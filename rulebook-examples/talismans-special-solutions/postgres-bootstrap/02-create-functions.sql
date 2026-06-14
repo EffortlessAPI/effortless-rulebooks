@@ -328,6 +328,136 @@ RETURNS INTEGER AS $$
   SELECT ((SELECT COUNT(*) FROM role_assignments WHERE calc_role_assignments_requires_compliance_audit(role_assignment_id) = TRUE))::integer;
 $$ LANGUAGE sql STABLE;
 
+-- calc_workflows_count_approval_gate_steps
+-- Field: Workflows.CountApprovalGateSteps
+-- Type: aggregation | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_workflows_count_approval_gate_steps(p_workflow_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((SELECT COUNT(*) FROM workflow_steps WHERE workflow = (SELECT NULLIF(workflow_id, '') FROM workflows WHERE workflow_id = p_workflow_id) AND calc_workflow_steps_is_approval_gate(workflow_step_id) = TRUE))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_workflows_count_gates_without_human_approver
+-- Field: Workflows.CountGatesWithoutHumanApprover
+-- Type: aggregation | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_workflows_count_gates_without_human_approver(p_workflow_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((SELECT COUNT(*) FROM approval_gates WHERE calc_approval_gates_has_human_approver(approval_gate_id) = FALSE))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_workflows_count_workflow_artifacts
+-- Field: Workflows.CountWorkflowArtifacts
+-- Type: aggregation | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_workflows_count_workflow_artifacts(p_workflow_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((SELECT COUNT(*) FROM workflow_artifacts WHERE calc_workflow_artifacts_produced_by_workflow(artifact_id) = (SELECT NULLIF(workflow_id, '') FROM workflows WHERE workflow_id = p_workflow_id)))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_workflows_count_roles_with_escalation_violation
+-- Field: Workflows.CountRolesWithEscalationViolation
+-- Type: aggregation | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_workflows_count_roles_with_escalation_violation(p_workflow_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((SELECT COUNT(*) FROM roles WHERE calc_roles_escalation_violation(role_id) = TRUE))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_workflows_count_unconsumed_datasets
+-- Field: Workflows.CountUnconsumedDatasets
+-- Type: aggregation | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_workflows_count_unconsumed_datasets(p_workflow_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((SELECT COUNT(*) FROM datasets WHERE calc_datasets_is_consumed(dataset_id) = FALSE))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_workflows_cq1_satisfied
+-- Field: Workflows.Cq1Satisfied
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_workflows_cq1_satisfied(p_workflow_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (calc_workflows_count_of_precedence_closure_pairs(p_workflow_id) = (COALESCE(CASE WHEN (calc_workflows_count_of_non_proposed_steps(p_workflow_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_workflows_count_of_non_proposed_steps(p_workflow_id))::numeric ELSE NULL END, 0) * COALESCE(CASE WHEN ((COALESCE(CASE WHEN ((COALESCE(CASE WHEN (calc_workflows_count_of_non_proposed_steps(p_workflow_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_workflows_count_of_non_proposed_steps(p_workflow_id))::numeric ELSE NULL END, 0) - COALESCE(1, 0)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((COALESCE(CASE WHEN (calc_workflows_count_of_non_proposed_steps(p_workflow_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_workflows_count_of_non_proposed_steps(p_workflow_id))::numeric ELSE NULL END, 0) - COALESCE(1, 0)))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(2, 0), 0)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((COALESCE(CASE WHEN ((COALESCE(CASE WHEN (calc_workflows_count_of_non_proposed_steps(p_workflow_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_workflows_count_of_non_proposed_steps(p_workflow_id))::numeric ELSE NULL END, 0) - COALESCE(1, 0)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((COALESCE(CASE WHEN (calc_workflows_count_of_non_proposed_steps(p_workflow_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_workflows_count_of_non_proposed_steps(p_workflow_id))::numeric ELSE NULL END, 0) - COALESCE(1, 0)))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(2, 0), 0)))::numeric ELSE NULL END, 0)))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_workflows_cq2_satisfied
+-- Field: Workflows.Cq2Satisfied
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_workflows_cq2_satisfied(p_workflow_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (((calc_workflows_count_approval_gate_steps(p_workflow_id))::NUMERIC > 0 AND (calc_workflows_count_gates_without_human_approver(p_workflow_id))::NUMERIC = 0));
+$$ LANGUAGE sql STABLE;
+
+-- calc_workflows_cq3_satisfied
+-- Field: Workflows.Cq3Satisfied
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_workflows_cq3_satisfied(p_workflow_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (NOT (calc_workflows_has_consistency_violation(p_workflow_id)))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_workflows_cq4_satisfied
+-- Field: Workflows.Cq4Satisfied
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_workflows_cq4_satisfied(p_workflow_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (calc_workflows_count_derivation_links(p_workflow_id) = (COALESCE(CASE WHEN (calc_workflows_count_workflow_artifacts(p_workflow_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_workflows_count_workflow_artifacts(p_workflow_id))::numeric ELSE NULL END, 0) - COALESCE(1, 0)))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_workflows_cq5_satisfied
+-- Field: Workflows.Cq5Satisfied
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_workflows_cq5_satisfied(p_workflow_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (NOT (calc_workflows_is_stale(p_workflow_id)))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_workflows_cq6_satisfied
+-- Field: Workflows.Cq6Satisfied
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_workflows_cq6_satisfied(p_workflow_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((calc_workflows_count_roles_with_escalation_violation(p_workflow_id))::NUMERIC = 0)::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_workflows_cq7_satisfied
+-- Field: Workflows.Cq7Satisfied
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_workflows_cq7_satisfied(p_workflow_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (calc_workflows_involves_engineering_and_legal(p_workflow_id))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_workflows_cq8_satisfied
+-- Field: Workflows.Cq8Satisfied
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_workflows_cq8_satisfied(p_workflow_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((calc_workflows_count_unconsumed_datasets(p_workflow_id))::NUMERIC = 0)::boolean;
+$$ LANGUAGE sql STABLE;
+
 -- calc_workflow_steps_parent_path
 -- Field: WorkflowSteps.ParentPath
 -- Type: lookup | DataType: string | Returns: TEXT
@@ -750,6 +880,16 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION calc_approval_gates_name(p_approval_gate_id TEXT)
 RETURNS TEXT AS $$
   SELECT (REPLACE(LOWER((SELECT NULLIF(display_name, '') FROM approval_gates WHERE approval_gate_id = p_approval_gate_id)), ' ', '-'))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_approval_gates_has_human_approver
+-- Field: ApprovalGates.HasHumanApprover
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_approval_gates_has_human_approver(p_approval_gate_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (NOT (((calc_approval_gates_gate_approver_human(p_approval_gate_id)) IS NULL OR (calc_approval_gates_gate_approver_human(p_approval_gate_id))::text = '')))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_step_precedence_parent_path
@@ -1339,6 +1479,16 @@ RETURNS TEXT AS $$
   SELECT (REPLACE(calc_datasets_relative_path(p_dataset_id), '/', '-'))::text;
 $$ LANGUAGE sql STABLE;
 
+-- calc_datasets_is_consumed
+-- Field: Datasets.IsConsumed
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_datasets_is_consumed(p_dataset_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (NOT ((((SELECT NULLIF(consumed_by_steps, '') FROM datasets WHERE dataset_id = p_dataset_id)) IS NULL OR ((SELECT NULLIF(consumed_by_steps, '') FROM datasets WHERE dataset_id = p_dataset_id))::text = '')))::boolean;
+$$ LANGUAGE sql STABLE;
+
 -- calc_workflow_artifacts_parent_path
 -- Field: WorkflowArtifacts.ParentPath
 -- Type: lookup | DataType: string | Returns: TEXT
@@ -1841,6 +1991,15 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION get_competency_questions_expected_answer(p_competency_question_id TEXT)
 RETURNS TEXT AS $$
   SELECT (SELECT expected_answer FROM competency_questions WHERE competency_question_id = p_competency_question_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_competency_questions_satisfied_field
+-- Helper function: Get SatisfiedField from CompetencyQuestions by CompetencyQuestionId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_competency_questions_satisfied_field(p_competency_question_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT satisfied_field FROM competency_questions WHERE competency_question_id = p_competency_question_id);
 $$ LANGUAGE sql STABLE;
 
 -- get_competency_questions_explanation

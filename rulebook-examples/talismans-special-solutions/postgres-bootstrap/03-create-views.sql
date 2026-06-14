@@ -73,7 +73,20 @@ SELECT
   calc_workflows_count_of_precedence_closure_pairs(t.workflow_id) AS count_of_precedence_closure_pairs,-- Total number of step-ordering pairs in the transitive closure of ntwf:precedesStep = asserted (4) + inferred (6) = 10. The article's headline closure cardinality, witnessing that the 4 asserted edges over a 5-step chain close to all 10 (i<j) pairs. Computed as CountAssertedPrecedencePairs + CountInferredPrecedencePairs so the total is provably the sum of the two halves, not a separate unconditional view count that could silently drift from them.
   calc_workflows_count_roles_with_bad_filler_cardinality(t.workflow_id) AS count_roles_with_bad_filler_cardinality,-- Number of roles that do NOT have exactly one filledBy arm set (rollup over Roles.HasExactlyOneFiller = FALSE). The three agent classes are owl:disjointWith one another and ntwf:filledBy is functional, so a clean ABox has 0 such roles — this is the Suite-1 functional/disjointness witness as a single integer. A non-zero value is the relational signal of the Suite-4 disjointness violation (a role filled by two agent classes, or by none). NOTE: this single-workflow model has exactly one Workflow and every Role participates in it, so the count is over all roles; a multi-workflow model would scope it through a role→workflow path.
   calc_workflows_count_agent_type_changes(t.workflow_id) AS count_agent_type_changes,-- Number of filledBy assignment periods that changed the agent CLASS of a role (rollup over RoleAssignments.IsAgentTypeChange = TRUE). NTWF governance distinguishes a same-class personnel/model swap from an agent-type transition; this counts the latter. NOTE: single-workflow model — every Role participates in the one workflow, so the count is over all assignment history; a multi-workflow model would scope it through a role→workflow path.
-  calc_workflows_count_compliance_audit_changes(t.workflow_id) AS count_compliance_audit_changes-- Number of filledBy assignment periods that took a previously AI-executed binding and reassigned it to a human (rollup over RoleAssignments.RequiresComplianceAudit = TRUE). NTWF governance treats this as a data operation with compliance implications: changing the agent type of a step from ntwf:AIAgent to ntwf:HumanAgent. Each such row must carry when (ValidFrom) and why (Reason). NOTE: single-workflow scoping as above.
+  calc_workflows_count_compliance_audit_changes(t.workflow_id) AS count_compliance_audit_changes,-- Number of filledBy assignment periods that took a previously AI-executed binding and reassigned it to a human (rollup over RoleAssignments.RequiresComplianceAudit = TRUE). NTWF governance treats this as a data operation with compliance implications: changing the agent type of a step from ntwf:AIAgent to ntwf:HumanAgent. Each such row must carry when (ValidFrom) and why (Reason). NOTE: single-workflow scoping as above.
+  calc_workflows_count_approval_gate_steps(t.workflow_id) AS count_approval_gate_steps,-- Number of this workflow's steps that are approval gates. >0 means the workflow has a blocking approval checkpoint; used by Cq2Satisfied to require that the gate exists before asking whether it has a human approver.
+  calc_workflows_count_gates_without_human_approver(t.workflow_id) AS count_gates_without_human_approver,-- Number of approval gates with no resolved human approver (gate role not filled by a HumanAgent). Single-workflow model, so this global count is wholly this workflow's. Drives Cq2Satisfied (= a gate exists AND none lack a human approver).
+  calc_workflows_count_workflow_artifacts(t.workflow_id) AS count_workflow_artifacts,-- Total artifacts produced by this workflow. With CountDerivationLinks (artifacts that have a wasDerivedFrom parent) this lets Cq4Satisfied check the provenance chain is intact: every artifact but the single origin has a parent.
+  calc_workflows_count_roles_with_escalation_violation(t.workflow_id) AS count_roles_with_escalation_violation,-- Number of roles that own an approval gate yet escalate to no one (Roles.EscalationViolation). Single-workflow model, so this global count applies to this workflow. Drives Cq6Satisfied (=0): the model's own native escalation-completeness invariant, replacing any hardcoded 'must reach the CTO' check.
+  calc_workflows_count_unconsumed_datasets(t.workflow_id) AS count_unconsumed_datasets,-- Number of datasets not consumed by any step (Datasets.IsConsumed = FALSE). Single-workflow model, so this global count applies to this workflow. Drives Cq8Satisfied (=0).
+  calc_workflows_cq1_satisfied(t.workflow_id) AS cq1_satisfied,                 -- CQ1 satisfied: the step-ordering closure is a TOTAL order — its pair count equals n*(n-1)/2 for n steps, so every pair of steps is comparable and 'the order' is well-defined. Purely structural; no asserted literal.
+  calc_workflows_cq2_satisfied(t.workflow_id) AS cq2_satisfied,                 -- CQ2 satisfied: the workflow has an approval gate AND every gate resolves to a human approver. Derived from the gate->role->filler chain; no hardcoded approver name.
+  calc_workflows_cq3_satisfied(t.workflow_id) AS cq3_satisfied,                 -- CQ3 satisfied: the AI-vs-human assignment is consistent — no step that requires a human decision is executed by a non-human (no ApprovalConsistencyViolation). Derived from the model's own consistency invariant.
+  calc_workflows_cq4_satisfied(t.workflow_id) AS cq4_satisfied,                 -- CQ4 satisfied: the wasDerivedFrom provenance chain is intact — every artifact but the single origin has a derivation parent. Structural; breaks the instant any derivation edge is cut.
+  calc_workflows_cq5_satisfied(t.workflow_id) AS cq5_satisfied,                 -- CQ5 satisfied: the workflow's compliance docs are within the review policy (not stale). Reads the existing IsStale verdict; flips when the review age passes StalenessThresholdMonths.
+  calc_workflows_cq6_satisfied(t.workflow_id) AS cq6_satisfied,                 -- CQ6 satisfied: no gate-owning role escalates to nobody — every approval gate has a complete escalation path. Uses the model's native EscalationViolation invariant; 'the top' is the delegation apex, derived, not a hardcoded CTO name.
+  calc_workflows_cq7_satisfied(t.workflow_id) AS cq7_satisfied,                 -- CQ7 satisfied: the workflow involves BOTH Engineering-owned and Legal-owned steps. Reads the existing InvolvesEngineeringAndLegal boolean.
+  calc_workflows_cq8_satisfied(t.workflow_id) AS cq8_satisfied                  -- CQ8 satisfied: every dataset the workflow declares is actually consumed by a step. Flips when a dataset is detached.
 FROM workflows t;
 
 -- ----------------------------------------------------------------------------
@@ -133,7 +146,8 @@ SELECT
   t.workflow_step,                                                              -- 1:1 FK to the WorkflowStep this gate specializes (subtype shared key). This is the relational expression of ntwf:ApprovalGate rdfs:subClassOf WorkflowStep: the gate row adds escalationThresholdHours to its step. Inverse is WorkflowSteps.ApprovalGate.
   t.escalation_threshold_hours,                                                 -- Integer number of hours that may elapse on a pending gate before the ntwf:delegatesTo chain activates. Maps to ntwf:escalationThresholdHours. Domain applies only to ApprovalGate individuals — which is exactly why the gate is its own subtype table and this attribute does not live on every WorkflowStep.
   calc_approval_gates_gate_role(t.approval_gate_id) AS gate_role,               -- The role responsible for this gate's underlying step, resolved through WorkflowStep → WorkflowSteps.AssignedRole. First hop of the CQ2 chain (gate → role → approver).
-  calc_approval_gates_gate_approver_human(t.approval_gate_id) AS gate_approver_human-- The human agent who approves at this gate, resolved through the two-hop chain gate → GateRole → Roles.FilledByHumanAgent. Answers CQ2 ('who is responsible for approving a production deployment') directly: the release-approval gate resolves to the Release Manager role, filled by Maria Gonzalez.
+  calc_approval_gates_gate_approver_human(t.approval_gate_id) AS gate_approver_human,-- The human agent who approves at this gate, resolved through the two-hop chain gate → GateRole → Roles.FilledByHumanAgent. Answers CQ2 ('who is responsible for approving a production deployment') directly: the release-approval gate resolves to the Release Manager role, filled by Maria Gonzalez.
+  calc_approval_gates_has_human_approver(t.approval_gate_id) AS has_human_approver-- TRUE iff this approval gate resolves to a human approver (its gate role is filled by a HumanAgent). Rolls up into Workflows.CountGatesWithoutHumanApprover, which CQ2's satisfaction reads.
 FROM approval_gates t;
 
 -- ----------------------------------------------------------------------------
@@ -346,7 +360,8 @@ SELECT
   t.identifier,                                                                 -- External system identifier. Maps to dct:identifier. Used for cross-referencing with data catalogs.
   t.modified,                                                                   -- Last modification timestamp. Maps to dct:modified.
   t.distribution_url,                                                           -- URL of the data distribution. Maps to dcat:Distribution. The access endpoint for the dataset.
-  t.consumed_by_steps                                                           -- Back-reference to WorkflowSteps that consume this dataset. Inverse of WorkflowSteps.ConsumesDataset.
+  t.consumed_by_steps,                                                          -- Back-reference to WorkflowSteps that consume this dataset. Inverse of WorkflowSteps.ConsumesDataset.
+  calc_datasets_is_consumed(t.dataset_id) AS is_consumed                        -- TRUE iff some workflow step consumes this dataset (ConsumedBySteps is set). Rolls up into Workflows.CountUnconsumedDatasets, which CQ8's satisfaction reads.
 FROM datasets t;
 
 -- ----------------------------------------------------------------------------
@@ -474,6 +489,7 @@ SELECT
   t.target_field,                                                               -- The substrate-computed field on TargetTable that answers this question (calc / lookup / aggregation / closure). The CQ scoreboard wraps the live answer in a DagCell(TargetTable, TargetField) so a click opens its inference graph.
   t.answer_kind,                                                                -- 'scalar' when the answer is a single value graded by equality with ExpectedAnswer; 'list' when the answer is a collection graded as answerable (non-empty / matches the asserted shape).
   t.expected_answer,                                                            -- The asserted correct answer for the seed worked example. For scalar questions the live computed value must equal this to score a pass; for list questions this is the canonical summary the rendered collection is checked against. Authored here so pass/fail is (substrate-computed value) vs (rulebook-asserted expectation) — a real conformance check, not UI logic.
+  t.satisfied_field,                                                            -- Name of the boolean column on Workflows that computes whether this CQ is satisfied (e.g. Cq6Satisfied). The scoreboard reads pass/fail straight from this substrate-computed column — the acceptance criterion lives in the rulebook as a derived field, never as app-side logic. Mirrors TargetTable/TargetField for the answer.
   t.explanation,                                                                -- One-sentence note on how this question resolves through the model — the FK / formula chain a presenter can narrate.
   t.sort_order,                                                                 -- Display order in the scoreboard. Mirrors Number for now; kept separate so the list can be re-sequenced without renumbering the canonical CQ ids.
   t.is_active,                                                                  -- Whether this competency question is shown in the scoreboard. All eight are active in the worked example.
@@ -581,6 +597,53 @@ WITH RECURSIVE edges AS (
     -- Treat NULL and empty-string FKs as 'no edge' (the transpiler stores absent
     -- relationship values as '' rather than NULL, so both must be excluded).
     WHERE role_id IS NOT NULL AND role_id <> '' AND delegates_to IS NOT NULL AND delegates_to <> ''
+),
+closure AS (
+    -- Base: the directly-asserted edges (hop 1).
+    SELECT
+        e.from_id,
+        e.to_id,
+        1 AS hop_distance,
+        ARRAY[e.from_id, e.to_id] AS path
+    FROM edges e
+    UNION ALL
+    -- Step: extend each path by one asserted edge, skipping nodes already on the
+    -- path so cyclic edge sets terminate (cycle-safe).
+    SELECT
+        cl.from_id,
+        e.to_id,
+        cl.hop_distance + 1,
+        cl.path || e.to_id
+    FROM closure cl
+    JOIN edges e ON e.from_id = cl.to_id
+    WHERE NOT (e.to_id = ANY(cl.path))
+)
+SELECT
+    cl.from_id,
+    cl.to_id,
+    MIN(cl.hop_distance) AS hop_distance,
+    NOT EXISTS (
+        SELECT 1 FROM edges e2
+        WHERE e2.from_id = cl.from_id AND e2.to_id = cl.to_id
+    ) AS is_inferred
+FROM closure cl
+GROUP BY cl.from_id, cl.to_id;
+
+
+-- ----------------------------------------------------------------------------
+-- vw_workflow_artifacts_closure: Transitive closure of prov:wasDerivedFrom over the self-referential DerivedFromArtifact FK. The asserted single-step derivation edges (Legal Clearance was derived from Risk Report, Release Authorization from Legal Clearance, …) imply the never-asserted reachability (Post-Deployment Report transitively wasDerivedFrom Risk Report). Materialized as vw_workflow_artifacts_closure(from_id, to_id, hop_distance, is_inferred). This is the artifact-lineage analogue of vw_step_precedence_closure and vw_roles_closure — the SAME closure construct as step ordering and role escalation, just over a different relation, so a broken link surfaces as a missing reachability pair exactly like a dropped precedence edge.
+-- Cycle-safe transitive closure of workflow_artifacts(artifact_id -> derived_from_artifact) [self-referential FK].
+-- Columns: from_id, to_id, hop_distance (shortest derivation), is_inferred
+--          (TRUE iff no direct hop-1 edge asserts the pair).
+-- ----------------------------------------------------------------------------
+DROP VIEW IF EXISTS vw_workflow_artifacts_closure CASCADE;
+CREATE VIEW vw_workflow_artifacts_closure WITH (security_invoker = ON) AS
+WITH RECURSIVE edges AS (
+    SELECT artifact_id AS from_id, derived_from_artifact AS to_id
+    FROM workflow_artifacts
+    -- Treat NULL and empty-string FKs as 'no edge' (the transpiler stores absent
+    -- relationship values as '' rather than NULL, so both must be excluded).
+    WHERE artifact_id IS NOT NULL AND artifact_id <> '' AND derived_from_artifact IS NOT NULL AND derived_from_artifact <> ''
 ),
 closure AS (
     -- Base: the directly-asserted edges (hop 1).

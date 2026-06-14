@@ -235,6 +235,23 @@ effortless-ntwf:ApprovalGatesShape a sh:NodeShape ;
                 BIND(?j3 AS ?_result)
             }
         """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_ApprovalGates_HasHumanApprover" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:hasHumanApprover ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:ApprovalGates .
+    OPTIONAL { $this effortless-ntwf:gateApproverHuman ?gate_approver_human . }
+                BIND((!((!BOUND(?gate_approver_human) || STR(?gate_approver_human) = ""))) AS ?_result)
+            }
+        """ ;
     ] .
 
 # === Shape with rules for ArtifactTypeConcepts ===
@@ -547,6 +564,23 @@ effortless-ntwf:DatasetsShape a sh:NodeShape ;
     $this a effortless-ntwf:Datasets .
     OPTIONAL { $this effortless-ntwf:relativePath ?relative_path . }
                 BIND(REPLACE(?relative_path, "/", "-") AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Datasets_IsConsumed" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:isConsumed ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:Datasets .
+    OPTIONAL { $this effortless-ntwf:consumedBySteps ?consumed_by_steps . }
+                BIND((!((!BOUND(?consumed_by_steps) || STR(?consumed_by_steps) = ""))) AS ?_result)
             }
         """ ;
     ] .
@@ -2273,6 +2307,255 @@ effortless-ntwf:WorkflowsShape a sh:NodeShape ;
                 }
             }
         """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Workflows_CountApprovalGateSteps" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:countApprovalGateSteps ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:Workflows .
+                {
+                    SELECT (COUNT(?child) AS ?_result) WHERE {
+                    ?child a effortless-ntwf:WorkflowSteps .
+                    ?child effortless-ntwf:workflow $this .
+                    OPTIONAL { ?child effortless-ntwf:isApprovalGate ?c2 . }
+                    FILTER(BOUND(?c2) && ?c2 = true)
+                    }
+                }
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Workflows_CountGatesWithoutHumanApprover" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:countGatesWithoutHumanApprover ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:Workflows .
+                {
+                    SELECT (COUNT(?child) AS ?_result) WHERE {
+                    ?child a effortless-ntwf:ApprovalGates .
+                    OPTIONAL { ?child effortless-ntwf:hasHumanApprover ?c0 . }
+                    FILTER(BOUND(?c0) && ?c0 = false)
+                    }
+                }
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Workflows_CountWorkflowArtifacts" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:countWorkflowArtifacts ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:Workflows .
+                {
+                    SELECT (COUNT(?child) AS ?_result) WHERE {
+                    ?child a effortless-ntwf:WorkflowArtifacts .
+                    ?child effortless-ntwf:producedByWorkflow $this .
+                    }
+                }
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Workflows_CountRolesWithEscalationViolation" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:countRolesWithEscalationViolation ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:Workflows .
+                {
+                    SELECT (COUNT(?child) AS ?_result) WHERE {
+                    ?child a effortless-ntwf:Roles .
+                    OPTIONAL { ?child effortless-ntwf:escalationViolation ?c0 . }
+                    FILTER(BOUND(?c0) && ?c0 = true)
+                    }
+                }
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Workflows_CountUnconsumedDatasets" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:countUnconsumedDatasets ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:Workflows .
+                {
+                    SELECT (COUNT(?child) AS ?_result) WHERE {
+                    ?child a effortless-ntwf:Datasets .
+                    OPTIONAL { ?child effortless-ntwf:isConsumed ?c0 . }
+                    FILTER(BOUND(?c0) && ?c0 = false)
+                    }
+                }
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Workflows_Cq1Satisfied" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:cq1Satisfied ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:Workflows .
+    OPTIONAL { $this effortless-ntwf:countOfNonProposedSteps ?count_of_non_proposed_steps . }
+    OPTIONAL { $this effortless-ntwf:countOfPrecedenceClosurePairs ?count_of_precedence_closure_pairs . }
+                BIND((?count_of_precedence_closure_pairs = ((?count_of_non_proposed_steps * (?count_of_non_proposed_steps - 1)) / 2)) AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Workflows_Cq2Satisfied" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:cq2Satisfied ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:Workflows .
+    OPTIONAL { $this effortless-ntwf:countApprovalGateSteps ?count_approval_gate_steps . }
+    OPTIONAL { $this effortless-ntwf:countGatesWithoutHumanApprover ?count_gates_without_human_approver . }
+                BIND(((?count_approval_gate_steps > 0) && (?count_gates_without_human_approver = 0)) AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Workflows_Cq3Satisfied" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:cq3Satisfied ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:Workflows .
+    OPTIONAL { $this effortless-ntwf:hasConsistencyViolation ?has_consistency_violation . }
+                BIND((!(?has_consistency_violation)) AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Workflows_Cq4Satisfied" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:cq4Satisfied ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:Workflows .
+    OPTIONAL { $this effortless-ntwf:countDerivationLinks ?count_derivation_links . }
+    OPTIONAL { $this effortless-ntwf:countWorkflowArtifacts ?count_workflow_artifacts . }
+                BIND((?count_derivation_links = (?count_workflow_artifacts - 1)) AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Workflows_Cq5Satisfied" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:cq5Satisfied ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:Workflows .
+    OPTIONAL { $this effortless-ntwf:isStale ?is_stale . }
+                BIND((!(?is_stale)) AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Workflows_Cq6Satisfied" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:cq6Satisfied ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:Workflows .
+    OPTIONAL { $this effortless-ntwf:countRolesWithEscalationViolation ?count_roles_with_escalation_violation . }
+                BIND((?count_roles_with_escalation_violation = 0) AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Workflows_Cq7Satisfied" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:cq7Satisfied ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:Workflows .
+    OPTIONAL { $this effortless-ntwf:involvesEngineeringAndLegal ?involves_engineering_and_legal . }
+                BIND(?involves_engineering_and_legal AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Workflows_Cq8Satisfied" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:cq8Satisfied ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:Workflows .
+    OPTIONAL { $this effortless-ntwf:countUnconsumedDatasets ?count_unconsumed_datasets . }
+                BIND((?count_unconsumed_datasets = 0) AS ?_result)
+            }
+        """ ;
     ] .
 
 # === Cardinality: single-valued forward FK properties ===
@@ -2342,7 +2625,6 @@ effortless-ntwf:WorkflowArtifactsCardinalityShape a sh:NodeShape ;
     sh:targetClass effortless-ntwf:WorkflowArtifacts ;
     sh:property [ sh:path effortless-ntwf:attributedToAutomatedPipeline ; sh:maxCount 1 ] ;
     sh:property [ sh:path effortless-ntwf:attributedToHumanAgent ; sh:maxCount 1 ] ;
-    sh:property [ sh:path effortless-ntwf:derivedFromArtifact ; sh:maxCount 1 ] ;
     sh:property [ sh:path effortless-ntwf:producedByStep ; sh:maxCount 1 ] ;
     sh:property [ sh:path effortless-ntwf:requiredBySteps ; sh:maxCount 1 ] .
 
@@ -2354,4 +2636,4 @@ effortless-ntwf:WorkflowStepsCardinalityShape a sh:NodeShape ;
     sh:targetClass effortless-ntwf:WorkflowSteps ;
     sh:property [ sh:path effortless-ntwf:workflow ; sh:maxCount 1 ] .
 
-# Generated 120 SHACL rules
+# Generated 135 SHACL rules

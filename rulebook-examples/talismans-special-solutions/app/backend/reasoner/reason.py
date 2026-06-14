@@ -326,6 +326,33 @@ def _precedence_closure(g: Graph, db: Dict[str, Any]) -> Dict[str, Any]:
     }
 
 
+def _derivation_closure(g: Graph, db: Dict[str, Any]) -> Dict[str, Any]:
+    # Transitive closure of prov:wasDerivedFrom over the self-referential
+    # derivedFromArtifact FK — the artifact-lineage analogue of
+    # _precedence_closure. derivedFromArtifact is declared owl:TransitiveProperty
+    # in the generated TBox, so OWL-RL materializes the inferred reachability
+    # pairs; the asserted set is the raw single-hop FKs.
+    asserted = set()
+    for row in db.get("WorkflowArtifacts", []):
+        parent = row.get("derivedFromArtifact")
+        if parent:
+            asserted.add((row.get("artifactId"), parent))
+    pairs = []
+    q = g.query(
+        "PREFIX erb: <https://w3id.org/effortless-ntwf#> "
+        "SELECT ?f ?t WHERE { ?f erb:derivedFromArtifact ?t } ORDER BY ?f ?t"
+    )
+    for r in q:
+        f, t = _local(r[0]), _local(r[1])
+        pairs.append({"from_id": f, "to_id": t, "is_inferred": (f, t) not in asserted})
+    return {
+        "count": len(pairs),
+        "inferred": sum(1 for p in pairs if p["is_inferred"]),
+        "asserted": sum(1 for p in pairs if not p["is_inferred"]),
+        "pairs": pairs,
+    }
+
+
 def _delegation(g: Graph, db: Dict[str, Any]) -> Dict[str, List[str]]:
     out: Dict[str, List[str]] = {}
     for row in db.get("Roles", []):
@@ -387,6 +414,7 @@ def reason(db: Dict[str, Any]) -> Dict[str, Any]:
         "individuals": _individuals(g),
         "competency": {
             "precedence_closure": _precedence_closure(g, db),
+            "derivation_closure": _derivation_closure(g, db),
             "delegation": _delegation(g, db),
             "disjoint_classes": _disjoint_classes(g),
             "roles_filled_by": _roles_filled_by(g, db),

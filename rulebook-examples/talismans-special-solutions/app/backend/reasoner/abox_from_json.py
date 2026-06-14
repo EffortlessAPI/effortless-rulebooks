@@ -76,11 +76,21 @@ JUNCTION_PROJECTIONS = {
 #
 # ONLY back-refs whose forward FK the app edits AND that are fully redundant with
 # that forward edge belong here. fromDelegatesTo qualifies (delegatesTo is the one
-# inverse-paired FK the console edits; fromDelegatesTo mirrors it exactly). Others
-# like consumedBySteps do NOT — a scenario authors data ON that back-ref side, so
-# dropping it would lose real facts. Add a property here only after confirming its
-# forward counterpart is the authoritative, edited side.
-DERIVED_INVERSE_BACKREFS = {"fromDelegatesTo"}
+# inverse-paired FK the console edits; fromDelegatesTo mirrors it exactly).
+#
+# consumedBySteps ALSO qualifies: WorkflowSteps.consumesDataset is the authoritative
+# DCAT forward FK (a step declares the dataset it consumes), and Datasets.consumedBySteps
+# is its exact owl:inverseOf. The CQ8 "detach the risk dataset" simulate edits the
+# FORWARD side (consumesDataset=""), so the back-ref MUST be derived-only — otherwise
+# the stored ds.consumedBySteps='prod-deploy-step-1' would resurrect the cut edge
+# (ds consumedBySteps step ⟹ step consumesDataset ds) and the simulate would do
+# nothing, exactly like the delegatesTo bug above. With it derived, clearing the one
+# forward FK fully detaches the dataset on both substrates. (The seed's redundant
+# stored ds.consumedBySteps is now ignored by the reasoner — Postgres already derived
+# it from the reverse FK — so baseline answers are unchanged.)
+# Add a property here only after confirming its forward counterpart is the
+# authoritative, edited side.
+DERIVED_INVERSE_BACKREFS = {"fromDelegatesTo", "consumedBySteps"}
 
 
 def _lname(prop: str) -> str:

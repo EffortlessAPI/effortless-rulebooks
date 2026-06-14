@@ -251,6 +251,10 @@ interface RoleFilledBy {
 // The full competency block, mirroring the reasoner's SPARQL answers.
 interface Competency {
   precedence_closure: PrecedenceClosure;
+  // Transitive closure of prov:wasDerivedFrom (artifact lineage) — the SAME
+  // ClosurePair shape as precedence_closure, read from vw_workflow_artifacts_closure.
+  // This is the third member of the closure family (steps, roles, artifacts).
+  derivation_closure: PrecedenceClosure;
   delegation: Record<string, string[]>;
   disjoint_classes: DisjointClassPair[];
   roles_filled_by: Record<string, RoleFilledBy>;
@@ -286,6 +290,30 @@ async function readCompetency(
     inferred: pairs.filter((p) => p.is_inferred).length,
     asserted: pairs.filter((p) => !p.is_inferred).length,
     pairs,
+  };
+
+  // derivation_closure: vw_workflow_artifacts_closure(from_id,to_id,hop_distance,is_inferred)
+  // — prov:wasDerivedFrom closed transitively over the self-referential
+  // DerivedFromArtifact FK. Identical shape/treatment to precedence_closure.
+  const ac = await client.query<{
+    from_id: string;
+    to_id: string;
+    hop_distance: number;
+    is_inferred: boolean;
+  }>(
+    `SELECT from_id, to_id, hop_distance, is_inferred
+       FROM vw_workflow_artifacts_closure ORDER BY from_id, to_id`
+  );
+  const derivationPairs: ClosurePair[] = ac.rows.map((r) => ({
+    from_id: r.from_id,
+    to_id: r.to_id,
+    is_inferred: r.is_inferred,
+  }));
+  const derivation_closure: PrecedenceClosure = {
+    count: derivationPairs.length,
+    inferred: derivationPairs.filter((p) => p.is_inferred).length,
+    asserted: derivationPairs.filter((p) => !p.is_inferred).length,
+    pairs: derivationPairs,
   };
 
   // delegation: keyed by roleId -> [reachable role ids], from vw_roles_closure.
@@ -340,7 +368,7 @@ async function readCompetency(
     };
   }
 
-  return { precedence_closure, delegation, disjoint_classes, roles_filled_by };
+  return { precedence_closure, derivation_closure, delegation, disjoint_classes, roles_filled_by };
 }
 
 // Attach the derived `precedesStep` multi-value to each WorkflowStep, so the

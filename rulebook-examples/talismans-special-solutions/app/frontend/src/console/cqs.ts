@@ -196,10 +196,9 @@ export const CQ_RESOLVERS: Record<string, CqResolver> = {
     const entry = sit.delegation?.[roleId];
     const fromName = entry?.from || sit.roleById[roleId]?.name || "—";
     const chain = entry?.to || [];
-    const reachesCto = chain.some((t) => /cto|chief technology/i.test(t.name));
     return {
       answer: chain.length ? `${fromName} → ${chain.map((t) => t.name).join(" → ")}` : `${fromName} — no delegation`,
-      ok: chain.length > 0 && reachesCto,
+      ok: false, // inert — resolveCq reads Cq6Satisfied (escalation apex) from the rulebook
       rows: [
         { label: fromName, sub: "gate role", kind: "role" },
         ...chain.map((t, i) => ({ label: t.name, sub: i === chain.length - 1 ? "final escalation" : "delegates to", kind: "role" as const })),
@@ -226,21 +225,29 @@ export const CQ_RESOLVERS: Record<string, CqResolver> = {
   },
 
   // CQ8 — datasets the review consumes + the AI agent that processed each. The
-  // consuming step (Datasets.ConsumedBySteps) resolves to its filling agent.
+  // consuming step (Datasets.ConsumedBySteps, the derived inverse of the step's
+  // ConsumesDataset FK) resolves to its filling agent. The question asks "which AI
+  // agents processed them", so the answer holds ONLY when every consumed dataset
+  // is processed by an AI agent — and at least one dataset is actually consumed.
+  // NOTE: `[].every(...)` is vacuously true, so the `flat.length > 0` guard is
+  // load-bearing: "no datasets consumed" (the detach simulate) must read RED, not
+  // silently pass. Reassign the consuming step to a human and it also goes red —
+  // the dataset is consumed, but not by an AI.
   "cq-8": (sit) => {
     const ds = sit.datasets || [];
     const flat = ds.flatMap((d) => d.consumedBySteps.map((c) => ({ d, c })));
+    const isAI = (c: { agent: { kind?: string } | null }): boolean => c.agent?.kind === "ai";
     const answer =
       flat.length === 0
         ? "no datasets consumed"
-        : flat.map(({ d, c }) => `${d.title}${c.agent ? ` · ${c.agent.name}` : ""}`).join(" ; ");
+        : flat.map(({ d, c }) => `${d.title}${c.agent ? ` · ${c.agent.name}${isAI(c) ? "" : " (not AI)"}` : " · no agent"}`).join(" ; ");
     return {
       answer,
-      ok: ds.length > 0 && flat.every(({ c }) => !!c.agent),
+      ok: ds.length > 0 && flat.length > 0 && flat.every(({ c }) => isAI(c)),
       rows: ds.map((d) => ({
         label: d.title,
         sub: d.consumedBySteps.length
-          ? d.consumedBySteps.map((c) => `${c.title}${c.agent ? ` — processed by ${c.agent.name}` : ""}`).join("; ")
+          ? d.consumedBySteps.map((c) => `${c.title}${c.agent ? ` — processed by ${c.agent.name}${isAI(c) ? " 🤖" : " (not an AI agent)"}` : " — no processing agent"}`).join("; ")
           : "not consumed by any step",
         kind: "dataset",
       })),
@@ -252,6 +259,14 @@ export const CQ_RESOLVERS: Record<string, CqResolver> = {
 // row the UI doesn't know yet) surfaces loudly rather than silently passing.
 export function resolveCq(sit: Situation, cq: CompetencyQuestion): CqResult {
   const r = CQ_RESOLVERS[cq.id];
-  if (!r) return { answer: "— no resolver for this CQ", ok: false, rows: [{ label: `add a resolver for ${cq.id} in cqs.ts` }] };
-  return r(sit, cq);
+  const base = r
+    ? r(sit, cq)
+    : { answer: "— no resolver for this CQ", ok: false, rows: [{ label: `add a resolver for ${cq.id} in cqs.ts` }] };
+  // Pass/fail is NOT decided here. It is read from the substrate-computed boolean
+  // the rulebook points at: CompetencyQuestions.SatisfiedField -> Workflows.CqNSatisfied,
+  // surfaced on the payload as `cq.satisfied`. The resolvers below only render the
+  // live ANSWER + backing rows; the acceptance criterion lives entirely in the
+  // rulebook (so e.g. CQ6 has no hardcoded "reaches the CTO" — it reads the derived
+  // escalation-violation rollup). Any per-resolver `ok:` expression is now inert.
+  return { ...base, ok: cq.satisfied === true };
 }

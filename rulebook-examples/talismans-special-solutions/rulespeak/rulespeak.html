@@ -248,9 +248,9 @@ html.show-consumers .elem-consumers{display:block}
 <nav class="toc">
   <h2 class="toc-title">Entities</h2>
   <ul class="toc-list">
-    <li><a href="#t-workflows">Workflow</a> <span class="toc-meta">24 rules · 2 links</span></li>
+    <li><a href="#t-workflows">Workflow</a> <span class="toc-meta">37 rules · 2 links</span></li>
     <li><a href="#t-workflowsteps">Workflow Step</a> <span class="toc-meta">19 rules · 8 links</span></li>
-    <li><a href="#t-approvalgates">Approval Gate</a> <span class="toc-meta">6 rules · 1 links</span></li>
+    <li><a href="#t-approvalgates">Approval Gate</a> <span class="toc-meta">7 rules · 1 links</span></li>
     <li><a href="#t-stepprecedence">Step Precedence</a> <span class="toc-meta">4 rules · 2 links</span></li>
     <li><a href="#t-roles">Role</a> <span class="toc-meta">8 rules · 9 links</span></li>
     <li><a href="#t-roleassignments">Role Assignment</a> <span class="toc-meta">9 rules · 4 links</span></li>
@@ -261,7 +261,7 @@ html.show-consumers .elem-consumers{display:block}
     <li><a href="#t-workflowstatusconcepts">Workflow Status Concept</a> <span class="toc-meta">2 rules · 1 links</span></li>
     <li><a href="#t-agentcapabilityconcepts">Agent Capability Concept</a> <span class="toc-meta">2 rules · 1 links</span></li>
     <li><a href="#t-artifacttypeconcepts">Artifact Type Concept</a> <span class="toc-meta">2 rules · 1 links</span></li>
-    <li><a href="#t-datasets">Dataset</a> <span class="toc-meta">2 rules · 1 links</span></li>
+    <li><a href="#t-datasets">Dataset</a> <span class="toc-meta">3 rules · 1 links</span></li>
     <li><a href="#t-workflowartifacts">Workflow Artifact</a> <span class="toc-meta">7 rules · 7 links</span></li>
     <li><a href="#t-governanceroles">Governance Role</a> <span class="toc-meta">4 rules · 1 links</span></li>
     <li><a href="#t-changelog">Change Log</a> <span class="toc-meta">5 rules · 1 links</span></li>
@@ -559,9 +559,10 @@ html.show-consumers .elem-consumers{display:block}
       </div>
     </details>
     <details class="prov prov-consumers elem elem-consumers">
-      <summary>Consumers <span class="count">1 direct</span> <span class="prov-hint">rules that read this one</span></summary>
+      <summary>Consumers <span class="count">2 direct</span> <span class="prov-hint">rules that read this one</span></summary>
       <div class="prov-pills">
         <a class="ref-pill tone-calc" href="#f-workflows-hasmorethan1step">ƒ Has More Than1 Step <span class="ref-pill-tbl">Workflows</span></a>
+        <a class="ref-pill tone-calc" href="#f-workflows-cq1satisfied">ƒ Cq1 Satisfied <span class="ref-pill-tbl">Workflows</span></a>
       </div>
     </details>
     <details class="prov prov-leaves elem elem-inputs">
@@ -815,9 +816,10 @@ html.show-consumers .elem-consumers{display:block}
       </div>
     </details>
     <details class="prov prov-consumers elem elem-consumers">
-      <summary>Consumers <span class="count">1 direct</span> <span class="prov-hint">rules that read this one</span></summary>
+      <summary>Consumers <span class="count">1 direct</span> <span class="count count-muted">+1 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
       <div class="prov-pills">
         <a class="ref-pill tone-calc" href="#f-workflows-hasconsistencyviolation">ƒ Has Consistency Violation <span class="ref-pill-tbl">Workflows</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-workflows-cq3satisfied">Cq3 Satisfied <span class="ref-pill-tbl">Workflows</span></a>
       </div>
     </details>
     <details class="prov prov-leaves elem elem-inputs">
@@ -863,6 +865,12 @@ html.show-consumers .elem-consumers{display:block}
           <span class="input-head"><span class="input-glyph">Σ</span><span class="input-name">Count Approval Consistency Violations</span><span class="input-table">Workflows</span></span>
           <span class="input-en">Count of WorkflowSteps whose workflow is workflow id and approval consistency violation is yes.</span>
         </a>
+      </div>
+    </details>
+    <details class="prov prov-consumers elem elem-consumers">
+      <summary>Consumers <span class="count">1 direct</span> <span class="prov-hint">rules that read this one</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-calc" href="#f-workflows-cq3satisfied">ƒ Cq3 Satisfied <span class="ref-pill-tbl">Workflows</span></a>
       </div>
     </details>
     <details class="prov prov-leaves elem elem-inputs">
@@ -961,10 +969,11 @@ html.show-consumers .elem-consumers{display:block}
       </div>
     </details>
     <details class="prov prov-consumers elem elem-consumers">
-      <summary>Consumers <span class="count">1 direct</span> <span class="count count-muted">+1 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
+      <summary>Consumers <span class="count">1 direct</span> <span class="count count-muted">+2 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
       <div class="prov-pills">
         <a class="ref-pill tone-calc" href="#f-workflows-isstale">ƒ Is Stale <span class="ref-pill-tbl">Workflows</span></a>
         <a class="ref-pill tone-rel faded" href="#f-workflows-isstaleandhasaiagent">Is Stale and Has AI Agent <span class="ref-pill-tbl">Workflows</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-workflows-cq5satisfied">Cq5 Satisfied <span class="ref-pill-tbl">Workflows</span></a>
       </div>
     </details>
     <details class="prov prov-leaves elem elem-inputs">
@@ -1012,9 +1021,10 @@ html.show-consumers .elem-consumers{display:block}
       </div>
     </details>
     <details class="prov prov-consumers elem elem-consumers">
-      <summary>Consumers <span class="count">1 direct</span> <span class="prov-hint">rules that read this one</span></summary>
+      <summary>Consumers <span class="count">2 direct</span> <span class="prov-hint">rules that read this one</span></summary>
       <div class="prov-pills">
         <a class="ref-pill tone-calc" href="#f-workflows-isstaleandhasaiagent">ƒ Is Stale and Has AI Agent <span class="ref-pill-tbl">Workflows</span></a>
+        <a class="ref-pill tone-calc" href="#f-workflows-cq5satisfied">ƒ Cq5 Satisfied <span class="ref-pill-tbl">Workflows</span></a>
       </div>
     </details>
     <details class="prov prov-leaves elem elem-inputs">
@@ -1116,6 +1126,12 @@ html.show-consumers .elem-consumers{display:block}
         </a>
       </div>
     </details>
+    <details class="prov prov-consumers elem elem-consumers">
+      <summary>Consumers <span class="count">1 direct</span> <span class="prov-hint">rules that read this one</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-calc" href="#f-workflows-cq4satisfied">ƒ Cq4 Satisfied <span class="ref-pill-tbl">Workflows</span></a>
+      </div>
+    </details>
     <details class="prov prov-leaves elem elem-inputs">
       <summary>Ground truth at the leaves <span class="count">5</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
       <div class="prov-pills">
@@ -1169,9 +1185,10 @@ html.show-consumers .elem-consumers{display:block}
       </div>
     </details>
     <details class="prov prov-consumers elem elem-consumers">
-      <summary>Consumers <span class="count">1 direct</span> <span class="prov-hint">rules that read this one</span></summary>
+      <summary>Consumers <span class="count">1 direct</span> <span class="count count-muted">+1 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
       <div class="prov-pills">
         <a class="ref-pill tone-calc" href="#f-workflows-involvesengineeringandlegal">ƒ Involves Engineering and Legal <span class="ref-pill-tbl">Workflows</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-workflows-cq7satisfied">Cq7 Satisfied <span class="ref-pill-tbl">Workflows</span></a>
       </div>
     </details>
     <details class="prov prov-leaves elem elem-inputs">
@@ -1227,9 +1244,10 @@ html.show-consumers .elem-consumers{display:block}
       </div>
     </details>
     <details class="prov prov-consumers elem elem-consumers">
-      <summary>Consumers <span class="count">1 direct</span> <span class="prov-hint">rules that read this one</span></summary>
+      <summary>Consumers <span class="count">1 direct</span> <span class="count count-muted">+1 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
       <div class="prov-pills">
         <a class="ref-pill tone-calc" href="#f-workflows-involvesengineeringandlegal">ƒ Involves Engineering and Legal <span class="ref-pill-tbl">Workflows</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-workflows-cq7satisfied">Cq7 Satisfied <span class="ref-pill-tbl">Workflows</span></a>
       </div>
     </details>
     <details class="prov prov-leaves elem elem-inputs">
@@ -1280,6 +1298,12 @@ html.show-consumers .elem-consumers{display:block}
         </a>
       </div>
     </details>
+    <details class="prov prov-consumers elem elem-consumers">
+      <summary>Consumers <span class="count">1 direct</span> <span class="prov-hint">rules that read this one</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-calc" href="#f-workflows-cq7satisfied">ƒ Cq7 Satisfied <span class="ref-pill-tbl">Workflows</span></a>
+      </div>
+    </details>
     <details class="prov prov-leaves elem elem-inputs">
       <summary>Ground truth at the leaves <span class="count">5</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
       <div class="prov-pills">
@@ -1316,9 +1340,10 @@ html.show-consumers .elem-consumers{display:block}
       </div>
     </div>
     <details class="prov prov-consumers elem elem-consumers">
-      <summary>Consumers <span class="count">1 direct</span> <span class="prov-hint">rules that read this one</span></summary>
+      <summary>Consumers <span class="count">1 direct</span> <span class="count count-muted">+1 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
       <div class="prov-pills">
         <a class="ref-pill tone-calc" href="#f-workflows-countofprecedenceclosurepairs">ƒ Count of Precedence Closure Pairs <span class="ref-pill-tbl">Workflows</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-workflows-cq1satisfied">Cq1 Satisfied <span class="ref-pill-tbl">Workflows</span></a>
       </div>
     </details>
     <p class="field-note elem elem-desc">Number of step-ordering pairs that the transitive closure of ntwf:precedesStep INFERRED (rollup over the closure view vw_step_precedence_closure where is_inferred = TRUE). The article's signature count: 6 of the 10 closure pairs were never asserted — including step-1 -&gt; step-5. NOTE: this single-workflow model has exactly one Workflow, so the global closure view is wholly this workflow's; the COUNTIFS is unfiltered because every precedence edge belongs to the Production Deployment DAG.</p>
@@ -1347,9 +1372,10 @@ html.show-consumers .elem-consumers{display:block}
       </div>
     </div>
     <details class="prov prov-consumers elem elem-consumers">
-      <summary>Consumers <span class="count">1 direct</span> <span class="prov-hint">rules that read this one</span></summary>
+      <summary>Consumers <span class="count">1 direct</span> <span class="count count-muted">+1 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
       <div class="prov-pills">
         <a class="ref-pill tone-calc" href="#f-workflows-countofprecedenceclosurepairs">ƒ Count of Precedence Closure Pairs <span class="ref-pill-tbl">Workflows</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-workflows-cq1satisfied">Cq1 Satisfied <span class="ref-pill-tbl">Workflows</span></a>
       </div>
     </details>
     <p class="field-note elem elem-desc">Number of step-ordering pairs that were directly ASSERTED as ntwf:precedesStep edges (rollup over vw_step_precedence_closure where is_inferred = FALSE) — the hop-1 rows. The article's 4 asserted edges. Together with CountInferredPrecedencePairs (6) this sums to the 10-pair closure, making CountOfPrecedenceClosurePairs an honest asserted+inferred total rather than an unconditional count. Single-workflow note as on CountInferredPrecedencePairs: the global closure view is this workflow's.</p>
@@ -1388,6 +1414,12 @@ html.show-consumers .elem-consumers{display:block}
           <span class="input-head"><span class="input-glyph">Σ</span><span class="input-name">Count Inferred Precedence Pairs</span><span class="input-table">Workflows</span></span>
           <span class="input-en">Count of vw_step_precedence_closure whose is inferred is true().</span>
         </a>
+      </div>
+    </details>
+    <details class="prov prov-consumers elem elem-consumers">
+      <summary>Consumers <span class="count">1 direct</span> <span class="prov-hint">rules that read this one</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-calc" href="#f-workflows-cq1satisfied">ƒ Cq1 Satisfied <span class="ref-pill-tbl">Workflows</span></a>
       </div>
     </details>
     <p class="field-note elem elem-desc">Total number of step-ordering pairs in the transitive closure of ntwf:precedesStep = asserted (4) + inferred (6) = 10. The article's headline closure cardinality, witnessing that the 4 asserted edges over a 5-step chain close to all 10 (i&lt;j) pairs. Computed as CountAssertedPrecedencePairs + CountInferredPrecedencePairs so the total is provably the sum of the two halves, not a separate unconditional view count that could silently drift from them.</p>
@@ -1520,6 +1552,617 @@ html.show-consumers .elem-consumers{display:block}
     </details>
     <p class="field-note elem elem-desc">Number of filledBy assignment periods that took a previously AI-executed binding and reassigned it to a human (rollup over RoleAssignments.RequiresComplianceAudit = TRUE). NTWF governance treats this as a data operation with compliance implications: changing the agent type of a step from ntwf:AIAgent to ntwf:HumanAgent. Each such row must carry when (ValidFrom) and why (Reason). NOTE: single-workflow scoping as above.</p>
     </article>
+  <article class="field tone-agg" id="f-workflows-countapprovalgatesteps" data-entity="Workflow" data-field="Count Approval Gate Steps">
+    <div class="field-head">
+      <span class="field-glyph" title="Aggregation">Σ</span>
+      <span class="field-name">Count Approval Gate Steps</span>
+      <span class="pill pill-type">Aggregation</span>
+      <span class="pill pill-depth">2 hops from ground truth</span>
+      <span class="pill pill-muted">integer</span>
+      <span class="pill pill-dr">DR-25</span>
+    </div>
+    <div class="narr-views">
+      <div class="view elem elem-rulespeak">
+        <span class="view-label">In RuleSpeak</span>
+        <p class="view-body">A <a class="ref" href="#f-workflowsteps-workflow">workflow</a>'s count approval gate steps is the number of the workflow's workflow steps that are approval gates.</p>
+      </div>
+      <div class="view elem elem-english">
+        <span class="view-label">In English</span>
+        <p class="view-body">Count of WorkflowSteps whose <a class="ref" href="#f-workflowsteps-workflow">workflow</a> is <a class="ref" href="#f-workflows-workflowid">workflow id</a> and <a class="ref" href="#f-workflowsteps-isapprovalgate">is approval gate</a> is yes.</p>
+      </div>
+      <div class="view elem elem-formula">
+        <span class="view-label">As a formula</span>
+        <div class="view-body fx"><span class="fx-eq">= </span>COUNTIFS(<a class="fx-chip" href="#f-workflowsteps-workflow">Workflow</a>, <a class="fx-chip" href="#f-workflows-workflowid">Workflow ID</a>, <a class="fx-chip" href="#f-workflowsteps-isapprovalgate">Is Approval Gate</a>, TRUE)</div>
+      </div>
+    </div>
+    <details class="prov prov-inputs elem elem-inputs" open>
+      <summary>Inputs <span class="count">3</span> <span class="prov-hint">fields this rule reads</span></summary>
+      <div class="prov-grid">
+        <a class="input tone-rel" href="#f-workflowsteps-workflow">
+          <span class="input-head"><span class="input-glyph">⇢</span><span class="input-name">Workflow</span><span class="input-table">WorkflowSteps</span></span>
+          <span class="input-en muted">Foreign key to the parent workflow. Represents the inverse of ntwf:hasStep, enabling navigation from step to its containing workflow (ntwf:isStepOf).</span>
+        </a>
+        <a class="input tone-raw" href="#f-workflows-workflowid">
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Workflow ID</span><span class="input-table">Workflows</span></span>
+          <span class="input-en muted">Ground truth · string</span>
+        </a>
+        <a class="input tone-calc" href="#f-workflowsteps-isapprovalgate">
+          <span class="input-head"><span class="input-glyph">ƒ</span><span class="input-name">Is Approval Gate</span><span class="input-table">WorkflowSteps</span></span>
+          <span class="input-en">Not approval gate is blank.</span>
+        </a>
+      </div>
+    </details>
+    <details class="prov prov-consumers elem elem-consumers">
+      <summary>Consumers <span class="count">1 direct</span> <span class="prov-hint">rules that read this one</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-calc" href="#f-workflows-cq2satisfied">ƒ Cq2 Satisfied <span class="ref-pill-tbl">Workflows</span></a>
+      </div>
+    </details>
+    <details class="prov prov-leaves elem elem-inputs">
+      <summary>Ground truth at the leaves <span class="count">3</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-rel" href="#f-workflowsteps-workflow">⇢ Workflow <span class="ref-pill-tbl">WorkflowSteps</span></a>
+        <a class="ref-pill tone-raw" href="#f-workflows-workflowid">● Workflow ID <span class="ref-pill-tbl">Workflows</span></a>
+        <a class="ref-pill tone-rel" href="#f-workflowsteps-approvalgate">⇢ Approval Gate <span class="ref-pill-tbl">WorkflowSteps</span></a>
+      </div>
+    </details>
+    <p class="field-note elem elem-desc">Number of this workflow's steps that are approval gates. &gt;0 means the workflow has a blocking approval checkpoint; used by Cq2Satisfied to require that the gate exists before asking whether it has a human approver.</p>
+    </article>
+  <article class="field tone-agg" id="f-workflows-countgateswithouthumanapprover" data-entity="Workflow" data-field="Count Gates Without Human Approver">
+    <div class="field-head">
+      <span class="field-glyph" title="Aggregation">Σ</span>
+      <span class="field-name">Count Gates Without Human Approver</span>
+      <span class="pill pill-type">Aggregation</span>
+      <span class="pill pill-depth">4 hops from ground truth</span>
+      <span class="pill pill-muted">integer</span>
+      <span class="pill pill-dr">DR-26</span>
+    </div>
+    <div class="narr-views">
+      <div class="view elem elem-rulespeak">
+        <span class="view-label">In RuleSpeak</span>
+        <p class="view-body">A workflow's count gates without human approver is the number of approval gates related to the workflow.</p>
+      </div>
+      <div class="view elem elem-english">
+        <span class="view-label">In English</span>
+        <p class="view-body">Count of ApprovalGates whose <a class="ref" href="#f-approvalgates-hashumanapprover">has human approver</a> is no.</p>
+      </div>
+      <div class="view elem elem-formula">
+        <span class="view-label">As a formula</span>
+        <div class="view-body fx"><span class="fx-eq">= </span>COUNTIFS(<a class="fx-chip" href="#f-approvalgates-hashumanapprover">Has Human Approver</a>, FALSE)</div>
+      </div>
+    </div>
+    <details class="prov prov-inputs elem elem-inputs" open>
+      <summary>Inputs <span class="count">1</span> <span class="prov-hint">fields this rule reads</span></summary>
+      <div class="prov-grid">
+        <a class="input tone-calc" href="#f-approvalgates-hashumanapprover">
+          <span class="input-head"><span class="input-glyph">ƒ</span><span class="input-name">Has Human Approver</span><span class="input-table">ApprovalGates</span></span>
+          <span class="input-en">Not gate approver human is blank.</span>
+        </a>
+      </div>
+    </details>
+    <details class="prov prov-consumers elem elem-consumers">
+      <summary>Consumers <span class="count">1 direct</span> <span class="prov-hint">rules that read this one</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-calc" href="#f-workflows-cq2satisfied">ƒ Cq2 Satisfied <span class="ref-pill-tbl">Workflows</span></a>
+      </div>
+    </details>
+    <details class="prov prov-leaves elem elem-inputs">
+      <summary>Ground truth at the leaves <span class="count">5</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-rel" href="#f-roles-filledbyhumanagent">⇢ Filled by Human Agent <span class="ref-pill-tbl">Roles</span></a>
+        <a class="ref-pill tone-rel" href="#f-workflowsteps-assignedrole">⇢ Assigned Role <span class="ref-pill-tbl">WorkflowSteps</span></a>
+        <a class="ref-pill tone-rel" href="#f-approvalgates-workflowstep">⇢ Workflow Step <span class="ref-pill-tbl">ApprovalGates</span></a>
+        <a class="ref-pill tone-raw" href="#f-workflowsteps-workflowstepid">● Workflow Step ID <span class="ref-pill-tbl">WorkflowSteps</span></a>
+        <a class="ref-pill tone-raw" href="#f-roles-roleid">● Role ID <span class="ref-pill-tbl">Roles</span></a>
+      </div>
+    </details>
+    <p class="field-note elem elem-desc">Number of approval gates with no resolved human approver (gate role not filled by a HumanAgent). Single-workflow model, so this global count is wholly this workflow's. Drives Cq2Satisfied (= a gate exists AND none lack a human approver).</p>
+    </article>
+  <article class="field tone-agg" id="f-workflows-countworkflowartifacts" data-entity="Workflow" data-field="Count Workflow Artifacts">
+    <div class="field-head">
+      <span class="field-glyph" title="Aggregation">Σ</span>
+      <span class="field-name">Count Workflow Artifacts</span>
+      <span class="pill pill-type">Aggregation</span>
+      <span class="pill pill-depth">2 hops from ground truth</span>
+      <span class="pill pill-muted">integer</span>
+      <span class="pill pill-dr">DR-27</span>
+    </div>
+    <div class="narr-views">
+      <div class="view elem elem-rulespeak">
+        <span class="view-label">In RuleSpeak</span>
+        <p class="view-body">A workflow's count workflow artifacts is the number of workflow artifacts related to the workflow.</p>
+      </div>
+      <div class="view elem elem-english">
+        <span class="view-label">In English</span>
+        <p class="view-body">Count of WorkflowArtifacts whose <a class="ref" href="#f-workflowartifacts-producedbyworkflow">produced by workflow</a> is <a class="ref" href="#f-workflows-workflowid">workflow id</a>.</p>
+      </div>
+      <div class="view elem elem-formula">
+        <span class="view-label">As a formula</span>
+        <div class="view-body fx"><span class="fx-eq">= </span>COUNTIFS(<a class="fx-chip" href="#f-workflowartifacts-producedbyworkflow">Produced by Workflow</a>, <a class="fx-chip" href="#f-workflows-workflowid">Workflow ID</a>)</div>
+      </div>
+    </div>
+    <details class="prov prov-inputs elem elem-inputs" open>
+      <summary>Inputs <span class="count">2</span> <span class="prov-hint">fields this rule reads</span></summary>
+      <div class="prov-grid">
+        <a class="input tone-lookup" href="#f-workflowartifacts-producedbyworkflow">
+          <span class="input-head"><span class="input-glyph">↗</span><span class="input-name">Produced by Workflow</span><span class="input-table">WorkflowArtifacts</span></span>
+          <span class="input-en">The workflow of the linked produced by step.</span>
+        </a>
+        <a class="input tone-raw" href="#f-workflows-workflowid">
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Workflow ID</span><span class="input-table">Workflows</span></span>
+          <span class="input-en muted">Ground truth · string</span>
+        </a>
+      </div>
+    </details>
+    <details class="prov prov-consumers elem elem-consumers">
+      <summary>Consumers <span class="count">1 direct</span> <span class="prov-hint">rules that read this one</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-calc" href="#f-workflows-cq4satisfied">ƒ Cq4 Satisfied <span class="ref-pill-tbl">Workflows</span></a>
+      </div>
+    </details>
+    <details class="prov prov-leaves elem elem-inputs">
+      <summary>Ground truth at the leaves <span class="count">4</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-rel" href="#f-workflowsteps-workflow">⇢ Workflow <span class="ref-pill-tbl">WorkflowSteps</span></a>
+        <a class="ref-pill tone-rel" href="#f-workflowartifacts-producedbystep">⇢ Produced by Step <span class="ref-pill-tbl">WorkflowArtifacts</span></a>
+        <a class="ref-pill tone-raw" href="#f-workflowsteps-workflowstepid">● Workflow Step ID <span class="ref-pill-tbl">WorkflowSteps</span></a>
+        <a class="ref-pill tone-raw" href="#f-workflows-workflowid">● Workflow ID <span class="ref-pill-tbl">Workflows</span></a>
+      </div>
+    </details>
+    <p class="field-note elem elem-desc">Total artifacts produced by this workflow. With CountDerivationLinks (artifacts that have a wasDerivedFrom parent) this lets Cq4Satisfied check the provenance chain is intact: every artifact but the single origin has a parent.</p>
+    </article>
+  <article class="field tone-agg" id="f-workflows-countroleswithescalationviolation" data-entity="Workflow" data-field="Count Roles With Escalation Violation">
+    <div class="field-head">
+      <span class="field-glyph" title="Aggregation">Σ</span>
+      <span class="field-name">Count Roles With Escalation Violation</span>
+      <span class="pill pill-type">Aggregation</span>
+      <span class="pill pill-depth">4 hops from ground truth</span>
+      <span class="pill pill-muted">integer</span>
+      <span class="pill pill-dr">DR-28</span>
+    </div>
+    <div class="narr-views">
+      <div class="view elem elem-rulespeak">
+        <span class="view-label">In RuleSpeak</span>
+        <p class="view-body">A workflow's count roles with <a class="ref" href="#f-roles-escalationviolation">escalation violation</a> is the number of roles related to the workflow.</p>
+      </div>
+      <div class="view elem elem-english">
+        <span class="view-label">In English</span>
+        <p class="view-body">Count of Roles whose <a class="ref" href="#f-roles-escalationviolation">escalation violation</a> is yes.</p>
+      </div>
+      <div class="view elem elem-formula">
+        <span class="view-label">As a formula</span>
+        <div class="view-body fx"><span class="fx-eq">= </span>COUNTIFS(<a class="fx-chip" href="#f-roles-escalationviolation">Escalation Violation</a>, TRUE)</div>
+      </div>
+    </div>
+    <details class="prov prov-inputs elem elem-inputs" open>
+      <summary>Inputs <span class="count">1</span> <span class="prov-hint">fields this rule reads</span></summary>
+      <div class="prov-grid">
+        <a class="input tone-calc" href="#f-roles-escalationviolation">
+          <span class="input-head"><span class="input-glyph">ƒ</span><span class="input-name">Escalation Violation</span><span class="input-table">Roles</span></span>
+          <span class="input-en">Fills approval gate is greater than 0 and delegates to is blank.</span>
+        </a>
+      </div>
+    </details>
+    <details class="prov prov-consumers elem elem-consumers">
+      <summary>Consumers <span class="count">1 direct</span> <span class="prov-hint">rules that read this one</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-calc" href="#f-workflows-cq6satisfied">ƒ Cq6 Satisfied <span class="ref-pill-tbl">Workflows</span></a>
+      </div>
+    </details>
+    <details class="prov prov-leaves elem elem-inputs">
+      <summary>Ground truth at the leaves <span class="count">4</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-rel" href="#f-workflowsteps-assignedrole">⇢ Assigned Role <span class="ref-pill-tbl">WorkflowSteps</span></a>
+        <a class="ref-pill tone-raw" href="#f-roles-roleid">● Role ID <span class="ref-pill-tbl">Roles</span></a>
+        <a class="ref-pill tone-rel" href="#f-workflowsteps-approvalgate">⇢ Approval Gate <span class="ref-pill-tbl">WorkflowSteps</span></a>
+        <a class="ref-pill tone-rel" href="#f-roles-delegatesto">⇢ Delegates to <span class="ref-pill-tbl">Roles</span></a>
+      </div>
+    </details>
+    <p class="field-note elem elem-desc">Number of roles that own an approval gate yet escalate to no one (Roles.EscalationViolation). Single-workflow model, so this global count applies to this workflow. Drives Cq6Satisfied (=0): the model's own native escalation-completeness invariant, replacing any hardcoded 'must reach the CTO' check.</p>
+    </article>
+  <article class="field tone-agg" id="f-workflows-countunconsumeddatasets" data-entity="Workflow" data-field="Count Unconsumed Datasets">
+    <div class="field-head">
+      <span class="field-glyph" title="Aggregation">Σ</span>
+      <span class="field-name">Count Unconsumed Datasets</span>
+      <span class="pill pill-type">Aggregation</span>
+      <span class="pill pill-depth">2 hops from ground truth</span>
+      <span class="pill pill-muted">integer</span>
+      <span class="pill pill-dr">DR-29</span>
+    </div>
+    <div class="narr-views">
+      <div class="view elem elem-rulespeak">
+        <span class="view-label">In RuleSpeak</span>
+        <p class="view-body">A workflow's count unconsumed datasets is the number of datasets related to the workflow.</p>
+      </div>
+      <div class="view elem elem-english">
+        <span class="view-label">In English</span>
+        <p class="view-body">Count of Datasets whose <a class="ref" href="#f-datasets-isconsumed">is consumed</a> is no.</p>
+      </div>
+      <div class="view elem elem-formula">
+        <span class="view-label">As a formula</span>
+        <div class="view-body fx"><span class="fx-eq">= </span>COUNTIFS(<a class="fx-chip" href="#f-datasets-isconsumed">Is Consumed</a>, FALSE)</div>
+      </div>
+    </div>
+    <details class="prov prov-inputs elem elem-inputs" open>
+      <summary>Inputs <span class="count">1</span> <span class="prov-hint">fields this rule reads</span></summary>
+      <div class="prov-grid">
+        <a class="input tone-calc" href="#f-datasets-isconsumed">
+          <span class="input-head"><span class="input-glyph">ƒ</span><span class="input-name">Is Consumed</span><span class="input-table">Datasets</span></span>
+          <span class="input-en">Not consumed by steps is blank.</span>
+        </a>
+      </div>
+    </details>
+    <details class="prov prov-consumers elem elem-consumers">
+      <summary>Consumers <span class="count">1 direct</span> <span class="prov-hint">rules that read this one</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-calc" href="#f-workflows-cq8satisfied">ƒ Cq8 Satisfied <span class="ref-pill-tbl">Workflows</span></a>
+      </div>
+    </details>
+    <details class="prov prov-leaves elem elem-inputs">
+      <summary>Ground truth at the leaves <span class="count">1</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-rel" href="#f-datasets-consumedbysteps">⇢ Consumed by Steps <span class="ref-pill-tbl">Datasets</span></a>
+      </div>
+    </details>
+    <p class="field-note elem elem-desc">Number of datasets not consumed by any step (Datasets.IsConsumed = FALSE). Single-workflow model, so this global count applies to this workflow. Drives Cq8Satisfied (=0).</p>
+    </article>
+  <article class="field tone-calc" id="f-workflows-cq1satisfied" data-entity="Workflow" data-field="Cq1 Satisfied">
+    <div class="field-head">
+      <span class="field-glyph" title="Calculated">ƒ</span>
+      <span class="field-name">Cq1 Satisfied</span>
+      <span class="pill pill-type">Calculated</span>
+      <span class="pill pill-depth">3 hops from ground truth</span>
+      <span class="pill pill-muted">boolean</span>
+      <span class="pill pill-dr">DR-30</span>
+    </div>
+    <div class="narr-views">
+      <div class="view elem elem-rulespeak">
+        <span class="view-label">In RuleSpeak</span>
+        <p class="view-body">A workflow is flagged cq1 satisfied if the <a class="ref" href="#f-workflows-countofprecedenceclosurepairs">count of precedence closure pairs</a> is the <a class="ref" href="#f-workflows-countofnonproposedsteps">count of non proposed steps</a> times the count of non proposed steps minus 1 divided by 2.</p>
+      </div>
+      <div class="view elem elem-english">
+        <span class="view-label">In English</span>
+        <p class="view-body"><a class="ref" href="#f-workflows-countofprecedenceclosurepairs">Count of precedence closure pairs</a> equals ((<a class="ref" href="#f-workflows-countofnonproposedsteps">count of non proposed steps</a> times (count of non proposed steps minus 1)) divided by 2).</p>
+      </div>
+      <div class="view elem elem-formula">
+        <span class="view-label">As a formula</span>
+        <div class="view-body fx"><span class="fx-eq">= </span><a class="fx-chip" href="#f-workflows-countofprecedenceclosurepairs">Count of Precedence Closure Pairs</a> = <a class="fx-chip" href="#f-workflows-countofnonproposedsteps">Count of Non Proposed Steps</a> * (<a class="fx-chip" href="#f-workflows-countofnonproposedsteps">Count of Non Proposed Steps</a> - 1) / 2</div>
+      </div>
+    </div>
+    <details class="prov prov-inputs elem elem-inputs" open>
+      <summary>Inputs <span class="count">2</span> <span class="prov-hint">fields this rule reads</span></summary>
+      <div class="prov-grid">
+        <a class="input tone-calc" href="#f-workflows-countofprecedenceclosurepairs">
+          <span class="input-head"><span class="input-glyph">ƒ</span><span class="input-name">Count of Precedence Closure Pairs</span><span class="input-table">Workflows</span></span>
+          <span class="input-en">Count asserted precedence pairs plus count inferred precedence pairs.</span>
+        </a>
+        <a class="input tone-agg" href="#f-workflows-countofnonproposedsteps">
+          <span class="input-head"><span class="input-glyph">Σ</span><span class="input-name">Count of Non Proposed Steps</span><span class="input-table">Workflows</span></span>
+          <span class="input-en">Count of WorkflowSteps whose workflow is workflow id.</span>
+        </a>
+      </div>
+    </details>
+    <details class="prov prov-leaves elem elem-inputs">
+      <summary>Ground truth at the leaves <span class="count">2</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-rel" href="#f-workflowsteps-workflow">⇢ Workflow <span class="ref-pill-tbl">WorkflowSteps</span></a>
+        <a class="ref-pill tone-raw" href="#f-workflows-workflowid">● Workflow ID <span class="ref-pill-tbl">Workflows</span></a>
+      </div>
+    </details>
+    <p class="field-note elem elem-desc">CQ1 satisfied: the step-ordering closure is a TOTAL order — its pair count equals n*(n-1)/2 for n steps, so every pair of steps is comparable and 'the order' is well-defined. Purely structural; no asserted literal.</p>
+    </article>
+  <article class="field tone-calc" id="f-workflows-cq2satisfied" data-entity="Workflow" data-field="Cq2 Satisfied">
+    <div class="field-head">
+      <span class="field-glyph" title="Calculated">ƒ</span>
+      <span class="field-name">Cq2 Satisfied</span>
+      <span class="pill pill-type">Calculated</span>
+      <span class="pill pill-depth">5 hops from ground truth</span>
+      <span class="pill pill-muted">boolean</span>
+      <span class="pill pill-dr">DR-31</span>
+    </div>
+    <div class="narr-views">
+      <div class="view elem elem-rulespeak">
+        <span class="view-label">In RuleSpeak</span>
+        <div class="view-body"><p class="rt-headline">A workflow is flagged cq2 satisfied if all of the following:</p><ol class="rt-priority"></ol></div>
+      </div>
+      <div class="view elem elem-english">
+        <span class="view-label">In English</span>
+        <p class="view-body"><a class="ref" href="#f-workflows-countapprovalgatesteps">Count approval gate steps</a> is greater than 0 and <a class="ref" href="#f-workflows-countgateswithouthumanapprover">count gates without human approver</a> equals 0.</p>
+      </div>
+      <div class="view elem elem-formula">
+        <span class="view-label">As a formula</span>
+        <div class="view-body fx"><span class="fx-eq">= </span>AND(<a class="fx-chip" href="#f-workflows-countapprovalgatesteps">Count Approval Gate Steps</a> &gt; 0, <a class="fx-chip" href="#f-workflows-countgateswithouthumanapprover">Count Gates Without Human Approver</a> = 0)</div>
+      </div>
+    </div>
+    <details class="prov prov-inputs elem elem-inputs" open>
+      <summary>Inputs <span class="count">2</span> <span class="prov-hint">fields this rule reads</span></summary>
+      <div class="prov-grid">
+        <a class="input tone-agg" href="#f-workflows-countapprovalgatesteps">
+          <span class="input-head"><span class="input-glyph">Σ</span><span class="input-name">Count Approval Gate Steps</span><span class="input-table">Workflows</span></span>
+          <span class="input-en">Count of WorkflowSteps whose workflow is workflow id and is approval gate is yes.</span>
+        </a>
+        <a class="input tone-agg" href="#f-workflows-countgateswithouthumanapprover">
+          <span class="input-head"><span class="input-glyph">Σ</span><span class="input-name">Count Gates Without Human Approver</span><span class="input-table">Workflows</span></span>
+          <span class="input-en">Count of ApprovalGates whose has human approver is no.</span>
+        </a>
+      </div>
+    </details>
+    <details class="prov prov-leaves elem elem-inputs">
+      <summary>Ground truth at the leaves <span class="count">8</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-rel" href="#f-workflowsteps-workflow">⇢ Workflow <span class="ref-pill-tbl">WorkflowSteps</span></a>
+        <a class="ref-pill tone-raw" href="#f-workflows-workflowid">● Workflow ID <span class="ref-pill-tbl">Workflows</span></a>
+        <a class="ref-pill tone-rel" href="#f-workflowsteps-approvalgate">⇢ Approval Gate <span class="ref-pill-tbl">WorkflowSteps</span></a>
+        <a class="ref-pill tone-rel" href="#f-roles-filledbyhumanagent">⇢ Filled by Human Agent <span class="ref-pill-tbl">Roles</span></a>
+        <a class="ref-pill tone-rel" href="#f-workflowsteps-assignedrole">⇢ Assigned Role <span class="ref-pill-tbl">WorkflowSteps</span></a>
+        <a class="ref-pill tone-rel" href="#f-approvalgates-workflowstep">⇢ Workflow Step <span class="ref-pill-tbl">ApprovalGates</span></a>
+        <a class="ref-pill tone-raw" href="#f-workflowsteps-workflowstepid">● Workflow Step ID <span class="ref-pill-tbl">WorkflowSteps</span></a>
+        <a class="ref-pill tone-raw" href="#f-roles-roleid">● Role ID <span class="ref-pill-tbl">Roles</span></a>
+      </div>
+    </details>
+    <p class="field-note elem elem-desc">CQ2 satisfied: the workflow has an approval gate AND every gate resolves to a human approver. Derived from the gate-&gt;role-&gt;filler chain; no hardcoded approver name.</p>
+    </article>
+  <article class="field tone-calc" id="f-workflows-cq3satisfied" data-entity="Workflow" data-field="Cq3 Satisfied">
+    <div class="field-head">
+      <span class="field-glyph" title="Calculated">ƒ</span>
+      <span class="field-name">Cq3 Satisfied</span>
+      <span class="pill pill-type">Calculated</span>
+      <span class="pill pill-depth">5 hops from ground truth</span>
+      <span class="pill pill-muted">boolean</span>
+      <span class="pill pill-dr">DR-32</span>
+    </div>
+    <div class="narr-views">
+      <div class="view elem elem-rulespeak">
+        <span class="view-label">In RuleSpeak</span>
+        <p class="view-body">A workflow is flagged cq3 satisfied if it is not the case that the <a class="ref" href="#f-workflows-hasconsistencyviolation">has consistency violation</a> flag is set.</p>
+      </div>
+      <div class="view elem elem-english">
+        <span class="view-label">In English</span>
+        <p class="view-body">Not <a class="ref" href="#f-workflows-hasconsistencyviolation">has consistency violation</a>.</p>
+      </div>
+      <div class="view elem elem-formula">
+        <span class="view-label">As a formula</span>
+        <div class="view-body fx"><span class="fx-eq">= </span>NOT(<a class="fx-chip" href="#f-workflows-hasconsistencyviolation">Has Consistency Violation</a>)</div>
+      </div>
+    </div>
+    <details class="prov prov-inputs elem elem-inputs" open>
+      <summary>Inputs <span class="count">1</span> <span class="prov-hint">fields this rule reads</span></summary>
+      <div class="prov-grid">
+        <a class="input tone-calc" href="#f-workflows-hasconsistencyviolation">
+          <span class="input-head"><span class="input-glyph">ƒ</span><span class="input-name">Has Consistency Violation</span><span class="input-table">Workflows</span></span>
+          <span class="input-en">Count approval consistency violations is greater than 0.</span>
+        </a>
+      </div>
+    </details>
+    <details class="prov prov-leaves elem elem-inputs">
+      <summary>Ground truth at the leaves <span class="count">6</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-rel" href="#f-workflowsteps-workflow">⇢ Workflow <span class="ref-pill-tbl">WorkflowSteps</span></a>
+        <a class="ref-pill tone-raw" href="#f-workflows-workflowid">● Workflow ID <span class="ref-pill-tbl">Workflows</span></a>
+        <a class="ref-pill tone-raw" href="#f-workflowsteps-requireshumanapproval">● Requires Human Approval <span class="ref-pill-tbl">WorkflowSteps</span></a>
+        <a class="ref-pill tone-rel" href="#f-roles-filledbyhumanagent">⇢ Filled by Human Agent <span class="ref-pill-tbl">Roles</span></a>
+        <a class="ref-pill tone-rel" href="#f-workflowsteps-assignedrole">⇢ Assigned Role <span class="ref-pill-tbl">WorkflowSteps</span></a>
+        <a class="ref-pill tone-raw" href="#f-roles-roleid">● Role ID <span class="ref-pill-tbl">Roles</span></a>
+      </div>
+    </details>
+    <p class="field-note elem elem-desc">CQ3 satisfied: the AI-vs-human assignment is consistent — no step that requires a human decision is executed by a non-human (no ApprovalConsistencyViolation). Derived from the model's own consistency invariant.</p>
+    </article>
+  <article class="field tone-calc" id="f-workflows-cq4satisfied" data-entity="Workflow" data-field="Cq4 Satisfied">
+    <div class="field-head">
+      <span class="field-glyph" title="Calculated">ƒ</span>
+      <span class="field-name">Cq4 Satisfied</span>
+      <span class="pill pill-type">Calculated</span>
+      <span class="pill pill-depth">3 hops from ground truth</span>
+      <span class="pill pill-muted">boolean</span>
+      <span class="pill pill-dr">DR-33</span>
+    </div>
+    <div class="narr-views">
+      <div class="view elem elem-rulespeak">
+        <span class="view-label">In RuleSpeak</span>
+        <p class="view-body">A workflow is flagged cq4 satisfied if the <a class="ref" href="#f-workflows-countderivationlinks">count derivation links</a> is the <a class="ref" href="#f-workflows-countworkflowartifacts">count workflow artifacts</a> minus 1.</p>
+      </div>
+      <div class="view elem elem-english">
+        <span class="view-label">In English</span>
+        <p class="view-body"><a class="ref" href="#f-workflows-countderivationlinks">Count derivation links</a> equals (<a class="ref" href="#f-workflows-countworkflowartifacts">count workflow artifacts</a> minus 1).</p>
+      </div>
+      <div class="view elem elem-formula">
+        <span class="view-label">As a formula</span>
+        <div class="view-body fx"><span class="fx-eq">= </span><a class="fx-chip" href="#f-workflows-countderivationlinks">Count Derivation Links</a> = <a class="fx-chip" href="#f-workflows-countworkflowartifacts">Count Workflow Artifacts</a> - 1</div>
+      </div>
+    </div>
+    <details class="prov prov-inputs elem elem-inputs" open>
+      <summary>Inputs <span class="count">2</span> <span class="prov-hint">fields this rule reads</span></summary>
+      <div class="prov-grid">
+        <a class="input tone-agg" href="#f-workflows-countderivationlinks">
+          <span class="input-head"><span class="input-glyph">Σ</span><span class="input-name">Count Derivation Links</span><span class="input-table">Workflows</span></span>
+          <span class="input-en">Count of WorkflowArtifacts whose produced by workflow is workflow id and has derivation parent is yes.</span>
+        </a>
+        <a class="input tone-agg" href="#f-workflows-countworkflowartifacts">
+          <span class="input-head"><span class="input-glyph">Σ</span><span class="input-name">Count Workflow Artifacts</span><span class="input-table">Workflows</span></span>
+          <span class="input-en">Count of WorkflowArtifacts whose produced by workflow is workflow id.</span>
+        </a>
+      </div>
+    </details>
+    <details class="prov prov-leaves elem elem-inputs">
+      <summary>Ground truth at the leaves <span class="count">5</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-rel" href="#f-workflowsteps-workflow">⇢ Workflow <span class="ref-pill-tbl">WorkflowSteps</span></a>
+        <a class="ref-pill tone-rel" href="#f-workflowartifacts-producedbystep">⇢ Produced by Step <span class="ref-pill-tbl">WorkflowArtifacts</span></a>
+        <a class="ref-pill tone-raw" href="#f-workflowsteps-workflowstepid">● Workflow Step ID <span class="ref-pill-tbl">WorkflowSteps</span></a>
+        <a class="ref-pill tone-raw" href="#f-workflows-workflowid">● Workflow ID <span class="ref-pill-tbl">Workflows</span></a>
+        <a class="ref-pill tone-rel" href="#f-workflowartifacts-derivedfromartifact">⇢ Derived From Artifact <span class="ref-pill-tbl">WorkflowArtifacts</span></a>
+      </div>
+    </details>
+    <p class="field-note elem elem-desc">CQ4 satisfied: the wasDerivedFrom provenance chain is intact — every artifact but the single origin has a derivation parent. Structural; breaks the instant any derivation edge is cut.</p>
+    </article>
+  <article class="field tone-calc" id="f-workflows-cq5satisfied" data-entity="Workflow" data-field="Cq5 Satisfied">
+    <div class="field-head">
+      <span class="field-glyph" title="Calculated">ƒ</span>
+      <span class="field-name">Cq5 Satisfied</span>
+      <span class="pill pill-type">Calculated</span>
+      <span class="pill pill-depth">3 hops from ground truth</span>
+      <span class="pill pill-muted">boolean</span>
+      <span class="pill pill-dr">DR-34</span>
+    </div>
+    <div class="narr-views">
+      <div class="view elem elem-rulespeak">
+        <span class="view-label">In RuleSpeak</span>
+        <p class="view-body">A workflow is flagged cq5 satisfied if it is not the case that the <a class="ref" href="#f-workflows-isstale">is stale</a> flag is set.</p>
+      </div>
+      <div class="view elem elem-english">
+        <span class="view-label">In English</span>
+        <p class="view-body">Not <a class="ref" href="#f-workflows-isstale">is stale</a>.</p>
+      </div>
+      <div class="view elem elem-formula">
+        <span class="view-label">As a formula</span>
+        <div class="view-body fx"><span class="fx-eq">= </span>NOT(<a class="fx-chip" href="#f-workflows-isstale">Is Stale</a>)</div>
+      </div>
+    </div>
+    <details class="prov prov-inputs elem elem-inputs" open>
+      <summary>Inputs <span class="count">1</span> <span class="prov-hint">fields this rule reads</span></summary>
+      <div class="prov-grid">
+        <a class="input tone-calc" href="#f-workflows-isstale">
+          <span class="input-head"><span class="input-glyph">ƒ</span><span class="input-name">Is Stale</span><span class="input-table">Workflows</span></span>
+          <span class="input-en">Months since modified is greater than staleness threshold months.</span>
+        </a>
+      </div>
+    </details>
+    <details class="prov prov-leaves elem elem-inputs">
+      <summary>Ground truth at the leaves <span class="count">2</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-raw" href="#f-workflows-modified">● Modified <span class="ref-pill-tbl">Workflows</span></a>
+        <a class="ref-pill tone-raw" href="#f-workflows-stalenessthresholdmonths">● Staleness Threshold Months <span class="ref-pill-tbl">Workflows</span></a>
+      </div>
+    </details>
+    <p class="field-note elem elem-desc">CQ5 satisfied: the workflow's compliance docs are within the review policy (not stale). Reads the existing IsStale verdict; flips when the review age passes StalenessThresholdMonths.</p>
+    </article>
+  <article class="field tone-calc" id="f-workflows-cq6satisfied" data-entity="Workflow" data-field="Cq6 Satisfied">
+    <div class="field-head">
+      <span class="field-glyph" title="Calculated">ƒ</span>
+      <span class="field-name">Cq6 Satisfied</span>
+      <span class="pill pill-type">Calculated</span>
+      <span class="pill pill-depth">5 hops from ground truth</span>
+      <span class="pill pill-muted">boolean</span>
+      <span class="pill pill-dr">DR-35</span>
+    </div>
+    <div class="narr-views">
+      <div class="view elem elem-rulespeak">
+        <span class="view-label">In RuleSpeak</span>
+        <p class="view-body">A workflow is flagged cq6 satisfied if the <a class="ref" href="#f-workflows-countroleswithescalationviolation">count roles with escalation violation</a> is 0.</p>
+      </div>
+      <div class="view elem elem-english">
+        <span class="view-label">In English</span>
+        <p class="view-body"><a class="ref" href="#f-workflows-countroleswithescalationviolation">Count roles with escalation violation</a> equals 0.</p>
+      </div>
+      <div class="view elem elem-formula">
+        <span class="view-label">As a formula</span>
+        <div class="view-body fx"><span class="fx-eq">= </span><a class="fx-chip" href="#f-workflows-countroleswithescalationviolation">Count Roles With Escalation Violation</a> = 0</div>
+      </div>
+    </div>
+    <details class="prov prov-inputs elem elem-inputs" open>
+      <summary>Inputs <span class="count">1</span> <span class="prov-hint">fields this rule reads</span></summary>
+      <div class="prov-grid">
+        <a class="input tone-agg" href="#f-workflows-countroleswithescalationviolation">
+          <span class="input-head"><span class="input-glyph">Σ</span><span class="input-name">Count Roles With Escalation Violation</span><span class="input-table">Workflows</span></span>
+          <span class="input-en">Count of Roles whose escalation violation is yes.</span>
+        </a>
+      </div>
+    </details>
+    <details class="prov prov-leaves elem elem-inputs">
+      <summary>Ground truth at the leaves <span class="count">4</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-rel" href="#f-workflowsteps-assignedrole">⇢ Assigned Role <span class="ref-pill-tbl">WorkflowSteps</span></a>
+        <a class="ref-pill tone-raw" href="#f-roles-roleid">● Role ID <span class="ref-pill-tbl">Roles</span></a>
+        <a class="ref-pill tone-rel" href="#f-workflowsteps-approvalgate">⇢ Approval Gate <span class="ref-pill-tbl">WorkflowSteps</span></a>
+        <a class="ref-pill tone-rel" href="#f-roles-delegatesto">⇢ Delegates to <span class="ref-pill-tbl">Roles</span></a>
+      </div>
+    </details>
+    <p class="field-note elem elem-desc">CQ6 satisfied: no gate-owning role escalates to nobody — every approval gate has a complete escalation path. Uses the model's native EscalationViolation invariant; 'the top' is the delegation apex, derived, not a hardcoded CTO name.</p>
+    </article>
+  <article class="field tone-calc" id="f-workflows-cq7satisfied" data-entity="Workflow" data-field="Cq7 Satisfied">
+    <div class="field-head">
+      <span class="field-glyph" title="Calculated">ƒ</span>
+      <span class="field-name">Cq7 Satisfied</span>
+      <span class="pill pill-type">Calculated</span>
+      <span class="pill pill-depth">5 hops from ground truth</span>
+      <span class="pill pill-muted">boolean</span>
+      <span class="pill pill-dr">DR-36</span>
+    </div>
+    <div class="narr-views">
+      <div class="view elem elem-rulespeak">
+        <span class="view-label">In RuleSpeak</span>
+        <p class="view-body">A workflow is flagged cq7 satisfied only if the workflow is considered to involve engineering and legal.</p>
+      </div>
+      <div class="view elem elem-english">
+        <span class="view-label">In English</span>
+        <p class="view-body"><a class="ref" href="#f-workflows-involvesengineeringandlegal">Involves engineering and legal</a>.</p>
+      </div>
+      <div class="view elem elem-formula">
+        <span class="view-label">As a formula</span>
+        <div class="view-body fx"><span class="fx-eq">= </span><a class="fx-chip" href="#f-workflows-involvesengineeringandlegal">Involves Engineering and Legal</a></div>
+      </div>
+    </div>
+    <details class="prov prov-inputs elem elem-inputs" open>
+      <summary>Inputs <span class="count">1</span> <span class="prov-hint">fields this rule reads</span></summary>
+      <div class="prov-grid">
+        <a class="input tone-calc" href="#f-workflows-involvesengineeringandlegal">
+          <span class="input-head"><span class="input-glyph">ƒ</span><span class="input-name">Involves Engineering and Legal</span><span class="input-table">Workflows</span></span>
+          <span class="input-en">Count engineering owned steps is greater than 0 and count legal owned steps is greater than 0.</span>
+        </a>
+      </div>
+    </details>
+    <details class="prov prov-leaves elem elem-inputs">
+      <summary>Ground truth at the leaves <span class="count">5</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-rel" href="#f-workflowsteps-workflow">⇢ Workflow <span class="ref-pill-tbl">WorkflowSteps</span></a>
+        <a class="ref-pill tone-raw" href="#f-workflows-workflowid">● Workflow ID <span class="ref-pill-tbl">Workflows</span></a>
+        <a class="ref-pill tone-rel" href="#f-roles-ownedby">⇢ Owned by <span class="ref-pill-tbl">Roles</span></a>
+        <a class="ref-pill tone-rel" href="#f-workflowsteps-assignedrole">⇢ Assigned Role <span class="ref-pill-tbl">WorkflowSteps</span></a>
+        <a class="ref-pill tone-raw" href="#f-roles-roleid">● Role ID <span class="ref-pill-tbl">Roles</span></a>
+      </div>
+    </details>
+    <p class="field-note elem elem-desc">CQ7 satisfied: the workflow involves BOTH Engineering-owned and Legal-owned steps. Reads the existing InvolvesEngineeringAndLegal boolean.</p>
+    </article>
+  <article class="field tone-calc" id="f-workflows-cq8satisfied" data-entity="Workflow" data-field="Cq8 Satisfied">
+    <div class="field-head">
+      <span class="field-glyph" title="Calculated">ƒ</span>
+      <span class="field-name">Cq8 Satisfied</span>
+      <span class="pill pill-type">Calculated</span>
+      <span class="pill pill-depth">3 hops from ground truth</span>
+      <span class="pill pill-muted">boolean</span>
+      <span class="pill pill-dr">DR-37</span>
+    </div>
+    <div class="narr-views">
+      <div class="view elem elem-rulespeak">
+        <span class="view-label">In RuleSpeak</span>
+        <p class="view-body">A workflow is flagged cq8 satisfied if the <a class="ref" href="#f-workflows-countunconsumeddatasets">count unconsumed datasets</a> is 0.</p>
+      </div>
+      <div class="view elem elem-english">
+        <span class="view-label">In English</span>
+        <p class="view-body"><a class="ref" href="#f-workflows-countunconsumeddatasets">Count unconsumed datasets</a> equals 0.</p>
+      </div>
+      <div class="view elem elem-formula">
+        <span class="view-label">As a formula</span>
+        <div class="view-body fx"><span class="fx-eq">= </span><a class="fx-chip" href="#f-workflows-countunconsumeddatasets">Count Unconsumed Datasets</a> = 0</div>
+      </div>
+    </div>
+    <details class="prov prov-inputs elem elem-inputs" open>
+      <summary>Inputs <span class="count">1</span> <span class="prov-hint">fields this rule reads</span></summary>
+      <div class="prov-grid">
+        <a class="input tone-agg" href="#f-workflows-countunconsumeddatasets">
+          <span class="input-head"><span class="input-glyph">Σ</span><span class="input-name">Count Unconsumed Datasets</span><span class="input-table">Workflows</span></span>
+          <span class="input-en">Count of Datasets whose is consumed is no.</span>
+        </a>
+      </div>
+    </details>
+    <details class="prov prov-leaves elem elem-inputs">
+      <summary>Ground truth at the leaves <span class="count">1</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-rel" href="#f-datasets-consumedbysteps">⇢ Consumed by Steps <span class="ref-pill-tbl">Datasets</span></a>
+      </div>
+    </details>
+    <p class="field-note elem elem-desc">CQ8 satisfied: every dataset the workflow declares is actually consumed by a step. Flips when a dataset is detached.</p>
+    </article>
 </section>
 <section class="entity" id="t-workflowsteps" data-entity="Workflow Step">
   <header class="entity-head">
@@ -1533,7 +2176,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Lookup</span>
       <span class="pill pill-depth">2 hops from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-25</span>
+      <span class="pill pill-dr">DR-38</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -1598,7 +2241,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">3 hops from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-26</span>
+      <span class="pill pill-dr">DR-39</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -1659,7 +2302,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">4 hops from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-27</span>
+      <span class="pill pill-dr">DR-40</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -1701,7 +2344,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-28</span>
+      <span class="pill pill-dr">DR-41</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -1763,7 +2406,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Aggregation</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">integer</span>
-      <span class="pill pill-dr">DR-29</span>
+      <span class="pill pill-dr">DR-42</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -1810,7 +2453,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">2 hops from ground truth</span>
       <span class="pill pill-muted">integer</span>
-      <span class="pill pill-dr">DR-30</span>
+      <span class="pill pill-dr">DR-43</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -1868,7 +2511,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">3 hops from ground truth</span>
       <span class="pill pill-muted">integer</span>
-      <span class="pill pill-dr">DR-31</span>
+      <span class="pill pill-dr">DR-44</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -2021,7 +2664,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Lookup</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-32</span>
+      <span class="pill pill-dr">DR-45</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -2055,7 +2698,7 @@ html.show-consumers .elem-consumers{display:block}
       </div>
     </details>
     <details class="prov prov-consumers elem elem-consumers">
-      <summary>Consumers <span class="count">4 direct</span> <span class="count count-muted">+3 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
+      <summary>Consumers <span class="count">4 direct</span> <span class="count count-muted">+4 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
       <div class="prov-pills">
         <a class="ref-pill tone-calc" href="#f-workflowsteps-executingagenttype">ƒ Executing Agent Type <span class="ref-pill-tbl">WorkflowSteps</span></a>
         <a class="ref-pill tone-calc" href="#f-workflowsteps-isexecutedbyhuman">ƒ Is Executed by Human <span class="ref-pill-tbl">WorkflowSteps</span></a>
@@ -2064,6 +2707,7 @@ html.show-consumers .elem-consumers{display:block}
         <a class="ref-pill tone-rel faded" href="#f-workflows-counthumansteps">Count Human Steps <span class="ref-pill-tbl">Workflows</span></a>
         <a class="ref-pill tone-rel faded" href="#f-workflows-countapprovalconsistencyviolations">Count Approval Consistency Violations <span class="ref-pill-tbl">Workflows</span></a>
         <a class="ref-pill tone-rel faded" href="#f-workflows-hasconsistencyviolation">Has Consistency Violation <span class="ref-pill-tbl">Workflows</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-workflows-cq3satisfied">Cq3 Satisfied <span class="ref-pill-tbl">Workflows</span></a>
       </div>
     </details>
     <details class="prov prov-leaves elem elem-inputs">
@@ -2083,7 +2727,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Lookup</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-33</span>
+      <span class="pill pill-dr">DR-46</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -2143,7 +2787,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Lookup</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-34</span>
+      <span class="pill pill-dr">DR-47</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -2199,7 +2843,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">2 hops from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-35</span>
+      <span class="pill pill-dr">DR-48</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -2251,7 +2895,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">2 hops from ground truth</span>
       <span class="pill pill-muted">boolean</span>
-      <span class="pill pill-dr">DR-36</span>
+      <span class="pill pill-dr">DR-49</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -2301,7 +2945,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">2 hops from ground truth</span>
       <span class="pill pill-muted">boolean</span>
-      <span class="pill pill-dr">DR-37</span>
+      <span class="pill pill-dr">DR-50</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -2349,7 +2993,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">boolean</span>
-      <span class="pill pill-dr">DR-38</span>
+      <span class="pill pill-dr">DR-51</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -2375,10 +3019,14 @@ html.show-consumers .elem-consumers{display:block}
       </div>
     </details>
     <details class="prov prov-consumers elem elem-consumers">
-      <summary>Consumers <span class="count">1 direct</span> <span class="count count-muted">+1 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
+      <summary>Consumers <span class="count">2 direct</span> <span class="count count-muted">+4 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
       <div class="prov-pills">
+        <a class="ref-pill tone-agg" href="#f-workflows-countapprovalgatesteps">Σ Count Approval Gate Steps <span class="ref-pill-tbl">Workflows</span></a>
         <a class="ref-pill tone-agg" href="#f-roles-fillsapprovalgate">Σ Fills Approval Gate <span class="ref-pill-tbl">Roles</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-workflows-cq2satisfied">Cq2 Satisfied <span class="ref-pill-tbl">Workflows</span></a>
         <a class="ref-pill tone-rel faded" href="#f-roles-escalationviolation">Escalation Violation <span class="ref-pill-tbl">Roles</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-workflows-countroleswithescalationviolation">Count Roles With Escalation Violation <span class="ref-pill-tbl">Workflows</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-workflows-cq6satisfied">Cq6 Satisfied <span class="ref-pill-tbl">Workflows</span></a>
       </div>
     </details>
     <details class="prov prov-leaves elem elem-inputs">
@@ -2396,7 +3044,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">2 hops from ground truth</span>
       <span class="pill pill-muted">boolean</span>
-      <span class="pill pill-dr">DR-39</span>
+      <span class="pill pill-dr">DR-52</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -2426,10 +3074,11 @@ html.show-consumers .elem-consumers{display:block}
       </div>
     </details>
     <details class="prov prov-consumers elem elem-consumers">
-      <summary>Consumers <span class="count">1 direct</span> <span class="count count-muted">+1 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
+      <summary>Consumers <span class="count">1 direct</span> <span class="count count-muted">+2 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
       <div class="prov-pills">
         <a class="ref-pill tone-agg" href="#f-workflows-countapprovalconsistencyviolations">Σ Count Approval Consistency Violations <span class="ref-pill-tbl">Workflows</span></a>
         <a class="ref-pill tone-rel faded" href="#f-workflows-hasconsistencyviolation">Has Consistency Violation <span class="ref-pill-tbl">Workflows</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-workflows-cq3satisfied">Cq3 Satisfied <span class="ref-pill-tbl">Workflows</span></a>
       </div>
     </details>
     <details class="prov prov-leaves elem elem-inputs">
@@ -2450,7 +3099,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">2 hops from ground truth</span>
       <span class="pill pill-muted">boolean</span>
-      <span class="pill pill-dr">DR-40</span>
+      <span class="pill pill-dr">DR-53</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -2497,7 +3146,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Lookup</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-41</span>
+      <span class="pill pill-dr">DR-54</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -2531,13 +3180,14 @@ html.show-consumers .elem-consumers{display:block}
       </div>
     </details>
     <details class="prov prov-consumers elem elem-consumers">
-      <summary>Consumers <span class="count">2 direct</span> <span class="count count-muted">+3 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
+      <summary>Consumers <span class="count">2 direct</span> <span class="count count-muted">+4 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
       <div class="prov-pills">
         <a class="ref-pill tone-calc" href="#f-workflowsteps-islegalowned">ƒ Is Legal Owned <span class="ref-pill-tbl">WorkflowSteps</span></a>
         <a class="ref-pill tone-calc" href="#f-workflowsteps-isengineeringowned">ƒ Is Engineering Owned <span class="ref-pill-tbl">WorkflowSteps</span></a>
         <a class="ref-pill tone-rel faded" href="#f-workflows-countlegalownedsteps">Count Legal Owned Steps <span class="ref-pill-tbl">Workflows</span></a>
         <a class="ref-pill tone-rel faded" href="#f-workflows-countengineeringownedsteps">Count Engineering Owned Steps <span class="ref-pill-tbl">Workflows</span></a>
         <a class="ref-pill tone-rel faded" href="#f-workflows-involvesengineeringandlegal">Involves Engineering and Legal <span class="ref-pill-tbl">Workflows</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-workflows-cq7satisfied">Cq7 Satisfied <span class="ref-pill-tbl">Workflows</span></a>
       </div>
     </details>
     <details class="prov prov-leaves elem elem-inputs">
@@ -2557,7 +3207,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">2 hops from ground truth</span>
       <span class="pill pill-muted">boolean</span>
-      <span class="pill pill-dr">DR-42</span>
+      <span class="pill pill-dr">DR-55</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -2583,10 +3233,11 @@ html.show-consumers .elem-consumers{display:block}
       </div>
     </details>
     <details class="prov prov-consumers elem elem-consumers">
-      <summary>Consumers <span class="count">1 direct</span> <span class="count count-muted">+1 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
+      <summary>Consumers <span class="count">1 direct</span> <span class="count count-muted">+2 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
       <div class="prov-pills">
         <a class="ref-pill tone-agg" href="#f-workflows-countlegalownedsteps">Σ Count Legal Owned Steps <span class="ref-pill-tbl">Workflows</span></a>
         <a class="ref-pill tone-rel faded" href="#f-workflows-involvesengineeringandlegal">Involves Engineering and Legal <span class="ref-pill-tbl">Workflows</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-workflows-cq7satisfied">Cq7 Satisfied <span class="ref-pill-tbl">Workflows</span></a>
       </div>
     </details>
     <details class="prov prov-leaves elem elem-inputs">
@@ -2606,7 +3257,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">2 hops from ground truth</span>
       <span class="pill pill-muted">boolean</span>
-      <span class="pill pill-dr">DR-43</span>
+      <span class="pill pill-dr">DR-56</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -2632,10 +3283,11 @@ html.show-consumers .elem-consumers{display:block}
       </div>
     </details>
     <details class="prov prov-consumers elem elem-consumers">
-      <summary>Consumers <span class="count">1 direct</span> <span class="count count-muted">+1 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
+      <summary>Consumers <span class="count">1 direct</span> <span class="count count-muted">+2 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
       <div class="prov-pills">
         <a class="ref-pill tone-agg" href="#f-workflows-countengineeringownedsteps">Σ Count Engineering Owned Steps <span class="ref-pill-tbl">Workflows</span></a>
         <a class="ref-pill tone-rel faded" href="#f-workflows-involvesengineeringandlegal">Involves Engineering and Legal <span class="ref-pill-tbl">Workflows</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-workflows-cq7satisfied">Cq7 Satisfied <span class="ref-pill-tbl">Workflows</span></a>
       </div>
     </details>
     <details class="prov prov-leaves elem elem-inputs">
@@ -2661,7 +3313,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Lookup</span>
       <span class="pill pill-depth">4 hops from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-44</span>
+      <span class="pill pill-dr">DR-57</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -2719,7 +3371,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">5 hops from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-45</span>
+      <span class="pill pill-dr">DR-58</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -2773,7 +3425,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">6 hops from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-46</span>
+      <span class="pill pill-dr">DR-59</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -2817,7 +3469,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-47</span>
+      <span class="pill pill-dr">DR-60</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -2891,7 +3543,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Lookup</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-48</span>
+      <span class="pill pill-dr">DR-61</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -2925,9 +3577,12 @@ html.show-consumers .elem-consumers{display:block}
       </div>
     </details>
     <details class="prov prov-consumers elem elem-consumers">
-      <summary>Consumers <span class="count">1 direct</span> <span class="prov-hint">rules that read this one</span></summary>
+      <summary>Consumers <span class="count">1 direct</span> <span class="count count-muted">+3 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
       <div class="prov-pills">
         <a class="ref-pill tone-lookup" href="#f-approvalgates-gateapproverhuman">↗ Gate Approver Human <span class="ref-pill-tbl">ApprovalGates</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-approvalgates-hashumanapprover">Has Human Approver <span class="ref-pill-tbl">ApprovalGates</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-workflows-countgateswithouthumanapprover">Count Gates Without Human Approver <span class="ref-pill-tbl">Workflows</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-workflows-cq2satisfied">Cq2 Satisfied <span class="ref-pill-tbl">Workflows</span></a>
       </div>
     </details>
     <details class="prov prov-leaves elem elem-inputs">
@@ -2947,7 +3602,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Lookup</span>
       <span class="pill pill-depth">2 hops from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-49</span>
+      <span class="pill pill-dr">DR-62</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -2980,6 +3635,14 @@ html.show-consumers .elem-consumers{display:block}
         </a>
       </div>
     </details>
+    <details class="prov prov-consumers elem elem-consumers">
+      <summary>Consumers <span class="count">1 direct</span> <span class="count count-muted">+2 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-calc" href="#f-approvalgates-hashumanapprover">ƒ Has Human Approver <span class="ref-pill-tbl">ApprovalGates</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-workflows-countgateswithouthumanapprover">Count Gates Without Human Approver <span class="ref-pill-tbl">Workflows</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-workflows-cq2satisfied">Cq2 Satisfied <span class="ref-pill-tbl">Workflows</span></a>
+      </div>
+    </details>
     <details class="prov prov-leaves elem elem-inputs">
       <summary>Ground truth at the leaves <span class="count">5</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
       <div class="prov-pills">
@@ -2991,6 +3654,57 @@ html.show-consumers .elem-consumers{display:block}
       </div>
     </details>
     <p class="field-note elem elem-desc">The human agent who approves at this gate, resolved through the two-hop chain gate → GateRole → Roles.FilledByHumanAgent. Answers CQ2 ('who is responsible for approving a production deployment') directly: the release-approval gate resolves to the Release Manager role, filled by Maria Gonzalez.</p>
+    </article>
+  <article class="field tone-calc" id="f-approvalgates-hashumanapprover" data-entity="Approval Gate" data-field="Has Human Approver">
+    <div class="field-head">
+      <span class="field-glyph" title="Calculated">ƒ</span>
+      <span class="field-name">Has Human Approver</span>
+      <span class="pill pill-type">Calculated</span>
+      <span class="pill pill-depth">3 hops from ground truth</span>
+      <span class="pill pill-muted">boolean</span>
+      <span class="pill pill-dr">DR-63</span>
+    </div>
+    <div class="narr-views">
+      <div class="view elem elem-rulespeak">
+        <span class="view-label">In RuleSpeak</span>
+        <p class="view-body">An approval gate is considered to have a human approver if the <a class="ref" href="#f-approvalgates-gateapproverhuman">gate approver human</a> has a value.</p>
+      </div>
+      <div class="view elem elem-english">
+        <span class="view-label">In English</span>
+        <p class="view-body">Not <a class="ref" href="#f-approvalgates-gateapproverhuman">gate approver human</a> is blank.</p>
+      </div>
+      <div class="view elem elem-formula">
+        <span class="view-label">As a formula</span>
+        <div class="view-body fx"><span class="fx-eq">= </span>NOT(ISBLANK(<a class="fx-chip" href="#f-approvalgates-gateapproverhuman">Gate Approver Human</a>))</div>
+      </div>
+    </div>
+    <details class="prov prov-inputs elem elem-inputs" open>
+      <summary>Inputs <span class="count">1</span> <span class="prov-hint">fields this rule reads</span></summary>
+      <div class="prov-grid">
+        <a class="input tone-lookup" href="#f-approvalgates-gateapproverhuman">
+          <span class="input-head"><span class="input-glyph">↗</span><span class="input-name">Gate Approver Human</span><span class="input-table">ApprovalGates</span></span>
+          <span class="input-en">The filled by human agent of the linked gate role.</span>
+        </a>
+      </div>
+    </details>
+    <details class="prov prov-consumers elem elem-consumers">
+      <summary>Consumers <span class="count">1 direct</span> <span class="count count-muted">+1 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-agg" href="#f-workflows-countgateswithouthumanapprover">Σ Count Gates Without Human Approver <span class="ref-pill-tbl">Workflows</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-workflows-cq2satisfied">Cq2 Satisfied <span class="ref-pill-tbl">Workflows</span></a>
+      </div>
+    </details>
+    <details class="prov prov-leaves elem elem-inputs">
+      <summary>Ground truth at the leaves <span class="count">5</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-rel" href="#f-roles-filledbyhumanagent">⇢ Filled by Human Agent <span class="ref-pill-tbl">Roles</span></a>
+        <a class="ref-pill tone-rel" href="#f-workflowsteps-assignedrole">⇢ Assigned Role <span class="ref-pill-tbl">WorkflowSteps</span></a>
+        <a class="ref-pill tone-rel" href="#f-approvalgates-workflowstep">⇢ Workflow Step <span class="ref-pill-tbl">ApprovalGates</span></a>
+        <a class="ref-pill tone-raw" href="#f-workflowsteps-workflowstepid">● Workflow Step ID <span class="ref-pill-tbl">WorkflowSteps</span></a>
+        <a class="ref-pill tone-raw" href="#f-roles-roleid">● Role ID <span class="ref-pill-tbl">Roles</span></a>
+      </div>
+    </details>
+    <p class="field-note elem elem-desc">TRUE iff this approval gate resolves to a human approver (its gate role is filled by a HumanAgent). Rolls up into Workflows.CountGatesWithoutHumanApprover, which CQ2's satisfaction reads.</p>
     </article>
 </section>
 <section class="entity" id="t-stepprecedence" data-entity="Step Precedence">
@@ -3005,7 +3719,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Lookup</span>
       <span class="pill pill-depth">4 hops from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-50</span>
+      <span class="pill pill-dr">DR-64</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -3063,7 +3777,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">5 hops from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-51</span>
+      <span class="pill pill-dr">DR-65</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -3117,7 +3831,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">6 hops from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-52</span>
+      <span class="pill pill-dr">DR-66</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -3161,7 +3875,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-53</span>
+      <span class="pill pill-dr">DR-67</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -3259,7 +3973,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-54</span>
+      <span class="pill pill-dr">DR-68</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -3308,7 +4022,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">2 hops from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-55</span>
+      <span class="pill pill-dr">DR-69</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -3348,7 +4062,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-56</span>
+      <span class="pill pill-dr">DR-70</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -3553,7 +4267,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">integer</span>
-      <span class="pill pill-dr">DR-57</span>
+      <span class="pill pill-dr">DR-71</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -3610,7 +4324,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">2 hops from ground truth</span>
       <span class="pill pill-muted">boolean</span>
-      <span class="pill pill-dr">DR-58</span>
+      <span class="pill pill-dr">DR-72</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -3658,7 +4372,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-59</span>
+      <span class="pill pill-dr">DR-73</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -3708,7 +4422,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Aggregation</span>
       <span class="pill pill-depth">2 hops from ground truth</span>
       <span class="pill pill-muted">integer</span>
-      <span class="pill pill-dr">DR-60</span>
+      <span class="pill pill-dr">DR-74</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -3742,9 +4456,11 @@ html.show-consumers .elem-consumers{display:block}
       </div>
     </details>
     <details class="prov prov-consumers elem elem-consumers">
-      <summary>Consumers <span class="count">1 direct</span> <span class="prov-hint">rules that read this one</span></summary>
+      <summary>Consumers <span class="count">1 direct</span> <span class="count count-muted">+2 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
       <div class="prov-pills">
         <a class="ref-pill tone-calc" href="#f-roles-escalationviolation">ƒ Escalation Violation <span class="ref-pill-tbl">Roles</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-workflows-countroleswithescalationviolation">Count Roles With Escalation Violation <span class="ref-pill-tbl">Workflows</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-workflows-cq6satisfied">Cq6 Satisfied <span class="ref-pill-tbl">Workflows</span></a>
       </div>
     </details>
     <details class="prov prov-leaves elem elem-inputs">
@@ -3764,7 +4480,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">3 hops from ground truth</span>
       <span class="pill pill-muted">boolean</span>
-      <span class="pill pill-dr">DR-61</span>
+      <span class="pill pill-dr">DR-75</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -3793,6 +4509,13 @@ html.show-consumers .elem-consumers{display:block}
         </a>
       </div>
     </details>
+    <details class="prov prov-consumers elem elem-consumers">
+      <summary>Consumers <span class="count">1 direct</span> <span class="count count-muted">+1 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-agg" href="#f-workflows-countroleswithescalationviolation">Σ Count Roles With Escalation Violation <span class="ref-pill-tbl">Workflows</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-workflows-cq6satisfied">Cq6 Satisfied <span class="ref-pill-tbl">Workflows</span></a>
+      </div>
+    </details>
     <details class="prov prov-leaves elem elem-inputs">
       <summary>Ground truth at the leaves <span class="count">4</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
       <div class="prov-pills">
@@ -3817,7 +4540,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Lookup</span>
       <span class="pill pill-depth">2 hops from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-62</span>
+      <span class="pill pill-dr">DR-76</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -3873,7 +4596,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">3 hops from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-63</span>
+      <span class="pill pill-dr">DR-77</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -3925,7 +4648,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">4 hops from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-64</span>
+      <span class="pill pill-dr">DR-78</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -3967,7 +4690,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-65</span>
+      <span class="pill pill-dr">DR-79</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -4113,7 +4836,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-66</span>
+      <span class="pill pill-dr">DR-80</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -4172,7 +4895,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">boolean</span>
-      <span class="pill pill-dr">DR-67</span>
+      <span class="pill pill-dr">DR-81</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -4212,7 +4935,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">boolean</span>
-      <span class="pill pill-dr">DR-68</span>
+      <span class="pill pill-dr">DR-82</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -4257,7 +4980,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">2 hops from ground truth</span>
       <span class="pill pill-muted">boolean</span>
-      <span class="pill pill-dr">DR-69</span>
+      <span class="pill pill-dr">DR-83</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -4310,7 +5033,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">2 hops from ground truth</span>
       <span class="pill pill-muted">boolean</span>
-      <span class="pill pill-dr">DR-70</span>
+      <span class="pill pill-dr">DR-84</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -4369,7 +5092,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-71</span>
+      <span class="pill pill-dr">DR-85</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -4415,7 +5138,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">2 hops from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-72</span>
+      <span class="pill pill-dr">DR-86</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -4455,7 +5178,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-73</span>
+      <span class="pill pill-dr">DR-87</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -4537,7 +5260,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-74</span>
+      <span class="pill pill-dr">DR-88</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -4583,7 +5306,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">2 hops from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-75</span>
+      <span class="pill pill-dr">DR-89</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -4676,7 +5399,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-76</span>
+      <span class="pill pill-dr">DR-90</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -4722,7 +5445,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">2 hops from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-77</span>
+      <span class="pill pill-dr">DR-91</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -4845,7 +5568,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Aggregation</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">integer</span>
-      <span class="pill pill-dr">DR-78</span>
+      <span class="pill pill-dr">DR-92</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -4890,7 +5613,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Aggregation</span>
       <span class="pill pill-depth">3 hops from ground truth</span>
       <span class="pill pill-muted">integer</span>
-      <span class="pill pill-dr">DR-79</span>
+      <span class="pill pill-dr">DR-93</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -4948,7 +5671,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-80</span>
+      <span class="pill pill-dr">DR-94</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -4994,7 +5717,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">2 hops from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-81</span>
+      <span class="pill pill-dr">DR-95</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -5087,7 +5810,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-82</span>
+      <span class="pill pill-dr">DR-96</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -5133,7 +5856,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">2 hops from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-83</span>
+      <span class="pill pill-dr">DR-97</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -5239,7 +5962,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-84</span>
+      <span class="pill pill-dr">DR-98</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -5285,7 +6008,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">2 hops from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-85</span>
+      <span class="pill pill-dr">DR-99</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -5391,7 +6114,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-86</span>
+      <span class="pill pill-dr">DR-100</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -5437,7 +6160,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">2 hops from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-87</span>
+      <span class="pill pill-dr">DR-101</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -5543,7 +6266,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-88</span>
+      <span class="pill pill-dr">DR-102</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -5589,7 +6312,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">2 hops from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-89</span>
+      <span class="pill pill-dr">DR-103</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -5682,6 +6405,53 @@ html.show-consumers .elem-consumers{display:block}
     </div>
     <p class="field-note elem elem-desc">Back-reference to WorkflowSteps that consume this dataset. Inverse of WorkflowSteps.ConsumesDataset.</p>
     </article>
+  <article class="field tone-calc" id="f-datasets-isconsumed" data-entity="Dataset" data-field="Is Consumed">
+    <div class="field-head">
+      <span class="field-glyph" title="Calculated">ƒ</span>
+      <span class="field-name">Is Consumed</span>
+      <span class="pill pill-type">Calculated</span>
+      <span class="pill pill-depth">1 hop from ground truth</span>
+      <span class="pill pill-muted">boolean</span>
+      <span class="pill pill-dr">DR-104</span>
+    </div>
+    <div class="narr-views">
+      <div class="view elem elem-rulespeak">
+        <span class="view-label">In RuleSpeak</span>
+        <p class="view-body">A dataset is considered consumed if the <a class="ref" href="#f-datasets-consumedbysteps">consumed by steps</a> has a value.</p>
+      </div>
+      <div class="view elem elem-english">
+        <span class="view-label">In English</span>
+        <p class="view-body">Not <a class="ref" href="#f-datasets-consumedbysteps">consumed by steps</a> is blank.</p>
+      </div>
+      <div class="view elem elem-formula">
+        <span class="view-label">As a formula</span>
+        <div class="view-body fx"><span class="fx-eq">= </span>NOT(ISBLANK(<a class="fx-chip" href="#f-datasets-consumedbysteps">Consumed by Steps</a>))</div>
+      </div>
+    </div>
+    <details class="prov prov-inputs elem elem-inputs" open>
+      <summary>Inputs <span class="count">1</span> <span class="prov-hint">fields this rule reads</span></summary>
+      <div class="prov-grid">
+        <a class="input tone-rel" href="#f-datasets-consumedbysteps">
+          <span class="input-head"><span class="input-glyph">⇢</span><span class="input-name">Consumed by Steps</span><span class="input-table">Datasets</span></span>
+          <span class="input-en muted">Back-reference to WorkflowSteps that consume this dataset. Inverse of WorkflowSteps.ConsumesDataset.</span>
+        </a>
+      </div>
+    </details>
+    <details class="prov prov-consumers elem elem-consumers">
+      <summary>Consumers <span class="count">1 direct</span> <span class="count count-muted">+1 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-agg" href="#f-workflows-countunconsumeddatasets">Σ Count Unconsumed Datasets <span class="ref-pill-tbl">Workflows</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-workflows-cq8satisfied">Cq8 Satisfied <span class="ref-pill-tbl">Workflows</span></a>
+      </div>
+    </details>
+    <details class="prov prov-leaves elem elem-inputs">
+      <summary>Ground truth at the leaves <span class="count">1</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-rel" href="#f-datasets-consumedbysteps">⇢ Consumed by Steps <span class="ref-pill-tbl">Datasets</span></a>
+      </div>
+    </details>
+    <p class="field-note elem elem-desc">TRUE iff some workflow step consumes this dataset (ConsumedBySteps is set). Rolls up into Workflows.CountUnconsumedDatasets, which CQ8's satisfaction reads.</p>
+    </article>
 </section>
 <section class="entity" id="t-workflowartifacts" data-entity="Workflow Artifact">
   <header class="entity-head">
@@ -5695,7 +6465,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Lookup</span>
       <span class="pill pill-depth">4 hops from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-90</span>
+      <span class="pill pill-dr">DR-105</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -5753,7 +6523,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">5 hops from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-91</span>
+      <span class="pill pill-dr">DR-106</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -5807,7 +6577,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">6 hops from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-92</span>
+      <span class="pill pill-dr">DR-107</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -5971,7 +6741,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-93</span>
+      <span class="pill pill-dr">DR-108</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -6021,7 +6791,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">boolean</span>
-      <span class="pill pill-dr">DR-94</span>
+      <span class="pill pill-dr">DR-109</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -6047,9 +6817,10 @@ html.show-consumers .elem-consumers{display:block}
       </div>
     </details>
     <details class="prov prov-consumers elem elem-consumers">
-      <summary>Consumers <span class="count">1 direct</span> <span class="prov-hint">rules that read this one</span></summary>
+      <summary>Consumers <span class="count">1 direct</span> <span class="count count-muted">+1 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
       <div class="prov-pills">
         <a class="ref-pill tone-agg" href="#f-workflows-countderivationlinks">Σ Count Derivation Links <span class="ref-pill-tbl">Workflows</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-workflows-cq4satisfied">Cq4 Satisfied <span class="ref-pill-tbl">Workflows</span></a>
       </div>
     </details>
     <details class="prov prov-leaves elem elem-inputs">
@@ -6067,7 +6838,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Lookup</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-95</span>
+      <span class="pill pill-dr">DR-110</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -6101,10 +6872,12 @@ html.show-consumers .elem-consumers{display:block}
       </div>
     </details>
     <details class="prov prov-consumers elem elem-consumers">
-      <summary>Consumers <span class="count">2 direct</span> <span class="count count-muted">+1 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
+      <summary>Consumers <span class="count">3 direct</span> <span class="count count-muted">+2 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
       <div class="prov-pills">
         <a class="ref-pill tone-agg" href="#f-workflows-countderivationlinks">Σ Count Derivation Links <span class="ref-pill-tbl">Workflows</span></a>
+        <a class="ref-pill tone-agg" href="#f-workflows-countworkflowartifacts">Σ Count Workflow Artifacts <span class="ref-pill-tbl">Workflows</span></a>
         <a class="ref-pill tone-calc" href="#f-workflowartifacts-hasproducingworkflow">ƒ Has Producing Workflow <span class="ref-pill-tbl">WorkflowArtifacts</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-workflows-cq4satisfied">Cq4 Satisfied <span class="ref-pill-tbl">Workflows</span></a>
         <a class="ref-pill tone-rel faded" href="#f-aiagents-countimpactedworkflows">Count Impacted Workflows <span class="ref-pill-tbl">AIAgents</span></a>
       </div>
     </details>
@@ -6125,7 +6898,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">2 hops from ground truth</span>
       <span class="pill pill-muted">boolean</span>
-      <span class="pill pill-dr">DR-96</span>
+      <span class="pill pill-dr">DR-111</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -6166,6 +6939,29 @@ html.show-consumers .elem-consumers{display:block}
     </details>
     <p class="field-note elem elem-desc">TRUE iff this artifact resolves to a producing workflow (ProducedByWorkflow is set). Lets the AIAgents blast-radius rollup (CountImpactedWorkflows) count only artifacts that reach a workflow, since COUNTIFS needs a boolean criterion column.</p>
     </article>
+  <article class="field tone-raw" id="f-workflowartifacts-derivationclosure" data-entity="Workflow Artifact" data-field="Derivation Closure">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Derivation Closure</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="narr-views">
+      <div class="view elem elem-rulespeak">
+        <span class="view-label">In RuleSpeak</span>
+        <p class="view-body">A workflow artifact's derivation closure is a defined attribute of the workflow artifact.</p>
+      </div>
+      <div class="view elem elem-english">
+        <span class="view-label">In English</span>
+        <p class="view-body muted">This roll-up is defined structurally over a relationship — no spreadsheet formula to read aloud. See <b>RuleSpeak</b>.</p>
+      </div>
+      <div class="view elem elem-formula">
+        <span class="view-label">As a formula</span>
+        <p class="view-body muted">No spreadsheet formula — a structural roll-up. See <b>RuleSpeak</b>.</p>
+      </div>
+    </div>
+    <p class="field-note elem elem-desc">Transitive closure of prov:wasDerivedFrom over the self-referential DerivedFromArtifact FK. The asserted single-step derivation edges (Legal Clearance was derived from Risk Report, Release Authorization from Legal Clearance, …) imply the never-asserted reachability (Post-Deployment Report transitively wasDerivedFrom Risk Report). Materialized as vw_workflow_artifacts_closure(from_id, to_id, hop_distance, is_inferred). This is the artifact-lineage analogue of vw_step_precedence_closure and vw_roles_closure — the SAME closure construct as step ordering and role escalation, just over a different relation, so a broken link surfaces as a missing reachability pair exactly like a dropped precedence edge.</p>
+    </article>
 </section>
 <section class="entity" id="t-governanceroles" data-entity="Governance Role">
   <header class="entity-head">
@@ -6179,7 +6975,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-97</span>
+      <span class="pill pill-dr">DR-112</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -6225,7 +7021,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">2 hops from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-98</span>
+      <span class="pill pill-dr">DR-113</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -6265,7 +7061,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-99</span>
+      <span class="pill pill-dr">DR-114</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -6365,7 +7161,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">boolean</span>
-      <span class="pill pill-dr">DR-100</span>
+      <span class="pill pill-dr">DR-115</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -6423,7 +7219,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-101</span>
+      <span class="pill pill-dr">DR-116</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -6469,7 +7265,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">2 hops from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-102</span>
+      <span class="pill pill-dr">DR-117</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -6509,7 +7305,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-103</span>
+      <span class="pill pill-dr">DR-118</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -6638,7 +7434,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">boolean</span>
-      <span class="pill pill-dr">DR-104</span>
+      <span class="pill pill-dr">DR-119</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -6678,7 +7474,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">boolean</span>
-      <span class="pill pill-dr">DR-105</span>
+      <span class="pill pill-dr">DR-120</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -6724,7 +7520,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-106</span>
+      <span class="pill pill-dr">DR-121</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -6770,7 +7566,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">2 hops from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-107</span>
+      <span class="pill pill-dr">DR-122</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -6810,7 +7606,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-108</span>
+      <span class="pill pill-dr">DR-123</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -6933,7 +7729,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-109</span>
+      <span class="pill pill-dr">DR-124</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -6979,7 +7775,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">2 hops from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-110</span>
+      <span class="pill pill-dr">DR-125</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -7019,7 +7815,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-111</span>
+      <span class="pill pill-dr">DR-126</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -7137,7 +7933,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-112</span>
+      <span class="pill pill-dr">DR-127</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -7183,7 +7979,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">2 hops from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-113</span>
+      <span class="pill pill-dr">DR-128</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -7223,7 +8019,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-114</span>
+      <span class="pill pill-dr">DR-129</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -7340,6 +8136,18 @@ html.show-consumers .elem-consumers{display:block}
     </div>
     <p class="field-note elem elem-desc">The asserted correct answer for the seed worked example. For scalar questions the live computed value must equal this to score a pass; for list questions this is the canonical summary the rendered collection is checked against. Authored here so pass/fail is (substrate-computed value) vs (rulebook-asserted expectation) — a real conformance check, not UI logic.</p>
     </article>
+  <article class="field tone-raw" id="f-competencyquestions-satisfiedfield" data-entity="Competency Question" data-field="Satisfied Field">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Satisfied Field</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Name of the boolean column on Workflows that computes whether this CQ is satisfied (e.g. Cq6Satisfied). The scoreboard reads pass/fail straight from this substrate-computed column — the acceptance criterion lives in the rulebook as a derived field, never as app-side logic. Mirrors TargetTable/TargetField for the answer.</p>
+    </article>
   <article class="field tone-raw" id="f-competencyquestions-explanation" data-entity="Competency Question" data-field="Explanation">
     <div class="field-head">
       <span class="field-glyph" title="Ground truth">●</span>
@@ -7401,7 +8209,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-115</span>
+      <span class="pill pill-dr">DR-130</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -7447,7 +8255,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">2 hops from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-116</span>
+      <span class="pill pill-dr">DR-131</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -7487,7 +8295,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-117</span>
+      <span class="pill pill-dr">DR-132</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -7593,7 +8401,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-118</span>
+      <span class="pill pill-dr">DR-133</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -7639,7 +8447,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">2 hops from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-119</span>
+      <span class="pill pill-dr">DR-134</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -7679,7 +8487,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-120</span>
+      <span class="pill pill-dr">DR-135</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">

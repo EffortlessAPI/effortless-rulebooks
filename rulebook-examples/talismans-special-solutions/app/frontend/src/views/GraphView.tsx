@@ -13,8 +13,8 @@ import type { Situation, Handlers, GraphNode, GraphEdge } from "../types";
 // Deterministic layout (no physics lib) — stable, readable, no jitter.
 // ===========================================================================
 
-const W = 860, H = 460;
-const STEP_Y = 330, AGENT_Y = 90;
+const W = 860, H = 500;
+const STEP_Y = 300, AGENT_Y = 80, DATASET_Y = 440;
 
 type Point = { x: number; y: number };
 
@@ -44,8 +44,9 @@ export function GraphView({ sit, handlers }: GraphViewProps) {
   return (
     <div className="graph">
       <div className="graph-hint muted">
-        Click a node to trace it. Agents <b>execute</b> steps; steps <b>precede</b> steps.
-        Every edge here is a triple the reasoner holds.
+        Click a node to trace it. Agents <b>execute</b> steps; steps <b>precede</b> steps;
+        a DCAT 📦 <b>dataset</b> feeds the step that consumes it (CQ8). Every edge here is a
+        triple the reasoner holds.
       </div>
       <svg viewBox={`0 0 ${W} ${H}`} className="graph-svg" onClick={() => setFocus(null)}>
         <defs>
@@ -64,7 +65,7 @@ export function GraphView({ sit, handlers }: GraphViewProps) {
               key={i}
               x1={a.x} y1={a.y} x2={b.x} y2={b.y}
               className={"gedge " + e.type + (lit ? " lit" : " dim")}
-              markerEnd={e.type === "precedes" ? "url(#arrow)" : undefined}
+              markerEnd={e.type === "precedes" || e.type === "consumes" ? "url(#arrow)" : undefined}
             />
           );
         })}
@@ -104,6 +105,20 @@ function GNode({ node, x, y, lit, focused, onClick }: GNodeProps) {
           className={"gnode-box k-" + node.agentKind + (node.violation ? " violation" : "") + (node.isGate ? " gate" : "")} />
         <text className="gnode-pos" y={-6}>{node.position}{node.isGate ? " 🔒" : ""}</text>
         <text className="gnode-label" y={12}>{truncate(node.label.replace(/^\d+\.\s*/, ""), 14)}</text>
+      </g>
+    );
+  }
+  if (node.type === "dataset") {
+    // A DCAT dataset: a first-class node so CQ8 ("what datasets does the review
+    // consume, and which AI processed them?") is visible. Orphan = consumed by
+    // no step (what the detach simulate leaves behind) → dashed + dimmed.
+    return (
+      <g className={"gnode dataset " + (lit ? "lit" : "dim") + (focused ? " focused" : "")} transform={`translate(${x},${y})`} onClick={onClick}>
+        <rect x={-52} y={-20} width={104} height={40} rx={7}
+          className={"gnode-dataset" + (node.orphan ? " orphan" : "")} />
+        <text className="gnode-dataset-icon" x={-38} y={5}>📦</text>
+        <text className="gnode-dataset-label" x={4} y={1}>{truncate(node.label, 13)}</text>
+        <text className="gnode-dataset-sub" x={4} y={13}>{node.orphan ? "consumed by no step" : "DCAT dataset"}</text>
       </g>
     );
   }
@@ -169,6 +184,14 @@ function positions(sit: Situation): Record<string, Point> {
   });
   // de-overlap agents that landed too close
   spread(agentNodes.map((a) => pos[a.id]).filter(Boolean), 64);
+  // datasets: a stable bottom row, evenly spread, INDEPENDENT of consumption —
+  // so detaching one (it loses its consume-edge) makes the edge vanish while the
+  // node stays put. That's the visible cut, not a node that jumps away.
+  const dsNodes = sit.graph.nodes.filter((nd) => nd.type === "dataset");
+  const dn = dsNodes.length;
+  dsNodes.forEach((d, i) => {
+    pos[d.id] = { x: pad + (dn === 1 ? span / 2 : (span * i) / (dn - 1)), y: DATASET_Y };
+  });
   return pos;
 }
 function spread(points: Point[], min: number) {

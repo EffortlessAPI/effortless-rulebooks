@@ -180,6 +180,13 @@ effortless-ntwf:gateApproverHuman a owl:DatatypeProperty ;
     rdfs:comment "The human agent who approves at this gate, resolved through the two-hop chain gate → GateRole → Roles.FilledByHumanAgent. Answers CQ2 ('who is responsible for approving a production deployment') directly: the release-approval gate resolves to the Release Manager role, filled by Maria Gonzalez." .
     # calculated: lookup
 
+effortless-ntwf:hasHumanApprover a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:ApprovalGates ;
+    rdfs:range xsd:boolean ;
+    rdfs:label "HasHumanApprover" ;
+    rdfs:comment "TRUE iff this approval gate resolves to a human approver (its gate role is filled by a HumanAgent). Rolls up into Workflows.CountGatesWithoutHumanApprover, which CQ2's satisfaction reads." .
+    # calculated: calculated
+
 # === Class: ArtifactTypeConcepts ===
 effortless-ntwf:ArtifactTypeConcepts a owl:Class ;
     rdfs:label "ArtifactTypeConcepts" ;
@@ -410,6 +417,12 @@ effortless-ntwf:expectedAnswer a owl:DatatypeProperty ;
     rdfs:label "ExpectedAnswer" ;
     rdfs:comment "The asserted correct answer for the seed worked example. For scalar questions the live computed value must equal this to score a pass; for list questions this is the canonical summary the rendered collection is checked against. Authored here so pass/fail is (substrate-computed value) vs (rulebook-asserted expectation) — a real conformance check, not UI logic." .
 
+effortless-ntwf:satisfiedField a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:CompetencyQuestions ;
+    rdfs:range xsd:string ;
+    rdfs:label "SatisfiedField" ;
+    rdfs:comment "Name of the boolean column on Workflows that computes whether this CQ is satisfied (e.g. Cq6Satisfied). The scoreboard reads pass/fail straight from this substrate-computed column — the acceptance criterion lives in the rulebook as a derived field, never as app-side logic. Mirrors TargetTable/TargetField for the answer." .
+
 effortless-ntwf:explanation a owl:DatatypeProperty ;
     rdfs:range xsd:string ;
     rdfs:label "Explanation" ;
@@ -559,6 +572,13 @@ effortless-ntwf:consumedBySteps a owl:ObjectProperty ;
     rdfs:range effortless-ntwf:WorkflowSteps ;
     rdfs:label "ConsumedBySteps" ;
     rdfs:comment "Back-reference to WorkflowSteps that consume this dataset. Inverse of WorkflowSteps.ConsumesDataset." .
+
+effortless-ntwf:isConsumed a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:Datasets ;
+    rdfs:range xsd:boolean ;
+    rdfs:label "IsConsumed" ;
+    rdfs:comment "TRUE iff some workflow step consumes this dataset (ConsumedBySteps is set). Rolls up into Workflows.CountUnconsumedDatasets, which CQ8's satisfaction reads." .
+    # calculated: calculated
 
 # === Class: Departments ===
 effortless-ntwf:Departments a owl:Class ;
@@ -1282,6 +1302,10 @@ effortless-ntwf:hasProducingWorkflow a owl:DatatypeProperty ;
     rdfs:comment "TRUE iff this artifact resolves to a producing workflow (ProducedByWorkflow is set). Lets the AIAgents blast-radius rollup (CountImpactedWorkflows) count only artifacts that reach a workflow, since COUNTIFS needs a boolean criterion column." .
     # calculated: calculated
 
+# effortless-ntwf:derivationClosure is the transitive closure of effortless-ntwf:derivedFromArtifact
+effortless-ntwf:derivedFromArtifact a owl:ObjectProperty , owl:TransitiveProperty ;
+    rdfs:label "Derivation" .
+
 # === Class: WorkflowStatusConcepts ===
 effortless-ntwf:WorkflowStatusConcepts a owl:Class ;
     rdfs:label "WorkflowStatusConcepts" ;
@@ -1745,6 +1769,97 @@ effortless-ntwf:countComplianceAuditChanges a owl:DatatypeProperty ;
     rdfs:label "CountComplianceAuditChanges" ;
     rdfs:comment "Number of filledBy assignment periods that took a previously AI-executed binding and reassigned it to a human (rollup over RoleAssignments.RequiresComplianceAudit = TRUE). NTWF governance treats this as a data operation with compliance implications: changing the agent type of a step from ntwf:AIAgent to ntwf:HumanAgent. Each such row must carry when (ValidFrom) and why (Reason). NOTE: single-workflow scoping as above." .
     # calculated: aggregation
+
+effortless-ntwf:countApprovalGateSteps a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:Workflows ;
+    rdfs:range xsd:integer ;
+    rdfs:label "CountApprovalGateSteps" ;
+    rdfs:comment "Number of this workflow's steps that are approval gates. >0 means the workflow has a blocking approval checkpoint; used by Cq2Satisfied to require that the gate exists before asking whether it has a human approver." .
+    # calculated: aggregation
+
+effortless-ntwf:countGatesWithoutHumanApprover a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:Workflows ;
+    rdfs:range xsd:integer ;
+    rdfs:label "CountGatesWithoutHumanApprover" ;
+    rdfs:comment "Number of approval gates with no resolved human approver (gate role not filled by a HumanAgent). Single-workflow model, so this global count is wholly this workflow's. Drives Cq2Satisfied (= a gate exists AND none lack a human approver)." .
+    # calculated: aggregation
+
+effortless-ntwf:countWorkflowArtifacts a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:Workflows ;
+    rdfs:range xsd:integer ;
+    rdfs:label "CountWorkflowArtifacts" ;
+    rdfs:comment "Total artifacts produced by this workflow. With CountDerivationLinks (artifacts that have a wasDerivedFrom parent) this lets Cq4Satisfied check the provenance chain is intact: every artifact but the single origin has a parent." .
+    # calculated: aggregation
+
+effortless-ntwf:countRolesWithEscalationViolation a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:Workflows ;
+    rdfs:range xsd:integer ;
+    rdfs:label "CountRolesWithEscalationViolation" ;
+    rdfs:comment "Number of roles that own an approval gate yet escalate to no one (Roles.EscalationViolation). Single-workflow model, so this global count applies to this workflow. Drives Cq6Satisfied (=0): the model's own native escalation-completeness invariant, replacing any hardcoded 'must reach the CTO' check." .
+    # calculated: aggregation
+
+effortless-ntwf:countUnconsumedDatasets a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:Workflows ;
+    rdfs:range xsd:integer ;
+    rdfs:label "CountUnconsumedDatasets" ;
+    rdfs:comment "Number of datasets not consumed by any step (Datasets.IsConsumed = FALSE). Single-workflow model, so this global count applies to this workflow. Drives Cq8Satisfied (=0)." .
+    # calculated: aggregation
+
+effortless-ntwf:cq1Satisfied a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:Workflows ;
+    rdfs:range xsd:boolean ;
+    rdfs:label "Cq1Satisfied" ;
+    rdfs:comment "CQ1 satisfied: the step-ordering closure is a TOTAL order — its pair count equals n*(n-1)/2 for n steps, so every pair of steps is comparable and 'the order' is well-defined. Purely structural; no asserted literal." .
+    # calculated: calculated
+
+effortless-ntwf:cq2Satisfied a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:Workflows ;
+    rdfs:range xsd:boolean ;
+    rdfs:label "Cq2Satisfied" ;
+    rdfs:comment "CQ2 satisfied: the workflow has an approval gate AND every gate resolves to a human approver. Derived from the gate->role->filler chain; no hardcoded approver name." .
+    # calculated: calculated
+
+effortless-ntwf:cq3Satisfied a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:Workflows ;
+    rdfs:range xsd:boolean ;
+    rdfs:label "Cq3Satisfied" ;
+    rdfs:comment "CQ3 satisfied: the AI-vs-human assignment is consistent — no step that requires a human decision is executed by a non-human (no ApprovalConsistencyViolation). Derived from the model's own consistency invariant." .
+    # calculated: calculated
+
+effortless-ntwf:cq4Satisfied a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:Workflows ;
+    rdfs:range xsd:boolean ;
+    rdfs:label "Cq4Satisfied" ;
+    rdfs:comment "CQ4 satisfied: the wasDerivedFrom provenance chain is intact — every artifact but the single origin has a derivation parent. Structural; breaks the instant any derivation edge is cut." .
+    # calculated: calculated
+
+effortless-ntwf:cq5Satisfied a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:Workflows ;
+    rdfs:range xsd:boolean ;
+    rdfs:label "Cq5Satisfied" ;
+    rdfs:comment "CQ5 satisfied: the workflow's compliance docs are within the review policy (not stale). Reads the existing IsStale verdict; flips when the review age passes StalenessThresholdMonths." .
+    # calculated: calculated
+
+effortless-ntwf:cq6Satisfied a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:Workflows ;
+    rdfs:range xsd:boolean ;
+    rdfs:label "Cq6Satisfied" ;
+    rdfs:comment "CQ6 satisfied: no gate-owning role escalates to nobody — every approval gate has a complete escalation path. Uses the model's native EscalationViolation invariant; 'the top' is the delegation apex, derived, not a hardcoded CTO name." .
+    # calculated: calculated
+
+effortless-ntwf:cq7Satisfied a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:Workflows ;
+    rdfs:range xsd:boolean ;
+    rdfs:label "Cq7Satisfied" ;
+    rdfs:comment "CQ7 satisfied: the workflow involves BOTH Engineering-owned and Legal-owned steps. Reads the existing InvolvesEngineeringAndLegal boolean." .
+    # calculated: calculated
+
+effortless-ntwf:cq8Satisfied a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:Workflows ;
+    rdfs:range xsd:boolean ;
+    rdfs:label "Cq8Satisfied" ;
+    rdfs:comment "CQ8 satisfied: every dataset the workflow declares is actually consumed by a step. Flips when a dataset is detached." .
+    # calculated: calculated
 
 # === Inverse object-property pairs (reverse direction inferred) ===
 effortless-ntwf:attributedArtifacts owl:inverseOf effortless-ntwf:attributedToAIAgent .
