@@ -77,12 +77,18 @@ export const CQ_RESOLVERS: Record<string, CqResolver> = {
     };
   },
 
-  // CQ2 — who approves: the approval gate's resolved human approver. Pass only
-  // if it matches the asserted expectation (reassign the gate → mismatch → ✗).
-  "cq-2": (sit, cq) => {
+  // CQ2 — who approves: the approval gate's resolved human approver. The
+  // article's role–agent separation (Heuristic 2) means the *role* approves and
+  // whoever fills it is the answer — swapping Maria→James is one edge, and James
+  // is a valid answer. So pass whenever the gate resolves to a single HUMAN
+  // approver via the role indirection (GateApproverHuman non-blank). It fails
+  // only when NO human resolves — an AI/pipeline fills the gate role (the
+  // ai-release-manager simulate) or there's no gate. We do NOT pin pass/fail to a
+  // specific person: production approval requires a human, not a *named* human.
+  "cq-2": (sit) => {
     const g = gateStep(sit);
     const approver = g?.gateApproverHuman || "";
-    const ok = !!approver && norm(cq.expectedAnswer).includes(norm(approver));
+    const ok = !!g && !!approver;
     return {
       answer: approver || "— no human approver",
       ok,
@@ -128,16 +134,32 @@ export const CQ_RESOLVERS: Record<string, CqResolver> = {
   },
 
   // CQ4 — artifact lineage: the wasDerivedFrom chain + who each was attributed
-  // to + the downstream consumer. All from WorkflowArtifacts' columns.
+  // to + the downstream consumer. All from WorkflowArtifacts' columns. The
+  // article asserts the five artifacts form ONE connected wasDerivedFrom chain.
+  // Each artifact has at most one DerivedFromArtifact parent (a single FK), so
+  // the structure is a forest and a single chain has exactly ONE origin (the
+  // head with no parent — HasDerivationParent = false). Blanking any link
+  // (the break-derivation scenario clears artifact-legal-clearance's parent)
+  // splits the chain into a second fragment → two origins → ✗. We read the
+  // substrate-computed HasDerivationParent column; we don't re-derive it.
   "cq-4": (sit) => {
     const arts = sit.artifacts || [];
+    const n = arts.length;
+    const origins = arts.filter((a) => !a.hasDerivationParent);
+    const links = n - origins.length;          // forest: edges = nodes − roots
+    const allAttributed = n > 0 && arts.every((a) => a.attributedTo);
+    const intact = n > 0 && origins.length === 1 && allAttributed;
     return {
-      answer: `${arts.length} artifacts · derivation chain`,
-      ok: arts.length > 0 && arts.every((a) => a.attributedTo),
+      answer: intact
+        ? `${n} artifacts · 1 chain (${links} links)`
+        : origins.length > 1
+          ? `BROKEN — ${origins.length} fragments, ${links}/${n - 1} links`
+          : `${n} artifacts · ${allAttributed ? "" : "unattributed link"}`,
+      ok: intact,
       rows: arts.map((a) => ({
         label: a.title,
         sub:
-          (a.derivedFromArtifact ? `from ${a.derivedFromArtifact.replace(/^artifact-/, "")} · ` : "origin · ") +
+          (a.derivedFromArtifact ? `from ${a.derivedFromArtifact.replace(/^artifact-/, "")} · ` : "⚑ origin (no parent) · ") +
           (a.attributedTo ? `by ${a.attributedTo.name}` : "unattributed") +
           (a.requiredBySteps.length ? ` → ${a.requiredBySteps.map((r) => r.title).join(", ")}` : ""),
         kind: a.attributedTo?.kind === "human" ? "human" : a.attributedTo?.kind === "ai" ? "ai" : a.attributedTo?.kind === "pipeline" ? "pipeline" : "artifact",

@@ -42,6 +42,8 @@ import sys
 from collections import defaultdict
 from pathlib import Path
 from typing import Any, Dict, List
+import psutil
+import os
 
 from rdflib import Graph, Literal, Namespace, URIRef
 import owlrl
@@ -66,6 +68,16 @@ ERB_PREFIX_LABEL = "effortless-ntwf"
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from abox_from_json import json_db_to_turtle, load_db  # noqa: E402
+
+
+def _check_memory(stage: str, limit_gb: float = 8.0) -> None:
+    process = psutil.Process(os.getpid())
+    mem_gb = process.memory_info().rss / (1024 ** 3)
+    if mem_gb > limit_gb:
+        raise MemoryError(
+            f"Reasoner ({stage}) exceeded {limit_gb}GB memory limit "
+            f"(using {mem_gb:.1f}GB). Rules may be cyclic or input too large."
+        )
 
 
 def _local(uri: Any) -> str:
@@ -153,6 +165,7 @@ def build_reasoned_graph(db: Dict[str, Any]) -> Graph:
         prev, iterations = None, 0
         while iterations < 50:
             iterations += 1
+            _check_memory(f"{stage} iteration {iterations}")
             pyshacl.validate(g, shacl_graph=shapes, advanced=True, inplace=True)
             cur = snapshot(g)
             if cur == prev:
@@ -246,7 +259,9 @@ def build_reasoned_graph(db: Dict[str, Any]) -> Graph:
         )
 
     shacl_to_fixpoint("stage 1")                                    # calc/lookup + asserted edges
+    _check_memory("before OWL-RL closure")
     owlrl.DeductiveClosure(owlrl.OWLRL_Semantics).expand(g)          # transitive/inverse/type closure
+    _check_memory("after OWL-RL closure")
     clear_derived()                                                 # drop stage-1 derived values
     shacl_to_fixpoint("stage 3")                                    # recompute over the closure
     settle_single_valued()                                          # collapse depth-driven multi-values

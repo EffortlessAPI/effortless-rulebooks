@@ -1,8 +1,8 @@
 {
   "summary": {
-    "startedAt": "2026-06-14T01:04:04.187Z",
-    "finishedAt": "2026-06-14T01:07:16.761Z",
-    "durationMs": 192573,
+    "startedAt": "2026-06-14T02:10:45.830Z",
+    "finishedAt": "2026-06-14T02:14:04.632Z",
+    "durationMs": 198802,
     "engines": [
       "reasoner",
       "postgres"
