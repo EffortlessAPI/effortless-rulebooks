@@ -14,7 +14,8 @@
     "simulate_scenario": "drop-final-edge",
     "relative_path": null,
     "iri": null,
-    "name": null
+    "name": null,
+    "satisfied_field": "Cq1Satisfied"
   },
   {
     "competency_question_id": "cq-2",
@@ -31,7 +32,8 @@
     "simulate_scenario": "ai-release-manager",
     "relative_path": null,
     "iri": null,
-    "name": null
+    "name": null,
+    "satisfied_field": "Cq2Satisfied"
   },
   {
     "competency_question_id": "cq-3",
@@ -48,7 +50,8 @@
     "simulate_scenario": "human-risk-step",
     "relative_path": null,
     "iri": null,
-    "name": null
+    "name": null,
+    "satisfied_field": "Cq3Satisfied"
   },
   {
     "competency_question_id": "cq-4",
@@ -65,7 +68,8 @@
     "simulate_scenario": "break-derivation",
     "relative_path": null,
     "iri": null,
-    "name": null
+    "name": null,
+    "satisfied_field": "Cq4Satisfied"
   },
   {
     "competency_question_id": "cq-5",
@@ -82,7 +86,8 @@
     "simulate_scenario": "stale-docs",
     "relative_path": null,
     "iri": null,
-    "name": null
+    "name": null,
+    "satisfied_field": "Cq5Satisfied"
   },
   {
     "competency_question_id": "cq-6",
@@ -99,7 +104,8 @@
     "simulate_scenario": "break-delegation",
     "relative_path": null,
     "iri": null,
-    "name": null
+    "name": null,
+    "satisfied_field": "Cq6Satisfied"
   },
   {
     "competency_question_id": "cq-7",
@@ -116,7 +122,8 @@
     "simulate_scenario": "legal-to-engineering",
     "relative_path": null,
     "iri": null,
-    "name": null
+    "name": null,
+    "satisfied_field": "Cq7Satisfied"
   },
   {
     "competency_question_id": "cq-8",
@@ -133,6 +140,7 @@
     "simulate_scenario": "dataset-unconsumed",
     "relative_path": null,
     "iri": null,
-    "name": null
+    "name": null,
+    "satisfied_field": "Cq8Satisfied"
   }
 ]
