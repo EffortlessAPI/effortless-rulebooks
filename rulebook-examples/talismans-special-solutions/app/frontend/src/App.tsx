@@ -5,6 +5,9 @@ import { buildSituation, KIND, kindOfType, initials } from "./model";
 import { FlowView } from "./views/FlowView";
 import { GraphView } from "./views/GraphView";
 import { ClosureView } from "./views/ClosureView";
+import { LineageView } from "./views/LineageView";
+import { OrgView } from "./views/OrgView";
+import { DeptView } from "./views/DeptView";
 import { CQView } from "./views/CQView";
 import { ReassignPopover, EscalationPopover } from "./Editable";
 import { StalenessBar } from "./console/StalenessBar";
@@ -28,12 +31,15 @@ import type { Story, Situation, Handlers, Scenario } from "./types";
 // now live in console/ and hooks/.)
 // ===========================================================================
 
-export type ViewId = "flow" | "graph" | "closure";
+export type ViewId = "flow" | "graph" | "closure" | "lineage" | "org" | "dept";
 
 const VIEWS: { id: ViewId; label: string; hint: string }[] = [
   { id: "flow", label: "Flow", hint: "the release, step by step" },
   { id: "graph", label: "Graph", hint: "the reasoned network" },
   { id: "closure", label: "Closure", hint: "assert order · watch it infer" },
+  { id: "lineage", label: "Lineage", hint: "artifacts · derived-from chain" },
+  { id: "org", label: "Org", hint: "who fills · who escalates to whom" },
+  { id: "dept", label: "Dept", hint: "which steps are Eng vs Legal · answers CQ7" },
 ];
 
 interface ReassignState {
@@ -110,6 +116,15 @@ export default function App({ headerRight = null }: AppProps) {
     // recomputes EscalationViolation + the delegation closure; CQ6 re-answers.
     setDelegatesTo: (roleId, targetRoleId) =>
       mutate(() => api.patchRow("Roles", roleId, { delegatesTo: targetRoleId })),
+    // Set an artifact's wasDerivedFrom parent (raw DerivedFromArtifact FK). The
+    // substrate recomputes the derivation closure; CQ4 + the lineage ribbon
+    // re-answer (a restored link re-connects the chain).
+    setDerivedFrom: (artifactId, parentArtifactId) =>
+      mutate(() => api.patchRow("WorkflowArtifacts", artifactId, { derivedFromArtifact: parentArtifactId })),
+    // Move a role to another department (raw Roles.OwnedBy). The substrate
+    // recomputes every owned step's OwningDepartment + the workflow's CQ7 verdict.
+    setOwnedBy: (roleId, departmentId) =>
+      mutate(() => api.patchRow("Roles", roleId, { ownedBy: departmentId })),
     setStalenessThreshold: (months) =>
       mutate(() => api.patchRow("Workflows", sit.workflow.id, { stalenessThresholdMonths: months })),
     setModified: (isoDate) =>
@@ -205,6 +220,9 @@ export default function App({ headerRight = null }: AppProps) {
           )}
           {view === "graph" && <GraphView sit={sit} handlers={handlers} />}
           {view === "closure" && <ClosureView sit={sit} handlers={handlers} />}
+          {view === "lineage" && <LineageView sit={sit} handlers={handlers} />}
+          {view === "org" && <OrgView sit={sit} handlers={handlers} />}
+          {view === "dept" && <DeptView sit={sit} handlers={handlers} />}
 
           {/* The docs-review-age slider sits at the bottom of the board column,
               right under the step/role cards (it edits Modified → drives CQ5's

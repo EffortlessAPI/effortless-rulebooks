@@ -106,14 +106,29 @@ export function buildSituation(story: Story): Situation {
   for (const s of story.steps) {
     if (s.agent) edges.push({ from: "agent:" + s.agent.id, to: "step:" + s.id, type: "executes" });
   }
+  // dataset nodes + consumption edges (CQ8). A DCAT dataset is a first-class node
+  // on the board so the question "what datasets does the review consume, and
+  // which AI processed them?" is VISIBLE: the dataset feeds the step, the step's
+  // agent (an AI) is one hop up. A dataset consumed by NO step renders as an
+  // orphan — which is exactly what the "detach the risk dataset" simulate leaves
+  // behind: you watch the edge break, not a string change in a card.
+  for (const d of story.datasets) {
+    addNode("dataset:" + d.id, "dataset", d.title, { orphan: d.consumedBySteps.length === 0 });
+    for (const c of d.consumedBySteps) {
+      edges.push({ from: "dataset:" + d.id, to: "step:" + c.id, type: "consumes" });
+    }
+  }
 
   return {
     company: story.company,
     workflow: story.workflow,
     closure: story.closure,
+    derivationClosure: story.derivationClosure ?? null,
     steps: story.steps,
     stepFacts: Object.fromEntries(story.stepFacts.map((f) => [f.id, f])),
     roles: story.roles,
+    departments: story.departments,
+    departmentById: Object.fromEntries((story.departments || []).map((d) => [d.id, d])),
     roleById,
     agentById,
     team: story.team,

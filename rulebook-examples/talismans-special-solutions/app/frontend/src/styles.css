@@ -226,36 +226,116 @@ button, input, select { font: inherit; }
 .pr-add select { background: var(--bg2); border: 1px solid var(--line); color: var(--text); border-radius: 7px; padding: 6px 8px; }
 
 /* ---- ORG view ----------------------------------------------------------- */
-.org { display: grid; grid-template-columns: 300px 1fr; gap: 22px; }
 .panel-label { font-size: 12px; text-transform: uppercase; letter-spacing: .07em; color: var(--muted); font-weight: 600; margin-bottom: 14px; }
-.org-tree { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px; }
-.chain { display: flex; flex-direction: column-reverse; gap: 0; align-items: flex-start; }
-.org-node { display: flex; align-items: center; gap: 10px; padding: 8px; border-radius: 9px; width: 100%; transition: background .12s; }
-.org-node.hot { background: #b692ff18; }
-.org-role { font-weight: 650; font-size: 14px; }
-.org-up { font-size: 11px; color: var(--accent); padding: 4px 0 4px 18px; }
-/* the escalation edge is always editable: clicking re-points this role's delegatesTo */
-.org-up-edit { appearance: none; font-family: inherit; cursor: pointer; background: transparent;
-  border: 1px solid transparent; border-radius: 6px; text-align: left; transition: background .12s, border-color .12s; }
-.org-up-edit:hover { background: #b692ff14; border-color: #b692ff55; }
-.org-up-pen { opacity: 0; margin-left: 4px; font-size: 10px; transition: opacity .12s; }
-.org-up-edit:hover .org-up-pen { opacity: .8; }
-.org-note { font-size: 12px; margin-top: 14px; }
-.org-grid { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px; overflow-x: auto; }
-.assign { width: 100%; border-collapse: collapse; font-size: 13.5px; }
-.assign th { text-align: left; font-size: 11px; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); padding: 0 12px 10px; font-weight: 600; }
-.assign td { padding: 11px 12px; border-top: 1px solid var(--line); vertical-align: middle; }
-.assign tr.hot td { background: #b692ff12; }
-.role-cell { font-weight: 600; }
-.filler-cell { min-width: 150px; }
-.step-chip { display: inline-block; background: var(--card2); border: 1px solid var(--line); border-radius: 6px; padding: 2px 8px; margin-right: 5px; font-weight: 600; font-size: 12px; }
-.org-steprail { grid-column: 1 / -1; display: flex; gap: 8px; overflow-x: auto; }
-.rail-step { flex: 1; min-width: 130px; background: var(--card); border: 1px solid var(--line); border-top: 3px solid var(--line); border-radius: 9px; padding: 10px; transition: opacity .15s, box-shadow .15s; }
-.rail-step.k-human { border-top-color: var(--human); } .rail-step.k-ai { border-top-color: var(--ai); } .rail-step.k-pipeline { border-top-color: var(--pipeline); }
-.rail-step.lit { box-shadow: 0 0 0 1px var(--accent); }
-.rail-step.dim { opacity: .4; }
-.rail-pos { font-weight: 700; margin-right: 8px; }
-.rail-title { font-size: 13px; }
+
+/* ---- ORG view (one coherent org chart) ---------------------------------- */
+.orgx { display: flex; flex-direction: column; gap: 18px; }
+.ox-help { font-size: 13px; line-height: 1.55; max-width: 880px; }
+.ox-help b { color: var(--text); font-weight: 650; }
+
+/* the escalation chart: tiers stacked apex-first, connected by ↑ */
+.ox-chart { display: flex; flex-direction: column; align-items: center; gap: 0; }
+.ox-tier { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+.ox-tier-gap { color: var(--muted); font-size: 20px; line-height: 1; padding: 8px 0; opacity: .7; }
+.ox-empty { padding: 18px; font-size: 13.5px; }
+
+/* one role card */
+.ox-card { width: 270px; background: var(--card); border: 1px solid var(--line); border-radius: 12px;
+  padding: 13px 14px; display: flex; flex-direction: column; gap: 11px; cursor: pointer;
+  transition: box-shadow .14s, border-color .14s, transform .14s; }
+.ox-card:hover { border-color: #b692ff66; }
+.ox-card.onpath { border-color: #b692ff66; box-shadow: 0 0 0 1px #b692ff44; }
+.ox-card.sel { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent), 0 10px 30px -14px var(--accent); transform: translateY(-2px); }
+.ox-card.gate { border-left: 3px solid var(--pipeline); }
+.ox-card-top { display: flex; align-items: center; gap: 11px; }
+.ox-card-id { min-width: 0; }
+.ox-role { font-weight: 650; font-size: 14.5px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.ox-gate-badge { font-size: 10.5px; font-weight: 700; color: var(--pipeline); border: 1px solid var(--pipeline);
+  border-radius: 999px; padding: 1px 7px; letter-spacing: .02em; }
+.ox-filler { font-size: 12.5px; }
+
+.ox-card-steps { display: flex; flex-wrap: wrap; gap: 5px; }
+.ox-stepchip { font-size: 11.5px; font-weight: 600; background: var(--card2); border: 1px solid var(--line);
+  border-left: 3px solid var(--line); border-radius: 6px; padding: 2px 8px; max-width: 100%;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ox-stepchip.k-human { border-left-color: var(--human); }
+.ox-stepchip.k-ai { border-left-color: var(--ai); }
+.ox-stepchip.k-pipeline { border-left-color: var(--pipeline); }
+.ox-nosteps { font-size: 12px; font-style: italic; }
+
+/* escalation control — always present on every card */
+.ox-esc { appearance: none; font-family: inherit; font-size: 12px; text-align: left; cursor: pointer;
+  background: var(--card2); border: 1px solid var(--line); border-radius: 8px; padding: 7px 10px;
+  color: var(--muted); transition: background .12s, border-color .12s, color .12s; }
+.ox-esc b { color: var(--text); font-weight: 650; }
+.ox-esc.set { color: var(--accent); }
+.ox-esc.set:hover { background: #b692ff14; border-color: #b692ff66; }
+.ox-esc.none:hover { border-color: #b692ff66; color: var(--text); }
+.ox-esc.broken { color: var(--risk); border-color: var(--risk); background: color-mix(in srgb, var(--risk) 12%, var(--card2)); font-weight: 600; }
+.ox-pen { opacity: .55; margin-left: 3px; font-size: 10px; }
+.ox-set { color: var(--accent); font-weight: 600; }
+
+/* roles not yet wired into the chain */
+.ox-unlinked { border-top: 1px dashed var(--line); padding-top: 16px; }
+.ox-unlinked-label { font-size: 11.5px; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); font-weight: 600; margin-bottom: 12px; text-align: center; }
+
+/* step rail */
+.ox-rail { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 14px; }
+.ox-rail-label { font-size: 11.5px; text-transform: uppercase; letter-spacing: .05em; font-weight: 600; margin-bottom: 11px; }
+.ox-rail-row { display: flex; gap: 8px; overflow-x: auto; }
+.ox-railstep { flex: 1; min-width: 150px; display: flex; align-items: center; gap: 10px; text-align: left;
+  font-family: inherit; cursor: pointer; background: var(--card2); border: 1px solid var(--line);
+  border-top: 3px solid var(--line); border-radius: 9px; padding: 9px 11px; color: var(--text);
+  transition: opacity .15s, box-shadow .15s, border-color .14s; }
+.ox-railstep:hover { border-color: #b692ff66; }
+.ox-railstep.k-human { border-top-color: var(--human); }
+.ox-railstep.k-ai { border-top-color: var(--ai); }
+.ox-railstep.k-pipeline { border-top-color: var(--pipeline); }
+.ox-railstep.lit { box-shadow: 0 0 0 1px var(--accent); border-color: var(--accent); }
+.ox-railstep.dim { opacity: .38; }
+.ox-rail-pos { width: 24px; height: 24px; flex: none; border-radius: 50%; background: var(--card);
+  display: grid; place-items: center; font-weight: 700; font-size: 12px; }
+.ox-rail-body { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.ox-rail-title { font-size: 13px; font-weight: 600; }
+.ox-rail-meta { font-size: 11px; }
+
+/* step → role reassignment menu */
+.ox-rolemenu { width: 250px; }
+
+/* ---- DEPT view (CQ7: cross-department lens) ----------------------------- */
+.deptx { display: flex; flex-direction: column; gap: 16px; }
+.dx-verdict { padding: 13px 16px; border-radius: var(--radius); border: 1px solid var(--line); background: var(--card); }
+.dx-verdict.yes { border-color: #3fb6a855; background: linear-gradient(180deg, #3fb6a814, var(--card)); }
+.dx-verdict.no { border-color: var(--line); }
+.dx-verdict-q { font-size: 13.5px; color: var(--muted); }
+.dx-verdict-a { font-size: 17px; font-weight: 700; margin-top: 4px; }
+.dx-help { font-size: 12.5px; line-height: 1.5; }
+.dx-help-chip { border: 1px dashed var(--muted); border-radius: 6px; padding: 0 5px; }
+
+.dx-cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px; align-items: start; }
+.dx-col { background: var(--card); border: 1px solid var(--line); border-top: 3px solid var(--muted); border-radius: var(--radius); padding: 13px 13px 6px; transition: box-shadow .12s; }
+.dx-col.hover { box-shadow: 0 0 0 1px var(--line) inset, 0 14px 40px -24px #000; }
+.dx-col-head { display: flex; align-items: center; gap: 8px; font-size: 15px; font-weight: 700; }
+.dx-col-dot { width: 10px; height: 10px; border-radius: 50%; flex: none; }
+.dx-col-title { flex: 1; }
+.dx-col-count { font-size: 11px; font-weight: 600; color: var(--muted); }
+.dx-col-sub { font-size: 11px; margin: 2px 0 10px; }
+.dx-col-sub code { font-size: 11px; }
+.dx-col-body { display: flex; flex-direction: column; gap: 9px; }
+.dx-col-empty { font-size: 12px; padding: 8px 0; }
+
+.dx-role { border: 1px solid var(--line); border-radius: 10px; padding: 9px 10px; background: var(--bg2); }
+.dx-role-top { display: flex; align-items: center; gap: 9px; }
+.dx-role-id { min-width: 0; }
+.dx-role-name { font-size: 13.5px; font-weight: 600; }
+.dx-deptchip { margin-top: 3px; background: transparent; border: 1px solid var(--line); border-radius: 999px; padding: 1px 9px; font-size: 11px; cursor: pointer; display: inline-flex; align-items: center; gap: 4px; }
+.dx-deptchip:hover { background: var(--card2); }
+.dx-pen { opacity: .55; font-size: 10px; }
+.dx-role-steps { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 8px; }
+.dx-stepchip { font-size: 11.5px; border: 1px solid var(--line); border-left: 3px solid var(--muted); border-radius: 6px; padding: 2px 7px; background: var(--card); }
+.dx-step-pos { color: var(--muted); font-weight: 600; }
+.dx-nosteps { font-size: 11px; }
+.dx-deptmenu { width: 250px; }
 
 /* ---- GRAPH view --------------------------------------------------------- */
 .graph { position: relative; }
@@ -264,6 +344,7 @@ button, input, select { font: inherit; }
 .gedge { stroke-width: 1.6; }
 .gedge.precedes { stroke: var(--muted); }
 .gedge.executes { stroke: #4a5168; stroke-dasharray: 4 3; }
+.gedge.consumes { stroke: #4fd1c5; stroke-dasharray: 2 3; }
 .gedge.lit { stroke: var(--accent); stroke-width: 2.2; }
 .gedge.dim { opacity: .18; }
 .gnode { cursor: pointer; }
@@ -279,6 +360,14 @@ button, input, select { font: inherit; }
 .gnode-circle.k-human { stroke: var(--human); } .gnode-circle.k-ai { stroke: var(--ai); } .gnode-circle.k-pipeline { stroke: var(--pipeline); }
 .gnode-icon { font-size: 18px; text-anchor: middle; }
 .gnode-aname { fill: var(--text); font-size: 11px; text-anchor: middle; font-weight: 600; }
+/* DCAT dataset node (CQ8) */
+.gnode-dataset { fill: var(--card2); stroke: #4fd1c5; stroke-width: 1.5; }
+.gnode-dataset.orphan { stroke-dasharray: 4 3; stroke: var(--risk); }
+.gnode.dataset.dim { opacity: .28; }
+.gnode.focused .gnode-dataset { filter: drop-shadow(0 0 8px var(--accent)); }
+.gnode-dataset-icon { font-size: 15px; text-anchor: middle; }
+.gnode-dataset-label { fill: var(--text); font-size: 10.5px; font-weight: 600; text-anchor: start; }
+.gnode-dataset-sub { fill: var(--muted); font-size: 8px; text-anchor: start; }
 .focus-panel { position: absolute; top: 44px; right: 12px; background: var(--bg2); border: 1px solid var(--accent); border-radius: 10px; padding: 12px 14px; max-width: 260px; }
 .fp-title { font-weight: 700; margin-bottom: 8px; }
 .fp-edge { font-size: 12.5px; padding: 3px 0; color: var(--muted); }
@@ -1277,3 +1366,49 @@ body:has(.dag-page) { background: var(--bg); }  /* uniform dark behind the panel
 .esc-node.current { background: #b692ff1c; color: var(--accent); box-shadow: inset 0 0 0 1px #b692ff55; }
 .esc-opt.current { opacity: .6; cursor: default; }
 .esc-opt.esc-clear .esc-opt-name { color: var(--risk); }
+
+/* ---- ChainRibbon: the shared transitive-closure chain (steps/roles/artifacts) --- */
+.lineage, .ribbon { width: 100%; }
+.ln-intro { margin-bottom: 6px; }
+.ln-intro-lead { font-size: 14px; color: var(--text); max-width: 880px; }
+.rb-counts { display: flex; align-items: center; gap: 12px; margin: 12px 0 8px; flex-wrap: wrap; font-size: 14px; }
+.rb-count { padding: 6px 12px; border-radius: 999px; border: 1px solid var(--line); background: var(--card2); }
+.rb-count.asserted { border-color: var(--accent); } .rb-count.asserted b { color: var(--accent); }
+.rb-count.inferred { border-color: var(--inferred); } .rb-count.inferred b { color: var(--inferred); }
+.rb-count.total b { color: #fff; }
+.rb-plus, .rb-eq { color: var(--muted); }
+.rb-rel { margin-left: 4px; }
+
+.rb-broken { margin: 10px 0; padding: 9px 13px; border-radius: 10px; font-size: 13px; font-weight: 600;
+  color: #ffd0c2; background: color-mix(in srgb, var(--risk) 14%, transparent); border: 1px solid color-mix(in srgb, var(--risk) 50%, transparent); }
+
+.rb-track { display: flex; align-items: stretch; gap: 0; overflow-x: auto; padding: 8px 2px 12px; }
+.rb-node { position: relative; flex: 1 1 0; min-width: 160px; background: var(--card2); border: 1px solid var(--line);
+  border-top: 3px solid var(--accent); border-radius: 10px; padding: 12px 12px 14px; display: flex; gap: 10px; align-items: flex-start; }
+.rb-node.k-human { border-top-color: var(--human); } .rb-node.k-ai { border-top-color: var(--ai); }
+.rb-node.k-pipeline { border-top-color: var(--pipeline); } .rb-node.k-artifact { border-top-color: var(--accent); }
+.rb-node.k-role { border-top-color: var(--human); }
+.rb-node.origin { box-shadow: inset 0 0 0 1px #b692ff44; }
+.rb-badge { flex: 0 0 auto; width: 30px; height: 30px; display: grid; place-items: center; border-radius: 8px;
+  background: var(--accent); color: #19102e; font-weight: 800; font-size: 14px; border: 1px solid var(--accent); }
+.rb-node-body { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+.rb-node-title { font-weight: 650; color: #fff; font-size: 13px; line-height: 1.25; }
+.rb-node-sub { font-size: 11px; line-height: 1.3; }
+.rb-flag { position: absolute; top: -9px; right: 8px; font-size: 10px; font-weight: 800; letter-spacing: .04em;
+  color: var(--accent); background: var(--panel); padding: 1px 7px; border-radius: 999px; border: 1px solid #b692ff55; }
+
+/* connector between two adjacent nodes */
+.rb-link { flex: 0 0 56px; align-self: center; position: relative; height: 40px; display: flex; flex-direction: column;
+  align-items: center; justify-content: center; gap: 3px; }
+.rb-link-line { width: 100%; height: 3px; border-radius: 3px; }
+.rb-link.asserted .rb-link-line { background: var(--accent); }
+.rb-link.inferred .rb-link-line { background: repeating-linear-gradient(90deg, var(--inferred) 0 5px, transparent 5px 10px); }
+.rb-link.missing { flex-basis: 96px; }
+.rb-link.missing .rb-link-line { background: repeating-linear-gradient(90deg, var(--risk) 0 4px, transparent 4px 9px); opacity: .55; }
+.rb-link-cap { font-size: 10px; white-space: nowrap; }
+.rb-gap { display: flex; flex-direction: column; align-items: center; gap: 5px; }
+.rb-gap-x { color: var(--risk); font-size: 15px; font-weight: 800; }
+.rb-fix { border: 1px solid color-mix(in srgb, var(--risk) 55%, transparent); background: color-mix(in srgb, var(--risk) 16%, transparent);
+  color: #ffd0c2; font-size: 11px; font-weight: 700; padding: 3px 9px; border-radius: 999px; cursor: pointer; white-space: nowrap; }
+.rb-fix:hover { background: color-mix(in srgb, var(--risk) 26%, transparent); }
+.ln-foot { margin-top: 12px; font-size: 12.5px; max-width: 880px; }

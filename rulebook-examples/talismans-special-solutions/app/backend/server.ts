@@ -200,6 +200,16 @@ app.get("/api/story", wrap(async (req, res) => {
         gateApproverHuman: gate ? (filler && filler.agent?.kind === "human" ? filler.agent.name : null) : null,
         consistencyViolation: !!s.approvalConsistencyViolation,
         precedes: Array.isArray(s.precedesStep) ? s.precedesStep : s.precedesStep ? [s.precedesStep] : [],
+        // CQ7 backing, per step. A step's department is NOT a raw fact — it is the
+        // owning department of the role the step is assigned to (OwningDepartment =
+        // INDEX/MATCH over Roles.OwnedBy). The two booleans are the substrate's
+        // calc over that lookup. We lift all three straight from the reasoned
+        // individual; we never re-walk the role→department chain in React. (Under
+        // the Postgres backend these carry that substrate's value, so a wrong
+        // lookup there shows up as a visible conformance diff — by design.)
+        owningDepartment: s.owningDepartment ?? null,
+        isLegalOwned: !!s.isLegalOwned,
+        isEngineeringOwned: !!s.isEngineeringOwned,
       };
     });
 
@@ -283,6 +293,16 @@ app.get("/api/story", wrap(async (req, res) => {
       // edit that moves THIS question's answer (isolated where one exists; for cq-2
       // it also ripples to cq-3). FK to Scenarios; null = no simulate button.
       simulateScenario: c.simulateScenario || null,
+      // Pass/fail is NOT decided in the app. Each CQ names a boolean column on the
+      // single Workflows row (SatisfiedField, e.g. "Cq6Satisfied") that the
+      // substrate computed from the model; read it straight off `wf`. The
+      // acceptance criterion lives entirely in the rulebook — no app heuristic, no
+      // hardcoded names (CQ6's "reaches the top" is the derived escalation rollup,
+      // not a /cto/ regex). camelCase the name the way the DAL keys its rows.
+      satisfiedField: c.satisfiedField || null,
+      satisfied: c.satisfiedField
+        ? !!wf[c.satisfiedField.charAt(0).toLowerCase() + c.satisfiedField.slice(1)]
+        : null,
     }))
     .sort((x, y) => (x.sortOrder ?? 99) - (y.sortOrder ?? 99));
 
@@ -308,6 +328,18 @@ app.get("/api/story", wrap(async (req, res) => {
     delegatesTo: r.delegatesTo || null,
     fillsApprovalGate: Number(r.fillsApprovalGate ?? 0),
     escalationViolation: !!r.escalationViolation,
+    // The raw FK that DECIDES every step's department: a role is ownedBy exactly
+    // one Department, and each step it owns inherits that. Editing this one fact
+    // re-fires CQ7. Lifted as the raw FK so the Dept lens can offer it as an edit.
+    ownedBy: r.ownedBy || null,
+  }));
+
+  // The Department class itself (schema:Organization) — what "Engineering" and
+  // "Legal" ARE, so the Dept lens can name them rather than show bare FK ids.
+  const departments = (I.Departments || []).map((d) => ({
+    id: d.departmentId,
+    title: d.title || d.displayName || d.departmentId,
+    displayName: d.displayName || null,
   }));
 
   const stepFacts = (I.WorkflowSteps || [])
@@ -339,6 +371,7 @@ app.get("/api/story", wrap(async (req, res) => {
     roles: rolesList.map((r) => ({ id: r.id, name: r.name })),
     steps: stepFacts.map((s) => ({ id: s.id, title: s.title, position: s.position })),
     datasets: (I.Datasets || []).map((d) => ({ id: d.datasetId, name: d.displayName || d.datasetId })),
+    departments: departments.map((d) => ({ id: d.id, name: d.title })),
   };
 
   res.json({
@@ -362,10 +395,15 @@ app.get("/api/story", wrap(async (req, res) => {
     steps,
     stepFacts,
     roles: rolesList,
+    departments,
     edges,
     options,
     delegation: deleg,
     closure: (reasoned.competency as Record<string, any>).precedence_closure,
+    // The artifact-lineage closure — same {count,inferred,asserted,pairs} shape
+    // as `closure`, read from vw_workflow_artifacts_closure (prov:wasDerivedFrom
+    // closed transitively). Drives the artifact ChainRibbon's inferred overlay.
+    derivationClosure: (reasoned.competency as Record<string, any>).derivation_closure ?? null,
     // CQ-backing projections (CQ4 artifacts, CQ8 datasets, the CQ suite itself).
     artifacts,
     datasets,
