@@ -133,7 +133,7 @@ effortless-ntwf:cq-1 a effortless-ntwf:CompetencyQuestions ;
     effortless-ntwf:explanation "WorkflowSteps ordered by SequencePosition; the order is the transitive closure of the asserted StepPrecedence edges, materialized as ntwf:precedesStep." ;
     effortless-ntwf:sortOrder "1" ;
     effortless-ntwf:isActive true ;
-    effortless-ntwf:simulateScenario effortless-ntwf:reroute-ordering .
+    effortless-ntwf:simulateScenario effortless-ntwf:drop-final-edge .
 
 effortless-ntwf:cq-2 a effortless-ntwf:CompetencyQuestions ;
     effortless-ntwf:competencyQuestionId "cq-2" ;
@@ -1295,12 +1295,12 @@ effortless-ntwf:ntwf-release-manager-role a effortless-ntwf:Roles ;
 
 # === Individuals: ScenarioCQEffects ===
 
-effortless-ntwf:reroute-ordering-cq-1 a effortless-ntwf:ScenarioCQEffects ;
-    effortless-ntwf:scenarioCQEffectId "reroute-ordering-cq-1" ;
-    effortless-ntwf:scenario effortless-ntwf:reroute-ordering ;
+effortless-ntwf:drop-final-edge-cq-1 a effortless-ntwf:ScenarioCQEffects ;
+    effortless-ntwf:scenarioCQEffectId "drop-final-edge-cq-1" ;
+    effortless-ntwf:scenario effortless-ntwf:drop-final-edge ;
     effortless-ntwf:competencyQuestion effortless-ntwf:cq-1 ;
     effortless-ntwf:effectKind "trigger" ;
-    effortless-ntwf:note "Re-pointing prec-4-5 shrinks the precedence closure (10 → 7 pairs); positions recompute. No other answer moves." ;
+    effortless-ntwf:note "Deleting the step-4→step-5 edge shrinks the precedence closure (10 → 6 ordered pairs); step 5 leaves the chain. No other answer moves." ;
     effortless-ntwf:sortOrder 10 .
 
 effortless-ntwf:ai-release-manager-cq-2 a effortless-ntwf:ScenarioCQEffects ;
@@ -1427,16 +1427,16 @@ effortless-ntwf:reset a effortless-ntwf:Scenarios ;
     effortless-ntwf:explanation "Restores the canonical seed assignments and a fresh review date — the known-good starting point. Every role is filled by exactly one agent, no requires-human-approval step is AI-filled, and the workflow is within its staleness window, so all the article's clean-ABox witnesses read green." ;
     effortless-ntwf:sortOrder 5 ;
     effortless-ntwf:isReset true ;
-    effortless-ntwf:edits "[{\"class\": \"Workflows\", \"match\": \"first\", \"set\": {\"modified\": \"2026-04-03T00:00:00-05:00\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-release-manager-role\", \"set\": {\"filledByHumanAgent\": \"ntwf-maria-gonzalez\", \"filledByAIAgent\": \"\", \"filledByAutomatedPipeline\": \"\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-risk-analysis-role\", \"set\": {\"filledByHumanAgent\": \"\", \"filledByAIAgent\": \"ntwf-risk-ai\", \"filledByAutomatedPipeline\": \"\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-legal-compliance-role\", \"set\": {\"filledByHumanAgent\": \"ntwf-james-okafor\", \"filledByAIAgent\": \"\", \"filledByAutomatedPipeline\": \"\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-ci-executor-role\", \"set\": {\"filledByHumanAgent\": \"\", \"filledByAIAgent\": \"\", \"filledByAutomatedPipeline\": \"ntwf-ci-pipeline\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-vp-engineering-role\", \"set\": {\"filledByHumanAgent\": \"ntwf-david-chen\", \"filledByAIAgent\": \"\", \"filledByAutomatedPipeline\": \"\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-cto-role\", \"set\": {\"filledByHumanAgent\": \"ntwf-sarah-kim\", \"filledByAIAgent\": \"\", \"filledByAutomatedPipeline\": \"\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-deployment-health-role\", \"set\": {\"filledByHumanAgent\": \"\", \"filledByAIAgent\": \"ntwf-health-ai\", \"filledByAutomatedPipeline\": \"\"}}]" .
+    effortless-ntwf:edits "[{\"class\": \"Workflows\", \"match\": \"first\", \"set\": {\"modified\": \"2026-04-03T00:00:00-05:00\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-release-manager-role\", \"set\": {\"filledByHumanAgent\": \"ntwf-maria-gonzalez\", \"filledByAIAgent\": \"\", \"filledByAutomatedPipeline\": \"\", \"delegatesTo\": \"ntwf-vp-engineering-role\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-risk-analysis-role\", \"set\": {\"filledByHumanAgent\": \"\", \"filledByAIAgent\": \"ntwf-risk-ai\", \"filledByAutomatedPipeline\": \"\", \"delegatesTo\": \"\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-legal-compliance-role\", \"set\": {\"filledByHumanAgent\": \"ntwf-james-okafor\", \"filledByAIAgent\": \"\", \"filledByAutomatedPipeline\": \"\", \"delegatesTo\": \"\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-ci-executor-role\", \"set\": {\"filledByHumanAgent\": \"\", \"filledByAIAgent\": \"\", \"filledByAutomatedPipeline\": \"ntwf-ci-pipeline\", \"delegatesTo\": \"\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-vp-engineering-role\", \"set\": {\"filledByHumanAgent\": \"ntwf-david-chen\", \"filledByAIAgent\": \"\", \"filledByAutomatedPipeline\": \"\", \"delegatesTo\": \"ntwf-cto-role\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-cto-role\", \"set\": {\"filledByHumanAgent\": \"ntwf-sarah-kim\", \"filledByAIAgent\": \"\", \"filledByAutomatedPipeline\": \"\", \"delegatesTo\": \"\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-deployment-health-role\", \"set\": {\"filledByHumanAgent\": \"\", \"filledByAIAgent\": \"ntwf-health-ai\", \"filledByAutomatedPipeline\": \"\", \"delegatesTo\": \"\"}}, {\"class\": \"StepPrecedence\", \"id\": \"prec-1-2\", \"set\": {\"fromStep\": \"prod-deploy-step-1\"}}, {\"class\": \"StepPrecedence\", \"id\": \"prec-2-3\", \"set\": {\"fromStep\": \"prod-deploy-step-2\"}}, {\"class\": \"StepPrecedence\", \"id\": \"prec-3-4\", \"set\": {\"fromStep\": \"prod-deploy-step-3\"}}, {\"class\": \"StepPrecedence\", \"id\": \"prec-4-5\", \"set\": {\"fromStep\": \"prod-deploy-step-4\"}}, {\"class\": \"StepPrecedence\", \"add\": {\"stepPrecedenceId\": \"prec-4-5\", \"fromStep\": \"prod-deploy-step-4\", \"toStep\": \"prod-deploy-step-5\"}}]" .
 
-effortless-ntwf:reroute-ordering a effortless-ntwf:Scenarios ;
-    effortless-ntwf:scenarioId "reroute-ordering" ;
-    effortless-ntwf:label "Re-route the last ordering edge" ;
-    effortless-ntwf:icon "🔀" ;
-    effortless-ntwf:explanation "Re-points the final precedence edge so step 5 follows step 1 instead of step 4. The transitive closure shrinks (10 → 7 ordered pairs) and the inferred positions recompute — nothing else moves. Demonstrates CQ1: order is a projection of the edges." ;
+effortless-ntwf:drop-final-edge a effortless-ntwf:Scenarios ;
+    effortless-ntwf:scenarioId "drop-final-edge" ;
+    effortless-ntwf:label "Drop the final ordering edge" ;
+    effortless-ntwf:icon "✂️" ;
+    effortless-ntwf:explanation "Removes the step-4 → step-5 precedence edge entirely. Step 5 falls out of the ordered chain, so the transitive closure shrinks from 10 ordered pairs to 6 — and nothing else moves. Demonstrates CQ1: the closure cardinality is a projection of the asserted edges, recomputed the instant one is removed." ;
     effortless-ntwf:sortOrder 10 ;
     effortless-ntwf:isReset false ;
-    effortless-ntwf:edits "[{\"class\": \"StepPrecedence\", \"id\": \"prec-4-5\", \"set\": {\"fromStep\": \"prod-deploy-step-1\"}}]" .
+    effortless-ntwf:edits "[{\"class\": \"StepPrecedence\", \"id\": \"prec-4-5\", \"delete\": true}]" .
 
 effortless-ntwf:ai-release-manager a effortless-ntwf:Scenarios ;
     effortless-ntwf:scenarioId "ai-release-manager" ;

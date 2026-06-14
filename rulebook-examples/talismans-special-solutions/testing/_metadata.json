@@ -45,6 +45,7 @@
       "executing_agent_type",
       "is_executed_by_ai",
       "is_executed_by_human",
+      "is_approval_gate",
       "approval_consistency_violation",
       "approval_is_human_filled",
       "owning_department",
@@ -83,7 +84,9 @@
       "name",
       "filled_by_arm_count",
       "has_exactly_one_filler",
-      "filler_type"
+      "filler_type",
+      "fills_approval_gate",
+      "escalation_violation"
     ],
     "record_count": 7
   },

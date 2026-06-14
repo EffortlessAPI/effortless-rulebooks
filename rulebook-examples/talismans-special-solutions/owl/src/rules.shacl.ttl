@@ -991,6 +991,47 @@ effortless-ntwf:RolesShape a sh:NodeShape ;
                 BIND(IF((!((!BOUND(?filled_by_human_agent) || STR(?filled_by_human_agent) = ""))), "HumanAgent", IF((!((!BOUND(?filled_by_ai_agent) || STR(?filled_by_ai_agent) = ""))), "AIAgent", IF((!((!BOUND(?filled_by_automated_pipeline) || STR(?filled_by_automated_pipeline) = ""))), "AutomatedPipeline", ""))) AS ?_result)
             }
         """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Roles_FillsApprovalGate" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:fillsApprovalGate ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:Roles .
+                {
+                    SELECT (COUNT(?child) AS ?_result) WHERE {
+                    ?child a effortless-ntwf:WorkflowSteps .
+                    ?child effortless-ntwf:assignedRole $this .
+                    OPTIONAL { ?child effortless-ntwf:isApprovalGate ?c2 . }
+                    FILTER(BOUND(?c2) && ?c2 = true)
+                    }
+                }
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Roles_EscalationViolation" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:escalationViolation ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:Roles .
+    OPTIONAL { $this effortless-ntwf:delegatesTo ?delegates_to . }
+    OPTIONAL { $this effortless-ntwf:fillsApprovalGate ?fills_approval_gate . }
+                BIND(((?fills_approval_gate > 0) && (!BOUND(?delegates_to) || STR(?delegates_to) = "")) AS ?_result)
+            }
+        """ ;
     ] .
 
 # === Shape with rules for ScenarioCQEffects ===
@@ -1639,6 +1680,23 @@ effortless-ntwf:WorkflowStepsShape a sh:NodeShape ;
     $this a effortless-ntwf:WorkflowSteps .
     OPTIONAL { $this effortless-ntwf:executingHumanAgent ?executing_human_agent . }
                 BIND((!((!BOUND(?executing_human_agent) || STR(?executing_human_agent) = ""))) AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_WorkflowSteps_IsApprovalGate" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:isApprovalGate ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:WorkflowSteps .
+    OPTIONAL { $this effortless-ntwf:approvalGate ?approval_gate . }
+                BIND((!((!BOUND(?approval_gate) || STR(?approval_gate) = ""))) AS ?_result)
             }
         """ ;
     ] ;
@@ -2296,4 +2354,4 @@ effortless-ntwf:WorkflowStepsCardinalityShape a sh:NodeShape ;
     sh:targetClass effortless-ntwf:WorkflowSteps ;
     sh:property [ sh:path effortless-ntwf:workflow ; sh:maxCount 1 ] .
 
-# Generated 117 SHACL rules
+# Generated 120 SHACL rules

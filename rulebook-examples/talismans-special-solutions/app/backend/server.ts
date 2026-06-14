@@ -492,7 +492,20 @@ app.get("/api/export/xlsx", wrap(async (_req, res) => {
 }));
 
 // --- scenarios (DATA-DRIVEN from the rulebook Scenarios table) -------------
-interface ScenarioEdit { class: string; id?: string; match?: string; set?: Record<string, unknown>; }
+// An edit is one of: set raw fields on an existing row (set), delete a row by id
+// (delete), or insert/replace a row (add). delete/add exist because some
+// scenarios must change STRUCTURE, not just values — e.g. cq-1 drops an ordering
+// edge to shrink the precedence closure. (The reasoner settles cleanly on a row
+// add or delete, but NOT on a `set` that mangles a surviving edge's endpoint, so
+// structural scenarios must add/delete whole rows, never re-point an edge.)
+interface ScenarioEdit {
+  class: string;
+  id?: string;
+  match?: string;
+  set?: Record<string, unknown>;
+  delete?: boolean;
+  add?: Record<string, unknown>;
+}
 interface ScenarioRow {
   id: string; label: string; icon: string; explanation: string;
   isReset: boolean; sortOrder: number; edits: ScenarioEdit[];
@@ -537,15 +550,44 @@ function locateRow(db: RawDb, cls: string, spec: ScenarioEdit): Record<string, u
   return row;
 }
 
+function assertRawOnly(cls: string, fields: Record<string, unknown>): void {
+  for (const k of Object.keys(fields)) {
+    if (COMPUTED_KEYS.has(k)) {
+      throw new Error(`scenario edit sets derived field '${k}' on ${cls}; scenarios edit raw facts only`);
+    }
+  }
+}
+
 function replayEdits(db: RawDb, edits: ScenarioEdit[]): void {
   for (const e of edits) {
-    const row = locateRow(db, e.class, e);
-    for (const [k, v] of Object.entries(e.set || {})) {
-      if (COMPUTED_KEYS.has(k)) {
-        throw new Error(`scenario edit sets derived field '${k}' on ${e.class}; scenarios edit raw facts only`);
-      }
-      row[k] = v;
+    const rows = db[e.class];
+    if (!Array.isArray(rows)) throw new Error(`scenario references unknown class '${e.class}'`);
+
+    // delete: remove the row by id. Idempotent (no-op if already absent) so a
+    // scenario can be re-applied and reset stays a safe restore.
+    if (e.delete) {
+      if (!e.id) throw new Error(`scenario delete on '${e.class}' needs an id`);
+      const i = rows.findIndex((r) => Object.entries(r).some(([k, v]) => k.endsWith("Id") && v === e.id));
+      if (i >= 0) rows.splice(i, 1);
+      continue;
     }
+
+    // add: insert (or replace, by id) a whole raw row. Used by reset to restore
+    // a structurally-removed row. Idempotent: same id replaces in place.
+    if (e.add) {
+      assertRawOnly(e.class, e.add);
+      const idKey = Object.keys(e.add).find((k) => k.endsWith("Id"));
+      const id = idKey ? e.add[idKey] : undefined;
+      const i = id !== undefined ? rows.findIndex((r) => r[idKey!] === id) : -1;
+      if (i >= 0) rows[i] = { ...e.add };
+      else rows.push({ ...e.add });
+      continue;
+    }
+
+    // set: mutate raw fields on an existing row (the common case).
+    const row = locateRow(db, e.class, e);
+    assertRawOnly(e.class, e.set || {});
+    for (const [k, v] of Object.entries(e.set || {})) row[k] = v;
   }
 }
 

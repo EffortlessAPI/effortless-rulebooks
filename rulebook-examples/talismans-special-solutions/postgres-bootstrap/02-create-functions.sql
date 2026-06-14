@@ -640,6 +640,16 @@ RETURNS BOOLEAN AS $$
   SELECT (NOT (((calc_workflow_steps_executing_human_agent(p_workflow_step_id)) IS NULL OR (calc_workflow_steps_executing_human_agent(p_workflow_step_id))::text = '')))::boolean;
 $$ LANGUAGE sql STABLE;
 
+-- calc_workflow_steps_is_approval_gate
+-- Field: WorkflowSteps.IsApprovalGate
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_workflow_steps_is_approval_gate(p_workflow_step_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (NOT ((((SELECT NULLIF(approval_gate, '') FROM workflow_steps WHERE workflow_step_id = p_workflow_step_id)) IS NULL OR ((SELECT NULLIF(approval_gate, '') FROM workflow_steps WHERE workflow_step_id = p_workflow_step_id))::text = '')))::boolean;
+$$ LANGUAGE sql STABLE;
+
 -- calc_workflow_steps_approval_consistency_violation
 -- Field: WorkflowSteps.ApprovalConsistencyViolation
 -- Type: calculated | DataType: boolean | Returns: BOOLEAN
@@ -1026,6 +1036,26 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION calc_roles_filler_type(p_role_id TEXT)
 RETURNS TEXT AS $$
   SELECT (CASE WHEN NOT ((((SELECT NULLIF(filled_by_human_agent, '') FROM roles WHERE role_id = p_role_id)) IS NULL OR ((SELECT NULLIF(filled_by_human_agent, '') FROM roles WHERE role_id = p_role_id))::text = '')) THEN ('HumanAgent')::text ELSE (CASE WHEN NOT ((((SELECT NULLIF(filled_by_ai_agent, '') FROM roles WHERE role_id = p_role_id)) IS NULL OR ((SELECT NULLIF(filled_by_ai_agent, '') FROM roles WHERE role_id = p_role_id))::text = '')) THEN ('AIAgent')::text ELSE (CASE WHEN NOT ((((SELECT NULLIF(filled_by_automated_pipeline, '') FROM roles WHERE role_id = p_role_id)) IS NULL OR ((SELECT NULLIF(filled_by_automated_pipeline, '') FROM roles WHERE role_id = p_role_id))::text = '')) THEN ('AutomatedPipeline')::text ELSE ('')::text END)::text END)::text END)::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_roles_fills_approval_gate
+-- Field: Roles.FillsApprovalGate
+-- Type: aggregation | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_roles_fills_approval_gate(p_role_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((SELECT COUNT(*) FROM workflow_steps WHERE assigned_role = (SELECT NULLIF(role_id, '') FROM roles WHERE role_id = p_role_id) AND calc_workflow_steps_is_approval_gate(workflow_step_id) = TRUE))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_roles_escalation_violation
+-- Field: Roles.EscalationViolation
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_roles_escalation_violation(p_role_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (((calc_roles_fills_approval_gate(p_role_id))::NUMERIC > 0 AND (((SELECT NULLIF(delegates_to, '') FROM roles WHERE role_id = p_role_id)) IS NULL OR ((SELECT NULLIF(delegates_to, '') FROM roles WHERE role_id = p_role_id))::text = '')));
 $$ LANGUAGE sql STABLE;
 
 -- calc_role_assignments_parent_path

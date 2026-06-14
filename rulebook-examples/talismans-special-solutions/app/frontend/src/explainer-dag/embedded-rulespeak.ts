@@ -845,6 +845,21 @@ export const rulespeakFields: Record<string, RuleSpeakFieldRule> = {
     ],
     "structure": null
   },
+  "WorkflowSteps.IsApprovalGate": {
+    "table": "WorkflowSteps",
+    "field": "IsApprovalGate",
+    "kind": "formula",
+    "rule": "A workflow step is considered an approval gate if the approval gate has a value.",
+    "mechanical": false,
+    "refs": [
+      {
+        "table": "WorkflowSteps",
+        "field": "ApprovalGate",
+        "label": "approval gate"
+      }
+    ],
+    "structure": null
+  },
   "WorkflowSteps.ApprovalConsistencyViolation": {
     "table": "WorkflowSteps",
     "field": "ApprovalConsistencyViolation",
@@ -1320,6 +1335,70 @@ export const rulespeakFields: Record<string, RuleSpeakFieldRule> = {
         }
       ],
       "children": null
+    }
+  },
+  "Roles.FillsApprovalGate": {
+    "table": "Roles",
+    "field": "FillsApprovalGate",
+    "kind": "rollup",
+    "rule": "A role\u0027s fills approval gate is the number of the role\u0027s workflow steps that are approval gates.",
+    "mechanical": false,
+    "refs": [
+      {
+        "table": "WorkflowSteps",
+        "field": "AssignedRole",
+        "label": "assigned role"
+      },
+      {
+        "table": "Roles",
+        "field": "RoleId",
+        "label": "role ID"
+      },
+      {
+        "table": "WorkflowSteps",
+        "field": "IsApprovalGate",
+        "label": "is approval gate"
+      }
+    ],
+    "structure": null
+  },
+  "Roles.EscalationViolation": {
+    "table": "Roles",
+    "field": "EscalationViolation",
+    "kind": "formula",
+    "rule": "A role is flagged escalation violation if all of the following hold: the fills approval gate is greater than 0 and the delegates to is blank.",
+    "mechanical": false,
+    "refs": [
+      {
+        "table": "Roles",
+        "field": "FillsApprovalGate",
+        "label": "fills approval gate"
+      },
+      {
+        "table": "Roles",
+        "field": "DelegatesTo",
+        "label": "delegates to"
+      }
+    ],
+    "structure": {
+      "kind": "priority",
+      "headline": "A role is flagged escalation violation if all of the following:",
+      "cases": [],
+      "children": [
+        {
+          "kind": "all",
+          "children": [
+            {
+              "kind": "leaf",
+              "text": "the fills approval gate is greater than 0"
+            },
+            {
+              "kind": "leaf",
+              "text": "the delegates to is blank"
+            }
+          ]
+        }
+      ]
     }
   },
   "RoleAssignments.ParentPath": {

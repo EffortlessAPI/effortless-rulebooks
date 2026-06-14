@@ -564,6 +564,14 @@ export const rulebook = {
         "formula": "=NOT(ISBLANK({{ExecutingHumanAgent}}))"
       },
       {
+        "name": "IsApprovalGate",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when this step is specialized by an ApprovalGate subtype row (its ApprovalGate back-reference is set). An approval gate carries escalationThresholdHours and, when it stalls, activates the gate role's delegatesTo escalation chain. Rolls up into Roles.FillsApprovalGate, which marks the role that must have a complete escalation path (CQ6).",
+        "formula": "=NOT(ISBLANK({{ApprovalGate}}))"
+      },
+      {
         "name": "ApprovalConsistencyViolation",
         "datatype": "boolean",
         "type": "calculated",
@@ -639,7 +647,8 @@ export const rulebook = {
         "IsLegalOwned": false,
         "IsEngineeringOwned": true,
         "PrecedingStepCount": 2,
-        "InferredSequencePosition": 3
+        "InferredSequencePosition": 3,
+        "IsApprovalGate": true
       },
       {
         "WorkflowStepId": "prod-deploy-step-2",
@@ -671,7 +680,8 @@ export const rulebook = {
         "IsLegalOwned": true,
         "IsEngineeringOwned": false,
         "PrecedingStepCount": 1,
-        "InferredSequencePosition": 2
+        "InferredSequencePosition": 2,
+        "IsApprovalGate": false
       },
       {
         "WorkflowStepId": "prod-deploy-step-5",
@@ -703,7 +713,8 @@ export const rulebook = {
         "IsLegalOwned": false,
         "IsEngineeringOwned": true,
         "PrecedingStepCount": 4,
-        "InferredSequencePosition": 5
+        "InferredSequencePosition": 5,
+        "IsApprovalGate": false
       },
       {
         "WorkflowStepId": "prod-deploy-step-1",
@@ -735,7 +746,8 @@ export const rulebook = {
         "IsLegalOwned": false,
         "IsEngineeringOwned": true,
         "PrecedingStepCount": 0,
-        "InferredSequencePosition": 1
+        "InferredSequencePosition": 1,
+        "IsApprovalGate": false
       },
       {
         "WorkflowStepId": "prod-deploy-step-4",
@@ -767,7 +779,8 @@ export const rulebook = {
         "IsLegalOwned": false,
         "IsEngineeringOwned": true,
         "PrecedingStepCount": 3,
-        "InferredSequencePosition": 4
+        "InferredSequencePosition": 4,
+        "IsApprovalGate": false
       }
     ]
   },
@@ -1136,6 +1149,24 @@ export const rulebook = {
         "nullable": true,
         "Description": "Which disjoint agent class fills this role (HumanAgent / AIAgent / AutomatedPipeline), from whichever filledBy arm is set. Lets the delegation-chain query confirm CQ6's 'zero AI agents in the escalation chain'.",
         "formula": "=IF(NOT(ISBLANK({{FilledByHumanAgent}})), \"HumanAgent\", IF(NOT(ISBLANK({{FilledByAIAgent}})), \"AIAgent\", IF(NOT(ISBLANK({{FilledByAutomatedPipeline}})), \"AutomatedPipeline\", \"\")))"
+      },
+      {
+        "name": "FillsApprovalGate",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "Number of this role's assigned WorkflowSteps that are approval gates (rollup over WorkflowSteps.IsApprovalGate). Greater than zero marks a role that owns a blocking decision checkpoint and therefore MUST have a complete delegatesTo escalation path — the precondition for EscalationViolation. Worked example: 1 for the Release Manager (who fills the Release Approval Gate), 0 for every other role.",
+        "formula": "=COUNTIFS(WorkflowSteps!{{AssignedRole}}, Roles!{{RoleId}}, WorkflowSteps!{{IsApprovalGate}}, TRUE)"
+      },
+      {
+        "name": "EscalationViolation",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "important": true,
+        "Description": "Detectable-error witness: TRUE iff this role owns an approval gate (FillsApprovalGate > 0) yet has no escalation target (DelegatesTo is blank). A gate can stall and must be escalable up the delegatesTo chain; a gate role with no one to escalate to is a broken escalation. A clean ABox yields FALSE for every role. This is the role-side analogue of WorkflowSteps.ApprovalConsistencyViolation, and the witness CQ6's escalation chain depends on.",
+        "explanation_rich": "**A broken escalation made visible.** An ApprovalGate carries `escalationThresholdHours`: when it stalls, authority must flow up the `ntwf:delegatesTo` chain (Release Manager → VP Engineering → CTO). If the role that owns the gate has nowhere to escalate (`DelegatesTo` blank), the gate can deadlock — there is no higher authority to take over. Here that surfaces as a boolean: `FillsApprovalGate > 0 AND DelegatesTo is blank`. Cut the Release Manager's escalation edge and this lights up, exactly as CQ6 ('what happens when the VP is unavailable during escalation?') would expose.",
+        "formula": "=AND({{FillsApprovalGate}} > 0, ISBLANK({{DelegatesTo}}))"
       }
     ],
     "data": [
@@ -1157,7 +1188,9 @@ export const rulebook = {
         "Name": "ci/cd-executor",
         "FilledByArmCount": 1,
         "HasExactlyOneFiller": true,
-        "FillerType": "AutomatedPipeline"
+        "FillerType": "AutomatedPipeline",
+        "FillsApprovalGate": 0,
+        "EscalationViolation": false
       },
       {
         "RoleId": "ntwf-cto-role",
@@ -1177,7 +1210,9 @@ export const rulebook = {
         "Name": "chief-technology-officer",
         "FilledByArmCount": 1,
         "HasExactlyOneFiller": true,
-        "FillerType": "HumanAgent"
+        "FillerType": "HumanAgent",
+        "FillsApprovalGate": 0,
+        "EscalationViolation": false
       },
       {
         "RoleId": "ntwf-deployment-health-role",
@@ -1197,7 +1232,9 @@ export const rulebook = {
         "Name": "deployment-health-agent",
         "FilledByArmCount": 1,
         "HasExactlyOneFiller": true,
-        "FillerType": "AIAgent"
+        "FillerType": "AIAgent",
+        "FillsApprovalGate": 0,
+        "EscalationViolation": false
       },
       {
         "RoleId": "ntwf-vp-engineering-role",
@@ -1217,7 +1254,9 @@ export const rulebook = {
         "Name": "vp-of-engineering",
         "FilledByArmCount": 1,
         "HasExactlyOneFiller": true,
-        "FillerType": "HumanAgent"
+        "FillerType": "HumanAgent",
+        "FillsApprovalGate": 0,
+        "EscalationViolation": false
       },
       {
         "RoleId": "ntwf-risk-analysis-role",
@@ -1237,7 +1276,9 @@ export const rulebook = {
         "Name": "risk-analysis-agent",
         "FilledByArmCount": 1,
         "HasExactlyOneFiller": true,
-        "FillerType": "AIAgent"
+        "FillerType": "AIAgent",
+        "FillsApprovalGate": 0,
+        "EscalationViolation": false
       },
       {
         "RoleId": "ntwf-legal-compliance-role",
@@ -1257,7 +1298,9 @@ export const rulebook = {
         "Name": "legal-compliance-reviewer",
         "FilledByArmCount": 1,
         "HasExactlyOneFiller": true,
-        "FillerType": "HumanAgent"
+        "FillerType": "HumanAgent",
+        "FillsApprovalGate": 0,
+        "EscalationViolation": false
       },
       {
         "RoleId": "ntwf-release-manager-role",
@@ -1277,7 +1320,9 @@ export const rulebook = {
         "Name": "release-manager",
         "FilledByArmCount": 1,
         "HasExactlyOneFiller": true,
-        "FillerType": "HumanAgent"
+        "FillerType": "HumanAgent",
+        "FillsApprovalGate": 1,
+        "EscalationViolation": false
       }
     ]
   },
@@ -3052,22 +3097,22 @@ export const rulebook = {
         "Explanation": "Restores the canonical seed assignments and a fresh review date — the known-good starting point. Every role is filled by exactly one agent, no requires-human-approval step is AI-filled, and the workflow is within its staleness window, so all the article's clean-ABox witnesses read green.",
         "SortOrder": 5,
         "IsReset": true,
-        "Edits": "[{\"class\": \"Workflows\", \"match\": \"first\", \"set\": {\"modified\": \"2026-04-03T00:00:00-05:00\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-release-manager-role\", \"set\": {\"filledByHumanAgent\": \"ntwf-maria-gonzalez\", \"filledByAIAgent\": \"\", \"filledByAutomatedPipeline\": \"\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-risk-analysis-role\", \"set\": {\"filledByHumanAgent\": \"\", \"filledByAIAgent\": \"ntwf-risk-ai\", \"filledByAutomatedPipeline\": \"\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-legal-compliance-role\", \"set\": {\"filledByHumanAgent\": \"ntwf-james-okafor\", \"filledByAIAgent\": \"\", \"filledByAutomatedPipeline\": \"\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-ci-executor-role\", \"set\": {\"filledByHumanAgent\": \"\", \"filledByAIAgent\": \"\", \"filledByAutomatedPipeline\": \"ntwf-ci-pipeline\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-vp-engineering-role\", \"set\": {\"filledByHumanAgent\": \"ntwf-david-chen\", \"filledByAIAgent\": \"\", \"filledByAutomatedPipeline\": \"\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-cto-role\", \"set\": {\"filledByHumanAgent\": \"ntwf-sarah-kim\", \"filledByAIAgent\": \"\", \"filledByAutomatedPipeline\": \"\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-deployment-health-role\", \"set\": {\"filledByHumanAgent\": \"\", \"filledByAIAgent\": \"ntwf-health-ai\", \"filledByAutomatedPipeline\": \"\"}}]",
+        "Edits": "[{\"class\": \"Workflows\", \"match\": \"first\", \"set\": {\"modified\": \"2026-04-03T00:00:00-05:00\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-release-manager-role\", \"set\": {\"filledByHumanAgent\": \"ntwf-maria-gonzalez\", \"filledByAIAgent\": \"\", \"filledByAutomatedPipeline\": \"\", \"delegatesTo\": \"ntwf-vp-engineering-role\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-risk-analysis-role\", \"set\": {\"filledByHumanAgent\": \"\", \"filledByAIAgent\": \"ntwf-risk-ai\", \"filledByAutomatedPipeline\": \"\", \"delegatesTo\": \"\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-legal-compliance-role\", \"set\": {\"filledByHumanAgent\": \"ntwf-james-okafor\", \"filledByAIAgent\": \"\", \"filledByAutomatedPipeline\": \"\", \"delegatesTo\": \"\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-ci-executor-role\", \"set\": {\"filledByHumanAgent\": \"\", \"filledByAIAgent\": \"\", \"filledByAutomatedPipeline\": \"ntwf-ci-pipeline\", \"delegatesTo\": \"\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-vp-engineering-role\", \"set\": {\"filledByHumanAgent\": \"ntwf-david-chen\", \"filledByAIAgent\": \"\", \"filledByAutomatedPipeline\": \"\", \"delegatesTo\": \"ntwf-cto-role\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-cto-role\", \"set\": {\"filledByHumanAgent\": \"ntwf-sarah-kim\", \"filledByAIAgent\": \"\", \"filledByAutomatedPipeline\": \"\", \"delegatesTo\": \"\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-deployment-health-role\", \"set\": {\"filledByHumanAgent\": \"\", \"filledByAIAgent\": \"ntwf-health-ai\", \"filledByAutomatedPipeline\": \"\", \"delegatesTo\": \"\"}}, {\"class\": \"StepPrecedence\", \"id\": \"prec-1-2\", \"set\": {\"fromStep\": \"prod-deploy-step-1\"}}, {\"class\": \"StepPrecedence\", \"id\": \"prec-2-3\", \"set\": {\"fromStep\": \"prod-deploy-step-2\"}}, {\"class\": \"StepPrecedence\", \"id\": \"prec-3-4\", \"set\": {\"fromStep\": \"prod-deploy-step-3\"}}, {\"class\": \"StepPrecedence\", \"id\": \"prec-4-5\", \"set\": {\"fromStep\": \"prod-deploy-step-4\"}}, {\"class\": \"StepPrecedence\", \"add\": {\"stepPrecedenceId\": \"prec-4-5\", \"fromStep\": \"prod-deploy-step-4\", \"toStep\": \"prod-deploy-step-5\"}}]",
         "RelativePath": "scenarios/reset",
         "Iri": "scenarios-reset",
         "Name": "reset-to-baseline"
       },
       {
-        "ScenarioId": "reroute-ordering",
-        "Label": "Re-route the last ordering edge",
-        "Icon": "🔀",
-        "Explanation": "Re-points the final precedence edge so step 5 follows step 1 instead of step 4. The transitive closure shrinks (10 → 7 ordered pairs) and the inferred positions recompute — nothing else moves. Demonstrates CQ1: order is a projection of the edges.",
+        "ScenarioId": "drop-final-edge",
+        "Label": "Drop the final ordering edge",
+        "Icon": "✂️",
+        "Explanation": "Removes the step-4 → step-5 precedence edge entirely. Step 5 falls out of the ordered chain, so the transitive closure shrinks from 10 ordered pairs to 6 — and nothing else moves. Demonstrates CQ1: the closure cardinality is a projection of the asserted edges, recomputed the instant one is removed.",
         "SortOrder": 10,
         "IsReset": false,
-        "Edits": "[{\"class\": \"StepPrecedence\", \"id\": \"prec-4-5\", \"set\": {\"fromStep\": \"prod-deploy-step-1\"}}]",
-        "RelativePath": "scenarios/reroute-ordering",
-        "Iri": "scenarios-reroute-ordering",
-        "Name": "re-route-the-last-ordering-edge"
+        "Edits": "[{\"class\": \"StepPrecedence\", \"id\": \"prec-4-5\", \"delete\": true}]",
+        "RelativePath": "scenarios/drop-final-edge",
+        "Iri": "scenarios-drop-final-edge",
+        "Name": "drop-the-final-ordering-edge"
       },
       {
         "ScenarioId": "ai-release-manager",
@@ -3281,7 +3326,7 @@ export const rulebook = {
         "Explanation": "WorkflowSteps ordered by SequencePosition; the order is the transitive closure of the asserted StepPrecedence edges, materialized as ntwf:precedesStep.",
         "SortOrder": 1,
         "IsActive": true,
-        "SimulateScenario": "reroute-ordering",
+        "SimulateScenario": "drop-final-edge",
         "RelativePath": "competency-questions/cq-1",
         "Iri": "competency-questions-cq-1",
         "Name": "steps-and-order"
@@ -3482,15 +3527,15 @@ export const rulebook = {
     ],
     "data": [
       {
-        "ScenarioCQEffectId": "reroute-ordering-cq-1",
-        "Scenario": "reroute-ordering",
+        "ScenarioCQEffectId": "drop-final-edge-cq-1",
+        "Scenario": "drop-final-edge",
         "CompetencyQuestion": "cq-1",
         "EffectKind": "trigger",
-        "Note": "Re-pointing prec-4-5 shrinks the precedence closure (10 → 7 pairs); positions recompute. No other answer moves.",
+        "Note": "Deleting the step-4→step-5 edge shrinks the precedence closure (10 → 6 ordered pairs); step 5 leaves the chain. No other answer moves.",
         "SortOrder": 10,
-        "RelativePath": "scenario-cq-effects/reroute-ordering-cq-1",
-        "Iri": "scenario-cq-effects-reroute-ordering-cq-1",
-        "Name": "reroute-ordering-cq-1"
+        "RelativePath": "scenario-cq-effects/drop-final-edge-cq-1",
+        "Iri": "scenario-cq-effects-drop-final-edge-cq-1",
+        "Name": "drop-final-edge-cq-1"
       },
       {
         "ScenarioCQEffectId": "ai-release-manager-cq-2",
