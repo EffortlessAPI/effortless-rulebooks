@@ -232,6 +232,21 @@ button, input, select { font: inherit; }
 .sc-needs { font-size: 11px; font-weight: 700; color: var(--human); }
 .sc-violation { font-size: 11px; font-weight: 700; color: var(--risk); }
 .sc-title { font-size: 15px; font-weight: 650; line-height: 1.25; }
+
+/* avatar-led card head: the face leads, badges + title sit beside it. The
+   per-person identity (name / role / department / escalation) is on hover, so
+   the card body itself carries no repeated words. */
+.sc-head { display: flex; align-items: flex-start; gap: 11px; padding-right: 30px; }
+.sc-agentwrap { position: relative; flex: none; }
+.sc-headmeta { min-width: 0; flex: 1; display: flex; flex-direction: column; gap: 5px; }
+.sc-headmeta .sc-top { padding-right: 0; }
+/* compact derived-effect chips (AI-risk, rule-broken) — replace the old full
+   sentences; each still drills via its DagCell. */
+.sc-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 9px; }
+.sc-chip { display: inline-block; font-size: 11px; font-weight: 600; border-radius: 999px; padding: 1px 9px; border: 1px solid var(--line); cursor: help; }
+.sc-chip.risk { color: var(--ai); border-color: color-mix(in srgb, var(--ai) 45%, transparent); background: color-mix(in srgb, var(--ai) 12%, transparent); }
+.sc-chip.broken { color: var(--risk); border-color: color-mix(in srgb, var(--risk) 45%, transparent); background: color-mix(in srgb, var(--risk) 12%, transparent); }
+
 .sc-assign { display: flex; align-items: center; gap: 10px; }
 .sc-agent { font-weight: 600; font-size: 13.5px; }
 .sc-role { font-size: 11.5px; color: var(--muted); }
@@ -486,6 +501,27 @@ button, input, select { font: inherit; }
   border-radius: 8px; padding: 4px 5px 4px 11px; font-weight: 700; font-size: 13px; }
 .cl-edge-x { background: transparent; border: 0; color: var(--muted); cursor: pointer; font-size: 18px; line-height: 1; padding: 0 4px; }
 .cl-edge-x:hover { color: var(--risk); }
+
+/* ---- 2D layered step DAG (columns by derived rank) ---------------------- */
+.cl-dag { position: relative; overflow-x: auto; padding: 22px 2px 10px; }
+.cl-dag-svg { position: absolute; top: 0; left: 0; pointer-events: none; z-index: 2; overflow: visible; }
+.cl-dagedge { stroke: var(--accent); stroke-width: 2; opacity: .8; }
+.cl-dag-cols { display: flex; align-items: flex-start; gap: 46px; min-width: min-content; position: relative; }
+.cl-dag-col { display: flex; flex-direction: column; min-width: 168px; }
+.cl-dag-colhead { font-size: 10.5px; font-weight: 800; color: var(--muted); text-transform: uppercase; letter-spacing: .05em;
+  text-align: center; margin-bottom: 14px; }
+.cl-dag-tie { color: var(--accent); }
+.cl-dag-stack { display: flex; flex-direction: column; gap: 18px; }
+/* a DAG card reuses .cl-step but is fixed-width and stacks (not flex-grow) */
+.cl-dagcard { flex: none; width: 168px; min-width: 168px; z-index: 1; }
+
+/* ---- the lineage section that now rides under the step closure --------- */
+.cl-lineage-section { margin-top: 30px; }
+.cl-section-divider { display: flex; align-items: center; gap: 14px; margin: 6px 0 10px; }
+.cl-section-divider::before, .cl-section-divider::after { content: ""; flex: 1; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--line), transparent); }
+.cl-section-divider-label { font-size: 12px; font-weight: 700; color: var(--accent); white-space: nowrap; }
+.cl-lineage-bridge { font-size: 12.5px; line-height: 1.5; margin: 0 0 14px; }
 
 /* the closure matrix */
 .cl-matrixwrap { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 18px; }

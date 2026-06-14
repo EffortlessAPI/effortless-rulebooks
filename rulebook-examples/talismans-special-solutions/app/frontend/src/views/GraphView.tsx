@@ -58,8 +58,8 @@ export function GraphView({ sit, handlers }: GraphViewProps) {
     <div className="graph">
       <div className="graph-hint muted">
         <b>Hover</b> any node for who/role/department · <b>click</b> to trace it. Agents
-        <b> execute</b> steps; steps <b>precede</b> steps; a DCAT 📦 <b>dataset</b> feeds the step
-        that consumes it (CQ8). Every edge here is a triple the reasoner holds.
+        <b> execute</b> steps; steps <b>precede</b> steps. (The input dataset lives once, on the
+        Flow board it feeds — not repeated here.) Every edge here is a triple the reasoner holds.
       </div>
       <svg viewBox={`0 0 ${W} ${H}`} className="graph-svg" onClick={() => setFocus(null)}>
         <defs>
@@ -68,8 +68,9 @@ export function GraphView({ sit, handlers }: GraphViewProps) {
           </marker>
         </defs>
 
-        {/* edges */}
-        {sit.graph.edges.map((e, i) => {
+        {/* edges — dataset consumption edges are omitted: the input dataset is
+            shown once, on the Flow board it feeds, not duplicated as a node here. */}
+        {sit.graph.edges.filter((e) => e.type !== "consumes").map((e, i) => {
           const a = layout[e.from], b = layout[e.to];
           if (!a || !b) return null;
           const lit = edgeLit(e);
@@ -83,8 +84,8 @@ export function GraphView({ sit, handlers }: GraphViewProps) {
           );
         })}
 
-        {/* nodes */}
-        {sit.graph.nodes.map((n) => {
+        {/* nodes — dataset nodes are omitted here (single home is the Flow feeder) */}
+        {sit.graph.nodes.filter((n) => n.type !== "dataset").map((n) => {
           const p = layout[n.id];
           if (!p) return null;
           const lit = isLit(n.id);

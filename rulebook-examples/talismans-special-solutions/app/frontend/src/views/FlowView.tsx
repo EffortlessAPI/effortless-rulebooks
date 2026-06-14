@@ -82,6 +82,7 @@ export function FlowView({ sit, handlers }: FlowViewProps) {
                 tied={posCounts[s.position] > 1}
                 escalationViolation={!!sit.roleById[s.roleId]?.escalationViolation}
                 escalatesTo={escalationAncestors(sit, s.roleId).map((a) => a.name)}
+                departmentTitle={s.owningDepartment ? sit.departmentById[s.owningDepartment]?.title ?? null : null}
               />
               {i < steps.length - 1 && (
                 <div className={"flow-arrow" + (ambiguousGap ? " flow-arrow--ambiguous" : "")}
@@ -132,9 +133,72 @@ interface StepCardProps {
   // The role's escalation ladder above it (e.g. ["VP of Engineering","CTO"]) —
   // read off the reasoned org tree so the card shows WHO this person answers to.
   escalatesTo?: string[];
+  // The owning department's title (Engineering / Legal), shown on avatar hover.
+  departmentTitle?: string | null;
 }
 
-function StepCard({ step, fact, handlers, tied, escalationViolation = false, escalatesTo = [] }: StepCardProps) {
+// Department hue (matches the Dept lens + graph hover).
+function deptHue(title?: string | null): string {
+  const s = title || "";
+  if (/legal/i.test(s)) return "#f0719b";
+  if (/eng/i.test(s)) return "#3fb6a8";
+  return "var(--muted)";
+}
+
+// The card's agent: a big distinct face that IS the "who" of the step. The name,
+// role, department and escalation chain are NOT printed on the card — they pop in
+// a hover-card, so the board reads as faces-over-steps instead of a wall of
+// repeated words. Clicking the avatar still reassigns (the edit path is unchanged).
+function CardAgent({
+  step, handlers, escalatesTo, departmentTitle, requiresHuman,
+}: {
+  step: Step;
+  handlers: Handlers;
+  escalatesTo: string[];
+  departmentTitle?: string | null;
+  requiresHuman: boolean;
+}) {
+  const [hov, setHov] = useState<{ x: number; y: number } | null>(null);
+  const kind: AgentKind = kindOfType(step.executingAgentType);
+  return (
+    <span
+      className="sc-agentwrap"
+      onMouseEnter={(e) => setHov({ x: e.clientX, y: e.clientY })}
+      onMouseMove={(e) => setHov({ x: e.clientX, y: e.clientY })}
+      onMouseLeave={() => setHov(null)}
+    >
+      <AgentAvatar
+        agent={step.agent}
+        type={step.executingAgentType}
+        roleId={step.roleId}
+        onReassign={handlers.openReassign}
+        requiresHuman={requiresHuman}
+        size={46}
+      />
+      {hov && (
+        <div
+          className="graph-hovercard"
+          style={{ left: Math.min(hov.x + 16, window.innerWidth - 260), top: Math.min(hov.y + 16, window.innerHeight - 170) }}
+        >
+          <div className="gh-title">{step.agent ? step.agent.name : "unassigned"}</div>
+          <div className="gh-sub muted">{KIND[kind].icon} {KIND[kind].label} · fills {step.role}</div>
+          <div className="gh-row">
+            department{" "}
+            <span className="gh-pill" style={{ borderColor: deptHue(departmentTitle), color: deptHue(departmentTitle) }}>
+              🏛 {departmentTitle || "—"}
+            </span>
+          </div>
+          {escalatesTo.length > 0 && (
+            <div className="gh-row muted">↑ escalates to {escalatesTo.join(" → ")}</div>
+          )}
+          <div className="gh-row muted">click to reassign</div>
+        </div>
+      )}
+    </span>
+  );
+}
+
+function StepCard({ step, fact, handlers, tied, escalationViolation = false, escalatesTo = [], departmentTitle }: StepCardProps) {
   const kind: AgentKind = kindOfType(step.executingAgentType);
   const isAI = kind === "ai";
   // This step REQUIRES a human sign-off (raw fact) — surface the expectation on
@@ -203,74 +267,43 @@ function StepCard({ step, fact, handlers, tied, escalationViolation = false, esc
         ⚙
       </button>
 
-      {/* badges live in their own row, with right padding reserved for the gear
-          so a "rule broken" / "needs human" flag is never hidden behind it */}
-      <div className="sc-top">
-        <span className={"sc-pos" + (tied ? " tied" : "")} title={tied ? "another step shares this position — order not determined" : undefined}>{step.position}{tied ? " ⚠" : ""}</span>
-        {step.isApprovalGate && <span className="sc-gate">🔒 gate</span>}
-        {requiresHuman && !step.consistencyViolation && (
-          <span className="sc-needs" title="this step requires a human sign-off">🔒 needs human</span>
-        )}
-        {step.consistencyViolation && <span className="sc-violation">⚠ rule broken</span>}
-      </div>
-      <div className="sc-title">{step.title}</div>
-
-      <div className="sc-assign">
-        <AgentAvatar
-          agent={step.agent}
-          type={step.executingAgentType}
-          roleId={step.roleId}
-          onReassign={handlers.openReassign}
+      {/* The avatar IS the "who" — a big distinct face. Name / role / department /
+          escalation are on hover, not printed, so the card stays a clean glance.
+          Badges + title sit beside it; the badges carry the only flags worth a
+          word (position, gate, needs-human, rule-broken). */}
+      <div className="sc-head">
+        <CardAgent
+          step={step}
+          handlers={handlers}
+          escalatesTo={escalatesTo}
+          departmentTitle={departmentTitle}
           requiresHuman={requiresHuman}
-          size={40}
         />
-        <div className="sc-who">
-          <div className="sc-agent">{step.agent ? step.agent.name : "unassigned"}</div>
-          {/* the kind label is the reasoner-resolved ExecutingAgentType (role→agent→type) */}
-          {/* who this person answers to — their escalation ladder (Release
-              Manager → VP of Engineering → CTO), so the chain of authority around
-              the assignee is legible right on the card. Reasoned, read-only here;
-              it's editable in the Org lens. */}
-          {escalatesTo.length > 0 && (
-            <div className="sc-escalates" title={`escalation chain: ${step.role} → ${escalatesTo.join(" → ")}`}>
-              <span className="sc-esc-arrow">↑</span>
-              {escalatesTo.map((nm, i) => (
-                <React.Fragment key={nm}>
-                  {i > 0 && <span className="sc-esc-sep">→</span>}
-                  <span className="sc-esc-name">{nm}</span>
-                </React.Fragment>
-              ))}
-            </div>
-          )}
-          <div className="sc-role">
-            <DagCell table="WorkflowSteps" field="ExecutingAgentType" block>
-              {step.role} · {KIND[kind].label}
-            </DagCell>
+        <div className="sc-headmeta">
+          <div className="sc-top">
+            <span className={"sc-pos" + (tied ? " tied" : "")} title={tied ? "another step shares this position — order not determined" : undefined}>{step.position}{tied ? " ⚠" : ""}</span>
+            {step.isApprovalGate && <span className="sc-gate">🔒 gate</span>}
+            {requiresHuman && !step.consistencyViolation && (
+              <span className="sc-needs" title="this step requires a human sign-off">🔒 needs human</span>
+            )}
+            {step.consistencyViolation && <span className="sc-violation">⚠ rule broken</span>}
           </div>
+          <div className="sc-title">{step.title}</div>
         </div>
       </div>
 
-      {/* Gate-only: the approval gate's defining properties. Today the card only
-          shows the 🔒 badge; surface the gate's actual contract — its escalation
-          window, the role that owns it, and the human who signs off. These are
-          ApprovalGates columns the reasoner resolved; we just render them. */}
+      {/* Gate-only: the one gate-specific contract worth a line — its escalation
+          window. (Who owns/approves it is the avatar + its hover, so those rows
+          are gone.) The escalation-broken witness stays: it's an actionable fix. */}
       {step.isApprovalGate && (
         <div className="sc-gate-detail">
           <div className="sc-gate-row">
-            <span className="sc-gate-k">escalation</span>
+            <span className="sc-gate-k">⏱ escalates after</span>
             <DagCell table="ApprovalGates" field="EscalationThresholdHours">
               <span className="sc-gate-v">
                 {step.escalationThresholdHours != null ? `${step.escalationThresholdHours} h` : "—"}
               </span>
             </DagCell>
-          </div>
-          <div className="sc-gate-row">
-            <span className="sc-gate-k">gate role</span>
-            <span className="sc-gate-v">{step.gateRole ?? "—"}</span>
-          </div>
-          <div className="sc-gate-row">
-            <span className="sc-gate-k">approver</span>
-            <span className="sc-gate-v">{step.gateApproverHuman ?? "—"}</span>
           </div>
           {/* The derived EscalationViolation witness: this gate's role has no
               delegatesTo target, so a stalled gate can't escalate. Click to open
@@ -289,32 +322,23 @@ function StepCard({ step, fact, handlers, tied, escalationViolation = false, esc
         </div>
       )}
 
-      {/* The PRECISE effect of who runs this step — always visible. Driven by the
-          derived IsExecutedByAI boolean. */}
-      <div className={"sc-effect " + (isAI ? "risk" : "safe")}>
-        <DagCell table="WorkflowSteps" field="IsExecutedByAI" block>
-          {isAI
-            ? "🤖 AI runs this → counts toward risk (risk fires if docs are also stale)"
-            : "🧑 not an AI → no AI-risk from this step"}
-        </DagCell>
-      </div>
-      {/* This step expects a human but doesn't have one yet — explain the
-          expectation BEFORE it turns into a hard violation. Driven by the
-          derived ApprovalIsHumanFilled boolean. */}
-      {requiresHuman && !step.consistencyViolation && (
-        <div className="sc-effect needs">
-          <DagCell table="WorkflowSteps" field="ApprovalIsHumanFilled" block>
-            🔒 requires a human sign-off → assign a 🧑 human to keep it consistent
-          </DagCell>
-        </div>
-      )}
-      {/* The hard violation IS the derived ApprovalConsistencyViolation boolean —
-          wrap it so explainer mode shows exactly how the rule fired. */}
-      {step.consistencyViolation && (
-        <div className="sc-effect broken">
-          <DagCell table="WorkflowSteps" field="ApprovalConsistencyViolation" block>
-            ⚠ requires human sign-off but isn't human-filled → consistency rule broken
-          </DagCell>
+      {/* The only derived effects worth a chip: AI-risk (the unique fact the
+          badges DON'T already flag) and the hard violation (kept drillable so
+          explainer mode still shows how the rule fired). "needs human" and the
+          "not-an-AI / safe" line are gone — the badges above already say it, and
+          the sentences just doubled the word count. */}
+      {(isAI || step.consistencyViolation) && (
+        <div className="sc-chips">
+          {isAI && (
+            <DagCell table="WorkflowSteps" field="IsExecutedByAI">
+              <span className="sc-chip risk" title="AI runs this → counts toward risk (fires if docs are also stale)">🤖 AI-risk</span>
+            </DagCell>
+          )}
+          {step.consistencyViolation && (
+            <DagCell table="WorkflowSteps" field="ApprovalConsistencyViolation">
+              <span className="sc-chip broken" title="requires human sign-off but isn't human-filled → consistency rule broken">⚠ rule broken</span>
+            </DagCell>
+          )}
         </div>
       )}
 
