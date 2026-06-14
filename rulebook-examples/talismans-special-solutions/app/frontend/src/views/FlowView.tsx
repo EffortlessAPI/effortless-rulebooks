@@ -58,6 +58,7 @@ export function FlowView({ sit, handlers }: FlowViewProps) {
                 fact={sit.stepFacts[s.id] || {}}
                 handlers={handlers}
                 tied={posCounts[s.position] > 1}
+                escalationViolation={!!sit.roleById[s.roleId]?.escalationViolation}
               />
               {i < steps.length - 1 && (
                 <div className={"flow-arrow" + (ambiguousGap ? " flow-arrow--ambiguous" : "")}
@@ -82,9 +83,11 @@ interface StepCardProps {
   fact: StepFact | Record<string, never>;
   handlers: Handlers;
   tied?: boolean;
+  // The gate role's derived EscalationViolation — drives the ⚠ badge on the gate.
+  escalationViolation?: boolean;
 }
 
-function StepCard({ step, fact, handlers, tied }: StepCardProps) {
+function StepCard({ step, fact, handlers, tied, escalationViolation = false }: StepCardProps) {
   const kind: AgentKind = kindOfType(step.executingAgentType);
   const isAI = kind === "ai";
   // This step REQUIRES a human sign-off (raw fact) — surface the expectation on
@@ -207,6 +210,20 @@ function StepCard({ step, fact, handlers, tied }: StepCardProps) {
             <span className="sc-gate-k">approver</span>
             <span className="sc-gate-v">{step.gateApproverHuman ?? "—"}</span>
           </div>
+          {/* The derived EscalationViolation witness: this gate's role has no
+              delegatesTo target, so a stalled gate can't escalate. Click to open
+              the org chart and restore the chain. */}
+          {escalationViolation && (
+            <button
+              className="sc-escalation-broken"
+              onClick={(e) => handlers.openEscalation(step.roleId, e.currentTarget.getBoundingClientRect())}
+              title="This gate has no escalation target — open the org chart to fix the chain"
+            >
+              <DagCell table="Roles" field="EscalationViolation" block>
+                ⚠ escalation broken — no one to escalate to → fix
+              </DagCell>
+            </button>
+          )}
         </div>
       )}
 

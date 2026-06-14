@@ -6,7 +6,7 @@ import { FlowView } from "./views/FlowView";
 import { GraphView } from "./views/GraphView";
 import { ClosureView } from "./views/ClosureView";
 import { CQView } from "./views/CQView";
-import { ReassignPopover } from "./Editable";
+import { ReassignPopover, EscalationPopover } from "./Editable";
 import { StalenessBar } from "./console/StalenessBar";
 import { resolveCq } from "./console/cqs";
 import { DagCell } from "./explainer-dag";
@@ -57,6 +57,7 @@ export default function App({ headerRight = null }: AppProps) {
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
   const [reassign, setReassign] = useState<ReassignState | null>(null);
+  const [escalation, setEscalation] = useState<{ roleId: string; anchorRect: DOMRect } | null>(null);
   const [scenarioOpen, setScenarioOpen] = useState(false);
   // CQ ids that just changed answer as the result of a "Simulate" click — drives
   // the chip-flash so the user SEES which questions a scenario moved (one for an
@@ -103,7 +104,12 @@ export default function App({ headerRight = null }: AppProps) {
   const handlers: Handlers = {
     openReassign: (roleId, anchorRect, requiresHuman = false) =>
       setReassign({ roleId, anchorRect, requiresHuman: !!requiresHuman }),
+    openEscalation: (roleId, anchorRect) => setEscalation({ roleId, anchorRect }),
     patchStep: (stepId, patch) => mutate(() => api.patchRow("WorkflowSteps", stepId, patch)),
+    // Set the role's escalation target (raw delegatesTo FK). The substrate
+    // recomputes EscalationViolation + the delegation closure; CQ6 re-answers.
+    setDelegatesTo: (roleId, targetRoleId) =>
+      mutate(() => api.patchRow("Roles", roleId, { delegatesTo: targetRoleId })),
     setStalenessThreshold: (months) =>
       mutate(() => api.patchRow("Workflows", sit.workflow.id, { stalenessThresholdMonths: months })),
     setModified: (isoDate) =>
@@ -216,6 +222,7 @@ export default function App({ headerRight = null }: AppProps) {
           flashed={flashed}
           onSimulate={simulate}
           onOpenScenarios={() => setScenarioOpen(true)}
+          onFixEscalation={handlers.openEscalation}
         />
       </div>
 
@@ -242,6 +249,16 @@ export default function App({ headerRight = null }: AppProps) {
           requiresHuman={reassign.requiresHuman}
           onPick={(agentId) => doReassign(reassign.roleId, agentId)}
           onClose={() => setReassign(null)}
+        />
+      )}
+
+      {escalation && (
+        <EscalationPopover
+          roleId={escalation.roleId}
+          sit={sit}
+          anchorRect={escalation.anchorRect}
+          onPick={(targetRoleId) => { setEscalation(null); handlers.setDelegatesTo(escalation.roleId, targetRoleId); }}
+          onClose={() => setEscalation(null)}
         />
       )}
 

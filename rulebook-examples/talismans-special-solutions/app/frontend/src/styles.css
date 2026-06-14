@@ -1232,3 +1232,35 @@ body:has(.dag-page) { background: var(--bg); }  /* uniform dark behind the panel
    the full-width page bar as a contained panel sitting under the cards. */
 .stage > .staleness { margin-top: 18px; padding: 12px 14px;
   background: var(--card); border: 1px solid var(--line); border-radius: 10px; }
+
+/* ---- escalation violation: clickable badges + the org-chart popup -------- */
+/* The three "fix escalation" triggers (CQ6 card · gate step · org node). Each
+   reads the derived Roles.EscalationViolation column and opens EscalationPopover. */
+.cq-fix-escalation, .sc-escalation-broken, .org-escalation-broken {
+  appearance: none; font-family: inherit; cursor: pointer;
+  color: var(--risk); background: #f0653f14; border: 1px solid #f0653f44;
+  border-radius: 7px; font-weight: 700; font-size: 11px; padding: 3px 8px;
+}
+.cq-fix-escalation:hover, .sc-escalation-broken:hover, .org-escalation-broken:hover {
+  background: #f0653f24; border-color: var(--risk);
+}
+.cq-fix-escalation { margin-left: 6px; white-space: nowrap; }
+.sc-escalation-broken { display: block; width: 100%; margin-top: 6px; text-align: left; }
+.org-escalation-broken { margin-left: 8px; }
+
+/* the floating org-chart popup */
+.esc-popover { width: 320px; border-color: var(--risk); }
+.esc-orgchart { padding: 10px 14px; border-bottom: 1px solid var(--line); }
+.esc-orgchart-label { font-size: 11px; color: var(--muted); font-weight: 600; margin-bottom: 7px; }
+.esc-chain { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin-bottom: 5px; }
+.esc-chain.broken-chain { margin-top: 6px; padding-top: 6px; border-top: 1px dashed var(--line); }
+.esc-node { font-size: 12px; font-weight: 600; padding: 3px 8px; border-radius: 6px; background: var(--card2); color: var(--text); }
+.esc-node.broken { background: #f0653f1c; color: var(--risk); box-shadow: inset 0 0 0 1px #f0653f55; }
+.esc-node.ghost { background: transparent; color: var(--muted); border: 1px dashed var(--line); font-weight: 500; }
+.esc-up { font-size: 11px; color: var(--muted); }
+.esc-up.dashed { color: var(--risk); }
+.esc-opt { justify-content: flex-start; }
+.esc-opt-name { font-weight: 600; }
+.esc-leads { margin-left: auto; font-size: 11px; color: var(--muted); }
+.esc-leads.top { font-style: italic; }
+.opt-dot.k-role { background: var(--accent); }

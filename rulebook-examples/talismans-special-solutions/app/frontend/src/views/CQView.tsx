@@ -31,9 +31,15 @@ interface CQViewProps {
   // Apply a CQ card's SimulateScenario (the minimal raw-fact edit that moves it).
   onSimulate?: (scenarioId: string) => void;
   onOpenScenarios?: () => void;
+  // Open the escalation org-chart popup for the role with a broken escalation
+  // (used by the CQ6 card when EscalationViolation is set).
+  onFixEscalation?: (roleId: string, anchorRect: DOMRect) => void;
 }
 
-export function CQView({ sit, hasScenarios = false, busy = false, flashed, onSimulate, onOpenScenarios }: CQViewProps) {
+export function CQView({ sit, hasScenarios = false, busy = false, flashed, onSimulate, onOpenScenarios, onFixEscalation }: CQViewProps) {
+  // The role (if any) whose escalation is broken — the derived witness column,
+  // read, not recomputed. Drives the CQ6 card's "fix on org chart" badge.
+  const escalationRoleId = sit.roles.find((r) => r.escalationViolation)?.id;
   const [onlyFailing, setOnlyFailing] = useState(false);
   const [open, setOpen] = useState<Record<string, boolean>>({});
 
@@ -98,6 +104,8 @@ export function CQView({ sit, hasScenarios = false, busy = false, flashed, onSim
             flash={!!flashed?.has(cq.id)}
             busy={busy}
             onSimulate={onSimulate}
+            escalationRoleId={escalationRoleId}
+            onFixEscalation={onFixEscalation}
             onToggle={() => setOpen((o) => ({ ...o, [cq.id]: !o[cq.id] }))}
           />
         ))}
@@ -125,11 +133,17 @@ interface CqCardProps {
   flash?: boolean;
   busy?: boolean;
   onSimulate?: (scenarioId: string) => void;
+  // Set when SOME role has a broken escalation; only the cq-6 card uses it.
+  escalationRoleId?: string;
+  onFixEscalation?: (roleId: string, anchorRect: DOMRect) => void;
   onToggle: () => void;
 }
 
-function CqCard({ cq, answer, ok, rows, open, flash = false, busy = false, onSimulate, onToggle }: CqCardProps) {
+function CqCard({ cq, answer, ok, rows, open, flash = false, busy = false, onSimulate, escalationRoleId, onFixEscalation, onToggle }: CqCardProps) {
   const canSimulate = !!cq.simulateScenario && !!onSimulate;
+  // CQ6 is the escalation question; when a role's escalation is broken, offer to
+  // open the org-chart popup right here and fix it.
+  const canFixEscalation = cq.id === "cq-6" && !!escalationRoleId && !!onFixEscalation;
   return (
     <div className={"cq-card " + (ok ? "ok" : "fail") + (flash ? " flash" : "")}>
       <div className="cq-num">CQ{cq.number}</div>
@@ -150,6 +164,16 @@ function CqCard({ cq, answer, ok, rows, open, flash = false, busy = false, onSim
               title="Apply the minimal raw-fact edit that moves this question's answer, then watch the substrate re-answer live"
             >
               ▶ simulate
+            </button>
+          )}
+          {canFixEscalation && (
+            <button
+              className="cq-fix-escalation"
+              disabled={busy}
+              onClick={(e) => onFixEscalation!(escalationRoleId!, e.currentTarget.getBoundingClientRect())}
+              title="A role that owns an approval gate has no one to escalate to — open the org chart and fix the chain"
+            >
+              ⚠ fix escalation
             </button>
           )}
           <button

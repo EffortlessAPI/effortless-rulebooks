@@ -72,6 +72,15 @@ export interface RoleRow {
   filledByHumanAgent: string | null;
   filledByAIAgent: string | null;
   filledByAutomatedPipeline: string | null;
+  // The escalation edge + the derived witness. NOTE: the reasoner materializes
+  // the TRANSITIVE delegatesTo (closure) onto the individual, so this arrives as
+  // an array there and a single FK from Postgres — we never read it as a scalar
+  // (the org-chart reads sit.delegation/escalationViolation instead). It's here
+  // only for completeness. escalationViolation is TRUE when this role owns an
+  // approval gate (fillsApprovalGate > 0) but has no escalation target.
+  delegatesTo: string | string[] | null;
+  fillsApprovalGate: number;
+  escalationViolation: boolean;
 }
 
 export interface PrecedenceEdge {
@@ -233,7 +242,11 @@ export interface Situation {
 // ---- the editing handlers passed down to every view -----------------------
 export interface Handlers {
   openReassign: (roleId: string, anchorRect: DOMRect, requiresHuman?: boolean) => void;
+  // Open the escalation org-chart popup anchored to the clicked violation badge.
+  openEscalation: (roleId: string, anchorRect: DOMRect) => void;
   patchStep: (stepId: string, patch: Record<string, unknown>) => void;
+  // Set a role's delegatesTo escalation target (raw FK). "" clears it.
+  setDelegatesTo: (roleId: string, targetRoleId: string) => void;
   setStalenessThreshold: (months: number) => void;
   setModified: (isoDate: string) => void;
   addEdge: (from: string, to: string) => void;

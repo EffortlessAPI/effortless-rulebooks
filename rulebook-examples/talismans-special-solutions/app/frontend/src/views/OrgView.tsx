@@ -47,6 +47,13 @@ export function OrgView({ sit, handlers }: OrgViewProps) {
                     <div className="org-role">{node.name}</div>
                     <div className="org-agent muted">{fillerAgent(sit, node.id)?.name || "unassigned"}</div>
                   </div>
+                  {sit.roleById[node.id]?.escalationViolation && (
+                    <button
+                      className="org-escalation-broken"
+                      onClick={(e) => handlers!.openEscalation(node.id, e.currentTarget.getBoundingClientRect())}
+                      title="This role owns a gate but has no escalation target — open the org chart to fix it"
+                    >⚠ no escalation</button>
+                  )}
                 </div>
                 {i < chain.length - 1 && <div className="org-up">↑ escalates to</div>}
               </React.Fragment>

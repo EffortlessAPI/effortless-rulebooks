@@ -617,7 +617,27 @@ app.post("/api/scenario/:name", wrap(async (req, res) => {
     res.status(404).json({ error: `unknown scenario: ${req.params.name}` });
     return;
   }
-  const result = await applyMutation(dataOf(req), (db: RawDb) => replayEdits(db, s.edits));
+
+  // "Reset to baseline" (IsReset) restores the FULL rulebook baseline — it does
+  // NOT replay a hand-maintained edit list. The baseline IS the rulebook seed
+  // data (the SSoT), so reseeding every raw fact undoes ANY Simulate card —
+  // present or future — without anyone having to enumerate which fields each one
+  // touched. (A per-field reset list silently goes stale the moment a new card
+  // mutates a field nobody added to the list: that's how CQ7's ownedBy edit, and
+  // CQ4/CQ8, ended up unfixable.) seedStoreFromRulebook returns the same
+  // camelCase raw-store shape the engines persist, covering every table.
+  let mutate: (db: RawDb) => void;
+  if (s.isReset) {
+    const baseline = await seedStoreFromRulebook(RULEBOOK_PATH);
+    mutate = (db: RawDb) => {
+      for (const k of Object.keys(db)) delete db[k];
+      for (const [cls, rows] of Object.entries(baseline)) db[cls] = rows as RawDb[string];
+    };
+  } else {
+    mutate = (db: RawDb) => replayEdits(db, s.edits);
+  }
+
+  const result = await applyMutation(dataOf(req), mutate);
   res.json({ ok: true, scenario: req.params.name, ...result });
 }));
 
