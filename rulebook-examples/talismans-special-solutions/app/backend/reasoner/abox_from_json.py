@@ -63,6 +63,25 @@ JUNCTION_PROJECTIONS = {
     "StepPrecedence": ("fromStep", "toStep", "precedesStep"),
 }
 
+# Inverse back-reference properties that are DERIVED, never asserted. Each is the
+# owl:inverseOf of an EDITABLE forward FK, and the forward side is the single
+# source of truth. If we asserted the stored back-ref too, OWL-RL's owl:inverseOf
+# would re-derive the forward edge FROM the stale back-ref — so cutting the
+# forward FK (e.g. clearing delegatesTo to break an escalation chain) would be
+# silently UNDONE: release-manager.delegatesTo='' drops the edge, but the
+# orphaned vp.fromDelegatesTo='release-manager' resurrects it (vp fromDelegatesTo
+# rm  ⟹  rm delegatesTo vp), and the transitive closure refills — so
+# EscalationViolation / CQ6 / the break-delegation scenario never fire. We skip
+# the back-ref and let OWL-RL materialize it cleanly from the live forward edge.
+#
+# ONLY back-refs whose forward FK the app edits AND that are fully redundant with
+# that forward edge belong here. fromDelegatesTo qualifies (delegatesTo is the one
+# inverse-paired FK the console edits; fromDelegatesTo mirrors it exactly). Others
+# like consumedBySteps do NOT — a scenario authors data ON that back-ref side, so
+# dropping it would lose real facts. Add a property here only after confirming its
+# forward counterpart is the authoritative, edited side.
+DERIVED_INVERSE_BACKREFS = {"fromDelegatesTo"}
+
 
 def _lname(prop: str) -> str:
     """erb: local name for a JSON key. Keys are already local names."""
@@ -168,6 +187,10 @@ def json_db_to_turtle(db: Dict[str, Any]) -> str:
             pk_field = _row_pk_field(row)
             triples = [f"erb:{pk} a erb:{cls}"]
             for key, value in row.items():
+                # Derived inverse back-refs are never asserted — OWL-RL materializes
+                # them from the live forward FK (see DERIVED_INVERSE_BACKREFS).
+                if key in DERIVED_INVERSE_BACKREFS:
+                    continue
                 if value is None:
                     continue
                 # The empty string is this domain's encoding of "no value" — every

@@ -55,7 +55,16 @@ export function OrgView({ sit, handlers }: OrgViewProps) {
                     >⚠ no escalation</button>
                   )}
                 </div>
-                {i < chain.length - 1 && <div className="org-up">↑ escalates to</div>}
+                {i < chain.length - 1 && (
+                  <button
+                    type="button"
+                    className="org-up org-up-edit"
+                    onClick={(e) => handlers!.openEscalation(node.id, e.currentTarget.getBoundingClientRect())}
+                    title={`Change who ${node.name} escalates to`}
+                  >
+                    ↑ escalates to <span className="org-up-pen">✎</span>
+                  </button>
+                )}
               </React.Fragment>
             ))}
           </div>

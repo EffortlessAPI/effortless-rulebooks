@@ -207,6 +207,18 @@ export function EscalationPopover({ roleId, sit, anchorRect, onPick, onClose }: 
   }, [onClose]);
 
   const role = sit.roleById[roleId];
+  // The role's CURRENT immediate next hop, read off the reasoned org tree (the
+  // node directly above it in its chain). Drives whether this popover frames a
+  // FIX ("no one to escalate to") or a CHANGE ("currently escalates to X"). We
+  // read it from orgTree rather than role.delegatesTo because that column is a
+  // transitive-closure array on the reasoner and a scalar on Postgres — orgTree
+  // is the one already-normalized adjacency both substrates agree on.
+  let currentTargetId: string | null = null;
+  for (const chain of sit.orgTree) {
+    const idx = chain.findIndex((n) => n.id === roleId);
+    if (idx >= 0 && idx < chain.length - 1) { currentTargetId = chain[idx + 1].id; break; }
+  }
+  const currentTarget = currentTargetId ? sit.roleById[currentTargetId] : null;
   // A candidate next hop is any role but self, excluding one whose escalation
   // already reaches this role (that pick would make a cycle). Roles that
   // themselves escalate upward (a non-empty reach) lead somewhere — list first.
@@ -232,14 +244,19 @@ export function EscalationPopover({ roleId, sit, anchorRect, onPick, onClose }: 
   }, [anchorRect, roleId]);
 
   return (
-    <div className="popover esc-popover" ref={ref} style={{ top, left }}>
+    <div className={"popover esc-popover" + (currentTarget ? " esc-popover-ok" : "")} ref={ref} style={{ top, left }}>
       <div className="popover-head">
-        ⚠ <b>{role?.name || roleId}</b> has no one to escalate to
+        {currentTarget
+          ? <>↑ <b>{role?.name || roleId}</b> escalates to <b>{currentTarget.name}</b></>
+          : <>⚠ <b>{role?.name || roleId}</b> has no one to escalate to</>}
       </div>
       <div className="popover-guide" role="note">
-        This role owns an <b>approval gate</b>. When the gate stalls past its
-        escalation window, authority must flow <b>up the delegation chain</b> — but
-        the chain dead-ends here. Pick who it escalates to:
+        {currentTarget
+          ? <>When this role's gate stalls past its escalation window, authority flows up
+             to <b>{currentTarget.name}</b>. Re-point the chain by picking a different next hop:</>
+          : <>This role owns an <b>approval gate</b>. When the gate stalls past its
+             escalation window, authority must flow <b>up the delegation chain</b> — but
+             the chain dead-ends here. Pick who it escalates to:</>}
       </div>
 
       <div className="esc-orgchart">
@@ -248,31 +265,50 @@ export function EscalationPopover({ roleId, sit, anchorRect, onPick, onClose }: 
           <div className="esc-chain" key={ci}>
             {chain.map((n, i) => (
               <React.Fragment key={n.id}>
-                <span className={"esc-node" + (n.id === roleId ? " broken" : "")}>{n.name}</span>
+                <span className={"esc-node" + (n.id === roleId ? (currentTarget ? " current" : " broken") : "")}>{n.name}</span>
                 {i < chain.length - 1 && <span className="esc-up">↑</span>}
               </React.Fragment>
             ))}
           </div>
         ))}
-        {/* the offending role, shown detached: its edge was cut */}
-        <div className="esc-chain broken-chain">
-          <span className="esc-node broken">{role?.name}</span>
-          <span className="esc-up dashed">↑ ?</span>
-          <span className="esc-node ghost">— no target —</span>
-        </div>
+        {/* when the edge is cut, show the offending role detached so the gap reads */}
+        {!currentTarget && (
+          <div className="esc-chain broken-chain">
+            <span className="esc-node broken">{role?.name}</span>
+            <span className="esc-up dashed">↑ ?</span>
+            <span className="esc-node ghost">— no target —</span>
+          </div>
+        )}
       </div>
 
       <div className="popover-body">
-        <div className="popover-group-label">Delegate to</div>
-        {candidates.map(({ r, chain }) => (
-          <button key={r.id} className="popover-opt esc-opt" onClick={() => onPick(r.id)}>
-            <span className="opt-dot k-role" />
-            <span className="esc-opt-name">{r.name}</span>
-            {chain.length > 0
-              ? <span className="esc-leads">↑ {chain.map((t) => t.name).join(" → ")}</span>
-              : <span className="esc-leads top">top of chain</span>}
+        <div className="popover-group-label">{currentTarget ? "Re-point to" : "Delegate to"}</div>
+        {candidates.map(({ r, chain }) => {
+          const isCurrent = r.id === currentTargetId;
+          return (
+            <button
+              key={r.id}
+              className={"popover-opt esc-opt" + (isCurrent ? " current" : "")}
+              onClick={() => onPick(r.id)}
+              disabled={isCurrent}
+            >
+              <span className="opt-dot k-role" />
+              <span className="esc-opt-name">{r.name}</span>
+              {isCurrent
+                ? <span className="esc-leads cur">✓ current</span>
+                : chain.length > 0
+                  ? <span className="esc-leads">↑ {chain.map((t) => t.name).join(" → ")}</span>
+                  : <span className="esc-leads top">top of chain</span>}
+            </button>
+          );
+        })}
+        {currentTarget && (
+          <button className="popover-opt esc-opt esc-clear" onClick={() => onPick("")}>
+            <span className="opt-dot k-clear" />
+            <span className="esc-opt-name">Clear escalation</span>
+            <span className="esc-leads">cut the edge — breaks CQ6</span>
           </button>
-        ))}
+        )}
       </div>
       <div className="popover-foot">
         Sets <code>{role?.name} → delegatesTo</code>; the reasoner re-closes the chain and CQ6 re-answers.
