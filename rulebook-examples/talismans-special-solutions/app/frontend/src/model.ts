@@ -64,22 +64,47 @@ function hashStr(s: string): number {
   }
   return h >>> 0;
 }
-const HUMAN_FACES = ["👩‍💼", "👨‍💼", "👩‍🔬", "👨‍💻", "👩‍⚖️", "🧑‍🚀", "👨‍🏫", "👩‍🔧", "🧔", "👩‍🦰", "👨‍🦱", "👩‍🦳"];
-const AI_FACES = ["🤖", "👾", "🦾"];
-const PIPELINE_FACES = ["⚙️", "🛠️", "🔁"];
-
 export interface AvatarLook {
   face: string;
   hue: number;
 }
 
+// Hand-assigned faces for the named cast, so each person is unmistakable at a
+// glance and never confused with another. Keyed by agent id; the hue gives each
+// a distinct ring color too. Anything not listed falls back to the hashed pool.
+const AGENT_FACES: Record<string, AvatarLook> = {
+  "ntwf-maria-gonzalez": { face: "👩",    hue: 25 },   // Release Manager — woman, brown hair
+  "ntwf-david-chen":     { face: "👨",    hue: 210 },  // VP Engineering — man, crew cut
+  "ntwf-james-okafor":   { face: "🕴️",   hue: 320 },  // Legal Compliance — a single suited person
+  "ntwf-sarah-kim":      { face: "👱‍♀️",  hue: 48 },   // CTO — blond
+  "ntwf-priya-nair":     { face: "👩‍🔬",  hue: 160 },  // (unassigned extra) — kept visually distinct
+};
+
+// ONE icon per non-human kind, used for EVERY agent of that kind: the robot is
+// the AI and ONLY the AI; the gear is the automated pipeline and nothing else.
+// (Reserving 🤖 for the AI is the whole point — it should never read as a person
+// or a process.)
+const AI_FACE = "🤖";
+const PIPELINE_FACE = "⚙️";
+// Deterministic fallback faces for any HUMAN not in the named cast above (none
+// in today's data, but keeps an added person from collapsing to a generic 🧑).
+const HUMAN_FACES = ["🧑", "👩", "👨", "🧓", "🧔"];
+
 export function avatarFor(agent?: Agent | null, type?: string): AvatarLook | null {
   if (!agent) return null;
   const kind: AgentKind = agent.kind || (type ? kindOfType(type) : "unknown");
-  const pool = kind === "ai" ? AI_FACES : kind === "pipeline" ? PIPELINE_FACES : kind === "human" ? HUMAN_FACES : null;
-  if (!pool) return null;
-  const h = hashStr(agent.id || agent.name || "?");
-  return { face: pool[h % pool.length], hue: h % 360 };
+  // A named human gets their hand-picked face; everyone of a non-human kind gets
+  // that kind's single icon. No more hash-roulette that made two AIs look unlike
+  // each other or a pipeline look like a robot.
+  const id = agent.id || "";
+  if (AGENT_FACES[id]) return AGENT_FACES[id];
+  if (kind === "ai") return { face: AI_FACE, hue: 265 };
+  if (kind === "pipeline") return { face: PIPELINE_FACE, hue: 40 };
+  if (kind === "human") {
+    const h = hashStr(id || agent.name || "?");
+    return { face: HUMAN_FACES[h % HUMAN_FACES.length], hue: h % 360 };
+  }
+  return null;
 }
 
 // The escalation ladder ABOVE a role (its VP, then CTO, …), read straight off
