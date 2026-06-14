@@ -5,7 +5,6 @@ import { buildSituation, KIND, kindOfType, initials } from "./model";
 import { FlowView } from "./views/FlowView";
 import { GraphView } from "./views/GraphView";
 import { ClosureView } from "./views/ClosureView";
-import { LineageView } from "./views/LineageView";
 import { OrgView } from "./views/OrgView";
 import { DeptView } from "./views/DeptView";
 import { CQView } from "./views/CQView";
@@ -19,8 +18,10 @@ import type { Story, Situation, Handlers, Scenario } from "./types";
 // Talisman's Special Solutions — Release Console.
 //
 // A dashboard for ONE release. The reasoned model is shown several ways
-// (Flow / Closure / Lineage / Org / Dept) on the LEFT — switch the lens via the URL
-// (the reasoned-network graph folds into the Flow lens as a collapsible panel).
+// (Flow / Closure / Org / Dept) on the LEFT — switch the lens via the URL.
+// The reasoned-network graph folds into the Flow lens as a collapsible panel;
+// the artifact lineage rides inside the Closure lens (it's the same closure
+// machine over wasDerivedFrom, and step order drives the artifact chain).
 // (/console/:view), the object is the same. The competency-question scoreboard
 // rides on the RIGHT, always visible, so the leadership questions re-answer
 // themselves live as you edit facts on the left. Everything with a dotted
@@ -32,12 +33,11 @@ import type { Story, Situation, Handlers, Scenario } from "./types";
 // now live in console/ and hooks/.)
 // ===========================================================================
 
-export type ViewId = "flow" | "closure" | "lineage" | "org" | "dept";
+export type ViewId = "flow" | "closure" | "org" | "dept";
 
 const VIEWS: { id: ViewId; label: string; hint: string }[] = [
   { id: "flow", label: "Flow", hint: "the release, step by step" },
-  { id: "closure", label: "Closure", hint: "assert order · watch it infer" },
-  { id: "lineage", label: "Lineage", hint: "artifacts · derived-from chain" },
+  { id: "closure", label: "Closure", hint: "assert order · watch it infer · + artifact lineage" },
   { id: "org", label: "Org", hint: "who fills · who escalates to whom" },
   { id: "dept", label: "Dept", hint: "which steps are Eng vs Legal · answers CQ7" },
 ];
@@ -214,16 +214,14 @@ export default function App({ headerRight = null }: AppProps) {
               it summarizes, in the Flow lens only. */}
           {view === "flow" && (
             <>
-              {/* The reasoned network is no longer a separate tab — it's an
-                  optional panel that unfolds in place ABOVE the step cards, so
-                  the graph and the cards are the same view of the same release. */}
-              <CollapsibleGraph sit={sit} handlers={handlers} />
+              {/* The reasoned network is no longer drawn separately: each agent
+                  node now sits directly on top of its real step card in FlowView
+                  (agent → stalk → card), so the five steps are shown ONCE. */}
               <AgentMix sit={sit} />
               <FlowView sit={sit} handlers={handlers} />
             </>
           )}
           {view === "closure" && <ClosureView sit={sit} handlers={handlers} />}
-          {view === "lineage" && <LineageView sit={sit} handlers={handlers} />}
           {view === "org" && <OrgView sit={sit} handlers={handlers} />}
           {view === "dept" && <DeptView sit={sit} handlers={handlers} />}
 

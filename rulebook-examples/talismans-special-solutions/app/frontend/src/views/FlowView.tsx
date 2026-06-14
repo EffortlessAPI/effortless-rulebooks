@@ -75,15 +75,26 @@ export function FlowView({ sit, handlers }: FlowViewProps) {
                   <div className="flow-arrow flow-arrow--feeds" title="feeds into (DCAT dataset consumed by this step)">⇢</div>
                 </>
               )}
-              <StepCard
-                step={s}
-                fact={sit.stepFacts[s.id] || {}}
-                handlers={handlers}
-                tied={posCounts[s.position] > 1}
-                escalationViolation={!!sit.roleById[s.roleId]?.escalationViolation}
-                escalatesTo={escalationAncestors(sit, s.roleId).map((a) => a.name)}
-                departmentTitle={s.owningDepartment ? sit.departmentById[s.owningDepartment]?.title ?? null : null}
-              />
+              {/* One column = the agent NODE on top (the old graph's circle),
+                  a short stalk, then the step's REAL card directly beneath it.
+                  The agent and the step it runs are the SAME column now — there is
+                  no separate graph drawing the five steps a second time. */}
+              <div className="sc-col">
+                <StepAgentNode
+                  step={s}
+                  handlers={handlers}
+                  escalatesTo={escalationAncestors(sit, s.roleId).map((a) => a.name)}
+                  departmentTitle={s.owningDepartment ? sit.departmentById[s.owningDepartment]?.title ?? null : null}
+                />
+                <div className="sc-connector" aria-hidden="true" />
+                <StepCard
+                  step={s}
+                  fact={sit.stepFacts[s.id] || {}}
+                  handlers={handlers}
+                  tied={posCounts[s.position] > 1}
+                  escalationViolation={!!sit.roleById[s.roleId]?.escalationViolation}
+                />
+              </div>
               {i < steps.length - 1 && (
                 <div className={"flow-arrow" + (ambiguousGap ? " flow-arrow--ambiguous" : "")}
                   title={ambiguousGap ? "these two steps share a position — their order is NOT asserted" : "comes before"}>
@@ -130,11 +141,6 @@ interface StepCardProps {
   tied?: boolean;
   // The gate role's derived EscalationViolation — drives the ⚠ badge on the gate.
   escalationViolation?: boolean;
-  // The role's escalation ladder above it (e.g. ["VP of Engineering","CTO"]) —
-  // read off the reasoned org tree so the card shows WHO this person answers to.
-  escalatesTo?: string[];
-  // The owning department's title (Engineering / Legal), shown on avatar hover.
-  departmentTitle?: string | null;
 }
 
 // Department hue (matches the Dept lens + graph hover).
@@ -145,24 +151,25 @@ function deptHue(title?: string | null): string {
   return "var(--muted)";
 }
 
-// The card's agent: a big distinct face that IS the "who" of the step. The name,
-// role, department and escalation chain are NOT printed on the card — they pop in
-// a hover-card, so the board reads as faces-over-steps instead of a wall of
-// repeated words. Clicking the avatar still reassigns (the edit path is unchanged).
-function CardAgent({
-  step, handlers, escalatesTo, departmentTitle, requiresHuman,
+// The agent NODE that sits on top of a step's card — this IS what the old graph's
+// top row of circles was, but now it's wired straight to the real card below it
+// (a short stalk), so the five steps are never drawn twice. The distinct face is
+// the "who"; the name sits under it; role / department / escalation pop on hover.
+// Clicking the avatar reassigns (the edit path is unchanged).
+function StepAgentNode({
+  step, handlers, escalatesTo, departmentTitle,
 }: {
   step: Step;
   handlers: Handlers;
   escalatesTo: string[];
   departmentTitle?: string | null;
-  requiresHuman: boolean;
 }) {
   const [hov, setHov] = useState<{ x: number; y: number } | null>(null);
   const kind: AgentKind = kindOfType(step.executingAgentType);
+  const requiresHuman = !!step.requiresHumanApproval;
   return (
-    <span
-      className="sc-agentwrap"
+    <div
+      className="sc-agentnode"
       onMouseEnter={(e) => setHov({ x: e.clientX, y: e.clientY })}
       onMouseMove={(e) => setHov({ x: e.clientX, y: e.clientY })}
       onMouseLeave={() => setHov(null)}
@@ -173,8 +180,11 @@ function CardAgent({
         roleId={step.roleId}
         onReassign={handlers.openReassign}
         requiresHuman={requiresHuman}
-        size={46}
+        size={50}
       />
+      <div className="sc-agentname" title={step.agent ? step.agent.name : "unassigned"}>
+        {step.agent ? step.agent.name : "unassigned"}
+      </div>
       {hov && (
         <div
           className="graph-hovercard"
@@ -194,11 +204,11 @@ function CardAgent({
           <div className="gh-row muted">click to reassign</div>
         </div>
       )}
-    </span>
+    </div>
   );
 }
 
-function StepCard({ step, fact, handlers, tied, escalationViolation = false, escalatesTo = [], departmentTitle }: StepCardProps) {
+function StepCard({ step, fact, handlers, tied, escalationViolation = false }: StepCardProps) {
   const kind: AgentKind = kindOfType(step.executingAgentType);
   const isAI = kind === "ai";
   // This step REQUIRES a human sign-off (raw fact) — surface the expectation on
@@ -267,30 +277,17 @@ function StepCard({ step, fact, handlers, tied, escalationViolation = false, esc
         ⚙
       </button>
 
-      {/* The avatar IS the "who" — a big distinct face. Name / role / department /
-          escalation are on hover, not printed, so the card stays a clean glance.
-          Badges + title sit beside it; the badges carry the only flags worth a
-          word (position, gate, needs-human, rule-broken). */}
-      <div className="sc-head">
-        <CardAgent
-          step={step}
-          handlers={handlers}
-          escalatesTo={escalatesTo}
-          departmentTitle={departmentTitle}
-          requiresHuman={requiresHuman}
-        />
-        <div className="sc-headmeta">
-          <div className="sc-top">
-            <span className={"sc-pos" + (tied ? " tied" : "")} title={tied ? "another step shares this position — order not determined" : undefined}>{step.position}{tied ? " ⚠" : ""}</span>
-            {step.isApprovalGate && <span className="sc-gate">🔒 gate</span>}
-            {requiresHuman && !step.consistencyViolation && (
-              <span className="sc-needs" title="this step requires a human sign-off">🔒 needs human</span>
-            )}
-            {step.consistencyViolation && <span className="sc-violation">⚠ rule broken</span>}
-          </div>
-          <div className="sc-title">{step.title}</div>
-        </div>
+      {/* The "who" is the agent node + stalk ABOVE this card, so the card body is
+          just the step itself: badges (the only flags worth a word) + title. */}
+      <div className="sc-top">
+        <span className={"sc-pos" + (tied ? " tied" : "")} title={tied ? "another step shares this position — order not determined" : undefined}>{step.position}{tied ? " ⚠" : ""}</span>
+        {step.isApprovalGate && <span className="sc-gate">🔒 gate</span>}
+        {requiresHuman && !step.consistencyViolation && (
+          <span className="sc-needs" title="this step requires a human sign-off">🔒 needs human</span>
+        )}
+        {step.consistencyViolation && <span className="sc-violation">⚠ rule broken</span>}
       </div>
+      <div className="sc-title">{step.title}</div>
 
       {/* Gate-only: the one gate-specific contract worth a line — its escalation
           window. (Who owns/approves it is the avatar + its hover, so those rows

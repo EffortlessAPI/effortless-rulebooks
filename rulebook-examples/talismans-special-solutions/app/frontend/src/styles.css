@@ -176,14 +176,26 @@ button, input, select { font: inherit; }
 /* ---- FLOW view ---------------------------------------------------------- */
 .flow-ambiguous { background: color-mix(in srgb, var(--risk) 12%, transparent); border: 1px solid var(--risk);
   border-radius: var(--radius); padding: 10px 14px; margin-bottom: 14px; font-size: 13px; line-height: 1.45; }
-.flow-track { display: flex; align-items: stretch; gap: 6px; overflow-x: auto; padding-bottom: 8px; }
-.flow-arrow { align-self: center; color: var(--muted); font-size: 22px; flex: none; transition: color .15s, transform .15s; }
+/* The agent-node head height (avatar + name + stalk). Arrows and the dataset
+   feeder drop by this much so they line up with the CARD row, not the avatars. */
+:root { --flow-head: 93px; }
+.flow-track { display: flex; align-items: flex-start; gap: 6px; overflow-x: auto; padding-bottom: 8px; }
+.flow-arrow { align-self: flex-start; margin-top: calc(var(--flow-head) + 14px); color: var(--muted); font-size: 22px; flex: none; transition: color .15s, transform .15s; }
 .flow-arrow.lit { color: var(--accent); transform: scale(1.25); }
 .flow-arrow--ambiguous { color: var(--risk); font-size: 16px; font-weight: 800; }
 .flow-arrow--feeds { color: #4fd1c5; font-size: 20px; }
+
+/* one step = a COLUMN: the agent node on top, a short stalk, then the real card.
+   This is the former graph's agent→step link, now wired to the actual card. */
+.sc-col { flex: 1 1 0; min-width: 188px; display: flex; flex-direction: column; align-items: center; }
+.sc-col > .stepcard { width: 100%; flex: none; min-width: 0; }
+.sc-agentnode { display: flex; flex-direction: column; align-items: center; gap: 5px; cursor: default; }
+.sc-agentname { font-size: 11.5px; font-weight: 600; color: var(--text); max-width: 168px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-align: center; }
+/* the dashed stalk from the agent node down to its card (the old graph edge) */
+.sc-connector { width: 0; height: 22px; border-left: 2px dashed color-mix(in srgb, var(--accent) 55%, transparent); }
 /* DCAT dataset feeder — a "stack of papers", categorically distinct from a step
    card so it can never be misread as a step in the ordered sequence. */
-.flow-dataset { position: relative; flex: none; align-self: center; min-width: 150px; max-width: 170px; margin: 8px 2px; }
+.flow-dataset { position: relative; flex: none; align-self: flex-start; margin-top: calc(var(--flow-head) + 4px); min-width: 150px; max-width: 170px; }
 .flow-dataset .ds-stack { position: absolute; inset: 0; border-radius: 8px; background: var(--card2);
   border: 1px solid #4fd1c5; }
 .flow-dataset .ds-stack-2 { transform: translate(5px, 5px); opacity: .55; }
