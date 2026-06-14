@@ -33,6 +33,19 @@
     "count_of_precedence_closure_pairs": 10,
     "count_roles_with_bad_filler_cardinality": 0,
     "count_agent_type_changes": 2,
-    "count_compliance_audit_changes": 1
+    "count_compliance_audit_changes": 1,
+    "count_approval_gate_steps": 1,
+    "count_gates_without_human_approver": 0,
+    "count_workflow_artifacts": 5,
+    "count_roles_with_escalation_violation": 0,
+    "count_unconsumed_datasets": 0,
+    "cq1_satisfied": true,
+    "cq2_satisfied": true,
+    "cq3_satisfied": true,
+    "cq4_satisfied": true,
+    "cq5_satisfied": true,
+    "cq6_satisfied": true,
+    "cq7_satisfied": true,
+    "cq8_satisfied": true
   }
 ]

@@ -25,7 +25,20 @@
       "count_of_precedence_closure_pairs",
       "count_roles_with_bad_filler_cardinality",
       "count_agent_type_changes",
-      "count_compliance_audit_changes"
+      "count_compliance_audit_changes",
+      "count_approval_gate_steps",
+      "count_gates_without_human_approver",
+      "count_workflow_artifacts",
+      "count_roles_with_escalation_violation",
+      "count_unconsumed_datasets",
+      "cq1_satisfied",
+      "cq2_satisfied",
+      "cq3_satisfied",
+      "cq4_satisfied",
+      "cq5_satisfied",
+      "cq6_satisfied",
+      "cq7_satisfied",
+      "cq8_satisfied"
     ],
     "record_count": 1
   },
@@ -62,7 +75,8 @@
       "iri",
       "name",
       "gate_role",
-      "gate_approver_human"
+      "gate_approver_human",
+      "has_human_approver"
     ],
     "record_count": 1
   },
@@ -168,7 +182,8 @@
     "primary_key": "dataset_id",
     "computed_columns": [
       "relative_path",
-      "iri"
+      "iri",
+      "is_consumed"
     ],
     "record_count": 1
   },

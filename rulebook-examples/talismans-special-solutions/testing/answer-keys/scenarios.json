@@ -63,10 +63,10 @@
     "scenario_id": "dataset-unconsumed",
     "label": "Detach the risk dataset",
     "icon": "\ud83d\udce6",
-    "explanation": "Clears the dataset's consumed-by-step link. The Q1 Risk Metrics dataset is no longer consumed by any step. Demonstrates CQ8: dataset consumption is an asserted relationship, and the answer is exactly which steps point at it.",
+    "explanation": "Clears the AI Risk Assessment step's consumes-dataset link (WorkflowSteps.ConsumesDataset is the authoritative DCAT forward FK; Datasets.ConsumedBySteps is its derived inverse). The Q1 Risk Metrics dataset is now consumed by no step \u2014 on the Graph lens its \ud83d\udce6 node visibly detaches from step 1. Demonstrates CQ8: dataset consumption is a real relationship, and the answer is exactly which steps point at it; with nothing consuming it, the AI-provenance answer is gone.",
     "sort_order": 80,
     "is_reset": false,
-    "edits": "[{\"class\": \"Datasets\", \"id\": \"ds-q1-2026-risk-metrics\", \"set\": {\"consumedBySteps\": \"\"}}]",
+    "edits": "[{\"class\": \"WorkflowSteps\", \"id\": \"prod-deploy-step-1\", \"set\": {\"consumesDataset\": \"\"}}]",
     "relative_path": "scenarios/dataset-unconsumed",
     "iri": "scenarios-dataset-unconsumed",
     "name": "detach-the-risk-dataset"

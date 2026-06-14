@@ -7,6 +7,7 @@
     "distribution_url": "https://data.internal.special-solutions.example/risk/q1-2026",
     "consumed_by_steps": "prod-deploy-step-1",
     "relative_path": "datasets/ds-q1-2026-risk-metrics",
-    "iri": "datasets-ds-q1-2026-risk-metrics"
+    "iri": "datasets-ds-q1-2026-risk-metrics",
+    "is_consumed": true
   }
 ]

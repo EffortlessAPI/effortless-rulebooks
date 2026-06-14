@@ -440,7 +440,20 @@
         "CountOfPrecedenceClosurePairs": 10,
         "CountRolesWithBadFillerCardinality": 0,
         "CountAgentTypeChanges": 2,
-        "CountComplianceAuditChanges": 1
+        "CountComplianceAuditChanges": 1,
+        "CountApprovalGateSteps": 1,
+        "CountGatesWithoutHumanApprover": 0,
+        "CountWorkflowArtifacts": 5,
+        "CountRolesWithEscalationViolation": 0,
+        "CountUnconsumedDatasets": 0,
+        "Cq1Satisfied": true,
+        "Cq2Satisfied": true,
+        "Cq3Satisfied": true,
+        "Cq4Satisfied": true,
+        "Cq5Satisfied": true,
+        "Cq6Satisfied": true,
+        "Cq7Satisfied": true,
+        "Cq8Satisfied": true
       }
     ]
   },
@@ -825,7 +838,7 @@
         "AssignedRole": "ntwf-risk-analysis-role",
         "RequiresHumanApproval": false,
         "StepDurationMinutes": 15,
-        "ConsumesDataset": "ds-q1-2026-risk-metrics",
+        "ConsumesDataset": "",
         "ProducesArtifacts": "artifact-risk-report",
         "ApprovalGate": "",
         "Precedes": "prec-1-2",
@@ -985,7 +998,8 @@
         "Iri": "workflows-production-deployment-steps-prod-deploy-step-3-approval-gates-ntwf-release-approval-gate",
         "Name": "release-approval-gate",
         "GateRole": "ntwf-release-manager-role",
-        "GateApproverHuman": "ntwf-maria-gonzalez"
+        "GateApproverHuman": "ntwf-maria-gonzalez",
+        "HasHumanApprover": true
       }
     ]
   },
@@ -2495,7 +2509,8 @@
         "DistributionUrl": "https://data.internal.special-solutions.example/risk/q1-2026",
         "ConsumedBySteps": "prod-deploy-step-1",
         "RelativePath": "datasets/ds-q1-2026-risk-metrics",
-        "Iri": "datasets-ds-q1-2026-risk-metrics"
+        "Iri": "datasets-ds-q1-2026-risk-metrics",
+        "IsConsumed": true
       }
     ]
   },

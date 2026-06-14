@@ -7,7 +7,7 @@
     "assigned_role": "ntwf-risk-analysis-role",
     "requires_human_approval": false,
     "step_duration_minutes": 15,
-    "consumes_dataset": "ds-q1-2026-risk-metrics",
+    "consumes_dataset": "",
     "produces_artifacts": "artifact-risk-report",
     "approval_gate": "",
     "precedes": "prec-1-2",
