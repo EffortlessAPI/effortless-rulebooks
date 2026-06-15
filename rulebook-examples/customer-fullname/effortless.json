@@ -83,8 +83,8 @@
       "RelativePath": "/web/src",
       "CommandLine": "rulebook-to-react-explainer-dag -i ../../effortless-rulebook/customer-fullname-rulebook.json",
       "IsDisabled": false,
-      "LastVersionUsed": "v2026.06.10.1301",
-      "LastUrl": "https://effortless-rulebook-to-react-exp-v2026-06-10-1301-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
+      "LastVersionUsed": "v2026.06.11.1530",
+      "LastUrl": "https://effortless-rulebook-to-react-exp-v2026-06-11-1530-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
     },
     {
       "IsSSoTTranspiler": false,

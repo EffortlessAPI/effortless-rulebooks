@@ -19,5 +19,5 @@ INSERT INTO customers (customer_id, first_name, last_name)
 VALUES ('emily-jones-email-com', 'Emily', 'Jones') ON CONFLICT (customer_id) DO NOTHING;
 
 INSERT INTO customers (customer_id, first_name, last_name)
-VALUES ('alice-cooper', 'Alice', 'Gutknecht') ON CONFLICT (customer_id) DO NOTHING;
+VALUES ('alice-cooper', 'Mary', 'Gutknecht') ON CONFLICT (customer_id) DO NOTHING;
 

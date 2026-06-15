@@ -8,13 +8,13 @@ export const rulebook = {
       { "name": "FirstName", "datatype": "string", "type": "raw", "Description": "First Name of the customer" },
       { "name": "LastName", "datatype": "string", "type": "raw", "Description": "Last Name of the customer" },
       { "name": "Name", "datatype": "string", "type": "calculated", "Description": "Full name: first and last", "formula": "={{LastName}} & \", \" & {{FirstName}}" },
-      { "name": "Initials", "datatype": "string", "type": "calculated", "Description": "Last letter of first and last name, dot-separated with trailing dot", "formula": "=LEFT({{FirstName}}, 1) & \". \" & LEFT({{LastName}}, 1) & \".\"" }
+      { "name": "Initials", "datatype": "string", "type": "calculated", "Description": "Last letter of first and last name, dot-separated with trailing dot", "formula": "=LEFT({{FirstName}}, 1) &LEFT({{LastName}}, 1) & \"-v2\"" }
     ],
     "data": [
       { "CustomerId": "jane-smith-email-com", "FirstName": "Jane", "LastName": "Smith" },
       { "CustomerId": "john-doe-email-com", "FirstName": "John", "LastName": "Doe" },
       { "CustomerId": "emily-jones-email-com", "FirstName": "Emily", "LastName": "Jones" },
-      { "CustomerId": "alice-cooper", "FirstName": "Alice", "LastName": "Gutknecht" }
+      { "CustomerId": "alice-cooper", "FirstName": "Mary", "LastName": "Gutknecht" }
     ]
   },
   "__meta__": {
