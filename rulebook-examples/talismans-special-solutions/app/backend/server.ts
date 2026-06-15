@@ -228,6 +228,13 @@ app.get("/api/story", wrap(async (req, res) => {
   const stepById = new Map(steps.map((s) => [s.id, s]));
   const stepTitleById = new Map<string, string>(steps.map((s) => [s.id, s.title]));
   const stepAgentById = new Map<string, ResolvedAgent | null>(steps.map((s) => [s.id, s.agent]));
+  // CQ8: the capability the consuming step's role REQUIRES of its filler (raw
+  // Roles.HasCapability). A dataset is only legitimately consumed by a step whose
+  // role can actually process it (the dataset-processing capability). Surfaced so
+  // the CQ8 resolver can check the consumer is capability-matched, not just any AI.
+  const stepCapabilityById = new Map<string, string | null>(
+    steps.map((s) => [s.id, ((roles.get(s.roleId) as Record<string, unknown> | undefined)?.hasCapability as string) || null]),
+  );
   const asList = (v: unknown): string[] =>
     Array.isArray(v) ? (v as string[]) : v ? [v as string] : [];
 
@@ -263,6 +270,7 @@ app.get("/api/story", wrap(async (req, res) => {
       id: sid,
       title: stepTitleById.get(sid) || sid,
       agent: stepAgentById.get(sid) || null,
+      roleCapability: stepCapabilityById.get(sid) || null,
     }));
     return {
       id: d.datasetId,
@@ -319,6 +327,10 @@ app.get("/api/story", wrap(async (req, res) => {
   const rolesList = (I.Roles || []).map((r) => ({
     id: r.roleId,
     name: r.displayName,
+    // The capability this role requires of its filler (raw Roles.HasCapability →
+    // AgentCapabilityConcepts). Used by the CQ8 fix picker to offer only steps
+    // whose role can actually process the dataset (the dataset-processing capability).
+    hasCapability: (r.hasCapability as string) || null,
     fillerType: r.fillerType,
     filledByHumanAgent: r.filledByHumanAgent || null,
     filledByAIAgent: r.filledByAIAgent || null,

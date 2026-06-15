@@ -1,6 +1,7 @@
-import React, { useMemo, useState, useEffect, useRef } from "react";
+import React, { useMemo, useState, useEffect, useRef, useLayoutEffect } from "react";
 import { kindOfType } from "../model";
 import { DagCell } from "../explainer-dag";
+import { LineageView } from "./LineageView";
 import type { Situation, Handlers, Step, PrecedenceEdge, ClosurePair } from "../types";
 
 // ===========================================================================
@@ -13,16 +14,25 @@ import type { Situation, Handlers, Step, PrecedenceEdge, ClosurePair } from "../
 // once and lets you EDIT the asserted layer by drag & drop — then watch the
 // inferred layer recompute.
 //
-//   • The CHAIN (top): each step is a node with a draggable "→ then" handle.
-//     Drag the handle from step A and drop it on step B to assert "A precedes B"
-//     (writes a StepPrecedence row). Drop a node's own edge chip to remove it.
-//   • The CLOSURE MATRIX (bottom): rows = from-step, cols = to-step. A SOLID
+//   • The LAYERED DAG (top): steps are laid out in 2D, like the org chart —
+//     the x-axis is the derived SequencePosition (rank), so every step in the
+//     same rank STACKS vertically in one column. Assert "A precedes B" (drag A's
+//     "then →" handle onto B) and B's rank jumps to the next column: you literally
+//     watch the inference push the card to the RIGHT. Asserted edges are drawn as
+//     solid arrows across the columns. When nothing is ordered, all steps tie at
+//     rank 1 and stack in a single column; a finished chain fans out 1→n columns.
+//   • The CLOSURE MATRIX (middle): rows = from-step, cols = to-step. A SOLID
 //     cell is an edge you asserted; a GHOST cell is one the reasoner INFERRED by
 //     transitivity. The never-asserted 1→5 is a ghost cell — the headline.
+//   • The ARTIFACT LINEAGE (bottom): the SAME transitive-closure machine pointed
+//     at a different relation (wasDerivedFrom). It lived on its own "Lineage" tab,
+//     but it's one story with step ordering (the artifacts are even sequenced by
+//     their producer-step), so it now rides here, below the step closure.
 //
 // We compute NO precedence here. `sit.closure.pairs` already carries every pair
 // with its is_inferred flag straight from the reasoner / the closure view. The
-// only thing this view derives is presentation (which cell, which handle).
+// only thing this view derives is presentation (which column, which cell, which
+// edge endpoints to draw).
 // ===========================================================================
 
 // Nominal label colors — like the colors in a graph-coloring problem, the
@@ -142,48 +152,24 @@ export function ClosureView({ sit, handlers }: ClosureViewProps) {
       {/* ---- THE CHAIN: drag a step's "then →" handle onto another step ---- */}
       <div className="cl-chainwrap">
         <div className="cl-section-label cl-section-label--row">
-          <span>Order the steps — drag a step's <span className="cl-handle-demo">then →</span> handle onto a later step</span>
+          <span>Order the steps — drag a step's <span className="cl-handle-demo">then →</span> handle onto another. Same-rank steps <b>stack</b>; asserting an edge pushes a step into the <b>next column to the right</b>.</span>
           <span className="cl-label-tools">
             <span className="cl-label-note">labels are nominal (like graph-coloring) →</span>
             <button className="cl-label-btn" onClick={randomizeLabels} title="Scramble the label assignment client-side — the closure structure is invariant">⤮ Randomize</button>
             <button className="cl-label-btn cl-label-btn--ghost" onClick={relabelInOrder} title="Re-assign A,B,C… straight down the current flow order — once fully wired, that's a clean A→E">↧ Relabel A→E in order</button>
           </span>
         </div>
-        <div className="cl-chain"
-          onDragEnd={() => { setDragFrom(null); setHoverTo(null); }}
-        >
-          {steps.map((s, i) => {
-            const kind = kindOfType(s.executingAgentType);
-            const isHover = hoverTo === s.id && dragFrom && dragFrom !== s.id;
-            const isSource = dragFrom === s.id;
-            return (
-              <React.Fragment key={s.id}>
-                <div
-                  className={"cl-step k-" + kind + (isHover ? " drophot" : "") + (isSource ? " dragging" : "")}
-                  onDragOver={(e: React.DragEvent<HTMLDivElement>) => { if (dragFrom && dragFrom !== s.id) { e.preventDefault(); setHoverTo(s.id); } }}
-                  onDragLeave={() => setHoverTo((h) => (h === s.id ? null : h))}
-                  onDrop={(e: React.DragEvent<HTMLDivElement>) => { e.preventDefault(); tryAssert(dragFrom, s.id); }}
-                >
-                  <div className="cl-step-pos" title="nominal label — identifies this card; reassignable, no structural meaning"
-                    style={{ background: colorOf(s.id), borderColor: colorOf(s.id), color: "#19102e" }}>{letOf(s.id)}</div>
-                  <div className="cl-step-rank" title="derived SequencePosition — recomputed from the closure">pos {s.position}</div>
-                  <div className="cl-step-title">{s.title}</div>
-                  {isHover && <div className="cl-drop-cue">drop → assert {letOf(dragFrom)} precedes {letOf(s.id)}</div>}
-                  {/* the draggable "then →" ordering handle */}
-                  <div
-                    className="cl-handle"
-                    draggable
-                    onDragStart={(e: React.DragEvent<HTMLDivElement>) => { e.dataTransfer.effectAllowed = "link"; setDragFrom(s.id); }}
-                    title={`drag to set what comes after "${s.title}"`}
-                  >
-                    then →
-                  </div>
-                </div>
-                {i < steps.length - 1 && <div className="cl-chain-gap" />}
-              </React.Fragment>
-            );
-          })}
-        </div>
+        <StepDag
+          steps={steps}
+          letOf={letOf}
+          colorOf={colorOf}
+          asserted={asserted}
+          dragFrom={dragFrom}
+          setDragFrom={setDragFrom}
+          hoverTo={hoverTo}
+          setHoverTo={setHoverTo}
+          onAssert={tryAssert}
+        />
 
         {/* asserted edges as removable chips — these are the ONLY facts in play */}
         <div className="cl-asserted-row">
@@ -212,8 +198,182 @@ export function ClosureView({ sit, handlers }: ClosureViewProps) {
         the closure is recomputed, not stored. <b>Randomize the labels</b> and this
         whole grid keeps its shape — the labels are nominal, only the ordering is real.
       </p>
+
+      {/* ---- SAME MACHINE, DIFFERENT RELATION: artifact lineage ----------- */}
+      <div className="cl-lineage-section">
+        <div className="cl-section-divider">
+          <span className="cl-section-divider-label">
+            ↓ the same transitive-closure machine — pointed at <code>wasDerivedFrom</code>
+          </span>
+        </div>
+        <p className="cl-lineage-bridge muted">
+          The step order above and the artifact lineage below are <b>one construct</b>: assert the
+          adjacent links, the reasoner closes the reachable pairs. They're coupled, too — each artifact
+          is sequenced by its <b>producer step</b>, so re-ordering steps above re-threads the chain below.
+          That's why these used to be two tabs and are now one.
+        </p>
+        <LineageView sit={sit} handlers={handlers} embedded />
+      </div>
     </div>
   );
+}
+
+// ===========================================================================
+// STEP DAG — the step set laid out in 2D by derived rank (SequencePosition).
+// Each column is one rank; steps that tie at a rank stack vertically in that
+// column. Asserting "A precedes B" (drag A's "then →" onto B) bumps B's rank, so
+// it slides into the next column — the inference is the layout moving. Asserted
+// edges are drawn as solid arrows over the columns (measured from the live DOM,
+// so they stay glued to the cards through reflow / reload). Computes nothing
+// about precedence: the column index IS s.position, straight from the substrate.
+// ===========================================================================
+interface StepDagProps {
+  steps: Step[];
+  asserted: PrecedenceEdge[];
+  letOf: (id: string | null) => string;
+  colorOf: (id: string | null) => string;
+  dragFrom: string | null;
+  setDragFrom: (id: string | null) => void;
+  hoverTo: string | null;
+  setHoverTo: (fn: string | null | ((h: string | null) => string | null)) => void;
+  onAssert: (from: string | null, to: string | null) => void;
+}
+
+interface Seg { x1: number; y1: number; x2: number; y2: number; key: string }
+
+function StepDag({ steps, asserted, letOf, colorOf, dragFrom, setDragFrom, hoverTo, setHoverTo, onAssert }: StepDagProps) {
+  // Group steps into columns by their derived rank (SequencePosition). Within a
+  // column, order by the nominal label so the stack is stable across reloads.
+  const columns = useMemo(() => {
+    const byRank: Record<number, Step[]> = {};
+    for (const s of steps) (byRank[s.position] ||= []).push(s);
+    return Object.keys(byRank)
+      .map(Number)
+      .sort((a, b) => a - b)
+      .map((rank) => ({
+        rank,
+        items: byRank[rank].slice().sort((a, b) => letOf(a.id).localeCompare(letOf(b.id))),
+      }));
+  }, [steps, letOf]);
+
+  // A stable fingerprint of the actual card arrangement (ranks + the vertical
+  // order within each column). Randomizing the nominal labels re-sorts a column
+  // WITHOUT changing the container size — so the ResizeObserver wouldn't fire and
+  // the arrows would go stale. Keying the measure effect on this string re-draws
+  // the arrows the instant the layout rearranges, label-shuffle included.
+  const layoutKey = useMemo(
+    () => columns.map((c) => c.rank + ":" + c.items.map((s) => s.id).join(",")).join("|"),
+    [columns],
+  );
+
+  const wrapRef = useRef<HTMLDivElement | null>(null);
+  const cardRefs = useRef<Record<string, HTMLDivElement | null>>({});
+  const [segs, setSegs] = useState<Seg[]>([]);
+  const [dims, setDims] = useState<{ w: number; h: number }>({ w: 0, h: 0 });
+
+  // Measure each asserted edge's endpoints from the live DOM and draw a line from
+  // the source card's right edge to the target card's left edge. Re-runs whenever
+  // the step set / asserted edges change, and on container resize.
+  useLayoutEffect(() => {
+    const measure = () => {
+      const wrap = wrapRef.current;
+      if (!wrap) return;
+      const cr = wrap.getBoundingClientRect();
+      const next: Seg[] = [];
+      for (const e of asserted) {
+        const a = cardRefs.current[e.from];
+        const b = cardRefs.current[e.to];
+        if (!a || !b) continue;
+        const ar = a.getBoundingClientRect();
+        const br = b.getBoundingClientRect();
+        next.push({
+          x1: ar.right - cr.left,
+          y1: ar.top - cr.top + ar.height / 2,
+          x2: br.left - cr.left,
+          y2: br.top - cr.top + br.height / 2,
+          key: e.id,
+        });
+      }
+      setSegs((prev) => (sameSegs(prev, next) ? prev : next));
+      setDims((prev) => {
+        const w = wrap.scrollWidth, h = wrap.scrollHeight;
+        return prev.w === w && prev.h === h ? prev : { w, h };
+      });
+    };
+    measure();
+    const ro = new ResizeObserver(measure);
+    if (wrapRef.current) ro.observe(wrapRef.current);
+    window.addEventListener("resize", measure);
+    return () => { ro.disconnect(); window.removeEventListener("resize", measure); };
+  }, [layoutKey, asserted]);
+
+  return (
+    <div className="cl-dag" ref={wrapRef} onDragEnd={() => { setDragFrom(null); setHoverTo(null); }}>
+      {/* asserted-edge arrows, drawn over the columns */}
+      <svg className="cl-dag-svg" width={dims.w || "100%"} height={dims.h || "100%"} aria-hidden="true">
+        <defs>
+          <marker id="cl-arrow" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto">
+            <path d="M0,0 L7,3 L0,6 Z" fill="var(--accent)" />
+          </marker>
+        </defs>
+        {segs.map((s) => (
+          <line key={s.key} x1={s.x1} y1={s.y1} x2={s.x2} y2={s.y2}
+            className="cl-dagedge" markerEnd="url(#cl-arrow)" />
+        ))}
+      </svg>
+
+      <div className="cl-dag-cols">
+        {columns.map((col) => (
+          <div className="cl-dag-col" key={col.rank}>
+            <div className="cl-dag-colhead" title="derived SequencePosition — recomputed from the closure">
+              pos {col.rank}{col.items.length > 1 ? <span className="cl-dag-tie"> · {col.items.length} tied</span> : null}
+            </div>
+            <div className="cl-dag-stack">
+              {col.items.map((s) => {
+                const kind = kindOfType(s.executingAgentType);
+                const isHover = hoverTo === s.id && dragFrom && dragFrom !== s.id;
+                const isSource = dragFrom === s.id;
+                return (
+                  <div
+                    key={s.id}
+                    ref={(el) => { cardRefs.current[s.id] = el; }}
+                    className={"cl-step cl-dagcard k-" + kind + (isHover ? " drophot" : "") + (isSource ? " dragging" : "")}
+                    onDragOver={(e: React.DragEvent<HTMLDivElement>) => { if (dragFrom && dragFrom !== s.id) { e.preventDefault(); setHoverTo(s.id); } }}
+                    onDragLeave={() => setHoverTo((h) => (h === s.id ? null : h))}
+                    onDrop={(e: React.DragEvent<HTMLDivElement>) => { e.preventDefault(); onAssert(dragFrom, s.id); }}
+                  >
+                    <div className="cl-step-pos" title="nominal label — identifies this card; reassignable, no structural meaning"
+                      style={{ background: colorOf(s.id), borderColor: colorOf(s.id), color: "#19102e" }}>{letOf(s.id)}</div>
+                    <div className="cl-step-title">{s.title}</div>
+                    {isHover && <div className="cl-drop-cue">drop → assert {letOf(dragFrom)} precedes {letOf(s.id)}</div>}
+                    <div
+                      className="cl-handle"
+                      draggable
+                      onDragStart={(e: React.DragEvent<HTMLDivElement>) => { e.dataTransfer.effectAllowed = "link"; setDragFrom(s.id); }}
+                      title={`drag to set what comes after "${s.title}"`}
+                    >
+                      then →
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// Cheap structural equality for the segment list, so measure() doesn't thrash
+// React state when nothing actually moved.
+function sameSegs(a: Seg[], b: Seg[]): boolean {
+  if (a.length !== b.length) return false;
+  for (let i = 0; i < a.length; i++) {
+    const p = a[i], q = b[i];
+    if (p.key !== q.key || p.x1 !== q.x1 || p.y1 !== q.y1 || p.x2 !== q.x2 || p.y2 !== q.y2) return false;
+  }
+  return true;
 }
 
 interface ClosureMatrixProps {

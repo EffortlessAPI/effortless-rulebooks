@@ -1486,7 +1486,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_datasets_is_consumed(p_dataset_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (NOT ((((SELECT NULLIF(consumed_by_steps, '') FROM datasets WHERE dataset_id = p_dataset_id)) IS NULL OR ((SELECT NULLIF(consumed_by_steps, '') FROM datasets WHERE dataset_id = p_dataset_id))::text = '')))::boolean;
+  SELECT (NOT (((calc_datasets_consumed_by_steps(p_dataset_id)) IS NULL OR (calc_datasets_consumed_by_steps(p_dataset_id))::text = '')))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_workflow_artifacts_parent_path
@@ -2098,4 +2098,17 @@ $$ LANGUAGE sql STABLE;
 -- INVERSE RELATIONSHIP FUNCTIONS
 -- These functions perform reverse FK lookups for inverse-side relationships
 -- ============================================================================
+
+-- calc_datasets_consumed_by_steps
+-- Field: Datasets.ConsumedBySteps
+-- Type: Inverse relationship (reverse FK lookup from WorkflowSteps.ConsumesDataset)
+
+CREATE OR REPLACE FUNCTION calc_datasets_consumed_by_steps(p_dataset_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (
+    SELECT STRING_AGG(workflow_step_id::TEXT, ', ' ORDER BY workflow_step_id)
+    FROM workflow_steps
+    WHERE consumes_dataset = p_dataset_id
+  );
+$$ LANGUAGE sql STABLE;
 

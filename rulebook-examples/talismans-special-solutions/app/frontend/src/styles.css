@@ -1394,6 +1394,11 @@ body:has(.dag-page) { background: var(--bg); }  /* uniform dark behind the panel
   font-size: 11px; font-weight: 700; letter-spacing: .02em; border-radius: 7px; padding: 4px 10px; cursor: pointer; }
 .cq-simulate:hover:not(:disabled) { filter: brightness(1.12); box-shadow: 0 4px 16px -8px var(--accent); }
 .cq-simulate:disabled { opacity: .5; cursor: default; }
+/* The CQ8 dataset re-attach picker (the fix): teal to match the 📦 dataset motif. */
+.cq-reattach { margin-left: 6px; background: var(--card2); border: 1px solid #4fd1c5; color: #4fd1c5;
+  font-size: 11px; font-weight: 700; border-radius: 7px; padding: 4px 8px; cursor: pointer; white-space: nowrap; }
+.cq-reattach:hover:not(:disabled) { filter: brightness(1.12); box-shadow: 0 4px 16px -8px #4fd1c5; }
+.cq-reattach:disabled { opacity: .5; cursor: default; }
 /* The flash: a brief accent ring + lift when this card's answer just changed. */
 .cq-card.flash { animation: cq-flash 2.6s ease-out 1; }
 @keyframes cq-flash {

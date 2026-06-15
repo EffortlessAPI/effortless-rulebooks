@@ -360,7 +360,7 @@ SELECT
   t.identifier,                                                                 -- External system identifier. Maps to dct:identifier. Used for cross-referencing with data catalogs.
   t.modified,                                                                   -- Last modification timestamp. Maps to dct:modified.
   t.distribution_url,                                                           -- URL of the data distribution. Maps to dcat:Distribution. The access endpoint for the dataset.
-  t.consumed_by_steps,                                                          -- Back-reference to WorkflowSteps that consume this dataset. Inverse of WorkflowSteps.ConsumesDataset.
+  calc_datasets_consumed_by_steps(t.dataset_id) AS consumed_by_steps,           -- Back-reference to WorkflowSteps that consume this dataset. Inverse of WorkflowSteps.ConsumesDataset. Marked isReversed so every substrate DERIVES it from the forward FK (a reverse lookup over WorkflowSteps.ConsumesDataset) instead of storing it — keeping the two sides from drifting when the forward FK is edited.
   calc_datasets_is_consumed(t.dataset_id) AS is_consumed                        -- TRUE iff some workflow step consumes this dataset (ConsumedBySteps is set). Rolls up into Workflows.CountUnconsumedDatasets, which CQ8's satisfaction reads.
 FROM datasets t;
 

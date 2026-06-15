@@ -242,6 +242,7 @@ export default function App({ headerRight = null }: AppProps) {
           onSimulate={simulate}
           onOpenScenarios={() => setScenarioOpen(true)}
           onFixEscalation={handlers.openEscalation}
+          onReattachDataset={(stepId, datasetId) => handlers.patchStep(stepId, { consumesDataset: datasetId })}
         />
       </div>
 

@@ -26,13 +26,17 @@ import type { Situation, Handlers, Artifact } from "../types";
 interface LineageViewProps {
   sit: Situation;
   handlers: Handlers;
+  // When rendered INSIDE the Closure lens, the surrounding view already explains
+  // "same closure machine" — so suppress this view's own intro to avoid saying it
+  // twice. Standalone (its own former tab) it still shows the full intro.
+  embedded?: boolean;
 }
 
 const short = (id: string | null): string => (id || "").replace(/^artifact-/, "");
 const agentKind = (a: Artifact["attributedTo"]): string =>
   a?.kind === "human" ? "human" : a?.kind === "ai" ? "ai" : a?.kind === "pipeline" ? "pipeline" : "artifact";
 
-export function LineageView({ sit, handlers }: LineageViewProps) {
+export function LineageView({ sit, handlers, embedded = false }: LineageViewProps) {
   // Artifacts arrive sorted by producer-step position — that IS the chain order.
   const arts = sit.artifacts || [];
   const dc = sit.derivationClosure;
@@ -86,15 +90,17 @@ export function LineageView({ sit, handlers }: LineageViewProps) {
 
   return (
     <div className="lineage">
-      <div className="ln-intro">
-        <div className="ln-intro-lead">
-          The release produces five artifacts in a PROV <code>wasDerivedFrom</code> chain — each
-          built from the one before it. This is the same transitive-closure construct as step
-          ordering and role escalation: you assert only the adjacent derivation links and the
-          reachable pairs close for free. Cut one link and the chain splits — repair it right on the
-          ribbon.
+      {!embedded && (
+        <div className="ln-intro">
+          <div className="ln-intro-lead">
+            The release produces five artifacts in a PROV <code>wasDerivedFrom</code> chain — each
+            built from the one before it. This is the same transitive-closure construct as step
+            ordering and role escalation: you assert only the adjacent derivation links and the
+            reachable pairs close for free. Cut one link and the chain splits — repair it right on the
+            ribbon.
+          </div>
         </div>
-      </div>
+      )}
 
       <DagCell table="WorkflowArtifacts" field="DerivationClosure">
         <ChainRibbon
@@ -120,11 +126,16 @@ export function LineageView({ sit, handlers }: LineageViewProps) {
         <b>{dc?.inferred ?? 0}</b> inferred pairs are the long-range reachability the closure derived
         but no one typed (e.g. Post-Deployment Report ⇒ Risk Report). A <b>✂ gap</b> is a severed
         link — the exact failure CQ4's <i>break-derivation</i> simulate creates, now visible and
-        one click from fixed. This is the SAME <code>closure</code> construct as{" "}
-        <code>precedesStep</code> (the Closure tab's step ordering) and <code>delegatesTo</code> (the
-        Org tab's escalation) — three relations, one transitive-closure machine; each tab just picks
-        the lens that fits (a ribbon here, a reachability matrix for the step DAG, an org chart for
-        escalation).
+        one click from fixed.
+        {!embedded && (
+          <>
+            {" "}This is the SAME <code>closure</code> construct as{" "}
+            <code>precedesStep</code> (the step ordering above) and <code>delegatesTo</code> (the
+            Org tab's escalation) — three relations, one transitive-closure machine; each just picks
+            the lens that fits (a ribbon here, a reachability matrix for the step DAG, an org chart for
+            escalation).
+          </>
+        )}
       </p>
     </div>
   );

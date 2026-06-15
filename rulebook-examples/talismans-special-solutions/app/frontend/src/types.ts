@@ -75,6 +75,8 @@ export interface StepFact {
 export interface RoleRow {
   id: string;
   name: string;
+  // The capability this role requires of its filler (Roles.HasCapability).
+  hasCapability: string | null;
   fillerType: string;
   filledByHumanAgent: string | null;
   filledByAIAgent: string | null;
@@ -138,12 +140,14 @@ export interface Artifact {
   producingAgentType: string | null;
 }
 
-// One DCAT dataset + the steps (and their agents) that consume it.
+// One DCAT dataset + the steps (and their agents) that consume it. roleCapability
+// is the capability the consuming step's role requires (Roles.HasCapability) —
+// CQ8 passes only when the consumer can actually process the dataset.
 export interface DatasetConsumption {
   id: string;
   title: string;
   identifier: string | null;
-  consumedBySteps: { id: string; title: string; agent: Agent | null }[];
+  consumedBySteps: { id: string; title: string; agent: Agent | null; roleCapability: string | null }[];
 }
 
 // One competency question — a first-class rulebook row. The question/target/

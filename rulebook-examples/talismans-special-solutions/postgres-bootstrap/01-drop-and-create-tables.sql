@@ -315,15 +315,13 @@ CREATE TABLE datasets (
   title                               TEXT                ,                     -- Human-readable dataset name. Maps to dct:title.
   identifier                          TEXT                ,                     -- External system identifier. Maps to dct:identifier. Used for cross-referencing with data catalogs.
   modified                            TIMESTAMPTZ         ,                     -- Last modification timestamp. Maps to dct:modified.
-  distribution_url                    TEXT                ,                     -- URL of the data distribution. Maps to dcat:Distribution. The access endpoint for the dataset.
-  consumed_by_steps                   TEXT                                      -- Back-reference to WorkflowSteps that consume this dataset. Inverse of WorkflowSteps.ConsumesDataset.
+  distribution_url                    TEXT                                      -- URL of the data distribution. Maps to dcat:Distribution. The access endpoint for the dataset.
 );
 COMMENT ON TABLE datasets IS 'DCAT datasets consumed by workflow steps. The NTWF mapping of dcat:Dataset. Kept separate from WorkflowArtifacts to preserve DCAT metadata semantics (dcat:Dataset vs. prov:Entity). Answers CQ8: ''What datasets does the review consume, and which AI processed them?''';
 COMMENT ON COLUMN datasets.title IS 'Human-readable dataset name. Maps to dct:title.';
 COMMENT ON COLUMN datasets.identifier IS 'External system identifier. Maps to dct:identifier. Used for cross-referencing with data catalogs.';
 COMMENT ON COLUMN datasets.modified IS 'Last modification timestamp. Maps to dct:modified.';
 COMMENT ON COLUMN datasets.distribution_url IS 'URL of the data distribution. Maps to dcat:Distribution. The access endpoint for the dataset.';
-COMMENT ON COLUMN datasets.consumed_by_steps IS 'Back-reference to WorkflowSteps that consume this dataset. Inverse of WorkflowSteps.ConsumesDataset.';
 
 -- ----------------------------------------------------------------------------
 -- WorkflowArtifacts: Artifacts produced and consumed by workflow steps. The NTWF WorkflowArtifact class — prov:Entity + schema:CreativeWork. The DerivedFromArtifact self-FK encodes the prov:wasDerivedFrom provenance chain; ProducedByStep maps prov:wasGeneratedBy; the AttributedTo* arms map prov:wasAttributedTo to the responsible agent.
@@ -580,9 +578,6 @@ CREATE INDEX IF NOT EXISTS idx_agent_capability_concepts_roles ON agent_capabili
 -- ArtifactTypeConcepts
 CREATE INDEX IF NOT EXISTS idx_artifact_type_concepts_workflow_artifacts ON artifact_type_concepts (workflow_artifacts);
 
--- Datasets
-CREATE INDEX IF NOT EXISTS idx_datasets_consumed_by_steps ON datasets (consumed_by_steps);
-
 -- WorkflowArtifacts
 CREATE INDEX IF NOT EXISTS idx_workflow_artifacts_artifact_type ON workflow_artifacts (artifact_type);
 CREATE INDEX IF NOT EXISTS idx_workflow_artifacts_produced_by_step ON workflow_artifacts (produced_by_step);
@@ -605,4 +600,4 @@ CREATE INDEX IF NOT EXISTS idx_competency_questions_simulate_scenario ON compete
 CREATE INDEX IF NOT EXISTS idx_scenario_cq_effects_scenario ON scenario_cq_effects (scenario);
 CREATE INDEX IF NOT EXISTS idx_scenario_cq_effects_competency_question ON scenario_cq_effects (competency_question);
 
--- 50 FK index(es) declared.
+-- 49 FK index(es) declared.

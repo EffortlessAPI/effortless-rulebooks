@@ -227,27 +227,42 @@ export const CQ_RESOLVERS: Record<string, CqResolver> = {
   // CQ8 — datasets the review consumes + the AI agent that processed each. The
   // consuming step (Datasets.ConsumedBySteps, the derived inverse of the step's
   // ConsumesDataset FK) resolves to its filling agent. The question asks "which AI
-  // agents processed them", so the answer holds ONLY when every consumed dataset
-  // is processed by an AI agent — and at least one dataset is actually consumed.
-  // NOTE: `[].every(...)` is vacuously true, so the `flat.length > 0` guard is
-  // load-bearing: "no datasets consumed" (the detach simulate) must read RED, not
-  // silently pass. Reassign the consuming step to a human and it also goes red —
-  // the dataset is consumed, but not by an AI.
+  // agents PROCESSED them" — and processing a structured input dataset is a
+  // capability (cap-risk-analysis: "probabilistic risk scoring over structured
+  // datasets"). So the answer holds ONLY when every consumed dataset is consumed
+  // by a step whose role actually carries that dataset-processing capability AND
+  // is filled by an AI. That makes the check semantic, not just "any AI step":
+  //   • detached (no step)                → RED  (no answer to "which AI processed it")
+  //   • consumed by a human/pipeline step → RED  (no AI processed it)
+  //   • consumed by an AI step whose role CAN'T process datasets (e.g. the
+  //     deployment-health role, cap-deployment-health) → RED (wrong processor)
+  //   • consumed by an AI step whose role HAS cap-risk-analysis → GREEN
+  // `[].every(...)` is vacuously true, so the `flat.length > 0` guard is
+  // load-bearing: "no datasets consumed" must read RED, not silently pass.
   "cq-8": (sit) => {
+    // The capability required to process a dcat:Dataset as input. Documented in
+    // AgentCapabilityConcepts as THE dataset-processing capability; a dataset is
+    // only legitimately consumed by a role that carries it.
+    const PROCESSING_CAP = "cap-risk-analysis";
     const ds = sit.datasets || [];
     const flat = ds.flatMap((d) => d.consumedBySteps.map((c) => ({ d, c })));
     const isAI = (c: { agent: { kind?: string } | null }): boolean => c.agent?.kind === "ai";
+    const canProcess = (c: { roleCapability: string | null }): boolean => c.roleCapability === PROCESSING_CAP;
+    const properlyConsumed = (c: { agent: { kind?: string } | null; roleCapability: string | null }): boolean =>
+      isAI(c) && canProcess(c);
+    const flag = (c: { agent: { kind?: string } | null; roleCapability: string | null }): string =>
+      !c.agent ? " · no agent" : !isAI(c) ? " (not AI)" : !canProcess(c) ? " (can't process datasets)" : "";
     const answer =
       flat.length === 0
         ? "no datasets consumed"
-        : flat.map(({ d, c }) => `${d.title}${c.agent ? ` · ${c.agent.name}${isAI(c) ? "" : " (not AI)"}` : " · no agent"}`).join(" ; ");
+        : flat.map(({ d, c }) => `${d.title}${c.agent ? ` · ${c.agent.name}${flag(c)}` : " · no agent"}`).join(" ; ");
     return {
       answer,
-      ok: ds.length > 0 && flat.length > 0 && flat.every(({ c }) => isAI(c)),
+      ok: ds.length > 0 && flat.length > 0 && flat.every(({ c }) => properlyConsumed(c)),
       rows: ds.map((d) => ({
         label: d.title,
         sub: d.consumedBySteps.length
-          ? d.consumedBySteps.map((c) => `${c.title}${c.agent ? ` — processed by ${c.agent.name}${isAI(c) ? " 🤖" : " (not an AI agent)"}` : " — no processing agent"}`).join("; ")
+          ? d.consumedBySteps.map((c) => `${c.title}${c.agent ? ` — processed by ${c.agent.name}${properlyConsumed(c) ? " 🤖" : c.roleCapability ? ` ⚠ role lacks dataset-processing capability (${c.roleCapability})` : " (not an AI agent)"}` : " — no processing agent"}`).join("; ")
           : "not consumed by any step",
         kind: "dataset",
       })),
