@@ -252,7 +252,15 @@ There is no upstream to "restore from." The JSON is the upstream.
 
 ## Architecture Overview
 
-**Three Effortless tools** form a hub-and-spokes around Airtable: **airtable-to-rulebook**, **rulebook-to-postgres**, **rulebook-to-airtable**. The rulebook is a disposable IR. **PostgreSQL has no limitations** — it fully supports complex aggregations, JOINs, and all formula types. Other substrates in this repo are local implementations with demonstration gaps.
+**Three Effortless tools** form a hub-and-spokes around Airtable: **airtable-to-rulebook**, **rulebook-to-postgres**, **rulebook-to-airtable**. The rulebook is a disposable IR.
+
+**Expressiveness is a per-substrate property, and it is recorded as data — not a Postgres-vs-everyone-else tier.** The platform rulebook's `ExecutionSubstrates` table has an `Expressive` column whose value is `full`, `partial-formula`, or `shape-only` for each substrate, plus a `Maturity` column (`reference-quality` / `demonstrating` / `prototype`). That table is the single source of truth for "what can this substrate express" — read it, don't assert a hierarchy from memory.
+
+- **No substrate is privileged.** Postgres is not "the only complete one." Many substrates are fully expressive (`Expressive: full`) — Postgres, Python, Go, Excel, Entity Framework, the Explain-DAG, and others. Postgres is the *reference-quality* answer key for convenience, not the ceiling of what the method or the other substrates can express.
+- **The Effortless tools are all expressively complete.** The licensed `rulebook-to-*` Effortless tools (under `licensed-effortless-tools/`) fully support complex aggregations, multi-table lookups/JOINs, window/GROUP-BY aggregations, recursive/closure formulas, and all formula types.
+- **A few OPEN reference injectors are intentionally partial — on purpose, and that is not a limitation of the demo, the conformance set, or the method.** Some open-source substrates under `execution-substrates/` are `partial-formula` (e.g. ARM64 binary, OWL) or `shape-only` (e.g. CSV, PlantUML). They exist to prove the rulebook is portable to wildly different targets *cheaply* — a CSV substrate is shape-only because CSV has no formula engine, not because ERB "doesn't support" the formula. Their partialness is a fact about that one target, recorded in its `Expressive` cell, and it says nothing about the breadth of the rulebook, the catalog (~30 domains, most fully expressive), or any other substrate.
+
+**Never write "Postgres has no limitations; other substrates have demonstration gaps," "the open demo runs on a shallow/limited formula vocabulary," or any phrasing that lists recursion / window-aggregations / multi-table joins as unsupported in the open demo.** That framing is wrong and was the root cause of repeated LLM misreadings. When you need to state what a substrate can express, quote its `Expressive` value from the `ExecutionSubstrates` table.
 
 Three-layer architecture:
 

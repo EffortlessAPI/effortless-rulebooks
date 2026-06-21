@@ -12,7 +12,7 @@ This is a **licensed Effortless** substrate. The work of compiling the rulebook 
 
 The `rulebook-to-xlsx` transpiler is a production Effortless tool. It compiles every rulebook formula into a corresponding Excel formula — and Excel's formula engine has been tested by hundreds of millions of users for decades. Provided the workbook is recalculated (Excel, LibreOffice, or Google Sheets all do this automatically when the file is opened), the cached values mirror the rulebook's intent exactly.
 
-Contrast with the open-source [`xlsx`](../xlsx/) substrate, which reimplements an Excel formula evaluator in Python — it scores well on simple formulas but has gaps on the long tail.
+Contrast with the open-source [`xlsx`](../xlsx/) substrate, which reimplements an Excel formula evaluator in Python. That open injector is a *reference implementation* — it covers the common formulas and is intentionally not extended to every Excel intrinsic, so the long tail of functions may not be wired up yet. That is a property of that one open injector (recorded in its `Expressive` value), not a limitation of the rulebook, the formula dialect, or the `rulebook-to-xlsx` Effortless tool above, which compiles every formula.
 
 ## See also
 
