@@ -339,7 +339,7 @@ _result_buf_eval_customers_name:
 
     .text
 
-// Identifier for the cusfdsfdstomers.
+// Identifier for the customer.
 // Formula: =SUBSTITUTE({{EmailAddress}}, "@", "-")
     .globl _eval_customers_name
     .p2align 2
