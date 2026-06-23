@@ -51,12 +51,12 @@ END $$;
 -- ----------------------------------------------------------------------------
 CREATE TABLE customers (
   customer_id                         TEXT                 PRIMARY KEY,
-  email_address                       TEXT                ,                     -- Thec ustomers email address
+  email_address                       TEXT                ,                     -- The customer's email address
   first_name                          TEXT                ,                     -- First Name of the customer - used to make the full name
   last_name                           TEXT                                      -- Last Name of the customer - used to make the full name
 );
 COMMENT ON TABLE customers IS 'Table: Customers';
-COMMENT ON COLUMN customers.email_address IS 'Thec ustomers email address';
+COMMENT ON COLUMN customers.email_address IS 'The customer''s email address';
 COMMENT ON COLUMN customers.first_name IS 'First Name of the customer - used to make the full name';
 COMMENT ON COLUMN customers.last_name IS 'Last Name of the customer - used to make the full name';
 

@@ -12,8 +12,8 @@ _Smallest viable rulebook with a calculated field — the "Hello, formulas" tuto
 | Term | Description | Narrative Comment |
 |------|-------------|-------------------|
 | **Customer** | A customer is identified by its name. | — |
-| Name | Computed as the email address with every the literal “@” replaced by a hyphen. | _Identifier for the cusfdsfdstomers._ |
-| Initials | Computed as the first 1 character(s) of the first name, followed by the first 1 character(s) of the last name. | — |
+| Name | Computed as the email address with every the literal “@” replaced by a hyphen. | _Identifier for the customer._ |
+| Initials | Computed as the first 1 character(s) of the first name, followed by the first 1 character(s) of the last name. | _Customer initials — the first letter of FirstName followed by the first letter of LastName._ |
 | Full Name | Computed as the first name, followed by a space, followed by the last name. | _Full name is computed from the first and last name of the customer_ |
 | **ERB Version** | An ERB version is identified by its name. | — |
 | **ERB Customization** | An ERB customization is identified by its name. | — |

@@ -1,0 +1,1660 @@
+{
+  "$schema": "https://example.com/cmcc-schema/v1",
+  "Name": "Does God Exist — Hitchens vs Turek (VCU)",
+  "Description": "Rulebook formalizing the VCU debate 'Does God Exist?' between Christopher Hitchens (atheism/anti-theism) and Frank Turek (theism), and every philosophical concept raised. Built via the Shadle steps: raw text -> vocabulary -> glossary -> narrative -> mock data -> normalized schema -> this DAG-structured hub.",
+  "Debaters": {
+    "Description": "The two principals and the moderator of the debate.",
+    "schema": [
+      {
+        "name": "Label",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Display name of the participant."
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": false,
+        "Description": "Logical primary key — slug of Label.",
+        "formula": "=SUBSTITUTE(LOWER({{Label}}), \" \", \"-\")"
+      },
+      {
+        "name": "Side",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Role in the debate: affirmative, negative, or moderator."
+      },
+      {
+        "name": "Description",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Biographical note and stance. (Worldviews defended are the reverse of Worldviews.ChampionedBy.)"
+      },
+      {
+        "name": "ArgumentCount",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": false,
+        "Description": "1st-order: number of arguments advanced.",
+        "formula": "=COUNTIFS(Arguments!{{AdvancedBy}}, {{Name}})"
+      },
+      {
+        "name": "ClaimCount",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": false,
+        "Description": "1st-order: number of claims made.",
+        "formula": "=COUNTIFS(Claims!{{MadeBy}}, {{Name}})"
+      },
+      {
+        "name": "ThinkersCited",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": false,
+        "Description": "1st-order: distinct thinkers pressed into service.",
+        "formula": "=COUNTIFS(Thinkers!{{CitedBy}}, {{Name}})"
+      }
+    ],
+    "data": [
+      {
+        "Label": "Frank Turek",
+        "Side": "affirmative",
+        "Description": "Christian apologist, founder of CrossExamined.org, co-author of 'I Don't Have Enough Faith to Be an Atheist'. Argues the affirmative for a generic theism."
+      },
+      {
+        "Label": "Christopher Hitchens",
+        "Side": "negative",
+        "Description": "Author of 'God Is Not Great'. Argues the negative; self-describes as anti-theist, not merely atheist."
+      },
+      {
+        "Label": "Timothy Hulley",
+        "Side": "moderator",
+        "Description": "Dean of the VCU Honors College; moderates phases and relays audience questions."
+      }
+    ]
+  },
+  "Worldviews": {
+    "Description": "Competing positions on God and reality contested in the debate.",
+    "schema": [
+      {
+        "name": "Label",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Name of the worldview."
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": false,
+        "Description": "Logical primary key — slug of Label.",
+        "formula": "=SUBSTITUTE(LOWER({{Label}}), \" \", \"-\")"
+      },
+      {
+        "name": "AffirmsGod",
+        "datatype": "boolean",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Whether the worldview affirms the existence of God."
+      },
+      {
+        "name": "ChampionedBy",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "Description": "Debater who principally champions this worldview.",
+        "RelatedTo": "Debaters"
+      },
+      {
+        "name": "Description",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "What the worldview holds in this debate's context."
+      },
+      {
+        "name": "ArgumentCount",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": false,
+        "Description": "1st-order: arguments fielded under this worldview.",
+        "formula": "=COUNTIFS(Arguments!{{FieldsWorldview}}, {{Name}})"
+      }
+    ],
+    "data": [
+      {
+        "Label": "Theism",
+        "AffirmsGod": true,
+        "ChampionedBy": "frank-turek",
+        "Description": "A personal God who created and intervenes in the universe, answers prayer, and grounds morality."
+      },
+      {
+        "Label": "Deism",
+        "AffirmsGod": true,
+        "Description": "A designer who set the cosmos in order but does not intervene or reveal itself; Hitchens treats it as separable from theism."
+      },
+      {
+        "Label": "Atheism",
+        "AffirmsGod": false,
+        "ChampionedBy": "christopher-hitchens",
+        "Description": "No advanced argument for God has survived rebuttal; not the dogmatic claim no God could exist."
+      },
+      {
+        "Label": "Anti-theism",
+        "AffirmsGod": false,
+        "ChampionedBy": "christopher-hitchens",
+        "Description": "Hitchens's stronger stance: relief that no celestial dictatorship exists, which he would oppose if it did."
+      },
+      {
+        "Label": "Agnosticism",
+        "AffirmsGod": false,
+        "Description": "Suspension of judgment; embodied by Jastrow, cited by Turek as a hostile witness for the Big Bang."
+      },
+      {
+        "Label": "Materialism",
+        "AffirmsGod": false,
+        "ChampionedBy": "christopher-hitchens",
+        "Description": "Only matter exists; mind, reason, and morality reduce to physical processes. Closely tied to naturalism; Turek's main target."
+      },
+      {
+        "Label": "Humanism",
+        "AffirmsGod": false,
+        "ChampionedBy": "christopher-hitchens",
+        "Description": "Ethics grounded in innate solidarity, empathy, and conscience without divine sanction."
+      },
+      {
+        "Label": "Christianity",
+        "AffirmsGod": true,
+        "ChampionedBy": "frank-turek",
+        "Description": "The specific tradition Turek personally holds but brackets in favor of generic theism for the debate."
+      }
+    ]
+  },
+  "Arguments": {
+    "Description": "The named arguments advanced by each side, with derived development and contestation metrics.",
+    "schema": [
+      {
+        "name": "Label",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Name of the argument."
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": false,
+        "Description": "Logical primary key — slug of Label.",
+        "formula": "=SUBSTITUTE(LOWER({{Label}}), \" \", \"-\")"
+      },
+      {
+        "name": "ArgumentType",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "primary, sub, supporting, or counter."
+      },
+      {
+        "name": "AdvancedBy",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": false,
+        "Description": "Debater who advances the argument.",
+        "RelatedTo": "Debaters"
+      },
+      {
+        "name": "FieldsWorldview",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": false,
+        "Description": "Worldview the argument serves.",
+        "RelatedTo": "Worldviews"
+      },
+      {
+        "name": "Conclusion",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "What the argument purports to establish."
+      },
+      {
+        "name": "Description",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Summary of the argument as presented."
+      },
+      {
+        "name": "PremiseCount",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": false,
+        "Description": "1st-order: premises composing the argument.",
+        "formula": "=COUNTIFS(Premises!{{SupportsArgument}}, {{Name}})"
+      },
+      {
+        "name": "EvidenceCount",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": false,
+        "Description": "1st-order: evidence items cited.",
+        "formula": "=COUNTIFS(Evidence!{{SupportsArgument}}, {{Name}})"
+      },
+      {
+        "name": "ClaimCount",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": false,
+        "Description": "1st-order: claims supporting the argument.",
+        "formula": "=COUNTIFS(Claims!{{SupportsArgument}}, {{Name}})"
+      },
+      {
+        "name": "IsFullyDeveloped",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": false,
+        "Description": "2nd-order: has at least two premises.",
+        "formula": "=IF({{PremiseCount}} >= 2, TRUE(), FALSE())"
+      },
+      {
+        "name": "TotalRebuttals",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": false,
+        "Description": "2nd-order: rebuttals accumulated across supporting claims.",
+        "formula": "=SUMIFS(Claims!{{RebuttalCount}}, Claims!{{SupportsArgument}}, {{Name}})"
+      },
+      {
+        "name": "IsContested",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": false,
+        "Description": "3rd-order: at least one supporting claim was rebutted.",
+        "formula": "=IF({{TotalRebuttals}} > 0, TRUE(), FALSE())"
+      }
+    ],
+    "data": [
+      {
+        "Label": "Cosmological Argument",
+        "ArgumentType": "primary",
+        "AdvancedBy": "frank-turek",
+        "FieldsWorldview": "theism",
+        "Conclusion": "The universe had a beginning, so it had a beginner.",
+        "Description": "From the Big Bang: a beginning implies a beginner; SURGE supplies the evidence."
+      },
+      {
+        "Label": "Teleological Argument",
+        "ArgumentType": "primary",
+        "AdvancedBy": "frank-turek",
+        "FieldsWorldview": "theism",
+        "Conclusion": "Order and apparent purpose imply a designer.",
+        "Description": "The design argument; contains fine-tuning and design-of-life as sub-arguments."
+      },
+      {
+        "Label": "Argument From Fine-Tuning",
+        "ArgumentType": "sub",
+        "AdvancedBy": "frank-turek",
+        "FieldsWorldview": "theism",
+        "Conclusion": "Life-permitting constants imply a tuner.",
+        "Description": "Constants on a razor's edge (gravity to 1 part in 10^40, expansion rate, axial tilt, Jupiter)."
+      },
+      {
+        "Label": "Argument From Design Of Life",
+        "ArgumentType": "sub",
+        "AdvancedBy": "frank-turek",
+        "FieldsWorldview": "theism",
+        "Conclusion": "DNA's specified complexity implies a mind.",
+        "Description": "Information only comes from minds; random mutation and macro-evolution cannot supply first life; panspermia concedes natural origin fails."
+      },
+      {
+        "Label": "Moral Argument",
+        "ArgumentType": "primary",
+        "AdvancedBy": "frank-turek",
+        "FieldsWorldview": "theism",
+        "Conclusion": "Objective moral values require a moral lawgiver.",
+        "Description": "A prescription needs a prescriber; the standard is God's nature."
+      },
+      {
+        "Label": "Argument From Reason",
+        "ArgumentType": "supporting",
+        "AdvancedBy": "frank-turek",
+        "FieldsWorldview": "theism",
+        "Conclusion": "Trustworthy reason cannot be mere chemistry.",
+        "Description": "If thoughts are only chemical reactions, we cannot trust them (Darwin's doubt)."
+      },
+      {
+        "Label": "Argument From Mathematics",
+        "ArgumentType": "supporting",
+        "AdvancedBy": "frank-turek",
+        "FieldsWorldview": "theism",
+        "Conclusion": "Mathematical order comes from mind, not matter.",
+        "Description": "Rationality and mathematics do not arise from randomness."
+      },
+      {
+        "Label": "Argument From Free Will",
+        "ArgumentType": "supporting",
+        "AdvancedBy": "frank-turek",
+        "FieldsWorldview": "theism",
+        "Conclusion": "Real freedom is impossible under materialism.",
+        "Description": "Molecules in motion (per Provine) afford no genuine human freedom."
+      },
+      {
+        "Label": "Argument From Consciousness",
+        "ArgumentType": "supporting",
+        "AdvancedBy": "frank-turek",
+        "FieldsWorldview": "theism",
+        "Conclusion": "Consciousness cannot reduce to chemicals.",
+        "Description": "Why is some carbon-based matter conscious? Materialism (Dennett) calls it an illusion."
+      },
+      {
+        "Label": "Argument From Poor Design",
+        "ArgumentType": "counter",
+        "AdvancedBy": "christopher-hitchens",
+        "FieldsWorldview": "atheism",
+        "Conclusion": "Waste and ruin suggest capricious or absent design.",
+        "Description": "Extinction, collision courses, heat death — not the marks of a careful tuner."
+      },
+      {
+        "Label": "Deism-Theism Gap",
+        "ArgumentType": "counter",
+        "AdvancedBy": "christopher-hitchens",
+        "FieldsWorldview": "atheism",
+        "Conclusion": "A designer is not yet a prayer-answering God.",
+        "Description": "Even granting design, the theist still owes virgin birth, resurrection, vicarious redemption."
+      },
+      {
+        "Label": "Morality Without God",
+        "ArgumentType": "counter",
+        "AdvancedBy": "christopher-hitchens",
+        "FieldsWorldview": "humanism",
+        "Conclusion": "Ethics needs no divine permission.",
+        "Description": "No moral act is unique to believers; some wicked acts are unique to them; conscience is innate."
+      },
+      {
+        "Label": "Religion Poisons Everything",
+        "ArgumentType": "counter",
+        "AdvancedBy": "christopher-hitchens",
+        "FieldsWorldview": "anti-theism",
+        "Conclusion": "Religion is a corrupting totalitarian tyranny.",
+        "Description": "Its eschatology yearns for the world's end; it demands a master-slave submission."
+      }
+    ]
+  },
+  "Premises": {
+    "Description": "Ordered premises composing each argument.",
+    "schema": [
+      {
+        "name": "Label",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Short name of the premise."
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": false,
+        "Description": "Logical primary key — slug of Label.",
+        "formula": "=SUBSTITUTE(LOWER({{Label}}), \" \", \"-\")"
+      },
+      {
+        "name": "SupportsArgument",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": false,
+        "Description": "Argument this premise belongs to.",
+        "RelatedTo": "Arguments"
+      },
+      {
+        "name": "Ordinal",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Position of the premise within its argument."
+      },
+      {
+        "name": "Statement",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "The premise as stated."
+      },
+      {
+        "name": "Description",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Note on the premise."
+      }
+    ],
+    "data": [
+      {
+        "Label": "Universe Began",
+        "SupportsArgument": "cosmological-argument",
+        "Ordinal": 1,
+        "Statement": "The universe had a beginning (SURGE).",
+        "Description": "Premise 1 of the cosmological argument."
+      },
+      {
+        "Label": "Beginning Needs Beginner",
+        "SupportsArgument": "cosmological-argument",
+        "Ordinal": 2,
+        "Statement": "Whatever begins to exist has a cause/beginner.",
+        "Description": "Premise 2 of the cosmological argument."
+      },
+      {
+        "Label": "Cause Is Transcendent",
+        "SupportsArgument": "cosmological-argument",
+        "Ordinal": 3,
+        "Statement": "The creator-cause is spaceless, timeless, immaterial, intelligent, powerful, and personal.",
+        "Description": "Premise 3 of the cosmological argument."
+      },
+      {
+        "Label": "Fine-Tuning Observed",
+        "SupportsArgument": "argument-from-fine-tuning",
+        "Ordinal": 1,
+        "Statement": "Physical constants are set on a razor's edge.",
+        "Description": "Premise 1 of the argument from fine tuning."
+      },
+      {
+        "Label": "Chance Insufficient",
+        "SupportsArgument": "argument-from-fine-tuning",
+        "Ordinal": 2,
+        "Statement": "Such precision is not plausibly due to chance.",
+        "Description": "Premise 2 of the argument from fine tuning."
+      },
+      {
+        "Label": "Tuner Inferred",
+        "SupportsArgument": "argument-from-fine-tuning",
+        "Ordinal": 3,
+        "Statement": "A fine-tuner best explains the balance.",
+        "Description": "Premise 3 of the argument from fine tuning."
+      },
+      {
+        "Label": "Life Carries Information",
+        "SupportsArgument": "argument-from-design-of-life",
+        "Ordinal": 1,
+        "Statement": "DNA encodes specified complexity.",
+        "Description": "Premise 1 of the argument from design of life."
+      },
+      {
+        "Label": "Information From Minds",
+        "SupportsArgument": "argument-from-design-of-life",
+        "Ordinal": 2,
+        "Statement": "Information only comes from minds.",
+        "Description": "Premise 2 of the argument from design of life."
+      },
+      {
+        "Label": "Designer Inferred",
+        "SupportsArgument": "argument-from-design-of-life",
+        "Ordinal": 3,
+        "Statement": "A mind best explains biological information.",
+        "Description": "Premise 3 of the argument from design of life."
+      },
+      {
+        "Label": "Objective Values Exist",
+        "SupportsArgument": "moral-argument",
+        "Ordinal": 1,
+        "Statement": "Objective moral values and duties exist.",
+        "Description": "Premise 1 of the moral argument."
+      },
+      {
+        "Label": "Values Need Lawgiver",
+        "SupportsArgument": "moral-argument",
+        "Ordinal": 2,
+        "Statement": "Objective values require a standard beyond humanity.",
+        "Description": "Premise 2 of the moral argument."
+      },
+      {
+        "Label": "Lawgiver Is God",
+        "SupportsArgument": "moral-argument",
+        "Ordinal": 3,
+        "Statement": "That standard is the moral lawgiver, God's nature.",
+        "Description": "Premise 3 of the moral argument."
+      },
+      {
+        "Label": "Atrocity From Permission",
+        "SupportsArgument": "morality-without-god",
+        "Ordinal": 1,
+        "Statement": "The worst atrocities flow from felt divine permission.",
+        "Description": "Premise 1 of the morality without god."
+      },
+      {
+        "Label": "No Unique Believer Virtue",
+        "SupportsArgument": "morality-without-god",
+        "Ordinal": 2,
+        "Statement": "No moral act is available only to believers.",
+        "Description": "Premise 2 of the morality without god."
+      },
+      {
+        "Label": "Conscience Is Innate",
+        "SupportsArgument": "morality-without-god",
+        "Ordinal": 3,
+        "Statement": "Conscience (Socrates, Smith) is innate, not granted.",
+        "Description": "Premise 3 of the morality without god."
+      },
+      {
+        "Label": "Designer Not Pray-Answerer",
+        "SupportsArgument": "deism-theism-gap",
+        "Ordinal": 1,
+        "Statement": "A designer need not answer prayer or perform miracles.",
+        "Description": "Premise 1 of the deism theism gap."
+      },
+      {
+        "Label": "Burden Remains",
+        "SupportsArgument": "deism-theism-gap",
+        "Ordinal": 2,
+        "Statement": "The theist must still bridge from designer to revealed God.",
+        "Description": "Premise 2 of the deism theism gap."
+      },
+      {
+        "Label": "Waste And Extinction",
+        "SupportsArgument": "argument-from-poor-design",
+        "Ordinal": 1,
+        "Statement": "Profuse creation is mostly wiped out; 99.8% of species are extinct.",
+        "Description": "Premise 1 of the argument from poor design."
+      },
+      {
+        "Label": "Capricious Or Absent",
+        "SupportsArgument": "argument-from-poor-design",
+        "Ordinal": 2,
+        "Statement": "Heat death and collisions imply capricious or no design.",
+        "Description": "Premise 2 of the argument from poor design."
+      }
+    ]
+  },
+  "Evidence": {
+    "Description": "Empirical and theoretical evidence items cited in support of arguments.",
+    "schema": [
+      {
+        "name": "Label",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Name of the evidence item."
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": false,
+        "Description": "Logical primary key — slug of Label.",
+        "formula": "=SUBSTITUTE(LOWER({{Label}}), \" \", \"-\")"
+      },
+      {
+        "name": "SupportsArgument",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": false,
+        "Description": "Argument the evidence supports.",
+        "RelatedTo": "Arguments"
+      },
+      {
+        "name": "EvidenceKind",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "observational or theoretical."
+      },
+      {
+        "name": "Description",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "What the evidence is and who found it."
+      }
+    ],
+    "data": [
+      {
+        "Label": "SURGE: Second Law",
+        "SupportsArgument": "cosmological-argument",
+        "EvidenceKind": "theoretical",
+        "Description": "Second law of thermodynamics — the universe runs toward heat death, so it cannot be eternal."
+      },
+      {
+        "Label": "SURGE: Universe Expanding",
+        "SupportsArgument": "cosmological-argument",
+        "EvidenceKind": "observational",
+        "Description": "Hubble's 1929 discovery of expansion; reversed, it collapses to a singularity."
+      },
+      {
+        "Label": "SURGE: Radiation Echo",
+        "SupportsArgument": "cosmological-argument",
+        "EvidenceKind": "observational",
+        "Description": "Cosmic afterglow found by Penzias and Wilson; remnant heat of the Big Bang."
+      },
+      {
+        "Label": "SURGE: Galaxy Seeds",
+        "SupportsArgument": "cosmological-argument",
+        "EvidenceKind": "observational",
+        "Description": "COBE's one-part-in-100,000 temperature variations that let galaxies form."
+      },
+      {
+        "Label": "SURGE: Einstein Relativity",
+        "SupportsArgument": "cosmological-argument",
+        "EvidenceKind": "theoretical",
+        "Description": "General relativity makes space-time-matter co-relative, originating together."
+      },
+      {
+        "Label": "DNA Information",
+        "SupportsArgument": "argument-from-design-of-life",
+        "EvidenceKind": "observational",
+        "Description": "DNA's information content, likened to a thousand encyclopedias (citing Dawkins)."
+      },
+      {
+        "Label": "Red Shift Increasing",
+        "SupportsArgument": "argument-from-poor-design",
+        "EvidenceKind": "observational",
+        "Description": "Krauss: the Hubble red-light-shift rate is increasing; the universe dissipates at speed."
+      }
+    ]
+  },
+  "Concepts": {
+    "Description": "Every philosophical concept raised in the debate, with category and introducer.",
+    "schema": [
+      {
+        "name": "Label",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Name of the concept."
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": false,
+        "Description": "Logical primary key — slug of Label.",
+        "formula": "=SUBSTITUTE(LOWER({{Label}}), \" \", \"-\")"
+      },
+      {
+        "name": "Category",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "cosmology, design, moral, theological, method, or epistemic."
+      },
+      {
+        "name": "IntroducedBy",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "Description": "Debater who introduced the concept.",
+        "RelatedTo": "Debaters"
+      },
+      {
+        "name": "Description",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Meaning of the concept in this debate."
+      },
+      {
+        "name": "ClaimCount",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": false,
+        "Description": "1st-order: claims that touch this concept.",
+        "formula": "=COUNTIFS(Claims!{{TouchesConcept}}, {{Name}})"
+      }
+    ],
+    "data": [
+      {
+        "Label": "Big Bang",
+        "Category": "cosmology",
+        "IntroducedBy": "frank-turek",
+        "Description": "The accepted origin of the universe; Turek accepts it and infers a 'banger'."
+      },
+      {
+        "Label": "Heat Death",
+        "Category": "cosmology",
+        "IntroducedBy": "frank-turek",
+        "Description": "The far-future maximal-entropy state; used by both (Turek vs eternity, Hitchens for poor design)."
+      },
+      {
+        "Label": "Singularity",
+        "Category": "cosmology",
+        "IntroducedBy": "frank-turek",
+        "Description": "The point reversed expansion collapses to; Turek equates it with 'nothing'."
+      },
+      {
+        "Label": "Fine-Tuning",
+        "Category": "design",
+        "IntroducedBy": "frank-turek",
+        "Description": "Constants on a razor's edge permitting life."
+      },
+      {
+        "Label": "Specified Complexity",
+        "Category": "design",
+        "IntroducedBy": "frank-turek",
+        "Description": "Information in living systems Turek says only minds produce."
+      },
+      {
+        "Label": "Watchmaker",
+        "Category": "design",
+        "IntroducedBy": "christopher-hitchens",
+        "Description": "Paley's image: design implies a designer."
+      },
+      {
+        "Label": "Panspermia",
+        "Category": "design",
+        "IntroducedBy": "frank-turek",
+        "Description": "Crick/Hoyle's seeded-life proposal; Turek calls it a backhanded concession."
+      },
+      {
+        "Label": "Objective Moral Values",
+        "Category": "moral",
+        "IntroducedBy": "frank-turek",
+        "Description": "Mind-independent moral facts at the center of the moral exchange."
+      },
+      {
+        "Label": "Moral Lawgiver",
+        "Category": "moral",
+        "IntroducedBy": "frank-turek",
+        "Description": "The prescriber Turek infers from the prescription of morality."
+      },
+      {
+        "Label": "Is-Ought Problem",
+        "Category": "epistemic",
+        "IntroducedBy": "christopher-hitchens",
+        "Description": "Hume's bar on deriving an 'ought' from an 'is'."
+      },
+      {
+        "Label": "Divine Permission",
+        "Category": "moral",
+        "IntroducedBy": "christopher-hitchens",
+        "Description": "Felt divine authorization Hitchens links to atrocity."
+      },
+      {
+        "Label": "Conscience",
+        "Category": "moral",
+        "IntroducedBy": "christopher-hitchens",
+        "Description": "Innate moral sense (Socrates's daemon, Smith's internal witness)."
+      },
+      {
+        "Label": "Empathy",
+        "Category": "moral",
+        "IntroducedBy": "christopher-hitchens",
+        "Description": "Biologically grounded basis for morality raised in audience Q&A."
+      },
+      {
+        "Label": "Vicarious Redemption",
+        "Category": "theological",
+        "IntroducedBy": "christopher-hitchens",
+        "Description": "Salvation by another's suffering through human sacrifice; Hitchens's central moral objection."
+      },
+      {
+        "Label": "Scapegoating",
+        "Category": "theological",
+        "IntroducedBy": "christopher-hitchens",
+        "Description": "Casting sins onto a substitute; called primitive and barbaric."
+      },
+      {
+        "Label": "Miracle",
+        "Category": "theological",
+        "IntroducedBy": "christopher-hitchens",
+        "Description": "A suspension of natural order (the regular course of nature), per Hume."
+      },
+      {
+        "Label": "Virgin Birth",
+        "Category": "theological",
+        "IntroducedBy": "christopher-hitchens",
+        "Description": "A miracle a design argument can never reach."
+      },
+      {
+        "Label": "Resurrection",
+        "Category": "theological",
+        "IntroducedBy": "christopher-hitchens",
+        "Description": "Hitchens notes it was 'commonplace' in the gospels."
+      },
+      {
+        "Label": "Eschatology",
+        "Category": "theological",
+        "IntroducedBy": "christopher-hitchens",
+        "Description": "End-times doctrine; the rapture, Armageddon, the apocalypse, a 'cult of death'."
+      },
+      {
+        "Label": "Mind-Forged Manacles",
+        "Category": "theological",
+        "IntroducedBy": "christopher-hitchens",
+        "Description": "Blake's phrase for self-imposed religious tyranny (limbo, hell)."
+      },
+      {
+        "Label": "Celestial Dictatorship",
+        "Category": "theological",
+        "IntroducedBy": "christopher-hitchens",
+        "Description": "Theism framed as totalitarian, master-slave submission."
+      },
+      {
+        "Label": "Materialism",
+        "Category": "method",
+        "IntroducedBy": "frank-turek",
+        "Description": "Only matter exists; Turek's target across the four supporting arguments."
+      },
+      {
+        "Label": "Free Will",
+        "Category": "method",
+        "IntroducedBy": "frank-turek",
+        "Description": "Genuine choice Turek says materialism cannot supply."
+      },
+      {
+        "Label": "Consciousness",
+        "Category": "method",
+        "IntroducedBy": "frank-turek",
+        "Description": "Subjective experience Turek says chemicals cannot explain."
+      },
+      {
+        "Label": "Occam's Razor",
+        "Category": "method",
+        "IntroducedBy": "christopher-hitchens",
+        "Description": "Dispose of needless assumptions — Hitchens removes the prime mover."
+      },
+      {
+        "Label": "Hume On Miracles",
+        "Category": "method",
+        "IntroducedBy": "christopher-hitchens",
+        "Description": "Error is always likelier than a suspension of nature in one's favor."
+      },
+      {
+        "Label": "Non-Overlapping Magisteria",
+        "Category": "method",
+        "IntroducedBy": "christopher-hitchens",
+        "Description": "Gould's thesis that science and religion address separate domains."
+      },
+      {
+        "Label": "Burden Of Proof",
+        "Category": "method",
+        "IntroducedBy": "frank-turek",
+        "Description": "Who must establish the claim; both accept a share."
+      },
+      {
+        "Label": "Ontological Argument",
+        "Category": "method",
+        "IntroducedBy": "christopher-hitchens",
+        "Description": "To conceive a thing is for it to be 'real in the mind' (parodied via limbo)."
+      },
+      {
+        "Label": "Borrowing From Theism",
+        "Category": "moral",
+        "IntroducedBy": "frank-turek",
+        "Description": "Turek's charge: Hitchens must 'sit in God's lap to slap his face'."
+      },
+      {
+        "Label": "Problem Of Evil",
+        "Category": "theological",
+        "IntroducedBy": "christopher-hitchens",
+        "Description": "Implicit in 'created sick, commanded to be well' — suffering counts against a good designer."
+      },
+      {
+        "Label": "Choice Argument",
+        "Category": "cosmology",
+        "IntroducedBy": "frank-turek",
+        "Description": "Turek's claim that moving from non-existence to existence requires a choice, and only persons choose."
+      },
+      {
+        "Label": "Divine Command",
+        "Category": "moral",
+        "IntroducedBy": "frank-turek",
+        "Description": "The divine-command standard: right and wrong fixed by God's nature and command."
+      }
+    ]
+  },
+  "Claims": {
+    "Description": "Specific assertions made by each debater, with derived rebuttal status.",
+    "schema": [
+      {
+        "name": "Label",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Short name of the claim."
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": false,
+        "Description": "Logical primary key — slug of Label.",
+        "formula": "=SUBSTITUTE(LOWER({{Label}}), \" \", \"-\")"
+      },
+      {
+        "name": "MadeBy",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": false,
+        "Description": "Debater who made the claim.",
+        "RelatedTo": "Debaters"
+      },
+      {
+        "name": "Phase",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "opening, rebuttal, cross-examination, or closing."
+      },
+      {
+        "name": "SupportsArgument",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "Description": "Argument the claim supports.",
+        "RelatedTo": "Arguments"
+      },
+      {
+        "name": "TouchesConcept",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "Description": "Primary concept the claim engages.",
+        "RelatedTo": "Concepts"
+      },
+      {
+        "name": "Description",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "The claim in brief."
+      },
+      {
+        "name": "RebuttalCount",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": false,
+        "Description": "1st-order: rebuttals directed at this claim.",
+        "formula": "=COUNTIFS(Rebuttals!{{RebutsClaim}}, {{Name}})"
+      },
+      {
+        "name": "IsRebutted",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": false,
+        "Description": "2nd-order: the claim drew at least one rebuttal.",
+        "formula": "=IF({{RebuttalCount}} > 0, TRUE(), FALSE())"
+      }
+    ],
+    "data": [
+      {
+        "Label": "Beginning Implies Beginner",
+        "MadeBy": "frank-turek",
+        "Phase": "opening",
+        "SupportsArgument": "cosmological-argument",
+        "TouchesConcept": "big-bang",
+        "Description": "The Big Bang's beginning requires a transcendent beginner."
+      },
+      {
+        "Label": "Constants Are Fine-Tuned",
+        "MadeBy": "frank-turek",
+        "Phase": "opening",
+        "SupportsArgument": "argument-from-fine-tuning",
+        "TouchesConcept": "fine-tuning",
+        "Description": "Life-permitting constants sit on a razor's edge, implying a tuner."
+      },
+      {
+        "Label": "Information Implies Mind",
+        "MadeBy": "frank-turek",
+        "Phase": "opening",
+        "SupportsArgument": "argument-from-design-of-life",
+        "TouchesConcept": "specified-complexity",
+        "Description": "DNA's specified complexity could only come from a mind."
+      },
+      {
+        "Label": "Objective Morality Needs God",
+        "MadeBy": "frank-turek",
+        "Phase": "opening",
+        "SupportsArgument": "moral-argument",
+        "TouchesConcept": "moral-lawgiver",
+        "Description": "Objective moral values require a moral lawgiver beyond humanity."
+      },
+      {
+        "Label": "Materialism Defeats Reason",
+        "MadeBy": "frank-turek",
+        "Phase": "opening",
+        "SupportsArgument": "argument-from-reason",
+        "TouchesConcept": "materialism",
+        "Description": "If thought is mere chemistry, reasoning cannot be trusted."
+      },
+      {
+        "Label": "Consciousness Defies Chemistry",
+        "MadeBy": "frank-turek",
+        "Phase": "opening",
+        "SupportsArgument": "argument-from-consciousness",
+        "TouchesConcept": "consciousness",
+        "Description": "No materialist account explains why matter is conscious."
+      },
+      {
+        "Label": "Hitchens Borrows Morality",
+        "MadeBy": "frank-turek",
+        "Phase": "rebuttal",
+        "SupportsArgument": "moral-argument",
+        "TouchesConcept": "borrowing-from-theism",
+        "Description": "Hitchens must assume God's moral standard to argue against God."
+      },
+      {
+        "Label": "Design Need Not Be Optimal",
+        "MadeBy": "frank-turek",
+        "Phase": "closing",
+        "SupportsArgument": "teleological-argument",
+        "TouchesConcept": "fine-tuning",
+        "Description": "Suboptimal design is still design; you can't judge it without the designer's purpose."
+      },
+      {
+        "Label": "Everyone Is An Atheist",
+        "MadeBy": "christopher-hitchens",
+        "Phase": "opening",
+        "SupportsArgument": "deism-theism-gap",
+        "TouchesConcept": "ontological-argument",
+        "Description": "Everyone disbelieves in thousands of gods; the theist must justify the one exception."
+      },
+      {
+        "Label": "Designer Is Not Enough",
+        "MadeBy": "christopher-hitchens",
+        "Phase": "opening",
+        "SupportsArgument": "deism-theism-gap",
+        "TouchesConcept": "watchmaker",
+        "Description": "Even a designer doesn't yield answered prayer, virgin birth, or resurrection."
+      },
+      {
+        "Label": "Atrocity From Divine Permission",
+        "MadeBy": "christopher-hitchens",
+        "Phase": "opening",
+        "SupportsArgument": "morality-without-god",
+        "TouchesConcept": "divine-permission",
+        "Description": "The most brutal acts come from believing one has divine permission."
+      },
+      {
+        "Label": "No Virtue Unique To Believers",
+        "MadeBy": "christopher-hitchens",
+        "Phase": "opening",
+        "SupportsArgument": "morality-without-god",
+        "TouchesConcept": "conscience",
+        "Description": "No moral act exists that only a believer could perform."
+      },
+      {
+        "Label": "Fine-Tuning Cuts Both Ways",
+        "MadeBy": "christopher-hitchens",
+        "Phase": "opening",
+        "SupportsArgument": "argument-from-poor-design",
+        "TouchesConcept": "heat-death",
+        "Description": "Accelerating dissipation and extinction suggest capricious or absent design."
+      },
+      {
+        "Label": "Miracles Fail Humes Test",
+        "MadeBy": "christopher-hitchens",
+        "Phase": "cross-examination",
+        "SupportsArgument": "deism-theism-gap",
+        "TouchesConcept": "hume-on-miracles",
+        "Description": "A reported miracle is always less likely than the witness being mistaken."
+      },
+      {
+        "Label": "Vicarious Redemption Is Immoral",
+        "MadeBy": "christopher-hitchens",
+        "Phase": "cross-examination",
+        "SupportsArgument": "morality-without-god",
+        "TouchesConcept": "vicarious-redemption",
+        "Description": "One may pay a debt but cannot assume another's moral responsibility."
+      },
+      {
+        "Label": "Religion Poisons Everything",
+        "MadeBy": "christopher-hitchens",
+        "Phase": "closing",
+        "SupportsArgument": "religion-poisons-everything",
+        "TouchesConcept": "eschatology",
+        "Description": "Religion demands servile submission and yearns for the end of the world."
+      }
+    ]
+  },
+  "Rebuttals": {
+    "Description": "Direct responses aimed at specific claims.",
+    "schema": [
+      {
+        "name": "Label",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Short name of the rebuttal."
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": false,
+        "Description": "Logical primary key — slug of Label.",
+        "formula": "=SUBSTITUTE(LOWER({{Label}}), \" \", \"-\")"
+      },
+      {
+        "name": "MadeBy",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": false,
+        "Description": "Debater making the rebuttal.",
+        "RelatedTo": "Debaters"
+      },
+      {
+        "name": "RebutsClaim",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": false,
+        "Description": "Claim being rebutted.",
+        "RelatedTo": "Claims"
+      },
+      {
+        "name": "Description",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "The rebuttal in brief."
+      }
+    ],
+    "data": [
+      {
+        "Label": "Cause Need Not Choose",
+        "MadeBy": "christopher-hitchens",
+        "RebutsClaim": "beginning-implies-beginner",
+        "Description": "'I don't have to know' the origin; positing a choosing being just relabels the mystery."
+      },
+      {
+        "Label": "Accelerating Expansion",
+        "MadeBy": "christopher-hitchens",
+        "RebutsClaim": "constants-are-fine-tuned",
+        "Description": "Krauss: the red-shift rate is increasing — the cosmos is flying apart, hardly careful tuning."
+      },
+      {
+        "Label": "Information Argument Is Faith",
+        "MadeBy": "christopher-hitchens",
+        "RebutsClaim": "information-implies-mind",
+        "Description": "The origin-of-life quotes are all statements of uncertainty, not evidence of a mind."
+      },
+      {
+        "Label": "Morality Predates Atoms",
+        "MadeBy": "christopher-hitchens",
+        "RebutsClaim": "objective-morality-needs-god",
+        "Description": "The question of the good predates Lucretius, Democritus, and Epicurus and the atomic theory; it needs no deity."
+      },
+      {
+        "Label": "I Am A Primate And Still Reason",
+        "MadeBy": "christopher-hitchens",
+        "RebutsClaim": "materialism-defeats-reason",
+        "Description": "Being a primate doesn't bar reasoning about heroism and self-sacrifice."
+      },
+      {
+        "Label": "Borrowing Charge Is False",
+        "MadeBy": "christopher-hitchens",
+        "RebutsClaim": "hitchens-borrows-morality",
+        "Description": "Conscience is innate (Socrates, Smith); no borrowing from theism is required."
+      },
+      {
+        "Label": "Optimality Objection Misfires",
+        "MadeBy": "christopher-hitchens",
+        "RebutsClaim": "design-need-not-be-optimal",
+        "Description": "Profuse extinction and a heat-death trajectory are not what design predicts."
+      },
+      {
+        "Label": "Religious People Aren't The Point",
+        "MadeBy": "frank-turek",
+        "RebutsClaim": "religion-poisons-everything",
+        "Description": "Bad believers say nothing about whether God exists; everything poisons religion."
+      },
+      {
+        "Label": "Hume's Premise Is Wrong",
+        "MadeBy": "frank-turek",
+        "RebutsClaim": "miracles-fail-humes-test",
+        "Description": "Hume's 'regular beats rare' rule would deny the Big Bang and one's own birth — singular events happen."
+      },
+      {
+        "Label": "Not All Pardons Are Immoral",
+        "MadeBy": "christopher-hitchens",
+        "RebutsClaim": "vicarious-redemption-is-immoral",
+        "Description": "Hitchens clarifies: not all pardons — only assuming another's responsibility — are immoral."
+      }
+    ]
+  },
+  "Thinkers": {
+    "Description": "Authorities invoked by each side, including hostile witnesses.",
+    "schema": [
+      {
+        "name": "Label",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Name of the thinker."
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": false,
+        "Description": "Logical primary key — slug of Label.",
+        "formula": "=SUBSTITUTE(LOWER({{Label}}), \" \", \"-\")"
+      },
+      {
+        "name": "Field",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Primary field (physics, biology, philosophy, etc.)."
+      },
+      {
+        "name": "Era",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Rough period."
+      },
+      {
+        "name": "CitedBy",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "Description": "Debater who invokes them.",
+        "RelatedTo": "Debaters"
+      },
+      {
+        "name": "CitedAsHostileWitness",
+        "datatype": "boolean",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Cited against their own sympathies (e.g., an atheist conceding fine-tuning)."
+      },
+      {
+        "name": "Description",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Why they appear in the debate."
+      },
+      {
+        "name": "QuotationCount",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": false,
+        "Description": "1st-order: quotations attributed to them.",
+        "formula": "=COUNTIFS(Quotations!{{Speaker}}, {{Name}})"
+      }
+    ],
+    "data": [
+      {
+        "Label": "Edwin Hubble",
+        "Field": "physics",
+        "Era": "20th c.",
+        "CitedBy": "frank-turek",
+        "CitedAsHostileWitness": false,
+        "Description": "Discovered cosmic expansion (1929)."
+      },
+      {
+        "Label": "Arno Penzias",
+        "Field": "physics",
+        "Era": "20th c.",
+        "CitedBy": "frank-turek",
+        "CitedAsHostileWitness": false,
+        "Description": "Co-discovered the radiation echo; quoted on a balanced, supernatural-seeming universe."
+      },
+      {
+        "Label": "Robert Wilson",
+        "Field": "physics",
+        "Era": "20th c.",
+        "CitedBy": "frank-turek",
+        "CitedAsHostileWitness": false,
+        "Description": "Co-discovered the cosmic afterglow at Bell Labs."
+      },
+      {
+        "Label": "George Smoot",
+        "Field": "physics",
+        "Era": "20th c.",
+        "CitedBy": "frank-turek",
+        "CitedAsHostileWitness": false,
+        "Description": "Led the COBE result; quoted comparing it to looking at God."
+      },
+      {
+        "Label": "Stephen Hawking",
+        "Field": "physics",
+        "Era": "20th-21st c.",
+        "CitedBy": "christopher-hitchens",
+        "CitedAsHostileWitness": false,
+        "Description": "Invoked by both; Hitchens warns against drafting him as a deist."
+      },
+      {
+        "Label": "Robert Jastrow",
+        "Field": "astronomy",
+        "Era": "20th c.",
+        "CitedBy": "frank-turek",
+        "CitedAsHostileWitness": true,
+        "Description": "Agnostic astronomer; Turek's hostile witness for an abrupt creation."
+      },
+      {
+        "Label": "Arthur Eddington",
+        "Field": "physics",
+        "Era": "20th c.",
+        "CitedBy": "frank-turek",
+        "CitedAsHostileWitness": false,
+        "Description": "Called the cosmic beginning 'frankly supernatural'."
+      },
+      {
+        "Label": "Albert Einstein",
+        "Field": "physics",
+        "Era": "20th c.",
+        "CitedBy": "frank-turek",
+        "CitedAsHostileWitness": false,
+        "Description": "General relativity; a determinist invoked on both sides."
+      },
+      {
+        "Label": "Aristotle",
+        "Field": "philosophy",
+        "Era": "ancient",
+        "CitedBy": "frank-turek",
+        "CitedAsHostileWitness": false,
+        "Description": "Defined nothing as 'what rocks dream about'."
+      },
+      {
+        "Label": "Richard Dawkins",
+        "Field": "biology",
+        "Era": "contemporary",
+        "CitedBy": "frank-turek",
+        "CitedAsHostileWitness": true,
+        "Description": "Hostile witness on DNA's information content."
+      },
+      {
+        "Label": "Francis Crick",
+        "Field": "biology",
+        "Era": "20th c.",
+        "CitedBy": "frank-turek",
+        "CitedAsHostileWitness": true,
+        "Description": "Co-discoverer of DNA; floated panspermia."
+      },
+      {
+        "Label": "Fred Hoyle",
+        "Field": "astronomy",
+        "Era": "20th c.",
+        "CitedBy": "frank-turek",
+        "CitedAsHostileWitness": true,
+        "Description": "Coined 'Big Bang'; spoke of a superintellect monkeying with physics."
+      },
+      {
+        "Label": "Chandra Wickramasinghe",
+        "Field": "astronomy",
+        "Era": "contemporary",
+        "CitedBy": "frank-turek",
+        "CitedAsHostileWitness": true,
+        "Description": "Called primordial-soup belief 'an article of faith'."
+      },
+      {
+        "Label": "Antony Flew",
+        "Field": "philosophy",
+        "Era": "contemporary",
+        "CitedBy": "frank-turek",
+        "CitedAsHostileWitness": false,
+        "Description": "Prominent atheist turned deist over DNA evidence."
+      },
+      {
+        "Label": "Steven Weinberg",
+        "Field": "physics",
+        "Era": "contemporary",
+        "CitedBy": "frank-turek",
+        "CitedAsHostileWitness": true,
+        "Description": "Atheist physicist on the delicate balance required for life."
+      },
+      {
+        "Label": "William Provine",
+        "Field": "biology",
+        "Era": "contemporary",
+        "CitedBy": "frank-turek",
+        "CitedAsHostileWitness": true,
+        "Description": "Materialist Darwinist who denies free will."
+      },
+      {
+        "Label": "Daniel Dennett",
+        "Field": "philosophy",
+        "Era": "contemporary",
+        "CitedBy": "frank-turek",
+        "CitedAsHostileWitness": true,
+        "Description": "Materialist who treats consciousness as an illusion."
+      },
+      {
+        "Label": "Charles Darwin",
+        "Field": "biology",
+        "Era": "19th c.",
+        "CitedBy": "christopher-hitchens",
+        "CitedAsHostileWitness": false,
+        "Description": "Natural selection; Hitchens's 'greater emancipator'."
+      },
+      {
+        "Label": "William Paley",
+        "Field": "philosophy",
+        "Era": "18th-19th c.",
+        "CitedBy": "christopher-hitchens",
+        "CitedAsHostileWitness": false,
+        "Description": "The watchmaker analogy: design implies a designer."
+      },
+      {
+        "Label": "Thomas Aquinas",
+        "Field": "philosophy",
+        "Era": "medieval",
+        "CitedBy": "christopher-hitchens",
+        "CitedAsHostileWitness": false,
+        "Description": "Source of the ontological move Hitchens parodies."
+      },
+      {
+        "Label": "Thomas Jefferson",
+        "Field": "statesmanship",
+        "Era": "18th c.",
+        "CitedBy": "christopher-hitchens",
+        "CitedAsHostileWitness": false,
+        "Description": "Author of Virginia's statute on religious freedom; a deist."
+      },
+      {
+        "Label": "David Hume",
+        "Field": "philosophy",
+        "Era": "18th c.",
+        "CitedBy": "christopher-hitchens",
+        "CitedAsHostileWitness": false,
+        "Description": "On miracles and the is-ought problem."
+      },
+      {
+        "Label": "Socrates",
+        "Field": "philosophy",
+        "Era": "ancient",
+        "CitedBy": "christopher-hitchens",
+        "CitedAsHostileWitness": false,
+        "Description": "His inner daemon as a model of conscience."
+      },
+      {
+        "Label": "Adam Smith",
+        "Field": "philosophy",
+        "Era": "18th c.",
+        "CitedBy": "christopher-hitchens",
+        "CitedAsHostileWitness": false,
+        "Description": "The 'internal witness' in Theory of Moral Sentiments."
+      },
+      {
+        "Label": "C. S. Lewis",
+        "Field": "theology",
+        "Era": "20th c.",
+        "CitedBy": "christopher-hitchens",
+        "CitedAsHostileWitness": false,
+        "Description": "Attributed conscience to the divine; Hitchens says without improving on Smith."
+      },
+      {
+        "Label": "Lawrence Krauss",
+        "Field": "physics",
+        "Era": "contemporary",
+        "CitedBy": "christopher-hitchens",
+        "CitedAsHostileWitness": false,
+        "Description": "On the increasing red-shift rate."
+      },
+      {
+        "Label": "Stephen Jay Gould",
+        "Field": "biology",
+        "Era": "20th c.",
+        "CitedBy": "christopher-hitchens",
+        "CitedAsHostileWitness": false,
+        "Description": "Panda's thumb (poor design) and non-overlapping magisteria."
+      },
+      {
+        "Label": "Georges Lemaitre",
+        "Field": "physics",
+        "Era": "20th c.",
+        "CitedBy": "christopher-hitchens",
+        "CitedAsHostileWitness": false,
+        "Description": "Catholic physicist who first proposed the Big Bang."
+      },
+      {
+        "Label": "H. L. Mencken",
+        "Field": "letters",
+        "Era": "20th c.",
+        "CitedBy": "christopher-hitchens",
+        "CitedAsHostileWitness": false,
+        "Description": "Listed thousands of dead gods in Hitchens's anthology."
+      },
+      {
+        "Label": "Fyodor Dostoevsky",
+        "Field": "literature",
+        "Era": "19th c.",
+        "CitedBy": "christopher-hitchens",
+        "CitedAsHostileWitness": false,
+        "Description": "Brothers Karamazov; his character Smerdyakov voices the 'everything is permitted' line."
+      },
+      {
+        "Label": "Blaise Pascal",
+        "Field": "philosophy",
+        "Era": "17th c.",
+        "CitedBy": "christopher-hitchens",
+        "CitedAsHostileWitness": false,
+        "Description": "Addressed those 'so made that they cannot believe'."
+      },
+      {
+        "Label": "Lucretius",
+        "Field": "philosophy",
+        "Era": "ancient",
+        "CitedBy": "christopher-hitchens",
+        "CitedAsHostileWitness": false,
+        "Description": "Atomic theory predating the morality debate."
+      }
+    ]
+  },
+  "Quotations": {
+    "Description": "Citations used by debaters, stored as paraphrased gists to respect copyright.",
+    "schema": [
+      {
+        "name": "Label",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Short name of the quotation."
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": false,
+        "Description": "Logical primary key — slug of Label.",
+        "formula": "=SUBSTITUTE(LOWER({{Label}}), \" \", \"-\")"
+      },
+      {
+        "name": "Speaker",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": false,
+        "Description": "Thinker the quotation is attributed to.",
+        "RelatedTo": "Thinkers"
+      },
+      {
+        "name": "CitedBy",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": false,
+        "Description": "Debater who cited it.",
+        "RelatedTo": "Debaters"
+      },
+      {
+        "name": "Gist",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Paraphrased substance of the quotation."
+      },
+      {
+        "name": "Description",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Context note."
+      }
+    ],
+    "data": [
+      {
+        "Label": "Smoot On Looking At God",
+        "Speaker": "george-smoot",
+        "CitedBy": "frank-turek",
+        "Gist": "Paraphrase: a religious person might see the COBE result as a glimpse of the divine.",
+        "Description": "Paraphrased citation used in the debate (not verbatim)."
+      },
+      {
+        "Label": "Jastrow's Mountain Of Ignorance",
+        "Speaker": "robert-jastrow",
+        "CitedBy": "frank-turek",
+        "Gist": "Paraphrase: the scientist scaling the peak finds theologians already seated there.",
+        "Description": "Paraphrased citation used in the debate (not verbatim)."
+      },
+      {
+        "Label": "Eddington On The Beginning",
+        "Speaker": "arthur-eddington",
+        "CitedBy": "frank-turek",
+        "Gist": "Paraphrase: the cosmic beginning seems frankly supernatural.",
+        "Description": "Paraphrased citation used in the debate (not verbatim)."
+      },
+      {
+        "Label": "Hoyle's Superintellect",
+        "Speaker": "fred-hoyle",
+        "CitedBy": "frank-turek",
+        "Gist": "Paraphrase: a superintellect appears to have arranged physics, chemistry, and biology.",
+        "Description": "Paraphrased citation used in the debate (not verbatim)."
+      },
+      {
+        "Label": "Wickramasinghe On Faith",
+        "Speaker": "chandra-wickramasinghe",
+        "CitedBy": "frank-turek",
+        "Gist": "Paraphrase: belief in life from a primordial soup is an article of faith.",
+        "Description": "Paraphrased citation used in the debate (not verbatim)."
+      },
+      {
+        "Label": "Dostoevsky's Permission",
+        "Speaker": "fyodor-dostoevsky",
+        "CitedBy": "christopher-hitchens",
+        "Gist": "Paraphrase: without God, everything is permitted — voiced by the story's basest character.",
+        "Description": "Paraphrased citation used in the debate (not verbatim)."
+      },
+      {
+        "Label": "Hume On Probability",
+        "Speaker": "david-hume",
+        "CitedBy": "christopher-hitchens",
+        "Gist": "Paraphrase: weigh whether nature was suspended for you, or whether you simply erred.",
+        "Description": "Paraphrased citation used in the debate (not verbatim)."
+      },
+      {
+        "Label": "Mencken's Dead Gods",
+        "Speaker": "h.-l.-mencken",
+        "CitedBy": "christopher-hitchens",
+        "Gist": "Paraphrase: a long catalogue of gods once worshipped and now believed by no one.",
+        "Description": "Paraphrased citation used in the debate (not verbatim)."
+      }
+    ]
+  },
+  "_meta": {
+    "_CMCC_Summary": "Shadle-steps bootstrap of a philosophical debate into a DAG-structured rulebook hub.",
+    "_conversion_metadata": {
+      "source": "VCU 'Does God Exist?' debate transcript (Hitchens vs Turek)",
+      "method": "effortless-bootstrap (Shadle steps) 1-10, Rulebook-First",
+      "table_count": 9,
+      "tool_version": "shadle-manual-1.0",
+      "dag_depth": 3,
+      "field_type_mapping": "raw, calculated, relationship, aggregation",
+      "copyright_note": "Quotations stored as paraphrased gists, never long verbatim."
+    }
+  }
+}

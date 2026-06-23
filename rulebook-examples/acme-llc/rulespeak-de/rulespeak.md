@@ -12,8 +12,8 @@ _Smallest viable rulebook with a calculated field — the "Hello, formulas" tuto
 | Begriff | Beschreibung | Erläuternder Kommentar |
 |---------|--------------|------------------------|
 | **Customer** | Ein customer wird durch seinen name identifiziert. | — |
-| Name | Berechnet als der email address, wobei jedes der Wert „@“ durch ein Bindestrich ersetzt wird. | _Identifier for the cusfdsfdstomers._ |
-| Initials | Berechnet als die ersten 1 Zeichen von der first name, gefolgt von die ersten 1 Zeichen von der last name. | — |
+| Name | Berechnet als der email address, wobei jedes der Wert „@“ durch ein Bindestrich ersetzt wird. | _Identifier for the customer._ |
+| Initials | Berechnet als die ersten 1 Zeichen von der first name, gefolgt von die ersten 1 Zeichen von der last name. | _Customer initials — the first letter of FirstName followed by the first letter of LastName._ |
 | Full Name | Berechnet als der first name, gefolgt von ein Leerzeichen, gefolgt von der last name. | _Full name is computed from the first and last name of the customer_ |
 | **ERB Version** | Ein ERB version wird durch seinen name identifiziert. | — |
 | **ERB Customization** | Ein ERB customization wird durch seinen name identifiziert. | — |
