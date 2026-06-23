@@ -145,8 +145,16 @@
       "RelativePath": "/rulespeak",
       "CommandLine": "rulebook-to-rulespeak -i ../effortless-rulebook/acme-llc-rulebook.json",
       "IsDisabled": false,
-      "LastVersionUsed": "v2026.06.06.0219",
-      "LastUrl": "https://effortless-rulebook-to-rulespeak-v2026-06-06-0219-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
+      "LastVersionUsed": "v2026.06.10.1308",
+      "LastUrl": "https://effortless-rulebook-to-rulespeak-v2026-06-10-1308-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
+    },
+    {
+      "IsSSoTTranspiler": false,
+      "Name": "rulebooktorulespeakde",
+      "RelativePath": "/rulespeak-de",
+      "CommandLine": "rulebook-to-rulespeak-de -i ../effortless-rulebook/acme-llc-rulebook.json",
+      "IsDisabled": false,
+      "PinnedVersion": "v2026.06.20.2306"
     }
   ]
 }

@@ -1,0 +1,606 @@
+<!doctype html>
+<html lang="de" class="show-rulespeak show-desc show-inputs">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ACME, LLC — RuleSpeak</title>
+<style>
+
+:root{
+  --raw:#003a70; --calc:#5a3aa0; --agg:#0a7b78; --rel:#666; --lookup:#9a6708;
+  --raw-bg:#eaf0f8; --calc-bg:#f1ebfb; --agg-bg:#e5f4f3; --rel-bg:#f0f0f0; --lookup-bg:#fbf2dd;
+  --ink:#1a1a22; --muted:#6b6b78; --line:#e3e3ea; --bg:#fafafc; --card:#fff;
+  --bar-h:48px;                 /* sticky topbar height — anchors clear it */
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font:15px/1.55 -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+  color:var(--ink);background:var(--bg);}
+a{color:var(--calc);text-decoration:none}
+a:hover{text-decoration:underline}
+code{font:0.85em ui-monospace,SFMono-Regular,Menlo,monospace;background:#f3f3f7;padding:1px 5px;border-radius:4px}
+
+/* ── Element visibility: each doc element shows only when <html> carries its flag.
+      All independent — any combination can be on at once. ──────────────────── */
+.elem{display:none}
+html.show-rulespeak .elem-rulespeak{display:block}
+html.show-english   .elem-english{display:block}
+html.show-formula   .elem-formula{display:block}
+html.show-desc      .elem-desc{display:block}
+html.show-inputs    .elem-inputs{display:block}
+html.show-consumers .elem-consumers{display:block}
+
+/* ── Sticky top bar (stays pinned) — brand · breadcrumb · gear ───────────── */
+.topbar{position:sticky;top:0;z-index:40;height:var(--bar-h);
+  background:rgba(255,255,255,.92);border-bottom:1px solid var(--line);
+  backdrop-filter:saturate(1.1) blur(8px)}
+.topbar-inner{max-width:960px;margin:0 auto;padding:0 24px;height:var(--bar-h);
+  display:flex;align-items:center;gap:12px}
+.topbar-brand{font-weight:800;font-size:15px;color:var(--ink);white-space:nowrap;flex:none}
+.topbar-brand:hover{text-decoration:none}
+.topbar-tag{font-size:11px;font-weight:700;color:var(--calc);background:var(--calc-bg);
+  padding:1px 7px;border-radius:999px;margin-left:4px;vertical-align:middle}
+.crumb{flex:1;min-width:0;display:flex;align-items:center;gap:7px;
+  font-size:13px;color:var(--muted);overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+.crumb-entity{font-weight:700;color:var(--ink)}
+.crumb-sep{color:var(--line)}
+.crumb-field{color:var(--calc);font-weight:600;overflow:hidden;text-overflow:ellipsis}
+.gear{flex:none;width:34px;height:34px;border-radius:9px;border:1px solid var(--line);
+  background:#fff;cursor:pointer;font-size:17px;line-height:1;color:var(--muted);
+  display:inline-flex;align-items:center;justify-content:center;transition:all .12s}
+.gear:hover{color:var(--ink);border-color:var(--calc);box-shadow:0 1px 4px rgba(90,58,160,.15)}
+.gear[aria-expanded='true']{background:var(--calc);color:#fff;border-color:var(--calc)}
+
+/* ── Gear popup — checkboxes, one per documentation element ──────────────── */
+.gear-pop{position:absolute;top:calc(var(--bar-h) + 6px);right:24px;z-index:50;width:290px;
+  background:#fff;border:1px solid var(--line);border-radius:12px;
+  box-shadow:0 10px 32px rgba(20,20,40,.18);padding:12px}
+.gear-pop[hidden]{display:none}
+.gear-pop-title{margin:2px 4px 8px;font-size:11px;font-weight:700;text-transform:uppercase;
+  letter-spacing:.06em;color:var(--muted)}
+.gear-opt{display:grid;grid-template-columns:auto 1fr;column-gap:9px;align-items:baseline;
+  padding:7px 6px;border-radius:8px;cursor:pointer}
+.gear-opt:hover{background:var(--calc-bg)}
+.gear-opt input{grid-row:1 / span 2;align-self:center;width:16px;height:16px;accent-color:var(--calc);cursor:pointer}
+.gear-opt-label{font-weight:600;font-size:14px;color:var(--ink)}
+.gear-opt-hint{grid-column:2;font-size:12px;color:var(--muted);line-height:1.35}
+.gear-reset{margin:8px 4px 2px;border:0;background:transparent;color:var(--calc);
+  font:600 12px/1 inherit;cursor:pointer;padding:4px}
+.gear-reset:hover{text-decoration:underline}
+.gear-inline{border:1px solid var(--line);background:#fff;border-radius:7px;padding:1px 7px;
+  font:600 12px/1 inherit;color:var(--calc);cursor:pointer}
+.gear-inline:hover{border-color:var(--calc)}
+
+.doc-header{background:linear-gradient(180deg,#fff,#f5f4fb);border-bottom:1px solid var(--line)}
+.doc-header-inner{max-width:960px;margin:0 auto;padding:18px 24px}
+.doc-title{margin:0;font-size:24px;font-weight:800}
+.doc-title-sub{font-size:13px;font-weight:600;color:var(--calc);background:var(--calc-bg);
+  padding:2px 8px;border-radius:999px;vertical-align:middle;margin-left:6px}
+.doc-lede{margin:6px 0 0;font-style:italic;color:var(--muted)}
+.doc-note{margin:8px 0 12px;color:var(--muted);font-size:13px;max-width:70ch}
+.narr-hint{margin:8px 0 0;font-size:12px;color:var(--muted);max-width:78ch}
+
+.toc{max-width:960px;margin:22px auto 0;padding:0 24px;scroll-margin-top:calc(var(--bar-h) + 12px)}
+.toc-title{font-size:13px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin:0 0 8px}
+.toc-list{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:6px}
+.toc-list a{font-weight:600}
+.toc-meta{font-size:12px;color:var(--muted);margin-left:6px}
+
+.entity{max-width:960px;margin:34px auto 0;padding:0 24px;scroll-margin-top:calc(var(--bar-h) + 14px)}
+.entity-head{border-bottom:2px solid var(--line);padding-bottom:8px;margin-bottom:14px}
+.entity-title{margin:0;font-size:21px;font-weight:800}
+.entity-synopsis{margin:4px 0 0;color:var(--muted);max-width:74ch}
+
+.field{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--rel);
+  border-radius:10px;padding:14px 16px;margin:0 0 12px;scroll-margin-top:calc(var(--bar-h) + 14px)}
+.field.tone-raw{border-left-color:var(--raw)} .field.tone-calc{border-left-color:var(--calc)}
+.field.tone-agg{border-left-color:var(--agg)} .field.tone-lookup{border-left-color:var(--lookup)}
+.field.tone-rel{border-left-color:var(--rel)}
+.field-head{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.field-glyph{width:24px;height:24px;display:inline-flex;align-items:center;justify-content:center;
+  border-radius:6px;font-weight:700;color:#fff;font-size:13px}
+.tone-raw .field-glyph{background:var(--raw)} .tone-calc .field-glyph{background:var(--calc)}
+.tone-agg .field-glyph{background:var(--agg)} .tone-lookup .field-glyph{background:var(--lookup)}
+.tone-rel .field-glyph{background:var(--rel)}
+.field-name{font-weight:700;font-size:16px}
+.pill{font-size:11px;font-weight:600;padding:2px 8px;border-radius:999px;background:#f0f0f5;color:var(--muted)}
+.pill-type{background:var(--calc-bg);color:var(--calc)}
+.tone-raw .pill-type{background:var(--raw-bg);color:var(--raw)}
+.tone-agg .pill-type{background:var(--agg-bg);color:var(--agg)}
+.tone-lookup .pill-type{background:var(--lookup-bg);color:var(--lookup)}
+.tone-rel .pill-type{background:var(--rel-bg);color:var(--rel)}
+.pill-dr{background:#eee;color:#555;font-variant-numeric:tabular-nums}
+
+.narr-views{margin-top:10px;display:flex;flex-direction:column;gap:10px}
+.narr-views:empty{margin-top:0}
+.view-label{display:inline-block;font-size:11px;font-weight:700;text-transform:uppercase;
+  letter-spacing:.05em;color:var(--muted);margin-bottom:4px}
+.view-body{margin:0}
+.mech{color:#9a6708;background:var(--lookup-bg);padding:1px 6px;border-radius:6px;
+  font-weight:600;text-transform:none;letter-spacing:0}
+.fx{font:0.92em ui-monospace,SFMono-Regular,Menlo,monospace;background:#f7f7fb;border:1px solid var(--line);
+  border-radius:8px;padding:8px 10px;overflow-x:auto;white-space:pre-wrap;word-break:break-word}
+.fx-eq{color:var(--muted)}
+.fx-chip{background:var(--calc-bg);color:var(--calc);padding:1px 6px;border-radius:5px;font-weight:600}
+.ref{border-bottom:1px dashed var(--calc);font-weight:600}
+
+.rt-headline{margin:0 0 4px}
+.rt-priority{margin:4px 0;padding-left:22px}
+.rt-priority>li{margin:2px 0}
+.rt-value{font-weight:700;color:var(--calc)}
+.rt-otherwise{color:var(--muted);font-style:italic}
+.rt-group-label{font-weight:600}
+.rt-group{margin:2px 0 6px;padding-left:20px}
+
+.gt{margin-top:8px}
+.gt-body{margin:0;color:var(--muted)}
+
+.prov{margin-top:10px;border-top:1px dashed var(--line);padding-top:8px}
+.prov>summary{cursor:pointer;font-size:13px;font-weight:600;color:var(--ink);list-style:none}
+.prov>summary::-webkit-details-marker{display:none}
+.prov>summary::before{content:'▸';display:inline-block;margin-right:6px;color:var(--muted);transition:transform .1s}
+.prov[open]>summary::before{transform:rotate(90deg)}
+.count{font-size:11px;font-weight:700;background:#eee;color:#555;padding:1px 7px;border-radius:999px;margin-left:4px}
+.count-muted{background:#f5f5f5;color:#999}
+.prov-hint{font-size:12px;font-weight:400;color:var(--muted);margin-left:6px}
+.prov-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:8px;margin-top:8px}
+.prov-pills{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.input{display:block;border:1px solid var(--line);border-left:3px solid var(--rel);border-radius:8px;
+  padding:8px 10px;background:#fcfcfe}
+.input.tone-raw{border-left-color:var(--raw)} .input.tone-calc{border-left-color:var(--calc)}
+.input.tone-agg{border-left-color:var(--agg)} .input.tone-lookup{border-left-color:var(--lookup)}
+.input.tone-rel{border-left-color:var(--rel)}
+.input:hover{background:#f4f3fb;text-decoration:none}
+.input-head{display:flex;align-items:center;gap:6px}
+.input-glyph{font-size:12px;color:var(--muted)}
+.input-name{font-weight:700;color:var(--ink)}
+.input-table{font-size:11px;color:var(--muted);margin-left:auto}
+.input-en{display:block;margin-top:3px;font-size:13px;color:var(--muted)}
+.ref-pill{display:inline-flex;align-items:center;gap:4px;font-size:12px;font-weight:600;
+  border:1px solid var(--line);border-radius:999px;padding:3px 10px;background:#fff;color:var(--ink)}
+.ref-pill.tone-raw{border-color:var(--raw);color:var(--raw)} .ref-pill.tone-calc{border-color:var(--calc);color:var(--calc)}
+.ref-pill.tone-agg{border-color:var(--agg);color:var(--agg)} .ref-pill.tone-lookup{border-color:var(--lookup);color:var(--lookup)}
+.ref-pill.faded{opacity:.6}
+.ref-pill-tbl{font-weight:400;color:var(--muted)}
+
+.field-note{margin:8px 0 0;font-size:13px;font-style:italic;color:var(--muted);
+  border-left:2px solid var(--line);padding-left:10px}
+
+.doc-footer{max-width:960px;margin:40px auto;padding:18px 24px;border-top:1px solid var(--line);
+  color:var(--muted);font-size:13px}
+.doc-footer-legend{margin-top:8px;display:flex;flex-wrap:wrap;gap:6px}
+.chip{font-size:12px;font-weight:600;padding:2px 9px;border-radius:999px}
+.chip-raw{background:var(--raw-bg);color:var(--raw)} .chip-calc{background:var(--calc-bg);color:var(--calc)}
+.chip-agg{background:var(--agg-bg);color:var(--agg)} .chip-lookup{background:var(--lookup-bg);color:var(--lookup)}
+.chip-rel{background:var(--rel-bg);color:var(--rel)}
+:target{animation:flash 1.2s ease}
+@keyframes flash{0%{background:var(--calc-bg)}100%{background:var(--card)}}
+
+</style>
+<script>
+
+(function(){
+  var ELEMS=['rulespeak','english','formula','desc','inputs','consumers'];
+  var root=document.documentElement;
+  ELEMS.forEach(function(k){
+    var v=null; try{v=localStorage.getItem('rulespeak.show.'+k);}catch(e){}
+    if(v==='1') root.classList.add('show-'+k);
+    else if(v==='0') root.classList.remove('show-'+k);
+  });
+})();
+
+</script>
+</head>
+<body>
+<div class="topbar">
+  <div class="topbar-inner">
+    <a class="topbar-brand" href="#top">📘 ACME, LLC <span class="topbar-tag">RuleSpeak</span></a>
+    <nav class="crumb" aria-label="Sie lesen gerade">
+      <span class="crumb-entity"></span>
+      <span class="crumb-sep" hidden>›</span>
+      <span class="crumb-field"></span>
+    </nav>
+    <button type="button" class="gear" id="gear-btn" aria-haspopup="dialog" aria-expanded="false" title="Dokumentationsoptionen" aria-label="Dokumentationsoptionen">⚙︎</button>
+  </div>
+  <div class="gear-pop" id="gear-pop" role="dialog" aria-label="Dokumentationsoptionen" hidden>
+    <p class="gear-pop-title">In diesem Dokument anzeigen</p>
+    <label class="gear-opt" title="Die deklarative Geschäftsregel (nur wenn / muss / Priorität)">
+      <input type="checkbox" data-elem="rulespeak" checked>
+      <span class="gear-opt-label">RuleSpeak</span>
+      <span class="gear-opt-hint">Die deklarative Geschäftsregel (nur wenn / muss / Priorität)</span>
+    </label>
+    <label class="gear-opt" title="Die Formel als klarsprachlicher deutscher Satz vorgelesen">
+      <input type="checkbox" data-elem="english">
+      <span class="gear-opt-label">Deutsch</span>
+      <span class="gear-opt-hint">Die Formel als klarsprachlicher deutscher Satz vorgelesen</span>
+    </label>
+    <label class="gear-opt" title="Der rohe =Ausdruck, mit anklickbaren Feld-Chips">
+      <input type="checkbox" data-elem="formula">
+      <span class="gear-opt-label">Formeln</span>
+      <span class="gear-opt-hint">Der rohe =Ausdruck, mit anklickbaren Feld-Chips</span>
+    </label>
+    <label class="gear-opt" title="Der erläuternde Kommentar des Autors zu einem Feld, falls vorhanden">
+      <input type="checkbox" data-elem="desc" checked>
+      <span class="gear-opt-label">Beschreibung</span>
+      <span class="gear-opt-hint">Der erläuternde Kommentar des Autors zu einem Feld, falls vorhanden</span>
+    </label>
+    <label class="gear-opt" title="Die Felder, die jede Regel liest (ihre DAG-Eingaben / vorgelagert)">
+      <input type="checkbox" data-elem="inputs" checked>
+      <span class="gear-opt-label">Links zu Eingaben</span>
+      <span class="gear-opt-hint">Die Felder, die jede Regel liest (ihre DAG-Eingaben / vorgelagert)</span>
+    </label>
+    <label class="gear-opt" title="Die Regeln, die diese hier lesen (ihre DAG-Verbraucher / nachgelagert)">
+      <input type="checkbox" data-elem="consumers">
+      <span class="gear-opt-label">Links zu Verbrauchern</span>
+      <span class="gear-opt-hint">Die Regeln, die diese hier lesen (ihre DAG-Verbraucher / nachgelagert)</span>
+    </label>
+    <button type="button" class="gear-reset" id="gear-reset">Auf Standard zurücksetzen</button>
+  </div>
+</div>
+<header class="doc-header" id="top">
+  <div class="doc-header-inner">
+    <h1 class="doc-title">📘 ACME, LLC <span class="doc-title-sub">RuleSpeak</span></h1>
+    <p class="doc-lede">Smallest viable rulebook with a calculated field — the &quot;Hello, formulas&quot; tutorial.</p>
+    <p class="doc-note">Deklarative Geschäftsregeln, aus dem Regelbuch gerendert — der einzigen Quelle der Wahrheit. Jede Aussage unten ist die klarsprachliche Lesart einer Formel; nichts hier ist von Hand verfasster Text.</p>
+    <p class="narr-hint">Nutzen Sie die <button type="button" class="gear-inline" id="gear-open-2">⚙︎ Optionen</button> oben rechts, um jeden Teil der Dokumentation ein- oder auszuschalten — RuleSpeak, Deutsch, die rohe Formel, die Beschreibung des Autors und die Links zu Eingaben und Verbrauchern einer Regel. Ihre Auswahl wird gespeichert.</p>
+  </div>
+</header>
+<nav class="toc">
+  <h2 class="toc-title">Entitäten</h2>
+  <ul class="toc-list">
+    <li><a href="#t-customers">Customer</a> <span class="toc-meta">3 Regeln · 0 Verknüpfungen</span></li>
+    <li><a href="#t-erbversions">ERB Version</a> <span class="toc-meta">0 Regeln · 0 Verknüpfungen</span></li>
+    <li><a href="#t-erbcustomizations">ERB Customization</a> <span class="toc-meta">0 Regeln · 0 Verknüpfungen</span></li>
+  </ul>
+</nav>
+<section class="entity" id="t-customers" data-entity="Customer">
+  <header class="entity-head">
+    <h2 class="entity-title">Customer</h2>
+    <p class="entity-synopsis">Ein customer is identified by its name.</p>
+  </header>
+  <article class="field tone-calc" id="f-customers-name" data-entity="Customer" data-field="Name">
+    <div class="field-head">
+      <span class="field-glyph" title="Berechnet">ƒ</span>
+      <span class="field-name">Name</span>
+      <span class="pill pill-type">Berechnet</span>
+      <span class="pill pill-depth">1 Sprung von der Grundwahrheit</span>
+      <span class="pill pill-muted">string</span>
+      <span class="pill pill-dr">DR-1</span>
+    </div>
+    <div class="narr-views">
+      <div class="view elem elem-rulespeak">
+        <span class="view-label">In RuleSpeak</span>
+        <p class="view-body">Ein customer: Name wird berechnet als der <a class="ref" href="#f-customers-emailaddress">email address</a>, wobei jedes der Wert „@“ durch ein Bindestrich ersetzt wird.</p>
+      </div>
+      <div class="view elem elem-english">
+        <span class="view-label">Auf Deutsch</span>
+        <p class="view-body"><a class="ref" href="#f-customers-emailaddress">Email address</a>, wobei „@“ durch „-“ ersetzt wird.</p>
+      </div>
+      <div class="view elem elem-formula">
+        <span class="view-label">Als Formel</span>
+        <div class="view-body fx"><span class="fx-eq">= </span>SUBSTITUTE(<a class="fx-chip" href="#f-customers-emailaddress">Email Address</a>, &quot;@&quot;, &quot;-&quot;)</div>
+      </div>
+    </div>
+    <details class="prov prov-inputs elem elem-inputs" open>
+      <summary>Eingaben <span class="count">1</span> <span class="prov-hint">Felder, die diese Regel liest</span></summary>
+      <div class="prov-grid">
+        <a class="input tone-raw" href="#f-customers-emailaddress">
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Email Address</span><span class="input-table">Customers</span></span>
+          <span class="input-en muted">Thec ustomers email address</span>
+        </a>
+      </div>
+    </details>
+    <details class="prov prov-leaves elem elem-inputs">
+      <summary>Grundwahrheit an den Blättern <span class="count">1</span> <span class="prov-hint">die Rohwerte, von denen dies letztlich abhängt</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-raw" href="#f-customers-emailaddress">● Email Address <span class="ref-pill-tbl">Customers</span></a>
+      </div>
+    </details>
+    <p class="field-note elem elem-desc">Identifier for the cusfdsfdstomers.</p>
+    </article>
+  <article class="field tone-raw" id="f-customers-emailaddress" data-entity="Customer" data-field="Email Address">
+    <div class="field-head">
+      <span class="field-glyph" title="Grundwahrheit">●</span>
+      <span class="field-name">Email Address</span>
+      <span class="pill pill-type">Grundwahrheit</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Grundwahrheit. Direkt in die Datenbank geschrieben (Datentyp <code>string</code>); nicht aus etwas anderem berechnet. Alles Abgeleitete führt letztlich auf Werte wie diesen zurück.</p>
+    </div>
+    <p class="field-note elem elem-desc">Thec ustomers email address</p>
+    </article>
+  <article class="field tone-raw" id="f-customers-firstname" data-entity="Customer" data-field="First Name">
+    <div class="field-head">
+      <span class="field-glyph" title="Grundwahrheit">●</span>
+      <span class="field-name">First Name</span>
+      <span class="pill pill-type">Grundwahrheit</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Grundwahrheit. Direkt in die Datenbank geschrieben (Datentyp <code>string</code>); nicht aus etwas anderem berechnet. Alles Abgeleitete führt letztlich auf Werte wie diesen zurück.</p>
+    </div>
+    <p class="field-note elem elem-desc">First Name of the customer - used to make the full name</p>
+    </article>
+  <article class="field tone-calc" id="f-customers-initials" data-entity="Customer" data-field="Initials">
+    <div class="field-head">
+      <span class="field-glyph" title="Berechnet">ƒ</span>
+      <span class="field-name">Initials</span>
+      <span class="pill pill-type">Berechnet</span>
+      <span class="pill pill-depth">1 Sprung von der Grundwahrheit</span>
+      <span class="pill pill-muted">string</span>
+      <span class="pill pill-dr">DR-2</span>
+    </div>
+    <div class="narr-views">
+      <div class="view elem elem-rulespeak">
+        <span class="view-label">In RuleSpeak</span>
+        <p class="view-body">Ein customer: Initials wird berechnet als die ersten 1 Zeichen von der <a class="ref" href="#f-customers-firstname">first name</a>, gefolgt von die ersten 1 Zeichen von der <a class="ref" href="#f-customers-lastname">last name</a>.</p>
+      </div>
+      <div class="view elem elem-english">
+        <span class="view-label">Auf Deutsch</span>
+        <p class="view-body">Die ersten 1 Zeichen von <a class="ref" href="#f-customers-firstname">first name</a> verbunden mit die ersten 1 Zeichen von <a class="ref" href="#f-customers-lastname">last name</a>.</p>
+      </div>
+      <div class="view elem elem-formula">
+        <span class="view-label">Als Formel</span>
+        <div class="view-body fx"><span class="fx-eq">= </span>LEFT(<a class="fx-chip" href="#f-customers-firstname">First Name</a>, 1) &amp; LEFT(<a class="fx-chip" href="#f-customers-lastname">Last Name</a>, 1)</div>
+      </div>
+    </div>
+    <details class="prov prov-inputs elem elem-inputs" open>
+      <summary>Eingaben <span class="count">2</span> <span class="prov-hint">Felder, die diese Regel liest</span></summary>
+      <div class="prov-grid">
+        <a class="input tone-raw" href="#f-customers-firstname">
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">First Name</span><span class="input-table">Customers</span></span>
+          <span class="input-en muted">First Name of the customer - used to make the full name</span>
+        </a>
+        <a class="input tone-raw" href="#f-customers-lastname">
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Last Name</span><span class="input-table">Customers</span></span>
+          <span class="input-en muted">Last Name of the customer - used to make the full name</span>
+        </a>
+      </div>
+    </details>
+    <details class="prov prov-leaves elem elem-inputs">
+      <summary>Grundwahrheit an den Blättern <span class="count">2</span> <span class="prov-hint">die Rohwerte, von denen dies letztlich abhängt</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-raw" href="#f-customers-firstname">● First Name <span class="ref-pill-tbl">Customers</span></a>
+        <a class="ref-pill tone-raw" href="#f-customers-lastname">● Last Name <span class="ref-pill-tbl">Customers</span></a>
+      </div>
+    </details>
+    </article>
+  <article class="field tone-raw" id="f-customers-lastname" data-entity="Customer" data-field="Last Name">
+    <div class="field-head">
+      <span class="field-glyph" title="Grundwahrheit">●</span>
+      <span class="field-name">Last Name</span>
+      <span class="pill pill-type">Grundwahrheit</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Grundwahrheit. Direkt in die Datenbank geschrieben (Datentyp <code>string</code>); nicht aus etwas anderem berechnet. Alles Abgeleitete führt letztlich auf Werte wie diesen zurück.</p>
+    </div>
+    <p class="field-note elem elem-desc">Last Name of the customer - used to make the full name</p>
+    </article>
+  <article class="field tone-calc" id="f-customers-fullname" data-entity="Customer" data-field="Full Name">
+    <div class="field-head">
+      <span class="field-glyph" title="Berechnet">ƒ</span>
+      <span class="field-name">Full Name</span>
+      <span class="pill pill-type">Berechnet</span>
+      <span class="pill pill-depth">1 Sprung von der Grundwahrheit</span>
+      <span class="pill pill-muted">string</span>
+      <span class="pill pill-dr">DR-3</span>
+    </div>
+    <div class="narr-views">
+      <div class="view elem elem-rulespeak">
+        <span class="view-label">In RuleSpeak</span>
+        <p class="view-body">Ein customer: Full name wird berechnet als der <a class="ref" href="#f-customers-firstname">first name</a>, gefolgt von ein Leerzeichen, gefolgt von der <a class="ref" href="#f-customers-lastname">last name</a>.</p>
+      </div>
+      <div class="view elem elem-english">
+        <span class="view-label">Auf Deutsch</span>
+        <p class="view-body">(<a class="ref" href="#f-customers-firstname">first name</a> verbunden mit &quot; &quot;) verbunden mit <a class="ref" href="#f-customers-lastname">last name</a>.</p>
+      </div>
+      <div class="view elem elem-formula">
+        <span class="view-label">Als Formel</span>
+        <div class="view-body fx"><span class="fx-eq">= </span><a class="fx-chip" href="#f-customers-firstname">First Name</a> &amp; &quot; &quot; &amp; <a class="fx-chip" href="#f-customers-lastname">Last Name</a></div>
+      </div>
+    </div>
+    <details class="prov prov-inputs elem elem-inputs" open>
+      <summary>Eingaben <span class="count">2</span> <span class="prov-hint">Felder, die diese Regel liest</span></summary>
+      <div class="prov-grid">
+        <a class="input tone-raw" href="#f-customers-firstname">
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">First Name</span><span class="input-table">Customers</span></span>
+          <span class="input-en muted">First Name of the customer - used to make the full name</span>
+        </a>
+        <a class="input tone-raw" href="#f-customers-lastname">
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Last Name</span><span class="input-table">Customers</span></span>
+          <span class="input-en muted">Last Name of the customer - used to make the full name</span>
+        </a>
+      </div>
+    </details>
+    <details class="prov prov-leaves elem elem-inputs">
+      <summary>Grundwahrheit an den Blättern <span class="count">2</span> <span class="prov-hint">die Rohwerte, von denen dies letztlich abhängt</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-raw" href="#f-customers-firstname">● First Name <span class="ref-pill-tbl">Customers</span></a>
+        <a class="ref-pill tone-raw" href="#f-customers-lastname">● Last Name <span class="ref-pill-tbl">Customers</span></a>
+      </div>
+    </details>
+    <p class="field-note elem elem-desc">Full name is computed from the first and last name of the customer</p>
+    </article>
+</section>
+<section class="entity" id="t-erbversions" data-entity="ERB Version">
+  <header class="entity-head">
+    <h2 class="entity-title">ERB Version</h2>
+    <p class="entity-synopsis">Ein ERB version is identified by its name.</p>
+  </header>
+  <article class="field tone-raw" id="f-erbversions-message" data-entity="ERB Version" data-field="Message">
+    <div class="field-head">
+      <span class="field-glyph" title="Grundwahrheit">●</span>
+      <span class="field-name">Message</span>
+      <span class="pill pill-type">Grundwahrheit</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Grundwahrheit. Direkt in die Datenbank geschrieben (Datentyp <code>string</code>); nicht aus etwas anderem berechnet. Alles Abgeleitete führt letztlich auf Werte wie diesen zurück.</p>
+    </div>
+    </article>
+  <article class="field tone-raw" id="f-erbversions-notes" data-entity="ERB Version" data-field="Notes">
+    <div class="field-head">
+      <span class="field-glyph" title="Grundwahrheit">●</span>
+      <span class="field-name">Notes</span>
+      <span class="pill pill-type">Grundwahrheit</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Grundwahrheit. Direkt in die Datenbank geschrieben (Datentyp <code>string</code>); nicht aus etwas anderem berechnet. Alles Abgeleitete führt letztlich auf Werte wie diesen zurück.</p>
+    </div>
+    </article>
+  <article class="field tone-raw" id="f-erbversions-commitdate" data-entity="ERB Version" data-field="Commit Date">
+    <div class="field-head">
+      <span class="field-glyph" title="Grundwahrheit">●</span>
+      <span class="field-name">Commit Date</span>
+      <span class="pill pill-type">Grundwahrheit</span>
+      <span class="pill pill-muted">datetime</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Grundwahrheit. Direkt in die Datenbank geschrieben (Datentyp <code>datetime</code>); nicht aus etwas anderem berechnet. Alles Abgeleitete führt letztlich auf Werte wie diesen zurück.</p>
+    </div>
+    </article>
+  <article class="field tone-raw" id="f-erbversions-ispublished" data-entity="ERB Version" data-field="Is Published">
+    <div class="field-head">
+      <span class="field-glyph" title="Grundwahrheit">●</span>
+      <span class="field-name">Is Published</span>
+      <span class="pill pill-type">Grundwahrheit</span>
+      <span class="pill pill-muted">boolean</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Grundwahrheit. Direkt in die Datenbank geschrieben (Datentyp <code>boolean</code>); nicht aus etwas anderem berechnet. Alles Abgeleitete führt letztlich auf Werte wie diesen zurück.</p>
+    </div>
+    </article>
+</section>
+<section class="entity" id="t-erbcustomizations" data-entity="ERB Customization">
+  <header class="entity-head">
+    <h2 class="entity-title">ERB Customization</h2>
+    <p class="entity-synopsis">Ein ERB customization is identified by its name.</p>
+  </header>
+  <article class="field tone-raw" id="f-erbcustomizations-title" data-entity="ERB Customization" data-field="Title">
+    <div class="field-head">
+      <span class="field-glyph" title="Grundwahrheit">●</span>
+      <span class="field-name">Title</span>
+      <span class="pill pill-type">Grundwahrheit</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Grundwahrheit. Direkt in die Datenbank geschrieben (Datentyp <code>string</code>); nicht aus etwas anderem berechnet. Alles Abgeleitete führt letztlich auf Werte wie diesen zurück.</p>
+    </div>
+    </article>
+  <article class="field tone-raw" id="f-erbcustomizations-sqlcode" data-entity="ERB Customization" data-field="SQL Code">
+    <div class="field-head">
+      <span class="field-glyph" title="Grundwahrheit">●</span>
+      <span class="field-name">SQL Code</span>
+      <span class="pill pill-type">Grundwahrheit</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Grundwahrheit. Direkt in die Datenbank geschrieben (Datentyp <code>string</code>); nicht aus etwas anderem berechnet. Alles Abgeleitete führt letztlich auf Werte wie diesen zurück.</p>
+    </div>
+    </article>
+  <article class="field tone-raw" id="f-erbcustomizations-sqltarget" data-entity="ERB Customization" data-field="SQL Target">
+    <div class="field-head">
+      <span class="field-glyph" title="Grundwahrheit">●</span>
+      <span class="field-name">SQL Target</span>
+      <span class="pill pill-type">Grundwahrheit</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Grundwahrheit. Direkt in die Datenbank geschrieben (Datentyp <code>string</code>); nicht aus etwas anderem berechnet. Alles Abgeleitete führt letztlich auf Werte wie diesen zurück.</p>
+    </div>
+    </article>
+  <article class="field tone-raw" id="f-erbcustomizations-customizationtype" data-entity="ERB Customization" data-field="Customization Type">
+    <div class="field-head">
+      <span class="field-glyph" title="Grundwahrheit">●</span>
+      <span class="field-name">Customization Type</span>
+      <span class="pill pill-type">Grundwahrheit</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Grundwahrheit. Direkt in die Datenbank geschrieben (Datentyp <code>string</code>); nicht aus etwas anderem berechnet. Alles Abgeleitete führt letztlich auf Werte wie diesen zurück.</p>
+    </div>
+    </article>
+</section>
+<footer class="doc-footer">
+  <p>Aus dem Regelbuch durch die gemeinsame <b>RuleSpeak</b>-Engine (<code>rulebook-rulespeak-core</code>) gerendert. Dieselbe Engine erläutert den React-Explainer-DAG, sodass Deutsch, Formel und RuleSpeak in beiden identisch gelesen werden.</p>
+  <p class="doc-footer-legend"><span class="chip chip-raw">● Grundwahrheit</span> <span class="chip chip-calc">ƒ Berechnet</span> <span class="chip chip-agg">Σ Aggregation</span> <span class="chip chip-lookup">↗ Verweis</span> <span class="chip chip-rel">⇢ Beziehung</span></p>
+</footer>
+<script>
+
+(function(){
+  var ELEMS=['rulespeak','english','formula','desc','inputs','consumers'];
+  var DEFAULTS={'rulespeak':true,'english':false,'formula':false,'desc':true,'inputs':true,'consumers':false};
+  var root=document.documentElement;
+
+  // ── Per-element visibility, persisted. The checkboxes drive <html> classes.
+  var boxes=Array.prototype.slice.call(document.querySelectorAll('.gear-opt input[data-elem]'));
+  function isOn(k){ return root.classList.contains('show-'+k); }
+  function setElem(k,on){
+    root.classList.toggle('show-'+k,on);
+    try{localStorage.setItem('rulespeak.show.'+k,on?'1':'0');}catch(e){}
+    var b=boxes.filter(function(x){return x.getAttribute('data-elem')===k;})[0];
+    if(b) b.checked=on;
+  }
+  // Sync each checkbox to the class the pre-paint script already applied.
+  boxes.forEach(function(b){
+    var k=b.getAttribute('data-elem');
+    b.checked=isOn(k);
+    b.addEventListener('change',function(){ setElem(k,b.checked); });
+  });
+  var reset=document.getElementById('gear-reset');
+  if(reset) reset.addEventListener('click',function(){ ELEMS.forEach(function(k){ setElem(k,!!DEFAULTS[k]); }); });
+
+  // ── Gear popup open/close.
+  var gear=document.getElementById('gear-btn');
+  var pop=document.getElementById('gear-pop');
+  function openPop(o){
+    pop.hidden=!o;
+    gear.setAttribute('aria-expanded',o?'true':'false');
+  }
+  gear.addEventListener('click',function(e){ e.stopPropagation(); openPop(pop.hidden); });
+  var inline=document.getElementById('gear-open-2');
+  if(inline) inline.addEventListener('click',function(e){ e.stopPropagation(); openPop(true); });
+  document.addEventListener('click',function(e){
+    if(!pop.hidden && !pop.contains(e.target) && e.target!==gear) openPop(false);
+  });
+  document.addEventListener('keydown',function(e){ if(e.key==='Escape') openPop(false); });
+
+  // ── Scroll-spy breadcrumb: track the field/entity currently under the topbar.
+  var cE=document.querySelector('.crumb-entity');
+  var cF=document.querySelector('.crumb-field');
+  var cSep=document.querySelector('.crumb-sep');
+  var fields=Array.prototype.slice.call(document.querySelectorAll('.field[data-field]'));
+  var entities=Array.prototype.slice.call(document.querySelectorAll('.entity[data-entity]'));
+  function setCrumb(entity,field){
+    cE.textContent=entity||'';
+    if(field){ cF.textContent=field; cSep.hidden=false; }
+    else { cF.textContent=''; cSep.hidden=true; }
+  }
+  // The active marker is the last field/entity whose top is above the topbar line.
+  var barH=parseInt(getComputedStyle(root).getPropertyValue('--bar-h'),10)||48;
+  function update(){
+    var line=barH+18, curF=null, curE=null;
+    for(var i=0;i<fields.length;i++){ if(fields[i].getBoundingClientRect().top<=line) curF=fields[i]; else break; }
+    for(var j=0;j<entities.length;j++){ if(entities[j].getBoundingClientRect().top<=line) curE=entities[j]; else break; }
+    if(curF){
+      // Only pair the field with its own entity (the field is inside the current entity).
+      var fEnt=curF.getAttribute('data-entity');
+      var eName=curE?curE.getAttribute('data-entity'):fEnt;
+      if(eName!==fEnt) setCrumb(eName,null);
+      else setCrumb(fEnt,curF.getAttribute('data-field'));
+    } else if(curE){ setCrumb(curE.getAttribute('data-entity'),null); }
+    else { setCrumb('',null); }
+  }
+  var ticking=false;
+  function onScroll(){ if(!ticking){ ticking=true; requestAnimationFrame(function(){ update(); ticking=false; }); } }
+  window.addEventListener('scroll',onScroll,{passive:true});
+  window.addEventListener('resize',onScroll,{passive:true});
+  update();
+})();
+
+</script>
+</body>
+</html>
