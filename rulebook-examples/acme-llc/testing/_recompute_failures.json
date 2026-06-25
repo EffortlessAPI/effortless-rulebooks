@@ -1,0 +1,26 @@
+[
+  {
+    "entity": "Customers",
+    "field": "FullName",
+    "formula": "={{FirstName}} & \" \" & {{LastName}}",
+    "record_id": "jane-smith-email-com",
+    "error": "drift: stored='Smith, Bobby' python-recompute='Bobby Smith'",
+    "severity": "drift"
+  },
+  {
+    "entity": "Customers",
+    "field": "FullName",
+    "formula": "={{FirstName}} & \" \" & {{LastName}}",
+    "record_id": "john-doe-email-com",
+    "error": "drift: stored='Doe, Jimmy' python-recompute='Jimmy Doe'",
+    "severity": "drift"
+  },
+  {
+    "entity": "Customers",
+    "field": "FullName",
+    "formula": "={{FirstName}} & \" \" & {{LastName}}",
+    "record_id": "emily-jones-email-com",
+    "error": "drift: stored='Jones, Mary' python-recompute='Mary Jones'",
+    "severity": "drift"
+  }
+]

@@ -2,7 +2,7 @@
   "schema_version": "erb.explain_spec.v1",
   "rulebook": {
     "name": "ACME, LLC",
-    "rulebook_hash": "sha256:3d0c5dd915474975bcbd537a048cac49"
+    "rulebook_hash": "sha256:a2929980207d13af5cd45c2db24ab2c1"
   },
   "semantics": {
     "profile": "excel",
@@ -24,13 +24,13 @@
           "datatype": "string",
           "nullable": true,
           "type": "calculated",
-          "description": "Identifier for the cusfdsfdstomers."
+          "description": "Identifier for the customer."
         },
         "EmailAddress": {
           "datatype": "string",
           "nullable": true,
           "type": "raw",
-          "description": "Thec ustomers email address"
+          "description": "The customer's email address"
         },
         "FirstName": {
           "datatype": "string",
@@ -41,7 +41,8 @@
         "Initials": {
           "datatype": "string",
           "nullable": true,
-          "type": "calculated"
+          "type": "calculated",
+          "description": "Customer initials \u2014 the first letter of FirstName followed by the first letter of LastName."
         },
         "LastName": {
           "datatype": "string",
@@ -140,7 +141,7 @@
               "n_result_Name"
             ]
           ],
-          "description": "Identifier for the cusfdsfdstomers."
+          "description": "Identifier for the customer."
         },
         "Initials": {
           "formula_source": "=LEFT({{FirstName}}, 1) & LEFT({{LastName}}, 1)",
@@ -229,7 +230,8 @@
               "n_op_7",
               "n_result_Initials"
             ]
-          ]
+          ],
+          "description": "Customer initials \u2014 the first letter of FirstName followed by the first letter of LastName."
         },
         "FullName": {
           "formula_source": "={{FirstName}} & \" \" & {{LastName}}",

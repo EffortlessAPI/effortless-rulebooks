@@ -44,7 +44,7 @@ from orchestration.shared import (
 
 def calc_customers_name(email_address):
     """
-    Identifier for the cusfdsfdstomers.
+    Identifier for the customer.
     
     Formula: =SUBSTITUTE({{EmailAddress}}, "@", "-")
     """

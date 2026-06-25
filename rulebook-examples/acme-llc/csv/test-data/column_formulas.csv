@@ -1,9 +1,9 @@
 table_name,field_name,field_type,dag_level,formula,description
 Customers,customer_id,raw,0,,
-Customers,name,calculated,,"=SUBSTITUTE({{EmailAddress}}, ""@"", ""-"")",Identifier for the cusfdsfdstomers.
-Customers,email_address,raw,0,,Thec ustomers email address
+Customers,name,calculated,,"=SUBSTITUTE({{EmailAddress}}, ""@"", ""-"")",Identifier for the customer.
+Customers,email_address,raw,0,,The customer's email address
 Customers,first_name,raw,0,,First Name of the customer - used to make the full name
-Customers,initials,calculated,,"=LEFT({{FirstName}}, 1) & LEFT({{LastName}}, 1)",
+Customers,initials,calculated,,"=LEFT({{FirstName}}, 1) & LEFT({{LastName}}, 1)",Customer initials — the first letter of FirstName followed by the first letter of LastName.
 Customers,last_name,raw,0,,Last Name of the customer - used to make the full name
 Customers,full_name,calculated,,"={{FirstName}} & "" "" & {{LastName}}",Full name is computed from the first and last name of the customer
 ERBVersions,erb_version_id,raw,0,,

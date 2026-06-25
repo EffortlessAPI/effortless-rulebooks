@@ -98,24 +98,25 @@ func (f FlexibleString) String() string {
 // Table: Customers
 type Customer struct {
 	CustomerId string `json:"customer_id"`
-	EmailAddress *string `json:"email_address"` // Thec ustomers email address
+	EmailAddress *string `json:"email_address"` // The customer's email address
 	FirstName *string `json:"first_name"` // First Name of the customer - used to make the full name
 	LastName *string `json:"last_name"` // Last Name of the customer - used to make the full name
-	Name *string `json:"name"` // Identifier for the cusfdsfdstomers.
-	Initials *string `json:"initials"`
+	Name *string `json:"name"` // Identifier for the customer.
+	Initials *string `json:"initials"` // Customer initials — the first letter of FirstName followed by the first letter of LastName.
 	FullName *string `json:"full_name"` // Full name is computed from the first and last name of the customer
 }
 
 // --- Individual Calculation Functions ---
 
 // CalcName computes the Name calculated field
-// Identifier for the cusfdsfdstomers.
+// Identifier for the customer.
 // Formula: =SUBSTITUTE({{EmailAddress}}, "@", "-")
 func (tc *Customer) CalcName() string {
 	return strings.ReplaceAll(stringVal(tc.EmailAddress), "@", "-")
 }
 
 // CalcInitials computes the Initials calculated field
+// Customer initials — the first letter of FirstName followed by the first letter of LastName.
 // Formula: =LEFT({{FirstName}}, 1) & LEFT({{LastName}}, 1)
 func (tc *Customer) CalcInitials() string {
 	return func() interface{} { panic("Formula parse error: Unknown function: LEFT") }()
