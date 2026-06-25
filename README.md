@@ -1,8 +1,10 @@
 # Effortlessly Invariant Rulebooks (ERB)
 
 <p align="center">
-  <img src="docs/erb-overview.svg" alt="ERB hub-and-spoke architecture: one rulebook fans out to many substrates, all shown to be conformant" width="100%"/>
+  <img src="docs/effortless-demo-flow.png" alt="Semantic Payload Movement Demo: one canonical rulebook.json is projected into an app, a database, a spreadsheet, a UI explainer, RuleSpeak, and a German translation — versioned only when meaning changes — and used to rebuild the whole stack in a new framework while preserving behavior" width="100%"/>
 </p>
+
+**Meaning is the source of truth.** `rulebook.json` is the one canonical semantic asset. Everything else — the app, the database, a spreadsheet, the UI explainer, RuleSpeak, translations, even a rebuild in an entirely new stack — is a *projection* generated from it. The software is disposable; the meaning persists. You can delete every generated artifact, keep only `rulebook.json`, and regenerate the system. Versions increment only when the *meaning* changes, not on UI/build/export churn — and every projection is conformance-tested against the same rulebook-derived answer key, so you can show that they still agree.
 
 Most "single source of truth" systems mean: *we wrote it in one place and try to keep everything else in sync.* ERB means something stronger: the rulebook **is** the spec, and every substrate — Postgres, Python, Go, COBOL, Excel, OWL, English prose, UML, ARM64 assembly, and more — is mechanically derived from it and **demonstrated** to return the same answer.
 
@@ -41,6 +43,29 @@ This repo contains the orchestration platform and a catalog of ready-to-run demo
 | english (LLM-graded) | 100% | 18.84s |
 
 The harness that produced this table runs on every build. There is no "build without testing."
+
+---
+
+## Meaning as the source of truth — the projection model
+The diagram above is not aspirational architecture — it describes the implemented loop. `rulebook.json` is the canonical semantic asset; every other artifact is a projection regenerated from it. The contract for each projection is the same three-phase pattern (**inject** the rulebook into a runnable artifact → **execute** it against blank test data → **grade** it field-by-field against the answer key), which is what lets each substrate adapter stay domain-agnostic rather than hand-coded per business case. The steps in the diagram:
+
+1. **Prompt → rulebook.** An LLM edit (under skills/conventions) changes the canonical rulebook. The prompt is the *what*; the rulebook is the recorded meaning.
+2. **rulebook.json is the asset.** One typed grid of entities, fields, formulas, and relationships. This is the recoverable business layer — not documentation, not config.
+3. **Effortless build → projections.** The rebuilt app, the Postgres database, RuleSpeak prose, and other substrates are all regenerated from the rulebook in one build.
+4. **Excel round-trip.** A non-developer edits meaning in a spreadsheet and writes it back to the canonical rulebook. The spreadsheet is an editing surface, not a second source of truth.
+5. **UI explainer DAG.** For any displayed value, the UI can show exactly how it was derived — raw inputs → lookups → calculations → aggregations — because it reads the same DAG the rulebook already produced.
+6. **RuleSpeak, including other languages.** Plain-English (and e.g. German) rule narratives are *generated explanations* of the same semantics, not the source. Language views are projections like any other.
+7. **Delete everything except rulebook.json, then rebuild in a new stack.** The strongest proof point: drop every generated artifact, keep only the rulebook, and regenerate the system in a different framework — with conformance confirming behavior is preserved.
+
+**Versioning tracks meaning, not noise.** A version increments when the rulebook's *meaning* changes, separating semantic changes from UI/build/export churn. The pieces this depends on are documented as their own capabilities below:
+
+- **Semantic diffing** — distinguishing a meaning change from a presentation-only change ([convergent builds](docs/features/README.convergent-build.md)).
+- **Round-trip safety** — validation and conflict handling when an Excel/Airtable edit is written back ([locally-designated SSoT](docs/features/README.local-ssot.md)).
+- **Projection drift detection** — showing that Postgres, UI, RuleSpeak, and app behavior all still match the rulebook ([conformance testing](docs/features/README.conformance.md)).
+- **Schema evolution** — migrating older rulebooks when the rulebook format itself changes.
+- **LLM-edit governance** — guardrails, validation, and tests around prompt-driven rulebook edits ([skills](docs/features/README.claude-skills.md), [fail-loud](docs/features/README.fail-loud.md)).
+
+The shape of the whole thing: a semantic build loop where business meaning lives in a canonical rulebook, and apps, databases, spreadsheets, explainers, and localized policy language are rebuildable projections — deterministic regeneration with LLM-assisted edits and conformance checks at every projection.
 
 ---
 
