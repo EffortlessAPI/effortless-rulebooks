@@ -48,7 +48,7 @@ rb["Debaters"] = {
    {"Label":"Christopher Hitchens","Side":"negative",
     "Description":"Author of 'God Is Not Great'. Argues the negative; self-describes as anti-theist, not merely atheist."},
    {"Label":"Timothy Hulley","Side":"moderator",
-    "Description":"Dean of the VCU Honors College; moderates phases and relays audience questions."},
+    "Description":"Dean of the VCU Honors College; moderates phases and relays audience questions for the event hosted by the United Secular Alliance."},
  ]
 }
 
@@ -103,7 +103,7 @@ rb["Arguments"] = {
  "data":[
    arg("Cosmological Argument","primary","frank-turek","theism","The universe had a beginning, so it had a beginner.","From the Big Bang: a beginning implies a beginner; SURGE supplies the evidence."),
    arg("Teleological Argument","primary","frank-turek","theism","Order and apparent purpose imply a designer.","The design argument; contains fine-tuning and design-of-life as sub-arguments."),
-   arg("Argument From Fine-Tuning","sub","frank-turek","theism","Life-permitting constants imply a tuner.","Constants on a razor's edge (gravity to 1 part in 10^40, expansion rate, axial tilt, Jupiter)."),
+   arg("Argument From Fine-Tuning","sub","frank-turek","theism","Life-permitting constants imply a tuner.","Constants on a razor's edge (the gravitational force to 1 part in 10^40, expansion rate, axial tilt, Jupiter)."),
    arg("Argument From Design Of Life","sub","frank-turek","theism","DNA's specified complexity implies a mind.","Information only comes from minds; random mutation and macro-evolution cannot supply first life; panspermia concedes natural origin fails."),
    arg("Moral Argument","primary","frank-turek","theism","Objective moral values require a moral lawgiver.","A prescription needs a prescriber; the standard is God's nature."),
    arg("Argument From Reason","supporting","frank-turek","theism","Trustworthy reason cannot be mere chemistry.","If thoughts are only chemical reactions, we cannot trust them (Darwin's doubt)."),
@@ -203,11 +203,11 @@ rb["Concepts"] = {
    con("Vicarious Redemption","theological",H,"Salvation by another's suffering through human sacrifice; Hitchens's central moral objection."),
    con("Scapegoating","theological",H,"Casting sins onto a substitute; called primitive and barbaric."),
    con("Miracle","theological",H,"A suspension of natural order (the regular course of nature), per Hume."),
-   con("Virgin Birth","theological",H,"A miracle a design argument can never reach."),
+   con("Virgin Birth","theological",H,"Parthenogenesis: a miracle a design argument can never reach, even if a male-free pregnancy could be tracked."),
    con("Resurrection","theological",H,"Hitchens notes it was 'commonplace' in the gospels."),
-   con("Eschatology","theological",H,"End-times doctrine; the rapture, Armageddon, the apocalypse, a 'cult of death'."),
+   con("Eschatology","theological",H,"End-times doctrine; the rapture, Armageddon, the apocalypse, a 'cult of death' set against a promised new Heaven and new earth."),
    con("Mind-Forged Manacles","theological",H,"Blake's phrase for self-imposed religious tyranny (limbo, hell)."),
-   con("Celestial Dictatorship","theological",H,"Theism framed as totalitarian, master-slave submission."),
+   con("Celestial Dictatorship","theological",H,"Theism framed as totalitarian, master-slave submission — the oldest enemy of our moral autonomy."),
    con("Materialism","method",T,"Only matter exists; Turek's target across the four supporting arguments."),
    con("Free Will","method",T,"Genuine choice Turek says materialism cannot supply."),
    con("Consciousness","method",T,"Subjective experience Turek says chemicals cannot explain."),
@@ -220,6 +220,25 @@ rb["Concepts"] = {
    con("Problem Of Evil","theological",H,"Implicit in 'created sick, commanded to be well' — suffering counts against a good designer."),
    con("Choice Argument","cosmology",T,"Turek's claim that moving from non-existence to existence requires a choice, and only persons choose."),
    con("Divine Command","moral",T,"The divine-command standard: right and wrong fixed by God's nature and command."),
+   con("Naturalism","method",H,"Natural causes suffice to explain the world; every origin question now has a natural or sufficient explanation."),
+   con("Determinism","method",T,"Physical law fixes all events (Einstein, Provine's Darwinism); Turek says it undercuts trust in reasoning."),
+   con("Probability Argument","epistemic",T,"Turek's cross-examination framing: not a proof of God but a cumulative case that God is the more probable explanation."),
+   con("Irreducible Complexity","design",T,"Raised in audience Q&A: whether such biological structures could have formed by chance."),
+   con("Prime Mover","method",H,"The first-cause designer Hitchens applies Occam's razor to remove — 'we don't need the prime mover at all'."),
+   con("Optimal Design","design",T,"Turek's closing: design need not be optimal; you can't call it suboptimal without knowing the designer's purpose (vs. Gould's panda's thumb)."),
+   con("Event Horizon","cosmology",H,"Hawking's 'lip of the black hole'; Hitchens uses it to show our God-talk is the vocabulary of our infancy."),
+   con("Andromeda Collision","cosmology",H,"The Andromeda galaxy on a direct collision course — Hitchens's exhibit for capricious or absent design."),
+   con("Termination Of Pregnancy","moral",T,"The abortion exchange: Turek presses Hitchens's book on the unborn child / fetus; embryology and early viability are invoked."),
+   con("Contraception","moral",H,"Hitchens calls it nonsensical and immoral for the Church to equate contraception with abortion; cites the ectopic pregnancy as a humanist no-starter."),
+   con("Good Samaritan","moral",H,"The Samaritan helped without religious instruction and predates Christianity — morality 'written on your heart'."),
+   con("Parable Of The Talents","theological",T,"Turek's counter that Jesus did not simply preach 'take no thought for tomorrow'."),
+   con("Original Sin","theological",T,"'We were well in the beginning but then we messed up'; the Fall, which Hitchens parodies as 'created sick, commanded to be well'."),
+   con("Atonement","theological",T,"Christ's sacrifice is retroactive to everyone before him, so God 'always had a witness' (creation, conscience, Christ)."),
+   con("Theocracy","theological",H,"Hitchens's post-9/11 cause: opposing theocracy and its messianic, end-times depredations internationally."),
+   con("Amalekites Genocide","theological",H,"God's Old Testament injunction to Moses that too many Amalekite children were spared — Hitchens's exhibit of divinely-commanded atrocity, not equivalent to a hard medical decision."),
+   con("Suicide Bombing","moral",H,"Wickedness Hitchens says is characteristically religious, alongside genital mutilation and circumcision dictated 'in God's name'."),
+   con("Enlightenment Values","method",H,"The post-religious values Turek says Hitchens wants all to adopt — which Turek reframes as 'the dictatorship of Christopher Hitchens'."),
+   con("Solipsism","epistemic",H,"Religion's appeal to self-regard — wanting to be objects of a divine plan — likened to a quick peek at one's horoscope."),
  ]
 }
 
@@ -257,6 +276,7 @@ rb["Claims"] = {
    clm("Miracles Fail Humes Test",H,"cross-examination","deism-theism-gap","hume-on-miracles","A reported miracle is always less likely than the witness being mistaken."),
    clm("Vicarious Redemption Is Immoral",H,"cross-examination","morality-without-god","vicarious-redemption","One may pay a debt but cannot assume another's moral responsibility."),
    clm("Religion Poisons Everything",H,"closing","religion-poisons-everything","eschatology","Religion demands servile submission and yearns for the end of the world."),
+   clm("Abortion Is A Double Standard",T,"cross-examination","moral-argument","termination-of-pregnancy","If God taking a life prematurely is an outrage, why is Hitchens taking one via abortion a moral right?"),
  ]
 }
 
@@ -281,6 +301,7 @@ rb["Rebuttals"] = {
    reb("Religious People Aren't The Point",T,"religion-poisons-everything","Bad believers say nothing about whether God exists; everything poisons religion."),
    reb("Hume's Premise Is Wrong",T,"miracles-fail-humes-test","Hume's 'regular beats rare' rule would deny the Big Bang and one's own birth — singular events happen."),
    reb("Not All Pardons Are Immoral",H,"vicarious-redemption-is-immoral","Hitchens clarifies: not all pardons — only assuming another's responsibility — are immoral."),
+   reb("Nature Is The Greater Abortion Provider",H,"abortion-is-a-double-standard","A false distinction: nature, not God, ends most pregnancies; the unborn has a real claim, but that is no moral equivalent to a commanded genocide."),
  ]
 }
 
@@ -331,7 +352,10 @@ rb["Thinkers"] = {
    thk("H. L. Mencken","letters","20th c.",H,False,"Listed thousands of dead gods in Hitchens's anthology."),
    thk("Fyodor Dostoevsky","literature","19th c.",H,False,"Brothers Karamazov; his character Smerdyakov voices the 'everything is permitted' line."),
    thk("Blaise Pascal","philosophy","17th c.",H,False,"Addressed those 'so made that they cannot believe'."),
-   thk("Lucretius","philosophy","ancient",H,False,"Atomic theory predating the morality debate."),
+   thk("Lucretius","philosophy","ancient",H,False,"Atomic theory predating the morality debate; cited with Democritus and Epicurus."),
+   thk("Francis Collins","biology","contemporary",H,False,"Supervisor of the Human Genome Project; Hitchens's 'occasional debating enemy', invoked on the age of Homo sapiens."),
+   thk("William Gladstone","statesmanship","19th c.",H,False,"Scholar of Latin and Greek; cited as having shown Greek moral precepts as 'prefigurations of Christianity'."),
+   thk("Omar Khayyam","literature","medieval",H,False,"Persian poet whose quatrain Hitchens borrows to ask Turek 'what is your authority for saying you know something I don't?'."),
  ]
 }
 
@@ -356,6 +380,30 @@ rb["Quotations"] = {
    quo("Dostoevsky's Permission","fyodor-dostoevsky",H,"Paraphrase: without God, everything is permitted — voiced by the story's basest character."),
    quo("Hume On Probability","david-hume",H,"Paraphrase: weigh whether nature was suspended for you, or whether you simply erred."),
    quo("Mencken's Dead Gods","h.-l.-mencken",H,"Paraphrase: a long catalogue of gods once worshipped and now believed by no one."),
+   quo("Khayyam On Authority","omar-khayyam",H,"Paraphrase: would God give a secret to a fanatic crew and deny it to me? — borrowed to press Turek on his authority."),
+ ]
+}
+
+# ---------------- __meta__ (first-class project-metadata table; transpiler-ignored) ----------------
+def meta_row(key, vtype, sval=None, jval=None):
+    return {"MetaKey":key, "ValueType":vtype, "StringValue":sval, "JsonValue":jval}
+rb["__meta__"] = {
+ "Description":"Project-level metadata for the debate rulebook (presentation hints + provenance). Typed-row key/value bag; ignored by execution-substrate transpilers.",
+ "schema":[
+   f("MetaKey","string","raw",False,"Logical primary key — the metadata key."),
+   f("Name","string","calculated",False,"Mirrors MetaKey.",formula='={{MetaKey}}'),
+   f("ValueType","string","raw",False,"One of: string, object, array."),
+   f("StringValue","string","raw",True,"Value when ValueType is string."),
+   f("JsonValue","string","raw",True,"JSON-encoded value when ValueType is object or array."),
+ ],
+ "data":[
+   meta_row("tagline","string","Does God exist? — Christopher Hitchens vs. Frank Turek at VCU, modeled as a DAG."),
+   meta_row("source","string","VCU 'Does God Exist?' debate transcript (Hitchens vs Turek), bootstrap/raw-input.txt."),
+   meta_row("method","string","effortless-bootstrap (Shadle steps) 1-10, Rulebook-First."),
+   meta_row("tool_version","string","shadle-manual-1.1"),
+   meta_row("dag_depth","string","3"),
+   meta_row("copyright_note","string","Quotations stored as paraphrased gists, never long verbatim."),
+   meta_row("motif","string","debate / philosophy of religion"),
  ]
 }
 
@@ -364,8 +412,8 @@ rb["_meta"] = {
  "_conversion_metadata":{
    "source":"VCU 'Does God Exist?' debate transcript (Hitchens vs Turek)",
    "method":"effortless-bootstrap (Shadle steps) 1-10, Rulebook-First",
-   "table_count":9,
-   "tool_version":"shadle-manual-1.0",
+   "table_count":11,
+   "tool_version":"shadle-manual-1.1",
    "dag_depth":3,
    "field_type_mapping":"raw, calculated, relationship, aggregation",
    "copyright_note":"Quotations stored as paraphrased gists, never long verbatim."
@@ -373,7 +421,10 @@ rb["_meta"] = {
 }
 
 import os
-out = "/home/claude/debate-rulebook/effortless-rulebook/effortless-rulebook.json"
+# Write to this project's rulebook hub, resolved relative to this script (bootstrap/ -> ../effortless-rulebook/).
+out = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "effortless-rulebook", "effortless-rulebook.json")
+out = os.path.normpath(out)
+os.makedirs(os.path.dirname(out), exist_ok=True)
 with open(out,"w") as fh:
     json.dump(rb, fh, indent=2, ensure_ascii=False)
 

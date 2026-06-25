@@ -1,32 +1,24 @@
 # Normalized Schema (rough, pre-JSON)
 
-A DAG of nine tables. Arrows are foreign keys (child → parent, many-to-one). Every `Name` is a slug formula over a `Label` raw field, per convention. Inference fields are tagged 1°/2°/3° by DAG depth.
+A DAG of **ten tables**. Arrows are foreign keys (child → parent, many-to-one). Every `Name` is a slug formula over a `Label` raw field, per convention. Inference fields are tagged 1°/2°/3° by DAG depth. No many-to-many, no cycles.
 
 ```
-Debaters ─────┐ ┌──────── Worldviews
-   ▲          │ │              ▲
-   │ (championedBy)            │ (fieldsWorldview)
-Worldviews ───┘                │
-   ▲                           │
-   │                           │
-Arguments ──(advancedBy)──▶ Debaters
-   ▲   ▲                       ▲
-   │   │                       │
-Premises Evidence              │ (introducedBy / citedBy / madeBy)
-   (supportsArgument)          │
-                               │
-Concepts ──(introducedBy)──▶ Debaters
-   ▲                           ▲
-   │ (touchesConcept)          │
-Claims ──(madeBy)──────────────┘
-   ▲   │
-   │   └(supportsArgument)──▶ Arguments
-Rebuttals ──(rebutsClaim)──▶ Claims
-            (madeBy)────────▶ Debaters
-
-Thinkers ──(citedBy)───────▶ Debaters
-Quotations ─(speaker)──────▶ Thinkers
-            (citedBy)──────▶ Debaters
+Worldviews ◀─(championedBy)── Debaters ──┐
+    ▲                          ▲   ▲      │
+    │ (fieldsWorldview)        │   │      │ (advancedBy / madeBy /
+    │                          │   │      │  introducedBy / citedBy)
+Arguments ──(advancedBy)──────▶┘   │      │
+   ▲   ▲   ▲                       │      │
+   │   │   └────(supportsArgument)─┼──── Claims ──(madeBy)──▶ Debaters
+   │   │                          │      │  │
+Premises Evidence                 │      │  └(touchesConcept)─▶ Concepts ──(introducedBy)─▶ Debaters
+ (supportsArgument)               │      │
+                                  │   Rebuttals ──(rebutsClaim)─▶ Claims
+                                  │             └(madeBy)───────▶ Debaters
+Thinkers ──(citedBy)─────────────▶┘
+   ▲
+   │ (speaker)
+Quotations ─(citedBy)────────────▶ Debaters
 ```
 
 ## Tables
@@ -34,7 +26,6 @@ Quotations ─(speaker)──────▶ Thinkers
 **Debaters** — the participants and the moderator.
 - `Label` (string, raw) · `Name` (string, calc slug)
 - `Side` (string, raw — affirmative / negative / moderator)
-- `WorldviewDefended` (relationship → Worldviews, nullable)
 - `Description` (string, raw)
 - `ArgumentCount` (integer, agg) — *1° COUNTIFS Arguments.AdvancedBy*
 - `ClaimCount` (integer, agg) — *1°*
@@ -45,11 +36,10 @@ Quotations ─(speaker)──────▶ Thinkers
 - `ArgumentCount` (integer, agg) — *1°*
 
 **Arguments** — the 13 named arguments.
-- `Label`/`Name` · `ArgumentType` (string, raw — primary / supporting / counter)
+- `Label`/`Name` · `ArgumentType` (string, raw — primary / sub / supporting / counter)
 - `AdvancedBy` (rel → Debaters) · `FieldsWorldview` (rel → Worldviews)
 - `Conclusion` (string, raw) · `Description`
-- `PremiseCount` (integer, agg) — *1°* · `EvidenceCount` (integer, agg) — *1°*
-- `ClaimCount` (integer, agg) — *1°*
+- `PremiseCount` (integer, agg) — *1°* · `EvidenceCount` (integer, agg) — *1°* · `ClaimCount` (integer, agg) — *1°*
 - `IsFullyDeveloped` (boolean, calc) — *2° PremiseCount ≥ 2*
 - `TotalRebuttals` (integer, agg) — *2° SUMIFS over Claims.RebuttalCount*
 - `IsContested` (boolean, calc) — *3° TotalRebuttals > 0*
@@ -58,7 +48,7 @@ Quotations ─(speaker)──────▶ Thinkers
 - `Label`/`Name` · `SupportsArgument` (rel → Arguments) · `Ordinal` (integer, raw)
 - `Statement` (string, raw) · `Description`
 
-**Evidence** — empirical items (SURGE, DNA-info, red-shift, etc.).
+**Evidence** — empirical/theoretical items (SURGE, DNA-info, red-shift, etc.).
 - `Label`/`Name` · `SupportsArgument` (rel → Arguments)
 - `EvidenceKind` (string, raw — observational / theoretical) · `Description`
 
@@ -69,8 +59,7 @@ Quotations ─(speaker)──────▶ Thinkers
 
 **Claims** — specific assertions.
 - `Label`/`Name` · `MadeBy` (rel → Debaters) · `Phase` (string, raw — opening/rebuttal/cross-ex/closing)
-- `SupportsArgument` (rel → Arguments, nullable) · `TouchesConcept` (rel → Concepts, nullable)
-- `Description`
+- `SupportsArgument` (rel → Arguments, nullable) · `TouchesConcept` (rel → Concepts, nullable) · `Description`
 - `RebuttalCount` (integer, agg) — *1°* · `IsRebutted` (boolean, calc) — *2° RebuttalCount > 0*
 
 **Rebuttals** — responses to claims.
@@ -86,7 +75,8 @@ Quotations ─(speaker)──────▶ Thinkers
 - `Gist` (string, raw — paraphrase) · `Description`
 
 ## DAG depth check
-- 1° (depend only on raw): all the COUNTIFS, IsRebutted's input.
-- 2°: `Argument.IsFullyDeveloped`, `Claim.IsRebutted`, `Argument.TotalRebuttals`.
-- 3°: `Argument.IsContested` (depends on TotalRebuttals which depends on Claim.RebuttalCount).
+- **1°** (depend only on raw rows): all the COUNTIFS aggregations (`ArgumentCount`, `ClaimCount`, `ThinkersCited`, `PremiseCount`, `EvidenceCount`, `RebuttalCount`, `QuotationCount`) and `IsRebutted`'s input.
+- **2°**: `Argument.IsFullyDeveloped` (← PremiseCount), `Claim.IsRebutted` (← RebuttalCount), `Argument.TotalRebuttals` (← Claims.RebuttalCount).
+- **3°**: `Argument.IsContested` (← TotalRebuttals ← Claim.RebuttalCount).
+
 No cycles; every relationship is many-to-one. ✓

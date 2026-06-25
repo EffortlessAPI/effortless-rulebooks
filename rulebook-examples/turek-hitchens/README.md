@@ -6,21 +6,21 @@ A formal **Effortless Rulebook (ERB)** built from the VCU debate transcript, cap
 
 | Step | Artifact | What it did |
 |---|---|---|
-| 1 · Word extraction | `bootstrap/words.txt` | 627 unique tokens pulled from the transcript text |
-| 2 · Domain vocabulary | `bootstrap/vocabulary.txt` | trimmed to **142 domain terms** (philosophy of religion) |
+| 1 · Word extraction | `bootstrap/words.txt` | **3,038 unique tokens** — exhaustive, uncurated, pulled from the full transcript (21,910 word tokens) |
+| 2 · Domain vocabulary | `bootstrap/vocabulary.txt` | trimmed to **181 domain terms** (philosophy of religion), each attested in the transcript |
 | 3 · Glossary | `bootstrap/glossary.md` | every term defined, grouped by area |
 | 4 · Narrative | `bootstrap/narrative.md` | prose using the full vocabulary, end-to-end |
-| 5 · Mock data & scenarios | `bootstrap/mock-data/scenarios.md` | 8 scenarios exercising each inference rule |
-| 6 · Normalized schema | `bootstrap/normalized-schema.md` | 9-table DAG design, FKs, depth-tagged inferences |
-| 7 · Rulebook JSON | `effortless-rulebook/effortless-rulebook.json` | the hub — all 142 vocab terms present |
+| 5 · Mock data & scenarios | `bootstrap/mock-data/scenarios.md` | 10 scenarios exercising each inference rule |
+| 6 · Normalized schema | `bootstrap/normalized-schema.md` | 10-table DAG design, FKs, depth-tagged inferences |
+| 7 · Rulebook JSON | `effortless-rulebook/effortless-rulebook.json` | the hub — all 181 vocab terms present |
 | 8 · Descriptions | (in the JSON) | every table and every field carries a `Description` |
-| 9 · Seed data | (in the JSON) | 149 rows across 10 tables |
+| 9 · Seed data | (in the JSON) | 181 rows across 11 tables |
 | 10 · Inference DAG | (in the JSON) | 1°/2°/3° calculated + aggregation fields |
-| 11 · Leopold loop | — | ready for `effortless build` → Postgres + other substrates |
+| 11 · Leopold loop | — | rulebook hub seeded; wire `effortless.json` to project to Postgres + other substrates |
 
-## The model (10 tables, 149 rows)
+## The model (10 domain tables + `__meta__`, 181 rows)
 
-`Debaters` · `Worldviews` · `Arguments` · `Premises` · `Evidence` · `Concepts` · `Claims` · `Rebuttals` · `Thinkers` · `Quotations`
+`Debaters` · `Worldviews` · `Arguments` · `Premises` · `Evidence` · `Concepts` · `Claims` · `Rebuttals` · `Thinkers` · `Quotations` (+ the transpiler-ignored `__meta__` project-metadata table)
 
 It is a clean DAG (1-to-many only, no cycles, no many-to-many). The derived layer chains three deep:
 **Rebuttal → `Claim.RebuttalCount` (1°) → `Argument.TotalRebuttals` (2°) → `Argument.IsContested` (3°).**
@@ -30,7 +30,8 @@ It is a clean DAG (1-to-many only, no cycles, no many-to-many). The derived laye
 - ✅ Valid JSON, ERB-conformant (PascalCase plural tables, `Name` = slug formula, `Description` on every field)
 - ✅ Foreign-key referential integrity (every relationship resolves to a parent `Name`)
 - ✅ Acyclic table-level dependency graph
-- ✅ **142/142 vocabulary terms present** in the rulebook
+- ✅ Unique computed `Name` per table
+- ✅ **181/181 vocabulary terms present** in the rulebook
 
 ## Derived scoreboard (computing the inference DAG)
 
@@ -40,7 +41,7 @@ It is a clean DAG (1-to-many only, no cycles, no many-to-many). The derived laye
 | Teleological (parent) | 0 | 0 | – | 1 | ✓ |
 | · Fine-Tuning | 3 | 0 | ✓ | 1 | ✓ |
 | · Design of Life | 3 | 1 | ✓ | 1 | ✓ |
-| Moral | 3 | 0 | ✓ | 2 | ✓ |
+| Moral | 3 | 0 | ✓ | 3 | ✓ |
 | From Reason | 0 | 0 | – | 1 | ✓ |
 | From Mathematics | 0 | 0 | – | 0 | – |
 | From Free Will | 0 | 0 | – | 0 | – |
@@ -50,8 +51,8 @@ It is a clean DAG (1-to-many only, no cycles, no many-to-many). The derived laye
 | Morality Without God (H) | 3 | 0 | ✓ | 1 | ✓ |
 | Religion Poisons Everything (H) | 0 | 0 | – | 1 | ✓ |
 
-Turek: 9 arguments, 8 claims, 16 thinkers cited · Hitchens: 4 arguments, 8 claims, 16 thinkers cited.
-**Hostile witnesses** (cited against their own sympathies): Jastrow, Dawkins, Crick, Hoyle, Wickramasinghe, Weinberg, Provine, Dennett.
+Turek: 9 arguments, 9 claims, 16 thinkers cited · Hitchens: 4 arguments, 8 claims, 19 thinkers cited.
+**Hostile witnesses** (cited against their own sympathies): Jastrow, Dawkins, Crick, Hoyle, Wickramasinghe, Weinberg, Provine, Dennett. The full-transcript re-run also adds the cross-examination on abortion/contraception (a Turek claim drawing Hitchens's "nature is the greater abortion provider" rebuttal) and three new Hitchens authorities — Francis Collins, William Gladstone, and Omar Khayyam.
 
 ## Notes
 

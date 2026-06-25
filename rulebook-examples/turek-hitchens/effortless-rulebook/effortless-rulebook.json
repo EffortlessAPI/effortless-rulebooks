@@ -73,7 +73,7 @@
       {
         "Label": "Timothy Hulley",
         "Side": "moderator",
-        "Description": "Dean of the VCU Honors College; moderates phases and relays audience questions."
+        "Description": "Dean of the VCU Honors College; moderates phases and relays audience questions for the event hosted by the United Secular Alliance."
       }
     ]
   },
@@ -302,7 +302,7 @@
         "AdvancedBy": "frank-turek",
         "FieldsWorldview": "theism",
         "Conclusion": "Life-permitting constants imply a tuner.",
-        "Description": "Constants on a razor's edge (gravity to 1 part in 10^40, expansion rate, axial tilt, Jupiter)."
+        "Description": "Constants on a razor's edge (the gravitational force to 1 part in 10^40, expansion rate, axial tilt, Jupiter)."
       },
       {
         "Label": "Argument From Design Of Life",
@@ -806,7 +806,7 @@
         "Label": "Virgin Birth",
         "Category": "theological",
         "IntroducedBy": "christopher-hitchens",
-        "Description": "A miracle a design argument can never reach."
+        "Description": "Parthenogenesis: a miracle a design argument can never reach, even if a male-free pregnancy could be tracked."
       },
       {
         "Label": "Resurrection",
@@ -818,7 +818,7 @@
         "Label": "Eschatology",
         "Category": "theological",
         "IntroducedBy": "christopher-hitchens",
-        "Description": "End-times doctrine; the rapture, Armageddon, the apocalypse, a 'cult of death'."
+        "Description": "End-times doctrine; the rapture, Armageddon, the apocalypse, a 'cult of death' set against a promised new Heaven and new earth."
       },
       {
         "Label": "Mind-Forged Manacles",
@@ -830,7 +830,7 @@
         "Label": "Celestial Dictatorship",
         "Category": "theological",
         "IntroducedBy": "christopher-hitchens",
-        "Description": "Theism framed as totalitarian, master-slave submission."
+        "Description": "Theism framed as totalitarian, master-slave submission — the oldest enemy of our moral autonomy."
       },
       {
         "Label": "Materialism",
@@ -903,6 +903,120 @@
         "Category": "moral",
         "IntroducedBy": "frank-turek",
         "Description": "The divine-command standard: right and wrong fixed by God's nature and command."
+      },
+      {
+        "Label": "Naturalism",
+        "Category": "method",
+        "IntroducedBy": "christopher-hitchens",
+        "Description": "Natural causes suffice to explain the world; every origin question now has a natural or sufficient explanation."
+      },
+      {
+        "Label": "Determinism",
+        "Category": "method",
+        "IntroducedBy": "frank-turek",
+        "Description": "Physical law fixes all events (Einstein, Provine's Darwinism); Turek says it undercuts trust in reasoning."
+      },
+      {
+        "Label": "Probability Argument",
+        "Category": "epistemic",
+        "IntroducedBy": "frank-turek",
+        "Description": "Turek's cross-examination framing: not a proof of God but a cumulative case that God is the more probable explanation."
+      },
+      {
+        "Label": "Irreducible Complexity",
+        "Category": "design",
+        "IntroducedBy": "frank-turek",
+        "Description": "Raised in audience Q&A: whether such biological structures could have formed by chance."
+      },
+      {
+        "Label": "Prime Mover",
+        "Category": "method",
+        "IntroducedBy": "christopher-hitchens",
+        "Description": "The first-cause designer Hitchens applies Occam's razor to remove — 'we don't need the prime mover at all'."
+      },
+      {
+        "Label": "Optimal Design",
+        "Category": "design",
+        "IntroducedBy": "frank-turek",
+        "Description": "Turek's closing: design need not be optimal; you can't call it suboptimal without knowing the designer's purpose (vs. Gould's panda's thumb)."
+      },
+      {
+        "Label": "Event Horizon",
+        "Category": "cosmology",
+        "IntroducedBy": "christopher-hitchens",
+        "Description": "Hawking's 'lip of the black hole'; Hitchens uses it to show our God-talk is the vocabulary of our infancy."
+      },
+      {
+        "Label": "Andromeda Collision",
+        "Category": "cosmology",
+        "IntroducedBy": "christopher-hitchens",
+        "Description": "The Andromeda galaxy on a direct collision course — Hitchens's exhibit for capricious or absent design."
+      },
+      {
+        "Label": "Termination Of Pregnancy",
+        "Category": "moral",
+        "IntroducedBy": "frank-turek",
+        "Description": "The abortion exchange: Turek presses Hitchens's book on the unborn child / fetus; embryology and early viability are invoked."
+      },
+      {
+        "Label": "Contraception",
+        "Category": "moral",
+        "IntroducedBy": "christopher-hitchens",
+        "Description": "Hitchens calls it nonsensical and immoral for the Church to equate contraception with abortion; cites the ectopic pregnancy as a humanist no-starter."
+      },
+      {
+        "Label": "Good Samaritan",
+        "Category": "moral",
+        "IntroducedBy": "christopher-hitchens",
+        "Description": "The Samaritan helped without religious instruction and predates Christianity — morality 'written on your heart'."
+      },
+      {
+        "Label": "Parable Of The Talents",
+        "Category": "theological",
+        "IntroducedBy": "frank-turek",
+        "Description": "Turek's counter that Jesus did not simply preach 'take no thought for tomorrow'."
+      },
+      {
+        "Label": "Original Sin",
+        "Category": "theological",
+        "IntroducedBy": "frank-turek",
+        "Description": "'We were well in the beginning but then we messed up'; the Fall, which Hitchens parodies as 'created sick, commanded to be well'."
+      },
+      {
+        "Label": "Atonement",
+        "Category": "theological",
+        "IntroducedBy": "frank-turek",
+        "Description": "Christ's sacrifice is retroactive to everyone before him, so God 'always had a witness' (creation, conscience, Christ)."
+      },
+      {
+        "Label": "Theocracy",
+        "Category": "theological",
+        "IntroducedBy": "christopher-hitchens",
+        "Description": "Hitchens's post-9/11 cause: opposing theocracy and its messianic, end-times depredations internationally."
+      },
+      {
+        "Label": "Amalekites Genocide",
+        "Category": "theological",
+        "IntroducedBy": "christopher-hitchens",
+        "Description": "God's Old Testament injunction to Moses that too many Amalekite children were spared — Hitchens's exhibit of divinely-commanded atrocity, not equivalent to a hard medical decision."
+      },
+      {
+        "Label": "Suicide Bombing",
+        "Category": "moral",
+        "IntroducedBy": "christopher-hitchens",
+        "Description": "Wickedness Hitchens says is characteristically religious, alongside genital mutilation and circumcision dictated 'in God's name'."
+      },
+      {
+        "Label": "Enlightenment Values",
+        "Category": "method",
+        "IntroducedBy": "christopher-hitchens",
+        "Description": "The post-religious values Turek says Hitchens wants all to adopt — which Turek reframes as 'the dictatorship of Christopher Hitchens'."
+      },
+      {
+        "Label": "Solipsism",
+        "Category": "epistemic",
+        "IntroducedBy": "christopher-hitchens",
+        "Description": "Religion's appeal to self-regard — wanting to be objects of a divine plan — likened to a quick peek at one's horoscope."
       }
     ]
   },
@@ -1107,6 +1221,14 @@
         "SupportsArgument": "religion-poisons-everything",
         "TouchesConcept": "eschatology",
         "Description": "Religion demands servile submission and yearns for the end of the world."
+      },
+      {
+        "Label": "Abortion Is A Double Standard",
+        "MadeBy": "frank-turek",
+        "Phase": "cross-examination",
+        "SupportsArgument": "moral-argument",
+        "TouchesConcept": "termination-of-pregnancy",
+        "Description": "If God taking a life prematurely is an outrage, why is Hitchens taking one via abortion a moral right?"
       }
     ]
   },
@@ -1212,6 +1334,12 @@
         "MadeBy": "christopher-hitchens",
         "RebutsClaim": "vicarious-redemption-is-immoral",
         "Description": "Hitchens clarifies: not all pardons — only assuming another's responsibility — are immoral."
+      },
+      {
+        "Label": "Nature Is The Greater Abortion Provider",
+        "MadeBy": "christopher-hitchens",
+        "RebutsClaim": "abortion-is-a-double-standard",
+        "Description": "A false distinction: nature, not God, ends most pregnancies; the unborn has a real claim, but that is no moral equivalent to a commanded genocide."
       }
     ]
   },
@@ -1533,7 +1661,31 @@
         "Era": "ancient",
         "CitedBy": "christopher-hitchens",
         "CitedAsHostileWitness": false,
-        "Description": "Atomic theory predating the morality debate."
+        "Description": "Atomic theory predating the morality debate; cited with Democritus and Epicurus."
+      },
+      {
+        "Label": "Francis Collins",
+        "Field": "biology",
+        "Era": "contemporary",
+        "CitedBy": "christopher-hitchens",
+        "CitedAsHostileWitness": false,
+        "Description": "Supervisor of the Human Genome Project; Hitchens's 'occasional debating enemy', invoked on the age of Homo sapiens."
+      },
+      {
+        "Label": "William Gladstone",
+        "Field": "statesmanship",
+        "Era": "19th c.",
+        "CitedBy": "christopher-hitchens",
+        "CitedAsHostileWitness": false,
+        "Description": "Scholar of Latin and Greek; cited as having shown Greek moral precepts as 'prefigurations of Christianity'."
+      },
+      {
+        "Label": "Omar Khayyam",
+        "Field": "literature",
+        "Era": "medieval",
+        "CitedBy": "christopher-hitchens",
+        "CitedAsHostileWitness": false,
+        "Description": "Persian poet whose quatrain Hitchens borrows to ask Turek 'what is your authority for saying you know something I don't?'."
       }
     ]
   },
@@ -1642,6 +1794,98 @@
         "CitedBy": "christopher-hitchens",
         "Gist": "Paraphrase: a long catalogue of gods once worshipped and now believed by no one.",
         "Description": "Paraphrased citation used in the debate (not verbatim)."
+      },
+      {
+        "Label": "Khayyam On Authority",
+        "Speaker": "omar-khayyam",
+        "CitedBy": "christopher-hitchens",
+        "Gist": "Paraphrase: would God give a secret to a fanatic crew and deny it to me? — borrowed to press Turek on his authority.",
+        "Description": "Paraphrased citation used in the debate (not verbatim)."
+      }
+    ]
+  },
+  "__meta__": {
+    "Description": "Project-level metadata for the debate rulebook (presentation hints + provenance). Typed-row key/value bag; ignored by execution-substrate transpilers.",
+    "schema": [
+      {
+        "name": "MetaKey",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Logical primary key — the metadata key."
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": false,
+        "Description": "Mirrors MetaKey.",
+        "formula": "={{MetaKey}}"
+      },
+      {
+        "name": "ValueType",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "One of: string, object, array."
+      },
+      {
+        "name": "StringValue",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Value when ValueType is string."
+      },
+      {
+        "name": "JsonValue",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "JSON-encoded value when ValueType is object or array."
+      }
+    ],
+    "data": [
+      {
+        "MetaKey": "tagline",
+        "ValueType": "string",
+        "StringValue": "Does God exist? — Christopher Hitchens vs. Frank Turek at VCU, modeled as a DAG.",
+        "JsonValue": null
+      },
+      {
+        "MetaKey": "source",
+        "ValueType": "string",
+        "StringValue": "VCU 'Does God Exist?' debate transcript (Hitchens vs Turek), bootstrap/raw-input.txt.",
+        "JsonValue": null
+      },
+      {
+        "MetaKey": "method",
+        "ValueType": "string",
+        "StringValue": "effortless-bootstrap (Shadle steps) 1-10, Rulebook-First.",
+        "JsonValue": null
+      },
+      {
+        "MetaKey": "tool_version",
+        "ValueType": "string",
+        "StringValue": "shadle-manual-1.1",
+        "JsonValue": null
+      },
+      {
+        "MetaKey": "dag_depth",
+        "ValueType": "string",
+        "StringValue": "3",
+        "JsonValue": null
+      },
+      {
+        "MetaKey": "copyright_note",
+        "ValueType": "string",
+        "StringValue": "Quotations stored as paraphrased gists, never long verbatim.",
+        "JsonValue": null
+      },
+      {
+        "MetaKey": "motif",
+        "ValueType": "string",
+        "StringValue": "debate / philosophy of religion",
+        "JsonValue": null
       }
     ]
   },
@@ -1650,8 +1894,8 @@
     "_conversion_metadata": {
       "source": "VCU 'Does God Exist?' debate transcript (Hitchens vs Turek)",
       "method": "effortless-bootstrap (Shadle steps) 1-10, Rulebook-First",
-      "table_count": 9,
-      "tool_version": "shadle-manual-1.0",
+      "table_count": 11,
+      "tool_version": "shadle-manual-1.1",
       "dag_depth": 3,
       "field_type_mapping": "raw, calculated, relationship, aggregation",
       "copyright_note": "Quotations stored as paraphrased gists, never long verbatim."
