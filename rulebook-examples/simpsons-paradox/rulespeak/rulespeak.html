@@ -252,10 +252,11 @@ html.show-consumers .elem-consumers{display:block}
     <li><a href="#t-studies">Study</a> <span class="toc-meta">2 rules · 0 links</span></li>
     <li><a href="#t-treatments">Treatment</a> <span class="toc-meta">3 rules · 1 links</span></li>
     <li><a href="#t-strata">Strata</a> <span class="toc-meta">1 rules · 1 links</span></li>
-    <li><a href="#t-casecells">Case Cell</a> <span class="toc-meta">1 rules · 1 links</span></li>
+    <li><a href="#t-casecells">Case Cell</a> <span class="toc-meta">3 rules · 1 links</span></li>
     <li><a href="#t-stratumsummaries">Stratum Summary</a> <span class="toc-meta">10 rules · 1 links</span></li>
+    <li><a href="#t-modelsummary">Model Summary</a> <span class="toc-meta">8 rules · 0 links</span></li>
     <li><a href="#t-stratumvariables">Stratum Variable</a> <span class="toc-meta">1 rules · 1 links</span></li>
-    <li><a href="#t-treatmentrankings">Treatment Ranking</a> <span class="toc-meta">14 rules · 1 links</span></li>
+    <li><a href="#t-treatmentrankings">Treatment Ranking</a> <span class="toc-meta">17 rules · 1 links</span></li>
   </ul>
 </nav>
 <section class="entity" id="t-loops" data-entity="Loop">
@@ -908,6 +909,108 @@ html.show-consumers .elem-consumers{display:block}
     </details>
     <p class="field-note elem elem-desc">Success rate within this cell: Successes / Cases. The first derived fact in the DAG.</p>
     </article>
+  <article class="field tone-agg" id="f-casecells-totalcasesfortreatment" data-entity="Case Cell" data-field="Total Cases for Treatment">
+    <div class="field-head">
+      <span class="field-glyph" title="Aggregation">Σ</span>
+      <span class="field-name">Total Cases for Treatment</span>
+      <span class="pill pill-type">Aggregation</span>
+      <span class="pill pill-depth">1 hop from ground truth</span>
+      <span class="pill pill-muted">integer</span>
+      <span class="pill pill-dr">DR-8</span>
+    </div>
+    <div class="narr-views">
+      <div class="view elem elem-rulespeak">
+        <span class="view-label">In RuleSpeak</span>
+        <p class="view-body">A case cell's total <a class="ref" href="#f-casecells-cases">cases</a> for treatment is the total cases across the case cells related to the case cell.</p>
+      </div>
+      <div class="view elem elem-english">
+        <span class="view-label">In English</span>
+        <p class="view-body">Sum of <a class="ref" href="#f-casecells-cases">cases</a> across all CaseCells whose <a class="ref" href="#f-casecells-study">study</a> is study and <a class="ref" href="#f-casecells-treatmentlabel">treatment label</a> is treatment label.</p>
+      </div>
+      <div class="view elem elem-formula">
+        <span class="view-label">As a formula</span>
+        <div class="view-body fx"><span class="fx-eq">= </span>SUMIFS(<a class="fx-chip" href="#f-casecells-cases">Cases</a>, <a class="fx-chip" href="#f-casecells-study">Study</a>, <a class="fx-chip" href="#f-casecells-study">Study</a>, <a class="fx-chip" href="#f-casecells-treatmentlabel">Treatment Label</a>, <a class="fx-chip" href="#f-casecells-treatmentlabel">Treatment Label</a>)</div>
+      </div>
+    </div>
+    <details class="prov prov-inputs elem elem-inputs" open>
+      <summary>Inputs <span class="count">3</span> <span class="prov-hint">fields this rule reads</span></summary>
+      <div class="prov-grid">
+        <a class="input tone-raw" href="#f-casecells-cases">
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Cases</span><span class="input-table">CaseCells</span></span>
+          <span class="input-en muted">Total number of patients in this cell. RAW INPUT — never derived.</span>
+        </a>
+        <a class="input tone-rel" href="#f-casecells-study">
+          <span class="input-head"><span class="input-glyph">⇢</span><span class="input-name">Study</span><span class="input-table">CaseCells</span></span>
+          <span class="input-en muted">FK to the parent Study.</span>
+        </a>
+        <a class="input tone-raw" href="#f-casecells-treatmentlabel">
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Treatment Label</span><span class="input-table">CaseCells</span></span>
+          <span class="input-en muted">The treatment applied in this cell (matches Treatments.TreatmentLabel).</span>
+        </a>
+      </div>
+    </details>
+    <details class="prov prov-consumers elem elem-consumers">
+      <summary>Consumers <span class="count">1 direct</span> <span class="prov-hint">rules that read this one</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-calc" href="#f-casecells-treatmentexposurefraction">ƒ Treatment Exposure Fraction <span class="ref-pill-tbl">CaseCells</span></a>
+      </div>
+    </details>
+    <details class="prov prov-leaves elem elem-inputs">
+      <summary>Ground truth at the leaves <span class="count">3</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-raw" href="#f-casecells-cases">● Cases <span class="ref-pill-tbl">CaseCells</span></a>
+        <a class="ref-pill tone-rel" href="#f-casecells-study">⇢ Study <span class="ref-pill-tbl">CaseCells</span></a>
+        <a class="ref-pill tone-raw" href="#f-casecells-treatmentlabel">● Treatment Label <span class="ref-pill-tbl">CaseCells</span></a>
+      </div>
+    </details>
+    <p class="field-note elem elem-desc">Total cases across ALL strata for this treatment in this study — the denominator for TreatmentExposureFraction.</p>
+    </article>
+  <article class="field tone-calc" id="f-casecells-treatmentexposurefraction" data-entity="Case Cell" data-field="Treatment Exposure Fraction">
+    <div class="field-head">
+      <span class="field-glyph" title="Calculated">ƒ</span>
+      <span class="field-name">Treatment Exposure Fraction</span>
+      <span class="pill pill-type">Calculated</span>
+      <span class="pill pill-depth">2 hops from ground truth</span>
+      <span class="pill pill-muted">number</span>
+      <span class="pill pill-dr">DR-9</span>
+    </div>
+    <div class="narr-views">
+      <div class="view elem elem-rulespeak">
+        <span class="view-label">In RuleSpeak</span>
+        <div class="view-body"><p class="rt-headline">The case cell's treatment exposure fraction is determined by the following priority:</p><ol class="rt-priority"><li><span class="rt-value">an empty string</span> <span class="rt-when">if the total cases for treatment is 0</span></li><li><span class="rt-value">the cases divided by the total cases for treatment</span> <span class="rt-when">in all other cases</span></li></ol></div>
+      </div>
+      <div class="view elem elem-english">
+        <span class="view-label">In English</span>
+        <p class="view-body">If <a class="ref" href="#f-casecells-totalcasesfortreatment">total <a class="ref" href="#f-casecells-cases">cases</a> for treatment</a> equals 0 then &quot;&quot;, otherwise (cases divided by total cases for treatment).</p>
+      </div>
+      <div class="view elem elem-formula">
+        <span class="view-label">As a formula</span>
+        <div class="view-body fx"><span class="fx-eq">= </span>IF(<a class="fx-chip" href="#f-casecells-totalcasesfortreatment">Total Cases for Treatment</a> = 0, &quot;&quot;, <a class="fx-chip" href="#f-casecells-cases">Cases</a> / <a class="fx-chip" href="#f-casecells-totalcasesfortreatment">Total Cases for Treatment</a>)</div>
+      </div>
+    </div>
+    <details class="prov prov-inputs elem elem-inputs" open>
+      <summary>Inputs <span class="count">2</span> <span class="prov-hint">fields this rule reads</span></summary>
+      <div class="prov-grid">
+        <a class="input tone-agg" href="#f-casecells-totalcasesfortreatment">
+          <span class="input-head"><span class="input-glyph">Σ</span><span class="input-name">Total Cases for Treatment</span><span class="input-table">CaseCells</span></span>
+          <span class="input-en">Sum of cases across all CaseCells whose study is study and treatment label is treatment label.</span>
+        </a>
+        <a class="input tone-raw" href="#f-casecells-cases">
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Cases</span><span class="input-table">CaseCells</span></span>
+          <span class="input-en muted">Total number of patients in this cell. RAW INPUT — never derived.</span>
+        </a>
+      </div>
+    </details>
+    <details class="prov prov-leaves elem elem-inputs">
+      <summary>Ground truth at the leaves <span class="count">3</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-raw" href="#f-casecells-cases">● Cases <span class="ref-pill-tbl">CaseCells</span></a>
+        <a class="ref-pill tone-rel" href="#f-casecells-study">⇢ Study <span class="ref-pill-tbl">CaseCells</span></a>
+        <a class="ref-pill tone-raw" href="#f-casecells-treatmentlabel">● Treatment Label <span class="ref-pill-tbl">CaseCells</span></a>
+      </div>
+    </details>
+    <p class="field-note elem elem-desc">Fraction of this treatment's total cases that fall in this stratum: Cases / TotalCasesForTreatment. High imbalance across strata is the mechanism of confounding — when treatments are allocated very differently across strata, the pooled rate conflates treatment effect with stratum difficulty.</p>
+    </article>
 </section>
 <section class="entity" id="t-stratumsummaries" data-entity="Stratum Summary">
   <header class="entity-head">
@@ -957,7 +1060,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Aggregation</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">integer</span>
-      <span class="pill pill-dr">DR-8</span>
+      <span class="pill pill-dr">DR-10</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -1033,7 +1136,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Aggregation</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">integer</span>
-      <span class="pill pill-dr">DR-9</span>
+      <span class="pill pill-dr">DR-11</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -1109,7 +1212,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">2 hops from ground truth</span>
       <span class="pill pill-muted">number</span>
-      <span class="pill pill-dr">DR-10</span>
+      <span class="pill pill-dr">DR-12</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -1160,7 +1263,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Aggregation</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">integer</span>
-      <span class="pill pill-dr">DR-11</span>
+      <span class="pill pill-dr">DR-13</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -1206,15 +1309,25 @@ html.show-consumers .elem-consumers{display:block}
       </div>
     </details>
     <details class="prov prov-consumers elem elem-consumers">
-      <summary>Consumers <span class="count">1 direct</span> <span class="count count-muted">+6 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
+      <summary>Consumers <span class="count">1 direct</span> <span class="count count-muted">+16 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
       <div class="prov-pills">
         <a class="ref-pill tone-calc" href="#f-stratumsummaries-stratumratea">ƒ Stratum Rate a <span class="ref-pill-tbl">StratumSummaries</span></a>
         <a class="ref-pill tone-rel faded" href="#f-stratumsummaries-stratumwinner">Stratum Winner <span class="ref-pill-tbl">StratumSummaries</span></a>
         <a class="ref-pill tone-rel faded" href="#f-treatmentrankings-stratawonbya">Strata Won by a <span class="ref-pill-tbl">TreatmentRankings</span></a>
         <a class="ref-pill tone-rel faded" href="#f-treatmentrankings-stratawonbyb">Strata Won by B <span class="ref-pill-tbl">TreatmentRankings</span></a>
         <a class="ref-pill tone-rel faded" href="#f-treatmentrankings-perstratumwinner">Per Stratum Winner <span class="ref-pill-tbl">TreatmentRankings</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-treatmentrankings-stratawonbyloser">Strata Won by Loser <span class="ref-pill-tbl">TreatmentRankings</span></a>
         <a class="ref-pill tone-rel faded" href="#f-treatmentrankings-isreversal">Is Reversal <span class="ref-pill-tbl">TreatmentRankings</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-modelsummary-zerostrengthcount">Zero Strength Count <span class="ref-pill-tbl">ModelSummary</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-treatmentrankings-paradoxstrength">Paradox Strength <span class="ref-pill-tbl">TreatmentRankings</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-modelsummary-reversalcount">Reversal Count <span class="ref-pill-tbl">ModelSummary</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-modelsummary-nonreversalcount">Non Reversal Count <span class="ref-pill-tbl">ModelSummary</span></a>
         <a class="ref-pill tone-rel faded" href="#f-treatmentrankings-isparadoxexplained">Is Paradox Explained <span class="ref-pill-tbl">TreatmentRankings</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-modelsummary-partialcount">Partial Count <span class="ref-pill-tbl">ModelSummary</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-modelsummary-totalparadoxstrength">Total Paradox Strength <span class="ref-pill-tbl">ModelSummary</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-modelsummary-studycount">Study Count <span class="ref-pill-tbl">ModelSummary</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-modelsummary-explainedcount">Explained Count <span class="ref-pill-tbl">ModelSummary</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-modelsummary-avgparadoxstrength">Avg Paradox Strength <span class="ref-pill-tbl">ModelSummary</span></a>
       </div>
     </details>
     <details class="prov prov-leaves elem elem-inputs">
@@ -1237,7 +1350,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Aggregation</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">integer</span>
-      <span class="pill pill-dr">DR-12</span>
+      <span class="pill pill-dr">DR-14</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -1283,15 +1396,25 @@ html.show-consumers .elem-consumers{display:block}
       </div>
     </details>
     <details class="prov prov-consumers elem elem-consumers">
-      <summary>Consumers <span class="count">1 direct</span> <span class="count count-muted">+6 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
+      <summary>Consumers <span class="count">1 direct</span> <span class="count count-muted">+16 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
       <div class="prov-pills">
         <a class="ref-pill tone-calc" href="#f-stratumsummaries-stratumratea">ƒ Stratum Rate a <span class="ref-pill-tbl">StratumSummaries</span></a>
         <a class="ref-pill tone-rel faded" href="#f-stratumsummaries-stratumwinner">Stratum Winner <span class="ref-pill-tbl">StratumSummaries</span></a>
         <a class="ref-pill tone-rel faded" href="#f-treatmentrankings-stratawonbya">Strata Won by a <span class="ref-pill-tbl">TreatmentRankings</span></a>
         <a class="ref-pill tone-rel faded" href="#f-treatmentrankings-stratawonbyb">Strata Won by B <span class="ref-pill-tbl">TreatmentRankings</span></a>
         <a class="ref-pill tone-rel faded" href="#f-treatmentrankings-perstratumwinner">Per Stratum Winner <span class="ref-pill-tbl">TreatmentRankings</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-treatmentrankings-stratawonbyloser">Strata Won by Loser <span class="ref-pill-tbl">TreatmentRankings</span></a>
         <a class="ref-pill tone-rel faded" href="#f-treatmentrankings-isreversal">Is Reversal <span class="ref-pill-tbl">TreatmentRankings</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-modelsummary-zerostrengthcount">Zero Strength Count <span class="ref-pill-tbl">ModelSummary</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-treatmentrankings-paradoxstrength">Paradox Strength <span class="ref-pill-tbl">TreatmentRankings</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-modelsummary-reversalcount">Reversal Count <span class="ref-pill-tbl">ModelSummary</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-modelsummary-nonreversalcount">Non Reversal Count <span class="ref-pill-tbl">ModelSummary</span></a>
         <a class="ref-pill tone-rel faded" href="#f-treatmentrankings-isparadoxexplained">Is Paradox Explained <span class="ref-pill-tbl">TreatmentRankings</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-modelsummary-partialcount">Partial Count <span class="ref-pill-tbl">ModelSummary</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-modelsummary-totalparadoxstrength">Total Paradox Strength <span class="ref-pill-tbl">ModelSummary</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-modelsummary-studycount">Study Count <span class="ref-pill-tbl">ModelSummary</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-modelsummary-explainedcount">Explained Count <span class="ref-pill-tbl">ModelSummary</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-modelsummary-avgparadoxstrength">Avg Paradox Strength <span class="ref-pill-tbl">ModelSummary</span></a>
       </div>
     </details>
     <details class="prov prov-leaves elem elem-inputs">
@@ -1314,7 +1437,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">2 hops from ground truth</span>
       <span class="pill pill-muted">number</span>
-      <span class="pill pill-dr">DR-13</span>
+      <span class="pill pill-dr">DR-15</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -1344,14 +1467,24 @@ html.show-consumers .elem-consumers{display:block}
       </div>
     </details>
     <details class="prov prov-consumers elem elem-consumers">
-      <summary>Consumers <span class="count">1 direct</span> <span class="count count-muted">+5 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
+      <summary>Consumers <span class="count">1 direct</span> <span class="count count-muted">+15 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
       <div class="prov-pills">
         <a class="ref-pill tone-calc" href="#f-stratumsummaries-stratumwinner">ƒ Stratum Winner <span class="ref-pill-tbl">StratumSummaries</span></a>
         <a class="ref-pill tone-rel faded" href="#f-treatmentrankings-stratawonbya">Strata Won by a <span class="ref-pill-tbl">TreatmentRankings</span></a>
         <a class="ref-pill tone-rel faded" href="#f-treatmentrankings-stratawonbyb">Strata Won by B <span class="ref-pill-tbl">TreatmentRankings</span></a>
         <a class="ref-pill tone-rel faded" href="#f-treatmentrankings-perstratumwinner">Per Stratum Winner <span class="ref-pill-tbl">TreatmentRankings</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-treatmentrankings-stratawonbyloser">Strata Won by Loser <span class="ref-pill-tbl">TreatmentRankings</span></a>
         <a class="ref-pill tone-rel faded" href="#f-treatmentrankings-isreversal">Is Reversal <span class="ref-pill-tbl">TreatmentRankings</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-modelsummary-zerostrengthcount">Zero Strength Count <span class="ref-pill-tbl">ModelSummary</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-treatmentrankings-paradoxstrength">Paradox Strength <span class="ref-pill-tbl">TreatmentRankings</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-modelsummary-reversalcount">Reversal Count <span class="ref-pill-tbl">ModelSummary</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-modelsummary-nonreversalcount">Non Reversal Count <span class="ref-pill-tbl">ModelSummary</span></a>
         <a class="ref-pill tone-rel faded" href="#f-treatmentrankings-isparadoxexplained">Is Paradox Explained <span class="ref-pill-tbl">TreatmentRankings</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-modelsummary-partialcount">Partial Count <span class="ref-pill-tbl">ModelSummary</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-modelsummary-totalparadoxstrength">Total Paradox Strength <span class="ref-pill-tbl">ModelSummary</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-modelsummary-studycount">Study Count <span class="ref-pill-tbl">ModelSummary</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-modelsummary-explainedcount">Explained Count <span class="ref-pill-tbl">ModelSummary</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-modelsummary-avgparadoxstrength">Avg Paradox Strength <span class="ref-pill-tbl">ModelSummary</span></a>
       </div>
     </details>
     <details class="prov prov-leaves elem elem-inputs">
@@ -1375,7 +1508,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Aggregation</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">integer</span>
-      <span class="pill pill-dr">DR-14</span>
+      <span class="pill pill-dr">DR-16</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -1421,15 +1554,25 @@ html.show-consumers .elem-consumers{display:block}
       </div>
     </details>
     <details class="prov prov-consumers elem elem-consumers">
-      <summary>Consumers <span class="count">1 direct</span> <span class="count count-muted">+6 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
+      <summary>Consumers <span class="count">1 direct</span> <span class="count count-muted">+16 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
       <div class="prov-pills">
         <a class="ref-pill tone-calc" href="#f-stratumsummaries-stratumrateb">ƒ Stratum Rate B <span class="ref-pill-tbl">StratumSummaries</span></a>
         <a class="ref-pill tone-rel faded" href="#f-stratumsummaries-stratumwinner">Stratum Winner <span class="ref-pill-tbl">StratumSummaries</span></a>
         <a class="ref-pill tone-rel faded" href="#f-treatmentrankings-stratawonbya">Strata Won by a <span class="ref-pill-tbl">TreatmentRankings</span></a>
         <a class="ref-pill tone-rel faded" href="#f-treatmentrankings-stratawonbyb">Strata Won by B <span class="ref-pill-tbl">TreatmentRankings</span></a>
         <a class="ref-pill tone-rel faded" href="#f-treatmentrankings-perstratumwinner">Per Stratum Winner <span class="ref-pill-tbl">TreatmentRankings</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-treatmentrankings-stratawonbyloser">Strata Won by Loser <span class="ref-pill-tbl">TreatmentRankings</span></a>
         <a class="ref-pill tone-rel faded" href="#f-treatmentrankings-isreversal">Is Reversal <span class="ref-pill-tbl">TreatmentRankings</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-modelsummary-zerostrengthcount">Zero Strength Count <span class="ref-pill-tbl">ModelSummary</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-treatmentrankings-paradoxstrength">Paradox Strength <span class="ref-pill-tbl">TreatmentRankings</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-modelsummary-reversalcount">Reversal Count <span class="ref-pill-tbl">ModelSummary</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-modelsummary-nonreversalcount">Non Reversal Count <span class="ref-pill-tbl">ModelSummary</span></a>
         <a class="ref-pill tone-rel faded" href="#f-treatmentrankings-isparadoxexplained">Is Paradox Explained <span class="ref-pill-tbl">TreatmentRankings</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-modelsummary-partialcount">Partial Count <span class="ref-pill-tbl">ModelSummary</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-modelsummary-totalparadoxstrength">Total Paradox Strength <span class="ref-pill-tbl">ModelSummary</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-modelsummary-studycount">Study Count <span class="ref-pill-tbl">ModelSummary</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-modelsummary-explainedcount">Explained Count <span class="ref-pill-tbl">ModelSummary</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-modelsummary-avgparadoxstrength">Avg Paradox Strength <span class="ref-pill-tbl">ModelSummary</span></a>
       </div>
     </details>
     <details class="prov prov-leaves elem elem-inputs">
@@ -1452,7 +1595,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Aggregation</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">integer</span>
-      <span class="pill pill-dr">DR-15</span>
+      <span class="pill pill-dr">DR-17</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -1498,15 +1641,25 @@ html.show-consumers .elem-consumers{display:block}
       </div>
     </details>
     <details class="prov prov-consumers elem elem-consumers">
-      <summary>Consumers <span class="count">1 direct</span> <span class="count count-muted">+6 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
+      <summary>Consumers <span class="count">1 direct</span> <span class="count count-muted">+16 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
       <div class="prov-pills">
         <a class="ref-pill tone-calc" href="#f-stratumsummaries-stratumrateb">ƒ Stratum Rate B <span class="ref-pill-tbl">StratumSummaries</span></a>
         <a class="ref-pill tone-rel faded" href="#f-stratumsummaries-stratumwinner">Stratum Winner <span class="ref-pill-tbl">StratumSummaries</span></a>
         <a class="ref-pill tone-rel faded" href="#f-treatmentrankings-stratawonbya">Strata Won by a <span class="ref-pill-tbl">TreatmentRankings</span></a>
         <a class="ref-pill tone-rel faded" href="#f-treatmentrankings-stratawonbyb">Strata Won by B <span class="ref-pill-tbl">TreatmentRankings</span></a>
         <a class="ref-pill tone-rel faded" href="#f-treatmentrankings-perstratumwinner">Per Stratum Winner <span class="ref-pill-tbl">TreatmentRankings</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-treatmentrankings-stratawonbyloser">Strata Won by Loser <span class="ref-pill-tbl">TreatmentRankings</span></a>
         <a class="ref-pill tone-rel faded" href="#f-treatmentrankings-isreversal">Is Reversal <span class="ref-pill-tbl">TreatmentRankings</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-modelsummary-zerostrengthcount">Zero Strength Count <span class="ref-pill-tbl">ModelSummary</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-treatmentrankings-paradoxstrength">Paradox Strength <span class="ref-pill-tbl">TreatmentRankings</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-modelsummary-reversalcount">Reversal Count <span class="ref-pill-tbl">ModelSummary</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-modelsummary-nonreversalcount">Non Reversal Count <span class="ref-pill-tbl">ModelSummary</span></a>
         <a class="ref-pill tone-rel faded" href="#f-treatmentrankings-isparadoxexplained">Is Paradox Explained <span class="ref-pill-tbl">TreatmentRankings</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-modelsummary-partialcount">Partial Count <span class="ref-pill-tbl">ModelSummary</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-modelsummary-totalparadoxstrength">Total Paradox Strength <span class="ref-pill-tbl">ModelSummary</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-modelsummary-studycount">Study Count <span class="ref-pill-tbl">ModelSummary</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-modelsummary-explainedcount">Explained Count <span class="ref-pill-tbl">ModelSummary</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-modelsummary-avgparadoxstrength">Avg Paradox Strength <span class="ref-pill-tbl">ModelSummary</span></a>
       </div>
     </details>
     <details class="prov prov-leaves elem elem-inputs">
@@ -1529,7 +1682,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">2 hops from ground truth</span>
       <span class="pill pill-muted">number</span>
-      <span class="pill pill-dr">DR-16</span>
+      <span class="pill pill-dr">DR-18</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -1559,14 +1712,24 @@ html.show-consumers .elem-consumers{display:block}
       </div>
     </details>
     <details class="prov prov-consumers elem elem-consumers">
-      <summary>Consumers <span class="count">1 direct</span> <span class="count count-muted">+5 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
+      <summary>Consumers <span class="count">1 direct</span> <span class="count count-muted">+15 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
       <div class="prov-pills">
         <a class="ref-pill tone-calc" href="#f-stratumsummaries-stratumwinner">ƒ Stratum Winner <span class="ref-pill-tbl">StratumSummaries</span></a>
         <a class="ref-pill tone-rel faded" href="#f-treatmentrankings-stratawonbya">Strata Won by a <span class="ref-pill-tbl">TreatmentRankings</span></a>
         <a class="ref-pill tone-rel faded" href="#f-treatmentrankings-stratawonbyb">Strata Won by B <span class="ref-pill-tbl">TreatmentRankings</span></a>
         <a class="ref-pill tone-rel faded" href="#f-treatmentrankings-perstratumwinner">Per Stratum Winner <span class="ref-pill-tbl">TreatmentRankings</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-treatmentrankings-stratawonbyloser">Strata Won by Loser <span class="ref-pill-tbl">TreatmentRankings</span></a>
         <a class="ref-pill tone-rel faded" href="#f-treatmentrankings-isreversal">Is Reversal <span class="ref-pill-tbl">TreatmentRankings</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-modelsummary-zerostrengthcount">Zero Strength Count <span class="ref-pill-tbl">ModelSummary</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-treatmentrankings-paradoxstrength">Paradox Strength <span class="ref-pill-tbl">TreatmentRankings</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-modelsummary-reversalcount">Reversal Count <span class="ref-pill-tbl">ModelSummary</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-modelsummary-nonreversalcount">Non Reversal Count <span class="ref-pill-tbl">ModelSummary</span></a>
         <a class="ref-pill tone-rel faded" href="#f-treatmentrankings-isparadoxexplained">Is Paradox Explained <span class="ref-pill-tbl">TreatmentRankings</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-modelsummary-partialcount">Partial Count <span class="ref-pill-tbl">ModelSummary</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-modelsummary-totalparadoxstrength">Total Paradox Strength <span class="ref-pill-tbl">ModelSummary</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-modelsummary-studycount">Study Count <span class="ref-pill-tbl">ModelSummary</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-modelsummary-explainedcount">Explained Count <span class="ref-pill-tbl">ModelSummary</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-modelsummary-avgparadoxstrength">Avg Paradox Strength <span class="ref-pill-tbl">ModelSummary</span></a>
       </div>
     </details>
     <details class="prov prov-leaves elem elem-inputs">
@@ -1590,7 +1753,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">3 hops from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-17</span>
+      <span class="pill pill-dr">DR-19</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -1620,13 +1783,23 @@ html.show-consumers .elem-consumers{display:block}
       </div>
     </details>
     <details class="prov prov-consumers elem elem-consumers">
-      <summary>Consumers <span class="count">2 direct</span> <span class="count count-muted">+3 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
+      <summary>Consumers <span class="count">2 direct</span> <span class="count count-muted">+13 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
       <div class="prov-pills">
         <a class="ref-pill tone-agg" href="#f-treatmentrankings-stratawonbya">Σ Strata Won by a <span class="ref-pill-tbl">TreatmentRankings</span></a>
         <a class="ref-pill tone-agg" href="#f-treatmentrankings-stratawonbyb">Σ Strata Won by B <span class="ref-pill-tbl">TreatmentRankings</span></a>
         <a class="ref-pill tone-rel faded" href="#f-treatmentrankings-perstratumwinner">Per Stratum Winner <span class="ref-pill-tbl">TreatmentRankings</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-treatmentrankings-stratawonbyloser">Strata Won by Loser <span class="ref-pill-tbl">TreatmentRankings</span></a>
         <a class="ref-pill tone-rel faded" href="#f-treatmentrankings-isreversal">Is Reversal <span class="ref-pill-tbl">TreatmentRankings</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-modelsummary-zerostrengthcount">Zero Strength Count <span class="ref-pill-tbl">ModelSummary</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-treatmentrankings-paradoxstrength">Paradox Strength <span class="ref-pill-tbl">TreatmentRankings</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-modelsummary-reversalcount">Reversal Count <span class="ref-pill-tbl">ModelSummary</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-modelsummary-nonreversalcount">Non Reversal Count <span class="ref-pill-tbl">ModelSummary</span></a>
         <a class="ref-pill tone-rel faded" href="#f-treatmentrankings-isparadoxexplained">Is Paradox Explained <span class="ref-pill-tbl">TreatmentRankings</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-modelsummary-partialcount">Partial Count <span class="ref-pill-tbl">ModelSummary</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-modelsummary-totalparadoxstrength">Total Paradox Strength <span class="ref-pill-tbl">ModelSummary</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-modelsummary-studycount">Study Count <span class="ref-pill-tbl">ModelSummary</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-modelsummary-explainedcount">Explained Count <span class="ref-pill-tbl">ModelSummary</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-modelsummary-avgparadoxstrength">Avg Paradox Strength <span class="ref-pill-tbl">ModelSummary</span></a>
       </div>
     </details>
     <details class="prov prov-leaves elem elem-inputs">
@@ -1642,6 +1815,465 @@ html.show-consumers .elem-consumers{display:block}
       </div>
     </details>
     <p class="field-note elem elem-desc">Which treatment wins in this stratum: 'A' if StratumRateA &gt; StratumRateB, else 'B'. Used by TreatmentRankings to detect paradox.</p>
+    </article>
+</section>
+<section class="entity" id="t-modelsummary" data-entity="Model Summary">
+  <header class="entity-head">
+    <h2 class="entity-title">Model Summary</h2>
+    <p class="entity-synopsis">A model summary is identified by its name.</p>
+  </header>
+  <article class="field tone-agg" id="f-modelsummary-reversalcount" data-entity="Model Summary" data-field="Reversal Count">
+    <div class="field-head">
+      <span class="field-glyph" title="Aggregation">Σ</span>
+      <span class="field-name">Reversal Count</span>
+      <span class="pill pill-type">Aggregation</span>
+      <span class="pill pill-depth">7 hops from ground truth</span>
+      <span class="pill pill-muted">integer</span>
+      <span class="pill pill-dr">DR-20</span>
+    </div>
+    <div class="narr-views">
+      <div class="view elem elem-rulespeak">
+        <span class="view-label">In RuleSpeak</span>
+        <p class="view-body">A model summary's reversal count is the number of treatment rankings related to the model summary.</p>
+      </div>
+      <div class="view elem elem-english">
+        <span class="view-label">In English</span>
+        <p class="view-body">Count of TreatmentRankings whose <a class="ref" href="#f-treatmentrankings-isreversal">is reversal</a> is true().</p>
+      </div>
+      <div class="view elem elem-formula">
+        <span class="view-label">As a formula</span>
+        <div class="view-body fx"><span class="fx-eq">= </span>COUNTIFS(<a class="fx-chip" href="#f-treatmentrankings-isreversal">Is Reversal</a>, TRUE())</div>
+      </div>
+    </div>
+    <details class="prov prov-inputs elem elem-inputs" open>
+      <summary>Inputs <span class="count">1</span> <span class="prov-hint">fields this rule reads</span></summary>
+      <div class="prov-grid">
+        <a class="input tone-calc" href="#f-treatmentrankings-isreversal">
+          <span class="input-head"><span class="input-glyph">ƒ</span><span class="input-name">Is Reversal</span><span class="input-table">TreatmentRankings</span></span>
+          <span class="input-en">Per stratum winner is not &quot;none&quot; and pooled winner is not per stratum winner.</span>
+        </a>
+      </div>
+    </details>
+    <details class="prov prov-consumers elem elem-consumers">
+      <summary>Consumers <span class="count">1 direct</span> <span class="count count-muted">+1 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-calc" href="#f-modelsummary-studycount">ƒ Study Count <span class="ref-pill-tbl">ModelSummary</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-modelsummary-avgparadoxstrength">Avg Paradox Strength <span class="ref-pill-tbl">ModelSummary</span></a>
+      </div>
+    </details>
+    <details class="prov prov-leaves elem elem-inputs">
+      <summary>Ground truth at the leaves <span class="count">11</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-rel" href="#f-stratumsummaries-study">⇢ Study <span class="ref-pill-tbl">StratumSummaries</span></a>
+        <a class="ref-pill tone-rel" href="#f-treatmentrankings-study">⇢ Study <span class="ref-pill-tbl">TreatmentRankings</span></a>
+        <a class="ref-pill tone-raw" href="#f-stratumsummaries-treatmentlabel">● Treatment Label <span class="ref-pill-tbl">StratumSummaries</span></a>
+        <a class="ref-pill tone-raw" href="#f-treatmentrankings-treatmenta">● Treatment a <span class="ref-pill-tbl">TreatmentRankings</span></a>
+        <a class="ref-pill tone-raw" href="#f-casecells-cases">● Cases <span class="ref-pill-tbl">CaseCells</span></a>
+        <a class="ref-pill tone-rel" href="#f-casecells-study">⇢ Study <span class="ref-pill-tbl">CaseCells</span></a>
+        <a class="ref-pill tone-raw" href="#f-casecells-stratumlabel">● Stratum Label <span class="ref-pill-tbl">CaseCells</span></a>
+        <a class="ref-pill tone-raw" href="#f-stratumsummaries-stratumlabel">● Stratum Label <span class="ref-pill-tbl">StratumSummaries</span></a>
+        <a class="ref-pill tone-raw" href="#f-casecells-treatmentlabel">● Treatment Label <span class="ref-pill-tbl">CaseCells</span></a>
+        <a class="ref-pill tone-raw" href="#f-casecells-successes">● Successes <span class="ref-pill-tbl">CaseCells</span></a>
+        <a class="ref-pill tone-raw" href="#f-treatmentrankings-treatmentb">● Treatment B <span class="ref-pill-tbl">TreatmentRankings</span></a>
+      </div>
+    </details>
+    <p class="field-note elem elem-desc">Number of studies with IsReversal=TRUE (strict full reversal).</p>
+    </article>
+  <article class="field tone-agg" id="f-modelsummary-nonreversalcount" data-entity="Model Summary" data-field="Non Reversal Count">
+    <div class="field-head">
+      <span class="field-glyph" title="Aggregation">Σ</span>
+      <span class="field-name">Non Reversal Count</span>
+      <span class="pill pill-type">Aggregation</span>
+      <span class="pill pill-depth">7 hops from ground truth</span>
+      <span class="pill pill-muted">integer</span>
+      <span class="pill pill-dr">DR-21</span>
+    </div>
+    <div class="narr-views">
+      <div class="view elem elem-rulespeak">
+        <span class="view-label">In RuleSpeak</span>
+        <p class="view-body">A model summary's non reversal count is the number of treatment rankings related to the model summary.</p>
+      </div>
+      <div class="view elem elem-english">
+        <span class="view-label">In English</span>
+        <p class="view-body">Count of TreatmentRankings whose <a class="ref" href="#f-treatmentrankings-isreversal">is reversal</a> is false().</p>
+      </div>
+      <div class="view elem elem-formula">
+        <span class="view-label">As a formula</span>
+        <div class="view-body fx"><span class="fx-eq">= </span>COUNTIFS(<a class="fx-chip" href="#f-treatmentrankings-isreversal">Is Reversal</a>, FALSE())</div>
+      </div>
+    </div>
+    <details class="prov prov-inputs elem elem-inputs" open>
+      <summary>Inputs <span class="count">1</span> <span class="prov-hint">fields this rule reads</span></summary>
+      <div class="prov-grid">
+        <a class="input tone-calc" href="#f-treatmentrankings-isreversal">
+          <span class="input-head"><span class="input-glyph">ƒ</span><span class="input-name">Is Reversal</span><span class="input-table">TreatmentRankings</span></span>
+          <span class="input-en">Per stratum winner is not &quot;none&quot; and pooled winner is not per stratum winner.</span>
+        </a>
+      </div>
+    </details>
+    <details class="prov prov-consumers elem elem-consumers">
+      <summary>Consumers <span class="count">2 direct</span> <span class="count count-muted">+1 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-calc" href="#f-modelsummary-studycount">ƒ Study Count <span class="ref-pill-tbl">ModelSummary</span></a>
+        <a class="ref-pill tone-calc" href="#f-modelsummary-partialcount">ƒ Partial Count <span class="ref-pill-tbl">ModelSummary</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-modelsummary-avgparadoxstrength">Avg Paradox Strength <span class="ref-pill-tbl">ModelSummary</span></a>
+      </div>
+    </details>
+    <details class="prov prov-leaves elem elem-inputs">
+      <summary>Ground truth at the leaves <span class="count">11</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-rel" href="#f-stratumsummaries-study">⇢ Study <span class="ref-pill-tbl">StratumSummaries</span></a>
+        <a class="ref-pill tone-rel" href="#f-treatmentrankings-study">⇢ Study <span class="ref-pill-tbl">TreatmentRankings</span></a>
+        <a class="ref-pill tone-raw" href="#f-stratumsummaries-treatmentlabel">● Treatment Label <span class="ref-pill-tbl">StratumSummaries</span></a>
+        <a class="ref-pill tone-raw" href="#f-treatmentrankings-treatmenta">● Treatment a <span class="ref-pill-tbl">TreatmentRankings</span></a>
+        <a class="ref-pill tone-raw" href="#f-casecells-cases">● Cases <span class="ref-pill-tbl">CaseCells</span></a>
+        <a class="ref-pill tone-rel" href="#f-casecells-study">⇢ Study <span class="ref-pill-tbl">CaseCells</span></a>
+        <a class="ref-pill tone-raw" href="#f-casecells-stratumlabel">● Stratum Label <span class="ref-pill-tbl">CaseCells</span></a>
+        <a class="ref-pill tone-raw" href="#f-stratumsummaries-stratumlabel">● Stratum Label <span class="ref-pill-tbl">StratumSummaries</span></a>
+        <a class="ref-pill tone-raw" href="#f-casecells-treatmentlabel">● Treatment Label <span class="ref-pill-tbl">CaseCells</span></a>
+        <a class="ref-pill tone-raw" href="#f-casecells-successes">● Successes <span class="ref-pill-tbl">CaseCells</span></a>
+        <a class="ref-pill tone-raw" href="#f-treatmentrankings-treatmentb">● Treatment B <span class="ref-pill-tbl">TreatmentRankings</span></a>
+      </div>
+    </details>
+    <p class="field-note elem elem-desc">Number of studies with IsReversal=FALSE.</p>
+    </article>
+  <article class="field tone-calc" id="f-modelsummary-studycount" data-entity="Model Summary" data-field="Study Count">
+    <div class="field-head">
+      <span class="field-glyph" title="Calculated">ƒ</span>
+      <span class="field-name">Study Count</span>
+      <span class="pill pill-type">Calculated</span>
+      <span class="pill pill-depth">8 hops from ground truth</span>
+      <span class="pill pill-muted">integer</span>
+      <span class="pill pill-dr">DR-22</span>
+    </div>
+    <div class="narr-views">
+      <div class="view elem elem-rulespeak">
+        <span class="view-label">In RuleSpeak</span>
+        <p class="view-body">A model summary's study count is computed as the <a class="ref" href="#f-modelsummary-reversalcount">reversal count</a> plus the <a class="ref" href="#f-modelsummary-nonreversalcount">non reversal count</a>.</p>
+      </div>
+      <div class="view elem elem-english">
+        <span class="view-label">In English</span>
+        <p class="view-body"><a class="ref" href="#f-modelsummary-reversalcount">Reversal count</a> plus <a class="ref" href="#f-modelsummary-nonreversalcount">non reversal count</a>.</p>
+      </div>
+      <div class="view elem elem-formula">
+        <span class="view-label">As a formula</span>
+        <div class="view-body fx"><span class="fx-eq">= </span><a class="fx-chip" href="#f-modelsummary-reversalcount">Reversal Count</a> + <a class="fx-chip" href="#f-modelsummary-nonreversalcount">Non Reversal Count</a></div>
+      </div>
+    </div>
+    <details class="prov prov-inputs elem elem-inputs" open>
+      <summary>Inputs <span class="count">2</span> <span class="prov-hint">fields this rule reads</span></summary>
+      <div class="prov-grid">
+        <a class="input tone-agg" href="#f-modelsummary-reversalcount">
+          <span class="input-head"><span class="input-glyph">Σ</span><span class="input-name">Reversal Count</span><span class="input-table">ModelSummary</span></span>
+          <span class="input-en">Count of TreatmentRankings whose is reversal is true().</span>
+        </a>
+        <a class="input tone-agg" href="#f-modelsummary-nonreversalcount">
+          <span class="input-head"><span class="input-glyph">Σ</span><span class="input-name">Non Reversal Count</span><span class="input-table">ModelSummary</span></span>
+          <span class="input-en">Count of TreatmentRankings whose is reversal is false().</span>
+        </a>
+      </div>
+    </details>
+    <details class="prov prov-consumers elem elem-consumers">
+      <summary>Consumers <span class="count">1 direct</span> <span class="prov-hint">rules that read this one</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-calc" href="#f-modelsummary-avgparadoxstrength">ƒ Avg Paradox Strength <span class="ref-pill-tbl">ModelSummary</span></a>
+      </div>
+    </details>
+    <details class="prov prov-leaves elem elem-inputs">
+      <summary>Ground truth at the leaves <span class="count">11</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-rel" href="#f-stratumsummaries-study">⇢ Study <span class="ref-pill-tbl">StratumSummaries</span></a>
+        <a class="ref-pill tone-rel" href="#f-treatmentrankings-study">⇢ Study <span class="ref-pill-tbl">TreatmentRankings</span></a>
+        <a class="ref-pill tone-raw" href="#f-stratumsummaries-treatmentlabel">● Treatment Label <span class="ref-pill-tbl">StratumSummaries</span></a>
+        <a class="ref-pill tone-raw" href="#f-treatmentrankings-treatmenta">● Treatment a <span class="ref-pill-tbl">TreatmentRankings</span></a>
+        <a class="ref-pill tone-raw" href="#f-casecells-cases">● Cases <span class="ref-pill-tbl">CaseCells</span></a>
+        <a class="ref-pill tone-rel" href="#f-casecells-study">⇢ Study <span class="ref-pill-tbl">CaseCells</span></a>
+        <a class="ref-pill tone-raw" href="#f-casecells-stratumlabel">● Stratum Label <span class="ref-pill-tbl">CaseCells</span></a>
+        <a class="ref-pill tone-raw" href="#f-stratumsummaries-stratumlabel">● Stratum Label <span class="ref-pill-tbl">StratumSummaries</span></a>
+        <a class="ref-pill tone-raw" href="#f-casecells-treatmentlabel">● Treatment Label <span class="ref-pill-tbl">CaseCells</span></a>
+        <a class="ref-pill tone-raw" href="#f-casecells-successes">● Successes <span class="ref-pill-tbl">CaseCells</span></a>
+        <a class="ref-pill tone-raw" href="#f-treatmentrankings-treatmentb">● Treatment B <span class="ref-pill-tbl">TreatmentRankings</span></a>
+      </div>
+    </details>
+    <p class="field-note elem elem-desc">Total number of TreatmentRankings in this model: ReversalCount + NonReversalCount.</p>
+    </article>
+  <article class="field tone-agg" id="f-modelsummary-explainedcount" data-entity="Model Summary" data-field="Explained Count">
+    <div class="field-head">
+      <span class="field-glyph" title="Aggregation">Σ</span>
+      <span class="field-name">Explained Count</span>
+      <span class="pill pill-type">Aggregation</span>
+      <span class="pill pill-depth">8 hops from ground truth</span>
+      <span class="pill pill-muted">integer</span>
+      <span class="pill pill-dr">DR-23</span>
+    </div>
+    <div class="narr-views">
+      <div class="view elem elem-rulespeak">
+        <span class="view-label">In RuleSpeak</span>
+        <p class="view-body">A model summary's explained count is the number of treatment rankings related to the model summary.</p>
+      </div>
+      <div class="view elem elem-english">
+        <span class="view-label">In English</span>
+        <p class="view-body">Count of TreatmentRankings whose <a class="ref" href="#f-treatmentrankings-isparadoxexplained">is paradox explained</a> is true().</p>
+      </div>
+      <div class="view elem elem-formula">
+        <span class="view-label">As a formula</span>
+        <div class="view-body fx"><span class="fx-eq">= </span>COUNTIFS(<a class="fx-chip" href="#f-treatmentrankings-isparadoxexplained">Is Paradox Explained</a>, TRUE())</div>
+      </div>
+    </div>
+    <details class="prov prov-inputs elem elem-inputs" open>
+      <summary>Inputs <span class="count">1</span> <span class="prov-hint">fields this rule reads</span></summary>
+      <div class="prov-grid">
+        <a class="input tone-calc" href="#f-treatmentrankings-isparadoxexplained">
+          <span class="input-head"><span class="input-glyph">ƒ</span><span class="input-name">Is Paradox Explained</span><span class="input-table">TreatmentRankings</span></span>
+          <span class="input-en">Is reversal and confounders in study is greater than 0.</span>
+        </a>
+      </div>
+    </details>
+    <details class="prov prov-leaves elem elem-inputs">
+      <summary>Ground truth at the leaves <span class="count">15</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-rel" href="#f-stratumsummaries-study">⇢ Study <span class="ref-pill-tbl">StratumSummaries</span></a>
+        <a class="ref-pill tone-rel" href="#f-treatmentrankings-study">⇢ Study <span class="ref-pill-tbl">TreatmentRankings</span></a>
+        <a class="ref-pill tone-raw" href="#f-stratumsummaries-treatmentlabel">● Treatment Label <span class="ref-pill-tbl">StratumSummaries</span></a>
+        <a class="ref-pill tone-raw" href="#f-treatmentrankings-treatmenta">● Treatment a <span class="ref-pill-tbl">TreatmentRankings</span></a>
+        <a class="ref-pill tone-raw" href="#f-casecells-cases">● Cases <span class="ref-pill-tbl">CaseCells</span></a>
+        <a class="ref-pill tone-rel" href="#f-casecells-study">⇢ Study <span class="ref-pill-tbl">CaseCells</span></a>
+        <a class="ref-pill tone-raw" href="#f-casecells-stratumlabel">● Stratum Label <span class="ref-pill-tbl">CaseCells</span></a>
+        <a class="ref-pill tone-raw" href="#f-stratumsummaries-stratumlabel">● Stratum Label <span class="ref-pill-tbl">StratumSummaries</span></a>
+        <a class="ref-pill tone-raw" href="#f-casecells-treatmentlabel">● Treatment Label <span class="ref-pill-tbl">CaseCells</span></a>
+        <a class="ref-pill tone-raw" href="#f-casecells-successes">● Successes <span class="ref-pill-tbl">CaseCells</span></a>
+        <a class="ref-pill tone-raw" href="#f-treatmentrankings-treatmentb">● Treatment B <span class="ref-pill-tbl">TreatmentRankings</span></a>
+        <a class="ref-pill tone-rel" href="#f-stratumvariables-study">⇢ Study <span class="ref-pill-tbl">StratumVariables</span></a>
+        <a class="ref-pill tone-raw" href="#f-stratumvariables-affectstreatmentassignment">● Affects Treatment Assignment <span class="ref-pill-tbl">StratumVariables</span></a>
+        <a class="ref-pill tone-raw" href="#f-stratumvariables-affectsoutcome">● Affects Outcome <span class="ref-pill-tbl">StratumVariables</span></a>
+        <a class="ref-pill tone-raw" href="#f-stratumvariables-causalrole">● Causal Role <span class="ref-pill-tbl">StratumVariables</span></a>
+      </div>
+    </details>
+    <p class="field-note elem elem-desc">Number of studies with IsParadoxExplained=TRUE (reversal AND confirmed confounder).</p>
+    </article>
+  <article class="field tone-agg" id="f-modelsummary-zerostrengthcount" data-entity="Model Summary" data-field="Zero Strength Count">
+    <div class="field-head">
+      <span class="field-glyph" title="Aggregation">Σ</span>
+      <span class="field-name">Zero Strength Count</span>
+      <span class="pill pill-type">Aggregation</span>
+      <span class="pill pill-depth">6 hops from ground truth</span>
+      <span class="pill pill-muted">integer</span>
+      <span class="pill pill-dr">DR-24</span>
+    </div>
+    <div class="narr-views">
+      <div class="view elem elem-rulespeak">
+        <span class="view-label">In RuleSpeak</span>
+        <p class="view-body">A model summary's zero strength count is the number of treatment rankings related to the model summary.</p>
+      </div>
+      <div class="view elem elem-english">
+        <span class="view-label">In English</span>
+        <p class="view-body">Count of TreatmentRankings whose <a class="ref" href="#f-treatmentrankings-stratawonbyloser">strata won by loser</a> is 0.</p>
+      </div>
+      <div class="view elem elem-formula">
+        <span class="view-label">As a formula</span>
+        <div class="view-body fx"><span class="fx-eq">= </span>COUNTIFS(<a class="fx-chip" href="#f-treatmentrankings-stratawonbyloser">Strata Won by Loser</a>, 0)</div>
+      </div>
+    </div>
+    <details class="prov prov-inputs elem elem-inputs" open>
+      <summary>Inputs <span class="count">1</span> <span class="prov-hint">fields this rule reads</span></summary>
+      <div class="prov-grid">
+        <a class="input tone-calc" href="#f-treatmentrankings-stratawonbyloser">
+          <span class="input-head"><span class="input-glyph">ƒ</span><span class="input-name">Strata Won by Loser</span><span class="input-table">TreatmentRankings</span></span>
+          <span class="input-en">If pooled winner equals treatment a then strata won by b, otherwise strata won by a.</span>
+        </a>
+      </div>
+    </details>
+    <details class="prov prov-consumers elem elem-consumers">
+      <summary>Consumers <span class="count">1 direct</span> <span class="prov-hint">rules that read this one</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-calc" href="#f-modelsummary-partialcount">ƒ Partial Count <span class="ref-pill-tbl">ModelSummary</span></a>
+      </div>
+    </details>
+    <details class="prov prov-leaves elem elem-inputs">
+      <summary>Ground truth at the leaves <span class="count">11</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-raw" href="#f-casecells-cases">● Cases <span class="ref-pill-tbl">CaseCells</span></a>
+        <a class="ref-pill tone-rel" href="#f-casecells-study">⇢ Study <span class="ref-pill-tbl">CaseCells</span></a>
+        <a class="ref-pill tone-rel" href="#f-treatmentrankings-study">⇢ Study <span class="ref-pill-tbl">TreatmentRankings</span></a>
+        <a class="ref-pill tone-raw" href="#f-casecells-treatmentlabel">● Treatment Label <span class="ref-pill-tbl">CaseCells</span></a>
+        <a class="ref-pill tone-raw" href="#f-treatmentrankings-treatmenta">● Treatment a <span class="ref-pill-tbl">TreatmentRankings</span></a>
+        <a class="ref-pill tone-raw" href="#f-casecells-successes">● Successes <span class="ref-pill-tbl">CaseCells</span></a>
+        <a class="ref-pill tone-raw" href="#f-treatmentrankings-treatmentb">● Treatment B <span class="ref-pill-tbl">TreatmentRankings</span></a>
+        <a class="ref-pill tone-rel" href="#f-stratumsummaries-study">⇢ Study <span class="ref-pill-tbl">StratumSummaries</span></a>
+        <a class="ref-pill tone-raw" href="#f-stratumsummaries-treatmentlabel">● Treatment Label <span class="ref-pill-tbl">StratumSummaries</span></a>
+        <a class="ref-pill tone-raw" href="#f-casecells-stratumlabel">● Stratum Label <span class="ref-pill-tbl">CaseCells</span></a>
+        <a class="ref-pill tone-raw" href="#f-stratumsummaries-stratumlabel">● Stratum Label <span class="ref-pill-tbl">StratumSummaries</span></a>
+      </div>
+    </details>
+    <p class="field-note elem elem-desc">Studies with StrataWonByLoser=0: no strata go against the pooled winner. These are structurally paradox-free.</p>
+    </article>
+  <article class="field tone-calc" id="f-modelsummary-partialcount" data-entity="Model Summary" data-field="Partial Count">
+    <div class="field-head">
+      <span class="field-glyph" title="Calculated">ƒ</span>
+      <span class="field-name">Partial Count</span>
+      <span class="pill pill-type">Calculated</span>
+      <span class="pill pill-depth">8 hops from ground truth</span>
+      <span class="pill pill-muted">integer</span>
+      <span class="pill pill-dr">DR-25</span>
+    </div>
+    <div class="narr-views">
+      <div class="view elem elem-rulespeak">
+        <span class="view-label">In RuleSpeak</span>
+        <p class="view-body">A model summary's partial count is computed as the <a class="ref" href="#f-modelsummary-nonreversalcount">non reversal count</a> minus the <a class="ref" href="#f-modelsummary-zerostrengthcount">zero strength count</a>.</p>
+      </div>
+      <div class="view elem elem-english">
+        <span class="view-label">In English</span>
+        <p class="view-body"><a class="ref" href="#f-modelsummary-nonreversalcount">Non reversal count</a> minus <a class="ref" href="#f-modelsummary-zerostrengthcount">zero strength count</a>.</p>
+      </div>
+      <div class="view elem elem-formula">
+        <span class="view-label">As a formula</span>
+        <div class="view-body fx"><span class="fx-eq">= </span><a class="fx-chip" href="#f-modelsummary-nonreversalcount">Non Reversal Count</a> - <a class="fx-chip" href="#f-modelsummary-zerostrengthcount">Zero Strength Count</a></div>
+      </div>
+    </div>
+    <details class="prov prov-inputs elem elem-inputs" open>
+      <summary>Inputs <span class="count">2</span> <span class="prov-hint">fields this rule reads</span></summary>
+      <div class="prov-grid">
+        <a class="input tone-agg" href="#f-modelsummary-nonreversalcount">
+          <span class="input-head"><span class="input-glyph">Σ</span><span class="input-name">Non Reversal Count</span><span class="input-table">ModelSummary</span></span>
+          <span class="input-en">Count of TreatmentRankings whose is reversal is false().</span>
+        </a>
+        <a class="input tone-agg" href="#f-modelsummary-zerostrengthcount">
+          <span class="input-head"><span class="input-glyph">Σ</span><span class="input-name">Zero Strength Count</span><span class="input-table">ModelSummary</span></span>
+          <span class="input-en">Count of TreatmentRankings whose strata won by loser is 0.</span>
+        </a>
+      </div>
+    </details>
+    <details class="prov prov-leaves elem elem-inputs">
+      <summary>Ground truth at the leaves <span class="count">11</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-rel" href="#f-stratumsummaries-study">⇢ Study <span class="ref-pill-tbl">StratumSummaries</span></a>
+        <a class="ref-pill tone-rel" href="#f-treatmentrankings-study">⇢ Study <span class="ref-pill-tbl">TreatmentRankings</span></a>
+        <a class="ref-pill tone-raw" href="#f-stratumsummaries-treatmentlabel">● Treatment Label <span class="ref-pill-tbl">StratumSummaries</span></a>
+        <a class="ref-pill tone-raw" href="#f-treatmentrankings-treatmenta">● Treatment a <span class="ref-pill-tbl">TreatmentRankings</span></a>
+        <a class="ref-pill tone-raw" href="#f-casecells-cases">● Cases <span class="ref-pill-tbl">CaseCells</span></a>
+        <a class="ref-pill tone-rel" href="#f-casecells-study">⇢ Study <span class="ref-pill-tbl">CaseCells</span></a>
+        <a class="ref-pill tone-raw" href="#f-casecells-stratumlabel">● Stratum Label <span class="ref-pill-tbl">CaseCells</span></a>
+        <a class="ref-pill tone-raw" href="#f-stratumsummaries-stratumlabel">● Stratum Label <span class="ref-pill-tbl">StratumSummaries</span></a>
+        <a class="ref-pill tone-raw" href="#f-casecells-treatmentlabel">● Treatment Label <span class="ref-pill-tbl">CaseCells</span></a>
+        <a class="ref-pill tone-raw" href="#f-casecells-successes">● Successes <span class="ref-pill-tbl">CaseCells</span></a>
+        <a class="ref-pill tone-raw" href="#f-treatmentrankings-treatmentb">● Treatment B <span class="ref-pill-tbl">TreatmentRankings</span></a>
+      </div>
+    </details>
+    <p class="field-note elem elem-desc">Studies with ParadoxStrength &gt; 0 but IsReversal=FALSE: partial paradoxes real but not formally complete.</p>
+    </article>
+  <article class="field tone-agg" id="f-modelsummary-totalparadoxstrength" data-entity="Model Summary" data-field="Total Paradox Strength">
+    <div class="field-head">
+      <span class="field-glyph" title="Aggregation">Σ</span>
+      <span class="field-name">Total Paradox Strength</span>
+      <span class="pill pill-type">Aggregation</span>
+      <span class="pill pill-depth">7 hops from ground truth</span>
+      <span class="pill pill-muted">number</span>
+      <span class="pill pill-dr">DR-26</span>
+    </div>
+    <div class="narr-views">
+      <div class="view elem elem-rulespeak">
+        <span class="view-label">In RuleSpeak</span>
+        <p class="view-body">A model summary's total <a class="ref" href="#f-treatmentrankings-paradoxstrength">paradox strength</a> is the total paradox strength across the treatment rankings related to the model summary.</p>
+      </div>
+      <div class="view elem elem-english">
+        <span class="view-label">In English</span>
+        <p class="view-body">Sum of <a class="ref" href="#f-treatmentrankings-paradoxstrength">paradox strength</a> across all TreatmentRankings whose <a class="ref" href="#f-treatmentrankings-treatmenta">treatment a</a> is &quot;A&quot;.</p>
+      </div>
+      <div class="view elem elem-formula">
+        <span class="view-label">As a formula</span>
+        <div class="view-body fx"><span class="fx-eq">= </span>SUMIFS(<a class="fx-chip" href="#f-treatmentrankings-paradoxstrength">Paradox Strength</a>, <a class="fx-chip" href="#f-treatmentrankings-treatmenta">Treatment a</a>, &quot;A&quot;)</div>
+      </div>
+    </div>
+    <details class="prov prov-inputs elem elem-inputs" open>
+      <summary>Inputs <span class="count">2</span> <span class="prov-hint">fields this rule reads</span></summary>
+      <div class="prov-grid">
+        <a class="input tone-calc" href="#f-treatmentrankings-paradoxstrength">
+          <span class="input-head"><span class="input-glyph">ƒ</span><span class="input-name">Paradox Strength</span><span class="input-table">TreatmentRankings</span></span>
+          <span class="input-en">If stratum count equals 0 then &quot;&quot;, otherwise (pooled gap times (strata won by loser divided by stratum count)).</span>
+        </a>
+        <a class="input tone-raw" href="#f-treatmentrankings-treatmenta">
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Treatment a</span><span class="input-table">TreatmentRankings</span></span>
+          <span class="input-en muted">Label for the first treatment in the comparison (matches Treatments.TreatmentLabel).</span>
+        </a>
+      </div>
+    </details>
+    <details class="prov prov-consumers elem elem-consumers">
+      <summary>Consumers <span class="count">1 direct</span> <span class="prov-hint">rules that read this one</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-calc" href="#f-modelsummary-avgparadoxstrength">ƒ Avg Paradox Strength <span class="ref-pill-tbl">ModelSummary</span></a>
+      </div>
+    </details>
+    <details class="prov prov-leaves elem elem-inputs">
+      <summary>Ground truth at the leaves <span class="count">11</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-rel" href="#f-stratumsummaries-study">⇢ Study <span class="ref-pill-tbl">StratumSummaries</span></a>
+        <a class="ref-pill tone-rel" href="#f-treatmentrankings-study">⇢ Study <span class="ref-pill-tbl">TreatmentRankings</span></a>
+        <a class="ref-pill tone-raw" href="#f-stratumsummaries-treatmentlabel">● Treatment Label <span class="ref-pill-tbl">StratumSummaries</span></a>
+        <a class="ref-pill tone-raw" href="#f-treatmentrankings-treatmenta">● Treatment a <span class="ref-pill-tbl">TreatmentRankings</span></a>
+        <a class="ref-pill tone-raw" href="#f-casecells-cases">● Cases <span class="ref-pill-tbl">CaseCells</span></a>
+        <a class="ref-pill tone-rel" href="#f-casecells-study">⇢ Study <span class="ref-pill-tbl">CaseCells</span></a>
+        <a class="ref-pill tone-raw" href="#f-casecells-treatmentlabel">● Treatment Label <span class="ref-pill-tbl">CaseCells</span></a>
+        <a class="ref-pill tone-raw" href="#f-casecells-successes">● Successes <span class="ref-pill-tbl">CaseCells</span></a>
+        <a class="ref-pill tone-raw" href="#f-treatmentrankings-treatmentb">● Treatment B <span class="ref-pill-tbl">TreatmentRankings</span></a>
+        <a class="ref-pill tone-raw" href="#f-casecells-stratumlabel">● Stratum Label <span class="ref-pill-tbl">CaseCells</span></a>
+        <a class="ref-pill tone-raw" href="#f-stratumsummaries-stratumlabel">● Stratum Label <span class="ref-pill-tbl">StratumSummaries</span></a>
+      </div>
+    </details>
+    <p class="field-note elem elem-desc">Sum of ParadoxStrength across all studies. Used to compute average.</p>
+    </article>
+  <article class="field tone-calc" id="f-modelsummary-avgparadoxstrength" data-entity="Model Summary" data-field="Avg Paradox Strength">
+    <div class="field-head">
+      <span class="field-glyph" title="Calculated">ƒ</span>
+      <span class="field-name">Avg Paradox Strength</span>
+      <span class="pill pill-type">Calculated</span>
+      <span class="pill pill-depth">9 hops from ground truth</span>
+      <span class="pill pill-muted">number</span>
+      <span class="pill pill-dr">DR-27</span>
+    </div>
+    <div class="narr-views">
+      <div class="view elem elem-rulespeak">
+        <span class="view-label">In RuleSpeak</span>
+        <div class="view-body"><p class="rt-headline">The model summary's avg paradox strength is determined by the following priority:</p><ol class="rt-priority"><li><span class="rt-value">an empty string</span> <span class="rt-when">if the study count is 0</span></li><li><span class="rt-value">the total paradox strength divided by the study count</span> <span class="rt-when">in all other cases</span></li></ol></div>
+      </div>
+      <div class="view elem elem-english">
+        <span class="view-label">In English</span>
+        <p class="view-body">If <a class="ref" href="#f-modelsummary-studycount">study count</a> equals 0 then &quot;&quot;, otherwise (<a class="ref" href="#f-modelsummary-totalparadoxstrength">total paradox strength</a> divided by study count).</p>
+      </div>
+      <div class="view elem elem-formula">
+        <span class="view-label">As a formula</span>
+        <div class="view-body fx"><span class="fx-eq">= </span>IF(<a class="fx-chip" href="#f-modelsummary-studycount">Study Count</a> = 0, &quot;&quot;, <a class="fx-chip" href="#f-modelsummary-totalparadoxstrength">Total Paradox Strength</a> / <a class="fx-chip" href="#f-modelsummary-studycount">Study Count</a>)</div>
+      </div>
+    </div>
+    <details class="prov prov-inputs elem elem-inputs" open>
+      <summary>Inputs <span class="count">2</span> <span class="prov-hint">fields this rule reads</span></summary>
+      <div class="prov-grid">
+        <a class="input tone-calc" href="#f-modelsummary-studycount">
+          <span class="input-head"><span class="input-glyph">ƒ</span><span class="input-name">Study Count</span><span class="input-table">ModelSummary</span></span>
+          <span class="input-en">Reversal count plus non reversal count.</span>
+        </a>
+        <a class="input tone-agg" href="#f-modelsummary-totalparadoxstrength">
+          <span class="input-head"><span class="input-glyph">Σ</span><span class="input-name">Total Paradox Strength</span><span class="input-table">ModelSummary</span></span>
+          <span class="input-en">Sum of paradox strength across all TreatmentRankings whose treatment a is &quot;A&quot;.</span>
+        </a>
+      </div>
+    </details>
+    <details class="prov prov-leaves elem elem-inputs">
+      <summary>Ground truth at the leaves <span class="count">11</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-rel" href="#f-stratumsummaries-study">⇢ Study <span class="ref-pill-tbl">StratumSummaries</span></a>
+        <a class="ref-pill tone-rel" href="#f-treatmentrankings-study">⇢ Study <span class="ref-pill-tbl">TreatmentRankings</span></a>
+        <a class="ref-pill tone-raw" href="#f-stratumsummaries-treatmentlabel">● Treatment Label <span class="ref-pill-tbl">StratumSummaries</span></a>
+        <a class="ref-pill tone-raw" href="#f-treatmentrankings-treatmenta">● Treatment a <span class="ref-pill-tbl">TreatmentRankings</span></a>
+        <a class="ref-pill tone-raw" href="#f-casecells-cases">● Cases <span class="ref-pill-tbl">CaseCells</span></a>
+        <a class="ref-pill tone-rel" href="#f-casecells-study">⇢ Study <span class="ref-pill-tbl">CaseCells</span></a>
+        <a class="ref-pill tone-raw" href="#f-casecells-stratumlabel">● Stratum Label <span class="ref-pill-tbl">CaseCells</span></a>
+        <a class="ref-pill tone-raw" href="#f-stratumsummaries-stratumlabel">● Stratum Label <span class="ref-pill-tbl">StratumSummaries</span></a>
+        <a class="ref-pill tone-raw" href="#f-casecells-treatmentlabel">● Treatment Label <span class="ref-pill-tbl">CaseCells</span></a>
+        <a class="ref-pill tone-raw" href="#f-casecells-successes">● Successes <span class="ref-pill-tbl">CaseCells</span></a>
+        <a class="ref-pill tone-raw" href="#f-treatmentrankings-treatmentb">● Treatment B <span class="ref-pill-tbl">TreatmentRankings</span></a>
+      </div>
+    </details>
+    <p class="field-note elem elem-desc">Average ParadoxStrength across all studies: TotalParadoxStrength / StudyCount. A scalar summary of how paradox-rich this dataset is.</p>
     </article>
 </section>
 <section class="entity" id="t-stratumvariables" data-entity="Stratum Variable">
@@ -1716,7 +2348,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">boolean</span>
-      <span class="pill pill-dr">DR-18</span>
+      <span class="pill pill-dr">DR-28</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -1750,10 +2382,11 @@ html.show-consumers .elem-consumers{display:block}
       </div>
     </details>
     <details class="prov prov-consumers elem elem-consumers">
-      <summary>Consumers <span class="count">1 direct</span> <span class="count count-muted">+1 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
+      <summary>Consumers <span class="count">1 direct</span> <span class="count count-muted">+2 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
       <div class="prov-pills">
         <a class="ref-pill tone-agg" href="#f-treatmentrankings-confoundersinstudy">Σ Confounders in Study <span class="ref-pill-tbl">TreatmentRankings</span></a>
         <a class="ref-pill tone-rel faded" href="#f-treatmentrankings-isparadoxexplained">Is Paradox Explained <span class="ref-pill-tbl">TreatmentRankings</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-modelsummary-explainedcount">Explained Count <span class="ref-pill-tbl">ModelSummary</span></a>
       </div>
     </details>
     <details class="prov prov-leaves elem elem-inputs">
@@ -1827,7 +2460,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Aggregation</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">integer</span>
-      <span class="pill pill-dr">DR-19</span>
+      <span class="pill pill-dr">DR-29</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -1869,12 +2502,23 @@ html.show-consumers .elem-consumers{display:block}
       </div>
     </details>
     <details class="prov prov-consumers elem elem-consumers">
-      <summary>Consumers <span class="count">1 direct</span> <span class="count count-muted">+3 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
+      <summary>Consumers <span class="count">1 direct</span> <span class="count count-muted">+14 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
       <div class="prov-pills">
         <a class="ref-pill tone-calc" href="#f-treatmentrankings-pooledratea">ƒ Pooled Rate a <span class="ref-pill-tbl">TreatmentRankings</span></a>
         <a class="ref-pill tone-rel faded" href="#f-treatmentrankings-pooledwinner">Pooled Winner <span class="ref-pill-tbl">TreatmentRankings</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-treatmentrankings-pooledgap">Pooled Gap <span class="ref-pill-tbl">TreatmentRankings</span></a>
         <a class="ref-pill tone-rel faded" href="#f-treatmentrankings-isreversal">Is Reversal <span class="ref-pill-tbl">TreatmentRankings</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-treatmentrankings-stratawonbyloser">Strata Won by Loser <span class="ref-pill-tbl">TreatmentRankings</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-treatmentrankings-paradoxstrength">Paradox Strength <span class="ref-pill-tbl">TreatmentRankings</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-modelsummary-reversalcount">Reversal Count <span class="ref-pill-tbl">ModelSummary</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-modelsummary-nonreversalcount">Non Reversal Count <span class="ref-pill-tbl">ModelSummary</span></a>
         <a class="ref-pill tone-rel faded" href="#f-treatmentrankings-isparadoxexplained">Is Paradox Explained <span class="ref-pill-tbl">TreatmentRankings</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-modelsummary-zerostrengthcount">Zero Strength Count <span class="ref-pill-tbl">ModelSummary</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-modelsummary-totalparadoxstrength">Total Paradox Strength <span class="ref-pill-tbl">ModelSummary</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-modelsummary-studycount">Study Count <span class="ref-pill-tbl">ModelSummary</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-modelsummary-partialcount">Partial Count <span class="ref-pill-tbl">ModelSummary</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-modelsummary-explainedcount">Explained Count <span class="ref-pill-tbl">ModelSummary</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-modelsummary-avgparadoxstrength">Avg Paradox Strength <span class="ref-pill-tbl">ModelSummary</span></a>
       </div>
     </details>
     <details class="prov prov-leaves elem elem-inputs">
@@ -1896,7 +2540,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Aggregation</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">integer</span>
-      <span class="pill pill-dr">DR-20</span>
+      <span class="pill pill-dr">DR-30</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -1938,12 +2582,23 @@ html.show-consumers .elem-consumers{display:block}
       </div>
     </details>
     <details class="prov prov-consumers elem elem-consumers">
-      <summary>Consumers <span class="count">1 direct</span> <span class="count count-muted">+3 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
+      <summary>Consumers <span class="count">1 direct</span> <span class="count count-muted">+14 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
       <div class="prov-pills">
         <a class="ref-pill tone-calc" href="#f-treatmentrankings-pooledratea">ƒ Pooled Rate a <span class="ref-pill-tbl">TreatmentRankings</span></a>
         <a class="ref-pill tone-rel faded" href="#f-treatmentrankings-pooledwinner">Pooled Winner <span class="ref-pill-tbl">TreatmentRankings</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-treatmentrankings-pooledgap">Pooled Gap <span class="ref-pill-tbl">TreatmentRankings</span></a>
         <a class="ref-pill tone-rel faded" href="#f-treatmentrankings-isreversal">Is Reversal <span class="ref-pill-tbl">TreatmentRankings</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-treatmentrankings-stratawonbyloser">Strata Won by Loser <span class="ref-pill-tbl">TreatmentRankings</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-treatmentrankings-paradoxstrength">Paradox Strength <span class="ref-pill-tbl">TreatmentRankings</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-modelsummary-reversalcount">Reversal Count <span class="ref-pill-tbl">ModelSummary</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-modelsummary-nonreversalcount">Non Reversal Count <span class="ref-pill-tbl">ModelSummary</span></a>
         <a class="ref-pill tone-rel faded" href="#f-treatmentrankings-isparadoxexplained">Is Paradox Explained <span class="ref-pill-tbl">TreatmentRankings</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-modelsummary-zerostrengthcount">Zero Strength Count <span class="ref-pill-tbl">ModelSummary</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-modelsummary-totalparadoxstrength">Total Paradox Strength <span class="ref-pill-tbl">ModelSummary</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-modelsummary-studycount">Study Count <span class="ref-pill-tbl">ModelSummary</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-modelsummary-partialcount">Partial Count <span class="ref-pill-tbl">ModelSummary</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-modelsummary-explainedcount">Explained Count <span class="ref-pill-tbl">ModelSummary</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-modelsummary-avgparadoxstrength">Avg Paradox Strength <span class="ref-pill-tbl">ModelSummary</span></a>
       </div>
     </details>
     <details class="prov prov-leaves elem elem-inputs">
@@ -1965,7 +2620,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">2 hops from ground truth</span>
       <span class="pill pill-muted">number</span>
-      <span class="pill pill-dr">DR-21</span>
+      <span class="pill pill-dr">DR-31</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -1995,11 +2650,22 @@ html.show-consumers .elem-consumers{display:block}
       </div>
     </details>
     <details class="prov prov-consumers elem elem-consumers">
-      <summary>Consumers <span class="count">1 direct</span> <span class="count count-muted">+2 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
+      <summary>Consumers <span class="count">2 direct</span> <span class="count count-muted">+12 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
       <div class="prov-pills">
         <a class="ref-pill tone-calc" href="#f-treatmentrankings-pooledwinner">ƒ Pooled Winner <span class="ref-pill-tbl">TreatmentRankings</span></a>
+        <a class="ref-pill tone-calc" href="#f-treatmentrankings-pooledgap">ƒ Pooled Gap <span class="ref-pill-tbl">TreatmentRankings</span></a>
         <a class="ref-pill tone-rel faded" href="#f-treatmentrankings-isreversal">Is Reversal <span class="ref-pill-tbl">TreatmentRankings</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-treatmentrankings-stratawonbyloser">Strata Won by Loser <span class="ref-pill-tbl">TreatmentRankings</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-treatmentrankings-paradoxstrength">Paradox Strength <span class="ref-pill-tbl">TreatmentRankings</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-modelsummary-reversalcount">Reversal Count <span class="ref-pill-tbl">ModelSummary</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-modelsummary-nonreversalcount">Non Reversal Count <span class="ref-pill-tbl">ModelSummary</span></a>
         <a class="ref-pill tone-rel faded" href="#f-treatmentrankings-isparadoxexplained">Is Paradox Explained <span class="ref-pill-tbl">TreatmentRankings</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-modelsummary-zerostrengthcount">Zero Strength Count <span class="ref-pill-tbl">ModelSummary</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-modelsummary-totalparadoxstrength">Total Paradox Strength <span class="ref-pill-tbl">ModelSummary</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-modelsummary-studycount">Study Count <span class="ref-pill-tbl">ModelSummary</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-modelsummary-partialcount">Partial Count <span class="ref-pill-tbl">ModelSummary</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-modelsummary-explainedcount">Explained Count <span class="ref-pill-tbl">ModelSummary</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-modelsummary-avgparadoxstrength">Avg Paradox Strength <span class="ref-pill-tbl">ModelSummary</span></a>
       </div>
     </details>
     <details class="prov prov-leaves elem elem-inputs">
@@ -2022,7 +2688,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Aggregation</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">integer</span>
-      <span class="pill pill-dr">DR-22</span>
+      <span class="pill pill-dr">DR-32</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -2064,12 +2730,23 @@ html.show-consumers .elem-consumers{display:block}
       </div>
     </details>
     <details class="prov prov-consumers elem elem-consumers">
-      <summary>Consumers <span class="count">1 direct</span> <span class="count count-muted">+3 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
+      <summary>Consumers <span class="count">1 direct</span> <span class="count count-muted">+14 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
       <div class="prov-pills">
         <a class="ref-pill tone-calc" href="#f-treatmentrankings-pooledrateb">ƒ Pooled Rate B <span class="ref-pill-tbl">TreatmentRankings</span></a>
         <a class="ref-pill tone-rel faded" href="#f-treatmentrankings-pooledwinner">Pooled Winner <span class="ref-pill-tbl">TreatmentRankings</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-treatmentrankings-pooledgap">Pooled Gap <span class="ref-pill-tbl">TreatmentRankings</span></a>
         <a class="ref-pill tone-rel faded" href="#f-treatmentrankings-isreversal">Is Reversal <span class="ref-pill-tbl">TreatmentRankings</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-treatmentrankings-stratawonbyloser">Strata Won by Loser <span class="ref-pill-tbl">TreatmentRankings</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-treatmentrankings-paradoxstrength">Paradox Strength <span class="ref-pill-tbl">TreatmentRankings</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-modelsummary-reversalcount">Reversal Count <span class="ref-pill-tbl">ModelSummary</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-modelsummary-nonreversalcount">Non Reversal Count <span class="ref-pill-tbl">ModelSummary</span></a>
         <a class="ref-pill tone-rel faded" href="#f-treatmentrankings-isparadoxexplained">Is Paradox Explained <span class="ref-pill-tbl">TreatmentRankings</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-modelsummary-zerostrengthcount">Zero Strength Count <span class="ref-pill-tbl">ModelSummary</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-modelsummary-totalparadoxstrength">Total Paradox Strength <span class="ref-pill-tbl">ModelSummary</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-modelsummary-studycount">Study Count <span class="ref-pill-tbl">ModelSummary</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-modelsummary-partialcount">Partial Count <span class="ref-pill-tbl">ModelSummary</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-modelsummary-explainedcount">Explained Count <span class="ref-pill-tbl">ModelSummary</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-modelsummary-avgparadoxstrength">Avg Paradox Strength <span class="ref-pill-tbl">ModelSummary</span></a>
       </div>
     </details>
     <details class="prov prov-leaves elem elem-inputs">
@@ -2091,7 +2768,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Aggregation</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">integer</span>
-      <span class="pill pill-dr">DR-23</span>
+      <span class="pill pill-dr">DR-33</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -2133,12 +2810,23 @@ html.show-consumers .elem-consumers{display:block}
       </div>
     </details>
     <details class="prov prov-consumers elem elem-consumers">
-      <summary>Consumers <span class="count">1 direct</span> <span class="count count-muted">+3 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
+      <summary>Consumers <span class="count">1 direct</span> <span class="count count-muted">+14 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
       <div class="prov-pills">
         <a class="ref-pill tone-calc" href="#f-treatmentrankings-pooledrateb">ƒ Pooled Rate B <span class="ref-pill-tbl">TreatmentRankings</span></a>
         <a class="ref-pill tone-rel faded" href="#f-treatmentrankings-pooledwinner">Pooled Winner <span class="ref-pill-tbl">TreatmentRankings</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-treatmentrankings-pooledgap">Pooled Gap <span class="ref-pill-tbl">TreatmentRankings</span></a>
         <a class="ref-pill tone-rel faded" href="#f-treatmentrankings-isreversal">Is Reversal <span class="ref-pill-tbl">TreatmentRankings</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-treatmentrankings-stratawonbyloser">Strata Won by Loser <span class="ref-pill-tbl">TreatmentRankings</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-treatmentrankings-paradoxstrength">Paradox Strength <span class="ref-pill-tbl">TreatmentRankings</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-modelsummary-reversalcount">Reversal Count <span class="ref-pill-tbl">ModelSummary</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-modelsummary-nonreversalcount">Non Reversal Count <span class="ref-pill-tbl">ModelSummary</span></a>
         <a class="ref-pill tone-rel faded" href="#f-treatmentrankings-isparadoxexplained">Is Paradox Explained <span class="ref-pill-tbl">TreatmentRankings</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-modelsummary-zerostrengthcount">Zero Strength Count <span class="ref-pill-tbl">ModelSummary</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-modelsummary-totalparadoxstrength">Total Paradox Strength <span class="ref-pill-tbl">ModelSummary</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-modelsummary-studycount">Study Count <span class="ref-pill-tbl">ModelSummary</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-modelsummary-partialcount">Partial Count <span class="ref-pill-tbl">ModelSummary</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-modelsummary-explainedcount">Explained Count <span class="ref-pill-tbl">ModelSummary</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-modelsummary-avgparadoxstrength">Avg Paradox Strength <span class="ref-pill-tbl">ModelSummary</span></a>
       </div>
     </details>
     <details class="prov prov-leaves elem elem-inputs">
@@ -2160,7 +2848,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">2 hops from ground truth</span>
       <span class="pill pill-muted">number</span>
-      <span class="pill pill-dr">DR-24</span>
+      <span class="pill pill-dr">DR-34</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -2190,11 +2878,22 @@ html.show-consumers .elem-consumers{display:block}
       </div>
     </details>
     <details class="prov prov-consumers elem elem-consumers">
-      <summary>Consumers <span class="count">1 direct</span> <span class="count count-muted">+2 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
+      <summary>Consumers <span class="count">2 direct</span> <span class="count count-muted">+12 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
       <div class="prov-pills">
         <a class="ref-pill tone-calc" href="#f-treatmentrankings-pooledwinner">ƒ Pooled Winner <span class="ref-pill-tbl">TreatmentRankings</span></a>
+        <a class="ref-pill tone-calc" href="#f-treatmentrankings-pooledgap">ƒ Pooled Gap <span class="ref-pill-tbl">TreatmentRankings</span></a>
         <a class="ref-pill tone-rel faded" href="#f-treatmentrankings-isreversal">Is Reversal <span class="ref-pill-tbl">TreatmentRankings</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-treatmentrankings-stratawonbyloser">Strata Won by Loser <span class="ref-pill-tbl">TreatmentRankings</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-treatmentrankings-paradoxstrength">Paradox Strength <span class="ref-pill-tbl">TreatmentRankings</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-modelsummary-reversalcount">Reversal Count <span class="ref-pill-tbl">ModelSummary</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-modelsummary-nonreversalcount">Non Reversal Count <span class="ref-pill-tbl">ModelSummary</span></a>
         <a class="ref-pill tone-rel faded" href="#f-treatmentrankings-isparadoxexplained">Is Paradox Explained <span class="ref-pill-tbl">TreatmentRankings</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-modelsummary-zerostrengthcount">Zero Strength Count <span class="ref-pill-tbl">ModelSummary</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-modelsummary-totalparadoxstrength">Total Paradox Strength <span class="ref-pill-tbl">ModelSummary</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-modelsummary-studycount">Study Count <span class="ref-pill-tbl">ModelSummary</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-modelsummary-partialcount">Partial Count <span class="ref-pill-tbl">ModelSummary</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-modelsummary-explainedcount">Explained Count <span class="ref-pill-tbl">ModelSummary</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-modelsummary-avgparadoxstrength">Avg Paradox Strength <span class="ref-pill-tbl">ModelSummary</span></a>
       </div>
     </details>
     <details class="prov prov-leaves elem elem-inputs">
@@ -2217,7 +2916,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">3 hops from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-25</span>
+      <span class="pill pill-dr">DR-35</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -2255,10 +2954,20 @@ html.show-consumers .elem-consumers{display:block}
       </div>
     </details>
     <details class="prov prov-consumers elem elem-consumers">
-      <summary>Consumers <span class="count">1 direct</span> <span class="count count-muted">+1 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
+      <summary>Consumers <span class="count">2 direct</span> <span class="count count-muted">+10 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
       <div class="prov-pills">
         <a class="ref-pill tone-calc" href="#f-treatmentrankings-isreversal">ƒ Is Reversal <span class="ref-pill-tbl">TreatmentRankings</span></a>
+        <a class="ref-pill tone-calc" href="#f-treatmentrankings-stratawonbyloser">ƒ Strata Won by Loser <span class="ref-pill-tbl">TreatmentRankings</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-modelsummary-reversalcount">Reversal Count <span class="ref-pill-tbl">ModelSummary</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-modelsummary-nonreversalcount">Non Reversal Count <span class="ref-pill-tbl">ModelSummary</span></a>
         <a class="ref-pill tone-rel faded" href="#f-treatmentrankings-isparadoxexplained">Is Paradox Explained <span class="ref-pill-tbl">TreatmentRankings</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-modelsummary-zerostrengthcount">Zero Strength Count <span class="ref-pill-tbl">ModelSummary</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-treatmentrankings-paradoxstrength">Paradox Strength <span class="ref-pill-tbl">TreatmentRankings</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-modelsummary-studycount">Study Count <span class="ref-pill-tbl">ModelSummary</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-modelsummary-partialcount">Partial Count <span class="ref-pill-tbl">ModelSummary</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-modelsummary-explainedcount">Explained Count <span class="ref-pill-tbl">ModelSummary</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-modelsummary-totalparadoxstrength">Total Paradox Strength <span class="ref-pill-tbl">ModelSummary</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-modelsummary-avgparadoxstrength">Avg Paradox Strength <span class="ref-pill-tbl">ModelSummary</span></a>
       </div>
     </details>
     <details class="prov prov-leaves elem elem-inputs">
@@ -2282,7 +2991,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Aggregation</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">integer</span>
-      <span class="pill pill-dr">DR-26</span>
+      <span class="pill pill-dr">DR-36</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -2320,11 +3029,19 @@ html.show-consumers .elem-consumers{display:block}
       </div>
     </details>
     <details class="prov prov-consumers elem elem-consumers">
-      <summary>Consumers <span class="count">1 direct</span> <span class="count count-muted">+2 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
+      <summary>Consumers <span class="count">2 direct</span> <span class="count count-muted">+9 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
       <div class="prov-pills">
         <a class="ref-pill tone-calc" href="#f-treatmentrankings-perstratumwinner">ƒ Per Stratum Winner <span class="ref-pill-tbl">TreatmentRankings</span></a>
+        <a class="ref-pill tone-calc" href="#f-treatmentrankings-paradoxstrength">ƒ Paradox Strength <span class="ref-pill-tbl">TreatmentRankings</span></a>
         <a class="ref-pill tone-rel faded" href="#f-treatmentrankings-isreversal">Is Reversal <span class="ref-pill-tbl">TreatmentRankings</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-modelsummary-totalparadoxstrength">Total Paradox Strength <span class="ref-pill-tbl">ModelSummary</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-modelsummary-reversalcount">Reversal Count <span class="ref-pill-tbl">ModelSummary</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-modelsummary-nonreversalcount">Non Reversal Count <span class="ref-pill-tbl">ModelSummary</span></a>
         <a class="ref-pill tone-rel faded" href="#f-treatmentrankings-isparadoxexplained">Is Paradox Explained <span class="ref-pill-tbl">TreatmentRankings</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-modelsummary-avgparadoxstrength">Avg Paradox Strength <span class="ref-pill-tbl">ModelSummary</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-modelsummary-studycount">Study Count <span class="ref-pill-tbl">ModelSummary</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-modelsummary-partialcount">Partial Count <span class="ref-pill-tbl">ModelSummary</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-modelsummary-explainedcount">Explained Count <span class="ref-pill-tbl">ModelSummary</span></a>
       </div>
     </details>
     <details class="prov prov-leaves elem elem-inputs">
@@ -2345,7 +3062,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Aggregation</span>
       <span class="pill pill-depth">4 hops from ground truth</span>
       <span class="pill pill-muted">integer</span>
-      <span class="pill pill-dr">DR-27</span>
+      <span class="pill pill-dr">DR-37</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -2387,11 +3104,21 @@ html.show-consumers .elem-consumers{display:block}
       </div>
     </details>
     <details class="prov prov-consumers elem elem-consumers">
-      <summary>Consumers <span class="count">1 direct</span> <span class="count count-muted">+2 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
+      <summary>Consumers <span class="count">2 direct</span> <span class="count count-muted">+11 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
       <div class="prov-pills">
         <a class="ref-pill tone-calc" href="#f-treatmentrankings-perstratumwinner">ƒ Per Stratum Winner <span class="ref-pill-tbl">TreatmentRankings</span></a>
+        <a class="ref-pill tone-calc" href="#f-treatmentrankings-stratawonbyloser">ƒ Strata Won by Loser <span class="ref-pill-tbl">TreatmentRankings</span></a>
         <a class="ref-pill tone-rel faded" href="#f-treatmentrankings-isreversal">Is Reversal <span class="ref-pill-tbl">TreatmentRankings</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-modelsummary-zerostrengthcount">Zero Strength Count <span class="ref-pill-tbl">ModelSummary</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-treatmentrankings-paradoxstrength">Paradox Strength <span class="ref-pill-tbl">TreatmentRankings</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-modelsummary-reversalcount">Reversal Count <span class="ref-pill-tbl">ModelSummary</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-modelsummary-nonreversalcount">Non Reversal Count <span class="ref-pill-tbl">ModelSummary</span></a>
         <a class="ref-pill tone-rel faded" href="#f-treatmentrankings-isparadoxexplained">Is Paradox Explained <span class="ref-pill-tbl">TreatmentRankings</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-modelsummary-partialcount">Partial Count <span class="ref-pill-tbl">ModelSummary</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-modelsummary-totalparadoxstrength">Total Paradox Strength <span class="ref-pill-tbl">ModelSummary</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-modelsummary-studycount">Study Count <span class="ref-pill-tbl">ModelSummary</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-modelsummary-explainedcount">Explained Count <span class="ref-pill-tbl">ModelSummary</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-modelsummary-avgparadoxstrength">Avg Paradox Strength <span class="ref-pill-tbl">ModelSummary</span></a>
       </div>
     </details>
     <details class="prov prov-leaves elem elem-inputs">
@@ -2418,7 +3145,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Aggregation</span>
       <span class="pill pill-depth">4 hops from ground truth</span>
       <span class="pill pill-muted">integer</span>
-      <span class="pill pill-dr">DR-28</span>
+      <span class="pill pill-dr">DR-38</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -2464,11 +3191,21 @@ html.show-consumers .elem-consumers{display:block}
       </div>
     </details>
     <details class="prov prov-consumers elem elem-consumers">
-      <summary>Consumers <span class="count">1 direct</span> <span class="count count-muted">+2 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
+      <summary>Consumers <span class="count">2 direct</span> <span class="count count-muted">+11 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
       <div class="prov-pills">
         <a class="ref-pill tone-calc" href="#f-treatmentrankings-perstratumwinner">ƒ Per Stratum Winner <span class="ref-pill-tbl">TreatmentRankings</span></a>
+        <a class="ref-pill tone-calc" href="#f-treatmentrankings-stratawonbyloser">ƒ Strata Won by Loser <span class="ref-pill-tbl">TreatmentRankings</span></a>
         <a class="ref-pill tone-rel faded" href="#f-treatmentrankings-isreversal">Is Reversal <span class="ref-pill-tbl">TreatmentRankings</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-modelsummary-zerostrengthcount">Zero Strength Count <span class="ref-pill-tbl">ModelSummary</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-treatmentrankings-paradoxstrength">Paradox Strength <span class="ref-pill-tbl">TreatmentRankings</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-modelsummary-reversalcount">Reversal Count <span class="ref-pill-tbl">ModelSummary</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-modelsummary-nonreversalcount">Non Reversal Count <span class="ref-pill-tbl">ModelSummary</span></a>
         <a class="ref-pill tone-rel faded" href="#f-treatmentrankings-isparadoxexplained">Is Paradox Explained <span class="ref-pill-tbl">TreatmentRankings</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-modelsummary-partialcount">Partial Count <span class="ref-pill-tbl">ModelSummary</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-modelsummary-totalparadoxstrength">Total Paradox Strength <span class="ref-pill-tbl">ModelSummary</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-modelsummary-studycount">Study Count <span class="ref-pill-tbl">ModelSummary</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-modelsummary-explainedcount">Explained Count <span class="ref-pill-tbl">ModelSummary</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-modelsummary-avgparadoxstrength">Avg Paradox Strength <span class="ref-pill-tbl">ModelSummary</span></a>
       </div>
     </details>
     <details class="prov prov-leaves elem elem-inputs">
@@ -2496,7 +3233,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">5 hops from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-29</span>
+      <span class="pill pill-dr">DR-39</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -2538,10 +3275,16 @@ html.show-consumers .elem-consumers{display:block}
       </div>
     </details>
     <details class="prov prov-consumers elem elem-consumers">
-      <summary>Consumers <span class="count">1 direct</span> <span class="count count-muted">+1 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
+      <summary>Consumers <span class="count">1 direct</span> <span class="count count-muted">+7 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
       <div class="prov-pills">
         <a class="ref-pill tone-calc" href="#f-treatmentrankings-isreversal">ƒ Is Reversal <span class="ref-pill-tbl">TreatmentRankings</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-modelsummary-reversalcount">Reversal Count <span class="ref-pill-tbl">ModelSummary</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-modelsummary-nonreversalcount">Non Reversal Count <span class="ref-pill-tbl">ModelSummary</span></a>
         <a class="ref-pill tone-rel faded" href="#f-treatmentrankings-isparadoxexplained">Is Paradox Explained <span class="ref-pill-tbl">TreatmentRankings</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-modelsummary-studycount">Study Count <span class="ref-pill-tbl">ModelSummary</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-modelsummary-partialcount">Partial Count <span class="ref-pill-tbl">ModelSummary</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-modelsummary-explainedcount">Explained Count <span class="ref-pill-tbl">ModelSummary</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-modelsummary-avgparadoxstrength">Avg Paradox Strength <span class="ref-pill-tbl">ModelSummary</span></a>
       </div>
     </details>
     <details class="prov prov-leaves elem elem-inputs">
@@ -2569,7 +3312,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">6 hops from ground truth</span>
       <span class="pill pill-muted">boolean</span>
-      <span class="pill pill-dr">DR-30</span>
+      <span class="pill pill-dr">DR-40</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -2599,9 +3342,15 @@ html.show-consumers .elem-consumers{display:block}
       </div>
     </details>
     <details class="prov prov-consumers elem elem-consumers">
-      <summary>Consumers <span class="count">1 direct</span> <span class="prov-hint">rules that read this one</span></summary>
+      <summary>Consumers <span class="count">3 direct</span> <span class="count count-muted">+4 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
       <div class="prov-pills">
+        <a class="ref-pill tone-agg" href="#f-modelsummary-reversalcount">Σ Reversal Count <span class="ref-pill-tbl">ModelSummary</span></a>
+        <a class="ref-pill tone-agg" href="#f-modelsummary-nonreversalcount">Σ Non Reversal Count <span class="ref-pill-tbl">ModelSummary</span></a>
         <a class="ref-pill tone-calc" href="#f-treatmentrankings-isparadoxexplained">ƒ Is Paradox Explained <span class="ref-pill-tbl">TreatmentRankings</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-modelsummary-studycount">Study Count <span class="ref-pill-tbl">ModelSummary</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-modelsummary-partialcount">Partial Count <span class="ref-pill-tbl">ModelSummary</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-modelsummary-explainedcount">Explained Count <span class="ref-pill-tbl">ModelSummary</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-modelsummary-avgparadoxstrength">Avg Paradox Strength <span class="ref-pill-tbl">ModelSummary</span></a>
       </div>
     </details>
     <details class="prov prov-leaves elem elem-inputs">
@@ -2629,7 +3378,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Aggregation</span>
       <span class="pill pill-depth">2 hops from ground truth</span>
       <span class="pill pill-muted">integer</span>
-      <span class="pill pill-dr">DR-31</span>
+      <span class="pill pill-dr">DR-41</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -2663,9 +3412,10 @@ html.show-consumers .elem-consumers{display:block}
       </div>
     </details>
     <details class="prov prov-consumers elem elem-consumers">
-      <summary>Consumers <span class="count">1 direct</span> <span class="prov-hint">rules that read this one</span></summary>
+      <summary>Consumers <span class="count">1 direct</span> <span class="count count-muted">+1 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
       <div class="prov-pills">
         <a class="ref-pill tone-calc" href="#f-treatmentrankings-isparadoxexplained">ƒ Is Paradox Explained <span class="ref-pill-tbl">TreatmentRankings</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-modelsummary-explainedcount">Explained Count <span class="ref-pill-tbl">ModelSummary</span></a>
       </div>
     </details>
     <details class="prov prov-leaves elem elem-inputs">
@@ -2687,7 +3437,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">7 hops from ground truth</span>
       <span class="pill pill-muted">boolean</span>
-      <span class="pill pill-dr">DR-32</span>
+      <span class="pill pill-dr">DR-42</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -2716,6 +3466,12 @@ html.show-consumers .elem-consumers{display:block}
         </a>
       </div>
     </details>
+    <details class="prov prov-consumers elem elem-consumers">
+      <summary>Consumers <span class="count">1 direct</span> <span class="prov-hint">rules that read this one</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-agg" href="#f-modelsummary-explainedcount">Σ Explained Count <span class="ref-pill-tbl">ModelSummary</span></a>
+      </div>
+    </details>
     <details class="prov prov-leaves elem elem-inputs">
       <summary>Ground truth at the leaves <span class="count">15</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
       <div class="prov-pills">
@@ -2737,6 +3493,201 @@ html.show-consumers .elem-consumers{display:block}
       </div>
     </details>
     <p class="field-note elem elem-desc">TRUE when IsReversal is present AND at least one confirmed confounder exists in the study. The model witnesses its own explanatory completeness — or its limits.</p>
+    </article>
+  <article class="field tone-calc" id="f-treatmentrankings-pooledgap" data-entity="Treatment Ranking" data-field="Pooled Gap">
+    <div class="field-head">
+      <span class="field-glyph" title="Calculated">ƒ</span>
+      <span class="field-name">Pooled Gap</span>
+      <span class="pill pill-type">Calculated</span>
+      <span class="pill pill-depth">3 hops from ground truth</span>
+      <span class="pill pill-muted">number</span>
+      <span class="pill pill-dr">DR-43</span>
+    </div>
+    <div class="narr-views">
+      <div class="view elem elem-rulespeak">
+        <span class="view-label">In RuleSpeak</span>
+        <div class="view-body"><p class="rt-headline">The treatment ranking's pooled gap is determined by the following priority:</p><ol class="rt-priority"><li><span class="rt-value">an empty string</span> <span class="rt-when">if the pooled rate a is blank</span></li><li><span class="rt-value">the absolute value of the pooled rate a minus the pooled rate b</span> <span class="rt-when">in all other cases</span></li></ol></div>
+      </div>
+      <div class="view elem elem-english">
+        <span class="view-label">In English</span>
+        <p class="view-body">If <a class="ref" href="#f-treatmentrankings-pooledratea">pooled rate a</a> is &quot;&quot; then &quot;&quot;, otherwise the absolute value of (pooled rate a minus <a class="ref" href="#f-treatmentrankings-pooledrateb">pooled rate b</a>).</p>
+      </div>
+      <div class="view elem elem-formula">
+        <span class="view-label">As a formula</span>
+        <div class="view-body fx"><span class="fx-eq">= </span>IF(<a class="fx-chip" href="#f-treatmentrankings-pooledratea">Pooled Rate a</a> = &quot;&quot;, &quot;&quot;, ABS(<a class="fx-chip" href="#f-treatmentrankings-pooledratea">Pooled Rate a</a> - <a class="fx-chip" href="#f-treatmentrankings-pooledrateb">Pooled Rate B</a>))</div>
+      </div>
+    </div>
+    <details class="prov prov-inputs elem elem-inputs" open>
+      <summary>Inputs <span class="count">2</span> <span class="prov-hint">fields this rule reads</span></summary>
+      <div class="prov-grid">
+        <a class="input tone-calc" href="#f-treatmentrankings-pooledratea">
+          <span class="input-head"><span class="input-glyph">ƒ</span><span class="input-name">Pooled Rate a</span><span class="input-table">TreatmentRankings</span></span>
+          <span class="input-en">If total cases a equals 0 then &quot;&quot;, otherwise (total successes a divided by total cases a).</span>
+        </a>
+        <a class="input tone-calc" href="#f-treatmentrankings-pooledrateb">
+          <span class="input-head"><span class="input-glyph">ƒ</span><span class="input-name">Pooled Rate B</span><span class="input-table">TreatmentRankings</span></span>
+          <span class="input-en">If total cases b equals 0 then &quot;&quot;, otherwise (total successes b divided by total cases b).</span>
+        </a>
+      </div>
+    </details>
+    <details class="prov prov-consumers elem elem-consumers">
+      <summary>Consumers <span class="count">1 direct</span> <span class="count count-muted">+2 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-calc" href="#f-treatmentrankings-paradoxstrength">ƒ Paradox Strength <span class="ref-pill-tbl">TreatmentRankings</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-modelsummary-totalparadoxstrength">Total Paradox Strength <span class="ref-pill-tbl">ModelSummary</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-modelsummary-avgparadoxstrength">Avg Paradox Strength <span class="ref-pill-tbl">ModelSummary</span></a>
+      </div>
+    </details>
+    <details class="prov prov-leaves elem elem-inputs">
+      <summary>Ground truth at the leaves <span class="count">7</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-raw" href="#f-casecells-cases">● Cases <span class="ref-pill-tbl">CaseCells</span></a>
+        <a class="ref-pill tone-rel" href="#f-casecells-study">⇢ Study <span class="ref-pill-tbl">CaseCells</span></a>
+        <a class="ref-pill tone-rel" href="#f-treatmentrankings-study">⇢ Study <span class="ref-pill-tbl">TreatmentRankings</span></a>
+        <a class="ref-pill tone-raw" href="#f-casecells-treatmentlabel">● Treatment Label <span class="ref-pill-tbl">CaseCells</span></a>
+        <a class="ref-pill tone-raw" href="#f-treatmentrankings-treatmenta">● Treatment a <span class="ref-pill-tbl">TreatmentRankings</span></a>
+        <a class="ref-pill tone-raw" href="#f-casecells-successes">● Successes <span class="ref-pill-tbl">CaseCells</span></a>
+        <a class="ref-pill tone-raw" href="#f-treatmentrankings-treatmentb">● Treatment B <span class="ref-pill-tbl">TreatmentRankings</span></a>
+      </div>
+    </details>
+    <p class="field-note elem elem-desc">Absolute difference between the two pooled rates: |PooledRateA - PooledRateB|. The size of the aggregate misleading signal.</p>
+    </article>
+  <article class="field tone-calc" id="f-treatmentrankings-stratawonbyloser" data-entity="Treatment Ranking" data-field="Strata Won by Loser">
+    <div class="field-head">
+      <span class="field-glyph" title="Calculated">ƒ</span>
+      <span class="field-name">Strata Won by Loser</span>
+      <span class="pill pill-type">Calculated</span>
+      <span class="pill pill-depth">5 hops from ground truth</span>
+      <span class="pill pill-muted">integer</span>
+      <span class="pill pill-dr">DR-44</span>
+    </div>
+    <div class="narr-views">
+      <div class="view elem elem-rulespeak">
+        <span class="view-label">In RuleSpeak</span>
+        <div class="view-body"><p class="rt-headline">The treatment ranking's strata won by loser is determined by the following priority:</p><ol class="rt-priority"><li><span class="rt-value">the strata won by b</span> <span class="rt-when">if the pooled winner is the treatment a</span></li><li><span class="rt-value">the strata won by a</span> <span class="rt-when">in all other cases</span></li></ol></div>
+      </div>
+      <div class="view elem elem-english">
+        <span class="view-label">In English</span>
+        <p class="view-body">If <a class="ref" href="#f-treatmentrankings-pooledwinner">pooled winner</a> equals <a class="ref" href="#f-treatmentrankings-treatmenta">treatment a</a> then <a class="ref" href="#f-treatmentrankings-stratawonbyb">strata won by b</a>, otherwise <a class="ref" href="#f-treatmentrankings-stratawonbya">strata won by a</a>.</p>
+      </div>
+      <div class="view elem elem-formula">
+        <span class="view-label">As a formula</span>
+        <div class="view-body fx"><span class="fx-eq">= </span>IF(<a class="fx-chip" href="#f-treatmentrankings-pooledwinner">Pooled Winner</a> = <a class="fx-chip" href="#f-treatmentrankings-treatmenta">Treatment a</a>, <a class="fx-chip" href="#f-treatmentrankings-stratawonbyb">Strata Won by B</a>, <a class="fx-chip" href="#f-treatmentrankings-stratawonbya">Strata Won by a</a>)</div>
+      </div>
+    </div>
+    <details class="prov prov-inputs elem elem-inputs" open>
+      <summary>Inputs <span class="count">4</span> <span class="prov-hint">fields this rule reads</span></summary>
+      <div class="prov-grid">
+        <a class="input tone-calc" href="#f-treatmentrankings-pooledwinner">
+          <span class="input-head"><span class="input-glyph">ƒ</span><span class="input-name">Pooled Winner</span><span class="input-table">TreatmentRankings</span></span>
+          <span class="input-en">If pooled rate a is greater than pooled rate b then treatment a, otherwise treatment b.</span>
+        </a>
+        <a class="input tone-raw" href="#f-treatmentrankings-treatmenta">
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Treatment a</span><span class="input-table">TreatmentRankings</span></span>
+          <span class="input-en muted">Label for the first treatment in the comparison (matches Treatments.TreatmentLabel).</span>
+        </a>
+        <a class="input tone-agg" href="#f-treatmentrankings-stratawonbyb">
+          <span class="input-head"><span class="input-glyph">Σ</span><span class="input-name">Strata Won by B</span><span class="input-table">TreatmentRankings</span></span>
+          <span class="input-en">Count of StratumSummaries whose study is study, treatment label is treatment a, and stratum winner is treatment b.</span>
+        </a>
+        <a class="input tone-agg" href="#f-treatmentrankings-stratawonbya">
+          <span class="input-head"><span class="input-glyph">Σ</span><span class="input-name">Strata Won by a</span><span class="input-table">TreatmentRankings</span></span>
+          <span class="input-en">Count of StratumSummaries whose study is study, treatment label is treatment a, and stratum winner is treatment a.</span>
+        </a>
+      </div>
+    </details>
+    <details class="prov prov-consumers elem elem-consumers">
+      <summary>Consumers <span class="count">2 direct</span> <span class="count count-muted">+3 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-agg" href="#f-modelsummary-zerostrengthcount">Σ Zero Strength Count <span class="ref-pill-tbl">ModelSummary</span></a>
+        <a class="ref-pill tone-calc" href="#f-treatmentrankings-paradoxstrength">ƒ Paradox Strength <span class="ref-pill-tbl">TreatmentRankings</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-modelsummary-partialcount">Partial Count <span class="ref-pill-tbl">ModelSummary</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-modelsummary-totalparadoxstrength">Total Paradox Strength <span class="ref-pill-tbl">ModelSummary</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-modelsummary-avgparadoxstrength">Avg Paradox Strength <span class="ref-pill-tbl">ModelSummary</span></a>
+      </div>
+    </details>
+    <details class="prov prov-leaves elem elem-inputs">
+      <summary>Ground truth at the leaves <span class="count">11</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-raw" href="#f-casecells-cases">● Cases <span class="ref-pill-tbl">CaseCells</span></a>
+        <a class="ref-pill tone-rel" href="#f-casecells-study">⇢ Study <span class="ref-pill-tbl">CaseCells</span></a>
+        <a class="ref-pill tone-rel" href="#f-treatmentrankings-study">⇢ Study <span class="ref-pill-tbl">TreatmentRankings</span></a>
+        <a class="ref-pill tone-raw" href="#f-casecells-treatmentlabel">● Treatment Label <span class="ref-pill-tbl">CaseCells</span></a>
+        <a class="ref-pill tone-raw" href="#f-treatmentrankings-treatmenta">● Treatment a <span class="ref-pill-tbl">TreatmentRankings</span></a>
+        <a class="ref-pill tone-raw" href="#f-casecells-successes">● Successes <span class="ref-pill-tbl">CaseCells</span></a>
+        <a class="ref-pill tone-raw" href="#f-treatmentrankings-treatmentb">● Treatment B <span class="ref-pill-tbl">TreatmentRankings</span></a>
+        <a class="ref-pill tone-rel" href="#f-stratumsummaries-study">⇢ Study <span class="ref-pill-tbl">StratumSummaries</span></a>
+        <a class="ref-pill tone-raw" href="#f-stratumsummaries-treatmentlabel">● Treatment Label <span class="ref-pill-tbl">StratumSummaries</span></a>
+        <a class="ref-pill tone-raw" href="#f-casecells-stratumlabel">● Stratum Label <span class="ref-pill-tbl">CaseCells</span></a>
+        <a class="ref-pill tone-raw" href="#f-stratumsummaries-stratumlabel">● Stratum Label <span class="ref-pill-tbl">StratumSummaries</span></a>
+      </div>
+    </details>
+    <p class="field-note elem elem-desc">Number of strata won by the pooled loser — the counter-signal. For full reversals this equals StratumCount; for partial paradoxes it is between 0 and StratumCount.</p>
+    </article>
+  <article class="field tone-calc" id="f-treatmentrankings-paradoxstrength" data-entity="Treatment Ranking" data-field="Paradox Strength">
+    <div class="field-head">
+      <span class="field-glyph" title="Calculated">ƒ</span>
+      <span class="field-name">Paradox Strength</span>
+      <span class="pill pill-type">Calculated</span>
+      <span class="pill pill-depth">6 hops from ground truth</span>
+      <span class="pill pill-muted">number</span>
+      <span class="pill pill-dr">DR-45</span>
+    </div>
+    <div class="narr-views">
+      <div class="view elem elem-rulespeak">
+        <span class="view-label">In RuleSpeak</span>
+        <div class="view-body"><p class="rt-headline">The treatment ranking's paradox strength is determined by the following priority:</p><ol class="rt-priority"><li><span class="rt-value">an empty string</span> <span class="rt-when">if the stratum count is 0</span></li><li><span class="rt-value">the pooled gap times the strata won by loser divided by the stratum count</span> <span class="rt-when">in all other cases</span></li></ol></div>
+      </div>
+      <div class="view elem elem-english">
+        <span class="view-label">In English</span>
+        <p class="view-body">If <a class="ref" href="#f-treatmentrankings-stratumcount">stratum count</a> equals 0 then &quot;&quot;, otherwise (<a class="ref" href="#f-treatmentrankings-pooledgap">pooled gap</a> times (<a class="ref" href="#f-treatmentrankings-stratawonbyloser">strata won by loser</a> divided by stratum count)).</p>
+      </div>
+      <div class="view elem elem-formula">
+        <span class="view-label">As a formula</span>
+        <div class="view-body fx"><span class="fx-eq">= </span>IF(<a class="fx-chip" href="#f-treatmentrankings-stratumcount">Stratum Count</a> = 0, &quot;&quot;, <a class="fx-chip" href="#f-treatmentrankings-pooledgap">Pooled Gap</a> * (<a class="fx-chip" href="#f-treatmentrankings-stratawonbyloser">Strata Won by Loser</a> / <a class="fx-chip" href="#f-treatmentrankings-stratumcount">Stratum Count</a>))</div>
+      </div>
+    </div>
+    <details class="prov prov-inputs elem elem-inputs" open>
+      <summary>Inputs <span class="count">3</span> <span class="prov-hint">fields this rule reads</span></summary>
+      <div class="prov-grid">
+        <a class="input tone-agg" href="#f-treatmentrankings-stratumcount">
+          <span class="input-head"><span class="input-glyph">Σ</span><span class="input-name">Stratum Count</span><span class="input-table">TreatmentRankings</span></span>
+          <span class="input-en">Count of StratumSummaries whose study is study and treatment label is treatment a.</span>
+        </a>
+        <a class="input tone-calc" href="#f-treatmentrankings-pooledgap">
+          <span class="input-head"><span class="input-glyph">ƒ</span><span class="input-name">Pooled Gap</span><span class="input-table">TreatmentRankings</span></span>
+          <span class="input-en">If pooled rate a is &quot;&quot; then &quot;&quot;, otherwise the absolute value of (pooled rate a minus pooled rate b).</span>
+        </a>
+        <a class="input tone-calc" href="#f-treatmentrankings-stratawonbyloser">
+          <span class="input-head"><span class="input-glyph">ƒ</span><span class="input-name">Strata Won by Loser</span><span class="input-table">TreatmentRankings</span></span>
+          <span class="input-en">If pooled winner equals treatment a then strata won by b, otherwise strata won by a.</span>
+        </a>
+      </div>
+    </details>
+    <details class="prov prov-consumers elem elem-consumers">
+      <summary>Consumers <span class="count">1 direct</span> <span class="count count-muted">+1 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-agg" href="#f-modelsummary-totalparadoxstrength">Σ Total Paradox Strength <span class="ref-pill-tbl">ModelSummary</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-modelsummary-avgparadoxstrength">Avg Paradox Strength <span class="ref-pill-tbl">ModelSummary</span></a>
+      </div>
+    </details>
+    <details class="prov prov-leaves elem elem-inputs">
+      <summary>Ground truth at the leaves <span class="count">11</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-rel" href="#f-stratumsummaries-study">⇢ Study <span class="ref-pill-tbl">StratumSummaries</span></a>
+        <a class="ref-pill tone-rel" href="#f-treatmentrankings-study">⇢ Study <span class="ref-pill-tbl">TreatmentRankings</span></a>
+        <a class="ref-pill tone-raw" href="#f-stratumsummaries-treatmentlabel">● Treatment Label <span class="ref-pill-tbl">StratumSummaries</span></a>
+        <a class="ref-pill tone-raw" href="#f-treatmentrankings-treatmenta">● Treatment a <span class="ref-pill-tbl">TreatmentRankings</span></a>
+        <a class="ref-pill tone-raw" href="#f-casecells-cases">● Cases <span class="ref-pill-tbl">CaseCells</span></a>
+        <a class="ref-pill tone-rel" href="#f-casecells-study">⇢ Study <span class="ref-pill-tbl">CaseCells</span></a>
+        <a class="ref-pill tone-raw" href="#f-casecells-treatmentlabel">● Treatment Label <span class="ref-pill-tbl">CaseCells</span></a>
+        <a class="ref-pill tone-raw" href="#f-casecells-successes">● Successes <span class="ref-pill-tbl">CaseCells</span></a>
+        <a class="ref-pill tone-raw" href="#f-treatmentrankings-treatmentb">● Treatment B <span class="ref-pill-tbl">TreatmentRankings</span></a>
+        <a class="ref-pill tone-raw" href="#f-casecells-stratumlabel">● Stratum Label <span class="ref-pill-tbl">CaseCells</span></a>
+        <a class="ref-pill tone-raw" href="#f-stratumsummaries-stratumlabel">● Stratum Label <span class="ref-pill-tbl">StratumSummaries</span></a>
+      </div>
+    </details>
+    <p class="field-note elem elem-desc">Scalar severity of the paradox: PooledGap × (StrataWonByLoser / StratumCount). Zero when no strata go against the pooled winner. Positive for partial paradoxes. Maximum when every stratum contradicts the pooled result.</p>
     </article>
 </section>
 <footer class="doc-footer">

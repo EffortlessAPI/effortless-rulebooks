@@ -25,16 +25,16 @@ INSERT INTO loops (loop_id, title, status, new_concept, domain_question, mock_da
 VALUES ('loop-05', 'StratumVariable: name the confounding factor, its causal role, and derive IsConfounder + IsParadoxExplained', 'complete', 'StratumVariables (one per study); CausalRole field; IsConfounder boolean; IsParadoxExplained on TreatmentRankings', 'What IS the stratum variable, why does it confound, and does the model witness its own explanation?', 'kidney-1986: VariableName=stone_size, CausalRole=confounder, AffectsTreatmentAssignment=true, AffectsOutcome=true → IsConfounder=true → IsParadoxExplained=true on TreatmentRankings.', 'Ask: how large is the allocation imbalance? Derive TreatmentExposureFraction on CaseCells — the fraction of each treatment''s cases that land in each stratum. High imbalance = confounding mechanism as a witnessed number.') ON CONFLICT (loop_id) DO UPDATE SET title = EXCLUDED.title, status = EXCLUDED.status, new_concept = EXCLUDED.new_concept, domain_question = EXCLUDED.domain_question, mock_data_note = EXCLUDED.mock_data_note, next_suggestion = EXCLUDED.next_suggestion;
 
 INSERT INTO loops (loop_id, title, status, new_concept, domain_question, mock_data_note, next_suggestion)
-VALUES ('loop-06', 'TreatmentExposureFraction: the allocation imbalance as a witnessed number', 'planned', 'TreatmentExposureFraction field on CaseCells (Cases / TotalCasesForTreatment in this study)', 'What fraction of each treatment''s total cases fall in each stratum? High imbalance across strata is the mechanism of confounding.', 'A: 263/350=75% in large-stone stratum. B: 80/350=23% in large-stone stratum. The 52-point gap IS the mechanism — now a first-class derived number.', 'Add a degenerate study where treatment allocation is perfectly balanced across strata. IsReversal must be FALSE — not because the data says so, but because the algebra guarantees it. The model witnesses its own structural impossibility.') ON CONFLICT (loop_id) DO UPDATE SET title = EXCLUDED.title, status = EXCLUDED.status, new_concept = EXCLUDED.new_concept, domain_question = EXCLUDED.domain_question, mock_data_note = EXCLUDED.mock_data_note, next_suggestion = EXCLUDED.next_suggestion;
+VALUES ('loop-06', 'TreatmentExposureFraction: the allocation imbalance as a witnessed number', 'complete', 'TreatmentExposureFraction field on CaseCells (Cases / TotalCasesForTreatment in this study)', 'What fraction of each treatment''s total cases fall in each stratum? High imbalance across strata is the mechanism of confounding.', 'A: 263/350=75% in large-stone stratum. B: 80/350=23% in large-stone stratum. The 52-point gap IS the mechanism — now a first-class derived number.', 'Add a degenerate study where treatment allocation is perfectly balanced across strata. IsReversal must be FALSE — not because the data says so, but because the algebra guarantees it. The model witnesses its own structural impossibility.') ON CONFLICT (loop_id) DO UPDATE SET title = EXCLUDED.title, status = EXCLUDED.status, new_concept = EXCLUDED.new_concept, domain_question = EXCLUDED.domain_question, mock_data_note = EXCLUDED.mock_data_note, next_suggestion = EXCLUDED.next_suggestion;
 
 INSERT INTO loops (loop_id, title, status, new_concept, domain_question, mock_data_note, next_suggestion)
-VALUES ('loop-07', 'Degenerate study: balanced allocation → IsReversal structurally impossible', 'planned', 'Second Studies row (balanced-synthetic); equal TreatmentExposureFraction across strata; IsReversal = FALSE by construction', 'If every stratum gets the same treatment-allocation fraction, can a reversal occur? The DAG should witness that it cannot.', 'Synthetic: A and B each assigned 50/50 to small/large strata. A=60% success both strata, B=50% both. Pooled: A=60%, B=50%. No reversal. IsParadoxExplained vacuously true (IsConfounder=false, no confounding, no reversal).', 'Add Berkeley 1973 — same DAG, contested domain. Aggregate: women admitted at lower rate. Per-department: women admitted at equal or higher rate in most. IsReversal=true. But IsConfounder is ambiguous — department choice may be downstream of gender (mediator, not confounder). The model witnesses its own explanatory limits.') ON CONFLICT (loop_id) DO UPDATE SET title = EXCLUDED.title, status = EXCLUDED.status, new_concept = EXCLUDED.new_concept, domain_question = EXCLUDED.domain_question, mock_data_note = EXCLUDED.mock_data_note, next_suggestion = EXCLUDED.next_suggestion;
+VALUES ('loop-07', 'Degenerate study: balanced allocation → IsReversal structurally impossible', 'complete', 'Second Studies row (balanced-synthetic); equal TreatmentExposureFraction across strata; IsReversal = FALSE by construction', 'If every stratum gets the same treatment-allocation fraction, can a reversal occur? The DAG should witness that it cannot.', 'Synthetic: A and B each assigned 50/50 to small/large strata. A=60% success both strata, B=50% both. Pooled: A=60%, B=50%. No reversal. IsParadoxExplained vacuously true (IsConfounder=false, no confounding, no reversal).', 'Add Berkeley 1973 — same DAG, contested domain. Aggregate: women admitted at lower rate. Per-department: women admitted at equal or higher rate in most. IsReversal=true. But IsConfounder is ambiguous — department choice may be downstream of gender (mediator, not confounder). The model witnesses its own explanatory limits.') ON CONFLICT (loop_id) DO UPDATE SET title = EXCLUDED.title, status = EXCLUDED.status, new_concept = EXCLUDED.new_concept, domain_question = EXCLUDED.domain_question, mock_data_note = EXCLUDED.mock_data_note, next_suggestion = EXCLUDED.next_suggestion;
 
 INSERT INTO loops (loop_id, title, status, new_concept, domain_question, mock_data_note, next_suggestion)
-VALUES ('loop-08', 'Berkeley 1973: contested confounder — the model witnesses its own explanatory limits', 'planned', 'Third Studies row (berkeley-1973); StratumVariable=department; CausalRole=contested; IsConfounder=false; IsParadoxExplained=false', 'Berkeley shows IsReversal=true but the causal story is contested — department may be a mediator (downstream of gender), not a confounder. Can the model represent that its explanation is incomplete?', 'Berkeley aggregate: women 30%, men 45% admitted. Per top-6 departments: women at equal or higher rate in 4/6. IsReversal=true. StratumVariable.CausalRole=''contested''. IsConfounder=false. IsParadoxExplained=false. The gap is witnessed.', 'Add ParadoxStrength (scalar severity) and IsExplained across all three studies. StudySummary rolls up: 2 reversals, 1 explained (kidney), 1 structurally impossible (balanced), 1 witnessed-unexplained (berkeley). The model now describes its own epistemic state.') ON CONFLICT (loop_id) DO UPDATE SET title = EXCLUDED.title, status = EXCLUDED.status, new_concept = EXCLUDED.new_concept, domain_question = EXCLUDED.domain_question, mock_data_note = EXCLUDED.mock_data_note, next_suggestion = EXCLUDED.next_suggestion;
+VALUES ('loop-08', 'Berkeley 1973: contested confounder — model reveals a PARTIAL paradox, not a clean reversal', 'complete', 'Third Studies row (berkeley-1973); StratumVariable=department; CausalRole=contested; IsConfounder=false; IsParadoxExplained=false; PerStratumWinner=none (mixed, not unanimous)', 'Does Berkeley show a clean reversal? No — PerStratumWinner=''none'' because the per-stratum winner is mixed (female wins 3/4 depts, male wins 1). The model surfaces a structural limit of the reversal definition: partial paradoxes are real but don''t satisfy the strict IsReversal criterion.', 'Witnessed: male pooled 52.8% vs female 39.9% (large gap). Per dept: female wins A (82%>62%), B (68%>63%), D (35%>33%); male wins C (37%>34%). No unanimous per-stratum winner → IsReversal=FALSE by strict definition. The intuitive paradox is real; the formal paradox is partial.', 'Add ParadoxStrength (scalar severity) to capture partial reversals — pooled gap and average per-stratum gap regardless of unanimity. Then StudySummary for epistemic coverage across all 3 studies.') ON CONFLICT (loop_id) DO UPDATE SET title = EXCLUDED.title, status = EXCLUDED.status, new_concept = EXCLUDED.new_concept, domain_question = EXCLUDED.domain_question, mock_data_note = EXCLUDED.mock_data_note, next_suggestion = EXCLUDED.next_suggestion;
 
 INSERT INTO loops (loop_id, title, status, new_concept, domain_question, mock_data_note, next_suggestion)
-VALUES ('loop-09', 'ParadoxStrength: scalar severity derived from pooled gap and per-stratum gap', 'planned', 'ParadoxStrength on TreatmentRankings; PooledGap and AvgStratumGap on StratumSummaries', 'How large is the reversal? Can we rank studies by paradox severity, and does strength correlate with allocation imbalance?', 'Kidney: pooled gap ~4.6pp favoring B, avg stratum gap ~5pp favoring A. Berkeley: larger pooled gap, varies by department. Balanced: strength=0 (no reversal).', 'StudySummary: roll up ReversalCount, ExplainedCount, AvgParadoxStrength across all studies. The model now describes its own epistemic coverage in a single view.') ON CONFLICT (loop_id) DO UPDATE SET title = EXCLUDED.title, status = EXCLUDED.status, new_concept = EXCLUDED.new_concept, domain_question = EXCLUDED.domain_question, mock_data_note = EXCLUDED.mock_data_note, next_suggestion = EXCLUDED.next_suggestion;
+VALUES ('loop-09', 'ParadoxStrength: scalar severity derived from pooled gap and per-stratum gap', 'complete', 'ParadoxStrength on TreatmentRankings; PooledGap and AvgStratumGap on StratumSummaries', 'How large is the reversal? Can we rank studies by paradox severity, and does strength correlate with allocation imbalance?', 'Kidney: pooled gap ~4.6pp favoring B, avg stratum gap ~5pp favoring A. Berkeley: larger pooled gap, varies by department. Balanced: strength=0 (no reversal).', 'StudySummary: roll up ReversalCount, ExplainedCount, AvgParadoxStrength across all studies. The model now describes its own epistemic coverage in a single view.') ON CONFLICT (loop_id) DO UPDATE SET title = EXCLUDED.title, status = EXCLUDED.status, new_concept = EXCLUDED.new_concept, domain_question = EXCLUDED.domain_question, mock_data_note = EXCLUDED.mock_data_note, next_suggestion = EXCLUDED.next_suggestion;
 
 INSERT INTO loops (loop_id, title, status, new_concept, domain_question, mock_data_note, next_suggestion)
 VALUES ('loop-10', 'StudySummary: the model witnesses its own epistemic coverage', 'planned', 'StudySummary table (one row per model instance): StudyCount, ReversalCount, ExplainedCount, UnexplainedCount, ImpossibleCount, AvgParadoxStrength', 'Across all studies in this model, what is the epistemic state? How many reversals, how many explained, how many witnessed-but-unexplained?', '3 studies: ReversalCount=2 (kidney+berkeley), ExplainedCount=1 (kidney), UnexplainedCount=1 (berkeley), ImpossibleCount=1 (balanced). The model now holds a mirror to itself.', 'Pour a fresh open dataset through this identical DAG. Any reversal it surfaces is deductively certain. The instrument is validated across three structurally distinct cases.') ON CONFLICT (loop_id) DO UPDATE SET title = EXCLUDED.title, status = EXCLUDED.status, new_concept = EXCLUDED.new_concept, domain_question = EXCLUDED.domain_question, mock_data_note = EXCLUDED.mock_data_note, next_suggestion = EXCLUDED.next_suggestion;
@@ -45,6 +45,12 @@ VALUES ('loop-10', 'StudySummary: the model witnesses its own epistemic coverage
 INSERT INTO studies (study_id, title, source, source_url)
 VALUES ('kidney-1986', 'Kidney Stone Treatment Study (Charig et al. 1986)', 'Charig CR et al. Comparison of treatment of renal calculi by open surgery, percutaneous nephrolithotomy, and extracorporeal shockwave lithotripsy. Br Med J. 1986;292:879.', 'https://www.bmj.com/content/292/6524/879') ON CONFLICT (study_id) DO UPDATE SET title = EXCLUDED.title, source = EXCLUDED.source, source_url = EXCLUDED.source_url;
 
+INSERT INTO studies (study_id, title, source, source_url)
+VALUES ('balanced-synthetic', 'Balanced Synthetic Study (degenerate case — reversal structurally impossible)', 'Synthetic dataset constructed to demonstrate that perfectly balanced treatment allocation across strata algebraically prevents Simpson''s Paradox. Not based on real data.', '') ON CONFLICT (study_id) DO UPDATE SET title = EXCLUDED.title, source = EXCLUDED.source, source_url = EXCLUDED.source_url;
+
+INSERT INTO studies (study_id, title, source, source_url)
+VALUES ('berkeley-1973', 'UC Berkeley Graduate Admissions (Bickel et al. 1975) — contested confounder', 'Bickel PJ, Hammel EA, O''Connell JW. Sex Bias in Graduate Admissions: Data from Berkeley. Science. 1975;187:398-404.', 'https://www.science.org/doi/10.1126/science.187.4175.398') ON CONFLICT (study_id) DO UPDATE SET title = EXCLUDED.title, source = EXCLUDED.source, source_url = EXCLUDED.source_url;
+
 -- ----------------------------------------------------------------------------
 -- Treatments: Table: Treatments — the interventions being compared within a study. Each treatment belongs to one study.
 -- ----------------------------------------------------------------------------
@@ -54,6 +60,18 @@ VALUES ('kidney-1986-A', 'kidney-1986', 'A', 'Open surgery / percutaneous nephro
 INSERT INTO treatments (treatment_id, study, treatment_label, description)
 VALUES ('kidney-1986-B', 'kidney-1986', 'B', 'Extracorporeal shock wave lithotripsy (ESWL) — the less invasive procedure, used more for small stones.') ON CONFLICT (treatment_id) DO UPDATE SET study = EXCLUDED.study, treatment_label = EXCLUDED.treatment_label, description = EXCLUDED.description;
 
+INSERT INTO treatments (treatment_id, study, treatment_label, description)
+VALUES ('balanced-synthetic-A', 'balanced-synthetic', 'A', 'Synthetic treatment A — 60% success rate in both strata. Allocated equally (50%) to each stratum.') ON CONFLICT (treatment_id) DO UPDATE SET study = EXCLUDED.study, treatment_label = EXCLUDED.treatment_label, description = EXCLUDED.description;
+
+INSERT INTO treatments (treatment_id, study, treatment_label, description)
+VALUES ('balanced-synthetic-B', 'balanced-synthetic', 'B', 'Synthetic treatment B — 50% success rate in both strata. Allocated equally (50%) to each stratum.') ON CONFLICT (treatment_id) DO UPDATE SET study = EXCLUDED.study, treatment_label = EXCLUDED.treatment_label, description = EXCLUDED.description;
+
+INSERT INTO treatments (treatment_id, study, treatment_label, description)
+VALUES ('berkeley-1973-male', 'berkeley-1973', 'A', 'Male applicants (labeled A). Pooled admission rate appears higher than female.') ON CONFLICT (treatment_id) DO UPDATE SET study = EXCLUDED.study, treatment_label = EXCLUDED.treatment_label, description = EXCLUDED.description;
+
+INSERT INTO treatments (treatment_id, study, treatment_label, description)
+VALUES ('berkeley-1973-female', 'berkeley-1973', 'B', 'Female applicants (labeled B). Pooled admission rate appears lower, but per-department rates are equal or higher in most departments.') ON CONFLICT (treatment_id) DO UPDATE SET study = EXCLUDED.study, treatment_label = EXCLUDED.treatment_label, description = EXCLUDED.description;
+
 -- ----------------------------------------------------------------------------
 -- Strata: Table: Strata — the subdivisions of patients within a study by the value of the confounding variable (e.g. stone size). Each stratum belongs to one study.
 -- ----------------------------------------------------------------------------
@@ -62,6 +80,24 @@ VALUES ('kidney-1986-small', 'kidney-1986', 'small', 'Patients with small kidney
 
 INSERT INTO strata (stratum_id, study, stratum_label, description)
 VALUES ('kidney-1986-large', 'kidney-1986', 'large', 'Patients with large kidney stones — harder to treat, lower baseline success rate regardless of treatment. Preferentially assigned to Treatment A.') ON CONFLICT (stratum_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, description = EXCLUDED.description;
+
+INSERT INTO strata (stratum_id, study, stratum_label, description)
+VALUES ('balanced-synthetic-easy', 'balanced-synthetic', 'easy', 'Easy stratum — higher baseline success rate. Receives exactly 50% of each treatment''s cases.') ON CONFLICT (stratum_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, description = EXCLUDED.description;
+
+INSERT INTO strata (stratum_id, study, stratum_label, description)
+VALUES ('balanced-synthetic-hard', 'balanced-synthetic', 'hard', 'Hard stratum — lower baseline success rate. Receives exactly 50% of each treatment''s cases. Equal allocation prevents confounding.') ON CONFLICT (stratum_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, description = EXCLUDED.description;
+
+INSERT INTO strata (stratum_id, study, stratum_label, description)
+VALUES ('berkeley-1973-dept-A', 'berkeley-1973', 'dept-A', 'Dept A — highly competitive (low admission rate ~64%). Women applied here at roughly equal rates to men.') ON CONFLICT (stratum_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, description = EXCLUDED.description;
+
+INSERT INTO strata (stratum_id, study, stratum_label, description)
+VALUES ('berkeley-1973-dept-B', 'berkeley-1973', 'dept-B', 'Dept B — competitive (~35% admission). Women applied here less often.') ON CONFLICT (stratum_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, description = EXCLUDED.description;
+
+INSERT INTO strata (stratum_id, study, stratum_label, description)
+VALUES ('berkeley-1973-dept-C', 'berkeley-1973', 'dept-C', 'Dept C — moderately selective (~34% admission). More balanced gender application.') ON CONFLICT (stratum_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, description = EXCLUDED.description;
+
+INSERT INTO strata (stratum_id, study, stratum_label, description)
+VALUES ('berkeley-1973-dept-D', 'berkeley-1973', 'dept-D', 'Dept D — open (~64% admission). Women applied here most heavily — this is the easy department that women disproportionately chose.') ON CONFLICT (stratum_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, description = EXCLUDED.description;
 
 -- ----------------------------------------------------------------------------
 -- CaseCells: Table: CaseCells — the raw leaves of the DAG. One row per (study, stratum, treatment) combination recording the aggregate count of successes and total cases. Every derived fact in the model traces back to these numbers. Nothing above this row is a raw input.
@@ -78,6 +114,42 @@ VALUES ('kidney-1986-large-A', 'kidney-1986', 'large', 'A', 192, 263) ON CONFLIC
 INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
 VALUES ('kidney-1986-large-B', 'kidney-1986', 'large', 'B', 55, 80) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
 
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('balanced-synthetic-easy-A', 'balanced-synthetic', 'easy', 'A', 60, 100) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('balanced-synthetic-easy-B', 'balanced-synthetic', 'easy', 'B', 50, 100) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('balanced-synthetic-hard-A', 'balanced-synthetic', 'hard', 'A', 60, 100) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('balanced-synthetic-hard-B', 'balanced-synthetic', 'hard', 'B', 50, 100) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('berkeley-1973-dept-A-male', 'berkeley-1973', 'dept-A', 'A', 512, 825) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('berkeley-1973-dept-A-female', 'berkeley-1973', 'dept-A', 'B', 89, 108) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('berkeley-1973-dept-B-male', 'berkeley-1973', 'dept-B', 'A', 353, 560) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('berkeley-1973-dept-B-female', 'berkeley-1973', 'dept-B', 'B', 17, 25) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('berkeley-1973-dept-C-male', 'berkeley-1973', 'dept-C', 'A', 120, 325) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('berkeley-1973-dept-C-female', 'berkeley-1973', 'dept-C', 'B', 202, 593) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('berkeley-1973-dept-D-male', 'berkeley-1973', 'dept-D', 'A', 138, 417) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('berkeley-1973-dept-D-female', 'berkeley-1973', 'dept-D', 'B', 131, 375) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
 -- ----------------------------------------------------------------------------
 -- StratumSummaries: Table: StratumSummaries — one row per (study, stratum, treatment). Computes the success rate WITHIN each stratum for each treatment. This is the stratified view that contradicts the pooled conclusion when a Simpson's Paradox reversal is present. Each row belongs to both a Stratum and a Treatment in the same Study.
 -- ----------------------------------------------------------------------------
@@ -93,15 +165,69 @@ VALUES ('kidney-1986-large-A', 'kidney-1986', 'large', 'A') ON CONFLICT (stratum
 INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
 VALUES ('kidney-1986-large-B', 'kidney-1986', 'large', 'B') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
 
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('balanced-synthetic-easy-A', 'balanced-synthetic', 'easy', 'A') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('balanced-synthetic-easy-B', 'balanced-synthetic', 'easy', 'B') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('balanced-synthetic-hard-A', 'balanced-synthetic', 'hard', 'A') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('balanced-synthetic-hard-B', 'balanced-synthetic', 'hard', 'B') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('berkeley-1973-dept-A-male', 'berkeley-1973', 'dept-A', 'A') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('berkeley-1973-dept-A-female', 'berkeley-1973', 'dept-A', 'B') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('berkeley-1973-dept-B-male', 'berkeley-1973', 'dept-B', 'A') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('berkeley-1973-dept-B-female', 'berkeley-1973', 'dept-B', 'B') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('berkeley-1973-dept-C-male', 'berkeley-1973', 'dept-C', 'A') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('berkeley-1973-dept-C-female', 'berkeley-1973', 'dept-C', 'B') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('berkeley-1973-dept-D-male', 'berkeley-1973', 'dept-D', 'A') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('berkeley-1973-dept-D-female', 'berkeley-1973', 'dept-D', 'B') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+-- ----------------------------------------------------------------------------
+-- ModelSummary: Table: ModelSummary — one row describing the epistemic coverage of this entire model instance. Aggregates across all TreatmentRankings to witness how many studies were examined, how many showed a full reversal, how many were explained, and the average paradox strength. The model holds a mirror to itself.
+-- ----------------------------------------------------------------------------
+INSERT INTO model_summary (model_summary_id)
+VALUES ('simpsons-paradox-v1') ON CONFLICT (model_summary_id) DO NOTHING;
+
 -- ----------------------------------------------------------------------------
 -- StratumVariables: Table: StratumVariables — one row per study, naming the variable that defines the strata and describing its causal role. A confounder affects both treatment assignment AND outcome; a mediator is downstream of treatment; a contested variable is one where the causal role is disputed. IsConfounder is derived from these two boolean flags.
 -- ----------------------------------------------------------------------------
 INSERT INTO stratum_variables (stratum_variable_id, study, variable_name, causal_role, affects_treatment_assignment, affects_outcome, mechanism_note)
 VALUES ('kidney-1986-stone-size', 'kidney-1986', 'stone_size', 'confounder', TRUE, TRUE, 'Large kidney stones were preferentially assigned to Treatment A (the more aggressive procedure), while small stones more often received Treatment B. Independently, large stones have lower baseline cure rates regardless of treatment. This dual influence — on both assignment and on outcome — is what drives the pooled reversal.') ON CONFLICT (stratum_variable_id) DO UPDATE SET study = EXCLUDED.study, variable_name = EXCLUDED.variable_name, causal_role = EXCLUDED.causal_role, affects_treatment_assignment = EXCLUDED.affects_treatment_assignment, affects_outcome = EXCLUDED.affects_outcome, mechanism_note = EXCLUDED.mechanism_note;
 
+INSERT INTO stratum_variables (stratum_variable_id, study, variable_name, causal_role, affects_treatment_assignment, affects_outcome, mechanism_note)
+VALUES ('berkeley-1973-department', 'berkeley-1973', 'department', 'contested', TRUE, TRUE, 'Department choice correlates with both gender (women applied disproportionately to competitive departments) and admission rate (competitive departments admit fewer applicants regardless of gender). However, department choice may itself be downstream of gender — if women systematically self-select into harder departments due to societal factors, then department is a mediator, not a confounder. The causal role is genuinely contested in the literature. IsConfounder=FALSE because CausalRole=''contested'', not because the flags are false.') ON CONFLICT (stratum_variable_id) DO UPDATE SET study = EXCLUDED.study, variable_name = EXCLUDED.variable_name, causal_role = EXCLUDED.causal_role, affects_treatment_assignment = EXCLUDED.affects_treatment_assignment, affects_outcome = EXCLUDED.affects_outcome, mechanism_note = EXCLUDED.mechanism_note;
+
+INSERT INTO stratum_variables (stratum_variable_id, study, variable_name, causal_role, affects_treatment_assignment, affects_outcome, mechanism_note)
+VALUES ('balanced-synthetic-stratum', 'balanced-synthetic', 'stratum', 'unknown', FALSE, TRUE, 'The stratum variable affects outcome (easy vs hard conditions) but does NOT affect treatment assignment — each treatment receives exactly 50% of its cases in each stratum. Because treatment assignment is independent of stratum, no confounding can occur and the pooled rate must agree with every per-stratum comparison.') ON CONFLICT (stratum_variable_id) DO UPDATE SET study = EXCLUDED.study, variable_name = EXCLUDED.variable_name, causal_role = EXCLUDED.causal_role, affects_treatment_assignment = EXCLUDED.affects_treatment_assignment, affects_outcome = EXCLUDED.affects_outcome, mechanism_note = EXCLUDED.mechanism_note;
+
 -- ----------------------------------------------------------------------------
 -- TreatmentRankings: Table: TreatmentRankings — one row per treatment-pair comparison within a study. Derives the pooled winner, the per-stratum winner, and the IsReversal boolean. The paradox emerges here as a derived fact: IsReversal is true when the pooled winner and the per-stratum winner disagree.
 -- ----------------------------------------------------------------------------
 INSERT INTO treatment_rankings (treatment_ranking_id, study, treatment_a, treatment_b)
 VALUES ('kidney-1986-A-vs-B', 'kidney-1986', 'A', 'B') ON CONFLICT (treatment_ranking_id) DO UPDATE SET study = EXCLUDED.study, treatment_a = EXCLUDED.treatment_a, treatment_b = EXCLUDED.treatment_b;
+
+INSERT INTO treatment_rankings (treatment_ranking_id, study, treatment_a, treatment_b)
+VALUES ('balanced-synthetic-A-vs-B', 'balanced-synthetic', 'A', 'B') ON CONFLICT (treatment_ranking_id) DO UPDATE SET study = EXCLUDED.study, treatment_a = EXCLUDED.treatment_a, treatment_b = EXCLUDED.treatment_b;
+
+INSERT INTO treatment_rankings (treatment_ranking_id, study, treatment_a, treatment_b)
+VALUES ('berkeley-1973-A-vs-B', 'berkeley-1973', 'A', 'B') ON CONFLICT (treatment_ranking_id) DO UPDATE SET study = EXCLUDED.study, treatment_a = EXCLUDED.treatment_a, treatment_b = EXCLUDED.treatment_b;
 

@@ -165,6 +165,26 @@ RETURNS NUMERIC AS $$
   SELECT (CASE WHEN ((SELECT cases FROM case_cells WHERE case_cell_id = p_case_cell_id))::NUMERIC = 0 THEN ('')::text ELSE ((COALESCE(CASE WHEN ((SELECT successes FROM case_cells WHERE case_cell_id = p_case_cell_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT successes FROM case_cells WHERE case_cell_id = p_case_cell_id))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(CASE WHEN ((SELECT cases FROM case_cells WHERE case_cell_id = p_case_cell_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT cases FROM case_cells WHERE case_cell_id = p_case_cell_id))::numeric ELSE NULL END, 0), 0)))::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
+-- calc_case_cells_total_cases_for_treatment
+-- Field: CaseCells.TotalCasesForTreatment
+-- Type: aggregation | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_case_cells_total_cases_for_treatment(p_case_cell_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((SELECT COALESCE(SUM((cases)::numeric), 0) FROM case_cells WHERE study = (SELECT NULLIF(study, '') FROM case_cells WHERE case_cell_id = p_case_cell_id) AND treatment_label = (SELECT NULLIF(treatment_label, '') FROM case_cells WHERE case_cell_id = p_case_cell_id)))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_case_cells_treatment_exposure_fraction
+-- Field: CaseCells.TreatmentExposureFraction
+-- Type: calculated | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_case_cells_treatment_exposure_fraction(p_case_cell_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT (CASE WHEN (calc_case_cells_total_cases_for_treatment(p_case_cell_id))::NUMERIC = 0 THEN ('')::text ELSE ((COALESCE(CASE WHEN ((SELECT cases FROM case_cells WHERE case_cell_id = p_case_cell_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT cases FROM case_cells WHERE case_cell_id = p_case_cell_id))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(CASE WHEN (calc_case_cells_total_cases_for_treatment(p_case_cell_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_case_cells_total_cases_for_treatment(p_case_cell_id))::numeric ELSE NULL END, 0), 0)))::text END)::numeric;
+$$ LANGUAGE sql STABLE;
+
 -- calc_stratum_summaries_name
 -- Field: StratumSummaries.Name
 -- Type: calculated | DataType: string | Returns: TEXT
@@ -273,6 +293,96 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION calc_stratum_summaries_stratum_winner(p_stratum_summary_id TEXT)
 RETURNS TEXT AS $$
   SELECT (CASE WHEN calc_stratum_summaries_stratum_rate_a(p_stratum_summary_id) > calc_stratum_summaries_stratum_rate_b(p_stratum_summary_id) THEN ('A')::text ELSE ('B')::text END)::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_model_summary_name
+-- Field: ModelSummary.Name
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_model_summary_name(p_model_summary_id TEXT)
+RETURNS TEXT AS $$
+  SELECT ((SELECT NULLIF(model_summary_id, '') FROM model_summary WHERE model_summary_id = p_model_summary_id))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_model_summary_reversal_count
+-- Field: ModelSummary.ReversalCount
+-- Type: aggregation | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_model_summary_reversal_count(p_model_summary_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((SELECT COUNT(*) FROM treatment_rankings WHERE calc_treatment_rankings_is_reversal(treatment_ranking_id) = TRUE))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_model_summary_non_reversal_count
+-- Field: ModelSummary.NonReversalCount
+-- Type: aggregation | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_model_summary_non_reversal_count(p_model_summary_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((SELECT COUNT(*) FROM treatment_rankings WHERE calc_treatment_rankings_is_reversal(treatment_ranking_id) = FALSE))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_model_summary_study_count
+-- Field: ModelSummary.StudyCount
+-- Type: calculated | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_model_summary_study_count(p_model_summary_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((COALESCE(CASE WHEN (calc_model_summary_reversal_count(p_model_summary_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_model_summary_reversal_count(p_model_summary_id))::numeric ELSE NULL END, 0) + COALESCE(CASE WHEN (calc_model_summary_non_reversal_count(p_model_summary_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_model_summary_non_reversal_count(p_model_summary_id))::numeric ELSE NULL END, 0)))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_model_summary_explained_count
+-- Field: ModelSummary.ExplainedCount
+-- Type: aggregation | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_model_summary_explained_count(p_model_summary_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((SELECT COUNT(*) FROM treatment_rankings WHERE calc_treatment_rankings_is_paradox_explained(treatment_ranking_id) = TRUE))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_model_summary_zero_strength_count
+-- Field: ModelSummary.ZeroStrengthCount
+-- Type: aggregation | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_model_summary_zero_strength_count(p_model_summary_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((SELECT COUNT(*) FROM treatment_rankings WHERE calc_treatment_rankings_strata_won_by_loser(treatment_ranking_id) = 0))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_model_summary_partial_count
+-- Field: ModelSummary.PartialCount
+-- Type: calculated | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_model_summary_partial_count(p_model_summary_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((COALESCE(CASE WHEN (calc_model_summary_non_reversal_count(p_model_summary_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_model_summary_non_reversal_count(p_model_summary_id))::numeric ELSE NULL END, 0) - COALESCE(CASE WHEN (calc_model_summary_zero_strength_count(p_model_summary_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_model_summary_zero_strength_count(p_model_summary_id))::numeric ELSE NULL END, 0)))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_model_summary_total_paradox_strength
+-- Field: ModelSummary.TotalParadoxStrength
+-- Type: aggregation | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_model_summary_total_paradox_strength(p_model_summary_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT ((SELECT COALESCE(SUM((calc_treatment_rankings_paradox_strength(treatment_ranking_id))::numeric), 0) FROM treatment_rankings WHERE treatment_a = 'A'))::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_model_summary_avg_paradox_strength
+-- Field: ModelSummary.AvgParadoxStrength
+-- Type: calculated | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_model_summary_avg_paradox_strength(p_model_summary_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT (CASE WHEN (calc_model_summary_study_count(p_model_summary_id))::NUMERIC = 0 THEN ('')::text ELSE ((COALESCE(CASE WHEN (calc_model_summary_total_paradox_strength(p_model_summary_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_model_summary_total_paradox_strength(p_model_summary_id))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(CASE WHEN (calc_model_summary_study_count(p_model_summary_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_model_summary_study_count(p_model_summary_id))::numeric ELSE NULL END, 0), 0)))::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_stratum_variables_name
@@ -443,6 +553,36 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION calc_treatment_rankings_is_paradox_explained(p_treatment_ranking_id TEXT)
 RETURNS BOOLEAN AS $$
   SELECT ((calc_treatment_rankings_is_reversal(p_treatment_ranking_id) AND (calc_treatment_rankings_confounders_in_study(p_treatment_ranking_id))::NUMERIC > 0));
+$$ LANGUAGE sql STABLE;
+
+-- calc_treatment_rankings_pooled_gap
+-- Field: TreatmentRankings.PooledGap
+-- Type: calculated | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_treatment_rankings_pooled_gap(p_treatment_ranking_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT (CASE WHEN calc_treatment_rankings_pooled_rate_a(p_treatment_ranking_id) IS NULL THEN ('')::text ELSE (ABS((COALESCE(CASE WHEN (calc_treatment_rankings_pooled_rate_a(p_treatment_ranking_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_treatment_rankings_pooled_rate_a(p_treatment_ranking_id))::numeric ELSE NULL END, 0) - COALESCE(CASE WHEN (calc_treatment_rankings_pooled_rate_b(p_treatment_ranking_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_treatment_rankings_pooled_rate_b(p_treatment_ranking_id))::numeric ELSE NULL END, 0))))::text END)::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_treatment_rankings_strata_won_by_loser
+-- Field: TreatmentRankings.StrataWonByLoser
+-- Type: calculated | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_treatment_rankings_strata_won_by_loser(p_treatment_ranking_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT (CASE WHEN calc_treatment_rankings_pooled_winner(p_treatment_ranking_id) = (SELECT NULLIF(treatment_a, '') FROM treatment_rankings WHERE treatment_ranking_id = p_treatment_ranking_id) THEN (calc_treatment_rankings_strata_won_by_b(p_treatment_ranking_id))::text ELSE (calc_treatment_rankings_strata_won_by_a(p_treatment_ranking_id))::text END)::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_treatment_rankings_paradox_strength
+-- Field: TreatmentRankings.ParadoxStrength
+-- Type: calculated | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_treatment_rankings_paradox_strength(p_treatment_ranking_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT (CASE WHEN (calc_treatment_rankings_stratum_count(p_treatment_ranking_id))::NUMERIC = 0 THEN ('')::text ELSE ((COALESCE(CASE WHEN (calc_treatment_rankings_pooled_gap(p_treatment_ranking_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_treatment_rankings_pooled_gap(p_treatment_ranking_id))::numeric ELSE NULL END, 0) * COALESCE(CASE WHEN ((COALESCE(CASE WHEN (calc_treatment_rankings_strata_won_by_loser(p_treatment_ranking_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_treatment_rankings_strata_won_by_loser(p_treatment_ranking_id))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(CASE WHEN (calc_treatment_rankings_stratum_count(p_treatment_ranking_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_treatment_rankings_stratum_count(p_treatment_ranking_id))::numeric ELSE NULL END, 0), 0)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((COALESCE(CASE WHEN (calc_treatment_rankings_strata_won_by_loser(p_treatment_ranking_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_treatment_rankings_strata_won_by_loser(p_treatment_ranking_id))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(CASE WHEN (calc_treatment_rankings_stratum_count(p_treatment_ranking_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_treatment_rankings_stratum_count(p_treatment_ranking_id))::numeric ELSE NULL END, 0), 0)))::numeric ELSE NULL END, 0)))::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- ============================================================================
