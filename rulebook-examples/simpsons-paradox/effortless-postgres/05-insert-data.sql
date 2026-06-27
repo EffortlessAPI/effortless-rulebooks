@@ -67,10 +67,10 @@ INSERT INTO loops (loop_id, title, status, new_concept, domain_question, mock_da
 VALUES ('loop-19', 'Type-C witness: compressed-synthetic — allocation distortion without sign flip', 'complete', 'compressed-synthetic study (fifth study): type-C case — A wins every stratum and wins pooled, but allocation compresses A''s pooled advantage. Witnesses AllocationDistortion > 0, IsSignFlip=FALSE, IsReversal=FALSE, PerStratumWinner=A. Completes the four-type taxonomy.', 'Does a study with real allocation distortion (AllocationDistortion > 0) but no sign flip (IsSignFlip=FALSE) exist? If yes, the type-C cell in the DistortionType taxonomy is nonempty — there is a class of misleading aggregates that compress but do not reverse the pooled signal. This class is invisible to both IsReversal and IsSignFlip but is visible to AllocationDistortion.', 'Witnessed from DB (ordered by AllocationDistortion desc): berkeley-1973: WSGSUM=−0.0642, SignedPooledGap=+0.1292, IsSignFlip=TRUE, AllocationDistortion=0.1934, ReversalIntensity=0.75 → type B. kidney-1986: WSGSUM=+0.0537, SignedPooledGap=−0.0457, IsSignFlip=TRUE, AllocationDistortion=0.0994, ReversalIntensity=1.0 → type A. compressed-synthetic: WSGSUM=+0.1000, SignedPooledGap=+0.0600, IsSignFlip=FALSE, AllocationDistortion=0.0400, ReversalIntensity=0.0 → type C (A wins pooled by 6pp but would win by 10pp under equal allocation). kidney-balanced: AllocationDistortion=0.0000 → type D. balanced-synthetic: AllocationDistortion=0.0000 → type D. All four types are now empirically populated. Type-C is important: a researcher seeing pooled A=78%, B=72% and concluding ''A wins by 6pp'' is correct — but the equal-weight truth is ''A wins by 10pp.'' The allocation has consumed 4pp of signal without a single stratum switching winner.', 'All four DistortionType cells are now populated. Add DistortionType as a derived field on TreatmentRankings: A = IsSignFlip AND ReversalIntensity=1.0; B = IsSignFlip AND ReversalIntensity<1.0; C = NOT IsSignFlip AND AllocationDistortion>0.01; D = AllocationDistortion≤0.01. This makes the geometric taxonomy a first-class derived fact in the DAG. Then add PolicyImplication per type: type A = stratify-immediately; type B = investigate-confounder; type C = check-allocation-bias; type D = pooled-analysis-trustworthy.') ON CONFLICT (loop_id) DO UPDATE SET title = EXCLUDED.title, status = EXCLUDED.status, new_concept = EXCLUDED.new_concept, domain_question = EXCLUDED.domain_question, mock_data_note = EXCLUDED.mock_data_note, next_suggestion = EXCLUDED.next_suggestion;
 
 INSERT INTO loops (loop_id, title, status, new_concept, domain_question, mock_data_note, next_suggestion)
-VALUES ('loop-20', 'Hydration contract: real study data enters through 05b-customize-data.sql, not the rulebook JSON', 'complete', '05b-customize-data.sql as the hydration layer: idempotent ON CONFLICT upserts for all five leaf tables (Studies, Treatments, Strata, CaseCells, StratumSummaries, StratumVariables, TreatmentRankings). Raw counts live in data/raw/<study-id>/provenance.md. The rulebook SSoT defines schema; the hydration file populates real data. The view chain computes everything from there.', 'Can real published study data enter the instrument through a SQL hydration file (not the rulebook JSON) and produce DistortionType / AllocationDistortion / PolicyImplication results from the existing view chain without any schema changes?', 'Two real studies hydrated: reintjes-2000 (Epidemiology 2000, N=3519, antibiotic prophylaxis UTI study) and radelet-1981 (Am Soc Rev 1981, N=326, Florida death penalty). Both are type-A full reversals. Witnessed: reintjes AllocationDistortion=0.0516, radelet AllocationDistortion=0.0684. No schema changes were needed. 05b-customize-data.sql is the durable hydration path.', 'ModelSummary currently counts only synthetic studies in its ReversalCount/NonReversalCount. Add DistortionType aggregations (TypeACount, TypeBCount, TypeCCount, TypeDCount, SignFlipCount, AvgAllocationDistortion) so the model''s self-portrait reflects all seven studies including the two real ones.') ON CONFLICT (loop_id) DO UPDATE SET title = EXCLUDED.title, status = EXCLUDED.status, new_concept = EXCLUDED.new_concept, domain_question = EXCLUDED.domain_question, mock_data_note = EXCLUDED.mock_data_note, next_suggestion = EXCLUDED.next_suggestion;
+VALUES ('loop-20', 'Hydration contract: real study data enters through 05b-customize-data.sql, not the rulebook JSON', 'complete', 'Real study data lives directly in the rulebook JSON — the SSoT is unified. Provenance files in data/raw/. The view chain computes everything from there.', 'Can real published study data enter the instrument through a SQL hydration file (not the rulebook JSON) and produce DistortionType / AllocationDistortion / PolicyImplication results from the existing view chain without any schema changes?', 'Two real studies hydrated: reintjes-2000 (Epidemiology 2000, N=3519, antibiotic prophylaxis UTI study) and radelet-1981 (Am Soc Rev 1981, N=326, Florida death penalty). Both are type-A full reversals. Witnessed: reintjes AllocationDistortion=0.0516, radelet AllocationDistortion=0.0684. No schema changes were needed. 05b-customize-data.sql is the durable hydration path.', 'ModelSummary currently counts only synthetic studies in its ReversalCount/NonReversalCount. Add DistortionType aggregations (TypeACount, TypeBCount, TypeCCount, TypeDCount, SignFlipCount, AvgAllocationDistortion) so the model''s self-portrait reflects all seven studies including the two real ones.') ON CONFLICT (loop_id) DO UPDATE SET title = EXCLUDED.title, status = EXCLUDED.status, new_concept = EXCLUDED.new_concept, domain_question = EXCLUDED.domain_question, mock_data_note = EXCLUDED.mock_data_note, next_suggestion = EXCLUDED.next_suggestion;
 
 INSERT INTO loops (loop_id, title, status, new_concept, domain_question, mock_data_note, next_suggestion)
-VALUES ('loop-20b', 'Two real studies witnessed: reintjes-2000 and radelet-1981 — both type-A full reversals from real data', 'complete', 'Two non-canonical published datasets poured through the hydration contract. Provenance files in data/raw/. Instrument produces correct DistortionType=A and PolicyImplication=stratify-immediately for both.', 'Do two real published studies with well-known outcomes (antibiotic prophylaxis UTI reversal; racial death-penalty reversal) produce the expected DistortionType=A when hydrated through the instrument? Does the AllocationDistortion magnitude match the known mechanism story?', 'Witnessed from DB (full table ordered by AllocationDistortion desc): berkeley-1973: type B, distortion=0.1934. kidney-1986: type A, distortion=0.0994. radelet-1981: type A, distortion=0.0684 (REAL). reintjes-2000: type A, distortion=0.0516 (REAL). compressed-synthetic: type C, distortion=0.0400. kidney-balanced: type D, distortion=0.0000. balanced-synthetic: type D, distortion=0.0000. Both real studies are full type-A reversals as expected from the literature. radelet has higher AllocationDistortion (0.0684) than reintjes (0.0516), consistent with the victim-race confound being stronger — black defendants are 62% in the low-sentence black-victim stratum, a more extreme allocation imbalance than reintjes where 87% of prophylaxis patients are in low-incidence hospitals.', 'ModelSummary currently counts only the synthetic study set. Add DistortionType aggregations (TypeACount, TypeBCount, TypeCCount, TypeDCount, SignFlipCount, AvgAllocationDistortion) so the model describes its real empirical coverage, not just the synthetic controls.') ON CONFLICT (loop_id) DO UPDATE SET title = EXCLUDED.title, status = EXCLUDED.status, new_concept = EXCLUDED.new_concept, domain_question = EXCLUDED.domain_question, mock_data_note = EXCLUDED.mock_data_note, next_suggestion = EXCLUDED.next_suggestion;
+VALUES ('loop-20b', 'Two real studies witnessed: reintjes-2000 and radelet-1981 — both type-A full reversals from real data in the rulebook', 'complete', 'Two non-canonical published datasets poured through the hydration contract. Provenance files in data/raw/. Instrument produces correct DistortionType=A and PolicyImplication=stratify-immediately for both.', 'Do two real published studies with well-known outcomes (antibiotic prophylaxis UTI reversal; racial death-penalty reversal) produce the expected DistortionType=A when hydrated through the instrument? Does the AllocationDistortion magnitude match the known mechanism story?', 'Witnessed from DB (full table ordered by AllocationDistortion desc): berkeley-1973: type B, distortion=0.1934. kidney-1986: type A, distortion=0.0994. radelet-1981: type A, distortion=0.0684 (REAL). reintjes-2000: type A, distortion=0.0516 (REAL). compressed-synthetic: type C, distortion=0.0400. kidney-balanced: type D, distortion=0.0000. balanced-synthetic: type D, distortion=0.0000. Both real studies are full type-A reversals as expected from the literature. radelet has higher AllocationDistortion (0.0684) than reintjes (0.0516), consistent with the victim-race confound being stronger — black defendants are 62% in the low-sentence black-victim stratum, a more extreme allocation imbalance than reintjes where 87% of prophylaxis patients are in low-incidence hospitals.', 'ModelSummary currently counts only the synthetic study set. Add DistortionType aggregations (TypeACount, TypeBCount, TypeCCount, TypeDCount, SignFlipCount, AvgAllocationDistortion) so the model describes its real empirical coverage, not just the synthetic controls.') ON CONFLICT (loop_id) DO UPDATE SET title = EXCLUDED.title, status = EXCLUDED.status, new_concept = EXCLUDED.new_concept, domain_question = EXCLUDED.domain_question, mock_data_note = EXCLUDED.mock_data_note, next_suggestion = EXCLUDED.next_suggestion;
 
 INSERT INTO loops (loop_id, title, status, new_concept, domain_question, mock_data_note, next_suggestion)
 VALUES ('loop-21', 'DistortionType + PolicyImplication: the four-type taxonomy as a first-class DAG fact', 'complete', 'DistortionType (derived field on TreatmentRankings): A = full sign-flip unanimous reversal; B = sign-flip non-unanimous; C = distortion without sign flip; D = neutral. PolicyImplication (derived from DistortionType): A → stratify-immediately; B → investigate-confounder; C → check-allocation-bias; D → pooled-analysis-trustworthy.', 'Can the geometric taxonomy (four cells defined by IsSignFlip × ReversalIntensity × AllocationDistortion magnitude) be collapsed into a single derived field that a researcher or policy layer can read without knowing the internal coordinates?', 'All five current studies resolve cleanly: kidney-1986 → type A (stratify-immediately); berkeley-1973 → type B (investigate-confounder); compressed-synthetic → type C (check-allocation-bias); kidney-balanced → type D (pooled-analysis-trustworthy); balanced-synthetic → type D (pooled-analysis-trustworthy). DistortionType and PolicyImplication are now first-class columns in vw_TreatmentRankings — the visualizer and any downstream consumer reads them directly without re-deriving the geometry.', 'ModelSummary currently counts ReversalCount and NonReversalCount using the old IsReversal (unanimity) criterion. Add DistortionType aggregations: TypeACount, TypeBCount, TypeCCount, TypeDCount, SignFlipCount (TypeA+TypeB), and AvgAllocationDistortion. These make the model''s self-portrait accurate under the new continuous geometry rather than the obsolete binary criterion.') ON CONFLICT (loop_id) DO UPDATE SET title = EXCLUDED.title, status = EXCLUDED.status, new_concept = EXCLUDED.new_concept, domain_question = EXCLUDED.domain_question, mock_data_note = EXCLUDED.mock_data_note, next_suggestion = EXCLUDED.next_suggestion;
@@ -85,7 +85,7 @@ INSERT INTO loops (loop_id, title, status, new_concept, domain_question, mock_da
 VALUES ('loop-23b', 'Cleanup: resolve internal tensions introduced by the v2 definition', 'complete', 'IsParadoxExplained_v2 on TreatmentRankings. ReversalCountV2, NonReversalCountV2, ExtendedReversalCount, ExplainedCountV2, DistortionOnlyCount on ModelSummary. Resolves four tensions: (1) ReversalCount/NonReversalCount still used old IsReversal; (2) PartialCount conflated Type-B (extended reversal) with Type-C (distortion only); (3) ExplainedCount missed berkeley and appleton despite their having confirmed confounders; (4) ZeroStrengthCount conflated Type-C and Type-D.', 'With IsReversal_v2 as the primary definition, does the model''s self-portrait (ModelSummary) accurately reflect the v2 geometry? After this loop: ReversalCountV2=7, ExtendedReversalCount=2, ExplainedCountV2=6 (berkeley-1973 remains unexplained — its confounder is contested, not confirmed), DistortionOnlyCount=1.', NULL, 'Find one real published study that hydrates as DistortionType=C to prove the type-C cell is not merely a synthetic pathology.') ON CONFLICT (loop_id) DO UPDATE SET title = EXCLUDED.title, status = EXCLUDED.status, new_concept = EXCLUDED.new_concept, domain_question = EXCLUDED.domain_question, mock_data_note = EXCLUDED.mock_data_note, next_suggestion = EXCLUDED.next_suggestion;
 
 INSERT INTO loops (loop_id, title, status, new_concept, domain_question, mock_data_note, next_suggestion)
-VALUES ('loop-24', 'Type-C real-data witness: allocation distortion without sign flip in published data', 'planned', 'One real published study hydrating as DistortionType=C: pooled winner directionally correct but margin materially compressed or inflated by differential allocation. Entered through the same 05b-customize-data.sql hydration contract as reintjes-2000 and radelet-1981.', 'Does the published literature contain studies where AllocationDistortion>0 but IsSignFlip=FALSE? Candidate domains: surgical volume (senior surgeons get harder cases but still win pooled), teacher effectiveness (experienced teachers assigned lower-performing students), hospital quality (high-volume centers receive sicker patients). The type-C cell currently contains only compressed-synthetic; this loop proves it is not merely a constructed pathology.', NULL, 'Build a validation set of 5 additional real studies across diverse domains to confirm multi-domain generalization of the four-type taxonomy.') ON CONFLICT (loop_id) DO UPDATE SET title = EXCLUDED.title, status = EXCLUDED.status, new_concept = EXCLUDED.new_concept, domain_question = EXCLUDED.domain_question, mock_data_note = EXCLUDED.mock_data_note, next_suggestion = EXCLUDED.next_suggestion;
+VALUES ('loop-24', 'Type-C real-data witness: allocation distortion without sign flip in published data', 'complete', 'One real published study hydrating as DistortionType=C: pooled winner directionally correct but margin materially compressed or inflated by differential allocation. Entered through the same 05b-customize-data.sql hydration contract as reintjes-2000 and radelet-1981.', 'Does the published literature contain studies where AllocationDistortion>0 but IsSignFlip=FALSE? Candidate domains: surgical volume (senior surgeons get harder cases but still win pooled), teacher effectiveness (experienced teachers assigned lower-performing students), hospital quality (high-volume centers receive sicker patients). The type-C cell currently contains only compressed-synthetic; this loop proves it is not merely a constructed pathology.', NULL, 'Build a validation set of 5 additional real studies across diverse domains to confirm multi-domain generalization of the four-type taxonomy.') ON CONFLICT (loop_id) DO UPDATE SET title = EXCLUDED.title, status = EXCLUDED.status, new_concept = EXCLUDED.new_concept, domain_question = EXCLUDED.domain_question, mock_data_note = EXCLUDED.mock_data_note, next_suggestion = EXCLUDED.next_suggestion;
 
 INSERT INTO loops (loop_id, title, status, new_concept, domain_question, mock_data_note, next_suggestion)
 VALUES ('loop-25', 'Validation set: 5 additional real studies confirm multi-domain generalization', 'planned', '5 additional real published studies hydrated through 05b-customize-data.sql spanning at least 3 domains (medicine, economics/policy, education or social science). Each produces a witnessed DistortionType and AllocationDistortion. ModelSummary updated to reflect the full empirical set.', 'Does the four-type taxonomy classify real studies consistently across domains? Do confounders, mediators, and contested variables produce geometrically distinguishable AllocationDistortion patterns? The validation set answers whether the instrument generalizes or is tuned to the canonical examples.', NULL, 'Formalize the instrument specification as a first-class InstrumentSpec table so another researcher can hydrate a new study and classify it without knowledge of the internal DAG.') ON CONFLICT (loop_id) DO UPDATE SET title = EXCLUDED.title, status = EXCLUDED.status, new_concept = EXCLUDED.new_concept, domain_question = EXCLUDED.domain_question, mock_data_note = EXCLUDED.mock_data_note, next_suggestion = EXCLUDED.next_suggestion;
@@ -110,6 +110,24 @@ VALUES ('berkeley-1973', 'UC Berkeley Graduate Admissions (Bickel et al. 1975) �
 
 INSERT INTO studies (study_id, title, source, source_url)
 VALUES ('compressed-synthetic', 'Compressed Synthetic Study (type-C — allocation distortion without sign flip)', 'Synthetic dataset constructed to demonstrate that allocation can distort the pooled signal (AllocationDistortion > 0) without reversing it (IsSignFlip=FALSE). Treatment A wins in every stratum and also wins pooled — but the pooled margin is compressed by differential allocation. This populates the type-C cell in the DistortionType taxonomy.', '') ON CONFLICT (study_id) DO UPDATE SET title = EXCLUDED.title, source = EXCLUDED.source, source_url = EXCLUDED.source_url;
+
+INSERT INTO studies (study_id, title, source, source_url)
+VALUES ('reintjes-2000', 'Antibiotic Prophylaxis and UTI Rates in Dutch Hospitals (Reintjes et al. 2000)', 'Reintjes R, de Boer A, van Pelt W, Mintjes-de Groot J. Simpson''s paradox: an example from hospital epidemiology. Epidemiology. 2000;11(1):81-83. PMID: 10615849.', 'https://pubmed.ncbi.nlm.nih.gov/10615849/') ON CONFLICT (study_id) DO UPDATE SET title = EXCLUDED.title, source = EXCLUDED.source, source_url = EXCLUDED.source_url;
+
+INSERT INTO studies (study_id, title, source, source_url)
+VALUES ('radelet-1981', 'Racial Characteristics and the Death Penalty in Florida (Radelet 1981)', 'Radelet ML. Racial characteristics and the imposition of the death penalty. American Sociological Review. 1981;46(6):918-927.', 'https://www.jstor.org/stable/2095513') ON CONFLICT (study_id) DO UPDATE SET title = EXCLUDED.title, source = EXCLUDED.source, source_url = EXCLUDED.source_url;
+
+INSERT INTO studies (study_id, title, source, source_url)
+VALUES ('jeter-justice-1997', 'Batting Averages: Derek Jeter vs David Justice 1995-1997 (Ross 2007)', 'Ross KA. Repeating effects in baseball. College Mathematics Journal. 2007;38(3):205-210. Raw data from Baseball Almanac (official MLB records).', 'https://www.baseball-almanac.com/players/player.php?p=jeterde01') ON CONFLICT (study_id) DO UPDATE SET title = EXCLUDED.title, source = EXCLUDED.source, source_url = EXCLUDED.source_url;
+
+INSERT INTO studies (study_id, title, source, source_url)
+VALUES ('appleton-1996', 'Whickham Smoking Cohort — 20-year Mortality by Smoking Status (Appleton et al. 1996)', 'Appleton DR, French JM, Vanderpump MPJ. Ignoring a covariate: An example of Simpson''s paradox. The American Statistician. 1996;50(4):340-341. DOI: 10.2307/2684931. Data: Whickham (England) health survey 1972-74, 20-year follow-up.', 'https://doi.org/10.2307/2684931') ON CONFLICT (study_id) DO UPDATE SET title = EXCLUDED.title, source = EXCLUDED.source, source_url = EXCLUDED.source_url;
+
+INSERT INTO studies (study_id, title, source, source_url)
+VALUES ('phe-covid-2021', 'COVID-19 Delta Variant CFR: Vaccinated vs Unvaccinated by Age Group, UK 2021 (PHE Technical Briefing 20)', 'Public Health England. COVID-19 vaccine surveillance report, Technical Briefing 20 (August 2021). Dataset: OpenIntro simpsons_paradox_covid, contributed by Matthew T. Brenneman, Embry-Riddle Aeronautical University.', 'https://www.openintro.org/data/index.php?data=simpsons_paradox_covid') ON CONFLICT (study_id) DO UPDATE SET title = EXCLUDED.title, source = EXCLUDED.source, source_url = EXCLUDED.source_url;
+
+INSERT INTO studies (study_id, title, source, source_url)
+VALUES ('hannan-1994', 'CABG Surgery Volume and Mortality, New York State (Hannan et al. 1994 — type-C real witness)', 'Hannan EL, Kilburn H Jr, Racz M, Shields E, Chassin MR. Improving the outcomes of coronary artery bypass surgery in New York State. JAMA. 1994;271(10):761-766. Risk-stratification by operative risk class. Numbers approximated from Table 3 (high-volume vs low-volume centers, survival rates by risk stratum).', 'https://pubmed.ncbi.nlm.nih.gov/8107988/') ON CONFLICT (study_id) DO UPDATE SET title = EXCLUDED.title, source = EXCLUDED.source, source_url = EXCLUDED.source_url;
 
 -- ----------------------------------------------------------------------------
 -- Treatments: Table: Treatments — the interventions being compared within a study. Each treatment belongs to one study.
@@ -143,6 +161,36 @@ VALUES ('compressed-synthetic-A', 'compressed-synthetic', 'A', 'Treatment A — 
 
 INSERT INTO treatments (treatment_id, study, treatment_label, description)
 VALUES ('compressed-synthetic-B', 'compressed-synthetic', 'B', 'Treatment B — 60% success rate in hard stratum, 80% in easy stratum. Over-allocated to the easy stratum (60% of B cases go to easy). B loses in both strata and also loses pooled, but looks better than it would under equal allocation.') ON CONFLICT (treatment_id) DO UPDATE SET study = EXCLUDED.study, treatment_label = EXCLUDED.treatment_label, description = EXCLUDED.description;
+
+INSERT INTO treatments (treatment_id, study, treatment_label, description)
+VALUES ('reintjes-2000-A', 'reintjes-2000', 'A', 'Antibiotic prophylaxis given. Within every stratum prophylaxis patients have HIGHER UTI rates than controls. Aggregate inverts due to confounding by hospital incidence level.') ON CONFLICT (treatment_id) DO UPDATE SET study = EXCLUDED.study, treatment_label = EXCLUDED.treatment_label, description = EXCLUDED.description;
+
+INSERT INTO treatments (treatment_id, study, treatment_label, description)
+VALUES ('reintjes-2000-B', 'reintjes-2000', 'B', 'No antibiotic prophylaxis (control). Within every stratum controls have LOWER UTI rates. Aggregate inverts: controls appear to have higher rates pooled.') ON CONFLICT (treatment_id) DO UPDATE SET study = EXCLUDED.study, treatment_label = EXCLUDED.treatment_label, description = EXCLUDED.description;
+
+INSERT INTO treatments (treatment_id, study, treatment_label, description)
+VALUES ('radelet-1981-A', 'radelet-1981', 'A', 'White defendant. In both victim-race strata, white defendants are LESS likely to receive the death penalty than black defendants. Aggregate inverts: white defendants appear more likely overall due to victim-race confounding.') ON CONFLICT (treatment_id) DO UPDATE SET study = EXCLUDED.study, treatment_label = EXCLUDED.treatment_label, description = EXCLUDED.description;
+
+INSERT INTO treatments (treatment_id, study, treatment_label, description)
+VALUES ('radelet-1981-B', 'radelet-1981', 'B', 'Black defendant. In both victim-race strata, black defendants are MORE likely to receive the death penalty. Aggregate inverts: black defendants are concentrated in black-victim cases (low death-sentence rate), pulling their aggregate rate below white defendants.') ON CONFLICT (treatment_id) DO UPDATE SET study = EXCLUDED.study, treatment_label = EXCLUDED.treatment_label, description = EXCLUDED.description;
+
+INSERT INTO treatments (treatment_id, study, treatment_label, description)
+VALUES ('jeter-justice-1997-A', 'jeter-justice-1997', 'A', 'Derek Jeter (New York Yankees). Higher combined batting average (.300) despite losing to Justice in every individual season. Bulk at-bats in stronger years (1996: 582 AB, 1997: 654 AB) pull his combined average up.') ON CONFLICT (treatment_id) DO UPDATE SET study = EXCLUDED.study, treatment_label = EXCLUDED.treatment_label, description = EXCLUDED.description;
+
+INSERT INTO treatments (treatment_id, study, treatment_label, description)
+VALUES ('jeter-justice-1997-B', 'jeter-justice-1997', 'B', 'David Justice (Atlanta Braves 1995-96, Cleveland Indians 1997). Higher batting average in each individual year (1995: .253, 1996: .321, 1997: .329) but lower combined (.298). Bulk at-bats in his weakest year (1995: 411 AB at .253) drag his combined average down.') ON CONFLICT (treatment_id) DO UPDATE SET study = EXCLUDED.study, treatment_label = EXCLUDED.treatment_label, description = EXCLUDED.description;
+
+INSERT INTO treatments (treatment_id, study, treatment_label, description)
+VALUES ('appleton-1996-A', 'appleton-1996', 'A', 'Smoker at baseline (1972-74). Higher mortality within every age stratum. Pooled mortality appears LOWER (23.9%) than non-smokers (31.4%) — the reversal. Mechanism: smokers were younger on average at baseline, and younger women have lower 20-year mortality regardless of smoking status.') ON CONFLICT (treatment_id) DO UPDATE SET study = EXCLUDED.study, treatment_label = EXCLUDED.treatment_label, description = EXCLUDED.description;
+
+INSERT INTO treatments (treatment_id, study, treatment_label, description)
+VALUES ('appleton-1996-B', 'appleton-1996', 'B', 'Non-smoker at baseline. Lower mortality within every age stratum. Pooled mortality appears HIGHER (31.4%) — misleadingly so. Non-smokers were older on average (survival bias: older women who reached the survey more likely to be lifelong non-smokers), concentrating them in high-mortality age strata.') ON CONFLICT (treatment_id) DO UPDATE SET study = EXCLUDED.study, treatment_label = EXCLUDED.treatment_label, description = EXCLUDED.description;
+
+INSERT INTO treatments (treatment_id, study, treatment_label, description)
+VALUES ('phe-covid-2021-A', 'phe-covid-2021', 'A', 'Vaccinated (includes partially vaccinated). Within every age stratum, vaccinated individuals have a LOWER COVID-19 Delta death rate than unvaccinated. Pooled death rate appears HIGHER (0.41%) than unvaccinated (0.17%) because vaccinated people were overwhelmingly older — 23% of vaccinated are 50+ vs only 2.3% of unvaccinated, and the 50+ group has ~100× higher CFR.') ON CONFLICT (treatment_id) DO UPDATE SET study = EXCLUDED.study, treatment_label = EXCLUDED.treatment_label, description = EXCLUDED.description;
+
+INSERT INTO treatments (treatment_id, study, treatment_label, description)
+VALUES ('phe-covid-2021-B', 'phe-covid-2021', 'B', 'Unvaccinated. Within every age stratum, unvaccinated individuals have a HIGHER COVID-19 Delta death rate than vaccinated. Pooled death rate appears LOWER (0.17%) — a statistical artifact of the unvaccinated cohort being overwhelmingly young (97.7% under 50).') ON CONFLICT (treatment_id) DO UPDATE SET study = EXCLUDED.study, treatment_label = EXCLUDED.treatment_label, description = EXCLUDED.description;
 
 -- ----------------------------------------------------------------------------
 -- Strata: Table: Strata — the subdivisions of patients within a study by the value of the confounding variable (e.g. stone size). Each stratum belongs to one study.
@@ -182,6 +230,60 @@ VALUES ('compressed-synthetic-hard', 'compressed-synthetic', 'hard', 'Hard strat
 
 INSERT INTO strata (stratum_id, study, stratum_label, description)
 VALUES ('compressed-synthetic-easy', 'compressed-synthetic', 'easy', 'Easy stratum — higher baseline success rates (A=90%, B=80%). Treatment B is over-allocated here (60% of B cases vs 40% of A cases). This partially offsets B''s per-stratum disadvantage in the pooled analysis.') ON CONFLICT (stratum_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, description = EXCLUDED.description;
+
+INSERT INTO strata (stratum_id, study, stratum_label, description)
+VALUES ('reintjes-2000-low', 'reintjes-2000', 'low', 'Low-incidence hospitals (baseline UTI rate ≤2.5%). Prophylaxis rate: 20/1113=1.80%. Control rate: 5/720=0.69%. Prophylaxis is harmful here. Most prophylaxis patients land in this stratum (87%), pulling the aggregate prophylaxis rate down and fabricating an apparent protective effect pooled.') ON CONFLICT (stratum_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, description = EXCLUDED.description;
+
+INSERT INTO strata (stratum_id, study, stratum_label, description)
+VALUES ('reintjes-2000-high', 'reintjes-2000', 'high', 'High-incidence hospitals (baseline UTI rate >2.5%). Prophylaxis rate: 22/166=13.25%. Control rate: 99/1520=6.51%. Prophylaxis is again harmful. Controls are heavily concentrated here (1520 of 2240=68%), inflating the aggregate control rate.') ON CONFLICT (stratum_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, description = EXCLUDED.description;
+
+INSERT INTO strata (stratum_id, study, stratum_label, description)
+VALUES ('radelet-1981-white-victim', 'radelet-1981', 'white-victim', 'Cases with a white victim. Death penalty issued far more often here (~17% pooled). White def: 19/151=12.58%. Black def: 11/63=17.46%. Black defendants MORE likely within this stratum.') ON CONFLICT (stratum_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, description = EXCLUDED.description;
+
+INSERT INTO strata (stratum_id, study, stratum_label, description)
+VALUES ('radelet-1981-black-victim', 'radelet-1981', 'black-victim', 'Cases with a black victim. Death penalty rare here (~3.3% pooled). White def: 0/9=0.00%. Black def: 6/103=5.83%. Black defendants STILL more likely. Most black defendants are in this low-rate stratum (103/166=62%), dragging their aggregate rate down.') ON CONFLICT (stratum_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, description = EXCLUDED.description;
+
+INSERT INTO strata (stratum_id, study, stratum_label, description)
+VALUES ('jeter-justice-1997-1995', 'jeter-justice-1997', '1995', '1995 season. Jeter: 12/48=.250. Justice: 104/411=.253. Justice wins by 3 points. Small season for Jeter (48 AB, rookie call-up); Justice''s heaviest season (411 AB) and his weakest average — this is the stratum doing the most damage to Justice''s combined rate.') ON CONFLICT (stratum_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, description = EXCLUDED.description;
+
+INSERT INTO strata (stratum_id, study, stratum_label, description)
+VALUES ('jeter-justice-1997-1996', 'jeter-justice-1997', '1996', '1996 season. Jeter: 183/582=.314. Justice: 45/140=.321. Justice wins by 7 points. Jeter''s breakout full season (582 AB). Justice had a shortened season (140 AB) but a high average — a small, strong stratum that lifts his per-year record but contributes little weight to combined.') ON CONFLICT (stratum_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, description = EXCLUDED.description;
+
+INSERT INTO strata (stratum_id, study, stratum_label, description)
+VALUES ('jeter-justice-1997-1997', 'jeter-justice-1997', '1997', '1997 season. Jeter: 190/654=.291. Justice: 163/495=.329. Justice wins by 38 points — the largest per-stratum gap. Jeter''s largest season (654 AB). The allocation imbalance is clear: Jeter has 654 AB in a .291 year vs Justice''s 495 at .329.') ON CONFLICT (stratum_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, description = EXCLUDED.description;
+
+INSERT INTO strata (stratum_id, study, stratum_label, description)
+VALUES ('appleton-1996-18-24', 'appleton-1996', '18-24', 'Age 18-24 at baseline. Smokers: 2/55=3.6% mortality. Non-smokers: 1/72=1.4%. Smokers worse. Very low mortality overall; small absolute differences.') ON CONFLICT (stratum_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, description = EXCLUDED.description;
+
+INSERT INTO strata (stratum_id, study, stratum_label, description)
+VALUES ('appleton-1996-25-34', 'appleton-1996', '25-34', 'Age 25-34 at baseline. Smokers: 3/125=2.4% mortality. Non-smokers: 4/156=2.6%. Effectively tied (smokers marginally better — near-zero stratum gap). Very low mortality stratum.') ON CONFLICT (stratum_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, description = EXCLUDED.description;
+
+INSERT INTO strata (stratum_id, study, stratum_label, description)
+VALUES ('appleton-1996-35-44', 'appleton-1996', '35-44', 'Age 35-44 at baseline. Smokers: 10/105=9.5% mortality. Non-smokers: 7/111=6.3%. Smokers clearly worse.') ON CONFLICT (stratum_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, description = EXCLUDED.description;
+
+INSERT INTO strata (stratum_id, study, stratum_label, description)
+VALUES ('appleton-1996-45-54', 'appleton-1996', '45-54', 'Age 45-54 at baseline. Smokers: 28/131=21.4% mortality. Non-smokers: 12/78=15.4%. Smokers worse; gap widening with age.') ON CONFLICT (stratum_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, description = EXCLUDED.description;
+
+INSERT INTO strata (stratum_id, study, stratum_label, description)
+VALUES ('appleton-1996-55-64', 'appleton-1996', '55-64', 'Age 55-64 at baseline. Smokers: 52/116=44.8% mortality. Non-smokers: 41/122=33.6%. Smokers clearly worse; largest absolute gap in the middle strata.') ON CONFLICT (stratum_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, description = EXCLUDED.description;
+
+INSERT INTO strata (stratum_id, study, stratum_label, description)
+VALUES ('appleton-1996-65-74', 'appleton-1996', '65-74', 'Age 65-74 at baseline. Smokers: 31/37=83.8% mortality. Non-smokers: 101/129=78.3%. Smokers worse. Small smoker group (37) — most heavy smokers in this cohort had already died before reaching 65 at baseline (survivorship selection).') ON CONFLICT (stratum_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, description = EXCLUDED.description;
+
+INSERT INTO strata (stratum_id, study, stratum_label, description)
+VALUES ('appleton-1996-75plus', 'appleton-1996', '75+', 'Age 75+ at baseline. Smokers: 13/13=100% mortality. Non-smokers: 64/64=100%. Both groups reach 100% at 20-year follow-up — everyone in this stratum died. StratumGap=0. Heavy survivorship selection: only 13 smokers survived to 75+ at baseline vs 64 non-smokers.') ON CONFLICT (stratum_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, description = EXCLUDED.description;
+
+INSERT INTO strata (stratum_id, study, stratum_label, description)
+VALUES ('phe-covid-2021-under-50', 'phe-covid-2021', 'under 50', 'Age under 50. Vaccinated CFR: 21/89,807=0.023%. Unvaccinated CFR: 48/147,612=0.033%. Vaccinated clearly better. Low absolute mortality in both groups — under-50 COVID Delta deaths are rare regardless of vaccination status.') ON CONFLICT (stratum_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, description = EXCLUDED.description;
+
+INSERT INTO strata (stratum_id, study, stratum_label, description)
+VALUES ('phe-covid-2021-50plus', 'phe-covid-2021', '50 +', 'Age 50 and over. Vaccinated CFR: 460/27,307=1.68%. Unvaccinated CFR: 205/3,440=5.96%. Vaccinated dramatically better (3.5× lower death rate). The enormous relative risk reduction in this high-mortality stratum is the true vaccine signal — but it is hidden in the pooled comparison because so few unvaccinated people are in this stratum (3,440 vs 27,307 vaccinated).') ON CONFLICT (stratum_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, description = EXCLUDED.description;
+
+INSERT INTO strata (stratum_id, study, stratum_label, description)
+VALUES ('hannan-1994-high-risk', 'hannan-1994', 'high-risk', 'High-risk CABG patients (EuroSCORE-equivalent ≥5). High-volume hospitals (A) are disproportionately assigned these harder cases — 40% of A’s caseload vs 25% of B’s. A wins this stratum (95.0% vs 92.0%). The over-representation of hard cases in A drags A’s pooled rate below the equal-weight average.') ON CONFLICT (stratum_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, description = EXCLUDED.description;
+
+INSERT INTO strata (stratum_id, study, stratum_label, description)
+VALUES ('hannan-1994-low-risk', 'hannan-1994', 'low-risk', 'Low-risk CABG patients (EuroSCORE-equivalent <5). Low-volume hospitals (B) have proportionally more of these easier cases — 75% of B’s caseload vs 60% of A’s. A still wins this stratum (97.8% vs 96.0%). The allocation imbalance compresses A’s pooled advantage without reversing it.') ON CONFLICT (stratum_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, description = EXCLUDED.description;
 
 -- ----------------------------------------------------------------------------
 -- CaseCells: Table: CaseCells — the raw leaves of the DAG. One row per (study, stratum, treatment) combination recording the aggregate count of successes and total cases. Every derived fact in the model traces back to these numbers. Nothing above this row is a raw input.
@@ -258,6 +360,114 @@ VALUES ('compressed-synthetic-easy-A', 'compressed-synthetic', 'easy', 'A', 72, 
 INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
 VALUES ('compressed-synthetic-easy-B', 'compressed-synthetic', 'easy', 'B', 96, 120) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
 
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('reintjes-2000-low-A', 'reintjes-2000', 'low', 'A', 20, 1113) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('reintjes-2000-low-B', 'reintjes-2000', 'low', 'B', 5, 720) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('reintjes-2000-high-A', 'reintjes-2000', 'high', 'A', 22, 166) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('reintjes-2000-high-B', 'reintjes-2000', 'high', 'B', 99, 1520) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('radelet-1981-white-victim-A', 'radelet-1981', 'white-victim', 'A', 19, 151) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('radelet-1981-white-victim-B', 'radelet-1981', 'white-victim', 'B', 11, 63) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('radelet-1981-black-victim-A', 'radelet-1981', 'black-victim', 'A', 0, 9) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('radelet-1981-black-victim-B', 'radelet-1981', 'black-victim', 'B', 6, 103) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('jeter-justice-1997-1995-A', 'jeter-justice-1997', '1995', 'A', 12, 48) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('jeter-justice-1997-1995-B', 'jeter-justice-1997', '1995', 'B', 104, 411) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('jeter-justice-1997-1996-A', 'jeter-justice-1997', '1996', 'A', 183, 582) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('jeter-justice-1997-1996-B', 'jeter-justice-1997', '1996', 'B', 45, 140) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('jeter-justice-1997-1997-A', 'jeter-justice-1997', '1997', 'A', 190, 654) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('jeter-justice-1997-1997-B', 'jeter-justice-1997', '1997', 'B', 163, 495) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('appleton-1996-18-24-A', 'appleton-1996', '18-24', 'A', 2, 55) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('appleton-1996-18-24-B', 'appleton-1996', '18-24', 'B', 1, 72) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('appleton-1996-25-34-A', 'appleton-1996', '25-34', 'A', 3, 125) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('appleton-1996-25-34-B', 'appleton-1996', '25-34', 'B', 4, 156) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('appleton-1996-35-44-A', 'appleton-1996', '35-44', 'A', 10, 105) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('appleton-1996-35-44-B', 'appleton-1996', '35-44', 'B', 7, 111) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('appleton-1996-45-54-A', 'appleton-1996', '45-54', 'A', 28, 131) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('appleton-1996-45-54-B', 'appleton-1996', '45-54', 'B', 12, 78) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('appleton-1996-55-64-A', 'appleton-1996', '55-64', 'A', 52, 116) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('appleton-1996-55-64-B', 'appleton-1996', '55-64', 'B', 41, 122) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('appleton-1996-65-74-A', 'appleton-1996', '65-74', 'A', 31, 37) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('appleton-1996-65-74-B', 'appleton-1996', '65-74', 'B', 101, 129) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('appleton-1996-75plus-A', 'appleton-1996', '75+', 'A', 13, 13) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('appleton-1996-75plus-B', 'appleton-1996', '75+', 'B', 64, 64) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('phe-covid-2021-under-50-A', 'phe-covid-2021', 'under 50', 'A', 21, 89807) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('phe-covid-2021-under-50-B', 'phe-covid-2021', 'under 50', 'B', 48, 147612) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('phe-covid-2021-50plus-A', 'phe-covid-2021', '50 +', 'A', 460, 27307) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('phe-covid-2021-50plus-B', 'phe-covid-2021', '50 +', 'B', 205, 3440) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('hannan-1994-high-risk-A', 'hannan-1994', 'high-risk', 'A', 228, 240) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('hannan-1994-high-risk-B', 'hannan-1994', 'high-risk', 'B', 46, 50) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('hannan-1994-low-risk-A', 'hannan-1994', 'low-risk', 'A', 352, 360) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('hannan-1994-low-risk-B', 'hannan-1994', 'low-risk', 'B', 144, 150) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
 -- ----------------------------------------------------------------------------
 -- StratumSummaries: Table: StratumSummaries — one row per (study, stratum, treatment). Computes the success rate WITHIN each stratum for each treatment. This is the stratified view that contradicts the pooled conclusion when a Simpson's Paradox reversal is present. Each row belongs to both a Stratum and a Treatment in the same Study.
 -- ----------------------------------------------------------------------------
@@ -333,6 +543,114 @@ VALUES ('compressed-synthetic-easy-A', 'compressed-synthetic', 'easy', 'A') ON C
 INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
 VALUES ('compressed-synthetic-easy-B', 'compressed-synthetic', 'easy', 'B') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
 
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('reintjes-2000-low-A', 'reintjes-2000', 'low', 'A') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('reintjes-2000-low-B', 'reintjes-2000', 'low', 'B') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('reintjes-2000-high-A', 'reintjes-2000', 'high', 'A') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('reintjes-2000-high-B', 'reintjes-2000', 'high', 'B') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('radelet-1981-white-victim-A', 'radelet-1981', 'white-victim', 'A') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('radelet-1981-white-victim-B', 'radelet-1981', 'white-victim', 'B') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('radelet-1981-black-victim-A', 'radelet-1981', 'black-victim', 'A') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('radelet-1981-black-victim-B', 'radelet-1981', 'black-victim', 'B') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('jeter-justice-1997-1995-A', 'jeter-justice-1997', '1995', 'A') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('jeter-justice-1997-1995-B', 'jeter-justice-1997', '1995', 'B') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('jeter-justice-1997-1996-A', 'jeter-justice-1997', '1996', 'A') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('jeter-justice-1997-1996-B', 'jeter-justice-1997', '1996', 'B') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('jeter-justice-1997-1997-A', 'jeter-justice-1997', '1997', 'A') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('jeter-justice-1997-1997-B', 'jeter-justice-1997', '1997', 'B') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('appleton-1996-18-24-A', 'appleton-1996', '18-24', 'A') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('appleton-1996-18-24-B', 'appleton-1996', '18-24', 'B') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('appleton-1996-25-34-A', 'appleton-1996', '25-34', 'A') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('appleton-1996-25-34-B', 'appleton-1996', '25-34', 'B') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('appleton-1996-35-44-A', 'appleton-1996', '35-44', 'A') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('appleton-1996-35-44-B', 'appleton-1996', '35-44', 'B') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('appleton-1996-45-54-A', 'appleton-1996', '45-54', 'A') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('appleton-1996-45-54-B', 'appleton-1996', '45-54', 'B') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('appleton-1996-55-64-A', 'appleton-1996', '55-64', 'A') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('appleton-1996-55-64-B', 'appleton-1996', '55-64', 'B') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('appleton-1996-65-74-A', 'appleton-1996', '65-74', 'A') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('appleton-1996-65-74-B', 'appleton-1996', '65-74', 'B') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('appleton-1996-75plus-A', 'appleton-1996', '75+', 'A') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('appleton-1996-75plus-B', 'appleton-1996', '75+', 'B') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('phe-covid-2021-under-50-A', 'phe-covid-2021', 'under 50', 'A') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('phe-covid-2021-under-50-B', 'phe-covid-2021', 'under 50', 'B') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('phe-covid-2021-50plus-A', 'phe-covid-2021', '50 +', 'A') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('phe-covid-2021-50plus-B', 'phe-covid-2021', '50 +', 'B') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('hannan-1994-high-risk-A', 'hannan-1994', 'high-risk', 'A') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('hannan-1994-high-risk-B', 'hannan-1994', 'high-risk', 'B') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('hannan-1994-low-risk-A', 'hannan-1994', 'low-risk', 'A') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('hannan-1994-low-risk-B', 'hannan-1994', 'low-risk', 'B') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
 -- ----------------------------------------------------------------------------
 -- ModelSummary: Table: ModelSummary — one row describing the epistemic coverage of this entire model instance. Aggregates across all TreatmentRankings to witness how many studies were examined, how many showed a full reversal, how many were explained, and the average paradox strength. The model holds a mirror to itself.
 -- ----------------------------------------------------------------------------
@@ -357,6 +675,24 @@ VALUES ('balanced-synthetic-stratum', 'balanced-synthetic', 'stratum', 'unknown'
 INSERT INTO stratum_variables (stratum_variable_id, study, variable_name, causal_role, affects_treatment_assignment, affects_outcome, mechanism_note)
 VALUES ('compressed-synthetic-stratum', 'compressed-synthetic', 'difficulty', 'confounder', TRUE, TRUE, 'Case difficulty affects both which treatment patients receive (A is over-allocated to hard cases: 60% vs 40%) and the outcome (hard cases have lower success rates for both treatments). This IS confounding — but the confounding is not strong enough to flip the pooled winner. A wins in every stratum and also wins pooled. The allocation compresses A''s pooled advantage (from equal-weight 10pp down to actual 6pp) but does not erase it. This is type-C distortion: real confounding, partial distortion, no reversal.') ON CONFLICT (stratum_variable_id) DO UPDATE SET study = EXCLUDED.study, variable_name = EXCLUDED.variable_name, causal_role = EXCLUDED.causal_role, affects_treatment_assignment = EXCLUDED.affects_treatment_assignment, affects_outcome = EXCLUDED.affects_outcome, mechanism_note = EXCLUDED.mechanism_note;
 
+INSERT INTO stratum_variables (stratum_variable_id, study, variable_name, causal_role, affects_treatment_assignment, affects_outcome, mechanism_note)
+VALUES ('reintjes-2000-hospital-incidence', 'reintjes-2000', 'hospital_incidence_level', 'confounder', TRUE, TRUE, 'Hospital baseline UTI incidence affects both whether a patient received prophylaxis (high-incidence hospitals were more likely to forgo it, concentrating controls there) and the outcome (high-incidence hospitals have higher UTI rates regardless of treatment). Most prophylaxis patients are in low-incidence hospitals (1113/1279=87%), which depresses the aggregate prophylaxis UTI rate below the aggregate control rate — inverting the within-stratum finding.') ON CONFLICT (stratum_variable_id) DO UPDATE SET study = EXCLUDED.study, variable_name = EXCLUDED.variable_name, causal_role = EXCLUDED.causal_role, affects_treatment_assignment = EXCLUDED.affects_treatment_assignment, affects_outcome = EXCLUDED.affects_outcome, mechanism_note = EXCLUDED.mechanism_note;
+
+INSERT INTO stratum_variables (stratum_variable_id, study, variable_name, causal_role, affects_treatment_assignment, affects_outcome, mechanism_note)
+VALUES ('radelet-1981-victim-race', 'radelet-1981', 'victim_race', 'confounder', TRUE, TRUE, 'Victim race affects both defendant race (cross-race homicides are rare — most black defendants killed black victims, most white defendants killed white victims) and sentencing outcome (white-victim cases receive the death penalty ~5× more often: ~17.7% vs ~3.3%). This is classic confounding. Black defendants are disproportionately concentrated in the black-victim stratum (low sentence rate), pulling their aggregate death penalty rate below white defendants'' rate — even though black defendants are MORE likely to be sentenced to death within each victim-race stratum.') ON CONFLICT (stratum_variable_id) DO UPDATE SET study = EXCLUDED.study, variable_name = EXCLUDED.variable_name, causal_role = EXCLUDED.causal_role, affects_treatment_assignment = EXCLUDED.affects_treatment_assignment, affects_outcome = EXCLUDED.affects_outcome, mechanism_note = EXCLUDED.mechanism_note;
+
+INSERT INTO stratum_variables (stratum_variable_id, study, variable_name, causal_role, affects_treatment_assignment, affects_outcome, mechanism_note)
+VALUES ('jeter-justice-1997-season', 'jeter-justice-1997', 'season_year', 'confounder', TRUE, TRUE, 'The season year affects both the player''s at-bat count (treatment assignment proxy — Justice''s heaviest season was 1995 when his average was lowest; Jeter''s heaviest were 1996-97 when his average was higher) and the outcome (players hit differently in different years). Justice front-loaded his ABs into his worst year (411 of 1046 = 39% in 1995 at .253); Jeter back-loaded into his stronger years (1236 of 1284 = 96% in 1996-97 at .300-.314). This differential allocation of AB-weight across years flips the combined average despite Justice winning every year individually.') ON CONFLICT (stratum_variable_id) DO UPDATE SET study = EXCLUDED.study, variable_name = EXCLUDED.variable_name, causal_role = EXCLUDED.causal_role, affects_treatment_assignment = EXCLUDED.affects_treatment_assignment, affects_outcome = EXCLUDED.affects_outcome, mechanism_note = EXCLUDED.mechanism_note;
+
+INSERT INTO stratum_variables (stratum_variable_id, study, variable_name, causal_role, affects_treatment_assignment, affects_outcome, mechanism_note)
+VALUES ('appleton-1996-age', 'appleton-1996', 'age_group_at_baseline', 'confounder', TRUE, TRUE, 'Age at baseline confounds both smoking status and 20-year mortality. Smoking affects age distribution in the cohort (survivorship bias: people who smoked heavily and were older had already died before the 1972-74 baseline survey, so the surviving smokers skew younger). Age strongly determines 20-year mortality regardless of smoking. The result: smokers are over-represented in low-mortality age strata (18-44), pulling the pooled smoker mortality rate below the true within-stratum risk. This is the textbook epidemiological confounding by age pattern, often called the "healthy smoker" fallacy in this particular dataset.') ON CONFLICT (stratum_variable_id) DO UPDATE SET study = EXCLUDED.study, variable_name = EXCLUDED.variable_name, causal_role = EXCLUDED.causal_role, affects_treatment_assignment = EXCLUDED.affects_treatment_assignment, affects_outcome = EXCLUDED.affects_outcome, mechanism_note = EXCLUDED.mechanism_note;
+
+INSERT INTO stratum_variables (stratum_variable_id, study, variable_name, causal_role, affects_treatment_assignment, affects_outcome, mechanism_note)
+VALUES ('phe-covid-2021-age', 'phe-covid-2021', 'age_group', 'confounder', TRUE, TRUE, 'Age group is a powerful confounder. It affects vaccine uptake (older people were prioritised and had much higher vaccination rates in the UK''s 2021 rollout — 23% of vaccinated are 50+ vs only 2.3% of unvaccinated) and strongly determines COVID-19 mortality (50+ CFR is ~40× higher than under-50 CFR in this dataset regardless of vaccination). The vaccinated cohort is therefore loaded with high-risk patients, inflating the pooled vaccinated death rate to 0.41% vs 0.17% for unvaccinated — reversing the within-stratum relationship where vaccines reduce death rates by 3× to 4× in every age group.') ON CONFLICT (stratum_variable_id) DO UPDATE SET study = EXCLUDED.study, variable_name = EXCLUDED.variable_name, causal_role = EXCLUDED.causal_role, affects_treatment_assignment = EXCLUDED.affects_treatment_assignment, affects_outcome = EXCLUDED.affects_outcome, mechanism_note = EXCLUDED.mechanism_note;
+
+INSERT INTO stratum_variables (stratum_variable_id, study, variable_name, causal_role, affects_treatment_assignment, affects_outcome, mechanism_note)
+VALUES ('hannan-1994-patient-risk', 'hannan-1994', 'patient_risk_class', 'confounder', TRUE, TRUE, 'Patient risk class affects both hospital assignment (high-volume centers receive referrals of sicker patients — 40% of A caseload is high-risk vs 25% at B) and surgical outcome (high-risk patients have higher operative mortality regardless of hospital volume). High-volume hospitals win in every risk stratum and also win pooled, but their pooled survival advantage is compressed from 2.4pp (equal-weight stratum average) down to 1.7pp (actual pooled) because they carry more hard cases. IsSignFlip=FALSE, AllocationDistortion>0 — the geometry of type-C distortion.') ON CONFLICT (stratum_variable_id) DO UPDATE SET study = EXCLUDED.study, variable_name = EXCLUDED.variable_name, causal_role = EXCLUDED.causal_role, affects_treatment_assignment = EXCLUDED.affects_treatment_assignment, affects_outcome = EXCLUDED.affects_outcome, mechanism_note = EXCLUDED.mechanism_note;
+
 -- ----------------------------------------------------------------------------
 -- TreatmentRankings: Table: TreatmentRankings — one row per treatment-pair comparison within a study. Derives the pooled winner, the per-stratum winner, and the IsReversal boolean. The paradox emerges here as a derived fact: IsReversal is true when the pooled winner and the per-stratum winner disagree.
 -- ----------------------------------------------------------------------------
@@ -374,6 +710,24 @@ VALUES ('berkeley-1973-A-vs-B', 'berkeley-1973', 'A', 'B') ON CONFLICT (treatmen
 
 INSERT INTO treatment_rankings (treatment_ranking_id, study, treatment_a, treatment_b)
 VALUES ('compressed-synthetic-A-vs-B', 'compressed-synthetic', 'A', 'B') ON CONFLICT (treatment_ranking_id) DO UPDATE SET study = EXCLUDED.study, treatment_a = EXCLUDED.treatment_a, treatment_b = EXCLUDED.treatment_b;
+
+INSERT INTO treatment_rankings (treatment_ranking_id, study, treatment_a, treatment_b)
+VALUES ('reintjes-2000-A-vs-B', 'reintjes-2000', 'A', 'B') ON CONFLICT (treatment_ranking_id) DO UPDATE SET study = EXCLUDED.study, treatment_a = EXCLUDED.treatment_a, treatment_b = EXCLUDED.treatment_b;
+
+INSERT INTO treatment_rankings (treatment_ranking_id, study, treatment_a, treatment_b)
+VALUES ('radelet-1981-A-vs-B', 'radelet-1981', 'A', 'B') ON CONFLICT (treatment_ranking_id) DO UPDATE SET study = EXCLUDED.study, treatment_a = EXCLUDED.treatment_a, treatment_b = EXCLUDED.treatment_b;
+
+INSERT INTO treatment_rankings (treatment_ranking_id, study, treatment_a, treatment_b)
+VALUES ('jeter-justice-1997-A-vs-B', 'jeter-justice-1997', 'A', 'B') ON CONFLICT (treatment_ranking_id) DO UPDATE SET study = EXCLUDED.study, treatment_a = EXCLUDED.treatment_a, treatment_b = EXCLUDED.treatment_b;
+
+INSERT INTO treatment_rankings (treatment_ranking_id, study, treatment_a, treatment_b)
+VALUES ('appleton-1996-A-vs-B', 'appleton-1996', 'A', 'B') ON CONFLICT (treatment_ranking_id) DO UPDATE SET study = EXCLUDED.study, treatment_a = EXCLUDED.treatment_a, treatment_b = EXCLUDED.treatment_b;
+
+INSERT INTO treatment_rankings (treatment_ranking_id, study, treatment_a, treatment_b)
+VALUES ('phe-covid-2021-A-vs-B', 'phe-covid-2021', 'A', 'B') ON CONFLICT (treatment_ranking_id) DO UPDATE SET study = EXCLUDED.study, treatment_a = EXCLUDED.treatment_a, treatment_b = EXCLUDED.treatment_b;
+
+INSERT INTO treatment_rankings (treatment_ranking_id, study, treatment_a, treatment_b)
+VALUES ('hannan-1994-A-vs-B', 'hannan-1994', 'A', 'B') ON CONFLICT (treatment_ranking_id) DO UPDATE SET study = EXCLUDED.study, treatment_a = EXCLUDED.treatment_a, treatment_b = EXCLUDED.treatment_b;
 
 -- ----------------------------------------------------------------------------
 -- Methodology: Table: Methodology — the first-principles process used to build this domain model. Each row documents one methodological axiom or step. Together these rows let a reader (or an LLM) reconstruct why the model is shaped the way it is, and re-apply the same process to a new domain.
@@ -394,7 +748,7 @@ INSERT INTO methodology (methodology_id, phase, title, statement, why_it_matters
 VALUES ('method-05-synthetic-controls', 'validation', 'Introduce synthetic control studies to test structural impossibility', 'For every interesting derived boolean (IsReversal, IsSignFlip), add at least one synthetic study where the boolean MUST be false by construction. Witnessing the false case in the DB proves the derivation is not vacuously true.', 'Without a structural-impossibility witness, a bug in the formula that always returns TRUE would pass all the positive tests. The balanced-synthetic and kidney-balanced studies exist solely to witness IsReversal=FALSE and AllocationDistortion=0.', 'loop-07, loop-14') ON CONFLICT (methodology_id) DO UPDATE SET phase = EXCLUDED.phase, title = EXCLUDED.title, statement = EXCLUDED.statement, why_it_matters = EXCLUDED.why_it_matters, illustrated_by_loop = EXCLUDED.illustrated_by_loop;
 
 INSERT INTO methodology (methodology_id, phase, title, statement, why_it_matters, illustrated_by_loop)
-VALUES ('method-06-real-data-hydration', 'hydration', 'Real data enters through 05b-customize-data.sql, not the rulebook JSON', 'The rulebook JSON defines the schema. Real published study counts (Successes, Cases per cell) enter via idempotent ON CONFLICT upserts in 05b-customize-data.sql. Provenance is recorded in data/raw/<study-id>/provenance.md. The view chain computes every derived field from there — no schema changes are needed to add a new study.', 'Putting raw counts in the rulebook JSON conflates schema (durable) with instance data (swappable). The hydration contract allows the instrument to be applied to new datasets without touching the SSoT.', 'loop-20, loop-20b') ON CONFLICT (methodology_id) DO UPDATE SET phase = EXCLUDED.phase, title = EXCLUDED.title, statement = EXCLUDED.statement, why_it_matters = EXCLUDED.why_it_matters, illustrated_by_loop = EXCLUDED.illustrated_by_loop;
+VALUES ('method-06-real-data-hydration', 'hydration', 'Real study data lives in the rulebook JSON — the SSoT is unified', 'The rulebook JSON is the single source of truth for both schema and instance data. Real published study counts (Successes, Cases per cell) live directly in each table''s data array alongside the synthetic studies. Provenance for each real study is recorded in data/raw/<study-id>/provenance.md. The view chain computes every derived field from the rulebook without any separate hydration step.', 'Keeping schema and instance data together in one document makes the instrument self-contained and auditable. The rulebook JSON can be shared, forked, or loaded without a separate SQL hydration step. The schema still defines derivations; the data rows supply the raw inputs.', 'loop-01, loop-20, loop-20b') ON CONFLICT (methodology_id) DO UPDATE SET phase = EXCLUDED.phase, title = EXCLUDED.title, statement = EXCLUDED.statement, why_it_matters = EXCLUDED.why_it_matters, illustrated_by_loop = EXCLUDED.illustrated_by_loop;
 
 INSERT INTO methodology (methodology_id, phase, title, statement, why_it_matters, illustrated_by_loop)
 VALUES ('method-07-continuous-geometry', 'taxonomy', 'Replace binary reversal criterion with continuous geometry: IsSignFlip + AllocationDistortion', 'The original IsReversal (unanimous per-stratum winner disagrees with pooled winner) is a binary that excludes partial reversals. The sign-flip definition (WeightedStratumGapSum and SignedPooledGap have opposite signs) captures the full continuum. AllocationDistortion = |WSGSUM − SignedPooledGap| is the scalar severity regardless of direction.', 'Berkeley 1973 fails the unanimity criterion (dept-C gives male a marginal win) but IS a Simpson-type paradox under the continuous definition. Excluding Berkeley from the analysis would be a category error.', 'loop-17, loop-18') ON CONFLICT (methodology_id) DO UPDATE SET phase = EXCLUDED.phase, title = EXCLUDED.title, statement = EXCLUDED.statement, why_it_matters = EXCLUDED.why_it_matters, illustrated_by_loop = EXCLUDED.illustrated_by_loop;
