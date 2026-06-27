@@ -100,7 +100,7 @@
       {
         "LoopId": "loop-10",
         "Title": "StudySummary: the model witnesses its own epistemic coverage",
-        "Status": "planned",
+        "Status": "complete",
         "NewConcept": "StudySummary table (one row per model instance): StudyCount, ReversalCount, ExplainedCount, UnexplainedCount, ImpossibleCount, AvgParadoxStrength",
         "DomainQuestion": "Across all studies in this model, what is the epistemic state? How many reversals, how many explained, how many witnessed-but-unexplained?",
         "MockDataNote": "3 studies: ReversalCount=2 (kidney+berkeley), ExplainedCount=1 (kidney), UnexplainedCount=1 (berkeley), ImpossibleCount=1 (balanced). The model now holds a mirror to itself.",
@@ -256,6 +256,25 @@
       { "StratumSummaryId": "berkeley-1973-dept-C-female","Study": "berkeley-1973",      "StratumLabel": "dept-C", "TreatmentLabel": "B" },
       { "StratumSummaryId": "berkeley-1973-dept-D-male",  "Study": "berkeley-1973",      "StratumLabel": "dept-D", "TreatmentLabel": "A" },
       { "StratumSummaryId": "berkeley-1973-dept-D-female","Study": "berkeley-1973",      "StratumLabel": "dept-D", "TreatmentLabel": "B" }
+    ]
+  },
+
+  "ModelSummary": {
+    "Description": "Table: ModelSummary — one row describing the epistemic coverage of this entire model instance. Aggregates across all TreatmentRankings to witness how many studies were examined, how many showed a full reversal, how many were explained, and the average paradox strength. The model holds a mirror to itself.",
+    "schema": [
+      { "name": "ModelSummaryId",      "datatype": "string",  "type": "raw",        "nullable": false, "Description": "Unique identifier for this model instance." },
+      { "name": "Name",                "datatype": "string",  "type": "calculated", "nullable": false, "Description": "Display label.", "formula": "={{ModelSummaryId}}" },
+      { "name": "ReversalCount",       "datatype": "integer", "type": "aggregation","nullable": true,  "Description": "Number of studies with IsReversal=TRUE (strict full reversal).", "formula": "=COUNTIFS(TreatmentRankings!{{IsReversal}}, TRUE())" },
+      { "name": "NonReversalCount",    "datatype": "integer", "type": "aggregation","nullable": true,  "Description": "Number of studies with IsReversal=FALSE.", "formula": "=COUNTIFS(TreatmentRankings!{{IsReversal}}, FALSE())" },
+      { "name": "StudyCount",          "datatype": "integer", "type": "calculated", "nullable": true,  "Description": "Total number of TreatmentRankings in this model: ReversalCount + NonReversalCount.", "formula": "={{ReversalCount}} + {{NonReversalCount}}" },
+      { "name": "ExplainedCount",      "datatype": "integer", "type": "aggregation","nullable": true,  "Description": "Number of studies with IsParadoxExplained=TRUE (reversal AND confirmed confounder).", "formula": "=COUNTIFS(TreatmentRankings!{{IsParadoxExplained}}, TRUE())" },
+      { "name": "ZeroStrengthCount",   "datatype": "integer", "type": "aggregation","nullable": true,  "Description": "Studies with StrataWonByLoser=0: no strata go against the pooled winner. These are structurally paradox-free.", "formula": "=COUNTIFS(TreatmentRankings!{{StrataWonByLoser}}, 0)" },
+      { "name": "PartialCount",        "datatype": "integer", "type": "calculated", "nullable": true,  "Description": "Studies with ParadoxStrength > 0 but IsReversal=FALSE: partial paradoxes real but not formally complete.", "formula": "={{NonReversalCount}} - {{ZeroStrengthCount}}" },
+      { "name": "TotalParadoxStrength","datatype": "number",  "type": "aggregation","nullable": true,  "Description": "Sum of ParadoxStrength across all studies. Used to compute average.", "formula": "=SUMIFS(TreatmentRankings!{{ParadoxStrength}}, TreatmentRankings!{{TreatmentA}}, \"A\")" },
+      { "name": "AvgParadoxStrength",  "datatype": "number",  "type": "calculated", "nullable": true,  "Description": "Average ParadoxStrength across all studies: TotalParadoxStrength / StudyCount. A scalar summary of how paradox-rich this dataset is.", "formula": "=IF({{StudyCount}} = 0, \"\", {{TotalParadoxStrength}} / {{StudyCount}})" }
+    ],
+    "data": [
+      { "ModelSummaryId": "simpsons-paradox-v1" }
     ]
   },
 
