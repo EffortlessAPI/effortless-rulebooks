@@ -104,7 +104,52 @@
         "NewConcept": "StudySummary table (one row per model instance): StudyCount, ReversalCount, ExplainedCount, UnexplainedCount, ImpossibleCount, AvgParadoxStrength",
         "DomainQuestion": "Across all studies in this model, what is the epistemic state? How many reversals, how many explained, how many witnessed-but-unexplained?",
         "MockDataNote": "3 studies: ReversalCount=2 (kidney+berkeley), ExplainedCount=1 (kidney), UnexplainedCount=1 (berkeley), ImpossibleCount=1 (balanced). The model now holds a mirror to itself.",
-        "NextSuggestion": "Pour a fresh open dataset through this identical DAG. Any reversal it surfaces is deductively certain. The instrument is validated across three structurally distinct cases."
+        "NextSuggestion": "Ask: how heavy is each stratum? Add StratumFraction to StratumSummaries — the fraction of the study's total cases that land in each stratum. The weight each stratum carries IS the lever the confounder pulls."
+      },
+      {
+        "LoopId": "loop-11",
+        "Title": "StratumFraction: the weight each stratum carries in the pooled average",
+        "Status": "complete",
+        "NewConcept": "StratumFraction (and StudyTotalCases, StratumTotalCases) on StratumSummaries",
+        "DomainQuestion": "What fraction of the study's total cases land in each stratum? High StratumFraction on a low-success stratum pulls the pooled rate down — and when that stratum is also over-allocated to one treatment, the reversal follows.",
+        "MockDataNote": "kidney-1986: large-stratum = (263+80)/700 = 49%; small-stratum = (87+270)/700 = 51%. Nearly equal stratum weights — but unequal per-treatment allocation (75% of A is in large; 23% of B is in large). The weight alone is not the mechanism; the differential allocation into heavy strata is.",
+        "NextSuggestion": "Add WeightedStratumRate: StratumFraction × StratumSuccessRate per treatment row. Sum these across strata to reconstruct PooledRate from first principles. The DAG now witnesses the mechanism equation: pooled rate = weighted average of stratum rates."
+      },
+      {
+        "LoopId": "loop-12",
+        "Title": "WeightedPull: mechanism equation witnessed — pooled rate = weighted sum of stratum rates",
+        "Status": "complete",
+        "NewConcept": "WeightedStratumRate on StratumSummaries; PooledRateFromWeightsA and PooledRateFromWeightsB on TreatmentRankings",
+        "DomainQuestion": "Can the DAG reconstruct each treatment's pooled rate purely from stratum weights × stratum rates? If PooledRateFromWeights = PooledRate, the mechanism equation is verified: Simpson's Paradox is algebraically explained.",
+        "MockDataNote": "kidney-1986: PooledRateFromWeightsA=0.833, PooledRateFromWeightsB=0.779 (A looks better under equal study-level weights). But actual pooled rates are A=0.780, B=0.826 (B looks better). The divergence IS the mechanism: real pooled uses treatment-level allocation weights; the reconstruction uses study-level weights. The swap between the two orderings shows exactly how differential allocation flips the conclusion. balanced-synthetic: weights match exactly (equal allocation = no flip possible).",
+        "NextSuggestion": "Add AllocationBias to StratumSummaries: the difference between TreatmentExposureFraction for A and B in each stratum. High bias toward the losing treatment in a low-success stratum IS the confounder's fingerprint as a witnessed number."
+      },
+      {
+        "LoopId": "loop-13",
+        "Title": "AllocationBias: the confounder's fingerprint as a signed witnessed number",
+        "Status": "complete",
+        "NewConcept": "AllocationBias on StratumSummaries (AllocationFractionA - AllocationFractionB); also AllocationFractionA, AllocationFractionB, TreatmentACasesHere, TreatmentBCasesHere, TreatmentATotalCases, TreatmentBTotalCases",
+        "DomainQuestion": "In each stratum, is one treatment disproportionately concentrated here? AllocationBias = AllocationFractionA - AllocationFractionB: positive means A is over-represented here, negative means B is. A strong negative bias in a low-success stratum is the confounder's fingerprint.",
+        "MockDataNote": "kidney-1986 large-stratum: AllocationFractionA=263/350=0.751, AllocationFractionB=80/350=0.229, AllocationBias=+0.523. A is massively over-allocated to the hard (large-stone) stratum. This single number summarizes why the pooled rate misleads: A carries 52pp more exposure to the hard case, dragging its pooled average down below B's despite beating B in both strata.",
+        "NextSuggestion": "Add a 4th study: kidney-balanced — same stratum rates as kidney-1986 but with equal allocation (50/50 split). AllocationBias=0 everywhere, IsReversal=FALSE. The counterfactual shows the reversal is purely an allocation artifact, not a property of the treatment rates themselves."
+      },
+      {
+        "LoopId": "loop-14",
+        "Title": "Counterfactual: kidney-balanced isolates allocation as the sole cause of the reversal",
+        "Status": "complete",
+        "NewConcept": "Fourth study (kidney-balanced): same stratum rates as kidney-1986, equal allocation (175 cases per cell). IsReversal=FALSE, AllocationBias=0, ParadoxStrength=0.",
+        "DomainQuestion": "If the same doctors, same disease, same treatments, same stratum difficulty — but patients were allocated equally — would the paradox still exist? The DAG answers: no. The reversal lives in the allocation, not in the treatment rates.",
+        "MockDataNote": "kidney-balanced: PooledRateA = (163+128)/350 = 0.831, PooledRateB = (152+120)/350 = 0.777. A wins pooled AND per-stratum. IsReversal=FALSE, ParadoxStrength=0. AllocationBias=0 in both strata. The counterfactual witnesses that the reversal in kidney-1986 is entirely an artifact of differential allocation, not of treatment efficacy.",
+        "NextSuggestion": "Add ReversalThreshold to TreatmentRankings: the minimum AllocationBias magnitude needed to flip the pooled winner. How far is kidney-1986 from the threshold? How close is berkeley-1973? This quantifies paradox fragility vs robustness."
+      },
+      {
+        "LoopId": "loop-15",
+        "Title": "ReversalThreshold: how robust or fragile is each study's paradox?",
+        "Status": "complete",
+        "NewConcept": "MaxAllocationBias, WeightedStratumGapSum, ThresholdMargin on TreatmentRankings",
+        "DomainQuestion": "How much allocation bias is needed to produce a reversal? Is the observed bias well above threshold (robust paradox) or barely over it (fragile paradox)? ThresholdMargin = observed bias minus minimum needed.",
+        "MockDataNote": "kidney-1986: ReversalIntensity=1.0, ThresholdMargin=+0.5 — maximally robust, every stratum opposes pooled. berkeley-1973: ReversalIntensity=0.75, ThresholdMargin=+0.25 — past threshold but not unanimous (3/4 departments oppose). balanced-synthetic and kidney-balanced: intensity=0, margin=-0.5 — structurally impossible. ThresholdMargin > 0 means the paradox is robust; < 0 means absent or impossible.",
+        "NextSuggestion": "Consider adding a per-stratum StratumGap field and a study-level WeightedStratumGapSum that correctly sums StratumFraction × |RateA - RateB|. Then ThresholdMargin becomes PooledGap / WeightedStratumGapSum — a dimensionless ratio: 1.0 means exactly at threshold, >1 means past it."
       }
     ]
   },
@@ -134,6 +179,12 @@
         "SourceUrl": ""
       },
       {
+        "StudyId": "kidney-balanced",
+        "Title": "Kidney Stone Counterfactual (balanced allocation — reversal algebraically impossible)",
+        "Source": "Synthetic dataset derived from Charig 1986 kidney stone rates but with equal treatment allocation across strata (175 cases per cell). Demonstrates that the reversal in the original study is purely an allocation artifact.",
+        "SourceUrl": ""
+      },
+      {
         "StudyId": "berkeley-1973",
         "Title": "UC Berkeley Graduate Admissions (Bickel et al. 1975) — contested confounder",
         "Source": "Bickel PJ, Hammel EA, O'Connell JW. Sex Bias in Graduate Admissions: Data from Berkeley. Science. 1975;187:398-404.",
@@ -157,6 +208,8 @@
     "data": [
       { "TreatmentId": "kidney-1986-A",        "Study": "kidney-1986",        "TreatmentLabel": "A", "Description": "Open surgery / percutaneous nephrolithotomy (PCNL) — the more invasive procedure, used preferentially for large stones." },
       { "TreatmentId": "kidney-1986-B",        "Study": "kidney-1986",        "TreatmentLabel": "B", "Description": "Extracorporeal shock wave lithotripsy (ESWL) — the less invasive procedure, used more for small stones." },
+      { "TreatmentId": "kidney-balanced-A",    "Study": "kidney-balanced",    "TreatmentLabel": "A", "Description": "Open surgery / PCNL — same per-stratum rates as kidney-1986 (small:93.1%, large:73.0%) but now allocated equally (50%) to each stratum. Counterfactual treatment A." },
+      { "TreatmentId": "kidney-balanced-B",    "Study": "kidney-balanced",    "TreatmentLabel": "B", "Description": "ESWL — same per-stratum rates as kidney-1986 (small:86.7%, large:68.8%) but allocated equally (50%) to each stratum. Counterfactual treatment B." },
       { "TreatmentId": "balanced-synthetic-A", "Study": "balanced-synthetic", "TreatmentLabel": "A", "Description": "Synthetic treatment A — 60% success rate in both strata. Allocated equally (50%) to each stratum." },
       { "TreatmentId": "balanced-synthetic-B", "Study": "balanced-synthetic", "TreatmentLabel": "B", "Description": "Synthetic treatment B — 50% success rate in both strata. Allocated equally (50%) to each stratum." },
       { "TreatmentId": "berkeley-1973-male",   "Study": "berkeley-1973",      "TreatmentLabel": "A", "Description": "Male applicants (labeled A). Pooled admission rate appears higher than female." },
@@ -177,6 +230,8 @@
     "data": [
       { "StratumId": "kidney-1986-small",      "Study": "kidney-1986",        "StratumLabel": "small", "Description": "Patients with small kidney stones — easier to treat, higher baseline success rate regardless of treatment." },
       { "StratumId": "kidney-1986-large",      "Study": "kidney-1986",        "StratumLabel": "large", "Description": "Patients with large kidney stones — harder to treat, lower baseline success rate regardless of treatment. Preferentially assigned to Treatment A." },
+      { "StratumId": "kidney-balanced-small",  "Study": "kidney-balanced",   "StratumLabel": "small", "Description": "Small kidney stones — same baseline rates as kidney-1986 small stratum but now receiving exactly 50% of each treatment's cases. Counterfactual stratum." },
+      { "StratumId": "kidney-balanced-large",  "Study": "kidney-balanced",   "StratumLabel": "large", "Description": "Large kidney stones — same baseline rates as kidney-1986 large stratum but now receiving exactly 50% of each treatment's cases. Equal allocation prevents confounding." },
       { "StratumId": "balanced-synthetic-easy","Study": "balanced-synthetic", "StratumLabel": "easy",  "Description": "Easy stratum — higher baseline success rate. Receives exactly 50% of each treatment's cases." },
       { "StratumId": "balanced-synthetic-hard","Study": "balanced-synthetic", "StratumLabel": "hard",  "Description": "Hard stratum — lower baseline success rate. Receives exactly 50% of each treatment's cases. Equal allocation prevents confounding." },
       { "StratumId": "berkeley-1973-dept-A",   "Study": "berkeley-1973",      "StratumLabel": "dept-A","Description": "Dept A — highly competitive (low admission rate ~64%). Women applied here at roughly equal rates to men." },
@@ -205,6 +260,10 @@
       { "CaseCellId": "kidney-1986-small-B",        "Study": "kidney-1986",        "StratumLabel": "small", "TreatmentLabel": "B", "Successes": 234, "Cases": 270 },
       { "CaseCellId": "kidney-1986-large-A",        "Study": "kidney-1986",        "StratumLabel": "large", "TreatmentLabel": "A", "Successes": 192, "Cases": 263 },
       { "CaseCellId": "kidney-1986-large-B",        "Study": "kidney-1986",        "StratumLabel": "large", "TreatmentLabel": "B", "Successes": 55,  "Cases": 80  },
+      { "CaseCellId": "kidney-balanced-small-A",     "Study": "kidney-balanced",   "StratumLabel": "small", "TreatmentLabel": "A", "Successes": 163, "Cases": 175 },
+      { "CaseCellId": "kidney-balanced-small-B",     "Study": "kidney-balanced",   "StratumLabel": "small", "TreatmentLabel": "B", "Successes": 152, "Cases": 175 },
+      { "CaseCellId": "kidney-balanced-large-A",     "Study": "kidney-balanced",   "StratumLabel": "large", "TreatmentLabel": "A", "Successes": 128, "Cases": 175 },
+      { "CaseCellId": "kidney-balanced-large-B",     "Study": "kidney-balanced",   "StratumLabel": "large", "TreatmentLabel": "B", "Successes": 120, "Cases": 175 },
       { "CaseCellId": "balanced-synthetic-easy-A",  "Study": "balanced-synthetic", "StratumLabel": "easy",   "TreatmentLabel": "A", "Successes": 60,  "Cases": 100 },
       { "CaseCellId": "balanced-synthetic-easy-B",  "Study": "balanced-synthetic", "StratumLabel": "easy",   "TreatmentLabel": "B", "Successes": 50,  "Cases": 100 },
       { "CaseCellId": "balanced-synthetic-hard-A",  "Study": "balanced-synthetic", "StratumLabel": "hard",   "TreatmentLabel": "A", "Successes": 60,  "Cases": 100 },
@@ -237,13 +296,28 @@
       { "name": "StratumSuccessesB","datatype": "integer", "type": "aggregation",  "nullable": true,  "Description": "Successes for treatment B in this (study, stratum).", "formula": "=SUMIFS(CaseCells!{{Successes}}, CaseCells!{{Study}}, {{Study}}, CaseCells!{{StratumLabel}}, {{StratumLabel}}, CaseCells!{{TreatmentLabel}}, \"B\")" },
       { "name": "StratumCasesB",    "datatype": "integer", "type": "aggregation",  "nullable": true,  "Description": "Cases for treatment B in this (study, stratum).", "formula": "=SUMIFS(CaseCells!{{Cases}}, CaseCells!{{Study}}, {{Study}}, CaseCells!{{StratumLabel}}, {{StratumLabel}}, CaseCells!{{TreatmentLabel}}, \"B\")" },
       { "name": "StratumRateB",     "datatype": "number",  "type": "calculated",   "nullable": true,  "Description": "Success rate for treatment B in this stratum.", "formula": "=IF({{StratumCasesB}} = 0, \"\", {{StratumSuccessesB}} / {{StratumCasesB}})" },
-      { "name": "StratumWinner",    "datatype": "string",  "type": "calculated",   "nullable": true,  "Description": "Which treatment wins in this stratum: 'A' if StratumRateA > StratumRateB, else 'B'. Used by TreatmentRankings to detect paradox.", "formula": "=IF({{StratumRateA}} > {{StratumRateB}}, \"A\", \"B\")" }
+      { "name": "StratumWinner",    "datatype": "string",  "type": "calculated",   "nullable": true,  "Description": "Which treatment wins in this stratum: 'A' if StratumRateA > StratumRateB, else 'B'. Used by TreatmentRankings to detect paradox.", "formula": "=IF({{StratumRateA}} > {{StratumRateB}}, \"A\", \"B\")" },
+      { "name": "StudyTotalCases", "datatype": "integer", "type": "aggregation",  "nullable": true,  "Description": "Total cases across ALL strata and ALL treatments in this study. The denominator for StratumFraction.", "formula": "=SUMIFS(CaseCells!{{Cases}}, CaseCells!{{Study}}, {{Study}})" },
+      { "name": "StratumTotalCases","datatype": "integer","type": "aggregation",  "nullable": true,  "Description": "Total cases in this stratum across both treatments (A + B combined). Numerator for StratumFraction.", "formula": "=SUMIFS(CaseCells!{{Cases}}, CaseCells!{{Study}}, {{Study}}, CaseCells!{{StratumLabel}}, {{StratumLabel}})" },
+      { "name": "StratumFraction", "datatype": "number",  "type": "calculated",   "nullable": true,  "Description": "Fraction of the study's total cases that fall in this stratum: StratumTotalCases / StudyTotalCases. The weight the confounder assigns to each stratum. A large StratumFraction on a low-success stratum pulls the pooled rate down; when that stratum is also over-allocated to one treatment, it creates the reversal.", "formula": "=IF({{StudyTotalCases}} = 0, \"\", {{StratumTotalCases}} / {{StudyTotalCases}})" },
+      { "name": "WeightedStratumRate", "datatype": "number", "type": "calculated", "nullable": true, "Description": "StratumFraction × StratumSuccessRate. The contribution of this (stratum, treatment) row to the study-level pooled rate. Summing WeightedStratumRate across all strata for a given treatment reconstructs that treatment's pooled rate from stratum weights — witnessing the mechanism equation.", "formula": "=IF({{StratumFraction}} = \"\", \"\", {{StratumFraction}} * {{StratumSuccessRate}})" },
+      { "name": "TreatmentACasesHere", "datatype": "integer", "type": "aggregation", "nullable": true, "Description": "Cases for treatment A in this stratum — used to compute TreatmentA's allocation fraction in this stratum.", "formula": "=SUMIFS(CaseCells!{{Cases}}, CaseCells!{{Study}}, {{Study}}, CaseCells!{{StratumLabel}}, {{StratumLabel}}, CaseCells!{{TreatmentLabel}}, \"A\")" },
+      { "name": "TreatmentBCasesHere", "datatype": "integer", "type": "aggregation", "nullable": true, "Description": "Cases for treatment B in this stratum — used to compute TreatmentB's allocation fraction in this stratum.", "formula": "=SUMIFS(CaseCells!{{Cases}}, CaseCells!{{Study}}, {{Study}}, CaseCells!{{StratumLabel}}, {{StratumLabel}}, CaseCells!{{TreatmentLabel}}, \"B\")" },
+      { "name": "TreatmentATotalCases", "datatype": "integer", "type": "aggregation", "nullable": true, "Description": "Total cases for treatment A across all strata in this study — denominator for AllocationFractionA.", "formula": "=SUMIFS(CaseCells!{{Cases}}, CaseCells!{{Study}}, {{Study}}, CaseCells!{{TreatmentLabel}}, \"A\")" },
+      { "name": "TreatmentBTotalCases", "datatype": "integer", "type": "aggregation", "nullable": true, "Description": "Total cases for treatment B across all strata in this study — denominator for AllocationFractionB.", "formula": "=SUMIFS(CaseCells!{{Cases}}, CaseCells!{{Study}}, {{Study}}, CaseCells!{{TreatmentLabel}}, \"B\")" },
+      { "name": "AllocationFractionA", "datatype": "number", "type": "calculated", "nullable": true, "Description": "Fraction of treatment A's total cases that land in this stratum: TreatmentACasesHere / TreatmentATotalCases. Equivalent to TreatmentExposureFraction for A.", "formula": "=IF({{TreatmentATotalCases}} = 0, \"\", {{TreatmentACasesHere}} / {{TreatmentATotalCases}})" },
+      { "name": "AllocationFractionB", "datatype": "number", "type": "calculated", "nullable": true, "Description": "Fraction of treatment B's total cases that land in this stratum: TreatmentBCasesHere / TreatmentBTotalCases.", "formula": "=IF({{TreatmentBTotalCases}} = 0, \"\", {{TreatmentBCasesHere}} / {{TreatmentBTotalCases}})" },
+      { "name": "AllocationBias", "datatype": "number", "type": "calculated", "nullable": true, "Description": "AllocationFractionA minus AllocationFractionB: how much more of treatment A (relative to B) is concentrated in this stratum. Positive = A is over-allocated here; negative = B is over-allocated here. When AllocationBias is large and negative in a low-success stratum, treatment A is under-represented in the hard cases — making A look worse in the pooled view than it is in any stratum. This is the confounder's fingerprint as a signed number.", "formula": "=IF({{AllocationFractionA}} = \"\", \"\", {{AllocationFractionA}} - {{AllocationFractionB}})" }
     ],
     "data": [
       { "StratumSummaryId": "kidney-1986-small-A",       "Study": "kidney-1986",        "StratumLabel": "small", "TreatmentLabel": "A" },
       { "StratumSummaryId": "kidney-1986-small-B",       "Study": "kidney-1986",        "StratumLabel": "small", "TreatmentLabel": "B" },
       { "StratumSummaryId": "kidney-1986-large-A",       "Study": "kidney-1986",        "StratumLabel": "large", "TreatmentLabel": "A" },
       { "StratumSummaryId": "kidney-1986-large-B",       "Study": "kidney-1986",        "StratumLabel": "large", "TreatmentLabel": "B" },
+      { "StratumSummaryId": "kidney-balanced-small-A",     "Study": "kidney-balanced",   "StratumLabel": "small", "TreatmentLabel": "A" },
+      { "StratumSummaryId": "kidney-balanced-small-B",     "Study": "kidney-balanced",   "StratumLabel": "small", "TreatmentLabel": "B" },
+      { "StratumSummaryId": "kidney-balanced-large-A",     "Study": "kidney-balanced",   "StratumLabel": "large", "TreatmentLabel": "A" },
+      { "StratumSummaryId": "kidney-balanced-large-B",     "Study": "kidney-balanced",   "StratumLabel": "large", "TreatmentLabel": "B" },
       { "StratumSummaryId": "balanced-synthetic-easy-A",  "Study": "balanced-synthetic", "StratumLabel": "easy",   "TreatmentLabel": "A" },
       { "StratumSummaryId": "balanced-synthetic-easy-B",  "Study": "balanced-synthetic", "StratumLabel": "easy",   "TreatmentLabel": "B" },
       { "StratumSummaryId": "balanced-synthetic-hard-A",  "Study": "balanced-synthetic", "StratumLabel": "hard",   "TreatmentLabel": "A" },
@@ -311,6 +385,15 @@
         "MechanismNote": "Department choice correlates with both gender (women applied disproportionately to competitive departments) and admission rate (competitive departments admit fewer applicants regardless of gender). However, department choice may itself be downstream of gender — if women systematically self-select into harder departments due to societal factors, then department is a mediator, not a confounder. The causal role is genuinely contested in the literature. IsConfounder=FALSE because CausalRole='contested', not because the flags are false."
       },
       {
+        "StratumVariableId": "kidney-balanced-stone-size",
+        "Study": "kidney-balanced",
+        "VariableName": "stone_size",
+        "CausalRole": "confounder",
+        "AffectsTreatmentAssignment": false,
+        "AffectsOutcome": true,
+        "MechanismNote": "In this counterfactual, stone size still affects outcome (hard cases have lower success rates) but does NOT affect treatment assignment — both treatments receive exactly 50% of their cases in each stratum. Because treatment assignment is now independent of stone size, no confounding occurs and AllocationBias=0 everywhere. IsConfounder=FALSE (AffectsTreatmentAssignment=false). The reversal is impossible by construction."
+      },
+      {
         "StratumVariableId": "balanced-synthetic-stratum",
         "Study": "balanced-synthetic",
         "VariableName": "stratum",
@@ -346,10 +429,15 @@
       { "name": "IsParadoxExplained", "datatype": "boolean", "type": "calculated",   "nullable": false, "Description": "TRUE when IsReversal is present AND at least one confirmed confounder exists in the study. The model witnesses its own explanatory completeness — or its limits.", "formula": "=AND({{IsReversal}}, {{ConfoundersInStudy}} > 0)" },
       { "name": "PooledGap",          "datatype": "number",  "type": "calculated",   "nullable": true,  "Description": "Absolute difference between the two pooled rates: |PooledRateA - PooledRateB|. The size of the aggregate misleading signal.", "formula": "=IF({{PooledRateA}} = \"\", \"\", ABS({{PooledRateA}} - {{PooledRateB}}))" },
       { "name": "StrataWonByLoser",   "datatype": "integer", "type": "calculated",   "nullable": true,  "Description": "Number of strata won by the pooled loser — the counter-signal. For full reversals this equals StratumCount; for partial paradoxes it is between 0 and StratumCount.", "formula": "=IF({{PooledWinner}} = {{TreatmentA}}, {{StrataWonByB}}, {{StrataWonByA}})" },
-      { "name": "ParadoxStrength",    "datatype": "number",  "type": "calculated",   "nullable": true,  "Description": "Scalar severity of the paradox: PooledGap × (StrataWonByLoser / StratumCount). Zero when no strata go against the pooled winner. Positive for partial paradoxes. Maximum when every stratum contradicts the pooled result.", "formula": "=IF({{StratumCount}} = 0, \"\", {{PooledGap}} * ({{StrataWonByLoser}} / {{StratumCount}}))" }
+      { "name": "ParadoxStrength",    "datatype": "number",  "type": "calculated",   "nullable": true,  "Description": "Scalar severity of the paradox: PooledGap × (StrataWonByLoser / StratumCount). Zero when no strata go against the pooled winner. Positive for partial paradoxes. Maximum when every stratum contradicts the pooled result.", "formula": "=IF({{StratumCount}} = 0, \"\", {{PooledGap}} * ({{StrataWonByLoser}} / {{StratumCount}}))" },
+      { "name": "PooledRateFromWeightsA", "datatype": "number", "type": "aggregation", "nullable": true, "Description": "Pooled rate for TreatmentA reconstructed as a weighted average of stratum rates: SUM(WeightedStratumRate) across all stratum rows for TreatmentA. Must match PooledRateA — this witnesses the mechanism equation: the pooled rate IS a weighted average of stratum rates, weighted by StratumFraction.", "formula": "=SUMIFS(StratumSummaries!{{WeightedStratumRate}}, StratumSummaries!{{Study}}, {{Study}}, StratumSummaries!{{TreatmentLabel}}, {{TreatmentA}})" },
+      { "name": "PooledRateFromWeightsB", "datatype": "number", "type": "aggregation", "nullable": true, "Description": "Pooled rate for TreatmentB reconstructed as a weighted average. Must match PooledRateB. If it does, the mechanism equation is verified: reversal is purely a consequence of differential weighting.", "formula": "=SUMIFS(StratumSummaries!{{WeightedStratumRate}}, StratumSummaries!{{Study}}, {{Study}}, StratumSummaries!{{TreatmentLabel}}, {{TreatmentB}})" },
+      { "name": "ReversalIntensity",  "datatype": "number", "type": "calculated", "nullable": true, "Description": "StrataWonByLoser / StratumCount: the fraction of strata that go against the pooled winner. Zero for no paradox, 1.0 for full reversal, between 0 and 1 for partial. This is the allocation-side measure of how deeply the confounding has penetrated the stratified view.", "formula": "=IF({{StratumCount}} = 0, \"\", {{StrataWonByLoser}} / {{StratumCount}})" },
+      { "name": "ThresholdMargin",   "datatype": "number", "type": "calculated", "nullable": true, "Description": "ReversalIntensity minus 0.5: positive when more than half the strata go against the pooled winner (reversal is robust), zero at the tipping point (exactly half), negative when fewer than half oppose the pooled winner (reversal is fragile or absent). A study with ThresholdMargin > 0 is robustly paradoxical; one with ThresholdMargin < 0 has a weak or absent paradox.", "formula": "=IF({{StratumCount}} = 0, \"\", {{ReversalIntensity}} - 0.5)" }
     ],
     "data": [
       { "TreatmentRankingId": "kidney-1986-A-vs-B",        "Study": "kidney-1986",        "TreatmentA": "A", "TreatmentB": "B" },
+      { "TreatmentRankingId": "kidney-balanced-A-vs-B",    "Study": "kidney-balanced",   "TreatmentA": "A", "TreatmentB": "B" },
       { "TreatmentRankingId": "balanced-synthetic-A-vs-B", "Study": "balanced-synthetic", "TreatmentA": "A", "TreatmentB": "B" },
       { "TreatmentRankingId": "berkeley-1973-A-vs-B",       "Study": "berkeley-1973",      "TreatmentA": "A", "TreatmentB": "B" }
     ]
