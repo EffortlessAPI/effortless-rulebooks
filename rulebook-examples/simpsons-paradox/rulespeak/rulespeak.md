@@ -78,6 +78,8 @@ _Digital mirror of the Simpson's Paradox domain. The entities are Studies, Treat
 | Paradox Strength | Determined by priority: an empty string if the stratum count is 0; in all other cases, the pooled gap times the strata won by loser divided by the stratum count. | _Scalar severity of the paradox: PooledGap × (StrataWonByLoser / StratumCount). Zero when no strata go against the pooled winner. Positive for partial paradoxes. Maximum when every stratum contradicts the pooled result._ |
 | Pooled Rate From Weights a | The total weighted stratum rate across the stratum summaries related to the treatment ranking. | _Pooled rate for TreatmentA reconstructed as a weighted average of stratum rates: SUM(WeightedStratumRate) across all stratum rows for TreatmentA. Must match PooledRateA — this witnesses the mechanism equation: the pooled rate IS a weighted average of stratum rates, weighted by StratumFraction._ |
 | Pooled Rate From Weights B | The total weighted stratum rate across the stratum summaries related to the treatment ranking. | _Pooled rate for TreatmentB reconstructed as a weighted average. Must match PooledRateB. If it does, the mechanism equation is verified: reversal is purely a consequence of differential weighting._ |
+| Reversal Intensity | Determined by priority: an empty string if the stratum count is 0; in all other cases, the strata won by loser divided by the stratum count. | _StrataWonByLoser / StratumCount: the fraction of strata that go against the pooled winner. Zero for no paradox, 1.0 for full reversal, between 0 and 1 for partial. This is the allocation-side measure of how deeply the confounding has penetrated the stratified view._ |
+| Threshold Margin | Determined by priority: an empty string if the stratum count is 0; in all other cases, the reversal intensity minus 0.5. | _ReversalIntensity minus 0.5: positive when more than half the strata go against the pooled winner (reversal is robust), zero at the tipping point (exactly half), negative when fewer than half oppose the pooled winner (reversal is fragile or absent). A study with ThresholdMargin > 0 is robustly paradoxical; one with ThresholdMargin < 0 has a weak or absent paradox._ |
 
 ## 2 Fact Types
 
@@ -179,6 +181,8 @@ but clunky — a flag for an optional downstream reword pass, not a defect._
 | **DR-56 Paradox Strength** | The treatment ranking's paradox strength is determined by the following priority:<br>1. an empty string, if the stratum count is 0;<br>2. in all other cases, the pooled gap times the strata won by loser divided by the stratum count. |
 | **DR-57 Pooled Rate From Weights a** | A treatment ranking's pooled rate from weights a is the total weighted stratum rate across the stratum summaries related to the treatment ranking. |
 | **DR-58 Pooled Rate From Weights B** | A treatment ranking's pooled rate from weights b is the total weighted stratum rate across the stratum summaries related to the treatment ranking. |
+| **DR-59 Reversal Intensity** | The treatment ranking's reversal intensity is determined by the following priority:<br>1. an empty string, if the stratum count is 0;<br>2. in all other cases, the strata won by loser divided by the stratum count. |
+| **DR-60 Threshold Margin** | The treatment ranking's threshold margin is determined by the following priority:<br>1. an empty string, if the stratum count is 0;<br>2. in all other cases, the reversal intensity minus 0.5. |
 
 ## 5 Traceability to Schema
 
@@ -245,6 +249,8 @@ the same logic the rulebook stores, written for a business reader._
 | **TreatmentRankings.ParadoxStrength** | formula | `If(StratumCount = 0, "", PooledGap * StrataWonByLoser / StratumCount)` |
 | **TreatmentRankings.PooledRateFromWeightsA** | rollup | `Sum(StratumSummaries.WeightedStratumRate via Study)` |
 | **TreatmentRankings.PooledRateFromWeightsB** | rollup | `Sum(StratumSummaries.WeightedStratumRate via Study)` |
+| **TreatmentRankings.ReversalIntensity** | formula | `If(StratumCount = 0, "", StrataWonByLoser / StratumCount)` |
+| **TreatmentRankings.ThresholdMargin** | formula | `If(StratumCount = 0, "", ReversalIntensity - 0.5)` |
 
 ---
 
