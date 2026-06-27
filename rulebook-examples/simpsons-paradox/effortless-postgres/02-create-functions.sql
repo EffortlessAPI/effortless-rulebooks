@@ -325,6 +325,16 @@ RETURNS NUMERIC AS $$
   SELECT (CASE WHEN (calc_stratum_summaries_study_total_cases(p_stratum_summary_id))::NUMERIC = 0 THEN ('')::text ELSE ((COALESCE(CASE WHEN (calc_stratum_summaries_stratum_total_cases(p_stratum_summary_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_stratum_summaries_stratum_total_cases(p_stratum_summary_id))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(CASE WHEN (calc_stratum_summaries_study_total_cases(p_stratum_summary_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_stratum_summaries_study_total_cases(p_stratum_summary_id))::numeric ELSE NULL END, 0), 0)))::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
+-- calc_stratum_summaries_weighted_stratum_rate
+-- Field: StratumSummaries.WeightedStratumRate
+-- Type: calculated | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_stratum_summaries_weighted_stratum_rate(p_stratum_summary_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT (CASE WHEN calc_stratum_summaries_stratum_fraction(p_stratum_summary_id) IS NULL THEN ('')::text ELSE ((COALESCE(CASE WHEN (calc_stratum_summaries_stratum_fraction(p_stratum_summary_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_stratum_summaries_stratum_fraction(p_stratum_summary_id))::numeric ELSE NULL END, 0) * COALESCE(CASE WHEN (calc_stratum_summaries_stratum_success_rate(p_stratum_summary_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_stratum_summaries_stratum_success_rate(p_stratum_summary_id))::numeric ELSE NULL END, 0)))::text END)::numeric;
+$$ LANGUAGE sql STABLE;
+
 -- calc_model_summary_name
 -- Field: ModelSummary.Name
 -- Type: calculated | DataType: string | Returns: TEXT
@@ -613,6 +623,26 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION calc_treatment_rankings_paradox_strength(p_treatment_ranking_id TEXT)
 RETURNS NUMERIC AS $$
   SELECT (CASE WHEN (calc_treatment_rankings_stratum_count(p_treatment_ranking_id))::NUMERIC = 0 THEN ('')::text ELSE ((COALESCE(CASE WHEN (calc_treatment_rankings_pooled_gap(p_treatment_ranking_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_treatment_rankings_pooled_gap(p_treatment_ranking_id))::numeric ELSE NULL END, 0) * COALESCE(CASE WHEN ((COALESCE(CASE WHEN (calc_treatment_rankings_strata_won_by_loser(p_treatment_ranking_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_treatment_rankings_strata_won_by_loser(p_treatment_ranking_id))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(CASE WHEN (calc_treatment_rankings_stratum_count(p_treatment_ranking_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_treatment_rankings_stratum_count(p_treatment_ranking_id))::numeric ELSE NULL END, 0), 0)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((COALESCE(CASE WHEN (calc_treatment_rankings_strata_won_by_loser(p_treatment_ranking_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_treatment_rankings_strata_won_by_loser(p_treatment_ranking_id))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(CASE WHEN (calc_treatment_rankings_stratum_count(p_treatment_ranking_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_treatment_rankings_stratum_count(p_treatment_ranking_id))::numeric ELSE NULL END, 0), 0)))::numeric ELSE NULL END, 0)))::text END)::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_treatment_rankings_pooled_rate_from_weights_a
+-- Field: TreatmentRankings.PooledRateFromWeightsA
+-- Type: aggregation | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_treatment_rankings_pooled_rate_from_weights_a(p_treatment_ranking_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT ((SELECT COALESCE(SUM((calc_stratum_summaries_weighted_stratum_rate(stratum_summary_id))::numeric), 0) FROM stratum_summaries WHERE study = (SELECT NULLIF(study, '') FROM treatment_rankings WHERE treatment_ranking_id = p_treatment_ranking_id) AND treatment_label = (SELECT NULLIF(treatment_a, '') FROM treatment_rankings WHERE treatment_ranking_id = p_treatment_ranking_id)))::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_treatment_rankings_pooled_rate_from_weights_b
+-- Field: TreatmentRankings.PooledRateFromWeightsB
+-- Type: aggregation | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_treatment_rankings_pooled_rate_from_weights_b(p_treatment_ranking_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT ((SELECT COALESCE(SUM((calc_stratum_summaries_weighted_stratum_rate(stratum_summary_id))::numeric), 0) FROM stratum_summaries WHERE study = (SELECT NULLIF(study, '') FROM treatment_rankings WHERE treatment_ranking_id = p_treatment_ranking_id) AND treatment_label = (SELECT NULLIF(treatment_b, '') FROM treatment_rankings WHERE treatment_ranking_id = p_treatment_ranking_id)))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- ============================================================================
