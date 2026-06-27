@@ -575,6 +575,56 @@ RETURNS TEXT AS $$
   SELECT (CONCAT('A:', calc_model_summary_type_a_count(p_model_summary_id), ' B:', calc_model_summary_type_b_count(p_model_summary_id), ' C:', calc_model_summary_type_c_count(p_model_summary_id), ' D:', calc_model_summary_type_d_count(p_model_summary_id)))::text;
 $$ LANGUAGE sql STABLE;
 
+-- calc_model_summary_reversal_count_v2
+-- Field: ModelSummary.ReversalCountV2
+-- Type: aggregation | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_model_summary_reversal_count_v2(p_model_summary_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((SELECT COUNT(*) FROM treatment_rankings WHERE calc_treatment_rankings_is_reversal_v2(treatment_ranking_id) = TRUE))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_model_summary_non_reversal_count_v2
+-- Field: ModelSummary.NonReversalCountV2
+-- Type: aggregation | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_model_summary_non_reversal_count_v2(p_model_summary_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((SELECT COUNT(*) FROM treatment_rankings WHERE calc_treatment_rankings_is_reversal_v2(treatment_ranking_id) = FALSE))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_model_summary_extended_reversal_count
+-- Field: ModelSummary.ExtendedReversalCount
+-- Type: calculated | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_model_summary_extended_reversal_count(p_model_summary_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((COALESCE(CASE WHEN (calc_model_summary_reversal_count_v2(p_model_summary_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_model_summary_reversal_count_v2(p_model_summary_id))::numeric ELSE NULL END, 0) - COALESCE(CASE WHEN (calc_model_summary_reversal_count(p_model_summary_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_model_summary_reversal_count(p_model_summary_id))::numeric ELSE NULL END, 0)))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_model_summary_explained_count_v2
+-- Field: ModelSummary.ExplainedCountV2
+-- Type: aggregation | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_model_summary_explained_count_v2(p_model_summary_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((SELECT COUNT(*) FROM treatment_rankings WHERE calc_treatment_rankings_is_paradox_explained_v2(treatment_ranking_id) = TRUE))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_model_summary_distortion_only_count
+-- Field: ModelSummary.DistortionOnlyCount
+-- Type: calculated | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_model_summary_distortion_only_count(p_model_summary_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT (calc_model_summary_type_c_count(p_model_summary_id))::integer;
+$$ LANGUAGE sql STABLE;
+
 -- calc_stratum_variables_name
 -- Field: StratumVariables.Name
 -- Type: calculated | DataType: string | Returns: TEXT
@@ -743,6 +793,16 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION calc_treatment_rankings_is_paradox_explained(p_treatment_ranking_id TEXT)
 RETURNS BOOLEAN AS $$
   SELECT ((calc_treatment_rankings_is_reversal(p_treatment_ranking_id) AND (calc_treatment_rankings_confounders_in_study(p_treatment_ranking_id))::NUMERIC > 0));
+$$ LANGUAGE sql STABLE;
+
+-- calc_treatment_rankings_is_paradox_explained_v2
+-- Field: TreatmentRankings.IsParadoxExplained_v2
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_treatment_rankings_is_paradox_explained_v2(p_treatment_ranking_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (((calc_treatment_rankings_is_reversal_v2(p_treatment_ranking_id) = 'true') AND (calc_treatment_rankings_confounders_in_study(p_treatment_ranking_id))::NUMERIC > 0));
 $$ LANGUAGE sql STABLE;
 
 -- calc_treatment_rankings_pooled_gap
