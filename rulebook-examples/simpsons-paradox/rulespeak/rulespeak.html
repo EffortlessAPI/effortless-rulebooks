@@ -252,7 +252,7 @@ html.show-consumers .elem-consumers{display:block}
     <li><a href="#t-studies">Study</a> <span class="toc-meta">2 rules · 0 links</span></li>
     <li><a href="#t-treatments">Treatment</a> <span class="toc-meta">3 rules · 1 links</span></li>
     <li><a href="#t-strata">Strata</a> <span class="toc-meta">1 rules · 1 links</span></li>
-    <li><a href="#t-casecells">Case Cell</a> <span class="toc-meta">1 rules · 1 links</span></li>
+    <li><a href="#t-casecells">Case Cell</a> <span class="toc-meta">3 rules · 1 links</span></li>
     <li><a href="#t-stratumsummaries">Stratum Summary</a> <span class="toc-meta">10 rules · 1 links</span></li>
     <li><a href="#t-stratumvariables">Stratum Variable</a> <span class="toc-meta">1 rules · 1 links</span></li>
     <li><a href="#t-treatmentrankings">Treatment Ranking</a> <span class="toc-meta">14 rules · 1 links</span></li>
@@ -908,6 +908,108 @@ html.show-consumers .elem-consumers{display:block}
     </details>
     <p class="field-note elem elem-desc">Success rate within this cell: Successes / Cases. The first derived fact in the DAG.</p>
     </article>
+  <article class="field tone-agg" id="f-casecells-totalcasesfortreatment" data-entity="Case Cell" data-field="Total Cases for Treatment">
+    <div class="field-head">
+      <span class="field-glyph" title="Aggregation">Σ</span>
+      <span class="field-name">Total Cases for Treatment</span>
+      <span class="pill pill-type">Aggregation</span>
+      <span class="pill pill-depth">1 hop from ground truth</span>
+      <span class="pill pill-muted">integer</span>
+      <span class="pill pill-dr">DR-8</span>
+    </div>
+    <div class="narr-views">
+      <div class="view elem elem-rulespeak">
+        <span class="view-label">In RuleSpeak</span>
+        <p class="view-body">A case cell's total <a class="ref" href="#f-casecells-cases">cases</a> for treatment is the total cases across the case cells related to the case cell.</p>
+      </div>
+      <div class="view elem elem-english">
+        <span class="view-label">In English</span>
+        <p class="view-body">Sum of <a class="ref" href="#f-casecells-cases">cases</a> across all CaseCells whose <a class="ref" href="#f-casecells-study">study</a> is study and <a class="ref" href="#f-casecells-treatmentlabel">treatment label</a> is treatment label.</p>
+      </div>
+      <div class="view elem elem-formula">
+        <span class="view-label">As a formula</span>
+        <div class="view-body fx"><span class="fx-eq">= </span>SUMIFS(<a class="fx-chip" href="#f-casecells-cases">Cases</a>, <a class="fx-chip" href="#f-casecells-study">Study</a>, <a class="fx-chip" href="#f-casecells-study">Study</a>, <a class="fx-chip" href="#f-casecells-treatmentlabel">Treatment Label</a>, <a class="fx-chip" href="#f-casecells-treatmentlabel">Treatment Label</a>)</div>
+      </div>
+    </div>
+    <details class="prov prov-inputs elem elem-inputs" open>
+      <summary>Inputs <span class="count">3</span> <span class="prov-hint">fields this rule reads</span></summary>
+      <div class="prov-grid">
+        <a class="input tone-raw" href="#f-casecells-cases">
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Cases</span><span class="input-table">CaseCells</span></span>
+          <span class="input-en muted">Total number of patients in this cell. RAW INPUT — never derived.</span>
+        </a>
+        <a class="input tone-rel" href="#f-casecells-study">
+          <span class="input-head"><span class="input-glyph">⇢</span><span class="input-name">Study</span><span class="input-table">CaseCells</span></span>
+          <span class="input-en muted">FK to the parent Study.</span>
+        </a>
+        <a class="input tone-raw" href="#f-casecells-treatmentlabel">
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Treatment Label</span><span class="input-table">CaseCells</span></span>
+          <span class="input-en muted">The treatment applied in this cell (matches Treatments.TreatmentLabel).</span>
+        </a>
+      </div>
+    </details>
+    <details class="prov prov-consumers elem elem-consumers">
+      <summary>Consumers <span class="count">1 direct</span> <span class="prov-hint">rules that read this one</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-calc" href="#f-casecells-treatmentexposurefraction">ƒ Treatment Exposure Fraction <span class="ref-pill-tbl">CaseCells</span></a>
+      </div>
+    </details>
+    <details class="prov prov-leaves elem elem-inputs">
+      <summary>Ground truth at the leaves <span class="count">3</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-raw" href="#f-casecells-cases">● Cases <span class="ref-pill-tbl">CaseCells</span></a>
+        <a class="ref-pill tone-rel" href="#f-casecells-study">⇢ Study <span class="ref-pill-tbl">CaseCells</span></a>
+        <a class="ref-pill tone-raw" href="#f-casecells-treatmentlabel">● Treatment Label <span class="ref-pill-tbl">CaseCells</span></a>
+      </div>
+    </details>
+    <p class="field-note elem elem-desc">Total cases across ALL strata for this treatment in this study — the denominator for TreatmentExposureFraction.</p>
+    </article>
+  <article class="field tone-calc" id="f-casecells-treatmentexposurefraction" data-entity="Case Cell" data-field="Treatment Exposure Fraction">
+    <div class="field-head">
+      <span class="field-glyph" title="Calculated">ƒ</span>
+      <span class="field-name">Treatment Exposure Fraction</span>
+      <span class="pill pill-type">Calculated</span>
+      <span class="pill pill-depth">2 hops from ground truth</span>
+      <span class="pill pill-muted">number</span>
+      <span class="pill pill-dr">DR-9</span>
+    </div>
+    <div class="narr-views">
+      <div class="view elem elem-rulespeak">
+        <span class="view-label">In RuleSpeak</span>
+        <div class="view-body"><p class="rt-headline">The case cell's treatment exposure fraction is determined by the following priority:</p><ol class="rt-priority"><li><span class="rt-value">an empty string</span> <span class="rt-when">if the total cases for treatment is 0</span></li><li><span class="rt-value">the cases divided by the total cases for treatment</span> <span class="rt-when">in all other cases</span></li></ol></div>
+      </div>
+      <div class="view elem elem-english">
+        <span class="view-label">In English</span>
+        <p class="view-body">If <a class="ref" href="#f-casecells-totalcasesfortreatment">total <a class="ref" href="#f-casecells-cases">cases</a> for treatment</a> equals 0 then &quot;&quot;, otherwise (cases divided by total cases for treatment).</p>
+      </div>
+      <div class="view elem elem-formula">
+        <span class="view-label">As a formula</span>
+        <div class="view-body fx"><span class="fx-eq">= </span>IF(<a class="fx-chip" href="#f-casecells-totalcasesfortreatment">Total Cases for Treatment</a> = 0, &quot;&quot;, <a class="fx-chip" href="#f-casecells-cases">Cases</a> / <a class="fx-chip" href="#f-casecells-totalcasesfortreatment">Total Cases for Treatment</a>)</div>
+      </div>
+    </div>
+    <details class="prov prov-inputs elem elem-inputs" open>
+      <summary>Inputs <span class="count">2</span> <span class="prov-hint">fields this rule reads</span></summary>
+      <div class="prov-grid">
+        <a class="input tone-agg" href="#f-casecells-totalcasesfortreatment">
+          <span class="input-head"><span class="input-glyph">Σ</span><span class="input-name">Total Cases for Treatment</span><span class="input-table">CaseCells</span></span>
+          <span class="input-en">Sum of cases across all CaseCells whose study is study and treatment label is treatment label.</span>
+        </a>
+        <a class="input tone-raw" href="#f-casecells-cases">
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Cases</span><span class="input-table">CaseCells</span></span>
+          <span class="input-en muted">Total number of patients in this cell. RAW INPUT — never derived.</span>
+        </a>
+      </div>
+    </details>
+    <details class="prov prov-leaves elem elem-inputs">
+      <summary>Ground truth at the leaves <span class="count">3</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-raw" href="#f-casecells-cases">● Cases <span class="ref-pill-tbl">CaseCells</span></a>
+        <a class="ref-pill tone-rel" href="#f-casecells-study">⇢ Study <span class="ref-pill-tbl">CaseCells</span></a>
+        <a class="ref-pill tone-raw" href="#f-casecells-treatmentlabel">● Treatment Label <span class="ref-pill-tbl">CaseCells</span></a>
+      </div>
+    </details>
+    <p class="field-note elem elem-desc">Fraction of this treatment's total cases that fall in this stratum: Cases / TotalCasesForTreatment. High imbalance across strata is the mechanism of confounding — when treatments are allocated very differently across strata, the pooled rate conflates treatment effect with stratum difficulty.</p>
+    </article>
 </section>
 <section class="entity" id="t-stratumsummaries" data-entity="Stratum Summary">
   <header class="entity-head">
@@ -957,7 +1059,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Aggregation</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">integer</span>
-      <span class="pill pill-dr">DR-8</span>
+      <span class="pill pill-dr">DR-10</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -1033,7 +1135,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Aggregation</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">integer</span>
-      <span class="pill pill-dr">DR-9</span>
+      <span class="pill pill-dr">DR-11</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -1109,7 +1211,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">2 hops from ground truth</span>
       <span class="pill pill-muted">number</span>
-      <span class="pill pill-dr">DR-10</span>
+      <span class="pill pill-dr">DR-12</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -1160,7 +1262,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Aggregation</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">integer</span>
-      <span class="pill pill-dr">DR-11</span>
+      <span class="pill pill-dr">DR-13</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -1237,7 +1339,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Aggregation</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">integer</span>
-      <span class="pill pill-dr">DR-12</span>
+      <span class="pill pill-dr">DR-14</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -1314,7 +1416,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">2 hops from ground truth</span>
       <span class="pill pill-muted">number</span>
-      <span class="pill pill-dr">DR-13</span>
+      <span class="pill pill-dr">DR-15</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -1375,7 +1477,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Aggregation</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">integer</span>
-      <span class="pill pill-dr">DR-14</span>
+      <span class="pill pill-dr">DR-16</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -1452,7 +1554,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Aggregation</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">integer</span>
-      <span class="pill pill-dr">DR-15</span>
+      <span class="pill pill-dr">DR-17</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -1529,7 +1631,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">2 hops from ground truth</span>
       <span class="pill pill-muted">number</span>
-      <span class="pill pill-dr">DR-16</span>
+      <span class="pill pill-dr">DR-18</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -1590,7 +1692,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">3 hops from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-17</span>
+      <span class="pill pill-dr">DR-19</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -1716,7 +1818,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">boolean</span>
-      <span class="pill pill-dr">DR-18</span>
+      <span class="pill pill-dr">DR-20</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -1827,7 +1929,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Aggregation</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">integer</span>
-      <span class="pill pill-dr">DR-19</span>
+      <span class="pill pill-dr">DR-21</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -1896,7 +1998,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Aggregation</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">integer</span>
-      <span class="pill pill-dr">DR-20</span>
+      <span class="pill pill-dr">DR-22</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -1965,7 +2067,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">2 hops from ground truth</span>
       <span class="pill pill-muted">number</span>
-      <span class="pill pill-dr">DR-21</span>
+      <span class="pill pill-dr">DR-23</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -2022,7 +2124,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Aggregation</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">integer</span>
-      <span class="pill pill-dr">DR-22</span>
+      <span class="pill pill-dr">DR-24</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -2091,7 +2193,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Aggregation</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">integer</span>
-      <span class="pill pill-dr">DR-23</span>
+      <span class="pill pill-dr">DR-25</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -2160,7 +2262,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">2 hops from ground truth</span>
       <span class="pill pill-muted">number</span>
-      <span class="pill pill-dr">DR-24</span>
+      <span class="pill pill-dr">DR-26</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -2217,7 +2319,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">3 hops from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-25</span>
+      <span class="pill pill-dr">DR-27</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -2282,7 +2384,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Aggregation</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">integer</span>
-      <span class="pill pill-dr">DR-26</span>
+      <span class="pill pill-dr">DR-28</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -2345,7 +2447,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Aggregation</span>
       <span class="pill pill-depth">4 hops from ground truth</span>
       <span class="pill pill-muted">integer</span>
-      <span class="pill pill-dr">DR-27</span>
+      <span class="pill pill-dr">DR-29</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -2418,7 +2520,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Aggregation</span>
       <span class="pill pill-depth">4 hops from ground truth</span>
       <span class="pill pill-muted">integer</span>
-      <span class="pill pill-dr">DR-28</span>
+      <span class="pill pill-dr">DR-30</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -2496,7 +2598,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">5 hops from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-29</span>
+      <span class="pill pill-dr">DR-31</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -2569,7 +2671,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">6 hops from ground truth</span>
       <span class="pill pill-muted">boolean</span>
-      <span class="pill pill-dr">DR-30</span>
+      <span class="pill pill-dr">DR-32</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -2629,7 +2731,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Aggregation</span>
       <span class="pill pill-depth">2 hops from ground truth</span>
       <span class="pill pill-muted">integer</span>
-      <span class="pill pill-dr">DR-31</span>
+      <span class="pill pill-dr">DR-33</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -2687,7 +2789,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">7 hops from ground truth</span>
       <span class="pill pill-muted">boolean</span>
-      <span class="pill pill-dr">DR-32</span>
+      <span class="pill pill-dr">DR-34</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">

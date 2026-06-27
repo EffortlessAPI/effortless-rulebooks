@@ -64,7 +64,7 @@
       {
         "LoopId": "loop-06",
         "Title": "TreatmentExposureFraction: the allocation imbalance as a witnessed number",
-        "Status": "planned",
+        "Status": "complete",
         "NewConcept": "TreatmentExposureFraction field on CaseCells (Cases / TotalCasesForTreatment in this study)",
         "DomainQuestion": "What fraction of each treatment's total cases fall in each stratum? High imbalance across strata is the mechanism of confounding.",
         "MockDataNote": "A: 263/350=75% in large-stone stratum. B: 80/350=23% in large-stone stratum. The 52-point gap IS the mechanism — now a first-class derived number.",
@@ -174,7 +174,9 @@
       { "name": "TreatmentLabel","datatype": "string",  "type": "raw",          "nullable": false, "Description": "The treatment applied in this cell (matches Treatments.TreatmentLabel)." },
       { "name": "Successes",     "datatype": "integer", "type": "raw",          "nullable": false, "Description": "Number of patients in this cell who had a successful outcome. RAW INPUT — never derived." },
       { "name": "Cases",         "datatype": "integer", "type": "raw",          "nullable": false, "Description": "Total number of patients in this cell. RAW INPUT — never derived." },
-      { "name": "CellSuccessRate","datatype": "number", "type": "calculated",   "nullable": true,  "Description": "Success rate within this cell: Successes / Cases. The first derived fact in the DAG.", "formula": "=IF({{Cases}} = 0, \"\", {{Successes}} / {{Cases}})" }
+      { "name": "CellSuccessRate",          "datatype": "number",  "type": "calculated",  "nullable": true,  "Description": "Success rate within this cell: Successes / Cases. The first derived fact in the DAG.", "formula": "=IF({{Cases}} = 0, \"\", {{Successes}} / {{Cases}})" },
+      { "name": "TotalCasesForTreatment",  "datatype": "integer", "type": "aggregation", "nullable": true,  "Description": "Total cases across ALL strata for this treatment in this study — the denominator for TreatmentExposureFraction.", "formula": "=SUMIFS(CaseCells!{{Cases}}, CaseCells!{{Study}}, {{Study}}, CaseCells!{{TreatmentLabel}}, {{TreatmentLabel}})" },
+      { "name": "TreatmentExposureFraction","datatype": "number", "type": "calculated",  "nullable": true,  "Description": "Fraction of this treatment's total cases that fall in this stratum: Cases / TotalCasesForTreatment. High imbalance across strata is the mechanism of confounding — when treatments are allocated very differently across strata, the pooled rate conflates treatment effect with stratum difficulty.", "formula": "=IF({{TotalCasesForTreatment}} = 0, \"\", {{Cases}} / {{TotalCasesForTreatment}})" }
     ],
     "data": [
       { "CaseCellId": "kidney-1986-small-A", "Study": "kidney-1986", "StratumLabel": "small", "TreatmentLabel": "A", "Successes": 81,  "Cases": 87  },

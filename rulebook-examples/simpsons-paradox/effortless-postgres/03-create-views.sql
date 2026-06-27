@@ -98,7 +98,9 @@ SELECT
   t.treatment_label,                                                            -- The treatment applied in this cell (matches Treatments.TreatmentLabel).
   t.successes,                                                                  -- Number of patients in this cell who had a successful outcome. RAW INPUT — never derived.
   t.cases,                                                                      -- Total number of patients in this cell. RAW INPUT — never derived.
-  calc_case_cells_cell_success_rate(t.case_cell_id) AS cell_success_rate        -- Success rate within this cell: Successes / Cases. The first derived fact in the DAG.
+  calc_case_cells_cell_success_rate(t.case_cell_id) AS cell_success_rate,       -- Success rate within this cell: Successes / Cases. The first derived fact in the DAG.
+  calc_case_cells_total_cases_for_treatment(t.case_cell_id) AS total_cases_for_treatment,-- Total cases across ALL strata for this treatment in this study — the denominator for TreatmentExposureFraction.
+  calc_case_cells_treatment_exposure_fraction(t.case_cell_id) AS treatment_exposure_fraction-- Fraction of this treatment's total cases that fall in this stratum: Cases / TotalCasesForTreatment. High imbalance across strata is the mechanism of confounding — when treatments are allocated very differently across strata, the pooled rate conflates treatment effect with stratum difficulty.
 FROM case_cells t;
 
 -- ----------------------------------------------------------------------------
