@@ -335,6 +335,76 @@ RETURNS NUMERIC AS $$
   SELECT (CASE WHEN calc_stratum_summaries_stratum_fraction(p_stratum_summary_id) IS NULL THEN ('')::text ELSE ((COALESCE(CASE WHEN (calc_stratum_summaries_stratum_fraction(p_stratum_summary_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_stratum_summaries_stratum_fraction(p_stratum_summary_id))::numeric ELSE NULL END, 0) * COALESCE(CASE WHEN (calc_stratum_summaries_stratum_success_rate(p_stratum_summary_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_stratum_summaries_stratum_success_rate(p_stratum_summary_id))::numeric ELSE NULL END, 0)))::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
+-- calc_stratum_summaries_treatment_a_cases_here
+-- Field: StratumSummaries.TreatmentACasesHere
+-- Type: aggregation | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_stratum_summaries_treatment_a_cases_here(p_stratum_summary_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((SELECT COALESCE(SUM((cases)::numeric), 0) FROM case_cells WHERE study = (SELECT NULLIF(study, '') FROM stratum_summaries WHERE stratum_summary_id = p_stratum_summary_id) AND stratum_label = (SELECT NULLIF(stratum_label, '') FROM stratum_summaries WHERE stratum_summary_id = p_stratum_summary_id) AND treatment_label = 'A'))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_stratum_summaries_treatment_b_cases_here
+-- Field: StratumSummaries.TreatmentBCasesHere
+-- Type: aggregation | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_stratum_summaries_treatment_b_cases_here(p_stratum_summary_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((SELECT COALESCE(SUM((cases)::numeric), 0) FROM case_cells WHERE study = (SELECT NULLIF(study, '') FROM stratum_summaries WHERE stratum_summary_id = p_stratum_summary_id) AND stratum_label = (SELECT NULLIF(stratum_label, '') FROM stratum_summaries WHERE stratum_summary_id = p_stratum_summary_id) AND treatment_label = 'B'))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_stratum_summaries_treatment_a_total_cases
+-- Field: StratumSummaries.TreatmentATotalCases
+-- Type: aggregation | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_stratum_summaries_treatment_a_total_cases(p_stratum_summary_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((SELECT COALESCE(SUM((cases)::numeric), 0) FROM case_cells WHERE study = (SELECT NULLIF(study, '') FROM stratum_summaries WHERE stratum_summary_id = p_stratum_summary_id) AND treatment_label = 'A'))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_stratum_summaries_treatment_b_total_cases
+-- Field: StratumSummaries.TreatmentBTotalCases
+-- Type: aggregation | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_stratum_summaries_treatment_b_total_cases(p_stratum_summary_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((SELECT COALESCE(SUM((cases)::numeric), 0) FROM case_cells WHERE study = (SELECT NULLIF(study, '') FROM stratum_summaries WHERE stratum_summary_id = p_stratum_summary_id) AND treatment_label = 'B'))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_stratum_summaries_allocation_fraction_a
+-- Field: StratumSummaries.AllocationFractionA
+-- Type: calculated | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_stratum_summaries_allocation_fraction_a(p_stratum_summary_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT (CASE WHEN (calc_stratum_summaries_treatment_a_total_cases(p_stratum_summary_id))::NUMERIC = 0 THEN ('')::text ELSE ((COALESCE(CASE WHEN (calc_stratum_summaries_treatment_a_cases_here(p_stratum_summary_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_stratum_summaries_treatment_a_cases_here(p_stratum_summary_id))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(CASE WHEN (calc_stratum_summaries_treatment_a_total_cases(p_stratum_summary_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_stratum_summaries_treatment_a_total_cases(p_stratum_summary_id))::numeric ELSE NULL END, 0), 0)))::text END)::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_stratum_summaries_allocation_fraction_b
+-- Field: StratumSummaries.AllocationFractionB
+-- Type: calculated | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_stratum_summaries_allocation_fraction_b(p_stratum_summary_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT (CASE WHEN (calc_stratum_summaries_treatment_b_total_cases(p_stratum_summary_id))::NUMERIC = 0 THEN ('')::text ELSE ((COALESCE(CASE WHEN (calc_stratum_summaries_treatment_b_cases_here(p_stratum_summary_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_stratum_summaries_treatment_b_cases_here(p_stratum_summary_id))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(CASE WHEN (calc_stratum_summaries_treatment_b_total_cases(p_stratum_summary_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_stratum_summaries_treatment_b_total_cases(p_stratum_summary_id))::numeric ELSE NULL END, 0), 0)))::text END)::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_stratum_summaries_allocation_bias
+-- Field: StratumSummaries.AllocationBias
+-- Type: calculated | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_stratum_summaries_allocation_bias(p_stratum_summary_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT (CASE WHEN calc_stratum_summaries_allocation_fraction_a(p_stratum_summary_id) IS NULL THEN ('')::text ELSE ((COALESCE(CASE WHEN (calc_stratum_summaries_allocation_fraction_a(p_stratum_summary_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_stratum_summaries_allocation_fraction_a(p_stratum_summary_id))::numeric ELSE NULL END, 0) - COALESCE(CASE WHEN (calc_stratum_summaries_allocation_fraction_b(p_stratum_summary_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_stratum_summaries_allocation_fraction_b(p_stratum_summary_id))::numeric ELSE NULL END, 0)))::text END)::numeric;
+$$ LANGUAGE sql STABLE;
+
 -- calc_model_summary_name
 -- Field: ModelSummary.Name
 -- Type: calculated | DataType: string | Returns: TEXT

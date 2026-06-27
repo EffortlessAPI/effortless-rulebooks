@@ -253,7 +253,7 @@ html.show-consumers .elem-consumers{display:block}
     <li><a href="#t-treatments">Treatment</a> <span class="toc-meta">3 rules · 1 links</span></li>
     <li><a href="#t-strata">Strata</a> <span class="toc-meta">1 rules · 1 links</span></li>
     <li><a href="#t-casecells">Case Cell</a> <span class="toc-meta">3 rules · 1 links</span></li>
-    <li><a href="#t-stratumsummaries">Stratum Summary</a> <span class="toc-meta">14 rules · 1 links</span></li>
+    <li><a href="#t-stratumsummaries">Stratum Summary</a> <span class="toc-meta">21 rules · 1 links</span></li>
     <li><a href="#t-modelsummary">Model Summary</a> <span class="toc-meta">8 rules · 0 links</span></li>
     <li><a href="#t-stratumvariables">Stratum Variable</a> <span class="toc-meta">1 rules · 1 links</span></li>
     <li><a href="#t-treatmentrankings">Treatment Ranking</a> <span class="toc-meta">19 rules · 1 links</span></li>
@@ -2072,6 +2072,433 @@ html.show-consumers .elem-consumers{display:block}
     </details>
     <p class="field-note elem elem-desc">StratumFraction × StratumSuccessRate. The contribution of this (stratum, treatment) row to the study-level pooled rate. Summing WeightedStratumRate across all strata for a given treatment reconstructs that treatment's pooled rate from stratum weights — witnessing the mechanism equation.</p>
     </article>
+  <article class="field tone-agg" id="f-stratumsummaries-treatmentacaseshere" data-entity="Stratum Summary" data-field="Treatment a Cases Here">
+    <div class="field-head">
+      <span class="field-glyph" title="Aggregation">Σ</span>
+      <span class="field-name">Treatment a Cases Here</span>
+      <span class="pill pill-type">Aggregation</span>
+      <span class="pill pill-depth">1 hop from ground truth</span>
+      <span class="pill pill-muted">integer</span>
+      <span class="pill pill-dr">DR-24</span>
+    </div>
+    <div class="narr-views">
+      <div class="view elem elem-rulespeak">
+        <span class="view-label">In RuleSpeak</span>
+        <p class="view-body">A stratum summary's treatment a <a class="ref" href="#f-casecells-cases">cases</a> here is the total cases across the case cells related to the stratum summary.</p>
+      </div>
+      <div class="view elem elem-english">
+        <span class="view-label">In English</span>
+        <p class="view-body">Sum of <a class="ref" href="#f-casecells-cases">cases</a> across all CaseCells whose <a class="ref" href="#f-casecells-<a class="ref" href="#f-stratumsummaries-study">study</a>">study</a> is study, <a class="ref" href="#f-casecells-stratumlabel"><a class="ref" href="#f-stratumsummaries-stratumlabel">stratum label</a></a> is stratum label, and <a class="ref" href="#f-casecells-treatmentlabel">treatment label</a> is &quot;A&quot;.</p>
+      </div>
+      <div class="view elem elem-formula">
+        <span class="view-label">As a formula</span>
+        <div class="view-body fx"><span class="fx-eq">= </span>SUMIFS(<a class="fx-chip" href="#f-casecells-cases">Cases</a>, <a class="fx-chip" href="#f-casecells-study">Study</a>, <a class="fx-chip" href="#f-stratumsummaries-study">Study</a>, <a class="fx-chip" href="#f-casecells-stratumlabel">Stratum Label</a>, <a class="fx-chip" href="#f-stratumsummaries-stratumlabel">Stratum Label</a>, <a class="fx-chip" href="#f-casecells-treatmentlabel">Treatment Label</a>, &quot;A&quot;)</div>
+      </div>
+    </div>
+    <details class="prov prov-inputs elem elem-inputs" open>
+      <summary>Inputs <span class="count">6</span> <span class="prov-hint">fields this rule reads</span></summary>
+      <div class="prov-grid">
+        <a class="input tone-raw" href="#f-casecells-cases">
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Cases</span><span class="input-table">CaseCells</span></span>
+          <span class="input-en muted">Total number of patients in this cell. RAW INPUT — never derived.</span>
+        </a>
+        <a class="input tone-rel" href="#f-casecells-study">
+          <span class="input-head"><span class="input-glyph">⇢</span><span class="input-name">Study</span><span class="input-table">CaseCells</span></span>
+          <span class="input-en muted">FK to the parent Study.</span>
+        </a>
+        <a class="input tone-rel" href="#f-stratumsummaries-study">
+          <span class="input-head"><span class="input-glyph">⇢</span><span class="input-name">Study</span><span class="input-table">StratumSummaries</span></span>
+          <span class="input-en muted">FK to the parent Study.</span>
+        </a>
+        <a class="input tone-raw" href="#f-casecells-stratumlabel">
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Stratum Label</span><span class="input-table">CaseCells</span></span>
+          <span class="input-en muted">The stratum this cell belongs to (matches Strata.StratumLabel).</span>
+        </a>
+        <a class="input tone-raw" href="#f-stratumsummaries-stratumlabel">
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Stratum Label</span><span class="input-table">StratumSummaries</span></span>
+          <span class="input-en muted">Which stratum (matches Strata.StratumLabel).</span>
+        </a>
+        <a class="input tone-raw" href="#f-casecells-treatmentlabel">
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Treatment Label</span><span class="input-table">CaseCells</span></span>
+          <span class="input-en muted">The treatment applied in this cell (matches Treatments.TreatmentLabel).</span>
+        </a>
+      </div>
+    </details>
+    <details class="prov prov-consumers elem elem-consumers">
+      <summary>Consumers <span class="count">1 direct</span> <span class="count count-muted">+1 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-calc" href="#f-stratumsummaries-allocationfractiona">ƒ Allocation Fraction a <span class="ref-pill-tbl">StratumSummaries</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-stratumsummaries-allocationbias">Allocation Bias <span class="ref-pill-tbl">StratumSummaries</span></a>
+      </div>
+    </details>
+    <details class="prov prov-leaves elem elem-inputs">
+      <summary>Ground truth at the leaves <span class="count">6</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-raw" href="#f-casecells-cases">● Cases <span class="ref-pill-tbl">CaseCells</span></a>
+        <a class="ref-pill tone-rel" href="#f-casecells-study">⇢ Study <span class="ref-pill-tbl">CaseCells</span></a>
+        <a class="ref-pill tone-rel" href="#f-stratumsummaries-study">⇢ Study <span class="ref-pill-tbl">StratumSummaries</span></a>
+        <a class="ref-pill tone-raw" href="#f-casecells-stratumlabel">● Stratum Label <span class="ref-pill-tbl">CaseCells</span></a>
+        <a class="ref-pill tone-raw" href="#f-stratumsummaries-stratumlabel">● Stratum Label <span class="ref-pill-tbl">StratumSummaries</span></a>
+        <a class="ref-pill tone-raw" href="#f-casecells-treatmentlabel">● Treatment Label <span class="ref-pill-tbl">CaseCells</span></a>
+      </div>
+    </details>
+    <p class="field-note elem elem-desc">Cases for treatment A in this stratum — used to compute TreatmentA's allocation fraction in this stratum.</p>
+    </article>
+  <article class="field tone-agg" id="f-stratumsummaries-treatmentbcaseshere" data-entity="Stratum Summary" data-field="Treatment B Cases Here">
+    <div class="field-head">
+      <span class="field-glyph" title="Aggregation">Σ</span>
+      <span class="field-name">Treatment B Cases Here</span>
+      <span class="pill pill-type">Aggregation</span>
+      <span class="pill pill-depth">1 hop from ground truth</span>
+      <span class="pill pill-muted">integer</span>
+      <span class="pill pill-dr">DR-25</span>
+    </div>
+    <div class="narr-views">
+      <div class="view elem elem-rulespeak">
+        <span class="view-label">In RuleSpeak</span>
+        <p class="view-body">A stratum summary's treatment b <a class="ref" href="#f-casecells-cases">cases</a> here is the total cases across the case cells related to the stratum summary.</p>
+      </div>
+      <div class="view elem elem-english">
+        <span class="view-label">In English</span>
+        <p class="view-body">Sum of <a class="ref" href="#f-casecells-cases">cases</a> across all CaseCells whose <a class="ref" href="#f-casecells-<a class="ref" href="#f-stratumsummaries-study">study</a>">study</a> is study, <a class="ref" href="#f-casecells-stratumlabel"><a class="ref" href="#f-stratumsummaries-stratumlabel">stratum label</a></a> is stratum label, and <a class="ref" href="#f-casecells-treatmentlabel">treatment label</a> is &quot;B&quot;.</p>
+      </div>
+      <div class="view elem elem-formula">
+        <span class="view-label">As a formula</span>
+        <div class="view-body fx"><span class="fx-eq">= </span>SUMIFS(<a class="fx-chip" href="#f-casecells-cases">Cases</a>, <a class="fx-chip" href="#f-casecells-study">Study</a>, <a class="fx-chip" href="#f-stratumsummaries-study">Study</a>, <a class="fx-chip" href="#f-casecells-stratumlabel">Stratum Label</a>, <a class="fx-chip" href="#f-stratumsummaries-stratumlabel">Stratum Label</a>, <a class="fx-chip" href="#f-casecells-treatmentlabel">Treatment Label</a>, &quot;B&quot;)</div>
+      </div>
+    </div>
+    <details class="prov prov-inputs elem elem-inputs" open>
+      <summary>Inputs <span class="count">6</span> <span class="prov-hint">fields this rule reads</span></summary>
+      <div class="prov-grid">
+        <a class="input tone-raw" href="#f-casecells-cases">
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Cases</span><span class="input-table">CaseCells</span></span>
+          <span class="input-en muted">Total number of patients in this cell. RAW INPUT — never derived.</span>
+        </a>
+        <a class="input tone-rel" href="#f-casecells-study">
+          <span class="input-head"><span class="input-glyph">⇢</span><span class="input-name">Study</span><span class="input-table">CaseCells</span></span>
+          <span class="input-en muted">FK to the parent Study.</span>
+        </a>
+        <a class="input tone-rel" href="#f-stratumsummaries-study">
+          <span class="input-head"><span class="input-glyph">⇢</span><span class="input-name">Study</span><span class="input-table">StratumSummaries</span></span>
+          <span class="input-en muted">FK to the parent Study.</span>
+        </a>
+        <a class="input tone-raw" href="#f-casecells-stratumlabel">
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Stratum Label</span><span class="input-table">CaseCells</span></span>
+          <span class="input-en muted">The stratum this cell belongs to (matches Strata.StratumLabel).</span>
+        </a>
+        <a class="input tone-raw" href="#f-stratumsummaries-stratumlabel">
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Stratum Label</span><span class="input-table">StratumSummaries</span></span>
+          <span class="input-en muted">Which stratum (matches Strata.StratumLabel).</span>
+        </a>
+        <a class="input tone-raw" href="#f-casecells-treatmentlabel">
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Treatment Label</span><span class="input-table">CaseCells</span></span>
+          <span class="input-en muted">The treatment applied in this cell (matches Treatments.TreatmentLabel).</span>
+        </a>
+      </div>
+    </details>
+    <details class="prov prov-consumers elem elem-consumers">
+      <summary>Consumers <span class="count">1 direct</span> <span class="count count-muted">+1 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-calc" href="#f-stratumsummaries-allocationfractionb">ƒ Allocation Fraction B <span class="ref-pill-tbl">StratumSummaries</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-stratumsummaries-allocationbias">Allocation Bias <span class="ref-pill-tbl">StratumSummaries</span></a>
+      </div>
+    </details>
+    <details class="prov prov-leaves elem elem-inputs">
+      <summary>Ground truth at the leaves <span class="count">6</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-raw" href="#f-casecells-cases">● Cases <span class="ref-pill-tbl">CaseCells</span></a>
+        <a class="ref-pill tone-rel" href="#f-casecells-study">⇢ Study <span class="ref-pill-tbl">CaseCells</span></a>
+        <a class="ref-pill tone-rel" href="#f-stratumsummaries-study">⇢ Study <span class="ref-pill-tbl">StratumSummaries</span></a>
+        <a class="ref-pill tone-raw" href="#f-casecells-stratumlabel">● Stratum Label <span class="ref-pill-tbl">CaseCells</span></a>
+        <a class="ref-pill tone-raw" href="#f-stratumsummaries-stratumlabel">● Stratum Label <span class="ref-pill-tbl">StratumSummaries</span></a>
+        <a class="ref-pill tone-raw" href="#f-casecells-treatmentlabel">● Treatment Label <span class="ref-pill-tbl">CaseCells</span></a>
+      </div>
+    </details>
+    <p class="field-note elem elem-desc">Cases for treatment B in this stratum — used to compute TreatmentB's allocation fraction in this stratum.</p>
+    </article>
+  <article class="field tone-agg" id="f-stratumsummaries-treatmentatotalcases" data-entity="Stratum Summary" data-field="Treatment a Total Cases">
+    <div class="field-head">
+      <span class="field-glyph" title="Aggregation">Σ</span>
+      <span class="field-name">Treatment a Total Cases</span>
+      <span class="pill pill-type">Aggregation</span>
+      <span class="pill pill-depth">1 hop from ground truth</span>
+      <span class="pill pill-muted">integer</span>
+      <span class="pill pill-dr">DR-26</span>
+    </div>
+    <div class="narr-views">
+      <div class="view elem elem-rulespeak">
+        <span class="view-label">In RuleSpeak</span>
+        <p class="view-body">A stratum summary's treatment a total <a class="ref" href="#f-casecells-cases">cases</a> is the total cases across the stratum summary's case cells that have a <a class="ref" href="#f-casecells-treatmentlabel">treatment label</a> of “A”.</p>
+      </div>
+      <div class="view elem elem-english">
+        <span class="view-label">In English</span>
+        <p class="view-body">Sum of <a class="ref" href="#f-casecells-cases">cases</a> across all CaseCells whose <a class="ref" href="#f-casecells-<a class="ref" href="#f-stratumsummaries-study">study</a>">study</a> is study and <a class="ref" href="#f-casecells-treatmentlabel">treatment label</a> is &quot;A&quot;.</p>
+      </div>
+      <div class="view elem elem-formula">
+        <span class="view-label">As a formula</span>
+        <div class="view-body fx"><span class="fx-eq">= </span>SUMIFS(<a class="fx-chip" href="#f-casecells-cases">Cases</a>, <a class="fx-chip" href="#f-casecells-study">Study</a>, <a class="fx-chip" href="#f-stratumsummaries-study">Study</a>, <a class="fx-chip" href="#f-casecells-treatmentlabel">Treatment Label</a>, &quot;A&quot;)</div>
+      </div>
+    </div>
+    <details class="prov prov-inputs elem elem-inputs" open>
+      <summary>Inputs <span class="count">4</span> <span class="prov-hint">fields this rule reads</span></summary>
+      <div class="prov-grid">
+        <a class="input tone-raw" href="#f-casecells-cases">
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Cases</span><span class="input-table">CaseCells</span></span>
+          <span class="input-en muted">Total number of patients in this cell. RAW INPUT — never derived.</span>
+        </a>
+        <a class="input tone-rel" href="#f-casecells-study">
+          <span class="input-head"><span class="input-glyph">⇢</span><span class="input-name">Study</span><span class="input-table">CaseCells</span></span>
+          <span class="input-en muted">FK to the parent Study.</span>
+        </a>
+        <a class="input tone-rel" href="#f-stratumsummaries-study">
+          <span class="input-head"><span class="input-glyph">⇢</span><span class="input-name">Study</span><span class="input-table">StratumSummaries</span></span>
+          <span class="input-en muted">FK to the parent Study.</span>
+        </a>
+        <a class="input tone-raw" href="#f-casecells-treatmentlabel">
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Treatment Label</span><span class="input-table">CaseCells</span></span>
+          <span class="input-en muted">The treatment applied in this cell (matches Treatments.TreatmentLabel).</span>
+        </a>
+      </div>
+    </details>
+    <details class="prov prov-consumers elem elem-consumers">
+      <summary>Consumers <span class="count">1 direct</span> <span class="count count-muted">+1 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-calc" href="#f-stratumsummaries-allocationfractiona">ƒ Allocation Fraction a <span class="ref-pill-tbl">StratumSummaries</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-stratumsummaries-allocationbias">Allocation Bias <span class="ref-pill-tbl">StratumSummaries</span></a>
+      </div>
+    </details>
+    <details class="prov prov-leaves elem elem-inputs">
+      <summary>Ground truth at the leaves <span class="count">4</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-raw" href="#f-casecells-cases">● Cases <span class="ref-pill-tbl">CaseCells</span></a>
+        <a class="ref-pill tone-rel" href="#f-casecells-study">⇢ Study <span class="ref-pill-tbl">CaseCells</span></a>
+        <a class="ref-pill tone-rel" href="#f-stratumsummaries-study">⇢ Study <span class="ref-pill-tbl">StratumSummaries</span></a>
+        <a class="ref-pill tone-raw" href="#f-casecells-treatmentlabel">● Treatment Label <span class="ref-pill-tbl">CaseCells</span></a>
+      </div>
+    </details>
+    <p class="field-note elem elem-desc">Total cases for treatment A across all strata in this study — denominator for AllocationFractionA.</p>
+    </article>
+  <article class="field tone-agg" id="f-stratumsummaries-treatmentbtotalcases" data-entity="Stratum Summary" data-field="Treatment B Total Cases">
+    <div class="field-head">
+      <span class="field-glyph" title="Aggregation">Σ</span>
+      <span class="field-name">Treatment B Total Cases</span>
+      <span class="pill pill-type">Aggregation</span>
+      <span class="pill pill-depth">1 hop from ground truth</span>
+      <span class="pill pill-muted">integer</span>
+      <span class="pill pill-dr">DR-27</span>
+    </div>
+    <div class="narr-views">
+      <div class="view elem elem-rulespeak">
+        <span class="view-label">In RuleSpeak</span>
+        <p class="view-body">A stratum summary's treatment b total <a class="ref" href="#f-casecells-cases">cases</a> is the total cases across the stratum summary's case cells that have a <a class="ref" href="#f-casecells-treatmentlabel">treatment label</a> of “B”.</p>
+      </div>
+      <div class="view elem elem-english">
+        <span class="view-label">In English</span>
+        <p class="view-body">Sum of <a class="ref" href="#f-casecells-cases">cases</a> across all CaseCells whose <a class="ref" href="#f-casecells-<a class="ref" href="#f-stratumsummaries-study">study</a>">study</a> is study and <a class="ref" href="#f-casecells-treatmentlabel">treatment label</a> is &quot;B&quot;.</p>
+      </div>
+      <div class="view elem elem-formula">
+        <span class="view-label">As a formula</span>
+        <div class="view-body fx"><span class="fx-eq">= </span>SUMIFS(<a class="fx-chip" href="#f-casecells-cases">Cases</a>, <a class="fx-chip" href="#f-casecells-study">Study</a>, <a class="fx-chip" href="#f-stratumsummaries-study">Study</a>, <a class="fx-chip" href="#f-casecells-treatmentlabel">Treatment Label</a>, &quot;B&quot;)</div>
+      </div>
+    </div>
+    <details class="prov prov-inputs elem elem-inputs" open>
+      <summary>Inputs <span class="count">4</span> <span class="prov-hint">fields this rule reads</span></summary>
+      <div class="prov-grid">
+        <a class="input tone-raw" href="#f-casecells-cases">
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Cases</span><span class="input-table">CaseCells</span></span>
+          <span class="input-en muted">Total number of patients in this cell. RAW INPUT — never derived.</span>
+        </a>
+        <a class="input tone-rel" href="#f-casecells-study">
+          <span class="input-head"><span class="input-glyph">⇢</span><span class="input-name">Study</span><span class="input-table">CaseCells</span></span>
+          <span class="input-en muted">FK to the parent Study.</span>
+        </a>
+        <a class="input tone-rel" href="#f-stratumsummaries-study">
+          <span class="input-head"><span class="input-glyph">⇢</span><span class="input-name">Study</span><span class="input-table">StratumSummaries</span></span>
+          <span class="input-en muted">FK to the parent Study.</span>
+        </a>
+        <a class="input tone-raw" href="#f-casecells-treatmentlabel">
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Treatment Label</span><span class="input-table">CaseCells</span></span>
+          <span class="input-en muted">The treatment applied in this cell (matches Treatments.TreatmentLabel).</span>
+        </a>
+      </div>
+    </details>
+    <details class="prov prov-consumers elem elem-consumers">
+      <summary>Consumers <span class="count">1 direct</span> <span class="count count-muted">+1 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-calc" href="#f-stratumsummaries-allocationfractionb">ƒ Allocation Fraction B <span class="ref-pill-tbl">StratumSummaries</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-stratumsummaries-allocationbias">Allocation Bias <span class="ref-pill-tbl">StratumSummaries</span></a>
+      </div>
+    </details>
+    <details class="prov prov-leaves elem elem-inputs">
+      <summary>Ground truth at the leaves <span class="count">4</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-raw" href="#f-casecells-cases">● Cases <span class="ref-pill-tbl">CaseCells</span></a>
+        <a class="ref-pill tone-rel" href="#f-casecells-study">⇢ Study <span class="ref-pill-tbl">CaseCells</span></a>
+        <a class="ref-pill tone-rel" href="#f-stratumsummaries-study">⇢ Study <span class="ref-pill-tbl">StratumSummaries</span></a>
+        <a class="ref-pill tone-raw" href="#f-casecells-treatmentlabel">● Treatment Label <span class="ref-pill-tbl">CaseCells</span></a>
+      </div>
+    </details>
+    <p class="field-note elem elem-desc">Total cases for treatment B across all strata in this study — denominator for AllocationFractionB.</p>
+    </article>
+  <article class="field tone-calc" id="f-stratumsummaries-allocationfractiona" data-entity="Stratum Summary" data-field="Allocation Fraction a">
+    <div class="field-head">
+      <span class="field-glyph" title="Calculated">ƒ</span>
+      <span class="field-name">Allocation Fraction a</span>
+      <span class="pill pill-type">Calculated</span>
+      <span class="pill pill-depth">2 hops from ground truth</span>
+      <span class="pill pill-muted">number</span>
+      <span class="pill pill-dr">DR-28</span>
+    </div>
+    <div class="narr-views">
+      <div class="view elem elem-rulespeak">
+        <span class="view-label">In RuleSpeak</span>
+        <div class="view-body"><p class="rt-headline">The stratum summary's allocation fraction a is determined by the following priority:</p><ol class="rt-priority"><li><span class="rt-value">an empty string</span> <span class="rt-when">if the treatment a total cases is 0</span></li><li><span class="rt-value">the treatment a cases here divided by the treatment a total cases</span> <span class="rt-when">in all other cases</span></li></ol></div>
+      </div>
+      <div class="view elem elem-english">
+        <span class="view-label">In English</span>
+        <p class="view-body">If <a class="ref" href="#f-stratumsummaries-treatmentatotalcases">treatment a total cases</a> equals 0 then &quot;&quot;, otherwise (<a class="ref" href="#f-stratumsummaries-treatmentacaseshere">treatment a cases here</a> divided by treatment a total cases).</p>
+      </div>
+      <div class="view elem elem-formula">
+        <span class="view-label">As a formula</span>
+        <div class="view-body fx"><span class="fx-eq">= </span>IF(<a class="fx-chip" href="#f-stratumsummaries-treatmentatotalcases">Treatment a Total Cases</a> = 0, &quot;&quot;, <a class="fx-chip" href="#f-stratumsummaries-treatmentacaseshere">Treatment a Cases Here</a> / <a class="fx-chip" href="#f-stratumsummaries-treatmentatotalcases">Treatment a Total Cases</a>)</div>
+      </div>
+    </div>
+    <details class="prov prov-inputs elem elem-inputs" open>
+      <summary>Inputs <span class="count">2</span> <span class="prov-hint">fields this rule reads</span></summary>
+      <div class="prov-grid">
+        <a class="input tone-agg" href="#f-stratumsummaries-treatmentatotalcases">
+          <span class="input-head"><span class="input-glyph">Σ</span><span class="input-name">Treatment a Total Cases</span><span class="input-table">StratumSummaries</span></span>
+          <span class="input-en">Sum of cases across all CaseCells whose study is study and treatment label is &quot;A&quot;.</span>
+        </a>
+        <a class="input tone-agg" href="#f-stratumsummaries-treatmentacaseshere">
+          <span class="input-head"><span class="input-glyph">Σ</span><span class="input-name">Treatment a Cases Here</span><span class="input-table">StratumSummaries</span></span>
+          <span class="input-en">Sum of cases across all CaseCells whose study is study, stratum label is stratum label, and treatment label is &quot;A&quot;.</span>
+        </a>
+      </div>
+    </details>
+    <details class="prov prov-consumers elem elem-consumers">
+      <summary>Consumers <span class="count">1 direct</span> <span class="prov-hint">rules that read this one</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-calc" href="#f-stratumsummaries-allocationbias">ƒ Allocation Bias <span class="ref-pill-tbl">StratumSummaries</span></a>
+      </div>
+    </details>
+    <details class="prov prov-leaves elem elem-inputs">
+      <summary>Ground truth at the leaves <span class="count">6</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-raw" href="#f-casecells-cases">● Cases <span class="ref-pill-tbl">CaseCells</span></a>
+        <a class="ref-pill tone-rel" href="#f-casecells-study">⇢ Study <span class="ref-pill-tbl">CaseCells</span></a>
+        <a class="ref-pill tone-rel" href="#f-stratumsummaries-study">⇢ Study <span class="ref-pill-tbl">StratumSummaries</span></a>
+        <a class="ref-pill tone-raw" href="#f-casecells-treatmentlabel">● Treatment Label <span class="ref-pill-tbl">CaseCells</span></a>
+        <a class="ref-pill tone-raw" href="#f-casecells-stratumlabel">● Stratum Label <span class="ref-pill-tbl">CaseCells</span></a>
+        <a class="ref-pill tone-raw" href="#f-stratumsummaries-stratumlabel">● Stratum Label <span class="ref-pill-tbl">StratumSummaries</span></a>
+      </div>
+    </details>
+    <p class="field-note elem elem-desc">Fraction of treatment A's total cases that land in this stratum: TreatmentACasesHere / TreatmentATotalCases. Equivalent to TreatmentExposureFraction for A.</p>
+    </article>
+  <article class="field tone-calc" id="f-stratumsummaries-allocationfractionb" data-entity="Stratum Summary" data-field="Allocation Fraction B">
+    <div class="field-head">
+      <span class="field-glyph" title="Calculated">ƒ</span>
+      <span class="field-name">Allocation Fraction B</span>
+      <span class="pill pill-type">Calculated</span>
+      <span class="pill pill-depth">2 hops from ground truth</span>
+      <span class="pill pill-muted">number</span>
+      <span class="pill pill-dr">DR-29</span>
+    </div>
+    <div class="narr-views">
+      <div class="view elem elem-rulespeak">
+        <span class="view-label">In RuleSpeak</span>
+        <div class="view-body"><p class="rt-headline">The stratum summary's allocation fraction b is determined by the following priority:</p><ol class="rt-priority"><li><span class="rt-value">an empty string</span> <span class="rt-when">if the treatment b total cases is 0</span></li><li><span class="rt-value">the treatment b cases here divided by the treatment b total cases</span> <span class="rt-when">in all other cases</span></li></ol></div>
+      </div>
+      <div class="view elem elem-english">
+        <span class="view-label">In English</span>
+        <p class="view-body">If <a class="ref" href="#f-stratumsummaries-treatmentbtotalcases">treatment b total cases</a> equals 0 then &quot;&quot;, otherwise (<a class="ref" href="#f-stratumsummaries-treatmentbcaseshere">treatment b cases here</a> divided by treatment b total cases).</p>
+      </div>
+      <div class="view elem elem-formula">
+        <span class="view-label">As a formula</span>
+        <div class="view-body fx"><span class="fx-eq">= </span>IF(<a class="fx-chip" href="#f-stratumsummaries-treatmentbtotalcases">Treatment B Total Cases</a> = 0, &quot;&quot;, <a class="fx-chip" href="#f-stratumsummaries-treatmentbcaseshere">Treatment B Cases Here</a> / <a class="fx-chip" href="#f-stratumsummaries-treatmentbtotalcases">Treatment B Total Cases</a>)</div>
+      </div>
+    </div>
+    <details class="prov prov-inputs elem elem-inputs" open>
+      <summary>Inputs <span class="count">2</span> <span class="prov-hint">fields this rule reads</span></summary>
+      <div class="prov-grid">
+        <a class="input tone-agg" href="#f-stratumsummaries-treatmentbtotalcases">
+          <span class="input-head"><span class="input-glyph">Σ</span><span class="input-name">Treatment B Total Cases</span><span class="input-table">StratumSummaries</span></span>
+          <span class="input-en">Sum of cases across all CaseCells whose study is study and treatment label is &quot;B&quot;.</span>
+        </a>
+        <a class="input tone-agg" href="#f-stratumsummaries-treatmentbcaseshere">
+          <span class="input-head"><span class="input-glyph">Σ</span><span class="input-name">Treatment B Cases Here</span><span class="input-table">StratumSummaries</span></span>
+          <span class="input-en">Sum of cases across all CaseCells whose study is study, stratum label is stratum label, and treatment label is &quot;B&quot;.</span>
+        </a>
+      </div>
+    </details>
+    <details class="prov prov-consumers elem elem-consumers">
+      <summary>Consumers <span class="count">1 direct</span> <span class="prov-hint">rules that read this one</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-calc" href="#f-stratumsummaries-allocationbias">ƒ Allocation Bias <span class="ref-pill-tbl">StratumSummaries</span></a>
+      </div>
+    </details>
+    <details class="prov prov-leaves elem elem-inputs">
+      <summary>Ground truth at the leaves <span class="count">6</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-raw" href="#f-casecells-cases">● Cases <span class="ref-pill-tbl">CaseCells</span></a>
+        <a class="ref-pill tone-rel" href="#f-casecells-study">⇢ Study <span class="ref-pill-tbl">CaseCells</span></a>
+        <a class="ref-pill tone-rel" href="#f-stratumsummaries-study">⇢ Study <span class="ref-pill-tbl">StratumSummaries</span></a>
+        <a class="ref-pill tone-raw" href="#f-casecells-treatmentlabel">● Treatment Label <span class="ref-pill-tbl">CaseCells</span></a>
+        <a class="ref-pill tone-raw" href="#f-casecells-stratumlabel">● Stratum Label <span class="ref-pill-tbl">CaseCells</span></a>
+        <a class="ref-pill tone-raw" href="#f-stratumsummaries-stratumlabel">● Stratum Label <span class="ref-pill-tbl">StratumSummaries</span></a>
+      </div>
+    </details>
+    <p class="field-note elem elem-desc">Fraction of treatment B's total cases that land in this stratum: TreatmentBCasesHere / TreatmentBTotalCases.</p>
+    </article>
+  <article class="field tone-calc" id="f-stratumsummaries-allocationbias" data-entity="Stratum Summary" data-field="Allocation Bias">
+    <div class="field-head">
+      <span class="field-glyph" title="Calculated">ƒ</span>
+      <span class="field-name">Allocation Bias</span>
+      <span class="pill pill-type">Calculated</span>
+      <span class="pill pill-depth">3 hops from ground truth</span>
+      <span class="pill pill-muted">number</span>
+      <span class="pill pill-dr">DR-30</span>
+    </div>
+    <div class="narr-views">
+      <div class="view elem elem-rulespeak">
+        <span class="view-label">In RuleSpeak</span>
+        <div class="view-body"><p class="rt-headline">The stratum summary's allocation bias is determined by the following priority:</p><ol class="rt-priority"><li><span class="rt-value">an empty string</span> <span class="rt-when">if the allocation fraction a is blank</span></li><li><span class="rt-value">the allocation fraction a minus the allocation fraction b</span> <span class="rt-when">in all other cases</span></li></ol></div>
+      </div>
+      <div class="view elem elem-english">
+        <span class="view-label">In English</span>
+        <p class="view-body">If <a class="ref" href="#f-stratumsummaries-allocationfractiona">allocation fraction a</a> is &quot;&quot; then &quot;&quot;, otherwise (allocation fraction a minus <a class="ref" href="#f-stratumsummaries-allocationfractionb">allocation fraction b</a>).</p>
+      </div>
+      <div class="view elem elem-formula">
+        <span class="view-label">As a formula</span>
+        <div class="view-body fx"><span class="fx-eq">= </span>IF(<a class="fx-chip" href="#f-stratumsummaries-allocationfractiona">Allocation Fraction a</a> = &quot;&quot;, &quot;&quot;, <a class="fx-chip" href="#f-stratumsummaries-allocationfractiona">Allocation Fraction a</a> - <a class="fx-chip" href="#f-stratumsummaries-allocationfractionb">Allocation Fraction B</a>)</div>
+      </div>
+    </div>
+    <details class="prov prov-inputs elem elem-inputs" open>
+      <summary>Inputs <span class="count">2</span> <span class="prov-hint">fields this rule reads</span></summary>
+      <div class="prov-grid">
+        <a class="input tone-calc" href="#f-stratumsummaries-allocationfractiona">
+          <span class="input-head"><span class="input-glyph">ƒ</span><span class="input-name">Allocation Fraction a</span><span class="input-table">StratumSummaries</span></span>
+          <span class="input-en">If treatment a total cases equals 0 then &quot;&quot;, otherwise (treatment a cases here divided by treatment a total cases).</span>
+        </a>
+        <a class="input tone-calc" href="#f-stratumsummaries-allocationfractionb">
+          <span class="input-head"><span class="input-glyph">ƒ</span><span class="input-name">Allocation Fraction B</span><span class="input-table">StratumSummaries</span></span>
+          <span class="input-en">If treatment b total cases equals 0 then &quot;&quot;, otherwise (treatment b cases here divided by treatment b total cases).</span>
+        </a>
+      </div>
+    </details>
+    <details class="prov prov-leaves elem elem-inputs">
+      <summary>Ground truth at the leaves <span class="count">6</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-raw" href="#f-casecells-cases">● Cases <span class="ref-pill-tbl">CaseCells</span></a>
+        <a class="ref-pill tone-rel" href="#f-casecells-study">⇢ Study <span class="ref-pill-tbl">CaseCells</span></a>
+        <a class="ref-pill tone-rel" href="#f-stratumsummaries-study">⇢ Study <span class="ref-pill-tbl">StratumSummaries</span></a>
+        <a class="ref-pill tone-raw" href="#f-casecells-treatmentlabel">● Treatment Label <span class="ref-pill-tbl">CaseCells</span></a>
+        <a class="ref-pill tone-raw" href="#f-casecells-stratumlabel">● Stratum Label <span class="ref-pill-tbl">CaseCells</span></a>
+        <a class="ref-pill tone-raw" href="#f-stratumsummaries-stratumlabel">● Stratum Label <span class="ref-pill-tbl">StratumSummaries</span></a>
+      </div>
+    </details>
+    <p class="field-note elem elem-desc">AllocationFractionA minus AllocationFractionB: how much more of treatment A (relative to B) is concentrated in this stratum. Positive = A is over-allocated here; negative = B is over-allocated here. When AllocationBias is large and negative in a low-success stratum, treatment A is under-represented in the hard cases — making A look worse in the pooled view than it is in any stratum. This is the confounder's fingerprint as a signed number.</p>
+    </article>
 </section>
 <section class="entity" id="t-modelsummary" data-entity="Model Summary">
   <header class="entity-head">
@@ -2085,7 +2512,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Aggregation</span>
       <span class="pill pill-depth">7 hops from ground truth</span>
       <span class="pill pill-muted">integer</span>
-      <span class="pill pill-dr">DR-24</span>
+      <span class="pill pill-dr">DR-31</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -2142,7 +2569,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Aggregation</span>
       <span class="pill pill-depth">7 hops from ground truth</span>
       <span class="pill pill-muted">integer</span>
-      <span class="pill pill-dr">DR-25</span>
+      <span class="pill pill-dr">DR-32</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -2200,7 +2627,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">8 hops from ground truth</span>
       <span class="pill pill-muted">integer</span>
-      <span class="pill pill-dr">DR-26</span>
+      <span class="pill pill-dr">DR-33</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -2260,7 +2687,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Aggregation</span>
       <span class="pill pill-depth">8 hops from ground truth</span>
       <span class="pill pill-muted">integer</span>
-      <span class="pill pill-dr">DR-27</span>
+      <span class="pill pill-dr">DR-34</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -2314,7 +2741,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Aggregation</span>
       <span class="pill pill-depth">6 hops from ground truth</span>
       <span class="pill pill-muted">integer</span>
-      <span class="pill pill-dr">DR-28</span>
+      <span class="pill pill-dr">DR-35</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -2370,7 +2797,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">8 hops from ground truth</span>
       <span class="pill pill-muted">integer</span>
-      <span class="pill pill-dr">DR-29</span>
+      <span class="pill pill-dr">DR-36</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -2424,7 +2851,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Aggregation</span>
       <span class="pill pill-depth">7 hops from ground truth</span>
       <span class="pill pill-muted">number</span>
-      <span class="pill pill-dr">DR-30</span>
+      <span class="pill pill-dr">DR-37</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -2484,7 +2911,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">9 hops from ground truth</span>
       <span class="pill pill-muted">number</span>
-      <span class="pill pill-dr">DR-31</span>
+      <span class="pill pill-dr">DR-38</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -2604,7 +3031,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">boolean</span>
-      <span class="pill pill-dr">DR-32</span>
+      <span class="pill pill-dr">DR-39</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -2716,7 +3143,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Aggregation</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">integer</span>
-      <span class="pill pill-dr">DR-33</span>
+      <span class="pill pill-dr">DR-40</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -2796,7 +3223,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Aggregation</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">integer</span>
-      <span class="pill pill-dr">DR-34</span>
+      <span class="pill pill-dr">DR-41</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -2876,7 +3303,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">2 hops from ground truth</span>
       <span class="pill pill-muted">number</span>
-      <span class="pill pill-dr">DR-35</span>
+      <span class="pill pill-dr">DR-42</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -2944,7 +3371,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Aggregation</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">integer</span>
-      <span class="pill pill-dr">DR-36</span>
+      <span class="pill pill-dr">DR-43</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -3024,7 +3451,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Aggregation</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">integer</span>
-      <span class="pill pill-dr">DR-37</span>
+      <span class="pill pill-dr">DR-44</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -3104,7 +3531,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">2 hops from ground truth</span>
       <span class="pill pill-muted">number</span>
-      <span class="pill pill-dr">DR-38</span>
+      <span class="pill pill-dr">DR-45</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -3172,7 +3599,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">3 hops from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-39</span>
+      <span class="pill pill-dr">DR-46</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -3247,7 +3674,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Aggregation</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">integer</span>
-      <span class="pill pill-dr">DR-40</span>
+      <span class="pill pill-dr">DR-47</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -3318,7 +3745,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Aggregation</span>
       <span class="pill pill-depth">4 hops from ground truth</span>
       <span class="pill pill-muted">integer</span>
-      <span class="pill pill-dr">DR-41</span>
+      <span class="pill pill-dr">DR-48</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -3401,7 +3828,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Aggregation</span>
       <span class="pill pill-depth">4 hops from ground truth</span>
       <span class="pill pill-muted">integer</span>
-      <span class="pill pill-dr">DR-42</span>
+      <span class="pill pill-dr">DR-49</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -3489,7 +3916,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">5 hops from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-43</span>
+      <span class="pill pill-dr">DR-50</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -3568,7 +3995,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">6 hops from ground truth</span>
       <span class="pill pill-muted">boolean</span>
-      <span class="pill pill-dr">DR-44</span>
+      <span class="pill pill-dr">DR-51</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -3634,7 +4061,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Aggregation</span>
       <span class="pill pill-depth">2 hops from ground truth</span>
       <span class="pill pill-muted">integer</span>
-      <span class="pill pill-dr">DR-45</span>
+      <span class="pill pill-dr">DR-52</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -3693,7 +4120,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">7 hops from ground truth</span>
       <span class="pill pill-muted">boolean</span>
-      <span class="pill pill-dr">DR-46</span>
+      <span class="pill pill-dr">DR-53</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -3757,7 +4184,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">3 hops from ground truth</span>
       <span class="pill pill-muted">number</span>
-      <span class="pill pill-dr">DR-47</span>
+      <span class="pill pill-dr">DR-54</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -3815,7 +4242,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">5 hops from ground truth</span>
       <span class="pill pill-muted">integer</span>
-      <span class="pill pill-dr">DR-48</span>
+      <span class="pill pill-dr">DR-55</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -3887,7 +4314,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">6 hops from ground truth</span>
       <span class="pill pill-muted">number</span>
-      <span class="pill pill-dr">DR-49</span>
+      <span class="pill pill-dr">DR-56</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -3952,7 +4379,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Aggregation</span>
       <span class="pill pill-depth">4 hops from ground truth</span>
       <span class="pill pill-muted">number</span>
-      <span class="pill pill-dr">DR-50</span>
+      <span class="pill pill-dr">DR-57</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -4017,7 +4444,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Aggregation</span>
       <span class="pill pill-depth">4 hops from ground truth</span>
       <span class="pill pill-muted">number</span>
-      <span class="pill pill-dr">DR-51</span>
+      <span class="pill pill-dr">DR-58</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
