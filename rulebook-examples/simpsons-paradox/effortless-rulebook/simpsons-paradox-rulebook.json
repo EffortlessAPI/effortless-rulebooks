@@ -180,12 +180,12 @@
       },
       {
         "LoopId": "loop-19",
-        "Title": "DistortionRank: do ParadoxStrength and AllocationDistortion agree? Which measure is right?",
-        "Status": "planned",
-        "NewConcept": "DistortionRank on TreatmentRankings (ordinal rank by AllocationDistortion across studies in ModelSummary); comparison of ParadoxStrength rank vs AllocationDistortion rank per study",
-        "DomainQuestion": "ParadoxStrength = PooledGap × ReversalIntensity. AllocationDistortion = |WSGSUM − PooledGapSigned|. Do they rank studies the same way? If they disagree, which ranking is more meaningful — and why? The answer determines which measure belongs in the instrument.",
-        "MockDataNote": "By AllocationDistortion: berkeley(0.193) > kidney-1986(0.100) > kidney-balanced(≈0) = balanced-synthetic(≈0). By ParadoxStrength: berkeley(0.097) > kidney-1986(0.046) > kidney-balanced(0) = balanced-synthetic(0). The ordinal ranking is the same but the magnitudes tell different stories: ParadoxStrength suppresses Berkeley (because ReversalIntensity is 0.75 not 1.0), while AllocationDistortion elevates it. AllocationDistortion does not penalise Berkeley for lacking unanimity — it measures what the allocation DID to the signal, not whether the outcome crosses an arbitrary threshold.",
-        "NextSuggestion": "AllocationDistortion is the cleaner measure because it is indifferent to the unanimity criterion. But it requires WSGSUM, which requires StratumGap and StratumFraction — two loops of upstream work. Ask: can AllocationDistortion be approximated from published summary statistics alone (no raw stratum data required)? That approximability determines whether this instrument can screen the literature."
+        "Title": "Type-C witness: compressed-synthetic — allocation distortion without sign flip",
+        "Status": "complete",
+        "NewConcept": "compressed-synthetic study (fifth study): type-C case — A wins every stratum and wins pooled, but allocation compresses A's pooled advantage. Witnesses AllocationDistortion > 0, IsSignFlip=FALSE, IsReversal=FALSE, PerStratumWinner=A. Completes the four-type taxonomy.",
+        "DomainQuestion": "Does a study with real allocation distortion (AllocationDistortion > 0) but no sign flip (IsSignFlip=FALSE) exist? If yes, the type-C cell in the DistortionType taxonomy is nonempty — there is a class of misleading aggregates that compress but do not reverse the pooled signal. This class is invisible to both IsReversal and IsSignFlip but is visible to AllocationDistortion.",
+        "MockDataNote": "Witnessed from DB (ordered by AllocationDistortion desc): berkeley-1973: WSGSUM=−0.0642, SignedPooledGap=+0.1292, IsSignFlip=TRUE, AllocationDistortion=0.1934, ReversalIntensity=0.75 → type B. kidney-1986: WSGSUM=+0.0537, SignedPooledGap=−0.0457, IsSignFlip=TRUE, AllocationDistortion=0.0994, ReversalIntensity=1.0 → type A. compressed-synthetic: WSGSUM=+0.1000, SignedPooledGap=+0.0600, IsSignFlip=FALSE, AllocationDistortion=0.0400, ReversalIntensity=0.0 → type C (A wins pooled by 6pp but would win by 10pp under equal allocation). kidney-balanced: AllocationDistortion=0.0000 → type D. balanced-synthetic: AllocationDistortion=0.0000 → type D. All four types are now empirically populated. Type-C is important: a researcher seeing pooled A=78%, B=72% and concluding 'A wins by 6pp' is correct — but the equal-weight truth is 'A wins by 10pp.' The allocation has consumed 4pp of signal without a single stratum switching winner.",
+        "NextSuggestion": "All four DistortionType cells are now populated. Add DistortionType as a derived field on TreatmentRankings: A = IsSignFlip AND ReversalIntensity=1.0; B = IsSignFlip AND ReversalIntensity<1.0; C = NOT IsSignFlip AND AllocationDistortion>0.01; D = AllocationDistortion≤0.01. This makes the geometric taxonomy a first-class derived fact in the DAG. Then add PolicyImplication per type: type A = stratify-immediately; type B = investigate-confounder; type C = check-allocation-bias; type D = pooled-analysis-trustworthy."
       },
       {
         "LoopId": "loop-20",
@@ -324,6 +324,12 @@
         "Title": "UC Berkeley Graduate Admissions (Bickel et al. 1975) — contested confounder",
         "Source": "Bickel PJ, Hammel EA, O'Connell JW. Sex Bias in Graduate Admissions: Data from Berkeley. Science. 1975;187:398-404.",
         "SourceUrl": "https://www.science.org/doi/10.1126/science.187.4175.398"
+      },
+      {
+        "StudyId": "compressed-synthetic",
+        "Title": "Compressed Synthetic Study (type-C — allocation distortion without sign flip)",
+        "Source": "Synthetic dataset constructed to demonstrate that allocation can distort the pooled signal (AllocationDistortion > 0) without reversing it (IsSignFlip=FALSE). Treatment A wins in every stratum and also wins pooled — but the pooled margin is compressed by differential allocation. This populates the type-C cell in the DistortionType taxonomy.",
+        "SourceUrl": ""
       }
     ]
   },
@@ -347,8 +353,10 @@
       { "TreatmentId": "kidney-balanced-B",    "Study": "kidney-balanced",    "TreatmentLabel": "B", "Description": "ESWL — same per-stratum rates as kidney-1986 (small:86.7%, large:68.8%) but allocated equally (50%) to each stratum. Counterfactual treatment B." },
       { "TreatmentId": "balanced-synthetic-A", "Study": "balanced-synthetic", "TreatmentLabel": "A", "Description": "Synthetic treatment A — 60% success rate in both strata. Allocated equally (50%) to each stratum." },
       { "TreatmentId": "balanced-synthetic-B", "Study": "balanced-synthetic", "TreatmentLabel": "B", "Description": "Synthetic treatment B — 50% success rate in both strata. Allocated equally (50%) to each stratum." },
-      { "TreatmentId": "berkeley-1973-male",   "Study": "berkeley-1973",      "TreatmentLabel": "A", "Description": "Male applicants (labeled A). Pooled admission rate appears higher than female." },
-      { "TreatmentId": "berkeley-1973-female", "Study": "berkeley-1973",      "TreatmentLabel": "B", "Description": "Female applicants (labeled B). Pooled admission rate appears lower, but per-department rates are equal or higher in most departments." }
+      { "TreatmentId": "berkeley-1973-male",      "Study": "berkeley-1973",       "TreatmentLabel": "A", "Description": "Male applicants (labeled A). Pooled admission rate appears higher than female." },
+      { "TreatmentId": "berkeley-1973-female",    "Study": "berkeley-1973",       "TreatmentLabel": "B", "Description": "Female applicants (labeled B). Pooled admission rate appears lower, but per-department rates are equal or higher in most departments." },
+      { "TreatmentId": "compressed-synthetic-A",  "Study": "compressed-synthetic", "TreatmentLabel": "A", "Description": "Treatment A — 70% success rate in hard stratum, 90% in easy stratum. Over-allocated to the hard stratum (60% of A cases go to hard). A wins in both strata and also wins pooled, but pooled margin is compressed by the allocation imbalance." },
+      { "TreatmentId": "compressed-synthetic-B",  "Study": "compressed-synthetic", "TreatmentLabel": "B", "Description": "Treatment B — 60% success rate in hard stratum, 80% in easy stratum. Over-allocated to the easy stratum (60% of B cases go to easy). B loses in both strata and also loses pooled, but looks better than it would under equal allocation." }
     ]
   },
 
@@ -372,7 +380,9 @@
       { "StratumId": "berkeley-1973-dept-A",   "Study": "berkeley-1973",      "StratumLabel": "dept-A","Description": "Dept A — highly competitive (low admission rate ~64%). Women applied here at roughly equal rates to men." },
       { "StratumId": "berkeley-1973-dept-B",   "Study": "berkeley-1973",      "StratumLabel": "dept-B","Description": "Dept B — competitive (~35% admission). Women applied here less often." },
       { "StratumId": "berkeley-1973-dept-C",   "Study": "berkeley-1973",      "StratumLabel": "dept-C","Description": "Dept C — moderately selective (~34% admission). More balanced gender application." },
-      { "StratumId": "berkeley-1973-dept-D",   "Study": "berkeley-1973",      "StratumLabel": "dept-D","Description": "Dept D — open (~64% admission). Women applied here most heavily — this is the easy department that women disproportionately chose." }
+      { "StratumId": "berkeley-1973-dept-D",      "Study": "berkeley-1973",       "StratumLabel": "dept-D", "Description": "Dept D — open (~64% admission). Women applied here most heavily — this is the easy department that women disproportionately chose." },
+      { "StratumId": "compressed-synthetic-hard", "Study": "compressed-synthetic", "StratumLabel": "hard",   "Description": "Hard stratum — lower baseline success rates (A=70%, B=60%). Treatment A is over-allocated here (60% of A cases vs 40% of B cases). This is the stratum that pulls A's pooled rate down relative to equal-weight expectation." },
+      { "StratumId": "compressed-synthetic-easy", "Study": "compressed-synthetic", "StratumLabel": "easy",   "Description": "Easy stratum — higher baseline success rates (A=90%, B=80%). Treatment B is over-allocated here (60% of B cases vs 40% of A cases). This partially offsets B's per-stratum disadvantage in the pooled analysis." }
     ]
   },
 
@@ -409,8 +419,12 @@
       { "CaseCellId": "berkeley-1973-dept-B-female","Study": "berkeley-1973",      "StratumLabel": "dept-B", "TreatmentLabel": "B", "Successes": 17,  "Cases": 25  },
       { "CaseCellId": "berkeley-1973-dept-C-male",  "Study": "berkeley-1973",      "StratumLabel": "dept-C", "TreatmentLabel": "A", "Successes": 120, "Cases": 325 },
       { "CaseCellId": "berkeley-1973-dept-C-female","Study": "berkeley-1973",      "StratumLabel": "dept-C", "TreatmentLabel": "B", "Successes": 202, "Cases": 593 },
-      { "CaseCellId": "berkeley-1973-dept-D-male",  "Study": "berkeley-1973",      "StratumLabel": "dept-D", "TreatmentLabel": "A", "Successes": 138, "Cases": 417 },
-      { "CaseCellId": "berkeley-1973-dept-D-female","Study": "berkeley-1973",      "StratumLabel": "dept-D", "TreatmentLabel": "B", "Successes": 131, "Cases": 375 }
+      { "CaseCellId": "berkeley-1973-dept-D-male",    "Study": "berkeley-1973",       "StratumLabel": "dept-D", "TreatmentLabel": "A", "Successes": 138, "Cases": 417 },
+      { "CaseCellId": "berkeley-1973-dept-D-female",  "Study": "berkeley-1973",       "StratumLabel": "dept-D", "TreatmentLabel": "B", "Successes": 131, "Cases": 375 },
+      { "CaseCellId": "compressed-synthetic-hard-A",  "Study": "compressed-synthetic", "StratumLabel": "hard",   "TreatmentLabel": "A", "Successes": 84,  "Cases": 120 },
+      { "CaseCellId": "compressed-synthetic-hard-B",  "Study": "compressed-synthetic", "StratumLabel": "hard",   "TreatmentLabel": "B", "Successes": 48,  "Cases": 80  },
+      { "CaseCellId": "compressed-synthetic-easy-A",  "Study": "compressed-synthetic", "StratumLabel": "easy",   "TreatmentLabel": "A", "Successes": 72,  "Cases": 80  },
+      { "CaseCellId": "compressed-synthetic-easy-B",  "Study": "compressed-synthetic", "StratumLabel": "easy",   "TreatmentLabel": "B", "Successes": 96,  "Cases": 120 }
     ]
   },
 
@@ -465,8 +479,12 @@
       { "StratumSummaryId": "berkeley-1973-dept-B-female","Study": "berkeley-1973",      "StratumLabel": "dept-B", "TreatmentLabel": "B" },
       { "StratumSummaryId": "berkeley-1973-dept-C-male",  "Study": "berkeley-1973",      "StratumLabel": "dept-C", "TreatmentLabel": "A" },
       { "StratumSummaryId": "berkeley-1973-dept-C-female","Study": "berkeley-1973",      "StratumLabel": "dept-C", "TreatmentLabel": "B" },
-      { "StratumSummaryId": "berkeley-1973-dept-D-male",  "Study": "berkeley-1973",      "StratumLabel": "dept-D", "TreatmentLabel": "A" },
-      { "StratumSummaryId": "berkeley-1973-dept-D-female","Study": "berkeley-1973",      "StratumLabel": "dept-D", "TreatmentLabel": "B" }
+      { "StratumSummaryId": "berkeley-1973-dept-D-male",    "Study": "berkeley-1973",       "StratumLabel": "dept-D", "TreatmentLabel": "A" },
+      { "StratumSummaryId": "berkeley-1973-dept-D-female",  "Study": "berkeley-1973",       "StratumLabel": "dept-D", "TreatmentLabel": "B" },
+      { "StratumSummaryId": "compressed-synthetic-hard-A",  "Study": "compressed-synthetic", "StratumLabel": "hard",   "TreatmentLabel": "A" },
+      { "StratumSummaryId": "compressed-synthetic-hard-B",  "Study": "compressed-synthetic", "StratumLabel": "hard",   "TreatmentLabel": "B" },
+      { "StratumSummaryId": "compressed-synthetic-easy-A",  "Study": "compressed-synthetic", "StratumLabel": "easy",   "TreatmentLabel": "A" },
+      { "StratumSummaryId": "compressed-synthetic-easy-B",  "Study": "compressed-synthetic", "StratumLabel": "easy",   "TreatmentLabel": "B" }
     ]
   },
 
@@ -538,6 +556,15 @@
         "AffectsTreatmentAssignment": false,
         "AffectsOutcome": true,
         "MechanismNote": "The stratum variable affects outcome (easy vs hard conditions) but does NOT affect treatment assignment — each treatment receives exactly 50% of its cases in each stratum. Because treatment assignment is independent of stratum, no confounding can occur and the pooled rate must agree with every per-stratum comparison."
+      },
+      {
+        "StratumVariableId": "compressed-synthetic-stratum",
+        "Study": "compressed-synthetic",
+        "VariableName": "difficulty",
+        "CausalRole": "confounder",
+        "AffectsTreatmentAssignment": true,
+        "AffectsOutcome": true,
+        "MechanismNote": "Case difficulty affects both which treatment patients receive (A is over-allocated to hard cases: 60% vs 40%) and the outcome (hard cases have lower success rates for both treatments). This IS confounding — but the confounding is not strong enough to flip the pooled winner. A wins in every stratum and also wins pooled. The allocation compresses A's pooled advantage (from equal-weight 10pp down to actual 6pp) but does not erase it. This is type-C distortion: real confounding, partial distortion, no reversal."
       }
     ]
   },
@@ -580,7 +607,8 @@
       { "TreatmentRankingId": "kidney-1986-A-vs-B",        "Study": "kidney-1986",        "TreatmentA": "A", "TreatmentB": "B" },
       { "TreatmentRankingId": "kidney-balanced-A-vs-B",    "Study": "kidney-balanced",   "TreatmentA": "A", "TreatmentB": "B" },
       { "TreatmentRankingId": "balanced-synthetic-A-vs-B", "Study": "balanced-synthetic", "TreatmentA": "A", "TreatmentB": "B" },
-      { "TreatmentRankingId": "berkeley-1973-A-vs-B",       "Study": "berkeley-1973",      "TreatmentA": "A", "TreatmentB": "B" }
+      { "TreatmentRankingId": "berkeley-1973-A-vs-B",        "Study": "berkeley-1973",       "TreatmentA": "A", "TreatmentB": "B" },
+      { "TreatmentRankingId": "compressed-synthetic-A-vs-B", "Study": "compressed-synthetic", "TreatmentA": "A", "TreatmentB": "B" }
     ]
   },
 
@@ -590,7 +618,7 @@
       "source": "hand-authored",
       "tool_version": "1.0.0",
       "export_mode": "schema_first_type_mapping",
-      "loop": "18"
+      "loop": "19"
     }
   }
 }
