@@ -295,6 +295,36 @@ RETURNS TEXT AS $$
   SELECT (CASE WHEN calc_stratum_summaries_stratum_rate_a(p_stratum_summary_id) > calc_stratum_summaries_stratum_rate_b(p_stratum_summary_id) THEN ('A')::text ELSE ('B')::text END)::text;
 $$ LANGUAGE sql STABLE;
 
+-- calc_stratum_summaries_study_total_cases
+-- Field: StratumSummaries.StudyTotalCases
+-- Type: aggregation | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_stratum_summaries_study_total_cases(p_stratum_summary_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((SELECT COALESCE(SUM((cases)::numeric), 0) FROM case_cells WHERE study = (SELECT NULLIF(study, '') FROM stratum_summaries WHERE stratum_summary_id = p_stratum_summary_id)))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_stratum_summaries_stratum_total_cases
+-- Field: StratumSummaries.StratumTotalCases
+-- Type: aggregation | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_stratum_summaries_stratum_total_cases(p_stratum_summary_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((SELECT COALESCE(SUM((cases)::numeric), 0) FROM case_cells WHERE study = (SELECT NULLIF(study, '') FROM stratum_summaries WHERE stratum_summary_id = p_stratum_summary_id) AND stratum_label = (SELECT NULLIF(stratum_label, '') FROM stratum_summaries WHERE stratum_summary_id = p_stratum_summary_id)))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_stratum_summaries_stratum_fraction
+-- Field: StratumSummaries.StratumFraction
+-- Type: calculated | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_stratum_summaries_stratum_fraction(p_stratum_summary_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT (CASE WHEN (calc_stratum_summaries_study_total_cases(p_stratum_summary_id))::NUMERIC = 0 THEN ('')::text ELSE ((COALESCE(CASE WHEN (calc_stratum_summaries_stratum_total_cases(p_stratum_summary_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_stratum_summaries_stratum_total_cases(p_stratum_summary_id))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(CASE WHEN (calc_stratum_summaries_study_total_cases(p_stratum_summary_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_stratum_summaries_study_total_cases(p_stratum_summary_id))::numeric ELSE NULL END, 0), 0)))::text END)::numeric;
+$$ LANGUAGE sql STABLE;
+
 -- calc_model_summary_name
 -- Field: ModelSummary.Name
 -- Type: calculated | DataType: string | Returns: TEXT

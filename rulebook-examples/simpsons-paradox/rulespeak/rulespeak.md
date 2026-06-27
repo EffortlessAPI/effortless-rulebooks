@@ -36,6 +36,9 @@ _Digital mirror of the Simpson's Paradox domain. The entities are Studies, Treat
 | Stratum Cases B | The total cases across the case cells related to the stratum summary. | _Cases for treatment B in this (study, stratum)._ |
 | Stratum Rate B | Determined by priority: an empty string if the stratum cases b is 0; in all other cases, the stratum successes b divided by the stratum cases b. | _Success rate for treatment B in this stratum._ |
 | Stratum Winner | Determined by priority: “A” if the stratum rate a is greater than the stratum rate b; in all other cases, “B”. | _Which treatment wins in this stratum: 'A' if StratumRateA > StratumRateB, else 'B'. Used by TreatmentRankings to detect paradox._ |
+| Study Total Cases | The total cases across the case cells related to the stratum summary. | _Total cases across ALL strata and ALL treatments in this study. The denominator for StratumFraction._ |
+| Stratum Total Cases | The total cases across the case cells related to the stratum summary. | _Total cases in this stratum across both treatments (A + B combined). Numerator for StratumFraction._ |
+| Stratum Fraction | Determined by priority: an empty string if the study total cases is 0; in all other cases, the stratum total cases divided by the study total cases. | _Fraction of the study's total cases that fall in this stratum: StratumTotalCases / StudyTotalCases. The weight the confounder assigns to each stratum. A large StratumFraction on a low-success stratum pulls the pooled rate down; when that stratum is also over-allocated to one treatment, it creates the reversal._ |
 | **Model Summary** | A model summary is identified by its name. | — |
 | Reversal Count | The number of treatment rankings related to the model summary. | _Number of studies with IsReversal=TRUE (strict full reversal)._ |
 | Non Reversal Count | The number of treatment rankings related to the model summary. | _Number of studies with IsReversal=FALSE._ |
@@ -127,32 +130,35 @@ but clunky — a flag for an optional downstream reword pass, not a defect._
 | **DR-17 Stratum Cases B** | A stratum summary's stratum cases b is the total cases across the case cells related to the stratum summary. |
 | **DR-18 Stratum Rate B** | The stratum summary's stratum rate b is determined by the following priority:<br>1. an empty string, if the stratum cases b is 0;<br>2. in all other cases, the stratum successes b divided by the stratum cases b. |
 | **DR-19 Stratum Winner** | The stratum summary's stratum winner is determined by the following priority:<br>1. “A”, if the stratum rate a is greater than the stratum rate b;<br>2. in all other cases, “B”. |
-| **DR-20 Reversal Count** | A model summary's reversal count is the number of treatment rankings related to the model summary. |
-| **DR-21 Non Reversal Count** | A model summary's non reversal count is the number of treatment rankings related to the model summary. |
-| **DR-22 Study Count** | A model summary's study count is computed as the reversal count plus the non reversal count. |
-| **DR-23 Explained Count** | A model summary's explained count is the number of treatment rankings related to the model summary. |
-| **DR-24 Zero Strength Count** | A model summary's zero strength count is the number of treatment rankings related to the model summary. |
-| **DR-25 Partial Count** | A model summary's partial count is computed as the non reversal count minus the zero strength count. |
-| **DR-26 Total Paradox Strength** | A model summary's total paradox strength is the total paradox strength across the treatment rankings related to the model summary. |
-| **DR-27 Avg Paradox Strength** | The model summary's avg paradox strength is determined by the following priority:<br>1. an empty string, if the study count is 0;<br>2. in all other cases, the total paradox strength divided by the study count. |
-| **DR-28 Is Confounder** | A stratum variable is considered a confounder if all of the following hold: the affects treatment assignment flag is set; the affects outcome flag is set; and the causal role is “confounder”. |
-| **DR-29 Total Cases a** | A treatment ranking's total cases a is the total cases across the case cells related to the treatment ranking. |
-| **DR-30 Total Successes a** | A treatment ranking's total successes a is the total successes across the case cells related to the treatment ranking. |
-| **DR-31 Pooled Rate a** | The treatment ranking's pooled rate a is determined by the following priority:<br>1. an empty string, if the total cases a is 0;<br>2. in all other cases, the total successes a divided by the total cases a. |
-| **DR-32 Total Cases B** | A treatment ranking's total cases b is the total cases across the case cells related to the treatment ranking. |
-| **DR-33 Total Successes B** | A treatment ranking's total successes b is the total successes across the case cells related to the treatment ranking. |
-| **DR-34 Pooled Rate B** | The treatment ranking's pooled rate b is determined by the following priority:<br>1. an empty string, if the total cases b is 0;<br>2. in all other cases, the total successes b divided by the total cases b. |
-| **DR-35 Pooled Winner** | The treatment ranking's pooled winner is determined by the following priority:<br>1. the treatment a, if the pooled rate a is greater than the pooled rate b;<br>2. in all other cases, the treatment b. |
-| **DR-36 Stratum Count** | A treatment ranking's stratum count is the number of stratum summaries related to the treatment ranking. |
-| **DR-37 Strata Won by a** | A treatment ranking's strata won by a is the number of stratum summaries related to the treatment ranking. |
-| **DR-38 Strata Won by B** | A treatment ranking's strata won by b is the number of stratum summaries related to the treatment ranking. |
-| **DR-39 Per Stratum Winner** | The treatment ranking's per stratum winner is determined by the following priority:<br>1. the treatment a, if the strata won by a is the stratum count;<br>2. the treatment b, if the strata won by b is the stratum count;<br>3. in all other cases, “none”. |
-| **DR-40 Is Reversal** | A treatment ranking is considered a reversal if all of the following hold: the per stratum winner is not “none” and the pooled winner is not the per stratum winner. |
-| **DR-41 Confounders in Study** | A treatment ranking's confounders in study is the number of the treatment ranking's stratum variables that are confounders. |
-| **DR-42 Is Paradox Explained** | A treatment ranking is considered paradox-explained if all of the following hold: the reversal flag is set and the confounders in study is greater than 0. |
-| **DR-43 Pooled Gap** | The treatment ranking's pooled gap is determined by the following priority:<br>1. an empty string, if the pooled rate a is blank;<br>2. in all other cases, the absolute value of the pooled rate a minus the pooled rate b. |
-| **DR-44 Strata Won by Loser** | The treatment ranking's strata won by loser is determined by the following priority:<br>1. the strata won by b, if the pooled winner is the treatment a;<br>2. in all other cases, the strata won by a. |
-| **DR-45 Paradox Strength** | The treatment ranking's paradox strength is determined by the following priority:<br>1. an empty string, if the stratum count is 0;<br>2. in all other cases, the pooled gap times the strata won by loser divided by the stratum count. |
+| **DR-20 Study Total Cases** | A stratum summary's study total cases is the total cases across the case cells related to the stratum summary. |
+| **DR-21 Stratum Total Cases** | A stratum summary's stratum total cases is the total cases across the case cells related to the stratum summary. |
+| **DR-22 Stratum Fraction** | The stratum summary's stratum fraction is determined by the following priority:<br>1. an empty string, if the study total cases is 0;<br>2. in all other cases, the stratum total cases divided by the study total cases. |
+| **DR-23 Reversal Count** | A model summary's reversal count is the number of treatment rankings related to the model summary. |
+| **DR-24 Non Reversal Count** | A model summary's non reversal count is the number of treatment rankings related to the model summary. |
+| **DR-25 Study Count** | A model summary's study count is computed as the reversal count plus the non reversal count. |
+| **DR-26 Explained Count** | A model summary's explained count is the number of treatment rankings related to the model summary. |
+| **DR-27 Zero Strength Count** | A model summary's zero strength count is the number of treatment rankings related to the model summary. |
+| **DR-28 Partial Count** | A model summary's partial count is computed as the non reversal count minus the zero strength count. |
+| **DR-29 Total Paradox Strength** | A model summary's total paradox strength is the total paradox strength across the treatment rankings related to the model summary. |
+| **DR-30 Avg Paradox Strength** | The model summary's avg paradox strength is determined by the following priority:<br>1. an empty string, if the study count is 0;<br>2. in all other cases, the total paradox strength divided by the study count. |
+| **DR-31 Is Confounder** | A stratum variable is considered a confounder if all of the following hold: the affects treatment assignment flag is set; the affects outcome flag is set; and the causal role is “confounder”. |
+| **DR-32 Total Cases a** | A treatment ranking's total cases a is the total cases across the case cells related to the treatment ranking. |
+| **DR-33 Total Successes a** | A treatment ranking's total successes a is the total successes across the case cells related to the treatment ranking. |
+| **DR-34 Pooled Rate a** | The treatment ranking's pooled rate a is determined by the following priority:<br>1. an empty string, if the total cases a is 0;<br>2. in all other cases, the total successes a divided by the total cases a. |
+| **DR-35 Total Cases B** | A treatment ranking's total cases b is the total cases across the case cells related to the treatment ranking. |
+| **DR-36 Total Successes B** | A treatment ranking's total successes b is the total successes across the case cells related to the treatment ranking. |
+| **DR-37 Pooled Rate B** | The treatment ranking's pooled rate b is determined by the following priority:<br>1. an empty string, if the total cases b is 0;<br>2. in all other cases, the total successes b divided by the total cases b. |
+| **DR-38 Pooled Winner** | The treatment ranking's pooled winner is determined by the following priority:<br>1. the treatment a, if the pooled rate a is greater than the pooled rate b;<br>2. in all other cases, the treatment b. |
+| **DR-39 Stratum Count** | A treatment ranking's stratum count is the number of stratum summaries related to the treatment ranking. |
+| **DR-40 Strata Won by a** | A treatment ranking's strata won by a is the number of stratum summaries related to the treatment ranking. |
+| **DR-41 Strata Won by B** | A treatment ranking's strata won by b is the number of stratum summaries related to the treatment ranking. |
+| **DR-42 Per Stratum Winner** | The treatment ranking's per stratum winner is determined by the following priority:<br>1. the treatment a, if the strata won by a is the stratum count;<br>2. the treatment b, if the strata won by b is the stratum count;<br>3. in all other cases, “none”. |
+| **DR-43 Is Reversal** | A treatment ranking is considered a reversal if all of the following hold: the per stratum winner is not “none” and the pooled winner is not the per stratum winner. |
+| **DR-44 Confounders in Study** | A treatment ranking's confounders in study is the number of the treatment ranking's stratum variables that are confounders. |
+| **DR-45 Is Paradox Explained** | A treatment ranking is considered paradox-explained if all of the following hold: the reversal flag is set and the confounders in study is greater than 0. |
+| **DR-46 Pooled Gap** | The treatment ranking's pooled gap is determined by the following priority:<br>1. an empty string, if the pooled rate a is blank;<br>2. in all other cases, the absolute value of the pooled rate a minus the pooled rate b. |
+| **DR-47 Strata Won by Loser** | The treatment ranking's strata won by loser is determined by the following priority:<br>1. the strata won by b, if the pooled winner is the treatment a;<br>2. in all other cases, the strata won by a. |
+| **DR-48 Paradox Strength** | The treatment ranking's paradox strength is determined by the following priority:<br>1. an empty string, if the stratum count is 0;<br>2. in all other cases, the pooled gap times the strata won by loser divided by the stratum count. |
 
 ## 5 Traceability to Schema
 
@@ -180,6 +186,9 @@ the same logic the rulebook stores, written for a business reader._
 | **StratumSummaries.StratumCasesB** | rollup | `Sum(CaseCells.Cases via Study)` |
 | **StratumSummaries.StratumRateB** | formula | `If(StratumCasesB = 0, "", StratumSuccessesB / StratumCasesB)` |
 | **StratumSummaries.StratumWinner** | formula | `If(StratumRateA > StratumRateB, "A", "B")` |
+| **StratumSummaries.StudyTotalCases** | rollup | `Sum(CaseCells.Cases via Study)` |
+| **StratumSummaries.StratumTotalCases** | rollup | `Sum(CaseCells.Cases via Study)` |
+| **StratumSummaries.StratumFraction** | formula | `If(StudyTotalCases = 0, "", StratumTotalCases / StudyTotalCases)` |
 | **ModelSummary.ReversalCount** | rollup | `Count(TreatmentRankings via IsReversal)` |
 | **ModelSummary.NonReversalCount** | rollup | `Count(TreatmentRankings via IsReversal)` |
 | **ModelSummary.StudyCount** | formula | `ReversalCount + NonReversalCount` |

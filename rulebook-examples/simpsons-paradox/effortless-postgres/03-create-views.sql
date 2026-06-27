@@ -125,7 +125,10 @@ SELECT
   calc_stratum_summaries_stratum_successes_b(t.stratum_summary_id) AS stratum_successes_b,-- Successes for treatment B in this (study, stratum).
   calc_stratum_summaries_stratum_cases_b(t.stratum_summary_id) AS stratum_cases_b,-- Cases for treatment B in this (study, stratum).
   calc_stratum_summaries_stratum_rate_b(t.stratum_summary_id) AS stratum_rate_b,-- Success rate for treatment B in this stratum.
-  calc_stratum_summaries_stratum_winner(t.stratum_summary_id) AS stratum_winner -- Which treatment wins in this stratum: 'A' if StratumRateA > StratumRateB, else 'B'. Used by TreatmentRankings to detect paradox.
+  calc_stratum_summaries_stratum_winner(t.stratum_summary_id) AS stratum_winner,-- Which treatment wins in this stratum: 'A' if StratumRateA > StratumRateB, else 'B'. Used by TreatmentRankings to detect paradox.
+  calc_stratum_summaries_study_total_cases(t.stratum_summary_id) AS study_total_cases,-- Total cases across ALL strata and ALL treatments in this study. The denominator for StratumFraction.
+  calc_stratum_summaries_stratum_total_cases(t.stratum_summary_id) AS stratum_total_cases,-- Total cases in this stratum across both treatments (A + B combined). Numerator for StratumFraction.
+  calc_stratum_summaries_stratum_fraction(t.stratum_summary_id) AS stratum_fraction-- Fraction of the study's total cases that fall in this stratum: StratumTotalCases / StudyTotalCases. The weight the confounder assigns to each stratum. A large StratumFraction on a low-success stratum pulls the pooled rate down; when that stratum is also over-allocated to one treatment, it creates the reversal.
 FROM stratum_summaries t;
 
 -- ----------------------------------------------------------------------------
