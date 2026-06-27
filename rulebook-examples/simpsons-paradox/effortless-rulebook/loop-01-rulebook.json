@@ -1,0 +1,79 @@
+{
+  "$schema": "https://example.com/cmcc-schema/v1",
+  "Name": "simpsons-paradox-loop-01",
+  "Description": "Loop 1: kidney-stone synthetic example (two stone sizes, two treatments).",
+  "Datasets": {
+    "Description": "Table: Datasets — source datasets for the kidney-stone Simpson's Paradox demonstration.",
+    "schema": [
+      { "name": "DatasetId", "datatype": "string", "type": "raw", "nullable": false, "Description": "Unique identifier for the dataset (slug)." },
+      { "name": "Name", "datatype": "string", "type": "calculated", "nullable": false, "Description": "Display name, mirrors DatasetId.", "formula": "={{DatasetId}}" },
+      { "name": "Source", "datatype": "string", "type": "raw", "nullable": true, "Description": "Human-readable description of where the dataset came from." },
+      { "name": "SourceUrl", "datatype": "string", "type": "raw", "nullable": true, "Description": "URL pointing to the original data source." },
+      { "name": "IngestDate", "datatype": "datetime", "type": "raw", "nullable": true, "Description": "Date the dataset was ingested." }
+    ],
+    "data": []
+  },
+  "Observations": {
+    "Description": "Table: Observations — one row per (dataset, stone size, treatment) combination recording successes and trials.",
+    "schema": [
+      { "name": "ObservationId", "datatype": "string", "type": "raw", "nullable": false, "Description": "Unique identifier for this observation record (slug)." },
+      { "name": "Name", "datatype": "string", "type": "calculated", "nullable": false, "Description": "Display label for this observation.", "formula": "={{ObservationId}}" },
+      { "name": "Dataset", "datatype": "string", "type": "relationship", "nullable": false, "Description": "FK to the parent Dataset.", "RelatedTo": "Datasets" },
+      { "name": "StoneSize", "datatype": "string", "type": "raw", "nullable": false, "Description": "Stone size category: small or large." },
+      { "name": "Treatment", "datatype": "string", "type": "raw", "nullable": false, "Description": "Treatment applied: A or B." },
+      { "name": "Successes", "datatype": "integer", "type": "raw", "nullable": false, "Description": "Number of successful outcomes in this cell." },
+      { "name": "Trials", "datatype": "integer", "type": "raw", "nullable": false, "Description": "Total number of trials in this cell." }
+    ],
+    "data": []
+  },
+  "PooledRates": {
+    "Description": "Table: PooledRates — pooled (collapsed across strata) success counts and rate per dataset+treatment pair.",
+    "schema": [
+      { "name": "PooledRateId", "datatype": "string", "type": "raw", "nullable": false, "Description": "Unique identifier for this pooled-rate record (slug, e.g. kidney-A)." },
+      { "name": "Name", "datatype": "string", "type": "calculated", "nullable": false, "Description": "Display label for this pooled rate.", "formula": "={{PooledRateId}}" },
+      { "name": "Dataset", "datatype": "string", "type": "relationship", "nullable": false, "Description": "FK to the parent Dataset.", "RelatedTo": "Datasets" },
+      { "name": "Treatment", "datatype": "string", "type": "raw", "nullable": false, "Description": "Treatment identifier: A or B." },
+      { "name": "PooledSuccesses", "datatype": "integer", "type": "aggregation", "nullable": true, "Description": "Sum of successes across all strata for this dataset+treatment.", "formula": "=SUMIFS(Observations!{{Successes}}, Observations!{{Dataset}}, {{Dataset}}, Observations!{{Treatment}}, {{Treatment}})" },
+      { "name": "PooledTrials", "datatype": "integer", "type": "aggregation", "nullable": true, "Description": "Sum of trials across all strata for this dataset+treatment.", "formula": "=SUMIFS(Observations!{{Trials}}, Observations!{{Dataset}}, {{Dataset}}, Observations!{{Treatment}}, {{Treatment}})" },
+      { "name": "PooledRate", "datatype": "number", "type": "calculated", "nullable": true, "Description": "Pooled success rate: PooledSuccesses / PooledTrials.", "formula": "=IF({{PooledTrials}} = 0, \"\", {{PooledSuccesses}} / {{PooledTrials}})" }
+    ],
+    "data": []
+  },
+  "StratumRates": {
+    "Description": "Table: StratumRates — per-stratum success counts and rate per dataset+stone-size+treatment combination.",
+    "schema": [
+      { "name": "StratumRateId", "datatype": "string", "type": "raw", "nullable": false, "Description": "Unique identifier for this stratum-rate record (slug, e.g. kidney-small-A)." },
+      { "name": "Name", "datatype": "string", "type": "calculated", "nullable": false, "Description": "Display label for this stratum rate.", "formula": "={{StratumRateId}}" },
+      { "name": "Dataset", "datatype": "string", "type": "relationship", "nullable": false, "Description": "FK to the parent Dataset.", "RelatedTo": "Datasets" },
+      { "name": "StoneSize", "datatype": "string", "type": "raw", "nullable": false, "Description": "Stone size stratum: small or large." },
+      { "name": "Treatment", "datatype": "string", "type": "raw", "nullable": false, "Description": "Treatment identifier: A or B." },
+      { "name": "StratumSuccesses", "datatype": "integer", "type": "aggregation", "nullable": true, "Description": "Sum of successes for this dataset+stone-size+treatment cell.", "formula": "=SUMIFS(Observations!{{Successes}}, Observations!{{Dataset}}, {{Dataset}}, Observations!{{StoneSize}}, {{StoneSize}}, Observations!{{Treatment}}, {{Treatment}})" },
+      { "name": "StratumTrials", "datatype": "integer", "type": "aggregation", "nullable": true, "Description": "Sum of trials for this dataset+stone-size+treatment cell.", "formula": "=SUMIFS(Observations!{{Trials}}, Observations!{{Dataset}}, {{Dataset}}, Observations!{{StoneSize}}, {{StoneSize}}, Observations!{{Treatment}}, {{Treatment}})" },
+      { "name": "StratumRate", "datatype": "number", "type": "calculated", "nullable": true, "Description": "Per-stratum success rate: StratumSuccesses / StratumTrials.", "formula": "=IF({{StratumTrials}} = 0, \"\", {{StratumSuccesses}} / {{StratumTrials}})" }
+    ],
+    "data": []
+  },
+  "ReversalDetections": {
+    "Description": "Table: ReversalDetections — one row per dataset identifying whether a Simpson's Paradox reversal occurred.",
+    "schema": [
+      { "name": "ReversalDetectionId", "datatype": "string", "type": "raw", "nullable": false, "Description": "Unique identifier for this reversal detection record (slug)." },
+      { "name": "Name", "datatype": "string", "type": "calculated", "nullable": false, "Description": "Display label for this detection.", "formula": "={{ReversalDetectionId}}" },
+      { "name": "Dataset", "datatype": "string", "type": "relationship", "nullable": false, "Description": "FK to the dataset being tested for reversal.", "RelatedTo": "Datasets" },
+      { "name": "GroupA", "datatype": "string", "type": "raw", "nullable": false, "Description": "Label for the first treatment group being compared (e.g. A)." },
+      { "name": "GroupB", "datatype": "string", "type": "raw", "nullable": false, "Description": "Label for the second treatment group being compared (e.g. B)." },
+      { "name": "PooledWinner", "datatype": "string", "type": "lookup", "nullable": true, "Description": "Treatment with the higher pooled rate — the misleading pooled winner.", "formula": "=INDEX(PooledRates!{{Treatment}}, MATCH(MAX(SUMIFS(PooledRates!{{PooledRate}}, PooledRates!{{Dataset}}, {{Dataset}})), PooledRates!{{PooledRate}}, 0))" },
+      { "name": "PerStratumSummary", "datatype": "string", "type": "raw", "nullable": true, "Description": "Free-text human summary of per-stratum comparison direction." },
+      { "name": "ReversalFlag", "datatype": "boolean", "type": "raw", "nullable": false, "Description": "True when the pooled winner differs from the per-stratum winner in all strata — confirming Simpson's Paradox." },
+      { "name": "DecidingStratum", "datatype": "string", "type": "raw", "nullable": true, "Description": "The stratum whose confounding effect drives the paradox (e.g. large stones)." }
+    ],
+    "data": []
+  },
+  "_meta": {
+    "_CMCC_Summary": "Loop-01 Simpson's Paradox rulebook: kidney-stone two-treatment synthetic example. Tables: Datasets, Observations, PooledRates, StratumRates, ReversalDetections.",
+    "_conversion_metadata": {
+      "source": "hand-authored",
+      "tool_version": "1.0.0",
+      "export_mode": "schema_first_type_mapping"
+    }
+  }
+}

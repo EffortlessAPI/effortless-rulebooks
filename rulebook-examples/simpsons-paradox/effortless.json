@@ -1,0 +1,37 @@
+{
+  "ShowHidden": false,
+  "ShowAllFiles": false,
+  "CurrentPath": null,
+  "SSoTmeProjectFiles": null,
+  "SSoTmeProjectId": "1037a966-c84d-4a70-88d2-665fcef5dd1f",
+  "Name": "simpsons-paradox",
+  "Description": "Digital mirror of the Simpson's Paradox domain — 10-loop build from raw case cells to a fully-inferred reversal object. The paradox emerges from the DAG; it is not modeled directly.",
+  "ProjectSettings": [
+    {
+      "Name": "project-name",
+      "Value": "simpsons-paradox"
+    }
+  ],
+  "ProjectTranspilers": [
+    {
+      "IsSSoTTranspiler": false,
+      "Name": "rulebooktopostgres",
+      "RelativePath": "/effortless-postgres",
+      "CommandLine": "rulebook-to-postgres -i ../effortless-rulebook/simpsons-paradox-rulebook.json",
+      "IsDisabled": false,
+      "LastVersionUsed": "v2026.06.20.1746",
+      "LastUrl": "https://effortless-rulebook-to-postgres-v2026-06-20-1746-cmvbd4phczmeg.7pktzg2z971j0.cpln.app",
+      "Description": "Generate Postgres schema + seed data from the rulebook"
+    },
+    {
+      "IsSSoTTranspiler": false,
+      "Name": "rulebooktorulespeak",
+      "RelativePath": "/rulespeak",
+      "CommandLine": "rulebook-to-rulespeak -i ../effortless-rulebook/simpsons-paradox-rulebook.json",
+      "IsDisabled": false,
+      "LastVersionUsed": "v2026.06.10.1308",
+      "LastUrl": "https://effortless-rulebook-to-rulespeak-v2026-06-10-1308-cmvbd4phczmeg.7pktzg2z971j0.cpln.app",
+      "Description": "Generate human-readable RuleSpeak narrative from the rulebook"
+    }
+  ]
+}

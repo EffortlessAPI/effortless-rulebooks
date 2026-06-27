@@ -1,0 +1,630 @@
+{
+  "$schema": "https://effortlessapi.com/schemas/rulebook/v1",
+  "Name": "ross-style-business-rules",
+  "Description": "A small, complete claims model demonstrating declarative business rules rendering themselves as RuleSpeak and tracing down to ground truth. Five rules incorporate Ronald Ross's corrections: (1) policy 'active' is ground truth, not a derived system rule; (2) high-risk uses 'must be considered ... if', not 'when'; (3) claimant of record is a priority ordering, never 'otherwise/else'; (4) valid claim is a conjunction of declarative conditions; (5) approvable is 'only if valid' (necessary, not sufficient) — not 'iff'.",
+  "Policies": {
+    "Description": "A coverage agreement. Whether a policy is active is a fact about the policy (ground truth), recorded by the system — not a derived rule.",
+    "schema": [
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": false,
+        "formula": "={{PolicyId}}",
+        "Description": "Logical primary key — mirrors PolicyId so every row is addressable by Name."
+      },
+      {
+        "name": "PolicyId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Stable identifier for the policy."
+      },
+      {
+        "name": "PolicyholderName",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Name of the policyholder."
+      },
+      {
+        "name": "IsActive",
+        "datatype": "boolean",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Ground truth: whether the policy is currently in force. Per R. Ross: being active is a business STATE — a fact about the policy — not a derived business rule. The system's 'Is Active' indicator merely records this fact, so it lives at the leaves, not in a rule."
+      },
+      {
+        "name": "CountOfCoveredClaimants",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "Number of claimants whose current policy is this one.",
+        "formula": "=COUNTIFS(Claimants!{{Policy}}, {{PolicyId}})"
+      }
+    ],
+    "data": [
+      {
+        "Name": "pol-1",
+        "PolicyId": "pol-1",
+        "PolicyholderName": "Northside Mutual",
+        "IsActive": true,
+        "CountOfCoveredClaimants": 3
+      },
+      {
+        "Name": "pol-2",
+        "PolicyId": "pol-2",
+        "PolicyholderName": "Lapsed Holdings",
+        "IsActive": false,
+        "CountOfCoveredClaimants": 1
+      },
+      {
+        "Name": "pol-3",
+        "PolicyId": "pol-3",
+        "PolicyholderName": "Harbor Assurance",
+        "IsActive": true,
+        "CountOfCoveredClaimants": 1
+      }
+    ]
+  },
+  "Claimants": {
+    "Description": "A person linked to incidents and (optionally) to claims. Carries a current policy, a favorite color, and a derived incident count.",
+    "schema": [
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": false,
+        "formula": "={{ClaimantName}}",
+        "Description": "Logical primary key — mirrors ClaimantName so every row is addressable by Name."
+      },
+      {
+        "name": "ClaimantId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Stable identifier for the claimant."
+      },
+      {
+        "name": "ClaimantName",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Display name of the claimant."
+      },
+      {
+        "name": "FavoriteColor",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "The claimant's favorite color (a single-select attribute)."
+      },
+      {
+        "name": "Policy",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "The claimant's current policy (foreign key to Policies)."
+      },
+      {
+        "name": "CountOfIncidents",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "The number of incidents whose claimant is this claimant.",
+        "formula": "=COUNTIFS(Incidents!{{Claimant}}, {{ClaimantId}})"
+      },
+      {
+        "name": "IsHighRisk",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "A claimant must be considered high-risk if the claimant's incident count exceeds 2. (Ross: 'must be considered ... if'; '>2' means 3 or more.)",
+        "formula": "={{CountOfIncidents}} > 2"
+      },
+      {
+        "name": "PolicyIsActive",
+        "datatype": "boolean",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Whether the claimant's current policy is active (ground truth carried over from the policy).",
+        "RelatedTo": "Policies",
+        "LookupField": "IsActive",
+        "ViaField": "Policy",
+        "formula": "=IFERROR(INDEX(Policies!{{IsActive}}, MATCH({{Policy}}, Policies!{{PolicyId}}, 0)), FALSE)"
+      }
+    ],
+    "data": [
+      {
+        "Name": "Alice",
+        "ClaimantId": "clm-1",
+        "ClaimantName": "Alice",
+        "FavoriteColor": "Blue",
+        "Policy": "pol-1",
+        "CountOfIncidents": 1,
+        "IsHighRisk": false,
+        "PolicyIsActive": true
+      },
+      {
+        "Name": "Bob",
+        "ClaimantId": "clm-2",
+        "ClaimantName": "Bob",
+        "FavoriteColor": "Red",
+        "Policy": "pol-3",
+        "CountOfIncidents": 1,
+        "IsHighRisk": false,
+        "PolicyIsActive": true
+      },
+      {
+        "Name": "Carol",
+        "ClaimantId": "clm-3",
+        "ClaimantName": "Carol",
+        "FavoriteColor": "Green",
+        "Policy": "pol-1",
+        "CountOfIncidents": 3,
+        "IsHighRisk": true,
+        "PolicyIsActive": true
+      },
+      {
+        "Name": "Dave",
+        "ClaimantId": "clm-4",
+        "ClaimantName": "Dave",
+        "FavoriteColor": "Red",
+        "Policy": "pol-2",
+        "CountOfIncidents": 1,
+        "IsHighRisk": false,
+        "PolicyIsActive": false
+      },
+      {
+        "Name": "Erin",
+        "ClaimantId": "clm-5",
+        "ClaimantName": "Erin",
+        "FavoriteColor": "Blue",
+        "Policy": "pol-1",
+        "CountOfIncidents": 1,
+        "IsHighRisk": false,
+        "PolicyIsActive": true
+      }
+    ]
+  },
+  "Incidents": {
+    "Description": "An event or loss that can give rise to a claim. Each incident involves exactly one claimant of record at the incident level.",
+    "schema": [
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": false,
+        "formula": "={{IncidentId}}",
+        "Description": "Logical primary key — mirrors IncidentId so every row is addressable by Name."
+      },
+      {
+        "name": "IncidentId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Stable identifier for the incident."
+      },
+      {
+        "name": "IncidentDescription",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Short description of the incident."
+      },
+      {
+        "name": "Claimant",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "The claimant involved in this incident (foreign key to Claimants via ClaimantId)."
+      },
+      {
+        "name": "IncidentClaimantName",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Name of the incident's claimant (for readability).",
+        "RelatedTo": "Claimants",
+        "LookupField": "ClaimantName",
+        "ViaField": "Claimant",
+        "formula": "=IFERROR(INDEX(Claimants!{{ClaimantName}}, MATCH({{Claimant}}, Claimants!{{ClaimantId}}, 0)), \"\")"
+      }
+    ],
+    "data": [
+      {
+        "Name": "inc-1",
+        "IncidentId": "inc-1",
+        "IncidentDescription": "Water damage",
+        "Claimant": "clm-1",
+        "IncidentClaimantName": "Alice"
+      },
+      {
+        "Name": "inc-2",
+        "IncidentId": "inc-2",
+        "IncidentDescription": "Fender bender",
+        "Claimant": "clm-3",
+        "IncidentClaimantName": "Carol"
+      },
+      {
+        "Name": "inc-3",
+        "IncidentId": "inc-3",
+        "IncidentDescription": "Hail damage",
+        "Claimant": "clm-3",
+        "IncidentClaimantName": "Carol"
+      },
+      {
+        "Name": "inc-4",
+        "IncidentId": "inc-4",
+        "IncidentDescription": "Theft",
+        "Claimant": "clm-3",
+        "IncidentClaimantName": "Carol"
+      },
+      {
+        "Name": "inc-5",
+        "IncidentId": "inc-5",
+        "IncidentDescription": "Roof leak",
+        "Claimant": "clm-5",
+        "IncidentClaimantName": "Erin"
+      },
+      {
+        "Name": "inc-6",
+        "IncidentId": "inc-6",
+        "IncidentDescription": "Broken window",
+        "Claimant": "clm-2",
+        "IncidentClaimantName": "Bob"
+      },
+      {
+        "Name": "inc-7",
+        "IncidentId": "inc-7",
+        "IncidentDescription": "Storm damage",
+        "Claimant": "clm-4",
+        "IncidentClaimantName": "Dave"
+      }
+    ]
+  },
+  "Claims": {
+    "Description": "A request to have an incident evaluated under a policy. Validity and approvability are computed, never entered.",
+    "schema": [
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": false,
+        "formula": "={{ClaimId}}",
+        "Description": "Logical primary key — mirrors ClaimId so every row is addressable by Name."
+      },
+      {
+        "name": "ClaimId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Stable identifier for the claim."
+      },
+      {
+        "name": "Incident",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "The incident this claim references (exactly one; foreign key to Incidents via IncidentId)."
+      },
+      {
+        "name": "AdditionalClaimant",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "An optional second claimant linked to the same claim (foreign key to Claimants via ClaimantId)."
+      },
+      {
+        "name": "IsFlaggedForReview",
+        "datatype": "boolean",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Ground truth: whether the claim has been flagged for manual review (e.g., possible fraud). A claim can be valid yet still be held here — which is exactly why 'approvable' is 'only if valid', not 'iff valid'."
+      },
+      {
+        "name": "ReferencesIncident",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "A claim references an incident when its incident is present.",
+        "formula": "={{Incident}} <> \"\""
+      },
+      {
+        "name": "HasAdditionalClaimant",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "A claim has an additional claimant when one is present.",
+        "formula": "={{AdditionalClaimant}} <> \"\""
+      },
+      {
+        "name": "IncidentClaimant",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "The claimant of the referenced incident.",
+        "RelatedTo": "Incidents",
+        "LookupField": "Claimant",
+        "ViaField": "Incident",
+        "formula": "=IFERROR(INDEX(Incidents!{{Claimant}}, MATCH({{Incident}}, Incidents!{{IncidentId}}, 0)), \"\")"
+      },
+      {
+        "name": "ClaimantOfRecord",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "The claimant of record for a claim is determined by priority: (1) the additional claimant, if one exists; (2) otherwise the incident's claimant. Per R. Ross: expressed as a priority ordering, not an 'otherwise/else' procedure — the ordering is the rule.",
+        "formula": "=IF({{HasAdditionalClaimant}}, {{AdditionalClaimant}}, {{IncidentClaimant}})"
+      },
+      {
+        "name": "IncidentClaimantPolicyActive",
+        "datatype": "boolean",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Whether the incident claimant's current policy is active.",
+        "RelatedTo": "Claimants",
+        "LookupField": "PolicyIsActive",
+        "ViaField": "IncidentClaimant",
+        "formula": "=IFERROR(INDEX(Claimants!{{PolicyIsActive}}, MATCH({{IncidentClaimant}}, Claimants!{{ClaimantId}}, 0)), FALSE)"
+      },
+      {
+        "name": "AdditionalClaimantPolicyActive",
+        "datatype": "boolean",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Whether the additional claimant's current policy is active (false when there is no additional claimant).",
+        "RelatedTo": "Claimants",
+        "LookupField": "PolicyIsActive",
+        "ViaField": "AdditionalClaimant",
+        "formula": "=IFERROR(INDEX(Claimants!{{PolicyIsActive}}, MATCH({{AdditionalClaimant}}, Claimants!{{ClaimantId}}, 0)), FALSE)"
+      },
+      {
+        "name": "AdditionalClaimantFavoriteColor",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "The additional claimant's favorite color (blank when there is no additional claimant).",
+        "RelatedTo": "Claimants",
+        "LookupField": "FavoriteColor",
+        "ViaField": "AdditionalClaimant",
+        "formula": "=IFERROR(INDEX(Claimants!{{FavoriteColor}}, MATCH({{AdditionalClaimant}}, Claimants!{{ClaimantId}}, 0)), \"\")"
+      },
+      {
+        "name": "ClaimantOfRecordIncidentCount",
+        "datatype": "integer",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "The incident count of the claimant of record.",
+        "RelatedTo": "Claimants",
+        "LookupField": "CountOfIncidents",
+        "ViaField": "ClaimantOfRecord",
+        "formula": "=IFERROR(INDEX(Claimants!{{CountOfIncidents}}, MATCH({{ClaimantOfRecord}}, Claimants!{{ClaimantId}}, 0)), 0)"
+      },
+      {
+        "name": "ClaimantOfRecordIsHighRisk",
+        "datatype": "boolean",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Whether the claimant of record is high-risk (DR-2). Carries the named rule — IsValid references this field rather than re-deriving the threshold inline, keeping the '> 2 incidents' definition in exactly one place.",
+        "RelatedTo": "Claimants",
+        "LookupField": "IsHighRisk",
+        "ViaField": "ClaimantOfRecord",
+        "formula": "=IFERROR(INDEX(Claimants!{{IsHighRisk}}, MATCH({{ClaimantOfRecord}}, Claimants!{{ClaimantId}}, 0)), FALSE)"
+      },
+      {
+        "name": "IsValid",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "All of the following must be true for a claim to be considered valid: it references an incident; at least one of the incident claimant's or the additional claimant's current policy is active; if an additional claimant exists, that claimant's favorite color is red; and the claimant of record is not high-risk (DR-2). Note: DR-4's fourth condition intentionally references the named high-risk rule rather than restating the incident-count threshold.",
+        "formula": "=AND({{ReferencesIncident}}, OR({{IncidentClaimantPolicyActive}}, {{AdditionalClaimantPolicyActive}}), IF({{HasAdditionalClaimant}}, LOWER({{AdditionalClaimantFavoriteColor}}) = \"red\", TRUE), NOT({{ClaimantOfRecordIsHighRisk}}))"
+      },
+      {
+        "name": "ValidityDecidingFactor",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Names the single deciding reason for a claim's validity verdict — the first unmet condition, or that all conditions are met.",
+        "formula": "=IF({{IsValid}}, \"Valid — all conditions met\", IF(NOT({{ReferencesIncident}}), \"No incident referenced\", IF(NOT(OR({{IncidentClaimantPolicyActive}}, {{AdditionalClaimantPolicyActive}})), \"No active policy on incident claimant or additional claimant\", IF(AND({{HasAdditionalClaimant}}, LOWER({{AdditionalClaimantFavoriteColor}}) <> \"red\"), \"Additional claimant's favorite color is not red\", IF({{ClaimantOfRecordIsHighRisk}}, \"Claimant of record is high-risk (DR-2)\", \"Undetermined\")))))"
+      },
+      {
+        "name": "IsApprovable",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "A claim may be considered approvable only if it is valid and not flagged for review. Per R. Ross: 'only if', not 'if and only if' — validity is necessary but not sufficient. Stating it as 'iff' would wrongly make 'valid' and 'approvable' the same concept.",
+        "formula": "=AND({{IsValid}}, NOT({{IsFlaggedForReview}}))"
+      },
+      {
+        "name": "ApprovabilityDecidingFactor",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Names the single deciding reason for a claim's approvability verdict.",
+        "formula": "=IF({{IsApprovable}}, \"Approvable\", IF(NOT({{IsValid}}), \"Not approvable — claim is not valid\", IF({{IsFlaggedForReview}}, \"Valid, but flagged for review\", \"Undetermined\")))"
+      }
+    ],
+    "data": [
+      {
+        "Name": "claim-A",
+        "ClaimId": "claim-A",
+        "Incident": "inc-1",
+        "AdditionalClaimant": "",
+        "IsFlaggedForReview": false,
+        "ReferencesIncident": true,
+        "HasAdditionalClaimant": false,
+        "IncidentClaimant": "clm-1",
+        "ClaimantOfRecord": "clm-1",
+        "IncidentClaimantPolicyActive": true,
+        "AdditionalClaimantPolicyActive": false,
+        "AdditionalClaimantFavoriteColor": "",
+        "ClaimantOfRecordIncidentCount": 1,
+        "ClaimantOfRecordIsHighRisk": false,
+        "IsValid": true,
+        "ValidityDecidingFactor": "Valid — all conditions met",
+        "IsApprovable": true,
+        "ApprovabilityDecidingFactor": "Approvable"
+      },
+      {
+        "Name": "claim-B",
+        "ClaimId": "claim-B",
+        "Incident": "inc-2",
+        "AdditionalClaimant": "",
+        "IsFlaggedForReview": false,
+        "ReferencesIncident": true,
+        "HasAdditionalClaimant": false,
+        "IncidentClaimant": "clm-3",
+        "ClaimantOfRecord": "clm-3",
+        "IncidentClaimantPolicyActive": true,
+        "AdditionalClaimantPolicyActive": false,
+        "AdditionalClaimantFavoriteColor": "",
+        "ClaimantOfRecordIncidentCount": 3,
+        "ClaimantOfRecordIsHighRisk": true,
+        "IsValid": false,
+        "ValidityDecidingFactor": "Claimant of record is high-risk (DR-2)",
+        "IsApprovable": false,
+        "ApprovabilityDecidingFactor": "Not approvable — claim is not valid"
+      },
+      {
+        "Name": "claim-C",
+        "ClaimId": "claim-C",
+        "Incident": "inc-5",
+        "AdditionalClaimant": "clm-1",
+        "IsFlaggedForReview": false,
+        "ReferencesIncident": true,
+        "HasAdditionalClaimant": true,
+        "IncidentClaimant": "clm-5",
+        "ClaimantOfRecord": "clm-1",
+        "IncidentClaimantPolicyActive": true,
+        "AdditionalClaimantPolicyActive": true,
+        "AdditionalClaimantFavoriteColor": "Blue",
+        "ClaimantOfRecordIncidentCount": 1,
+        "ClaimantOfRecordIsHighRisk": false,
+        "IsValid": false,
+        "ValidityDecidingFactor": "Additional claimant's favorite color is not red",
+        "IsApprovable": false,
+        "ApprovabilityDecidingFactor": "Not approvable — claim is not valid"
+      },
+      {
+        "Name": "claim-D",
+        "ClaimId": "claim-D",
+        "Incident": "inc-6",
+        "AdditionalClaimant": "",
+        "IsFlaggedForReview": true,
+        "ReferencesIncident": true,
+        "HasAdditionalClaimant": false,
+        "IncidentClaimant": "clm-2",
+        "ClaimantOfRecord": "clm-2",
+        "IncidentClaimantPolicyActive": true,
+        "AdditionalClaimantPolicyActive": false,
+        "AdditionalClaimantFavoriteColor": "",
+        "ClaimantOfRecordIncidentCount": 1,
+        "ClaimantOfRecordIsHighRisk": false,
+        "IsValid": true,
+        "ValidityDecidingFactor": "Valid — all conditions met",
+        "IsApprovable": false,
+        "ApprovabilityDecidingFactor": "Valid, but flagged for review"
+      },
+      {
+        "Name": "claim-E",
+        "ClaimId": "claim-E",
+        "Incident": "inc-7",
+        "AdditionalClaimant": "clm-2",
+        "IsFlaggedForReview": false,
+        "ReferencesIncident": true,
+        "HasAdditionalClaimant": true,
+        "IncidentClaimant": "clm-4",
+        "ClaimantOfRecord": "clm-2",
+        "IncidentClaimantPolicyActive": false,
+        "AdditionalClaimantPolicyActive": true,
+        "AdditionalClaimantFavoriteColor": "Red",
+        "ClaimantOfRecordIncidentCount": 1,
+        "ClaimantOfRecordIsHighRisk": false,
+        "IsValid": true,
+        "ValidityDecidingFactor": "Valid — all conditions met",
+        "IsApprovable": true,
+        "ApprovabilityDecidingFactor": "Approvable"
+      }
+    ]
+  },
+  "__meta__": {
+    "Description": "Project-level metadata that travels with the rulebook: tagline, motif, narrative descriptions, substrate list, signature rows, etc. One row per metadata key. Use ValueType to interpret StringValue vs JsonValue.",
+    "important": false,
+    "schema": [
+      {
+        "name": "MetaKey",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "The metadata key (e.g. 'tagline', 'motif_palette', 'substrates'). Unique within the table."
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": false,
+        "formula": "={{MetaKey}}",
+        "Description": "Identifier for this metadata entry. Mirrors MetaKey so the row is addressable by Name like every other table."
+      },
+      {
+        "name": "ValueType",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "How to interpret the value columns: 'string' (use StringValue), 'object' (parse JsonValue as JSON object), 'array' (parse JsonValue as JSON array)."
+      },
+      {
+        "name": "StringValue",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Plain string value. Populated when ValueType == 'string'; null otherwise."
+      },
+      {
+        "name": "JsonValue",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "JSON-encoded value. Populated when ValueType == 'object' or 'array'; null when ValueType == 'string'."
+      }
+    ],
+    "data": [
+      {
+        "MetaKey": "tagline",
+        "Name": "tagline",
+        "ValueType": "string",
+        "StringValue": "Five declarative rules, four entities, one dataset that proves 'valid' and 'approvable' are not the same concept.",
+        "JsonValue": null
+      },
+      {
+        "MetaKey": "motif",
+        "Name": "motif",
+        "ValueType": "string",
+        "StringValue": "legal-claims",
+        "JsonValue": null
+      },
+      {
+        "MetaKey": "description_rich",
+        "Name": "description_rich",
+        "ValueType": "string",
+        "StringValue": "A small, complete claims model built to demonstrate Ronald Ross's five corrections to business-rule wording. Every verdict (IsValid, IsApprovable) is computed from raw leaves only — IsActive, FavoriteColor, the incident→claimant links, and the review flag — and each verdict names its single deciding factor. The dataset exercises every branch: claim-D is valid yet not approvable (proving the 'only if' vs 'iff' distinction); claim-C fails on color; claim-B fails on high-risk; claim-E passes via the additional claimant's active policy.",
+        "JsonValue": null
+      },
+      {
+        "MetaKey": "ross_corrections",
+        "Name": "ross_corrections",
+        "ValueType": "array",
+        "StringValue": null,
+        "JsonValue": "[\"DR-1 (active policy): demoted from a derived 'system rule' to raw ground truth on Policies.IsActive.\",\"DR-2 (high-risk): worded 'a claimant must be considered high-risk if incident count exceeds 2'.\",\"DR-3 (claimant of record): a priority ordering (additional claimant, then incident claimant), not 'otherwise/else'.\",\"DR-4 (valid claim): a conjunction of declarative conditions with a nested 'at least one of' disjunction.\",\"DR-5 (approvable): 'only if valid' (and not flagged) — necessary, not sufficient; deliberately not 'iff'.\"]"
+      },
+      {
+        "MetaKey": "cmcc_summary",
+        "Name": "cmcc_summary",
+        "ValueType": "string",
+        "StringValue": "Five declarative rules over four entities (Policies, Claimants, Incidents, Claims). Every verdict is computed from raw leaves only. Each verdict names its single deciding factor. The dataset is chosen so every condition is exercised by both a passing and a failing claim, including claim-D — the concrete proof that 'valid' and 'approvable' are not the same concept, and therefore that the rule is 'only if', not 'iff'.",
+        "JsonValue": null
+      }
+    ]
+  }
+}
