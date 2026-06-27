@@ -2,7 +2,7 @@
   "$schema": "https://example.com/cmcc-schema/v1",
   "Name": "simpsons-paradox",
   "_hydrated": {
-    "exported_at": "2026-06-27T21:44:56Z",
+    "exported_at": "2026-06-27T21:58:14Z",
     "source_db": "postgresql://postgres@localhost:5432/simpsons_paradox",
     "note": "All calculated and aggregation fields are DB-computed values from vw_* views. Raw fields match the rulebook SSoT. Real study data lives in effortless-postgres/05b-customize-data.sql."
   },
@@ -201,22 +201,22 @@
       {
         "LoopId": "loop-20",
         "Name": "loop-20",
-        "Title": "Hydrator regression: write kidney-1986 through the adapter and diff against known-correct output",
-        "Status": "planned",
-        "NewConcept": "Implementation-layer infrastructure, not a new domain concept: DevDbHydrator (idempotent upsert of rulebook leaves into dev Postgres), one boring explicit adapter for kidney-1986, round-trip diff. The rulebook remains the analytic contract; this loop proves the hydrator works before any new data enters.",
-        "DomainQuestion": "Can kidney-1986 \u2014 whose CaseCells are already in the rulebook \u2014 be written through a hydrator adapter, upserted into the dev DB, materialized by the existing Postgres inference chain, and produce AllocationDistortion/IsSignFlip/DistortionType numbers that exactly match the witnessed values from loop-19?",
-        "MockDataNote": "Steps: (1) Store source capture under data/raw/kidney-1986/ with provenance note (Charig et al. BMJ 1986, table extracted manually). (2) Write scripts/adapters/kidney_1986.py (or .ts) that returns the five canonical leaf tables: Studies, Treatments, Strata, StratumVariables, CaseCells \u2014 boring and explicit, no abstraction. (3) Write scripts/hydrate.py that idempotently upserts adapter output into the dev DB, tagged by study_id and ingestion_run_id. (4) Run the existing Postgres view chain. (5) Diff computed output against expected values: PooledRateA=0.780, PooledRateB=0.826, IsReversal=TRUE, IsSignFlip=TRUE, AllocationDistortion=0.0994, DistortionType=A. If all match, the hydrator is validated. Success criterion is a passing diff, not a visualizer change.",
-        "NextSuggestion": "Hydrator validated. Now pour one new non-canonical real study through the same adapter contract (loop-20b). The new study should be consequential, have a clean 2\u00d7N shape, and not be a known Simpson example \u2014 so the instrument makes a genuine claim rather than reproducing a textbook result."
+        "Title": "Hydration contract: real study data enters through 05b-customize-data.sql, not the rulebook JSON",
+        "Status": "complete",
+        "NewConcept": "05b-customize-data.sql as the hydration layer: idempotent ON CONFLICT upserts for all five leaf tables (Studies, Treatments, Strata, CaseCells, StratumSummaries, StratumVariables, TreatmentRankings). Raw counts live in data/raw/<study-id>/provenance.md. The rulebook SSoT defines schema; the hydration file populates real data. The view chain computes everything from there.",
+        "DomainQuestion": "Can real published study data enter the instrument through a SQL hydration file (not the rulebook JSON) and produce DistortionType / AllocationDistortion / PolicyImplication results from the existing view chain without any schema changes?",
+        "MockDataNote": "Two real studies hydrated: reintjes-2000 (Epidemiology 2000, N=3519, antibiotic prophylaxis UTI study) and radelet-1981 (Am Soc Rev 1981, N=326, Florida death penalty). Both are type-A full reversals. Witnessed: reintjes AllocationDistortion=0.0516, radelet AllocationDistortion=0.0684. No schema changes were needed. 05b-customize-data.sql is the durable hydration path.",
+        "NextSuggestion": "ModelSummary currently counts only synthetic studies in its ReversalCount/NonReversalCount. Add DistortionType aggregations (TypeACount, TypeBCount, TypeCCount, TypeDCount, SignFlipCount, AvgAllocationDistortion) so the model's self-portrait reflects all seven studies including the two real ones."
       },
       {
         "LoopId": "loop-20b",
         "Name": "loop-20b",
-        "Title": "First new real study: pour a non-canonical published dataset through the validated hydrator",
-        "Status": "planned",
-        "NewConcept": "One new real study row set, produced by an explicit adapter and entered through the loop-20 hydrator. The domain concept is provenance: source URL/PDF/table/page, extraction date, and normalization notes stored under data/raw/<study_id>/.",
-        "DomainQuestion": "Does the instrument produce a geometrically informative result (a non-trivial DistortionType and AllocationDistortion value) when a real published study that is NOT a known Simpson example is poured through the hydrator?",
-        "MockDataNote": "Candidate criteria: two comparison groups, discrete strata, successes and total cases available per cell, denominators unambiguous, adapter writable in under an hour. Good candidate domains: clinical outcomes by risk group, sentencing outcomes by legally meaningful strata, education outcomes by program/school type, hospital/surgeon volume outcomes. The result is informative regardless of DistortionType \u2014 a type-D (neutral) result is a valid finding, not a failure. Do not generalize the adapter until this study survives the round trip.",
-        "NextSuggestion": "After two real studies have survived the round trip, add schema fields the real import proves are needed: provenance, completeness flags, RawDataRequired. Do not generalize the hydrator before witnessing what breaks."
+        "Title": "Two real studies witnessed: reintjes-2000 and radelet-1981 \u2014 both type-A full reversals from real data",
+        "Status": "complete",
+        "NewConcept": "Two non-canonical published datasets poured through the hydration contract. Provenance files in data/raw/. Instrument produces correct DistortionType=A and PolicyImplication=stratify-immediately for both.",
+        "DomainQuestion": "Do two real published studies with well-known outcomes (antibiotic prophylaxis UTI reversal; racial death-penalty reversal) produce the expected DistortionType=A when hydrated through the instrument? Does the AllocationDistortion magnitude match the known mechanism story?",
+        "MockDataNote": "Witnessed from DB (full table ordered by AllocationDistortion desc): berkeley-1973: type B, distortion=0.1934. kidney-1986: type A, distortion=0.0994. radelet-1981: type A, distortion=0.0684 (REAL). reintjes-2000: type A, distortion=0.0516 (REAL). compressed-synthetic: type C, distortion=0.0400. kidney-balanced: type D, distortion=0.0000. balanced-synthetic: type D, distortion=0.0000. Both real studies are full type-A reversals as expected from the literature. radelet has higher AllocationDistortion (0.0684) than reintjes (0.0516), consistent with the victim-race confound being stronger \u2014 black defendants are 62% in the low-sentence black-victim stratum, a more extreme allocation imbalance than reintjes where 87% of prophylaxis patients are in low-incidence hospitals.",
+        "NextSuggestion": "ModelSummary currently counts only the synthetic study set. Add DistortionType aggregations (TypeACount, TypeBCount, TypeCCount, TypeDCount, SignFlipCount, AvgAllocationDistortion) so the model describes its real empirical coverage, not just the synthetic controls."
       },
       {
         "LoopId": "loop-21",

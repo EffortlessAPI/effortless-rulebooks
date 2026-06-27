@@ -815,6 +815,46 @@ RETURNS TEXT AS $$
   SELECT (CASE WHEN calc_treatment_rankings_distortion_type(p_treatment_ranking_id) IS NULL THEN ('')::text ELSE (CASE WHEN calc_treatment_rankings_distortion_type(p_treatment_ranking_id) = 'A' THEN ('stratify-immediately')::text ELSE (CASE WHEN calc_treatment_rankings_distortion_type(p_treatment_ranking_id) = 'B' THEN ('investigate-confounder')::text ELSE (CASE WHEN calc_treatment_rankings_distortion_type(p_treatment_ranking_id) = 'C' THEN ('check-allocation-bias')::text ELSE ('pooled-analysis-trustworthy')::text END)::text END)::text END)::text END)::text;
 $$ LANGUAGE sql STABLE;
 
+-- calc_methodology_name
+-- Field: Methodology.Name
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_methodology_name(p_methodology_id TEXT)
+RETURNS TEXT AS $$
+  SELECT ((SELECT NULLIF(methodology_id, '') FROM methodology WHERE methodology_id = p_methodology_id))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_conclusions_name
+-- Field: Conclusions.Name
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_conclusions_name(p_conclusion_id TEXT)
+RETURNS TEXT AS $$
+  SELECT ((SELECT NULLIF(conclusion_id, '') FROM conclusions WHERE conclusion_id = p_conclusion_id))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_ui_screens_name
+-- Field: UIScreens.Name
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_ui_screens_name(p_screen_id TEXT)
+RETURNS TEXT AS $$
+  SELECT ((SELECT NULLIF(screen_id, '') FROM ui_screens WHERE screen_id = p_screen_id))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_ui_components_name
+-- Field: UIComponents.Name
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_ui_components_name(p_component_id TEXT)
+RETURNS TEXT AS $$
+  SELECT ((SELECT NULLIF(component_id, '') FROM ui_components WHERE component_id = p_component_id))::text;
+$$ LANGUAGE sql STABLE;
+
 -- ============================================================================
 -- MANY-SIDE RELATIONSHIP FUNCTIONS
 -- These functions aggregate child records for many-side relationships

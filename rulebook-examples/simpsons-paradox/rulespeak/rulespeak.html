@@ -257,6 +257,10 @@ html.show-consumers .elem-consumers{display:block}
     <li><a href="#t-modelsummary">Model Summary</a> <span class="toc-meta">8 rules · 0 links</span></li>
     <li><a href="#t-stratumvariables">Stratum Variable</a> <span class="toc-meta">1 rules · 1 links</span></li>
     <li><a href="#t-treatmentrankings">Treatment Ranking</a> <span class="toc-meta">27 rules · 1 links</span></li>
+    <li><a href="#t-methodology">Methodology</a> <span class="toc-meta">0 rules · 0 links</span></li>
+    <li><a href="#t-conclusions">Conclusion</a> <span class="toc-meta">0 rules · 0 links</span></li>
+    <li><a href="#t-uiscreens">UI Screen</a> <span class="toc-meta">0 rules · 0 links</span></li>
+    <li><a href="#t-uicomponents">UI Component</a> <span class="toc-meta">0 rules · 0 links</span></li>
   </ul>
 </nav>
 <section class="entity" id="t-loops" data-entity="Loop">
@@ -5245,6 +5249,306 @@ html.show-consumers .elem-consumers{display:block}
       </div>
     </details>
     <p class="field-note elem elem-desc">The researcher action implied by the geometric classification. Derived from DistortionType: type A (full reversal) → 'stratify-immediately' — the pooled conclusion is directionally wrong; do not act on it without stratifying. Type B (partial sign-flip) → 'investigate-confounder' — the equal-weight signal opposes the pooled signal, but the per-stratum picture is mixed; the causal mechanism needs examination before trusting either estimate. Type C (compression without flip) → 'check-allocation-bias' — the pooled winner is probably correct but the effect size is distorted; report adjusted or standardized margins rather than the raw pooled gap. Type D (neutral) → 'pooled-analysis-trustworthy' — allocation is not materially distorting the signal; the pooled conclusion is safe with respect to this stratification.</p>
+    </article>
+</section>
+<section class="entity" id="t-methodology" data-entity="Methodology">
+  <header class="entity-head">
+    <h2 class="entity-title">Methodology</h2>
+    <p class="entity-synopsis">A methodology is identified by its name.</p>
+  </header>
+  <article class="field tone-raw" id="f-methodology-phase" data-entity="Methodology" data-field="Phase">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Phase</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Broad phase: axiom | decomposition | derivation | hydration | validation | taxonomy | conclusion</p>
+    </article>
+  <article class="field tone-raw" id="f-methodology-title" data-entity="Methodology" data-field="Title">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Title</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Short title of the methodological principle or step.</p>
+    </article>
+  <article class="field tone-raw" id="f-methodology-statement" data-entity="Methodology" data-field="Statement">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Statement</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">One-to-three sentence statement of the principle, precise enough to be applied or falsified.</p>
+    </article>
+  <article class="field tone-raw" id="f-methodology-whyitmatters" data-entity="Methodology" data-field="Why It Matters">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Why It Matters</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Why this step or principle is load-bearing for this model — what breaks if you skip it.</p>
+    </article>
+  <article class="field tone-raw" id="f-methodology-illustratedbyloop" data-entity="Methodology" data-field="Illustrated by Loop">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Illustrated by Loop</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">LoopId(s) where this principle was concretely demonstrated (comma-separated).</p>
+    </article>
+</section>
+<section class="entity" id="t-conclusions" data-entity="Conclusion">
+  <header class="entity-head">
+    <h2 class="entity-title">Conclusion</h2>
+    <p class="entity-synopsis">A conclusion is identified by its name.</p>
+  </header>
+  <article class="field tone-raw" id="f-conclusions-category" data-entity="Conclusion" data-field="Category">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Category</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">domain | instrument | methodology | open-question</p>
+    </article>
+  <article class="field tone-raw" id="f-conclusions-status" data-entity="Conclusion" data-field="Status">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Status</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">witnessed | planned | open</p>
+    </article>
+  <article class="field tone-raw" id="f-conclusions-title" data-entity="Conclusion" data-field="Title">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Title</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">One-line statement of the conclusion.</p>
+    </article>
+  <article class="field tone-raw" id="f-conclusions-evidence" data-entity="Conclusion" data-field="Evidence">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Evidence</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">The specific DB query result, loop outcome, or argument that establishes or will establish this conclusion.</p>
+    </article>
+  <article class="field tone-raw" id="f-conclusions-witnessedinloop" data-entity="Conclusion" data-field="Witnessed in Loop">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Witnessed in Loop</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">LoopId where this conclusion was first witnessed (if status=witnessed).</p>
+    </article>
+  <article class="field tone-raw" id="f-conclusions-targetloop" data-entity="Conclusion" data-field="Target Loop">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Target Loop</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">LoopId that is designed to witness this conclusion (if status=planned).</p>
+    </article>
+</section>
+<section class="entity" id="t-uiscreens" data-entity="UI Screen">
+  <header class="entity-head">
+    <h2 class="entity-title">UI Screen</h2>
+    <p class="entity-synopsis">A UI screen is identified by its name.</p>
+  </header>
+  <article class="field tone-raw" id="f-uiscreens-title" data-entity="UI Screen" data-field="Title">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Title</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Human-readable screen title shown in the UI.</p>
+    </article>
+  <article class="field tone-raw" id="f-uiscreens-route" data-entity="UI Screen" data-field="Route">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Route</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">URL path pattern (e.g. /, /study/:studyId, /compare).</p>
+    </article>
+  <article class="field tone-raw" id="f-uiscreens-primaryentity" data-entity="UI Screen" data-field="Primary Entity">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Primary Entity</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">The main rulebook entity this screen reads from (the vw_* view name without prefix).</p>
+    </article>
+  <article class="field tone-raw" id="f-uiscreens-purpose" data-entity="UI Screen" data-field="Purpose">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Purpose</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">One sentence: what a user can learn or do on this screen.</p>
+    </article>
+  <article class="field tone-raw" id="f-uiscreens-keyfields" data-entity="UI Screen" data-field="Key Fields">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Key Fields</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Comma-separated list of the most important fields displayed on this screen.</p>
+    </article>
+  <article class="field tone-raw" id="f-uiscreens-useraction" data-entity="UI Screen" data-field="User Action">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">User Action</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Primary user action available on this screen (e.g. select a study, drill into a stratum).</p>
+    </article>
+</section>
+<section class="entity" id="t-uicomponents" data-entity="UI Component">
+  <header class="entity-head">
+    <h2 class="entity-title">UI Component</h2>
+    <p class="entity-synopsis">A UI component is identified by its name.</p>
+  </header>
+  <article class="field tone-raw" id="f-uicomponents-componentname" data-entity="UI Component" data-field="Component Name">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Component Name</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Code-level component name (PascalCase, e.g. DistortionBadge).</p>
+    </article>
+  <article class="field tone-raw" id="f-uicomponents-usedonscreens" data-entity="UI Component" data-field="Used on Screens">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Used on Screens</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Comma-separated ScreenIds where this component appears.</p>
+    </article>
+  <article class="field tone-raw" id="f-uicomponents-primaryentity" data-entity="UI Component" data-field="Primary Entity">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Primary Entity</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">The rulebook entity this component reads (the vw_* view).</p>
+    </article>
+  <article class="field tone-raw" id="f-uicomponents-description" data-entity="UI Component" data-field="Description">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Description</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">What this component renders and what decisions a developer must make to implement it.</p>
+    </article>
+  <article class="field tone-raw" id="f-uicomponents-requiredfields" data-entity="UI Component" data-field="Required Fields">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Required Fields</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Comma-separated rulebook fields this component must receive as props.</p>
+    </article>
+  <article class="field tone-raw" id="f-uicomponents-visualspec" data-entity="UI Component" data-field="Visual Spec">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Visual Spec</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Plain-English description of the visual output: shape, color coding, interactivity.</p>
     </article>
 </section>
 <footer class="doc-footer">

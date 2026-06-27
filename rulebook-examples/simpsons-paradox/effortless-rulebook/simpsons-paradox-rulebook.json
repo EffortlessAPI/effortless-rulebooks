@@ -301,13 +301,419 @@
       {"TreatmentRankingId": "compressed-synthetic-A-vs-B", "Study": "compressed-synthetic", "TreatmentA": "A", "TreatmentB": "B"}
     ]
   },
-  "_meta": {
-    "_CMCC_Summary": "Domain mirror of Simpson's Paradox. Entities: Studies, Treatments, Strata, CaseCells. CellSuccessRate is the first derived fact. Pooled rates, per-stratum rates, and the reversal fall out as higher-order derived nodes in subsequent loops.",
-    "_conversion_metadata": {
-      "source": "hand-authored",
-      "tool_version": "1.0.0",
-      "export_mode": "schema_first_type_mapping",
-      "loop": "21+20b-realdata-hydrated"
-    }
+  "__meta__": {
+    "Description": "Table: __meta__ — project-level metadata for the Simpson's Paradox domain. One row per key. Transparent to transpilers.",
+    "schema": [
+      {"name": "MetaKey", "datatype": "string", "type": "raw", "nullable": false, "Description": "Unique key identifying this metadata entry."},
+      {"name": "Name", "datatype": "string", "type": "calculated", "nullable": false, "Description": "Display label, mirrors MetaKey.", "formula": "={{MetaKey}}"},
+      {"name": "ValueType", "datatype": "string", "type": "raw", "nullable": false, "Description": "Type of value stored: string | object | array"},
+      {"name": "StringValue", "datatype": "string", "type": "raw", "nullable": true, "Description": "Value when ValueType = string."},
+      {"name": "JsonValue", "datatype": "string", "type": "raw", "nullable": true, "Description": "JSON-encoded value when ValueType = object or array."}
+    ],
+    "data": [
+      {"MetaKey": "cmcc_summary", "ValueType": "string", "StringValue": "Domain mirror of Simpson's Paradox. Entities: Studies, Treatments, Strata, CaseCells. CellSuccessRate is the first derived fact. Pooled rates, per-stratum rates, and the reversal fall out as higher-order derived nodes in subsequent loops."},
+      {"MetaKey": "source", "ValueType": "string", "StringValue": "hand-authored"},
+      {"MetaKey": "tool_version", "ValueType": "string", "StringValue": "1.0.0"},
+      {"MetaKey": "export_mode", "ValueType": "string", "StringValue": "schema_first_type_mapping"},
+      {"MetaKey": "loop", "ValueType": "string", "StringValue": "21+20b-realdata-hydrated"},
+      {"MetaKey": "tagline", "ValueType": "string", "StringValue": "A digital mirror of Simpson's Paradox — the paradox falls out of the DAG as a derived fact, never modeled directly."},
+      {"MetaKey": "motif", "ValueType": "string", "StringValue": "reversal"},
+      {"MetaKey": "use_cases", "ValueType": "array", "JsonValue": "[\"Teaching Simpson's Paradox with real data\", \"Classifying studies by distortion geometry\", \"Generating researcher action (PolicyImplication) from allocation bias\", \"Prospective literature screening for confounded pooled conclusions\"]"},
+      {"MetaKey": "journal_seed", "ValueType": "string", "StringValue": "The instrument witnessed its first full type-A reversal from real published data (reintjes-2000 and radelet-1981) in loop-20b. Berkeley (loop-08) introduced the partial reversal and the sign-flip definition replaced the unanimity criterion in loop-17. The four-type taxonomy (A/B/C/D) was completed in loop-21."}
+    ]
+  },
+
+  "Methodology": {
+    "Description": "Table: Methodology — the first-principles process used to build this domain model. Each row documents one methodological axiom or step. Together these rows let a reader (or an LLM) reconstruct why the model is shaped the way it is, and re-apply the same process to a new domain.",
+    "schema": [
+      {"name": "MethodologyId", "datatype": "string", "type": "raw", "nullable": false, "Description": "Unique slug (e.g. method-01-cmcc, method-02-dag-first)."},
+      {"name": "Name", "datatype": "string", "type": "calculated", "nullable": false, "Description": "Display label, mirrors MethodologyId.", "formula": "={{MethodologyId}}"},
+      {"name": "Phase", "datatype": "string", "type": "raw", "nullable": false, "Description": "Broad phase: axiom | decomposition | derivation | hydration | validation | taxonomy | conclusion"},
+      {"name": "Title", "datatype": "string", "type": "raw", "nullable": false, "Description": "Short title of the methodological principle or step."},
+      {"name": "Statement", "datatype": "string", "type": "raw", "nullable": false, "Description": "One-to-three sentence statement of the principle, precise enough to be applied or falsified."},
+      {"name": "WhyItMatters", "datatype": "string", "type": "raw", "nullable": true, "Description": "Why this step or principle is load-bearing for this model — what breaks if you skip it."},
+      {"name": "IllustratedByLoop", "datatype": "string", "type": "raw", "nullable": true, "Description": "LoopId(s) where this principle was concretely demonstrated (comma-separated)."}
+    ],
+    "data": [
+      {
+        "MethodologyId": "method-01-cmcc",
+        "Phase": "axiom",
+        "Title": "CMCC: any sufficiently crisp conceptual world decomposes into a DAG of S/D/L/A/F primitives",
+        "Statement": "The Conceptual Model Conjecture (CMCC) holds that every domain can be decomposed into Schema, Data, Lookups, Aggregations, and Functions arranged as a directed acyclic graph. Each node is locally simple; complexity emerges from composition, not from any single node. This is the working assumption for the entire model, not a hypothesis to relitigate each turn.",
+        "WhyItMatters": "If CMCC holds, the paradox can be derived rather than modeled. The model does not need a 'ReversalDetection' entity — it just needs the right leaf data and the right DAG edges. The paradox falls out as a consequence.",
+        "IllustratedByLoop": "loop-01"
+      },
+      {
+        "MethodologyId": "method-02-dag-first",
+        "Phase": "decomposition",
+        "Title": "Model the domain entities first; derived facts emerge from the DAG",
+        "Statement": "Start with the empirical leaf data: Cases and Successes in each (Study, Stratum, Treatment) cell. Never model the phenomenon of interest (the paradox) directly. The paradox is a derived fact — it emerges when you ask the right questions of a correctly-shaped DAG.",
+        "WhyItMatters": "Modeling the paradox directly (e.g. a 'ReversalDetection' table) would conflate the phenomenon with the domain. The domain is Studies, Treatments, Strata, and CaseCells. The paradox is a read on that domain.",
+        "IllustratedByLoop": "loop-01, loop-04"
+      },
+      {
+        "MethodologyId": "method-03-leopold-loops",
+        "Phase": "decomposition",
+        "Title": "Build the model incrementally via Leopold Loops — one new concept per loop",
+        "Statement": "Each loop introduces exactly one new first-class concept and asks the natural-language question that concept answers. The loop ends when the new derived fact is witnessed in the database. Loop N's NextSuggestion seeds Loop N+1.",
+        "WhyItMatters": "Introducing multiple concepts per loop makes it hard to witness whether each concept earns its place. One concept per loop forces the question: 'what new thing can I now ask that I couldn't before?'",
+        "IllustratedByLoop": "loop-01, loop-02, loop-03, loop-04, loop-05"
+      },
+      {
+        "MethodologyId": "method-04-witness-not-claim",
+        "Phase": "derivation",
+        "Title": "Every derived fact must be witnessed from the database, not claimed from the rulebook",
+        "Statement": "A field is not 'done' when it is added to the rulebook. It is done when a Postgres query returns the expected value for the seeded data. MockDataNote in each Loop row states what value is expected and from which study. If the DB returns a different value, the formula or the seed data is wrong.",
+        "WhyItMatters": "Without witnessing, silent fallbacks and mistranslations accumulate invisibly. The rulebook says CellSuccessRate = Successes/Cases; the DB must actually return 0.931 for kidney small-A.",
+        "IllustratedByLoop": "loop-01, loop-06, loop-12, loop-17"
+      },
+      {
+        "MethodologyId": "method-05-synthetic-controls",
+        "Phase": "validation",
+        "Title": "Introduce synthetic control studies to test structural impossibility",
+        "Statement": "For every interesting derived boolean (IsReversal, IsSignFlip), add at least one synthetic study where the boolean MUST be false by construction. Witnessing the false case in the DB proves the derivation is not vacuously true.",
+        "WhyItMatters": "Without a structural-impossibility witness, a bug in the formula that always returns TRUE would pass all the positive tests. The balanced-synthetic and kidney-balanced studies exist solely to witness IsReversal=FALSE and AllocationDistortion=0.",
+        "IllustratedByLoop": "loop-07, loop-14"
+      },
+      {
+        "MethodologyId": "method-06-real-data-hydration",
+        "Phase": "hydration",
+        "Title": "Real data enters through 05b-customize-data.sql, not the rulebook JSON",
+        "Statement": "The rulebook JSON defines the schema. Real published study counts (Successes, Cases per cell) enter via idempotent ON CONFLICT upserts in 05b-customize-data.sql. Provenance is recorded in data/raw/<study-id>/provenance.md. The view chain computes every derived field from there — no schema changes are needed to add a new study.",
+        "WhyItMatters": "Putting raw counts in the rulebook JSON conflates schema (durable) with instance data (swappable). The hydration contract allows the instrument to be applied to new datasets without touching the SSoT.",
+        "IllustratedByLoop": "loop-20, loop-20b"
+      },
+      {
+        "MethodologyId": "method-07-continuous-geometry",
+        "Phase": "taxonomy",
+        "Title": "Replace binary reversal criterion with continuous geometry: IsSignFlip + AllocationDistortion",
+        "Statement": "The original IsReversal (unanimous per-stratum winner disagrees with pooled winner) is a binary that excludes partial reversals. The sign-flip definition (WeightedStratumGapSum and SignedPooledGap have opposite signs) captures the full continuum. AllocationDistortion = |WSGSUM − SignedPooledGap| is the scalar severity regardless of direction.",
+        "WhyItMatters": "Berkeley 1973 fails the unanimity criterion (dept-C gives male a marginal win) but IS a Simpson-type paradox under the continuous definition. Excluding Berkeley from the analysis would be a category error.",
+        "IllustratedByLoop": "loop-17, loop-18"
+      },
+      {
+        "MethodologyId": "method-08-four-type-taxonomy",
+        "Phase": "taxonomy",
+        "Title": "Classify studies into four types (A/B/C/D) by distortion geometry, independent of causal label",
+        "Statement": "Type A = IsSignFlip AND ReversalIntensity=1.0 (full unanimous reversal). Type B = IsSignFlip AND ReversalIntensity<1.0 (partial sign-flip). Type C = NOT IsSignFlip AND AllocationDistortion>threshold (compression without flip). Type D = AllocationDistortion≈0 (neutral). The geometry is computed from allocation and rates alone — no causal story is required.",
+        "WhyItMatters": "The taxonomy makes PolicyImplication derivable. A researcher reading DistortionType=A knows to stratify immediately without needing to know what caused the allocation imbalance.",
+        "IllustratedByLoop": "loop-19, loop-21"
+      },
+      {
+        "MethodologyId": "method-09-model-self-portrait",
+        "Phase": "conclusion",
+        "Title": "The model witnesses its own epistemic coverage via ModelSummary",
+        "Statement": "ModelSummary is a single-row table that aggregates ReversalCount, ExplainedCount, TypeACount, TypeBCount, TypeCCount, TypeDCount, and AvgAllocationDistortion across all studies. It is the model's self-portrait — a derived fact about the model's own completeness.",
+        "WhyItMatters": "Without ModelSummary, you can query any individual study but cannot ask 'how many studies does this instrument explain?' The self-portrait is the epistemic coverage claim.",
+        "IllustratedByLoop": "loop-10"
+      },
+      {
+        "MethodologyId": "method-10-policy-from-geometry",
+        "Phase": "conclusion",
+        "Title": "Policy implication is derived from geometry, not asserted from domain knowledge",
+        "Statement": "PolicyImplication is a calculated field derived from DistortionType. No domain-specific knowledge about medicine, law, or education is encoded. The instrument tells a researcher what to do next with the pooled conclusion (stratify, investigate, check bias, or trust) purely from the allocation geometry.",
+        "WhyItMatters": "Domain-neutral policy derivation means the instrument generalizes across clinical, judicial, educational, and other settings without re-tuning. The same formula works for kidney stones, Berkeley admissions, and antibiotic prophylaxis.",
+        "IllustratedByLoop": "loop-21, loop-26"
+      }
+    ]
+  },
+
+  "Conclusions": {
+    "Description": "Table: Conclusions — the substantive epistemic findings that this model has produced or is designed to produce. Each row is one conclusion: a claim about the domain, about the instrument, or about the methodology that is either already witnessed or is the target of a planned loop.",
+    "schema": [
+      {"name": "ConclusionId", "datatype": "string", "type": "raw", "nullable": false, "Description": "Unique slug (e.g. conc-01-paradox-is-derived)."},
+      {"name": "Name", "datatype": "string", "type": "calculated", "nullable": false, "Description": "Display label, mirrors ConclusionId.", "formula": "={{ConclusionId}}"},
+      {"name": "Category", "datatype": "string", "type": "raw", "nullable": false, "Description": "domain | instrument | methodology | open-question"},
+      {"name": "Status", "datatype": "string", "type": "raw", "nullable": false, "Description": "witnessed | planned | open"},
+      {"name": "Title", "datatype": "string", "type": "raw", "nullable": false, "Description": "One-line statement of the conclusion."},
+      {"name": "Evidence", "datatype": "string", "type": "raw", "nullable": true, "Description": "The specific DB query result, loop outcome, or argument that establishes or will establish this conclusion."},
+      {"name": "WitnessedInLoop", "datatype": "string", "type": "raw", "nullable": true, "Description": "LoopId where this conclusion was first witnessed (if status=witnessed)."},
+      {"name": "TargetLoop", "datatype": "string", "type": "raw", "nullable": true, "Description": "LoopId that is designed to witness this conclusion (if status=planned)."}
+    ],
+    "data": [
+      {
+        "ConclusionId": "conc-01-paradox-is-derived",
+        "Category": "domain",
+        "Status": "witnessed",
+        "Title": "Simpson's Paradox is a derived fact from the DAG, not a modeled entity",
+        "Evidence": "IsReversal (and later IsSignFlip) falls out as a calculated field on TreatmentRankings, derived from aggregated CaseCell counts. No 'ReversalDetection' entity was ever needed.",
+        "WitnessedInLoop": "loop-04"
+      },
+      {
+        "ConclusionId": "conc-02-reversal-from-allocation",
+        "Category": "domain",
+        "Status": "witnessed",
+        "Title": "The reversal in kidney-1986 is entirely an allocation artifact — same rates with balanced allocation produce no reversal",
+        "Evidence": "kidney-balanced uses identical stratum success rates to kidney-1986 but with equal allocation (175 cases per cell). IsReversal=FALSE, AllocationDistortion=0. The paradox is algebraically isolated as a property of allocation, not of treatment efficacy.",
+        "WitnessedInLoop": "loop-14"
+      },
+      {
+        "ConclusionId": "conc-03-binary-excludes-partial",
+        "Category": "instrument",
+        "Status": "witnessed",
+        "Title": "The unanimity criterion (IsReversal) incorrectly excludes Berkeley 1973 despite its being a Simpson-type paradox",
+        "Evidence": "Berkeley: WSGSUM=−0.0642, SignedPooledGap=+0.1292, IsSignFlip=TRUE, AllocationDistortion=0.1934 — greater distortion than kidney-1986. But IsReversal=FALSE because dept-C marginally favors male. The unanimity criterion is a strict subtype, not the primary definition.",
+        "WitnessedInLoop": "loop-17"
+      },
+      {
+        "ConclusionId": "conc-04-type-c-exists",
+        "Category": "instrument",
+        "Status": "witnessed",
+        "Title": "Allocation can compress the pooled signal without flipping it (type-C): a class invisible to IsReversal and IsSignFlip but visible to AllocationDistortion",
+        "Evidence": "compressed-synthetic: A wins every stratum and wins pooled, but the pooled margin is 6pp rather than the equal-weight 10pp. AllocationDistortion=0.0400, IsSignFlip=FALSE. The pooled winner is correct; the effect size is wrong by 4pp.",
+        "WitnessedInLoop": "loop-19"
+      },
+      {
+        "ConclusionId": "conc-05-real-data-generalizes",
+        "Category": "instrument",
+        "Status": "witnessed",
+        "Title": "Two real published studies (reintjes-2000, radelet-1981) hydrate as type-A full reversals without schema changes",
+        "Evidence": "Both studies entered via 05b-customize-data.sql. Witnessed: reintjes AllocationDistortion=0.0516, DistortionType=A; radelet AllocationDistortion=0.0684, DistortionType=A. No DAG or schema change was needed — the hydration contract generalizes.",
+        "WitnessedInLoop": "loop-20b"
+      },
+      {
+        "ConclusionId": "conc-06-policy-derivable",
+        "Category": "instrument",
+        "Status": "witnessed",
+        "Title": "PolicyImplication is domain-neutral: the same formula produces researcher actions across medicine, law, and education",
+        "Evidence": "All five current studies (kidney-1986, berkeley-1973, compressed-synthetic, kidney-balanced, balanced-synthetic) plus two real studies produce unambiguous PolicyImplication values from DistortionType alone. No domain-specific knowledge is encoded in the formula.",
+        "WitnessedInLoop": "loop-21"
+      },
+      {
+        "ConclusionId": "conc-07-model-self-portrait",
+        "Category": "instrument",
+        "Status": "witnessed",
+        "Title": "ModelSummary witnesses the instrument's own epistemic coverage as a first-class derived fact",
+        "Evidence": "ModelSummary aggregates ReversalCount, ExplainedCount, TypeA/B/C/D counts, and AvgAllocationDistortion across all studies. The model describes its own completeness in a single row.",
+        "WitnessedInLoop": "loop-10"
+      },
+      {
+        "ConclusionId": "conc-08-type-c-real",
+        "Category": "open-question",
+        "Status": "planned",
+        "Title": "Does the published literature contain real type-C studies (compression without sign flip)?",
+        "Evidence": "compressed-synthetic demonstrates the algebra. The open question is whether real studies produce this pattern — a correct pooled winner but materially compressed effect size.",
+        "TargetLoop": "loop-25"
+      },
+      {
+        "ConclusionId": "conc-09-causal-vs-geometric",
+        "Category": "open-question",
+        "Status": "planned",
+        "Title": "Does AllocationDistortion measure causal confounding, or purely arithmetic distortion?",
+        "Evidence": "Berkeley has the highest AllocationDistortion (0.1934) but CausalRole=contested (mediator vs confounder). The open question is whether distortion geometry and causal structure are correlated, and if so, how strongly.",
+        "TargetLoop": "loop-23"
+      },
+      {
+        "ConclusionId": "conc-10-instrument-specifiable",
+        "Category": "methodology",
+        "Status": "planned",
+        "Title": "The full instrument can be specified precisely enough for any researcher to apply it to a new study",
+        "Evidence": "InstrumentSpec table (loop-30) will enumerate every required input, derived coordinate, classification rule, adapter contract, and screening formula. Machine-verifiable against current seed + real datasets.",
+        "TargetLoop": "loop-30"
+      }
+    ]
+  },
+
+  "UIScreens": {
+    "Description": "Table: UIScreens — the canonical screens that comprise the Simpson's Paradox Explorer UI. Each row defines one screen: its purpose, its primary data source (which rulebook view it reads), and the user action it supports. A developer can reconstruct the full UI from this table without any prior knowledge of the application.",
+    "schema": [
+      {"name": "ScreenId", "datatype": "string", "type": "raw", "nullable": false, "Description": "Unique slug (e.g. screen-01-study-list)."},
+      {"name": "Name", "datatype": "string", "type": "calculated", "nullable": false, "Description": "Display label, mirrors ScreenId.", "formula": "={{ScreenId}}"},
+      {"name": "Title", "datatype": "string", "type": "raw", "nullable": false, "Description": "Human-readable screen title shown in the UI."},
+      {"name": "Route", "datatype": "string", "type": "raw", "nullable": false, "Description": "URL path pattern (e.g. /, /study/:studyId, /compare)."},
+      {"name": "PrimaryEntity", "datatype": "string", "type": "raw", "nullable": false, "Description": "The main rulebook entity this screen reads from (the vw_* view name without prefix)."},
+      {"name": "Purpose", "datatype": "string", "type": "raw", "nullable": false, "Description": "One sentence: what a user can learn or do on this screen."},
+      {"name": "KeyFields", "datatype": "string", "type": "raw", "nullable": true, "Description": "Comma-separated list of the most important fields displayed on this screen."},
+      {"name": "UserAction", "datatype": "string", "type": "raw", "nullable": true, "Description": "Primary user action available on this screen (e.g. select a study, drill into a stratum)."}
+    ],
+    "data": [
+      {
+        "ScreenId": "screen-01-study-list",
+        "Title": "Study List",
+        "Route": "/",
+        "PrimaryEntity": "Studies",
+        "Purpose": "Show all studies with their DistortionType badge and AllocationDistortion magnitude so a user can immediately see which studies exhibit the paradox and how severely.",
+        "KeyFields": "Title, DistortionType (from TreatmentRankings), AllocationDistortion, PolicyImplication, IsSignFlip, TotalCases",
+        "UserAction": "Click a study row to navigate to the Study Detail screen."
+      },
+      {
+        "ScreenId": "screen-02-study-detail",
+        "Title": "Study Detail",
+        "Route": "/study/:studyId",
+        "PrimaryEntity": "TreatmentRankings",
+        "Purpose": "Show one study's complete geometry: pooled rates, per-stratum rates, allocation fractions, AllocationDistortion, DistortionType, and PolicyImplication — the full causal picture for this study.",
+        "KeyFields": "PooledRateA, PooledRateB, PooledWinner, PerStratumWinner, IsReversal, IsSignFlip, WeightedStratumGapSum, SignedPooledGap, AllocationDistortion, DistortionType, PolicyImplication, ConfoundersInStudy, IsParadoxExplained",
+        "UserAction": "Expand strata panel to see per-stratum breakdown; navigate to Strata Detail."
+      },
+      {
+        "ScreenId": "screen-03-strata-detail",
+        "Title": "Strata Detail",
+        "Route": "/study/:studyId/strata",
+        "PrimaryEntity": "StratumSummaries",
+        "Purpose": "Show every (stratum, treatment) cell for a study: StratumSuccessRate, AllocationBias, StratumGap, WeightedStratumGap — the leaf-level evidence for why the pooled conclusion is or isn't misleading.",
+        "KeyFields": "StratumLabel, TreatmentLabel, StratumSuccessRate, StratumRateA, StratumRateB, StratumWinner, AllocationBias, AllocationFractionA, AllocationFractionB, StratumGap, WeightedStratumGap, StratumFraction",
+        "UserAction": "Hover a cell for the raw Successes/Cases count from CaseCells."
+      },
+      {
+        "ScreenId": "screen-04-confounder-panel",
+        "Title": "Confounder Panel",
+        "Route": "/study/:studyId/confounder",
+        "PrimaryEntity": "StratumVariables",
+        "Purpose": "Show the stratifying variable's causal role for a study: VariableName, CausalRole, AffectsTreatmentAssignment, AffectsOutcome, IsConfounder, MechanismNote.",
+        "KeyFields": "VariableName, CausalRole, AffectsTreatmentAssignment, AffectsOutcome, IsConfounder, MechanismNote",
+        "UserAction": "Read the mechanism note; understand why IsParadoxExplained is TRUE or FALSE for this study."
+      },
+      {
+        "ScreenId": "screen-05-distortion-plane",
+        "Title": "Distortion Plane",
+        "Route": "/plane",
+        "PrimaryEntity": "TreatmentRankings",
+        "Purpose": "Plot all studies on a 2D plane: AllocationDistortion (x-axis) × ReversalIntensity (y-axis), colored by DistortionType. Shows the geometric taxonomy at a glance and reveals how the four types partition the plane.",
+        "KeyFields": "Title (from Studies), AllocationDistortion, ReversalIntensity, IsSignFlip, DistortionType, PolicyImplication, ParadoxStrength",
+        "UserAction": "Click a data point to navigate to that study's Study Detail screen."
+      },
+      {
+        "ScreenId": "screen-06-model-summary",
+        "Title": "Model Summary",
+        "Route": "/summary",
+        "PrimaryEntity": "ModelSummary",
+        "Purpose": "Show the instrument's self-portrait: how many studies, how many of each DistortionType, average AllocationDistortion, total paradox strength — the epistemic coverage of the full model instance.",
+        "KeyFields": "StudyCount, ReversalCount, ExplainedCount, TypeACount, TypeBCount, TypeCCount, TypeDCount, AvgAllocationDistortion, TotalParadoxStrength",
+        "UserAction": "Navigate to Study List or Distortion Plane from this summary."
+      },
+      {
+        "ScreenId": "screen-07-loop-history",
+        "Title": "Loop History",
+        "Route": "/loops",
+        "PrimaryEntity": "Loops",
+        "Purpose": "Show the full build history: all 31 loops with their status, new concept, domain question, and mock data note. Lets a developer understand why the model is shaped the way it is — the DAG is the story.",
+        "KeyFields": "LoopId, Title, Status, NewConcept, DomainQuestion, MockDataNote, NextSuggestion",
+        "UserAction": "Filter by Status (complete/planned); click a loop to expand its full detail."
+      },
+      {
+        "ScreenId": "screen-08-methodology",
+        "Title": "Methodology",
+        "Route": "/methodology",
+        "PrimaryEntity": "Methodology",
+        "Purpose": "Show the ten first-principles methodological axioms that shaped this model — from CMCC as the floor, through DAG-first decomposition, to the four-type taxonomy. Enables a developer to apply the same process to a new domain.",
+        "KeyFields": "Phase, Title, Statement, WhyItMatters, IllustratedByLoop",
+        "UserAction": "Click IllustratedByLoop to jump to that loop in the Loop History screen."
+      },
+      {
+        "ScreenId": "screen-09-conclusions",
+        "Title": "Conclusions",
+        "Route": "/conclusions",
+        "PrimaryEntity": "Conclusions",
+        "Purpose": "Show all witnessed and planned conclusions, grouped by category (domain / instrument / methodology / open-question). The read-out of what this model has actually established.",
+        "KeyFields": "Category, Status, Title, Evidence, WitnessedInLoop, TargetLoop",
+        "UserAction": "Filter by Status (witnessed/planned/open); click WitnessedInLoop to navigate to Loop History."
+      }
+    ]
+  },
+
+  "UIComponents": {
+    "Description": "Table: UIComponents — the reusable visual building blocks used across UIScreens. Each row defines one component: what it renders, which entity it reads, and what props it requires. A developer can implement the full UI by composing these components onto the screens defined in UIScreens.",
+    "schema": [
+      {"name": "ComponentId", "datatype": "string", "type": "raw", "nullable": false, "Description": "Unique slug (e.g. comp-01-distortion-badge)."},
+      {"name": "Name", "datatype": "string", "type": "calculated", "nullable": false, "Description": "Display label, mirrors ComponentId.", "formula": "={{ComponentId}}"},
+      {"name": "ComponentName", "datatype": "string", "type": "raw", "nullable": false, "Description": "Code-level component name (PascalCase, e.g. DistortionBadge)."},
+      {"name": "UsedOnScreens", "datatype": "string", "type": "raw", "nullable": true, "Description": "Comma-separated ScreenIds where this component appears."},
+      {"name": "PrimaryEntity", "datatype": "string", "type": "raw", "nullable": false, "Description": "The rulebook entity this component reads (the vw_* view)."},
+      {"name": "Description", "datatype": "string", "type": "raw", "nullable": false, "Description": "What this component renders and what decisions a developer must make to implement it."},
+      {"name": "RequiredFields", "datatype": "string", "type": "raw", "nullable": true, "Description": "Comma-separated rulebook fields this component must receive as props."},
+      {"name": "VisualSpec", "datatype": "string", "type": "raw", "nullable": true, "Description": "Plain-English description of the visual output: shape, color coding, interactivity."}
+    ],
+    "data": [
+      {
+        "ComponentId": "comp-01-distortion-badge",
+        "ComponentName": "DistortionBadge",
+        "UsedOnScreens": "screen-01-study-list, screen-02-study-detail, screen-05-distortion-plane",
+        "PrimaryEntity": "TreatmentRankings",
+        "Description": "A colored pill/chip that shows DistortionType (A/B/C/D) and PolicyImplication for one study. Color-coded: A=red (stratify-immediately), B=orange (investigate-confounder), C=yellow (check-allocation-bias), D=green (pooled-analysis-trustworthy).",
+        "RequiredFields": "DistortionType, PolicyImplication",
+        "VisualSpec": "Pill shape, 2–3 chars for the type letter, tooltip on hover showing PolicyImplication text. Consistent color across all screens."
+      },
+      {
+        "ComponentId": "comp-02-rate-comparison-bar",
+        "ComponentName": "RateComparisonBar",
+        "UsedOnScreens": "screen-02-study-detail, screen-03-strata-detail",
+        "PrimaryEntity": "TreatmentRankings",
+        "Description": "A side-by-side horizontal bar chart comparing PooledRateA vs PooledRateB (or StratumRateA vs StratumRateB for strata). The bar for the loser under equal-weight allocation is visually distinguished from the bar for the pooled loser.",
+        "RequiredFields": "PooledRateA, PooledRateB, PooledWinner, WeightedStratumGapSum, SignedPooledGap, IsSignFlip",
+        "VisualSpec": "Two horizontal bars, labeled A and B. Arrow or bracket showing the gap. IsSignFlip=TRUE triggers a 'reversal' annotation. Width proportional to rate (0–1 scale)."
+      },
+      {
+        "ComponentId": "comp-03-allocation-heatmap",
+        "ComponentName": "AllocationHeatmap",
+        "UsedOnScreens": "screen-03-strata-detail",
+        "PrimaryEntity": "StratumSummaries",
+        "Description": "A grid of (Stratum × Treatment) cells where cell color encodes AllocationBias magnitude and sign. Positive bias (A over-allocated here) in one color; negative (B over-allocated) in another. Cell text shows AllocationFractionA and AllocationFractionB.",
+        "RequiredFields": "StratumLabel, TreatmentLabel, AllocationBias, AllocationFractionA, AllocationFractionB, StratumSuccessRate",
+        "VisualSpec": "Matrix layout: rows=strata, cols=treatments. Diverging color scale centered at 0. Tooltip shows raw Cases and Successes from CaseCells."
+      },
+      {
+        "ComponentId": "comp-04-distortion-plane-scatter",
+        "ComponentName": "DistortionPlaneScatter",
+        "UsedOnScreens": "screen-05-distortion-plane",
+        "PrimaryEntity": "TreatmentRankings",
+        "Description": "A 2D scatter plot with AllocationDistortion on the x-axis and ReversalIntensity on the y-axis. Each point is one study, colored by DistortionType. Quadrant lines at AllocationDistortion=0.01 (threshold) and ReversalIntensity=1.0 (unanimity) divide the plane into the four types.",
+        "RequiredFields": "AllocationDistortion, ReversalIntensity, DistortionType, PolicyImplication, IsSignFlip",
+        "VisualSpec": "SVG or canvas scatter. Labeled quadrant regions. Clickable points. Legend showing type → color → policy action."
+      },
+      {
+        "ComponentId": "comp-05-stratum-gap-waterfall",
+        "ComponentName": "StratumGapWaterfall",
+        "UsedOnScreens": "screen-03-strata-detail",
+        "PrimaryEntity": "StratumSummaries",
+        "Description": "A waterfall chart showing how each stratum's WeightedStratumGap contributes to WeightedStratumGapSum, then how the allocation re-weights them to produce SignedPooledGap. The visual makes the mechanism equation explicit: pooled = Σ(weight × rate).",
+        "RequiredFields": "StratumLabel, StratumGap, StratumFraction, WeightedStratumGap, WeightedStratumGapSum, SignedPooledGap",
+        "VisualSpec": "Waterfall/stacked bar: each stratum's WeightedStratumGap as a segment; running sum shown; final total vs actual SignedPooledGap shown side-by-side. IsSignFlip highlights the sign difference."
+      },
+      {
+        "ComponentId": "comp-06-model-summary-scorecard",
+        "ComponentName": "ModelSummaryScorecard",
+        "UsedOnScreens": "screen-06-model-summary",
+        "PrimaryEntity": "ModelSummary",
+        "Description": "A summary scorecard showing all ModelSummary fields as labeled metric tiles: StudyCount, ReversalCount, ExplainedCount, TypeA/B/C/D counts, AvgAllocationDistortion, TotalParadoxStrength.",
+        "RequiredFields": "StudyCount, ReversalCount, ExplainedCount, ZeroStrengthCount, TotalParadoxStrength, AvgParadoxStrength",
+        "VisualSpec": "Grid of metric tiles. Each tile: large number, small label. Color: ReversalCount in orange/red; ExplainedCount in green; TypeD in grey. Single row layout on desktop, 2-column on mobile."
+      },
+      {
+        "ComponentId": "comp-07-confounder-card",
+        "ComponentName": "ConfounderCard",
+        "UsedOnScreens": "screen-04-confounder-panel",
+        "PrimaryEntity": "StratumVariables",
+        "Description": "A card showing one StratumVariable row: VariableName, CausalRole badge, AffectsTreatmentAssignment checkbox, AffectsOutcome checkbox, IsConfounder result, and MechanismNote prose block.",
+        "RequiredFields": "VariableName, CausalRole, AffectsTreatmentAssignment, AffectsOutcome, IsConfounder, MechanismNote",
+        "VisualSpec": "Card with header=VariableName, CausalRole as a badge (confounder=red, mediator=orange, contested=yellow, unknown=grey), two boolean indicators, and MechanismNote as body text."
+      },
+      {
+        "ComponentId": "comp-08-loop-timeline",
+        "ComponentName": "LoopTimeline",
+        "UsedOnScreens": "screen-07-loop-history",
+        "PrimaryEntity": "Loops",
+        "Description": "A vertical timeline of all Loops rows, grouped by Status. Each entry shows LoopId, Title, Status indicator, NewConcept chip, and an expandable section with DomainQuestion, MockDataNote, and NextSuggestion.",
+        "RequiredFields": "LoopId, Title, Status, NewConcept, DomainQuestion, MockDataNote, NextSuggestion",
+        "VisualSpec": "Vertical list. Status=complete: solid circle; in-progress: half-filled; planned: open circle. Expandable accordion per entry. Color: complete=green, in-progress=blue, planned=grey."
+      },
+      {
+        "ComponentId": "comp-09-policy-action-banner",
+        "ComponentName": "PolicyActionBanner",
+        "UsedOnScreens": "screen-02-study-detail",
+        "PrimaryEntity": "TreatmentRankings",
+        "Description": "A prominent banner at the top of the Study Detail screen showing PolicyImplication as a clear action statement, color-coded by DistortionType. Includes a one-sentence explanation of why this action follows from the geometry.",
+        "RequiredFields": "PolicyImplication, DistortionType, AllocationDistortion, IsSignFlip",
+        "VisualSpec": "Full-width colored banner. Large icon (e.g. warning triangle for A, magnifying glass for B, scale for C, checkmark for D). Bold action text. Secondary line explaining the geometric basis."
+      },
+      {
+        "ComponentId": "comp-10-conclusion-list",
+        "ComponentName": "ConclusionList",
+        "UsedOnScreens": "screen-09-conclusions",
+        "PrimaryEntity": "Conclusions",
+        "Description": "A filterable list of Conclusions rows grouped by Category and Status. Each entry shows the Title, Status badge, Evidence summary, and a link to the WitnessedInLoop or TargetLoop.",
+        "RequiredFields": "Category, Status, Title, Evidence, WitnessedInLoop, TargetLoop",
+        "VisualSpec": "Grouped list with category headers. Status badge: witnessed=green, planned=blue, open=orange. Evidence shown as collapsed text (expand on click). Loop links navigate to LoopTimeline."
+      }
+    ]
   }
 }

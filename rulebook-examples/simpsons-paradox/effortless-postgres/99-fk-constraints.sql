@@ -42,4 +42,12 @@ ALTER TABLE treatment_rankings DROP CONSTRAINT IF EXISTS fk_treatment_rankings_s
 ALTER TABLE treatment_rankings ADD CONSTRAINT fk_treatment_rankings_study
   FOREIGN KEY (study) REFERENCES studies (study_id);
 
--- 6 FK constraint(s) declared (off unless EFFORTLESS_ENFORCE_FKS=true).
+-- Conclusions
+ALTER TABLE conclusions DROP CONSTRAINT IF EXISTS fk_conclusions_witnessed_in_loop;
+ALTER TABLE conclusions ADD CONSTRAINT fk_conclusions_witnessed_in_loop
+  FOREIGN KEY (witnessed_in_loop) REFERENCES loops (loop_id);
+ALTER TABLE conclusions DROP CONSTRAINT IF EXISTS fk_conclusions_target_loop;
+ALTER TABLE conclusions ADD CONSTRAINT fk_conclusions_target_loop
+  FOREIGN KEY (target_loop) REFERENCES loops (loop_id);
+
+-- 8 FK constraint(s) declared (off unless EFFORTLESS_ENFORCE_FKS=true).

@@ -88,6 +88,10 @@ _Digital mirror of the Simpson's Paradox domain. The entities are Studies, Treat
 | Allocation Distortion | Determined by priority: an empty string if the weighted stratum gap sum is blank; in all other cases, the absolute value of the weighted stratum gap sum minus the signed pooled gap. | _The magnitude of how far the allocation has bent the pooled signal: \|WeightedStratumGapSum − SignedPooledGap\|. Zero means the allocation is neutral — the pooled analysis faithfully represents the equal-weight stratum evidence. A large AllocationDistortion means the allocation is doing most of the work: the pooled number is mostly noise from how cases were assigned, not signal about which treatment is better. This measure does NOT require a sign flip to be nonzero — it captures any allocation-induced distortion, not just reversals._ |
 | Distortion Type | Determined by priority: an empty string if the allocation distortion is blank; “A” if all of the following hold: the sign flip flag is set and the reversal intensity is 1; “B” if all of the following hold: the sign flip flag is set and the reversal intensity is less than 1; “C” if all of the following hold: it is not the case that the sign flip flag is set and the allocation distortion is greater than 0.01; in all other cases, “D”. | _Geometric classification of this study's allocation-induced distortion. Four exhaustive types: A = full sign-flip with unanimous per-stratum reversal (IsSignFlip=TRUE AND ReversalIntensity=1.0); B = sign-flip but not unanimous (IsSignFlip=TRUE AND ReversalIntensity<1.0); C = distortion without sign flip (IsSignFlip=FALSE AND AllocationDistortion>0.01 — the allocation has compressed or inflated the pooled margin but not reversed it); D = effectively neutral (AllocationDistortion≤0.01 — pooled analysis is trustworthy with respect to this stratification). The taxonomy is derived purely from the geometric coordinates; it does not depend on causal attribution._ |
 | Policy Implication | Determined by priority: an empty string if the distortion type is blank; “stratify-immediately” if the distortion type is “A”; “investigate-confounder” if the distortion type is “B”; “check-allocation-bias” if the distortion type is “C”; in all other cases, “pooled-analysis-trustworthy”. | _The researcher action implied by the geometric classification. Derived from DistortionType: type A (full reversal) → 'stratify-immediately' — the pooled conclusion is directionally wrong; do not act on it without stratifying. Type B (partial sign-flip) → 'investigate-confounder' — the equal-weight signal opposes the pooled signal, but the per-stratum picture is mixed; the causal mechanism needs examination before trusting either estimate. Type C (compression without flip) → 'check-allocation-bias' — the pooled winner is probably correct but the effect size is distorted; report adjusted or standardized margins rather than the raw pooled gap. Type D (neutral) → 'pooled-analysis-trustworthy' — allocation is not materially distorting the signal; the pooled conclusion is safe with respect to this stratification._ |
+| **Methodology** | A methodology is identified by its name. | — |
+| **Conclusion** | A conclusion is identified by its name. | — |
+| **UI Screen** | A UI screen is identified by its name. | — |
+| **UI Component** | A UI component is identified by its name. | — |
 
 ## 2 Fact Types
 
@@ -120,6 +124,10 @@ already computes (cross-referenced as DR-N in the Definitional Rules below)._
 - A stratum variable **must** have a variable name and a causal role, and record whether it is affects treatment assignment and whether it is affects outcome.
 - A treatment ranking **must** reference exactly one study.
 - A treatment ranking **must** have a treatment a and a treatment b.
+- A methodology **must** have a phase, a title, and a statement.
+- A conclusion **must** have a category, a status, and a title.
+- A UI screen **must** have a title, a route, a primary entity, and a purpose.
+- A UI component **must** have a component name, a primary entity, and a description.
 
 ## 4 Definitional Rules
 
