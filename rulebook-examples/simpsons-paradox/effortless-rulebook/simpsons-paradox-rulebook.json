@@ -1,0 +1,196 @@
+{
+  "$schema": "https://example.com/cmcc-schema/v1",
+  "Name": "simpsons-paradox",
+  "Description": "Digital mirror of the Simpson's Paradox domain. The entities are Studies, Treatments, Strata, and CaseCells (raw patient counts). SuccessRates, TreatmentSummaries, and TreatmentRankings are derived. The paradox falls out of the DAG as an emergent derived fact — it is never modeled directly.",
+
+  "Loops": {
+    "Description": "Table: Loops — the 10-loop build plan, carried as a first-class entity inside the model. Each row documents what new concept is introduced and why.",
+    "schema": [
+      { "name": "LoopId",        "datatype": "string", "type": "raw",        "nullable": false, "Description": "Unique identifier: loop-01 through loop-10." },
+      { "name": "Name",          "datatype": "string", "type": "calculated", "nullable": false, "Description": "Display label.", "formula": "={{LoopId}}" },
+      { "name": "Title",         "datatype": "string", "type": "raw",        "nullable": false, "Description": "Short title for what this loop adds to the domain model." },
+      { "name": "Status",        "datatype": "string", "type": "raw",        "nullable": false, "Description": "planned | in-progress | complete" },
+      { "name": "NewConcept",    "datatype": "string", "type": "raw",        "nullable": true,  "Description": "The new first-class domain concept introduced this loop." },
+      { "name": "DomainQuestion","datatype": "string", "type": "raw",        "nullable": true,  "Description": "The natural-language question this loop's concept answers FROM the domain data." },
+      { "name": "MockDataNote",  "datatype": "string", "type": "raw",        "nullable": true,  "Description": "What the seed data is designed to show." },
+      { "name": "NextSuggestion","datatype": "string", "type": "raw",        "nullable": true,  "Description": "Suggestion for the next loop, written after witnessing the DAG at this loop's end." }
+    ],
+    "data": [
+      {
+        "LoopId": "loop-01",
+        "Title": "Core domain: Study, Treatment, Stratum, CaseCell → SuccessRate falls out",
+        "Status": "complete",
+        "NewConcept": "Studies, Treatments, Strata, CaseCells",
+        "DomainQuestion": "For each (stratum, treatment) cell in a study, what is the success rate?",
+        "MockDataNote": "Kidney stone study (Charig 1986): 2 strata (small/large), 2 treatments (A/B), 4 cells. CellSuccessRate is the first derived fact.",
+        "NextSuggestion": "Ask: for each treatment, what is its pooled (across all strata) success rate? That requires TreatmentSummary — aggregating CaseCells by treatment, ignoring stratum."
+      },
+      {
+        "LoopId": "loop-02",
+        "Title": "TreatmentSummary: pooled rate per treatment across all strata",
+        "Status": "planned",
+        "NewConcept": "TreatmentSummaries",
+        "DomainQuestion": "If you ignore stratum entirely, what is each treatment's overall success rate?",
+        "MockDataNote": "Pooled: A=273/350=78%, B=289/350=83%. B looks better — this is the misleading aggregate view.",
+        "NextSuggestion": "Ask: for each (stratum, treatment) pair, what is the success rate WITHIN that stratum? That requires StratumSummary — the view that contradicts the pooled view."
+      },
+      {
+        "LoopId": "loop-03",
+        "Title": "StratumSummary: per-stratum rate per treatment — the true picture",
+        "Status": "planned",
+        "NewConcept": "StratumSummaries",
+        "DomainQuestion": "Within each stratum, which treatment has the higher success rate?",
+        "MockDataNote": "Small: A=93.1% > B=86.7%. Large: A=73.0% > B=68.8%. A wins in BOTH strata. Contradiction with pooled view is now visible.",
+        "NextSuggestion": "Ask: for each treatment pair in a study, does the pooled winner match the per-stratum winner? That requires TreatmentRanking — the node where the paradox either exists or doesn't."
+      },
+      {
+        "LoopId": "loop-04",
+        "Title": "TreatmentRanking: does the pooled winner = the per-stratum winner?",
+        "Status": "planned",
+        "NewConcept": "TreatmentRankings",
+        "DomainQuestion": "When pooled and stratified conclusions disagree — which treatment should actually be preferred?",
+        "MockDataNote": "Pooled winner = B. Per-stratum winner = A in every stratum. Simpson's Paradox: IsReversal = true. This is the paradox as a derived fact, not a modeled entity.",
+        "NextSuggestion": "Ask: WHY does the paradox occur? The stratifying variable (stone size) affects both treatment assignment AND outcome. Name it as a StratumVariable with a CausalRole field."
+      },
+      {
+        "LoopId": "loop-05",
+        "Title": "StratumVariable: name the confounding factor and its causal role",
+        "Status": "planned",
+        "NewConcept": "StratumVariables (one per study, describing the stratifying variable and why it confounds)",
+        "DomainQuestion": "What IS the stratum variable, and why does it cause both differential treatment assignment and differential outcome?",
+        "MockDataNote": "StratumVariable: stone_size. CausalRole: confounder. Path to treatment: large stones were preferentially assigned to A. Path to outcome: large stones have lower baseline cure rates.",
+        "NextSuggestion": "Ask: how large is the treatment-allocation imbalance across strata? CaseCells already have trial counts; derive TreatmentExposureFraction per (stratum, treatment) — the mechanism of confounding."
+      },
+      {
+        "LoopId": "loop-06",
+        "Title": "TreatmentExposureFraction: how unevenly is each treatment allocated across strata?",
+        "Status": "planned",
+        "NewConcept": "TreatmentExposureFraction field on CaseCells (fraction of this treatment's total cases that land in this stratum)",
+        "DomainQuestion": "What fraction of each treatment's total cases fall in each stratum? High imbalance = confounding mechanism.",
+        "MockDataNote": "A: 75% of its cases are large stones. B: only 23% are large stones. This asymmetry IS the mechanism. Now it's a witnessed number, not a verbal description.",
+        "NextSuggestion": "Add a second study (Berkeley 1973 admissions) — same domain model, different subject matter. Two studies, one schema. The DAG either witnesses a reversal or doesn't for each."
+      },
+      {
+        "LoopId": "loop-07",
+        "Title": "Second study: Berkeley 1973 — same model, different domain",
+        "Status": "planned",
+        "NewConcept": "Second Studies row (berkeley-1973); CaseCells for 6 departments; StratumVariable = department",
+        "DomainQuestion": "Does the Berkeley admissions data also exhibit a reversal when stratified by department?",
+        "MockDataNote": "Aggregate: women admitted at lower rate. Per department: women admitted at equal or higher rate in most departments. Same paradox, different domain. IsReversal = true.",
+        "NextSuggestion": "Ask: across studies, can we rank them by how severe the paradox is? Add ParadoxStrength to TreatmentRanking — a scalar derived from pooled gap + average per-stratum gap."
+      },
+      {
+        "LoopId": "loop-08",
+        "Title": "ParadoxStrength: scalar severity of the reversal across studies",
+        "Status": "planned",
+        "NewConcept": "ParadoxStrength field on TreatmentRankings; StratumDelta field on StratumSummaries",
+        "DomainQuestion": "How large is the reversal? Can we rank studies by paradox severity?",
+        "MockDataNote": "Kidney: pooled gap ~4.6pp, avg stratum gap ~5.3pp, strength ~0.10. Berkeley will have its own strength score.",
+        "NextSuggestion": "Add a control study with NO reversal (balanced treatment allocation across strata) to validate that the model correctly witnesses absence of paradox as well as presence."
+      },
+      {
+        "LoopId": "loop-09",
+        "Title": "Control study: no reversal — validate the model witnesses absence correctly",
+        "Status": "planned",
+        "NewConcept": "Third Studies row (synthetic-control); balanced CaseCells where pooled and per-stratum agree",
+        "DomainQuestion": "If treatment allocation is balanced across strata, does the paradox disappear? IsReversal should = false.",
+        "MockDataNote": "Synthetic: A=60%, B=50% success in BOTH strata. Pooled: A=60%, B=50%. Per-stratum: same direction. No reversal. Validates model in both directions.",
+        "NextSuggestion": "Loop 10 synthesis: add StudySummary rolling up across all studies — how many studies, how many reversals witnessed, average paradox strength. The model now describes its own coverage."
+      },
+      {
+        "LoopId": "loop-10",
+        "Title": "StudySummary: the model describes its own coverage",
+        "Status": "planned",
+        "NewConcept": "StudySummary table aggregating across Studies (StudyCount, ReversalCount, AvgParadoxStrength)",
+        "DomainQuestion": "Across all studies in this model, how many exhibit the paradox and how severe is it on average?",
+        "MockDataNote": "3 studies: 2 reversals (kidney, berkeley), 1 non-reversal (control). AvgParadoxStrength over the reversal cases.",
+        "NextSuggestion": "Real-data phase: pour a fresh open dataset through this identical DAG. Any reversal it surfaces is now deductively certain — the instrument is validated on three datasets."
+      }
+    ]
+  },
+
+  "Studies": {
+    "Description": "Table: Studies — a clinical or empirical study comparing two or more treatments for a condition, with patient cases stratified by a confounding variable. The top-level entity in the domain.",
+    "schema": [
+      { "name": "StudyId",      "datatype": "string",   "type": "raw",        "nullable": false, "Description": "Unique slug for this study (e.g. kidney-1986, berkeley-1973)." },
+      { "name": "Name",         "datatype": "string",   "type": "calculated", "nullable": false, "Description": "Display label, mirrors StudyId.", "formula": "={{StudyId}}" },
+      { "name": "Title",        "datatype": "string",   "type": "raw",        "nullable": true,  "Description": "Human-readable title of the study." },
+      { "name": "Source",       "datatype": "string",   "type": "raw",        "nullable": true,  "Description": "Citation or description of the original data source." },
+      { "name": "SourceUrl",    "datatype": "string",   "type": "raw",        "nullable": true,  "Description": "URL to the original source." },
+      { "name": "TotalCases",   "datatype": "integer",  "type": "aggregation","nullable": true,  "Description": "Total number of cases (trials) across all CaseCells in this study.", "formula": "=SUMIFS(CaseCells!{{Cases}}, CaseCells!{{Study}}, {{StudyId}})" },
+      { "name": "CellCount",    "datatype": "integer",  "type": "aggregation","nullable": true,  "Description": "Number of CaseCell rows for this study.", "formula": "=COUNTIFS(CaseCells!{{Study}}, {{StudyId}})" }
+    ],
+    "data": [
+      {
+        "StudyId": "kidney-1986",
+        "Title": "Kidney Stone Treatment Study (Charig et al. 1986)",
+        "Source": "Charig CR et al. Comparison of treatment of renal calculi by open surgery, percutaneous nephrolithotomy, and extracorporeal shockwave lithotripsy. Br Med J. 1986;292:879.",
+        "SourceUrl": "https://www.bmj.com/content/292/6524/879"
+      }
+    ]
+  },
+
+  "Treatments": {
+    "Description": "Table: Treatments — the interventions being compared within a study. Each treatment belongs to one study.",
+    "schema": [
+      { "name": "TreatmentId",   "datatype": "string", "type": "raw",          "nullable": false, "Description": "Unique slug (e.g. kidney-1986-A, kidney-1986-B)." },
+      { "name": "Name",          "datatype": "string", "type": "calculated",   "nullable": false, "Description": "Display label.", "formula": "={{TreatmentId}}" },
+      { "name": "Study",         "datatype": "string", "type": "relationship", "nullable": false, "Description": "FK to the parent Study.", "RelatedTo": "Studies" },
+      { "name": "TreatmentLabel","datatype": "string", "type": "raw",          "nullable": false, "Description": "Short label used in CaseCells and comparisons (e.g. A, B)." },
+      { "name": "Description",   "datatype": "string", "type": "raw",          "nullable": true,  "Description": "Plain-language description of what this treatment is." },
+      { "name": "TotalCases",    "datatype": "integer","type": "aggregation",  "nullable": true,  "Description": "Total cases for this treatment across all strata.", "formula": "=SUMIFS(CaseCells!{{Cases}}, CaseCells!{{Study}}, {{Study}}, CaseCells!{{TreatmentLabel}}, {{TreatmentLabel}})" },
+      { "name": "TotalSuccesses","datatype": "integer","type": "aggregation",  "nullable": true,  "Description": "Total successes for this treatment across all strata.", "formula": "=SUMIFS(CaseCells!{{Successes}}, CaseCells!{{Study}}, {{Study}}, CaseCells!{{TreatmentLabel}}, {{TreatmentLabel}})" },
+      { "name": "PooledSuccessRate","datatype": "number","type": "calculated", "nullable": true,  "Description": "Pooled (across all strata) success rate for this treatment: TotalSuccesses / TotalCases.", "formula": "=IF({{TotalCases}} = 0, \"\", {{TotalSuccesses}} / {{TotalCases}})" }
+    ],
+    "data": [
+      { "TreatmentId": "kidney-1986-A", "Study": "kidney-1986", "TreatmentLabel": "A", "Description": "Open surgery / percutaneous nephrolithotomy (PCNL) — the more invasive procedure, used preferentially for large stones." },
+      { "TreatmentId": "kidney-1986-B", "Study": "kidney-1986", "TreatmentLabel": "B", "Description": "Extracorporeal shock wave lithotripsy (ESWL) — the less invasive procedure, used more for small stones." }
+    ]
+  },
+
+  "Strata": {
+    "Description": "Table: Strata — the subdivisions of patients within a study by the value of the confounding variable (e.g. stone size). Each stratum belongs to one study.",
+    "schema": [
+      { "name": "StratumId",    "datatype": "string", "type": "raw",          "nullable": false, "Description": "Unique slug (e.g. kidney-1986-small, kidney-1986-large)." },
+      { "name": "Name",         "datatype": "string", "type": "calculated",   "nullable": false, "Description": "Display label.", "formula": "={{StratumId}}" },
+      { "name": "Study",        "datatype": "string", "type": "relationship", "nullable": false, "Description": "FK to the parent Study.", "RelatedTo": "Studies" },
+      { "name": "StratumLabel", "datatype": "string", "type": "raw",          "nullable": false, "Description": "Short label used in CaseCells (e.g. small, large, dept-A)." },
+      { "name": "Description",  "datatype": "string", "type": "raw",          "nullable": true,  "Description": "Plain-language description of what defines this stratum." },
+      { "name": "TotalCases",   "datatype": "integer","type": "aggregation",  "nullable": true,  "Description": "Total cases in this stratum across all treatments.", "formula": "=SUMIFS(CaseCells!{{Cases}}, CaseCells!{{Study}}, {{Study}}, CaseCells!{{StratumLabel}}, {{StratumLabel}})" }
+    ],
+    "data": [
+      { "StratumId": "kidney-1986-small", "Study": "kidney-1986", "StratumLabel": "small", "Description": "Patients with small kidney stones — easier to treat, higher baseline success rate regardless of treatment." },
+      { "StratumId": "kidney-1986-large", "Study": "kidney-1986", "StratumLabel": "large", "Description": "Patients with large kidney stones — harder to treat, lower baseline success rate regardless of treatment. Preferentially assigned to Treatment A." }
+    ]
+  },
+
+  "CaseCells": {
+    "Description": "Table: CaseCells — the raw leaves of the DAG. One row per (study, stratum, treatment) combination recording the aggregate count of successes and total cases. Every derived fact in the model traces back to these numbers. Nothing above this row is a raw input.",
+    "schema": [
+      { "name": "CaseCellId",    "datatype": "string",  "type": "raw",          "nullable": false, "Description": "Unique slug (e.g. kidney-1986-small-A)." },
+      { "name": "Name",          "datatype": "string",  "type": "calculated",   "nullable": false, "Description": "Display label.", "formula": "={{CaseCellId}}" },
+      { "name": "Study",         "datatype": "string",  "type": "relationship", "nullable": false, "Description": "FK to the parent Study.", "RelatedTo": "Studies" },
+      { "name": "StratumLabel",  "datatype": "string",  "type": "raw",          "nullable": false, "Description": "The stratum this cell belongs to (matches Strata.StratumLabel)." },
+      { "name": "TreatmentLabel","datatype": "string",  "type": "raw",          "nullable": false, "Description": "The treatment applied in this cell (matches Treatments.TreatmentLabel)." },
+      { "name": "Successes",     "datatype": "integer", "type": "raw",          "nullable": false, "Description": "Number of patients in this cell who had a successful outcome. RAW INPUT — never derived." },
+      { "name": "Cases",         "datatype": "integer", "type": "raw",          "nullable": false, "Description": "Total number of patients in this cell. RAW INPUT — never derived." },
+      { "name": "CellSuccessRate","datatype": "number", "type": "calculated",   "nullable": true,  "Description": "Success rate within this cell: Successes / Cases. The first derived fact in the DAG.", "formula": "=IF({{Cases}} = 0, \"\", {{Successes}} / {{Cases}})" }
+    ],
+    "data": [
+      { "CaseCellId": "kidney-1986-small-A", "Study": "kidney-1986", "StratumLabel": "small", "TreatmentLabel": "A", "Successes": 81,  "Cases": 87  },
+      { "CaseCellId": "kidney-1986-small-B", "Study": "kidney-1986", "StratumLabel": "small", "TreatmentLabel": "B", "Successes": 234, "Cases": 270 },
+      { "CaseCellId": "kidney-1986-large-A", "Study": "kidney-1986", "StratumLabel": "large", "TreatmentLabel": "A", "Successes": 192, "Cases": 263 },
+      { "CaseCellId": "kidney-1986-large-B", "Study": "kidney-1986", "StratumLabel": "large", "TreatmentLabel": "B", "Successes": 55,  "Cases": 80  }
+    ]
+  },
+
+  "_meta": {
+    "_CMCC_Summary": "Domain mirror of Simpson's Paradox. Entities: Studies, Treatments, Strata, CaseCells. CellSuccessRate is the first derived fact. Pooled rates, per-stratum rates, and the reversal fall out as higher-order derived nodes in subsequent loops.",
+    "_conversion_metadata": {
+      "source": "hand-authored",
+      "tool_version": "1.0.0",
+      "export_mode": "schema_first_type_mapping",
+      "loop": "01"
+    }
+  }
+}
