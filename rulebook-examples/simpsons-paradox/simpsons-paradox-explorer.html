@@ -13,51 +13,97 @@ header h1{font-size:1.05rem;font-weight:600;color:#58a6ff}
 header .sub{font-size:.75rem;color:#8b949e;flex:1}
 header .hbtn{background:none;border:1px solid #30363d;border-radius:5px;color:#8b949e;cursor:pointer;font-size:.75rem;padding:4px 10px;white-space:nowrap}
 header .hbtn:hover{color:#58a6ff;border-color:#58a6ff}
-nav{background:#161b22;border-bottom:1px solid #30363d;display:flex;padding:0 28px}
-nav button{background:none;border:none;border-bottom:2px solid transparent;color:#8b949e;cursor:pointer;font-size:.85rem;padding:11px 16px;transition:color .15s,border-color .15s}
+nav{background:#161b22;border-bottom:1px solid #30363d;display:flex;padding:0 20px;overflow-x:auto;white-space:nowrap}
+nav button{background:none;border:none;border-bottom:2px solid transparent;color:#8b949e;cursor:pointer;font-size:.82rem;padding:11px 14px;transition:color .15s,border-color .15s;flex-shrink:0}
 nav button:hover{color:#e6edf3}
 nav button.active{color:#58a6ff;border-bottom-color:#58a6ff}
-main{padding:28px;max-width:1200px;margin:0 auto}
-/* ── Intro modal ── */
+main{padding:24px 28px;max-width:1280px;margin:0 auto}
+/* modal */
 .modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.75);display:flex;align-items:center;justify-content:center;z-index:999;padding:20px}
 .modal-bg.hidden{display:none}
-.modal{background:#161b22;border:1px solid #30363d;border-radius:10px;max-width:680px;width:100%;padding:32px;position:relative;max-height:90vh;overflow-y:auto}
+.modal{background:#161b22;border:1px solid #30363d;border-radius:10px;max-width:700px;width:100%;padding:32px;position:relative;max-height:90vh;overflow-y:auto}
 .modal h2{font-size:1.25rem;font-weight:700;color:#58a6ff;margin-bottom:6px}
-.modal .tagline{font-size:.82rem;color:#8b949e;margin-bottom:22px;font-style:italic}
+.modal .tagline{font-size:.82rem;color:#8b949e;margin-bottom:20px;font-style:italic}
 .modal h3{font-size:.88rem;font-weight:600;color:#c9d1d9;margin:16px 0 6px}
 .modal p{font-size:.83rem;color:#c9d1d9;line-height:1.65;margin-bottom:8px}
 .modal ul{font-size:.83rem;color:#c9d1d9;line-height:1.7;padding-left:20px;margin-bottom:8px}
-.modal .type-row{display:flex;gap:10px;flex-wrap:wrap;margin:10px 0}
-.modal .tb{border-radius:6px;padding:6px 12px;font-size:.78rem;font-weight:700}
+.type-row{display:flex;gap:10px;flex-wrap:wrap;margin:10px 0}
+.tb{border-radius:6px;padding:6px 12px;font-size:.78rem;font-weight:700}
 .tb-a{background:#7f1d1d;color:#fca5a5}.tb-b{background:#78350f;color:#fde68a}.tb-c{background:#1e3a5f;color:#93c5fd}.tb-d{background:#14532d;color:#86efac}
 .modal-close{margin-top:24px;display:flex;justify-content:flex-end}
 .modal-close button{background:#238636;border:none;border-radius:6px;color:#fff;cursor:pointer;font-size:.88rem;font-weight:600;padding:9px 22px}
 .modal-close button:hover{background:#2ea043}
+/* views */
 .view{display:none}.view.active{display:block}
-.vtitle{font-size:1.2rem;font-weight:600;margin-bottom:5px}
-.vdesc{font-size:.82rem;color:#8b949e;margin-bottom:22px;line-height:1.55;max-width:780px}
-.card{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:20px;margin-bottom:20px}
+.vtitle{font-size:1.15rem;font-weight:600;margin-bottom:4px}
+.vdesc{font-size:.82rem;color:#8b949e;margin-bottom:20px;line-height:1.55;max-width:820px}
+/* cards */
+.card{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:20px;margin-bottom:18px}
 .card h3{font-size:.85rem;font-weight:600;color:#c9d1d9;margin-bottom:14px}
 canvas{max-width:100%}
-.controls{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:18px;align-items:center}
+/* controls */
+.controls{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:16px;align-items:center}
 .controls label{font-size:.8rem;color:#8b949e}
 .controls select{background:#0d1117;border:1px solid #30363d;border-radius:4px;color:#e6edf3;font-size:.83rem;padding:4px 8px}
+/* pills */
 .pill{display:inline-block;border-radius:10px;font-size:.68rem;font-weight:700;padding:2px 8px;text-transform:uppercase;letter-spacing:.05em}
-.p-rev{background:#7f1d1d;color:#fca5a5}.p-sig{background:#78350f;color:#fde68a}.p-typ{background:#1e3a5f;color:#93c5fd}.p-ok{background:#14532d;color:#86efac}
-/* overview two-column layout */
+.p-a{background:#7f1d1d;color:#fca5a5}
+.p-b{background:#78350f;color:#fde68a}
+.p-c{background:#1e3a5f;color:#93c5fd}
+.p-d{background:#14532d;color:#86efac}
+.p-wit{background:#14532d;color:#86efac}
+.p-plan{background:#1e3a5f;color:#93c5fd}
+.p-open{background:#78350f;color:#fde68a}
+.p-comp{background:#14532d;color:#86efac}
+.p-prog{background:#1e3a5f;color:#93c5fd}
+.p-done{background:#21262d;color:#8b949e}
+/* study list */
+.study-list{display:flex;flex-direction:column;gap:12px}
+.study-row{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:16px 20px;cursor:pointer;display:flex;align-items:center;gap:16px;transition:border-color .15s}
+.study-row:hover{border-color:#58a6ff}
+.study-row .sr-title{font-size:.92rem;font-weight:600;flex:1}
+.study-row .sr-meta{font-size:.75rem;color:#8b949e;margin-top:2px}
+.study-row .sr-stats{display:flex;gap:20px;font-size:.78rem;flex-shrink:0}
+.study-row .sr-stat{text-align:center}
+.study-row .sr-stat .sv{font-weight:600;font-variant-numeric:tabular-nums;display:block}
+.study-row .sr-stat .sl{color:#8b949e;font-size:.7rem}
+/* study detail */
+.detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.detail-grid.wide{grid-template-columns:1fr}
+@media(max-width:700px){.detail-grid{grid-template-columns:1fr}}
+.kv-list{display:flex;flex-direction:column;gap:6px}
+.kv{display:flex;justify-content:space-between;font-size:.82rem;padding:5px 0;border-bottom:1px solid #21262d}
+.kv:last-child{border-bottom:none}
+.kv .kl{color:#8b949e}
+.kv .kv-val{font-weight:600;font-variant-numeric:tabular-nums}
+.kv .kv-val.g{color:#3fb950}.kv .kv-val.r{color:#f85149}.kv .kv-val.y{color:#d29922}.kv .kv-val.b{color:#58a6ff}
+/* policy banner */
+.policy-banner{border-radius:8px;padding:16px 20px;margin-bottom:18px;display:flex;align-items:center;gap:16px}
+.policy-banner .pb-icon{font-size:1.8rem;flex-shrink:0}
+.policy-banner .pb-text .pb-action{font-size:1rem;font-weight:700}
+.policy-banner .pb-text .pb-why{font-size:.8rem;opacity:.85;margin-top:4px}
+.pb-a{background:#450a0a;border:1px solid #991b1b}
+.pb-b{background:#431407;border:1px solid #9a3412}
+.pb-c{background:#1a2340;border:1px solid #1e3a5f}
+.pb-d{background:#052e16;border:1px solid #166534}
+/* overview grid */
 .overview-grid{display:grid;grid-template-columns:420px 1fr;gap:20px;align-items:start}
+@media(max-width:900px){.overview-grid{grid-template-columns:1fr}}
 .scatter-wrap{position:sticky;top:20px}
 .scatter-wrap .card{margin-bottom:0}
 #scatterChart{display:block;width:100%!important;height:340px!important}
-.sgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px}
+.sgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px}
 .sc{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:18px;cursor:pointer;transition:border-color .15s}
 .sc:hover{border-color:#58a6ff}.sc.sel{border-color:#58a6ff;background:#1a2d42}
-.sc .ct{font-size:.88rem;font-weight:600;margin-bottom:6px}
-.sc .cm{font-size:.75rem;color:#8b949e;margin-bottom:10px;line-height:1.5}
-.sr{display:flex;justify-content:space-between;font-size:.78rem;padding:3px 0;border-bottom:1px solid #21262d}
-.sr:last-child{border-bottom:none}.sl{color:#8b949e}.sv{font-weight:600;font-variant-numeric:tabular-nums}
+.sc .ct{font-size:.88rem;font-weight:600;margin-bottom:4px}
+.sc .cm{font-size:.74rem;color:#8b949e;margin-bottom:10px;line-height:1.45}
+.sr-row{display:flex;justify-content:space-between;font-size:.78rem;padding:3px 0;border-bottom:1px solid #21262d}
+.sr-row:last-child{border-bottom:none}
+.sr-row .sl{color:#8b949e}.sr-row .sv{font-weight:600;font-variant-numeric:tabular-nums}
 .sv.g{color:#3fb950}.sv.r{color:#f85149}.sv.n{color:#e6edf3}.sv.y{color:#d29922}
+/* sandbox */
 .sg{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+@media(max-width:700px){.sg{grid-template-columns:1fr}}
 .sg2{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:18px}
 .sg2 h4{font-size:.82rem;color:#8b949e;margin-bottom:14px}
 .slrow{display:flex;align-items:center;gap:10px;margin-bottom:10px;font-size:.8rem}
@@ -69,36 +115,82 @@ canvas{max-width:100%}
 .v-sig{background:#431407;color:#fb923c;border:1px solid #9a3412}
 .v-ok{background:#052e16;color:#4ade80;border:1px solid #166534}
 .note{font-size:.75rem;color:#8b949e;margin-top:8px;line-height:1.5}
+/* loops / methodology / conclusions */
+.loop-list{display:flex;flex-direction:column;gap:8px}
+.loop-item{background:#161b22;border:1px solid #30363d;border-radius:8px;overflow:hidden}
+.loop-header{padding:12px 16px;cursor:pointer;display:flex;align-items:center;gap:12px;transition:background .15s}
+.loop-header:hover{background:#1c2128}
+.loop-id{font-size:.72rem;font-family:monospace;color:#8b949e;flex-shrink:0;width:72px}
+.loop-title{font-size:.85rem;font-weight:600;flex:1}
+.loop-body{padding:0 16px;max-height:0;overflow:hidden;transition:max-height .25s ease}
+.loop-body.open{max-height:600px;padding:0 16px 14px}
+.loop-body p{font-size:.81rem;color:#c9d1d9;line-height:1.6;margin-top:8px}
+.loop-body .lbl{font-size:.72rem;font-weight:600;color:#8b949e;text-transform:uppercase;letter-spacing:.06em;margin-top:10px;margin-bottom:2px}
+.meth-list{display:flex;flex-direction:column;gap:12px}
+.meth-item{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:18px}
+.meth-phase{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#8b949e;margin-bottom:4px}
+.meth-title{font-size:.9rem;font-weight:600;color:#58a6ff;margin-bottom:8px}
+.meth-body p{font-size:.82rem;color:#c9d1d9;line-height:1.6;margin-bottom:8px}
+.meth-body p:last-child{margin-bottom:0}
+.meth-why{background:#0d1117;border-radius:6px;padding:10px 14px;margin-top:8px}
+.meth-why .lbl{font-size:.7rem;font-weight:700;color:#d29922;text-transform:uppercase;letter-spacing:.06em}
+.conc-list{display:flex;flex-direction:column;gap:10px}
+.conc-item{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:16px}
+.conc-cat{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#8b949e;margin-bottom:4px}
+.conc-title{font-size:.88rem;font-weight:600;margin-bottom:6px}
+.conc-evidence{font-size:.8rem;color:#c9d1d9;line-height:1.6}
+.filter-row{display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap}
+.filter-btn{background:#21262d;border:1px solid #30363d;border-radius:20px;color:#8b949e;cursor:pointer;font-size:.75rem;padding:4px 12px}
+.filter-btn.active{background:#1e3a5f;border-color:#58a6ff;color:#58a6ff}
+/* model scorecard */
+.scorecard{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:14px;margin-bottom:20px}
+.tile{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:16px;text-align:center}
+.tile .tval{font-size:2rem;font-weight:700;font-variant-numeric:tabular-nums}
+.tile .tlbl{font-size:.75rem;color:#8b949e;margin-top:4px}
+.tile.t-warn .tval{color:#f85149}
+.tile.t-ok .tval{color:#3fb950}
+.tile.t-info .tval{color:#58a6ff}
+.tile.t-grey .tval{color:#8b949e}
+/* strata table */
+.strata-table{width:100%;border-collapse:collapse;font-size:.82rem}
+.strata-table th{font-size:.72rem;font-weight:600;color:#8b949e;text-transform:uppercase;letter-spacing:.05em;padding:8px 10px;border-bottom:1px solid #30363d;text-align:left}
+.strata-table td{padding:8px 10px;border-bottom:1px solid #21262d;font-variant-numeric:tabular-nums}
+.strata-table tr:last-child td{border-bottom:none}
+.strata-table tr:hover td{background:#1c2128}
 </style>
 </head>
 <body>
+
 <!-- Intro modal -->
 <div class="modal-bg" id="introBg">
   <div class="modal">
     <h2>Simpson's Paradox Explorer</h2>
-    <div class="tagline">A digital mirror of the paradox — every number derived from raw case counts, no formulas hand-coded</div>
+    <div class="tagline">A digital mirror of the paradox — every number derived from raw case counts via the embedded rulebook DAG</div>
 
     <h3>What is Simpson's Paradox?</h3>
-    <p>A statistical phenomenon where a trend that appears in several groups of data disappears — or <em>reverses</em> — when those groups are combined. It occurs when a confounding variable (one that affects both <em>who receives each treatment</em> and <em>how well they do</em>) is unevenly distributed across the groups being compared.</p>
-    <p>The classic example: in the 1986 kidney stone study, Treatment A cures a higher fraction of patients in <em>every size category</em> — but Treatment B looks better in the pooled numbers. Why? Because A was preferentially given to the harder cases. The pooled rate conflates treatment effectiveness with case difficulty.</p>
+    <p>A statistical phenomenon where a trend that appears in every subgroup disappears — or <em>reverses</em> — when the subgroups are combined. It occurs when a confounding variable influences both who receives each treatment and how well they do, creating an allocation imbalance that bends the pooled conclusion.</p>
+    <p>The classic example: in the 1986 kidney stone study, Treatment A cures a higher fraction in <em>every size category</em> — yet Treatment B looks better in the pooled numbers. Why? Because the harder cases were preferentially routed to Treatment A, dragging its pooled rate down.</p>
 
     <h3>What this tool shows</h3>
-    <p>Five studies — two real, two synthetic controls, one counterfactual — are run through a DAG of derived formulas. Every number you see is computed live from the raw (successes, cases) leaf data embedded in this file:</p>
     <ul>
-      <li><strong>Study Overview</strong> — scatter plot of all studies on the distortion plane. Cards show per-study metrics including the new continuous measures.</li>
-      <li><strong>Stratum Breakdown</strong> — per-stratum bars vs pooled dashed lines. When bars go one way but the dashed line goes the other, you're looking at the paradox.</li>
-      <li><strong>Allocation Weights</strong> — how each treatment's cases are spread across strata. The allocation bias is the confounder's fingerprint as a signed number.</li>
-      <li><strong>Interactive Sandbox</strong> — sliders for raw counts. Watch the reversal verdict flip in real time as you shift allocation.</li>
+      <li><strong>Study Overview</strong> — all studies on the distortion plane; cards with per-study metrics.</li>
+      <li><strong>Study Detail</strong> — full geometry for one study: pooled rates, strata, allocation, confounder, policy action.</li>
+      <li><strong>Distortion Plane</strong> — AllocationDistortion × ReversalIntensity scatter, colored by type.</li>
+      <li><strong>Model Summary</strong> — the instrument's self-portrait across all studies.</li>
+      <li><strong>Loop History</strong> — all 27 build loops: how the model was constructed.</li>
+      <li><strong>Methodology</strong> — the 10 first-principles axioms behind the model.</li>
+      <li><strong>Conclusions</strong> — witnessed findings and open questions.</li>
+      <li><strong>Interactive Sandbox</strong> — drag sliders and watch the reversal verdict flip in real time.</li>
     </ul>
 
-    <h3>The four distortion types</h3>
+    <h3>The four distortion types (loops 19–21)</h3>
     <div class="type-row">
       <span class="tb tb-a">Type A — Full reversal</span>
       <span class="tb tb-b">Type B — Sign flip (partial)</span>
       <span class="tb tb-c">Type C — Compressed, no flip</span>
       <span class="tb tb-d">Type D — Neutral</span>
     </div>
-    <p>Beyond the classic binary IsReversal, this model derives <strong>AllocationDistortion</strong> — the magnitude of how far the allocation has bent the pooled signal — and <strong>IsSignFlip</strong>, which correctly classifies Berkeley 1973 as paradoxical even though its per-department winner isn't unanimous.</p>
+    <p>Beyond the classic binary IsReversal (unanimity criterion), this model derives <strong>AllocationDistortion</strong> — the scalar magnitude of how far the pooled signal has been bent — and <strong>IsSignFlip</strong>, which correctly classifies Berkeley 1973 as a Simpson-type paradox even though its per-department winner is not unanimous. The type taxonomy is geometry-first: no causal story required to classify.</p>
 
     <div class="modal-close"><button id="introClose">Start exploring →</button></div>
   </div>
@@ -106,20 +198,24 @@ canvas{max-width:100%}
 
 <header>
   <h1>Simpson's Paradox Explorer</h1>
-  <span class="sub">Self-contained viewer — all computations derived from the embedded rulebook</span>
+  <span class="sub">loop-21+20b · all computations derived from the embedded rulebook</span>
   <button class="hbtn" id="aboutBtn">? About</button>
 </header>
 <nav>
   <button class="active" data-v="overview">Study Overview</button>
-  <button data-v="stratum">Stratum Breakdown</button>
-  <button data-v="weights">Allocation Weights</button>
-  <button data-v="sandbox">Interactive Sandbox</button>
+  <button data-v="detail">Study Detail</button>
+  <button data-v="plane">Distortion Plane</button>
+  <button data-v="summary">Model Summary</button>
+  <button data-v="loops">Loop History</button>
+  <button data-v="methodology">Methodology</button>
+  <button data-v="conclusions">Conclusions</button>
+  <button data-v="sandbox">Sandbox</button>
 </nav>
 <main>
 
 <div id="view-overview" class="view active">
   <div class="vtitle">Study Overview</div>
-  <div class="vdesc">Every study on the distortion plane: allocation bias (x) vs paradox strength (y). Bubble size = total cases. <span style="color:#f87171">■ A: full reversal</span> · <span style="color:#fb923c">■ B: sign flip</span> · <span style="color:#93c5fd">■ C: compressed</span> · <span style="color:#86efac">■ D: neutral</span></div>
+  <div class="vdesc">All studies with their distortion type and key metrics. Click a row to open Study Detail.</div>
   <div class="overview-grid">
     <div class="scatter-wrap">
       <div class="card"><h3>Allocation distortion plane</h3><canvas id="scatterChart"></canvas></div>
@@ -128,160 +224,268 @@ canvas{max-width:100%}
   </div>
 </div>
 
-<div id="view-stratum" class="view">
-  <div class="vtitle">Stratum Breakdown</div>
-  <div class="vdesc">Per-stratum success rates for each treatment (bars) vs pooled rates (dashed lines). When bars unanimously favor one treatment but the dashed lines cross — that's the paradox made visual. The second chart shows the weighted contributions that sum to each pooled rate.</div>
-  <div class="controls"><label>Study</label><select id="stratSel"></select></div>
-  <div class="card"><h3>Per-stratum rates — Treatment A vs B · dashed = pooled</h3><canvas id="stratBar" height="280"></canvas></div>
-  <div class="card"><h3>Weighted contributions (StratumFraction × rate) — summing these reconstructs the pooled rate</h3><canvas id="wBar" height="210"></canvas></div>
+<div id="view-detail" class="view">
+  <div class="vtitle">Study Detail</div>
+  <div class="vdesc">Full geometry for one study: pooled rates, per-stratum breakdown, allocation weights, confounder, and policy action.</div>
+  <div class="controls">
+    <label>Study</label>
+    <select id="detailSel"></select>
+  </div>
+  <div id="detailContent"></div>
 </div>
 
-<div id="view-weights" class="view">
-  <div class="vtitle">Allocation Weights</div>
-  <div class="vdesc">How each treatment's cases are distributed across strata. When one treatment is over-concentrated in the harder stratum, it drags its pooled rate down. Allocation bias = fraction<sub>A</sub> − fraction<sub>B</sub> per stratum: positive = A over-allocated here.</div>
-  <div class="controls"><label>Study</label><select id="wgtSel"></select></div>
-  <div class="card"><h3>Allocation fractions — % of each treatment's cases in each stratum</h3><canvas id="allocBar" height="260"></canvas></div>
-  <div class="card"><h3>Allocation bias per stratum (+ = A over-allocated · − = B over-allocated)</h3><canvas id="biasBar" height="180"></canvas></div>
+<div id="view-plane" class="view">
+  <div class="vtitle">Distortion Plane</div>
+  <div class="vdesc">AllocationDistortion (x) × ReversalIntensity (y), colored by DistortionType. The four quadrants correspond to types A/B/C/D. Click a point to open Study Detail.</div>
+  <div class="card"><canvas id="planeChart" height="400"></canvas></div>
+  <div class="card">
+    <h3>Type legend</h3>
+    <div class="kv-list">
+      <div class="kv"><span class="kl"><span class="pill p-a">A</span> Full reversal</span><span class="kv-val">IsSignFlip=T AND ReversalIntensity=1.0 — stratify immediately</span></div>
+      <div class="kv"><span class="kl"><span class="pill p-b">B</span> Sign flip (partial)</span><span class="kv-val">IsSignFlip=T AND ReversalIntensity&lt;1.0 — investigate confounder</span></div>
+      <div class="kv"><span class="kl"><span class="pill p-c">C</span> Compressed</span><span class="kv-val">IsSignFlip=F AND AllocationDistortion&gt;threshold — check allocation bias</span></div>
+      <div class="kv"><span class="kl"><span class="pill p-d">D</span> Neutral</span><span class="kv-val">AllocationDistortion≈0 — pooled analysis trustworthy</span></div>
+    </div>
+  </div>
+</div>
+
+<div id="view-summary" class="view">
+  <div class="vtitle">Model Summary</div>
+  <div class="vdesc">The instrument's self-portrait — a derived read across all studies showing epistemic coverage of the four-type taxonomy.</div>
+  <div id="summaryContent"></div>
+</div>
+
+<div id="view-loops" class="view">
+  <div class="vtitle">Loop History</div>
+  <div class="vdesc">All 27 build loops — one new concept per loop. The DAG is the story.</div>
+  <div class="filter-row" id="loopFilters"></div>
+  <div class="loop-list" id="loopList"></div>
+</div>
+
+<div id="view-methodology" class="view">
+  <div class="vtitle">Methodology</div>
+  <div class="vdesc">Ten first-principles axioms behind this model — from CMCC as the floor through the four-type taxonomy.</div>
+  <div class="meth-list" id="methList"></div>
+</div>
+
+<div id="view-conclusions" class="view">
+  <div class="vtitle">Conclusions</div>
+  <div class="vdesc">Witnessed findings and open questions, grouped by category.</div>
+  <div class="filter-row" id="concFilters"></div>
+  <div class="conc-list" id="concList"></div>
 </div>
 
 <div id="view-sandbox" class="view">
   <div class="vtitle">Interactive Sandbox</div>
-  <div class="vdesc">Adjust raw case counts and watch the reversal verdict update live. Load a real study as a starting point, then drag allocations to see the paradox flip on or off. All three paradox criteria (IsReversal, IsSignFlip, AllocationDistortion) are computed in real time.</div>
+  <div class="vdesc">Adjust raw case counts and watch the reversal verdict update live. Load a real study as starting point, then drag allocations to see the paradox flip on or off.</div>
   <div class="controls"><label>Load preset</label><select id="presetSel"></select></div>
   <div class="sg">
-    <div class="sg2"><h4>Stratum 1 — easy / small</h4>
-      <div class="slrow"><label>A — cases</label><input type="range" id="s_cA1" min="1" max="400" value="87"><span class="val" id="v_cA1">87</span></div>
-      <div class="slrow"><label>A — successes</label><input type="range" id="s_sA1" min="0" max="400" value="81"><span class="val" id="v_sA1">81</span></div>
-      <div class="slrow"><label>B — cases</label><input type="range" id="s_cB1" min="1" max="400" value="270"><span class="val" id="v_cB1">270</span></div>
-      <div class="slrow"><label>B — successes</label><input type="range" id="s_sB1" min="0" max="400" value="234"><span class="val" id="v_sB1">234</span></div>
+    <div class="sg2"><h4 id="sand-lbl1">Stratum 1</h4>
+      <div class="slrow"><label>A — cases</label><input type="range" id="s_cA1" min="1" max="500" value="87"><span class="val" id="v_cA1">87</span></div>
+      <div class="slrow"><label>A — successes</label><input type="range" id="s_sA1" min="0" max="500" value="81"><span class="val" id="v_sA1">81</span></div>
+      <div class="slrow"><label>B — cases</label><input type="range" id="s_cB1" min="1" max="500" value="270"><span class="val" id="v_cB1">270</span></div>
+      <div class="slrow"><label>B — successes</label><input type="range" id="s_sB1" min="0" max="500" value="234"><span class="val" id="v_sB1">234</span></div>
     </div>
-    <div class="sg2"><h4>Stratum 2 — hard / large</h4>
-      <div class="slrow"><label>A — cases</label><input type="range" id="s_cA2" min="1" max="400" value="263"><span class="val" id="v_cA2">263</span></div>
-      <div class="slrow"><label>A — successes</label><input type="range" id="s_sA2" min="0" max="400" value="192"><span class="val" id="v_sA2">192</span></div>
-      <div class="slrow"><label>B — cases</label><input type="range" id="s_cB2" min="1" max="400" value="80"><span class="val" id="v_cB2">80</span></div>
-      <div class="slrow"><label>B — successes</label><input type="range" id="s_sB2" min="0" max="400" value="55"><span class="val" id="v_sB2">55</span></div>
+    <div class="sg2"><h4 id="sand-lbl2">Stratum 2</h4>
+      <div class="slrow"><label>A — cases</label><input type="range" id="s_cA2" min="1" max="500" value="263"><span class="val" id="v_cA2">263</span></div>
+      <div class="slrow"><label>A — successes</label><input type="range" id="s_sA2" min="0" max="500" value="192"><span class="val" id="v_sA2">192</span></div>
+      <div class="slrow"><label>B — cases</label><input type="range" id="s_cB2" min="1" max="500" value="80"><span class="val" id="v_cB2">80</span></div>
+      <div class="slrow"><label>B — successes</label><input type="range" id="s_sB2" min="0" max="500" value="55"><span class="val" id="v_sB2">55</span></div>
     </div>
   </div>
-  <div class="card" style="margin-top:18px"><h3>Live rates</h3><canvas id="sandChart" height="230"></canvas></div>
+  <div class="card" style="margin-top:16px"><h3>Live rates</h3><canvas id="sandChart" height="220"></canvas></div>
   <div id="verd" class="verd v-ok">No paradox</div>
   <div class="note" id="sandNote"></div>
 </div>
 
 </main>
+
 <script>
-// ══════════════════════════════════════════════════════════════
-// EMBEDDED RULEBOOK (raw leaf data — CaseCells + StratumVariables)
-// ══════════════════════════════════════════════════════════════
-const RB_CELLS = [
-  {study:"kidney-1986",        stratum:"small",  trt:"A", s:81,  c:87 },
-  {study:"kidney-1986",        stratum:"small",  trt:"B", s:234, c:270},
-  {study:"kidney-1986",        stratum:"large",  trt:"A", s:192, c:263},
-  {study:"kidney-1986",        stratum:"large",  trt:"B", s:55,  c:80 },
-  {study:"kidney-balanced",    stratum:"small",  trt:"A", s:163, c:175},
-  {study:"kidney-balanced",    stratum:"small",  trt:"B", s:152, c:175},
-  {study:"kidney-balanced",    stratum:"large",  trt:"A", s:128, c:175},
-  {study:"kidney-balanced",    stratum:"large",  trt:"B", s:120, c:175},
-  {study:"balanced-synthetic", stratum:"easy",   trt:"A", s:60,  c:100},
-  {study:"balanced-synthetic", stratum:"easy",   trt:"B", s:50,  c:100},
-  {study:"balanced-synthetic", stratum:"hard",   trt:"A", s:60,  c:100},
-  {study:"balanced-synthetic", stratum:"hard",   trt:"B", s:50,  c:100},
-  {study:"berkeley-1973",      stratum:"dept-A", trt:"A", s:512, c:825},
-  {study:"berkeley-1973",      stratum:"dept-A", trt:"B", s:89,  c:108},
-  {study:"berkeley-1973",      stratum:"dept-B", trt:"A", s:353, c:560},
-  {study:"berkeley-1973",      stratum:"dept-B", trt:"B", s:17,  c:25 },
-  {study:"berkeley-1973",      stratum:"dept-C", trt:"A", s:120, c:325},
-  {study:"berkeley-1973",      stratum:"dept-C", trt:"B", s:202, c:593},
-  {study:"berkeley-1973",      stratum:"dept-D", trt:"A", s:138, c:417},
-  {study:"berkeley-1973",      stratum:"dept-D", trt:"B", s:131, c:375},
-  {study:"compressed-synthetic",stratum:"hard",  trt:"A", s:84,  c:120},
-  {study:"compressed-synthetic",stratum:"hard",  trt:"B", s:48,  c:80 },
-  {study:"compressed-synthetic",stratum:"easy",  trt:"A", s:72,  c:80 },
-  {study:"compressed-synthetic",stratum:"easy",  trt:"B", s:96,  c:120},
-];
-
-const RB_STUDIES = {
-  "kidney-1986":         {title:"Kidney Stone Treatment (Charig 1986)",              source:"Charig et al., BMJ 1986"},
-  "kidney-balanced":     {title:"Kidney Stone Counterfactual (balanced allocation)",  source:"Synthetic — same rates, equal allocation"},
-  "balanced-synthetic":  {title:"Balanced Synthetic (type-D control)",               source:"Synthetic — equal allocation, constant rates"},
-  "berkeley-1973":       {title:"UC Berkeley Admissions (Bickel 1975)",               source:"Bickel, Hammel & O'Connell, Science 1975"},
-  "compressed-synthetic":{title:"Compressed Synthetic (type-C — distortion, no flip)",source:"Synthetic — imbalanced allocation, no reversal"},
+// ════════════════════════════════════════════════════════════════
+// EMBEDDED RULEBOOK DATA — sourced directly from simpsons-paradox-rulebook.json
+// ════════════════════════════════════════════════════════════════
+const RB = {
+  Studies: [
+    {"StudyId":"kidney-1986","Title":"Kidney Stone Treatment Study (Charig et al. 1986)","Source":"Charig CR et al. Br Med J. 1986;292:879.","SourceUrl":"https://www.bmj.com/content/292/6524/879"},
+    {"StudyId":"balanced-synthetic","Title":"Balanced Synthetic Study (degenerate case — reversal structurally impossible)","Source":"Synthetic — equal allocation, constant rates","SourceUrl":""},
+    {"StudyId":"kidney-balanced","Title":"Kidney Stone Counterfactual (balanced allocation — reversal algebraically impossible)","Source":"Synthetic — same rates as kidney-1986, equal allocation","SourceUrl":""},
+    {"StudyId":"berkeley-1973","Title":"UC Berkeley Graduate Admissions (Bickel et al. 1975) — contested confounder","Source":"Bickel PJ et al. Science. 1975;187:398-404.","SourceUrl":"https://www.science.org/doi/10.1126/science.187.4175.398"},
+    {"StudyId":"compressed-synthetic","Title":"Compressed Synthetic Study (type-C — allocation distortion without sign flip)","Source":"Synthetic — imbalanced allocation, no reversal","SourceUrl":""}
+  ],
+  Treatments: [
+    {"TreatmentId":"kidney-1986-A","Study":"kidney-1986","TreatmentLabel":"A","Description":"Open surgery / PCNL — more invasive, used preferentially for large stones."},
+    {"TreatmentId":"kidney-1986-B","Study":"kidney-1986","TreatmentLabel":"B","Description":"ESWL — less invasive, used more for small stones."},
+    {"TreatmentId":"kidney-balanced-A","Study":"kidney-balanced","TreatmentLabel":"A","Description":"Open surgery / PCNL — same per-stratum rates as kidney-1986, equally allocated."},
+    {"TreatmentId":"kidney-balanced-B","Study":"kidney-balanced","TreatmentLabel":"B","Description":"ESWL — same per-stratum rates as kidney-1986, equally allocated."},
+    {"TreatmentId":"balanced-synthetic-A","Study":"balanced-synthetic","TreatmentLabel":"A","Description":"Synthetic — 60% success rate in both strata, equal allocation."},
+    {"TreatmentId":"balanced-synthetic-B","Study":"balanced-synthetic","TreatmentLabel":"B","Description":"Synthetic — 50% success rate in both strata, equal allocation."},
+    {"TreatmentId":"berkeley-1973-male","Study":"berkeley-1973","TreatmentLabel":"A","Description":"Male applicants — pooled admission rate appears higher."},
+    {"TreatmentId":"berkeley-1973-female","Study":"berkeley-1973","TreatmentLabel":"B","Description":"Female applicants — pooled rate appears lower despite equal or higher per-department rates."},
+    {"TreatmentId":"compressed-synthetic-A","Study":"compressed-synthetic","TreatmentLabel":"A","Description":"Treatment A — 70% hard / 90% easy. Over-allocated to hard (60% of A cases). A wins both strata and pooled but pooled margin is compressed."},
+    {"TreatmentId":"compressed-synthetic-B","Study":"compressed-synthetic","TreatmentLabel":"B","Description":"Treatment B — 60% hard / 80% easy. Over-allocated to easy (60% of B cases)."}
+  ],
+  Strata: [
+    {"StratumId":"kidney-1986-small","Study":"kidney-1986","StratumLabel":"small","Description":"Patients with small kidney stones — easier to treat, higher baseline success rate."},
+    {"StratumId":"kidney-1986-large","Study":"kidney-1986","StratumLabel":"large","Description":"Patients with large kidney stones — harder to treat. Preferentially assigned to Treatment A."},
+    {"StratumId":"kidney-balanced-small","Study":"kidney-balanced","StratumLabel":"small","Description":"Small kidney stones — same rates as kidney-1986, equal allocation (175 per cell)."},
+    {"StratumId":"kidney-balanced-large","Study":"kidney-balanced","StratumLabel":"large","Description":"Large kidney stones — same rates as kidney-1986, equal allocation (175 per cell)."},
+    {"StratumId":"balanced-synthetic-easy","Study":"balanced-synthetic","StratumLabel":"easy","Description":"Easy stratum — 50% of each treatment's cases."},
+    {"StratumId":"balanced-synthetic-hard","Study":"balanced-synthetic","StratumLabel":"hard","Description":"Hard stratum — 50% of each treatment's cases."},
+    {"StratumId":"berkeley-1973-dept-A","Study":"berkeley-1973","StratumLabel":"dept-A","Description":"Dept A — highly competitive. Women applied at roughly equal rates to men."},
+    {"StratumId":"berkeley-1973-dept-B","Study":"berkeley-1973","StratumLabel":"dept-B","Description":"Dept B — competitive. Women applied less often."},
+    {"StratumId":"berkeley-1973-dept-C","Study":"berkeley-1973","StratumLabel":"dept-C","Description":"Dept C — moderately selective. More balanced gender application."},
+    {"StratumId":"berkeley-1973-dept-D","Study":"berkeley-1973","StratumLabel":"dept-D","Description":"Dept D — open. Women applied here most heavily."},
+    {"StratumId":"compressed-synthetic-hard","Study":"compressed-synthetic","StratumLabel":"hard","Description":"Hard stratum — A=70%, B=60%. A over-allocated here (60% vs 40%)."},
+    {"StratumId":"compressed-synthetic-easy","Study":"compressed-synthetic","StratumLabel":"easy","Description":"Easy stratum — A=90%, B=80%. B over-allocated here (60% vs 40%)."}
+  ],
+  CaseCells: [
+    {"CaseCellId":"kidney-1986-small-A","Study":"kidney-1986","StratumLabel":"small","TreatmentLabel":"A","Successes":81,"Cases":87},
+    {"CaseCellId":"kidney-1986-small-B","Study":"kidney-1986","StratumLabel":"small","TreatmentLabel":"B","Successes":234,"Cases":270},
+    {"CaseCellId":"kidney-1986-large-A","Study":"kidney-1986","StratumLabel":"large","TreatmentLabel":"A","Successes":192,"Cases":263},
+    {"CaseCellId":"kidney-1986-large-B","Study":"kidney-1986","StratumLabel":"large","TreatmentLabel":"B","Successes":55,"Cases":80},
+    {"CaseCellId":"kidney-balanced-small-A","Study":"kidney-balanced","StratumLabel":"small","TreatmentLabel":"A","Successes":163,"Cases":175},
+    {"CaseCellId":"kidney-balanced-small-B","Study":"kidney-balanced","StratumLabel":"small","TreatmentLabel":"B","Successes":152,"Cases":175},
+    {"CaseCellId":"kidney-balanced-large-A","Study":"kidney-balanced","StratumLabel":"large","TreatmentLabel":"A","Successes":128,"Cases":175},
+    {"CaseCellId":"kidney-balanced-large-B","Study":"kidney-balanced","StratumLabel":"large","TreatmentLabel":"B","Successes":120,"Cases":175},
+    {"CaseCellId":"balanced-synthetic-easy-A","Study":"balanced-synthetic","StratumLabel":"easy","TreatmentLabel":"A","Successes":60,"Cases":100},
+    {"CaseCellId":"balanced-synthetic-easy-B","Study":"balanced-synthetic","StratumLabel":"easy","TreatmentLabel":"B","Successes":50,"Cases":100},
+    {"CaseCellId":"balanced-synthetic-hard-A","Study":"balanced-synthetic","StratumLabel":"hard","TreatmentLabel":"A","Successes":60,"Cases":100},
+    {"CaseCellId":"balanced-synthetic-hard-B","Study":"balanced-synthetic","StratumLabel":"hard","TreatmentLabel":"B","Successes":50,"Cases":100},
+    {"CaseCellId":"berkeley-1973-dept-A-male","Study":"berkeley-1973","StratumLabel":"dept-A","TreatmentLabel":"A","Successes":512,"Cases":825},
+    {"CaseCellId":"berkeley-1973-dept-A-female","Study":"berkeley-1973","StratumLabel":"dept-A","TreatmentLabel":"B","Successes":89,"Cases":108},
+    {"CaseCellId":"berkeley-1973-dept-B-male","Study":"berkeley-1973","StratumLabel":"dept-B","TreatmentLabel":"A","Successes":353,"Cases":560},
+    {"CaseCellId":"berkeley-1973-dept-B-female","Study":"berkeley-1973","StratumLabel":"dept-B","TreatmentLabel":"B","Successes":17,"Cases":25},
+    {"CaseCellId":"berkeley-1973-dept-C-male","Study":"berkeley-1973","StratumLabel":"dept-C","TreatmentLabel":"A","Successes":120,"Cases":325},
+    {"CaseCellId":"berkeley-1973-dept-C-female","Study":"berkeley-1973","StratumLabel":"dept-C","TreatmentLabel":"B","Successes":202,"Cases":593},
+    {"CaseCellId":"berkeley-1973-dept-D-male","Study":"berkeley-1973","StratumLabel":"dept-D","TreatmentLabel":"A","Successes":138,"Cases":417},
+    {"CaseCellId":"berkeley-1973-dept-D-female","Study":"berkeley-1973","StratumLabel":"dept-D","TreatmentLabel":"B","Successes":131,"Cases":375},
+    {"CaseCellId":"compressed-synthetic-hard-A","Study":"compressed-synthetic","StratumLabel":"hard","TreatmentLabel":"A","Successes":84,"Cases":120},
+    {"CaseCellId":"compressed-synthetic-hard-B","Study":"compressed-synthetic","StratumLabel":"hard","TreatmentLabel":"B","Successes":48,"Cases":80},
+    {"CaseCellId":"compressed-synthetic-easy-A","Study":"compressed-synthetic","StratumLabel":"easy","TreatmentLabel":"A","Successes":72,"Cases":80},
+    {"CaseCellId":"compressed-synthetic-easy-B","Study":"compressed-synthetic","StratumLabel":"easy","TreatmentLabel":"B","Successes":96,"Cases":120}
+  ],
+  StratumVariables: [
+    {"StratumVariableId":"kidney-1986-stone-size","Study":"kidney-1986","VariableName":"stone_size","CausalRole":"confounder","AffectsTreatmentAssignment":true,"AffectsOutcome":true,"MechanismNote":"Large kidney stones were preferentially assigned to Treatment A (the more aggressive procedure). Independently, large stones have lower baseline cure rates. Both influences (assignment and outcome) drive the pooled reversal."},
+    {"StratumVariableId":"berkeley-1973-department","Study":"berkeley-1973","VariableName":"department","CausalRole":"contested","AffectsTreatmentAssignment":true,"AffectsOutcome":true,"MechanismNote":"Department choice correlates with both gender (women applied disproportionately to competitive departments) and admission rate. However, department choice may itself be downstream of gender — if women systematically self-select into harder departments due to societal factors, then department is a mediator, not a confounder. CausalRole=contested; IsConfounder=FALSE."},
+    {"StratumVariableId":"kidney-balanced-stone-size","Study":"kidney-balanced","VariableName":"stone_size","CausalRole":"confounder","AffectsTreatmentAssignment":false,"AffectsOutcome":true,"MechanismNote":"Stone size still affects outcome but NOT assignment — both treatments receive 50% in each stratum. No confounding; reversal impossible by construction."},
+    {"StratumVariableId":"balanced-synthetic-stratum","Study":"balanced-synthetic","VariableName":"stratum","CausalRole":"unknown","AffectsTreatmentAssignment":false,"AffectsOutcome":true,"MechanismNote":"Stratum affects outcome but not assignment. Equal allocation prevents confounding."},
+    {"StratumVariableId":"compressed-synthetic-stratum","Study":"compressed-synthetic","VariableName":"difficulty","CausalRole":"confounder","AffectsTreatmentAssignment":true,"AffectsOutcome":true,"MechanismNote":"Case difficulty affects both assignment (A over-allocated to hard) and outcome. This IS confounding — but not strong enough to flip the pooled winner. Type-C distortion: real confounding, partial compression, no reversal."}
+  ],
+  Loops: [
+    {"LoopId":"loop-01","Title":"Core domain: Study, Treatment, Stratum, CaseCell → SuccessRate falls out","Status":"complete","NewConcept":"Studies, Treatments, Strata, CaseCells","DomainQuestion":"For each (stratum, treatment) cell, what is the success rate?","MockDataNote":"kidney-1986: 4 cells. CellSuccessRate=Successes/Cases. A-small=93.1%, B-small=86.7%, A-large=73.0%, B-large=68.8%.","NextSuggestion":"Ask: pooled rate per treatment across all strata?"},
+    {"LoopId":"loop-02","Title":"TreatmentSummary: pooled rate per treatment across all strata","Status":"complete","NewConcept":"TreatmentSummaries","DomainQuestion":"If you ignore stratum entirely, what is each treatment's overall success rate?","MockDataNote":"Pooled: A=273/350=78%, B=289/350=83%. B looks better — the misleading aggregate.","NextSuggestion":"Ask: per-stratum rate per treatment?"},
+    {"LoopId":"loop-03","Title":"StratumSummary: per-stratum rate per treatment — the true picture","Status":"complete","NewConcept":"StratumSummaries","DomainQuestion":"Within each stratum, which treatment has the higher success rate?","MockDataNote":"Small: A=93.1%>B=86.7%. Large: A=73.0%>B=68.8%. A wins BOTH. Contradiction with pooled view visible.","NextSuggestion":"Ask: does the pooled winner match the per-stratum winner?"},
+    {"LoopId":"loop-04","Title":"TreatmentRanking: does the pooled winner = the per-stratum winner?","Status":"complete","NewConcept":"TreatmentRankings","DomainQuestion":"When pooled and stratified conclusions disagree — which treatment should be preferred?","MockDataNote":"Pooled winner=B. Per-stratum winner=A everywhere. IsReversal=true. Paradox as derived fact.","NextSuggestion":"Ask: WHY does the paradox occur?"},
+    {"LoopId":"loop-05","Title":"StratumVariable: name the confounding factor and derive IsConfounder + IsParadoxExplained","Status":"complete","NewConcept":"StratumVariables; CausalRole; IsConfounder; IsParadoxExplained","DomainQuestion":"What IS the stratum variable, why does it confound, and does the model witness its own explanation?","MockDataNote":"kidney-1986: stone_size, CausalRole=confounder, both flags true → IsConfounder=true → IsParadoxExplained=true.","NextSuggestion":"Derive TreatmentExposureFraction — how cases are distributed across strata per treatment."},
+    {"LoopId":"loop-06","Title":"TreatmentExposureFraction: how each treatment's cases are distributed across strata","Status":"complete","NewConcept":"AllocFracA / AllocFracB on StratumSummaries","DomainQuestion":"What fraction of Treatment A's cases land in each stratum? How does that compare to Treatment B?","MockDataNote":"kidney-1986: A sends 75% to large (hard) strata. B sends 77% to small (easy). Allocation imbalance as a witnessed number.","NextSuggestion":"Ask: what is the balanced-allocation counterfactual?"},
+    {"LoopId":"loop-07","Title":"Balanced-allocation synthetic: reversal structurally impossible — IsReversal=FALSE witnessed","Status":"complete","NewConcept":"balanced-synthetic study (type-D control)","DomainQuestion":"If both treatments are allocated identically, can Simpson's Paradox still occur?","MockDataNote":"balanced-synthetic: equal allocation, constant rates. IsReversal=FALSE, AllocationDistortion=0. Structural impossibility witnessed.","NextSuggestion":"Derive StratumFraction — what fraction of ALL cases fall in each stratum?"},
+    {"LoopId":"loop-08","Title":"Berkeley 1973 — four strata, contested confounder, first partial-reversal hint","Status":"complete","NewConcept":"berkeley-1973 study (4 strata, contested causal role)","DomainQuestion":"Does the unanimity criterion (IsReversal) correctly classify Berkeley?","MockDataNote":"Berkeley: pooled male admission higher (44.5%) vs female (30.5%). Dept-C marginally favors female. IsReversal=FALSE under unanimity criterion.","NextSuggestion":"Is the unanimity criterion the right definition? Berkeley feels like a paradox even if not unanimous."},
+    {"LoopId":"loop-09","Title":"StratumFraction: weight of each stratum in the pooled calculation","Status":"complete","NewConcept":"StratumFraction on StratumSummaries","DomainQuestion":"How much does each stratum contribute to the pooled rate? Which strata dominate the pooled conclusion?","MockDataNote":"kidney-1986: small stratum = 357/700 = 51%, large = 343/700 = 49%. Roughly equal weight but critical for the pooled formula.","NextSuggestion":"Ask: what is the model's aggregate picture across all studies?"},
+    {"LoopId":"loop-10","Title":"ModelSummary: instrument self-portrait — how many studies, how many reversals","Status":"complete","NewConcept":"ModelSummary (single-row aggregate over all studies)","DomainQuestion":"How many studies does this instrument currently explain? How many exhibit each classification?","MockDataNote":"ModelSummary: StudyCount=2 (at the time), ReversalCount=1, ExplainedCount=1. Self-portrait as a derived fact.","NextSuggestion":"Ask: what is the weighted stratum gap sum — the equal-weight measure of treatment advantage?"},
+    {"LoopId":"loop-11","Title":"WeightedStratumGap: StratumGap × StratumFraction — the equal-weight comparison","Status":"complete","NewConcept":"StratumGap, WeightedStratumGap, WeightedStratumGapSum","DomainQuestion":"If both treatments had equal allocation, which would win, and by how much?","MockDataNote":"kidney-1986: WsgSum=+0.0769 (A would win by 7.7pp under equal allocation). SignedPooledGap=−0.0486 (B wins pooled). The gap is 12.5pp.","NextSuggestion":"Compute AllocationDistortion = |WsgSum − SignedPooledGap| as the allocation penalty."},
+    {"LoopId":"loop-12","Title":"AllocationDistortion: |WsgSum − SignedPooledGap| — scalar severity of the allocation bend","Status":"complete","NewConcept":"AllocationDistortion on TreatmentRankings","DomainQuestion":"How much has the allocation distorted the pooled signal? Is the distortion more or less severe than in other studies?","MockDataNote":"kidney-1986: AllocationDistortion=0.1255. Witnessed as a continuous measure, not just binary.","NextSuggestion":"Introduce a second real study (balanced-synthetic or kidney-balanced) to compare AllocationDistortion."},
+    {"LoopId":"loop-13","Title":"ReversalThreshold + ReversalIntensity: what fraction of strata favor the pooled loser?","Status":"complete","NewConcept":"ReversalIntensity, ThresholdMargin, ParadoxStrength","DomainQuestion":"How intense is the reversal? If only some strata disagree with the pooled conclusion, is that still a paradox?","MockDataNote":"kidney-1986: 2/2 strata favor A while pooled favors B. ReversalIntensity=1.0. ThresholdMargin=+0.5.","NextSuggestion":"Derive a counterfactual where the reversal is structurally impossible — kidney-balanced."},
+    {"LoopId":"loop-14","Title":"Counterfactual kidney-balanced: reversal is allocation artifact, not treatment efficacy","Status":"complete","NewConcept":"kidney-balanced study (same rates, equal allocation — IsReversal=FALSE)","DomainQuestion":"If we equalize allocation while keeping per-stratum rates identical, does the reversal disappear?","MockDataNote":"kidney-balanced: A wins pooled (83.2% vs 77.7%), AllocationDistortion=0. The reversal is purely an allocation artifact.","NextSuggestion":"Introduce Berkeley (4 strata) to stress-test the unanimity criterion."},
+    {"LoopId":"loop-15","Title":"ReversalThreshold: robustness margin above/below the 0.5 intensity threshold","Status":"complete","NewConcept":"ThresholdMargin on TreatmentRankings","DomainQuestion":"How fragile is the reversal? Would adding one non-reversing stratum flip the verdict?","MockDataNote":"kidney-1986: ThresholdMargin=+0.5 (robustly above threshold). Berkeley: dept-C favors male marginally, ThresholdMargin=−0.25 under unanimity criterion.","NextSuggestion":"Replace unanimity criterion with IsSignFlip definition to capture Berkeley."},
+    {"LoopId":"loop-16","Title":"StratumGap: signed per-stratum rate difference (rateA − rateB)","Status":"complete","NewConcept":"StratumGap (raw, signed)","DomainQuestion":"In each stratum, exactly how much better (or worse) is Treatment A than B?","MockDataNote":"kidney-1986 large: A=73.0%, B=68.8%, StratumGap=+0.042. All strata positive for kidney-1986.","NextSuggestion":"Derive WsgSum and compare its sign to SignedPooledGap — that's the IsSignFlip definition."},
+    {"LoopId":"loop-17","Title":"WeightedStratumGapSum + IsSignFlip — Berkeley category error witnessed live","Status":"complete","NewConcept":"IsSignFlip; AllocationBias per stratum; Berkeley correctly classified","DomainQuestion":"Does Berkeley exhibit a Simpson-type paradox under the continuous definition even though not unanimous?","MockDataNote":"Berkeley: WsgSum=−0.0642, SignedPooledGap=+0.1292. Opposite signs → IsSignFlip=TRUE. AllocationDistortion=0.1934 — greater than kidney-1986!","NextSuggestion":"Quantify the magnitude of the allocation bend as AllocationDistortion."},
+    {"LoopId":"loop-18","Title":"AllocationDistortion: magnitude of the signal the allocation erased or fabricated","Status":"complete","NewConcept":"AllocationDistortion witnessed continuously across all studies","DomainQuestion":"How much of the pooled signal is real, and how much is an allocation artifact?","MockDataNote":"Berkeley AllocationDistortion=0.1934 > kidney-1986=0.1255 > kidney-balanced=0 > balanced-synthetic=0. Continuous severity witnessed.","NextSuggestion":"Construct a type-C study: allocation distortion without sign flip."},
+    {"LoopId":"loop-19","Title":"Compressed synthetic: type-C distortion witnessed — no flip, real compression","Status":"complete","NewConcept":"compressed-synthetic study; DistortionType C (compression without reversal)","DomainQuestion":"Can AllocationDistortion be real and meaningful without a sign flip?","MockDataNote":"compressed-synthetic: A wins both strata and pooled. WsgSum=+0.1, SignedPooledGap=+0.06. AllocationDistortion=0.04. IsSignFlip=FALSE. Type-C confirmed.","NextSuggestion":"Complete the four-type taxonomy: DistortionType as A/B/C/D from geometry alone."},
+    {"LoopId":"loop-20","Title":"PolicyImplication from DistortionType — domain-neutral researcher action derived from geometry","Status":"complete","NewConcept":"PolicyImplication on TreatmentRankings","DomainQuestion":"What should a researcher DO when they see each distortion type? Can that action be derived from geometry without domain knowledge?","MockDataNote":"Type A: 'stratify-immediately'. Type B: 'investigate-confounder'. Type C: 'check-allocation-bias'. Type D: 'pooled-analysis-trustworthy'.","NextSuggestion":"Hydrate real published data via 05b-customize-data.sql to confirm generalization."},
+    {"LoopId":"loop-20b","Title":"Real study hydration: reintjes-2000 and radelet-1981 enter as type-A full reversals","Status":"complete","NewConcept":"05b-customize-data.sql hydration contract; real published data without schema changes","DomainQuestion":"Does the instrument generalize to new datasets without changing the DAG or schema?","MockDataNote":"reintjes-2000 (antibiotic prophylaxis): AllocationDistortion=0.0516, DistortionType=A. radelet-1981 (death penalty race): AllocationDistortion=0.0684, DistortionType=A. Both hydrate without schema changes.","NextSuggestion":"Complete four-type taxonomy as first-class DAG facts."},
+    {"LoopId":"loop-21","Title":"DistortionType + PolicyImplication — four-type taxonomy as first-class DAG facts","Status":"complete","NewConcept":"DistortionType (A/B/C/D) and PolicyImplication as calculated fields on TreatmentRankings","DomainQuestion":"Can the four-type taxonomy be expressed as a calculated field derived purely from IsSignFlip, ReversalIntensity, and AllocationDistortion?","MockDataNote":"All 5 studies produce unambiguous DistortionType and PolicyImplication. Taxonomy complete and machine-derivable.","NextSuggestion":"Build validation set from real published data across 3+ domains."},
+    {"LoopId":"loop-22","Title":"Validation set: 5 additional real studies across 3 domains","Status":"planned","NewConcept":"Additional real studies (medicine, economics/policy, education or social science)","DomainQuestion":"Does the four-type taxonomy classify real studies consistently across domains?","MockDataNote":"To be hydrated via 05b-customize-data.sql.","NextSuggestion":"Seek type-C real example (compression without flip)."},
+    {"LoopId":"loop-23","Title":"AllocationDistortion and causal confounding — geometric vs causal alignment","Status":"planned","NewConcept":"Correlation between distortion geometry and causal structure","DomainQuestion":"Does AllocationDistortion measure causal confounding, or purely arithmetic distortion?","MockDataNote":"Berkeley: highest AllocationDistortion (0.1934) but CausalRole=contested. Open question.","NextSuggestion":"Investigate whether causal and geometric measures are correlated."},
+    {"LoopId":"loop-24","Title":"Type-C real-data witness: allocation distortion without sign flip in published data","Status":"planned","NewConcept":"Real published study hydrating as DistortionType=C","DomainQuestion":"Does the published literature contain studies where AllocationDistortion>0 but IsSignFlip=FALSE?","MockDataNote":"Candidates: surgical volume, teacher effectiveness, hospital quality. Type-C cell currently synthetic only.","NextSuggestion":"Build full validation set across domains."},
+    {"LoopId":"loop-25","Title":"Validation set: 5 additional real studies confirm multi-domain generalization","Status":"planned","NewConcept":"5 additional real published studies across 3+ domains","DomainQuestion":"Does the taxonomy classify real studies consistently across domains?","MockDataNote":"Each produces a witnessed DistortionType and AllocationDistortion.","NextSuggestion":"Formalize the instrument specification."},
+    {"LoopId":"loop-26","Title":"Instrument specification: adapter contract, five input fields, four output types","Status":"planned","NewConcept":"InstrumentSpec table","DomainQuestion":"Can the full instrument be stated precisely enough for another researcher to apply it to a new study without knowledge of the internal DAG?","MockDataNote":"InstrumentSpec row per input/output/rule. Machine-verifiable against hydrated studies.","NextSuggestion":"Preprint or methods paper follows from spec + validation set."}
+  ],
+  Methodology: [
+    {"MethodologyId":"method-01-cmcc","Phase":"axiom","Title":"CMCC: any sufficiently crisp conceptual world decomposes into a DAG of S/D/L/A/F primitives","Statement":"The Conceptual Model Conjecture holds that every domain decomposes into Schema, Data, Lookups, Aggregations, and Functions arranged as a directed acyclic graph. Each node is locally simple; complexity emerges from composition.","WhyItMatters":"If CMCC holds, the paradox can be derived rather than modeled. No 'ReversalDetection' entity is needed — it falls out as a consequence of the right leaf data and DAG edges.","IllustratedByLoop":"loop-01"},
+    {"MethodologyId":"method-02-dag-first","Phase":"decomposition","Title":"Model the domain entities first; derived facts emerge from the DAG","Statement":"Start with empirical leaf data: Cases and Successes per (Study, Stratum, Treatment) cell. Never model the phenomenon of interest directly. The paradox is a derived fact — it emerges when you ask the right questions of a correctly-shaped DAG.","WhyItMatters":"Modeling the paradox directly (e.g. a 'ReversalDetection' table) would conflate the phenomenon with the domain.","IllustratedByLoop":"loop-01, loop-04"},
+    {"MethodologyId":"method-03-leopold-loops","Phase":"decomposition","Title":"Build the model incrementally via Leopold Loops — one new concept per loop","Statement":"Each loop introduces exactly one new first-class concept and asks the natural-language question that concept answers. The loop ends when the new derived fact is witnessed in the database.","WhyItMatters":"Introducing multiple concepts per loop makes it hard to witness whether each earns its place. One concept per loop forces the question: what new thing can I now ask that I couldn't before?","IllustratedByLoop":"loop-01 through loop-05"},
+    {"MethodologyId":"method-04-witness-not-claim","Phase":"derivation","Title":"Every derived fact must be witnessed from the database, not claimed from the rulebook","Statement":"A field is not done when added to the rulebook. It is done when a Postgres query returns the expected value for the seeded data. MockDataNote in each Loop row states what value is expected and from which study.","WhyItMatters":"Without witnessing, silent fallbacks and mistranslations accumulate invisibly.","IllustratedByLoop":"loop-01, loop-06, loop-12, loop-17"},
+    {"MethodologyId":"method-05-synthetic-controls","Phase":"validation","Title":"Introduce synthetic control studies to test structural impossibility","Statement":"For every interesting derived boolean (IsReversal, IsSignFlip), add at least one synthetic study where the boolean MUST be false by construction. Witnessing the false case proves the derivation is not vacuously true.","WhyItMatters":"Without a structural-impossibility witness, a bug that always returns TRUE would pass all positive tests.","IllustratedByLoop":"loop-07, loop-14"},
+    {"MethodologyId":"method-06-real-data-hydration","Phase":"hydration","Title":"Real data enters through 05b-customize-data.sql, not the rulebook JSON","Statement":"The rulebook JSON defines the schema. Real published study counts enter via idempotent ON CONFLICT upserts in 05b-customize-data.sql. The view chain computes every derived field from there — no schema changes are needed to add a new study.","WhyItMatters":"Putting raw counts in the rulebook JSON conflates schema (durable) with instance data (swappable).","IllustratedByLoop":"loop-20, loop-20b"},
+    {"MethodologyId":"method-07-continuous-geometry","Phase":"taxonomy","Title":"Replace binary reversal criterion with continuous geometry: IsSignFlip + AllocationDistortion","Statement":"The original IsReversal (unanimous per-stratum winner disagrees with pooled winner) is a binary that excludes partial reversals. IsSignFlip (WeightedStratumGapSum and SignedPooledGap have opposite signs) captures the full continuum. AllocationDistortion = |WSGSUM − SignedPooledGap| is the scalar severity.","WhyItMatters":"Berkeley 1973 fails the unanimity criterion but IS a Simpson-type paradox under the continuous definition.","IllustratedByLoop":"loop-17, loop-18"},
+    {"MethodologyId":"method-08-four-type-taxonomy","Phase":"taxonomy","Title":"Classify studies into four types (A/B/C/D) by distortion geometry, independent of causal label","Statement":"Type A = IsSignFlip AND ReversalIntensity=1.0. Type B = IsSignFlip AND ReversalIntensity<1.0. Type C = NOT IsSignFlip AND AllocationDistortion>threshold. Type D = AllocationDistortion≈0. Geometry computed from allocation and rates alone.","WhyItMatters":"The taxonomy makes PolicyImplication derivable without a causal story.","IllustratedByLoop":"loop-19, loop-21"},
+    {"MethodologyId":"method-09-model-self-portrait","Phase":"conclusion","Title":"The model witnesses its own epistemic coverage via ModelSummary","Statement":"ModelSummary is a single-row table that aggregates ReversalCount, ExplainedCount, TypeA/B/C/D counts, and AvgAllocationDistortion across all studies. It is the model's self-portrait.","WhyItMatters":"Without ModelSummary, you can query any individual study but cannot ask how many studies the instrument explains.","IllustratedByLoop":"loop-10"},
+    {"MethodologyId":"method-10-policy-from-geometry","Phase":"conclusion","Title":"Policy implication is derived from geometry, not asserted from domain knowledge","Statement":"PolicyImplication is a calculated field derived from DistortionType. No domain-specific knowledge about medicine, law, or education is encoded. The instrument tells a researcher what to do next purely from allocation geometry.","WhyItMatters":"Domain-neutral policy derivation means the instrument generalizes across clinical, judicial, educational, and other settings without re-tuning.","IllustratedByLoop":"loop-21, loop-26"}
+  ],
+  Conclusions: [
+    {"ConclusionId":"conc-01","Category":"domain","Status":"witnessed","Title":"Simpson's Paradox is a derived fact from the DAG, not a modeled entity","Evidence":"IsReversal (and IsSignFlip) falls out as a calculated field on TreatmentRankings. No 'ReversalDetection' entity was ever needed.","WitnessedInLoop":"loop-04"},
+    {"ConclusionId":"conc-02","Category":"domain","Status":"witnessed","Title":"The reversal in kidney-1986 is entirely an allocation artifact — same rates with balanced allocation produce no reversal","Evidence":"kidney-balanced: identical per-stratum rates, equal allocation, 175 per cell. IsReversal=FALSE, AllocationDistortion=0. The paradox is algebraically isolated as a property of allocation, not treatment efficacy.","WitnessedInLoop":"loop-14"},
+    {"ConclusionId":"conc-03","Category":"instrument","Status":"witnessed","Title":"The unanimity criterion (IsReversal) incorrectly excludes Berkeley 1973 despite its being a Simpson-type paradox","Evidence":"Berkeley: WsgSum=−0.0642, SignedPooledGap=+0.1292, IsSignFlip=TRUE, AllocationDistortion=0.1934 — greater than kidney-1986. IsReversal=FALSE only because dept-C marginally favors male.","WitnessedInLoop":"loop-17"},
+    {"ConclusionId":"conc-04","Category":"instrument","Status":"witnessed","Title":"Type-C exists: allocation can compress the pooled signal without flipping it","Evidence":"compressed-synthetic: A wins every stratum and wins pooled, but pooled margin is 6pp rather than equal-weight 10pp. AllocationDistortion=0.04, IsSignFlip=FALSE. The pooled winner is correct; the effect size is compressed by 4pp.","WitnessedInLoop":"loop-19"},
+    {"ConclusionId":"conc-05","Category":"instrument","Status":"witnessed","Title":"Two real published studies (reintjes-2000, radelet-1981) hydrate as type-A full reversals without schema changes","Evidence":"Both entered via 05b-customize-data.sql. Witnessed: reintjes AllocationDistortion=0.0516, DistortionType=A; radelet AllocationDistortion=0.0684, DistortionType=A.","WitnessedInLoop":"loop-20b"},
+    {"ConclusionId":"conc-06","Category":"instrument","Status":"witnessed","Title":"PolicyImplication is domain-neutral: same formula produces researcher actions across medicine, law, and education","Evidence":"All five studies plus two real studies produce unambiguous PolicyImplication values from DistortionType alone. No domain-specific knowledge encoded.","WitnessedInLoop":"loop-21"},
+    {"ConclusionId":"conc-07","Category":"instrument","Status":"witnessed","Title":"ModelSummary witnesses the instrument's own epistemic coverage as a first-class derived fact","Evidence":"ModelSummary aggregates ReversalCount, ExplainedCount, TypeA/B/C/D counts, and AvgAllocationDistortion across all studies.","WitnessedInLoop":"loop-10"},
+    {"ConclusionId":"conc-08","Category":"open-question","Status":"planned","Title":"Does the published literature contain real type-C studies (compression without sign flip)?","Evidence":"compressed-synthetic demonstrates the algebra. The open question is whether real studies produce this pattern.","TargetLoop":"loop-24"},
+    {"ConclusionId":"conc-09","Category":"open-question","Status":"planned","Title":"Does AllocationDistortion measure causal confounding, or purely arithmetic distortion?","Evidence":"Berkeley has the highest AllocationDistortion (0.1934) but CausalRole=contested. The open question is whether distortion geometry and causal structure are correlated.","TargetLoop":"loop-23"},
+    {"ConclusionId":"conc-10","Category":"methodology","Status":"planned","Title":"The full instrument can be specified precisely enough for any researcher to apply it to a new study","Evidence":"InstrumentSpec table (loop-26) will enumerate every required input, derived coordinate, classification rule, and adapter contract. Machine-verifiable against current seed + real datasets.","TargetLoop":"loop-26"}
+  ]
 };
 
-const RB_SV = {
-  "kidney-1986":         {variable:"stone_size",  causal:"confounder",  assignAffected:true,  outcomeAffected:true },
-  "kidney-balanced":     {variable:"stone_size",  causal:"confounder",  assignAffected:false, outcomeAffected:true },
-  "balanced-synthetic":  {variable:"stratum",     causal:"unknown",     assignAffected:false, outcomeAffected:true },
-  "berkeley-1973":       {variable:"department",  causal:"contested",   assignAffected:true,  outcomeAffected:true },
-  "compressed-synthetic":{variable:"difficulty",  causal:"confounder",  assignAffected:true,  outcomeAffected:true },
-};
+// ════════════════════════════════════════════════════════════════
+// DAG ENGINE — derives all computed fields from CaseCells
+// ════════════════════════════════════════════════════════════════
+function computeStudy(studyId) {
+  const cells = RB.CaseCells.filter(c => c.Study === studyId);
+  const strataLabels = [...new Set(cells.map(c => c.StratumLabel))];
 
-// ══════════════════════════════════════════════════════════════
-// DAG ENGINE — replicates the Postgres view chain in JS
-// ══════════════════════════════════════════════════════════════
-function computeStudy(studyId, cells) {
-  const sc = cells.filter(r => r.study === studyId);
-  const strata = [...new Set(sc.map(r => r.stratum))];
-
-  // Per-stratum, per-treatment aggregates
-  const ss = strata.map(st => {
-    const rA = sc.find(r => r.stratum === st && r.trt === 'A');
-    const rB = sc.find(r => r.stratum === st && r.trt === 'B');
-    const rateA = rA ? rA.s / rA.c : 0;
-    const rateB = rB ? rB.s / rB.c : 0;
-    return {stratum: st, rA, rB, rateA, rateB, winner: rateA > rateB ? 'A' : 'B'};
+  // Per-stratum cells
+  const strata = strataLabels.map(sl => {
+    const cA = cells.find(c => c.StratumLabel === sl && c.TreatmentLabel === 'A');
+    const cB = cells.find(c => c.StratumLabel === sl && c.TreatmentLabel === 'B');
+    const rateA = cA ? cA.Successes / cA.Cases : 0;
+    const rateB = cB ? cB.Successes / cB.Cases : 0;
+    const stratumCases = (cA ? cA.Cases : 0) + (cB ? cB.Cases : 0);
+    return {sl, cA, cB, rateA, rateB, stratumCases, stratumWinner: rateA > rateB ? 'A' : 'B'};
   });
 
-  // Study totals
-  const totalCases = sc.reduce((a, r) => a + r.c, 0);
+  // Totals
+  const totalCases = cells.reduce((a, c) => a + c.Cases, 0);
+  strata.forEach(s => s.stratumFraction = totalCases > 0 ? s.stratumCases / totalCases : 0);
 
   // Pooled rates
-  const totA = sc.filter(r => r.trt === 'A');
-  const totB = sc.filter(r => r.trt === 'B');
-  const succA = totA.reduce((a, r) => a + r.s, 0);
-  const casesA = totA.reduce((a, r) => a + r.c, 0);
-  const succB = totB.reduce((a, r) => a + r.s, 0);
-  const casesB = totB.reduce((a, r) => a + r.c, 0);
+  const cellsA = cells.filter(c => c.TreatmentLabel === 'A');
+  const cellsB = cells.filter(c => c.TreatmentLabel === 'B');
+  const succA = cellsA.reduce((a, c) => a + c.Successes, 0);
+  const casesA = cellsA.reduce((a, c) => a + c.Cases, 0);
+  const succB = cellsB.reduce((a, c) => a + c.Successes, 0);
+  const casesB = cellsB.reduce((a, c) => a + c.Cases, 0);
   const pooledA = casesA > 0 ? succA / casesA : 0;
   const pooledB = casesB > 0 ? succB / casesB : 0;
   const pooledWinner = pooledA >= pooledB ? 'A' : 'B';
 
-  // Per-stratum winner unanimity
-  const wonByA = ss.filter(s => s.winner === 'A').length;
-  const wonByB = ss.filter(s => s.winner === 'B').length;
+  // Stratum winner counts
+  const wonByA = strata.filter(s => s.rateA > s.rateB).length;
+  const wonByB = strata.filter(s => s.rateB > s.rateA).length;
   const perStratumWinner = wonByA === strata.length ? 'A' : wonByB === strata.length ? 'B' : 'none';
   const isReversal = perStratumWinner !== 'none' && perStratumWinner !== pooledWinner;
-
-  // Stratum fractions
-  ss.forEach(s => {
-    s.stratumCases = (s.rA ? s.rA.c : 0) + (s.rB ? s.rB.c : 0);
-    s.stratumFraction = totalCases > 0 ? s.stratumCases / totalCases : 0;
-    s.weightedRateA = s.stratumFraction * s.rateA;
-    s.weightedRateB = s.stratumFraction * s.rateB;
-    s.allocFracA = casesA > 0 ? (s.rA ? s.rA.c : 0) / casesA : 0;
-    s.allocFracB = casesB > 0 ? (s.rB ? s.rB.c : 0) / casesB : 0;
-    s.allocBias = s.allocFracA - s.allocFracB;
-    s.stratumGap = s.rateA - s.rateB;
-    s.weightedGap = s.stratumGap * s.stratumFraction;
-  });
-
-  // Weighted stratum gap sum (equal-weight pooled gap)
-  const wsgSum = ss.reduce((a, s) => a + s.weightedGap, 0);
-  const signedPooledGap = pooledA - pooledB;
-  const isSignFlip = (wsgSum > 0 && signedPooledGap < 0) || (wsgSum < 0 && signedPooledGap > 0);
-  const allocDistortion = Math.abs(wsgSum - signedPooledGap);
-
-  // Paradox strength
-  const stratumCount = strata.length;
   const strataWonByLoser = pooledWinner === 'A' ? wonByB : wonByA;
-  const pooledGap = Math.abs(signedPooledGap);
-  const paradoxStrength = stratumCount > 0 ? pooledGap * (strataWonByLoser / stratumCount) : 0;
+  const stratumCount = strata.length;
   const reversalIntensity = stratumCount > 0 ? strataWonByLoser / stratumCount : 0;
   const thresholdMargin = reversalIntensity - 0.5;
 
-  // Confounder
-  const sv = RB_SV[studyId];
-  const isConfounder = sv && sv.assignAffected && sv.outcomeAffected && sv.causal === 'confounder';
-  const isParadoxExplained = isReversal && isConfounder;
+  // Per-stratum derived
+  strata.forEach(s => {
+    s.allocFracA = casesA > 0 ? (s.cA ? s.cA.Cases : 0) / casesA : 0;
+    s.allocFracB = casesB > 0 ? (s.cB ? s.cB.Cases : 0) / casesB : 0;
+    s.allocBias = s.allocFracA - s.allocFracB;
+    s.stratumGap = s.rateA - s.rateB;
+    s.weightedStratumGap = s.stratumGap * s.stratumFraction;
+    s.weightedRateA = s.stratumFraction * s.rateA;
+    s.weightedRateB = s.stratumFraction * s.rateB;
+  });
+
+  const wsgSum = strata.reduce((a, s) => a + s.weightedStratumGap, 0);
+  const signedPooledGap = pooledA - pooledB;
+  const isSignFlip = (wsgSum > 0 && signedPooledGap < 0) || (wsgSum < 0 && signedPooledGap > 0);
+  const allocDistortion = Math.abs(wsgSum - signedPooledGap);
+  const pooledGap = Math.abs(signedPooledGap);
+  const paradoxStrength = stratumCount > 0 ? pooledGap * (strataWonByLoser / stratumCount) : 0;
+  const maxAllocBias = Math.max(0, ...strata.map(s => Math.abs(s.allocBias)));
 
   // Distortion type
   let distortionType;
@@ -290,229 +494,263 @@ function computeStudy(studyId, cells) {
   else if (isSignFlip) distortionType = 'B';
   else distortionType = 'C';
 
-  // Max allocation bias
-  const maxAllocBias = Math.max(...ss.map(s => Math.abs(s.allocBias)));
+  // Policy implication
+  const policyMap = {A:'Stratify immediately — pooled conclusion is directionally wrong',B:'Investigate confounder — pooled direction may be misleading',C:'Check allocation bias — pooled winner correct but effect size compressed',D:'Pooled analysis trustworthy — allocation is balanced'};
+  const policyImplication = policyMap[distortionType];
+
+  // Confounder
+  const sv = RB.StratumVariables.find(v => v.Study === studyId);
+  const isConfounder = sv && sv.AffectsTreatmentAssignment && sv.AffectsOutcome && sv.CausalRole === 'confounder';
+  const isParadoxExplained = isReversal && isConfounder;
 
   return {
-    studyId, strata: ss, totalCases, casesA, casesB, succA, succB,
+    studyId, strata, totalCases, casesA, casesB, succA, succB,
     pooledA, pooledB, pooledWinner, perStratumWinner,
     isReversal, isSignFlip, isParadoxExplained, isConfounder,
     paradoxStrength, allocDistortion, wsgSum, signedPooledGap,
     reversalIntensity, thresholdMargin, pooledGap,
     stratumCount, wonByA, wonByB, strataWonByLoser, maxAllocBias,
-    distortionType, sv,
+    distortionType, policyImplication, sv,
   };
 }
 
-// Pre-compute all studies
-const STUDY_IDS = Object.keys(RB_STUDIES);
+const STUDY_IDS = RB.Studies.map(s => s.StudyId);
 const RESULTS = {};
-STUDY_IDS.forEach(id => { RESULTS[id] = computeStudy(id, RB_CELLS); });
+STUDY_IDS.forEach(id => { RESULTS[id] = computeStudy(id); });
 
-// ══════════════════════════════════════════════════════════════
-// COLORS
-// ══════════════════════════════════════════════════════════════
+// ════════════════════════════════════════════════════════════════
+// CONSTANTS
+// ════════════════════════════════════════════════════════════════
 const C = {A:'#58a6ff', B:'#f85149', grid:'#21262d', bg:'#0d1117'};
 const TYPE_COLOR = {A:'#f87171', B:'#fb923c', C:'#93c5fd', D:'#86efac'};
-const TYPE_LABEL = {A:'Full reversal', B:'Sign flip', C:'Compressed', D:'Neutral'};
+const TYPE_LABEL = {A:'Full reversal', B:'Sign flip (partial)', C:'Compressed', D:'Neutral'};
+const TYPE_PILL  = {A:'p-a', B:'p-b', C:'p-c', D:'p-d'};
+const POLICY_ICON = {A:'⚠', B:'🔍', C:'⚖', D:'✓'};
+const POLICY_BANNER_CLS = {A:'pb-a', B:'pb-b', C:'pb-c', D:'pb-d'};
 Chart.defaults.color = '#8b949e';
 Chart.defaults.borderColor = C.grid;
 
 const pct = v => (v * 100).toFixed(1) + '%';
 const fmt3 = v => v.toFixed(3);
+const studyTitle = id => (RB.Studies.find(s => s.StudyId === id) || {Title: id}).Title;
 
-// ══════════════════════════════════════════════════════════════
+function boolVal(b, cls) {
+  return `<span class="kv-val ${cls || (b ? 'g' : 'r')}">${b}</span>`;
+}
+
+// ════════════════════════════════════════════════════════════════
 // NAV
-// ══════════════════════════════════════════════════════════════
+// ════════════════════════════════════════════════════════════════
 const navBtns = document.querySelectorAll('nav button');
 const views = document.querySelectorAll('.view');
-const rendered = new Set(['overview']);
+const rendered = new Set();
+
 navBtns.forEach(btn => {
   btn.addEventListener('click', () => {
     navBtns.forEach(b => b.classList.remove('active'));
     views.forEach(v => v.classList.remove('active'));
     btn.classList.add('active');
-    document.getElementById('view-' + btn.dataset.v).classList.add('active');
-    if (!rendered.has(btn.dataset.v)) { rendered.add(btn.dataset.v); INIT[btn.dataset.v](); }
+    const vn = btn.dataset.v;
+    document.getElementById('view-' + vn).classList.add('active');
+    if (!rendered.has(vn)) { rendered.add(vn); (INIT[vn] || (()=>{}))(); }
   });
 });
 
-// ══════════════════════════════════════════════════════════════
+function showDetail(studyId) {
+  const btn = document.querySelector('nav button[data-v="detail"]');
+  btn.click();
+  document.getElementById('detailSel').value = studyId;
+  renderDetail(studyId);
+}
+
+// ════════════════════════════════════════════════════════════════
 // VIEW 1: OVERVIEW
-// ══════════════════════════════════════════════════════════════
+// ════════════════════════════════════════════════════════════════
 let scatterChart = null;
 
 function initOverview() {
-  renderCards();
-  renderScatter();
+  renderStudyCards();
+  renderOverviewScatter();
 }
 
-function renderCards() {
+function renderStudyCards() {
   const cont = document.getElementById('studyCards');
   cont.innerHTML = '';
   STUDY_IDS.forEach(id => {
     const r = RESULTS[id];
-    const info = RB_STUDIES[id];
-    const col = TYPE_COLOR[r.distortionType];
-    const pillCls = {A:'p-rev',B:'p-sig',C:'p-typ',D:'p-ok'}[r.distortionType];
     const d = document.createElement('div');
     d.className = 'sc';
     d.innerHTML = `
-      <div class="ct">${info.title}</div>
+      <div class="ct">${studyTitle(id)}</div>
       <div class="cm">${id} · ${r.totalCases} cases · ${r.stratumCount} strata</div>
-      <span class="pill ${pillCls}">Type ${r.distortionType} — ${TYPE_LABEL[r.distortionType]}</span>
+      <span class="pill ${TYPE_PILL[r.distortionType]}">Type ${r.distortionType} — ${TYPE_LABEL[r.distortionType]}</span>
       <div style="margin-top:12px">
-        <div class="sr"><span class="sl">Pooled A</span><span class="sv n">${pct(r.pooledA)}</span></div>
-        <div class="sr"><span class="sl">Pooled B</span><span class="sv n">${pct(r.pooledB)}</span></div>
-        <div class="sr"><span class="sl">Pooled winner</span><span class="sv n">Treatment ${r.pooledWinner}</span></div>
-        <div class="sr"><span class="sl">Per-stratum winner</span><span class="sv n">${r.perStratumWinner === 'none' ? 'No unanimous winner' : 'Treatment ' + r.perStratumWinner}</span></div>
-        <div class="sr"><span class="sl">IsReversal</span><span class="sv ${r.isReversal ? 'r' : 'g'}">${r.isReversal}</span></div>
-        <div class="sr"><span class="sl">IsSignFlip</span><span class="sv ${r.isSignFlip ? 'y' : 'g'}">${r.isSignFlip}</span></div>
-        <div class="sr"><span class="sl">AllocationDistortion</span><span class="sv ${r.allocDistortion > 0.01 ? 'y' : 'g'}">${fmt3(r.allocDistortion)}</span></div>
-        <div class="sr"><span class="sl">ParadoxStrength</span><span class="sv n">${fmt3(r.paradoxStrength)}</span></div>
-        <div class="sr"><span class="sl">Confounder</span><span class="sv n">${r.sv?.variable || '—'} (${r.sv?.causal || '?'})</span></div>
+        <div class="sr-row"><span class="sl">Pooled A</span><span class="sv n">${pct(r.pooledA)}</span></div>
+        <div class="sr-row"><span class="sl">Pooled B</span><span class="sv n">${pct(r.pooledB)}</span></div>
+        <div class="sr-row"><span class="sl">Pooled winner</span><span class="sv n">Treatment ${r.pooledWinner}</span></div>
+        <div class="sr-row"><span class="sl">IsSignFlip</span><span class="sv ${r.isSignFlip?'r':'g'}">${r.isSignFlip}</span></div>
+        <div class="sr-row"><span class="sl">AllocationDistortion</span><span class="sv ${r.allocDistortion>0.01?'y':'g'}">${fmt3(r.allocDistortion)}</span></div>
+        <div class="sr-row"><span class="sl">DistortionType</span><span class="sv n">Type ${r.distortionType}</span></div>
       </div>`;
+    d.addEventListener('click', () => showDetail(id));
     cont.appendChild(d);
   });
 }
 
-function renderScatter() {
+function renderOverviewScatter() {
   const datasets = STUDY_IDS.map(id => {
     const r = RESULTS[id];
     const col = TYPE_COLOR[r.distortionType];
     return {
-      label: RB_STUDIES[id].title,
-      data: [{x: r.maxAllocBias, y: r.paradoxStrength, r: r}],
-      backgroundColor: col + 'bb',
-      borderColor: col,
-      pointRadius: Math.max(9, Math.sqrt(r.totalCases) * 0.65),
-      pointHoverRadius: Math.max(11, Math.sqrt(r.totalCases) * 0.75),
+      label: studyTitle(id),
+      data: [{x: r.maxAllocBias, y: r.paradoxStrength, id}],
+      backgroundColor: col + 'bb', borderColor: col,
+      pointRadius: Math.max(9, Math.sqrt(r.totalCases) * 0.6),
+      pointHoverRadius: Math.max(11, Math.sqrt(r.totalCases) * 0.7),
     };
   });
-
   const ctx = document.getElementById('scatterChart');
   if (scatterChart) scatterChart.destroy();
   scatterChart = new Chart(ctx, {
-    type: 'scatter',
-    data: {datasets},
+    type: 'scatter', data: {datasets},
     options: {
-      responsive: true,
-      maintainAspectRatio: false,
+      responsive:true, maintainAspectRatio:false,
       plugins: {
-        legend: {position:'right'},
-        tooltip: {callbacks:{label(item) {
-          const r = item.raw.r;
-          return [
-            RB_STUDIES[r.studyId].title,
-            `Max alloc bias: ${item.parsed.x.toFixed(3)}`,
-            `Paradox strength: ${item.parsed.y.toFixed(3)}`,
-            `AllocDistortion: ${r.allocDistortion.toFixed(3)}`,
-            `Type ${r.distortionType}: ${TYPE_LABEL[r.distortionType]}`,
-          ];
+        legend:{position:'right', labels:{font:{size:11}}},
+        tooltip:{callbacks:{label(item){
+          const r = RESULTS[item.raw.id];
+          return [`Type ${r.distortionType}: ${TYPE_LABEL[r.distortionType]}`,`AllocDistortion: ${fmt3(r.allocDistortion)}`,`ParadoxStrength: ${fmt3(r.paradoxStrength)}`];
         }}}
       },
-      scales: {
-        x: {title:{display:true, text:'Max allocation bias (|fracA − fracB|)'}, min:0, max:.7},
-        y: {title:{display:true, text:'Paradox strength'}, min:0},
-      }
+      scales:{
+        x:{title:{display:true,text:'Max allocation bias (|fracA − fracB|)'},min:0,max:.8},
+        y:{title:{display:true,text:'Paradox strength'},min:0}
+      },
+      onClick(e, elems) { if (elems[0]) showDetail(datasets[elems[0].datasetIndex].data[0].id); }
     }
   });
 }
 
-// ══════════════════════════════════════════════════════════════
-// VIEW 2: STRATUM BREAKDOWN
-// ══════════════════════════════════════════════════════════════
-let stratBarChart = null, wBarChart = null;
+// ════════════════════════════════════════════════════════════════
+// VIEW 2: STUDY DETAIL
+// ════════════════════════════════════════════════════════════════
+let detailStratChart = null, detailAllocChart = null;
 
-function initStratum() {
-  const sel = document.getElementById('stratSel');
-  sel.innerHTML = STUDY_IDS.map(id => `<option value="${id}">${RB_STUDIES[id].title}</option>`).join('');
-  sel.addEventListener('change', () => renderStratCharts(sel.value));
-  renderStratCharts(sel.value);
+function initDetail() {
+  const sel = document.getElementById('detailSel');
+  sel.innerHTML = STUDY_IDS.map(id => `<option value="${id}">${studyTitle(id)}</option>`).join('');
+  sel.addEventListener('change', () => renderDetail(sel.value));
+  renderDetail(sel.value);
 }
 
-function renderStratCharts(studyId) {
+function renderDetail(studyId) {
+  document.getElementById('detailSel').value = studyId;
   const r = RESULTS[studyId];
-  const labels = r.strata.map(s => s.stratum);
-  const ratesA = r.strata.map(s => s.rateA * 100);
-  const ratesB = r.strata.map(s => s.rateB * 100);
-  const pA = r.pooledA * 100, pB = r.pooledB * 100;
+  const sv = r.sv;
+  const policyIcon = POLICY_ICON[r.distortionType];
 
-  const ctx = document.getElementById('stratBar');
-  if (stratBarChart) stratBarChart.destroy();
-  stratBarChart = new Chart(ctx, {
-    type: 'bar',
-    data: {
-      labels,
-      datasets: [
-        {label:'Treatment A — stratum rate', data:ratesA, backgroundColor:C.A+'99', borderColor:C.A, borderWidth:1},
-        {label:'Treatment B — stratum rate', data:ratesB, backgroundColor:C.B+'99', borderColor:C.B, borderWidth:1},
-      ]
-    },
-    options: {
-      responsive: true,
-      plugins: {
-        legend:{position:'top'},
-        tooltip:{callbacks:{label:c => `${c.dataset.label}: ${c.parsed.y.toFixed(1)}%`}},
-      },
-      scales: {y:{title:{display:true,text:'Success rate (%)'},min:0,max:100}}
-    },
-    plugins: [{id:'pLines', afterDraw(ch) {
-      const {ctx:c, chartArea:{left,right}, scales:{y}} = ch;
-      [[pA, C.A, 'A pooled'],[pB, C.B, 'B pooled']].forEach(([val, col, lbl]) => {
-        const yp = y.getPixelForValue(val);
-        c.save(); c.setLineDash([6,4]); c.strokeStyle=col; c.lineWidth=2;
-        c.beginPath(); c.moveTo(left,yp); c.lineTo(right,yp); c.stroke();
-        c.fillStyle=col; c.font='11px system-ui';
-        c.fillText(`${lbl}: ${val.toFixed(1)}%`, left+4, yp-4); c.restore();
-      });
-    }}]
-  });
+  let html = `
+  <div class="policy-banner ${POLICY_BANNER_CLS[r.distortionType]}">
+    <div class="pb-icon">${policyIcon}</div>
+    <div class="pb-text">
+      <div class="pb-action">${r.policyImplication}</div>
+      <div class="pb-why">Type ${r.distortionType} · AllocationDistortion=${fmt3(r.allocDistortion)} · IsSignFlip=${r.isSignFlip}</div>
+    </div>
+  </div>
 
-  const wA = r.strata.map(s => s.weightedRateA * 100);
-  const wB = r.strata.map(s => s.weightedRateB * 100);
-  const ctx2 = document.getElementById('wBar');
-  if (wBarChart) wBarChart.destroy();
-  wBarChart = new Chart(ctx2, {
+  <div class="detail-grid">
+    <div class="card"><h3>Pooled comparison</h3>
+      <div class="kv-list">
+        <div class="kv"><span class="kl">Pooled rate A</span><span class="kv-val b">${pct(r.pooledA)}</span></div>
+        <div class="kv"><span class="kl">Pooled rate B</span><span class="kv-val b">${pct(r.pooledB)}</span></div>
+        <div class="kv"><span class="kl">Pooled winner</span><span class="kv-val">Treatment ${r.pooledWinner}</span></div>
+        <div class="kv"><span class="kl">Per-stratum winner</span><span class="kv-val">${r.perStratumWinner === 'none' ? 'No unanimous winner' : 'Treatment ' + r.perStratumWinner}</span></div>
+        <div class="kv"><span class="kl">IsReversal (unanimity)</span>${boolVal(r.isReversal)}</div>
+        <div class="kv"><span class="kl">IsSignFlip (continuous)</span>${boolVal(r.isSignFlip)}</div>
+        <div class="kv"><span class="kl">WsgSum</span><span class="kv-val">${fmt3(r.wsgSum)}</span></div>
+        <div class="kv"><span class="kl">SignedPooledGap</span><span class="kv-val">${fmt3(r.signedPooledGap)}</span></div>
+        <div class="kv"><span class="kl">AllocationDistortion</span><span class="kv-val y">${fmt3(r.allocDistortion)}</span></div>
+        <div class="kv"><span class="kl">ReversalIntensity</span><span class="kv-val">${fmt3(r.reversalIntensity)}</span></div>
+        <div class="kv"><span class="kl">ParadoxStrength</span><span class="kv-val">${fmt3(r.paradoxStrength)}</span></div>
+        <div class="kv"><span class="kl">DistortionType</span><span class="kv-val"><span class="pill ${TYPE_PILL[r.distortionType]}">Type ${r.distortionType}</span></span></div>
+      </div>
+    </div>
+    <div class="card"><h3>Confounder</h3>
+      <div class="kv-list">
+        <div class="kv"><span class="kl">Variable</span><span class="kv-val">${sv ? sv.VariableName : '—'}</span></div>
+        <div class="kv"><span class="kl">Causal role</span><span class="kv-val">${sv ? sv.CausalRole : '—'}</span></div>
+        <div class="kv"><span class="kl">Affects assignment</span>${boolVal(sv ? sv.AffectsTreatmentAssignment : false)}</div>
+        <div class="kv"><span class="kl">Affects outcome</span>${boolVal(sv ? sv.AffectsOutcome : false)}</div>
+        <div class="kv"><span class="kl">IsConfounder</span>${boolVal(r.isConfounder)}</div>
+        <div class="kv"><span class="kl">IsParadoxExplained</span>${boolVal(r.isParadoxExplained)}</div>
+      </div>
+      ${sv ? `<div style="margin-top:12px;font-size:.8rem;color:#c9d1d9;line-height:1.6">${sv.MechanismNote}</div>` : ''}
+    </div>
+  </div>
+
+  <div class="card"><h3>Per-stratum breakdown</h3>
+    <table class="strata-table">
+      <thead><tr>
+        <th>Stratum</th><th>Rate A</th><th>Rate B</th><th>Stratum winner</th>
+        <th>AllocFracA</th><th>AllocFracB</th><th>AllocBias</th><th>StratumGap</th><th>WgtGap</th>
+      </tr></thead>
+      <tbody>
+        ${r.strata.map(s => `<tr>
+          <td>${s.sl}</td>
+          <td>${pct(s.rateA)}</td><td>${pct(s.rateB)}</td>
+          <td><span class="pill ${s.stratumWinner==='A'?'p-d':'p-a'}">${s.stratumWinner}</span></td>
+          <td>${pct(s.allocFracA)}</td><td>${pct(s.allocFracB)}</td>
+          <td style="color:${s.allocBias>0?'#58a6ff':'#f85149'}">${fmt3(s.allocBias)}</td>
+          <td style="color:${s.stratumGap>0?'#3fb950':'#f85149'}">${fmt3(s.stratumGap)}</td>
+          <td>${fmt3(s.weightedStratumGap)}</td>
+        </tr>`).join('')}
+      </tbody>
+    </table>
+  </div>
+  <div id="detailCharts"></div>`;
+
+  document.getElementById('detailContent').innerHTML = html;
+
+  // Render charts into detailCharts
+  const chartDiv = document.getElementById('detailCharts');
+  chartDiv.innerHTML = `
+    <div class="detail-grid">
+      <div class="card"><h3>Per-stratum rates (bars) vs pooled (dashed)</h3><canvas id="dStratChart" height="260"></canvas></div>
+      <div class="card"><h3>Allocation fractions per stratum</h3><canvas id="dAllocChart" height="260"></canvas></div>
+    </div>`;
+
+  const labels = r.strata.map(s => s.sl);
+
+  if (detailStratChart) { detailStratChart.destroy(); detailStratChart = null; }
+  detailStratChart = new Chart(document.getElementById('dStratChart'), {
     type:'bar',
     data:{labels, datasets:[
-      {label:'A: StratumFraction × rate', data:wA, backgroundColor:C.A+'77', borderColor:C.A, borderWidth:1},
-      {label:'B: StratumFraction × rate', data:wB, backgroundColor:C.B+'77', borderColor:C.B, borderWidth:1},
+      {label:'Rate A', data:r.strata.map(s=>s.rateA*100), backgroundColor:C.A+'99', borderColor:C.A, borderWidth:1},
+      {label:'Rate B', data:r.strata.map(s=>s.rateB*100), backgroundColor:C.B+'99', borderColor:C.B, borderWidth:1},
     ]},
     options:{
       responsive:true,
       plugins:{legend:{position:'top'}, tooltip:{callbacks:{label:c=>`${c.dataset.label}: ${c.parsed.y.toFixed(1)}%`}}},
-      scales:{y:{title:{display:true,text:'Weighted contribution (%)'},min:0}}
-    }
+      scales:{y:{title:{display:true,text:'Success rate (%)'},min:0,max:100}}
+    },
+    plugins:[{id:'pLines', afterDraw(ch) {
+      const {ctx:cx, chartArea:{left,right}, scales:{y}} = ch;
+      [[r.pooledA*100,C.A,'A pooled'],[r.pooledB*100,C.B,'B pooled']].forEach(([val,col,lbl])=>{
+        const yp=y.getPixelForValue(val);
+        cx.save(); cx.setLineDash([6,4]); cx.strokeStyle=col; cx.lineWidth=2;
+        cx.beginPath(); cx.moveTo(left,yp); cx.lineTo(right,yp); cx.stroke();
+        cx.fillStyle=col; cx.font='11px system-ui';
+        cx.fillText(`${lbl}: ${val.toFixed(1)}%`, left+4, yp-4); cx.restore();
+      });
+    }}]
   });
-}
 
-// ══════════════════════════════════════════════════════════════
-// VIEW 3: ALLOCATION WEIGHTS
-// ══════════════════════════════════════════════════════════════
-let allocChart = null, biasChart = null;
-
-function initWeights() {
-  const sel = document.getElementById('wgtSel');
-  sel.innerHTML = STUDY_IDS.map(id => `<option value="${id}">${RB_STUDIES[id].title}</option>`).join('');
-  sel.addEventListener('change', () => renderWeightCharts(sel.value));
-  renderWeightCharts(sel.value);
-}
-
-function renderWeightCharts(studyId) {
-  const r = RESULTS[studyId];
-  const labels = r.strata.map(s => s.stratum);
-  const fA = r.strata.map(s => s.allocFracA * 100);
-  const fB = r.strata.map(s => s.allocFracB * 100);
-  const bias = r.strata.map(s => s.allocBias);
-
-  const ctx = document.getElementById('allocBar');
-  if (allocChart) allocChart.destroy();
-  allocChart = new Chart(ctx, {
+  if (detailAllocChart) { detailAllocChart.destroy(); detailAllocChart = null; }
+  detailAllocChart = new Chart(document.getElementById('dAllocChart'), {
     type:'bar',
     data:{labels, datasets:[
-      {label:'A — % of its cases here', data:fA, backgroundColor:C.A+'99', borderColor:C.A, borderWidth:1},
-      {label:'B — % of its cases here', data:fB, backgroundColor:C.B+'99', borderColor:C.B, borderWidth:1},
+      {label:'A — % of its cases here', data:r.strata.map(s=>s.allocFracA*100), backgroundColor:C.A+'99', borderColor:C.A, borderWidth:1},
+      {label:'B — % of its cases here', data:r.strata.map(s=>s.allocFracB*100), backgroundColor:C.B+'99', borderColor:C.B, borderWidth:1},
     ]},
     options:{
       responsive:true,
@@ -520,52 +758,232 @@ function renderWeightCharts(studyId) {
       scales:{y:{title:{display:true,text:'Fraction of treatment cases (%)'},min:0,max:100}}
     }
   });
+}
 
-  const ctx2 = document.getElementById('biasBar');
-  if (biasChart) biasChart.destroy();
-  biasChart = new Chart(ctx2, {
-    type:'bar',
-    data:{labels, datasets:[{
-      label:'Allocation bias (fracA − fracB)',
-      data:bias,
-      backgroundColor:bias.map(b => (b>=0?C.A:C.B)+'99'),
-      borderColor:bias.map(b => b>=0?C.A:C.B),
-      borderWidth:1,
-    }]},
+// ════════════════════════════════════════════════════════════════
+// VIEW 3: DISTORTION PLANE
+// ════════════════════════════════════════════════════════════════
+let planeChart = null;
+
+function initPlane() {
+  const datasets = STUDY_IDS.map(id => {
+    const r = RESULTS[id];
+    const col = TYPE_COLOR[r.distortionType];
+    return {
+      label: studyTitle(id),
+      data: [{x: r.allocDistortion, y: r.reversalIntensity, id}],
+      backgroundColor: col + 'bb', borderColor: col,
+      pointRadius: Math.max(10, Math.sqrt(r.totalCases) * 0.6),
+      pointHoverRadius: Math.max(12, Math.sqrt(r.totalCases) * 0.7),
+    };
+  });
+
+  const ctx = document.getElementById('planeChart');
+  if (planeChart) planeChart.destroy();
+  planeChart = new Chart(ctx, {
+    type:'scatter', data:{datasets},
     options:{
       responsive:true,
-      plugins:{legend:{position:'top'}, tooltip:{callbacks:{label:c=>`Bias: ${c.parsed.y.toFixed(3)}`}}},
-      scales:{y:{title:{display:true,text:'Allocation bias'}}}
-    }
+      plugins:{
+        legend:{position:'right', labels:{font:{size:11}}},
+        tooltip:{callbacks:{label(item){
+          const r=RESULTS[item.raw.id];
+          return [`Type ${r.distortionType}: ${TYPE_LABEL[r.distortionType]}`,`AllocDistortion: ${fmt3(r.allocDistortion)}`,`ReversalIntensity: ${fmt3(r.reversalIntensity)}`,r.policyImplication];
+        }}}
+      },
+      scales:{
+        x:{title:{display:true,text:'AllocationDistortion (|WsgSum − SignedPooledGap|)'},min:0},
+        y:{title:{display:true,text:'ReversalIntensity (fraction of strata favoring loser)'},min:0,max:1.2}
+      },
+      onClick(e,elems){ if(elems[0]) showDetail(datasets[elems[0].datasetIndex].data[0].id); }
+    },
+    plugins:[{id:'quadLines', afterDraw(ch){
+      const {ctx:cx, chartArea:{left,right,top,bottom}, scales:{x,y}} = ch;
+      cx.save(); cx.setLineDash([4,4]); cx.strokeStyle='#30363d'; cx.lineWidth=1;
+      const x0=x.getPixelForValue(0.005);
+      cx.beginPath(); cx.moveTo(x0,top); cx.lineTo(x0,bottom); cx.stroke();
+      const y1=y.getPixelForValue(1.0);
+      cx.beginPath(); cx.moveTo(left,y1); cx.lineTo(right,y1); cx.stroke();
+      cx.restore();
+      [[0.001,1.08,'D: Neutral','#86efac'],[0.15,1.08,'A: Full reversal','#f87171'],
+       [0.15,0.4,'B: Sign flip','#fb923c'],[0.001,0.4,'C / D','#93c5fd']].forEach(([xv,yv,lbl,col])=>{
+        cx.save(); cx.fillStyle=col; cx.font='bold 11px system-ui'; cx.globalAlpha=.7;
+        cx.fillText(lbl, x.getPixelForValue(xv)+4, y.getPixelForValue(yv)); cx.restore();
+      });
+    }}]
   });
 }
 
-// ══════════════════════════════════════════════════════════════
-// VIEW 4: SANDBOX
-// ══════════════════════════════════════════════════════════════
+// ════════════════════════════════════════════════════════════════
+// VIEW 4: MODEL SUMMARY
+// ════════════════════════════════════════════════════════════════
+function initSummary() {
+  const all = STUDY_IDS.map(id => RESULTS[id]);
+  const reversalCount = all.filter(r => r.isSignFlip).length;
+  const explainedCount = all.filter(r => r.isParadoxExplained).length;
+  const typeA = all.filter(r => r.distortionType==='A').length;
+  const typeB = all.filter(r => r.distortionType==='B').length;
+  const typeC = all.filter(r => r.distortionType==='C').length;
+  const typeD = all.filter(r => r.distortionType==='D').length;
+  const avgDist = all.reduce((a,r)=>a+r.allocDistortion,0)/all.length;
+  const totalStrength = all.reduce((a,r)=>a+r.paradoxStrength,0);
+
+  document.getElementById('summaryContent').innerHTML = `
+  <div class="scorecard">
+    <div class="tile t-info"><div class="tval">${all.length}</div><div class="tlbl">Studies</div></div>
+    <div class="tile t-warn"><div class="tval">${reversalCount}</div><div class="tlbl">IsSignFlip=TRUE</div></div>
+    <div class="tile t-ok"><div class="tval">${explainedCount}</div><div class="tlbl">IsParadoxExplained</div></div>
+    <div class="tile t-warn"><div class="tval">${typeA}</div><div class="tlbl">Type A (full reversal)</div></div>
+    <div class="tile" style="border-color:#78350f"><div class="tval" style="color:#fde68a">${typeB}</div><div class="tlbl">Type B (sign flip)</div></div>
+    <div class="tile" style="border-color:#1e3a5f"><div class="tval" style="color:#93c5fd">${typeC}</div><div class="tlbl">Type C (compressed)</div></div>
+    <div class="tile t-grey"><div class="tval">${typeD}</div><div class="tlbl">Type D (neutral)</div></div>
+    <div class="tile t-info"><div class="tval">${fmt3(avgDist)}</div><div class="tlbl">Avg AllocationDistortion</div></div>
+    <div class="tile t-info"><div class="tval">${fmt3(totalStrength)}</div><div class="tlbl">Total ParadoxStrength</div></div>
+  </div>
+  <div class="card"><h3>Per-study summary</h3>
+    <table class="strata-table">
+      <thead><tr><th>Study</th><th>Type</th><th>IsSignFlip</th><th>IsReversal</th><th>AllocDistortion</th><th>ReversalIntensity</th><th>PolicyImplication</th></tr></thead>
+      <tbody>
+        ${STUDY_IDS.map(id=>{const r=RESULTS[id];return`<tr>
+          <td style="cursor:pointer;color:#58a6ff" onclick="showDetail('${id}')">${id}</td>
+          <td><span class="pill ${TYPE_PILL[r.distortionType]}">Type ${r.distortionType}</span></td>
+          <td style="color:${r.isSignFlip?'#f85149':'#3fb950'}">${r.isSignFlip}</td>
+          <td style="color:${r.isReversal?'#f85149':'#3fb950'}">${r.isReversal}</td>
+          <td>${fmt3(r.allocDistortion)}</td>
+          <td>${fmt3(r.reversalIntensity)}</td>
+          <td style="font-size:.75rem">${r.policyImplication}</td>
+        </tr>`;}).join('')}
+      </tbody>
+    </table>
+  </div>`;
+}
+
+// ════════════════════════════════════════════════════════════════
+// VIEW 5: LOOP HISTORY
+// ════════════════════════════════════════════════════════════════
+function initLoops() {
+  const statuses = [...new Set(RB.Loops.map(l => l.Status))];
+  let activeFilter = 'all';
+
+  const filterRow = document.getElementById('loopFilters');
+  filterRow.innerHTML = ['all', ...statuses].map(s =>
+    `<button class="filter-btn${s==='all'?' active':''}" data-f="${s}">${s}</button>`).join('');
+
+  filterRow.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      filterRow.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      activeFilter = btn.dataset.f;
+      renderLoops(activeFilter);
+    });
+  });
+
+  renderLoops('all');
+}
+
+function renderLoops(filter) {
+  const list = document.getElementById('loopList');
+  const loops = filter === 'all' ? RB.Loops : RB.Loops.filter(l => l.Status === filter);
+  list.innerHTML = loops.map(l => {
+    const pillCls = l.Status==='complete'?'p-comp':l.Status==='in-progress'?'p-prog':'p-plan';
+    return `<div class="loop-item">
+      <div class="loop-header" onclick="this.nextElementSibling.classList.toggle('open')">
+        <span class="loop-id">${l.LoopId}</span>
+        <span class="loop-title">${l.Title}</span>
+        <span class="pill ${pillCls}">${l.Status}</span>
+      </div>
+      <div class="loop-body">
+        <div class="lbl">New concept</div><p>${l.NewConcept}</p>
+        <div class="lbl">Domain question</div><p>${l.DomainQuestion}</p>
+        <div class="lbl">Mock data note</div><p>${l.MockDataNote}</p>
+        <div class="lbl">Next suggestion</div><p>${l.NextSuggestion}</p>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ════════════════════════════════════════════════════════════════
+// VIEW 6: METHODOLOGY
+// ════════════════════════════════════════════════════════════════
+function initMethodology() {
+  document.getElementById('methList').innerHTML = RB.Methodology.map(m => `
+    <div class="meth-item">
+      <div class="meth-phase">${m.Phase} · ${m.IllustratedByLoop}</div>
+      <div class="meth-title">${m.Title}</div>
+      <div class="meth-body">
+        <p>${m.Statement}</p>
+        <div class="meth-why"><div class="lbl">Why it matters</div><p>${m.WhyItMatters}</p></div>
+      </div>
+    </div>`).join('');
+}
+
+// ════════════════════════════════════════════════════════════════
+// VIEW 7: CONCLUSIONS
+// ════════════════════════════════════════════════════════════════
+function initConclusions() {
+  const cats = [...new Set(RB.Conclusions.map(c => c.Category))];
+  let activeFilter = 'all';
+
+  const filterRow = document.getElementById('concFilters');
+  filterRow.innerHTML = ['all', ...cats].map(c =>
+    `<button class="filter-btn${c==='all'?' active':''}" data-f="${c}">${c}</button>`).join('');
+
+  filterRow.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      filterRow.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      activeFilter = btn.dataset.f;
+      renderConclusions(activeFilter);
+    });
+  });
+
+  renderConclusions('all');
+}
+
+function renderConclusions(filter) {
+  const list = document.getElementById('concList');
+  const concs = filter === 'all' ? RB.Conclusions : RB.Conclusions.filter(c => c.Category === filter);
+  list.innerHTML = concs.map(c => {
+    const pillCls = c.Status==='witnessed'?'p-wit':c.Status==='planned'?'p-plan':'p-open';
+    const loopRef = c.WitnessedInLoop || c.TargetLoop || '';
+    return `<div class="conc-item">
+      <div class="conc-cat">${c.Category} · <span class="pill ${pillCls}">${c.Status}</span>${loopRef?` · ${loopRef}`:''}</div>
+      <div class="conc-title">${c.Title}</div>
+      <div class="conc-evidence">${c.Evidence}</div>
+    </div>`;
+  }).join('');
+}
+
+// ════════════════════════════════════════════════════════════════
+// VIEW 8: SANDBOX
+// ════════════════════════════════════════════════════════════════
 let sandChart = null;
 
 const PRESETS = {};
 STUDY_IDS.forEach(id => {
   const r = RESULTS[id];
-  if (r.stratumCount < 2) return;
+  if (r.strata.length < 2) return;
   const s1 = r.strata[0], s2 = r.strata[1];
-  PRESETS[RB_STUDIES[id].title] = {
-    cA1: s1.rA?.c||100, sA1: s1.rA?.s||70, cB1: s1.rB?.c||100, sB1: s1.rB?.s||60,
-    cA2: s2.rA?.c||100, sA2: s2.rA?.s||70, cB2: s2.rB?.c||100, sB2: s2.rB?.s||55,
-    lbl1: s1.stratum, lbl2: s2.stratum,
+  PRESETS[id] = {
+    cA1: s1.cA?.Cases||100, sA1: s1.cA?.Successes||70,
+    cB1: s1.cB?.Cases||100, sB1: s1.cB?.Successes||60,
+    cA2: s2.cA?.Cases||100, sA2: s2.cA?.Successes||70,
+    cB2: s2.cB?.Cases||100, sB2: s2.cB?.Successes||55,
+    lbl1: s1.sl, lbl2: s2.sl,
   };
 });
 
 function initSandbox() {
   const sel = document.getElementById('presetSel');
-  sel.innerHTML = Object.keys(PRESETS).map(k => `<option value="${k}">${k}</option>`).join('');
-  sel.addEventListener('change', () => loadPreset(PRESETS[sel.value]));
+  sel.innerHTML = STUDY_IDS.filter(id => PRESETS[id]).map(id =>
+    `<option value="${id}">${studyTitle(id)}</option>`).join('');
+  sel.addEventListener('change', () => { const p=PRESETS[sel.value]; if(p) loadPreset(p); });
   ['cA1','sA1','cB1','sB1','cA2','sA2','cB2','sB2'].forEach(id => {
     const inp = document.getElementById('s_'+id);
     inp.addEventListener('input', () => { document.getElementById('v_'+id).textContent = inp.value; updateSandbox(); });
   });
-  loadPreset(PRESETS[Object.keys(PRESETS)[0]]);
+  const first = STUDY_IDS.find(id => PRESETS[id]);
+  if (first) { sel.value = first; loadPreset(PRESETS[first]); }
 }
 
 function loadPreset(p) {
@@ -573,6 +991,8 @@ function loadPreset(p) {
     document.getElementById('s_'+k).value = p[k];
     document.getElementById('v_'+k).textContent = p[k];
   });
+  if (p.lbl1) document.getElementById('sand-lbl1').textContent = 'Stratum 1 — ' + p.lbl1;
+  if (p.lbl2) document.getElementById('sand-lbl2').textContent = 'Stratum 2 — ' + p.lbl2;
   updateSandbox();
 }
 
@@ -584,78 +1004,86 @@ function updateSandbox() {
   const cA2=gv('cA2'), sA2=Math.min(gv('sA2'),cA2);
   const cB2=gv('cB2'), sB2=Math.min(gv('sB2'),cB2);
 
-  const rA1 = cA1>0 ? sA1/cA1 : 0, rB1 = cB1>0 ? sB1/cB1 : 0;
-  const rA2 = cA2>0 ? sA2/cA2 : 0, rB2 = cB2>0 ? sB2/cB2 : 0;
+  const rA1=cA1>0?sA1/cA1:0, rB1=cB1>0?sB1/cB1:0;
+  const rA2=cA2>0?sA2/cA2:0, rB2=cB2>0?sB2/cB2:0;
+  const totA=cA1+cA2, totB=cB1+cB2;
+  const pA=totA>0?(sA1+sA2)/totA:0;
+  const pB=totB>0?(sB1+sB2)/totB:0;
+  const totalCases=cA1+cA2+cB1+cB2;
+  const w1=totalCases>0?(cA1+cB1)/totalCases:0;
+  const w2=totalCases>0?(cA2+cB2)/totalCases:0;
+  const wsgSum=(rA1-rB1)*w1+(rA2-rB2)*w2;
+  const signedGap=pA-pB;
+  const isFlip=(wsgSum>0&&signedGap<0)||(wsgSum<0&&signedGap>0);
+  const dist=Math.abs(wsgSum-signedGap);
+  const pooledWinner=pA>=pB?'A':'B';
+  const strWinner=(rA1>rB1&&rA2>rB2)?'A':(rB1>rA1&&rB2>rA2)?'B':'none';
+  const isRev=strWinner!=='none'&&strWinner!==pooledWinner;
 
-  const totA = cA1+cA2, totB = cB1+cB2;
-  const pA = totA>0 ? (sA1+sA2)/totA : 0;
-  const pB = totB>0 ? (sB1+sB2)/totB : 0;
-
-  const w1 = (cA1+cB1)/(cA1+cB1+cA2+cB2), w2 = (cA2+cB2)/(cA1+cB1+cA2+cB2);
-  const gap1 = rA1-rB1, gap2 = rA2-rB2;
-  const wsgSum = gap1*w1 + gap2*w2;
-  const signedGap = pA - pB;
-  const isRev = (rA1>rB1 && rA2>rB2 && pB>pA) || (rB1>rA1 && rB2>rA2 && pA>pB);
-  const isFlip = (wsgSum>0 && signedGap<0) || (wsgSum<0 && signedGap>0);
-  const dist = Math.abs(wsgSum - signedGap);
-  const pooledWinner = pA >= pB ? 'A' : 'B';
-  const strWinner = (rA1>rB1 && rA2>rB2) ? 'A' : (rB1>rA1 && rB2>rA2) ? 'B' : 'none';
-
-  // chart
-  const ctx = document.getElementById('sandChart');
-  if (sandChart) sandChart.destroy();
-  sandChart = new Chart(ctx, {
+  const ctx=document.getElementById('sandChart');
+  if(sandChart) sandChart.destroy();
+  sandChart=new Chart(ctx,{
     type:'bar',
     data:{
-      labels:['Stratum 1 — A','Stratum 1 — B','Stratum 2 — A','Stratum 2 — B','Pooled — A','Pooled — B'],
+      labels:['S1 A','S1 B','S2 A','S2 B','Pooled A','Pooled B'],
       datasets:[{
         label:'Success rate',
-        data:[rA1*100, rB1*100, rA2*100, rB2*100, pA*100, pB*100],
+        data:[rA1*100,rB1*100,rA2*100,rB2*100,pA*100,pB*100],
         backgroundColor:[C.A+'99',C.B+'99',C.A+'99',C.B+'99',C.A,C.B],
         borderColor:[C.A,C.B,C.A,C.B,C.A,C.B],
         borderWidth:[1,1,1,1,2,2],
       }]
     },
     options:{
-      responsive:true, plugins:{legend:{display:false}, tooltip:{callbacks:{label:c=>`${c.parsed.y.toFixed(1)}%`}}},
+      responsive:true,
+      plugins:{legend:{display:false}, tooltip:{callbacks:{label:c=>`${c.parsed.y.toFixed(1)}%`}}},
       scales:{y:{title:{display:true,text:'Success rate (%)'},min:0,max:100}}
     }
   });
 
-  // verdict
-  const vEl = document.getElementById('verd');
-  const note = document.getElementById('sandNote');
-  if (isRev) {
+  const vEl=document.getElementById('verd');
+  if(isRev){
     vEl.className='verd v-rev';
-    vEl.textContent = `⚠ FULL REVERSAL — Treatment ${strWinner} wins every stratum, but Treatment ${pooledWinner} wins pooled`;
-  } else if (isFlip) {
+    vEl.textContent=`⚠ FULL REVERSAL — Treatment ${strWinner} wins every stratum, but Treatment ${pooledWinner} wins pooled`;
+  } else if(isFlip){
     vEl.className='verd v-sig';
-    vEl.textContent = `≈ SIGN FLIP — Under equal allocation A would ${wsgSum>0?'win':'lose'}, but actual pooled says ${pooledWinner} wins`;
+    vEl.textContent=`≈ SIGN FLIP — Under equal allocation ${wsgSum>0?'A':'B'} would win, but actual pooled says ${pooledWinner} wins`;
   } else {
     vEl.className='verd v-ok';
-    vEl.textContent = `✓ No paradox — Treatment ${pooledWinner} wins pooled${strWinner!=='none'?' and per-stratum':' (mixed strata)'}`;
+    vEl.textContent=`✓ No paradox — Treatment ${pooledWinner} wins pooled${strWinner!=='none'?' and per-stratum':' (mixed strata)'}`;
   }
-  note.textContent = `WsgSum: ${wsgSum.toFixed(3)} · SignedPooledGap: ${signedGap.toFixed(3)} · AllocationDistortion: ${dist.toFixed(3)} · IsSignFlip: ${isFlip}`;
+  document.getElementById('sandNote').textContent =
+    `WsgSum: ${wsgSum.toFixed(3)} · SignedPooledGap: ${signedGap.toFixed(3)} · AllocationDistortion: ${dist.toFixed(3)} · IsSignFlip: ${isFlip}`;
 }
 
-// ══════════════════════════════════════════════════════════════
+// ════════════════════════════════════════════════════════════════
+// INIT MAP
+// ════════════════════════════════════════════════════════════════
+const INIT = {
+  overview: initOverview,
+  detail: initDetail,
+  plane: initPlane,
+  summary: initSummary,
+  loops: initLoops,
+  methodology: initMethodology,
+  conclusions: initConclusions,
+  sandbox: initSandbox,
+};
+
+// ════════════════════════════════════════════════════════════════
 // INTRO MODAL
-// ══════════════════════════════════════════════════════════════
-const SEEN_KEY = 'simpsons_intro_seen';
+// ════════════════════════════════════════════════════════════════
+const SEEN_KEY = 'simpsons_intro_seen_v2';
 const bg = document.getElementById('introBg');
 document.getElementById('introClose').addEventListener('click', () => {
   bg.classList.add('hidden');
   localStorage.setItem(SEEN_KEY, '1');
 });
-document.getElementById('aboutBtn').addEventListener('click', () => {
-  bg.classList.remove('hidden');
-});
+document.getElementById('aboutBtn').addEventListener('click', () => bg.classList.remove('hidden'));
 if (localStorage.getItem(SEEN_KEY)) bg.classList.add('hidden');
 
-// ══════════════════════════════════════════════════════════════
-// INIT MAP
-// ══════════════════════════════════════════════════════════════
-const INIT = {overview:initOverview, stratum:initStratum, weights:initWeights, sandbox:initSandbox};
+// Boot
+rendered.add('overview');
 initOverview();
 </script>
 </body>

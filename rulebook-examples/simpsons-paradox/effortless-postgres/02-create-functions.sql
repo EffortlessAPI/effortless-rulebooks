@@ -875,6 +875,36 @@ RETURNS TEXT AS $$
   SELECT (CASE WHEN calc_treatment_rankings_distortion_type(p_treatment_ranking_id) IS NULL THEN ('')::text ELSE (CASE WHEN calc_treatment_rankings_distortion_type(p_treatment_ranking_id) = 'A' THEN ('stratify-immediately')::text ELSE (CASE WHEN calc_treatment_rankings_distortion_type(p_treatment_ranking_id) = 'B' THEN ('investigate-confounder')::text ELSE (CASE WHEN calc_treatment_rankings_distortion_type(p_treatment_ranking_id) = 'C' THEN ('check-allocation-bias')::text ELSE ('pooled-analysis-trustworthy')::text END)::text END)::text END)::text END)::text;
 $$ LANGUAGE sql STABLE;
 
+-- calc_treatment_rankings_is_reversal_v2
+-- Field: TreatmentRankings.IsReversal_v2
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_treatment_rankings_is_reversal_v2(p_treatment_ranking_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (CASE WHEN calc_treatment_rankings_is_sign_flip(p_treatment_ranking_id) IS NULL THEN ('')::text ELSE (calc_treatment_rankings_is_sign_flip(p_treatment_ranking_id))::text END)::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_treatment_rankings_definition_delta
+-- Field: TreatmentRankings.DefinitionDelta
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_treatment_rankings_definition_delta(p_treatment_ranking_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (CASE WHEN calc_treatment_rankings_is_reversal_v2(p_treatment_ranking_id) IS NULL THEN ('')::text ELSE (((calc_treatment_rankings_is_reversal_v2(p_treatment_ranking_id) = 'true') AND NOT (calc_treatment_rankings_is_reversal(p_treatment_ranking_id))))::text END)::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_treatment_rankings_strict_reversal_subtype
+-- Field: TreatmentRankings.StrictReversalSubtype
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_treatment_rankings_strict_reversal_subtype(p_treatment_ranking_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CASE WHEN calc_treatment_rankings_is_reversal_v2(p_treatment_ranking_id) IS NULL THEN ('')::text ELSE (CASE WHEN calc_treatment_rankings_is_reversal(p_treatment_ranking_id) THEN ('strict')::text ELSE (CASE WHEN (calc_treatment_rankings_is_reversal_v2(p_treatment_ranking_id) = 'true') THEN ('extended')::text ELSE ('none')::text END)::text END)::text END)::text;
+$$ LANGUAGE sql STABLE;
+
 -- calc_methodology_name
 -- Field: Methodology.Name
 -- Type: calculated | DataType: string | Returns: TEXT
