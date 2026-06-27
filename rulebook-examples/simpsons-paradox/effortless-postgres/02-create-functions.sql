@@ -405,6 +405,16 @@ RETURNS NUMERIC AS $$
   SELECT (CASE WHEN calc_stratum_summaries_allocation_fraction_a(p_stratum_summary_id) IS NULL THEN ('')::text ELSE ((COALESCE(CASE WHEN (calc_stratum_summaries_allocation_fraction_a(p_stratum_summary_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_stratum_summaries_allocation_fraction_a(p_stratum_summary_id))::numeric ELSE NULL END, 0) - COALESCE(CASE WHEN (calc_stratum_summaries_allocation_fraction_b(p_stratum_summary_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_stratum_summaries_allocation_fraction_b(p_stratum_summary_id))::numeric ELSE NULL END, 0)))::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
+-- calc_stratum_summaries_stratum_gap
+-- Field: StratumSummaries.StratumGap
+-- Type: calculated | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_stratum_summaries_stratum_gap(p_stratum_summary_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT (CASE WHEN calc_stratum_summaries_stratum_rate_a(p_stratum_summary_id) IS NULL THEN ('')::text ELSE ((COALESCE(CASE WHEN (calc_stratum_summaries_stratum_rate_a(p_stratum_summary_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_stratum_summaries_stratum_rate_a(p_stratum_summary_id))::numeric ELSE NULL END, 0) - COALESCE(CASE WHEN (calc_stratum_summaries_stratum_rate_b(p_stratum_summary_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_stratum_summaries_stratum_rate_b(p_stratum_summary_id))::numeric ELSE NULL END, 0)))::text END)::numeric;
+$$ LANGUAGE sql STABLE;
+
 -- calc_model_summary_name
 -- Field: ModelSummary.Name
 -- Type: calculated | DataType: string | Returns: TEXT

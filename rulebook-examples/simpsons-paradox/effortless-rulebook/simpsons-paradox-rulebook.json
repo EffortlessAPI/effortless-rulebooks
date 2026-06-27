@@ -154,11 +154,11 @@
       {
         "LoopId": "loop-16",
         "Title": "StratumGap: per-stratum rate difference as a signed witnessed number",
-        "Status": "planned",
+        "Status": "complete",
         "NewConcept": "StratumGap field on StratumSummaries (StratumRateA - StratumRateB, signed)",
         "DomainQuestion": "In each stratum, how large is the treatment advantage, and in which direction? StratumGap > 0 means A wins here; < 0 means B wins. Summing StratumGap × StratumFraction gives the equal-weight pooled gap — a new derived node.",
-        "MockDataNote": "kidney-1986: small-stratum gap = +0.064 (A wins by 6.4pp), large-stratum gap = +0.043 (A wins by 4.3pp). Both positive — A wins everywhere. The pooled gap is negative (B appears to win by 4.6pp) purely due to allocation. The signed gap makes this contradiction arithmetically visible in one column.",
-        "NextSuggestion": "Derive WeightedStratumGapSum on TreatmentRankings: SUM(StratumGap × StratumFraction). This is the equal-weight pooled gap — the gap you would see if allocation were perfectly balanced. Compare it to the actual PooledGap to get a precise measure of how much the allocation is distorting the signal."
+        "MockDataNote": "kidney-1986: small-stratum gap = +0.064 (A wins by 6.4pp), large-stratum gap = +0.043 (A wins by 4.3pp). Both positive — A wins everywhere. The pooled gap is negative (B appears to win by 4.6pp) purely due to allocation. The signed gap makes this contradiction arithmetically visible in one column. kidney-balanced: small=+0.064, large=+0.042 (same signs, same magnitudes — the rates are identical to kidney-1986 but now A also wins pooled because allocation is balanced). balanced-synthetic: small=+0.10, large=+0.10 (constant, equal allocation). berkeley-1973: dept-A=−0.200 (female wins), dept-B=+0.011 (male wins barely), dept-C=−0.002 (female wins barely), dept-D=−0.016 (female wins). Mixed signs confirm the partial paradox: no unanimous StratumGap direction, hence no clean reversal.",
+        "NextSuggestion": "Derive WeightedStratumGapSum on TreatmentRankings: SUM(StratumGap × StratumFraction) aggregated across all TreatmentA rows for this study. This is the equal-weight pooled gap — the gap allocation-free weighting would produce. When WeightedStratumGapSum and PooledGap have opposite signs, the allocation has not just compressed the signal but flipped it. That sign flip is a more precise characterisation of Simpson's Paradox than IsReversal: it handles partial flips and gives a magnitude to the distortion."
       },
       {
         "LoopId": "loop-17",
@@ -532,7 +532,8 @@
       { "name": "TreatmentBTotalCases", "datatype": "integer", "type": "aggregation", "nullable": true, "Description": "Total cases for treatment B across all strata in this study — denominator for AllocationFractionB.", "formula": "=SUMIFS(CaseCells!{{Cases}}, CaseCells!{{Study}}, {{Study}}, CaseCells!{{TreatmentLabel}}, \"B\")" },
       { "name": "AllocationFractionA", "datatype": "number", "type": "calculated", "nullable": true, "Description": "Fraction of treatment A's total cases that land in this stratum: TreatmentACasesHere / TreatmentATotalCases. Equivalent to TreatmentExposureFraction for A.", "formula": "=IF({{TreatmentATotalCases}} = 0, \"\", {{TreatmentACasesHere}} / {{TreatmentATotalCases}})" },
       { "name": "AllocationFractionB", "datatype": "number", "type": "calculated", "nullable": true, "Description": "Fraction of treatment B's total cases that land in this stratum: TreatmentBCasesHere / TreatmentBTotalCases.", "formula": "=IF({{TreatmentBTotalCases}} = 0, \"\", {{TreatmentBCasesHere}} / {{TreatmentBTotalCases}})" },
-      { "name": "AllocationBias", "datatype": "number", "type": "calculated", "nullable": true, "Description": "AllocationFractionA minus AllocationFractionB: how much more of treatment A (relative to B) is concentrated in this stratum. Positive = A is over-allocated here; negative = B is over-allocated here. When AllocationBias is large and negative in a low-success stratum, treatment A is under-represented in the hard cases — making A look worse in the pooled view than it is in any stratum. This is the confounder's fingerprint as a signed number.", "formula": "=IF({{AllocationFractionA}} = \"\", \"\", {{AllocationFractionA}} - {{AllocationFractionB}})" }
+      { "name": "AllocationBias", "datatype": "number", "type": "calculated", "nullable": true, "Description": "AllocationFractionA minus AllocationFractionB: how much more of treatment A (relative to B) is concentrated in this stratum. Positive = A is over-allocated here; negative = B is over-allocated here. When AllocationBias is large and negative in a low-success stratum, treatment A is under-represented in the hard cases — making A look worse in the pooled view than it is in any stratum. This is the confounder's fingerprint as a signed number.", "formula": "=IF({{AllocationFractionA}} = \"\", \"\", {{AllocationFractionA}} - {{AllocationFractionB}})" },
+      { "name": "StratumGap",    "datatype": "number",  "type": "calculated", "nullable": true,  "Description": "Signed rate difference within this stratum: StratumRateA minus StratumRateB. Positive = A wins here; negative = B wins here; zero = tied. When every stratum has StratumGap > 0 but the pooled gap is negative, the contradiction IS Simpson's Paradox made arithmetically visible in one column. Multiply StratumGap × StratumFraction and sum across strata to get the equal-weight pooled gap (the signal allocation would produce without confounding).", "formula": "=IF({{StratumRateA}} = \"\", \"\", {{StratumRateA}} - {{StratumRateB}})" }
     ],
     "data": [
       { "StratumSummaryId": "kidney-1986-small-A",       "Study": "kidney-1986",        "StratumLabel": "small", "TreatmentLabel": "A" },
@@ -674,7 +675,7 @@
       "source": "hand-authored",
       "tool_version": "1.0.0",
       "export_mode": "schema_first_type_mapping",
-      "loop": "01"
+      "loop": "16"
     }
   }
 }
