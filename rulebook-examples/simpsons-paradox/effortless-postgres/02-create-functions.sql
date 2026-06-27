@@ -785,6 +785,16 @@ RETURNS BOOLEAN AS $$
   SELECT (CASE WHEN calc_treatment_rankings_weighted_stratum_gap_sum(p_treatment_ranking_id) IS NULL THEN ('')::text ELSE (CASE WHEN (calc_treatment_rankings_weighted_stratum_gap_sum(p_treatment_ranking_id))::NUMERIC > 0 THEN ((calc_treatment_rankings_signed_pooled_gap(p_treatment_ranking_id))::NUMERIC < 0)::text ELSE ((calc_treatment_rankings_signed_pooled_gap(p_treatment_ranking_id))::NUMERIC > 0)::text END)::text END)::boolean;
 $$ LANGUAGE sql STABLE;
 
+-- calc_treatment_rankings_allocation_distortion
+-- Field: TreatmentRankings.AllocationDistortion
+-- Type: calculated | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_treatment_rankings_allocation_distortion(p_treatment_ranking_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT (CASE WHEN calc_treatment_rankings_weighted_stratum_gap_sum(p_treatment_ranking_id) IS NULL THEN ('')::text ELSE (ABS((COALESCE(CASE WHEN (calc_treatment_rankings_weighted_stratum_gap_sum(p_treatment_ranking_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_treatment_rankings_weighted_stratum_gap_sum(p_treatment_ranking_id))::numeric ELSE NULL END, 0) - COALESCE(CASE WHEN (calc_treatment_rankings_signed_pooled_gap(p_treatment_ranking_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_treatment_rankings_signed_pooled_gap(p_treatment_ranking_id))::numeric ELSE NULL END, 0))))::text END)::numeric;
+$$ LANGUAGE sql STABLE;
+
 -- ============================================================================
 -- MANY-SIDE RELATIONSHIP FUNCTIONS
 -- These functions aggregate child records for many-side relationships

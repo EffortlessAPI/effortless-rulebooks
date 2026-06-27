@@ -85,6 +85,7 @@ _Digital mirror of the Simpson's Paradox domain. The entities are Studies, Treat
 | Signed Pooled Gap | Determined by priority: an empty string if the pooled rate a is blank; in all other cases, the pooled rate a minus the pooled rate b. | _Signed difference between pooled rates: PooledRateA minus PooledRateB. Positive = A wins pooled; negative = B wins pooled. Unlike PooledGap (which is absolute), this preserves direction — essential for detecting sign flips between the equal-weight and actual pooled signals._ |
 | Weighted Stratum Gap Sum | The total weighted stratum gap across the stratum summaries related to the treatment ranking. | _Sum of WeightedStratumGap (= StratumGap × StratumFraction) across all StratumSummaries rows where TreatmentLabel = TreatmentA for this study. This is the equal-weight pooled gap — the gap the pooled analysis would produce if allocation were perfectly balanced across strata. When this has the opposite sign to SignedPooledGap, the allocation has not merely compressed the signal: it has flipped it entirely._ |
 | Is Sign Flip | True when the signed pooled gap is less than 0 if the weighted stratum gap sum is greater than 0, in all other cases the signed pooled gap is greater than 0. | _TRUE when WeightedStratumGapSum and SignedPooledGap have opposite signs — the allocation has reversed the direction of the pooled signal relative to what equal-weight strata would show. This is the continuous generalisation of IsReversal: it does not require every stratum to agree, only that the equal-weight estimate and the actual pooled estimate point in opposite directions. Berkeley 1973 satisfies IsSignFlip=TRUE despite IsReversal=FALSE._ |
+| Allocation Distortion | Determined by priority: an empty string if the weighted stratum gap sum is blank; in all other cases, the absolute value of the weighted stratum gap sum minus the signed pooled gap. | _The magnitude of how far the allocation has bent the pooled signal: \|WeightedStratumGapSum − SignedPooledGap\|. Zero means the allocation is neutral — the pooled analysis faithfully represents the equal-weight stratum evidence. A large AllocationDistortion means the allocation is doing most of the work: the pooled number is mostly noise from how cases were assigned, not signal about which treatment is better. This measure does NOT require a sign flip to be nonzero — it captures any allocation-induced distortion, not just reversals._ |
 
 ## 2 Fact Types
 
@@ -193,6 +194,7 @@ but clunky — a flag for an optional downstream reword pass, not a defect._
 | **DR-63 Signed Pooled Gap** | The treatment ranking's signed pooled gap is determined by the following priority:<br>1. an empty string, if the pooled rate a is blank;<br>2. in all other cases, the pooled rate a minus the pooled rate b. |
 | **DR-64 Weighted Stratum Gap Sum** | A treatment ranking's weighted stratum gap sum is the total weighted stratum gap across the stratum summaries related to the treatment ranking. |
 | **DR-65 Is Sign Flip** | A treatment ranking is considered a sign flip if the signed pooled gap is less than 0 if the weighted stratum gap sum is greater than 0, in all other cases the signed pooled gap is greater than 0. |
+| **DR-66 Allocation Distortion** | The treatment ranking's allocation distortion is determined by the following priority:<br>1. an empty string, if the weighted stratum gap sum is blank;<br>2. in all other cases, the absolute value of the weighted stratum gap sum minus the signed pooled gap. |
 
 ## 5 Traceability to Schema
 
@@ -266,6 +268,7 @@ the same logic the rulebook stores, written for a business reader._
 | **TreatmentRankings.SignedPooledGap** | formula | `If(PooledRateA = "", "", PooledRateA - PooledRateB)` |
 | **TreatmentRankings.WeightedStratumGapSum** | rollup | `Sum(StratumSummaries.WeightedStratumGap via Study)` |
 | **TreatmentRankings.IsSignFlip** | formula | `If(WeightedStratumGapSum = "", "", If(WeightedStratumGapSum > 0, SignedPooledGap < 0, SignedPooledGap > 0))` |
+| **TreatmentRankings.AllocationDistortion** | formula | `If(WeightedStratumGapSum = "", "", Abs(WeightedStratumGapSum - SignedPooledGap))` |
 
 ---
 

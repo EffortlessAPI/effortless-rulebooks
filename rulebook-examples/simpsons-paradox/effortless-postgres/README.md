@@ -2,7 +2,7 @@
 
 **Schema:** `public`
 **Database:** `demo`
-**Timestamp:** 2026-06-27 20:21:53 UTC
+**Timestamp:** 2026-06-27 20:23:16 UTC
 
 ## Parsing Rulebook
 
@@ -17,10 +17,10 @@ Found **9** tables in rulebook
   - **StratumSummaries** (28 fields, 20 records)
   - **ModelSummary** (10 fields, 1 records)
   - **StratumVariables** (9 fields, 4 records)
-  - **TreatmentRankings** (29 fields, 4 records)
+  - **TreatmentRankings** (30 fields, 4 records)
 
 Generated **9** table definitions with **35** raw fields (mode=check-add)
-Generated **77** calculation functions
+Generated **78** calculation functions
 Generated **9** views
 Enabled RLS on **9** tables
 Generated insert statements for **101** records
