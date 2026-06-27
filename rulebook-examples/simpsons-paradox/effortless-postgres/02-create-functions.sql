@@ -415,6 +415,16 @@ RETURNS NUMERIC AS $$
   SELECT (CASE WHEN calc_stratum_summaries_stratum_rate_a(p_stratum_summary_id) IS NULL THEN ('')::text ELSE ((COALESCE(CASE WHEN (calc_stratum_summaries_stratum_rate_a(p_stratum_summary_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_stratum_summaries_stratum_rate_a(p_stratum_summary_id))::numeric ELSE NULL END, 0) - COALESCE(CASE WHEN (calc_stratum_summaries_stratum_rate_b(p_stratum_summary_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_stratum_summaries_stratum_rate_b(p_stratum_summary_id))::numeric ELSE NULL END, 0)))::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
+-- calc_stratum_summaries_weighted_stratum_gap
+-- Field: StratumSummaries.WeightedStratumGap
+-- Type: calculated | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_stratum_summaries_weighted_stratum_gap(p_stratum_summary_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT (CASE WHEN calc_stratum_summaries_stratum_gap(p_stratum_summary_id) IS NULL THEN ('')::text ELSE ((COALESCE(CASE WHEN (calc_stratum_summaries_stratum_gap(p_stratum_summary_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_stratum_summaries_stratum_gap(p_stratum_summary_id))::numeric ELSE NULL END, 0) * COALESCE(CASE WHEN (calc_stratum_summaries_stratum_fraction(p_stratum_summary_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_stratum_summaries_stratum_fraction(p_stratum_summary_id))::numeric ELSE NULL END, 0)))::text END)::numeric;
+$$ LANGUAGE sql STABLE;
+
 -- calc_model_summary_name
 -- Field: ModelSummary.Name
 -- Type: calculated | DataType: string | Returns: TEXT
@@ -743,6 +753,36 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION calc_treatment_rankings_threshold_margin(p_treatment_ranking_id TEXT)
 RETURNS NUMERIC AS $$
   SELECT (CASE WHEN (calc_treatment_rankings_stratum_count(p_treatment_ranking_id))::NUMERIC = 0 THEN ('')::text ELSE ((COALESCE(CASE WHEN (calc_treatment_rankings_reversal_intensity(p_treatment_ranking_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_treatment_rankings_reversal_intensity(p_treatment_ranking_id))::numeric ELSE NULL END, 0) - COALESCE(0.5, 0)))::text END)::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_treatment_rankings_signed_pooled_gap
+-- Field: TreatmentRankings.SignedPooledGap
+-- Type: calculated | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_treatment_rankings_signed_pooled_gap(p_treatment_ranking_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT (CASE WHEN calc_treatment_rankings_pooled_rate_a(p_treatment_ranking_id) IS NULL THEN ('')::text ELSE ((COALESCE(CASE WHEN (calc_treatment_rankings_pooled_rate_a(p_treatment_ranking_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_treatment_rankings_pooled_rate_a(p_treatment_ranking_id))::numeric ELSE NULL END, 0) - COALESCE(CASE WHEN (calc_treatment_rankings_pooled_rate_b(p_treatment_ranking_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_treatment_rankings_pooled_rate_b(p_treatment_ranking_id))::numeric ELSE NULL END, 0)))::text END)::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_treatment_rankings_weighted_stratum_gap_sum
+-- Field: TreatmentRankings.WeightedStratumGapSum
+-- Type: aggregation | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_treatment_rankings_weighted_stratum_gap_sum(p_treatment_ranking_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT ((SELECT COALESCE(SUM((calc_stratum_summaries_weighted_stratum_gap(stratum_summary_id))::numeric), 0) FROM stratum_summaries WHERE study = (SELECT NULLIF(study, '') FROM treatment_rankings WHERE treatment_ranking_id = p_treatment_ranking_id) AND treatment_label = (SELECT NULLIF(treatment_a, '') FROM treatment_rankings WHERE treatment_ranking_id = p_treatment_ranking_id)))::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_treatment_rankings_is_sign_flip
+-- Field: TreatmentRankings.IsSignFlip
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_treatment_rankings_is_sign_flip(p_treatment_ranking_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (CASE WHEN calc_treatment_rankings_weighted_stratum_gap_sum(p_treatment_ranking_id) IS NULL THEN ('')::text ELSE (CASE WHEN (calc_treatment_rankings_weighted_stratum_gap_sum(p_treatment_ranking_id))::NUMERIC > 0 THEN ((calc_treatment_rankings_signed_pooled_gap(p_treatment_ranking_id))::NUMERIC < 0)::text ELSE ((calc_treatment_rankings_signed_pooled_gap(p_treatment_ranking_id))::NUMERIC > 0)::text END)::text END)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- ============================================================================
