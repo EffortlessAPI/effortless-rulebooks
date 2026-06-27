@@ -23,12 +23,17 @@ _Digital mirror of the Simpson's Paradox domain. The entities are Studies, Treat
 | Total Cases | The total cases across the case cells related to the strata. | _Total cases in this stratum across all treatments._ |
 | **Case Cell** | A case cell is identified by its name and is related to a study. | — |
 | Cell Success Rate | Determined by priority: an empty string if the cases is 0; in all other cases, the successes divided by the cases. | _Success rate within this cell: Successes / Cases. The first derived fact in the DAG._ |
+| **Stratum Summary** | A stratum summary is identified by its name and is related to a study. | — |
+| Stratum Successes | The total successes across the case cells related to the stratum summary. | _Total successes in this (stratum, treatment) cell for this study._ |
+| Stratum Cases | The total cases across the case cells related to the stratum summary. | _Total cases in this (stratum, treatment) cell for this study._ |
+| Stratum Success Rate | Determined by priority: an empty string if the stratum cases is 0; in all other cases, the stratum successes divided by the stratum cases. | _Success rate within this stratum for this treatment: StratumSuccesses / StratumCases. The true per-stratum picture._ |
 
 ## 2 Fact Types
 
 - a **treatment** references exactly one **study**
 - a **strata** references exactly one **study**
 - a **case cell** references exactly one **study**
+- a **stratum summary** references exactly one **study**
 
 ## 3 Operative Rules
 
@@ -46,6 +51,8 @@ already computes (cross-referenced as DR-N in the Definitional Rules below)._
 - A strata **must** have a stratum label.
 - A case cell **must** reference exactly one study.
 - A case cell **must** have a stratum label, a treatment label, a successes, and a cases.
+- A stratum summary **must** reference exactly one study.
+- A stratum summary **must** have a stratum label and a treatment label.
 
 ## 4 Definitional Rules
 
@@ -64,6 +71,9 @@ but clunky — a flag for an optional downstream reword pass, not a defect._
 | **DR-5 Pooled Success Rate** | The treatment's pooled success rate is determined by the following priority:<br>1. an empty string, if the total cases is 0;<br>2. in all other cases, the total successes divided by the total cases. |
 | **DR-6 Total Cases** | A strata's total cases is the total cases across the case cells related to the strata. |
 | **DR-7 Cell Success Rate** | The case cell's cell success rate is determined by the following priority:<br>1. an empty string, if the cases is 0;<br>2. in all other cases, the successes divided by the cases. |
+| **DR-8 Stratum Successes** | A stratum summary's stratum successes is the total successes across the case cells related to the stratum summary. |
+| **DR-9 Stratum Cases** | A stratum summary's stratum cases is the total cases across the case cells related to the stratum summary. |
+| **DR-10 Stratum Success Rate** | The stratum summary's stratum success rate is determined by the following priority:<br>1. an empty string, if the stratum cases is 0;<br>2. in all other cases, the stratum successes divided by the stratum cases. |
 
 ## 5 Traceability to Schema
 
@@ -79,6 +89,9 @@ the same logic the rulebook stores, written for a business reader._
 | **Treatments.PooledSuccessRate** | formula | `If(TotalCases = 0, "", TotalSuccesses / TotalCases)` |
 | **Strata.TotalCases** | rollup | `Sum(CaseCells.Cases via Study)` |
 | **CaseCells.CellSuccessRate** | formula | `If(Cases = 0, "", Successes / Cases)` |
+| **StratumSummaries.StratumSuccesses** | rollup | `Sum(CaseCells.Successes via Study)` |
+| **StratumSummaries.StratumCases** | rollup | `Sum(CaseCells.Cases via Study)` |
+| **StratumSummaries.StratumSuccessRate** | formula | `If(StratumCases = 0, "", StratumSuccesses / StratumCases)` |
 
 ---
 

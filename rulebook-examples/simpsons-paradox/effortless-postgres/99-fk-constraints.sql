@@ -27,4 +27,9 @@ ALTER TABLE case_cells DROP CONSTRAINT IF EXISTS fk_case_cells_study;
 ALTER TABLE case_cells ADD CONSTRAINT fk_case_cells_study
   FOREIGN KEY (study) REFERENCES studies (study_id);
 
--- 3 FK constraint(s) declared (off unless EFFORTLESS_ENFORCE_FKS=true).
+-- StratumSummaries
+ALTER TABLE stratum_summaries DROP CONSTRAINT IF EXISTS fk_stratum_summaries_study;
+ALTER TABLE stratum_summaries ADD CONSTRAINT fk_stratum_summaries_study
+  FOREIGN KEY (study) REFERENCES studies (study_id);
+
+-- 4 FK constraint(s) declared (off unless EFFORTLESS_ENFORCE_FKS=true).

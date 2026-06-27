@@ -1,6 +1,6 @@
 {
   "_comment": "Stable DR-number ledger for rulebook-to-rulespeak. Auto-maintained; feed this file back in on the next build to keep rule numbers stable. Numbers in 'Retired' are tombstones and are never reissued. Hand-edit an Assignments number only to deliberately re-pin a rule.",
-  "NextId": 8,
+  "NextId": 11,
   "Assignments": {
     "Studies.TotalCases": 1,
     "Studies.CellCount": 2,
@@ -8,7 +8,10 @@
     "Treatments.TotalSuccesses": 4,
     "Treatments.PooledSuccessRate": 5,
     "Strata.TotalCases": 6,
-    "CaseCells.CellSuccessRate": 7
+    "CaseCells.CellSuccessRate": 7,
+    "StratumSummaries.StratumSuccesses": 8,
+    "StratumSummaries.StratumCases": 9,
+    "StratumSummaries.StratumSuccessRate": 10
   },
   "Retired": []
 }
