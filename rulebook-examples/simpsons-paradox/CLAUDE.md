@@ -28,3 +28,44 @@ Local Postgres regenerated from scratch on every `effortless build` via
 
 Before every `effortless build`, run `git status`. If dirty, pause and ask.
 Never auto-commit generated files.
+
+## Rulebook JSON format: compact data rows
+
+Every `data` array in the rulebook JSON must have **one object per line** — all
+fields of a single row on a single line, no internal newlines. The `schema` arrays
+and top-level structure stay pretty-printed; only the leaf data rows are compacted.
+
+**Correct:**
+```json
+"data": [
+  {"LoopId": "loop-01", "Title": "...", "Status": "complete", ...},
+  {"LoopId": "loop-02", "Title": "...", "Status": "planned", ...}
+]
+```
+
+**Wrong (multi-line row):**
+```json
+"data": [
+  {
+    "LoopId": "loop-01",
+    "Title": "...",
+    "Status": "complete"
+  }
+]
+```
+
+If Claude opens the rulebook and any data row is multi-line, compact it before
+making any other edits and before any commit. The `python3` one-liner to fix it:
+
+```python
+import json, re
+path = 'effortless-rulebook/simpsons-paradox-rulebook.json'
+rb = json.loads(open(path).read())
+# write pretty, then compact data rows
+pretty = json.dumps(rb, indent=2, ensure_ascii=False)
+# (use the compact_data_arrays helper pattern from the build scripts)
+```
+
+The easiest safe approach: load with `json.load`, mutate in memory, then write
+using the splice/compact pattern that keeps schema arrays pretty and data rows
+single-line. Never write multi-line data rows to this file.

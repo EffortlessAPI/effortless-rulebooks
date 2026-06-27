@@ -161,7 +161,13 @@ SELECT
   calc_model_summary_zero_strength_count(t.model_summary_id) AS zero_strength_count,-- Studies with StrataWonByLoser=0: no strata go against the pooled winner. These are structurally paradox-free.
   calc_model_summary_partial_count(t.model_summary_id) AS partial_count,        -- Studies with ParadoxStrength > 0 but IsReversal=FALSE: partial paradoxes real but not formally complete.
   calc_model_summary_total_paradox_strength(t.model_summary_id) AS total_paradox_strength,-- Sum of ParadoxStrength across all studies. Used to compute average.
-  calc_model_summary_avg_paradox_strength(t.model_summary_id) AS avg_paradox_strength-- Average ParadoxStrength across all studies: TotalParadoxStrength / StudyCount. A scalar summary of how paradox-rich this dataset is.
+  calc_model_summary_avg_paradox_strength(t.model_summary_id) AS avg_paradox_strength,-- Average ParadoxStrength across all studies: TotalParadoxStrength / StudyCount. A scalar summary of how paradox-rich this dataset is.
+  calc_model_summary_type_a_count(t.model_summary_id) AS type_a_count,          -- Studies classified as Type-A: sign flip AND full reversal (ReversalIntensity=1). The canonical Simpson's Paradox — allocation distortion reverses the pooled winner.
+  calc_model_summary_type_b_count(t.model_summary_id) AS type_b_count,          -- Studies classified as Type-B: sign flip but partial reversal (ReversalIntensity<1). Allocation distortion creates a sign flip but the pooled signal partially reflects per-stratum reality.
+  calc_model_summary_type_c_count(t.model_summary_id) AS type_c_count,          -- Studies classified as Type-C: no sign flip but substantial allocation distortion (>0.01). The pooled winner is correct but the pooled magnitude is distorted by allocation imbalance.
+  calc_model_summary_type_d_count(t.model_summary_id) AS type_d_count,          -- Studies classified as Type-D: no sign flip, negligible distortion. Pooled analysis is trustworthy — allocation is sufficiently balanced.
+  calc_model_summary_type_a_fraction(t.model_summary_id) AS type_a_fraction,    -- Fraction of studies that are Type-A (full canonical reversals). TypeACount / StudyCount.
+  calc_model_summary_distortion_taxonomy_coverage(t.model_summary_id) AS distortion_taxonomy_coverage-- Human-readable summary of the four-type distribution: e.g. 'A:2 B:1 C:1 D:0'. The model's self-portrait of its own distortion geometry.
 FROM model_summary t;
 
 -- ----------------------------------------------------------------------------

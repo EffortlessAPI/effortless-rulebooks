@@ -515,6 +515,66 @@ RETURNS NUMERIC AS $$
   SELECT (CASE WHEN (calc_model_summary_study_count(p_model_summary_id))::NUMERIC = 0 THEN ('')::text ELSE ((COALESCE(CASE WHEN (calc_model_summary_total_paradox_strength(p_model_summary_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_model_summary_total_paradox_strength(p_model_summary_id))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(CASE WHEN (calc_model_summary_study_count(p_model_summary_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_model_summary_study_count(p_model_summary_id))::numeric ELSE NULL END, 0), 0)))::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
+-- calc_model_summary_type_a_count
+-- Field: ModelSummary.TypeACount
+-- Type: aggregation | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_model_summary_type_a_count(p_model_summary_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((SELECT COUNT(*) FROM treatment_rankings WHERE calc_treatment_rankings_distortion_type(treatment_ranking_id) = 'A'))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_model_summary_type_b_count
+-- Field: ModelSummary.TypeBCount
+-- Type: aggregation | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_model_summary_type_b_count(p_model_summary_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((SELECT COUNT(*) FROM treatment_rankings WHERE calc_treatment_rankings_distortion_type(treatment_ranking_id) = 'B'))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_model_summary_type_c_count
+-- Field: ModelSummary.TypeCCount
+-- Type: aggregation | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_model_summary_type_c_count(p_model_summary_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((SELECT COUNT(*) FROM treatment_rankings WHERE calc_treatment_rankings_distortion_type(treatment_ranking_id) = 'C'))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_model_summary_type_d_count
+-- Field: ModelSummary.TypeDCount
+-- Type: aggregation | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_model_summary_type_d_count(p_model_summary_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((SELECT COUNT(*) FROM treatment_rankings WHERE calc_treatment_rankings_distortion_type(treatment_ranking_id) = 'D'))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_model_summary_type_a_fraction
+-- Field: ModelSummary.TypeAFraction
+-- Type: calculated | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_model_summary_type_a_fraction(p_model_summary_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT (CASE WHEN (calc_model_summary_study_count(p_model_summary_id))::NUMERIC = 0 THEN ('')::text ELSE ((COALESCE(CASE WHEN (calc_model_summary_type_a_count(p_model_summary_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_model_summary_type_a_count(p_model_summary_id))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(CASE WHEN (calc_model_summary_study_count(p_model_summary_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_model_summary_study_count(p_model_summary_id))::numeric ELSE NULL END, 0), 0)))::text END)::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_model_summary_distortion_taxonomy_coverage
+-- Field: ModelSummary.DistortionTaxonomyCoverage
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_model_summary_distortion_taxonomy_coverage(p_model_summary_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CONCAT('A:', calc_model_summary_type_a_count(p_model_summary_id), ' B:', calc_model_summary_type_b_count(p_model_summary_id), ' C:', calc_model_summary_type_c_count(p_model_summary_id), ' D:', calc_model_summary_type_d_count(p_model_summary_id)))::text;
+$$ LANGUAGE sql STABLE;
+
 -- calc_stratum_variables_name
 -- Field: StratumVariables.Name
 -- Type: calculated | DataType: string | Returns: TEXT
