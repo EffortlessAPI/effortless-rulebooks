@@ -1,0 +1,27 @@
+{
+  "ShowHidden": false,
+  "ShowAllFiles": false,
+  "CurrentPath": null,
+  "SSoTmeProjectFiles": null,
+  "SSoTmeProjectId": "44f6a0c8-6833-473d-914c-604860ede8ef",
+  "Name": "ross-style-business-rules",
+  "Description": "Claims System — Ross-style Business Rules demo: five declarative rules over four entities, rendered as RuleSpeak.",
+  "ProjectSettings": [
+    {
+      "Name": "project-name",
+      "Value": "ross-style-business-rules"
+    }
+  ],
+  "ProjectTranspilers": [
+    {
+      "IsSSoTTranspiler": false,
+      "Name": "rulebooktorulespeak",
+      "RelativePath": "/rulespeak",
+      "CommandLine": "rulebook-to-rulespeak -i ../effortless-rulebook/ross-style-business-rules-rulebook.json",
+      "IsDisabled": false,
+      "LastVersionUsed": "v2026.06.10.1308",
+      "LastUrl": "https://effortless-rulebook-to-rulespeak-v2026-06-10-1308-cmvbd4phczmeg.7pktzg2z971j0.cpln.app",
+      "Description": "Render the rulebook as plain-English RuleSpeak (HTML + Markdown)"
+    }
+  ]
+}
