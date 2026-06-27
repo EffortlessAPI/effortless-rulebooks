@@ -795,6 +795,26 @@ RETURNS NUMERIC AS $$
   SELECT (CASE WHEN calc_treatment_rankings_weighted_stratum_gap_sum(p_treatment_ranking_id) IS NULL THEN ('')::text ELSE (ABS((COALESCE(CASE WHEN (calc_treatment_rankings_weighted_stratum_gap_sum(p_treatment_ranking_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_treatment_rankings_weighted_stratum_gap_sum(p_treatment_ranking_id))::numeric ELSE NULL END, 0) - COALESCE(CASE WHEN (calc_treatment_rankings_signed_pooled_gap(p_treatment_ranking_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_treatment_rankings_signed_pooled_gap(p_treatment_ranking_id))::numeric ELSE NULL END, 0))))::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
+-- calc_treatment_rankings_distortion_type
+-- Field: TreatmentRankings.DistortionType
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_treatment_rankings_distortion_type(p_treatment_ranking_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CASE WHEN calc_treatment_rankings_allocation_distortion(p_treatment_ranking_id) IS NULL THEN ('')::text ELSE (CASE WHEN (calc_treatment_rankings_is_sign_flip(p_treatment_ranking_id) AND (calc_treatment_rankings_reversal_intensity(p_treatment_ranking_id))::NUMERIC = 1) THEN ('A')::text ELSE (CASE WHEN (calc_treatment_rankings_is_sign_flip(p_treatment_ranking_id) AND (calc_treatment_rankings_reversal_intensity(p_treatment_ranking_id))::NUMERIC < 1) THEN ('B')::text ELSE (CASE WHEN (NOT (calc_treatment_rankings_is_sign_flip(p_treatment_ranking_id)) AND (calc_treatment_rankings_allocation_distortion(p_treatment_ranking_id))::NUMERIC > 0.01) THEN ('C')::text ELSE ('D')::text END)::text END)::text END)::text END)::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_treatment_rankings_policy_implication
+-- Field: TreatmentRankings.PolicyImplication
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_treatment_rankings_policy_implication(p_treatment_ranking_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CASE WHEN calc_treatment_rankings_distortion_type(p_treatment_ranking_id) IS NULL THEN ('')::text ELSE (CASE WHEN calc_treatment_rankings_distortion_type(p_treatment_ranking_id) = 'A' THEN ('stratify-immediately')::text ELSE (CASE WHEN calc_treatment_rankings_distortion_type(p_treatment_ranking_id) = 'B' THEN ('investigate-confounder')::text ELSE (CASE WHEN calc_treatment_rankings_distortion_type(p_treatment_ranking_id) = 'C' THEN ('check-allocation-bias')::text ELSE ('pooled-analysis-trustworthy')::text END)::text END)::text END)::text END)::text;
+$$ LANGUAGE sql STABLE;
+
 -- ============================================================================
 -- MANY-SIDE RELATIONSHIP FUNCTIONS
 -- These functions aggregate child records for many-side relationships
