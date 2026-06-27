@@ -81,12 +81,12 @@
       },
       {
         "LoopId": "loop-08",
-        "Title": "Berkeley 1973: contested confounder — the model witnesses its own explanatory limits",
-        "Status": "planned",
-        "NewConcept": "Third Studies row (berkeley-1973); StratumVariable=department; CausalRole=contested; IsConfounder=false; IsParadoxExplained=false",
-        "DomainQuestion": "Berkeley shows IsReversal=true but the causal story is contested — department may be a mediator (downstream of gender), not a confounder. Can the model represent that its explanation is incomplete?",
-        "MockDataNote": "Berkeley aggregate: women 30%, men 45% admitted. Per top-6 departments: women at equal or higher rate in 4/6. IsReversal=true. StratumVariable.CausalRole='contested'. IsConfounder=false. IsParadoxExplained=false. The gap is witnessed.",
-        "NextSuggestion": "Add ParadoxStrength (scalar severity) and IsExplained across all three studies. StudySummary rolls up: 2 reversals, 1 explained (kidney), 1 structurally impossible (balanced), 1 witnessed-unexplained (berkeley). The model now describes its own epistemic state."
+        "Title": "Berkeley 1973: contested confounder — model reveals a PARTIAL paradox, not a clean reversal",
+        "Status": "complete",
+        "NewConcept": "Third Studies row (berkeley-1973); StratumVariable=department; CausalRole=contested; IsConfounder=false; IsParadoxExplained=false; PerStratumWinner=none (mixed, not unanimous)",
+        "DomainQuestion": "Does Berkeley show a clean reversal? No — PerStratumWinner='none' because the per-stratum winner is mixed (female wins 3/4 depts, male wins 1). The model surfaces a structural limit of the reversal definition: partial paradoxes are real but don't satisfy the strict IsReversal criterion.",
+        "MockDataNote": "Witnessed: male pooled 52.8% vs female 39.9% (large gap). Per dept: female wins A (82%>62%), B (68%>63%), D (35%>33%); male wins C (37%>34%). No unanimous per-stratum winner → IsReversal=FALSE by strict definition. The intuitive paradox is real; the formal paradox is partial.",
+        "NextSuggestion": "Add ParadoxStrength (scalar severity) to capture partial reversals — pooled gap and average per-stratum gap regardless of unanimity. Then StudySummary for epistemic coverage across all 3 studies."
       },
       {
         "LoopId": "loop-09",
@@ -132,6 +132,12 @@
         "Title": "Balanced Synthetic Study (degenerate case — reversal structurally impossible)",
         "Source": "Synthetic dataset constructed to demonstrate that perfectly balanced treatment allocation across strata algebraically prevents Simpson's Paradox. Not based on real data.",
         "SourceUrl": ""
+      },
+      {
+        "StudyId": "berkeley-1973",
+        "Title": "UC Berkeley Graduate Admissions (Bickel et al. 1975) — contested confounder",
+        "Source": "Bickel PJ, Hammel EA, O'Connell JW. Sex Bias in Graduate Admissions: Data from Berkeley. Science. 1975;187:398-404.",
+        "SourceUrl": "https://www.science.org/doi/10.1126/science.187.4175.398"
       }
     ]
   },
@@ -152,7 +158,9 @@
       { "TreatmentId": "kidney-1986-A",        "Study": "kidney-1986",        "TreatmentLabel": "A", "Description": "Open surgery / percutaneous nephrolithotomy (PCNL) — the more invasive procedure, used preferentially for large stones." },
       { "TreatmentId": "kidney-1986-B",        "Study": "kidney-1986",        "TreatmentLabel": "B", "Description": "Extracorporeal shock wave lithotripsy (ESWL) — the less invasive procedure, used more for small stones." },
       { "TreatmentId": "balanced-synthetic-A", "Study": "balanced-synthetic", "TreatmentLabel": "A", "Description": "Synthetic treatment A — 60% success rate in both strata. Allocated equally (50%) to each stratum." },
-      { "TreatmentId": "balanced-synthetic-B", "Study": "balanced-synthetic", "TreatmentLabel": "B", "Description": "Synthetic treatment B — 50% success rate in both strata. Allocated equally (50%) to each stratum." }
+      { "TreatmentId": "balanced-synthetic-B", "Study": "balanced-synthetic", "TreatmentLabel": "B", "Description": "Synthetic treatment B — 50% success rate in both strata. Allocated equally (50%) to each stratum." },
+      { "TreatmentId": "berkeley-1973-male",   "Study": "berkeley-1973",      "TreatmentLabel": "A", "Description": "Male applicants (labeled A). Pooled admission rate appears higher than female." },
+      { "TreatmentId": "berkeley-1973-female", "Study": "berkeley-1973",      "TreatmentLabel": "B", "Description": "Female applicants (labeled B). Pooled admission rate appears lower, but per-department rates are equal or higher in most departments." }
     ]
   },
 
@@ -170,7 +178,11 @@
       { "StratumId": "kidney-1986-small",      "Study": "kidney-1986",        "StratumLabel": "small", "Description": "Patients with small kidney stones — easier to treat, higher baseline success rate regardless of treatment." },
       { "StratumId": "kidney-1986-large",      "Study": "kidney-1986",        "StratumLabel": "large", "Description": "Patients with large kidney stones — harder to treat, lower baseline success rate regardless of treatment. Preferentially assigned to Treatment A." },
       { "StratumId": "balanced-synthetic-easy","Study": "balanced-synthetic", "StratumLabel": "easy",  "Description": "Easy stratum — higher baseline success rate. Receives exactly 50% of each treatment's cases." },
-      { "StratumId": "balanced-synthetic-hard","Study": "balanced-synthetic", "StratumLabel": "hard",  "Description": "Hard stratum — lower baseline success rate. Receives exactly 50% of each treatment's cases. Equal allocation prevents confounding." }
+      { "StratumId": "balanced-synthetic-hard","Study": "balanced-synthetic", "StratumLabel": "hard",  "Description": "Hard stratum — lower baseline success rate. Receives exactly 50% of each treatment's cases. Equal allocation prevents confounding." },
+      { "StratumId": "berkeley-1973-dept-A",   "Study": "berkeley-1973",      "StratumLabel": "dept-A","Description": "Dept A — highly competitive (low admission rate ~64%). Women applied here at roughly equal rates to men." },
+      { "StratumId": "berkeley-1973-dept-B",   "Study": "berkeley-1973",      "StratumLabel": "dept-B","Description": "Dept B — competitive (~35% admission). Women applied here less often." },
+      { "StratumId": "berkeley-1973-dept-C",   "Study": "berkeley-1973",      "StratumLabel": "dept-C","Description": "Dept C — moderately selective (~34% admission). More balanced gender application." },
+      { "StratumId": "berkeley-1973-dept-D",   "Study": "berkeley-1973",      "StratumLabel": "dept-D","Description": "Dept D — open (~64% admission). Women applied here most heavily — this is the easy department that women disproportionately chose." }
     ]
   },
 
@@ -193,10 +205,18 @@
       { "CaseCellId": "kidney-1986-small-B",        "Study": "kidney-1986",        "StratumLabel": "small", "TreatmentLabel": "B", "Successes": 234, "Cases": 270 },
       { "CaseCellId": "kidney-1986-large-A",        "Study": "kidney-1986",        "StratumLabel": "large", "TreatmentLabel": "A", "Successes": 192, "Cases": 263 },
       { "CaseCellId": "kidney-1986-large-B",        "Study": "kidney-1986",        "StratumLabel": "large", "TreatmentLabel": "B", "Successes": 55,  "Cases": 80  },
-      { "CaseCellId": "balanced-synthetic-easy-A",  "Study": "balanced-synthetic", "StratumLabel": "easy",  "TreatmentLabel": "A", "Successes": 60,  "Cases": 100 },
-      { "CaseCellId": "balanced-synthetic-easy-B",  "Study": "balanced-synthetic", "StratumLabel": "easy",  "TreatmentLabel": "B", "Successes": 50,  "Cases": 100 },
-      { "CaseCellId": "balanced-synthetic-hard-A",  "Study": "balanced-synthetic", "StratumLabel": "hard",  "TreatmentLabel": "A", "Successes": 60,  "Cases": 100 },
-      { "CaseCellId": "balanced-synthetic-hard-B",  "Study": "balanced-synthetic", "StratumLabel": "hard",  "TreatmentLabel": "B", "Successes": 50,  "Cases": 100 }
+      { "CaseCellId": "balanced-synthetic-easy-A",  "Study": "balanced-synthetic", "StratumLabel": "easy",   "TreatmentLabel": "A", "Successes": 60,  "Cases": 100 },
+      { "CaseCellId": "balanced-synthetic-easy-B",  "Study": "balanced-synthetic", "StratumLabel": "easy",   "TreatmentLabel": "B", "Successes": 50,  "Cases": 100 },
+      { "CaseCellId": "balanced-synthetic-hard-A",  "Study": "balanced-synthetic", "StratumLabel": "hard",   "TreatmentLabel": "A", "Successes": 60,  "Cases": 100 },
+      { "CaseCellId": "balanced-synthetic-hard-B",  "Study": "balanced-synthetic", "StratumLabel": "hard",   "TreatmentLabel": "B", "Successes": 50,  "Cases": 100 },
+      { "CaseCellId": "berkeley-1973-dept-A-male",  "Study": "berkeley-1973",      "StratumLabel": "dept-A", "TreatmentLabel": "A", "Successes": 512, "Cases": 825 },
+      { "CaseCellId": "berkeley-1973-dept-A-female","Study": "berkeley-1973",      "StratumLabel": "dept-A", "TreatmentLabel": "B", "Successes": 89,  "Cases": 108 },
+      { "CaseCellId": "berkeley-1973-dept-B-male",  "Study": "berkeley-1973",      "StratumLabel": "dept-B", "TreatmentLabel": "A", "Successes": 353, "Cases": 560 },
+      { "CaseCellId": "berkeley-1973-dept-B-female","Study": "berkeley-1973",      "StratumLabel": "dept-B", "TreatmentLabel": "B", "Successes": 17,  "Cases": 25  },
+      { "CaseCellId": "berkeley-1973-dept-C-male",  "Study": "berkeley-1973",      "StratumLabel": "dept-C", "TreatmentLabel": "A", "Successes": 120, "Cases": 325 },
+      { "CaseCellId": "berkeley-1973-dept-C-female","Study": "berkeley-1973",      "StratumLabel": "dept-C", "TreatmentLabel": "B", "Successes": 202, "Cases": 593 },
+      { "CaseCellId": "berkeley-1973-dept-D-male",  "Study": "berkeley-1973",      "StratumLabel": "dept-D", "TreatmentLabel": "A", "Successes": 138, "Cases": 417 },
+      { "CaseCellId": "berkeley-1973-dept-D-female","Study": "berkeley-1973",      "StratumLabel": "dept-D", "TreatmentLabel": "B", "Successes": 131, "Cases": 375 }
     ]
   },
 
@@ -224,10 +244,18 @@
       { "StratumSummaryId": "kidney-1986-small-B",       "Study": "kidney-1986",        "StratumLabel": "small", "TreatmentLabel": "B" },
       { "StratumSummaryId": "kidney-1986-large-A",       "Study": "kidney-1986",        "StratumLabel": "large", "TreatmentLabel": "A" },
       { "StratumSummaryId": "kidney-1986-large-B",       "Study": "kidney-1986",        "StratumLabel": "large", "TreatmentLabel": "B" },
-      { "StratumSummaryId": "balanced-synthetic-easy-A", "Study": "balanced-synthetic", "StratumLabel": "easy",  "TreatmentLabel": "A" },
-      { "StratumSummaryId": "balanced-synthetic-easy-B", "Study": "balanced-synthetic", "StratumLabel": "easy",  "TreatmentLabel": "B" },
-      { "StratumSummaryId": "balanced-synthetic-hard-A", "Study": "balanced-synthetic", "StratumLabel": "hard",  "TreatmentLabel": "A" },
-      { "StratumSummaryId": "balanced-synthetic-hard-B", "Study": "balanced-synthetic", "StratumLabel": "hard",  "TreatmentLabel": "B" }
+      { "StratumSummaryId": "balanced-synthetic-easy-A",  "Study": "balanced-synthetic", "StratumLabel": "easy",   "TreatmentLabel": "A" },
+      { "StratumSummaryId": "balanced-synthetic-easy-B",  "Study": "balanced-synthetic", "StratumLabel": "easy",   "TreatmentLabel": "B" },
+      { "StratumSummaryId": "balanced-synthetic-hard-A",  "Study": "balanced-synthetic", "StratumLabel": "hard",   "TreatmentLabel": "A" },
+      { "StratumSummaryId": "balanced-synthetic-hard-B",  "Study": "balanced-synthetic", "StratumLabel": "hard",   "TreatmentLabel": "B" },
+      { "StratumSummaryId": "berkeley-1973-dept-A-male",  "Study": "berkeley-1973",      "StratumLabel": "dept-A", "TreatmentLabel": "A" },
+      { "StratumSummaryId": "berkeley-1973-dept-A-female","Study": "berkeley-1973",      "StratumLabel": "dept-A", "TreatmentLabel": "B" },
+      { "StratumSummaryId": "berkeley-1973-dept-B-male",  "Study": "berkeley-1973",      "StratumLabel": "dept-B", "TreatmentLabel": "A" },
+      { "StratumSummaryId": "berkeley-1973-dept-B-female","Study": "berkeley-1973",      "StratumLabel": "dept-B", "TreatmentLabel": "B" },
+      { "StratumSummaryId": "berkeley-1973-dept-C-male",  "Study": "berkeley-1973",      "StratumLabel": "dept-C", "TreatmentLabel": "A" },
+      { "StratumSummaryId": "berkeley-1973-dept-C-female","Study": "berkeley-1973",      "StratumLabel": "dept-C", "TreatmentLabel": "B" },
+      { "StratumSummaryId": "berkeley-1973-dept-D-male",  "Study": "berkeley-1973",      "StratumLabel": "dept-D", "TreatmentLabel": "A" },
+      { "StratumSummaryId": "berkeley-1973-dept-D-female","Study": "berkeley-1973",      "StratumLabel": "dept-D", "TreatmentLabel": "B" }
     ]
   },
 
@@ -253,6 +281,15 @@
         "AffectsTreatmentAssignment": true,
         "AffectsOutcome": true,
         "MechanismNote": "Large kidney stones were preferentially assigned to Treatment A (the more aggressive procedure), while small stones more often received Treatment B. Independently, large stones have lower baseline cure rates regardless of treatment. This dual influence — on both assignment and on outcome — is what drives the pooled reversal."
+      },
+      {
+        "StratumVariableId": "berkeley-1973-department",
+        "Study": "berkeley-1973",
+        "VariableName": "department",
+        "CausalRole": "contested",
+        "AffectsTreatmentAssignment": true,
+        "AffectsOutcome": true,
+        "MechanismNote": "Department choice correlates with both gender (women applied disproportionately to competitive departments) and admission rate (competitive departments admit fewer applicants regardless of gender). However, department choice may itself be downstream of gender — if women systematically self-select into harder departments due to societal factors, then department is a mediator, not a confounder. The causal role is genuinely contested in the literature. IsConfounder=FALSE because CausalRole='contested', not because the flags are false."
       },
       {
         "StratumVariableId": "balanced-synthetic-stratum",
@@ -291,7 +328,8 @@
     ],
     "data": [
       { "TreatmentRankingId": "kidney-1986-A-vs-B",        "Study": "kidney-1986",        "TreatmentA": "A", "TreatmentB": "B" },
-      { "TreatmentRankingId": "balanced-synthetic-A-vs-B", "Study": "balanced-synthetic", "TreatmentA": "A", "TreatmentB": "B" }
+      { "TreatmentRankingId": "balanced-synthetic-A-vs-B", "Study": "balanced-synthetic", "TreatmentA": "A", "TreatmentB": "B" },
+      { "TreatmentRankingId": "berkeley-1973-A-vs-B",       "Study": "berkeley-1973",      "TreatmentA": "A", "TreatmentB": "B" }
     ]
   },
 
