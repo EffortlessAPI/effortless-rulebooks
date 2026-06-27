@@ -1,0 +1,5 @@
+dataset_id,stone_size,treatment,successes,trials
+loop1,small,A,81,87
+loop1,small,B,234,270
+loop1,large,A,192,263
+loop1,large,B,55,80
