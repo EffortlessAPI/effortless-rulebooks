@@ -54,57 +54,57 @@
       },
       {
         "LoopId": "loop-05",
-        "Title": "StratumVariable: name the confounding factor and its causal role",
-        "Status": "planned",
-        "NewConcept": "StratumVariables (one per study, describing the stratifying variable and why it confounds)",
-        "DomainQuestion": "What IS the stratum variable, and why does it cause both differential treatment assignment and differential outcome?",
-        "MockDataNote": "StratumVariable: stone_size. CausalRole: confounder. Path to treatment: large stones were preferentially assigned to A. Path to outcome: large stones have lower baseline cure rates.",
-        "NextSuggestion": "Ask: how large is the treatment-allocation imbalance across strata? CaseCells already have trial counts; derive TreatmentExposureFraction per (stratum, treatment) — the mechanism of confounding."
+        "Title": "StratumVariable: name the confounding factor, its causal role, and derive IsConfounder + IsParadoxExplained",
+        "Status": "complete",
+        "NewConcept": "StratumVariables (one per study); CausalRole field; IsConfounder boolean; IsParadoxExplained on TreatmentRankings",
+        "DomainQuestion": "What IS the stratum variable, why does it confound, and does the model witness its own explanation?",
+        "MockDataNote": "kidney-1986: VariableName=stone_size, CausalRole=confounder, AffectsTreatmentAssignment=true, AffectsOutcome=true → IsConfounder=true → IsParadoxExplained=true on TreatmentRankings.",
+        "NextSuggestion": "Ask: how large is the allocation imbalance? Derive TreatmentExposureFraction on CaseCells — the fraction of each treatment's cases that land in each stratum. High imbalance = confounding mechanism as a witnessed number."
       },
       {
         "LoopId": "loop-06",
-        "Title": "TreatmentExposureFraction: how unevenly is each treatment allocated across strata?",
+        "Title": "TreatmentExposureFraction: the allocation imbalance as a witnessed number",
         "Status": "planned",
-        "NewConcept": "TreatmentExposureFraction field on CaseCells (fraction of this treatment's total cases that land in this stratum)",
-        "DomainQuestion": "What fraction of each treatment's total cases fall in each stratum? High imbalance = confounding mechanism.",
-        "MockDataNote": "A: 75% of its cases are large stones. B: only 23% are large stones. This asymmetry IS the mechanism. Now it's a witnessed number, not a verbal description.",
-        "NextSuggestion": "Add a second study (Berkeley 1973 admissions) — same domain model, different subject matter. Two studies, one schema. The DAG either witnesses a reversal or doesn't for each."
+        "NewConcept": "TreatmentExposureFraction field on CaseCells (Cases / TotalCasesForTreatment in this study)",
+        "DomainQuestion": "What fraction of each treatment's total cases fall in each stratum? High imbalance across strata is the mechanism of confounding.",
+        "MockDataNote": "A: 263/350=75% in large-stone stratum. B: 80/350=23% in large-stone stratum. The 52-point gap IS the mechanism — now a first-class derived number.",
+        "NextSuggestion": "Add a degenerate study where treatment allocation is perfectly balanced across strata. IsReversal must be FALSE — not because the data says so, but because the algebra guarantees it. The model witnesses its own structural impossibility."
       },
       {
         "LoopId": "loop-07",
-        "Title": "Second study: Berkeley 1973 — same model, different domain",
+        "Title": "Degenerate study: balanced allocation → IsReversal structurally impossible",
         "Status": "planned",
-        "NewConcept": "Second Studies row (berkeley-1973); CaseCells for 6 departments; StratumVariable = department",
-        "DomainQuestion": "Does the Berkeley admissions data also exhibit a reversal when stratified by department?",
-        "MockDataNote": "Aggregate: women admitted at lower rate. Per department: women admitted at equal or higher rate in most departments. Same paradox, different domain. IsReversal = true.",
-        "NextSuggestion": "Ask: across studies, can we rank them by how severe the paradox is? Add ParadoxStrength to TreatmentRanking — a scalar derived from pooled gap + average per-stratum gap."
+        "NewConcept": "Second Studies row (balanced-synthetic); equal TreatmentExposureFraction across strata; IsReversal = FALSE by construction",
+        "DomainQuestion": "If every stratum gets the same treatment-allocation fraction, can a reversal occur? The DAG should witness that it cannot.",
+        "MockDataNote": "Synthetic: A and B each assigned 50/50 to small/large strata. A=60% success both strata, B=50% both. Pooled: A=60%, B=50%. No reversal. IsParadoxExplained vacuously true (IsConfounder=false, no confounding, no reversal).",
+        "NextSuggestion": "Add Berkeley 1973 — same DAG, contested domain. Aggregate: women admitted at lower rate. Per-department: women admitted at equal or higher rate in most. IsReversal=true. But IsConfounder is ambiguous — department choice may be downstream of gender (mediator, not confounder). The model witnesses its own explanatory limits."
       },
       {
         "LoopId": "loop-08",
-        "Title": "ParadoxStrength: scalar severity of the reversal across studies",
+        "Title": "Berkeley 1973: contested confounder — the model witnesses its own explanatory limits",
         "Status": "planned",
-        "NewConcept": "ParadoxStrength field on TreatmentRankings; StratumDelta field on StratumSummaries",
-        "DomainQuestion": "How large is the reversal? Can we rank studies by paradox severity?",
-        "MockDataNote": "Kidney: pooled gap ~4.6pp, avg stratum gap ~5.3pp, strength ~0.10. Berkeley will have its own strength score.",
-        "NextSuggestion": "Add a control study with NO reversal (balanced treatment allocation across strata) to validate that the model correctly witnesses absence of paradox as well as presence."
+        "NewConcept": "Third Studies row (berkeley-1973); StratumVariable=department; CausalRole=contested; IsConfounder=false; IsParadoxExplained=false",
+        "DomainQuestion": "Berkeley shows IsReversal=true but the causal story is contested — department may be a mediator (downstream of gender), not a confounder. Can the model represent that its explanation is incomplete?",
+        "MockDataNote": "Berkeley aggregate: women 30%, men 45% admitted. Per top-6 departments: women at equal or higher rate in 4/6. IsReversal=true. StratumVariable.CausalRole='contested'. IsConfounder=false. IsParadoxExplained=false. The gap is witnessed.",
+        "NextSuggestion": "Add ParadoxStrength (scalar severity) and IsExplained across all three studies. StudySummary rolls up: 2 reversals, 1 explained (kidney), 1 structurally impossible (balanced), 1 witnessed-unexplained (berkeley). The model now describes its own epistemic state."
       },
       {
         "LoopId": "loop-09",
-        "Title": "Control study: no reversal — validate the model witnesses absence correctly",
+        "Title": "ParadoxStrength: scalar severity derived from pooled gap and per-stratum gap",
         "Status": "planned",
-        "NewConcept": "Third Studies row (synthetic-control); balanced CaseCells where pooled and per-stratum agree",
-        "DomainQuestion": "If treatment allocation is balanced across strata, does the paradox disappear? IsReversal should = false.",
-        "MockDataNote": "Synthetic: A=60%, B=50% success in BOTH strata. Pooled: A=60%, B=50%. Per-stratum: same direction. No reversal. Validates model in both directions.",
-        "NextSuggestion": "Loop 10 synthesis: add StudySummary rolling up across all studies — how many studies, how many reversals witnessed, average paradox strength. The model now describes its own coverage."
+        "NewConcept": "ParadoxStrength on TreatmentRankings; PooledGap and AvgStratumGap on StratumSummaries",
+        "DomainQuestion": "How large is the reversal? Can we rank studies by paradox severity, and does strength correlate with allocation imbalance?",
+        "MockDataNote": "Kidney: pooled gap ~4.6pp favoring B, avg stratum gap ~5pp favoring A. Berkeley: larger pooled gap, varies by department. Balanced: strength=0 (no reversal).",
+        "NextSuggestion": "StudySummary: roll up ReversalCount, ExplainedCount, AvgParadoxStrength across all studies. The model now describes its own epistemic coverage in a single view."
       },
       {
         "LoopId": "loop-10",
-        "Title": "StudySummary: the model describes its own coverage",
+        "Title": "StudySummary: the model witnesses its own epistemic coverage",
         "Status": "planned",
-        "NewConcept": "StudySummary table aggregating across Studies (StudyCount, ReversalCount, AvgParadoxStrength)",
-        "DomainQuestion": "Across all studies in this model, how many exhibit the paradox and how severe is it on average?",
-        "MockDataNote": "3 studies: 2 reversals (kidney, berkeley), 1 non-reversal (control). AvgParadoxStrength over the reversal cases.",
-        "NextSuggestion": "Real-data phase: pour a fresh open dataset through this identical DAG. Any reversal it surfaces is now deductively certain — the instrument is validated on three datasets."
+        "NewConcept": "StudySummary table (one row per model instance): StudyCount, ReversalCount, ExplainedCount, UnexplainedCount, ImpossibleCount, AvgParadoxStrength",
+        "DomainQuestion": "Across all studies in this model, what is the epistemic state? How many reversals, how many explained, how many witnessed-but-unexplained?",
+        "MockDataNote": "3 studies: ReversalCount=2 (kidney+berkeley), ExplainedCount=1 (kidney), UnexplainedCount=1 (berkeley), ImpossibleCount=1 (balanced). The model now holds a mirror to itself.",
+        "NextSuggestion": "Pour a fresh open dataset through this identical DAG. Any reversal it surfaces is deductively certain. The instrument is validated across three structurally distinct cases."
       }
     ]
   },
@@ -211,6 +211,32 @@
     ]
   },
 
+  "StratumVariables": {
+    "Description": "Table: StratumVariables — one row per study, naming the variable that defines the strata and describing its causal role. A confounder affects both treatment assignment AND outcome; a mediator is downstream of treatment; a contested variable is one where the causal role is disputed. IsConfounder is derived from these two boolean flags.",
+    "schema": [
+      { "name": "StratumVariableId",          "datatype": "string",  "type": "raw",        "nullable": false, "Description": "Unique slug (e.g. kidney-1986-stone-size)." },
+      { "name": "Name",                        "datatype": "string",  "type": "calculated", "nullable": false, "Description": "Display label.", "formula": "={{StratumVariableId}}" },
+      { "name": "Study",                       "datatype": "string",  "type": "relationship","nullable": false, "Description": "FK to the parent Study.", "RelatedTo": "Studies" },
+      { "name": "VariableName",                "datatype": "string",  "type": "raw",        "nullable": false, "Description": "The name of the stratifying variable (e.g. stone_size, department, age_group)." },
+      { "name": "CausalRole",                  "datatype": "string",  "type": "raw",        "nullable": false, "Description": "The variable's causal role: 'confounder' (affects both assignment and outcome), 'mediator' (downstream of treatment), 'contested' (causal role disputed), 'unknown'." },
+      { "name": "AffectsTreatmentAssignment",  "datatype": "boolean", "type": "raw",        "nullable": false, "Description": "TRUE if this variable causally influences which treatment a patient receives. Required for confounding." },
+      { "name": "AffectsOutcome",              "datatype": "boolean", "type": "raw",        "nullable": false, "Description": "TRUE if this variable causally influences the outcome independently of treatment. Required for confounding." },
+      { "name": "IsConfounder",               "datatype": "boolean", "type": "calculated", "nullable": false, "Description": "TRUE when AffectsTreatmentAssignment AND AffectsOutcome AND CausalRole = 'confounder'. A confounder is the classic driver of Simpson's Paradox.", "formula": "=AND({{AffectsTreatmentAssignment}}, {{AffectsOutcome}}, {{CausalRole}} = \"confounder\")" },
+      { "name": "MechanismNote",               "datatype": "string",  "type": "raw",        "nullable": true,  "Description": "Plain-language description of how this variable creates the confounding: why it affects both assignment and outcome." }
+    ],
+    "data": [
+      {
+        "StratumVariableId": "kidney-1986-stone-size",
+        "Study": "kidney-1986",
+        "VariableName": "stone_size",
+        "CausalRole": "confounder",
+        "AffectsTreatmentAssignment": true,
+        "AffectsOutcome": true,
+        "MechanismNote": "Large kidney stones were preferentially assigned to Treatment A (the more aggressive procedure), while small stones more often received Treatment B. Independently, large stones have lower baseline cure rates regardless of treatment. This dual influence — on both assignment and on outcome — is what drives the pooled reversal."
+      }
+    ]
+  },
+
   "TreatmentRankings": {
     "Description": "Table: TreatmentRankings — one row per treatment-pair comparison within a study. Derives the pooled winner, the per-stratum winner, and the IsReversal boolean. The paradox emerges here as a derived fact: IsReversal is true when the pooled winner and the per-stratum winner disagree.",
     "schema": [
@@ -230,7 +256,9 @@
       { "name": "StrataWonByA",       "datatype": "integer", "type": "aggregation",  "nullable": true,  "Description": "Number of strata where A wins: count StratumSummaries rows whose TreatmentLabel=TreatmentA AND StratumWinner=TreatmentA. These are the one-per-stratum sentinel rows.", "formula": "=COUNTIFS(StratumSummaries!{{Study}}, {{Study}}, StratumSummaries!{{TreatmentLabel}}, {{TreatmentA}}, StratumSummaries!{{StratumWinner}}, {{TreatmentA}})" },
       { "name": "StrataWonByB",       "datatype": "integer", "type": "aggregation",  "nullable": true,  "Description": "Number of strata where B wins: count StratumSummaries rows whose TreatmentLabel=TreatmentA AND StratumWinner=TreatmentB.", "formula": "=COUNTIFS(StratumSummaries!{{Study}}, {{Study}}, StratumSummaries!{{TreatmentLabel}}, {{TreatmentA}}, StratumSummaries!{{StratumWinner}}, {{TreatmentB}})" },
       { "name": "PerStratumWinner",   "datatype": "string",  "type": "calculated",   "nullable": true,  "Description": "The treatment that wins in every stratum — 'A' if StrataWonByA = StratumCount, 'B' if StrataWonByB = StratumCount, else 'none' (no unanimous per-stratum winner).", "formula": "=IF({{StrataWonByA}} = {{StratumCount}}, {{TreatmentA}}, IF({{StrataWonByB}} = {{StratumCount}}, {{TreatmentB}}, \"none\"))" },
-      { "name": "IsReversal",         "datatype": "boolean", "type": "calculated",   "nullable": false, "Description": "TRUE when the pooled winner and the per-stratum winner disagree — i.e. Simpson's Paradox is present. FALSE otherwise. This is the paradox as a derived fact, not a modeled entity.", "formula": "=AND({{PerStratumWinner}} <> \"none\", {{PooledWinner}} <> {{PerStratumWinner}})" }
+      { "name": "IsReversal",          "datatype": "boolean", "type": "calculated",   "nullable": false, "Description": "TRUE when the pooled winner and the per-stratum winner disagree — i.e. Simpson's Paradox is present. FALSE otherwise. This is the paradox as a derived fact, not a modeled entity.", "formula": "=AND({{PerStratumWinner}} <> \"none\", {{PooledWinner}} <> {{PerStratumWinner}})" },
+      { "name": "ConfoundersInStudy", "datatype": "integer", "type": "aggregation",  "nullable": true,  "Description": "Count of StratumVariables in this study whose IsConfounder = TRUE. When > 0, the paradox has a causal explanation.", "formula": "=COUNTIFS(StratumVariables!{{Study}}, {{Study}}, StratumVariables!{{IsConfounder}}, TRUE())" },
+      { "name": "IsParadoxExplained", "datatype": "boolean", "type": "calculated",   "nullable": false, "Description": "TRUE when IsReversal is present AND at least one confirmed confounder exists in the study. The model witnesses its own explanatory completeness — or its limits.", "formula": "=AND({{IsReversal}}, {{ConfoundersInStudy}} > 0)" }
     ],
     "data": [
       { "TreatmentRankingId": "kidney-1986-A-vs-B", "Study": "kidney-1986", "TreatmentA": "A", "TreatmentB": "B" }

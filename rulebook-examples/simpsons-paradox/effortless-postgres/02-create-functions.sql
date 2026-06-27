@@ -275,6 +275,26 @@ RETURNS TEXT AS $$
   SELECT (CASE WHEN calc_stratum_summaries_stratum_rate_a(p_stratum_summary_id) > calc_stratum_summaries_stratum_rate_b(p_stratum_summary_id) THEN ('A')::text ELSE ('B')::text END)::text;
 $$ LANGUAGE sql STABLE;
 
+-- calc_stratum_variables_name
+-- Field: StratumVariables.Name
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_stratum_variables_name(p_stratum_variable_id TEXT)
+RETURNS TEXT AS $$
+  SELECT ((SELECT NULLIF(stratum_variable_id, '') FROM stratum_variables WHERE stratum_variable_id = p_stratum_variable_id))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_stratum_variables_is_confounder
+-- Field: StratumVariables.IsConfounder
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_stratum_variables_is_confounder(p_stratum_variable_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((COALESCE((SELECT affects_treatment_assignment FROM stratum_variables WHERE stratum_variable_id = p_stratum_variable_id), FALSE) AND COALESCE((SELECT affects_outcome FROM stratum_variables WHERE stratum_variable_id = p_stratum_variable_id), FALSE) AND (SELECT NULLIF(causal_role, '') FROM stratum_variables WHERE stratum_variable_id = p_stratum_variable_id) = 'confounder'))::boolean;
+$$ LANGUAGE sql STABLE;
+
 -- calc_treatment_rankings_name
 -- Field: TreatmentRankings.Name
 -- Type: calculated | DataType: string | Returns: TEXT
@@ -403,6 +423,26 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION calc_treatment_rankings_is_reversal(p_treatment_ranking_id TEXT)
 RETURNS BOOLEAN AS $$
   SELECT ((calc_treatment_rankings_per_stratum_winner(p_treatment_ranking_id) <> 'none' AND calc_treatment_rankings_pooled_winner(p_treatment_ranking_id) <> calc_treatment_rankings_per_stratum_winner(p_treatment_ranking_id)))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_treatment_rankings_confounders_in_study
+-- Field: TreatmentRankings.ConfoundersInStudy
+-- Type: aggregation | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_treatment_rankings_confounders_in_study(p_treatment_ranking_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((SELECT COUNT(*) FROM stratum_variables WHERE study = (SELECT NULLIF(study, '') FROM treatment_rankings WHERE treatment_ranking_id = p_treatment_ranking_id) AND calc_stratum_variables_is_confounder(stratum_variable_id) = TRUE))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_treatment_rankings_is_paradox_explained
+-- Field: TreatmentRankings.IsParadoxExplained
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_treatment_rankings_is_paradox_explained(p_treatment_ranking_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((calc_treatment_rankings_is_reversal(p_treatment_ranking_id) AND (calc_treatment_rankings_confounders_in_study(p_treatment_ranking_id))::NUMERIC > 0));
 $$ LANGUAGE sql STABLE;
 
 -- ============================================================================

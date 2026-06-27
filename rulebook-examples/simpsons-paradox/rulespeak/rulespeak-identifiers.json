@@ -1,6 +1,6 @@
 {
   "_comment": "Stable DR-number ledger for rulebook-to-rulespeak. Auto-maintained; feed this file back in on the next build to keep rule numbers stable. Numbers in 'Retired' are tombstones and are never reissued. Hand-edit an Assignments number only to deliberately re-pin a rule.",
-  "NextId": 30,
+  "NextId": 33,
   "Assignments": {
     "Studies.TotalCases": 1,
     "Studies.CellCount": 2,
@@ -19,18 +19,21 @@
     "StratumSummaries.StratumCasesB": 15,
     "StratumSummaries.StratumRateB": 16,
     "StratumSummaries.StratumWinner": 17,
-    "TreatmentRankings.TotalCasesA": 18,
-    "TreatmentRankings.TotalSuccessesA": 19,
-    "TreatmentRankings.PooledRateA": 20,
-    "TreatmentRankings.TotalCasesB": 21,
-    "TreatmentRankings.TotalSuccessesB": 22,
-    "TreatmentRankings.PooledRateB": 23,
-    "TreatmentRankings.PooledWinner": 24,
-    "TreatmentRankings.StratumCount": 25,
-    "TreatmentRankings.StrataWonByA": 26,
-    "TreatmentRankings.StrataWonByB": 27,
-    "TreatmentRankings.PerStratumWinner": 28,
-    "TreatmentRankings.IsReversal": 29
+    "StratumVariables.IsConfounder": 18,
+    "TreatmentRankings.TotalCasesA": 19,
+    "TreatmentRankings.TotalSuccessesA": 20,
+    "TreatmentRankings.PooledRateA": 21,
+    "TreatmentRankings.TotalCasesB": 22,
+    "TreatmentRankings.TotalSuccessesB": 23,
+    "TreatmentRankings.PooledRateB": 24,
+    "TreatmentRankings.PooledWinner": 25,
+    "TreatmentRankings.StratumCount": 26,
+    "TreatmentRankings.StrataWonByA": 27,
+    "TreatmentRankings.StrataWonByB": 28,
+    "TreatmentRankings.PerStratumWinner": 29,
+    "TreatmentRankings.IsReversal": 30,
+    "TreatmentRankings.ConfoundersInStudy": 31,
+    "TreatmentRankings.IsParadoxExplained": 32
   },
   "Retired": []
 }

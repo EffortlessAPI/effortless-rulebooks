@@ -13,6 +13,7 @@ ALTER TABLE treatments ENABLE ROW LEVEL SECURITY;
 ALTER TABLE strata ENABLE ROW LEVEL SECURITY;
 ALTER TABLE case_cells ENABLE ROW LEVEL SECURITY;
 ALTER TABLE stratum_summaries ENABLE ROW LEVEL SECURITY;
+ALTER TABLE stratum_variables ENABLE ROW LEVEL SECURITY;
 ALTER TABLE treatment_rankings ENABLE ROW LEVEL SECURITY;
 
 -- TODO: Add specific RLS policies based on your security requirements
