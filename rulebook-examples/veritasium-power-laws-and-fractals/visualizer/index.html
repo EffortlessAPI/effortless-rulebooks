@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Power Laws & Fractals - Interactive Visualizer</title>
+    <style>
+        :root {
+            --bg-dark: #0d1117;
+            --bg-card: #161b22;
+            --bg-hover: #21262d;
+            --border: #30363d;
+            --text-primary: #c9d1d9;
+            --text-secondary: #8b949e;
+            --text-muted: #6e7681;
+            --accent-blue: #58a6ff;
+            --accent-green: #3fb950;
+            --accent-yellow: #d29922;
+            --accent-red: #f85149;
+            --accent-purple: #a371f7;
+            --accent-cyan: #39d353;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'JetBrains Mono', 'Fira Code', 'SF Mono', monospace;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding: 3rem 2rem;
+            background: linear-gradient(135deg, 
+                rgba(88, 166, 255, 0.1) 0%, 
+                rgba(163, 113, 247, 0.1) 50%,
+                rgba(57, 211, 83, 0.1) 100%);
+            border-radius: 16px;
+            border: 1px solid var(--border);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--accent-blue), var(--accent-purple), var(--accent-cyan));
+        }
+        
+        .logo {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -0.02em;
+        }
+        
+        .subtitle {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .badge-row {
+            display: flex;
+            gap: 0.75rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+        
+        .badge-icon {
+            font-size: 1.1rem;
+        }
+        
+        .nav-tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+            background: var(--bg-card);
+            padding: 0.5rem;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+        }
+        
+        .nav-tab {
+            flex: 1;
+            padding: 1rem;
+            text-align: center;
+            background: transparent;
+            border: none;
+            border-radius: 8px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: inherit;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+        
+        .nav-tab:hover {
+            background: var(--bg-hover);
+            color: var(--text-primary);
+        }
+        
+        .nav-tab.active {
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+            color: white;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+        }
+        
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+        
+        .card-icon {
+            font-size: 2rem;
+        }
+        
+        .card-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+        
+        .card-subtitle {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        .card-body {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+        
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.8rem;
+            margin-top: 1rem;
+        }
+        
+        .data-table th,
+        .data-table td {
+            padding: 0.5rem;
+            text-align: right;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .data-table th {
+            color: var(--text-muted);
+            font-weight: 500;
+            text-transform: uppercase;
+            font-size: 0.7rem;
+        }
+        
+        .data-table th:first-child,
+        .data-table td:first-child {
+            text-align: left;
+        }
+        
+        .data-table tr:hover {
+            background: var(--bg-hover);
+        }
+        
+        .slope-value {
+            font-weight: 700;
+            color: var(--accent-blue);
+        }
+        
+        .slope-error {
+            color: var(--accent-green);
+            font-size: 0.8em;
+        }
+        
+        .chart-container {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .chart-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+        
+        canvas {
+            width: 100% !important;
+            max-height: 400px;
+        }
+        
+        .info-box {
+            background: linear-gradient(135deg, rgba(88, 166, 255, 0.1), rgba(163, 113, 247, 0.1));
+            border: 1px solid var(--accent-blue);
+            border-radius: 8px;
+            padding: 1rem 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .info-box h3 {
+            color: var(--accent-blue);
+            margin-bottom: 0.5rem;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-muted);
+            border-top: 1px solid var(--border);
+            margin-top: 3rem;
+        }
+        
+        .link-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-primary);
+            text-decoration: none;
+            transition: all 0.2s;
+            margin: 0.5rem;
+        }
+        
+        .link-btn:hover {
+            background: var(--bg-hover);
+            border-color: var(--accent-blue);
+        }
+        
+        #systemsData, #testResultsData {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">🔺</div>
+            <h1>Power Laws & Fractals</h1>
+            <p class="subtitle">Veritasium Edition — Entity Rule Book Demonstration</p>
+            <div class="badge-row">
+                <span class="badge"><span class="badge-icon">📊</span> 7 Systems</span>
+                <span class="badge"><span class="badge-icon">📈</span> 56 Scale Points</span>
+                <span class="badge"><span class="badge-icon">🧮</span> 3 Platforms</span>
+            </div>
+        </header>
+        
+        <nav class="nav-tabs">
+            <button class="nav-tab active" data-tab="overview">Overview</button>
+            <button class="nav-tab" data-tab="systems">Systems</button>
+            <button class="nav-tab" data-tab="testing">Testing</button>
+            <button class="nav-tab" data-tab="about">About</button>
+        </nav>
+        
+        <main>
+            <div id="overview" class="tab-content active">
+                <div class="info-box">
+                    <h3>🎯 What is this?</h3>
+                    <p>This project demonstrates how <strong>fractals and power laws</strong> follow the same mathematical pattern: 
+                    a linear relationship on a log-log plot. The slope of that line reveals deep properties of each system—whether 
+                    it's the fractal dimension of the Sierpinski Triangle or the exponent of Zipf's Law.</p>
+                </div>
+                
+                <div class="grid-3">
+                    <div class="card">
+                        <div class="card-header">
+                            <span class="card-icon">🔺</span>
+                            <div>
+                                <div class="card-title">Fractals</div>
+                                <div class="card-subtitle">Self-Similar Geometry</div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <p>Geometric patterns that repeat at every scale. The Sierpinski Triangle and Koch Snowflake 
+                            demonstrate how complexity emerges from simple rules.</p>
+                            <table class="data-table">
+                                <tr><th>System</th><th>Slope</th></tr>
+                                <tr><td>Sierpinski Triangle</td><td class="slope-value">-1.585</td></tr>
+                                <tr><td>Koch Snowflake</td><td class="slope-value">-0.262</td></tr>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-header">
+                            <span class="card-icon">📈</span>
+                            <div>
+                                <div class="card-title">Power Laws</div>
+                                <div class="card-subtitle">Statistical Scaling</div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <p>Probability distributions where large events are rare but follow predictable scaling. 
+                            Found in word frequencies, network connections, and natural disasters.</p>
+                            <table class="data-table">
+                                <tr><th>System</th><th>Slope</th></tr>
+                                <tr><td>Zipf's Law</td><td class="slope-value">-1.0</td></tr>
+                                <tr><td>Scale-Free Networks</td><td class="slope-value">-2.5</td></tr>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-header">
+                            <span class="card-icon">⚡</span>
+                            <div>
+                                <div class="card-title">Self-Organized Criticality</div>
+                                <div class="card-subtitle">Emergent Power Laws</div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <p>Systems that naturally evolve to a critical state where power laws emerge. 
+                            Sandpile avalanches, earthquakes, and forest fires all exhibit this behavior.</p>
+                            <table class="data-table">
+                                <tr><th>System</th><th>Slope</th></tr>
+                                <tr><td>Sandpile Model</td><td class="slope-value">-1.0</td></tr>
+                                <tr><td>Forest Fires</td><td class="slope-value">-1.3</td></tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="systems" class="tab-content">
+                <h2 style="margin-bottom: 1.5rem;">All Systems</h2>
+                <div class="grid-3">
+                    <div class="card">
+                        <div class="card-header">
+                            <span class="card-icon">🔺</span>
+                            <div><div class="card-title">Sierpinski Triangle</div><div class="card-subtitle">Fractal</div></div>
+                        </div>
+                        <div class="card-body">
+                            <p>Created by repeatedly removing triangles. Each iteration triples the count while halving the scale.</p>
+                            <p><strong>Fractal Dimension:</strong> log(3)/log(2) ≈ 1.585</p>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-header">
+                            <span class="card-icon">❄️</span>
+                            <div><div class="card-title">Koch Snowflake</div><div class="card-subtitle">Fractal</div></div>
+                        </div>
+                        <div class="card-body">
+                            <p>Each edge is replaced by 4 segments of 1/3 the length. Infinite perimeter, finite area.</p>
+                            <p><strong>Fractal Dimension:</strong> log(4)/log(3) ≈ 1.262</p>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-header">
+                            <span class="card-icon">📝</span>
+                            <div><div class="card-title">Zipf's Law</div><div class="card-subtitle">Power Law</div></div>
+                        </div>
+                        <div class="card-body">
+                            <p>Word frequency is inversely proportional to rank. The 2nd most common word appears half as often as the 1st.</p>
+                            <p><strong>Exponent:</strong> -1.0</p>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-header">
+                            <span class="card-icon">🕸️</span>
+                            <div><div class="card-title">Scale-Free Networks</div><div class="card-subtitle">Power Law</div></div>
+                        </div>
+                        <div class="card-body">
+                            <p>Networks where a few nodes have many connections while most have few. Found in the web, social networks, and biology.</p>
+                            <p><strong>Exponent:</strong> -2.5</p>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-header">
+                            <span class="card-icon">⏳</span>
+                            <div><div class="card-title">Sandpile Model</div><div class="card-subtitle">Power Law</div></div>
+                        </div>
+                        <div class="card-body">
+                            <p>Add grains one by one. The system self-organizes to a critical state where avalanches of all sizes occur.</p>
+                            <p><strong>Exponent:</strong> -1.0</p>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-header">
+                            <span class="card-icon">🌲</span>
+                            <div><div class="card-title">Forest Fires</div><div class="card-subtitle">Power Law</div></div>
+                        </div>
+                        <div class="card-body">
+                            <p>Fire sizes follow a power law distribution. Small fires are common; large fires are rare but follow the same pattern.</p>
+                            <p><strong>Exponent:</strong> -1.3</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="testing" class="tab-content">
+                <h2 style="margin-bottom: 1.5rem;">Cross-Platform Testing</h2>
+                
+                <div class="info-box">
+                    <h3>🧪 Unified Testing Protocol</h3>
+                    <p>This project validates that Python, PostgreSQL, and Go all compute identical results from the same 
+                    Entity Rule Book (ERB) definition. Each platform receives only raw facts and must compute all derived values.</p>
+                </div>
+                
+                <div class="grid-3">
+                    <div class="card">
+                        <div class="card-header">
+                            <span class="card-icon">🐍</span>
+                            <div><div class="card-title">Python</div><div class="card-subtitle">Reference Implementation</div></div>
+                        </div>
+                        <div class="card-body">
+                            <p>Uses dataclasses with cached properties. Calculations follow formula dependency order automatically.</p>
+                            <p><code>python python/run-tests.py</code></p>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-header">
+                            <span class="card-icon">🐘</span>
+                            <div><div class="card-title">PostgreSQL</div><div class="card-subtitle">Computed Views</div></div>
+                        </div>
+                        <div class="card-body">
+                            <p>Stores raw facts in tables. Views call SQL functions to compute derived values on-the-fly.</p>
+                            <p><code>python postgres/run-tests.py</code></p>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-header">
+                            <span class="card-icon">🐹</span>
+                            <div><div class="card-title">Go</div><div class="card-subtitle">Struct Methods</div></div>
+                        </div>
+                        <div class="card-body">
+                            <p>Uses structs with cached pointer fields. Methods compute values lazily and cache results.</p>
+                            <p><code>go run ./golang</code></p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div style="text-align: center; margin-top: 2rem;">
+                    <a href="report.html" class="link-btn">📊 View Detailed Report</a>
+                    <a href="../TESTING-PROTOCOL.md" class="link-btn">📄 Testing Protocol</a>
+                </div>
+            </div>
+            
+            <div id="about" class="tab-content">
+                <h2 style="margin-bottom: 1.5rem;">About This Project</h2>
+                
+                <div class="card" style="max-width: 800px; margin: 0 auto;">
+                    <div class="card-body">
+                        <h3 style="margin-bottom: 1rem;">📺 Inspired by Veritasium</h3>
+                        <p style="margin-bottom: 1.5rem;">
+                            This project is inspired by the Veritasium video on power laws and fractals, exploring how 
+                            these mathematical patterns appear throughout nature, language, and networks.
+                        </p>
+                        
+                        <h3 style="margin-bottom: 1rem;">🏗️ Entity Rule Book (ERB)</h3>
+                        <p style="margin-bottom: 1.5rem;">
+                            The Single Source of Truth (SSoT) is a JSON file that defines:
+                        </p>
+                        <ul style="margin-left: 1.5rem; margin-bottom: 1.5rem;">
+                            <li>Data schemas with field types (raw, lookup, calculated, aggregation)</li>
+                            <li>Formulas in Excel-like syntax that get translated to each platform</li>
+                            <li>Sample data for validation</li>
+                        </ul>
+                        
+                        <h3 style="margin-bottom: 1rem;">📂 Project Structure</h3>
+                        <pre style="background: var(--bg-dark); padding: 1rem; border-radius: 8px; overflow-x: auto; font-size: 0.85rem;">
+ERB_veritasium-power-laws-and-fractals/
+├── ssot/                    # Source of Truth JSON
+├── test-data/              # Generated test data
+├── test-results/           # Platform outputs
+├── python/                 # Python implementation
+├── postgres/               # PostgreSQL implementation
+├── golang/                 # Go implementation
+├── visualizer/             # This dashboard
+├── orchestrator.py         # Master test runner
+└── start.sh                # Entry point
+                        </pre>
+                    </div>
+                </div>
+            </div>
+        </main>
+        
+        <footer>
+            <p>🔺 Power Laws & Fractals — ERB Demonstration Project</p>
+            <p style="margin-top: 0.5rem;">Veritasium Edition • Cross-Platform Computation Validation</p>
+        </footer>
+    </div>
+    
+    <script>
+        // Tab switching
+        document.querySelectorAll('.nav-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                // Remove active from all
+                document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                
+                // Add active to clicked
+                tab.classList.add('active');
+                document.getElementById(tab.dataset.tab).classList.add('active');
+            });
+        });
+    </script>
+</body>
+</html>

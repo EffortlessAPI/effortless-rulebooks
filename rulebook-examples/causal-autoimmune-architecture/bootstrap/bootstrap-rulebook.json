@@ -1,0 +1,1559 @@
+{
+  "$schema": "https://example.com/cmcc-schema/v1",
+  "Name": "Causal Autoimmune Architecture Platform",
+  "Description": "Rulebook for inferring the complete causal architecture of heterogeneous autoimmune disease from multi-omic cohort data, producing falsifiable mechanisms and ancestry-equitable predictions with calibrated uncertainty.",
+  "AutoimmuneDiseases": {
+    "Description": "Target heterogeneous autoimmune disease definitions tracked across development, aging, tissues, and disease stages.",
+    "schema": [
+      {
+        "name": "AutoimmuneDiseaseId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Stable identifier for each autoimmune disease (e.g. sle, ra, t1d)."
+      },
+      {
+        "name": "DiseaseLabel",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Human-readable disease name."
+      },
+      {
+        "name": "IsComplexDisease",
+        "datatype": "boolean",
+        "type": "raw",
+        "nullable": false,
+        "Description": "True when the disease is a multifactorial complex disease beyond simple monogenic traits."
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Display label for the autoimmune disease.",
+        "formula": "={{DiseaseLabel}}"
+      },
+      {
+        "name": "CountOfDiseaseStages",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "Number of disease stages defined for this autoimmune disease.",
+        "formula": "=COUNTIFS(DiseaseStages!{{AutoimmuneDisease}}, {{AutoimmuneDiseaseId}})"
+      },
+      {
+        "name": "CountOfInterventionTargets",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "Count of validated intervention targets linked to this disease.",
+        "formula": "=COUNTIFS(InterventionTargets!{{AutoimmuneDisease}}, {{AutoimmuneDiseaseId}})"
+      },
+      {
+        "name": "DiseaseStages",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "Description": "Disease stages for this autoimmune disease.",
+        "RelatedTo": "DiseaseStages"
+      },
+      {
+        "name": "Treatments",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "Description": "Treatment histories for this disease.",
+        "RelatedTo": "Treatments"
+      },
+      {
+        "name": "ClinicalPhenotypes",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "Description": "Clinical phenotypes observed for this disease.",
+        "RelatedTo": "ClinicalPhenotypes"
+      },
+      {
+        "name": "IndividualPredictions",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "Description": "Predictions of disease onset, severity, and treatment response.",
+        "RelatedTo": "IndividualPredictions"
+      },
+      {
+        "name": "CounterfactualTrajectories",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "Description": "Counterfactual disease trajectories for this disease.",
+        "RelatedTo": "CounterfactualTrajectories"
+      },
+      {
+        "name": "InterventionTargets",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "Description": "Experimentally falsifiable intervention targets.",
+        "RelatedTo": "InterventionTargets"
+      }
+    ],
+    "data": [
+      {
+        "AutoimmuneDiseaseId": "sle",
+        "DiseaseLabel": "Systemic Lupus Erythematosus",
+        "IsComplexDisease": true
+      },
+      {
+        "AutoimmuneDiseaseId": "ra",
+        "DiseaseLabel": "Rheumatoid Arthritis",
+        "IsComplexDisease": true
+      },
+      {
+        "AutoimmuneDiseaseId": "t1d",
+        "DiseaseLabel": "Type 1 Diabetes",
+        "IsComplexDisease": true
+      }
+    ]
+  },
+  "DiseaseStages": {
+    "Description": "Ordered disease stages capturing presymptomatic, active, remission, and treatment-refractory phases along disease progression.",
+    "schema": [
+      {
+        "name": "DiseaseStageId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Stable identifier for each disease stage."
+      },
+      {
+        "name": "StageLabel",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Human-readable stage label (e.g. presymptomatic, active)."
+      },
+      {
+        "name": "SortOrder",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Numeric ordering of stages along disease progression."
+      },
+      {
+        "name": "AutoimmuneDisease",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Parent autoimmune disease."
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Display label combining disease and stage.",
+        "formula": "={{AutoimmuneDiseaseDiseaseLabel}} & \" \u2014 \" & {{StageLabel}}"
+      },
+      {
+        "name": "AutoimmuneDiseaseDiseaseLabel",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Lookup of parent disease label.",
+        "formula": "=INDEX(AutoimmuneDiseases!{{DiseaseLabel}}, MATCH({{AutoimmuneDisease}}, AutoimmuneDiseases!{{AutoimmuneDiseaseId}}, 0))"
+      },
+      {
+        "name": "IsPresymptomatic",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "True when stage is presymptomatic diagnosis window.",
+        "formula": "=IF({{StageLabel}} = \"Presymptomatic\", TRUE(), FALSE())"
+      }
+    ],
+    "data": [
+      {
+        "DiseaseStageId": "sle-presymptomatic",
+        "StageLabel": "Presymptomatic",
+        "SortOrder": 1,
+        "AutoimmuneDisease": "sle"
+      },
+      {
+        "DiseaseStageId": "sle-active",
+        "StageLabel": "Active",
+        "SortOrder": 2,
+        "AutoimmuneDisease": "sle"
+      },
+      {
+        "DiseaseStageId": "sle-remission",
+        "StageLabel": "Remission",
+        "SortOrder": 3,
+        "AutoimmuneDisease": "sle"
+      },
+      {
+        "DiseaseStageId": "ra-active",
+        "StageLabel": "Active",
+        "SortOrder": 1,
+        "AutoimmuneDisease": "ra"
+      },
+      {
+        "DiseaseStageId": "ra-remission",
+        "StageLabel": "Remission",
+        "SortOrder": 2,
+        "AutoimmuneDisease": "ra"
+      },
+      {
+        "DiseaseStageId": "t1d-presymptomatic",
+        "StageLabel": "Presymptomatic",
+        "SortOrder": 1,
+        "AutoimmuneDisease": "t1d"
+      }
+    ]
+  },
+  "Tissues": {
+    "Description": "Anatomical tissues where omics assays resolve cell-state-specific effects; includes cases of missing tissues.",
+    "schema": [
+      {
+        "name": "TissueId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Stable identifier for each tissue type."
+      },
+      {
+        "name": "TissueLabel",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Human-readable tissue name (blood, gut, synovium, skin, brain)."
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Display label for the tissue.",
+        "formula": "={{TissueLabel}}"
+      },
+      {
+        "name": "CountOfOmicsAssays",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "Number of omics assays performed on this tissue.",
+        "formula": "=COUNTIFS(OmicsAssays!{{Tissue}}, {{TissueId}})"
+      },
+      {
+        "name": "OmicsAssays",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "Description": "Omics assays performed on this tissue.",
+        "RelatedTo": "OmicsAssays"
+      }
+    ],
+    "data": [
+      {
+        "TissueId": "blood",
+        "TissueLabel": "Blood"
+      },
+      {
+        "TissueId": "gut",
+        "TissueLabel": "Gut"
+      },
+      {
+        "TissueId": "synovium",
+        "TissueLabel": "Synovium"
+      },
+      {
+        "TissueId": "skin",
+        "TissueLabel": "Skin"
+      },
+      {
+        "TissueId": "brain",
+        "TissueLabel": "Brain"
+      }
+    ]
+  },
+  "OmicsModalities": {
+    "Description": "Registry of omics assay modalities: RNA-seq, ATAC-seq, proteomics, metabolomics, methylomes, chromatin-conformation, immune-receptor repertoires, microbiomes, and long-read genomes.",
+    "schema": [
+      {
+        "name": "OmicsModalityId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Stable identifier for each omics modality."
+      },
+      {
+        "name": "ModalityLabel",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Human-readable modality name."
+      },
+      {
+        "name": "IsSingleCell",
+        "datatype": "boolean",
+        "type": "raw",
+        "nullable": false,
+        "Description": "True for single-cell or spatial assays resolving cellular states."
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Display label for the omics modality.",
+        "formula": "={{ModalityLabel}}"
+      },
+      {
+        "name": "CountOfOmicsAssays",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "Count of assays using this modality.",
+        "formula": "=COUNTIFS(OmicsAssays!{{OmicsModality}}, {{OmicsModalityId}})"
+      },
+      {
+        "name": "OmicsAssays",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "Description": "Assays of this modality.",
+        "RelatedTo": "OmicsAssays"
+      }
+    ],
+    "data": [
+      {
+        "OmicsModalityId": "long-read-genomes",
+        "ModalityLabel": "Phased Telomere-to-Telomere Long-Read Genomes",
+        "IsSingleCell": false
+      },
+      {
+        "OmicsModalityId": "rna-seq",
+        "ModalityLabel": "RNA-seq",
+        "IsSingleCell": false
+      },
+      {
+        "OmicsModalityId": "single-cell-rna",
+        "ModalityLabel": "Single-Cell RNA-seq",
+        "IsSingleCell": true
+      },
+      {
+        "OmicsModalityId": "spatial-rna",
+        "ModalityLabel": "Spatial RNA-seq",
+        "IsSingleCell": true
+      },
+      {
+        "OmicsModalityId": "atac-seq",
+        "ModalityLabel": "ATAC-seq",
+        "IsSingleCell": false
+      },
+      {
+        "OmicsModalityId": "proteomics",
+        "ModalityLabel": "Proteomics",
+        "IsSingleCell": false
+      },
+      {
+        "OmicsModalityId": "metabolomics",
+        "ModalityLabel": "Metabolomics",
+        "IsSingleCell": false
+      },
+      {
+        "OmicsModalityId": "microbiome",
+        "ModalityLabel": "Microbiome",
+        "IsSingleCell": false
+      }
+    ]
+  },
+  "FederatedDatasets": {
+    "Description": "Privacy-preserving federated datasets contributing cohort partitions without centralizing raw genomes.",
+    "schema": [
+      {
+        "name": "FederatedDatasetId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Stable identifier for each federated data node."
+      },
+      {
+        "name": "NodeLabel",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Human-readable federated node name."
+      },
+      {
+        "name": "Region",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Geographic region; shifting environments may alter exposure profiles."
+      },
+      {
+        "name": "IsPrivacyPreserving",
+        "datatype": "boolean",
+        "type": "raw",
+        "nullable": false,
+        "Description": "True when node uses privacy-preserving federated learning."
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Display label for the federated dataset.",
+        "formula": "={{NodeLabel}}"
+      },
+      {
+        "name": "CountOfIndividuals",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "Individuals enrolled via this federated node.",
+        "formula": "=COUNTIFS(Individuals!{{FederatedDataset}}, {{FederatedDatasetId}})"
+      },
+      {
+        "name": "Individuals",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "Description": "Individuals linked to this federated dataset.",
+        "RelatedTo": "Individuals"
+      },
+      {
+        "name": "OmicsAssays",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "Description": "Omics assays sourced from this node.",
+        "RelatedTo": "OmicsAssays"
+      }
+    ],
+    "data": [
+      {
+        "FederatedDatasetId": "fed-west-africa",
+        "NodeLabel": "West Africa Federated Node",
+        "Region": "West Africa",
+        "IsPrivacyPreserving": true
+      },
+      {
+        "FederatedDatasetId": "fed-amazon-cohort",
+        "NodeLabel": "Amazon Indigenous Cohort",
+        "Region": "Amazon Basin",
+        "IsPrivacyPreserving": true
+      }
+    ]
+  },
+  "VariantTypes": {
+    "Description": "Classification of genomic variant mechanisms: regulatory, coding, repeat expansions, mobile-element insertions, HLA haplotypes, structural variants, de novo mutations, somatic mosaicism, mitochondrial variation.",
+    "schema": [
+      {
+        "name": "VariantTypeId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Stable identifier for each variant type."
+      },
+      {
+        "name": "TypeLabel",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Human-readable variant mechanism label."
+      },
+      {
+        "name": "IsRareVariantClass",
+        "datatype": "boolean",
+        "type": "raw",
+        "nullable": false,
+        "Description": "True when this type contributes to rare-variant burden scoring."
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Display label for variant type.",
+        "formula": "={{TypeLabel}}"
+      },
+      {
+        "name": "CountOfGenomicVariants",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "Variants classified under this type.",
+        "formula": "=COUNTIFS(GenomicVariants!{{VariantType}}, {{VariantTypeId}})"
+      },
+      {
+        "name": "GenomicVariants",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "Description": "Genomic variants of this type.",
+        "RelatedTo": "GenomicVariants"
+      }
+    ],
+    "data": [
+      {
+        "VariantTypeId": "regulatory",
+        "TypeLabel": "Regulatory Variant",
+        "IsRareVariantClass": true
+      },
+      {
+        "VariantTypeId": "coding",
+        "TypeLabel": "Coding Variant",
+        "IsRareVariantClass": true
+      },
+      {
+        "VariantTypeId": "repeat-expansion",
+        "TypeLabel": "Repeat Expansion",
+        "IsRareVariantClass": true
+      },
+      {
+        "VariantTypeId": "mobile-element",
+        "TypeLabel": "Mobile-Element Insertion",
+        "IsRareVariantClass": true
+      },
+      {
+        "VariantTypeId": "hla-haplotype",
+        "TypeLabel": "HLA Haplotype",
+        "IsRareVariantClass": false
+      },
+      {
+        "VariantTypeId": "structural",
+        "TypeLabel": "Structural Variant",
+        "IsRareVariantClass": true
+      },
+      {
+        "VariantTypeId": "de-novo",
+        "TypeLabel": "De Novo Mutation",
+        "IsRareVariantClass": true
+      },
+      {
+        "VariantTypeId": "somatic-mosaicism",
+        "TypeLabel": "Somatic Mosaicism",
+        "IsRareVariantClass": true
+      },
+      {
+        "VariantTypeId": "mitochondrial",
+        "TypeLabel": "Mitochondrial Variation",
+        "IsRareVariantClass": true
+      },
+      {
+        "VariantTypeId": "epigenetic-inheritance",
+        "TypeLabel": "Epigenetic Inheritance",
+        "IsRareVariantClass": false
+      }
+    ]
+  },
+  "Individuals": {
+    "Description": "Ancestrally diverse cohort participants whose phased genomes, omics profiles, exposures, and clinical phenotypes feed causal architecture inference.",
+    "schema": [
+      {
+        "name": "IndividualId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Stable identifier for each individual in the million-person cohort."
+      },
+      {
+        "name": "GivenName",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Participant given name (de-identified mock)."
+      },
+      {
+        "name": "FamilyName",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Participant family name (de-identified mock)."
+      },
+      {
+        "name": "AncestryLabel",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Ancestry label for population stratification and ancestry-equitable risk prediction."
+      },
+      {
+        "name": "AgeYears",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Age in years spanning development and aging windows."
+      },
+      {
+        "name": "IsAncestryAbsentFromTraining",
+        "datatype": "boolean",
+        "type": "raw",
+        "nullable": false,
+        "Description": "True when individual ancestry was absent from primary training data."
+      },
+      {
+        "name": "FederatedDataset",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Federated dataset node when enrolled via privacy-preserving federation."
+      },
+      {
+        "name": "EnrollmentDate",
+        "datatype": "datetime",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Longitudinal cohort enrollment date."
+      },
+      {
+        "name": "HasCrypticRelatednessFlag",
+        "datatype": "boolean",
+        "type": "raw",
+        "nullable": false,
+        "Description": "True when cryptic relatedness or assortative mating bias detected."
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Display name for the individual.",
+        "formula": "={{GivenName}} & \" \" & {{FamilyName}}"
+      },
+      {
+        "name": "FederatedDatasetNodeLabel",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Lookup of federated node label.",
+        "formula": "=IF({{FederatedDataset}} = \"\", \"\", INDEX(FederatedDatasets!{{NodeLabel}}, MATCH({{FederatedDataset}}, FederatedDatasets!{{FederatedDatasetId}}, 0)))"
+      },
+      {
+        "name": "CountOfGenomicVariants",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "Total genomic variants for rare-variant burden assessment.",
+        "formula": "=COUNTIFS(GenomicVariants!{{Individual}}, {{IndividualId}})"
+      },
+      {
+        "name": "CountOfCausalMechanisms",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "Inferred causal mechanisms linked to this individual.",
+        "formula": "=COUNTIFS(CausalMechanisms!{{Individual}}, {{IndividualId}})"
+      },
+      {
+        "name": "CountOfEpistaticInteractions",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "Higher-order epistasis interactions involving this individual.",
+        "formula": "=COUNTIFS(EpistaticInteractions!{{Individual}}, {{IndividualId}})"
+      },
+      {
+        "name": "RareVariantBurdenScore",
+        "datatype": "number",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "2nd-order score from rare variant count normalized by age.",
+        "formula": "=IF({{AgeYears}} > 0, {{CountOfGenomicVariants}} / {{AgeYears}}, 0)"
+      },
+      {
+        "name": "CausalArchitectureScore",
+        "datatype": "number",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "3rd-order composite of causal mechanisms and epistasis density.",
+        "formula": "={{CountOfCausalMechanisms}} * 10 + {{CountOfEpistaticInteractions}} * 5 + {{RareVariantBurdenScore}}"
+      },
+      {
+        "name": "IsDevelopmentWindow",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "True when age falls in developmental effects window (0-25).",
+        "formula": "=IF({{AgeYears}} <= 25, TRUE(), FALSE())"
+      },
+      {
+        "name": "IsAgingWindow",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "True when age falls in aging window (60+).",
+        "formula": "=IF({{AgeYears}} >= 60, TRUE(), FALSE())"
+      },
+      {
+        "name": "GenomicVariants",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "Description": "Genomic variants for this individual.",
+        "RelatedTo": "GenomicVariants"
+      },
+      {
+        "name": "OmicsAssays",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "Description": "Omics assays for this individual.",
+        "RelatedTo": "OmicsAssays"
+      },
+      {
+        "name": "EnvironmentalExposures",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "Description": "Longitudinal environmental exposures.",
+        "RelatedTo": "EnvironmentalExposures"
+      },
+      {
+        "name": "Treatments",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "Description": "Treatment histories.",
+        "RelatedTo": "Treatments"
+      },
+      {
+        "name": "ClinicalPhenotypes",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "Description": "Clinical phenotypes.",
+        "RelatedTo": "ClinicalPhenotypes"
+      },
+      {
+        "name": "CausalMechanisms",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "Description": "Inferred causal mechanisms.",
+        "RelatedTo": "CausalMechanisms"
+      },
+      {
+        "name": "EpistaticInteractions",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "Description": "Epistatic interactions.",
+        "RelatedTo": "EpistaticInteractions"
+      },
+      {
+        "name": "CounterfactualTrajectories",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "Description": "Counterfactual trajectories.",
+        "RelatedTo": "CounterfactualTrajectories"
+      },
+      {
+        "name": "IndividualPredictions",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "Description": "Individual predictions.",
+        "RelatedTo": "IndividualPredictions"
+      }
+    ],
+    "data": [
+      {
+        "IndividualId": "ind-yoruba-0042",
+        "GivenName": "Amara",
+        "FamilyName": "Okafor",
+        "AncestryLabel": "Yoruba",
+        "AgeYears": 22,
+        "IsAncestryAbsentFromTraining": false,
+        "FederatedDataset": "fed-west-africa",
+        "EnrollmentDate": "2024-01-15",
+        "HasCrypticRelatednessFlag": false
+      },
+      {
+        "IndividualId": "ind-european-1187",
+        "GivenName": "Elena",
+        "FamilyName": "Kowalski",
+        "AncestryLabel": "European",
+        "AgeYears": 45,
+        "IsAncestryAbsentFromTraining": false,
+        "FederatedDataset": "",
+        "EnrollmentDate": "2023-06-01",
+        "HasCrypticRelatednessFlag": false
+      },
+      {
+        "IndividualId": "ind-east-asian-3301",
+        "GivenName": "Kenji",
+        "FamilyName": "Tanaka",
+        "AncestryLabel": "East Asian",
+        "AgeYears": 38,
+        "IsAncestryAbsentFromTraining": false,
+        "FederatedDataset": "",
+        "EnrollmentDate": "2022-11-20",
+        "HasCrypticRelatednessFlag": true
+      },
+      {
+        "IndividualId": "ind-indigenous-american-0099",
+        "GivenName": "Ixchel",
+        "FamilyName": "Mamani",
+        "AncestryLabel": "Indigenous American",
+        "AgeYears": 31,
+        "IsAncestryAbsentFromTraining": true,
+        "FederatedDataset": "fed-amazon-cohort",
+        "EnrollmentDate": "2025-02-01",
+        "HasCrypticRelatednessFlag": false
+      },
+      {
+        "IndividualId": "ind-african-0555",
+        "GivenName": "Kwame",
+        "FamilyName": "Asante",
+        "AncestryLabel": "African",
+        "AgeYears": 52,
+        "IsAncestryAbsentFromTraining": false,
+        "FederatedDataset": "fed-west-africa",
+        "EnrollmentDate": "2021-08-10",
+        "HasCrypticRelatednessFlag": false
+      },
+      {
+        "IndividualId": "ind-south-asian-2200",
+        "GivenName": "Priya",
+        "FamilyName": "Sharma",
+        "AncestryLabel": "South Asian",
+        "AgeYears": 67,
+        "IsAncestryAbsentFromTraining": false,
+        "FederatedDataset": "",
+        "EnrollmentDate": "2020-03-05",
+        "HasCrypticRelatednessFlag": false
+      }
+    ]
+  },
+  "GenomicVariants": {
+    "Description": "Genomic variant calls per individual spanning regulatory, coding, structural, HLA haplotypes, de novo mutations, somatic mosaicism, and mitochondrial variation.",
+    "schema": [
+      {
+        "name": "GenomicVariantId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Stable identifier for each genomic variant record."
+      },
+      {
+        "name": "VariantLabel",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Human-readable variant label (gene/locus)."
+      },
+      {
+        "name": "Individual",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Individual carrying this variant."
+      },
+      {
+        "name": "VariantType",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Variant mechanism classification."
+      },
+      {
+        "name": "AlleleFrequency",
+        "datatype": "number",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Population allele frequency for rare-variant burden."
+      },
+      {
+        "name": "HasAlleleSpecificExpression",
+        "datatype": "boolean",
+        "type": "raw",
+        "nullable": false,
+        "Description": "True when allele-specific expression observed."
+      },
+      {
+        "name": "IsTrueCausalCandidate",
+        "datatype": "boolean",
+        "type": "raw",
+        "nullable": false,
+        "Description": "True when variant passes causal filter vs spurious correlations."
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Display label.",
+        "formula": "={{VariantLabel}}"
+      },
+      {
+        "name": "VariantTypeLabel",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Lookup of variant type label.",
+        "formula": "=INDEX(VariantTypes!{{TypeLabel}}, MATCH({{VariantType}}, VariantTypes!{{VariantTypeId}}, 0))"
+      },
+      {
+        "name": "IndividualAncestryLabel",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Lookup of individual ancestry for stratification checks.",
+        "formula": "=INDEX(Individuals!{{AncestryLabel}}, MATCH({{Individual}}, Individuals!{{IndividualId}}, 0))"
+      },
+      {
+        "name": "IsRareVariant",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "True when allele frequency below 0.01.",
+        "formula": "=IF({{AlleleFrequency}} < 0.01, TRUE(), FALSE())"
+      },
+      {
+        "name": "IsCausalCandidate",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "2nd-order: rare and flagged as true causal candidate.",
+        "formula": "=IF(AND({{IsRareVariant}}, {{IsTrueCausalCandidate}}), TRUE(), FALSE())"
+      }
+    ],
+    "data": [
+      {
+        "GenomicVariantId": "var-hla-dr15",
+        "VariantLabel": "HLA-DRB1*15:01",
+        "Individual": "ind-yoruba-0042",
+        "VariantType": "hla-haplotype",
+        "AlleleFrequency": 0.12,
+        "HasAlleleSpecificExpression": true,
+        "IsTrueCausalCandidate": true
+      },
+      {
+        "GenomicVariantId": "var-reg-irf5",
+        "VariantLabel": "IRF5 regulatory",
+        "Individual": "ind-yoruba-0042",
+        "VariantType": "regulatory",
+        "AlleleFrequency": 0.008,
+        "HasAlleleSpecificExpression": true,
+        "IsTrueCausalCandidate": true
+      },
+      {
+        "GenomicVariantId": "var-coding-ptpn22",
+        "VariantLabel": "PTPN22 R620W",
+        "Individual": "ind-european-1187",
+        "VariantType": "coding",
+        "AlleleFrequency": 0.09,
+        "HasAlleleSpecificExpression": false,
+        "IsTrueCausalCandidate": true
+      },
+      {
+        "GenomicVariantId": "var-reg-ctla4",
+        "VariantLabel": "CTLA4 enhancer",
+        "Individual": "ind-african-0555",
+        "VariantType": "regulatory",
+        "AlleleFrequency": 0.005,
+        "HasAlleleSpecificExpression": true,
+        "IsTrueCausalCandidate": true
+      },
+      {
+        "GenomicVariantId": "var-reg-stat4",
+        "VariantLabel": "STAT4 regulatory",
+        "Individual": "ind-african-0555",
+        "VariantType": "regulatory",
+        "AlleleFrequency": 0.007,
+        "HasAlleleSpecificExpression": true,
+        "IsTrueCausalCandidate": true
+      },
+      {
+        "GenomicVariantId": "var-struct-complex",
+        "VariantLabel": "Complex SV chr6",
+        "Individual": "ind-east-asian-3301",
+        "VariantType": "structural",
+        "AlleleFrequency": 0.002,
+        "HasAlleleSpecificExpression": false,
+        "IsTrueCausalCandidate": false
+      },
+      {
+        "GenomicVariantId": "var-denovo-il2ra",
+        "VariantLabel": "IL2RA de novo",
+        "Individual": "ind-south-asian-2200",
+        "VariantType": "de-novo",
+        "AlleleFrequency": 0.0001,
+        "HasAlleleSpecificExpression": true,
+        "IsTrueCausalCandidate": true
+      },
+      {
+        "GenomicVariantId": "var-mito-16519",
+        "VariantLabel": "MT-16519T>C",
+        "Individual": "ind-indigenous-american-0099",
+        "VariantType": "mitochondrial",
+        "AlleleFrequency": 0.03,
+        "HasAlleleSpecificExpression": false,
+        "IsTrueCausalCandidate": false
+      }
+    ]
+  },
+  "OmicsAssays": {
+    "Description": "Omics assay instances linking individuals to modalities and tissues; captures batch effects, measurement error, and missing tissues.",
+    "schema": [
+      {
+        "name": "OmicsAssayId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Stable identifier for each omics assay."
+      },
+      {
+        "name": "AssayLabel",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Human-readable assay label."
+      },
+      {
+        "name": "Individual",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Individual assayed."
+      },
+      {
+        "name": "OmicsModality",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Omics modality used."
+      },
+      {
+        "name": "Tissue",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Tissue sampled; empty when missing tissues."
+      },
+      {
+        "name": "FederatedDataset",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Source federated node if applicable."
+      },
+      {
+        "name": "BatchId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Sequencing batch for batch effects control."
+      },
+      {
+        "name": "MeasurementErrorScore",
+        "datatype": "number",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Estimated measurement error (0-1)."
+      },
+      {
+        "name": "HasCellStateSpecificEffect",
+        "datatype": "boolean",
+        "type": "raw",
+        "nullable": false,
+        "Description": "True when cell-state-specific effects detected."
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Display label.",
+        "formula": "={{AssayLabel}}"
+      },
+      {
+        "name": "ModalityLabel",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Lookup of modality label.",
+        "formula": "=INDEX(OmicsModalities!{{ModalityLabel}}, MATCH({{OmicsModality}}, OmicsModalities!{{OmicsModalityId}}, 0))"
+      },
+      {
+        "name": "TissueLabel",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Lookup of tissue label.",
+        "formula": "=IF({{Tissue}} = \"\", \"Missing Tissue\", INDEX(Tissues!{{TissueLabel}}, MATCH({{Tissue}}, Tissues!{{TissueId}}, 0)))"
+      },
+      {
+        "name": "HasBatchEffectRisk",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "True when measurement error exceeds 0.3.",
+        "formula": "=IF({{MeasurementErrorScore}} > 0.3, TRUE(), FALSE())"
+      },
+      {
+        "name": "IsHighQualityAssay",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "2nd-order quality flag.",
+        "formula": "=IF(AND(NOT({{HasBatchEffectRisk}}), {{MeasurementErrorScore}} < 0.15), TRUE(), FALSE())"
+      }
+    ],
+    "data": [
+      {
+        "OmicsAssayId": "assay-yoruba-rna-blood",
+        "AssayLabel": "Yoruba RNA-seq Blood",
+        "Individual": "ind-yoruba-0042",
+        "OmicsModality": "rna-seq",
+        "Tissue": "blood",
+        "FederatedDataset": "fed-west-africa",
+        "BatchId": "batch-2024-01",
+        "MeasurementErrorScore": 0.08,
+        "HasCellStateSpecificEffect": true
+      },
+      {
+        "OmicsAssayId": "assay-euro-micro-gut",
+        "AssayLabel": "European Microbiome Gut",
+        "Individual": "ind-european-1187",
+        "OmicsModality": "microbiome",
+        "Tissue": "gut",
+        "FederatedDataset": "",
+        "BatchId": "batch-2023-06",
+        "MeasurementErrorScore": 0.12,
+        "HasCellStateSpecificEffect": false
+      },
+      {
+        "OmicsAssayId": "assay-euro-rna-synovium",
+        "AssayLabel": "European RNA-seq Synovium",
+        "Individual": "ind-european-1187",
+        "OmicsModality": "rna-seq",
+        "Tissue": "synovium",
+        "FederatedDataset": "",
+        "BatchId": "batch-2023-06",
+        "MeasurementErrorScore": 0.18,
+        "HasCellStateSpecificEffect": true
+      },
+      {
+        "OmicsAssayId": "assay-asian-atac-skin",
+        "AssayLabel": "East Asian ATAC-seq Skin",
+        "Individual": "ind-east-asian-3301",
+        "OmicsModality": "atac-seq",
+        "Tissue": "skin",
+        "FederatedDataset": "",
+        "BatchId": "batch-2022-11",
+        "MeasurementErrorScore": 0.35,
+        "HasCellStateSpecificEffect": true
+      },
+      {
+        "OmicsAssayId": "assay-indig-genome",
+        "AssayLabel": "Indigenous Long-Read Genome",
+        "Individual": "ind-indigenous-american-0099",
+        "OmicsModality": "long-read-genomes",
+        "Tissue": "blood",
+        "FederatedDataset": "fed-amazon-cohort",
+        "BatchId": "batch-2025-02",
+        "MeasurementErrorScore": 0.05,
+        "HasCellStateSpecificEffect": false
+      },
+      {
+        "OmicsAssayId": "assay-african-sc-rna",
+        "AssayLabel": "African Single-Cell RNA",
+        "Individual": "ind-african-0555",
+        "OmicsModality": "single-cell-rna",
+        "Tissue": "blood",
+        "FederatedDataset": "fed-west-africa",
+        "BatchId": "batch-2021-08",
+        "MeasurementErrorScore": 0.11,
+        "HasCellStateSpecificEffect": true
+      }
+    ]
+  },
+  "EnvironmentalExposures": {
+    "Description": "Longitudinal environmental exposures contributing to gene-environment-microbiome interactions and shifting environments.",
+    "schema": [
+      {
+        "name": "EnvironmentalExposureId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Stable identifier for each exposure record."
+      },
+      {
+        "name": "ExposureLabel",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Exposure name (smoking, UV, particulate, etc.)."
+      },
+      {
+        "name": "Individual",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Exposed individual."
+      },
+      {
+        "name": "ExposureLevel",
+        "datatype": "number",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Quantified exposure intensity."
+      },
+      {
+        "name": "ExposureStartDate",
+        "datatype": "datetime",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Start of longitudinal exposure window."
+      },
+      {
+        "name": "IsMaternalEffect",
+        "datatype": "boolean",
+        "type": "raw",
+        "nullable": false,
+        "Description": "True when exposure reflects maternal developmental effects."
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Display label.",
+        "formula": "={{ExposureLabel}}"
+      },
+      {
+        "name": "IndividualAncestryLabel",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Ancestry lookup for stratification.",
+        "formula": "=INDEX(Individuals!{{AncestryLabel}}, MATCH({{Individual}}, Individuals!{{IndividualId}}, 0))"
+      },
+      {
+        "name": "IsHighExposure",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "True when exposure level exceeds threshold.",
+        "formula": "=IF({{ExposureLevel}} > 5, TRUE(), FALSE())"
+      }
+    ],
+    "data": [
+      {
+        "EnvironmentalExposureId": "exp-smoking-pack-years",
+        "ExposureLabel": "Smoking Pack-Years",
+        "Individual": "ind-european-1187",
+        "ExposureLevel": 12.5,
+        "ExposureStartDate": "1998-01-01",
+        "IsMaternalEffect": false
+      },
+      {
+        "EnvironmentalExposureId": "exp-uv-index",
+        "ExposureLabel": "UV Radiation Index",
+        "Individual": "ind-yoruba-0042",
+        "ExposureLevel": 8.2,
+        "ExposureStartDate": "2020-06-01",
+        "IsMaternalEffect": false
+      },
+      {
+        "EnvironmentalExposureId": "exp-maternal-infection",
+        "ExposureLabel": "Maternal Infection During Pregnancy",
+        "Individual": "ind-south-asian-2200",
+        "ExposureLevel": 1,
+        "ExposureStartDate": "1958-03-01",
+        "IsMaternalEffect": true
+      }
+    ]
+  },
+  "Treatments": {
+    "Description": "Treatment histories capturing treatment-induced changes, treatment response, and adverse effects.",
+    "schema": [
+      {
+        "name": "TreatmentId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Stable identifier for each treatment record."
+      },
+      {
+        "name": "TreatmentLabel",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Therapy name."
+      },
+      {
+        "name": "Individual",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Treated individual."
+      },
+      {
+        "name": "AutoimmuneDisease",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Target autoimmune disease."
+      },
+      {
+        "name": "TreatmentResponse",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Response category: Complete, Partial, None, Adverse."
+      },
+      {
+        "name": "HasTreatmentInducedChange",
+        "datatype": "boolean",
+        "type": "raw",
+        "nullable": false,
+        "Description": "True when molecular state shifted due to therapy."
+      },
+      {
+        "name": "HasAdverseEffect",
+        "datatype": "boolean",
+        "type": "raw",
+        "nullable": false,
+        "Description": "True when adverse effects observed."
+      },
+      {
+        "name": "StartDate",
+        "datatype": "datetime",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Treatment start date."
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Display label.",
+        "formula": "={{TreatmentLabel}}"
+      },
+      {
+        "name": "AutoimmuneDiseaseLabel",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Disease label lookup.",
+        "formula": "=INDEX(AutoimmuneDiseases!{{DiseaseLabel}}, MATCH({{AutoimmuneDisease}}, AutoimmuneDiseases!{{AutoimmuneDiseaseId}}, 0))"
+      },
+      {
+        "name": "IsEffectiveTreatment",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "True for Complete or Partial response without adverse effects.",
+        "formula": "=IF(AND(OR({{TreatmentResponse}} = \"Complete\", {{TreatmentResponse}} = \"Partial\"), NOT({{HasAdverseEffect}})), TRUE(), FALSE())"
+      }
+    ],
+    "data": [
+      {
+        "TreatmentId": "tx-rituximab-3301",
+        "TreatmentLabel": "Rituximab",
+        "Individual": "ind-east-asian-3301",
+        "AutoimmuneDisease": "ra",
+        "TreatmentResponse": "Partial",
+        "HasTreatmentInducedChange": true,
+        "HasAdverseEffect": false,
+        "StartDate": "2023-04-01"
+      },
+      {
+        "TreatmentId": "tx-hydroxy-sle",
+        "TreatmentLabel": "Hydroxychloroquine",
+        "Individual": "ind-yoruba-0042",
+        "AutoimmuneDisease": "sle",
+        "TreatmentResponse": "None",
+        "HasTreatmentInducedChange": false,
+        "HasAdverseEffect": false,
+        "StartDate": "2024-06-01"
+      },
+      {
+        "TreatmentId": "tx-insulin-t1d",
+        "TreatmentLabel": "Insulin Therapy",
+        "Individual": "ind-south-asian-2200",
+        "AutoimmuneDisease": "t1d",
+        "TreatmentResponse": "Complete",
+        "HasTreatmentInducedChange": true,
+        "HasAdverseEffect": true,
+        "StartDate": "1965-01-01"
+      }
+    ]
+  },
+  "ClinicalPhenotypes": {
+    "Description": "Clinical phenotypes including severity, immune dysfunction markers, and feedback from disease progression.",
+    "schema": [
+      {
+        "name": "ClinicalPhenotypeId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Stable identifier for each phenotype measurement."
+      },
+      {
+        "name": "PhenotypeLabel",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Phenotype name."
+      },
+      {
+        "name": "Individual",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Individual measured."
+      },
+      {
+        "name": "AutoimmuneDisease",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Related autoimmune disease."
+      },
+      {
+        "name": "DiseaseStage",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Disease stage at measurement."
+      },
+      {
+        "name": "Tissue",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Tissue context if applicable."
+      },
+      {
+        "name": "SeverityScore",
+        "datatype": "number",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Disease severity (0-10)."
+      },
+      {
+        "name": "MeasurementDate",
+        "datatype": "datetime",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Date of phenotype assessment."
+      },
+      {
+        "name": "HasImmuneDysfunction",
+        "datatype": "boolean",
+        "type": "raw",
+        "nullable": false,
+        "Description": "True when immune dysfunction markers elevated."
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Display label.",
+        "formula": "={{PhenotypeLabel}}"
+      },
+      {
+        "name": "DiseaseStageLabel",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Stage label lookup.",
+        "formula": "=IF({{DiseaseStage}} = \"\", \"\", INDEX(DiseaseStages!{{StageLabel}}, MATCH({{DiseaseStage}}, DiseaseStages!{{DiseaseStageId}}, 0)))"
+      },
+      {
+        "name": "IsHighSeverity",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "True when severity exceeds 7.",
+        "formula": "=IF({{SeverityScore}} > 7, TRUE(), FALSE())"
+      },
+      {
+        "name": "IsPresymptomaticPhenotype",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "True when stage is presymptomatic.",
+        "formula": "=IF({{DiseaseStageLabel}} = \"Presymptomatic\", TRUE(), FALSE())"
+      }
+    ],
+    "data": [
+      {
+        "ClinicalPhenotypeId": "ph-yoruba-ana",
+        "PhenotypeLabel": "ANA Titer Elevation",
+        "Individual": "ind-yoruba-0042",
+        "AutoimmuneDisease": "sle",
+        "DiseaseStage": "sle-presymptomatic",
+        "Tissue": "blood",
+        "SeverityScore": 2.1,
+        "MeasurementDate": "2024-07-01",
+        "HasImmuneDysfunction": true
+      },
+      {
+        "ClinicalPhenotypeId": "ph-euro-das28",
+        "PhenotypeLabel": "DAS28 Joint Score",
+        "Individual": "ind-european-1187",
+        "AutoimmuneDisease": "ra",
+        "DiseaseStage": "ra-active",
+        "Tissue": "synovium",
+        "SeverityScore": 6.8,
+        "MeasurementDate": "2023-08-15",
+        "HasImmuneDysfunction": true
+      },
+      {
+        "ClinicalPhenotypeId": "ph-asian-das28-rem",
+        "PhenotypeLabel": "DAS28 Post-Treatment",
+        "Individual": "ind-east-asian-3301",
+        "AutoimmuneDisease": "ra",
+        "DiseaseStage": "ra-remission",
+        "Tissue": "synovium",
+        "SeverityScore": 3.1,
+        "MeasurementDate": "2024-01-10",
+        "HasImmuneDysfunction": false
+      },
+      {
+        "ClinicalPhenotypeId": "ph-asian-das28-pre",
+        "PhenotypeLabel": "DAS28 Pre-Treatment",
+        "Individual": "ind-east-asian-3301",
+        "AutoimmuneDisease": "ra",
+        "DiseaseStage": "ra-active",
+        "Tissue": "synovium",
+        "SeverityScore": 8.2,
+        "MeasurementDate": "2023-03-01",
+        "HasImmuneDysfunction": true
+      },
+      {
+        "ClinicalPhenotypeId": "ph-indig-risk",
+        "PhenotypeLabel": "Autoimmune Risk Score",
+        "Individual": "ind-indigenous-american-0099",
+        "AutoimmuneDisease": "sle",
+        "DiseaseStage": "sle-presymptomatic",
+        "Tissue": "",
+        "SeverityScore": 1.5,
+        "MeasurementDate": "2025-03-01",
+        "HasImmuneDysfunction": false
+      },
+      {
+        "ClinicalPhenotypeId": "ph-south-hba1c",
+        "PhenotypeLabel": "HbA1c",
+        "Individual": "ind-south-asian-2200",
+        "AutoimmuneDisease": "t1d",
+        "DiseaseStage": "t1d-presymptomatic",
+        "Tissue": "blood",
+        "SeverityScore": 7.5,
+        "MeasurementDate": "2024-12-01",
+        "HasImmuneDysfunction": true
+      }
+    ]
+  }
+}

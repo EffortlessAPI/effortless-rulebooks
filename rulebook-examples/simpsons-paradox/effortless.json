@@ -32,6 +32,25 @@
       "LastVersionUsed": "v2026.06.10.1308",
       "LastUrl": "https://effortless-rulebook-to-rulespeak-v2026-06-10-1308-cmvbd4phczmeg.7pktzg2z971j0.cpln.app",
       "Description": "Generate human-readable RuleSpeak narrative from the rulebook"
+    },
+    {
+      "IsSSoTTranspiler": false,
+      "Name": "rulebooktoowl",
+      "RelativePath": "/owl",
+      "CommandLine": "rulebook-to-owl -i ../effortless-rulebook/simpsons-paradox-rulebook.json",
+      "IsDisabled": false,
+      "PinnedVersion": "v2026.06.21.1215",
+      "LastVersionUsed": "v2026.06.21.1215",
+      "LastUrl": "https://effortless-rulebook-to-owl-v2026-06-21-1215-cmvbd4phczmeg.7pktzg2z971j0.cpln.app",
+      "Description": "Generate OWL ontology + SHACL rules from the rulebook"
+    },
+    {
+      "IsSSoTTranspiler": false,
+      "Name": "owl-conformance",
+      "RelativePath": "/owl",
+      "CommandLine": "-exec ./run-conformance.sh",
+      "IsDisabled": false,
+      "Description": "Run OWL-SHACL vs Postgres conformance receipt"
     }
   ]
 }

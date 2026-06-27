@@ -1,0 +1,3797 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix effortless-ntwf: <https://w3id.org/effortless-ntwf#> .
+
+# === Shape with rules for AutoimmuneDiseases ===
+effortless-ntwf:AutoimmuneDiseasesShape a sh:NodeShape ;
+    sh:targetClass effortless-ntwf:AutoimmuneDiseases ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_AutoimmuneDiseases_Name" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:name ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:AutoimmuneDiseases .
+    OPTIONAL { $this effortless-ntwf:diseaseLabel ?disease_label . }
+                BIND(?disease_label AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_AutoimmuneDiseases_RelativePath" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:relativePath ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:AutoimmuneDiseases .
+    OPTIONAL { $this effortless-ntwf:autoimmuneDiseaseId ?autoimmune_disease_id . }
+                BIND(CONCAT("/diseases/", IF(isIRI(?autoimmune_disease_id), REPLACE(STR(?autoimmune_disease_id), "^.*[#/]", ""), STR(?autoimmune_disease_id))) AS ?_result)
+            }
+        """ ;
+    ] .
+# Rule for CountOfDiseaseStages - parse error: unsupported COUNTIFS criteria: FieldRef
+# Rule for CountOfInterventionTargets - parse error: unsupported COUNTIFS criteria: FieldRef
+
+# === Shape with rules for Axioms ===
+effortless-ntwf:AxiomsShape a sh:NodeShape ;
+    sh:targetClass effortless-ntwf:Axioms ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Axioms_Name" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:name ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:Axioms .
+    OPTIONAL { $this effortless-ntwf:statement ?statement . }
+                BIND(?statement AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Axioms_RelativePath" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:relativePath ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:Axioms .
+    OPTIONAL { $this effortless-ntwf:axiomId ?axiom_id . }
+                BIND(CONCAT("/admin/axioms/", IF(isIRI(?axiom_id), REPLACE(STR(?axiom_id), "^.*[#/]", ""), STR(?axiom_id))) AS ?_result)
+            }
+        """ ;
+    ] .
+
+# === Shape with rules for CalibrationBins ===
+effortless-ntwf:CalibrationBinsShape a sh:NodeShape ;
+    sh:targetClass effortless-ntwf:CalibrationBins ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_CalibrationBins_Name" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:name ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:CalibrationBins .
+    OPTIONAL { $this effortless-ntwf:binLabel ?bin_label . }
+                BIND(?bin_label AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_CalibrationBins_ParentPath" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:parentPath ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:CalibrationBins .
+                OPTIONAL { $this effortless-ntwf:individualPrediction ?j0 . }
+                OPTIONAL { ?j1 a effortless-ntwf:IndividualPredictions ; effortless-ntwf:individualPredictionId ?j2 . FILTER(REPLACE(STR(?j2), "^.*[#/]", "") = REPLACE(STR(?j0), "^.*[#/]", "")) OPTIONAL { ?j1 effortless-ntwf:relativePath ?j3 . } }
+                BIND(?j3 AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_CalibrationBins_RelativePath" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:relativePath ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:CalibrationBins .
+    OPTIONAL { $this effortless-ntwf:calibrationBinId ?calibration_bin_id . }
+    OPTIONAL { $this effortless-ntwf:parentPath ?parent_path . }
+                BIND(CONCAT(IF(isIRI(?parent_path), REPLACE(STR(?parent_path), "^.*[#/]", ""), STR(?parent_path)), "/bins/", IF(isIRI(?calibration_bin_id), REPLACE(STR(?calibration_bin_id), "^.*[#/]", ""), STR(?calibration_bin_id))) AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_CalibrationBins_BinAbsError" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:binAbsError ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:CalibrationBins .
+    OPTIONAL { $this effortless-ntwf:observedEventRate ?observed_event_rate . }
+    OPTIONAL { $this effortless-ntwf:predictedProbabilityBand ?predicted_probability_band . }
+                BIND(IF((?predicted_probability_band >= ?observed_event_rate), (?predicted_probability_band - ?observed_event_rate), (?observed_event_rate - ?predicted_probability_band)) AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_CalibrationBins_IsWellCalibratedBin" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:isWellCalibratedBin ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:CalibrationBins .
+    OPTIONAL { $this effortless-ntwf:binAbsError ?bin_abs_error . }
+    OPTIONAL { $this effortless-ntwf:coverageCount ?coverage_count . }
+                BIND(IF(((?coverage_count >= 20) && (?bin_abs_error <= 0.1)), true, false) AS ?_result)
+            }
+        """ ;
+    ] .
+
+# === Shape with rules for CausalMechanisms ===
+effortless-ntwf:CausalMechanismsShape a sh:NodeShape ;
+    sh:targetClass effortless-ntwf:CausalMechanisms ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_CausalMechanisms_TargetPathwayCode" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:targetPathwayCode ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:CausalMechanisms .
+    OPTIONAL { $this effortless-ntwf:targetPathway ?target_pathway . }
+                BIND(IF((REPLACE(COALESCE(STR(?target_pathway), ""), "^.*#", "") = "type-I-IFN"), 1, IF((REPLACE(COALESCE(STR(?target_pathway), ""), "^.*#", "") = "B-cell/autoantibody"), 2, IF((REPLACE(COALESCE(STR(?target_pathway), ""), "^.*#", "") = "T-cell-costim"), 3, IF((REPLACE(COALESCE(STR(?target_pathway), ""), "^.*#", "") = "IL-17/23"), 4, 0)))) AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_CausalMechanisms_Name" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:name ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:CausalMechanisms .
+    OPTIONAL { $this effortless-ntwf:mechanismLabel ?mechanism_label . }
+                BIND(?mechanism_label AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_CausalMechanisms_ParentPath" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:parentPath ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:CausalMechanisms .
+                OPTIONAL { $this effortless-ntwf:individual ?j0 . }
+                OPTIONAL { ?j1 a effortless-ntwf:Individuals ; effortless-ntwf:individualId ?j2 . FILTER(REPLACE(STR(?j2), "^.*[#/]", "") = REPLACE(STR(?j0), "^.*[#/]", "")) OPTIONAL { ?j1 effortless-ntwf:relativePath ?j3 . } }
+                BIND(?j3 AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_CausalMechanisms_RelativePath" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:relativePath ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:CausalMechanisms .
+    OPTIONAL { $this effortless-ntwf:causalMechanismId ?causal_mechanism_id . }
+    OPTIONAL { $this effortless-ntwf:parentPath ?parent_path . }
+                BIND(CONCAT(IF(isIRI(?parent_path), REPLACE(STR(?parent_path), "^.*[#/]", ""), STR(?parent_path)), "/mechanisms/", IF(isIRI(?causal_mechanism_id), REPLACE(STR(?causal_mechanism_id), "^.*[#/]", ""), STR(?causal_mechanism_id))) AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_CausalMechanisms_IsExperimentallyFalsifiable" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:isExperimentallyFalsifiable ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:CausalMechanisms .
+    OPTIONAL { $this effortless-ntwf:countInterventionTargets ?count_intervention_targets . }
+    OPTIONAL { $this effortless-ntwf:countQualifiedEvidence ?count_qualified_evidence . }
+                BIND(IF(((?count_intervention_targets >= 1) && (?count_qualified_evidence >= 1)), true, false) AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_CausalMechanisms_ReplicationFraction" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:replicationFraction ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:CausalMechanisms .
+    OPTIONAL { $this effortless-ntwf:countConcordantReplications ?count_concordant_replications . }
+    OPTIONAL { $this effortless-ntwf:countReplications ?count_replications . }
+                BIND(IF((?count_replications > 0), (?count_concordant_replications / ?count_replications), 0) AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_CausalMechanisms_ReplicatesAcrossCohorts" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:replicatesAcrossCohorts ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:CausalMechanisms .
+    OPTIONAL { $this effortless-ntwf:countConcordantReplications ?count_concordant_replications . }
+    OPTIONAL { $this effortless-ntwf:countReplications ?count_replications . }
+                BIND(IF(((?count_replications >= 2) && (?count_concordant_replications >= 2)), true, false) AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_CausalMechanisms_SurvivesNegativeControls" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:survivesNegativeControls ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:CausalMechanisms .
+    OPTIONAL { $this effortless-ntwf:countNegControlSurvived ?count_neg_control_survived . }
+    OPTIONAL { $this effortless-ntwf:countNegControlTests ?count_neg_control_tests . }
+                BIND(IF(((?count_neg_control_tests >= 1) && (?count_neg_control_survived = ?count_neg_control_tests)), true, false) AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_CausalMechanisms_IsSpuriousDerived" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:isSpuriousDerived ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:CausalMechanisms .
+    OPTIONAL { $this effortless-ntwf:countModalitiesSupporting ?count_modalities_supporting . }
+    OPTIONAL { $this effortless-ntwf:hasPleiotropy ?has_pleiotropy . }
+    OPTIONAL { $this effortless-ntwf:replicatesAcrossCohorts ?replicates_across_cohorts . }
+    OPTIONAL { $this effortless-ntwf:survivesNegativeControls ?survives_negative_controls . }
+                BIND(IF(((!(?replicates_across_cohorts)) || (!(?survives_negative_controls)) || (?count_modalities_supporting < 2) || ?has_pleiotropy), true, false) AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_CausalMechanisms_CausalConfidence" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:causalConfidence ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:CausalMechanisms .
+    OPTIONAL { $this effortless-ntwf:countModalitiesSupporting ?count_modalities_supporting . }
+    OPTIONAL { $this effortless-ntwf:countQualifiedEvidence ?count_qualified_evidence . }
+    OPTIONAL { $this effortless-ntwf:replicationFraction ?replication_fraction . }
+    OPTIONAL { $this effortless-ntwf:survivesNegativeControls ?survives_negative_controls . }
+                BIND(IF((((((0.3 * IF((?count_qualified_evidence >= 4), 1, (?count_qualified_evidence / 4))) + (0.2 * IF((?count_modalities_supporting >= 3), 1, (?count_modalities_supporting / 3)))) + (0.3 * ?replication_fraction)) + (0.2 * IF(?survives_negative_controls, 1, 0))) > 1), 1, ((((0.3 * IF((?count_qualified_evidence >= 4), 1, (?count_qualified_evidence / 4))) + (0.2 * IF((?count_modalities_supporting >= 3), 1, (?count_modalities_supporting / 3)))) + (0.3 * ?replication_fraction)) + (0.2 * IF(?survives_negative_controls, 1, 0)))) AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_CausalMechanisms_IsCausalArchitectureNode" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:isCausalArchitectureNode ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:CausalMechanisms .
+    OPTIONAL { $this effortless-ntwf:causalConfidence ?causal_confidence . }
+    OPTIONAL { $this effortless-ntwf:environmentalExposure ?environmental_exposure . }
+    OPTIONAL { $this effortless-ntwf:isExperimentallyFalsifiable ?is_experimentally_falsifiable . }
+    OPTIONAL { $this effortless-ntwf:isSpuriousDerived ?is_spurious_derived . }
+    OPTIONAL { $this effortless-ntwf:variantIsCausalCandidate ?variant_is_causal_candidate . }
+                BIND(IF(((?causal_confidence >= 0.7) && ?is_experimentally_falsifiable && (!(?is_spurious_derived)) && (?variant_is_causal_candidate || (REPLACE(COALESCE(STR(?environmental_exposure), ""), "^.*#", "") != ""))), true, false) AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_CausalMechanisms_IsAncestryTransportable" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:isAncestryTransportable ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:CausalMechanisms .
+    OPTIONAL { $this effortless-ntwf:countCrossAncestryConcordant ?count_cross_ancestry_concordant . }
+    OPTIONAL { $this effortless-ntwf:isCausalArchitectureNode ?is_causal_architecture_node . }
+                BIND(IF((?is_causal_architecture_node && (?count_cross_ancestry_concordant >= 1)), true, false) AS ?_result)
+            }
+        """ ;
+    ] .
+# Rule for IndividualAncestryLabel - parse error: Unknown function: INDEX
+# Rule for CountQualifiedEvidence - parse error: unsupported COUNTIFS criteria: FieldRef
+# Rule for CountModalitiesSupporting - parse error: unsupported COUNTIFS criteria: FieldRef
+# Rule for CountInterventionTargets - parse error: unsupported COUNTIFS criteria: FieldRef
+# Rule for CountReplications - parse error: unsupported COUNTIFS criteria: FieldRef
+# Rule for CountConcordantReplications - parse error: unsupported COUNTIFS criteria: FieldRef
+# Rule for CountCrossAncestryConcordant - parse error: unsupported COUNTIFS criteria: FieldRef
+# Rule for CountNegControlTests - parse error: unsupported COUNTIFS criteria: FieldRef
+# Rule for CountNegControlSurvived - parse error: unsupported COUNTIFS criteria: FieldRef
+# Rule for VariantIsCausalCandidate - parse error: unsupported lookup sub-expression: FuncCall
+
+# === Shape with rules for ClinicalPhenotypes ===
+effortless-ntwf:ClinicalPhenotypesShape a sh:NodeShape ;
+    sh:targetClass effortless-ntwf:ClinicalPhenotypes ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_ClinicalPhenotypes_Name" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:name ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:ClinicalPhenotypes .
+    OPTIONAL { $this effortless-ntwf:phenotypeLabel ?phenotype_label . }
+                BIND(?phenotype_label AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_ClinicalPhenotypes_ParentPath" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:parentPath ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:ClinicalPhenotypes .
+                OPTIONAL { $this effortless-ntwf:individual ?j0 . }
+                OPTIONAL { ?j1 a effortless-ntwf:Individuals ; effortless-ntwf:individualId ?j2 . FILTER(REPLACE(STR(?j2), "^.*[#/]", "") = REPLACE(STR(?j0), "^.*[#/]", "")) OPTIONAL { ?j1 effortless-ntwf:relativePath ?j3 . } }
+                BIND(?j3 AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_ClinicalPhenotypes_RelativePath" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:relativePath ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:ClinicalPhenotypes .
+    OPTIONAL { $this effortless-ntwf:clinicalPhenotypeId ?clinical_phenotype_id . }
+    OPTIONAL { $this effortless-ntwf:parentPath ?parent_path . }
+                BIND(CONCAT(IF(isIRI(?parent_path), REPLACE(STR(?parent_path), "^.*[#/]", ""), STR(?parent_path)), "/phenotypes/", IF(isIRI(?clinical_phenotype_id), REPLACE(STR(?clinical_phenotype_id), "^.*[#/]", ""), STR(?clinical_phenotype_id))) AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_ClinicalPhenotypes_IsHighSeverity" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:isHighSeverity ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:ClinicalPhenotypes .
+    OPTIONAL { $this effortless-ntwf:severityScore ?severity_score . }
+                BIND(IF((?severity_score > 7), true, false) AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_ClinicalPhenotypes_IsPresymptomaticPhenotype" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:isPresymptomaticPhenotype ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:ClinicalPhenotypes .
+    OPTIONAL { $this effortless-ntwf:diseaseStageLabel ?disease_stage_label . }
+                BIND(IF((REPLACE(COALESCE(STR(?disease_stage_label), ""), "^.*#", "") = "Presymptomatic"), true, false) AS ?_result)
+            }
+        """ ;
+    ] .
+# Rule for DiseaseStageLabel - parse error: Unknown function: INDEX
+
+# === Shape with rules for CohortReplications ===
+effortless-ntwf:CohortReplicationsShape a sh:NodeShape ;
+    sh:targetClass effortless-ntwf:CohortReplications ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_CohortReplications_Name" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:name ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:CohortReplications .
+    OPTIONAL { $this effortless-ntwf:replicationLabel ?replication_label . }
+                BIND(?replication_label AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_CohortReplications_ParentPath" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:parentPath ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:CohortReplications .
+                OPTIONAL { $this effortless-ntwf:causalMechanism ?j0 . }
+                OPTIONAL { ?j1 a effortless-ntwf:CausalMechanisms ; effortless-ntwf:causalMechanismId ?j2 . FILTER(REPLACE(STR(?j2), "^.*[#/]", "") = REPLACE(STR(?j0), "^.*[#/]", "")) OPTIONAL { ?j1 effortless-ntwf:relativePath ?j3 . } }
+                BIND(?j3 AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_CohortReplications_RelativePath" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:relativePath ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:CohortReplications .
+    OPTIONAL { $this effortless-ntwf:cohortReplicationId ?cohort_replication_id . }
+    OPTIONAL { $this effortless-ntwf:parentPath ?parent_path . }
+                BIND(CONCAT(IF(isIRI(?parent_path), REPLACE(STR(?parent_path), "^.*[#/]", ""), STR(?parent_path)), "/replications/", IF(isIRI(?cohort_replication_id), REPLACE(STR(?cohort_replication_id), "^.*[#/]", ""), STR(?cohort_replication_id))) AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_CohortReplications_ReplicatedAtNominalSig" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:replicatedAtNominalSig ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:CohortReplications .
+    OPTIONAL { $this effortless-ntwf:replicationEffectSign ?replication_effect_sign . }
+    OPTIONAL { $this effortless-ntwf:replicationPValue ?replication_p_value . }
+                BIND(IF(((?replication_p_value <= 0.05) && (?replication_effect_sign = 1)), true, false) AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_CohortReplications_MechanismPrimaryAncestry" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:mechanismPrimaryAncestry ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:CohortReplications .
+                OPTIONAL { $this effortless-ntwf:causalMechanism ?j0 . }
+                OPTIONAL { ?j1 a effortless-ntwf:CausalMechanisms ; effortless-ntwf:causalMechanismId ?j2 . FILTER(REPLACE(STR(?j2), "^.*[#/]", "") = REPLACE(STR(?j0), "^.*[#/]", "")) OPTIONAL { ?j1 effortless-ntwf:individualAncestryLabel ?j3 . } }
+                BIND(?j3 AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_CohortReplications_IsDifferentAncestryReplication" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:isDifferentAncestryReplication ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:CohortReplications .
+    OPTIONAL { $this effortless-ntwf:mechanismPrimaryAncestry ?mechanism_primary_ancestry . }
+    OPTIONAL { $this effortless-ntwf:replicationAncestryLabel ?replication_ancestry_label . }
+                BIND(IF((?replication_ancestry_label = ?mechanism_primary_ancestry), false, true) AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_CohortReplications_IsCrossAncestryConcordant" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:isCrossAncestryConcordant ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:CohortReplications .
+    OPTIONAL { $this effortless-ntwf:isDifferentAncestryReplication ?is_different_ancestry_replication . }
+    OPTIONAL { $this effortless-ntwf:replicatedAtNominalSig ?replicated_at_nominal_sig . }
+                BIND(IF((?replicated_at_nominal_sig && ?is_different_ancestry_replication), true, false) AS ?_result)
+            }
+        """ ;
+    ] .
+
+# === Shape with rules for CounterfactualTrajectories ===
+effortless-ntwf:CounterfactualTrajectoriesShape a sh:NodeShape ;
+    sh:targetClass effortless-ntwf:CounterfactualTrajectories ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_CounterfactualTrajectories_Name" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:name ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:CounterfactualTrajectories .
+    OPTIONAL { $this effortless-ntwf:trajectoryLabel ?trajectory_label . }
+                BIND(?trajectory_label AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_CounterfactualTrajectories_ParentPath" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:parentPath ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:CounterfactualTrajectories .
+                OPTIONAL { $this effortless-ntwf:individual ?j0 . }
+                OPTIONAL { ?j1 a effortless-ntwf:Individuals ; effortless-ntwf:individualId ?j2 . FILTER(REPLACE(STR(?j2), "^.*[#/]", "") = REPLACE(STR(?j0), "^.*[#/]", "")) OPTIONAL { ?j1 effortless-ntwf:relativePath ?j3 . } }
+                BIND(?j3 AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_CounterfactualTrajectories_RelativePath" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:relativePath ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:CounterfactualTrajectories .
+    OPTIONAL { $this effortless-ntwf:counterfactualTrajectoryId ?counterfactual_trajectory_id . }
+    OPTIONAL { $this effortless-ntwf:parentPath ?parent_path . }
+                BIND(CONCAT(IF(isIRI(?parent_path), REPLACE(STR(?parent_path), "^.*[#/]", ""), STR(?parent_path)), "/trajectories/", IF(isIRI(?counterfactual_trajectory_id), REPLACE(STR(?counterfactual_trajectory_id), "^.*[#/]", ""), STR(?counterfactual_trajectory_id))) AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_CounterfactualTrajectories_IsWorseningTrajectory" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:isWorseningTrajectory ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:CounterfactualTrajectories .
+    OPTIONAL { $this effortless-ntwf:projectedSeverity ?projected_severity . }
+                BIND(IF((?projected_severity > 7), true, false) AS ?_result)
+            }
+        """ ;
+    ] .
+# Rule for AutoimmuneDiseaseLabel - parse error: Unknown function: INDEX
+
+# === Shape with rules for DiseaseDomainConcepts ===
+effortless-ntwf:DiseaseDomainConceptsShape a sh:NodeShape ;
+    sh:targetClass effortless-ntwf:DiseaseDomainConcepts ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_DiseaseDomainConcepts_Name" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:name ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:DiseaseDomainConcepts .
+    OPTIONAL { $this effortless-ntwf:conceptLabel ?concept_label . }
+                BIND(?concept_label AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_DiseaseDomainConcepts_RelativePath" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:relativePath ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:DiseaseDomainConcepts .
+    OPTIONAL { $this effortless-ntwf:diseaseDomainConceptId ?disease_domain_concept_id . }
+                BIND(CONCAT("/admin/disease-concepts/", IF(isIRI(?disease_domain_concept_id), REPLACE(STR(?disease_domain_concept_id), "^.*[#/]", ""), STR(?disease_domain_concept_id))) AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_DiseaseDomainConcepts_IsDeeplyModeled" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:isDeeplyModeled ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:DiseaseDomainConcepts .
+    OPTIONAL { $this effortless-ntwf:modelingStatus ?modeling_status . }
+                BIND(IF((REPLACE(COALESCE(STR(?modeling_status), ""), "^.*#", "") = "deep-dag"), true, false) AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_DiseaseDomainConcepts_IsSchemaModeled" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:isSchemaModeled ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:DiseaseDomainConcepts .
+    OPTIONAL { $this effortless-ntwf:modelingStatus ?modeling_status . }
+                BIND(IF(((REPLACE(COALESCE(STR(?modeling_status), ""), "^.*#", "") = "deep-dag") || (REPLACE(COALESCE(STR(?modeling_status), ""), "^.*#", "") = "schema")), true, false) AS ?_result)
+            }
+        """ ;
+    ] .
+
+# === Shape with rules for DiseaseStages ===
+effortless-ntwf:DiseaseStagesShape a sh:NodeShape ;
+    sh:targetClass effortless-ntwf:DiseaseStages ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_DiseaseStages_Name" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:name ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:DiseaseStages .
+    OPTIONAL { $this effortless-ntwf:autoimmuneDiseaseDiseaseLabel ?autoimmune_disease_disease_label . }
+    OPTIONAL { $this effortless-ntwf:stageLabel ?stage_label . }
+                BIND(CONCAT(IF(isIRI(?autoimmune_disease_disease_label), REPLACE(STR(?autoimmune_disease_disease_label), "^.*[#/]", ""), STR(?autoimmune_disease_disease_label)), " — ", IF(isIRI(?stage_label), REPLACE(STR(?stage_label), "^.*[#/]", ""), STR(?stage_label))) AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_DiseaseStages_ParentPath" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:parentPath ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:DiseaseStages .
+                OPTIONAL { $this effortless-ntwf:autoimmuneDisease ?j0 . }
+                OPTIONAL { ?j1 a effortless-ntwf:AutoimmuneDiseases ; effortless-ntwf:autoimmuneDiseaseId ?j2 . FILTER(REPLACE(STR(?j2), "^.*[#/]", "") = REPLACE(STR(?j0), "^.*[#/]", "")) OPTIONAL { ?j1 effortless-ntwf:relativePath ?j3 . } }
+                BIND(?j3 AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_DiseaseStages_RelativePath" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:relativePath ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:DiseaseStages .
+    OPTIONAL { $this effortless-ntwf:diseaseStageId ?disease_stage_id . }
+    OPTIONAL { $this effortless-ntwf:parentPath ?parent_path . }
+                BIND(CONCAT(IF(isIRI(?parent_path), REPLACE(STR(?parent_path), "^.*[#/]", ""), STR(?parent_path)), "/stages/", IF(isIRI(?disease_stage_id), REPLACE(STR(?disease_stage_id), "^.*[#/]", ""), STR(?disease_stage_id))) AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_DiseaseStages_IsPresymptomatic" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:isPresymptomatic ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:DiseaseStages .
+    OPTIONAL { $this effortless-ntwf:stageLabel ?stage_label . }
+                BIND(IF((REPLACE(COALESCE(STR(?stage_label), ""), "^.*#", "") = "Presymptomatic"), true, false) AS ?_result)
+            }
+        """ ;
+    ] .
+# Rule for AutoimmuneDiseaseDiseaseLabel - parse error: Unknown function: INDEX
+
+# === Shape with rules for EnvironmentalExposures ===
+effortless-ntwf:EnvironmentalExposuresShape a sh:NodeShape ;
+    sh:targetClass effortless-ntwf:EnvironmentalExposures ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_EnvironmentalExposures_Name" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:name ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:EnvironmentalExposures .
+    OPTIONAL { $this effortless-ntwf:exposureLabel ?exposure_label . }
+                BIND(?exposure_label AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_EnvironmentalExposures_ParentPath" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:parentPath ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:EnvironmentalExposures .
+                OPTIONAL { $this effortless-ntwf:individual ?j0 . }
+                OPTIONAL { ?j1 a effortless-ntwf:Individuals ; effortless-ntwf:individualId ?j2 . FILTER(REPLACE(STR(?j2), "^.*[#/]", "") = REPLACE(STR(?j0), "^.*[#/]", "")) OPTIONAL { ?j1 effortless-ntwf:relativePath ?j3 . } }
+                BIND(?j3 AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_EnvironmentalExposures_RelativePath" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:relativePath ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:EnvironmentalExposures .
+    OPTIONAL { $this effortless-ntwf:environmentalExposureId ?environmental_exposure_id . }
+    OPTIONAL { $this effortless-ntwf:parentPath ?parent_path . }
+                BIND(CONCAT(IF(isIRI(?parent_path), REPLACE(STR(?parent_path), "^.*[#/]", ""), STR(?parent_path)), "/exposures/", IF(isIRI(?environmental_exposure_id), REPLACE(STR(?environmental_exposure_id), "^.*[#/]", ""), STR(?environmental_exposure_id))) AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_EnvironmentalExposures_IsHighExposure" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:isHighExposure ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:EnvironmentalExposures .
+    OPTIONAL { $this effortless-ntwf:exposureLevel ?exposure_level . }
+                BIND(IF((?exposure_level > 5), true, false) AS ?_result)
+            }
+        """ ;
+    ] .
+# Rule for IndividualAncestryLabel - parse error: Unknown function: INDEX
+
+# === Shape with rules for EpistaticInteractions ===
+effortless-ntwf:EpistaticInteractionsShape a sh:NodeShape ;
+    sh:targetClass effortless-ntwf:EpistaticInteractions ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_EpistaticInteractions_Name" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:name ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:EpistaticInteractions .
+    OPTIONAL { $this effortless-ntwf:interactionLabel ?interaction_label . }
+                BIND(?interaction_label AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_EpistaticInteractions_ParentPath" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:parentPath ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:EpistaticInteractions .
+                OPTIONAL { $this effortless-ntwf:individual ?j0 . }
+                OPTIONAL { ?j1 a effortless-ntwf:Individuals ; effortless-ntwf:individualId ?j2 . FILTER(REPLACE(STR(?j2), "^.*[#/]", "") = REPLACE(STR(?j0), "^.*[#/]", "")) OPTIONAL { ?j1 effortless-ntwf:relativePath ?j3 . } }
+                BIND(?j3 AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_EpistaticInteractions_RelativePath" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:relativePath ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:EpistaticInteractions .
+    OPTIONAL { $this effortless-ntwf:epistaticInteractionId ?epistatic_interaction_id . }
+    OPTIONAL { $this effortless-ntwf:parentPath ?parent_path . }
+                BIND(CONCAT(IF(isIRI(?parent_path), REPLACE(STR(?parent_path), "^.*[#/]", ""), STR(?parent_path)), "/epistasis/", IF(isIRI(?epistatic_interaction_id), REPLACE(STR(?epistatic_interaction_id), "^.*[#/]", ""), STR(?epistatic_interaction_id))) AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_EpistaticInteractions_IsHighOrderEpistasis" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:isHighOrderEpistasis ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:EpistaticInteractions .
+    OPTIONAL { $this effortless-ntwf:epistasisScore ?epistasis_score . }
+                BIND(IF((?epistasis_score > 0.5), true, false) AS ?_result)
+            }
+        """ ;
+    ] .
+
+# === Shape with rules for EvidenceItems ===
+effortless-ntwf:EvidenceItemsShape a sh:NodeShape ;
+    sh:targetClass effortless-ntwf:EvidenceItems ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_EvidenceItems_Name" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:name ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:EvidenceItems .
+    OPTIONAL { $this effortless-ntwf:evidenceLabel ?evidence_label . }
+                BIND(?evidence_label AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_EvidenceItems_ParentPath" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:parentPath ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:EvidenceItems .
+                OPTIONAL { $this effortless-ntwf:causalMechanism ?j0 . }
+                OPTIONAL { ?j1 a effortless-ntwf:CausalMechanisms ; effortless-ntwf:causalMechanismId ?j2 . FILTER(REPLACE(STR(?j2), "^.*[#/]", "") = REPLACE(STR(?j0), "^.*[#/]", "")) OPTIONAL { ?j1 effortless-ntwf:relativePath ?j3 . } }
+                BIND(?j3 AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_EvidenceItems_RelativePath" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:relativePath ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:EvidenceItems .
+    OPTIONAL { $this effortless-ntwf:evidenceItemId ?evidence_item_id . }
+    OPTIONAL { $this effortless-ntwf:parentPath ?parent_path . }
+                BIND(CONCAT(IF(isIRI(?parent_path), REPLACE(STR(?parent_path), "^.*[#/]", ""), STR(?parent_path)), "/evidence/", IF(isIRI(?evidence_item_id), REPLACE(STR(?evidence_item_id), "^.*[#/]", ""), STR(?evidence_item_id))) AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_EvidenceItems_AssayIsHighQuality" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:assayIsHighQuality ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:EvidenceItems .
+                OPTIONAL { $this effortless-ntwf:omicsAssay ?j0 . }
+                OPTIONAL { ?j1 a effortless-ntwf:OmicsAssays ; effortless-ntwf:omicsAssayId ?j2 . FILTER(REPLACE(STR(?j2), "^.*[#/]", "") = REPLACE(STR(?j0), "^.*[#/]", "")) OPTIONAL { ?j1 effortless-ntwf:isHighQualityAssay ?j3 . } }
+                BIND(?j3 AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_EvidenceItems_ZStat" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:zStat ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:EvidenceItems .
+    OPTIONAL { $this effortless-ntwf:effectSize ?effect_size . }
+    OPTIONAL { $this effortless-ntwf:standardError ?standard_error . }
+                BIND(IF((?standard_error > 0), (?effect_size / ?standard_error), 0) AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_EvidenceItems_IsConfoundControlled" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:isConfoundControlled ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:EvidenceItems .
+    OPTIONAL { $this effortless-ntwf:isAdjustedForAncestryPCs ?is_adjusted_for_ancestry_p_cs . }
+    OPTIONAL { $this effortless-ntwf:isAdjustedForBatch ?is_adjusted_for_batch . }
+                BIND(IF((?is_adjusted_for_ancestry_p_cs && ?is_adjusted_for_batch), true, false) AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_EvidenceItems_IsQualifiedEvidence" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:isQualifiedEvidence ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:EvidenceItems .
+    OPTIONAL { $this effortless-ntwf:assayIsHighQuality ?assay_is_high_quality . }
+    OPTIONAL { $this effortless-ntwf:isConfoundControlled ?is_confound_controlled . }
+    OPTIONAL { $this effortless-ntwf:isNegativeControlArm ?is_negative_control_arm . }
+    OPTIONAL { $this effortless-ntwf:zStat ?z_stat . }
+                BIND(IF((?assay_is_high_quality && (!(?is_negative_control_arm)) && (?z_stat >= 2) && ?is_confound_controlled), true, false) AS ?_result)
+            }
+        """ ;
+    ] .
+
+# === Shape with rules for Features ===
+effortless-ntwf:FeaturesShape a sh:NodeShape ;
+    sh:targetClass effortless-ntwf:Features ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Features_Name" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:name ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:Features .
+    OPTIONAL { $this effortless-ntwf:title ?title . }
+                BIND(?title AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Features_RelativePath" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:relativePath ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:Features .
+    OPTIONAL { $this effortless-ntwf:featureId ?feature_id . }
+                BIND(CONCAT("/admin/features/", IF(isIRI(?feature_id), REPLACE(STR(?feature_id), "^.*[#/]", ""), STR(?feature_id))) AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Features_MetaLine" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:metaLine ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:Features .
+    OPTIONAL { $this effortless-ntwf:category ?category . }
+    OPTIONAL { $this effortless-ntwf:priority ?priority . }
+    OPTIONAL { $this effortless-ntwf:refCount ?ref_count . }
+                BIND(CONCAT("**Category:** ", IF(isIRI(?category), REPLACE(STR(?category), "^.*[#/]", ""), STR(?category)), " - **Priority:** ", IF(isIRI(?priority), REPLACE(STR(?priority), "^.*[#/]", ""), STR(?priority)), " - **Challenge refs:** ", IF(isIRI(?ref_count), REPLACE(STR(?ref_count), "^.*[#/]", ""), STR(?ref_count))) AS ?_result)
+            }
+        """ ;
+    ] .
+
+# === Shape with rules for FederatedDatasets ===
+effortless-ntwf:FederatedDatasetsShape a sh:NodeShape ;
+    sh:targetClass effortless-ntwf:FederatedDatasets ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_FederatedDatasets_Name" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:name ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:FederatedDatasets .
+    OPTIONAL { $this effortless-ntwf:nodeLabel ?node_label . }
+                BIND(?node_label AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_FederatedDatasets_RelativePath" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:relativePath ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:FederatedDatasets .
+    OPTIONAL { $this effortless-ntwf:federatedDatasetId ?federated_dataset_id . }
+                BIND(CONCAT("/datasets/", IF(isIRI(?federated_dataset_id), REPLACE(STR(?federated_dataset_id), "^.*[#/]", ""), STR(?federated_dataset_id))) AS ?_result)
+            }
+        """ ;
+    ] .
+# Rule for CountOfIndividuals - parse error: unsupported COUNTIFS criteria: FieldRef
+
+# === Shape with rules for GenomicVariants ===
+effortless-ntwf:GenomicVariantsShape a sh:NodeShape ;
+    sh:targetClass effortless-ntwf:GenomicVariants ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_GenomicVariants_Name" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:name ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:GenomicVariants .
+    OPTIONAL { $this effortless-ntwf:variantLabel ?variant_label . }
+                BIND(?variant_label AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_GenomicVariants_ParentPath" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:parentPath ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:GenomicVariants .
+                OPTIONAL { $this effortless-ntwf:individual ?j0 . }
+                OPTIONAL { ?j1 a effortless-ntwf:Individuals ; effortless-ntwf:individualId ?j2 . FILTER(REPLACE(STR(?j2), "^.*[#/]", "") = REPLACE(STR(?j0), "^.*[#/]", "")) OPTIONAL { ?j1 effortless-ntwf:relativePath ?j3 . } }
+                BIND(?j3 AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_GenomicVariants_RelativePath" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:relativePath ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:GenomicVariants .
+    OPTIONAL { $this effortless-ntwf:genomicVariantId ?genomic_variant_id . }
+    OPTIONAL { $this effortless-ntwf:parentPath ?parent_path . }
+                BIND(CONCAT(IF(isIRI(?parent_path), REPLACE(STR(?parent_path), "^.*[#/]", ""), STR(?parent_path)), "/variants/", IF(isIRI(?genomic_variant_id), REPLACE(STR(?genomic_variant_id), "^.*[#/]", ""), STR(?genomic_variant_id))) AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_GenomicVariants_VariantClassIsRare" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:variantClassIsRare ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:GenomicVariants .
+                OPTIONAL { $this effortless-ntwf:variantType ?j0 . }
+                OPTIONAL { ?j1 a effortless-ntwf:VariantTypes ; effortless-ntwf:variantTypeId ?j2 . FILTER(REPLACE(STR(?j2), "^.*[#/]", "") = REPLACE(STR(?j0), "^.*[#/]", "")) OPTIONAL { ?j1 effortless-ntwf:isRareVariantClass ?j3 . } }
+                BIND(?j3 AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_GenomicVariants_IsRareVariant" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:isRareVariant ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:GenomicVariants .
+    OPTIONAL { $this effortless-ntwf:alleleFrequency ?allele_frequency . }
+                BIND(IF((?allele_frequency < 0.01), true, false) AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_GenomicVariants_IsCausalCandidate" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:isCausalCandidate ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:GenomicVariants .
+    OPTIONAL { $this effortless-ntwf:hasAlleleSpecificExpression ?has_allele_specific_expression . }
+    OPTIONAL { $this effortless-ntwf:isRareVariant ?is_rare_variant . }
+    OPTIONAL { $this effortless-ntwf:variantClassIsRare ?variant_class_is_rare . }
+                BIND(IF(((?is_rare_variant || ?variant_class_is_rare) && ?has_allele_specific_expression), true, false) AS ?_result)
+            }
+        """ ;
+    ] .
+# Rule for VariantTypeLabel - parse error: Unknown function: INDEX
+# Rule for IndividualAncestryLabel - parse error: Unknown function: INDEX
+
+# === Shape with rules for GlossaryTerms ===
+effortless-ntwf:GlossaryTermsShape a sh:NodeShape ;
+    sh:targetClass effortless-ntwf:GlossaryTerms ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_GlossaryTerms_Name" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:name ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:GlossaryTerms .
+    OPTIONAL { $this effortless-ntwf:term ?term . }
+                BIND(?term AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_GlossaryTerms_RelativePath" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:relativePath ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:GlossaryTerms .
+    OPTIONAL { $this effortless-ntwf:glossaryTermId ?glossary_term_id . }
+                BIND(CONCAT("/admin/glossary/", IF(isIRI(?glossary_term_id), REPLACE(STR(?glossary_term_id), "^.*[#/]", ""), STR(?glossary_term_id))) AS ?_result)
+            }
+        """ ;
+    ] .
+
+# === Shape with rules for IndividualPredictions ===
+effortless-ntwf:IndividualPredictionsShape a sh:NodeShape ;
+    sh:targetClass effortless-ntwf:IndividualPredictions ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_IndividualPredictions_Name" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:name ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:IndividualPredictions .
+    OPTIONAL { $this effortless-ntwf:predictionLabel ?prediction_label . }
+                BIND(?prediction_label AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_IndividualPredictions_ParentPath" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:parentPath ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:IndividualPredictions .
+                OPTIONAL { $this effortless-ntwf:individual ?j0 . }
+                OPTIONAL { ?j1 a effortless-ntwf:Individuals ; effortless-ntwf:individualId ?j2 . FILTER(REPLACE(STR(?j2), "^.*[#/]", "") = REPLACE(STR(?j0), "^.*[#/]", "")) OPTIONAL { ?j1 effortless-ntwf:relativePath ?j3 . } }
+                BIND(?j3 AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_IndividualPredictions_RelativePath" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:relativePath ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:IndividualPredictions .
+    OPTIONAL { $this effortless-ntwf:individualPredictionId ?individual_prediction_id . }
+    OPTIONAL { $this effortless-ntwf:parentPath ?parent_path . }
+                BIND(CONCAT(IF(isIRI(?parent_path), REPLACE(STR(?parent_path), "^.*[#/]", ""), STR(?parent_path)), "/predictions/", IF(isIRI(?individual_prediction_id), REPLACE(STR(?individual_prediction_id), "^.*[#/]", ""), STR(?individual_prediction_id))) AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_IndividualPredictions_PredictedValue" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:predictedValue ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:IndividualPredictions .
+    OPTIONAL { $this effortless-ntwf:individualCausalMass ?individual_causal_mass . }
+    OPTIONAL { $this effortless-ntwf:individualConfirmedNodeCount ?individual_confirmed_node_count . }
+                BIND(IF((((2 * ?individual_causal_mass) + (1.5 * ?individual_confirmed_node_count)) > 10), 10, ((2 * ?individual_causal_mass) + (1.5 * ?individual_confirmed_node_count))) AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_IndividualPredictions_MeanBinAbsError" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:meanBinAbsError ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:IndividualPredictions .
+    OPTIONAL { $this effortless-ntwf:countBins ?count_bins . }
+    OPTIONAL { $this effortless-ntwf:sumBinAbsError ?sum_bin_abs_error . }
+                BIND(IF((?count_bins > 0), (?sum_bin_abs_error / ?count_bins), 1) AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_IndividualPredictions_WellCalibratedFraction" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:wellCalibratedFraction ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:IndividualPredictions .
+    OPTIONAL { $this effortless-ntwf:countBins ?count_bins . }
+    OPTIONAL { $this effortless-ntwf:countWellCalibratedBins ?count_well_calibrated_bins . }
+                BIND(IF((?count_bins > 0), (?count_well_calibrated_bins / ?count_bins), 0) AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_IndividualPredictions_CalibratedUncertainty" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:calibratedUncertainty ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:IndividualPredictions .
+    OPTIONAL { $this effortless-ntwf:meanBinAbsError ?mean_bin_abs_error . }
+    OPTIONAL { $this effortless-ntwf:wellCalibratedFraction ?well_calibrated_fraction . }
+                BIND((IF(((1 - ?mean_bin_abs_error) < 0), 0, (1 - ?mean_bin_abs_error)) * ?well_calibrated_fraction) AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_IndividualPredictions_RestsOnConfirmedMechanism" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:restsOnConfirmedMechanism ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:IndividualPredictions .
+    OPTIONAL { $this effortless-ntwf:individualConfirmedNodeCount ?individual_confirmed_node_count . }
+                BIND(IF((?individual_confirmed_node_count >= 1), true, false) AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_IndividualPredictions_HasSpuriousCorrelationFlag" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:hasSpuriousCorrelationFlag ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:IndividualPredictions .
+    OPTIONAL { $this effortless-ntwf:individualHasCrypticRelatedness ?individual_has_cryptic_relatedness . }
+    OPTIONAL { $this effortless-ntwf:restsOnConfirmedMechanism ?rests_on_confirmed_mechanism . }
+                BIND(IF(((!(?rests_on_confirmed_mechanism)) || ?individual_has_cryptic_relatedness), true, false) AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_IndividualPredictions_IsFalsifiabilityBacked" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:isFalsifiabilityBacked ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:IndividualPredictions .
+    OPTIONAL { $this effortless-ntwf:individualConfirmedNodeCount ?individual_confirmed_node_count . }
+                BIND(IF((?individual_confirmed_node_count >= 1), true, false) AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_IndividualPredictions_IsTransportableToAbsentAncestry" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:isTransportableToAbsentAncestry ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:IndividualPredictions .
+    OPTIONAL { $this effortless-ntwf:hasSpuriousCorrelationFlag ?has_spurious_correlation_flag . }
+    OPTIONAL { $this effortless-ntwf:individualCrossAncestryNodeCount ?individual_cross_ancestry_node_count . }
+    OPTIONAL { $this effortless-ntwf:isAncestryHoldout ?is_ancestry_holdout . }
+                BIND(IF((?is_ancestry_holdout && (?individual_cross_ancestry_node_count >= 1) && (!(?has_spurious_correlation_flag))), true, false) AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_IndividualPredictions_IsAncestryTransportSafe" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:isAncestryTransportSafe ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:IndividualPredictions .
+    OPTIONAL { $this effortless-ntwf:isAncestryHoldout ?is_ancestry_holdout . }
+    OPTIONAL { $this effortless-ntwf:isTransportableToAbsentAncestry ?is_transportable_to_absent_ancestry . }
+                BIND(IF(?is_ancestry_holdout, ?is_transportable_to_absent_ancestry, true) AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_IndividualPredictions_TransportGateStatus" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:transportGateStatus ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:IndividualPredictions .
+    OPTIONAL { $this effortless-ntwf:isAncestryHoldout ?is_ancestry_holdout . }
+    OPTIONAL { $this effortless-ntwf:isTransportableToAbsentAncestry ?is_transportable_to_absent_ancestry . }
+                BIND(IF((!(?is_ancestry_holdout)), "NotApplicable", IF(?is_transportable_to_absent_ancestry, "PASS-tested", "FAIL")) AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_IndividualPredictions_IsHighConfidencePrediction" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:isHighConfidencePrediction ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:IndividualPredictions .
+    OPTIONAL { $this effortless-ntwf:calibratedUncertainty ?calibrated_uncertainty . }
+    OPTIONAL { $this effortless-ntwf:hasSpuriousCorrelationFlag ?has_spurious_correlation_flag . }
+                BIND(IF(((?calibrated_uncertainty >= 0.7) && (!(?has_spurious_correlation_flag))), true, false) AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_IndividualPredictions_PatientStratificationTier" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:patientStratificationTier ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:IndividualPredictions .
+    OPTIONAL { $this effortless-ntwf:predictedValue ?predicted_value . }
+                BIND(IF((?predicted_value >= 7), "High-Risk Pathway", IF((?predicted_value >= 4), "Moderate-Risk Pathway", "Low-Risk Pathway")) AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_IndividualPredictions_PredictedSeverityValue" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:predictedSeverityValue ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:IndividualPredictions .
+    OPTIONAL { $this effortless-ntwf:individualMaxSeverityScore ?individual_max_severity_score . }
+                BIND(?individual_max_severity_score AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_IndividualPredictions_SeverityTier" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:severityTier ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:IndividualPredictions .
+    OPTIONAL { $this effortless-ntwf:predictedSeverityValue ?predicted_severity_value . }
+                BIND(IF((?predicted_severity_value > 7), "Severe", IF((?predicted_severity_value >= 4), "Moderate", "Mild")) AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_IndividualPredictions_IsSeverityActionable" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:isSeverityActionable ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:IndividualPredictions .
+    OPTIONAL { $this effortless-ntwf:hasSpuriousCorrelationFlag ?has_spurious_correlation_flag . }
+    OPTIONAL { $this effortless-ntwf:individualHasHighSeverityPhenotype ?individual_has_high_severity_phenotype . }
+    OPTIONAL { $this effortless-ntwf:restsOnConfirmedMechanism ?rests_on_confirmed_mechanism . }
+                BIND(IF((?individual_has_high_severity_phenotype && ?rests_on_confirmed_mechanism && (!(?has_spurious_correlation_flag))), true, false) AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_IndividualPredictions_SeverityDecidingFactor" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:severityDecidingFactor ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:IndividualPredictions .
+    OPTIONAL { $this effortless-ntwf:hasSpuriousCorrelationFlag ?has_spurious_correlation_flag . }
+    OPTIONAL { $this effortless-ntwf:individualHasHighSeverityPhenotype ?individual_has_high_severity_phenotype . }
+    OPTIONAL { $this effortless-ntwf:isSeverityActionable ?is_severity_actionable . }
+    OPTIONAL { $this effortless-ntwf:restsOnConfirmedMechanism ?rests_on_confirmed_mechanism . }
+                BIND(IF(?is_severity_actionable, "HighSeverityOnConfirmedMechanism", IF((!(?individual_has_high_severity_phenotype)), "NotHighSeverity", IF((!(?rests_on_confirmed_mechanism)), "NoValidatedMechanism", IF(?has_spurious_correlation_flag, "SpuriousFlag", "Undetermined")))) AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_IndividualPredictions_IsTreatmentResponseActionable" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:isTreatmentResponseActionable ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:IndividualPredictions .
+    OPTIONAL { $this effortless-ntwf:individualHasPredictedTreatmentResponse ?individual_has_predicted_treatment_response . }
+                BIND(IF(?individual_has_predicted_treatment_response, true, false) AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_IndividualPredictions_TreatmentResponseDecidingFactor" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:treatmentResponseDecidingFactor ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:IndividualPredictions .
+    OPTIONAL { $this effortless-ntwf:isTreatmentResponseActionable ?is_treatment_response_actionable . }
+    OPTIONAL { $this effortless-ntwf:restsOnConfirmedMechanism ?rests_on_confirmed_mechanism . }
+                BIND(IF(?is_treatment_response_actionable, "EffectiveOnConfirmedMechanism", IF(?rests_on_confirmed_mechanism, "NoEffectiveTreatmentOnMechanism", "NoConfirmedMechanism")) AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_IndividualPredictions_IsClinicallyActionable" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:isClinicallyActionable ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:IndividualPredictions .
+    OPTIONAL { $this effortless-ntwf:isAncestryTransportSafe ?is_ancestry_transport_safe . }
+    OPTIONAL { $this effortless-ntwf:isFalsifiabilityBacked ?is_falsifiability_backed . }
+    OPTIONAL { $this effortless-ntwf:isHighConfidencePrediction ?is_high_confidence_prediction . }
+    OPTIONAL { $this effortless-ntwf:predictedValue ?predicted_value . }
+                BIND(IF((?is_high_confidence_prediction && ?is_falsifiability_backed && ?is_ancestry_transport_safe && (?predicted_value > 0)), true, false) AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_IndividualPredictions_LifecycleStateKey" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:lifecycleStateKey ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:IndividualPredictions .
+    OPTIONAL { $this effortless-ntwf:calibratedUncertainty ?calibrated_uncertainty . }
+    OPTIONAL { $this effortless-ntwf:individualHasCrypticRelatedness ?individual_has_cryptic_relatedness . }
+    OPTIONAL { $this effortless-ntwf:isAncestryTransportSafe ?is_ancestry_transport_safe . }
+    OPTIONAL { $this effortless-ntwf:isFalsifiabilityBacked ?is_falsifiability_backed . }
+    OPTIONAL { $this effortless-ntwf:isHighConfidencePrediction ?is_high_confidence_prediction . }
+    OPTIONAL { $this effortless-ntwf:predictedValue ?predicted_value . }
+    OPTIONAL { $this effortless-ntwf:restsOnConfirmedMechanism ?rests_on_confirmed_mechanism . }
+                BIND(IF((?is_high_confidence_prediction && ?is_falsifiability_backed && ?is_ancestry_transport_safe && (?predicted_value > 0)), "Actionable", IF(((!(?rests_on_confirmed_mechanism)) || (!(?is_falsifiability_backed))), "NotActionable", IF(?individual_has_cryptic_relatedness, "NotActionable", IF((?calibrated_uncertainty < 0.7), "NotActionable", IF((!(?is_ancestry_transport_safe)), "NotActionable", "Actionable"))))) AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_IndividualPredictions_DecidingGate" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:decidingGate ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:IndividualPredictions .
+    OPTIONAL { $this effortless-ntwf:calibratedUncertainty ?calibrated_uncertainty . }
+    OPTIONAL { $this effortless-ntwf:individualHasCrypticRelatedness ?individual_has_cryptic_relatedness . }
+    OPTIONAL { $this effortless-ntwf:isAncestryTransportSafe ?is_ancestry_transport_safe . }
+    OPTIONAL { $this effortless-ntwf:isClinicallyActionable ?is_clinically_actionable . }
+    OPTIONAL { $this effortless-ntwf:restsOnConfirmedMechanism ?rests_on_confirmed_mechanism . }
+                BIND(IF(?is_clinically_actionable, "AllGatesPass", IF((!(?rests_on_confirmed_mechanism)), "NoValidatedMechanism", IF(?individual_has_cryptic_relatedness, "CrypticRelatedness", IF((?calibrated_uncertainty < 0.7), "Calibration", IF((!(?is_ancestry_transport_safe)), "AncestryTransport", "Undetermined"))))) AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_IndividualPredictions_IndividualTargetPathway" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:individualTargetPathway ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:IndividualPredictions .
+                OPTIONAL { $this effortless-ntwf:individual ?j0 . }
+                OPTIONAL { ?j1 a effortless-ntwf:Individuals ; effortless-ntwf:individualId ?j2 . FILTER(REPLACE(STR(?j2), "^.*[#/]", "") = REPLACE(STR(?j0), "^.*[#/]", "")) OPTIONAL { ?j1 effortless-ntwf:targetPathway ?j3 . } }
+                BIND(?j3 AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_IndividualPredictions_IndividualProgressionStateKey" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:individualProgressionStateKey ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:IndividualPredictions .
+                OPTIONAL { $this effortless-ntwf:individual ?j0 . }
+                OPTIONAL { ?j1 a effortless-ntwf:Individuals ; effortless-ntwf:individualId ?j2 . FILTER(REPLACE(STR(?j2), "^.*[#/]", "") = REPLACE(STR(?j0), "^.*[#/]", "")) OPTIONAL { ?j1 effortless-ntwf:nephritisProgressionStateKey ?j3 . } }
+                BIND(?j3 AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_IndividualPredictions_IndividualIsDiseaseProgressing" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:individualIsDiseaseProgressing ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:IndividualPredictions .
+                OPTIONAL { $this effortless-ntwf:individual ?j0 . }
+                OPTIONAL { ?j1 a effortless-ntwf:Individuals ; effortless-ntwf:individualId ?j2 . FILTER(REPLACE(STR(?j2), "^.*[#/]", "") = REPLACE(STR(?j0), "^.*[#/]", "")) OPTIONAL { ?j1 effortless-ntwf:isDiseaseProgressing ?j3 . } }
+                BIND(?j3 AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_IndividualPredictions_RecommendedTreatmentLine" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:recommendedTreatmentLine ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:IndividualPredictions .
+    OPTIONAL { $this effortless-ntwf:individualProgressionStateKey ?individual_progression_state_key . }
+    OPTIONAL { $this effortless-ntwf:individualTargetPathway ?individual_target_pathway . }
+    OPTIONAL { $this effortless-ntwf:restsOnConfirmedMechanism ?rests_on_confirmed_mechanism . }
+                BIND(IF((!(?rests_on_confirmed_mechanism)), "No targeted line — mechanism unconfirmed", IF(((REPLACE(COALESCE(STR(?individual_progression_state_key), ""), "^.*#", "") = "RenalFlareRisk") || (REPLACE(COALESCE(STR(?individual_progression_state_key), ""), "^.*#", "") = "BiopsyIndicated")), "Mycophenolate (induction)", IF((REPLACE(COALESCE(STR(?individual_target_pathway), ""), "^.*#", "") = "type-I-IFN"), "Anifrolumab", IF((REPLACE(COALESCE(STR(?individual_target_pathway), ""), "^.*#", "") = "B-cell/autoantibody"), "Belimumab", IF((REPLACE(COALESCE(STR(?individual_target_pathway), ""), "^.*#", "") = "IL-17/23"), "Secukinumab", "Standard-of-care (no mechanism-matched targeted line)"))))) AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_IndividualPredictions_TreatmentLineDecidingFactor" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:treatmentLineDecidingFactor ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:IndividualPredictions .
+    OPTIONAL { $this effortless-ntwf:individualProgressionStateKey ?individual_progression_state_key . }
+    OPTIONAL { $this effortless-ntwf:individualTargetPathway ?individual_target_pathway . }
+    OPTIONAL { $this effortless-ntwf:restsOnConfirmedMechanism ?rests_on_confirmed_mechanism . }
+                BIND(IF((!(?rests_on_confirmed_mechanism)), "MechanismUnconfirmed", IF(((REPLACE(COALESCE(STR(?individual_progression_state_key), ""), "^.*#", "") = "RenalFlareRisk") || (REPLACE(COALESCE(STR(?individual_progression_state_key), ""), "^.*#", "") = "BiopsyIndicated")), "ActiveNephritis-Induction", IF((REPLACE(COALESCE(STR(?individual_target_pathway), ""), "^.*#", "") = "type-I-IFN"), "IFNSignature-Anifrolumab", IF((REPLACE(COALESCE(STR(?individual_target_pathway), ""), "^.*#", "") = "B-cell/autoantibody"), "AutoantibodyDriven-Belimumab", IF((REPLACE(COALESCE(STR(?individual_target_pathway), ""), "^.*#", "") = "IL-17/23"), "IL17Axis-Secukinumab", "NoMechanismMatch"))))) AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_IndividualPredictions_ProgressionVsActionabilityDisagree" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:progressionVsActionabilityDisagree ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:IndividualPredictions .
+    OPTIONAL { $this effortless-ntwf:individualIsDiseaseProgressing ?individual_is_disease_progressing . }
+    OPTIONAL { $this effortless-ntwf:isClinicallyActionable ?is_clinically_actionable . }
+                BIND(IF((?individual_is_disease_progressing && (!(?is_clinically_actionable))), true, false) AS ?_result)
+            }
+        """ ;
+    ] .
+# Rule for IndividualAncestryLabel - parse error: Unknown function: INDEX
+# Rule for IsAncestryHoldout - parse error: Unknown function: INDEX
+# Rule for IndividualCausalMass - parse error: unsupported lookup sub-expression: FuncCall
+# Rule for IndividualConfirmedNodeCount - parse error: unsupported lookup sub-expression: FuncCall
+# Rule for IndividualCrossAncestryNodeCount - parse error: unsupported lookup sub-expression: FuncCall
+# Rule for IndividualHasCrypticRelatedness - parse error: unsupported lookup sub-expression: FuncCall
+# Rule for IndividualMaxSeverityScore - parse error: unsupported lookup sub-expression: FuncCall
+# Rule for IndividualHasHighSeverityPhenotype - parse error: unsupported lookup sub-expression: FuncCall
+# Rule for IndividualHasPredictedTreatmentResponse - parse error: unsupported lookup sub-expression: FuncCall
+# Rule for CountBins - parse error: unsupported COUNTIFS criteria: FieldRef
+# Rule for CountWellCalibratedBins - parse error: unsupported COUNTIFS criteria: FieldRef
+# Rule for SumBinAbsError - parse error: unsupported COUNTIFS criteria: FieldRef
+
+# === Shape with rules for Individuals ===
+effortless-ntwf:IndividualsShape a sh:NodeShape ;
+    sh:targetClass effortless-ntwf:Individuals ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Individuals_Name" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:name ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:Individuals .
+    OPTIONAL { $this effortless-ntwf:familyName ?family_name . }
+    OPTIONAL { $this effortless-ntwf:givenName ?given_name . }
+                BIND(CONCAT(IF(isIRI(?given_name), REPLACE(STR(?given_name), "^.*[#/]", ""), STR(?given_name)), " ", IF(isIRI(?family_name), REPLACE(STR(?family_name), "^.*[#/]", ""), STR(?family_name))) AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Individuals_Slug" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:slug ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:Individuals .
+    OPTIONAL { $this effortless-ntwf:familyName ?family_name . }
+    OPTIONAL { $this effortless-ntwf:givenName ?given_name . }
+                BIND(REPLACE(LCASE(CONCAT(IF(isIRI(?family_name), REPLACE(STR(?family_name), "^.*[#/]", ""), STR(?family_name)), "-", IF(isIRI(?given_name), REPLACE(STR(?given_name), "^.*[#/]", ""), STR(?given_name)))), " ", "-") AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Individuals_RelativePath" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:relativePath ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:Individuals .
+    OPTIONAL { $this effortless-ntwf:slug ?slug . }
+                BIND(CONCAT("/intake/new-patient/", IF(isIRI(?slug), REPLACE(STR(?slug), "^.*[#/]", ""), STR(?slug))) AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Individuals_RareVariantBurdenScore" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:rareVariantBurdenScore ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:Individuals .
+    OPTIONAL { $this effortless-ntwf:ageYears ?age_years . }
+    OPTIONAL { $this effortless-ntwf:countOfGenomicVariants ?count_of_genomic_variants . }
+                BIND(IF((?age_years > 0), (?count_of_genomic_variants / ?age_years), 0) AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Individuals_CausalArchitectureScore" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:causalArchitectureScore ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:Individuals .
+    OPTIONAL { $this effortless-ntwf:countOfCausalMechanisms ?count_of_causal_mechanisms . }
+    OPTIONAL { $this effortless-ntwf:countOfEpistaticInteractions ?count_of_epistatic_interactions . }
+    OPTIONAL { $this effortless-ntwf:rareVariantBurdenScore ?rare_variant_burden_score . }
+                BIND((((?count_of_causal_mechanisms * 10) + (?count_of_epistatic_interactions * 5)) + ?rare_variant_burden_score) AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Individuals_IsDevelopmentWindow" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:isDevelopmentWindow ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:Individuals .
+    OPTIONAL { $this effortless-ntwf:ageYears ?age_years . }
+                BIND(IF((?age_years <= 25), true, false) AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Individuals_IsAgingWindow" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:isAgingWindow ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:Individuals .
+    OPTIONAL { $this effortless-ntwf:ageYears ?age_years . }
+                BIND(IF((?age_years >= 60), true, false) AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Individuals_HasHighSeverityPhenotype" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:hasHighSeverityPhenotype ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:Individuals .
+    OPTIONAL { $this effortless-ntwf:countHighSeverityPhenotypes ?count_high_severity_phenotypes . }
+                BIND(IF((?count_high_severity_phenotypes >= 1), true, false) AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Individuals_HasPredictedTreatmentResponse" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:hasPredictedTreatmentResponse ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:Individuals .
+    OPTIONAL { $this effortless-ntwf:countPredictedTreatmentResponses ?count_predicted_treatment_responses . }
+                BIND(IF((?count_predicted_treatment_responses >= 1), true, false) AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Individuals_IsInPreNephriticSignatureCluster" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:isInPreNephriticSignatureCluster ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:Individuals .
+    OPTIONAL { $this effortless-ntwf:countPreNephriticSignaturePanels ?count_pre_nephritic_signature_panels . }
+                BIND(IF((?count_pre_nephritic_signature_panels >= 1), true, false) AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Individuals_SignatureStrength" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:signatureStrength ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:Individuals .
+    OPTIONAL { $this effortless-ntwf:countPreNephriticSignaturePanels ?count_pre_nephritic_signature_panels . }
+                BIND(IF((?count_pre_nephritic_signature_panels >= 2), 2, IF((?count_pre_nephritic_signature_panels >= 1), 1, 0)) AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Individuals_NephritisProgressionStateKey" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:nephritisProgressionStateKey ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:Individuals .
+    OPTIONAL { $this effortless-ntwf:maxProgressionStateOrder ?max_progression_state_order . }
+                BIND(IF((?max_progression_state_order >= 5), "BiopsyIndicated", IF((?max_progression_state_order >= 4), "RenalFlareRisk", IF((?max_progression_state_order >= 3), "EarlyNephritis", IF((?max_progression_state_order >= 2), "SerologicActive", "PresymptomaticAutoimmunity")))) AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Individuals_ActivityTier" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:activityTier ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:Individuals .
+    OPTIONAL { $this effortless-ntwf:latestSledaiScore ?latest_sledai_score . }
+                BIND(IF((?latest_sledai_score >= 12), "High / flare", IF((?latest_sledai_score >= 6), "Moderate", IF((?latest_sledai_score >= 1), "Mild", "Quiescent"))) AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Individuals_IsHighDiseaseActivity" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:isHighDiseaseActivity ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:Individuals .
+    OPTIONAL { $this effortless-ntwf:latestSledaiScore ?latest_sledai_score . }
+                BIND(IF((?latest_sledai_score >= 12), true, false) AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Individuals_IsDiseaseProgressing" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:isDiseaseProgressing ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:Individuals .
+    OPTIONAL { $this effortless-ntwf:nephritisProgressionStateKey ?nephritis_progression_state_key . }
+                BIND(IF(((REPLACE(COALESCE(STR(?nephritis_progression_state_key), ""), "^.*#", "") = "EarlyNephritis") || (REPLACE(COALESCE(STR(?nephritis_progression_state_key), ""), "^.*#", "") = "RenalFlareRisk") || (REPLACE(COALESCE(STR(?nephritis_progression_state_key), ""), "^.*#", "") = "BiopsyIndicated")), true, false) AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Individuals_TargetPathway" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:targetPathway ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:Individuals .
+    OPTIONAL { $this effortless-ntwf:targetPathwayCode ?target_pathway_code . }
+                BIND(IF((?target_pathway_code = 1), "type-I-IFN", IF((?target_pathway_code = 2), "B-cell/autoantibody", IF((?target_pathway_code = 3), "T-cell-costim", IF((?target_pathway_code = 4), "IL-17/23", "")))) AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Individuals_CurrentProgressionStateId" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:currentProgressionStateId ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:Individuals .
+    OPTIONAL { $this effortless-ntwf:nephritisProgressionStateKey ?nephritis_progression_state_key . }
+                BIND(CONCAT("lupus-nephritis-progression--", IF(isIRI(LCASE(?nephritis_progression_state_key)), REPLACE(STR(LCASE(?nephritis_progression_state_key)), "^.*[#/]", ""), STR(LCASE(?nephritis_progression_state_key)))) AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Individuals_ReachableStatesAhead" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:reachableStatesAhead ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:Individuals .
+                OPTIONAL { $this effortless-ntwf:currentProgressionStateId ?j0 . }
+                OPTIONAL { ?j1 a effortless-ntwf:MachineStates ; effortless-ntwf:machineStateId ?j2 . FILTER(REPLACE(STR(?j2), "^.*[#/]", "") = REPLACE(STR(?j0), "^.*[#/]", "")) OPTIONAL { ?j1 effortless-ntwf:reachableStateCount ?j3 . } }
+                BIND(?j3 AS ?_result)
+            }
+        """ ;
+    ] .
+# Rule for FederatedDatasetNodeLabel - parse error: Unknown function: INDEX
+# Rule for CountOfGenomicVariants - parse error: unsupported COUNTIFS criteria: FieldRef
+# Rule for CountOfCausalMechanisms - parse error: unsupported COUNTIFS criteria: FieldRef
+# Rule for CountOfEpistaticInteractions - parse error: unsupported COUNTIFS criteria: FieldRef
+# Rule for CountConfirmedCausalNodes - parse error: unsupported COUNTIFS criteria: FieldRef
+# Rule for SumConfirmedCausalConfidence - parse error: unsupported COUNTIFS criteria: FieldRef
+# Rule for CountCrossAncestryConfirmedNodes - parse error: unsupported COUNTIFS criteria: FieldRef
+# Rule for MaxSeverityScore - parse error: aggregation formula must be COUNTIFS(...) or SUMIFS(...)
+# Rule for CountHighSeverityPhenotypes - parse error: unsupported COUNTIFS criteria: FieldRef
+# Rule for CountPredictedTreatmentResponses - parse error: unsupported COUNTIFS criteria: FieldRef
+# Rule for CountSerologyPanels - parse error: unsupported COUNTIFS criteria: FieldRef
+# Rule for CountPreNephriticSignaturePanels - parse error: unsupported COUNTIFS criteria: FieldRef
+# Rule for MaxProgressionStateOrder - parse error: aggregation formula must be COUNTIFS(...) or SUMIFS(...)
+# Rule for LatestSledaiScore - parse error: aggregation formula must be COUNTIFS(...) or SUMIFS(...)
+# Rule for TargetPathwayCode - parse error: aggregation formula must be COUNTIFS(...) or SUMIFS(...)
+
+# === Shape with rules for InferenceKinds ===
+effortless-ntwf:InferenceKindsShape a sh:NodeShape ;
+    sh:targetClass effortless-ntwf:InferenceKinds ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_InferenceKinds_Name" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:name ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:InferenceKinds .
+    OPTIONAL { $this effortless-ntwf:title ?title . }
+                BIND(?title AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_InferenceKinds_RelativePath" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:relativePath ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:InferenceKinds .
+    OPTIONAL { $this effortless-ntwf:inferenceKindId ?inference_kind_id . }
+                BIND(CONCAT("/admin/inference-kinds/", IF(isIRI(?inference_kind_id), REPLACE(STR(?inference_kind_id), "^.*[#/]", ""), STR(?inference_kind_id))) AS ?_result)
+            }
+        """ ;
+    ] .
+
+# === Shape with rules for InterventionTargets ===
+effortless-ntwf:InterventionTargetsShape a sh:NodeShape ;
+    sh:targetClass effortless-ntwf:InterventionTargets ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_InterventionTargets_Name" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:name ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:InterventionTargets .
+    OPTIONAL { $this effortless-ntwf:targetLabel ?target_label . }
+                BIND(?target_label AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_InterventionTargets_ParentPath" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:parentPath ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:InterventionTargets .
+                OPTIONAL { $this effortless-ntwf:causalMechanism ?j0 . }
+                OPTIONAL { ?j1 a effortless-ntwf:CausalMechanisms ; effortless-ntwf:causalMechanismId ?j2 . FILTER(REPLACE(STR(?j2), "^.*[#/]", "") = REPLACE(STR(?j0), "^.*[#/]", "")) OPTIONAL { ?j1 effortless-ntwf:relativePath ?j3 . } }
+                BIND(?j3 AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_InterventionTargets_RelativePath" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:relativePath ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:InterventionTargets .
+    OPTIONAL { $this effortless-ntwf:interventionTargetId ?intervention_target_id . }
+    OPTIONAL { $this effortless-ntwf:parentPath ?parent_path . }
+                BIND(CONCAT(IF(isIRI(?parent_path), REPLACE(STR(?parent_path), "^.*[#/]", ""), STR(?parent_path)), "/targets/", IF(isIRI(?intervention_target_id), REPLACE(STR(?intervention_target_id), "^.*[#/]", ""), STR(?intervention_target_id))) AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_InterventionTargets_IsGeneBasedTherapy" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:isGeneBasedTherapy ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:InterventionTargets .
+    OPTIONAL { $this effortless-ntwf:therapyClass ?therapy_class . }
+                BIND(IF((REPLACE(COALESCE(STR(?therapy_class), ""), "^.*#", "") = "Gene-based"), true, false) AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_InterventionTargets_IsCellBasedTherapy" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:isCellBasedTherapy ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:InterventionTargets .
+    OPTIONAL { $this effortless-ntwf:therapyClass ?therapy_class . }
+                BIND(IF((REPLACE(COALESCE(STR(?therapy_class), ""), "^.*#", "") = "Cell-based"), true, false) AS ?_result)
+            }
+        """ ;
+    ] .
+# Rule for CausalMechanismLabel - parse error: Unknown function: INDEX
+
+# === Shape with rules for LeopoldLoops ===
+effortless-ntwf:LeopoldLoopsShape a sh:NodeShape ;
+    sh:targetClass effortless-ntwf:LeopoldLoops ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_LeopoldLoops_RelativePath" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:relativePath ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:LeopoldLoops .
+    OPTIONAL { $this effortless-ntwf:leopoldLoopId ?leopold_loop_id . }
+                BIND(CONCAT("/admin/leopold-loops/", IF(isIRI(?leopold_loop_id), REPLACE(STR(?leopold_loop_id), "^.*[#/]", ""), STR(?leopold_loop_id))) AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_LeopoldLoops_Completedness" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:completedness ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:LeopoldLoops .
+    OPTIONAL { $this effortless-ntwf:status ?status . }
+                BIND(?status AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_LeopoldLoops_IsInCurrentPlan" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:isInCurrentPlan ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:LeopoldLoops .
+    OPTIONAL { $this effortless-ntwf:status ?status . }
+                BIND(IF((REPLACE(COALESCE(STR(?status), ""), "^.*#", "") = "done"), false, true) AS ?_result)
+            }
+        """ ;
+    ] .
+# Rule for Name - parse error: Unknown function: CONCATENATE
+
+# === Shape with rules for MachineStates ===
+effortless-ntwf:MachineStatesShape a sh:NodeShape ;
+    sh:targetClass effortless-ntwf:MachineStates ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_MachineStates_Name" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:name ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:MachineStates .
+    OPTIONAL { $this effortless-ntwf:machineStateId ?machine_state_id . }
+                BIND(?machine_state_id AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_MachineStates_RelativePath" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:relativePath ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:MachineStates .
+    OPTIONAL { $this effortless-ntwf:machineStateId ?machine_state_id . }
+                BIND(CONCAT("/admin/state-machine/states/", IF(isIRI(?machine_state_id), REPLACE(STR(?machine_state_id), "^.*[#/]", ""), STR(?machine_state_id))) AS ?_result)
+            }
+        """ ;
+    ] .
+# Rule for ReachableStateCount - parse error: closure COUNTIFS criteria must be TRUE()/FALSE() or a per-row key ref
+
+# === Shape with rules for NegativeControlTests ===
+effortless-ntwf:NegativeControlTestsShape a sh:NodeShape ;
+    sh:targetClass effortless-ntwf:NegativeControlTests ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_NegativeControlTests_Name" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:name ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:NegativeControlTests .
+    OPTIONAL { $this effortless-ntwf:controlLabel ?control_label . }
+                BIND(?control_label AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_NegativeControlTests_ParentPath" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:parentPath ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:NegativeControlTests .
+                OPTIONAL { $this effortless-ntwf:causalMechanism ?j0 . }
+                OPTIONAL { ?j1 a effortless-ntwf:CausalMechanisms ; effortless-ntwf:causalMechanismId ?j2 . FILTER(REPLACE(STR(?j2), "^.*[#/]", "") = REPLACE(STR(?j0), "^.*[#/]", "")) OPTIONAL { ?j1 effortless-ntwf:relativePath ?j3 . } }
+                BIND(?j3 AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_NegativeControlTests_RelativePath" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:relativePath ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:NegativeControlTests .
+    OPTIONAL { $this effortless-ntwf:negativeControlTestId ?negative_control_test_id . }
+    OPTIONAL { $this effortless-ntwf:parentPath ?parent_path . }
+                BIND(CONCAT(IF(isIRI(?parent_path), REPLACE(STR(?parent_path), "^.*[#/]", ""), STR(?parent_path)), "/neg-controls/", IF(isIRI(?negative_control_test_id), REPLACE(STR(?negative_control_test_id), "^.*[#/]", ""), STR(?negative_control_test_id))) AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_NegativeControlTests_IsSurvived" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:isSurvived ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:NegativeControlTests .
+    OPTIONAL { $this effortless-ntwf:nullThreshold ?null_threshold . }
+    OPTIONAL { $this effortless-ntwf:permutationEffectSize ?permutation_effect_size . }
+                BIND(IF((?permutation_effect_size <= ?null_threshold), true, false) AS ?_result)
+            }
+        """ ;
+    ] .
+
+# === Shape with rules for NonGoals ===
+effortless-ntwf:NonGoalsShape a sh:NodeShape ;
+    sh:targetClass effortless-ntwf:NonGoals ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_NonGoals_Name" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:name ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:NonGoals .
+    OPTIONAL { $this effortless-ntwf:statement ?statement . }
+                BIND(?statement AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_NonGoals_RelativePath" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:relativePath ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:NonGoals .
+    OPTIONAL { $this effortless-ntwf:nonGoalId ?non_goal_id . }
+                BIND(CONCAT("/admin/non-goals/", IF(isIRI(?non_goal_id), REPLACE(STR(?non_goal_id), "^.*[#/]", ""), STR(?non_goal_id))) AS ?_result)
+            }
+        """ ;
+    ] .
+
+# === Shape with rules for OmicsAssays ===
+effortless-ntwf:OmicsAssaysShape a sh:NodeShape ;
+    sh:targetClass effortless-ntwf:OmicsAssays ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_OmicsAssays_Name" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:name ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:OmicsAssays .
+    OPTIONAL { $this effortless-ntwf:assayLabel ?assay_label . }
+                BIND(?assay_label AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_OmicsAssays_ParentPath" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:parentPath ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:OmicsAssays .
+                OPTIONAL { $this effortless-ntwf:individual ?j0 . }
+                OPTIONAL { ?j1 a effortless-ntwf:Individuals ; effortless-ntwf:individualId ?j2 . FILTER(REPLACE(STR(?j2), "^.*[#/]", "") = REPLACE(STR(?j0), "^.*[#/]", "")) OPTIONAL { ?j1 effortless-ntwf:relativePath ?j3 . } }
+                BIND(?j3 AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_OmicsAssays_RelativePath" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:relativePath ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:OmicsAssays .
+    OPTIONAL { $this effortless-ntwf:omicsAssayId ?omics_assay_id . }
+    OPTIONAL { $this effortless-ntwf:parentPath ?parent_path . }
+                BIND(CONCAT(IF(isIRI(?parent_path), REPLACE(STR(?parent_path), "^.*[#/]", ""), STR(?parent_path)), "/assays/", IF(isIRI(?omics_assay_id), REPLACE(STR(?omics_assay_id), "^.*[#/]", ""), STR(?omics_assay_id))) AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_OmicsAssays_HasBatchEffectRisk" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:hasBatchEffectRisk ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:OmicsAssays .
+    OPTIONAL { $this effortless-ntwf:measurementErrorScore ?measurement_error_score . }
+                BIND(IF((?measurement_error_score > 0.3), true, false) AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_OmicsAssays_IsHighQualityAssay" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:isHighQualityAssay ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:OmicsAssays .
+    OPTIONAL { $this effortless-ntwf:hasBatchEffectRisk ?has_batch_effect_risk . }
+    OPTIONAL { $this effortless-ntwf:measurementErrorScore ?measurement_error_score . }
+                BIND(IF(((!(?has_batch_effect_risk)) && (?measurement_error_score < 0.15)), true, false) AS ?_result)
+            }
+        """ ;
+    ] .
+# Rule for ModalityLabel - parse error: Unknown function: INDEX
+# Rule for TissueLabel - parse error: Unknown function: INDEX
+
+# === Shape with rules for OmicsModalities ===
+effortless-ntwf:OmicsModalitiesShape a sh:NodeShape ;
+    sh:targetClass effortless-ntwf:OmicsModalities ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_OmicsModalities_Name" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:name ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:OmicsModalities .
+    OPTIONAL { $this effortless-ntwf:modalityLabel ?modality_label . }
+                BIND(?modality_label AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_OmicsModalities_RelativePath" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:relativePath ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:OmicsModalities .
+    OPTIONAL { $this effortless-ntwf:omicsModalityId ?omics_modality_id . }
+                BIND(CONCAT("/omics-modalities/", IF(isIRI(?omics_modality_id), REPLACE(STR(?omics_modality_id), "^.*[#/]", ""), STR(?omics_modality_id))) AS ?_result)
+            }
+        """ ;
+    ] .
+# Rule for CountOfOmicsAssays - parse error: unsupported COUNTIFS criteria: FieldRef
+
+# === Shape with rules for OpenQuestions ===
+effortless-ntwf:OpenQuestionsShape a sh:NodeShape ;
+    sh:targetClass effortless-ntwf:OpenQuestions ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_OpenQuestions_Name" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:name ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:OpenQuestions .
+    OPTIONAL { $this effortless-ntwf:question ?question . }
+                BIND(?question AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_OpenQuestions_RelativePath" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:relativePath ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:OpenQuestions .
+    OPTIONAL { $this effortless-ntwf:openQuestionId ?open_question_id . }
+                BIND(CONCAT("/admin/open-questions/", IF(isIRI(?open_question_id), REPLACE(STR(?open_question_id), "^.*[#/]", ""), STR(?open_question_id))) AS ?_result)
+            }
+        """ ;
+    ] .
+
+# === Shape with rules for RoutingAndNavigation ===
+effortless-ntwf:RoutingAndNavigationShape a sh:NodeShape ;
+    sh:targetClass effortless-ntwf:RoutingAndNavigation ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_RoutingAndNavigation_Name" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:name ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:RoutingAndNavigation .
+    OPTIONAL { $this effortless-ntwf:displayName ?display_name . }
+                BIND(REPLACE(LCASE(?display_name), " ", "-") AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_RoutingAndNavigation_Depth" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:depth ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:RoutingAndNavigation .
+    OPTIONAL { $this effortless-ntwf:parentRouteKey ?parent_route_key . }
+    OPTIONAL { $this effortless-ntwf:routeKey ?route_key . }
+                BIND(IF((?parent_route_key = ""), 0, (STRLEN(STR(?route_key)) - STRLEN(STR(REPLACE(?route_key, ".", ""))))) AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_RoutingAndNavigation_FullPath" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:fullPath ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:RoutingAndNavigation .
+    OPTIONAL { $this effortless-ntwf:route ?route . }
+                BIND(?route AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_RoutingAndNavigation_HandlerBaseName" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:handlerBaseName ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:RoutingAndNavigation .
+    OPTIONAL { $this effortless-ntwf:routeKey ?route_key . }
+                BIND(REPLACE(REPLACE(?route_key, ".", " "), "-", " ") AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_RoutingAndNavigation_RelativePath" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:relativePath ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:RoutingAndNavigation .
+    OPTIONAL { $this effortless-ntwf:routingAndNavigationId ?routing_and_navigation_id . }
+                BIND(CONCAT("/admin/routing/", IF(isIRI(?routing_and_navigation_id), REPLACE(STR(?routing_and_navigation_id), "^.*[#/]", ""), STR(?routing_and_navigation_id))) AS ?_result)
+            }
+        """ ;
+    ] .
+# Rule for AdminCanCreate - parse error: Unknown function: ISERROR
+# Rule for AdminCanRead - parse error: Unknown function: ISERROR
+# Rule for AdminCanUpdate - parse error: Unknown function: ISERROR
+# Rule for AdminCanDelete - parse error: Unknown function: ISERROR
+# Rule for IntakeClinicianCanCreate - parse error: Unknown function: ISERROR
+# Rule for IntakeClinicianCanRead - parse error: Unknown function: ISERROR
+# Rule for IntakeClinicianCanUpdate - parse error: Unknown function: ISERROR
+# Rule for IntakeClinicianCanDelete - parse error: Unknown function: ISERROR
+# Rule for DiagnosingDoctorCanCreate - parse error: Unknown function: ISERROR
+# Rule for DiagnosingDoctorCanRead - parse error: Unknown function: ISERROR
+# Rule for DiagnosingDoctorCanUpdate - parse error: Unknown function: ISERROR
+# Rule for DiagnosingDoctorCanDelete - parse error: Unknown function: ISERROR
+# Rule for ExternalLlmCanCreate - parse error: Unknown function: ISERROR
+# Rule for ExternalLlmCanRead - parse error: Unknown function: ISERROR
+# Rule for ExternalLlmCanUpdate - parse error: Unknown function: ISERROR
+# Rule for ExternalLlmCanDelete - parse error: Unknown function: ISERROR
+
+# === Shape with rules for SerologyObservations ===
+effortless-ntwf:SerologyObservationsShape a sh:NodeShape ;
+    sh:targetClass effortless-ntwf:SerologyObservations ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_SerologyObservations_PriorAntiDsDnaIU" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:priorAntiDsDnaIU ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:SerologyObservations .
+                OPTIONAL { $this effortless-ntwf:priorObservation ?j0 . }
+                OPTIONAL { ?j1 a effortless-ntwf:SerologyObservations ; effortless-ntwf:serologyObservationId ?j2 . FILTER(REPLACE(STR(?j2), "^.*[#/]", "") = REPLACE(STR(?j0), "^.*[#/]", "")) OPTIONAL { ?j1 effortless-ntwf:antiDsDnaIU ?j3 . } }
+                BIND(?j3 AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_SerologyObservations_PriorC3" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:priorC3 ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:SerologyObservations .
+                OPTIONAL { $this effortless-ntwf:priorObservation ?j0 . }
+                OPTIONAL { ?j1 a effortless-ntwf:SerologyObservations ; effortless-ntwf:serologyObservationId ?j2 . FILTER(REPLACE(STR(?j2), "^.*[#/]", "") = REPLACE(STR(?j0), "^.*[#/]", "")) OPTIONAL { ?j1 effortless-ntwf:complementC3 ?j3 . } }
+                BIND(?j3 AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_SerologyObservations_PriorC4" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:priorC4 ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:SerologyObservations .
+                OPTIONAL { $this effortless-ntwf:priorObservation ?j0 . }
+                OPTIONAL { ?j1 a effortless-ntwf:SerologyObservations ; effortless-ntwf:serologyObservationId ?j2 . FILTER(REPLACE(STR(?j2), "^.*[#/]", "") = REPLACE(STR(?j0), "^.*[#/]", "")) OPTIONAL { ?j1 effortless-ntwf:complementC4 ?j3 . } }
+                BIND(?j3 AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_SerologyObservations_AntiDsDnaTrend" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:antiDsDnaTrend ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:SerologyObservations .
+    OPTIONAL { $this effortless-ntwf:antiDsDnaIU ?anti_ds_dna_iu . }
+    OPTIONAL { $this effortless-ntwf:priorAntiDsDnaIU ?prior_anti_ds_dna_iu . }
+                BIND(IF((!BOUND(?prior_anti_ds_dna_iu) || STR(?prior_anti_ds_dna_iu) = ""), "Stable", IF((?anti_ds_dna_iu > (?prior_anti_ds_dna_iu * 1.25)), "Rising", IF((?anti_ds_dna_iu < (?prior_anti_ds_dna_iu * 0.8)), "Falling", "Stable"))) AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_SerologyObservations_ComplementTrend" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:complementTrend ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:SerologyObservations .
+    OPTIONAL { $this effortless-ntwf:complementC3 ?complement_c3 . }
+    OPTIONAL { $this effortless-ntwf:complementC4 ?complement_c4 . }
+    OPTIONAL { $this effortless-ntwf:priorC3 ?prior_c3 . }
+    OPTIONAL { $this effortless-ntwf:priorC4 ?prior_c4 . }
+                BIND(IF((!BOUND(?prior_c3) || STR(?prior_c3) = ""), "Stable", IF(((?complement_c3 + ?complement_c4) < ((?prior_c3 + ?prior_c4) * 0.85)), "Falling", IF(((?complement_c3 + ?complement_c4) > ((?prior_c3 + ?prior_c4) * 1.15)), "Rising", "Stable"))) AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_SerologyObservations_IsPreNephriticSignaturePanel" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:isPreNephriticSignaturePanel ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:SerologyObservations .
+    OPTIONAL { $this effortless-ntwf:antiDsDnaTrend ?anti_ds_dna_trend . }
+    OPTIONAL { $this effortless-ntwf:complementTrend ?complement_trend . }
+                BIND(IF(((REPLACE(COALESCE(STR(?anti_ds_dna_trend), ""), "^.*#", "") = "Rising") && (REPLACE(COALESCE(STR(?complement_trend), ""), "^.*#", "") = "Falling")), true, false) AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_SerologyObservations_IsSignificantProteinuria" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:isSignificantProteinuria ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:SerologyObservations .
+    OPTIONAL { $this effortless-ntwf:proteinuriaGPerDay ?proteinuria_g_per_day . }
+                BIND(IF((?proteinuria_g_per_day >= 0.5), true, false) AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_SerologyObservations_IsNephroticRangeProteinuria" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:isNephroticRangeProteinuria ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:SerologyObservations .
+    OPTIONAL { $this effortless-ntwf:proteinuriaGPerDay ?proteinuria_g_per_day . }
+                BIND(IF((?proteinuria_g_per_day >= 3.0), true, false) AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_SerologyObservations_SledaiRenalPoints" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:sledaiRenalPoints ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:SerologyObservations .
+    OPTIONAL { $this effortless-ntwf:hasActiveUrinarySediment ?has_active_urinary_sediment . }
+    OPTIONAL { $this effortless-ntwf:isNephroticRangeProteinuria ?is_nephrotic_range_proteinuria . }
+    OPTIONAL { $this effortless-ntwf:isSignificantProteinuria ?is_significant_proteinuria . }
+                BIND(IF((?is_nephrotic_range_proteinuria || ?has_active_urinary_sediment), 8, IF(?is_significant_proteinuria, 4, 0)) AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_SerologyObservations_SledaiSerologyPoints" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:sledaiSerologyPoints ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:SerologyObservations .
+    OPTIONAL { $this effortless-ntwf:antiDsDnaTrend ?anti_ds_dna_trend . }
+    OPTIONAL { $this effortless-ntwf:complementTrend ?complement_trend . }
+                BIND(IF(((REPLACE(COALESCE(STR(?complement_trend), ""), "^.*#", "") = "Falling") && (REPLACE(COALESCE(STR(?anti_ds_dna_trend), ""), "^.*#", "") = "Rising")), 4, IF(((REPLACE(COALESCE(STR(?complement_trend), ""), "^.*#", "") = "Falling") || (REPLACE(COALESCE(STR(?anti_ds_dna_trend), ""), "^.*#", "") = "Rising")), 2, 0)) AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_SerologyObservations_SledaiScore" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:sledaiScore ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:SerologyObservations .
+    OPTIONAL { $this effortless-ntwf:sledaiRenalPoints ?sledai_renal_points . }
+    OPTIONAL { $this effortless-ntwf:sledaiSerologyPoints ?sledai_serology_points . }
+                BIND((?sledai_renal_points + ?sledai_serology_points) AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_SerologyObservations_ProgressionStateKey" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:progressionStateKey ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:SerologyObservations .
+    OPTIONAL { $this effortless-ntwf:antiDsDnaTrend ?anti_ds_dna_trend . }
+    OPTIONAL { $this effortless-ntwf:complementTrend ?complement_trend . }
+    OPTIONAL { $this effortless-ntwf:hasActiveUrinarySediment ?has_active_urinary_sediment . }
+    OPTIONAL { $this effortless-ntwf:isNephroticRangeProteinuria ?is_nephrotic_range_proteinuria . }
+    OPTIONAL { $this effortless-ntwf:isSignificantProteinuria ?is_significant_proteinuria . }
+    OPTIONAL { $this effortless-ntwf:proteinuriaGPerDay ?proteinuria_g_per_day . }
+                BIND(IF((?is_nephrotic_range_proteinuria || ?has_active_urinary_sediment), "BiopsyIndicated", IF((?proteinuria_g_per_day >= 1.0), "RenalFlareRisk", IF(?is_significant_proteinuria, "EarlyNephritis", IF(((REPLACE(COALESCE(STR(?anti_ds_dna_trend), ""), "^.*#", "") = "Rising") && (REPLACE(COALESCE(STR(?complement_trend), ""), "^.*#", "") = "Falling")), "SerologicActive", "PresymptomaticAutoimmunity")))) AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_SerologyObservations_ProgressionStateOrder" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:progressionStateOrder ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:SerologyObservations .
+    OPTIONAL { $this effortless-ntwf:progressionStateKey ?progression_state_key . }
+                BIND(IF((REPLACE(COALESCE(STR(?progression_state_key), ""), "^.*#", "") = "BiopsyIndicated"), 5, IF((REPLACE(COALESCE(STR(?progression_state_key), ""), "^.*#", "") = "RenalFlareRisk"), 4, IF((REPLACE(COALESCE(STR(?progression_state_key), ""), "^.*#", "") = "EarlyNephritis"), 3, IF((REPLACE(COALESCE(STR(?progression_state_key), ""), "^.*#", "") = "SerologicActive"), 2, 1)))) AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_SerologyObservations_Name" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:name ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:SerologyObservations .
+    OPTIONAL { $this effortless-ntwf:serologyObservationId ?serology_observation_id . }
+                BIND(?serology_observation_id AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_SerologyObservations_RelativePath" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:relativePath ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:SerologyObservations .
+    OPTIONAL { $this effortless-ntwf:serologyObservationId ?serology_observation_id . }
+                BIND(CONCAT("/admin/serology/", IF(isIRI(?serology_observation_id), REPLACE(STR(?serology_observation_id), "^.*[#/]", ""), STR(?serology_observation_id))) AS ?_result)
+            }
+        """ ;
+    ] .
+
+# === Shape with rules for StateMachines ===
+effortless-ntwf:StateMachinesShape a sh:NodeShape ;
+    sh:targetClass effortless-ntwf:StateMachines ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_StateMachines_Name" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:name ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:StateMachines .
+    OPTIONAL { $this effortless-ntwf:stateMachineId ?state_machine_id . }
+                BIND(?state_machine_id AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_StateMachines_RelativePath" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:relativePath ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:StateMachines .
+    OPTIONAL { $this effortless-ntwf:stateMachineId ?state_machine_id . }
+                BIND(CONCAT("/admin/state-machine/", IF(isIRI(?state_machine_id), REPLACE(STR(?state_machine_id), "^.*[#/]", ""), STR(?state_machine_id))) AS ?_result)
+            }
+        """ ;
+    ] .
+# Rule for StateCount - parse error: unsupported COUNTIFS criteria: FieldRef
+# Rule for TransitionRuleCount - parse error: unsupported COUNTIFS criteria: FieldRef
+
+# === Shape with rules for StateTransitionRules ===
+effortless-ntwf:StateTransitionRulesShape a sh:NodeShape ;
+    sh:targetClass effortless-ntwf:StateTransitionRules ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_StateTransitionRules_Name" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:name ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:StateTransitionRules .
+    OPTIONAL { $this effortless-ntwf:stateTransitionRuleId ?state_transition_rule_id . }
+                BIND(?state_transition_rule_id AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_StateTransitionRules_RelativePath" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:relativePath ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:StateTransitionRules .
+    OPTIONAL { $this effortless-ntwf:stateTransitionRuleId ?state_transition_rule_id . }
+                BIND(CONCAT("/admin/state-machine/rules/", IF(isIRI(?state_transition_rule_id), REPLACE(STR(?state_transition_rule_id), "^.*[#/]", ""), STR(?state_transition_rule_id))) AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_StateTransitionRules_FromStateKey" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:fromStateKey ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:StateTransitionRules .
+                OPTIONAL { $this effortless-ntwf:fromState ?j0 . }
+                OPTIONAL { ?j1 a effortless-ntwf:MachineStates ; effortless-ntwf:machineStateId ?j2 . FILTER(REPLACE(STR(?j2), "^.*[#/]", "") = REPLACE(STR(?j0), "^.*[#/]", "")) OPTIONAL { ?j1 effortless-ntwf:stateKey ?j3 . } }
+                BIND(?j3 AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_StateTransitionRules_ToStateKey" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:toStateKey ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:StateTransitionRules .
+                OPTIONAL { $this effortless-ntwf:toState ?j0 . }
+                OPTIONAL { ?j1 a effortless-ntwf:MachineStates ; effortless-ntwf:machineStateId ?j2 . FILTER(REPLACE(STR(?j2), "^.*[#/]", "") = REPLACE(STR(?j0), "^.*[#/]", "")) OPTIONAL { ?j1 effortless-ntwf:stateKey ?j3 . } }
+                BIND(?j3 AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_StateTransitionRules_IsForwardEdge" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:isForwardEdge ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:StateTransitionRules .
+    OPTIONAL { $this effortless-ntwf:fromStateKey ?from_state_key . }
+    OPTIONAL { $this effortless-ntwf:toStateKey ?to_state_key . }
+                BIND((!((?to_state_key = ?from_state_key))) AS ?_result)
+            }
+        """ ;
+    ] .
+
+# === Shape with rules for StateTransitions ===
+effortless-ntwf:StateTransitionsShape a sh:NodeShape ;
+    sh:targetClass effortless-ntwf:StateTransitions ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_StateTransitions_Name" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:name ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:StateTransitions .
+    OPTIONAL { $this effortless-ntwf:stateTransitionId ?state_transition_id . }
+                BIND(?state_transition_id AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_StateTransitions_RelativePath" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:relativePath ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:StateTransitions .
+    OPTIONAL { $this effortless-ntwf:stateTransitionId ?state_transition_id . }
+                BIND(CONCAT("/admin/state-machine/transitions/", IF(isIRI(?state_transition_id), REPLACE(STR(?state_transition_id), "^.*[#/]", ""), STR(?state_transition_id))) AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_StateTransitions_IsForward" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:isForward ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:StateTransitions .
+    OPTIONAL { $this effortless-ntwf:toStateKey ?to_state_key . }
+                BIND((!((REPLACE(COALESCE(STR(?to_state_key), ""), "^.*#", "") = "Intake"))) AS ?_result)
+            }
+        """ ;
+    ] .
+
+# === Shape with rules for SubjectStateInstances ===
+effortless-ntwf:SubjectStateInstancesShape a sh:NodeShape ;
+    sh:targetClass effortless-ntwf:SubjectStateInstances ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_SubjectStateInstances_Name" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:name ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:SubjectStateInstances .
+    OPTIONAL { $this effortless-ntwf:subjectStateInstanceId ?subject_state_instance_id . }
+                BIND(?subject_state_instance_id AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_SubjectStateInstances_RelativePath" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:relativePath ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:SubjectStateInstances .
+    OPTIONAL { $this effortless-ntwf:subjectStateInstanceId ?subject_state_instance_id . }
+                BIND(CONCAT("/admin/state-machine/instances/", IF(isIRI(?subject_state_instance_id), REPLACE(STR(?subject_state_instance_id), "^.*[#/]", ""), STR(?subject_state_instance_id))) AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_SubjectStateInstances_IsCurrent" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:isCurrent ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:SubjectStateInstances .
+    OPTIONAL { $this effortless-ntwf:exitedAt ?exited_at . }
+                BIND((!BOUND(?exited_at) || STR(?exited_at) = "") AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_SubjectStateInstances_HasCompleteLineage" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:hasCompleteLineage ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:SubjectStateInstances .
+    OPTIONAL { $this effortless-ntwf:sequenceIndex ?sequence_index . }
+                BIND((?sequence_index >= 1) AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_SubjectStateInstances_IsLongDwell" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:isLongDwell ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:SubjectStateInstances .
+    OPTIONAL { $this effortless-ntwf:dwellDays ?dwell_days . }
+                BIND(IF((?dwell_days >= 90), true, false) AS ?_result)
+            }
+        """ ;
+    ] .
+
+# === Shape with rules for TestsForSuccess ===
+effortless-ntwf:TestsForSuccessShape a sh:NodeShape ;
+    sh:targetClass effortless-ntwf:TestsForSuccess ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_TestsForSuccess_Name" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:name ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:TestsForSuccess .
+    OPTIONAL { $this effortless-ntwf:claim ?claim . }
+                BIND(?claim AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_TestsForSuccess_RelativePath" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:relativePath ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:TestsForSuccess .
+    OPTIONAL { $this effortless-ntwf:testForSuccessId ?test_for_success_id . }
+                BIND(CONCAT("/admin/tests-for-success/", IF(isIRI(?test_for_success_id), REPLACE(STR(?test_for_success_id), "^.*[#/]", ""), STR(?test_for_success_id))) AS ?_result)
+            }
+        """ ;
+    ] .
+
+# === Shape with rules for TherapyOptions ===
+effortless-ntwf:TherapyOptionsShape a sh:NodeShape ;
+    sh:targetClass effortless-ntwf:TherapyOptions ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_TherapyOptions_Name" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:name ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:TherapyOptions .
+    OPTIONAL { $this effortless-ntwf:therapyLabel ?therapy_label . }
+                BIND(?therapy_label AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_TherapyOptions_RelativePath" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:relativePath ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:TherapyOptions .
+    OPTIONAL { $this effortless-ntwf:therapyOptionId ?therapy_option_id . }
+                BIND(CONCAT("/admin/therapy-options/", IF(isIRI(?therapy_option_id), REPLACE(STR(?therapy_option_id), "^.*[#/]", ""), STR(?therapy_option_id))) AS ?_result)
+            }
+        """ ;
+    ] .
+
+# === Shape with rules for Tissues ===
+effortless-ntwf:TissuesShape a sh:NodeShape ;
+    sh:targetClass effortless-ntwf:Tissues ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Tissues_Name" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:name ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:Tissues .
+    OPTIONAL { $this effortless-ntwf:tissueLabel ?tissue_label . }
+                BIND(?tissue_label AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Tissues_RelativePath" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:relativePath ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:Tissues .
+    OPTIONAL { $this effortless-ntwf:tissueId ?tissue_id . }
+                BIND(CONCAT("/tissues/", IF(isIRI(?tissue_id), REPLACE(STR(?tissue_id), "^.*[#/]", ""), STR(?tissue_id))) AS ?_result)
+            }
+        """ ;
+    ] .
+# Rule for CountOfOmicsAssays - parse error: unsupported COUNTIFS criteria: FieldRef
+
+# === Shape with rules for Treatments ===
+effortless-ntwf:TreatmentsShape a sh:NodeShape ;
+    sh:targetClass effortless-ntwf:Treatments ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Treatments_Name" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:name ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:Treatments .
+    OPTIONAL { $this effortless-ntwf:treatmentLabel ?treatment_label . }
+                BIND(?treatment_label AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Treatments_ParentPath" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:parentPath ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:Treatments .
+                OPTIONAL { $this effortless-ntwf:individual ?j0 . }
+                OPTIONAL { ?j1 a effortless-ntwf:Individuals ; effortless-ntwf:individualId ?j2 . FILTER(REPLACE(STR(?j2), "^.*[#/]", "") = REPLACE(STR(?j0), "^.*[#/]", "")) OPTIONAL { ?j1 effortless-ntwf:relativePath ?j3 . } }
+                BIND(?j3 AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Treatments_RelativePath" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:relativePath ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:Treatments .
+    OPTIONAL { $this effortless-ntwf:parentPath ?parent_path . }
+    OPTIONAL { $this effortless-ntwf:treatmentId ?treatment_id . }
+                BIND(CONCAT(IF(isIRI(?parent_path), REPLACE(STR(?parent_path), "^.*[#/]", ""), STR(?parent_path)), "/treatments/", IF(isIRI(?treatment_id), REPLACE(STR(?treatment_id), "^.*[#/]", ""), STR(?treatment_id))) AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Treatments_IsEffectiveTreatment" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:isEffectiveTreatment ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:Treatments .
+    OPTIONAL { $this effortless-ntwf:hasAdverseEffect ?has_adverse_effect . }
+    OPTIONAL { $this effortless-ntwf:treatmentResponse ?treatment_response . }
+                BIND(IF((((REPLACE(COALESCE(STR(?treatment_response), ""), "^.*#", "") = "Complete") || (REPLACE(COALESCE(STR(?treatment_response), ""), "^.*#", "") = "Partial")) && (!(?has_adverse_effect))), true, false) AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Treatments_IsTreatmentResponsePredicted" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:isTreatmentResponsePredicted ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:Treatments .
+    OPTIONAL { $this effortless-ntwf:isEffectiveTreatment ?is_effective_treatment . }
+    OPTIONAL { $this effortless-ntwf:isMechanismMatched ?is_mechanism_matched . }
+                BIND(IF((?is_effective_treatment && ?is_mechanism_matched), true, false) AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Treatments_TreatmentResponseDecidingFactor" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:treatmentResponseDecidingFactor ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:Treatments .
+    OPTIONAL { $this effortless-ntwf:hasAdverseEffect ?has_adverse_effect . }
+    OPTIONAL { $this effortless-ntwf:isMechanismMatched ?is_mechanism_matched . }
+    OPTIONAL { $this effortless-ntwf:isTreatmentResponsePredicted ?is_treatment_response_predicted . }
+    OPTIONAL { $this effortless-ntwf:treatmentResponse ?treatment_response . }
+                BIND(IF(?is_treatment_response_predicted, "EffectiveOnConfirmedMechanism", IF((!(?is_mechanism_matched)), "NoConfirmedMechanism", IF(?has_adverse_effect, "AdverseEffect", IF(((REPLACE(COALESCE(STR(?treatment_response), ""), "^.*#", "") = "None") || (REPLACE(COALESCE(STR(?treatment_response), ""), "^.*#", "") = "Adverse")), "NoResponse", "Undetermined")))) AS ?_result)
+            }
+        """ ;
+    ] .
+# Rule for AutoimmuneDiseaseLabel - parse error: Unknown function: INDEX
+# Rule for IsMechanismMatched - parse error: unsupported lookup sub-expression: FuncCall
+
+# === Shape with rules for VariantTypes ===
+effortless-ntwf:VariantTypesShape a sh:NodeShape ;
+    sh:targetClass effortless-ntwf:VariantTypes ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_VariantTypes_Name" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:name ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:VariantTypes .
+    OPTIONAL { $this effortless-ntwf:typeLabel ?type_label . }
+                BIND(?type_label AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_VariantTypes_RelativePath" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:relativePath ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:VariantTypes .
+    OPTIONAL { $this effortless-ntwf:variantTypeId ?variant_type_id . }
+                BIND(CONCAT("/variant-types/", IF(isIRI(?variant_type_id), REPLACE(STR(?variant_type_id), "^.*[#/]", ""), STR(?variant_type_id))) AS ?_result)
+            }
+        """ ;
+    ] .
+# Rule for CountOfGenomicVariants - parse error: unsupported COUNTIFS criteria: FieldRef
+
+# === Cardinality: single-valued forward FK properties ===
+effortless-ntwf:AutoimmuneDiseasesCardinalityShape a sh:NodeShape ;
+    sh:targetClass effortless-ntwf:AutoimmuneDiseases ;
+    sh:property [ sh:path effortless-ntwf:clinicalPhenotypes ; sh:maxCount 1 ] ;
+    sh:property [ sh:path effortless-ntwf:counterfactualTrajectories ; sh:maxCount 1 ] ;
+    sh:property [ sh:path effortless-ntwf:diseaseStages ; sh:maxCount 1 ] ;
+    sh:property [ sh:path effortless-ntwf:individualPredictions ; sh:maxCount 1 ] ;
+    sh:property [ sh:path effortless-ntwf:interventionTargets ; sh:maxCount 1 ] ;
+    sh:property [ sh:path effortless-ntwf:treatments ; sh:maxCount 1 ] .
+
+effortless-ntwf:CausalMechanismsCardinalityShape a sh:NodeShape ;
+    sh:targetClass effortless-ntwf:CausalMechanisms ;
+    sh:property [ sh:path effortless-ntwf:cohortReplications ; sh:maxCount 1 ] ;
+    sh:property [ sh:path effortless-ntwf:evidenceItems ; sh:maxCount 1 ] ;
+    sh:property [ sh:path effortless-ntwf:interventionTargets ; sh:maxCount 1 ] ;
+    sh:property [ sh:path effortless-ntwf:negativeControlTests ; sh:maxCount 1 ] .
+
+effortless-ntwf:FederatedDatasetsCardinalityShape a sh:NodeShape ;
+    sh:targetClass effortless-ntwf:FederatedDatasets ;
+    sh:property [ sh:path effortless-ntwf:cohortReplications ; sh:maxCount 1 ] ;
+    sh:property [ sh:path effortless-ntwf:individuals ; sh:maxCount 1 ] ;
+    sh:property [ sh:path effortless-ntwf:omicsAssays ; sh:maxCount 1 ] .
+
+effortless-ntwf:IndividualPredictionsCardinalityShape a sh:NodeShape ;
+    sh:targetClass effortless-ntwf:IndividualPredictions ;
+    sh:property [ sh:path effortless-ntwf:calibrationBins ; sh:maxCount 1 ] .
+
+effortless-ntwf:IndividualsCardinalityShape a sh:NodeShape ;
+    sh:targetClass effortless-ntwf:Individuals ;
+    sh:property [ sh:path effortless-ntwf:causalMechanisms ; sh:maxCount 1 ] ;
+    sh:property [ sh:path effortless-ntwf:clinicalPhenotypes ; sh:maxCount 1 ] ;
+    sh:property [ sh:path effortless-ntwf:counterfactualTrajectories ; sh:maxCount 1 ] ;
+    sh:property [ sh:path effortless-ntwf:environmentalExposures ; sh:maxCount 1 ] ;
+    sh:property [ sh:path effortless-ntwf:epistaticInteractions ; sh:maxCount 1 ] ;
+    sh:property [ sh:path effortless-ntwf:genomicVariants ; sh:maxCount 1 ] ;
+    sh:property [ sh:path effortless-ntwf:individualPredictions ; sh:maxCount 1 ] ;
+    sh:property [ sh:path effortless-ntwf:omicsAssays ; sh:maxCount 1 ] ;
+    sh:property [ sh:path effortless-ntwf:treatments ; sh:maxCount 1 ] .
+
+effortless-ntwf:MachineStatesCardinalityShape a sh:NodeShape ;
+    sh:targetClass effortless-ntwf:MachineStates ;
+    sh:property [ sh:path effortless-ntwf:fromTransitionRules ; sh:maxCount 1 ] ;
+    sh:property [ sh:path effortless-ntwf:stateMachine ; sh:maxCount 1 ] ;
+    sh:property [ sh:path effortless-ntwf:toTransitionRules ; sh:maxCount 1 ] .
+
+effortless-ntwf:OmicsAssaysCardinalityShape a sh:NodeShape ;
+    sh:targetClass effortless-ntwf:OmicsAssays ;
+    sh:property [ sh:path effortless-ntwf:evidenceItems ; sh:maxCount 1 ] .
+
+effortless-ntwf:OmicsModalitiesCardinalityShape a sh:NodeShape ;
+    sh:targetClass effortless-ntwf:OmicsModalities ;
+    sh:property [ sh:path effortless-ntwf:omicsAssays ; sh:maxCount 1 ] .
+
+effortless-ntwf:SerologyObservationsCardinalityShape a sh:NodeShape ;
+    sh:targetClass effortless-ntwf:SerologyObservations ;
+    sh:property [ sh:path effortless-ntwf:individual ; sh:maxCount 1 ] ;
+    sh:property [ sh:path effortless-ntwf:priorObservation ; sh:maxCount 1 ] .
+
+effortless-ntwf:StateMachinesCardinalityShape a sh:NodeShape ;
+    sh:targetClass effortless-ntwf:StateMachines ;
+    sh:property [ sh:path effortless-ntwf:stateTransitionRules ; sh:maxCount 1 ] ;
+    sh:property [ sh:path effortless-ntwf:stateTransitions ; sh:maxCount 1 ] .
+
+effortless-ntwf:StateTransitionRulesCardinalityShape a sh:NodeShape ;
+    sh:targetClass effortless-ntwf:StateTransitionRules ;
+    sh:property [ sh:path effortless-ntwf:fromState ; sh:maxCount 1 ] .
+
+effortless-ntwf:SubjectStateInstancesCardinalityShape a sh:NodeShape ;
+    sh:targetClass effortless-ntwf:SubjectStateInstances ;
+    sh:property [ sh:path effortless-ntwf:enteredViaTransition ; sh:maxCount 1 ] ;
+    sh:property [ sh:path effortless-ntwf:priorInstance ; sh:maxCount 1 ] ;
+    sh:property [ sh:path effortless-ntwf:stateMachine ; sh:maxCount 1 ] .
+
+effortless-ntwf:TissuesCardinalityShape a sh:NodeShape ;
+    sh:targetClass effortless-ntwf:Tissues ;
+    sh:property [ sh:path effortless-ntwf:omicsAssays ; sh:maxCount 1 ] .
+
+effortless-ntwf:VariantTypesCardinalityShape a sh:NodeShape ;
+    sh:targetClass effortless-ntwf:VariantTypes ;
+    sh:property [ sh:path effortless-ntwf:genomicVariants ; sh:maxCount 1 ] .
+
+# Generated 197 SHACL rules

@@ -1,0 +1,27 @@
+{
+  "name": "causal-autoimmune-admin-app",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "description": "Admin / case-intake app for the Causal Autoimmune Architecture Platform. Reads vw_* views, writes base tables. Ships with a witnessed inference test harness (RED until each DAG node is surfaced).",
+  "scripts": {
+    "server": "node server/index.js",
+    "client": "vite",
+    "dev": "concurrently -k -n api,web -c green,cyan \"npm:server\" \"npm:client\"",
+    "build": "vite build",
+    "preview": "vite preview",
+    "test": "node --test tests/harness/*.test.js",
+    "test:watch": "node --test --watch tests/harness/*.test.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "pg": "^8.12.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.3.1",
+    "concurrently": "^9.0.1",
+    "vite": "^5.4.8"
+  }
+}

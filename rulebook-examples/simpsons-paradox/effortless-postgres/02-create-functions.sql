@@ -515,6 +515,116 @@ RETURNS NUMERIC AS $$
   SELECT (CASE WHEN (calc_model_summary_study_count(p_model_summary_id))::NUMERIC = 0 THEN ('')::text ELSE ((COALESCE(CASE WHEN (calc_model_summary_total_paradox_strength(p_model_summary_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_model_summary_total_paradox_strength(p_model_summary_id))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(CASE WHEN (calc_model_summary_study_count(p_model_summary_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_model_summary_study_count(p_model_summary_id))::numeric ELSE NULL END, 0), 0)))::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
+-- calc_model_summary_type_a_count
+-- Field: ModelSummary.TypeACount
+-- Type: aggregation | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_model_summary_type_a_count(p_model_summary_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((SELECT COUNT(*) FROM treatment_rankings WHERE calc_treatment_rankings_distortion_type(treatment_ranking_id) = 'A'))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_model_summary_type_b_count
+-- Field: ModelSummary.TypeBCount
+-- Type: aggregation | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_model_summary_type_b_count(p_model_summary_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((SELECT COUNT(*) FROM treatment_rankings WHERE calc_treatment_rankings_distortion_type(treatment_ranking_id) = 'B'))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_model_summary_type_c_count
+-- Field: ModelSummary.TypeCCount
+-- Type: aggregation | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_model_summary_type_c_count(p_model_summary_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((SELECT COUNT(*) FROM treatment_rankings WHERE calc_treatment_rankings_distortion_type(treatment_ranking_id) = 'C'))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_model_summary_type_d_count
+-- Field: ModelSummary.TypeDCount
+-- Type: aggregation | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_model_summary_type_d_count(p_model_summary_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((SELECT COUNT(*) FROM treatment_rankings WHERE calc_treatment_rankings_distortion_type(treatment_ranking_id) = 'D'))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_model_summary_type_a_fraction
+-- Field: ModelSummary.TypeAFraction
+-- Type: calculated | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_model_summary_type_a_fraction(p_model_summary_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT (CASE WHEN (calc_model_summary_study_count(p_model_summary_id))::NUMERIC = 0 THEN ('')::text ELSE ((COALESCE(CASE WHEN (calc_model_summary_type_a_count(p_model_summary_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_model_summary_type_a_count(p_model_summary_id))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(CASE WHEN (calc_model_summary_study_count(p_model_summary_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_model_summary_study_count(p_model_summary_id))::numeric ELSE NULL END, 0), 0)))::text END)::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_model_summary_distortion_taxonomy_coverage
+-- Field: ModelSummary.DistortionTaxonomyCoverage
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_model_summary_distortion_taxonomy_coverage(p_model_summary_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CONCAT('A:', calc_model_summary_type_a_count(p_model_summary_id), ' B:', calc_model_summary_type_b_count(p_model_summary_id), ' C:', calc_model_summary_type_c_count(p_model_summary_id), ' D:', calc_model_summary_type_d_count(p_model_summary_id)))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_model_summary_reversal_count_v2
+-- Field: ModelSummary.ReversalCountV2
+-- Type: aggregation | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_model_summary_reversal_count_v2(p_model_summary_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((SELECT COUNT(*) FROM treatment_rankings WHERE calc_treatment_rankings_is_reversal_v2(treatment_ranking_id) = TRUE))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_model_summary_non_reversal_count_v2
+-- Field: ModelSummary.NonReversalCountV2
+-- Type: aggregation | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_model_summary_non_reversal_count_v2(p_model_summary_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((SELECT COUNT(*) FROM treatment_rankings WHERE calc_treatment_rankings_is_reversal_v2(treatment_ranking_id) = FALSE))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_model_summary_extended_reversal_count
+-- Field: ModelSummary.ExtendedReversalCount
+-- Type: calculated | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_model_summary_extended_reversal_count(p_model_summary_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((COALESCE(CASE WHEN (calc_model_summary_reversal_count_v2(p_model_summary_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_model_summary_reversal_count_v2(p_model_summary_id))::numeric ELSE NULL END, 0) - COALESCE(CASE WHEN (calc_model_summary_reversal_count(p_model_summary_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_model_summary_reversal_count(p_model_summary_id))::numeric ELSE NULL END, 0)))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_model_summary_explained_count_v2
+-- Field: ModelSummary.ExplainedCountV2
+-- Type: aggregation | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_model_summary_explained_count_v2(p_model_summary_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((SELECT COUNT(*) FROM treatment_rankings WHERE calc_treatment_rankings_is_paradox_explained_v2(treatment_ranking_id) = TRUE))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_model_summary_distortion_only_count
+-- Field: ModelSummary.DistortionOnlyCount
+-- Type: calculated | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_model_summary_distortion_only_count(p_model_summary_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT (calc_model_summary_type_c_count(p_model_summary_id))::integer;
+$$ LANGUAGE sql STABLE;
+
 -- calc_stratum_variables_name
 -- Field: StratumVariables.Name
 -- Type: calculated | DataType: string | Returns: TEXT
@@ -685,6 +795,16 @@ RETURNS BOOLEAN AS $$
   SELECT ((calc_treatment_rankings_is_reversal(p_treatment_ranking_id) AND (calc_treatment_rankings_confounders_in_study(p_treatment_ranking_id))::NUMERIC > 0));
 $$ LANGUAGE sql STABLE;
 
+-- calc_treatment_rankings_is_paradox_explained_v2
+-- Field: TreatmentRankings.IsParadoxExplained_v2
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_treatment_rankings_is_paradox_explained_v2(p_treatment_ranking_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (((calc_treatment_rankings_is_reversal_v2(p_treatment_ranking_id) = 'true') AND (calc_treatment_rankings_confounders_in_study(p_treatment_ranking_id))::NUMERIC > 0));
+$$ LANGUAGE sql STABLE;
+
 -- calc_treatment_rankings_pooled_gap
 -- Field: TreatmentRankings.PooledGap
 -- Type: calculated | DataType: number | Returns: NUMERIC
@@ -813,6 +933,226 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION calc_treatment_rankings_policy_implication(p_treatment_ranking_id TEXT)
 RETURNS TEXT AS $$
   SELECT (CASE WHEN calc_treatment_rankings_distortion_type(p_treatment_ranking_id) IS NULL THEN ('')::text ELSE (CASE WHEN calc_treatment_rankings_distortion_type(p_treatment_ranking_id) = 'A' THEN ('stratify-immediately')::text ELSE (CASE WHEN calc_treatment_rankings_distortion_type(p_treatment_ranking_id) = 'B' THEN ('investigate-confounder')::text ELSE (CASE WHEN calc_treatment_rankings_distortion_type(p_treatment_ranking_id) = 'C' THEN ('check-allocation-bias')::text ELSE ('pooled-analysis-trustworthy')::text END)::text END)::text END)::text END)::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_treatment_rankings_is_reversal_v2
+-- Field: TreatmentRankings.IsReversal_v2
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_treatment_rankings_is_reversal_v2(p_treatment_ranking_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (CASE WHEN calc_treatment_rankings_is_sign_flip(p_treatment_ranking_id) IS NULL THEN ('')::text ELSE (calc_treatment_rankings_is_sign_flip(p_treatment_ranking_id))::text END)::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_treatment_rankings_definition_delta
+-- Field: TreatmentRankings.DefinitionDelta
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_treatment_rankings_definition_delta(p_treatment_ranking_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (CASE WHEN calc_treatment_rankings_is_reversal_v2(p_treatment_ranking_id) IS NULL THEN ('')::text ELSE (((calc_treatment_rankings_is_reversal_v2(p_treatment_ranking_id) = 'true') AND NOT (calc_treatment_rankings_is_reversal(p_treatment_ranking_id))))::text END)::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_treatment_rankings_strict_reversal_subtype
+-- Field: TreatmentRankings.StrictReversalSubtype
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_treatment_rankings_strict_reversal_subtype(p_treatment_ranking_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CASE WHEN calc_treatment_rankings_is_reversal_v2(p_treatment_ranking_id) IS NULL THEN ('')::text ELSE (CASE WHEN calc_treatment_rankings_is_reversal(p_treatment_ranking_id) THEN ('strict')::text ELSE (CASE WHEN (calc_treatment_rankings_is_reversal_v2(p_treatment_ranking_id) = 'true') THEN ('extended')::text ELSE ('none')::text END)::text END)::text END)::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_treatment_rankings_corrected_gap
+-- Field: TreatmentRankings.CorrectedGap
+-- Type: calculated | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_treatment_rankings_corrected_gap(p_treatment_ranking_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT (calc_treatment_rankings_weighted_stratum_gap_sum(p_treatment_ranking_id))::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_treatment_rankings_corrected_winner
+-- Field: TreatmentRankings.CorrectedWinner
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_treatment_rankings_corrected_winner(p_treatment_ranking_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CASE WHEN calc_treatment_rankings_corrected_gap(p_treatment_ranking_id) IS NULL THEN ('')::text ELSE (CASE WHEN (calc_treatment_rankings_corrected_gap(p_treatment_ranking_id))::NUMERIC > 0 THEN ((SELECT NULLIF(treatment_a, '') FROM treatment_rankings WHERE treatment_ranking_id = p_treatment_ranking_id))::text ELSE (CASE WHEN (calc_treatment_rankings_corrected_gap(p_treatment_ranking_id))::NUMERIC < 0 THEN ((SELECT NULLIF(treatment_b, '') FROM treatment_rankings WHERE treatment_ranking_id = p_treatment_ranking_id))::text ELSE ('tie')::text END)::text END)::text END)::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_treatment_rankings_corrected_vs_pooled_agreement
+-- Field: TreatmentRankings.CorrectedVsPooledAgreement
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_treatment_rankings_corrected_vs_pooled_agreement(p_treatment_ranking_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (CASE WHEN calc_treatment_rankings_corrected_winner(p_treatment_ranking_id) IS NULL THEN ('')::text ELSE (calc_treatment_rankings_corrected_winner(p_treatment_ranking_id) = calc_treatment_rankings_pooled_winner(p_treatment_ranking_id))::text END)::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_treatment_rankings_corrected_policy_implication
+-- Field: TreatmentRankings.CorrectedPolicyImplication
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_treatment_rankings_corrected_policy_implication(p_treatment_ranking_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CASE WHEN calc_treatment_rankings_distortion_type(p_treatment_ranking_id) IS NULL THEN ('')::text ELSE (CASE WHEN calc_treatment_rankings_distortion_type(p_treatment_ranking_id) = 'A' THEN ('use-corrected-winner')::text ELSE (CASE WHEN calc_treatment_rankings_distortion_type(p_treatment_ranking_id) = 'B' THEN ('use-corrected-winner-with-caution')::text ELSE (CASE WHEN calc_treatment_rankings_distortion_type(p_treatment_ranking_id) = 'C' THEN ('check-allocation-bias')::text ELSE ('pooled-analysis-trustworthy')::text END)::text END)::text END)::text END)::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_treatment_rankings_confirmed_causal_role_count
+-- Field: TreatmentRankings.ConfirmedCausalRoleCount
+-- Type: aggregation | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_treatment_rankings_confirmed_causal_role_count(p_treatment_ranking_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((SELECT COUNT(*) FROM stratum_variables WHERE study = (SELECT NULLIF(study, '') FROM treatment_rankings WHERE treatment_ranking_id = p_treatment_ranking_id) AND causal_role = 'confounder'))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_treatment_rankings_mediator_risk_count
+-- Field: TreatmentRankings.MediatorRiskCount
+-- Type: aggregation | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_treatment_rankings_mediator_risk_count(p_treatment_ranking_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((COALESCE(CASE WHEN ((SELECT COUNT(*) FROM stratum_variables WHERE study = (SELECT NULLIF(study, '') FROM treatment_rankings WHERE treatment_ranking_id = p_treatment_ranking_id) AND conditioning_risk = 'mediator'))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT COUNT(*) FROM stratum_variables WHERE study = (SELECT NULLIF(study, '') FROM treatment_rankings WHERE treatment_ranking_id = p_treatment_ranking_id) AND conditioning_risk = 'mediator'))::numeric ELSE NULL END, 0) + COALESCE(CASE WHEN ((SELECT COUNT(*) FROM stratum_variables WHERE study = (SELECT NULLIF(study, '') FROM treatment_rankings WHERE treatment_ranking_id = p_treatment_ranking_id) AND conditioning_risk = 'collider'))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT COUNT(*) FROM stratum_variables WHERE study = (SELECT NULLIF(study, '') FROM treatment_rankings WHERE treatment_ranking_id = p_treatment_ranking_id) AND conditioning_risk = 'collider'))::numeric ELSE NULL END, 0)))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_treatment_rankings_contested_stratum_count
+-- Field: TreatmentRankings.ContestedStratumCount
+-- Type: aggregation | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_treatment_rankings_contested_stratum_count(p_treatment_ranking_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((SELECT COUNT(*) FROM stratum_variables WHERE study = (SELECT NULLIF(study, '') FROM treatment_rankings WHERE treatment_ranking_id = p_treatment_ranking_id) AND causal_role = 'contested'))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_treatment_rankings_unknown_causal_role_count
+-- Field: TreatmentRankings.UnknownCausalRoleCount
+-- Type: aggregation | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_treatment_rankings_unknown_causal_role_count(p_treatment_ranking_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((SELECT COUNT(*) FROM stratum_variables WHERE study = (SELECT NULLIF(study, '') FROM treatment_rankings WHERE treatment_ranking_id = p_treatment_ranking_id) AND causal_role = 'unknown'))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_treatment_rankings_causal_claim_status
+-- Field: TreatmentRankings.CausalClaimStatus
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_treatment_rankings_causal_claim_status(p_treatment_ranking_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CASE WHEN (calc_treatment_rankings_contested_stratum_count(p_treatment_ranking_id))::NUMERIC > 0 THEN ('contested')::text ELSE (CASE WHEN (calc_treatment_rankings_unknown_causal_role_count(p_treatment_ranking_id))::NUMERIC > 0 THEN ('geometric-only')::text ELSE (CASE WHEN (calc_treatment_rankings_confirmed_causal_role_count(p_treatment_ranking_id))::NUMERIC > 0 THEN ('established')::text ELSE ('geometric-only')::text END)::text END)::text END)::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_treatment_rankings_adjustment_appropriate
+-- Field: TreatmentRankings.AdjustmentAppropriate
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_treatment_rankings_adjustment_appropriate(p_treatment_ranking_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (((calc_treatment_rankings_mediator_risk_count(p_treatment_ranking_id))::NUMERIC = 0 AND calc_treatment_rankings_causal_claim_status(p_treatment_ranking_id) = 'established'));
+$$ LANGUAGE sql STABLE;
+
+-- calc_invariant_checks_name
+-- Field: InvariantChecks.Name
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_invariant_checks_name(p_invariant_check_id TEXT)
+RETURNS TEXT AS $$
+  SELECT ((SELECT NULLIF(invariant_check_id, '') FROM invariant_checks WHERE invariant_check_id = p_invariant_check_id))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_invariant_checks_universe_count
+-- Field: InvariantChecks.UniverseCount
+-- Type: calculated | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_invariant_checks_universe_count(p_invariant_check_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((COALESCE(CASE WHEN ((SELECT pass_count FROM invariant_checks WHERE invariant_check_id = p_invariant_check_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT pass_count FROM invariant_checks WHERE invariant_check_id = p_invariant_check_id))::numeric ELSE NULL END, 0) + COALESCE(CASE WHEN ((SELECT fail_count FROM invariant_checks WHERE invariant_check_id = p_invariant_check_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT fail_count FROM invariant_checks WHERE invariant_check_id = p_invariant_check_id))::numeric ELSE NULL END, 0)))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_invariant_checks_is_green
+-- Field: InvariantChecks.IsGreen
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_invariant_checks_is_green(p_invariant_check_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (((SELECT fail_count FROM invariant_checks WHERE invariant_check_id = p_invariant_check_id))::NUMERIC = 0)::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_invariant_checks_status_label
+-- Field: InvariantChecks.StatusLabel
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_invariant_checks_status_label(p_invariant_check_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CASE WHEN calc_invariant_checks_is_green(p_invariant_check_id) THEN ('PASS')::text ELSE (CONCAT('FAIL(', (SELECT fail_count FROM invariant_checks WHERE invariant_check_id = p_invariant_check_id), ')'))::text END)::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_methodology_name
+-- Field: Methodology.Name
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_methodology_name(p_methodology_id TEXT)
+RETURNS TEXT AS $$
+  SELECT ((SELECT NULLIF(methodology_id, '') FROM methodology WHERE methodology_id = p_methodology_id))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_conclusions_name
+-- Field: Conclusions.Name
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_conclusions_name(p_conclusion_id TEXT)
+RETURNS TEXT AS $$
+  SELECT ((SELECT NULLIF(conclusion_id, '') FROM conclusions WHERE conclusion_id = p_conclusion_id))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_ui_screens_name
+-- Field: UIScreens.Name
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_ui_screens_name(p_screen_id TEXT)
+RETURNS TEXT AS $$
+  SELECT ((SELECT NULLIF(screen_id, '') FROM ui_screens WHERE screen_id = p_screen_id))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_ui_components_name
+-- Field: UIComponents.Name
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_ui_components_name(p_component_id TEXT)
+RETURNS TEXT AS $$
+  SELECT ((SELECT NULLIF(component_id, '') FROM ui_components WHERE component_id = p_component_id))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_instrument_spec_name
+-- Field: InstrumentSpec.Name
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_instrument_spec_name(p_spec_id TEXT)
+RETURNS TEXT AS $$
+  SELECT ((SELECT NULLIF(spec_id, '') FROM instrument_spec WHERE spec_id = p_spec_id))::text;
 $$ LANGUAGE sql STABLE;
 
 -- ============================================================================

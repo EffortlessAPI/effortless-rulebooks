@@ -1,0 +1,19 @@
+<!-- Drop into any host layout (Flask/Jinja, Rails, Vue index.html, etc.) -->
+<link rel="stylesheet" href="/rulebook-explainer-dag/dag.css">
+<script src="/rulebook-explainer-dag/embedded-graph.js"></script>
+<script src="/rulebook-explainer-dag/dag-resolver.js"></script>
+<script src="/rulebook-explainer-dag/routing.js"></script>
+<script src="/rulebook-explainer-dag/explainer-dag.js"></script>
+<script>
+  EffortlessExplainer.init({
+    mode: "path",           // hash | path | modal | callback
+    fieldPath: "/dag/:table/:field",
+    tablePath: "/dag/:table",
+    indexPath: "/dag",
+    homePath: "/",
+    mountToggle: "#explainer-toggle-mount",
+  });
+</script>
+<div id="explainer-toggle-mount"></div>
+
+<!-- Wrap derived values: <span data-er-dag="Table.Field">your value</span> -->

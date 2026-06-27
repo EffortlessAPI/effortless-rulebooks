@@ -1,0 +1,1172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Power Laws & Fractals - Test Results</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --bg: #0d1117;
+            --card: #161b22;
+            --border: #30363d;
+            --text: #c9d1d9;
+            --muted: #8b949e;
+            --green: #3fb950;
+            --red: #f85149;
+            --purple: #a371f7;
+            --blue: #58a6ff;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'JetBrains Mono', 'SF Mono', monospace;
+            background: var(--bg);
+            color: var(--text);
+            padding: 2rem;
+            line-height: 1.5;
+        }
+        .container { max-width: 1900px; margin: 0 auto; }
+        
+        header {
+            text-align: center;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            background: linear-gradient(135deg, rgba(88,166,255,0.1), rgba(163,113,247,0.1));
+            border-radius: 12px;
+            border: 1px solid var(--border);
+        }
+        h1 {
+            font-size: 2.5rem;
+            background: linear-gradient(135deg, var(--blue), var(--purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .timestamp { color: var(--muted); font-size: 0.875rem; }
+        
+        .status-banner {
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            font-size: 1.25rem;
+            font-weight: 600;
+            text-align: center;
+        }
+        .status-banner.passed {
+            background: rgba(63, 185, 80, 0.2);
+            border: 2px solid var(--green);
+            color: var(--green);
+        }
+        .status-banner.failed {
+            background: rgba(248, 81, 73, 0.2);
+            border: 2px solid var(--red);
+            color: var(--red);
+        }
+        
+        .platform-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        .platform-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1.5rem;
+            text-align: center;
+        }
+        .platform-card.passed { border-left: 4px solid var(--green); }
+        .platform-card.failed { border-left: 4px solid var(--red); }
+        .platform-name { font-size: 1.5rem; margin-bottom: 0.5rem; }
+        .platform-status.passed { color: var(--green); }
+        .platform-status.failed { color: var(--red); }
+        .platform-counts { margin-top: 0.5rem; color: var(--muted); font-size: 0.8rem; }
+        
+        .system {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        .system.has-failures { border-left: 4px solid var(--red); }
+        .system-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+        .system-icon { font-size: 2rem; }
+        .system-name { font-size: 1.5rem; font-weight: 600; }
+        .system-badge {
+            background: var(--bg);
+            padding: 0.25rem 0.75rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            color: var(--muted);
+        }
+        .badge-fail { background: var(--red); color: white; }
+        
+        .system-content {
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 2rem;
+        }
+        @media (max-width: 1200px) {
+            .system-content { grid-template-columns: 1fr; }
+            .platform-grid { grid-template-columns: 1fr; }
+        }
+        
+        .chart-container {
+            background: var(--bg);
+            border-radius: 8px;
+            padding: 1rem;
+            height: 350px;
+        }
+        
+        .table-wrap { overflow-x: auto; }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.7rem;
+        }
+        th, td {
+            padding: 0.35rem 0.4rem;
+            text-align: right;
+            border-bottom: 1px solid var(--border);
+        }
+        th {
+            color: var(--muted);
+            font-weight: 500;
+            text-transform: uppercase;
+            font-size: 0.6rem;
+            background: var(--card);
+        }
+        th:first-child, td:first-child { text-align: center; }
+        
+        .row-actual { color: var(--green); }
+        .row-projected { color: var(--purple); }
+        .row-failed { background: rgba(248,81,73,0.15); }
+        .row-marker { font-size: 0.8rem; }
+        
+        .val-match { color: var(--green); }
+        .val-fail { color: var(--red); font-weight: 700; }
+        .val-na { color: var(--muted); }
+        
+        footer {
+            text-align: center;
+            padding: 2rem;
+            color: var(--muted);
+            border-top: 1px solid var(--border);
+            margin-top: 2rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🔺 Power Laws & Fractals</h1>
+            <p>Cross-Platform Validation Report</p>
+            <p class="timestamp">Generated: 2026-01-26 03:42:34 UTC</p>
+        </header>
+        
+        <div class="status-banner passed">
+            ✓ ALL PLATFORMS PASSED
+        </div>
+        
+        <div class="platform-grid">
+            <div class="platform-card passed">
+                <div class="platform-name">🐍 Python</div>
+                <div class="platform-status passed">✓ PASSED</div>
+                <div class="platform-counts">28 passed, 0 failed</div>
+            </div>
+            <div class="platform-card passed">
+                <div class="platform-name">🐘 PostgreSQL</div>
+                <div class="platform-status passed">✓ PASSED</div>
+                <div class="platform-counts">28 passed, 0 failed</div>
+            </div>
+            <div class="platform-card passed">
+                <div class="platform-name">🐹 Go</div>
+                <div class="platform-status passed">✓ PASSED</div>
+                <div class="platform-counts">28 passed, 0 failed</div>
+            </div>
+        </div>
+
+        <div class="system ">
+            <div class="system-header">
+                <span class="system-icon">📈</span>
+                <span class="system-name">Earthquake energies</span>
+                <span class="system-badge">Power Law</span>
+                <span class="system-badge">Slope: -1</span>
+                
+            </div>
+            
+            <div class="system-content">
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>Iter</th>
+                                <th>Measure</th>
+                                <th>Scale<br>(expected)</th>
+                                <th>log(S)</th>
+                                <th>log(M)<br>(expected)</th>
+                                <th>🐍 log(M)</th>
+                                <th>🐘 log(M)</th>
+                                <th>🐹 log(M)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="row-actual">
+                                <td class="row-marker" style="">●</td>
+                                <td>0</td>
+                                <td>1.000000</td>
+                                <td>1.000000</td>
+                                <td>0.000000</td>
+                                <td>0.000000</td>
+                                <td class="val-na">-</td>
+                                <td class="val-na">-</td>
+                                <td class="val-na">-</td>
+                            </tr>
+                            <tr class="row-actual">
+                                <td class="row-marker" style="">●</td>
+                                <td>1</td>
+                                <td>0.500000</td>
+                                <td>2.000000</td>
+                                <td>0.301030</td>
+                                <td>-0.301030</td>
+                                <td class="val-na">-</td>
+                                <td class="val-na">-</td>
+                                <td class="val-na">-</td>
+                            </tr>
+                            <tr class="row-actual">
+                                <td class="row-marker" style="">●</td>
+                                <td>2</td>
+                                <td>0.250000</td>
+                                <td>4.000000</td>
+                                <td>0.602060</td>
+                                <td>-0.602060</td>
+                                <td class="val-na">-</td>
+                                <td class="val-na">-</td>
+                                <td class="val-na">-</td>
+                            </tr>
+                            <tr class="row-actual">
+                                <td class="row-marker" style="">●</td>
+                                <td>3</td>
+                                <td>0.125000</td>
+                                <td>8.000000</td>
+                                <td>0.903090</td>
+                                <td>-0.903090</td>
+                                <td class="val-na">-</td>
+                                <td class="val-na">-</td>
+                                <td class="val-na">-</td>
+                            </tr>
+                            <tr class="row-projected">
+                                <td class="row-marker" style="">◌</td>
+                                <td>4</td>
+                                <td>0.062500</td>
+                                <td>16.000000</td>
+                                <td>1.204120</td>
+                                <td>-1.204120</td>
+                                <td class="val-match">-1.204120</td>
+                                <td class="val-match">-1.204120</td>
+                                <td class="val-match">-1.204120</td>
+                            </tr>
+                            <tr class="row-projected">
+                                <td class="row-marker" style="">◌</td>
+                                <td>5</td>
+                                <td>0.031250</td>
+                                <td>32.000000</td>
+                                <td>1.505150</td>
+                                <td>-1.505150</td>
+                                <td class="val-match">-1.505150</td>
+                                <td class="val-match">-1.505150</td>
+                                <td class="val-match">-1.505150</td>
+                            </tr>
+                            <tr class="row-projected">
+                                <td class="row-marker" style="">◌</td>
+                                <td>6</td>
+                                <td>0.015625</td>
+                                <td>64.000000</td>
+                                <td>1.806180</td>
+                                <td>-1.806180</td>
+                                <td class="val-match">-1.806180</td>
+                                <td class="val-match">-1.806180</td>
+                                <td class="val-match">-1.806180</td>
+                            </tr>
+                            <tr class="row-projected">
+                                <td class="row-marker" style="">◌</td>
+                                <td>7</td>
+                                <td>0.007812</td>
+                                <td>128.000000</td>
+                                <td>2.107210</td>
+                                <td>-2.107238</td>
+                                <td class="val-match">-2.107238</td>
+                                <td class="val-match">-2.107238</td>
+                                <td class="val-match">-2.107238</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="chart-container">
+                    <canvas id="chart-Earthquakes"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="system ">
+            <div class="system-header">
+                <span class="system-icon">📈</span>
+                <span class="system-name">Forest fire sizes</span>
+                <span class="system-badge">Power Law</span>
+                <span class="system-badge">Slope: -1.3</span>
+                
+            </div>
+            
+            <div class="system-content">
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>Iter</th>
+                                <th>Measure</th>
+                                <th>Scale<br>(expected)</th>
+                                <th>log(S)</th>
+                                <th>log(M)<br>(expected)</th>
+                                <th>🐍 log(M)</th>
+                                <th>🐘 log(M)</th>
+                                <th>🐹 log(M)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="row-actual">
+                                <td class="row-marker" style="">●</td>
+                                <td>0</td>
+                                <td>1.000000</td>
+                                <td>1.000000</td>
+                                <td>0.000000</td>
+                                <td>0.000000</td>
+                                <td class="val-na">-</td>
+                                <td class="val-na">-</td>
+                                <td class="val-na">-</td>
+                            </tr>
+                            <tr class="row-actual">
+                                <td class="row-marker" style="">●</td>
+                                <td>1</td>
+                                <td>0.406126</td>
+                                <td>2.000000</td>
+                                <td>0.301030</td>
+                                <td>-0.391339</td>
+                                <td class="val-na">-</td>
+                                <td class="val-na">-</td>
+                                <td class="val-na">-</td>
+                            </tr>
+                            <tr class="row-actual">
+                                <td class="row-marker" style="">●</td>
+                                <td>2</td>
+                                <td>0.164938</td>
+                                <td>4.000000</td>
+                                <td>0.602060</td>
+                                <td>-0.782679</td>
+                                <td class="val-na">-</td>
+                                <td class="val-na">-</td>
+                                <td class="val-na">-</td>
+                            </tr>
+                            <tr class="row-actual">
+                                <td class="row-marker" style="">●</td>
+                                <td>3</td>
+                                <td>0.066986</td>
+                                <td>8.000000</td>
+                                <td>0.903090</td>
+                                <td>-1.174016</td>
+                                <td class="val-na">-</td>
+                                <td class="val-na">-</td>
+                                <td class="val-na">-</td>
+                            </tr>
+                            <tr class="row-projected">
+                                <td class="row-marker" style="">◌</td>
+                                <td>4</td>
+                                <td>0.027205</td>
+                                <td>16.000000</td>
+                                <td>1.204120</td>
+                                <td>-1.565351</td>
+                                <td class="val-match">-1.565351</td>
+                                <td class="val-match">-1.565351</td>
+                                <td class="val-match">-1.565351</td>
+                            </tr>
+                            <tr class="row-projected">
+                                <td class="row-marker" style="">◌</td>
+                                <td>5</td>
+                                <td>0.011049</td>
+                                <td>32.000000</td>
+                                <td>1.505150</td>
+                                <td>-1.956677</td>
+                                <td class="val-match">-1.956677</td>
+                                <td class="val-match">-1.956677</td>
+                                <td class="val-match">-1.956677</td>
+                            </tr>
+                            <tr class="row-projected">
+                                <td class="row-marker" style="">◌</td>
+                                <td>6</td>
+                                <td>0.004487</td>
+                                <td>64.000000</td>
+                                <td>1.806180</td>
+                                <td>-2.348044</td>
+                                <td class="val-match">-2.348044</td>
+                                <td class="val-match">-2.348044</td>
+                                <td class="val-match">-2.348044</td>
+                            </tr>
+                            <tr class="row-projected">
+                                <td class="row-marker" style="">◌</td>
+                                <td>7</td>
+                                <td>0.001822</td>
+                                <td>128.000000</td>
+                                <td>2.107210</td>
+                                <td>-2.739452</td>
+                                <td class="val-match">-2.739452</td>
+                                <td class="val-match">-2.739452</td>
+                                <td class="val-match">-2.739452</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="chart-container">
+                    <canvas id="chart-ForestFires"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="system ">
+            <div class="system-header">
+                <span class="system-icon">🔺</span>
+                <span class="system-name">Koch Snowflake (edge)</span>
+                <span class="system-badge">Fractal</span>
+                <span class="system-badge">Slope: -0.262</span>
+                
+            </div>
+            
+            <div class="system-content">
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>Iter</th>
+                                <th>Measure</th>
+                                <th>Scale<br>(expected)</th>
+                                <th>log(S)</th>
+                                <th>log(M)<br>(expected)</th>
+                                <th>🐍 log(M)</th>
+                                <th>🐘 log(M)</th>
+                                <th>🐹 log(M)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="row-actual">
+                                <td class="row-marker" style="">●</td>
+                                <td>0</td>
+                                <td>1.000000</td>
+                                <td>1.000000</td>
+                                <td>0.000000</td>
+                                <td>0.000000</td>
+                                <td class="val-na">-</td>
+                                <td class="val-na">-</td>
+                                <td class="val-na">-</td>
+                            </tr>
+                            <tr class="row-actual">
+                                <td class="row-marker" style="">●</td>
+                                <td>1</td>
+                                <td>1.333539</td>
+                                <td>0.333333</td>
+                                <td>-0.477121</td>
+                                <td>0.125006</td>
+                                <td class="val-na">-</td>
+                                <td class="val-na">-</td>
+                                <td class="val-na">-</td>
+                            </tr>
+                            <tr class="row-actual">
+                                <td class="row-marker" style="">●</td>
+                                <td>2</td>
+                                <td>1.778327</td>
+                                <td>0.111111</td>
+                                <td>-0.954243</td>
+                                <td>0.250012</td>
+                                <td class="val-na">-</td>
+                                <td class="val-na">-</td>
+                                <td class="val-na">-</td>
+                            </tr>
+                            <tr class="row-actual">
+                                <td class="row-marker" style="">●</td>
+                                <td>3</td>
+                                <td>2.371468</td>
+                                <td>0.037037</td>
+                                <td>-1.431364</td>
+                                <td>0.375017</td>
+                                <td class="val-na">-</td>
+                                <td class="val-na">-</td>
+                                <td class="val-na">-</td>
+                            </tr>
+                            <tr class="row-projected">
+                                <td class="row-marker" style="">◌</td>
+                                <td>4</td>
+                                <td>3.162446</td>
+                                <td>0.012346</td>
+                                <td>-1.908485</td>
+                                <td>0.500023</td>
+                                <td class="val-match">0.500023</td>
+                                <td class="val-match">0.500023</td>
+                                <td class="val-match">0.500023</td>
+                            </tr>
+                            <tr class="row-projected">
+                                <td class="row-marker" style="">◌</td>
+                                <td>5</td>
+                                <td>4.217245</td>
+                                <td>0.004115</td>
+                                <td>-2.385606</td>
+                                <td>0.625029</td>
+                                <td class="val-match">0.625029</td>
+                                <td class="val-match">0.625029</td>
+                                <td class="val-match">0.625029</td>
+                            </tr>
+                            <tr class="row-projected">
+                                <td class="row-marker" style="">◌</td>
+                                <td>6</td>
+                                <td>5.623861</td>
+                                <td>0.001372</td>
+                                <td>-2.862728</td>
+                                <td>0.750035</td>
+                                <td class="val-match">0.750035</td>
+                                <td class="val-match">0.750035</td>
+                                <td class="val-match">0.750035</td>
+                            </tr>
+                            <tr class="row-projected">
+                                <td class="row-marker" style="">◌</td>
+                                <td>7</td>
+                                <td>7.499639</td>
+                                <td>0.000457</td>
+                                <td>-3.339849</td>
+                                <td>0.875040</td>
+                                <td class="val-match">0.875040</td>
+                                <td class="val-match">0.875040</td>
+                                <td class="val-match">0.875040</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="chart-container">
+                    <canvas id="chart-Koch"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="system ">
+            <div class="system-header">
+                <span class="system-icon">📈</span>
+                <span class="system-name">Sandpile avalanches</span>
+                <span class="system-badge">Power Law</span>
+                <span class="system-badge">Slope: -1</span>
+                
+            </div>
+            
+            <div class="system-content">
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>Iter</th>
+                                <th>Measure</th>
+                                <th>Scale<br>(expected)</th>
+                                <th>log(S)</th>
+                                <th>log(M)<br>(expected)</th>
+                                <th>🐍 log(M)</th>
+                                <th>🐘 log(M)</th>
+                                <th>🐹 log(M)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="row-actual">
+                                <td class="row-marker" style="">●</td>
+                                <td>0</td>
+                                <td>1.000000</td>
+                                <td>1.000000</td>
+                                <td>0.000000</td>
+                                <td>0.000000</td>
+                                <td class="val-na">-</td>
+                                <td class="val-na">-</td>
+                                <td class="val-na">-</td>
+                            </tr>
+                            <tr class="row-actual">
+                                <td class="row-marker" style="">●</td>
+                                <td>1</td>
+                                <td>0.500000</td>
+                                <td>2.000000</td>
+                                <td>0.301030</td>
+                                <td>-0.301030</td>
+                                <td class="val-na">-</td>
+                                <td class="val-na">-</td>
+                                <td class="val-na">-</td>
+                            </tr>
+                            <tr class="row-actual">
+                                <td class="row-marker" style="">●</td>
+                                <td>2</td>
+                                <td>0.250000</td>
+                                <td>4.000000</td>
+                                <td>0.602060</td>
+                                <td>-0.602060</td>
+                                <td class="val-na">-</td>
+                                <td class="val-na">-</td>
+                                <td class="val-na">-</td>
+                            </tr>
+                            <tr class="row-actual">
+                                <td class="row-marker" style="">●</td>
+                                <td>3</td>
+                                <td>0.125000</td>
+                                <td>8.000000</td>
+                                <td>0.903090</td>
+                                <td>-0.903090</td>
+                                <td class="val-na">-</td>
+                                <td class="val-na">-</td>
+                                <td class="val-na">-</td>
+                            </tr>
+                            <tr class="row-projected">
+                                <td class="row-marker" style="">◌</td>
+                                <td>4</td>
+                                <td>0.062500</td>
+                                <td>16.000000</td>
+                                <td>1.204120</td>
+                                <td>-1.204120</td>
+                                <td class="val-match">-1.204120</td>
+                                <td class="val-match">-1.204120</td>
+                                <td class="val-match">-1.204120</td>
+                            </tr>
+                            <tr class="row-projected">
+                                <td class="row-marker" style="">◌</td>
+                                <td>5</td>
+                                <td>0.031250</td>
+                                <td>32.000000</td>
+                                <td>1.505150</td>
+                                <td>-1.505150</td>
+                                <td class="val-match">-1.505150</td>
+                                <td class="val-match">-1.505150</td>
+                                <td class="val-match">-1.505150</td>
+                            </tr>
+                            <tr class="row-projected">
+                                <td class="row-marker" style="">◌</td>
+                                <td>6</td>
+                                <td>0.015625</td>
+                                <td>64.000000</td>
+                                <td>1.806180</td>
+                                <td>-1.806180</td>
+                                <td class="val-match">-1.806180</td>
+                                <td class="val-match">-1.806180</td>
+                                <td class="val-match">-1.806180</td>
+                            </tr>
+                            <tr class="row-projected">
+                                <td class="row-marker" style="">◌</td>
+                                <td>7</td>
+                                <td>0.007812</td>
+                                <td>128.000000</td>
+                                <td>2.107210</td>
+                                <td>-2.107238</td>
+                                <td class="val-match">-2.107238</td>
+                                <td class="val-match">-2.107238</td>
+                                <td class="val-match">-2.107238</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="chart-container">
+                    <canvas id="chart-Sandpile"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="system ">
+            <div class="system-header">
+                <span class="system-icon">📈</span>
+                <span class="system-name">Scale-free network degrees</span>
+                <span class="system-badge">Power Law</span>
+                <span class="system-badge">Slope: -2.5</span>
+                
+            </div>
+            
+            <div class="system-content">
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>Iter</th>
+                                <th>Measure</th>
+                                <th>Scale<br>(expected)</th>
+                                <th>log(S)</th>
+                                <th>log(M)<br>(expected)</th>
+                                <th>🐍 log(M)</th>
+                                <th>🐘 log(M)</th>
+                                <th>🐹 log(M)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="row-actual">
+                                <td class="row-marker" style="">●</td>
+                                <td>0</td>
+                                <td>1.000000</td>
+                                <td>1.000000</td>
+                                <td>0.000000</td>
+                                <td>0.000000</td>
+                                <td class="val-na">-</td>
+                                <td class="val-na">-</td>
+                                <td class="val-na">-</td>
+                            </tr>
+                            <tr class="row-actual">
+                                <td class="row-marker" style="">●</td>
+                                <td>1</td>
+                                <td>0.176777</td>
+                                <td>2.000000</td>
+                                <td>0.301030</td>
+                                <td>-0.752574</td>
+                                <td class="val-na">-</td>
+                                <td class="val-na">-</td>
+                                <td class="val-na">-</td>
+                            </tr>
+                            <tr class="row-actual">
+                                <td class="row-marker" style="">●</td>
+                                <td>2</td>
+                                <td>0.031250</td>
+                                <td>4.000000</td>
+                                <td>0.602060</td>
+                                <td>-1.505150</td>
+                                <td class="val-na">-</td>
+                                <td class="val-na">-</td>
+                                <td class="val-na">-</td>
+                            </tr>
+                            <tr class="row-actual">
+                                <td class="row-marker" style="">●</td>
+                                <td>3</td>
+                                <td>0.005524</td>
+                                <td>8.000000</td>
+                                <td>0.903090</td>
+                                <td>-2.257746</td>
+                                <td class="val-na">-</td>
+                                <td class="val-na">-</td>
+                                <td class="val-na">-</td>
+                            </tr>
+                            <tr class="row-projected">
+                                <td class="row-marker" style="">◌</td>
+                                <td>4</td>
+                                <td>0.000977</td>
+                                <td>16.000000</td>
+                                <td>1.204120</td>
+                                <td>-3.010105</td>
+                                <td class="val-match">-3.010105</td>
+                                <td class="val-match">-3.010105</td>
+                                <td class="val-match">-3.010105</td>
+                            </tr>
+                            <tr class="row-projected">
+                                <td class="row-marker" style="">◌</td>
+                                <td>5</td>
+                                <td>0.000173</td>
+                                <td>32.000000</td>
+                                <td>1.505150</td>
+                                <td>-3.761954</td>
+                                <td class="val-match">-3.761954</td>
+                                <td class="val-match">-3.761954</td>
+                                <td class="val-match">-3.761954</td>
+                            </tr>
+                            <tr class="row-projected">
+                                <td class="row-marker" style="">◌</td>
+                                <td>6</td>
+                                <td>0.000031</td>
+                                <td>64.000000</td>
+                                <td>1.806180</td>
+                                <td>-4.508638</td>
+                                <td class="val-match">-4.508638</td>
+                                <td class="val-match">-4.508638</td>
+                                <td class="val-match">-4.508638</td>
+                            </tr>
+                            <tr class="row-projected">
+                                <td class="row-marker" style="">◌</td>
+                                <td>7</td>
+                                <td>0.000005</td>
+                                <td>128.000000</td>
+                                <td>2.107210</td>
+                                <td>-5.301030</td>
+                                <td class="val-match">-5.301030</td>
+                                <td class="val-match">-5.301030</td>
+                                <td class="val-match">-5.301030</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="chart-container">
+                    <canvas id="chart-ScaleFreeNet"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="system ">
+            <div class="system-header">
+                <span class="system-icon">🔺</span>
+                <span class="system-name">Sierpinski Triangle</span>
+                <span class="system-badge">Fractal</span>
+                <span class="system-badge">Slope: -1.585</span>
+                
+            </div>
+            
+            <div class="system-content">
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>Iter</th>
+                                <th>Measure</th>
+                                <th>Scale<br>(expected)</th>
+                                <th>log(S)</th>
+                                <th>log(M)<br>(expected)</th>
+                                <th>🐍 log(M)</th>
+                                <th>🐘 log(M)</th>
+                                <th>🐹 log(M)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="row-actual">
+                                <td class="row-marker" style="">●</td>
+                                <td>0</td>
+                                <td>1.000000</td>
+                                <td>1.000000</td>
+                                <td>0.000000</td>
+                                <td>0.000000</td>
+                                <td class="val-na">-</td>
+                                <td class="val-na">-</td>
+                                <td class="val-na">-</td>
+                            </tr>
+                            <tr class="row-actual">
+                                <td class="row-marker" style="">●</td>
+                                <td>1</td>
+                                <td>3.000078</td>
+                                <td>0.500000</td>
+                                <td>-0.301030</td>
+                                <td>0.477133</td>
+                                <td class="val-na">-</td>
+                                <td class="val-na">-</td>
+                                <td class="val-na">-</td>
+                            </tr>
+                            <tr class="row-actual">
+                                <td class="row-marker" style="">●</td>
+                                <td>2</td>
+                                <td>9.000468</td>
+                                <td>0.250000</td>
+                                <td>-0.602060</td>
+                                <td>0.954265</td>
+                                <td class="val-na">-</td>
+                                <td class="val-na">-</td>
+                                <td class="val-na">-</td>
+                            </tr>
+                            <tr class="row-actual">
+                                <td class="row-marker" style="">●</td>
+                                <td>3</td>
+                                <td>27.002105</td>
+                                <td>0.125000</td>
+                                <td>-0.903090</td>
+                                <td>1.431398</td>
+                                <td class="val-na">-</td>
+                                <td class="val-na">-</td>
+                                <td class="val-na">-</td>
+                            </tr>
+                            <tr class="row-projected">
+                                <td class="row-marker" style="">◌</td>
+                                <td>4</td>
+                                <td>81.008422</td>
+                                <td>0.062500</td>
+                                <td>-1.204120</td>
+                                <td>1.908530</td>
+                                <td class="val-match">1.908530</td>
+                                <td class="val-match">1.908530</td>
+                                <td class="val-match">1.908530</td>
+                            </tr>
+                            <tr class="row-projected">
+                                <td class="row-marker" style="">◌</td>
+                                <td>5</td>
+                                <td>243.031583</td>
+                                <td>0.031250</td>
+                                <td>-1.505150</td>
+                                <td>2.385663</td>
+                                <td class="val-match">2.385663</td>
+                                <td class="val-match">2.385663</td>
+                                <td class="val-match">2.385663</td>
+                            </tr>
+                            <tr class="row-projected">
+                                <td class="row-marker" style="">◌</td>
+                                <td>6</td>
+                                <td>729.113700</td>
+                                <td>0.015625</td>
+                                <td>-1.806180</td>
+                                <td>2.862795</td>
+                                <td class="val-match">2.862795</td>
+                                <td class="val-match">2.862795</td>
+                                <td class="val-match">2.862795</td>
+                            </tr>
+                            <tr class="row-projected">
+                                <td class="row-marker" style="">◌</td>
+                                <td>7</td>
+                                <td>2187.397956</td>
+                                <td>0.007812</td>
+                                <td>-2.107210</td>
+                                <td>3.339928</td>
+                                <td class="val-match">3.339928</td>
+                                <td class="val-match">3.339928</td>
+                                <td class="val-match">3.339928</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="chart-container">
+                    <canvas id="chart-Sierpinski"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="system ">
+            <div class="system-header">
+                <span class="system-icon">📈</span>
+                <span class="system-name">Zipf word frequencies</span>
+                <span class="system-badge">Power Law</span>
+                <span class="system-badge">Slope: -1</span>
+                
+            </div>
+            
+            <div class="system-content">
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>Iter</th>
+                                <th>Measure</th>
+                                <th>Scale<br>(expected)</th>
+                                <th>log(S)</th>
+                                <th>log(M)<br>(expected)</th>
+                                <th>🐍 log(M)</th>
+                                <th>🐘 log(M)</th>
+                                <th>🐹 log(M)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="row-actual">
+                                <td class="row-marker" style="">●</td>
+                                <td>0</td>
+                                <td>1.000000</td>
+                                <td>1.000000</td>
+                                <td>0.000000</td>
+                                <td>0.000000</td>
+                                <td class="val-na">-</td>
+                                <td class="val-na">-</td>
+                                <td class="val-na">-</td>
+                            </tr>
+                            <tr class="row-actual">
+                                <td class="row-marker" style="">●</td>
+                                <td>1</td>
+                                <td>0.500000</td>
+                                <td>2.000000</td>
+                                <td>0.301030</td>
+                                <td>-0.301030</td>
+                                <td class="val-na">-</td>
+                                <td class="val-na">-</td>
+                                <td class="val-na">-</td>
+                            </tr>
+                            <tr class="row-actual">
+                                <td class="row-marker" style="">●</td>
+                                <td>2</td>
+                                <td>0.250000</td>
+                                <td>4.000000</td>
+                                <td>0.602060</td>
+                                <td>-0.602060</td>
+                                <td class="val-na">-</td>
+                                <td class="val-na">-</td>
+                                <td class="val-na">-</td>
+                            </tr>
+                            <tr class="row-actual">
+                                <td class="row-marker" style="">●</td>
+                                <td>3</td>
+                                <td>0.125000</td>
+                                <td>8.000000</td>
+                                <td>0.903090</td>
+                                <td>-0.903090</td>
+                                <td class="val-na">-</td>
+                                <td class="val-na">-</td>
+                                <td class="val-na">-</td>
+                            </tr>
+                            <tr class="row-projected">
+                                <td class="row-marker" style="">◌</td>
+                                <td>4</td>
+                                <td>0.062500</td>
+                                <td>16.000000</td>
+                                <td>1.204120</td>
+                                <td>-1.204120</td>
+                                <td class="val-match">-1.204120</td>
+                                <td class="val-match">-1.204120</td>
+                                <td class="val-match">-1.204120</td>
+                            </tr>
+                            <tr class="row-projected">
+                                <td class="row-marker" style="">◌</td>
+                                <td>5</td>
+                                <td>0.031250</td>
+                                <td>32.000000</td>
+                                <td>1.505150</td>
+                                <td>-1.505150</td>
+                                <td class="val-match">-1.505150</td>
+                                <td class="val-match">-1.505150</td>
+                                <td class="val-match">-1.505150</td>
+                            </tr>
+                            <tr class="row-projected">
+                                <td class="row-marker" style="">◌</td>
+                                <td>6</td>
+                                <td>0.015625</td>
+                                <td>64.000000</td>
+                                <td>1.806180</td>
+                                <td>-1.806180</td>
+                                <td class="val-match">-1.806180</td>
+                                <td class="val-match">-1.806180</td>
+                                <td class="val-match">-1.806180</td>
+                            </tr>
+                            <tr class="row-projected">
+                                <td class="row-marker" style="">◌</td>
+                                <td>7</td>
+                                <td>0.007812</td>
+                                <td>128.000000</td>
+                                <td>2.107210</td>
+                                <td>-2.107238</td>
+                                <td class="val-match">-2.107238</td>
+                                <td class="val-match">-2.107238</td>
+                                <td class="val-match">-2.107238</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="chart-container">
+                    <canvas id="chart-ZipfWords"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>🔺 Power Laws & Fractals — ERB Testing Protocol</p>
+            <p>Validating 28 projected scales</p>
+        </footer>
+    </div>
+    
+    <script>
+        const chartData = {"Sierpinski": {"actual": [{"x": 0.0, "y": 0.0, "iter": 0, "id": "Sierpinski_0"}, {"x": -0.30103, "y": 0.477133, "iter": 1, "id": "Sierpinski_1"}, {"x": -0.60206, "y": 0.954265, "iter": 2, "id": "Sierpinski_2"}, {"x": -0.90309, "y": 1.431398, "iter": 3, "id": "Sierpinski_3"}], "projected": [{"x": -1.20412, "y": 1.90853, "iter": 4, "id": "Sierpinski_4"}, {"x": -1.50515, "y": 2.385663, "iter": 5, "id": "Sierpinski_5"}, {"x": -1.80618, "y": 2.862795, "iter": 6, "id": "Sierpinski_6"}, {"x": -2.10721, "y": 3.339928, "iter": 7, "id": "Sierpinski_7"}], "failed": [], "slope": -1.585, "name": "Sierpinski Triangle"}, "Koch": {"actual": [{"x": 0.0, "y": 0.0, "iter": 0, "id": "Koch_0"}, {"x": -0.477121, "y": 0.125006, "iter": 1, "id": "Koch_1"}, {"x": -0.954243, "y": 0.250012, "iter": 2, "id": "Koch_2"}, {"x": -1.431364, "y": 0.375017, "iter": 3, "id": "Koch_3"}], "projected": [{"x": -1.908485, "y": 0.500023, "iter": 4, "id": "Koch_4"}, {"x": -2.385606, "y": 0.625029, "iter": 5, "id": "Koch_5"}, {"x": -2.862728, "y": 0.750035, "iter": 6, "id": "Koch_6"}, {"x": -3.339849, "y": 0.87504, "iter": 7, "id": "Koch_7"}], "failed": [], "slope": -0.262, "name": "Koch Snowflake (edge)"}, "ZipfWords": {"actual": [{"x": 0.0, "y": 0.0, "iter": 0, "id": "ZipfWords_0"}, {"x": 0.30103, "y": -0.30103, "iter": 1, "id": "ZipfWords_1"}, {"x": 0.60206, "y": -0.60206, "iter": 2, "id": "ZipfWords_2"}, {"x": 0.90309, "y": -0.90309, "iter": 3, "id": "ZipfWords_3"}], "projected": [{"x": 1.20412, "y": -1.20412, "iter": 4, "id": "ZipfWords_4"}, {"x": 1.50515, "y": -1.50515, "iter": 5, "id": "ZipfWords_5"}, {"x": 1.80618, "y": -1.80618, "iter": 6, "id": "ZipfWords_6"}, {"x": 2.10721, "y": -2.107238, "iter": 7, "id": "ZipfWords_7"}], "failed": [], "slope": -1, "name": "Zipf word frequencies"}, "ScaleFreeNet": {"actual": [{"x": 0.0, "y": 0.0, "iter": 0, "id": "ScaleFreeNet_0"}, {"x": 0.30103, "y": -0.752574, "iter": 1, "id": "ScaleFreeNet_1"}, {"x": 0.60206, "y": -1.50515, "iter": 2, "id": "ScaleFreeNet_2"}, {"x": 0.90309, "y": -2.257746, "iter": 3, "id": "ScaleFreeNet_3"}], "projected": [{"x": 1.20412, "y": -3.010105, "iter": 4, "id": "ScaleFreeNet_4"}, {"x": 1.50515, "y": -3.761954, "iter": 5, "id": "ScaleFreeNet_5"}, {"x": 1.80618, "y": -4.508638, "iter": 6, "id": "ScaleFreeNet_6"}, {"x": 2.10721, "y": -5.30103, "iter": 7, "id": "ScaleFreeNet_7"}], "failed": [], "slope": -2.5, "name": "Scale-free network degrees"}, "Sandpile": {"actual": [{"x": 0.0, "y": 0.0, "iter": 0, "id": "Sandpile_0"}, {"x": 0.30103, "y": -0.30103, "iter": 1, "id": "Sandpile_1"}, {"x": 0.60206, "y": -0.60206, "iter": 2, "id": "Sandpile_2"}, {"x": 0.90309, "y": -0.90309, "iter": 3, "id": "Sandpile_3"}], "projected": [{"x": 1.20412, "y": -1.20412, "iter": 4, "id": "Sandpile_4"}, {"x": 1.50515, "y": -1.50515, "iter": 5, "id": "Sandpile_5"}, {"x": 1.80618, "y": -1.80618, "iter": 6, "id": "Sandpile_6"}, {"x": 2.10721, "y": -2.107238, "iter": 7, "id": "Sandpile_7"}], "failed": [], "slope": -1, "name": "Sandpile avalanches"}, "Earthquakes": {"actual": [{"x": 0.0, "y": 0.0, "iter": 0, "id": "Earthquakes_0"}, {"x": 0.30103, "y": -0.30103, "iter": 1, "id": "Earthquakes_1"}, {"x": 0.60206, "y": -0.60206, "iter": 2, "id": "Earthquakes_2"}, {"x": 0.90309, "y": -0.90309, "iter": 3, "id": "Earthquakes_3"}], "projected": [{"x": 1.20412, "y": -1.20412, "iter": 4, "id": "Earthquakes_4"}, {"x": 1.50515, "y": -1.50515, "iter": 5, "id": "Earthquakes_5"}, {"x": 1.80618, "y": -1.80618, "iter": 6, "id": "Earthquakes_6"}, {"x": 2.10721, "y": -2.107238, "iter": 7, "id": "Earthquakes_7"}], "failed": [], "slope": -1, "name": "Earthquake energies"}, "ForestFires": {"actual": [{"x": 0.0, "y": 0.0, "iter": 0, "id": "ForestFires_0"}, {"x": 0.30103, "y": -0.391339, "iter": 1, "id": "ForestFires_1"}, {"x": 0.60206, "y": -0.782679, "iter": 2, "id": "ForestFires_2"}, {"x": 0.90309, "y": -1.174016, "iter": 3, "id": "ForestFires_3"}], "projected": [{"x": 1.20412, "y": -1.565351, "iter": 4, "id": "ForestFires_4"}, {"x": 1.50515, "y": -1.956677, "iter": 5, "id": "ForestFires_5"}, {"x": 1.80618, "y": -2.348044, "iter": 6, "id": "ForestFires_6"}, {"x": 2.10721, "y": -2.739452, "iter": 7, "id": "ForestFires_7"}], "failed": [], "slope": -1.3, "name": "Forest fire sizes"}};
+        
+        Object.keys(chartData).forEach(sysId => {
+            const data = chartData[sysId];
+            const canvas = document.getElementById('chart-' + sysId);
+            if (!canvas) return;
+            
+            const ctx = canvas.getContext('2d');
+            const all = [...data.actual, ...data.projected, ...data.failed];
+            if (all.length === 0) return;
+            
+            const xMin = Math.min(...all.map(p => p.x));
+            const xMax = Math.max(...all.map(p => p.x));
+            const first = all[0];
+            
+            const theory = [];
+            for (let i = 0; i <= 20; i++) {
+                const x = xMin + (xMax - xMin) * i / 20;
+                const y = first.y + data.slope * (x - first.x);
+                theory.push({x, y});
+            }
+            
+            const datasets = [
+                {
+                    label: 'Actual (0-3)',
+                    data: data.actual,
+                    backgroundColor: '#3fb950',
+                    borderColor: '#3fb950',
+                    pointRadius: 8,
+                    pointHoverRadius: 10
+                },
+                {
+                    label: 'Projected (4-7)',
+                    data: data.projected,
+                    backgroundColor: '#a371f7',
+                    borderColor: '#a371f7',
+                    pointRadius: 8,
+                    pointHoverRadius: 10
+                },
+                {
+                    label: 'Theoretical (slope=' + data.slope.toFixed(3) + ')',
+                    data: theory,
+                    type: 'line',
+                    borderColor: 'rgba(139, 148, 158, 0.6)',
+                    borderDash: [5, 5],
+                    borderWidth: 2,
+                    pointRadius: 0,
+                    fill: false
+                }
+            ];
+            
+            // Add failed points as separate red dataset
+            if (data.failed && data.failed.length > 0) {
+                datasets.splice(2, 0, {
+                    label: '✗ FAILED',
+                    data: data.failed,
+                    backgroundColor: '#f85149',
+                    borderColor: '#f85149',
+                    borderWidth: 3,
+                    pointRadius: 12,
+                    pointHoverRadius: 14,
+                    pointStyle: 'crossRot'
+                });
+            }
+            
+            new Chart(ctx, {
+                type: 'scatter',
+                data: { datasets },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: { color: '#c9d1d9', font: { size: 10 } }
+                        },
+                        title: {
+                            display: true,
+                            text: data.name + ' - Log-Log Plot',
+                            color: '#c9d1d9',
+                            font: { size: 13 }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(ctx) {
+                                    const pt = ctx.raw;
+                                    return 'Iter ' + pt.iter + ': (' + pt.x.toFixed(3) + ', ' + pt.y.toFixed(3) + ')';
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            title: { display: true, text: 'log(Scale)', color: '#8b949e' },
+                            ticks: { color: '#8b949e' },
+                            grid: { color: '#30363d' }
+                        },
+                        y: {
+                            title: { display: true, text: 'log(Measure)', color: '#8b949e' },
+                            ticks: { color: '#8b949e' },
+                            grid: { color: '#30363d' }
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
