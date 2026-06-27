@@ -140,3 +140,10 @@ MANIFEST="${SCRIPT_DIR}/.applied-manifest.json"
 } > "$MANIFEST"
 
 echo "[init-db] complete (manifest: .applied-manifest.json)"
+
+# ----------------------------------------------------------------------
+# 5. Export hydrated rulebook — computed view values checked into git.
+# ----------------------------------------------------------------------
+if [ -f "${SCRIPT_DIR}/export-hydrated-rulebook.sh" ]; then
+    DATABASE_URL="$DATABASE_URL" bash "${SCRIPT_DIR}/export-hydrated-rulebook.sh"
+fi
