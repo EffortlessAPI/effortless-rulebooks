@@ -1,64 +1,125 @@
-# Build Plan / Discussion Starter: A Witnessed DAG for Stratification Reversals (Simpson's Paradox)
+# Simpson's Paradox — Witnessed DAG Demo
 
-I want to build a small, complete, reproducible domain that turns Simpson's paradox from a textbook curiosity into a **computational object** — a witnessed dependency graph where the reversal is a derived, inspectable fact rather than a story someone tells over a chart. Before I start building, I want your read on the plan, your pushback, and your help sharpening the schema. Treat this as a design review, not a spec to implement silently.
+A **witnessed dependency graph** that turns Simpson's paradox from a textbook curiosity into a computational object. Every derived value — pooled rates, stratified rates, reversal flags, paradox strength, allocation bias — falls out of formulas declared in a single rulebook. No inference is ever hand-entered.
 
-## The methodology I'm building on
+---
 
-The approach is "one rulebook, many runtimes." A single structured **rulebook** (JSON) defines a domain as tables, where every field is one of five first-class kinds:
+## What this is
 
-- **Schema** — the tables and their shapes
-- **Data** — raw, entered facts (the leaves; never inferences)
-- **Lookups** — pull a value from a related row (INDEX/MATCH-style)
-- **Aggregations** — COUNTIFS/SUMIFS/AVERAGEIFS over related rows
-- **Functions** — pure calculated cells over other fields
+An **Effortless Rulebook (ERB)** domain. The SSoT is `effortless-rulebook/simpsons-paradox-rulebook.json`. All other artifacts — Postgres SQL, views, the explorer UI — are mechanically derived from it.
 
-Everything above the raw leaves is a pure, inspectable formula DAG. The same rulebook is then mechanically compiled into multiple execution substrates (e.g. Postgres, Python, Go, and others) that **provably return identical results** against a shared answer key. That cross-substrate agreement is the conformance guarantee: a defect either shows up as divergence across substrates (caught) or as a defect in the specification itself (visible in the rulebook, where a human can see it). No inference is ever hand-entered. The trust boundary is literally a line in the dependency graph: anything with a formula is derived; anything raw is an input.
+The paradox **emerges** from the model. It is not modeled directly. `IsReversal` is a derived boolean that falls out of comparing `PooledWinner` to `PerStratumWinner`. There is no `ReversalDetection` entity.
 
-The build process is an iterative loop:
+The methodology: one rulebook, compiled into multiple execution substrates (Postgres, the browser-side explorer) that provably return identical results. The trust boundary is a line in the dependency graph — anything with a formula is derived; anything raw is an input.
 
-1. Look at the rulebook.
-2. Hypothesize a change (a new concept to make first-class).
-3. Update the schema.
-4. Push the model into the substrate(s).
-5. The substrate computes all higher-order inferences.
-6. That computed data is imported back into the rulebook.
-7. Repeat — now with the new concept witnessed and first-class.
+---
 
-Each turn of the loop adds one concept as a citizen of the model. Once concepts are first-class columns, you can group, sort, filter, pivot, chart, and cluster **at the level of the inferences**, not just the raw facts — and patterns that are invisible from any single angle become legible once enough angles coexist in the same substrate.
+## The entity model
 
-## Why Simpson's paradox is the ideal first domain
+```
+Studies ──< Strata ──< CaseCells   ← raw leaves: (successes, cases) per cell
+   └──< Treatments
+              │
+              └──> StratumSummaries    per-(stratum, treatment) rates, StratumGap,
+                                       AllocationBias, WeightedStratumRate
+              └──> TreatmentRankings   IsReversal, IsSignFlip, AllocationDistortion,
+                                       ParadoxStrength, DistortionType, PolicyImplication
+   └──< StratumVariables               IsConfounder, CausalRole
+   └──  ModelSummary                   epistemic rollup across all studies
+```
 
-Simpson's paradox is the cleanest possible demonstration of the core thesis: **the same fixed data, viewed from one angle, says X; viewed from another, says not-X; and only building both witnesses reveals it.** An aggregate trend points one way; the trend within every stratum points the other way. The reversal is fully latent in the rows the entire time — no new measurement is needed to "discover" it. It becomes knowable only when someone instantiates the specific projection (the stratified angle) alongside the aggregate one and looks.
+`CaseCells` is the ground truth. The Postgres view chain is: `vw_case_cells` → `vw_stratum_summaries` → `vw_treatment_rankings` → `vw_model_summary`.
 
-Three properties make it the strongest candidate for a defensible, uncontroversial, genuinely solid build:
+---
 
-- **The result is a proof, not a prediction.** A witnessed reversal over a real dataset is deductively true given the rows — arithmetic, not a fitted model that "happens to land." Reality can't veto it; no threshold is up for argument. This is the rare case where a finding can be both *novel* (a previously unnoticed reversal in a fresh dataset) and *deductively certain* on the spot, with no replication required.
-- **The mechanism is tiny.** At its heart it's two aggregations over the same rows — the pooled trend and the per-stratum trend — plus a comparison that flags when their directions disagree. That makes it tractable to build correctly and easy to audit.
-- **The punchline is visceral.** "The trend reverses inside every group" is surprising to nearly everyone the first time they see it and undeniable once shown. It demonstrates the method to a non-specialist audience without requiring them to care about any particular domain.
+## The four distortion types
 
-## The build approach
+Beyond the binary `IsReversal`, the model classifies every study on a continuous distortion plane (allocation bias × paradox strength):
 
-I want to follow a synthetic-first, real-data-last protocol, and I want to be disciplined about what each phase is allowed to claim:
+| Type | Criterion | Example |
+|---|---|---|
+| **A — Full reversal** | `IsSignFlip=true`, `ReversalIntensity=1.0` | kidney-1986 |
+| **B — Sign flip** | `IsSignFlip=true`, `ReversalIntensity<1.0` | berkeley-1973 |
+| **C — Compressed** | `IsSignFlip=false`, `AllocationDistortion>0` | compressed-synthetic |
+| **D — Neutral** | `AllocationDistortion≈0` | balanced-synthetic, kidney-balanced |
 
-- **Synthetic phase (build and harden the instrument).** Start with *realistic synthetic data* — raw leaves only, never inferences — for which the correct higher-order results are already known. Add angles one loop at a time: the pooled aggregate, the stratified aggregate, group sizes, weighting, the reversal flag, the deciding stratum. At each loop, confirm the rulebook computes the known-correct inference. The synthetic data is **not** the carrier of any finding; it is scaffolding to prove the inference machinery is sound, independent of any claim about the world.
-- **Real-data step (make the one empirical claim).** Once the witness apparatus passes every synthetic angle, pour a *real* dataset through the identical DAG. Any reversal it surfaces is then a witnessed, traceable, deductively certain fact about that real data — with every node drillable down to the raw counts that produced it. Cite the source dataset after this step, not before.
+`AllocationDistortion = |WeightedStratumGapSum − SignedPooledGap|` — the scalar distance between what equal-weight strata would show and what the actual allocation-weighted pooled number shows. Berkeley scores 0.193 (nearly twice kidney-1986's 0.099), despite `IsReversal=false`.
 
-The distinction I care about: the synthetic phase only ever answers "is the inference machinery sound?" The world-claim is made exactly once, at the end, through a structure already shown to be correct — not "train on synthetic and hope it transfers."
+---
 
-## Where I want your input
+## Studies loaded
 
-I'd rather have the plan stress-tested than agreed with. Specifically:
+| Study | Type | Source |
+|---|---|---|
+| `kidney-1986` | A | Charig et al., BMJ 1986 |
+| `berkeley-1973` | B | Bickel, Hammel & O'Connell, Science 1975 |
+| `compressed-synthetic` | C | Synthetic — imbalanced allocation, no sign flip |
+| `balanced-synthetic` | D | Synthetic — equal allocation, constant rates |
+| `kidney-balanced` | D | Counterfactual — kidney-1986 rates, equal allocation |
 
-1. **Schema.** What are the right first-class tables and fields? My starting instinct is something like: `Populations` (or `Datasets`), `Strata`, `Observations` (raw counts per cell), and derived layers for pooled rates, per-stratum rates, and a `ReversalDetected` flag with a `DecidingStratum` / deciding-factor field that names *why* the reversal occurs (e.g. which confounder's uneven distribution drives it). What am I missing or over-modeling?
+Synthetic and counterfactual studies are scaffolding. They prove the inference machinery is sound, not claims about the world.
 
-2. **The reversal predicate.** Simpson's reversals come in more than one flavor (rate reversal across two groups; trend-sign reversal in a regression across strata; the aggregation-paradox in weighted means). Should the first build target the cleanest case (two groups, a binary outcome, one stratifying variable) and generalize later, or should the schema be built to hold the general case from loop 1?
+---
 
-3. **What "realistic synthetic" must mean here.** Since the eventual real-data run is the only empirical claim, the realism that matters is in the *raw leaves* — the count structure and the confounder distribution — not the inferences. What properties must the synthetic data share with real data for the hardened instrument to transfer honestly?
+## Explorer UI
 
-4. **Good real datasets for step 7.** Candidates that are open, well-understood, and where a reversal is either famously present (as a validation) or plausibly lurking and unnoticed (as a discovery). The classic admissions and treatment-efficacy examples are validations; I'm also interested in fresh datasets with many strata where a reversal might not yet be documented.
+`simpsons-paradox-explorer.html` — self-contained, open in any browser. Four views:
 
-5. **The witnesses.** The whole value is in making the reversal *legible*. What are the right visualizations and tables — the pooled view next to the stratified view, the deciding-stratum drill-down, the group-size weighting that drives the flip — so that a non-technical reader sees exactly what's happening and can trace it to ground truth?
+- **Study Overview** — scatter plot on the distortion plane; per-study metric cards
+- **Stratum Breakdown** — per-stratum bars vs pooled dashed lines (the paradox made visual)
+- **Allocation Weights** — how each treatment's cases are distributed across strata; `AllocationBias` per stratum
+- **Interactive Sandbox** — sliders for raw counts; `IsReversal`, `IsSignFlip`, `AllocationDistortion` update live
 
-6. **The compounding angle.** Once datasets are rows with reversal-flags as columns, a second-order question appears for free: *what structural property of a dataset predicts whether it harbors a reversal?* Is that worth designing toward from the start, or a distraction from the clean first build?
+---
 
-Start by telling me where this plan is wrong or weak before telling me where it's right. Then let's converge on the loop-1 schema.
+## How this compares to existing academic tools
+
+A 110-agent adversarially-verified research sweep found no existing tool that combines all three properties:
+
+| Property | OMOP CDM | metafor (R) | PRIME-IPD | psHarmonize | This model |
+|---|---|---|---|---|---|
+| Fixed canonical entity schema declared upfront | ✓ | — | — | — | ✓ |
+| Derived values declared as formulas in the schema | — | partial | — | — | ✓ |
+| Same formulas applied uniformly to all loaded studies | partial | ✓ (aggregates only) | — | — | ✓ |
+| Raw individual-level data as input | ✓ | — | ✓ | ✓ | ✓ |
+
+The field has two separate traditions — structural harmonization (OMOP, CDISC SEND) and statistical synthesis (metafor, IPD meta-analysis) — that don't overlap. The rulebook-first DAG is a third thing: a declarative formula layer that is part of the schema definition itself.
+
+---
+
+## Loop plan
+
+The `Loops` table in the rulebook IS the build plan. Each row documents what domain concept was introduced and what natural-language question it answers. Currently at loop 19 complete, loop 20+ planned:
+
+- **Loops 1–4**: Core entities, pooled rates, stratum rates, `IsReversal`
+- **Loops 5–8**: `StratumVariables`, `IsConfounder`, exposure fractions, balanced counterfactual, Berkeley 1973
+- **Loops 9–12**: `ParadoxStrength`, `ModelSummary`, `StratumFraction`, `WeightedStratumRate` mechanism equation
+- **Loops 13–16**: `AllocationBias`, kidney-balanced counterfactual, `ReversalThreshold`, `StratumGap` signed
+- **Loops 17–19**: `WeightedStratumGapSum`, `IsSignFlip`, `AllocationDistortion`, `DistortionType` taxonomy (all four types populated)
+- **Loop 20**: Hydrator regression — write kidney-1986 through an explicit adapter, diff computed output against known-correct witnessed values (the hydrator is validated when the diff passes, not when the visualizer changes)
+- **Loop 20b**: First new real study — pour one non-canonical published dataset through the validated hydrator; result is informative regardless of DistortionType
+- **Loops 21–23**: `ScreeningApproximation`, third real dataset, `CausalStructureSignal`
+- **Loops 24–26**: `DistortionType` as first-class DAG field, type-C real-data witness, `PolicyImplication`
+- **Loops 27–30**: Retrospective validation, literature screen, prospective validation, `InstrumentSpec`
+- **Loop 31**: `IsReversal_v2 = IsSignFlip`, retire unanimity criterion as primary definition
+
+---
+
+## Build discipline
+
+```bash
+git status                           # always check first
+cd effortless-postgres && ./init-db.sh   # drop and recreate from rulebook
+```
+
+No migrations. Edit rulebook → build → DB reflects it.
+
+---
+
+## Local transpiler bus (`localhost:4242`)
+
+> **All 13 local transpilers live on `localhost:4242`.** Once you run
+> `./start.sh` from the repo root, the ssotme-proxy exposes every repo-local
+> transpiler — `rulebook-to-postgres`, `rulebook-to-python`, `rulebook-to-golang`,
+> `rulebook-to-cobol`, `rulebook-to-owl`, and more — as first-class `ssotme://`
+> routes any `effortless build` can call.
