@@ -73,7 +73,7 @@
       {
         "LoopId": "loop-07",
         "Title": "Degenerate study: balanced allocation → IsReversal structurally impossible",
-        "Status": "planned",
+        "Status": "complete",
         "NewConcept": "Second Studies row (balanced-synthetic); equal TreatmentExposureFraction across strata; IsReversal = FALSE by construction",
         "DomainQuestion": "If every stratum gets the same treatment-allocation fraction, can a reversal occur? The DAG should witness that it cannot.",
         "MockDataNote": "Synthetic: A and B each assigned 50/50 to small/large strata. A=60% success both strata, B=50% both. Pooled: A=60%, B=50%. No reversal. IsParadoxExplained vacuously true (IsConfounder=false, no confounding, no reversal).",
@@ -126,6 +126,12 @@
         "Title": "Kidney Stone Treatment Study (Charig et al. 1986)",
         "Source": "Charig CR et al. Comparison of treatment of renal calculi by open surgery, percutaneous nephrolithotomy, and extracorporeal shockwave lithotripsy. Br Med J. 1986;292:879.",
         "SourceUrl": "https://www.bmj.com/content/292/6524/879"
+      },
+      {
+        "StudyId": "balanced-synthetic",
+        "Title": "Balanced Synthetic Study (degenerate case — reversal structurally impossible)",
+        "Source": "Synthetic dataset constructed to demonstrate that perfectly balanced treatment allocation across strata algebraically prevents Simpson's Paradox. Not based on real data.",
+        "SourceUrl": ""
       }
     ]
   },
@@ -143,8 +149,10 @@
       { "name": "PooledSuccessRate","datatype": "number","type": "calculated", "nullable": true,  "Description": "Pooled (across all strata) success rate for this treatment: TotalSuccesses / TotalCases.", "formula": "=IF({{TotalCases}} = 0, \"\", {{TotalSuccesses}} / {{TotalCases}})" }
     ],
     "data": [
-      { "TreatmentId": "kidney-1986-A", "Study": "kidney-1986", "TreatmentLabel": "A", "Description": "Open surgery / percutaneous nephrolithotomy (PCNL) — the more invasive procedure, used preferentially for large stones." },
-      { "TreatmentId": "kidney-1986-B", "Study": "kidney-1986", "TreatmentLabel": "B", "Description": "Extracorporeal shock wave lithotripsy (ESWL) — the less invasive procedure, used more for small stones." }
+      { "TreatmentId": "kidney-1986-A",        "Study": "kidney-1986",        "TreatmentLabel": "A", "Description": "Open surgery / percutaneous nephrolithotomy (PCNL) — the more invasive procedure, used preferentially for large stones." },
+      { "TreatmentId": "kidney-1986-B",        "Study": "kidney-1986",        "TreatmentLabel": "B", "Description": "Extracorporeal shock wave lithotripsy (ESWL) — the less invasive procedure, used more for small stones." },
+      { "TreatmentId": "balanced-synthetic-A", "Study": "balanced-synthetic", "TreatmentLabel": "A", "Description": "Synthetic treatment A — 60% success rate in both strata. Allocated equally (50%) to each stratum." },
+      { "TreatmentId": "balanced-synthetic-B", "Study": "balanced-synthetic", "TreatmentLabel": "B", "Description": "Synthetic treatment B — 50% success rate in both strata. Allocated equally (50%) to each stratum." }
     ]
   },
 
@@ -159,8 +167,10 @@
       { "name": "TotalCases",   "datatype": "integer","type": "aggregation",  "nullable": true,  "Description": "Total cases in this stratum across all treatments.", "formula": "=SUMIFS(CaseCells!{{Cases}}, CaseCells!{{Study}}, {{Study}}, CaseCells!{{StratumLabel}}, {{StratumLabel}})" }
     ],
     "data": [
-      { "StratumId": "kidney-1986-small", "Study": "kidney-1986", "StratumLabel": "small", "Description": "Patients with small kidney stones — easier to treat, higher baseline success rate regardless of treatment." },
-      { "StratumId": "kidney-1986-large", "Study": "kidney-1986", "StratumLabel": "large", "Description": "Patients with large kidney stones — harder to treat, lower baseline success rate regardless of treatment. Preferentially assigned to Treatment A." }
+      { "StratumId": "kidney-1986-small",      "Study": "kidney-1986",        "StratumLabel": "small", "Description": "Patients with small kidney stones — easier to treat, higher baseline success rate regardless of treatment." },
+      { "StratumId": "kidney-1986-large",      "Study": "kidney-1986",        "StratumLabel": "large", "Description": "Patients with large kidney stones — harder to treat, lower baseline success rate regardless of treatment. Preferentially assigned to Treatment A." },
+      { "StratumId": "balanced-synthetic-easy","Study": "balanced-synthetic", "StratumLabel": "easy",  "Description": "Easy stratum — higher baseline success rate. Receives exactly 50% of each treatment's cases." },
+      { "StratumId": "balanced-synthetic-hard","Study": "balanced-synthetic", "StratumLabel": "hard",  "Description": "Hard stratum — lower baseline success rate. Receives exactly 50% of each treatment's cases. Equal allocation prevents confounding." }
     ]
   },
 
@@ -179,10 +189,14 @@
       { "name": "TreatmentExposureFraction","datatype": "number", "type": "calculated",  "nullable": true,  "Description": "Fraction of this treatment's total cases that fall in this stratum: Cases / TotalCasesForTreatment. High imbalance across strata is the mechanism of confounding — when treatments are allocated very differently across strata, the pooled rate conflates treatment effect with stratum difficulty.", "formula": "=IF({{TotalCasesForTreatment}} = 0, \"\", {{Cases}} / {{TotalCasesForTreatment}})" }
     ],
     "data": [
-      { "CaseCellId": "kidney-1986-small-A", "Study": "kidney-1986", "StratumLabel": "small", "TreatmentLabel": "A", "Successes": 81,  "Cases": 87  },
-      { "CaseCellId": "kidney-1986-small-B", "Study": "kidney-1986", "StratumLabel": "small", "TreatmentLabel": "B", "Successes": 234, "Cases": 270 },
-      { "CaseCellId": "kidney-1986-large-A", "Study": "kidney-1986", "StratumLabel": "large", "TreatmentLabel": "A", "Successes": 192, "Cases": 263 },
-      { "CaseCellId": "kidney-1986-large-B", "Study": "kidney-1986", "StratumLabel": "large", "TreatmentLabel": "B", "Successes": 55,  "Cases": 80  }
+      { "CaseCellId": "kidney-1986-small-A",        "Study": "kidney-1986",        "StratumLabel": "small", "TreatmentLabel": "A", "Successes": 81,  "Cases": 87  },
+      { "CaseCellId": "kidney-1986-small-B",        "Study": "kidney-1986",        "StratumLabel": "small", "TreatmentLabel": "B", "Successes": 234, "Cases": 270 },
+      { "CaseCellId": "kidney-1986-large-A",        "Study": "kidney-1986",        "StratumLabel": "large", "TreatmentLabel": "A", "Successes": 192, "Cases": 263 },
+      { "CaseCellId": "kidney-1986-large-B",        "Study": "kidney-1986",        "StratumLabel": "large", "TreatmentLabel": "B", "Successes": 55,  "Cases": 80  },
+      { "CaseCellId": "balanced-synthetic-easy-A",  "Study": "balanced-synthetic", "StratumLabel": "easy",  "TreatmentLabel": "A", "Successes": 60,  "Cases": 100 },
+      { "CaseCellId": "balanced-synthetic-easy-B",  "Study": "balanced-synthetic", "StratumLabel": "easy",  "TreatmentLabel": "B", "Successes": 50,  "Cases": 100 },
+      { "CaseCellId": "balanced-synthetic-hard-A",  "Study": "balanced-synthetic", "StratumLabel": "hard",  "TreatmentLabel": "A", "Successes": 60,  "Cases": 100 },
+      { "CaseCellId": "balanced-synthetic-hard-B",  "Study": "balanced-synthetic", "StratumLabel": "hard",  "TreatmentLabel": "B", "Successes": 50,  "Cases": 100 }
     ]
   },
 
@@ -206,10 +220,14 @@
       { "name": "StratumWinner",    "datatype": "string",  "type": "calculated",   "nullable": true,  "Description": "Which treatment wins in this stratum: 'A' if StratumRateA > StratumRateB, else 'B'. Used by TreatmentRankings to detect paradox.", "formula": "=IF({{StratumRateA}} > {{StratumRateB}}, \"A\", \"B\")" }
     ],
     "data": [
-      { "StratumSummaryId": "kidney-1986-small-A", "Study": "kidney-1986", "StratumLabel": "small", "TreatmentLabel": "A" },
-      { "StratumSummaryId": "kidney-1986-small-B", "Study": "kidney-1986", "StratumLabel": "small", "TreatmentLabel": "B" },
-      { "StratumSummaryId": "kidney-1986-large-A", "Study": "kidney-1986", "StratumLabel": "large", "TreatmentLabel": "A" },
-      { "StratumSummaryId": "kidney-1986-large-B", "Study": "kidney-1986", "StratumLabel": "large", "TreatmentLabel": "B" }
+      { "StratumSummaryId": "kidney-1986-small-A",       "Study": "kidney-1986",        "StratumLabel": "small", "TreatmentLabel": "A" },
+      { "StratumSummaryId": "kidney-1986-small-B",       "Study": "kidney-1986",        "StratumLabel": "small", "TreatmentLabel": "B" },
+      { "StratumSummaryId": "kidney-1986-large-A",       "Study": "kidney-1986",        "StratumLabel": "large", "TreatmentLabel": "A" },
+      { "StratumSummaryId": "kidney-1986-large-B",       "Study": "kidney-1986",        "StratumLabel": "large", "TreatmentLabel": "B" },
+      { "StratumSummaryId": "balanced-synthetic-easy-A", "Study": "balanced-synthetic", "StratumLabel": "easy",  "TreatmentLabel": "A" },
+      { "StratumSummaryId": "balanced-synthetic-easy-B", "Study": "balanced-synthetic", "StratumLabel": "easy",  "TreatmentLabel": "B" },
+      { "StratumSummaryId": "balanced-synthetic-hard-A", "Study": "balanced-synthetic", "StratumLabel": "hard",  "TreatmentLabel": "A" },
+      { "StratumSummaryId": "balanced-synthetic-hard-B", "Study": "balanced-synthetic", "StratumLabel": "hard",  "TreatmentLabel": "B" }
     ]
   },
 
@@ -235,6 +253,15 @@
         "AffectsTreatmentAssignment": true,
         "AffectsOutcome": true,
         "MechanismNote": "Large kidney stones were preferentially assigned to Treatment A (the more aggressive procedure), while small stones more often received Treatment B. Independently, large stones have lower baseline cure rates regardless of treatment. This dual influence — on both assignment and on outcome — is what drives the pooled reversal."
+      },
+      {
+        "StratumVariableId": "balanced-synthetic-stratum",
+        "Study": "balanced-synthetic",
+        "VariableName": "stratum",
+        "CausalRole": "unknown",
+        "AffectsTreatmentAssignment": false,
+        "AffectsOutcome": true,
+        "MechanismNote": "The stratum variable affects outcome (easy vs hard conditions) but does NOT affect treatment assignment — each treatment receives exactly 50% of its cases in each stratum. Because treatment assignment is independent of stratum, no confounding can occur and the pooled rate must agree with every per-stratum comparison."
       }
     ]
   },
@@ -263,7 +290,8 @@
       { "name": "IsParadoxExplained", "datatype": "boolean", "type": "calculated",   "nullable": false, "Description": "TRUE when IsReversal is present AND at least one confirmed confounder exists in the study. The model witnesses its own explanatory completeness — or its limits.", "formula": "=AND({{IsReversal}}, {{ConfoundersInStudy}} > 0)" }
     ],
     "data": [
-      { "TreatmentRankingId": "kidney-1986-A-vs-B", "Study": "kidney-1986", "TreatmentA": "A", "TreatmentB": "B" }
+      { "TreatmentRankingId": "kidney-1986-A-vs-B",        "Study": "kidney-1986",        "TreatmentA": "A", "TreatmentB": "B" },
+      { "TreatmentRankingId": "balanced-synthetic-A-vs-B", "Study": "balanced-synthetic", "TreatmentA": "A", "TreatmentB": "B" }
     ]
   },
 
