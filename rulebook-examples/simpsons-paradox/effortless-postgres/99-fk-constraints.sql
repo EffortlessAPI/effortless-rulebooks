@@ -32,4 +32,9 @@ ALTER TABLE stratum_summaries DROP CONSTRAINT IF EXISTS fk_stratum_summaries_stu
 ALTER TABLE stratum_summaries ADD CONSTRAINT fk_stratum_summaries_study
   FOREIGN KEY (study) REFERENCES studies (study_id);
 
--- 4 FK constraint(s) declared (off unless EFFORTLESS_ENFORCE_FKS=true).
+-- TreatmentRankings
+ALTER TABLE treatment_rankings DROP CONSTRAINT IF EXISTS fk_treatment_rankings_study;
+ALTER TABLE treatment_rankings ADD CONSTRAINT fk_treatment_rankings_study
+  FOREIGN KEY (study) REFERENCES studies (study_id);
+
+-- 5 FK constraint(s) declared (off unless EFFORTLESS_ENFORCE_FKS=true).

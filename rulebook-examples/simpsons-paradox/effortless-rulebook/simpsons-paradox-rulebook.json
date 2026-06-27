@@ -46,7 +46,7 @@
       {
         "LoopId": "loop-04",
         "Title": "TreatmentRanking: does the pooled winner = the per-stratum winner?",
-        "Status": "planned",
+        "Status": "complete",
         "NewConcept": "TreatmentRankings",
         "DomainQuestion": "When pooled and stratified conclusions disagree — which treatment should actually be preferred?",
         "MockDataNote": "Pooled winner = B. Per-stratum winner = A in every stratum. Simpson's Paradox: IsReversal = true. This is the paradox as a derived fact, not a modeled entity.",
@@ -194,13 +194,46 @@
       { "name": "TreatmentLabel",    "datatype": "string",  "type": "raw",          "nullable": false, "Description": "Which treatment (matches Treatments.TreatmentLabel)." },
       { "name": "StratumSuccesses",  "datatype": "integer", "type": "aggregation",  "nullable": true,  "Description": "Total successes in this (stratum, treatment) cell for this study.", "formula": "=SUMIFS(CaseCells!{{Successes}}, CaseCells!{{Study}}, {{Study}}, CaseCells!{{StratumLabel}}, {{StratumLabel}}, CaseCells!{{TreatmentLabel}}, {{TreatmentLabel}})" },
       { "name": "StratumCases",      "datatype": "integer", "type": "aggregation",  "nullable": true,  "Description": "Total cases in this (stratum, treatment) cell for this study.", "formula": "=SUMIFS(CaseCells!{{Cases}}, CaseCells!{{Study}}, {{Study}}, CaseCells!{{StratumLabel}}, {{StratumLabel}}, CaseCells!{{TreatmentLabel}}, {{TreatmentLabel}})" },
-      { "name": "StratumSuccessRate","datatype": "number",  "type": "calculated",   "nullable": true,  "Description": "Success rate within this stratum for this treatment: StratumSuccesses / StratumCases. The true per-stratum picture.", "formula": "=IF({{StratumCases}} = 0, \"\", {{StratumSuccesses}} / {{StratumCases}})" }
+      { "name": "StratumSuccessRate","datatype": "number",  "type": "calculated",   "nullable": true,  "Description": "Success rate within this stratum for this treatment: StratumSuccesses / StratumCases. The true per-stratum picture.", "formula": "=IF({{StratumCases}} = 0, \"\", {{StratumSuccesses}} / {{StratumCases}})" },
+      { "name": "StratumSuccessesA","datatype": "integer", "type": "aggregation",  "nullable": true,  "Description": "Successes for treatment A in this (study, stratum) — used to determine the per-stratum winner.", "formula": "=SUMIFS(CaseCells!{{Successes}}, CaseCells!{{Study}}, {{Study}}, CaseCells!{{StratumLabel}}, {{StratumLabel}}, CaseCells!{{TreatmentLabel}}, \"A\")" },
+      { "name": "StratumCasesA",    "datatype": "integer", "type": "aggregation",  "nullable": true,  "Description": "Cases for treatment A in this (study, stratum).", "formula": "=SUMIFS(CaseCells!{{Cases}}, CaseCells!{{Study}}, {{Study}}, CaseCells!{{StratumLabel}}, {{StratumLabel}}, CaseCells!{{TreatmentLabel}}, \"A\")" },
+      { "name": "StratumRateA",     "datatype": "number",  "type": "calculated",   "nullable": true,  "Description": "Success rate for treatment A in this stratum.", "formula": "=IF({{StratumCasesA}} = 0, \"\", {{StratumSuccessesA}} / {{StratumCasesA}})" },
+      { "name": "StratumSuccessesB","datatype": "integer", "type": "aggregation",  "nullable": true,  "Description": "Successes for treatment B in this (study, stratum).", "formula": "=SUMIFS(CaseCells!{{Successes}}, CaseCells!{{Study}}, {{Study}}, CaseCells!{{StratumLabel}}, {{StratumLabel}}, CaseCells!{{TreatmentLabel}}, \"B\")" },
+      { "name": "StratumCasesB",    "datatype": "integer", "type": "aggregation",  "nullable": true,  "Description": "Cases for treatment B in this (study, stratum).", "formula": "=SUMIFS(CaseCells!{{Cases}}, CaseCells!{{Study}}, {{Study}}, CaseCells!{{StratumLabel}}, {{StratumLabel}}, CaseCells!{{TreatmentLabel}}, \"B\")" },
+      { "name": "StratumRateB",     "datatype": "number",  "type": "calculated",   "nullable": true,  "Description": "Success rate for treatment B in this stratum.", "formula": "=IF({{StratumCasesB}} = 0, \"\", {{StratumSuccessesB}} / {{StratumCasesB}})" },
+      { "name": "StratumWinner",    "datatype": "string",  "type": "calculated",   "nullable": true,  "Description": "Which treatment wins in this stratum: 'A' if StratumRateA > StratumRateB, else 'B'. Used by TreatmentRankings to detect paradox.", "formula": "=IF({{StratumRateA}} > {{StratumRateB}}, \"A\", \"B\")" }
     ],
     "data": [
       { "StratumSummaryId": "kidney-1986-small-A", "Study": "kidney-1986", "StratumLabel": "small", "TreatmentLabel": "A" },
       { "StratumSummaryId": "kidney-1986-small-B", "Study": "kidney-1986", "StratumLabel": "small", "TreatmentLabel": "B" },
       { "StratumSummaryId": "kidney-1986-large-A", "Study": "kidney-1986", "StratumLabel": "large", "TreatmentLabel": "A" },
       { "StratumSummaryId": "kidney-1986-large-B", "Study": "kidney-1986", "StratumLabel": "large", "TreatmentLabel": "B" }
+    ]
+  },
+
+  "TreatmentRankings": {
+    "Description": "Table: TreatmentRankings — one row per treatment-pair comparison within a study. Derives the pooled winner, the per-stratum winner, and the IsReversal boolean. The paradox emerges here as a derived fact: IsReversal is true when the pooled winner and the per-stratum winner disagree.",
+    "schema": [
+      { "name": "TreatmentRankingId", "datatype": "string",  "type": "raw",          "nullable": false, "Description": "Unique slug (e.g. kidney-1986-A-vs-B)." },
+      { "name": "Name",               "datatype": "string",  "type": "calculated",   "nullable": false, "Description": "Display label.", "formula": "={{TreatmentRankingId}}" },
+      { "name": "Study",              "datatype": "string",  "type": "relationship", "nullable": false, "Description": "FK to the parent Study.", "RelatedTo": "Studies" },
+      { "name": "TreatmentA",         "datatype": "string",  "type": "raw",          "nullable": false, "Description": "Label for the first treatment in the comparison (matches Treatments.TreatmentLabel)." },
+      { "name": "TreatmentB",         "datatype": "string",  "type": "raw",          "nullable": false, "Description": "Label for the second treatment in the comparison." },
+      { "name": "TotalCasesA",        "datatype": "integer", "type": "aggregation",  "nullable": true,  "Description": "Total cases for TreatmentA across all strata in this study.", "formula": "=SUMIFS(CaseCells!{{Cases}}, CaseCells!{{Study}}, {{Study}}, CaseCells!{{TreatmentLabel}}, {{TreatmentA}})" },
+      { "name": "TotalSuccessesA",    "datatype": "integer", "type": "aggregation",  "nullable": true,  "Description": "Total successes for TreatmentA across all strata.", "formula": "=SUMIFS(CaseCells!{{Successes}}, CaseCells!{{Study}}, {{Study}}, CaseCells!{{TreatmentLabel}}, {{TreatmentA}})" },
+      { "name": "PooledRateA",        "datatype": "number",  "type": "calculated",   "nullable": true,  "Description": "Pooled success rate for TreatmentA: TotalSuccessesA / TotalCasesA.", "formula": "=IF({{TotalCasesA}} = 0, \"\", {{TotalSuccessesA}} / {{TotalCasesA}})" },
+      { "name": "TotalCasesB",        "datatype": "integer", "type": "aggregation",  "nullable": true,  "Description": "Total cases for TreatmentB across all strata.", "formula": "=SUMIFS(CaseCells!{{Cases}}, CaseCells!{{Study}}, {{Study}}, CaseCells!{{TreatmentLabel}}, {{TreatmentB}})" },
+      { "name": "TotalSuccessesB",    "datatype": "integer", "type": "aggregation",  "nullable": true,  "Description": "Total successes for TreatmentB across all strata.", "formula": "=SUMIFS(CaseCells!{{Successes}}, CaseCells!{{Study}}, {{Study}}, CaseCells!{{TreatmentLabel}}, {{TreatmentB}})" },
+      { "name": "PooledRateB",        "datatype": "number",  "type": "calculated",   "nullable": true,  "Description": "Pooled success rate for TreatmentB: TotalSuccessesB / TotalCasesB.", "formula": "=IF({{TotalCasesB}} = 0, \"\", {{TotalSuccessesB}} / {{TotalCasesB}})" },
+      { "name": "PooledWinner",       "datatype": "string",  "type": "calculated",   "nullable": true,  "Description": "Which treatment wins when strata are ignored: the one with the higher pooled rate.", "formula": "=IF({{PooledRateA}} > {{PooledRateB}}, {{TreatmentA}}, {{TreatmentB}})" },
+      { "name": "StratumCount",       "datatype": "integer", "type": "aggregation",  "nullable": true,  "Description": "Number of strata in this study. Counted from StratumSummaries filtered to TreatmentA rows (one row per stratum).", "formula": "=COUNTIFS(StratumSummaries!{{Study}}, {{Study}}, StratumSummaries!{{TreatmentLabel}}, {{TreatmentA}})" },
+      { "name": "StrataWonByA",       "datatype": "integer", "type": "aggregation",  "nullable": true,  "Description": "Number of strata where A wins: count StratumSummaries rows whose TreatmentLabel=TreatmentA AND StratumWinner=TreatmentA. These are the one-per-stratum sentinel rows.", "formula": "=COUNTIFS(StratumSummaries!{{Study}}, {{Study}}, StratumSummaries!{{TreatmentLabel}}, {{TreatmentA}}, StratumSummaries!{{StratumWinner}}, {{TreatmentA}})" },
+      { "name": "StrataWonByB",       "datatype": "integer", "type": "aggregation",  "nullable": true,  "Description": "Number of strata where B wins: count StratumSummaries rows whose TreatmentLabel=TreatmentA AND StratumWinner=TreatmentB.", "formula": "=COUNTIFS(StratumSummaries!{{Study}}, {{Study}}, StratumSummaries!{{TreatmentLabel}}, {{TreatmentA}}, StratumSummaries!{{StratumWinner}}, {{TreatmentB}})" },
+      { "name": "PerStratumWinner",   "datatype": "string",  "type": "calculated",   "nullable": true,  "Description": "The treatment that wins in every stratum — 'A' if StrataWonByA = StratumCount, 'B' if StrataWonByB = StratumCount, else 'none' (no unanimous per-stratum winner).", "formula": "=IF({{StrataWonByA}} = {{StratumCount}}, {{TreatmentA}}, IF({{StrataWonByB}} = {{StratumCount}}, {{TreatmentB}}, \"none\"))" },
+      { "name": "IsReversal",         "datatype": "boolean", "type": "calculated",   "nullable": false, "Description": "TRUE when the pooled winner and the per-stratum winner disagree — i.e. Simpson's Paradox is present. FALSE otherwise. This is the paradox as a derived fact, not a modeled entity.", "formula": "=AND({{PerStratumWinner}} <> \"none\", {{PooledWinner}} <> {{PerStratumWinner}})" }
+    ],
+    "data": [
+      { "TreatmentRankingId": "kidney-1986-A-vs-B", "Study": "kidney-1986", "TreatmentA": "A", "TreatmentB": "B" }
     ]
   },
 

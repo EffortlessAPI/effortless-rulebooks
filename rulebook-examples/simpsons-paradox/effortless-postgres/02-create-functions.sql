@@ -205,6 +205,206 @@ RETURNS NUMERIC AS $$
   SELECT (CASE WHEN (calc_stratum_summaries_stratum_cases(p_stratum_summary_id))::NUMERIC = 0 THEN ('')::text ELSE ((COALESCE(CASE WHEN (calc_stratum_summaries_stratum_successes(p_stratum_summary_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_stratum_summaries_stratum_successes(p_stratum_summary_id))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(CASE WHEN (calc_stratum_summaries_stratum_cases(p_stratum_summary_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_stratum_summaries_stratum_cases(p_stratum_summary_id))::numeric ELSE NULL END, 0), 0)))::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
+-- calc_stratum_summaries_stratum_successes_a
+-- Field: StratumSummaries.StratumSuccessesA
+-- Type: aggregation | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_stratum_summaries_stratum_successes_a(p_stratum_summary_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((SELECT COALESCE(SUM((successes)::numeric), 0) FROM case_cells WHERE study = (SELECT NULLIF(study, '') FROM stratum_summaries WHERE stratum_summary_id = p_stratum_summary_id) AND stratum_label = (SELECT NULLIF(stratum_label, '') FROM stratum_summaries WHERE stratum_summary_id = p_stratum_summary_id) AND treatment_label = 'A'))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_stratum_summaries_stratum_cases_a
+-- Field: StratumSummaries.StratumCasesA
+-- Type: aggregation | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_stratum_summaries_stratum_cases_a(p_stratum_summary_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((SELECT COALESCE(SUM((cases)::numeric), 0) FROM case_cells WHERE study = (SELECT NULLIF(study, '') FROM stratum_summaries WHERE stratum_summary_id = p_stratum_summary_id) AND stratum_label = (SELECT NULLIF(stratum_label, '') FROM stratum_summaries WHERE stratum_summary_id = p_stratum_summary_id) AND treatment_label = 'A'))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_stratum_summaries_stratum_rate_a
+-- Field: StratumSummaries.StratumRateA
+-- Type: calculated | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_stratum_summaries_stratum_rate_a(p_stratum_summary_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT (CASE WHEN (calc_stratum_summaries_stratum_cases_a(p_stratum_summary_id))::NUMERIC = 0 THEN ('')::text ELSE ((COALESCE(CASE WHEN (calc_stratum_summaries_stratum_successes_a(p_stratum_summary_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_stratum_summaries_stratum_successes_a(p_stratum_summary_id))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(CASE WHEN (calc_stratum_summaries_stratum_cases_a(p_stratum_summary_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_stratum_summaries_stratum_cases_a(p_stratum_summary_id))::numeric ELSE NULL END, 0), 0)))::text END)::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_stratum_summaries_stratum_successes_b
+-- Field: StratumSummaries.StratumSuccessesB
+-- Type: aggregation | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_stratum_summaries_stratum_successes_b(p_stratum_summary_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((SELECT COALESCE(SUM((successes)::numeric), 0) FROM case_cells WHERE study = (SELECT NULLIF(study, '') FROM stratum_summaries WHERE stratum_summary_id = p_stratum_summary_id) AND stratum_label = (SELECT NULLIF(stratum_label, '') FROM stratum_summaries WHERE stratum_summary_id = p_stratum_summary_id) AND treatment_label = 'B'))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_stratum_summaries_stratum_cases_b
+-- Field: StratumSummaries.StratumCasesB
+-- Type: aggregation | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_stratum_summaries_stratum_cases_b(p_stratum_summary_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((SELECT COALESCE(SUM((cases)::numeric), 0) FROM case_cells WHERE study = (SELECT NULLIF(study, '') FROM stratum_summaries WHERE stratum_summary_id = p_stratum_summary_id) AND stratum_label = (SELECT NULLIF(stratum_label, '') FROM stratum_summaries WHERE stratum_summary_id = p_stratum_summary_id) AND treatment_label = 'B'))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_stratum_summaries_stratum_rate_b
+-- Field: StratumSummaries.StratumRateB
+-- Type: calculated | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_stratum_summaries_stratum_rate_b(p_stratum_summary_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT (CASE WHEN (calc_stratum_summaries_stratum_cases_b(p_stratum_summary_id))::NUMERIC = 0 THEN ('')::text ELSE ((COALESCE(CASE WHEN (calc_stratum_summaries_stratum_successes_b(p_stratum_summary_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_stratum_summaries_stratum_successes_b(p_stratum_summary_id))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(CASE WHEN (calc_stratum_summaries_stratum_cases_b(p_stratum_summary_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_stratum_summaries_stratum_cases_b(p_stratum_summary_id))::numeric ELSE NULL END, 0), 0)))::text END)::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_stratum_summaries_stratum_winner
+-- Field: StratumSummaries.StratumWinner
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_stratum_summaries_stratum_winner(p_stratum_summary_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CASE WHEN calc_stratum_summaries_stratum_rate_a(p_stratum_summary_id) > calc_stratum_summaries_stratum_rate_b(p_stratum_summary_id) THEN ('A')::text ELSE ('B')::text END)::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_treatment_rankings_name
+-- Field: TreatmentRankings.Name
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_treatment_rankings_name(p_treatment_ranking_id TEXT)
+RETURNS TEXT AS $$
+  SELECT ((SELECT NULLIF(treatment_ranking_id, '') FROM treatment_rankings WHERE treatment_ranking_id = p_treatment_ranking_id))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_treatment_rankings_total_cases_a
+-- Field: TreatmentRankings.TotalCasesA
+-- Type: aggregation | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_treatment_rankings_total_cases_a(p_treatment_ranking_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((SELECT COALESCE(SUM((cases)::numeric), 0) FROM case_cells WHERE study = (SELECT NULLIF(study, '') FROM treatment_rankings WHERE treatment_ranking_id = p_treatment_ranking_id) AND treatment_label = (SELECT NULLIF(treatment_a, '') FROM treatment_rankings WHERE treatment_ranking_id = p_treatment_ranking_id)))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_treatment_rankings_total_successes_a
+-- Field: TreatmentRankings.TotalSuccessesA
+-- Type: aggregation | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_treatment_rankings_total_successes_a(p_treatment_ranking_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((SELECT COALESCE(SUM((successes)::numeric), 0) FROM case_cells WHERE study = (SELECT NULLIF(study, '') FROM treatment_rankings WHERE treatment_ranking_id = p_treatment_ranking_id) AND treatment_label = (SELECT NULLIF(treatment_a, '') FROM treatment_rankings WHERE treatment_ranking_id = p_treatment_ranking_id)))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_treatment_rankings_pooled_rate_a
+-- Field: TreatmentRankings.PooledRateA
+-- Type: calculated | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_treatment_rankings_pooled_rate_a(p_treatment_ranking_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT (CASE WHEN (calc_treatment_rankings_total_cases_a(p_treatment_ranking_id))::NUMERIC = 0 THEN ('')::text ELSE ((COALESCE(CASE WHEN (calc_treatment_rankings_total_successes_a(p_treatment_ranking_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_treatment_rankings_total_successes_a(p_treatment_ranking_id))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(CASE WHEN (calc_treatment_rankings_total_cases_a(p_treatment_ranking_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_treatment_rankings_total_cases_a(p_treatment_ranking_id))::numeric ELSE NULL END, 0), 0)))::text END)::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_treatment_rankings_total_cases_b
+-- Field: TreatmentRankings.TotalCasesB
+-- Type: aggregation | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_treatment_rankings_total_cases_b(p_treatment_ranking_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((SELECT COALESCE(SUM((cases)::numeric), 0) FROM case_cells WHERE study = (SELECT NULLIF(study, '') FROM treatment_rankings WHERE treatment_ranking_id = p_treatment_ranking_id) AND treatment_label = (SELECT NULLIF(treatment_b, '') FROM treatment_rankings WHERE treatment_ranking_id = p_treatment_ranking_id)))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_treatment_rankings_total_successes_b
+-- Field: TreatmentRankings.TotalSuccessesB
+-- Type: aggregation | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_treatment_rankings_total_successes_b(p_treatment_ranking_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((SELECT COALESCE(SUM((successes)::numeric), 0) FROM case_cells WHERE study = (SELECT NULLIF(study, '') FROM treatment_rankings WHERE treatment_ranking_id = p_treatment_ranking_id) AND treatment_label = (SELECT NULLIF(treatment_b, '') FROM treatment_rankings WHERE treatment_ranking_id = p_treatment_ranking_id)))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_treatment_rankings_pooled_rate_b
+-- Field: TreatmentRankings.PooledRateB
+-- Type: calculated | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_treatment_rankings_pooled_rate_b(p_treatment_ranking_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT (CASE WHEN (calc_treatment_rankings_total_cases_b(p_treatment_ranking_id))::NUMERIC = 0 THEN ('')::text ELSE ((COALESCE(CASE WHEN (calc_treatment_rankings_total_successes_b(p_treatment_ranking_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_treatment_rankings_total_successes_b(p_treatment_ranking_id))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(CASE WHEN (calc_treatment_rankings_total_cases_b(p_treatment_ranking_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_treatment_rankings_total_cases_b(p_treatment_ranking_id))::numeric ELSE NULL END, 0), 0)))::text END)::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_treatment_rankings_pooled_winner
+-- Field: TreatmentRankings.PooledWinner
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_treatment_rankings_pooled_winner(p_treatment_ranking_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CASE WHEN calc_treatment_rankings_pooled_rate_a(p_treatment_ranking_id) > calc_treatment_rankings_pooled_rate_b(p_treatment_ranking_id) THEN ((SELECT NULLIF(treatment_a, '') FROM treatment_rankings WHERE treatment_ranking_id = p_treatment_ranking_id))::text ELSE ((SELECT NULLIF(treatment_b, '') FROM treatment_rankings WHERE treatment_ranking_id = p_treatment_ranking_id))::text END)::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_treatment_rankings_stratum_count
+-- Field: TreatmentRankings.StratumCount
+-- Type: aggregation | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_treatment_rankings_stratum_count(p_treatment_ranking_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((SELECT COUNT(*) FROM stratum_summaries WHERE study = (SELECT NULLIF(study, '') FROM treatment_rankings WHERE treatment_ranking_id = p_treatment_ranking_id) AND treatment_label = (SELECT NULLIF(treatment_a, '') FROM treatment_rankings WHERE treatment_ranking_id = p_treatment_ranking_id)))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_treatment_rankings_strata_won_by_a
+-- Field: TreatmentRankings.StrataWonByA
+-- Type: aggregation | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_treatment_rankings_strata_won_by_a(p_treatment_ranking_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((SELECT COUNT(*) FROM stratum_summaries WHERE study = (SELECT NULLIF(study, '') FROM treatment_rankings WHERE treatment_ranking_id = p_treatment_ranking_id) AND treatment_label = (SELECT NULLIF(treatment_a, '') FROM treatment_rankings WHERE treatment_ranking_id = p_treatment_ranking_id) AND calc_stratum_summaries_stratum_winner(stratum_summary_id) = (SELECT NULLIF(treatment_a, '') FROM treatment_rankings WHERE treatment_ranking_id = p_treatment_ranking_id)))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_treatment_rankings_strata_won_by_b
+-- Field: TreatmentRankings.StrataWonByB
+-- Type: aggregation | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_treatment_rankings_strata_won_by_b(p_treatment_ranking_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((SELECT COUNT(*) FROM stratum_summaries WHERE study = (SELECT NULLIF(study, '') FROM treatment_rankings WHERE treatment_ranking_id = p_treatment_ranking_id) AND treatment_label = (SELECT NULLIF(treatment_a, '') FROM treatment_rankings WHERE treatment_ranking_id = p_treatment_ranking_id) AND calc_stratum_summaries_stratum_winner(stratum_summary_id) = (SELECT NULLIF(treatment_b, '') FROM treatment_rankings WHERE treatment_ranking_id = p_treatment_ranking_id)))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_treatment_rankings_per_stratum_winner
+-- Field: TreatmentRankings.PerStratumWinner
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_treatment_rankings_per_stratum_winner(p_treatment_ranking_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CASE WHEN calc_treatment_rankings_strata_won_by_a(p_treatment_ranking_id) = calc_treatment_rankings_stratum_count(p_treatment_ranking_id) THEN ((SELECT NULLIF(treatment_a, '') FROM treatment_rankings WHERE treatment_ranking_id = p_treatment_ranking_id))::text ELSE (CASE WHEN calc_treatment_rankings_strata_won_by_b(p_treatment_ranking_id) = calc_treatment_rankings_stratum_count(p_treatment_ranking_id) THEN ((SELECT NULLIF(treatment_b, '') FROM treatment_rankings WHERE treatment_ranking_id = p_treatment_ranking_id))::text ELSE ('none')::text END)::text END)::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_treatment_rankings_is_reversal
+-- Field: TreatmentRankings.IsReversal
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_treatment_rankings_is_reversal(p_treatment_ranking_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((calc_treatment_rankings_per_stratum_winner(p_treatment_ranking_id) <> 'none' AND calc_treatment_rankings_pooled_winner(p_treatment_ranking_id) <> calc_treatment_rankings_per_stratum_winner(p_treatment_ranking_id)))::boolean;
+$$ LANGUAGE sql STABLE;
+
 -- ============================================================================
 -- MANY-SIDE RELATIONSHIP FUNCTIONS
 -- These functions aggregate child records for many-side relationships

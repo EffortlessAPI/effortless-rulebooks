@@ -93,3 +93,9 @@ VALUES ('kidney-1986-large-A', 'kidney-1986', 'large', 'A') ON CONFLICT (stratum
 INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
 VALUES ('kidney-1986-large-B', 'kidney-1986', 'large', 'B') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
 
+-- ----------------------------------------------------------------------------
+-- TreatmentRankings: Table: TreatmentRankings — one row per treatment-pair comparison within a study. Derives the pooled winner, the per-stratum winner, and the IsReversal boolean. The paradox emerges here as a derived fact: IsReversal is true when the pooled winner and the per-stratum winner disagree.
+-- ----------------------------------------------------------------------------
+INSERT INTO treatment_rankings (treatment_ranking_id, study, treatment_a, treatment_b)
+VALUES ('kidney-1986-A-vs-B', 'kidney-1986', 'A', 'B') ON CONFLICT (treatment_ranking_id) DO UPDATE SET study = EXCLUDED.study, treatment_a = EXCLUDED.treatment_a, treatment_b = EXCLUDED.treatment_b;
+
