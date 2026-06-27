@@ -91,7 +91,7 @@
       {
         "LoopId": "loop-09",
         "Title": "ParadoxStrength: scalar severity derived from pooled gap and per-stratum gap",
-        "Status": "planned",
+        "Status": "complete",
         "NewConcept": "ParadoxStrength on TreatmentRankings; PooledGap and AvgStratumGap on StratumSummaries",
         "DomainQuestion": "How large is the reversal? Can we rank studies by paradox severity, and does strength correlate with allocation imbalance?",
         "MockDataNote": "Kidney: pooled gap ~4.6pp favoring B, avg stratum gap ~5pp favoring A. Berkeley: larger pooled gap, varies by department. Balanced: strength=0 (no reversal).",
@@ -324,7 +324,10 @@
       { "name": "PerStratumWinner",   "datatype": "string",  "type": "calculated",   "nullable": true,  "Description": "The treatment that wins in every stratum — 'A' if StrataWonByA = StratumCount, 'B' if StrataWonByB = StratumCount, else 'none' (no unanimous per-stratum winner).", "formula": "=IF({{StrataWonByA}} = {{StratumCount}}, {{TreatmentA}}, IF({{StrataWonByB}} = {{StratumCount}}, {{TreatmentB}}, \"none\"))" },
       { "name": "IsReversal",          "datatype": "boolean", "type": "calculated",   "nullable": false, "Description": "TRUE when the pooled winner and the per-stratum winner disagree — i.e. Simpson's Paradox is present. FALSE otherwise. This is the paradox as a derived fact, not a modeled entity.", "formula": "=AND({{PerStratumWinner}} <> \"none\", {{PooledWinner}} <> {{PerStratumWinner}})" },
       { "name": "ConfoundersInStudy", "datatype": "integer", "type": "aggregation",  "nullable": true,  "Description": "Count of StratumVariables in this study whose IsConfounder = TRUE. When > 0, the paradox has a causal explanation.", "formula": "=COUNTIFS(StratumVariables!{{Study}}, {{Study}}, StratumVariables!{{IsConfounder}}, TRUE())" },
-      { "name": "IsParadoxExplained", "datatype": "boolean", "type": "calculated",   "nullable": false, "Description": "TRUE when IsReversal is present AND at least one confirmed confounder exists in the study. The model witnesses its own explanatory completeness — or its limits.", "formula": "=AND({{IsReversal}}, {{ConfoundersInStudy}} > 0)" }
+      { "name": "IsParadoxExplained", "datatype": "boolean", "type": "calculated",   "nullable": false, "Description": "TRUE when IsReversal is present AND at least one confirmed confounder exists in the study. The model witnesses its own explanatory completeness — or its limits.", "formula": "=AND({{IsReversal}}, {{ConfoundersInStudy}} > 0)" },
+      { "name": "PooledGap",          "datatype": "number",  "type": "calculated",   "nullable": true,  "Description": "Absolute difference between the two pooled rates: |PooledRateA - PooledRateB|. The size of the aggregate misleading signal.", "formula": "=IF({{PooledRateA}} = \"\", \"\", ABS({{PooledRateA}} - {{PooledRateB}}))" },
+      { "name": "StrataWonByLoser",   "datatype": "integer", "type": "calculated",   "nullable": true,  "Description": "Number of strata won by the pooled loser — the counter-signal. For full reversals this equals StratumCount; for partial paradoxes it is between 0 and StratumCount.", "formula": "=IF({{PooledWinner}} = {{TreatmentA}}, {{StrataWonByB}}, {{StrataWonByA}})" },
+      { "name": "ParadoxStrength",    "datatype": "number",  "type": "calculated",   "nullable": true,  "Description": "Scalar severity of the paradox: PooledGap × (StrataWonByLoser / StratumCount). Zero when no strata go against the pooled winner. Positive for partial paradoxes. Maximum when every stratum contradicts the pooled result.", "formula": "=IF({{StratumCount}} = 0, \"\", {{PooledGap}} * ({{StrataWonByLoser}} / {{StratumCount}}))" }
     ],
     "data": [
       { "TreatmentRankingId": "kidney-1986-A-vs-B",        "Study": "kidney-1986",        "TreatmentA": "A", "TreatmentB": "B" },

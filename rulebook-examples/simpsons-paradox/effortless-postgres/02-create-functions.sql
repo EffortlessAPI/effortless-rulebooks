@@ -465,6 +465,36 @@ RETURNS BOOLEAN AS $$
   SELECT ((calc_treatment_rankings_is_reversal(p_treatment_ranking_id) AND (calc_treatment_rankings_confounders_in_study(p_treatment_ranking_id))::NUMERIC > 0));
 $$ LANGUAGE sql STABLE;
 
+-- calc_treatment_rankings_pooled_gap
+-- Field: TreatmentRankings.PooledGap
+-- Type: calculated | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_treatment_rankings_pooled_gap(p_treatment_ranking_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT (CASE WHEN calc_treatment_rankings_pooled_rate_a(p_treatment_ranking_id) IS NULL THEN ('')::text ELSE (ABS((COALESCE(CASE WHEN (calc_treatment_rankings_pooled_rate_a(p_treatment_ranking_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_treatment_rankings_pooled_rate_a(p_treatment_ranking_id))::numeric ELSE NULL END, 0) - COALESCE(CASE WHEN (calc_treatment_rankings_pooled_rate_b(p_treatment_ranking_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_treatment_rankings_pooled_rate_b(p_treatment_ranking_id))::numeric ELSE NULL END, 0))))::text END)::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_treatment_rankings_strata_won_by_loser
+-- Field: TreatmentRankings.StrataWonByLoser
+-- Type: calculated | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_treatment_rankings_strata_won_by_loser(p_treatment_ranking_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT (CASE WHEN calc_treatment_rankings_pooled_winner(p_treatment_ranking_id) = (SELECT NULLIF(treatment_a, '') FROM treatment_rankings WHERE treatment_ranking_id = p_treatment_ranking_id) THEN (calc_treatment_rankings_strata_won_by_b(p_treatment_ranking_id))::text ELSE (calc_treatment_rankings_strata_won_by_a(p_treatment_ranking_id))::text END)::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_treatment_rankings_paradox_strength
+-- Field: TreatmentRankings.ParadoxStrength
+-- Type: calculated | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_treatment_rankings_paradox_strength(p_treatment_ranking_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT (CASE WHEN (calc_treatment_rankings_stratum_count(p_treatment_ranking_id))::NUMERIC = 0 THEN ('')::text ELSE ((COALESCE(CASE WHEN (calc_treatment_rankings_pooled_gap(p_treatment_ranking_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_treatment_rankings_pooled_gap(p_treatment_ranking_id))::numeric ELSE NULL END, 0) * COALESCE(CASE WHEN ((COALESCE(CASE WHEN (calc_treatment_rankings_strata_won_by_loser(p_treatment_ranking_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_treatment_rankings_strata_won_by_loser(p_treatment_ranking_id))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(CASE WHEN (calc_treatment_rankings_stratum_count(p_treatment_ranking_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_treatment_rankings_stratum_count(p_treatment_ranking_id))::numeric ELSE NULL END, 0), 0)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((COALESCE(CASE WHEN (calc_treatment_rankings_strata_won_by_loser(p_treatment_ranking_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_treatment_rankings_strata_won_by_loser(p_treatment_ranking_id))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(CASE WHEN (calc_treatment_rankings_stratum_count(p_treatment_ranking_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_treatment_rankings_stratum_count(p_treatment_ranking_id))::numeric ELSE NULL END, 0), 0)))::numeric ELSE NULL END, 0)))::text END)::numeric;
+$$ LANGUAGE sql STABLE;
+
 -- ============================================================================
 -- MANY-SIDE RELATIONSHIP FUNCTIONS
 -- These functions aggregate child records for many-side relationships

@@ -170,6 +170,9 @@ SELECT
   calc_treatment_rankings_per_stratum_winner(t.treatment_ranking_id) AS per_stratum_winner,-- The treatment that wins in every stratum — 'A' if StrataWonByA = StratumCount, 'B' if StrataWonByB = StratumCount, else 'none' (no unanimous per-stratum winner).
   calc_treatment_rankings_is_reversal(t.treatment_ranking_id) AS is_reversal,   -- TRUE when the pooled winner and the per-stratum winner disagree — i.e. Simpson's Paradox is present. FALSE otherwise. This is the paradox as a derived fact, not a modeled entity.
   calc_treatment_rankings_confounders_in_study(t.treatment_ranking_id) AS confounders_in_study,-- Count of StratumVariables in this study whose IsConfounder = TRUE. When > 0, the paradox has a causal explanation.
-  calc_treatment_rankings_is_paradox_explained(t.treatment_ranking_id) AS is_paradox_explained-- TRUE when IsReversal is present AND at least one confirmed confounder exists in the study. The model witnesses its own explanatory completeness — or its limits.
+  calc_treatment_rankings_is_paradox_explained(t.treatment_ranking_id) AS is_paradox_explained,-- TRUE when IsReversal is present AND at least one confirmed confounder exists in the study. The model witnesses its own explanatory completeness — or its limits.
+  calc_treatment_rankings_pooled_gap(t.treatment_ranking_id) AS pooled_gap,     -- Absolute difference between the two pooled rates: |PooledRateA - PooledRateB|. The size of the aggregate misleading signal.
+  calc_treatment_rankings_strata_won_by_loser(t.treatment_ranking_id) AS strata_won_by_loser,-- Number of strata won by the pooled loser — the counter-signal. For full reversals this equals StratumCount; for partial paradoxes it is between 0 and StratumCount.
+  calc_treatment_rankings_paradox_strength(t.treatment_ranking_id) AS paradox_strength-- Scalar severity of the paradox: PooledGap × (StrataWonByLoser / StratumCount). Zero when no strata go against the pooled winner. Positive for partial paradoxes. Maximum when every stratum contradicts the pooled result.
 FROM treatment_rankings t;
 

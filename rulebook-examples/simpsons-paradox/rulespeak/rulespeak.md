@@ -53,6 +53,9 @@ _Digital mirror of the Simpson's Paradox domain. The entities are Studies, Treat
 | Is Reversal | True when all of the following hold: the per stratum winner is not “none” and the pooled winner is not the per stratum winner. | _TRUE when the pooled winner and the per-stratum winner disagree — i.e. Simpson's Paradox is present. FALSE otherwise. This is the paradox as a derived fact, not a modeled entity._ |
 | Confounders in Study | The number of the treatment ranking's stratum variables that are confounders. | _Count of StratumVariables in this study whose IsConfounder = TRUE. When > 0, the paradox has a causal explanation._ |
 | Is Paradox Explained | True when all of the following hold: the reversal flag is set and the confounders in study is greater than 0. | _TRUE when IsReversal is present AND at least one confirmed confounder exists in the study. The model witnesses its own explanatory completeness — or its limits._ |
+| Pooled Gap | Determined by priority: an empty string if the pooled rate a is blank; in all other cases, the absolute value of the pooled rate a minus the pooled rate b. | _Absolute difference between the two pooled rates: \|PooledRateA - PooledRateB\|. The size of the aggregate misleading signal._ |
+| Strata Won by Loser | Determined by priority: the strata won by b if the pooled winner is the treatment a; in all other cases, the strata won by a. | _Number of strata won by the pooled loser — the counter-signal. For full reversals this equals StratumCount; for partial paradoxes it is between 0 and StratumCount._ |
+| Paradox Strength | Determined by priority: an empty string if the stratum count is 0; in all other cases, the pooled gap times the strata won by loser divided by the stratum count. | _Scalar severity of the paradox: PooledGap × (StrataWonByLoser / StratumCount). Zero when no strata go against the pooled winner. Positive for partial paradoxes. Maximum when every stratum contradicts the pooled result._ |
 
 ## 2 Fact Types
 
@@ -130,6 +133,9 @@ but clunky — a flag for an optional downstream reword pass, not a defect._
 | **DR-32 Is Reversal** | A treatment ranking is considered a reversal if all of the following hold: the per stratum winner is not “none” and the pooled winner is not the per stratum winner. |
 | **DR-33 Confounders in Study** | A treatment ranking's confounders in study is the number of the treatment ranking's stratum variables that are confounders. |
 | **DR-34 Is Paradox Explained** | A treatment ranking is considered paradox-explained if all of the following hold: the reversal flag is set and the confounders in study is greater than 0. |
+| **DR-35 Pooled Gap** | The treatment ranking's pooled gap is determined by the following priority:<br>1. an empty string, if the pooled rate a is blank;<br>2. in all other cases, the absolute value of the pooled rate a minus the pooled rate b. |
+| **DR-36 Strata Won by Loser** | The treatment ranking's strata won by loser is determined by the following priority:<br>1. the strata won by b, if the pooled winner is the treatment a;<br>2. in all other cases, the strata won by a. |
+| **DR-37 Paradox Strength** | The treatment ranking's paradox strength is determined by the following priority:<br>1. an empty string, if the stratum count is 0;<br>2. in all other cases, the pooled gap times the strata won by loser divided by the stratum count. |
 
 ## 5 Traceability to Schema
 
@@ -172,6 +178,9 @@ the same logic the rulebook stores, written for a business reader._
 | **TreatmentRankings.IsReversal** | formula | `And(PerStratumWinner <> "none", PooledWinner <> PerStratumWinner)` |
 | **TreatmentRankings.ConfoundersInStudy** | rollup | `Count(StratumVariables via Study)` |
 | **TreatmentRankings.IsParadoxExplained** | formula | `And(IsReversal, ConfoundersInStudy > 0)` |
+| **TreatmentRankings.PooledGap** | formula | `If(PooledRateA = "", "", Abs(PooledRateA - PooledRateB))` |
+| **TreatmentRankings.StrataWonByLoser** | formula | `If(PooledWinner = TreatmentA, StrataWonByB, StrataWonByA)` |
+| **TreatmentRankings.ParadoxStrength** | formula | `If(StratumCount = 0, "", PooledGap * StrataWonByLoser / StratumCount)` |
 
 ---
 
