@@ -48,6 +48,9 @@ VALUES ('loop-12', 'WeightedPull: mechanism equation witnessed — pooled rate =
 INSERT INTO loops (loop_id, title, status, new_concept, domain_question, mock_data_note, next_suggestion)
 VALUES ('loop-13', 'AllocationBias: the confounder''s fingerprint as a signed witnessed number', 'complete', 'AllocationBias on StratumSummaries (AllocationFractionA - AllocationFractionB); also AllocationFractionA, AllocationFractionB, TreatmentACasesHere, TreatmentBCasesHere, TreatmentATotalCases, TreatmentBTotalCases', 'In each stratum, is one treatment disproportionately concentrated here? AllocationBias = AllocationFractionA - AllocationFractionB: positive means A is over-represented here, negative means B is. A strong negative bias in a low-success stratum is the confounder''s fingerprint.', 'kidney-1986 large-stratum: AllocationFractionA=263/350=0.751, AllocationFractionB=80/350=0.229, AllocationBias=+0.523. A is massively over-allocated to the hard (large-stone) stratum. This single number summarizes why the pooled rate misleads: A carries 52pp more exposure to the hard case, dragging its pooled average down below B''s despite beating B in both strata.', 'Add a 4th study: kidney-balanced — same stratum rates as kidney-1986 but with equal allocation (50/50 split). AllocationBias=0 everywhere, IsReversal=FALSE. The counterfactual shows the reversal is purely an allocation artifact, not a property of the treatment rates themselves.') ON CONFLICT (loop_id) DO UPDATE SET title = EXCLUDED.title, status = EXCLUDED.status, new_concept = EXCLUDED.new_concept, domain_question = EXCLUDED.domain_question, mock_data_note = EXCLUDED.mock_data_note, next_suggestion = EXCLUDED.next_suggestion;
 
+INSERT INTO loops (loop_id, title, status, new_concept, domain_question, mock_data_note, next_suggestion)
+VALUES ('loop-14', 'Counterfactual: kidney-balanced isolates allocation as the sole cause of the reversal', 'complete', 'Fourth study (kidney-balanced): same stratum rates as kidney-1986, equal allocation (175 cases per cell). IsReversal=FALSE, AllocationBias=0, ParadoxStrength=0.', 'If the same doctors, same disease, same treatments, same stratum difficulty — but patients were allocated equally — would the paradox still exist? The DAG answers: no. The reversal lives in the allocation, not in the treatment rates.', 'kidney-balanced: PooledRateA = (163+128)/350 = 0.831, PooledRateB = (152+120)/350 = 0.777. A wins pooled AND per-stratum. IsReversal=FALSE, ParadoxStrength=0. AllocationBias=0 in both strata. The counterfactual witnesses that the reversal in kidney-1986 is entirely an artifact of differential allocation, not of treatment efficacy.', 'Add ReversalThreshold to TreatmentRankings: the minimum AllocationBias magnitude needed to flip the pooled winner. How far is kidney-1986 from the threshold? How close is berkeley-1973? This quantifies paradox fragility vs robustness.') ON CONFLICT (loop_id) DO UPDATE SET title = EXCLUDED.title, status = EXCLUDED.status, new_concept = EXCLUDED.new_concept, domain_question = EXCLUDED.domain_question, mock_data_note = EXCLUDED.mock_data_note, next_suggestion = EXCLUDED.next_suggestion;
+
 -- ----------------------------------------------------------------------------
 -- Studies: Table: Studies — a clinical or empirical study comparing two or more treatments for a condition, with patient cases stratified by a confounding variable. The top-level entity in the domain.
 -- ----------------------------------------------------------------------------
@@ -56,6 +59,9 @@ VALUES ('kidney-1986', 'Kidney Stone Treatment Study (Charig et al. 1986)', 'Cha
 
 INSERT INTO studies (study_id, title, source, source_url)
 VALUES ('balanced-synthetic', 'Balanced Synthetic Study (degenerate case — reversal structurally impossible)', 'Synthetic dataset constructed to demonstrate that perfectly balanced treatment allocation across strata algebraically prevents Simpson''s Paradox. Not based on real data.', '') ON CONFLICT (study_id) DO UPDATE SET title = EXCLUDED.title, source = EXCLUDED.source, source_url = EXCLUDED.source_url;
+
+INSERT INTO studies (study_id, title, source, source_url)
+VALUES ('kidney-balanced', 'Kidney Stone Counterfactual (balanced allocation — reversal algebraically impossible)', 'Synthetic dataset derived from Charig 1986 kidney stone rates but with equal treatment allocation across strata (175 cases per cell). Demonstrates that the reversal in the original study is purely an allocation artifact.', '') ON CONFLICT (study_id) DO UPDATE SET title = EXCLUDED.title, source = EXCLUDED.source, source_url = EXCLUDED.source_url;
 
 INSERT INTO studies (study_id, title, source, source_url)
 VALUES ('berkeley-1973', 'UC Berkeley Graduate Admissions (Bickel et al. 1975) — contested confounder', 'Bickel PJ, Hammel EA, O''Connell JW. Sex Bias in Graduate Admissions: Data from Berkeley. Science. 1975;187:398-404.', 'https://www.science.org/doi/10.1126/science.187.4175.398') ON CONFLICT (study_id) DO UPDATE SET title = EXCLUDED.title, source = EXCLUDED.source, source_url = EXCLUDED.source_url;
@@ -68,6 +74,12 @@ VALUES ('kidney-1986-A', 'kidney-1986', 'A', 'Open surgery / percutaneous nephro
 
 INSERT INTO treatments (treatment_id, study, treatment_label, description)
 VALUES ('kidney-1986-B', 'kidney-1986', 'B', 'Extracorporeal shock wave lithotripsy (ESWL) — the less invasive procedure, used more for small stones.') ON CONFLICT (treatment_id) DO UPDATE SET study = EXCLUDED.study, treatment_label = EXCLUDED.treatment_label, description = EXCLUDED.description;
+
+INSERT INTO treatments (treatment_id, study, treatment_label, description)
+VALUES ('kidney-balanced-A', 'kidney-balanced', 'A', 'Open surgery / PCNL — same per-stratum rates as kidney-1986 (small:93.1%, large:73.0%) but now allocated equally (50%) to each stratum. Counterfactual treatment A.') ON CONFLICT (treatment_id) DO UPDATE SET study = EXCLUDED.study, treatment_label = EXCLUDED.treatment_label, description = EXCLUDED.description;
+
+INSERT INTO treatments (treatment_id, study, treatment_label, description)
+VALUES ('kidney-balanced-B', 'kidney-balanced', 'B', 'ESWL — same per-stratum rates as kidney-1986 (small:86.7%, large:68.8%) but allocated equally (50%) to each stratum. Counterfactual treatment B.') ON CONFLICT (treatment_id) DO UPDATE SET study = EXCLUDED.study, treatment_label = EXCLUDED.treatment_label, description = EXCLUDED.description;
 
 INSERT INTO treatments (treatment_id, study, treatment_label, description)
 VALUES ('balanced-synthetic-A', 'balanced-synthetic', 'A', 'Synthetic treatment A — 60% success rate in both strata. Allocated equally (50%) to each stratum.') ON CONFLICT (treatment_id) DO UPDATE SET study = EXCLUDED.study, treatment_label = EXCLUDED.treatment_label, description = EXCLUDED.description;
@@ -89,6 +101,12 @@ VALUES ('kidney-1986-small', 'kidney-1986', 'small', 'Patients with small kidney
 
 INSERT INTO strata (stratum_id, study, stratum_label, description)
 VALUES ('kidney-1986-large', 'kidney-1986', 'large', 'Patients with large kidney stones — harder to treat, lower baseline success rate regardless of treatment. Preferentially assigned to Treatment A.') ON CONFLICT (stratum_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, description = EXCLUDED.description;
+
+INSERT INTO strata (stratum_id, study, stratum_label, description)
+VALUES ('kidney-balanced-small', 'kidney-balanced', 'small', 'Small kidney stones — same baseline rates as kidney-1986 small stratum but now receiving exactly 50% of each treatment''s cases. Counterfactual stratum.') ON CONFLICT (stratum_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, description = EXCLUDED.description;
+
+INSERT INTO strata (stratum_id, study, stratum_label, description)
+VALUES ('kidney-balanced-large', 'kidney-balanced', 'large', 'Large kidney stones — same baseline rates as kidney-1986 large stratum but now receiving exactly 50% of each treatment''s cases. Equal allocation prevents confounding.') ON CONFLICT (stratum_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, description = EXCLUDED.description;
 
 INSERT INTO strata (stratum_id, study, stratum_label, description)
 VALUES ('balanced-synthetic-easy', 'balanced-synthetic', 'easy', 'Easy stratum — higher baseline success rate. Receives exactly 50% of each treatment''s cases.') ON CONFLICT (stratum_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, description = EXCLUDED.description;
@@ -122,6 +140,18 @@ VALUES ('kidney-1986-large-A', 'kidney-1986', 'large', 'A', 192, 263) ON CONFLIC
 
 INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
 VALUES ('kidney-1986-large-B', 'kidney-1986', 'large', 'B', 55, 80) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('kidney-balanced-small-A', 'kidney-balanced', 'small', 'A', 163, 175) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('kidney-balanced-small-B', 'kidney-balanced', 'small', 'B', 152, 175) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('kidney-balanced-large-A', 'kidney-balanced', 'large', 'A', 128, 175) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('kidney-balanced-large-B', 'kidney-balanced', 'large', 'B', 120, 175) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
 
 INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
 VALUES ('balanced-synthetic-easy-A', 'balanced-synthetic', 'easy', 'A', 60, 100) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
@@ -175,6 +205,18 @@ INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatme
 VALUES ('kidney-1986-large-B', 'kidney-1986', 'large', 'B') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
 
 INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('kidney-balanced-small-A', 'kidney-balanced', 'small', 'A') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('kidney-balanced-small-B', 'kidney-balanced', 'small', 'B') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('kidney-balanced-large-A', 'kidney-balanced', 'large', 'A') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('kidney-balanced-large-B', 'kidney-balanced', 'large', 'B') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
 VALUES ('balanced-synthetic-easy-A', 'balanced-synthetic', 'easy', 'A') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
 
 INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
@@ -226,6 +268,9 @@ INSERT INTO stratum_variables (stratum_variable_id, study, variable_name, causal
 VALUES ('berkeley-1973-department', 'berkeley-1973', 'department', 'contested', TRUE, TRUE, 'Department choice correlates with both gender (women applied disproportionately to competitive departments) and admission rate (competitive departments admit fewer applicants regardless of gender). However, department choice may itself be downstream of gender — if women systematically self-select into harder departments due to societal factors, then department is a mediator, not a confounder. The causal role is genuinely contested in the literature. IsConfounder=FALSE because CausalRole=''contested'', not because the flags are false.') ON CONFLICT (stratum_variable_id) DO UPDATE SET study = EXCLUDED.study, variable_name = EXCLUDED.variable_name, causal_role = EXCLUDED.causal_role, affects_treatment_assignment = EXCLUDED.affects_treatment_assignment, affects_outcome = EXCLUDED.affects_outcome, mechanism_note = EXCLUDED.mechanism_note;
 
 INSERT INTO stratum_variables (stratum_variable_id, study, variable_name, causal_role, affects_treatment_assignment, affects_outcome, mechanism_note)
+VALUES ('kidney-balanced-stone-size', 'kidney-balanced', 'stone_size', 'confounder', FALSE, TRUE, 'In this counterfactual, stone size still affects outcome (hard cases have lower success rates) but does NOT affect treatment assignment — both treatments receive exactly 50% of their cases in each stratum. Because treatment assignment is now independent of stone size, no confounding occurs and AllocationBias=0 everywhere. IsConfounder=FALSE (AffectsTreatmentAssignment=false). The reversal is impossible by construction.') ON CONFLICT (stratum_variable_id) DO UPDATE SET study = EXCLUDED.study, variable_name = EXCLUDED.variable_name, causal_role = EXCLUDED.causal_role, affects_treatment_assignment = EXCLUDED.affects_treatment_assignment, affects_outcome = EXCLUDED.affects_outcome, mechanism_note = EXCLUDED.mechanism_note;
+
+INSERT INTO stratum_variables (stratum_variable_id, study, variable_name, causal_role, affects_treatment_assignment, affects_outcome, mechanism_note)
 VALUES ('balanced-synthetic-stratum', 'balanced-synthetic', 'stratum', 'unknown', FALSE, TRUE, 'The stratum variable affects outcome (easy vs hard conditions) but does NOT affect treatment assignment — each treatment receives exactly 50% of its cases in each stratum. Because treatment assignment is independent of stratum, no confounding can occur and the pooled rate must agree with every per-stratum comparison.') ON CONFLICT (stratum_variable_id) DO UPDATE SET study = EXCLUDED.study, variable_name = EXCLUDED.variable_name, causal_role = EXCLUDED.causal_role, affects_treatment_assignment = EXCLUDED.affects_treatment_assignment, affects_outcome = EXCLUDED.affects_outcome, mechanism_note = EXCLUDED.mechanism_note;
 
 -- ----------------------------------------------------------------------------
@@ -233,6 +278,9 @@ VALUES ('balanced-synthetic-stratum', 'balanced-synthetic', 'stratum', 'unknown'
 -- ----------------------------------------------------------------------------
 INSERT INTO treatment_rankings (treatment_ranking_id, study, treatment_a, treatment_b)
 VALUES ('kidney-1986-A-vs-B', 'kidney-1986', 'A', 'B') ON CONFLICT (treatment_ranking_id) DO UPDATE SET study = EXCLUDED.study, treatment_a = EXCLUDED.treatment_a, treatment_b = EXCLUDED.treatment_b;
+
+INSERT INTO treatment_rankings (treatment_ranking_id, study, treatment_a, treatment_b)
+VALUES ('kidney-balanced-A-vs-B', 'kidney-balanced', 'A', 'B') ON CONFLICT (treatment_ranking_id) DO UPDATE SET study = EXCLUDED.study, treatment_a = EXCLUDED.treatment_a, treatment_b = EXCLUDED.treatment_b;
 
 INSERT INTO treatment_rankings (treatment_ranking_id, study, treatment_a, treatment_b)
 VALUES ('balanced-synthetic-A-vs-B', 'balanced-synthetic', 'A', 'B') ON CONFLICT (treatment_ranking_id) DO UPDATE SET study = EXCLUDED.study, treatment_a = EXCLUDED.treatment_a, treatment_b = EXCLUDED.treatment_b;
