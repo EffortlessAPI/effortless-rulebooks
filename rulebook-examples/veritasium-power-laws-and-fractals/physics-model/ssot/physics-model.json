@@ -1,0 +1,6 @@
+{
+    "$schema": "https://effortlessapi.com/cmcc-schema/v1",
+    "model_name": "physics-model",
+    "Description": "Physics-first extension to the existing scaling-focused lab.",
+    "Status": "Design + Patch Spec"
+}

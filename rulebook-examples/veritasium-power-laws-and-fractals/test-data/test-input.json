@@ -1,0 +1,204 @@
+{
+  "description": "Test input with only raw facts for iterations 4-7 (platforms must compute derived values)",
+  "source": "ssot/ERB_veritasium-power-laws-and-fractals.json",
+  "total_iterations": 8,
+  "base_iterations": 4,
+  "scales": [
+    {
+      "ScaleID": "Sierpinski_4",
+      "System": "Sierpinski",
+      "Iteration": 4,
+      "Measure": 81.008422,
+      "IsProjected": true
+    },
+    {
+      "ScaleID": "Sierpinski_5",
+      "System": "Sierpinski",
+      "Iteration": 5,
+      "Measure": 243.031583,
+      "IsProjected": true
+    },
+    {
+      "ScaleID": "Sierpinski_6",
+      "System": "Sierpinski",
+      "Iteration": 6,
+      "Measure": 729.1137,
+      "IsProjected": true
+    },
+    {
+      "ScaleID": "Sierpinski_7",
+      "System": "Sierpinski",
+      "Iteration": 7,
+      "Measure": 2187.397956,
+      "IsProjected": true
+    },
+    {
+      "ScaleID": "Koch_4",
+      "System": "Koch",
+      "Iteration": 4,
+      "Measure": 3.162446,
+      "IsProjected": true
+    },
+    {
+      "ScaleID": "Koch_5",
+      "System": "Koch",
+      "Iteration": 5,
+      "Measure": 4.217245,
+      "IsProjected": true
+    },
+    {
+      "ScaleID": "Koch_6",
+      "System": "Koch",
+      "Iteration": 6,
+      "Measure": 5.623861,
+      "IsProjected": true
+    },
+    {
+      "ScaleID": "Koch_7",
+      "System": "Koch",
+      "Iteration": 7,
+      "Measure": 7.499639,
+      "IsProjected": true
+    },
+    {
+      "ScaleID": "ZipfWords_4",
+      "System": "ZipfWords",
+      "Iteration": 4,
+      "Measure": 0.0625,
+      "IsProjected": true
+    },
+    {
+      "ScaleID": "ZipfWords_5",
+      "System": "ZipfWords",
+      "Iteration": 5,
+      "Measure": 0.03125,
+      "IsProjected": true
+    },
+    {
+      "ScaleID": "ZipfWords_6",
+      "System": "ZipfWords",
+      "Iteration": 6,
+      "Measure": 0.015625,
+      "IsProjected": true
+    },
+    {
+      "ScaleID": "ZipfWords_7",
+      "System": "ZipfWords",
+      "Iteration": 7,
+      "Measure": 0.007812,
+      "IsProjected": true
+    },
+    {
+      "ScaleID": "ScaleFreeNet_4",
+      "System": "ScaleFreeNet",
+      "Iteration": 4,
+      "Measure": 0.000977,
+      "IsProjected": true
+    },
+    {
+      "ScaleID": "ScaleFreeNet_5",
+      "System": "ScaleFreeNet",
+      "Iteration": 5,
+      "Measure": 0.000173,
+      "IsProjected": true
+    },
+    {
+      "ScaleID": "ScaleFreeNet_6",
+      "System": "ScaleFreeNet",
+      "Iteration": 6,
+      "Measure": 3.1e-05,
+      "IsProjected": true
+    },
+    {
+      "ScaleID": "ScaleFreeNet_7",
+      "System": "ScaleFreeNet",
+      "Iteration": 7,
+      "Measure": 5e-06,
+      "IsProjected": true
+    },
+    {
+      "ScaleID": "Sandpile_4",
+      "System": "Sandpile",
+      "Iteration": 4,
+      "Measure": 0.0625,
+      "IsProjected": true
+    },
+    {
+      "ScaleID": "Sandpile_5",
+      "System": "Sandpile",
+      "Iteration": 5,
+      "Measure": 0.03125,
+      "IsProjected": true
+    },
+    {
+      "ScaleID": "Sandpile_6",
+      "System": "Sandpile",
+      "Iteration": 6,
+      "Measure": 0.015625,
+      "IsProjected": true
+    },
+    {
+      "ScaleID": "Sandpile_7",
+      "System": "Sandpile",
+      "Iteration": 7,
+      "Measure": 0.007812,
+      "IsProjected": true
+    },
+    {
+      "ScaleID": "Earthquakes_4",
+      "System": "Earthquakes",
+      "Iteration": 4,
+      "Measure": 0.0625,
+      "IsProjected": true
+    },
+    {
+      "ScaleID": "Earthquakes_5",
+      "System": "Earthquakes",
+      "Iteration": 5,
+      "Measure": 0.03125,
+      "IsProjected": true
+    },
+    {
+      "ScaleID": "Earthquakes_6",
+      "System": "Earthquakes",
+      "Iteration": 6,
+      "Measure": 0.015625,
+      "IsProjected": true
+    },
+    {
+      "ScaleID": "Earthquakes_7",
+      "System": "Earthquakes",
+      "Iteration": 7,
+      "Measure": 0.007812,
+      "IsProjected": true
+    },
+    {
+      "ScaleID": "ForestFires_4",
+      "System": "ForestFires",
+      "Iteration": 4,
+      "Measure": 0.027205,
+      "IsProjected": true
+    },
+    {
+      "ScaleID": "ForestFires_5",
+      "System": "ForestFires",
+      "Iteration": 5,
+      "Measure": 0.011049,
+      "IsProjected": true
+    },
+    {
+      "ScaleID": "ForestFires_6",
+      "System": "ForestFires",
+      "Iteration": 6,
+      "Measure": 0.004487,
+      "IsProjected": true
+    },
+    {
+      "ScaleID": "ForestFires_7",
+      "System": "ForestFires",
+      "Iteration": 7,
+      "Measure": 0.001822,
+      "IsProjected": true
+    }
+  ]
+}

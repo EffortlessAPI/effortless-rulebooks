@@ -1,0 +1,15 @@
+# Ignore conversation data
+conversations/
+conversations/**/*
+
+# Ignore user-specific data
+current_state.json
+
+# Ignore temporary files
+*.tmp
+*.temp
+**/.DS_Store/**/*
+**/__pycache__/**/*
+**/.DS_Store
+.ssotme/**/*
+.effortless/**/*
