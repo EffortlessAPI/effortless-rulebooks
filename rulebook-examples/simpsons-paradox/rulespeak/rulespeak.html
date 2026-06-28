@@ -256,7 +256,7 @@ html.show-consumers .elem-consumers{display:block}
     <li><a href="#t-stratumsummaries">Stratum Summary</a> <span class="toc-meta">23 rules · 1 links</span></li>
     <li><a href="#t-modelsummary">Model Summary</a> <span class="toc-meta">19 rules · 0 links</span></li>
     <li><a href="#t-stratumvariables">Stratum Variable</a> <span class="toc-meta">1 rules · 1 links</span></li>
-    <li><a href="#t-treatmentrankings">Treatment Ranking</a> <span class="toc-meta">40 rules · 1 links</span></li>
+    <li><a href="#t-treatmentrankings">Treatment Ranking</a> <span class="toc-meta">41 rules · 1 links</span></li>
     <li><a href="#t-invariantchecks">Invariant Check</a> <span class="toc-meta">3 rules · 0 links</span></li>
     <li><a href="#t-methodology">Methodology</a> <span class="toc-meta">0 rules · 0 links</span></li>
     <li><a href="#t-conclusions">Conclusion</a> <span class="toc-meta">0 rules · 0 links</span></li>
@@ -4098,15 +4098,13 @@ html.show-consumers .elem-consumers{display:block}
       </div>
     </details>
     <details class="prov prov-consumers elem elem-consumers">
-      <summary>Consumers <span class="count">1 direct</span> <span class="count count-muted">+6 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
+      <summary>Consumers <span class="count">1 direct</span> <span class="count count-muted">+4 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
       <div class="prov-pills">
         <a class="ref-pill tone-agg" href="#f-treatmentrankings-confoundersinstudy">Σ Confounders in Study <span class="ref-pill-tbl">TreatmentRankings</span></a>
         <a class="ref-pill tone-rel faded" href="#f-treatmentrankings-isparadoxexplained">Is Paradox Explained <span class="ref-pill-tbl">TreatmentRankings</span></a>
         <a class="ref-pill tone-rel faded" href="#f-treatmentrankings-isparadoxexplained-v2">Is Paradox Explained v2 <span class="ref-pill-tbl">TreatmentRankings</span></a>
-        <a class="ref-pill tone-rel faded" href="#f-treatmentrankings-causalclaimstatus">Causal Claim Status <span class="ref-pill-tbl">TreatmentRankings</span></a>
         <a class="ref-pill tone-rel faded" href="#f-modelsummary-explainedcount">Explained Count <span class="ref-pill-tbl">ModelSummary</span></a>
         <a class="ref-pill tone-rel faded" href="#f-modelsummary-explainedcountv2">Explained Count V2 <span class="ref-pill-tbl">ModelSummary</span></a>
-        <a class="ref-pill tone-rel faded" href="#f-treatmentrankings-adjustmentappropriate">Adjustment Appropriate <span class="ref-pill-tbl">TreatmentRankings</span></a>
       </div>
     </details>
     <details class="prov prov-leaves elem elem-inputs">
@@ -5357,14 +5355,12 @@ html.show-consumers .elem-consumers{display:block}
       </div>
     </details>
     <details class="prov prov-consumers elem elem-consumers">
-      <summary>Consumers <span class="count">3 direct</span> <span class="count count-muted">+3 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
+      <summary>Consumers <span class="count">2 direct</span> <span class="count count-muted">+2 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
       <div class="prov-pills">
         <a class="ref-pill tone-calc" href="#f-treatmentrankings-isparadoxexplained">ƒ Is Paradox Explained <span class="ref-pill-tbl">TreatmentRankings</span></a>
         <a class="ref-pill tone-calc" href="#f-treatmentrankings-isparadoxexplained-v2">ƒ Is Paradox Explained v2 <span class="ref-pill-tbl">TreatmentRankings</span></a>
-        <a class="ref-pill tone-calc" href="#f-treatmentrankings-causalclaimstatus">ƒ Causal Claim Status <span class="ref-pill-tbl">TreatmentRankings</span></a>
         <a class="ref-pill tone-rel faded" href="#f-modelsummary-explainedcount">Explained Count <span class="ref-pill-tbl">ModelSummary</span></a>
         <a class="ref-pill tone-rel faded" href="#f-modelsummary-explainedcountv2">Explained Count V2 <span class="ref-pill-tbl">ModelSummary</span></a>
-        <a class="ref-pill tone-rel faded" href="#f-treatmentrankings-adjustmentappropriate">Adjustment Appropriate <span class="ref-pill-tbl">TreatmentRankings</span></a>
       </div>
     </details>
     <details class="prov prov-leaves elem elem-inputs">
@@ -6798,6 +6794,63 @@ html.show-consumers .elem-consumers{display:block}
     </details>
     <p class="field-note elem elem-desc">The allocation-aware researcher action: what to do when the corrected verdict is available. Derived from DistortionType and CorrectedWinner together, making the instrument self-consistent with Reversal Recovery (loop-27). Type A (full sign-flip, unanimous per-stratum reversal): CorrectedWinner is the true signal — 'use-corrected-winner'. The pooled analysis was directionally wrong; act on CorrectedWinner, not PooledWinner. Type B (partial sign-flip, non-unanimous): CorrectedWinner points against the pooled signal but strata disagree among themselves — 'use-corrected-winner-with-caution'. Trust the corrected direction but acknowledge residual uncertainty. Type C (compression, no sign flip): PooledWinner is directionally correct; the distortion is in the magnitude, not the direction — 'check-allocation-bias'. Same as PolicyImplication. Type D (neutral): allocation is not materially distorting the signal — 'pooled-analysis-trustworthy'. Same as PolicyImplication. For Types C and D, CorrectedPolicyImplication and PolicyImplication always agree; for Types A and B, CorrectedPolicyImplication supersedes PolicyImplication with the allocation-corrected verdict.</p>
     </article>
+  <article class="field tone-agg" id="f-treatmentrankings-confirmedcausalrolecount" data-entity="Treatment Ranking" data-field="Confirmed Causal Role Count">
+    <div class="field-head">
+      <span class="field-glyph" title="Aggregation">Σ</span>
+      <span class="field-name">Confirmed Causal Role Count</span>
+      <span class="pill pill-type">Aggregation</span>
+      <span class="pill pill-depth">1 hop from ground truth</span>
+      <span class="pill pill-muted">integer</span>
+      <span class="pill pill-dr">DR-88</span>
+    </div>
+    <div class="narr-views">
+      <div class="view elem elem-rulespeak">
+        <span class="view-label">In RuleSpeak</span>
+        <p class="view-body">A treatment ranking's confirmed <a class="ref" href="#f-stratumvariables-causalrole">causal role</a> count is the number of the treatment ranking's stratum variables that have a causal role of “confounder”.</p>
+      </div>
+      <div class="view elem elem-english">
+        <span class="view-label">In English</span>
+        <p class="view-body">Count of StratumVariables whose <a class="ref" href="#f-stratumvariables-<a class="ref" href="#f-treatmentrankings-study">study</a>">study</a> is study and <a class="ref" href="#f-stratumvariables-causalrole">causal role</a> is &quot;confounder&quot;.</p>
+      </div>
+      <div class="view elem elem-formula">
+        <span class="view-label">As a formula</span>
+        <div class="view-body fx"><span class="fx-eq">= </span>COUNTIFS(<a class="fx-chip" href="#f-stratumvariables-study">Study</a>, <a class="fx-chip" href="#f-treatmentrankings-study">Study</a>, <a class="fx-chip" href="#f-stratumvariables-causalrole">Causal Role</a>, &quot;confounder&quot;)</div>
+      </div>
+    </div>
+    <details class="prov prov-inputs elem elem-inputs" open>
+      <summary>Inputs <span class="count">3</span> <span class="prov-hint">fields this rule reads</span></summary>
+      <div class="prov-grid">
+        <a class="input tone-rel" href="#f-stratumvariables-study">
+          <span class="input-head"><span class="input-glyph">⇢</span><span class="input-name">Study</span><span class="input-table">StratumVariables</span></span>
+          <span class="input-en muted">FK to the parent Study.</span>
+        </a>
+        <a class="input tone-rel" href="#f-treatmentrankings-study">
+          <span class="input-head"><span class="input-glyph">⇢</span><span class="input-name">Study</span><span class="input-table">TreatmentRankings</span></span>
+          <span class="input-en muted">FK to the parent Study.</span>
+        </a>
+        <a class="input tone-raw" href="#f-stratumvariables-causalrole">
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Causal Role</span><span class="input-table">StratumVariables</span></span>
+          <span class="input-en muted">The variable's causal role: 'confounder' (affects both assignment and outcome), 'mediator' (downstream of treatment), 'contested' (causal role disputed), 'unknown'.</span>
+        </a>
+      </div>
+    </details>
+    <details class="prov prov-consumers elem elem-consumers">
+      <summary>Consumers <span class="count">1 direct</span> <span class="count count-muted">+1 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-calc" href="#f-treatmentrankings-causalclaimstatus">ƒ Causal Claim Status <span class="ref-pill-tbl">TreatmentRankings</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-treatmentrankings-adjustmentappropriate">Adjustment Appropriate <span class="ref-pill-tbl">TreatmentRankings</span></a>
+      </div>
+    </details>
+    <details class="prov prov-leaves elem elem-inputs">
+      <summary>Ground truth at the leaves <span class="count">3</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-rel" href="#f-stratumvariables-study">⇢ Study <span class="ref-pill-tbl">StratumVariables</span></a>
+        <a class="ref-pill tone-rel" href="#f-treatmentrankings-study">⇢ Study <span class="ref-pill-tbl">TreatmentRankings</span></a>
+        <a class="ref-pill tone-raw" href="#f-stratumvariables-causalrole">● Causal Role <span class="ref-pill-tbl">StratumVariables</span></a>
+      </div>
+    </details>
+    <p class="field-note elem elem-desc">Count of StratumVariables in this study whose CausalRole is &quot;confounder&quot; — includes variables that confound the outcome regardless of whether allocation was balanced.</p>
+    </article>
   <article class="field tone-agg" id="f-treatmentrankings-mediatorriskcount" data-entity="Treatment Ranking" data-field="Mediator Risk Count">
     <div class="field-head">
       <span class="field-glyph" title="Aggregation">Σ</span>
@@ -6805,7 +6858,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Aggregation</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">integer</span>
-      <span class="pill pill-dr">DR-88</span>
+      <span class="pill pill-dr">DR-89</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -6861,7 +6914,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Aggregation</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">integer</span>
-      <span class="pill pill-dr">DR-89</span>
+      <span class="pill pill-dr">DR-90</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -6918,7 +6971,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Aggregation</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">integer</span>
-      <span class="pill pill-dr">DR-90</span>
+      <span class="pill pill-dr">DR-91</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -6973,22 +7026,22 @@ html.show-consumers .elem-consumers{display:block}
       <span class="field-glyph" title="Calculated">ƒ</span>
       <span class="field-name">Causal Claim Status</span>
       <span class="pill pill-type">Calculated</span>
-      <span class="pill pill-depth">3 hops from ground truth</span>
+      <span class="pill pill-depth">2 hops from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-91</span>
+      <span class="pill pill-dr">DR-92</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
         <span class="view-label">In RuleSpeak</span>
-        <div class="view-body"><p class="rt-headline">The treatment ranking's causal claim status is determined by the following priority:</p><ol class="rt-priority"><li><span class="rt-value">“contested”</span> <span class="rt-when">if the contested stratum count is greater than 0</span></li><li><span class="rt-value">“geometric-only”</span> <span class="rt-when">if the unknown causal role count is greater than 0</span></li><li><span class="rt-value">“established”</span> <span class="rt-when">if the confounders in study is greater than 0</span></li><li><span class="rt-value">“geometric-only”</span> <span class="rt-when">in all other cases</span></li></ol></div>
+        <div class="view-body"><p class="rt-headline">The treatment ranking's causal claim status is determined by the following priority:</p><ol class="rt-priority"><li><span class="rt-value">“contested”</span> <span class="rt-when">if the contested stratum count is greater than 0</span></li><li><span class="rt-value">“geometric-only”</span> <span class="rt-when">if the unknown causal role count is greater than 0</span></li><li><span class="rt-value">“established”</span> <span class="rt-when">if the confirmed causal role count is greater than 0</span></li><li><span class="rt-value">“geometric-only”</span> <span class="rt-when">in all other cases</span></li></ol></div>
       </div>
       <div class="view elem elem-english">
         <span class="view-label">In English</span>
-        <p class="view-body">If <a class="ref" href="#f-treatmentrankings-contestedstratumcount">contested stratum count</a> is greater than 0 then &quot;contested&quot;, otherwise if <a class="ref" href="#f-treatmentrankings-unknowncausalrolecount">unknown causal role count</a> is greater than 0 then &quot;geometric-only&quot;, otherwise if <a class="ref" href="#f-treatmentrankings-confoundersinstudy">confounders in study</a> is greater than 0 then &quot;established&quot;, otherwise &quot;geometric-only&quot;.</p>
+        <p class="view-body">If <a class="ref" href="#f-treatmentrankings-contestedstratumcount">contested stratum count</a> is greater than 0 then &quot;contested&quot;, otherwise if <a class="ref" href="#f-treatmentrankings-unknowncausalrolecount">unknown causal role count</a> is greater than 0 then &quot;geometric-only&quot;, otherwise if <a class="ref" href="#f-treatmentrankings-confirmedcausalrolecount">confirmed causal role count</a> is greater than 0 then &quot;established&quot;, otherwise &quot;geometric-only&quot;.</p>
       </div>
       <div class="view elem elem-formula">
         <span class="view-label">As a formula</span>
-        <div class="view-body fx"><span class="fx-eq">= </span>IF(<a class="fx-chip" href="#f-treatmentrankings-contestedstratumcount">Contested Stratum Count</a> &gt; 0, &quot;contested&quot;, IF(<a class="fx-chip" href="#f-treatmentrankings-unknowncausalrolecount">Unknown Causal Role Count</a> &gt; 0, &quot;geometric-only&quot;, IF(<a class="fx-chip" href="#f-treatmentrankings-confoundersinstudy">Confounders in Study</a> &gt; 0, &quot;established&quot;, &quot;geometric-only&quot;)))</div>
+        <div class="view-body fx"><span class="fx-eq">= </span>IF(<a class="fx-chip" href="#f-treatmentrankings-contestedstratumcount">Contested Stratum Count</a> &gt; 0, &quot;contested&quot;, IF(<a class="fx-chip" href="#f-treatmentrankings-unknowncausalrolecount">Unknown Causal Role Count</a> &gt; 0, &quot;geometric-only&quot;, IF(<a class="fx-chip" href="#f-treatmentrankings-confirmedcausalrolecount">Confirmed Causal Role Count</a> &gt; 0, &quot;established&quot;, &quot;geometric-only&quot;)))</div>
       </div>
     </div>
     <details class="prov prov-inputs elem elem-inputs" open>
@@ -7002,9 +7055,9 @@ html.show-consumers .elem-consumers{display:block}
           <span class="input-head"><span class="input-glyph">Σ</span><span class="input-name">Unknown Causal Role Count</span><span class="input-table">TreatmentRankings</span></span>
           <span class="input-en">Count of StratumVariables whose study is study and causal role is &quot;unknown&quot;.</span>
         </a>
-        <a class="input tone-agg" href="#f-treatmentrankings-confoundersinstudy">
-          <span class="input-head"><span class="input-glyph">Σ</span><span class="input-name">Confounders in Study</span><span class="input-table">TreatmentRankings</span></span>
-          <span class="input-en">Count of StratumVariables whose study is study and is confounder is true().</span>
+        <a class="input tone-agg" href="#f-treatmentrankings-confirmedcausalrolecount">
+          <span class="input-head"><span class="input-glyph">Σ</span><span class="input-name">Confirmed Causal Role Count</span><span class="input-table">TreatmentRankings</span></span>
+          <span class="input-en">Count of StratumVariables whose study is study and causal role is &quot;confounder&quot;.</span>
         </a>
       </div>
     </details>
@@ -7015,13 +7068,11 @@ html.show-consumers .elem-consumers{display:block}
       </div>
     </details>
     <details class="prov prov-leaves elem elem-inputs">
-      <summary>Ground truth at the leaves <span class="count">5</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <summary>Ground truth at the leaves <span class="count">3</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
       <div class="prov-pills">
         <a class="ref-pill tone-rel" href="#f-stratumvariables-study">⇢ Study <span class="ref-pill-tbl">StratumVariables</span></a>
         <a class="ref-pill tone-rel" href="#f-treatmentrankings-study">⇢ Study <span class="ref-pill-tbl">TreatmentRankings</span></a>
         <a class="ref-pill tone-raw" href="#f-stratumvariables-causalrole">● Causal Role <span class="ref-pill-tbl">StratumVariables</span></a>
-        <a class="ref-pill tone-raw" href="#f-stratumvariables-affectstreatmentassignment">● Affects Treatment Assignment <span class="ref-pill-tbl">StratumVariables</span></a>
-        <a class="ref-pill tone-raw" href="#f-stratumvariables-affectsoutcome">● Affects Outcome <span class="ref-pill-tbl">StratumVariables</span></a>
       </div>
     </details>
     <p class="field-note elem elem-desc">The epistemic status of the causal interpretation for this study. Values: established (all stratum variables are confirmed confounders with known mechanisms), contested (at least one stratum variable has a disputed causal role — e.g. Berkeley 1973 where department choice may be endogenous), geometric-only (no stratum variable has an established causal role — the distortion is a geometric fact, not a causal claim). Derived from StratumVariables.CausalRole and ConditioningRisk.</p>
@@ -7031,22 +7082,22 @@ html.show-consumers .elem-consumers{display:block}
       <span class="field-glyph" title="Calculated">ƒ</span>
       <span class="field-name">Adjustment Appropriate</span>
       <span class="pill pill-type">Calculated</span>
-      <span class="pill pill-depth">4 hops from ground truth</span>
+      <span class="pill pill-depth">3 hops from ground truth</span>
       <span class="pill pill-muted">boolean</span>
-      <span class="pill pill-dr">DR-92</span>
+      <span class="pill pill-dr">DR-93</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
         <span class="view-label">In RuleSpeak</span>
-        <div class="view-body"><p class="rt-headline">A treatment ranking is flagged adjustment appropriate if all of the following:</p><ol class="rt-priority"><ul class="rt-group"><li>the mediator risk count is 0</li><li>the causal claim status is not “geometric-only”</li></ul></ol></div>
+        <div class="view-body"><p class="rt-headline">A treatment ranking is flagged adjustment appropriate if all of the following:</p><ol class="rt-priority"><ul class="rt-group"><li>the mediator risk count is 0</li><li>the causal claim status is “established”</li></ul></ol></div>
       </div>
       <div class="view elem elem-english">
         <span class="view-label">In English</span>
-        <p class="view-body"><a class="ref" href="#f-treatmentrankings-mediatorriskcount">Mediator risk count</a> equals 0 and <a class="ref" href="#f-treatmentrankings-causalclaimstatus">causal claim status</a> is not &quot;geometric-only&quot;.</p>
+        <p class="view-body"><a class="ref" href="#f-treatmentrankings-mediatorriskcount">Mediator risk count</a> equals 0 and <a class="ref" href="#f-treatmentrankings-causalclaimstatus">causal claim status</a> is &quot;established&quot;.</p>
       </div>
       <div class="view elem elem-formula">
         <span class="view-label">As a formula</span>
-        <div class="view-body fx"><span class="fx-eq">= </span>AND(<a class="fx-chip" href="#f-treatmentrankings-mediatorriskcount">Mediator Risk Count</a> = 0, <a class="fx-chip" href="#f-treatmentrankings-causalclaimstatus">Causal Claim Status</a> &lt;&gt; &quot;geometric-only&quot;)</div>
+        <div class="view-body fx"><span class="fx-eq">= </span>AND(<a class="fx-chip" href="#f-treatmentrankings-mediatorriskcount">Mediator Risk Count</a> = 0, <a class="fx-chip" href="#f-treatmentrankings-causalclaimstatus">Causal Claim Status</a> = &quot;established&quot;)</div>
       </div>
     </div>
     <details class="prov prov-inputs elem elem-inputs" open>
@@ -7058,22 +7109,20 @@ html.show-consumers .elem-consumers{display:block}
         </a>
         <a class="input tone-calc" href="#f-treatmentrankings-causalclaimstatus">
           <span class="input-head"><span class="input-glyph">ƒ</span><span class="input-name">Causal Claim Status</span><span class="input-table">TreatmentRankings</span></span>
-          <span class="input-en">If contested stratum count is greater than 0 then &quot;contested&quot;, otherwise if unknown causal role count is greater than 0 then &quot;geometric-only&quot;, otherwise if confounders in study is greater than 0 then &quot;established&quot;, otherwise &quot;geometric-only&quot;.</span>
+          <span class="input-en">If contested stratum count is greater than 0 then &quot;contested&quot;, otherwise if unknown causal role count is greater than 0 then &quot;geometric-only&quot;, otherwise if confirmed causal role count is greater than 0 then &quot;established&quot;, otherwise &quot;geometric-only&quot;.</span>
         </a>
       </div>
     </details>
     <details class="prov prov-leaves elem elem-inputs">
-      <summary>Ground truth at the leaves <span class="count">6</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <summary>Ground truth at the leaves <span class="count">4</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
       <div class="prov-pills">
         <a class="ref-pill tone-rel" href="#f-stratumvariables-study">⇢ Study <span class="ref-pill-tbl">StratumVariables</span></a>
         <a class="ref-pill tone-rel" href="#f-treatmentrankings-study">⇢ Study <span class="ref-pill-tbl">TreatmentRankings</span></a>
         <a class="ref-pill tone-raw" href="#f-stratumvariables-conditioningrisk">● Conditioning Risk <span class="ref-pill-tbl">StratumVariables</span></a>
         <a class="ref-pill tone-raw" href="#f-stratumvariables-causalrole">● Causal Role <span class="ref-pill-tbl">StratumVariables</span></a>
-        <a class="ref-pill tone-raw" href="#f-stratumvariables-affectstreatmentassignment">● Affects Treatment Assignment <span class="ref-pill-tbl">StratumVariables</span></a>
-        <a class="ref-pill tone-raw" href="#f-stratumvariables-affectsoutcome">● Affects Outcome <span class="ref-pill-tbl">StratumVariables</span></a>
       </div>
     </details>
-    <p class="field-note elem elem-desc">TRUE when it is epistemically safe to act on CorrectedGap as the causal treatment effect estimate. FALSE when the stratification variable is a mediator or collider (conditioning would block or open non-causal paths), or when CausalClaimStatus is geometric-only (no causal warrant for the adjustment). The instrument knows its own epistemic limits.</p>
+    <p class="field-note elem elem-desc">TRUE only when it is epistemically safe to act on CorrectedGap as the causal treatment effect estimate: no mediator/collider conditioning risk AND causal claim is established (not contested or geometric-only). FALSE for the birth-weight paradox (mediator), berkeley-1973 (contested), and synthetic/degenerate studies (geometric-only).</p>
     </article>
   <article class="field tone-raw" id="f-treatmentrankings-adjustmentrationale" data-entity="Treatment Ranking" data-field="Adjustment Rationale">
     <div class="field-head">
@@ -7153,6 +7202,30 @@ html.show-consumers .elem-consumers{display:block}
     </div>
     <p class="field-note elem elem-desc">The per-row condition that must be TRUE for every row in scope.</p>
     </article>
+  <article class="field tone-raw" id="f-invariantchecks-sqlfilter" data-entity="Invariant Check" data-field="SQL Filter">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">SQL Filter</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Optional SQL WHERE clause that selects the universe of rows in scope for this invariant (e.g. distortion_type = 'D'). Empty string means all rows.</p>
+    </article>
+  <article class="field tone-raw" id="f-invariantchecks-sqlassertion" data-entity="Invariant Check" data-field="SQL Assertion">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">SQL Assertion</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">The SQL WHERE clause (without WHERE keyword) that counts PASSING rows from vw_treatment_rankings for this invariant. Used by run_invariant_checks() to evaluate each assertion dynamically from the rulebook table.</p>
+    </article>
   <article class="field tone-raw" id="f-invariantchecks-passcount" data-entity="Invariant Check" data-field="Pass Count">
     <div class="field-head">
       <span class="field-glyph" title="Ground truth">●</span>
@@ -7184,7 +7257,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">integer</span>
-      <span class="pill pill-dr">DR-93</span>
+      <span class="pill pill-dr">DR-94</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -7229,7 +7302,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">boolean</span>
-      <span class="pill pill-dr">DR-94</span>
+      <span class="pill pill-dr">DR-95</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -7275,7 +7348,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">2 hops from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-95</span>
+      <span class="pill pill-dr">DR-96</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
