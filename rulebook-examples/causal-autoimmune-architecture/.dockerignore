@@ -1,0 +1,28 @@
+# Keep the build context small & reproducible. Deps are installed in-image;
+# the SPA is built in-image. Don't ship host artifacts or VCS metadata.
+.git
+.gitignore
+.DS_Store
+**/.DS_Store
+.ssotme
+
+# Node deps & build outputs — re-created inside the image.
+**/node_modules
+admin-app/dist
+
+# Docker artifacts themselves.
+Dockerfile
+.dockerignore
+run-docker.sh
+
+# Local-only / transient.
+effortless.env
+**/*.bak
+causal-autoimmune-export.xlsx
+
+# Docs & planning not needed at runtime (rulebook + postgres + admin-app are
+# copied explicitly in the Dockerfile, so excluding these just trims context).
+bootstrap
+plan
+rulespeak
+LEOPOLD_LOOPING_PLAN.md

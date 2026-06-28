@@ -1,0 +1,72 @@
+# The original Challenge
+
+```
+Given phased telomere-to-telomere long-read genomes, pangenome graphs, single-cell and spatial RNA/ATAC-seq, proteomics, metabolomics, methylomes, chromatin-conformation data, immune-receptor repertoires, microbiomes, longitudinal environmental exposures, treatment histories, and clinical phenotypes from one million ancestrally diverse individuals, identify the complete causal architecture of a heterogeneous autoimmune disease across development, aging, tissues, and disease stages. The model must distinguish true causal regulatory variants, coding variants, repeat expansions, mobile-element insertions, HLA haplotypes, complex structural variants, de novo mutations, somatic mosaicism, mitochondrial variation, and epigenetic inheritance while resolving cell-state-specific effects, allele-specific expression, 3D enhancer–promoter interactions, rare-variant burden, higher-order epistasis, pleiotropy, gene–environment–microbiome interactions, maternal and developmental effects, treatment-induced changes, and feedback between disease progression and molecular state. It must infer counterfactual disease trajectories without randomized perturbation data, remain valid despite population stratification, assortative mating, cryptic relatedness, batch effects, missing tissues, measurement error, ascertainment bias, privacy-preserving federated datasets, and shifting environments, then produce experimentally falsifiable mechanisms and accurately predict disease onset, severity, treatment response, and adverse effects in individuals from ancestries and environments absent from the training data—with calibrated uncertainty and no reliance on spurious correlations.
+
+Solving this problem would yield a near-complete causal map connecting human genetic variation, cellular states, environmental exposures, and immune dysfunction across the full course of autoimmune disease. It could enable individualized prevention, presymptomatic diagnosis, ancestry-equitable risk prediction, precise patient stratification, and therapies that target each person’s causal molecular pathway rather than broadly suppressing the immune system. It would also provide validated intervention targets, predict which genetic or environmental changes would alter disease trajectories, guide gene- and cell-based therapies, reduce failed clinical trials, and establish a general framework for decoding other complex diseases.
+```
+
+# v1 response:
+
+```
+Thanks again for your time yesterday, and I appreciate the challenge.   The repo's here: https://github.com/eejai42/jholla-problem-to-solve
+
+You said the binary answer was buried in the "Solving this would yield…" paragraph — individualized, ancestry-equitable, actionable prediction. So I made that the single thing the whole system reduces to: one computed boolean, IsClinicallyActionable, that's TRUE only when four derived gates all hold — causally grounded, well-calibrated, non-spurious, and ancestry-generalizable.
+
+The point isn't an engine that always says "yes." It's that the same deterministic derivation lands on both sides and names the single deciding reason. Seven synthetic patients; two come back actionable, five fail — each on exactly one gate (one on calibration, one on a sign-flipping replication, one on cryptic-relatedness leakage, one on falsifiability, one on ancestry transport). Nothing is hand-entered: every gate bottoms out only in raw observations (allele freqs, effect sizes/SEs, replication p-values, permutation controls, calibration coverage). There's no field anyone can set to make the verdict come out right.
+
+The part I think answers your skepticism directly: the LLM is allowed to do exactly two things, both at the bottom layer only — read the case like an intake nurse, and "run the labs" (produce the raw test numbers). It never computes a single inference above that. Everything from there up — every Z-stat, every gate, the keystone — is a pure, inspectable formula DAG. The trust boundary is literally a line in the dependency graph: anything with a formula is the model's; anything raw is the human's (or the LLM's, as an overridable front-end). So it's not "an LLM that diagnoses" — it's an auditable derivation with a replaceable transcriber bolted on the front.
+
+The home screen is a red→green test harness that asserts every node of that derivation against the app's own API, for all seven patients. A green run produces a per-patient, doctor-style writeup as a side effect.
+
+The README walks through all of it, including the honest bounds. This was ~4–6 hours, mostly running in the background — so treat it as a proof of shape, not a clinical product. Curious what you make of it.
+```
+
+# v1 audit - Doctor feedback:
+
+```
+For the full target you described, I would call it about 15% there overall. It is not 50% there because the hard part of the target is not the final Boolean, the test harness, or the formula DAG. The hard part is discovering and validating real causal autoimmune biology from real multi-omics, longitudinal, ancestrally diverse clinical data. Your current system is much closer to an auditable clinical evidence adjudication layer than to a complete causal-disease platform.
+
+The reason I would not say 10% is that the system does capture an important part of the clinical logic: it understands that a prediction should not be actionable unless it is causally grounded, calibrated, non-spurious, and ancestry-generalizable. That is not trivial. The seven synthetic patients are deliberately constructed so the system lands on both actionable and non-actionable outcomes, and each failed case has a specific deciding gate such as calibration failure, sign-flipping replication, cryptic-relatedness leakage, lack of falsifiability, or failed ancestry transport. That is a real foundation for clinical reasoning and safety gating, not just a toy label generator.
+
+But I would not go much above 15% because the system does not yet contain the disease-domain depth a physician would expect. It has broad diseases like SLE, RA, and psoriatic arthritis, but it does not deeply model lupus nephritis, neuropsychiatric lupus, cutaneous lupus, seropositive versus seronegative RA, erosive disease, axial PsA, enthesitis, dactylitis, uveitis, inflammatory bowel disease overlap, organ damage, flare patterns, treatment lines, or real disease activity scores. It also does not yet represent the clinical workflow from referral, differential diagnosis, workup, classification, baseline severity assessment, treatment choice, monitoring, flare management, adverse-event surveillance, and long-term outcomes.
+
+The biggest gap is that the current system simulates whether evidence is clinically actionable, not whether disease is actually progressing in a biologically and clinically realistic way. It can say, “This prediction passes or fails actionability gates.” It cannot yet say, “This patient is transitioning from presymptomatic autoimmunity to early lupus nephritis, has rising anti-dsDNA and falling complement, is at risk of renal flare, should be evaluated for biopsy, and would likely respond differently to mycophenolate versus belimumab versus anifrolumab.” That is the difference between an evidence gate and a disease-state simulator.
+
+So my honest estimate is 15% toward the full vision. It is maybe 70% toward a credible demo of an auditable actionability-gating system, maybe 30% toward a useful clinical-research workflow scaffold, but only 5–10% toward a clinically validated autoimmune prediction engine. Weighted together against the original spec, 15% is the fairest number. The foundation is real, but the disease biology, phenotype depth, causal discovery, treatment modeling, validation, and clinical workflow layers just don't exist.
+```
+
+# v2 Response
+
+Joe —
+
+Thanks again for the feedback.  Please pass this back to the doctor, and thank them — that was the most useful kind of feedback: specific, fair, and it named the real gap instead of the easy one.
+
+First, I'm not going to argue the 15%. On the axis they scored — disease-domain depth — it's fair, and honestly it's likely to stay low for a long time, because that axis is bottomless: there's always going to be one more phenotype.
+
+But that's also why I'd gently point at a different axis. A coverage score is a point-in-time snapshot — "how much is modeled today." The thing it can't see, and the thing I actually care about, is the slope: *what does it cost to model the next thing, and does adding it keep the audit guarantee?* That's the number to watch for a framework, and below is the test of it — because the sentence I took most seriously was the cleanest one: "it simulates whether evidence is actionable, not whether disease is progressing — an evidence gate, not a disease-state simulator." That's exactly right about v1, and is a great suggestion for what should come next.
+
+So I built it, and now a few hours later three things that didn't exist before now do, and they're the doctor's own two examples:
+
+Disease now progresses as a state machine derived from raw labs. A patient walks Presymptomatic → SerologicActive → EarlyNephritis → RenalFlareRisk → BiopsyIndicated, and the current state is computed from rising anti-dsDNA + falling complement + proteinuria — never entered. It also tracks how long they've been in each state. This is the "is the disease progressing" layer, on the same trust boundary as before: the labs are the clinician's input, the state is the model's derivation.
+
+The first worked example, computed. For the right patient the system now produces: "transitioning toward early lupus nephritis, rising anti-dsDNA, falling complement, at renal-flare risk, biopsy-indicated" — every clause derived from his serology series, with a derived SLEDAI activity score, not a label anyone typed.
+
+The second worked example, computed. A derived treatment-line recommendation with a single stated reason — mycophenolate induction for active nephritis, anifrolumab for an IFN-pathway mechanism, belimumab for autoantibody-driven, secukinumab for IL-17/23 — differentiated by the confirmed mechanism and the disease state.
+
+The part I'd actually point the doctor to is the counter-example. One patient is flagged where the disease-state simulator and the actionability gate disagree: the disease is clearly progressing (biopsy-indicated, high activity) and the prediction is not clinically actionable (a relatedness-leakage problem). A system that only gated evidence could never say "this patient needs attention now, but our mechanism prediction isn't trustworthy enough to pick a targeted therapy." That it can say exactly that is the proof this is a second, independent layer — not the old thing relabeled.
+
+I want to again point out that this is not intended to be a clinically ready application - it's just a proof of concept, and hopefully on a complex enough model that it shows it's more than a toy.  But...
+
+- It's still synthetic, transparent data. I'm not claiming validated biology — this is a proof of shape. What I am claiming is that the auditable structure real biology would slot into now exists, and that adding the whole disease-state layer was additive into the same model rather than a second system. That last part is the actual point of the framework, and it's the thing a point-in-time coverage score can't see: not "how much is modeled" but "what does it cost to model the next thing, and does adding it keep the audit guarantee." Here it cost a few hours and stayed green and inspectable.
+- The doctor's deepest point — discovery — I'd frame this way: discovery is inherently corpus-level. A single chart never discovers a mechanism; a pattern across many patients does. v1 was per-patient adjudication; so I built the cohort surface. The serology signature that precedes nephritis — rising anti-dsDNA + falling complement — now surfaces as a derived emergent cluster across the whole population: a per-patient IsInPreNephriticSignatureCluster rolled up from each person's raw serology series, no label assigned. On the synthetic cohort it lands cleanly — 6 of 12 in the cluster, and it perfectly separates the active/progressing patients from the quiescent ones. That separation is the point: membership emerges from the population's raw data and tracks the disease, which is what "discovery is corpus-level" means in practice. It's still the shape of discovery on synthetic data, not a validated finding — but the structure a real finding would slot into now exists and is witnessed.
+
+Everything's in the repo: the home screen is still the red→green harness (now 738 checks, all green, with the disease-state layer sorted to the top), there's a clause-by-clause coverage map against the original challenge, and an honest scorecard. The corpus-level Cohort discovery board is the top nav item for every role — the disease-state map, the emergent serology-signature scatter (now with the derived cluster drawn as a halo, not a colour I painted), the disagreement board, and the treatment-line distribution, all reading derived fields. If the doctor has a few minutes, two things are worth clicking: the disagreement case (the clearest test of whether the shape is right for the hard part they named), and the signature cluster on the cohort scatter (the corpus-level discovery they asked about, now computed).
+
+And one open invitation, if they're game — because I'd rather have my belief tested than agreed with. The whole bet is that *known* reasoning (not the discovery of it — the expression of it) decomposes into inspectable structure. So: name one piece of genetic or clinical reasoning that is finitely computable and already understood, but that you believe *cannot* be expressed as schema + data + lookups + aggregations + formulas in an auditable DAG. Not "the model can't discover it" — that part stays genuinely hard and I'm not claiming otherwise. Just "this known rule can't be written as structure." If there's one that survives, that's a real finding and I'd want to know it. So far I haven't found one — but I'd take that conversation over a 15% any day.
+
+Curious what they make of it.
+
+ej
+
+ -- Ever tried. Ever failed. No matter. Try Again. Fail again. Fail better!

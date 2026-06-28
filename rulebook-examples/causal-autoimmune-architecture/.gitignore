@@ -1,0 +1,8 @@
+.ssotme/
+node_modules
+.DS_Store
+
+# reverse-sync (snapshot-to-rulebook) writes this backup before overwriting the hub
+effortless-rulebook/effortless-rulebook.json.bak
+# transient excel export artifact (routes/export.js cleans it up, but never commit it)
+causal-autoimmune-export.xlsx
