@@ -995,6 +995,16 @@ RETURNS BOOLEAN AS $$
   SELECT (CASE WHEN calc_treatment_rankings_corrected_winner(p_treatment_ranking_id) IS NULL THEN ('')::text ELSE (calc_treatment_rankings_corrected_winner(p_treatment_ranking_id) = calc_treatment_rankings_pooled_winner(p_treatment_ranking_id))::text END)::boolean;
 $$ LANGUAGE sql STABLE;
 
+-- calc_treatment_rankings_corrected_policy_implication
+-- Field: TreatmentRankings.CorrectedPolicyImplication
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_treatment_rankings_corrected_policy_implication(p_treatment_ranking_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CASE WHEN calc_treatment_rankings_distortion_type(p_treatment_ranking_id) IS NULL THEN ('')::text ELSE (CASE WHEN calc_treatment_rankings_distortion_type(p_treatment_ranking_id) = 'A' THEN ('use-corrected-winner')::text ELSE (CASE WHEN calc_treatment_rankings_distortion_type(p_treatment_ranking_id) = 'B' THEN ('use-corrected-winner-with-caution')::text ELSE (CASE WHEN calc_treatment_rankings_distortion_type(p_treatment_ranking_id) = 'C' THEN ('check-allocation-bias')::text ELSE ('pooled-analysis-trustworthy')::text END)::text END)::text END)::text END)::text;
+$$ LANGUAGE sql STABLE;
+
 -- calc_methodology_name
 -- Field: Methodology.Name
 -- Type: calculated | DataType: string | Returns: TEXT

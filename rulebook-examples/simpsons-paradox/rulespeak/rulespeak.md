@@ -106,6 +106,7 @@ _Digital mirror of the Simpson's Paradox domain. The entities are Studies, Treat
 | Corrected Gap | The same as its weighted stratum gap sum. | _The allocation-corrected treatment gap: WeightedStratumGapSum, i.e. what SignedPooledGap would be if allocation were equal across strata. Positive means A is favoured in the corrected world; negative means B is favoured._ |
 | Corrected Winner | Determined by priority: an empty string if the corrected gap is blank; the treatment a if the corrected gap is greater than 0; the treatment b if the corrected gap is less than 0; in all other cases, “tie”. | _Which treatment wins once allocation bias is removed. Derived from CorrectedGap: positive → TreatmentA; negative → TreatmentB; zero → tie._ |
 | Corrected Vs Pooled Agreement | True when the corrected winner is the pooled winner. | _TRUE when the allocation-corrected winner matches the pooled winner. FALSE when removing allocation bias would change which treatment appears to win — the machine-readable definition of a reversal recovery._ |
+| Corrected Policy Implication | Determined by priority: an empty string if the distortion type is blank; “use-corrected-winner” if the distortion type is “A”; “use-corrected-winner-with-caution” if the distortion type is “B”; “check-allocation-bias” if the distortion type is “C”; in all other cases, “pooled-analysis-trustworthy”. | _The allocation-aware researcher action: what to do when the corrected verdict is available. Derived from DistortionType and CorrectedWinner together, making the instrument self-consistent with Reversal Recovery (loop-27). Type A (full sign-flip, unanimous per-stratum reversal): CorrectedWinner is the true signal — 'use-corrected-winner'. The pooled analysis was directionally wrong; act on CorrectedWinner, not PooledWinner. Type B (partial sign-flip, non-unanimous): CorrectedWinner points against the pooled signal but strata disagree among themselves — 'use-corrected-winner-with-caution'. Trust the corrected direction but acknowledge residual uncertainty. Type C (compression, no sign flip): PooledWinner is directionally correct; the distortion is in the magnitude, not the direction — 'check-allocation-bias'. Same as PolicyImplication. Type D (neutral): allocation is not materially distorting the signal — 'pooled-analysis-trustworthy'. Same as PolicyImplication. For Types C and D, CorrectedPolicyImplication and PolicyImplication always agree; for Types A and B, CorrectedPolicyImplication supersedes PolicyImplication with the allocation-corrected verdict._ |
 | **Methodology** | A methodology is identified by its name. | — |
 | **Conclusion** | A conclusion is identified by its name. | — |
 | **UI Screen** | A UI screen is identified by its name. | — |
@@ -245,6 +246,7 @@ but clunky — a flag for an optional downstream reword pass, not a defect._
 | **DR-84 Corrected Gap** | A treatment ranking's corrected gap is the same as its weighted stratum gap sum. |
 | **DR-85 Corrected Winner** | The treatment ranking's corrected winner is determined by the following priority:<br>1. an empty string, if the corrected gap is blank;<br>2. the treatment a, if the corrected gap is greater than 0;<br>3. the treatment b, if the corrected gap is less than 0;<br>4. in all other cases, “tie”. |
 | **DR-86 Corrected Vs Pooled Agreement** | A treatment ranking is flagged corrected vs pooled agreement if the corrected winner is the pooled winner. |
+| **DR-87 Corrected Policy Implication** | The treatment ranking's corrected policy implication is determined by the following priority:<br>1. an empty string, if the distortion type is blank;<br>2. “use-corrected-winner”, if the distortion type is “A”;<br>3. “use-corrected-winner-with-caution”, if the distortion type is “B”;<br>4. “check-allocation-bias”, if the distortion type is “C”;<br>5. in all other cases, “pooled-analysis-trustworthy”. |
 
 ## 5 Traceability to Schema
 
@@ -339,6 +341,7 @@ the same logic the rulebook stores, written for a business reader._
 | **TreatmentRankings.CorrectedGap** | formula | `WeightedStratumGapSum` |
 | **TreatmentRankings.CorrectedWinner** | formula | `If(CorrectedGap = "", "", If(CorrectedGap > 0, TreatmentA, If(CorrectedGap < 0, TreatmentB, "tie")))` |
 | **TreatmentRankings.CorrectedVsPooledAgreement** | formula | `If(CorrectedWinner = "", "", CorrectedWinner = PooledWinner)` |
+| **TreatmentRankings.CorrectedPolicyImplication** | formula | `If(DistortionType = "", "", If(DistortionType = "A", "use-corrected-winner", If(DistortionType = "B", "use-corrected-winner-with-caution", If(DistortionType = "C", "check-allocation-bias", "pooled-analysis-trustworthy"))))` |
 
 ---
 
