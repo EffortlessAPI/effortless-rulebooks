@@ -1005,6 +1005,16 @@ RETURNS TEXT AS $$
   SELECT ((SELECT NULLIF(component_id, '') FROM ui_components WHERE component_id = p_component_id))::text;
 $$ LANGUAGE sql STABLE;
 
+-- calc_instrument_spec_name
+-- Field: InstrumentSpec.Name
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_instrument_spec_name(p_spec_id TEXT)
+RETURNS TEXT AS $$
+  SELECT ((SELECT NULLIF(spec_id, '') FROM instrument_spec WHERE spec_id = p_spec_id))::text;
+$$ LANGUAGE sql STABLE;
+
 -- ============================================================================
 -- MANY-SIDE RELATIONSHIP FUNCTIONS
 -- These functions aggregate child records for many-side relationships

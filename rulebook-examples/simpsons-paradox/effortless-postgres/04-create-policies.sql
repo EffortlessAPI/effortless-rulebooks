@@ -20,6 +20,7 @@ ALTER TABLE methodology ENABLE ROW LEVEL SECURITY;
 ALTER TABLE conclusions ENABLE ROW LEVEL SECURITY;
 ALTER TABLE ui_screens ENABLE ROW LEVEL SECURITY;
 ALTER TABLE ui_components ENABLE ROW LEVEL SECURITY;
+ALTER TABLE instrument_spec ENABLE ROW LEVEL SECURITY;
 
 -- TODO: Add specific RLS policies based on your security requirements
 -- Example:

@@ -107,6 +107,7 @@ _Digital mirror of the Simpson's Paradox domain. The entities are Studies, Treat
 | **Conclusion** | A conclusion is identified by its name. | — |
 | **UI Screen** | A UI screen is identified by its name. | — |
 | **UI Component** | A UI component is identified by its name. | — |
+| **Instrument Spec** | An instrument spec is identified by its name. | — |
 
 ## 2 Fact Types
 
@@ -143,6 +144,7 @@ already computes (cross-referenced as DR-N in the Definitional Rules below)._
 - A conclusion **must** have a category, a status, and a title.
 - A UI screen **must** have a title, a route, a primary entity, and a purpose.
 - A UI component **must** have a component name, a primary entity, and a description.
+- An instrument spec **must** have a component type, a field name, and a natural language.
 
 ## 4 Definitional Rules
 

@@ -261,6 +261,7 @@ html.show-consumers .elem-consumers{display:block}
     <li><a href="#t-conclusions">Conclusion</a> <span class="toc-meta">0 rules · 0 links</span></li>
     <li><a href="#t-uiscreens">UI Screen</a> <span class="toc-meta">0 rules · 0 links</span></li>
     <li><a href="#t-uicomponents">UI Component</a> <span class="toc-meta">0 rules · 0 links</span></li>
+    <li><a href="#t-instrumentspec">Instrument Spec</a> <span class="toc-meta">0 rules · 0 links</span></li>
   </ul>
 </nav>
 <section class="entity" id="t-loops" data-entity="Loop">
@@ -6783,6 +6784,96 @@ html.show-consumers .elem-consumers{display:block}
       <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
     </div>
     <p class="field-note elem elem-desc">Plain-English description of the visual output: shape, color coding, interactivity.</p>
+    </article>
+</section>
+<section class="entity" id="t-instrumentspec" data-entity="Instrument Spec">
+  <header class="entity-head">
+    <h2 class="entity-title">Instrument Spec</h2>
+    <p class="entity-synopsis">An instrument spec is identified by its name.</p>
+  </header>
+  <article class="field tone-raw" id="f-instrumentspec-componenttype" data-entity="Instrument Spec" data-field="Component Type">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Component Type</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">input | derived | classification | adapter-requirement</p>
+    </article>
+  <article class="field tone-raw" id="f-instrumentspec-fieldname" data-entity="Instrument Spec" data-field="Field Name">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Field Name</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">The field or variable name in the DAG.</p>
+    </article>
+  <article class="field tone-raw" id="f-instrumentspec-datatype" data-entity="Instrument Spec" data-field="Data Type">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Data Type</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">integer | decimal | boolean | string | categorical</p>
+    </article>
+  <article class="field tone-raw" id="f-instrumentspec-sourcetable" data-entity="Instrument Spec" data-field="Source Table">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Source Table</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">The DAG table where this field is computed or stored.</p>
+    </article>
+  <article class="field tone-raw" id="f-instrumentspec-formula" data-entity="Instrument Spec" data-field="Formula">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Formula</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">The ERB formula or derivation rule for this component.</p>
+    </article>
+  <article class="field tone-raw" id="f-instrumentspec-naturallanguage" data-entity="Instrument Spec" data-field="Natural Language">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Natural Language</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Plain-English statement of what this component represents or requires.</p>
+    </article>
+  <article class="field tone-raw" id="f-instrumentspec-adapternote" data-entity="Instrument Spec" data-field="Adapter Note">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Adapter Note</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">What a researcher must supply or verify to satisfy this component when hydrating a new study.</p>
     </article>
 </section>
 <footer class="doc-footer">

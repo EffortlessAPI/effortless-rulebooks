@@ -2,32 +2,33 @@
 
 **Schema:** `public`
 **Database:** `demo`
-**Timestamp:** 2026-06-27 23:30:19 UTC
+**Timestamp:** 2026-06-27 23:52:04 UTC
 
 ## Parsing Rulebook
 
-Found **13** tables in rulebook
+Found **14** tables in rulebook
 
 
   - **Loops** (8 fields, 28 records)
-  - **Studies** (7 fields, 11 records)
+  - **Studies** (7 fields, 16 records)
   - **Treatments** (8 fields, 20 records)
-  - **Strata** (6 fields, 30 records)
-  - **CaseCells** (10 fields, 60 records)
-  - **StratumSummaries** (28 fields, 60 records)
+  - **Strata** (6 fields, 40 records)
+  - **CaseCells** (10 fields, 80 records)
+  - **StratumSummaries** (28 fields, 80 records)
   - **ModelSummary** (21 fields, 1 records)
-  - **StratumVariables** (9 fields, 11 records)
-  - **TreatmentRankings** (36 fields, 11 records)
+  - **StratumVariables** (9 fields, 16 records)
+  - **TreatmentRankings** (36 fields, 16 records)
   - **Methodology** (7 fields, 10 records)
   - **Conclusions** (8 fields, 10 records)
   - **UIScreens** (8 fields, 9 records)
   - **UIComponents** (8 fields, 10 records)
+  - **InstrumentSpec** (9 fields, 20 records)
 
-Generated **13** table definitions with **62** raw fields (mode=check-add)
-Generated **99** calculation functions
-Generated **13** views
-Enabled RLS on **13** tables
-Generated insert statements for **271** records
+Generated **14** table definitions with **70** raw fields (mode=check-add)
+Generated **100** calculation functions
+Generated **14** views
+Enabled RLS on **14** tables
+Generated insert statements for **356** records
 ## Script Generation Complete
 
 Generated files:
