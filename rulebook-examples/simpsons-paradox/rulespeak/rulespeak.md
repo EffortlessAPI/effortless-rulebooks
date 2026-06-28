@@ -103,6 +103,9 @@ _Digital mirror of the Simpson's Paradox domain. The entities are Studies, Treat
 | Is Reversal v2 | True when the sign flip flag is set. | _The sign-flip definition of reversal: TRUE when the equal-weight pooled signal (WeightedStratumGapSum) and the actual pooled signal (SignedPooledGap) point in opposite directions. Strictly generalizes the unanimity criterion — every Type-A study satisfies both IsReversal and IsReversal_v2, but Berkeley-1973 and Appleton-1996 satisfy IsReversal_v2 without satisfying IsReversal. The unanimity criterion (IsReversal) is now understood as the Type-A subtype of this broader definition._ |
 | Definition Delta | True when all of the following hold: the reversal v2 flag is set and it is not the case that the reversal flag is set. | _TRUE when IsReversal_v2 and IsReversal disagree — i.e. when the sign-flip definition fires but the unanimity criterion does not. These are the studies the old definition misclassified as non-reversals. In the current dataset: berkeley-1973 and appleton-1996. A non-empty DefinitionDelta set is the empirical proof that the unanimity criterion is a strict subset of the sign-flip criterion._ |
 | Strict Reversal Subtype | Determined by priority: an empty string if the is reversal v2 is blank; “strict” if the reversal flag is set; “extended” if the reversal v2 flag is set; in all other cases, “none”. | _Classifies each study's relationship to the two reversal definitions. 'strict' = unanimity reversal (IsReversal=TRUE, DistortionType=A — the old definition's true positives). 'extended' = sign-flip only, not unanimous (IsReversal_v2=TRUE, IsReversal=FALSE — the studies the old definition missed). 'none' = no reversal under either definition._ |
+| Corrected Gap | The same as its weighted stratum gap sum. | _The allocation-corrected treatment gap: WeightedStratumGapSum, i.e. what SignedPooledGap would be if allocation were equal across strata. Positive means A is favoured in the corrected world; negative means B is favoured._ |
+| Corrected Winner | Determined by priority: an empty string if the corrected gap is blank; the treatment a if the corrected gap is greater than 0; the treatment b if the corrected gap is less than 0; in all other cases, “tie”. | _Which treatment wins once allocation bias is removed. Derived from CorrectedGap: positive → TreatmentA; negative → TreatmentB; zero → tie._ |
+| Corrected Vs Pooled Agreement | True when the corrected winner is the pooled winner. | _TRUE when the allocation-corrected winner matches the pooled winner. FALSE when removing allocation bias would change which treatment appears to win — the machine-readable definition of a reversal recovery._ |
 | **Methodology** | A methodology is identified by its name. | — |
 | **Conclusion** | A conclusion is identified by its name. | — |
 | **UI Screen** | A UI screen is identified by its name. | — |
@@ -239,6 +242,9 @@ but clunky — a flag for an optional downstream reword pass, not a defect._
 | **DR-81 Is Reversal v2** | A treatment ranking is considered a reversal v2 if the sign flip flag is set. |
 | **DR-82 Definition Delta** | A treatment ranking is flagged definition delta if all of the following hold: the reversal v2 flag is set and it is not the case that the reversal flag is set. |
 | **DR-83 Strict Reversal Subtype** | The treatment ranking's strict reversal subtype is determined by the following priority:<br>1. an empty string, if the is reversal v2 is blank;<br>2. “strict”, if the reversal flag is set;<br>3. “extended”, if the reversal v2 flag is set;<br>4. in all other cases, “none”. |
+| **DR-84 Corrected Gap** | A treatment ranking's corrected gap is the same as its weighted stratum gap sum. |
+| **DR-85 Corrected Winner** | The treatment ranking's corrected winner is determined by the following priority:<br>1. an empty string, if the corrected gap is blank;<br>2. the treatment a, if the corrected gap is greater than 0;<br>3. the treatment b, if the corrected gap is less than 0;<br>4. in all other cases, “tie”. |
+| **DR-86 Corrected Vs Pooled Agreement** | A treatment ranking is flagged corrected vs pooled agreement if the corrected winner is the pooled winner. |
 
 ## 5 Traceability to Schema
 
@@ -330,6 +336,9 @@ the same logic the rulebook stores, written for a business reader._
 | **TreatmentRankings.IsReversal_v2** | formula | `If(IsSignFlip = "", "", IsSignFlip)` |
 | **TreatmentRankings.DefinitionDelta** | formula | `If(IsReversal_v2 = "", "", And(IsReversal_v2, Not(IsReversal)))` |
 | **TreatmentRankings.StrictReversalSubtype** | formula | `If(IsReversal_v2 = "", "", If(IsReversal, "strict", If(IsReversal_v2, "extended", "none")))` |
+| **TreatmentRankings.CorrectedGap** | formula | `WeightedStratumGapSum` |
+| **TreatmentRankings.CorrectedWinner** | formula | `If(CorrectedGap = "", "", If(CorrectedGap > 0, TreatmentA, If(CorrectedGap < 0, TreatmentB, "tie")))` |
+| **TreatmentRankings.CorrectedVsPooledAgreement** | formula | `If(CorrectedWinner = "", "", CorrectedWinner = PooledWinner)` |
 
 ---
 

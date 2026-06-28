@@ -965,6 +965,36 @@ RETURNS TEXT AS $$
   SELECT (CASE WHEN calc_treatment_rankings_is_reversal_v2(p_treatment_ranking_id) IS NULL THEN ('')::text ELSE (CASE WHEN calc_treatment_rankings_is_reversal(p_treatment_ranking_id) THEN ('strict')::text ELSE (CASE WHEN (calc_treatment_rankings_is_reversal_v2(p_treatment_ranking_id) = 'true') THEN ('extended')::text ELSE ('none')::text END)::text END)::text END)::text;
 $$ LANGUAGE sql STABLE;
 
+-- calc_treatment_rankings_corrected_gap
+-- Field: TreatmentRankings.CorrectedGap
+-- Type: calculated | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_treatment_rankings_corrected_gap(p_treatment_ranking_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT (calc_treatment_rankings_weighted_stratum_gap_sum(p_treatment_ranking_id))::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_treatment_rankings_corrected_winner
+-- Field: TreatmentRankings.CorrectedWinner
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_treatment_rankings_corrected_winner(p_treatment_ranking_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CASE WHEN calc_treatment_rankings_corrected_gap(p_treatment_ranking_id) IS NULL THEN ('')::text ELSE (CASE WHEN (calc_treatment_rankings_corrected_gap(p_treatment_ranking_id))::NUMERIC > 0 THEN ((SELECT NULLIF(treatment_a, '') FROM treatment_rankings WHERE treatment_ranking_id = p_treatment_ranking_id))::text ELSE (CASE WHEN (calc_treatment_rankings_corrected_gap(p_treatment_ranking_id))::NUMERIC < 0 THEN ((SELECT NULLIF(treatment_b, '') FROM treatment_rankings WHERE treatment_ranking_id = p_treatment_ranking_id))::text ELSE ('tie')::text END)::text END)::text END)::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_treatment_rankings_corrected_vs_pooled_agreement
+-- Field: TreatmentRankings.CorrectedVsPooledAgreement
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_treatment_rankings_corrected_vs_pooled_agreement(p_treatment_ranking_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (CASE WHEN calc_treatment_rankings_corrected_winner(p_treatment_ranking_id) IS NULL THEN ('')::text ELSE (calc_treatment_rankings_corrected_winner(p_treatment_ranking_id) = calc_treatment_rankings_pooled_winner(p_treatment_ranking_id))::text END)::boolean;
+$$ LANGUAGE sql STABLE;
+
 -- calc_methodology_name
 -- Field: Methodology.Name
 -- Type: calculated | DataType: string | Returns: TEXT
