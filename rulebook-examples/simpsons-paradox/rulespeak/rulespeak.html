@@ -257,6 +257,7 @@ html.show-consumers .elem-consumers{display:block}
     <li><a href="#t-modelsummary">Model Summary</a> <span class="toc-meta">19 rules · 0 links</span></li>
     <li><a href="#t-stratumvariables">Stratum Variable</a> <span class="toc-meta">1 rules · 1 links</span></li>
     <li><a href="#t-treatmentrankings">Treatment Ranking</a> <span class="toc-meta">35 rules · 1 links</span></li>
+    <li><a href="#t-invariantchecks">Invariant Check</a> <span class="toc-meta">3 rules · 0 links</span></li>
     <li><a href="#t-methodology">Methodology</a> <span class="toc-meta">0 rules · 0 links</span></li>
     <li><a href="#t-conclusions">Conclusion</a> <span class="toc-meta">0 rules · 0 links</span></li>
     <li><a href="#t-uiscreens">UI Screen</a> <span class="toc-meta">0 rules · 0 links</span></li>
@@ -6780,6 +6781,243 @@ html.show-consumers .elem-consumers{display:block}
       </div>
     </details>
     <p class="field-note elem elem-desc">The allocation-aware researcher action: what to do when the corrected verdict is available. Derived from DistortionType and CorrectedWinner together, making the instrument self-consistent with Reversal Recovery (loop-27). Type A (full sign-flip, unanimous per-stratum reversal): CorrectedWinner is the true signal — 'use-corrected-winner'. The pooled analysis was directionally wrong; act on CorrectedWinner, not PooledWinner. Type B (partial sign-flip, non-unanimous): CorrectedWinner points against the pooled signal but strata disagree among themselves — 'use-corrected-winner-with-caution'. Trust the corrected direction but acknowledge residual uncertainty. Type C (compression, no sign flip): PooledWinner is directionally correct; the distortion is in the magnitude, not the direction — 'check-allocation-bias'. Same as PolicyImplication. Type D (neutral): allocation is not materially distorting the signal — 'pooled-analysis-trustworthy'. Same as PolicyImplication. For Types C and D, CorrectedPolicyImplication and PolicyImplication always agree; for Types A and B, CorrectedPolicyImplication supersedes PolicyImplication with the allocation-corrected verdict.</p>
+    </article>
+</section>
+<section class="entity" id="t-invariantchecks" data-entity="Invariant Check">
+  <header class="entity-head">
+    <h2 class="entity-title">Invariant Check</h2>
+    <p class="entity-synopsis">An invariant check is identified by its name.</p>
+  </header>
+  <article class="field tone-raw" id="f-invariantchecks-algebraicstatement" data-entity="Invariant Check" data-field="Algebraic Statement">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Algebraic Statement</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">The mathematical assertion in compact symbolic form.</p>
+    </article>
+  <article class="field tone-raw" id="f-invariantchecks-naturallanguage" data-entity="Invariant Check" data-field="Natural Language">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Natural Language</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Plain-English statement of what property must hold and why it is an invariant of the model.</p>
+    </article>
+  <article class="field tone-raw" id="f-invariantchecks-sourcetable" data-entity="Invariant Check" data-field="Source Table">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Source Table</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">The DAG table whose rows are checked (TreatmentRankings or StratumSummaries).</p>
+    </article>
+  <article class="field tone-raw" id="f-invariantchecks-filterexpression" data-entity="Invariant Check" data-field="Filter Expression">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Filter Expression</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Condition selecting the universe of rows this invariant applies to. Empty means all rows.</p>
+    </article>
+  <article class="field tone-raw" id="f-invariantchecks-assertionexpression" data-entity="Invariant Check" data-field="Assertion Expression">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Assertion Expression</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">The per-row condition that must be TRUE for every row in scope.</p>
+    </article>
+  <article class="field tone-raw" id="f-invariantchecks-passcount" data-entity="Invariant Check" data-field="Pass Count">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Pass Count</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">integer</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>integer</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Rows where the invariant holds. Populated by 05b-customize-data.sql from a live query against vw_treatment_rankings.</p>
+    </article>
+  <article class="field tone-raw" id="f-invariantchecks-failcount" data-entity="Invariant Check" data-field="Fail Count">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Fail Count</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">integer</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>integer</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Rows where the invariant is violated. Any FailCount &gt; 0 is a build-breaking bug.</p>
+    </article>
+  <article class="field tone-calc" id="f-invariantchecks-universecount" data-entity="Invariant Check" data-field="Universe Count">
+    <div class="field-head">
+      <span class="field-glyph" title="Calculated">ƒ</span>
+      <span class="field-name">Universe Count</span>
+      <span class="pill pill-type">Calculated</span>
+      <span class="pill pill-depth">1 hop from ground truth</span>
+      <span class="pill pill-muted">integer</span>
+      <span class="pill pill-dr">DR-88</span>
+    </div>
+    <div class="narr-views">
+      <div class="view elem elem-rulespeak">
+        <span class="view-label">In RuleSpeak</span>
+        <p class="view-body">An invariant check's universe count is computed as the <a class="ref" href="#f-invariantchecks-passcount">pass count</a> plus the <a class="ref" href="#f-invariantchecks-failcount">fail count</a>.</p>
+      </div>
+      <div class="view elem elem-english">
+        <span class="view-label">In English</span>
+        <p class="view-body"><a class="ref" href="#f-invariantchecks-passcount">Pass count</a> plus <a class="ref" href="#f-invariantchecks-failcount">fail count</a>.</p>
+      </div>
+      <div class="view elem elem-formula">
+        <span class="view-label">As a formula</span>
+        <div class="view-body fx"><span class="fx-eq">= </span><a class="fx-chip" href="#f-invariantchecks-passcount">Pass Count</a> + <a class="fx-chip" href="#f-invariantchecks-failcount">Fail Count</a></div>
+      </div>
+    </div>
+    <details class="prov prov-inputs elem elem-inputs" open>
+      <summary>Inputs <span class="count">2</span> <span class="prov-hint">fields this rule reads</span></summary>
+      <div class="prov-grid">
+        <a class="input tone-raw" href="#f-invariantchecks-passcount">
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Pass Count</span><span class="input-table">InvariantChecks</span></span>
+          <span class="input-en muted">Rows where the invariant holds. Populated by 05b-customize-data.sql from a live query against vw_treatment_rankings.</span>
+        </a>
+        <a class="input tone-raw" href="#f-invariantchecks-failcount">
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Fail Count</span><span class="input-table">InvariantChecks</span></span>
+          <span class="input-en muted">Rows where the invariant is violated. Any FailCount &gt; 0 is a build-breaking bug.</span>
+        </a>
+      </div>
+    </details>
+    <details class="prov prov-leaves elem elem-inputs">
+      <summary>Ground truth at the leaves <span class="count">2</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-raw" href="#f-invariantchecks-passcount">● Pass Count <span class="ref-pill-tbl">InvariantChecks</span></a>
+        <a class="ref-pill tone-raw" href="#f-invariantchecks-failcount">● Fail Count <span class="ref-pill-tbl">InvariantChecks</span></a>
+      </div>
+    </details>
+    <p class="field-note elem elem-desc">Total rows in scope (PassCount + FailCount).</p>
+    </article>
+  <article class="field tone-calc" id="f-invariantchecks-isgreen" data-entity="Invariant Check" data-field="Is Green">
+    <div class="field-head">
+      <span class="field-glyph" title="Calculated">ƒ</span>
+      <span class="field-name">Is Green</span>
+      <span class="pill pill-type">Calculated</span>
+      <span class="pill pill-depth">1 hop from ground truth</span>
+      <span class="pill pill-muted">boolean</span>
+      <span class="pill pill-dr">DR-89</span>
+    </div>
+    <div class="narr-views">
+      <div class="view elem elem-rulespeak">
+        <span class="view-label">In RuleSpeak</span>
+        <p class="view-body">An invariant check is considered a green if the <a class="ref" href="#f-invariantchecks-failcount">fail count</a> is 0.</p>
+      </div>
+      <div class="view elem elem-english">
+        <span class="view-label">In English</span>
+        <p class="view-body"><a class="ref" href="#f-invariantchecks-failcount">Fail count</a> equals 0.</p>
+      </div>
+      <div class="view elem elem-formula">
+        <span class="view-label">As a formula</span>
+        <div class="view-body fx"><span class="fx-eq">= </span><a class="fx-chip" href="#f-invariantchecks-failcount">Fail Count</a> = 0</div>
+      </div>
+    </div>
+    <details class="prov prov-inputs elem elem-inputs" open>
+      <summary>Inputs <span class="count">1</span> <span class="prov-hint">fields this rule reads</span></summary>
+      <div class="prov-grid">
+        <a class="input tone-raw" href="#f-invariantchecks-failcount">
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Fail Count</span><span class="input-table">InvariantChecks</span></span>
+          <span class="input-en muted">Rows where the invariant is violated. Any FailCount &gt; 0 is a build-breaking bug.</span>
+        </a>
+      </div>
+    </details>
+    <details class="prov prov-consumers elem elem-consumers">
+      <summary>Consumers <span class="count">1 direct</span> <span class="prov-hint">rules that read this one</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-calc" href="#f-invariantchecks-statuslabel">ƒ Status Label <span class="ref-pill-tbl">InvariantChecks</span></a>
+      </div>
+    </details>
+    <details class="prov prov-leaves elem elem-inputs">
+      <summary>Ground truth at the leaves <span class="count">1</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-raw" href="#f-invariantchecks-failcount">● Fail Count <span class="ref-pill-tbl">InvariantChecks</span></a>
+      </div>
+    </details>
+    <p class="field-note elem elem-desc">TRUE when FailCount = 0.</p>
+    </article>
+  <article class="field tone-calc" id="f-invariantchecks-statuslabel" data-entity="Invariant Check" data-field="Status Label">
+    <div class="field-head">
+      <span class="field-glyph" title="Calculated">ƒ</span>
+      <span class="field-name">Status Label</span>
+      <span class="pill pill-type">Calculated</span>
+      <span class="pill pill-depth">2 hops from ground truth</span>
+      <span class="pill pill-muted">string</span>
+      <span class="pill pill-dr">DR-90</span>
+    </div>
+    <div class="narr-views">
+      <div class="view elem elem-rulespeak">
+        <span class="view-label">In RuleSpeak</span>
+        <div class="view-body"><p class="rt-headline">The invariant check's status label is determined by the following priority:</p><ol class="rt-priority"><li><span class="rt-value">“PASS”</span> <span class="rt-when">if the green flag is set</span></li><li><span class="rt-value">“FAIL(”, followed by the fail count, followed by “)”</span> <span class="rt-when">in all other cases</span></li></ol></div>
+      </div>
+      <div class="view elem elem-english">
+        <span class="view-label">In English</span>
+        <p class="view-body">If <a class="ref" href="#f-invariantchecks-isgreen">is green</a> then &quot;PASS&quot;, otherwise &quot;FAIL(&quot;, <a class="ref" href="#f-invariantchecks-failcount">fail count</a>, joined with &quot;)&quot;.</p>
+      </div>
+      <div class="view elem elem-formula">
+        <span class="view-label">As a formula</span>
+        <div class="view-body fx"><span class="fx-eq">= </span>IF(<a class="fx-chip" href="#f-invariantchecks-isgreen">Is Green</a>, &quot;PASS&quot;, CONCAT(&quot;FAIL(&quot;, <a class="fx-chip" href="#f-invariantchecks-failcount">Fail Count</a>, &quot;)&quot;))</div>
+      </div>
+    </div>
+    <details class="prov prov-inputs elem elem-inputs" open>
+      <summary>Inputs <span class="count">2</span> <span class="prov-hint">fields this rule reads</span></summary>
+      <div class="prov-grid">
+        <a class="input tone-calc" href="#f-invariantchecks-isgreen">
+          <span class="input-head"><span class="input-glyph">ƒ</span><span class="input-name">Is Green</span><span class="input-table">InvariantChecks</span></span>
+          <span class="input-en">Fail count equals 0.</span>
+        </a>
+        <a class="input tone-raw" href="#f-invariantchecks-failcount">
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Fail Count</span><span class="input-table">InvariantChecks</span></span>
+          <span class="input-en muted">Rows where the invariant is violated. Any FailCount &gt; 0 is a build-breaking bug.</span>
+        </a>
+      </div>
+    </details>
+    <details class="prov prov-leaves elem elem-inputs">
+      <summary>Ground truth at the leaves <span class="count">1</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-raw" href="#f-invariantchecks-failcount">● Fail Count <span class="ref-pill-tbl">InvariantChecks</span></a>
+      </div>
+    </details>
+    <p class="field-note elem elem-desc">PASS or FAIL(n) summary for display.</p>
+    </article>
+  <article class="field tone-raw" id="f-invariantchecks-severity" data-entity="Invariant Check" data-field="Severity">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Severity</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">critical | warning — critical means any FailCount &gt; 0 is a build-breaking bug.</p>
     </article>
 </section>
 <section class="entity" id="t-methodology" data-entity="Methodology">

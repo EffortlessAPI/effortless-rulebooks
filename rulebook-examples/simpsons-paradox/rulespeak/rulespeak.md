@@ -107,6 +107,10 @@ _Digital mirror of the Simpson's Paradox domain. The entities are Studies, Treat
 | Corrected Winner | Determined by priority: an empty string if the corrected gap is blank; the treatment a if the corrected gap is greater than 0; the treatment b if the corrected gap is less than 0; in all other cases, “tie”. | _Which treatment wins once allocation bias is removed. Derived from CorrectedGap: positive → TreatmentA; negative → TreatmentB; zero → tie._ |
 | Corrected Vs Pooled Agreement | True when the corrected winner is the pooled winner. | _TRUE when the allocation-corrected winner matches the pooled winner. FALSE when removing allocation bias would change which treatment appears to win — the machine-readable definition of a reversal recovery._ |
 | Corrected Policy Implication | Determined by priority: an empty string if the distortion type is blank; “use-corrected-winner” if the distortion type is “A”; “use-corrected-winner-with-caution” if the distortion type is “B”; “check-allocation-bias” if the distortion type is “C”; in all other cases, “pooled-analysis-trustworthy”. | _The allocation-aware researcher action: what to do when the corrected verdict is available. Derived from DistortionType and CorrectedWinner together, making the instrument self-consistent with Reversal Recovery (loop-27). Type A (full sign-flip, unanimous per-stratum reversal): CorrectedWinner is the true signal — 'use-corrected-winner'. The pooled analysis was directionally wrong; act on CorrectedWinner, not PooledWinner. Type B (partial sign-flip, non-unanimous): CorrectedWinner points against the pooled signal but strata disagree among themselves — 'use-corrected-winner-with-caution'. Trust the corrected direction but acknowledge residual uncertainty. Type C (compression, no sign flip): PooledWinner is directionally correct; the distortion is in the magnitude, not the direction — 'check-allocation-bias'. Same as PolicyImplication. Type D (neutral): allocation is not materially distorting the signal — 'pooled-analysis-trustworthy'. Same as PolicyImplication. For Types C and D, CorrectedPolicyImplication and PolicyImplication always agree; for Types A and B, CorrectedPolicyImplication supersedes PolicyImplication with the allocation-corrected verdict._ |
+| **Invariant Check** | An invariant check is identified by its name. | — |
+| Universe Count | Computed as the pass count plus the fail count. | _Total rows in scope (PassCount + FailCount)._ |
+| Is Green | True when the fail count is 0. | _TRUE when FailCount = 0._ |
+| Status Label | Determined by priority: “PASS” if the green flag is set; in all other cases, “FAIL(”, followed by the fail count, followed by “)”. | _PASS or FAIL(n) summary for display._ |
 | **Methodology** | A methodology is identified by its name. | — |
 | **Conclusion** | A conclusion is identified by its name. | — |
 | **UI Screen** | A UI screen is identified by its name. | — |
@@ -144,6 +148,7 @@ already computes (cross-referenced as DR-N in the Definitional Rules below)._
 - A stratum variable **must** have a variable name and a causal role, and record whether it is affects treatment assignment and whether it is affects outcome.
 - A treatment ranking **must** reference exactly one study.
 - A treatment ranking **must** have a treatment a and a treatment b.
+- An invariant check **must** have an algebraic statement, a natural language, a source table, an assertion expression, a pass count, a fail count, and a severity.
 - A methodology **must** have a phase, a title, and a statement.
 - A conclusion **must** have a category, a status, and a title.
 - A UI screen **must** have a title, a route, a primary entity, and a purpose.
@@ -247,6 +252,9 @@ but clunky — a flag for an optional downstream reword pass, not a defect._
 | **DR-85 Corrected Winner** | The treatment ranking's corrected winner is determined by the following priority:<br>1. an empty string, if the corrected gap is blank;<br>2. the treatment a, if the corrected gap is greater than 0;<br>3. the treatment b, if the corrected gap is less than 0;<br>4. in all other cases, “tie”. |
 | **DR-86 Corrected Vs Pooled Agreement** | A treatment ranking is flagged corrected vs pooled agreement if the corrected winner is the pooled winner. |
 | **DR-87 Corrected Policy Implication** | The treatment ranking's corrected policy implication is determined by the following priority:<br>1. an empty string, if the distortion type is blank;<br>2. “use-corrected-winner”, if the distortion type is “A”;<br>3. “use-corrected-winner-with-caution”, if the distortion type is “B”;<br>4. “check-allocation-bias”, if the distortion type is “C”;<br>5. in all other cases, “pooled-analysis-trustworthy”. |
+| **DR-88 Universe Count** | An invariant check's universe count is computed as the pass count plus the fail count. |
+| **DR-89 Is Green** | An invariant check is considered a green if the fail count is 0. |
+| **DR-90 Status Label** | The invariant check's status label is determined by the following priority:<br>1. “PASS”, if the green flag is set;<br>2. in all other cases, “FAIL(”, followed by the fail count, followed by “)”. |
 
 ## 5 Traceability to Schema
 
@@ -342,6 +350,9 @@ the same logic the rulebook stores, written for a business reader._
 | **TreatmentRankings.CorrectedWinner** | formula | `If(CorrectedGap = "", "", If(CorrectedGap > 0, TreatmentA, If(CorrectedGap < 0, TreatmentB, "tie")))` |
 | **TreatmentRankings.CorrectedVsPooledAgreement** | formula | `If(CorrectedWinner = "", "", CorrectedWinner = PooledWinner)` |
 | **TreatmentRankings.CorrectedPolicyImplication** | formula | `If(DistortionType = "", "", If(DistortionType = "A", "use-corrected-winner", If(DistortionType = "B", "use-corrected-winner-with-caution", If(DistortionType = "C", "check-allocation-bias", "pooled-analysis-trustworthy"))))` |
+| **InvariantChecks.UniverseCount** | formula | `PassCount + FailCount` |
+| **InvariantChecks.IsGreen** | formula | `FailCount = 0` |
+| **InvariantChecks.StatusLabel** | formula | `If(IsGreen, "PASS", Concat("FAIL(", FailCount, ")"))` |
 
 ---
 

@@ -1005,6 +1005,46 @@ RETURNS TEXT AS $$
   SELECT (CASE WHEN calc_treatment_rankings_distortion_type(p_treatment_ranking_id) IS NULL THEN ('')::text ELSE (CASE WHEN calc_treatment_rankings_distortion_type(p_treatment_ranking_id) = 'A' THEN ('use-corrected-winner')::text ELSE (CASE WHEN calc_treatment_rankings_distortion_type(p_treatment_ranking_id) = 'B' THEN ('use-corrected-winner-with-caution')::text ELSE (CASE WHEN calc_treatment_rankings_distortion_type(p_treatment_ranking_id) = 'C' THEN ('check-allocation-bias')::text ELSE ('pooled-analysis-trustworthy')::text END)::text END)::text END)::text END)::text;
 $$ LANGUAGE sql STABLE;
 
+-- calc_invariant_checks_name
+-- Field: InvariantChecks.Name
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_invariant_checks_name(p_invariant_check_id TEXT)
+RETURNS TEXT AS $$
+  SELECT ((SELECT NULLIF(invariant_check_id, '') FROM invariant_checks WHERE invariant_check_id = p_invariant_check_id))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_invariant_checks_universe_count
+-- Field: InvariantChecks.UniverseCount
+-- Type: calculated | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_invariant_checks_universe_count(p_invariant_check_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((COALESCE(CASE WHEN ((SELECT pass_count FROM invariant_checks WHERE invariant_check_id = p_invariant_check_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT pass_count FROM invariant_checks WHERE invariant_check_id = p_invariant_check_id))::numeric ELSE NULL END, 0) + COALESCE(CASE WHEN ((SELECT fail_count FROM invariant_checks WHERE invariant_check_id = p_invariant_check_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT fail_count FROM invariant_checks WHERE invariant_check_id = p_invariant_check_id))::numeric ELSE NULL END, 0)))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_invariant_checks_is_green
+-- Field: InvariantChecks.IsGreen
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_invariant_checks_is_green(p_invariant_check_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (((SELECT fail_count FROM invariant_checks WHERE invariant_check_id = p_invariant_check_id))::NUMERIC = 0)::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_invariant_checks_status_label
+-- Field: InvariantChecks.StatusLabel
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_invariant_checks_status_label(p_invariant_check_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CASE WHEN calc_invariant_checks_is_green(p_invariant_check_id) THEN ('PASS')::text ELSE (CONCAT('FAIL(', (SELECT fail_count FROM invariant_checks WHERE invariant_check_id = p_invariant_check_id), ')'))::text END)::text;
+$$ LANGUAGE sql STABLE;
+
 -- calc_methodology_name
 -- Field: Methodology.Name
 -- Type: calculated | DataType: string | Returns: TEXT
