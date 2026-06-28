@@ -1005,6 +1005,66 @@ RETURNS TEXT AS $$
   SELECT (CASE WHEN calc_treatment_rankings_distortion_type(p_treatment_ranking_id) IS NULL THEN ('')::text ELSE (CASE WHEN calc_treatment_rankings_distortion_type(p_treatment_ranking_id) = 'A' THEN ('use-corrected-winner')::text ELSE (CASE WHEN calc_treatment_rankings_distortion_type(p_treatment_ranking_id) = 'B' THEN ('use-corrected-winner-with-caution')::text ELSE (CASE WHEN calc_treatment_rankings_distortion_type(p_treatment_ranking_id) = 'C' THEN ('check-allocation-bias')::text ELSE ('pooled-analysis-trustworthy')::text END)::text END)::text END)::text END)::text;
 $$ LANGUAGE sql STABLE;
 
+-- calc_treatment_rankings_confirmed_causal_role_count
+-- Field: TreatmentRankings.ConfirmedCausalRoleCount
+-- Type: aggregation | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_treatment_rankings_confirmed_causal_role_count(p_treatment_ranking_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((SELECT COUNT(*) FROM stratum_variables WHERE study = (SELECT NULLIF(study, '') FROM treatment_rankings WHERE treatment_ranking_id = p_treatment_ranking_id) AND causal_role = 'confounder'))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_treatment_rankings_mediator_risk_count
+-- Field: TreatmentRankings.MediatorRiskCount
+-- Type: aggregation | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_treatment_rankings_mediator_risk_count(p_treatment_ranking_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((COALESCE(CASE WHEN ((SELECT COUNT(*) FROM stratum_variables WHERE study = (SELECT NULLIF(study, '') FROM treatment_rankings WHERE treatment_ranking_id = p_treatment_ranking_id) AND conditioning_risk = 'mediator'))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT COUNT(*) FROM stratum_variables WHERE study = (SELECT NULLIF(study, '') FROM treatment_rankings WHERE treatment_ranking_id = p_treatment_ranking_id) AND conditioning_risk = 'mediator'))::numeric ELSE NULL END, 0) + COALESCE(CASE WHEN ((SELECT COUNT(*) FROM stratum_variables WHERE study = (SELECT NULLIF(study, '') FROM treatment_rankings WHERE treatment_ranking_id = p_treatment_ranking_id) AND conditioning_risk = 'collider'))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT COUNT(*) FROM stratum_variables WHERE study = (SELECT NULLIF(study, '') FROM treatment_rankings WHERE treatment_ranking_id = p_treatment_ranking_id) AND conditioning_risk = 'collider'))::numeric ELSE NULL END, 0)))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_treatment_rankings_contested_stratum_count
+-- Field: TreatmentRankings.ContestedStratumCount
+-- Type: aggregation | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_treatment_rankings_contested_stratum_count(p_treatment_ranking_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((SELECT COUNT(*) FROM stratum_variables WHERE study = (SELECT NULLIF(study, '') FROM treatment_rankings WHERE treatment_ranking_id = p_treatment_ranking_id) AND causal_role = 'contested'))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_treatment_rankings_unknown_causal_role_count
+-- Field: TreatmentRankings.UnknownCausalRoleCount
+-- Type: aggregation | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_treatment_rankings_unknown_causal_role_count(p_treatment_ranking_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((SELECT COUNT(*) FROM stratum_variables WHERE study = (SELECT NULLIF(study, '') FROM treatment_rankings WHERE treatment_ranking_id = p_treatment_ranking_id) AND causal_role = 'unknown'))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_treatment_rankings_causal_claim_status
+-- Field: TreatmentRankings.CausalClaimStatus
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_treatment_rankings_causal_claim_status(p_treatment_ranking_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CASE WHEN (calc_treatment_rankings_contested_stratum_count(p_treatment_ranking_id))::NUMERIC > 0 THEN ('contested')::text ELSE (CASE WHEN (calc_treatment_rankings_unknown_causal_role_count(p_treatment_ranking_id))::NUMERIC > 0 THEN ('geometric-only')::text ELSE (CASE WHEN (calc_treatment_rankings_confirmed_causal_role_count(p_treatment_ranking_id))::NUMERIC > 0 THEN ('established')::text ELSE ('geometric-only')::text END)::text END)::text END)::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_treatment_rankings_adjustment_appropriate
+-- Field: TreatmentRankings.AdjustmentAppropriate
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_treatment_rankings_adjustment_appropriate(p_treatment_ranking_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (((calc_treatment_rankings_mediator_risk_count(p_treatment_ranking_id))::NUMERIC = 0 AND calc_treatment_rankings_causal_claim_status(p_treatment_ranking_id) = 'established'));
+$$ LANGUAGE sql STABLE;
+
 -- calc_invariant_checks_name
 -- Field: InvariantChecks.Name
 -- Type: calculated | DataType: string | Returns: TEXT
