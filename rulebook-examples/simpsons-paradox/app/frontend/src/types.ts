@@ -1,11 +1,40 @@
+export interface CaseCell {
+  case_cell_id: string;
+  study: string;
+  stratum_label: string;
+  treatment_label: string;
+  successes: number;
+  cases: number;
+  cell_success_rate: number;
+  total_cases_for_treatment?: number;
+  treatment_exposure_fraction?: number;
+}
+
+export interface SandboxEvaluateResult {
+  ranking: TreatmentRanking | null;
+  summaries: StratumSummary[];
+  cells: CaseCell[];
+}
+
 export interface Study {
   study_id: string;
   name: string;
   title: string;
   source: string;
   source_url: string;
+  publication_year: number | null;
+  domain: string | null;
+  is_synthetic: boolean | null;
   total_cases: number;
   cell_count: number;
+  distortion_type: string | null;
+  policy_implication: string | null;
+  allocation_distortion: number | null;
+  signal_purity: number | null;
+  is_sign_flip: boolean | null;
+  corrected_winner: string | null;
+  confounding_variable: string | null;
+  causal_role: string | null;
 }
 
 export interface Stratum {
@@ -57,6 +86,10 @@ export interface TreatmentRanking {
   reversal_intensity: number;
   threshold_margin: number;
   allocation_distortion: number;
+  distortion_ratio: number;
+  instrument_score: number;
+  screening_tier: string;
+  screening_verdict: string;
   signed_pooled_gap: number;
   weighted_stratum_gap_sum: number;
   pooled_gap: number;
@@ -65,7 +98,13 @@ export interface TreatmentRanking {
   definition_delta: boolean;
   strict_reversal_subtype: string;
   confounders_in_study: number;
+  arm_size_ratio: number;
+  symmetry_departure: number;
+  max_stratum_imbalance: number;
+  max_stratum_gap: number;
   is_paradox_explained: boolean;
+  signal_purity: number | null;
+  allocation_direction: string | null;
 }
 
 export interface Treatment {
@@ -77,6 +116,67 @@ export interface Treatment {
   total_cases: number;
   total_successes: number;
   pooled_success_rate: number;
+}
+
+export interface AllocationSweepRow {
+  sweep_id: string;
+  study_id: string;
+  alloc_fraction_a: number;
+  is_original: boolean;
+  n_sweep_stratum_total: number;
+  n_sweep_a: number;
+  n_sweep_b: number;
+  n_fixed_a: number;
+  n_fixed_b: number;
+  sweep_rate_a: number;
+  sweep_rate_b: number;
+  fixed_rate_a: number;
+  fixed_rate_b: number;
+  sweep_pooled_rate_a: number;
+  sweep_pooled_rate_b: number;
+  sweep_pooled_gap: number;
+  sweep_corrected_gap: number;
+  allocation_distortion_witness: number;
+}
+
+export interface SweepStudySummary {
+  sweep_study_id: string;
+  distortion_type_label: string;
+  sweep_stratum_label: string;
+  corrected_gap_constant: number;
+  sweep_corrected_gap_range: number;
+  sweep_pooled_gap_max: number;
+  sweep_pooled_gap_min: number;
+  sweep_pooled_gap_range: number;
+  pooled_gap_crosses_zero: boolean;
+  invariant_witness: string;
+}
+
+export interface SyntheticPhaseRow {
+  phase_id: string;
+  param_stratum_fraction: number;
+  param_stratum_gap1: number;
+  param_stratum_gap2: number;
+  param_allocation_bias: number;
+  phase_signed_pooled_gap: number;
+  phase_corrected_gap: number;
+  phase_allocation_distortion: number;
+  phase_distortion_type: string;
+  phase_is_sign_flip: boolean;
+  phase_reversal_intensity: number;
+}
+
+export interface PhaseDiagramSummary {
+  phase_diagram_id: string;
+  phase_point_count: number;
+  phase_type_a_count: number;
+  phase_type_b_count: number;
+  phase_type_c_plus_count: number;
+  phase_type_c_minus_count: number;
+  phase_type_d_count: number;
+  all_five_types_present: boolean;
+  phase_taxonomy_witness: string;
+  phase_witness_note: string;
 }
 
 export interface ModelSummary {
@@ -94,4 +194,80 @@ export interface ModelSummary {
   type_b_count: number;
   type_c_count: number;
   type_d_count: number;
+  min_ratio_type_a: number;
+  max_ratio_type_a: number;
+  min_ratio_type_b: number;
+  max_ratio_type_b: number;
+  avg_instrument_score_danger: number;
+  avg_instrument_score_caution: number;
+  danger_tier_count: number;
+  caution_tier_count: number;
+  safe_tier_count: number;
+  type_c_plus_count: number;
+  type_c_minus_count: number;
+  avg_signal_purity: number | null;
+  avg_signal_purity_reversal: number | null;
+  avg_signal_purity_non_reversal: number | null;
+  signal_purity_gap: number | null;
+  synthetic_phase_count: number | null;
+  phase_diagram_complete: boolean | null;
+  phase_taxonomy_coverage: string | null;
+  catalog_entry_count: number | null;
+  pending_import_count: number | null;
+  ready_to_encode_count: number | null;
+  import_session_ready: boolean | null;
+  catalog_witness_note: string | null;
+}
+
+export interface CorpusCatalogSummary {
+  catalog_summary_id: string;
+  total_catalog_entries: number;
+  imported_count: number;
+  candidate_count: number;
+  blocked_count: number;
+  ready_to_encode_count: number;
+  high_priority_count: number;
+  import_session_ready: boolean;
+  catalog_witness_note: string;
+}
+
+export interface CandidateStudyRow {
+  candidate_id: string;
+  proposed_study_id: string;
+  title: string;
+  citation: string;
+  source_url: string | null;
+  domain: string;
+  stratum_variable_name: string;
+  expected_distortion_type: string;
+  ingestion_status: string;
+  priority: number;
+  stratum_count_estimate: number;
+  data_source_note: string;
+  linked_study_id: string | null;
+  publication_year: number | null;
+  is_ready_to_encode: boolean;
+  is_imported: boolean;
+  observed_distortion_type: string | null;
+  type_prediction_match: boolean | null;
+}
+
+export interface DomainExpansionTarget {
+  domain_target_id: string;
+  domain: string;
+  target_min_count: number;
+  current_imported_count: number;
+  candidate_queued_count: number;
+  projected_count: number;
+  gap_count: number;
+  is_under_represented: boolean;
+}
+
+export interface StudyImportTemplateStep {
+  template_step_id: string;
+  sort_order: number;
+  target_table: string;
+  row_description: string;
+  required_fields: string;
+  mechanical_check: string;
 }

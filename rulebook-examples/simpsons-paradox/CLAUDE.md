@@ -5,13 +5,20 @@ This is an **Effortless Rulebook (ERB)** project. The SSoT is
 
 ## What this models
 
-A **digital mirror** of the Simpson's Paradox domain. The entities are domain objects:
-Studies, Treatments, Strata, CaseCells. The paradox emerges as a derived fact from
-the DAG — it is NOT modeled directly. No `ReversalDetection` entity. No `PooledRate`
-entity. The paradox falls out when you ask the right questions of the domain.
+A **digital mirror** of the Simpson's Paradox domain — a 46-study validation corpus
+spanning medicine, epidemiology, law, sports, education, economics, and social science.
+The entities are domain objects: Studies, Treatments, Strata, CaseCells. The paradox
+emerges as a derived fact from the DAG — it is NOT modeled directly. No
+`ReversalDetection` entity. No `PooledRate` entity. The paradox falls out when you ask
+the right questions of the domain.
 
-The model is built in 10 Leopold Loops. The `Loops` table IS the plan — each row
-documents what domain concept is introduced and what natural-language question it answers.
+Derived geometry on `TreatmentRankings` includes `IsSignFlip`, `AllocationDistortion`,
+`DistortionType` (A / B / C+ / C− / D), `SignalPurity`, and allocation-corrected winners.
+`InvariantChecks` rows are build-breaking: any `FailCount > 0` is a bug.
+
+The model is built iteratively via Leopold loops. The `Loops` table IS the plan — each
+row documents what domain concept is introduced and what natural-language question it
+answers. Read it before making structural changes.
 
 ## Relevant skills
 

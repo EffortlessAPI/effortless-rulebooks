@@ -26,6 +26,8 @@ export function ModelSummaryView() {
       <div className="page-desc">
         Rollup across all studies — how many exhibit each distortion type, the average
         paradox strength, and which studies the unanimity vs sign-flip definitions disagree on.
+        SignalPurity is treated as a first-class summary metric: values below 0.5 indicate
+        that allocation noise exceeds true signal on average.
       </div>
 
       <div className="three-col" style={{ marginBottom: 16 }}>
@@ -80,6 +82,22 @@ export function ModelSummaryView() {
           <div className="stat-row">
             <span className="stat-label">Average paradox strength</span>
             <span className="stat-value">{num(summary.avg_paradox_strength)}</span>
+          </div>
+          <div className="stat-row">
+            <span className="stat-label">Avg signal purity</span>
+            <span className="stat-value">{num(summary.avg_signal_purity)}</span>
+          </div>
+          <div className="stat-row">
+            <span className="stat-label">Avg purity (reversal)</span>
+            <span className="stat-value">{num(summary.avg_signal_purity_reversal)}</span>
+          </div>
+          <div className="stat-row">
+            <span className="stat-label">Avg purity (non-reversal)</span>
+            <span className="stat-value">{num(summary.avg_signal_purity_non_reversal)}</span>
+          </div>
+          <div className="stat-row">
+            <span className="stat-label">Signal purity gap</span>
+            <span className="stat-value">{num(summary.signal_purity_gap)}</span>
           </div>
           <div className="stat-row">
             <span className="stat-label">Total paradox strength</span>
@@ -155,6 +173,7 @@ export function ModelSummaryView() {
               <th style={{ textAlign: 'center', padding: '6px 6px' }}>Reversal</th>
               <th style={{ textAlign: 'center', padding: '6px 6px' }}>SignFlip</th>
               <th style={{ textAlign: 'right', padding: '6px 6px' }}>Strength</th>
+              <th style={{ textAlign: 'right', padding: '6px 6px' }}>Signal purity</th>
               <th style={{ textAlign: 'right', padding: '6px 6px' }}>Intensity</th>
               <th style={{ textAlign: 'right', padding: '6px 6px' }}>Distortion</th>
               <th style={{ textAlign: 'left', padding: '6px 6px' }}>Subtype</th>
@@ -177,6 +196,9 @@ export function ModelSummaryView() {
                 </td>
                 <td style={{ padding: '6px 6px', textAlign: 'right', fontVariantNumeric: 'tabular-nums' }}>
                   {num(r.paradox_strength)}
+                </td>
+                <td style={{ padding: '6px 6px', textAlign: 'right', fontVariantNumeric: 'tabular-nums', color: r.signal_purity != null && r.signal_purity < 0.5 ? '#ff7b72' : '#7ee787' }}>
+                  {num(r.signal_purity, 3)}
                 </td>
                 <td style={{ padding: '6px 6px', textAlign: 'right', fontVariantNumeric: 'tabular-nums' }}>
                   {(Number(r.reversal_intensity) * 100).toFixed(0)}%

@@ -1,6 +1,6 @@
 # Simpson's Paradox — Witnessed DAG Demo
 
-A **witnessed dependency graph** that turns Simpson's paradox from a textbook curiosity into a computational object. Sixteen published and synthetic studies — spanning medicine, law, sports, public health, and education — are poured into a single entity model. Every derived value falls out of formulas declared in the rulebook. No inference is ever hand-entered.
+A **witnessed dependency graph** that turns Simpson's paradox from a textbook curiosity into a computational object. **46 published and synthetic studies** — spanning medicine, epidemiology, law, sports, education, economics, and social science — are poured into a single entity model. The instrument was built across **57 Leopold loops** (loop-01 through loop-57, all complete; 52 rows documented in the `Loops` table). Every derived value falls out of formulas declared in the rulebook. No inference is ever hand-entered.
 
 ---
 
@@ -8,7 +8,9 @@ A **witnessed dependency graph** that turns Simpson's paradox from a textbook cu
 
 An **Effortless Rulebook (ERB)** domain. The SSoT is `effortless-rulebook/simpsons-paradox-rulebook.json`. All other artifacts — Postgres SQL, views, the explorer UI — are mechanically derived from it.
 
-The paradox **emerges** from the model. It is not modeled directly. `IsReversal` is a derived boolean that falls out of comparing pooled rates to per-stratum rates. There is no `ReversalDetection` entity.
+The paradox **emerges** from the model. It is not modeled directly. `IsReversal` and `IsSignFlip` are derived booleans that fall out of comparing pooled rates to per-stratum rates. There is no `ReversalDetection` entity.
+
+The `Loops` table is the build history — each row documents what domain concept was introduced, which natural-language question it answers, and what was witnessed.
 
 ---
 
@@ -21,13 +23,15 @@ Studies ──< Strata ──< CaseCells            ← raw leaves: (successes, 
               └──> StratumSummaries          per-(stratum, treatment) rates, StratumGap,
                                              AllocationBias, WeightedStratumRate
               └──> TreatmentRankings         IsReversal, IsSignFlip, AllocationDistortion,
-                                             DistortionType, PolicyImplication,
-                                             CorrectedWinner, CorrectedPolicyImplication
+                                             DistortionType, SignalPurity, AllocationDirection,
+                                             CorrectedWinner, PolicyImplication
    └──< StratumVariables                     IsConfounder, CausalRole, AdjustmentAppropriate
-   └──  ModelSummary                         epistemic rollup across all 16 studies
-   └──  InstrumentSpec                       5 input fields, 10 derived coordinates,
-                                             machine-verifiable adapter contract
-   └──  InvariantChecks                      7 algebraic self-consistency assertions (all PASS)
+   └──  ModelSummary                         epistemic rollup across all 46 studies
+   └──  InstrumentSpec                       input fields, derived coordinates, adapter contract
+   └──  InvariantChecks                      21 algebraic self-consistency assertions (all PASS)
+   └──  Conclusions / Methodology / Loops    witnessed claims and build narrative
+   └──  CandidateStudyCatalog               import backlog for corpus expansion
+   └──  AllocationSweep / SyntheticPhase     parameter-space exploration
 ```
 
 `CaseCells` is the ground truth. The Postgres view chain is:
@@ -35,61 +39,78 @@ Studies ──< Strata ──< CaseCells            ← raw leaves: (successes, 
 
 ---
 
-## The four distortion types
+## The five distortion types
 
-Beyond the binary `IsReversal`, every study is classified on a continuous distortion plane (allocation bias × paradox strength):
+Beyond the binary `IsReversal`, every study is classified on a continuous distortion plane (allocation bias × paradox strength). Type C was split in loop-43 into **C+** (amplification) and **C−** (compression) — epistemically opposite errors with opposite clinical implications.
 
-| Type | Criterion | Studies |
-|---|---|---|
-| **A — Full reversal** | `IsSignFlip=true`, unanimity across all strata | kidney-1986, reintjes-2000, radelet-1981, jeter-justice-1997, phe-covid-2021 |
-| **B — Sign flip** | `IsSignFlip=true`, not unanimous | berkeley-1973, appleton-1996, birth-weight-paradox, sat-wainer-1986 |
-| **C — Compressed** | `IsSignFlip=false`, `AllocationDistortion>0.01` | compressed-synthetic, hannan-1994, titanic-1912, melanoma-altman-1991 |
-| **D — Neutral** | `AllocationDistortion<0.01` | balanced-synthetic, kidney-balanced, coffee-tverdal-2020 |
+| Type | Criterion | Count | Representative studies |
+|---|---|---|---|
+| **A — Full reversal** | `IsSignFlip=true`, unanimity across all strata | 6 | kidney-1986, reintjes-2000, radelet-1981, jeter-justice-1997, phe-covid-2021, rosiglitazone-mi-pool-2007 |
+| **B — Sign flip** | `IsSignFlip=true`, not unanimous | 10 | berkeley-1973, berkeley-six-dept-1973, appleton-1996, birth-weight-paradox, sat-wainer-1986, … |
+| **C+ — Amplification** | `IsSignFlip=false`, `DistortionRatio > 1` | 5 | titanic-1912, melanoma-altman-1991, cesarean-birth-weight-2006, coffee-smoking-lung-1968, uc-irvine-admissions-1985 |
+| **C− — Compression** | `IsSignFlip=false`, `DistortionRatio ∈ (0,1)` | 4 | hannan-1994, compressed-synthetic, hanley-power-lines-2000, gender-pay-gap-industry |
+| **D — Neutral** | `AllocationDistortion < 0.01` | 21 | balanced-synthetic, kidney-balanced, coffee-tverdal-2020, folic-fortification-2000, … |
 
-`AllocationDistortion = |WeightedStratumGapSum − SignedPooledGap|` — the scalar distance between what equal-weight strata would show and what the actual allocation-weighted pooled number shows. Berkeley scores 0.193 (nearly twice kidney-1986's 0.099), despite `IsReversal=false`.
+`AllocationDistortion = |WeightedStratumGapSum − SignedPooledGap|` — the scalar distance between what equal-weight strata would show and what the actual allocation-weighted pooled number shows. Berkeley still scores **0.193** (nearly twice kidney-1986's 0.099), despite `IsReversal=false`.
+
+`SignalPurity = |CorrectedGap| / (|CorrectedGap| + AllocationDistortion)` — when below 0.5, allocation noise exceeds true signal; all type-A/B reversal studies satisfy this (witnessed in loop-44).
 
 ---
 
-## The 16 studies
+## The 46-study corpus
 
-| Study | N | Type | Domain | Source |
-|---|---|---|---|---|
-| kidney-1986 | 700 | A | medicine | Charig et al., BMJ 1986 |
-| reintjes-2000 | 3,519 | A | hospital epidemiology | Reintjes et al., Epidemiology 2000 |
-| radelet-1981 | 326 | A | criminal justice | Radelet, Am Soc Rev 1981 |
-| jeter-justice-1997 | 2,330 | A | sports | Ross, College Math J 2007 |
-| phe-covid-2021 | 268,166 | A | public health | PHE Technical Briefing 20, 2021 |
-| berkeley-1973 | 3,228 | B | education | Bickel et al., Science 1975 |
-| appleton-1996 | 1,314 | B | epidemiology | Appleton et al., Am Statistician 1996 |
-| birth-weight-paradox | 7,500 | B | neonatology | Yerushalmy 1971 / Hernandez-Diaz 2006 |
-| sat-wainer-1986 | 1,150 | B | education | Wainer 1986 |
-| compressed-synthetic | 400 | C | synthetic | constructed |
-| hannan-1994 | 1,100 | C | surgery | Hannan et al., JAMA 1994 |
-| titanic-1912 | 946 | C | history | British Board of Trade 1912 |
-| melanoma-altman-1991 | 400 | C | oncology | Altman 1991 / Balch 2001 |
-| balanced-synthetic | 400 | D | synthetic | constructed |
-| kidney-balanced | 700 | D | counterfactual | derived from kidney-1986 |
-| coffee-tverdal-2020 | 4,000 | D | cardiology | Tverdal et al., Eur J Prev Cardiol 2020 |
+| Domain | Studies | Types present |
+|---|---|---|
+| epidemiology | 12 | A, B, C+, C−, D |
+| medicine | 11 | A, B, C+, C−, D |
+| sports | 6 | A, B, D |
+| social-science | 5 | B, C+, D |
+| education | 4 | B, D |
+| economics | 3 | C−, D |
+| legal | 2 | A, B |
+| synthetic | 3 | C−, D (structural controls) |
 
-Synthetic and counterfactual studies are structural controls — they prove impossibility claims (balanced allocation → reversal structurally impossible) and isolate single causal factors.
+**Type A (6):** jeter-justice-1997, kidney-1986, phe-covid-2021, radelet-1981, reintjes-2000, rosiglitazone-mi-pool-2007
+
+**Type B (10):** appleton-1996, berkeley-1973, berkeley-six-dept-1973, birth-weight-paradox, ironman-gender-age-2010, north-carolina-death-penalty-1990, panama-sweden-mortality-1975, rogers-nicewander-1988, sat-wainer-1986, steroid-asthma-severity
+
+**Type C+ (5):** cesarean-birth-weight-2006, coffee-smoking-lung-1968, melanoma-altman-1991, titanic-1912, uc-irvine-admissions-1985
+
+**Type C− (4):** compressed-synthetic, gender-pay-gap-industry, hanley-power-lines-2000, hannan-1994
+
+**Type D (21):** balanced-synthetic, clemens-bly-1998, coffee-tverdal-2020, diabetes-metformin-bmi, exercise-cholesterol-age, florida-reef-fish-1994, folic-acid-neural-tube-1991, folic-fortification-2000, housing-discrimination-audit, income-education-state, kidney-balanced, kidney-dialysis-facility-1990, lucente-baseball-1995, oncology-trial-stage, open-university-1975, pisa-immigration-2015, red-meat-colorectal-bmi, schizophrenia-antipsychotic, wainer-sat-states-1992, warfarin-bleeding-age, wilson-batting-2000
+
+Synthetic and counterfactual studies are structural controls — they prove impossibility claims (balanced allocation → reversal structurally impossible) and isolate single causal factors. **43 of 45 catalog candidates** are linked to live studies (`inv-catalog-imported-linked`).
 
 ---
 
 ## What the model witnesses
 
-All seven algebraic invariants pass across all 16 studies (7/7 PASS, 0 failures):
+All **21 algebraic invariants** pass across the full corpus (**0 failures** — any `FailCount > 0` breaks the build):
 
-- Every row has a `DistortionType` in {A,B,C,D}
-- Types A and B always have `IsSignFlip=TRUE`
-- Types C and D always have `IsSignFlip=FALSE`
+- Every row has a `DistortionType` in {A, B, C+, C−, D}
+- Types A and B always have `IsSignFlip=TRUE`; C+, C−, and D always have `IsSignFlip=FALSE`
 - When `IsSignFlip=TRUE`, corrected and pooled winners always disagree
 - When `DistortionType=D`, corrected and pooled winners always agree
 - Type-D rows always have `AllocationDistortion < 0.01`
 - `SIGN(CorrectedGap) = SIGN(WeightedStratumGapSum)` for all rows
+- C+ rows have `DistortionRatio > 1`; C− rows have `DistortionRatio ∈ (0,1)`
+- All reversal studies (types A/B) have `SignalPurity < 0.5`
+- …plus ingestion-contract, phase-diagram, and catalog-linkage checks
 
-The model also witnesses its own epistemic coverage in a single `ModelSummary` row: 5 full reversals (unanimity), 9 sign-flips (v2 criterion), all four distortion types populated, `AllocationDistortion` measured for all 16 studies.
+The `ModelSummary` row witnesses epistemic coverage in one query:
+
+| Metric | Value |
+|---|---|
+| StudyCount | 46 |
+| ReversalCount (unanimity) | 8 |
+| ReversalCountV2 (sign-flip) | 16 |
+| Type A / B / C / D | 6 / 10 / 9 / 21 |
+| ExplainedCountV2 | 13 |
 
 **Reversal recovery is free.** `CorrectedGap = WeightedStratumGapSum` is already derived from the allocation arithmetic. The allocation-corrected winner (`CorrectedWinner`) and its policy implication (`CorrectedPolicyImplication`) cost zero new data.
+
+**14 witnessed conclusions** are stored as first-class rows in `Conclusions` — from "Simpson's paradox is a derived fact" (loop-04) through the SignalPurity theorem (loop-44) and the five-type instrument spec (loop-26).
 
 ---
 
@@ -97,35 +118,19 @@ The model also witnesses its own epistemic coverage in a single `ModelSummary` r
 
 Run `./start.sh` to boot the backend (`:3001`) and Vite frontend (`:5173`).
 
-### Study Overview
+| Route | View |
+|---|---|
+| `/overview` | **Study Overview** — allocation-distortion plane; each dot is a study, colored by type |
+| `/stratum` | **Stratum Breakdown** — per-stratum rates vs pooled rates for any selected study |
+| `/weights` | **Allocation Weights** — case distribution across strata vs stratum success rate |
+| `/sandbox` | **Interactive Sandbox** — adjust raw counts via sliders; derived fields update live via the same Postgres views (rollback transaction) |
+| `/model` | **Model Summary** — rollup across all 46 studies: type distribution, paradox strength, definition-delta table |
+| `/sweep` | **Allocation Sweep** — parameter-space exploration of allocation geometry |
+| `/phase` | **Phase Diagram** — five-type taxonomy in synthetic parameter space |
+| `/catalog` | **Import Backlog** — candidate studies awaiting ingestion |
+| `/instrument` | **Instrument Dashboard** — `InstrumentSpec` adapter contract and screening coordinates |
 
-The allocation-distortion plane. X = how far allocation bends the pooled signal; Y = paradox strength. Each dot is a study, colored by type.
-
-![Study Overview](docs/screenshots/overview.png)
-
-### Stratum Breakdown
-
-Per-stratum success rates (bars) vs pooled rates (dashed lines) for any selected study. When bars unanimously favour one treatment but the dashed lines cross — that's the paradox made visual.
-
-![Stratum Breakdown](docs/screenshots/stratum-breakdown.png)
-
-### Allocation Weights
-
-How each treatment's cases are distributed across strata (bars) vs the stratum success rate (line). When a treatment concentrates in low-success strata, its pooled rate is dragged down even when it wins every stratum individually.
-
-![Allocation Weights](docs/screenshots/allocation-weights.png)
-
-### Interactive Sandbox
-
-Adjust raw counts via sliders. `IsReversal`, `IsSignFlip`, `AllocationDistortion`, and `DistortionType` update live — running the same DAG as the Postgres views, entirely in the browser. Presets load kidney-1986, Berkeley, and the neutral control.
-
-![Interactive Sandbox](docs/screenshots/sandbox.png)
-
-### Model Summary
-
-Rollup across all 16 studies: distortion type distribution, average paradox strength, and the "definition delta" table showing which studies the unanimity vs sign-flip definitions disagree on.
-
-![Model Summary](docs/screenshots/model-summary.png)
+The sandbox presets load kidney-1986, Berkeley, and the neutral control. A standalone email-ready HTML export lives at `simpsons-paradox-explorer.html`.
 
 ---
 

@@ -1,158 +1,375 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { Chart } from 'chart.js/auto';
 import { api } from '../api';
-import type { Study, TreatmentRanking } from '../types';
+import type { ModelSummary, Study, TreatmentRanking } from '../types';
+import {
+  TYPE_COLORS,
+  buildCanonicalPlaneChart,
+  buildPurityChart,
+  buildRecoveryChart,
+  buildScreeningChart,
+} from './overviewCharts';
+import './Overview.css';
 
-function typeBadge(r: TreatmentRanking) {
-  const cls = `badge badge-type-${r.distortion_type?.toLowerCase() ?? 'd'}`;
-  return <span className={cls}>Type {r.distortion_type}</span>;
+const TYPE_INSIGHTS = [
+  {
+    key: 'A',
+    typeClass: 'type-a',
+    title: 'Full reversal',
+    desc: 'Pooled winner is wrong in every stratum. Stratify immediately — the aggregate lies.',
+    filter: (r: TreatmentRanking) => r.distortion_type === 'A',
+  },
+  {
+    key: 'B',
+    typeClass: 'type-b',
+    title: 'Sign flip',
+    desc: 'Direction reverses but not unanimously. Investigate the confounder before trusting pooled rates.',
+    filter: (r: TreatmentRanking) => r.distortion_type === 'B',
+  },
+  {
+    key: 'C',
+    typeClass: 'type-c',
+    title: 'Magnitude distortion',
+    desc: 'Winner direction holds, but allocation inflates or compresses the effect size.',
+    filter: (r: TreatmentRanking) => r.distortion_type.startsWith('C'),
+  },
+  {
+    key: 'D',
+    typeClass: 'type-d',
+    title: 'Trustworthy pooled',
+    desc: 'Allocation is balanced enough — the naive aggregate is safe to report.',
+    filter: (r: TreatmentRanking) => r.distortion_type === 'D',
+  },
+] as const;
+
+function n(v: number | string | null | undefined, dp = 3): string {
+  if (v == null || v === '') return '—';
+  return Number(v).toFixed(dp);
 }
 
-function pct(n: number | null) {
-  if (n == null) return '—';
-  return (Number(n) * 100).toFixed(1) + '%';
+function pct(v: number | null | undefined): string {
+  if (v == null) return '—';
+  return (Number(v) * 100).toFixed(1) + '%';
 }
 
-function num(n: number | null, dp = 3) {
-  if (n == null) return '—';
-  return Number(n).toFixed(dp);
+function typeBadge(type: string | null | undefined) {
+  const cls = type?.startsWith('C') ? 'badge badge-type-c' : `badge badge-type-${type?.toLowerCase() ?? 'd'}`;
+  return <span className={cls}>Type {type}</span>;
+}
+
+function tierPill(tier: string | null | undefined) {
+  if (!tier) return null;
+  return <span className={`tier-pill ${tier.toLowerCase()}`}>{tier}</span>;
 }
 
 export function OverviewView() {
   const [studies, setStudies] = useState<Study[]>([]);
   const [rankings, setRankings] = useState<TreatmentRanking[]>([]);
+  const [summary, setSummary] = useState<ModelSummary | null>(null);
   const [loading, setLoading] = useState(true);
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const chartRef = useRef<Chart | null>(null);
+  const [typeFilter, setTypeFilter] = useState<string | null>(null);
+  const [tierFilter, setTierFilter] = useState<string | null>(null);
+  const [search, setSearch] = useState('');
+  const [expanded, setExpanded] = useState<string | null>(null);
+
+  const canonicalRef = useRef<HTMLCanvasElement>(null);
+  const finding1Ref = useRef<HTMLCanvasElement>(null);
+  const finding2Ref = useRef<HTMLCanvasElement>(null);
+  const finding3Ref = useRef<HTMLCanvasElement>(null);
+  const chartsRef = useRef<(Chart | null)[]>([]);
 
   useEffect(() => {
-    Promise.all([api.studies(), api.treatmentRankings()])
-      .then(([s, r]) => { setStudies(s); setRankings(r); })
+    Promise.all([api.studies(), api.treatmentRankings(), api.modelSummary()])
+      .then(([s, r, m]) => { setStudies(s); setRankings(r); setSummary(m); })
       .finally(() => setLoading(false));
   }, []);
 
-  useEffect(() => {
-    if (!canvasRef.current || !rankings.length) return;
-    if (chartRef.current) chartRef.current.destroy();
+  const studyById = useMemo(
+    () => Object.fromEntries(studies.map(s => [s.study_id, s])),
+    [studies],
+  );
 
-    const typeColors: Record<string, string> = {
-      A: '#ff7b72', B: '#d2a8ff', C: '#7ee787', D: '#6e7681',
-    };
 
-    const datasets = ['A', 'B', 'C', 'D'].map(t => ({
-      label: `Type ${t}`,
-      data: rankings
-        .filter(r => r.distortion_type === t)
-        .map(r => ({
-          x: Number(r.allocation_distortion),
-          y: Number(r.paradox_strength),
-          label: r.study,
-        })),
-      backgroundColor: typeColors[t] + 'cc',
-      pointRadius: 8,
-      pointHoverRadius: 10,
-    }));
+  const spotlight = useMemo(
+    () => [...rankings]
+      .sort((a, b) => Number(b.instrument_score) - Number(a.instrument_score))
+      .slice(0, 6),
+    [rankings],
+  );
 
-    chartRef.current = new Chart(canvasRef.current, {
-      type: 'scatter',
-      data: { datasets },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-          legend: { labels: { color: '#8b949e', font: { size: 12 } } },
-          tooltip: {
-            callbacks: {
-              label: ctx => {
-                const d = ctx.raw as { x: number; y: number; label: string };
-                return `${d.label}  distortion=${d.x.toFixed(3)}  strength=${d.y.toFixed(3)}`;
-              },
-            },
-          },
-        },
-        scales: {
-          x: {
-            title: { display: true, text: 'Allocation Distortion', color: '#8b949e' },
-            ticks: { color: '#8b949e' },
-            grid: { color: '#21262d' },
-          },
-          y: {
-            title: { display: true, text: 'Paradox Strength', color: '#8b949e' },
-            ticks: { color: '#8b949e' },
-            grid: { color: '#21262d' },
-          },
-        },
-      },
+  const filteredStudies = useMemo(() => {
+    const q = search.trim().toLowerCase();
+    return studies.filter(s => {
+      const r = rankings.find(x => x.study === s.study_id);
+      if (typeFilter && r?.distortion_type !== typeFilter && !(typeFilter === 'C' && r?.distortion_type.startsWith('C'))) return false;
+      if (tierFilter && r?.screening_tier !== tierFilter) return false;
+      if (!q) return true;
+      return (
+        s.study_id.toLowerCase().includes(q) ||
+        (s.title ?? '').toLowerCase().includes(q) ||
+        (s.domain ?? '').toLowerCase().includes(q)
+      );
     });
-  }, [rankings]);
+  }, [studies, rankings, typeFilter, tierFilter, search]);
+
+  useEffect(() => {
+    if (!rankings.length) return;
+    chartsRef.current.forEach(c => c?.destroy());
+    const built: Chart[] = [];
+    if (canonicalRef.current) built.push(buildCanonicalPlaneChart(canonicalRef.current, rankings, studyById));
+    if (finding1Ref.current) built.push(buildRecoveryChart(finding1Ref.current, rankings, studyById));
+    if (finding2Ref.current) built.push(buildScreeningChart(finding2Ref.current, rankings, studyById));
+    if (finding3Ref.current) built.push(buildPurityChart(finding3Ref.current, rankings, studyById));
+    chartsRef.current = built;
+    return () => { chartsRef.current.forEach(c => c?.destroy()); chartsRef.current = []; };
+  }, [rankings, studyById]);
 
   if (loading) return <div className="loading">Loading…</div>;
 
-  const rankByStudy = Object.fromEntries(rankings.map(r => [r.study, r]));
+  const total = summary?.study_count ?? studies.length;
+  const dangerCount = Number(summary?.danger_tier_count ?? 0);
+  const signFlipCount = rankings.filter(r => r.is_sign_flip).length;
+  const reversalCount = Number(summary?.reversal_count ?? 0);
 
   return (
-    <div>
-      <div className="page-title">Study Overview</div>
-      <div className="page-desc">
-        Each study plotted on the allocation-distortion plane. X axis = how far allocation
-        bends the pooled signal; Y axis = paradox strength (pooled gap × reversal intensity).
-        Type A = full sign-flip reversal · B = partial sign-flip · C = distortion without
-        flip · D = neutral.
-      </div>
-
-      <div className="card" style={{ marginBottom: 20 }}>
-        <h3>Allocation distortion plane</h3>
-        <div style={{ height: 320 }}>
-          <canvas ref={canvasRef} />
+    <div className="overview">
+      <div className="overview-hero">
+        <div className="overview-hero-inner">
+          <div className="overview-eyebrow">Simpson's Paradox · {total} witnessed studies</div>
+          <h1 className="overview-headline">
+            <em>{dangerCount} of {total}</em> pooled conclusions would mislead you.
+          </h1>
+          <p className="overview-sub">
+            Three derived facts fall out of the same arithmetic: severity tracks allocation bias,
+            corrected gaps diverge from pooled gaps on sign-flips, and signal purity flags when
+            the aggregate is mostly noise.
+          </p>
         </div>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: 14 }}>
-        {studies.map(s => {
-          const r = rankByStudy[s.study_id];
+      <div className="kpi-strip">
+        <div className="kpi-tile danger">
+          <div className="kpi-value danger">{dangerCount}</div>
+          <div className="kpi-label">DANGER tier<br />Pooled sign is wrong</div>
+        </div>
+        <div className="kpi-tile caution">
+          <div className="kpi-value caution">{summary?.caution_tier_count ?? '—'}</div>
+          <div className="kpi-label">CAUTION tier<br />Magnitude distorted</div>
+        </div>
+        <div className="kpi-tile safe">
+          <div className="kpi-value safe">{summary?.safe_tier_count ?? '—'}</div>
+          <div className="kpi-label">SAFE tier<br />Pooling trustworthy</div>
+        </div>
+        <div className="kpi-tile info">
+          <div className="kpi-value info">{signFlipCount}</div>
+          <div className="kpi-label">Sign-flips<br />vs {reversalCount} unanimous reversals</div>
+        </div>
+      </div>
+
+      {/* Anchor visualization — the original good one */}
+      <div className="canonical-plane-panel">
+        <div className="finding-badge">Signature view</div>
+        <h2 className="canonical-title">Allocation distortion plane</h2>
+        <p className="chart-caption">
+          Each dot is a study. X = how far allocation bends the pooled signal;
+          Y = paradox strength (pooled gap × reversal intensity).
+          Sign-flip studies rise from the origin toward the upper-right — severity tracks bias.
+          Color = distortion type.
+        </p>
+        <div className="chart-canvas-wrap chart-canvas-wrap-hero">
+          <canvas ref={canonicalRef} />
+        </div>
+      </div>
+
+      {/* Three key findings — additional 2D views, not replacements */}
+      <div className="findings-section-header">
+        <h2 className="section-title">Three findings from the corpus</h2>
+        <p className="section-sub">Same 40 studies, three other lenses — the plane above is unchanged.</p>
+      </div>
+
+      <div className="findings-grid">
+        <div className="finding-panel">
+          <div className="finding-num">1</div>
+          <h3 className="finding-title">Reversal recovery is visible</h3>
+          <p className="finding-blurb">
+            Where sign-flip occurs, the pooled gap (x) and stratum-corrected gap (y) disagree.
+            Points off the diagonal are studies where pooling picked the wrong direction.
+          </p>
+          <div className="chart-canvas-wrap chart-canvas-wrap-finding">
+            <canvas ref={finding1Ref} />
+          </div>
+        </div>
+
+        <div className="finding-panel">
+          <div className="finding-num">2</div>
+          <h3 className="finding-title">Screening separates safe from dangerous</h3>
+          <p className="finding-blurb">
+            Instrument score (|DistortionRatio − 1|) vs allocation distortion.
+            DANGER studies cluster upper-right; SAFE studies hug the origin.
+          </p>
+          <div className="chart-canvas-wrap chart-canvas-wrap-finding">
+            <canvas ref={finding2Ref} />
+          </div>
+        </div>
+
+        <div className="finding-panel">
+          <div className="finding-num">3</div>
+          <h3 className="finding-title">Signal purity marks suspect aggregates</h3>
+          <p className="finding-blurb">
+            When purity drops below 0.5, allocation noise contributes more than half the pooled
+            signal. Sign-flip studies (red/purple) sit low; many safe studies sit high.
+          </p>
+          <div className="chart-canvas-wrap chart-canvas-wrap-finding">
+            <canvas ref={finding3Ref} />
+          </div>
+        </div>
+      </div>
+
+      <div className="insight-grid">
+        {TYPE_INSIGHTS.map(ins => {
+          const count = rankings.filter(ins.filter).length;
+          const active = typeFilter === ins.key;
           return (
-            <div className="card" key={s.study_id}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 8 }}>
+            <div
+              key={ins.key}
+              className={`insight-card ${ins.typeClass}${active ? ' active' : ''}`}
+              onClick={() => setTypeFilter(active ? null : ins.key)}
+              role="button"
+              tabIndex={0}
+              onKeyDown={e => e.key === 'Enter' && setTypeFilter(active ? null : ins.key)}
+            >
+              <div className="insight-type">TYPE {ins.key}</div>
+              <div className="insight-title">{ins.title}</div>
+              <div className="insight-desc">{ins.desc}</div>
+              <div className="insight-count">{count}</div>
+            </div>
+          );
+        })}
+      </div>
+
+      <div className="spotlight-section">
+        <div className="section-header">
+          <div>
+            <div className="section-title">Most misleading studies</div>
+            <div className="section-sub">Ranked by instrument score — click to jump to full detail below</div>
+          </div>
+        </div>
+        <div className="spotlight-list">
+          {spotlight.map((r, i) => {
+            const study = studyById[r.study];
+            return (
+              <div
+                key={r.treatment_ranking_id}
+                className="spotlight-row"
+                onClick={() => {
+                  setExpanded(r.study);
+                  setSearch('');
+                  setTypeFilter(null);
+                  setTierFilter(null);
+                  document.getElementById(`study-${r.study}`)?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }}
+              >
+                <div className={`spotlight-rank${i < 3 ? ' top' : ''}`}>{i + 1}</div>
                 <div>
-                  <div style={{ fontWeight: 600, fontSize: 14 }}>{s.title || s.name}</div>
-                  <div style={{ color: '#8b949e', fontSize: 12, marginTop: 2 }}>{s.source}</div>
+                  <div className="spotlight-name">{study?.title ?? r.study}</div>
+                  <div className="spotlight-meta">{r.study} · {study?.domain ?? '—'}</div>
                 </div>
-                {r && typeBadge(r)}
+                <div className="spotlight-metrics">
+                  <div className="spotlight-metric">
+                    <span className="val" style={{ color: TYPE_COLORS[r.distortion_type] ?? '#ff7b72' }}>
+                      {n(r.paradox_strength, 4)}
+                    </span>
+                    <span className="lbl">Strength</span>
+                  </div>
+                  <div className="spotlight-metric">
+                    <span className="val">{n(r.allocation_distortion)}</span>
+                    <span className="lbl">Distortion</span>
+                  </div>
+                  <div className="spotlight-metric">
+                    <span className="val">{n(r.instrument_score)}</span>
+                    <span className="lbl">Instrument</span>
+                  </div>
+                </div>
+                <div className="study-row-badges">
+                  {typeBadge(r.distortion_type)}
+                  {tierPill(r.screening_tier)}
+                </div>
               </div>
-              {r && <>
-                <div className="stat-row">
-                  <span className="stat-label">Pooled winner</span>
-                  <span className="stat-value">{r.pooled_winner}</span>
+            );
+          })}
+        </div>
+      </div>
+
+      <div className="study-explorer">
+        <div className="section-header">
+          <div className="section-title">All studies</div>
+          <span className="explorer-count">{filteredStudies.length} of {total}</span>
+        </div>
+
+        <div className="explorer-toolbar">
+          <input
+            className="explorer-search"
+            placeholder="Search by name, domain, or ID…"
+            value={search}
+            onChange={e => setSearch(e.target.value)}
+          />
+          {(['DANGER', 'CAUTION', 'SAFE'] as const).map(t => (
+            <button
+              key={t}
+              type="button"
+              className={`filter-chip tier-${t.toLowerCase()}${tierFilter === t ? ' active' : ''}`}
+              onClick={() => setTierFilter(tierFilter === t ? null : t)}
+            >
+              {t}
+            </button>
+          ))}
+          {(typeFilter || tierFilter || search) && (
+            <button
+              type="button"
+              className="filter-chip"
+              onClick={() => { setTypeFilter(null); setTierFilter(null); setSearch(''); }}
+            >
+              Clear filters
+            </button>
+          )}
+        </div>
+
+        {filteredStudies.map(s => {
+          const r = rankings.find(x => x.study === s.study_id);
+          const isOpen = expanded === s.study_id;
+          return (
+            <div className="study-row-compact" key={s.study_id} id={`study-${s.study_id}`}>
+              <div
+                className="study-row-header"
+                onClick={() => setExpanded(isOpen ? null : s.study_id)}
+              >
+                <div>
+                  <div className="study-row-title">{s.title || s.name}</div>
+                  <div className="study-row-source">{s.source}</div>
                 </div>
-                <div className="stat-row">
-                  <span className="stat-label">Per-stratum winner</span>
-                  <span className="stat-value">{r.per_stratum_winner}</span>
+                <div className="study-row-badges">
+                  {r && typeBadge(r.distortion_type)}
+                  {r && tierPill(r.screening_tier)}
                 </div>
-                <div className="stat-row">
-                  <span className="stat-label">IsReversal (unanimity)</span>
-                  <span className="stat-value" style={{ color: r.is_reversal ? '#ff7b72' : '#7ee787' }}>
-                    {r.is_reversal ? 'YES' : 'no'}
-                  </span>
+                <span className={`study-row-chevron${isOpen ? ' open' : ''}`}>▶</span>
+              </div>
+              {isOpen && r && (
+                <div className="study-row-detail">
+                  <div className="detail-kv"><span className="dk">Pooled winner</span><span className="dv">{r.pooled_winner}</span></div>
+                  <div className="detail-kv"><span className="dk">Per-stratum winner</span><span className="dv">{r.per_stratum_winner}</span></div>
+                  <div className="detail-kv"><span className="dk">Paradox strength</span><span className="dv">{n(r.paradox_strength, 4)}</span></div>
+                  <div className="detail-kv"><span className="dk">Sign flip</span><span className="dv" style={{ color: r.is_sign_flip ? '#ff7b72' : '#7ee787' }}>{r.is_sign_flip ? 'YES' : 'no'}</span></div>
+                  <div className="detail-kv"><span className="dk">Allocation distortion</span><span className="dv">{n(r.allocation_distortion)}</span></div>
+                  <div className="detail-kv"><span className="dk">Instrument score</span><span className="dv">{n(r.instrument_score)}</span></div>
+                  <div className="detail-kv"><span className="dk">Signal purity</span><span className="dv" style={{ color: r.signal_purity != null && r.signal_purity < 0.5 ? '#ff7b72' : '#7ee787' }}>{pct(r.signal_purity)}</span></div>
+                  <div className="detail-kv"><span className="dk">Domain · year</span><span className="dv">{s.domain ?? '—'} · {s.publication_year ?? '—'}</span></div>
+                  {r.screening_verdict && (
+                    <div style={{ gridColumn: '1 / -1', fontSize: 12, color: '#8b949e', marginTop: 4, lineHeight: 1.5 }}>
+                      {r.screening_verdict}
+                    </div>
+                  )}
                 </div>
-                <div className="stat-row">
-                  <span className="stat-label">IsReversal v2 (sign-flip)</span>
-                  <span className="stat-value" style={{ color: r.is_reversal_v2 ? '#d2a8ff' : '#7ee787' }}>
-                    {r.is_reversal_v2 ? 'YES' : 'no'}
-                  </span>
-                </div>
-                <div className="stat-row">
-                  <span className="stat-label">Allocation distortion</span>
-                  <span className="stat-value">{num(r.allocation_distortion)}</span>
-                </div>
-                <div className="stat-row">
-                  <span className="stat-label">Paradox strength</span>
-                  <span className="stat-value">{num(r.paradox_strength)}</span>
-                </div>
-                <div className="stat-row">
-                  <span className="stat-label">Pooled rate A / B</span>
-                  <span className="stat-value">{pct(r.pooled_rate_a)} / {pct(r.pooled_rate_b)}</span>
-                </div>
-              </>}
+              )}
             </div>
           );
         })}

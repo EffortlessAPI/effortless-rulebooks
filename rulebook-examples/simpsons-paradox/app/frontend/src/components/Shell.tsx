@@ -24,6 +24,18 @@ export function Shell() {
         <NavLink to="/model" className={({ isActive }) => isActive ? 'nav-item active' : 'nav-item'}>
           Model Summary
         </NavLink>
+        <NavLink to="/sweep" className={({ isActive }) => isActive ? 'nav-item active' : 'nav-item'}>
+          Allocation Sweep
+        </NavLink>
+        <NavLink to="/phase" className={({ isActive }) => isActive ? 'nav-item active' : 'nav-item'}>
+          Phase Diagram
+        </NavLink>
+        <NavLink to="/catalog" className={({ isActive }) => isActive ? 'nav-item active' : 'nav-item'}>
+          Import Backlog
+        </NavLink>
+        <NavLink to="/instrument" className={({ isActive }) => isActive ? 'nav-item active' : 'nav-item'}>
+          Instrument Dashboard
+        </NavLink>
         <div className="sidebar-sep" />
         <a
           className="nav-item nav-item-external"

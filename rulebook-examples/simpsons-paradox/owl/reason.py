@@ -26,6 +26,7 @@ leaves, derive the DAG, diff the two substrates.
 Deps: rdflib, pyshacl, psycopg2 (all present in the ERB environment).
 Run:  python3 owl/reason.py   (from the project root)
 """
+import json
 import os
 import subprocess
 import sys
@@ -36,6 +37,7 @@ from pyshacl import validate
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 SRC = os.path.join(HERE, "src")
+RULEBOOK = os.path.join(HERE, "..", "effortless-rulebook", "simpsons-paradox-rulebook.json")
 NS = "https://w3id.org/effortless-ntwf#"
 NTWF = Namespace(NS)
 PG_CONN = os.environ.get(
@@ -43,47 +45,56 @@ PG_CONN = os.environ.get(
     "postgresql://postgres@localhost:5432/simpsons_paradox",
 )
 
-# Fields we compare OWL-derived vs Postgres for TreatmentRankings.
-# These are the pure calculated fields whose SHACL rules were generated.
-TR_COMPARE = {
-    "pooledRateA":               ("pooled_rate_a",              float),
-    "pooledRateB":               ("pooled_rate_b",              float),
-    "pooledWinner":              ("pooled_winner",              str),
-    "perStratumWinner":          ("per_stratum_winner",         str),
-    "isReversal":                ("is_reversal",                bool),
-    "isParadoxExplained":        ("is_paradox_explained",       bool),
-    "strataWonByLoser":          ("strata_won_by_loser",        int),
-    "reversalIntensity":         ("reversal_intensity",         float),
-    "thresholdMargin":           ("threshold_margin",           float),
-    "signedPooledGap":           ("signed_pooled_gap",          float),
-    "isSignFlip":                ("is_sign_flip",               bool),
-    "distortionType":            ("distortion_type",            str),
-    "isReversal_v2":             ("is_reversal_v2",             bool),
-    "definitionDelta":           ("definition_delta",           bool),
-    "strictReversalSubtype":     ("strict_reversal_subtype",    str),
-    "correctedGap":              ("corrected_gap",              float),
-    "correctedWinner":           ("corrected_winner",           str),
-    "correctedVsPooledAgreement": ("corrected_vs_pooled_agreement", bool),
-    "correctedPolicyImplication": ("corrected_policy_implication", str),
-    "causalClaimStatus":         ("causal_claim_status",        str),
-    "adjustmentAppropriate":     ("adjustment_appropriate",     bool),
+TYPE_MAP = {
+    "float": float,
+    "int": int,
+    "bool": bool,
+    "str": str,
 }
 
-# Fields for StratumSummaries that SHACL can derive once stratumCasesA/B etc. are asserted.
-SS_COMPARE = {
-    "stratumRateA":      ("stratum_rate_a",      float),
-    "stratumRateB":      ("stratum_rate_b",      float),
-    "stratumWinner":     ("stratum_winner",       str),
-    "stratumFraction":   ("stratum_fraction",     float),
-    "allocationBias":    ("allocation_bias",      float),
-    "stratumGap":        ("stratum_gap",          float),
-    "weightedStratumGap": ("weighted_stratum_gap", float),
-}
 
-# Fields for StratumVariables.
-SV_COMPARE = {
-    "isConfounder": ("is_confounder", bool),
-}
+def load_conformance_manifest():
+    """Load SubstrateConformanceFields rows from the rulebook SSoT."""
+    with open(RULEBOOK, encoding="utf-8") as f:
+        rb = json.load(f)
+    return rb["SubstrateConformanceFields"]["data"]
+
+
+def compare_specs_from_manifest(manifest):
+    """Build per-table compare dicts: owlLocalName -> (pg_column, python_type)."""
+    specs = {
+        "TreatmentRankings": {},
+        "StratumSummaries": {},
+        "StratumVariables": {},
+    }
+    for row in manifest:
+        if not row.get("InCompareSet"):
+            continue
+        table = row["SourceTable"]
+        specs[table][row["OwlLocalName"]] = (
+            row["PgColumn"],
+            TYPE_MAP[row["DataType"]],
+        )
+    return specs
+
+
+def assert_from_postgres_rows(manifest, g, pg_by_table):
+    """Assert fields flagged AssertFromPostgres=TRUE before SHACL fixpoint."""
+    for row in manifest:
+        if not row.get("AssertFromPostgres"):
+            continue
+        table = row["SourceTable"]
+        pg_rows = pg_by_table.get(table, {})
+        owl_local = row["OwlLocalName"]
+        pg_col = row["PgColumn"]
+        typ = TYPE_MAP[row["DataType"]]
+        pred = NTWF[owl_local]
+        for pk, data in pg_rows.items():
+            subj = NTWF[pk.replace(" ", "-")]
+            raw = data.get(owl_local, data.get(pg_col, ""))
+            lit = xsd_val(raw, typ)
+            if lit is not None:
+                g.add((subj, pred, lit))
 
 
 def psql(sql):
@@ -95,13 +106,13 @@ def psql(sql):
     return [line for line in out.splitlines() if line.strip()]
 
 
-def pg_treatment_rankings():
+def pg_treatment_rankings(compare_spec):
     cols = "treatment_ranking_id," + ",".join(
-        pg_col for _, (pg_col, _) in TR_COMPARE.items()
+        pg_col for _, (pg_col, _) in compare_spec.items()
     )
     rows = psql(f"SELECT {cols} FROM vw_treatment_rankings ORDER BY 1;")
     result = {}
-    col_names = list(TR_COMPARE.keys())
+    col_names = list(compare_spec.keys())
     for line in rows:
         parts = line.split("\t")
         pk = parts[0]
@@ -111,9 +122,9 @@ def pg_treatment_rankings():
     return result
 
 
-def pg_stratum_summaries():
+def pg_stratum_summaries(compare_spec):
     cols = "stratum_summary_id,stratum_cases_a,stratum_cases_b,stratum_successes_a,stratum_successes_b,stratum_cases,stratum_successes,study_total_cases,stratum_total_cases,treatment_a_cases_here,treatment_b_cases_here,treatment_a_total_cases,treatment_b_total_cases,weighted_stratum_rate," + ",".join(
-        pg_col for _, (pg_col, _) in SS_COMPARE.items()
+        pg_col for _, (pg_col, _) in compare_spec.items()
     )
     rows = psql(f"SELECT {cols} FROM vw_stratum_summaries ORDER BY 1;")
     result = {}
@@ -121,7 +132,7 @@ def pg_stratum_summaries():
                   "stratumCases", "stratumSuccesses", "studyTotalCases", "stratumTotalCases",
                   "treatmentACasesHere", "treatmentBCasesHere", "treatmentATotalCases", "treatmentBTotalCases",
                   "weightedStratumRate"]
-    derive_cols = list(SS_COMPARE.keys())
+    derive_cols = list(compare_spec.keys())
     for line in rows:
         parts = line.split("\t")
         pk = parts[0]
@@ -134,9 +145,9 @@ def pg_stratum_summaries():
     return result
 
 
-def pg_stratum_variables():
+def pg_stratum_variables(compare_spec):
     cols = "stratum_variable_id,affects_treatment_assignment,affects_outcome,causal_role," + ",".join(
-        pg_col for _, (pg_col, _) in SV_COMPARE.items()
+        pg_col for _, (pg_col, _) in compare_spec.items()
     )
     rows = psql(f"SELECT {cols} FROM vw_stratum_variables ORDER BY 1;")
     result = {}
@@ -380,13 +391,19 @@ def main():
     print("OWL-SHACL (pyshacl fixpoint) vs Postgres (vw_* views)")
     print("=" * 70)
 
+    manifest = load_conformance_manifest()
+    compare_specs = compare_specs_from_manifest(manifest)
+    tr_compare = compare_specs["TreatmentRankings"]
+    ss_compare = compare_specs["StratumSummaries"]
+    sv_compare = compare_specs["StratumVariables"]
+
     # Fetch Postgres data
     print("\n[1] Fetching Postgres computed values...")
     try:
-        pg_tr = pg_treatment_rankings()
+        pg_tr = pg_treatment_rankings(tr_compare)
         pg_tr_aggs = pg_treatment_rankings_aggregates()
-        pg_ss = pg_stratum_summaries()
-        pg_sv = pg_stratum_variables()
+        pg_ss = pg_stratum_summaries(ss_compare)
+        pg_sv = pg_stratum_variables(sv_compare)
     except subprocess.CalledProcessError as e:
         print(f"ERROR: Could not query Postgres: {e.stderr}")
         print("  Is the simpsons_paradox DB running? Run: ./effortless-postgres/init-db.sh")
@@ -403,6 +420,15 @@ def main():
 
     print("\n[3] Asserting Postgres aggregation values as leaf facts...")
     assert_aggregates(g, pg_tr_aggs, pg_ss, pg_sv)
+    assert_from_postgres_rows(
+        manifest,
+        g,
+        {
+            "TreatmentRankings": pg_tr,
+            "StratumSummaries": pg_ss,
+            "StratumVariables": pg_sv,
+        },
+    )
     after_assert = len(g)
     print(f"  +{after_assert - base_triples} triples asserted ({after_assert} total)")
 
@@ -416,15 +442,15 @@ def main():
 
     tr_matches, tr_mismatches = compare_table(
         g, NTWF.TreatmentRankings, NTWF.treatmentRankingId,
-        TR_COMPARE, pg_tr, "TreatmentRankings"
+        tr_compare, pg_tr, "TreatmentRankings"
     )
     ss_matches, ss_mismatches = compare_table(
         g, NTWF.StratumSummaries, NTWF.stratumSummaryId,
-        SS_COMPARE, pg_ss, "StratumSummaries"
+        ss_compare, pg_ss, "StratumSummaries"
     )
     sv_matches, sv_mismatches = compare_table(
         g, NTWF.StratumVariables, NTWF.stratumVariableId,
-        SV_COMPARE, pg_sv, "StratumVariables"
+        sv_compare, pg_sv, "StratumVariables"
     )
 
     total_matches = tr_matches + ss_matches + sv_matches
