@@ -287,5 +287,6 @@ CREATE INDEX IF NOT EXISTS idx_treatment_rankings_study ON treatment_rankings (s
 
 -- Conclusions
 CREATE INDEX IF NOT EXISTS idx_conclusions_witnessed_in_loop ON conclusions (witnessed_in_loop);
+CREATE INDEX IF NOT EXISTS idx_conclusions_target_loop ON conclusions (target_loop);
 
--- 7 FK index(es) declared.
+-- 8 FK index(es) declared.
