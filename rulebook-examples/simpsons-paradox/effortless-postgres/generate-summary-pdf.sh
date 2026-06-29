@@ -2,8 +2,8 @@
 # ============================================================================
 # generate-summary-pdf.sh
 # ============================================================================
-# Writes simpsons-paradox-summary.pdf from live vw_* views (Conclusions,
-# discovery findings, ModelSummary, invariants). Requires a populated local DB.
+# Writes simpsons-paradox-summary.pdf — corpus snapshot from live vw_* views,
+# with deductive/empirical framing. Requires a populated local DB.
 #
 # Run automatically at the end of init-db.sh, or standalone:
 #   ./effortless-postgres/generate-summary-pdf.sh

@@ -38,6 +38,12 @@ interface SummaryRow {
   caution_tier_count: number;
   safe_tier_count: number;
   avg_signal_purity: number | null;
+  avg_signal_purity_reversal: number | null;
+  avg_signal_purity_non_reversal: number | null;
+  sign_flip_signal_purity_max: number | null;
+  real_study_count: number | null;
+  economics_sign_flip_count: number | null;
+  domain_diversity_note: string | null;
   latent_type_d_count: number | null;
   latent_type_d_fraction: number | null;
   discovery_witness_note: string | null;
@@ -228,6 +234,7 @@ export async function buildSummaryPdf(): Promise<Buffer> {
 
   const tagline = readTagline();
   const witnessed = conclusionRows.filter(c => c.status === 'witnessed');
+  const discoveryConfirmed = findingRows.filter(f => f.is_confirmed === true).length;
   const findingsByHypothesis = new Map(
     findingRows.map(f => [f.hypothesis_id, f]),
   );
@@ -246,7 +253,7 @@ export async function buildSummaryPdf(): Promise<Buffer> {
     info: {
       Title: "Simpson's Paradox — Corpus Summary",
       Author: 'Effortless Rulebook',
-      Subject: 'Witnessed conclusions and corpus findings',
+      Subject: 'Witnessed corpus snapshot with deductive/empirical framing',
     },
   });
 
@@ -267,39 +274,47 @@ export async function buildSummaryPdf(): Promise<Buffer> {
   y = bodyText(
     doc,
     y,
-    `Generated ${generatedAt} from live Postgres views (vw_model_summary, vw_conclusions, vw_discovery_*, vw_invariant_checks). This is a narrative export — not the full rulebook.`,
+    `Generated ${generatedAt} from live vw_* views — same data as the /conclusions screen. SSoT is the rulebook JSON; this export reads views only.`,
     { size: SMALL_SIZE, color: '#666666' },
   );
+  y = bodyText(
+    doc,
+    y,
+    'Formal epistemic claims are in the Conclusions table (witnessed across Leopold loops). Loop-61 adds pre-registered DiscoveryHypotheses with PASS/FAIL from the corpus. Theorem conclusions are deductive; domain conclusions and discovery findings are empirical on this convenience sample.',
+    { size: SMALL_SIZE, color: '#555555' },
+  );
 
-  y = sectionHeading(doc, y, 'Corpus snapshot');
-  y = bulletLine(doc, y, 'Studies witnessed', String(summary.study_count));
-  y = bulletLine(doc, y, 'Sign-flips (types A/B)', String(signFlipCount));
+  y = sectionHeading(doc, y, 'Summary');
+  y = bulletLine(doc, y, 'Conclusions witnessed', `${witnessed.length} / ${conclusionRows.length}`);
   y = bulletLine(
     doc,
     y,
-    'Screening tiers',
-    `DANGER ${summary.danger_tier_count} · CAUTION ${summary.caution_tier_count} · SAFE ${summary.safe_tier_count}`,
+    'Discovery (loop-61)',
+    `${discoveryConfirmed} / ${findingRows.length} hypotheses confirmed`,
   );
+  if (summary.latent_type_d_count != null && summary.type_d_count != null) {
+    y = bulletLine(
+      doc,
+      y,
+      'Latent Type-D',
+      `${summary.latent_type_d_count} / ${summary.type_d_count} SAFE studies flip under sweep (${fmtPct(summary.latent_type_d_fraction)})`,
+    );
+  }
+  y = bulletLine(doc, y, 'Studies in corpus', String(summary.study_count));
   y = bulletLine(
     doc,
     y,
     'Distortion taxonomy',
     `A ${summary.type_a_count} · B ${summary.type_b_count} · C+ ${summary.type_c_plus_count} · C− ${summary.type_c_minus_count} · D ${summary.type_d_count}`,
   );
-  y = bulletLine(doc, y, 'Avg signal purity', fmtNum(summary.avg_signal_purity, 3));
-  if (summary.latent_type_d_count != null && summary.type_d_count != null) {
-    y = bulletLine(
-      doc,
-      y,
-      'Latent Type-D (SAFE but sweep-flip)',
-      `${summary.latent_type_d_count} of ${summary.type_d_count} (${fmtPct(summary.latent_type_d_fraction)})`,
-    );
-  }
-  if (summary.discovery_witness_note) {
-    y = bodyText(doc, y, summary.discovery_witness_note, { size: SMALL_SIZE });
-  }
 
   y = sectionHeading(doc, y, 'Pre-registered discovery (loop-61)');
+  y = bodyText(
+    doc,
+    y,
+    'Hypotheses registered before querying the full corpus. Each finding is computed live from ModelSummary / TreatmentRankings — corpus statistics, not algebraic invariants.',
+    { size: SMALL_SIZE, color: '#666666' },
+  );
   if (hypothesisRows.length === 0) {
     y = bodyText(doc, y, 'No discovery hypotheses in the corpus.');
   } else {
@@ -308,19 +323,10 @@ export async function buildSummaryPdf(): Promise<Buffer> {
       const pass = f?.is_confirmed === true;
       y = ensureSpace(doc, y, 36);
       doc.font('Helvetica-Bold').fontSize(BODY_SIZE).fillColor('#111111');
-      doc.text(
-        `${h.hypothesis_id} — ${pass ? 'PASS' : 'FAIL'}`,
-        PAGE_MARGIN,
-        y,
-      );
+      doc.text(`${h.hypothesis_id} — ${pass ? 'PASS' : 'FAIL'}`, PAGE_MARGIN, y);
       y = doc.y + 2;
       y = bodyText(doc, y, h.statement, { size: SMALL_SIZE });
-      y = bulletLine(
-        doc,
-        y,
-        'Expected',
-        h.expected_outcome,
-      );
+      y = bulletLine(doc, y, 'Expected', h.expected_outcome);
       if (f?.observed_metric) {
         y = bulletLine(doc, y, 'Observed', f.observed_metric);
       }
@@ -363,6 +369,14 @@ export async function buildSummaryPdf(): Promise<Buffer> {
     y += 6;
   }
 
+  y = sectionHeading(doc, y, 'Caveats');
+  y = bodyText(
+    doc,
+    y,
+    'Geometric, not causal: the instrument classifies allocation distortion; confounder vs mediator vs collider is external (Berkeley: CausalRole=contested). Theorem conclusions follow from definitions; domain conclusions and discovery findings are corpus statistics on a convenience sample (small n per domain).',
+    { size: SMALL_SIZE, color: '#444444' },
+  );
+
   y = sectionHeading(doc, y, 'Invariant health');
   y = bulletLine(
     doc,
@@ -385,7 +399,7 @@ export async function buildSummaryPdf(): Promise<Buffer> {
     y = bodyText(
       doc,
       y,
-      `All ${criticalInvariants.length} critical invariants pass across the full corpus.`,
+      `All ${criticalInvariants.length} critical invariants pass — regression checks that transpiler output matches stated algebra.`,
       { size: SMALL_SIZE },
     );
   }
@@ -403,28 +417,34 @@ export async function buildSummaryPdf(): Promise<Buffer> {
     y = doc.y + 2;
   }
 
-  y = sectionHeading(doc, y, 'Repository evidence (GitHub)');
+  y = sectionHeading(doc, y, 'Rulebook & repo (full derivation)');
   y = bodyText(
     doc,
     y,
-    'Links point at the Effortless Rulebooks monorepo. Checkout a loop tag or commit to reproduce the witnessed state.',
+    'Formulas, Loops build history, InvariantChecks, and Conclusions rows live in the rulebook JSON. This PDF is a snapshot; README.md carries the framing.',
     { size: SMALL_SIZE, color: '#666666' },
   );
   y = bulletLine(doc, y, 'Project folder', projectTreeUrl(), projectTreeUrl());
-  y = bulletLine(doc, y, 'README', 'README.md', PROJECT_LINKS.readme());
+  y = bulletLine(doc, y, 'README (full repo guide)', 'README.md', PROJECT_LINKS.readme());
   y = bulletLine(
     doc,
     y,
-    'Rulebook SSoT',
+    'Rulebook SSoT (formulas, Loops, InvariantChecks, Conclusions)',
     'effortless-rulebook/simpsons-paradox-rulebook.json',
     PROJECT_LINKS.rulebook(),
   );
-  y = bulletLine(doc, y, 'Rulespeak narrative', 'rulespeak/rulespeak.md', PROJECT_LINKS.rulespeak());
   y = bulletLine(
     doc,
     y,
-    'Generated Postgres substrate',
-    'effortless-postgres/',
+    'Rulespeak (plain-English business rules)',
+    'rulespeak/rulespeak.md',
+    PROJECT_LINKS.rulespeak(),
+  );
+  y = bulletLine(
+    doc,
+    y,
+    'Postgres substrate (views, init-db.sh)',
+    'effortless-postgres/README.md',
     PROJECT_LINKS.postgres(),
   );
   y = bulletLine(
@@ -433,6 +453,12 @@ export async function buildSummaryPdf(): Promise<Buffer> {
     'Standalone HTML explorer',
     'simpsons-paradox-explorer.html',
     PROJECT_LINKS.explorerHtml(),
+  );
+  y = bulletLine(
+    doc,
+    y,
+    'Live API (with ./start.sh)',
+    'GET localhost:3001/api/invariant-checks · /api/treatment-rankings · /api/model-summary',
   );
 
   const taggedConclusions = witnessed.filter(c => c.witnessed_in_loop_git_tag);

@@ -1,6 +1,10 @@
 # Simpson's Paradox — Witnessed DAG Demo
 
-A **witnessed dependency graph** that turns Simpson's paradox from a textbook curiosity into a computational object. **90+ published and synthetic studies** — spanning medicine, epidemiology, law, sports, education, economics, and social science — are poured into a single entity model. The instrument was built across **59 Leopold loops** (loop-01 through loop-59, all complete; 55 rows documented in the `Loops` table). Every derived value falls out of formulas declared in the rulebook. No inference is ever hand-entered.
+A **witnessed dependency graph** that turns Simpson's paradox from a textbook curiosity into a computational object. **96 published and synthetic studies** — spanning medicine, epidemiology, law, sports, education, economics, and social science — share one entity model. The instrument was built across **61+ Leopold loops**. Every derived value falls out of formulas declared in the rulebook; modeling choices are centralized there, not scattered in app code.
+
+**Start at `/conclusions`.** Formal epistemic claims live in the rulebook `Conclusions` table — findings witnessed across loops, categorized (theorem · instrument · domain · …). Loop-61 adds pre-registered `DiscoveryHypotheses` / `DiscoveryFindings` with live PASS/FAIL from the corpus. SSoT is the rulebook JSON; the explorer reads `vw_*` views only. Run `./start.sh` → [Conclusions & Findings](http://localhost:5173/conclusions).
+
+[`simpsons-paradox-summary.pdf`](simpsons-paradox-summary.pdf) is a static export of the same witnessed state (regenerated on `./init-db.sh`). For framing caveats — geometric vs causal, deductive vs empirical, convenience-sample limits — see [What this is not](#what-this-is-not) below.
 
 ---
 
@@ -149,13 +153,21 @@ Run `./start.sh` to boot the backend (`:3001`) and Vite frontend (`:5173`).
 | `/catalog` | **Import Backlog** — candidate catalog (import session complete; backlog drained) |
 | `/instrument` | **Instrument Dashboard** — `InstrumentSpec` adapter contract and screening coordinates |
 
-The sandbox presets load kidney-1986, Berkeley, and the neutral control. Standalone exports at the project root: `simpsons-paradox-explorer.html` and `simpsons-paradox-summary.pdf` (regenerated on every `./init-db.sh` / `effortless build`).
+The sandbox presets load kidney-1986, Berkeley, and the neutral control.
+
+## Corpus summary (PDF)
+
+**[`simpsons-paradox-summary.pdf`](simpsons-paradox-summary.pdf)** — offline export of the same data as `/conclusions` (witnessed conclusions, loop-61 discovery PASS/FAIL, corpus counts). Regenerated on `./init-db.sh`. With `./start.sh`: [localhost:3001/simpsons-paradox-summary.pdf](http://localhost:3001/simpsons-paradox-summary.pdf) or `GET /api/export/summary-pdf`.
+
+Standalone HTML: [`simpsons-paradox-explorer.html`](simpsons-paradox-explorer.html).
 
 ---
 
 ## What this is not
 
-The instrument is **geometric**: it classifies allocation distortion and flags the allocation-corrected winner from arithmetic alone. Whether it is safe to act on that correction as a causal claim is answered by `AdjustmentAppropriate`, which gates on `ConditioningRisk` and `CausalClaimStatus`. Berkeley is the proof: it has the highest `AllocationDistortion` (0.193) but `CausalRole=contested` — the instrument classifies the geometry; the researcher supplies the causal account.
+**Geometric, not causal.** The instrument classifies allocation distortion and flags the allocation-corrected winner from arithmetic alone. Whether it is safe to act on that correction as a causal claim is answered by `AdjustmentAppropriate`, which gates on `ConditioningRisk` and `CausalClaimStatus`. Berkeley is the proof: it has the highest `AllocationDistortion` (0.193) but `CausalRole=contested` — the instrument classifies the geometry; the researcher supplies the causal account.
+
+**Deductive vs. empirical.** `Conclusions` rows tagged **theorem** (e.g. SignalPurity bound) are true by the definitions — invariant checks on them are regression tests for the transpiler, not independent discoveries about nature. Rows tagged **domain** and loop-61 **DiscoveryHypotheses** (e.g. H-econ-zero, H-latent-d) are corpus statistics on a convenience sample — pre-registered before expansion, still provisional. Do not treat H-purity PASS the same way you treat a theorem; the UI separates them for a reason.
 
 Catalog `ExpectedDistortionType` is a **pre-encoding guess**. Observed `DistortionType` is what the DAG computes from cell counts. Mismatches are data for pattern analysis, not bugs — unless they violate an algebraic invariant.
 
