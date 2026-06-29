@@ -144,3 +144,10 @@ echo "[init-db] complete (manifest: .applied-manifest.json)"
 if [ -f "${SCRIPT_DIR}/export-hydrated-rulebook.sh" ]; then
     DATABASE_URL="$DATABASE_URL" bash "${SCRIPT_DIR}/export-hydrated-rulebook.sh"
 fi
+
+# ----------------------------------------------------------------------
+# 6. Corpus summary PDF — conclusions + findings from live views.
+# ----------------------------------------------------------------------
+if [ -f "${SCRIPT_DIR}/generate-summary-pdf.sh" ]; then
+    DATABASE_URL="$DATABASE_URL" bash "${SCRIPT_DIR}/generate-summary-pdf.sh"
+fi

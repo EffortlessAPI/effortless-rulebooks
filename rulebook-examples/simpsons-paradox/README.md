@@ -149,7 +149,7 @@ Run `./start.sh` to boot the backend (`:3001`) and Vite frontend (`:5173`).
 | `/catalog` | **Import Backlog** — candidate catalog (import session complete; backlog drained) |
 | `/instrument` | **Instrument Dashboard** — `InstrumentSpec` adapter contract and screening coordinates |
 
-The sandbox presets load kidney-1986, Berkeley, and the neutral control. A standalone email-ready HTML export lives at `simpsons-paradox-explorer.html`.
+The sandbox presets load kidney-1986, Berkeley, and the neutral control. Standalone exports at the project root: `simpsons-paradox-explorer.html` and `simpsons-paradox-summary.pdf` (regenerated on every `./init-db.sh` / `effortless build`).
 
 ---
 
@@ -169,11 +169,11 @@ Transpilers are registered in `effortless.json` and run on hosted Effortless inf
 
 ```bash
 git status                               # always check first — rulebook JSON is sacred
-effortless build                         # hosted transpilers → postgres/, rulespeak/, owl/
-cd effortless-postgres && ./init-db.sh   # drop and recreate local DB from generated SQL
+effortless build                         # hosted transpilers → postgres/, rulespeak/, owl/, summary PDF
+cd effortless-postgres && ./init-db.sh   # drop and recreate local DB; writes simpsons-paradox-summary.pdf
 ./start.sh                               # explorer UI on :5173 (API on :3001)
 ```
 
-No migrations. Edit rulebook → `effortless build` → `./init-db.sh` → DB reflects it.
+No migrations. Edit rulebook → `effortless build` → `./init-db.sh` → DB reflects it. The build pipeline also regenerates `simpsons-paradox-summary.pdf` at the project root (from live `vw_*` views after Postgres is loaded).
 
 Bulk import scripts live under `scripts/` (`bulk-import-candidates.py`, `import-wave3-candidates.py`, `import-wave4-real33.py`, `generate-allocation-sweep-all.py`). Run allocation-sweep regeneration after any import that adds studies.

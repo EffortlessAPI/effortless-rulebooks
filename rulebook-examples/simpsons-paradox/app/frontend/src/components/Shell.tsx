@@ -42,6 +42,14 @@ export function Shell() {
         <div className="sidebar-sep" />
         <a
           className="nav-item nav-item-external"
+          href="../simpsons-paradox-summary.pdf"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          📄 Summary PDF
+        </a>
+        <a
+          className="nav-item nav-item-external"
           href="../simpsons-paradox-explorer.html"
           target="_blank"
           rel="noopener noreferrer"

@@ -345,6 +345,18 @@ app.get('/simpsons-paradox-explorer.html', (_req, res) => {
   res.sendFile(path.join(projectRoot, 'simpsons-paradox-explorer.html'));
 });
 
+app.get('/simpsons-paradox-summary.pdf', (_req, res) => {
+  const pdfPath = path.join(projectRoot, 'simpsons-paradox-summary.pdf');
+  res.sendFile(pdfPath, (err) => {
+    if (err) {
+      res.status(404).json({
+        error:
+          'simpsons-paradox-summary.pdf not found — run ./effortless-postgres/init-db.sh after effortless build',
+      });
+    }
+  });
+});
+
 app.listen(PORT, () => {
   console.log(`[simpsons-paradox api] http://localhost:${PORT}`);
 });

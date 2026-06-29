@@ -51,6 +51,14 @@
       "CommandLine": "-exec ./run-conformance.sh",
       "IsDisabled": false,
       "Description": "Run OWL-SHACL vs Postgres conformance receipt"
+    },
+    {
+      "IsSSoTTranspiler": false,
+      "Name": "summarypdf",
+      "RelativePath": "/effortless-postgres",
+      "CommandLine": "-exec ./generate-summary-pdf.sh",
+      "IsDisabled": false,
+      "Description": "Generate simpsons-paradox-summary.pdf from live vw_* views (requires local Postgres)"
     }
   ]
 }
