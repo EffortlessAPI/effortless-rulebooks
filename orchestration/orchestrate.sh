@@ -1325,7 +1325,8 @@ run_substrates() {
     # generated artifacts (postgres SQL, xlsx workbook, entity-framework dir).
     local _domain
     _domain=$(get_active_domain)
-    export ERB_DOMAIN_DIR="$RULEBOOK_EXAMPLES_DIR/$_domain"
+    export ERB_DOMAIN_DIR
+    ERB_DOMAIN_DIR=$(find_domain_dir "$_domain" 2>/dev/null) || ERB_DOMAIN_DIR="$RULEBOOK_EXAMPLES_DIR/$_domain"
     export ERB_TESTING_DIR="$ERB_DOMAIN_DIR/testing"
     export ERB_RULEBOOK_PATH="$(get_domain_rulebook_path "$_domain")"
     mkdir -p "$ERB_TESTING_DIR"
@@ -1927,20 +1928,19 @@ else
 fi
 echo ""
 echo -e "${CYAN}Results written to:${NC}"
-_active_domain_results=$(get_active_domain)
 if [ -n "$RUN_SINGLE" ]; then
-    echo -e "  ${DIM}•${NC} Test results:  ${WHITE}rulebook-examples/$_active_domain_results/testing/$RUN_SINGLE/test-results.md${NC}"
+    echo -e "  ${DIM}•${NC} Test results:  ${WHITE}$ERB_DOMAIN_DIR/testing/$RUN_SINGLE/test-results.md${NC}"
 else
-    echo -e "  ${DIM}•${NC} Test results:  ${WHITE}rulebook-examples/$_active_domain_results/testing/*/test-results.md${NC}"
+    echo -e "  ${DIM}•${NC} Test results:  ${WHITE}$ERB_DOMAIN_DIR/testing/*/test-results.md${NC}"
     echo -e "  ${DIM}•${NC} Summary:       ${WHITE}orchestration/all-tests-results.md${NC}"
 fi
-echo -e "  ${DIM}•${NC} HTML Report:   ${WHITE}rulebook-examples/$_active_domain_results/orchestration-report.html${NC}"
+echo -e "  ${DIM}•${NC} HTML Report:   ${WHITE}$ERB_DOMAIN_DIR/orchestration-report.html${NC}"
 echo ""
 
 # Open browser (skip in CI mode)
 if ! $CI_MODE; then
     echo -e "${CYAN}Opening HTML report in browser...${NC}"
-    open "$RULEBOOK_EXAMPLES_DIR/$(get_active_domain)/orchestration-report.html"
+    open "$ERB_DOMAIN_DIR/orchestration-report.html"
     echo ""
 fi
 
