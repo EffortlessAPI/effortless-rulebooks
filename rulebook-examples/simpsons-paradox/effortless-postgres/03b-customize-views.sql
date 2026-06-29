@@ -234,3 +234,28 @@ SELECT
   m.phase_distortion_type
 FROM synthetic_phase sp
 JOIN _erb_sp_metrics m ON m.phase_id = sp.phase_id;
+
+-- ============================================================================
+-- vw_conclusions — join loop commit provenance for discovery replay (loop-62)
+-- ============================================================================
+DROP VIEW IF EXISTS vw_conclusions CASCADE;
+CREATE VIEW vw_conclusions WITH (security_invoker = ON) AS
+SELECT
+  t.conclusion_id,
+  calc_conclusions_name(t.conclusion_id) AS name,
+  t.category,
+  t.status,
+  t.title,
+  t.evidence,
+  t.witnessed_in_loop,
+  t.target_loop,
+  t.tradition_id,
+  t.researcher_id,
+  t.challenges_researcher,
+  calc_conclusions_invariant_protecting_count(t.conclusion_id) AS invariant_protecting_count,
+  l.commit_hash AS witnessed_in_loop_commit_hash,
+  calc_loops_commit_short(l.loop_id) AS witnessed_in_loop_commit_short,
+  l.commit_date AS witnessed_in_loop_commit_date,
+  l.git_tag AS witnessed_in_loop_git_tag
+FROM conclusions t
+LEFT JOIN loops l ON l.loop_id = t.witnessed_in_loop;

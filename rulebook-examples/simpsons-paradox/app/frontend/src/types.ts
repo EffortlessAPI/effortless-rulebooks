@@ -208,6 +208,10 @@ export interface ModelSummary {
   ready_to_encode_count: number | null;
   import_session_ready: boolean | null;
   catalog_witness_note: string | null;
+  latent_type_d_count?: number | null;
+  latent_type_d_fraction?: number | null;
+  type_d_count?: number | null;
+  discovery_witness_note?: string | null;
 }
 
 export interface CorpusCatalogSummary {
@@ -261,4 +265,56 @@ export interface StudyImportTemplateStep {
   row_description: string;
   required_fields: string;
   mechanical_check: string;
+}
+
+export interface Conclusion {
+  conclusion_id: string;
+  name: string;
+  category: string;
+  status: string;
+  title: string;
+  evidence: string | null;
+  witnessed_in_loop: string | null;
+  target_loop: string | null;
+  witnessed_in_loop_commit_hash: string | null;
+  witnessed_in_loop_commit_short: string | null;
+  witnessed_in_loop_commit_date: string | null;
+  witnessed_in_loop_git_tag: string | null;
+  tradition_id: string | null;
+  researcher_id: string | null;
+  challenges_researcher: string | null;
+  invariant_protecting_count: number | null;
+}
+
+export interface DiscoveryHypothesis {
+  hypothesis_id: string;
+  name: string;
+  statement: string;
+  expected_outcome: string;
+  registered_in_loop: string;
+  tradition_id: string | null;
+}
+
+export interface DiscoveryFinding {
+  finding_id: string;
+  name: string;
+  hypothesis_id: string;
+  hypothesis_statement: string | null;
+  observed_metric: string | null;
+  is_confirmed: boolean | null;
+  evidence: string | null;
+  witnessed_in_loop: string;
+}
+
+export interface InvariantCheck {
+  invariant_check_id: string;
+  name: string;
+  natural_language: string;
+  source_table: string;
+  pass_count: number;
+  fail_count: number;
+  is_green: boolean;
+  status_label: string;
+  severity: string;
+  protects_conclusion: string | null;
 }

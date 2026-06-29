@@ -57,7 +57,12 @@ SELECT
   t.domain_question,                                                            -- The natural-language question this loop's concept answers FROM the domain data.
   t.mock_data_note,                                                             -- What the seed data is designed to show.
   t.next_suggestion,                                                            -- Suggestion for the next loop, written after witnessing the DAG at this loop's end.
-  t.tradition_id                                                                -- FK → ResearchTraditions.TraditionId. The scholarly tradition whose conceptual vocabulary this loop primarily draws on — tracks which tradition has driven each stage of the instrument's development.
+  t.tradition_id,                                                               -- FK → ResearchTraditions.TraditionId. The scholarly tradition whose conceptual vocabulary this loop primarily draws on — tracks which tradition has driven each stage of the instrument's development.
+  t.commit_hash,                                                                -- Full git SHA where this loop row first landed in effortless-rulebook.json — the replay anchor for this turn of the Leopold loop.
+  calc_loops_commit_short(t.loop_id) AS commit_short,                           -- First 7 characters of CommitHash for display and git checkout.
+  t.commit_date,                                                                -- ISO date (YYYY-MM-DD) of the commit where this loop landed.
+  t.commit_message,                                                             -- Git commit subject line for this loop's landing commit.
+  t.git_tag                                                                     -- Optional milestone tag pointing at this loop's landing commit (sp-loop-milestone-*). Used for discovery replay without memorizing SHAs.
 FROM loops t;
 
 -- ----------------------------------------------------------------------------
