@@ -12,9 +12,25 @@ You write business rules once as a typed grid of named cells — entities, field
 
 The conformance harness runs on every build and produces a pass/fail matrix across all substrates. If they don't agree, the build fails.
 
-This repo contains the orchestration platform and a catalog of ready-to-run demo domains. The catalog demonstrates two distinct things. **[acme-llc](rulebook-examples/acme-llc/)** shows *breadth of platforms*: a deliberately simple domain (six calculated fields) run through **all 17 substrates** — Postgres, Python, Go, COBOL, Excel, OWL, English, and more — every one demonstrates to return the same answer. **[effortless-banking](rulebook-examples/effortless-banking/)** illustrates *depth of domain*: a full loan-origination lifecycle with an underwriting state machine, time-based covenant monitoring, risk-grade migration, segregation-of-duties checks, and branching approval logic. The remaining 25+ domains show the *depth of expressivity* the rulebook reaches across wildly different subject matter — they are not attempts to rebuild the bank in every language.
+This repo contains the orchestration platform and a catalog of ready-to-run demo domains — from a three-table Hello World to a 55-table multi-jurisdiction rules engine — all driven by the same hub-and-spoke pattern.
 
 → [What does "non-linguistic" actually mean?](docs/what-is-non-linguistic.md) · [GitHub](https://github.com/effortlessapi/effortless-rulebooks)
+
+---
+
+## What it looks like in practice
+
+These domains were each built in roughly a weekend — 10–15 hours of actual work — by one person tending a rulebook. The commit history is the record: not a changelog of modules added or removed, but a log of *intent* crystallizing, each commit one step forward with almost no thrash. The rulebook is stable early; the application layer follows. The complexity you see below is the complexity of the domain, not the cost of building it.
+
+| Domain | Tables | What it models |
+|---|---|---|
+| [causal-autoimmune-architecture](rulebook-examples/causal-autoimmune-architecture/) | 38 | A causal inference engine for heterogeneous autoimmune disease — multi-omic cohort data, federated datasets, variant types, ancestry-equitable predictions. The DAG produces falsifiable causal mechanisms as derived facts. |
+| [simpsons-paradox](rulebook-examples/simpsons-paradox/) | 29 | A digital mirror of Simpson's Paradox. The paradox itself falls out of the DAG as a derived fact — it is never modeled directly. Loop commits in this repo (`loop-05` → `loop-20`) show the rulebook evolving from blank to witnessed reversal in four named steps. |
+| [talismans-special-solutions](rulebook-examples/talismans-special-solutions/) | 22 | One approval workflow told tip to tail: humans, AI agents, and automated pipelines under one ontology. Roles, departments, escalation logic, and a dual-substrate conformance witness (Postgres + OWL reasoner). |
+| [traffic-ticket-contest](rulebook-examples/traffic-ticket-contest/) | 55 | A traffic ticket everyone understands, modeled as four state machines and a multi-jurisdiction rules engine — 75 features, 57 business rules, 194 conformance tests, 980 catalog fields. An intentionally ordinary domain taken to full production depth. |
+| [intelligence-taxonomy](rulebook-examples/intelligence-taxonomy/) | 3 | A catalog of intelligences — biological, digital, collective — classified by what they can do, not what they are made of. Intentionally minimal: three tables, the point is the classification logic, not the table count. |
+
+→ [Full domain catalog](docs/derived/domains.md) · [acme-llc](rulebook-examples/acme-llc/) (breadth witness — same six answers from 17 substrates) · [effortless-banking](rulebook-examples/effortless-banking/) (depth witness — full loan-origination lifecycle)
 
 ---
 
@@ -67,6 +83,8 @@ The diagram above is not aspirational architecture — it describes the implemen
 
 The shape of the whole thing: a semantic build loop where business meaning lives in a canonical rulebook, and apps, databases, spreadsheets, explainers, and localized policy language are rebuildable projections — deterministic regeneration with LLM-assisted edits and conformance checks at every projection.
 
+**What this does to version history.** In a conventional project, the commit log is a record of *modules changed* — files added, functions removed, imports updated. In an ERB project it becomes a record of *intent evolving*. The simpsons-paradox domain in this repo shows the shape clearly: `loop-05` adds `StratumVariables` and the first `IsParadoxExplained` field; `loop-10` adds `ModelSummary` so the DAG can witness its own epistemic state; `loop-15` adds a `ReversalThreshold` to test robustness; `loop-20` hydrates real study data and two type-A reversals are witnessed. Four commits, each one a named conceptual step. The intermediate artifacts (SQL, Python, the admin app) are not mentioned in those messages — they regenerated automatically. The commits track the *shape of understanding*, not the mechanics of the build. This is what projects in other domains look like too: a few dozen commits, each a deliberate step, producing systems of real depth with almost no thrash.
+
 ---
 
 ## Key features
@@ -105,29 +123,15 @@ The shape of the whole thing: a semantic build loop where business meaning lives
 
 ---
 
-## Demo domains
+## Full domain catalog
 
-The catalog spans **27 ready-to-run domains** — from a one-table Hello World to a full loan-origination lifecycle — all driven by the same hub-and-spoke pattern. Read it along two axes:
+The top five domains above are the new additions that show what a weekend of focused work produces. The broader catalog also includes the platform witnesses:
 
-- **Breadth of platforms** — one domain, every substrate. **acme-llc** is intentionally a *simple* business (a handful of calculated fields) so that what it brings is the substrate matrix: the same six answers come out of Postgres, Python, Go, COBOL, Excel, OWL, and English alike. It is not meant to be a complex domain; it is the breadth witness.
-- **Depth of domain** — one domain, real complexity. **effortless-banking** is the complex-domain witness: an underwriting state machine, time-based covenant and DSCR/LTV monitoring, risk-rating migration, segregation-of-duties enforcement, and branching approval logic — a complete origination lifecycle expressed in the same rulebook primitives.
-- **Depth of expressivity** — many domains, wildly different subject matter. The remaining 25+ demos show how far the same primitives stretch across unrelated problems. The point is not "you could rebuild the bank in COBOL" — it's that one modeling discipline covers all of these.
+- **[acme-llc](rulebook-examples/acme-llc/)** — the substrate breadth witness: a deliberately simple domain (six calculated fields) run through all 17 substrates, all conformant. Start here if you want to see the substrate matrix.
+- **[effortless-banking](rulebook-examples/effortless-banking/)** — the domain depth witness: a full loan-origination lifecycle with an underwriting state machine, time-based covenant monitoring, risk-grade migration, segregation-of-duties checks, and branching approval logic.
+- **[A Tale of Two Claudes](rulebook-examples/naked-claude-vs-effortless-claude/TALE_OF_TWO_CLAUDES.md)** — a direct comparison of LLM behavior with and without ERB grounding on the same question.
 
-The highlights table below is a curated subset; the [full domain catalog](docs/derived/domains.md) is generated from the platform rulebook on every build. For a direct comparison of LLM behavior with and without ERB grounding, see **[A Tale of Two Claudes](rulebook-examples/naked-claude-vs-effortless-claude/TALE_OF_TWO_CLAUDES.md)**.
-
-| Domain | Demonstrates | What it shows |
-|---|---|---|
-| [acme-llc](rulebook-examples/acme-llc/) | **breadth of platforms** | A deliberately simple domain run through **all 17 substrates**, all shown conformant — start here |
-| [effortless-banking](rulebook-examples/effortless-banking/) | **depth of domain** | Loan-origination lifecycle: underwriting state machine, time-based covenant monitoring, risk-grade migration, segregation-of-duties, branching approvals |
-| [mechanical-kitchen-timer](rulebook-examples/mechanical-kitchen-timer/) | depth of expressivity | A 26-table hardware ontology — demonstrates that the methodology isn't limited to information systems |
-| [fantasy-football](rulebook-examples/fantasy-football/) | depth of expressivity | Four-hop DAG: raw stats → roster aggregations → matchup scoring → standings |
-| [therapist-helper-portal](rulebook-examples/therapist-helper-portal/) | depth of expressivity | Three-hop cascading inference: GoalUpdate → Goal.ProgressPct → Client.IsAtRisk |
-| [talisman-basic](rulebook-examples/talisman-basic/) | depth of expressivity | Relationships, aggregations, role-agent separation |
-| [star-trek](rulebook-examples/star-trek/) | depth of expressivity | Hierarchical rollups, polymorphic foreign keys |
-| [is-everything-a-language](rulebook-examples/is-everything-a-language/) | depth of expressivity | 8-predicate AND logic, formal argument modeling |
-| [customer-fullname](rulebook-examples/customer-fullname/) | minimal | Hello World — string concat formula |
-
-→ [Full domain catalog (27 domains, generated)](docs/derived/domains.md)
+→ [Full domain catalog (generated)](docs/derived/domains.md)
 
 ---
 
