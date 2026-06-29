@@ -165,12 +165,15 @@ There are **two** kinds of rulebook here and they are NOT the same thing. Confus
 
 #### Intentional structural exceptions
 
-Two subdirs under `rulebook-examples/` deliberately carry no `<project>-rulebook.json`:
+One subdir under `rulebook-examples/` deliberately carries no `<project>-rulebook.json`:
 
-- `naked-claude-vs-effortless-claude/` — an experiment tree (not an ontology).
 - `volunteer-shift-scheduler-demo/` — a demo-app scaffold that consumes `volunteer-shift-scheduler/`'s rulebook.
 
-These are **not** demos and are not in any "demos with a rulebook" denominator. Do not flag them as missing.
+This is **not** a demo and is not in any "demos with a rulebook" denominator. Do not flag it as missing.
+
+One subdir under `toy-rulebooks/` deliberately carries no `<project>-rulebook.json`:
+
+- `naked-claude-vs-effortless-claude/` — an experiment tree comparing LLM behavior with and without ERB grounding (not an ontology itself).
 
 #### Required transpilers for every new example project
 
