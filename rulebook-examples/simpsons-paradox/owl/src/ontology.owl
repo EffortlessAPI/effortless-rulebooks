@@ -358,13 +358,11 @@ effortless-ntwf:title a owl:DatatypeProperty ;
     rdfs:comment "One-line statement of the conclusion." .
 
 effortless-ntwf:evidence a owl:DatatypeProperty ;
-    rdfs:domain effortless-ntwf:Conclusions ;
     rdfs:range xsd:string ;
     rdfs:label "Evidence" ;
     rdfs:comment "The specific DB query result, loop outcome, or argument that establishes or will establish this conclusion." .
 
 effortless-ntwf:witnessedInLoop a owl:DatatypeProperty ;
-    rdfs:domain effortless-ntwf:Conclusions ;
     rdfs:range xsd:string ;
     rdfs:label "WitnessedInLoop" ;
     rdfs:comment "LoopId where this conclusion was first witnessed (if status=witnessed)." .
@@ -507,6 +505,98 @@ effortless-ntwf:catalogWitnessNote a owl:DatatypeProperty ;
     rdfs:label "CatalogWitnessNote" ;
     rdfs:comment "Human-readable readiness summary." .
     # calculated: calculated
+
+# === Class: DiscoveryFindings ===
+effortless-ntwf:DiscoveryFindings a owl:Class ;
+    rdfs:label "DiscoveryFindings" ;
+    rdfs:comment "Table: DiscoveryFindings — witnessed outcomes for each pre-registered DiscoveryHypothesis. IsConfirmed is computed live from ModelSummary aggregates." .
+
+effortless-ntwf:findingId a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:DiscoveryFindings ;
+    rdfs:range xsd:string ;
+    rdfs:label "FindingId" ;
+    rdfs:comment "Unique slug; one row per hypothesis." .
+
+effortless-ntwf:name a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "Name" ;
+    rdfs:comment "Display label." .
+    # calculated: calculated
+
+effortless-ntwf:hypothesisId a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "HypothesisId" ;
+    rdfs:comment "FK → DiscoveryHypotheses.HypothesisId." .
+
+effortless-ntwf:hypothesisStatement a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:DiscoveryFindings ;
+    rdfs:range xsd:string ;
+    rdfs:label "HypothesisStatement" ;
+    rdfs:comment "Lookup: DiscoveryHypotheses.Statement." .
+    # calculated: lookup
+
+effortless-ntwf:observedMetric a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:DiscoveryFindings ;
+    rdfs:range xsd:string ;
+    rdfs:label "ObservedMetric" ;
+    rdfs:comment "Witnessed metric value from ModelSummary for this hypothesis." .
+    # calculated: calculated
+
+effortless-ntwf:isConfirmed a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:DiscoveryFindings ;
+    rdfs:range xsd:boolean ;
+    rdfs:label "IsConfirmed" ;
+    rdfs:comment "TRUE when the witnessed metric satisfies the pre-registered ExpectedOutcome." .
+    # calculated: calculated
+
+effortless-ntwf:evidence a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "Evidence" ;
+    rdfs:comment "Pass/fail witness string for UI and conclusions." .
+    # calculated: calculated
+
+effortless-ntwf:witnessedInLoop a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "WitnessedInLoop" ;
+    rdfs:comment "LoopId where this finding was witnessed." .
+
+# === Class: DiscoveryHypotheses ===
+effortless-ntwf:DiscoveryHypotheses a owl:Class ;
+    rdfs:label "DiscoveryHypotheses" ;
+    rdfs:comment "Table: DiscoveryHypotheses — pre-registered empirical claims tested against the corpus at loop-61. Each row states an expected pattern before querying the DAG." .
+
+effortless-ntwf:hypothesisId a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "HypothesisId" ;
+    rdfs:comment "Unique slug (e.g. H-latent-d)." .
+
+effortless-ntwf:name a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "Name" ;
+    rdfs:comment "Display label." .
+    # calculated: calculated
+
+effortless-ntwf:statement a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "Statement" ;
+    rdfs:comment "Natural-language claim under test." .
+
+effortless-ntwf:expectedOutcome a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:DiscoveryHypotheses ;
+    rdfs:range xsd:string ;
+    rdfs:label "ExpectedOutcome" ;
+    rdfs:comment "Pass criterion in plain language." .
+
+effortless-ntwf:registeredInLoop a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:DiscoveryHypotheses ;
+    rdfs:range xsd:string ;
+    rdfs:label "RegisteredInLoop" ;
+    rdfs:comment "LoopId where this hypothesis was registered." .
+
+effortless-ntwf:traditionId a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "TraditionId" ;
+    rdfs:comment "FK → ResearchTraditions.TraditionId." .
 
 # === Class: DomainExpansionTargets ===
 effortless-ntwf:DomainExpansionTargets a owl:Class ;
@@ -1003,7 +1093,6 @@ effortless-ntwf:title a owl:DatatypeProperty ;
     rdfs:comment "Short title of the methodological principle or step." .
 
 effortless-ntwf:statement a owl:DatatypeProperty ;
-    rdfs:domain effortless-ntwf:Methodology ;
     rdfs:range xsd:string ;
     rdfs:label "Statement" ;
     rdfs:comment "One-to-three sentence statement of the principle, precise enough to be applied or falsified." .
@@ -1085,7 +1174,7 @@ effortless-ntwf:reversalCount a owl:DatatypeProperty ;
     rdfs:domain effortless-ntwf:ModelSummary ;
     rdfs:range xsd:integer ;
     rdfs:label "ReversalCount" ;
-    rdfs:comment "Number of studies with IsReversal=TRUE (strict full reversal)." .
+    rdfs:comment "Number of studies with IsReversal=TRUE (sign-flip / allocation-driven reversal)." .
     # calculated: aggregation
 
 effortless-ntwf:nonReversalCount a owl:DatatypeProperty ;
@@ -1107,20 +1196,6 @@ effortless-ntwf:explainedCount a owl:DatatypeProperty ;
     rdfs:label "ExplainedCount" ;
     rdfs:comment "Number of studies with IsParadoxExplained=TRUE (reversal AND confirmed confounder)." .
     # calculated: aggregation
-
-effortless-ntwf:zeroStrengthCount a owl:DatatypeProperty ;
-    rdfs:domain effortless-ntwf:ModelSummary ;
-    rdfs:range xsd:integer ;
-    rdfs:label "ZeroStrengthCount" ;
-    rdfs:comment "Studies with StrataWonByLoser=0: no strata go against the pooled winner. These are structurally paradox-free." .
-    # calculated: aggregation
-
-effortless-ntwf:partialCount a owl:DatatypeProperty ;
-    rdfs:domain effortless-ntwf:ModelSummary ;
-    rdfs:range xsd:integer ;
-    rdfs:label "PartialCount" ;
-    rdfs:comment "Studies with ParadoxStrength > 0 but IsReversal=FALSE: partial paradoxes real but not formally complete." .
-    # calculated: calculated
 
 effortless-ntwf:totalParadoxStrength a owl:DatatypeProperty ;
     rdfs:domain effortless-ntwf:ModelSummary ;
@@ -1150,13 +1225,6 @@ effortless-ntwf:typeBCount a owl:DatatypeProperty ;
     rdfs:comment "Studies classified as Type-B: sign flip but partial reversal (ReversalIntensity<1). Allocation distortion creates a sign flip but the pooled signal partially reflects per-stratum reality." .
     # calculated: aggregation
 
-effortless-ntwf:typeCCount a owl:DatatypeProperty ;
-    rdfs:domain effortless-ntwf:ModelSummary ;
-    rdfs:range xsd:integer ;
-    rdfs:label "TypeCCount" ;
-    rdfs:comment "Studies classified as Type-C: no sign flip but substantial allocation distortion (>0.01). The pooled winner is correct but the pooled magnitude is distorted by allocation imbalance." .
-    # calculated: aggregation
-
 effortless-ntwf:typeDCount a owl:DatatypeProperty ;
     rdfs:domain effortless-ntwf:ModelSummary ;
     rdfs:range xsd:integer ;
@@ -1177,34 +1245,6 @@ effortless-ntwf:distortionTaxonomyCoverage a owl:DatatypeProperty ;
     rdfs:label "DistortionTaxonomyCoverage" ;
     rdfs:comment "Human-readable summary of the four-type distribution: e.g. 'A:2 B:1 C:1 D:0'. The model's self-portrait of its own distortion geometry." .
     # calculated: calculated
-
-effortless-ntwf:reversalCountV2 a owl:DatatypeProperty ;
-    rdfs:domain effortless-ntwf:ModelSummary ;
-    rdfs:range xsd:integer ;
-    rdfs:label "ReversalCountV2" ;
-    rdfs:comment "Number of studies with IsReversal_v2=TRUE (sign-flip definition). Includes both Type-A (strict/unanimous) and Type-B (extended/partial sign-flip). This is the primary reversal count under the v2 definition; ReversalCount (unanimity) is now the Type-A subtype." .
-    # calculated: aggregation
-
-effortless-ntwf:nonReversalCountV2 a owl:DatatypeProperty ;
-    rdfs:domain effortless-ntwf:ModelSummary ;
-    rdfs:range xsd:integer ;
-    rdfs:label "NonReversalCountV2" ;
-    rdfs:comment "Number of studies with IsReversal_v2=FALSE (no sign flip under the v2 definition). Covers Type-C and Type-D only — studies where the equal-weight and actual pooled signals point in the same direction." .
-    # calculated: aggregation
-
-effortless-ntwf:extendedReversalCount a owl:DatatypeProperty ;
-    rdfs:domain effortless-ntwf:ModelSummary ;
-    rdfs:range xsd:integer ;
-    rdfs:label "ExtendedReversalCount" ;
-    rdfs:comment "Number of studies that are reversals under the v2 definition but not under the unanimity criterion: ReversalCountV2 minus ReversalCount. These are the Type-B studies — the ones the old definition missed. In the current dataset: 2 (berkeley-1973 and appleton-1996)." .
-    # calculated: calculated
-
-effortless-ntwf:explainedCountV2 a owl:DatatypeProperty ;
-    rdfs:domain effortless-ntwf:ModelSummary ;
-    rdfs:range xsd:integer ;
-    rdfs:label "ExplainedCountV2" ;
-    rdfs:comment "Number of studies with IsParadoxExplained_v2=TRUE: sign-flip reversal AND confirmed confounder. Includes the Type-B studies that IsParadoxExplained missed. The gap between ExplainedCountV2 and ExplainedCount is the number of extended reversals with causal accounts." .
-    # calculated: aggregation
 
 effortless-ntwf:distortionOnlyCount a owl:DatatypeProperty ;
     rdfs:domain effortless-ntwf:ModelSummary ;
@@ -1382,6 +1422,83 @@ effortless-ntwf:catalogWitnessNote a owl:DatatypeProperty ;
     rdfs:label "CatalogWitnessNote" ;
     rdfs:comment "Import backlog witness string." .
     # calculated: lookup
+
+effortless-ntwf:latentTypeDCount a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:ModelSummary ;
+    rdfs:range xsd:string ;
+    rdfs:label "LatentTypeDCount" ;
+    rdfs:comment "Type-D studies with LatentFlipPotential=TRUE." .
+    # calculated: calculated
+
+effortless-ntwf:stableTypeDCount a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:ModelSummary ;
+    rdfs:range xsd:string ;
+    rdfs:label "StableTypeDCount" ;
+    rdfs:comment "Type-D studies without latent flip potential (allocation-stable at observed and counterfactual sweep)." .
+    # calculated: calculated
+
+effortless-ntwf:latentTypeDFraction a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:ModelSummary ;
+    rdfs:range xsd:string ;
+    rdfs:label "LatentTypeDFraction" ;
+    rdfs:comment "Fraction of Type-D studies with latent flip potential." .
+    # calculated: calculated
+
+effortless-ntwf:crossZeroCount a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:ModelSummary ;
+    rdfs:range xsd:string ;
+    rdfs:label "CrossZeroCount" ;
+    rdfs:comment "Studies whose pooled gap crosses zero under allocation sweep." .
+    # calculated: calculated
+
+effortless-ntwf:signFlipSignalPurityMax a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:ModelSummary ;
+    rdfs:range xsd:string ;
+    rdfs:label "SignFlipSignalPurityMax" ;
+    rdfs:comment "Maximum SignalPurity among sign-flip studies. Must stay below 0.5 for the signal-purity theorem." .
+    # calculated: calculated
+
+effortless-ntwf:economicsSignFlipCount a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:ModelSummary ;
+    rdfs:range xsd:string ;
+    rdfs:label "EconomicsSignFlipCount" ;
+    rdfs:comment "Sign-flip count in economics domain." .
+    # calculated: calculated
+
+effortless-ntwf:avgPooledGapLatentD a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:ModelSummary ;
+    rdfs:range xsd:string ;
+    rdfs:label "AvgPooledGapLatentD" ;
+    rdfs:comment "Average PooledGap among Type-D studies with latent flip potential." .
+    # calculated: calculated
+
+effortless-ntwf:avgPooledGapStableD a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:ModelSummary ;
+    rdfs:range xsd:string ;
+    rdfs:label "AvgPooledGapStableD" ;
+    rdfs:comment "Average PooledGap among allocation-stable Type-D studies." .
+    # calculated: calculated
+
+effortless-ntwf:epidemiologyAvgDistortion a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:ModelSummary ;
+    rdfs:range xsd:string ;
+    rdfs:label "EpidemiologyAvgDistortion" ;
+    rdfs:comment "Mean AllocationDistortion in epidemiology studies." .
+    # calculated: calculated
+
+effortless-ntwf:educationAvgDistortion a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:ModelSummary ;
+    rdfs:range xsd:string ;
+    rdfs:label "EducationAvgDistortion" ;
+    rdfs:comment "Mean AllocationDistortion in education studies." .
+    # calculated: calculated
+
+effortless-ntwf:discoveryWitnessNote a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:ModelSummary ;
+    rdfs:range xsd:string ;
+    rdfs:label "DiscoveryWitnessNote" ;
+    rdfs:comment "One-line summary of loop-61 empirical discovery findings." .
+    # calculated: calculated
 
 # === Class: PhaseDiagramSummary ===
 effortless-ntwf:PhaseDiagramSummary a owl:Class ;
@@ -2391,7 +2508,6 @@ effortless-ntwf:sweepPooledGapRange a owl:DatatypeProperty ;
     # calculated: calculated
 
 effortless-ntwf:pooledGapCrossesZero a owl:DatatypeProperty ;
-    rdfs:domain effortless-ntwf:SweepStudySummary ;
     rdfs:range xsd:boolean ;
     rdfs:label "PooledGapCrossesZero" ;
     rdfs:comment "TRUE when SweepPooledGapMin < 0 and SweepPooledGapMax > 0 — the pooled gap changes sign somewhere in the sweep, meaning the paradox can be created or destroyed by pure allocation." .
@@ -2692,7 +2808,7 @@ effortless-ntwf:isReversal a owl:DatatypeProperty ;
     rdfs:domain effortless-ntwf:TreatmentRankings ;
     rdfs:range xsd:boolean ;
     rdfs:label "IsReversal" ;
-    rdfs:comment "TRUE when the pooled winner and the per-stratum winner disagree — i.e. Simpson's Paradox is present. FALSE otherwise. This is the paradox as a derived fact, not a modeled entity." .
+    rdfs:comment "TRUE when the equal-weight pooled signal (WeightedStratumGapSum) and the actual pooled signal (SignedPooledGap) point in opposite directions — allocation has flipped the direction of the aggregate conclusion. This is Simpson's Paradox as a derived fact." .
     # calculated: calculated
 
 effortless-ntwf:confoundersInStudy a owl:DatatypeProperty ;
@@ -2706,14 +2822,7 @@ effortless-ntwf:isParadoxExplained a owl:DatatypeProperty ;
     rdfs:domain effortless-ntwf:TreatmentRankings ;
     rdfs:range xsd:boolean ;
     rdfs:label "IsParadoxExplained" ;
-    rdfs:comment "TRUE when IsReversal is present AND at least one confirmed confounder exists in the study. The model witnesses its own explanatory completeness — or its limits." .
-    # calculated: calculated
-
-effortless-ntwf:isParadoxExplained_v2 a owl:DatatypeProperty ;
-    rdfs:domain effortless-ntwf:TreatmentRankings ;
-    rdfs:range xsd:boolean ;
-    rdfs:label "IsParadoxExplained_v2" ;
-    rdfs:comment "TRUE when IsReversal_v2 is present AND at least one confirmed confounder exists in the study. The v2 counterpart to IsParadoxExplained — captures berkeley-1973 and appleton-1996, which have confirmed confounders but do not satisfy the unanimity criterion. Together with IsParadoxExplained, this field witnesses exactly which studies the old definition left unexplained despite having a causal account." .
+    rdfs:comment "TRUE when IsReversal is present AND at least one confirmed confounder exists in the study." .
     # calculated: calculated
 
 effortless-ntwf:pooledGap a owl:DatatypeProperty ;
@@ -2782,7 +2891,7 @@ effortless-ntwf:weightedStratumGapSum a owl:DatatypeProperty ;
 effortless-ntwf:isSignFlip a owl:DatatypeProperty ;
     rdfs:range xsd:boolean ;
     rdfs:label "IsSignFlip" ;
-    rdfs:comment "TRUE when WeightedStratumGapSum and SignedPooledGap have opposite signs — the allocation has reversed the direction of the pooled signal relative to what equal-weight strata would show. This is the continuous generalisation of IsReversal: it does not require every stratum to agree, only that the equal-weight estimate and the actual pooled estimate point in opposite directions. Berkeley 1973 satisfies IsSignFlip=TRUE despite IsReversal=FALSE." .
+    rdfs:comment "TRUE when WeightedStratumGapSum and SignedPooledGap have opposite signs. Same condition as IsReversal; retained as the coordinate-level name in the DAG." .
     # calculated: calculated
 
 effortless-ntwf:allocationDistortion a owl:DatatypeProperty ;
@@ -2801,27 +2910,6 @@ effortless-ntwf:policyImplication a owl:DatatypeProperty ;
     rdfs:range xsd:string ;
     rdfs:label "PolicyImplication" ;
     rdfs:comment "The researcher action implied by the geometric classification. Derived from DistortionType: type A (full reversal) → 'stratify-immediately' — the pooled conclusion is directionally wrong; do not act on it without stratifying. Type B (partial sign-flip) → 'investigate-confounder' — the equal-weight signal opposes the pooled signal, but the per-stratum picture is mixed; the causal mechanism needs examination before trusting either estimate. Type C (compression without flip) → 'check-allocation-bias' — the pooled winner is probably correct but the effect size is distorted; report adjusted or standardized margins rather than the raw pooled gap. Type D (neutral) → 'pooled-analysis-trustworthy' — allocation is not materially distorting the signal; the pooled conclusion is safe with respect to this stratification." .
-    # calculated: calculated
-
-effortless-ntwf:isReversal_v2 a owl:DatatypeProperty ;
-    rdfs:domain effortless-ntwf:TreatmentRankings ;
-    rdfs:range xsd:boolean ;
-    rdfs:label "IsReversal_v2" ;
-    rdfs:comment "The sign-flip definition of reversal: TRUE when the equal-weight pooled signal (WeightedStratumGapSum) and the actual pooled signal (SignedPooledGap) point in opposite directions. Strictly generalizes the unanimity criterion — every Type-A study satisfies both IsReversal and IsReversal_v2, but Berkeley-1973 and Appleton-1996 satisfy IsReversal_v2 without satisfying IsReversal. The unanimity criterion (IsReversal) is now understood as the Type-A subtype of this broader definition." .
-    # calculated: calculated
-
-effortless-ntwf:definitionDelta a owl:DatatypeProperty ;
-    rdfs:domain effortless-ntwf:TreatmentRankings ;
-    rdfs:range xsd:boolean ;
-    rdfs:label "DefinitionDelta" ;
-    rdfs:comment "TRUE when IsReversal_v2 and IsReversal disagree — i.e. when the sign-flip definition fires but the unanimity criterion does not. These are the studies the old definition misclassified as non-reversals. In the current dataset: berkeley-1973 and appleton-1996. A non-empty DefinitionDelta set is the empirical proof that the unanimity criterion is a strict subset of the sign-flip criterion." .
-    # calculated: calculated
-
-effortless-ntwf:strictReversalSubtype a owl:DatatypeProperty ;
-    rdfs:domain effortless-ntwf:TreatmentRankings ;
-    rdfs:range xsd:string ;
-    rdfs:label "StrictReversalSubtype" ;
-    rdfs:comment "Classifies each study's relationship to the two reversal definitions. 'strict' = unanimity reversal (IsReversal=TRUE, DistortionType=A — the old definition's true positives). 'extended' = sign-flip only, not unanimous (IsReversal_v2=TRUE, IsReversal=FALSE — the studies the old definition missed). 'none' = no reversal under either definition." .
     # calculated: calculated
 
 effortless-ntwf:correctedGap a owl:DatatypeProperty ;
@@ -2863,6 +2951,39 @@ effortless-ntwf:signalPurity a owl:DatatypeProperty ;
     rdfs:label "SignalPurity" ;
     rdfs:comment "The fraction of total observed variation (|CorrectedGap| + AllocationDistortion) that is genuine treatment signal rather than allocation noise. SignalPurity = |CorrectedGap| / (|CorrectedGap| + AllocationDistortion). Range [0,1]: 1.0 = allocation contributed nothing (type D); 0 = corrected gap is zero (pure noise). Critical threshold is 0.5: SignalPurity < 0.5 means allocation noise exceeds true signal. The signal-purity theorem (loop-44): AllocationDirection='reversal' → SignalPurity < 0.5. Equivalently: a sign flip requires the confound to produce more distortion than the treatment produced signal. This is the mechanistic account of why reversals happen: not study-design accidents but algebraic necessities." .
     # calculated: calculated
+
+effortless-ntwf:pooledGapCrossesZero a owl:DatatypeProperty ;
+    rdfs:range xsd:boolean ;
+    rdfs:label "PooledGapCrossesZero" ;
+    rdfs:comment "Lookup: SweepStudySummary.PooledGapCrossesZero via Study. TRUE when reweighting allocation would change the sign of the pooled gap." .
+    # calculated: lookup
+
+effortless-ntwf:sweepPooledGapRange a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "SweepPooledGapRange" ;
+    rdfs:comment "Lookup: SweepStudySummary.SweepPooledGapRange via Study. Width of pooled-gap wander under allocation sweep." .
+    # calculated: lookup
+
+effortless-ntwf:latentFlipPotential a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:TreatmentRankings ;
+    rdfs:range xsd:boolean ;
+    rdfs:label "LatentFlipPotential" ;
+    rdfs:comment "TRUE when DistortionType=D but PooledGapCrossesZero=TRUE — SAFE at observed allocation but flip-capable under counterfactual reweighting." .
+    # calculated: calculated
+
+effortless-ntwf:allocationFragility a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:TreatmentRankings ;
+    rdfs:range xsd:string ;
+    rdfs:label "AllocationFragility" ;
+    rdfs:comment "SweepPooledGapRange divided by |PooledGap|. High values mean small observed effect but wide counterfactual wander." .
+    # calculated: calculated
+
+effortless-ntwf:studyDomain a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:TreatmentRankings ;
+    rdfs:range xsd:string ;
+    rdfs:label "StudyDomain" ;
+    rdfs:comment "Lookup: Studies.Domain via Study." .
+    # calculated: lookup
 
 effortless-ntwf:confirmedCausalRoleCount a owl:DatatypeProperty ;
     rdfs:domain effortless-ntwf:TreatmentRankings ;

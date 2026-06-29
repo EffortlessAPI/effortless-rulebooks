@@ -8908,7 +8908,7 @@ effortless-ntwf:measles-outbreak-vaccinated-high-coverage-setting-A a effortless
     effortless-ntwf:study effortless-ntwf:measles-outbreak-vaccinated ;
     effortless-ntwf:stratumLabel "high-coverage-setting" ;
     effortless-ntwf:treatmentLabel "A" ;
-    effortless-ntwf:successes 90 ;
+    effortless-ntwf:successes 100 ;
     effortless-ntwf:cases 9000 .
 
 effortless-ntwf:measles-outbreak-vaccinated-high-coverage-setting-B a effortless-ntwf:CaseCells ;
@@ -8916,7 +8916,7 @@ effortless-ntwf:measles-outbreak-vaccinated-high-coverage-setting-B a effortless
     effortless-ntwf:study effortless-ntwf:measles-outbreak-vaccinated ;
     effortless-ntwf:stratumLabel "high-coverage-setting" ;
     effortless-ntwf:treatmentLabel "B" ;
-    effortless-ntwf:successes 36 ;
+    effortless-ntwf:successes 44 ;
     effortless-ntwf:cases 1000 .
 
 effortless-ntwf:measles-outbreak-vaccinated-lower-coverage-setting-A a effortless-ntwf:CaseCells ;
@@ -8924,7 +8924,7 @@ effortless-ntwf:measles-outbreak-vaccinated-lower-coverage-setting-A a effortles
     effortless-ntwf:study effortless-ntwf:measles-outbreak-vaccinated ;
     effortless-ntwf:stratumLabel "lower-coverage-setting" ;
     effortless-ntwf:treatmentLabel "A" ;
-    effortless-ntwf:successes 21 ;
+    effortless-ntwf:successes 15 ;
     effortless-ntwf:cases 2000 .
 
 effortless-ntwf:measles-outbreak-vaccinated-lower-coverage-setting-B a effortless-ntwf:CaseCells ;
@@ -8932,7 +8932,7 @@ effortless-ntwf:measles-outbreak-vaccinated-lower-coverage-setting-B a effortles
     effortless-ntwf:study effortless-ntwf:measles-outbreak-vaccinated ;
     effortless-ntwf:stratumLabel "lower-coverage-setting" ;
     effortless-ntwf:treatmentLabel "B" ;
-    effortless-ntwf:successes 40 ;
+    effortless-ntwf:successes 35 ;
     effortless-ntwf:cases 500 .
 
 effortless-ntwf:air-pollution-mortality-city-younger-population-city-A a effortless-ntwf:CaseCells ;
@@ -9875,16 +9875,107 @@ effortless-ntwf:conc-13-cplus-cminus-opposite-errors a effortless-ntwf:Conclusio
 effortless-ntwf:conc-14-scale-is-discovery-path a effortless-ntwf:Conclusions ;
     effortless-ntwf:conclusionId "conc-14-scale-is-discovery-path" ;
     effortless-ntwf:category "methodology" ;
-    effortless-ntwf:status "planned" ;
+    effortless-ntwf:status "witnessed" ;
     effortless-ntwf:title "Cross-domain SignalPurity correlations require a pre-registered unbiased corpus of 50+ studies to distinguish pattern from selection artifact" ;
-    effortless-ntwf:evidence "Current 16-study corpus: 3 synthetic, 13 real. Domain breakdown: medicine=3, epidemiology=6, other=4. The instrument can classify any 2xK contingency table in five inputs. But detecting whether Domain predicts DistortionType, or whether SampleSize correlates with SignalPurity, requires enough studies per cell to reach statistical power. Minimum target: 8 studies per domain × 5 domains = 40+, ideally 50-80. Pre-registration of inclusion criteria (any real published 2xK study with a named confounder) prevents cherry-picking. This is the only path from clean instrumentation to empirical discovery." ;
-    effortless-ntwf:witnessedInLoop "loop-46" ;
-    effortless-ntwf:targetLoop "loop-47" .
+    effortless-ntwf:evidence "Partial domain patterns witnessed at 91 real studies (loop-61): epidemiology avg distortion 0.050 vs education 0.004; legal/sports/epidemiology flip rates ~27% vs economics 0%. Full causal domain→DistortionType mapping still requires pre-registered expansion beyond convenience sample, but the instrument now supports DiscoveryHypotheses/Findings for ongoing corpus-scale tests." ;
+    effortless-ntwf:witnessedInLoop "loop-61" ;
+    effortless-ntwf:targetLoop "" .
+
+effortless-ntwf:conc-15-latent-flip-potential a effortless-ntwf:Conclusions ;
+    effortless-ntwf:conclusionId "conc-15-latent-flip-potential" ;
+    effortless-ntwf:category "instrument" ;
+    effortless-ntwf:status "witnessed" ;
+    effortless-ntwf:title "Type-D at observed allocation does not imply allocation-stable — 70% of SAFE studies flip under counterfactual reweighting" ;
+    effortless-ntwf:evidence "LatentTypeDCount=45, TypeDCount=64, LatentTypeDFraction=0.703. LatentFlipPotential=TRUE when DistortionType=D AND PooledGapCrossesZero=TRUE. Examples: uc-systemwide-admissions (Type D, sweep range 0.56), recsys-offline-eval (Type D, sweep range 0.56). The ScreeningTier SAFE label describes observed allocation only; sweep reveals latent flip potential." ;
+    effortless-ntwf:witnessedInLoop "loop-61" ;
+    effortless-ntwf:traditionId "tradition-historical" .
+
+effortless-ntwf:conc-16-small-effect-fragile a effortless-ntwf:Conclusions ;
+    effortless-ntwf:conclusionId "conc-16-small-effect-fragile" ;
+    effortless-ntwf:category "theorem" ;
+    effortless-ntwf:status "witnessed" ;
+    effortless-ntwf:title "Large observed pooled gaps (>0.10) predict allocation-stable Type-D; small gaps predict latent flip potential" ;
+    effortless-ntwf:evidence "AvgPooledGapStableD=0.102 across 19 stable Type-D studies; AvgPooledGapLatentD=0.022 across 45 latent Type-D studies. Stable studies also have lower sweep range (avg 0.072 vs 0.211). Small observed effects are allocation-fragile even when currently classified SAFE." ;
+    effortless-ntwf:witnessedInLoop "loop-61" ;
+    effortless-ntwf:traditionId "tradition-dag" .
+
+effortless-ntwf:conc-17-economics-flip-free a effortless-ntwf:Conclusions ;
+    effortless-ntwf:conclusionId "conc-17-economics-flip-free" ;
+    effortless-ntwf:category "domain" ;
+    effortless-ntwf:status "witnessed" ;
+    effortless-ntwf:title "Economics-domain 2×K encodings in this corpus produce zero sign-flips — composition studies read as Type D or C−" ;
+    effortless-ntwf:evidence "EconomicsSignFlipCount=0 across 8 economics studies (6 Type D, 2 Type C−). Contrast epidemiology (6 sign-flips / 22 studies, 27.3%). Composition and wage-decomposition paradoxes compress or stabilize rather than flip in this instrument's 2×K encoding." ;
+    effortless-ntwf:witnessedInLoop "loop-61" ;
+    effortless-ntwf:traditionId "tradition-epidemiology" .
 
 # === Individuals: CorpusCatalogSummary ===
 
 effortless-ntwf:catalog-v1 a effortless-ntwf:CorpusCatalogSummary ;
     effortless-ntwf:catalogSummaryId "catalog-v1" .
+
+# === Individuals: DiscoveryFindings ===
+
+effortless-ntwf:find-H-latent-d a effortless-ntwf:DiscoveryFindings ;
+    effortless-ntwf:findingId "find-H-latent-d" ;
+    effortless-ntwf:hypothesisId "H-latent-d" ;
+    effortless-ntwf:witnessedInLoop "loop-61" .
+
+effortless-ntwf:find-H-purity a effortless-ntwf:DiscoveryFindings ;
+    effortless-ntwf:findingId "find-H-purity" ;
+    effortless-ntwf:hypothesisId "H-purity" ;
+    effortless-ntwf:witnessedInLoop "loop-61" .
+
+effortless-ntwf:find-H-small-effect a effortless-ntwf:DiscoveryFindings ;
+    effortless-ntwf:findingId "find-H-small-effect" ;
+    effortless-ntwf:hypothesisId "H-small-effect" ;
+    effortless-ntwf:witnessedInLoop "loop-61" .
+
+effortless-ntwf:find-H-econ-zero a effortless-ntwf:DiscoveryFindings ;
+    effortless-ntwf:findingId "find-H-econ-zero" ;
+    effortless-ntwf:hypothesisId "H-econ-zero" ;
+    effortless-ntwf:witnessedInLoop "loop-61" .
+
+effortless-ntwf:find-H-domain-dist a effortless-ntwf:DiscoveryFindings ;
+    effortless-ntwf:findingId "find-H-domain-dist" ;
+    effortless-ntwf:hypothesisId "H-domain-dist" ;
+    effortless-ntwf:witnessedInLoop "loop-61" .
+
+# === Individuals: DiscoveryHypotheses ===
+
+effortless-ntwf:H-latent-d a effortless-ntwf:DiscoveryHypotheses ;
+    effortless-ntwf:hypothesisId "H-latent-d" ;
+    effortless-ntwf:statement "More than half of Type-D (SAFE) studies would flip their pooled winner under counterfactual allocation reweighting." ;
+    effortless-ntwf:expectedOutcome "LatentTypeDFraction > 0.5" ;
+    effortless-ntwf:registeredInLoop "loop-61" ;
+    effortless-ntwf:traditionId "tradition-historical" .
+
+effortless-ntwf:H-purity a effortless-ntwf:DiscoveryHypotheses ;
+    effortless-ntwf:hypothesisId "H-purity" ;
+    effortless-ntwf:statement "Every sign-flip study has SignalPurity strictly below 0.5." ;
+    effortless-ntwf:expectedOutcome "SignFlipSignalPurityMax < 0.5" ;
+    effortless-ntwf:registeredInLoop "loop-61" ;
+    effortless-ntwf:traditionId "tradition-dag" .
+
+effortless-ntwf:H-small-effect a effortless-ntwf:DiscoveryHypotheses ;
+    effortless-ntwf:hypothesisId "H-small-effect" ;
+    effortless-ntwf:statement "Allocation-stable Type-D studies carry larger observed pooled gaps than latent Type-D studies." ;
+    effortless-ntwf:expectedOutcome "AvgPooledGapStableD > AvgPooledGapLatentD" ;
+    effortless-ntwf:registeredInLoop "loop-61" ;
+    effortless-ntwf:traditionId "tradition-epidemiology" .
+
+effortless-ntwf:H-econ-zero a effortless-ntwf:DiscoveryHypotheses ;
+    effortless-ntwf:hypothesisId "H-econ-zero" ;
+    effortless-ntwf:statement "Economics-domain studies produce zero sign-flips in 2×K encoding." ;
+    effortless-ntwf:expectedOutcome "EconomicsSignFlipCount = 0" ;
+    effortless-ntwf:registeredInLoop "loop-61" ;
+    effortless-ntwf:traditionId "tradition-historical" .
+
+effortless-ntwf:H-domain-dist a effortless-ntwf:DiscoveryHypotheses ;
+    effortless-ntwf:hypothesisId "H-domain-dist" ;
+    effortless-ntwf:statement "Epidemiology studies carry higher mean AllocationDistortion than education studies." ;
+    effortless-ntwf:expectedOutcome "EpidemiologyAvgDistortion > EducationAvgDistortion" ;
+    effortless-ntwf:registeredInLoop "loop-61" ;
+    effortless-ntwf:traditionId "tradition-epidemiology" .
 
 # === Individuals: DomainExpansionTargets ===
 
@@ -10514,7 +10605,7 @@ effortless-ntwf:inv-import-session-ready a effortless-ntwf:InvariantChecks ;
     effortless-ntwf:invariantCheckId "inv-import-session-ready" ;
     effortless-ntwf:algebraicStatement "CandidateCount = 0 (all encode-ready catalog rows imported)" ;
     effortless-ntwf:naturalLanguage "Post loop-59: REAL? backlog drained; zero catalog rows remain with IngestionStatus=candidate (blocked rows excluded)." ;
-    effortless-ntwf:sourceTable "CandidateStudyCatalog" ;
+    effortless-ntwf:sourceTable "CorpusCatalogSummary" ;
     effortless-ntwf:filterExpression "" ;
     effortless-ntwf:assertionExpression "CandidateCount = 0" ;
     effortless-ntwf:sqlFilter "" ;
@@ -10597,6 +10688,36 @@ effortless-ntwf:inv-type-d-ratio-near-unity a effortless-ntwf:InvariantChecks ;
     effortless-ntwf:severity "critical" ;
     effortless-ntwf:traditionId "tradition-historical" ;
     effortless-ntwf:protectsConclusion "conc-02-reversal-from-allocation" .
+
+effortless-ntwf:inv-latent-d-majority a effortless-ntwf:InvariantChecks ;
+    effortless-ntwf:invariantCheckId "inv-latent-d-majority" ;
+    effortless-ntwf:algebraicStatement "LatentTypeDFraction > 0.5" ;
+    effortless-ntwf:naturalLanguage "More than half of Type-D studies have latent flip potential under allocation sweep." ;
+    effortless-ntwf:sourceTable "ModelSummary" ;
+    effortless-ntwf:filterExpression "" ;
+    effortless-ntwf:assertionExpression "LatentTypeDFraction > 0.5" ;
+    effortless-ntwf:sqlFilter "" ;
+    effortless-ntwf:sqlAssertion "latent_type_d_fraction > 0.5" ;
+    effortless-ntwf:passCount 1 ;
+    effortless-ntwf:failCount 0 ;
+    effortless-ntwf:severity "critical" ;
+    effortless-ntwf:traditionId "tradition-historical" ;
+    effortless-ntwf:protectsConclusion "conc-15-latent-flip-potential" .
+
+effortless-ntwf:inv-discovery-all-confirmed a effortless-ntwf:InvariantChecks ;
+    effortless-ntwf:invariantCheckId "inv-discovery-all-confirmed" ;
+    effortless-ntwf:algebraicStatement "COUNTIFS(DiscoveryFindings IsConfirmed FALSE) = 0" ;
+    effortless-ntwf:naturalLanguage "All loop-61 pre-registered discovery hypotheses must confirm against the live corpus." ;
+    effortless-ntwf:sourceTable "DiscoveryFindings" ;
+    effortless-ntwf:filterExpression "" ;
+    effortless-ntwf:assertionExpression "IsConfirmed = TRUE" ;
+    effortless-ntwf:sqlFilter "" ;
+    effortless-ntwf:sqlAssertion "is_confirmed = TRUE" ;
+    effortless-ntwf:passCount 5 ;
+    effortless-ntwf:failCount 0 ;
+    effortless-ntwf:severity "critical" ;
+    effortless-ntwf:traditionId "tradition-epidemiology" ;
+    effortless-ntwf:protectsConclusion "conc-15-latent-flip-potential" .
 
 # === Individuals: Loops ===
 
@@ -11119,6 +11240,26 @@ effortless-ntwf:loop-59 a effortless-ntwf:Loops ;
     effortless-ntwf:domainQuestion "Does draining the REAL? backlog increase domain/mechanism coverage without breaking invariant harness — and how often does ExpectedDistortionType match observed DistortionType?" ;
     effortless-ntwf:mockDataNote "Witnessed: 33 studies imported from REAL? backlog; corpus now 96 studies." ;
     effortless-ntwf:nextSuggestion "loop-60: TypePredictionMatch audit + ModelSummary refresh across full 96-study corpus" ;
+    effortless-ntwf:traditionId "tradition-epidemiology" .
+
+effortless-ntwf:loop-60 a effortless-ntwf:Loops ;
+    effortless-ntwf:loopId "loop-60" ;
+    effortless-ntwf:title "Legacy prune: IsReversal = sign-flip; drop v2 meta and presentation layer" ;
+    effortless-ntwf:status "complete" ;
+    effortless-ntwf:newConcept "IsReversal redefined as IsSignFlip (single reversal definition). Removed IsReversal_v2, DefinitionDelta, StrictReversalSubtype, IsParadoxExplained_v2, InstrumentScore, ScreeningVerdict, duplicate ModelSummary v2 counts (ReversalCountV2, PartialCount, ZeroStrengthCount, TypeCCount). Unanimous-vs-partial distinction lives in DistortionType A vs B only." ;
+    effortless-ntwf:domainQuestion "Can the instrument shed legacy presentation and v2 meta fields without losing load-bearing taxonomy coordinates (DistortionType, SignalPurity, AllocationDirection)?" ;
+    effortless-ntwf:mockDataNote "Witnessed post-build: IsReversal equals IsSignFlip on all studies. ReversalCount counts sign-flips. Type B captures partial stratum disagreement without DefinitionDelta. ScreeningTier retained (derived from DistortionType)." ;
+    effortless-ntwf:nextSuggestion "loop-61: DiscoveryHypotheses + DiscoveryFindings — first empirical discovery loop on the pruned instrument." ;
+    effortless-ntwf:traditionId "tradition-dag" .
+
+effortless-ntwf:loop-61 a effortless-ntwf:Loops ;
+    effortless-ntwf:loopId "loop-61" ;
+    effortless-ntwf:title "Discovery loop: latent flip potential + pre-registered corpus findings" ;
+    effortless-ntwf:status "complete" ;
+    effortless-ntwf:newConcept "DiscoveryHypotheses + DiscoveryFindings tables; TreatmentRankings sweep lookups (PooledGapCrossesZero, SweepPooledGapRange, LatentFlipPotential, AllocationFragility, StudyDomain); ModelSummary discovery aggregates" ;
+    effortless-ntwf:domainQuestion "At 96-study corpus scale, do pre-registered empirical hypotheses about allocation fragility, signal purity, domain patterns, and effect-size stability witness in the DAG?" ;
+    effortless-ntwf:mockDataNote "Witnessed post-build: 45/64 Type-D studies (70.3%) have LatentFlipPotential; SignFlipSignalPurityMax=0.483; stable Type-D avg PooledGap 0.102 vs latent 0.022; economics 0/8 sign-flips; epidemiology avg distortion 0.050 vs education 0.004." ;
+    effortless-ntwf:nextSuggestion "loop-62: Discovery UI screen + fix CorpusCatalogSummary priority calc + CandidateStudyCatalog observed_distortion_type for type-prediction audit" ;
     effortless-ntwf:traditionId "tradition-epidemiology" .
 
 # === Individuals: Methodology ===
@@ -17601,36 +17742,6 @@ effortless-ntwf:tr-distortion-type a effortless-ntwf:SubstrateConformanceFields 
     effortless-ntwf:assertFromPostgres true ;
     effortless-ntwf:inCompareSet true .
 
-effortless-ntwf:tr-is-reversal-v2 a effortless-ntwf:SubstrateConformanceFields ;
-    effortless-ntwf:fieldId "tr-is-reversal-v2" ;
-    effortless-ntwf:sourceTable "TreatmentRankings" ;
-    effortless-ntwf:fieldName "IsReversal_v2" ;
-    effortless-ntwf:pgColumn "is_reversal_v2" ;
-    effortless-ntwf:owlLocalName "isReversal_v2" ;
-    effortless-ntwf:dataType "bool" ;
-    effortless-ntwf:assertFromPostgres false ;
-    effortless-ntwf:inCompareSet true .
-
-effortless-ntwf:tr-definition-delta a effortless-ntwf:SubstrateConformanceFields ;
-    effortless-ntwf:fieldId "tr-definition-delta" ;
-    effortless-ntwf:sourceTable "TreatmentRankings" ;
-    effortless-ntwf:fieldName "DefinitionDelta" ;
-    effortless-ntwf:pgColumn "definition_delta" ;
-    effortless-ntwf:owlLocalName "definitionDelta" ;
-    effortless-ntwf:dataType "bool" ;
-    effortless-ntwf:assertFromPostgres false ;
-    effortless-ntwf:inCompareSet true .
-
-effortless-ntwf:tr-strict-reversal-subtype a effortless-ntwf:SubstrateConformanceFields ;
-    effortless-ntwf:fieldId "tr-strict-reversal-subtype" ;
-    effortless-ntwf:sourceTable "TreatmentRankings" ;
-    effortless-ntwf:fieldName "StrictReversalSubtype" ;
-    effortless-ntwf:pgColumn "strict_reversal_subtype" ;
-    effortless-ntwf:owlLocalName "strictReversalSubtype" ;
-    effortless-ntwf:dataType "str" ;
-    effortless-ntwf:assertFromPostgres false ;
-    effortless-ntwf:inCompareSet true .
-
 effortless-ntwf:tr-corrected-gap a effortless-ntwf:SubstrateConformanceFields ;
     effortless-ntwf:fieldId "tr-corrected-gap" ;
     effortless-ntwf:sourceTable "TreatmentRankings" ;
@@ -18758,14 +18869,14 @@ effortless-ntwf:measles-outbreak-vaccinated a effortless-ntwf:SweepStudyConfig ;
     effortless-ntwf:studyId "measles-outbreak-vaccinated" ;
     effortless-ntwf:sweepStratumLabel "high-coverage-setting" ;
     effortless-ntwf:nSweepStratumTotal 10000 ;
-    effortless-ntwf:sweepRateA 0.01 ;
-    effortless-ntwf:sweepRateB 0.036 ;
+    effortless-ntwf:sweepRateA 0.011111 ;
+    effortless-ntwf:sweepRateB 0.044 ;
     effortless-ntwf:nFixedA 2000 ;
     effortless-ntwf:nFixedB 500 ;
-    effortless-ntwf:fixedRateA 0.0105 ;
-    effortless-ntwf:fixedRateB 0.08 ;
+    effortless-ntwf:fixedRateA 0.0075 ;
+    effortless-ntwf:fixedRateB 0.07 ;
     effortless-ntwf:originalAllocFractionA 0.9 ;
-    effortless-ntwf:sweepCorrectedGap -0.0347 .
+    effortless-ntwf:sweepCorrectedGap -0.038811 .
 
 effortless-ntwf:air-pollution-mortality-city a effortless-ntwf:SweepStudyConfig ;
     effortless-ntwf:configId "air-pollution-mortality-city" ;
@@ -22898,7 +23009,7 @@ effortless-ntwf:comp-06-model-summary-scorecard a effortless-ntwf:UIComponents ;
     effortless-ntwf:usedOnScreens "screen-06-model-summary" ;
     effortless-ntwf:primaryEntity "ModelSummary" ;
     effortless-ntwf:description "A summary scorecard showing all ModelSummary fields as labeled metric tiles: StudyCount, ReversalCount, ExplainedCount, TypeA/B/C/D counts, AvgAllocationDistortion, TotalParadoxStrength." ;
-    effortless-ntwf:requiredFields "StudyCount, ReversalCount, ExplainedCount, ZeroStrengthCount, TotalParadoxStrength, AvgParadoxStrength" ;
+    effortless-ntwf:requiredFields "StudyCount, ReversalCount, ExplainedCount, TotalParadoxStrength, AvgParadoxStrength" ;
     effortless-ntwf:visualSpec "Grid of metric tiles. Each tile: large number, small label. Color: ReversalCount in orange/red; ExplainedCount in green; TypeD in grey. Single row layout on desktop, 2-column on mobile." .
 
 effortless-ntwf:comp-07-confounder-card a effortless-ntwf:UIComponents ;

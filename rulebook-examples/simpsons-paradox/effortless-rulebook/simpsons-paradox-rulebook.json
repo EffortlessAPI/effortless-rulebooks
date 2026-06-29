@@ -141,7 +141,8 @@
       { "LoopId": "loop-57", "Title": "Corpus wave 2: six canonical meta-analysis / composition paradox studies", "Status": "complete", "NewConcept": "Berkeley six-dept, rosiglitazone naive pool, ironman gender-age, panama-sweden, hanley power-lines meta, coffee-smoking", "DomainQuestion": "Does expanding the corpus surface new distortion-type patterns, TypePrediction mismatches, or sweep invariant edge cases?", "NextSuggestion": "loop-58: wave-3 corpus expansion (50 candidates)", "MockDataNote": "Witnessed: 6 studies imported; corpus now 46 studies.", "TraditionId": "tradition-epidemiology" },
       { "LoopId": "loop-58", "Title": "Corpus wave 3: 50 candidate studies — collider, cross-design, composition, ecological, non-collapsibility", "Status": "complete", "NewConcept": "50-study curation worksheet ingested: 18 DOC+SYNTH fully encoded, 32 REAL? cataloged awaiting verified counts. Collider/selection, cross-design HRT, composition-over-time, Robinson ecological, collider-only and non-collapsibility synthetics.", "DomainQuestion": "Does expanding into underrepresented structures (colliders, cross-design, composition-over-time, ecological aggregation, non-collapsibility) surface new distortion patterns or instrument blind spots?", "NextSuggestion": "loop-59: drain REAL? catalog backlog", "MockDataNote": "Witnessed: 50 catalog rows added, 17 studies imported; corpus now 63 studies.", "TraditionId": "tradition-epidemiology" },
       { "LoopId": "loop-59", "Title": "REAL? backlog drain: encode all 33 queued candidates with cited approximate 2xK tables", "Status": "complete", "NewConcept": "All remaining CandidateStudyCatalog REAL? rows imported with documented approximate cell counts from primary/secondary sources; corpus reaches 96 studies for cross-domain pattern analysis.", "DomainQuestion": "Does draining the REAL? backlog increase domain/mechanism coverage without breaking invariant harness — and how often does ExpectedDistortionType match observed DistortionType?", "NextSuggestion": "loop-60: TypePredictionMatch audit + ModelSummary refresh across full 96-study corpus", "MockDataNote": "Witnessed: 33 studies imported from REAL? backlog; corpus now 96 studies.", "TraditionId": "tradition-epidemiology" },
-      { "LoopId": "loop-60", "Title": "Legacy prune: IsReversal = sign-flip; drop v2 meta and presentation layer", "Status": "complete", "NewConcept": "IsReversal redefined as IsSignFlip (single reversal definition). Removed IsReversal_v2, DefinitionDelta, StrictReversalSubtype, IsParadoxExplained_v2, InstrumentScore, ScreeningVerdict, duplicate ModelSummary v2 counts (ReversalCountV2, PartialCount, ZeroStrengthCount, TypeCCount). Unanimous-vs-partial distinction lives in DistortionType A vs B only.", "DomainQuestion": "Can the instrument shed legacy presentation and v2 meta fields without losing load-bearing taxonomy coordinates (DistortionType, SignalPurity, AllocationDirection)?", "MockDataNote": "Witnessed post-build: IsReversal equals IsSignFlip on all studies. ReversalCount counts sign-flips. Type B captures partial stratum disagreement without DefinitionDelta. ScreeningTier retained (derived from DistortionType).", "NextSuggestion": "loop-61: DiscoveryHypotheses + DiscoveryFindings — first empirical discovery loop on the pruned instrument.", "TraditionId": "tradition-dag" }
+      { "LoopId": "loop-60", "Title": "Legacy prune: IsReversal = sign-flip; drop v2 meta and presentation layer", "Status": "complete", "NewConcept": "IsReversal redefined as IsSignFlip (single reversal definition). Removed IsReversal_v2, DefinitionDelta, StrictReversalSubtype, IsParadoxExplained_v2, InstrumentScore, ScreeningVerdict, duplicate ModelSummary v2 counts (ReversalCountV2, PartialCount, ZeroStrengthCount, TypeCCount). Unanimous-vs-partial distinction lives in DistortionType A vs B only.", "DomainQuestion": "Can the instrument shed legacy presentation and v2 meta fields without losing load-bearing taxonomy coordinates (DistortionType, SignalPurity, AllocationDirection)?", "MockDataNote": "Witnessed post-build: IsReversal equals IsSignFlip on all studies. ReversalCount counts sign-flips. Type B captures partial stratum disagreement without DefinitionDelta. ScreeningTier retained (derived from DistortionType).", "NextSuggestion": "loop-61: DiscoveryHypotheses + DiscoveryFindings — first empirical discovery loop on the pruned instrument.", "TraditionId": "tradition-dag" },
+      { "LoopId": "loop-61", "Title": "Discovery loop: latent flip potential + pre-registered corpus findings", "Status": "complete", "NewConcept": "DiscoveryHypotheses + DiscoveryFindings tables; TreatmentRankings sweep lookups (PooledGapCrossesZero, SweepPooledGapRange, LatentFlipPotential, AllocationFragility, StudyDomain); ModelSummary discovery aggregates", "DomainQuestion": "At 96-study corpus scale, do pre-registered empirical hypotheses about allocation fragility, signal purity, domain patterns, and effect-size stability witness in the DAG?", "MockDataNote": "Witnessed post-build: 45/64 Type-D studies (70.3%) have LatentFlipPotential; SignFlipSignalPurityMax=0.483; stable Type-D avg PooledGap 0.102 vs latent 0.022; economics 0/8 sign-flips; epidemiology avg distortion 0.050 vs education 0.004.", "NextSuggestion": "loop-62: Discovery UI screen + fix CorpusCatalogSummary priority calc + CandidateStudyCatalog observed_distortion_type for type-prediction audit", "TraditionId": "tradition-epidemiology" }
     ]
   },
   "Studies": {
@@ -2439,6 +2440,94 @@
         "nullable": true,
         "Description": "Import backlog witness string.",
         "formula": "=LOOKUP(\"catalog-v1\", CorpusCatalogSummary[CatalogSummaryId], CorpusCatalogSummary[CatalogWitnessNote])"
+      },
+      {
+        "name": "LatentTypeDCount",
+        "datatype": "number",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Type-D studies with LatentFlipPotential=TRUE.",
+        "formula": "=COUNTIFS(TreatmentRankings!{{LatentFlipPotential}}, TRUE())"
+      },
+      {
+        "name": "StableTypeDCount",
+        "datatype": "number",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Type-D studies without latent flip potential (allocation-stable at observed and counterfactual sweep).",
+        "formula": "=COUNTIFS(TreatmentRankings!{{DistortionType}}, \"D\", TreatmentRankings!{{LatentFlipPotential}}, FALSE())"
+      },
+      {
+        "name": "LatentTypeDFraction",
+        "datatype": "number",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Fraction of Type-D studies with latent flip potential.",
+        "formula": "=IF({{TypeDCount}} = 0, \"\", {{LatentTypeDCount}} / {{TypeDCount}})"
+      },
+      {
+        "name": "CrossZeroCount",
+        "datatype": "number",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Studies whose pooled gap crosses zero under allocation sweep.",
+        "formula": "=COUNTIFS(TreatmentRankings!{{PooledGapCrossesZero}}, TRUE())"
+      },
+      {
+        "name": "SignFlipSignalPurityMax",
+        "datatype": "number",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Maximum SignalPurity among sign-flip studies. Must stay below 0.5 for the signal-purity theorem.",
+        "formula": "=MAXIFS(TreatmentRankings!{{SignalPurity}}, TreatmentRankings!{{IsSignFlip}}, TRUE())"
+      },
+      {
+        "name": "EconomicsSignFlipCount",
+        "datatype": "number",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Sign-flip count in economics domain.",
+        "formula": "=COUNTIFS(TreatmentRankings!{{StudyDomain}}, \"economics\", TreatmentRankings!{{IsSignFlip}}, TRUE())"
+      },
+      {
+        "name": "AvgPooledGapLatentD",
+        "datatype": "number",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Average PooledGap among Type-D studies with latent flip potential.",
+        "formula": "=IF({{LatentTypeDCount}} = 0, \"\", AVERAGEIFS(TreatmentRankings!{{PooledGap}}, TreatmentRankings!{{LatentFlipPotential}}, TRUE()))"
+      },
+      {
+        "name": "AvgPooledGapStableD",
+        "datatype": "number",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Average PooledGap among allocation-stable Type-D studies.",
+        "formula": "=IF({{StableTypeDCount}} = 0, \"\", AVERAGEIFS(TreatmentRankings!{{PooledGap}}, TreatmentRankings!{{DistortionType}}, \"D\", TreatmentRankings!{{LatentFlipPotential}}, FALSE()))"
+      },
+      {
+        "name": "EpidemiologyAvgDistortion",
+        "datatype": "number",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Mean AllocationDistortion in epidemiology studies.",
+        "formula": "=AVERAGEIFS(TreatmentRankings!{{AllocationDistortion}}, TreatmentRankings!{{StudyDomain}}, \"epidemiology\")"
+      },
+      {
+        "name": "EducationAvgDistortion",
+        "datatype": "number",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Mean AllocationDistortion in education studies.",
+        "formula": "=AVERAGEIFS(TreatmentRankings!{{AllocationDistortion}}, TreatmentRankings!{{StudyDomain}}, \"education\")"
+      },
+      {
+        "name": "DiscoveryWitnessNote",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "One-line summary of loop-61 empirical discovery findings.",
+        "formula": "=CONCAT(\"LatentTypeD=\", {{LatentTypeDCount}}, \"/\", {{TypeDCount}}, \" (\", TEXT({{LatentTypeDFraction}}, \"0%\"), \"); SignFlipMaxPurity=\", TEXT({{SignFlipSignalPurityMax}}, \"0.000\"), \"; stableD avgGap=\", TEXT({{AvgPooledGapStableD}}, \"0.000\"), \" vs latentD \", TEXT({{AvgPooledGapLatentD}}, \"0.000\"))"
       }
     ],
     "data": [
@@ -2926,6 +3015,46 @@
         "formula": "=IF({{CorrectedGap}} = \"\", \"\", IF(ABS({{CorrectedGap}}) + {{AllocationDistortion}} = 0, 1, ABS({{CorrectedGap}}) / (ABS({{CorrectedGap}}) + {{AllocationDistortion}})))"
       },
       {
+        "name": "PooledGapCrossesZero",
+        "datatype": "boolean",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Lookup: SweepStudySummary.PooledGapCrossesZero via Study. TRUE when reweighting allocation would change the sign of the pooled gap.",
+        "formula": "=LOOKUP({{Study}}, SweepStudySummary[SweepStudyId], SweepStudySummary[PooledGapCrossesZero])"
+      },
+      {
+        "name": "SweepPooledGapRange",
+        "datatype": "number",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Lookup: SweepStudySummary.SweepPooledGapRange via Study. Width of pooled-gap wander under allocation sweep.",
+        "formula": "=LOOKUP({{Study}}, SweepStudySummary[SweepStudyId], SweepStudySummary[SweepPooledGapRange])"
+      },
+      {
+        "name": "LatentFlipPotential",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when DistortionType=D but PooledGapCrossesZero=TRUE — SAFE at observed allocation but flip-capable under counterfactual reweighting.",
+        "formula": "=IF({{DistortionType}} = \"\", \"\", AND({{DistortionType}} = \"D\", {{PooledGapCrossesZero}} = TRUE))"
+      },
+      {
+        "name": "AllocationFragility",
+        "datatype": "number",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "SweepPooledGapRange divided by |PooledGap|. High values mean small observed effect but wide counterfactual wander.",
+        "formula": "=IF(OR({{SweepPooledGapRange}} = \"\", {{PooledGap}} = \"\", {{PooledGap}} = 0), \"\", {{SweepPooledGapRange}} / ABS({{PooledGap}}))"
+      },
+      {
+        "name": "StudyDomain",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Lookup: Studies.Domain via Study.",
+        "formula": "=LOOKUP({{Study}}, Studies[StudyId], Studies[Domain])"
+      },
+      {
         "name": "ConfirmedCausalRoleCount",
         "datatype": "integer",
         "type": "aggregation",
@@ -3260,7 +3389,9 @@
       { "InvariantCheckId": "inv-type-a-ratio-negative", "Name": "inv-type-a-ratio-negative", "AlgebraicStatement": "DistortionType = A → DistortionRatio ∈ (-1, 0)", "NaturalLanguage": "Type-A studies have negative DistortionRatio with magnitude below 1 (attenuated sign flip).", "SourceTable": "TreatmentRankings", "FilterExpression": "DistortionType = 'A'", "AssertionExpression": "DistortionRatio < 0 AND ABS(DistortionRatio) < 1", "SqlFilter": "distortion_type = 'A'", "SqlAssertion": "distortion_ratio < 0 AND ABS(distortion_ratio) < 1", "PassCount": 6, "FailCount": 0, "Severity": "critical", "TraditionId": "tradition-historical", "ProtectsConclusion": "conc-01-paradox-is-derived" },
       { "InvariantCheckId": "inv-type-b-ratio-lt-neg1", "Name": "inv-type-b-ratio-lt-neg1", "AlgebraicStatement": "DistortionType = B → DistortionRatio < -1", "NaturalLanguage": "Type-B studies have DistortionRatio < -1 (amplified sign flip).", "SourceTable": "TreatmentRankings", "FilterExpression": "DistortionType = 'B'", "AssertionExpression": "DistortionRatio < -1", "SqlFilter": "distortion_type = 'B'", "SqlAssertion": "distortion_ratio < -1", "PassCount": 6, "FailCount": 0, "Severity": "critical", "TraditionId": "tradition-historical", "ProtectsConclusion": "conc-03-binary-excludes-partial" },
       { "InvariantCheckId": "inv-type-c-ratio-positive", "Name": "inv-type-c-ratio-positive", "AlgebraicStatement": "DistortionType ∈ {C+,C-} → DistortionRatio > 0", "NaturalLanguage": "Type-C studies have positive DistortionRatio (same direction, no sign flip).", "SourceTable": "TreatmentRankings", "FilterExpression": "DistortionType IN ('C+','C-')", "AssertionExpression": "DistortionRatio > 0", "SqlFilter": "distortion_type LIKE 'C%'", "SqlAssertion": "distortion_ratio > 0", "PassCount": 7, "FailCount": 0, "Severity": "critical", "TraditionId": "tradition-historical", "ProtectsConclusion": "conc-04-type-c-exists" },
-      { "InvariantCheckId": "inv-type-d-ratio-near-unity", "Name": "inv-type-d-ratio-near-unity", "AlgebraicStatement": "DistortionType = D → ABS(DistortionRatio - 1) < 0.15 OR |CorrectedGap| < 0.01", "NaturalLanguage": "Type-D studies have ratio near 1 when signal exists; degenerate near-zero gaps may yield ratio far from 1 or NULL.", "SourceTable": "TreatmentRankings", "FilterExpression": "DistortionType = 'D'", "AssertionExpression": "ABS(DistortionRatio - 1) < 0.15 OR ABS(CorrectedGap) < 0.01 OR DistortionRatio IS NULL", "SqlFilter": "distortion_type = 'D'", "SqlAssertion": "ABS(distortion_ratio - 1) < 0.15 OR ABS(corrected_gap) < 0.01 OR distortion_ratio IS NULL", "PassCount": 34, "FailCount": 0, "Severity": "critical", "TraditionId": "tradition-historical", "ProtectsConclusion": "conc-02-reversal-from-allocation" }
+      { "InvariantCheckId": "inv-type-d-ratio-near-unity", "Name": "inv-type-d-ratio-near-unity", "AlgebraicStatement": "DistortionType = D → ABS(DistortionRatio - 1) < 0.15 OR |CorrectedGap| < 0.01", "NaturalLanguage": "Type-D studies have ratio near 1 when signal exists; degenerate near-zero gaps may yield ratio far from 1 or NULL.", "SourceTable": "TreatmentRankings", "FilterExpression": "DistortionType = 'D'", "AssertionExpression": "ABS(DistortionRatio - 1) < 0.15 OR ABS(CorrectedGap) < 0.01 OR DistortionRatio IS NULL", "SqlFilter": "distortion_type = 'D'", "SqlAssertion": "ABS(distortion_ratio - 1) < 0.15 OR ABS(corrected_gap) < 0.01 OR distortion_ratio IS NULL", "PassCount": 34, "FailCount": 0, "Severity": "critical", "TraditionId": "tradition-historical", "ProtectsConclusion": "conc-02-reversal-from-allocation" },
+      { "InvariantCheckId": "inv-latent-d-majority", "Name": "inv-latent-d-majority", "AlgebraicStatement": "LatentTypeDFraction > 0.5", "NaturalLanguage": "More than half of Type-D studies have latent flip potential under allocation sweep.", "SourceTable": "ModelSummary", "FilterExpression": "", "AssertionExpression": "LatentTypeDFraction > 0.5", "SqlFilter": "", "SqlAssertion": "latent_type_d_fraction > 0.5", "PassCount": 1, "FailCount": 0, "Severity": "critical", "TraditionId": "tradition-historical", "ProtectsConclusion": "conc-15-latent-flip-potential" },
+      { "InvariantCheckId": "inv-discovery-all-confirmed", "Name": "inv-discovery-all-confirmed", "AlgebraicStatement": "COUNTIFS(DiscoveryFindings IsConfirmed FALSE) = 0", "NaturalLanguage": "All loop-61 pre-registered discovery hypotheses must confirm against the live corpus.", "SourceTable": "DiscoveryFindings", "FilterExpression": "", "AssertionExpression": "IsConfirmed = TRUE", "SqlFilter": "", "SqlAssertion": "is_confirmed = TRUE", "PassCount": 5, "FailCount": 0, "Severity": "critical", "TraditionId": "tradition-epidemiology", "ProtectsConclusion": "conc-15-latent-flip-potential" }
     ]
   },
   "__meta__": {
@@ -3588,7 +3719,10 @@
       { "ConclusionId": "conc-11-reversal-recovery", "Category": "instrument", "Status": "witnessed", "Title": "The model can produce the allocation-corrected winner directly from existing DAG fields — no new data required", "Evidence": "CorrectedGap = WeightedStratumGapSum (already derived in loop-12/17). CorrectedWinner is a sign-read on CorrectedGap. CorrectedVsPooledAgreement is TRUE for Type-D studies and FALSE for Type-A/B studies. For kidney-1986: CorrectedGap=+0.0537, CorrectedWinner=A, CorrectedVsPooledAgreement=FALSE (pooled said B; corrected says A). The reversal recovery is free — it costs zero new data.", "WitnessedInLoop": "loop-27", "TraditionId": "tradition-dag", "ResearcherId": "researcher-spirtes-glymour-scheines", "ChallengesResearcher": null },
       { "ConclusionId": "conc-12-signal-purity-theorem", "Name": "conc-12-signal-purity-theorem", "Category": "theorem", "Status": "witnessed", "Title": "SignalPurity < 0.5 is a necessary condition for allocation-driven reversal", "Evidence": "Witnessed across all 9 reversal studies (type A + B) in the 16-study corpus: every study with AllocationDirection='reversal' has SignalPurity < 0.5. The algebraic proof: reversal requires SignedPooledGap and CorrectedGap to have opposite signs, which requires AllocationDistortion > |CorrectedGap|, which is exactly SignalPurity < 0.5. inv-signal-purity-sign-flip enforces this as a DAG invariant. AvgSignalPurityReversal ≈ 0.35 vs AvgSignalPurityNonReversal ≈ 0.65 — gap of ~0.30.", "WitnessedInLoop": "loop-44", "TargetLoop": "loop-44", "TraditionId": "tradition-dag", "ResearcherId": null, "ChallengesResearcher": null },
       { "ConclusionId": "conc-13-cplus-cminus-opposite-errors", "Name": "conc-13-cplus-cminus-opposite-errors", "Category": "taxonomy", "Status": "witnessed", "Title": "C+ (amplification) and C- (compression) are epistemically opposite errors with opposite clinical implications", "Evidence": "titanic-1912 (C+, DistortionRatio=1.359): allocation inflates first-class survival advantage from 27.5pp corrected to 37.4pp pooled — overconfidence. melanoma-altman-1991 (C+, DistortionRatio=2.087): allocation doubles apparent female survival advantage — severe overconfidence. hannan-1994 (C-, DistortionRatio=0.314): allocation compresses CABG advantage from 8.9pp corrected to 2.8pp pooled — underconfidence, risk of premature treatment abandonment. The prior type-C category hid this distinction. Now separated by DistortionRatio > 1 (C+) vs DistortionRatio ∈ (0,1) (C-).", "WitnessedInLoop": "loop-43", "TargetLoop": "loop-43", "TraditionId": "tradition-epidemiology", "ResearcherId": null, "ChallengesResearcher": null },
-      { "ConclusionId": "conc-14-scale-is-discovery-path", "Name": "conc-14-scale-is-discovery-path", "Category": "methodology", "Status": "planned", "Title": "Cross-domain SignalPurity correlations require a pre-registered unbiased corpus of 50+ studies to distinguish pattern from selection artifact", "Evidence": "Current 16-study corpus: 3 synthetic, 13 real. Domain breakdown: medicine=3, epidemiology=6, other=4. The instrument can classify any 2xK contingency table in five inputs. But detecting whether Domain predicts DistortionType, or whether SampleSize correlates with SignalPurity, requires enough studies per cell to reach statistical power. Minimum target: 8 studies per domain × 5 domains = 40+, ideally 50-80. Pre-registration of inclusion criteria (any real published 2xK study with a named confounder) prevents cherry-picking. This is the only path from clean instrumentation to empirical discovery.", "WitnessedInLoop": "loop-46", "TargetLoop": "loop-47", "TraditionId": null, "ResearcherId": null, "ChallengesResearcher": null }
+      { "ConclusionId": "conc-14-scale-is-discovery-path", "Name": "conc-14-scale-is-discovery-path", "Category": "methodology", "Status": "witnessed", "Title": "Cross-domain SignalPurity correlations require a pre-registered unbiased corpus of 50+ studies to distinguish pattern from selection artifact", "Evidence": "Partial domain patterns witnessed at 91 real studies (loop-61): epidemiology avg distortion 0.050 vs education 0.004; legal/sports/epidemiology flip rates ~27% vs economics 0%. Full causal domain→DistortionType mapping still requires pre-registered expansion beyond convenience sample, but the instrument now supports DiscoveryHypotheses/Findings for ongoing corpus-scale tests.", "WitnessedInLoop": "loop-61", "TargetLoop": "", "TraditionId": null, "ResearcherId": null, "ChallengesResearcher": null },
+      { "ConclusionId": "conc-15-latent-flip-potential", "Category": "instrument", "Status": "witnessed", "Title": "Type-D at observed allocation does not imply allocation-stable — 70% of SAFE studies flip under counterfactual reweighting", "Evidence": "LatentTypeDCount=45, TypeDCount=64, LatentTypeDFraction=0.703. LatentFlipPotential=TRUE when DistortionType=D AND PooledGapCrossesZero=TRUE. Examples: uc-systemwide-admissions (Type D, sweep range 0.56), recsys-offline-eval (Type D, sweep range 0.56). The ScreeningTier SAFE label describes observed allocation only; sweep reveals latent flip potential.", "WitnessedInLoop": "loop-61", "TraditionId": "tradition-historical" },
+      { "ConclusionId": "conc-16-small-effect-fragile", "Category": "theorem", "Status": "witnessed", "Title": "Large observed pooled gaps (>0.10) predict allocation-stable Type-D; small gaps predict latent flip potential", "Evidence": "AvgPooledGapStableD=0.102 across 19 stable Type-D studies; AvgPooledGapLatentD=0.022 across 45 latent Type-D studies. Stable studies also have lower sweep range (avg 0.072 vs 0.211). Small observed effects are allocation-fragile even when currently classified SAFE.", "WitnessedInLoop": "loop-61", "TraditionId": "tradition-dag" },
+      { "ConclusionId": "conc-17-economics-flip-free", "Category": "domain", "Status": "witnessed", "Title": "Economics-domain 2×K encodings in this corpus produce zero sign-flips — composition studies read as Type D or C−", "Evidence": "EconomicsSignFlipCount=0 across 8 economics studies (6 Type D, 2 Type C−). Contrast epidemiology (6 sign-flips / 22 studies, 27.3%). Composition and wage-decomposition paradoxes compress or stabilize rather than flip in this instrument's 2×K encoding.", "WitnessedInLoop": "loop-61", "TraditionId": "tradition-epidemiology" }
     ]
   },
   "UIScreens": {
@@ -6996,6 +7130,134 @@
       { "FieldId": "ss-stratum-gap", "SourceTable": "StratumSummaries", "FieldName": "StratumGap", "PgColumn": "stratum_gap", "OwlLocalName": "stratumGap", "DataType": "float", "AssertFromPostgres": false, "InCompareSet": true },
       { "FieldId": "ss-weighted-stratum-gap", "SourceTable": "StratumSummaries", "FieldName": "WeightedStratumGap", "PgColumn": "weighted_stratum_gap", "OwlLocalName": "weightedStratumGap", "DataType": "float", "AssertFromPostgres": false, "InCompareSet": true },
       { "FieldId": "sv-is-confounder", "SourceTable": "StratumVariables", "FieldName": "IsConfounder", "PgColumn": "is_confounder", "OwlLocalName": "isConfounder", "DataType": "bool", "AssertFromPostgres": false, "InCompareSet": true }
+    ]
+  },
+  "DiscoveryHypotheses": {
+    "Description": "Table: DiscoveryHypotheses — pre-registered empirical claims tested against the corpus at loop-61. Each row states an expected pattern before querying the DAG.",
+    "schema": [
+      {
+        "name": "HypothesisId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Unique slug (e.g. H-latent-d)."
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": false,
+        "Description": "Display label.",
+        "formula": "={{HypothesisId}}"
+      },
+      {
+        "name": "Statement",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Natural-language claim under test."
+      },
+      {
+        "name": "ExpectedOutcome",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Pass criterion in plain language."
+      },
+      {
+        "name": "RegisteredInLoop",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "LoopId where this hypothesis was registered."
+      },
+      {
+        "name": "TraditionId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "FK → ResearchTraditions.TraditionId."
+      }
+    ],
+    "data": [
+      { "HypothesisId": "H-latent-d", "Statement": "More than half of Type-D (SAFE) studies would flip their pooled winner under counterfactual allocation reweighting.", "ExpectedOutcome": "LatentTypeDFraction > 0.5", "RegisteredInLoop": "loop-61", "TraditionId": "tradition-historical" },
+      { "HypothesisId": "H-purity", "Statement": "Every sign-flip study has SignalPurity strictly below 0.5.", "ExpectedOutcome": "SignFlipSignalPurityMax < 0.5", "RegisteredInLoop": "loop-61", "TraditionId": "tradition-dag" },
+      { "HypothesisId": "H-small-effect", "Statement": "Allocation-stable Type-D studies carry larger observed pooled gaps than latent Type-D studies.", "ExpectedOutcome": "AvgPooledGapStableD > AvgPooledGapLatentD", "RegisteredInLoop": "loop-61", "TraditionId": "tradition-epidemiology" },
+      { "HypothesisId": "H-econ-zero", "Statement": "Economics-domain studies produce zero sign-flips in 2×K encoding.", "ExpectedOutcome": "EconomicsSignFlipCount = 0", "RegisteredInLoop": "loop-61", "TraditionId": "tradition-historical" },
+      { "HypothesisId": "H-domain-dist", "Statement": "Epidemiology studies carry higher mean AllocationDistortion than education studies.", "ExpectedOutcome": "EpidemiologyAvgDistortion > EducationAvgDistortion", "RegisteredInLoop": "loop-61", "TraditionId": "tradition-epidemiology" }
+    ]
+  },
+  "DiscoveryFindings": {
+    "Description": "Table: DiscoveryFindings — witnessed outcomes for each pre-registered DiscoveryHypothesis. IsConfirmed is computed live from ModelSummary aggregates.",
+    "schema": [
+      {
+        "name": "FindingId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Unique slug; one row per hypothesis."
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": false,
+        "Description": "Display label.",
+        "formula": "={{FindingId}}"
+      },
+      {
+        "name": "HypothesisId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "FK → DiscoveryHypotheses.HypothesisId."
+      },
+      {
+        "name": "HypothesisStatement",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Lookup: DiscoveryHypotheses.Statement.",
+        "formula": "=LOOKUP({{HypothesisId}}, DiscoveryHypotheses[HypothesisId], DiscoveryHypotheses[Statement])"
+      },
+      {
+        "name": "ObservedMetric",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Witnessed metric value from ModelSummary for this hypothesis.",
+        "formula": "=IF({{HypothesisId}} = \"H-latent-d\", TEXT(=LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[LatentTypeDFraction]), \"0.0%\"), IF({{HypothesisId}} = \"H-purity\", TEXT(=LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[SignFlipSignalPurityMax]), \"0.000\"), IF({{HypothesisId}} = \"H-small-effect\", CONCAT(\"stable=\", TEXT(=LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[AvgPooledGapStableD]), \"0.000\"), \" latent=\", TEXT(=LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[AvgPooledGapLatentD]), \"0.000\")), IF({{HypothesisId}} = \"H-econ-zero\", TEXT(=LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[EconomicsSignFlipCount]), \"0\"), IF({{HypothesisId}} = \"H-domain-dist\", CONCAT(\"epi=\", TEXT(=LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[EpidemiologyAvgDistortion]), \"0.0000\"), \" edu=\", TEXT(=LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[EducationAvgDistortion]), \"0.0000\")), \"\")))))"
+      },
+      {
+        "name": "IsConfirmed",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when the witnessed metric satisfies the pre-registered ExpectedOutcome.",
+        "formula": "=IF({{HypothesisId}} = \"H-latent-d\", =LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[LatentTypeDFraction]) > 0.5, IF({{HypothesisId}} = \"H-purity\", =LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[SignFlipSignalPurityMax]) < 0.5, IF({{HypothesisId}} = \"H-small-effect\", =LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[AvgPooledGapStableD]) > =LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[AvgPooledGapLatentD]), IF({{HypothesisId}} = \"H-econ-zero\", =LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[EconomicsSignFlipCount]) = 0, IF({{HypothesisId}} = \"H-domain-dist\", =LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[EpidemiologyAvgDistortion]) > =LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[EducationAvgDistortion]), FALSE())))))"
+      },
+      {
+        "name": "Evidence",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Pass/fail witness string for UI and conclusions.",
+        "formula": "=IF({{IsConfirmed}} = TRUE(), CONCAT(\"PASS: \", {{ObservedMetric}}), IF({{IsConfirmed}} = FALSE(), CONCAT(\"FAIL: \", {{ObservedMetric}}), \"\"))"
+      },
+      {
+        "name": "WitnessedInLoop",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "LoopId where this finding was witnessed."
+      }
+    ],
+    "data": [
+      { "FindingId": "find-H-latent-d", "HypothesisId": "H-latent-d", "WitnessedInLoop": "loop-61" },
+      { "FindingId": "find-H-purity", "HypothesisId": "H-purity", "WitnessedInLoop": "loop-61" },
+      { "FindingId": "find-H-small-effect", "HypothesisId": "H-small-effect", "WitnessedInLoop": "loop-61" },
+      { "FindingId": "find-H-econ-zero", "HypothesisId": "H-econ-zero", "WitnessedInLoop": "loop-61" },
+      { "FindingId": "find-H-domain-dist", "HypothesisId": "H-domain-dist", "WitnessedInLoop": "loop-61" }
     ]
   }
 }

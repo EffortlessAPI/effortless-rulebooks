@@ -36,6 +36,8 @@ ALTER TABLE domain_expansion_targets ENABLE ROW LEVEL SECURITY;
 ALTER TABLE study_import_template ENABLE ROW LEVEL SECURITY;
 ALTER TABLE sweep_study_config ENABLE ROW LEVEL SECURITY;
 ALTER TABLE substrate_conformance_fields ENABLE ROW LEVEL SECURITY;
+ALTER TABLE discovery_hypotheses ENABLE ROW LEVEL SECURITY;
+ALTER TABLE discovery_findings ENABLE ROW LEVEL SECURITY;
 
 -- TODO: Add specific RLS policies based on your security requirements
 -- Example:

@@ -502,6 +502,52 @@ effortless-ntwf:CorpusCatalogSummaryShape a sh:NodeShape ;
     ] .
 # Rule for CatalogWitnessNote - parse error: Unknown function: CONCAT
 
+# === Shape with rules for DiscoveryFindings ===
+effortless-ntwf:DiscoveryFindingsShape a sh:NodeShape ;
+    sh:targetClass effortless-ntwf:DiscoveryFindings ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_DiscoveryFindings_Name" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:name ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:DiscoveryFindings .
+    OPTIONAL { $this effortless-ntwf:findingId ?finding_id . }
+                BIND(?finding_id AS ?_result)
+            }
+        """ ;
+    ] .
+# Rule for HypothesisStatement - parse error: Unexpected character '[' at position 44
+# Rule for ObservedMetric - parse error: Unexpected character '[' at position 84
+# Rule for IsConfirmed - parse error: Unexpected character '[' at position 79
+# Rule for Evidence - parse error: Unknown function: CONCAT
+
+# === Shape with rules for DiscoveryHypotheses ===
+effortless-ntwf:DiscoveryHypothesesShape a sh:NodeShape ;
+    sh:targetClass effortless-ntwf:DiscoveryHypotheses ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_DiscoveryHypotheses_Name" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:name ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:DiscoveryHypotheses .
+    OPTIONAL { $this effortless-ntwf:hypothesisId ?hypothesis_id . }
+                BIND(?hypothesis_id AS ?_result)
+            }
+        """ ;
+    ] .
+
 # === Shape with rules for DomainExpansionTargets ===
 effortless-ntwf:DomainExpansionTargetsShape a sh:NodeShape ;
     sh:targetClass effortless-ntwf:DomainExpansionTargets ;
@@ -1069,46 +1115,6 @@ effortless-ntwf:ModelSummaryShape a sh:NodeShape ;
     ] ;
     sh:rule [
         a sh:SPARQLRule ;
-        rdfs:label "rule_ModelSummary_ZeroStrengthCount" ;
-        sh:prefixes effortless-ntwf: ;
-        sh:construct """
-            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
-            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
-            CONSTRUCT {
-                $this effortless-ntwf:zeroStrengthCount ?_result .
-            }
-            WHERE {
-    $this a effortless-ntwf:ModelSummary .
-                {
-                    SELECT (COUNT(?child) AS ?_result) WHERE {
-                    ?child a effortless-ntwf:TreatmentRankings .
-                    OPTIONAL { ?child effortless-ntwf:strataWonByLoser ?c0 . }
-                    FILTER(?c0 = 0)
-                    }
-                }
-            }
-        """ ;
-    ] ;
-    sh:rule [
-        a sh:SPARQLRule ;
-        rdfs:label "rule_ModelSummary_PartialCount" ;
-        sh:prefixes effortless-ntwf: ;
-        sh:construct """
-            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
-            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
-            CONSTRUCT {
-                $this effortless-ntwf:partialCount ?_result .
-            }
-            WHERE {
-    $this a effortless-ntwf:ModelSummary .
-    OPTIONAL { $this effortless-ntwf:nonReversalCount ?non_reversal_count . }
-    OPTIONAL { $this effortless-ntwf:zeroStrengthCount ?zero_strength_count . }
-                BIND((?non_reversal_count - ?zero_strength_count) AS ?_result)
-            }
-        """ ;
-    ] ;
-    sh:rule [
-        a sh:SPARQLRule ;
         rdfs:label "rule_ModelSummary_TotalParadoxStrength" ;
         sh:prefixes effortless-ntwf: ;
         sh:construct """
@@ -1230,90 +1236,6 @@ effortless-ntwf:ModelSummaryShape a sh:NodeShape ;
     OPTIONAL { $this effortless-ntwf:studyCount ?study_count . }
     OPTIONAL { $this effortless-ntwf:typeACount ?type_a_count . }
                 BIND(IF((?study_count = 0), "", (?type_a_count / ?study_count)) AS ?_result)
-            }
-        """ ;
-    ] ;
-    sh:rule [
-        a sh:SPARQLRule ;
-        rdfs:label "rule_ModelSummary_ReversalCountV2" ;
-        sh:prefixes effortless-ntwf: ;
-        sh:construct """
-            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
-            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
-            CONSTRUCT {
-                $this effortless-ntwf:reversalCountV2 ?_result .
-            }
-            WHERE {
-    $this a effortless-ntwf:ModelSummary .
-                {
-                    SELECT (COUNT(?child) AS ?_result) WHERE {
-                    ?child a effortless-ntwf:TreatmentRankings .
-                    OPTIONAL { ?child effortless-ntwf:isReversal_v2 ?c0 . }
-                    FILTER(BOUND(?c0) && ?c0 = true)
-                    }
-                }
-            }
-        """ ;
-    ] ;
-    sh:rule [
-        a sh:SPARQLRule ;
-        rdfs:label "rule_ModelSummary_NonReversalCountV2" ;
-        sh:prefixes effortless-ntwf: ;
-        sh:construct """
-            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
-            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
-            CONSTRUCT {
-                $this effortless-ntwf:nonReversalCountV2 ?_result .
-            }
-            WHERE {
-    $this a effortless-ntwf:ModelSummary .
-                {
-                    SELECT (COUNT(?child) AS ?_result) WHERE {
-                    ?child a effortless-ntwf:TreatmentRankings .
-                    OPTIONAL { ?child effortless-ntwf:isReversal_v2 ?c0 . }
-                    FILTER(BOUND(?c0) && ?c0 = false)
-                    }
-                }
-            }
-        """ ;
-    ] ;
-    sh:rule [
-        a sh:SPARQLRule ;
-        rdfs:label "rule_ModelSummary_ExtendedReversalCount" ;
-        sh:prefixes effortless-ntwf: ;
-        sh:construct """
-            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
-            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
-            CONSTRUCT {
-                $this effortless-ntwf:extendedReversalCount ?_result .
-            }
-            WHERE {
-    $this a effortless-ntwf:ModelSummary .
-    OPTIONAL { $this effortless-ntwf:reversalCount ?reversal_count . }
-    OPTIONAL { $this effortless-ntwf:reversalCountV2 ?reversal_count_v2 . }
-                BIND((?reversal_count_v2 - ?reversal_count) AS ?_result)
-            }
-        """ ;
-    ] ;
-    sh:rule [
-        a sh:SPARQLRule ;
-        rdfs:label "rule_ModelSummary_ExplainedCountV2" ;
-        sh:prefixes effortless-ntwf: ;
-        sh:construct """
-            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
-            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
-            CONSTRUCT {
-                $this effortless-ntwf:explainedCountV2 ?_result .
-            }
-            WHERE {
-    $this a effortless-ntwf:ModelSummary .
-                {
-                    SELECT (COUNT(?child) AS ?_result) WHERE {
-                    ?child a effortless-ntwf:TreatmentRankings .
-                    OPTIONAL { ?child effortless-ntwf:isParadoxExplained_v2 ?c0 . }
-                    FILTER(BOUND(?c0) && ?c0 = true)
-                    }
-                }
             }
         """ ;
     ] ;
@@ -1455,8 +1377,25 @@ effortless-ntwf:ModelSummaryShape a sh:NodeShape ;
                 }
             }
         """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_ModelSummary_LatentTypeDFraction" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:latentTypeDFraction ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:ModelSummary .
+    OPTIONAL { $this effortless-ntwf:latentTypeDCount ?latent_type_d_count . }
+    OPTIONAL { $this effortless-ntwf:typeDCount ?type_d_count . }
+                BIND(IF((?type_d_count = 0), "", (?latent_type_d_count / ?type_d_count)) AS ?_result)
+            }
+        """ ;
     ] .
-# Rule for TypeCCount - parse error: aggregation formula must be COUNTIFS(...) or SUMIFS(...)
 # Rule for DistortionTaxonomyCoverage - parse error: Unknown function: CONCAT
 # Rule for AvgSignalPurity - parse error: aggregation formula must be COUNTIFS(...) or SUMIFS(...)
 # Rule for SweepCorrectedGapMax - parse error: aggregation formula must be COUNTIFS(...) or SUMIFS(...)
@@ -1475,6 +1414,16 @@ effortless-ntwf:ModelSummaryShape a sh:NodeShape ;
 # Rule for ReadyToEncodeCount - parse error: Unexpected character '[' at position 41
 # Rule for ImportSessionReady - parse error: Unexpected character '[' at position 41
 # Rule for CatalogWitnessNote - parse error: Unexpected character '[' at position 41
+# Rule for LatentTypeDCount - parse error: Unknown function: COUNTIFS
+# Rule for StableTypeDCount - parse error: Unknown function: COUNTIFS
+# Rule for CrossZeroCount - parse error: Unknown function: COUNTIFS
+# Rule for SignFlipSignalPurityMax - parse error: Unknown function: MAXIFS
+# Rule for EconomicsSignFlipCount - parse error: Unknown function: COUNTIFS
+# Rule for AvgPooledGapLatentD - parse error: Unknown function: AVERAGEIFS
+# Rule for AvgPooledGapStableD - parse error: Unknown function: AVERAGEIFS
+# Rule for EpidemiologyAvgDistortion - parse error: Unknown function: AVERAGEIFS
+# Rule for EducationAvgDistortion - parse error: Unknown function: AVERAGEIFS
+# Rule for DiscoveryWitnessNote - parse error: Unknown function: CONCAT
 
 # === Shape with rules for PhaseDiagramSummary ===
 effortless-ntwf:PhaseDiagramSummaryShape a sh:NodeShape ;
@@ -2470,9 +2419,8 @@ effortless-ntwf:TreatmentRankingsShape a sh:NodeShape ;
             }
             WHERE {
     $this a effortless-ntwf:TreatmentRankings .
-    OPTIONAL { $this effortless-ntwf:perStratumWinner ?per_stratum_winner . }
-    OPTIONAL { $this effortless-ntwf:pooledWinner ?pooled_winner . }
-                BIND(((REPLACE(COALESCE(STR(?per_stratum_winner), ""), "^.*#", "") != "none") && (?pooled_winner != ?per_stratum_winner)) AS ?_result)
+    OPTIONAL { $this effortless-ntwf:isSignFlip ?is_sign_flip . }
+                BIND(IF((REPLACE(COALESCE(STR(?is_sign_flip), ""), "^.*#", "") = ""), "", ?is_sign_flip) AS ?_result)
             }
         """ ;
     ] ;
@@ -2491,24 +2439,6 @@ effortless-ntwf:TreatmentRankingsShape a sh:NodeShape ;
     OPTIONAL { $this effortless-ntwf:confoundersInStudy ?confounders_in_study . }
     OPTIONAL { $this effortless-ntwf:isReversal ?is_reversal . }
                 BIND((?is_reversal && (?confounders_in_study > 0)) AS ?_result)
-            }
-        """ ;
-    ] ;
-    sh:rule [
-        a sh:SPARQLRule ;
-        rdfs:label "rule_TreatmentRankings_IsParadoxExplained_v2" ;
-        sh:prefixes effortless-ntwf: ;
-        sh:construct """
-            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
-            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
-            CONSTRUCT {
-                $this effortless-ntwf:isParadoxExplained_v2 ?_result .
-            }
-            WHERE {
-    $this a effortless-ntwf:TreatmentRankings .
-    OPTIONAL { $this effortless-ntwf:confoundersInStudy ?confounders_in_study . }
-    OPTIONAL { $this effortless-ntwf:isReversal_v2 ?is_reversal_v2 . }
-                BIND((?is_reversal_v2 && (?confounders_in_study > 0)) AS ?_result)
             }
         """ ;
     ] ;
@@ -2642,59 +2572,6 @@ effortless-ntwf:TreatmentRankingsShape a sh:NodeShape ;
     ] ;
     sh:rule [
         a sh:SPARQLRule ;
-        rdfs:label "rule_TreatmentRankings_IsReversal_v2" ;
-        sh:prefixes effortless-ntwf: ;
-        sh:construct """
-            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
-            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
-            CONSTRUCT {
-                $this effortless-ntwf:isReversal_v2 ?_result .
-            }
-            WHERE {
-    $this a effortless-ntwf:TreatmentRankings .
-    OPTIONAL { $this effortless-ntwf:isSignFlip ?is_sign_flip . }
-                BIND(IF((REPLACE(COALESCE(STR(?is_sign_flip), ""), "^.*#", "") = ""), "", ?is_sign_flip) AS ?_result)
-            }
-        """ ;
-    ] ;
-    sh:rule [
-        a sh:SPARQLRule ;
-        rdfs:label "rule_TreatmentRankings_DefinitionDelta" ;
-        sh:prefixes effortless-ntwf: ;
-        sh:construct """
-            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
-            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
-            CONSTRUCT {
-                $this effortless-ntwf:definitionDelta ?_result .
-            }
-            WHERE {
-    $this a effortless-ntwf:TreatmentRankings .
-    OPTIONAL { $this effortless-ntwf:isReversal ?is_reversal . }
-    OPTIONAL { $this effortless-ntwf:isReversal_v2 ?is_reversal_v2 . }
-                BIND(IF((REPLACE(COALESCE(STR(?is_reversal_v2), ""), "^.*#", "") = ""), "", (?is_reversal_v2 && (!(?is_reversal)))) AS ?_result)
-            }
-        """ ;
-    ] ;
-    sh:rule [
-        a sh:SPARQLRule ;
-        rdfs:label "rule_TreatmentRankings_StrictReversalSubtype" ;
-        sh:prefixes effortless-ntwf: ;
-        sh:construct """
-            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
-            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
-            CONSTRUCT {
-                $this effortless-ntwf:strictReversalSubtype ?_result .
-            }
-            WHERE {
-    $this a effortless-ntwf:TreatmentRankings .
-    OPTIONAL { $this effortless-ntwf:isReversal ?is_reversal . }
-    OPTIONAL { $this effortless-ntwf:isReversal_v2 ?is_reversal_v2 . }
-                BIND(IF((REPLACE(COALESCE(STR(?is_reversal_v2), ""), "^.*#", "") = ""), "", IF(?is_reversal, "strict", IF(?is_reversal_v2, "extended", "none"))) AS ?_result)
-            }
-        """ ;
-    ] ;
-    sh:rule [
-        a sh:SPARQLRule ;
         rdfs:label "rule_TreatmentRankings_CorrectedGap" ;
         sh:prefixes effortless-ntwf: ;
         sh:construct """
@@ -2742,6 +2619,24 @@ effortless-ntwf:TreatmentRankingsShape a sh:NodeShape ;
     $this a effortless-ntwf:TreatmentRankings .
     OPTIONAL { $this effortless-ntwf:distortionType ?distortion_type . }
                 BIND(IF((REPLACE(COALESCE(STR(?distortion_type), ""), "^.*#", "") = ""), "", IF((REPLACE(COALESCE(STR(?distortion_type), ""), "^.*#", "") = "A"), "use-corrected-winner", IF((REPLACE(COALESCE(STR(?distortion_type), ""), "^.*#", "") = "B"), "use-corrected-winner-with-caution", IF(((REPLACE(COALESCE(STR(?distortion_type), ""), "^.*#", "") = "C+") || (REPLACE(COALESCE(STR(?distortion_type), ""), "^.*#", "") = "C-")), "check-allocation-bias", "pooled-analysis-trustworthy")))) AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_TreatmentRankings_LatentFlipPotential" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:latentFlipPotential ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:TreatmentRankings .
+    OPTIONAL { $this effortless-ntwf:distortionType ?distortion_type . }
+    OPTIONAL { $this effortless-ntwf:pooledGapCrossesZero ?pooled_gap_crosses_zero . }
+                BIND(IF((REPLACE(COALESCE(STR(?distortion_type), ""), "^.*#", "") = ""), "", ((REPLACE(COALESCE(STR(?distortion_type), ""), "^.*#", "") = "D") && (?pooled_gap_crosses_zero = true))) AS ?_result)
             }
         """ ;
     ] ;
@@ -2800,6 +2695,10 @@ effortless-ntwf:TreatmentRankingsShape a sh:NodeShape ;
 # Rule for CorrectedWinner - parse error: Unknown function: ABS
 # Rule for AllocationDirection - parse error: Unknown function: ABS
 # Rule for SignalPurity - parse error: Unknown function: ABS
+# Rule for PooledGapCrossesZero - parse error: Unexpected character '[' at position 35
+# Rule for SweepPooledGapRange - parse error: Unexpected character '[' at position 35
+# Rule for AllocationFragility - parse error: Unknown function: ABS
+# Rule for StudyDomain - parse error: Unexpected character '[' at position 25
 # Rule for ConfirmedCausalRoleCount - parse error: unsupported COUNTIFS criteria: FieldRef
 # Rule for MediatorRiskCount - parse error: aggregation formula must be COUNTIFS(...) or SUMIFS(...)
 # Rule for ContestedStratumCount - parse error: unsupported COUNTIFS criteria: FieldRef
@@ -2917,4 +2816,4 @@ effortless-ntwf:TreatmentsCardinalityShape a sh:NodeShape ;
     sh:targetClass effortless-ntwf:Treatments ;
     sh:property [ sh:path effortless-ntwf:study ; sh:maxCount 1 ] .
 
-# Generated 141 SHACL rules
+# Generated 135 SHACL rules

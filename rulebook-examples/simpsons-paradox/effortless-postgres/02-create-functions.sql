@@ -700,6 +700,120 @@ RETURNS INTEGER AS $$
   SELECT ((SELECT COUNT(*) FROM ingestion_protocol WHERE protocol_id = '<>'))::integer;
 $$ LANGUAGE sql STABLE;
 
+-- calc_model_summary_latent_type_d_count
+-- Field: ModelSummary.LatentTypeDCount
+-- Type: calculated | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_model_summary_latent_type_d_count(p_model_summary_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT ((SELECT COUNT(*) FROM treatment_rankings WHERE calc_treatment_rankings_latent_flip_potential(treatment_ranking_id) = TRUE))::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_model_summary_stable_type_d_count
+-- Field: ModelSummary.StableTypeDCount
+-- Type: calculated | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_model_summary_stable_type_d_count(p_model_summary_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT ((SELECT COUNT(*) FROM treatment_rankings WHERE calc_treatment_rankings_distortion_type(treatment_ranking_id) = 'D' AND calc_treatment_rankings_latent_flip_potential(treatment_ranking_id) = FALSE))::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_model_summary_latent_type_d_fraction
+-- Field: ModelSummary.LatentTypeDFraction
+-- Type: calculated | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_model_summary_latent_type_d_fraction(p_model_summary_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT (CASE WHEN (calc_model_summary_type_d_count(p_model_summary_id))::NUMERIC = 0 THEN ('')::text ELSE ((COALESCE(CASE WHEN (calc_model_summary_latent_type_d_count(p_model_summary_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_model_summary_latent_type_d_count(p_model_summary_id))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(CASE WHEN (calc_model_summary_type_d_count(p_model_summary_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_model_summary_type_d_count(p_model_summary_id))::numeric ELSE NULL END, 0), 0)))::text END)::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_model_summary_cross_zero_count
+-- Field: ModelSummary.CrossZeroCount
+-- Type: calculated | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_model_summary_cross_zero_count(p_model_summary_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT ((SELECT COUNT(*) FROM treatment_rankings WHERE calc_treatment_rankings_pooled_gap_crosses_zero(treatment_ranking_id) = TRUE))::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_model_summary_sign_flip_signal_purity_max
+-- Field: ModelSummary.SignFlipSignalPurityMax
+-- Type: calculated | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_model_summary_sign_flip_signal_purity_max(p_model_summary_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT ((SELECT COALESCE(MAX((calc_treatment_rankings_signal_purity(treatment_ranking_id))::numeric), 0) FROM treatment_rankings WHERE calc_treatment_rankings_is_sign_flip(treatment_ranking_id) = TRUE))::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_model_summary_economics_sign_flip_count
+-- Field: ModelSummary.EconomicsSignFlipCount
+-- Type: calculated | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_model_summary_economics_sign_flip_count(p_model_summary_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT ((SELECT COUNT(*) FROM treatment_rankings WHERE calc_treatment_rankings_study_domain(treatment_ranking_id) = 'economics' AND calc_treatment_rankings_is_sign_flip(treatment_ranking_id) = TRUE))::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_model_summary_avg_pooled_gap_latent_d
+-- Field: ModelSummary.AvgPooledGapLatentD
+-- Type: calculated | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_model_summary_avg_pooled_gap_latent_d(p_model_summary_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT (CASE WHEN (calc_model_summary_latent_type_d_count(p_model_summary_id))::NUMERIC = 0 THEN ('')::text ELSE ((SELECT COALESCE(AVG((calc_treatment_rankings_pooled_gap(treatment_ranking_id))::numeric), 0) FROM treatment_rankings WHERE rankings_latent_flip_potential = TRUE))::text END)::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_model_summary_avg_pooled_gap_stable_d
+-- Field: ModelSummary.AvgPooledGapStableD
+-- Type: calculated | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_model_summary_avg_pooled_gap_stable_d(p_model_summary_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT (CASE WHEN (calc_model_summary_stable_type_d_count(p_model_summary_id))::NUMERIC = 0 THEN ('')::text ELSE ((SELECT COALESCE(AVG((calc_treatment_rankings_pooled_gap(treatment_ranking_id))::numeric), 0) FROM treatment_rankings WHERE rankings_distortion_type = 'D' AND rankings_latent_flip_potential = FALSE))::text END)::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_model_summary_epidemiology_avg_distortion
+-- Field: ModelSummary.EpidemiologyAvgDistortion
+-- Type: calculated | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_model_summary_epidemiology_avg_distortion(p_model_summary_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT ((SELECT COALESCE(AVG((calc_treatment_rankings_allocation_distortion(treatment_ranking_id))::numeric), 0) FROM treatment_rankings WHERE study_domain = 'epidemiology'))::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_model_summary_education_avg_distortion
+-- Field: ModelSummary.EducationAvgDistortion
+-- Type: calculated | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_model_summary_education_avg_distortion(p_model_summary_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT ((SELECT COALESCE(AVG((calc_treatment_rankings_allocation_distortion(treatment_ranking_id))::numeric), 0) FROM treatment_rankings WHERE study_domain = 'education'))::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_model_summary_discovery_witness_note
+-- Field: ModelSummary.DiscoveryWitnessNote
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_model_summary_discovery_witness_note(p_model_summary_id TEXT)
+RETURNS TEXT AS $$
+  SELECT /* WARNING: Formula translation failed: Function 'TEXT' is not supported yet
+   Original Airtable formula:
+   =CONCAT("LatentTypeD=", {{LatentTypeDCount}}, "/", {{TypeDCount}}, " (", TEXT({{LatentTypeDFraction}}, "0%"), "); SignFlipMaxPurity=", TEXT({{SignFlipSignalPurityMax}}, "0.000"), "; stableD avgGap=", TEXT({{AvgPooledGapStableD}}, "0.000"), " vs latentD ", TEXT({{AvgPooledGapLatentD}}, "0.000"))
+*/
+NULL::text;
+$$ LANGUAGE sql STABLE;
+
 -- calc_stratum_variables_name
 -- Field: StratumVariables.Name
 -- Type: calculated | DataType: string | Returns: TEXT
@@ -1058,6 +1172,26 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION calc_treatment_rankings_signal_purity(p_treatment_ranking_id TEXT)
 RETURNS NUMERIC AS $$
   SELECT (CASE WHEN calc_treatment_rankings_corrected_gap(p_treatment_ranking_id) IS NULL THEN ('')::text ELSE (CASE WHEN ((COALESCE(CASE WHEN (ABS(calc_treatment_rankings_corrected_gap(p_treatment_ranking_id)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (ABS(calc_treatment_rankings_corrected_gap(p_treatment_ranking_id)))::numeric ELSE NULL END, 0) + COALESCE(CASE WHEN (calc_treatment_rankings_allocation_distortion(p_treatment_ranking_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_treatment_rankings_allocation_distortion(p_treatment_ranking_id))::numeric ELSE NULL END, 0)))::NUMERIC = 0 THEN (1)::text ELSE ((COALESCE(CASE WHEN (ABS(calc_treatment_rankings_corrected_gap(p_treatment_ranking_id)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (ABS(calc_treatment_rankings_corrected_gap(p_treatment_ranking_id)))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(CASE WHEN ((COALESCE(CASE WHEN (ABS(calc_treatment_rankings_corrected_gap(p_treatment_ranking_id)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (ABS(calc_treatment_rankings_corrected_gap(p_treatment_ranking_id)))::numeric ELSE NULL END, 0) + COALESCE(CASE WHEN (calc_treatment_rankings_allocation_distortion(p_treatment_ranking_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_treatment_rankings_allocation_distortion(p_treatment_ranking_id))::numeric ELSE NULL END, 0)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((COALESCE(CASE WHEN (ABS(calc_treatment_rankings_corrected_gap(p_treatment_ranking_id)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (ABS(calc_treatment_rankings_corrected_gap(p_treatment_ranking_id)))::numeric ELSE NULL END, 0) + COALESCE(CASE WHEN (calc_treatment_rankings_allocation_distortion(p_treatment_ranking_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_treatment_rankings_allocation_distortion(p_treatment_ranking_id))::numeric ELSE NULL END, 0)))::numeric ELSE NULL END, 0), 0)))::text END)::text END)::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_treatment_rankings_latent_flip_potential
+-- Field: TreatmentRankings.LatentFlipPotential
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_treatment_rankings_latent_flip_potential(p_treatment_ranking_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (CASE WHEN calc_treatment_rankings_distortion_type(p_treatment_ranking_id) IS NULL THEN ('')::text ELSE ((calc_treatment_rankings_distortion_type(p_treatment_ranking_id) = 'D' AND (SELECT pooled_gap_crosses_zero FROM treatment_rankings WHERE treatment_ranking_id = p_treatment_ranking_id) = TRUE))::text END)::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_treatment_rankings_allocation_fragility
+-- Field: TreatmentRankings.AllocationFragility
+-- Type: calculated | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_treatment_rankings_allocation_fragility(p_treatment_ranking_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT (CASE WHEN ((SELECT sweep_pooled_gap_range FROM treatment_rankings WHERE treatment_ranking_id = p_treatment_ranking_id) IS NULL OR calc_treatment_rankings_pooled_gap(p_treatment_ranking_id) IS NULL OR (calc_treatment_rankings_pooled_gap(p_treatment_ranking_id))::NUMERIC = 0) THEN ('')::text ELSE ((COALESCE(CASE WHEN ((SELECT sweep_pooled_gap_range FROM treatment_rankings WHERE treatment_ranking_id = p_treatment_ranking_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT sweep_pooled_gap_range FROM treatment_rankings WHERE treatment_ranking_id = p_treatment_ranking_id))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(CASE WHEN (ABS(calc_treatment_rankings_pooled_gap(p_treatment_ranking_id)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (ABS(calc_treatment_rankings_pooled_gap(p_treatment_ranking_id)))::numeric ELSE NULL END, 0), 0)))::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_treatment_rankings_confirmed_causal_role_count
@@ -2182,6 +2316,64 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION calc_substrate_conformance_fields_name(p_field_id TEXT)
 RETURNS TEXT AS $$
   SELECT ((SELECT NULLIF(field_id, '') FROM substrate_conformance_fields WHERE field_id = p_field_id))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_discovery_hypotheses_name
+-- Field: DiscoveryHypotheses.Name
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_discovery_hypotheses_name(p_hypothesis_id TEXT)
+RETURNS TEXT AS $$
+  SELECT ((SELECT NULLIF(hypothesis_id, '') FROM discovery_hypotheses WHERE hypothesis_id = p_hypothesis_id))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_discovery_findings_name
+-- Field: DiscoveryFindings.Name
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_discovery_findings_name(p_finding_id TEXT)
+RETURNS TEXT AS $$
+  SELECT ((SELECT NULLIF(finding_id, '') FROM discovery_findings WHERE finding_id = p_finding_id))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_discovery_findings_observed_metric
+-- Field: DiscoveryFindings.ObservedMetric
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_discovery_findings_observed_metric(p_finding_id TEXT)
+RETURNS TEXT AS $$
+  SELECT /* WARNING: Formula translation failed: Function 'TEXT' is not supported yet
+   Original Airtable formula:
+   =IF({{HypothesisId}} = "H-latent-d", TEXT(=LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[LatentTypeDFraction]), "0.0%"), IF({{HypothesisId}} = "H-purity", TEXT(=LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[SignFlipSignalPurityMax]), "0.000"), IF({{HypothesisId}} = "H-small-effect", CONCAT("stable=", TEXT(=LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[AvgPooledGapStableD]), "0.000"), " latent=", TEXT(=LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[AvgPooledGapLatentD]), "0.000")), IF({{HypothesisId}} = "H-econ-zero", TEXT(=LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[EconomicsSignFlipCount]), "0"), IF({{HypothesisId}} = "H-domain-dist", CONCAT("epi=", TEXT(=LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[EpidemiologyAvgDistortion]), "0.0000"), " edu=", TEXT(=LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[EducationAvgDistortion]), "0.0000")), "")))))
+*/
+NULL::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_discovery_findings_is_confirmed
+-- Field: DiscoveryFindings.IsConfirmed
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_discovery_findings_is_confirmed(p_finding_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT /* WARNING: Formula translation failed: Function 'LOOKUP' is not supported yet
+   Original Airtable formula:
+   =IF({{HypothesisId}} = "H-latent-d", =LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[LatentTypeDFraction]) > 0.5, IF({{HypothesisId}} = "H-purity", =LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[SignFlipSignalPurityMax]) < 0.5, IF({{HypothesisId}} = "H-small-effect", =LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[AvgPooledGapStableD]) > =LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[AvgPooledGapLatentD]), IF({{HypothesisId}} = "H-econ-zero", =LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[EconomicsSignFlipCount]) = 0, IF({{HypothesisId}} = "H-domain-dist", =LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[EpidemiologyAvgDistortion]) > =LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[EducationAvgDistortion]), FALSE())))))
+*/
+NULL::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_discovery_findings_evidence
+-- Field: DiscoveryFindings.Evidence
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_discovery_findings_evidence(p_finding_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CASE WHEN calc_discovery_findings_is_confirmed(p_finding_id) = TRUE THEN (CONCAT('PASS: ', calc_discovery_findings_observed_metric(p_finding_id)))::text ELSE (CASE WHEN calc_discovery_findings_is_confirmed(p_finding_id) = FALSE THEN (CONCAT('FAIL: ', calc_discovery_findings_observed_metric(p_finding_id)))::text ELSE ('')::text END)::text END)::text;
 $$ LANGUAGE sql STABLE;
 
 -- ============================================================================
