@@ -1,4 +1,4 @@
-import type { Study, Stratum, StratumSummary, TreatmentRanking, Treatment, ModelSummary, AllocationSweepRow, SweepStudySummary, SyntheticPhaseRow, PhaseDiagramSummary, CorpusCatalogSummary, CandidateStudyRow, DomainExpansionTarget, StudyImportTemplateStep, CaseCell, SandboxEvaluateResult } from './types';
+import type { Study, Stratum, StratumSummary, TreatmentRanking, Treatment, ModelSummary, AllocationSweepRow, SweepStudySummary, SyntheticPhaseRow, PhaseDiagramSummary, CorpusCatalogSummary, CandidateStudyRow, DomainExpansionTarget, StudyImportTemplateStep, CaseCell, SandboxEvaluateResult, Conclusion, DiscoveryHypothesis, DiscoveryFinding, InvariantCheck } from './types';
 
 async function get<T>(path: string): Promise<T> {
   const res = await fetch(path);
@@ -47,4 +47,8 @@ export const api = {
   candidateStudyCatalog: () => get<CandidateStudyRow[]>('/api/candidate-study-catalog'),
   domainExpansionTargets: () => get<DomainExpansionTarget[]>('/api/domain-expansion-targets'),
   studyImportTemplate: () => get<StudyImportTemplateStep[]>('/api/study-import-template'),
+  conclusions: () => get<Conclusion[]>('/api/conclusions'),
+  discoveryHypotheses: () => get<DiscoveryHypothesis[]>('/api/discovery-hypotheses'),
+  discoveryFindings: () => get<DiscoveryFinding[]>('/api/discovery-findings'),
+  invariantChecks: () => get<InvariantCheck[]>('/api/invariant-checks'),
 };

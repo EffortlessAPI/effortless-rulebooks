@@ -224,6 +224,31 @@ app.get('/api/conclusions', async (_req, res) => {
   res.json(rows);
 });
 
+app.get('/api/discovery-hypotheses', async (_req, res) => {
+  const rows = await query(
+    'SELECT * FROM vw_discovery_hypotheses ORDER BY hypothesis_id'
+  );
+  res.json(rows);
+});
+
+app.get('/api/discovery-findings', async (_req, res) => {
+  const rows = await query(
+    'SELECT * FROM vw_discovery_findings ORDER BY hypothesis_id'
+  );
+  res.json(rows);
+});
+
+app.get('/api/invariant-checks', async (_req, res) => {
+  const rows = await query(
+    `SELECT invariant_check_id, name, natural_language, source_table,
+            pass_count, fail_count, is_green, status_label, severity,
+            protects_conclusion
+     FROM vw_invariant_checks
+     ORDER BY invariant_check_id`
+  );
+  res.json(rows);
+});
+
 // --- Allocation sweep ---
 
 app.get('/api/sweep', async (req, res) => {

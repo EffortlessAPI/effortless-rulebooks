@@ -7,9 +7,9 @@
 # Two responsibilities: install magic-links auth, then run all
 # NN[b]?-*.sql files in lex order. Skips *.sql.disabled.
 #
-# THIS IS THE DEV LOOP (per plan 04). Re-running against a populated
-# DB should be safe — every file is meant to be idempotent. If it
-# isn't, fix the file, not this script.
+# Local dev loop: re-run after `effortless build` to apply generated SQL.
+# Re-running against a populated DB should be safe — every file is meant
+# to be idempotent. If it isn't, fix the file, not this script.
 # ============================================================================
 
 set -euo pipefail
@@ -19,20 +19,18 @@ DEFAULT_CONN="postgresql://postgres@localhost:5432/simpsons_paradox"
 DATABASE_URL="${DATABASE_URL:-${1:-$DEFAULT_CONN}}"
 
 # ----------------------------------------------------------------------
-# Plan 04 §8: bases-URL refusal (defense in depth).
-# bases.effortlessapi.com is migration-only. Any rebuild against it
-# would drop tables and lose data. Use postgres/apply-migration.sh
-# instead. This check has no escape hatch by design.
+# Refuse hosted bases URLs — init-db.sh drops and recreates everything.
+# Point DATABASE_URL at local Postgres only (default: simpsons_paradox).
 # ----------------------------------------------------------------------
 if echo "$DATABASE_URL" | grep -qi 'bases\.effortlessapi\.com' ; then
-    echo "refusing to run init-db.sh against bases." >&2
-    echo "bases is migration-only — see CLAUDE.md \"Bases is migration-only\"" >&2
-    echo "use postgres/apply-migration.sh postgres/migrations/NNNN-….sql" >&2
+    echo "refusing to run init-db.sh against bases.effortlessapi.com" >&2
+    echo "init-db.sh is for local dev only — it drops and recreates all tables" >&2
+    echo "use the default: postgresql://postgres@localhost:5432/simpsons_paradox" >&2
     exit 2
 fi
 if [ -n "${BASES_DATABASE_URL:-}" ] && [ "$DATABASE_URL" = "$BASES_DATABASE_URL" ]; then
     echo "refusing to run init-db.sh: DATABASE_URL == BASES_DATABASE_URL" >&2
-    echo "bases is migration-only — use postgres/apply-migration.sh" >&2
+    echo "init-db.sh is for local dev only — it drops and recreates all tables" >&2
     exit 2
 fi
 
@@ -111,8 +109,7 @@ if compgen -G "${SCRIPT_DIR}/function-overrides/*.sql" > /dev/null 2>&1; then
 fi
 
 # ----------------------------------------------------------------------
-# 4. Plan 04 §9: write postgres/.applied-manifest.json so tooling can
-#    compare to .build-manifest.json and detect drift.
+# 4. Write .applied-manifest.json (compare to .build-manifest.json for drift).
 # ----------------------------------------------------------------------
 APPLIED_AT="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
 MANIFEST="${SCRIPT_DIR}/.applied-manifest.json"

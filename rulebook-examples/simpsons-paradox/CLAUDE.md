@@ -1,7 +1,8 @@
 # Simpson's Paradox — Effortless Project
 
-This is an **Effortless Rulebook (ERB)** project. The SSoT is
+Standalone **Effortless Rulebook (ERB)** project. The SSoT is
 `effortless-rulebook/simpsons-paradox-rulebook.json`. Rulebook-First — no Airtable.
+Build with `effortless build` (hosted transpilers in `effortless.json`); run the explorer with `./start.sh`.
 
 ## What this models
 
@@ -22,9 +23,8 @@ answers. Read it before making structural changes.
 
 ## Relevant skills
 
-- `effortless-orchestrator`, `effortless-schema`, `effortless-conventions`
-- `effortless-setup-postgres`, `effortless-leopold-loop`
-- `effortless-sql`, `effortless-query`, `effortless-rulespeak`
+- `effortless-schema`, `effortless-conventions`, `effortless-setup-postgres`
+- `effortless-leopold-loop`, `effortless-sql`, `effortless-query`, `effortless-rulespeak`
 
 ## NO MIGRATIONS
 

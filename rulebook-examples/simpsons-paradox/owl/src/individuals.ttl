@@ -10729,7 +10729,11 @@ effortless-ntwf:loop-01 a effortless-ntwf:Loops ;
     effortless-ntwf:domainQuestion "For each (stratum, treatment) cell in a study, what is the success rate?" ;
     effortless-ntwf:mockDataNote "Kidney stone study (Charig 1986): 2 strata (small/large), 2 treatments (A/B), 4 cells. CellSuccessRate is the first derived fact." ;
     effortless-ntwf:nextSuggestion "Ask: for each treatment, what is its pooled (across all strata) success rate? That requires TreatmentSummary — aggregating CaseCells by treatment, ignoring stratum." ;
-    effortless-ntwf:traditionId "tradition-historical" .
+    effortless-ntwf:traditionId "tradition-historical" ;
+    effortless-ntwf:commitHash "b96e0fe6e3402d85b16e9772518d9241c64c1b1e" ;
+    effortless-ntwf:commitDate "2026-06-27" ;
+    effortless-ntwf:commitMessage "loop-05: StratumVariables + IsParadoxExplained — the DAG witnesses its own explanation" ;
+    effortless-ntwf:gitTag "sp-loop-milestone-01-loops-01-10" .
 
 effortless-ntwf:loop-02 a effortless-ntwf:Loops ;
     effortless-ntwf:loopId "loop-02" ;
@@ -10739,7 +10743,11 @@ effortless-ntwf:loop-02 a effortless-ntwf:Loops ;
     effortless-ntwf:domainQuestion "If you ignore stratum entirely, what is each treatment's overall success rate?" ;
     effortless-ntwf:mockDataNote "Pooled: A=273/350=78%, B=289/350=83%. B looks better — this is the misleading aggregate view." ;
     effortless-ntwf:nextSuggestion "Ask: for each (stratum, treatment) pair, what is the success rate WITHIN that stratum? That requires StratumSummary — the view that contradicts the pooled view." ;
-    effortless-ntwf:traditionId "tradition-historical" .
+    effortless-ntwf:traditionId "tradition-historical" ;
+    effortless-ntwf:commitHash "b96e0fe6e3402d85b16e9772518d9241c64c1b1e" ;
+    effortless-ntwf:commitDate "2026-06-27" ;
+    effortless-ntwf:commitMessage "loop-05: StratumVariables + IsParadoxExplained — the DAG witnesses its own explanation" ;
+    effortless-ntwf:gitTag "sp-loop-milestone-01-loops-01-10" .
 
 effortless-ntwf:loop-03 a effortless-ntwf:Loops ;
     effortless-ntwf:loopId "loop-03" ;
@@ -10749,7 +10757,11 @@ effortless-ntwf:loop-03 a effortless-ntwf:Loops ;
     effortless-ntwf:domainQuestion "Within each stratum, which treatment has the higher success rate?" ;
     effortless-ntwf:mockDataNote "Small: A=93.1% > B=86.7%. Large: A=73.0% > B=68.8%. A wins in BOTH strata. Contradiction with pooled view is now visible." ;
     effortless-ntwf:nextSuggestion "Ask: for each treatment pair in a study, does the pooled winner match the per-stratum winner? That requires TreatmentRanking — the node where the paradox either exists or doesn't." ;
-    effortless-ntwf:traditionId "tradition-historical" .
+    effortless-ntwf:traditionId "tradition-historical" ;
+    effortless-ntwf:commitHash "b96e0fe6e3402d85b16e9772518d9241c64c1b1e" ;
+    effortless-ntwf:commitDate "2026-06-27" ;
+    effortless-ntwf:commitMessage "loop-05: StratumVariables + IsParadoxExplained — the DAG witnesses its own explanation" ;
+    effortless-ntwf:gitTag "sp-loop-milestone-01-loops-01-10" .
 
 effortless-ntwf:loop-04 a effortless-ntwf:Loops ;
     effortless-ntwf:loopId "loop-04" ;
@@ -10759,7 +10771,11 @@ effortless-ntwf:loop-04 a effortless-ntwf:Loops ;
     effortless-ntwf:domainQuestion "When pooled and stratified conclusions disagree — which treatment should actually be preferred?" ;
     effortless-ntwf:mockDataNote "Pooled winner = B. Per-stratum winner = A in every stratum. Simpson's Paradox: IsReversal = true. This is the paradox as a derived fact, not a modeled entity." ;
     effortless-ntwf:nextSuggestion "Ask: WHY does the paradox occur? The stratifying variable (stone size) affects both treatment assignment AND outcome. Name it as a StratumVariable with a CausalRole field." ;
-    effortless-ntwf:traditionId "tradition-historical" .
+    effortless-ntwf:traditionId "tradition-historical" ;
+    effortless-ntwf:commitHash "b96e0fe6e3402d85b16e9772518d9241c64c1b1e" ;
+    effortless-ntwf:commitDate "2026-06-27" ;
+    effortless-ntwf:commitMessage "loop-05: StratumVariables + IsParadoxExplained — the DAG witnesses its own explanation" ;
+    effortless-ntwf:gitTag "sp-loop-milestone-01-loops-01-10" .
 
 effortless-ntwf:loop-05 a effortless-ntwf:Loops ;
     effortless-ntwf:loopId "loop-05" ;
@@ -10769,7 +10785,11 @@ effortless-ntwf:loop-05 a effortless-ntwf:Loops ;
     effortless-ntwf:domainQuestion "What IS the stratum variable, why does it confound, and does the model witness its own explanation?" ;
     effortless-ntwf:mockDataNote "kidney-1986: VariableName=stone_size, CausalRole=confounder, AffectsTreatmentAssignment=true, AffectsOutcome=true → IsConfounder=true → IsParadoxExplained=true on TreatmentRankings." ;
     effortless-ntwf:nextSuggestion "Ask: how large is the allocation imbalance? Derive TreatmentExposureFraction on CaseCells — the fraction of each treatment's cases that land in each stratum. High imbalance = confounding mechanism as a witnessed number." ;
-    effortless-ntwf:traditionId "tradition-dag" .
+    effortless-ntwf:traditionId "tradition-dag" ;
+    effortless-ntwf:commitHash "b96e0fe6e3402d85b16e9772518d9241c64c1b1e" ;
+    effortless-ntwf:commitDate "2026-06-27" ;
+    effortless-ntwf:commitMessage "loop-05: StratumVariables + IsParadoxExplained — the DAG witnesses its own explanation" ;
+    effortless-ntwf:gitTag "sp-loop-milestone-01-loops-01-10" .
 
 effortless-ntwf:loop-06 a effortless-ntwf:Loops ;
     effortless-ntwf:loopId "loop-06" ;
@@ -10779,7 +10799,11 @@ effortless-ntwf:loop-06 a effortless-ntwf:Loops ;
     effortless-ntwf:domainQuestion "What fraction of each treatment's total cases fall in each stratum? High imbalance across strata is the mechanism of confounding." ;
     effortless-ntwf:mockDataNote "A: 263/350=75% in large-stone stratum. B: 80/350=23% in large-stone stratum. The 52-point gap IS the mechanism — now a first-class derived number." ;
     effortless-ntwf:nextSuggestion "Add a degenerate study where treatment allocation is perfectly balanced across strata. IsReversal must be FALSE — not because the data says so, but because the algebra guarantees it. The model witnesses its own structural impossibility." ;
-    effortless-ntwf:traditionId "tradition-epidemiology" .
+    effortless-ntwf:traditionId "tradition-epidemiology" ;
+    effortless-ntwf:commitHash "b96e0fe6e3402d85b16e9772518d9241c64c1b1e" ;
+    effortless-ntwf:commitDate "2026-06-27" ;
+    effortless-ntwf:commitMessage "loop-05: StratumVariables + IsParadoxExplained — the DAG witnesses its own explanation" ;
+    effortless-ntwf:gitTag "sp-loop-milestone-01-loops-01-10" .
 
 effortless-ntwf:loop-07 a effortless-ntwf:Loops ;
     effortless-ntwf:loopId "loop-07" ;
@@ -10789,7 +10813,11 @@ effortless-ntwf:loop-07 a effortless-ntwf:Loops ;
     effortless-ntwf:domainQuestion "If every stratum gets the same treatment-allocation fraction, can a reversal occur? The DAG should witness that it cannot." ;
     effortless-ntwf:mockDataNote "Synthetic: A and B each assigned 50/50 to small/large strata. A=60% success both strata, B=50% both. Pooled: A=60%, B=50%. No reversal. IsParadoxExplained vacuously true (IsConfounder=false, no confounding, no reversal)." ;
     effortless-ntwf:nextSuggestion "Add Berkeley 1973 — same DAG, contested domain. Aggregate: women admitted at lower rate. Per-department: women admitted at equal or higher rate in most. IsReversal=true. But IsConfounder is ambiguous — department choice may be downstream of gender (mediator, not confounder). The model witnesses its own explanatory limits." ;
-    effortless-ntwf:traditionId "tradition-historical" .
+    effortless-ntwf:traditionId "tradition-historical" ;
+    effortless-ntwf:commitHash "b96e0fe6e3402d85b16e9772518d9241c64c1b1e" ;
+    effortless-ntwf:commitDate "2026-06-27" ;
+    effortless-ntwf:commitMessage "loop-05: StratumVariables + IsParadoxExplained — the DAG witnesses its own explanation" ;
+    effortless-ntwf:gitTag "sp-loop-milestone-01-loops-01-10" .
 
 effortless-ntwf:loop-08 a effortless-ntwf:Loops ;
     effortless-ntwf:loopId "loop-08" ;
@@ -10799,7 +10827,11 @@ effortless-ntwf:loop-08 a effortless-ntwf:Loops ;
     effortless-ntwf:domainQuestion "Does Berkeley show a clean reversal? No — PerStratumWinner='none' because the per-stratum winner is mixed (female wins 3/4 depts, male wins 1). The model surfaces a structural limit of the reversal definition: partial paradoxes are real but don't satisfy the strict IsReversal criterion." ;
     effortless-ntwf:mockDataNote "Witnessed: male pooled 52.8% vs female 39.9% (large gap). Per dept: female wins A (82%>62%), B (68%>63%), D (35%>33%); male wins C (37%>34%). No unanimous per-stratum winner → IsReversal=FALSE by strict definition. The intuitive paradox is real; the formal paradox is partial." ;
     effortless-ntwf:nextSuggestion "Add ParadoxStrength (scalar severity) to capture partial reversals — pooled gap and average per-stratum gap regardless of unanimity. Then StudySummary for epistemic coverage across all 3 studies." ;
-    effortless-ntwf:traditionId "tradition-epidemiology" .
+    effortless-ntwf:traditionId "tradition-epidemiology" ;
+    effortless-ntwf:commitHash "b96e0fe6e3402d85b16e9772518d9241c64c1b1e" ;
+    effortless-ntwf:commitDate "2026-06-27" ;
+    effortless-ntwf:commitMessage "loop-05: StratumVariables + IsParadoxExplained — the DAG witnesses its own explanation" ;
+    effortless-ntwf:gitTag "sp-loop-milestone-01-loops-01-10" .
 
 effortless-ntwf:loop-09 a effortless-ntwf:Loops ;
     effortless-ntwf:loopId "loop-09" ;
@@ -10809,7 +10841,11 @@ effortless-ntwf:loop-09 a effortless-ntwf:Loops ;
     effortless-ntwf:domainQuestion "How large is the reversal? Can we rank studies by paradox severity, and does strength correlate with allocation imbalance?" ;
     effortless-ntwf:mockDataNote "Kidney: pooled gap ~4.6pp favoring B, avg stratum gap ~5pp favoring A. Berkeley: larger pooled gap, varies by department. Balanced: strength=0 (no reversal)." ;
     effortless-ntwf:nextSuggestion "StudySummary: roll up ReversalCount, ExplainedCount, AvgParadoxStrength across all studies. The model now describes its own epistemic coverage in a single view." ;
-    effortless-ntwf:traditionId "tradition-historical" .
+    effortless-ntwf:traditionId "tradition-historical" ;
+    effortless-ntwf:commitHash "b96e0fe6e3402d85b16e9772518d9241c64c1b1e" ;
+    effortless-ntwf:commitDate "2026-06-27" ;
+    effortless-ntwf:commitMessage "loop-05: StratumVariables + IsParadoxExplained — the DAG witnesses its own explanation" ;
+    effortless-ntwf:gitTag "sp-loop-milestone-01-loops-01-10" .
 
 effortless-ntwf:loop-10 a effortless-ntwf:Loops ;
     effortless-ntwf:loopId "loop-10" ;
@@ -10819,7 +10855,11 @@ effortless-ntwf:loop-10 a effortless-ntwf:Loops ;
     effortless-ntwf:domainQuestion "Across all studies in this model, what is the epistemic state? How many reversals, how many explained, how many witnessed-but-unexplained?" ;
     effortless-ntwf:mockDataNote "3 studies: ReversalCount=2 (kidney+berkeley), ExplainedCount=1 (kidney), UnexplainedCount=1 (berkeley), ImpossibleCount=1 (balanced). The model now holds a mirror to itself." ;
     effortless-ntwf:nextSuggestion "Ask: how heavy is each stratum? Add StratumFraction to StratumSummaries — the fraction of the study's total cases that land in each stratum. The weight each stratum carries IS the lever the confounder pulls." ;
-    effortless-ntwf:traditionId "tradition-historical" .
+    effortless-ntwf:traditionId "tradition-historical" ;
+    effortless-ntwf:commitHash "b96e0fe6e3402d85b16e9772518d9241c64c1b1e" ;
+    effortless-ntwf:commitDate "2026-06-27" ;
+    effortless-ntwf:commitMessage "loop-05: StratumVariables + IsParadoxExplained — the DAG witnesses its own explanation" ;
+    effortless-ntwf:gitTag "sp-loop-milestone-01-loops-01-10" .
 
 effortless-ntwf:loop-11 a effortless-ntwf:Loops ;
     effortless-ntwf:loopId "loop-11" ;
@@ -10829,7 +10869,11 @@ effortless-ntwf:loop-11 a effortless-ntwf:Loops ;
     effortless-ntwf:domainQuestion "What fraction of the study's total cases land in each stratum? High StratumFraction on a low-success stratum pulls the pooled rate down — and when that stratum is also over-allocated to one treatment, the reversal follows." ;
     effortless-ntwf:mockDataNote "kidney-1986: large-stratum = (263+80)/700 = 49%; small-stratum = (87+270)/700 = 51%. Nearly equal stratum weights — but unequal per-treatment allocation (75% of A is in large; 23% of B is in large). The weight alone is not the mechanism; the differential allocation into heavy strata is." ;
     effortless-ntwf:nextSuggestion "Add WeightedStratumRate: StratumFraction × StratumSuccessRate per treatment row. Sum these across strata to reconstruct PooledRate from first principles. The DAG now witnesses the mechanism equation: pooled rate = weighted average of stratum rates." ;
-    effortless-ntwf:traditionId "tradition-epidemiology" .
+    effortless-ntwf:traditionId "tradition-epidemiology" ;
+    effortless-ntwf:commitHash "49f01e7cafcdb6b529db5743081ee7b32d708b01" ;
+    effortless-ntwf:commitDate "2026-06-27" ;
+    effortless-ntwf:commitMessage "loop-15: ReversalThreshold — intensity and margin witness paradox robustness vs fragility" ;
+    effortless-ntwf:gitTag "sp-loop-milestone-03-loops-11-15" .
 
 effortless-ntwf:loop-12 a effortless-ntwf:Loops ;
     effortless-ntwf:loopId "loop-12" ;
@@ -10839,7 +10883,11 @@ effortless-ntwf:loop-12 a effortless-ntwf:Loops ;
     effortless-ntwf:domainQuestion "Can the DAG reconstruct each treatment's pooled rate purely from stratum weights × stratum rates? If PooledRateFromWeights = PooledRate, the mechanism equation is verified: Simpson's Paradox is algebraically explained." ;
     effortless-ntwf:mockDataNote "kidney-1986: PooledRateFromWeightsA=0.833, PooledRateFromWeightsB=0.779 (A looks better under equal study-level weights). But actual pooled rates are A=0.780, B=0.826 (B looks better). The divergence IS the mechanism: real pooled uses treatment-level allocation weights; the reconstruction uses study-level weights. The swap between the two orderings shows exactly how differential allocation flips the conclusion. balanced-synthetic: weights match exactly (equal allocation = no flip possible)." ;
     effortless-ntwf:nextSuggestion "Add AllocationBias to StratumSummaries: the difference between TreatmentExposureFraction for A and B in each stratum. High bias toward the losing treatment in a low-success stratum IS the confounder's fingerprint as a witnessed number." ;
-    effortless-ntwf:traditionId "tradition-historical" .
+    effortless-ntwf:traditionId "tradition-historical" ;
+    effortless-ntwf:commitHash "49f01e7cafcdb6b529db5743081ee7b32d708b01" ;
+    effortless-ntwf:commitDate "2026-06-27" ;
+    effortless-ntwf:commitMessage "loop-15: ReversalThreshold — intensity and margin witness paradox robustness vs fragility" ;
+    effortless-ntwf:gitTag "sp-loop-milestone-03-loops-11-15" .
 
 effortless-ntwf:loop-13 a effortless-ntwf:Loops ;
     effortless-ntwf:loopId "loop-13" ;
@@ -10849,7 +10897,11 @@ effortless-ntwf:loop-13 a effortless-ntwf:Loops ;
     effortless-ntwf:domainQuestion "In each stratum, is one treatment disproportionately concentrated here? AllocationBias = AllocationFractionA - AllocationFractionB: positive means A is over-represented here, negative means B is. A strong negative bias in a low-success stratum is the confounder's fingerprint." ;
     effortless-ntwf:mockDataNote "kidney-1986 large-stratum: AllocationFractionA=263/350=0.751, AllocationFractionB=80/350=0.229, AllocationBias=+0.523. A is massively over-allocated to the hard (large-stone) stratum. This single number summarizes why the pooled rate misleads: A carries 52pp more exposure to the hard case, dragging its pooled average down below B's despite beating B in both strata." ;
     effortless-ntwf:nextSuggestion "Add a 4th study: kidney-balanced — same stratum rates as kidney-1986 but with equal allocation (50/50 split). AllocationBias=0 everywhere, IsReversal=FALSE. The counterfactual shows the reversal is purely an allocation artifact, not a property of the treatment rates themselves." ;
-    effortless-ntwf:traditionId "tradition-historical" .
+    effortless-ntwf:traditionId "tradition-historical" ;
+    effortless-ntwf:commitHash "49f01e7cafcdb6b529db5743081ee7b32d708b01" ;
+    effortless-ntwf:commitDate "2026-06-27" ;
+    effortless-ntwf:commitMessage "loop-15: ReversalThreshold — intensity and margin witness paradox robustness vs fragility" ;
+    effortless-ntwf:gitTag "sp-loop-milestone-03-loops-11-15" .
 
 effortless-ntwf:loop-14 a effortless-ntwf:Loops ;
     effortless-ntwf:loopId "loop-14" ;
@@ -10859,7 +10911,11 @@ effortless-ntwf:loop-14 a effortless-ntwf:Loops ;
     effortless-ntwf:domainQuestion "If the same doctors, same disease, same treatments, same stratum difficulty — but patients were allocated equally — would the paradox still exist? The DAG answers: no. The reversal lives in the allocation, not in the treatment rates." ;
     effortless-ntwf:mockDataNote "kidney-balanced: PooledRateA = (163+128)/350 = 0.831, PooledRateB = (152+120)/350 = 0.777. A wins pooled AND per-stratum. IsReversal=FALSE, ParadoxStrength=0. AllocationBias=0 in both strata. The counterfactual witnesses that the reversal in kidney-1986 is entirely an artifact of differential allocation, not of treatment efficacy." ;
     effortless-ntwf:nextSuggestion "Add ReversalThreshold to TreatmentRankings: the minimum AllocationBias magnitude needed to flip the pooled winner. How far is kidney-1986 from the threshold? How close is berkeley-1973? This quantifies paradox fragility vs robustness." ;
-    effortless-ntwf:traditionId "tradition-historical" .
+    effortless-ntwf:traditionId "tradition-historical" ;
+    effortless-ntwf:commitHash "49f01e7cafcdb6b529db5743081ee7b32d708b01" ;
+    effortless-ntwf:commitDate "2026-06-27" ;
+    effortless-ntwf:commitMessage "loop-15: ReversalThreshold — intensity and margin witness paradox robustness vs fragility" ;
+    effortless-ntwf:gitTag "sp-loop-milestone-03-loops-11-15" .
 
 effortless-ntwf:loop-15 a effortless-ntwf:Loops ;
     effortless-ntwf:loopId "loop-15" ;
@@ -10869,7 +10925,11 @@ effortless-ntwf:loop-15 a effortless-ntwf:Loops ;
     effortless-ntwf:domainQuestion "How much allocation bias is needed to produce a reversal? Is the observed bias well above threshold (robust paradox) or barely over it (fragile paradox)? ThresholdMargin = observed bias minus minimum needed." ;
     effortless-ntwf:mockDataNote "kidney-1986: ReversalIntensity=1.0, ThresholdMargin=+0.5 — maximally robust, every stratum opposes pooled. berkeley-1973: ReversalIntensity=0.75, ThresholdMargin=+0.25 — past threshold but not unanimous (3/4 departments oppose). balanced-synthetic and kidney-balanced: intensity=0, margin=-0.5 — structurally impossible. ThresholdMargin > 0 means the paradox is robust; < 0 means absent or impossible." ;
     effortless-ntwf:nextSuggestion "Pour a real-world dataset with a known mediator (not confounder) through the same DAG and witness where it lands on the reversal_intensity × paradox_strength plane. The geometry of the plane is the next frontier." ;
-    effortless-ntwf:traditionId "tradition-historical" .
+    effortless-ntwf:traditionId "tradition-historical" ;
+    effortless-ntwf:commitHash "49f01e7cafcdb6b529db5743081ee7b32d708b01" ;
+    effortless-ntwf:commitDate "2026-06-27" ;
+    effortless-ntwf:commitMessage "loop-15: ReversalThreshold — intensity and margin witness paradox robustness vs fragility" ;
+    effortless-ntwf:gitTag "sp-loop-milestone-03-loops-11-15" .
 
 effortless-ntwf:loop-16 a effortless-ntwf:Loops ;
     effortless-ntwf:loopId "loop-16" ;
@@ -10879,7 +10939,11 @@ effortless-ntwf:loop-16 a effortless-ntwf:Loops ;
     effortless-ntwf:domainQuestion "In each stratum, how large is the treatment advantage, and in which direction? StratumGap > 0 means A wins here; < 0 means B wins. Summing StratumGap × StratumFraction gives the equal-weight pooled gap — a new derived node." ;
     effortless-ntwf:mockDataNote "kidney-1986: small-stratum gap = +0.064 (A wins by 6.4pp), large-stratum gap = +0.043 (A wins by 4.3pp). Both positive — A wins everywhere. The pooled gap is negative (B appears to win by 4.6pp) purely due to allocation. The signed gap makes this contradiction arithmetically visible in one column. kidney-balanced: small=+0.064, large=+0.042 (same signs, same magnitudes — the rates are identical to kidney-1986 but now A also wins pooled because allocation is balanced). balanced-synthetic: small=+0.10, large=+0.10 (constant, equal allocation). berkeley-1973: dept-A=−0.200 (female wins), dept-B=+0.011 (male wins barely), dept-C=−0.002 (female wins barely), dept-D=−0.016 (female wins). Mixed signs confirm the partial paradox: no unanimous StratumGap direction, hence no clean reversal." ;
     effortless-ntwf:nextSuggestion "Derive WeightedStratumGapSum on TreatmentRankings: SUM(StratumGap × StratumFraction) aggregated across all TreatmentA rows for this study. This is the equal-weight pooled gap — the gap allocation-free weighting would produce. When WeightedStratumGapSum and PooledGap have opposite signs, the allocation has not just compressed the signal but flipped it. That sign flip is a more precise characterisation of Simpson's Paradox than IsReversal: it handles partial flips and gives a magnitude to the distortion." ;
-    effortless-ntwf:traditionId "tradition-historical" .
+    effortless-ntwf:traditionId "tradition-historical" ;
+    effortless-ntwf:commitHash "ca3109557acb34bb159bed0ac1c39e5a81cce5dc" ;
+    effortless-ntwf:commitDate "2026-06-27" ;
+    effortless-ntwf:commitMessage "loop-20+20b: real study hydration via 05b-customize-data.sql — two type-A reversals witnessed" ;
+    effortless-ntwf:gitTag "sp-loop-milestone-04-loops-16-31" .
 
 effortless-ntwf:loop-17 a effortless-ntwf:Loops ;
     effortless-ntwf:loopId "loop-17" ;
@@ -10889,7 +10953,11 @@ effortless-ntwf:loop-17 a effortless-ntwf:Loops ;
     effortless-ntwf:domainQuestion "If allocation were equal across strata, what would the pooled gap be? WeightedStratumGapSum answers this. When it has the opposite sign to SignedPooledGap, the allocation has not just compressed the signal — it has flipped it. That sign flip IS Simpson's Paradox under a continuous definition. Does Berkeley sign-flip?" ;
     effortless-ntwf:mockDataNote "Witnessed from DB: balanced-synthetic: WSGSUM=+0.1000, SignedPooledGap=+0.1000 → IsSignFlip=FALSE (equal allocation, no distortion). kidney-1986: WSGSUM=+0.0537, SignedPooledGap=−0.0457 → IsSignFlip=TRUE (A wins in every stratum by 5.4pp on average, but actual pooled shows B winning by 4.6pp). kidney-balanced: WSGSUM=+0.0543, SignedPooledGap=+0.0543 → IsSignFlip=FALSE (equal allocation, WSGSUM = actual pooled gap). berkeley-1973: WSGSUM=−0.0642, SignedPooledGap=+0.1292 → IsSignFlip=TRUE. Per-stratum breakdown: dept-A gap=−0.2035 (female wins by 20.4pp, fraction=0.289); dept-B=−0.0496 (female wins, fraction=0.181); dept-C=+0.0286 (male wins barely, fraction=0.284); dept-D=−0.0184 (female wins, fraction=0.245). Under equal allocation female would win pooled by 6.4pp — but the actual pooled shows male winning by 12.9pp. Berkeley IS a Simpson's Paradox under the sign-flip definition despite IsReversal=FALSE. The binary unanimity criterion excluded Berkeley because dept-C goes to male; the sign-flip criterion correctly includes it." ;
     effortless-ntwf:nextSuggestion "The sign flip is witnessed. Now measure the magnitude: how far has the allocation bent the pooled signal? AllocationDistortion = |WeightedStratumGapSum − SignedPooledGap|. Berkeley: |−0.0642 − (+0.1292)| = 0.1934. Kidney: |+0.0537 − (−0.0457)| = 0.0994. Berkeley's distortion is nearly twice kidney's — despite IsReversal=FALSE. This is the single-number measure that ranks studies by how badly confounding has distorted their pooled result." ;
-    effortless-ntwf:traditionId "tradition-historical" .
+    effortless-ntwf:traditionId "tradition-historical" ;
+    effortless-ntwf:commitHash "ca3109557acb34bb159bed0ac1c39e5a81cce5dc" ;
+    effortless-ntwf:commitDate "2026-06-27" ;
+    effortless-ntwf:commitMessage "loop-20+20b: real study hydration via 05b-customize-data.sql — two type-A reversals witnessed" ;
+    effortless-ntwf:gitTag "sp-loop-milestone-04-loops-16-31" .
 
 effortless-ntwf:loop-18 a effortless-ntwf:Loops ;
     effortless-ntwf:loopId "loop-18" ;
@@ -10899,7 +10967,11 @@ effortless-ntwf:loop-18 a effortless-ntwf:Loops ;
     effortless-ntwf:domainQuestion "How much has the allocation distorted the pooled signal relative to what equal-weight strata would show? AllocationDistortion=0 means the allocation is neutral. A large AllocationDistortion means the pooled number is mostly noise from case assignment, not signal about treatment efficacy." ;
     effortless-ntwf:mockDataNote "Witnessed from DB (ordered by AllocationDistortion desc): berkeley-1973: WSGSUM=−0.0642, SignedPooledGap=+0.1292, AllocationDistortion=0.1934. kidney-1986: WSGSUM=+0.0537, SignedPooledGap=−0.0457, AllocationDistortion=0.0994. kidney-balanced: AllocationDistortion=0.0000 (balanced allocation, no distortion). balanced-synthetic: AllocationDistortion=0.0000 (equal allocation, no distortion). The allocation is injecting a 19.3pp distortion into Berkeley's pooled result — reversing a real female advantage of 6.4pp into an apparent male advantage of 12.9pp. This is nearly twice the 9.9pp distortion in kidney-1986. ParadoxStrength (old measure) gives berkeley=0.0969, kidney=0.0457 — same ordinal ranking but ParadoxStrength is penalized by the unanimity criterion: Berkeley's 0.75 ReversalIntensity reduces its score. AllocationDistortion is not so penalized: it measures what the allocation DID to the signal, not whether the outcome passes an arbitrary threshold." ;
     effortless-ntwf:nextSuggestion "Two severity measures are now live: ParadoxStrength and AllocationDistortion. They agree on ordinal ranking across our four studies but diverge in magnitude (Berkeley is 2× kidney under AllocationDistortion but only 2.1× under ParadoxStrength). The more important question: is a study with AllocationDistortion > 0 but IsSignFlip=FALSE possible? That would be a type-C study — allocation has compressed but not reversed the signal. None of the current studies are type-C. Design a synthetic type-C study: same-sign WSGSUM and SignedPooledGap, but WSGSUM closer to zero than SignedPooledGap. Add it to the data and witness AllocationDistortion > 0, IsSignFlip=FALSE." ;
-    effortless-ntwf:traditionId "tradition-historical" .
+    effortless-ntwf:traditionId "tradition-historical" ;
+    effortless-ntwf:commitHash "ca3109557acb34bb159bed0ac1c39e5a81cce5dc" ;
+    effortless-ntwf:commitDate "2026-06-27" ;
+    effortless-ntwf:commitMessage "loop-20+20b: real study hydration via 05b-customize-data.sql — two type-A reversals witnessed" ;
+    effortless-ntwf:gitTag "sp-loop-milestone-04-loops-16-31" .
 
 effortless-ntwf:loop-19 a effortless-ntwf:Loops ;
     effortless-ntwf:loopId "loop-19" ;
@@ -10909,7 +10981,11 @@ effortless-ntwf:loop-19 a effortless-ntwf:Loops ;
     effortless-ntwf:domainQuestion "Does a study with real allocation distortion (AllocationDistortion > 0) but no sign flip (IsSignFlip=FALSE) exist? If yes, the type-C cell in the DistortionType taxonomy is nonempty — there is a class of misleading aggregates that compress but do not reverse the pooled signal. This class is invisible to both IsReversal and IsSignFlip but is visible to AllocationDistortion." ;
     effortless-ntwf:mockDataNote "Witnessed from DB (ordered by AllocationDistortion desc): berkeley-1973: WSGSUM=−0.0642, SignedPooledGap=+0.1292, IsSignFlip=TRUE, AllocationDistortion=0.1934, ReversalIntensity=0.75 → type B. kidney-1986: WSGSUM=+0.0537, SignedPooledGap=−0.0457, IsSignFlip=TRUE, AllocationDistortion=0.0994, ReversalIntensity=1.0 → type A. compressed-synthetic: WSGSUM=+0.1000, SignedPooledGap=+0.0600, IsSignFlip=FALSE, AllocationDistortion=0.0400, ReversalIntensity=0.0 → type C (A wins pooled by 6pp but would win by 10pp under equal allocation). kidney-balanced: AllocationDistortion=0.0000 → type D. balanced-synthetic: AllocationDistortion=0.0000 → type D. All four types are now empirically populated. Type-C is important: a researcher seeing pooled A=78%, B=72% and concluding 'A wins by 6pp' is correct — but the equal-weight truth is 'A wins by 10pp.' The allocation has consumed 4pp of signal without a single stratum switching winner." ;
     effortless-ntwf:nextSuggestion "All four DistortionType cells are now populated. Add DistortionType as a derived field on TreatmentRankings: A = IsSignFlip AND ReversalIntensity=1.0; B = IsSignFlip AND ReversalIntensity<1.0; C = NOT IsSignFlip AND AllocationDistortion>0.01; D = AllocationDistortion≤0.01. This makes the geometric taxonomy a first-class derived fact in the DAG. Then add PolicyImplication per type: type A = stratify-immediately; type B = investigate-confounder; type C = check-allocation-bias; type D = pooled-analysis-trustworthy." ;
-    effortless-ntwf:traditionId "tradition-historical" .
+    effortless-ntwf:traditionId "tradition-historical" ;
+    effortless-ntwf:commitHash "ca3109557acb34bb159bed0ac1c39e5a81cce5dc" ;
+    effortless-ntwf:commitDate "2026-06-27" ;
+    effortless-ntwf:commitMessage "loop-20+20b: real study hydration via 05b-customize-data.sql — two type-A reversals witnessed" ;
+    effortless-ntwf:gitTag "sp-loop-milestone-04-loops-16-31" .
 
 effortless-ntwf:loop-20 a effortless-ntwf:Loops ;
     effortless-ntwf:loopId "loop-20" ;
@@ -10919,7 +10995,11 @@ effortless-ntwf:loop-20 a effortless-ntwf:Loops ;
     effortless-ntwf:domainQuestion "Can real published study data enter the instrument through a SQL hydration file (not the rulebook JSON) and produce DistortionType / AllocationDistortion / PolicyImplication results from the existing view chain without any schema changes?" ;
     effortless-ntwf:mockDataNote "Two real studies hydrated: reintjes-2000 (Epidemiology 2000, N=3519, antibiotic prophylaxis UTI study) and radelet-1981 (Am Soc Rev 1981, N=326, Florida death penalty). Both are type-A full reversals. Witnessed: reintjes AllocationDistortion=0.0516, radelet AllocationDistortion=0.0684. No schema changes were needed. 05b-customize-data.sql is the durable hydration path." ;
     effortless-ntwf:nextSuggestion "ModelSummary currently counts only synthetic studies in its ReversalCount/NonReversalCount. Add DistortionType aggregations (TypeACount, TypeBCount, TypeCCount, TypeDCount, SignFlipCount, AvgAllocationDistortion) so the model's self-portrait reflects all seven studies including the two real ones." ;
-    effortless-ntwf:traditionId "tradition-epidemiology" .
+    effortless-ntwf:traditionId "tradition-epidemiology" ;
+    effortless-ntwf:commitHash "ca3109557acb34bb159bed0ac1c39e5a81cce5dc" ;
+    effortless-ntwf:commitDate "2026-06-27" ;
+    effortless-ntwf:commitMessage "loop-20+20b: real study hydration via 05b-customize-data.sql — two type-A reversals witnessed" ;
+    effortless-ntwf:gitTag "sp-loop-milestone-04-loops-16-31" .
 
 effortless-ntwf:loop-20b a effortless-ntwf:Loops ;
     effortless-ntwf:loopId "loop-20b" ;
@@ -10929,7 +11009,11 @@ effortless-ntwf:loop-20b a effortless-ntwf:Loops ;
     effortless-ntwf:domainQuestion "Do two real published studies with well-known outcomes (antibiotic prophylaxis UTI reversal; racial death-penalty reversal) produce the expected DistortionType=A when hydrated through the instrument? Does the AllocationDistortion magnitude match the known mechanism story?" ;
     effortless-ntwf:mockDataNote "Witnessed from DB (full table ordered by AllocationDistortion desc): berkeley-1973: type B, distortion=0.1934. kidney-1986: type A, distortion=0.0994. radelet-1981: type A, distortion=0.0684 (REAL). reintjes-2000: type A, distortion=0.0516 (REAL). compressed-synthetic: type C, distortion=0.0400. kidney-balanced: type D, distortion=0.0000. balanced-synthetic: type D, distortion=0.0000. Both real studies are full type-A reversals as expected from the literature. radelet has higher AllocationDistortion (0.0684) than reintjes (0.0516), consistent with the victim-race confound being stronger — black defendants are 62% in the low-sentence black-victim stratum, a more extreme allocation imbalance than reintjes where 87% of prophylaxis patients are in low-incidence hospitals." ;
     effortless-ntwf:nextSuggestion "ModelSummary currently counts only the synthetic study set. Add DistortionType aggregations (TypeACount, TypeBCount, TypeCCount, TypeDCount, SignFlipCount, AvgAllocationDistortion) so the model describes its real empirical coverage, not just the synthetic controls." ;
-    effortless-ntwf:traditionId "tradition-epidemiology" .
+    effortless-ntwf:traditionId "tradition-epidemiology" ;
+    effortless-ntwf:commitHash "ca3109557acb34bb159bed0ac1c39e5a81cce5dc" ;
+    effortless-ntwf:commitDate "2026-06-27" ;
+    effortless-ntwf:commitMessage "loop-20+20b: real study hydration via 05b-customize-data.sql — two type-A reversals witnessed" ;
+    effortless-ntwf:gitTag "sp-loop-milestone-04-loops-16-31" .
 
 effortless-ntwf:loop-21 a effortless-ntwf:Loops ;
     effortless-ntwf:loopId "loop-21" ;
@@ -10939,7 +11023,11 @@ effortless-ntwf:loop-21 a effortless-ntwf:Loops ;
     effortless-ntwf:domainQuestion "Can the geometric taxonomy (four cells defined by IsSignFlip × ReversalIntensity × AllocationDistortion magnitude) be collapsed into a single derived field that a researcher or policy layer can read without knowing the internal coordinates?" ;
     effortless-ntwf:mockDataNote "All five current studies resolve cleanly: kidney-1986 → type A (stratify-immediately); berkeley-1973 → type B (investigate-confounder); compressed-synthetic → type C (check-allocation-bias); kidney-balanced → type D (pooled-analysis-trustworthy); balanced-synthetic → type D (pooled-analysis-trustworthy). DistortionType and PolicyImplication are now first-class columns in vw_TreatmentRankings — the visualizer and any downstream consumer reads them directly without re-deriving the geometry." ;
     effortless-ntwf:nextSuggestion "ModelSummary currently counts ReversalCount and NonReversalCount using the old IsReversal (unanimity) criterion. Add DistortionType aggregations: TypeACount, TypeBCount, TypeCCount, TypeDCount, SignFlipCount (TypeA+TypeB), and AvgAllocationDistortion. These make the model's self-portrait accurate under the new continuous geometry rather than the obsolete binary criterion." ;
-    effortless-ntwf:traditionId "tradition-historical" .
+    effortless-ntwf:traditionId "tradition-historical" ;
+    effortless-ntwf:commitHash "ca3109557acb34bb159bed0ac1c39e5a81cce5dc" ;
+    effortless-ntwf:commitDate "2026-06-27" ;
+    effortless-ntwf:commitMessage "loop-20+20b: real study hydration via 05b-customize-data.sql — two type-A reversals witnessed" ;
+    effortless-ntwf:gitTag "sp-loop-milestone-04-loops-16-31" .
 
 effortless-ntwf:loop-22 a effortless-ntwf:Loops ;
     effortless-ntwf:loopId "loop-22" ;
@@ -10948,7 +11036,11 @@ effortless-ntwf:loop-22 a effortless-ntwf:Loops ;
     effortless-ntwf:newConcept "TypeACount, TypeBCount, TypeCCount, TypeDCount, SignFlipCount, AvgAllocationDistortion on ModelSummary. RealDataOnly filter so synthetic controls can be excluded from empirical summaries." ;
     effortless-ntwf:domainQuestion "Across all studies in this model, what is the DistortionType breakdown? How many sign-flips, what is the average AllocationDistortion? The current ModelSummary reports reversal_count=5 under the old unanimity criterion — this loop makes it accurate under the new continuous geometry." ;
     effortless-ntwf:nextSuggestion "With the model's self-portrait corrected, formally name IsReversal_v2 = IsSignFlip as a first-class field and document that the unanimity IsReversal is now a strict subtype (DistortionType=A only)." ;
-    effortless-ntwf:traditionId "tradition-historical" .
+    effortless-ntwf:traditionId "tradition-historical" ;
+    effortless-ntwf:commitHash "ca3109557acb34bb159bed0ac1c39e5a81cce5dc" ;
+    effortless-ntwf:commitDate "2026-06-27" ;
+    effortless-ntwf:commitMessage "loop-20+20b: real study hydration via 05b-customize-data.sql — two type-A reversals witnessed" ;
+    effortless-ntwf:gitTag "sp-loop-milestone-04-loops-16-31" .
 
 effortless-ntwf:loop-23 a effortless-ntwf:Loops ;
     effortless-ntwf:loopId "loop-23" ;
@@ -10957,7 +11049,11 @@ effortless-ntwf:loop-23 a effortless-ntwf:Loops ;
     effortless-ntwf:newConcept "IsReversal_v2 = IsSignFlip as a named first-class field on TreatmentRankings. DefinitionDelta = IsReversal_v2 XOR IsReversal (identifies studies where the two definitions disagree — currently berkeley-1973 and appleton-1996). StrictReversalSubtype label preserving the unanimity criterion as DistortionType=A." ;
     effortless-ntwf:domainQuestion "Does the sign-flip definition strictly generalize the old unanimity definition across all 10 hydrated studies? Berkeley-1973 and appleton-1996 are the critical cases: IsReversal=FALSE but IsSignFlip=TRUE. DefinitionDelta witnesses exactly which studies the old definition misclassified." ;
     effortless-ntwf:nextSuggestion "Find one real published study that hydrates as DistortionType=C (AllocationDistortion>0, IsSignFlip=FALSE) to prove the type-C cell is not merely a synthetic pathology." ;
-    effortless-ntwf:traditionId "tradition-historical" .
+    effortless-ntwf:traditionId "tradition-historical" ;
+    effortless-ntwf:commitHash "ca3109557acb34bb159bed0ac1c39e5a81cce5dc" ;
+    effortless-ntwf:commitDate "2026-06-27" ;
+    effortless-ntwf:commitMessage "loop-20+20b: real study hydration via 05b-customize-data.sql — two type-A reversals witnessed" ;
+    effortless-ntwf:gitTag "sp-loop-milestone-04-loops-16-31" .
 
 effortless-ntwf:loop-23b a effortless-ntwf:Loops ;
     effortless-ntwf:loopId "loop-23b" ;
@@ -10966,7 +11062,11 @@ effortless-ntwf:loop-23b a effortless-ntwf:Loops ;
     effortless-ntwf:newConcept "IsParadoxExplained_v2 on TreatmentRankings. ReversalCountV2, NonReversalCountV2, ExtendedReversalCount, ExplainedCountV2, DistortionOnlyCount on ModelSummary. Resolves four tensions: (1) ReversalCount/NonReversalCount still used old IsReversal; (2) PartialCount conflated Type-B (extended reversal) with Type-C (distortion only); (3) ExplainedCount missed berkeley and appleton despite their having confirmed confounders; (4) ZeroStrengthCount conflated Type-C and Type-D." ;
     effortless-ntwf:domainQuestion "With IsReversal_v2 as the primary definition, does the model's self-portrait (ModelSummary) accurately reflect the v2 geometry? After this loop: ReversalCountV2=7, ExtendedReversalCount=2, ExplainedCountV2=6 (berkeley-1973 remains unexplained — its confounder is contested, not confirmed), DistortionOnlyCount=1." ;
     effortless-ntwf:nextSuggestion "Find one real published study that hydrates as DistortionType=C to prove the type-C cell is not merely a synthetic pathology." ;
-    effortless-ntwf:traditionId "tradition-historical" .
+    effortless-ntwf:traditionId "tradition-historical" ;
+    effortless-ntwf:commitHash "a6e0725cbcbeb17a49c11dbcad061f770de2293e" ;
+    effortless-ntwf:commitDate "2026-06-27" ;
+    effortless-ntwf:commitMessage "feat: enhance README and server to support standalone explorer; add new screenshots" ;
+    effortless-ntwf:gitTag "sp-loop-milestone-05-loops-23b-33" .
 
 effortless-ntwf:loop-24 a effortless-ntwf:Loops ;
     effortless-ntwf:loopId "loop-24" ;
@@ -10975,7 +11075,11 @@ effortless-ntwf:loop-24 a effortless-ntwf:Loops ;
     effortless-ntwf:newConcept "One real published study hydrating as DistortionType=C: pooled winner directionally correct but margin materially compressed or inflated by differential allocation. Entered through the same 05b-customize-data.sql hydration contract as reintjes-2000 and radelet-1981." ;
     effortless-ntwf:domainQuestion "Does the published literature contain studies where AllocationDistortion>0 but IsSignFlip=FALSE? Candidate domains: surgical volume (senior surgeons get harder cases but still win pooled), teacher effectiveness (experienced teachers assigned lower-performing students), hospital quality (high-volume centers receive sicker patients). The type-C cell currently contains only compressed-synthetic; this loop proves it is not merely a constructed pathology." ;
     effortless-ntwf:nextSuggestion "Build a validation set of 5 additional real studies across diverse domains to confirm multi-domain generalization of the four-type taxonomy." ;
-    effortless-ntwf:traditionId "tradition-epidemiology" .
+    effortless-ntwf:traditionId "tradition-epidemiology" ;
+    effortless-ntwf:commitHash "ca3109557acb34bb159bed0ac1c39e5a81cce5dc" ;
+    effortless-ntwf:commitDate "2026-06-27" ;
+    effortless-ntwf:commitMessage "loop-20+20b: real study hydration via 05b-customize-data.sql — two type-A reversals witnessed" ;
+    effortless-ntwf:gitTag "sp-loop-milestone-04-loops-16-31" .
 
 effortless-ntwf:loop-25 a effortless-ntwf:Loops ;
     effortless-ntwf:loopId "loop-25" ;
@@ -10984,7 +11088,11 @@ effortless-ntwf:loop-25 a effortless-ntwf:Loops ;
     effortless-ntwf:newConcept "5 additional real published studies hydrated through 05b-customize-data.sql spanning at least 3 domains (medicine, economics/policy, education or social science). Each produces a witnessed DistortionType and AllocationDistortion. ModelSummary updated to reflect the full empirical set." ;
     effortless-ntwf:domainQuestion "Does the four-type taxonomy classify real studies consistently across domains? Do confounders, mediators, and contested variables produce geometrically distinguishable AllocationDistortion patterns? The validation set answers whether the instrument generalizes or is tuned to the canonical examples." ;
     effortless-ntwf:nextSuggestion "Formalize the instrument specification as a first-class InstrumentSpec table so another researcher can hydrate a new study and classify it without knowledge of the internal DAG." ;
-    effortless-ntwf:traditionId "tradition-epidemiology" .
+    effortless-ntwf:traditionId "tradition-epidemiology" ;
+    effortless-ntwf:commitHash "ca3109557acb34bb159bed0ac1c39e5a81cce5dc" ;
+    effortless-ntwf:commitDate "2026-06-27" ;
+    effortless-ntwf:commitMessage "loop-20+20b: real study hydration via 05b-customize-data.sql — two type-A reversals witnessed" ;
+    effortless-ntwf:gitTag "sp-loop-milestone-04-loops-16-31" .
 
 effortless-ntwf:loop-26 a effortless-ntwf:Loops ;
     effortless-ntwf:loopId "loop-26" ;
@@ -10993,7 +11101,11 @@ effortless-ntwf:loop-26 a effortless-ntwf:Loops ;
     effortless-ntwf:newConcept "InstrumentSpec table: one row per required input field, derived coordinate, classification rule, and adapter contract requirement. Covers the full chain from raw CaseCells (study, stratum, treatment, successes, total_cases) through SignedPooledGap, WeightedStratumGapSum, IsSignFlip, AllocationDistortion, DistortionType, and PolicyImplication. Every row machine-verifiable against the hydrated studies." ;
     effortless-ntwf:domainQuestion "Can the full instrument be stated precisely enough that another researcher or script can hydrate a new study and classify it without access to the internal DAG? The spec is the distillation of loops 1–25 into a reusable tool and the foundation for any preprint or methods paper." ;
     effortless-ntwf:nextSuggestion "The instrument specification is the terminal deliverable. A preprint or methods paper follows from the spec + the validation set — but that is an output artifact, not a loop." ;
-    effortless-ntwf:traditionId "tradition-historical" .
+    effortless-ntwf:traditionId "tradition-historical" ;
+    effortless-ntwf:commitHash "ca3109557acb34bb159bed0ac1c39e5a81cce5dc" ;
+    effortless-ntwf:commitDate "2026-06-27" ;
+    effortless-ntwf:commitMessage "loop-20+20b: real study hydration via 05b-customize-data.sql — two type-A reversals witnessed" ;
+    effortless-ntwf:gitTag "sp-loop-milestone-04-loops-16-31" .
 
 effortless-ntwf:loop-27 a effortless-ntwf:Loops ;
     effortless-ntwf:loopId "loop-27" ;
@@ -11002,7 +11114,11 @@ effortless-ntwf:loop-27 a effortless-ntwf:Loops ;
     effortless-ntwf:newConcept "CorrectedGap (= WeightedStratumGapSum, named with intent), CorrectedWinner, CorrectedVsPooledAgreement on TreatmentRankings. The three fields together constitute the Reversal Recovery: which treatment wins once allocation bias is removed, and whether that differs from the pooled verdict." ;
     effortless-ntwf:domainQuestion "Given the observed allocation distortion, which treatment would a researcher conclude is better if the allocation artifact were corrected? Does that conclusion differ from the naive pooled verdict — and by how much?" ;
     effortless-ntwf:nextSuggestion "Loop 28 could introduce a CorrectedPolicyImplication field that derives the appropriate research action from CorrectedWinner + DistortionType together, superseding the allocation-unaware PolicyImplication for Types A and B studies." ;
-    effortless-ntwf:traditionId "tradition-dag" .
+    effortless-ntwf:traditionId "tradition-dag" ;
+    effortless-ntwf:commitHash "ca3109557acb34bb159bed0ac1c39e5a81cce5dc" ;
+    effortless-ntwf:commitDate "2026-06-27" ;
+    effortless-ntwf:commitMessage "loop-20+20b: real study hydration via 05b-customize-data.sql — two type-A reversals witnessed" ;
+    effortless-ntwf:gitTag "sp-loop-milestone-04-loops-16-31" .
 
 effortless-ntwf:loop-28 a effortless-ntwf:Loops ;
     effortless-ntwf:loopId "loop-28" ;
@@ -11011,7 +11127,11 @@ effortless-ntwf:loop-28 a effortless-ntwf:Loops ;
     effortless-ntwf:newConcept "CorrectedPolicyImplication on TreatmentRankings: derives the researcher action from CorrectedWinner + DistortionType together. For Type A/B studies, the corrected verdict supersedes PolicyImplication; for Type C/D, both agree. Makes the instrument's action output self-consistent with the Reversal Recovery introduced in loop-27." ;
     effortless-ntwf:domainQuestion "When the corrected winner differs from the pooled winner, what should a researcher do — and does the instrument tell them clearly, or does it give two contradictory action fields?" ;
     effortless-ntwf:nextSuggestion "Loop 29 must audit every derived formula for internal consistency: balanced allocation ⇒ AllocationDistortion=0; Type D ⇒ CorrectedVsPooledAgreement=TRUE; Type A ⇒ CorrectedVsPooledAgreement=FALSE. These are not empirical claims — they are algebraic invariants. Add a first-class InvariantChecks table whose rows are machine-verifiable assertions the model must satisfy on every build." ;
-    effortless-ntwf:traditionId "tradition-ai-fairness" .
+    effortless-ntwf:traditionId "tradition-ai-fairness" ;
+    effortless-ntwf:commitHash "ca3109557acb34bb159bed0ac1c39e5a81cce5dc" ;
+    effortless-ntwf:commitDate "2026-06-27" ;
+    effortless-ntwf:commitMessage "loop-20+20b: real study hydration via 05b-customize-data.sql — two type-A reversals witnessed" ;
+    effortless-ntwf:gitTag "sp-loop-milestone-04-loops-16-31" .
 
 effortless-ntwf:loop-29 a effortless-ntwf:Loops ;
     effortless-ntwf:loopId "loop-29" ;
@@ -11020,7 +11140,11 @@ effortless-ntwf:loop-29 a effortless-ntwf:Loops ;
     effortless-ntwf:newConcept "InvariantChecks table: one row per algebraic invariant (balanced allocation → AllocationDistortion=0; Type D → CorrectedVsPooledAgreement=TRUE; IsSignFlip → CorrectedWinner≠PooledWinner; WeightedStratumGapSum = Σ(StratumFraction×StratumGap); etc.). Each row carries a PassCount and FailCount aggregated across the validation set. Any FailCount>0 is a build-breaking bug, not a data anomaly." ;
     effortless-ntwf:domainQuestion "Is the model algebraically self-consistent across all 16 studies? Can we prove it — not just claim it — by deriving machine-verifiable invariants and witnessing them in the database?" ;
     effortless-ntwf:nextSuggestion "Loop 33 must lock the hydration and provenance story to a single canonical account. Real data enters via one path (rulebook JSON as SSoT; 05b-customize-data.sql is a build artifact). Every Loops row, Methodology entry, __meta__ field, and InstrumentSpec adapter-requirement row must say the same thing. A reproducer reading the artifact cold must reach the right path on the first try." ;
-    effortless-ntwf:traditionId "tradition-dag" .
+    effortless-ntwf:traditionId "tradition-dag" ;
+    effortless-ntwf:commitHash "ca3109557acb34bb159bed0ac1c39e5a81cce5dc" ;
+    effortless-ntwf:commitDate "2026-06-27" ;
+    effortless-ntwf:commitMessage "loop-20+20b: real study hydration via 05b-customize-data.sql — two type-A reversals witnessed" ;
+    effortless-ntwf:gitTag "sp-loop-milestone-04-loops-16-31" .
 
 effortless-ntwf:loop-30 a effortless-ntwf:Loops ;
     effortless-ntwf:loopId "loop-30" ;
@@ -11029,7 +11153,11 @@ effortless-ntwf:loop-30 a effortless-ntwf:Loops ;
     effortless-ntwf:newConcept "CausalClaimStatus (established | contested | geometric-only) and AdjustmentAppropriate (boolean with rationale) on TreatmentRankings. ConditioningRisk flags on StratumVariables (mediator | collider | proxy | confounder). Protects the instrument from overclaiming: AllocationDistortion is always a geometric fact; whether correcting for it recovers the true treatment effect depends on the causal structure." ;
     effortless-ntwf:domainQuestion "When is CorrectedGap the right estimate to report, and when is it still wrong? Does adjusting for a mediator or collider make things worse? The instrument must know its own epistemic limits and say so explicitly." ;
     effortless-ntwf:nextSuggestion "After loop-33 the instrument is publishable as a methods paper: allocation-aware action guidance (loop-28), algebraic self-consistency (loop-29), clean provenance (loop-30), structural integrity + honest weighting (loop-31), cherry-picking defense (loop-32), and causality honesty (loop-33). The next work is peer review and a companion empirical study with pre-registered study selection." ;
-    effortless-ntwf:traditionId "tradition-dag" .
+    effortless-ntwf:traditionId "tradition-dag" ;
+    effortless-ntwf:commitHash "ca3109557acb34bb159bed0ac1c39e5a81cce5dc" ;
+    effortless-ntwf:commitDate "2026-06-27" ;
+    effortless-ntwf:commitMessage "loop-20+20b: real study hydration via 05b-customize-data.sql — two type-A reversals witnessed" ;
+    effortless-ntwf:gitTag "sp-loop-milestone-04-loops-16-31" .
 
 effortless-ntwf:loop-31 a effortless-ntwf:Loops ;
     effortless-ntwf:loopId "loop-31" ;
@@ -11038,7 +11166,11 @@ effortless-ntwf:loop-31 a effortless-ntwf:Loops ;
     effortless-ntwf:newConcept "ProvenanceAudit: a sweep of every Loops row, Methodology entry, __meta__ field, InstrumentSpec adapter-requirement, and 05b header comment for contradictions about where real data lives and how a reproducer seeds a new study. All resolved to a single canonical account. No loop row may claim a different hydration path than another." ;
     effortless-ntwf:domainQuestion "If a researcher reads only the artifact — no prior context, no conversation — do they arrive at the correct seeding procedure? Or do some docstrings point to SQL, some to JSON, and some to neither?" ;
     effortless-ntwf:nextSuggestion "Loop 33 must complete structural integrity: every study has exactly 2 treatment rows, every stratum has exactly one A-cell and one B-cell, every TreatmentRanking FK resolves to a valid Study. Missing rows flagged and added; orphaned rows identified and removed. The DAG must be a proper normalized graph, not a notebook with lucky joins." ;
-    effortless-ntwf:traditionId "tradition-dag" .
+    effortless-ntwf:traditionId "tradition-dag" ;
+    effortless-ntwf:commitHash "ca3109557acb34bb159bed0ac1c39e5a81cce5dc" ;
+    effortless-ntwf:commitDate "2026-06-27" ;
+    effortless-ntwf:commitMessage "loop-20+20b: real study hydration via 05b-customize-data.sql — two type-A reversals witnessed" ;
+    effortless-ntwf:gitTag "sp-loop-milestone-04-loops-16-31" .
 
 effortless-ntwf:loop-32 a effortless-ntwf:Loops ;
     effortless-ntwf:loopId "loop-32" ;
@@ -11047,7 +11179,11 @@ effortless-ntwf:loop-32 a effortless-ntwf:Loops ;
     effortless-ntwf:newConcept "RelationshipIntegrityValidator: assertions that every study has ≥2 strata, exactly 2 treatment labels, paired A/B cells per stratum, and every FK resolves. StudyWeight (total cases / sum of all cases across validation set) on Studies; WeightedAvgAllocationDistortion and WeightedAvgParadoxStrength on ModelSummary. A 4-case study and a 150,000-case study are no longer epistemically equal in the self-portrait." ;
     effortless-ntwf:domainQuestion "Is the model a proper normalized DAG with no missing links? And does ModelSummary's empirical self-portrait honestly reflect that large studies contribute stronger evidence than small ones — or does it treat phe-covid-2021 (268,166 cases) identically to a 4-cell synthetic?" ;
     effortless-ntwf:nextSuggestion "Loop 33 must define the validation protocol — inclusion/exclusion criteria and minimum cell counts — so the empirical generalization claim is not vulnerable to a cherry-picking objection. Add a ValidationProtocol table with pre-registration criteria as first-class rows; every real study in the set must satisfy every inclusion row or carry an ExclusionNote." ;
-    effortless-ntwf:traditionId "tradition-epidemiology" .
+    effortless-ntwf:traditionId "tradition-epidemiology" ;
+    effortless-ntwf:commitHash "a6e0725cbcbeb17a49c11dbcad061f770de2293e" ;
+    effortless-ntwf:commitDate "2026-06-27" ;
+    effortless-ntwf:commitMessage "feat: enhance README and server to support standalone explorer; add new screenshots" ;
+    effortless-ntwf:gitTag "sp-loop-milestone-05-loops-23b-33" .
 
 effortless-ntwf:loop-33 a effortless-ntwf:Loops ;
     effortless-ntwf:loopId "loop-33" ;
@@ -11056,7 +11192,11 @@ effortless-ntwf:loop-33 a effortless-ntwf:Loops ;
     effortless-ntwf:newConcept "ValidationProtocol table: one row per inclusion/exclusion criterion (minimum cell count ≥ 10 per cell; binary treatment; outcome direction pre-registered; stratum variable named before classification; no post-hoc stratum splitting). Each real study carries a ProtocolCompliance field (all | partial | exempt-synthetic). Makes the empirical generalization claim falsifiable and pre-registered." ;
     effortless-ntwf:domainQuestion "Could a reviewer accuse the validation set of being hand-picked to make the instrument look good? What protocol discipline removes that objection and makes the 16-study classification reproducible by an independent researcher?" ;
     effortless-ntwf:nextSuggestion "Loop 30 must add the causality boundary layer — explicitly separate what the geometry says (AllocationDistortion, CorrectedGap) from what the causal interpretation claims (IsConfounder, CausalRole). Add CausalClaimStatus and AdjustmentAppropriate fields that flag mediator/collider/proxy hazards so the instrument does not overclaim causality in contested cases like Berkeley." ;
-    effortless-ntwf:traditionId "tradition-dag" .
+    effortless-ntwf:traditionId "tradition-dag" ;
+    effortless-ntwf:commitHash "a6e0725cbcbeb17a49c11dbcad061f770de2293e" ;
+    effortless-ntwf:commitDate "2026-06-27" ;
+    effortless-ntwf:commitMessage "feat: enhance README and server to support standalone explorer; add new screenshots" ;
+    effortless-ntwf:gitTag "sp-loop-milestone-05-loops-23b-33" .
 
 effortless-ntwf:loop-34 a effortless-ntwf:Loops ;
     effortless-ntwf:loopId "loop-34" ;
@@ -11065,7 +11205,11 @@ effortless-ntwf:loop-34 a effortless-ntwf:Loops ;
     effortless-ntwf:newConcept "AllocationSweep table: a parametric sweep of treatment-A allocation fraction within kidney-1986's large stratum (10 rows, f_L from 0.05 to 0.95). Stratum totals and per-stratum rates are fixed; only the A/B split varies. Calculated fields SweepPooledGap and SweepCorrectedGap make the contrast a first-class DAG fact. Two new InvariantChecks: (1) SweepCorrectedGapRange < 0.0001 (the corrected gap is allocation-free); (2) SweepPooledGapRange > 0.10 (the pooled gap genuinely wanders). Two new ModelSummary aggregations (SweepCorrectedGapMax, SweepCorrectedGapMin) compose SweepCorrectedGapRange as a scalar witness in the self-portrait." ;
     effortless-ntwf:domainQuestion "Is CorrectedGap (= WeightedStratumGapSum) genuinely invariant under re-stratification — or does it move when the allocation shifts? If it is invariant, it deserves to be called the allocation-free signal: the quantity that survives the operation that creates the paradox." ;
     effortless-ntwf:nextSuggestion "loop-35: extend AllocationSweep to all four distortion types and add SweepStudySummary one-row-per-study aggregation + UI sweep slider" ;
-    effortless-ntwf:traditionId "tradition-historical" .
+    effortless-ntwf:traditionId "tradition-historical" ;
+    effortless-ntwf:commitHash "5a14dcb9e84aaf645e19965933246fdc0cb76e34" ;
+    effortless-ntwf:commitDate "2026-06-28" ;
+    effortless-ntwf:commitMessage "Add new metrics and definitions for allocation sweep analysis" ;
+    effortless-ntwf:gitTag "sp-loop-milestone-06-loops-34-57" .
 
 effortless-ntwf:loop-35 a effortless-ntwf:Loops ;
     effortless-ntwf:loopId "loop-35" ;
@@ -11073,7 +11217,11 @@ effortless-ntwf:loop-35 a effortless-ntwf:Loops ;
     effortless-ntwf:status "complete" ;
     effortless-ntwf:domainQuestion "Does the invariant hold for every distortion type? Can we show the pooled gap wandering and CorrectedGap flat in real time?" ;
     effortless-ntwf:nextSuggestion "loop-36: presentation polish — slider labels, original-allocation marker, paradox crossover annotation" ;
-    effortless-ntwf:traditionId "tradition-historical" .
+    effortless-ntwf:traditionId "tradition-historical" ;
+    effortless-ntwf:commitHash "5a14dcb9e84aaf645e19965933246fdc0cb76e34" ;
+    effortless-ntwf:commitDate "2026-06-28" ;
+    effortless-ntwf:commitMessage "Add new metrics and definitions for allocation sweep analysis" ;
+    effortless-ntwf:gitTag "sp-loop-milestone-06-loops-34-57" .
 
 effortless-ntwf:loop-43 a effortless-ntwf:Loops ;
     effortless-ntwf:loopId "loop-43" ;
@@ -11083,7 +11231,11 @@ effortless-ntwf:loop-43 a effortless-ntwf:Loops ;
     effortless-ntwf:domainQuestion "The existing type-C category collapses two epistemically opposite errors: C+ (allocation inflates effect, causing researcher overconfidence) and C- (allocation suppresses effect, causing researcher underconfidence and possible premature treatment abandonment). Can the instrument separate these with distinct labels, invariants, and policy implications?" ;
     effortless-ntwf:mockDataNote "Witnessed from DB: hannan-1994 → C- (DistortionRatio=0.314 — true CABG advantage 8.9pp, pooled shows 2.8pp; underconfidence). titanic-1912 → C+ (DistortionRatio=1.359 — true first-class survival advantage 27.5pp, pooled shows 37.4pp; overconfidence). melanoma-altman-1991 → C+ (DistortionRatio=2.087 — true female survival advantage 8.6pp, pooled shows 18pp). InvariantChecks pass. C+ and C- are mechanically distinguishable by whether DistortionRatio > 1 or DistortionRatio < 1." ;
     effortless-ntwf:nextSuggestion "loop-44: Add SignalPurity = |CorrectedGap| / (|CorrectedGap| + AllocationDistortion). Witness the theorem: AllocationDirection='reversal' → SignalPurity < 0.5. This is the mechanistic account of why reversals happen." ;
-    effortless-ntwf:traditionId "tradition-historical" .
+    effortless-ntwf:traditionId "tradition-historical" ;
+    effortless-ntwf:commitHash "5a14dcb9e84aaf645e19965933246fdc0cb76e34" ;
+    effortless-ntwf:commitDate "2026-06-28" ;
+    effortless-ntwf:commitMessage "Add new metrics and definitions for allocation sweep analysis" ;
+    effortless-ntwf:gitTag "sp-loop-milestone-06-loops-34-57" .
 
 effortless-ntwf:loop-44 a effortless-ntwf:Loops ;
     effortless-ntwf:loopId "loop-44" ;
@@ -11093,7 +11245,11 @@ effortless-ntwf:loop-44 a effortless-ntwf:Loops ;
     effortless-ntwf:domainQuestion "Is there a single threshold separating studies where the pooled conclusion is directionally trustworthy from studies where it is not? The theorem: when SignalPurity < 0.5 (allocation noise exceeds true signal), the pooled direction cannot be trusted. Does the instrument witness this across all real reversal studies?" ;
     effortless-ntwf:mockDataNote "Witnessed from DB: all type-A/B studies (AllocationDirection=reversal) have SignalPurity < 0.5 — the confound is doing more than half the work. All type-C and D studies have SignalPurity >= 0.5 except melanoma-altman-1991 (C+, ~0.479) — the known exception where amplification pushes AllocationDistortion > |CorrectedGap| without a sign flip because amplification adds to rather than subtracts from the signal. inv-signal-purity-sign-flip passes across all reversal studies. AvgSignalPurity across real studies ≈ 0.38 — the average real study in this validation set is allocation-noise-dominated. This is the first quantitative claim in this instrument that could not be derived from the standard Simpson's Paradox literature: the confound is generating more apparent signal than the treatment itself across the corpus." ;
     effortless-ntwf:nextSuggestion "The five-cell taxonomy (A, B, C+, C-, D) with SignalPurity as a continuous severity axis is now complete. Next question: does SignalPurity correlate with domain, sample size, or causal role? Add ByDomain breakdown to test whether the confound mechanism is domain-specific." ;
-    effortless-ntwf:traditionId "tradition-dag" .
+    effortless-ntwf:traditionId "tradition-dag" ;
+    effortless-ntwf:commitHash "5a14dcb9e84aaf645e19965933246fdc0cb76e34" ;
+    effortless-ntwf:commitDate "2026-06-28" ;
+    effortless-ntwf:commitMessage "Add new metrics and definitions for allocation sweep analysis" ;
+    effortless-ntwf:gitTag "sp-loop-milestone-06-loops-34-57" .
 
 effortless-ntwf:loop-45 a effortless-ntwf:Loops ;
     effortless-ntwf:loopId "loop-45" ;
@@ -11103,7 +11259,11 @@ effortless-ntwf:loop-45 a effortless-ntwf:Loops ;
     effortless-ntwf:domainQuestion "How many studies are C+ vs C- — i.e. how many have allocation that amplifies vs attenuates the pooled signal without reversing it?" ;
     effortless-ntwf:mockDataNote "Witnessed from DB: CAmplificationCount=2 (titanic-1912 C+ DistortionRatio=1.359, melanoma-altman-1991 C+ DistortionRatio=2.087), CCompressionCount=2 (hannan-1994 C- DistortionRatio=0.314, plus one synthetic). TypeCPlusCount and TypeCMinusCount verified in vw_model_summary. ModelSummary DistortionTaxonomyCoverage now reads: A:5 B:4 C+:2 C-:2 D:3. DistortionOnlyCount=4 (C+ + C-)." ;
     effortless-ntwf:nextSuggestion "loop-46: Rulespeak regen — update human-readable narrative with five-type taxonomy and InstrumentScore" ;
-    effortless-ntwf:traditionId "tradition-historical" .
+    effortless-ntwf:traditionId "tradition-historical" ;
+    effortless-ntwf:commitHash "5a14dcb9e84aaf645e19965933246fdc0cb76e34" ;
+    effortless-ntwf:commitDate "2026-06-28" ;
+    effortless-ntwf:commitMessage "Add new metrics and definitions for allocation sweep analysis" ;
+    effortless-ntwf:gitTag "sp-loop-milestone-06-loops-34-57" .
 
 effortless-ntwf:loop-46 a effortless-ntwf:Loops ;
     effortless-ntwf:loopId "loop-46" ;
@@ -11113,7 +11273,11 @@ effortless-ntwf:loop-46 a effortless-ntwf:Loops ;
     effortless-ntwf:domainQuestion "Does the rulespeak narrative accurately describe the five-type taxonomy (A, B, C+, C-, D) and the InstrumentScore screening formula?" ;
     effortless-ntwf:mockDataNote "Rulespeak narrative regenerated. Five-type taxonomy (A/B/C+/C-/D), SignalPurity theorem, AllocationDirection, InstrumentScore, ScreeningTier, and ScreeningVerdict all appear in the narrative. Loop table updated: loops 36-46 all complete. All 17 invariants pass. AvgSignalPurity across corpus ≈ 0.533." ;
     effortless-ntwf:nextSuggestion "Scale path: ingest additional published studies (target 50+) to test whether SignalPurity correlates with domain, causal role, or sample size at statistical significance." ;
-    effortless-ntwf:traditionId "tradition-historical" .
+    effortless-ntwf:traditionId "tradition-historical" ;
+    effortless-ntwf:commitHash "5a14dcb9e84aaf645e19965933246fdc0cb76e34" ;
+    effortless-ntwf:commitDate "2026-06-28" ;
+    effortless-ntwf:commitMessage "Add new metrics and definitions for allocation sweep analysis" ;
+    effortless-ntwf:gitTag "sp-loop-milestone-06-loops-34-57" .
 
 effortless-ntwf:loop-47 a effortless-ntwf:Loops ;
     effortless-ntwf:loopId "loop-47" ;
@@ -11122,7 +11286,11 @@ effortless-ntwf:loop-47 a effortless-ntwf:Loops ;
     effortless-ntwf:newConcept "PublicationYear (integer), Domain (medicine|epidemiology|social-science|education|legal|sports|economics|synthetic), IsSynthetic (boolean) on Studies; RealStudyCount, MedicineStudyCount, EpidemiologyStudyCount, OtherDomainStudyCount, DomainDiversityNote on ModelSummary" ;
     effortless-ntwf:domainQuestion "Does the instrument know enough about each study to stratify SignalPurity and DistortionType by domain? Without Domain and IsSynthetic, any cross-domain claim is uncomputable from the DAG. Adding these fields makes domain-stratified analysis a first-class DAG query rather than a manual grouping." ;
     effortless-ntwf:mockDataNote "16 studies populated: medicine=3 (kidney-1986, hannan-1994, melanoma-altman-1991), epidemiology=6 (berkeley-1973→social-science actually; reintjes-2000, appleton-1996, phe-covid-2021, birth-weight-paradox, coffee-tverdal-2020), social-science=2 (berkeley-1973, titanic-1912), legal=1 (radelet-1981), sports=1 (jeter-justice-1997), education=1 (sat-wainer-1986), synthetic=3. DomainDiversityNote: medicine:3 epidemiology:5 other:5 (13 real studies)." ;
-    effortless-ntwf:nextSuggestion "loop-48: AvgSignalPurityReversal vs AvgSignalPurityNonReversal — witness the SignalPurity theorem quantitatively as a ModelSummary gap field" .
+    effortless-ntwf:nextSuggestion "loop-48: AvgSignalPurityReversal vs AvgSignalPurityNonReversal — witness the SignalPurity theorem quantitatively as a ModelSummary gap field" ;
+    effortless-ntwf:commitHash "5a14dcb9e84aaf645e19965933246fdc0cb76e34" ;
+    effortless-ntwf:commitDate "2026-06-28" ;
+    effortless-ntwf:commitMessage "Add new metrics and definitions for allocation sweep analysis" ;
+    effortless-ntwf:gitTag "sp-loop-milestone-06-loops-34-57" .
 
 effortless-ntwf:loop-48 a effortless-ntwf:Loops ;
     effortless-ntwf:loopId "loop-48" ;
@@ -11131,7 +11299,11 @@ effortless-ntwf:loop-48 a effortless-ntwf:Loops ;
     effortless-ntwf:newConcept "AvgSignalPurityReversal (avg over AllocationDirection=reversal studies), AvgSignalPurityNonReversal (avg over non-reversal), SignalPurityGap (difference — separation power of the 0.5 threshold)" ;
     effortless-ntwf:domainQuestion "The SignalPurity theorem (loop-44) says SignalPurity < 0.5 → reversal. But how large is the gap between reversal and non-reversal populations in practice? A large gap means the threshold is a good discriminator; a small gap means it's a narrow margin. This witnesses the theorem's practical diagnostic power, not just its algebraic necessity." ;
     effortless-ntwf:mockDataNote "Witnessed from DB: AvgSignalPurityReversal ≈ 0.35 (9 reversal studies), AvgSignalPurityNonReversal ≈ 0.70 (7 non-reversal studies), SignalPurityGap ≈ 0.35. The separation is substantial — the threshold at 0.5 sits well within the gap, not near either mean. melanoma-altman-1991 (C+, purity=0.479) is the known exception within non-reversal; it lies below 0.5 but above 0.45." ;
-    effortless-ntwf:nextSuggestion "loop-49: Ingestion protocol — define the five-input adapter contract as a first-class rulebook entity enabling systematic study acquisition" .
+    effortless-ntwf:nextSuggestion "loop-49: Ingestion protocol — define the five-input adapter contract as a first-class rulebook entity enabling systematic study acquisition" ;
+    effortless-ntwf:commitHash "5a14dcb9e84aaf645e19965933246fdc0cb76e34" ;
+    effortless-ntwf:commitDate "2026-06-28" ;
+    effortless-ntwf:commitMessage "Add new metrics and definitions for allocation sweep analysis" ;
+    effortless-ntwf:gitTag "sp-loop-milestone-06-loops-34-57" .
 
 effortless-ntwf:loop-49 a effortless-ntwf:Loops ;
     effortless-ntwf:loopId "loop-49" ;
@@ -11141,7 +11313,11 @@ effortless-ntwf:loop-49 a effortless-ntwf:Loops ;
     effortless-ntwf:domainQuestion "The instrument can classify any real published 2xK study with a named confounder. But the acquisition bottleneck is human: adding a study takes ~10 minutes of encoding work. What is the minimal formal contract that defines a valid new study entry — and can that contract be expressed as a rulebook table so that any LLM or researcher can mechanically check whether a candidate study qualifies?" ;
     effortless-ntwf:mockDataNote "Witnessed from DB: IngestionProtocol=17 contract items (5 required inputs + 4 structural + 3 inclusion + 2 exclusion + 3 adapter-metadata). CorpusCellCount=80, ValidCellCount=80, AllCellsValid=TRUE. StructuralCompliantCount=16/16 studies. RealFullyCompliantCount=13/13 (3 synthetic studies exempt). IngestionContractPasses=TRUE. inv-ingestion-contract PASS. Mechanically checkable by any LLM against IngestionProtocol rows before encoding a new study." ;
     effortless-ntwf:nextSuggestion "loop-51: Corpus expansion — add 20+ real published studies across under-represented domains and re-examine DomainDiversityNote" ;
-    effortless-ntwf:traditionId "tradition-epidemiology" .
+    effortless-ntwf:traditionId "tradition-epidemiology" ;
+    effortless-ntwf:commitHash "5a14dcb9e84aaf645e19965933246fdc0cb76e34" ;
+    effortless-ntwf:commitDate "2026-06-28" ;
+    effortless-ntwf:commitMessage "Add new metrics and definitions for allocation sweep analysis" ;
+    effortless-ntwf:gitTag "sp-loop-milestone-06-loops-34-57" .
 
 effortless-ntwf:loop-50 a effortless-ntwf:Loops ;
     effortless-ntwf:loopId "loop-50" ;
@@ -11150,7 +11326,11 @@ effortless-ntwf:loop-50 a effortless-ntwf:Loops ;
     effortless-ntwf:newConcept "SyntheticPhase table with controlled parameter coordinates; PhaseDiagram view showing which (AllocationBias, StratumGap, StratumFraction) point produces which DistortionType — a mathematical result independent of empirical data" ;
     effortless-ntwf:domainQuestion "The five distortion types (A/B/C+/C-/D) emerge from the interaction of three upstream parameters. Can the instrument map the exact geometric boundaries — where does type A end and type B begin? Where does C+ transition to D? This is a mathematical question with a definitive answer derivable entirely from the DAG formulas, requiring no new empirical data. It proves the taxonomy is complete and exhaustive." ;
     effortless-ntwf:mockDataNote "Witnessed from DB: 240 grid points. PhaseTaxonomyCoverage A:76 B:62 C+:26 C-:12 D:64. AllFiveTypesPresent=TRUE. inv-phase-diagram-five-types PASS. Hard stratum (rate≈0.45) + easy stratum (rate≈0.75) template; allocation bias applied in hard stratum only." ;
-    effortless-ntwf:nextSuggestion "loop-51: CandidateStudyCatalog — curated import backlog with status, domain, and expected distortion type" .
+    effortless-ntwf:nextSuggestion "loop-51: CandidateStudyCatalog — curated import backlog with status, domain, and expected distortion type" ;
+    effortless-ntwf:commitHash "5a14dcb9e84aaf645e19965933246fdc0cb76e34" ;
+    effortless-ntwf:commitDate "2026-06-28" ;
+    effortless-ntwf:commitMessage "Add new metrics and definitions for allocation sweep analysis" ;
+    effortless-ntwf:gitTag "sp-loop-milestone-06-loops-34-57" .
 
 effortless-ntwf:loop-51 a effortless-ntwf:Loops ;
     effortless-ntwf:loopId "loop-51" ;
@@ -11160,7 +11340,11 @@ effortless-ntwf:loop-51 a effortless-ntwf:Loops ;
     effortless-ntwf:domainQuestion "Before bulk import, which published studies qualify, what domain do they fill, and what distortion type do we expect once encoded? Can this backlog be first-class data so an import session is mechanical rather than ad hoc?" ;
     effortless-ntwf:mockDataNote "Witnessed: 39 catalog rows — 13 imported (linked to corpus), 24 candidates ready to encode, 2 blocked duplicates. High-priority candidates include Rogers-Nicewander 1988, Open University 1975, folic acid NTD." ;
     effortless-ntwf:nextSuggestion "loop-52: CorpusCatalogSummary + DomainExpansionTargets — readiness metrics and per-domain gaps" ;
-    effortless-ntwf:traditionId "tradition-epidemiology" .
+    effortless-ntwf:traditionId "tradition-epidemiology" ;
+    effortless-ntwf:commitHash "5a14dcb9e84aaf645e19965933246fdc0cb76e34" ;
+    effortless-ntwf:commitDate "2026-06-28" ;
+    effortless-ntwf:commitMessage "Add new metrics and definitions for allocation sweep analysis" ;
+    effortless-ntwf:gitTag "sp-loop-milestone-06-loops-34-57" .
 
 effortless-ntwf:loop-52 a effortless-ntwf:Loops ;
     effortless-ntwf:loopId "loop-52" ;
@@ -11170,7 +11354,11 @@ effortless-ntwf:loop-52 a effortless-ntwf:Loops ;
     effortless-ntwf:domainQuestion "Is the backlog large enough for a bulk import session, and which domains remain under-represented after queued candidates land?" ;
     effortless-ntwf:mockDataNote "Witnessed: ImportSessionReady=TRUE (24 candidates, 24 encode-ready). Domain gaps: economics 0→3 after queue, sports 1→5, education 1→4." ;
     effortless-ntwf:nextSuggestion "loop-53: StudyImportTemplate — mechanical six-step encoding checklist per study" ;
-    effortless-ntwf:traditionId "tradition-epidemiology" .
+    effortless-ntwf:traditionId "tradition-epidemiology" ;
+    effortless-ntwf:commitHash "5a14dcb9e84aaf645e19965933246fdc0cb76e34" ;
+    effortless-ntwf:commitDate "2026-06-28" ;
+    effortless-ntwf:commitMessage "Add new metrics and definitions for allocation sweep analysis" ;
+    effortless-ntwf:gitTag "sp-loop-milestone-06-loops-34-57" .
 
 effortless-ntwf:loop-53 a effortless-ntwf:Loops ;
     effortless-ntwf:loopId "loop-53" ;
@@ -11180,7 +11368,11 @@ effortless-ntwf:loop-53 a effortless-ntwf:Loops ;
     effortless-ntwf:domainQuestion "What exact sequence of rulebook rows must an import session create so IngestionProtocol and TreatmentRankings fire automatically?" ;
     effortless-ntwf:mockDataNote "Witnessed: 6 template steps from Studies through CandidateStudyCatalog status flip. Pairs with loop-49 IngestionProtocol 17-item contract." ;
     effortless-ntwf:nextSuggestion "loop-54: Import Backlog UI — catalog table, domain gaps, encoding checklist" ;
-    effortless-ntwf:traditionId "tradition-dag" .
+    effortless-ntwf:traditionId "tradition-dag" ;
+    effortless-ntwf:commitHash "5a14dcb9e84aaf645e19965933246fdc0cb76e34" ;
+    effortless-ntwf:commitDate "2026-06-28" ;
+    effortless-ntwf:commitMessage "Add new metrics and definitions for allocation sweep analysis" ;
+    effortless-ntwf:gitTag "sp-loop-milestone-06-loops-34-57" .
 
 effortless-ntwf:loop-54 a effortless-ntwf:Loops ;
     effortless-ntwf:loopId "loop-54" ;
@@ -11190,7 +11382,11 @@ effortless-ntwf:loop-54 a effortless-ntwf:Loops ;
     effortless-ntwf:domainQuestion "Can a practitioner see the full import backlog, domain gaps, and encoding steps in one screen before starting a bulk import session?" ;
     effortless-ntwf:mockDataNote "Witnessed: /catalog UI shows readiness banner, domain gap table, 24-row candidate backlog sorted by priority, 6-step import template." ;
     effortless-ntwf:nextSuggestion "loop-55: Bulk corpus import — encode high-priority candidates from CandidateStudyCatalog" ;
-    effortless-ntwf:traditionId "tradition-historical" .
+    effortless-ntwf:traditionId "tradition-historical" ;
+    effortless-ntwf:commitHash "5a14dcb9e84aaf645e19965933246fdc0cb76e34" ;
+    effortless-ntwf:commitDate "2026-06-28" ;
+    effortless-ntwf:commitMessage "Add new metrics and definitions for allocation sweep analysis" ;
+    effortless-ntwf:gitTag "sp-loop-milestone-06-loops-34-57" .
 
 effortless-ntwf:loop-55 a effortless-ntwf:Loops ;
     effortless-ntwf:loopId "loop-55" ;
@@ -11200,7 +11396,11 @@ effortless-ntwf:loop-55 a effortless-ntwf:Loops ;
     effortless-ntwf:domainQuestion "Can the import backlog be drained in one session — every encode-ready candidate becomes a full Studies subgraph with TreatmentRankings firing automatically?" ;
     effortless-ntwf:mockDataNote "Witnessed: 24 studies imported in one session; corpus now 40 studies (37 real, 3 synthetic). Catalog: 37 imported, 0 candidates, 2 blocked. TreatmentRankings=40. DistortionType mix: A=6 B=6 C+=4 C-=3 D=21. IngestionContractPasses=TRUE. TypePredictionMatch audit deferred to loop-56." ;
     effortless-ntwf:nextSuggestion "loop-56: corpus-wide AllocationSweep for all 40 studies" ;
-    effortless-ntwf:traditionId "tradition-epidemiology" .
+    effortless-ntwf:traditionId "tradition-epidemiology" ;
+    effortless-ntwf:commitHash "5a14dcb9e84aaf645e19965933246fdc0cb76e34" ;
+    effortless-ntwf:commitDate "2026-06-28" ;
+    effortless-ntwf:commitMessage "Add new metrics and definitions for allocation sweep analysis" ;
+    effortless-ntwf:gitTag "sp-loop-milestone-06-loops-34-57" .
 
 effortless-ntwf:loop-56 a effortless-ntwf:Loops ;
     effortless-ntwf:loopId "loop-56" ;
@@ -11210,7 +11410,11 @@ effortless-ntwf:loop-56 a effortless-ntwf:Loops ;
     effortless-ntwf:domainQuestion "Does CorrectedGap invariance hold for every study in the corpus — not just the four distortion-type witnesses from loop-35?" ;
     effortless-ntwf:mockDataNote "Witnessed: 40 SweepStudyConfig rows, 400 AllocationSweep rows, 40 SweepStudySummary rows. inv-corrected-gap-invariant 40/40 PASS. LOOKUP SQL in 02b-customize-functions.sql." ;
     effortless-ntwf:nextSuggestion "loop-57: second import wave + pattern audit" ;
-    effortless-ntwf:traditionId "tradition-dag" .
+    effortless-ntwf:traditionId "tradition-dag" ;
+    effortless-ntwf:commitHash "5a14dcb9e84aaf645e19965933246fdc0cb76e34" ;
+    effortless-ntwf:commitDate "2026-06-28" ;
+    effortless-ntwf:commitMessage "Add new metrics and definitions for allocation sweep analysis" ;
+    effortless-ntwf:gitTag "sp-loop-milestone-06-loops-34-57" .
 
 effortless-ntwf:loop-57 a effortless-ntwf:Loops ;
     effortless-ntwf:loopId "loop-57" ;
@@ -11220,7 +11424,11 @@ effortless-ntwf:loop-57 a effortless-ntwf:Loops ;
     effortless-ntwf:domainQuestion "Does expanding the corpus surface new distortion-type patterns, TypePrediction mismatches, or sweep invariant edge cases?" ;
     effortless-ntwf:mockDataNote "Witnessed: 6 studies imported; corpus now 46 studies." ;
     effortless-ntwf:nextSuggestion "loop-58: wave-3 corpus expansion (50 candidates)" ;
-    effortless-ntwf:traditionId "tradition-epidemiology" .
+    effortless-ntwf:traditionId "tradition-epidemiology" ;
+    effortless-ntwf:commitHash "5a14dcb9e84aaf645e19965933246fdc0cb76e34" ;
+    effortless-ntwf:commitDate "2026-06-28" ;
+    effortless-ntwf:commitMessage "Add new metrics and definitions for allocation sweep analysis" ;
+    effortless-ntwf:gitTag "sp-loop-milestone-06-loops-34-57" .
 
 effortless-ntwf:loop-58 a effortless-ntwf:Loops ;
     effortless-ntwf:loopId "loop-58" ;
@@ -11230,7 +11438,11 @@ effortless-ntwf:loop-58 a effortless-ntwf:Loops ;
     effortless-ntwf:domainQuestion "Does expanding into underrepresented structures (colliders, cross-design, composition-over-time, ecological aggregation, non-collapsibility) surface new distortion patterns or instrument blind spots?" ;
     effortless-ntwf:mockDataNote "Witnessed: 50 catalog rows added, 17 studies imported; corpus now 63 studies." ;
     effortless-ntwf:nextSuggestion "loop-59: drain REAL? catalog backlog" ;
-    effortless-ntwf:traditionId "tradition-epidemiology" .
+    effortless-ntwf:traditionId "tradition-epidemiology" ;
+    effortless-ntwf:commitHash "4172aaebbb6e52b0d89b890dff98c26ff77f8c4b" ;
+    effortless-ntwf:commitDate "2026-06-29" ;
+    effortless-ntwf:commitMessage "Revise README for Rulebook Examples" ;
+    effortless-ntwf:gitTag "sp-loop-milestone-07-loops-58-60" .
 
 effortless-ntwf:loop-59 a effortless-ntwf:Loops ;
     effortless-ntwf:loopId "loop-59" ;
@@ -11240,7 +11452,11 @@ effortless-ntwf:loop-59 a effortless-ntwf:Loops ;
     effortless-ntwf:domainQuestion "Does draining the REAL? backlog increase domain/mechanism coverage without breaking invariant harness — and how often does ExpectedDistortionType match observed DistortionType?" ;
     effortless-ntwf:mockDataNote "Witnessed: 33 studies imported from REAL? backlog; corpus now 96 studies." ;
     effortless-ntwf:nextSuggestion "loop-60: TypePredictionMatch audit + ModelSummary refresh across full 96-study corpus" ;
-    effortless-ntwf:traditionId "tradition-epidemiology" .
+    effortless-ntwf:traditionId "tradition-epidemiology" ;
+    effortless-ntwf:commitHash "4172aaebbb6e52b0d89b890dff98c26ff77f8c4b" ;
+    effortless-ntwf:commitDate "2026-06-29" ;
+    effortless-ntwf:commitMessage "Revise README for Rulebook Examples" ;
+    effortless-ntwf:gitTag "sp-loop-milestone-07-loops-58-60" .
 
 effortless-ntwf:loop-60 a effortless-ntwf:Loops ;
     effortless-ntwf:loopId "loop-60" ;
@@ -11250,7 +11466,11 @@ effortless-ntwf:loop-60 a effortless-ntwf:Loops ;
     effortless-ntwf:domainQuestion "Can the instrument shed legacy presentation and v2 meta fields without losing load-bearing taxonomy coordinates (DistortionType, SignalPurity, AllocationDirection)?" ;
     effortless-ntwf:mockDataNote "Witnessed post-build: IsReversal equals IsSignFlip on all studies. ReversalCount counts sign-flips. Type B captures partial stratum disagreement without DefinitionDelta. ScreeningTier retained (derived from DistortionType)." ;
     effortless-ntwf:nextSuggestion "loop-61: DiscoveryHypotheses + DiscoveryFindings — first empirical discovery loop on the pruned instrument." ;
-    effortless-ntwf:traditionId "tradition-dag" .
+    effortless-ntwf:traditionId "tradition-dag" ;
+    effortless-ntwf:commitHash "4172aaebbb6e52b0d89b890dff98c26ff77f8c4b" ;
+    effortless-ntwf:commitDate "2026-06-29" ;
+    effortless-ntwf:commitMessage "Revise README for Rulebook Examples" ;
+    effortless-ntwf:gitTag "sp-loop-milestone-07-loops-58-60" .
 
 effortless-ntwf:loop-61 a effortless-ntwf:Loops ;
     effortless-ntwf:loopId "loop-61" ;
@@ -11260,7 +11480,11 @@ effortless-ntwf:loop-61 a effortless-ntwf:Loops ;
     effortless-ntwf:domainQuestion "At 96-study corpus scale, do pre-registered empirical hypotheses about allocation fragility, signal purity, domain patterns, and effect-size stability witness in the DAG?" ;
     effortless-ntwf:mockDataNote "Witnessed post-build: 45/64 Type-D studies (70.3%) have LatentFlipPotential; SignFlipSignalPurityMax=0.483; stable Type-D avg PooledGap 0.102 vs latent 0.022; economics 0/8 sign-flips; epidemiology avg distortion 0.050 vs education 0.004." ;
     effortless-ntwf:nextSuggestion "loop-62: Discovery UI screen + fix CorpusCatalogSummary priority calc + CandidateStudyCatalog observed_distortion_type for type-prediction audit" ;
-    effortless-ntwf:traditionId "tradition-epidemiology" .
+    effortless-ntwf:traditionId "tradition-epidemiology" ;
+    effortless-ntwf:commitHash "7b3938e88201fb6c93b0fd0a11c235fea4a335c1" ;
+    effortless-ntwf:commitDate "2026-06-29" ;
+    effortless-ntwf:commitMessage "Enhance database schema and functions for DiscoveryHypotheses and DiscoveryFindings" ;
+    effortless-ntwf:gitTag "sp-loop-milestone-08-loop-61" .
 
 # === Individuals: Methodology ===
 

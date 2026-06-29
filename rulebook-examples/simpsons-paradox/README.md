@@ -161,23 +161,19 @@ Catalog `ExpectedDistortionType` is a **pre-encoding guess**. Observed `Distorti
 
 ---
 
-## Build discipline
+## Build & run
+
+**Prerequisites:** [Effortless CLI](https://effortlessapi.com), local Postgres, Node.js.
+
+Transpilers are registered in `effortless.json` and run on hosted Effortless infrastructure (Control Plane). No local transpiler bus is required.
 
 ```bash
-git status                               # always check first
-cd effortless-postgres && ./init-db.sh   # drop and recreate from rulebook
+git status                               # always check first — rulebook JSON is sacred
+effortless build                         # hosted transpilers → postgres/, rulespeak/, owl/
+cd effortless-postgres && ./init-db.sh   # drop and recreate local DB from generated SQL
+./start.sh                               # explorer UI on :5173 (API on :3001)
 ```
 
-No migrations. Edit rulebook → build → DB reflects it.
+No migrations. Edit rulebook → `effortless build` → `./init-db.sh` → DB reflects it.
 
 Bulk import scripts live under `scripts/` (`bulk-import-candidates.py`, `import-wave3-candidates.py`, `import-wave4-real33.py`, `generate-allocation-sweep-all.py`). Run allocation-sweep regeneration after any import that adds studies.
-
----
-
-## Local transpiler bus (`localhost:4242`)
-
-> **All 13 local transpilers live on `localhost:4242`.** Once you run
-> `./start.sh` from the repo root, the ssotme-proxy exposes every repo-local
-> transpiler — `rulebook-to-postgres`, `rulebook-to-python`, `rulebook-to-golang`,
-> `rulebook-to-cobol`, `rulebook-to-owl`, and more — as first-class `ssotme://`
-> routes any `effortless build` can call.

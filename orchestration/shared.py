@@ -38,12 +38,29 @@ def get_default_database_url():
     return f"postgresql://postgres@localhost:5432/{db_name}"
 
 
+def find_domain_root(domain, project_root=None):
+    """Return the directory containing a domain, searching rulebook-examples/ then toy-rulebooks/.
+
+    Fails loudly if the domain is not found in either location.
+    """
+    if project_root is None:
+        project_root = Path(__file__).parent.parent
+    for parent in ("rulebook-examples", "toy-rulebooks"):
+        candidate = project_root / parent / domain
+        if candidate.is_dir():
+            return candidate
+    raise FileNotFoundError(
+        f"Domain '{domain}' not found under rulebook-examples/ or toy-rulebooks/. "
+        f"(ERB_DOMAIN={domain!r})"
+    )
+
+
 def get_rulebook_path():
     """Get the path to the rulebook JSON for the active domain.
 
     Priority:
       1. ERB_RULEBOOK_PATH env var (set by ssotme-proxy for project-scoped runs)
-      2. ERB_DOMAIN → rulebook-examples/<domain>/effortless-rulebook/<domain>-rulebook.json
+      2. ERB_DOMAIN → (rulebook-examples or toy-rulebooks)/<domain>/effortless-rulebook/<domain>-rulebook.json
 
     Fails loudly if ERB_RULEBOOK_PATH points at a directory or doesn't end in
     -rulebook.json — callers MUST pass an exact file path.
@@ -58,8 +75,8 @@ def get_rulebook_path():
             )
         return p
     domain = get_active_domain()
-    project_root = Path(__file__).parent.parent
-    return project_root / "rulebook-examples" / domain / "effortless-rulebook" / f"{domain}-rulebook.json"
+    domain_root = find_domain_root(domain)
+    return domain_root / "effortless-rulebook" / f"{domain}-rulebook.json"
 
 
 def load_rulebook():
@@ -94,7 +111,8 @@ def get_active_project_substrates(domain=None):
     if domain is None:
         domain = get_active_domain()
     project_root = Path(__file__).parent.parent
-    ej = project_root / "rulebook-examples" / domain / "effortless.json"
+    domain_root = find_domain_root(domain, project_root)
+    ej = domain_root / "effortless.json"
     if not ej.exists():
         raise FileNotFoundError(
             f"effortless.json not found at {ej}. "

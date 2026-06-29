@@ -13,6 +13,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
 SUBSTRATES_DIR="$PROJECT_ROOT/execution-substrates"
 RULEBOOK_EXAMPLES_DIR="$PROJECT_ROOT/rulebook-examples"
+TOY_RULEBOOKS_DIR="$PROJECT_ROOT/toy-rulebooks"
 
 # Active domain for this orchestrate.sh session. Per CLAUDE.md doctrine
 # (`active-domain.txt` is the CLI + conversation scratchpad), the SSoT for
@@ -127,8 +128,8 @@ set_active_domain() {
     # CLI tool that reads the file) picks up the same domain.
     printf '%s\n' "$ACTIVE_DOMAIN" > "$ACTIVE_DOMAIN_FILE"
     # Bump the domain folder's mtime so "recently opened" sort reflects this.
-    local _dir="$RULEBOOK_EXAMPLES_DIR/$ACTIVE_DOMAIN"
-    [ -d "$_dir" ] && touch -- "$_dir"
+    local _dir
+    _dir=$(find_domain_dir "$ACTIVE_DOMAIN" 2>/dev/null) && touch -- "$_dir"
 }
 
 get_mtime() {
@@ -153,15 +154,32 @@ format_time_since() {
     fi
 }
 
+find_domain_dir() {
+    # Search rulebook-examples/ first, then toy-rulebooks/. Fails loudly if not found.
+    local domain="${1:-$(get_active_domain)}"
+    if [ -d "$RULEBOOK_EXAMPLES_DIR/$domain" ]; then
+        echo "$RULEBOOK_EXAMPLES_DIR/$domain"
+    elif [ -d "$TOY_RULEBOOKS_DIR/$domain" ]; then
+        echo "$TOY_RULEBOOKS_DIR/$domain"
+    else
+        echo "FATAL: domain '$domain' not found under rulebook-examples/ or toy-rulebooks/" >&2
+        return 1
+    fi
+}
+
 get_domain_rulebook_path() {
     local domain="${1:-$(get_active_domain)}"
-    echo "$RULEBOOK_EXAMPLES_DIR/$domain/effortless-rulebook/${domain}-rulebook.json"
+    local domain_dir
+    domain_dir=$(find_domain_dir "$domain") || return 1
+    echo "$domain_dir/effortless-rulebook/${domain}-rulebook.json"
 }
 
 get_project_name() {
     local domain
     domain=$(get_active_domain)
-    local effortless_json="$RULEBOOK_EXAMPLES_DIR/$domain/effortless.json"
+    local domain_dir
+    domain_dir=$(find_domain_dir "$domain") || { echo "$domain"; return; }
+    local effortless_json="$domain_dir/effortless.json"
     if [ -f "$effortless_json" ]; then
         python3 -c "
 import json
@@ -175,7 +193,7 @@ print(config.get('Name', '$domain'))
 }
 
 list_domains() {
-    for d in "$RULEBOOK_EXAMPLES_DIR"/*/; do
+    for d in "$RULEBOOK_EXAMPLES_DIR"/*/ "$TOY_RULEBOOKS_DIR"/*/; do
         [ -d "$d" ] || continue
         basename "$d"
     done
@@ -227,7 +245,7 @@ get_valid_substrates() {
     # Make sure the active domain has an effortless.json. If not, initialize.
     local _domain _domain_dir
     _domain=$(get_active_domain)
-    _domain_dir="$RULEBOOK_EXAMPLES_DIR/$_domain"
+    _domain_dir=$(find_domain_dir "$_domain")
     if [ ! -f "$_domain_dir/effortless.json" ]; then
         echo "  ${YELLOW}effortless.json missing in $_domain_dir — running 'effortless -init'...${NC}" >&2
         ( cd "$_domain_dir" && effortless -init ) >&2 || {
@@ -298,7 +316,9 @@ print(' '.join(get_active_project_substrates()))
 get_active_effortless_json() {
     local domain
     domain=$(get_active_domain)
-    local path="$RULEBOOK_EXAMPLES_DIR/$domain/effortless.json"
+    local domain_dir
+    domain_dir=$(find_domain_dir "$domain" 2>/dev/null) || { echo ""; return; }
+    local path="$domain_dir/effortless.json"
     [ -f "$path" ] && echo "$path" || echo ""
 }
 
@@ -503,7 +523,8 @@ show_menu() {
     echo -e "${BOLD}${CYAN}║${NC}          ${BOLD}${WHITE}EXECUTION SUBSTRATE ORCHESTRATOR${NC}                  ${BOLD}${CYAN}║${NC}"
     echo -e "${BOLD}${CYAN}╚════════════════════════════════════════════════════════════╝${NC}"
     echo ""
-    local DOMAIN_PATH="$RULEBOOK_EXAMPLES_DIR/$ACTIVE_DOMAIN"
+    local DOMAIN_PATH
+    DOMAIN_PATH=$(find_domain_dir "$ACTIVE_DOMAIN" 2>/dev/null) || DOMAIN_PATH="$RULEBOOK_EXAMPLES_DIR/$ACTIVE_DOMAIN"
     echo -e "  Project:  ${WHITE}$PROJECT_NAME${NC}"
     printf "  Domain:   \033]8;;file://%s\033\\\\%b%s%b\033]8;;\033\\\\  \033[2m%s\033[0m\n" \
         "$DOMAIN_PATH" "$CYAN" "${ACTIVE_DOMAIN}" "$NC" "$DOMAIN_PATH"
@@ -623,7 +644,9 @@ action_select_domain() {
         local _rows=()
         local _d _mt
         while IFS= read -r _d; do
-            _mt=$(get_mtime "$RULEBOOK_EXAMPLES_DIR/$_d")
+            local _ddir
+            _ddir=$(find_domain_dir "$_d" 2>/dev/null) || _ddir="$RULEBOOK_EXAMPLES_DIR/$_d"
+            _mt=$(get_mtime "$_ddir")
             _rows+=("${_d}	${_mt:-0}")
         done < <(list_domains)
 
@@ -869,9 +892,11 @@ action_view_results() {
     echo -e "${BOLD}${GREEN}╚════════════════════════════════════════════════════════════╝${NC}"
     echo ""
     echo -e "${CYAN}Opening HTML report in browser...${NC}"
-    open "$RULEBOOK_EXAMPLES_DIR/$domain/orchestration-report.html" 2>/dev/null || \
-        xdg-open "$RULEBOOK_EXAMPLES_DIR/$domain/orchestration-report.html" 2>/dev/null || \
-        echo -e "  ${DIM}Report: $RULEBOOK_EXAMPLES_DIR/$domain/orchestration-report.html${NC}"
+    local _domain_dir
+    _domain_dir=$(find_domain_dir "$domain" 2>/dev/null) || _domain_dir="$RULEBOOK_EXAMPLES_DIR/$domain"
+    open "$_domain_dir/orchestration-report.html" 2>/dev/null || \
+        xdg-open "$_domain_dir/orchestration-report.html" 2>/dev/null || \
+        echo -e "  ${DIM}Report: $_domain_dir/orchestration-report.html${NC}"
     echo ""
     read -p "Press Enter to continue..."
 }
@@ -1248,7 +1273,9 @@ action_init_postgres() {
     _domain=$(get_active_domain)
     local _db_name="erb_${_domain//-/_}"
     local _db_url="postgresql://postgres@localhost:5432/${_db_name}"
-    local init_script="$RULEBOOK_EXAMPLES_DIR/$_domain/postgres-bootstrap/init-db.sh"
+    local _domain_dir
+    _domain_dir=$(find_domain_dir "$_domain" 2>/dev/null) || _domain_dir="$RULEBOOK_EXAMPLES_DIR/$_domain"
+    local init_script="$_domain_dir/postgres-bootstrap/init-db.sh"
 
     echo ""
     echo -e "${BOLD}${CYAN}Initialize PostgreSQL Database for ${WHITE}${_domain}${NC}"
@@ -1298,7 +1325,8 @@ run_substrates() {
     # generated artifacts (postgres SQL, xlsx workbook, entity-framework dir).
     local _domain
     _domain=$(get_active_domain)
-    export ERB_DOMAIN_DIR="$RULEBOOK_EXAMPLES_DIR/$_domain"
+    export ERB_DOMAIN_DIR
+    ERB_DOMAIN_DIR=$(find_domain_dir "$_domain" 2>/dev/null) || ERB_DOMAIN_DIR="$RULEBOOK_EXAMPLES_DIR/$_domain"
     export ERB_TESTING_DIR="$ERB_DOMAIN_DIR/testing"
     export ERB_RULEBOOK_PATH="$(get_domain_rulebook_path "$_domain")"
     mkdir -p "$ERB_TESTING_DIR"
@@ -1900,20 +1928,19 @@ else
 fi
 echo ""
 echo -e "${CYAN}Results written to:${NC}"
-_active_domain_results=$(get_active_domain)
 if [ -n "$RUN_SINGLE" ]; then
-    echo -e "  ${DIM}•${NC} Test results:  ${WHITE}rulebook-examples/$_active_domain_results/testing/$RUN_SINGLE/test-results.md${NC}"
+    echo -e "  ${DIM}•${NC} Test results:  ${WHITE}$ERB_DOMAIN_DIR/testing/$RUN_SINGLE/test-results.md${NC}"
 else
-    echo -e "  ${DIM}•${NC} Test results:  ${WHITE}rulebook-examples/$_active_domain_results/testing/*/test-results.md${NC}"
+    echo -e "  ${DIM}•${NC} Test results:  ${WHITE}$ERB_DOMAIN_DIR/testing/*/test-results.md${NC}"
     echo -e "  ${DIM}•${NC} Summary:       ${WHITE}orchestration/all-tests-results.md${NC}"
 fi
-echo -e "  ${DIM}•${NC} HTML Report:   ${WHITE}rulebook-examples/$_active_domain_results/orchestration-report.html${NC}"
+echo -e "  ${DIM}•${NC} HTML Report:   ${WHITE}$ERB_DOMAIN_DIR/orchestration-report.html${NC}"
 echo ""
 
 # Open browser (skip in CI mode)
 if ! $CI_MODE; then
     echo -e "${CYAN}Opening HTML report in browser...${NC}"
-    open "$RULEBOOK_EXAMPLES_DIR/$(get_active_domain)/orchestration-report.html"
+    open "$ERB_DOMAIN_DIR/orchestration-report.html"
     echo ""
 fi
 

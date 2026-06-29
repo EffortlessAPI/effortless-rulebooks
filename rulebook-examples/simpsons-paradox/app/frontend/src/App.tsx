@@ -9,6 +9,7 @@ import { AllocationSweepView } from './views/AllocationSweepView';
 import { PhaseDiagramView } from './views/PhaseDiagramView';
 import { ImportCatalogView } from './views/ImportCatalogView';
 import { InstrumentDashboardView } from './views/InstrumentDashboardView';
+import { ConclusionsAdminView } from './views/ConclusionsAdminView';
 
 export function App() {
   return (
@@ -16,6 +17,7 @@ export function App() {
       <Routes>
         <Route path="/" element={<Shell />}>
           <Route index element={<Navigate to="/overview" replace />} />
+          <Route path="conclusions" element={<ConclusionsAdminView />} />
           <Route path="overview" element={<OverviewView />} />
           <Route path="stratum" element={<StratumView />} />
           <Route path="weights" element={<WeightsView />} />

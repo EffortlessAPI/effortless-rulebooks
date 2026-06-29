@@ -28,6 +28,16 @@ RETURNS TEXT AS $$
   SELECT ((SELECT NULLIF(loop_id, '') FROM loops WHERE loop_id = p_loop_id))::text;
 $$ LANGUAGE sql STABLE;
 
+-- calc_loops_commit_short
+-- Field: Loops.CommitShort
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_loops_commit_short(p_loop_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (LEFT(((SELECT NULLIF(commit_hash, '') FROM loops WHERE loop_id = p_loop_id))::text, (7)::integer))::text;
+$$ LANGUAGE sql STABLE;
+
 -- calc_studies_name
 -- Field: Studies.Name
 -- Type: calculated | DataType: string | Returns: TEXT

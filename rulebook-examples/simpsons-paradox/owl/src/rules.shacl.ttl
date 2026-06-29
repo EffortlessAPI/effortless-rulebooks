@@ -326,6 +326,10 @@ effortless-ntwf:ConclusionsShape a sh:NodeShape ;
 # Rule for ResearcherAffiliation - parse error: Unexpected character '[' at position 36
 # Rule for ChallengesResearcherName - parse error: Unexpected character '[' at position 44
 # Rule for WitnessedInLoopTitle - parse error: Unexpected character '[' at position 33
+# Rule for WitnessedInLoopCommitHash - parse error: Unexpected character '[' at position 33
+# Rule for WitnessedInLoopCommitShort - parse error: Unexpected character '[' at position 33
+# Rule for WitnessedInLoopCommitDate - parse error: Unexpected character '[' at position 33
+# Rule for WitnessedInLoopGitTag - parse error: Unexpected character '[' at position 33
 # Rule for InvariantProtectingCount - parse error: unsupported COUNTIFS criteria: FieldRef
 
 # === Shape with rules for CorpusCatalogSummary ===
@@ -977,6 +981,23 @@ effortless-ntwf:LoopsShape a sh:NodeShape ;
     $this a effortless-ntwf:Loops .
     OPTIONAL { $this effortless-ntwf:loopId ?loop_id . }
                 BIND(?loop_id AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Loops_CommitShort" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:commitShort ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:Loops .
+    OPTIONAL { $this effortless-ntwf:commitHash ?commit_hash . }
+                BIND(SUBSTR(STR(?commit_hash), 1, 7) AS ?_result)
             }
         """ ;
     ] .
@@ -2816,4 +2837,4 @@ effortless-ntwf:TreatmentsCardinalityShape a sh:NodeShape ;
     sh:targetClass effortless-ntwf:Treatments ;
     sh:property [ sh:path effortless-ntwf:study ; sh:maxCount 1 ] .
 
-# Generated 135 SHACL rules
+# Generated 136 SHACL rules

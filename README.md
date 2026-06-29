@@ -12,7 +12,7 @@ You write business rules once as a typed grid of named cells — entities, field
 
 The conformance harness runs on every build and produces a pass/fail matrix across all substrates. If they don't agree, the build fails.
 
-This repo contains the orchestration platform and a catalog of ready-to-run demo domains — from a three-table Hello World to a 55-table multi-jurisdiction rules engine — all driven by the same hub-and-spoke pattern.
+This repo contains the orchestration platform and two catalogs: **[toy-rulebooks/](toy-rulebooks/)** (minimal domains for demonstrating substrate breadth) and **[rulebook-examples/](rulebook-examples/)** (full ontologies showing domain depth). Because this repo is also a live demonstration environment, some domains may show partially-completed loop steps at any given point. A full `effortless build` on any domain resets it to its defined state.
 
 → [What does "non-linguistic" actually mean?](docs/what-is-non-linguistic.md) · [GitHub](https://github.com/effortlessapi/effortless-rulebooks)
 
@@ -30,7 +30,9 @@ These domains were each built in roughly a weekend — 10–15 hours of actual w
 | [traffic-ticket-contest](rulebook-examples/traffic-ticket-contest/) | 55 | A traffic ticket everyone understands, modeled as four state machines and a multi-jurisdiction rules engine — 75 features, 57 business rules, 194 conformance tests, 980 catalog fields. An intentionally ordinary domain taken to full production depth. |
 | [intelligence-taxonomy](rulebook-examples/intelligence-taxonomy/) | 3 | A catalog of intelligences — biological, digital, collective — classified by what they can do, not what they are made of. Intentionally minimal: three tables, the point is the classification logic, not the table count. |
 
-→ [Full domain catalog](docs/derived/domains.md) · [acme-llc](rulebook-examples/acme-llc/) (breadth witness — same six answers from 17 substrates) · [effortless-banking](rulebook-examples/effortless-banking/) (depth witness — full loan-origination lifecycle)
+→ [Full domain examples](rulebook-examples/) · [Toy demos](toy-rulebooks/) · [Generated domain catalog](docs/derived/domains.md)
+
+**Two directories, by construction.** [`toy-rulebooks/`](toy-rulebooks/) contains intentionally minimal domains — [acme-llc](toy-rulebooks/acme-llc/) is the canonical one, three tables, run through all 17 substrates — whose job is to open the door by showing the *substrate matrix*. [`rulebook-examples/`](rulebook-examples/) contains the full ontologies above, showing how far the primitives actually reach. The toys demonstrate breadth of platform. The examples demonstrate depth of domain.
 
 ---
 
@@ -127,9 +129,9 @@ The shape of the whole thing: a semantic build loop where business meaning lives
 
 The top five domains above are the new additions that show what a weekend of focused work produces. The broader catalog also includes the platform witnesses:
 
-- **[acme-llc](rulebook-examples/acme-llc/)** — the substrate breadth witness: a deliberately simple domain (six calculated fields) run through all 17 substrates, all conformant. Start here if you want to see the substrate matrix.
+- **[acme-llc](toy-rulebooks/acme-llc/)** — the substrate breadth witness: a deliberately simple domain (six calculated fields) run through all 17 substrates, all conformant. Start here if you want to see the substrate matrix.
 - **[effortless-banking](rulebook-examples/effortless-banking/)** — the domain depth witness: a full loan-origination lifecycle with an underwriting state machine, time-based covenant monitoring, risk-grade migration, segregation-of-duties checks, and branching approval logic.
-- **[A Tale of Two Claudes](rulebook-examples/naked-claude-vs-effortless-claude/TALE_OF_TWO_CLAUDES.md)** — a direct comparison of LLM behavior with and without ERB grounding on the same question.
+- **[A Tale of Two Claudes](toy-rulebooks/naked-claude-vs-effortless-claude/TALE_OF_TWO_CLAUDES.md)** — a direct comparison of LLM behavior with and without ERB grounding on the same question.
 
 → [Full domain catalog (generated)](docs/derived/domains.md)
 

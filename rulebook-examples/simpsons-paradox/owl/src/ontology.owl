@@ -429,6 +429,34 @@ effortless-ntwf:witnessedInLoopTitle a owl:DatatypeProperty ;
     rdfs:comment "Lookup: Loops.Title via WitnessedInLoop." .
     # calculated: lookup
 
+effortless-ntwf:witnessedInLoopCommitHash a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:Conclusions ;
+    rdfs:range xsd:string ;
+    rdfs:label "WitnessedInLoopCommitHash" ;
+    rdfs:comment "Lookup: Loops.CommitHash via WitnessedInLoop — git checkout this SHA to replay the instrument state when this conclusion was first witnessed." .
+    # calculated: lookup
+
+effortless-ntwf:witnessedInLoopCommitShort a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:Conclusions ;
+    rdfs:range xsd:string ;
+    rdfs:label "WitnessedInLoopCommitShort" ;
+    rdfs:comment "Lookup: Loops.CommitShort via WitnessedInLoop." .
+    # calculated: lookup
+
+effortless-ntwf:witnessedInLoopCommitDate a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:Conclusions ;
+    rdfs:range xsd:string ;
+    rdfs:label "WitnessedInLoopCommitDate" ;
+    rdfs:comment "Lookup: Loops.CommitDate via WitnessedInLoop." .
+    # calculated: lookup
+
+effortless-ntwf:witnessedInLoopGitTag a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:Conclusions ;
+    rdfs:range xsd:string ;
+    rdfs:label "WitnessedInLoopGitTag" ;
+    rdfs:comment "Lookup: Loops.GitTag via WitnessedInLoop — preferred replay entry point when a milestone tag exists." .
+    # calculated: lookup
+
 effortless-ntwf:invariantProtectingCount a owl:DatatypeProperty ;
     rdfs:domain effortless-ntwf:Conclusions ;
     rdfs:range xsd:integer ;
@@ -1063,6 +1091,37 @@ effortless-ntwf:traditionCoreConern a owl:DatatypeProperty ;
     rdfs:label "TraditionCoreConern" ;
     rdfs:comment "Lookup: ResearchTraditions.CoreConcern via TraditionId — which intellectual concern drove this loop." .
     # calculated: lookup
+
+effortless-ntwf:commitHash a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:Loops ;
+    rdfs:range xsd:string ;
+    rdfs:label "CommitHash" ;
+    rdfs:comment "Full git SHA where this loop row first landed in effortless-rulebook.json — the replay anchor for this turn of the Leopold loop." .
+
+effortless-ntwf:commitShort a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:Loops ;
+    rdfs:range xsd:string ;
+    rdfs:label "CommitShort" ;
+    rdfs:comment "First 7 characters of CommitHash for display and git checkout." .
+    # calculated: calculated
+
+effortless-ntwf:commitDate a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:Loops ;
+    rdfs:range xsd:string ;
+    rdfs:label "CommitDate" ;
+    rdfs:comment "ISO date (YYYY-MM-DD) of the commit where this loop landed." .
+
+effortless-ntwf:commitMessage a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:Loops ;
+    rdfs:range xsd:string ;
+    rdfs:label "CommitMessage" ;
+    rdfs:comment "Git commit subject line for this loop's landing commit." .
+
+effortless-ntwf:gitTag a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:Loops ;
+    rdfs:range xsd:string ;
+    rdfs:label "GitTag" ;
+    rdfs:comment "Optional milestone tag pointing at this loop's landing commit (sp-loop-milestone-*). Used for discovery replay without memorizing SHAs." .
 
 # === Class: Methodology ===
 effortless-ntwf:Methodology a owl:Class ;

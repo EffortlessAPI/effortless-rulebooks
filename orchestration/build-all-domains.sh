@@ -33,6 +33,7 @@ set -u
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 RULEBOOK_EXAMPLES_DIR="$PROJECT_ROOT/rulebook-examples"
+TOY_RULEBOOKS_DIR="$PROJECT_ROOT/toy-rulebooks"
 STATUS_DIR="$SCRIPT_DIR/build-status"
 LOGS_DIR="$STATUS_DIR/logs"
 SUMMARY_JSON="$STATUS_DIR/summary.json"
@@ -61,10 +62,21 @@ done
 
 # --- list of demos to attempt ------------------------------------------------
 ALL_DOMAINS=()
-for d in "$RULEBOOK_EXAMPLES_DIR"/*/; do
+for d in "$RULEBOOK_EXAMPLES_DIR"/*/ "$TOY_RULEBOOKS_DIR"/*/; do
     [ -d "$d" ] || continue
     ALL_DOMAINS+=("$(basename "$d")")
 done
+
+find_domain_dir_build() {
+    local domain="$1"
+    if [ -d "$RULEBOOK_EXAMPLES_DIR/$domain" ]; then
+        echo "$RULEBOOK_EXAMPLES_DIR/$domain"
+    elif [ -d "$TOY_RULEBOOKS_DIR/$domain" ]; then
+        echo "$TOY_RULEBOOKS_DIR/$domain"
+    else
+        echo "" ; return 1
+    fi
+}
 
 TARGETS=()
 case "$MODE" in
@@ -73,7 +85,7 @@ case "$MODE" in
         ;;
     single)
         # Validate the demo actually exists.
-        if [ ! -d "$RULEBOOK_EXAMPLES_DIR/$SINGLE_DOMAIN" ]; then
+        if ! find_domain_dir_build "$SINGLE_DOMAIN" > /dev/null 2>&1; then
             echo "No such demo: $SINGLE_DOMAIN" >&2
             echo "Existing demos:" >&2
             printf '  - %s\n' "${ALL_DOMAINS[@]}" >&2
