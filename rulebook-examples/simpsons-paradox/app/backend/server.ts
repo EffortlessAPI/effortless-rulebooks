@@ -1,9 +1,12 @@
 import express from 'express';
 import cors from 'cors';
 import path from 'path';
+import { spawn } from 'node:child_process';
+import { existsSync } from 'node:fs';
 import { fileURLToPath } from 'url';
 import { query, withRollbackTransaction } from './db.js';
 import { buildSummaryPdf } from './export-summary-pdf.js';
+import { exportXlsx } from './export-xlsx.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -322,6 +325,16 @@ app.get('/api/study-import-template', async (_req, res) => {
 
 // --- PDF summary export (conclusions + findings, not full rulebook) ---
 
+app.get('/api/export/xlsx', async (_req, res) => {
+  try {
+    await exportXlsx(res);
+  } catch (err) {
+    const message = err instanceof Error ? err.message : String(err);
+    console.error('[export/xlsx]', message);
+    res.status(500).json({ error: message });
+  }
+});
+
 app.get('/api/export/summary-pdf', async (_req, res) => {
   try {
     const pdf = await buildSummaryPdf();
@@ -341,6 +354,9 @@ app.get('/api/export/summary-pdf', async (_req, res) => {
 
 // Serve the standalone explorer HTML from the project root
 const projectRoot = path.resolve(__dirname, '../..');
+const rulespeakDir = path.join(projectRoot, 'rulespeak');
+const rulespeakPdfScript = path.join(rulespeakDir, 'generate-rulespeak-pdf.sh');
+
 app.get('/simpsons-paradox-explorer.html', (_req, res) => {
   res.sendFile(path.join(projectRoot, 'simpsons-paradox-explorer.html'));
 });
@@ -356,6 +372,31 @@ app.get('/simpsons-paradox-summary.pdf', (_req, res) => {
     }
   });
 });
+
+app.get('/rulespeak/rulespeak.pdf', (_req, res) => {
+  const pdfPath = path.join(rulespeakDir, 'rulespeak.pdf');
+  if (existsSync(pdfPath)) {
+    res.sendFile(pdfPath);
+    return;
+  }
+  const child = spawn(rulespeakPdfScript, [], { cwd: rulespeakDir });
+  let stderr = '';
+  child.stderr.on('data', (d) => { stderr += d.toString(); });
+  child.on('error', (err) => {
+    res.status(500).json({ error: String(err) });
+  });
+  child.on('close', (code) => {
+    if (code !== 0 || !existsSync(pdfPath)) {
+      res.status(500).json({
+        error: stderr.trim() || `rulespeak PDF generation failed (exit ${code})`,
+      });
+      return;
+    }
+    res.sendFile(pdfPath);
+  });
+});
+
+app.use('/rulespeak', express.static(rulespeakDir));
 
 app.listen(PORT, () => {
   console.log(`[simpsons-paradox api] http://localhost:${PORT}`);

@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { Chart } from 'chart.js/auto';
 import { api } from '../api';
+import { DagValue } from '../components/DagValue';
 import type { Study, StratumSummary, TreatmentRanking } from '../types';
 import { StudySelector } from '../components/StudySelector';
 
@@ -132,7 +133,8 @@ export function StratumView() {
           <div
             className={`policy-banner ${policyClass(ranking.policy_implication)}`}
           >
-            <strong>Policy implication:</strong> {ranking.policy_implication}
+            <strong>Policy implication:</strong>{' '}
+            <DagValue table="TreatmentRankings" field="PolicyImplication">{ranking.policy_implication}</DagValue>
           </div>
 
           <div className="card">
@@ -147,7 +149,7 @@ export function StratumView() {
               <h3>Reversal status</h3>
               <div className="stat-row">
                 <span className="stat-label">Distortion type</span>
-                <span className="stat-value">Type {ranking.distortion_type}</span>
+                <span className="stat-value">Type <DagValue table="TreatmentRankings" field="DistortionType">{ranking.distortion_type}</DagValue></span>
               </div>
               <div className="stat-row">
                 <span className="stat-label">IsReversal (unanimity)</span>
@@ -175,11 +177,11 @@ export function StratumView() {
               <h3>Pooled rates</h3>
               <div className="stat-row">
                 <span className="stat-label">Treatment {ranking.treatment_a} pooled</span>
-                <span className="stat-value">{pct(ranking.pooled_rate_a)}</span>
+                <span className="stat-value"><DagValue table="TreatmentRankings" field="PooledRateA">{pct(ranking.pooled_rate_a)}</DagValue></span>
               </div>
               <div className="stat-row">
                 <span className="stat-label">Treatment {ranking.treatment_b} pooled</span>
-                <span className="stat-value">{pct(ranking.pooled_rate_b)}</span>
+                <span className="stat-value"><DagValue table="TreatmentRankings" field="PooledRateB">{pct(ranking.pooled_rate_b)}</DagValue></span>
               </div>
               <div className="stat-row">
                 <span className="stat-label">Pooled winner</span>
@@ -220,7 +222,7 @@ export function StratumView() {
                     <tr key={s.stratum_summary_id} style={{ borderBottom: '1px solid #21262d' }}>
                       <td style={{ padding: '6px 8px' }}>{s.stratum_label}</td>
                       <td style={{ padding: '6px 8px', textAlign: 'right', fontVariantNumeric: 'tabular-nums' }}>
-                        {pct(s.stratum_rate_a)}
+                        <DagValue table="StratumSummaries" field="StratumRateA">{pct(s.stratum_rate_a)}</DagValue>
                       </td>
                       <td style={{ padding: '6px 8px', textAlign: 'right', fontVariantNumeric: 'tabular-nums' }}>
                         {pct(s.stratum_rate_b)}
@@ -233,7 +235,7 @@ export function StratumView() {
                       </td>
                       <td style={{ padding: '6px 8px', textAlign: 'right', fontVariantNumeric: 'tabular-nums',
                         color: Number(s.allocation_bias) < 0 ? '#ff7b72' : '#7ee787' }}>
-                        {Number(s.allocation_bias).toFixed(3)}
+                        <DagValue table="StratumSummaries" field="AllocationBias">{Number(s.allocation_bias).toFixed(3)}</DagValue>
                       </td>
                     </tr>
                   ))}

@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { Chart } from 'chart.js/auto';
 import { api } from '../api';
+import { DagValue } from '../components/DagValue';
 import type { Study, StratumSummary, TreatmentRanking } from '../types';
 import { StudySelector } from '../components/StudySelector';
 
@@ -203,7 +204,7 @@ export function WeightsView() {
             </div>
             <div className="stat-row">
               <span className="stat-label">WeightedStratumGapSum (equal-weight signal)</span>
-              <span className="stat-value">{Number(ranking.weighted_stratum_gap_sum).toFixed(4)}</span>
+              <span className="stat-value"><DagValue table="TreatmentRankings" field="WeightedStratumGapSum">{Number(ranking.weighted_stratum_gap_sum).toFixed(4)}</DagValue></span>
             </div>
             <div className="stat-row">
               <span className="stat-label">SignedPooledGap (actual signal)</span>
@@ -211,7 +212,7 @@ export function WeightsView() {
             </div>
             <div className="stat-row">
               <span className="stat-label">AllocationDistortion</span>
-              <span className="stat-value">{Number(ranking.allocation_distortion).toFixed(4)}</span>
+              <span className="stat-value"><DagValue table="TreatmentRankings" field="AllocationDistortion">{Number(ranking.allocation_distortion).toFixed(4)}</DagValue></span>
             </div>
           </div>
         </>

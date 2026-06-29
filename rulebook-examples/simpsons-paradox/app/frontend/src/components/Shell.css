@@ -13,6 +13,14 @@ body {
   overflow: hidden;
 }
 
+.main-column {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  overflow: hidden;
+}
+
 .sidebar {
   width: 210px;
   flex-shrink: 0;

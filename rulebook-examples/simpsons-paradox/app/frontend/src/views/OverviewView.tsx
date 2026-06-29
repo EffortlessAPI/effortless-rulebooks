@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Chart } from 'chart.js/auto';
 import { api } from '../api';
+import { DagValue } from '../components/DagValue';
 import type { ModelSummary, Study, TreatmentRanking } from '../types';
 import {
   TYPE_COLORS,
@@ -71,8 +72,6 @@ export function OverviewView() {
   const [tierFilter, setTierFilter] = useState<string | null>(null);
   const [search, setSearch] = useState('');
   const [expanded, setExpanded] = useState<string | null>(null);
-  const [pdfLoading, setPdfLoading] = useState(false);
-  const [pdfError, setPdfError] = useState<string | null>(null);
 
   const canonicalRef = useRef<HTMLCanvasElement>(null);
   const finding1Ref = useRef<HTMLCanvasElement>(null);
@@ -126,18 +125,6 @@ export function OverviewView() {
     return () => { chartsRef.current.forEach(c => c?.destroy()); chartsRef.current = []; };
   }, [rankings, studyById]);
 
-  async function handleDownloadSummary() {
-    setPdfError(null);
-    setPdfLoading(true);
-    try {
-      await api.downloadSummaryPdf();
-    } catch (err) {
-      setPdfError(err instanceof Error ? err.message : String(err));
-    } finally {
-      setPdfLoading(false);
-    }
-  }
-
   if (loading) return <div className="loading">Loading…</div>;
 
   const total = summary?.study_count ?? studies.length;
@@ -155,41 +142,33 @@ export function OverviewView() {
           <p className="overview-sub">
             Three derived facts fall out of the same arithmetic: severity tracks allocation bias,
             corrected gaps diverge from pooled gaps on sign-flips, and signal purity flags when
-            the aggregate is mostly noise.
+            the aggregate is mostly noise. Use the ⬇ menu for exports and the ƒ toggle for field provenance.
           </p>
-          <div className="overview-hero-actions">
-            <button
-              type="button"
-              className="summary-pdf-btn"
-              onClick={handleDownloadSummary}
-              disabled={pdfLoading}
-            >
-              {pdfLoading ? 'Building PDF…' : 'Download summary PDF'}
-            </button>
-            <span className="summary-pdf-hint">
-              Conclusions, discovery findings, invariant health, and GitHub evidence links — not the full rulebook.
-            </span>
-          </div>
-          {pdfError && <p className="summary-pdf-error">{pdfError}</p>}
         </div>
       </div>
 
       <div className="kpi-strip">
         <div className="kpi-tile danger">
-          <div className="kpi-value danger">{dangerCount}</div>
+          <div className="kpi-value danger">
+            <DagValue table="ModelSummary" field="DangerTierCount">{dangerCount}</DagValue>
+          </div>
           <div className="kpi-label">DANGER tier<br />Pooled sign is wrong</div>
         </div>
         <div className="kpi-tile caution">
-          <div className="kpi-value caution">{summary?.caution_tier_count ?? '—'}</div>
+          <div className="kpi-value caution">
+            <DagValue table="ModelSummary" field="CautionTierCount">{summary?.caution_tier_count ?? '—'}</DagValue>
+          </div>
           <div className="kpi-label">CAUTION tier<br />Magnitude distorted</div>
         </div>
         <div className="kpi-tile safe">
-          <div className="kpi-value safe">{summary?.safe_tier_count ?? '—'}</div>
+          <div className="kpi-value safe">
+            <DagValue table="ModelSummary" field="SafeTierCount">{summary?.safe_tier_count ?? '—'}</DagValue>
+          </div>
           <div className="kpi-label">SAFE tier<br />Pooling trustworthy</div>
         </div>
         <div className="kpi-tile info">
           <div className="kpi-value info">{signFlipCount}</div>
-          <div className="kpi-label">Sign-flips<br />Type A: {summary?.type_a_count ?? '—'} unanimous</div>
+          <div className="kpi-label">Sign-flips<br />Type A: <DagValue table="ModelSummary" field="TypeACount">{summary?.type_a_count ?? '—'}</DagValue> unanimous</div>
         </div>
       </div>
 

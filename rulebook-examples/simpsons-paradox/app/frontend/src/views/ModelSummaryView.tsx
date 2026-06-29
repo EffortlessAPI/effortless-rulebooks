@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { api } from '../api';
+import { DagValue } from '../components/DagValue';
 import type { ModelSummary, TreatmentRanking } from '../types';
 
 function num(n: number | null, dp = 4) {
@@ -32,15 +33,21 @@ export function ModelSummaryView() {
 
       <div className="three-col" style={{ marginBottom: 16 }}>
         <div className="card" style={{ textAlign: 'center' }}>
-          <div style={{ fontSize: 36, fontWeight: 700, color: '#ff7b72' }}>{summary.reversal_count}</div>
+          <div style={{ fontSize: 36, fontWeight: 700, color: '#ff7b72' }}>
+            <DagValue table="ModelSummary" field="ReversalCount">{summary.reversal_count}</DagValue>
+          </div>
           <div style={{ color: '#8b949e', fontSize: 13, marginTop: 4 }}>Sign-flip reversals</div>
         </div>
         <div className="card" style={{ textAlign: 'center' }}>
-          <div style={{ fontSize: 36, fontWeight: 700, color: '#d2a8ff' }}>{summary.type_b_count}</div>
+          <div style={{ fontSize: 36, fontWeight: 700, color: '#d2a8ff' }}>
+            <DagValue table="ModelSummary" field="TypeBCount">{summary.type_b_count}</DagValue>
+          </div>
           <div style={{ color: '#8b949e', fontSize: 13, marginTop: 4 }}>Type B (partial stratum)</div>
         </div>
         <div className="card" style={{ textAlign: 'center' }}>
-          <div style={{ fontSize: 36, fontWeight: 700, color: '#58a6ff' }}>{summary.study_count}</div>
+          <div style={{ fontSize: 36, fontWeight: 700, color: '#58a6ff' }}>
+            <DagValue table="ModelSummary" field="StudyCount">{summary.study_count}</DagValue>
+          </div>
           <div style={{ color: '#8b949e', fontSize: 13, marginTop: 4 }}>Total studies</div>
         </div>
       </div>
@@ -83,11 +90,11 @@ export function ModelSummaryView() {
           <h3>Continuous measures</h3>
           <div className="stat-row">
             <span className="stat-label">Average paradox strength</span>
-            <span className="stat-value">{num(summary.avg_paradox_strength)}</span>
+            <span className="stat-value"><DagValue table="ModelSummary" field="AvgParadoxStrength">{num(summary.avg_paradox_strength)}</DagValue></span>
           </div>
           <div className="stat-row">
             <span className="stat-label">Avg signal purity</span>
-            <span className="stat-value">{num(summary.avg_signal_purity)}</span>
+            <span className="stat-value"><DagValue table="ModelSummary" field="AvgSignalPurity">{num(summary.avg_signal_purity)}</DagValue></span>
           </div>
           <div className="stat-row">
             <span className="stat-label">Avg purity (reversal)</span>
@@ -132,7 +139,9 @@ export function ModelSummaryView() {
               <tr key={r.treatment_ranking_id} style={{ borderBottom: '1px solid #21262d' }}>
                 <td style={{ padding: '6px 6px' }}>{r.study}</td>
                 <td style={{ padding: '6px 6px', textAlign: 'center' }}>
-                  <span className={`badge badge-type-${r.distortion_type?.toLowerCase()}`}>{r.distortion_type}</span>
+                  <span className={`badge badge-type-${r.distortion_type?.toLowerCase()}`}>
+                    <DagValue table="TreatmentRankings" field="DistortionType">{r.distortion_type}</DagValue>
+                  </span>
                 </td>
                 <td style={{ padding: '6px 6px', textAlign: 'center', fontSize: 11 }}>{r.screening_tier ?? '—'}</td>
                 <td style={{ padding: '6px 6px', textAlign: 'center',
@@ -140,16 +149,16 @@ export function ModelSummaryView() {
                   {r.is_reversal ? 'YES' : 'no'}
                 </td>
                 <td style={{ padding: '6px 6px', textAlign: 'right', fontVariantNumeric: 'tabular-nums' }}>
-                  {num(r.paradox_strength)}
+                  <DagValue table="TreatmentRankings" field="ParadoxStrength">{num(r.paradox_strength)}</DagValue>
                 </td>
                 <td style={{ padding: '6px 6px', textAlign: 'right', fontVariantNumeric: 'tabular-nums', color: r.signal_purity != null && r.signal_purity < 0.5 ? '#ff7b72' : '#7ee787' }}>
-                  {num(r.signal_purity, 3)}
+                  <DagValue table="TreatmentRankings" field="SignalPurity">{num(r.signal_purity, 3)}</DagValue>
                 </td>
                 <td style={{ padding: '6px 6px', textAlign: 'right', fontVariantNumeric: 'tabular-nums' }}>
                   {(Number(r.reversal_intensity) * 100).toFixed(0)}%
                 </td>
                 <td style={{ padding: '6px 6px', textAlign: 'right', fontVariantNumeric: 'tabular-nums' }}>
-                  {num(r.allocation_distortion)}
+                  <DagValue table="TreatmentRankings" field="AllocationDistortion">{num(r.allocation_distortion)}</DagValue>
                 </td>
               </tr>
             ))}

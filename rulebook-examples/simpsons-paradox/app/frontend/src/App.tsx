@@ -10,10 +10,19 @@ import { PhaseDiagramView } from './views/PhaseDiagramView';
 import { ImportCatalogView } from './views/ImportCatalogView';
 import { InstrumentDashboardView } from './views/InstrumentDashboardView';
 import { ConclusionsAdminView } from './views/ConclusionsAdminView';
+import {
+  DagFieldPage,
+  DagIndexPage,
+  DagTablePage,
+  ExplainerEnhance,
+  useExplainerRouting,
+} from './explainer-bridge';
 
-export function App() {
+function AppRoutes() {
+  useExplainerRouting();
   return (
-    <BrowserRouter>
+    <>
+      <ExplainerEnhance />
       <Routes>
         <Route path="/" element={<Shell />}>
           <Route index element={<Navigate to="/overview" replace />} />
@@ -28,7 +37,18 @@ export function App() {
           <Route path="instrument" element={<InstrumentDashboardView />} />
           <Route path="catalog" element={<ImportCatalogView />} />
         </Route>
+        <Route path="/dag" element={<DagIndexPage />} />
+        <Route path="/dag/:table" element={<DagTablePage />} />
+        <Route path="/dag/:table/:field" element={<DagFieldPage />} />
       </Routes>
+    </>
+  );
+}
+
+export function App() {
+  return (
+    <BrowserRouter>
+      <AppRoutes />
     </BrowserRouter>
   );
 }

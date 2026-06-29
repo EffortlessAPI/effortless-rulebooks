@@ -63,10 +63,26 @@
     {
       "IsSSoTTranspiler": false,
       "Name": "rulebooktoexplainerdag",
-      "RelativePath": "/app/frontend",
-      "CommandLine": "rulebook-to-explainer-dag -i ../../effortless-rulebook/simpsons-paradox-rulebook.json",
+      "RelativePath": "/app/frontend/public",
+      "CommandLine": "rulebook-to-explainer-dag -i ../../effortless-rulebook/simpsons-paradox-rulebook.json -o rulebook-explainer-dag",
       "IsDisabled": false,
       "PinnedVersion": "v2026.06.20.1606"
+    },
+    {
+      "IsSSoTTranspiler": false,
+      "Name": "rulebooktoxlsx",
+      "RelativePath": "",
+      "CommandLine": "rulebook-to-xlsx -i effortless-rulebook/simpsons-paradox-rulebook.json",
+      "IsDisabled": false,
+      "PinnedVersion": "v2026.05.25.2316"
+    },
+    {
+      "IsSSoTTranspiler": false,
+      "Name": "rulespeakpdf",
+      "RelativePath": "/rulespeak",
+      "CommandLine": "-exec ./generate-rulespeak-pdf.sh",
+      "IsDisabled": false,
+      "Description": "Render rulespeak/rulespeak.pdf from rulespeak.html (requires Chrome/Chromium)"
     }
   ]
 }

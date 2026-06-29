@@ -8,12 +8,12 @@ for PORT in 3001 5173; do
   [ -n "$pid" ] && kill -9 $pid 2>/dev/null && echo "[start] killed pid $pid on :$PORT" || true
 done
 
-# Backend
+export PROJECT_NAME="simpsons-paradox"
 cd "$SCRIPT_DIR/app/backend"
 echo "[start] installing backend deps…"
 npm install --silent
 echo "[start] booting backend on :3001…"
-npx tsx server.ts &
+PROJECT_NAME="simpsons-paradox" npx tsx server.ts &
 BACKEND_PID=$!
 
 # Frontend

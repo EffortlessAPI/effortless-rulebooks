@@ -7,6 +7,7 @@ export default defineConfig({
     port: 5173,
     proxy: {
       '/api': 'http://localhost:3001',
+      '/rulespeak': 'http://localhost:3001',
       '/simpsons-paradox-explorer.html': 'http://localhost:3001',
       '/simpsons-paradox-summary.pdf': 'http://localhost:3001',
     },

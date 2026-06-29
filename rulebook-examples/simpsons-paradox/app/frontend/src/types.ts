@@ -210,7 +210,6 @@ export interface ModelSummary {
   catalog_witness_note: string | null;
   latent_type_d_count?: number | null;
   latent_type_d_fraction?: number | null;
-  type_d_count?: number | null;
   discovery_witness_note?: string | null;
 }
 

@@ -73,4 +73,6 @@ export const api = {
       `simpsons-paradox-summary-${stamp}.pdf`,
     );
   },
+  downloadXlsx: () =>
+    downloadBlob('/api/export/xlsx', 'simpsons-paradox-rulebook.xlsx'),
 };

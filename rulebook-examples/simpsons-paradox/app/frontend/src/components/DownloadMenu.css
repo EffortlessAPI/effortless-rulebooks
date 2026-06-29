@@ -1,0 +1,126 @@
+.download-menu {
+  position: relative;
+}
+
+.download-menu-trigger {
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  border: 1px solid #30363d;
+  background: #21262d;
+  color: #e6edf3;
+  cursor: pointer;
+  font-size: 16px;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-color 0.12s, background 0.12s;
+}
+
+.download-menu-trigger:hover,
+.download-menu-trigger[aria-expanded='true'] {
+  border-color: #58a6ff;
+  background: #161b22;
+}
+
+.download-menu-pop {
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  z-index: 40;
+  width: 280px;
+  background: #161b22;
+  border: 1px solid #30363d;
+  border-radius: 10px;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.45);
+  padding: 6px;
+}
+
+.download-menu-item {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 10px 12px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: #e6edf3;
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.download-menu-item:hover:not(:disabled) {
+  background: #21262d;
+}
+
+.download-menu-item:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+
+.download-menu-hint {
+  display: block;
+  margin-top: 2px;
+  font-size: 11px;
+  font-weight: 400;
+  color: #8b949e;
+  line-height: 1.35;
+}
+
+.download-menu-error {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #ff7b72;
+  color: #0d1117;
+  font-size: 11px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.app-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 10px 24px;
+  border-bottom: 1px solid #30363d;
+  background: #0d1117;
+  flex-shrink: 0;
+}
+
+#effortless-dag-toggle {
+  display: flex;
+  align-items: center;
+}
+
+#effortless-dag-toggle .dag-toggle {
+  position: static;
+  top: auto;
+  right: auto;
+  box-shadow: none;
+}
+
+.dag-page {
+  min-height: 100%;
+  padding: 24px;
+  background: #0d1117;
+}
+
+/* Explainer DAG on dark dashboard — keep ƒ badges visible when toggle is on */
+.dag-cell { position: relative; }
+.dag-cell .dag-cell-fx {
+  opacity: 1 !important;
+  transform: scale(1) !important;
+  pointer-events: auto !important;
+}
+.dag-cell-quiet .dag-cell-fx { opacity: 0 !important; }

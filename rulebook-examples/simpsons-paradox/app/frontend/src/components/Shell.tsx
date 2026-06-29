@@ -1,5 +1,7 @@
 import { NavLink, Outlet } from 'react-router-dom';
+import { DownloadMenu } from './DownloadMenu';
 import './Shell.css';
+import './DownloadMenu.css';
 
 export function Shell() {
   return (
@@ -39,27 +41,16 @@ export function Shell() {
         <NavLink to="/instrument" className={({ isActive }) => isActive ? 'nav-item active' : 'nav-item'}>
           Instrument Dashboard
         </NavLink>
-        <div className="sidebar-sep" />
-        <a
-          className="nav-item nav-item-external"
-          href="../simpsons-paradox-summary.pdf"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          📄 Summary PDF
-        </a>
-        <a
-          className="nav-item nav-item-external"
-          href="../simpsons-paradox-explorer.html"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          ✉ Email-ready HTML
-        </a>
       </nav>
-      <main className="content">
-        <Outlet />
-      </main>
+      <div className="main-column">
+        <header className="app-topbar">
+          <DownloadMenu />
+          <div id="effortless-dag-toggle" />
+        </header>
+        <main className="content">
+          <Outlet />
+        </main>
+      </div>
     </div>
   );
 }

@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { Chart } from 'chart.js/auto';
 import { api } from '../api';
+import { DagValue } from '../components/DagValue';
 import type { CaseCell, StratumSummary, TreatmentRanking } from '../types';
 
 const PRESET_STUDIES = ['kidney-1986', 'berkeley-1973', 'balanced-synthetic'];
@@ -281,11 +282,11 @@ export function SandboxView() {
               <h3>Derived facts</h3>
               <div className="stat-row">
                 <span className="stat-label">Pooled rate {ranking.treatment_a}</span>
-                <span className="stat-value">{pct(ranking.pooled_rate_a)}</span>
+                <span className="stat-value"><DagValue table="TreatmentRankings" field="PooledRateA">{pct(ranking.pooled_rate_a)}</DagValue></span>
               </div>
               <div className="stat-row">
                 <span className="stat-label">Pooled rate {ranking.treatment_b}</span>
-                <span className="stat-value">{pct(ranking.pooled_rate_b)}</span>
+                <span className="stat-value"><DagValue table="TreatmentRankings" field="PooledRateB">{pct(ranking.pooled_rate_b)}</DagValue></span>
               </div>
               <div className="stat-row">
                 <span className="stat-label">Pooled winner</span>
@@ -308,11 +309,11 @@ export function SandboxView() {
               <h3>Continuous measures</h3>
               <div className="stat-row">
                 <span className="stat-label">Paradox strength</span>
-                <span className="stat-value">{Number(ranking.paradox_strength).toFixed(4)}</span>
+                <span className="stat-value"><DagValue table="TreatmentRankings" field="ParadoxStrength">{Number(ranking.paradox_strength).toFixed(4)}</DagValue></span>
               </div>
               <div className="stat-row">
                 <span className="stat-label">Allocation distortion</span>
-                <span className="stat-value">{Number(ranking.allocation_distortion).toFixed(4)}</span>
+                <span className="stat-value"><DagValue table="TreatmentRankings" field="AllocationDistortion">{Number(ranking.allocation_distortion).toFixed(4)}</DagValue></span>
               </div>
               {summaries
                 .filter(s => s.treatment_label === ranking.treatment_a)
