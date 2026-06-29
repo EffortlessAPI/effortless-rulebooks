@@ -347,7 +347,7 @@ already computes (cross-referenced as DR-N in the Definitional Rules below)._
 - A study import template **must** have a sort order, a target table, a row description, a required fields, and a mechanical check.
 - A sweep study config **must** have a sweep stratum label, a n sweep stratum total, a sweep rate a, a sweep rate b, a n fixed a, a n fixed b, a fixed rate a, a fixed rate b, an original alloc fraction a, and a sweep corrected gap.
 - A substrate conformance field **must** have a source table, a field name, a pg column, an owl local name, and a data type, and record whether it is assert from postgres and whether it is in compare set.
-- A discovery hypothes **must** have a statement, an expected outcome, and a registered in loop.
+- A discovery hypothes **must** have a statement, an expected outcome, a registered in loop, and an epistemic tier.
 - A discovery finding **must** have a witnessed in loop.
 
 ## 4 Definitional Rules

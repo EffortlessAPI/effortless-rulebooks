@@ -7,16 +7,19 @@ import type {
   InvariantCheck,
   ModelSummary,
 } from '../types';
+import {
+  CATEGORY_ORDER,
+  LIMITS_TEXT,
+  SCOPE_BOUNDARY_TEXT,
+  SCOPE_BOUNDARY_TITLE,
+  SWEEP_CONTRACT,
+  conclusionPdfLabel,
+  domainCaveat,
+  formatObservedMetric,
+  isConsistencyCheck,
+  tierConclusionCounts,
+} from '../../../shared/epistemic-framing';
 import './Conclusions.css';
-
-const CATEGORY_ORDER = [
-  'theorem',
-  'instrument',
-  'domain',
-  'methodology',
-  'taxonomy',
-  'open-question',
-] as const;
 
 const STATUS_COLORS: Record<string, string> = {
   witnessed: 'badge-type-c',
@@ -25,7 +28,37 @@ const STATUS_COLORS: Record<string, string> = {
 };
 
 function categoryLabel(cat: string): string {
-  return cat.replace(/-/g, ' ');
+  return conclusionPdfLabel(cat);
+}
+
+function DiscoveryCard({
+  h,
+  f,
+  tierLabel,
+}: {
+  h: DiscoveryHypothesis;
+  f: DiscoveryFinding | undefined;
+  tierLabel: string;
+}) {
+  const pass = f?.is_confirmed === true;
+  return (
+    <div className={`discovery-card ${pass ? 'discovery-pass' : 'discovery-fail'}`}>
+      <div className="discovery-card-head">
+        <span className="discovery-id">{h.hypothesis_id}</span>
+        <span className="discovery-tier">{tierLabel}</span>
+        <span className={`badge ${pass ? 'badge-type-c' : 'badge-reversal'}`}>
+          {pass ? 'PASS' : 'FAIL'}
+        </span>
+      </div>
+      <p className="discovery-statement">{h.statement}</p>
+      <div className="discovery-meta">
+        <span>Expected: {h.expected_outcome}</span>
+        {f?.observed_metric && (
+          <span>Observed: {formatObservedMetric(f.observed_metric)}</span>
+        )}
+      </div>
+    </div>
+  );
 }
 
 export function ConclusionsAdminView() {
@@ -81,7 +114,20 @@ export function ConclusionsAdminView() {
     return map;
   }, [findings]);
 
-  const witnessedCount = conclusions.filter(c => c.status === 'witnessed').length;
+  const tiers = tierConclusionCounts(conclusions);
+
+  const consistencyHypotheses = hypotheses.filter(
+    h => isConsistencyCheck(h.hypothesis_id) || h.epistemic_tier === 'consistency-check',
+  );
+  const corpusHypotheses = hypotheses.filter(
+    h => !isConsistencyCheck(h.hypothesis_id) && h.epistemic_tier !== 'consistency-check',
+  );
+  const corpusConfirmed = corpusHypotheses.filter(
+    h => findingsByHypothesis.get(h.hypothesis_id)?.is_confirmed === true,
+  ).length;
+  const consistencyConfirmed = consistencyHypotheses.filter(
+    h => findingsByHypothesis.get(h.hypothesis_id)?.is_confirmed === true,
+  ).length;
 
   if (loading) return <div className="loading">Loading conclusions…</div>;
 
@@ -89,25 +135,50 @@ export function ConclusionsAdminView() {
     <div className="conclusions-page">
       <h1 className="page-title">Conclusions &amp; Findings</h1>
       <p className="page-desc">
-        Formal epistemic claims tracked in the rulebook <code>Conclusions</code> table — findings
-        witnessed across Leopold loops. Loop-61 adds pre-registered{' '}
-        <code>DiscoveryHypotheses</code> / <code>DiscoveryFindings</code> with live PASS/FAIL
-        from the corpus. SSoT is the rulebook JSON; this surface reads <code>vw_*</code> views only.
+        Formal epistemic claims in the rulebook <code>Conclusions</code> table — tiered by what
+        kind of claim each row is (proved · instrument · corpus snapshot). Loop-61 adds
+        pre-registered <code>DiscoveryHypotheses</code> split into consistency checks vs corpus
+        hypotheses. SSoT is the rulebook JSON; this surface reads <code>vw_*</code> views only.
       </p>
 
-      <div className="conclusions-stats three-col">
+      <section className="card scope-card">
+        <h2>{SCOPE_BOUNDARY_TITLE}</h2>
+        <p className="scope-text">{SCOPE_BOUNDARY_TEXT}</p>
+        <p className="scope-text scope-muted">{LIMITS_TEXT}</p>
+        <p className="scope-text scope-muted">{SWEEP_CONTRACT}</p>
+      </section>
+
+      <div className="conclusions-stats">
         <div className="card stat-card">
-          <h3>Conclusions</h3>
-          <div className="stat-big">{witnessedCount}<span> / {conclusions.length}</span></div>
-          <div className="stat-caption">witnessed</div>
+          <h3>Proved (theorem)</h3>
+          <div className="stat-big">{tiers.proved}</div>
+          <div className="stat-caption">by construction</div>
         </div>
         <div className="card stat-card">
-          <h3>Discovery (loop-61)</h3>
+          <h3>Instrument &amp; scope</h3>
+          <div className="stat-big">{tiers.instrument}</div>
+          <div className="stat-caption">instrument · taxonomy · methodology · scope</div>
+        </div>
+        <div className="card stat-card">
+          <h3>Corpus snapshot</h3>
+          <div className="stat-big">{tiers.corpus}</div>
+          <div className="stat-caption">domain — provisional (see conc-14)</div>
+        </div>
+        <div className="card stat-card">
+          <h3>Corpus hypotheses</h3>
           <div className="stat-big">
-            {findings.filter(f => f.is_confirmed).length}
-            <span> / {findings.length}</span>
+            {corpusConfirmed}
+            <span> / {corpusHypotheses.length}</span>
           </div>
-          <div className="stat-caption">hypotheses confirmed</div>
+          <div className="stat-caption">loop-61 contingent findings</div>
+        </div>
+        <div className="card stat-card">
+          <h3>Consistency checks</h3>
+          <div className="stat-big">
+            {consistencyConfirmed}
+            <span> / {consistencyHypotheses.length}</span>
+          </div>
+          <div className="stat-caption">definition-linked (e.g. H-purity)</div>
         </div>
         <div className="card stat-card">
           <h3>Latent Type-D</h3>
@@ -117,39 +188,45 @@ export function ConclusionsAdminView() {
               : '—'}
           </div>
           <div className="stat-caption">
-            {summary?.latent_type_d_count ?? '—'} / {summary?.type_d_count ?? '—'} SAFE studies flip under sweep
+            {summary?.latent_type_d_count ?? '—'} / {summary?.type_d_count ?? '—'} under sweep
+            contract
           </div>
         </div>
       </div>
 
       <section className="card">
-        <h2>Pre-registered discovery (loop-61)</h2>
+        <h2>Consistency checks (loop-61)</h2>
         <p className="section-hint">
-          Hypotheses registered before querying the 90+ study corpus. Each finding is computed live from ModelSummary.
+          Confirm implementation matches stated algebra — same tier as conc-12. Not independent
+          discoveries about nature.
         </p>
         <div className="discovery-grid">
-          {hypotheses.map(h => {
-            const f = findingsByHypothesis.get(h.hypothesis_id);
-            const pass = f?.is_confirmed === true;
-            return (
-              <div
-                key={h.hypothesis_id}
-                className={`discovery-card ${pass ? 'discovery-pass' : 'discovery-fail'}`}
-              >
-                <div className="discovery-card-head">
-                  <span className="discovery-id">{h.hypothesis_id}</span>
-                  <span className={`badge ${pass ? 'badge-type-c' : 'badge-reversal'}`}>
-                    {pass ? 'PASS' : 'FAIL'}
-                  </span>
-                </div>
-                <p className="discovery-statement">{h.statement}</p>
-                <div className="discovery-meta">
-                  <span>Expected: {h.expected_outcome}</span>
-                  {f?.observed_metric && <span>Observed: {f.observed_metric}</span>}
-                </div>
-              </div>
-            );
-          })}
+          {consistencyHypotheses.map(h => (
+            <DiscoveryCard
+              key={h.hypothesis_id}
+              h={h}
+              f={findingsByHypothesis.get(h.hypothesis_id)}
+              tierLabel="consistency"
+            />
+          ))}
+        </div>
+      </section>
+
+      <section className="card">
+        <h2>Corpus hypotheses (loop-61)</h2>
+        <p className="section-hint">
+          Contingent patterns on this convenience sample — directional only, not inferential.
+          See conc-14.
+        </p>
+        <div className="discovery-grid">
+          {corpusHypotheses.map(h => (
+            <DiscoveryCard
+              key={h.hypothesis_id}
+              h={h}
+              f={findingsByHypothesis.get(h.hypothesis_id)}
+              tierLabel="corpus"
+            />
+          ))}
         </div>
       </section>
 
@@ -163,7 +240,7 @@ export function ConclusionsAdminView() {
               onChange={e => setCategoryFilter(e.target.value)}
             >
               <option value="all">All categories</option>
-              {CATEGORY_ORDER.map(cat => (
+              {CATEGORY_ORDER.map((cat: (typeof CATEGORY_ORDER)[number]) => (
                 <option key={cat} value={cat}>
                   {categoryLabel(cat)}
                 </option>
@@ -203,15 +280,18 @@ export function ConclusionsAdminView() {
               </div>
               <h2 className="detail-title">{selected.title}</h2>
               <div className="detail-meta">
-                <span>Category: {categoryLabel(selected.category)}</span>
+                <span>Tier: {categoryLabel(selected.category)}</span>
                 {selected.witnessed_in_loop && (
                   <span>Witnessed in: {selected.witnessed_in_loop}</span>
                 )}
                 {selected.target_loop && <span>Target loop: {selected.target_loop}</span>}
               </div>
+              {domainCaveat(selected.conclusion_id) && (
+                <p className="domain-caveat">{domainCaveat(selected.conclusion_id)}</p>
+              )}
               {(selected.witnessed_in_loop_commit_short || selected.witnessed_in_loop_git_tag) && (
                 <div className="replay-block">
-                  <h3>Discovery replay</h3>
+                  <h3>Loop replay</h3>
                   <p className="replay-hint">
                     Check out the landing commit for this conclusion&apos;s loop, rebuild, and the
                     instrument state matches what was witnessed when the conclusion landed.

@@ -28,7 +28,7 @@ effortless-ntwf:name a owl:DatatypeProperty ;
 effortless-ntwf:studyId a owl:DatatypeProperty ;
     rdfs:range xsd:string ;
     rdfs:label "StudyId" ;
-    rdfs:comment "The study being swept — all 40 studies in the corpus." .
+    rdfs:comment "The study being swept — all 90+ studies in the corpus." .
 
 effortless-ntwf:allocFractionA a owl:DatatypeProperty ;
     rdfs:domain effortless-ntwf:AllocationSweep ;
@@ -626,6 +626,12 @@ effortless-ntwf:traditionId a owl:DatatypeProperty ;
     rdfs:label "TraditionId" ;
     rdfs:comment "FK → ResearchTraditions.TraditionId." .
 
+effortless-ntwf:epistemicTier a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:DiscoveryHypotheses ;
+    rdfs:range xsd:string ;
+    rdfs:label "EpistemicTier" ;
+    rdfs:comment "consistency-check (definition-linked regression) | corpus-hypothesis (contingent corpus pattern)." .
+
 # === Class: DomainExpansionTargets ===
 effortless-ntwf:DomainExpansionTargets a owl:Class ;
     rdfs:label "DomainExpansionTargets" ;
@@ -839,7 +845,7 @@ effortless-ntwf:ingestionWitnessNote a owl:DatatypeProperty ;
 # === Class: InstrumentSpec ===
 effortless-ntwf:InstrumentSpec a owl:Class ;
     rdfs:label "InstrumentSpec" ;
-    rdfs:comment "Table: InstrumentSpec — the complete specification of the Simpson's Paradox classification instrument. One row per component: required input fields, derived coordinates, classification outputs, and adapter requirements. Every row is machine-verifiable against the 16 hydrated studies. This table is the distillation of loops 1–25 into a reusable tool." .
+    rdfs:comment "Table: InstrumentSpec — the complete specification of the Simpson's Paradox classification instrument. One row per component: required input fields, derived coordinates, classification outputs, and adapter requirements. Every row is machine-verifiable against the 90+ study corpus. This table is the distillation of loops 1–25 into a reusable tool." .
 
 effortless-ntwf:specId a owl:DatatypeProperty ;
     rdfs:domain effortless-ntwf:InstrumentSpec ;
@@ -1027,7 +1033,7 @@ effortless-ntwf:protectsConclusionCategory a owl:DatatypeProperty ;
 # === Class: Loops ===
 effortless-ntwf:Loops a owl:Class ;
     rdfs:label "Loops" ;
-    rdfs:comment "Table: Loops — the 10-loop build plan, carried as a first-class entity inside the model. Each row documents what new concept is introduced and why." .
+    rdfs:comment "Table: Loops — build history and forward plan, carried as a first-class entity inside the model. Each row documents what new concept is introduced, what was witnessed, and (for planned rows) the next empirical question. Loops 62+ are the corpus-scale research sweep: pre-register in DiscoveryHypotheses, run against vw_* views, LoopReview at end of each turn before committing vocabulary." .
 
 effortless-ntwf:loopId a owl:DatatypeProperty ;
     rdfs:domain effortless-ntwf:Loops ;

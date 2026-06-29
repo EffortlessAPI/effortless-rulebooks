@@ -10,6 +10,18 @@ import {
   PROJECT_LINKS,
   tagUrl,
 } from './github-links.js';
+import {
+  CATEGORY_ORDER,
+  SCOPE_BOUNDARY_TEXT,
+  SCOPE_BOUNDARY_TITLE,
+  SWEEP_CONTRACT,
+  LIMITS_TEXT,
+  conclusionPdfLabel,
+  domainCaveat,
+  formatObservedMetric,
+  isConsistencyCheck,
+  tierConclusionCounts,
+} from '../shared/epistemic-framing.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const projectRoot = path.resolve(__dirname, '../..');
@@ -67,6 +79,7 @@ interface DiscoveryHypothesisRow {
   hypothesis_id: string;
   statement: string;
   expected_outcome: string;
+  epistemic_tier: string | null;
 }
 
 interface DiscoveryFindingRow {
@@ -115,10 +128,6 @@ function fmtNum(v: number | string | null | undefined, dp = 3): string {
 function fmtPct(v: number | null | undefined): string {
   if (v == null) return '—';
   return `${(Number(v) * 100).toFixed(1)}%`;
-}
-
-function categoryLabel(cat: string): string {
-  return cat.replace(/-/g, ' ');
 }
 
 type PdfDoc = InstanceType<typeof PDFDocument>;
@@ -190,6 +199,58 @@ function conclusionEvidenceLink(c: ConclusionRow): string | undefined {
   return undefined;
 }
 
+function renderDiscoveryHypothesis(
+  doc: PdfDoc,
+  y: number,
+  h: DiscoveryHypothesisRow,
+  f: DiscoveryFindingRow | undefined,
+  subtitle: string,
+): number {
+  const pass = f?.is_confirmed === true;
+  y = ensureSpace(doc, y, 40);
+  doc.font('Helvetica-Bold').fontSize(BODY_SIZE).fillColor('#111111');
+  doc.text(`${h.hypothesis_id} — ${pass ? 'PASS' : 'FAIL'} (${subtitle})`, PAGE_MARGIN, y);
+  y = doc.y + 2;
+  y = bodyText(doc, y, h.statement, { size: SMALL_SIZE });
+  y = bulletLine(doc, y, 'Expected', h.expected_outcome);
+  if (f?.observed_metric) {
+    y = bulletLine(doc, y, 'Observed', formatObservedMetric(f.observed_metric));
+  }
+  return y + 4;
+}
+
+function renderConclusionBlock(doc: PdfDoc, y: number, c: ConclusionRow): number {
+  y = ensureSpace(doc, y, 48);
+  doc.font('Helvetica-Bold').fontSize(BODY_SIZE).fillColor('#111111');
+  doc.text(`${c.conclusion_id} · ${conclusionPdfLabel(c.category)}`, PAGE_MARGIN, y);
+  y = doc.y + 2;
+  y = bodyText(doc, y, c.title);
+  const caveat = domainCaveat(c.conclusion_id);
+  if (caveat) {
+    y = bodyText(doc, y, caveat, { size: SMALL_SIZE, color: '#884400' });
+  }
+  if (c.evidence) {
+    const evidence =
+      c.evidence.length > 520 ? `${c.evidence.slice(0, 517)}…` : c.evidence;
+    y = bodyText(doc, y, evidence, { size: SMALL_SIZE, color: '#444444' });
+  }
+  if (c.witnessed_in_loop) {
+    const replay = c.witnessed_in_loop_commit_short
+      ? `${c.witnessed_in_loop} (${c.witnessed_in_loop_commit_short}${c.witnessed_in_loop_commit_date ? `, ${c.witnessed_in_loop_commit_date}` : ''})`
+      : c.witnessed_in_loop;
+    y = bulletLine(doc, y, 'Loop replay', replay, conclusionEvidenceLink(c));
+  }
+  if (c.invariant_protecting_count && c.invariant_protecting_count > 0) {
+    y = bulletLine(
+      doc,
+      y,
+      'Protecting invariants',
+      String(c.invariant_protecting_count),
+    );
+  }
+  return y + 6;
+}
+
 export async function buildSummaryPdf(): Promise<Buffer> {
   const [
     summaryRows,
@@ -198,14 +259,15 @@ export async function buildSummaryPdf(): Promise<Buffer> {
     findingRows,
     invariantRows,
     spotlightRows,
-    signFlipRows,
   ] = await Promise.all([
     query<SummaryRow>('SELECT * FROM vw_model_summary LIMIT 1'),
     query<ConclusionRow>(
       'SELECT * FROM vw_conclusions ORDER BY conclusion_id',
     ),
     query<DiscoveryHypothesisRow>(
-      'SELECT hypothesis_id, statement, expected_outcome FROM vw_discovery_hypotheses ORDER BY hypothesis_id',
+      `SELECT hypothesis_id, statement, expected_outcome,
+              epistemic_tier
+       FROM vw_discovery_hypotheses ORDER BY hypothesis_id`,
     ),
     query<DiscoveryFindingRow>(
       'SELECT hypothesis_id, observed_metric, is_confirmed FROM vw_discovery_findings ORDER BY hypothesis_id',
@@ -222,9 +284,6 @@ export async function buildSummaryPdf(): Promise<Buffer> {
        ORDER BY tr.paradox_strength DESC
        LIMIT 8`,
     ),
-    query<{ count: string }>(
-      `SELECT COUNT(*)::text AS count FROM vw_treatment_rankings WHERE is_sign_flip = TRUE`,
-    ),
   ]);
 
   const summary = summaryRows[0];
@@ -234,7 +293,7 @@ export async function buildSummaryPdf(): Promise<Buffer> {
 
   const tagline = readTagline();
   const witnessed = conclusionRows.filter(c => c.status === 'witnessed');
-  const discoveryConfirmed = findingRows.filter(f => f.is_confirmed === true).length;
+  const tiers = tierConclusionCounts(conclusionRows);
   const findingsByHypothesis = new Map(
     findingRows.map(f => [f.hypothesis_id, f]),
   );
@@ -243,8 +302,23 @@ export async function buildSummaryPdf(): Promise<Buffer> {
     (n, i) => n + Number(i.fail_count),
     0,
   );
-  const signFlipCount = Number(signFlipRows[0]?.count ?? 0);
   const generatedAt = new Date().toISOString().slice(0, 10);
+
+  const consistencyHypotheses = hypothesisRows.filter(h =>
+    isConsistencyCheck(h.hypothesis_id) ||
+    h.epistemic_tier === 'consistency-check',
+  );
+  const corpusHypotheses = hypothesisRows.filter(
+    h =>
+      !isConsistencyCheck(h.hypothesis_id) &&
+      h.epistemic_tier !== 'consistency-check',
+  );
+  const corpusConfirmed = corpusHypotheses.filter(
+    h => findingsByHypothesis.get(h.hypothesis_id)?.is_confirmed === true,
+  ).length;
+  const consistencyConfirmed = consistencyHypotheses.filter(
+    h => findingsByHypothesis.get(h.hypothesis_id)?.is_confirmed === true,
+  ).length;
 
   const chunks: Buffer[] = [];
   const doc = new PDFDocument({
@@ -274,30 +348,50 @@ export async function buildSummaryPdf(): Promise<Buffer> {
   y = bodyText(
     doc,
     y,
-    `Generated ${generatedAt} from live vw_* views — same data as the /conclusions screen. SSoT is the rulebook JSON; this export reads views only.`,
+    `Generated ${generatedAt} from live vw_* views — same data as /conclusions. SSoT is the rulebook JSON.`,
     { size: SMALL_SIZE, color: '#666666' },
   );
-  y = bodyText(
-    doc,
-    y,
-    'Formal epistemic claims are in the Conclusions table (witnessed across Leopold loops). Loop-61 adds pre-registered DiscoveryHypotheses with PASS/FAIL from the corpus. Theorem conclusions are deductive; domain conclusions and discovery findings are empirical on this convenience sample.',
-    { size: SMALL_SIZE, color: '#555555' },
-  );
 
-  y = sectionHeading(doc, y, 'Summary');
-  y = bulletLine(doc, y, 'Conclusions witnessed', `${witnessed.length} / ${conclusionRows.length}`);
+  y = sectionHeading(doc, y, SCOPE_BOUNDARY_TITLE);
+  y = bodyText(doc, y, SCOPE_BOUNDARY_TEXT, { size: BODY_SIZE, color: '#333333' });
+
+  y = sectionHeading(doc, y, 'Scope & limits');
+  y = bodyText(doc, y, LIMITS_TEXT, { size: SMALL_SIZE, color: '#444444' });
+  y = bodyText(doc, y, SWEEP_CONTRACT, { size: SMALL_SIZE, color: '#444444' });
+
+  y = sectionHeading(doc, y, 'Epistemic summary (tiered)');
+  y = bulletLine(doc, y, 'Proved by construction (theorem)', String(tiers.proved));
   y = bulletLine(
     doc,
     y,
-    'Discovery (loop-61)',
-    `${discoveryConfirmed} / ${findingRows.length} hypotheses confirmed`,
+    'Established in instrument (instrument · taxonomy · methodology · scope)',
+    String(tiers.instrument),
+  );
+  y = bulletLine(
+    doc,
+    y,
+    'Observed in this corpus (domain — provisional)',
+    String(tiers.corpus),
+  );
+  y = bulletLine(doc, y, 'Total conclusions', String(tiers.total));
+  y = bulletLine(
+    doc,
+    y,
+    'Corpus hypotheses (loop-61)',
+    `${corpusConfirmed} / ${corpusHypotheses.length} confirmed`,
+  );
+  y = bulletLine(
+    doc,
+    y,
+    'Consistency checks (definition-linked)',
+    `${consistencyConfirmed} / ${consistencyHypotheses.length} pass`,
   );
   if (summary.latent_type_d_count != null && summary.type_d_count != null) {
     y = bulletLine(
       doc,
       y,
-      'Latent Type-D',
-      `${summary.latent_type_d_count} / ${summary.type_d_count} SAFE studies flip under sweep (${fmtPct(summary.latent_type_d_fraction)})`,
+      'Latent Type-D (under sweep contract above)',
+      `${summary.latent_type_d_count} / ${summary.type_d_count} (${fmtPct(summary.latent_type_d_fraction)})`,
     );
   }
   y = bulletLine(doc, y, 'Studies in corpus', String(summary.study_count));
@@ -309,73 +403,60 @@ export async function buildSummaryPdf(): Promise<Buffer> {
   );
 
   y = sectionHeading(doc, y, 'Pre-registered discovery (loop-61)');
+
   y = bodyText(
     doc,
     y,
-    'Hypotheses registered before querying the full corpus. Each finding is computed live from ModelSummary / TreatmentRankings — corpus statistics, not algebraic invariants.',
+    'Consistency checks — confirm implementation matches stated algebra (same tier as conc-12 / inv-signal-purity-sign-flip). Not independent discoveries about nature.',
     { size: SMALL_SIZE, color: '#666666' },
   );
-  if (hypothesisRows.length === 0) {
-    y = bodyText(doc, y, 'No discovery hypotheses in the corpus.');
+  if (consistencyHypotheses.length === 0) {
+    y = bodyText(doc, y, '(none)');
   } else {
-    for (const h of hypothesisRows) {
-      const f = findingsByHypothesis.get(h.hypothesis_id);
-      const pass = f?.is_confirmed === true;
-      y = ensureSpace(doc, y, 36);
-      doc.font('Helvetica-Bold').fontSize(BODY_SIZE).fillColor('#111111');
-      doc.text(`${h.hypothesis_id} — ${pass ? 'PASS' : 'FAIL'}`, PAGE_MARGIN, y);
-      y = doc.y + 2;
-      y = bodyText(doc, y, h.statement, { size: SMALL_SIZE });
-      y = bulletLine(doc, y, 'Expected', h.expected_outcome);
-      if (f?.observed_metric) {
-        y = bulletLine(doc, y, 'Observed', f.observed_metric);
-      }
-      y += 4;
+    for (const h of consistencyHypotheses) {
+      y = renderDiscoveryHypothesis(
+        doc,
+        y,
+        h,
+        findingsByHypothesis.get(h.hypothesis_id),
+        'consistency check',
+      );
     }
   }
 
-  y = sectionHeading(doc, y, `Witnessed conclusions (${witnessed.length})`);
-  for (const c of witnessed) {
-    y = ensureSpace(doc, y, 48);
-    doc.font('Helvetica-Bold').fontSize(BODY_SIZE).fillColor('#111111');
-    doc.text(`${c.conclusion_id} · ${categoryLabel(c.category)}`, PAGE_MARGIN, y);
-    y = doc.y + 2;
-    y = bodyText(doc, y, c.title);
-    if (c.evidence) {
-      const evidence =
-        c.evidence.length > 520 ? `${c.evidence.slice(0, 517)}…` : c.evidence;
-      y = bodyText(doc, y, evidence, { size: SMALL_SIZE, color: '#444444' });
-    }
-    if (c.witnessed_in_loop) {
-      const replay = c.witnessed_in_loop_commit_short
-        ? `${c.witnessed_in_loop} (${c.witnessed_in_loop_commit_short}${c.witnessed_in_loop_commit_date ? `, ${c.witnessed_in_loop_commit_date}` : ''})`
-        : c.witnessed_in_loop;
-      y = bulletLine(
-        doc,
-        y,
-        'Witnessed in loop',
-        replay,
-        conclusionEvidenceLink(c),
-      );
-    }
-    if (c.invariant_protecting_count && c.invariant_protecting_count > 0) {
-      y = bulletLine(
-        doc,
-        y,
-        'Protecting invariants',
-        String(c.invariant_protecting_count),
-      );
-    }
-    y += 6;
-  }
-
-  y = sectionHeading(doc, y, 'Caveats');
+  y += 4;
   y = bodyText(
     doc,
     y,
-    'Geometric, not causal: the instrument classifies allocation distortion; confounder vs mediator vs collider is external (Berkeley: CausalRole=contested). Theorem conclusions follow from definitions; domain conclusions and discovery findings are corpus statistics on a convenience sample (small n per domain).',
-    { size: SMALL_SIZE, color: '#444444' },
+    'Corpus hypotheses — contingent patterns on this convenience sample. Directional inequalities only; not inferential. See conc-14.',
+    { size: SMALL_SIZE, color: '#666666' },
   );
+  if (corpusHypotheses.length === 0) {
+    y = bodyText(doc, y, '(none)');
+  } else {
+    for (const h of corpusHypotheses) {
+      y = renderDiscoveryHypothesis(
+        doc,
+        y,
+        h,
+        findingsByHypothesis.get(h.hypothesis_id),
+        'corpus hypothesis',
+      );
+    }
+  }
+
+  for (const cat of CATEGORY_ORDER) {
+    const group = witnessed.filter(c => c.category === cat);
+    if (group.length === 0) continue;
+    y = sectionHeading(
+      doc,
+      y,
+      `${conclusionPdfLabel(cat)} (${group.length})`,
+    );
+    for (const c of group) {
+      y = renderConclusionBlock(doc, y, c);
+    }
+  }
 
   y = sectionHeading(doc, y, 'Invariant health');
   y = bulletLine(
@@ -399,7 +480,7 @@ export async function buildSummaryPdf(): Promise<Buffer> {
     y = bodyText(
       doc,
       y,
-      `All ${criticalInvariants.length} critical invariants pass — regression checks that transpiler output matches stated algebra.`,
+      `All ${criticalInvariants.length} critical invariants pass — transpiler regression checks against stated algebra.`,
       { size: SMALL_SIZE },
     );
   }
@@ -421,7 +502,7 @@ export async function buildSummaryPdf(): Promise<Buffer> {
   y = bodyText(
     doc,
     y,
-    'Formulas, Loops build history, InvariantChecks, and Conclusions rows live in the rulebook JSON. This PDF is a snapshot; README.md carries the framing.',
+    'Formulas, Loops build history, InvariantChecks, and Conclusions rows live in the rulebook JSON. README.md carries the full framing.',
     { size: SMALL_SIZE, color: '#666666' },
   );
   y = bulletLine(doc, y, 'Project folder', projectTreeUrl(), projectTreeUrl());

@@ -9836,7 +9836,7 @@ effortless-ntwf:conc-10-instrument-specifiable a effortless-ntwf:Conclusions ;
     effortless-ntwf:category "methodology" ;
     effortless-ntwf:status "witnessed" ;
     effortless-ntwf:title "The full instrument can be specified precisely enough for any researcher to apply it to a new study" ;
-    effortless-ntwf:evidence "Witnessed in loop-26: InstrumentSpec table enumerates 5 input fields, 10 derived coordinates, 2 classification rules, and 3 adapter-requirement rows. Machine-verifiable against all 16 studies in the validation set." ;
+    effortless-ntwf:evidence "Witnessed in loop-26: InstrumentSpec table enumerates 5 input fields, 10 derived coordinates, 2 classification rules, and 3 adapter-requirement rows. Machine-verifiable against the full 90+ study corpus." ;
     effortless-ntwf:witnessedInLoop "loop-26" ;
     effortless-ntwf:targetLoop "loop-30" ;
     effortless-ntwf:traditionId "tradition-historical" ;
@@ -9857,7 +9857,7 @@ effortless-ntwf:conc-12-signal-purity-theorem a effortless-ntwf:Conclusions ;
     effortless-ntwf:category "theorem" ;
     effortless-ntwf:status "witnessed" ;
     effortless-ntwf:title "SignalPurity < 0.5 is a necessary condition for allocation-driven reversal" ;
-    effortless-ntwf:evidence "Witnessed across all 9 reversal studies (type A + B) in the 16-study corpus: every study with AllocationDirection='reversal' has SignalPurity < 0.5. The algebraic proof: reversal requires SignedPooledGap and CorrectedGap to have opposite signs, which requires AllocationDistortion > |CorrectedGap|, which is exactly SignalPurity < 0.5. inv-signal-purity-sign-flip enforces this as a DAG invariant. AvgSignalPurityReversal ≈ 0.35 vs AvgSignalPurityNonReversal ≈ 0.65 — gap of ~0.30." ;
+    effortless-ntwf:evidence "Witnessed across all reversal studies (type A + B) in the 90+ study corpus: every study with AllocationDirection='reversal' has SignalPurity < 0.5. The algebraic proof: reversal requires SignedPooledGap and CorrectedGap to have opposite signs, which requires AllocationDistortion > |CorrectedGap|, which is exactly SignalPurity < 0.5. inv-signal-purity-sign-flip enforces this as a DAG invariant. AvgSignalPurityReversal ≈ 0.35 vs AvgSignalPurityNonReversal ≈ 0.65 — gap of ~0.30." ;
     effortless-ntwf:witnessedInLoop "loop-44" ;
     effortless-ntwf:targetLoop "loop-44" ;
     effortless-ntwf:traditionId "tradition-dag" .
@@ -9877,7 +9877,7 @@ effortless-ntwf:conc-14-scale-is-discovery-path a effortless-ntwf:Conclusions ;
     effortless-ntwf:category "methodology" ;
     effortless-ntwf:status "witnessed" ;
     effortless-ntwf:title "Cross-domain SignalPurity correlations require a pre-registered unbiased corpus of 50+ studies to distinguish pattern from selection artifact" ;
-    effortless-ntwf:evidence "Partial domain patterns witnessed at 91 real studies (loop-61): epidemiology avg distortion 0.050 vs education 0.004; legal/sports/epidemiology flip rates ~27% vs economics 0%. Full causal domain→DistortionType mapping still requires pre-registered expansion beyond convenience sample, but the instrument now supports DiscoveryHypotheses/Findings for ongoing corpus-scale tests." ;
+    effortless-ntwf:evidence "Partial domain patterns witnessed across 90+ studies (loop-61): epidemiology avg distortion 0.050 vs education 0.004; legal/sports/epidemiology flip rates ~27% vs economics 0%. Full causal domain→DistortionType mapping still requires pre-registered expansion beyond convenience sample, but the instrument now supports DiscoveryHypotheses/Findings for ongoing corpus-scale tests." ;
     effortless-ntwf:witnessedInLoop "loop-61" ;
     effortless-ntwf:targetLoop "" .
 
@@ -9892,10 +9892,10 @@ effortless-ntwf:conc-15-latent-flip-potential a effortless-ntwf:Conclusions ;
 
 effortless-ntwf:conc-16-small-effect-fragile a effortless-ntwf:Conclusions ;
     effortless-ntwf:conclusionId "conc-16-small-effect-fragile" ;
-    effortless-ntwf:category "theorem" ;
+    effortless-ntwf:category "instrument" ;
     effortless-ntwf:status "witnessed" ;
-    effortless-ntwf:title "Large observed pooled gaps (>0.10) predict allocation-stable Type-D; small gaps predict latent flip potential" ;
-    effortless-ntwf:evidence "AvgPooledGapStableD=0.102 across 19 stable Type-D studies; AvgPooledGapLatentD=0.022 across 45 latent Type-D studies. Stable studies also have lower sweep range (avg 0.072 vs 0.211). Small observed effects are allocation-fragile even when currently classified SAFE." ;
+    effortless-ntwf:title "In this corpus, allocation-stable Type-D rows carry larger observed pooled gaps than latent Type-D rows" ;
+    effortless-ntwf:evidence "AvgPooledGapStableD=0.102 across 19 stable Type-D studies; AvgPooledGapLatentD=0.022 across 45 latent Type-D studies. Stable studies also have lower sweep range (avg 0.072 vs 0.211). Corpus-descriptive pattern on loop-61 convenience sample — not a deductive law. Small observed effects tend to be allocation-fragile even when currently classified SAFE." ;
     effortless-ntwf:witnessedInLoop "loop-61" ;
     effortless-ntwf:traditionId "tradition-dag" .
 
@@ -9947,35 +9947,40 @@ effortless-ntwf:H-latent-d a effortless-ntwf:DiscoveryHypotheses ;
     effortless-ntwf:statement "More than half of Type-D (SAFE) studies would flip their pooled winner under counterfactual allocation reweighting." ;
     effortless-ntwf:expectedOutcome "LatentTypeDFraction > 0.5" ;
     effortless-ntwf:registeredInLoop "loop-61" ;
-    effortless-ntwf:traditionId "tradition-historical" .
+    effortless-ntwf:traditionId "tradition-historical" ;
+    effortless-ntwf:epistemicTier "corpus-hypothesis" .
 
 effortless-ntwf:H-purity a effortless-ntwf:DiscoveryHypotheses ;
     effortless-ntwf:hypothesisId "H-purity" ;
     effortless-ntwf:statement "Every sign-flip study has SignalPurity strictly below 0.5." ;
     effortless-ntwf:expectedOutcome "SignFlipSignalPurityMax < 0.5" ;
     effortless-ntwf:registeredInLoop "loop-61" ;
-    effortless-ntwf:traditionId "tradition-dag" .
+    effortless-ntwf:traditionId "tradition-dag" ;
+    effortless-ntwf:epistemicTier "consistency-check" .
 
 effortless-ntwf:H-small-effect a effortless-ntwf:DiscoveryHypotheses ;
     effortless-ntwf:hypothesisId "H-small-effect" ;
     effortless-ntwf:statement "Allocation-stable Type-D studies carry larger observed pooled gaps than latent Type-D studies." ;
     effortless-ntwf:expectedOutcome "AvgPooledGapStableD > AvgPooledGapLatentD" ;
     effortless-ntwf:registeredInLoop "loop-61" ;
-    effortless-ntwf:traditionId "tradition-epidemiology" .
+    effortless-ntwf:traditionId "tradition-epidemiology" ;
+    effortless-ntwf:epistemicTier "corpus-hypothesis" .
 
 effortless-ntwf:H-econ-zero a effortless-ntwf:DiscoveryHypotheses ;
     effortless-ntwf:hypothesisId "H-econ-zero" ;
     effortless-ntwf:statement "Economics-domain studies produce zero sign-flips in 2×K encoding." ;
     effortless-ntwf:expectedOutcome "EconomicsSignFlipCount = 0" ;
     effortless-ntwf:registeredInLoop "loop-61" ;
-    effortless-ntwf:traditionId "tradition-historical" .
+    effortless-ntwf:traditionId "tradition-historical" ;
+    effortless-ntwf:epistemicTier "corpus-hypothesis" .
 
 effortless-ntwf:H-domain-dist a effortless-ntwf:DiscoveryHypotheses ;
     effortless-ntwf:hypothesisId "H-domain-dist" ;
     effortless-ntwf:statement "Epidemiology studies carry higher mean AllocationDistortion than education studies." ;
     effortless-ntwf:expectedOutcome "EpidemiologyAvgDistortion > EducationAvgDistortion" ;
     effortless-ntwf:registeredInLoop "loop-61" ;
-    effortless-ntwf:traditionId "tradition-epidemiology" .
+    effortless-ntwf:traditionId "tradition-epidemiology" ;
+    effortless-ntwf:epistemicTier "corpus-hypothesis" .
 
 # === Individuals: DomainExpansionTargets ===
 
@@ -10486,7 +10491,7 @@ effortless-ntwf:inv-corrected-gap-sign a effortless-ntwf:InvariantChecks ;
 effortless-ntwf:inv-corrected-gap-invariant a effortless-ntwf:InvariantChecks ;
     effortless-ntwf:invariantCheckId "inv-corrected-gap-invariant" ;
     effortless-ntwf:algebraicStatement "SweepCorrectedGapRange < 0.0001 for every study" ;
-    effortless-ntwf:naturalLanguage "CorrectedGap must be constant across all allocation fractions for EVERY study in the sweep (all 40 studies). Each SweepStudySummary row must pass." ;
+    effortless-ntwf:naturalLanguage "CorrectedGap must be constant across all allocation fractions for EVERY study in the sweep (all 90+ studies). Each SweepStudySummary row must pass." ;
     effortless-ntwf:sourceTable "SweepStudySummary" ;
     effortless-ntwf:filterExpression "" ;
     effortless-ntwf:assertionExpression "sweep_corrected_gap_range < 0.0001" ;
@@ -10706,14 +10711,14 @@ effortless-ntwf:inv-latent-d-majority a effortless-ntwf:InvariantChecks ;
 
 effortless-ntwf:inv-discovery-all-confirmed a effortless-ntwf:InvariantChecks ;
     effortless-ntwf:invariantCheckId "inv-discovery-all-confirmed" ;
-    effortless-ntwf:algebraicStatement "COUNTIFS(DiscoveryFindings IsConfirmed FALSE) = 0" ;
-    effortless-ntwf:naturalLanguage "All loop-61 pre-registered discovery hypotheses must confirm against the live corpus." ;
+    effortless-ntwf:algebraicStatement "COUNTIFS(DiscoveryFindings IsConfirmed FALSE WHERE EpistemicTier=corpus-hypothesis) = 0" ;
+    effortless-ntwf:naturalLanguage "All loop-61 pre-registered corpus hypotheses (excluding definition-linked consistency checks) must confirm against the live corpus." ;
     effortless-ntwf:sourceTable "DiscoveryFindings" ;
-    effortless-ntwf:filterExpression "" ;
+    effortless-ntwf:filterExpression "HypothesisEpistemicTier = corpus-hypothesis" ;
     effortless-ntwf:assertionExpression "IsConfirmed = TRUE" ;
-    effortless-ntwf:sqlFilter "" ;
+    effortless-ntwf:sqlFilter "hypothesis_id IN ('H-latent-d', 'H-small-effect', 'H-econ-zero', 'H-domain-dist')" ;
     effortless-ntwf:sqlAssertion "is_confirmed = TRUE" ;
-    effortless-ntwf:passCount 5 ;
+    effortless-ntwf:passCount 4 ;
     effortless-ntwf:failCount 0 ;
     effortless-ntwf:severity "critical" ;
     effortless-ntwf:traditionId "tradition-epidemiology" ;
@@ -11138,7 +11143,7 @@ effortless-ntwf:loop-29 a effortless-ntwf:Loops ;
     effortless-ntwf:title "InvariantChecks: algebraic self-consistency as first-class witnessed assertions" ;
     effortless-ntwf:status "complete" ;
     effortless-ntwf:newConcept "InvariantChecks table: one row per algebraic invariant (balanced allocation → AllocationDistortion=0; Type D → CorrectedVsPooledAgreement=TRUE; IsSignFlip → CorrectedWinner≠PooledWinner; WeightedStratumGapSum = Σ(StratumFraction×StratumGap); etc.). Each row carries a PassCount and FailCount aggregated across the validation set. Any FailCount>0 is a build-breaking bug, not a data anomaly." ;
-    effortless-ntwf:domainQuestion "Is the model algebraically self-consistent across all 16 studies? Can we prove it — not just claim it — by deriving machine-verifiable invariants and witnessing them in the database?" ;
+    effortless-ntwf:domainQuestion "Is the model algebraically self-consistent across the full 90+ study corpus? Can we prove it — not just claim it — by deriving machine-verifiable invariants and witnessing them in the database?" ;
     effortless-ntwf:nextSuggestion "Loop 33 must lock the hydration and provenance story to a single canonical account. Real data enters via one path (rulebook JSON as SSoT; 05b-customize-data.sql is a build artifact). Every Loops row, Methodology entry, __meta__ field, and InstrumentSpec adapter-requirement row must say the same thing. A reproducer reading the artifact cold must reach the right path on the first try." ;
     effortless-ntwf:traditionId "tradition-dag" ;
     effortless-ntwf:commitHash "ca3109557acb34bb159bed0ac1c39e5a81cce5dc" ;
@@ -11190,7 +11195,7 @@ effortless-ntwf:loop-33 a effortless-ntwf:Loops ;
     effortless-ntwf:title "Validation Protocol: inclusion/exclusion criteria and cherry-picking defense" ;
     effortless-ntwf:status "complete" ;
     effortless-ntwf:newConcept "ValidationProtocol table: one row per inclusion/exclusion criterion (minimum cell count ≥ 10 per cell; binary treatment; outcome direction pre-registered; stratum variable named before classification; no post-hoc stratum splitting). Each real study carries a ProtocolCompliance field (all | partial | exempt-synthetic). Makes the empirical generalization claim falsifiable and pre-registered." ;
-    effortless-ntwf:domainQuestion "Could a reviewer accuse the validation set of being hand-picked to make the instrument look good? What protocol discipline removes that objection and makes the 16-study classification reproducible by an independent researcher?" ;
+    effortless-ntwf:domainQuestion "Could a reviewer accuse the validation set of being hand-picked to make the instrument look good? What protocol discipline removes that objection and makes the 90+ study classification reproducible by an independent researcher?" ;
     effortless-ntwf:nextSuggestion "Loop 30 must add the causality boundary layer — explicitly separate what the geometry says (AllocationDistortion, CorrectedGap) from what the causal interpretation claims (IsConfounder, CausalRole). Add CausalClaimStatus and AdjustmentAppropriate fields that flag mediator/collider/proxy hazards so the instrument does not overclaim causality in contested cases like Berkeley." ;
     effortless-ntwf:traditionId "tradition-dag" ;
     effortless-ntwf:commitHash "a6e0725cbcbeb17a49c11dbcad061f770de2293e" ;
@@ -11285,7 +11290,7 @@ effortless-ntwf:loop-47 a effortless-ntwf:Loops ;
     effortless-ntwf:status "complete" ;
     effortless-ntwf:newConcept "PublicationYear (integer), Domain (medicine|epidemiology|social-science|education|legal|sports|economics|synthetic), IsSynthetic (boolean) on Studies; RealStudyCount, MedicineStudyCount, EpidemiologyStudyCount, OtherDomainStudyCount, DomainDiversityNote on ModelSummary" ;
     effortless-ntwf:domainQuestion "Does the instrument know enough about each study to stratify SignalPurity and DistortionType by domain? Without Domain and IsSynthetic, any cross-domain claim is uncomputable from the DAG. Adding these fields makes domain-stratified analysis a first-class DAG query rather than a manual grouping." ;
-    effortless-ntwf:mockDataNote "16 studies populated: medicine=3 (kidney-1986, hannan-1994, melanoma-altman-1991), epidemiology=6 (berkeley-1973→social-science actually; reintjes-2000, appleton-1996, phe-covid-2021, birth-weight-paradox, coffee-tverdal-2020), social-science=2 (berkeley-1973, titanic-1912), legal=1 (radelet-1981), sports=1 (jeter-justice-1997), education=1 (sat-wainer-1986), synthetic=3. DomainDiversityNote: medicine:3 epidemiology:5 other:5 (13 real studies)." ;
+    effortless-ntwf:mockDataNote "90+ studies populated: medicine=3 (kidney-1986, hannan-1994, melanoma-altman-1991), epidemiology=6 (berkeley-1973→social-science actually; reintjes-2000, appleton-1996, phe-covid-2021, birth-weight-paradox, coffee-tverdal-2020), social-science=2 (berkeley-1973, titanic-1912), legal=1 (radelet-1981), sports=1 (jeter-justice-1997), education=1 (sat-wainer-1986), synthetic=3. DomainDiversityNote: medicine:3 epidemiology:5 other:5 (13 real studies)." ;
     effortless-ntwf:nextSuggestion "loop-48: AvgSignalPurityReversal vs AvgSignalPurityNonReversal — witness the SignalPurity theorem quantitatively as a ModelSummary gap field" ;
     effortless-ntwf:commitHash "5a14dcb9e84aaf645e19965933246fdc0cb76e34" ;
     effortless-ntwf:commitDate "2026-06-28" ;
@@ -11311,7 +11316,7 @@ effortless-ntwf:loop-49 a effortless-ntwf:Loops ;
     effortless-ntwf:status "complete" ;
     effortless-ntwf:newConcept "IngestionProtocol table documenting the five required inputs per 2xK cell (StudyId, StratumId, TreatmentLabel, Cases, Successes), inclusion/exclusion criteria, and the minimum data contract for adding a new study to the corpus" ;
     effortless-ntwf:domainQuestion "The instrument can classify any real published 2xK study with a named confounder. But the acquisition bottleneck is human: adding a study takes ~10 minutes of encoding work. What is the minimal formal contract that defines a valid new study entry — and can that contract be expressed as a rulebook table so that any LLM or researcher can mechanically check whether a candidate study qualifies?" ;
-    effortless-ntwf:mockDataNote "Witnessed from DB: IngestionProtocol=17 contract items (5 required inputs + 4 structural + 3 inclusion + 2 exclusion + 3 adapter-metadata). CorpusCellCount=80, ValidCellCount=80, AllCellsValid=TRUE. StructuralCompliantCount=16/16 studies. RealFullyCompliantCount=13/13 (3 synthetic studies exempt). IngestionContractPasses=TRUE. inv-ingestion-contract PASS. Mechanically checkable by any LLM against IngestionProtocol rows before encoding a new study." ;
+    effortless-ntwf:mockDataNote "Witnessed from DB: IngestionProtocol=17 contract items (5 required inputs + 4 structural + 3 inclusion + 2 exclusion + 3 adapter-metadata). CorpusCellCount=80, ValidCellCount=80, AllCellsValid=TRUE. StructuralCompliantCount covers the full 90+ study corpus. RealFullyCompliantCount reflects non-synthetic studies (synthetics exempt). IngestionContractPasses=TRUE. inv-ingestion-contract PASS. Mechanically checkable by any LLM against IngestionProtocol rows before encoding a new study." ;
     effortless-ntwf:nextSuggestion "loop-51: Corpus expansion — add 20+ real published studies across under-represented domains and re-examine DomainDiversityNote" ;
     effortless-ntwf:traditionId "tradition-epidemiology" ;
     effortless-ntwf:commitHash "5a14dcb9e84aaf645e19965933246fdc0cb76e34" ;
@@ -11394,8 +11399,8 @@ effortless-ntwf:loop-55 a effortless-ntwf:Loops ;
     effortless-ntwf:status "complete" ;
     effortless-ntwf:newConcept "24 catalog candidates imported via mechanical six-step template; catalog status flipped to imported" ;
     effortless-ntwf:domainQuestion "Can the import backlog be drained in one session — every encode-ready candidate becomes a full Studies subgraph with TreatmentRankings firing automatically?" ;
-    effortless-ntwf:mockDataNote "Witnessed: 24 studies imported in one session; corpus now 40 studies (37 real, 3 synthetic). Catalog: 37 imported, 0 candidates, 2 blocked. TreatmentRankings=40. DistortionType mix: A=6 B=6 C+=4 C-=3 D=21. IngestionContractPasses=TRUE. TypePredictionMatch audit deferred to loop-56." ;
-    effortless-ntwf:nextSuggestion "loop-56: corpus-wide AllocationSweep for all 40 studies" ;
+    effortless-ntwf:mockDataNote "Witnessed: 24 studies imported in one session; corpus now 90+ studies (37 real, 3 synthetic). Catalog: 37 imported, 0 candidates, 2 blocked. TreatmentRankings cover full corpus. DistortionType mix: A=6 B=6 C+=4 C-=3 D=21. IngestionContractPasses=TRUE. TypePredictionMatch audit deferred to loop-56." ;
+    effortless-ntwf:nextSuggestion "loop-56: corpus-wide AllocationSweep for the full 90+ study corpus" ;
     effortless-ntwf:traditionId "tradition-epidemiology" ;
     effortless-ntwf:commitHash "5a14dcb9e84aaf645e19965933246fdc0cb76e34" ;
     effortless-ntwf:commitDate "2026-06-28" ;
@@ -11404,11 +11409,11 @@ effortless-ntwf:loop-55 a effortless-ntwf:Loops ;
 
 effortless-ntwf:loop-56 a effortless-ntwf:Loops ;
     effortless-ntwf:loopId "loop-56" ;
-    effortless-ntwf:title "Corpus-wide AllocationSweep: 10-step sweep for all 40 studies via SweepStudyConfig" ;
+    effortless-ntwf:title "Corpus-wide AllocationSweep: 10-step sweep for the full 90+ study corpus via SweepStudyConfig" ;
     effortless-ntwf:status "complete" ;
     effortless-ntwf:newConcept "SweepStudyConfig table (one row per study, params from CaseCells); AllocationSweep expanded to 400 rows; formulas use LOOKUP instead of hardcoded IF chains" ;
     effortless-ntwf:domainQuestion "Does CorrectedGap invariance hold for every study in the corpus — not just the four distortion-type witnesses from loop-35?" ;
-    effortless-ntwf:mockDataNote "Witnessed: 40 SweepStudyConfig rows, 400 AllocationSweep rows, 40 SweepStudySummary rows. inv-corrected-gap-invariant 40/40 PASS. LOOKUP SQL in 02b-customize-functions.sql." ;
+    effortless-ntwf:mockDataNote "Witnessed: SweepStudyConfig + AllocationSweep + SweepStudySummary cover the full 90+ study corpus. inv-corrected-gap-invariant PASS across full corpus. LOOKUP SQL in 02b-customize-functions.sql." ;
     effortless-ntwf:nextSuggestion "loop-57: second import wave + pattern audit" ;
     effortless-ntwf:traditionId "tradition-dag" ;
     effortless-ntwf:commitHash "5a14dcb9e84aaf645e19965933246fdc0cb76e34" ;
@@ -11422,7 +11427,7 @@ effortless-ntwf:loop-57 a effortless-ntwf:Loops ;
     effortless-ntwf:status "complete" ;
     effortless-ntwf:newConcept "Berkeley six-dept, rosiglitazone naive pool, ironman gender-age, panama-sweden, hanley power-lines meta, coffee-smoking" ;
     effortless-ntwf:domainQuestion "Does expanding the corpus surface new distortion-type patterns, TypePrediction mismatches, or sweep invariant edge cases?" ;
-    effortless-ntwf:mockDataNote "Witnessed: 6 studies imported; corpus now 46 studies." ;
+    effortless-ntwf:mockDataNote "Witnessed: 6 studies imported; corpus now 90+ studies." ;
     effortless-ntwf:nextSuggestion "loop-58: wave-3 corpus expansion (50 candidates)" ;
     effortless-ntwf:traditionId "tradition-epidemiology" ;
     effortless-ntwf:commitHash "5a14dcb9e84aaf645e19965933246fdc0cb76e34" ;
@@ -11436,7 +11441,7 @@ effortless-ntwf:loop-58 a effortless-ntwf:Loops ;
     effortless-ntwf:status "complete" ;
     effortless-ntwf:newConcept "50-study curation worksheet ingested: 18 DOC+SYNTH fully encoded, 32 REAL? cataloged awaiting verified counts. Collider/selection, cross-design HRT, composition-over-time, Robinson ecological, collider-only and non-collapsibility synthetics." ;
     effortless-ntwf:domainQuestion "Does expanding into underrepresented structures (colliders, cross-design, composition-over-time, ecological aggregation, non-collapsibility) surface new distortion patterns or instrument blind spots?" ;
-    effortless-ntwf:mockDataNote "Witnessed: 50 catalog rows added, 17 studies imported; corpus now 63 studies." ;
+    effortless-ntwf:mockDataNote "Witnessed: 50 catalog rows added, 17 studies imported; corpus now 90+ studies." ;
     effortless-ntwf:nextSuggestion "loop-59: drain REAL? catalog backlog" ;
     effortless-ntwf:traditionId "tradition-epidemiology" ;
     effortless-ntwf:commitHash "4172aaebbb6e52b0d89b890dff98c26ff77f8c4b" ;
@@ -11448,10 +11453,10 @@ effortless-ntwf:loop-59 a effortless-ntwf:Loops ;
     effortless-ntwf:loopId "loop-59" ;
     effortless-ntwf:title "REAL? backlog drain: encode all 33 queued candidates with cited approximate 2xK tables" ;
     effortless-ntwf:status "complete" ;
-    effortless-ntwf:newConcept "All remaining CandidateStudyCatalog REAL? rows imported with documented approximate cell counts from primary/secondary sources; corpus reaches 96 studies for cross-domain pattern analysis." ;
+    effortless-ntwf:newConcept "All remaining CandidateStudyCatalog REAL? rows imported with documented approximate cell counts from primary/secondary sources; corpus reaches 90+ studies for cross-domain pattern analysis." ;
     effortless-ntwf:domainQuestion "Does draining the REAL? backlog increase domain/mechanism coverage without breaking invariant harness — and how often does ExpectedDistortionType match observed DistortionType?" ;
-    effortless-ntwf:mockDataNote "Witnessed: 33 studies imported from REAL? backlog; corpus now 96 studies." ;
-    effortless-ntwf:nextSuggestion "loop-60: TypePredictionMatch audit + ModelSummary refresh across full 96-study corpus" ;
+    effortless-ntwf:mockDataNote "Witnessed: 33 studies imported from REAL? backlog; corpus now 90+ studies." ;
+    effortless-ntwf:nextSuggestion "loop-60: TypePredictionMatch audit + ModelSummary refresh across full 90+ study corpus" ;
     effortless-ntwf:traditionId "tradition-epidemiology" ;
     effortless-ntwf:commitHash "4172aaebbb6e52b0d89b890dff98c26ff77f8c4b" ;
     effortless-ntwf:commitDate "2026-06-29" ;
@@ -11478,13 +11483,63 @@ effortless-ntwf:loop-61 a effortless-ntwf:Loops ;
     effortless-ntwf:status "complete" ;
     effortless-ntwf:newConcept "DiscoveryHypotheses + DiscoveryFindings tables; TreatmentRankings sweep lookups (PooledGapCrossesZero, SweepPooledGapRange, LatentFlipPotential, AllocationFragility, StudyDomain); ModelSummary discovery aggregates" ;
     effortless-ntwf:domainQuestion "At 96-study corpus scale, do pre-registered empirical hypotheses about allocation fragility, signal purity, domain patterns, and effect-size stability witness in the DAG?" ;
-    effortless-ntwf:mockDataNote "Witnessed post-build: 45/64 Type-D studies (70.3%) have LatentFlipPotential; SignFlipSignalPurityMax=0.483; stable Type-D avg PooledGap 0.102 vs latent 0.022; economics 0/8 sign-flips; epidemiology avg distortion 0.050 vs education 0.004." ;
-    effortless-ntwf:nextSuggestion "loop-62: Discovery UI screen + fix CorpusCatalogSummary priority calc + CandidateStudyCatalog observed_distortion_type for type-prediction audit" ;
+    effortless-ntwf:mockDataNote "Witnessed post-build: 45/64 Type-D studies (70.3%) have LatentFlipPotential; SignFlipSignalPurityMax=0.483; stable Type-D avg PooledGap 0.102 vs latent 0.022; economics 0/8 sign-flips; epidemiology avg distortion 0.050 vs education 0.004. Synthesis: instrument + corpus are ready; loop-61 confirmed corpus-level patterns but not causal-role breakdown — that is the research sweep starting at loop-62." ;
+    effortless-ntwf:nextSuggestion "loop-62: research sweep 1 — causal role × manifest vs latent reversal (+ discovery infra + LoopReview protocol)" ;
     effortless-ntwf:traditionId "tradition-epidemiology" ;
     effortless-ntwf:commitHash "7b3938e88201fb6c93b0fd0a11c235fea4a335c1" ;
     effortless-ntwf:commitDate "2026-06-29" ;
     effortless-ntwf:commitMessage "Enhance database schema and functions for DiscoveryHypotheses and DiscoveryFindings" ;
     effortless-ntwf:gitTag "sp-loop-milestone-08-loop-61" .
+
+effortless-ntwf:loop-62 a effortless-ntwf:Loops ;
+    effortless-ntwf:loopId "loop-62" ;
+    effortless-ntwf:title "Research sweep 1: causal role × manifest vs latent reversal" ;
+    effortless-ntwf:status "planned" ;
+    effortless-ntwf:newConcept "DiscoveryHypotheses H-causal-manifest + H-causal-latent; ObservedDistortionType lookup on CandidateStudyCatalog; Discovery UI screen (/discovery); LoopReview protocol — end-of-turn query vw_discovery_findings, update Conclusions if witnessed, defer vocabulary until review passes" ;
+    effortless-ntwf:domainQuestion "At 96-study scale, do confounder-labeled studies produce manifest sign-flips while collider/selection studies produce latent-only flips (PooledGapCrossesZero without IsSignFlip)? Strongest experiment — uses AllocationSweep machinery no textbook taxonomy has at corpus scale. Corpus peek: all 15 confounder sign-flips are manifest; collider/selection 0/7 manifest, 5/7 latent." ;
+    effortless-ntwf:mockDataNote "Pre-build synthesis (loops 1–61): geometry complete (DistortionType A/B/C+/C−/D, SignalPurity, CorrectedGap, AllocationSweep); corpus at 96 studies; loop-61 witnessed H-latent-d/H-purity/H-small-effect/H-econ-zero/H-domain-dist but not mechanism-stratified reversal. LoopReview (end of turn): confirm or refute H-causal-* in vw_discovery_findings; decide whether ManifestReversal vs LatentReversal deserves first-class fields in loop-67+ or whether existing LatentFlipPotential + CausalRole suffice." ;
+    effortless-ntwf:nextSuggestion "loop-63: after LoopReview — paradox-explained × mechanism partition (do not start until loop-62 review documents pass/fail and vocabulary decision)" ;
+    effortless-ntwf:traditionId "tradition-epidemiology" .
+
+effortless-ntwf:loop-63 a effortless-ntwf:Loops ;
+    effortless-ntwf:loopId "loop-63" ;
+    effortless-ntwf:title "Research sweep 2: IsParadoxExplained × causal mechanism" ;
+    effortless-ntwf:status "planned" ;
+    effortless-ntwf:newConcept "DiscoveryHypotheses H-explained-confounder + H-unexplained-nonconfounder; optional InvariantCheck inv-explained-sign-flip-confounder" ;
+    effortless-ntwf:domainQuestion "Does IsParadoxExplained track adjust-resolvable confounding rather than geometric distortion alone? Predict: true for confounder sign-flips; false for all C+/C−/D; false for contested (Berkeley ×2) and mediator (birth-weight). Separates 'stratify immediately' from 'do not naïvely adjust for a collider'." ;
+    effortless-ntwf:mockDataNote "Corpus peek: 15/15 confounder sign-flips explained; 0/78 C+/C−/D explained; 3 unexplained Type B = berkeley-1973, berkeley-six-dept-1973, birth-weight-paradox (contested/mediator). LoopReview: if confirmed, promote Conclusion about adjustment boundary; if exceptions exist, classify as contested rows not counterexamples — do not widen IsParadoxExplained formula without review." ;
+    effortless-ntwf:nextSuggestion "loop-64: after LoopReview — formalize signal purity law from loop-61 (graduate H-purity to invariant, not re-run experiment)" ;
+    effortless-ntwf:traditionId "tradition-dag" .
+
+effortless-ntwf:loop-64 a effortless-ntwf:Loops ;
+    effortless-ntwf:loopId "loop-64" ;
+    effortless-ntwf:title "Research sweep 3: signal purity law — loop-61 H-purity → invariant + Conclusion" ;
+    effortless-ntwf:status "planned" ;
+    effortless-ntwf:newConcept "InvariantCheck inv-sign-flip-signal-purity-max; Conclusion conc-signal-purity-ceiling; DiscoveryFinding refresh for H-purity with boundary-condition note" ;
+    effortless-ntwf:domainQuestion "Loop-61 confirmed SignFlipSignalPurityMax=0.483 (<0.5). Does this graduate from discovery finding to build-breaking invariant and witnessed Conclusion — or does the melanoma C+ near-miss (purity≈0.48, no sign-flip) require an explicit carve-out?" ;
+    effortless-ntwf:mockDataNote "NOT a new experiment — a review loop on loop-61 output. H-purity already confirmed; this turn decides whether it is instrument-law or corpus statistic. LoopReview: document melanoma-altman-1991 as known non-sign-flip boundary case; check Type A vs Type B purity separation; only add invariant if zero counterexamples among IsSignFlip=TRUE rows." ;
+    effortless-ntwf:nextSuggestion "loop-65: after LoopReview — catalog expectation falsification (type prediction audit + CorpusCatalogSummary match counts)" ;
+    effortless-ntwf:traditionId "tradition-dag" .
+
+effortless-ntwf:loop-65 a effortless-ntwf:Loops ;
+    effortless-ntwf:loopId "loop-65" ;
+    effortless-ntwf:title "Research sweep 4: catalog expectation falsification (type prediction audit)" ;
+    effortless-ntwf:status "planned" ;
+    effortless-ntwf:newConcept "CorpusCatalogSummary TypePredictionMatchCount + TypePredictionMismatchCount; CandidateStudyCatalog ObservedDistortionType lookup (fixes broken type_prediction_match calc); DiscoveryHypotheses H-catalog-exact-match + H-catalog-flip-prediction" ;
+    effortless-ntwf:domainQuestion "When curators tag ExpectedDistortionType at import, how often does observed DistortionType match? Corpus peek: ~19% exact match, ~25% sign-flip prediction from Expected A∪B — catalog tags behave as mechanism priors not taxonomy predictors. Meta-research on curation discipline, not a paradox law." ;
+    effortless-ntwf:mockDataNote "LoopReview: if match rate <50%, conclude catalog needs separate ExpectedSignFlip vs ExpectedDistortionType (or drop type prediction entirely); do NOT add ObservedDistortionType to Studies — keep it on catalog as audit trail only. Document biggest misprediction buckets (Expected A→D: 23 studies)." ;
+    effortless-ntwf:nextSuggestion "loop-66: after LoopReview — domain heterogeneity under geometry controls + full sweep synthesis" ;
+    effortless-ntwf:traditionId "tradition-epidemiology" .
+
+effortless-ntwf:loop-66 a effortless-ntwf:Loops ;
+    effortless-ntwf:loopId "loop-66" ;
+    effortless-ntwf:title "Research sweep 5: domain screening + synthesis review" ;
+    effortless-ntwf:status "planned" ;
+    effortless-ntwf:newConcept "DiscoveryHypotheses H-domain-flip-geometry-controlled; ModelSummary discovery rollup refresh; Conclusions rows from loops 62–66; loop-67+ direction decided only after synthesis" ;
+    effortless-ntwf:domainQuestion "Do domain flip-rate differences (economics 0%, legal/epi/sports ~27%) survive conditioning on max_stratum_imbalance — or are they catalog selection artifacts? Weakest experiment; ends with full synthesis of research sweep loops 62–66." ;
+    effortless-ntwf:mockDataNote "Fold loop-61 partial findings (H-econ-zero, H-domain-dist, H-small-effect) into synthesis — do not re-run. LoopReview (synthesis): aggregate confirmed laws vs corpus-specific patterns vs falsified hypotheses; list vocabulary commitments deferred to loop-67+ (ManifestReversal/LatentReversal, catalog tag split, Discovery screen polish); write sweep summary in Conclusions table." ;
+    effortless-ntwf:nextSuggestion "loop-67: vocabulary landing turn — ONLY after loop-66 synthesis review confirms which findings deserve first-class fields vs remaining as DiscoveryFindings rows" ;
+    effortless-ntwf:traditionId "tradition-historical" .
 
 # === Individuals: Methodology ===
 

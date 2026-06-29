@@ -6,7 +6,50 @@
 }
 
 .conclusions-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 12px;
   margin-bottom: 16px;
+}
+
+.scope-card {
+  margin-bottom: 16px;
+  border-left: 3px solid #58a6ff;
+}
+
+.scope-card h2 {
+  margin: 0 0 10px;
+  font-size: 15px;
+}
+
+.scope-text {
+  font-size: 13px;
+  line-height: 1.5;
+  color: #c9d1d9;
+  margin: 0 0 8px;
+}
+
+.scope-muted {
+  color: #8b949e;
+  font-size: 12px;
+}
+
+.domain-caveat {
+  margin: 0 0 14px;
+  padding: 10px 12px;
+  border-radius: 6px;
+  border: 1px solid #6e4c00;
+  background: #1c1400;
+  color: #f0c674;
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.discovery-tier {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #8b949e;
 }
 
 .stat-card {
@@ -69,6 +112,8 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
   margin-bottom: 8px;
 }
 

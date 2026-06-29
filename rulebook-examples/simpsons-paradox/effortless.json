@@ -59,6 +59,14 @@
       "CommandLine": "-exec ./generate-summary-pdf.sh",
       "IsDisabled": false,
       "Description": "Generate simpsons-paradox-summary.pdf from live vw_* views (requires local Postgres)"
+    },
+    {
+      "IsSSoTTranspiler": false,
+      "Name": "rulebooktoexplainerdag",
+      "RelativePath": "/app/frontend",
+      "CommandLine": "rulebook-to-explainer-dag -i ../../effortless-rulebook/simpsons-paradox-rulebook.json",
+      "IsDisabled": false,
+      "PinnedVersion": "v2026.06.20.1606"
     }
   ]
 }

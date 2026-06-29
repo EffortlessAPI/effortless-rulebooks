@@ -2,9 +2,9 @@
 
 A **witnessed dependency graph** that turns Simpson's paradox from a textbook curiosity into a computational object. **96 published and synthetic studies** — spanning medicine, epidemiology, law, sports, education, economics, and social science — share one entity model. The instrument was built across **61+ Leopold loops**. Every derived value falls out of formulas declared in the rulebook; modeling choices are centralized there, not scattered in app code.
 
-**Start at `/conclusions`.** Formal epistemic claims live in the rulebook `Conclusions` table — findings witnessed across loops, categorized (theorem · instrument · domain · …). Loop-61 adds pre-registered `DiscoveryHypotheses` / `DiscoveryFindings` with live PASS/FAIL from the corpus. SSoT is the rulebook JSON; the explorer reads `vw_*` views only. Run `./start.sh` → [Conclusions & Findings](http://localhost:5173/conclusions).
+**Start at `/conclusions`.** Formal epistemic claims live in the rulebook `Conclusions` table — tiered by claim type (theorem · instrument · corpus snapshot). Loop-61 `DiscoveryHypotheses` split into **consistency checks** (definition-linked, e.g. H-purity) vs **corpus hypotheses** (contingent, provisional). SSoT is the rulebook JSON; the explorer reads `vw_*` views only. Run `./start.sh` → [Conclusions & Findings](http://localhost:5173/conclusions).
 
-[`simpsons-paradox-summary.pdf`](simpsons-paradox-summary.pdf) is a static export of the same witnessed state (regenerated on `./init-db.sh`). For framing caveats — geometric vs causal, deductive vs empirical, convenience-sample limits — see [What this is not](#what-this-is-not) below.
+[`simpsons-paradox-summary.pdf`](simpsons-paradox-summary.pdf) is a static export of the same tiered state (regenerated on `./init-db.sh`). For framing caveats — geometric vs causal, deductive vs empirical, convenience-sample limits — see [What this is not](#what-this-is-not) below.
 
 ---
 
@@ -133,7 +133,7 @@ The `ModelSummary` row witnesses epistemic coverage in one query:
 
 **Reversal recovery is free.** `CorrectedGap = WeightedStratumGapSum` is already derived from the allocation arithmetic. The allocation-corrected winner (`CorrectedWinner`) and its policy implication (`CorrectedPolicyImplication`) cost zero new data.
 
-**14 witnessed conclusions** are stored as first-class rows in `Conclusions` — from "Simpson's paradox is a derived fact" (loop-04) through the SignalPurity theorem (loop-44) and the five-type instrument spec (loop-26).
+**17 conclusions** are stored as first-class rows in `Conclusions` — from "Simpson's paradox is a derived fact" (loop-04) through loop-61 corpus patterns. The PDF and `/conclusions` UI group them by epistemic tier (proved · instrument · corpus snapshot), not a single headline tally.
 
 ---
 

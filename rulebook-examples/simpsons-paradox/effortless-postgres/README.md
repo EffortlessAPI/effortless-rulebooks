@@ -2,14 +2,14 @@
 
 **Schema:** `public`
 **Database:** `demo`
-**Timestamp:** 2026-06-29 19:34:57 UTC
+**Timestamp:** 2026-06-29 23:38:47 UTC
 
 ## Parsing Rulebook
 
 Found **31** tables in rulebook
 
 
-  - **Loops** (16 fields, 56 records)
+  - **Loops** (16 fields, 61 records)
   - **Studies** (26 fields, 96 records)
   - **Treatments** (8 fields, 180 records)
   - **Strata** (6 fields, 213 records)
@@ -38,14 +38,14 @@ Found **31** tables in rulebook
   - **StudyImportTemplate** (7 fields, 8 records)
   - **SweepStudyConfig** (13 fields, 96 records)
   - **SubstrateConformanceFields** (9 fields, 26 records)
-  - **DiscoveryHypotheses** (6 fields, 5 records)
+  - **DiscoveryHypotheses** (7 fields, 5 records)
   - **DiscoveryFindings** (8 fields, 5 records)
 
-Generated **31** table definitions with **210** raw fields (mode=check-add)
+Generated **31** table definitions with **211** raw fields (mode=check-add)
 Generated **234** calculation functions
 Generated **31** views
 Enabled RLS on **31** tables
-Generated insert statements for **3261** records
+Generated insert statements for **3266** records
 ## Script Generation Complete
 
 Generated files:

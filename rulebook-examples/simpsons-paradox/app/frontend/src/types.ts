@@ -293,6 +293,7 @@ export interface DiscoveryHypothesis {
   expected_outcome: string;
   registered_in_loop: string;
   tradition_id: string | null;
+  epistemic_tier: string | null;
 }
 
 export interface DiscoveryFinding {

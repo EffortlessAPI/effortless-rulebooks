@@ -43,7 +43,7 @@ DROP VIEW IF EXISTS vw_studies CASCADE;
 DROP VIEW IF EXISTS vw_loops CASCADE;
 
 -- ----------------------------------------------------------------------------
--- vw_loops: Table: Loops — the 10-loop build plan, carried as a first-class entity inside the model. Each row documents what new concept is introduced and why.
+-- vw_loops: Table: Loops — build history and forward plan, carried as a first-class entity inside the model. Each row documents what new concept is introduced, what was witnessed, and (for planned rows) the next empirical question. Loops 62+ are the corpus-scale research sweep: pre-register in DiscoveryHypotheses, run against vw_* views, LoopReview at end of each turn before committing vocabulary.
 -- Combines base table columns with calculated/lookup/aggregation fields.
 -- ----------------------------------------------------------------------------
 DROP VIEW IF EXISTS vw_loops CASCADE;
@@ -746,7 +746,8 @@ SELECT
   t.statement,                                                                  -- Natural-language claim under test.
   t.expected_outcome,                                                           -- Pass criterion in plain language.
   t.registered_in_loop,                                                         -- LoopId where this hypothesis was registered.
-  t.tradition_id                                                                -- FK → ResearchTraditions.TraditionId.
+  t.tradition_id,                                                               -- FK → ResearchTraditions.TraditionId.
+  t.epistemic_tier                                                              -- consistency-check (definition-linked regression) | corpus-hypothesis (contingent corpus pattern).
 FROM discovery_hypotheses t;
 
 -- ----------------------------------------------------------------------------
