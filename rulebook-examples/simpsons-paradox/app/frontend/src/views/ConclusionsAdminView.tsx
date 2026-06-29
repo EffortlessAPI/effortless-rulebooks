@@ -87,10 +87,10 @@ export function ConclusionsAdminView() {
 
   return (
     <div className="conclusions-page">
-      <h1 className="page-title">Conclusions &amp; Gems</h1>
+      <h1 className="page-title">Conclusions &amp; Findings</h1>
       <p className="page-desc">
-        Formal epistemic claims tracked in the rulebook <code>Conclusions</code> table — these
-        are the &ldquo;gems&rdquo; witnessed across Leopold loops. Loop-61 adds pre-registered{' '}
+        Formal epistemic claims tracked in the rulebook <code>Conclusions</code> table — findings
+        witnessed across Leopold loops. Loop-61 adds pre-registered{' '}
         <code>DiscoveryHypotheses</code> / <code>DiscoveryFindings</code> with live PASS/FAIL
         from the corpus. SSoT is the rulebook JSON; this surface reads <code>vw_*</code> views only.
       </p>
@@ -125,7 +125,7 @@ export function ConclusionsAdminView() {
       <section className="card">
         <h2>Pre-registered discovery (loop-61)</h2>
         <p className="section-hint">
-          Hypotheses registered before querying the 96-study corpus. Each finding is computed live from ModelSummary.
+          Hypotheses registered before querying the 90+ study corpus. Each finding is computed live from ModelSummary.
         </p>
         <div className="discovery-grid">
           {hypotheses.map(h => {
@@ -214,7 +214,7 @@ export function ConclusionsAdminView() {
                   <h3>Discovery replay</h3>
                   <p className="replay-hint">
                     Check out the landing commit for this conclusion&apos;s loop, rebuild, and the
-                    instrument state matches what was witnessed when the gem landed.
+                    instrument state matches what was witnessed when the conclusion landed.
                   </p>
                   {selected.witnessed_in_loop_git_tag && (
                     <div>

@@ -6,7 +6,7 @@ Build with `effortless build` (hosted transpilers in `effortless.json`); run the
 
 ## What this models
 
-A **digital mirror** of the Simpson's Paradox domain — a 46-study validation corpus
+A **digital mirror** of the Simpson's Paradox domain — a 90+ study validation corpus
 spanning medicine, epidemiology, law, sports, education, economics, and social science.
 The entities are domain objects: Studies, Treatments, Strata, CaseCells. The paradox
 emerges as a derived fact from the DAG — it is NOT modeled directly. No

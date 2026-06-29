@@ -10,7 +10,7 @@ export function Shell() {
           Simpson's Paradox
         </div>
         <NavLink to="/conclusions" className={({ isActive }) => isActive ? 'nav-item nav-item-priority active' : 'nav-item nav-item-priority'}>
-          Conclusions &amp; Gems
+          Conclusions &amp; Findings
         </NavLink>
         <NavLink to="/overview" className={({ isActive }) => isActive ? 'nav-item active' : 'nav-item'}>
           Study Overview

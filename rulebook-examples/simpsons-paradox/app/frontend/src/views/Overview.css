@@ -64,6 +64,49 @@
   max-width: 680px;
 }
 
+.overview-hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 16px;
+  margin-top: 18px;
+}
+
+.summary-pdf-btn {
+  background: #238636;
+  border: 1px solid #2ea043;
+  border-radius: 8px;
+  color: #fff;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 10px 18px;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.summary-pdf-btn:hover:not(:disabled) {
+  background: #2ea043;
+  border-color: #3fb950;
+}
+
+.summary-pdf-btn:disabled {
+  cursor: default;
+  opacity: 0.7;
+}
+
+.summary-pdf-hint {
+  color: #8b949e;
+  font-size: 12px;
+  line-height: 1.45;
+  max-width: 420px;
+}
+
+.summary-pdf-error {
+  color: #ff7b72;
+  font-size: 12px;
+  margin-top: 10px;
+}
+
 .kpi-strip {
   display: grid;
   grid-template-columns: repeat(4, 1fr);

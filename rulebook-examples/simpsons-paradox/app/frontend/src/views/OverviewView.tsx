@@ -71,6 +71,8 @@ export function OverviewView() {
   const [tierFilter, setTierFilter] = useState<string | null>(null);
   const [search, setSearch] = useState('');
   const [expanded, setExpanded] = useState<string | null>(null);
+  const [pdfLoading, setPdfLoading] = useState(false);
+  const [pdfError, setPdfError] = useState<string | null>(null);
 
   const canonicalRef = useRef<HTMLCanvasElement>(null);
   const finding1Ref = useRef<HTMLCanvasElement>(null);
@@ -124,6 +126,18 @@ export function OverviewView() {
     return () => { chartsRef.current.forEach(c => c?.destroy()); chartsRef.current = []; };
   }, [rankings, studyById]);
 
+  async function handleDownloadSummary() {
+    setPdfError(null);
+    setPdfLoading(true);
+    try {
+      await api.downloadSummaryPdf();
+    } catch (err) {
+      setPdfError(err instanceof Error ? err.message : String(err));
+    } finally {
+      setPdfLoading(false);
+    }
+  }
+
   if (loading) return <div className="loading">Loading…</div>;
 
   const total = summary?.study_count ?? studies.length;
@@ -143,6 +157,20 @@ export function OverviewView() {
             corrected gaps diverge from pooled gaps on sign-flips, and signal purity flags when
             the aggregate is mostly noise.
           </p>
+          <div className="overview-hero-actions">
+            <button
+              type="button"
+              className="summary-pdf-btn"
+              onClick={handleDownloadSummary}
+              disabled={pdfLoading}
+            >
+              {pdfLoading ? 'Building PDF…' : 'Download summary PDF'}
+            </button>
+            <span className="summary-pdf-hint">
+              Conclusions, discovery findings, invariant health, and GitHub evidence links — not the full rulebook.
+            </span>
+          </div>
+          {pdfError && <p className="summary-pdf-error">{pdfError}</p>}
         </div>
       </div>
 
@@ -183,7 +211,7 @@ export function OverviewView() {
       {/* Three key findings — additional 2D views, not replacements */}
       <div className="findings-section-header">
         <h2 className="section-title">Three findings from the corpus</h2>
-        <p className="section-sub">Same 40 studies, three other lenses — the plane above is unchanged.</p>
+        <p className="section-sub">Same 90+ studies, three other lenses — the plane above is unchanged.</p>
       </div>
 
       <div className="findings-grid">

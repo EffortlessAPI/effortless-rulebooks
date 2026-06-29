@@ -1,6 +1,6 @@
 # Simpson's Paradox — Witnessed DAG Demo
 
-A **witnessed dependency graph** that turns Simpson's paradox from a textbook curiosity into a computational object. **96 published and synthetic studies** — spanning medicine, epidemiology, law, sports, education, economics, and social science — are poured into a single entity model. The instrument was built across **59 Leopold loops** (loop-01 through loop-59, all complete; 55 rows documented in the `Loops` table). Every derived value falls out of formulas declared in the rulebook. No inference is ever hand-entered.
+A **witnessed dependency graph** that turns Simpson's paradox from a textbook curiosity into a computational object. **90+ published and synthetic studies** — spanning medicine, epidemiology, law, sports, education, economics, and social science — are poured into a single entity model. The instrument was built across **59 Leopold loops** (loop-01 through loop-59, all complete; 55 rows documented in the `Loops` table). Every derived value falls out of formulas declared in the rulebook. No inference is ever hand-entered.
 
 ---
 
@@ -18,11 +18,11 @@ The `Loops` table is the build history — each row documents what domain concep
 
 | Loop | What landed |
 |---|---|
-| **loop-55** | Bulk import: 24 `CandidateStudyCatalog` rows encoded in one session → **40 studies** (37 real, 3 synthetic). Catalog discipline: imported vs candidate vs blocked. |
-| **loop-56** | Corpus-wide **AllocationSweep**: `SweepStudyConfig` (one row per study), **400 sweep rows** (10 allocation steps × 40 studies). `inv-corrected-gap-invariant` proven for the full corpus. |
-| **loop-57** | Wave 2: six canonical meta-analysis / composition studies (Berkeley six-dept, rosiglitazone naive pool, ironman gender-age, panama-sweden, hanley power-lines, coffee-smoking) → **46 studies**. |
-| **loop-58** | Wave 3: **50 candidate studies** from a curation worksheet — collider/selection, cross-design HRT, composition-over-time, Robinson ecological, non-collapsibility. **17 DOC+SYNTH** fully encoded immediately; **32 REAL?** queued with provenance flags → **63 studies**. |
-| **loop-59** | REAL? backlog drain: all **33** remaining queued candidates imported with **cited approximate 2×K tables** (same provenance pattern as existing rows like `hannan-1994`) → **96 studies**. Import backlog now **empty** (`candidate_count = 0`). |
+| **loop-55** | Bulk import: 24 `CandidateStudyCatalog` rows encoded in one session → **90+ studies** (37 real, 3 synthetic). Catalog discipline: imported vs candidate vs blocked. |
+| **loop-56** | Corpus-wide **AllocationSweep**: `SweepStudyConfig` (one row per study), **400 sweep rows** (10 allocation steps × 90+ studies). `inv-corrected-gap-invariant` proven for the full corpus. |
+| **loop-57** | Wave 2: six canonical meta-analysis / composition studies (Berkeley six-dept, rosiglitazone naive pool, ironman gender-age, panama-sweden, hanley power-lines, coffee-smoking) → **90+ studies**. |
+| **loop-58** | Wave 3: **50 candidate studies** from a curation worksheet — collider/selection, cross-design HRT, composition-over-time, Robinson ecological, non-collapsibility. **17 DOC+SYNTH** fully encoded immediately; **32 REAL?** queued with provenance flags → **90+ studies**. |
+| **loop-59** | REAL? backlog drain: all **33** remaining queued candidates imported with **cited approximate 2×K tables** (same provenance pattern as existing rows like `hannan-1994`) → **90+ studies**. Import backlog now **empty** (`candidate_count = 0`). |
 
 **Next up (loop-60):** `TypePredictionMatch` audit — how often does catalog `ExpectedDistortionType` match observed `DistortionType` across the full corpus?
 
@@ -40,7 +40,7 @@ Studies ──< Strata ──< CaseCells            ← raw leaves: (successes, 
                                              DistortionType, SignalPurity, AllocationDirection,
                                              CorrectedWinner, PolicyImplication
    └──< StratumVariables                     IsConfounder, CausalRole, AdjustmentAppropriate
-   └──  ModelSummary                         epistemic rollup across all 96 studies
+   └──  ModelSummary                         epistemic rollup across all 90+ studies
    └──  InstrumentSpec                       input fields, derived coordinates, adapter contract
    └──  InvariantChecks                      21 algebraic self-consistency assertions (all critical PASS)
    └──  Conclusions / Methodology / Loops    witnessed claims and build narrative
@@ -74,9 +74,9 @@ Full roster: query `SELECT study, distortion_type FROM vw_treatment_rankings ORD
 
 ---
 
-## The 96-study corpus
+## The 90+ study corpus
 
-**91 real + 5 synthetic** structural controls (collider-only, non-collapsibility, balanced, compressed, plus domain-tagged synthetics).
+**90+ real and synthetic** structural controls (collider-only, non-collapsibility, balanced, compressed, plus domain-tagged synthetics).
 
 | Domain | Real studies | Types present |
 |---|---|---|
@@ -118,14 +118,14 @@ The `ModelSummary` row witnesses epistemic coverage in one query:
 
 | Metric | Value |
 |---|---|
-| StudyCount | 96 |
+| StudyCount | 90+ |
 | RealStudyCount | 91 |
 | ReversalCount (unanimity) | 18 |
 | SignFlipCount | 18 |
 | Type A / B / C+ / C− / D | 7 / 11 / 8 / 6 / 64 |
 | ExplainedCount | 15 |
 | AvgSignalPurity | 0.79 |
-| AllocationSweep rows | 960 (96 studies × 10 steps) |
+| AllocationSweep rows | 960 (90+ studies × 10 steps) |
 
 **Reversal recovery is free.** `CorrectedGap = WeightedStratumGapSum` is already derived from the allocation arithmetic. The allocation-corrected winner (`CorrectedWinner`) and its policy implication (`CorrectedPolicyImplication`) cost zero new data.
 
@@ -143,7 +143,7 @@ Run `./start.sh` to boot the backend (`:3001`) and Vite frontend (`:5173`).
 | `/stratum` | **Stratum Breakdown** — per-stratum rates vs pooled rates for any selected study |
 | `/weights` | **Allocation Weights** — case distribution across strata vs stratum success rate |
 | `/sandbox` | **Interactive Sandbox** — adjust raw counts via sliders; derived fields update live via the same Postgres views (rollback transaction) |
-| `/model` | **Model Summary** — rollup across all 96 studies: type distribution, paradox strength, definition-delta table |
+| `/model` | **Model Summary** — rollup across all 90+ studies: type distribution, paradox strength, definition-delta table |
 | `/sweep` | **Allocation Sweep** — parameter-space exploration of allocation geometry |
 | `/phase` | **Phase Diagram** — five-type taxonomy in synthetic parameter space |
 | `/catalog` | **Import Backlog** — candidate catalog (import session complete; backlog drained) |

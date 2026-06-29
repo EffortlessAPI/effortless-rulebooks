@@ -411,7 +411,7 @@ SELECT
 FROM ui_components t;
 
 -- ----------------------------------------------------------------------------
--- vw_instrument_spec: Table: InstrumentSpec — the complete specification of the Simpson's Paradox classification instrument. One row per component: required input fields, derived coordinates, classification outputs, and adapter requirements. Every row is machine-verifiable against the 16 hydrated studies. This table is the distillation of loops 1–25 into a reusable tool.
+-- vw_instrument_spec: Table: InstrumentSpec — the complete specification of the Simpson's Paradox classification instrument. One row per component: required input fields, derived coordinates, classification outputs, and adapter requirements. Every row is machine-verifiable against the 90+ study corpus. This table is the distillation of loops 1–25 into a reusable tool.
 -- Combines base table columns with calculated/lookup/aggregation fields.
 -- ----------------------------------------------------------------------------
 DROP VIEW IF EXISTS vw_instrument_spec CASCADE;
@@ -437,7 +437,7 @@ CREATE VIEW vw_allocation_sweep WITH (security_invoker = ON) AS
 SELECT
   t.sweep_id,                                                                   -- Unique row identifier: <study>-f<pct> where pct is AllocFractionA*100.
   calc_allocation_sweep_name(t.sweep_id) AS name,                               -- Display label.
-  t.study_id,                                                                   -- The study being swept — all 40 studies in the corpus.
+  t.study_id,                                                                   -- The study being swept — all 90+ studies in the corpus.
   t.alloc_fraction_a,                                                           -- Fraction of the sweep-stratum cases assigned to treatment A. Ranges from 0.05 to 0.95. The sweep stratum is the one whose allocation was most confounded in the original study.
   calc_allocation_sweep_is_original(t.sweep_id) AS is_original,                 -- TRUE for the row closest to the actual original study allocation.
   calc_allocation_sweep_n_sweep_stratum_total(t.sweep_id) AS n_sweep_stratum_total,-- Total cases in the sweep stratum (the stratum whose allocation is being varied). Fixed per study.

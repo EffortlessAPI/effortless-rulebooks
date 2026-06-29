@@ -3,6 +3,7 @@ import cors from 'cors';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { query, withRollbackTransaction } from './db.js';
+import { buildSummaryPdf } from './export-summary-pdf.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -317,6 +318,25 @@ app.get('/api/study-import-template', async (_req, res) => {
     'SELECT template_step_id, sort_order, target_table, row_description, required_fields, mechanical_check FROM vw_study_import_template ORDER BY sort_order'
   );
   res.json(rows);
+});
+
+// --- PDF summary export (conclusions + findings, not full rulebook) ---
+
+app.get('/api/export/summary-pdf', async (_req, res) => {
+  try {
+    const pdf = await buildSummaryPdf();
+    const stamp = new Date().toISOString().slice(0, 10);
+    res.setHeader('Content-Type', 'application/pdf');
+    res.setHeader(
+      'Content-Disposition',
+      `attachment; filename="simpsons-paradox-summary-${stamp}.pdf"`,
+    );
+    res.send(pdf);
+  } catch (err) {
+    const message = err instanceof Error ? err.message : String(err);
+    console.error('[export/summary-pdf]', message);
+    res.status(500).json({ error: message });
+  }
 });
 
 // Serve the standalone explorer HTML from the project root

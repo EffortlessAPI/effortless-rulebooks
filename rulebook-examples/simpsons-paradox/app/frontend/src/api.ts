@@ -6,6 +6,21 @@ async function get<T>(path: string): Promise<T> {
   return res.json() as Promise<T>;
 }
 
+async function downloadBlob(path: string, filename: string): Promise<void> {
+  const res = await fetch(path);
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({})) as { error?: string };
+    throw new Error(err.error ?? `GET ${path} → ${res.status}`);
+  }
+  const blob = await res.blob();
+  const url = URL.createObjectURL(blob);
+  const anchor = document.createElement('a');
+  anchor.href = url;
+  anchor.download = filename;
+  anchor.click();
+  URL.revokeObjectURL(url);
+}
+
 async function post<T>(path: string, body: unknown): Promise<T> {
   const res = await fetch(path, {
     method: 'POST',
@@ -51,4 +66,11 @@ export const api = {
   discoveryHypotheses: () => get<DiscoveryHypothesis[]>('/api/discovery-hypotheses'),
   discoveryFindings: () => get<DiscoveryFinding[]>('/api/discovery-findings'),
   invariantChecks: () => get<InvariantCheck[]>('/api/invariant-checks'),
+  downloadSummaryPdf: () => {
+    const stamp = new Date().toISOString().slice(0, 10);
+    return downloadBlob(
+      '/api/export/summary-pdf',
+      `simpsons-paradox-summary-${stamp}.pdf`,
+    );
+  },
 };
