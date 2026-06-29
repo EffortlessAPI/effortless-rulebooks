@@ -523,8 +523,8 @@ effortless-ntwf:DiscoveryFindingsShape a sh:NodeShape ;
         """ ;
     ] .
 # Rule for HypothesisStatement - parse error: Unexpected character '[' at position 44
-# Rule for ObservedMetric - parse error: Unexpected character '[' at position 84
-# Rule for IsConfirmed - parse error: Unexpected character '[' at position 79
+# Rule for ObservedMetric - parse error: Unexpected character '[' at position 98
+# Rule for IsConfirmed - parse error: Unexpected character '[' at position 78
 # Rule for Evidence - parse error: Unknown function: CONCAT
 
 # === Shape with rules for DiscoveryHypotheses ===

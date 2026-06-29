@@ -2,7 +2,7 @@
 
 **Schema:** `public`
 **Database:** `demo`
-**Timestamp:** 2026-06-29 19:13:43 UTC
+**Timestamp:** 2026-06-29 19:20:30 UTC
 
 ## Parsing Rulebook
 
@@ -42,7 +42,7 @@ Found **31** tables in rulebook
   - **DiscoveryFindings** (8 fields, 5 records)
 
 Generated **31** table definitions with **206** raw fields (mode=check-add)
-Generated **230** calculation functions
+Generated **233** calculation functions
 Generated **31** views
 Enabled RLS on **31** tables
 Generated insert statements for **3261** records

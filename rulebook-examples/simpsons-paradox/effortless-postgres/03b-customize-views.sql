@@ -87,7 +87,12 @@ SELECT
   m.max_stratum_imbalance,
   m.max_stratum_gap,
   m.allocation_direction,
-  m.signal_purity
+  m.signal_purity,
+  m.pooled_gap_crosses_zero,
+  m.sweep_pooled_gap_range,
+  m.latent_flip_potential,
+  m.allocation_fragility,
+  m.study_domain
 FROM treatment_rankings t
 JOIN _erb_tr_metrics m ON m.treatment_ranking_id = t.treatment_ranking_id;
 
@@ -143,7 +148,18 @@ SELECT
   (SELECT phase_taxonomy_witness FROM vw_phase_diagram_summary LIMIT 1)      AS phase_taxonomy_coverage,
   calc_model_summary_ingestion_protocol_item_count(t.model_summary_id)       AS ingestion_protocol_item_count,
   calc_model_summary_corpus_passes_ingestion_contract(t.model_summary_id)      AS corpus_passes_ingestion_contract,
-  calc_model_summary_ingestion_witness_note(t.model_summary_id)              AS ingestion_witness_note
+  calc_model_summary_ingestion_witness_note(t.model_summary_id)              AS ingestion_witness_note,
+  calc_model_summary_latent_type_d_count(t.model_summary_id)                 AS latent_type_d_count,
+  calc_model_summary_stable_type_d_count(t.model_summary_id)                 AS stable_type_d_count,
+  calc_model_summary_latent_type_d_fraction(t.model_summary_id)              AS latent_type_d_fraction,
+  calc_model_summary_cross_zero_count(t.model_summary_id)                    AS cross_zero_count,
+  calc_model_summary_sign_flip_signal_purity_max(t.model_summary_id)         AS sign_flip_signal_purity_max,
+  calc_model_summary_economics_sign_flip_count(t.model_summary_id)           AS economics_sign_flip_count,
+  calc_model_summary_avg_pooled_gap_latent_d(t.model_summary_id)             AS avg_pooled_gap_latent_d,
+  calc_model_summary_avg_pooled_gap_stable_d(t.model_summary_id)             AS avg_pooled_gap_stable_d,
+  calc_model_summary_epidemiology_avg_distortion(t.model_summary_id)         AS epidemiology_avg_distortion,
+  calc_model_summary_education_avg_distortion(t.model_summary_id)            AS education_avg_distortion,
+  calc_model_summary_discovery_witness_note(t.model_summary_id)                AS discovery_witness_note
 FROM model_summary t;
 
 -- ============================================================================

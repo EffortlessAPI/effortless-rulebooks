@@ -787,7 +787,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_model_summary_epidemiology_avg_distortion(p_model_summary_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COALESCE(AVG((calc_treatment_rankings_allocation_distortion(treatment_ranking_id))::numeric), 0) FROM treatment_rankings WHERE study_domain = 'epidemiology'))::numeric;
+  SELECT ((SELECT COALESCE(AVG((calc_treatment_rankings_allocation_distortion(treatment_ranking_id))::numeric), 0) FROM treatment_rankings WHERE calc_treatment_rankings_study_domain(treatment_ranking_id) = 'epidemiology'))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_model_summary_education_avg_distortion
@@ -797,7 +797,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_model_summary_education_avg_distortion(p_model_summary_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COALESCE(AVG((calc_treatment_rankings_allocation_distortion(treatment_ranking_id))::numeric), 0) FROM treatment_rankings WHERE study_domain = 'education'))::numeric;
+  SELECT ((SELECT COALESCE(AVG((calc_treatment_rankings_allocation_distortion(treatment_ranking_id))::numeric), 0) FROM treatment_rankings WHERE calc_treatment_rankings_study_domain(treatment_ranking_id) = 'education'))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_model_summary_discovery_witness_note
@@ -807,11 +807,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_model_summary_discovery_witness_note(p_model_summary_id TEXT)
 RETURNS TEXT AS $$
-  SELECT /* WARNING: Formula translation failed: Function 'TEXT' is not supported yet
-   Original Airtable formula:
-   =CONCAT("LatentTypeD=", {{LatentTypeDCount}}, "/", {{TypeDCount}}, " (", TEXT({{LatentTypeDFraction}}, "0%"), "); SignFlipMaxPurity=", TEXT({{SignFlipSignalPurityMax}}, "0.000"), "; stableD avgGap=", TEXT({{AvgPooledGapStableD}}, "0.000"), " vs latentD ", TEXT({{AvgPooledGapLatentD}}, "0.000"))
-*/
-NULL::text;
+  SELECT (CONCAT('LatentTypeD=', calc_model_summary_latent_type_d_count(p_model_summary_id), '/', calc_model_summary_type_d_count(p_model_summary_id), '; SignFlipMaxPurity=', calc_model_summary_sign_flip_signal_purity_max(p_model_summary_id), '; stableD=', calc_model_summary_avg_pooled_gap_stable_d(p_model_summary_id), ' latentD=', calc_model_summary_avg_pooled_gap_latent_d(p_model_summary_id)))::text;
 $$ LANGUAGE sql STABLE;
 
 -- calc_stratum_variables_name
@@ -1174,6 +1170,34 @@ RETURNS NUMERIC AS $$
   SELECT (CASE WHEN calc_treatment_rankings_corrected_gap(p_treatment_ranking_id) IS NULL THEN ('')::text ELSE (CASE WHEN ((COALESCE(CASE WHEN (ABS(calc_treatment_rankings_corrected_gap(p_treatment_ranking_id)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (ABS(calc_treatment_rankings_corrected_gap(p_treatment_ranking_id)))::numeric ELSE NULL END, 0) + COALESCE(CASE WHEN (calc_treatment_rankings_allocation_distortion(p_treatment_ranking_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_treatment_rankings_allocation_distortion(p_treatment_ranking_id))::numeric ELSE NULL END, 0)))::NUMERIC = 0 THEN (1)::text ELSE ((COALESCE(CASE WHEN (ABS(calc_treatment_rankings_corrected_gap(p_treatment_ranking_id)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (ABS(calc_treatment_rankings_corrected_gap(p_treatment_ranking_id)))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(CASE WHEN ((COALESCE(CASE WHEN (ABS(calc_treatment_rankings_corrected_gap(p_treatment_ranking_id)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (ABS(calc_treatment_rankings_corrected_gap(p_treatment_ranking_id)))::numeric ELSE NULL END, 0) + COALESCE(CASE WHEN (calc_treatment_rankings_allocation_distortion(p_treatment_ranking_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_treatment_rankings_allocation_distortion(p_treatment_ranking_id))::numeric ELSE NULL END, 0)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((COALESCE(CASE WHEN (ABS(calc_treatment_rankings_corrected_gap(p_treatment_ranking_id)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (ABS(calc_treatment_rankings_corrected_gap(p_treatment_ranking_id)))::numeric ELSE NULL END, 0) + COALESCE(CASE WHEN (calc_treatment_rankings_allocation_distortion(p_treatment_ranking_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_treatment_rankings_allocation_distortion(p_treatment_ranking_id))::numeric ELSE NULL END, 0)))::numeric ELSE NULL END, 0), 0)))::text END)::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
+-- calc_treatment_rankings_pooled_gap_crosses_zero
+-- Field: TreatmentRankings.PooledGapCrossesZero
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_treatment_rankings_pooled_gap_crosses_zero(p_treatment_ranking_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT /* WARNING: Formula translation failed: Function 'LOOKUP' is not supported yet
+   Original Airtable formula:
+   =LOOKUP({{Study}}, SweepStudySummary[SweepStudyId], SweepStudySummary[PooledGapCrossesZero])
+*/
+NULL::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_treatment_rankings_sweep_pooled_gap_range
+-- Field: TreatmentRankings.SweepPooledGapRange
+-- Type: calculated | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_treatment_rankings_sweep_pooled_gap_range(p_treatment_ranking_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT /* WARNING: Formula translation failed: Function 'LOOKUP' is not supported yet
+   Original Airtable formula:
+   =LOOKUP({{Study}}, SweepStudySummary[SweepStudyId], SweepStudySummary[SweepPooledGapRange])
+*/
+NULL::numeric;
+$$ LANGUAGE sql STABLE;
+
 -- calc_treatment_rankings_latent_flip_potential
 -- Field: TreatmentRankings.LatentFlipPotential
 -- Type: calculated | DataType: boolean | Returns: BOOLEAN
@@ -1181,7 +1205,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_treatment_rankings_latent_flip_potential(p_treatment_ranking_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (CASE WHEN calc_treatment_rankings_distortion_type(p_treatment_ranking_id) IS NULL THEN ('')::text ELSE ((calc_treatment_rankings_distortion_type(p_treatment_ranking_id) = 'D' AND (SELECT pooled_gap_crosses_zero FROM treatment_rankings WHERE treatment_ranking_id = p_treatment_ranking_id) = TRUE))::text END)::boolean;
+  SELECT (CASE WHEN calc_treatment_rankings_distortion_type(p_treatment_ranking_id) IS NULL THEN ('')::text ELSE ((calc_treatment_rankings_distortion_type(p_treatment_ranking_id) = 'D' AND calc_treatment_rankings_pooled_gap_crosses_zero(p_treatment_ranking_id) = TRUE))::text END)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_treatment_rankings_allocation_fragility
@@ -1191,7 +1215,21 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_treatment_rankings_allocation_fragility(p_treatment_ranking_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT (CASE WHEN ((SELECT sweep_pooled_gap_range FROM treatment_rankings WHERE treatment_ranking_id = p_treatment_ranking_id) IS NULL OR calc_treatment_rankings_pooled_gap(p_treatment_ranking_id) IS NULL OR (calc_treatment_rankings_pooled_gap(p_treatment_ranking_id))::NUMERIC = 0) THEN ('')::text ELSE ((COALESCE(CASE WHEN ((SELECT sweep_pooled_gap_range FROM treatment_rankings WHERE treatment_ranking_id = p_treatment_ranking_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT sweep_pooled_gap_range FROM treatment_rankings WHERE treatment_ranking_id = p_treatment_ranking_id))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(CASE WHEN (ABS(calc_treatment_rankings_pooled_gap(p_treatment_ranking_id)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (ABS(calc_treatment_rankings_pooled_gap(p_treatment_ranking_id)))::numeric ELSE NULL END, 0), 0)))::text END)::numeric;
+  SELECT (CASE WHEN (calc_treatment_rankings_sweep_pooled_gap_range(p_treatment_ranking_id) IS NULL OR calc_treatment_rankings_pooled_gap(p_treatment_ranking_id) IS NULL OR (calc_treatment_rankings_pooled_gap(p_treatment_ranking_id))::NUMERIC = 0) THEN ('')::text ELSE ((COALESCE(CASE WHEN (calc_treatment_rankings_sweep_pooled_gap_range(p_treatment_ranking_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_treatment_rankings_sweep_pooled_gap_range(p_treatment_ranking_id))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(CASE WHEN (ABS(calc_treatment_rankings_pooled_gap(p_treatment_ranking_id)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (ABS(calc_treatment_rankings_pooled_gap(p_treatment_ranking_id)))::numeric ELSE NULL END, 0), 0)))::text END)::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_treatment_rankings_study_domain
+-- Field: TreatmentRankings.StudyDomain
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_treatment_rankings_study_domain(p_treatment_ranking_id TEXT)
+RETURNS TEXT AS $$
+  SELECT /* WARNING: Formula translation failed: Function 'LOOKUP' is not supported yet
+   Original Airtable formula:
+   =LOOKUP({{Study}}, Studies[StudyId], Studies[Domain])
+*/
+NULL::text;
 $$ LANGUAGE sql STABLE;
 
 -- calc_treatment_rankings_confirmed_causal_role_count
@@ -2345,9 +2383,9 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_discovery_findings_observed_metric(p_finding_id TEXT)
 RETURNS TEXT AS $$
-  SELECT /* WARNING: Formula translation failed: Function 'TEXT' is not supported yet
+  SELECT /* WARNING: Formula translation failed: Function 'LOOKUP' is not supported yet
    Original Airtable formula:
-   =IF({{HypothesisId}} = "H-latent-d", TEXT(=LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[LatentTypeDFraction]), "0.0%"), IF({{HypothesisId}} = "H-purity", TEXT(=LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[SignFlipSignalPurityMax]), "0.000"), IF({{HypothesisId}} = "H-small-effect", CONCAT("stable=", TEXT(=LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[AvgPooledGapStableD]), "0.000"), " latent=", TEXT(=LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[AvgPooledGapLatentD]), "0.000")), IF({{HypothesisId}} = "H-econ-zero", TEXT(=LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[EconomicsSignFlipCount]), "0"), IF({{HypothesisId}} = "H-domain-dist", CONCAT("epi=", TEXT(=LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[EpidemiologyAvgDistortion]), "0.0000"), " edu=", TEXT(=LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[EducationAvgDistortion]), "0.0000")), "")))))
+   =IF({{HypothesisId}} = "H-latent-d", CONCAT("fraction=", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[LatentTypeDFraction])), IF({{HypothesisId}} = "H-purity", CONCAT("maxPurity=", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[SignFlipSignalPurityMax])), IF({{HypothesisId}} = "H-small-effect", CONCAT("stable=", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[AvgPooledGapStableD]), " latent=", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[AvgPooledGapLatentD])), IF({{HypothesisId}} = "H-econ-zero", CONCAT("flips=", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[EconomicsSignFlipCount])), IF({{HypothesisId}} = "H-domain-dist", CONCAT("epi=", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[EpidemiologyAvgDistortion]), " edu=", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[EducationAvgDistortion])), "")))))
 */
 NULL::text;
 $$ LANGUAGE sql STABLE;
@@ -2361,7 +2399,7 @@ CREATE OR REPLACE FUNCTION calc_discovery_findings_is_confirmed(p_finding_id TEX
 RETURNS BOOLEAN AS $$
   SELECT /* WARNING: Formula translation failed: Function 'LOOKUP' is not supported yet
    Original Airtable formula:
-   =IF({{HypothesisId}} = "H-latent-d", =LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[LatentTypeDFraction]) > 0.5, IF({{HypothesisId}} = "H-purity", =LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[SignFlipSignalPurityMax]) < 0.5, IF({{HypothesisId}} = "H-small-effect", =LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[AvgPooledGapStableD]) > =LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[AvgPooledGapLatentD]), IF({{HypothesisId}} = "H-econ-zero", =LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[EconomicsSignFlipCount]) = 0, IF({{HypothesisId}} = "H-domain-dist", =LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[EpidemiologyAvgDistortion]) > =LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[EducationAvgDistortion]), FALSE())))))
+   =IF({{HypothesisId}} = "H-latent-d", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[LatentTypeDFraction]) > 0.5, IF({{HypothesisId}} = "H-purity", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[SignFlipSignalPurityMax]) < 0.5, IF({{HypothesisId}} = "H-small-effect", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[AvgPooledGapStableD]) > LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[AvgPooledGapLatentD]), IF({{HypothesisId}} = "H-econ-zero", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[EconomicsSignFlipCount]) = 0, IF({{HypothesisId}} = "H-domain-dist", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[EpidemiologyAvgDistortion]) > LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[EducationAvgDistortion]), FALSE())))))
 */
 NULL::boolean;
 $$ LANGUAGE sql STABLE;

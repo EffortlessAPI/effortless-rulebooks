@@ -2956,13 +2956,13 @@ effortless-ntwf:pooledGapCrossesZero a owl:DatatypeProperty ;
     rdfs:range xsd:boolean ;
     rdfs:label "PooledGapCrossesZero" ;
     rdfs:comment "Lookup: SweepStudySummary.PooledGapCrossesZero via Study. TRUE when reweighting allocation would change the sign of the pooled gap." .
-    # calculated: lookup
+    # calculated: calculated
 
 effortless-ntwf:sweepPooledGapRange a owl:DatatypeProperty ;
     rdfs:range xsd:string ;
     rdfs:label "SweepPooledGapRange" ;
     rdfs:comment "Lookup: SweepStudySummary.SweepPooledGapRange via Study. Width of pooled-gap wander under allocation sweep." .
-    # calculated: lookup
+    # calculated: calculated
 
 effortless-ntwf:latentFlipPotential a owl:DatatypeProperty ;
     rdfs:domain effortless-ntwf:TreatmentRankings ;
@@ -2983,7 +2983,7 @@ effortless-ntwf:studyDomain a owl:DatatypeProperty ;
     rdfs:range xsd:string ;
     rdfs:label "StudyDomain" ;
     rdfs:comment "Lookup: Studies.Domain via Study." .
-    # calculated: lookup
+    # calculated: calculated
 
 effortless-ntwf:confirmedCausalRoleCount a owl:DatatypeProperty ;
     rdfs:domain effortless-ntwf:TreatmentRankings ;

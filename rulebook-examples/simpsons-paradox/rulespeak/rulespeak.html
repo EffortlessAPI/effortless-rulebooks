@@ -5395,12 +5395,6 @@ html.show-consumers .elem-consumers{display:block}
         </a>
       </div>
     </details>
-    <details class="prov prov-consumers elem elem-consumers">
-      <summary>Consumers <span class="count">1 direct</span> <span class="prov-hint">rules that read this one</span></summary>
-      <div class="prov-pills">
-        <a class="ref-pill tone-calc" href="#f-modelsummary-discoverywitnessnote">ƒ Discovery Witness Note <span class="ref-pill-tbl">ModelSummary</span></a>
-      </div>
-    </details>
     <details class="prov prov-leaves elem elem-inputs">
       <summary>Ground truth at the leaves <span class="count">11</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
       <div class="prov-pills">
@@ -5445,8 +5439,8 @@ html.show-consumers .elem-consumers{display:block}
     <details class="prov prov-inputs elem elem-inputs" open>
       <summary>Inputs <span class="count">1</span> <span class="prov-hint">fields this rule reads</span></summary>
       <div class="prov-grid">
-        <a class="input tone-lookup" href="#f-treatmentrankings-pooledgapcrosseszero">
-          <span class="input-head"><span class="input-glyph">↗</span><span class="input-name">Pooled Gap Crosses Zero</span><span class="input-table">TreatmentRankings</span></span>
+        <a class="input tone-calc" href="#f-treatmentrankings-pooledgapcrosseszero">
+          <span class="input-head"><span class="input-glyph">ƒ</span><span class="input-name">Pooled Gap Crosses Zero</span><span class="input-table">TreatmentRankings</span></span>
           <span class="input-en">LOOKUP({{Study}}, SweepStudySummary[SweepStudyId], SweepStudySummary[PooledGapCrossesZero]).</span>
         </a>
       </div>
@@ -5545,8 +5539,8 @@ html.show-consumers .elem-consumers{display:block}
     <details class="prov prov-inputs elem elem-inputs" open>
       <summary>Inputs <span class="count">2</span> <span class="prov-hint">fields this rule reads</span></summary>
       <div class="prov-grid">
-        <a class="input tone-lookup" href="#f-treatmentrankings-studydomain">
-          <span class="input-head"><span class="input-glyph">↗</span><span class="input-name">Study Domain</span><span class="input-table">TreatmentRankings</span></span>
+        <a class="input tone-calc" href="#f-treatmentrankings-studydomain">
+          <span class="input-head"><span class="input-glyph">ƒ</span><span class="input-name">Study Domain</span><span class="input-table">TreatmentRankings</span></span>
           <span class="input-en">LOOKUP({{Study}}, Studies[StudyId], Studies[Domain]).</span>
         </a>
         <a class="input tone-calc" href="#f-treatmentrankings-issignflip">
@@ -5735,8 +5729,8 @@ html.show-consumers .elem-consumers{display:block}
           <span class="input-head"><span class="input-glyph">ƒ</span><span class="input-name">Allocation Distortion</span><span class="input-table">TreatmentRankings</span></span>
           <span class="input-en">If weighted stratum gap sum is &quot;&quot; then &quot;&quot;, otherwise the absolute value of (weighted stratum gap sum minus signed pooled gap).</span>
         </a>
-        <a class="input tone-lookup" href="#f-treatmentrankings-studydomain">
-          <span class="input-head"><span class="input-glyph">↗</span><span class="input-name">Study Domain</span><span class="input-table">TreatmentRankings</span></span>
+        <a class="input tone-calc" href="#f-treatmentrankings-studydomain">
+          <span class="input-head"><span class="input-glyph">ƒ</span><span class="input-name">Study Domain</span><span class="input-table">TreatmentRankings</span></span>
           <span class="input-en">LOOKUP({{Study}}, Studies[StudyId], Studies[Domain]).</span>
         </a>
       </div>
@@ -5789,8 +5783,8 @@ html.show-consumers .elem-consumers{display:block}
           <span class="input-head"><span class="input-glyph">ƒ</span><span class="input-name">Allocation Distortion</span><span class="input-table">TreatmentRankings</span></span>
           <span class="input-en">If weighted stratum gap sum is &quot;&quot; then &quot;&quot;, otherwise the absolute value of (weighted stratum gap sum minus signed pooled gap).</span>
         </a>
-        <a class="input tone-lookup" href="#f-treatmentrankings-studydomain">
-          <span class="input-head"><span class="input-glyph">↗</span><span class="input-name">Study Domain</span><span class="input-table">TreatmentRankings</span></span>
+        <a class="input tone-calc" href="#f-treatmentrankings-studydomain">
+          <span class="input-head"><span class="input-glyph">ƒ</span><span class="input-name">Study Domain</span><span class="input-table">TreatmentRankings</span></span>
           <span class="input-en">LOOKUP({{Study}}, Studies[StudyId], Studies[Domain]).</span>
         </a>
       </div>
@@ -5825,19 +5819,19 @@ html.show-consumers .elem-consumers{display:block}
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
         <span class="view-label">In RuleSpeak</span>
-        <p class="view-body">A model summary's discovery witness note is computed as “LatentTypeD=”, followed by the <a class="ref" href="#f-modelsummary-latenttypedcount">latent <a class="ref" href="#f-modelsummary-typedcount">type d count</a></a>, followed by a slash, followed by the type d count, followed by “ (”, followed by the TEXT of the <a class="ref" href="#f-modelsummary-latenttypedfraction">latent type d fraction</a> and “0%”, followed by “); SignFlipMaxPurity=”, followed by the TEXT of the <a class="ref" href="#f-modelsummary-signflipsignalpuritymax">sign flip signal purity max</a> and “0.000”, followed by “; stableD avgGap=”, followed by the TEXT of the <a class="ref" href="#f-modelsummary-avgpooledgapstabled">avg pooled gap stable d</a> and “0.000”, followed by “ vs latentD ”, followed by the TEXT of the <a class="ref" href="#f-modelsummary-avgpooledgaplatentd">avg pooled gap latent d</a> and “0.000”.</p>
+        <p class="view-body">A model summary's discovery witness note is computed as “LatentTypeD=”, followed by the <a class="ref" href="#f-modelsummary-latenttypedcount">latent <a class="ref" href="#f-modelsummary-typedcount">type d count</a></a>, followed by a slash, followed by the type d count, followed by “; SignFlipMaxPurity=”, followed by the <a class="ref" href="#f-modelsummary-signflipsignalpuritymax">sign flip signal purity max</a>, followed by “; stableD=”, followed by the <a class="ref" href="#f-modelsummary-avgpooledgapstabled">avg pooled gap stable d</a>, followed by “ latentD=”, followed by the <a class="ref" href="#f-modelsummary-avgpooledgaplatentd">avg pooled gap latent d</a>.</p>
       </div>
       <div class="view elem elem-english">
         <span class="view-label">In English</span>
-        <p class="view-body">&quot;LatentTypeD=&quot;, <a class="ref" href="#f-modelsummary-latenttypedcount">latent <a class="ref" href="#f-modelsummary-typedcount">type d count</a></a>, &quot;/&quot;, type d count, &quot; (&quot;, text(<a class="ref" href="#f-modelsummary-latenttypedfraction">latent type d fraction</a>, &quot;0%&quot;), &quot;); SignFlipMaxPurity=&quot;, text(<a class="ref" href="#f-modelsummary-signflipsignalpuritymax">sign flip signal purity max</a>, &quot;0.000&quot;), &quot;; stableD avgGap=&quot;, text(<a class="ref" href="#f-modelsummary-avgpooledgapstabled">avg pooled gap stable d</a>, &quot;0.000&quot;), &quot; vs latentD &quot;, joined with text(<a class="ref" href="#f-modelsummary-avgpooledgaplatentd">avg pooled gap latent d</a>, &quot;0.000&quot;).</p>
+        <p class="view-body">&quot;LatentTypeD=&quot;, <a class="ref" href="#f-modelsummary-latenttypedcount">latent <a class="ref" href="#f-modelsummary-typedcount">type d count</a></a>, &quot;/&quot;, type d count, &quot;; SignFlipMaxPurity=&quot;, <a class="ref" href="#f-modelsummary-signflipsignalpuritymax">sign flip signal purity max</a>, &quot;; stableD=&quot;, <a class="ref" href="#f-modelsummary-avgpooledgapstabled">avg pooled gap stable d</a>, &quot; latentD=&quot;, joined with <a class="ref" href="#f-modelsummary-avgpooledgaplatentd">avg pooled gap latent d</a>.</p>
       </div>
       <div class="view elem elem-formula">
         <span class="view-label">As a formula</span>
-        <div class="view-body fx"><span class="fx-eq">= </span>CONCAT(&quot;LatentTypeD=&quot;, <a class="fx-chip" href="#f-modelsummary-latenttypedcount">Latent Type D Count</a>, &quot;/&quot;, <a class="fx-chip" href="#f-modelsummary-typedcount">Type D Count</a>, &quot; (&quot;, TEXT(<a class="fx-chip" href="#f-modelsummary-latenttypedfraction">Latent Type D Fraction</a>, &quot;0%&quot;), &quot;); SignFlipMaxPurity=&quot;, TEXT(<a class="fx-chip" href="#f-modelsummary-signflipsignalpuritymax">Sign Flip Signal Purity Max</a>, &quot;0.000&quot;), &quot;; stableD avgGap=&quot;, TEXT(<a class="fx-chip" href="#f-modelsummary-avgpooledgapstabled">Avg Pooled Gap Stable D</a>, &quot;0.000&quot;), &quot; vs latentD &quot;, TEXT(<a class="fx-chip" href="#f-modelsummary-avgpooledgaplatentd">Avg Pooled Gap Latent D</a>, &quot;0.000&quot;))</div>
+        <div class="view-body fx"><span class="fx-eq">= </span>CONCAT(&quot;LatentTypeD=&quot;, <a class="fx-chip" href="#f-modelsummary-latenttypedcount">Latent Type D Count</a>, &quot;/&quot;, <a class="fx-chip" href="#f-modelsummary-typedcount">Type D Count</a>, &quot;; SignFlipMaxPurity=&quot;, <a class="fx-chip" href="#f-modelsummary-signflipsignalpuritymax">Sign Flip Signal Purity Max</a>, &quot;; stableD=&quot;, <a class="fx-chip" href="#f-modelsummary-avgpooledgapstabled">Avg Pooled Gap Stable D</a>, &quot; latentD=&quot;, <a class="fx-chip" href="#f-modelsummary-avgpooledgaplatentd">Avg Pooled Gap Latent D</a>)</div>
       </div>
     </div>
     <details class="prov prov-inputs elem elem-inputs" open>
-      <summary>Inputs <span class="count">6</span> <span class="prov-hint">fields this rule reads</span></summary>
+      <summary>Inputs <span class="count">5</span> <span class="prov-hint">fields this rule reads</span></summary>
       <div class="prov-grid">
         <a class="input tone-calc" href="#f-modelsummary-latenttypedcount">
           <span class="input-head"><span class="input-glyph">ƒ</span><span class="input-name">Latent Type D Count</span><span class="input-table">ModelSummary</span></span>
@@ -5846,10 +5840,6 @@ html.show-consumers .elem-consumers{display:block}
         <a class="input tone-agg" href="#f-modelsummary-typedcount">
           <span class="input-head"><span class="input-glyph">Σ</span><span class="input-name">Type D Count</span><span class="input-table">ModelSummary</span></span>
           <span class="input-en">Count of TreatmentRankings whose distortion type is &quot;D&quot;.</span>
-        </a>
-        <a class="input tone-calc" href="#f-modelsummary-latenttypedfraction">
-          <span class="input-head"><span class="input-glyph">ƒ</span><span class="input-name">Latent Type D Fraction</span><span class="input-table">ModelSummary</span></span>
-          <span class="input-en">If type d count equals 0 then &quot;&quot;, otherwise (latent type d count divided by type d count).</span>
         </a>
         <a class="input tone-calc" href="#f-modelsummary-signflipsignalpuritymax">
           <span class="input-head"><span class="input-glyph">ƒ</span><span class="input-name">Sign Flip Signal Purity Max</span><span class="input-table">ModelSummary</span></span>
@@ -8723,11 +8713,11 @@ html.show-consumers .elem-consumers{display:block}
     </details>
     <p class="field-note elem elem-desc">The fraction of total observed variation (|CorrectedGap| + AllocationDistortion) that is genuine treatment signal rather than allocation noise. SignalPurity = |CorrectedGap| / (|CorrectedGap| + AllocationDistortion). Range [0,1]: 1.0 = allocation contributed nothing (type D); 0 = corrected gap is zero (pure noise). Critical threshold is 0.5: SignalPurity &lt; 0.5 means allocation noise exceeds true signal. The signal-purity theorem (loop-44): AllocationDirection='reversal' → SignalPurity &lt; 0.5. Equivalently: a sign flip requires the confound to produce more distortion than the treatment produced signal. This is the mechanistic account of why reversals happen: not study-design accidents but algebraic necessities.</p>
     </article>
-  <article class="field tone-lookup" id="f-treatmentrankings-pooledgapcrosseszero" data-entity="Treatment Ranking" data-field="Pooled Gap Crosses Zero">
+  <article class="field tone-calc" id="f-treatmentrankings-pooledgapcrosseszero" data-entity="Treatment Ranking" data-field="Pooled Gap Crosses Zero">
     <div class="field-head">
-      <span class="field-glyph" title="Lookup">↗</span>
+      <span class="field-glyph" title="Calculated">ƒ</span>
       <span class="field-name">Pooled Gap Crosses Zero</span>
-      <span class="pill pill-type">Lookup</span>
+      <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">boolean</span>
       <span class="pill pill-dr">DR-122</span>
@@ -8735,7 +8725,7 @@ html.show-consumers .elem-consumers{display:block}
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
         <span class="view-label">In RuleSpeak</span>
-        <p class="view-body">A treatment ranking's pooled gap crosses zero is the value of LOOKUP(<a class="ref" href="#f-treatmentrankings-study">Study</a>, SweepStudySummary[SweepStudyId], SweepStudySummary[PooledGapCrossesZero]).</p>
+        <p class="view-body">A treatment ranking is flagged pooled gap crosses zero if the value of LOOKUP(<a class="ref" href="#f-treatmentrankings-study">Study</a>, SweepStudySummary[SweepStudyId], SweepStudySummary[PooledGapCrossesZero]).</p>
       </div>
       <div class="view elem elem-english">
         <span class="view-label">In English</span>
@@ -8776,11 +8766,11 @@ html.show-consumers .elem-consumers{display:block}
     </details>
     <p class="field-note elem elem-desc">Lookup: SweepStudySummary.PooledGapCrossesZero via Study. TRUE when reweighting allocation would change the sign of the pooled gap.</p>
     </article>
-  <article class="field tone-lookup" id="f-treatmentrankings-sweeppooledgaprange" data-entity="Treatment Ranking" data-field="Sweep Pooled Gap Range">
+  <article class="field tone-calc" id="f-treatmentrankings-sweeppooledgaprange" data-entity="Treatment Ranking" data-field="Sweep Pooled Gap Range">
     <div class="field-head">
-      <span class="field-glyph" title="Lookup">↗</span>
+      <span class="field-glyph" title="Calculated">ƒ</span>
       <span class="field-name">Sweep Pooled Gap Range</span>
-      <span class="pill pill-type">Lookup</span>
+      <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">number</span>
       <span class="pill pill-dr">DR-123</span>
@@ -8788,7 +8778,7 @@ html.show-consumers .elem-consumers{display:block}
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
         <span class="view-label">In RuleSpeak</span>
-        <p class="view-body">A treatment ranking's sweep pooled gap range is the value of LOOKUP(<a class="ref" href="#f-treatmentrankings-study">Study</a>, SweepStudySummary[SweepStudyId], SweepStudySummary[SweepPooledGapRange]).</p>
+        <p class="view-body">A treatment ranking's sweep pooled gap range is computed as the value of LOOKUP(<a class="ref" href="#f-treatmentrankings-study">Study</a>, SweepStudySummary[SweepStudyId], SweepStudySummary[SweepPooledGapRange]).</p>
       </div>
       <div class="view elem elem-english">
         <span class="view-label">In English</span>
@@ -8852,8 +8842,8 @@ html.show-consumers .elem-consumers{display:block}
           <span class="input-head"><span class="input-glyph">ƒ</span><span class="input-name">Distortion Type</span><span class="input-table">TreatmentRankings</span></span>
           <span class="input-en">If allocation distortion is &quot;&quot; then &quot;&quot;, otherwise if is sign flip then if weighted stratum gap sum is not 0 and (signed pooled gap divided by weighted stratum gap sum) is less than negative 1 then &quot;B&quot;, otherwise if weighted stratum gap sum is not 0 and (signed pooled gap divided by weighted stratum gap sum) is less than 0 then &quot;A&quot;, otherwise if reversal intensity equals 1 then &quot;A&quot;, otherwise &quot;B&quot;, otherwise if not is sign flip, allocation distortion is greater than 0.01, and the absolute value of signed pooled gap is greater than (the absolute value of corrected gap plus 0.001) then &quot;C+&quot;, otherwise if not is sign flip, allocation distortion is greater than 0.01, and the absolute value of signed pooled gap is less than (the absolute value of corrected gap minus 0.001) then &quot;C-&quot;, otherwise &quot;D&quot;.</span>
         </a>
-        <a class="input tone-lookup" href="#f-treatmentrankings-pooledgapcrosseszero">
-          <span class="input-head"><span class="input-glyph">↗</span><span class="input-name">Pooled Gap Crosses Zero</span><span class="input-table">TreatmentRankings</span></span>
+        <a class="input tone-calc" href="#f-treatmentrankings-pooledgapcrosseszero">
+          <span class="input-head"><span class="input-glyph">ƒ</span><span class="input-name">Pooled Gap Crosses Zero</span><span class="input-table">TreatmentRankings</span></span>
           <span class="input-en">LOOKUP({{Study}}, SweepStudySummary[SweepStudyId], SweepStudySummary[PooledGapCrossesZero]).</span>
         </a>
       </div>
@@ -8913,8 +8903,8 @@ html.show-consumers .elem-consumers{display:block}
     <details class="prov prov-inputs elem elem-inputs" open>
       <summary>Inputs <span class="count">2</span> <span class="prov-hint">fields this rule reads</span></summary>
       <div class="prov-grid">
-        <a class="input tone-lookup" href="#f-treatmentrankings-sweeppooledgaprange">
-          <span class="input-head"><span class="input-glyph">↗</span><span class="input-name">Sweep Pooled Gap Range</span><span class="input-table">TreatmentRankings</span></span>
+        <a class="input tone-calc" href="#f-treatmentrankings-sweeppooledgaprange">
+          <span class="input-head"><span class="input-glyph">ƒ</span><span class="input-name">Sweep Pooled Gap Range</span><span class="input-table">TreatmentRankings</span></span>
           <span class="input-en">LOOKUP({{Study}}, SweepStudySummary[SweepStudyId], SweepStudySummary[SweepPooledGapRange]).</span>
         </a>
         <a class="input tone-calc" href="#f-treatmentrankings-pooledgap">
@@ -8937,11 +8927,11 @@ html.show-consumers .elem-consumers{display:block}
     </details>
     <p class="field-note elem elem-desc">SweepPooledGapRange divided by |PooledGap|. High values mean small observed effect but wide counterfactual wander.</p>
     </article>
-  <article class="field tone-lookup" id="f-treatmentrankings-studydomain" data-entity="Treatment Ranking" data-field="Study Domain">
+  <article class="field tone-calc" id="f-treatmentrankings-studydomain" data-entity="Treatment Ranking" data-field="Study Domain">
     <div class="field-head">
-      <span class="field-glyph" title="Lookup">↗</span>
+      <span class="field-glyph" title="Calculated">ƒ</span>
       <span class="field-name">Study Domain</span>
-      <span class="pill pill-type">Lookup</span>
+      <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
       <span class="pill pill-dr">DR-126</span>
@@ -8949,7 +8939,7 @@ html.show-consumers .elem-consumers{display:block}
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
         <span class="view-label">In RuleSpeak</span>
-        <p class="view-body">A treatment ranking's <a class="ref" href="#f-treatmentrankings-study">study</a> domain is the value of LOOKUP(Study, Studies[StudyId], Studies[Domain]).</p>
+        <p class="view-body">A treatment ranking's <a class="ref" href="#f-treatmentrankings-study">study</a> domain is computed as the value of LOOKUP(Study, Studies[StudyId], Studies[Domain]).</p>
       </div>
       <div class="view elem elem-english">
         <span class="view-label">In English</span>
@@ -16496,15 +16486,15 @@ html.show-consumers .elem-consumers{display:block}
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
         <span class="view-label">In RuleSpeak</span>
-        <p class="view-body">A discovery finding's observed metric is computed as the value of IF(HypothesisId = &quot;H-latent-d&quot;, TEXT(=LOOKUP(&quot;simpsons-paradox-v1&quot;, ModelSummary[ModelSummaryId], ModelSummary[LatentTypeDFraction]), &quot;0.0%&quot;), IF(HypothesisId = &quot;H-purity&quot;, TEXT(=LOOKUP(&quot;simpsons-paradox-v1&quot;, ModelSummary[ModelSummaryId], ModelSummary[SignFlipSignalPurityMax]), &quot;0.000&quot;), IF(HypothesisId = &quot;H-small-effect&quot;, CONCAT(&quot;stable=&quot;, TEXT(=LOOKUP(&quot;simpsons-paradox-v1&quot;, ModelSummary[ModelSummaryId], ModelSummary[AvgPooledGapStableD]), &quot;0.000&quot;), &quot; latent=&quot;, TEXT(=LOOKUP(&quot;simpsons-paradox-v1&quot;, ModelSummary[ModelSummaryId], ModelSummary[AvgPooledGapLatentD]), &quot;0.000&quot;)), IF(HypothesisId = &quot;H-econ-zero&quot;, TEXT(=LOOKUP(&quot;simpsons-paradox-v1&quot;, ModelSummary[ModelSummaryId], ModelSummary[EconomicsSignFlipCount]), &quot;0&quot;), IF(HypothesisId = &quot;H-domain-dist&quot;, CONCAT(&quot;epi=&quot;, TEXT(=LOOKUP(&quot;simpsons-paradox-v1&quot;, ModelSummary[ModelSummaryId], ModelSummary[EpidemiologyAvgDistortion]), &quot;0.0000&quot;), &quot; edu=&quot;, TEXT(=LOOKUP(&quot;simpsons-paradox-v1&quot;, ModelSummary[ModelSummaryId], ModelSummary[EducationAvgDistortion]), &quot;0.0000&quot;)), &quot;&quot;))))).</p>
+        <p class="view-body">A discovery finding's observed metric is computed as the value of IF(HypothesisId = &quot;H-latent-d&quot;, CONCAT(&quot;fraction=&quot;, LOOKUP(&quot;simpsons-paradox-v1&quot;, ModelSummary[ModelSummaryId], ModelSummary[LatentTypeDFraction])), IF(HypothesisId = &quot;H-purity&quot;, CONCAT(&quot;maxPurity=&quot;, LOOKUP(&quot;simpsons-paradox-v1&quot;, ModelSummary[ModelSummaryId], ModelSummary[SignFlipSignalPurityMax])), IF(HypothesisId = &quot;H-small-effect&quot;, CONCAT(&quot;stable=&quot;, LOOKUP(&quot;simpsons-paradox-v1&quot;, ModelSummary[ModelSummaryId], ModelSummary[AvgPooledGapStableD]), &quot; latent=&quot;, LOOKUP(&quot;simpsons-paradox-v1&quot;, ModelSummary[ModelSummaryId], ModelSummary[AvgPooledGapLatentD])), IF(HypothesisId = &quot;H-econ-zero&quot;, CONCAT(&quot;flips=&quot;, LOOKUP(&quot;simpsons-paradox-v1&quot;, ModelSummary[ModelSummaryId], ModelSummary[EconomicsSignFlipCount])), IF(HypothesisId = &quot;H-domain-dist&quot;, CONCAT(&quot;epi=&quot;, LOOKUP(&quot;simpsons-paradox-v1&quot;, ModelSummary[ModelSummaryId], ModelSummary[EpidemiologyAvgDistortion]), &quot; edu=&quot;, LOOKUP(&quot;simpsons-paradox-v1&quot;, ModelSummary[ModelSummaryId], ModelSummary[EducationAvgDistortion])), &quot;&quot;))))).</p>
       </div>
       <div class="view elem elem-english">
         <span class="view-label">In English</span>
-        <p class="view-body">IF({{HypothesisId}} = &quot;H-latent-d&quot;, TEXT(=LOOKUP(&quot;simpsons-paradox-v1&quot;, ModelSummary[ModelSummaryId], ModelSummary[LatentTypeDFraction]), &quot;0.0%&quot;), IF({{HypothesisId}} = &quot;H-purity&quot;, TEXT(=LOOKUP(&quot;simpsons-paradox-v1&quot;, ModelSummary[ModelSummaryId], ModelSummary[SignFlipSignalPurityMax]), &quot;0.000&quot;), IF({{HypothesisId}} = &quot;H-small-effect&quot;, CONCAT(&quot;stable=&quot;, TEXT(=LOOKUP(&quot;simpsons-paradox-v1&quot;, ModelSummary[ModelSummaryId], ModelSummary[AvgPooledGapStableD]), &quot;0.000&quot;), &quot; latent=&quot;, TEXT(=LOOKUP(&quot;simpsons-paradox-v1&quot;, ModelSummary[ModelSummaryId], ModelSummary[AvgPooledGapLatentD]), &quot;0.000&quot;)), IF({{HypothesisId}} = &quot;H-econ-zero&quot;, TEXT(=LOOKUP(&quot;simpsons-paradox-v1&quot;, ModelSummary[ModelSummaryId], ModelSummary[EconomicsSignFlipCount]), &quot;0&quot;), IF({{HypothesisId}} = &quot;H-domain-dist&quot;, CONCAT(&quot;epi=&quot;, TEXT(=LOOKUP(&quot;simpsons-paradox-v1&quot;, ModelSummary[ModelSummaryId], ModelSummary[EpidemiologyAvgDistortion]), &quot;0.0000&quot;), &quot; edu=&quot;, TEXT(=LOOKUP(&quot;simpsons-paradox-v1&quot;, ModelSummary[ModelSummaryId], ModelSummary[EducationAvgDistortion]), &quot;0.0000&quot;)), &quot;&quot;))))).</p>
+        <p class="view-body">IF({{HypothesisId}} = &quot;H-latent-d&quot;, CONCAT(&quot;fraction=&quot;, LOOKUP(&quot;simpsons-paradox-v1&quot;, ModelSummary[ModelSummaryId], ModelSummary[LatentTypeDFraction])), IF({{HypothesisId}} = &quot;H-purity&quot;, CONCAT(&quot;maxPurity=&quot;, LOOKUP(&quot;simpsons-paradox-v1&quot;, ModelSummary[ModelSummaryId], ModelSummary[SignFlipSignalPurityMax])), IF({{HypothesisId}} = &quot;H-small-effect&quot;, CONCAT(&quot;stable=&quot;, LOOKUP(&quot;simpsons-paradox-v1&quot;, ModelSummary[ModelSummaryId], ModelSummary[AvgPooledGapStableD]), &quot; latent=&quot;, LOOKUP(&quot;simpsons-paradox-v1&quot;, ModelSummary[ModelSummaryId], ModelSummary[AvgPooledGapLatentD])), IF({{HypothesisId}} = &quot;H-econ-zero&quot;, CONCAT(&quot;flips=&quot;, LOOKUP(&quot;simpsons-paradox-v1&quot;, ModelSummary[ModelSummaryId], ModelSummary[EconomicsSignFlipCount])), IF({{HypothesisId}} = &quot;H-domain-dist&quot;, CONCAT(&quot;epi=&quot;, LOOKUP(&quot;simpsons-paradox-v1&quot;, ModelSummary[ModelSummaryId], ModelSummary[EpidemiologyAvgDistortion]), &quot; edu=&quot;, LOOKUP(&quot;simpsons-paradox-v1&quot;, ModelSummary[ModelSummaryId], ModelSummary[EducationAvgDistortion])), &quot;&quot;))))).</p>
       </div>
       <div class="view elem elem-formula">
         <span class="view-label">As a formula</span>
-        <div class="view-body fx"><span class="fx-eq">= </span>IF(<a class="fx-chip" href="#f-discoveryfindings-hypothesisid">Hypothesis ID</a> = &quot;H-latent-d&quot;, TEXT(=LOOKUP(&quot;simpsons-paradox-v1&quot;, ModelSummary[ModelSummaryId], ModelSummary[LatentTypeDFraction]), &quot;0.0%&quot;), IF(<a class="fx-chip" href="#f-discoveryfindings-hypothesisid">Hypothesis ID</a> = &quot;H-purity&quot;, TEXT(=LOOKUP(&quot;simpsons-paradox-v1&quot;, ModelSummary[ModelSummaryId], ModelSummary[SignFlipSignalPurityMax]), &quot;0.000&quot;), IF(<a class="fx-chip" href="#f-discoveryfindings-hypothesisid">Hypothesis ID</a> = &quot;H-small-effect&quot;, CONCAT(&quot;stable=&quot;, TEXT(=LOOKUP(&quot;simpsons-paradox-v1&quot;, ModelSummary[ModelSummaryId], ModelSummary[AvgPooledGapStableD]), &quot;0.000&quot;), &quot; latent=&quot;, TEXT(=LOOKUP(&quot;simpsons-paradox-v1&quot;, ModelSummary[ModelSummaryId], ModelSummary[AvgPooledGapLatentD]), &quot;0.000&quot;)), IF(<a class="fx-chip" href="#f-discoveryfindings-hypothesisid">Hypothesis ID</a> = &quot;H-econ-zero&quot;, TEXT(=LOOKUP(&quot;simpsons-paradox-v1&quot;, ModelSummary[ModelSummaryId], ModelSummary[EconomicsSignFlipCount]), &quot;0&quot;), IF(<a class="fx-chip" href="#f-discoveryfindings-hypothesisid">Hypothesis ID</a> = &quot;H-domain-dist&quot;, CONCAT(&quot;epi=&quot;, TEXT(=LOOKUP(&quot;simpsons-paradox-v1&quot;, ModelSummary[ModelSummaryId], ModelSummary[EpidemiologyAvgDistortion]), &quot;0.0000&quot;), &quot; edu=&quot;, TEXT(=LOOKUP(&quot;simpsons-paradox-v1&quot;, ModelSummary[ModelSummaryId], ModelSummary[EducationAvgDistortion]), &quot;0.0000&quot;)), &quot;&quot;)))))</div>
+        <div class="view-body fx"><span class="fx-eq">= </span>IF(<a class="fx-chip" href="#f-discoveryfindings-hypothesisid">Hypothesis ID</a> = &quot;H-latent-d&quot;, CONCAT(&quot;fraction=&quot;, LOOKUP(&quot;simpsons-paradox-v1&quot;, ModelSummary[ModelSummaryId], ModelSummary[LatentTypeDFraction])), IF(<a class="fx-chip" href="#f-discoveryfindings-hypothesisid">Hypothesis ID</a> = &quot;H-purity&quot;, CONCAT(&quot;maxPurity=&quot;, LOOKUP(&quot;simpsons-paradox-v1&quot;, ModelSummary[ModelSummaryId], ModelSummary[SignFlipSignalPurityMax])), IF(<a class="fx-chip" href="#f-discoveryfindings-hypothesisid">Hypothesis ID</a> = &quot;H-small-effect&quot;, CONCAT(&quot;stable=&quot;, LOOKUP(&quot;simpsons-paradox-v1&quot;, ModelSummary[ModelSummaryId], ModelSummary[AvgPooledGapStableD]), &quot; latent=&quot;, LOOKUP(&quot;simpsons-paradox-v1&quot;, ModelSummary[ModelSummaryId], ModelSummary[AvgPooledGapLatentD])), IF(<a class="fx-chip" href="#f-discoveryfindings-hypothesisid">Hypothesis ID</a> = &quot;H-econ-zero&quot;, CONCAT(&quot;flips=&quot;, LOOKUP(&quot;simpsons-paradox-v1&quot;, ModelSummary[ModelSummaryId], ModelSummary[EconomicsSignFlipCount])), IF(<a class="fx-chip" href="#f-discoveryfindings-hypothesisid">Hypothesis ID</a> = &quot;H-domain-dist&quot;, CONCAT(&quot;epi=&quot;, LOOKUP(&quot;simpsons-paradox-v1&quot;, ModelSummary[ModelSummaryId], ModelSummary[EpidemiologyAvgDistortion]), &quot; edu=&quot;, LOOKUP(&quot;simpsons-paradox-v1&quot;, ModelSummary[ModelSummaryId], ModelSummary[EducationAvgDistortion])), &quot;&quot;)))))</div>
       </div>
     </div>
     <details class="prov prov-inputs elem elem-inputs" open>
@@ -16542,15 +16532,15 @@ html.show-consumers .elem-consumers{display:block}
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
         <span class="view-label">In RuleSpeak</span>
-        <p class="view-body">A discovery finding is considered confirmed if the value of IF(HypothesisId = &quot;H-latent-d&quot;, =LOOKUP(&quot;simpsons-paradox-v1&quot;, ModelSummary[ModelSummaryId], ModelSummary[LatentTypeDFraction]) &gt; 0.5, IF(HypothesisId = &quot;H-purity&quot;, =LOOKUP(&quot;simpsons-paradox-v1&quot;, ModelSummary[ModelSummaryId], ModelSummary[SignFlipSignalPurityMax]) &lt; 0.5, IF(HypothesisId = &quot;H-small-effect&quot;, =LOOKUP(&quot;simpsons-paradox-v1&quot;, ModelSummary[ModelSummaryId], ModelSummary[AvgPooledGapStableD]) &gt; =LOOKUP(&quot;simpsons-paradox-v1&quot;, ModelSummary[ModelSummaryId], ModelSummary[AvgPooledGapLatentD]), IF(HypothesisId = &quot;H-econ-zero&quot;, =LOOKUP(&quot;simpsons-paradox-v1&quot;, ModelSummary[ModelSummaryId], ModelSummary[EconomicsSignFlipCount]) = 0, IF(HypothesisId = &quot;H-domain-dist&quot;, =LOOKUP(&quot;simpsons-paradox-v1&quot;, ModelSummary[ModelSummaryId], ModelSummary[EpidemiologyAvgDistortion]) &gt; =LOOKUP(&quot;simpsons-paradox-v1&quot;, ModelSummary[ModelSummaryId], ModelSummary[EducationAvgDistortion]), FALSE()))))).</p>
+        <p class="view-body">A discovery finding is considered confirmed if the value of IF(HypothesisId = &quot;H-latent-d&quot;, LOOKUP(&quot;simpsons-paradox-v1&quot;, ModelSummary[ModelSummaryId], ModelSummary[LatentTypeDFraction]) &gt; 0.5, IF(HypothesisId = &quot;H-purity&quot;, LOOKUP(&quot;simpsons-paradox-v1&quot;, ModelSummary[ModelSummaryId], ModelSummary[SignFlipSignalPurityMax]) &lt; 0.5, IF(HypothesisId = &quot;H-small-effect&quot;, LOOKUP(&quot;simpsons-paradox-v1&quot;, ModelSummary[ModelSummaryId], ModelSummary[AvgPooledGapStableD]) &gt; LOOKUP(&quot;simpsons-paradox-v1&quot;, ModelSummary[ModelSummaryId], ModelSummary[AvgPooledGapLatentD]), IF(HypothesisId = &quot;H-econ-zero&quot;, LOOKUP(&quot;simpsons-paradox-v1&quot;, ModelSummary[ModelSummaryId], ModelSummary[EconomicsSignFlipCount]) = 0, IF(HypothesisId = &quot;H-domain-dist&quot;, LOOKUP(&quot;simpsons-paradox-v1&quot;, ModelSummary[ModelSummaryId], ModelSummary[EpidemiologyAvgDistortion]) &gt; LOOKUP(&quot;simpsons-paradox-v1&quot;, ModelSummary[ModelSummaryId], ModelSummary[EducationAvgDistortion]), FALSE()))))).</p>
       </div>
       <div class="view elem elem-english">
         <span class="view-label">In English</span>
-        <p class="view-body">IF({{HypothesisId}} = &quot;H-latent-d&quot;, =LOOKUP(&quot;simpsons-paradox-v1&quot;, ModelSummary[ModelSummaryId], ModelSummary[LatentTypeDFraction]) &gt; 0.5, IF({{HypothesisId}} = &quot;H-purity&quot;, =LOOKUP(&quot;simpsons-paradox-v1&quot;, ModelSummary[ModelSummaryId], ModelSummary[SignFlipSignalPurityMax]) &lt; 0.5, IF({{HypothesisId}} = &quot;H-small-effect&quot;, =LOOKUP(&quot;simpsons-paradox-v1&quot;, ModelSummary[ModelSummaryId], ModelSummary[AvgPooledGapStableD]) &gt; =LOOKUP(&quot;simpsons-paradox-v1&quot;, ModelSummary[ModelSummaryId], ModelSummary[AvgPooledGapLatentD]), IF({{HypothesisId}} = &quot;H-econ-zero&quot;, =LOOKUP(&quot;simpsons-paradox-v1&quot;, ModelSummary[ModelSummaryId], ModelSummary[EconomicsSignFlipCount]) = 0, IF({{HypothesisId}} = &quot;H-domain-dist&quot;, =LOOKUP(&quot;simpsons-paradox-v1&quot;, ModelSummary[ModelSummaryId], ModelSummary[EpidemiologyAvgDistortion]) &gt; =LOOKUP(&quot;simpsons-paradox-v1&quot;, ModelSummary[ModelSummaryId], ModelSummary[EducationAvgDistortion]), FALSE()))))).</p>
+        <p class="view-body">IF({{HypothesisId}} = &quot;H-latent-d&quot;, LOOKUP(&quot;simpsons-paradox-v1&quot;, ModelSummary[ModelSummaryId], ModelSummary[LatentTypeDFraction]) &gt; 0.5, IF({{HypothesisId}} = &quot;H-purity&quot;, LOOKUP(&quot;simpsons-paradox-v1&quot;, ModelSummary[ModelSummaryId], ModelSummary[SignFlipSignalPurityMax]) &lt; 0.5, IF({{HypothesisId}} = &quot;H-small-effect&quot;, LOOKUP(&quot;simpsons-paradox-v1&quot;, ModelSummary[ModelSummaryId], ModelSummary[AvgPooledGapStableD]) &gt; LOOKUP(&quot;simpsons-paradox-v1&quot;, ModelSummary[ModelSummaryId], ModelSummary[AvgPooledGapLatentD]), IF({{HypothesisId}} = &quot;H-econ-zero&quot;, LOOKUP(&quot;simpsons-paradox-v1&quot;, ModelSummary[ModelSummaryId], ModelSummary[EconomicsSignFlipCount]) = 0, IF({{HypothesisId}} = &quot;H-domain-dist&quot;, LOOKUP(&quot;simpsons-paradox-v1&quot;, ModelSummary[ModelSummaryId], ModelSummary[EpidemiologyAvgDistortion]) &gt; LOOKUP(&quot;simpsons-paradox-v1&quot;, ModelSummary[ModelSummaryId], ModelSummary[EducationAvgDistortion]), FALSE()))))).</p>
       </div>
       <div class="view elem elem-formula">
         <span class="view-label">As a formula</span>
-        <div class="view-body fx"><span class="fx-eq">= </span>IF(<a class="fx-chip" href="#f-discoveryfindings-hypothesisid">Hypothesis ID</a> = &quot;H-latent-d&quot;, =LOOKUP(&quot;simpsons-paradox-v1&quot;, ModelSummary[ModelSummaryId], ModelSummary[LatentTypeDFraction]) &gt; 0.5, IF(<a class="fx-chip" href="#f-discoveryfindings-hypothesisid">Hypothesis ID</a> = &quot;H-purity&quot;, =LOOKUP(&quot;simpsons-paradox-v1&quot;, ModelSummary[ModelSummaryId], ModelSummary[SignFlipSignalPurityMax]) &lt; 0.5, IF(<a class="fx-chip" href="#f-discoveryfindings-hypothesisid">Hypothesis ID</a> = &quot;H-small-effect&quot;, =LOOKUP(&quot;simpsons-paradox-v1&quot;, ModelSummary[ModelSummaryId], ModelSummary[AvgPooledGapStableD]) &gt; =LOOKUP(&quot;simpsons-paradox-v1&quot;, ModelSummary[ModelSummaryId], ModelSummary[AvgPooledGapLatentD]), IF(<a class="fx-chip" href="#f-discoveryfindings-hypothesisid">Hypothesis ID</a> = &quot;H-econ-zero&quot;, =LOOKUP(&quot;simpsons-paradox-v1&quot;, ModelSummary[ModelSummaryId], ModelSummary[EconomicsSignFlipCount]) = 0, IF(<a class="fx-chip" href="#f-discoveryfindings-hypothesisid">Hypothesis ID</a> = &quot;H-domain-dist&quot;, =LOOKUP(&quot;simpsons-paradox-v1&quot;, ModelSummary[ModelSummaryId], ModelSummary[EpidemiologyAvgDistortion]) &gt; =LOOKUP(&quot;simpsons-paradox-v1&quot;, ModelSummary[ModelSummaryId], ModelSummary[EducationAvgDistortion]), FALSE())))))</div>
+        <div class="view-body fx"><span class="fx-eq">= </span>IF(<a class="fx-chip" href="#f-discoveryfindings-hypothesisid">Hypothesis ID</a> = &quot;H-latent-d&quot;, LOOKUP(&quot;simpsons-paradox-v1&quot;, ModelSummary[ModelSummaryId], ModelSummary[LatentTypeDFraction]) &gt; 0.5, IF(<a class="fx-chip" href="#f-discoveryfindings-hypothesisid">Hypothesis ID</a> = &quot;H-purity&quot;, LOOKUP(&quot;simpsons-paradox-v1&quot;, ModelSummary[ModelSummaryId], ModelSummary[SignFlipSignalPurityMax]) &lt; 0.5, IF(<a class="fx-chip" href="#f-discoveryfindings-hypothesisid">Hypothesis ID</a> = &quot;H-small-effect&quot;, LOOKUP(&quot;simpsons-paradox-v1&quot;, ModelSummary[ModelSummaryId], ModelSummary[AvgPooledGapStableD]) &gt; LOOKUP(&quot;simpsons-paradox-v1&quot;, ModelSummary[ModelSummaryId], ModelSummary[AvgPooledGapLatentD]), IF(<a class="fx-chip" href="#f-discoveryfindings-hypothesisid">Hypothesis ID</a> = &quot;H-econ-zero&quot;, LOOKUP(&quot;simpsons-paradox-v1&quot;, ModelSummary[ModelSummaryId], ModelSummary[EconomicsSignFlipCount]) = 0, IF(<a class="fx-chip" href="#f-discoveryfindings-hypothesisid">Hypothesis ID</a> = &quot;H-domain-dist&quot;, LOOKUP(&quot;simpsons-paradox-v1&quot;, ModelSummary[ModelSummaryId], ModelSummary[EpidemiologyAvgDistortion]) &gt; LOOKUP(&quot;simpsons-paradox-v1&quot;, ModelSummary[ModelSummaryId], ModelSummary[EducationAvgDistortion]), FALSE())))))</div>
       </div>
     </div>
     <details class="prov prov-inputs elem elem-inputs" open>
@@ -16604,11 +16594,11 @@ html.show-consumers .elem-consumers{display:block}
       <div class="prov-grid">
         <a class="input tone-calc" href="#f-discoveryfindings-isconfirmed">
           <span class="input-head"><span class="input-glyph">ƒ</span><span class="input-name">Is Confirmed</span><span class="input-table">DiscoveryFindings</span></span>
-          <span class="input-en">IF({{HypothesisId}} = &quot;H-latent-d&quot;, =LOOKUP(&quot;simpsons-paradox-v1&quot;, ModelSummary[ModelSummaryId], ModelSummary[LatentTypeDFraction]) &gt; 0.5, IF({{HypothesisId}} = &quot;H-purity&quot;, =LOOKUP(&quot;simpsons-paradox-v1&quot;, ModelSummary[ModelSummaryId], ModelSummary[SignFlipSignalPurityMax]) &lt; 0.5, IF({{HypothesisId}} = &quot;H-small-effect&quot;, =LOOKUP(&quot;simpsons-paradox-v1&quot;, ModelSummary[ModelSummaryId], ModelSummary[AvgPooledGapStableD]) &gt; =LOOKUP(&quot;simpsons-paradox-v1&quot;, ModelSummary[ModelSummaryId], ModelSummary[AvgPooledGapLatentD]), IF({{HypothesisId}} = &quot;H-econ-zero&quot;, =LOOKUP(&quot;simpsons-paradox-v1&quot;, ModelSummary[ModelSummaryId], ModelSummary[EconomicsSignFlipCount]) = 0, IF({{HypothesisId}} = &quot;H-domain-dist&quot;, =LOOKUP(&quot;simpsons-paradox-v1&quot;, ModelSummary[ModelSummaryId], ModelSummary[EpidemiologyAvgDistortion]) &gt; =LOOKUP(&quot;simpsons-paradox-v1&quot;, ModelSummary[ModelSummaryId], ModelSummary[EducationAvgDistortion]), FALSE()))))).</span>
+          <span class="input-en">IF({{HypothesisId}} = &quot;H-latent-d&quot;, LOOKUP(&quot;simpsons-paradox-v1&quot;, ModelSummary[ModelSummaryId], ModelSummary[LatentTypeDFraction]) &gt; 0.5, IF({{HypothesisId}} = &quot;H-purity&quot;, LOOKUP(&quot;simpsons-paradox-v1&quot;, ModelSummary[ModelSummaryId], ModelSummary[SignFlipSignalPurityMax]) &lt; 0.5, IF({{HypothesisId}} = &quot;H-small-effect&quot;, LOOKUP(&quot;simpsons-paradox-v1&quot;, ModelSummary[ModelSummaryId], ModelSummary[AvgPooledGapStableD]) &gt; LOOKUP(&quot;simpsons-paradox-v1&quot;, ModelSummary[ModelSummaryId], ModelSummary[AvgPooledGapLatentD]), IF({{HypothesisId}} = &quot;H-econ-zero&quot;, LOOKUP(&quot;simpsons-paradox-v1&quot;, ModelSummary[ModelSummaryId], ModelSummary[EconomicsSignFlipCount]) = 0, IF({{HypothesisId}} = &quot;H-domain-dist&quot;, LOOKUP(&quot;simpsons-paradox-v1&quot;, ModelSummary[ModelSummaryId], ModelSummary[EpidemiologyAvgDistortion]) &gt; LOOKUP(&quot;simpsons-paradox-v1&quot;, ModelSummary[ModelSummaryId], ModelSummary[EducationAvgDistortion]), FALSE()))))).</span>
         </a>
         <a class="input tone-calc" href="#f-discoveryfindings-observedmetric">
           <span class="input-head"><span class="input-glyph">ƒ</span><span class="input-name">Observed Metric</span><span class="input-table">DiscoveryFindings</span></span>
-          <span class="input-en">IF({{HypothesisId}} = &quot;H-latent-d&quot;, TEXT(=LOOKUP(&quot;simpsons-paradox-v1&quot;, ModelSummary[ModelSummaryId], ModelSummary[LatentTypeDFraction]), &quot;0.0%&quot;), IF({{HypothesisId}} = &quot;H-purity&quot;, TEXT(=LOOKUP(&quot;simpsons-paradox-v1&quot;, ModelSummary[ModelSummaryId], ModelSummary[SignFlipSignalPurityMax]), &quot;0.000&quot;), IF({{HypothesisId}} = &quot;H-small-effect&quot;, CONCAT(&quot;stable=&quot;, TEXT(=LOOKUP(&quot;simpsons-paradox-v1&quot;, ModelSummary[ModelSummaryId], ModelSummary[AvgPooledGapStableD]), &quot;0.000&quot;), &quot; latent=&quot;, TEXT(=LOOKUP(&quot;simpsons-paradox-v1&quot;, ModelSummary[ModelSummaryId], ModelSummary[AvgPooledGapLatentD]), &quot;0.000&quot;)), IF({{HypothesisId}} = &quot;H-econ-zero&quot;, TEXT(=LOOKUP(&quot;simpsons-paradox-v1&quot;, ModelSummary[ModelSummaryId], ModelSummary[EconomicsSignFlipCount]), &quot;0&quot;), IF({{HypothesisId}} = &quot;H-domain-dist&quot;, CONCAT(&quot;epi=&quot;, TEXT(=LOOKUP(&quot;simpsons-paradox-v1&quot;, ModelSummary[ModelSummaryId], ModelSummary[EpidemiologyAvgDistortion]), &quot;0.0000&quot;), &quot; edu=&quot;, TEXT(=LOOKUP(&quot;simpsons-paradox-v1&quot;, ModelSummary[ModelSummaryId], ModelSummary[EducationAvgDistortion]), &quot;0.0000&quot;)), &quot;&quot;))))).</span>
+          <span class="input-en">IF({{HypothesisId}} = &quot;H-latent-d&quot;, CONCAT(&quot;fraction=&quot;, LOOKUP(&quot;simpsons-paradox-v1&quot;, ModelSummary[ModelSummaryId], ModelSummary[LatentTypeDFraction])), IF({{HypothesisId}} = &quot;H-purity&quot;, CONCAT(&quot;maxPurity=&quot;, LOOKUP(&quot;simpsons-paradox-v1&quot;, ModelSummary[ModelSummaryId], ModelSummary[SignFlipSignalPurityMax])), IF({{HypothesisId}} = &quot;H-small-effect&quot;, CONCAT(&quot;stable=&quot;, LOOKUP(&quot;simpsons-paradox-v1&quot;, ModelSummary[ModelSummaryId], ModelSummary[AvgPooledGapStableD]), &quot; latent=&quot;, LOOKUP(&quot;simpsons-paradox-v1&quot;, ModelSummary[ModelSummaryId], ModelSummary[AvgPooledGapLatentD])), IF({{HypothesisId}} = &quot;H-econ-zero&quot;, CONCAT(&quot;flips=&quot;, LOOKUP(&quot;simpsons-paradox-v1&quot;, ModelSummary[ModelSummaryId], ModelSummary[EconomicsSignFlipCount])), IF({{HypothesisId}} = &quot;H-domain-dist&quot;, CONCAT(&quot;epi=&quot;, LOOKUP(&quot;simpsons-paradox-v1&quot;, ModelSummary[ModelSummaryId], ModelSummary[EpidemiologyAvgDistortion]), &quot; edu=&quot;, LOOKUP(&quot;simpsons-paradox-v1&quot;, ModelSummary[ModelSummaryId], ModelSummary[EducationAvgDistortion])), &quot;&quot;))))).</span>
         </a>
       </div>
     </details>

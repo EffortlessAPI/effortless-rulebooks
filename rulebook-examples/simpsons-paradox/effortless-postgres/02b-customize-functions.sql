@@ -250,6 +250,8 @@ BEGIN
       view_name := 'vw_corpus_catalog_summary';
     ELSIF rec.source_table = 'CandidateStudyCatalog' THEN
       view_name := 'vw_candidate_study_catalog';
+    ELSIF rec.source_table = 'DiscoveryFindings' THEN
+      view_name := 'vw_discovery_findings';
     ELSE
       view_name := 'vw_treatment_rankings';
     END IF;
@@ -383,7 +385,9 @@ BEGIN
     corrected_gap, corrected_winner, corrected_vs_pooled_agreement, corrected_policy_implication,
     confirmed_causal_role_count, mediator_risk_count, contested_stratum_count, unknown_causal_role_count,
     causal_claim_status, adjustment_appropriate,
-    allocation_direction, signal_purity, max_stratum_imbalance, max_stratum_gap
+    allocation_direction, signal_purity, max_stratum_imbalance, max_stratum_gap,
+    pooled_gap_crosses_zero, sweep_pooled_gap_range, latent_flip_potential,
+    allocation_fragility, study_domain
   )
   SELECT
     tr.treatment_ranking_id,
@@ -433,7 +437,20 @@ BEGIN
      WHERE ss.study = tr.study AND ss.treatment_label = tr.treatment_a),
     (SELECT MAX(ABS(ss.stratum_gap))
      FROM vw_stratum_summaries ss
-     WHERE ss.study = tr.study AND ss.treatment_label = tr.treatment_a)
+     WHERE ss.study = tr.study AND ss.treatment_label = tr.treatment_a),
+    calc_sweep_study_summary_pooled_gap_crosses_zero(tr.study),
+    calc_sweep_study_summary_sweep_pooled_gap_range(tr.study),
+    (_erb_snap_tr_distortion_type(tr.treatment_ranking_id) = 'D'
+      AND calc_sweep_study_summary_pooled_gap_crosses_zero(tr.study) = TRUE),
+    CASE
+      WHEN _erb_snap_tr_pooled_gap(tr.treatment_ranking_id) IS NULL
+        OR _erb_snap_tr_pooled_gap(tr.treatment_ranking_id) = 0
+        OR calc_sweep_study_summary_sweep_pooled_gap_range(tr.study) IS NULL
+      THEN NULL
+      ELSE calc_sweep_study_summary_sweep_pooled_gap_range(tr.study)
+           / ABS(_erb_snap_tr_pooled_gap(tr.treatment_ranking_id))
+    END,
+    (SELECT s.domain FROM studies s WHERE s.study_id = tr.study)
   FROM treatment_rankings tr;
 END;
 $$;
@@ -580,6 +597,21 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION calc_treatment_rankings_signal_purity(p_treatment_ranking_id TEXT) RETURNS NUMERIC AS $$
   SELECT signal_purity FROM _erb_tr_metrics WHERE treatment_ranking_id = p_treatment_ranking_id;
 $$ LANGUAGE sql STABLE;
+CREATE OR REPLACE FUNCTION calc_treatment_rankings_pooled_gap_crosses_zero(p_treatment_ranking_id TEXT) RETURNS BOOLEAN AS $$
+  SELECT pooled_gap_crosses_zero FROM _erb_tr_metrics WHERE treatment_ranking_id = p_treatment_ranking_id;
+$$ LANGUAGE sql STABLE;
+CREATE OR REPLACE FUNCTION calc_treatment_rankings_sweep_pooled_gap_range(p_treatment_ranking_id TEXT) RETURNS NUMERIC AS $$
+  SELECT sweep_pooled_gap_range FROM _erb_tr_metrics WHERE treatment_ranking_id = p_treatment_ranking_id;
+$$ LANGUAGE sql STABLE;
+CREATE OR REPLACE FUNCTION calc_treatment_rankings_latent_flip_potential(p_treatment_ranking_id TEXT) RETURNS BOOLEAN AS $$
+  SELECT latent_flip_potential FROM _erb_tr_metrics WHERE treatment_ranking_id = p_treatment_ranking_id;
+$$ LANGUAGE sql STABLE;
+CREATE OR REPLACE FUNCTION calc_treatment_rankings_allocation_fragility(p_treatment_ranking_id TEXT) RETURNS NUMERIC AS $$
+  SELECT allocation_fragility FROM _erb_tr_metrics WHERE treatment_ranking_id = p_treatment_ranking_id;
+$$ LANGUAGE sql STABLE;
+CREATE OR REPLACE FUNCTION calc_treatment_rankings_study_domain(p_treatment_ranking_id TEXT) RETURNS TEXT AS $$
+  SELECT study_domain FROM _erb_tr_metrics WHERE treatment_ranking_id = p_treatment_ranking_id;
+$$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION calc_treatment_rankings_confirmed_causal_role_count(p_treatment_ranking_id TEXT) RETURNS INTEGER AS $$
   SELECT confirmed_causal_role_count FROM _erb_tr_metrics WHERE treatment_ranking_id = p_treatment_ranking_id;
 $$ LANGUAGE sql STABLE;
@@ -650,6 +682,83 @@ CREATE OR REPLACE FUNCTION calc_model_summary_distortion_taxonomy_coverage(p_mod
     ' C-:', calc_model_summary_c_compression_count(p_model_summary_id),
     ' D:', calc_model_summary_type_d_count(p_model_summary_id)
   );
+$$ LANGUAGE sql STABLE;
+
+-- loop-61 discovery aggregates — single scan of _erb_tr_metrics
+CREATE OR REPLACE FUNCTION calc_model_summary_latent_type_d_count(p_model_summary_id TEXT) RETURNS NUMERIC AS $$
+  SELECT COUNT(*)::numeric FROM _erb_tr_metrics WHERE latent_flip_potential = true;
+$$ LANGUAGE sql STABLE;
+CREATE OR REPLACE FUNCTION calc_model_summary_stable_type_d_count(p_model_summary_id TEXT) RETURNS NUMERIC AS $$
+  SELECT COUNT(*)::numeric FROM _erb_tr_metrics WHERE distortion_type = 'D' AND latent_flip_potential = false;
+$$ LANGUAGE sql STABLE;
+CREATE OR REPLACE FUNCTION calc_model_summary_latent_type_d_fraction(p_model_summary_id TEXT) RETURNS NUMERIC AS $$
+  SELECT COUNT(*) FILTER (WHERE latent_flip_potential = true)::numeric / NULLIF(COUNT(*) FILTER (WHERE distortion_type = 'D'), 0)
+  FROM _erb_tr_metrics;
+$$ LANGUAGE sql STABLE;
+CREATE OR REPLACE FUNCTION calc_model_summary_cross_zero_count(p_model_summary_id TEXT) RETURNS NUMERIC AS $$
+  SELECT COUNT(*)::numeric FROM _erb_tr_metrics WHERE pooled_gap_crosses_zero = true;
+$$ LANGUAGE sql STABLE;
+CREATE OR REPLACE FUNCTION calc_model_summary_sign_flip_signal_purity_max(p_model_summary_id TEXT) RETURNS NUMERIC AS $$
+  SELECT MAX(signal_purity) FROM _erb_tr_metrics WHERE is_sign_flip = true;
+$$ LANGUAGE sql STABLE;
+CREATE OR REPLACE FUNCTION calc_model_summary_economics_sign_flip_count(p_model_summary_id TEXT) RETURNS NUMERIC AS $$
+  SELECT COUNT(*)::numeric FROM _erb_tr_metrics WHERE study_domain = 'economics' AND is_sign_flip = true;
+$$ LANGUAGE sql STABLE;
+CREATE OR REPLACE FUNCTION calc_model_summary_avg_pooled_gap_latent_d(p_model_summary_id TEXT) RETURNS NUMERIC AS $$
+  SELECT AVG(pooled_gap) FROM _erb_tr_metrics WHERE latent_flip_potential = true;
+$$ LANGUAGE sql STABLE;
+CREATE OR REPLACE FUNCTION calc_model_summary_avg_pooled_gap_stable_d(p_model_summary_id TEXT) RETURNS NUMERIC AS $$
+  SELECT AVG(pooled_gap) FROM _erb_tr_metrics WHERE distortion_type = 'D' AND latent_flip_potential = false;
+$$ LANGUAGE sql STABLE;
+CREATE OR REPLACE FUNCTION calc_model_summary_epidemiology_avg_distortion(p_model_summary_id TEXT) RETURNS NUMERIC AS $$
+  SELECT AVG(allocation_distortion) FROM _erb_tr_metrics WHERE study_domain = 'epidemiology';
+$$ LANGUAGE sql STABLE;
+CREATE OR REPLACE FUNCTION calc_model_summary_education_avg_distortion(p_model_summary_id TEXT) RETURNS NUMERIC AS $$
+  SELECT AVG(allocation_distortion) FROM _erb_tr_metrics WHERE study_domain = 'education';
+$$ LANGUAGE sql STABLE;
+CREATE OR REPLACE FUNCTION calc_model_summary_discovery_witness_note(p_model_summary_id TEXT) RETURNS TEXT AS $$
+  SELECT CONCAT(
+    'LatentTypeD=', calc_model_summary_latent_type_d_count(p_model_summary_id),
+    '/', calc_model_summary_type_d_count(p_model_summary_id),
+    '; SignFlipMaxPurity=', calc_model_summary_sign_flip_signal_purity_max(p_model_summary_id),
+    '; stableD=', calc_model_summary_avg_pooled_gap_stable_d(p_model_summary_id),
+    ' latentD=', calc_model_summary_avg_pooled_gap_latent_d(p_model_summary_id)
+  );
+$$ LANGUAGE sql STABLE;
+
+-- loop-61 discovery findings
+CREATE OR REPLACE FUNCTION calc_discovery_findings_is_confirmed(p_finding_id TEXT) RETURNS BOOLEAN AS $$
+  SELECT CASE (SELECT hypothesis_id FROM discovery_findings WHERE finding_id = p_finding_id)
+    WHEN 'H-latent-d' THEN calc_model_summary_latent_type_d_fraction('simpsons-paradox-v1') > 0.5
+    WHEN 'H-purity' THEN calc_model_summary_sign_flip_signal_purity_max('simpsons-paradox-v1') < 0.5
+    WHEN 'H-small-effect' THEN calc_model_summary_avg_pooled_gap_stable_d('simpsons-paradox-v1')
+                              > calc_model_summary_avg_pooled_gap_latent_d('simpsons-paradox-v1')
+    WHEN 'H-econ-zero' THEN calc_model_summary_economics_sign_flip_count('simpsons-paradox-v1') = 0
+    WHEN 'H-domain-dist' THEN calc_model_summary_epidemiology_avg_distortion('simpsons-paradox-v1')
+                              > calc_model_summary_education_avg_distortion('simpsons-paradox-v1')
+    ELSE FALSE
+  END;
+$$ LANGUAGE sql STABLE;
+CREATE OR REPLACE FUNCTION calc_discovery_findings_observed_metric(p_finding_id TEXT) RETURNS TEXT AS $$
+  SELECT CASE (SELECT hypothesis_id FROM discovery_findings WHERE finding_id = p_finding_id)
+    WHEN 'H-latent-d' THEN CONCAT('fraction=', calc_model_summary_latent_type_d_fraction('simpsons-paradox-v1'))
+    WHEN 'H-purity' THEN CONCAT('maxPurity=', calc_model_summary_sign_flip_signal_purity_max('simpsons-paradox-v1'))
+    WHEN 'H-small-effect' THEN CONCAT('stable=', calc_model_summary_avg_pooled_gap_stable_d('simpsons-paradox-v1'),
+                                      ' latent=', calc_model_summary_avg_pooled_gap_latent_d('simpsons-paradox-v1'))
+    WHEN 'H-econ-zero' THEN CONCAT('flips=', calc_model_summary_economics_sign_flip_count('simpsons-paradox-v1'))
+    WHEN 'H-domain-dist' THEN CONCAT('epi=', calc_model_summary_epidemiology_avg_distortion('simpsons-paradox-v1'),
+                                     ' edu=', calc_model_summary_education_avg_distortion('simpsons-paradox-v1'))
+    ELSE ''
+  END;
+$$ LANGUAGE sql STABLE;
+CREATE OR REPLACE FUNCTION calc_discovery_findings_evidence(p_finding_id TEXT) RETURNS TEXT AS $$
+  SELECT CASE
+    WHEN calc_discovery_findings_is_confirmed(p_finding_id) THEN
+      CONCAT('PASS: ', calc_discovery_findings_observed_metric(p_finding_id))
+    WHEN calc_discovery_findings_is_confirmed(p_finding_id) = FALSE THEN
+      CONCAT('FAIL: ', calc_discovery_findings_observed_metric(p_finding_id))
+    ELSE ''
+  END;
 $$ LANGUAGE sql STABLE;
 
 -- SyntheticPhase calc_* overrides

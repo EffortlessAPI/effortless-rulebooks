@@ -2527,7 +2527,7 @@
         "type": "calculated",
         "nullable": true,
         "Description": "One-line summary of loop-61 empirical discovery findings.",
-        "formula": "=CONCAT(\"LatentTypeD=\", {{LatentTypeDCount}}, \"/\", {{TypeDCount}}, \" (\", TEXT({{LatentTypeDFraction}}, \"0%\"), \"); SignFlipMaxPurity=\", TEXT({{SignFlipSignalPurityMax}}, \"0.000\"), \"; stableD avgGap=\", TEXT({{AvgPooledGapStableD}}, \"0.000\"), \" vs latentD \", TEXT({{AvgPooledGapLatentD}}, \"0.000\"))"
+        "formula": "=CONCAT(\"LatentTypeD=\", {{LatentTypeDCount}}, \"/\", {{TypeDCount}}, \"; SignFlipMaxPurity=\", {{SignFlipSignalPurityMax}}, \"; stableD=\", {{AvgPooledGapStableD}}, \" latentD=\", {{AvgPooledGapLatentD}})"
       }
     ],
     "data": [
@@ -3017,7 +3017,7 @@
       {
         "name": "PooledGapCrossesZero",
         "datatype": "boolean",
-        "type": "lookup",
+        "type": "calculated",
         "nullable": true,
         "Description": "Lookup: SweepStudySummary.PooledGapCrossesZero via Study. TRUE when reweighting allocation would change the sign of the pooled gap.",
         "formula": "=LOOKUP({{Study}}, SweepStudySummary[SweepStudyId], SweepStudySummary[PooledGapCrossesZero])"
@@ -3025,7 +3025,7 @@
       {
         "name": "SweepPooledGapRange",
         "datatype": "number",
-        "type": "lookup",
+        "type": "calculated",
         "nullable": true,
         "Description": "Lookup: SweepStudySummary.SweepPooledGapRange via Study. Width of pooled-gap wander under allocation sweep.",
         "formula": "=LOOKUP({{Study}}, SweepStudySummary[SweepStudyId], SweepStudySummary[SweepPooledGapRange])"
@@ -3049,7 +3049,7 @@
       {
         "name": "StudyDomain",
         "datatype": "string",
-        "type": "lookup",
+        "type": "calculated",
         "nullable": true,
         "Description": "Lookup: Studies.Domain via Study.",
         "formula": "=LOOKUP({{Study}}, Studies[StudyId], Studies[Domain])"
@@ -7226,7 +7226,7 @@
         "type": "calculated",
         "nullable": true,
         "Description": "Witnessed metric value from ModelSummary for this hypothesis.",
-        "formula": "=IF({{HypothesisId}} = \"H-latent-d\", TEXT(=LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[LatentTypeDFraction]), \"0.0%\"), IF({{HypothesisId}} = \"H-purity\", TEXT(=LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[SignFlipSignalPurityMax]), \"0.000\"), IF({{HypothesisId}} = \"H-small-effect\", CONCAT(\"stable=\", TEXT(=LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[AvgPooledGapStableD]), \"0.000\"), \" latent=\", TEXT(=LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[AvgPooledGapLatentD]), \"0.000\")), IF({{HypothesisId}} = \"H-econ-zero\", TEXT(=LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[EconomicsSignFlipCount]), \"0\"), IF({{HypothesisId}} = \"H-domain-dist\", CONCAT(\"epi=\", TEXT(=LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[EpidemiologyAvgDistortion]), \"0.0000\"), \" edu=\", TEXT(=LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[EducationAvgDistortion]), \"0.0000\")), \"\")))))"
+        "formula": "=IF({{HypothesisId}} = \"H-latent-d\", CONCAT(\"fraction=\", LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[LatentTypeDFraction])), IF({{HypothesisId}} = \"H-purity\", CONCAT(\"maxPurity=\", LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[SignFlipSignalPurityMax])), IF({{HypothesisId}} = \"H-small-effect\", CONCAT(\"stable=\", LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[AvgPooledGapStableD]), \" latent=\", LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[AvgPooledGapLatentD])), IF({{HypothesisId}} = \"H-econ-zero\", CONCAT(\"flips=\", LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[EconomicsSignFlipCount])), IF({{HypothesisId}} = \"H-domain-dist\", CONCAT(\"epi=\", LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[EpidemiologyAvgDistortion]), \" edu=\", LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[EducationAvgDistortion])), \"\")))))"
       },
       {
         "name": "IsConfirmed",
@@ -7234,7 +7234,7 @@
         "type": "calculated",
         "nullable": true,
         "Description": "TRUE when the witnessed metric satisfies the pre-registered ExpectedOutcome.",
-        "formula": "=IF({{HypothesisId}} = \"H-latent-d\", =LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[LatentTypeDFraction]) > 0.5, IF({{HypothesisId}} = \"H-purity\", =LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[SignFlipSignalPurityMax]) < 0.5, IF({{HypothesisId}} = \"H-small-effect\", =LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[AvgPooledGapStableD]) > =LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[AvgPooledGapLatentD]), IF({{HypothesisId}} = \"H-econ-zero\", =LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[EconomicsSignFlipCount]) = 0, IF({{HypothesisId}} = \"H-domain-dist\", =LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[EpidemiologyAvgDistortion]) > =LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[EducationAvgDistortion]), FALSE())))))"
+        "formula": "=IF({{HypothesisId}} = \"H-latent-d\", LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[LatentTypeDFraction]) > 0.5, IF({{HypothesisId}} = \"H-purity\", LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[SignFlipSignalPurityMax]) < 0.5, IF({{HypothesisId}} = \"H-small-effect\", LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[AvgPooledGapStableD]) > LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[AvgPooledGapLatentD]), IF({{HypothesisId}} = \"H-econ-zero\", LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[EconomicsSignFlipCount]) = 0, IF({{HypothesisId}} = \"H-domain-dist\", LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[EpidemiologyAvgDistortion]) > LOOKUP(\"simpsons-paradox-v1\", ModelSummary[ModelSummaryId], ModelSummary[EducationAvgDistortion]), FALSE())))))"
       },
       {
         "name": "Evidence",

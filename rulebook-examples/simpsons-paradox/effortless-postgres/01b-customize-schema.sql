@@ -76,10 +76,21 @@ CREATE UNLOGGED TABLE IF NOT EXISTS _erb_tr_metrics (
   allocation_direction          TEXT,
   signal_purity                 NUMERIC,
   max_stratum_imbalance         NUMERIC,
-  max_stratum_gap               NUMERIC
+  max_stratum_gap               NUMERIC,
+  pooled_gap_crosses_zero       BOOLEAN,
+  sweep_pooled_gap_range        NUMERIC,
+  latent_flip_potential         BOOLEAN,
+  allocation_fragility          NUMERIC,
+  study_domain                  TEXT
 );
 
 CREATE INDEX IF NOT EXISTS idx_erb_tr_metrics_study ON _erb_tr_metrics (study);
+
+ALTER TABLE _erb_tr_metrics ADD COLUMN IF NOT EXISTS pooled_gap_crosses_zero BOOLEAN;
+ALTER TABLE _erb_tr_metrics ADD COLUMN IF NOT EXISTS sweep_pooled_gap_range NUMERIC;
+ALTER TABLE _erb_tr_metrics ADD COLUMN IF NOT EXISTS latent_flip_potential BOOLEAN;
+ALTER TABLE _erb_tr_metrics ADD COLUMN IF NOT EXISTS allocation_fragility NUMERIC;
+ALTER TABLE _erb_tr_metrics ADD COLUMN IF NOT EXISTS study_domain TEXT;
 
 CREATE UNLOGGED TABLE IF NOT EXISTS _erb_sp_metrics (
   phase_id                      TEXT PRIMARY KEY,
