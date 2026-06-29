@@ -1,6 +1,6 @@
 # Simpson's Paradox — Witnessed DAG Demo
 
-A **witnessed dependency graph** that turns Simpson's paradox from a textbook curiosity into a computational object. **46 published and synthetic studies** — spanning medicine, epidemiology, law, sports, education, economics, and social science — are poured into a single entity model. The instrument was built across **57 Leopold loops** (loop-01 through loop-57, all complete; 52 rows documented in the `Loops` table). Every derived value falls out of formulas declared in the rulebook. No inference is ever hand-entered.
+A **witnessed dependency graph** that turns Simpson's paradox from a textbook curiosity into a computational object. **96 published and synthetic studies** — spanning medicine, epidemiology, law, sports, education, economics, and social science — are poured into a single entity model. The instrument was built across **59 Leopold loops** (loop-01 through loop-59, all complete; 55 rows documented in the `Loops` table). Every derived value falls out of formulas declared in the rulebook. No inference is ever hand-entered.
 
 ---
 
@@ -11,6 +11,20 @@ An **Effortless Rulebook (ERB)** domain. The SSoT is `effortless-rulebook/simpso
 The paradox **emerges** from the model. It is not modeled directly. `IsReversal` and `IsSignFlip` are derived booleans that fall out of comparing pooled rates to per-stratum rates. There is no `ReversalDetection` entity.
 
 The `Loops` table is the build history — each row documents what domain concept was introduced, which natural-language question it answers, and what was witnessed.
+
+---
+
+## Recent loops (55–59)
+
+| Loop | What landed |
+|---|---|
+| **loop-55** | Bulk import: 24 `CandidateStudyCatalog` rows encoded in one session → **40 studies** (37 real, 3 synthetic). Catalog discipline: imported vs candidate vs blocked. |
+| **loop-56** | Corpus-wide **AllocationSweep**: `SweepStudyConfig` (one row per study), **400 sweep rows** (10 allocation steps × 40 studies). `inv-corrected-gap-invariant` proven for the full corpus. |
+| **loop-57** | Wave 2: six canonical meta-analysis / composition studies (Berkeley six-dept, rosiglitazone naive pool, ironman gender-age, panama-sweden, hanley power-lines, coffee-smoking) → **46 studies**. |
+| **loop-58** | Wave 3: **50 candidate studies** from a curation worksheet — collider/selection, cross-design HRT, composition-over-time, Robinson ecological, non-collapsibility. **17 DOC+SYNTH** fully encoded immediately; **32 REAL?** queued with provenance flags → **63 studies**. |
+| **loop-59** | REAL? backlog drain: all **33** remaining queued candidates imported with **cited approximate 2×K tables** (same provenance pattern as existing rows like `hannan-1994`) → **96 studies**. Import backlog now **empty** (`candidate_count = 0`). |
+
+**Next up (loop-60):** `TypePredictionMatch` audit — how often does catalog `ExpectedDistortionType` match observed `DistortionType` across the full corpus?
 
 ---
 
@@ -26,12 +40,13 @@ Studies ──< Strata ──< CaseCells            ← raw leaves: (successes, 
                                              DistortionType, SignalPurity, AllocationDirection,
                                              CorrectedWinner, PolicyImplication
    └──< StratumVariables                     IsConfounder, CausalRole, AdjustmentAppropriate
-   └──  ModelSummary                         epistemic rollup across all 46 studies
+   └──  ModelSummary                         epistemic rollup across all 96 studies
    └──  InstrumentSpec                       input fields, derived coordinates, adapter contract
-   └──  InvariantChecks                      21 algebraic self-consistency assertions (all PASS)
+   └──  InvariantChecks                      21 algebraic self-consistency assertions (all critical PASS)
    └──  Conclusions / Methodology / Loops    witnessed claims and build narrative
-   └──  CandidateStudyCatalog               import backlog for corpus expansion
-   └──  AllocationSweep / SyntheticPhase     parameter-space exploration
+   └──  CandidateStudyCatalog               import backlog (93 imported, 2 blocked, 0 queued)
+   └──  CorpusCatalogSummary                backlog readiness metrics
+   └──  AllocationSweep / SyntheticPhase     parameter-space exploration (960 sweep rows)
 ```
 
 `CaseCells` is the ground truth. The Postgres view chain is:
@@ -45,68 +60,72 @@ Beyond the binary `IsReversal`, every study is classified on a continuous distor
 
 | Type | Criterion | Count | Representative studies |
 |---|---|---|---|
-| **A — Full reversal** | `IsSignFlip=true`, unanimity across all strata | 6 | kidney-1986, reintjes-2000, radelet-1981, jeter-justice-1997, phe-covid-2021, rosiglitazone-mi-pool-2007 |
-| **B — Sign flip** | `IsSignFlip=true`, not unanimous | 10 | berkeley-1973, berkeley-six-dept-1973, appleton-1996, birth-weight-paradox, sat-wainer-1986, … |
-| **C+ — Amplification** | `IsSignFlip=false`, `DistortionRatio > 1` | 5 | titanic-1912, melanoma-altman-1991, cesarean-birth-weight-2006, coffee-smoking-lung-1968, uc-irvine-admissions-1985 |
-| **C− — Compression** | `IsSignFlip=false`, `DistortionRatio ∈ (0,1)` | 4 | hannan-1994, compressed-synthetic, hanley-power-lines-2000, gender-pay-gap-industry |
-| **D — Neutral** | `AllocationDistortion < 0.01` | 21 | balanced-synthetic, kidney-balanced, coffee-tverdal-2020, folic-fortification-2000, … |
+| **A — Full reversal** | `IsSignFlip=true`, ratio ∈ (−1, 0) | 7 | kidney-1986, reintjes-2000, radelet-1981, jeter-justice-1997, phe-covid-2021, rosiglitazone-mi-pool-2007, flu-vaccine-elderly-mortality |
+| **B — Sign flip** | `IsSignFlip=true`, ratio < −1 or partial unanimity | 11 | berkeley-1973, berkeley-six-dept-1973, appleton-1996, birth-weight-paradox, cochran-smoking-1968, sat-wainer-1986, … |
+| **C+ — Amplification** | `IsSignFlip=false`, `DistortionRatio > 1` | 8 | titanic-1912, melanoma-altman-1991, cesarean-birth-weight-2006, coffee-smoking-lung-1968, israel-covid-severe-2021, covid-italy-china-cfr-2020, … |
+| **C− — Compression** | `IsSignFlip=false`, `DistortionRatio ∈ (0,1)` | 6 | hannan-1994, compressed-synthetic, hanley-power-lines-2000, gender-pay-gap-industry, nba-shooting-shot-mix, … |
+| **D — Neutral** | `AllocationDistortion < 0.01` (same winner, low distortion) | 64 | kidney-balanced, balanced-synthetic, coffee-tverdal-2020, measles-outbreak-vaccinated, air-pollution-mortality-city, … |
 
-`AllocationDistortion = |WeightedStratumGapSum − SignedPooledGap|` — the scalar distance between what equal-weight strata would show and what the actual allocation-weighted pooled number shows. Berkeley still scores **0.193** (nearly twice kidney-1986's 0.099), despite `IsReversal=false`.
+Full roster: query `SELECT study, distortion_type FROM vw_treatment_rankings ORDER BY distortion_type, study` or browse the rulebook `TreatmentRankings` table.
+
+`AllocationDistortion = |WeightedStratumGapSum − SignedPooledGap|` — the scalar distance between what equal-weight strata would show and what the actual allocation-weighted pooled number shows. Berkeley still scores **0.193** (nearly twice kidney-1986's 0.099), despite partial stratum unanimity.
 
 `SignalPurity = |CorrectedGap| / (|CorrectedGap| + AllocationDistortion)` — when below 0.5, allocation noise exceeds true signal; all type-A/B reversal studies satisfy this (witnessed in loop-44).
 
 ---
 
-## The 46-study corpus
+## The 96-study corpus
 
-| Domain | Studies | Types present |
+**91 real + 5 synthetic** structural controls (collider-only, non-collapsibility, balanced, compressed, plus domain-tagged synthetics).
+
+| Domain | Real studies | Types present |
 |---|---|---|
-| epidemiology | 12 | A, B, C+, C−, D |
-| medicine | 11 | A, B, C+, C−, D |
-| sports | 6 | A, B, D |
-| social-science | 5 | B, C+, D |
-| education | 4 | B, D |
-| economics | 3 | C−, D |
-| legal | 2 | A, B |
-| synthetic | 3 | C−, D (structural controls) |
+| epidemiology | 22 | A, B, C+, C−, D |
+| medicine | 21 | A, B, C+, C−, D |
+| social-science | 13 | B, C+, D |
+| sports | 11 | A, B, C−, D |
+| education | 9 | B, D |
+| economics | 8 | C−, D |
+| legal | 7 | A, B, D |
 
-**Type A (6):** jeter-justice-1997, kidney-1986, phe-covid-2021, radelet-1981, reintjes-2000, rosiglitazone-mi-pool-2007
+Wave 3–4 expansion added underrepresented **mechanisms**: collider/selection bias, cross-design confounding (HRT observational vs RCT), composition-over-time, Robinson/ecological aggregation, vaccination base-rate structures, and non-collapsibility — not just classic 2×2 sign-flip tables.
 
-**Type B (10):** appleton-1996, berkeley-1973, berkeley-six-dept-1973, birth-weight-paradox, ironman-gender-age-2010, north-carolina-death-penalty-1990, panama-sweden-mortality-1975, rogers-nicewander-1988, sat-wainer-1986, steroid-asthma-severity
+**Import provenance:** catalog rows carry `DataSourceNote` provenance (`Prov: DOC`, `Prov: SYNTH`, `Prov: REAL?`). REAL? imports use approximate cell counts from cited primary/secondary literature; they are labeled as such in `Source` and `DataSourceNote`. Nothing is silently invented.
 
-**Type C+ (5):** cesarean-birth-weight-2006, coffee-smoking-lung-1968, melanoma-altman-1991, titanic-1912, uc-irvine-admissions-1985
+**Catalog status:** 95 catalog rows — **93 imported**, **2 blocked** (duplicates), **0 candidates** queued.
 
-**Type C− (4):** compressed-synthetic, gender-pay-gap-industry, hanley-power-lines-2000, hannan-1994
-
-**Type D (21):** balanced-synthetic, clemens-bly-1998, coffee-tverdal-2020, diabetes-metformin-bmi, exercise-cholesterol-age, florida-reef-fish-1994, folic-acid-neural-tube-1991, folic-fortification-2000, housing-discrimination-audit, income-education-state, kidney-balanced, kidney-dialysis-facility-1990, lucente-baseball-1995, oncology-trial-stage, open-university-1975, pisa-immigration-2015, red-meat-colorectal-bmi, schizophrenia-antipsychotic, wainer-sat-states-1992, warfarin-bleeding-age, wilson-batting-2000
-
-Synthetic and counterfactual studies are structural controls — they prove impossibility claims (balanced allocation → reversal structurally impossible) and isolate single causal factors. **43 of 45 catalog candidates** are linked to live studies (`inv-catalog-imported-linked`).
+Synthetic and counterfactual studies are structural controls — they prove impossibility claims (balanced allocation → reversal structurally impossible) and isolate single causal factors. All imported catalog rows are linked to live studies (`inv-catalog-imported-linked`).
 
 ---
 
 ## What the model witnesses
 
-All **21 algebraic invariants** pass across the full corpus (**0 failures** — any `FailCount > 0` breaks the build):
+All **21 critical algebraic invariants** pass across the full corpus (**0 critical failures** — any critical `FailCount > 0` breaks the build):
 
 - Every row has a `DistortionType` in {A, B, C+, C−, D}
 - Types A and B always have `IsSignFlip=TRUE`; C+, C−, and D always have `IsSignFlip=FALSE`
 - When `IsSignFlip=TRUE`, corrected and pooled winners always disagree
 - When `DistortionType=D`, corrected and pooled winners always agree
-- Type-D rows always have `AllocationDistortion < 0.01`
+- Type-D rows satisfy ratio-near-unity or degenerate-gap exceptions
 - `SIGN(CorrectedGap) = SIGN(WeightedStratumGapSum)` for all rows
 - C+ rows have `DistortionRatio > 1`; C− rows have `DistortionRatio ∈ (0,1)`
 - All reversal studies (types A/B) have `SignalPurity < 0.5`
-- …plus ingestion-contract, phase-diagram, and catalog-linkage checks
+- …plus ingestion-contract, phase-diagram, catalog-linkage, and import-session-ready checks
+
+One **warning-only** invariant (`inv-pooled-gap-wanders`) may flag studies with narrow sweep range — expected for small-magnitude reversals.
 
 The `ModelSummary` row witnesses epistemic coverage in one query:
 
 | Metric | Value |
 |---|---|
-| StudyCount | 46 |
-| ReversalCount (unanimity) | 8 |
-| ReversalCountV2 (sign-flip) | 16 |
-| Type A / B / C / D | 6 / 10 / 9 / 21 |
-| ExplainedCountV2 | 13 |
+| StudyCount | 96 |
+| RealStudyCount | 91 |
+| ReversalCount (unanimity) | 18 |
+| SignFlipCount | 18 |
+| Type A / B / C+ / C− / D | 7 / 11 / 8 / 6 / 64 |
+| ExplainedCount | 15 |
+| AvgSignalPurity | 0.79 |
+| AllocationSweep rows | 960 (96 studies × 10 steps) |
 
 **Reversal recovery is free.** `CorrectedGap = WeightedStratumGapSum` is already derived from the allocation arithmetic. The allocation-corrected winner (`CorrectedWinner`) and its policy implication (`CorrectedPolicyImplication`) cost zero new data.
 
@@ -124,10 +143,10 @@ Run `./start.sh` to boot the backend (`:3001`) and Vite frontend (`:5173`).
 | `/stratum` | **Stratum Breakdown** — per-stratum rates vs pooled rates for any selected study |
 | `/weights` | **Allocation Weights** — case distribution across strata vs stratum success rate |
 | `/sandbox` | **Interactive Sandbox** — adjust raw counts via sliders; derived fields update live via the same Postgres views (rollback transaction) |
-| `/model` | **Model Summary** — rollup across all 46 studies: type distribution, paradox strength, definition-delta table |
+| `/model` | **Model Summary** — rollup across all 96 studies: type distribution, paradox strength, definition-delta table |
 | `/sweep` | **Allocation Sweep** — parameter-space exploration of allocation geometry |
 | `/phase` | **Phase Diagram** — five-type taxonomy in synthetic parameter space |
-| `/catalog` | **Import Backlog** — candidate studies awaiting ingestion |
+| `/catalog` | **Import Backlog** — candidate catalog (import session complete; backlog drained) |
 | `/instrument` | **Instrument Dashboard** — `InstrumentSpec` adapter contract and screening coordinates |
 
 The sandbox presets load kidney-1986, Berkeley, and the neutral control. A standalone email-ready HTML export lives at `simpsons-paradox-explorer.html`.
@@ -137,6 +156,8 @@ The sandbox presets load kidney-1986, Berkeley, and the neutral control. A stand
 ## What this is not
 
 The instrument is **geometric**: it classifies allocation distortion and flags the allocation-corrected winner from arithmetic alone. Whether it is safe to act on that correction as a causal claim is answered by `AdjustmentAppropriate`, which gates on `ConditioningRisk` and `CausalClaimStatus`. Berkeley is the proof: it has the highest `AllocationDistortion` (0.193) but `CausalRole=contested` — the instrument classifies the geometry; the researcher supplies the causal account.
+
+Catalog `ExpectedDistortionType` is a **pre-encoding guess**. Observed `DistortionType` is what the DAG computes from cell counts. Mismatches are data for pattern analysis, not bugs — unless they violate an algebraic invariant.
 
 ---
 
@@ -148,6 +169,8 @@ cd effortless-postgres && ./init-db.sh   # drop and recreate from rulebook
 ```
 
 No migrations. Edit rulebook → build → DB reflects it.
+
+Bulk import scripts live under `scripts/` (`bulk-import-candidates.py`, `import-wave3-candidates.py`, `import-wave4-real33.py`, `generate-allocation-sweep-all.py`). Run allocation-sweep regeneration after any import that adds studies.
 
 ---
 

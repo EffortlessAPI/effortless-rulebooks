@@ -289,7 +289,7 @@ export function buildRecoveryChart(
   return new Chart(canvas, config);
 }
 
-/** Finding 2: screening tiers on the instrument plane. */
+/** Finding 2: screening tiers on allocation vs severity plane. */
 export function buildScreeningChart(
   canvas: HTMLCanvasElement,
   rankings: TreatmentRanking[],
@@ -297,7 +297,7 @@ export function buildScreeningChart(
 ): Chart<'scatter'> {
   const datasets = byTierDatasets(rankings, studyById, (r, study) => {
     const rawX = Number(r.allocation_distortion);
-    const rawY = Number(r.instrument_score);
+    const rawY = Number(r.paradox_strength);
     const { x, y } = jitterOrigin(rawX, rawY, r.study, 0.06);
     return {
       x, y, label: r.study, rawX, rawY,
@@ -320,10 +320,10 @@ export function buildScreeningChart(
     options: {
       ...baseScatterOptions(
         'Allocation distortion →',
-        'Instrument score →',
+        'Paradox strength →',
         bounds,
         v => Number(v) < 0 ? '' : Number(v).toFixed(2),
-        v => Number(v) < 0 ? '' : Number(v).toFixed(1),
+        v => Number(v) < 0 ? '' : Number(v).toFixed(3),
       ),
       plugins: {
         ...baseScatterOptions('', '', bounds, v => String(v), v => String(v)).plugins,
@@ -335,7 +335,7 @@ export function buildScreeningChart(
               return [
                 `${d.tier} · Type ${d.type}`,
                 `Distortion: ${d.rawX.toFixed(4)}`,
-                `Instrument score: ${d.rawY.toFixed(3)}`,
+                `Strength: ${d.rawY.toFixed(4)}`,
               ];
             },
           },

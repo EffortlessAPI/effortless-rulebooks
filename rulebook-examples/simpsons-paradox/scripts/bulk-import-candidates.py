@@ -534,6 +534,7 @@ def build_rows(spec: dict) -> dict:
     total_cases = sum(sdata["A"][1] + sdata["B"][1] for sdata in strata.values())
     cell_count = len(strata) * 2
 
+    is_synthetic = spec.get("is_synthetic", False)
     study = {
         "StudyId": sid,
         "Title": spec["title"],
@@ -545,25 +546,34 @@ def build_rows(spec: dict) -> dict:
         "TraditionId": spec["tradition_id"],
         "PrimaryResearcherId": spec["primary_researcher_id"],
         "PublicationYear": spec["publication_year"],
-        "Domain": spec["domain"],
-        "IsSynthetic": False,
+        "Domain": "synthetic" if is_synthetic else spec["domain"],
+        "IsSynthetic": is_synthetic,
     }
+
+    role = spec["causal_role"]
+    if role == "confounder":
+        is_confounder, conditioning_risk = True, "confounder"
+    elif role == "contested":
+        is_confounder, conditioning_risk = False, "confounder"
+    elif role == "mediator":
+        is_confounder, conditioning_risk = False, "mediator"
+    elif role in ("collider", "selection"):
+        is_confounder, conditioning_risk = False, "collider"
+    else:
+        is_confounder, conditioning_risk = False, "none"
 
     sv = {
         "StratumVariableId": f"{sid}-{spec['variable_name']}",
         "Study": sid,
         "VariableName": spec["variable_name"],
-        "CausalRole": spec["causal_role"],
+        "CausalRole": role,
         "AffectsTreatmentAssignment": True,
         "AffectsOutcome": True,
         "MechanismNote": spec["mechanism_note"],
         "Name": f"{sid}-{spec['variable_name']}",
-        "IsConfounder": spec["causal_role"] == "confounder",
-        "ConditioningRisk": "confounder" if spec["causal_role"] == "confounder" else "none",
+        "IsConfounder": is_confounder,
+        "ConditioningRisk": conditioning_risk,
     }
-    if spec["causal_role"] == "contested":
-        sv["IsConfounder"] = False
-        sv["ConditioningRisk"] = "confounder"
 
     treatments = []
     for label, desc_key in [("A", "treatment_a_desc"), ("B", "treatment_b_desc")]:
@@ -611,15 +621,27 @@ def build_rows(spec: dict) -> dict:
                 "Name": f"{sid}-{slabel}-{tlabel}",
             })
 
-    if spec["causal_role"] == "contested":
+    if spec.get("adjustment_rationale"):
+        adj_rationale = spec["adjustment_rationale"]
+    elif role == "contested":
         adj_rationale = (
             "Causal role contested — geometric correction is available but "
             "adjustment requires caution about endogenous stratum choice."
         )
-    elif spec["causal_role"] == "mediator":
+    elif role == "mediator":
         adj_rationale = (
             "Stratum variable is a mediator on the causal pathway; "
             "do not treat CorrectedGap as a causal treatment effect."
+        )
+    elif role in ("collider", "selection"):
+        adj_rationale = (
+            "Stratum variable is a collider/selection mechanism; "
+            "conditioning induces spurious association — AdjustmentAppropriate=FALSE."
+        )
+    elif is_synthetic:
+        adj_rationale = (
+            "Synthetic structural control — geometric facts only; "
+            "no causal treatment effect claim."
         )
     else:
         adj_rationale = (

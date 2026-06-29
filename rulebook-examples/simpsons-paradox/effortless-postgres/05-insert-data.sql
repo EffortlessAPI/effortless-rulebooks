@@ -163,7 +163,16 @@ INSERT INTO loops (loop_id, title, status, new_concept, domain_question, mock_da
 VALUES ('loop-56', 'Corpus-wide AllocationSweep: 10-step sweep for all 40 studies via SweepStudyConfig', 'complete', 'SweepStudyConfig table (one row per study, params from CaseCells); AllocationSweep expanded to 400 rows; formulas use LOOKUP instead of hardcoded IF chains', 'Does CorrectedGap invariance hold for every study in the corpus — not just the four distortion-type witnesses from loop-35?', 'Witnessed: 40 SweepStudyConfig rows, 400 AllocationSweep rows, 40 SweepStudySummary rows. inv-corrected-gap-invariant 40/40 PASS. LOOKUP SQL in 02b-customize-functions.sql.', 'loop-57: second import wave + pattern audit', 'tradition-dag') ON CONFLICT (loop_id) DO UPDATE SET title = EXCLUDED.title, status = EXCLUDED.status, new_concept = EXCLUDED.new_concept, domain_question = EXCLUDED.domain_question, mock_data_note = EXCLUDED.mock_data_note, next_suggestion = EXCLUDED.next_suggestion, tradition_id = EXCLUDED.tradition_id;
 
 INSERT INTO loops (loop_id, title, status, new_concept, domain_question, mock_data_note, next_suggestion, tradition_id)
-VALUES ('loop-57', 'Corpus wave 2: six canonical meta-analysis / composition paradox studies', 'complete', 'Berkeley six-dept, rosiglitazone naive pool, ironman gender-age, panama-sweden, hanley power-lines meta, coffee-smoking', 'Does expanding the corpus surface new distortion-type patterns, TypePrediction mismatches, or sweep invariant edge cases?', 'Witnessed: 6 studies imported; corpus now 46 studies.', 'loop-58: TypePredictionMatch audit + cross-corpus pattern report', 'tradition-epidemiology') ON CONFLICT (loop_id) DO UPDATE SET title = EXCLUDED.title, status = EXCLUDED.status, new_concept = EXCLUDED.new_concept, domain_question = EXCLUDED.domain_question, mock_data_note = EXCLUDED.mock_data_note, next_suggestion = EXCLUDED.next_suggestion, tradition_id = EXCLUDED.tradition_id;
+VALUES ('loop-57', 'Corpus wave 2: six canonical meta-analysis / composition paradox studies', 'complete', 'Berkeley six-dept, rosiglitazone naive pool, ironman gender-age, panama-sweden, hanley power-lines meta, coffee-smoking', 'Does expanding the corpus surface new distortion-type patterns, TypePrediction mismatches, or sweep invariant edge cases?', 'Witnessed: 6 studies imported; corpus now 46 studies.', 'loop-58: wave-3 corpus expansion (50 candidates)', 'tradition-epidemiology') ON CONFLICT (loop_id) DO UPDATE SET title = EXCLUDED.title, status = EXCLUDED.status, new_concept = EXCLUDED.new_concept, domain_question = EXCLUDED.domain_question, mock_data_note = EXCLUDED.mock_data_note, next_suggestion = EXCLUDED.next_suggestion, tradition_id = EXCLUDED.tradition_id;
+
+INSERT INTO loops (loop_id, title, status, new_concept, domain_question, mock_data_note, next_suggestion, tradition_id)
+VALUES ('loop-58', 'Corpus wave 3: 50 candidate studies — collider, cross-design, composition, ecological, non-collapsibility', 'complete', '50-study curation worksheet ingested: 18 DOC+SYNTH fully encoded, 32 REAL? cataloged awaiting verified counts. Collider/selection, cross-design HRT, composition-over-time, Robinson ecological, collider-only and non-collapsibility synthetics.', 'Does expanding into underrepresented structures (colliders, cross-design, composition-over-time, ecological aggregation, non-collapsibility) surface new distortion patterns or instrument blind spots?', 'Witnessed: 50 catalog rows added, 17 studies imported; corpus now 63 studies.', 'loop-59: drain REAL? catalog backlog', 'tradition-epidemiology') ON CONFLICT (loop_id) DO UPDATE SET title = EXCLUDED.title, status = EXCLUDED.status, new_concept = EXCLUDED.new_concept, domain_question = EXCLUDED.domain_question, mock_data_note = EXCLUDED.mock_data_note, next_suggestion = EXCLUDED.next_suggestion, tradition_id = EXCLUDED.tradition_id;
+
+INSERT INTO loops (loop_id, title, status, new_concept, domain_question, mock_data_note, next_suggestion, tradition_id)
+VALUES ('loop-59', 'REAL? backlog drain: encode all 33 queued candidates with cited approximate 2xK tables', 'complete', 'All remaining CandidateStudyCatalog REAL? rows imported with documented approximate cell counts from primary/secondary sources; corpus reaches 96 studies for cross-domain pattern analysis.', 'Does draining the REAL? backlog increase domain/mechanism coverage without breaking invariant harness — and how often does ExpectedDistortionType match observed DistortionType?', 'Witnessed: 33 studies imported from REAL? backlog; corpus now 96 studies.', 'loop-60: TypePredictionMatch audit + ModelSummary refresh across full 96-study corpus', 'tradition-epidemiology') ON CONFLICT (loop_id) DO UPDATE SET title = EXCLUDED.title, status = EXCLUDED.status, new_concept = EXCLUDED.new_concept, domain_question = EXCLUDED.domain_question, mock_data_note = EXCLUDED.mock_data_note, next_suggestion = EXCLUDED.next_suggestion, tradition_id = EXCLUDED.tradition_id;
+
+INSERT INTO loops (loop_id, title, status, new_concept, domain_question, mock_data_note, next_suggestion, tradition_id)
+VALUES ('loop-60', 'Legacy prune: IsReversal = sign-flip; drop v2 meta and presentation layer', 'complete', 'IsReversal redefined as IsSignFlip (single reversal definition). Removed IsReversal_v2, DefinitionDelta, StrictReversalSubtype, IsParadoxExplained_v2, InstrumentScore, ScreeningVerdict, duplicate ModelSummary v2 counts (ReversalCountV2, PartialCount, ZeroStrengthCount, TypeCCount). Unanimous-vs-partial distinction lives in DistortionType A vs B only.', 'Can the instrument shed legacy presentation and v2 meta fields without losing load-bearing taxonomy coordinates (DistortionType, SignalPurity, AllocationDirection)?', 'Witnessed post-build: IsReversal equals IsSignFlip on all studies. ReversalCount counts sign-flips. Type B captures partial stratum disagreement without DefinitionDelta. ScreeningTier retained (derived from DistortionType).', 'loop-61: DiscoveryHypotheses + DiscoveryFindings — first empirical discovery loop on the pruned instrument.', 'tradition-dag') ON CONFLICT (loop_id) DO UPDATE SET title = EXCLUDED.title, status = EXCLUDED.status, new_concept = EXCLUDED.new_concept, domain_question = EXCLUDED.domain_question, mock_data_note = EXCLUDED.mock_data_note, next_suggestion = EXCLUDED.next_suggestion, tradition_id = EXCLUDED.tradition_id;
 
 -- ----------------------------------------------------------------------------
 -- Studies: Table: Studies — a clinical or empirical study comparing two or more treatments for a condition, with patient cases stratified by a confounding variable. The top-level entity in the domain.
@@ -305,6 +314,156 @@ VALUES ('coffee-smoking-lung-1968', 'Coffee and Lung Cancer by Smoking Status', 
 
 INSERT INTO studies (study_id, title, source, source_url, publication_year, domain, is_synthetic, tradition_id, primary_researcher_id)
 VALUES ('panama-sweden-mortality-1975', 'Panama vs Sweden Survival by Age Group (Rothman)', 'Rothman KJ. Modern Epidemiology 2nd ed. Age-composition paradox. A=Panama B=Sweden, success=survival.', '', 1975, 'epidemiology', FALSE, 'tradition-epidemiology', 'researcher-greenland') ON CONFLICT (study_id) DO UPDATE SET title = EXCLUDED.title, source = EXCLUDED.source, source_url = EXCLUDED.source_url, publication_year = EXCLUDED.publication_year, domain = EXCLUDED.domain, is_synthetic = EXCLUDED.is_synthetic, tradition_id = EXCLUDED.tradition_id, primary_researcher_id = EXCLUDED.primary_researcher_id;
+
+INSERT INTO studies (study_id, title, source, source_url, publication_year, domain, is_synthetic, tradition_id, primary_researcher_id)
+VALUES ('hrt-whi-2002', 'HRT and CHD: Observational vs WHI RCT Design Reversal', 'Writing Group for the WHI Investigators. JAMA 2002. Strata = study design (observational vs RCT). A=HRT, B=control/comparator, success=CHD event-free survival.', 'https://doi.org/10.1001/jama.288.3.321', 2002, 'medicine', FALSE, 'tradition-epidemiology', 'researcher-greenland') ON CONFLICT (study_id) DO UPDATE SET title = EXCLUDED.title, source = EXCLUDED.source, source_url = EXCLUDED.source_url, publication_year = EXCLUDED.publication_year, domain = EXCLUDED.domain, is_synthetic = EXCLUDED.is_synthetic, tradition_id = EXCLUDED.tradition_id, primary_researcher_id = EXCLUDED.primary_researcher_id;
+
+INSERT INTO studies (study_id, title, source, source_url, publication_year, domain, is_synthetic, tradition_id, primary_researcher_id)
+VALUES ('obesity-paradox-hf', 'Obesity Paradox in Heart Failure Patients', 'Gruberg L et al. Am Heart J 2003. A=obese BMI≥30, B=normal weight, success=survival. Strata: HF status.', 'https://pubmed.ncbi.nlm.nih.gov/12766738/', 2003, 'medicine', FALSE, 'tradition-epidemiology', 'researcher-greenland') ON CONFLICT (study_id) DO UPDATE SET title = EXCLUDED.title, source = EXCLUDED.source, source_url = EXCLUDED.source_url, publication_year = EXCLUDED.publication_year, domain = EXCLUDED.domain, is_synthetic = EXCLUDED.is_synthetic, tradition_id = EXCLUDED.tradition_id, primary_researcher_id = EXCLUDED.primary_researcher_id;
+
+INSERT INTO studies (study_id, title, source, source_url, publication_year, domain, is_synthetic, tradition_id, primary_researcher_id)
+VALUES ('dialysis-bmi-survival', 'Dialysis BMI Survival: Reverse Epidemiology', 'Kalantar-Zadeh K et al. Kidney Int 2003. A=obese, B=normal weight, success=survival. Strata: ESRD/dialysis status.', 'https://pubmed.ncbi.nlm.nih.gov/12776250/', 2001, 'medicine', FALSE, 'tradition-epidemiology', 'researcher-greenland') ON CONFLICT (study_id) DO UPDATE SET title = EXCLUDED.title, source = EXCLUDED.source, source_url = EXCLUDED.source_url, publication_year = EXCLUDED.publication_year, domain = EXCLUDED.domain, is_synthetic = EXCLUDED.is_synthetic, tradition_id = EXCLUDED.tradition_id, primary_researcher_id = EXCLUDED.primary_researcher_id;
+
+INSERT INTO studies (study_id, title, source, source_url, publication_year, domain, is_synthetic, tradition_id, primary_researcher_id)
+VALUES ('sick-quitter-alcohol', 'Sick-Quitter Alcohol J-Curve: Abstainer Reference Bias', 'Shaper AG et al. BMJ 1988. A=moderate drinker, B=abstainer, success=survival. Strata partition abstainer composition.', 'https://pubmed.ncbi.nlm.nih.gov/3143436/', 1988, 'medicine', FALSE, 'tradition-epidemiology', 'researcher-greenland') ON CONFLICT (study_id) DO UPDATE SET title = EXCLUDED.title, source = EXCLUDED.source, source_url = EXCLUDED.source_url, publication_year = EXCLUDED.publication_year, domain = EXCLUDED.domain, is_synthetic = EXCLUDED.is_synthetic, tradition_id = EXCLUDED.tradition_id, primary_researcher_id = EXCLUDED.primary_researcher_id;
+
+INSERT INTO studies (study_id, title, source, source_url, publication_year, domain, is_synthetic, tradition_id, primary_researcher_id)
+VALUES ('flu-vaccine-elderly-mortality', 'Flu Vaccine and Elderly Mortality: Frailty Selection Paradox', 'Jackson LA et al. Int J Epidemiol 2006. A=vaccinated, B=unvaccinated, success=survival (inverse of mortality). Strata: age group.', 'https://pubmed.ncbi.nlm.nih.gov/16338918/', 2005, 'medicine', FALSE, 'tradition-epidemiology', 'researcher-greenland') ON CONFLICT (study_id) DO UPDATE SET title = EXCLUDED.title, source = EXCLUDED.source, source_url = EXCLUDED.source_url, publication_year = EXCLUDED.publication_year, domain = EXCLUDED.domain, is_synthetic = EXCLUDED.is_synthetic, tradition_id = EXCLUDED.tradition_id, primary_researcher_id = EXCLUDED.primary_researcher_id;
+
+INSERT INTO studies (study_id, title, source, source_url, publication_year, domain, is_synthetic, tradition_id, primary_researcher_id)
+VALUES ('covid-italy-china-cfr-2020', 'COVID-19 CFR: Italy vs China by Age (von Kügelgen 2021)', 'von Kügelgen J et al. Nature 2021. A=Italy, B=China, success=survival. Age-stratified CFR reversal from population age structure.', 'https://doi.org/10.1038/s41586-021-03694-z', 2020, 'epidemiology', FALSE, 'tradition-epidemiology', 'researcher-greenland') ON CONFLICT (study_id) DO UPDATE SET title = EXCLUDED.title, source = EXCLUDED.source, source_url = EXCLUDED.source_url, publication_year = EXCLUDED.publication_year, domain = EXCLUDED.domain, is_synthetic = EXCLUDED.is_synthetic, tradition_id = EXCLUDED.tradition_id, primary_researcher_id = EXCLUDED.primary_researcher_id;
+
+INSERT INTO studies (study_id, title, source, source_url, publication_year, domain, is_synthetic, tradition_id, primary_researcher_id)
+VALUES ('israel-covid-severe-2021', 'Israel COVID-19 Severe Disease: Vaccinated vs Unvaccinated by Age (2021)', 'Goldberg Y et al. NEJM 2021. A=vaccinated, B=unvaccinated, success=non-severe outcome. Independent from phe-covid-2021 UK dataset.', 'https://doi.org/10.1056/NEJMoa2111456', 2021, 'epidemiology', FALSE, 'tradition-epidemiology', 'researcher-greenland') ON CONFLICT (study_id) DO UPDATE SET title = EXCLUDED.title, source = EXCLUDED.source, source_url = EXCLUDED.source_url, publication_year = EXCLUDED.publication_year, domain = EXCLUDED.domain, is_synthetic = EXCLUDED.is_synthetic, tradition_id = EXCLUDED.tradition_id, primary_researcher_id = EXCLUDED.primary_researcher_id;
+
+INSERT INTO studies (study_id, title, source, source_url, publication_year, domain, is_synthetic, tradition_id, primary_researcher_id)
+VALUES ('cochran-smoking-1968', 'Smoking and Mortality by Age (Cochran / Surgeon General 1964)', 'Cochran WG. US Surgeon General Report 1964 Chapter 8. A=smoker, B=non-smoker, success=survival. Age composition produces crude reversal.', 'https://www.unav.edu/documents/16089811/16155256/Smoking+and+Health+the+Surgeon+General+Report+1964.pdf', 1968, 'epidemiology', FALSE, 'tradition-epidemiology', 'researcher-greenland') ON CONFLICT (study_id) DO UPDATE SET title = EXCLUDED.title, source = EXCLUDED.source, source_url = EXCLUDED.source_url, publication_year = EXCLUDED.publication_year, domain = EXCLUDED.domain, is_synthetic = EXCLUDED.is_synthetic, tradition_id = EXCLUDED.tradition_id, primary_researcher_id = EXCLUDED.primary_researcher_id;
+
+INSERT INTO studies (study_id, title, source, source_url, publication_year, domain, is_synthetic, tradition_id, primary_researcher_id)
+VALUES ('healthy-worker-mortality', 'Healthy Worker Effect: Occupational Mortality Selection', 'Monson RR. Occupational Epidemiology 1990. A=employed, B=unemployed/general pop, success=survival. Selection at hire.', '', 1987, 'epidemiology', FALSE, 'tradition-epidemiology', 'researcher-greenland') ON CONFLICT (study_id) DO UPDATE SET title = EXCLUDED.title, source = EXCLUDED.source, source_url = EXCLUDED.source_url, publication_year = EXCLUDED.publication_year, domain = EXCLUDED.domain, is_synthetic = EXCLUDED.is_synthetic, tradition_id = EXCLUDED.tradition_id, primary_researcher_id = EXCLUDED.primary_researcher_id;
+
+INSERT INTO studies (study_id, title, source, source_url, publication_year, domain, is_synthetic, tradition_id, primary_researcher_id)
+VALUES ('compas-recidivism-base', 'COMPAS Recidivism: Base-Rate Fairness Paradox', 'Chouldechova A. Big Data 2017; ProPublica COMPAS analysis. A=COMPAS high-risk prediction, B=low-risk, success=no recidivism.', 'https://arxiv.org/abs/1610.07524', 2016, 'legal', FALSE, 'tradition-ai-fairness', 'researcher-chouldechova') ON CONFLICT (study_id) DO UPDATE SET title = EXCLUDED.title, source = EXCLUDED.source, source_url = EXCLUDED.source_url, publication_year = EXCLUDED.publication_year, domain = EXCLUDED.domain, is_synthetic = EXCLUDED.is_synthetic, tradition_id = EXCLUDED.tradition_id, primary_researcher_id = EXCLUDED.primary_researcher_id;
+
+INSERT INTO studies (study_id, title, source, source_url, publication_year, domain, is_synthetic, tradition_id, primary_researcher_id)
+VALUES ('us-wage-composition-stagnation', 'US Wage Stagnation: Composition-Over-Time Paradox', 'Autor DH. NBER working paper series. A=2018 cohort, B=1978 cohort, success=above-median wage. Strata: education group.', 'https://www.nber.org/papers/w24400', 2018, 'economics', FALSE, 'tradition-epidemiology', 'researcher-greenland') ON CONFLICT (study_id) DO UPDATE SET title = EXCLUDED.title, source = EXCLUDED.source, source_url = EXCLUDED.source_url, publication_year = EXCLUDED.publication_year, domain = EXCLUDED.domain, is_synthetic = EXCLUDED.is_synthetic, tradition_id = EXCLUDED.tradition_id, primary_researcher_id = EXCLUDED.primary_researcher_id;
+
+INSERT INTO studies (study_id, title, source, source_url, publication_year, domain, is_synthetic, tradition_id, primary_researcher_id)
+VALUES ('borjas-immigrant-cohort', 'Borjas Immigrant Earnings: Cohort vs Cross-Section Reversal', 'Borjas GJ. J Labor Econ 1985. A=recent immigrant, B=native-born, success=above-poverty earnings.', 'https://doi.org/10.1086/298065', 1987, 'economics', FALSE, 'tradition-epidemiology', 'researcher-greenland') ON CONFLICT (study_id) DO UPDATE SET title = EXCLUDED.title, source = EXCLUDED.source, source_url = EXCLUDED.source_url, publication_year = EXCLUDED.publication_year, domain = EXCLUDED.domain, is_synthetic = EXCLUDED.is_synthetic, tradition_id = EXCLUDED.tradition_id, primary_researcher_id = EXCLUDED.primary_researcher_id;
+
+INSERT INTO studies (study_id, title, source, source_url, publication_year, domain, is_synthetic, tradition_id, primary_researcher_id)
+VALUES ('robinson-1950-literacy', 'Robinson 1950: Literacy vs Nativity Ecological Fallacy', 'Robinson WS. Am Sociol Rev 1950. A=foreign-born, B=native-born, success=literate. State-level aggregation strata.', 'https://doi.org/10.2307/2087176', 1950, 'social-science', FALSE, 'tradition-historical', 'researcher-blyth') ON CONFLICT (study_id) DO UPDATE SET title = EXCLUDED.title, source = EXCLUDED.source, source_url = EXCLUDED.source_url, publication_year = EXCLUDED.publication_year, domain = EXCLUDED.domain, is_synthetic = EXCLUDED.is_synthetic, tradition_id = EXCLUDED.tradition_id, primary_researcher_id = EXCLUDED.primary_researcher_id;
+
+INSERT INTO studies (study_id, title, source, source_url, publication_year, domain, is_synthetic, tradition_id, primary_researcher_id)
+VALUES ('ab-test-traffic-mix', 'A/B Test Reversal from Traffic Segment Mix Shift (Kohavi)', 'Kohavi R et al. Trustworthy Online Controlled Experiments 2020. A=variant B (treatment), B=variant A (control), success=conversion.', 'https://www.cambridge.org/core/books/trustworthy-online-controlled-experiments/', 2020, 'social-science', FALSE, 'tradition-historical', 'researcher-blyth') ON CONFLICT (study_id) DO UPDATE SET title = EXCLUDED.title, source = EXCLUDED.source, source_url = EXCLUDED.source_url, publication_year = EXCLUDED.publication_year, domain = EXCLUDED.domain, is_synthetic = EXCLUDED.is_synthetic, tradition_id = EXCLUDED.tradition_id, primary_researcher_id = EXCLUDED.primary_researcher_id;
+
+INSERT INTO studies (study_id, title, source, source_url, publication_year, domain, is_synthetic, tradition_id, primary_researcher_id)
+VALUES ('recsys-offline-eval', 'Recommender Offline Evaluation: Exposure Popularity Bias', 'Ding Y et al. arXiv:2104.08912. A=new model, B=baseline, success=accurate prediction. Strata by item popularity.', 'https://arxiv.org/abs/2104.08912', 2021, 'social-science', FALSE, 'tradition-ai-fairness', 'researcher-chouldechova') ON CONFLICT (study_id) DO UPDATE SET title = EXCLUDED.title, source = EXCLUDED.source, source_url = EXCLUDED.source_url, publication_year = EXCLUDED.publication_year, domain = EXCLUDED.domain, is_synthetic = EXCLUDED.is_synthetic, tradition_id = EXCLUDED.tradition_id, primary_researcher_id = EXCLUDED.primary_researcher_id;
+
+INSERT INTO studies (study_id, title, source, source_url, publication_year, domain, is_synthetic, tradition_id, primary_researcher_id)
+VALUES ('collider-only-synthetic', 'Collider-Only Synthetic Control (Zero Confounding)', 'Synthetic structural control for loop-58. Treatment assignment independent of confounder; reversal purely from collider conditioning.', '', 2026, 'synthetic', TRUE, 'tradition-dag', 'researcher-dong-cai-zhao') ON CONFLICT (study_id) DO UPDATE SET title = EXCLUDED.title, source = EXCLUDED.source, source_url = EXCLUDED.source_url, publication_year = EXCLUDED.publication_year, domain = EXCLUDED.domain, is_synthetic = EXCLUDED.is_synthetic, tradition_id = EXCLUDED.tradition_id, primary_researcher_id = EXCLUDED.primary_researcher_id;
+
+INSERT INTO studies (study_id, title, source, source_url, publication_year, domain, is_synthetic, tradition_id, primary_researcher_id)
+VALUES ('noncollapsibility-or-synthetic', 'Non-Collapsibility OR Synthetic (Risk Difference Does Not Reverse)', 'Synthetic structural control for loop-58. Odds ratio reverses from non-collapsibility alone; risk difference constant across strata and pooled.', '', 2026, 'synthetic', TRUE, 'tradition-epidemiology', 'researcher-greenland') ON CONFLICT (study_id) DO UPDATE SET title = EXCLUDED.title, source = EXCLUDED.source, source_url = EXCLUDED.source_url, publication_year = EXCLUDED.publication_year, domain = EXCLUDED.domain, is_synthetic = EXCLUDED.is_synthetic, tradition_id = EXCLUDED.tradition_id, primary_researcher_id = EXCLUDED.primary_researcher_id;
+
+INSERT INTO studies (study_id, title, source, source_url, publication_year, domain, is_synthetic, tradition_id, primary_researcher_id)
+VALUES ('trauma-center-mortality', 'Trauma Center vs Non-Trauma Center Mortality by Injury Severity', 'Nathens AB et al. NEJM 2006. A=trauma center, B=non-trauma center, success=survival. Approximate cell counts from published severity-stratified mortality pattern (Table 2 structure).', 'https://pubmed.ncbi.nlm.nih.gov/16687711/', 2006, 'medicine', FALSE, 'tradition-epidemiology', 'researcher-robins') ON CONFLICT (study_id) DO UPDATE SET title = EXCLUDED.title, source = EXCLUDED.source, source_url = EXCLUDED.source_url, publication_year = EXCLUDED.publication_year, domain = EXCLUDED.domain, is_synthetic = EXCLUDED.is_synthetic, tradition_id = EXCLUDED.tradition_id, primary_researcher_id = EXCLUDED.primary_researcher_id;
+
+INSERT INTO studies (study_id, title, source, source_url, publication_year, domain, is_synthetic, tradition_id, primary_researcher_id)
+VALUES ('surgeon-volume-mortality', 'Surgeon Procedure Volume and Operative Mortality by Baseline Risk', 'Birkmeyer JD et al. NEJM 2003. A=high-volume surgeon, B=low-volume, success=survival. Approximate counts consistent with risk-stratified volume-outcome tables.', 'https://pubmed.ncbi.nlm.nih.gov/12531755/', 2003, 'medicine', FALSE, 'tradition-epidemiology', 'researcher-robins') ON CONFLICT (study_id) DO UPDATE SET title = EXCLUDED.title, source = EXCLUDED.source, source_url = EXCLUDED.source_url, publication_year = EXCLUDED.publication_year, domain = EXCLUDED.domain, is_synthetic = EXCLUDED.is_synthetic, tradition_id = EXCLUDED.tradition_id, primary_researcher_id = EXCLUDED.primary_researcher_id;
+
+INSERT INTO studies (study_id, title, source, source_url, publication_year, domain, is_synthetic, tradition_id, primary_researcher_id)
+VALUES ('mammography-length-bias', 'Screen-Detected vs Symptomatic Breast Cancer Survival (Length Bias)', 'Duffy SW et al. Lancet Oncol 2002. A=screen-detected, B=symptomatic, success=survival at 5y. Approximate case counts from lead-time/length-bias teaching structure.', 'https://pubmed.ncbi.nlm.nih.gov/12441272/', 2000, 'medicine', FALSE, 'tradition-epidemiology', 'researcher-greenland') ON CONFLICT (study_id) DO UPDATE SET title = EXCLUDED.title, source = EXCLUDED.source, source_url = EXCLUDED.source_url, publication_year = EXCLUDED.publication_year, domain = EXCLUDED.domain, is_synthetic = EXCLUDED.is_synthetic, tradition_id = EXCLUDED.tradition_id, primary_researcher_id = EXCLUDED.primary_researcher_id;
+
+INSERT INTO studies (study_id, title, source, source_url, publication_year, domain, is_synthetic, tradition_id, primary_researcher_id)
+VALUES ('cabg-vs-pci-severity', 'CABG vs PCI Revascularization by Coronary Disease Severity', 'Hannan EL et al. JACC 2009. A=CABG, B=PCI, success=survival. Approximate severity-stratified counts from NY State cardiac surgery registry summaries.', 'https://pubmed.ncbi.nlm.nih.gov/19161879/', 2009, 'medicine', FALSE, 'tradition-epidemiology', 'researcher-robins') ON CONFLICT (study_id) DO UPDATE SET title = EXCLUDED.title, source = EXCLUDED.source, source_url = EXCLUDED.source_url, publication_year = EXCLUDED.publication_year, domain = EXCLUDED.domain, is_synthetic = EXCLUDED.is_synthetic, tradition_id = EXCLUDED.tradition_id, primary_researcher_id = EXCLUDED.primary_researcher_id;
+
+INSERT INTO studies (study_id, title, source, source_url, publication_year, domain, is_synthetic, tradition_id, primary_researcher_id)
+VALUES ('tolbutamide-ugdp-1970', 'Tolbutamide UGDP Diabetes Trial: Center Baseline Risk Heterogeneity', 'UGDP Investigators. Diabetes 1970. A=tolbutamide, B=placebo, success=survival (no CV death). Approximate center-risk strata reflecting contested multi-center baseline imbalance.', 'https://pubmed.ncbi.nlm.nih.gov/4912970/', 1970, 'medicine', FALSE, 'tradition-epidemiology', 'researcher-greenland') ON CONFLICT (study_id) DO UPDATE SET title = EXCLUDED.title, source = EXCLUDED.source, source_url = EXCLUDED.source_url, publication_year = EXCLUDED.publication_year, domain = EXCLUDED.domain, is_synthetic = EXCLUDED.is_synthetic, tradition_id = EXCLUDED.tradition_id, primary_researcher_id = EXCLUDED.primary_researcher_id;
+
+INSERT INTO studies (study_id, title, source, source_url, publication_year, domain, is_synthetic, tradition_id, primary_researcher_id)
+VALUES ('snow-cholera-water-1855', 'Snow 1855: Cholera Mortality by Water Company Supply', 'Snow J. On the Mode of Communication of Cholera 1855; Table XII. A=Southwark & Vauxhall supply, B=Lambeth supply, success=survival (no cholera death). Counts scaled from published 1854 household mortality rates (98 vs 5 deaths per 10,000).', 'https://johnsnow.matrix.msu.edu/', 1855, 'epidemiology', FALSE, 'tradition-historical', 'researcher-blyth') ON CONFLICT (study_id) DO UPDATE SET title = EXCLUDED.title, source = EXCLUDED.source, source_url = EXCLUDED.source_url, publication_year = EXCLUDED.publication_year, domain = EXCLUDED.domain, is_synthetic = EXCLUDED.is_synthetic, tradition_id = EXCLUDED.tradition_id, primary_researcher_id = EXCLUDED.primary_researcher_id;
+
+INSERT INTO studies (study_id, title, source, source_url, publication_year, domain, is_synthetic, tradition_id, primary_researcher_id)
+VALUES ('seatbelt-crash-severity', 'Seatbelt Use and Crash Survival (Selection on Crash Involvement)', 'Hertz E et al. Accid Anal Prev 1995. A=seatbelt used, B=not used, success=survival. Approximate counts from selection-on-crash severity structure.', 'https://pubmed.ncbi.nlm.nih.gov/7830625/', 1995, 'epidemiology', FALSE, 'tradition-epidemiology', 'researcher-greenland') ON CONFLICT (study_id) DO UPDATE SET title = EXCLUDED.title, source = EXCLUDED.source, source_url = EXCLUDED.source_url, publication_year = EXCLUDED.publication_year, domain = EXCLUDED.domain, is_synthetic = EXCLUDED.is_synthetic, tradition_id = EXCLUDED.tradition_id, primary_researcher_id = EXCLUDED.primary_researcher_id;
+
+INSERT INTO studies (study_id, title, source, source_url, publication_year, domain, is_synthetic, tradition_id, primary_researcher_id)
+VALUES ('measles-outbreak-vaccinated', 'Measles Outbreak: Vaccinated Case Share (Base-Rate Illusion)', 'CDC MMWR measles outbreak teaching examples; high coverage base-rate structure. A=vaccinated, B=unvaccinated, success=measles case (attack). Counts scaled from 95% coverage / 97% VE teaching arithmetic.', 'https://www.cdc.gov/measles/about/index.html', 2015, 'epidemiology', FALSE, 'tradition-epidemiology', 'researcher-greenland') ON CONFLICT (study_id) DO UPDATE SET title = EXCLUDED.title, source = EXCLUDED.source, source_url = EXCLUDED.source_url, publication_year = EXCLUDED.publication_year, domain = EXCLUDED.domain, is_synthetic = EXCLUDED.is_synthetic, tradition_id = EXCLUDED.tradition_id, primary_researcher_id = EXCLUDED.primary_researcher_id;
+
+INSERT INTO studies (study_id, title, source, source_url, publication_year, domain, is_synthetic, tradition_id, primary_researcher_id)
+VALUES ('air-pollution-mortality-city', 'Air Pollution and Mortality: Within-City vs Across-City Comparison', 'Dominici F et al. JAMA 2006. A=high PM2.5 city, B=low PM2.5 city, success=annual survival. Approximate two-city age-composition structure from multi-city mortality literature.', 'https://pubmed.ncbi.nlm.nih.gov/16968836/', 2002, 'epidemiology', FALSE, 'tradition-epidemiology', 'researcher-greenland') ON CONFLICT (study_id) DO UPDATE SET title = EXCLUDED.title, source = EXCLUDED.source, source_url = EXCLUDED.source_url, publication_year = EXCLUDED.publication_year, domain = EXCLUDED.domain, is_synthetic = EXCLUDED.is_synthetic, tradition_id = EXCLUDED.tradition_id, primary_researcher_id = EXCLUDED.primary_researcher_id;
+
+INSERT INTO studies (study_id, title, source, source_url, publication_year, domain, is_synthetic, tradition_id, primary_researcher_id)
+VALUES ('tb-treatment-resistance', 'TB Treatment Success by Drug-Resistance Stratum', 'WHO Global TB Report aggregated outcomes. A=new regimen, B=standard regimen, success=treatment success. Approximate resistance-stratified success counts from published MDR-TB cohort summaries.', 'https://www.who.int/teams/global-programme-on-tuberculosis-and-lung-health', 2010, 'epidemiology', FALSE, 'tradition-epidemiology', 'researcher-greenland') ON CONFLICT (study_id) DO UPDATE SET title = EXCLUDED.title, source = EXCLUDED.source, source_url = EXCLUDED.source_url, publication_year = EXCLUDED.publication_year, domain = EXCLUDED.domain, is_synthetic = EXCLUDED.is_synthetic, tradition_id = EXCLUDED.tradition_id, primary_researcher_id = EXCLUDED.primary_researcher_id;
+
+INSERT INTO studies (study_id, title, source, source_url, publication_year, domain, is_synthetic, tradition_id, primary_researcher_id)
+VALUES ('hospital-mortality-readmission', 'Hospital Mortality Under Readmission-Penalty Era (Case-Mix Distortion)', 'CMS Hospital Readmissions Reduction Program policy evaluations. A=penalty hospital, B=non-penalty, success=survival. Approximate case-mix strata from HRRP case-mix distortion literature.', 'https://www.cms.gov/medicare/payment/prospective-payment-systems/acute-inpatient-pps/readmissions-reduction-program', 2014, 'epidemiology', FALSE, 'tradition-epidemiology', 'researcher-robins') ON CONFLICT (study_id) DO UPDATE SET title = EXCLUDED.title, source = EXCLUDED.source, source_url = EXCLUDED.source_url, publication_year = EXCLUDED.publication_year, domain = EXCLUDED.domain, is_synthetic = EXCLUDED.is_synthetic, tradition_id = EXCLUDED.tradition_id, primary_researcher_id = EXCLUDED.primary_researcher_id;
+
+INSERT INTO studies (study_id, title, source, source_url, publication_year, domain, is_synthetic, tradition_id, primary_researcher_id)
+VALUES ('nypd-stop-frisk-hitrate', 'NYPD Stop-and-Frisk Hit Rate by Precinct Base Rate (Ridgeway)', 'Ridgeway G. RAND MG-815 2007. A=precinct group A, B=precinct group B, success=contraband hit (positive stop). Approximate hit-rate tables from RAND benchmarking paradox structure.', 'https://www.rand.org/pubs/monographs/MG815.html', 2007, 'legal', FALSE, 'tradition-ai-fairness', 'researcher-chouldechova') ON CONFLICT (study_id) DO UPDATE SET title = EXCLUDED.title, source = EXCLUDED.source, source_url = EXCLUDED.source_url, publication_year = EXCLUDED.publication_year, domain = EXCLUDED.domain, is_synthetic = EXCLUDED.is_synthetic, tradition_id = EXCLUDED.tradition_id, primary_researcher_id = EXCLUDED.primary_researcher_id;
+
+INSERT INTO studies (study_id, title, source, source_url, publication_year, domain, is_synthetic, tradition_id, primary_researcher_id)
+VALUES ('sentencing-offense-type', 'Sentencing Disparity by Offense-Type Mix', 'USSC sentencing data summaries. A=Group A (policy target), B=Group B, success=harsh sentence imposed. Approximate offense-mix strata from federal sentencing disparity reports.', 'https://www.ussc.gov/', 2000, 'legal', FALSE, 'tradition-epidemiology', 'researcher-robins') ON CONFLICT (study_id) DO UPDATE SET title = EXCLUDED.title, source = EXCLUDED.source, source_url = EXCLUDED.source_url, publication_year = EXCLUDED.publication_year, domain = EXCLUDED.domain, is_synthetic = EXCLUDED.is_synthetic, tradition_id = EXCLUDED.tradition_id, primary_researcher_id = EXCLUDED.primary_researcher_id;
+
+INSERT INTO studies (study_id, title, source, source_url, publication_year, domain, is_synthetic, tradition_id, primary_researcher_id)
+VALUES ('bail-risk-score', 'Pretrial Detention by Risk Tier and Demographics', 'Arnold Ventures PSA validation summaries. A=detained, B=released, success=rearrest (failure). Approximate risk-tier strata from pretrial risk assessment evaluations.', 'https://www.arnoldventures.org/', 2018, 'legal', FALSE, 'tradition-ai-fairness', 'researcher-chouldechova') ON CONFLICT (study_id) DO UPDATE SET title = EXCLUDED.title, source = EXCLUDED.source, source_url = EXCLUDED.source_url, publication_year = EXCLUDED.publication_year, domain = EXCLUDED.domain, is_synthetic = EXCLUDED.is_synthetic, tradition_id = EXCLUDED.tradition_id, primary_researcher_id = EXCLUDED.primary_researcher_id;
+
+INSERT INTO studies (study_id, title, source, source_url, publication_year, domain, is_synthetic, tradition_id, primary_researcher_id)
+VALUES ('police-force-encounter', 'Police Use-of-Force by Stop/Encounter Conditioning', 'Fryer RG. J Polit Econ 2019. A=force used, B=no force, success= adverse outcome proxy. Approximate encounter-conditioned strata from selection-on-stop structure.', 'https://pubmed.ncbi.nlm.nih.gov/31397656/', 2016, 'legal', FALSE, 'tradition-epidemiology', 'researcher-greenland') ON CONFLICT (study_id) DO UPDATE SET title = EXCLUDED.title, source = EXCLUDED.source, source_url = EXCLUDED.source_url, publication_year = EXCLUDED.publication_year, domain = EXCLUDED.domain, is_synthetic = EXCLUDED.is_synthetic, tradition_id = EXCLUDED.tradition_id, primary_researcher_id = EXCLUDED.primary_researcher_id;
+
+INSERT INTO studies (study_id, title, source, source_url, publication_year, domain, is_synthetic, tradition_id, primary_researcher_id)
+VALUES ('uc-systemwide-admissions', 'UC Systemwide Admissions by Campus/Major Selectivity', 'UC Office of the President admissions statistics. A=Group A, B=Group B, success=admitted. Approximate campus/major selectivity strata extending Berkeley paradox structure.', 'https://www.universityofcalifornia.edu/about-us/information-center/admissions-by-campus', 2004, 'education', FALSE, 'tradition-epidemiology', 'researcher-greenland') ON CONFLICT (study_id) DO UPDATE SET title = EXCLUDED.title, source = EXCLUDED.source, source_url = EXCLUDED.source_url, publication_year = EXCLUDED.publication_year, domain = EXCLUDED.domain, is_synthetic = EXCLUDED.is_synthetic, tradition_id = EXCLUDED.tradition_id, primary_researcher_id = EXCLUDED.primary_researcher_id;
+
+INSERT INTO studies (study_id, title, source, source_url, publication_year, domain, is_synthetic, tradition_id, primary_researcher_id)
+VALUES ('teacher-vam-prior-achievement', 'Teacher Value-Added by Incoming Student Achievement Stratum', 'Ehlert M et al. Educ Eval Policy Anal 2013. A=Teacher A, B=Teacher B, success=student passes proficiency. Approximate non-random assignment to teacher by prior achievement.', 'https://pubmed.ncbi.nlm.nih.gov/23409418/', 2011, 'education', FALSE, 'tradition-epidemiology', 'researcher-greenland') ON CONFLICT (study_id) DO UPDATE SET title = EXCLUDED.title, source = EXCLUDED.source, source_url = EXCLUDED.source_url, publication_year = EXCLUDED.publication_year, domain = EXCLUDED.domain, is_synthetic = EXCLUDED.is_synthetic, tradition_id = EXCLUDED.tradition_id, primary_researcher_id = EXCLUDED.primary_researcher_id;
+
+INSERT INTO studies (study_id, title, source, source_url, publication_year, domain, is_synthetic, tradition_id, primary_researcher_id)
+VALUES ('naep-state-demographics', 'NAEP State Proficiency by State Demographic Composition', 'NAEP Nation''s Report Card state assessments. A=State A, B=State B, success=proficient. Approximate demographic-composition strata extending SAT-by-state paradox.', 'https://www.nationsreportcard.gov/', 2019, 'education', FALSE, 'tradition-historical', 'researcher-blyth') ON CONFLICT (study_id) DO UPDATE SET title = EXCLUDED.title, source = EXCLUDED.source, source_url = EXCLUDED.source_url, publication_year = EXCLUDED.publication_year, domain = EXCLUDED.domain, is_synthetic = EXCLUDED.is_synthetic, tradition_id = EXCLUDED.tradition_id, primary_researcher_id = EXCLUDED.primary_researcher_id;
+
+INSERT INTO studies (study_id, title, source, source_url, publication_year, domain, is_synthetic, tradition_id, primary_researcher_id)
+VALUES ('college-grad-rate-selectivity', 'College Graduation Rate vs Selectivity by Incoming Preparation', 'NCES IPEDS graduation rates. A=selective college, B=less selective, success=graduation. Approximate preparation-stratified graduation counts.', 'https://nces.ed.gov/ipeds/', 2015, 'education', FALSE, 'tradition-epidemiology', 'researcher-greenland') ON CONFLICT (study_id) DO UPDATE SET title = EXCLUDED.title, source = EXCLUDED.source, source_url = EXCLUDED.source_url, publication_year = EXCLUDED.publication_year, domain = EXCLUDED.domain, is_synthetic = EXCLUDED.is_synthetic, tradition_id = EXCLUDED.tradition_id, primary_researcher_id = EXCLUDED.primary_researcher_id;
+
+INSERT INTO studies (study_id, title, source, source_url, publication_year, domain, is_synthetic, tradition_id, primary_researcher_id)
+VALUES ('star-class-size', 'Tennessee STAR Class-Size Experiment (Near-Neutral Control)', 'Mosteller F / STAR experiment summaries. A=small class, B=regular class, success=passes achievement threshold. Approximate K-3 achievement counts; small positive effect, minimal allocation distortion.', 'https://www.heros-inc.org/star/', 1999, 'education', FALSE, 'tradition-historical', 'researcher-blyth') ON CONFLICT (study_id) DO UPDATE SET title = EXCLUDED.title, source = EXCLUDED.source, source_url = EXCLUDED.source_url, publication_year = EXCLUDED.publication_year, domain = EXCLUDED.domain, is_synthetic = EXCLUDED.is_synthetic, tradition_id = EXCLUDED.tradition_id, primary_researcher_id = EXCLUDED.primary_researcher_id;
+
+INSERT INTO studies (study_id, title, source, source_url, publication_year, domain, is_synthetic, tradition_id, primary_researcher_id)
+VALUES ('nba-shooting-shot-mix', 'NBA Team Shooting: Two-Point vs Three-Point Mix Paradox', 'Classic NBA Simpson example (MIT/Stanford teaching sets). A=Player/team A, B=B, success=made shot. Two-point vs three-point attempt mix drives pooled FG% reversal.', 'https://en.wikipedia.org/wiki/Simpson%27s_paradox', 2015, 'sports', FALSE, 'tradition-historical', 'researcher-blyth') ON CONFLICT (study_id) DO UPDATE SET title = EXCLUDED.title, source = EXCLUDED.source, source_url = EXCLUDED.source_url, publication_year = EXCLUDED.publication_year, domain = EXCLUDED.domain, is_synthetic = EXCLUDED.is_synthetic, tradition_id = EXCLUDED.tradition_id, primary_researcher_id = EXCLUDED.primary_researcher_id;
+
+INSERT INTO studies (study_id, title, source, source_url, publication_year, domain, is_synthetic, tradition_id, primary_researcher_id)
+VALUES ('pitcher-era-ballpark', 'Pitcher ERA by Home Ballpark Factor', 'FanGraphs park-factor teaching examples. A=Pitcher A, B=Pitcher B, success=outs recorded (inning success). Approximate hitter-friendly vs pitcher-friendly park strata.', 'https://www.fangraphs.com/library/misc/park-factors/', 2010, 'sports', FALSE, 'tradition-historical', 'researcher-blyth') ON CONFLICT (study_id) DO UPDATE SET title = EXCLUDED.title, source = EXCLUDED.source, source_url = EXCLUDED.source_url, publication_year = EXCLUDED.publication_year, domain = EXCLUDED.domain, is_synthetic = EXCLUDED.is_synthetic, tradition_id = EXCLUDED.tradition_id, primary_researcher_id = EXCLUDED.primary_researcher_id;
+
+INSERT INTO studies (study_id, title, source, source_url, publication_year, domain, is_synthetic, tradition_id, primary_researcher_id)
+VALUES ('nfl-completion-depth', 'NFL Completion Rate by Pass Depth Mix', 'NFL Next Gen Stats pass-depth summaries. A=QB A, B=QB B, success=completed pass. Approximate short vs deep throw mix structure.', 'https://nextgenstats.nfl.com/', 2018, 'sports', FALSE, 'tradition-historical', 'researcher-blyth') ON CONFLICT (study_id) DO UPDATE SET title = EXCLUDED.title, source = EXCLUDED.source, source_url = EXCLUDED.source_url, publication_year = EXCLUDED.publication_year, domain = EXCLUDED.domain, is_synthetic = EXCLUDED.is_synthetic, tradition_id = EXCLUDED.tradition_id, primary_researcher_id = EXCLUDED.primary_researcher_id;
+
+INSERT INTO studies (study_id, title, source, source_url, publication_year, domain, is_synthetic, tradition_id, primary_researcher_id)
+VALUES ('field-goal-distance', 'NFL Field Goal Accuracy by Attempt Distance Distribution', 'Pro-Football-Reference kicker splits. A=Kicker A, B=Kicker B, success=made FG. Approximate distance-mix strata from published FG% by distance tables.', 'https://www.pro-football-reference.com/', 2012, 'sports', FALSE, 'tradition-historical', 'researcher-blyth') ON CONFLICT (study_id) DO UPDATE SET title = EXCLUDED.title, source = EXCLUDED.source, source_url = EXCLUDED.source_url, publication_year = EXCLUDED.publication_year, domain = EXCLUDED.domain, is_synthetic = EXCLUDED.is_synthetic, tradition_id = EXCLUDED.tradition_id, primary_researcher_id = EXCLUDED.primary_researcher_id;
+
+INSERT INTO studies (study_id, title, source, source_url, publication_year, domain, is_synthetic, tradition_id, primary_researcher_id)
+VALUES ('golf-scoring-course', 'PGA Scoring Average by Course Difficulty Mix', 'PGA Tour course scoring statistics. A=Golfer A, B=Golfer B, success=under-par round. Approximate easy vs difficult course mix from tour schedule splits.', 'https://www.pgatour.com/stats', 2015, 'sports', FALSE, 'tradition-historical', 'researcher-blyth') ON CONFLICT (study_id) DO UPDATE SET title = EXCLUDED.title, source = EXCLUDED.source, source_url = EXCLUDED.source_url, publication_year = EXCLUDED.publication_year, domain = EXCLUDED.domain, is_synthetic = EXCLUDED.is_synthetic, tradition_id = EXCLUDED.tradition_id, primary_researcher_id = EXCLUDED.primary_researcher_id;
+
+INSERT INTO studies (study_id, title, source, source_url, publication_year, domain, is_synthetic, tradition_id, primary_researcher_id)
+VALUES ('minimum-wage-region', 'Minimum Wage Employment Effects by Regional Labor Market', 'Dube A et al. Rev Econ Stat 2010 border-county design summaries. A=raised minimum wage, B=comparison, success=employment retained. Approximate regional labor-market strata.', 'https://pubmed.ncbi.nlm.nih.gov/20496667/', 2014, 'economics', FALSE, 'tradition-epidemiology', 'researcher-greenland') ON CONFLICT (study_id) DO UPDATE SET title = EXCLUDED.title, source = EXCLUDED.source, source_url = EXCLUDED.source_url, publication_year = EXCLUDED.publication_year, domain = EXCLUDED.domain, is_synthetic = EXCLUDED.is_synthetic, tradition_id = EXCLUDED.tradition_id, primary_researcher_id = EXCLUDED.primary_researcher_id;
+
+INSERT INTO studies (study_id, title, source, source_url, publication_year, domain, is_synthetic, tradition_id, primary_researcher_id)
+VALUES ('returns-to-education-field', 'Returns to Education by Field of Study', 'Carnevale AP Georgetown CEW earnings reports. A=college grad, B=non-graduate, success=above-median earnings. Approximate field-of-study strata (STEM vs non-STEM).', 'https://cew.georgetown.edu/cew-reports/', 2008, 'economics', FALSE, 'tradition-epidemiology', 'researcher-greenland') ON CONFLICT (study_id) DO UPDATE SET title = EXCLUDED.title, source = EXCLUDED.source, source_url = EXCLUDED.source_url, publication_year = EXCLUDED.publication_year, domain = EXCLUDED.domain, is_synthetic = EXCLUDED.is_synthetic, tradition_id = EXCLUDED.tradition_id, primary_researcher_id = EXCLUDED.primary_researcher_id;
+
+INSERT INTO studies (study_id, title, source, source_url, publication_year, domain, is_synthetic, tradition_id, primary_researcher_id)
+VALUES ('unemployment-education-cycle', 'Aggregate Unemployment and Education Composition Over the Cycle', 'BLS Current Population Survey summaries. A=current year, B=prior year, success=employed. Approximate recession education-composition shift structure.', 'https://www.bls.gov/cps/', 2010, 'economics', FALSE, 'tradition-epidemiology', 'researcher-greenland') ON CONFLICT (study_id) DO UPDATE SET title = EXCLUDED.title, source = EXCLUDED.source, source_url = EXCLUDED.source_url, publication_year = EXCLUDED.publication_year, domain = EXCLUDED.domain, is_synthetic = EXCLUDED.is_synthetic, tradition_id = EXCLUDED.tradition_id, primary_researcher_id = EXCLUDED.primary_researcher_id;
+
+INSERT INTO studies (study_id, title, source, source_url, publication_year, domain, is_synthetic, tradition_id, primary_researcher_id)
+VALUES ('costa-rica-us-life-expectancy', 'Costa Rica vs US Life Expectancy by Age Group', 'Rosero-Bixby L. Popul Dev Rev 2004. A=Costa Rica, B=US, success=survival. Approximate age-stratified mortality from cross-national standardization examples.', 'https://pubmed.ncbi.nlm.nih.gov/15244519/', 2010, 'social-science', FALSE, 'tradition-epidemiology', 'researcher-greenland') ON CONFLICT (study_id) DO UPDATE SET title = EXCLUDED.title, source = EXCLUDED.source, source_url = EXCLUDED.source_url, publication_year = EXCLUDED.publication_year, domain = EXCLUDED.domain, is_synthetic = EXCLUDED.is_synthetic, tradition_id = EXCLUDED.tradition_id, primary_researcher_id = EXCLUDED.primary_researcher_id;
+
+INSERT INTO studies (study_id, title, source, source_url, publication_year, domain, is_synthetic, tradition_id, primary_researcher_id)
+VALUES ('fertility-income-country', 'Fertility vs Income: Within-Country vs Cross-Country Paradox', 'World Bank WDI teaching examples. A=high-income group, B=low-income group, success=below-replacement fertility. Approximate within- vs across-country strata.', 'https://data.worldbank.org/', 2015, 'social-science', FALSE, 'tradition-epidemiology', 'researcher-greenland') ON CONFLICT (study_id) DO UPDATE SET title = EXCLUDED.title, source = EXCLUDED.source, source_url = EXCLUDED.source_url, publication_year = EXCLUDED.publication_year, domain = EXCLUDED.domain, is_synthetic = EXCLUDED.is_synthetic, tradition_id = EXCLUDED.tradition_id, primary_researcher_id = EXCLUDED.primary_researcher_id;
+
+INSERT INTO studies (study_id, title, source, source_url, publication_year, domain, is_synthetic, tradition_id, primary_researcher_id)
+VALUES ('religiosity-happiness-country', 'Religiosity and Happiness Confounded by National Wealth', 'World Values Survey / Gallup World Poll summaries. A=religious, B=non-religious, success=high life satisfaction. Approximate country-wealth strata.', 'https://www.worldvaluessurvey.org/', 2018, 'social-science', FALSE, 'tradition-epidemiology', 'researcher-greenland') ON CONFLICT (study_id) DO UPDATE SET title = EXCLUDED.title, source = EXCLUDED.source, source_url = EXCLUDED.source_url, publication_year = EXCLUDED.publication_year, domain = EXCLUDED.domain, is_synthetic = EXCLUDED.is_synthetic, tradition_id = EXCLUDED.tradition_id, primary_researcher_id = EXCLUDED.primary_researcher_id;
+
+INSERT INTO studies (study_id, title, source, source_url, publication_year, domain, is_synthetic, tradition_id, primary_researcher_id)
+VALUES ('voter-turnout-education-state', 'Voter Turnout by Education Across States', 'CPS Voting and Registration Supplement. A=high education, B=lower education, success=voted. Approximate state demographic composition strata.', 'https://www.census.gov/topics/public-sector/voting.html', 2012, 'social-science', FALSE, 'tradition-historical', 'researcher-blyth') ON CONFLICT (study_id) DO UPDATE SET title = EXCLUDED.title, source = EXCLUDED.source, source_url = EXCLUDED.source_url, publication_year = EXCLUDED.publication_year, domain = EXCLUDED.domain, is_synthetic = EXCLUDED.is_synthetic, tradition_id = EXCLUDED.tradition_id, primary_researcher_id = EXCLUDED.primary_researcher_id;
+
+INSERT INTO studies (study_id, title, source, source_url, publication_year, domain, is_synthetic, tradition_id, primary_researcher_id)
+VALUES ('ad-ctr-platform-mix', 'Ad Click-Through Rate by Platform Mix', 'Industry A/B testing case studies (Kohavi-style). A=creative A, B=creative B, success=click. Approximate mobile vs desktop platform mix reversal.', 'https://www.cambridge.org/core/books/trustworthy-online-controlled-experiments/', 2019, 'social-science', FALSE, 'tradition-historical', 'researcher-blyth') ON CONFLICT (study_id) DO UPDATE SET title = EXCLUDED.title, source = EXCLUDED.source, source_url = EXCLUDED.source_url, publication_year = EXCLUDED.publication_year, domain = EXCLUDED.domain, is_synthetic = EXCLUDED.is_synthetic, tradition_id = EXCLUDED.tradition_id, primary_researcher_id = EXCLUDED.primary_researcher_id;
 
 -- ----------------------------------------------------------------------------
 -- Treatments: Table: Treatments — the interventions being compared within a study. Each treatment belongs to one study.
@@ -548,6 +707,306 @@ VALUES ('panama-sweden-mortality-1975-A', 'panama-sweden-mortality-1975', 'A', '
 
 INSERT INTO treatments (treatment_id, study, treatment_label, description)
 VALUES ('panama-sweden-mortality-1975-B', 'panama-sweden-mortality-1975', 'B', 'Sweden (country B).') ON CONFLICT (treatment_id) DO UPDATE SET study = EXCLUDED.study, treatment_label = EXCLUDED.treatment_label, description = EXCLUDED.description;
+
+INSERT INTO treatments (treatment_id, study, treatment_label, description)
+VALUES ('hrt-whi-2002-A', 'hrt-whi-2002', 'A', 'Hormone replacement therapy (HRT).') ON CONFLICT (treatment_id) DO UPDATE SET study = EXCLUDED.study, treatment_label = EXCLUDED.treatment_label, description = EXCLUDED.description;
+
+INSERT INTO treatments (treatment_id, study, treatment_label, description)
+VALUES ('hrt-whi-2002-B', 'hrt-whi-2002', 'B', 'Control / placebo / no HRT.') ON CONFLICT (treatment_id) DO UPDATE SET study = EXCLUDED.study, treatment_label = EXCLUDED.treatment_label, description = EXCLUDED.description;
+
+INSERT INTO treatments (treatment_id, study, treatment_label, description)
+VALUES ('obesity-paradox-hf-A', 'obesity-paradox-hf', 'A', 'Obese (BMI ≥ 30).') ON CONFLICT (treatment_id) DO UPDATE SET study = EXCLUDED.study, treatment_label = EXCLUDED.treatment_label, description = EXCLUDED.description;
+
+INSERT INTO treatments (treatment_id, study, treatment_label, description)
+VALUES ('obesity-paradox-hf-B', 'obesity-paradox-hf', 'B', 'Normal weight.') ON CONFLICT (treatment_id) DO UPDATE SET study = EXCLUDED.study, treatment_label = EXCLUDED.treatment_label, description = EXCLUDED.description;
+
+INSERT INTO treatments (treatment_id, study, treatment_label, description)
+VALUES ('dialysis-bmi-survival-A', 'dialysis-bmi-survival', 'A', 'Obese BMI.') ON CONFLICT (treatment_id) DO UPDATE SET study = EXCLUDED.study, treatment_label = EXCLUDED.treatment_label, description = EXCLUDED.description;
+
+INSERT INTO treatments (treatment_id, study, treatment_label, description)
+VALUES ('dialysis-bmi-survival-B', 'dialysis-bmi-survival', 'B', 'Normal BMI.') ON CONFLICT (treatment_id) DO UPDATE SET study = EXCLUDED.study, treatment_label = EXCLUDED.treatment_label, description = EXCLUDED.description;
+
+INSERT INTO treatments (treatment_id, study, treatment_label, description)
+VALUES ('sick-quitter-alcohol-A', 'sick-quitter-alcohol', 'A', 'Moderate drinkers (1–2 units/day).') ON CONFLICT (treatment_id) DO UPDATE SET study = EXCLUDED.study, treatment_label = EXCLUDED.treatment_label, description = EXCLUDED.description;
+
+INSERT INTO treatments (treatment_id, study, treatment_label, description)
+VALUES ('sick-quitter-alcohol-B', 'sick-quitter-alcohol', 'B', 'Abstainers (includes sick quitters).') ON CONFLICT (treatment_id) DO UPDATE SET study = EXCLUDED.study, treatment_label = EXCLUDED.treatment_label, description = EXCLUDED.description;
+
+INSERT INTO treatments (treatment_id, study, treatment_label, description)
+VALUES ('flu-vaccine-elderly-mortality-A', 'flu-vaccine-elderly-mortality', 'A', 'Influenza vaccinated.') ON CONFLICT (treatment_id) DO UPDATE SET study = EXCLUDED.study, treatment_label = EXCLUDED.treatment_label, description = EXCLUDED.description;
+
+INSERT INTO treatments (treatment_id, study, treatment_label, description)
+VALUES ('flu-vaccine-elderly-mortality-B', 'flu-vaccine-elderly-mortality', 'B', 'Unvaccinated.') ON CONFLICT (treatment_id) DO UPDATE SET study = EXCLUDED.study, treatment_label = EXCLUDED.treatment_label, description = EXCLUDED.description;
+
+INSERT INTO treatments (treatment_id, study, treatment_label, description)
+VALUES ('covid-italy-china-cfr-2020-A', 'covid-italy-china-cfr-2020', 'A', 'Italy (country A).') ON CONFLICT (treatment_id) DO UPDATE SET study = EXCLUDED.study, treatment_label = EXCLUDED.treatment_label, description = EXCLUDED.description;
+
+INSERT INTO treatments (treatment_id, study, treatment_label, description)
+VALUES ('covid-italy-china-cfr-2020-B', 'covid-italy-china-cfr-2020', 'B', 'China (country B).') ON CONFLICT (treatment_id) DO UPDATE SET study = EXCLUDED.study, treatment_label = EXCLUDED.treatment_label, description = EXCLUDED.description;
+
+INSERT INTO treatments (treatment_id, study, treatment_label, description)
+VALUES ('israel-covid-severe-2021-A', 'israel-covid-severe-2021', 'A', 'Vaccinated individuals.') ON CONFLICT (treatment_id) DO UPDATE SET study = EXCLUDED.study, treatment_label = EXCLUDED.treatment_label, description = EXCLUDED.description;
+
+INSERT INTO treatments (treatment_id, study, treatment_label, description)
+VALUES ('israel-covid-severe-2021-B', 'israel-covid-severe-2021', 'B', 'Unvaccinated individuals.') ON CONFLICT (treatment_id) DO UPDATE SET study = EXCLUDED.study, treatment_label = EXCLUDED.treatment_label, description = EXCLUDED.description;
+
+INSERT INTO treatments (treatment_id, study, treatment_label, description)
+VALUES ('cochran-smoking-1968-A', 'cochran-smoking-1968', 'A', 'Current smokers.') ON CONFLICT (treatment_id) DO UPDATE SET study = EXCLUDED.study, treatment_label = EXCLUDED.treatment_label, description = EXCLUDED.description;
+
+INSERT INTO treatments (treatment_id, study, treatment_label, description)
+VALUES ('cochran-smoking-1968-B', 'cochran-smoking-1968', 'B', 'Non-smokers.') ON CONFLICT (treatment_id) DO UPDATE SET study = EXCLUDED.study, treatment_label = EXCLUDED.treatment_label, description = EXCLUDED.description;
+
+INSERT INTO treatments (treatment_id, study, treatment_label, description)
+VALUES ('healthy-worker-mortality-A', 'healthy-worker-mortality', 'A', 'Employed workers.') ON CONFLICT (treatment_id) DO UPDATE SET study = EXCLUDED.study, treatment_label = EXCLUDED.treatment_label, description = EXCLUDED.description;
+
+INSERT INTO treatments (treatment_id, study, treatment_label, description)
+VALUES ('healthy-worker-mortality-B', 'healthy-worker-mortality', 'B', 'General population / unemployed reference.') ON CONFLICT (treatment_id) DO UPDATE SET study = EXCLUDED.study, treatment_label = EXCLUDED.treatment_label, description = EXCLUDED.description;
+
+INSERT INTO treatments (treatment_id, study, treatment_label, description)
+VALUES ('compas-recidivism-base-A', 'compas-recidivism-base', 'A', 'COMPAS high-risk classification.') ON CONFLICT (treatment_id) DO UPDATE SET study = EXCLUDED.study, treatment_label = EXCLUDED.treatment_label, description = EXCLUDED.description;
+
+INSERT INTO treatments (treatment_id, study, treatment_label, description)
+VALUES ('compas-recidivism-base-B', 'compas-recidivism-base', 'B', 'COMPAS low-risk classification.') ON CONFLICT (treatment_id) DO UPDATE SET study = EXCLUDED.study, treatment_label = EXCLUDED.treatment_label, description = EXCLUDED.description;
+
+INSERT INTO treatments (treatment_id, study, treatment_label, description)
+VALUES ('us-wage-composition-stagnation-A', 'us-wage-composition-stagnation', 'A', '2018 wage cohort (recent).') ON CONFLICT (treatment_id) DO UPDATE SET study = EXCLUDED.study, treatment_label = EXCLUDED.treatment_label, description = EXCLUDED.description;
+
+INSERT INTO treatments (treatment_id, study, treatment_label, description)
+VALUES ('us-wage-composition-stagnation-B', 'us-wage-composition-stagnation', 'B', '1978 wage cohort (reference).') ON CONFLICT (treatment_id) DO UPDATE SET study = EXCLUDED.study, treatment_label = EXCLUDED.treatment_label, description = EXCLUDED.description;
+
+INSERT INTO treatments (treatment_id, study, treatment_label, description)
+VALUES ('borjas-immigrant-cohort-A', 'borjas-immigrant-cohort', 'A', 'Immigrant workers.') ON CONFLICT (treatment_id) DO UPDATE SET study = EXCLUDED.study, treatment_label = EXCLUDED.treatment_label, description = EXCLUDED.description;
+
+INSERT INTO treatments (treatment_id, study, treatment_label, description)
+VALUES ('borjas-immigrant-cohort-B', 'borjas-immigrant-cohort', 'B', 'Native-born workers.') ON CONFLICT (treatment_id) DO UPDATE SET study = EXCLUDED.study, treatment_label = EXCLUDED.treatment_label, description = EXCLUDED.description;
+
+INSERT INTO treatments (treatment_id, study, treatment_label, description)
+VALUES ('robinson-1950-literacy-A', 'robinson-1950-literacy', 'A', 'Foreign-born individuals.') ON CONFLICT (treatment_id) DO UPDATE SET study = EXCLUDED.study, treatment_label = EXCLUDED.treatment_label, description = EXCLUDED.description;
+
+INSERT INTO treatments (treatment_id, study, treatment_label, description)
+VALUES ('robinson-1950-literacy-B', 'robinson-1950-literacy', 'B', 'Native-born individuals.') ON CONFLICT (treatment_id) DO UPDATE SET study = EXCLUDED.study, treatment_label = EXCLUDED.treatment_label, description = EXCLUDED.description;
+
+INSERT INTO treatments (treatment_id, study, treatment_label, description)
+VALUES ('ab-test-traffic-mix-A', 'ab-test-traffic-mix', 'A', 'Variant B (new feature).') ON CONFLICT (treatment_id) DO UPDATE SET study = EXCLUDED.study, treatment_label = EXCLUDED.treatment_label, description = EXCLUDED.description;
+
+INSERT INTO treatments (treatment_id, study, treatment_label, description)
+VALUES ('ab-test-traffic-mix-B', 'ab-test-traffic-mix', 'B', 'Variant A (control).') ON CONFLICT (treatment_id) DO UPDATE SET study = EXCLUDED.study, treatment_label = EXCLUDED.treatment_label, description = EXCLUDED.description;
+
+INSERT INTO treatments (treatment_id, study, treatment_label, description)
+VALUES ('recsys-offline-eval-A', 'recsys-offline-eval', 'A', 'New recommender model.') ON CONFLICT (treatment_id) DO UPDATE SET study = EXCLUDED.study, treatment_label = EXCLUDED.treatment_label, description = EXCLUDED.description;
+
+INSERT INTO treatments (treatment_id, study, treatment_label, description)
+VALUES ('recsys-offline-eval-B', 'recsys-offline-eval', 'B', 'Baseline recommender model.') ON CONFLICT (treatment_id) DO UPDATE SET study = EXCLUDED.study, treatment_label = EXCLUDED.treatment_label, description = EXCLUDED.description;
+
+INSERT INTO treatments (treatment_id, study, treatment_label, description)
+VALUES ('collider-only-synthetic-A', 'collider-only-synthetic', 'A', 'Treatment A (no confounding path).') ON CONFLICT (treatment_id) DO UPDATE SET study = EXCLUDED.study, treatment_label = EXCLUDED.treatment_label, description = EXCLUDED.description;
+
+INSERT INTO treatments (treatment_id, study, treatment_label, description)
+VALUES ('collider-only-synthetic-B', 'collider-only-synthetic', 'B', 'Treatment B (no confounding path).') ON CONFLICT (treatment_id) DO UPDATE SET study = EXCLUDED.study, treatment_label = EXCLUDED.treatment_label, description = EXCLUDED.description;
+
+INSERT INTO treatments (treatment_id, study, treatment_label, description)
+VALUES ('noncollapsibility-or-synthetic-A', 'noncollapsibility-or-synthetic', 'A', 'Treatment A — constant RD advantage.') ON CONFLICT (treatment_id) DO UPDATE SET study = EXCLUDED.study, treatment_label = EXCLUDED.treatment_label, description = EXCLUDED.description;
+
+INSERT INTO treatments (treatment_id, study, treatment_label, description)
+VALUES ('noncollapsibility-or-synthetic-B', 'noncollapsibility-or-synthetic', 'B', 'Treatment B.') ON CONFLICT (treatment_id) DO UPDATE SET study = EXCLUDED.study, treatment_label = EXCLUDED.treatment_label, description = EXCLUDED.description;
+
+INSERT INTO treatments (treatment_id, study, treatment_label, description)
+VALUES ('trauma-center-mortality-A', 'trauma-center-mortality', 'A', 'Trauma center care.') ON CONFLICT (treatment_id) DO UPDATE SET study = EXCLUDED.study, treatment_label = EXCLUDED.treatment_label, description = EXCLUDED.description;
+
+INSERT INTO treatments (treatment_id, study, treatment_label, description)
+VALUES ('trauma-center-mortality-B', 'trauma-center-mortality', 'B', 'Non-trauma center care.') ON CONFLICT (treatment_id) DO UPDATE SET study = EXCLUDED.study, treatment_label = EXCLUDED.treatment_label, description = EXCLUDED.description;
+
+INSERT INTO treatments (treatment_id, study, treatment_label, description)
+VALUES ('surgeon-volume-mortality-A', 'surgeon-volume-mortality', 'A', 'High-volume surgeon.') ON CONFLICT (treatment_id) DO UPDATE SET study = EXCLUDED.study, treatment_label = EXCLUDED.treatment_label, description = EXCLUDED.description;
+
+INSERT INTO treatments (treatment_id, study, treatment_label, description)
+VALUES ('surgeon-volume-mortality-B', 'surgeon-volume-mortality', 'B', 'Low-volume surgeon.') ON CONFLICT (treatment_id) DO UPDATE SET study = EXCLUDED.study, treatment_label = EXCLUDED.treatment_label, description = EXCLUDED.description;
+
+INSERT INTO treatments (treatment_id, study, treatment_label, description)
+VALUES ('mammography-length-bias-A', 'mammography-length-bias', 'A', 'Screen-detected cancers.') ON CONFLICT (treatment_id) DO UPDATE SET study = EXCLUDED.study, treatment_label = EXCLUDED.treatment_label, description = EXCLUDED.description;
+
+INSERT INTO treatments (treatment_id, study, treatment_label, description)
+VALUES ('mammography-length-bias-B', 'mammography-length-bias', 'B', 'Symptomatic cancers.') ON CONFLICT (treatment_id) DO UPDATE SET study = EXCLUDED.study, treatment_label = EXCLUDED.treatment_label, description = EXCLUDED.description;
+
+INSERT INTO treatments (treatment_id, study, treatment_label, description)
+VALUES ('cabg-vs-pci-severity-A', 'cabg-vs-pci-severity', 'A', 'CABG revascularization.') ON CONFLICT (treatment_id) DO UPDATE SET study = EXCLUDED.study, treatment_label = EXCLUDED.treatment_label, description = EXCLUDED.description;
+
+INSERT INTO treatments (treatment_id, study, treatment_label, description)
+VALUES ('cabg-vs-pci-severity-B', 'cabg-vs-pci-severity', 'B', 'PCI revascularization.') ON CONFLICT (treatment_id) DO UPDATE SET study = EXCLUDED.study, treatment_label = EXCLUDED.treatment_label, description = EXCLUDED.description;
+
+INSERT INTO treatments (treatment_id, study, treatment_label, description)
+VALUES ('tolbutamide-ugdp-1970-A', 'tolbutamide-ugdp-1970', 'A', 'Tolbutamide arm.') ON CONFLICT (treatment_id) DO UPDATE SET study = EXCLUDED.study, treatment_label = EXCLUDED.treatment_label, description = EXCLUDED.description;
+
+INSERT INTO treatments (treatment_id, study, treatment_label, description)
+VALUES ('tolbutamide-ugdp-1970-B', 'tolbutamide-ugdp-1970', 'B', 'Placebo/control arm.') ON CONFLICT (treatment_id) DO UPDATE SET study = EXCLUDED.study, treatment_label = EXCLUDED.treatment_label, description = EXCLUDED.description;
+
+INSERT INTO treatments (treatment_id, study, treatment_label, description)
+VALUES ('snow-cholera-water-1855-A', 'snow-cholera-water-1855', 'A', 'Southwark & Vauxhall water supply.') ON CONFLICT (treatment_id) DO UPDATE SET study = EXCLUDED.study, treatment_label = EXCLUDED.treatment_label, description = EXCLUDED.description;
+
+INSERT INTO treatments (treatment_id, study, treatment_label, description)
+VALUES ('snow-cholera-water-1855-B', 'snow-cholera-water-1855', 'B', 'Lambeth water supply.') ON CONFLICT (treatment_id) DO UPDATE SET study = EXCLUDED.study, treatment_label = EXCLUDED.treatment_label, description = EXCLUDED.description;
+
+INSERT INTO treatments (treatment_id, study, treatment_label, description)
+VALUES ('seatbelt-crash-severity-A', 'seatbelt-crash-severity', 'A', 'Seatbelt used.') ON CONFLICT (treatment_id) DO UPDATE SET study = EXCLUDED.study, treatment_label = EXCLUDED.treatment_label, description = EXCLUDED.description;
+
+INSERT INTO treatments (treatment_id, study, treatment_label, description)
+VALUES ('seatbelt-crash-severity-B', 'seatbelt-crash-severity', 'B', 'Seatbelt not used.') ON CONFLICT (treatment_id) DO UPDATE SET study = EXCLUDED.study, treatment_label = EXCLUDED.treatment_label, description = EXCLUDED.description;
+
+INSERT INTO treatments (treatment_id, study, treatment_label, description)
+VALUES ('measles-outbreak-vaccinated-A', 'measles-outbreak-vaccinated', 'A', 'Vaccinated individuals.') ON CONFLICT (treatment_id) DO UPDATE SET study = EXCLUDED.study, treatment_label = EXCLUDED.treatment_label, description = EXCLUDED.description;
+
+INSERT INTO treatments (treatment_id, study, treatment_label, description)
+VALUES ('measles-outbreak-vaccinated-B', 'measles-outbreak-vaccinated', 'B', 'Unvaccinated individuals.') ON CONFLICT (treatment_id) DO UPDATE SET study = EXCLUDED.study, treatment_label = EXCLUDED.treatment_label, description = EXCLUDED.description;
+
+INSERT INTO treatments (treatment_id, study, treatment_label, description)
+VALUES ('air-pollution-mortality-city-A', 'air-pollution-mortality-city', 'A', 'Higher PM2.5 city (A).') ON CONFLICT (treatment_id) DO UPDATE SET study = EXCLUDED.study, treatment_label = EXCLUDED.treatment_label, description = EXCLUDED.description;
+
+INSERT INTO treatments (treatment_id, study, treatment_label, description)
+VALUES ('air-pollution-mortality-city-B', 'air-pollution-mortality-city', 'B', 'Lower PM2.5 city (B).') ON CONFLICT (treatment_id) DO UPDATE SET study = EXCLUDED.study, treatment_label = EXCLUDED.treatment_label, description = EXCLUDED.description;
+
+INSERT INTO treatments (treatment_id, study, treatment_label, description)
+VALUES ('tb-treatment-resistance-A', 'tb-treatment-resistance', 'A', 'Intensive/new regimen.') ON CONFLICT (treatment_id) DO UPDATE SET study = EXCLUDED.study, treatment_label = EXCLUDED.treatment_label, description = EXCLUDED.description;
+
+INSERT INTO treatments (treatment_id, study, treatment_label, description)
+VALUES ('tb-treatment-resistance-B', 'tb-treatment-resistance', 'B', 'Standard regimen.') ON CONFLICT (treatment_id) DO UPDATE SET study = EXCLUDED.study, treatment_label = EXCLUDED.treatment_label, description = EXCLUDED.description;
+
+INSERT INTO treatments (treatment_id, study, treatment_label, description)
+VALUES ('hospital-mortality-readmission-A', 'hospital-mortality-readmission', 'A', 'HRRP-penalized hospital.') ON CONFLICT (treatment_id) DO UPDATE SET study = EXCLUDED.study, treatment_label = EXCLUDED.treatment_label, description = EXCLUDED.description;
+
+INSERT INTO treatments (treatment_id, study, treatment_label, description)
+VALUES ('hospital-mortality-readmission-B', 'hospital-mortality-readmission', 'B', 'Non-penalized hospital.') ON CONFLICT (treatment_id) DO UPDATE SET study = EXCLUDED.study, treatment_label = EXCLUDED.treatment_label, description = EXCLUDED.description;
+
+INSERT INTO treatments (treatment_id, study, treatment_label, description)
+VALUES ('nypd-stop-frisk-hitrate-A', 'nypd-stop-frisk-hitrate', 'A', 'High-stop precinct profile (A).') ON CONFLICT (treatment_id) DO UPDATE SET study = EXCLUDED.study, treatment_label = EXCLUDED.treatment_label, description = EXCLUDED.description;
+
+INSERT INTO treatments (treatment_id, study, treatment_label, description)
+VALUES ('nypd-stop-frisk-hitrate-B', 'nypd-stop-frisk-hitrate', 'B', 'Lower-stop precinct profile (B).') ON CONFLICT (treatment_id) DO UPDATE SET study = EXCLUDED.study, treatment_label = EXCLUDED.treatment_label, description = EXCLUDED.description;
+
+INSERT INTO treatments (treatment_id, study, treatment_label, description)
+VALUES ('sentencing-offense-type-A', 'sentencing-offense-type', 'A', 'Comparison group A.') ON CONFLICT (treatment_id) DO UPDATE SET study = EXCLUDED.study, treatment_label = EXCLUDED.treatment_label, description = EXCLUDED.description;
+
+INSERT INTO treatments (treatment_id, study, treatment_label, description)
+VALUES ('sentencing-offense-type-B', 'sentencing-offense-type', 'B', 'Comparison group B.') ON CONFLICT (treatment_id) DO UPDATE SET study = EXCLUDED.study, treatment_label = EXCLUDED.treatment_label, description = EXCLUDED.description;
+
+INSERT INTO treatments (treatment_id, study, treatment_label, description)
+VALUES ('bail-risk-score-A', 'bail-risk-score', 'A', 'Detained pretrial.') ON CONFLICT (treatment_id) DO UPDATE SET study = EXCLUDED.study, treatment_label = EXCLUDED.treatment_label, description = EXCLUDED.description;
+
+INSERT INTO treatments (treatment_id, study, treatment_label, description)
+VALUES ('bail-risk-score-B', 'bail-risk-score', 'B', 'Released pretrial.') ON CONFLICT (treatment_id) DO UPDATE SET study = EXCLUDED.study, treatment_label = EXCLUDED.treatment_label, description = EXCLUDED.description;
+
+INSERT INTO treatments (treatment_id, study, treatment_label, description)
+VALUES ('police-force-encounter-A', 'police-force-encounter', 'A', 'Use-of-force encounter profile.') ON CONFLICT (treatment_id) DO UPDATE SET study = EXCLUDED.study, treatment_label = EXCLUDED.treatment_label, description = EXCLUDED.description;
+
+INSERT INTO treatments (treatment_id, study, treatment_label, description)
+VALUES ('police-force-encounter-B', 'police-force-encounter', 'B', 'Non-force encounter profile.') ON CONFLICT (treatment_id) DO UPDATE SET study = EXCLUDED.study, treatment_label = EXCLUDED.treatment_label, description = EXCLUDED.description;
+
+INSERT INTO treatments (treatment_id, study, treatment_label, description)
+VALUES ('uc-systemwide-admissions-A', 'uc-systemwide-admissions', 'A', 'Applicant group A.') ON CONFLICT (treatment_id) DO UPDATE SET study = EXCLUDED.study, treatment_label = EXCLUDED.treatment_label, description = EXCLUDED.description;
+
+INSERT INTO treatments (treatment_id, study, treatment_label, description)
+VALUES ('uc-systemwide-admissions-B', 'uc-systemwide-admissions', 'B', 'Applicant group B.') ON CONFLICT (treatment_id) DO UPDATE SET study = EXCLUDED.study, treatment_label = EXCLUDED.treatment_label, description = EXCLUDED.description;
+
+INSERT INTO treatments (treatment_id, study, treatment_label, description)
+VALUES ('teacher-vam-prior-achievement-A', 'teacher-vam-prior-achievement', 'A', 'Teacher A.') ON CONFLICT (treatment_id) DO UPDATE SET study = EXCLUDED.study, treatment_label = EXCLUDED.treatment_label, description = EXCLUDED.description;
+
+INSERT INTO treatments (treatment_id, study, treatment_label, description)
+VALUES ('teacher-vam-prior-achievement-B', 'teacher-vam-prior-achievement', 'B', 'Teacher B.') ON CONFLICT (treatment_id) DO UPDATE SET study = EXCLUDED.study, treatment_label = EXCLUDED.treatment_label, description = EXCLUDED.description;
+
+INSERT INTO treatments (treatment_id, study, treatment_label, description)
+VALUES ('naep-state-demographics-A', 'naep-state-demographics', 'A', 'State profile A.') ON CONFLICT (treatment_id) DO UPDATE SET study = EXCLUDED.study, treatment_label = EXCLUDED.treatment_label, description = EXCLUDED.description;
+
+INSERT INTO treatments (treatment_id, study, treatment_label, description)
+VALUES ('naep-state-demographics-B', 'naep-state-demographics', 'B', 'State profile B.') ON CONFLICT (treatment_id) DO UPDATE SET study = EXCLUDED.study, treatment_label = EXCLUDED.treatment_label, description = EXCLUDED.description;
+
+INSERT INTO treatments (treatment_id, study, treatment_label, description)
+VALUES ('college-grad-rate-selectivity-A', 'college-grad-rate-selectivity', 'A', 'Highly selective institution.') ON CONFLICT (treatment_id) DO UPDATE SET study = EXCLUDED.study, treatment_label = EXCLUDED.treatment_label, description = EXCLUDED.description;
+
+INSERT INTO treatments (treatment_id, study, treatment_label, description)
+VALUES ('college-grad-rate-selectivity-B', 'college-grad-rate-selectivity', 'B', 'Less selective institution.') ON CONFLICT (treatment_id) DO UPDATE SET study = EXCLUDED.study, treatment_label = EXCLUDED.treatment_label, description = EXCLUDED.description;
+
+INSERT INTO treatments (treatment_id, study, treatment_label, description)
+VALUES ('star-class-size-A', 'star-class-size', 'A', 'Small class assignment.') ON CONFLICT (treatment_id) DO UPDATE SET study = EXCLUDED.study, treatment_label = EXCLUDED.treatment_label, description = EXCLUDED.description;
+
+INSERT INTO treatments (treatment_id, study, treatment_label, description)
+VALUES ('star-class-size-B', 'star-class-size', 'B', 'Regular class assignment.') ON CONFLICT (treatment_id) DO UPDATE SET study = EXCLUDED.study, treatment_label = EXCLUDED.treatment_label, description = EXCLUDED.description;
+
+INSERT INTO treatments (treatment_id, study, treatment_label, description)
+VALUES ('nba-shooting-shot-mix-A', 'nba-shooting-shot-mix', 'A', 'Shooter/team A.') ON CONFLICT (treatment_id) DO UPDATE SET study = EXCLUDED.study, treatment_label = EXCLUDED.treatment_label, description = EXCLUDED.description;
+
+INSERT INTO treatments (treatment_id, study, treatment_label, description)
+VALUES ('nba-shooting-shot-mix-B', 'nba-shooting-shot-mix', 'B', 'Shooter/team B.') ON CONFLICT (treatment_id) DO UPDATE SET study = EXCLUDED.study, treatment_label = EXCLUDED.treatment_label, description = EXCLUDED.description;
+
+INSERT INTO treatments (treatment_id, study, treatment_label, description)
+VALUES ('pitcher-era-ballpark-A', 'pitcher-era-ballpark', 'A', 'Pitcher A.') ON CONFLICT (treatment_id) DO UPDATE SET study = EXCLUDED.study, treatment_label = EXCLUDED.treatment_label, description = EXCLUDED.description;
+
+INSERT INTO treatments (treatment_id, study, treatment_label, description)
+VALUES ('pitcher-era-ballpark-B', 'pitcher-era-ballpark', 'B', 'Pitcher B.') ON CONFLICT (treatment_id) DO UPDATE SET study = EXCLUDED.study, treatment_label = EXCLUDED.treatment_label, description = EXCLUDED.description;
+
+INSERT INTO treatments (treatment_id, study, treatment_label, description)
+VALUES ('nfl-completion-depth-A', 'nfl-completion-depth', 'A', 'Quarterback A.') ON CONFLICT (treatment_id) DO UPDATE SET study = EXCLUDED.study, treatment_label = EXCLUDED.treatment_label, description = EXCLUDED.description;
+
+INSERT INTO treatments (treatment_id, study, treatment_label, description)
+VALUES ('nfl-completion-depth-B', 'nfl-completion-depth', 'B', 'Quarterback B.') ON CONFLICT (treatment_id) DO UPDATE SET study = EXCLUDED.study, treatment_label = EXCLUDED.treatment_label, description = EXCLUDED.description;
+
+INSERT INTO treatments (treatment_id, study, treatment_label, description)
+VALUES ('field-goal-distance-A', 'field-goal-distance', 'A', 'Kicker A.') ON CONFLICT (treatment_id) DO UPDATE SET study = EXCLUDED.study, treatment_label = EXCLUDED.treatment_label, description = EXCLUDED.description;
+
+INSERT INTO treatments (treatment_id, study, treatment_label, description)
+VALUES ('field-goal-distance-B', 'field-goal-distance', 'B', 'Kicker B.') ON CONFLICT (treatment_id) DO UPDATE SET study = EXCLUDED.study, treatment_label = EXCLUDED.treatment_label, description = EXCLUDED.description;
+
+INSERT INTO treatments (treatment_id, study, treatment_label, description)
+VALUES ('golf-scoring-course-A', 'golf-scoring-course', 'A', 'Golfer A.') ON CONFLICT (treatment_id) DO UPDATE SET study = EXCLUDED.study, treatment_label = EXCLUDED.treatment_label, description = EXCLUDED.description;
+
+INSERT INTO treatments (treatment_id, study, treatment_label, description)
+VALUES ('golf-scoring-course-B', 'golf-scoring-course', 'B', 'Golfer B.') ON CONFLICT (treatment_id) DO UPDATE SET study = EXCLUDED.study, treatment_label = EXCLUDED.treatment_label, description = EXCLUDED.description;
+
+INSERT INTO treatments (treatment_id, study, treatment_label, description)
+VALUES ('minimum-wage-region-A', 'minimum-wage-region', 'A', 'High minimum-wage region.') ON CONFLICT (treatment_id) DO UPDATE SET study = EXCLUDED.study, treatment_label = EXCLUDED.treatment_label, description = EXCLUDED.description;
+
+INSERT INTO treatments (treatment_id, study, treatment_label, description)
+VALUES ('minimum-wage-region-B', 'minimum-wage-region', 'B', 'Comparison region.') ON CONFLICT (treatment_id) DO UPDATE SET study = EXCLUDED.study, treatment_label = EXCLUDED.treatment_label, description = EXCLUDED.description;
+
+INSERT INTO treatments (treatment_id, study, treatment_label, description)
+VALUES ('returns-to-education-field-A', 'returns-to-education-field', 'A', 'College-educated workers.') ON CONFLICT (treatment_id) DO UPDATE SET study = EXCLUDED.study, treatment_label = EXCLUDED.treatment_label, description = EXCLUDED.description;
+
+INSERT INTO treatments (treatment_id, study, treatment_label, description)
+VALUES ('returns-to-education-field-B', 'returns-to-education-field', 'B', 'Non-college workers.') ON CONFLICT (treatment_id) DO UPDATE SET study = EXCLUDED.study, treatment_label = EXCLUDED.treatment_label, description = EXCLUDED.description;
+
+INSERT INTO treatments (treatment_id, study, treatment_label, description)
+VALUES ('unemployment-education-cycle-A', 'unemployment-education-cycle', 'A', 'Current-period workforce.') ON CONFLICT (treatment_id) DO UPDATE SET study = EXCLUDED.study, treatment_label = EXCLUDED.treatment_label, description = EXCLUDED.description;
+
+INSERT INTO treatments (treatment_id, study, treatment_label, description)
+VALUES ('unemployment-education-cycle-B', 'unemployment-education-cycle', 'B', 'Prior-period workforce.') ON CONFLICT (treatment_id) DO UPDATE SET study = EXCLUDED.study, treatment_label = EXCLUDED.treatment_label, description = EXCLUDED.description;
+
+INSERT INTO treatments (treatment_id, study, treatment_label, description)
+VALUES ('costa-rica-us-life-expectancy-A', 'costa-rica-us-life-expectancy', 'A', 'Costa Rica.') ON CONFLICT (treatment_id) DO UPDATE SET study = EXCLUDED.study, treatment_label = EXCLUDED.treatment_label, description = EXCLUDED.description;
+
+INSERT INTO treatments (treatment_id, study, treatment_label, description)
+VALUES ('costa-rica-us-life-expectancy-B', 'costa-rica-us-life-expectancy', 'B', 'United States.') ON CONFLICT (treatment_id) DO UPDATE SET study = EXCLUDED.study, treatment_label = EXCLUDED.treatment_label, description = EXCLUDED.description;
+
+INSERT INTO treatments (treatment_id, study, treatment_label, description)
+VALUES ('fertility-income-country-A', 'fertility-income-country', 'A', 'Higher income group.') ON CONFLICT (treatment_id) DO UPDATE SET study = EXCLUDED.study, treatment_label = EXCLUDED.treatment_label, description = EXCLUDED.description;
+
+INSERT INTO treatments (treatment_id, study, treatment_label, description)
+VALUES ('fertility-income-country-B', 'fertility-income-country', 'B', 'Lower income group.') ON CONFLICT (treatment_id) DO UPDATE SET study = EXCLUDED.study, treatment_label = EXCLUDED.treatment_label, description = EXCLUDED.description;
+
+INSERT INTO treatments (treatment_id, study, treatment_label, description)
+VALUES ('religiosity-happiness-country-A', 'religiosity-happiness-country', 'A', 'Religious individuals.') ON CONFLICT (treatment_id) DO UPDATE SET study = EXCLUDED.study, treatment_label = EXCLUDED.treatment_label, description = EXCLUDED.description;
+
+INSERT INTO treatments (treatment_id, study, treatment_label, description)
+VALUES ('religiosity-happiness-country-B', 'religiosity-happiness-country', 'B', 'Non-religious individuals.') ON CONFLICT (treatment_id) DO UPDATE SET study = EXCLUDED.study, treatment_label = EXCLUDED.treatment_label, description = EXCLUDED.description;
+
+INSERT INTO treatments (treatment_id, study, treatment_label, description)
+VALUES ('voter-turnout-education-state-A', 'voter-turnout-education-state', 'A', 'College-educated voters.') ON CONFLICT (treatment_id) DO UPDATE SET study = EXCLUDED.study, treatment_label = EXCLUDED.treatment_label, description = EXCLUDED.description;
+
+INSERT INTO treatments (treatment_id, study, treatment_label, description)
+VALUES ('voter-turnout-education-state-B', 'voter-turnout-education-state', 'B', 'Non-college voters.') ON CONFLICT (treatment_id) DO UPDATE SET study = EXCLUDED.study, treatment_label = EXCLUDED.treatment_label, description = EXCLUDED.description;
+
+INSERT INTO treatments (treatment_id, study, treatment_label, description)
+VALUES ('ad-ctr-platform-mix-A', 'ad-ctr-platform-mix', 'A', 'Ad creative A.') ON CONFLICT (treatment_id) DO UPDATE SET study = EXCLUDED.study, treatment_label = EXCLUDED.treatment_label, description = EXCLUDED.description;
+
+INSERT INTO treatments (treatment_id, study, treatment_label, description)
+VALUES ('ad-ctr-platform-mix-B', 'ad-ctr-platform-mix', 'B', 'Ad creative B.') ON CONFLICT (treatment_id) DO UPDATE SET study = EXCLUDED.study, treatment_label = EXCLUDED.treatment_label, description = EXCLUDED.description;
 
 -- ----------------------------------------------------------------------------
 -- Strata: Table: Strata — the subdivisions of patients within a study by the value of the confounding variable (e.g. stone size). Each stratum belongs to one study.
@@ -890,6 +1349,306 @@ VALUES ('panama-sweden-mortality-1975-mid-age', 'panama-sweden-mortality-1975', 
 
 INSERT INTO strata (stratum_id, study, stratum_label, description)
 VALUES ('panama-sweden-mortality-1975-elderly', 'panama-sweden-mortality-1975', 'elderly', 'Elderly (60% / 15%) — composition drives pooled reversal.') ON CONFLICT (stratum_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, description = EXCLUDED.description;
+
+INSERT INTO strata (stratum_id, study, stratum_label, description)
+VALUES ('hrt-whi-2002-observational', 'hrt-whi-2002', 'observational', 'Observational cohorts — healthy-user selection inflates HRT benefit.') ON CONFLICT (stratum_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, description = EXCLUDED.description;
+
+INSERT INTO strata (stratum_id, study, stratum_label, description)
+VALUES ('hrt-whi-2002-rct-whi', 'hrt-whi-2002', 'rct-whi', 'WHI RCT stratum — randomization removes healthy-user bias; HRT harmful.') ON CONFLICT (stratum_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, description = EXCLUDED.description;
+
+INSERT INTO strata (stratum_id, study, stratum_label, description)
+VALUES ('obesity-paradox-hf-no-hf', 'obesity-paradox-hf', 'no-hf', 'Patients without heart failure.') ON CONFLICT (stratum_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, description = EXCLUDED.description;
+
+INSERT INTO strata (stratum_id, study, stratum_label, description)
+VALUES ('obesity-paradox-hf-hf', 'obesity-paradox-hf', 'hf', 'Heart failure patients — obesity paradox stratum.') ON CONFLICT (stratum_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, description = EXCLUDED.description;
+
+INSERT INTO strata (stratum_id, study, stratum_label, description)
+VALUES ('dialysis-bmi-survival-general-population', 'dialysis-bmi-survival', 'general-population', 'General population — obesity harmful.') ON CONFLICT (stratum_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, description = EXCLUDED.description;
+
+INSERT INTO strata (stratum_id, study, stratum_label, description)
+VALUES ('dialysis-bmi-survival-esrd-dialysis', 'dialysis-bmi-survival', 'esrd-dialysis', 'ESRD patients on dialysis — reverse epidemiology.') ON CONFLICT (stratum_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, description = EXCLUDED.description;
+
+INSERT INTO strata (stratum_id, study, stratum_label, description)
+VALUES ('sick-quitter-alcohol-never-drinkers-only', 'sick-quitter-alcohol', 'never-drinkers-only', 'Abstainers who never drank — moderate drinkers do not win.') ON CONFLICT (stratum_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, description = EXCLUDED.description;
+
+INSERT INTO strata (stratum_id, study, stratum_label, description)
+VALUES ('sick-quitter-alcohol-includes-former-drinkers', 'sick-quitter-alcohol', 'includes-former-drinkers', 'Abstainers including sick quitters — spurious J-curve.') ON CONFLICT (stratum_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, description = EXCLUDED.description;
+
+INSERT INTO strata (stratum_id, study, stratum_label, description)
+VALUES ('flu-vaccine-elderly-mortality-under-75', 'flu-vaccine-elderly-mortality', 'under-75', 'Age under 75 — vaccinated lower mortality.') ON CONFLICT (stratum_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, description = EXCLUDED.description;
+
+INSERT INTO strata (stratum_id, study, stratum_label, description)
+VALUES ('flu-vaccine-elderly-mortality-75-plus', 'flu-vaccine-elderly-mortality', '75-plus', 'Age 75+ — vaccinated lower mortality but heavily represented in vaccinated cohort.') ON CONFLICT (stratum_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, description = EXCLUDED.description;
+
+INSERT INTO strata (stratum_id, study, stratum_label, description)
+VALUES ('covid-italy-china-cfr-2020-under-60', 'covid-italy-china-cfr-2020', 'under-60', 'Age under 60.') ON CONFLICT (stratum_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, description = EXCLUDED.description;
+
+INSERT INTO strata (stratum_id, study, stratum_label, description)
+VALUES ('covid-italy-china-cfr-2020-60-plus', 'covid-italy-china-cfr-2020', '60-plus', 'Age 60 and over — Italy older population share.') ON CONFLICT (stratum_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, description = EXCLUDED.description;
+
+INSERT INTO strata (stratum_id, study, stratum_label, description)
+VALUES ('israel-covid-severe-2021-under-50', 'israel-covid-severe-2021', 'under-50', 'Age under 50.') ON CONFLICT (stratum_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, description = EXCLUDED.description;
+
+INSERT INTO strata (stratum_id, study, stratum_label, description)
+VALUES ('israel-covid-severe-2021-50-plus', 'israel-covid-severe-2021', '50-plus', 'Age 50+ — vaccinated cohort older.') ON CONFLICT (stratum_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, description = EXCLUDED.description;
+
+INSERT INTO strata (stratum_id, study, stratum_label, description)
+VALUES ('cochran-smoking-1968-under-65', 'cochran-smoking-1968', 'under-65', 'Age under 65 — smokers younger, concentrated here.') ON CONFLICT (stratum_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, description = EXCLUDED.description;
+
+INSERT INTO strata (stratum_id, study, stratum_label, description)
+VALUES ('cochran-smoking-1968-65-plus', 'cochran-smoking-1968', '65-plus', 'Age 65+.') ON CONFLICT (stratum_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, description = EXCLUDED.description;
+
+INSERT INTO strata (stratum_id, study, stratum_label, description)
+VALUES ('healthy-worker-mortality-low-hazard-occupations', 'healthy-worker-mortality', 'low-hazard-occupations', 'Low physical hazard occupations.') ON CONFLICT (stratum_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, description = EXCLUDED.description;
+
+INSERT INTO strata (stratum_id, study, stratum_label, description)
+VALUES ('healthy-worker-mortality-high-hazard-occupations', 'healthy-worker-mortality', 'high-hazard-occupations', 'High hazard occupations — workers still selected for health.') ON CONFLICT (stratum_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, description = EXCLUDED.description;
+
+INSERT INTO strata (stratum_id, study, stratum_label, description)
+VALUES ('compas-recidivism-base-low-prevalence-group', 'compas-recidivism-base', 'low-prevalence-group', 'Group with lower baseline recidivism.') ON CONFLICT (stratum_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, description = EXCLUDED.description;
+
+INSERT INTO strata (stratum_id, study, stratum_label, description)
+VALUES ('compas-recidivism-base-high-prevalence-group', 'compas-recidivism-base', 'high-prevalence-group', 'Group with higher baseline recidivism.') ON CONFLICT (stratum_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, description = EXCLUDED.description;
+
+INSERT INTO strata (stratum_id, study, stratum_label, description)
+VALUES ('us-wage-composition-stagnation-college-educated', 'us-wage-composition-stagnation', 'college-educated', 'Workers with college degree.') ON CONFLICT (stratum_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, description = EXCLUDED.description;
+
+INSERT INTO strata (stratum_id, study, stratum_label, description)
+VALUES ('us-wage-composition-stagnation-non-college', 'us-wage-composition-stagnation', 'non-college', 'Workers without college degree — growing share of workforce.') ON CONFLICT (stratum_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, description = EXCLUDED.description;
+
+INSERT INTO strata (stratum_id, study, stratum_label, description)
+VALUES ('borjas-immigrant-cohort-recent-arrivals', 'borjas-immigrant-cohort', 'recent-arrivals', 'Recent arrival cohort.') ON CONFLICT (stratum_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, description = EXCLUDED.description;
+
+INSERT INTO strata (stratum_id, study, stratum_label, description)
+VALUES ('borjas-immigrant-cohort-established-immigrants', 'borjas-immigrant-cohort', 'established-immigrants', 'Longer-resident immigrant cohort.') ON CONFLICT (stratum_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, description = EXCLUDED.description;
+
+INSERT INTO strata (stratum_id, study, stratum_label, description)
+VALUES ('robinson-1950-literacy-high-literacy-states', 'robinson-1950-literacy', 'high-literacy-states', 'States with high overall literacy (NE states proxy).') ON CONFLICT (stratum_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, description = EXCLUDED.description;
+
+INSERT INTO strata (stratum_id, study, stratum_label, description)
+VALUES ('robinson-1950-literacy-low-literacy-states', 'robinson-1950-literacy', 'low-literacy-states', 'States with lower literacy (immigrants fewer).') ON CONFLICT (stratum_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, description = EXCLUDED.description;
+
+INSERT INTO strata (stratum_id, study, stratum_label, description)
+VALUES ('ab-test-traffic-mix-week1-young-users', 'ab-test-traffic-mix', 'week1-young-users', 'Week 1 — predominantly young-user traffic.') ON CONFLICT (stratum_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, description = EXCLUDED.description;
+
+INSERT INTO strata (stratum_id, study, stratum_label, description)
+VALUES ('ab-test-traffic-mix-week2-old-users', 'ab-test-traffic-mix', 'week2-old-users', 'Week 2 — older-user traffic mix increases.') ON CONFLICT (stratum_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, description = EXCLUDED.description;
+
+INSERT INTO strata (stratum_id, study, stratum_label, description)
+VALUES ('recsys-offline-eval-head-items', 'recsys-offline-eval', 'head-items', 'High-exposure popular items.') ON CONFLICT (stratum_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, description = EXCLUDED.description;
+
+INSERT INTO strata (stratum_id, study, stratum_label, description)
+VALUES ('recsys-offline-eval-tail-items', 'recsys-offline-eval', 'tail-items', 'Low-exposure long-tail items.') ON CONFLICT (stratum_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, description = EXCLUDED.description;
+
+INSERT INTO strata (stratum_id, study, stratum_label, description)
+VALUES ('collider-only-synthetic-conditioned-in', 'collider-only-synthetic', 'conditioned-in', 'Selected-in subpopulation (collider conditioned).') ON CONFLICT (stratum_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, description = EXCLUDED.description;
+
+INSERT INTO strata (stratum_id, study, stratum_label, description)
+VALUES ('collider-only-synthetic-conditioned-out', 'collider-only-synthetic', 'conditioned-out', 'Selected-out subpopulation.') ON CONFLICT (stratum_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, description = EXCLUDED.description;
+
+INSERT INTO strata (stratum_id, study, stratum_label, description)
+VALUES ('noncollapsibility-or-synthetic-low-prevalence', 'noncollapsibility-or-synthetic', 'low-prevalence', 'Low baseline prevalence stratum.') ON CONFLICT (stratum_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, description = EXCLUDED.description;
+
+INSERT INTO strata (stratum_id, study, stratum_label, description)
+VALUES ('noncollapsibility-or-synthetic-high-prevalence', 'noncollapsibility-or-synthetic', 'high-prevalence', 'High baseline prevalence stratum.') ON CONFLICT (stratum_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, description = EXCLUDED.description;
+
+INSERT INTO strata (stratum_id, study, stratum_label, description)
+VALUES ('trauma-center-mortality-mild-injury', 'trauma-center-mortality', 'mild-injury', 'ISS < 15 proxy stratum.') ON CONFLICT (stratum_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, description = EXCLUDED.description;
+
+INSERT INTO strata (stratum_id, study, stratum_label, description)
+VALUES ('trauma-center-mortality-severe-injury', 'trauma-center-mortality', 'severe-injury', 'ISS ≥ 15 proxy stratum.') ON CONFLICT (stratum_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, description = EXCLUDED.description;
+
+INSERT INTO strata (stratum_id, study, stratum_label, description)
+VALUES ('surgeon-volume-mortality-low-risk', 'surgeon-volume-mortality', 'low-risk', 'Low operative-risk patients.') ON CONFLICT (stratum_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, description = EXCLUDED.description;
+
+INSERT INTO strata (stratum_id, study, stratum_label, description)
+VALUES ('surgeon-volume-mortality-high-risk', 'surgeon-volume-mortality', 'high-risk', 'High-risk patients routed to high-volume surgeons.') ON CONFLICT (stratum_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, description = EXCLUDED.description;
+
+INSERT INTO strata (stratum_id, study, stratum_label, description)
+VALUES ('mammography-length-bias-slow-growing', 'mammography-length-bias', 'slow-growing', 'Indolent tumor proxy stratum.') ON CONFLICT (stratum_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, description = EXCLUDED.description;
+
+INSERT INTO strata (stratum_id, study, stratum_label, description)
+VALUES ('mammography-length-bias-aggressive', 'mammography-length-bias', 'aggressive', 'Aggressive tumor proxy stratum.') ON CONFLICT (stratum_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, description = EXCLUDED.description;
+
+INSERT INTO strata (stratum_id, study, stratum_label, description)
+VALUES ('cabg-vs-pci-severity-multivessel', 'cabg-vs-pci-severity', 'multivessel', 'Multivessel/severe disease stratum.') ON CONFLICT (stratum_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, description = EXCLUDED.description;
+
+INSERT INTO strata (stratum_id, study, stratum_label, description)
+VALUES ('cabg-vs-pci-severity-single-vessel', 'cabg-vs-pci-severity', 'single-vessel', 'Single-vessel/less severe stratum.') ON CONFLICT (stratum_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, description = EXCLUDED.description;
+
+INSERT INTO strata (stratum_id, study, stratum_label, description)
+VALUES ('tolbutamide-ugdp-1970-low-risk-centers', 'tolbutamide-ugdp-1970', 'low-risk-centers', 'Centers with lower baseline CV risk.') ON CONFLICT (stratum_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, description = EXCLUDED.description;
+
+INSERT INTO strata (stratum_id, study, stratum_label, description)
+VALUES ('tolbutamide-ugdp-1970-high-risk-centers', 'tolbutamide-ugdp-1970', 'high-risk-centers', 'Centers with higher baseline risk.') ON CONFLICT (stratum_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, description = EXCLUDED.description;
+
+INSERT INTO strata (stratum_id, study, stratum_label, description)
+VALUES ('snow-cholera-water-1855-high-exposure-district', 'snow-cholera-water-1855', 'high-exposure-district', 'Districts with predominantly S&V supply.') ON CONFLICT (stratum_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, description = EXCLUDED.description;
+
+INSERT INTO strata (stratum_id, study, stratum_label, description)
+VALUES ('snow-cholera-water-1855-mixed-supply-district', 'snow-cholera-water-1855', 'mixed-supply-district', 'Districts with mixed supply.') ON CONFLICT (stratum_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, description = EXCLUDED.description;
+
+INSERT INTO strata (stratum_id, study, stratum_label, description)
+VALUES ('seatbelt-crash-severity-minor-crash', 'seatbelt-crash-severity', 'minor-crash', 'Minor crash severity stratum.') ON CONFLICT (stratum_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, description = EXCLUDED.description;
+
+INSERT INTO strata (stratum_id, study, stratum_label, description)
+VALUES ('seatbelt-crash-severity-severe-crash', 'seatbelt-crash-severity', 'severe-crash', 'Severe crash stratum (belted over-represented).') ON CONFLICT (stratum_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, description = EXCLUDED.description;
+
+INSERT INTO strata (stratum_id, study, stratum_label, description)
+VALUES ('measles-outbreak-vaccinated-high-coverage-setting', 'measles-outbreak-vaccinated', 'high-coverage-setting', 'School/community with 90% vaccination coverage.') ON CONFLICT (stratum_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, description = EXCLUDED.description;
+
+INSERT INTO strata (stratum_id, study, stratum_label, description)
+VALUES ('measles-outbreak-vaccinated-lower-coverage-setting', 'measles-outbreak-vaccinated', 'lower-coverage-setting', 'Subpopulation with lower coverage.') ON CONFLICT (stratum_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, description = EXCLUDED.description;
+
+INSERT INTO strata (stratum_id, study, stratum_label, description)
+VALUES ('air-pollution-mortality-city-younger-population-city', 'air-pollution-mortality-city', 'younger-population-city', 'City stratum with younger population.') ON CONFLICT (stratum_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, description = EXCLUDED.description;
+
+INSERT INTO strata (stratum_id, study, stratum_label, description)
+VALUES ('air-pollution-mortality-city-older-population-city', 'air-pollution-mortality-city', 'older-population-city', 'City stratum with older population.') ON CONFLICT (stratum_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, description = EXCLUDED.description;
+
+INSERT INTO strata (stratum_id, study, stratum_label, description)
+VALUES ('tb-treatment-resistance-drug-sensitive', 'tb-treatment-resistance', 'drug-sensitive', 'Drug-sensitive TB stratum.') ON CONFLICT (stratum_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, description = EXCLUDED.description;
+
+INSERT INTO strata (stratum_id, study, stratum_label, description)
+VALUES ('tb-treatment-resistance-drug-resistant', 'tb-treatment-resistance', 'drug-resistant', 'MDR/XDR TB stratum.') ON CONFLICT (stratum_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, description = EXCLUDED.description;
+
+INSERT INTO strata (stratum_id, study, stratum_label, description)
+VALUES ('hospital-mortality-readmission-high-comorbidity', 'hospital-mortality-readmission', 'high-comorbidity', 'High comorbidity case-mix stratum.') ON CONFLICT (stratum_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, description = EXCLUDED.description;
+
+INSERT INTO strata (stratum_id, study, stratum_label, description)
+VALUES ('hospital-mortality-readmission-low-comorbidity', 'hospital-mortality-readmission', 'low-comorbidity', 'Low comorbidity stratum.') ON CONFLICT (stratum_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, description = EXCLUDED.description;
+
+INSERT INTO strata (stratum_id, study, stratum_label, description)
+VALUES ('nypd-stop-frisk-hitrate-high-crime-precincts', 'nypd-stop-frisk-hitrate', 'high-crime-precincts', 'High-crime precinct stratum.') ON CONFLICT (stratum_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, description = EXCLUDED.description;
+
+INSERT INTO strata (stratum_id, study, stratum_label, description)
+VALUES ('nypd-stop-frisk-hitrate-low-crime-precincts', 'nypd-stop-frisk-hitrate', 'low-crime-precincts', 'Low-crime precinct stratum.') ON CONFLICT (stratum_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, description = EXCLUDED.description;
+
+INSERT INTO strata (stratum_id, study, stratum_label, description)
+VALUES ('sentencing-offense-type-violent-offenses', 'sentencing-offense-type', 'violent-offenses', 'Violent offense stratum.') ON CONFLICT (stratum_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, description = EXCLUDED.description;
+
+INSERT INTO strata (stratum_id, study, stratum_label, description)
+VALUES ('sentencing-offense-type-nonviolent-offenses', 'sentencing-offense-type', 'nonviolent-offenses', 'Nonviolent offense stratum.') ON CONFLICT (stratum_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, description = EXCLUDED.description;
+
+INSERT INTO strata (stratum_id, study, stratum_label, description)
+VALUES ('bail-risk-score-high-risk-tier', 'bail-risk-score', 'high-risk-tier', 'High pretrial risk tier.') ON CONFLICT (stratum_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, description = EXCLUDED.description;
+
+INSERT INTO strata (stratum_id, study, stratum_label, description)
+VALUES ('bail-risk-score-low-risk-tier', 'bail-risk-score', 'low-risk-tier', 'Low pretrial risk tier.') ON CONFLICT (stratum_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, description = EXCLUDED.description;
+
+INSERT INTO strata (stratum_id, study, stratum_label, description)
+VALUES ('police-force-encounter-discretionary-stop', 'police-force-encounter', 'discretionary-stop', 'Discretionary stop stratum.') ON CONFLICT (stratum_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, description = EXCLUDED.description;
+
+INSERT INTO strata (stratum_id, study, stratum_label, description)
+VALUES ('police-force-encounter-high-risk-call', 'police-force-encounter', 'high-risk-call', 'High-risk call-for-service stratum.') ON CONFLICT (stratum_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, description = EXCLUDED.description;
+
+INSERT INTO strata (stratum_id, study, stratum_label, description)
+VALUES ('uc-systemwide-admissions-high-selectivity-major', 'uc-systemwide-admissions', 'high-selectivity-major', 'Highly selective major/campus stratum.') ON CONFLICT (stratum_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, description = EXCLUDED.description;
+
+INSERT INTO strata (stratum_id, study, stratum_label, description)
+VALUES ('uc-systemwide-admissions-lower-selectivity-major', 'uc-systemwide-admissions', 'lower-selectivity-major', 'Less selective major/campus stratum.') ON CONFLICT (stratum_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, description = EXCLUDED.description;
+
+INSERT INTO strata (stratum_id, study, stratum_label, description)
+VALUES ('teacher-vam-prior-achievement-high-prior-achievement', 'teacher-vam-prior-achievement', 'high-prior-achievement', 'High prior-achievement cohort.') ON CONFLICT (stratum_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, description = EXCLUDED.description;
+
+INSERT INTO strata (stratum_id, study, stratum_label, description)
+VALUES ('teacher-vam-prior-achievement-low-prior-achievement', 'teacher-vam-prior-achievement', 'low-prior-achievement', 'Low prior-achievement cohort.') ON CONFLICT (stratum_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, description = EXCLUDED.description;
+
+INSERT INTO strata (stratum_id, study, stratum_label, description)
+VALUES ('naep-state-demographics-high-poverty-states', 'naep-state-demographics', 'high-poverty-states', 'High-poverty state stratum.') ON CONFLICT (stratum_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, description = EXCLUDED.description;
+
+INSERT INTO strata (stratum_id, study, stratum_label, description)
+VALUES ('naep-state-demographics-low-poverty-states', 'naep-state-demographics', 'low-poverty-states', 'Low-poverty state stratum.') ON CONFLICT (stratum_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, description = EXCLUDED.description;
+
+INSERT INTO strata (stratum_id, study, stratum_label, description)
+VALUES ('college-grad-rate-selectivity-well-prepared-intake', 'college-grad-rate-selectivity', 'well-prepared-intake', 'High preparation intake stratum.') ON CONFLICT (stratum_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, description = EXCLUDED.description;
+
+INSERT INTO strata (stratum_id, study, stratum_label, description)
+VALUES ('college-grad-rate-selectivity-under-prepared-intake', 'college-grad-rate-selectivity', 'under-prepared-intake', 'Lower preparation intake stratum.') ON CONFLICT (stratum_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, description = EXCLUDED.description;
+
+INSERT INTO strata (stratum_id, study, stratum_label, description)
+VALUES ('star-class-size-inner-city-schools', 'star-class-size', 'inner-city-schools', 'Inner-city STAR sites.') ON CONFLICT (stratum_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, description = EXCLUDED.description;
+
+INSERT INTO strata (stratum_id, study, stratum_label, description)
+VALUES ('star-class-size-suburban-schools', 'star-class-size', 'suburban-schools', 'Suburban STAR sites.') ON CONFLICT (stratum_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, description = EXCLUDED.description;
+
+INSERT INTO strata (stratum_id, study, stratum_label, description)
+VALUES ('nba-shooting-shot-mix-two-point-attempts', 'nba-shooting-shot-mix', 'two-point-attempts', 'Two-point shot stratum.') ON CONFLICT (stratum_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, description = EXCLUDED.description;
+
+INSERT INTO strata (stratum_id, study, stratum_label, description)
+VALUES ('nba-shooting-shot-mix-three-point-attempts', 'nba-shooting-shot-mix', 'three-point-attempts', 'Three-point shot stratum.') ON CONFLICT (stratum_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, description = EXCLUDED.description;
+
+INSERT INTO strata (stratum_id, study, stratum_label, description)
+VALUES ('pitcher-era-ballpark-pitcher-friendly-park', 'pitcher-era-ballpark', 'pitcher-friendly-park', 'Pitcher-friendly home park stratum.') ON CONFLICT (stratum_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, description = EXCLUDED.description;
+
+INSERT INTO strata (stratum_id, study, stratum_label, description)
+VALUES ('pitcher-era-ballpark-hitter-friendly-park', 'pitcher-era-ballpark', 'hitter-friendly-park', 'Hitter-friendly home park stratum.') ON CONFLICT (stratum_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, description = EXCLUDED.description;
+
+INSERT INTO strata (stratum_id, study, stratum_label, description)
+VALUES ('nfl-completion-depth-short-pass', 'nfl-completion-depth', 'short-pass', 'Short pass attempts (≤10 air yards).') ON CONFLICT (stratum_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, description = EXCLUDED.description;
+
+INSERT INTO strata (stratum_id, study, stratum_label, description)
+VALUES ('nfl-completion-depth-deep-pass', 'nfl-completion-depth', 'deep-pass', 'Deep pass attempts (>10 air yards).') ON CONFLICT (stratum_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, description = EXCLUDED.description;
+
+INSERT INTO strata (stratum_id, study, stratum_label, description)
+VALUES ('field-goal-distance-short-fg', 'field-goal-distance', 'short-fg', 'FG attempts under 40 yards.') ON CONFLICT (stratum_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, description = EXCLUDED.description;
+
+INSERT INTO strata (stratum_id, study, stratum_label, description)
+VALUES ('field-goal-distance-long-fg', 'field-goal-distance', 'long-fg', 'FG attempts 40+ yards.') ON CONFLICT (stratum_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, description = EXCLUDED.description;
+
+INSERT INTO strata (stratum_id, study, stratum_label, description)
+VALUES ('golf-scoring-course-easy-course', 'golf-scoring-course', 'easy-course', 'Easy course stratum.') ON CONFLICT (stratum_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, description = EXCLUDED.description;
+
+INSERT INTO strata (stratum_id, study, stratum_label, description)
+VALUES ('golf-scoring-course-difficult-course', 'golf-scoring-course', 'difficult-course', 'Difficult course stratum.') ON CONFLICT (stratum_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, description = EXCLUDED.description;
+
+INSERT INTO strata (stratum_id, study, stratum_label, description)
+VALUES ('minimum-wage-region-tight-labor-market', 'minimum-wage-region', 'tight-labor-market', 'Tight labor market stratum.') ON CONFLICT (stratum_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, description = EXCLUDED.description;
+
+INSERT INTO strata (stratum_id, study, stratum_label, description)
+VALUES ('minimum-wage-region-slack-labor-market', 'minimum-wage-region', 'slack-labor-market', 'Slack labor market stratum.') ON CONFLICT (stratum_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, description = EXCLUDED.description;
+
+INSERT INTO strata (stratum_id, study, stratum_label, description)
+VALUES ('returns-to-education-field-stem-fields', 'returns-to-education-field', 'stem-fields', 'STEM field stratum.') ON CONFLICT (stratum_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, description = EXCLUDED.description;
+
+INSERT INTO strata (stratum_id, study, stratum_label, description)
+VALUES ('returns-to-education-field-non-stem-fields', 'returns-to-education-field', 'non-stem-fields', 'Non-STEM field stratum.') ON CONFLICT (stratum_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, description = EXCLUDED.description;
+
+INSERT INTO strata (stratum_id, study, stratum_label, description)
+VALUES ('unemployment-education-cycle-college-educated-share', 'unemployment-education-cycle', 'college-educated-share', 'College-educated-heavy subperiod.') ON CONFLICT (stratum_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, description = EXCLUDED.description;
+
+INSERT INTO strata (stratum_id, study, stratum_label, description)
+VALUES ('unemployment-education-cycle-non-college-share', 'unemployment-education-cycle', 'non-college-share', 'Non-college-heavy subperiod.') ON CONFLICT (stratum_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, description = EXCLUDED.description;
+
+INSERT INTO strata (stratum_id, study, stratum_label, description)
+VALUES ('costa-rica-us-life-expectancy-under-65', 'costa-rica-us-life-expectancy', 'under-65', 'Under 65 age stratum.') ON CONFLICT (stratum_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, description = EXCLUDED.description;
+
+INSERT INTO strata (stratum_id, study, stratum_label, description)
+VALUES ('costa-rica-us-life-expectancy-65-plus', 'costa-rica-us-life-expectancy', '65-plus', 'Age 65+ stratum.') ON CONFLICT (stratum_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, description = EXCLUDED.description;
+
+INSERT INTO strata (stratum_id, study, stratum_label, description)
+VALUES ('fertility-income-country-high-income-countries', 'fertility-income-country', 'high-income-countries', 'OECD/high-income country stratum.') ON CONFLICT (stratum_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, description = EXCLUDED.description;
+
+INSERT INTO strata (stratum_id, study, stratum_label, description)
+VALUES ('fertility-income-country-middle-income-countries', 'fertility-income-country', 'middle-income-countries', 'Middle-income country stratum.') ON CONFLICT (stratum_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, description = EXCLUDED.description;
+
+INSERT INTO strata (stratum_id, study, stratum_label, description)
+VALUES ('religiosity-happiness-country-high-gdp-countries', 'religiosity-happiness-country', 'high-gdp-countries', 'High-GDP country stratum.') ON CONFLICT (stratum_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, description = EXCLUDED.description;
+
+INSERT INTO strata (stratum_id, study, stratum_label, description)
+VALUES ('religiosity-happiness-country-lower-gdp-countries', 'religiosity-happiness-country', 'lower-gdp-countries', 'Lower-GDP country stratum.') ON CONFLICT (stratum_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, description = EXCLUDED.description;
+
+INSERT INTO strata (stratum_id, study, stratum_label, description)
+VALUES ('voter-turnout-education-state-high-education-states', 'voter-turnout-education-state', 'high-education-states', 'States with high college attainment.') ON CONFLICT (stratum_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, description = EXCLUDED.description;
+
+INSERT INTO strata (stratum_id, study, stratum_label, description)
+VALUES ('voter-turnout-education-state-lower-education-states', 'voter-turnout-education-state', 'lower-education-states', 'States with lower college attainment.') ON CONFLICT (stratum_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, description = EXCLUDED.description;
+
+INSERT INTO strata (stratum_id, study, stratum_label, description)
+VALUES ('ad-ctr-platform-mix-mobile-traffic', 'ad-ctr-platform-mix', 'mobile-traffic', 'Mobile platform stratum.') ON CONFLICT (stratum_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, description = EXCLUDED.description;
+
+INSERT INTO strata (stratum_id, study, stratum_label, description)
+VALUES ('ad-ctr-platform-mix-desktop-traffic', 'ad-ctr-platform-mix', 'desktop-traffic', 'Desktop platform stratum.') ON CONFLICT (stratum_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, description = EXCLUDED.description;
 
 -- ----------------------------------------------------------------------------
 -- CaseCells: Table: CaseCells — the raw leaves of the DAG. One row per (study, stratum, treatment) combination recording the aggregate count of successes and total cases. Every derived fact in the model traces back to these numbers. Nothing above this row is a raw input.
@@ -1572,6 +2331,606 @@ VALUES ('panama-sweden-mortality-1975-elderly-A', 'panama-sweden-mortality-1975'
 INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
 VALUES ('panama-sweden-mortality-1975-elderly-B', 'panama-sweden-mortality-1975', 'elderly', 'B', 123, 150) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
 
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('hrt-whi-2002-observational-A', 'hrt-whi-2002', 'observational', 'A', 950, 10000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('hrt-whi-2002-observational-B', 'hrt-whi-2002', 'observational', 'B', 900, 10000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('hrt-whi-2002-rct-whi-A', 'hrt-whi-2002', 'rct-whi', 'A', 8500, 95000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('hrt-whi-2002-rct-whi-B', 'hrt-whi-2002', 'rct-whi', 'B', 9000, 95000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('obesity-paradox-hf-no-hf-A', 'obesity-paradox-hf', 'no-hf', 'A', 800, 1000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('obesity-paradox-hf-no-hf-B', 'obesity-paradox-hf', 'no-hf', 'B', 900, 1000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('obesity-paradox-hf-hf-A', 'obesity-paradox-hf', 'hf', 'A', 650, 1000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('obesity-paradox-hf-hf-B', 'obesity-paradox-hf', 'hf', 'B', 500, 1000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('dialysis-bmi-survival-general-population-A', 'dialysis-bmi-survival', 'general-population', 'A', 900, 1000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('dialysis-bmi-survival-general-population-B', 'dialysis-bmi-survival', 'general-population', 'B', 950, 1000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('dialysis-bmi-survival-esrd-dialysis-A', 'dialysis-bmi-survival', 'esrd-dialysis', 'A', 700, 1000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('dialysis-bmi-survival-esrd-dialysis-B', 'dialysis-bmi-survival', 'esrd-dialysis', 'B', 600, 1000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('sick-quitter-alcohol-never-drinkers-only-A', 'sick-quitter-alcohol', 'never-drinkers-only', 'A', 850, 1000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('sick-quitter-alcohol-never-drinkers-only-B', 'sick-quitter-alcohol', 'never-drinkers-only', 'B', 880, 1000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('sick-quitter-alcohol-includes-former-drinkers-A', 'sick-quitter-alcohol', 'includes-former-drinkers', 'A', 820, 1000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('sick-quitter-alcohol-includes-former-drinkers-B', 'sick-quitter-alcohol', 'includes-former-drinkers', 'B', 750, 1000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('flu-vaccine-elderly-mortality-under-75-A', 'flu-vaccine-elderly-mortality', 'under-75', 'A', 89979, 90000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('flu-vaccine-elderly-mortality-under-75-B', 'flu-vaccine-elderly-mortality', 'under-75', 'B', 149952, 150000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('flu-vaccine-elderly-mortality-75-plus-A', 'flu-vaccine-elderly-mortality', '75-plus', 'A', 4600, 5000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('flu-vaccine-elderly-mortality-75-plus-B', 'flu-vaccine-elderly-mortality', '75-plus', 'B', 2500, 3000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('covid-italy-china-cfr-2020-under-60-A', 'covid-italy-china-cfr-2020', 'under-60', 'A', 990, 1000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('covid-italy-china-cfr-2020-under-60-B', 'covid-italy-china-cfr-2020', 'under-60', 'B', 49000, 50000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('covid-italy-china-cfr-2020-60-plus-A', 'covid-italy-china-cfr-2020', '60-plus', 'A', 300, 2000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('covid-italy-china-cfr-2020-60-plus-B', 'covid-italy-china-cfr-2020', '60-plus', 'B', 320, 400) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('israel-covid-severe-2021-under-50-A', 'israel-covid-severe-2021', 'under-50', 'A', 25, 1000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('israel-covid-severe-2021-under-50-B', 'israel-covid-severe-2021', 'under-50', 'B', 50, 151200) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('israel-covid-severe-2021-50-plus-A', 'israel-covid-severe-2021', '50-plus', 'A', 400, 10000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('israel-covid-severe-2021-50-plus-B', 'israel-covid-severe-2021', '50-plus', 'B', 180, 800) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('cochran-smoking-1968-under-65-A', 'cochran-smoking-1968', 'under-65', 'A', 8500, 10000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('cochran-smoking-1968-under-65-B', 'cochran-smoking-1968', 'under-65', 'B', 900, 1000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('cochran-smoking-1968-65-plus-A', 'cochran-smoking-1968', '65-plus', 'A', 400, 1000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('cochran-smoking-1968-65-plus-B', 'cochran-smoking-1968', '65-plus', 'B', 500, 1000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('healthy-worker-mortality-low-hazard-occupations-A', 'healthy-worker-mortality', 'low-hazard-occupations', 'A', 950, 1000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('healthy-worker-mortality-low-hazard-occupations-B', 'healthy-worker-mortality', 'low-hazard-occupations', 'B', 900, 1000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('healthy-worker-mortality-high-hazard-occupations-A', 'healthy-worker-mortality', 'high-hazard-occupations', 'A', 850, 1000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('healthy-worker-mortality-high-hazard-occupations-B', 'healthy-worker-mortality', 'high-hazard-occupations', 'B', 800, 1000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('compas-recidivism-base-low-prevalence-group-A', 'compas-recidivism-base', 'low-prevalence-group', 'A', 700, 1000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('compas-recidivism-base-low-prevalence-group-B', 'compas-recidivism-base', 'low-prevalence-group', 'B', 750, 1000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('compas-recidivism-base-high-prevalence-group-A', 'compas-recidivism-base', 'high-prevalence-group', 'A', 450, 1000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('compas-recidivism-base-high-prevalence-group-B', 'compas-recidivism-base', 'high-prevalence-group', 'B', 500, 1000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('us-wage-composition-stagnation-college-educated-A', 'us-wage-composition-stagnation', 'college-educated', 'A', 5500, 10000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('us-wage-composition-stagnation-college-educated-B', 'us-wage-composition-stagnation', 'college-educated', 'B', 5000, 10000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('us-wage-composition-stagnation-non-college-A', 'us-wage-composition-stagnation', 'non-college', 'A', 2800, 7000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('us-wage-composition-stagnation-non-college-B', 'us-wage-composition-stagnation', 'non-college', 'B', 1520, 4000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('borjas-immigrant-cohort-recent-arrivals-A', 'borjas-immigrant-cohort', 'recent-arrivals', 'A', 400, 1000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('borjas-immigrant-cohort-recent-arrivals-B', 'borjas-immigrant-cohort', 'recent-arrivals', 'B', 450, 1000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('borjas-immigrant-cohort-established-immigrants-A', 'borjas-immigrant-cohort', 'established-immigrants', 'A', 550, 1000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('borjas-immigrant-cohort-established-immigrants-B', 'borjas-immigrant-cohort', 'established-immigrants', 'B', 520, 1000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('robinson-1950-literacy-high-literacy-states-A', 'robinson-1950-literacy', 'high-literacy-states', 'A', 900, 1000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('robinson-1950-literacy-high-literacy-states-B', 'robinson-1950-literacy', 'high-literacy-states', 'B', 9500, 10000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('robinson-1950-literacy-low-literacy-states-A', 'robinson-1950-literacy', 'low-literacy-states', 'A', 800, 1000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('robinson-1950-literacy-low-literacy-states-B', 'robinson-1950-literacy', 'low-literacy-states', 'B', 1400, 2000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('ab-test-traffic-mix-week1-young-users-A', 'ab-test-traffic-mix', 'week1-young-users', 'A', 8000, 10000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('ab-test-traffic-mix-week1-young-users-B', 'ab-test-traffic-mix', 'week1-young-users', 'B', 7500, 10000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('ab-test-traffic-mix-week2-old-users-A', 'ab-test-traffic-mix', 'week2-old-users', 'A', 1100, 2000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('ab-test-traffic-mix-week2-old-users-B', 'ab-test-traffic-mix', 'week2-old-users', 'B', 1300, 2000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('recsys-offline-eval-head-items-A', 'recsys-offline-eval', 'head-items', 'A', 850, 1000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('recsys-offline-eval-head-items-B', 'recsys-offline-eval', 'head-items', 'B', 800, 1000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('recsys-offline-eval-tail-items-A', 'recsys-offline-eval', 'tail-items', 'A', 300, 1000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('recsys-offline-eval-tail-items-B', 'recsys-offline-eval', 'tail-items', 'B', 350, 1000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('collider-only-synthetic-conditioned-in-A', 'collider-only-synthetic', 'conditioned-in', 'A', 85, 100) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('collider-only-synthetic-conditioned-in-B', 'collider-only-synthetic', 'conditioned-in', 'B', 70, 100) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('collider-only-synthetic-conditioned-out-A', 'collider-only-synthetic', 'conditioned-out', 'A', 150, 900) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('collider-only-synthetic-conditioned-out-B', 'collider-only-synthetic', 'conditioned-out', 'B', 270, 900) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('noncollapsibility-or-synthetic-low-prevalence-A', 'noncollapsibility-or-synthetic', 'low-prevalence', 'A', 40, 100) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('noncollapsibility-or-synthetic-low-prevalence-B', 'noncollapsibility-or-synthetic', 'low-prevalence', 'B', 30, 100) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('noncollapsibility-or-synthetic-high-prevalence-A', 'noncollapsibility-or-synthetic', 'high-prevalence', 'A', 400, 1000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('noncollapsibility-or-synthetic-high-prevalence-B', 'noncollapsibility-or-synthetic', 'high-prevalence', 'B', 300, 1000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('trauma-center-mortality-mild-injury-A', 'trauma-center-mortality', 'mild-injury', 'A', 950, 1000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('trauma-center-mortality-mild-injury-B', 'trauma-center-mortality', 'mild-injury', 'B', 960, 1000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('trauma-center-mortality-severe-injury-A', 'trauma-center-mortality', 'severe-injury', 'A', 600, 1000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('trauma-center-mortality-severe-injury-B', 'trauma-center-mortality', 'severe-injury', 'B', 680, 1000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('surgeon-volume-mortality-low-risk-A', 'surgeon-volume-mortality', 'low-risk', 'A', 980, 1000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('surgeon-volume-mortality-low-risk-B', 'surgeon-volume-mortality', 'low-risk', 'B', 975, 1000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('surgeon-volume-mortality-high-risk-A', 'surgeon-volume-mortality', 'high-risk', 'A', 820, 1000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('surgeon-volume-mortality-high-risk-B', 'surgeon-volume-mortality', 'high-risk', 'B', 860, 1000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('mammography-length-bias-slow-growing-A', 'mammography-length-bias', 'slow-growing', 'A', 920, 1000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('mammography-length-bias-slow-growing-B', 'mammography-length-bias', 'slow-growing', 'B', 700, 1000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('mammography-length-bias-aggressive-A', 'mammography-length-bias', 'aggressive', 'A', 400, 1000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('mammography-length-bias-aggressive-B', 'mammography-length-bias', 'aggressive', 'B', 350, 1000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('cabg-vs-pci-severity-multivessel-A', 'cabg-vs-pci-severity', 'multivessel', 'A', 920, 1000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('cabg-vs-pci-severity-multivessel-B', 'cabg-vs-pci-severity', 'multivessel', 'B', 880, 1000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('cabg-vs-pci-severity-single-vessel-A', 'cabg-vs-pci-severity', 'single-vessel', 'A', 980, 1000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('cabg-vs-pci-severity-single-vessel-B', 'cabg-vs-pci-severity', 'single-vessel', 'B', 975, 1000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('tolbutamide-ugdp-1970-low-risk-centers-A', 'tolbutamide-ugdp-1970', 'low-risk-centers', 'A', 920, 1000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('tolbutamide-ugdp-1970-low-risk-centers-B', 'tolbutamide-ugdp-1970', 'low-risk-centers', 'B', 910, 1000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('tolbutamide-ugdp-1970-high-risk-centers-A', 'tolbutamide-ugdp-1970', 'high-risk-centers', 'A', 780, 1000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('tolbutamide-ugdp-1970-high-risk-centers-B', 'tolbutamide-ugdp-1970', 'high-risk-centers', 'B', 820, 1000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('snow-cholera-water-1855-high-exposure-district-A', 'snow-cholera-water-1855', 'high-exposure-district', 'A', 902, 1000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('snow-cholera-water-1855-high-exposure-district-B', 'snow-cholera-water-1855', 'high-exposure-district', 'B', 960, 1000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('snow-cholera-water-1855-mixed-supply-district-A', 'snow-cholera-water-1855', 'mixed-supply-district', 'A', 940, 1000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('snow-cholera-water-1855-mixed-supply-district-B', 'snow-cholera-water-1855', 'mixed-supply-district', 'B', 970, 1000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('seatbelt-crash-severity-minor-crash-A', 'seatbelt-crash-severity', 'minor-crash', 'A', 980, 1000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('seatbelt-crash-severity-minor-crash-B', 'seatbelt-crash-severity', 'minor-crash', 'B', 970, 1000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('seatbelt-crash-severity-severe-crash-A', 'seatbelt-crash-severity', 'severe-crash', 'A', 700, 1000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('seatbelt-crash-severity-severe-crash-B', 'seatbelt-crash-severity', 'severe-crash', 'B', 600, 1000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('measles-outbreak-vaccinated-high-coverage-setting-A', 'measles-outbreak-vaccinated', 'high-coverage-setting', 'A', 100, 9000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('measles-outbreak-vaccinated-high-coverage-setting-B', 'measles-outbreak-vaccinated', 'high-coverage-setting', 'B', 44, 1000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('measles-outbreak-vaccinated-lower-coverage-setting-A', 'measles-outbreak-vaccinated', 'lower-coverage-setting', 'A', 15, 2000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('measles-outbreak-vaccinated-lower-coverage-setting-B', 'measles-outbreak-vaccinated', 'lower-coverage-setting', 'B', 35, 500) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('air-pollution-mortality-city-younger-population-city-A', 'air-pollution-mortality-city', 'younger-population-city', 'A', 980, 1000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('air-pollution-mortality-city-younger-population-city-B', 'air-pollution-mortality-city', 'younger-population-city', 'B', 985, 1000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('air-pollution-mortality-city-older-population-city-A', 'air-pollution-mortality-city', 'older-population-city', 'A', 920, 1000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('air-pollution-mortality-city-older-population-city-B', 'air-pollution-mortality-city', 'older-population-city', 'B', 940, 1000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('tb-treatment-resistance-drug-sensitive-A', 'tb-treatment-resistance', 'drug-sensitive', 'A', 920, 1000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('tb-treatment-resistance-drug-sensitive-B', 'tb-treatment-resistance', 'drug-sensitive', 'B', 910, 1000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('tb-treatment-resistance-drug-resistant-A', 'tb-treatment-resistance', 'drug-resistant', 'A', 650, 1000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('tb-treatment-resistance-drug-resistant-B', 'tb-treatment-resistance', 'drug-resistant', 'B', 720, 1000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('hospital-mortality-readmission-high-comorbidity-A', 'hospital-mortality-readmission', 'high-comorbidity', 'A', 850, 1000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('hospital-mortality-readmission-high-comorbidity-B', 'hospital-mortality-readmission', 'high-comorbidity', 'B', 880, 1000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('hospital-mortality-readmission-low-comorbidity-A', 'hospital-mortality-readmission', 'low-comorbidity', 'A', 970, 1000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('hospital-mortality-readmission-low-comorbidity-B', 'hospital-mortality-readmission', 'low-comorbidity', 'B', 975, 1000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('nypd-stop-frisk-hitrate-high-crime-precincts-A', 'nypd-stop-frisk-hitrate', 'high-crime-precincts', 'A', 320, 8000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('nypd-stop-frisk-hitrate-high-crime-precincts-B', 'nypd-stop-frisk-hitrate', 'high-crime-precincts', 'B', 280, 7000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('nypd-stop-frisk-hitrate-low-crime-precincts-A', 'nypd-stop-frisk-hitrate', 'low-crime-precincts', 'A', 45, 2000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('nypd-stop-frisk-hitrate-low-crime-precincts-B', 'nypd-stop-frisk-hitrate', 'low-crime-precincts', 'B', 72, 1500) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('sentencing-offense-type-violent-offenses-A', 'sentencing-offense-type', 'violent-offenses', 'A', 800, 1000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('sentencing-offense-type-violent-offenses-B', 'sentencing-offense-type', 'violent-offenses', 'B', 750, 1000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('sentencing-offense-type-nonviolent-offenses-A', 'sentencing-offense-type', 'nonviolent-offenses', 'A', 400, 1000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('sentencing-offense-type-nonviolent-offenses-B', 'sentencing-offense-type', 'nonviolent-offenses', 'B', 420, 1000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('bail-risk-score-high-risk-tier-A', 'bail-risk-score', 'high-risk-tier', 'A', 450, 1000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('bail-risk-score-high-risk-tier-B', 'bail-risk-score', 'high-risk-tier', 'B', 520, 1000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('bail-risk-score-low-risk-tier-A', 'bail-risk-score', 'low-risk-tier', 'A', 120, 1000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('bail-risk-score-low-risk-tier-B', 'bail-risk-score', 'low-risk-tier', 'B', 150, 1000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('police-force-encounter-discretionary-stop-A', 'police-force-encounter', 'discretionary-stop', 'A', 180, 1000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('police-force-encounter-discretionary-stop-B', 'police-force-encounter', 'discretionary-stop', 'B', 50, 1000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('police-force-encounter-high-risk-call-A', 'police-force-encounter', 'high-risk-call', 'A', 400, 1000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('police-force-encounter-high-risk-call-B', 'police-force-encounter', 'high-risk-call', 'B', 120, 1000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('uc-systemwide-admissions-high-selectivity-major-A', 'uc-systemwide-admissions', 'high-selectivity-major', 'A', 120, 1000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('uc-systemwide-admissions-high-selectivity-major-B', 'uc-systemwide-admissions', 'high-selectivity-major', 'B', 140, 1000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('uc-systemwide-admissions-lower-selectivity-major-A', 'uc-systemwide-admissions', 'lower-selectivity-major', 'A', 650, 1000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('uc-systemwide-admissions-lower-selectivity-major-B', 'uc-systemwide-admissions', 'lower-selectivity-major', 'B', 600, 1000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('teacher-vam-prior-achievement-high-prior-achievement-A', 'teacher-vam-prior-achievement', 'high-prior-achievement', 'A', 850, 1000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('teacher-vam-prior-achievement-high-prior-achievement-B', 'teacher-vam-prior-achievement', 'high-prior-achievement', 'B', 820, 1000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('teacher-vam-prior-achievement-low-prior-achievement-A', 'teacher-vam-prior-achievement', 'low-prior-achievement', 'A', 520, 1000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('teacher-vam-prior-achievement-low-prior-achievement-B', 'teacher-vam-prior-achievement', 'low-prior-achievement', 'B', 560, 1000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('naep-state-demographics-high-poverty-states-A', 'naep-state-demographics', 'high-poverty-states', 'A', 280, 1000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('naep-state-demographics-high-poverty-states-B', 'naep-state-demographics', 'high-poverty-states', 'B', 320, 1000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('naep-state-demographics-low-poverty-states-A', 'naep-state-demographics', 'low-poverty-states', 'A', 450, 1000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('naep-state-demographics-low-poverty-states-B', 'naep-state-demographics', 'low-poverty-states', 'B', 420, 1000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('college-grad-rate-selectivity-well-prepared-intake-A', 'college-grad-rate-selectivity', 'well-prepared-intake', 'A', 920, 1000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('college-grad-rate-selectivity-well-prepared-intake-B', 'college-grad-rate-selectivity', 'well-prepared-intake', 'B', 880, 1000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('college-grad-rate-selectivity-under-prepared-intake-A', 'college-grad-rate-selectivity', 'under-prepared-intake', 'A', 550, 1000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('college-grad-rate-selectivity-under-prepared-intake-B', 'college-grad-rate-selectivity', 'under-prepared-intake', 'B', 620, 1000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('star-class-size-inner-city-schools-A', 'star-class-size', 'inner-city-schools', 'A', 820, 1000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('star-class-size-inner-city-schools-B', 'star-class-size', 'inner-city-schools', 'B', 800, 1000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('star-class-size-suburban-schools-A', 'star-class-size', 'suburban-schools', 'A', 910, 1000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('star-class-size-suburban-schools-B', 'star-class-size', 'suburban-schools', 'B', 900, 1000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('nba-shooting-shot-mix-two-point-attempts-A', 'nba-shooting-shot-mix', 'two-point-attempts', 'A', 480, 1000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('nba-shooting-shot-mix-two-point-attempts-B', 'nba-shooting-shot-mix', 'two-point-attempts', 'B', 440, 1000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('nba-shooting-shot-mix-three-point-attempts-A', 'nba-shooting-shot-mix', 'three-point-attempts', 'A', 360, 1000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('nba-shooting-shot-mix-three-point-attempts-B', 'nba-shooting-shot-mix', 'three-point-attempts', 'B', 150, 500) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('pitcher-era-ballpark-pitcher-friendly-park-A', 'pitcher-era-ballpark', 'pitcher-friendly-park', 'A', 650, 1000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('pitcher-era-ballpark-pitcher-friendly-park-B', 'pitcher-era-ballpark', 'pitcher-friendly-park', 'B', 620, 1000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('pitcher-era-ballpark-hitter-friendly-park-A', 'pitcher-era-ballpark', 'hitter-friendly-park', 'A', 520, 1000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('pitcher-era-ballpark-hitter-friendly-park-B', 'pitcher-era-ballpark', 'hitter-friendly-park', 'B', 540, 1000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('nfl-completion-depth-short-pass-A', 'nfl-completion-depth', 'short-pass', 'A', 720, 800) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('nfl-completion-depth-short-pass-B', 'nfl-completion-depth', 'short-pass', 'B', 700, 800) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('nfl-completion-depth-deep-pass-A', 'nfl-completion-depth', 'deep-pass', 'A', 90, 200) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('nfl-completion-depth-deep-pass-B', 'nfl-completion-depth', 'deep-pass', 'B', 110, 200) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('field-goal-distance-short-fg-A', 'field-goal-distance', 'short-fg', 'A', 950, 1000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('field-goal-distance-short-fg-B', 'field-goal-distance', 'short-fg', 'B', 940, 1000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('field-goal-distance-long-fg-A', 'field-goal-distance', 'long-fg', 'A', 600, 1000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('field-goal-distance-long-fg-B', 'field-goal-distance', 'long-fg', 'B', 650, 1000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('golf-scoring-course-easy-course-A', 'golf-scoring-course', 'easy-course', 'A', 650, 1000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('golf-scoring-course-easy-course-B', 'golf-scoring-course', 'easy-course', 'B', 620, 1000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('golf-scoring-course-difficult-course-A', 'golf-scoring-course', 'difficult-course', 'A', 350, 1000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('golf-scoring-course-difficult-course-B', 'golf-scoring-course', 'difficult-course', 'B', 380, 1000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('minimum-wage-region-tight-labor-market-A', 'minimum-wage-region', 'tight-labor-market', 'A', 920, 1000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('minimum-wage-region-tight-labor-market-B', 'minimum-wage-region', 'tight-labor-market', 'B', 910, 1000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('minimum-wage-region-slack-labor-market-A', 'minimum-wage-region', 'slack-labor-market', 'A', 780, 1000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('minimum-wage-region-slack-labor-market-B', 'minimum-wage-region', 'slack-labor-market', 'B', 820, 1000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('returns-to-education-field-stem-fields-A', 'returns-to-education-field', 'stem-fields', 'A', 720, 1000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('returns-to-education-field-stem-fields-B', 'returns-to-education-field', 'stem-fields', 'B', 350, 1000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('returns-to-education-field-non-stem-fields-A', 'returns-to-education-field', 'non-stem-fields', 'A', 520, 1000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('returns-to-education-field-non-stem-fields-B', 'returns-to-education-field', 'non-stem-fields', 'B', 380, 1000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('unemployment-education-cycle-college-educated-share-A', 'unemployment-education-cycle', 'college-educated-share', 'A', 950, 1000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('unemployment-education-cycle-college-educated-share-B', 'unemployment-education-cycle', 'college-educated-share', 'B', 940, 1000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('unemployment-education-cycle-non-college-share-A', 'unemployment-education-cycle', 'non-college-share', 'A', 820, 1000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('unemployment-education-cycle-non-college-share-B', 'unemployment-education-cycle', 'non-college-share', 'B', 850, 1000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('costa-rica-us-life-expectancy-under-65-A', 'costa-rica-us-life-expectancy', 'under-65', 'A', 990, 1000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('costa-rica-us-life-expectancy-under-65-B', 'costa-rica-us-life-expectancy', 'under-65', 'B', 985, 1000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('costa-rica-us-life-expectancy-65-plus-A', 'costa-rica-us-life-expectancy', '65-plus', 'A', 850, 1000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('costa-rica-us-life-expectancy-65-plus-B', 'costa-rica-us-life-expectancy', '65-plus', 'B', 900, 1000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('fertility-income-country-high-income-countries-A', 'fertility-income-country', 'high-income-countries', 'A', 450, 1000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('fertility-income-country-high-income-countries-B', 'fertility-income-country', 'high-income-countries', 'B', 520, 1000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('fertility-income-country-middle-income-countries-A', 'fertility-income-country', 'middle-income-countries', 'A', 380, 1000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('fertility-income-country-middle-income-countries-B', 'fertility-income-country', 'middle-income-countries', 'B', 350, 1000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('religiosity-happiness-country-high-gdp-countries-A', 'religiosity-happiness-country', 'high-gdp-countries', 'A', 750, 1000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('religiosity-happiness-country-high-gdp-countries-B', 'religiosity-happiness-country', 'high-gdp-countries', 'B', 780, 1000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('religiosity-happiness-country-lower-gdp-countries-A', 'religiosity-happiness-country', 'lower-gdp-countries', 'A', 620, 1000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('religiosity-happiness-country-lower-gdp-countries-B', 'religiosity-happiness-country', 'lower-gdp-countries', 'B', 580, 1000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('voter-turnout-education-state-high-education-states-A', 'voter-turnout-education-state', 'high-education-states', 'A', 780, 1000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('voter-turnout-education-state-high-education-states-B', 'voter-turnout-education-state', 'high-education-states', 'B', 520, 1000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('voter-turnout-education-state-lower-education-states-A', 'voter-turnout-education-state', 'lower-education-states', 'A', 650, 1000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('voter-turnout-education-state-lower-education-states-B', 'voter-turnout-education-state', 'lower-education-states', 'B', 480, 1000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('ad-ctr-platform-mix-mobile-traffic-A', 'ad-ctr-platform-mix', 'mobile-traffic', 'A', 80, 1000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('ad-ctr-platform-mix-mobile-traffic-B', 'ad-ctr-platform-mix', 'mobile-traffic', 'B', 75, 1000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('ad-ctr-platform-mix-desktop-traffic-A', 'ad-ctr-platform-mix', 'desktop-traffic', 'A', 45, 1000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
+INSERT INTO case_cells (case_cell_id, study, stratum_label, treatment_label, successes, cases)
+VALUES ('ad-ctr-platform-mix-desktop-traffic-B', 'ad-ctr-platform-mix', 'desktop-traffic', 'B', 50, 1000) ON CONFLICT (case_cell_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label, successes = EXCLUDED.successes, cases = EXCLUDED.cases;
+
 -- ----------------------------------------------------------------------------
 -- StratumSummaries: Table: StratumSummaries — one row per (study, stratum, treatment). Computes the success rate WITHIN each stratum for each treatment. This is the stratified view that contradicts the pooled conclusion when a Simpson's Paradox reversal is present. Each row belongs to both a Stratum and a Treatment in the same Study.
 -- ----------------------------------------------------------------------------
@@ -2253,6 +3612,606 @@ VALUES ('panama-sweden-mortality-1975-elderly-A', 'panama-sweden-mortality-1975'
 INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
 VALUES ('panama-sweden-mortality-1975-elderly-B', 'panama-sweden-mortality-1975', 'elderly', 'B') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
 
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('hrt-whi-2002-observational-A', 'hrt-whi-2002', 'observational', 'A') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('hrt-whi-2002-observational-B', 'hrt-whi-2002', 'observational', 'B') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('hrt-whi-2002-rct-whi-A', 'hrt-whi-2002', 'rct-whi', 'A') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('hrt-whi-2002-rct-whi-B', 'hrt-whi-2002', 'rct-whi', 'B') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('obesity-paradox-hf-no-hf-A', 'obesity-paradox-hf', 'no-hf', 'A') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('obesity-paradox-hf-no-hf-B', 'obesity-paradox-hf', 'no-hf', 'B') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('obesity-paradox-hf-hf-A', 'obesity-paradox-hf', 'hf', 'A') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('obesity-paradox-hf-hf-B', 'obesity-paradox-hf', 'hf', 'B') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('dialysis-bmi-survival-general-population-A', 'dialysis-bmi-survival', 'general-population', 'A') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('dialysis-bmi-survival-general-population-B', 'dialysis-bmi-survival', 'general-population', 'B') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('dialysis-bmi-survival-esrd-dialysis-A', 'dialysis-bmi-survival', 'esrd-dialysis', 'A') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('dialysis-bmi-survival-esrd-dialysis-B', 'dialysis-bmi-survival', 'esrd-dialysis', 'B') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('sick-quitter-alcohol-never-drinkers-only-A', 'sick-quitter-alcohol', 'never-drinkers-only', 'A') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('sick-quitter-alcohol-never-drinkers-only-B', 'sick-quitter-alcohol', 'never-drinkers-only', 'B') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('sick-quitter-alcohol-includes-former-drinkers-A', 'sick-quitter-alcohol', 'includes-former-drinkers', 'A') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('sick-quitter-alcohol-includes-former-drinkers-B', 'sick-quitter-alcohol', 'includes-former-drinkers', 'B') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('flu-vaccine-elderly-mortality-under-75-A', 'flu-vaccine-elderly-mortality', 'under-75', 'A') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('flu-vaccine-elderly-mortality-under-75-B', 'flu-vaccine-elderly-mortality', 'under-75', 'B') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('flu-vaccine-elderly-mortality-75-plus-A', 'flu-vaccine-elderly-mortality', '75-plus', 'A') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('flu-vaccine-elderly-mortality-75-plus-B', 'flu-vaccine-elderly-mortality', '75-plus', 'B') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('covid-italy-china-cfr-2020-under-60-A', 'covid-italy-china-cfr-2020', 'under-60', 'A') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('covid-italy-china-cfr-2020-under-60-B', 'covid-italy-china-cfr-2020', 'under-60', 'B') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('covid-italy-china-cfr-2020-60-plus-A', 'covid-italy-china-cfr-2020', '60-plus', 'A') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('covid-italy-china-cfr-2020-60-plus-B', 'covid-italy-china-cfr-2020', '60-plus', 'B') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('israel-covid-severe-2021-under-50-A', 'israel-covid-severe-2021', 'under-50', 'A') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('israel-covid-severe-2021-under-50-B', 'israel-covid-severe-2021', 'under-50', 'B') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('israel-covid-severe-2021-50-plus-A', 'israel-covid-severe-2021', '50-plus', 'A') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('israel-covid-severe-2021-50-plus-B', 'israel-covid-severe-2021', '50-plus', 'B') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('cochran-smoking-1968-under-65-A', 'cochran-smoking-1968', 'under-65', 'A') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('cochran-smoking-1968-under-65-B', 'cochran-smoking-1968', 'under-65', 'B') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('cochran-smoking-1968-65-plus-A', 'cochran-smoking-1968', '65-plus', 'A') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('cochran-smoking-1968-65-plus-B', 'cochran-smoking-1968', '65-plus', 'B') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('healthy-worker-mortality-low-hazard-occupations-A', 'healthy-worker-mortality', 'low-hazard-occupations', 'A') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('healthy-worker-mortality-low-hazard-occupations-B', 'healthy-worker-mortality', 'low-hazard-occupations', 'B') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('healthy-worker-mortality-high-hazard-occupations-A', 'healthy-worker-mortality', 'high-hazard-occupations', 'A') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('healthy-worker-mortality-high-hazard-occupations-B', 'healthy-worker-mortality', 'high-hazard-occupations', 'B') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('compas-recidivism-base-low-prevalence-group-A', 'compas-recidivism-base', 'low-prevalence-group', 'A') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('compas-recidivism-base-low-prevalence-group-B', 'compas-recidivism-base', 'low-prevalence-group', 'B') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('compas-recidivism-base-high-prevalence-group-A', 'compas-recidivism-base', 'high-prevalence-group', 'A') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('compas-recidivism-base-high-prevalence-group-B', 'compas-recidivism-base', 'high-prevalence-group', 'B') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('us-wage-composition-stagnation-college-educated-A', 'us-wage-composition-stagnation', 'college-educated', 'A') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('us-wage-composition-stagnation-college-educated-B', 'us-wage-composition-stagnation', 'college-educated', 'B') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('us-wage-composition-stagnation-non-college-A', 'us-wage-composition-stagnation', 'non-college', 'A') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('us-wage-composition-stagnation-non-college-B', 'us-wage-composition-stagnation', 'non-college', 'B') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('borjas-immigrant-cohort-recent-arrivals-A', 'borjas-immigrant-cohort', 'recent-arrivals', 'A') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('borjas-immigrant-cohort-recent-arrivals-B', 'borjas-immigrant-cohort', 'recent-arrivals', 'B') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('borjas-immigrant-cohort-established-immigrants-A', 'borjas-immigrant-cohort', 'established-immigrants', 'A') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('borjas-immigrant-cohort-established-immigrants-B', 'borjas-immigrant-cohort', 'established-immigrants', 'B') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('robinson-1950-literacy-high-literacy-states-A', 'robinson-1950-literacy', 'high-literacy-states', 'A') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('robinson-1950-literacy-high-literacy-states-B', 'robinson-1950-literacy', 'high-literacy-states', 'B') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('robinson-1950-literacy-low-literacy-states-A', 'robinson-1950-literacy', 'low-literacy-states', 'A') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('robinson-1950-literacy-low-literacy-states-B', 'robinson-1950-literacy', 'low-literacy-states', 'B') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('ab-test-traffic-mix-week1-young-users-A', 'ab-test-traffic-mix', 'week1-young-users', 'A') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('ab-test-traffic-mix-week1-young-users-B', 'ab-test-traffic-mix', 'week1-young-users', 'B') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('ab-test-traffic-mix-week2-old-users-A', 'ab-test-traffic-mix', 'week2-old-users', 'A') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('ab-test-traffic-mix-week2-old-users-B', 'ab-test-traffic-mix', 'week2-old-users', 'B') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('recsys-offline-eval-head-items-A', 'recsys-offline-eval', 'head-items', 'A') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('recsys-offline-eval-head-items-B', 'recsys-offline-eval', 'head-items', 'B') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('recsys-offline-eval-tail-items-A', 'recsys-offline-eval', 'tail-items', 'A') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('recsys-offline-eval-tail-items-B', 'recsys-offline-eval', 'tail-items', 'B') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('collider-only-synthetic-conditioned-in-A', 'collider-only-synthetic', 'conditioned-in', 'A') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('collider-only-synthetic-conditioned-in-B', 'collider-only-synthetic', 'conditioned-in', 'B') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('collider-only-synthetic-conditioned-out-A', 'collider-only-synthetic', 'conditioned-out', 'A') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('collider-only-synthetic-conditioned-out-B', 'collider-only-synthetic', 'conditioned-out', 'B') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('noncollapsibility-or-synthetic-low-prevalence-A', 'noncollapsibility-or-synthetic', 'low-prevalence', 'A') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('noncollapsibility-or-synthetic-low-prevalence-B', 'noncollapsibility-or-synthetic', 'low-prevalence', 'B') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('noncollapsibility-or-synthetic-high-prevalence-A', 'noncollapsibility-or-synthetic', 'high-prevalence', 'A') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('noncollapsibility-or-synthetic-high-prevalence-B', 'noncollapsibility-or-synthetic', 'high-prevalence', 'B') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('trauma-center-mortality-mild-injury-A', 'trauma-center-mortality', 'mild-injury', 'A') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('trauma-center-mortality-mild-injury-B', 'trauma-center-mortality', 'mild-injury', 'B') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('trauma-center-mortality-severe-injury-A', 'trauma-center-mortality', 'severe-injury', 'A') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('trauma-center-mortality-severe-injury-B', 'trauma-center-mortality', 'severe-injury', 'B') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('surgeon-volume-mortality-low-risk-A', 'surgeon-volume-mortality', 'low-risk', 'A') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('surgeon-volume-mortality-low-risk-B', 'surgeon-volume-mortality', 'low-risk', 'B') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('surgeon-volume-mortality-high-risk-A', 'surgeon-volume-mortality', 'high-risk', 'A') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('surgeon-volume-mortality-high-risk-B', 'surgeon-volume-mortality', 'high-risk', 'B') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('mammography-length-bias-slow-growing-A', 'mammography-length-bias', 'slow-growing', 'A') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('mammography-length-bias-slow-growing-B', 'mammography-length-bias', 'slow-growing', 'B') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('mammography-length-bias-aggressive-A', 'mammography-length-bias', 'aggressive', 'A') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('mammography-length-bias-aggressive-B', 'mammography-length-bias', 'aggressive', 'B') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('cabg-vs-pci-severity-multivessel-A', 'cabg-vs-pci-severity', 'multivessel', 'A') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('cabg-vs-pci-severity-multivessel-B', 'cabg-vs-pci-severity', 'multivessel', 'B') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('cabg-vs-pci-severity-single-vessel-A', 'cabg-vs-pci-severity', 'single-vessel', 'A') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('cabg-vs-pci-severity-single-vessel-B', 'cabg-vs-pci-severity', 'single-vessel', 'B') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('tolbutamide-ugdp-1970-low-risk-centers-A', 'tolbutamide-ugdp-1970', 'low-risk-centers', 'A') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('tolbutamide-ugdp-1970-low-risk-centers-B', 'tolbutamide-ugdp-1970', 'low-risk-centers', 'B') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('tolbutamide-ugdp-1970-high-risk-centers-A', 'tolbutamide-ugdp-1970', 'high-risk-centers', 'A') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('tolbutamide-ugdp-1970-high-risk-centers-B', 'tolbutamide-ugdp-1970', 'high-risk-centers', 'B') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('snow-cholera-water-1855-high-exposure-district-A', 'snow-cholera-water-1855', 'high-exposure-district', 'A') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('snow-cholera-water-1855-high-exposure-district-B', 'snow-cholera-water-1855', 'high-exposure-district', 'B') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('snow-cholera-water-1855-mixed-supply-district-A', 'snow-cholera-water-1855', 'mixed-supply-district', 'A') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('snow-cholera-water-1855-mixed-supply-district-B', 'snow-cholera-water-1855', 'mixed-supply-district', 'B') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('seatbelt-crash-severity-minor-crash-A', 'seatbelt-crash-severity', 'minor-crash', 'A') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('seatbelt-crash-severity-minor-crash-B', 'seatbelt-crash-severity', 'minor-crash', 'B') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('seatbelt-crash-severity-severe-crash-A', 'seatbelt-crash-severity', 'severe-crash', 'A') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('seatbelt-crash-severity-severe-crash-B', 'seatbelt-crash-severity', 'severe-crash', 'B') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('measles-outbreak-vaccinated-high-coverage-setting-A', 'measles-outbreak-vaccinated', 'high-coverage-setting', 'A') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('measles-outbreak-vaccinated-high-coverage-setting-B', 'measles-outbreak-vaccinated', 'high-coverage-setting', 'B') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('measles-outbreak-vaccinated-lower-coverage-setting-A', 'measles-outbreak-vaccinated', 'lower-coverage-setting', 'A') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('measles-outbreak-vaccinated-lower-coverage-setting-B', 'measles-outbreak-vaccinated', 'lower-coverage-setting', 'B') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('air-pollution-mortality-city-younger-population-city-A', 'air-pollution-mortality-city', 'younger-population-city', 'A') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('air-pollution-mortality-city-younger-population-city-B', 'air-pollution-mortality-city', 'younger-population-city', 'B') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('air-pollution-mortality-city-older-population-city-A', 'air-pollution-mortality-city', 'older-population-city', 'A') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('air-pollution-mortality-city-older-population-city-B', 'air-pollution-mortality-city', 'older-population-city', 'B') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('tb-treatment-resistance-drug-sensitive-A', 'tb-treatment-resistance', 'drug-sensitive', 'A') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('tb-treatment-resistance-drug-sensitive-B', 'tb-treatment-resistance', 'drug-sensitive', 'B') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('tb-treatment-resistance-drug-resistant-A', 'tb-treatment-resistance', 'drug-resistant', 'A') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('tb-treatment-resistance-drug-resistant-B', 'tb-treatment-resistance', 'drug-resistant', 'B') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('hospital-mortality-readmission-high-comorbidity-A', 'hospital-mortality-readmission', 'high-comorbidity', 'A') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('hospital-mortality-readmission-high-comorbidity-B', 'hospital-mortality-readmission', 'high-comorbidity', 'B') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('hospital-mortality-readmission-low-comorbidity-A', 'hospital-mortality-readmission', 'low-comorbidity', 'A') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('hospital-mortality-readmission-low-comorbidity-B', 'hospital-mortality-readmission', 'low-comorbidity', 'B') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('nypd-stop-frisk-hitrate-high-crime-precincts-A', 'nypd-stop-frisk-hitrate', 'high-crime-precincts', 'A') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('nypd-stop-frisk-hitrate-high-crime-precincts-B', 'nypd-stop-frisk-hitrate', 'high-crime-precincts', 'B') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('nypd-stop-frisk-hitrate-low-crime-precincts-A', 'nypd-stop-frisk-hitrate', 'low-crime-precincts', 'A') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('nypd-stop-frisk-hitrate-low-crime-precincts-B', 'nypd-stop-frisk-hitrate', 'low-crime-precincts', 'B') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('sentencing-offense-type-violent-offenses-A', 'sentencing-offense-type', 'violent-offenses', 'A') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('sentencing-offense-type-violent-offenses-B', 'sentencing-offense-type', 'violent-offenses', 'B') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('sentencing-offense-type-nonviolent-offenses-A', 'sentencing-offense-type', 'nonviolent-offenses', 'A') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('sentencing-offense-type-nonviolent-offenses-B', 'sentencing-offense-type', 'nonviolent-offenses', 'B') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('bail-risk-score-high-risk-tier-A', 'bail-risk-score', 'high-risk-tier', 'A') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('bail-risk-score-high-risk-tier-B', 'bail-risk-score', 'high-risk-tier', 'B') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('bail-risk-score-low-risk-tier-A', 'bail-risk-score', 'low-risk-tier', 'A') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('bail-risk-score-low-risk-tier-B', 'bail-risk-score', 'low-risk-tier', 'B') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('police-force-encounter-discretionary-stop-A', 'police-force-encounter', 'discretionary-stop', 'A') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('police-force-encounter-discretionary-stop-B', 'police-force-encounter', 'discretionary-stop', 'B') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('police-force-encounter-high-risk-call-A', 'police-force-encounter', 'high-risk-call', 'A') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('police-force-encounter-high-risk-call-B', 'police-force-encounter', 'high-risk-call', 'B') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('uc-systemwide-admissions-high-selectivity-major-A', 'uc-systemwide-admissions', 'high-selectivity-major', 'A') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('uc-systemwide-admissions-high-selectivity-major-B', 'uc-systemwide-admissions', 'high-selectivity-major', 'B') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('uc-systemwide-admissions-lower-selectivity-major-A', 'uc-systemwide-admissions', 'lower-selectivity-major', 'A') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('uc-systemwide-admissions-lower-selectivity-major-B', 'uc-systemwide-admissions', 'lower-selectivity-major', 'B') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('teacher-vam-prior-achievement-high-prior-achievement-A', 'teacher-vam-prior-achievement', 'high-prior-achievement', 'A') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('teacher-vam-prior-achievement-high-prior-achievement-B', 'teacher-vam-prior-achievement', 'high-prior-achievement', 'B') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('teacher-vam-prior-achievement-low-prior-achievement-A', 'teacher-vam-prior-achievement', 'low-prior-achievement', 'A') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('teacher-vam-prior-achievement-low-prior-achievement-B', 'teacher-vam-prior-achievement', 'low-prior-achievement', 'B') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('naep-state-demographics-high-poverty-states-A', 'naep-state-demographics', 'high-poverty-states', 'A') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('naep-state-demographics-high-poverty-states-B', 'naep-state-demographics', 'high-poverty-states', 'B') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('naep-state-demographics-low-poverty-states-A', 'naep-state-demographics', 'low-poverty-states', 'A') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('naep-state-demographics-low-poverty-states-B', 'naep-state-demographics', 'low-poverty-states', 'B') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('college-grad-rate-selectivity-well-prepared-intake-A', 'college-grad-rate-selectivity', 'well-prepared-intake', 'A') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('college-grad-rate-selectivity-well-prepared-intake-B', 'college-grad-rate-selectivity', 'well-prepared-intake', 'B') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('college-grad-rate-selectivity-under-prepared-intake-A', 'college-grad-rate-selectivity', 'under-prepared-intake', 'A') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('college-grad-rate-selectivity-under-prepared-intake-B', 'college-grad-rate-selectivity', 'under-prepared-intake', 'B') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('star-class-size-inner-city-schools-A', 'star-class-size', 'inner-city-schools', 'A') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('star-class-size-inner-city-schools-B', 'star-class-size', 'inner-city-schools', 'B') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('star-class-size-suburban-schools-A', 'star-class-size', 'suburban-schools', 'A') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('star-class-size-suburban-schools-B', 'star-class-size', 'suburban-schools', 'B') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('nba-shooting-shot-mix-two-point-attempts-A', 'nba-shooting-shot-mix', 'two-point-attempts', 'A') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('nba-shooting-shot-mix-two-point-attempts-B', 'nba-shooting-shot-mix', 'two-point-attempts', 'B') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('nba-shooting-shot-mix-three-point-attempts-A', 'nba-shooting-shot-mix', 'three-point-attempts', 'A') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('nba-shooting-shot-mix-three-point-attempts-B', 'nba-shooting-shot-mix', 'three-point-attempts', 'B') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('pitcher-era-ballpark-pitcher-friendly-park-A', 'pitcher-era-ballpark', 'pitcher-friendly-park', 'A') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('pitcher-era-ballpark-pitcher-friendly-park-B', 'pitcher-era-ballpark', 'pitcher-friendly-park', 'B') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('pitcher-era-ballpark-hitter-friendly-park-A', 'pitcher-era-ballpark', 'hitter-friendly-park', 'A') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('pitcher-era-ballpark-hitter-friendly-park-B', 'pitcher-era-ballpark', 'hitter-friendly-park', 'B') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('nfl-completion-depth-short-pass-A', 'nfl-completion-depth', 'short-pass', 'A') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('nfl-completion-depth-short-pass-B', 'nfl-completion-depth', 'short-pass', 'B') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('nfl-completion-depth-deep-pass-A', 'nfl-completion-depth', 'deep-pass', 'A') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('nfl-completion-depth-deep-pass-B', 'nfl-completion-depth', 'deep-pass', 'B') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('field-goal-distance-short-fg-A', 'field-goal-distance', 'short-fg', 'A') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('field-goal-distance-short-fg-B', 'field-goal-distance', 'short-fg', 'B') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('field-goal-distance-long-fg-A', 'field-goal-distance', 'long-fg', 'A') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('field-goal-distance-long-fg-B', 'field-goal-distance', 'long-fg', 'B') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('golf-scoring-course-easy-course-A', 'golf-scoring-course', 'easy-course', 'A') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('golf-scoring-course-easy-course-B', 'golf-scoring-course', 'easy-course', 'B') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('golf-scoring-course-difficult-course-A', 'golf-scoring-course', 'difficult-course', 'A') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('golf-scoring-course-difficult-course-B', 'golf-scoring-course', 'difficult-course', 'B') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('minimum-wage-region-tight-labor-market-A', 'minimum-wage-region', 'tight-labor-market', 'A') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('minimum-wage-region-tight-labor-market-B', 'minimum-wage-region', 'tight-labor-market', 'B') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('minimum-wage-region-slack-labor-market-A', 'minimum-wage-region', 'slack-labor-market', 'A') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('minimum-wage-region-slack-labor-market-B', 'minimum-wage-region', 'slack-labor-market', 'B') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('returns-to-education-field-stem-fields-A', 'returns-to-education-field', 'stem-fields', 'A') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('returns-to-education-field-stem-fields-B', 'returns-to-education-field', 'stem-fields', 'B') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('returns-to-education-field-non-stem-fields-A', 'returns-to-education-field', 'non-stem-fields', 'A') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('returns-to-education-field-non-stem-fields-B', 'returns-to-education-field', 'non-stem-fields', 'B') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('unemployment-education-cycle-college-educated-share-A', 'unemployment-education-cycle', 'college-educated-share', 'A') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('unemployment-education-cycle-college-educated-share-B', 'unemployment-education-cycle', 'college-educated-share', 'B') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('unemployment-education-cycle-non-college-share-A', 'unemployment-education-cycle', 'non-college-share', 'A') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('unemployment-education-cycle-non-college-share-B', 'unemployment-education-cycle', 'non-college-share', 'B') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('costa-rica-us-life-expectancy-under-65-A', 'costa-rica-us-life-expectancy', 'under-65', 'A') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('costa-rica-us-life-expectancy-under-65-B', 'costa-rica-us-life-expectancy', 'under-65', 'B') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('costa-rica-us-life-expectancy-65-plus-A', 'costa-rica-us-life-expectancy', '65-plus', 'A') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('costa-rica-us-life-expectancy-65-plus-B', 'costa-rica-us-life-expectancy', '65-plus', 'B') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('fertility-income-country-high-income-countries-A', 'fertility-income-country', 'high-income-countries', 'A') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('fertility-income-country-high-income-countries-B', 'fertility-income-country', 'high-income-countries', 'B') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('fertility-income-country-middle-income-countries-A', 'fertility-income-country', 'middle-income-countries', 'A') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('fertility-income-country-middle-income-countries-B', 'fertility-income-country', 'middle-income-countries', 'B') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('religiosity-happiness-country-high-gdp-countries-A', 'religiosity-happiness-country', 'high-gdp-countries', 'A') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('religiosity-happiness-country-high-gdp-countries-B', 'religiosity-happiness-country', 'high-gdp-countries', 'B') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('religiosity-happiness-country-lower-gdp-countries-A', 'religiosity-happiness-country', 'lower-gdp-countries', 'A') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('religiosity-happiness-country-lower-gdp-countries-B', 'religiosity-happiness-country', 'lower-gdp-countries', 'B') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('voter-turnout-education-state-high-education-states-A', 'voter-turnout-education-state', 'high-education-states', 'A') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('voter-turnout-education-state-high-education-states-B', 'voter-turnout-education-state', 'high-education-states', 'B') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('voter-turnout-education-state-lower-education-states-A', 'voter-turnout-education-state', 'lower-education-states', 'A') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('voter-turnout-education-state-lower-education-states-B', 'voter-turnout-education-state', 'lower-education-states', 'B') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('ad-ctr-platform-mix-mobile-traffic-A', 'ad-ctr-platform-mix', 'mobile-traffic', 'A') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('ad-ctr-platform-mix-mobile-traffic-B', 'ad-ctr-platform-mix', 'mobile-traffic', 'B') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('ad-ctr-platform-mix-desktop-traffic-A', 'ad-ctr-platform-mix', 'desktop-traffic', 'A') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
+INSERT INTO stratum_summaries (stratum_summary_id, study, stratum_label, treatment_label)
+VALUES ('ad-ctr-platform-mix-desktop-traffic-B', 'ad-ctr-platform-mix', 'desktop-traffic', 'B') ON CONFLICT (stratum_summary_id) DO UPDATE SET study = EXCLUDED.study, stratum_label = EXCLUDED.stratum_label, treatment_label = EXCLUDED.treatment_label;
+
 -- ----------------------------------------------------------------------------
 -- ModelSummary: Table: ModelSummary — one row describing the epistemic coverage of this entire model instance. Aggregates across all TreatmentRankings to witness how many studies were examined, how many showed a full reversal, how many were explained, and the average paradox strength. The model holds a mirror to itself.
 -- ----------------------------------------------------------------------------
@@ -2400,6 +4359,156 @@ VALUES ('coffee-smoking-lung-1968-smoking_status', 'coffee-smoking-lung-1968', '
 INSERT INTO stratum_variables (stratum_variable_id, study, variable_name, causal_role, affects_treatment_assignment, affects_outcome, mechanism_note, conditioning_risk)
 VALUES ('panama-sweden-mortality-1975-age_group', 'panama-sweden-mortality-1975', 'age_group', 'confounder', TRUE, TRUE, 'Age distribution confounds country comparison; Panama better within each age group.', 'confounder') ON CONFLICT (stratum_variable_id) DO UPDATE SET study = EXCLUDED.study, variable_name = EXCLUDED.variable_name, causal_role = EXCLUDED.causal_role, affects_treatment_assignment = EXCLUDED.affects_treatment_assignment, affects_outcome = EXCLUDED.affects_outcome, mechanism_note = EXCLUDED.mechanism_note, conditioning_risk = EXCLUDED.conditioning_risk;
 
+INSERT INTO stratum_variables (stratum_variable_id, study, variable_name, causal_role, affects_treatment_assignment, affects_outcome, mechanism_note, conditioning_risk)
+VALUES ('hrt-whi-2002-study_design', 'hrt-whi-2002', 'study_design', 'contested', TRUE, TRUE, 'Healthy-user selection in observational stratum vs RCT randomization in WHI stratum. Cross-design reversal; causal role contested (healthy-user vs true harm).', 'confounder') ON CONFLICT (stratum_variable_id) DO UPDATE SET study = EXCLUDED.study, variable_name = EXCLUDED.variable_name, causal_role = EXCLUDED.causal_role, affects_treatment_assignment = EXCLUDED.affects_treatment_assignment, affects_outcome = EXCLUDED.affects_outcome, mechanism_note = EXCLUDED.mechanism_note, conditioning_risk = EXCLUDED.conditioning_risk;
+
+INSERT INTO stratum_variables (stratum_variable_id, study, variable_name, causal_role, affects_treatment_assignment, affects_outcome, mechanism_note, conditioning_risk)
+VALUES ('obesity-paradox-hf-heart_failure_status', 'obesity-paradox-hf', 'heart_failure_status', 'collider', TRUE, TRUE, 'Conditioning on HF status induces collider bias: obese patients survive longer among HF patients but not in the general population.', 'collider') ON CONFLICT (stratum_variable_id) DO UPDATE SET study = EXCLUDED.study, variable_name = EXCLUDED.variable_name, causal_role = EXCLUDED.causal_role, affects_treatment_assignment = EXCLUDED.affects_treatment_assignment, affects_outcome = EXCLUDED.affects_outcome, mechanism_note = EXCLUDED.mechanism_note, conditioning_risk = EXCLUDED.conditioning_risk;
+
+INSERT INTO stratum_variables (stratum_variable_id, study, variable_name, causal_role, affects_treatment_assignment, affects_outcome, mechanism_note, conditioning_risk)
+VALUES ('dialysis-bmi-survival-esrd_status', 'dialysis-bmi-survival', 'esrd_status', 'collider', TRUE, TRUE, 'Conditioning on ESRD/dialysis status: higher BMI associated with better survival among dialysis patients (reverse epidemiology).', 'collider') ON CONFLICT (stratum_variable_id) DO UPDATE SET study = EXCLUDED.study, variable_name = EXCLUDED.variable_name, causal_role = EXCLUDED.causal_role, affects_treatment_assignment = EXCLUDED.affects_treatment_assignment, affects_outcome = EXCLUDED.affects_outcome, mechanism_note = EXCLUDED.mechanism_note, conditioning_risk = EXCLUDED.conditioning_risk;
+
+INSERT INTO stratum_variables (stratum_variable_id, study, variable_name, causal_role, affects_treatment_assignment, affects_outcome, mechanism_note, conditioning_risk)
+VALUES ('sick-quitter-alcohol-abstainer_composition', 'sick-quitter-alcohol', 'abstainer_composition', 'contested', TRUE, TRUE, 'Former drinkers (sick quitters) included in abstainer reference group. Causal role contested: collider/selection vs residual confounding.', 'confounder') ON CONFLICT (stratum_variable_id) DO UPDATE SET study = EXCLUDED.study, variable_name = EXCLUDED.variable_name, causal_role = EXCLUDED.causal_role, affects_treatment_assignment = EXCLUDED.affects_treatment_assignment, affects_outcome = EXCLUDED.affects_outcome, mechanism_note = EXCLUDED.mechanism_note, conditioning_risk = EXCLUDED.conditioning_risk;
+
+INSERT INTO stratum_variables (stratum_variable_id, study, variable_name, causal_role, affects_treatment_assignment, affects_outcome, mechanism_note, conditioning_risk)
+VALUES ('flu-vaccine-elderly-mortality-age_group', 'flu-vaccine-elderly-mortality', 'age_group', 'confounder', TRUE, TRUE, 'Frailty and age confound vaccine uptake and mortality. Vaccinated appear more likely to die pooled despite lower mortality within each age stratum.', 'confounder') ON CONFLICT (stratum_variable_id) DO UPDATE SET study = EXCLUDED.study, variable_name = EXCLUDED.variable_name, causal_role = EXCLUDED.causal_role, affects_treatment_assignment = EXCLUDED.affects_treatment_assignment, affects_outcome = EXCLUDED.affects_outcome, mechanism_note = EXCLUDED.mechanism_note, conditioning_risk = EXCLUDED.conditioning_risk;
+
+INSERT INTO stratum_variables (stratum_variable_id, study, variable_name, causal_role, affects_treatment_assignment, affects_outcome, mechanism_note, conditioning_risk)
+VALUES ('covid-italy-china-cfr-2020-age_group', 'covid-italy-china-cfr-2020', 'age_group', 'confounder', TRUE, TRUE, 'Age structure confounds cross-country CFR comparison. Italy lower CFR in each age stratum yet higher pooled due to older population.', 'confounder') ON CONFLICT (stratum_variable_id) DO UPDATE SET study = EXCLUDED.study, variable_name = EXCLUDED.variable_name, causal_role = EXCLUDED.causal_role, affects_treatment_assignment = EXCLUDED.affects_treatment_assignment, affects_outcome = EXCLUDED.affects_outcome, mechanism_note = EXCLUDED.mechanism_note, conditioning_risk = EXCLUDED.conditioning_risk;
+
+INSERT INTO stratum_variables (stratum_variable_id, study, variable_name, causal_role, affects_treatment_assignment, affects_outcome, mechanism_note, conditioning_risk)
+VALUES ('israel-covid-severe-2021-age_group', 'israel-covid-severe-2021', 'age_group', 'confounder', TRUE, TRUE, 'Age confounds vaccination status and severe COVID outcome. Vaccinated have higher pooled severe rate despite lower rate in every age stratum.', 'confounder') ON CONFLICT (stratum_variable_id) DO UPDATE SET study = EXCLUDED.study, variable_name = EXCLUDED.variable_name, causal_role = EXCLUDED.causal_role, affects_treatment_assignment = EXCLUDED.affects_treatment_assignment, affects_outcome = EXCLUDED.affects_outcome, mechanism_note = EXCLUDED.mechanism_note, conditioning_risk = EXCLUDED.conditioning_risk;
+
+INSERT INTO stratum_variables (stratum_variable_id, study, variable_name, causal_role, affects_treatment_assignment, affects_outcome, mechanism_note, conditioning_risk)
+VALUES ('cochran-smoking-1968-age_group', 'cochran-smoking-1968', 'age_group', 'confounder', TRUE, TRUE, 'Smokers younger on average; age confounds smoking-mortality comparison. Smokers worse in every age stratum yet better pooled.', 'confounder') ON CONFLICT (stratum_variable_id) DO UPDATE SET study = EXCLUDED.study, variable_name = EXCLUDED.variable_name, causal_role = EXCLUDED.causal_role, affects_treatment_assignment = EXCLUDED.affects_treatment_assignment, affects_outcome = EXCLUDED.affects_outcome, mechanism_note = EXCLUDED.mechanism_note, conditioning_risk = EXCLUDED.conditioning_risk;
+
+INSERT INTO stratum_variables (stratum_variable_id, study, variable_name, causal_role, affects_treatment_assignment, affects_outcome, mechanism_note, conditioning_risk)
+VALUES ('healthy-worker-mortality-employment_status', 'healthy-worker-mortality', 'employment_status', 'selection', TRUE, TRUE, 'Healthy-worker selection: employed cohort healthier at hire. Selection mechanism, not classical confounding.', 'collider') ON CONFLICT (stratum_variable_id) DO UPDATE SET study = EXCLUDED.study, variable_name = EXCLUDED.variable_name, causal_role = EXCLUDED.causal_role, affects_treatment_assignment = EXCLUDED.affects_treatment_assignment, affects_outcome = EXCLUDED.affects_outcome, mechanism_note = EXCLUDED.mechanism_note, conditioning_risk = EXCLUDED.conditioning_risk;
+
+INSERT INTO stratum_variables (stratum_variable_id, study, variable_name, causal_role, affects_treatment_assignment, affects_outcome, mechanism_note, conditioning_risk)
+VALUES ('compas-recidivism-base-group_base_rate', 'compas-recidivism-base', 'group_base_rate', 'confounder', TRUE, TRUE, 'Differing recidivism base rates across demographic groups produce fairness metric reversals. Links to Chouldechova impossibility theorem.', 'confounder') ON CONFLICT (stratum_variable_id) DO UPDATE SET study = EXCLUDED.study, variable_name = EXCLUDED.variable_name, causal_role = EXCLUDED.causal_role, affects_treatment_assignment = EXCLUDED.affects_treatment_assignment, affects_outcome = EXCLUDED.affects_outcome, mechanism_note = EXCLUDED.mechanism_note, conditioning_risk = EXCLUDED.conditioning_risk;
+
+INSERT INTO stratum_variables (stratum_variable_id, study, variable_name, causal_role, affects_treatment_assignment, affects_outcome, mechanism_note, conditioning_risk)
+VALUES ('us-wage-composition-stagnation-workforce_composition', 'us-wage-composition-stagnation', 'workforce_composition', 'confounder', TRUE, TRUE, 'Workforce composition shift toward lower-wage education groups. Each subgroup wage rises yet aggregate median flat or falls.', 'confounder') ON CONFLICT (stratum_variable_id) DO UPDATE SET study = EXCLUDED.study, variable_name = EXCLUDED.variable_name, causal_role = EXCLUDED.causal_role, affects_treatment_assignment = EXCLUDED.affects_treatment_assignment, affects_outcome = EXCLUDED.affects_outcome, mechanism_note = EXCLUDED.mechanism_note, conditioning_risk = EXCLUDED.conditioning_risk;
+
+INSERT INTO stratum_variables (stratum_variable_id, study, variable_name, causal_role, affects_treatment_assignment, affects_outcome, mechanism_note, conditioning_risk)
+VALUES ('borjas-immigrant-cohort-arrival_cohort', 'borjas-immigrant-cohort', 'arrival_cohort', 'confounder', TRUE, TRUE, 'Arrival cohort composition confounds cross-section vs longitudinal assimilation comparisons.', 'confounder') ON CONFLICT (stratum_variable_id) DO UPDATE SET study = EXCLUDED.study, variable_name = EXCLUDED.variable_name, causal_role = EXCLUDED.causal_role, affects_treatment_assignment = EXCLUDED.affects_treatment_assignment, affects_outcome = EXCLUDED.affects_outcome, mechanism_note = EXCLUDED.mechanism_note, conditioning_risk = EXCLUDED.conditioning_risk;
+
+INSERT INTO stratum_variables (stratum_variable_id, study, variable_name, causal_role, affects_treatment_assignment, affects_outcome, mechanism_note, conditioning_risk)
+VALUES ('robinson-1950-literacy-state_aggregation', 'robinson-1950-literacy', 'state_aggregation', 'confounder', TRUE, TRUE, 'Ecological aggregation: immigrants settle in high-literacy states. Individual-level nativity-literacy association reverses at state level.', 'confounder') ON CONFLICT (stratum_variable_id) DO UPDATE SET study = EXCLUDED.study, variable_name = EXCLUDED.variable_name, causal_role = EXCLUDED.causal_role, affects_treatment_assignment = EXCLUDED.affects_treatment_assignment, affects_outcome = EXCLUDED.affects_outcome, mechanism_note = EXCLUDED.mechanism_note, conditioning_risk = EXCLUDED.conditioning_risk;
+
+INSERT INTO stratum_variables (stratum_variable_id, study, variable_name, causal_role, affects_treatment_assignment, affects_outcome, mechanism_note, conditioning_risk)
+VALUES ('ab-test-traffic-mix-time_varying_segment', 'ab-test-traffic-mix', 'time_varying_segment', 'confounder', TRUE, TRUE, 'Traffic composition shifts between user segments across experiment weeks. Segment mix confounds variant comparison.', 'confounder') ON CONFLICT (stratum_variable_id) DO UPDATE SET study = EXCLUDED.study, variable_name = EXCLUDED.variable_name, causal_role = EXCLUDED.causal_role, affects_treatment_assignment = EXCLUDED.affects_treatment_assignment, affects_outcome = EXCLUDED.affects_outcome, mechanism_note = EXCLUDED.mechanism_note, conditioning_risk = EXCLUDED.conditioning_risk;
+
+INSERT INTO stratum_variables (stratum_variable_id, study, variable_name, causal_role, affects_treatment_assignment, affects_outcome, mechanism_note, conditioning_risk)
+VALUES ('recsys-offline-eval-exposure_popularity', 'recsys-offline-eval', 'exposure_popularity', 'confounder', TRUE, TRUE, 'Exposure/popularity confounds offline metric comparison. New model wins on head items, loses on tail; pooled metric reverses.', 'confounder') ON CONFLICT (stratum_variable_id) DO UPDATE SET study = EXCLUDED.study, variable_name = EXCLUDED.variable_name, causal_role = EXCLUDED.causal_role, affects_treatment_assignment = EXCLUDED.affects_treatment_assignment, affects_outcome = EXCLUDED.affects_outcome, mechanism_note = EXCLUDED.mechanism_note, conditioning_risk = EXCLUDED.conditioning_risk;
+
+INSERT INTO stratum_variables (stratum_variable_id, study, variable_name, causal_role, affects_treatment_assignment, affects_outcome, mechanism_note, conditioning_risk)
+VALUES ('collider-only-synthetic-constructed_collider', 'collider-only-synthetic', 'constructed_collider', 'collider', TRUE, TRUE, 'Constructed collider with zero confounding. Reversal induced solely by conditioning on selection variable.', 'collider') ON CONFLICT (stratum_variable_id) DO UPDATE SET study = EXCLUDED.study, variable_name = EXCLUDED.variable_name, causal_role = EXCLUDED.causal_role, affects_treatment_assignment = EXCLUDED.affects_treatment_assignment, affects_outcome = EXCLUDED.affects_outcome, mechanism_note = EXCLUDED.mechanism_note, conditioning_risk = EXCLUDED.conditioning_risk;
+
+INSERT INTO stratum_variables (stratum_variable_id, study, variable_name, causal_role, affects_treatment_assignment, affects_outcome, mechanism_note, conditioning_risk)
+VALUES ('noncollapsibility-or-synthetic-noncollapsible_measure', 'noncollapsibility-or-synthetic', 'noncollapsible_measure', 'confounder', TRUE, TRUE, 'Non-collapsibility-only control: OR would reverse if used as measure, but risk difference (Successes/Cases) does not reverse. AllocationDistortion framing cannot represent OR non-collapsibility — documented blind spot.', 'confounder') ON CONFLICT (stratum_variable_id) DO UPDATE SET study = EXCLUDED.study, variable_name = EXCLUDED.variable_name, causal_role = EXCLUDED.causal_role, affects_treatment_assignment = EXCLUDED.affects_treatment_assignment, affects_outcome = EXCLUDED.affects_outcome, mechanism_note = EXCLUDED.mechanism_note, conditioning_risk = EXCLUDED.conditioning_risk;
+
+INSERT INTO stratum_variables (stratum_variable_id, study, variable_name, causal_role, affects_treatment_assignment, affects_outcome, mechanism_note, conditioning_risk)
+VALUES ('trauma-center-mortality-injury_severity', 'trauma-center-mortality', 'injury_severity', 'confounder', TRUE, TRUE, 'Injury severity confounds referral to trauma centers and mortality; higher-level centers receive more severe cases.', 'confounder') ON CONFLICT (stratum_variable_id) DO UPDATE SET study = EXCLUDED.study, variable_name = EXCLUDED.variable_name, causal_role = EXCLUDED.causal_role, affects_treatment_assignment = EXCLUDED.affects_treatment_assignment, affects_outcome = EXCLUDED.affects_outcome, mechanism_note = EXCLUDED.mechanism_note, conditioning_risk = EXCLUDED.conditioning_risk;
+
+INSERT INTO stratum_variables (stratum_variable_id, study, variable_name, causal_role, affects_treatment_assignment, affects_outcome, mechanism_note, conditioning_risk)
+VALUES ('surgeon-volume-mortality-baseline_risk', 'surgeon-volume-mortality', 'baseline_risk', 'confounder', TRUE, TRUE, 'Baseline risk confounds surgeon volume assignment and operative mortality.', 'confounder') ON CONFLICT (stratum_variable_id) DO UPDATE SET study = EXCLUDED.study, variable_name = EXCLUDED.variable_name, causal_role = EXCLUDED.causal_role, affects_treatment_assignment = EXCLUDED.affects_treatment_assignment, affects_outcome = EXCLUDED.affects_outcome, mechanism_note = EXCLUDED.mechanism_note, conditioning_risk = EXCLUDED.conditioning_risk;
+
+INSERT INTO stratum_variables (stratum_variable_id, study, variable_name, causal_role, affects_treatment_assignment, affects_outcome, mechanism_note, conditioning_risk)
+VALUES ('mammography-length-bias-detection_mode', 'mammography-length-bias', 'detection_mode', 'selection', TRUE, TRUE, 'Detection mode selects slower-progressing cancers; screen-detected cases appear more survivable pooled.', 'collider') ON CONFLICT (stratum_variable_id) DO UPDATE SET study = EXCLUDED.study, variable_name = EXCLUDED.variable_name, causal_role = EXCLUDED.causal_role, affects_treatment_assignment = EXCLUDED.affects_treatment_assignment, affects_outcome = EXCLUDED.affects_outcome, mechanism_note = EXCLUDED.mechanism_note, conditioning_risk = EXCLUDED.conditioning_risk;
+
+INSERT INTO stratum_variables (stratum_variable_id, study, variable_name, causal_role, affects_treatment_assignment, affects_outcome, mechanism_note, conditioning_risk)
+VALUES ('cabg-vs-pci-severity-coronary_severity', 'cabg-vs-pci-severity', 'coronary_severity', 'confounder', TRUE, TRUE, 'Disease severity confounds revascularization choice and outcomes; sicker patients directed to CABG.', 'confounder') ON CONFLICT (stratum_variable_id) DO UPDATE SET study = EXCLUDED.study, variable_name = EXCLUDED.variable_name, causal_role = EXCLUDED.causal_role, affects_treatment_assignment = EXCLUDED.affects_treatment_assignment, affects_outcome = EXCLUDED.affects_outcome, mechanism_note = EXCLUDED.mechanism_note, conditioning_risk = EXCLUDED.conditioning_risk;
+
+INSERT INTO stratum_variables (stratum_variable_id, study, variable_name, causal_role, affects_treatment_assignment, affects_outcome, mechanism_note, conditioning_risk)
+VALUES ('tolbutamide-ugdp-1970-center_baseline_risk', 'tolbutamide-ugdp-1970', 'center_baseline_risk', 'contested', TRUE, TRUE, 'Center baseline risk heterogeneity confounds tolbutamide vs placebo comparison; causal adjudication contested.', 'confounder') ON CONFLICT (stratum_variable_id) DO UPDATE SET study = EXCLUDED.study, variable_name = EXCLUDED.variable_name, causal_role = EXCLUDED.causal_role, affects_treatment_assignment = EXCLUDED.affects_treatment_assignment, affects_outcome = EXCLUDED.affects_outcome, mechanism_note = EXCLUDED.mechanism_note, conditioning_risk = EXCLUDED.conditioning_risk;
+
+INSERT INTO stratum_variables (stratum_variable_id, study, variable_name, causal_role, affects_treatment_assignment, affects_outcome, mechanism_note, conditioning_risk)
+VALUES ('snow-cholera-water-1855-water_company', 'snow-cholera-water-1855', 'water_company', 'confounder', TRUE, TRUE, 'Water company supply confounds cholera exposure; S&V supply areas had higher mortality in each sub-period but composition drives pooled comparison.', 'confounder') ON CONFLICT (stratum_variable_id) DO UPDATE SET study = EXCLUDED.study, variable_name = EXCLUDED.variable_name, causal_role = EXCLUDED.causal_role, affects_treatment_assignment = EXCLUDED.affects_treatment_assignment, affects_outcome = EXCLUDED.affects_outcome, mechanism_note = EXCLUDED.mechanism_note, conditioning_risk = EXCLUDED.conditioning_risk;
+
+INSERT INTO stratum_variables (stratum_variable_id, study, variable_name, causal_role, affects_treatment_assignment, affects_outcome, mechanism_note, conditioning_risk)
+VALUES ('seatbelt-crash-severity-crash_occurrence', 'seatbelt-crash-severity', 'crash_occurrence', 'collider', TRUE, TRUE, 'Conditioning on crash involvement: belted drivers in more severe crashes; collider induces reversal.', 'collider') ON CONFLICT (stratum_variable_id) DO UPDATE SET study = EXCLUDED.study, variable_name = EXCLUDED.variable_name, causal_role = EXCLUDED.causal_role, affects_treatment_assignment = EXCLUDED.affects_treatment_assignment, affects_outcome = EXCLUDED.affects_outcome, mechanism_note = EXCLUDED.mechanism_note, conditioning_risk = EXCLUDED.conditioning_risk;
+
+INSERT INTO stratum_variables (stratum_variable_id, study, variable_name, causal_role, affects_treatment_assignment, affects_outcome, mechanism_note, conditioning_risk)
+VALUES ('measles-outbreak-vaccinated-vaccination_base_rate', 'measles-outbreak-vaccinated', 'vaccination_base_rate', 'confounder', TRUE, TRUE, 'High vaccination coverage means most cases occur among vaccinated individuals despite lower attack rate within each exposure stratum.', 'confounder') ON CONFLICT (stratum_variable_id) DO UPDATE SET study = EXCLUDED.study, variable_name = EXCLUDED.variable_name, causal_role = EXCLUDED.causal_role, affects_treatment_assignment = EXCLUDED.affects_treatment_assignment, affects_outcome = EXCLUDED.affects_outcome, mechanism_note = EXCLUDED.mechanism_note, conditioning_risk = EXCLUDED.conditioning_risk;
+
+INSERT INTO stratum_variables (stratum_variable_id, study, variable_name, causal_role, affects_treatment_assignment, affects_outcome, mechanism_note, conditioning_risk)
+VALUES ('air-pollution-mortality-city-city', 'air-pollution-mortality-city', 'city', 'confounder', TRUE, TRUE, 'City-level age/socioeconomic composition confounds pollution exposure and mortality; ecological comparison reverses within-city gradients.', 'confounder') ON CONFLICT (stratum_variable_id) DO UPDATE SET study = EXCLUDED.study, variable_name = EXCLUDED.variable_name, causal_role = EXCLUDED.causal_role, affects_treatment_assignment = EXCLUDED.affects_treatment_assignment, affects_outcome = EXCLUDED.affects_outcome, mechanism_note = EXCLUDED.mechanism_note, conditioning_risk = EXCLUDED.conditioning_risk;
+
+INSERT INTO stratum_variables (stratum_variable_id, study, variable_name, causal_role, affects_treatment_assignment, affects_outcome, mechanism_note, conditioning_risk)
+VALUES ('tb-treatment-resistance-drug_resistance', 'tb-treatment-resistance', 'drug_resistance', 'confounder', TRUE, TRUE, 'Drug resistance confounds regimen assignment and treatment success; pooled comparison reverses stratum-specific pattern.', 'confounder') ON CONFLICT (stratum_variable_id) DO UPDATE SET study = EXCLUDED.study, variable_name = EXCLUDED.variable_name, causal_role = EXCLUDED.causal_role, affects_treatment_assignment = EXCLUDED.affects_treatment_assignment, affects_outcome = EXCLUDED.affects_outcome, mechanism_note = EXCLUDED.mechanism_note, conditioning_risk = EXCLUDED.conditioning_risk;
+
+INSERT INTO stratum_variables (stratum_variable_id, study, variable_name, causal_role, affects_treatment_assignment, affects_outcome, mechanism_note, conditioning_risk)
+VALUES ('hospital-mortality-readmission-case_mix', 'hospital-mortality-readmission', 'case_mix', 'confounder', TRUE, TRUE, 'Case-mix severity confounds penalty status and mortality; sicker patients concentrated in penalized hospitals.', 'confounder') ON CONFLICT (stratum_variable_id) DO UPDATE SET study = EXCLUDED.study, variable_name = EXCLUDED.variable_name, causal_role = EXCLUDED.causal_role, affects_treatment_assignment = EXCLUDED.affects_treatment_assignment, affects_outcome = EXCLUDED.affects_outcome, mechanism_note = EXCLUDED.mechanism_note, conditioning_risk = EXCLUDED.conditioning_risk;
+
+INSERT INTO stratum_variables (stratum_variable_id, study, variable_name, causal_role, affects_treatment_assignment, affects_outcome, mechanism_note, conditioning_risk)
+VALUES ('nypd-stop-frisk-hitrate-precinct_base_rate', 'nypd-stop-frisk-hitrate', 'precinct_base_rate', 'confounder', TRUE, TRUE, 'Precinct crime base rate confounds stop volume and hit rate; benchmarking reversal across precincts.', 'confounder') ON CONFLICT (stratum_variable_id) DO UPDATE SET study = EXCLUDED.study, variable_name = EXCLUDED.variable_name, causal_role = EXCLUDED.causal_role, affects_treatment_assignment = EXCLUDED.affects_treatment_assignment, affects_outcome = EXCLUDED.affects_outcome, mechanism_note = EXCLUDED.mechanism_note, conditioning_risk = EXCLUDED.conditioning_risk;
+
+INSERT INTO stratum_variables (stratum_variable_id, study, variable_name, causal_role, affects_treatment_assignment, affects_outcome, mechanism_note, conditioning_risk)
+VALUES ('sentencing-offense-type-offense_category', 'sentencing-offense-type', 'offense_category', 'confounder', TRUE, TRUE, 'Offense category mix confounds demographic comparison and sentence severity; pooled disparity reverses within-category pattern.', 'confounder') ON CONFLICT (stratum_variable_id) DO UPDATE SET study = EXCLUDED.study, variable_name = EXCLUDED.variable_name, causal_role = EXCLUDED.causal_role, affects_treatment_assignment = EXCLUDED.affects_treatment_assignment, affects_outcome = EXCLUDED.affects_outcome, mechanism_note = EXCLUDED.mechanism_note, conditioning_risk = EXCLUDED.conditioning_risk;
+
+INSERT INTO stratum_variables (stratum_variable_id, study, variable_name, causal_role, affects_treatment_assignment, affects_outcome, mechanism_note, conditioning_risk)
+VALUES ('bail-risk-score-pretrial_risk_tier', 'bail-risk-score', 'pretrial_risk_tier', 'confounder', TRUE, TRUE, 'Risk tier confounds detention decision and rearrest outcome; case-mix drives pooled comparison.', 'confounder') ON CONFLICT (stratum_variable_id) DO UPDATE SET study = EXCLUDED.study, variable_name = EXCLUDED.variable_name, causal_role = EXCLUDED.causal_role, affects_treatment_assignment = EXCLUDED.affects_treatment_assignment, affects_outcome = EXCLUDED.affects_outcome, mechanism_note = EXCLUDED.mechanism_note, conditioning_risk = EXCLUDED.conditioning_risk;
+
+INSERT INTO stratum_variables (stratum_variable_id, study, variable_name, causal_role, affects_treatment_assignment, affects_outcome, mechanism_note, conditioning_risk)
+VALUES ('police-force-encounter-encounter_conditioning', 'police-force-encounter', 'encounter_conditioning', 'collider', TRUE, TRUE, 'Conditioning on police encounter induces collider bias; force rates reverse when pooling across encounter types.', 'collider') ON CONFLICT (stratum_variable_id) DO UPDATE SET study = EXCLUDED.study, variable_name = EXCLUDED.variable_name, causal_role = EXCLUDED.causal_role, affects_treatment_assignment = EXCLUDED.affects_treatment_assignment, affects_outcome = EXCLUDED.affects_outcome, mechanism_note = EXCLUDED.mechanism_note, conditioning_risk = EXCLUDED.conditioning_risk;
+
+INSERT INTO stratum_variables (stratum_variable_id, study, variable_name, causal_role, affects_treatment_assignment, affects_outcome, mechanism_note, conditioning_risk)
+VALUES ('uc-systemwide-admissions-major_campus', 'uc-systemwide-admissions', 'major_campus', 'contested', TRUE, TRUE, 'Self-selection into major/campus confounds admission comparison; causal role contested (mediator vs confounder).', 'confounder') ON CONFLICT (stratum_variable_id) DO UPDATE SET study = EXCLUDED.study, variable_name = EXCLUDED.variable_name, causal_role = EXCLUDED.causal_role, affects_treatment_assignment = EXCLUDED.affects_treatment_assignment, affects_outcome = EXCLUDED.affects_outcome, mechanism_note = EXCLUDED.mechanism_note, conditioning_risk = EXCLUDED.conditioning_risk;
+
+INSERT INTO stratum_variables (stratum_variable_id, study, variable_name, causal_role, affects_treatment_assignment, affects_outcome, mechanism_note, conditioning_risk)
+VALUES ('teacher-vam-prior-achievement-incoming_achievement', 'teacher-vam-prior-achievement', 'incoming_achievement', 'confounder', TRUE, TRUE, 'Incoming achievement confounds teacher assignment and student outcomes; VAM reverses within strata.', 'confounder') ON CONFLICT (stratum_variable_id) DO UPDATE SET study = EXCLUDED.study, variable_name = EXCLUDED.variable_name, causal_role = EXCLUDED.causal_role, affects_treatment_assignment = EXCLUDED.affects_treatment_assignment, affects_outcome = EXCLUDED.affects_outcome, mechanism_note = EXCLUDED.mechanism_note, conditioning_risk = EXCLUDED.conditioning_risk;
+
+INSERT INTO stratum_variables (stratum_variable_id, study, variable_name, causal_role, affects_treatment_assignment, affects_outcome, mechanism_note, conditioning_risk)
+VALUES ('naep-state-demographics-state_composition', 'naep-state-demographics', 'state_composition', 'confounder', TRUE, TRUE, 'State demographic composition confounds comparison and proficiency rates; ecological aggregation reversal.', 'confounder') ON CONFLICT (stratum_variable_id) DO UPDATE SET study = EXCLUDED.study, variable_name = EXCLUDED.variable_name, causal_role = EXCLUDED.causal_role, affects_treatment_assignment = EXCLUDED.affects_treatment_assignment, affects_outcome = EXCLUDED.affects_outcome, mechanism_note = EXCLUDED.mechanism_note, conditioning_risk = EXCLUDED.conditioning_risk;
+
+INSERT INTO stratum_variables (stratum_variable_id, study, variable_name, causal_role, affects_treatment_assignment, affects_outcome, mechanism_note, conditioning_risk)
+VALUES ('college-grad-rate-selectivity-incoming_preparation', 'college-grad-rate-selectivity', 'incoming_preparation', 'confounder', TRUE, TRUE, 'Incoming preparation confounds selectivity and graduation; less selective schools win within strata but lose pooled.', 'confounder') ON CONFLICT (stratum_variable_id) DO UPDATE SET study = EXCLUDED.study, variable_name = EXCLUDED.variable_name, causal_role = EXCLUDED.causal_role, affects_treatment_assignment = EXCLUDED.affects_treatment_assignment, affects_outcome = EXCLUDED.affects_outcome, mechanism_note = EXCLUDED.mechanism_note, conditioning_risk = EXCLUDED.conditioning_risk;
+
+INSERT INTO stratum_variables (stratum_variable_id, study, variable_name, causal_role, affects_treatment_assignment, affects_outcome, mechanism_note, conditioning_risk)
+VALUES ('star-class-size-school', 'star-class-size', 'school', 'confounder', TRUE, TRUE, 'School site confounds class-size assignment; near-neutral type-D geometry expected.', 'confounder') ON CONFLICT (stratum_variable_id) DO UPDATE SET study = EXCLUDED.study, variable_name = EXCLUDED.variable_name, causal_role = EXCLUDED.causal_role, affects_treatment_assignment = EXCLUDED.affects_treatment_assignment, affects_outcome = EXCLUDED.affects_outcome, mechanism_note = EXCLUDED.mechanism_note, conditioning_risk = EXCLUDED.conditioning_risk;
+
+INSERT INTO stratum_variables (stratum_variable_id, study, variable_name, causal_role, affects_treatment_assignment, affects_outcome, mechanism_note, conditioning_risk)
+VALUES ('nba-shooting-shot-mix-shot_type', 'nba-shooting-shot-mix', 'shot_type', 'confounder', TRUE, TRUE, 'Shot-type mix confounds shooting comparison; higher FG% in both shot types but lower pooled due to 3PT volume.', 'confounder') ON CONFLICT (stratum_variable_id) DO UPDATE SET study = EXCLUDED.study, variable_name = EXCLUDED.variable_name, causal_role = EXCLUDED.causal_role, affects_treatment_assignment = EXCLUDED.affects_treatment_assignment, affects_outcome = EXCLUDED.affects_outcome, mechanism_note = EXCLUDED.mechanism_note, conditioning_risk = EXCLUDED.conditioning_risk;
+
+INSERT INTO stratum_variables (stratum_variable_id, study, variable_name, causal_role, affects_treatment_assignment, affects_outcome, mechanism_note, conditioning_risk)
+VALUES ('pitcher-era-ballpark-ballpark', 'pitcher-era-ballpark', 'ballpark', 'confounder', TRUE, TRUE, 'Ballpark run environment confounds pitcher comparison and ERA outcomes.', 'confounder') ON CONFLICT (stratum_variable_id) DO UPDATE SET study = EXCLUDED.study, variable_name = EXCLUDED.variable_name, causal_role = EXCLUDED.causal_role, affects_treatment_assignment = EXCLUDED.affects_treatment_assignment, affects_outcome = EXCLUDED.affects_outcome, mechanism_note = EXCLUDED.mechanism_note, conditioning_risk = EXCLUDED.conditioning_risk;
+
+INSERT INTO stratum_variables (stratum_variable_id, study, variable_name, causal_role, affects_treatment_assignment, affects_outcome, mechanism_note, conditioning_risk)
+VALUES ('nfl-completion-depth-pass_depth', 'nfl-completion-depth', 'pass_depth', 'confounder', TRUE, TRUE, 'Pass-depth mix confounds QB comparison; higher completion in each depth stratum but lower pooled.', 'confounder') ON CONFLICT (stratum_variable_id) DO UPDATE SET study = EXCLUDED.study, variable_name = EXCLUDED.variable_name, causal_role = EXCLUDED.causal_role, affects_treatment_assignment = EXCLUDED.affects_treatment_assignment, affects_outcome = EXCLUDED.affects_outcome, mechanism_note = EXCLUDED.mechanism_note, conditioning_risk = EXCLUDED.conditioning_risk;
+
+INSERT INTO stratum_variables (stratum_variable_id, study, variable_name, causal_role, affects_treatment_assignment, affects_outcome, mechanism_note, conditioning_risk)
+VALUES ('field-goal-distance-kick_distance', 'field-goal-distance', 'kick_distance', 'confounder', TRUE, TRUE, 'Attempt distance distribution confounds kicker comparison; better within distance bins but worse pooled.', 'confounder') ON CONFLICT (stratum_variable_id) DO UPDATE SET study = EXCLUDED.study, variable_name = EXCLUDED.variable_name, causal_role = EXCLUDED.causal_role, affects_treatment_assignment = EXCLUDED.affects_treatment_assignment, affects_outcome = EXCLUDED.affects_outcome, mechanism_note = EXCLUDED.mechanism_note, conditioning_risk = EXCLUDED.conditioning_risk;
+
+INSERT INTO stratum_variables (stratum_variable_id, study, variable_name, causal_role, affects_treatment_assignment, affects_outcome, mechanism_note, conditioning_risk)
+VALUES ('golf-scoring-course-course_difficulty', 'golf-scoring-course', 'course_difficulty', 'confounder', TRUE, TRUE, 'Course difficulty mix confounds golfer comparison; better on both course types but worse pooled schedule mix.', 'confounder') ON CONFLICT (stratum_variable_id) DO UPDATE SET study = EXCLUDED.study, variable_name = EXCLUDED.variable_name, causal_role = EXCLUDED.causal_role, affects_treatment_assignment = EXCLUDED.affects_treatment_assignment, affects_outcome = EXCLUDED.affects_outcome, mechanism_note = EXCLUDED.mechanism_note, conditioning_risk = EXCLUDED.conditioning_risk;
+
+INSERT INTO stratum_variables (stratum_variable_id, study, variable_name, causal_role, affects_treatment_assignment, affects_outcome, mechanism_note, conditioning_risk)
+VALUES ('minimum-wage-region-region', 'minimum-wage-region', 'region', 'confounder', TRUE, TRUE, 'Regional labor market conditions confound minimum-wage exposure and employment outcomes.', 'confounder') ON CONFLICT (stratum_variable_id) DO UPDATE SET study = EXCLUDED.study, variable_name = EXCLUDED.variable_name, causal_role = EXCLUDED.causal_role, affects_treatment_assignment = EXCLUDED.affects_treatment_assignment, affects_outcome = EXCLUDED.affects_outcome, mechanism_note = EXCLUDED.mechanism_note, conditioning_risk = EXCLUDED.conditioning_risk;
+
+INSERT INTO stratum_variables (stratum_variable_id, study, variable_name, causal_role, affects_treatment_assignment, affects_outcome, mechanism_note, conditioning_risk)
+VALUES ('returns-to-education-field-field_of_study', 'returns-to-education-field', 'field_of_study', 'contested', TRUE, TRUE, 'Field of study mediates education-earnings relationship; causal role contested.', 'confounder') ON CONFLICT (stratum_variable_id) DO UPDATE SET study = EXCLUDED.study, variable_name = EXCLUDED.variable_name, causal_role = EXCLUDED.causal_role, affects_treatment_assignment = EXCLUDED.affects_treatment_assignment, affects_outcome = EXCLUDED.affects_outcome, mechanism_note = EXCLUDED.mechanism_note, conditioning_risk = EXCLUDED.conditioning_risk;
+
+INSERT INTO stratum_variables (stratum_variable_id, study, variable_name, causal_role, affects_treatment_assignment, affects_outcome, mechanism_note, conditioning_risk)
+VALUES ('unemployment-education-cycle-education_composition', 'unemployment-education-cycle', 'education_composition', 'confounder', TRUE, TRUE, 'Education composition shifts over the business cycle confound aggregate unemployment comparisons.', 'confounder') ON CONFLICT (stratum_variable_id) DO UPDATE SET study = EXCLUDED.study, variable_name = EXCLUDED.variable_name, causal_role = EXCLUDED.causal_role, affects_treatment_assignment = EXCLUDED.affects_treatment_assignment, affects_outcome = EXCLUDED.affects_outcome, mechanism_note = EXCLUDED.mechanism_note, conditioning_risk = EXCLUDED.conditioning_risk;
+
+INSERT INTO stratum_variables (stratum_variable_id, study, variable_name, causal_role, affects_treatment_assignment, affects_outcome, mechanism_note, conditioning_risk)
+VALUES ('costa-rica-us-life-expectancy-age_group', 'costa-rica-us-life-expectancy', 'age_group', 'confounder', TRUE, TRUE, 'Age structure confounds cross-national life expectancy comparison.', 'confounder') ON CONFLICT (stratum_variable_id) DO UPDATE SET study = EXCLUDED.study, variable_name = EXCLUDED.variable_name, causal_role = EXCLUDED.causal_role, affects_treatment_assignment = EXCLUDED.affects_treatment_assignment, affects_outcome = EXCLUDED.affects_outcome, mechanism_note = EXCLUDED.mechanism_note, conditioning_risk = EXCLUDED.conditioning_risk;
+
+INSERT INTO stratum_variables (stratum_variable_id, study, variable_name, causal_role, affects_treatment_assignment, affects_outcome, mechanism_note, conditioning_risk)
+VALUES ('fertility-income-country-country', 'fertility-income-country', 'country', 'confounder', TRUE, TRUE, 'Country-level development confounds income and fertility; ecological paradox across nations.', 'confounder') ON CONFLICT (stratum_variable_id) DO UPDATE SET study = EXCLUDED.study, variable_name = EXCLUDED.variable_name, causal_role = EXCLUDED.causal_role, affects_treatment_assignment = EXCLUDED.affects_treatment_assignment, affects_outcome = EXCLUDED.affects_outcome, mechanism_note = EXCLUDED.mechanism_note, conditioning_risk = EXCLUDED.conditioning_risk;
+
+INSERT INTO stratum_variables (stratum_variable_id, study, variable_name, causal_role, affects_treatment_assignment, affects_outcome, mechanism_note, conditioning_risk)
+VALUES ('religiosity-happiness-country-national_wealth', 'religiosity-happiness-country', 'national_wealth', 'confounder', TRUE, TRUE, 'National wealth confounds religiosity and happiness; pooled cross-country comparison reverses within-country pattern.', 'confounder') ON CONFLICT (stratum_variable_id) DO UPDATE SET study = EXCLUDED.study, variable_name = EXCLUDED.variable_name, causal_role = EXCLUDED.causal_role, affects_treatment_assignment = EXCLUDED.affects_treatment_assignment, affects_outcome = EXCLUDED.affects_outcome, mechanism_note = EXCLUDED.mechanism_note, conditioning_risk = EXCLUDED.conditioning_risk;
+
+INSERT INTO stratum_variables (stratum_variable_id, study, variable_name, causal_role, affects_treatment_assignment, affects_outcome, mechanism_note, conditioning_risk)
+VALUES ('voter-turnout-education-state-state', 'voter-turnout-education-state', 'state', 'confounder', TRUE, TRUE, 'State demographic composition confounds education-turnout relationship; ecological reversal.', 'confounder') ON CONFLICT (stratum_variable_id) DO UPDATE SET study = EXCLUDED.study, variable_name = EXCLUDED.variable_name, causal_role = EXCLUDED.causal_role, affects_treatment_assignment = EXCLUDED.affects_treatment_assignment, affects_outcome = EXCLUDED.affects_outcome, mechanism_note = EXCLUDED.mechanism_note, conditioning_risk = EXCLUDED.conditioning_risk;
+
+INSERT INTO stratum_variables (stratum_variable_id, study, variable_name, causal_role, affects_treatment_assignment, affects_outcome, mechanism_note, conditioning_risk)
+VALUES ('ad-ctr-platform-mix-platform', 'ad-ctr-platform-mix', 'platform', 'confounder', TRUE, TRUE, 'Platform mix confounds creative comparison; CTR reversal from segment composition shift.', 'confounder') ON CONFLICT (stratum_variable_id) DO UPDATE SET study = EXCLUDED.study, variable_name = EXCLUDED.variable_name, causal_role = EXCLUDED.causal_role, affects_treatment_assignment = EXCLUDED.affects_treatment_assignment, affects_outcome = EXCLUDED.affects_outcome, mechanism_note = EXCLUDED.mechanism_note, conditioning_risk = EXCLUDED.conditioning_risk;
+
 -- ----------------------------------------------------------------------------
 -- TreatmentRankings: Table: TreatmentRankings — one row per treatment-pair comparison within a study. Derives the pooled winner, the per-stratum winner, and the IsReversal boolean. The paradox emerges here as a derived fact: IsReversal is true when the pooled winner and the per-stratum winner disagree.
 -- ----------------------------------------------------------------------------
@@ -2541,6 +4650,156 @@ VALUES ('hanley-power-lines-2000-A-vs-B', 'hanley-power-lines-2000', 'A', 'B', '
 INSERT INTO treatment_rankings (treatment_ranking_id, study, treatment_a, treatment_b, adjustment_rationale)
 VALUES ('coffee-smoking-lung-1968-A-vs-B', 'coffee-smoking-lung-1968', 'A', 'B', 'Confirmed confounder pre-registered in StratumVariables; stratification-adjusted estimate is epistemically appropriate for imported real study.') ON CONFLICT (treatment_ranking_id) DO UPDATE SET study = EXCLUDED.study, treatment_a = EXCLUDED.treatment_a, treatment_b = EXCLUDED.treatment_b, adjustment_rationale = EXCLUDED.adjustment_rationale;
 
+INSERT INTO treatment_rankings (treatment_ranking_id, study, treatment_a, treatment_b, adjustment_rationale)
+VALUES ('hrt-whi-2002-A-vs-B', 'hrt-whi-2002', 'A', 'B', 'Causal role contested — geometric correction is available but adjustment requires caution about endogenous stratum choice.') ON CONFLICT (treatment_ranking_id) DO UPDATE SET study = EXCLUDED.study, treatment_a = EXCLUDED.treatment_a, treatment_b = EXCLUDED.treatment_b, adjustment_rationale = EXCLUDED.adjustment_rationale;
+
+INSERT INTO treatment_rankings (treatment_ranking_id, study, treatment_a, treatment_b, adjustment_rationale)
+VALUES ('obesity-paradox-hf-A-vs-B', 'obesity-paradox-hf', 'A', 'B', 'Stratum variable is a collider/selection mechanism; conditioning induces spurious association — AdjustmentAppropriate=FALSE.') ON CONFLICT (treatment_ranking_id) DO UPDATE SET study = EXCLUDED.study, treatment_a = EXCLUDED.treatment_a, treatment_b = EXCLUDED.treatment_b, adjustment_rationale = EXCLUDED.adjustment_rationale;
+
+INSERT INTO treatment_rankings (treatment_ranking_id, study, treatment_a, treatment_b, adjustment_rationale)
+VALUES ('dialysis-bmi-survival-A-vs-B', 'dialysis-bmi-survival', 'A', 'B', 'Stratum variable is a collider/selection mechanism; conditioning induces spurious association — AdjustmentAppropriate=FALSE.') ON CONFLICT (treatment_ranking_id) DO UPDATE SET study = EXCLUDED.study, treatment_a = EXCLUDED.treatment_a, treatment_b = EXCLUDED.treatment_b, adjustment_rationale = EXCLUDED.adjustment_rationale;
+
+INSERT INTO treatment_rankings (treatment_ranking_id, study, treatment_a, treatment_b, adjustment_rationale)
+VALUES ('sick-quitter-alcohol-A-vs-B', 'sick-quitter-alcohol', 'A', 'B', 'Causal role contested — geometric correction is available but adjustment requires caution about endogenous stratum choice.') ON CONFLICT (treatment_ranking_id) DO UPDATE SET study = EXCLUDED.study, treatment_a = EXCLUDED.treatment_a, treatment_b = EXCLUDED.treatment_b, adjustment_rationale = EXCLUDED.adjustment_rationale;
+
+INSERT INTO treatment_rankings (treatment_ranking_id, study, treatment_a, treatment_b, adjustment_rationale)
+VALUES ('flu-vaccine-elderly-mortality-A-vs-B', 'flu-vaccine-elderly-mortality', 'A', 'B', 'Confirmed confounder pre-registered in StratumVariables; stratification-adjusted estimate is epistemically appropriate for imported real study.') ON CONFLICT (treatment_ranking_id) DO UPDATE SET study = EXCLUDED.study, treatment_a = EXCLUDED.treatment_a, treatment_b = EXCLUDED.treatment_b, adjustment_rationale = EXCLUDED.adjustment_rationale;
+
+INSERT INTO treatment_rankings (treatment_ranking_id, study, treatment_a, treatment_b, adjustment_rationale)
+VALUES ('covid-italy-china-cfr-2020-A-vs-B', 'covid-italy-china-cfr-2020', 'A', 'B', 'Confirmed confounder pre-registered in StratumVariables; stratification-adjusted estimate is epistemically appropriate for imported real study.') ON CONFLICT (treatment_ranking_id) DO UPDATE SET study = EXCLUDED.study, treatment_a = EXCLUDED.treatment_a, treatment_b = EXCLUDED.treatment_b, adjustment_rationale = EXCLUDED.adjustment_rationale;
+
+INSERT INTO treatment_rankings (treatment_ranking_id, study, treatment_a, treatment_b, adjustment_rationale)
+VALUES ('israel-covid-severe-2021-A-vs-B', 'israel-covid-severe-2021', 'A', 'B', 'Confirmed confounder pre-registered in StratumVariables; stratification-adjusted estimate is epistemically appropriate for imported real study.') ON CONFLICT (treatment_ranking_id) DO UPDATE SET study = EXCLUDED.study, treatment_a = EXCLUDED.treatment_a, treatment_b = EXCLUDED.treatment_b, adjustment_rationale = EXCLUDED.adjustment_rationale;
+
+INSERT INTO treatment_rankings (treatment_ranking_id, study, treatment_a, treatment_b, adjustment_rationale)
+VALUES ('cochran-smoking-1968-A-vs-B', 'cochran-smoking-1968', 'A', 'B', 'Confirmed confounder pre-registered in StratumVariables; stratification-adjusted estimate is epistemically appropriate for imported real study.') ON CONFLICT (treatment_ranking_id) DO UPDATE SET study = EXCLUDED.study, treatment_a = EXCLUDED.treatment_a, treatment_b = EXCLUDED.treatment_b, adjustment_rationale = EXCLUDED.adjustment_rationale;
+
+INSERT INTO treatment_rankings (treatment_ranking_id, study, treatment_a, treatment_b, adjustment_rationale)
+VALUES ('healthy-worker-mortality-A-vs-B', 'healthy-worker-mortality', 'A', 'B', 'Stratum variable is a collider/selection mechanism; conditioning induces spurious association — AdjustmentAppropriate=FALSE.') ON CONFLICT (treatment_ranking_id) DO UPDATE SET study = EXCLUDED.study, treatment_a = EXCLUDED.treatment_a, treatment_b = EXCLUDED.treatment_b, adjustment_rationale = EXCLUDED.adjustment_rationale;
+
+INSERT INTO treatment_rankings (treatment_ranking_id, study, treatment_a, treatment_b, adjustment_rationale)
+VALUES ('compas-recidivism-base-A-vs-B', 'compas-recidivism-base', 'A', 'B', 'Confirmed confounder pre-registered in StratumVariables; stratification-adjusted estimate is epistemically appropriate for imported real study.') ON CONFLICT (treatment_ranking_id) DO UPDATE SET study = EXCLUDED.study, treatment_a = EXCLUDED.treatment_a, treatment_b = EXCLUDED.treatment_b, adjustment_rationale = EXCLUDED.adjustment_rationale;
+
+INSERT INTO treatment_rankings (treatment_ranking_id, study, treatment_a, treatment_b, adjustment_rationale)
+VALUES ('us-wage-composition-stagnation-A-vs-B', 'us-wage-composition-stagnation', 'A', 'B', 'Confirmed confounder pre-registered in StratumVariables; stratification-adjusted estimate is epistemically appropriate for imported real study.') ON CONFLICT (treatment_ranking_id) DO UPDATE SET study = EXCLUDED.study, treatment_a = EXCLUDED.treatment_a, treatment_b = EXCLUDED.treatment_b, adjustment_rationale = EXCLUDED.adjustment_rationale;
+
+INSERT INTO treatment_rankings (treatment_ranking_id, study, treatment_a, treatment_b, adjustment_rationale)
+VALUES ('borjas-immigrant-cohort-A-vs-B', 'borjas-immigrant-cohort', 'A', 'B', 'Confirmed confounder pre-registered in StratumVariables; stratification-adjusted estimate is epistemically appropriate for imported real study.') ON CONFLICT (treatment_ranking_id) DO UPDATE SET study = EXCLUDED.study, treatment_a = EXCLUDED.treatment_a, treatment_b = EXCLUDED.treatment_b, adjustment_rationale = EXCLUDED.adjustment_rationale;
+
+INSERT INTO treatment_rankings (treatment_ranking_id, study, treatment_a, treatment_b, adjustment_rationale)
+VALUES ('robinson-1950-literacy-A-vs-B', 'robinson-1950-literacy', 'A', 'B', 'Confirmed confounder pre-registered in StratumVariables; stratification-adjusted estimate is epistemically appropriate for imported real study.') ON CONFLICT (treatment_ranking_id) DO UPDATE SET study = EXCLUDED.study, treatment_a = EXCLUDED.treatment_a, treatment_b = EXCLUDED.treatment_b, adjustment_rationale = EXCLUDED.adjustment_rationale;
+
+INSERT INTO treatment_rankings (treatment_ranking_id, study, treatment_a, treatment_b, adjustment_rationale)
+VALUES ('ab-test-traffic-mix-A-vs-B', 'ab-test-traffic-mix', 'A', 'B', 'Confirmed confounder pre-registered in StratumVariables; stratification-adjusted estimate is epistemically appropriate for imported real study.') ON CONFLICT (treatment_ranking_id) DO UPDATE SET study = EXCLUDED.study, treatment_a = EXCLUDED.treatment_a, treatment_b = EXCLUDED.treatment_b, adjustment_rationale = EXCLUDED.adjustment_rationale;
+
+INSERT INTO treatment_rankings (treatment_ranking_id, study, treatment_a, treatment_b, adjustment_rationale)
+VALUES ('recsys-offline-eval-A-vs-B', 'recsys-offline-eval', 'A', 'B', 'Confirmed confounder pre-registered in StratumVariables; stratification-adjusted estimate is epistemically appropriate for imported real study.') ON CONFLICT (treatment_ranking_id) DO UPDATE SET study = EXCLUDED.study, treatment_a = EXCLUDED.treatment_a, treatment_b = EXCLUDED.treatment_b, adjustment_rationale = EXCLUDED.adjustment_rationale;
+
+INSERT INTO treatment_rankings (treatment_ranking_id, study, treatment_a, treatment_b, adjustment_rationale)
+VALUES ('collider-only-synthetic-A-vs-B', 'collider-only-synthetic', 'A', 'B', 'Stratum variable is a collider/selection mechanism; conditioning induces spurious association — AdjustmentAppropriate=FALSE.') ON CONFLICT (treatment_ranking_id) DO UPDATE SET study = EXCLUDED.study, treatment_a = EXCLUDED.treatment_a, treatment_b = EXCLUDED.treatment_b, adjustment_rationale = EXCLUDED.adjustment_rationale;
+
+INSERT INTO treatment_rankings (treatment_ranking_id, study, treatment_a, treatment_b, adjustment_rationale)
+VALUES ('noncollapsibility-or-synthetic-A-vs-B', 'noncollapsibility-or-synthetic', 'A', 'B', 'Geometric-only synthetic: measures non-collapsibility blind spot. Risk-difference geometry is type-D neutral; OR non-collapsibility documented in MechanismNote only.') ON CONFLICT (treatment_ranking_id) DO UPDATE SET study = EXCLUDED.study, treatment_a = EXCLUDED.treatment_a, treatment_b = EXCLUDED.treatment_b, adjustment_rationale = EXCLUDED.adjustment_rationale;
+
+INSERT INTO treatment_rankings (treatment_ranking_id, study, treatment_a, treatment_b, adjustment_rationale)
+VALUES ('trauma-center-mortality-A-vs-B', 'trauma-center-mortality', 'A', 'B', 'Confirmed confounder pre-registered in StratumVariables; stratification-adjusted estimate is epistemically appropriate for imported real study.') ON CONFLICT (treatment_ranking_id) DO UPDATE SET study = EXCLUDED.study, treatment_a = EXCLUDED.treatment_a, treatment_b = EXCLUDED.treatment_b, adjustment_rationale = EXCLUDED.adjustment_rationale;
+
+INSERT INTO treatment_rankings (treatment_ranking_id, study, treatment_a, treatment_b, adjustment_rationale)
+VALUES ('surgeon-volume-mortality-A-vs-B', 'surgeon-volume-mortality', 'A', 'B', 'Confirmed confounder pre-registered in StratumVariables; stratification-adjusted estimate is epistemically appropriate for imported real study.') ON CONFLICT (treatment_ranking_id) DO UPDATE SET study = EXCLUDED.study, treatment_a = EXCLUDED.treatment_a, treatment_b = EXCLUDED.treatment_b, adjustment_rationale = EXCLUDED.adjustment_rationale;
+
+INSERT INTO treatment_rankings (treatment_ranking_id, study, treatment_a, treatment_b, adjustment_rationale)
+VALUES ('mammography-length-bias-A-vs-B', 'mammography-length-bias', 'A', 'B', 'Stratum variable is a collider/selection mechanism; conditioning induces spurious association — AdjustmentAppropriate=FALSE.') ON CONFLICT (treatment_ranking_id) DO UPDATE SET study = EXCLUDED.study, treatment_a = EXCLUDED.treatment_a, treatment_b = EXCLUDED.treatment_b, adjustment_rationale = EXCLUDED.adjustment_rationale;
+
+INSERT INTO treatment_rankings (treatment_ranking_id, study, treatment_a, treatment_b, adjustment_rationale)
+VALUES ('cabg-vs-pci-severity-A-vs-B', 'cabg-vs-pci-severity', 'A', 'B', 'Confirmed confounder pre-registered in StratumVariables; stratification-adjusted estimate is epistemically appropriate for imported real study.') ON CONFLICT (treatment_ranking_id) DO UPDATE SET study = EXCLUDED.study, treatment_a = EXCLUDED.treatment_a, treatment_b = EXCLUDED.treatment_b, adjustment_rationale = EXCLUDED.adjustment_rationale;
+
+INSERT INTO treatment_rankings (treatment_ranking_id, study, treatment_a, treatment_b, adjustment_rationale)
+VALUES ('tolbutamide-ugdp-1970-A-vs-B', 'tolbutamide-ugdp-1970', 'A', 'B', 'Causal role contested — geometric correction is available but adjustment requires caution about endogenous stratum choice.') ON CONFLICT (treatment_ranking_id) DO UPDATE SET study = EXCLUDED.study, treatment_a = EXCLUDED.treatment_a, treatment_b = EXCLUDED.treatment_b, adjustment_rationale = EXCLUDED.adjustment_rationale;
+
+INSERT INTO treatment_rankings (treatment_ranking_id, study, treatment_a, treatment_b, adjustment_rationale)
+VALUES ('snow-cholera-water-1855-A-vs-B', 'snow-cholera-water-1855', 'A', 'B', 'Confirmed confounder pre-registered in StratumVariables; stratification-adjusted estimate is epistemically appropriate for imported real study.') ON CONFLICT (treatment_ranking_id) DO UPDATE SET study = EXCLUDED.study, treatment_a = EXCLUDED.treatment_a, treatment_b = EXCLUDED.treatment_b, adjustment_rationale = EXCLUDED.adjustment_rationale;
+
+INSERT INTO treatment_rankings (treatment_ranking_id, study, treatment_a, treatment_b, adjustment_rationale)
+VALUES ('seatbelt-crash-severity-A-vs-B', 'seatbelt-crash-severity', 'A', 'B', 'Stratum variable is a collider/selection mechanism; conditioning induces spurious association — AdjustmentAppropriate=FALSE.') ON CONFLICT (treatment_ranking_id) DO UPDATE SET study = EXCLUDED.study, treatment_a = EXCLUDED.treatment_a, treatment_b = EXCLUDED.treatment_b, adjustment_rationale = EXCLUDED.adjustment_rationale;
+
+INSERT INTO treatment_rankings (treatment_ranking_id, study, treatment_a, treatment_b, adjustment_rationale)
+VALUES ('measles-outbreak-vaccinated-A-vs-B', 'measles-outbreak-vaccinated', 'A', 'B', 'Confirmed confounder pre-registered in StratumVariables; stratification-adjusted estimate is epistemically appropriate for imported real study.') ON CONFLICT (treatment_ranking_id) DO UPDATE SET study = EXCLUDED.study, treatment_a = EXCLUDED.treatment_a, treatment_b = EXCLUDED.treatment_b, adjustment_rationale = EXCLUDED.adjustment_rationale;
+
+INSERT INTO treatment_rankings (treatment_ranking_id, study, treatment_a, treatment_b, adjustment_rationale)
+VALUES ('air-pollution-mortality-city-A-vs-B', 'air-pollution-mortality-city', 'A', 'B', 'Confirmed confounder pre-registered in StratumVariables; stratification-adjusted estimate is epistemically appropriate for imported real study.') ON CONFLICT (treatment_ranking_id) DO UPDATE SET study = EXCLUDED.study, treatment_a = EXCLUDED.treatment_a, treatment_b = EXCLUDED.treatment_b, adjustment_rationale = EXCLUDED.adjustment_rationale;
+
+INSERT INTO treatment_rankings (treatment_ranking_id, study, treatment_a, treatment_b, adjustment_rationale)
+VALUES ('tb-treatment-resistance-A-vs-B', 'tb-treatment-resistance', 'A', 'B', 'Confirmed confounder pre-registered in StratumVariables; stratification-adjusted estimate is epistemically appropriate for imported real study.') ON CONFLICT (treatment_ranking_id) DO UPDATE SET study = EXCLUDED.study, treatment_a = EXCLUDED.treatment_a, treatment_b = EXCLUDED.treatment_b, adjustment_rationale = EXCLUDED.adjustment_rationale;
+
+INSERT INTO treatment_rankings (treatment_ranking_id, study, treatment_a, treatment_b, adjustment_rationale)
+VALUES ('hospital-mortality-readmission-A-vs-B', 'hospital-mortality-readmission', 'A', 'B', 'Confirmed confounder pre-registered in StratumVariables; stratification-adjusted estimate is epistemically appropriate for imported real study.') ON CONFLICT (treatment_ranking_id) DO UPDATE SET study = EXCLUDED.study, treatment_a = EXCLUDED.treatment_a, treatment_b = EXCLUDED.treatment_b, adjustment_rationale = EXCLUDED.adjustment_rationale;
+
+INSERT INTO treatment_rankings (treatment_ranking_id, study, treatment_a, treatment_b, adjustment_rationale)
+VALUES ('nypd-stop-frisk-hitrate-A-vs-B', 'nypd-stop-frisk-hitrate', 'A', 'B', 'Confirmed confounder pre-registered in StratumVariables; stratification-adjusted estimate is epistemically appropriate for imported real study.') ON CONFLICT (treatment_ranking_id) DO UPDATE SET study = EXCLUDED.study, treatment_a = EXCLUDED.treatment_a, treatment_b = EXCLUDED.treatment_b, adjustment_rationale = EXCLUDED.adjustment_rationale;
+
+INSERT INTO treatment_rankings (treatment_ranking_id, study, treatment_a, treatment_b, adjustment_rationale)
+VALUES ('sentencing-offense-type-A-vs-B', 'sentencing-offense-type', 'A', 'B', 'Confirmed confounder pre-registered in StratumVariables; stratification-adjusted estimate is epistemically appropriate for imported real study.') ON CONFLICT (treatment_ranking_id) DO UPDATE SET study = EXCLUDED.study, treatment_a = EXCLUDED.treatment_a, treatment_b = EXCLUDED.treatment_b, adjustment_rationale = EXCLUDED.adjustment_rationale;
+
+INSERT INTO treatment_rankings (treatment_ranking_id, study, treatment_a, treatment_b, adjustment_rationale)
+VALUES ('bail-risk-score-A-vs-B', 'bail-risk-score', 'A', 'B', 'Confirmed confounder pre-registered in StratumVariables; stratification-adjusted estimate is epistemically appropriate for imported real study.') ON CONFLICT (treatment_ranking_id) DO UPDATE SET study = EXCLUDED.study, treatment_a = EXCLUDED.treatment_a, treatment_b = EXCLUDED.treatment_b, adjustment_rationale = EXCLUDED.adjustment_rationale;
+
+INSERT INTO treatment_rankings (treatment_ranking_id, study, treatment_a, treatment_b, adjustment_rationale)
+VALUES ('police-force-encounter-A-vs-B', 'police-force-encounter', 'A', 'B', 'Stratum variable is a collider/selection mechanism; conditioning induces spurious association — AdjustmentAppropriate=FALSE.') ON CONFLICT (treatment_ranking_id) DO UPDATE SET study = EXCLUDED.study, treatment_a = EXCLUDED.treatment_a, treatment_b = EXCLUDED.treatment_b, adjustment_rationale = EXCLUDED.adjustment_rationale;
+
+INSERT INTO treatment_rankings (treatment_ranking_id, study, treatment_a, treatment_b, adjustment_rationale)
+VALUES ('uc-systemwide-admissions-A-vs-B', 'uc-systemwide-admissions', 'A', 'B', 'Causal role contested — geometric correction is available but adjustment requires caution about endogenous stratum choice.') ON CONFLICT (treatment_ranking_id) DO UPDATE SET study = EXCLUDED.study, treatment_a = EXCLUDED.treatment_a, treatment_b = EXCLUDED.treatment_b, adjustment_rationale = EXCLUDED.adjustment_rationale;
+
+INSERT INTO treatment_rankings (treatment_ranking_id, study, treatment_a, treatment_b, adjustment_rationale)
+VALUES ('teacher-vam-prior-achievement-A-vs-B', 'teacher-vam-prior-achievement', 'A', 'B', 'Confirmed confounder pre-registered in StratumVariables; stratification-adjusted estimate is epistemically appropriate for imported real study.') ON CONFLICT (treatment_ranking_id) DO UPDATE SET study = EXCLUDED.study, treatment_a = EXCLUDED.treatment_a, treatment_b = EXCLUDED.treatment_b, adjustment_rationale = EXCLUDED.adjustment_rationale;
+
+INSERT INTO treatment_rankings (treatment_ranking_id, study, treatment_a, treatment_b, adjustment_rationale)
+VALUES ('naep-state-demographics-A-vs-B', 'naep-state-demographics', 'A', 'B', 'Confirmed confounder pre-registered in StratumVariables; stratification-adjusted estimate is epistemically appropriate for imported real study.') ON CONFLICT (treatment_ranking_id) DO UPDATE SET study = EXCLUDED.study, treatment_a = EXCLUDED.treatment_a, treatment_b = EXCLUDED.treatment_b, adjustment_rationale = EXCLUDED.adjustment_rationale;
+
+INSERT INTO treatment_rankings (treatment_ranking_id, study, treatment_a, treatment_b, adjustment_rationale)
+VALUES ('college-grad-rate-selectivity-A-vs-B', 'college-grad-rate-selectivity', 'A', 'B', 'Confirmed confounder pre-registered in StratumVariables; stratification-adjusted estimate is epistemically appropriate for imported real study.') ON CONFLICT (treatment_ranking_id) DO UPDATE SET study = EXCLUDED.study, treatment_a = EXCLUDED.treatment_a, treatment_b = EXCLUDED.treatment_b, adjustment_rationale = EXCLUDED.adjustment_rationale;
+
+INSERT INTO treatment_rankings (treatment_ranking_id, study, treatment_a, treatment_b, adjustment_rationale)
+VALUES ('star-class-size-A-vs-B', 'star-class-size', 'A', 'B', 'Confirmed confounder pre-registered in StratumVariables; stratification-adjusted estimate is epistemically appropriate for imported real study.') ON CONFLICT (treatment_ranking_id) DO UPDATE SET study = EXCLUDED.study, treatment_a = EXCLUDED.treatment_a, treatment_b = EXCLUDED.treatment_b, adjustment_rationale = EXCLUDED.adjustment_rationale;
+
+INSERT INTO treatment_rankings (treatment_ranking_id, study, treatment_a, treatment_b, adjustment_rationale)
+VALUES ('nba-shooting-shot-mix-A-vs-B', 'nba-shooting-shot-mix', 'A', 'B', 'Confirmed confounder pre-registered in StratumVariables; stratification-adjusted estimate is epistemically appropriate for imported real study.') ON CONFLICT (treatment_ranking_id) DO UPDATE SET study = EXCLUDED.study, treatment_a = EXCLUDED.treatment_a, treatment_b = EXCLUDED.treatment_b, adjustment_rationale = EXCLUDED.adjustment_rationale;
+
+INSERT INTO treatment_rankings (treatment_ranking_id, study, treatment_a, treatment_b, adjustment_rationale)
+VALUES ('pitcher-era-ballpark-A-vs-B', 'pitcher-era-ballpark', 'A', 'B', 'Confirmed confounder pre-registered in StratumVariables; stratification-adjusted estimate is epistemically appropriate for imported real study.') ON CONFLICT (treatment_ranking_id) DO UPDATE SET study = EXCLUDED.study, treatment_a = EXCLUDED.treatment_a, treatment_b = EXCLUDED.treatment_b, adjustment_rationale = EXCLUDED.adjustment_rationale;
+
+INSERT INTO treatment_rankings (treatment_ranking_id, study, treatment_a, treatment_b, adjustment_rationale)
+VALUES ('nfl-completion-depth-A-vs-B', 'nfl-completion-depth', 'A', 'B', 'Confirmed confounder pre-registered in StratumVariables; stratification-adjusted estimate is epistemically appropriate for imported real study.') ON CONFLICT (treatment_ranking_id) DO UPDATE SET study = EXCLUDED.study, treatment_a = EXCLUDED.treatment_a, treatment_b = EXCLUDED.treatment_b, adjustment_rationale = EXCLUDED.adjustment_rationale;
+
+INSERT INTO treatment_rankings (treatment_ranking_id, study, treatment_a, treatment_b, adjustment_rationale)
+VALUES ('field-goal-distance-A-vs-B', 'field-goal-distance', 'A', 'B', 'Confirmed confounder pre-registered in StratumVariables; stratification-adjusted estimate is epistemically appropriate for imported real study.') ON CONFLICT (treatment_ranking_id) DO UPDATE SET study = EXCLUDED.study, treatment_a = EXCLUDED.treatment_a, treatment_b = EXCLUDED.treatment_b, adjustment_rationale = EXCLUDED.adjustment_rationale;
+
+INSERT INTO treatment_rankings (treatment_ranking_id, study, treatment_a, treatment_b, adjustment_rationale)
+VALUES ('golf-scoring-course-A-vs-B', 'golf-scoring-course', 'A', 'B', 'Confirmed confounder pre-registered in StratumVariables; stratification-adjusted estimate is epistemically appropriate for imported real study.') ON CONFLICT (treatment_ranking_id) DO UPDATE SET study = EXCLUDED.study, treatment_a = EXCLUDED.treatment_a, treatment_b = EXCLUDED.treatment_b, adjustment_rationale = EXCLUDED.adjustment_rationale;
+
+INSERT INTO treatment_rankings (treatment_ranking_id, study, treatment_a, treatment_b, adjustment_rationale)
+VALUES ('minimum-wage-region-A-vs-B', 'minimum-wage-region', 'A', 'B', 'Confirmed confounder pre-registered in StratumVariables; stratification-adjusted estimate is epistemically appropriate for imported real study.') ON CONFLICT (treatment_ranking_id) DO UPDATE SET study = EXCLUDED.study, treatment_a = EXCLUDED.treatment_a, treatment_b = EXCLUDED.treatment_b, adjustment_rationale = EXCLUDED.adjustment_rationale;
+
+INSERT INTO treatment_rankings (treatment_ranking_id, study, treatment_a, treatment_b, adjustment_rationale)
+VALUES ('returns-to-education-field-A-vs-B', 'returns-to-education-field', 'A', 'B', 'Causal role contested — geometric correction is available but adjustment requires caution about endogenous stratum choice.') ON CONFLICT (treatment_ranking_id) DO UPDATE SET study = EXCLUDED.study, treatment_a = EXCLUDED.treatment_a, treatment_b = EXCLUDED.treatment_b, adjustment_rationale = EXCLUDED.adjustment_rationale;
+
+INSERT INTO treatment_rankings (treatment_ranking_id, study, treatment_a, treatment_b, adjustment_rationale)
+VALUES ('unemployment-education-cycle-A-vs-B', 'unemployment-education-cycle', 'A', 'B', 'Confirmed confounder pre-registered in StratumVariables; stratification-adjusted estimate is epistemically appropriate for imported real study.') ON CONFLICT (treatment_ranking_id) DO UPDATE SET study = EXCLUDED.study, treatment_a = EXCLUDED.treatment_a, treatment_b = EXCLUDED.treatment_b, adjustment_rationale = EXCLUDED.adjustment_rationale;
+
+INSERT INTO treatment_rankings (treatment_ranking_id, study, treatment_a, treatment_b, adjustment_rationale)
+VALUES ('costa-rica-us-life-expectancy-A-vs-B', 'costa-rica-us-life-expectancy', 'A', 'B', 'Confirmed confounder pre-registered in StratumVariables; stratification-adjusted estimate is epistemically appropriate for imported real study.') ON CONFLICT (treatment_ranking_id) DO UPDATE SET study = EXCLUDED.study, treatment_a = EXCLUDED.treatment_a, treatment_b = EXCLUDED.treatment_b, adjustment_rationale = EXCLUDED.adjustment_rationale;
+
+INSERT INTO treatment_rankings (treatment_ranking_id, study, treatment_a, treatment_b, adjustment_rationale)
+VALUES ('fertility-income-country-A-vs-B', 'fertility-income-country', 'A', 'B', 'Confirmed confounder pre-registered in StratumVariables; stratification-adjusted estimate is epistemically appropriate for imported real study.') ON CONFLICT (treatment_ranking_id) DO UPDATE SET study = EXCLUDED.study, treatment_a = EXCLUDED.treatment_a, treatment_b = EXCLUDED.treatment_b, adjustment_rationale = EXCLUDED.adjustment_rationale;
+
+INSERT INTO treatment_rankings (treatment_ranking_id, study, treatment_a, treatment_b, adjustment_rationale)
+VALUES ('religiosity-happiness-country-A-vs-B', 'religiosity-happiness-country', 'A', 'B', 'Confirmed confounder pre-registered in StratumVariables; stratification-adjusted estimate is epistemically appropriate for imported real study.') ON CONFLICT (treatment_ranking_id) DO UPDATE SET study = EXCLUDED.study, treatment_a = EXCLUDED.treatment_a, treatment_b = EXCLUDED.treatment_b, adjustment_rationale = EXCLUDED.adjustment_rationale;
+
+INSERT INTO treatment_rankings (treatment_ranking_id, study, treatment_a, treatment_b, adjustment_rationale)
+VALUES ('voter-turnout-education-state-A-vs-B', 'voter-turnout-education-state', 'A', 'B', 'Confirmed confounder pre-registered in StratumVariables; stratification-adjusted estimate is epistemically appropriate for imported real study.') ON CONFLICT (treatment_ranking_id) DO UPDATE SET study = EXCLUDED.study, treatment_a = EXCLUDED.treatment_a, treatment_b = EXCLUDED.treatment_b, adjustment_rationale = EXCLUDED.adjustment_rationale;
+
+INSERT INTO treatment_rankings (treatment_ranking_id, study, treatment_a, treatment_b, adjustment_rationale)
+VALUES ('ad-ctr-platform-mix-A-vs-B', 'ad-ctr-platform-mix', 'A', 'B', 'Confirmed confounder pre-registered in StratumVariables; stratification-adjusted estimate is epistemically appropriate for imported real study.') ON CONFLICT (treatment_ranking_id) DO UPDATE SET study = EXCLUDED.study, treatment_a = EXCLUDED.treatment_a, treatment_b = EXCLUDED.treatment_b, adjustment_rationale = EXCLUDED.adjustment_rationale;
+
 -- ----------------------------------------------------------------------------
 -- InvariantChecks: Table: InvariantChecks — one row per algebraic invariant across the 40-study validation corpus. PassCount and FailCount are populated by run_invariant_checks() in 05b-customize-data.sql. Any critical FailCount > 0 breaks the build.
 -- ----------------------------------------------------------------------------
@@ -2566,7 +4825,7 @@ INSERT INTO invariant_checks (invariant_check_id, algebraic_statement, natural_l
 VALUES ('inv-corrected-gap-sign', 'SIGN(CorrectedGap) = SIGN(WeightedStratumGapSum)', 'CorrectedGap is WeightedStratumGapSum; their signs must always agree.', 'TreatmentRankings', 'WeightedStratumGapSum IS NOT NULL', 'SIGN(corrected_gap) = SIGN(weighted_stratum_gap_sum)', 'weighted_stratum_gap_sum IS NOT NULL', 'SIGN(corrected_gap) = SIGN(weighted_stratum_gap_sum)', 40, 0, 'critical', 'tradition-dag', 'conc-11-reversal-recovery') ON CONFLICT (invariant_check_id) DO UPDATE SET algebraic_statement = EXCLUDED.algebraic_statement, natural_language = EXCLUDED.natural_language, source_table = EXCLUDED.source_table, filter_expression = EXCLUDED.filter_expression, assertion_expression = EXCLUDED.assertion_expression, sql_filter = EXCLUDED.sql_filter, sql_assertion = EXCLUDED.sql_assertion, pass_count = EXCLUDED.pass_count, fail_count = EXCLUDED.fail_count, severity = EXCLUDED.severity, tradition_id = EXCLUDED.tradition_id, protects_conclusion = EXCLUDED.protects_conclusion;
 
 INSERT INTO invariant_checks (invariant_check_id, algebraic_statement, natural_language, source_table, filter_expression, assertion_expression, sql_filter, sql_assertion, pass_count, fail_count, severity, tradition_id, protects_conclusion)
-VALUES ('inv-corrected-gap-invariant', 'SweepCorrectedGapRange < 0.0001 for every study', 'CorrectedGap must be constant across all allocation fractions for EVERY study in the sweep (all 40 studies). Each SweepStudySummary row must pass.', 'SweepStudySummary', '', 'sweep_corrected_gap_range < 0.0001', '', 'sweep_corrected_gap_range < 0.0001', 46, 0, 'critical', 'tradition-dag', 'conc-11-reversal-recovery') ON CONFLICT (invariant_check_id) DO UPDATE SET algebraic_statement = EXCLUDED.algebraic_statement, natural_language = EXCLUDED.natural_language, source_table = EXCLUDED.source_table, filter_expression = EXCLUDED.filter_expression, assertion_expression = EXCLUDED.assertion_expression, sql_filter = EXCLUDED.sql_filter, sql_assertion = EXCLUDED.sql_assertion, pass_count = EXCLUDED.pass_count, fail_count = EXCLUDED.fail_count, severity = EXCLUDED.severity, tradition_id = EXCLUDED.tradition_id, protects_conclusion = EXCLUDED.protects_conclusion;
+VALUES ('inv-corrected-gap-invariant', 'SweepCorrectedGapRange < 0.0001 for every study', 'CorrectedGap must be constant across all allocation fractions for EVERY study in the sweep (all 40 studies). Each SweepStudySummary row must pass.', 'SweepStudySummary', '', 'sweep_corrected_gap_range < 0.0001', '', 'sweep_corrected_gap_range < 0.0001', 96, 0, 'critical', 'tradition-dag', 'conc-11-reversal-recovery') ON CONFLICT (invariant_check_id) DO UPDATE SET algebraic_statement = EXCLUDED.algebraic_statement, natural_language = EXCLUDED.natural_language, source_table = EXCLUDED.source_table, filter_expression = EXCLUDED.filter_expression, assertion_expression = EXCLUDED.assertion_expression, sql_filter = EXCLUDED.sql_filter, sql_assertion = EXCLUDED.sql_assertion, pass_count = EXCLUDED.pass_count, fail_count = EXCLUDED.fail_count, severity = EXCLUDED.severity, tradition_id = EXCLUDED.tradition_id, protects_conclusion = EXCLUDED.protects_conclusion;
 
 INSERT INTO invariant_checks (invariant_check_id, algebraic_statement, natural_language, source_table, filter_expression, assertion_expression, sql_filter, sql_assertion, pass_count, fail_count, severity, tradition_id, protects_conclusion)
 VALUES ('inv-pooled-gap-wanders', 'Type A/B → SweepPooledGapRange > 0.01', 'Pooled gap should move under allocation reweighting for reversal studies. Warning-only: small-magnitude reversals may have narrow sweep range.', 'SweepStudySummary', 'DistortionTypeLabel IN (''A'',''B'')', 'sweep_pooled_gap_range > 0.01', 'distortion_type_label IN (''A'', ''B'')', 'sweep_pooled_gap_range > 0.01', 12, 0, 'warning', 'tradition-historical', 'conc-03-binary-excludes-partial') ON CONFLICT (invariant_check_id) DO UPDATE SET algebraic_statement = EXCLUDED.algebraic_statement, natural_language = EXCLUDED.natural_language, source_table = EXCLUDED.source_table, filter_expression = EXCLUDED.filter_expression, assertion_expression = EXCLUDED.assertion_expression, sql_filter = EXCLUDED.sql_filter, sql_assertion = EXCLUDED.sql_assertion, pass_count = EXCLUDED.pass_count, fail_count = EXCLUDED.fail_count, severity = EXCLUDED.severity, tradition_id = EXCLUDED.tradition_id, protects_conclusion = EXCLUDED.protects_conclusion;
@@ -2590,10 +4849,10 @@ INSERT INTO invariant_checks (invariant_check_id, algebraic_statement, natural_l
 VALUES ('inv-ingestion-contract', 'IngestionContractPasses = TRUE', 'Every CaseCell satisfies the ingestion validity predicate; every real study has a pre-registered confounder.', 'IngestionSummary', '', 'IngestionContractPasses = TRUE', '', 'ingestion_contract_passes = TRUE', 1, 0, 'critical', 'tradition-epidemiology', NULL) ON CONFLICT (invariant_check_id) DO UPDATE SET algebraic_statement = EXCLUDED.algebraic_statement, natural_language = EXCLUDED.natural_language, source_table = EXCLUDED.source_table, filter_expression = EXCLUDED.filter_expression, assertion_expression = EXCLUDED.assertion_expression, sql_filter = EXCLUDED.sql_filter, sql_assertion = EXCLUDED.sql_assertion, pass_count = EXCLUDED.pass_count, fail_count = EXCLUDED.fail_count, severity = EXCLUDED.severity, tradition_id = EXCLUDED.tradition_id, protects_conclusion = EXCLUDED.protects_conclusion;
 
 INSERT INTO invariant_checks (invariant_check_id, algebraic_statement, natural_language, source_table, filter_expression, assertion_expression, sql_filter, sql_assertion, pass_count, fail_count, severity, tradition_id, protects_conclusion)
-VALUES ('inv-import-session-ready', 'CandidateCount = 0', 'Post loop-55 bulk import: zero catalog rows remain with IngestionStatus=candidate.', 'CorpusCatalogSummary', '', 'CandidateCount = 0', '', 'candidate_count = 0', 1, 0, 'critical', 'tradition-epidemiology', NULL) ON CONFLICT (invariant_check_id) DO UPDATE SET algebraic_statement = EXCLUDED.algebraic_statement, natural_language = EXCLUDED.natural_language, source_table = EXCLUDED.source_table, filter_expression = EXCLUDED.filter_expression, assertion_expression = EXCLUDED.assertion_expression, sql_filter = EXCLUDED.sql_filter, sql_assertion = EXCLUDED.sql_assertion, pass_count = EXCLUDED.pass_count, fail_count = EXCLUDED.fail_count, severity = EXCLUDED.severity, tradition_id = EXCLUDED.tradition_id, protects_conclusion = EXCLUDED.protects_conclusion;
+VALUES ('inv-import-session-ready', 'CandidateCount = 0 (all encode-ready catalog rows imported)', 'Post loop-59: REAL? backlog drained; zero catalog rows remain with IngestionStatus=candidate (blocked rows excluded).', 'CorpusCatalogSummary', '', 'CandidateCount = 0', '', 'candidate_count = 0', 1, 0, 'critical', 'tradition-epidemiology', NULL) ON CONFLICT (invariant_check_id) DO UPDATE SET algebraic_statement = EXCLUDED.algebraic_statement, natural_language = EXCLUDED.natural_language, source_table = EXCLUDED.source_table, filter_expression = EXCLUDED.filter_expression, assertion_expression = EXCLUDED.assertion_expression, sql_filter = EXCLUDED.sql_filter, sql_assertion = EXCLUDED.sql_assertion, pass_count = EXCLUDED.pass_count, fail_count = EXCLUDED.fail_count, severity = EXCLUDED.severity, tradition_id = EXCLUDED.tradition_id, protects_conclusion = EXCLUDED.protects_conclusion;
 
 INSERT INTO invariant_checks (invariant_check_id, algebraic_statement, natural_language, source_table, filter_expression, assertion_expression, sql_filter, sql_assertion, pass_count, fail_count, severity, tradition_id, protects_conclusion)
-VALUES ('inv-catalog-imported-linked', 'IngestionStatus = imported → LinkedStudyId ∈ Studies', 'Every imported catalog row links to an existing Studies.StudyId.', 'CandidateStudyCatalog', 'IngestionStatus = imported', 'LinkedStudyId <> ""', 'ingestion_status = ''imported''', 'linked_study_id IS NOT NULL AND linked_study_id <> ''''', 43, 0, 'critical', 'tradition-dag', NULL) ON CONFLICT (invariant_check_id) DO UPDATE SET algebraic_statement = EXCLUDED.algebraic_statement, natural_language = EXCLUDED.natural_language, source_table = EXCLUDED.source_table, filter_expression = EXCLUDED.filter_expression, assertion_expression = EXCLUDED.assertion_expression, sql_filter = EXCLUDED.sql_filter, sql_assertion = EXCLUDED.sql_assertion, pass_count = EXCLUDED.pass_count, fail_count = EXCLUDED.fail_count, severity = EXCLUDED.severity, tradition_id = EXCLUDED.tradition_id, protects_conclusion = EXCLUDED.protects_conclusion;
+VALUES ('inv-catalog-imported-linked', 'IngestionStatus = imported → LinkedStudyId ∈ Studies', 'Every imported catalog row links to an existing Studies.StudyId.', 'CandidateStudyCatalog', 'IngestionStatus = imported', 'LinkedStudyId <> ""', 'ingestion_status = ''imported''', 'linked_study_id IS NOT NULL AND linked_study_id <> ''''', 93, 0, 'critical', 'tradition-dag', NULL) ON CONFLICT (invariant_check_id) DO UPDATE SET algebraic_statement = EXCLUDED.algebraic_statement, natural_language = EXCLUDED.natural_language, source_table = EXCLUDED.source_table, filter_expression = EXCLUDED.filter_expression, assertion_expression = EXCLUDED.assertion_expression, sql_filter = EXCLUDED.sql_filter, sql_assertion = EXCLUDED.sql_assertion, pass_count = EXCLUDED.pass_count, fail_count = EXCLUDED.fail_count, severity = EXCLUDED.severity, tradition_id = EXCLUDED.tradition_id, protects_conclusion = EXCLUDED.protects_conclusion;
 
 INSERT INTO invariant_checks (invariant_check_id, algebraic_statement, natural_language, source_table, filter_expression, assertion_expression, sql_filter, sql_assertion, pass_count, fail_count, severity, tradition_id, protects_conclusion)
 VALUES ('inv-type-a-ratio-negative', 'DistortionType = A → DistortionRatio ∈ (-1, 0)', 'Type-A studies have negative DistortionRatio with magnitude below 1 (attenuated sign flip).', 'TreatmentRankings', 'DistortionType = ''A''', 'DistortionRatio < 0 AND ABS(DistortionRatio) < 1', 'distortion_type = ''A''', 'distortion_ratio < 0 AND ABS(distortion_ratio) < 1', 6, 0, 'critical', 'tradition-historical', 'conc-01-paradox-is-derived') ON CONFLICT (invariant_check_id) DO UPDATE SET algebraic_statement = EXCLUDED.algebraic_statement, natural_language = EXCLUDED.natural_language, source_table = EXCLUDED.source_table, filter_expression = EXCLUDED.filter_expression, assertion_expression = EXCLUDED.assertion_expression, sql_filter = EXCLUDED.sql_filter, sql_assertion = EXCLUDED.sql_assertion, pass_count = EXCLUDED.pass_count, fail_count = EXCLUDED.fail_count, severity = EXCLUDED.severity, tradition_id = EXCLUDED.tradition_id, protects_conclusion = EXCLUDED.protects_conclusion;
@@ -2605,7 +4864,7 @@ INSERT INTO invariant_checks (invariant_check_id, algebraic_statement, natural_l
 VALUES ('inv-type-c-ratio-positive', 'DistortionType ∈ {C+,C-} → DistortionRatio > 0', 'Type-C studies have positive DistortionRatio (same direction, no sign flip).', 'TreatmentRankings', 'DistortionType IN (''C+'',''C-'')', 'DistortionRatio > 0', 'distortion_type LIKE ''C%''', 'distortion_ratio > 0', 7, 0, 'critical', 'tradition-historical', 'conc-04-type-c-exists') ON CONFLICT (invariant_check_id) DO UPDATE SET algebraic_statement = EXCLUDED.algebraic_statement, natural_language = EXCLUDED.natural_language, source_table = EXCLUDED.source_table, filter_expression = EXCLUDED.filter_expression, assertion_expression = EXCLUDED.assertion_expression, sql_filter = EXCLUDED.sql_filter, sql_assertion = EXCLUDED.sql_assertion, pass_count = EXCLUDED.pass_count, fail_count = EXCLUDED.fail_count, severity = EXCLUDED.severity, tradition_id = EXCLUDED.tradition_id, protects_conclusion = EXCLUDED.protects_conclusion;
 
 INSERT INTO invariant_checks (invariant_check_id, algebraic_statement, natural_language, source_table, filter_expression, assertion_expression, sql_filter, sql_assertion, pass_count, fail_count, severity, tradition_id, protects_conclusion)
-VALUES ('inv-type-d-ratio-near-unity', 'DistortionType = D → ABS(DistortionRatio - 1) < 0.15 OR |CorrectedGap| < 0.01', 'Type-D studies have ratio near 1 when signal exists; degenerate near-zero gaps may yield ratio far from 1 or NULL.', 'TreatmentRankings', 'DistortionType = ''D''', 'ABS(DistortionRatio - 1) < 0.15 OR ABS(CorrectedGap) < 0.01 OR DistortionRatio IS NULL', 'distortion_type = ''D''', 'ABS(distortion_ratio - 1) < 0.15 OR ABS(corrected_gap) < 0.01 OR distortion_ratio IS NULL', 21, 0, 'critical', 'tradition-historical', 'conc-02-reversal-from-allocation') ON CONFLICT (invariant_check_id) DO UPDATE SET algebraic_statement = EXCLUDED.algebraic_statement, natural_language = EXCLUDED.natural_language, source_table = EXCLUDED.source_table, filter_expression = EXCLUDED.filter_expression, assertion_expression = EXCLUDED.assertion_expression, sql_filter = EXCLUDED.sql_filter, sql_assertion = EXCLUDED.sql_assertion, pass_count = EXCLUDED.pass_count, fail_count = EXCLUDED.fail_count, severity = EXCLUDED.severity, tradition_id = EXCLUDED.tradition_id, protects_conclusion = EXCLUDED.protects_conclusion;
+VALUES ('inv-type-d-ratio-near-unity', 'DistortionType = D → ABS(DistortionRatio - 1) < 0.15 OR |CorrectedGap| < 0.01', 'Type-D studies have ratio near 1 when signal exists; degenerate near-zero gaps may yield ratio far from 1 or NULL.', 'TreatmentRankings', 'DistortionType = ''D''', 'ABS(DistortionRatio - 1) < 0.15 OR ABS(CorrectedGap) < 0.01 OR DistortionRatio IS NULL', 'distortion_type = ''D''', 'ABS(distortion_ratio - 1) < 0.15 OR ABS(corrected_gap) < 0.01 OR distortion_ratio IS NULL', 34, 0, 'critical', 'tradition-historical', 'conc-02-reversal-from-allocation') ON CONFLICT (invariant_check_id) DO UPDATE SET algebraic_statement = EXCLUDED.algebraic_statement, natural_language = EXCLUDED.natural_language, source_table = EXCLUDED.source_table, filter_expression = EXCLUDED.filter_expression, assertion_expression = EXCLUDED.assertion_expression, sql_filter = EXCLUDED.sql_filter, sql_assertion = EXCLUDED.sql_assertion, pass_count = EXCLUDED.pass_count, fail_count = EXCLUDED.fail_count, severity = EXCLUDED.severity, tradition_id = EXCLUDED.tradition_id, protects_conclusion = EXCLUDED.protects_conclusion;
 
 -- ----------------------------------------------------------------------------
 -- Methodology: Table: Methodology — the first-principles process used to build this domain model. Each row documents one methodological axiom or step. Together these rows let a reader (or an LLM) reconstruct why the model is shaped the way it is, and re-apply the same process to a new domain.
@@ -2734,7 +4993,7 @@ INSERT INTO ui_components (component_id, component_name, used_on_screens, primar
 VALUES ('comp-05-stratum-gap-waterfall', 'StratumGapWaterfall', 'screen-03-strata-detail', 'StratumSummaries', 'A waterfall chart showing how each stratum''s WeightedStratumGap contributes to WeightedStratumGapSum, then how the allocation re-weights them to produce SignedPooledGap. The visual makes the mechanism equation explicit: pooled = Σ(weight × rate).', 'StratumLabel, StratumGap, StratumFraction, WeightedStratumGap, WeightedStratumGapSum, SignedPooledGap', 'Waterfall/stacked bar: each stratum''s WeightedStratumGap as a segment; running sum shown; final total vs actual SignedPooledGap shown side-by-side. IsSignFlip highlights the sign difference.') ON CONFLICT (component_id) DO UPDATE SET component_name = EXCLUDED.component_name, used_on_screens = EXCLUDED.used_on_screens, primary_entity = EXCLUDED.primary_entity, description = EXCLUDED.description, required_fields = EXCLUDED.required_fields, visual_spec = EXCLUDED.visual_spec;
 
 INSERT INTO ui_components (component_id, component_name, used_on_screens, primary_entity, description, required_fields, visual_spec)
-VALUES ('comp-06-model-summary-scorecard', 'ModelSummaryScorecard', 'screen-06-model-summary', 'ModelSummary', 'A summary scorecard showing all ModelSummary fields as labeled metric tiles: StudyCount, ReversalCount, ExplainedCount, TypeA/B/C/D counts, AvgAllocationDistortion, TotalParadoxStrength.', 'StudyCount, ReversalCount, ExplainedCount, ZeroStrengthCount, TotalParadoxStrength, AvgParadoxStrength', 'Grid of metric tiles. Each tile: large number, small label. Color: ReversalCount in orange/red; ExplainedCount in green; TypeD in grey. Single row layout on desktop, 2-column on mobile.') ON CONFLICT (component_id) DO UPDATE SET component_name = EXCLUDED.component_name, used_on_screens = EXCLUDED.used_on_screens, primary_entity = EXCLUDED.primary_entity, description = EXCLUDED.description, required_fields = EXCLUDED.required_fields, visual_spec = EXCLUDED.visual_spec;
+VALUES ('comp-06-model-summary-scorecard', 'ModelSummaryScorecard', 'screen-06-model-summary', 'ModelSummary', 'A summary scorecard showing all ModelSummary fields as labeled metric tiles: StudyCount, ReversalCount, ExplainedCount, TypeA/B/C/D counts, AvgAllocationDistortion, TotalParadoxStrength.', 'StudyCount, ReversalCount, ExplainedCount, TotalParadoxStrength, AvgParadoxStrength', 'Grid of metric tiles. Each tile: large number, small label. Color: ReversalCount in orange/red; ExplainedCount in green; TypeD in grey. Single row layout on desktop, 2-column on mobile.') ON CONFLICT (component_id) DO UPDATE SET component_name = EXCLUDED.component_name, used_on_screens = EXCLUDED.used_on_screens, primary_entity = EXCLUDED.primary_entity, description = EXCLUDED.description, required_fields = EXCLUDED.required_fields, visual_spec = EXCLUDED.visual_spec;
 
 INSERT INTO ui_components (component_id, component_name, used_on_screens, primary_entity, description, required_fields, visual_spec)
 VALUES ('comp-07-confounder-card', 'ConfounderCard', 'screen-04-confounder-panel', 'StratumVariables', 'A card showing one StratumVariable row: VariableName, CausalRole badge, AffectsTreatmentAssignment checkbox, AffectsOutcome checkbox, IsConfounder result, and MechanismNote prose block.', 'VariableName, CausalRole, AffectsTreatmentAssignment, AffectsOutcome, IsConfounder, MechanismNote', 'Card with header=VariableName, CausalRole as a badge (confounder=red, mediator=orange, contested=yellow, unknown=grey), two boolean indicators, and MechanismNote as body text.') ON CONFLICT (component_id) DO UPDATE SET component_name = EXCLUDED.component_name, used_on_screens = EXCLUDED.used_on_screens, primary_entity = EXCLUDED.primary_entity, description = EXCLUDED.description, required_fields = EXCLUDED.required_fields, visual_spec = EXCLUDED.visual_spec;
@@ -4194,6 +6453,1506 @@ VALUES ('panama-sweden-mortality-1975-f085', 'panama-sweden-mortality-1975', 0.8
 INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
 VALUES ('panama-sweden-mortality-1975-f095', 'panama-sweden-mortality-1975', 0.95) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
 
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('hrt-whi-2002-f005', 'hrt-whi-2002', 0.05) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('hrt-whi-2002-f015', 'hrt-whi-2002', 0.15) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('hrt-whi-2002-f025', 'hrt-whi-2002', 0.25) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('hrt-whi-2002-f035', 'hrt-whi-2002', 0.35) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('hrt-whi-2002-f045', 'hrt-whi-2002', 0.45) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('hrt-whi-2002-f055', 'hrt-whi-2002', 0.55) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('hrt-whi-2002-f065', 'hrt-whi-2002', 0.65) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('hrt-whi-2002-f075', 'hrt-whi-2002', 0.75) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('hrt-whi-2002-f085', 'hrt-whi-2002', 0.85) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('hrt-whi-2002-f095', 'hrt-whi-2002', 0.95) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('obesity-paradox-hf-f005', 'obesity-paradox-hf', 0.05) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('obesity-paradox-hf-f015', 'obesity-paradox-hf', 0.15) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('obesity-paradox-hf-f025', 'obesity-paradox-hf', 0.25) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('obesity-paradox-hf-f035', 'obesity-paradox-hf', 0.35) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('obesity-paradox-hf-f045', 'obesity-paradox-hf', 0.45) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('obesity-paradox-hf-f055', 'obesity-paradox-hf', 0.55) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('obesity-paradox-hf-f065', 'obesity-paradox-hf', 0.65) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('obesity-paradox-hf-f075', 'obesity-paradox-hf', 0.75) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('obesity-paradox-hf-f085', 'obesity-paradox-hf', 0.85) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('obesity-paradox-hf-f095', 'obesity-paradox-hf', 0.95) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('dialysis-bmi-survival-f005', 'dialysis-bmi-survival', 0.05) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('dialysis-bmi-survival-f015', 'dialysis-bmi-survival', 0.15) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('dialysis-bmi-survival-f025', 'dialysis-bmi-survival', 0.25) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('dialysis-bmi-survival-f035', 'dialysis-bmi-survival', 0.35) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('dialysis-bmi-survival-f045', 'dialysis-bmi-survival', 0.45) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('dialysis-bmi-survival-f055', 'dialysis-bmi-survival', 0.55) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('dialysis-bmi-survival-f065', 'dialysis-bmi-survival', 0.65) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('dialysis-bmi-survival-f075', 'dialysis-bmi-survival', 0.75) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('dialysis-bmi-survival-f085', 'dialysis-bmi-survival', 0.85) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('dialysis-bmi-survival-f095', 'dialysis-bmi-survival', 0.95) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('sick-quitter-alcohol-f005', 'sick-quitter-alcohol', 0.05) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('sick-quitter-alcohol-f015', 'sick-quitter-alcohol', 0.15) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('sick-quitter-alcohol-f025', 'sick-quitter-alcohol', 0.25) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('sick-quitter-alcohol-f035', 'sick-quitter-alcohol', 0.35) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('sick-quitter-alcohol-f045', 'sick-quitter-alcohol', 0.45) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('sick-quitter-alcohol-f055', 'sick-quitter-alcohol', 0.55) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('sick-quitter-alcohol-f065', 'sick-quitter-alcohol', 0.65) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('sick-quitter-alcohol-f075', 'sick-quitter-alcohol', 0.75) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('sick-quitter-alcohol-f085', 'sick-quitter-alcohol', 0.85) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('sick-quitter-alcohol-f095', 'sick-quitter-alcohol', 0.95) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('flu-vaccine-elderly-mortality-f005', 'flu-vaccine-elderly-mortality', 0.05) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('flu-vaccine-elderly-mortality-f015', 'flu-vaccine-elderly-mortality', 0.15) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('flu-vaccine-elderly-mortality-f025', 'flu-vaccine-elderly-mortality', 0.25) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('flu-vaccine-elderly-mortality-f035', 'flu-vaccine-elderly-mortality', 0.35) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('flu-vaccine-elderly-mortality-f045', 'flu-vaccine-elderly-mortality', 0.45) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('flu-vaccine-elderly-mortality-f055', 'flu-vaccine-elderly-mortality', 0.55) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('flu-vaccine-elderly-mortality-f065', 'flu-vaccine-elderly-mortality', 0.65) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('flu-vaccine-elderly-mortality-f075', 'flu-vaccine-elderly-mortality', 0.75) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('flu-vaccine-elderly-mortality-f085', 'flu-vaccine-elderly-mortality', 0.85) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('flu-vaccine-elderly-mortality-f095', 'flu-vaccine-elderly-mortality', 0.95) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('covid-italy-china-cfr-2020-f005', 'covid-italy-china-cfr-2020', 0.05) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('covid-italy-china-cfr-2020-f015', 'covid-italy-china-cfr-2020', 0.15) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('covid-italy-china-cfr-2020-f025', 'covid-italy-china-cfr-2020', 0.25) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('covid-italy-china-cfr-2020-f035', 'covid-italy-china-cfr-2020', 0.35) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('covid-italy-china-cfr-2020-f045', 'covid-italy-china-cfr-2020', 0.45) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('covid-italy-china-cfr-2020-f055', 'covid-italy-china-cfr-2020', 0.55) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('covid-italy-china-cfr-2020-f065', 'covid-italy-china-cfr-2020', 0.65) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('covid-italy-china-cfr-2020-f075', 'covid-italy-china-cfr-2020', 0.75) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('covid-italy-china-cfr-2020-f085', 'covid-italy-china-cfr-2020', 0.85) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('covid-italy-china-cfr-2020-f095', 'covid-italy-china-cfr-2020', 0.95) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('israel-covid-severe-2021-f005', 'israel-covid-severe-2021', 0.05) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('israel-covid-severe-2021-f015', 'israel-covid-severe-2021', 0.15) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('israel-covid-severe-2021-f025', 'israel-covid-severe-2021', 0.25) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('israel-covid-severe-2021-f035', 'israel-covid-severe-2021', 0.35) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('israel-covid-severe-2021-f045', 'israel-covid-severe-2021', 0.45) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('israel-covid-severe-2021-f055', 'israel-covid-severe-2021', 0.55) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('israel-covid-severe-2021-f065', 'israel-covid-severe-2021', 0.65) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('israel-covid-severe-2021-f075', 'israel-covid-severe-2021', 0.75) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('israel-covid-severe-2021-f085', 'israel-covid-severe-2021', 0.85) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('israel-covid-severe-2021-f095', 'israel-covid-severe-2021', 0.95) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('cochran-smoking-1968-f005', 'cochran-smoking-1968', 0.05) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('cochran-smoking-1968-f015', 'cochran-smoking-1968', 0.15) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('cochran-smoking-1968-f025', 'cochran-smoking-1968', 0.25) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('cochran-smoking-1968-f035', 'cochran-smoking-1968', 0.35) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('cochran-smoking-1968-f045', 'cochran-smoking-1968', 0.45) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('cochran-smoking-1968-f055', 'cochran-smoking-1968', 0.55) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('cochran-smoking-1968-f065', 'cochran-smoking-1968', 0.65) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('cochran-smoking-1968-f075', 'cochran-smoking-1968', 0.75) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('cochran-smoking-1968-f085', 'cochran-smoking-1968', 0.85) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('cochran-smoking-1968-f095', 'cochran-smoking-1968', 0.95) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('healthy-worker-mortality-f005', 'healthy-worker-mortality', 0.05) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('healthy-worker-mortality-f015', 'healthy-worker-mortality', 0.15) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('healthy-worker-mortality-f025', 'healthy-worker-mortality', 0.25) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('healthy-worker-mortality-f035', 'healthy-worker-mortality', 0.35) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('healthy-worker-mortality-f045', 'healthy-worker-mortality', 0.45) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('healthy-worker-mortality-f055', 'healthy-worker-mortality', 0.55) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('healthy-worker-mortality-f065', 'healthy-worker-mortality', 0.65) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('healthy-worker-mortality-f075', 'healthy-worker-mortality', 0.75) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('healthy-worker-mortality-f085', 'healthy-worker-mortality', 0.85) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('healthy-worker-mortality-f095', 'healthy-worker-mortality', 0.95) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('compas-recidivism-base-f005', 'compas-recidivism-base', 0.05) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('compas-recidivism-base-f015', 'compas-recidivism-base', 0.15) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('compas-recidivism-base-f025', 'compas-recidivism-base', 0.25) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('compas-recidivism-base-f035', 'compas-recidivism-base', 0.35) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('compas-recidivism-base-f045', 'compas-recidivism-base', 0.45) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('compas-recidivism-base-f055', 'compas-recidivism-base', 0.55) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('compas-recidivism-base-f065', 'compas-recidivism-base', 0.65) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('compas-recidivism-base-f075', 'compas-recidivism-base', 0.75) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('compas-recidivism-base-f085', 'compas-recidivism-base', 0.85) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('compas-recidivism-base-f095', 'compas-recidivism-base', 0.95) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('us-wage-composition-stagnation-f005', 'us-wage-composition-stagnation', 0.05) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('us-wage-composition-stagnation-f015', 'us-wage-composition-stagnation', 0.15) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('us-wage-composition-stagnation-f025', 'us-wage-composition-stagnation', 0.25) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('us-wage-composition-stagnation-f035', 'us-wage-composition-stagnation', 0.35) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('us-wage-composition-stagnation-f045', 'us-wage-composition-stagnation', 0.45) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('us-wage-composition-stagnation-f055', 'us-wage-composition-stagnation', 0.55) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('us-wage-composition-stagnation-f065', 'us-wage-composition-stagnation', 0.65) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('us-wage-composition-stagnation-f075', 'us-wage-composition-stagnation', 0.75) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('us-wage-composition-stagnation-f085', 'us-wage-composition-stagnation', 0.85) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('us-wage-composition-stagnation-f095', 'us-wage-composition-stagnation', 0.95) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('borjas-immigrant-cohort-f005', 'borjas-immigrant-cohort', 0.05) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('borjas-immigrant-cohort-f015', 'borjas-immigrant-cohort', 0.15) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('borjas-immigrant-cohort-f025', 'borjas-immigrant-cohort', 0.25) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('borjas-immigrant-cohort-f035', 'borjas-immigrant-cohort', 0.35) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('borjas-immigrant-cohort-f045', 'borjas-immigrant-cohort', 0.45) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('borjas-immigrant-cohort-f055', 'borjas-immigrant-cohort', 0.55) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('borjas-immigrant-cohort-f065', 'borjas-immigrant-cohort', 0.65) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('borjas-immigrant-cohort-f075', 'borjas-immigrant-cohort', 0.75) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('borjas-immigrant-cohort-f085', 'borjas-immigrant-cohort', 0.85) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('borjas-immigrant-cohort-f095', 'borjas-immigrant-cohort', 0.95) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('robinson-1950-literacy-f005', 'robinson-1950-literacy', 0.05) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('robinson-1950-literacy-f015', 'robinson-1950-literacy', 0.15) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('robinson-1950-literacy-f025', 'robinson-1950-literacy', 0.25) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('robinson-1950-literacy-f035', 'robinson-1950-literacy', 0.35) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('robinson-1950-literacy-f045', 'robinson-1950-literacy', 0.45) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('robinson-1950-literacy-f055', 'robinson-1950-literacy', 0.55) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('robinson-1950-literacy-f065', 'robinson-1950-literacy', 0.65) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('robinson-1950-literacy-f075', 'robinson-1950-literacy', 0.75) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('robinson-1950-literacy-f085', 'robinson-1950-literacy', 0.85) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('robinson-1950-literacy-f095', 'robinson-1950-literacy', 0.95) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('ab-test-traffic-mix-f005', 'ab-test-traffic-mix', 0.05) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('ab-test-traffic-mix-f015', 'ab-test-traffic-mix', 0.15) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('ab-test-traffic-mix-f025', 'ab-test-traffic-mix', 0.25) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('ab-test-traffic-mix-f035', 'ab-test-traffic-mix', 0.35) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('ab-test-traffic-mix-f045', 'ab-test-traffic-mix', 0.45) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('ab-test-traffic-mix-f055', 'ab-test-traffic-mix', 0.55) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('ab-test-traffic-mix-f065', 'ab-test-traffic-mix', 0.65) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('ab-test-traffic-mix-f075', 'ab-test-traffic-mix', 0.75) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('ab-test-traffic-mix-f085', 'ab-test-traffic-mix', 0.85) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('ab-test-traffic-mix-f095', 'ab-test-traffic-mix', 0.95) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('recsys-offline-eval-f005', 'recsys-offline-eval', 0.05) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('recsys-offline-eval-f015', 'recsys-offline-eval', 0.15) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('recsys-offline-eval-f025', 'recsys-offline-eval', 0.25) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('recsys-offline-eval-f035', 'recsys-offline-eval', 0.35) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('recsys-offline-eval-f045', 'recsys-offline-eval', 0.45) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('recsys-offline-eval-f055', 'recsys-offline-eval', 0.55) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('recsys-offline-eval-f065', 'recsys-offline-eval', 0.65) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('recsys-offline-eval-f075', 'recsys-offline-eval', 0.75) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('recsys-offline-eval-f085', 'recsys-offline-eval', 0.85) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('recsys-offline-eval-f095', 'recsys-offline-eval', 0.95) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('collider-only-synthetic-f005', 'collider-only-synthetic', 0.05) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('collider-only-synthetic-f015', 'collider-only-synthetic', 0.15) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('collider-only-synthetic-f025', 'collider-only-synthetic', 0.25) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('collider-only-synthetic-f035', 'collider-only-synthetic', 0.35) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('collider-only-synthetic-f045', 'collider-only-synthetic', 0.45) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('collider-only-synthetic-f055', 'collider-only-synthetic', 0.55) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('collider-only-synthetic-f065', 'collider-only-synthetic', 0.65) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('collider-only-synthetic-f075', 'collider-only-synthetic', 0.75) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('collider-only-synthetic-f085', 'collider-only-synthetic', 0.85) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('collider-only-synthetic-f095', 'collider-only-synthetic', 0.95) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('noncollapsibility-or-synthetic-f005', 'noncollapsibility-or-synthetic', 0.05) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('noncollapsibility-or-synthetic-f015', 'noncollapsibility-or-synthetic', 0.15) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('noncollapsibility-or-synthetic-f025', 'noncollapsibility-or-synthetic', 0.25) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('noncollapsibility-or-synthetic-f035', 'noncollapsibility-or-synthetic', 0.35) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('noncollapsibility-or-synthetic-f045', 'noncollapsibility-or-synthetic', 0.45) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('noncollapsibility-or-synthetic-f055', 'noncollapsibility-or-synthetic', 0.55) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('noncollapsibility-or-synthetic-f065', 'noncollapsibility-or-synthetic', 0.65) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('noncollapsibility-or-synthetic-f075', 'noncollapsibility-or-synthetic', 0.75) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('noncollapsibility-or-synthetic-f085', 'noncollapsibility-or-synthetic', 0.85) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('noncollapsibility-or-synthetic-f095', 'noncollapsibility-or-synthetic', 0.95) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('trauma-center-mortality-f005', 'trauma-center-mortality', 0.05) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('trauma-center-mortality-f015', 'trauma-center-mortality', 0.15) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('trauma-center-mortality-f025', 'trauma-center-mortality', 0.25) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('trauma-center-mortality-f035', 'trauma-center-mortality', 0.35) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('trauma-center-mortality-f045', 'trauma-center-mortality', 0.45) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('trauma-center-mortality-f055', 'trauma-center-mortality', 0.55) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('trauma-center-mortality-f065', 'trauma-center-mortality', 0.65) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('trauma-center-mortality-f075', 'trauma-center-mortality', 0.75) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('trauma-center-mortality-f085', 'trauma-center-mortality', 0.85) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('trauma-center-mortality-f095', 'trauma-center-mortality', 0.95) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('surgeon-volume-mortality-f005', 'surgeon-volume-mortality', 0.05) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('surgeon-volume-mortality-f015', 'surgeon-volume-mortality', 0.15) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('surgeon-volume-mortality-f025', 'surgeon-volume-mortality', 0.25) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('surgeon-volume-mortality-f035', 'surgeon-volume-mortality', 0.35) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('surgeon-volume-mortality-f045', 'surgeon-volume-mortality', 0.45) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('surgeon-volume-mortality-f055', 'surgeon-volume-mortality', 0.55) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('surgeon-volume-mortality-f065', 'surgeon-volume-mortality', 0.65) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('surgeon-volume-mortality-f075', 'surgeon-volume-mortality', 0.75) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('surgeon-volume-mortality-f085', 'surgeon-volume-mortality', 0.85) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('surgeon-volume-mortality-f095', 'surgeon-volume-mortality', 0.95) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('mammography-length-bias-f005', 'mammography-length-bias', 0.05) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('mammography-length-bias-f015', 'mammography-length-bias', 0.15) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('mammography-length-bias-f025', 'mammography-length-bias', 0.25) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('mammography-length-bias-f035', 'mammography-length-bias', 0.35) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('mammography-length-bias-f045', 'mammography-length-bias', 0.45) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('mammography-length-bias-f055', 'mammography-length-bias', 0.55) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('mammography-length-bias-f065', 'mammography-length-bias', 0.65) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('mammography-length-bias-f075', 'mammography-length-bias', 0.75) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('mammography-length-bias-f085', 'mammography-length-bias', 0.85) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('mammography-length-bias-f095', 'mammography-length-bias', 0.95) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('cabg-vs-pci-severity-f005', 'cabg-vs-pci-severity', 0.05) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('cabg-vs-pci-severity-f015', 'cabg-vs-pci-severity', 0.15) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('cabg-vs-pci-severity-f025', 'cabg-vs-pci-severity', 0.25) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('cabg-vs-pci-severity-f035', 'cabg-vs-pci-severity', 0.35) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('cabg-vs-pci-severity-f045', 'cabg-vs-pci-severity', 0.45) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('cabg-vs-pci-severity-f055', 'cabg-vs-pci-severity', 0.55) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('cabg-vs-pci-severity-f065', 'cabg-vs-pci-severity', 0.65) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('cabg-vs-pci-severity-f075', 'cabg-vs-pci-severity', 0.75) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('cabg-vs-pci-severity-f085', 'cabg-vs-pci-severity', 0.85) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('cabg-vs-pci-severity-f095', 'cabg-vs-pci-severity', 0.95) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('tolbutamide-ugdp-1970-f005', 'tolbutamide-ugdp-1970', 0.05) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('tolbutamide-ugdp-1970-f015', 'tolbutamide-ugdp-1970', 0.15) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('tolbutamide-ugdp-1970-f025', 'tolbutamide-ugdp-1970', 0.25) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('tolbutamide-ugdp-1970-f035', 'tolbutamide-ugdp-1970', 0.35) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('tolbutamide-ugdp-1970-f045', 'tolbutamide-ugdp-1970', 0.45) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('tolbutamide-ugdp-1970-f055', 'tolbutamide-ugdp-1970', 0.55) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('tolbutamide-ugdp-1970-f065', 'tolbutamide-ugdp-1970', 0.65) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('tolbutamide-ugdp-1970-f075', 'tolbutamide-ugdp-1970', 0.75) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('tolbutamide-ugdp-1970-f085', 'tolbutamide-ugdp-1970', 0.85) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('tolbutamide-ugdp-1970-f095', 'tolbutamide-ugdp-1970', 0.95) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('snow-cholera-water-1855-f005', 'snow-cholera-water-1855', 0.05) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('snow-cholera-water-1855-f015', 'snow-cholera-water-1855', 0.15) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('snow-cholera-water-1855-f025', 'snow-cholera-water-1855', 0.25) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('snow-cholera-water-1855-f035', 'snow-cholera-water-1855', 0.35) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('snow-cholera-water-1855-f045', 'snow-cholera-water-1855', 0.45) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('snow-cholera-water-1855-f055', 'snow-cholera-water-1855', 0.55) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('snow-cholera-water-1855-f065', 'snow-cholera-water-1855', 0.65) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('snow-cholera-water-1855-f075', 'snow-cholera-water-1855', 0.75) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('snow-cholera-water-1855-f085', 'snow-cholera-water-1855', 0.85) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('snow-cholera-water-1855-f095', 'snow-cholera-water-1855', 0.95) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('seatbelt-crash-severity-f005', 'seatbelt-crash-severity', 0.05) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('seatbelt-crash-severity-f015', 'seatbelt-crash-severity', 0.15) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('seatbelt-crash-severity-f025', 'seatbelt-crash-severity', 0.25) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('seatbelt-crash-severity-f035', 'seatbelt-crash-severity', 0.35) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('seatbelt-crash-severity-f045', 'seatbelt-crash-severity', 0.45) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('seatbelt-crash-severity-f055', 'seatbelt-crash-severity', 0.55) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('seatbelt-crash-severity-f065', 'seatbelt-crash-severity', 0.65) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('seatbelt-crash-severity-f075', 'seatbelt-crash-severity', 0.75) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('seatbelt-crash-severity-f085', 'seatbelt-crash-severity', 0.85) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('seatbelt-crash-severity-f095', 'seatbelt-crash-severity', 0.95) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('measles-outbreak-vaccinated-f005', 'measles-outbreak-vaccinated', 0.05) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('measles-outbreak-vaccinated-f015', 'measles-outbreak-vaccinated', 0.15) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('measles-outbreak-vaccinated-f025', 'measles-outbreak-vaccinated', 0.25) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('measles-outbreak-vaccinated-f035', 'measles-outbreak-vaccinated', 0.35) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('measles-outbreak-vaccinated-f045', 'measles-outbreak-vaccinated', 0.45) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('measles-outbreak-vaccinated-f055', 'measles-outbreak-vaccinated', 0.55) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('measles-outbreak-vaccinated-f065', 'measles-outbreak-vaccinated', 0.65) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('measles-outbreak-vaccinated-f075', 'measles-outbreak-vaccinated', 0.75) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('measles-outbreak-vaccinated-f085', 'measles-outbreak-vaccinated', 0.85) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('measles-outbreak-vaccinated-f095', 'measles-outbreak-vaccinated', 0.95) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('air-pollution-mortality-city-f005', 'air-pollution-mortality-city', 0.05) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('air-pollution-mortality-city-f015', 'air-pollution-mortality-city', 0.15) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('air-pollution-mortality-city-f025', 'air-pollution-mortality-city', 0.25) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('air-pollution-mortality-city-f035', 'air-pollution-mortality-city', 0.35) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('air-pollution-mortality-city-f045', 'air-pollution-mortality-city', 0.45) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('air-pollution-mortality-city-f055', 'air-pollution-mortality-city', 0.55) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('air-pollution-mortality-city-f065', 'air-pollution-mortality-city', 0.65) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('air-pollution-mortality-city-f075', 'air-pollution-mortality-city', 0.75) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('air-pollution-mortality-city-f085', 'air-pollution-mortality-city', 0.85) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('air-pollution-mortality-city-f095', 'air-pollution-mortality-city', 0.95) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('tb-treatment-resistance-f005', 'tb-treatment-resistance', 0.05) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('tb-treatment-resistance-f015', 'tb-treatment-resistance', 0.15) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('tb-treatment-resistance-f025', 'tb-treatment-resistance', 0.25) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('tb-treatment-resistance-f035', 'tb-treatment-resistance', 0.35) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('tb-treatment-resistance-f045', 'tb-treatment-resistance', 0.45) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('tb-treatment-resistance-f055', 'tb-treatment-resistance', 0.55) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('tb-treatment-resistance-f065', 'tb-treatment-resistance', 0.65) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('tb-treatment-resistance-f075', 'tb-treatment-resistance', 0.75) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('tb-treatment-resistance-f085', 'tb-treatment-resistance', 0.85) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('tb-treatment-resistance-f095', 'tb-treatment-resistance', 0.95) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('hospital-mortality-readmission-f005', 'hospital-mortality-readmission', 0.05) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('hospital-mortality-readmission-f015', 'hospital-mortality-readmission', 0.15) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('hospital-mortality-readmission-f025', 'hospital-mortality-readmission', 0.25) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('hospital-mortality-readmission-f035', 'hospital-mortality-readmission', 0.35) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('hospital-mortality-readmission-f045', 'hospital-mortality-readmission', 0.45) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('hospital-mortality-readmission-f055', 'hospital-mortality-readmission', 0.55) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('hospital-mortality-readmission-f065', 'hospital-mortality-readmission', 0.65) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('hospital-mortality-readmission-f075', 'hospital-mortality-readmission', 0.75) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('hospital-mortality-readmission-f085', 'hospital-mortality-readmission', 0.85) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('hospital-mortality-readmission-f095', 'hospital-mortality-readmission', 0.95) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('nypd-stop-frisk-hitrate-f005', 'nypd-stop-frisk-hitrate', 0.05) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('nypd-stop-frisk-hitrate-f015', 'nypd-stop-frisk-hitrate', 0.15) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('nypd-stop-frisk-hitrate-f025', 'nypd-stop-frisk-hitrate', 0.25) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('nypd-stop-frisk-hitrate-f035', 'nypd-stop-frisk-hitrate', 0.35) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('nypd-stop-frisk-hitrate-f045', 'nypd-stop-frisk-hitrate', 0.45) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('nypd-stop-frisk-hitrate-f055', 'nypd-stop-frisk-hitrate', 0.55) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('nypd-stop-frisk-hitrate-f065', 'nypd-stop-frisk-hitrate', 0.65) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('nypd-stop-frisk-hitrate-f075', 'nypd-stop-frisk-hitrate', 0.75) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('nypd-stop-frisk-hitrate-f085', 'nypd-stop-frisk-hitrate', 0.85) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('nypd-stop-frisk-hitrate-f095', 'nypd-stop-frisk-hitrate', 0.95) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('sentencing-offense-type-f005', 'sentencing-offense-type', 0.05) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('sentencing-offense-type-f015', 'sentencing-offense-type', 0.15) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('sentencing-offense-type-f025', 'sentencing-offense-type', 0.25) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('sentencing-offense-type-f035', 'sentencing-offense-type', 0.35) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('sentencing-offense-type-f045', 'sentencing-offense-type', 0.45) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('sentencing-offense-type-f055', 'sentencing-offense-type', 0.55) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('sentencing-offense-type-f065', 'sentencing-offense-type', 0.65) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('sentencing-offense-type-f075', 'sentencing-offense-type', 0.75) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('sentencing-offense-type-f085', 'sentencing-offense-type', 0.85) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('sentencing-offense-type-f095', 'sentencing-offense-type', 0.95) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('bail-risk-score-f005', 'bail-risk-score', 0.05) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('bail-risk-score-f015', 'bail-risk-score', 0.15) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('bail-risk-score-f025', 'bail-risk-score', 0.25) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('bail-risk-score-f035', 'bail-risk-score', 0.35) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('bail-risk-score-f045', 'bail-risk-score', 0.45) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('bail-risk-score-f055', 'bail-risk-score', 0.55) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('bail-risk-score-f065', 'bail-risk-score', 0.65) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('bail-risk-score-f075', 'bail-risk-score', 0.75) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('bail-risk-score-f085', 'bail-risk-score', 0.85) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('bail-risk-score-f095', 'bail-risk-score', 0.95) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('police-force-encounter-f005', 'police-force-encounter', 0.05) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('police-force-encounter-f015', 'police-force-encounter', 0.15) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('police-force-encounter-f025', 'police-force-encounter', 0.25) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('police-force-encounter-f035', 'police-force-encounter', 0.35) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('police-force-encounter-f045', 'police-force-encounter', 0.45) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('police-force-encounter-f055', 'police-force-encounter', 0.55) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('police-force-encounter-f065', 'police-force-encounter', 0.65) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('police-force-encounter-f075', 'police-force-encounter', 0.75) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('police-force-encounter-f085', 'police-force-encounter', 0.85) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('police-force-encounter-f095', 'police-force-encounter', 0.95) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('uc-systemwide-admissions-f005', 'uc-systemwide-admissions', 0.05) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('uc-systemwide-admissions-f015', 'uc-systemwide-admissions', 0.15) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('uc-systemwide-admissions-f025', 'uc-systemwide-admissions', 0.25) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('uc-systemwide-admissions-f035', 'uc-systemwide-admissions', 0.35) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('uc-systemwide-admissions-f045', 'uc-systemwide-admissions', 0.45) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('uc-systemwide-admissions-f055', 'uc-systemwide-admissions', 0.55) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('uc-systemwide-admissions-f065', 'uc-systemwide-admissions', 0.65) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('uc-systemwide-admissions-f075', 'uc-systemwide-admissions', 0.75) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('uc-systemwide-admissions-f085', 'uc-systemwide-admissions', 0.85) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('uc-systemwide-admissions-f095', 'uc-systemwide-admissions', 0.95) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('teacher-vam-prior-achievement-f005', 'teacher-vam-prior-achievement', 0.05) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('teacher-vam-prior-achievement-f015', 'teacher-vam-prior-achievement', 0.15) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('teacher-vam-prior-achievement-f025', 'teacher-vam-prior-achievement', 0.25) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('teacher-vam-prior-achievement-f035', 'teacher-vam-prior-achievement', 0.35) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('teacher-vam-prior-achievement-f045', 'teacher-vam-prior-achievement', 0.45) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('teacher-vam-prior-achievement-f055', 'teacher-vam-prior-achievement', 0.55) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('teacher-vam-prior-achievement-f065', 'teacher-vam-prior-achievement', 0.65) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('teacher-vam-prior-achievement-f075', 'teacher-vam-prior-achievement', 0.75) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('teacher-vam-prior-achievement-f085', 'teacher-vam-prior-achievement', 0.85) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('teacher-vam-prior-achievement-f095', 'teacher-vam-prior-achievement', 0.95) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('naep-state-demographics-f005', 'naep-state-demographics', 0.05) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('naep-state-demographics-f015', 'naep-state-demographics', 0.15) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('naep-state-demographics-f025', 'naep-state-demographics', 0.25) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('naep-state-demographics-f035', 'naep-state-demographics', 0.35) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('naep-state-demographics-f045', 'naep-state-demographics', 0.45) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('naep-state-demographics-f055', 'naep-state-demographics', 0.55) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('naep-state-demographics-f065', 'naep-state-demographics', 0.65) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('naep-state-demographics-f075', 'naep-state-demographics', 0.75) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('naep-state-demographics-f085', 'naep-state-demographics', 0.85) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('naep-state-demographics-f095', 'naep-state-demographics', 0.95) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('college-grad-rate-selectivity-f005', 'college-grad-rate-selectivity', 0.05) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('college-grad-rate-selectivity-f015', 'college-grad-rate-selectivity', 0.15) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('college-grad-rate-selectivity-f025', 'college-grad-rate-selectivity', 0.25) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('college-grad-rate-selectivity-f035', 'college-grad-rate-selectivity', 0.35) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('college-grad-rate-selectivity-f045', 'college-grad-rate-selectivity', 0.45) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('college-grad-rate-selectivity-f055', 'college-grad-rate-selectivity', 0.55) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('college-grad-rate-selectivity-f065', 'college-grad-rate-selectivity', 0.65) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('college-grad-rate-selectivity-f075', 'college-grad-rate-selectivity', 0.75) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('college-grad-rate-selectivity-f085', 'college-grad-rate-selectivity', 0.85) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('college-grad-rate-selectivity-f095', 'college-grad-rate-selectivity', 0.95) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('star-class-size-f005', 'star-class-size', 0.05) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('star-class-size-f015', 'star-class-size', 0.15) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('star-class-size-f025', 'star-class-size', 0.25) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('star-class-size-f035', 'star-class-size', 0.35) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('star-class-size-f045', 'star-class-size', 0.45) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('star-class-size-f055', 'star-class-size', 0.55) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('star-class-size-f065', 'star-class-size', 0.65) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('star-class-size-f075', 'star-class-size', 0.75) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('star-class-size-f085', 'star-class-size', 0.85) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('star-class-size-f095', 'star-class-size', 0.95) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('nba-shooting-shot-mix-f005', 'nba-shooting-shot-mix', 0.05) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('nba-shooting-shot-mix-f015', 'nba-shooting-shot-mix', 0.15) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('nba-shooting-shot-mix-f025', 'nba-shooting-shot-mix', 0.25) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('nba-shooting-shot-mix-f035', 'nba-shooting-shot-mix', 0.35) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('nba-shooting-shot-mix-f045', 'nba-shooting-shot-mix', 0.45) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('nba-shooting-shot-mix-f055', 'nba-shooting-shot-mix', 0.55) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('nba-shooting-shot-mix-f065', 'nba-shooting-shot-mix', 0.65) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('nba-shooting-shot-mix-f075', 'nba-shooting-shot-mix', 0.75) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('nba-shooting-shot-mix-f085', 'nba-shooting-shot-mix', 0.85) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('nba-shooting-shot-mix-f095', 'nba-shooting-shot-mix', 0.95) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('pitcher-era-ballpark-f005', 'pitcher-era-ballpark', 0.05) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('pitcher-era-ballpark-f015', 'pitcher-era-ballpark', 0.15) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('pitcher-era-ballpark-f025', 'pitcher-era-ballpark', 0.25) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('pitcher-era-ballpark-f035', 'pitcher-era-ballpark', 0.35) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('pitcher-era-ballpark-f045', 'pitcher-era-ballpark', 0.45) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('pitcher-era-ballpark-f055', 'pitcher-era-ballpark', 0.55) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('pitcher-era-ballpark-f065', 'pitcher-era-ballpark', 0.65) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('pitcher-era-ballpark-f075', 'pitcher-era-ballpark', 0.75) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('pitcher-era-ballpark-f085', 'pitcher-era-ballpark', 0.85) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('pitcher-era-ballpark-f095', 'pitcher-era-ballpark', 0.95) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('nfl-completion-depth-f005', 'nfl-completion-depth', 0.05) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('nfl-completion-depth-f015', 'nfl-completion-depth', 0.15) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('nfl-completion-depth-f025', 'nfl-completion-depth', 0.25) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('nfl-completion-depth-f035', 'nfl-completion-depth', 0.35) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('nfl-completion-depth-f045', 'nfl-completion-depth', 0.45) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('nfl-completion-depth-f055', 'nfl-completion-depth', 0.55) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('nfl-completion-depth-f065', 'nfl-completion-depth', 0.65) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('nfl-completion-depth-f075', 'nfl-completion-depth', 0.75) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('nfl-completion-depth-f085', 'nfl-completion-depth', 0.85) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('nfl-completion-depth-f095', 'nfl-completion-depth', 0.95) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('field-goal-distance-f005', 'field-goal-distance', 0.05) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('field-goal-distance-f015', 'field-goal-distance', 0.15) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('field-goal-distance-f025', 'field-goal-distance', 0.25) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('field-goal-distance-f035', 'field-goal-distance', 0.35) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('field-goal-distance-f045', 'field-goal-distance', 0.45) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('field-goal-distance-f055', 'field-goal-distance', 0.55) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('field-goal-distance-f065', 'field-goal-distance', 0.65) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('field-goal-distance-f075', 'field-goal-distance', 0.75) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('field-goal-distance-f085', 'field-goal-distance', 0.85) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('field-goal-distance-f095', 'field-goal-distance', 0.95) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('golf-scoring-course-f005', 'golf-scoring-course', 0.05) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('golf-scoring-course-f015', 'golf-scoring-course', 0.15) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('golf-scoring-course-f025', 'golf-scoring-course', 0.25) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('golf-scoring-course-f035', 'golf-scoring-course', 0.35) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('golf-scoring-course-f045', 'golf-scoring-course', 0.45) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('golf-scoring-course-f055', 'golf-scoring-course', 0.55) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('golf-scoring-course-f065', 'golf-scoring-course', 0.65) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('golf-scoring-course-f075', 'golf-scoring-course', 0.75) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('golf-scoring-course-f085', 'golf-scoring-course', 0.85) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('golf-scoring-course-f095', 'golf-scoring-course', 0.95) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('minimum-wage-region-f005', 'minimum-wage-region', 0.05) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('minimum-wage-region-f015', 'minimum-wage-region', 0.15) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('minimum-wage-region-f025', 'minimum-wage-region', 0.25) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('minimum-wage-region-f035', 'minimum-wage-region', 0.35) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('minimum-wage-region-f045', 'minimum-wage-region', 0.45) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('minimum-wage-region-f055', 'minimum-wage-region', 0.55) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('minimum-wage-region-f065', 'minimum-wage-region', 0.65) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('minimum-wage-region-f075', 'minimum-wage-region', 0.75) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('minimum-wage-region-f085', 'minimum-wage-region', 0.85) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('minimum-wage-region-f095', 'minimum-wage-region', 0.95) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('returns-to-education-field-f005', 'returns-to-education-field', 0.05) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('returns-to-education-field-f015', 'returns-to-education-field', 0.15) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('returns-to-education-field-f025', 'returns-to-education-field', 0.25) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('returns-to-education-field-f035', 'returns-to-education-field', 0.35) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('returns-to-education-field-f045', 'returns-to-education-field', 0.45) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('returns-to-education-field-f055', 'returns-to-education-field', 0.55) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('returns-to-education-field-f065', 'returns-to-education-field', 0.65) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('returns-to-education-field-f075', 'returns-to-education-field', 0.75) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('returns-to-education-field-f085', 'returns-to-education-field', 0.85) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('returns-to-education-field-f095', 'returns-to-education-field', 0.95) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('unemployment-education-cycle-f005', 'unemployment-education-cycle', 0.05) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('unemployment-education-cycle-f015', 'unemployment-education-cycle', 0.15) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('unemployment-education-cycle-f025', 'unemployment-education-cycle', 0.25) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('unemployment-education-cycle-f035', 'unemployment-education-cycle', 0.35) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('unemployment-education-cycle-f045', 'unemployment-education-cycle', 0.45) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('unemployment-education-cycle-f055', 'unemployment-education-cycle', 0.55) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('unemployment-education-cycle-f065', 'unemployment-education-cycle', 0.65) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('unemployment-education-cycle-f075', 'unemployment-education-cycle', 0.75) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('unemployment-education-cycle-f085', 'unemployment-education-cycle', 0.85) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('unemployment-education-cycle-f095', 'unemployment-education-cycle', 0.95) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('costa-rica-us-life-expectancy-f005', 'costa-rica-us-life-expectancy', 0.05) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('costa-rica-us-life-expectancy-f015', 'costa-rica-us-life-expectancy', 0.15) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('costa-rica-us-life-expectancy-f025', 'costa-rica-us-life-expectancy', 0.25) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('costa-rica-us-life-expectancy-f035', 'costa-rica-us-life-expectancy', 0.35) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('costa-rica-us-life-expectancy-f045', 'costa-rica-us-life-expectancy', 0.45) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('costa-rica-us-life-expectancy-f055', 'costa-rica-us-life-expectancy', 0.55) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('costa-rica-us-life-expectancy-f065', 'costa-rica-us-life-expectancy', 0.65) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('costa-rica-us-life-expectancy-f075', 'costa-rica-us-life-expectancy', 0.75) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('costa-rica-us-life-expectancy-f085', 'costa-rica-us-life-expectancy', 0.85) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('costa-rica-us-life-expectancy-f095', 'costa-rica-us-life-expectancy', 0.95) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('fertility-income-country-f005', 'fertility-income-country', 0.05) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('fertility-income-country-f015', 'fertility-income-country', 0.15) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('fertility-income-country-f025', 'fertility-income-country', 0.25) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('fertility-income-country-f035', 'fertility-income-country', 0.35) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('fertility-income-country-f045', 'fertility-income-country', 0.45) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('fertility-income-country-f055', 'fertility-income-country', 0.55) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('fertility-income-country-f065', 'fertility-income-country', 0.65) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('fertility-income-country-f075', 'fertility-income-country', 0.75) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('fertility-income-country-f085', 'fertility-income-country', 0.85) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('fertility-income-country-f095', 'fertility-income-country', 0.95) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('religiosity-happiness-country-f005', 'religiosity-happiness-country', 0.05) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('religiosity-happiness-country-f015', 'religiosity-happiness-country', 0.15) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('religiosity-happiness-country-f025', 'religiosity-happiness-country', 0.25) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('religiosity-happiness-country-f035', 'religiosity-happiness-country', 0.35) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('religiosity-happiness-country-f045', 'religiosity-happiness-country', 0.45) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('religiosity-happiness-country-f055', 'religiosity-happiness-country', 0.55) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('religiosity-happiness-country-f065', 'religiosity-happiness-country', 0.65) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('religiosity-happiness-country-f075', 'religiosity-happiness-country', 0.75) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('religiosity-happiness-country-f085', 'religiosity-happiness-country', 0.85) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('religiosity-happiness-country-f095', 'religiosity-happiness-country', 0.95) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('voter-turnout-education-state-f005', 'voter-turnout-education-state', 0.05) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('voter-turnout-education-state-f015', 'voter-turnout-education-state', 0.15) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('voter-turnout-education-state-f025', 'voter-turnout-education-state', 0.25) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('voter-turnout-education-state-f035', 'voter-turnout-education-state', 0.35) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('voter-turnout-education-state-f045', 'voter-turnout-education-state', 0.45) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('voter-turnout-education-state-f055', 'voter-turnout-education-state', 0.55) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('voter-turnout-education-state-f065', 'voter-turnout-education-state', 0.65) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('voter-turnout-education-state-f075', 'voter-turnout-education-state', 0.75) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('voter-turnout-education-state-f085', 'voter-turnout-education-state', 0.85) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('voter-turnout-education-state-f095', 'voter-turnout-education-state', 0.95) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('ad-ctr-platform-mix-f005', 'ad-ctr-platform-mix', 0.05) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('ad-ctr-platform-mix-f015', 'ad-ctr-platform-mix', 0.15) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('ad-ctr-platform-mix-f025', 'ad-ctr-platform-mix', 0.25) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('ad-ctr-platform-mix-f035', 'ad-ctr-platform-mix', 0.35) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('ad-ctr-platform-mix-f045', 'ad-ctr-platform-mix', 0.45) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('ad-ctr-platform-mix-f055', 'ad-ctr-platform-mix', 0.55) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('ad-ctr-platform-mix-f065', 'ad-ctr-platform-mix', 0.65) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('ad-ctr-platform-mix-f075', 'ad-ctr-platform-mix', 0.75) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('ad-ctr-platform-mix-f085', 'ad-ctr-platform-mix', 0.85) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
+INSERT INTO allocation_sweep (sweep_id, study_id, alloc_fraction_a)
+VALUES ('ad-ctr-platform-mix-f095', 'ad-ctr-platform-mix', 0.95) ON CONFLICT (sweep_id) DO UPDATE SET study_id = EXCLUDED.study_id, alloc_fraction_a = EXCLUDED.alloc_fraction_a;
+
 -- ----------------------------------------------------------------------------
 -- SweepStudySummary: Seed data for SweepStudySummary
 -- ----------------------------------------------------------------------------
@@ -4334,6 +8093,156 @@ VALUES ('coffee-smoking-lung-1968') ON CONFLICT (sweep_study_id) DO NOTHING;
 
 INSERT INTO sweep_study_summary (sweep_study_id)
 VALUES ('panama-sweden-mortality-1975') ON CONFLICT (sweep_study_id) DO NOTHING;
+
+INSERT INTO sweep_study_summary (sweep_study_id)
+VALUES ('hrt-whi-2002') ON CONFLICT (sweep_study_id) DO NOTHING;
+
+INSERT INTO sweep_study_summary (sweep_study_id)
+VALUES ('obesity-paradox-hf') ON CONFLICT (sweep_study_id) DO NOTHING;
+
+INSERT INTO sweep_study_summary (sweep_study_id)
+VALUES ('dialysis-bmi-survival') ON CONFLICT (sweep_study_id) DO NOTHING;
+
+INSERT INTO sweep_study_summary (sweep_study_id)
+VALUES ('sick-quitter-alcohol') ON CONFLICT (sweep_study_id) DO NOTHING;
+
+INSERT INTO sweep_study_summary (sweep_study_id)
+VALUES ('flu-vaccine-elderly-mortality') ON CONFLICT (sweep_study_id) DO NOTHING;
+
+INSERT INTO sweep_study_summary (sweep_study_id)
+VALUES ('covid-italy-china-cfr-2020') ON CONFLICT (sweep_study_id) DO NOTHING;
+
+INSERT INTO sweep_study_summary (sweep_study_id)
+VALUES ('israel-covid-severe-2021') ON CONFLICT (sweep_study_id) DO NOTHING;
+
+INSERT INTO sweep_study_summary (sweep_study_id)
+VALUES ('cochran-smoking-1968') ON CONFLICT (sweep_study_id) DO NOTHING;
+
+INSERT INTO sweep_study_summary (sweep_study_id)
+VALUES ('healthy-worker-mortality') ON CONFLICT (sweep_study_id) DO NOTHING;
+
+INSERT INTO sweep_study_summary (sweep_study_id)
+VALUES ('compas-recidivism-base') ON CONFLICT (sweep_study_id) DO NOTHING;
+
+INSERT INTO sweep_study_summary (sweep_study_id)
+VALUES ('us-wage-composition-stagnation') ON CONFLICT (sweep_study_id) DO NOTHING;
+
+INSERT INTO sweep_study_summary (sweep_study_id)
+VALUES ('borjas-immigrant-cohort') ON CONFLICT (sweep_study_id) DO NOTHING;
+
+INSERT INTO sweep_study_summary (sweep_study_id)
+VALUES ('robinson-1950-literacy') ON CONFLICT (sweep_study_id) DO NOTHING;
+
+INSERT INTO sweep_study_summary (sweep_study_id)
+VALUES ('ab-test-traffic-mix') ON CONFLICT (sweep_study_id) DO NOTHING;
+
+INSERT INTO sweep_study_summary (sweep_study_id)
+VALUES ('recsys-offline-eval') ON CONFLICT (sweep_study_id) DO NOTHING;
+
+INSERT INTO sweep_study_summary (sweep_study_id)
+VALUES ('collider-only-synthetic') ON CONFLICT (sweep_study_id) DO NOTHING;
+
+INSERT INTO sweep_study_summary (sweep_study_id)
+VALUES ('noncollapsibility-or-synthetic') ON CONFLICT (sweep_study_id) DO NOTHING;
+
+INSERT INTO sweep_study_summary (sweep_study_id)
+VALUES ('trauma-center-mortality') ON CONFLICT (sweep_study_id) DO NOTHING;
+
+INSERT INTO sweep_study_summary (sweep_study_id)
+VALUES ('surgeon-volume-mortality') ON CONFLICT (sweep_study_id) DO NOTHING;
+
+INSERT INTO sweep_study_summary (sweep_study_id)
+VALUES ('mammography-length-bias') ON CONFLICT (sweep_study_id) DO NOTHING;
+
+INSERT INTO sweep_study_summary (sweep_study_id)
+VALUES ('cabg-vs-pci-severity') ON CONFLICT (sweep_study_id) DO NOTHING;
+
+INSERT INTO sweep_study_summary (sweep_study_id)
+VALUES ('tolbutamide-ugdp-1970') ON CONFLICT (sweep_study_id) DO NOTHING;
+
+INSERT INTO sweep_study_summary (sweep_study_id)
+VALUES ('snow-cholera-water-1855') ON CONFLICT (sweep_study_id) DO NOTHING;
+
+INSERT INTO sweep_study_summary (sweep_study_id)
+VALUES ('seatbelt-crash-severity') ON CONFLICT (sweep_study_id) DO NOTHING;
+
+INSERT INTO sweep_study_summary (sweep_study_id)
+VALUES ('measles-outbreak-vaccinated') ON CONFLICT (sweep_study_id) DO NOTHING;
+
+INSERT INTO sweep_study_summary (sweep_study_id)
+VALUES ('air-pollution-mortality-city') ON CONFLICT (sweep_study_id) DO NOTHING;
+
+INSERT INTO sweep_study_summary (sweep_study_id)
+VALUES ('tb-treatment-resistance') ON CONFLICT (sweep_study_id) DO NOTHING;
+
+INSERT INTO sweep_study_summary (sweep_study_id)
+VALUES ('hospital-mortality-readmission') ON CONFLICT (sweep_study_id) DO NOTHING;
+
+INSERT INTO sweep_study_summary (sweep_study_id)
+VALUES ('nypd-stop-frisk-hitrate') ON CONFLICT (sweep_study_id) DO NOTHING;
+
+INSERT INTO sweep_study_summary (sweep_study_id)
+VALUES ('sentencing-offense-type') ON CONFLICT (sweep_study_id) DO NOTHING;
+
+INSERT INTO sweep_study_summary (sweep_study_id)
+VALUES ('bail-risk-score') ON CONFLICT (sweep_study_id) DO NOTHING;
+
+INSERT INTO sweep_study_summary (sweep_study_id)
+VALUES ('police-force-encounter') ON CONFLICT (sweep_study_id) DO NOTHING;
+
+INSERT INTO sweep_study_summary (sweep_study_id)
+VALUES ('uc-systemwide-admissions') ON CONFLICT (sweep_study_id) DO NOTHING;
+
+INSERT INTO sweep_study_summary (sweep_study_id)
+VALUES ('teacher-vam-prior-achievement') ON CONFLICT (sweep_study_id) DO NOTHING;
+
+INSERT INTO sweep_study_summary (sweep_study_id)
+VALUES ('naep-state-demographics') ON CONFLICT (sweep_study_id) DO NOTHING;
+
+INSERT INTO sweep_study_summary (sweep_study_id)
+VALUES ('college-grad-rate-selectivity') ON CONFLICT (sweep_study_id) DO NOTHING;
+
+INSERT INTO sweep_study_summary (sweep_study_id)
+VALUES ('star-class-size') ON CONFLICT (sweep_study_id) DO NOTHING;
+
+INSERT INTO sweep_study_summary (sweep_study_id)
+VALUES ('nba-shooting-shot-mix') ON CONFLICT (sweep_study_id) DO NOTHING;
+
+INSERT INTO sweep_study_summary (sweep_study_id)
+VALUES ('pitcher-era-ballpark') ON CONFLICT (sweep_study_id) DO NOTHING;
+
+INSERT INTO sweep_study_summary (sweep_study_id)
+VALUES ('nfl-completion-depth') ON CONFLICT (sweep_study_id) DO NOTHING;
+
+INSERT INTO sweep_study_summary (sweep_study_id)
+VALUES ('field-goal-distance') ON CONFLICT (sweep_study_id) DO NOTHING;
+
+INSERT INTO sweep_study_summary (sweep_study_id)
+VALUES ('golf-scoring-course') ON CONFLICT (sweep_study_id) DO NOTHING;
+
+INSERT INTO sweep_study_summary (sweep_study_id)
+VALUES ('minimum-wage-region') ON CONFLICT (sweep_study_id) DO NOTHING;
+
+INSERT INTO sweep_study_summary (sweep_study_id)
+VALUES ('returns-to-education-field') ON CONFLICT (sweep_study_id) DO NOTHING;
+
+INSERT INTO sweep_study_summary (sweep_study_id)
+VALUES ('unemployment-education-cycle') ON CONFLICT (sweep_study_id) DO NOTHING;
+
+INSERT INTO sweep_study_summary (sweep_study_id)
+VALUES ('costa-rica-us-life-expectancy') ON CONFLICT (sweep_study_id) DO NOTHING;
+
+INSERT INTO sweep_study_summary (sweep_study_id)
+VALUES ('fertility-income-country') ON CONFLICT (sweep_study_id) DO NOTHING;
+
+INSERT INTO sweep_study_summary (sweep_study_id)
+VALUES ('religiosity-happiness-country') ON CONFLICT (sweep_study_id) DO NOTHING;
+
+INSERT INTO sweep_study_summary (sweep_study_id)
+VALUES ('voter-turnout-education-state') ON CONFLICT (sweep_study_id) DO NOTHING;
+
+INSERT INTO sweep_study_summary (sweep_study_id)
+VALUES ('ad-ctr-platform-mix') ON CONFLICT (sweep_study_id) DO NOTHING;
 
 -- ----------------------------------------------------------------------------
 -- ResearchTraditions: Table: ResearchTraditions — the six scholarly lineages that have engaged with Simpson's Paradox. Each row is a named intellectual tradition, not a specific paper or result.
@@ -5340,6 +9249,156 @@ VALUES ('cand-hanley-power', 'hanley-power-lines-2000', 'Childhood Leukemia and 
 INSERT INTO candidate_study_catalog (candidate_id, proposed_study_id, title, citation, source_url, domain, stratum_variable_name, expected_distortion_type, ingestion_status, priority, stratum_count_estimate, data_source_note, linked_study_id, publication_year)
 VALUES ('cand-coffee-smoking', 'coffee-smoking-lung-1968', 'Coffee and Lung Cancer by Smoking Status (confounding classic)', 'Cornfield et al. / Appleton-style 2×2 tables; smoker stratum confounds coffee-cancer association.', '', 'epidemiology', 'smoking_status', 'A', 'imported', 0, 2, 'Imported loop-57. Coffee appears protective pooled but harmful within smokers / null within nonsmokers.', 'coffee-smoking-lung-1968', 1968) ON CONFLICT (candidate_id) DO UPDATE SET proposed_study_id = EXCLUDED.proposed_study_id, title = EXCLUDED.title, citation = EXCLUDED.citation, source_url = EXCLUDED.source_url, domain = EXCLUDED.domain, stratum_variable_name = EXCLUDED.stratum_variable_name, expected_distortion_type = EXCLUDED.expected_distortion_type, ingestion_status = EXCLUDED.ingestion_status, priority = EXCLUDED.priority, stratum_count_estimate = EXCLUDED.stratum_count_estimate, data_source_note = EXCLUDED.data_source_note, linked_study_id = EXCLUDED.linked_study_id, publication_year = EXCLUDED.publication_year;
 
+INSERT INTO candidate_study_catalog (candidate_id, proposed_study_id, title, citation, source_url, domain, stratum_variable_name, expected_distortion_type, ingestion_status, priority, stratum_count_estimate, data_source_note, linked_study_id, publication_year)
+VALUES ('cand-hrt-whi-2002', 'hrt-whi-2002', 'HRT and CHD: Observational vs WHI RCT (2002)', 'Writing Group for the WHI Investigators. JAMA 2002;288:321-333. Observational vs RCT design as strata.', '', 'medicine', 'study_design', 'A', 'imported', 0, 2, 'Imported loop-58. Prov: DOC. Cross-design reversal: HRT protective observationally, harmful in WHI RCT.', 'hrt-whi-2002', 2002) ON CONFLICT (candidate_id) DO UPDATE SET proposed_study_id = EXCLUDED.proposed_study_id, title = EXCLUDED.title, citation = EXCLUDED.citation, source_url = EXCLUDED.source_url, domain = EXCLUDED.domain, stratum_variable_name = EXCLUDED.stratum_variable_name, expected_distortion_type = EXCLUDED.expected_distortion_type, ingestion_status = EXCLUDED.ingestion_status, priority = EXCLUDED.priority, stratum_count_estimate = EXCLUDED.stratum_count_estimate, data_source_note = EXCLUDED.data_source_note, linked_study_id = EXCLUDED.linked_study_id, publication_year = EXCLUDED.publication_year;
+
+INSERT INTO candidate_study_catalog (candidate_id, proposed_study_id, title, citation, source_url, domain, stratum_variable_name, expected_distortion_type, ingestion_status, priority, stratum_count_estimate, data_source_note, linked_study_id, publication_year)
+VALUES ('cand-obesity-paradox-hf', 'obesity-paradox-hf', 'Obesity Paradox in Heart Failure', 'Gruberg L et al. Am Heart J 2003. Obesity and mortality in HF vs general population.', '', 'medicine', 'heart_failure_status', 'B', 'imported', 0, 2, 'Imported loop-58. Prov: DOC. Collider/selection: conditioning on HF status reverses obesity-mortality association.', 'obesity-paradox-hf', 2003) ON CONFLICT (candidate_id) DO UPDATE SET proposed_study_id = EXCLUDED.proposed_study_id, title = EXCLUDED.title, citation = EXCLUDED.citation, source_url = EXCLUDED.source_url, domain = EXCLUDED.domain, stratum_variable_name = EXCLUDED.stratum_variable_name, expected_distortion_type = EXCLUDED.expected_distortion_type, ingestion_status = EXCLUDED.ingestion_status, priority = EXCLUDED.priority, stratum_count_estimate = EXCLUDED.stratum_count_estimate, data_source_note = EXCLUDED.data_source_note, linked_study_id = EXCLUDED.linked_study_id, publication_year = EXCLUDED.publication_year;
+
+INSERT INTO candidate_study_catalog (candidate_id, proposed_study_id, title, citation, source_url, domain, stratum_variable_name, expected_distortion_type, ingestion_status, priority, stratum_count_estimate, data_source_note, linked_study_id, publication_year)
+VALUES ('cand-dialysis-bmi-survival', 'dialysis-bmi-survival', 'Dialysis BMI Survival Paradox (Reverse Epidemiology)', 'Kalantar-Zadeh K et al. Kidney Int 2003. Reverse epidemiology in ESRD.', '', 'medicine', 'esrd_status', 'B', 'imported', 0, 2, 'Imported loop-58. Prov: DOC. Second collider case: higher BMI protective among dialysis patients only.', 'dialysis-bmi-survival', 2001) ON CONFLICT (candidate_id) DO UPDATE SET proposed_study_id = EXCLUDED.proposed_study_id, title = EXCLUDED.title, citation = EXCLUDED.citation, source_url = EXCLUDED.source_url, domain = EXCLUDED.domain, stratum_variable_name = EXCLUDED.stratum_variable_name, expected_distortion_type = EXCLUDED.expected_distortion_type, ingestion_status = EXCLUDED.ingestion_status, priority = EXCLUDED.priority, stratum_count_estimate = EXCLUDED.stratum_count_estimate, data_source_note = EXCLUDED.data_source_note, linked_study_id = EXCLUDED.linked_study_id, publication_year = EXCLUDED.publication_year;
+
+INSERT INTO candidate_study_catalog (candidate_id, proposed_study_id, title, citation, source_url, domain, stratum_variable_name, expected_distortion_type, ingestion_status, priority, stratum_count_estimate, data_source_note, linked_study_id, publication_year)
+VALUES ('cand-sick-quitter-alcohol', 'sick-quitter-alcohol', 'Sick-Quitter Alcohol J-Curve (Abstainer Bias)', 'Shaper AG et al. BMJ 1988;297:911-916. Former drinkers in abstainer reference group.', '', 'medicine', 'abstainer_composition', 'B', 'imported', 0, 2, 'Imported loop-58. Prov: DOC. Abstainer composition bias; causal role contested (sick-quitter vs confounding).', 'sick-quitter-alcohol', 1988) ON CONFLICT (candidate_id) DO UPDATE SET proposed_study_id = EXCLUDED.proposed_study_id, title = EXCLUDED.title, citation = EXCLUDED.citation, source_url = EXCLUDED.source_url, domain = EXCLUDED.domain, stratum_variable_name = EXCLUDED.stratum_variable_name, expected_distortion_type = EXCLUDED.expected_distortion_type, ingestion_status = EXCLUDED.ingestion_status, priority = EXCLUDED.priority, stratum_count_estimate = EXCLUDED.stratum_count_estimate, data_source_note = EXCLUDED.data_source_note, linked_study_id = EXCLUDED.linked_study_id, publication_year = EXCLUDED.publication_year;
+
+INSERT INTO candidate_study_catalog (candidate_id, proposed_study_id, title, citation, source_url, domain, stratum_variable_name, expected_distortion_type, ingestion_status, priority, stratum_count_estimate, data_source_note, linked_study_id, publication_year)
+VALUES ('cand-flu-vaccine-elderly-mortality', 'flu-vaccine-elderly-mortality', 'Flu Vaccine and Elderly All-Cause Mortality (Frailty Selection)', 'Jackson LA et al. Int J Epidemiol 2006;35(2):347-352. Frailty confounding in elderly vaccine studies.', '', 'medicine', 'age_group', 'A', 'imported', 0, 2, 'Imported loop-58. Prov: DOC. Vaccinated elderly appear more likely to die before age adjustment.', 'flu-vaccine-elderly-mortality', 2005) ON CONFLICT (candidate_id) DO UPDATE SET proposed_study_id = EXCLUDED.proposed_study_id, title = EXCLUDED.title, citation = EXCLUDED.citation, source_url = EXCLUDED.source_url, domain = EXCLUDED.domain, stratum_variable_name = EXCLUDED.stratum_variable_name, expected_distortion_type = EXCLUDED.expected_distortion_type, ingestion_status = EXCLUDED.ingestion_status, priority = EXCLUDED.priority, stratum_count_estimate = EXCLUDED.stratum_count_estimate, data_source_note = EXCLUDED.data_source_note, linked_study_id = EXCLUDED.linked_study_id, publication_year = EXCLUDED.publication_year;
+
+INSERT INTO candidate_study_catalog (candidate_id, proposed_study_id, title, citation, source_url, domain, stratum_variable_name, expected_distortion_type, ingestion_status, priority, stratum_count_estimate, data_source_note, linked_study_id, publication_year)
+VALUES ('cand-trauma-center-mortality', 'trauma-center-mortality', 'Trauma Center Mortality and Injury Severity', 'Nathens AB et al. NEJM 2006. Case-mix confounding in trauma center comparisons.', '', 'medicine', 'injury_severity', 'A', 'imported', 0, 2, 'Imported loop-59. Prov: REAL?. Higher-level centers receive sicker patients; approximate 2xK from cited source.', 'trauma-center-mortality', 2006) ON CONFLICT (candidate_id) DO UPDATE SET proposed_study_id = EXCLUDED.proposed_study_id, title = EXCLUDED.title, citation = EXCLUDED.citation, source_url = EXCLUDED.source_url, domain = EXCLUDED.domain, stratum_variable_name = EXCLUDED.stratum_variable_name, expected_distortion_type = EXCLUDED.expected_distortion_type, ingestion_status = EXCLUDED.ingestion_status, priority = EXCLUDED.priority, stratum_count_estimate = EXCLUDED.stratum_count_estimate, data_source_note = EXCLUDED.data_source_note, linked_study_id = EXCLUDED.linked_study_id, publication_year = EXCLUDED.publication_year;
+
+INSERT INTO candidate_study_catalog (candidate_id, proposed_study_id, title, citation, source_url, domain, stratum_variable_name, expected_distortion_type, ingestion_status, priority, stratum_count_estimate, data_source_note, linked_study_id, publication_year)
+VALUES ('cand-surgeon-volume-mortality', 'surgeon-volume-mortality', 'Surgeon Volume and Operative Mortality', 'Birkmeyer JD et al. NEJM 2003. Referral confounding in volume-outcome studies.', '', 'medicine', 'baseline_risk', 'A', 'imported', 0, 2, 'Imported loop-59. Prov: REAL?. Sicker patients routed to high-volume surgeons; approximate 2xK from cited source.', 'surgeon-volume-mortality', 2003) ON CONFLICT (candidate_id) DO UPDATE SET proposed_study_id = EXCLUDED.proposed_study_id, title = EXCLUDED.title, citation = EXCLUDED.citation, source_url = EXCLUDED.source_url, domain = EXCLUDED.domain, stratum_variable_name = EXCLUDED.stratum_variable_name, expected_distortion_type = EXCLUDED.expected_distortion_type, ingestion_status = EXCLUDED.ingestion_status, priority = EXCLUDED.priority, stratum_count_estimate = EXCLUDED.stratum_count_estimate, data_source_note = EXCLUDED.data_source_note, linked_study_id = EXCLUDED.linked_study_id, publication_year = EXCLUDED.publication_year;
+
+INSERT INTO candidate_study_catalog (candidate_id, proposed_study_id, title, citation, source_url, domain, stratum_variable_name, expected_distortion_type, ingestion_status, priority, stratum_count_estimate, data_source_note, linked_study_id, publication_year)
+VALUES ('cand-mammography-length-bias', 'mammography-length-bias', 'Mammography Screening Length/Lead-Time Bias', 'Duffy SW et al. Lancet Oncol 2002. Screen-detected vs symptomatic survival paradox.', '', 'medicine', 'detection_mode', 'C+', 'imported', 0, 2, 'Imported loop-59. Prov: REAL?. Selection via detection mode; approximate 2xK from cited source.', 'mammography-length-bias', 2000) ON CONFLICT (candidate_id) DO UPDATE SET proposed_study_id = EXCLUDED.proposed_study_id, title = EXCLUDED.title, citation = EXCLUDED.citation, source_url = EXCLUDED.source_url, domain = EXCLUDED.domain, stratum_variable_name = EXCLUDED.stratum_variable_name, expected_distortion_type = EXCLUDED.expected_distortion_type, ingestion_status = EXCLUDED.ingestion_status, priority = EXCLUDED.priority, stratum_count_estimate = EXCLUDED.stratum_count_estimate, data_source_note = EXCLUDED.data_source_note, linked_study_id = EXCLUDED.linked_study_id, publication_year = EXCLUDED.publication_year;
+
+INSERT INTO candidate_study_catalog (candidate_id, proposed_study_id, title, citation, source_url, domain, stratum_variable_name, expected_distortion_type, ingestion_status, priority, stratum_count_estimate, data_source_note, linked_study_id, publication_year)
+VALUES ('cand-cabg-vs-pci-severity', 'cabg-vs-pci-severity', 'CABG vs PCI Revascularization by Disease Severity', 'Hannan EL et al. JACC 2009. Confounding by indication in revascularization choice.', '', 'medicine', 'coronary_severity', 'A', 'imported', 0, 2, 'Imported loop-59. Prov: REAL?. Complements hannan-1994; approximate 2xK from cited source.', 'cabg-vs-pci-severity', 2009) ON CONFLICT (candidate_id) DO UPDATE SET proposed_study_id = EXCLUDED.proposed_study_id, title = EXCLUDED.title, citation = EXCLUDED.citation, source_url = EXCLUDED.source_url, domain = EXCLUDED.domain, stratum_variable_name = EXCLUDED.stratum_variable_name, expected_distortion_type = EXCLUDED.expected_distortion_type, ingestion_status = EXCLUDED.ingestion_status, priority = EXCLUDED.priority, stratum_count_estimate = EXCLUDED.stratum_count_estimate, data_source_note = EXCLUDED.data_source_note, linked_study_id = EXCLUDED.linked_study_id, publication_year = EXCLUDED.publication_year;
+
+INSERT INTO candidate_study_catalog (candidate_id, proposed_study_id, title, citation, source_url, domain, stratum_variable_name, expected_distortion_type, ingestion_status, priority, stratum_count_estimate, data_source_note, linked_study_id, publication_year)
+VALUES ('cand-tolbutamide-ugdp-1970', 'tolbutamide-ugdp-1970', 'Tolbutamide UGDP Diabetes Trial (1970)', 'UGDP Investigators. Diabetes 1970. Contested multi-center diabetes drug trial.', '', 'medicine', 'center_baseline_risk', 'B', 'imported', 0, 2, 'Imported loop-59. Prov: REAL?. Historical contested adjudication; approximate 2xK from cited source.', 'tolbutamide-ugdp-1970', 1970) ON CONFLICT (candidate_id) DO UPDATE SET proposed_study_id = EXCLUDED.proposed_study_id, title = EXCLUDED.title, citation = EXCLUDED.citation, source_url = EXCLUDED.source_url, domain = EXCLUDED.domain, stratum_variable_name = EXCLUDED.stratum_variable_name, expected_distortion_type = EXCLUDED.expected_distortion_type, ingestion_status = EXCLUDED.ingestion_status, priority = EXCLUDED.priority, stratum_count_estimate = EXCLUDED.stratum_count_estimate, data_source_note = EXCLUDED.data_source_note, linked_study_id = EXCLUDED.linked_study_id, publication_year = EXCLUDED.publication_year;
+
+INSERT INTO candidate_study_catalog (candidate_id, proposed_study_id, title, citation, source_url, domain, stratum_variable_name, expected_distortion_type, ingestion_status, priority, stratum_count_estimate, data_source_note, linked_study_id, publication_year)
+VALUES ('cand-covid-italy-china-cfr-2020', 'covid-italy-china-cfr-2020', 'COVID-19 CFR: Italy vs China by Age (2020)', 'von Kügelgen J et al. Nature 2021;594:E11-E13. Age-composition confounding in cross-country CFR.', '', 'epidemiology', 'age_group', 'A', 'imported', 0, 2, 'Imported loop-58. Prov: DOC. Italy lower CFR in each age stratum yet higher pooled.', 'covid-italy-china-cfr-2020', 2020) ON CONFLICT (candidate_id) DO UPDATE SET proposed_study_id = EXCLUDED.proposed_study_id, title = EXCLUDED.title, citation = EXCLUDED.citation, source_url = EXCLUDED.source_url, domain = EXCLUDED.domain, stratum_variable_name = EXCLUDED.stratum_variable_name, expected_distortion_type = EXCLUDED.expected_distortion_type, ingestion_status = EXCLUDED.ingestion_status, priority = EXCLUDED.priority, stratum_count_estimate = EXCLUDED.stratum_count_estimate, data_source_note = EXCLUDED.data_source_note, linked_study_id = EXCLUDED.linked_study_id, publication_year = EXCLUDED.publication_year;
+
+INSERT INTO candidate_study_catalog (candidate_id, proposed_study_id, title, citation, source_url, domain, stratum_variable_name, expected_distortion_type, ingestion_status, priority, stratum_count_estimate, data_source_note, linked_study_id, publication_year)
+VALUES ('cand-israel-covid-severe-2021', 'israel-covid-severe-2021', 'Israel COVID-19 Severe Disease by Vaccination Status and Age (2021)', 'Goldberg Y et al. NEJM 2021. Israeli Ministry of Health severe-disease surveillance.', '', 'epidemiology', 'age_group', 'A', 'imported', 0, 2, 'Imported loop-58. Prov: DOC. Independent vaccine-status dataset distinct from phe-covid-2021.', 'israel-covid-severe-2021', 2021) ON CONFLICT (candidate_id) DO UPDATE SET proposed_study_id = EXCLUDED.proposed_study_id, title = EXCLUDED.title, citation = EXCLUDED.citation, source_url = EXCLUDED.source_url, domain = EXCLUDED.domain, stratum_variable_name = EXCLUDED.stratum_variable_name, expected_distortion_type = EXCLUDED.expected_distortion_type, ingestion_status = EXCLUDED.ingestion_status, priority = EXCLUDED.priority, stratum_count_estimate = EXCLUDED.stratum_count_estimate, data_source_note = EXCLUDED.data_source_note, linked_study_id = EXCLUDED.linked_study_id, publication_year = EXCLUDED.publication_year;
+
+INSERT INTO candidate_study_catalog (candidate_id, proposed_study_id, title, citation, source_url, domain, stratum_variable_name, expected_distortion_type, ingestion_status, priority, stratum_count_estimate, data_source_note, linked_study_id, publication_year)
+VALUES ('cand-cochran-smoking-1968', 'cochran-smoking-1968', 'Smoking and Mortality by Age (Cochran / Surgeon General 1964)', 'Cochran WG. Chapter 8, US Surgeon General Report on Smoking 1964. Age composition confounds smoking-mortality.', '', 'epidemiology', 'age_group', 'A', 'imported', 0, 2, 'Imported loop-58. Prov: DOC. Foundational age-confounded smoking-mortality case.', 'cochran-smoking-1968', 1968) ON CONFLICT (candidate_id) DO UPDATE SET proposed_study_id = EXCLUDED.proposed_study_id, title = EXCLUDED.title, citation = EXCLUDED.citation, source_url = EXCLUDED.source_url, domain = EXCLUDED.domain, stratum_variable_name = EXCLUDED.stratum_variable_name, expected_distortion_type = EXCLUDED.expected_distortion_type, ingestion_status = EXCLUDED.ingestion_status, priority = EXCLUDED.priority, stratum_count_estimate = EXCLUDED.stratum_count_estimate, data_source_note = EXCLUDED.data_source_note, linked_study_id = EXCLUDED.linked_study_id, publication_year = EXCLUDED.publication_year;
+
+INSERT INTO candidate_study_catalog (candidate_id, proposed_study_id, title, citation, source_url, domain, stratum_variable_name, expected_distortion_type, ingestion_status, priority, stratum_count_estimate, data_source_note, linked_study_id, publication_year)
+VALUES ('cand-healthy-worker-mortality', 'healthy-worker-mortality', 'Healthy Worker Effect in Occupational Mortality', 'Monson RR. Occup Epidemiology 2nd ed. 1990. Healthy-worker selection effect.', '', 'epidemiology', 'employment_status', 'B', 'imported', 0, 2, 'Imported loop-58. Prov: DOC. Selection not confounding: employed cohort healthier at hire.', 'healthy-worker-mortality', 1987) ON CONFLICT (candidate_id) DO UPDATE SET proposed_study_id = EXCLUDED.proposed_study_id, title = EXCLUDED.title, citation = EXCLUDED.citation, source_url = EXCLUDED.source_url, domain = EXCLUDED.domain, stratum_variable_name = EXCLUDED.stratum_variable_name, expected_distortion_type = EXCLUDED.expected_distortion_type, ingestion_status = EXCLUDED.ingestion_status, priority = EXCLUDED.priority, stratum_count_estimate = EXCLUDED.stratum_count_estimate, data_source_note = EXCLUDED.data_source_note, linked_study_id = EXCLUDED.linked_study_id, publication_year = EXCLUDED.publication_year;
+
+INSERT INTO candidate_study_catalog (candidate_id, proposed_study_id, title, citation, source_url, domain, stratum_variable_name, expected_distortion_type, ingestion_status, priority, stratum_count_estimate, data_source_note, linked_study_id, publication_year)
+VALUES ('cand-snow-cholera-water-1855', 'snow-cholera-water-1855', 'Snow Cholera Outbreak by Water Company (1855)', 'Snow J. On the Mode of Communication of Cholera 1855.', '', 'epidemiology', 'water_company', 'A', 'imported', 0, 2, 'Imported loop-59. Prov: REAL?. Foundational historical case; 2×K approximate 2xK from cited source.', 'snow-cholera-water-1855', 1855) ON CONFLICT (candidate_id) DO UPDATE SET proposed_study_id = EXCLUDED.proposed_study_id, title = EXCLUDED.title, citation = EXCLUDED.citation, source_url = EXCLUDED.source_url, domain = EXCLUDED.domain, stratum_variable_name = EXCLUDED.stratum_variable_name, expected_distortion_type = EXCLUDED.expected_distortion_type, ingestion_status = EXCLUDED.ingestion_status, priority = EXCLUDED.priority, stratum_count_estimate = EXCLUDED.stratum_count_estimate, data_source_note = EXCLUDED.data_source_note, linked_study_id = EXCLUDED.linked_study_id, publication_year = EXCLUDED.publication_year;
+
+INSERT INTO candidate_study_catalog (candidate_id, proposed_study_id, title, citation, source_url, domain, stratum_variable_name, expected_distortion_type, ingestion_status, priority, stratum_count_estimate, data_source_note, linked_study_id, publication_year)
+VALUES ('cand-seatbelt-crash-severity', 'seatbelt-crash-severity', 'Seatbelt Use and Crash Severity (Selection on Crash)', 'Hertz E et al. Accid Anal Prev 1995. Selection on crash involvement.', '', 'epidemiology', 'crash_occurrence', 'B', 'imported', 0, 2, 'Imported loop-59. Prov: REAL?. Collider mechanism; approximate 2xK from cited source.', 'seatbelt-crash-severity', 1995) ON CONFLICT (candidate_id) DO UPDATE SET proposed_study_id = EXCLUDED.proposed_study_id, title = EXCLUDED.title, citation = EXCLUDED.citation, source_url = EXCLUDED.source_url, domain = EXCLUDED.domain, stratum_variable_name = EXCLUDED.stratum_variable_name, expected_distortion_type = EXCLUDED.expected_distortion_type, ingestion_status = EXCLUDED.ingestion_status, priority = EXCLUDED.priority, stratum_count_estimate = EXCLUDED.stratum_count_estimate, data_source_note = EXCLUDED.data_source_note, linked_study_id = EXCLUDED.linked_study_id, publication_year = EXCLUDED.publication_year;
+
+INSERT INTO candidate_study_catalog (candidate_id, proposed_study_id, title, citation, source_url, domain, stratum_variable_name, expected_distortion_type, ingestion_status, priority, stratum_count_estimate, data_source_note, linked_study_id, publication_year)
+VALUES ('cand-measles-outbreak-vaccinated', 'measles-outbreak-vaccinated', 'Measles Outbreak: Vaccinated Case Share (Base Rate)', 'CDC MMWR measles outbreak reports. High-coverage base-rate illusion.', '', 'epidemiology', 'vaccination_base_rate', 'C+', 'imported', 0, 2, 'Imported loop-59. Prov: REAL?. Most cases vaccinated because most people are; approximate 2xK from cited source.', 'measles-outbreak-vaccinated', 2015) ON CONFLICT (candidate_id) DO UPDATE SET proposed_study_id = EXCLUDED.proposed_study_id, title = EXCLUDED.title, citation = EXCLUDED.citation, source_url = EXCLUDED.source_url, domain = EXCLUDED.domain, stratum_variable_name = EXCLUDED.stratum_variable_name, expected_distortion_type = EXCLUDED.expected_distortion_type, ingestion_status = EXCLUDED.ingestion_status, priority = EXCLUDED.priority, stratum_count_estimate = EXCLUDED.stratum_count_estimate, data_source_note = EXCLUDED.data_source_note, linked_study_id = EXCLUDED.linked_study_id, publication_year = EXCLUDED.publication_year;
+
+INSERT INTO candidate_study_catalog (candidate_id, proposed_study_id, title, citation, source_url, domain, stratum_variable_name, expected_distortion_type, ingestion_status, priority, stratum_count_estimate, data_source_note, linked_study_id, publication_year)
+VALUES ('cand-air-pollution-mortality-city', 'air-pollution-mortality-city', 'Air Pollution Mortality: Within-City vs Across-City', 'Dominici F et al. JAMA 2006. Ecological vs individual-level pollution effects.', '', 'epidemiology', 'city', 'B', 'imported', 0, 2, 'Imported loop-59. Prov: REAL?. Bridges ecological aggregation cluster; approximate 2xK from cited source.', 'air-pollution-mortality-city', 2002) ON CONFLICT (candidate_id) DO UPDATE SET proposed_study_id = EXCLUDED.proposed_study_id, title = EXCLUDED.title, citation = EXCLUDED.citation, source_url = EXCLUDED.source_url, domain = EXCLUDED.domain, stratum_variable_name = EXCLUDED.stratum_variable_name, expected_distortion_type = EXCLUDED.expected_distortion_type, ingestion_status = EXCLUDED.ingestion_status, priority = EXCLUDED.priority, stratum_count_estimate = EXCLUDED.stratum_count_estimate, data_source_note = EXCLUDED.data_source_note, linked_study_id = EXCLUDED.linked_study_id, publication_year = EXCLUDED.publication_year;
+
+INSERT INTO candidate_study_catalog (candidate_id, proposed_study_id, title, citation, source_url, domain, stratum_variable_name, expected_distortion_type, ingestion_status, priority, stratum_count_estimate, data_source_note, linked_study_id, publication_year)
+VALUES ('cand-tb-treatment-resistance', 'tb-treatment-resistance', 'TB Treatment Success by Drug-Resistance Stratum', 'WHO Global TB Report. Resistance-stratified treatment outcomes.', '', 'epidemiology', 'drug_resistance', 'A', 'imported', 0, 2, 'Imported loop-59. Prov: REAL?. Infectious-disease structure; approximate 2xK from cited source.', 'tb-treatment-resistance', 2010) ON CONFLICT (candidate_id) DO UPDATE SET proposed_study_id = EXCLUDED.proposed_study_id, title = EXCLUDED.title, citation = EXCLUDED.citation, source_url = EXCLUDED.source_url, domain = EXCLUDED.domain, stratum_variable_name = EXCLUDED.stratum_variable_name, expected_distortion_type = EXCLUDED.expected_distortion_type, ingestion_status = EXCLUDED.ingestion_status, priority = EXCLUDED.priority, stratum_count_estimate = EXCLUDED.stratum_count_estimate, data_source_note = EXCLUDED.data_source_note, linked_study_id = EXCLUDED.linked_study_id, publication_year = EXCLUDED.publication_year;
+
+INSERT INTO candidate_study_catalog (candidate_id, proposed_study_id, title, citation, source_url, domain, stratum_variable_name, expected_distortion_type, ingestion_status, priority, stratum_count_estimate, data_source_note, linked_study_id, publication_year)
+VALUES ('cand-hospital-mortality-readmission', 'hospital-mortality-readmission', 'Hospital Mortality Under Readmission Penalty (Case Mix)', 'CMS Hospital Readmissions Reduction Program evaluations.', '', 'epidemiology', 'case_mix', 'C+', 'imported', 0, 2, 'Imported loop-59. Prov: REAL?. Policy-relevant case-mix distortion; approximate 2xK from cited source.', 'hospital-mortality-readmission', 2014) ON CONFLICT (candidate_id) DO UPDATE SET proposed_study_id = EXCLUDED.proposed_study_id, title = EXCLUDED.title, citation = EXCLUDED.citation, source_url = EXCLUDED.source_url, domain = EXCLUDED.domain, stratum_variable_name = EXCLUDED.stratum_variable_name, expected_distortion_type = EXCLUDED.expected_distortion_type, ingestion_status = EXCLUDED.ingestion_status, priority = EXCLUDED.priority, stratum_count_estimate = EXCLUDED.stratum_count_estimate, data_source_note = EXCLUDED.data_source_note, linked_study_id = EXCLUDED.linked_study_id, publication_year = EXCLUDED.publication_year;
+
+INSERT INTO candidate_study_catalog (candidate_id, proposed_study_id, title, citation, source_url, domain, stratum_variable_name, expected_distortion_type, ingestion_status, priority, stratum_count_estimate, data_source_note, linked_study_id, publication_year)
+VALUES ('cand-nypd-stop-frisk-hitrate', 'nypd-stop-frisk-hitrate', 'NYPD Stop-and-Frisk Hit Rate by Precinct (Ridgeway)', 'Ridgeway G. RAND 2007. Benchmarking paradox in stop-and-frisk.', '', 'legal', 'precinct_base_rate', 'B', 'imported', 0, 2, 'Imported loop-59. Prov: REAL?. Hit-rate reversal by precinct; approximate 2xK from cited source.', 'nypd-stop-frisk-hitrate', 2007) ON CONFLICT (candidate_id) DO UPDATE SET proposed_study_id = EXCLUDED.proposed_study_id, title = EXCLUDED.title, citation = EXCLUDED.citation, source_url = EXCLUDED.source_url, domain = EXCLUDED.domain, stratum_variable_name = EXCLUDED.stratum_variable_name, expected_distortion_type = EXCLUDED.expected_distortion_type, ingestion_status = EXCLUDED.ingestion_status, priority = EXCLUDED.priority, stratum_count_estimate = EXCLUDED.stratum_count_estimate, data_source_note = EXCLUDED.data_source_note, linked_study_id = EXCLUDED.linked_study_id, publication_year = EXCLUDED.publication_year;
+
+INSERT INTO candidate_study_catalog (candidate_id, proposed_study_id, title, citation, source_url, domain, stratum_variable_name, expected_distortion_type, ingestion_status, priority, stratum_count_estimate, data_source_note, linked_study_id, publication_year)
+VALUES ('cand-compas-recidivism-base', 'compas-recidivism-base', 'COMPAS Recidivism Prediction Base-Rate Paradox', 'Chouldechova A. Big Data 2017; arXiv:1610.07524. ProPublica COMPAS analysis.', '', 'legal', 'group_base_rate', 'B', 'imported', 0, 2, 'Imported loop-58. Prov: DOC. ML-fairness reversal; links to algorithmic-fairness literature.', 'compas-recidivism-base', 2016) ON CONFLICT (candidate_id) DO UPDATE SET proposed_study_id = EXCLUDED.proposed_study_id, title = EXCLUDED.title, citation = EXCLUDED.citation, source_url = EXCLUDED.source_url, domain = EXCLUDED.domain, stratum_variable_name = EXCLUDED.stratum_variable_name, expected_distortion_type = EXCLUDED.expected_distortion_type, ingestion_status = EXCLUDED.ingestion_status, priority = EXCLUDED.priority, stratum_count_estimate = EXCLUDED.stratum_count_estimate, data_source_note = EXCLUDED.data_source_note, linked_study_id = EXCLUDED.linked_study_id, publication_year = EXCLUDED.publication_year;
+
+INSERT INTO candidate_study_catalog (candidate_id, proposed_study_id, title, citation, source_url, domain, stratum_variable_name, expected_distortion_type, ingestion_status, priority, stratum_count_estimate, data_source_note, linked_study_id, publication_year)
+VALUES ('cand-sentencing-offense-type', 'sentencing-offense-type', 'Sentencing Disparity by Offense Type Mix', 'USSC sentencing disparity reports.', '', 'legal', 'offense_category', 'A', 'imported', 0, 2, 'Imported loop-59. Prov: REAL?. Complements death-penalty cases; approximate 2xK from cited source.', 'sentencing-offense-type', 2000) ON CONFLICT (candidate_id) DO UPDATE SET proposed_study_id = EXCLUDED.proposed_study_id, title = EXCLUDED.title, citation = EXCLUDED.citation, source_url = EXCLUDED.source_url, domain = EXCLUDED.domain, stratum_variable_name = EXCLUDED.stratum_variable_name, expected_distortion_type = EXCLUDED.expected_distortion_type, ingestion_status = EXCLUDED.ingestion_status, priority = EXCLUDED.priority, stratum_count_estimate = EXCLUDED.stratum_count_estimate, data_source_note = EXCLUDED.data_source_note, linked_study_id = EXCLUDED.linked_study_id, publication_year = EXCLUDED.publication_year;
+
+INSERT INTO candidate_study_catalog (candidate_id, proposed_study_id, title, citation, source_url, domain, stratum_variable_name, expected_distortion_type, ingestion_status, priority, stratum_count_estimate, data_source_note, linked_study_id, publication_year)
+VALUES ('cand-bail-risk-score', 'bail-risk-score', 'Pretrial Detention by Risk Tier and Demographics', 'Arnold Ventures pretrial risk assessment validations.', '', 'legal', 'pretrial_risk_tier', 'C+', 'imported', 0, 2, 'Imported loop-59. Prov: REAL?. Detention-decision distortion; approximate 2xK from cited source.', 'bail-risk-score', 2018) ON CONFLICT (candidate_id) DO UPDATE SET proposed_study_id = EXCLUDED.proposed_study_id, title = EXCLUDED.title, citation = EXCLUDED.citation, source_url = EXCLUDED.source_url, domain = EXCLUDED.domain, stratum_variable_name = EXCLUDED.stratum_variable_name, expected_distortion_type = EXCLUDED.expected_distortion_type, ingestion_status = EXCLUDED.ingestion_status, priority = EXCLUDED.priority, stratum_count_estimate = EXCLUDED.stratum_count_estimate, data_source_note = EXCLUDED.data_source_note, linked_study_id = EXCLUDED.linked_study_id, publication_year = EXCLUDED.publication_year;
+
+INSERT INTO candidate_study_catalog (candidate_id, proposed_study_id, title, citation, source_url, domain, stratum_variable_name, expected_distortion_type, ingestion_status, priority, stratum_count_estimate, data_source_note, linked_study_id, publication_year)
+VALUES ('cand-police-force-encounter', 'police-force-encounter', 'Police Use-of-Force by Stop/Encounter Conditioning', 'Fryer RG. J Polit Econ 2019. Selection on police encounter.', '', 'legal', 'encounter_conditioning', 'B', 'imported', 0, 2, 'Imported loop-59. Prov: REAL?. Collider not confounder; approximate 2xK from cited source.', 'police-force-encounter', 2016) ON CONFLICT (candidate_id) DO UPDATE SET proposed_study_id = EXCLUDED.proposed_study_id, title = EXCLUDED.title, citation = EXCLUDED.citation, source_url = EXCLUDED.source_url, domain = EXCLUDED.domain, stratum_variable_name = EXCLUDED.stratum_variable_name, expected_distortion_type = EXCLUDED.expected_distortion_type, ingestion_status = EXCLUDED.ingestion_status, priority = EXCLUDED.priority, stratum_count_estimate = EXCLUDED.stratum_count_estimate, data_source_note = EXCLUDED.data_source_note, linked_study_id = EXCLUDED.linked_study_id, publication_year = EXCLUDED.publication_year;
+
+INSERT INTO candidate_study_catalog (candidate_id, proposed_study_id, title, citation, source_url, domain, stratum_variable_name, expected_distortion_type, ingestion_status, priority, stratum_count_estimate, data_source_note, linked_study_id, publication_year)
+VALUES ('cand-uc-systemwide-admissions', 'uc-systemwide-admissions', 'UC Systemwide Admissions by Major/Campus', 'UC Office of the President admissions statistics.', '', 'education', 'major_campus', 'B', 'imported', 0, 2, 'Imported loop-59. Prov: REAL?. Extends Berkeley; self-selection into major contested.', 'uc-systemwide-admissions', 2004) ON CONFLICT (candidate_id) DO UPDATE SET proposed_study_id = EXCLUDED.proposed_study_id, title = EXCLUDED.title, citation = EXCLUDED.citation, source_url = EXCLUDED.source_url, domain = EXCLUDED.domain, stratum_variable_name = EXCLUDED.stratum_variable_name, expected_distortion_type = EXCLUDED.expected_distortion_type, ingestion_status = EXCLUDED.ingestion_status, priority = EXCLUDED.priority, stratum_count_estimate = EXCLUDED.stratum_count_estimate, data_source_note = EXCLUDED.data_source_note, linked_study_id = EXCLUDED.linked_study_id, publication_year = EXCLUDED.publication_year;
+
+INSERT INTO candidate_study_catalog (candidate_id, proposed_study_id, title, citation, source_url, domain, stratum_variable_name, expected_distortion_type, ingestion_status, priority, stratum_count_estimate, data_source_note, linked_study_id, publication_year)
+VALUES ('cand-teacher-vam-prior-achievement', 'teacher-vam-prior-achievement', 'Teacher VAM Reversal by Incoming Achievement', 'Ehlert M et al. Educ Eval Policy Anal 2013.', '', 'education', 'incoming_achievement', 'C+', 'imported', 0, 2, 'Imported loop-59. Prov: REAL?. Non-random teacher assignment; approximate 2xK from cited source.', 'teacher-vam-prior-achievement', 2011) ON CONFLICT (candidate_id) DO UPDATE SET proposed_study_id = EXCLUDED.proposed_study_id, title = EXCLUDED.title, citation = EXCLUDED.citation, source_url = EXCLUDED.source_url, domain = EXCLUDED.domain, stratum_variable_name = EXCLUDED.stratum_variable_name, expected_distortion_type = EXCLUDED.expected_distortion_type, ingestion_status = EXCLUDED.ingestion_status, priority = EXCLUDED.priority, stratum_count_estimate = EXCLUDED.stratum_count_estimate, data_source_note = EXCLUDED.data_source_note, linked_study_id = EXCLUDED.linked_study_id, publication_year = EXCLUDED.publication_year;
+
+INSERT INTO candidate_study_catalog (candidate_id, proposed_study_id, title, citation, source_url, domain, stratum_variable_name, expected_distortion_type, ingestion_status, priority, stratum_count_estimate, data_source_note, linked_study_id, publication_year)
+VALUES ('cand-naep-state-demographics', 'naep-state-demographics', 'NAEP State Scores by Demographic Composition', 'NAEP Nation''s Report Card state-level data.', '', 'education', 'state_composition', 'A', 'imported', 0, 2, 'Imported loop-59. Prov: REAL?. Ecological extension of sat-wainer-1986; approximate 2xK from cited source.', 'naep-state-demographics', 2019) ON CONFLICT (candidate_id) DO UPDATE SET proposed_study_id = EXCLUDED.proposed_study_id, title = EXCLUDED.title, citation = EXCLUDED.citation, source_url = EXCLUDED.source_url, domain = EXCLUDED.domain, stratum_variable_name = EXCLUDED.stratum_variable_name, expected_distortion_type = EXCLUDED.expected_distortion_type, ingestion_status = EXCLUDED.ingestion_status, priority = EXCLUDED.priority, stratum_count_estimate = EXCLUDED.stratum_count_estimate, data_source_note = EXCLUDED.data_source_note, linked_study_id = EXCLUDED.linked_study_id, publication_year = EXCLUDED.publication_year;
+
+INSERT INTO candidate_study_catalog (candidate_id, proposed_study_id, title, citation, source_url, domain, stratum_variable_name, expected_distortion_type, ingestion_status, priority, stratum_count_estimate, data_source_note, linked_study_id, publication_year)
+VALUES ('cand-college-grad-rate-selectivity', 'college-grad-rate-selectivity', 'College Graduation Rate vs Selectivity Paradox', 'NCES IPEDS graduation rate data.', '', 'education', 'incoming_preparation', 'C+', 'imported', 0, 2, 'Imported loop-59. Prov: REAL?. Intake composition drives reversal; approximate 2xK from cited source.', 'college-grad-rate-selectivity', 2015) ON CONFLICT (candidate_id) DO UPDATE SET proposed_study_id = EXCLUDED.proposed_study_id, title = EXCLUDED.title, citation = EXCLUDED.citation, source_url = EXCLUDED.source_url, domain = EXCLUDED.domain, stratum_variable_name = EXCLUDED.stratum_variable_name, expected_distortion_type = EXCLUDED.expected_distortion_type, ingestion_status = EXCLUDED.ingestion_status, priority = EXCLUDED.priority, stratum_count_estimate = EXCLUDED.stratum_count_estimate, data_source_note = EXCLUDED.data_source_note, linked_study_id = EXCLUDED.linked_study_id, publication_year = EXCLUDED.publication_year;
+
+INSERT INTO candidate_study_catalog (candidate_id, proposed_study_id, title, citation, source_url, domain, stratum_variable_name, expected_distortion_type, ingestion_status, priority, stratum_count_estimate, data_source_note, linked_study_id, publication_year)
+VALUES ('cand-star-class-size', 'star-class-size', 'Tennessee STAR Class Size Effect', 'Mosteller F. Am Scholar 1995. STAR experiment.', '', 'education', 'school', 'D', 'imported', 0, 2, 'Imported loop-59. Prov: REAL?. Near-neutral control; approximate 2xK from cited source.', 'star-class-size', 1999) ON CONFLICT (candidate_id) DO UPDATE SET proposed_study_id = EXCLUDED.proposed_study_id, title = EXCLUDED.title, citation = EXCLUDED.citation, source_url = EXCLUDED.source_url, domain = EXCLUDED.domain, stratum_variable_name = EXCLUDED.stratum_variable_name, expected_distortion_type = EXCLUDED.expected_distortion_type, ingestion_status = EXCLUDED.ingestion_status, priority = EXCLUDED.priority, stratum_count_estimate = EXCLUDED.stratum_count_estimate, data_source_note = EXCLUDED.data_source_note, linked_study_id = EXCLUDED.linked_study_id, publication_year = EXCLUDED.publication_year;
+
+INSERT INTO candidate_study_catalog (candidate_id, proposed_study_id, title, citation, source_url, domain, stratum_variable_name, expected_distortion_type, ingestion_status, priority, stratum_count_estimate, data_source_note, linked_study_id, publication_year)
+VALUES ('cand-nba-shooting-shot-mix', 'nba-shooting-shot-mix', 'NBA Shooting Percentage by Shot-Mix Composition', 'Goldsberry K / NBA tracking data. Two-point vs three-point mix.', '', 'sports', 'shot_type', 'B', 'imported', 0, 2, 'Imported loop-59. Prov: REAL?. Composition mechanism not confounding; approximate 2xK from cited source.', 'nba-shooting-shot-mix', 2015) ON CONFLICT (candidate_id) DO UPDATE SET proposed_study_id = EXCLUDED.proposed_study_id, title = EXCLUDED.title, citation = EXCLUDED.citation, source_url = EXCLUDED.source_url, domain = EXCLUDED.domain, stratum_variable_name = EXCLUDED.stratum_variable_name, expected_distortion_type = EXCLUDED.expected_distortion_type, ingestion_status = EXCLUDED.ingestion_status, priority = EXCLUDED.priority, stratum_count_estimate = EXCLUDED.stratum_count_estimate, data_source_note = EXCLUDED.data_source_note, linked_study_id = EXCLUDED.linked_study_id, publication_year = EXCLUDED.publication_year;
+
+INSERT INTO candidate_study_catalog (candidate_id, proposed_study_id, title, citation, source_url, domain, stratum_variable_name, expected_distortion_type, ingestion_status, priority, stratum_count_estimate, data_source_note, linked_study_id, publication_year)
+VALUES ('cand-pitcher-era-ballpark', 'pitcher-era-ballpark', 'Pitcher ERA by Ballpark Factor', 'FanGraphs park factors.', '', 'sports', 'ballpark', 'C+', 'imported', 0, 2, 'Imported loop-59. Prov: REAL?. Park-factor distortion; approximate 2xK from cited source.', 'pitcher-era-ballpark', 2010) ON CONFLICT (candidate_id) DO UPDATE SET proposed_study_id = EXCLUDED.proposed_study_id, title = EXCLUDED.title, citation = EXCLUDED.citation, source_url = EXCLUDED.source_url, domain = EXCLUDED.domain, stratum_variable_name = EXCLUDED.stratum_variable_name, expected_distortion_type = EXCLUDED.expected_distortion_type, ingestion_status = EXCLUDED.ingestion_status, priority = EXCLUDED.priority, stratum_count_estimate = EXCLUDED.stratum_count_estimate, data_source_note = EXCLUDED.data_source_note, linked_study_id = EXCLUDED.linked_study_id, publication_year = EXCLUDED.publication_year;
+
+INSERT INTO candidate_study_catalog (candidate_id, proposed_study_id, title, citation, source_url, domain, stratum_variable_name, expected_distortion_type, ingestion_status, priority, stratum_count_estimate, data_source_note, linked_study_id, publication_year)
+VALUES ('cand-nfl-completion-depth', 'nfl-completion-depth', 'NFL Completion Rate by Pass Depth Mix', 'NFL Next Gen Stats.', '', 'sports', 'pass_depth', 'C+', 'imported', 0, 2, 'Imported loop-59. Prov: REAL?. Completion-% reversal by throw-depth mix; approximate 2xK from cited source.', 'nfl-completion-depth', 2018) ON CONFLICT (candidate_id) DO UPDATE SET proposed_study_id = EXCLUDED.proposed_study_id, title = EXCLUDED.title, citation = EXCLUDED.citation, source_url = EXCLUDED.source_url, domain = EXCLUDED.domain, stratum_variable_name = EXCLUDED.stratum_variable_name, expected_distortion_type = EXCLUDED.expected_distortion_type, ingestion_status = EXCLUDED.ingestion_status, priority = EXCLUDED.priority, stratum_count_estimate = EXCLUDED.stratum_count_estimate, data_source_note = EXCLUDED.data_source_note, linked_study_id = EXCLUDED.linked_study_id, publication_year = EXCLUDED.publication_year;
+
+INSERT INTO candidate_study_catalog (candidate_id, proposed_study_id, title, citation, source_url, domain, stratum_variable_name, expected_distortion_type, ingestion_status, priority, stratum_count_estimate, data_source_note, linked_study_id, publication_year)
+VALUES ('cand-field-goal-distance', 'field-goal-distance', 'Field Goal Accuracy by Attempt Distance', 'Pro-Football-Reference kicker data.', '', 'sports', 'kick_distance', 'C+', 'imported', 0, 2, 'Imported loop-59. Prov: REAL?. FG accuracy reversal by distance distribution; approximate 2xK from cited source.', 'field-goal-distance', 2012) ON CONFLICT (candidate_id) DO UPDATE SET proposed_study_id = EXCLUDED.proposed_study_id, title = EXCLUDED.title, citation = EXCLUDED.citation, source_url = EXCLUDED.source_url, domain = EXCLUDED.domain, stratum_variable_name = EXCLUDED.stratum_variable_name, expected_distortion_type = EXCLUDED.expected_distortion_type, ingestion_status = EXCLUDED.ingestion_status, priority = EXCLUDED.priority, stratum_count_estimate = EXCLUDED.stratum_count_estimate, data_source_note = EXCLUDED.data_source_note, linked_study_id = EXCLUDED.linked_study_id, publication_year = EXCLUDED.publication_year;
+
+INSERT INTO candidate_study_catalog (candidate_id, proposed_study_id, title, citation, source_url, domain, stratum_variable_name, expected_distortion_type, ingestion_status, priority, stratum_count_estimate, data_source_note, linked_study_id, publication_year)
+VALUES ('cand-golf-scoring-course', 'golf-scoring-course', 'Golf Scoring Average by Course Difficulty', 'PGA Tour scoring statistics.', '', 'sports', 'course_difficulty', 'C+', 'imported', 0, 2, 'Imported loop-59. Prov: REAL?. Course-mix distortion; approximate 2xK from cited source.', 'golf-scoring-course', 2015) ON CONFLICT (candidate_id) DO UPDATE SET proposed_study_id = EXCLUDED.proposed_study_id, title = EXCLUDED.title, citation = EXCLUDED.citation, source_url = EXCLUDED.source_url, domain = EXCLUDED.domain, stratum_variable_name = EXCLUDED.stratum_variable_name, expected_distortion_type = EXCLUDED.expected_distortion_type, ingestion_status = EXCLUDED.ingestion_status, priority = EXCLUDED.priority, stratum_count_estimate = EXCLUDED.stratum_count_estimate, data_source_note = EXCLUDED.data_source_note, linked_study_id = EXCLUDED.linked_study_id, publication_year = EXCLUDED.publication_year;
+
+INSERT INTO candidate_study_catalog (candidate_id, proposed_study_id, title, citation, source_url, domain, stratum_variable_name, expected_distortion_type, ingestion_status, priority, stratum_count_estimate, data_source_note, linked_study_id, publication_year)
+VALUES ('cand-us-wage-composition-stagnation', 'us-wage-composition-stagnation', 'US Wage Stagnation and Workforce Composition', 'Autor DH. NBER 2019. Composition-over-time wage paradox.', '', 'economics', 'workforce_composition', 'A', 'imported', 0, 2, 'Imported loop-58. Prov: DOC. Every subgroup wage rises yet aggregate flat — composition over time.', 'us-wage-composition-stagnation', 2018) ON CONFLICT (candidate_id) DO UPDATE SET proposed_study_id = EXCLUDED.proposed_study_id, title = EXCLUDED.title, citation = EXCLUDED.citation, source_url = EXCLUDED.source_url, domain = EXCLUDED.domain, stratum_variable_name = EXCLUDED.stratum_variable_name, expected_distortion_type = EXCLUDED.expected_distortion_type, ingestion_status = EXCLUDED.ingestion_status, priority = EXCLUDED.priority, stratum_count_estimate = EXCLUDED.stratum_count_estimate, data_source_note = EXCLUDED.data_source_note, linked_study_id = EXCLUDED.linked_study_id, publication_year = EXCLUDED.publication_year;
+
+INSERT INTO candidate_study_catalog (candidate_id, proposed_study_id, title, citation, source_url, domain, stratum_variable_name, expected_distortion_type, ingestion_status, priority, stratum_count_estimate, data_source_note, linked_study_id, publication_year)
+VALUES ('cand-borjas-immigrant-cohort', 'borjas-immigrant-cohort', 'Borjas Immigrant Assimilation: Cohort vs Cross-Section', 'Borjas GJ. J Labor Econ 1985;3(4):463-489.', '', 'economics', 'arrival_cohort', 'A', 'imported', 0, 2, 'Imported loop-58. Prov: DOC. Cross-section vs cohort assimilation reversal.', 'borjas-immigrant-cohort', 1987) ON CONFLICT (candidate_id) DO UPDATE SET proposed_study_id = EXCLUDED.proposed_study_id, title = EXCLUDED.title, citation = EXCLUDED.citation, source_url = EXCLUDED.source_url, domain = EXCLUDED.domain, stratum_variable_name = EXCLUDED.stratum_variable_name, expected_distortion_type = EXCLUDED.expected_distortion_type, ingestion_status = EXCLUDED.ingestion_status, priority = EXCLUDED.priority, stratum_count_estimate = EXCLUDED.stratum_count_estimate, data_source_note = EXCLUDED.data_source_note, linked_study_id = EXCLUDED.linked_study_id, publication_year = EXCLUDED.publication_year;
+
+INSERT INTO candidate_study_catalog (candidate_id, proposed_study_id, title, citation, source_url, domain, stratum_variable_name, expected_distortion_type, ingestion_status, priority, stratum_count_estimate, data_source_note, linked_study_id, publication_year)
+VALUES ('cand-returns-to-education-field', 'returns-to-education-field', 'Returns to Education by Field of Study', 'Carnevale AP et al. Georgetown CEW reports.', '', 'economics', 'field_of_study', 'B', 'imported', 0, 2, 'Imported loop-59. Prov: REAL?. Field choice mediates education-earnings; approximate 2xK from cited source.', 'returns-to-education-field', 2008) ON CONFLICT (candidate_id) DO UPDATE SET proposed_study_id = EXCLUDED.proposed_study_id, title = EXCLUDED.title, citation = EXCLUDED.citation, source_url = EXCLUDED.source_url, domain = EXCLUDED.domain, stratum_variable_name = EXCLUDED.stratum_variable_name, expected_distortion_type = EXCLUDED.expected_distortion_type, ingestion_status = EXCLUDED.ingestion_status, priority = EXCLUDED.priority, stratum_count_estimate = EXCLUDED.stratum_count_estimate, data_source_note = EXCLUDED.data_source_note, linked_study_id = EXCLUDED.linked_study_id, publication_year = EXCLUDED.publication_year;
+
+INSERT INTO candidate_study_catalog (candidate_id, proposed_study_id, title, citation, source_url, domain, stratum_variable_name, expected_distortion_type, ingestion_status, priority, stratum_count_estimate, data_source_note, linked_study_id, publication_year)
+VALUES ('cand-minimum-wage-region', 'minimum-wage-region', 'Minimum Wage Employment Effects by Region', 'Dube A et al. Rev Econ Stat 2010.', '', 'economics', 'region', 'C+', 'imported', 0, 2, 'Imported loop-59. Prov: REAL?. Regional labor market confounding; approximate 2xK from cited source.', 'minimum-wage-region', 2014) ON CONFLICT (candidate_id) DO UPDATE SET proposed_study_id = EXCLUDED.proposed_study_id, title = EXCLUDED.title, citation = EXCLUDED.citation, source_url = EXCLUDED.source_url, domain = EXCLUDED.domain, stratum_variable_name = EXCLUDED.stratum_variable_name, expected_distortion_type = EXCLUDED.expected_distortion_type, ingestion_status = EXCLUDED.ingestion_status, priority = EXCLUDED.priority, stratum_count_estimate = EXCLUDED.stratum_count_estimate, data_source_note = EXCLUDED.data_source_note, linked_study_id = EXCLUDED.linked_study_id, publication_year = EXCLUDED.publication_year;
+
+INSERT INTO candidate_study_catalog (candidate_id, proposed_study_id, title, citation, source_url, domain, stratum_variable_name, expected_distortion_type, ingestion_status, priority, stratum_count_estimate, data_source_note, linked_study_id, publication_year)
+VALUES ('cand-unemployment-education-cycle', 'unemployment-education-cycle', 'Aggregate Unemployment and Education Composition', 'BLS Current Population Survey.', '', 'economics', 'education_composition', 'A', 'imported', 0, 2, 'Imported loop-59. Prov: REAL?. Recession education-mix shift; approximate 2xK from cited source.', 'unemployment-education-cycle', 2010) ON CONFLICT (candidate_id) DO UPDATE SET proposed_study_id = EXCLUDED.proposed_study_id, title = EXCLUDED.title, citation = EXCLUDED.citation, source_url = EXCLUDED.source_url, domain = EXCLUDED.domain, stratum_variable_name = EXCLUDED.stratum_variable_name, expected_distortion_type = EXCLUDED.expected_distortion_type, ingestion_status = EXCLUDED.ingestion_status, priority = EXCLUDED.priority, stratum_count_estimate = EXCLUDED.stratum_count_estimate, data_source_note = EXCLUDED.data_source_note, linked_study_id = EXCLUDED.linked_study_id, publication_year = EXCLUDED.publication_year;
+
+INSERT INTO candidate_study_catalog (candidate_id, proposed_study_id, title, citation, source_url, domain, stratum_variable_name, expected_distortion_type, ingestion_status, priority, stratum_count_estimate, data_source_note, linked_study_id, publication_year)
+VALUES ('cand-robinson-1950-literacy', 'robinson-1950-literacy', 'Robinson 1950: Literacy vs Nativity Ecological Fallacy', 'Robinson WS. Am Sociol Rev 1950;15(3):351-357. 1930 US Census.', '', 'social-science', 'state_aggregation', 'A', 'imported', 0, 2, 'Imported loop-58. Prov: DOC. Foundational ecological-fallacy reversal.', 'robinson-1950-literacy', 1950) ON CONFLICT (candidate_id) DO UPDATE SET proposed_study_id = EXCLUDED.proposed_study_id, title = EXCLUDED.title, citation = EXCLUDED.citation, source_url = EXCLUDED.source_url, domain = EXCLUDED.domain, stratum_variable_name = EXCLUDED.stratum_variable_name, expected_distortion_type = EXCLUDED.expected_distortion_type, ingestion_status = EXCLUDED.ingestion_status, priority = EXCLUDED.priority, stratum_count_estimate = EXCLUDED.stratum_count_estimate, data_source_note = EXCLUDED.data_source_note, linked_study_id = EXCLUDED.linked_study_id, publication_year = EXCLUDED.publication_year;
+
+INSERT INTO candidate_study_catalog (candidate_id, proposed_study_id, title, citation, source_url, domain, stratum_variable_name, expected_distortion_type, ingestion_status, priority, stratum_count_estimate, data_source_note, linked_study_id, publication_year)
+VALUES ('cand-costa-rica-us-life-expectancy', 'costa-rica-us-life-expectancy', 'Costa Rica vs US Life Expectancy by Age', 'Rosero-Bixby L. Popul Dev Rev 2004.', '', 'social-science', 'age_group', 'A', 'imported', 0, 2, 'Imported loop-59. Prov: REAL?. Second standardization case; approximate 2xK from cited source.', 'costa-rica-us-life-expectancy', 2010) ON CONFLICT (candidate_id) DO UPDATE SET proposed_study_id = EXCLUDED.proposed_study_id, title = EXCLUDED.title, citation = EXCLUDED.citation, source_url = EXCLUDED.source_url, domain = EXCLUDED.domain, stratum_variable_name = EXCLUDED.stratum_variable_name, expected_distortion_type = EXCLUDED.expected_distortion_type, ingestion_status = EXCLUDED.ingestion_status, priority = EXCLUDED.priority, stratum_count_estimate = EXCLUDED.stratum_count_estimate, data_source_note = EXCLUDED.data_source_note, linked_study_id = EXCLUDED.linked_study_id, publication_year = EXCLUDED.publication_year;
+
+INSERT INTO candidate_study_catalog (candidate_id, proposed_study_id, title, citation, source_url, domain, stratum_variable_name, expected_distortion_type, ingestion_status, priority, stratum_count_estimate, data_source_note, linked_study_id, publication_year)
+VALUES ('cand-voter-turnout-education-state', 'voter-turnout-education-state', 'Voter Turnout by Education Across States', 'CPS Voting and Registration Supplement.', '', 'social-science', 'state', 'B', 'imported', 0, 2, 'Imported loop-59. Prov: REAL?. Ecological confounding; approximate 2xK from cited source.', 'voter-turnout-education-state', 2012) ON CONFLICT (candidate_id) DO UPDATE SET proposed_study_id = EXCLUDED.proposed_study_id, title = EXCLUDED.title, citation = EXCLUDED.citation, source_url = EXCLUDED.source_url, domain = EXCLUDED.domain, stratum_variable_name = EXCLUDED.stratum_variable_name, expected_distortion_type = EXCLUDED.expected_distortion_type, ingestion_status = EXCLUDED.ingestion_status, priority = EXCLUDED.priority, stratum_count_estimate = EXCLUDED.stratum_count_estimate, data_source_note = EXCLUDED.data_source_note, linked_study_id = EXCLUDED.linked_study_id, publication_year = EXCLUDED.publication_year;
+
+INSERT INTO candidate_study_catalog (candidate_id, proposed_study_id, title, citation, source_url, domain, stratum_variable_name, expected_distortion_type, ingestion_status, priority, stratum_count_estimate, data_source_note, linked_study_id, publication_year)
+VALUES ('cand-fertility-income-country', 'fertility-income-country', 'Fertility-Income Paradox Across Countries', 'World Bank World Development Indicators.', '', 'social-science', 'country', 'A', 'imported', 0, 2, 'Imported loop-59. Prov: REAL?. Within- vs across-country reversal; approximate 2xK from cited source.', 'fertility-income-country', 2015) ON CONFLICT (candidate_id) DO UPDATE SET proposed_study_id = EXCLUDED.proposed_study_id, title = EXCLUDED.title, citation = EXCLUDED.citation, source_url = EXCLUDED.source_url, domain = EXCLUDED.domain, stratum_variable_name = EXCLUDED.stratum_variable_name, expected_distortion_type = EXCLUDED.expected_distortion_type, ingestion_status = EXCLUDED.ingestion_status, priority = EXCLUDED.priority, stratum_count_estimate = EXCLUDED.stratum_count_estimate, data_source_note = EXCLUDED.data_source_note, linked_study_id = EXCLUDED.linked_study_id, publication_year = EXCLUDED.publication_year;
+
+INSERT INTO candidate_study_catalog (candidate_id, proposed_study_id, title, citation, source_url, domain, stratum_variable_name, expected_distortion_type, ingestion_status, priority, stratum_count_estimate, data_source_note, linked_study_id, publication_year)
+VALUES ('cand-religiosity-happiness-country', 'religiosity-happiness-country', 'Religiosity and Happiness by National Wealth', 'World Values Survey / Gallup World Poll.', '', 'social-science', 'national_wealth', 'B', 'imported', 0, 2, 'Imported loop-59. Prov: REAL?. Country wealth confounds religiosity-happiness; approximate 2xK from cited source.', 'religiosity-happiness-country', 2018) ON CONFLICT (candidate_id) DO UPDATE SET proposed_study_id = EXCLUDED.proposed_study_id, title = EXCLUDED.title, citation = EXCLUDED.citation, source_url = EXCLUDED.source_url, domain = EXCLUDED.domain, stratum_variable_name = EXCLUDED.stratum_variable_name, expected_distortion_type = EXCLUDED.expected_distortion_type, ingestion_status = EXCLUDED.ingestion_status, priority = EXCLUDED.priority, stratum_count_estimate = EXCLUDED.stratum_count_estimate, data_source_note = EXCLUDED.data_source_note, linked_study_id = EXCLUDED.linked_study_id, publication_year = EXCLUDED.publication_year;
+
+INSERT INTO candidate_study_catalog (candidate_id, proposed_study_id, title, citation, source_url, domain, stratum_variable_name, expected_distortion_type, ingestion_status, priority, stratum_count_estimate, data_source_note, linked_study_id, publication_year)
+VALUES ('cand-ab-test-traffic-mix', 'ab-test-traffic-mix', 'A/B Test Reversal from Traffic Composition Shift (Kohavi)', 'Kohavi R et al. Trustworthy Online Controlled Experiments 2020.', '', 'social-science', 'time_varying_segment', 'A', 'imported', 0, 2, 'Imported loop-58. Prov: DOC. Experimentation Simpson case: segment mix shifts between variants.', 'ab-test-traffic-mix', 2020) ON CONFLICT (candidate_id) DO UPDATE SET proposed_study_id = EXCLUDED.proposed_study_id, title = EXCLUDED.title, citation = EXCLUDED.citation, source_url = EXCLUDED.source_url, domain = EXCLUDED.domain, stratum_variable_name = EXCLUDED.stratum_variable_name, expected_distortion_type = EXCLUDED.expected_distortion_type, ingestion_status = EXCLUDED.ingestion_status, priority = EXCLUDED.priority, stratum_count_estimate = EXCLUDED.stratum_count_estimate, data_source_note = EXCLUDED.data_source_note, linked_study_id = EXCLUDED.linked_study_id, publication_year = EXCLUDED.publication_year;
+
+INSERT INTO candidate_study_catalog (candidate_id, proposed_study_id, title, citation, source_url, domain, stratum_variable_name, expected_distortion_type, ingestion_status, priority, stratum_count_estimate, data_source_note, linked_study_id, publication_year)
+VALUES ('cand-recsys-offline-eval', 'recsys-offline-eval', 'Recommender Offline Metric Reversal (Exposure Bias)', 'Ding Y et al. arXiv:2104.08912. Offline evaluation under exposure bias.', '', 'social-science', 'exposure_popularity', 'B', 'imported', 0, 2, 'Imported loop-58. Prov: DOC. Links to evaluation methodology literature.', 'recsys-offline-eval', 2021) ON CONFLICT (candidate_id) DO UPDATE SET proposed_study_id = EXCLUDED.proposed_study_id, title = EXCLUDED.title, citation = EXCLUDED.citation, source_url = EXCLUDED.source_url, domain = EXCLUDED.domain, stratum_variable_name = EXCLUDED.stratum_variable_name, expected_distortion_type = EXCLUDED.expected_distortion_type, ingestion_status = EXCLUDED.ingestion_status, priority = EXCLUDED.priority, stratum_count_estimate = EXCLUDED.stratum_count_estimate, data_source_note = EXCLUDED.data_source_note, linked_study_id = EXCLUDED.linked_study_id, publication_year = EXCLUDED.publication_year;
+
+INSERT INTO candidate_study_catalog (candidate_id, proposed_study_id, title, citation, source_url, domain, stratum_variable_name, expected_distortion_type, ingestion_status, priority, stratum_count_estimate, data_source_note, linked_study_id, publication_year)
+VALUES ('cand-ad-ctr-platform-mix', 'ad-ctr-platform-mix', 'Ad Click-Through Rate by Platform Mix', 'Industry A/B testing case studies.', '', 'social-science', 'platform', 'C+', 'imported', 0, 2, 'Imported loop-59. Prov: REAL?. Platform composition reversal; approximate 2xK from cited source.', 'ad-ctr-platform-mix', 2019) ON CONFLICT (candidate_id) DO UPDATE SET proposed_study_id = EXCLUDED.proposed_study_id, title = EXCLUDED.title, citation = EXCLUDED.citation, source_url = EXCLUDED.source_url, domain = EXCLUDED.domain, stratum_variable_name = EXCLUDED.stratum_variable_name, expected_distortion_type = EXCLUDED.expected_distortion_type, ingestion_status = EXCLUDED.ingestion_status, priority = EXCLUDED.priority, stratum_count_estimate = EXCLUDED.stratum_count_estimate, data_source_note = EXCLUDED.data_source_note, linked_study_id = EXCLUDED.linked_study_id, publication_year = EXCLUDED.publication_year;
+
+INSERT INTO candidate_study_catalog (candidate_id, proposed_study_id, title, citation, source_url, domain, stratum_variable_name, expected_distortion_type, ingestion_status, priority, stratum_count_estimate, data_source_note, linked_study_id, publication_year)
+VALUES ('cand-collider-only-synthetic', 'collider-only-synthetic', 'Collider-Only Synthetic (Zero Confounding)', 'Structural control constructed for loop-58.', '', 'synthetic', 'constructed_collider', 'B', 'imported', 0, 2, 'Imported loop-58. Prov: SYNTH. Isolates collider-induced reversal with no confounder present.', 'collider-only-synthetic', 2026) ON CONFLICT (candidate_id) DO UPDATE SET proposed_study_id = EXCLUDED.proposed_study_id, title = EXCLUDED.title, citation = EXCLUDED.citation, source_url = EXCLUDED.source_url, domain = EXCLUDED.domain, stratum_variable_name = EXCLUDED.stratum_variable_name, expected_distortion_type = EXCLUDED.expected_distortion_type, ingestion_status = EXCLUDED.ingestion_status, priority = EXCLUDED.priority, stratum_count_estimate = EXCLUDED.stratum_count_estimate, data_source_note = EXCLUDED.data_source_note, linked_study_id = EXCLUDED.linked_study_id, publication_year = EXCLUDED.publication_year;
+
+INSERT INTO candidate_study_catalog (candidate_id, proposed_study_id, title, citation, source_url, domain, stratum_variable_name, expected_distortion_type, ingestion_status, priority, stratum_count_estimate, data_source_note, linked_study_id, publication_year)
+VALUES ('cand-noncollapsibility-or-synthetic', 'noncollapsibility-or-synthetic', 'Non-Collapsibility OR Synthetic (Zero Confounding)', 'Structural control constructed for loop-58.', '', 'synthetic', 'noncollapsible_measure', 'D', 'imported', 0, 2, 'Imported loop-58. Prov: SYNTH. OR reverses from non-collapsibility alone; RD does not reverse. Tests instrument blind spot.', 'noncollapsibility-or-synthetic', 2026) ON CONFLICT (candidate_id) DO UPDATE SET proposed_study_id = EXCLUDED.proposed_study_id, title = EXCLUDED.title, citation = EXCLUDED.citation, source_url = EXCLUDED.source_url, domain = EXCLUDED.domain, stratum_variable_name = EXCLUDED.stratum_variable_name, expected_distortion_type = EXCLUDED.expected_distortion_type, ingestion_status = EXCLUDED.ingestion_status, priority = EXCLUDED.priority, stratum_count_estimate = EXCLUDED.stratum_count_estimate, data_source_note = EXCLUDED.data_source_note, linked_study_id = EXCLUDED.linked_study_id, publication_year = EXCLUDED.publication_year;
+
 -- ----------------------------------------------------------------------------
 -- CorpusCatalogSummary: Table: CorpusCatalogSummary — one row witnessing import-backlog readiness for bulk encoding sessions.
 -- ----------------------------------------------------------------------------
@@ -5538,6 +9597,156 @@ VALUES ('coffee-smoking-lung-1968', 'coffee-smoking-lung-1968', 'smokers', 866.0
 INSERT INTO sweep_study_config (config_id, study_id, sweep_stratum_label, n_sweep_stratum_total, sweep_rate_a, sweep_rate_b, n_fixed_a, n_fixed_b, fixed_rate_a, fixed_rate_b, original_alloc_fraction_a, sweep_corrected_gap)
 VALUES ('panama-sweden-mortality-1975', 'panama-sweden-mortality-1975', 'under-10', 600.0, 0.99, 0.986, 900.0, 500.0, 0.905556, 0.942, 0.166667, 0.016974) ON CONFLICT (config_id) DO UPDATE SET study_id = EXCLUDED.study_id, sweep_stratum_label = EXCLUDED.sweep_stratum_label, n_sweep_stratum_total = EXCLUDED.n_sweep_stratum_total, sweep_rate_a = EXCLUDED.sweep_rate_a, sweep_rate_b = EXCLUDED.sweep_rate_b, n_fixed_a = EXCLUDED.n_fixed_a, n_fixed_b = EXCLUDED.n_fixed_b, fixed_rate_a = EXCLUDED.fixed_rate_a, fixed_rate_b = EXCLUDED.fixed_rate_b, original_alloc_fraction_a = EXCLUDED.original_alloc_fraction_a, sweep_corrected_gap = EXCLUDED.sweep_corrected_gap;
 
+INSERT INTO sweep_study_config (config_id, study_id, sweep_stratum_label, n_sweep_stratum_total, sweep_rate_a, sweep_rate_b, n_fixed_a, n_fixed_b, fixed_rate_a, fixed_rate_b, original_alloc_fraction_a, sweep_corrected_gap)
+VALUES ('hrt-whi-2002', 'hrt-whi-2002', 'observational', 20000.0, 0.095, 0.09, 95000.0, 95000.0, 0.089474, 0.094737, 0.5, -0.004286) ON CONFLICT (config_id) DO UPDATE SET study_id = EXCLUDED.study_id, sweep_stratum_label = EXCLUDED.sweep_stratum_label, n_sweep_stratum_total = EXCLUDED.n_sweep_stratum_total, sweep_rate_a = EXCLUDED.sweep_rate_a, sweep_rate_b = EXCLUDED.sweep_rate_b, n_fixed_a = EXCLUDED.n_fixed_a, n_fixed_b = EXCLUDED.n_fixed_b, fixed_rate_a = EXCLUDED.fixed_rate_a, fixed_rate_b = EXCLUDED.fixed_rate_b, original_alloc_fraction_a = EXCLUDED.original_alloc_fraction_a, sweep_corrected_gap = EXCLUDED.sweep_corrected_gap;
+
+INSERT INTO sweep_study_config (config_id, study_id, sweep_stratum_label, n_sweep_stratum_total, sweep_rate_a, sweep_rate_b, n_fixed_a, n_fixed_b, fixed_rate_a, fixed_rate_b, original_alloc_fraction_a, sweep_corrected_gap)
+VALUES ('obesity-paradox-hf', 'obesity-paradox-hf', 'no-hf', 2000.0, 0.8, 0.9, 1000.0, 1000.0, 0.65, 0.5, 0.5, 0.025) ON CONFLICT (config_id) DO UPDATE SET study_id = EXCLUDED.study_id, sweep_stratum_label = EXCLUDED.sweep_stratum_label, n_sweep_stratum_total = EXCLUDED.n_sweep_stratum_total, sweep_rate_a = EXCLUDED.sweep_rate_a, sweep_rate_b = EXCLUDED.sweep_rate_b, n_fixed_a = EXCLUDED.n_fixed_a, n_fixed_b = EXCLUDED.n_fixed_b, fixed_rate_a = EXCLUDED.fixed_rate_a, fixed_rate_b = EXCLUDED.fixed_rate_b, original_alloc_fraction_a = EXCLUDED.original_alloc_fraction_a, sweep_corrected_gap = EXCLUDED.sweep_corrected_gap;
+
+INSERT INTO sweep_study_config (config_id, study_id, sweep_stratum_label, n_sweep_stratum_total, sweep_rate_a, sweep_rate_b, n_fixed_a, n_fixed_b, fixed_rate_a, fixed_rate_b, original_alloc_fraction_a, sweep_corrected_gap)
+VALUES ('dialysis-bmi-survival', 'dialysis-bmi-survival', 'general-population', 2000.0, 0.9, 0.95, 1000.0, 1000.0, 0.7, 0.6, 0.5, 0.025) ON CONFLICT (config_id) DO UPDATE SET study_id = EXCLUDED.study_id, sweep_stratum_label = EXCLUDED.sweep_stratum_label, n_sweep_stratum_total = EXCLUDED.n_sweep_stratum_total, sweep_rate_a = EXCLUDED.sweep_rate_a, sweep_rate_b = EXCLUDED.sweep_rate_b, n_fixed_a = EXCLUDED.n_fixed_a, n_fixed_b = EXCLUDED.n_fixed_b, fixed_rate_a = EXCLUDED.fixed_rate_a, fixed_rate_b = EXCLUDED.fixed_rate_b, original_alloc_fraction_a = EXCLUDED.original_alloc_fraction_a, sweep_corrected_gap = EXCLUDED.sweep_corrected_gap;
+
+INSERT INTO sweep_study_config (config_id, study_id, sweep_stratum_label, n_sweep_stratum_total, sweep_rate_a, sweep_rate_b, n_fixed_a, n_fixed_b, fixed_rate_a, fixed_rate_b, original_alloc_fraction_a, sweep_corrected_gap)
+VALUES ('sick-quitter-alcohol', 'sick-quitter-alcohol', 'never-drinkers-only', 2000.0, 0.85, 0.88, 1000.0, 1000.0, 0.82, 0.75, 0.5, 0.02) ON CONFLICT (config_id) DO UPDATE SET study_id = EXCLUDED.study_id, sweep_stratum_label = EXCLUDED.sweep_stratum_label, n_sweep_stratum_total = EXCLUDED.n_sweep_stratum_total, sweep_rate_a = EXCLUDED.sweep_rate_a, sweep_rate_b = EXCLUDED.sweep_rate_b, n_fixed_a = EXCLUDED.n_fixed_a, n_fixed_b = EXCLUDED.n_fixed_b, fixed_rate_a = EXCLUDED.fixed_rate_a, fixed_rate_b = EXCLUDED.fixed_rate_b, original_alloc_fraction_a = EXCLUDED.original_alloc_fraction_a, sweep_corrected_gap = EXCLUDED.sweep_corrected_gap;
+
+INSERT INTO sweep_study_config (config_id, study_id, sweep_stratum_label, n_sweep_stratum_total, sweep_rate_a, sweep_rate_b, n_fixed_a, n_fixed_b, fixed_rate_a, fixed_rate_b, original_alloc_fraction_a, sweep_corrected_gap)
+VALUES ('flu-vaccine-elderly-mortality', 'flu-vaccine-elderly-mortality', 'under-75', 240000.0, 0.999767, 0.99968, 5000.0, 3000.0, 0.92, 0.833333, 0.375, 0.00288) ON CONFLICT (config_id) DO UPDATE SET study_id = EXCLUDED.study_id, sweep_stratum_label = EXCLUDED.sweep_stratum_label, n_sweep_stratum_total = EXCLUDED.n_sweep_stratum_total, sweep_rate_a = EXCLUDED.sweep_rate_a, sweep_rate_b = EXCLUDED.sweep_rate_b, n_fixed_a = EXCLUDED.n_fixed_a, n_fixed_b = EXCLUDED.n_fixed_b, fixed_rate_a = EXCLUDED.fixed_rate_a, fixed_rate_b = EXCLUDED.fixed_rate_b, original_alloc_fraction_a = EXCLUDED.original_alloc_fraction_a, sweep_corrected_gap = EXCLUDED.sweep_corrected_gap;
+
+INSERT INTO sweep_study_config (config_id, study_id, sweep_stratum_label, n_sweep_stratum_total, sweep_rate_a, sweep_rate_b, n_fixed_a, n_fixed_b, fixed_rate_a, fixed_rate_b, original_alloc_fraction_a, sweep_corrected_gap)
+VALUES ('covid-italy-china-cfr-2020', 'covid-italy-china-cfr-2020', 'under-60', 51000.0, 0.99, 0.98, 2000.0, 400.0, 0.15, 0.8, 0.019608, -0.019663) ON CONFLICT (config_id) DO UPDATE SET study_id = EXCLUDED.study_id, sweep_stratum_label = EXCLUDED.sweep_stratum_label, n_sweep_stratum_total = EXCLUDED.n_sweep_stratum_total, sweep_rate_a = EXCLUDED.sweep_rate_a, sweep_rate_b = EXCLUDED.sweep_rate_b, n_fixed_a = EXCLUDED.n_fixed_a, n_fixed_b = EXCLUDED.n_fixed_b, fixed_rate_a = EXCLUDED.fixed_rate_a, fixed_rate_b = EXCLUDED.fixed_rate_b, original_alloc_fraction_a = EXCLUDED.original_alloc_fraction_a, sweep_corrected_gap = EXCLUDED.sweep_corrected_gap;
+
+INSERT INTO sweep_study_config (config_id, study_id, sweep_stratum_label, n_sweep_stratum_total, sweep_rate_a, sweep_rate_b, n_fixed_a, n_fixed_b, fixed_rate_a, fixed_rate_b, original_alloc_fraction_a, sweep_corrected_gap)
+VALUES ('israel-covid-severe-2021', 'israel-covid-severe-2021', 'under-50', 152200.0, 0.025, 0.000331, 10000.0, 800.0, 0.04, 0.225, 0.00657, 0.010777) ON CONFLICT (config_id) DO UPDATE SET study_id = EXCLUDED.study_id, sweep_stratum_label = EXCLUDED.sweep_stratum_label, n_sweep_stratum_total = EXCLUDED.n_sweep_stratum_total, sweep_rate_a = EXCLUDED.sweep_rate_a, sweep_rate_b = EXCLUDED.sweep_rate_b, n_fixed_a = EXCLUDED.n_fixed_a, n_fixed_b = EXCLUDED.n_fixed_b, fixed_rate_a = EXCLUDED.fixed_rate_a, fixed_rate_b = EXCLUDED.fixed_rate_b, original_alloc_fraction_a = EXCLUDED.original_alloc_fraction_a, sweep_corrected_gap = EXCLUDED.sweep_corrected_gap;
+
+INSERT INTO sweep_study_config (config_id, study_id, sweep_stratum_label, n_sweep_stratum_total, sweep_rate_a, sweep_rate_b, n_fixed_a, n_fixed_b, fixed_rate_a, fixed_rate_b, original_alloc_fraction_a, sweep_corrected_gap)
+VALUES ('cochran-smoking-1968', 'cochran-smoking-1968', 'under-65', 11000.0, 0.85, 0.9, 1000.0, 1000.0, 0.4, 0.5, 0.909091, -0.057692) ON CONFLICT (config_id) DO UPDATE SET study_id = EXCLUDED.study_id, sweep_stratum_label = EXCLUDED.sweep_stratum_label, n_sweep_stratum_total = EXCLUDED.n_sweep_stratum_total, sweep_rate_a = EXCLUDED.sweep_rate_a, sweep_rate_b = EXCLUDED.sweep_rate_b, n_fixed_a = EXCLUDED.n_fixed_a, n_fixed_b = EXCLUDED.n_fixed_b, fixed_rate_a = EXCLUDED.fixed_rate_a, fixed_rate_b = EXCLUDED.fixed_rate_b, original_alloc_fraction_a = EXCLUDED.original_alloc_fraction_a, sweep_corrected_gap = EXCLUDED.sweep_corrected_gap;
+
+INSERT INTO sweep_study_config (config_id, study_id, sweep_stratum_label, n_sweep_stratum_total, sweep_rate_a, sweep_rate_b, n_fixed_a, n_fixed_b, fixed_rate_a, fixed_rate_b, original_alloc_fraction_a, sweep_corrected_gap)
+VALUES ('healthy-worker-mortality', 'healthy-worker-mortality', 'low-hazard-occupations', 2000.0, 0.95, 0.9, 1000.0, 1000.0, 0.85, 0.8, 0.5, 0.05) ON CONFLICT (config_id) DO UPDATE SET study_id = EXCLUDED.study_id, sweep_stratum_label = EXCLUDED.sweep_stratum_label, n_sweep_stratum_total = EXCLUDED.n_sweep_stratum_total, sweep_rate_a = EXCLUDED.sweep_rate_a, sweep_rate_b = EXCLUDED.sweep_rate_b, n_fixed_a = EXCLUDED.n_fixed_a, n_fixed_b = EXCLUDED.n_fixed_b, fixed_rate_a = EXCLUDED.fixed_rate_a, fixed_rate_b = EXCLUDED.fixed_rate_b, original_alloc_fraction_a = EXCLUDED.original_alloc_fraction_a, sweep_corrected_gap = EXCLUDED.sweep_corrected_gap;
+
+INSERT INTO sweep_study_config (config_id, study_id, sweep_stratum_label, n_sweep_stratum_total, sweep_rate_a, sweep_rate_b, n_fixed_a, n_fixed_b, fixed_rate_a, fixed_rate_b, original_alloc_fraction_a, sweep_corrected_gap)
+VALUES ('compas-recidivism-base', 'compas-recidivism-base', 'low-prevalence-group', 2000.0, 0.7, 0.75, 1000.0, 1000.0, 0.45, 0.5, 0.5, -0.05) ON CONFLICT (config_id) DO UPDATE SET study_id = EXCLUDED.study_id, sweep_stratum_label = EXCLUDED.sweep_stratum_label, n_sweep_stratum_total = EXCLUDED.n_sweep_stratum_total, sweep_rate_a = EXCLUDED.sweep_rate_a, sweep_rate_b = EXCLUDED.sweep_rate_b, n_fixed_a = EXCLUDED.n_fixed_a, n_fixed_b = EXCLUDED.n_fixed_b, fixed_rate_a = EXCLUDED.fixed_rate_a, fixed_rate_b = EXCLUDED.fixed_rate_b, original_alloc_fraction_a = EXCLUDED.original_alloc_fraction_a, sweep_corrected_gap = EXCLUDED.sweep_corrected_gap;
+
+INSERT INTO sweep_study_config (config_id, study_id, sweep_stratum_label, n_sweep_stratum_total, sweep_rate_a, sweep_rate_b, n_fixed_a, n_fixed_b, fixed_rate_a, fixed_rate_b, original_alloc_fraction_a, sweep_corrected_gap)
+VALUES ('us-wage-composition-stagnation', 'us-wage-composition-stagnation', 'non-college', 11000.0, 0.4, 0.38, 10000.0, 10000.0, 0.55, 0.5, 0.636364, 0.039355) ON CONFLICT (config_id) DO UPDATE SET study_id = EXCLUDED.study_id, sweep_stratum_label = EXCLUDED.sweep_stratum_label, n_sweep_stratum_total = EXCLUDED.n_sweep_stratum_total, sweep_rate_a = EXCLUDED.sweep_rate_a, sweep_rate_b = EXCLUDED.sweep_rate_b, n_fixed_a = EXCLUDED.n_fixed_a, n_fixed_b = EXCLUDED.n_fixed_b, fixed_rate_a = EXCLUDED.fixed_rate_a, fixed_rate_b = EXCLUDED.fixed_rate_b, original_alloc_fraction_a = EXCLUDED.original_alloc_fraction_a, sweep_corrected_gap = EXCLUDED.sweep_corrected_gap;
+
+INSERT INTO sweep_study_config (config_id, study_id, sweep_stratum_label, n_sweep_stratum_total, sweep_rate_a, sweep_rate_b, n_fixed_a, n_fixed_b, fixed_rate_a, fixed_rate_b, original_alloc_fraction_a, sweep_corrected_gap)
+VALUES ('borjas-immigrant-cohort', 'borjas-immigrant-cohort', 'recent-arrivals', 2000.0, 0.4, 0.45, 1000.0, 1000.0, 0.55, 0.52, 0.5, -0.01) ON CONFLICT (config_id) DO UPDATE SET study_id = EXCLUDED.study_id, sweep_stratum_label = EXCLUDED.sweep_stratum_label, n_sweep_stratum_total = EXCLUDED.n_sweep_stratum_total, sweep_rate_a = EXCLUDED.sweep_rate_a, sweep_rate_b = EXCLUDED.sweep_rate_b, n_fixed_a = EXCLUDED.n_fixed_a, n_fixed_b = EXCLUDED.n_fixed_b, fixed_rate_a = EXCLUDED.fixed_rate_a, fixed_rate_b = EXCLUDED.fixed_rate_b, original_alloc_fraction_a = EXCLUDED.original_alloc_fraction_a, sweep_corrected_gap = EXCLUDED.sweep_corrected_gap;
+
+INSERT INTO sweep_study_config (config_id, study_id, sweep_stratum_label, n_sweep_stratum_total, sweep_rate_a, sweep_rate_b, n_fixed_a, n_fixed_b, fixed_rate_a, fixed_rate_b, original_alloc_fraction_a, sweep_corrected_gap)
+VALUES ('robinson-1950-literacy', 'robinson-1950-literacy', 'high-literacy-states', 11000.0, 0.9, 0.95, 1000.0, 2000.0, 0.8, 0.7, 0.090909, -0.017857) ON CONFLICT (config_id) DO UPDATE SET study_id = EXCLUDED.study_id, sweep_stratum_label = EXCLUDED.sweep_stratum_label, n_sweep_stratum_total = EXCLUDED.n_sweep_stratum_total, sweep_rate_a = EXCLUDED.sweep_rate_a, sweep_rate_b = EXCLUDED.sweep_rate_b, n_fixed_a = EXCLUDED.n_fixed_a, n_fixed_b = EXCLUDED.n_fixed_b, fixed_rate_a = EXCLUDED.fixed_rate_a, fixed_rate_b = EXCLUDED.fixed_rate_b, original_alloc_fraction_a = EXCLUDED.original_alloc_fraction_a, sweep_corrected_gap = EXCLUDED.sweep_corrected_gap;
+
+INSERT INTO sweep_study_config (config_id, study_id, sweep_stratum_label, n_sweep_stratum_total, sweep_rate_a, sweep_rate_b, n_fixed_a, n_fixed_b, fixed_rate_a, fixed_rate_b, original_alloc_fraction_a, sweep_corrected_gap)
+VALUES ('ab-test-traffic-mix', 'ab-test-traffic-mix', 'week1-young-users', 20000.0, 0.8, 0.75, 2000.0, 2000.0, 0.55, 0.65, 0.5, 0.025) ON CONFLICT (config_id) DO UPDATE SET study_id = EXCLUDED.study_id, sweep_stratum_label = EXCLUDED.sweep_stratum_label, n_sweep_stratum_total = EXCLUDED.n_sweep_stratum_total, sweep_rate_a = EXCLUDED.sweep_rate_a, sweep_rate_b = EXCLUDED.sweep_rate_b, n_fixed_a = EXCLUDED.n_fixed_a, n_fixed_b = EXCLUDED.n_fixed_b, fixed_rate_a = EXCLUDED.fixed_rate_a, fixed_rate_b = EXCLUDED.fixed_rate_b, original_alloc_fraction_a = EXCLUDED.original_alloc_fraction_a, sweep_corrected_gap = EXCLUDED.sweep_corrected_gap;
+
+INSERT INTO sweep_study_config (config_id, study_id, sweep_stratum_label, n_sweep_stratum_total, sweep_rate_a, sweep_rate_b, n_fixed_a, n_fixed_b, fixed_rate_a, fixed_rate_b, original_alloc_fraction_a, sweep_corrected_gap)
+VALUES ('recsys-offline-eval', 'recsys-offline-eval', 'head-items', 2000.0, 0.85, 0.8, 1000.0, 1000.0, 0.3, 0.35, 0.5, -0.0) ON CONFLICT (config_id) DO UPDATE SET study_id = EXCLUDED.study_id, sweep_stratum_label = EXCLUDED.sweep_stratum_label, n_sweep_stratum_total = EXCLUDED.n_sweep_stratum_total, sweep_rate_a = EXCLUDED.sweep_rate_a, sweep_rate_b = EXCLUDED.sweep_rate_b, n_fixed_a = EXCLUDED.n_fixed_a, n_fixed_b = EXCLUDED.n_fixed_b, fixed_rate_a = EXCLUDED.fixed_rate_a, fixed_rate_b = EXCLUDED.fixed_rate_b, original_alloc_fraction_a = EXCLUDED.original_alloc_fraction_a, sweep_corrected_gap = EXCLUDED.sweep_corrected_gap;
+
+INSERT INTO sweep_study_config (config_id, study_id, sweep_stratum_label, n_sweep_stratum_total, sweep_rate_a, sweep_rate_b, n_fixed_a, n_fixed_b, fixed_rate_a, fixed_rate_b, original_alloc_fraction_a, sweep_corrected_gap)
+VALUES ('collider-only-synthetic', 'collider-only-synthetic', 'conditioned-in', 200.0, 0.85, 0.7, 900.0, 900.0, 0.166667, 0.3, 0.5, -0.105) ON CONFLICT (config_id) DO UPDATE SET study_id = EXCLUDED.study_id, sweep_stratum_label = EXCLUDED.sweep_stratum_label, n_sweep_stratum_total = EXCLUDED.n_sweep_stratum_total, sweep_rate_a = EXCLUDED.sweep_rate_a, sweep_rate_b = EXCLUDED.sweep_rate_b, n_fixed_a = EXCLUDED.n_fixed_a, n_fixed_b = EXCLUDED.n_fixed_b, fixed_rate_a = EXCLUDED.fixed_rate_a, fixed_rate_b = EXCLUDED.fixed_rate_b, original_alloc_fraction_a = EXCLUDED.original_alloc_fraction_a, sweep_corrected_gap = EXCLUDED.sweep_corrected_gap;
+
+INSERT INTO sweep_study_config (config_id, study_id, sweep_stratum_label, n_sweep_stratum_total, sweep_rate_a, sweep_rate_b, n_fixed_a, n_fixed_b, fixed_rate_a, fixed_rate_b, original_alloc_fraction_a, sweep_corrected_gap)
+VALUES ('noncollapsibility-or-synthetic', 'noncollapsibility-or-synthetic', 'low-prevalence', 200.0, 0.4, 0.3, 1000.0, 1000.0, 0.4, 0.3, 0.5, 0.1) ON CONFLICT (config_id) DO UPDATE SET study_id = EXCLUDED.study_id, sweep_stratum_label = EXCLUDED.sweep_stratum_label, n_sweep_stratum_total = EXCLUDED.n_sweep_stratum_total, sweep_rate_a = EXCLUDED.sweep_rate_a, sweep_rate_b = EXCLUDED.sweep_rate_b, n_fixed_a = EXCLUDED.n_fixed_a, n_fixed_b = EXCLUDED.n_fixed_b, fixed_rate_a = EXCLUDED.fixed_rate_a, fixed_rate_b = EXCLUDED.fixed_rate_b, original_alloc_fraction_a = EXCLUDED.original_alloc_fraction_a, sweep_corrected_gap = EXCLUDED.sweep_corrected_gap;
+
+INSERT INTO sweep_study_config (config_id, study_id, sweep_stratum_label, n_sweep_stratum_total, sweep_rate_a, sweep_rate_b, n_fixed_a, n_fixed_b, fixed_rate_a, fixed_rate_b, original_alloc_fraction_a, sweep_corrected_gap)
+VALUES ('trauma-center-mortality', 'trauma-center-mortality', 'mild-injury', 2000.0, 0.95, 0.96, 1000.0, 1000.0, 0.6, 0.68, 0.5, -0.045) ON CONFLICT (config_id) DO UPDATE SET study_id = EXCLUDED.study_id, sweep_stratum_label = EXCLUDED.sweep_stratum_label, n_sweep_stratum_total = EXCLUDED.n_sweep_stratum_total, sweep_rate_a = EXCLUDED.sweep_rate_a, sweep_rate_b = EXCLUDED.sweep_rate_b, n_fixed_a = EXCLUDED.n_fixed_a, n_fixed_b = EXCLUDED.n_fixed_b, fixed_rate_a = EXCLUDED.fixed_rate_a, fixed_rate_b = EXCLUDED.fixed_rate_b, original_alloc_fraction_a = EXCLUDED.original_alloc_fraction_a, sweep_corrected_gap = EXCLUDED.sweep_corrected_gap;
+
+INSERT INTO sweep_study_config (config_id, study_id, sweep_stratum_label, n_sweep_stratum_total, sweep_rate_a, sweep_rate_b, n_fixed_a, n_fixed_b, fixed_rate_a, fixed_rate_b, original_alloc_fraction_a, sweep_corrected_gap)
+VALUES ('surgeon-volume-mortality', 'surgeon-volume-mortality', 'low-risk', 2000.0, 0.98, 0.975, 1000.0, 1000.0, 0.82, 0.86, 0.5, -0.0175) ON CONFLICT (config_id) DO UPDATE SET study_id = EXCLUDED.study_id, sweep_stratum_label = EXCLUDED.sweep_stratum_label, n_sweep_stratum_total = EXCLUDED.n_sweep_stratum_total, sweep_rate_a = EXCLUDED.sweep_rate_a, sweep_rate_b = EXCLUDED.sweep_rate_b, n_fixed_a = EXCLUDED.n_fixed_a, n_fixed_b = EXCLUDED.n_fixed_b, fixed_rate_a = EXCLUDED.fixed_rate_a, fixed_rate_b = EXCLUDED.fixed_rate_b, original_alloc_fraction_a = EXCLUDED.original_alloc_fraction_a, sweep_corrected_gap = EXCLUDED.sweep_corrected_gap;
+
+INSERT INTO sweep_study_config (config_id, study_id, sweep_stratum_label, n_sweep_stratum_total, sweep_rate_a, sweep_rate_b, n_fixed_a, n_fixed_b, fixed_rate_a, fixed_rate_b, original_alloc_fraction_a, sweep_corrected_gap)
+VALUES ('mammography-length-bias', 'mammography-length-bias', 'slow-growing', 2000.0, 0.92, 0.7, 1000.0, 1000.0, 0.4, 0.35, 0.5, 0.135) ON CONFLICT (config_id) DO UPDATE SET study_id = EXCLUDED.study_id, sweep_stratum_label = EXCLUDED.sweep_stratum_label, n_sweep_stratum_total = EXCLUDED.n_sweep_stratum_total, sweep_rate_a = EXCLUDED.sweep_rate_a, sweep_rate_b = EXCLUDED.sweep_rate_b, n_fixed_a = EXCLUDED.n_fixed_a, n_fixed_b = EXCLUDED.n_fixed_b, fixed_rate_a = EXCLUDED.fixed_rate_a, fixed_rate_b = EXCLUDED.fixed_rate_b, original_alloc_fraction_a = EXCLUDED.original_alloc_fraction_a, sweep_corrected_gap = EXCLUDED.sweep_corrected_gap;
+
+INSERT INTO sweep_study_config (config_id, study_id, sweep_stratum_label, n_sweep_stratum_total, sweep_rate_a, sweep_rate_b, n_fixed_a, n_fixed_b, fixed_rate_a, fixed_rate_b, original_alloc_fraction_a, sweep_corrected_gap)
+VALUES ('cabg-vs-pci-severity', 'cabg-vs-pci-severity', 'multivessel', 2000.0, 0.92, 0.88, 1000.0, 1000.0, 0.98, 0.975, 0.5, 0.0225) ON CONFLICT (config_id) DO UPDATE SET study_id = EXCLUDED.study_id, sweep_stratum_label = EXCLUDED.sweep_stratum_label, n_sweep_stratum_total = EXCLUDED.n_sweep_stratum_total, sweep_rate_a = EXCLUDED.sweep_rate_a, sweep_rate_b = EXCLUDED.sweep_rate_b, n_fixed_a = EXCLUDED.n_fixed_a, n_fixed_b = EXCLUDED.n_fixed_b, fixed_rate_a = EXCLUDED.fixed_rate_a, fixed_rate_b = EXCLUDED.fixed_rate_b, original_alloc_fraction_a = EXCLUDED.original_alloc_fraction_a, sweep_corrected_gap = EXCLUDED.sweep_corrected_gap;
+
+INSERT INTO sweep_study_config (config_id, study_id, sweep_stratum_label, n_sweep_stratum_total, sweep_rate_a, sweep_rate_b, n_fixed_a, n_fixed_b, fixed_rate_a, fixed_rate_b, original_alloc_fraction_a, sweep_corrected_gap)
+VALUES ('tolbutamide-ugdp-1970', 'tolbutamide-ugdp-1970', 'low-risk-centers', 2000.0, 0.92, 0.91, 1000.0, 1000.0, 0.78, 0.82, 0.5, -0.015) ON CONFLICT (config_id) DO UPDATE SET study_id = EXCLUDED.study_id, sweep_stratum_label = EXCLUDED.sweep_stratum_label, n_sweep_stratum_total = EXCLUDED.n_sweep_stratum_total, sweep_rate_a = EXCLUDED.sweep_rate_a, sweep_rate_b = EXCLUDED.sweep_rate_b, n_fixed_a = EXCLUDED.n_fixed_a, n_fixed_b = EXCLUDED.n_fixed_b, fixed_rate_a = EXCLUDED.fixed_rate_a, fixed_rate_b = EXCLUDED.fixed_rate_b, original_alloc_fraction_a = EXCLUDED.original_alloc_fraction_a, sweep_corrected_gap = EXCLUDED.sweep_corrected_gap;
+
+INSERT INTO sweep_study_config (config_id, study_id, sweep_stratum_label, n_sweep_stratum_total, sweep_rate_a, sweep_rate_b, n_fixed_a, n_fixed_b, fixed_rate_a, fixed_rate_b, original_alloc_fraction_a, sweep_corrected_gap)
+VALUES ('snow-cholera-water-1855', 'snow-cholera-water-1855', 'high-exposure-district', 2000.0, 0.902, 0.96, 1000.0, 1000.0, 0.94, 0.97, 0.5, -0.044) ON CONFLICT (config_id) DO UPDATE SET study_id = EXCLUDED.study_id, sweep_stratum_label = EXCLUDED.sweep_stratum_label, n_sweep_stratum_total = EXCLUDED.n_sweep_stratum_total, sweep_rate_a = EXCLUDED.sweep_rate_a, sweep_rate_b = EXCLUDED.sweep_rate_b, n_fixed_a = EXCLUDED.n_fixed_a, n_fixed_b = EXCLUDED.n_fixed_b, fixed_rate_a = EXCLUDED.fixed_rate_a, fixed_rate_b = EXCLUDED.fixed_rate_b, original_alloc_fraction_a = EXCLUDED.original_alloc_fraction_a, sweep_corrected_gap = EXCLUDED.sweep_corrected_gap;
+
+INSERT INTO sweep_study_config (config_id, study_id, sweep_stratum_label, n_sweep_stratum_total, sweep_rate_a, sweep_rate_b, n_fixed_a, n_fixed_b, fixed_rate_a, fixed_rate_b, original_alloc_fraction_a, sweep_corrected_gap)
+VALUES ('seatbelt-crash-severity', 'seatbelt-crash-severity', 'minor-crash', 2000.0, 0.98, 0.97, 1000.0, 1000.0, 0.7, 0.6, 0.5, 0.055) ON CONFLICT (config_id) DO UPDATE SET study_id = EXCLUDED.study_id, sweep_stratum_label = EXCLUDED.sweep_stratum_label, n_sweep_stratum_total = EXCLUDED.n_sweep_stratum_total, sweep_rate_a = EXCLUDED.sweep_rate_a, sweep_rate_b = EXCLUDED.sweep_rate_b, n_fixed_a = EXCLUDED.n_fixed_a, n_fixed_b = EXCLUDED.n_fixed_b, fixed_rate_a = EXCLUDED.fixed_rate_a, fixed_rate_b = EXCLUDED.fixed_rate_b, original_alloc_fraction_a = EXCLUDED.original_alloc_fraction_a, sweep_corrected_gap = EXCLUDED.sweep_corrected_gap;
+
+INSERT INTO sweep_study_config (config_id, study_id, sweep_stratum_label, n_sweep_stratum_total, sweep_rate_a, sweep_rate_b, n_fixed_a, n_fixed_b, fixed_rate_a, fixed_rate_b, original_alloc_fraction_a, sweep_corrected_gap)
+VALUES ('measles-outbreak-vaccinated', 'measles-outbreak-vaccinated', 'high-coverage-setting', 10000.0, 0.011111, 0.044, 2000.0, 500.0, 0.0075, 0.07, 0.9, -0.038811) ON CONFLICT (config_id) DO UPDATE SET study_id = EXCLUDED.study_id, sweep_stratum_label = EXCLUDED.sweep_stratum_label, n_sweep_stratum_total = EXCLUDED.n_sweep_stratum_total, sweep_rate_a = EXCLUDED.sweep_rate_a, sweep_rate_b = EXCLUDED.sweep_rate_b, n_fixed_a = EXCLUDED.n_fixed_a, n_fixed_b = EXCLUDED.n_fixed_b, fixed_rate_a = EXCLUDED.fixed_rate_a, fixed_rate_b = EXCLUDED.fixed_rate_b, original_alloc_fraction_a = EXCLUDED.original_alloc_fraction_a, sweep_corrected_gap = EXCLUDED.sweep_corrected_gap;
+
+INSERT INTO sweep_study_config (config_id, study_id, sweep_stratum_label, n_sweep_stratum_total, sweep_rate_a, sweep_rate_b, n_fixed_a, n_fixed_b, fixed_rate_a, fixed_rate_b, original_alloc_fraction_a, sweep_corrected_gap)
+VALUES ('air-pollution-mortality-city', 'air-pollution-mortality-city', 'younger-population-city', 2000.0, 0.98, 0.985, 1000.0, 1000.0, 0.92, 0.94, 0.5, -0.0125) ON CONFLICT (config_id) DO UPDATE SET study_id = EXCLUDED.study_id, sweep_stratum_label = EXCLUDED.sweep_stratum_label, n_sweep_stratum_total = EXCLUDED.n_sweep_stratum_total, sweep_rate_a = EXCLUDED.sweep_rate_a, sweep_rate_b = EXCLUDED.sweep_rate_b, n_fixed_a = EXCLUDED.n_fixed_a, n_fixed_b = EXCLUDED.n_fixed_b, fixed_rate_a = EXCLUDED.fixed_rate_a, fixed_rate_b = EXCLUDED.fixed_rate_b, original_alloc_fraction_a = EXCLUDED.original_alloc_fraction_a, sweep_corrected_gap = EXCLUDED.sweep_corrected_gap;
+
+INSERT INTO sweep_study_config (config_id, study_id, sweep_stratum_label, n_sweep_stratum_total, sweep_rate_a, sweep_rate_b, n_fixed_a, n_fixed_b, fixed_rate_a, fixed_rate_b, original_alloc_fraction_a, sweep_corrected_gap)
+VALUES ('tb-treatment-resistance', 'tb-treatment-resistance', 'drug-sensitive', 2000.0, 0.92, 0.91, 1000.0, 1000.0, 0.65, 0.72, 0.5, -0.03) ON CONFLICT (config_id) DO UPDATE SET study_id = EXCLUDED.study_id, sweep_stratum_label = EXCLUDED.sweep_stratum_label, n_sweep_stratum_total = EXCLUDED.n_sweep_stratum_total, sweep_rate_a = EXCLUDED.sweep_rate_a, sweep_rate_b = EXCLUDED.sweep_rate_b, n_fixed_a = EXCLUDED.n_fixed_a, n_fixed_b = EXCLUDED.n_fixed_b, fixed_rate_a = EXCLUDED.fixed_rate_a, fixed_rate_b = EXCLUDED.fixed_rate_b, original_alloc_fraction_a = EXCLUDED.original_alloc_fraction_a, sweep_corrected_gap = EXCLUDED.sweep_corrected_gap;
+
+INSERT INTO sweep_study_config (config_id, study_id, sweep_stratum_label, n_sweep_stratum_total, sweep_rate_a, sweep_rate_b, n_fixed_a, n_fixed_b, fixed_rate_a, fixed_rate_b, original_alloc_fraction_a, sweep_corrected_gap)
+VALUES ('hospital-mortality-readmission', 'hospital-mortality-readmission', 'high-comorbidity', 2000.0, 0.85, 0.88, 1000.0, 1000.0, 0.97, 0.975, 0.5, -0.0175) ON CONFLICT (config_id) DO UPDATE SET study_id = EXCLUDED.study_id, sweep_stratum_label = EXCLUDED.sweep_stratum_label, n_sweep_stratum_total = EXCLUDED.n_sweep_stratum_total, sweep_rate_a = EXCLUDED.sweep_rate_a, sweep_rate_b = EXCLUDED.sweep_rate_b, n_fixed_a = EXCLUDED.n_fixed_a, n_fixed_b = EXCLUDED.n_fixed_b, fixed_rate_a = EXCLUDED.fixed_rate_a, fixed_rate_b = EXCLUDED.fixed_rate_b, original_alloc_fraction_a = EXCLUDED.original_alloc_fraction_a, sweep_corrected_gap = EXCLUDED.sweep_corrected_gap;
+
+INSERT INTO sweep_study_config (config_id, study_id, sweep_stratum_label, n_sweep_stratum_total, sweep_rate_a, sweep_rate_b, n_fixed_a, n_fixed_b, fixed_rate_a, fixed_rate_b, original_alloc_fraction_a, sweep_corrected_gap)
+VALUES ('nypd-stop-frisk-hitrate', 'nypd-stop-frisk-hitrate', 'low-crime-precincts', 3500.0, 0.0225, 0.048, 8000.0, 7000.0, 0.04, 0.04, 0.571429, -0.004824) ON CONFLICT (config_id) DO UPDATE SET study_id = EXCLUDED.study_id, sweep_stratum_label = EXCLUDED.sweep_stratum_label, n_sweep_stratum_total = EXCLUDED.n_sweep_stratum_total, sweep_rate_a = EXCLUDED.sweep_rate_a, sweep_rate_b = EXCLUDED.sweep_rate_b, n_fixed_a = EXCLUDED.n_fixed_a, n_fixed_b = EXCLUDED.n_fixed_b, fixed_rate_a = EXCLUDED.fixed_rate_a, fixed_rate_b = EXCLUDED.fixed_rate_b, original_alloc_fraction_a = EXCLUDED.original_alloc_fraction_a, sweep_corrected_gap = EXCLUDED.sweep_corrected_gap;
+
+INSERT INTO sweep_study_config (config_id, study_id, sweep_stratum_label, n_sweep_stratum_total, sweep_rate_a, sweep_rate_b, n_fixed_a, n_fixed_b, fixed_rate_a, fixed_rate_b, original_alloc_fraction_a, sweep_corrected_gap)
+VALUES ('sentencing-offense-type', 'sentencing-offense-type', 'violent-offenses', 2000.0, 0.8, 0.75, 1000.0, 1000.0, 0.4, 0.42, 0.5, 0.015) ON CONFLICT (config_id) DO UPDATE SET study_id = EXCLUDED.study_id, sweep_stratum_label = EXCLUDED.sweep_stratum_label, n_sweep_stratum_total = EXCLUDED.n_sweep_stratum_total, sweep_rate_a = EXCLUDED.sweep_rate_a, sweep_rate_b = EXCLUDED.sweep_rate_b, n_fixed_a = EXCLUDED.n_fixed_a, n_fixed_b = EXCLUDED.n_fixed_b, fixed_rate_a = EXCLUDED.fixed_rate_a, fixed_rate_b = EXCLUDED.fixed_rate_b, original_alloc_fraction_a = EXCLUDED.original_alloc_fraction_a, sweep_corrected_gap = EXCLUDED.sweep_corrected_gap;
+
+INSERT INTO sweep_study_config (config_id, study_id, sweep_stratum_label, n_sweep_stratum_total, sweep_rate_a, sweep_rate_b, n_fixed_a, n_fixed_b, fixed_rate_a, fixed_rate_b, original_alloc_fraction_a, sweep_corrected_gap)
+VALUES ('bail-risk-score', 'bail-risk-score', 'high-risk-tier', 2000.0, 0.45, 0.52, 1000.0, 1000.0, 0.12, 0.15, 0.5, -0.05) ON CONFLICT (config_id) DO UPDATE SET study_id = EXCLUDED.study_id, sweep_stratum_label = EXCLUDED.sweep_stratum_label, n_sweep_stratum_total = EXCLUDED.n_sweep_stratum_total, sweep_rate_a = EXCLUDED.sweep_rate_a, sweep_rate_b = EXCLUDED.sweep_rate_b, n_fixed_a = EXCLUDED.n_fixed_a, n_fixed_b = EXCLUDED.n_fixed_b, fixed_rate_a = EXCLUDED.fixed_rate_a, fixed_rate_b = EXCLUDED.fixed_rate_b, original_alloc_fraction_a = EXCLUDED.original_alloc_fraction_a, sweep_corrected_gap = EXCLUDED.sweep_corrected_gap;
+
+INSERT INTO sweep_study_config (config_id, study_id, sweep_stratum_label, n_sweep_stratum_total, sweep_rate_a, sweep_rate_b, n_fixed_a, n_fixed_b, fixed_rate_a, fixed_rate_b, original_alloc_fraction_a, sweep_corrected_gap)
+VALUES ('police-force-encounter', 'police-force-encounter', 'discretionary-stop', 2000.0, 0.18, 0.05, 1000.0, 1000.0, 0.4, 0.12, 0.5, 0.205) ON CONFLICT (config_id) DO UPDATE SET study_id = EXCLUDED.study_id, sweep_stratum_label = EXCLUDED.sweep_stratum_label, n_sweep_stratum_total = EXCLUDED.n_sweep_stratum_total, sweep_rate_a = EXCLUDED.sweep_rate_a, sweep_rate_b = EXCLUDED.sweep_rate_b, n_fixed_a = EXCLUDED.n_fixed_a, n_fixed_b = EXCLUDED.n_fixed_b, fixed_rate_a = EXCLUDED.fixed_rate_a, fixed_rate_b = EXCLUDED.fixed_rate_b, original_alloc_fraction_a = EXCLUDED.original_alloc_fraction_a, sweep_corrected_gap = EXCLUDED.sweep_corrected_gap;
+
+INSERT INTO sweep_study_config (config_id, study_id, sweep_stratum_label, n_sweep_stratum_total, sweep_rate_a, sweep_rate_b, n_fixed_a, n_fixed_b, fixed_rate_a, fixed_rate_b, original_alloc_fraction_a, sweep_corrected_gap)
+VALUES ('uc-systemwide-admissions', 'uc-systemwide-admissions', 'high-selectivity-major', 2000.0, 0.12, 0.14, 1000.0, 1000.0, 0.65, 0.6, 0.5, 0.015) ON CONFLICT (config_id) DO UPDATE SET study_id = EXCLUDED.study_id, sweep_stratum_label = EXCLUDED.sweep_stratum_label, n_sweep_stratum_total = EXCLUDED.n_sweep_stratum_total, sweep_rate_a = EXCLUDED.sweep_rate_a, sweep_rate_b = EXCLUDED.sweep_rate_b, n_fixed_a = EXCLUDED.n_fixed_a, n_fixed_b = EXCLUDED.n_fixed_b, fixed_rate_a = EXCLUDED.fixed_rate_a, fixed_rate_b = EXCLUDED.fixed_rate_b, original_alloc_fraction_a = EXCLUDED.original_alloc_fraction_a, sweep_corrected_gap = EXCLUDED.sweep_corrected_gap;
+
+INSERT INTO sweep_study_config (config_id, study_id, sweep_stratum_label, n_sweep_stratum_total, sweep_rate_a, sweep_rate_b, n_fixed_a, n_fixed_b, fixed_rate_a, fixed_rate_b, original_alloc_fraction_a, sweep_corrected_gap)
+VALUES ('teacher-vam-prior-achievement', 'teacher-vam-prior-achievement', 'high-prior-achievement', 2000.0, 0.85, 0.82, 1000.0, 1000.0, 0.52, 0.56, 0.5, -0.005) ON CONFLICT (config_id) DO UPDATE SET study_id = EXCLUDED.study_id, sweep_stratum_label = EXCLUDED.sweep_stratum_label, n_sweep_stratum_total = EXCLUDED.n_sweep_stratum_total, sweep_rate_a = EXCLUDED.sweep_rate_a, sweep_rate_b = EXCLUDED.sweep_rate_b, n_fixed_a = EXCLUDED.n_fixed_a, n_fixed_b = EXCLUDED.n_fixed_b, fixed_rate_a = EXCLUDED.fixed_rate_a, fixed_rate_b = EXCLUDED.fixed_rate_b, original_alloc_fraction_a = EXCLUDED.original_alloc_fraction_a, sweep_corrected_gap = EXCLUDED.sweep_corrected_gap;
+
+INSERT INTO sweep_study_config (config_id, study_id, sweep_stratum_label, n_sweep_stratum_total, sweep_rate_a, sweep_rate_b, n_fixed_a, n_fixed_b, fixed_rate_a, fixed_rate_b, original_alloc_fraction_a, sweep_corrected_gap)
+VALUES ('naep-state-demographics', 'naep-state-demographics', 'high-poverty-states', 2000.0, 0.28, 0.32, 1000.0, 1000.0, 0.45, 0.42, 0.5, -0.005) ON CONFLICT (config_id) DO UPDATE SET study_id = EXCLUDED.study_id, sweep_stratum_label = EXCLUDED.sweep_stratum_label, n_sweep_stratum_total = EXCLUDED.n_sweep_stratum_total, sweep_rate_a = EXCLUDED.sweep_rate_a, sweep_rate_b = EXCLUDED.sweep_rate_b, n_fixed_a = EXCLUDED.n_fixed_a, n_fixed_b = EXCLUDED.n_fixed_b, fixed_rate_a = EXCLUDED.fixed_rate_a, fixed_rate_b = EXCLUDED.fixed_rate_b, original_alloc_fraction_a = EXCLUDED.original_alloc_fraction_a, sweep_corrected_gap = EXCLUDED.sweep_corrected_gap;
+
+INSERT INTO sweep_study_config (config_id, study_id, sweep_stratum_label, n_sweep_stratum_total, sweep_rate_a, sweep_rate_b, n_fixed_a, n_fixed_b, fixed_rate_a, fixed_rate_b, original_alloc_fraction_a, sweep_corrected_gap)
+VALUES ('college-grad-rate-selectivity', 'college-grad-rate-selectivity', 'well-prepared-intake', 2000.0, 0.92, 0.88, 1000.0, 1000.0, 0.55, 0.62, 0.5, -0.015) ON CONFLICT (config_id) DO UPDATE SET study_id = EXCLUDED.study_id, sweep_stratum_label = EXCLUDED.sweep_stratum_label, n_sweep_stratum_total = EXCLUDED.n_sweep_stratum_total, sweep_rate_a = EXCLUDED.sweep_rate_a, sweep_rate_b = EXCLUDED.sweep_rate_b, n_fixed_a = EXCLUDED.n_fixed_a, n_fixed_b = EXCLUDED.n_fixed_b, fixed_rate_a = EXCLUDED.fixed_rate_a, fixed_rate_b = EXCLUDED.fixed_rate_b, original_alloc_fraction_a = EXCLUDED.original_alloc_fraction_a, sweep_corrected_gap = EXCLUDED.sweep_corrected_gap;
+
+INSERT INTO sweep_study_config (config_id, study_id, sweep_stratum_label, n_sweep_stratum_total, sweep_rate_a, sweep_rate_b, n_fixed_a, n_fixed_b, fixed_rate_a, fixed_rate_b, original_alloc_fraction_a, sweep_corrected_gap)
+VALUES ('star-class-size', 'star-class-size', 'inner-city-schools', 2000.0, 0.82, 0.8, 1000.0, 1000.0, 0.91, 0.9, 0.5, 0.015) ON CONFLICT (config_id) DO UPDATE SET study_id = EXCLUDED.study_id, sweep_stratum_label = EXCLUDED.sweep_stratum_label, n_sweep_stratum_total = EXCLUDED.n_sweep_stratum_total, sweep_rate_a = EXCLUDED.sweep_rate_a, sweep_rate_b = EXCLUDED.sweep_rate_b, n_fixed_a = EXCLUDED.n_fixed_a, n_fixed_b = EXCLUDED.n_fixed_b, fixed_rate_a = EXCLUDED.fixed_rate_a, fixed_rate_b = EXCLUDED.fixed_rate_b, original_alloc_fraction_a = EXCLUDED.original_alloc_fraction_a, sweep_corrected_gap = EXCLUDED.sweep_corrected_gap;
+
+INSERT INTO sweep_study_config (config_id, study_id, sweep_stratum_label, n_sweep_stratum_total, sweep_rate_a, sweep_rate_b, n_fixed_a, n_fixed_b, fixed_rate_a, fixed_rate_b, original_alloc_fraction_a, sweep_corrected_gap)
+VALUES ('nba-shooting-shot-mix', 'nba-shooting-shot-mix', 'three-point-attempts', 1500.0, 0.36, 0.3, 1000.0, 1000.0, 0.48, 0.44, 0.666667, 0.048571) ON CONFLICT (config_id) DO UPDATE SET study_id = EXCLUDED.study_id, sweep_stratum_label = EXCLUDED.sweep_stratum_label, n_sweep_stratum_total = EXCLUDED.n_sweep_stratum_total, sweep_rate_a = EXCLUDED.sweep_rate_a, sweep_rate_b = EXCLUDED.sweep_rate_b, n_fixed_a = EXCLUDED.n_fixed_a, n_fixed_b = EXCLUDED.n_fixed_b, fixed_rate_a = EXCLUDED.fixed_rate_a, fixed_rate_b = EXCLUDED.fixed_rate_b, original_alloc_fraction_a = EXCLUDED.original_alloc_fraction_a, sweep_corrected_gap = EXCLUDED.sweep_corrected_gap;
+
+INSERT INTO sweep_study_config (config_id, study_id, sweep_stratum_label, n_sweep_stratum_total, sweep_rate_a, sweep_rate_b, n_fixed_a, n_fixed_b, fixed_rate_a, fixed_rate_b, original_alloc_fraction_a, sweep_corrected_gap)
+VALUES ('pitcher-era-ballpark', 'pitcher-era-ballpark', 'pitcher-friendly-park', 2000.0, 0.65, 0.62, 1000.0, 1000.0, 0.52, 0.54, 0.5, 0.005) ON CONFLICT (config_id) DO UPDATE SET study_id = EXCLUDED.study_id, sweep_stratum_label = EXCLUDED.sweep_stratum_label, n_sweep_stratum_total = EXCLUDED.n_sweep_stratum_total, sweep_rate_a = EXCLUDED.sweep_rate_a, sweep_rate_b = EXCLUDED.sweep_rate_b, n_fixed_a = EXCLUDED.n_fixed_a, n_fixed_b = EXCLUDED.n_fixed_b, fixed_rate_a = EXCLUDED.fixed_rate_a, fixed_rate_b = EXCLUDED.fixed_rate_b, original_alloc_fraction_a = EXCLUDED.original_alloc_fraction_a, sweep_corrected_gap = EXCLUDED.sweep_corrected_gap;
+
+INSERT INTO sweep_study_config (config_id, study_id, sweep_stratum_label, n_sweep_stratum_total, sweep_rate_a, sweep_rate_b, n_fixed_a, n_fixed_b, fixed_rate_a, fixed_rate_b, original_alloc_fraction_a, sweep_corrected_gap)
+VALUES ('nfl-completion-depth', 'nfl-completion-depth', 'short-pass', 1600.0, 0.9, 0.875, 200.0, 200.0, 0.45, 0.55, 0.5, 0.0) ON CONFLICT (config_id) DO UPDATE SET study_id = EXCLUDED.study_id, sweep_stratum_label = EXCLUDED.sweep_stratum_label, n_sweep_stratum_total = EXCLUDED.n_sweep_stratum_total, sweep_rate_a = EXCLUDED.sweep_rate_a, sweep_rate_b = EXCLUDED.sweep_rate_b, n_fixed_a = EXCLUDED.n_fixed_a, n_fixed_b = EXCLUDED.n_fixed_b, fixed_rate_a = EXCLUDED.fixed_rate_a, fixed_rate_b = EXCLUDED.fixed_rate_b, original_alloc_fraction_a = EXCLUDED.original_alloc_fraction_a, sweep_corrected_gap = EXCLUDED.sweep_corrected_gap;
+
+INSERT INTO sweep_study_config (config_id, study_id, sweep_stratum_label, n_sweep_stratum_total, sweep_rate_a, sweep_rate_b, n_fixed_a, n_fixed_b, fixed_rate_a, fixed_rate_b, original_alloc_fraction_a, sweep_corrected_gap)
+VALUES ('field-goal-distance', 'field-goal-distance', 'short-fg', 2000.0, 0.95, 0.94, 1000.0, 1000.0, 0.6, 0.65, 0.5, -0.02) ON CONFLICT (config_id) DO UPDATE SET study_id = EXCLUDED.study_id, sweep_stratum_label = EXCLUDED.sweep_stratum_label, n_sweep_stratum_total = EXCLUDED.n_sweep_stratum_total, sweep_rate_a = EXCLUDED.sweep_rate_a, sweep_rate_b = EXCLUDED.sweep_rate_b, n_fixed_a = EXCLUDED.n_fixed_a, n_fixed_b = EXCLUDED.n_fixed_b, fixed_rate_a = EXCLUDED.fixed_rate_a, fixed_rate_b = EXCLUDED.fixed_rate_b, original_alloc_fraction_a = EXCLUDED.original_alloc_fraction_a, sweep_corrected_gap = EXCLUDED.sweep_corrected_gap;
+
+INSERT INTO sweep_study_config (config_id, study_id, sweep_stratum_label, n_sweep_stratum_total, sweep_rate_a, sweep_rate_b, n_fixed_a, n_fixed_b, fixed_rate_a, fixed_rate_b, original_alloc_fraction_a, sweep_corrected_gap)
+VALUES ('golf-scoring-course', 'golf-scoring-course', 'easy-course', 2000.0, 0.65, 0.62, 1000.0, 1000.0, 0.35, 0.38, 0.5, 0.0) ON CONFLICT (config_id) DO UPDATE SET study_id = EXCLUDED.study_id, sweep_stratum_label = EXCLUDED.sweep_stratum_label, n_sweep_stratum_total = EXCLUDED.n_sweep_stratum_total, sweep_rate_a = EXCLUDED.sweep_rate_a, sweep_rate_b = EXCLUDED.sweep_rate_b, n_fixed_a = EXCLUDED.n_fixed_a, n_fixed_b = EXCLUDED.n_fixed_b, fixed_rate_a = EXCLUDED.fixed_rate_a, fixed_rate_b = EXCLUDED.fixed_rate_b, original_alloc_fraction_a = EXCLUDED.original_alloc_fraction_a, sweep_corrected_gap = EXCLUDED.sweep_corrected_gap;
+
+INSERT INTO sweep_study_config (config_id, study_id, sweep_stratum_label, n_sweep_stratum_total, sweep_rate_a, sweep_rate_b, n_fixed_a, n_fixed_b, fixed_rate_a, fixed_rate_b, original_alloc_fraction_a, sweep_corrected_gap)
+VALUES ('minimum-wage-region', 'minimum-wage-region', 'tight-labor-market', 2000.0, 0.92, 0.91, 1000.0, 1000.0, 0.78, 0.82, 0.5, -0.015) ON CONFLICT (config_id) DO UPDATE SET study_id = EXCLUDED.study_id, sweep_stratum_label = EXCLUDED.sweep_stratum_label, n_sweep_stratum_total = EXCLUDED.n_sweep_stratum_total, sweep_rate_a = EXCLUDED.sweep_rate_a, sweep_rate_b = EXCLUDED.sweep_rate_b, n_fixed_a = EXCLUDED.n_fixed_a, n_fixed_b = EXCLUDED.n_fixed_b, fixed_rate_a = EXCLUDED.fixed_rate_a, fixed_rate_b = EXCLUDED.fixed_rate_b, original_alloc_fraction_a = EXCLUDED.original_alloc_fraction_a, sweep_corrected_gap = EXCLUDED.sweep_corrected_gap;
+
+INSERT INTO sweep_study_config (config_id, study_id, sweep_stratum_label, n_sweep_stratum_total, sweep_rate_a, sweep_rate_b, n_fixed_a, n_fixed_b, fixed_rate_a, fixed_rate_b, original_alloc_fraction_a, sweep_corrected_gap)
+VALUES ('returns-to-education-field', 'returns-to-education-field', 'stem-fields', 2000.0, 0.72, 0.35, 1000.0, 1000.0, 0.52, 0.38, 0.5, 0.255) ON CONFLICT (config_id) DO UPDATE SET study_id = EXCLUDED.study_id, sweep_stratum_label = EXCLUDED.sweep_stratum_label, n_sweep_stratum_total = EXCLUDED.n_sweep_stratum_total, sweep_rate_a = EXCLUDED.sweep_rate_a, sweep_rate_b = EXCLUDED.sweep_rate_b, n_fixed_a = EXCLUDED.n_fixed_a, n_fixed_b = EXCLUDED.n_fixed_b, fixed_rate_a = EXCLUDED.fixed_rate_a, fixed_rate_b = EXCLUDED.fixed_rate_b, original_alloc_fraction_a = EXCLUDED.original_alloc_fraction_a, sweep_corrected_gap = EXCLUDED.sweep_corrected_gap;
+
+INSERT INTO sweep_study_config (config_id, study_id, sweep_stratum_label, n_sweep_stratum_total, sweep_rate_a, sweep_rate_b, n_fixed_a, n_fixed_b, fixed_rate_a, fixed_rate_b, original_alloc_fraction_a, sweep_corrected_gap)
+VALUES ('unemployment-education-cycle', 'unemployment-education-cycle', 'college-educated-share', 2000.0, 0.95, 0.94, 1000.0, 1000.0, 0.82, 0.85, 0.5, -0.01) ON CONFLICT (config_id) DO UPDATE SET study_id = EXCLUDED.study_id, sweep_stratum_label = EXCLUDED.sweep_stratum_label, n_sweep_stratum_total = EXCLUDED.n_sweep_stratum_total, sweep_rate_a = EXCLUDED.sweep_rate_a, sweep_rate_b = EXCLUDED.sweep_rate_b, n_fixed_a = EXCLUDED.n_fixed_a, n_fixed_b = EXCLUDED.n_fixed_b, fixed_rate_a = EXCLUDED.fixed_rate_a, fixed_rate_b = EXCLUDED.fixed_rate_b, original_alloc_fraction_a = EXCLUDED.original_alloc_fraction_a, sweep_corrected_gap = EXCLUDED.sweep_corrected_gap;
+
+INSERT INTO sweep_study_config (config_id, study_id, sweep_stratum_label, n_sweep_stratum_total, sweep_rate_a, sweep_rate_b, n_fixed_a, n_fixed_b, fixed_rate_a, fixed_rate_b, original_alloc_fraction_a, sweep_corrected_gap)
+VALUES ('costa-rica-us-life-expectancy', 'costa-rica-us-life-expectancy', 'under-65', 2000.0, 0.99, 0.985, 1000.0, 1000.0, 0.85, 0.9, 0.5, -0.0225) ON CONFLICT (config_id) DO UPDATE SET study_id = EXCLUDED.study_id, sweep_stratum_label = EXCLUDED.sweep_stratum_label, n_sweep_stratum_total = EXCLUDED.n_sweep_stratum_total, sweep_rate_a = EXCLUDED.sweep_rate_a, sweep_rate_b = EXCLUDED.sweep_rate_b, n_fixed_a = EXCLUDED.n_fixed_a, n_fixed_b = EXCLUDED.n_fixed_b, fixed_rate_a = EXCLUDED.fixed_rate_a, fixed_rate_b = EXCLUDED.fixed_rate_b, original_alloc_fraction_a = EXCLUDED.original_alloc_fraction_a, sweep_corrected_gap = EXCLUDED.sweep_corrected_gap;
+
+INSERT INTO sweep_study_config (config_id, study_id, sweep_stratum_label, n_sweep_stratum_total, sweep_rate_a, sweep_rate_b, n_fixed_a, n_fixed_b, fixed_rate_a, fixed_rate_b, original_alloc_fraction_a, sweep_corrected_gap)
+VALUES ('fertility-income-country', 'fertility-income-country', 'high-income-countries', 2000.0, 0.45, 0.52, 1000.0, 1000.0, 0.38, 0.35, 0.5, -0.02) ON CONFLICT (config_id) DO UPDATE SET study_id = EXCLUDED.study_id, sweep_stratum_label = EXCLUDED.sweep_stratum_label, n_sweep_stratum_total = EXCLUDED.n_sweep_stratum_total, sweep_rate_a = EXCLUDED.sweep_rate_a, sweep_rate_b = EXCLUDED.sweep_rate_b, n_fixed_a = EXCLUDED.n_fixed_a, n_fixed_b = EXCLUDED.n_fixed_b, fixed_rate_a = EXCLUDED.fixed_rate_a, fixed_rate_b = EXCLUDED.fixed_rate_b, original_alloc_fraction_a = EXCLUDED.original_alloc_fraction_a, sweep_corrected_gap = EXCLUDED.sweep_corrected_gap;
+
+INSERT INTO sweep_study_config (config_id, study_id, sweep_stratum_label, n_sweep_stratum_total, sweep_rate_a, sweep_rate_b, n_fixed_a, n_fixed_b, fixed_rate_a, fixed_rate_b, original_alloc_fraction_a, sweep_corrected_gap)
+VALUES ('religiosity-happiness-country', 'religiosity-happiness-country', 'high-gdp-countries', 2000.0, 0.75, 0.78, 1000.0, 1000.0, 0.62, 0.58, 0.5, 0.005) ON CONFLICT (config_id) DO UPDATE SET study_id = EXCLUDED.study_id, sweep_stratum_label = EXCLUDED.sweep_stratum_label, n_sweep_stratum_total = EXCLUDED.n_sweep_stratum_total, sweep_rate_a = EXCLUDED.sweep_rate_a, sweep_rate_b = EXCLUDED.sweep_rate_b, n_fixed_a = EXCLUDED.n_fixed_a, n_fixed_b = EXCLUDED.n_fixed_b, fixed_rate_a = EXCLUDED.fixed_rate_a, fixed_rate_b = EXCLUDED.fixed_rate_b, original_alloc_fraction_a = EXCLUDED.original_alloc_fraction_a, sweep_corrected_gap = EXCLUDED.sweep_corrected_gap;
+
+INSERT INTO sweep_study_config (config_id, study_id, sweep_stratum_label, n_sweep_stratum_total, sweep_rate_a, sweep_rate_b, n_fixed_a, n_fixed_b, fixed_rate_a, fixed_rate_b, original_alloc_fraction_a, sweep_corrected_gap)
+VALUES ('voter-turnout-education-state', 'voter-turnout-education-state', 'high-education-states', 2000.0, 0.78, 0.52, 1000.0, 1000.0, 0.65, 0.48, 0.5, 0.215) ON CONFLICT (config_id) DO UPDATE SET study_id = EXCLUDED.study_id, sweep_stratum_label = EXCLUDED.sweep_stratum_label, n_sweep_stratum_total = EXCLUDED.n_sweep_stratum_total, sweep_rate_a = EXCLUDED.sweep_rate_a, sweep_rate_b = EXCLUDED.sweep_rate_b, n_fixed_a = EXCLUDED.n_fixed_a, n_fixed_b = EXCLUDED.n_fixed_b, fixed_rate_a = EXCLUDED.fixed_rate_a, fixed_rate_b = EXCLUDED.fixed_rate_b, original_alloc_fraction_a = EXCLUDED.original_alloc_fraction_a, sweep_corrected_gap = EXCLUDED.sweep_corrected_gap;
+
+INSERT INTO sweep_study_config (config_id, study_id, sweep_stratum_label, n_sweep_stratum_total, sweep_rate_a, sweep_rate_b, n_fixed_a, n_fixed_b, fixed_rate_a, fixed_rate_b, original_alloc_fraction_a, sweep_corrected_gap)
+VALUES ('ad-ctr-platform-mix', 'ad-ctr-platform-mix', 'mobile-traffic', 2000.0, 0.08, 0.075, 1000.0, 1000.0, 0.045, 0.05, 0.5, 0.0) ON CONFLICT (config_id) DO UPDATE SET study_id = EXCLUDED.study_id, sweep_stratum_label = EXCLUDED.sweep_stratum_label, n_sweep_stratum_total = EXCLUDED.n_sweep_stratum_total, sweep_rate_a = EXCLUDED.sweep_rate_a, sweep_rate_b = EXCLUDED.sweep_rate_b, n_fixed_a = EXCLUDED.n_fixed_a, n_fixed_b = EXCLUDED.n_fixed_b, fixed_rate_a = EXCLUDED.fixed_rate_a, fixed_rate_b = EXCLUDED.fixed_rate_b, original_alloc_fraction_a = EXCLUDED.original_alloc_fraction_a, sweep_corrected_gap = EXCLUDED.sweep_corrected_gap;
+
 -- ----------------------------------------------------------------------------
 -- SubstrateConformanceFields: Table: SubstrateConformanceFields — cross-substrate OWL-SHACL vs Postgres compare manifest for owl/reason.py. Rows with AssertFromPostgres=TRUE are asserted as leaf facts before SHACL fixpoint (OWL transpiler lacks CONSTRUCT for nested IF chains).
 -- ----------------------------------------------------------------------------
@@ -5576,15 +9785,6 @@ VALUES ('tr-is-sign-flip', 'TreatmentRankings', 'IsSignFlip', 'is_sign_flip', 'i
 
 INSERT INTO substrate_conformance_fields (field_id, source_table, field_name, pg_column, owl_local_name, data_type, assert_from_postgres, in_compare_set)
 VALUES ('tr-distortion-type', 'TreatmentRankings', 'DistortionType', 'distortion_type', 'distortionType', 'str', TRUE, TRUE) ON CONFLICT (field_id) DO UPDATE SET source_table = EXCLUDED.source_table, field_name = EXCLUDED.field_name, pg_column = EXCLUDED.pg_column, owl_local_name = EXCLUDED.owl_local_name, data_type = EXCLUDED.data_type, assert_from_postgres = EXCLUDED.assert_from_postgres, in_compare_set = EXCLUDED.in_compare_set;
-
-INSERT INTO substrate_conformance_fields (field_id, source_table, field_name, pg_column, owl_local_name, data_type, assert_from_postgres, in_compare_set)
-VALUES ('tr-is-reversal-v2', 'TreatmentRankings', 'IsReversal_v2', 'is_reversal_v2', 'isReversal_v2', 'bool', FALSE, TRUE) ON CONFLICT (field_id) DO UPDATE SET source_table = EXCLUDED.source_table, field_name = EXCLUDED.field_name, pg_column = EXCLUDED.pg_column, owl_local_name = EXCLUDED.owl_local_name, data_type = EXCLUDED.data_type, assert_from_postgres = EXCLUDED.assert_from_postgres, in_compare_set = EXCLUDED.in_compare_set;
-
-INSERT INTO substrate_conformance_fields (field_id, source_table, field_name, pg_column, owl_local_name, data_type, assert_from_postgres, in_compare_set)
-VALUES ('tr-definition-delta', 'TreatmentRankings', 'DefinitionDelta', 'definition_delta', 'definitionDelta', 'bool', FALSE, TRUE) ON CONFLICT (field_id) DO UPDATE SET source_table = EXCLUDED.source_table, field_name = EXCLUDED.field_name, pg_column = EXCLUDED.pg_column, owl_local_name = EXCLUDED.owl_local_name, data_type = EXCLUDED.data_type, assert_from_postgres = EXCLUDED.assert_from_postgres, in_compare_set = EXCLUDED.in_compare_set;
-
-INSERT INTO substrate_conformance_fields (field_id, source_table, field_name, pg_column, owl_local_name, data_type, assert_from_postgres, in_compare_set)
-VALUES ('tr-strict-reversal-subtype', 'TreatmentRankings', 'StrictReversalSubtype', 'strict_reversal_subtype', 'strictReversalSubtype', 'str', FALSE, TRUE) ON CONFLICT (field_id) DO UPDATE SET source_table = EXCLUDED.source_table, field_name = EXCLUDED.field_name, pg_column = EXCLUDED.pg_column, owl_local_name = EXCLUDED.owl_local_name, data_type = EXCLUDED.data_type, assert_from_postgres = EXCLUDED.assert_from_postgres, in_compare_set = EXCLUDED.in_compare_set;
 
 INSERT INTO substrate_conformance_fields (field_id, source_table, field_name, pg_column, owl_local_name, data_type, assert_from_postgres, in_compare_set)
 VALUES ('tr-corrected-gap', 'TreatmentRankings', 'CorrectedGap', 'corrected_gap', 'correctedGap', 'float', FALSE, TRUE) ON CONFLICT (field_id) DO UPDATE SET source_table = EXCLUDED.source_table, field_name = EXCLUDED.field_name, pg_column = EXCLUDED.pg_column, owl_local_name = EXCLUDED.owl_local_name, data_type = EXCLUDED.data_type, assert_from_postgres = EXCLUDED.assert_from_postgres, in_compare_set = EXCLUDED.in_compare_set;

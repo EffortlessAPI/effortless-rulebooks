@@ -92,7 +92,7 @@ export function OverviewView() {
 
   const spotlight = useMemo(
     () => [...rankings]
-      .sort((a, b) => Number(b.instrument_score) - Number(a.instrument_score))
+      .sort((a, b) => Number(b.paradox_strength) - Number(a.paradox_strength))
       .slice(0, 6),
     [rankings],
   );
@@ -129,7 +129,6 @@ export function OverviewView() {
   const total = summary?.study_count ?? studies.length;
   const dangerCount = Number(summary?.danger_tier_count ?? 0);
   const signFlipCount = rankings.filter(r => r.is_sign_flip).length;
-  const reversalCount = Number(summary?.reversal_count ?? 0);
 
   return (
     <div className="overview">
@@ -162,7 +161,7 @@ export function OverviewView() {
         </div>
         <div className="kpi-tile info">
           <div className="kpi-value info">{signFlipCount}</div>
-          <div className="kpi-label">Sign-flips<br />vs {reversalCount} unanimous reversals</div>
+          <div className="kpi-label">Sign-flips<br />Type A: {summary?.type_a_count ?? '—'} unanimous</div>
         </div>
       </div>
 
@@ -204,7 +203,7 @@ export function OverviewView() {
           <div className="finding-num">2</div>
           <h3 className="finding-title">Screening separates safe from dangerous</h3>
           <p className="finding-blurb">
-            Instrument score (|DistortionRatio − 1|) vs allocation distortion.
+            Paradox strength vs allocation distortion, colored by screening tier.
             DANGER studies cluster upper-right; SAFE studies hug the origin.
           </p>
           <div className="chart-canvas-wrap chart-canvas-wrap-finding">
@@ -251,7 +250,7 @@ export function OverviewView() {
         <div className="section-header">
           <div>
             <div className="section-title">Most misleading studies</div>
-            <div className="section-sub">Ranked by instrument score — click to jump to full detail below</div>
+            <div className="section-sub">Ranked by paradox strength — click to jump to full detail below</div>
           </div>
         </div>
         <div className="spotlight-list">
@@ -286,8 +285,8 @@ export function OverviewView() {
                     <span className="lbl">Distortion</span>
                   </div>
                   <div className="spotlight-metric">
-                    <span className="val">{n(r.instrument_score)}</span>
-                    <span className="lbl">Instrument</span>
+                    <span className="val">{n(r.signal_purity, 3)}</span>
+                    <span className="lbl">Purity</span>
                   </div>
                 </div>
                 <div className="study-row-badges">
@@ -360,12 +359,12 @@ export function OverviewView() {
                   <div className="detail-kv"><span className="dk">Paradox strength</span><span className="dv">{n(r.paradox_strength, 4)}</span></div>
                   <div className="detail-kv"><span className="dk">Sign flip</span><span className="dv" style={{ color: r.is_sign_flip ? '#ff7b72' : '#7ee787' }}>{r.is_sign_flip ? 'YES' : 'no'}</span></div>
                   <div className="detail-kv"><span className="dk">Allocation distortion</span><span className="dv">{n(r.allocation_distortion)}</span></div>
-                  <div className="detail-kv"><span className="dk">Instrument score</span><span className="dv">{n(r.instrument_score)}</span></div>
+                  <div className="detail-kv"><span className="dk">Distortion ratio</span><span className="dv">{n(r.distortion_ratio)}</span></div>
                   <div className="detail-kv"><span className="dk">Signal purity</span><span className="dv" style={{ color: r.signal_purity != null && r.signal_purity < 0.5 ? '#ff7b72' : '#7ee787' }}>{pct(r.signal_purity)}</span></div>
                   <div className="detail-kv"><span className="dk">Domain · year</span><span className="dv">{s.domain ?? '—'} · {s.publication_year ?? '—'}</span></div>
-                  {r.screening_verdict && (
+                  {r.policy_implication && (
                     <div style={{ gridColumn: '1 / -1', fontSize: 12, color: '#8b949e', marginTop: 4, lineHeight: 1.5 }}>
-                      {r.screening_verdict}
+                      {r.policy_implication}
                     </div>
                   )}
                 </div>

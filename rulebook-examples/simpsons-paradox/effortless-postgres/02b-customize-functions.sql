@@ -375,12 +375,11 @@ BEGIN
     total_cases_a, total_successes_a, pooled_rate_a,
     total_cases_b, total_successes_b, pooled_rate_b,
     pooled_winner, stratum_count, strata_won_by_a, strata_won_by_b, per_stratum_winner,
-    is_reversal, confounders_in_study, is_paradox_explained, is_paradox_explained_v2,
+    is_reversal, confounders_in_study, is_paradox_explained,
     pooled_gap, strata_won_by_loser, paradox_strength,
     pooled_rate_from_weights_a, pooled_rate_from_weights_b,
     reversal_intensity, threshold_margin, signed_pooled_gap, weighted_stratum_gap_sum,
     is_sign_flip, allocation_distortion, distortion_type, policy_implication,
-    is_reversal_v2, definition_delta, strict_reversal_subtype,
     corrected_gap, corrected_winner, corrected_vs_pooled_agreement, corrected_policy_implication,
     confirmed_causal_role_count, mediator_risk_count, contested_stratum_count, unknown_causal_role_count,
     causal_claim_status, adjustment_appropriate,
@@ -404,7 +403,6 @@ BEGIN
     _erb_snap_tr_is_reversal(tr.treatment_ranking_id),
     _erb_snap_tr_confounders_in_study(tr.treatment_ranking_id),
     _erb_snap_tr_is_paradox_explained(tr.treatment_ranking_id),
-    _erb_snap_tr_is_paradox_explained_v2(tr.treatment_ranking_id),
     _erb_snap_tr_pooled_gap(tr.treatment_ranking_id),
     _erb_snap_tr_strata_won_by_loser(tr.treatment_ranking_id),
     _erb_snap_tr_paradox_strength(tr.treatment_ranking_id),
@@ -418,9 +416,6 @@ BEGIN
     _erb_snap_tr_allocation_distortion(tr.treatment_ranking_id),
     _erb_snap_tr_distortion_type(tr.treatment_ranking_id),
     _erb_snap_tr_policy_implication(tr.treatment_ranking_id),
-    _erb_snap_tr_is_reversal_v2(tr.treatment_ranking_id),
-    _erb_snap_tr_definition_delta(tr.treatment_ranking_id),
-    _erb_snap_tr_strict_reversal_subtype(tr.treatment_ranking_id),
     _erb_snap_tr_corrected_gap(tr.treatment_ranking_id),
     _erb_snap_tr_corrected_winner(tr.treatment_ranking_id),
     _erb_snap_tr_corrected_vs_pooled_agreement(tr.treatment_ranking_id),
@@ -528,9 +523,6 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION calc_treatment_rankings_is_paradox_explained(p_treatment_ranking_id TEXT) RETURNS BOOLEAN AS $$
   SELECT is_paradox_explained FROM _erb_tr_metrics WHERE treatment_ranking_id = p_treatment_ranking_id;
 $$ LANGUAGE sql STABLE;
-CREATE OR REPLACE FUNCTION calc_treatment_rankings_is_paradox_explained_v2(p_treatment_ranking_id TEXT) RETURNS BOOLEAN AS $$
-  SELECT is_paradox_explained_v2 FROM _erb_tr_metrics WHERE treatment_ranking_id = p_treatment_ranking_id;
-$$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION calc_treatment_rankings_pooled_gap(p_treatment_ranking_id TEXT) RETURNS NUMERIC AS $$
   SELECT pooled_gap FROM _erb_tr_metrics WHERE treatment_ranking_id = p_treatment_ranking_id;
 $$ LANGUAGE sql STABLE;
@@ -569,15 +561,6 @@ CREATE OR REPLACE FUNCTION calc_treatment_rankings_distortion_type(p_treatment_r
 $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION calc_treatment_rankings_policy_implication(p_treatment_ranking_id TEXT) RETURNS TEXT AS $$
   SELECT policy_implication FROM _erb_tr_metrics WHERE treatment_ranking_id = p_treatment_ranking_id;
-$$ LANGUAGE sql STABLE;
-CREATE OR REPLACE FUNCTION calc_treatment_rankings_is_reversal_v2(p_treatment_ranking_id TEXT) RETURNS BOOLEAN AS $$
-  SELECT is_reversal_v2 FROM _erb_tr_metrics WHERE treatment_ranking_id = p_treatment_ranking_id;
-$$ LANGUAGE sql STABLE;
-CREATE OR REPLACE FUNCTION calc_treatment_rankings_definition_delta(p_treatment_ranking_id TEXT) RETURNS BOOLEAN AS $$
-  SELECT definition_delta FROM _erb_tr_metrics WHERE treatment_ranking_id = p_treatment_ranking_id;
-$$ LANGUAGE sql STABLE;
-CREATE OR REPLACE FUNCTION calc_treatment_rankings_strict_reversal_subtype(p_treatment_ranking_id TEXT) RETURNS TEXT AS $$
-  SELECT strict_reversal_subtype FROM _erb_tr_metrics WHERE treatment_ranking_id = p_treatment_ranking_id;
 $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION calc_treatment_rankings_corrected_gap(p_treatment_ranking_id TEXT) RETURNS NUMERIC AS $$
   SELECT corrected_gap FROM _erb_tr_metrics WHERE treatment_ranking_id = p_treatment_ranking_id;
@@ -629,12 +612,6 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION calc_model_summary_explained_count(p_model_summary_id TEXT) RETURNS INTEGER AS $$
   SELECT COUNT(*)::integer FROM _erb_tr_metrics WHERE is_paradox_explained = true;
 $$ LANGUAGE sql STABLE;
-CREATE OR REPLACE FUNCTION calc_model_summary_zero_strength_count(p_model_summary_id TEXT) RETURNS INTEGER AS $$
-  SELECT COUNT(*)::integer FROM _erb_tr_metrics WHERE strata_won_by_loser = 0;
-$$ LANGUAGE sql STABLE;
-CREATE OR REPLACE FUNCTION calc_model_summary_partial_count(p_model_summary_id TEXT) RETURNS INTEGER AS $$
-  SELECT COUNT(*)::integer FROM _erb_tr_metrics WHERE paradox_strength > 0 AND is_reversal = false;
-$$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION calc_model_summary_total_paradox_strength(p_model_summary_id TEXT) RETURNS NUMERIC AS $$
   SELECT COALESCE(SUM(paradox_strength), 0) FROM _erb_tr_metrics;
 $$ LANGUAGE sql STABLE;
@@ -652,18 +629,6 @@ CREATE OR REPLACE FUNCTION calc_model_summary_type_d_count(p_model_summary_id TE
 $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION calc_model_summary_type_a_fraction(p_model_summary_id TEXT) RETURNS NUMERIC AS $$
   SELECT COUNT(*) FILTER (WHERE distortion_type = 'A')::numeric / NULLIF(COUNT(*), 0) FROM _erb_tr_metrics;
-$$ LANGUAGE sql STABLE;
-CREATE OR REPLACE FUNCTION calc_model_summary_reversal_count_v2(p_model_summary_id TEXT) RETURNS INTEGER AS $$
-  SELECT COUNT(*)::integer FROM _erb_tr_metrics WHERE is_reversal_v2 = true;
-$$ LANGUAGE sql STABLE;
-CREATE OR REPLACE FUNCTION calc_model_summary_non_reversal_count_v2(p_model_summary_id TEXT) RETURNS INTEGER AS $$
-  SELECT COUNT(*)::integer FROM _erb_tr_metrics WHERE is_reversal_v2 = false;
-$$ LANGUAGE sql STABLE;
-CREATE OR REPLACE FUNCTION calc_model_summary_extended_reversal_count(p_model_summary_id TEXT) RETURNS INTEGER AS $$
-  SELECT COUNT(*)::integer FROM _erb_tr_metrics WHERE is_reversal_v2 = true AND is_reversal = false;
-$$ LANGUAGE sql STABLE;
-CREATE OR REPLACE FUNCTION calc_model_summary_explained_count_v2(p_model_summary_id TEXT) RETURNS INTEGER AS $$
-  SELECT COUNT(*)::integer FROM _erb_tr_metrics WHERE is_paradox_explained_v2 = true;
 $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION calc_model_summary_c_amplification_count(p_model_summary_id TEXT) RETURNS INTEGER AS $$
   SELECT COUNT(*)::integer FROM _erb_tr_metrics WHERE distortion_type = 'C+';

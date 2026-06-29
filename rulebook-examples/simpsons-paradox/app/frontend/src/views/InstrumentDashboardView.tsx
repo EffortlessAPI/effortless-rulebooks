@@ -14,11 +14,6 @@ function ratio(n: number | null | undefined): string {
   return (v >= 0 ? '+' : '') + v.toFixed(3);
 }
 
-function score(n: number | null | undefined): string {
-  if (n == null) return '—';
-  return Number(n).toFixed(3);
-}
-
 function pct(n: number | null | undefined): string {
   if (n == null) return '—';
   return (Number(n) * 100).toFixed(1) + '%';
@@ -27,7 +22,7 @@ function pct(n: number | null | undefined): string {
 export function InstrumentDashboardView() {
   const [rows, setRows] = useState<TreatmentRanking[]>([]);
   const [loading, setLoading] = useState(true);
-  const [sortCol, setSortCol] = useState<'instrument_score' | 'distortion_ratio' | 'study'>('instrument_score');
+  const [sortCol, setSortCol] = useState<'distortion_ratio' | 'allocation_distortion' | 'study'>('distortion_ratio');
   const [sortDir, setSortDir] = useState<'asc' | 'desc'>('desc');
 
   useEffect(() => {
@@ -40,14 +35,14 @@ export function InstrumentDashboardView() {
   }
 
   const sorted = [...rows].sort((a, b) => {
-    const va = sortCol === 'study' ? a.study : Number((a as any)[sortCol] ?? 0);
-    const vb = sortCol === 'study' ? b.study : Number((b as any)[sortCol] ?? 0);
+    const va = sortCol === 'study' ? a.study : Number(a[sortCol] ?? 0);
+    const vb = sortCol === 'study' ? b.study : Number(b[sortCol] ?? 0);
     if (typeof va === 'string') return sortDir === 'asc' ? va.localeCompare(vb as string) : (vb as string).localeCompare(va);
     return sortDir === 'asc' ? (va as number) - (vb as number) : (vb as number) - (va as number);
   });
 
   const tierCounts = { DANGER: 0, CAUTION: 0, SAFE: 0 } as Record<string, number>;
-  rows.forEach(r => { if ((r as any).screening_tier) tierCounts[(r as any).screening_tier]++; });
+  rows.forEach(r => { if (r.screening_tier) tierCounts[r.screening_tier]++; });
 
   const thStyle = (col: typeof sortCol): React.CSSProperties => ({
     padding: '6px 10px', textAlign: 'left', cursor: 'pointer', userSelect: 'none',
@@ -61,14 +56,12 @@ export function InstrumentDashboardView() {
     <div style={{ padding: '1.5rem', maxWidth: 1000 }}>
       <h2 style={{ margin: '0 0 .25rem' }}>Instrument Dashboard</h2>
       <p style={{ color: '#666', fontSize: 14, margin: '0 0 1.25rem' }}>
-        Screening verdict for each study. <strong>InstrumentScore = |DistortionRatio − 1|</strong>.
-        Zero = no distortion. Higher = more dangerous.
+        Screening tier for each study from DistortionType.
         <strong style={{ color: '#c00' }}> DANGER</strong> = pooled sign is wrong (Types A & B).
         <strong style={{ color: '#854d0e' }}> CAUTION</strong> = direction correct, magnitude distorted (Type C).
         <strong style={{ color: '#166534' }}> SAFE</strong> = pooled trustworthy (Type D).
       </p>
 
-      {/* Tier summary badges */}
       <div style={{ display: 'flex', gap: 12, marginBottom: '1.25rem', flexWrap: 'wrap' }}>
         {(['DANGER', 'CAUTION', 'SAFE'] as const).map(tier => {
           const c = TIER_COLORS[tier];
@@ -84,7 +77,6 @@ export function InstrumentDashboardView() {
         })}
       </div>
 
-      {/* Main table */}
       <div style={{ overflowX: 'auto', borderRadius: 8, border: '1px solid #ddd' }}>
         <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 13 }}>
           <thead>
@@ -97,20 +89,19 @@ export function InstrumentDashboardView() {
               <th style={thStyle('distortion_ratio')} onClick={() => toggleSort('distortion_ratio')}>
                 DistortionRatio {sortCol === 'distortion_ratio' ? (sortDir === 'asc' ? '▲' : '▼') : ''}
               </th>
-              <th style={thStyle('instrument_score')} onClick={() => toggleSort('instrument_score')}>
-                InstrumentScore {sortCol === 'instrument_score' ? (sortDir === 'asc' ? '▲' : '▼') : ''}
+              <th style={thStyle('allocation_distortion')} onClick={() => toggleSort('allocation_distortion')}>
+                AllocDistortion {sortCol === 'allocation_distortion' ? (sortDir === 'asc' ? '▲' : '▼') : ''}
               </th>
               <th style={{ ...thStyle('study'), cursor: 'default' }}>CorrectedGap</th>
               <th style={{ ...thStyle('study'), cursor: 'default' }}>PooledGap</th>
-              <th style={{ ...thStyle('study'), cursor: 'default' }}>Verdict</th>
+              <th style={{ ...thStyle('study'), cursor: 'default' }}>Policy</th>
             </tr>
           </thead>
           <tbody>
             {sorted.map((r, i) => {
-              const tier = (r as any).screening_tier as string | undefined;
+              const tier = r.screening_tier;
               const c = tier ? TIER_COLORS[tier] : { bg: 'transparent', text: '#333', border: '#ddd' };
-              const dr = Number((r as any).distortion_ratio);
-              const isScore = Number((r as any).instrument_score);
+              const dr = Number(r.distortion_ratio);
               return (
                 <tr key={r.study} style={{ background: i % 2 === 0 ? '#fafafa' : '#fff' }}>
                   <td style={{ padding: '7px 10px', fontWeight: 500 }}>{r.study}</td>
@@ -140,18 +131,10 @@ export function InstrumentDashboardView() {
                     color: dr < -1 ? '#800' : dr < 0 ? '#c44' : dr === 1 ? '#166534' : '#555',
                     fontWeight: 600,
                   }}>
-                    {ratio((r as any).distortion_ratio)}
+                    {ratio(r.distortion_ratio)}
                   </td>
-                  <td style={{ padding: '7px 10px', textAlign: 'right', position: 'relative' }}>
-                    <div style={{
-                      position: 'absolute', left: 4, top: '50%', transform: 'translateY(-50%)',
-                      height: 14, width: `${Math.min(isScore / 5.5 * 80, 80)}%`,
-                      background: tier === 'DANGER' ? '#fcc' : tier === 'CAUTION' ? '#fde68a' : '#bbf7d0',
-                      borderRadius: 2, opacity: 0.6,
-                    }} />
-                    <span style={{ position: 'relative', fontFamily: 'monospace', fontWeight: 600 }}>
-                      {score((r as any).instrument_score)}
-                    </span>
+                  <td style={{ padding: '7px 10px', textAlign: 'right', fontFamily: 'monospace' }}>
+                    {Number(r.allocation_distortion).toFixed(4)}
                   </td>
                   <td style={{ padding: '7px 10px', textAlign: 'right', color: '#166534', fontFamily: 'monospace' }}>
                     {pct(r.weighted_stratum_gap_sum)}
@@ -160,7 +143,7 @@ export function InstrumentDashboardView() {
                     {pct(r.signed_pooled_gap)}
                   </td>
                   <td style={{ padding: '7px 10px', fontSize: 11, color: c.text, maxWidth: 240 }}>
-                    {(r as any).screening_verdict}
+                    {r.policy_implication}
                   </td>
                 </tr>
               );
@@ -169,23 +152,18 @@ export function InstrumentDashboardView() {
         </table>
       </div>
 
-      {/* Formula box */}
       <div style={{
         marginTop: '1.25rem', padding: '14px 18px', background: '#f8f8fc',
         borderRadius: 8, border: '1px solid #ddd', fontSize: 13,
       }}>
-        <strong>Screening formula:</strong>{' '}
+        <strong>Distortion ratio:</strong>{' '}
         <code style={{ background: '#ece', padding: '2px 6px', borderRadius: 3 }}>
           DistortionRatio = SignedPooledGap / CorrectedGap
         </code>
-        {' '}·{' '}
-        <code style={{ background: '#ece', padding: '2px 6px', borderRadius: 3 }}>
-          InstrumentScore = |DistortionRatio − 1|
-        </code>
         <br />
         <span style={{ color: '#666', marginTop: 6, display: 'block' }}>
-          Ratio &lt; −1 → Type B (amplification paradox) · Ratio ∈ (−1, 0) → Type A (classic reversal) ·
-          Ratio &gt; 0 → Type C/D (no sign flip) · Ratio = 1 exactly → Type D (safe)
+          Ratio &lt; −1 → Type B · Ratio ∈ (−1, 0) → Type A ·
+          Ratio &gt; 0 → Type C/D · Ratio = 1 → Type D (safe)
         </span>
       </div>
     </div>

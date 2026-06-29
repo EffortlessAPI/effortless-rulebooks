@@ -14,14 +14,10 @@
 -- Your custom views changes will appear here:
 
 -- ============================================================================
--- vw_treatment_rankings — add loop-36/37/38/39 fields (not emitted by transpiler)
---   distortion_ratio   = signed_pooled_gap / weighted_stratum_gap_sum
---   instrument_score   = |distortion_ratio - 1|
---   screening_tier     = DANGER / CAUTION / SAFE
---   screening_verdict  = practitioner message
---   arm_size_ratio     = total_cases_a / (total_cases_a + total_cases_b)
---   symmetry_departure = |arm_size_ratio - 0.5|
---   max_stratum_imbalance / max_stratum_gap from vw_stratum_summaries
+-- vw_treatment_rankings — add loop-36/38 fields + DistortionRatio (presentation layer pruned loop-60)
+--   distortion_ratio = signed_pooled_gap / weighted_stratum_gap_sum
+--   screening_tier     = DANGER / CAUTION / SAFE (from DistortionType)
+--   arm_size_ratio, symmetry_departure, max_stratum_imbalance / max_stratum_gap
 -- MUST come before vw_model_summary (which references this view)
 -- ============================================================================
 DROP VIEW IF EXISTS vw_treatment_rankings CASCADE;
@@ -46,7 +42,6 @@ SELECT
   m.is_reversal,
   m.confounders_in_study,
   m.is_paradox_explained,
-  m.is_paradox_explained_v2,
   m.pooled_gap,
   m.strata_won_by_loser,
   m.paradox_strength,
@@ -64,27 +59,12 @@ SELECT
   END AS distortion_ratio,
   m.distortion_type,
   CASE
-    WHEN m.weighted_stratum_gap_sum = 0 THEN NULL
-    ELSE ABS(m.signed_pooled_gap / m.weighted_stratum_gap_sum - 1)
-  END AS instrument_score,
-  CASE
     WHEN m.distortion_type IN ('A','B') THEN 'DANGER'
     WHEN m.distortion_type LIKE 'C%'   THEN 'CAUTION'
     WHEN m.distortion_type = 'D'       THEN 'SAFE'
     ELSE NULL
   END AS screening_tier,
-  CASE
-    WHEN m.distortion_type = 'A'  THEN 'DANGER: pooled reverses corrected signal'
-    WHEN m.distortion_type = 'B'  THEN 'DANGER: pooled amplifies and reverses corrected signal'
-    WHEN m.distortion_type = 'C+' THEN 'CAUTION: pooled magnitude amplified by allocation (C+)'
-    WHEN m.distortion_type = 'C-' THEN 'CAUTION: pooled magnitude compressed by allocation (C-)'
-    WHEN m.distortion_type = 'D'  THEN 'SAFE: pooled faithfully represents stratum evidence'
-    ELSE NULL
-  END AS screening_verdict,
   m.policy_implication,
-  m.is_reversal_v2,
-  m.definition_delta,
-  m.strict_reversal_subtype,
   m.corrected_gap,
   m.corrected_winner,
   m.corrected_vs_pooled_agreement,
@@ -124,20 +104,13 @@ SELECT
   calc_model_summary_non_reversal_count(t.model_summary_id) AS non_reversal_count,
   calc_model_summary_study_count(t.model_summary_id) AS study_count,
   calc_model_summary_explained_count(t.model_summary_id) AS explained_count,
-  calc_model_summary_zero_strength_count(t.model_summary_id) AS zero_strength_count,
-  calc_model_summary_partial_count(t.model_summary_id) AS partial_count,
   calc_model_summary_total_paradox_strength(t.model_summary_id) AS total_paradox_strength,
   calc_model_summary_avg_paradox_strength(t.model_summary_id) AS avg_paradox_strength,
   calc_model_summary_type_a_count(t.model_summary_id) AS type_a_count,
   calc_model_summary_type_b_count(t.model_summary_id) AS type_b_count,
-  calc_model_summary_type_c_count(t.model_summary_id) AS type_c_count,
   calc_model_summary_type_d_count(t.model_summary_id) AS type_d_count,
   calc_model_summary_type_a_fraction(t.model_summary_id) AS type_a_fraction,
   calc_model_summary_distortion_taxonomy_coverage(t.model_summary_id) AS distortion_taxonomy_coverage,
-  calc_model_summary_reversal_count_v2(t.model_summary_id) AS reversal_count_v2,
-  calc_model_summary_non_reversal_count_v2(t.model_summary_id) AS non_reversal_count_v2,
-  calc_model_summary_extended_reversal_count(t.model_summary_id) AS extended_reversal_count,
-  calc_model_summary_explained_count_v2(t.model_summary_id) AS explained_count_v2,
   calc_model_summary_distortion_only_count(t.model_summary_id) AS distortion_only_count,
   calc_model_summary_sweep_corrected_gap_max(t.model_summary_id) AS sweep_corrected_gap_max,
   calc_model_summary_sweep_corrected_gap_min(t.model_summary_id) AS sweep_corrected_gap_min,
@@ -148,8 +121,6 @@ SELECT
   (SELECT MAX(signed_pooled_gap / NULLIF(weighted_stratum_gap_sum, 0)) FROM _erb_tr_metrics WHERE distortion_type = 'A') AS max_ratio_type_a,
   (SELECT MIN(signed_pooled_gap / NULLIF(weighted_stratum_gap_sum, 0)) FROM _erb_tr_metrics WHERE distortion_type = 'B') AS min_ratio_type_b,
   (SELECT MAX(signed_pooled_gap / NULLIF(weighted_stratum_gap_sum, 0)) FROM _erb_tr_metrics WHERE distortion_type = 'B') AS max_ratio_type_b,
-  (SELECT AVG(ABS(signed_pooled_gap / NULLIF(weighted_stratum_gap_sum, 0) - 1)) FROM _erb_tr_metrics WHERE distortion_type IN ('A','B')) AS avg_instrument_score_danger,
-  (SELECT AVG(ABS(signed_pooled_gap / NULLIF(weighted_stratum_gap_sum, 0) - 1)) FROM _erb_tr_metrics WHERE distortion_type LIKE 'C%') AS avg_instrument_score_caution,
   (SELECT COUNT(*) FROM _erb_tr_metrics WHERE distortion_type IN ('A','B')) AS danger_tier_count,
   (SELECT COUNT(*) FROM _erb_tr_metrics WHERE distortion_type LIKE 'C%') AS caution_tier_count,
   (SELECT COUNT(*) FROM _erb_tr_metrics WHERE distortion_type = 'D') AS safe_tier_count,

@@ -82,24 +82,22 @@ SELECT json_agg(row_to_json(r) ORDER BY r.treatment_ranking_id) FROM (
          pooled_winner, stratum_count,
          strata_won_by_a, strata_won_by_b, per_stratum_winner,
          is_reversal, confounders_in_study, is_paradox_explained,
-         is_paradox_explained_v2, pooled_gap, strata_won_by_loser,
+         pooled_gap, strata_won_by_loser,
          paradox_strength, pooled_rate_from_weights_a, pooled_rate_from_weights_b,
          reversal_intensity, threshold_margin, signed_pooled_gap,
          weighted_stratum_gap_sum, is_sign_flip, allocation_distortion,
-         distortion_type, policy_implication,
-         is_reversal_v2, definition_delta, strict_reversal_subtype
+         distortion_type, policy_implication
   FROM vw_treatment_rankings) r;" > "$TMPDIR_RH/treatment_rankings.json"
 
 psql "$DATABASE_URL" -At -c "
 SELECT json_agg(row_to_json(r)) FROM (
   SELECT model_summary_id, name,
          reversal_count, non_reversal_count, study_count,
-         explained_count, zero_strength_count, partial_count,
+         explained_count,
          total_paradox_strength, avg_paradox_strength,
-         type_a_count, type_b_count, type_c_count, type_d_count,
+         type_a_count, type_b_count, type_d_count,
          type_a_fraction, distortion_taxonomy_coverage,
-         reversal_count_v2, non_reversal_count_v2, extended_reversal_count,
-         explained_count_v2, distortion_only_count
+         distortion_only_count
   FROM vw_model_summary) r;" > "$TMPDIR_RH/model_summary.json"
 
 # ── merge computed values back into the rulebook ──────────────────────────────
@@ -156,7 +154,6 @@ COL = {
     'per_stratum_winner': 'PerStratumWinner',
     'is_reversal': 'IsReversal', 'confounders_in_study': 'ConfoundersInStudy',
     'is_paradox_explained': 'IsParadoxExplained',
-    'is_paradox_explained_v2': 'IsParadoxExplained_v2',
     'pooled_gap': 'PooledGap', 'strata_won_by_loser': 'StrataWonByLoser',
     'paradox_strength': 'ParadoxStrength',
     'pooled_rate_from_weights_a': 'PooledRateFromWeightsA',
@@ -166,22 +163,15 @@ COL = {
     'weighted_stratum_gap_sum': 'WeightedStratumGapSum',
     'is_sign_flip': 'IsSignFlip', 'allocation_distortion': 'AllocationDistortion',
     'distortion_type': 'DistortionType', 'policy_implication': 'PolicyImplication',
-    'is_reversal_v2': 'IsReversal_v2', 'definition_delta': 'DefinitionDelta',
-    'strict_reversal_subtype': 'StrictReversalSubtype',
     'model_summary_id': 'ModelSummaryId',
     'reversal_count': 'ReversalCount', 'non_reversal_count': 'NonReversalCount',
     'study_count': 'StudyCount', 'explained_count': 'ExplainedCount',
-    'zero_strength_count': 'ZeroStrengthCount', 'partial_count': 'PartialCount',
     'total_paradox_strength': 'TotalParadoxStrength',
     'avg_paradox_strength': 'AvgParadoxStrength',
     'type_a_count': 'TypeACount', 'type_b_count': 'TypeBCount',
-    'type_c_count': 'TypeCCount', 'type_d_count': 'TypeDCount',
+    'type_d_count': 'TypeDCount',
     'type_a_fraction': 'TypeAFraction',
     'distortion_taxonomy_coverage': 'DistortionTaxonomyCoverage',
-    'reversal_count_v2': 'ReversalCountV2',
-    'non_reversal_count_v2': 'NonReversalCountV2',
-    'extended_reversal_count': 'ExtendedReversalCount',
-    'explained_count_v2': 'ExplainedCountV2',
     'distortion_only_count': 'DistortionOnlyCount',
 }
 

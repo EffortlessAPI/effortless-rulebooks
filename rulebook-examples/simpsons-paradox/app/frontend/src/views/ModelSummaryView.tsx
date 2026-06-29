@@ -24,20 +24,20 @@ export function ModelSummaryView() {
     <div>
       <div className="page-title">Model Summary</div>
       <div className="page-desc">
-        Rollup across all studies — how many exhibit each distortion type, the average
-        paradox strength, and which studies the unanimity vs sign-flip definitions disagree on.
-        SignalPurity is treated as a first-class summary metric: values below 0.5 indicate
-        that allocation noise exceeds true signal on average.
+        Rollup across all studies — how many exhibit each distortion type and the average
+        paradox strength. IsReversal is the sign-flip criterion (same as IsSignFlip).
+        Type A vs Type B captures unanimous vs partial stratum disagreement.
+        SignalPurity below 0.5 means allocation noise exceeds true signal on average.
       </div>
 
       <div className="three-col" style={{ marginBottom: 16 }}>
         <div className="card" style={{ textAlign: 'center' }}>
           <div style={{ fontSize: 36, fontWeight: 700, color: '#ff7b72' }}>{summary.reversal_count}</div>
-          <div style={{ color: '#8b949e', fontSize: 13, marginTop: 4 }}>Full reversals (unanimity)</div>
+          <div style={{ color: '#8b949e', fontSize: 13, marginTop: 4 }}>Sign-flip reversals</div>
         </div>
         <div className="card" style={{ textAlign: 'center' }}>
           <div style={{ fontSize: 36, fontWeight: 700, color: '#d2a8ff' }}>{summary.type_b_count}</div>
-          <div style={{ color: '#8b949e', fontSize: 13, marginTop: 4 }}>Sign-flip only (v2 extends)</div>
+          <div style={{ color: '#8b949e', fontSize: 13, marginTop: 4 }}>Type B (partial stratum)</div>
         </div>
         <div className="card" style={{ textAlign: 'center' }}>
           <div style={{ fontSize: 36, fontWeight: 700, color: '#58a6ff' }}>{summary.study_count}</div>
@@ -49,7 +49,9 @@ export function ModelSummaryView() {
         <div className="card">
           <h3>Distortion type distribution</h3>
           {(['A', 'B', 'C', 'D'] as const).map(t => {
-            const count = summary[`type_${t.toLowerCase()}_count` as keyof ModelSummary] as number;
+            const count = t === 'C'
+              ? Number(summary.type_c_plus_count ?? 0) + Number(summary.type_c_minus_count ?? 0)
+              : summary[`type_${t.toLowerCase()}_count` as keyof ModelSummary] as number;
             const pct = summary.study_count ? Math.round(count / summary.study_count * 100) : 0;
             return (
               <div key={t} style={{ marginBottom: 12 }}>
@@ -58,8 +60,8 @@ export function ModelSummaryView() {
                     <span className={`badge badge-type-${t.toLowerCase()}`}>Type {t}</span>
                     &nbsp;&nbsp;
                     <span style={{ fontSize: 12, color: '#8b949e' }}>
-                      {t === 'A' ? 'Full reversal + sign flip' :
-                        t === 'B' ? 'Sign flip, partial reversal' :
+                      {t === 'A' ? 'Unanimous sign flip' :
+                        t === 'B' ? 'Sign flip, partial stratum' :
                           t === 'C' ? 'Distortion, no sign flip' : 'Neutral / trustworthy'}
                     </span>
                   </span>
@@ -107,60 +109,7 @@ export function ModelSummaryView() {
             <span className="stat-label">Explained (reversal + confounder)</span>
             <span className="stat-value">{summary.explained_count}</span>
           </div>
-          <div className="stat-row">
-            <span className="stat-label">Partial paradoxes</span>
-            <span className="stat-value">{summary.partial_count}</span>
-          </div>
-          <div className="stat-row">
-            <span className="stat-label">Zero paradox strength</span>
-            <span className="stat-value">{summary.zero_strength_count}</span>
-          </div>
         </div>
-      </div>
-
-      <div className="card">
-        <h3>Definition delta — studies where unanimity ≠ sign-flip</h3>
-        <div className="page-desc" style={{ marginBottom: 12 }}>
-          These studies satisfy IsReversal_v2 (sign-flip criterion) but NOT IsReversal
-          (unanimity criterion). They are the empirical proof that the unanimity criterion
-          is a strict subset of the broader definition.
-        </div>
-        {rankings.filter(r => r.definition_delta).length === 0 ? (
-          <div style={{ color: '#8b949e', fontSize: 13 }}>No definition delta in current dataset.</div>
-        ) : (
-          <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 13 }}>
-            <thead>
-              <tr style={{ borderBottom: '1px solid #30363d', color: '#8b949e' }}>
-                <th style={{ textAlign: 'left', padding: '6px 8px' }}>Study</th>
-                <th style={{ textAlign: 'center', padding: '6px 8px' }}>IsReversal</th>
-                <th style={{ textAlign: 'center', padding: '6px 8px' }}>IsSignFlip</th>
-                <th style={{ textAlign: 'center', padding: '6px 8px' }}>Type</th>
-                <th style={{ textAlign: 'right', padding: '6px 8px' }}>Reversal intensity</th>
-                <th style={{ textAlign: 'right', padding: '6px 8px' }}>Alloc distortion</th>
-              </tr>
-            </thead>
-            <tbody>
-              {rankings.filter(r => r.definition_delta).map(r => (
-                <tr key={r.treatment_ranking_id} style={{ borderBottom: '1px solid #21262d' }}>
-                  <td style={{ padding: '6px 8px' }}>{r.study}</td>
-                  <td style={{ padding: '6px 8px', textAlign: 'center', color: '#6e7681' }}>no</td>
-                  <td style={{ padding: '6px 8px', textAlign: 'center', color: '#d2a8ff' }}>YES</td>
-                  <td style={{ padding: '6px 8px', textAlign: 'center' }}>
-                    <span className={`badge badge-type-${r.distortion_type?.toLowerCase()}`}>
-                      {r.distortion_type}
-                    </span>
-                  </td>
-                  <td style={{ padding: '6px 8px', textAlign: 'right', fontVariantNumeric: 'tabular-nums' }}>
-                    {(Number(r.reversal_intensity) * 100).toFixed(0)}%
-                  </td>
-                  <td style={{ padding: '6px 8px', textAlign: 'right', fontVariantNumeric: 'tabular-nums' }}>
-                    {Number(r.allocation_distortion).toFixed(4)}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        )}
       </div>
 
       <div className="card">
@@ -170,13 +119,12 @@ export function ModelSummaryView() {
             <tr style={{ borderBottom: '1px solid #30363d', color: '#8b949e' }}>
               <th style={{ textAlign: 'left', padding: '6px 6px' }}>Study</th>
               <th style={{ textAlign: 'center', padding: '6px 6px' }}>Type</th>
+              <th style={{ textAlign: 'center', padding: '6px 6px' }}>Tier</th>
               <th style={{ textAlign: 'center', padding: '6px 6px' }}>Reversal</th>
-              <th style={{ textAlign: 'center', padding: '6px 6px' }}>SignFlip</th>
               <th style={{ textAlign: 'right', padding: '6px 6px' }}>Strength</th>
               <th style={{ textAlign: 'right', padding: '6px 6px' }}>Signal purity</th>
               <th style={{ textAlign: 'right', padding: '6px 6px' }}>Intensity</th>
               <th style={{ textAlign: 'right', padding: '6px 6px' }}>Distortion</th>
-              <th style={{ textAlign: 'left', padding: '6px 6px' }}>Subtype</th>
             </tr>
           </thead>
           <tbody>
@@ -186,13 +134,10 @@ export function ModelSummaryView() {
                 <td style={{ padding: '6px 6px', textAlign: 'center' }}>
                   <span className={`badge badge-type-${r.distortion_type?.toLowerCase()}`}>{r.distortion_type}</span>
                 </td>
+                <td style={{ padding: '6px 6px', textAlign: 'center', fontSize: 11 }}>{r.screening_tier ?? '—'}</td>
                 <td style={{ padding: '6px 6px', textAlign: 'center',
                   color: r.is_reversal ? '#ff7b72' : '#6e7681' }}>
                   {r.is_reversal ? 'YES' : 'no'}
-                </td>
-                <td style={{ padding: '6px 6px', textAlign: 'center',
-                  color: r.is_sign_flip ? '#d2a8ff' : '#6e7681' }}>
-                  {r.is_sign_flip ? 'YES' : 'no'}
                 </td>
                 <td style={{ padding: '6px 6px', textAlign: 'right', fontVariantNumeric: 'tabular-nums' }}>
                   {num(r.paradox_strength)}
@@ -205,9 +150,6 @@ export function ModelSummaryView() {
                 </td>
                 <td style={{ padding: '6px 6px', textAlign: 'right', fontVariantNumeric: 'tabular-nums' }}>
                   {num(r.allocation_distortion)}
-                </td>
-                <td style={{ padding: '6px 6px', color: '#8b949e', fontSize: 11 }}>
-                  {r.strict_reversal_subtype}
                 </td>
               </tr>
             ))}
