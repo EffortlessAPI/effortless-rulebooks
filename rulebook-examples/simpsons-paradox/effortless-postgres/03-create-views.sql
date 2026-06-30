@@ -227,6 +227,11 @@ SELECT
   calc_model_summary_avg_pooled_gap_stable_d(t.model_summary_id) AS avg_pooled_gap_stable_d,-- Average PooledGap among allocation-stable Type-D studies.
   calc_model_summary_epidemiology_avg_distortion(t.model_summary_id) AS epidemiology_avg_distortion,-- Mean AllocationDistortion in epidemiology studies.
   calc_model_summary_education_avg_distortion(t.model_summary_id) AS education_avg_distortion,-- Mean AllocationDistortion in education studies.
+  calc_model_summary_confounder_sign_flip_count(t.model_summary_id) AS confounder_sign_flip_count,-- Sign-flip count among confounder-labeled studies.
+  calc_model_summary_confounder_latent_only_count(t.model_summary_id) AS confounder_latent_only_count,-- Latent-only flip count among confounder-labeled studies.
+  calc_model_summary_collider_selection_count(t.model_summary_id) AS collider_selection_count,-- Studies tagged collider or selection on StratumVariables.
+  calc_model_summary_collider_selection_manifest_count(t.model_summary_id) AS collider_selection_manifest_count,-- Manifest sign-flips among collider/selection studies.
+  calc_model_summary_collider_selection_latent_only_count(t.model_summary_id) AS collider_selection_latent_only_count,-- Latent-only flips among collider/selection studies.
   calc_model_summary_discovery_witness_note(t.model_summary_id) AS discovery_witness_note-- One-line summary of loop-61 empirical discovery findings.
 FROM model_summary t;
 
@@ -299,6 +304,7 @@ SELECT
   calc_treatment_rankings_latent_flip_potential(t.treatment_ranking_id) AS latent_flip_potential,-- TRUE when DistortionType=D but PooledGapCrossesZero=TRUE — SAFE at observed allocation but flip-capable under counterfactual reweighting.
   calc_treatment_rankings_allocation_fragility(t.treatment_ranking_id) AS allocation_fragility,-- SweepPooledGapRange divided by |PooledGap|. High values mean small observed effect but wide counterfactual wander.
   calc_treatment_rankings_study_domain(t.treatment_ranking_id) AS study_domain, -- Lookup: Studies.Domain via Study.
+  calc_treatment_rankings_is_latent_only_flip(t.treatment_ranking_id) AS is_latent_only_flip,-- TRUE when allocation sweep crosses zero but observed allocation shows no sign flip — latent-only reversal.
   calc_treatment_rankings_confirmed_causal_role_count(t.treatment_ranking_id) AS confirmed_causal_role_count,-- Count of StratumVariables in this study whose CausalRole is "confounder" — includes variables that confound the outcome regardless of whether allocation was balanced.
   calc_treatment_rankings_mediator_risk_count(t.treatment_ranking_id) AS mediator_risk_count,-- Count of StratumVariables in this study whose ConditioningRisk is mediator or collider — the hazardous conditioning types.
   calc_treatment_rankings_contested_stratum_count(t.treatment_ranking_id) AS contested_stratum_count,-- Count of StratumVariables in this study whose CausalRole is contested — the causal interpretation is disputed.

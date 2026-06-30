@@ -12,7 +12,10 @@ export function Shell() {
           <span className="sidebar-logo">∫</span>
           Simpson's Paradox
         </div>
-        <NavLink to="/conclusions" className={({ isActive }) => isActive ? 'nav-item nav-item-priority active' : 'nav-item nav-item-priority'}>
+        <NavLink to="/discovery" className={({ isActive }) => isActive ? 'nav-item nav-item-priority active' : 'nav-item nav-item-priority'}>
+          Discovery Research
+        </NavLink>
+        <NavLink to="/conclusions" className={({ isActive }) => isActive ? 'nav-item active' : 'nav-item'}>
           Conclusions &amp; Findings
         </NavLink>
         <NavLink to="/overview" className={({ isActive }) => isActive ? 'nav-item active' : 'nav-item'}>

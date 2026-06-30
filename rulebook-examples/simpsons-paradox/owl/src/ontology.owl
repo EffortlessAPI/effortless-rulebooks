@@ -1558,6 +1558,41 @@ effortless-ntwf:educationAvgDistortion a owl:DatatypeProperty ;
     rdfs:comment "Mean AllocationDistortion in education studies." .
     # calculated: calculated
 
+effortless-ntwf:confounderSignFlipCount a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:ModelSummary ;
+    rdfs:range xsd:string ;
+    rdfs:label "ConfounderSignFlipCount" ;
+    rdfs:comment "Sign-flip count among confounder-labeled studies." .
+    # calculated: calculated
+
+effortless-ntwf:confounderLatentOnlyCount a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:ModelSummary ;
+    rdfs:range xsd:string ;
+    rdfs:label "ConfounderLatentOnlyCount" ;
+    rdfs:comment "Latent-only flip count among confounder-labeled studies." .
+    # calculated: calculated
+
+effortless-ntwf:colliderSelectionCount a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:ModelSummary ;
+    rdfs:range xsd:string ;
+    rdfs:label "ColliderSelectionCount" ;
+    rdfs:comment "Studies tagged collider or selection on StratumVariables." .
+    # calculated: calculated
+
+effortless-ntwf:colliderSelectionManifestCount a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:ModelSummary ;
+    rdfs:range xsd:string ;
+    rdfs:label "ColliderSelectionManifestCount" ;
+    rdfs:comment "Manifest sign-flips among collider/selection studies." .
+    # calculated: calculated
+
+effortless-ntwf:colliderSelectionLatentOnlyCount a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:ModelSummary ;
+    rdfs:range xsd:string ;
+    rdfs:label "ColliderSelectionLatentOnlyCount" ;
+    rdfs:comment "Latent-only flips among collider/selection studies." .
+    # calculated: calculated
+
 effortless-ntwf:discoveryWitnessNote a owl:DatatypeProperty ;
     rdfs:domain effortless-ntwf:ModelSummary ;
     rdfs:range xsd:string ;
@@ -3048,6 +3083,20 @@ effortless-ntwf:studyDomain a owl:DatatypeProperty ;
     rdfs:range xsd:string ;
     rdfs:label "StudyDomain" ;
     rdfs:comment "Lookup: Studies.Domain via Study." .
+    # calculated: calculated
+
+effortless-ntwf:stratumCausalRole a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:TreatmentRankings ;
+    rdfs:range xsd:string ;
+    rdfs:label "StratumCausalRole" ;
+    rdfs:comment "Lookup: StratumVariables.CausalRole for this study — confounder, mediator, collider, selection, contested, etc." .
+    # calculated: lookup
+
+effortless-ntwf:isLatentOnlyFlip a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:TreatmentRankings ;
+    rdfs:range xsd:boolean ;
+    rdfs:label "IsLatentOnlyFlip" ;
+    rdfs:comment "TRUE when allocation sweep crosses zero but observed allocation shows no sign flip — latent-only reversal." .
     # calculated: calculated
 
 effortless-ntwf:confirmedCausalRoleCount a owl:DatatypeProperty ;

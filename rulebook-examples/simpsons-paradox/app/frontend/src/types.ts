@@ -100,6 +100,11 @@ export interface TreatmentRanking {
   is_paradox_explained: boolean;
   signal_purity: number | null;
   allocation_direction: string | null;
+  pooled_gap_crosses_zero?: boolean | null;
+  latent_flip_potential?: boolean | null;
+  study_domain?: string | null;
+  stratum_causal_role?: string | null;
+  is_latent_only_flip?: boolean | null;
 }
 
 export interface Treatment {
@@ -211,6 +216,11 @@ export interface ModelSummary {
   latent_type_d_count?: number | null;
   latent_type_d_fraction?: number | null;
   discovery_witness_note?: string | null;
+  confounder_sign_flip_count?: number | null;
+  confounder_latent_only_count?: number | null;
+  collider_selection_count?: number | null;
+  collider_selection_manifest_count?: number | null;
+  collider_selection_latent_only_count?: number | null;
 }
 
 export interface CorpusCatalogSummary {

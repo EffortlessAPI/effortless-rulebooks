@@ -387,7 +387,8 @@ BEGIN
     causal_claim_status, adjustment_appropriate,
     allocation_direction, signal_purity, max_stratum_imbalance, max_stratum_gap,
     pooled_gap_crosses_zero, sweep_pooled_gap_range, latent_flip_potential,
-    allocation_fragility, study_domain
+    allocation_fragility, study_domain,
+    stratum_causal_role, is_latent_only_flip
   )
   SELECT
     tr.treatment_ranking_id,
@@ -450,7 +451,10 @@ BEGIN
       ELSE calc_sweep_study_summary_sweep_pooled_gap_range(tr.study)
            / ABS(_erb_snap_tr_pooled_gap(tr.treatment_ranking_id))
     END,
-    (SELECT s.domain FROM studies s WHERE s.study_id = tr.study)
+    (SELECT s.domain FROM studies s WHERE s.study_id = tr.study),
+    (SELECT sv.causal_role FROM stratum_variables sv WHERE sv.study = tr.study LIMIT 1),
+    (calc_sweep_study_summary_pooled_gap_crosses_zero(tr.study) = TRUE
+      AND _erb_snap_tr_is_sign_flip(tr.treatment_ranking_id) = FALSE)
   FROM treatment_rankings tr;
 END;
 $$;
@@ -612,6 +616,12 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION calc_treatment_rankings_study_domain(p_treatment_ranking_id TEXT) RETURNS TEXT AS $$
   SELECT study_domain FROM _erb_tr_metrics WHERE treatment_ranking_id = p_treatment_ranking_id;
 $$ LANGUAGE sql STABLE;
+CREATE OR REPLACE FUNCTION calc_treatment_rankings_stratum_causal_role(p_treatment_ranking_id TEXT) RETURNS TEXT AS $$
+  SELECT stratum_causal_role FROM _erb_tr_metrics WHERE treatment_ranking_id = p_treatment_ranking_id;
+$$ LANGUAGE sql STABLE;
+CREATE OR REPLACE FUNCTION calc_treatment_rankings_is_latent_only_flip(p_treatment_ranking_id TEXT) RETURNS BOOLEAN AS $$
+  SELECT is_latent_only_flip FROM _erb_tr_metrics WHERE treatment_ranking_id = p_treatment_ranking_id;
+$$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION calc_treatment_rankings_confirmed_causal_role_count(p_treatment_ranking_id TEXT) RETURNS INTEGER AS $$
   SELECT confirmed_causal_role_count FROM _erb_tr_metrics WHERE treatment_ranking_id = p_treatment_ranking_id;
 $$ LANGUAGE sql STABLE;
@@ -716,6 +726,29 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION calc_model_summary_education_avg_distortion(p_model_summary_id TEXT) RETURNS NUMERIC AS $$
   SELECT AVG(allocation_distortion) FROM _erb_tr_metrics WHERE study_domain = 'education';
 $$ LANGUAGE sql STABLE;
+
+-- loop-62 causal-role × manifest/latent aggregates
+CREATE OR REPLACE FUNCTION calc_model_summary_confounder_sign_flip_count(p_model_summary_id TEXT) RETURNS NUMERIC AS $$
+  SELECT COUNT(*)::numeric FROM _erb_tr_metrics
+  WHERE stratum_causal_role = 'confounder' AND is_sign_flip = true;
+$$ LANGUAGE sql STABLE;
+CREATE OR REPLACE FUNCTION calc_model_summary_confounder_latent_only_count(p_model_summary_id TEXT) RETURNS NUMERIC AS $$
+  SELECT COUNT(*)::numeric FROM _erb_tr_metrics
+  WHERE stratum_causal_role = 'confounder' AND is_latent_only_flip = true;
+$$ LANGUAGE sql STABLE;
+CREATE OR REPLACE FUNCTION calc_model_summary_collider_selection_count(p_model_summary_id TEXT) RETURNS NUMERIC AS $$
+  SELECT COUNT(*)::numeric FROM _erb_tr_metrics
+  WHERE stratum_causal_role IN ('collider', 'selection');
+$$ LANGUAGE sql STABLE;
+CREATE OR REPLACE FUNCTION calc_model_summary_collider_selection_manifest_count(p_model_summary_id TEXT) RETURNS NUMERIC AS $$
+  SELECT COUNT(*)::numeric FROM _erb_tr_metrics
+  WHERE stratum_causal_role IN ('collider', 'selection') AND is_sign_flip = true;
+$$ LANGUAGE sql STABLE;
+CREATE OR REPLACE FUNCTION calc_model_summary_collider_selection_latent_only_count(p_model_summary_id TEXT) RETURNS NUMERIC AS $$
+  SELECT COUNT(*)::numeric FROM _erb_tr_metrics
+  WHERE stratum_causal_role IN ('collider', 'selection') AND is_latent_only_flip = true;
+$$ LANGUAGE sql STABLE;
+
 CREATE OR REPLACE FUNCTION calc_model_summary_discovery_witness_note(p_model_summary_id TEXT) RETURNS TEXT AS $$
   SELECT CONCAT(
     'LatentTypeD=', calc_model_summary_latent_type_d_count(p_model_summary_id),
@@ -736,6 +769,9 @@ CREATE OR REPLACE FUNCTION calc_discovery_findings_is_confirmed(p_finding_id TEX
     WHEN 'H-econ-zero' THEN calc_model_summary_economics_sign_flip_count('simpsons-paradox-v1') = 0
     WHEN 'H-domain-dist' THEN calc_model_summary_epidemiology_avg_distortion('simpsons-paradox-v1')
                               > calc_model_summary_education_avg_distortion('simpsons-paradox-v1')
+    WHEN 'H-causal-manifest' THEN calc_model_summary_confounder_latent_only_count('simpsons-paradox-v1') = 0
+    WHEN 'H-causal-latent' THEN calc_model_summary_collider_selection_manifest_count('simpsons-paradox-v1') = 0
+                              AND calc_model_summary_collider_selection_latent_only_count('simpsons-paradox-v1') >= 5
     ELSE FALSE
   END;
 $$ LANGUAGE sql STABLE;
@@ -748,6 +784,11 @@ CREATE OR REPLACE FUNCTION calc_discovery_findings_observed_metric(p_finding_id 
     WHEN 'H-econ-zero' THEN CONCAT('flips=', calc_model_summary_economics_sign_flip_count('simpsons-paradox-v1'))
     WHEN 'H-domain-dist' THEN CONCAT('epi=', calc_model_summary_epidemiology_avg_distortion('simpsons-paradox-v1'),
                                      ' edu=', calc_model_summary_education_avg_distortion('simpsons-paradox-v1'))
+    WHEN 'H-causal-manifest' THEN CONCAT('confLatent=', calc_model_summary_confounder_latent_only_count('simpsons-paradox-v1'),
+                                        ' confFlip=', calc_model_summary_confounder_sign_flip_count('simpsons-paradox-v1'))
+    WHEN 'H-causal-latent' THEN CONCAT('collManifest=', calc_model_summary_collider_selection_manifest_count('simpsons-paradox-v1'),
+                                        ' collLatent=', calc_model_summary_collider_selection_latent_only_count('simpsons-paradox-v1'),
+                                        ' collN=', calc_model_summary_collider_selection_count('simpsons-paradox-v1'))
     ELSE ''
   END;
 $$ LANGUAGE sql STABLE;

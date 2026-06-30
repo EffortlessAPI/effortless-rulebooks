@@ -11,6 +11,7 @@ import { PhaseDiagramView } from './views/PhaseDiagramView';
 import { ImportCatalogView } from './views/ImportCatalogView';
 import { InstrumentDashboardView } from './views/InstrumentDashboardView';
 import { ConclusionsAdminView } from './views/ConclusionsAdminView';
+import { DiscoveryView } from './views/DiscoveryView';
 import {
   DagFieldPage,
   DagIndexPage,
@@ -33,6 +34,7 @@ function AppRoutes() {
         <Route path="/" element={<Shell />}>
           <Route index element={<Navigate to="/overview" replace />} />
           <Route path="conclusions" element={<ConclusionsAdminView />} />
+          <Route path="discovery" element={<DiscoveryView />} />
           <Route path="overview" element={<OverviewView />} />
           <Route path="stratum" element={<StratumView />} />
           <Route path="weights" element={<WeightsView />} />

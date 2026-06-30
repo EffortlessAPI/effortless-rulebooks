@@ -91,6 +91,8 @@ ALTER TABLE _erb_tr_metrics ADD COLUMN IF NOT EXISTS sweep_pooled_gap_range NUME
 ALTER TABLE _erb_tr_metrics ADD COLUMN IF NOT EXISTS latent_flip_potential BOOLEAN;
 ALTER TABLE _erb_tr_metrics ADD COLUMN IF NOT EXISTS allocation_fragility NUMERIC;
 ALTER TABLE _erb_tr_metrics ADD COLUMN IF NOT EXISTS study_domain TEXT;
+ALTER TABLE _erb_tr_metrics ADD COLUMN IF NOT EXISTS stratum_causal_role TEXT;
+ALTER TABLE _erb_tr_metrics ADD COLUMN IF NOT EXISTS is_latent_only_flip BOOLEAN;
 
 CREATE UNLOGGED TABLE IF NOT EXISTS _erb_sp_metrics (
   phase_id                      TEXT PRIMARY KEY,

@@ -9908,6 +9908,15 @@ effortless-ntwf:conc-17-economics-flip-free a effortless-ntwf:Conclusions ;
     effortless-ntwf:witnessedInLoop "loop-61" ;
     effortless-ntwf:traditionId "tradition-epidemiology" .
 
+effortless-ntwf:conc-18-causal-role-flip-mode a effortless-ntwf:Conclusions ;
+    effortless-ntwf:conclusionId "conc-18-causal-role-flip-mode" ;
+    effortless-ntwf:category "instrument" ;
+    effortless-ntwf:status "witnessed" ;
+    effortless-ntwf:title "Causal role predicts manifest vs latent reversal mode — confounders flip at observed allocation; collider/selection flips stay sweep-latent" ;
+    effortless-ntwf:evidence "Loop-62 research sweep: ConfounderSignFlipCount=15, ConfounderLatentOnlyCount=0 (H-causal-manifest PASS). ColliderSelectionCount=7, ColliderSelectionManifestCount=0, ColliderSelectionLatentOnlyCount=5 (H-causal-latent PASS). Manifest reversal = IsSignFlip at observed allocation; latent-only = PooledGapCrossesZero AND NOT IsSignFlip. Existing LatentFlipPotential + StratumCausalRole suffice — no ManifestReversal first-class field needed yet." ;
+    effortless-ntwf:witnessedInLoop "loop-62" ;
+    effortless-ntwf:traditionId "tradition-dag" .
+
 # === Individuals: CorpusCatalogSummary ===
 
 effortless-ntwf:catalog-v1 a effortless-ntwf:CorpusCatalogSummary ;
@@ -9939,6 +9948,16 @@ effortless-ntwf:find-H-domain-dist a effortless-ntwf:DiscoveryFindings ;
     effortless-ntwf:findingId "find-H-domain-dist" ;
     effortless-ntwf:hypothesisId "H-domain-dist" ;
     effortless-ntwf:witnessedInLoop "loop-61" .
+
+effortless-ntwf:find-H-causal-manifest a effortless-ntwf:DiscoveryFindings ;
+    effortless-ntwf:findingId "find-H-causal-manifest" ;
+    effortless-ntwf:hypothesisId "H-causal-manifest" ;
+    effortless-ntwf:witnessedInLoop "loop-62" .
+
+effortless-ntwf:find-H-causal-latent a effortless-ntwf:DiscoveryFindings ;
+    effortless-ntwf:findingId "find-H-causal-latent" ;
+    effortless-ntwf:hypothesisId "H-causal-latent" ;
+    effortless-ntwf:witnessedInLoop "loop-62" .
 
 # === Individuals: DiscoveryHypotheses ===
 
@@ -9979,6 +9998,22 @@ effortless-ntwf:H-domain-dist a effortless-ntwf:DiscoveryHypotheses ;
     effortless-ntwf:statement "Epidemiology studies carry higher mean AllocationDistortion than education studies." ;
     effortless-ntwf:expectedOutcome "EpidemiologyAvgDistortion > EducationAvgDistortion" ;
     effortless-ntwf:registeredInLoop "loop-61" ;
+    effortless-ntwf:traditionId "tradition-epidemiology" ;
+    effortless-ntwf:epistemicTier "corpus-hypothesis" .
+
+effortless-ntwf:H-causal-manifest a effortless-ntwf:DiscoveryHypotheses ;
+    effortless-ntwf:hypothesisId "H-causal-manifest" ;
+    effortless-ntwf:statement "Confounder-labeled studies produce manifest sign-flips at observed allocation — no latent-only flip (PooledGapCrossesZero without IsSignFlip) among confounder-tagged rows." ;
+    effortless-ntwf:expectedOutcome "ConfounderLatentOnlyCount = 0" ;
+    effortless-ntwf:registeredInLoop "loop-62" ;
+    effortless-ntwf:traditionId "tradition-dag" ;
+    effortless-ntwf:epistemicTier "corpus-hypothesis" .
+
+effortless-ntwf:H-causal-latent a effortless-ntwf:DiscoveryHypotheses ;
+    effortless-ntwf:hypothesisId "H-causal-latent" ;
+    effortless-ntwf:statement "Collider/selection studies produce latent-only flips under allocation sweep without manifest sign-flips at observed allocation." ;
+    effortless-ntwf:expectedOutcome "ColliderSelectionManifestCount = 0 AND ColliderSelectionLatentOnlyCount >= 5" ;
+    effortless-ntwf:registeredInLoop "loop-62" ;
     effortless-ntwf:traditionId "tradition-epidemiology" ;
     effortless-ntwf:epistemicTier "corpus-hypothesis" .
 
@@ -10712,11 +10747,11 @@ effortless-ntwf:inv-latent-d-majority a effortless-ntwf:InvariantChecks ;
 effortless-ntwf:inv-discovery-all-confirmed a effortless-ntwf:InvariantChecks ;
     effortless-ntwf:invariantCheckId "inv-discovery-all-confirmed" ;
     effortless-ntwf:algebraicStatement "COUNTIFS(DiscoveryFindings IsConfirmed FALSE WHERE EpistemicTier=corpus-hypothesis) = 0" ;
-    effortless-ntwf:naturalLanguage "All loop-61 pre-registered corpus hypotheses (excluding definition-linked consistency checks) must confirm against the live corpus." ;
+    effortless-ntwf:naturalLanguage "All pre-registered corpus hypotheses (loops 61–62, excluding definition-linked consistency checks) must confirm against the live corpus." ;
     effortless-ntwf:sourceTable "DiscoveryFindings" ;
     effortless-ntwf:filterExpression "HypothesisEpistemicTier = corpus-hypothesis" ;
     effortless-ntwf:assertionExpression "IsConfirmed = TRUE" ;
-    effortless-ntwf:sqlFilter "hypothesis_id IN ('H-latent-d', 'H-small-effect', 'H-econ-zero', 'H-domain-dist')" ;
+    effortless-ntwf:sqlFilter "hypothesis_id IN ('H-latent-d', 'H-small-effect', 'H-econ-zero', 'H-domain-dist', 'H-causal-manifest', 'H-causal-latent')" ;
     effortless-ntwf:sqlAssertion "is_confirmed = TRUE" ;
     effortless-ntwf:passCount 4 ;
     effortless-ntwf:failCount 0 ;
@@ -11494,11 +11529,11 @@ effortless-ntwf:loop-61 a effortless-ntwf:Loops ;
 effortless-ntwf:loop-62 a effortless-ntwf:Loops ;
     effortless-ntwf:loopId "loop-62" ;
     effortless-ntwf:title "Research sweep 1: causal role × manifest vs latent reversal" ;
-    effortless-ntwf:status "planned" ;
+    effortless-ntwf:status "complete" ;
     effortless-ntwf:newConcept "DiscoveryHypotheses H-causal-manifest + H-causal-latent; ObservedDistortionType lookup on CandidateStudyCatalog; Discovery UI screen (/discovery); LoopReview protocol — end-of-turn query vw_discovery_findings, update Conclusions if witnessed, defer vocabulary until review passes" ;
     effortless-ntwf:domainQuestion "At 96-study scale, do confounder-labeled studies produce manifest sign-flips while collider/selection studies produce latent-only flips (PooledGapCrossesZero without IsSignFlip)? Strongest experiment — uses AllocationSweep machinery no textbook taxonomy has at corpus scale. Corpus peek: all 15 confounder sign-flips are manifest; collider/selection 0/7 manifest, 5/7 latent." ;
-    effortless-ntwf:mockDataNote "Pre-build synthesis (loops 1–61): geometry complete (DistortionType A/B/C+/C−/D, SignalPurity, CorrectedGap, AllocationSweep); corpus at 96 studies; loop-61 witnessed H-latent-d/H-purity/H-small-effect/H-econ-zero/H-domain-dist but not mechanism-stratified reversal. LoopReview (end of turn): confirm or refute H-causal-* in vw_discovery_findings; decide whether ManifestReversal vs LatentReversal deserves first-class fields in loop-67+ or whether existing LatentFlipPotential + CausalRole suffice." ;
-    effortless-ntwf:nextSuggestion "loop-63: after LoopReview — paradox-explained × mechanism partition (do not start until loop-62 review documents pass/fail and vocabulary decision)" ;
+    effortless-ntwf:mockDataNote "Witnessed post-build: H-causal-manifest PASS (confLatent=0, confFlip=15). H-causal-latent PASS (collManifest=0, collLatent=5, collN=7). LoopReview: existing LatentFlipPotential + CausalRole suffice; defer ManifestReversal/LatentReversal vocabulary to loop-67+." ;
+    effortless-ntwf:nextSuggestion "loop-63: after LoopReview — paradox-explained × mechanism partition" ;
     effortless-ntwf:traditionId "tradition-epidemiology" .
 
 effortless-ntwf:loop-63 a effortless-ntwf:Loops ;
@@ -23327,6 +23362,15 @@ effortless-ntwf:comp-10-conclusion-list a effortless-ntwf:UIComponents ;
     effortless-ntwf:requiredFields "Category, Status, Title, Evidence, WitnessedInLoop, TargetLoop" ;
     effortless-ntwf:visualSpec "Grouped list with category headers. Status badge: witnessed=green, planned=blue, open=orange. Evidence shown as collapsed text (expand on click). Loop links navigate to LoopTimeline." .
 
+effortless-ntwf:comp-11-discovery-panel a effortless-ntwf:UIComponents ;
+    effortless-ntwf:componentId "comp-11-discovery-panel" ;
+    effortless-ntwf:componentName "DiscoveryResearchPanel" ;
+    effortless-ntwf:usedOnScreens "screen-10-discovery" ;
+    effortless-ntwf:primaryEntity "DiscoveryFindings" ;
+    effortless-ntwf:description "Grouped hypothesis cards with observed metrics, PASS/FAIL badges, and a study table filtered by StratumCausalRole × flip mode (manifest / latent-only / stable)." ;
+    effortless-ntwf:requiredFields "HypothesisId, HypothesisStatement, ObservedMetric, IsConfirmed, Evidence, WitnessedInLoop" ;
+    effortless-ntwf:visualSpec "Two sections: hypothesis cards (green PASS / red FAIL) then study table with columns Study, StratumCausalRole, IsSignFlip, PooledGapCrossesZero, IsLatentOnlyFlip, DistortionType." .
+
 # === Individuals: UIScreens ===
 
 effortless-ntwf:screen-01-study-list a effortless-ntwf:UIScreens ;
@@ -23427,3 +23471,14 @@ effortless-ntwf:screen-09-conclusions a effortless-ntwf:UIScreens ;
     effortless-ntwf:userAction "Filter by Status (witnessed/planned/open); click WitnessedInLoop to navigate to Loop History." ;
     effortless-ntwf:traditionId "tradition-historical" ;
     effortless-ntwf:primaryConclusion "conc-10-instrument-specifiable" .
+
+effortless-ntwf:screen-10-discovery a effortless-ntwf:UIScreens ;
+    effortless-ntwf:screenId "screen-10-discovery" ;
+    effortless-ntwf:title "Discovery Research" ;
+    effortless-ntwf:route "/discovery" ;
+    effortless-ntwf:primaryEntity "DiscoveryFindings" ;
+    effortless-ntwf:purpose "Show pre-registered DiscoveryHypotheses and witnessed DiscoveryFindings — loop-61 corpus patterns and loop-62 causal-role × manifest/latent sweep with study-level breakdown by StratumCausalRole." ;
+    effortless-ntwf:keyFields "HypothesisId, HypothesisStatement, ObservedMetric, IsConfirmed, Evidence, WitnessedInLoop" ;
+    effortless-ntwf:userAction "Review PASS/FAIL cards; filter by RegisteredInLoop; drill into studies by causal role and flip mode." ;
+    effortless-ntwf:traditionId "tradition-epidemiology" ;
+    effortless-ntwf:primaryConclusion "conc-18-causal-role-flip-mode" .

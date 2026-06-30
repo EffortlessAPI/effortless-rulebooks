@@ -1444,6 +1444,11 @@ effortless-ntwf:ModelSummaryShape a sh:NodeShape ;
 # Rule for AvgPooledGapStableD - parse error: Unknown function: AVERAGEIFS
 # Rule for EpidemiologyAvgDistortion - parse error: Unknown function: AVERAGEIFS
 # Rule for EducationAvgDistortion - parse error: Unknown function: AVERAGEIFS
+# Rule for ConfounderSignFlipCount - parse error: Unknown function: COUNTIFS
+# Rule for ConfounderLatentOnlyCount - parse error: Unknown function: COUNTIFS
+# Rule for ColliderSelectionCount - parse error: Unknown function: COUNTIFS
+# Rule for ColliderSelectionManifestCount - parse error: Unknown function: COUNTIFS
+# Rule for ColliderSelectionLatentOnlyCount - parse error: Unknown function: COUNTIFS
 # Rule for DiscoveryWitnessNote - parse error: Unknown function: CONCAT
 
 # === Shape with rules for PhaseDiagramSummary ===
@@ -2663,6 +2668,24 @@ effortless-ntwf:TreatmentRankingsShape a sh:NodeShape ;
     ] ;
     sh:rule [
         a sh:SPARQLRule ;
+        rdfs:label "rule_TreatmentRankings_IsLatentOnlyFlip" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:isLatentOnlyFlip ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:TreatmentRankings .
+    OPTIONAL { $this effortless-ntwf:isSignFlip ?is_sign_flip . }
+    OPTIONAL { $this effortless-ntwf:pooledGapCrossesZero ?pooled_gap_crosses_zero . }
+                BIND(IF((REPLACE(COALESCE(STR(?pooled_gap_crosses_zero), ""), "^.*#", "") = ""), "", ((?pooled_gap_crosses_zero = true) && (?is_sign_flip = false))) AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
         rdfs:label "rule_TreatmentRankings_CausalClaimStatus" ;
         sh:prefixes effortless-ntwf: ;
         sh:construct """
@@ -2720,6 +2743,7 @@ effortless-ntwf:TreatmentRankingsShape a sh:NodeShape ;
 # Rule for SweepPooledGapRange - parse error: Unexpected character '[' at position 35
 # Rule for AllocationFragility - parse error: Unknown function: ABS
 # Rule for StudyDomain - parse error: Unexpected character '[' at position 25
+# Rule for StratumCausalRole - parse error: Unexpected character '[' at position 34
 # Rule for ConfirmedCausalRoleCount - parse error: unsupported COUNTIFS criteria: FieldRef
 # Rule for MediatorRiskCount - parse error: aggregation formula must be COUNTIFS(...) or SUMIFS(...)
 # Rule for ContestedStratumCount - parse error: unsupported COUNTIFS criteria: FieldRef
@@ -2837,4 +2861,4 @@ effortless-ntwf:TreatmentsCardinalityShape a sh:NodeShape ;
     sh:targetClass effortless-ntwf:Treatments ;
     sh:property [ sh:path effortless-ntwf:study ; sh:maxCount 1 ] .
 
-# Generated 136 SHACL rules
+# Generated 137 SHACL rules

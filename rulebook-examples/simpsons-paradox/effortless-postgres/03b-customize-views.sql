@@ -92,7 +92,9 @@ SELECT
   m.sweep_pooled_gap_range,
   m.latent_flip_potential,
   m.allocation_fragility,
-  m.study_domain
+  m.study_domain,
+  m.stratum_causal_role,
+  m.is_latent_only_flip
 FROM treatment_rankings t
 JOIN _erb_tr_metrics m ON m.treatment_ranking_id = t.treatment_ranking_id;
 
@@ -159,6 +161,11 @@ SELECT
   calc_model_summary_avg_pooled_gap_stable_d(t.model_summary_id)             AS avg_pooled_gap_stable_d,
   calc_model_summary_epidemiology_avg_distortion(t.model_summary_id)         AS epidemiology_avg_distortion,
   calc_model_summary_education_avg_distortion(t.model_summary_id)            AS education_avg_distortion,
+  calc_model_summary_confounder_sign_flip_count(t.model_summary_id)          AS confounder_sign_flip_count,
+  calc_model_summary_confounder_latent_only_count(t.model_summary_id)        AS confounder_latent_only_count,
+  calc_model_summary_collider_selection_count(t.model_summary_id)            AS collider_selection_count,
+  calc_model_summary_collider_selection_manifest_count(t.model_summary_id)   AS collider_selection_manifest_count,
+  calc_model_summary_collider_selection_latent_only_count(t.model_summary_id) AS collider_selection_latent_only_count,
   calc_model_summary_discovery_witness_note(t.model_summary_id)                AS discovery_witness_note
 FROM model_summary t;
 

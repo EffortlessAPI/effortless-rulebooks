@@ -321,3 +321,25 @@
   color: #6e7681;
   line-height: 1.5;
 }
+
+.discovery-table-wrap {
+  overflow-x: auto;
+}
+
+.discovery-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.discovery-table th,
+.discovery-table td {
+  padding: 8px 10px;
+  text-align: left;
+  border-bottom: 1px solid #21262d;
+}
+
+.discovery-table th {
+  color: #8b949e;
+  font-weight: 600;
+}

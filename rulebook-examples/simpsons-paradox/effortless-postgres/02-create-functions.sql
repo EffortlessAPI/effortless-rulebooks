@@ -810,6 +810,56 @@ RETURNS NUMERIC AS $$
   SELECT ((SELECT COALESCE(AVG((calc_treatment_rankings_allocation_distortion(treatment_ranking_id))::numeric), 0) FROM treatment_rankings WHERE calc_treatment_rankings_study_domain(treatment_ranking_id) = 'education'))::numeric;
 $$ LANGUAGE sql STABLE;
 
+-- calc_model_summary_confounder_sign_flip_count
+-- Field: ModelSummary.ConfounderSignFlipCount
+-- Type: calculated | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_model_summary_confounder_sign_flip_count(p_model_summary_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT ((SELECT COUNT(*) FROM treatment_rankings WHERE calc_treatment_rankings_stratum_causal_role(treatment_ranking_id) = 'confounder' AND calc_treatment_rankings_is_sign_flip(treatment_ranking_id) = TRUE))::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_model_summary_confounder_latent_only_count
+-- Field: ModelSummary.ConfounderLatentOnlyCount
+-- Type: calculated | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_model_summary_confounder_latent_only_count(p_model_summary_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT ((SELECT COUNT(*) FROM treatment_rankings WHERE calc_treatment_rankings_stratum_causal_role(treatment_ranking_id) = 'confounder' AND calc_treatment_rankings_is_latent_only_flip(treatment_ranking_id) = TRUE))::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_model_summary_collider_selection_count
+-- Field: ModelSummary.ColliderSelectionCount
+-- Type: calculated | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_model_summary_collider_selection_count(p_model_summary_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT ((COALESCE(CASE WHEN ((SELECT COUNT(*) FROM treatment_rankings WHERE calc_treatment_rankings_stratum_causal_role(treatment_ranking_id) = 'collider'))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT COUNT(*) FROM treatment_rankings WHERE calc_treatment_rankings_stratum_causal_role(treatment_ranking_id) = 'collider'))::numeric ELSE NULL END, 0) + COALESCE(CASE WHEN ((SELECT COUNT(*) FROM treatment_rankings WHERE calc_treatment_rankings_stratum_causal_role(treatment_ranking_id) = 'selection'))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT COUNT(*) FROM treatment_rankings WHERE calc_treatment_rankings_stratum_causal_role(treatment_ranking_id) = 'selection'))::numeric ELSE NULL END, 0)))::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_model_summary_collider_selection_manifest_count
+-- Field: ModelSummary.ColliderSelectionManifestCount
+-- Type: calculated | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_model_summary_collider_selection_manifest_count(p_model_summary_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT ((COALESCE(CASE WHEN ((SELECT COUNT(*) FROM treatment_rankings WHERE calc_treatment_rankings_stratum_causal_role(treatment_ranking_id) = 'collider'))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT COUNT(*) FROM treatment_rankings WHERE calc_treatment_rankings_stratum_causal_role(treatment_ranking_id) = 'collider'))::numeric ELSE NULL END, 0) + COALESCE(CASE WHEN ((SELECT COUNT(*) FROM treatment_rankings WHERE calc_treatment_rankings_stratum_causal_role(treatment_ranking_id) = 'selection'))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT COUNT(*) FROM treatment_rankings WHERE calc_treatment_rankings_stratum_causal_role(treatment_ranking_id) = 'selection'))::numeric ELSE NULL END, 0)))::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_model_summary_collider_selection_latent_only_count
+-- Field: ModelSummary.ColliderSelectionLatentOnlyCount
+-- Type: calculated | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_model_summary_collider_selection_latent_only_count(p_model_summary_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT ((COALESCE(CASE WHEN ((SELECT COUNT(*) FROM treatment_rankings WHERE calc_treatment_rankings_stratum_causal_role(treatment_ranking_id) = 'collider'))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT COUNT(*) FROM treatment_rankings WHERE calc_treatment_rankings_stratum_causal_role(treatment_ranking_id) = 'collider'))::numeric ELSE NULL END, 0) + COALESCE(CASE WHEN ((SELECT COUNT(*) FROM treatment_rankings WHERE calc_treatment_rankings_stratum_causal_role(treatment_ranking_id) = 'selection'))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT COUNT(*) FROM treatment_rankings WHERE calc_treatment_rankings_stratum_causal_role(treatment_ranking_id) = 'selection'))::numeric ELSE NULL END, 0)))::numeric;
+$$ LANGUAGE sql STABLE;
+
 -- calc_model_summary_discovery_witness_note
 -- Field: ModelSummary.DiscoveryWitnessNote
 -- Type: calculated | DataType: string | Returns: TEXT
@@ -1240,6 +1290,16 @@ RETURNS TEXT AS $$
    =LOOKUP({{Study}}, Studies[StudyId], Studies[Domain])
 */
 NULL::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_treatment_rankings_is_latent_only_flip
+-- Field: TreatmentRankings.IsLatentOnlyFlip
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_treatment_rankings_is_latent_only_flip(p_treatment_ranking_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (CASE WHEN calc_treatment_rankings_pooled_gap_crosses_zero(p_treatment_ranking_id) IS NULL THEN ('')::text ELSE ((calc_treatment_rankings_pooled_gap_crosses_zero(p_treatment_ranking_id) = TRUE AND calc_treatment_rankings_is_sign_flip(p_treatment_ranking_id) = FALSE))::text END)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_treatment_rankings_confirmed_causal_role_count
@@ -2393,11 +2453,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_discovery_findings_observed_metric(p_finding_id TEXT)
 RETURNS TEXT AS $$
-  SELECT /* WARNING: Formula translation failed: Function 'LOOKUP' is not supported yet
-   Original Airtable formula:
-   =IF({{HypothesisId}} = "H-latent-d", CONCAT("fraction=", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[LatentTypeDFraction])), IF({{HypothesisId}} = "H-purity", CONCAT("maxPurity=", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[SignFlipSignalPurityMax])), IF({{HypothesisId}} = "H-small-effect", CONCAT("stable=", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[AvgPooledGapStableD]), " latent=", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[AvgPooledGapLatentD])), IF({{HypothesisId}} = "H-econ-zero", CONCAT("flips=", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[EconomicsSignFlipCount])), IF({{HypothesisId}} = "H-domain-dist", CONCAT("epi=", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[EpidemiologyAvgDistortion]), " edu=", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[EducationAvgDistortion])), "")))))
-*/
-NULL::text;
+  SELECT (IF((SELECT NULLIF(hypothesis_id, '') FROM discovery_findings WHERE finding_id = p_finding_id) = "H-latent-d", CONCAT("fraction=", LOOKUP("simpsons-paradox-v1", ModelSummary(SELECT NULLIF(model_summary_id, '') FROM discovery_findings WHERE finding_id = p_finding_id), ModelSummary(SELECT NULLIF(latent_type_d_fraction, '') FROM discovery_findings WHERE finding_id = p_finding_id))), IF((SELECT NULLIF(hypothesis_id, '') FROM discovery_findings WHERE finding_id = p_finding_id) = "H-purity", CONCAT("maxPurity=", LOOKUP("simpsons-paradox-v1", ModelSummary(SELECT NULLIF(model_summary_id, '') FROM discovery_findings WHERE finding_id = p_finding_id), ModelSummary(SELECT NULLIF(sign_flip_signal_purity_max, '') FROM discovery_findings WHERE finding_id = p_finding_id))), IF((SELECT NULLIF(hypothesis_id, '') FROM discovery_findings WHERE finding_id = p_finding_id) = "H-small-effect", CONCAT("stable=", LOOKUP("simpsons-paradox-v1", ModelSummary(SELECT NULLIF(model_summary_id, '') FROM discovery_findings WHERE finding_id = p_finding_id), ModelSummary(SELECT NULLIF(avg_pooled_gap_stable_d, '') FROM discovery_findings WHERE finding_id = p_finding_id)), " latent=", LOOKUP("simpsons-paradox-v1", ModelSummary(SELECT NULLIF(model_summary_id, '') FROM discovery_findings WHERE finding_id = p_finding_id), ModelSummary(SELECT NULLIF(avg_pooled_gap_latent_d, '') FROM discovery_findings WHERE finding_id = p_finding_id))), IF((SELECT NULLIF(hypothesis_id, '') FROM discovery_findings WHERE finding_id = p_finding_id) = "H-econ-zero", CONCAT("flips=", LOOKUP("simpsons-paradox-v1", ModelSummary(SELECT NULLIF(model_summary_id, '') FROM discovery_findings WHERE finding_id = p_finding_id), ModelSummary(SELECT NULLIF(economics_sign_flip_count, '') FROM discovery_findings WHERE finding_id = p_finding_id))), IF((SELECT NULLIF(hypothesis_id, '') FROM discovery_findings WHERE finding_id = p_finding_id) = "H-domain-dist", CONCAT("epi=", LOOKUP("simpsons-paradox-v1", ModelSummary(SELECT NULLIF(model_summary_id, '') FROM discovery_findings WHERE finding_id = p_finding_id), ModelSummary(SELECT NULLIF(epidemiology_avg_distortion, '') FROM discovery_findings WHERE finding_id = p_finding_id)), " edu=", LOOKUP("simpsons-paradox-v1", ModelSummary(SELECT NULLIF(model_summary_id, '') FROM discovery_findings WHERE finding_id = p_finding_id), ModelSummary(SELECT NULLIF(education_avg_distortion, '') FROM discovery_findings WHERE finding_id = p_finding_id))), IF((SELECT NULLIF(hypothesis_id, '') FROM discovery_findings WHERE finding_id = p_finding_id) = "H-causal-manifest", CONCAT("confLatent=", LOOKUP("simpsons-paradox-v1", ModelSummary(SELECT NULLIF(model_summary_id, '') FROM discovery_findings WHERE finding_id = p_finding_id), ModelSummary(SELECT NULLIF(confounder_latent_only_count, '') FROM discovery_findings WHERE finding_id = p_finding_id)), " confFlip=", LOOKUP("simpsons-paradox-v1", ModelSummary(SELECT NULLIF(model_summary_id, '') FROM discovery_findings WHERE finding_id = p_finding_id), ModelSummary(SELECT NULLIF(confounder_sign_flip_count, '') FROM discovery_findings WHERE finding_id = p_finding_id))), IF((SELECT NULLIF(hypothesis_id, '') FROM discovery_findings WHERE finding_id = p_finding_id) = "H-causal-latent", CONCAT("collManifest=", LOOKUP("simpsons-paradox-v1", ModelSummary(SELECT NULLIF(model_summary_id, '') FROM discovery_findings WHERE finding_id = p_finding_id), ModelSummary(SELECT NULLIF(collider_selection_manifest_count, '') FROM discovery_findings WHERE finding_id = p_finding_id)), " collLatent=", LOOKUP("simpsons-paradox-v1", ModelSummary(SELECT NULLIF(model_summary_id, '') FROM discovery_findings WHERE finding_id = p_finding_id), ModelSummary(SELECT NULLIF(collider_selection_latent_only_count, '') FROM discovery_findings WHERE finding_id = p_finding_id)), " collN=", LOOKUP("simpsons-paradox-v1", ModelSummary(SELECT NULLIF(model_summary_id, '') FROM discovery_findings WHERE finding_id = p_finding_id), ModelSummary(SELECT NULLIF(collider_selection_count, '') FROM discovery_findings WHERE finding_id = p_finding_id))), ""))))))::text;
 $$ LANGUAGE sql STABLE;
 
 -- calc_discovery_findings_is_confirmed
@@ -2407,11 +2463,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_discovery_findings_is_confirmed(p_finding_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT /* WARNING: Formula translation failed: Function 'LOOKUP' is not supported yet
-   Original Airtable formula:
-   =IF({{HypothesisId}} = "H-latent-d", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[LatentTypeDFraction]) > 0.5, IF({{HypothesisId}} = "H-purity", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[SignFlipSignalPurityMax]) < 0.5, IF({{HypothesisId}} = "H-small-effect", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[AvgPooledGapStableD]) > LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[AvgPooledGapLatentD]), IF({{HypothesisId}} = "H-econ-zero", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[EconomicsSignFlipCount]) = 0, IF({{HypothesisId}} = "H-domain-dist", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[EpidemiologyAvgDistortion]) > LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[EducationAvgDistortion]), FALSE())))))
-*/
-NULL::boolean;
+  SELECT (IF((SELECT NULLIF(hypothesis_id, '') FROM discovery_findings WHERE finding_id = p_finding_id) = "H-latent-d", LOOKUP("simpsons-paradox-v1", ModelSummary(SELECT NULLIF(model_summary_id, '') FROM discovery_findings WHERE finding_id = p_finding_id), ModelSummary(SELECT NULLIF(latent_type_d_fraction, '') FROM discovery_findings WHERE finding_id = p_finding_id)) > 0.5, IF((SELECT NULLIF(hypothesis_id, '') FROM discovery_findings WHERE finding_id = p_finding_id) = "H-purity", LOOKUP("simpsons-paradox-v1", ModelSummary(SELECT NULLIF(model_summary_id, '') FROM discovery_findings WHERE finding_id = p_finding_id), ModelSummary(SELECT NULLIF(sign_flip_signal_purity_max, '') FROM discovery_findings WHERE finding_id = p_finding_id)) < 0.5, IF((SELECT NULLIF(hypothesis_id, '') FROM discovery_findings WHERE finding_id = p_finding_id) = "H-small-effect", LOOKUP("simpsons-paradox-v1", ModelSummary(SELECT NULLIF(model_summary_id, '') FROM discovery_findings WHERE finding_id = p_finding_id), ModelSummary(SELECT NULLIF(avg_pooled_gap_stable_d, '') FROM discovery_findings WHERE finding_id = p_finding_id)) > LOOKUP("simpsons-paradox-v1", ModelSummary(SELECT NULLIF(model_summary_id, '') FROM discovery_findings WHERE finding_id = p_finding_id), ModelSummary(SELECT NULLIF(avg_pooled_gap_latent_d, '') FROM discovery_findings WHERE finding_id = p_finding_id)), IF((SELECT NULLIF(hypothesis_id, '') FROM discovery_findings WHERE finding_id = p_finding_id) = "H-econ-zero", LOOKUP("simpsons-paradox-v1", ModelSummary(SELECT NULLIF(model_summary_id, '') FROM discovery_findings WHERE finding_id = p_finding_id), ModelSummary(SELECT NULLIF(economics_sign_flip_count, '') FROM discovery_findings WHERE finding_id = p_finding_id)) = 0, IF((SELECT NULLIF(hypothesis_id, '') FROM discovery_findings WHERE finding_id = p_finding_id) = "H-domain-dist", LOOKUP("simpsons-paradox-v1", ModelSummary(SELECT NULLIF(model_summary_id, '') FROM discovery_findings WHERE finding_id = p_finding_id), ModelSummary(SELECT NULLIF(epidemiology_avg_distortion, '') FROM discovery_findings WHERE finding_id = p_finding_id)) > LOOKUP("simpsons-paradox-v1", ModelSummary(SELECT NULLIF(model_summary_id, '') FROM discovery_findings WHERE finding_id = p_finding_id), ModelSummary(SELECT NULLIF(education_avg_distortion, '') FROM discovery_findings WHERE finding_id = p_finding_id)), IF((SELECT NULLIF(hypothesis_id, '') FROM discovery_findings WHERE finding_id = p_finding_id) = "H-causal-manifest", LOOKUP("simpsons-paradox-v1", ModelSummary(SELECT NULLIF(model_summary_id, '') FROM discovery_findings WHERE finding_id = p_finding_id), ModelSummary(SELECT NULLIF(confounder_latent_only_count, '') FROM discovery_findings WHERE finding_id = p_finding_id)) = 0, IF((SELECT NULLIF(hypothesis_id, '') FROM discovery_findings WHERE finding_id = p_finding_id) = "H-causal-latent", AND(LOOKUP("simpsons-paradox-v1", ModelSummary(SELECT NULLIF(model_summary_id, '') FROM discovery_findings WHERE finding_id = p_finding_id), ModelSummary(SELECT NULLIF(collider_selection_manifest_count, '') FROM discovery_findings WHERE finding_id = p_finding_id)) = 0, LOOKUP("simpsons-paradox-v1", ModelSummary(SELECT NULLIF(model_summary_id, '') FROM discovery_findings WHERE finding_id = p_finding_id), ModelSummary(SELECT NULLIF(collider_selection_latent_only_count, '') FROM discovery_findings WHERE finding_id = p_finding_id)) >= 5), FALSE()))))))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_discovery_findings_evidence
