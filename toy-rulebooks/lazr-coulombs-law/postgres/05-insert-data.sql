@@ -6,3 +6,18 @@
 -- PK strategy: string (FK values are rewritten to match each PK)
 -- ============================================================================
 
+-- ----------------------------------------------------------------------------
+-- Charges: Individual charged particles with position and mass
+-- ----------------------------------------------------------------------------
+INSERT INTO charges (charge_id, label, charge_value, position_x, position_y, position_z, mass)
+VALUES ('charge_1', 'Proton A', 1.602e-19, 0, 0, 0, 1.673e-27) ON CONFLICT (charge_id) DO UPDATE SET label = EXCLUDED.label, charge_value = EXCLUDED.charge_value, position_x = EXCLUDED.position_x, position_y = EXCLUDED.position_y, position_z = EXCLUDED.position_z, mass = EXCLUDED.mass;
+
+INSERT INTO charges (charge_id, label, charge_value, position_x, position_y, position_z, mass)
+VALUES ('charge_2', 'Electron B', -1.602e-19, 1e-10, 0, 0, 9.109e-31) ON CONFLICT (charge_id) DO UPDATE SET label = EXCLUDED.label, charge_value = EXCLUDED.charge_value, position_x = EXCLUDED.position_x, position_y = EXCLUDED.position_y, position_z = EXCLUDED.position_z, mass = EXCLUDED.mass;
+
+-- ----------------------------------------------------------------------------
+-- ChargeInteractions: Pairs of charges with computed electrostatic force
+-- ----------------------------------------------------------------------------
+INSERT INTO charge_interactions (interaction_id, charge1_id, charge2_id)
+VALUES ('interaction_1_2', 'charge_1', 'charge_2') ON CONFLICT (interaction_id) DO UPDATE SET charge1_id = EXCLUDED.charge1_id, charge2_id = EXCLUDED.charge2_id;
+

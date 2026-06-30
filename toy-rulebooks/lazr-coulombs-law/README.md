@@ -1,6 +1,65 @@
-A natural "hello world" from LaSR's own results is Coulomb's law (Equation #10 in the Feynman benchmark), which the authors use as their walked-through qualitative case study.
-In three sentences: LaSR is given a dataset of electrostatic-force measurements and searches for a compact equation that fits, using its LLM-guided concept library to bias the search. Both LaSR and baseline PySR recover a high-performing expression, but LaSR's reduces to the ground-truth form in about four manual simplification steps versus roughly ten for PySR's unwieldier version, and it uses fewer constants (making it less prone to optimization error). Notably, smaller LLMs tended to yield simpler discovered equations in this case.
-What it formalizes: the electrostatic force between two point charges, F=q1q24πε0r2F = \frac{q_1 q_2}{4\pi\varepsilon_0 r^2}
-F=4πε0​r2q1​q2​​ — capturing two reusable concepts that the concept library makes explicit, namely the inverse-square power-law relationship between force and distance (F∝1/r2F \propto 1/r^2
-F∝1/r2) and the commutative product of the two charges (q1q2=q2q1q_1 q_2 = q_2 q_1
-q1​q2​=q2​q1​, so charge order doesn't matter).
+# Lazr Coulomb's Law
+
+An Effortless Rulebook project modeling **Coulomb's Law** of electrostatic force.
+
+## About
+
+This project demonstrates ERB (Effortless Rulebook) applied to physics: the fundamental law describing the electrostatic force between charged particles.
+
+**Coulomb's Law:** F = k·q₁·q₂/r²
+
+Where:
+- F = electrostatic force (Newtons)
+- k = Coulomb's constant (8.99 × 10⁹ N·m²/C²)
+- q₁, q₂ = charges (Coulombs)
+- r = distance between charges (meters)
+
+## Tables
+
+- **Charges** — individual charged particles with position and magnitude
+- **ChargeInteractions** — pairs of charges with computed force, distance, and interaction type (attractive/repulsive)
+
+## Getting Started
+
+The rulebook and Postgres database are already set up. Verify the schema:
+
+```bash
+psql -d lazr_coulombs_law -c "\d vw_*"
+```
+
+Query interactions:
+
+```bash
+psql -d lazr_coulombs_law -c "SELECT * FROM vw_chargeinteractions LIMIT 1"
+```
+
+To rebuild the database after editing the rulebook:
+
+```bash
+effortless build
+```
+
+This will regenerate the SQL under `postgres/` and reinitialize the database via `init-db.sh`.
+
+## Project Structure
+
+```
+lazr-coulombs-law/
+├── CLAUDE.md                          # ERB project conventions
+├── README.md                           # This file
+├── effortless.json                    # Build pipeline config
+├── effortless-rulebook/
+│   └── effortless-rulebook.json      # Single source of truth
+└── postgres/
+    ├── 00-bootstrap.sql
+    ├── 01-drop-and-create-tables.sql
+    ├── 02-create-functions.sql
+    ├── 03-create-views.sql
+    ├── 04-create-policies.sql
+    ├── 05-insert-data.sql
+    └── init-db.sh                     # One-command DB setup
+```
+
+## Database Name
+
+`lazr_coulombs_law` — set via `DATABASE_URL` env var or `postgres/init-db.sh` default.

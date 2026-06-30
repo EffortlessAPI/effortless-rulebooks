@@ -18,6 +18,34 @@ SET check_function_bodies = off;
 -- These functions perform lookups via foreign key relationships
 -- ============================================================================
 
+-- calc_charge_interactions_is_repulsive
+-- Field: ChargeInteractions.IsRepulsive
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_charge_interactions_is_repulsive(p_interaction_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT /* WARNING: Formula translation failed: Function 'VLOOKUP' is not supported yet
+   Original Airtable formula:
+   =VLOOKUP({{Charge1Id}}, Charges!{{ChargeId}}, Charges!{{ChargeValue}}) * VLOOKUP({{Charge2Id}}, Charges!{{ChargeId}}, Charges!{{ChargeValue}}) > 0
+*/
+NULL::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_charge_interactions_is_attractive
+-- Field: ChargeInteractions.IsAttractive
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_charge_interactions_is_attractive(p_interaction_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT /* WARNING: Formula translation failed: Function 'VLOOKUP' is not supported yet
+   Original Airtable formula:
+   =VLOOKUP({{Charge1Id}}, Charges!{{ChargeId}}, Charges!{{ChargeValue}}) * VLOOKUP({{Charge2Id}}, Charges!{{ChargeId}}, Charges!{{ChargeValue}}) < 0
+*/
+NULL::boolean;
+$$ LANGUAGE sql STABLE;
+
 -- ============================================================================
 -- MANY-SIDE RELATIONSHIP FUNCTIONS
 -- These functions aggregate child records for many-side relationships

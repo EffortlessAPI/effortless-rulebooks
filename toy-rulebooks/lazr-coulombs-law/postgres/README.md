@@ -2,20 +2,21 @@
 
 **Schema:** `public`
 **Database:** `demo`
-**Timestamp:** 2026-06-30 15:42:30 UTC
+**Timestamp:** 2026-06-30 15:44:25 UTC
 
 ## Parsing Rulebook
 
-Found **1** tables in rulebook
+Found **2** tables in rulebook
 
 
-  - **schema** (1 fields, 0 records)
+  - **Charges** (7 fields, 2 records)
+  - **ChargeInteractions** (5 fields, 1 records)
 
-Generated **1** table definitions with **1** raw fields (mode=check-add)
-Generated **0** calculation functions
-Generated **1** views
-Enabled RLS on **1** tables
-Generated insert statements for **0** records
+Generated **2** table definitions with **10** raw fields (mode=check-add)
+Generated **2** calculation functions
+Generated **2** views
+Enabled RLS on **2** tables
+Generated insert statements for **3** records
 ## Script Generation Complete
 
 Generated files:

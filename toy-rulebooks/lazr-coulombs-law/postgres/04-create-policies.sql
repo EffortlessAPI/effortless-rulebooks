@@ -7,7 +7,8 @@
 
 -- Enable RLS on all tables
 
-ALTER TABLE "schema" ENABLE ROW LEVEL SECURITY;
+ALTER TABLE charges ENABLE ROW LEVEL SECURITY;
+ALTER TABLE charge_interactions ENABLE ROW LEVEL SECURITY;
 
 -- TODO: Add specific RLS policies based on your security requirements
 -- Example:
