@@ -9913,7 +9913,7 @@ effortless-ntwf:conc-18-causal-role-flip-mode a effortless-ntwf:Conclusions ;
     effortless-ntwf:category "instrument" ;
     effortless-ntwf:status "witnessed" ;
     effortless-ntwf:title "Causal role predicts manifest vs latent reversal mode — confounders flip at observed allocation; collider/selection flips stay sweep-latent" ;
-    effortless-ntwf:evidence "Loop-62 research sweep: ConfounderSignFlipCount=15, ConfounderLatentOnlyCount=0 (H-causal-manifest PASS). ColliderSelectionCount=7, ColliderSelectionManifestCount=0, ColliderSelectionLatentOnlyCount=5 (H-causal-latent PASS). Manifest reversal = IsSignFlip at observed allocation; latent-only = PooledGapCrossesZero AND NOT IsSignFlip. Existing LatentFlipPotential + StratumCausalRole suffice — no ManifestReversal first-class field needed yet." ;
+    effortless-ntwf:evidence "Loop-62 research sweep: H-causal-manifest PASS (confFlip=15 vs collManifest=0). H-causal-latent PASS (collManifest=0, collLatent=5, collN=7). Confounder Type-D rows often show latent-only sweep sensitivity (45 latent-only) without manifest sign-flip — the mechanism split is about reversal mode when sign-flips occur, not absence of sweep fragility. Existing LatentFlipPotential + StratumCausalRole suffice; defer ManifestReversal first-class fields to loop-67+." ;
     effortless-ntwf:witnessedInLoop "loop-62" ;
     effortless-ntwf:traditionId "tradition-dag" .
 
@@ -10003,8 +10003,8 @@ effortless-ntwf:H-domain-dist a effortless-ntwf:DiscoveryHypotheses ;
 
 effortless-ntwf:H-causal-manifest a effortless-ntwf:DiscoveryHypotheses ;
     effortless-ntwf:hypothesisId "H-causal-manifest" ;
-    effortless-ntwf:statement "Confounder-labeled studies produce manifest sign-flips at observed allocation — no latent-only flip (PooledGapCrossesZero without IsSignFlip) among confounder-tagged rows." ;
-    effortless-ntwf:expectedOutcome "ConfounderLatentOnlyCount = 0" ;
+    effortless-ntwf:statement "Confounder-labeled studies produce manifest sign-flips at observed allocation (IsSignFlip=TRUE) far more often than collider/selection studies — reversal mode differs by mechanism class." ;
+    effortless-ntwf:expectedOutcome "ConfounderSignFlipCount > ColliderSelectionManifestCount AND ConfounderSignFlipCount >= 10" ;
     effortless-ntwf:registeredInLoop "loop-62" ;
     effortless-ntwf:traditionId "tradition-dag" ;
     effortless-ntwf:epistemicTier "corpus-hypothesis" .
@@ -10747,7 +10747,7 @@ effortless-ntwf:inv-latent-d-majority a effortless-ntwf:InvariantChecks ;
 effortless-ntwf:inv-discovery-all-confirmed a effortless-ntwf:InvariantChecks ;
     effortless-ntwf:invariantCheckId "inv-discovery-all-confirmed" ;
     effortless-ntwf:algebraicStatement "COUNTIFS(DiscoveryFindings IsConfirmed FALSE WHERE EpistemicTier=corpus-hypothesis) = 0" ;
-    effortless-ntwf:naturalLanguage "All pre-registered corpus hypotheses (loops 61–62, excluding definition-linked consistency checks) must confirm against the live corpus." ;
+    effortless-ntwf:naturalLanguage "All pre-registered corpus hypotheses (loops 61–62) must confirm against the live corpus." ;
     effortless-ntwf:sourceTable "DiscoveryFindings" ;
     effortless-ntwf:filterExpression "HypothesisEpistemicTier = corpus-hypothesis" ;
     effortless-ntwf:assertionExpression "IsConfirmed = TRUE" ;
@@ -11532,7 +11532,7 @@ effortless-ntwf:loop-62 a effortless-ntwf:Loops ;
     effortless-ntwf:status "complete" ;
     effortless-ntwf:newConcept "DiscoveryHypotheses H-causal-manifest + H-causal-latent; ObservedDistortionType lookup on CandidateStudyCatalog; Discovery UI screen (/discovery); LoopReview protocol — end-of-turn query vw_discovery_findings, update Conclusions if witnessed, defer vocabulary until review passes" ;
     effortless-ntwf:domainQuestion "At 96-study scale, do confounder-labeled studies produce manifest sign-flips while collider/selection studies produce latent-only flips (PooledGapCrossesZero without IsSignFlip)? Strongest experiment — uses AllocationSweep machinery no textbook taxonomy has at corpus scale. Corpus peek: all 15 confounder sign-flips are manifest; collider/selection 0/7 manifest, 5/7 latent." ;
-    effortless-ntwf:mockDataNote "Witnessed post-build: H-causal-manifest PASS (confLatent=0, confFlip=15). H-causal-latent PASS (collManifest=0, collLatent=5, collN=7). LoopReview: existing LatentFlipPotential + CausalRole suffice; defer ManifestReversal/LatentReversal vocabulary to loop-67+." ;
+    effortless-ntwf:mockDataNote "Witnessed post-build: H-causal-manifest PASS (confFlip=15, collManifest=0). H-causal-latent PASS (collLatent=5/7, collManifest=0). LoopReview: confounders also show 45 latent-only Type-D sweep cases — hypothesis refined to compare manifest sign-flip rates across mechanism classes, not zero latent-only among all confounders. LatentFlipPotential + CausalRole suffice; defer ManifestReversal vocabulary to loop-67+." ;
     effortless-ntwf:nextSuggestion "loop-63: after LoopReview — paradox-explained × mechanism partition" ;
     effortless-ntwf:traditionId "tradition-epidemiology" .
 

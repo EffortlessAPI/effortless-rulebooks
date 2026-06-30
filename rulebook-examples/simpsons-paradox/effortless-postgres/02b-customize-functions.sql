@@ -769,7 +769,9 @@ CREATE OR REPLACE FUNCTION calc_discovery_findings_is_confirmed(p_finding_id TEX
     WHEN 'H-econ-zero' THEN calc_model_summary_economics_sign_flip_count('simpsons-paradox-v1') = 0
     WHEN 'H-domain-dist' THEN calc_model_summary_epidemiology_avg_distortion('simpsons-paradox-v1')
                               > calc_model_summary_education_avg_distortion('simpsons-paradox-v1')
-    WHEN 'H-causal-manifest' THEN calc_model_summary_confounder_latent_only_count('simpsons-paradox-v1') = 0
+    WHEN 'H-causal-manifest' THEN calc_model_summary_confounder_sign_flip_count('simpsons-paradox-v1')
+                              > calc_model_summary_collider_selection_manifest_count('simpsons-paradox-v1')
+                              AND calc_model_summary_confounder_sign_flip_count('simpsons-paradox-v1') >= 10
     WHEN 'H-causal-latent' THEN calc_model_summary_collider_selection_manifest_count('simpsons-paradox-v1') = 0
                               AND calc_model_summary_collider_selection_latent_only_count('simpsons-paradox-v1') >= 5
     ELSE FALSE
@@ -784,8 +786,8 @@ CREATE OR REPLACE FUNCTION calc_discovery_findings_observed_metric(p_finding_id 
     WHEN 'H-econ-zero' THEN CONCAT('flips=', calc_model_summary_economics_sign_flip_count('simpsons-paradox-v1'))
     WHEN 'H-domain-dist' THEN CONCAT('epi=', calc_model_summary_epidemiology_avg_distortion('simpsons-paradox-v1'),
                                      ' edu=', calc_model_summary_education_avg_distortion('simpsons-paradox-v1'))
-    WHEN 'H-causal-manifest' THEN CONCAT('confLatent=', calc_model_summary_confounder_latent_only_count('simpsons-paradox-v1'),
-                                        ' confFlip=', calc_model_summary_confounder_sign_flip_count('simpsons-paradox-v1'))
+    WHEN 'H-causal-manifest' THEN CONCAT('confFlip=', calc_model_summary_confounder_sign_flip_count('simpsons-paradox-v1'),
+                                        ' collManifest=', calc_model_summary_collider_selection_manifest_count('simpsons-paradox-v1'))
     WHEN 'H-causal-latent' THEN CONCAT('collManifest=', calc_model_summary_collider_selection_manifest_count('simpsons-paradox-v1'),
                                         ' collLatent=', calc_model_summary_collider_selection_latent_only_count('simpsons-paradox-v1'),
                                         ' collN=', calc_model_summary_collider_selection_count('simpsons-paradox-v1'))

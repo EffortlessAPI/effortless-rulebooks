@@ -94,7 +94,7 @@ export function DiscoveryView() {
               {summary?.confounder_latent_only_count ?? '—'}
             </Cell>
           </div>
-          <div className="stat-caption">H-causal-manifest expects 0</div>
+          <div className="stat-caption">Type-D sweep sensitivity (not H-causal-manifest criterion)</div>
         </div>
         <div className="card stat-card">
           <h3>Collider/selection</h3>

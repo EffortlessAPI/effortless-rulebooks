@@ -4,6 +4,10 @@ A **witnessed dependency graph** that turns Simpson's paradox from a textbook cu
 
 **Start at `/conclusions`.** Formal epistemic claims live in the rulebook `Conclusions` table — tiered by claim type (theorem · instrument · corpus snapshot). Loop-61 `DiscoveryHypotheses` split into **consistency checks** (definition-linked, e.g. H-purity) vs **corpus hypotheses** (contingent, provisional). SSoT is the rulebook JSON; the explorer reads `vw_*` views only. Run `./start.sh` → [Conclusions & Findings](http://localhost:5173/conclusions).
 
+![Conclusions & Findings — tiered epistemic claims read straight from vw_* views](docs/current-ui/conclusions-findings.png)
+
+*Conclusions & Findings — formal claims grouped by epistemic tier (proved · instrument · corpus snapshot), with loop-61 discovery hypotheses and scope boundaries. Every number on screen is a column from a Postgres view; the UI never re-derives formulas.*
+
 [`simpsons-paradox-summary.pdf`](simpsons-paradox-summary.pdf) is a static export of the same tiered state (regenerated on `./init-db.sh`). For framing caveats — geometric vs causal, deductive vs empirical, convenience-sample limits — see [What this is not](#what-this-is-not) below.
 
 ---
@@ -143,6 +147,8 @@ Run `./start.sh` to boot the backend (`:3001`) and Vite frontend (`:5173`).
 
 | Route | View |
 |---|---|
+| `/conclusions` | **Conclusions & Findings** — tiered epistemic claims, discovery PASS/FAIL, scope boundaries |
+| `/discovery` | **Discovery Research** — pre-registered loop-61/62 hypotheses tested against live views |
 | `/overview` | **Study Overview** — allocation-distortion plane; each dot is a study, colored by type |
 | `/stratum` | **Stratum Breakdown** — per-stratum rates vs pooled rates for any selected study |
 | `/weights` | **Allocation Weights** — case distribution across strata vs stratum success rate |
@@ -153,7 +159,21 @@ Run `./start.sh` to boot the backend (`:3001`) and Vite frontend (`:5173`).
 | `/catalog` | **Import Backlog** — candidate catalog (import session complete; backlog drained) |
 | `/instrument` | **Instrument Dashboard** — `InstrumentSpec` adapter contract and screening coordinates |
 
-The sandbox presets load kidney-1986, Berkeley, and the neutral control.
+![Study Overview — 96 studies on the allocation-distortion plane, colored by distortion type](docs/current-ui/study-overview.png)
+
+*Study Overview — headline rollup (“18 of 96 pooled conclusions would mislead you”) plus the scatter of all studies on the allocation-distortion plane. Severity tracks type A/B/C/D; click any dot to drill into stratum breakdown.*
+
+![Discovery Research — loop-62 causal-role hypotheses with PASS/FAIL against live vw_* metrics](docs/current-ui/discovery-research.png)
+
+*Discovery Research — pre-registered `DiscoveryHypotheses` scored against computed columns (manifest vs latent sign-flips by causal role). Consistency checks and corpus hypotheses are kept separate, same as in the PDF export.*
+
+![Model Summary — distortion-type distribution and continuous paradox-strength measures across the full corpus](docs/current-ui/model-summary.png)
+
+*Model Summary — one-screen rollup: sign-flip count, type A/B/C/D distribution, average paradox strength, and signal-purity gap between reversal and non-reversal studies.*
+
+![Interactive Sandbox — live slider edits against kidney-1986 with derived rates from Postgres views](docs/current-ui/interactive-sandbox.png)
+
+*Interactive Sandbox — drag successes/cases per stratum and treatment; derived rates, gaps, and distortion type update through the same `vw_*` view chain (rollback transaction — nothing persists). Presets load kidney-1986, Berkeley, and the balanced synthetic control.*
 
 ## Corpus summary (PDF)
 
