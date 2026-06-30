@@ -10,6 +10,8 @@ import {
   buildPurityChart,
   buildRecoveryChart,
   buildScreeningChart,
+  type RangeMode,
+  type ScaleMode,
 } from './overviewCharts';
 import './Overview.css';
 
@@ -71,6 +73,9 @@ export function OverviewView() {
   const [tierFilter, setTierFilter] = useState<string | null>(null);
   const [search, setSearch] = useState('');
   const [expanded, setExpanded] = useState<string | null>(null);
+  const [planeRange, setPlaneRange] = useState<RangeMode>('focused');
+  const [planeScale, setPlaneScale] = useState<ScaleMode>('linear');
+  const [clippedCount, setClippedCount] = useState(0);
 
   const canonicalRef = useRef<HTMLCanvasElement>(null);
   const finding1Ref = useRef<HTMLCanvasElement>(null);
@@ -112,17 +117,26 @@ export function OverviewView() {
     });
   }, [studies, rankings, typeFilter, tierFilter, search]);
 
+  const planeOptions = useMemo(
+    () => ({ rangeMode: planeRange, scaleMode: planeScale }),
+    [planeRange, planeScale],
+  );
+
   useEffect(() => {
     if (!rankings.length) return;
     chartsRef.current.forEach(c => c?.destroy());
     const built: Chart[] = [];
-    if (canonicalRef.current) built.push(buildCanonicalPlaneChart(canonicalRef.current, rankings, studyById));
+    if (canonicalRef.current) {
+      const { chart, meta } = buildCanonicalPlaneChart(canonicalRef.current, rankings, studyById, planeOptions);
+      built.push(chart);
+      setClippedCount(meta.clippedCount);
+    }
     if (finding1Ref.current) built.push(buildRecoveryChart(finding1Ref.current, rankings, studyById));
-    if (finding2Ref.current) built.push(buildScreeningChart(finding2Ref.current, rankings, studyById));
-    if (finding3Ref.current) built.push(buildPurityChart(finding3Ref.current, rankings, studyById));
+    if (finding2Ref.current) built.push(buildScreeningChart(finding2Ref.current, rankings, studyById, planeOptions));
+    if (finding3Ref.current) built.push(buildPurityChart(finding3Ref.current, rankings, studyById, planeOptions));
     chartsRef.current = built;
     return () => { chartsRef.current.forEach(c => c?.destroy()); chartsRef.current = []; };
-  }, [rankings, studyById]);
+  }, [rankings, studyById, planeOptions]);
 
   if (loading) return <div className="loading">Loading…</div>;
 
@@ -190,6 +204,52 @@ export function OverviewView() {
           Sign-flip studies rise from the origin toward the upper-right — severity tracks bias.
           Color = distortion type.
         </p>
+        <div className="chart-controls">
+          <div className="chart-control-group">
+            <span className="chart-control-label">Zoom</span>
+            <div className="chart-segmented" role="group" aria-label="Chart zoom">
+              <button
+                type="button"
+                className={planeRange === 'focused' ? 'active' : ''}
+                onClick={() => setPlaneRange('focused')}
+              >
+                Focused
+              </button>
+              <button
+                type="button"
+                className={planeRange === 'full' ? 'active' : ''}
+                onClick={() => setPlaneRange('full')}
+              >
+                Full range
+              </button>
+            </div>
+          </div>
+          <div className="chart-control-group">
+            <span className="chart-control-label">Scale</span>
+            <div className="chart-segmented" role="group" aria-label="Chart scale">
+              <button
+                type="button"
+                className={planeScale === 'linear' ? 'active' : ''}
+                onClick={() => setPlaneScale('linear')}
+              >
+                Linear
+              </button>
+              <button
+                type="button"
+                className={planeScale === 'symlog' ? 'active' : ''}
+                onClick={() => setPlaneScale('symlog')}
+              >
+                Log
+              </button>
+            </div>
+          </div>
+          {planeRange === 'focused' && clippedCount > 0 && (
+            <p className="chart-control-hint">
+              {clippedCount} {clippedCount === 1 ? 'study sits' : 'studies sit'} beyond this view
+              (shown as diamonds at the edge). Switch to Full range to see them.
+            </p>
+          )}
+        </div>
         <div className="chart-canvas-wrap chart-canvas-wrap-hero">
           <canvas ref={canonicalRef} />
         </div>

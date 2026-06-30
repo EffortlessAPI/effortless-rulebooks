@@ -194,6 +194,66 @@
   padding: 4px 8px 0;
 }
 
+.chart-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 20px;
+  margin: 12px 0 4px;
+}
+
+.chart-control-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.chart-control-label {
+  color: #6e7681;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.chart-segmented {
+  display: inline-flex;
+  background: #21262d;
+  border: 1px solid #30363d;
+  border-radius: 8px;
+  padding: 2px;
+  gap: 2px;
+}
+
+.chart-segmented button {
+  background: transparent;
+  border: none;
+  border-radius: 6px;
+  color: #8b949e;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 5px 12px;
+  transition: background 0.12s, color 0.12s;
+}
+
+.chart-segmented button:hover {
+  color: #e6edf3;
+}
+
+.chart-segmented button.active {
+  background: #30363d;
+  color: #e6edf3;
+}
+
+.chart-control-hint {
+  color: #8b949e;
+  font-size: 12px;
+  line-height: 1.45;
+  margin: 0;
+  flex: 1 1 220px;
+}
+
 .chart-canvas-wrap-hero {
   height: 420px;
 }
