@@ -1,0 +1,6 @@
+A natural "hello world" from LaSR's own results is Coulomb's law (Equation #10 in the Feynman benchmark), which the authors use as their walked-through qualitative case study.
+In three sentences: LaSR is given a dataset of electrostatic-force measurements and searches for a compact equation that fits, using its LLM-guided concept library to bias the search. Both LaSR and baseline PySR recover a high-performing expression, but LaSR's reduces to the ground-truth form in about four manual simplification steps versus roughly ten for PySR's unwieldier version, and it uses fewer constants (making it less prone to optimization error). Notably, smaller LLMs tended to yield simpler discovered equations in this case.
+What it formalizes: the electrostatic force between two point charges, F=q1q24πε0r2F = \frac{q_1 q_2}{4\pi\varepsilon_0 r^2}
+F=4πε0​r2q1​q2​​ — capturing two reusable concepts that the concept library makes explicit, namely the inverse-square power-law relationship between force and distance (F∝1/r2F \propto 1/r^2
+F∝1/r2) and the commutative product of the two charges (q1q2=q2q1q_1 q_2 = q_2 q_1
+q1​q2​=q2​q1​, so charge order doesn't matter).

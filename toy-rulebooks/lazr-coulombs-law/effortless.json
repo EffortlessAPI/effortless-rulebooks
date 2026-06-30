@@ -1,0 +1,24 @@
+{
+  "ShowHidden": false,
+  "ShowAllFiles": false,
+  "CurrentPath": null,
+  "SSoTmeProjectFiles": null,
+  "SSoTmeProjectId": "57fd3565-b68e-4b46-abfd-25e816f14df2",
+  "Name": "lazr-coulombs-law",
+  "ProjectSettings": [
+    {
+      "Name": "project-name",
+      "Value": "lazr-coulombs-law"
+    }
+  ],
+  "ProjectTranspilers": [
+    {
+      "IsSSoTTranspiler": false,
+      "Name": "rulebooktopostgres",
+      "RelativePath": "/postgres",
+      "CommandLine": "rulebook-to-postgres -i ../effortless-rulebook/effortless-rulebook.json",
+      "IsDisabled": false,
+      "PinnedVersion": "v2026.06.20.1746"
+    }
+  ]
+}

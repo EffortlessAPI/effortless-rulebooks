@@ -1,0 +1,197 @@
+{
+  "schema": {
+    "__meta__": {
+      "schema": [
+        {
+          "Name": "MetaKey",
+          "Type": "text",
+          "IsKeyField": true,
+          "Description": "Unique metadata key"
+        },
+        {
+          "Name": "Name",
+          "Type": "text",
+          "IsPrimaryField": true,
+          "Formula": "=[MetaKey]",
+          "Description": "Display name (mirrors MetaKey)"
+        },
+        {
+          "Name": "ValueType",
+          "Type": "text",
+          "Description": "Type of value: 'string', 'object', or 'array'"
+        },
+        {
+          "Name": "StringValue",
+          "Type": "text",
+          "Description": "String value (nullable)"
+        },
+        {
+          "Name": "JsonValue",
+          "Type": "text",
+          "Description": "JSON value as encoded string (nullable)"
+        }
+      ],
+      "data": [
+        {
+          "MetaKey": "project_name",
+          "ValueType": "string",
+          "StringValue": "Lazr Coulomb's Law"
+        },
+        {
+          "MetaKey": "project_description",
+          "ValueType": "string",
+          "StringValue": "Physics simulation: Coulomb's Law of electrostatic force between charged particles"
+        },
+        {
+          "MetaKey": "domain",
+          "ValueType": "string",
+          "StringValue": "physics"
+        }
+      ]
+    },
+    "Charges": {
+      "schema": [
+        {
+          "Name": "ChargeId",
+          "Type": "text",
+          "IsKeyField": true,
+          "Description": "Unique identifier for the charge"
+        },
+        {
+          "Name": "Label",
+          "Type": "text",
+          "IsPrimaryField": true,
+          "Description": "Human-readable label (e.g., 'Proton A', 'Electron B')"
+        },
+        {
+          "Name": "ChargeValue",
+          "Type": "number",
+          "Description": "Charge in Coulombs (e.g., 1.6e-19 for elementary charge)"
+        },
+        {
+          "Name": "PositionX",
+          "Type": "number",
+          "Description": "X coordinate in meters"
+        },
+        {
+          "Name": "PositionY",
+          "Type": "number",
+          "Description": "Y coordinate in meters"
+        },
+        {
+          "Name": "PositionZ",
+          "Type": "number",
+          "Description": "Z coordinate in meters"
+        },
+        {
+          "Name": "Mass",
+          "Type": "number",
+          "Description": "Mass in kilograms (optional, for dynamics simulation)"
+        }
+      ],
+      "data": [
+        {
+          "ChargeId": "charge_1",
+          "Label": "Proton A",
+          "ChargeValue": 1.602e-19,
+          "PositionX": 0,
+          "PositionY": 0,
+          "PositionZ": 0,
+          "Mass": 1.673e-27
+        },
+        {
+          "ChargeId": "charge_2",
+          "Label": "Electron B",
+          "ChargeValue": -1.602e-19,
+          "PositionX": 1e-10,
+          "PositionY": 0,
+          "PositionZ": 0,
+          "Mass": 9.109e-31
+        }
+      ]
+    },
+    "ChargeInteractions": {
+      "schema": [
+        {
+          "Name": "InteractionId",
+          "Type": "text",
+          "IsKeyField": true,
+          "Description": "Unique identifier for this interaction"
+        },
+        {
+          "Name": "Charge1Id",
+          "Type": "text",
+          "ForeignKeyTarget": "Charges.ChargeId",
+          "Description": "First charge involved in interaction"
+        },
+        {
+          "Name": "Charge2Id",
+          "Type": "text",
+          "ForeignKeyTarget": "Charges.ChargeId",
+          "Description": "Second charge involved in interaction"
+        },
+        {
+          "Name": "Charge1Label",
+          "Type": "text",
+          "Formula": "=INDEX(Charges,Charge1Id).Label",
+          "Description": "Display label of first charge"
+        },
+        {
+          "Name": "Charge2Label",
+          "Type": "text",
+          "Formula": "=INDEX(Charges,Charge2Id).Label",
+          "Description": "Display label of second charge"
+        },
+        {
+          "Name": "Distance",
+          "Type": "number",
+          "Formula": "=SQRT(POWER(INDEX(Charges,Charge2Id).PositionX - INDEX(Charges,Charge1Id).PositionX,2) + POWER(INDEX(Charges,Charge2Id).PositionY - INDEX(Charges,Charge1Id).PositionY,2) + POWER(INDEX(Charges,Charge2Id).PositionZ - INDEX(Charges,Charge1Id).PositionZ,2))",
+          "Description": "Distance between charges in meters"
+        },
+        {
+          "Name": "Charge1Value",
+          "Type": "number",
+          "Formula": "=INDEX(Charges,Charge1Id).ChargeValue",
+          "Description": "Value of first charge in Coulombs"
+        },
+        {
+          "Name": "Charge2Value",
+          "Type": "number",
+          "Formula": "=INDEX(Charges,Charge2Id).ChargeValue",
+          "Description": "Value of second charge in Coulombs"
+        },
+        {
+          "Name": "Force",
+          "Type": "number",
+          "Formula": "=IF(Distance=0,0,8.99e9 * Charge1Value * Charge2Value / POWER(Distance,2))",
+          "Description": "Electrostatic force in Newtons (Coulomb's Law: F = k*q1*q2/r²)"
+        },
+        {
+          "Name": "ForceType",
+          "Type": "text",
+          "Formula": "=IF(Force > 0,\"Repulsive\",IF(Force < 0,\"Attractive\",\"None\"))",
+          "Description": "Whether force is repulsive or attractive"
+        },
+        {
+          "Name": "IsRepulsive",
+          "Type": "boolean",
+          "Formula": "=Force > 0",
+          "Description": "True if charges repel (same sign)"
+        },
+        {
+          "Name": "IsAttractive",
+          "Type": "boolean",
+          "Formula": "=Force < 0",
+          "Description": "True if charges attract (opposite sign)"
+        }
+      ],
+      "data": [
+        {
+          "InteractionId": "interaction_1_2",
+          "Charge1Id": "charge_1",
+          "Charge2Id": "charge_2"
+        }
+      ]
+    }
+  }
+}
