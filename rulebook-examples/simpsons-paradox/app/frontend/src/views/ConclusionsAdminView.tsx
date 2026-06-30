@@ -1,5 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { api } from '../api';
+import { ViewDagScan } from '../components/DagValue';
+import { Cell } from '../components/dag-display';
 import type {
   Conclusion,
   DiscoveryFinding,
@@ -47,14 +49,14 @@ function DiscoveryCard({
         <span className="discovery-id">{h.hypothesis_id}</span>
         <span className="discovery-tier">{tierLabel}</span>
         <span className={`badge ${pass ? 'badge-type-c' : 'badge-reversal'}`}>
-          {pass ? 'PASS' : 'FAIL'}
+          <Cell table="DiscoveryFindings" col="is_confirmed">{pass ? 'PASS' : 'FAIL'}</Cell>
         </span>
       </div>
       <p className="discovery-statement">{h.statement}</p>
       <div className="discovery-meta">
         <span>Expected: {h.expected_outcome}</span>
         {f?.observed_metric && (
-          <span>Observed: {formatObservedMetric(f.observed_metric)}</span>
+          <span>Observed: <Cell table="DiscoveryFindings" col="observed_metric">{formatObservedMetric(f.observed_metric)}</Cell></span>
         )}
       </div>
     </div>
@@ -183,12 +185,15 @@ export function ConclusionsAdminView() {
         <div className="card stat-card">
           <h3>Latent Type-D</h3>
           <div className="stat-big">
-            {summary?.latent_type_d_count != null
-              ? `${Math.round(Number(summary.latent_type_d_fraction) * 1000) / 10}%`
-              : '—'}
+            <Cell table="ModelSummary" col="latent_type_d_fraction">
+              {summary?.latent_type_d_count != null
+                ? `${Math.round(Number(summary.latent_type_d_fraction) * 1000) / 10}%`
+                : '—'}
+            </Cell>
           </div>
           <div className="stat-caption">
-            {summary?.latent_type_d_count ?? '—'} / {summary?.type_d_count ?? '—'} under sweep
+            <Cell table="ModelSummary" col="latent_type_d_count">{summary?.latent_type_d_count ?? '—'}</Cell> /{' '}
+            <Cell table="ModelSummary" col="type_d_count">{summary?.type_d_count ?? '—'}</Cell> under sweep
             contract
           </div>
         </div>
@@ -256,12 +261,14 @@ export function ConclusionsAdminView() {
                   onClick={() => setSelectedId(c.conclusion_id)}
                 >
                   <span className={`badge ${STATUS_COLORS[c.status] ?? 'badge-neutral'}`}>
-                    {c.status}
+                    <Cell table="Conclusions" col="status">{c.status}</Cell>
                   </span>
                   <span className="conclusion-cat">{categoryLabel(c.category)}</span>
                   <span className="conclusion-title">{c.title}</span>
                   {c.invariant_protecting_count != null && c.invariant_protecting_count > 0 && (
-                    <span className="conclusion-inv-count">{c.invariant_protecting_count} inv</span>
+                    <span className="conclusion-inv-count">
+                      <Cell table="Conclusions" col="invariant_protecting_count">{c.invariant_protecting_count}</Cell> inv
+                    </span>
                   )}
                 </button>
               </li>
@@ -275,7 +282,7 @@ export function ConclusionsAdminView() {
               <div className="detail-header">
                 <code className="detail-id">{selected.conclusion_id}</code>
                 <span className={`badge ${STATUS_COLORS[selected.status] ?? 'badge-neutral'}`}>
-                  {selected.status}
+                  <Cell table="Conclusions" col="status">{selected.status}</Cell>
                 </span>
               </div>
               <h2 className="detail-title">{selected.title}</h2>
@@ -322,10 +329,15 @@ export function ConclusionsAdminView() {
                     {protectingInvariants.map(inv => (
                       <li key={inv.invariant_check_id}>
                         <span className={`badge ${inv.is_green ? 'badge-type-c' : 'badge-reversal'}`}>
-                          {inv.status_label}
+                          <Cell table="InvariantChecks" col="status_label">{inv.status_label}</Cell>
                         </span>
                         <strong>{inv.invariant_check_id}</strong>
-                        <span>{inv.natural_language}</span>
+                        <span><Cell table="InvariantChecks" col="natural_language">{inv.natural_language}</Cell></span>
+                        <span style={{ marginLeft: 8, color: '#8b949e', fontSize: 12 }}>
+                          pass <Cell table="InvariantChecks" col="pass_count">{inv.pass_count}</Cell>
+                          {' / fail '}
+                          <Cell table="InvariantChecks" col="fail_count">{inv.fail_count}</Cell>
+                        </span>
                       </li>
                     ))}
                   </ul>
@@ -342,6 +354,7 @@ export function ConclusionsAdminView() {
           )}
         </section>
       </div>
+      <ViewDagScan ready={!loading} deps={[conclusions, hypotheses, findings, invariants, selectedId, categoryFilter]} />
     </div>
   );
 }

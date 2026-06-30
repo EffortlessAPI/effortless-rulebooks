@@ -1,7 +1,8 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { Chart } from 'chart.js/auto';
 import { api } from '../api';
-import { DagValue } from '../components/DagValue';
+import { V, ViewDagScan } from '../components/DagValue';
+import { SsCell, TrCell } from '../components/dag-display';
 import type { CaseCell, StratumSummary, TreatmentRanking } from '../types';
 
 const PRESET_STUDIES = ['kidney-1986', 'berkeley-1973', 'balanced-synthetic'];
@@ -261,7 +262,9 @@ export function SandboxView() {
                         />
                         <div style={{ marginBottom: 12, fontSize: 12, color: '#8b949e' }}>
                           Rate: <strong style={{ color }}>
-                            {cell.cases ? (cell.successes / cell.cases * 100).toFixed(1) : '—'}%
+                            <V table="CaseCells" col="cell_success_rate">
+                              {cell.cases ? (cell.successes / cell.cases * 100).toFixed(1) : '—'}%
+                            </V>
                           </strong>
                         </div>
                       </div>
@@ -282,26 +285,26 @@ export function SandboxView() {
               <h3>Derived facts</h3>
               <div className="stat-row">
                 <span className="stat-label">Pooled rate {ranking.treatment_a}</span>
-                <span className="stat-value"><DagValue table="TreatmentRankings" field="PooledRateA">{pct(ranking.pooled_rate_a)}</DagValue></span>
+                <span className="stat-value"><TrCell col="pooled_rate_a">{pct(ranking.pooled_rate_a)}</TrCell></span>
               </div>
               <div className="stat-row">
                 <span className="stat-label">Pooled rate {ranking.treatment_b}</span>
-                <span className="stat-value"><DagValue table="TreatmentRankings" field="PooledRateB">{pct(ranking.pooled_rate_b)}</DagValue></span>
+                <span className="stat-value"><TrCell col="pooled_rate_b">{pct(ranking.pooled_rate_b)}</TrCell></span>
               </div>
               <div className="stat-row">
                 <span className="stat-label">Pooled winner</span>
-                <span className="stat-value">{ranking.pooled_winner}</span>
+                <span className="stat-value"><TrCell col="pooled_winner">{ranking.pooled_winner}</TrCell></span>
               </div>
               <div className="stat-row">
                 <span className="stat-label">IsReversal (unanimity)</span>
                 <span className="stat-value" style={{ color: ranking.is_reversal ? '#ff7b72' : '#7ee787' }}>
-                  {ranking.is_reversal ? 'YES' : 'no'}
+                  <TrCell col="is_reversal">{ranking.is_reversal ? 'YES' : 'no'}</TrCell>
                 </span>
               </div>
               <div className="stat-row">
                 <span className="stat-label">IsSignFlip</span>
                 <span className="stat-value" style={{ color: ranking.is_sign_flip ? '#d2a8ff' : '#7ee787' }}>
-                  {ranking.is_sign_flip ? 'YES' : 'no'}
+                  <TrCell col="is_sign_flip">{ranking.is_sign_flip ? 'YES' : 'no'}</TrCell>
                 </span>
               </div>
             </div>
@@ -309,24 +312,27 @@ export function SandboxView() {
               <h3>Continuous measures</h3>
               <div className="stat-row">
                 <span className="stat-label">Paradox strength</span>
-                <span className="stat-value"><DagValue table="TreatmentRankings" field="ParadoxStrength">{Number(ranking.paradox_strength).toFixed(4)}</DagValue></span>
+                <span className="stat-value"><TrCell col="paradox_strength">{Number(ranking.paradox_strength).toFixed(4)}</TrCell></span>
               </div>
               <div className="stat-row">
                 <span className="stat-label">Allocation distortion</span>
-                <span className="stat-value"><DagValue table="TreatmentRankings" field="AllocationDistortion">{Number(ranking.allocation_distortion).toFixed(4)}</DagValue></span>
+                <span className="stat-value"><TrCell col="allocation_distortion">{Number(ranking.allocation_distortion).toFixed(4)}</TrCell></span>
               </div>
               {summaries
                 .filter(s => s.treatment_label === ranking.treatment_a)
                 .map(s => (
                   <div className="stat-row" key={s.stratum_summary_id}>
                     <span className="stat-label">{s.stratum_label} winner</span>
-                    <span className="stat-value" style={{ color: '#58a6ff' }}>{s.stratum_winner}</span>
+                    <span className="stat-value" style={{ color: '#58a6ff' }}>
+                      <SsCell col="stratum_winner">{s.stratum_winner}</SsCell>
+                    </span>
                   </div>
                 ))}
             </div>
           </div>
         </>
       )}
+      <ViewDagScan ready={!loading && !!ranking} deps={[selectedStudy, ranking, summaries, cells]} />
     </div>
   );
 }

@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
 import { Chart } from 'chart.js/auto';
 import { api } from '../api';
-import { DagValue } from '../components/DagValue';
+import { ViewDagScan } from '../components/DagValue';
+import { SsCell, TrCell } from '../components/dag-display';
 import type { Study, StratumSummary, TreatmentRanking } from '../types';
 import { StudySelector } from '../components/StudySelector';
 
@@ -30,9 +31,12 @@ export function WeightsView() {
   useEffect(() => {
     if (!selected) return;
     setLoading(true);
-    Promise.all([api.stratumSummaries(selected), api.treatmentRankings(selected)])
-      .then(([sums, ranks]) => { setSummaries(sums); setRanking(ranks[0] ?? null); })
-      .finally(() => setLoading(false));
+    api.stratumSummaries(selected).then(sums => {
+      return api.treatmentRankings(selected).then(ranks => {
+        setSummaries(sums);
+        setRanking(ranks[0] ?? null);
+      });
+    }).finally(() => setLoading(false));
   }, [selected]);
 
   function buildWeightChart(
@@ -111,6 +115,9 @@ export function WeightsView() {
     buildWeightChart(canvasBRef.current, chartBRef, rowsB, ranking.treatment_b, 'allocation_fraction_b', '#d2a8ff');
   }, [summaries, ranking]);
 
+  const pooledFromWeightsA = (ranking as TreatmentRanking & { pooled_rate_from_weights_a?: number })
+    .pooled_rate_from_weights_a;
+
   return (
     <div>
       <div className="page-title">Allocation Weights</div>
@@ -167,23 +174,23 @@ export function WeightsView() {
                       <tr key={s.stratum_summary_id} style={{ borderBottom: '1px solid #21262d' }}>
                         <td style={{ padding: '6px 8px' }}>{s.stratum_label}</td>
                         <td style={{ padding: '6px 8px', textAlign: 'right', fontVariantNumeric: 'tabular-nums' }}>
-                          {pct(s.stratum_success_rate)}
+                          <SsCell col="stratum_success_rate">{pct(s.stratum_success_rate)}</SsCell>
                         </td>
                         <td style={{ padding: '6px 8px', textAlign: 'right', fontVariantNumeric: 'tabular-nums', color: '#58a6ff' }}>
-                          {pct(s.allocation_fraction_a)}
+                          <SsCell col="allocation_fraction_a">{pct(s.allocation_fraction_a)}</SsCell>
                         </td>
                         <td style={{ padding: '6px 8px', textAlign: 'right', fontVariantNumeric: 'tabular-nums', color: '#d2a8ff' }}>
-                          {matchB ? pct(matchB.allocation_fraction_b) : '—'}
+                          {matchB ? <SsCell col="allocation_fraction_b">{pct(matchB.allocation_fraction_b)}</SsCell> : '—'}
                         </td>
                         <td style={{ padding: '6px 8px', textAlign: 'right', fontVariantNumeric: 'tabular-nums',
                           color: Number(s.allocation_bias) < 0 ? '#ff7b72' : '#7ee787' }}>
-                          {Number(s.allocation_bias).toFixed(3)}
+                          <SsCell col="allocation_bias">{Number(s.allocation_bias).toFixed(3)}</SsCell>
                         </td>
                         <td style={{ padding: '6px 8px', textAlign: 'right', fontVariantNumeric: 'tabular-nums' }}>
-                          {pct(s.stratum_fraction)}
+                          <SsCell col="stratum_fraction">{pct(s.stratum_fraction)}</SsCell>
                         </td>
                         <td style={{ padding: '6px 8px', textAlign: 'right', fontVariantNumeric: 'tabular-nums' }}>
-                          {Number(s.weighted_stratum_gap).toFixed(4)}
+                          <SsCell col="weighted_stratum_gap">{Number(s.weighted_stratum_gap).toFixed(4)}</SsCell>
                         </td>
                       </tr>
                     );
@@ -196,27 +203,30 @@ export function WeightsView() {
             <h3>Mechanism equation check</h3>
             <div className="stat-row">
               <span className="stat-label">Pooled rate A (direct)</span>
-              <span className="stat-value">{pct(ranking.pooled_rate_a)}</span>
+              <span className="stat-value"><TrCell col="pooled_rate_a">{pct(ranking.pooled_rate_a)}</TrCell></span>
             </div>
             <div className="stat-row">
               <span className="stat-label">Pooled rate A (from weights)</span>
-              <span className="stat-value">{pct((ranking as unknown as Record<string, number>).pooled_rate_from_weights_a)}</span>
+              <span className="stat-value">
+                <TrCell col="pooled_rate_from_weights_a">{pct(pooledFromWeightsA ?? null)}</TrCell>
+              </span>
             </div>
             <div className="stat-row">
               <span className="stat-label">WeightedStratumGapSum (equal-weight signal)</span>
-              <span className="stat-value"><DagValue table="TreatmentRankings" field="WeightedStratumGapSum">{Number(ranking.weighted_stratum_gap_sum).toFixed(4)}</DagValue></span>
+              <span className="stat-value"><TrCell col="weighted_stratum_gap_sum">{Number(ranking.weighted_stratum_gap_sum).toFixed(4)}</TrCell></span>
             </div>
             <div className="stat-row">
               <span className="stat-label">SignedPooledGap (actual signal)</span>
-              <span className="stat-value">{Number(ranking.signed_pooled_gap).toFixed(4)}</span>
+              <span className="stat-value"><TrCell col="signed_pooled_gap">{Number(ranking.signed_pooled_gap).toFixed(4)}</TrCell></span>
             </div>
             <div className="stat-row">
               <span className="stat-label">AllocationDistortion</span>
-              <span className="stat-value"><DagValue table="TreatmentRankings" field="AllocationDistortion">{Number(ranking.allocation_distortion).toFixed(4)}</DagValue></span>
+              <span className="stat-value"><TrCell col="allocation_distortion">{Number(ranking.allocation_distortion).toFixed(4)}</TrCell></span>
             </div>
           </div>
         </>
       )}
+      <ViewDagScan ready={!loading && !!ranking} deps={[selected, summaries, ranking]} />
     </div>
   );
 }

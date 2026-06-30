@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
 import { api } from '../api';
+import { ViewDagScan } from '../components/DagValue';
+import { Cell, TrCell, TrTierPill, TrTypeBadge } from '../components/dag-display';
 import type { TreatmentRanking } from '../types';
 
 const TIER_COLORS: Record<string, { bg: string; text: string; border: string }> = {
@@ -106,44 +108,29 @@ export function InstrumentDashboardView() {
                 <tr key={r.study} style={{ background: i % 2 === 0 ? '#fafafa' : '#fff' }}>
                   <td style={{ padding: '7px 10px', fontWeight: 500 }}>{r.study}</td>
                   <td style={{ padding: '7px 10px', textAlign: 'center' }}>
-                    <span style={{
-                      display: 'inline-block', borderRadius: 4, padding: '1px 7px',
-                      fontSize: 11, fontWeight: 700,
-                      background: { A: '#fde', B: '#ede', C: '#def', D: '#dfd' }[r.distortion_type] ?? '#eee',
-                      color: { A: '#c00', B: '#808', C: '#008', D: '#060' }[r.distortion_type] ?? '#444',
-                    }}>
-                      {r.distortion_type}
-                    </span>
+                    <TrTypeBadge type={r.distortion_type} />
                   </td>
                   <td style={{ padding: '7px 10px', textAlign: 'center' }}>
-                    {tier && (
-                      <span style={{
-                        display: 'inline-block', borderRadius: 4, padding: '2px 8px',
-                        fontSize: 11, fontWeight: 700,
-                        background: c.bg, color: c.text, border: `1px solid ${c.border}`,
-                      }}>
-                        {tier}
-                      </span>
-                    )}
+                    <TrTierPill tier={tier} />
                   </td>
                   <td style={{
                     padding: '7px 10px', textAlign: 'right', fontFamily: 'monospace',
                     color: dr < -1 ? '#800' : dr < 0 ? '#c44' : dr === 1 ? '#166534' : '#555',
                     fontWeight: 600,
                   }}>
-                    {ratio(r.distortion_ratio)}
+                    <TrCell col="distortion_ratio">{ratio(r.distortion_ratio)}</TrCell>
                   </td>
                   <td style={{ padding: '7px 10px', textAlign: 'right', fontFamily: 'monospace' }}>
-                    {Number(r.allocation_distortion).toFixed(4)}
+                    <TrCell col="allocation_distortion">{Number(r.allocation_distortion).toFixed(4)}</TrCell>
                   </td>
                   <td style={{ padding: '7px 10px', textAlign: 'right', color: '#166534', fontFamily: 'monospace' }}>
-                    {pct(r.weighted_stratum_gap_sum)}
+                    <TrCell col="weighted_stratum_gap_sum">{pct(r.weighted_stratum_gap_sum)}</TrCell>
                   </td>
                   <td style={{ padding: '7px 10px', textAlign: 'right', fontFamily: 'monospace' }}>
-                    {pct(r.signed_pooled_gap)}
+                    <TrCell col="signed_pooled_gap">{pct(r.signed_pooled_gap)}</TrCell>
                   </td>
                   <td style={{ padding: '7px 10px', fontSize: 11, color: c.text, maxWidth: 240 }}>
-                    {r.policy_implication}
+                    <TrCell col="policy_implication">{r.policy_implication}</TrCell>
                   </td>
                 </tr>
               );
@@ -166,6 +153,7 @@ export function InstrumentDashboardView() {
           Ratio &gt; 0 → Type C/D · Ratio = 1 → Type D (safe)
         </span>
       </div>
+      <ViewDagScan ready={!loading} deps={[rows, sortCol, sortDir]} />
     </div>
   );
 }

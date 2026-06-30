@@ -1,5 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { api } from '../api';
+import { ViewDagScan } from '../components/DagValue';
+import { Cell } from '../components/dag-display';
 import type { PhaseDiagramSummary, SyntheticPhaseRow } from '../types';
 
 const TYPE_COLORS: Record<string, string> = {
@@ -73,8 +75,10 @@ export function PhaseDiagramView() {
           fontSize: 14,
         }}
       >
-        <strong>{summary.phase_witness_note}</strong>
-        <div style={{ marginTop: 4, color: '#555' }}>{summary.phase_taxonomy_witness}</div>
+        <strong><Cell table="PhaseDiagramSummary" col="phase_witness_note">{summary.phase_witness_note}</Cell></strong>
+        <div style={{ marginTop: 4, color: '#555' }}>
+          <Cell table="PhaseDiagramSummary" col="phase_taxonomy_witness">{summary.phase_taxonomy_witness}</Cell>
+        </div>
       </div>
 
       <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginBottom: '1.25rem' }}>
@@ -92,7 +96,11 @@ export function PhaseDiagramView() {
             }}
           >
             <span style={{ color: TYPE_COLORS[t], fontWeight: 700 }}>{t}</span>
-            <span style={{ color: '#888', marginLeft: 6 }}>{counts[t]}</span>
+            <span style={{ color: '#888', marginLeft: 6 }}>
+              <Cell table="PhaseDiagramSummary" col={`phase_type_${t === 'C+' ? 'c_plus' : t === 'C-' ? 'c_minus' : t.toLowerCase()}_count`}>
+                {counts[t]}
+              </Cell>
+            </span>
           </button>
         ))}
         {typeFilter !== 'all' && (
@@ -124,19 +132,33 @@ export function PhaseDiagramView() {
               <tr key={r.phase_id} style={{ borderTop: '1px solid #eee' }}>
                 <td style={{ padding: '6px 10px' }}>
                   <span style={{ color: TYPE_COLORS[r.phase_distortion_type], fontWeight: 600 }}>
-                    {r.phase_distortion_type}
+                    <Cell table="SyntheticPhase" col="phase_distortion_type">{r.phase_distortion_type}</Cell>
                   </span>
                   <span style={{ color: '#aaa', fontSize: 11, marginLeft: 4 }}>
                     {TYPE_LABELS[r.phase_distortion_type]}
                   </span>
                 </td>
-                <td style={{ padding: '6px 10px' }}>{r.param_stratum_fraction.toFixed(2)}</td>
-                <td style={{ padding: '6px 10px' }}>{(r.param_stratum_gap1 * 100).toFixed(0)}pp</td>
-                <td style={{ padding: '6px 10px' }}>{(r.param_stratum_gap2 * 100).toFixed(0)}pp</td>
-                <td style={{ padding: '6px 10px' }}>{r.param_allocation_bias.toFixed(2)}</td>
-                <td style={{ padding: '6px 10px' }}>{(r.phase_signed_pooled_gap * 100).toFixed(2)}pp</td>
-                <td style={{ padding: '6px 10px' }}>{(r.phase_corrected_gap * 100).toFixed(2)}pp</td>
-                <td style={{ padding: '6px 10px' }}>{(r.phase_allocation_distortion * 100).toFixed(2)}pp</td>
+                <td style={{ padding: '6px 10px' }}>
+                  <Cell table="SyntheticPhase" col="param_stratum_fraction">{r.param_stratum_fraction.toFixed(2)}</Cell>
+                </td>
+                <td style={{ padding: '6px 10px' }}>
+                  <Cell table="SyntheticPhase" col="param_stratum_gap1">{(r.param_stratum_gap1 * 100).toFixed(0)}pp</Cell>
+                </td>
+                <td style={{ padding: '6px 10px' }}>
+                  <Cell table="SyntheticPhase" col="param_stratum_gap2">{(r.param_stratum_gap2 * 100).toFixed(0)}pp</Cell>
+                </td>
+                <td style={{ padding: '6px 10px' }}>
+                  <Cell table="SyntheticPhase" col="param_allocation_bias">{r.param_allocation_bias.toFixed(2)}</Cell>
+                </td>
+                <td style={{ padding: '6px 10px' }}>
+                  <Cell table="SyntheticPhase" col="phase_signed_pooled_gap">{(r.phase_signed_pooled_gap * 100).toFixed(2)}pp</Cell>
+                </td>
+                <td style={{ padding: '6px 10px' }}>
+                  <Cell table="SyntheticPhase" col="phase_corrected_gap">{(r.phase_corrected_gap * 100).toFixed(2)}pp</Cell>
+                </td>
+                <td style={{ padding: '6px 10px' }}>
+                  <Cell table="SyntheticPhase" col="phase_allocation_distortion">{(r.phase_allocation_distortion * 100).toFixed(2)}pp</Cell>
+                </td>
               </tr>
             ))}
           </tbody>
@@ -147,6 +169,7 @@ export function PhaseDiagramView() {
           </p>
         )}
       </div>
+      <ViewDagScan ready={!loading} deps={[filtered, typeFilter, summary]} />
     </div>
   );
 }

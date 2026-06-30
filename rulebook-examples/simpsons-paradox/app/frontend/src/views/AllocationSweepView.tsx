@@ -1,5 +1,7 @@
 import { useState, useEffect, useMemo } from 'react';
 import { api } from '../api';
+import { ViewDagScan } from '../components/DagValue';
+import { Cell } from '../components/dag-display';
 import type { AllocationSweepRow, SweepStudySummary } from '../types';
 
 const TYPE_COLORS: Record<string, string> = {
@@ -147,7 +149,7 @@ export function AllocationSweepView() {
                 marginRight: 6,
               }}
             >
-              {s.distortion_type_label}
+              <Cell table="SweepStudySummary" col="distortion_type_label">{s.distortion_type_label}</Cell>
             </span>
             {s.sweep_study_id}
           </button>
@@ -175,9 +177,12 @@ export function AllocationSweepView() {
                 fontSize: 13,
               }}
             >
-              <strong>{summary.invariant_witness}</strong>
+              <strong><Cell table="SweepStudySummary" col="invariant_witness">{summary.invariant_witness}</Cell></strong>
               <div style={{ marginTop: 4, color: '#555' }}>
-                CG range = {(Number(summary.sweep_corrected_gap_range) * 100).toFixed(8)}pp
+                CG range ={' '}
+                <Cell table="SweepStudySummary" col="sweep_corrected_gap_range">
+                  {(Number(summary.sweep_corrected_gap_range) * 100).toFixed(8)}pp
+                </Cell>
               </div>
             </div>
             <div
@@ -190,20 +195,32 @@ export function AllocationSweepView() {
               }}
             >
               {summary.pooled_gap_crosses_zero
-                ? `PooledGap crosses zero — range ${pp(Number(summary.sweep_pooled_gap_range))}`
-                : `PooledGap range ${pp(Number(summary.sweep_pooled_gap_range))} (no sign flip in sweep)`}
+                ? <>
+                    PooledGap crosses zero — range{' '}
+                    <Cell table="SweepStudySummary" col="sweep_pooled_gap_range">
+                      {pp(Number(summary.sweep_pooled_gap_range))}
+                    </Cell>
+                  </>
+                : <>
+                    PooledGap range{' '}
+                    <Cell table="SweepStudySummary" col="sweep_pooled_gap_range">
+                      {pp(Number(summary.sweep_pooled_gap_range))}
+                    </Cell>{' '}
+                    (no sign flip in sweep)
+                  </>}
             </div>
           </div>
 
           <p style={{ color: '#666', fontSize: 13, marginBottom: '1rem' }}>
             Sweeping allocation in stratum{' '}
-            <strong>{summary.sweep_stratum_label ?? '—'}</strong>. All other stratum totals and
-            per-cell rates are fixed. CorrectedGap constant ={' '}
-            <strong>{pct(correctedGap)}</strong>
+            <strong><Cell table="SweepStudySummary" col="sweep_stratum_label">{summary.sweep_stratum_label ?? '—'}</Cell></strong>.
+            All other stratum totals and per-cell rates are fixed. CorrectedGap constant ={' '}
+            <strong><Cell table="SweepStudySummary" col="corrected_gap_constant">{pct(correctedGap)}</Cell></strong>
             {originalRow && (
               <>
                 {' '}
                 · Original allocation ≈ <strong>{pct(originalRow.alloc_fraction_a)}</strong>
+                {originalRow.is_original ? ' ★' : ''}
               </>
             )}
           </p>
@@ -254,7 +271,7 @@ export function AllocationSweepView() {
                       fontWeight: 600,
                     }}
                   >
-                    CG = {pct(correctedGap)}
+                    CG = <Cell table="AllocationSweep" col="sweep_corrected_gap">{pct(correctedGap)}</Cell>
                   </span>
                 </div>
               )}
@@ -321,7 +338,7 @@ export function AllocationSweepView() {
                         color: pooled >= 0 ? '#4a90e2' : '#e05',
                       }}
                     >
-                      {pp(pooled)}
+                      <Cell table="AllocationSweep" col="sweep_pooled_gap">{pp(pooled)}</Cell>
                     </span>
                   </div>
                 );
@@ -411,10 +428,10 @@ export function AllocationSweepView() {
                       {row.is_original ? ' ★' : ''}
                     </td>
                     <td style={{ padding: '3px 8px', textAlign: 'right' }}>
-                      {pct(row.sweep_pooled_rate_a)}
+                      <Cell table="AllocationSweep" col="sweep_pooled_rate_a">{pct(row.sweep_pooled_rate_a)}</Cell>
                     </td>
                     <td style={{ padding: '3px 8px', textAlign: 'right' }}>
-                      {pct(row.sweep_pooled_rate_b)}
+                      <Cell table="AllocationSweep" col="sweep_pooled_rate_b">{pct(row.sweep_pooled_rate_b)}</Cell>
                     </td>
                     <td
                       style={{
@@ -423,13 +440,15 @@ export function AllocationSweepView() {
                         color: Number(row.sweep_pooled_gap) >= 0 ? '#4a90e2' : '#e05',
                       }}
                     >
-                      {pp(Number(row.sweep_pooled_gap))}
+                      <Cell table="AllocationSweep" col="sweep_pooled_gap">{pp(Number(row.sweep_pooled_gap))}</Cell>
                     </td>
                     <td style={{ padding: '3px 8px', textAlign: 'right', color: '#0a0' }}>
-                      {pp(Number(row.sweep_corrected_gap))}
+                      <Cell table="AllocationSweep" col="sweep_corrected_gap">{pp(Number(row.sweep_corrected_gap))}</Cell>
                     </td>
                     <td style={{ padding: '3px 8px', textAlign: 'right', color: '#888' }}>
-                      {pp(Number(row.allocation_distortion_witness))}
+                      <Cell table="AllocationSweep" col="allocation_distortion_witness">
+                        {pp(Number(row.allocation_distortion_witness))}
+                      </Cell>
                     </td>
                   </tr>
                 ))}
@@ -473,7 +492,7 @@ export function AllocationSweepView() {
                   >
                     <td style={{ padding: '3px 8px' }}>{s.sweep_study_id}</td>
                     <td style={{ padding: '3px 8px', fontFamily: 'monospace', fontSize: 11 }}>
-                      {s.sweep_stratum_label}
+                      <Cell table="SweepStudySummary" col="sweep_stratum_label">{s.sweep_stratum_label}</Cell>
                     </td>
                     <td style={{ padding: '3px 8px', textAlign: 'center' }}>
                       <span
@@ -486,11 +505,11 @@ export function AllocationSweepView() {
                           fontWeight: 700,
                         }}
                       >
-                        {s.distortion_type_label}
+                        <Cell table="SweepStudySummary" col="distortion_type_label">{s.distortion_type_label}</Cell>
                       </span>
                     </td>
                     <td style={{ padding: '3px 8px', textAlign: 'right', color: '#0a0' }}>
-                      {pp(Number(s.corrected_gap_constant))}
+                      <Cell table="SweepStudySummary" col="corrected_gap_constant">{pp(Number(s.corrected_gap_constant))}</Cell>
                     </td>
                     <td
                       style={{
@@ -499,13 +518,17 @@ export function AllocationSweepView() {
                         color: Number(s.sweep_corrected_gap_range) < 0.0001 ? '#0a0' : '#e05',
                       }}
                     >
-                      {(Number(s.sweep_corrected_gap_range) * 100).toFixed(8)}pp
+                      <Cell table="SweepStudySummary" col="sweep_corrected_gap_range">
+                        {(Number(s.sweep_corrected_gap_range) * 100).toFixed(8)}pp
+                      </Cell>
                     </td>
                     <td style={{ padding: '3px 8px', textAlign: 'right' }}>
-                      {pp(Number(s.sweep_pooled_gap_range))}
+                      <Cell table="SweepStudySummary" col="sweep_pooled_gap_range">{pp(Number(s.sweep_pooled_gap_range))}</Cell>
                     </td>
                     <td style={{ padding: '3px 8px', textAlign: 'center' }}>
-                      {s.pooled_gap_crosses_zero ? '✓' : '—'}
+                      <Cell table="SweepStudySummary" col="pooled_gap_crosses_zero">
+                        {s.pooled_gap_crosses_zero ? '✓' : '—'}
+                      </Cell>
                     </td>
                   </tr>
                 ))}
@@ -514,6 +537,7 @@ export function AllocationSweepView() {
           </details>
         </>
       )}
+      <ViewDagScan ready={!loading} deps={[rows, summaries, studyId, typeFilter, summary]} />
     </div>
   );
 }

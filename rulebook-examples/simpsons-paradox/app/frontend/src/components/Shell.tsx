@@ -1,4 +1,5 @@
 import { NavLink, Outlet } from 'react-router-dom';
+import { DagToggle } from '../explainer-bridge';
 import { DownloadMenu } from './DownloadMenu';
 import './Shell.css';
 import './DownloadMenu.css';
@@ -45,7 +46,7 @@ export function Shell() {
       <div className="main-column">
         <header className="app-topbar">
           <DownloadMenu />
-          <div id="effortless-dag-toggle" />
+          <DagToggle />
         </header>
         <main className="content">
           <Outlet />

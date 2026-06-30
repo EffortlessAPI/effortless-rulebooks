@@ -1,7 +1,8 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Chart } from 'chart.js/auto';
 import { api } from '../api';
-import { DagValue } from '../components/DagValue';
+import { V, ViewDagScan } from '../components/DagValue';
+import { TrCell, TrTierPill, TrTypeBadge } from '../components/dag-display';
 import type { ModelSummary, Study, TreatmentRanking } from '../types';
 import {
   TYPE_COLORS,
@@ -54,13 +55,11 @@ function pct(v: number | null | undefined): string {
 }
 
 function typeBadge(type: string | null | undefined) {
-  const cls = type?.startsWith('C') ? 'badge badge-type-c' : `badge badge-type-${type?.toLowerCase() ?? 'd'}`;
-  return <span className={cls}>Type {type}</span>;
+  return <TrTypeBadge type={type} />;
 }
 
 function tierPill(tier: string | null | undefined) {
-  if (!tier) return null;
-  return <span className={`tier-pill ${tier.toLowerCase()}`}>{tier}</span>;
+  return <TrTierPill tier={tier} />;
 }
 
 export function OverviewView() {
@@ -135,9 +134,16 @@ export function OverviewView() {
     <div className="overview">
       <div className="overview-hero">
         <div className="overview-hero-inner">
-          <div className="overview-eyebrow">Simpson's Paradox · {total} witnessed studies</div>
+          <div className="overview-eyebrow">
+            Simpson's Paradox ·{' '}
+            <V table="ModelSummary" col="study_count">{total}</V> witnessed studies
+          </div>
           <h1 className="overview-headline">
-            <em>{dangerCount} of {total}</em> pooled conclusions would mislead you.
+            <em>
+              <V table="ModelSummary" col="danger_tier_count">{dangerCount}</V> of{' '}
+              <V table="ModelSummary" col="study_count">{total}</V>
+            </em>{' '}
+            pooled conclusions would mislead you.
           </h1>
           <p className="overview-sub">
             Three derived facts fall out of the same arithmetic: severity tracks allocation bias,
@@ -150,25 +156,27 @@ export function OverviewView() {
       <div className="kpi-strip">
         <div className="kpi-tile danger">
           <div className="kpi-value danger">
-            <DagValue table="ModelSummary" field="DangerTierCount">{dangerCount}</DagValue>
+            <V table="ModelSummary" col="danger_tier_count">{dangerCount}</V>
           </div>
           <div className="kpi-label">DANGER tier<br />Pooled sign is wrong</div>
         </div>
         <div className="kpi-tile caution">
           <div className="kpi-value caution">
-            <DagValue table="ModelSummary" field="CautionTierCount">{summary?.caution_tier_count ?? '—'}</DagValue>
+            <V table="ModelSummary" col="caution_tier_count">{summary?.caution_tier_count ?? '—'}</V>
           </div>
           <div className="kpi-label">CAUTION tier<br />Magnitude distorted</div>
         </div>
         <div className="kpi-tile safe">
           <div className="kpi-value safe">
-            <DagValue table="ModelSummary" field="SafeTierCount">{summary?.safe_tier_count ?? '—'}</DagValue>
+            <V table="ModelSummary" col="safe_tier_count">{summary?.safe_tier_count ?? '—'}</V>
           </div>
           <div className="kpi-label">SAFE tier<br />Pooling trustworthy</div>
         </div>
         <div className="kpi-tile info">
-          <div className="kpi-value info">{signFlipCount}</div>
-          <div className="kpi-label">Sign-flips<br />Type A: <DagValue table="ModelSummary" field="TypeACount">{summary?.type_a_count ?? '—'}</DagValue> unanimous</div>
+          <div className="kpi-value info">
+            <V table="ModelSummary" col="reversal_count">{signFlipCount}</V>
+          </div>
+          <div className="kpi-label">Sign-flips<br />Type A: <V table="ModelSummary" col="type_a_count">{summary?.type_a_count ?? '—'}</V> unanimous</div>
         </div>
       </div>
 
@@ -234,6 +242,11 @@ export function OverviewView() {
       <div className="insight-grid">
         {TYPE_INSIGHTS.map(ins => {
           const count = rankings.filter(ins.filter).length;
+          const countField =
+            ins.key === 'A' ? 'type_a_count'
+              : ins.key === 'B' ? 'type_b_count'
+                : ins.key === 'D' ? 'type_d_count'
+                  : undefined;
           const active = typeFilter === ins.key;
           return (
             <div
@@ -247,7 +260,13 @@ export function OverviewView() {
               <div className="insight-type">TYPE {ins.key}</div>
               <div className="insight-title">{ins.title}</div>
               <div className="insight-desc">{ins.desc}</div>
-              <div className="insight-count">{count}</div>
+              <div className="insight-count">
+                {countField ? (
+                  <V table="ModelSummary" col={countField}>{count}</V>
+                ) : (
+                  <V table="ModelSummary" col="type_c_plus_count">{count}</V>
+                )}
+              </div>
             </div>
           );
         })}
@@ -283,16 +302,16 @@ export function OverviewView() {
                 <div className="spotlight-metrics">
                   <div className="spotlight-metric">
                     <span className="val" style={{ color: TYPE_COLORS[r.distortion_type] ?? '#ff7b72' }}>
-                      {n(r.paradox_strength, 4)}
+                      <TrCell col="paradox_strength">{n(r.paradox_strength, 4)}</TrCell>
                     </span>
                     <span className="lbl">Strength</span>
                   </div>
                   <div className="spotlight-metric">
-                    <span className="val">{n(r.allocation_distortion)}</span>
+                    <span className="val"><TrCell col="allocation_distortion">{n(r.allocation_distortion)}</TrCell></span>
                     <span className="lbl">Distortion</span>
                   </div>
                   <div className="spotlight-metric">
-                    <span className="val">{n(r.signal_purity, 3)}</span>
+                    <span className="val"><TrCell col="signal_purity">{n(r.signal_purity, 3)}</TrCell></span>
                     <span className="lbl">Purity</span>
                   </div>
                 </div>
@@ -361,17 +380,17 @@ export function OverviewView() {
               </div>
               {isOpen && r && (
                 <div className="study-row-detail">
-                  <div className="detail-kv"><span className="dk">Pooled winner</span><span className="dv">{r.pooled_winner}</span></div>
-                  <div className="detail-kv"><span className="dk">Per-stratum winner</span><span className="dv">{r.per_stratum_winner}</span></div>
-                  <div className="detail-kv"><span className="dk">Paradox strength</span><span className="dv">{n(r.paradox_strength, 4)}</span></div>
-                  <div className="detail-kv"><span className="dk">Sign flip</span><span className="dv" style={{ color: r.is_sign_flip ? '#ff7b72' : '#7ee787' }}>{r.is_sign_flip ? 'YES' : 'no'}</span></div>
-                  <div className="detail-kv"><span className="dk">Allocation distortion</span><span className="dv">{n(r.allocation_distortion)}</span></div>
-                  <div className="detail-kv"><span className="dk">Distortion ratio</span><span className="dv">{n(r.distortion_ratio)}</span></div>
-                  <div className="detail-kv"><span className="dk">Signal purity</span><span className="dv" style={{ color: r.signal_purity != null && r.signal_purity < 0.5 ? '#ff7b72' : '#7ee787' }}>{pct(r.signal_purity)}</span></div>
+                  <div className="detail-kv"><span className="dk">Pooled winner</span><span className="dv"><TrCell col="pooled_winner">{r.pooled_winner}</TrCell></span></div>
+                  <div className="detail-kv"><span className="dk">Per-stratum winner</span><span className="dv"><TrCell col="per_stratum_winner">{r.per_stratum_winner}</TrCell></span></div>
+                  <div className="detail-kv"><span className="dk">Paradox strength</span><span className="dv"><TrCell col="paradox_strength">{n(r.paradox_strength, 4)}</TrCell></span></div>
+                  <div className="detail-kv"><span className="dk">Sign flip</span><span className="dv" style={{ color: r.is_sign_flip ? '#ff7b72' : '#7ee787' }}><TrCell col="is_sign_flip">{r.is_sign_flip ? 'YES' : 'no'}</TrCell></span></div>
+                  <div className="detail-kv"><span className="dk">Allocation distortion</span><span className="dv"><TrCell col="allocation_distortion">{n(r.allocation_distortion)}</TrCell></span></div>
+                  <div className="detail-kv"><span className="dk">Distortion ratio</span><span className="dv"><TrCell col="distortion_ratio">{n(r.distortion_ratio)}</TrCell></span></div>
+                  <div className="detail-kv"><span className="dk">Signal purity</span><span className="dv" style={{ color: r.signal_purity != null && r.signal_purity < 0.5 ? '#ff7b72' : '#7ee787' }}><TrCell col="signal_purity">{pct(r.signal_purity)}</TrCell></span></div>
                   <div className="detail-kv"><span className="dk">Domain · year</span><span className="dv">{s.domain ?? '—'} · {s.publication_year ?? '—'}</span></div>
                   {r.policy_implication && (
                     <div style={{ gridColumn: '1 / -1', fontSize: 12, color: '#8b949e', marginTop: 4, lineHeight: 1.5 }}>
-                      {r.policy_implication}
+                      <TrCell col="policy_implication">{r.policy_implication}</TrCell>
                     </div>
                   )}
                 </div>
@@ -380,6 +399,7 @@ export function OverviewView() {
           );
         })}
       </div>
+      <ViewDagScan ready={!loading} deps={[rankings, filteredStudies, expanded, typeFilter, tierFilter]} />
     </div>
   );
 }

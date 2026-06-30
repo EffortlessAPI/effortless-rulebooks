@@ -1,5 +1,5 @@
 import { useEffect, useLayoutEffect, useRef } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { Link, Outlet, useNavigate, useParams } from 'react-router-dom';
 
 declare global {
   interface Window {
@@ -9,6 +9,7 @@ declare global {
       renderTablePage: (el: HTMLElement, table: string) => void;
       renderTablesIndex: (el: HTMLElement) => void;
       enhanceCells: (root?: ParentNode) => void;
+      mountToggle: (container?: ParentNode | null) => HTMLButtonElement;
     };
   }
 }
@@ -23,7 +24,6 @@ export function useExplainerRouting() {
     window.EffortlessExplainer.init({
       mode: 'callback',
       enhance: false,
-      mountToggle: '#effortless-dag-toggle',
       routing: {
         navigate: (t: string, f: string) => navigate(`/dag/${encodeURIComponent(t)}/${encodeURIComponent(f)}`),
         navigateTable: (t: string) => navigate(`/dag/${encodeURIComponent(t)}`),
@@ -34,6 +34,50 @@ export function useExplainerRouting() {
       },
     });
   }, [navigate]);
+}
+
+/** Mount the provenance ƒ toggle once the host div is in the DOM (Shell or DAG layout). */
+export function DagToggle() {
+  const hostRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    let interval: number | undefined;
+
+    const mount = () => {
+      const host = hostRef.current;
+      if (!host || !window.EffortlessExplainer?.mountToggle) return false;
+      host.replaceChildren();
+      window.EffortlessExplainer.mountToggle(host);
+      return true;
+    };
+
+    if (!mount()) {
+      interval = window.setInterval(() => {
+        if (mount()) window.clearInterval(interval);
+      }, 50);
+    }
+
+    return () => {
+      if (interval) window.clearInterval(interval);
+      hostRef.current?.replaceChildren();
+    };
+  }, []);
+
+  return <div ref={hostRef} className="dag-toggle-host" />;
+}
+
+export function DagShell() {
+  return (
+    <div className="dag-shell">
+      <header className="dag-app-topbar">
+        <Link to="/overview" className="dag-back-link">
+          ← Back to dashboard
+        </Link>
+        <DagToggle />
+      </header>
+      <Outlet />
+    </div>
+  );
 }
 
 function useDagRenderer(render: (el: HTMLElement) => void, deps: unknown[]) {
@@ -68,5 +112,13 @@ export function ExplainerEnhance({ root }: { root?: HTMLElement | null }) {
   useLayoutEffect(() => {
     window.EffortlessExplainer?.enhanceCells(root ?? document);
   });
+  return null;
+}
+
+/** Re-scan the whole document when the route changes (view swap). */
+export function RouteDagScan({ pathname }: { pathname: string }) {
+  useLayoutEffect(() => {
+    window.EffortlessExplainer?.enhanceCells(document);
+  }, [pathname]);
   return null;
 }

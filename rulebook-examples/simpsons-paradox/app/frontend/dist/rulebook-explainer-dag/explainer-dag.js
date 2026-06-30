@@ -886,6 +886,11 @@
     activeHoverCard = shell;
   }
 
+  function attachHoverToCell(cellEl, table, field) {
+    cellEl.addEventListener("mouseenter", () => openHoverCard(table, field, cellEl.getBoundingClientRect()));
+    cellEl.addEventListener("mouseleave", scheduleHoverClose);
+  }
+
   function attachHoverToGlyph(glyphEl, table, field) {
     glyphEl.addEventListener("mouseenter", () => openHoverCard(table, field, glyphEl.getBoundingClientRect()));
     glyphEl.addEventListener("mouseleave", scheduleHoverClose);
@@ -903,7 +908,12 @@
     root = root || document;
     const glyphsOn = prefs.glyphsOn();
     root.querySelectorAll("[data-er-dag]").forEach((el) => {
-      if (el.dataset.erEnhanced) return;
+      if (el.dataset.erEnhanced) {
+        // React re-renders wipe appended badges; re-enhance when the wrap is missing.
+        if (el.querySelector(".dag-cell-badge-wrap")) return;
+        delete el.dataset.erEnhanced;
+        el.classList.remove("dag-cell", "dag-cell-quiet");
+      }
       const spec = el.dataset.erDag;
       if (!spec || !spec.includes(".")) return;
       const [table, field] = spec.split(".", 2);
@@ -912,7 +922,7 @@
       el.classList.add("dag-cell");
       if (!glyphsOn) el.classList.add("dag-cell-quiet");
       el.title = glyphsOn
-        ? "Hover the badge to peek; double-click to open the full DAG page"
+        ? "Hover to peek provenance; double-click to open the full DAG page"
         : "Double-click to see provenance (toggle ƒ glyphs in header)";
 
       const tone = R().typeTone(dagType(table, field));
@@ -924,6 +934,7 @@
       glyph.textContent = R().typeGlyph(dagType(table, field));
       link.appendChild(glyph);
       attachHoverToGlyph(glyph, table, field);
+      attachHoverToCell(el, table, field);
       badge.appendChild(link);
       el.appendChild(badge);
 
@@ -965,7 +976,12 @@
   // ════════════════════════════════════════════════════════════════════════
   function setGlyphsOn(on) {
     prefs.setGlyphs(on);
-    document.querySelectorAll(".dag-cell").forEach((el) => el.classList.toggle("dag-cell-quiet", !on));
+    document.querySelectorAll(".dag-cell").forEach((el) => {
+      el.classList.toggle("dag-cell-quiet", !on);
+      el.title = on
+        ? "Hover to peek provenance; double-click to open the full DAG page"
+        : "Double-click to see provenance (toggle ƒ glyphs in header)";
+    });
   }
   function syncTogglePill(btn) {
     const on = prefs.glyphsOn();

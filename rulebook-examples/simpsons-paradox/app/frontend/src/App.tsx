@@ -1,4 +1,5 @@
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
+import './components/DownloadMenu.css';
 import { Shell } from './components/Shell';
 import { OverviewView } from './views/OverviewView';
 import { StratumView } from './views/StratumView';
@@ -13,16 +14,21 @@ import { ConclusionsAdminView } from './views/ConclusionsAdminView';
 import {
   DagFieldPage,
   DagIndexPage,
+  DagShell,
   DagTablePage,
+  DagToggle,
   ExplainerEnhance,
+  RouteDagScan,
   useExplainerRouting,
 } from './explainer-bridge';
 
 function AppRoutes() {
+  const { pathname } = useLocation();
   useExplainerRouting();
   return (
     <>
       <ExplainerEnhance />
+      <RouteDagScan pathname={pathname} />
       <Routes>
         <Route path="/" element={<Shell />}>
           <Route index element={<Navigate to="/overview" replace />} />
@@ -37,9 +43,11 @@ function AppRoutes() {
           <Route path="instrument" element={<InstrumentDashboardView />} />
           <Route path="catalog" element={<ImportCatalogView />} />
         </Route>
-        <Route path="/dag" element={<DagIndexPage />} />
-        <Route path="/dag/:table" element={<DagTablePage />} />
-        <Route path="/dag/:table/:field" element={<DagFieldPage />} />
+        <Route path="/dag" element={<DagShell />}>
+          <Route index element={<DagIndexPage />} />
+          <Route path=":table" element={<DagTablePage />} />
+          <Route path=":table/:field" element={<DagFieldPage />} />
+        </Route>
       </Routes>
     </>
   );

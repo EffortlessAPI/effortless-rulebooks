@@ -98,29 +98,87 @@
   flex-shrink: 0;
 }
 
-#effortless-dag-toggle {
+.dag-toggle-host {
   display: flex;
   align-items: center;
 }
 
-#effortless-dag-toggle .dag-toggle {
+/* Provenance pill on dark dashboard chrome */
+.app-topbar .dag-toggle,
+.dag-app-topbar .dag-toggle {
   position: static;
   top: auto;
   right: auto;
   box-shadow: none;
+  background: #21262d;
+  border-color: #484f58;
+  color: #8b949e;
 }
 
-.dag-page {
-  min-height: 100%;
-  padding: 24px;
+.app-topbar .dag-toggle.is-on,
+.dag-app-topbar .dag-toggle.is-on {
+  border-color: #a371f7;
+  color: #d2a8ff;
+  background: #1c1425;
+}
+
+.app-topbar .dag-toggle.is-on .dag-toggle-glyph,
+.dag-app-topbar .dag-toggle.is-on .dag-toggle-glyph {
+  background: #8957e5;
+}
+
+.app-topbar .dag-toggle:hover,
+.dag-app-topbar .dag-toggle:hover {
+  box-shadow: 0 0 0 1px rgba(163, 113, 247, 0.35);
+}
+
+/* Dashboard inline cells — subtle hover hint; badges stay hidden until hover */
+.content .dag-cell:hover {
+  background-color: rgba(90, 58, 160, 0.12);
+  border-radius: 3px;
+}
+
+/* Full DAG explorer — light theme (dag.css expects these variables) */
+.dag-shell {
+  min-height: 100vh;
+  background: #f6f8fa;
+  color: #222;
+  --fg: #222;
+  --muted: #666;
+  --card: #ffffff;
+  --border: #e0e0e0;
+  --accent: #5a3aa0;
+}
+
+.dag-app-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 24px;
+  border-bottom: 1px solid #30363d;
   background: #0d1117;
 }
 
-/* Explainer DAG on dark dashboard — keep ƒ badges visible when toggle is on */
-.dag-cell { position: relative; }
-.dag-cell .dag-cell-fx {
-  opacity: 1 !important;
-  transform: scale(1) !important;
-  pointer-events: auto !important;
+.dag-back-link {
+  color: #58a6ff;
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 600;
 }
-.dag-cell-quiet .dag-cell-fx { opacity: 0 !important; }
+
+.dag-back-link:hover {
+  text-decoration: underline;
+}
+
+.dag-page {
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 24px 24px 4em;
+  color: var(--fg);
+}
+
+/* Hover cards over dark dashboard remain readable */
+.dag-hovercard-shell-fixed .dag-hovercard {
+  color: #222;
+}

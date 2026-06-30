@@ -1,5 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { api } from '../api';
+import { ViewDagScan } from '../components/DagValue';
+import { Cell } from '../components/dag-display';
 import type {
   CandidateStudyRow,
   CorpusCatalogSummary,
@@ -67,10 +69,12 @@ export function ImportCatalogView() {
           fontSize: 14,
         }}
       >
-        <strong>{summary.catalog_witness_note}</strong>
+        <strong><Cell table="CorpusCatalogSummary" col="catalog_witness_note">{summary.catalog_witness_note}</Cell></strong>
         <div style={{ marginTop: 4, color: '#555' }}>
-          {summary.imported_count} imported · {summary.candidate_count} candidates ·{' '}
-          {summary.ready_to_encode_count} encode-ready · {summary.blocked_count} blocked
+          <Cell table="CorpusCatalogSummary" col="imported_count">{summary.imported_count}</Cell> imported ·{' '}
+          <Cell table="CorpusCatalogSummary" col="candidate_count">{summary.candidate_count}</Cell> candidates ·{' '}
+          <Cell table="CorpusCatalogSummary" col="ready_to_encode_count">{summary.ready_to_encode_count}</Cell> encode-ready ·{' '}
+          <Cell table="CorpusCatalogSummary" col="blocked_count">{summary.blocked_count}</Cell> blocked
         </div>
       </div>
 
@@ -89,11 +93,17 @@ export function ImportCatalogView() {
           {domains.map(d => (
             <tr key={d.domain_target_id} style={{ borderBottom: '1px solid #eee' }}>
               <td style={{ padding: '6px 8px' }}>{d.domain}</td>
-              <td style={{ padding: '6px 8px' }}>{d.current_imported_count}</td>
-              <td style={{ padding: '6px 8px' }}>{d.candidate_queued_count}</td>
-              <td style={{ padding: '6px 8px' }}>{d.target_min_count}</td>
+              <td style={{ padding: '6px 8px' }}>
+                <Cell table="DomainExpansionTargets" col="current_imported_count">{d.current_imported_count}</Cell>
+              </td>
+              <td style={{ padding: '6px 8px' }}>
+                <Cell table="DomainExpansionTargets" col="candidate_queued_count">{d.candidate_queued_count}</Cell>
+              </td>
+              <td style={{ padding: '6px 8px' }}>
+                <Cell table="DomainExpansionTargets" col="target_min_count">{d.target_min_count}</Cell>
+              </td>
               <td style={{ padding: '6px 8px', color: d.is_under_represented ? '#c5221f' : '#137333' }}>
-                {d.gap_count}
+                <Cell table="DomainExpansionTargets" col="gap_count">{d.gap_count}</Cell>
               </td>
             </tr>
           ))}
@@ -105,7 +115,9 @@ export function ImportCatalogView() {
         {template.map(step => (
           <li key={step.template_step_id} style={{ marginBottom: 6 }}>
             <strong>{step.target_table}</strong> — {step.row_description}
-            <div style={{ color: '#888', fontSize: 12 }}>{step.mechanical_check}</div>
+            <div style={{ color: '#888', fontSize: 12 }}>
+              <Cell table="StudyImportTemplate" col="mechanical_check">{step.mechanical_check}</Cell>
+            </div>
           </li>
         ))}
       </ol>
@@ -145,9 +157,11 @@ export function ImportCatalogView() {
         <tbody>
           {filtered.map(row => (
             <tr key={row.candidate_id} style={{ borderBottom: '1px solid #eee' }}>
-              <td style={{ padding: '6px 8px' }}>{row.priority}</td>
+              <td style={{ padding: '6px 8px' }}>
+                <Cell table="CandidateStudyCatalog" col="priority">{row.priority}</Cell>
+              </td>
               <td style={{ padding: '6px 8px', color: STATUS_COLORS[row.ingestion_status] ?? '#333' }}>
-                {row.ingestion_status}
+                <Cell table="CandidateStudyCatalog" col="ingestion_status">{row.ingestion_status}</Cell>
               </td>
               <td style={{ padding: '6px 8px', maxWidth: 280 }}>
                 <div>{row.title}</div>
@@ -157,14 +171,23 @@ export function ImportCatalogView() {
               <td style={{ padding: '6px 8px', fontFamily: 'monospace', fontSize: 12 }}>
                 {row.stratum_variable_name}
               </td>
-              <td style={{ padding: '6px 8px', fontWeight: 600 }}>{row.expected_distortion_type}</td>
+              <td style={{ padding: '6px 8px', fontWeight: 600 }}>
+                <Cell table="CandidateStudyCatalog" col="expected_distortion_type">{row.expected_distortion_type}</Cell>
+              </td>
               <td style={{ padding: '6px 8px', fontFamily: 'monospace', fontSize: 11 }}>
                 {row.proposed_study_id}
+                {row.is_imported && (
+                  <> · linked <Cell table="CandidateStudyCatalog" col="linked_study_id">{row.linked_study_id}</Cell></>
+                )}
+                {row.observed_distortion_type && (
+                  <> · observed <Cell table="CandidateStudyCatalog" col="observed_distortion_type">{row.observed_distortion_type}</Cell></>
+                )}
               </td>
             </tr>
           ))}
         </tbody>
       </table>
+      <ViewDagScan ready={!loading} deps={[filtered, candidates, domains, summary, statusFilter]} />
     </div>
   );
 }
