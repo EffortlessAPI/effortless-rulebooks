@@ -2,21 +2,29 @@
 
 **Schema:** `public`
 **Database:** `demo`
-**Timestamp:** 2026-06-30 15:44:25 UTC
+**Timestamp:** 2026-06-30 16:11:45 UTC
 
 ## Parsing Rulebook
 
-Found **2** tables in rulebook
+Found **10** tables in rulebook
 
 
-  - **Charges** (7 fields, 2 records)
-  - **ChargeInteractions** (5 fields, 1 records)
+  - **Loops** (10 fields, 4 records)
+  - **PhysicsConstants** (6 fields, 6 records)
+  - **Particles** (6 fields, 6 records)
+  - **Charges** (14 fields, 7 records)
+  - **Systems** (11 fields, 3 records)
+  - **ChargeInteractions** (28 fields, 5 records)
+  - **ForceVectors** (17 fields, 5 records)
+  - **ElectricFieldPoints** (24 fields, 7 records)
+  - **InvariantChecks** (6 fields, 8 records)
+  - **SystemSummary** (15 fields, 3 records)
 
-Generated **2** table definitions with **10** raw fields (mode=check-add)
-Generated **2** calculation functions
-Generated **2** views
-Enabled RLS on **2** tables
-Generated insert statements for **3** records
+Generated **10** table definitions with **76** raw fields (mode=check-add)
+Generated **58** calculation functions
+Generated **10** views
+Enabled RLS on **10** tables
+Generated insert statements for **54** records
 ## Script Generation Complete
 
 Generated files:

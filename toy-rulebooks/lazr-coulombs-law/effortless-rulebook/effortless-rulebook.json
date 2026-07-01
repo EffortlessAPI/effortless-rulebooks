@@ -1,128 +1,425 @@
 {
   "$schema": "https://example.com/cmcc-schema/v1",
-  "Name": "Lazr Coulomb's Law",
-  "Description": "Physics simulation: electrostatic force between charged particles",
-  "Charges": {
-    "Description": "Individual charged particles with position and mass",
+  "Name": "lazr-coulombs-law",
+  "Description": "Digital mirror of Coulomb's Law of electrostatics. Entities: Charges, ChargeInteractions, ForceComponents, ElectricFields. Force magnitude, direction, attraction/repulsion, electric field strength, and field superposition all fall out of the DAG as derived facts — never modeled directly.",
+
+  "__meta__": {
+    "Description": "Table: __meta__ — project-level metadata for the Coulomb's Law domain. One row per key.",
     "schema": [
-      {
-        "name": "ChargeId",
-        "datatype": "string",
-        "type": "raw",
-        "nullable": false,
-        "Description": "Unique identifier"
-      },
-      {
-        "name": "Label",
-        "datatype": "string",
-        "type": "raw",
-        "nullable": false,
-        "Description": "Human-readable label"
-      },
-      {
-        "name": "ChargeValue",
-        "datatype": "number",
-        "type": "raw",
-        "nullable": false,
-        "Description": "Charge in Coulombs"
-      },
-      {
-        "name": "PositionX",
-        "datatype": "number",
-        "type": "raw",
-        "nullable": false,
-        "Description": "X coordinate"
-      },
-      {
-        "name": "PositionY",
-        "datatype": "number",
-        "type": "raw",
-        "nullable": false,
-        "Description": "Y coordinate"
-      },
-      {
-        "name": "PositionZ",
-        "datatype": "number",
-        "type": "raw",
-        "nullable": false,
-        "Description": "Z coordinate"
-      },
-      {
-        "name": "Mass",
-        "datatype": "number",
-        "type": "raw",
-        "nullable": true,
-        "Description": "Mass in kg"
-      }
+      { "name": "MetaKey",     "datatype": "string", "type": "raw",        "nullable": false, "Description": "Unique key" },
+      { "name": "Name",        "datatype": "string", "type": "calculated", "nullable": false, "Description": "Display label.", "formula": "={{MetaKey}}" },
+      { "name": "ValueType",   "datatype": "string", "type": "raw",        "nullable": false, "Description": "string | object | array" },
+      { "name": "StringValue", "datatype": "string", "type": "raw",        "nullable": true,  "Description": "Value when ValueType=string" },
+      { "name": "JsonValue",   "datatype": "string", "type": "raw",        "nullable": true,  "Description": "Value when ValueType=object or array" }
+    ],
+    "data": [
+      { "MetaKey": "cmcc_summary",  "ValueType": "string", "StringValue": "Domain mirror of Coulomb's Law. Entities: Charges, ChargeInteractions, ForceComponents, ElectricFieldPoints. ForceMagnitude, ForceDirection, ElectricFieldStrength all emerge from the DAG — never hardcoded." },
+      { "MetaKey": "source",        "ValueType": "string", "StringValue": "hand-authored" },
+      { "MetaKey": "tool_version",  "ValueType": "string", "StringValue": "1.0.0" },
+      { "MetaKey": "loop",          "ValueType": "string", "StringValue": "loop-01" },
+      { "MetaKey": "tagline",       "ValueType": "string", "StringValue": "Coulomb's Law as a DAG: F = k·q₁·q₂/r² falls out as a derived fact, never modeled directly." },
+      { "MetaKey": "motif",         "ValueType": "string", "StringValue": "electrostatics" },
+      { "MetaKey": "use_cases",     "ValueType": "string", "StringValue": "Physics simulation; educational model; ERB scaffolding demonstration; multi-table lookup + aggregation showcase" }
+    ]
+  },
+
+  "Loops": {
+    "Description": "Table: Loops — build history and forward plan. Each row documents what new concept is introduced, what was witnessed, and what the next empirical question is.",
+    "schema": [
+      { "name": "LoopId",        "datatype": "string",  "type": "raw",        "nullable": false, "Description": "Unique identifier: loop-01, loop-02, …" },
+      { "name": "Name",          "datatype": "string",  "type": "calculated", "nullable": false, "Description": "Display label.", "formula": "={{LoopId}}" },
+      { "name": "Title",         "datatype": "string",  "type": "raw",        "nullable": false, "Description": "Short title for what this loop adds." },
+      { "name": "Status",        "datatype": "string",  "type": "raw",        "nullable": false, "Description": "planned | in-progress | complete" },
+      { "name": "NewConcept",    "datatype": "string",  "type": "raw",        "nullable": true,  "Description": "The new first-class domain concept introduced this loop." },
+      { "name": "DomainQuestion","datatype": "string",  "type": "raw",        "nullable": true,  "Description": "The natural-language question this loop's concept answers." },
+      { "name": "MockDataNote",  "datatype": "string",  "type": "raw",        "nullable": true,  "Description": "What the seed data is designed to show." },
+      { "name": "NextSuggestion","datatype": "string",  "type": "raw",        "nullable": true,  "Description": "Suggestion for the next loop." },
+      { "name": "CommitHash",    "datatype": "string",  "type": "raw",        "nullable": true,  "Description": "Git SHA where this loop first landed." },
+      { "name": "CommitDate",    "datatype": "string",  "type": "raw",        "nullable": true,  "Description": "ISO date of the commit." }
     ],
     "data": [
       {
-        "ChargeId": "charge_1",
-        "Label": "Proton A",
-        "ChargeValue": 1.602e-19,
-        "PositionX": 0,
-        "PositionY": 0,
-        "PositionZ": 0,
-        "Mass": 1.673e-27
+        "LoopId": "loop-01",
+        "Title": "Core domain: Charges + ChargeInteractions → ForceMagnitude falls out",
+        "Status": "complete",
+        "NewConcept": "Charges, ChargeInteractions",
+        "DomainQuestion": "For each pair of charges, what is the electrostatic force magnitude between them?",
+        "MockDataNote": "Hydrogen atom: proton at origin, electron 1 Bohr radius away. ForceMagnitude = k·|q₁|·|q₂|/r² ≈ 8.24×10⁻⁸ N.",
+        "NextSuggestion": "Ask: what is the direction of the force — and decompose it into X/Y/Z components? That requires ForceComponents.",
+        "CommitDate": "2026-06-30"
       },
       {
-        "ChargeId": "charge_2",
-        "Label": "Electron B",
-        "ChargeValue": -1.602e-19,
-        "PositionX": 1e-10,
-        "PositionY": 0,
-        "PositionZ": 0,
-        "Mass": 9.109e-31
+        "LoopId": "loop-02",
+        "Title": "ForceComponents: decompose force vector into X, Y, Z projections",
+        "Status": "planned",
+        "NewConcept": "ForceComponents",
+        "DomainQuestion": "In what direction does each charge push/pull its partner? What are the X, Y, Z force components?",
+        "NextSuggestion": "Ask: what is the electric field at an arbitrary observation point due to a source charge? That requires ElectricFieldPoints."
+      },
+      {
+        "LoopId": "loop-03",
+        "Title": "ElectricFieldPoints: field strength and direction at observation points",
+        "Status": "planned",
+        "NewConcept": "ElectricFieldPoints",
+        "DomainQuestion": "At any point in space, what is the total electric field due to all charges in the system?",
+        "NextSuggestion": "Ask: which charge dominates the field at each observation point? Add FieldDominantCharge as a derived fact."
+      },
+      {
+        "LoopId": "loop-04",
+        "Title": "SystemSummary: the model witnesses its own state — total force, net field, dominant interactions",
+        "Status": "planned",
+        "NewConcept": "SystemSummary",
+        "DomainQuestion": "Across all interactions in this system, what is the total attractive force? Total repulsive force? Which pair has the strongest interaction?",
+        "NextSuggestion": "Add InvariantChecks: Coulomb symmetry (F₁₂ = F₂₁), superposition compliance, sign consistency."
       }
     ]
   },
-  "ChargeInteractions": {
-    "Description": "Pairs of charges with computed electrostatic force",
+
+  "PhysicsConstants": {
+    "Description": "Table: PhysicsConstants — fundamental constants used in Coulomb's Law calculations. Single source of truth for k, e, a₀, etc.",
     "schema": [
-      {
-        "name": "InteractionId",
-        "datatype": "string",
-        "type": "raw",
-        "nullable": false,
-        "Description": "Interaction ID"
-      },
-      {
-        "name": "Charge1Id",
-        "datatype": "string",
-        "type": "raw",
-        "nullable": false,
-        "Description": "First charge"
-      },
-      {
-        "name": "Charge2Id",
-        "datatype": "string",
-        "type": "raw",
-        "nullable": false,
-        "Description": "Second charge"
-      },
-      {
-        "name": "IsRepulsive",
-        "datatype": "boolean",
-        "type": "calculated",
-        "nullable": false,
-        "Description": "Same charge sign = repulsive",
-        "formula": "=VLOOKUP({{Charge1Id}}, Charges!{{ChargeId}}, Charges!{{ChargeValue}}) * VLOOKUP({{Charge2Id}}, Charges!{{ChargeId}}, Charges!{{ChargeValue}}) > 0"
-      },
-      {
-        "name": "IsAttractive",
-        "datatype": "boolean",
-        "type": "calculated",
-        "nullable": false,
-        "Description": "Opposite charge sign = attractive",
-        "formula": "=VLOOKUP({{Charge1Id}}, Charges!{{ChargeId}}, Charges!{{ChargeValue}}) * VLOOKUP({{Charge2Id}}, Charges!{{ChargeId}}, Charges!{{ChargeValue}}) < 0"
-      }
+      { "name": "ConstantId",   "datatype": "string", "type": "raw",        "nullable": false, "Description": "Unique identifier (e.g. coulomb_k, elem_charge)" },
+      { "name": "Name",         "datatype": "string", "type": "raw",        "nullable": false, "Description": "Human-readable name" },
+      { "name": "Symbol",       "datatype": "string", "type": "raw",        "nullable": false, "Description": "Physics symbol (k, e, a₀, …)" },
+      { "name": "Value",        "datatype": "number", "type": "raw",        "nullable": false, "Description": "Numeric value in SI units" },
+      { "name": "Units",        "datatype": "string", "type": "raw",        "nullable": false, "Description": "SI unit string" },
+      { "name": "Description",  "datatype": "string", "type": "raw",        "nullable": true,  "Description": "What this constant represents" }
+    ],
+    "data": [
+      { "ConstantId": "coulomb_k",    "Name": "Coulomb's Constant",        "Symbol": "k",   "Value": 8990000000,         "Units": "N·m²·C⁻²", "Description": "Proportionality constant in Coulomb's Law (= 1/(4πε₀))" },
+      { "ConstantId": "elem_charge",  "Name": "Elementary Charge",         "Symbol": "e",   "Value": 1.602e-19,          "Units": "C",         "Description": "Magnitude of charge on a proton or electron" },
+      { "ConstantId": "bohr_radius",  "Name": "Bohr Radius",               "Symbol": "a₀",  "Value": 5.292e-11,          "Units": "m",         "Description": "Most probable distance from proton to electron in ground-state hydrogen" },
+      { "ConstantId": "epsilon_0",    "Name": "Permittivity of Free Space", "Symbol": "ε₀",  "Value": 8.854187817e-12,    "Units": "C²·N⁻¹·m⁻²","Description": "Electric constant; k = 1/(4πε₀)" },
+      { "ConstantId": "proton_mass",  "Name": "Proton Mass",               "Symbol": "mₚ",  "Value": 1.67262192e-27,     "Units": "kg",        "Description": "Rest mass of a proton" },
+      { "ConstantId": "electron_mass","Name": "Electron Mass",              "Symbol": "mₑ",  "Value": 9.1093837015e-31,   "Units": "kg",        "Description": "Rest mass of an electron" }
+    ]
+  },
+
+  "Particles": {
+    "Description": "Table: Particles — named particle archetypes with canonical charge and mass values. Used as reference for Charges rows.",
+    "schema": [
+      { "name": "ParticleId",      "datatype": "string", "type": "raw",        "nullable": false, "Description": "Unique identifier" },
+      { "name": "Name",            "datatype": "string", "type": "raw",        "nullable": false, "Description": "Common name (Proton, Electron, …)" },
+      { "name": "CanonicalCharge", "datatype": "number", "type": "raw",        "nullable": false, "Description": "Charge in Coulombs (positive or negative)" },
+      { "name": "CanonicalMass",   "datatype": "number", "type": "raw",        "nullable": false, "Description": "Rest mass in kg" },
+      { "name": "ChargeSign",      "datatype": "string", "type": "calculated", "nullable": false, "Description": "positive | negative | neutral", "formula": "=IF({{CanonicalCharge}} > 0, \"positive\", IF({{CanonicalCharge}} < 0, \"negative\", \"neutral\"))" },
+      { "name": "Description",     "datatype": "string", "type": "raw",        "nullable": true,  "Description": "Physical description" }
+    ],
+    "data": [
+      { "ParticleId": "particle_proton",    "Name": "Proton",    "CanonicalCharge":  1.602e-19, "CanonicalMass": 1.67262192e-27, "Description": "Positively charged baryon; nucleus constituent" },
+      { "ParticleId": "particle_electron",  "Name": "Electron",  "CanonicalCharge": -1.602e-19, "CanonicalMass": 9.1093837015e-31, "Description": "Negatively charged lepton; orbital particle" },
+      { "ParticleId": "particle_neutron",   "Name": "Neutron",   "CanonicalCharge":  0.0,        "CanonicalMass": 1.67492749e-27,  "Description": "Neutral baryon; nucleus constituent" },
+      { "ParticleId": "particle_alpha",     "Name": "Alpha",     "CanonicalCharge":  3.204e-19,  "CanonicalMass": 6.6446573e-27,   "Description": "Helium-4 nucleus: 2 protons + 2 neutrons; charge = +2e" },
+      { "ParticleId": "particle_pos_ion",   "Name": "Cation",    "CanonicalCharge":  1.602e-19,  "CanonicalMass": 1.67262192e-27,  "Description": "Generic positive ion (1 missing electron)" },
+      { "ParticleId": "particle_neg_ion",   "Name": "Anion",     "CanonicalCharge": -1.602e-19,  "CanonicalMass": 9.1093837015e-31, "Description": "Generic negative ion (1 extra electron)" }
+    ]
+  },
+
+  "Charges": {
+    "Description": "Table: Charges — individual charged particles with 3D position and physical properties. The raw leaves of the Coulomb's Law DAG.",
+    "schema": [
+      { "name": "ChargeId",      "datatype": "string",  "type": "raw",        "nullable": false, "Description": "Unique identifier" },
+      { "name": "Name",          "datatype": "string",  "type": "raw",        "nullable": false, "Description": "Human-readable label (Proton A, Electron B, …)" },
+      { "name": "SystemId",      "datatype": "string",  "type": "raw",        "nullable": false, "Description": "FK → Systems.SystemId — which physical system this charge belongs to" },
+      { "name": "ParticleId",    "datatype": "string",  "type": "raw",        "nullable": true,  "Description": "FK → Particles.ParticleId — archetype (optional)" },
+      { "name": "ChargeValue",   "datatype": "number",  "type": "raw",        "nullable": false, "Description": "Charge in Coulombs (signed: positive or negative)" },
+      { "name": "PositionX",     "datatype": "number",  "type": "raw",        "nullable": false, "Description": "X coordinate in meters" },
+      { "name": "PositionY",     "datatype": "number",  "type": "raw",        "nullable": false, "Description": "Y coordinate in meters" },
+      { "name": "PositionZ",     "datatype": "number",  "type": "raw",        "nullable": false, "Description": "Z coordinate in meters" },
+      { "name": "Mass",          "datatype": "number",  "type": "raw",        "nullable": true,  "Description": "Mass in kg (null = massless / not tracked)" },
+      { "name": "ChargeSign",    "datatype": "string",  "type": "calculated", "nullable": false, "Description": "positive | negative | neutral",
+        "formula": "=IF({{ChargeValue}} > 0, \"positive\", IF({{ChargeValue}} < 0, \"negative\", \"neutral\"))" },
+      { "name": "ChargeMagnitude","datatype": "number", "type": "calculated", "nullable": false, "Description": "Absolute value of ChargeValue in Coulombs",
+        "formula": "=ABS({{ChargeValue}})" },
+      { "name": "SystemName",    "datatype": "string",  "type": "lookup",     "nullable": true,  "Description": "Lookup: Systems.Name via SystemId.",
+        "formula": "=LOOKUP({{SystemId}}, Systems[SystemId], Systems[Name])" },
+      { "name": "ParticleName",  "datatype": "string",  "type": "lookup",     "nullable": true,  "Description": "Lookup: Particles.Name via ParticleId.",
+        "formula": "=LOOKUP({{ParticleId}}, Particles[ParticleId], Particles[Name])" },
+      { "name": "InteractionCount","datatype": "integer","type": "aggregation","nullable": false, "Description": "Count of ChargeInteractions that reference this charge as Charge1 or Charge2.",
+        "formula": "=COUNTIFS(ChargeInteractions!{{Charge1Id}}, {{ChargeId}})" }
+    ],
+    "data": [
+      { "ChargeId": "charge_h_proton",   "Name": "Proton A",     "SystemId": "sys_hydrogen",  "ParticleId": "particle_proton",   "ChargeValue":  1.602e-19, "PositionX": 0,         "PositionY": 0, "PositionZ": 0, "Mass": 1.67262192e-27 },
+      { "ChargeId": "charge_h_electron", "Name": "Electron B",   "SystemId": "sys_hydrogen",  "ParticleId": "particle_electron", "ChargeValue": -1.602e-19, "PositionX": 5.292e-11, "PositionY": 0, "PositionZ": 0, "Mass": 9.1093837015e-31 },
+      { "ChargeId": "charge_nacl_na",    "Name": "Sodium Na⁺",   "SystemId": "sys_nacl",      "ParticleId": "particle_pos_ion",  "ChargeValue":  1.602e-19, "PositionX": 0,         "PositionY": 0, "PositionZ": 0, "Mass": 3.8175e-26 },
+      { "ChargeId": "charge_nacl_cl",    "Name": "Chloride Cl⁻", "SystemId": "sys_nacl",      "ParticleId": "particle_neg_ion",  "ChargeValue": -1.602e-19, "PositionX": 2.82e-10,  "PositionY": 0, "PositionZ": 0, "Mass": 5.887e-26 },
+      { "ChargeId": "charge_tri_a",      "Name": "Charge A (+)",  "SystemId": "sys_triangle",  "ParticleId": "particle_proton",   "ChargeValue":  1.602e-19, "PositionX": 0,         "PositionY": 0, "PositionZ": 0, "Mass": 1.67262192e-27 },
+      { "ChargeId": "charge_tri_b",      "Name": "Charge B (+)",  "SystemId": "sys_triangle",  "ParticleId": "particle_proton",   "ChargeValue":  1.602e-19, "PositionX": 1e-10,     "PositionY": 0, "PositionZ": 0, "Mass": 1.67262192e-27 },
+      { "ChargeId": "charge_tri_c",      "Name": "Charge C (−)",  "SystemId": "sys_triangle",  "ParticleId": "particle_electron", "ChargeValue": -1.602e-19, "PositionX": 5e-11,     "PositionY": 8.66e-11, "PositionZ": 0, "Mass": 9.1093837015e-31 }
+    ]
+  },
+
+  "Systems": {
+    "Description": "Table: Systems — named physical configurations of charges. Groups Charges into testable scenarios (hydrogen atom, NaCl pair, triangle of charges, etc.).",
+    "schema": [
+      { "name": "SystemId",        "datatype": "string",  "type": "raw",        "nullable": false, "Description": "Unique identifier" },
+      { "name": "Name",            "datatype": "string",  "type": "raw",        "nullable": false, "Description": "Human-readable name" },
+      { "name": "Description",     "datatype": "string",  "type": "raw",        "nullable": true,  "Description": "What physical situation this represents" },
+      { "name": "IsSynthetic",     "datatype": "boolean", "type": "raw",        "nullable": false, "Description": "True if this is a constructed example; false if from real measurements" },
+      { "name": "ChargeCount",     "datatype": "integer", "type": "aggregation","nullable": false, "Description": "Number of charges in this system.",
+        "formula": "=COUNTIFS(Charges!{{SystemId}}, {{SystemId}})" },
+      { "name": "InteractionCount","datatype": "integer", "type": "aggregation","nullable": false, "Description": "Number of pairwise interactions in this system.",
+        "formula": "=COUNTIFS(ChargeInteractions!{{SystemId}}, {{SystemId}})" },
+      { "name": "AttractiveCount", "datatype": "integer", "type": "aggregation","nullable": false, "Description": "Count of attractive interactions in this system.",
+        "formula": "=COUNTIFS(ChargeInteractions!{{SystemId}}, {{SystemId}}, ChargeInteractions!{{IsAttractive}}, TRUE())" },
+      { "name": "RepulsiveCount",  "datatype": "integer", "type": "aggregation","nullable": false, "Description": "Count of repulsive interactions in this system.",
+        "formula": "=COUNTIFS(ChargeInteractions!{{SystemId}}, {{SystemId}}, ChargeInteractions!{{IsRepulsive}}, TRUE())" },
+      { "name": "TotalCharge",     "datatype": "number",  "type": "aggregation","nullable": false, "Description": "Algebraic sum of all charges in the system (net charge).",
+        "formula": "=SUMIFS(Charges!{{ChargeValue}}, Charges!{{SystemId}}, {{SystemId}})" },
+      { "name": "IsNeutral",       "datatype": "boolean", "type": "calculated", "nullable": false, "Description": "True when net charge is effectively zero.",
+        "formula": "=ABS({{TotalCharge}}) < 1e-30" },
+      { "name": "MaxForceMagnitude","datatype": "number", "type": "aggregation","nullable": false, "Description": "Strongest pairwise interaction in this system.",
+        "formula": "=MAXIFS(ChargeInteractions!{{ForceMagnitude}}, ChargeInteractions!{{SystemId}}, {{SystemId}})" }
+    ],
+    "data": [
+      { "SystemId": "sys_hydrogen",  "Name": "Hydrogen Atom",        "Description": "Ground-state hydrogen: proton at origin, electron at 1 Bohr radius. The canonical Coulomb's Law demonstration.", "IsSynthetic": false },
+      { "SystemId": "sys_nacl",      "Name": "NaCl Ion Pair",        "Description": "Sodium chloride: Na⁺ and Cl⁻ separated by the equilibrium bond length (282 pm). Ionic bond model.", "IsSynthetic": false },
+      { "SystemId": "sys_triangle",  "Name": "Charge Triangle",      "Description": "Two positive charges and one negative charge in an equilateral triangle. Tests superposition and mixed attractive/repulsive interactions.", "IsSynthetic": true }
+    ]
+  },
+
+  "ChargeInteractions": {
+    "Description": "Table: ChargeInteractions — pairwise electrostatic interactions. One row per ordered pair (Charge1, Charge2) within a system. Position and charge values are stored directly (denormalized from Charges) so that DeltaX/Y/Z, DistanceMeters, ForceMagnitude, IsAttractive, and IsRepulsive can be computed as calculated fields. F = k·|q₁·q₂|/r² falls out of the DAG.",
+    "schema": [
+      { "name": "InteractionId",    "datatype": "string",  "type": "raw",        "nullable": false, "Description": "Unique identifier" },
+      { "name": "Name",             "datatype": "string",  "type": "calculated", "nullable": false, "Description": "Display label.", "formula": "={{InteractionId}}" },
+      { "name": "SystemId",         "datatype": "string",  "type": "raw",        "nullable": false, "Description": "FK → Systems.SystemId" },
+      { "name": "Charge1Id",        "datatype": "string",  "type": "raw",        "nullable": false, "Description": "FK → Charges.ChargeId (first particle)" },
+      { "name": "Charge2Id",        "datatype": "string",  "type": "raw",        "nullable": false, "Description": "FK → Charges.ChargeId (second particle)" },
+      { "name": "Charge1Label",     "datatype": "string",  "type": "raw",        "nullable": true,  "Description": "Human label copied from Charges.Name at seed time" },
+      { "name": "Charge2Label",     "datatype": "string",  "type": "raw",        "nullable": true,  "Description": "Human label copied from Charges.Name at seed time" },
+      { "name": "Q1",               "datatype": "number",  "type": "raw",        "nullable": false, "Description": "Charge value of Charge1 in Coulombs (copied from Charges.ChargeValue)" },
+      { "name": "Q2",               "datatype": "number",  "type": "raw",        "nullable": false, "Description": "Charge value of Charge2 in Coulombs (copied from Charges.ChargeValue)" },
+      { "name": "X1",               "datatype": "number",  "type": "raw",        "nullable": false, "Description": "X position of Charge1 in meters (copied from Charges.PositionX)" },
+      { "name": "Y1",               "datatype": "number",  "type": "raw",        "nullable": false, "Description": "Y position of Charge1 in meters (copied from Charges.PositionY)" },
+      { "name": "Z1",               "datatype": "number",  "type": "raw",        "nullable": false, "Description": "Z position of Charge1 in meters (copied from Charges.PositionZ)" },
+      { "name": "X2",               "datatype": "number",  "type": "raw",        "nullable": false, "Description": "X position of Charge2 in meters (copied from Charges.PositionX)" },
+      { "name": "Y2",               "datatype": "number",  "type": "raw",        "nullable": false, "Description": "Y position of Charge2 in meters (copied from Charges.PositionY)" },
+      { "name": "Z2",               "datatype": "number",  "type": "raw",        "nullable": false, "Description": "Z position of Charge2 in meters (copied from Charges.PositionZ)" },
+      { "name": "CoulombK",         "datatype": "number",  "type": "raw",        "nullable": false, "Description": "Coulomb's constant: 8.99×10⁹ N·m²·C⁻². Stored per-row so the formula is self-contained." },
+      { "name": "DeltaX",           "datatype": "number",  "type": "calculated", "nullable": false, "Description": "X2 − X1: displacement in X from Charge1 to Charge2 in meters.",
+        "formula": "={{X2}} - {{X1}}" },
+      { "name": "DeltaY",           "datatype": "number",  "type": "calculated", "nullable": false, "Description": "Y2 − Y1: displacement in Y from Charge1 to Charge2 in meters.",
+        "formula": "={{Y2}} - {{Y1}}" },
+      { "name": "DeltaZ",           "datatype": "number",  "type": "calculated", "nullable": false, "Description": "Z2 − Z1: displacement in Z from Charge1 to Charge2 in meters.",
+        "formula": "={{Z2}} - {{Z1}}" },
+      { "name": "DistanceSquared",  "datatype": "number",  "type": "calculated", "nullable": false, "Description": "r² = ΔX² + ΔY² + ΔZ² in m². Intermediate value for Coulomb's Law.",
+        "formula": "={{DeltaX}} * {{DeltaX}} + {{DeltaY}} * {{DeltaY}} + {{DeltaZ}} * {{DeltaZ}}" },
+      { "name": "DistanceMeters",   "datatype": "number",  "type": "calculated", "nullable": false, "Description": "r = √(r²): charge separation in meters.",
+        "formula": "=SQRT({{DistanceSquared}})" },
+      { "name": "DistancePicometers","datatype": "number", "type": "calculated", "nullable": false, "Description": "Distance expressed in picometers (r × 10¹²). Human-readable at atomic scale.",
+        "formula": "={{DistanceMeters}} * 1000000000000" },
+      { "name": "ChargeProduct",    "datatype": "number",  "type": "calculated", "nullable": false, "Description": "q₁ · q₂ (signed). Positive → same-sign charges (repulsive). Negative → opposite-sign (attractive).",
+        "formula": "={{Q1}} * {{Q2}}" },
+      { "name": "ForceMagnitude",   "datatype": "number",  "type": "calculated", "nullable": false, "Description": "F = k · |q₁ · q₂| / r² in Newtons. This is Coulomb's Law.",
+        "formula": "={{CoulombK}} * ABS({{ChargeProduct}}) / {{DistanceSquared}}" },
+      { "name": "IsAttractive",     "datatype": "boolean", "type": "calculated", "nullable": false, "Description": "True when charges have opposite signs (ChargeProduct < 0). Force pulls the particles together.",
+        "formula": "={{ChargeProduct}} < 0" },
+      { "name": "IsRepulsive",      "datatype": "boolean", "type": "calculated", "nullable": false, "Description": "True when charges have the same sign (ChargeProduct > 0). Force pushes the particles apart.",
+        "formula": "={{ChargeProduct}} > 0" },
+      { "name": "InteractionType",  "datatype": "string",  "type": "calculated", "nullable": false, "Description": "attractive | repulsive | neutral — derived from sign of ChargeProduct.",
+        "formula": "=IF({{IsAttractive}}, \"attractive\", IF({{IsRepulsive}}, \"repulsive\", \"neutral\"))" },
+      { "name": "ForceInAttoNewtons","datatype": "number", "type": "calculated", "nullable": false, "Description": "ForceMagnitude expressed in attonewtons (F × 10¹⁸). Human-readable at atomic scale.",
+        "formula": "={{ForceMagnitude}} * 1000000000000000000" }
     ],
     "data": [
       {
-        "InteractionId": "interaction_1_2",
-        "Charge1Id": "charge_1",
-        "Charge2Id": "charge_2"
+        "InteractionId": "int_h_p_e",
+        "SystemId": "sys_hydrogen",
+        "Charge1Id": "charge_h_proton",   "Charge1Label": "Proton A",
+        "Charge2Id": "charge_h_electron", "Charge2Label": "Electron B",
+        "Q1":  1.602e-19, "Q2": -1.602e-19,
+        "X1": 0, "Y1": 0, "Z1": 0,
+        "X2": 5.292e-11, "Y2": 0, "Z2": 0,
+        "CoulombK": 8990000000
+      },
+      {
+        "InteractionId": "int_nacl",
+        "SystemId": "sys_nacl",
+        "Charge1Id": "charge_nacl_na",    "Charge1Label": "Sodium Na⁺",
+        "Charge2Id": "charge_nacl_cl",    "Charge2Label": "Chloride Cl⁻",
+        "Q1":  1.602e-19, "Q2": -1.602e-19,
+        "X1": 0, "Y1": 0, "Z1": 0,
+        "X2": 2.82e-10, "Y2": 0, "Z2": 0,
+        "CoulombK": 8990000000
+      },
+      {
+        "InteractionId": "int_tri_ab",
+        "SystemId": "sys_triangle",
+        "Charge1Id": "charge_tri_a",      "Charge1Label": "Charge A (+)",
+        "Charge2Id": "charge_tri_b",      "Charge2Label": "Charge B (+)",
+        "Q1":  1.602e-19, "Q2":  1.602e-19,
+        "X1": 0, "Y1": 0, "Z1": 0,
+        "X2": 1e-10, "Y2": 0, "Z2": 0,
+        "CoulombK": 8990000000
+      },
+      {
+        "InteractionId": "int_tri_ac",
+        "SystemId": "sys_triangle",
+        "Charge1Id": "charge_tri_a",      "Charge1Label": "Charge A (+)",
+        "Charge2Id": "charge_tri_c",      "Charge2Label": "Charge C (−)",
+        "Q1":  1.602e-19, "Q2": -1.602e-19,
+        "X1": 0, "Y1": 0, "Z1": 0,
+        "X2": 5e-11, "Y2": 8.66e-11, "Z2": 0,
+        "CoulombK": 8990000000
+      },
+      {
+        "InteractionId": "int_tri_bc",
+        "SystemId": "sys_triangle",
+        "Charge1Id": "charge_tri_b",      "Charge1Label": "Charge B (+)",
+        "Charge2Id": "charge_tri_c",      "Charge2Label": "Charge C (−)",
+        "Q1":  1.602e-19, "Q2": -1.602e-19,
+        "X1": 1e-10, "Y1": 0, "Z1": 0,
+        "X2": 5e-11, "Y2": 8.66e-11, "Z2": 0,
+        "CoulombK": 8990000000
       }
+    ]
+  },
+
+  "ForceVectors": {
+    "Description": "Table: ForceVectors — unit vector and full Cartesian force components for each ChargeInteraction. FX, FY, FZ decompose the scalar ForceMagnitude along the displacement direction. Force on Charge1 due to Charge2: attractive → pulls C1 toward C2 (−r̂); repulsive → pushes C1 away from C2 (+r̂). Position and interaction values are stored directly (denormalized) so all components compute as pure calculated fields.",
+    "schema": [
+      { "name": "ForceVectorId",      "datatype": "string",  "type": "raw",        "nullable": false, "Description": "Unique identifier (mirrors InteractionId)" },
+      { "name": "Name",               "datatype": "string",  "type": "calculated", "nullable": false, "Description": "Display label.", "formula": "={{ForceVectorId}}" },
+      { "name": "InteractionId",      "datatype": "string",  "type": "raw",        "nullable": false, "Description": "FK → ChargeInteractions.InteractionId" },
+      { "name": "ForceMagnitudeRaw",  "datatype": "number",  "type": "raw",        "nullable": false, "Description": "Scalar force magnitude in Newtons (copied from ChargeInteractions.ForceMagnitude)" },
+      { "name": "DX",                 "datatype": "number",  "type": "raw",        "nullable": false, "Description": "ΔX = X2 − X1 in meters (copied from ChargeInteractions.DeltaX)" },
+      { "name": "DY",                 "datatype": "number",  "type": "raw",        "nullable": false, "Description": "ΔY = Y2 − Y1 in meters (copied from ChargeInteractions.DeltaY)" },
+      { "name": "DZ",                 "datatype": "number",  "type": "raw",        "nullable": false, "Description": "ΔZ = Z2 − Z1 in meters (copied from ChargeInteractions.DeltaZ)" },
+      { "name": "DistRaw",            "datatype": "number",  "type": "raw",        "nullable": false, "Description": "Separation distance r in meters (copied from ChargeInteractions.DistanceMeters)" },
+      { "name": "IsAttractiveRaw",    "datatype": "boolean", "type": "raw",        "nullable": false, "Description": "Attraction flag (copied from ChargeInteractions.IsAttractive)" },
+      { "name": "UnitX",              "datatype": "number",  "type": "calculated", "nullable": false, "Description": "X component of the displacement unit vector r̂ = ΔX/r.",
+        "formula": "=IF({{DistRaw}} = 0, 0, {{DX}} / {{DistRaw}})" },
+      { "name": "UnitY",              "datatype": "number",  "type": "calculated", "nullable": false, "Description": "Y component of the displacement unit vector ΔY/r.",
+        "formula": "=IF({{DistRaw}} = 0, 0, {{DY}} / {{DistRaw}})" },
+      { "name": "UnitZ",              "datatype": "number",  "type": "calculated", "nullable": false, "Description": "Z component of the displacement unit vector ΔZ/r.",
+        "formula": "=IF({{DistRaw}} = 0, 0, {{DZ}} / {{DistRaw}})" },
+      { "name": "SignFactor",         "datatype": "number",  "type": "calculated", "nullable": false, "Description": "+1 if repulsive (C1 pushed away from C2); −1 if attractive (C1 pulled toward C2).",
+        "formula": "=IF({{IsAttractiveRaw}}, -1, 1)" },
+      { "name": "FX",                 "datatype": "number",  "type": "calculated", "nullable": false, "Description": "X component of force on Charge1 in Newtons. Positive = net force in +X direction.",
+        "formula": "={{ForceMagnitudeRaw}} * {{SignFactor}} * {{UnitX}}" },
+      { "name": "FY",                 "datatype": "number",  "type": "calculated", "nullable": false, "Description": "Y component of force on Charge1 in Newtons.",
+        "formula": "={{ForceMagnitudeRaw}} * {{SignFactor}} * {{UnitY}}" },
+      { "name": "FZ",                 "datatype": "number",  "type": "calculated", "nullable": false, "Description": "Z component of force on Charge1 in Newtons.",
+        "formula": "={{ForceMagnitudeRaw}} * {{SignFactor}} * {{UnitZ}}" },
+      { "name": "ForceDirDescription","datatype": "string",  "type": "calculated", "nullable": false, "Description": "towards (attractive) | away-from (repulsive).",
+        "formula": "=IF({{IsAttractiveRaw}}, \"towards\", \"away-from\")" }
+    ],
+    "data": [
+      { "ForceVectorId": "fv_h_p_e",  "InteractionId": "int_h_p_e",  "ForceMagnitudeRaw": 8.24e-8, "DX":  5.292e-11, "DY": 0,         "DZ": 0, "DistRaw": 5.292e-11, "IsAttractiveRaw": true  },
+      { "ForceVectorId": "fv_nacl",   "InteractionId": "int_nacl",   "ForceMagnitudeRaw": 2.89e-9, "DX":  2.82e-10,  "DY": 0,         "DZ": 0, "DistRaw": 2.82e-10,  "IsAttractiveRaw": true  },
+      { "ForceVectorId": "fv_tri_ab", "InteractionId": "int_tri_ab", "ForceMagnitudeRaw": 2.31e-8, "DX":  1e-10,     "DY": 0,         "DZ": 0, "DistRaw": 1e-10,     "IsAttractiveRaw": false },
+      { "ForceVectorId": "fv_tri_ac", "InteractionId": "int_tri_ac", "ForceMagnitudeRaw": 2.31e-8, "DX":  5e-11,     "DY": 8.66e-11,  "DZ": 0, "DistRaw": 1e-10,     "IsAttractiveRaw": true  },
+      { "ForceVectorId": "fv_tri_bc", "InteractionId": "int_tri_bc", "ForceMagnitudeRaw": 2.31e-8, "DX": -5e-11,     "DY": 8.66e-11,  "DZ": 0, "DistRaw": 1e-10,     "IsAttractiveRaw": true  }
+    ]
+  },
+
+  "ElectricFieldPoints": {
+    "Description": "Table: ElectricFieldPoints — observation points in space at which the electric field contribution of a single source Charge is evaluated. E = k·q/r² pointing away from positive sources. One row per (ObservationPoint, SourceCharge) pair. Source charge and position values stored directly (denormalized) so EX, EY, EZ compute as pure calculated fields.",
+    "schema": [
+      { "name": "FieldPointId",     "datatype": "string",  "type": "raw",        "nullable": false, "Description": "Unique identifier" },
+      { "name": "Name",             "datatype": "string",  "type": "calculated", "nullable": false, "Description": "Display label.", "formula": "={{FieldPointId}}" },
+      { "name": "SystemId",         "datatype": "string",  "type": "raw",        "nullable": false, "Description": "FK → Systems.SystemId" },
+      { "name": "SourceChargeId",   "datatype": "string",  "type": "raw",        "nullable": false, "Description": "FK → Charges.ChargeId — the charge creating this field contribution" },
+      { "name": "SourceChargeName", "datatype": "string",  "type": "raw",        "nullable": true,  "Description": "Human label of source charge (copied from Charges.Name)" },
+      { "name": "ObservationLabel", "datatype": "string",  "type": "raw",        "nullable": false, "Description": "Human label for the observation point (midpoint, centroid, etc.)" },
+      { "name": "ObsX",             "datatype": "number",  "type": "raw",        "nullable": false, "Description": "Observation point X coordinate in meters" },
+      { "name": "ObsY",             "datatype": "number",  "type": "raw",        "nullable": false, "Description": "Observation point Y coordinate in meters" },
+      { "name": "ObsZ",             "datatype": "number",  "type": "raw",        "nullable": false, "Description": "Observation point Z coordinate in meters" },
+      { "name": "CoulombK",         "datatype": "number",  "type": "raw",        "nullable": false, "Description": "Coulomb's constant per-row (8.99×10⁹ N·m²·C⁻²)" },
+      { "name": "SourceQ",          "datatype": "number",  "type": "raw",        "nullable": false, "Description": "Charge value of source charge in Coulombs (copied from Charges.ChargeValue)" },
+      { "name": "SrcX",             "datatype": "number",  "type": "raw",        "nullable": false, "Description": "X position of source charge in meters (copied from Charges.PositionX)" },
+      { "name": "SrcY",             "datatype": "number",  "type": "raw",        "nullable": false, "Description": "Y position of source charge in meters (copied from Charges.PositionY)" },
+      { "name": "SrcZ",             "datatype": "number",  "type": "raw",        "nullable": false, "Description": "Z position of source charge in meters (copied from Charges.PositionZ)" },
+      { "name": "dX",               "datatype": "number",  "type": "calculated", "nullable": false, "Description": "ObsX − SrcX: displacement from source to observation point.",
+        "formula": "={{ObsX}} - {{SrcX}}" },
+      { "name": "dY",               "datatype": "number",  "type": "calculated", "nullable": false, "Description": "ObsY − SrcY: displacement in Y.",
+        "formula": "={{ObsY}} - {{SrcY}}" },
+      { "name": "dZ",               "datatype": "number",  "type": "calculated", "nullable": false, "Description": "ObsZ − SrcZ: displacement in Z.",
+        "formula": "={{ObsZ}} - {{SrcZ}}" },
+      { "name": "DistanceSquared",  "datatype": "number",  "type": "calculated", "nullable": false, "Description": "r² = dX² + dY² + dZ².",
+        "formula": "={{dX}} * {{dX}} + {{dY}} * {{dY}} + {{dZ}} * {{dZ}}" },
+      { "name": "Distance",         "datatype": "number",  "type": "calculated", "nullable": false, "Description": "r = √(r²): distance from source charge to observation point.",
+        "formula": "=SQRT({{DistanceSquared}})" },
+      { "name": "EFieldMagnitude",  "datatype": "number",  "type": "calculated", "nullable": false, "Description": "E = k·|q|/r²: electric field strength at observation point due to this source charge in N/C.",
+        "formula": "={{CoulombK}} * ABS({{SourceQ}}) / {{DistanceSquared}}" },
+      { "name": "QSign",            "datatype": "number",  "type": "calculated", "nullable": false, "Description": "Sign of source charge: +1 for positive, −1 for negative. Field points away from positive, toward negative.",
+        "formula": "=IF({{SourceQ}} > 0, 1, -1)" },
+      { "name": "EX",               "datatype": "number",  "type": "calculated", "nullable": false, "Description": "X component of electric field contribution at observation point (N/C). Positive = points in +X direction.",
+        "formula": "={{EFieldMagnitude}} * {{QSign}} * {{dX}} / {{Distance}}" },
+      { "name": "EY",               "datatype": "number",  "type": "calculated", "nullable": false, "Description": "Y component of electric field contribution.",
+        "formula": "={{EFieldMagnitude}} * {{QSign}} * {{dY}} / {{Distance}}" },
+      { "name": "EZ",               "datatype": "number",  "type": "calculated", "nullable": false, "Description": "Z component of electric field contribution.",
+        "formula": "={{EFieldMagnitude}} * {{QSign}} * {{dZ}} / {{Distance}}" }
+    ],
+    "data": [
+      { "FieldPointId": "efp_h_mid_proton",    "SystemId": "sys_hydrogen", "SourceChargeId": "charge_h_proton",   "SourceChargeName": "Proton A",     "ObservationLabel": "midpoint of H atom", "ObsX": 2.646e-11, "ObsY": 0, "ObsZ": 0, "CoulombK": 8990000000, "SourceQ":  1.602e-19, "SrcX": 0,        "SrcY": 0, "SrcZ": 0 },
+      { "FieldPointId": "efp_h_mid_electron",  "SystemId": "sys_hydrogen", "SourceChargeId": "charge_h_electron", "SourceChargeName": "Electron B",   "ObservationLabel": "midpoint of H atom", "ObsX": 2.646e-11, "ObsY": 0, "ObsZ": 0, "CoulombK": 8990000000, "SourceQ": -1.602e-19, "SrcX": 5.292e-11, "SrcY": 0, "SrcZ": 0 },
+      { "FieldPointId": "efp_nacl_mid_na",     "SystemId": "sys_nacl",     "SourceChargeId": "charge_nacl_na",    "SourceChargeName": "Sodium Na⁺",   "ObservationLabel": "midpoint of NaCl bond", "ObsX": 1.41e-10, "ObsY": 0, "ObsZ": 0, "CoulombK": 8990000000, "SourceQ":  1.602e-19, "SrcX": 0,        "SrcY": 0, "SrcZ": 0 },
+      { "FieldPointId": "efp_nacl_mid_cl",     "SystemId": "sys_nacl",     "SourceChargeId": "charge_nacl_cl",    "SourceChargeName": "Chloride Cl⁻", "ObservationLabel": "midpoint of NaCl bond", "ObsX": 1.41e-10, "ObsY": 0, "ObsZ": 0, "CoulombK": 8990000000, "SourceQ": -1.602e-19, "SrcX": 2.82e-10, "SrcY": 0, "SrcZ": 0 },
+      { "FieldPointId": "efp_tri_cen_a",       "SystemId": "sys_triangle", "SourceChargeId": "charge_tri_a",      "SourceChargeName": "Charge A (+)", "ObservationLabel": "centroid of triangle", "ObsX": 5e-11, "ObsY": 2.887e-11, "ObsZ": 0, "CoulombK": 8990000000, "SourceQ":  1.602e-19, "SrcX": 0,      "SrcY": 0,        "SrcZ": 0 },
+      { "FieldPointId": "efp_tri_cen_b",       "SystemId": "sys_triangle", "SourceChargeId": "charge_tri_b",      "SourceChargeName": "Charge B (+)", "ObservationLabel": "centroid of triangle", "ObsX": 5e-11, "ObsY": 2.887e-11, "ObsZ": 0, "CoulombK": 8990000000, "SourceQ":  1.602e-19, "SrcX": 1e-10,  "SrcY": 0,        "SrcZ": 0 },
+      { "FieldPointId": "efp_tri_cen_c",       "SystemId": "sys_triangle", "SourceChargeId": "charge_tri_c",      "SourceChargeName": "Charge C (−)", "ObservationLabel": "centroid of triangle", "ObsX": 5e-11, "ObsY": 2.887e-11, "ObsZ": 0, "CoulombK": 8990000000, "SourceQ": -1.602e-19, "SrcX": 5e-11,  "SrcY": 8.66e-11, "SrcZ": 0 }
+    ]
+  },
+
+  "InvariantChecks": {
+    "Description": "Table: InvariantChecks — one row per algebraic invariant that the Coulomb's Law DAG must satisfy. These are the model's built-in correctness witnesses.",
+    "schema": [
+      { "name": "InvariantId",        "datatype": "string",  "type": "raw",        "nullable": false, "Description": "Unique identifier" },
+      { "name": "Name",               "datatype": "string",  "type": "calculated", "nullable": false, "Description": "Display label.", "formula": "={{InvariantId}}" },
+      { "name": "AlgebraicStatement", "datatype": "string",  "type": "raw",        "nullable": false, "Description": "The mathematical identity being checked" },
+      { "name": "NaturalLanguage",    "datatype": "string",  "type": "raw",        "nullable": false, "Description": "Plain English: what must be true?" },
+      { "name": "PhysicsLaw",         "datatype": "string",  "type": "raw",        "nullable": true,  "Description": "Which physics principle this invariant encodes" },
+      { "name": "Severity",           "datatype": "string",  "type": "raw",        "nullable": false, "Description": "critical | warning | informational" }
+    ],
+    "data": [
+      { "InvariantId": "inv-force-symmetry",     "AlgebraicStatement": "F(q1→q2) = F(q2→q1)", "NaturalLanguage": "Newton's 3rd law: the magnitude of the force each charge exerts on the other must be equal.", "PhysicsLaw": "Newton's Third Law", "Severity": "critical" },
+      { "InvariantId": "inv-distance-positive",  "AlgebraicStatement": "DistanceMeters > 0 for all interactions", "NaturalLanguage": "No two distinct charges can occupy the same position (would produce infinite force).", "PhysicsLaw": "Coulomb's Law regularity", "Severity": "critical" },
+      { "InvariantId": "inv-attractive-negative","AlgebraicStatement": "IsAttractive ↔ ChargeProduct < 0", "NaturalLanguage": "A pair is attractive if and only if their charges have opposite signs.", "PhysicsLaw": "Coulomb's Law sign convention", "Severity": "critical" },
+      { "InvariantId": "inv-repulsive-positive", "AlgebraicStatement": "IsRepulsive ↔ ChargeProduct > 0", "NaturalLanguage": "A pair is repulsive if and only if their charges have the same sign.", "PhysicsLaw": "Coulomb's Law sign convention", "Severity": "critical" },
+      { "InvariantId": "inv-unit-vector-length", "AlgebraicStatement": "UnitX² + UnitY² + UnitZ² = 1 (within floating point)", "NaturalLanguage": "The displacement unit vector must have magnitude 1 for all non-zero separations.", "PhysicsLaw": "Vector normalization", "Severity": "warning" },
+      { "InvariantId": "inv-field-superposition","AlgebraicStatement": "E_total = Σ E_i (vector sum over all source charges)", "NaturalLanguage": "Electric fields obey the superposition principle: total field at a point is the vector sum of individual fields.", "PhysicsLaw": "Superposition Principle", "Severity": "informational" },
+      { "InvariantId": "inv-force-inverse-sq",   "AlgebraicStatement": "F ∝ 1/r²: doubling distance quarters the force", "NaturalLanguage": "Coulomb's Law is an inverse-square law: force falls off with the square of distance.", "PhysicsLaw": "Coulomb's Law", "Severity": "informational" },
+      { "InvariantId": "inv-neutral-system",     "AlgebraicStatement": "TotalCharge = Σ q_i for IsNeutral systems ≈ 0", "NaturalLanguage": "Electrically neutral systems have zero net charge.", "PhysicsLaw": "Charge conservation", "Severity": "informational" }
+    ]
+  },
+
+  "SystemSummary": {
+    "Description": "Table: SystemSummary — one row per system, aggregating all interactions and field points. The model witnesses its own state: total force, dominant pair, net charge, field at midpoints.",
+    "schema": [
+      { "name": "SummaryId",           "datatype": "string",  "type": "raw",        "nullable": false, "Description": "Unique identifier (mirrors SystemId)" },
+      { "name": "Name",                "datatype": "string",  "type": "calculated", "nullable": false, "Description": "Display label.", "formula": "={{SummaryId}}" },
+      { "name": "SystemId",            "datatype": "string",  "type": "raw",        "nullable": false, "Description": "FK → Systems.SystemId" },
+      { "name": "SystemName",          "datatype": "string",  "type": "lookup",     "nullable": false, "Description": "Lookup: Systems.Name.",
+        "formula": "=LOOKUP({{SystemId}}, Systems[SystemId], Systems[Name])" },
+      { "name": "ChargeCount",         "datatype": "integer", "type": "aggregation","nullable": false, "Description": "Total charges in this system.",
+        "formula": "=COUNTIFS(Charges!{{SystemId}}, {{SystemId}})" },
+      { "name": "InteractionCount",    "datatype": "integer", "type": "aggregation","nullable": false, "Description": "Total pairwise interactions.",
+        "formula": "=COUNTIFS(ChargeInteractions!{{SystemId}}, {{SystemId}})" },
+      { "name": "AttractiveCount",     "datatype": "integer", "type": "aggregation","nullable": false, "Description": "Count of attractive interactions.",
+        "formula": "=COUNTIFS(ChargeInteractions!{{SystemId}}, {{SystemId}}, ChargeInteractions!{{IsAttractive}}, TRUE())" },
+      { "name": "RepulsiveCount",      "datatype": "integer", "type": "aggregation","nullable": false, "Description": "Count of repulsive interactions.",
+        "formula": "=COUNTIFS(ChargeInteractions!{{SystemId}}, {{SystemId}}, ChargeInteractions!{{IsRepulsive}}, TRUE())" },
+      { "name": "TotalCharge",         "datatype": "number",  "type": "aggregation","nullable": false, "Description": "Net algebraic charge across all charges in the system.",
+        "formula": "=SUMIFS(Charges!{{ChargeValue}}, Charges!{{SystemId}}, {{SystemId}})" },
+      { "name": "IsNeutral",           "datatype": "boolean", "type": "calculated", "nullable": false, "Description": "True when |TotalCharge| < 1e-30.",
+        "formula": "=ABS({{TotalCharge}}) < 1e-30" },
+      { "name": "MaxForceMagnitude",   "datatype": "number",  "type": "aggregation","nullable": false, "Description": "Strongest pairwise interaction in Newtons.",
+        "formula": "=MAXIFS(ChargeInteractions!{{ForceMagnitude}}, ChargeInteractions!{{SystemId}}, {{SystemId}})" },
+      { "name": "MinDistanceMeters",   "datatype": "number",  "type": "aggregation","nullable": false, "Description": "Closest pair separation in meters.",
+        "formula": "=MINIFS(ChargeInteractions!{{DistanceMeters}}, ChargeInteractions!{{SystemId}}, {{SystemId}})" },
+      { "name": "AllAttractive",       "datatype": "boolean", "type": "calculated", "nullable": false, "Description": "True when every interaction in the system is attractive.",
+        "formula": "={{AttractiveCount}} = {{InteractionCount}}" },
+      { "name": "AllRepulsive",        "datatype": "boolean", "type": "calculated", "nullable": false, "Description": "True when every interaction in the system is repulsive.",
+        "formula": "={{RepulsiveCount}} = {{InteractionCount}}" },
+      { "name": "HasMixedInteractions","datatype": "boolean", "type": "calculated", "nullable": false, "Description": "True when the system has both attractive and repulsive interactions.",
+        "formula": "=AND({{AttractiveCount}} > 0, {{RepulsiveCount}} > 0)" }
+    ],
+    "data": [
+      { "SummaryId": "ss_hydrogen",  "SystemId": "sys_hydrogen" },
+      { "SummaryId": "ss_nacl",      "SystemId": "sys_nacl" },
+      { "SummaryId": "ss_triangle",  "SystemId": "sys_triangle" }
     ]
   }
 }

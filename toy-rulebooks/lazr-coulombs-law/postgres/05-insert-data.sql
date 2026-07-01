@@ -7,17 +7,194 @@
 -- ============================================================================
 
 -- ----------------------------------------------------------------------------
--- Charges: Individual charged particles with position and mass
+-- Loops: Table: Loops — build history and forward plan. Each row documents what new concept is introduced, what was witnessed, and what the next empirical question is.
 -- ----------------------------------------------------------------------------
-INSERT INTO charges (charge_id, label, charge_value, position_x, position_y, position_z, mass)
-VALUES ('charge_1', 'Proton A', 1.602e-19, 0, 0, 0, 1.673e-27) ON CONFLICT (charge_id) DO UPDATE SET label = EXCLUDED.label, charge_value = EXCLUDED.charge_value, position_x = EXCLUDED.position_x, position_y = EXCLUDED.position_y, position_z = EXCLUDED.position_z, mass = EXCLUDED.mass;
+INSERT INTO loops (loop_id, title, status, new_concept, domain_question, mock_data_note, next_suggestion, commit_hash, commit_date)
+VALUES ('loop-01', 'Core domain: Charges + ChargeInteractions → ForceMagnitude falls out', 'complete', 'Charges, ChargeInteractions', 'For each pair of charges, what is the electrostatic force magnitude between them?', 'Hydrogen atom: proton at origin, electron 1 Bohr radius away. ForceMagnitude = k·|q₁|·|q₂|/r² ≈ 8.24×10⁻⁸ N.', 'Ask: what is the direction of the force — and decompose it into X/Y/Z components? That requires ForceComponents.', NULL, '2026-06-30') ON CONFLICT (loop_id) DO UPDATE SET title = EXCLUDED.title, status = EXCLUDED.status, new_concept = EXCLUDED.new_concept, domain_question = EXCLUDED.domain_question, mock_data_note = EXCLUDED.mock_data_note, next_suggestion = EXCLUDED.next_suggestion, commit_hash = EXCLUDED.commit_hash, commit_date = EXCLUDED.commit_date;
 
-INSERT INTO charges (charge_id, label, charge_value, position_x, position_y, position_z, mass)
-VALUES ('charge_2', 'Electron B', -1.602e-19, 1e-10, 0, 0, 9.109e-31) ON CONFLICT (charge_id) DO UPDATE SET label = EXCLUDED.label, charge_value = EXCLUDED.charge_value, position_x = EXCLUDED.position_x, position_y = EXCLUDED.position_y, position_z = EXCLUDED.position_z, mass = EXCLUDED.mass;
+INSERT INTO loops (loop_id, title, status, new_concept, domain_question, mock_data_note, next_suggestion, commit_hash, commit_date)
+VALUES ('loop-02', 'ForceComponents: decompose force vector into X, Y, Z projections', 'planned', 'ForceComponents', 'In what direction does each charge push/pull its partner? What are the X, Y, Z force components?', NULL, 'Ask: what is the electric field at an arbitrary observation point due to a source charge? That requires ElectricFieldPoints.', NULL, NULL) ON CONFLICT (loop_id) DO UPDATE SET title = EXCLUDED.title, status = EXCLUDED.status, new_concept = EXCLUDED.new_concept, domain_question = EXCLUDED.domain_question, mock_data_note = EXCLUDED.mock_data_note, next_suggestion = EXCLUDED.next_suggestion, commit_hash = EXCLUDED.commit_hash, commit_date = EXCLUDED.commit_date;
+
+INSERT INTO loops (loop_id, title, status, new_concept, domain_question, mock_data_note, next_suggestion, commit_hash, commit_date)
+VALUES ('loop-03', 'ElectricFieldPoints: field strength and direction at observation points', 'planned', 'ElectricFieldPoints', 'At any point in space, what is the total electric field due to all charges in the system?', NULL, 'Ask: which charge dominates the field at each observation point? Add FieldDominantCharge as a derived fact.', NULL, NULL) ON CONFLICT (loop_id) DO UPDATE SET title = EXCLUDED.title, status = EXCLUDED.status, new_concept = EXCLUDED.new_concept, domain_question = EXCLUDED.domain_question, mock_data_note = EXCLUDED.mock_data_note, next_suggestion = EXCLUDED.next_suggestion, commit_hash = EXCLUDED.commit_hash, commit_date = EXCLUDED.commit_date;
+
+INSERT INTO loops (loop_id, title, status, new_concept, domain_question, mock_data_note, next_suggestion, commit_hash, commit_date)
+VALUES ('loop-04', 'SystemSummary: the model witnesses its own state — total force, net field, dominant interactions', 'planned', 'SystemSummary', 'Across all interactions in this system, what is the total attractive force? Total repulsive force? Which pair has the strongest interaction?', NULL, 'Add InvariantChecks: Coulomb symmetry (F₁₂ = F₂₁), superposition compliance, sign consistency.', NULL, NULL) ON CONFLICT (loop_id) DO UPDATE SET title = EXCLUDED.title, status = EXCLUDED.status, new_concept = EXCLUDED.new_concept, domain_question = EXCLUDED.domain_question, mock_data_note = EXCLUDED.mock_data_note, next_suggestion = EXCLUDED.next_suggestion, commit_hash = EXCLUDED.commit_hash, commit_date = EXCLUDED.commit_date;
 
 -- ----------------------------------------------------------------------------
--- ChargeInteractions: Pairs of charges with computed electrostatic force
+-- PhysicsConstants: Table: PhysicsConstants — fundamental constants used in Coulomb's Law calculations. Single source of truth for k, e, a₀, etc.
 -- ----------------------------------------------------------------------------
-INSERT INTO charge_interactions (interaction_id, charge1_id, charge2_id)
-VALUES ('interaction_1_2', 'charge_1', 'charge_2') ON CONFLICT (interaction_id) DO UPDATE SET charge1_id = EXCLUDED.charge1_id, charge2_id = EXCLUDED.charge2_id;
+INSERT INTO physics_constants (constant_id, name, symbol, value, units, description)
+VALUES ('coulomb_k', 'Coulomb''s Constant', 'k', 8990000000, 'N·m²·C⁻²', 'Proportionality constant in Coulomb''s Law (= 1/(4πε₀))') ON CONFLICT (constant_id) DO UPDATE SET name = EXCLUDED.name, symbol = EXCLUDED.symbol, value = EXCLUDED.value, units = EXCLUDED.units, description = EXCLUDED.description;
+
+INSERT INTO physics_constants (constant_id, name, symbol, value, units, description)
+VALUES ('elem_charge', 'Elementary Charge', 'e', 1.602e-19, 'C', 'Magnitude of charge on a proton or electron') ON CONFLICT (constant_id) DO UPDATE SET name = EXCLUDED.name, symbol = EXCLUDED.symbol, value = EXCLUDED.value, units = EXCLUDED.units, description = EXCLUDED.description;
+
+INSERT INTO physics_constants (constant_id, name, symbol, value, units, description)
+VALUES ('bohr_radius', 'Bohr Radius', 'a₀', 5.292e-11, 'm', 'Most probable distance from proton to electron in ground-state hydrogen') ON CONFLICT (constant_id) DO UPDATE SET name = EXCLUDED.name, symbol = EXCLUDED.symbol, value = EXCLUDED.value, units = EXCLUDED.units, description = EXCLUDED.description;
+
+INSERT INTO physics_constants (constant_id, name, symbol, value, units, description)
+VALUES ('epsilon_0', 'Permittivity of Free Space', 'ε₀', 8.854187817e-12, 'C²·N⁻¹·m⁻²', 'Electric constant; k = 1/(4πε₀)') ON CONFLICT (constant_id) DO UPDATE SET name = EXCLUDED.name, symbol = EXCLUDED.symbol, value = EXCLUDED.value, units = EXCLUDED.units, description = EXCLUDED.description;
+
+INSERT INTO physics_constants (constant_id, name, symbol, value, units, description)
+VALUES ('proton_mass', 'Proton Mass', 'mₚ', 1.67262192e-27, 'kg', 'Rest mass of a proton') ON CONFLICT (constant_id) DO UPDATE SET name = EXCLUDED.name, symbol = EXCLUDED.symbol, value = EXCLUDED.value, units = EXCLUDED.units, description = EXCLUDED.description;
+
+INSERT INTO physics_constants (constant_id, name, symbol, value, units, description)
+VALUES ('electron_mass', 'Electron Mass', 'mₑ', 9.1093837015e-31, 'kg', 'Rest mass of an electron') ON CONFLICT (constant_id) DO UPDATE SET name = EXCLUDED.name, symbol = EXCLUDED.symbol, value = EXCLUDED.value, units = EXCLUDED.units, description = EXCLUDED.description;
+
+-- ----------------------------------------------------------------------------
+-- Particles: Table: Particles — named particle archetypes with canonical charge and mass values. Used as reference for Charges rows.
+-- ----------------------------------------------------------------------------
+INSERT INTO particles (particle_id, name, canonical_charge, canonical_mass, description)
+VALUES ('particle_proton', 'Proton', 1.602e-19, 1.67262192e-27, 'Positively charged baryon; nucleus constituent') ON CONFLICT (particle_id) DO UPDATE SET name = EXCLUDED.name, canonical_charge = EXCLUDED.canonical_charge, canonical_mass = EXCLUDED.canonical_mass, description = EXCLUDED.description;
+
+INSERT INTO particles (particle_id, name, canonical_charge, canonical_mass, description)
+VALUES ('particle_electron', 'Electron', -1.602e-19, 9.1093837015e-31, 'Negatively charged lepton; orbital particle') ON CONFLICT (particle_id) DO UPDATE SET name = EXCLUDED.name, canonical_charge = EXCLUDED.canonical_charge, canonical_mass = EXCLUDED.canonical_mass, description = EXCLUDED.description;
+
+INSERT INTO particles (particle_id, name, canonical_charge, canonical_mass, description)
+VALUES ('particle_neutron', 'Neutron', 0.0, 1.67492749e-27, 'Neutral baryon; nucleus constituent') ON CONFLICT (particle_id) DO UPDATE SET name = EXCLUDED.name, canonical_charge = EXCLUDED.canonical_charge, canonical_mass = EXCLUDED.canonical_mass, description = EXCLUDED.description;
+
+INSERT INTO particles (particle_id, name, canonical_charge, canonical_mass, description)
+VALUES ('particle_alpha', 'Alpha', 3.204e-19, 6.6446573e-27, 'Helium-4 nucleus: 2 protons + 2 neutrons; charge = +2e') ON CONFLICT (particle_id) DO UPDATE SET name = EXCLUDED.name, canonical_charge = EXCLUDED.canonical_charge, canonical_mass = EXCLUDED.canonical_mass, description = EXCLUDED.description;
+
+INSERT INTO particles (particle_id, name, canonical_charge, canonical_mass, description)
+VALUES ('particle_pos_ion', 'Cation', 1.602e-19, 1.67262192e-27, 'Generic positive ion (1 missing electron)') ON CONFLICT (particle_id) DO UPDATE SET name = EXCLUDED.name, canonical_charge = EXCLUDED.canonical_charge, canonical_mass = EXCLUDED.canonical_mass, description = EXCLUDED.description;
+
+INSERT INTO particles (particle_id, name, canonical_charge, canonical_mass, description)
+VALUES ('particle_neg_ion', 'Anion', -1.602e-19, 9.1093837015e-31, 'Generic negative ion (1 extra electron)') ON CONFLICT (particle_id) DO UPDATE SET name = EXCLUDED.name, canonical_charge = EXCLUDED.canonical_charge, canonical_mass = EXCLUDED.canonical_mass, description = EXCLUDED.description;
+
+-- ----------------------------------------------------------------------------
+-- Charges: Table: Charges — individual charged particles with 3D position and physical properties. The raw leaves of the Coulomb's Law DAG.
+-- ----------------------------------------------------------------------------
+INSERT INTO charges (charge_id, name, system_id, particle_id, charge_value, position_x, position_y, position_z, mass)
+VALUES ('charge_h_proton', 'Proton A', 'sys_hydrogen', 'particle_proton', 1.602e-19, 0, 0, 0, 1.67262192e-27) ON CONFLICT (charge_id) DO UPDATE SET name = EXCLUDED.name, system_id = EXCLUDED.system_id, particle_id = EXCLUDED.particle_id, charge_value = EXCLUDED.charge_value, position_x = EXCLUDED.position_x, position_y = EXCLUDED.position_y, position_z = EXCLUDED.position_z, mass = EXCLUDED.mass;
+
+INSERT INTO charges (charge_id, name, system_id, particle_id, charge_value, position_x, position_y, position_z, mass)
+VALUES ('charge_h_electron', 'Electron B', 'sys_hydrogen', 'particle_electron', -1.602e-19, 5.292e-11, 0, 0, 9.1093837015e-31) ON CONFLICT (charge_id) DO UPDATE SET name = EXCLUDED.name, system_id = EXCLUDED.system_id, particle_id = EXCLUDED.particle_id, charge_value = EXCLUDED.charge_value, position_x = EXCLUDED.position_x, position_y = EXCLUDED.position_y, position_z = EXCLUDED.position_z, mass = EXCLUDED.mass;
+
+INSERT INTO charges (charge_id, name, system_id, particle_id, charge_value, position_x, position_y, position_z, mass)
+VALUES ('charge_nacl_na', 'Sodium Na⁺', 'sys_nacl', 'particle_pos_ion', 1.602e-19, 0, 0, 0, 3.8175e-26) ON CONFLICT (charge_id) DO UPDATE SET name = EXCLUDED.name, system_id = EXCLUDED.system_id, particle_id = EXCLUDED.particle_id, charge_value = EXCLUDED.charge_value, position_x = EXCLUDED.position_x, position_y = EXCLUDED.position_y, position_z = EXCLUDED.position_z, mass = EXCLUDED.mass;
+
+INSERT INTO charges (charge_id, name, system_id, particle_id, charge_value, position_x, position_y, position_z, mass)
+VALUES ('charge_nacl_cl', 'Chloride Cl⁻', 'sys_nacl', 'particle_neg_ion', -1.602e-19, 2.82e-10, 0, 0, 5.887e-26) ON CONFLICT (charge_id) DO UPDATE SET name = EXCLUDED.name, system_id = EXCLUDED.system_id, particle_id = EXCLUDED.particle_id, charge_value = EXCLUDED.charge_value, position_x = EXCLUDED.position_x, position_y = EXCLUDED.position_y, position_z = EXCLUDED.position_z, mass = EXCLUDED.mass;
+
+INSERT INTO charges (charge_id, name, system_id, particle_id, charge_value, position_x, position_y, position_z, mass)
+VALUES ('charge_tri_a', 'Charge A (+)', 'sys_triangle', 'particle_proton', 1.602e-19, 0, 0, 0, 1.67262192e-27) ON CONFLICT (charge_id) DO UPDATE SET name = EXCLUDED.name, system_id = EXCLUDED.system_id, particle_id = EXCLUDED.particle_id, charge_value = EXCLUDED.charge_value, position_x = EXCLUDED.position_x, position_y = EXCLUDED.position_y, position_z = EXCLUDED.position_z, mass = EXCLUDED.mass;
+
+INSERT INTO charges (charge_id, name, system_id, particle_id, charge_value, position_x, position_y, position_z, mass)
+VALUES ('charge_tri_b', 'Charge B (+)', 'sys_triangle', 'particle_proton', 1.602e-19, 1e-10, 0, 0, 1.67262192e-27) ON CONFLICT (charge_id) DO UPDATE SET name = EXCLUDED.name, system_id = EXCLUDED.system_id, particle_id = EXCLUDED.particle_id, charge_value = EXCLUDED.charge_value, position_x = EXCLUDED.position_x, position_y = EXCLUDED.position_y, position_z = EXCLUDED.position_z, mass = EXCLUDED.mass;
+
+INSERT INTO charges (charge_id, name, system_id, particle_id, charge_value, position_x, position_y, position_z, mass)
+VALUES ('charge_tri_c', 'Charge C (−)', 'sys_triangle', 'particle_electron', -1.602e-19, 5e-11, 8.66e-11, 0, 9.1093837015e-31) ON CONFLICT (charge_id) DO UPDATE SET name = EXCLUDED.name, system_id = EXCLUDED.system_id, particle_id = EXCLUDED.particle_id, charge_value = EXCLUDED.charge_value, position_x = EXCLUDED.position_x, position_y = EXCLUDED.position_y, position_z = EXCLUDED.position_z, mass = EXCLUDED.mass;
+
+-- ----------------------------------------------------------------------------
+-- Systems: Table: Systems — named physical configurations of charges. Groups Charges into testable scenarios (hydrogen atom, NaCl pair, triangle of charges, etc.).
+-- ----------------------------------------------------------------------------
+INSERT INTO systems (system_id, name, description, is_synthetic)
+VALUES ('sys_hydrogen', 'Hydrogen Atom', 'Ground-state hydrogen: proton at origin, electron at 1 Bohr radius. The canonical Coulomb''s Law demonstration.', FALSE) ON CONFLICT (system_id) DO UPDATE SET name = EXCLUDED.name, description = EXCLUDED.description, is_synthetic = EXCLUDED.is_synthetic;
+
+INSERT INTO systems (system_id, name, description, is_synthetic)
+VALUES ('sys_nacl', 'NaCl Ion Pair', 'Sodium chloride: Na⁺ and Cl⁻ separated by the equilibrium bond length (282 pm). Ionic bond model.', FALSE) ON CONFLICT (system_id) DO UPDATE SET name = EXCLUDED.name, description = EXCLUDED.description, is_synthetic = EXCLUDED.is_synthetic;
+
+INSERT INTO systems (system_id, name, description, is_synthetic)
+VALUES ('sys_triangle', 'Charge Triangle', 'Two positive charges and one negative charge in an equilateral triangle. Tests superposition and mixed attractive/repulsive interactions.', TRUE) ON CONFLICT (system_id) DO UPDATE SET name = EXCLUDED.name, description = EXCLUDED.description, is_synthetic = EXCLUDED.is_synthetic;
+
+-- ----------------------------------------------------------------------------
+-- ChargeInteractions: Table: ChargeInteractions — pairwise electrostatic interactions. One row per ordered pair (Charge1, Charge2) within a system. Position and charge values are stored directly (denormalized from Charges) so that DeltaX/Y/Z, DistanceMeters, ForceMagnitude, IsAttractive, and IsRepulsive can be computed as calculated fields. F = k·|q₁·q₂|/r² falls out of the DAG.
+-- ----------------------------------------------------------------------------
+INSERT INTO charge_interactions (interaction_id, system_id, charge1_id, charge2_id, charge1_label, charge2_label, q1, q2, x1, y1, z1, x2, y2, z2, coulomb_k)
+VALUES ('int_h_p_e', 'sys_hydrogen', 'charge_h_proton', 'charge_h_electron', 'Proton A', 'Electron B', 1.602e-19, -1.602e-19, 0, 0, 0, 5.292e-11, 0, 0, 8990000000) ON CONFLICT (interaction_id) DO UPDATE SET system_id = EXCLUDED.system_id, charge1_id = EXCLUDED.charge1_id, charge2_id = EXCLUDED.charge2_id, charge1_label = EXCLUDED.charge1_label, charge2_label = EXCLUDED.charge2_label, q1 = EXCLUDED.q1, q2 = EXCLUDED.q2, x1 = EXCLUDED.x1, y1 = EXCLUDED.y1, z1 = EXCLUDED.z1, x2 = EXCLUDED.x2, y2 = EXCLUDED.y2, z2 = EXCLUDED.z2, coulomb_k = EXCLUDED.coulomb_k;
+
+INSERT INTO charge_interactions (interaction_id, system_id, charge1_id, charge2_id, charge1_label, charge2_label, q1, q2, x1, y1, z1, x2, y2, z2, coulomb_k)
+VALUES ('int_nacl', 'sys_nacl', 'charge_nacl_na', 'charge_nacl_cl', 'Sodium Na⁺', 'Chloride Cl⁻', 1.602e-19, -1.602e-19, 0, 0, 0, 2.82e-10, 0, 0, 8990000000) ON CONFLICT (interaction_id) DO UPDATE SET system_id = EXCLUDED.system_id, charge1_id = EXCLUDED.charge1_id, charge2_id = EXCLUDED.charge2_id, charge1_label = EXCLUDED.charge1_label, charge2_label = EXCLUDED.charge2_label, q1 = EXCLUDED.q1, q2 = EXCLUDED.q2, x1 = EXCLUDED.x1, y1 = EXCLUDED.y1, z1 = EXCLUDED.z1, x2 = EXCLUDED.x2, y2 = EXCLUDED.y2, z2 = EXCLUDED.z2, coulomb_k = EXCLUDED.coulomb_k;
+
+INSERT INTO charge_interactions (interaction_id, system_id, charge1_id, charge2_id, charge1_label, charge2_label, q1, q2, x1, y1, z1, x2, y2, z2, coulomb_k)
+VALUES ('int_tri_ab', 'sys_triangle', 'charge_tri_a', 'charge_tri_b', 'Charge A (+)', 'Charge B (+)', 1.602e-19, 1.602e-19, 0, 0, 0, 1e-10, 0, 0, 8990000000) ON CONFLICT (interaction_id) DO UPDATE SET system_id = EXCLUDED.system_id, charge1_id = EXCLUDED.charge1_id, charge2_id = EXCLUDED.charge2_id, charge1_label = EXCLUDED.charge1_label, charge2_label = EXCLUDED.charge2_label, q1 = EXCLUDED.q1, q2 = EXCLUDED.q2, x1 = EXCLUDED.x1, y1 = EXCLUDED.y1, z1 = EXCLUDED.z1, x2 = EXCLUDED.x2, y2 = EXCLUDED.y2, z2 = EXCLUDED.z2, coulomb_k = EXCLUDED.coulomb_k;
+
+INSERT INTO charge_interactions (interaction_id, system_id, charge1_id, charge2_id, charge1_label, charge2_label, q1, q2, x1, y1, z1, x2, y2, z2, coulomb_k)
+VALUES ('int_tri_ac', 'sys_triangle', 'charge_tri_a', 'charge_tri_c', 'Charge A (+)', 'Charge C (−)', 1.602e-19, -1.602e-19, 0, 0, 0, 5e-11, 8.66e-11, 0, 8990000000) ON CONFLICT (interaction_id) DO UPDATE SET system_id = EXCLUDED.system_id, charge1_id = EXCLUDED.charge1_id, charge2_id = EXCLUDED.charge2_id, charge1_label = EXCLUDED.charge1_label, charge2_label = EXCLUDED.charge2_label, q1 = EXCLUDED.q1, q2 = EXCLUDED.q2, x1 = EXCLUDED.x1, y1 = EXCLUDED.y1, z1 = EXCLUDED.z1, x2 = EXCLUDED.x2, y2 = EXCLUDED.y2, z2 = EXCLUDED.z2, coulomb_k = EXCLUDED.coulomb_k;
+
+INSERT INTO charge_interactions (interaction_id, system_id, charge1_id, charge2_id, charge1_label, charge2_label, q1, q2, x1, y1, z1, x2, y2, z2, coulomb_k)
+VALUES ('int_tri_bc', 'sys_triangle', 'charge_tri_b', 'charge_tri_c', 'Charge B (+)', 'Charge C (−)', 1.602e-19, -1.602e-19, 1e-10, 0, 0, 5e-11, 8.66e-11, 0, 8990000000) ON CONFLICT (interaction_id) DO UPDATE SET system_id = EXCLUDED.system_id, charge1_id = EXCLUDED.charge1_id, charge2_id = EXCLUDED.charge2_id, charge1_label = EXCLUDED.charge1_label, charge2_label = EXCLUDED.charge2_label, q1 = EXCLUDED.q1, q2 = EXCLUDED.q2, x1 = EXCLUDED.x1, y1 = EXCLUDED.y1, z1 = EXCLUDED.z1, x2 = EXCLUDED.x2, y2 = EXCLUDED.y2, z2 = EXCLUDED.z2, coulomb_k = EXCLUDED.coulomb_k;
+
+-- ----------------------------------------------------------------------------
+-- ForceVectors: Table: ForceVectors — unit vector and full Cartesian force components for each ChargeInteraction. FX, FY, FZ decompose the scalar ForceMagnitude along the displacement direction. Force on Charge1 due to Charge2: attractive → pulls C1 toward C2 (−r̂); repulsive → pushes C1 away from C2 (+r̂). Position and interaction values are stored directly (denormalized) so all components compute as pure calculated fields.
+-- ----------------------------------------------------------------------------
+INSERT INTO force_vectors (force_vector_id, interaction_id, force_magnitude_raw, dx, dy, dz, dist_raw, is_attractive_raw)
+VALUES ('fv_h_p_e', 'int_h_p_e', 8.24e-8, 5.292e-11, 0, 0, 5.292e-11, TRUE) ON CONFLICT (force_vector_id) DO UPDATE SET interaction_id = EXCLUDED.interaction_id, force_magnitude_raw = EXCLUDED.force_magnitude_raw, dx = EXCLUDED.dx, dy = EXCLUDED.dy, dz = EXCLUDED.dz, dist_raw = EXCLUDED.dist_raw, is_attractive_raw = EXCLUDED.is_attractive_raw;
+
+INSERT INTO force_vectors (force_vector_id, interaction_id, force_magnitude_raw, dx, dy, dz, dist_raw, is_attractive_raw)
+VALUES ('fv_nacl', 'int_nacl', 2.89e-9, 2.82e-10, 0, 0, 2.82e-10, TRUE) ON CONFLICT (force_vector_id) DO UPDATE SET interaction_id = EXCLUDED.interaction_id, force_magnitude_raw = EXCLUDED.force_magnitude_raw, dx = EXCLUDED.dx, dy = EXCLUDED.dy, dz = EXCLUDED.dz, dist_raw = EXCLUDED.dist_raw, is_attractive_raw = EXCLUDED.is_attractive_raw;
+
+INSERT INTO force_vectors (force_vector_id, interaction_id, force_magnitude_raw, dx, dy, dz, dist_raw, is_attractive_raw)
+VALUES ('fv_tri_ab', 'int_tri_ab', 2.31e-8, 1e-10, 0, 0, 1e-10, FALSE) ON CONFLICT (force_vector_id) DO UPDATE SET interaction_id = EXCLUDED.interaction_id, force_magnitude_raw = EXCLUDED.force_magnitude_raw, dx = EXCLUDED.dx, dy = EXCLUDED.dy, dz = EXCLUDED.dz, dist_raw = EXCLUDED.dist_raw, is_attractive_raw = EXCLUDED.is_attractive_raw;
+
+INSERT INTO force_vectors (force_vector_id, interaction_id, force_magnitude_raw, dx, dy, dz, dist_raw, is_attractive_raw)
+VALUES ('fv_tri_ac', 'int_tri_ac', 2.31e-8, 5e-11, 8.66e-11, 0, 1e-10, TRUE) ON CONFLICT (force_vector_id) DO UPDATE SET interaction_id = EXCLUDED.interaction_id, force_magnitude_raw = EXCLUDED.force_magnitude_raw, dx = EXCLUDED.dx, dy = EXCLUDED.dy, dz = EXCLUDED.dz, dist_raw = EXCLUDED.dist_raw, is_attractive_raw = EXCLUDED.is_attractive_raw;
+
+INSERT INTO force_vectors (force_vector_id, interaction_id, force_magnitude_raw, dx, dy, dz, dist_raw, is_attractive_raw)
+VALUES ('fv_tri_bc', 'int_tri_bc', 2.31e-8, -5e-11, 8.66e-11, 0, 1e-10, TRUE) ON CONFLICT (force_vector_id) DO UPDATE SET interaction_id = EXCLUDED.interaction_id, force_magnitude_raw = EXCLUDED.force_magnitude_raw, dx = EXCLUDED.dx, dy = EXCLUDED.dy, dz = EXCLUDED.dz, dist_raw = EXCLUDED.dist_raw, is_attractive_raw = EXCLUDED.is_attractive_raw;
+
+-- ----------------------------------------------------------------------------
+-- ElectricFieldPoints: Table: ElectricFieldPoints — observation points in space at which the electric field contribution of a single source Charge is evaluated. E = k·q/r² pointing away from positive sources. One row per (ObservationPoint, SourceCharge) pair. Source charge and position values stored directly (denormalized) so EX, EY, EZ compute as pure calculated fields.
+-- ----------------------------------------------------------------------------
+INSERT INTO electric_field_points (field_point_id, system_id, source_charge_id, source_charge_name, observation_label, obs_x, obs_y, obs_z, coulomb_k, source_q, src_x, src_y, src_z)
+VALUES ('efp_h_mid_proton', 'sys_hydrogen', 'charge_h_proton', 'Proton A', 'midpoint of H atom', 2.646e-11, 0, 0, 8990000000, 1.602e-19, 0, 0, 0) ON CONFLICT (field_point_id) DO UPDATE SET system_id = EXCLUDED.system_id, source_charge_id = EXCLUDED.source_charge_id, source_charge_name = EXCLUDED.source_charge_name, observation_label = EXCLUDED.observation_label, obs_x = EXCLUDED.obs_x, obs_y = EXCLUDED.obs_y, obs_z = EXCLUDED.obs_z, coulomb_k = EXCLUDED.coulomb_k, source_q = EXCLUDED.source_q, src_x = EXCLUDED.src_x, src_y = EXCLUDED.src_y, src_z = EXCLUDED.src_z;
+
+INSERT INTO electric_field_points (field_point_id, system_id, source_charge_id, source_charge_name, observation_label, obs_x, obs_y, obs_z, coulomb_k, source_q, src_x, src_y, src_z)
+VALUES ('efp_h_mid_electron', 'sys_hydrogen', 'charge_h_electron', 'Electron B', 'midpoint of H atom', 2.646e-11, 0, 0, 8990000000, -1.602e-19, 5.292e-11, 0, 0) ON CONFLICT (field_point_id) DO UPDATE SET system_id = EXCLUDED.system_id, source_charge_id = EXCLUDED.source_charge_id, source_charge_name = EXCLUDED.source_charge_name, observation_label = EXCLUDED.observation_label, obs_x = EXCLUDED.obs_x, obs_y = EXCLUDED.obs_y, obs_z = EXCLUDED.obs_z, coulomb_k = EXCLUDED.coulomb_k, source_q = EXCLUDED.source_q, src_x = EXCLUDED.src_x, src_y = EXCLUDED.src_y, src_z = EXCLUDED.src_z;
+
+INSERT INTO electric_field_points (field_point_id, system_id, source_charge_id, source_charge_name, observation_label, obs_x, obs_y, obs_z, coulomb_k, source_q, src_x, src_y, src_z)
+VALUES ('efp_nacl_mid_na', 'sys_nacl', 'charge_nacl_na', 'Sodium Na⁺', 'midpoint of NaCl bond', 1.41e-10, 0, 0, 8990000000, 1.602e-19, 0, 0, 0) ON CONFLICT (field_point_id) DO UPDATE SET system_id = EXCLUDED.system_id, source_charge_id = EXCLUDED.source_charge_id, source_charge_name = EXCLUDED.source_charge_name, observation_label = EXCLUDED.observation_label, obs_x = EXCLUDED.obs_x, obs_y = EXCLUDED.obs_y, obs_z = EXCLUDED.obs_z, coulomb_k = EXCLUDED.coulomb_k, source_q = EXCLUDED.source_q, src_x = EXCLUDED.src_x, src_y = EXCLUDED.src_y, src_z = EXCLUDED.src_z;
+
+INSERT INTO electric_field_points (field_point_id, system_id, source_charge_id, source_charge_name, observation_label, obs_x, obs_y, obs_z, coulomb_k, source_q, src_x, src_y, src_z)
+VALUES ('efp_nacl_mid_cl', 'sys_nacl', 'charge_nacl_cl', 'Chloride Cl⁻', 'midpoint of NaCl bond', 1.41e-10, 0, 0, 8990000000, -1.602e-19, 2.82e-10, 0, 0) ON CONFLICT (field_point_id) DO UPDATE SET system_id = EXCLUDED.system_id, source_charge_id = EXCLUDED.source_charge_id, source_charge_name = EXCLUDED.source_charge_name, observation_label = EXCLUDED.observation_label, obs_x = EXCLUDED.obs_x, obs_y = EXCLUDED.obs_y, obs_z = EXCLUDED.obs_z, coulomb_k = EXCLUDED.coulomb_k, source_q = EXCLUDED.source_q, src_x = EXCLUDED.src_x, src_y = EXCLUDED.src_y, src_z = EXCLUDED.src_z;
+
+INSERT INTO electric_field_points (field_point_id, system_id, source_charge_id, source_charge_name, observation_label, obs_x, obs_y, obs_z, coulomb_k, source_q, src_x, src_y, src_z)
+VALUES ('efp_tri_cen_a', 'sys_triangle', 'charge_tri_a', 'Charge A (+)', 'centroid of triangle', 5e-11, 2.887e-11, 0, 8990000000, 1.602e-19, 0, 0, 0) ON CONFLICT (field_point_id) DO UPDATE SET system_id = EXCLUDED.system_id, source_charge_id = EXCLUDED.source_charge_id, source_charge_name = EXCLUDED.source_charge_name, observation_label = EXCLUDED.observation_label, obs_x = EXCLUDED.obs_x, obs_y = EXCLUDED.obs_y, obs_z = EXCLUDED.obs_z, coulomb_k = EXCLUDED.coulomb_k, source_q = EXCLUDED.source_q, src_x = EXCLUDED.src_x, src_y = EXCLUDED.src_y, src_z = EXCLUDED.src_z;
+
+INSERT INTO electric_field_points (field_point_id, system_id, source_charge_id, source_charge_name, observation_label, obs_x, obs_y, obs_z, coulomb_k, source_q, src_x, src_y, src_z)
+VALUES ('efp_tri_cen_b', 'sys_triangle', 'charge_tri_b', 'Charge B (+)', 'centroid of triangle', 5e-11, 2.887e-11, 0, 8990000000, 1.602e-19, 1e-10, 0, 0) ON CONFLICT (field_point_id) DO UPDATE SET system_id = EXCLUDED.system_id, source_charge_id = EXCLUDED.source_charge_id, source_charge_name = EXCLUDED.source_charge_name, observation_label = EXCLUDED.observation_label, obs_x = EXCLUDED.obs_x, obs_y = EXCLUDED.obs_y, obs_z = EXCLUDED.obs_z, coulomb_k = EXCLUDED.coulomb_k, source_q = EXCLUDED.source_q, src_x = EXCLUDED.src_x, src_y = EXCLUDED.src_y, src_z = EXCLUDED.src_z;
+
+INSERT INTO electric_field_points (field_point_id, system_id, source_charge_id, source_charge_name, observation_label, obs_x, obs_y, obs_z, coulomb_k, source_q, src_x, src_y, src_z)
+VALUES ('efp_tri_cen_c', 'sys_triangle', 'charge_tri_c', 'Charge C (−)', 'centroid of triangle', 5e-11, 2.887e-11, 0, 8990000000, -1.602e-19, 5e-11, 8.66e-11, 0) ON CONFLICT (field_point_id) DO UPDATE SET system_id = EXCLUDED.system_id, source_charge_id = EXCLUDED.source_charge_id, source_charge_name = EXCLUDED.source_charge_name, observation_label = EXCLUDED.observation_label, obs_x = EXCLUDED.obs_x, obs_y = EXCLUDED.obs_y, obs_z = EXCLUDED.obs_z, coulomb_k = EXCLUDED.coulomb_k, source_q = EXCLUDED.source_q, src_x = EXCLUDED.src_x, src_y = EXCLUDED.src_y, src_z = EXCLUDED.src_z;
+
+-- ----------------------------------------------------------------------------
+-- InvariantChecks: Table: InvariantChecks — one row per algebraic invariant that the Coulomb's Law DAG must satisfy. These are the model's built-in correctness witnesses.
+-- ----------------------------------------------------------------------------
+INSERT INTO invariant_checks (invariant_id, algebraic_statement, natural_language, physics_law, severity)
+VALUES ('inv-force-symmetry', 'F(q1→q2) = F(q2→q1)', 'Newton''s 3rd law: the magnitude of the force each charge exerts on the other must be equal.', 'Newton''s Third Law', 'critical') ON CONFLICT (invariant_id) DO UPDATE SET algebraic_statement = EXCLUDED.algebraic_statement, natural_language = EXCLUDED.natural_language, physics_law = EXCLUDED.physics_law, severity = EXCLUDED.severity;
+
+INSERT INTO invariant_checks (invariant_id, algebraic_statement, natural_language, physics_law, severity)
+VALUES ('inv-distance-positive', 'DistanceMeters > 0 for all interactions', 'No two distinct charges can occupy the same position (would produce infinite force).', 'Coulomb''s Law regularity', 'critical') ON CONFLICT (invariant_id) DO UPDATE SET algebraic_statement = EXCLUDED.algebraic_statement, natural_language = EXCLUDED.natural_language, physics_law = EXCLUDED.physics_law, severity = EXCLUDED.severity;
+
+INSERT INTO invariant_checks (invariant_id, algebraic_statement, natural_language, physics_law, severity)
+VALUES ('inv-attractive-negative', 'IsAttractive ↔ ChargeProduct < 0', 'A pair is attractive if and only if their charges have opposite signs.', 'Coulomb''s Law sign convention', 'critical') ON CONFLICT (invariant_id) DO UPDATE SET algebraic_statement = EXCLUDED.algebraic_statement, natural_language = EXCLUDED.natural_language, physics_law = EXCLUDED.physics_law, severity = EXCLUDED.severity;
+
+INSERT INTO invariant_checks (invariant_id, algebraic_statement, natural_language, physics_law, severity)
+VALUES ('inv-repulsive-positive', 'IsRepulsive ↔ ChargeProduct > 0', 'A pair is repulsive if and only if their charges have the same sign.', 'Coulomb''s Law sign convention', 'critical') ON CONFLICT (invariant_id) DO UPDATE SET algebraic_statement = EXCLUDED.algebraic_statement, natural_language = EXCLUDED.natural_language, physics_law = EXCLUDED.physics_law, severity = EXCLUDED.severity;
+
+INSERT INTO invariant_checks (invariant_id, algebraic_statement, natural_language, physics_law, severity)
+VALUES ('inv-unit-vector-length', 'UnitX² + UnitY² + UnitZ² = 1 (within floating point)', 'The displacement unit vector must have magnitude 1 for all non-zero separations.', 'Vector normalization', 'warning') ON CONFLICT (invariant_id) DO UPDATE SET algebraic_statement = EXCLUDED.algebraic_statement, natural_language = EXCLUDED.natural_language, physics_law = EXCLUDED.physics_law, severity = EXCLUDED.severity;
+
+INSERT INTO invariant_checks (invariant_id, algebraic_statement, natural_language, physics_law, severity)
+VALUES ('inv-field-superposition', 'E_total = Σ E_i (vector sum over all source charges)', 'Electric fields obey the superposition principle: total field at a point is the vector sum of individual fields.', 'Superposition Principle', 'informational') ON CONFLICT (invariant_id) DO UPDATE SET algebraic_statement = EXCLUDED.algebraic_statement, natural_language = EXCLUDED.natural_language, physics_law = EXCLUDED.physics_law, severity = EXCLUDED.severity;
+
+INSERT INTO invariant_checks (invariant_id, algebraic_statement, natural_language, physics_law, severity)
+VALUES ('inv-force-inverse-sq', 'F ∝ 1/r²: doubling distance quarters the force', 'Coulomb''s Law is an inverse-square law: force falls off with the square of distance.', 'Coulomb''s Law', 'informational') ON CONFLICT (invariant_id) DO UPDATE SET algebraic_statement = EXCLUDED.algebraic_statement, natural_language = EXCLUDED.natural_language, physics_law = EXCLUDED.physics_law, severity = EXCLUDED.severity;
+
+INSERT INTO invariant_checks (invariant_id, algebraic_statement, natural_language, physics_law, severity)
+VALUES ('inv-neutral-system', 'TotalCharge = Σ q_i for IsNeutral systems ≈ 0', 'Electrically neutral systems have zero net charge.', 'Charge conservation', 'informational') ON CONFLICT (invariant_id) DO UPDATE SET algebraic_statement = EXCLUDED.algebraic_statement, natural_language = EXCLUDED.natural_language, physics_law = EXCLUDED.physics_law, severity = EXCLUDED.severity;
+
+-- ----------------------------------------------------------------------------
+-- SystemSummary: Table: SystemSummary — one row per system, aggregating all interactions and field points. The model witnesses its own state: total force, dominant pair, net charge, field at midpoints.
+-- ----------------------------------------------------------------------------
+INSERT INTO system_summary (summary_id, system_id)
+VALUES ('ss_hydrogen', 'sys_hydrogen') ON CONFLICT (summary_id) DO UPDATE SET system_id = EXCLUDED.system_id;
+
+INSERT INTO system_summary (summary_id, system_id)
+VALUES ('ss_nacl', 'sys_nacl') ON CONFLICT (summary_id) DO UPDATE SET system_id = EXCLUDED.system_id;
+
+INSERT INTO system_summary (summary_id, system_id)
+VALUES ('ss_triangle', 'sys_triangle') ON CONFLICT (summary_id) DO UPDATE SET system_id = EXCLUDED.system_id;
 

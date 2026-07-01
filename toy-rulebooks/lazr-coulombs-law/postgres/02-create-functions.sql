@@ -18,18 +18,214 @@ SET check_function_bodies = off;
 -- These functions perform lookups via foreign key relationships
 -- ============================================================================
 
--- calc_charge_interactions_is_repulsive
--- Field: ChargeInteractions.IsRepulsive
+-- calc_loops_name
+-- Field: Loops.Name
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_loops_name(p_loop_id TEXT)
+RETURNS TEXT AS $$
+  SELECT ((SELECT NULLIF(loop_id, '') FROM loops WHERE loop_id = p_loop_id))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_particles_charge_sign
+-- Field: Particles.ChargeSign
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_particles_charge_sign(p_particle_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CASE WHEN ((SELECT canonical_charge FROM particles WHERE particle_id = p_particle_id))::NUMERIC > 0 THEN ('positive')::text ELSE (CASE WHEN ((SELECT canonical_charge FROM particles WHERE particle_id = p_particle_id))::NUMERIC < 0 THEN ('negative')::text ELSE ('neutral')::text END)::text END)::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_charges_charge_sign
+-- Field: Charges.ChargeSign
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_charges_charge_sign(p_charge_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CASE WHEN ((SELECT charge_value FROM charges WHERE charge_id = p_charge_id))::NUMERIC > 0 THEN ('positive')::text ELSE (CASE WHEN ((SELECT charge_value FROM charges WHERE charge_id = p_charge_id))::NUMERIC < 0 THEN ('negative')::text ELSE ('neutral')::text END)::text END)::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_charges_charge_magnitude
+-- Field: Charges.ChargeMagnitude
+-- Type: calculated | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_charges_charge_magnitude(p_charge_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT (ABS((SELECT charge_value FROM charges WHERE charge_id = p_charge_id)))::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_charges_interaction_count
+-- Field: Charges.InteractionCount
+-- Type: aggregation | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_charges_interaction_count(p_charge_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((SELECT COUNT(*) FROM charge_interactions WHERE charge1_id = (SELECT NULLIF(charge_id, '') FROM charges WHERE charge_id = p_charge_id)))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_systems_charge_count
+-- Field: Systems.ChargeCount
+-- Type: aggregation | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_systems_charge_count(p_system_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((SELECT COUNT(*) FROM charges WHERE system_id = (SELECT NULLIF(system_id, '') FROM systems WHERE system_id = p_system_id)))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_systems_interaction_count
+-- Field: Systems.InteractionCount
+-- Type: aggregation | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_systems_interaction_count(p_system_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((SELECT COUNT(*) FROM charge_interactions WHERE system_id = (SELECT NULLIF(system_id, '') FROM systems WHERE system_id = p_system_id)))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_systems_attractive_count
+-- Field: Systems.AttractiveCount
+-- Type: aggregation | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_systems_attractive_count(p_system_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((SELECT COUNT(*) FROM charge_interactions WHERE system_id = (SELECT NULLIF(system_id, '') FROM systems WHERE system_id = p_system_id) AND calc_charge_interactions_is_attractive(interaction_id) = TRUE))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_systems_repulsive_count
+-- Field: Systems.RepulsiveCount
+-- Type: aggregation | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_systems_repulsive_count(p_system_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((SELECT COUNT(*) FROM charge_interactions WHERE system_id = (SELECT NULLIF(system_id, '') FROM systems WHERE system_id = p_system_id) AND calc_charge_interactions_is_repulsive(interaction_id) = TRUE))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_systems_total_charge
+-- Field: Systems.TotalCharge
+-- Type: aggregation | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_systems_total_charge(p_system_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT ((SELECT COALESCE(SUM((charge_value)::numeric), 0) FROM charges WHERE system_id = p_system_id))::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_systems_is_neutral
+-- Field: Systems.IsNeutral
 -- Type: calculated | DataType: boolean | Returns: BOOLEAN
 
 
-CREATE OR REPLACE FUNCTION calc_charge_interactions_is_repulsive(p_interaction_id TEXT)
+CREATE OR REPLACE FUNCTION calc_systems_is_neutral(p_system_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT /* WARNING: Formula translation failed: Function 'VLOOKUP' is not supported yet
-   Original Airtable formula:
-   =VLOOKUP({{Charge1Id}}, Charges!{{ChargeId}}, Charges!{{ChargeValue}}) * VLOOKUP({{Charge2Id}}, Charges!{{ChargeId}}, Charges!{{ChargeValue}}) > 0
-*/
-NULL::boolean;
+  SELECT ((ABS(calc_systems_total_charge(p_system_id)))::NUMERIC < 1e-30)::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_systems_max_force_magnitude
+-- Field: Systems.MaxForceMagnitude
+-- Type: aggregation | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_systems_max_force_magnitude(p_system_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT ((SELECT COALESCE(MAX((calc_charge_interactions_force_magnitude(interaction_id))::numeric), 0) FROM charge_interactions WHERE system_id = p_system_id))::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_charge_interactions_name
+-- Field: ChargeInteractions.Name
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_charge_interactions_name(p_interaction_id TEXT)
+RETURNS TEXT AS $$
+  SELECT ((SELECT NULLIF(interaction_id, '') FROM charge_interactions WHERE interaction_id = p_interaction_id))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_charge_interactions_delta_x
+-- Field: ChargeInteractions.DeltaX
+-- Type: calculated | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_charge_interactions_delta_x(p_interaction_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT ((COALESCE(CASE WHEN ((SELECT x2 FROM charge_interactions WHERE interaction_id = p_interaction_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT x2 FROM charge_interactions WHERE interaction_id = p_interaction_id))::numeric ELSE NULL END, 0) - COALESCE(CASE WHEN ((SELECT x1 FROM charge_interactions WHERE interaction_id = p_interaction_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT x1 FROM charge_interactions WHERE interaction_id = p_interaction_id))::numeric ELSE NULL END, 0)))::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_charge_interactions_delta_y
+-- Field: ChargeInteractions.DeltaY
+-- Type: calculated | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_charge_interactions_delta_y(p_interaction_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT ((COALESCE(CASE WHEN ((SELECT y2 FROM charge_interactions WHERE interaction_id = p_interaction_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT y2 FROM charge_interactions WHERE interaction_id = p_interaction_id))::numeric ELSE NULL END, 0) - COALESCE(CASE WHEN ((SELECT y1 FROM charge_interactions WHERE interaction_id = p_interaction_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT y1 FROM charge_interactions WHERE interaction_id = p_interaction_id))::numeric ELSE NULL END, 0)))::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_charge_interactions_delta_z
+-- Field: ChargeInteractions.DeltaZ
+-- Type: calculated | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_charge_interactions_delta_z(p_interaction_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT ((COALESCE(CASE WHEN ((SELECT z2 FROM charge_interactions WHERE interaction_id = p_interaction_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT z2 FROM charge_interactions WHERE interaction_id = p_interaction_id))::numeric ELSE NULL END, 0) - COALESCE(CASE WHEN ((SELECT z1 FROM charge_interactions WHERE interaction_id = p_interaction_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT z1 FROM charge_interactions WHERE interaction_id = p_interaction_id))::numeric ELSE NULL END, 0)))::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_charge_interactions_distance_squared
+-- Field: ChargeInteractions.DistanceSquared
+-- Type: calculated | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_charge_interactions_distance_squared(p_interaction_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT ((COALESCE(CASE WHEN ((COALESCE(CASE WHEN (calc_charge_interactions_delta_x(p_interaction_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_charge_interactions_delta_x(p_interaction_id))::numeric ELSE NULL END, 0) * COALESCE(CASE WHEN (calc_charge_interactions_delta_x(p_interaction_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_charge_interactions_delta_x(p_interaction_id))::numeric ELSE NULL END, 0)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((COALESCE(CASE WHEN (calc_charge_interactions_delta_x(p_interaction_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_charge_interactions_delta_x(p_interaction_id))::numeric ELSE NULL END, 0) * COALESCE(CASE WHEN (calc_charge_interactions_delta_x(p_interaction_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_charge_interactions_delta_x(p_interaction_id))::numeric ELSE NULL END, 0)))::numeric ELSE NULL END, 0) + COALESCE(CASE WHEN ((COALESCE(CASE WHEN ((COALESCE(CASE WHEN (calc_charge_interactions_delta_y(p_interaction_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_charge_interactions_delta_y(p_interaction_id))::numeric ELSE NULL END, 0) * COALESCE(CASE WHEN (calc_charge_interactions_delta_y(p_interaction_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_charge_interactions_delta_y(p_interaction_id))::numeric ELSE NULL END, 0)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((COALESCE(CASE WHEN (calc_charge_interactions_delta_y(p_interaction_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_charge_interactions_delta_y(p_interaction_id))::numeric ELSE NULL END, 0) * COALESCE(CASE WHEN (calc_charge_interactions_delta_y(p_interaction_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_charge_interactions_delta_y(p_interaction_id))::numeric ELSE NULL END, 0)))::numeric ELSE NULL END, 0) + COALESCE(CASE WHEN ((COALESCE(CASE WHEN (calc_charge_interactions_delta_z(p_interaction_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_charge_interactions_delta_z(p_interaction_id))::numeric ELSE NULL END, 0) * COALESCE(CASE WHEN (calc_charge_interactions_delta_z(p_interaction_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_charge_interactions_delta_z(p_interaction_id))::numeric ELSE NULL END, 0)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((COALESCE(CASE WHEN (calc_charge_interactions_delta_z(p_interaction_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_charge_interactions_delta_z(p_interaction_id))::numeric ELSE NULL END, 0) * COALESCE(CASE WHEN (calc_charge_interactions_delta_z(p_interaction_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_charge_interactions_delta_z(p_interaction_id))::numeric ELSE NULL END, 0)))::numeric ELSE NULL END, 0)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((COALESCE(CASE WHEN ((COALESCE(CASE WHEN (calc_charge_interactions_delta_y(p_interaction_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_charge_interactions_delta_y(p_interaction_id))::numeric ELSE NULL END, 0) * COALESCE(CASE WHEN (calc_charge_interactions_delta_y(p_interaction_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_charge_interactions_delta_y(p_interaction_id))::numeric ELSE NULL END, 0)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((COALESCE(CASE WHEN (calc_charge_interactions_delta_y(p_interaction_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_charge_interactions_delta_y(p_interaction_id))::numeric ELSE NULL END, 0) * COALESCE(CASE WHEN (calc_charge_interactions_delta_y(p_interaction_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_charge_interactions_delta_y(p_interaction_id))::numeric ELSE NULL END, 0)))::numeric ELSE NULL END, 0) + COALESCE(CASE WHEN ((COALESCE(CASE WHEN (calc_charge_interactions_delta_z(p_interaction_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_charge_interactions_delta_z(p_interaction_id))::numeric ELSE NULL END, 0) * COALESCE(CASE WHEN (calc_charge_interactions_delta_z(p_interaction_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_charge_interactions_delta_z(p_interaction_id))::numeric ELSE NULL END, 0)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((COALESCE(CASE WHEN (calc_charge_interactions_delta_z(p_interaction_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_charge_interactions_delta_z(p_interaction_id))::numeric ELSE NULL END, 0) * COALESCE(CASE WHEN (calc_charge_interactions_delta_z(p_interaction_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_charge_interactions_delta_z(p_interaction_id))::numeric ELSE NULL END, 0)))::numeric ELSE NULL END, 0)))::numeric ELSE NULL END, 0)))::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_charge_interactions_distance_meters
+-- Field: ChargeInteractions.DistanceMeters
+-- Type: calculated | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_charge_interactions_distance_meters(p_interaction_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT (SQRT((calc_charge_interactions_distance_squared(p_interaction_id))::NUMERIC))::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_charge_interactions_distance_picometers
+-- Field: ChargeInteractions.DistancePicometers
+-- Type: calculated | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_charge_interactions_distance_picometers(p_interaction_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT ((COALESCE(CASE WHEN (calc_charge_interactions_distance_meters(p_interaction_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_charge_interactions_distance_meters(p_interaction_id))::numeric ELSE NULL END, 0) * COALESCE(1000000000000, 0)))::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_charge_interactions_charge_product
+-- Field: ChargeInteractions.ChargeProduct
+-- Type: calculated | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_charge_interactions_charge_product(p_interaction_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT ((COALESCE(CASE WHEN ((SELECT q1 FROM charge_interactions WHERE interaction_id = p_interaction_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT q1 FROM charge_interactions WHERE interaction_id = p_interaction_id))::numeric ELSE NULL END, 0) * COALESCE(CASE WHEN ((SELECT q2 FROM charge_interactions WHERE interaction_id = p_interaction_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT q2 FROM charge_interactions WHERE interaction_id = p_interaction_id))::numeric ELSE NULL END, 0)))::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_charge_interactions_force_magnitude
+-- Field: ChargeInteractions.ForceMagnitude
+-- Type: calculated | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_charge_interactions_force_magnitude(p_interaction_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT ((COALESCE(CASE WHEN ((SELECT coulomb_k FROM charge_interactions WHERE interaction_id = p_interaction_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT coulomb_k FROM charge_interactions WHERE interaction_id = p_interaction_id))::numeric ELSE NULL END, 0) * COALESCE(CASE WHEN ((COALESCE(CASE WHEN (ABS(calc_charge_interactions_charge_product(p_interaction_id)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (ABS(calc_charge_interactions_charge_product(p_interaction_id)))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(CASE WHEN (calc_charge_interactions_distance_squared(p_interaction_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_charge_interactions_distance_squared(p_interaction_id))::numeric ELSE NULL END, 0), 0)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((COALESCE(CASE WHEN (ABS(calc_charge_interactions_charge_product(p_interaction_id)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (ABS(calc_charge_interactions_charge_product(p_interaction_id)))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(CASE WHEN (calc_charge_interactions_distance_squared(p_interaction_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_charge_interactions_distance_squared(p_interaction_id))::numeric ELSE NULL END, 0), 0)))::numeric ELSE NULL END, 0)))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_charge_interactions_is_attractive
@@ -39,11 +235,367 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_charge_interactions_is_attractive(p_interaction_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT /* WARNING: Formula translation failed: Function 'VLOOKUP' is not supported yet
-   Original Airtable formula:
-   =VLOOKUP({{Charge1Id}}, Charges!{{ChargeId}}, Charges!{{ChargeValue}}) * VLOOKUP({{Charge2Id}}, Charges!{{ChargeId}}, Charges!{{ChargeValue}}) < 0
-*/
-NULL::boolean;
+  SELECT ((calc_charge_interactions_charge_product(p_interaction_id))::NUMERIC < 0)::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_charge_interactions_is_repulsive
+-- Field: ChargeInteractions.IsRepulsive
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_charge_interactions_is_repulsive(p_interaction_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((calc_charge_interactions_charge_product(p_interaction_id))::NUMERIC > 0)::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_charge_interactions_interaction_type
+-- Field: ChargeInteractions.InteractionType
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_charge_interactions_interaction_type(p_interaction_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CASE WHEN calc_charge_interactions_is_attractive(p_interaction_id) THEN ('attractive')::text ELSE (CASE WHEN calc_charge_interactions_is_repulsive(p_interaction_id) THEN ('repulsive')::text ELSE ('neutral')::text END)::text END)::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_charge_interactions_force_in_atto_newtons
+-- Field: ChargeInteractions.ForceInAttoNewtons
+-- Type: calculated | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_charge_interactions_force_in_atto_newtons(p_interaction_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT ((COALESCE(CASE WHEN (calc_charge_interactions_force_magnitude(p_interaction_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_charge_interactions_force_magnitude(p_interaction_id))::numeric ELSE NULL END, 0) * COALESCE(1000000000000000000, 0)))::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_force_vectors_name
+-- Field: ForceVectors.Name
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_force_vectors_name(p_force_vector_id TEXT)
+RETURNS TEXT AS $$
+  SELECT ((SELECT NULLIF(force_vector_id, '') FROM force_vectors WHERE force_vector_id = p_force_vector_id))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_force_vectors_unit_x
+-- Field: ForceVectors.UnitX
+-- Type: calculated | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_force_vectors_unit_x(p_force_vector_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT (CASE WHEN ((SELECT dist_raw FROM force_vectors WHERE force_vector_id = p_force_vector_id))::NUMERIC = 0 THEN (0)::text ELSE ((COALESCE(CASE WHEN ((SELECT dx FROM force_vectors WHERE force_vector_id = p_force_vector_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT dx FROM force_vectors WHERE force_vector_id = p_force_vector_id))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(CASE WHEN ((SELECT dist_raw FROM force_vectors WHERE force_vector_id = p_force_vector_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT dist_raw FROM force_vectors WHERE force_vector_id = p_force_vector_id))::numeric ELSE NULL END, 0), 0)))::text END)::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_force_vectors_unit_y
+-- Field: ForceVectors.UnitY
+-- Type: calculated | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_force_vectors_unit_y(p_force_vector_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT (CASE WHEN ((SELECT dist_raw FROM force_vectors WHERE force_vector_id = p_force_vector_id))::NUMERIC = 0 THEN (0)::text ELSE ((COALESCE(CASE WHEN ((SELECT dy FROM force_vectors WHERE force_vector_id = p_force_vector_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT dy FROM force_vectors WHERE force_vector_id = p_force_vector_id))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(CASE WHEN ((SELECT dist_raw FROM force_vectors WHERE force_vector_id = p_force_vector_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT dist_raw FROM force_vectors WHERE force_vector_id = p_force_vector_id))::numeric ELSE NULL END, 0), 0)))::text END)::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_force_vectors_unit_z
+-- Field: ForceVectors.UnitZ
+-- Type: calculated | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_force_vectors_unit_z(p_force_vector_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT (CASE WHEN ((SELECT dist_raw FROM force_vectors WHERE force_vector_id = p_force_vector_id))::NUMERIC = 0 THEN (0)::text ELSE ((COALESCE(CASE WHEN ((SELECT dz FROM force_vectors WHERE force_vector_id = p_force_vector_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT dz FROM force_vectors WHERE force_vector_id = p_force_vector_id))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(CASE WHEN ((SELECT dist_raw FROM force_vectors WHERE force_vector_id = p_force_vector_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT dist_raw FROM force_vectors WHERE force_vector_id = p_force_vector_id))::numeric ELSE NULL END, 0), 0)))::text END)::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_force_vectors_sign_factor
+-- Field: ForceVectors.SignFactor
+-- Type: calculated | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_force_vectors_sign_factor(p_force_vector_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT (CASE WHEN COALESCE((SELECT is_attractive_raw FROM force_vectors WHERE force_vector_id = p_force_vector_id), FALSE) THEN (-1)::text ELSE (1)::text END)::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_force_vectors_fx
+-- Field: ForceVectors.FX
+-- Type: calculated | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_force_vectors_fx(p_force_vector_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT ((COALESCE(CASE WHEN ((SELECT force_magnitude_raw FROM force_vectors WHERE force_vector_id = p_force_vector_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT force_magnitude_raw FROM force_vectors WHERE force_vector_id = p_force_vector_id))::numeric ELSE NULL END, 0) * COALESCE(CASE WHEN ((COALESCE(CASE WHEN (calc_force_vectors_sign_factor(p_force_vector_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_force_vectors_sign_factor(p_force_vector_id))::numeric ELSE NULL END, 0) * COALESCE(CASE WHEN (calc_force_vectors_unit_x(p_force_vector_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_force_vectors_unit_x(p_force_vector_id))::numeric ELSE NULL END, 0)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((COALESCE(CASE WHEN (calc_force_vectors_sign_factor(p_force_vector_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_force_vectors_sign_factor(p_force_vector_id))::numeric ELSE NULL END, 0) * COALESCE(CASE WHEN (calc_force_vectors_unit_x(p_force_vector_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_force_vectors_unit_x(p_force_vector_id))::numeric ELSE NULL END, 0)))::numeric ELSE NULL END, 0)))::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_force_vectors_fy
+-- Field: ForceVectors.FY
+-- Type: calculated | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_force_vectors_fy(p_force_vector_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT ((COALESCE(CASE WHEN ((SELECT force_magnitude_raw FROM force_vectors WHERE force_vector_id = p_force_vector_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT force_magnitude_raw FROM force_vectors WHERE force_vector_id = p_force_vector_id))::numeric ELSE NULL END, 0) * COALESCE(CASE WHEN ((COALESCE(CASE WHEN (calc_force_vectors_sign_factor(p_force_vector_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_force_vectors_sign_factor(p_force_vector_id))::numeric ELSE NULL END, 0) * COALESCE(CASE WHEN (calc_force_vectors_unit_y(p_force_vector_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_force_vectors_unit_y(p_force_vector_id))::numeric ELSE NULL END, 0)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((COALESCE(CASE WHEN (calc_force_vectors_sign_factor(p_force_vector_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_force_vectors_sign_factor(p_force_vector_id))::numeric ELSE NULL END, 0) * COALESCE(CASE WHEN (calc_force_vectors_unit_y(p_force_vector_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_force_vectors_unit_y(p_force_vector_id))::numeric ELSE NULL END, 0)))::numeric ELSE NULL END, 0)))::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_force_vectors_fz
+-- Field: ForceVectors.FZ
+-- Type: calculated | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_force_vectors_fz(p_force_vector_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT ((COALESCE(CASE WHEN ((SELECT force_magnitude_raw FROM force_vectors WHERE force_vector_id = p_force_vector_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT force_magnitude_raw FROM force_vectors WHERE force_vector_id = p_force_vector_id))::numeric ELSE NULL END, 0) * COALESCE(CASE WHEN ((COALESCE(CASE WHEN (calc_force_vectors_sign_factor(p_force_vector_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_force_vectors_sign_factor(p_force_vector_id))::numeric ELSE NULL END, 0) * COALESCE(CASE WHEN (calc_force_vectors_unit_z(p_force_vector_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_force_vectors_unit_z(p_force_vector_id))::numeric ELSE NULL END, 0)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((COALESCE(CASE WHEN (calc_force_vectors_sign_factor(p_force_vector_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_force_vectors_sign_factor(p_force_vector_id))::numeric ELSE NULL END, 0) * COALESCE(CASE WHEN (calc_force_vectors_unit_z(p_force_vector_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_force_vectors_unit_z(p_force_vector_id))::numeric ELSE NULL END, 0)))::numeric ELSE NULL END, 0)))::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_force_vectors_force_dir_description
+-- Field: ForceVectors.ForceDirDescription
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_force_vectors_force_dir_description(p_force_vector_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CASE WHEN COALESCE((SELECT is_attractive_raw FROM force_vectors WHERE force_vector_id = p_force_vector_id), FALSE) THEN ('towards')::text ELSE ('away-from')::text END)::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_electric_field_points_name
+-- Field: ElectricFieldPoints.Name
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_electric_field_points_name(p_field_point_id TEXT)
+RETURNS TEXT AS $$
+  SELECT ((SELECT NULLIF(field_point_id, '') FROM electric_field_points WHERE field_point_id = p_field_point_id))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_electric_field_points_d_x
+-- Field: ElectricFieldPoints.dX
+-- Type: calculated | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_electric_field_points_d_x(p_field_point_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT ((COALESCE(CASE WHEN ((SELECT obs_x FROM electric_field_points WHERE field_point_id = p_field_point_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT obs_x FROM electric_field_points WHERE field_point_id = p_field_point_id))::numeric ELSE NULL END, 0) - COALESCE(CASE WHEN ((SELECT src_x FROM electric_field_points WHERE field_point_id = p_field_point_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT src_x FROM electric_field_points WHERE field_point_id = p_field_point_id))::numeric ELSE NULL END, 0)))::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_electric_field_points_d_y
+-- Field: ElectricFieldPoints.dY
+-- Type: calculated | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_electric_field_points_d_y(p_field_point_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT ((COALESCE(CASE WHEN ((SELECT obs_y FROM electric_field_points WHERE field_point_id = p_field_point_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT obs_y FROM electric_field_points WHERE field_point_id = p_field_point_id))::numeric ELSE NULL END, 0) - COALESCE(CASE WHEN ((SELECT src_y FROM electric_field_points WHERE field_point_id = p_field_point_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT src_y FROM electric_field_points WHERE field_point_id = p_field_point_id))::numeric ELSE NULL END, 0)))::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_electric_field_points_d_z
+-- Field: ElectricFieldPoints.dZ
+-- Type: calculated | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_electric_field_points_d_z(p_field_point_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT ((COALESCE(CASE WHEN ((SELECT obs_z FROM electric_field_points WHERE field_point_id = p_field_point_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT obs_z FROM electric_field_points WHERE field_point_id = p_field_point_id))::numeric ELSE NULL END, 0) - COALESCE(CASE WHEN ((SELECT src_z FROM electric_field_points WHERE field_point_id = p_field_point_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT src_z FROM electric_field_points WHERE field_point_id = p_field_point_id))::numeric ELSE NULL END, 0)))::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_electric_field_points_distance_squared
+-- Field: ElectricFieldPoints.DistanceSquared
+-- Type: calculated | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_electric_field_points_distance_squared(p_field_point_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT ((COALESCE(CASE WHEN ((COALESCE(CASE WHEN (calc_electric_field_points_d_x(p_field_point_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_electric_field_points_d_x(p_field_point_id))::numeric ELSE NULL END, 0) * COALESCE(CASE WHEN (calc_electric_field_points_d_x(p_field_point_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_electric_field_points_d_x(p_field_point_id))::numeric ELSE NULL END, 0)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((COALESCE(CASE WHEN (calc_electric_field_points_d_x(p_field_point_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_electric_field_points_d_x(p_field_point_id))::numeric ELSE NULL END, 0) * COALESCE(CASE WHEN (calc_electric_field_points_d_x(p_field_point_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_electric_field_points_d_x(p_field_point_id))::numeric ELSE NULL END, 0)))::numeric ELSE NULL END, 0) + COALESCE(CASE WHEN ((COALESCE(CASE WHEN ((COALESCE(CASE WHEN (calc_electric_field_points_d_y(p_field_point_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_electric_field_points_d_y(p_field_point_id))::numeric ELSE NULL END, 0) * COALESCE(CASE WHEN (calc_electric_field_points_d_y(p_field_point_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_electric_field_points_d_y(p_field_point_id))::numeric ELSE NULL END, 0)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((COALESCE(CASE WHEN (calc_electric_field_points_d_y(p_field_point_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_electric_field_points_d_y(p_field_point_id))::numeric ELSE NULL END, 0) * COALESCE(CASE WHEN (calc_electric_field_points_d_y(p_field_point_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_electric_field_points_d_y(p_field_point_id))::numeric ELSE NULL END, 0)))::numeric ELSE NULL END, 0) + COALESCE(CASE WHEN ((COALESCE(CASE WHEN (calc_electric_field_points_d_z(p_field_point_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_electric_field_points_d_z(p_field_point_id))::numeric ELSE NULL END, 0) * COALESCE(CASE WHEN (calc_electric_field_points_d_z(p_field_point_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_electric_field_points_d_z(p_field_point_id))::numeric ELSE NULL END, 0)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((COALESCE(CASE WHEN (calc_electric_field_points_d_z(p_field_point_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_electric_field_points_d_z(p_field_point_id))::numeric ELSE NULL END, 0) * COALESCE(CASE WHEN (calc_electric_field_points_d_z(p_field_point_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_electric_field_points_d_z(p_field_point_id))::numeric ELSE NULL END, 0)))::numeric ELSE NULL END, 0)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((COALESCE(CASE WHEN ((COALESCE(CASE WHEN (calc_electric_field_points_d_y(p_field_point_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_electric_field_points_d_y(p_field_point_id))::numeric ELSE NULL END, 0) * COALESCE(CASE WHEN (calc_electric_field_points_d_y(p_field_point_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_electric_field_points_d_y(p_field_point_id))::numeric ELSE NULL END, 0)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((COALESCE(CASE WHEN (calc_electric_field_points_d_y(p_field_point_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_electric_field_points_d_y(p_field_point_id))::numeric ELSE NULL END, 0) * COALESCE(CASE WHEN (calc_electric_field_points_d_y(p_field_point_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_electric_field_points_d_y(p_field_point_id))::numeric ELSE NULL END, 0)))::numeric ELSE NULL END, 0) + COALESCE(CASE WHEN ((COALESCE(CASE WHEN (calc_electric_field_points_d_z(p_field_point_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_electric_field_points_d_z(p_field_point_id))::numeric ELSE NULL END, 0) * COALESCE(CASE WHEN (calc_electric_field_points_d_z(p_field_point_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_electric_field_points_d_z(p_field_point_id))::numeric ELSE NULL END, 0)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((COALESCE(CASE WHEN (calc_electric_field_points_d_z(p_field_point_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_electric_field_points_d_z(p_field_point_id))::numeric ELSE NULL END, 0) * COALESCE(CASE WHEN (calc_electric_field_points_d_z(p_field_point_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_electric_field_points_d_z(p_field_point_id))::numeric ELSE NULL END, 0)))::numeric ELSE NULL END, 0)))::numeric ELSE NULL END, 0)))::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_electric_field_points_distance
+-- Field: ElectricFieldPoints.Distance
+-- Type: calculated | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_electric_field_points_distance(p_field_point_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT (SQRT((calc_electric_field_points_distance_squared(p_field_point_id))::NUMERIC))::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_electric_field_points_e_field_magnitude
+-- Field: ElectricFieldPoints.EFieldMagnitude
+-- Type: calculated | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_electric_field_points_e_field_magnitude(p_field_point_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT ((COALESCE(CASE WHEN ((SELECT coulomb_k FROM electric_field_points WHERE field_point_id = p_field_point_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT coulomb_k FROM electric_field_points WHERE field_point_id = p_field_point_id))::numeric ELSE NULL END, 0) * COALESCE(CASE WHEN ((COALESCE(CASE WHEN (ABS((SELECT source_q FROM electric_field_points WHERE field_point_id = p_field_point_id)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (ABS((SELECT source_q FROM electric_field_points WHERE field_point_id = p_field_point_id)))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(CASE WHEN (calc_electric_field_points_distance_squared(p_field_point_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_electric_field_points_distance_squared(p_field_point_id))::numeric ELSE NULL END, 0), 0)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((COALESCE(CASE WHEN (ABS((SELECT source_q FROM electric_field_points WHERE field_point_id = p_field_point_id)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (ABS((SELECT source_q FROM electric_field_points WHERE field_point_id = p_field_point_id)))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(CASE WHEN (calc_electric_field_points_distance_squared(p_field_point_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_electric_field_points_distance_squared(p_field_point_id))::numeric ELSE NULL END, 0), 0)))::numeric ELSE NULL END, 0)))::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_electric_field_points_q_sign
+-- Field: ElectricFieldPoints.QSign
+-- Type: calculated | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_electric_field_points_q_sign(p_field_point_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT (CASE WHEN ((SELECT source_q FROM electric_field_points WHERE field_point_id = p_field_point_id))::NUMERIC > 0 THEN (1)::text ELSE (-1)::text END)::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_electric_field_points_ex
+-- Field: ElectricFieldPoints.EX
+-- Type: calculated | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_electric_field_points_ex(p_field_point_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT ((COALESCE(CASE WHEN (calc_electric_field_points_e_field_magnitude(p_field_point_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_electric_field_points_e_field_magnitude(p_field_point_id))::numeric ELSE NULL END, 0) * COALESCE(CASE WHEN ((COALESCE(CASE WHEN (calc_electric_field_points_q_sign(p_field_point_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_electric_field_points_q_sign(p_field_point_id))::numeric ELSE NULL END, 0) * COALESCE(CASE WHEN ((COALESCE(CASE WHEN (calc_electric_field_points_d_x(p_field_point_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_electric_field_points_d_x(p_field_point_id))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(CASE WHEN (calc_electric_field_points_distance(p_field_point_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_electric_field_points_distance(p_field_point_id))::numeric ELSE NULL END, 0), 0)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((COALESCE(CASE WHEN (calc_electric_field_points_d_x(p_field_point_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_electric_field_points_d_x(p_field_point_id))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(CASE WHEN (calc_electric_field_points_distance(p_field_point_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_electric_field_points_distance(p_field_point_id))::numeric ELSE NULL END, 0), 0)))::numeric ELSE NULL END, 0)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((COALESCE(CASE WHEN (calc_electric_field_points_q_sign(p_field_point_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_electric_field_points_q_sign(p_field_point_id))::numeric ELSE NULL END, 0) * COALESCE(CASE WHEN ((COALESCE(CASE WHEN (calc_electric_field_points_d_x(p_field_point_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_electric_field_points_d_x(p_field_point_id))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(CASE WHEN (calc_electric_field_points_distance(p_field_point_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_electric_field_points_distance(p_field_point_id))::numeric ELSE NULL END, 0), 0)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((COALESCE(CASE WHEN (calc_electric_field_points_d_x(p_field_point_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_electric_field_points_d_x(p_field_point_id))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(CASE WHEN (calc_electric_field_points_distance(p_field_point_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_electric_field_points_distance(p_field_point_id))::numeric ELSE NULL END, 0), 0)))::numeric ELSE NULL END, 0)))::numeric ELSE NULL END, 0)))::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_electric_field_points_ey
+-- Field: ElectricFieldPoints.EY
+-- Type: calculated | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_electric_field_points_ey(p_field_point_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT ((COALESCE(CASE WHEN (calc_electric_field_points_e_field_magnitude(p_field_point_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_electric_field_points_e_field_magnitude(p_field_point_id))::numeric ELSE NULL END, 0) * COALESCE(CASE WHEN ((COALESCE(CASE WHEN (calc_electric_field_points_q_sign(p_field_point_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_electric_field_points_q_sign(p_field_point_id))::numeric ELSE NULL END, 0) * COALESCE(CASE WHEN ((COALESCE(CASE WHEN (calc_electric_field_points_d_y(p_field_point_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_electric_field_points_d_y(p_field_point_id))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(CASE WHEN (calc_electric_field_points_distance(p_field_point_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_electric_field_points_distance(p_field_point_id))::numeric ELSE NULL END, 0), 0)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((COALESCE(CASE WHEN (calc_electric_field_points_d_y(p_field_point_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_electric_field_points_d_y(p_field_point_id))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(CASE WHEN (calc_electric_field_points_distance(p_field_point_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_electric_field_points_distance(p_field_point_id))::numeric ELSE NULL END, 0), 0)))::numeric ELSE NULL END, 0)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((COALESCE(CASE WHEN (calc_electric_field_points_q_sign(p_field_point_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_electric_field_points_q_sign(p_field_point_id))::numeric ELSE NULL END, 0) * COALESCE(CASE WHEN ((COALESCE(CASE WHEN (calc_electric_field_points_d_y(p_field_point_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_electric_field_points_d_y(p_field_point_id))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(CASE WHEN (calc_electric_field_points_distance(p_field_point_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_electric_field_points_distance(p_field_point_id))::numeric ELSE NULL END, 0), 0)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((COALESCE(CASE WHEN (calc_electric_field_points_d_y(p_field_point_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_electric_field_points_d_y(p_field_point_id))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(CASE WHEN (calc_electric_field_points_distance(p_field_point_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_electric_field_points_distance(p_field_point_id))::numeric ELSE NULL END, 0), 0)))::numeric ELSE NULL END, 0)))::numeric ELSE NULL END, 0)))::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_electric_field_points_ez
+-- Field: ElectricFieldPoints.EZ
+-- Type: calculated | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_electric_field_points_ez(p_field_point_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT ((COALESCE(CASE WHEN (calc_electric_field_points_e_field_magnitude(p_field_point_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_electric_field_points_e_field_magnitude(p_field_point_id))::numeric ELSE NULL END, 0) * COALESCE(CASE WHEN ((COALESCE(CASE WHEN (calc_electric_field_points_q_sign(p_field_point_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_electric_field_points_q_sign(p_field_point_id))::numeric ELSE NULL END, 0) * COALESCE(CASE WHEN ((COALESCE(CASE WHEN (calc_electric_field_points_d_z(p_field_point_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_electric_field_points_d_z(p_field_point_id))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(CASE WHEN (calc_electric_field_points_distance(p_field_point_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_electric_field_points_distance(p_field_point_id))::numeric ELSE NULL END, 0), 0)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((COALESCE(CASE WHEN (calc_electric_field_points_d_z(p_field_point_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_electric_field_points_d_z(p_field_point_id))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(CASE WHEN (calc_electric_field_points_distance(p_field_point_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_electric_field_points_distance(p_field_point_id))::numeric ELSE NULL END, 0), 0)))::numeric ELSE NULL END, 0)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((COALESCE(CASE WHEN (calc_electric_field_points_q_sign(p_field_point_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_electric_field_points_q_sign(p_field_point_id))::numeric ELSE NULL END, 0) * COALESCE(CASE WHEN ((COALESCE(CASE WHEN (calc_electric_field_points_d_z(p_field_point_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_electric_field_points_d_z(p_field_point_id))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(CASE WHEN (calc_electric_field_points_distance(p_field_point_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_electric_field_points_distance(p_field_point_id))::numeric ELSE NULL END, 0), 0)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((COALESCE(CASE WHEN (calc_electric_field_points_d_z(p_field_point_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_electric_field_points_d_z(p_field_point_id))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(CASE WHEN (calc_electric_field_points_distance(p_field_point_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_electric_field_points_distance(p_field_point_id))::numeric ELSE NULL END, 0), 0)))::numeric ELSE NULL END, 0)))::numeric ELSE NULL END, 0)))::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_invariant_checks_name
+-- Field: InvariantChecks.Name
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_invariant_checks_name(p_invariant_id TEXT)
+RETURNS TEXT AS $$
+  SELECT ((SELECT NULLIF(invariant_id, '') FROM invariant_checks WHERE invariant_id = p_invariant_id))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_system_summary_name
+-- Field: SystemSummary.Name
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_system_summary_name(p_summary_id TEXT)
+RETURNS TEXT AS $$
+  SELECT ((SELECT NULLIF(summary_id, '') FROM system_summary WHERE summary_id = p_summary_id))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_system_summary_charge_count
+-- Field: SystemSummary.ChargeCount
+-- Type: aggregation | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_system_summary_charge_count(p_summary_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((SELECT COUNT(*) FROM charges WHERE system_id = (SELECT NULLIF(system_id, '') FROM system_summary WHERE summary_id = p_summary_id)))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_system_summary_interaction_count
+-- Field: SystemSummary.InteractionCount
+-- Type: aggregation | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_system_summary_interaction_count(p_summary_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((SELECT COUNT(*) FROM charge_interactions WHERE system_id = (SELECT NULLIF(system_id, '') FROM system_summary WHERE summary_id = p_summary_id)))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_system_summary_attractive_count
+-- Field: SystemSummary.AttractiveCount
+-- Type: aggregation | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_system_summary_attractive_count(p_summary_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((SELECT COUNT(*) FROM charge_interactions WHERE system_id = (SELECT NULLIF(system_id, '') FROM system_summary WHERE summary_id = p_summary_id) AND calc_charge_interactions_is_attractive(interaction_id) = TRUE))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_system_summary_repulsive_count
+-- Field: SystemSummary.RepulsiveCount
+-- Type: aggregation | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_system_summary_repulsive_count(p_summary_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((SELECT COUNT(*) FROM charge_interactions WHERE system_id = (SELECT NULLIF(system_id, '') FROM system_summary WHERE summary_id = p_summary_id) AND calc_charge_interactions_is_repulsive(interaction_id) = TRUE))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_system_summary_total_charge
+-- Field: SystemSummary.TotalCharge
+-- Type: aggregation | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_system_summary_total_charge(p_summary_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT ((SELECT COALESCE(SUM((charge_value)::numeric), 0) FROM charges WHERE system_id = (SELECT NULLIF(system_id, '') FROM system_summary WHERE summary_id = p_summary_id)))::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_system_summary_is_neutral
+-- Field: SystemSummary.IsNeutral
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_system_summary_is_neutral(p_summary_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((ABS(calc_system_summary_total_charge(p_summary_id)))::NUMERIC < 1e-30)::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_system_summary_max_force_magnitude
+-- Field: SystemSummary.MaxForceMagnitude
+-- Type: aggregation | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_system_summary_max_force_magnitude(p_summary_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT ((SELECT COALESCE(MAX((calc_charge_interactions_force_magnitude(interaction_id))::numeric), 0) FROM charge_interactions WHERE system_id = (SELECT NULLIF(system_id, '') FROM system_summary WHERE summary_id = p_summary_id)))::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_system_summary_min_distance_meters
+-- Field: SystemSummary.MinDistanceMeters
+-- Type: aggregation | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_system_summary_min_distance_meters(p_summary_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT ((SELECT COALESCE(MIN((calc_charge_interactions_distance_meters(interaction_id))::numeric), 0) FROM charge_interactions WHERE system_id = (SELECT NULLIF(system_id, '') FROM system_summary WHERE summary_id = p_summary_id)))::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_system_summary_all_attractive
+-- Field: SystemSummary.AllAttractive
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_system_summary_all_attractive(p_summary_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (calc_system_summary_attractive_count(p_summary_id) = calc_system_summary_interaction_count(p_summary_id))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_system_summary_all_repulsive
+-- Field: SystemSummary.AllRepulsive
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_system_summary_all_repulsive(p_summary_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (calc_system_summary_repulsive_count(p_summary_id) = calc_system_summary_interaction_count(p_summary_id))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_system_summary_has_mixed_interactions
+-- Field: SystemSummary.HasMixedInteractions
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_system_summary_has_mixed_interactions(p_summary_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (((calc_system_summary_attractive_count(p_summary_id))::NUMERIC > 0 AND (calc_system_summary_repulsive_count(p_summary_id))::NUMERIC > 0));
 $$ LANGUAGE sql STABLE;
 
 -- ============================================================================
