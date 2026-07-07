@@ -20,6 +20,14 @@ const TYPE_LABELS: Record<string, string> = {
   D: 'Neutral',
 };
 
+function fmt(n: unknown, dp: number): string {
+  return Number(n).toFixed(dp);
+}
+
+function fmtPp(n: unknown, dp = 0): string {
+  return `${fmt(Number(n) * 100, dp)}pp`;
+}
+
 export function PhaseDiagramView() {
   const [summary, setSummary] = useState<PhaseDiagramSummary | null>(null);
   const [rows, setRows] = useState<SyntheticPhaseRow[]>([]);
@@ -139,25 +147,25 @@ export function PhaseDiagramView() {
                   </span>
                 </td>
                 <td style={{ padding: '6px 10px' }}>
-                  <Cell table="SyntheticPhase" col="param_stratum_fraction">{r.param_stratum_fraction.toFixed(2)}</Cell>
+                  <Cell table="SyntheticPhase" col="param_stratum_fraction">{fmt(r.param_stratum_fraction, 2)}</Cell>
                 </td>
                 <td style={{ padding: '6px 10px' }}>
-                  <Cell table="SyntheticPhase" col="param_stratum_gap1">{(r.param_stratum_gap1 * 100).toFixed(0)}pp</Cell>
+                  <Cell table="SyntheticPhase" col="param_stratum_gap1">{fmtPp(r.param_stratum_gap1)}</Cell>
                 </td>
                 <td style={{ padding: '6px 10px' }}>
-                  <Cell table="SyntheticPhase" col="param_stratum_gap2">{(r.param_stratum_gap2 * 100).toFixed(0)}pp</Cell>
+                  <Cell table="SyntheticPhase" col="param_stratum_gap2">{fmtPp(r.param_stratum_gap2)}</Cell>
                 </td>
                 <td style={{ padding: '6px 10px' }}>
-                  <Cell table="SyntheticPhase" col="param_allocation_bias">{r.param_allocation_bias.toFixed(2)}</Cell>
+                  <Cell table="SyntheticPhase" col="param_allocation_bias">{fmt(r.param_allocation_bias, 2)}</Cell>
                 </td>
                 <td style={{ padding: '6px 10px' }}>
-                  <Cell table="SyntheticPhase" col="phase_signed_pooled_gap">{(r.phase_signed_pooled_gap * 100).toFixed(2)}pp</Cell>
+                  <Cell table="SyntheticPhase" col="phase_signed_pooled_gap">{fmtPp(r.phase_signed_pooled_gap, 2)}</Cell>
                 </td>
                 <td style={{ padding: '6px 10px' }}>
-                  <Cell table="SyntheticPhase" col="phase_corrected_gap">{(r.phase_corrected_gap * 100).toFixed(2)}pp</Cell>
+                  <Cell table="SyntheticPhase" col="phase_corrected_gap">{fmtPp(r.phase_corrected_gap, 2)}</Cell>
                 </td>
                 <td style={{ padding: '6px 10px' }}>
-                  <Cell table="SyntheticPhase" col="phase_allocation_distortion">{(r.phase_allocation_distortion * 100).toFixed(2)}pp</Cell>
+                  <Cell table="SyntheticPhase" col="phase_allocation_distortion">{fmtPp(r.phase_allocation_distortion, 2)}</Cell>
                 </td>
               </tr>
             ))}

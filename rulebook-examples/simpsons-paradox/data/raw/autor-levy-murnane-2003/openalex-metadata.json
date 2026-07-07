@@ -1,0 +1,1187 @@
+{
+  "id": "https://openalex.org/W2158550634",
+  "doi": "https://doi.org/10.1257/aer.99.2.58",
+  "title": "Job Polarization in Europe",
+  "display_name": "Job Polarization in Europe",
+  "relevance_score": 552.32837,
+  "publication_year": 2009,
+  "publication_date": "2009-04-01",
+  "ids": {
+    "openalex": "https://openalex.org/W2158550634",
+    "doi": "https://doi.org/10.1257/aer.99.2.58",
+    "mag": "2158550634"
+  },
+  "language": "en",
+  "primary_location": {
+    "id": "doi:10.1257/aer.99.2.58",
+    "is_oa": false,
+    "landing_page_url": "https://doi.org/10.1257/aer.99.2.58",
+    "pdf_url": null,
+    "source": {
+      "id": "https://openalex.org/S23254222",
+      "display_name": "American Economic Review",
+      "issn_l": "0002-8282",
+      "issn": [
+        "0002-8282",
+        "1944-7981"
+      ],
+      "is_oa": false,
+      "is_in_doaj": false,
+      "is_core": true,
+      "host_organization": "https://openalex.org/P4310315912",
+      "host_organization_name": "American Economic Association",
+      "host_organization_lineage": [
+        "https://openalex.org/P4310315912"
+      ],
+      "host_organization_lineage_names": [
+        "American Economic Association"
+      ],
+      "type": "journal"
+    },
+    "license": null,
+    "license_id": null,
+    "version": "publishedVersion",
+    "is_accepted": true,
+    "is_published": true,
+    "raw_source_name": "American Economic Review",
+    "raw_type": "journal-article"
+  },
+  "type": "article",
+  "indexed_in": [
+    "crossref"
+  ],
+  "open_access": {
+    "is_oa": false,
+    "oa_status": "closed",
+    "oa_url": null,
+    "any_repository_has_fulltext": false
+  },
+  "authorships": [
+    {
+      "author_position": "first",
+      "author": {
+        "id": "https://openalex.org/A5108772693",
+        "display_name": "Maarten Goos",
+        "orcid": null
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I99464096",
+          "display_name": "KU Leuven",
+          "ror": "https://ror.org/05f950310",
+          "country_code": "BE",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I99464096"
+          ]
+        }
+      ],
+      "countries": [
+        "BE"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Maarten Goos",
+      "raw_affiliation_strings": [
+        "Centre for Economic Studies, University of Leuven, Naamsestraat 69, 3000 Leuven, Belgium"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Centre for Economic Studies, University of Leuven, Naamsestraat 69, 3000 Leuven, Belgium",
+          "institution_ids": [
+            "https://openalex.org/I99464096"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5087092499",
+        "display_name": "Alan Manning",
+        "orcid": "https://orcid.org/0000-0002-7884-3580"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I909854389",
+          "display_name": "London School of Economics and Political Science",
+          "ror": "https://ror.org/0090zs177",
+          "country_code": "GB",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I124357947",
+            "https://openalex.org/I909854389"
+          ]
+        }
+      ],
+      "countries": [
+        "GB"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Alan Manning",
+      "raw_affiliation_strings": [
+        "Department of Economics, London School of Economics, Houghton Street, London WC2A 2AE, United Kingdom"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Department of Economics, London School of Economics, Houghton Street, London WC2A 2AE, United Kingdom",
+          "institution_ids": [
+            "https://openalex.org/I909854389"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "last",
+      "author": {
+        "id": "https://openalex.org/A5110447170",
+        "display_name": "Anna Salomons",
+        "orcid": null
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I99464096",
+          "display_name": "KU Leuven",
+          "ror": "https://ror.org/05f950310",
+          "country_code": "BE",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I99464096"
+          ]
+        }
+      ],
+      "countries": [
+        "BE"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Anna Salomons",
+      "raw_affiliation_strings": [
+        "Centre for Economic Studies, University of Leuven, Naamsestraat 69, 3000 Leuven, Belgium"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Centre for Economic Studies, University of Leuven, Naamsestraat 69, 3000 Leuven, Belgium",
+          "institution_ids": [
+            "https://openalex.org/I99464096"
+          ]
+        }
+      ]
+    }
+  ],
+  "institutions": [],
+  "countries_distinct_count": 2,
+  "institutions_distinct_count": 2,
+  "corresponding_author_ids": [],
+  "corresponding_institution_ids": [],
+  "apc_list": null,
+  "apc_paid": null,
+  "fwci": 106.2311,
+  "has_fulltext": false,
+  "cited_by_count": 1368,
+  "citation_normalized_percentile": {
+    "value": 0.99938913,
+    "is_in_top_1_percent": true,
+    "is_in_top_10_percent": true
+  },
+  "cited_by_percentile_year": {
+    "min": 99,
+    "max": 100
+  },
+  "biblio": {
+    "volume": "99",
+    "issue": "2",
+    "first_page": "58",
+    "last_page": "63"
+  },
+  "is_retracted": false,
+  "is_paratext": false,
+  "is_xpac": false,
+  "primary_topic": {
+    "id": "https://openalex.org/T10208",
+    "display_name": "Labor market dynamics and wage inequality",
+    "score": 0.9980000257492065,
+    "subfield": {
+      "id": "https://openalex.org/subfields/2002",
+      "display_name": "Economics and Econometrics"
+    },
+    "field": {
+      "id": "https://openalex.org/fields/20",
+      "display_name": "Economics, Econometrics and Finance"
+    },
+    "domain": {
+      "id": "https://openalex.org/domains/2",
+      "display_name": "Social Sciences"
+    }
+  },
+  "topics": [
+    {
+      "id": "https://openalex.org/T10208",
+      "display_name": "Labor market dynamics and wage inequality",
+      "score": 0.9980000257492065,
+      "subfield": {
+        "id": "https://openalex.org/subfields/2002",
+        "display_name": "Economics and Econometrics"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/20",
+        "display_name": "Economics, Econometrics and Finance"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/2",
+        "display_name": "Social Sciences"
+      }
+    },
+    {
+      "id": "https://openalex.org/T11959",
+      "display_name": "Employment and Welfare Studies",
+      "score": 0.9926000237464905,
+      "subfield": {
+        "id": "https://openalex.org/subfields/3600",
+        "display_name": "General Health Professions"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/36",
+        "display_name": "Health Professions"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/4",
+        "display_name": "Health Sciences"
+      }
+    },
+    {
+      "id": "https://openalex.org/T12851",
+      "display_name": "Firm Innovation and Growth",
+      "score": 0.974399983882904,
+      "subfield": {
+        "id": "https://openalex.org/subfields/2002",
+        "display_name": "Economics and Econometrics"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/20",
+        "display_name": "Economics, Econometrics and Finance"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/2",
+        "display_name": "Social Sciences"
+      }
+    }
+  ],
+  "keywords": [
+    {
+      "id": "https://openalex.org/keywords/economics",
+      "display_name": "Economics",
+      "score": 0.706834077835083
+    },
+    {
+      "id": "https://openalex.org/keywords/polarization",
+      "display_name": "Polarization (electrochemistry)",
+      "score": 0.4822740852832794
+    },
+    {
+      "id": "https://openalex.org/keywords/labour-economics",
+      "display_name": "Labour economics",
+      "score": 0.382228821516037
+    },
+    {
+      "id": "https://openalex.org/keywords/chemistry",
+      "display_name": "Chemistry",
+      "score": 0.06993642449378967
+    }
+  ],
+  "concepts": [
+    {
+      "id": "https://openalex.org/C162324750",
+      "wikidata": "https://www.wikidata.org/wiki/Q8134",
+      "display_name": "Economics",
+      "level": 0,
+      "score": 0.706834077835083
+    },
+    {
+      "id": "https://openalex.org/C205049153",
+      "wikidata": "https://www.wikidata.org/wiki/Q2698605",
+      "display_name": "Polarization (electrochemistry)",
+      "level": 2,
+      "score": 0.4822740852832794
+    },
+    {
+      "id": "https://openalex.org/C145236788",
+      "wikidata": "https://www.wikidata.org/wiki/Q28161",
+      "display_name": "Labour economics",
+      "level": 1,
+      "score": 0.382228821516037
+    },
+    {
+      "id": "https://openalex.org/C185592680",
+      "wikidata": "https://www.wikidata.org/wiki/Q2329",
+      "display_name": "Chemistry",
+      "level": 0,
+      "score": 0.06993642449378967
+    },
+    {
+      "id": "https://openalex.org/C147789679",
+      "wikidata": "https://www.wikidata.org/wiki/Q11372",
+      "display_name": "Physical chemistry",
+      "level": 1,
+      "score": 0.0
+    }
+  ],
+  "mesh": [],
+  "locations_count": 4,
+  "locations": [
+    {
+      "id": "doi:10.1257/aer.99.2.58",
+      "is_oa": false,
+      "landing_page_url": "https://doi.org/10.1257/aer.99.2.58",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S23254222",
+        "display_name": "American Economic Review",
+        "issn_l": "0002-8282",
+        "issn": [
+          "0002-8282",
+          "1944-7981"
+        ],
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": true,
+        "host_organization": "https://openalex.org/P4310315912",
+        "host_organization_name": "American Economic Association",
+        "host_organization_lineage": [
+          "https://openalex.org/P4310315912"
+        ],
+        "host_organization_lineage_names": [
+          "American Economic Association"
+        ],
+        "type": "journal"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "publishedVersion",
+      "is_accepted": true,
+      "is_published": true,
+      "raw_source_name": "American Economic Review",
+      "raw_type": "journal-article"
+    },
+    {
+      "id": "pmh:oai:tilburguniversity.edu:openaire_cris_publications/8c6daa72-b805-40cf-b4c8-d6e8641f2f40",
+      "is_oa": false,
+      "landing_page_url": "https://research.tilburguniversity.edu/en/publications/8c6daa72-b805-40cf-b4c8-d6e8641f2f40",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4306401490",
+        "display_name": "Research portal (Tilburg University)",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I193700539",
+        "host_organization_name": "Tilburg University",
+        "host_organization_lineage": [
+          "https://openalex.org/I193700539"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "publishedVersion",
+      "is_accepted": true,
+      "is_published": true,
+      "raw_source_name": "Goos, M, Manning, A & Salomons, A 2009, 'Job polarization in Europe', American Economic Review, vol. 99, no. 2, pp. 58-63. https://doi.org/10.1257/aer.99.2.58",
+      "raw_type": "info:eu-repo/semantics/article"
+    },
+    {
+      "id": "pmh:oai:eprints.lse.ac.uk:30567",
+      "is_oa": false,
+      "landing_page_url": "https://orcid.org/0000-0002-7884-3580>",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4306401593",
+        "display_name": "London School of Economics and Political Science Research Online (London School of Economics and Political Science)",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I909854389",
+        "host_organization_name": "London School of Economics and Political Science",
+        "host_organization_lineage": [
+          "https://openalex.org/I909854389"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "acceptedVersion",
+      "is_accepted": true,
+      "is_published": false,
+      "raw_source_name": null,
+      "raw_type": "Article"
+    },
+    {
+      "id": "pmh:oai:RePEc:aea:aecrev:v:99:y:2009:i:2:p:58-63",
+      "is_oa": false,
+      "landing_page_url": "http://www.aeaweb.org/articles.php?doi=10.1257/aer.99.2.58",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4306401271",
+        "display_name": "RePEc: Research Papers in Economics",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I77793887",
+        "host_organization_name": "Federal Reserve Bank of St. Louis",
+        "host_organization_lineage": [
+          "https://openalex.org/I77793887"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "submittedVersion",
+      "is_accepted": false,
+      "is_published": false,
+      "raw_source_name": null,
+      "raw_type": "article"
+    }
+  ],
+  "best_oa_location": null,
+  "sustainable_development_goals": [
+    {
+      "score": 0.7400000095367432,
+      "display_name": "Decent work and economic growth",
+      "id": "https://metadata.un.org/sdg/8"
+    }
+  ],
+  "awards": [],
+  "funders": [],
+  "has_content": {
+    "grobid_xml": false,
+    "pdf": false
+  },
+  "content_urls": null,
+  "referenced_works_count": 29,
+  "referenced_works": [
+    "https://openalex.org/W1546654714",
+    "https://openalex.org/W1588739638",
+    "https://openalex.org/W1601834727",
+    "https://openalex.org/W2030759064",
+    "https://openalex.org/W2046953410",
+    "https://openalex.org/W2097937224",
+    "https://openalex.org/W2098662935",
+    "https://openalex.org/W2102292466",
+    "https://openalex.org/W2134826163",
+    "https://openalex.org/W2140769313",
+    "https://openalex.org/W2141999111",
+    "https://openalex.org/W2145246914",
+    "https://openalex.org/W2154366648",
+    "https://openalex.org/W2156409105",
+    "https://openalex.org/W2170821050",
+    "https://openalex.org/W2172189056",
+    "https://openalex.org/W2175877536",
+    "https://openalex.org/W2555246873",
+    "https://openalex.org/W2569625930",
+    "https://openalex.org/W2776671922",
+    "https://openalex.org/W2892380133",
+    "https://openalex.org/W3122472760",
+    "https://openalex.org/W3123108020",
+    "https://openalex.org/W3124401164",
+    "https://openalex.org/W3124990081",
+    "https://openalex.org/W3125109350",
+    "https://openalex.org/W3125121094",
+    "https://openalex.org/W3125585220",
+    "https://openalex.org/W3125670964"
+  ],
+  "related_works": [
+    "https://openalex.org/W1502198272",
+    "https://openalex.org/W2017540542",
+    "https://openalex.org/W2104764082",
+    "https://openalex.org/W2073254488",
+    "https://openalex.org/W2084227502",
+    "https://openalex.org/W2066504725",
+    "https://openalex.org/W2010938771",
+    "https://openalex.org/W2778042569",
+    "https://openalex.org/W2070530935",
+    "https://openalex.org/W3125332134"
+  ],
+  "abstract_inverted_index": {
+    "The": [
+      0,
+      66
+    ],
+    "structure": [
+      1,
+      247
+    ],
+    "of": [
+      2,
+      21,
+      68,
+      136,
+      166,
+      201,
+      220,
+      242
+    ],
+    "employment": [
+      3,
+      33,
+      80,
+      116,
+      132
+    ],
+    "is": [
+      4,
+      64,
+      113,
+      145,
+      204,
+      226,
+      238
+    ],
+    "always": [
+      5,
+      10
+    ],
+    "changing,": [
+      6
+    ],
+    "and": [
+      7,
+      42,
+      84,
+      96,
+      101,
+      106,
+      123,
+      125,
+      140,
+      148,
+      161,
+      192,
+      214,
+      233,
+      268
+    ],
+    "economists": [
+      8
+    ],
+    "are": [
+      9,
+      170
+    ],
+    "trying": [
+      11
+    ],
+    "to": [
+      12,
+      28,
+      73,
+      159,
+      205,
+      211
+    ],
+    "understand": [
+      13,
+      29
+    ],
+    "those": [
+      14
+    ],
+    "changes.": [
+      15
+    ],
+    "In": [
+      16
+    ],
+    "the": [
+      17,
+      19,
+      30,
+      91,
+      102,
+      119,
+      134,
+      137,
+      156,
+      174,
+      181,
+      199,
+      218,
+      221,
+      227,
+      245,
+      249
+    ],
+    "1990s": [
+      18
+    ],
+    "idea": [
+      20,
+      67
+    ],
+    "skill-biased": [
+      22
+    ],
+    "technological": [
+      23,
+      202
+    ],
+    "change": [
+      24,
+      243
+    ],
+    "(SBTC)": [
+      25
+    ],
+    "was": [
+      26
+    ],
+    "used": [
+      27
+    ],
+    "shift": [
+      31,
+      78
+    ],
+    "in": [
+      32,
+      51,
+      79,
+      115,
+      117,
+      133,
+      217,
+      231,
+      235,
+      244,
+      248
+    ],
+    "toward": [
+      34,
+      85
+    ],
+    "more": [
+      35,
+      61
+    ],
+    "educated": [
+      36
+    ],
+    "workers": [
+      37
+    ],
+    "(see": [
+      38
+    ],
+    "David": [
+      39
+    ],
+    "H.": [
+      40
+    ],
+    "Autor": [
+      41
+    ],
+    "Lawrence": [
+      43
+    ],
+    "F.": [
+      44
+    ],
+    "Katz": [
+      45
+    ],
+    "1999,": [
+      46
+    ],
+    "for": [
+      47,
+      90,
+      164,
+      177,
+      253
+    ],
+    "a": [
+      48,
+      60,
+      75,
+      263
+    ],
+    "survey).": [
+      49
+    ],
+    "However,": [
+      50
+    ],
+    "recent": [
+      52
+    ],
+    "years,": [
+      53
+    ],
+    "it": [
+      54
+    ],
+    "has": [
+      55
+    ],
+    "become": [
+      56
+    ],
+    "appar": [
+      57
+    ],
+    "ent": [
+      58
+    ],
+    "that": [
+      59,
+      111,
+      198,
+      229
+    ],
+    "nuanced": [
+      62
+    ],
+    "approach": [
+      63
+    ],
+    "needed.": [
+      65
+    ],
+    "SBTC": [
+      69
+    ],
+    "might": [
+      70
+    ],
+    "lead": [
+      71
+    ],
+    "one": [
+      72
+    ],
+    "predict": [
+      74
+    ],
+    "uni": [
+      76
+    ],
+    "form": [
+      77
+    ],
+    "away": [
+      81
+    ],
+    "from": [
+      82
+    ],
+    "low-skilled": [
+      83
+    ],
+    "high-skilled": [
+      86
+    ],
+    "occupations,": [
+      87,
+      129
+    ],
+    "but": [
+      88
+    ],
+    "studies": [
+      89
+    ],
+    "United": [
+      92,
+      103
+    ],
+    "States": [
+      93
+    ],
+    "(Autor,": [
+      94
+    ],
+    "Katz,": [
+      95
+    ],
+    "Melissa": [
+      97
+    ],
+    "S.": [
+      98,
+      256
+    ],
+    "Kearney": [
+      99
+    ],
+    "2006)": [
+      100
+    ],
+    "Kingdom": [
+      104
+    ],
+    "(Goos": [
+      105
+    ],
+    "Manning": [
+      107,
+      149,
+      162
+    ],
+    "2007)": [
+      108
+    ],
+    "have": [
+      109
+    ],
+    "shown": [
+      110
+    ],
+    "there": [
+      112,
+      225,
+      260
+    ],
+    "growth": [
+      114
+    ],
+    "both": [
+      118
+    ],
+    "high": [
+      120
+    ],
+    "est-skilled": [
+      121
+    ],
+    "(professional": [
+      122
+    ],
+    "managerial)": [
+      124
+    ],
+    "lowest-skilled": [
+      126
+    ],
+    "(personal": [
+      127
+    ],
+    "services)": [
+      128
+    ],
+    "with": [
+      130
+    ],
+    "declining": [
+      131
+    ],
+    "middle": [
+      135,
+      219
+    ],
+    "distribution": [
+      138
+    ],
+    "(manufacturing": [
+      139
+    ],
+    "routine": [
+      207
+    ],
+    "office": [
+      142
+    ],
+    "jobs).": [
+      143
+    ],
+    "This": [
+      144
+    ],
+    "what": [
+      146
+    ],
+    "Goos": [
+      147,
+      160
+    ],
+    "(2007)": [
+      150
+    ],
+    "term": [
+      151
+    ],
+    "job": [
+      152,
+      178,
+      246,
+      266
+    ],
+    "polarization": [
+      153,
+      267
+    ],
+    "(although": [
+      154
+    ],
+    "see": [
+      155
+    ],
+    "introduc": [
+      157
+    ],
+    "tion": [
+      183
+    ],
+    "2007": [
+      163
+    ],
+    "antecedents": [
+      165
+    ],
+    "these": [
+      167
+    ],
+    "ideas).": [
+      168
+    ],
+    "There": [
+      169
+    ],
+    "several": [
+      171
+    ],
+    "hypotheses": [
+      172
+    ],
+    "about": [
+      173
+    ],
+    "rea": [
+      175
+    ],
+    "sons": [
+      176
+    ],
+    "polarization.": [
+      179
+    ],
+    "First,": [
+      180
+    ],
+    "routiniza": [
+      182
+    ],
+    "hypothesis": [
+      184
+    ],
+    "(first": [
+      185
+    ],
+    "put": [
+      186
+    ],
+    "forward": [
+      187
+    ],
+    "by": [
+      188
+    ],
+    "Autor,": [
+      189
+    ],
+    "Frank": [
+      190
+    ],
+    "Levy,": [
+      191
+    ],
+    "Richard": [
+      193
+    ],
+    "Murnane": [
+      194
+    ],
+    "2003)": [
+      195
+    ],
+    "sug": [
+      196
+    ],
+    "gests": [
+      197
+    ],
+    "effect": [
+      200
+    ],
+    "progress": [
+      203
+    ],
+    "replace": [
+      206
+    ],
+    "labor": [
+      208
+    ],
+    "which": [
+      209
+    ],
+    "tends": [
+      210
+    ],
+    "be": [
+      212,
+      262
+    ],
+    "clerical": [
+      213
+    ],
+    "craft": [
+      215
+    ],
+    "jobs": [
+      216
+    ],
+    "wage": [
+      222
+    ],
+    "distribution.": [
+      223
+    ],
+    "Second,": [
+      224
+    ],
+    "view": [
+      228
+    ],
+    "globalization": [
+      230
+    ],
+    "general,": [
+      232
+    ],
+    "offshoring": [
+      234
+    ],
+    "par": [
+      236
+    ],
+    "ticular,": [
+      237
+    ],
+    "an": [
+      239
+    ],
+    "important": [
+      240
+    ],
+    "source": [
+      241
+    ],
+    "richest": [
+      250
+    ],
+    "countries": [
+      251
+    ],
+    "(see,": [
+      252
+    ],
+    "example,": [
+      254
+    ],
+    "Alan": [
+      255
+    ],
+    "Blinder": [
+      257
+    ],
+    "2007).": [
+      258
+    ],
+    "Third,": [
+      259
+    ],
+    "may": [
+      261
+    ],
+    "link": [
+      264
+    ],
+    "between": [
+      265
+    ]
+  },
+  "counts_by_year": [
+    {
+      "year": 2026,
+      "cited_by_count": 37
+    },
+    {
+      "year": 2025,
+      "cited_by_count": 88
+    },
+    {
+      "year": 2024,
+      "cited_by_count": 92
+    },
+    {
+      "year": 2023,
+      "cited_by_count": 84
+    },
+    {
+      "year": 2022,
+      "cited_by_count": 99
+    },
+    {
+      "year": 2021,
+      "cited_by_count": 123
+    },
+    {
+      "year": 2020,
+      "cited_by_count": 119
+    },
+    {
+      "year": 2019,
+      "cited_by_count": 111
+    },
+    {
+      "year": 2018,
+      "cited_by_count": 108
+    },
+    {
+      "year": 2017,
+      "cited_by_count": 80
+    },
+    {
+      "year": 2016,
+      "cited_by_count": 76
+    },
+    {
+      "year": 2015,
+      "cited_by_count": 93
+    },
+    {
+      "year": 2014,
+      "cited_by_count": 92
+    },
+    {
+      "year": 2013,
+      "cited_by_count": 64
+    },
+    {
+      "year": 2012,
+      "cited_by_count": 42
+    }
+  ],
+  "updated_date": "2026-07-05T07:55:05.734416",
+  "created_date": "2025-10-10T00:00:00"
+}

@@ -1,0 +1,2175 @@
+{
+  "id": "https://openalex.org/W2024352468",
+  "doi": "https://doi.org/10.1136/bmj.324.7329.71",
+  "title": "Collaborative meta-analysis of randomised trials of antiplatelet therapy for prevention of death, myocardial infarction, and stroke in high risk patients",
+  "display_name": "Collaborative meta-analysis of randomised trials of antiplatelet therapy for prevention of death, myocardial infarction, and stroke in high risk patients",
+  "relevance_score": 603.20087,
+  "publication_year": 2002,
+  "publication_date": "2002-01-12",
+  "ids": {
+    "openalex": "https://openalex.org/W2024352468",
+    "doi": "https://doi.org/10.1136/bmj.324.7329.71",
+    "mag": "2024352468",
+    "pmid": "https://pubmed.ncbi.nlm.nih.gov/11786451"
+  },
+  "language": "en",
+  "primary_location": {
+    "id": "doi:10.1136/bmj.324.7329.71",
+    "is_oa": true,
+    "landing_page_url": "https://doi.org/10.1136/bmj.324.7329.71",
+    "pdf_url": "https://www.bmj.com/content/bmj/324/7329/71.full.pdf",
+    "source": {
+      "id": "https://openalex.org/S192814187",
+      "display_name": "BMJ",
+      "issn_l": "0959-8138",
+      "issn": [
+        "0959-8138"
+      ],
+      "is_oa": false,
+      "is_in_doaj": false,
+      "is_core": true,
+      "host_organization": "https://openalex.org/P4310319945",
+      "host_organization_name": "BMJ",
+      "host_organization_lineage": [
+        "https://openalex.org/P4310319945"
+      ],
+      "host_organization_lineage_names": [
+        "BMJ"
+      ],
+      "type": "journal"
+    },
+    "license": null,
+    "license_id": null,
+    "version": "publishedVersion",
+    "is_accepted": true,
+    "is_published": true,
+    "raw_source_name": "BMJ",
+    "raw_type": "journal-article"
+  },
+  "type": "review",
+  "indexed_in": [
+    "crossref",
+    "pubmed"
+  ],
+  "open_access": {
+    "is_oa": true,
+    "oa_status": "bronze",
+    "oa_url": "https://www.bmj.com/content/bmj/324/7329/71.full.pdf",
+    "any_repository_has_fulltext": true
+  },
+  "authorships": [
+    {
+      "author_position": "first",
+      "author": {
+        "id": "https://openalex.org/A5097831011",
+        "display_name": "Antiplatelet Trialists Collaboration",
+        "orcid": null
+      },
+      "institutions": [],
+      "countries": [],
+      "is_corresponding": true,
+      "raw_author_name": "",
+      "raw_affiliation_strings": [
+        "Data Safe Haven"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Data Safe Haven",
+          "institution_ids": []
+        }
+      ]
+    }
+  ],
+  "institutions": [],
+  "countries_distinct_count": 0,
+  "institutions_distinct_count": 0,
+  "corresponding_author_ids": [
+    "https://openalex.org/A5097831011"
+  ],
+  "corresponding_institution_ids": [],
+  "apc_list": null,
+  "apc_paid": null,
+  "fwci": 195.252,
+  "has_fulltext": true,
+  "cited_by_count": 6965,
+  "citation_normalized_percentile": {
+    "value": 0.99990119,
+    "is_in_top_1_percent": true,
+    "is_in_top_10_percent": true
+  },
+  "cited_by_percentile_year": {
+    "min": 99,
+    "max": 100
+  },
+  "biblio": {
+    "volume": "324",
+    "issue": "7329",
+    "first_page": "71",
+    "last_page": "86"
+  },
+  "is_retracted": false,
+  "is_paratext": false,
+  "is_xpac": false,
+  "primary_topic": {
+    "id": "https://openalex.org/T11064",
+    "display_name": "Antiplatelet Therapy and Cardiovascular Diseases",
+    "score": 0.3345000147819519,
+    "subfield": {
+      "id": "https://openalex.org/subfields/2705",
+      "display_name": "Cardiology and Cardiovascular Medicine"
+    },
+    "field": {
+      "id": "https://openalex.org/fields/27",
+      "display_name": "Medicine"
+    },
+    "domain": {
+      "id": "https://openalex.org/domains/4",
+      "display_name": "Health Sciences"
+    }
+  },
+  "topics": [
+    {
+      "id": "https://openalex.org/T11064",
+      "display_name": "Antiplatelet Therapy and Cardiovascular Diseases",
+      "score": 0.3345000147819519,
+      "subfield": {
+        "id": "https://openalex.org/subfields/2705",
+        "display_name": "Cardiology and Cardiovascular Medicine"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/27",
+        "display_name": "Medicine"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/4",
+        "display_name": "Health Sciences"
+      }
+    },
+    {
+      "id": "https://openalex.org/T10227",
+      "display_name": "Acute Ischemic Stroke Management",
+      "score": 0.16539999842643738,
+      "subfield": {
+        "id": "https://openalex.org/subfields/2713",
+        "display_name": "Epidemiology"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/27",
+        "display_name": "Medicine"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/4",
+        "display_name": "Health Sciences"
+      }
+    },
+    {
+      "id": "https://openalex.org/T10292",
+      "display_name": "Acute Myocardial Infarction Research",
+      "score": 0.09229999780654907,
+      "subfield": {
+        "id": "https://openalex.org/subfields/2705",
+        "display_name": "Cardiology and Cardiovascular Medicine"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/27",
+        "display_name": "Medicine"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/4",
+        "display_name": "Health Sciences"
+      }
+    }
+  ],
+  "keywords": [
+    {
+      "id": "https://openalex.org/keywords/medicine",
+      "display_name": "Medicine",
+      "score": 0.7758080363273621
+    },
+    {
+      "id": "https://openalex.org/keywords/myocardial-infarction",
+      "display_name": "Myocardial infarction",
+      "score": 0.766166090965271
+    },
+    {
+      "id": "https://openalex.org/keywords/stroke",
+      "display_name": "Stroke (engine)",
+      "score": 0.7161263227462769
+    },
+    {
+      "id": "https://openalex.org/keywords/meta-analysis",
+      "display_name": "Meta-analysis",
+      "score": 0.6710283756256104
+    },
+    {
+      "id": "https://openalex.org/keywords/internal-medicine",
+      "display_name": "Internal medicine",
+      "score": 0.6169346570968628
+    },
+    {
+      "id": "https://openalex.org/keywords/cardiology",
+      "display_name": "Cardiology",
+      "score": 0.5916070938110352
+    },
+    {
+      "id": "https://openalex.org/keywords/randomized-controlled-trial",
+      "display_name": "Randomized controlled trial",
+      "score": 0.4347441494464874
+    },
+    {
+      "id": "https://openalex.org/keywords/ischemic-stroke",
+      "display_name": "Ischemic stroke",
+      "score": 0.41344892978668213
+    },
+    {
+      "id": "https://openalex.org/keywords/intensive-care-medicine",
+      "display_name": "Intensive care medicine",
+      "score": 0.3422470688819885
+    },
+    {
+      "id": "https://openalex.org/keywords/ischemia",
+      "display_name": "Ischemia",
+      "score": 0.05519074201583862
+    }
+  ],
+  "concepts": [
+    {
+      "id": "https://openalex.org/C71924100",
+      "wikidata": "https://www.wikidata.org/wiki/Q11190",
+      "display_name": "Medicine",
+      "level": 0,
+      "score": 0.7758080363273621
+    },
+    {
+      "id": "https://openalex.org/C500558357",
+      "wikidata": "https://www.wikidata.org/wiki/Q12152",
+      "display_name": "Myocardial infarction",
+      "level": 2,
+      "score": 0.766166090965271
+    },
+    {
+      "id": "https://openalex.org/C2780645631",
+      "wikidata": "https://www.wikidata.org/wiki/Q671554",
+      "display_name": "Stroke (engine)",
+      "level": 2,
+      "score": 0.7161263227462769
+    },
+    {
+      "id": "https://openalex.org/C95190672",
+      "wikidata": "https://www.wikidata.org/wiki/Q815382",
+      "display_name": "Meta-analysis",
+      "level": 2,
+      "score": 0.6710283756256104
+    },
+    {
+      "id": "https://openalex.org/C126322002",
+      "wikidata": "https://www.wikidata.org/wiki/Q11180",
+      "display_name": "Internal medicine",
+      "level": 1,
+      "score": 0.6169346570968628
+    },
+    {
+      "id": "https://openalex.org/C164705383",
+      "wikidata": "https://www.wikidata.org/wiki/Q10379",
+      "display_name": "Cardiology",
+      "level": 1,
+      "score": 0.5916070938110352
+    },
+    {
+      "id": "https://openalex.org/C168563851",
+      "wikidata": "https://www.wikidata.org/wiki/Q1436668",
+      "display_name": "Randomized controlled trial",
+      "level": 2,
+      "score": 0.4347441494464874
+    },
+    {
+      "id": "https://openalex.org/C3020199598",
+      "wikidata": "https://www.wikidata.org/wiki/Q12202",
+      "display_name": "Ischemic stroke",
+      "level": 3,
+      "score": 0.41344892978668213
+    },
+    {
+      "id": "https://openalex.org/C177713679",
+      "wikidata": "https://www.wikidata.org/wiki/Q679690",
+      "display_name": "Intensive care medicine",
+      "level": 1,
+      "score": 0.3422470688819885
+    },
+    {
+      "id": "https://openalex.org/C541997718",
+      "wikidata": "https://www.wikidata.org/wiki/Q188151",
+      "display_name": "Ischemia",
+      "level": 2,
+      "score": 0.05519074201583862
+    },
+    {
+      "id": "https://openalex.org/C127413603",
+      "wikidata": "https://www.wikidata.org/wiki/Q11023",
+      "display_name": "Engineering",
+      "level": 0,
+      "score": 0.0
+    },
+    {
+      "id": "https://openalex.org/C78519656",
+      "wikidata": "https://www.wikidata.org/wiki/Q101333",
+      "display_name": "Mechanical engineering",
+      "level": 1,
+      "score": 0.0
+    }
+  ],
+  "mesh": [
+    {
+      "descriptor_ui": "D001241",
+      "descriptor_name": "Aspirin",
+      "qualifier_ui": "Q000627",
+      "qualifier_name": "therapeutic use",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D001241",
+      "descriptor_name": "Aspirin",
+      "qualifier_ui": "Q000627",
+      "qualifier_name": "therapeutic use",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D001241",
+      "descriptor_name": "Aspirin",
+      "qualifier_ui": "Q000627",
+      "qualifier_name": "therapeutic use",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D002318",
+      "descriptor_name": "Cardiovascular Diseases",
+      "qualifier_ui": "Q000401",
+      "qualifier_name": "mortality",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D002318",
+      "descriptor_name": "Cardiovascular Diseases",
+      "qualifier_ui": "Q000401",
+      "qualifier_name": "mortality",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D002318",
+      "descriptor_name": "Cardiovascular Diseases",
+      "qualifier_ui": "Q000401",
+      "qualifier_name": "mortality",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D002318",
+      "descriptor_name": "Cardiovascular Diseases",
+      "qualifier_ui": "Q000517",
+      "qualifier_name": "prevention & control",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D002318",
+      "descriptor_name": "Cardiovascular Diseases",
+      "qualifier_ui": "Q000517",
+      "qualifier_name": "prevention & control",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D002318",
+      "descriptor_name": "Cardiovascular Diseases",
+      "qualifier_ui": "Q000517",
+      "qualifier_name": "prevention & control",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D004334",
+      "descriptor_name": "Drug Administration Schedule",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D004334",
+      "descriptor_name": "Drug Administration Schedule",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D004334",
+      "descriptor_name": "Drug Administration Schedule",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D004359",
+      "descriptor_name": "Drug Therapy, Combination",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D004359",
+      "descriptor_name": "Drug Therapy, Combination",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D004359",
+      "descriptor_name": "Drug Therapy, Combination",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D006801",
+      "descriptor_name": "Humans",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D006801",
+      "descriptor_name": "Humans",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D006801",
+      "descriptor_name": "Humans",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D009203",
+      "descriptor_name": "Myocardial Infarction",
+      "qualifier_ui": "Q000517",
+      "qualifier_name": "prevention & control",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D009203",
+      "descriptor_name": "Myocardial Infarction",
+      "qualifier_ui": "Q000517",
+      "qualifier_name": "prevention & control",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D009203",
+      "descriptor_name": "Myocardial Infarction",
+      "qualifier_ui": "Q000517",
+      "qualifier_name": "prevention & control",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D010975",
+      "descriptor_name": "Platelet Aggregation Inhibitors",
+      "qualifier_ui": "Q000627",
+      "qualifier_name": "therapeutic use",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D010975",
+      "descriptor_name": "Platelet Aggregation Inhibitors",
+      "qualifier_ui": "Q000627",
+      "qualifier_name": "therapeutic use",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D010975",
+      "descriptor_name": "Platelet Aggregation Inhibitors",
+      "qualifier_ui": "Q000627",
+      "qualifier_name": "therapeutic use",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D016032",
+      "descriptor_name": "Randomized Controlled Trials as Topic",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D016032",
+      "descriptor_name": "Randomized Controlled Trials as Topic",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D016032",
+      "descriptor_name": "Randomized Controlled Trials as Topic",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D018570",
+      "descriptor_name": "Risk Assessment",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D018570",
+      "descriptor_name": "Risk Assessment",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D018570",
+      "descriptor_name": "Risk Assessment",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D020521",
+      "descriptor_name": "Stroke",
+      "qualifier_ui": "Q000517",
+      "qualifier_name": "prevention & control",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D020521",
+      "descriptor_name": "Stroke",
+      "qualifier_ui": "Q000517",
+      "qualifier_name": "prevention & control",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D020521",
+      "descriptor_name": "Stroke",
+      "qualifier_ui": "Q000517",
+      "qualifier_name": "prevention & control",
+      "is_major_topic": false
+    }
+  ],
+  "locations_count": 11,
+  "locations": [
+    {
+      "id": "doi:10.1136/bmj.324.7329.71",
+      "is_oa": true,
+      "landing_page_url": "https://doi.org/10.1136/bmj.324.7329.71",
+      "pdf_url": "https://www.bmj.com/content/bmj/324/7329/71.full.pdf",
+      "source": {
+        "id": "https://openalex.org/S192814187",
+        "display_name": "BMJ",
+        "issn_l": "0959-8138",
+        "issn": [
+          "0959-8138"
+        ],
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": true,
+        "host_organization": "https://openalex.org/P4310319945",
+        "host_organization_name": "BMJ",
+        "host_organization_lineage": [
+          "https://openalex.org/P4310319945"
+        ],
+        "host_organization_lineage_names": [
+          "BMJ"
+        ],
+        "type": "journal"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "publishedVersion",
+      "is_accepted": true,
+      "is_published": true,
+      "raw_source_name": "BMJ",
+      "raw_type": "journal-article"
+    },
+    {
+      "id": "pmid:11786451",
+      "is_oa": false,
+      "landing_page_url": "https://pubmed.ncbi.nlm.nih.gov/11786451",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4306525036",
+        "display_name": "PubMed",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I1299303238",
+        "host_organization_name": "National Institutes of Health",
+        "host_organization_lineage": [
+          "https://openalex.org/I1299303238"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "publishedVersion",
+      "is_accepted": true,
+      "is_published": true,
+      "raw_source_name": "BMJ (Clinical research ed.)",
+      "raw_type": null
+    },
+    {
+      "id": "pmh:oai:pure.atira.dk:openaire_cris_publications/1ba57c54-49a4-4f3a-b837-29209cc1bda0",
+      "is_oa": false,
+      "landing_page_url": "https://research.manchester.ac.uk/en/publications/1ba57c54-49a4-4f3a-b837-29209cc1bda0",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4306400662",
+        "display_name": "Research Explorer (The University of Manchester)",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I28407311",
+        "host_organization_name": "University of Manchester",
+        "host_organization_lineage": [
+          "https://openalex.org/I28407311"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "publishedVersion",
+      "is_accepted": true,
+      "is_published": true,
+      "raw_source_name": "Mccollum, C, McCollum, CN & Collaboration, A T 2002, 'Collaborative meta-analysis of randomised trials of antiplatelet therapy for prevention of death, myocardial infarction, and stroke in high risk patients', British Medical Journal, vol. 324, pp. 71-86. https://doi.org/10.1136/bmj.324.7329.71",
+      "raw_type": "info:eu-repo/semantics/article"
+    },
+    {
+      "id": "pmh:oai:researchonline.lshtm.ac.uk:12831",
+      "is_oa": false,
+      "landing_page_url": "https://doi.org/10.1136/bmj.324.7329.71>",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4306402527",
+        "display_name": "LSHTM Research Online (London School of Hygiene and Tropical Medicine)",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I4210089966",
+        "host_organization_name": "London School of Hygiene & Tropical Medicine",
+        "host_organization_lineage": [
+          "https://openalex.org/I4210089966"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "acceptedVersion",
+      "is_accepted": true,
+      "is_published": false,
+      "raw_source_name": null,
+      "raw_type": "Article"
+    },
+    {
+      "id": "pmh:oai:air.unimi.it:2434/59632",
+      "is_oa": true,
+      "landing_page_url": "http://hdl.handle.net/2434/59632",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4306400516",
+        "display_name": "Archivio Istituzionale della Ricerca (Universita Degli Studi Di Milano)",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I189158943",
+        "host_organization_name": "University of Milan",
+        "host_organization_lineage": [
+          "https://openalex.org/I189158943"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": "other-oa",
+      "license_id": "https://openalex.org/licenses/other-oa",
+      "version": "submittedVersion",
+      "is_accepted": false,
+      "is_published": false,
+      "raw_source_name": null,
+      "raw_type": "info:eu-repo/semantics/article"
+    },
+    {
+      "id": "pmh:oai:cris.unibo.it:11585/971342",
+      "is_oa": false,
+      "landing_page_url": "https://hdl.handle.net/11585/971342",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4306402579",
+        "display_name": "Archivio istituzionale della ricerca (Alma Mater Studiorum Universit\u00e0 di Bologna)",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I4210117483",
+        "host_organization_name": "Istituto di Ematologia di Bologna",
+        "host_organization_lineage": [
+          "https://openalex.org/I4210117483"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "submittedVersion",
+      "is_accepted": false,
+      "is_published": false,
+      "raw_source_name": "",
+      "raw_type": "info:eu-repo/semantics/article"
+    },
+    {
+      "id": "pmh:oai:europepmc.org:978527",
+      "is_oa": false,
+      "landing_page_url": "https://www.ncbi.nlm.nih.gov/pmc/articles/64503",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4306400806",
+        "display_name": "Europe PMC (PubMed Central)",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I1303153112",
+        "host_organization_name": "European Bioinformatics Institute",
+        "host_organization_lineage": [
+          "https://openalex.org/I1303153112"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "submittedVersion",
+      "is_accepted": false,
+      "is_published": false,
+      "raw_source_name": null,
+      "raw_type": "Text"
+    },
+    {
+      "id": "pmh:oai:iris.unimore.it:11380/608227",
+      "is_oa": true,
+      "landing_page_url": "http://hdl.handle.net/11380/608227",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4306400718",
+        "display_name": "IRIS UNIMORE (University of Modena and Reggio Emilia)",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I122346577",
+        "host_organization_name": "University of Modena and Reggio Emilia",
+        "host_organization_lineage": [
+          "https://openalex.org/I122346577"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": "cc-by",
+      "license_id": "https://openalex.org/licenses/cc-by",
+      "version": "submittedVersion",
+      "is_accepted": false,
+      "is_published": false,
+      "raw_source_name": null,
+      "raw_type": "info:eu-repo/semantics/article"
+    },
+    {
+      "id": "pmh:oai:pure.atira.dk:publications/1ba57c54-49a4-4f3a-b837-29209cc1bda0",
+      "is_oa": false,
+      "landing_page_url": "https://www.research.manchester.ac.uk/portal/en/publications/collaborative-metaanalysis-of-randomised-trials-of-antiplatelet-therapy-for-prevention-of-death-myocardial-infarction-and-stroke-in-high-risk-patients(1ba57c54-49a4-4f3a-b837-29209cc1bda0).html",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4306400662",
+        "display_name": "Research Explorer (The University of Manchester)",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I28407311",
+        "host_organization_name": "University of Manchester",
+        "host_organization_lineage": [
+          "https://openalex.org/I28407311"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "submittedVersion",
+      "is_accepted": false,
+      "is_published": false,
+      "raw_source_name": "Mccollum, C, McCollum, CN & Collaboration, A T 2002, 'Collaborative meta-analysis of randomised trials of antiplatelet therapy for prevention of death, myocardial infarction, and stroke in high risk patients', British Medical Journal, vol. 324, pp. 71-86. https://doi.org/10.1136/bmj.324.7329.71",
+      "raw_type": "info:eu-repo/semantics/article"
+    },
+    {
+      "id": "pmh:oai:pure.rug.nl:publications/500abf4a-2078-4f00-953b-812d3c9647ac",
+      "is_oa": false,
+      "landing_page_url": "https://hdl.handle.net/11370/500abf4a-2078-4f00-953b-812d3c9647ac",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4306400420",
+        "display_name": "University of Groningen research database (University of Groningen / Centre for Information Technology)",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I169381384",
+        "host_organization_name": "University of Groningen",
+        "host_organization_lineage": [
+          "https://openalex.org/I169381384"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "submittedVersion",
+      "is_accepted": false,
+      "is_published": false,
+      "raw_source_name": "Baigent, C, Sudlow, C, Collins, R, Peto, R & Antithromboci Trialists Collaborat 2002, 'Collaborative meta-analysis of randomised trials of antiplatelet therapy for prevention of death, myocardial infarction, and stroke in high risk patients', British Medical Journal, vol. 324, no. 7329, pp. 71-86. https://doi.org/10.1136/bmj.324.7329.71",
+      "raw_type": "info:eu-repo/semantics/article"
+    },
+    {
+      "id": "pmh:rug:oai:pure.rug.nl:publications/500abf4a-2078-4f00-953b-812d3c9647ac",
+      "is_oa": false,
+      "landing_page_url": "https://research.rug.nl/en/publications/500abf4a-2078-4f00-953b-812d3c9647ac",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4306401843",
+        "display_name": "Data Archiving and Networked Services (DANS)",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I1322597698",
+        "host_organization_name": "Royal Netherlands Academy of Arts and Sciences",
+        "host_organization_lineage": [
+          "https://openalex.org/I1322597698"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "submittedVersion",
+      "is_accepted": false,
+      "is_published": false,
+      "raw_source_name": "British Medical Journal, 324(7329), 71 - 86. BMJ PUBLISHING GROUP",
+      "raw_type": "info:eu-repo/semantics/article"
+    }
+  ],
+  "best_oa_location": {
+    "id": "doi:10.1136/bmj.324.7329.71",
+    "is_oa": true,
+    "landing_page_url": "https://doi.org/10.1136/bmj.324.7329.71",
+    "pdf_url": "https://www.bmj.com/content/bmj/324/7329/71.full.pdf",
+    "source": {
+      "id": "https://openalex.org/S192814187",
+      "display_name": "BMJ",
+      "issn_l": "0959-8138",
+      "issn": [
+        "0959-8138"
+      ],
+      "is_oa": false,
+      "is_in_doaj": false,
+      "is_core": true,
+      "host_organization": "https://openalex.org/P4310319945",
+      "host_organization_name": "BMJ",
+      "host_organization_lineage": [
+        "https://openalex.org/P4310319945"
+      ],
+      "host_organization_lineage_names": [
+        "BMJ"
+      ],
+      "type": "journal"
+    },
+    "license": null,
+    "license_id": null,
+    "version": "publishedVersion",
+    "is_accepted": true,
+    "is_published": true,
+    "raw_source_name": "BMJ",
+    "raw_type": "journal-article"
+  },
+  "sustainable_development_goals": [
+    {
+      "id": "https://metadata.un.org/sdg/3",
+      "display_name": "Good health and well-being",
+      "score": 0.8500000238418579
+    }
+  ],
+  "awards": [],
+  "funders": [
+    {
+      "id": "https://openalex.org/F4320311904",
+      "display_name": "Wellcome Trust",
+      "ror": "https://ror.org/029chgv08"
+    }
+  ],
+  "has_content": {
+    "grobid_xml": true,
+    "pdf": true
+  },
+  "content_urls": {
+    "pdf": "https://content.openalex.org/works/W2024352468.pdf",
+    "grobid_xml": "https://content.openalex.org/works/W2024352468.grobid-xml"
+  },
+  "referenced_works_count": 73,
+  "referenced_works": [
+    "https://openalex.org/W107715711",
+    "https://openalex.org/W311320695",
+    "https://openalex.org/W1498265361",
+    "https://openalex.org/W1553345686",
+    "https://openalex.org/W1903416688",
+    "https://openalex.org/W1964677165",
+    "https://openalex.org/W1970095573",
+    "https://openalex.org/W1971442835",
+    "https://openalex.org/W1974992620",
+    "https://openalex.org/W1984761420",
+    "https://openalex.org/W1986956974",
+    "https://openalex.org/W1989371645",
+    "https://openalex.org/W1997755108",
+    "https://openalex.org/W1998690504",
+    "https://openalex.org/W1999945793",
+    "https://openalex.org/W2002831021",
+    "https://openalex.org/W2011861566",
+    "https://openalex.org/W2013530778",
+    "https://openalex.org/W2019436402",
+    "https://openalex.org/W2020053250",
+    "https://openalex.org/W2021373460",
+    "https://openalex.org/W2026458612",
+    "https://openalex.org/W2029642095",
+    "https://openalex.org/W2046308564",
+    "https://openalex.org/W2047484334",
+    "https://openalex.org/W2053411744",
+    "https://openalex.org/W2060527467",
+    "https://openalex.org/W2064500978",
+    "https://openalex.org/W2069157080",
+    "https://openalex.org/W2069885733",
+    "https://openalex.org/W2076302054",
+    "https://openalex.org/W2077401512",
+    "https://openalex.org/W2078110114",
+    "https://openalex.org/W2090376664",
+    "https://openalex.org/W2106228247",
+    "https://openalex.org/W2110159059",
+    "https://openalex.org/W2114775432",
+    "https://openalex.org/W2124840320",
+    "https://openalex.org/W2128661749",
+    "https://openalex.org/W2141117188",
+    "https://openalex.org/W2149141184",
+    "https://openalex.org/W2158652149",
+    "https://openalex.org/W2162638782",
+    "https://openalex.org/W2164096839",
+    "https://openalex.org/W2164884464",
+    "https://openalex.org/W2168667906",
+    "https://openalex.org/W2169639211",
+    "https://openalex.org/W2258503797",
+    "https://openalex.org/W2327850977",
+    "https://openalex.org/W2330709704",
+    "https://openalex.org/W2332447703",
+    "https://openalex.org/W2355563412",
+    "https://openalex.org/W2410643039",
+    "https://openalex.org/W2412404365",
+    "https://openalex.org/W2473914180",
+    "https://openalex.org/W2478734695",
+    "https://openalex.org/W2478782318",
+    "https://openalex.org/W2527032421",
+    "https://openalex.org/W3011443004",
+    "https://openalex.org/W3016233686",
+    "https://openalex.org/W4231489345",
+    "https://openalex.org/W4241937234",
+    "https://openalex.org/W4244537139",
+    "https://openalex.org/W4245728113",
+    "https://openalex.org/W4290747706",
+    "https://openalex.org/W4290749263",
+    "https://openalex.org/W4290764582",
+    "https://openalex.org/W4298311999",
+    "https://openalex.org/W4299423054",
+    "https://openalex.org/W4301350706",
+    "https://openalex.org/W4301774590",
+    "https://openalex.org/W6661974885",
+    "https://openalex.org/W6702500228"
+  ],
+  "related_works": [
+    "https://openalex.org/W2355769538",
+    "https://openalex.org/W2373885168",
+    "https://openalex.org/W2112436308",
+    "https://openalex.org/W2362391294",
+    "https://openalex.org/W3139914494",
+    "https://openalex.org/W3210678099",
+    "https://openalex.org/W1556819926",
+    "https://openalex.org/W4200025911",
+    "https://openalex.org/W3088977003",
+    "https://openalex.org/W3179965273"
+  ],
+  "abstract_inverted_index": {
+    "OBJECTIVE:": [
+      0
+    ],
+    "To": [
+      1
+    ],
+    "determine": [
+      2
+    ],
+    "the": [
+      3,
+      75,
+      149,
+      191,
+      299,
+      304,
+      313,
+      360
+    ],
+    "effects": [
+      4,
+      334
+    ],
+    "of": [
+      5,
+      13,
+      26,
+      33,
+      68,
+      74,
+      96,
+      109,
+      119,
+      152,
+      193,
+      294,
+      307,
+      321,
+      335,
+      370,
+      391,
+      398,
+      439,
+      444,
+      498
+    ],
+    "antiplatelet": [
+      6,
+      28,
+      35,
+      97,
+      110,
+      121,
+      146,
+      317,
+      432,
+      484,
+      510
+    ],
+    "therapy": [
+      7,
+      111,
+      147
+    ],
+    "among": [
+      8,
+      139,
+      209,
+      224,
+      238,
+      255,
+      269
+    ],
+    "patients": [
+      9,
+      42,
+      106,
+      210,
+      219,
+      225,
+      273,
+      387
+    ],
+    "at": [
+      10,
+      325,
+      388,
+      441,
+      499
+    ],
+    "high": [
+      11,
+      40,
+      141,
+      271,
+      296,
+      389
+    ],
+    "risk": [
+      12,
+      41,
+      142,
+      192,
+      272,
+      297,
+      390,
+      443
+    ],
+    "occlusive": [
+      14,
+      445
+    ],
+    "vascular": [
+      15,
+      47,
+      127,
+      135,
+      155,
+      175,
+      197,
+      348,
+      380,
+      411,
+      446
+    ],
+    "events.": [
+      16
+    ],
+    "DESIGN:": [
+      17
+    ],
+    "Collaborative": [
+      18
+    ],
+    "meta-analyses": [
+      19
+    ],
+    "(systematic": [
+      20
+    ],
+    "overviews).": [
+      21
+    ],
+    "INCLUSION": [
+      22
+    ],
+    "CRITERIA:": [
+      23
+    ],
+    "Randomised": [
+      24
+    ],
+    "trials": [
+      25
+    ],
+    "an": [
+      27,
+      399,
+      451,
+      482,
+      494
+    ],
+    "regimen": [
+      29,
+      36,
+      485
+    ],
+    "versus": [
+      30,
+      37,
+      112
+    ],
+    "control": [
+      31,
+      113
+    ],
+    "or": [
+      32,
+      45,
+      49,
+      134,
+      243,
+      455,
+      459,
+      466,
+      472
+    ],
+    "one": [
+      34,
+      159,
+      167,
+      172,
+      178,
+      222
+    ],
+    "another": [
+      38,
+      430
+    ],
+    "in": [
+      39,
+      94,
+      107,
+      117,
+      190,
+      379,
+      436,
+      491,
+      518
+    ],
+    "(with": [
+      43,
+      180,
+      274
+    ],
+    "acute": [
+      44,
+      227,
+      258,
+      452,
+      492
+    ],
+    "previous": [
+      46,
+      212,
+      241,
+      462
+    ],
+    "disease": [
+      48,
+      286
+    ],
+    "some": [
+      50,
+      519
+    ],
+    "other": [
+      51,
+      186,
+      270
+    ],
+    "predisposing": [
+      52
+    ],
+    "condition)": [
+      53
+    ],
+    "from": [
+      54
+    ],
+    "which": [
+      55,
+      356
+    ],
+    "results": [
+      56,
+      277
+    ],
+    "were": [
+      57,
+      199,
+      342
+    ],
+    "available": [
+      58
+    ],
+    "before": [
+      59
+    ],
+    "September": [
+      60
+    ],
+    "1997.": [
+      61
+    ],
+    "Trials": [
+      62
+    ],
+    "had": [
+      63,
+      83
+    ],
+    "to": [
+      64,
+      78,
+      84,
+      145,
+      359,
+      372,
+      404,
+      512
+    ],
+    "use": [
+      65
+    ],
+    "a": [
+      66,
+      195,
+      407,
+      508
+    ],
+    "method": [
+      67
+    ],
+    "randomisation": [
+      69
+    ],
+    "that": [
+      70,
+      91
+    ],
+    "precluded": [
+      71
+    ],
+    "prior": [
+      72
+    ],
+    "knowledge": [
+      73
+    ],
+    "next": [
+      76
+    ],
+    "treatment": [
+      77
+    ],
+    "be": [
+      79,
+      85,
+      505
+    ],
+    "allocated": [
+      80
+    ],
+    "and": [
+      81,
+      114,
+      174,
+      260,
+      288
+    ],
+    "comparisons": [
+      82,
+      108,
+      118
+    ],
+    "unconfounded-that": [
+      86
+    ],
+    "is,": [
+      87
+    ],
+    "have": [
+      88
+    ],
+    "study": [
+      89
+    ],
+    "groups": [
+      90
+    ],
+    "differed": [
+      92
+    ],
+    "only": [
+      93
+    ],
+    "terms": [
+      95
+    ],
+    "regimen.": [
+      98
+    ],
+    "STUDIES": [
+      99
+    ],
+    "REVIEWED:": [
+      100
+    ],
+    "287": [
+      101
+    ],
+    "studies": [
+      102
+    ],
+    "involving": [
+      103
+    ],
+    "135": [
+      104
+    ],
+    "000": [
+      105,
+      116
+    ],
+    "77": [
+      115
+    ],
+    "different": [
+      120
+    ],
+    "regimens.": [
+      122
+    ],
+    "MAIN": [
+      123
+    ],
+    "OUTCOME": [
+      124
+    ],
+    "MEASURE:": [
+      125
+    ],
+    "\"Serious": [
+      126
+    ],
+    "event\":": [
+      128
+    ],
+    "non-fatal": [
+      129,
+      132,
+      161,
+      169
+    ],
+    "myocardial": [
+      130,
+      162,
+      213,
+      228,
+      453,
+      463
+    ],
+    "infarction,": [
+      131,
+      464
+    ],
+    "stroke,": [
+      133,
+      457
+    ],
+    "death.": [
+      136
+    ],
+    "RESULTS:": [
+      137
+    ],
+    "Overall,": [
+      138
+    ],
+    "these": [
+      140,
+      295
+    ],
+    "patients,": [
+      143
+    ],
+    "allocation": [
+      144
+    ],
+    "reduced": [
+      148,
+      165,
+      346
+    ],
+    "combined": [
+      150
+    ],
+    "outcome": [
+      151
+    ],
+    "any": [
+      153
+    ],
+    "serious": [
+      154,
+      196,
+      347
+    ],
+    "event": [
+      156,
+      198
+    ],
+    "by": [
+      157,
+      166,
+      171,
+      177,
+      350
+    ],
+    "about": [
+      158
+    ],
+    "quarter;": [
+      160
+    ],
+    "infarction": [
+      163,
+      454
+    ],
+    "was": [
+      164,
+      312,
+      357
+    ],
+    "third,": [
+      168
+    ],
+    "stroke": [
+      170,
+      242,
+      465
+    ],
+    "quarter,": [
+      173
+    ],
+    "mortality": [
+      176
+    ],
+    "sixth": [
+      179
+    ],
+    "no": [
+      181,
+      375
+    ],
+    "apparent": [
+      182
+    ],
+    "adverse": [
+      183
+    ],
+    "effect": [
+      184
+    ],
+    "on": [
+      185
+    ],
+    "deaths).": [
+      187
+    ],
+    "Absolute": [
+      188
+    ],
+    "reductions": [
+      189
+    ],
+    "having": [
+      194
+    ],
+    "36": [
+      200,
+      230
+    ],
+    "(SE": [
+      201
+    ],
+    "5)": [
+      202
+    ],
+    "per": [
+      203,
+      217,
+      232,
+      249,
+      263,
+      413,
+      425
+    ],
+    "1000": [
+      204,
+      218,
+      233,
+      250,
+      264,
+      414
+    ],
+    "treated": [
+      205,
+      220,
+      234,
+      251,
+      265
+    ],
+    "for": [
+      206,
+      221,
+      235,
+      252,
+      266,
+      278,
+      486
+    ],
+    "two": [
+      207,
+      236,
+      267
+    ],
+    "years": [
+      208,
+      237,
+      268
+    ],
+    "with": [
+      211,
+      226,
+      240,
+      257,
+      280,
+      319,
+      354,
+      365,
+      383,
+      450
+    ],
+    "infarction;": [
+      214,
+      229
+    ],
+    "38": [
+      215
+    ],
+    "(5)": [
+      216
+    ],
+    "month": [
+      223
+    ],
+    "(6)": [
+      231
+    ],
+    "those": [
+      239,
+      256,
+      279,
+      449
+    ],
+    "transient": [
+      244
+    ],
+    "ischaemic": [
+      245,
+      456
+    ],
+    "attack;": [
+      246
+    ],
+    "9": [
+      247
+    ],
+    "(3)": [
+      248,
+      262
+    ],
+    "three": [
+      253
+    ],
+    "weeks": [
+      254
+    ],
+    "stroke;": [
+      259
+    ],
+    "22": [
+      261
+    ],
+    "separately": [
+      275
+    ],
+    "significant": [
+      276,
+      376
+    ],
+    "stable": [
+      281,
+      460
+    ],
+    "angina": [
+      282
+    ],
+    "(P=0.0005),": [
+      283
+    ],
+    "peripheral": [
+      284,
+      469
+    ],
+    "arterial": [
+      285,
+      470
+    ],
+    "(P=0.004),": [
+      287
+    ],
+    "atrial": [
+      289,
+      473
+    ],
+    "fibrillation": [
+      290
+    ],
+    "(P=0.01)).": [
+      291
+    ],
+    "In": [
+      292
+    ],
+    "each": [
+      293
+    ],
+    "categories,": [
+      298
+    ],
+    "absolute": [
+      300,
+      305
+    ],
+    "benefits": [
+      301,
+      517
+    ],
+    "substantially": [
+      302
+    ],
+    "outweighed": [
+      303
+    ],
+    "risks": [
+      306
+    ],
+    "major": [
+      308,
+      419
+    ],
+    "extracranial": [
+      309,
+      423
+    ],
+    "bleeding.": [
+      310
+    ],
+    "Aspirin": [
+      311,
+      428
+    ],
+    "most": [
+      314,
+      437
+    ],
+    "widely": [
+      315
+    ],
+    "studied": [
+      316
+    ],
+    "drug,": [
+      318
+    ],
+    "doses": [
+      320,
+      336
+    ],
+    "75-150": [
+      322
+    ],
+    "mg": [
+      323,
+      340,
+      479,
+      502
+    ],
+    "daily": [
+      324,
+      331,
+      341
+    ],
+    "least": [
+      326,
+      500
+    ],
+    "as": [
+      327,
+      329
+    ],
+    "effective": [
+      328,
+      483
+    ],
+    "higher": [
+      330
+    ],
+    "doses.": [
+      332
+    ],
+    "The": [
+      333
+    ],
+    "lower": [
+      337
+    ],
+    "than": [
+      338
+    ],
+    "75": [
+      339
+    ],
+    "less": [
+      343
+    ],
+    "certain.": [
+      344
+    ],
+    "Clopidogrel": [
+      345
+    ],
+    "events": [
+      349,
+      381,
+      412
+    ],
+    "10%": [
+      351
+    ],
+    "(4%)": [
+      352
+    ],
+    "compared": [
+      353,
+      382
+    ],
+    "aspirin,": [
+      355
+    ],
+    "similar": [
+      358
+    ],
+    "12%": [
+      361
+    ],
+    "(7%)": [
+      362
+    ],
+    "reduction": [
+      363,
+      378
+    ],
+    "observed": [
+      364
+    ],
+    "its": [
+      366
+    ],
+    "analogue": [
+      367
+    ],
+    "ticlopidine.": [
+      368
+    ],
+    "Addition": [
+      369
+    ],
+    "dipyridamole": [
+      371
+    ],
+    "aspirin": [
+      373,
+      384,
+      405,
+      477,
+      503,
+      513
+    ],
+    "produced": [
+      374
+    ],
+    "further": [
+      377,
+      408
+    ],
+    "alone.": [
+      385
+    ],
+    "Among": [
+      386
+    ],
+    "immediate": [
+      392
+    ],
+    "coronary": [
+      393
+    ],
+    "occlusion,": [
+      394
+    ],
+    "short": [
+      395
+    ],
+    "term": [
+      396,
+      488
+    ],
+    "addition": [
+      397
+    ],
+    "intravenous": [
+      400
+    ],
+    "glycoprotein": [
+      401
+    ],
+    "IIb/IIIa": [
+      402
+    ],
+    "antagonist": [
+      403
+    ],
+    "prevented": [
+      406
+    ],
+    "20": [
+      409
+    ],
+    "(4)": [
+      410
+    ],
+    "(P<0.0001)": [
+      415
+    ],
+    "but": [
+      416,
+      490,
+      522
+    ],
+    "caused": [
+      417
+    ],
+    "23": [
+      418
+    ],
+    "(but": [
+      420
+    ],
+    "rarely": [
+      421
+    ],
+    "fatal)": [
+      422
+    ],
+    "bleeds": [
+      424
+    ],
+    "1000.": [
+      426
+    ],
+    "CONCLUSIONS:": [
+      427
+    ],
+    "(or": [
+      429
+    ],
+    "oral": [
+      431
+    ],
+    "drug)": [
+      433
+    ],
+    "is": [
+      434,
+      481,
+      528
+    ],
+    "protective": [
+      435
+    ],
+    "types": [
+      438
+    ],
+    "patient": [
+      440
+    ],
+    "increased": [
+      442
+    ],
+    "events,": [
+      447
+    ],
+    "including": [
+      448
+    ],
+    "unstable": [
+      458
+    ],
+    "angina,": [
+      461
+    ],
+    "cerebral": [
+      467
+    ],
+    "ischaemia,": [
+      468
+    ],
+    "disease,": [
+      471
+    ],
+    "fibrillation.": [
+      474
+    ],
+    "Low": [
+      475
+    ],
+    "dose": [
+      476,
+      497
+    ],
+    "(75-150": [
+      478
+    ],
+    "daily)": [
+      480
+    ],
+    "long": [
+      487
+    ],
+    "use,": [
+      489
+    ],
+    "settings": [
+      493
+    ],
+    "initial": [
+      495
+    ],
+    "loading": [
+      496
+    ],
+    "150": [
+      501
+    ],
+    "may": [
+      504,
+      514
+    ],
+    "required.": [
+      506
+    ],
+    "Adding": [
+      507
+    ],
+    "second": [
+      509
+    ],
+    "drug": [
+      511
+    ],
+    "produce": [
+      515
+    ],
+    "additional": [
+      516
+    ],
+    "clinical": [
+      520
+    ],
+    "circumstances,": [
+      521
+    ],
+    "more": [
+      523
+    ],
+    "research": [
+      524
+    ],
+    "into": [
+      525
+    ],
+    "this": [
+      526
+    ],
+    "strategy": [
+      527
+    ],
+    "needed.": [
+      529
+    ]
+  },
+  "counts_by_year": [
+    {
+      "year": 2026,
+      "cited_by_count": 49
+    },
+    {
+      "year": 2025,
+      "cited_by_count": 117
+    },
+    {
+      "year": 2024,
+      "cited_by_count": 131
+    },
+    {
+      "year": 2023,
+      "cited_by_count": 153
+    },
+    {
+      "year": 2022,
+      "cited_by_count": 162
+    },
+    {
+      "year": 2021,
+      "cited_by_count": 212
+    },
+    {
+      "year": 2020,
+      "cited_by_count": 200
+    },
+    {
+      "year": 2019,
+      "cited_by_count": 239
+    },
+    {
+      "year": 2018,
+      "cited_by_count": 200
+    },
+    {
+      "year": 2017,
+      "cited_by_count": 276
+    },
+    {
+      "year": 2016,
+      "cited_by_count": 267
+    },
+    {
+      "year": 2015,
+      "cited_by_count": 282
+    },
+    {
+      "year": 2014,
+      "cited_by_count": 324
+    },
+    {
+      "year": 2013,
+      "cited_by_count": 345
+    },
+    {
+      "year": 2012,
+      "cited_by_count": 420
+    }
+  ],
+  "updated_date": "2026-07-06T08:01:05.025921",
+  "created_date": "2025-10-10T00:00:00"
+}

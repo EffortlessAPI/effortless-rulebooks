@@ -1,0 +1,12 @@
+{
+  "candidate_id": "cand-exp-petersen-rajan-1994",
+  "proposed_study_id": "petersen-rajan-1994",
+  "acquisition_status": "blocked",
+  "attempted_at": "2026-07-07T03:48:06+00:00",
+  "catalog_source_url": "https://www.federalreserve.gov/releases/nssbf/",
+  "resolved_urls": [
+    "https://www.federalreserve.gov/releases/nssbf/"
+  ],
+  "files": [],
+  "dois": []
+}

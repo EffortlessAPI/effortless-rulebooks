@@ -1,0 +1,2438 @@
+<!doctype html>
+<html class="no-js" lang="en-GB">
+<head>
+<meta charset="utf-8">
+
+<meta name="Copyright" content="Hudl">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta property="fb:pages" content="112477931222">
+
+<link rel="home" href="https://www.hudl.com/en_gb/">
+
+<link rel="dns-prefetch" href="https://static.hudl.com">
+<link rel="dns-prefetch" href="https://sc.hudl.com">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link rel="icon" href="https://sc.hudl.com/favicon.ico" sizes="any">
+<link rel="icon" href="https://sc.hudl.com/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="https://sc.hudl.com/apple-touch-icon.png">
+<link rel="mask-icon" href="https://sc.hudl.com/safari-pinned-tab.svg" color="#ff6300">
+<meta name="theme-color" content="#ffffff">
+<title>Hudl Statsbomb - The World’s Most Advanced Football Data</title>
+<meta name="description" content="We create the best data in the industry, informing the work of football’s data analysis community and empowering them to make better decisions faster.">
+
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@hudl">
+<meta name="twitter:title" content="Hudl Statsbomb - The World’s Most Advanced Football Data">
+<meta name="twitter:description" content="We create the best data in the industry, informing the work of football’s data analysis community and empowering them to make better decisions faster.">
+<meta name="twitter:url" content="https://www.hudl.com/en_gb/products/statsbomb">
+<meta name="twitter:image" content="https://static.hudl.com/craft/hudl-default-OG.jpg?mtime=20191218113232">
+
+<meta property="og:title" content="Hudl Statsbomb - The World’s Most Advanced Football Data">
+<meta property="og:description" content="We create the best data in the industry, informing the work of football’s data analysis community and empowering them to make better decisions faster.">
+<meta property="og:url" content="https://www.hudl.com/en_gb/products/statsbomb">
+<meta property="og:image" content="https://static.hudl.com/craft/hudl-default-OG.jpg?mtime=20191218113232">
+<meta property="og:type" content="website">
+<meta property="og:app_id" content="137562929649180" />
+<meta property="og:site_name" content ="Hudl">
+    <link rel="canonical" href="https://www.hudl.com/en_gb/products/statsbomb">
+	<link rel="alternate" hreflang="en-US" href="https://www.hudl.com/products/statsbomb">
+	<link rel="alternate" hreflang="en-GB" href="https://www.hudl.com/en_gb/products/statsbomb">
+	<link rel="alternate" hreflang="en" href="https://www.hudl.com/en_gb/products/statsbomb">
+	<link rel="alternate" hreflang="x-default" href="https://www.hudl.com/en_gb/products/statsbomb">
+
+	<script>
+		window.hudl = window.hudl || {};
+		window.hudl.l10n = window.hudl.l10n || {};
+		window.hudl.l10n.alternates = [{"language":"en-US","languageDisplay":"English (United States)","current":false,"url":"https:\/\/www.hudl.com\/products\/statsbomb"},{"language":"en-GB","languageDisplay":"English (International)","current":true,"url":"https:\/\/www.hudl.com\/en_gb\/products\/statsbomb"}];
+		window.hudl.l10n.sites = [{"language":"en-US","languageDisplay":"English (United States)","url":"https:\/\/www.hudl.com\/","external":false},{"language":"en-GB","languageDisplay":"English (International)","url":"https:\/\/www.hudl.com\/en_gb\/","external":false},{"language":"es-419","languageDisplay":"espa\u00f1ol (Latinoam\u00e9rica)","url":"https:\/\/es.hudl.com\/es-xl","external":true},{"language":"pt-BR","languageDisplay":"portugu\u00eas (Brasil)","url":"https:\/\/pt.hudl.com\/pt","external":true},{"language":"ja","languageDisplay":"\u65e5\u672c\u8a9e","url":"https:\/\/jp.hudl.com\/ja","external":true}];
+	</script>
+        
+<script>
+(function() {
+  // Constants: hardcoded site configuration
+  const COOKIE_NAME = 'mktgLanguagePref';
+  const LANG_DEFAULT = 'en-us';
+  const LANG_FALLBACK = 'en-gb';
+  const MATCH_PATHS = ['/', '/sports'];
+
+  // Site mapping: handle -> base URL
+  const SITES = {
+    'en-us': { primary: true, baseUrl: '/' },
+    'en-gb': { primary: false, baseUrl: '/en_gb/' }
+  };
+
+  // Language code mappings (e.g., en-ca -> en-us)
+  const LANG_MAP = {
+    'en-ca': LANG_DEFAULT
+  };
+
+  function getCookieValue() {
+    const cookies = document.cookie.split(';');
+    for (let cookie of cookies) {
+      const [name, value] = cookie.trim().split('=');
+      if (name === COOKIE_NAME) {
+        return decodeURIComponent(value).toLowerCase();
+      }
+    }
+    return '';
+  }
+
+  function normalizeLanguage(language) {
+    language = language.toLowerCase();
+    return LANG_MAP[language] || language;
+  }
+
+  function getBrowserLanguage() {
+    const navLang = navigator.language;
+    if (!navLang) return null;
+
+    const normalized = normalizeLanguage(navLang);
+
+    if (SITES[normalized]) {
+      return normalized;
+    }
+
+    if (normalized.includes('-')) {
+      const langComponent = normalized.split('-')[0];
+      for (const siteHandle in SITES) {
+        if (siteHandle.startsWith(langComponent)) {
+          return siteHandle;
+        }
+      }
+    }
+
+    return null;
+  }
+
+  function getRequestedSite() {
+    const cookieValue = getCookieValue();
+    if (cookieValue && SITES[cookieValue]) {
+      return cookieValue;
+    }
+
+    const browserLang = getBrowserLanguage();
+    if (browserLang) {
+      return browserLang;
+    }
+
+    return LANG_FALLBACK;
+  }
+
+  function isPreventRedirect(targetSite) {
+    if (SITES[targetSite].primary) {
+      return true;
+    }
+
+    if (getCookieValue() === LANG_DEFAULT) {
+      return true;
+    }
+
+    const params = new URLSearchParams(window.location.search);
+    if (params.has('token') || params.has('ignore-lang')) {
+      return true;
+    }
+
+    return false;
+  }
+
+  function shouldCheckRedirect() {
+    const pathname = window.location.pathname;
+    const normalizedPath = pathname === '/' ? '/' : pathname.replace(/\/$/, '');
+    return MATCH_PATHS.includes(normalizedPath);
+  }
+
+  function checkForRedirect() {
+    if (!shouldCheckRedirect()) {
+      return;
+    }
+
+    const targetSite = getRequestedSite();
+    if (isPreventRedirect(targetSite)) {
+      return;
+    }
+
+    const pathname = window.location.pathname;
+    const search = window.location.search;
+    const hash = window.location.hash;
+
+    const baseUrl = SITES[targetSite].baseUrl;
+    const targetUrl = baseUrl + pathname.replace(/^\//, '') + search + hash;
+
+    window.location.replace(targetUrl);
+  }
+
+  checkForRedirect();
+})();
+</script>
+	
+  <script>var _hsq = window._hsq = window._hsq || []; _hsq.push(["setContentType", "site-page"]);</script>
+
+  <!-- OneTrust Cookies Consent Notice start for hudl.com -->
+<script
+    src="https://cdn.cookielaw.org/scripttemplates/otSDKStub.js"
+    data-document-language="true"
+    data-domain-script="3bd688f5-b6bf-4b17-939b-ebc3cf875964"
+></script>
+<!-- OneTrust Cookies Consent Notice end for hudl.com -->    
+    <script>
+        function OptanonWrapper() {}
+
+        /* Utility function for checking user consent values */
+        function hasConsent(category) {
+            const categories = {
+                "performance": "C0002",
+                "functional": "C0003",
+                "targeting": "C0004",
+                "social": "C0005"
+            }
+            return !!(
+                (window.OptanonActiveGroups !== undefined) &&                           // OptanonActiveGroups is defined
+                (categories[category] !== undefined) &&                                 // the provided category is valid
+                (window.OptanonActiveGroups.indexOf(','+categories[category]+',') > -1) // Consent is given for this category
+            )
+        }
+    </script>
+
+<script>
+    window.craftCMS = true;
+    window.hudlEnableRumScripts = true;
+</script>
+
+            <script>
+    (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    '//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-57574Z');
+    </script>
+    
+
+  <style>
+html.is-embedded {
+  .mainnav,
+  .site-footer .footer-links,
+  .site-footer hr,
+  .site-footer .social-icons,
+  .site-footer .l10n-selector {
+      display: none;
+  }
+}
+</style>
+<script>
+(function() {
+  const params = new URLSearchParams(window.location.search);
+  const isEmbeddedQuery = params.get('isEmbedded');
+  if (isEmbeddedQuery === 'false') {
+    document.cookie = 'isEmbedded=false; path=/';
+  } else if (isEmbeddedQuery !== null) {
+    const isHttps = window.location.protocol === 'https:';
+    const cookieAttributes = isHttps
+      ? '; path=/; Secure; SameSite=None'
+      : '; path=/; SameSite=Lax';
+    document.cookie = 'isEmbedded=true' + cookieAttributes;
+  }
+  if (document.cookie.split(';').some(cookie => cookie.trim().startsWith('isEmbedded=true'))) {
+    document.documentElement.classList.add('is-embedded');
+  }
+})();
+</script>
+
+      
+  <link href="https://sc.hudl.com/cms/assets/brand-5/css/main.min.css?id=10fd686e287a5b8c0ad95b2f34a0910d" rel="stylesheet">
+<link href="https://sc.hudl.com/cms/assets/styles/critical.css?id=98bd4b11c90ad066d9199642920a6350" rel="stylesheet">
+<style>  .skip-nav {
+    background-color: var(--button-brand-bg);
+    color: var(--button-brand-fg);
+
+    &:focus-visible {
+      outline: 2px solid var(--effect-focus-ring);
+      outline-offset: 2px;
+      background-color: var(--button-brand-bg-hover);
+      color: var(--button-brand-fg-hover);
+    }
+  }
+
+  .mainnav {
+    --nav-bg-color: var(--bg-default);
+    --nav-mainnav-item-active-color: var(--text-brand-primary-hover);
+    --nav-subnav-bg-color: var(--bg-default);
+    --nav-group-heading-text-color: var(--text-default);
+    --nav-heading-font-family: Barlow Condensed, sans-serif;
+    --nav-heading-font-weight: 500;
+    --nav-heading-letter-spacing: 0;
+    --nav-item-hover: var(--bg-electric-accent);
+    --nav-bg-accent-color: var(--bg-level1);
+    --nav-subnav-desc-color: var(--text-default);
+    --nav-border-color: var(--border-subtle);
+  }
+  .mainnav--de {
+    --nav-group-heading-text-color: #C0C6CD;
+    --nav-bg-accent-color: #101417;
+    --nav-item-hover: rgb(1, 64, 126, 0.3);
+    --nav-subnav-desc-color: #C0C6CD;
+    --nav-border-color: var(--border-minimal);
+  }
+  .mainnav--le {
+    --nav-link-color: var(--text-default);
+  }
+  .secondary-nav {
+    --nav-cta-background-hover: var(--button-brand-bg-hover);
+    --nav-mainnav-item-active-color: var(--text-brand-primary-hover);
+    --nav-item-hover: var(--bg-electric-accent);
+  }
+
+  @media screen and (min-width: 1026px) {
+    .mainnav__btn,
+    .mainnav .mainnav--login {
+      border-radius: var(--radius-2xs);
+      padding: 0 var(--spacing-2xl);
+    }
+
+    .mainnav .mainnav--login {
+      background-color: var(--button-brand-bg);
+
+      &:hover {
+        background-color: var(--button-brand-bg-hover);
+      }
+    }
+
+    .mainnav .mainnav--login .mainnav__item {
+      padding-inline: 0;
+      color: var(--button-brand-fg);
+    }
+
+    .secondary-nav .subnav .subnavitem {
+      font-size: var(--text-size-sm);
+      font-weight: revert;
+      color: var(--text-default);
+    }
+  }
+
+  @media screen and (min-width: 1460px) {
+    .mainnav {
+      grid-template-columns: calc((100vw - var(--container-max-width-desktop)) / 2) auto auto; // doing some math magic here to get the nav items to line up with the left-aligned content below
+    }
+  }
+
+  .secondary-nav .row.constrained {
+    max-width: var(--container-max-width-desktop);
+    margin-inline: auto;
+  }
+
+  .secondary-nav button {
+    line-height: var(--text-leading-default);
+  }
+
+	.site-footer {
+		position: relative;
+		padding: 3rem 0 2rem 0;
+
+		background-color: var(--bg-level0-accent-de);
+		color: var(--text-subtle-de);
+		font-size: .75rem;
+
+		hr {
+			height: 1px;
+			margin: 25px 0;
+			border-color: var(--border-minimal-de);
+			border-width: 0 0 1px;
+		}
+
+		a {
+			color: inherit;
+			text-decoration: none;
+		}
+
+		a:hover {
+			color: var(--text-default-de);
+			text-decoration: underline;
+		}
+
+		.tiny-link {
+			color: var(--text-subtle-de);
+			font-weight: 700;
+		}
+
+		.footer-links {
+			display: flex;
+			flex-flow: row wrap;
+			justify-content: space-between;
+			align-items: stretch;
+			font-size: .875rem;
+			gap: 2rem;
+
+			.column {
+				margin-bottom: 1.5rem;
+			}
+
+			.column:nth-child(2) ul {
+				column-count: 2;
+				gap: 2rem;
+			}
+
+			.footer-links-label,
+			.footer-links-label a {
+				margin-bottom: 10px;
+				color: var(--text-default-de);
+				font-weight: 700;
+				text-transform: none;
+			}
+
+			ul {
+				padding: 0;
+
+				li {
+					margin-bottom: 10px;
+					list-style: none;
+
+					a {
+						color: var(--text-subtle-de);
+						font-weight: 400;
+					}
+				}
+			}
+		}
+
+		.social-icons {
+			display: flex;
+			align-items: center;
+			gap: 1rem;
+			margin-top: 30px;
+
+			a {
+				display: block;
+				line-height: 0;
+
+				&:hover {
+					text-decoration: none;
+
+					path {
+						fill: var(--text-default-de);
+					}
+				}
+			}
+
+			svg {
+				display: block;
+				height: 20px;
+				width: auto;
+			}
+
+			a[title$="Facebook"] svg,
+			a[title$="Instagram"] svg {
+				height: 24px;
+			}
+
+			path {
+				transition: fill 100ms;
+				fill: var(--text-subtle-de);
+			}
+		}
+	}
+	</style>
+<style>  .hero__header.hero--cover {
+    --section-padding: var(--spacing-11xl);
+    background-position: center;
+}
+
+.section-partner {
+    --section-bg-color: #000;
+    --section-bg-img: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTQ0MCIgaGVpZ2h0PSI3MzciIHZpZXdCb3g9IjAgMCAxNDQwIDczNyIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWx0ZXI9InVybCgjYSkiPjxwYXRoIGQ9Ik0xMzUxLjA1IDIxOC42OWMwIDMwNS4yNzgtMTgzLjY4IDUzMS42ODYtNTE4LjAxNyA1MzEuNjg2LTMzNC4zMzMgMC02MTEuNDktMzMwLjkyOS00NDEuNjk2LTUwMC4wNzYgMC0zMDUuMjc4IDg0LjU4LTMxLjYxIDQxOC45MTQtMzEuNjEgMzM0LjMyOSAwIDU0MC43OTktMzA1LjI3OCA1NDAuNzk5IDAiIGZpbGw9IiMyMzJBMzEiLz48L2c+PGcgZmlsdGVyPSJ1cmwoI2IpIj48ZWxsaXBzZSBjeD0iMTMyNS4wMiIgY3k9IjUzMS4zNzUiIHJ4PSIyOTUuMTMxIiByeT0iMjc2LjI3OCIgZmlsbD0iIzAwOUNFMyIvPjwvZz48ZyBmaWx0ZXI9InVybCgjYykiPjxwYXRoIGQ9Ik0zNjYuNzY1IDI2MC42MzZjLTI4LjcyNiA2MTUuMjk4IDE1OS4xODQgNTE3LjA1OCAwIDUxNy4wNThzLTI4Ni4yIDM3Ljg4Ny0yODYuMi0xNjcuOTU5LTg2Ljk0NS04MTUuNTY4IDcyLjIzOS04MTUuNTY4UzM2Ni43NjUgNTQuNzkgMzY2Ljc2NSAyNjAuNjM2IiBmaWxsPSIjRkY2MzAwIiBmaWxsLW9wYWNpdHk9Ii43NSIvPjwvZz48ZyBmaWx0ZXI9InVybCgjZCkiPjxlbGxpcHNlIGN4PSIxMjY3Ljg5IiBjeT0iNDU5LjMzIiByeD0iMjU5LjE1MSIgcnk9IjE1NC45MjEiIGZpbGw9IiMwMDlDRTMiIGZpbGwtb3BhY2l0eT0iLjc1Ii8+PC9nPjxkZWZzPjxmaWx0ZXIgaWQ9ImEiIHg9IjU1LjEwNiIgeT0iLTIwMS43NzEiIHdpZHRoPSIxNTgwLjczIiBoZWlnaHQ9IjEyMzYuOTMiIGZpbHRlclVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgY29sb3ItaW50ZXJwb2xhdGlvbi1maWx0ZXJzPSJzUkdCIj48ZmVGbG9vZCBmbG9vZC1vcGFjaXR5PSIwIiByZXN1bHQ9IkJhY2tncm91bmRJbWFnZUZpeCIvPjxmZUJsZW5kIGluPSJTb3VyY2VHcmFwaGljIiBpbjI9IkJhY2tncm91bmRJbWFnZUZpeCIgcmVzdWx0PSJzaGFwZSIvPjxmZUdhdXNzaWFuQmx1ciBzdGREZXZpYXRpb249IjE0Mi4zOTEiIHJlc3VsdD0iZWZmZWN0MV9mb3JlZ3JvdW5kQmx1cl8wXzEiLz48L2ZpbHRlcj48ZmlsdGVyIGlkPSJiIiB4PSI3OTcuMTMzIiB5PSIyMi4zNDQiIHdpZHRoPSIxMDU1Ljc3IiBoZWlnaHQ9IjEwMTguMDYiIGZpbHRlclVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgY29sb3ItaW50ZXJwb2xhdGlvbi1maWx0ZXJzPSJzUkdCIj48ZmVGbG9vZCBmbG9vZC1vcGFjaXR5PSIwIiByZXN1bHQ9IkJhY2tncm91bmRJbWFnZUZpeCIvPjxmZUJsZW5kIGluPSJTb3VyY2VHcmFwaGljIiBpbjI9IkJhY2tncm91bmRJbWFnZUZpeCIgcmVzdWx0PSJzaGFwZSIvPjxmZUdhdXNzaWFuQmx1ciBzdGREZXZpYXRpb249IjExNi4zNzYiIHJlc3VsdD0iZWZmZWN0MV9mb3JlZ3JvdW5kQmx1cl8wXzEiLz48L2ZpbHRlcj48ZmlsdGVyIGlkPSJjIiB4PSItMjgxLjA3OSIgeT0iLTU0My43NzkiIHdpZHRoPSIxMDUwLjU3IiBoZWlnaHQ9IjE2NjUuMTgiIGZpbHRlclVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgY29sb3ItaW50ZXJwb2xhdGlvbi1maWx0ZXJzPSJzUkdCIj48ZmVGbG9vZCBmbG9vZC1vcGFjaXR5PSIwIiByZXN1bHQ9IkJhY2tncm91bmRJbWFnZUZpeCIvPjxmZUJsZW5kIGluPSJTb3VyY2VHcmFwaGljIiBpbjI9IkJhY2tncm91bmRJbWFnZUZpeCIgcmVzdWx0PSJzaGFwZSIvPjxmZUdhdXNzaWFuQmx1ciBzdGREZXZpYXRpb249IjE2OC45NzMiIHJlc3VsdD0iZWZmZWN0MV9mb3JlZ3JvdW5kQmx1cl8wXzEiLz48L2ZpbHRlcj48ZmlsdGVyIGlkPSJkIiB4PSI3MjMuOTYyIiB5PSIxOS42MjgiIHdpZHRoPSIxMDg3Ljg2IiBoZWlnaHQ9Ijg3OS40MDUiIGZpbHRlclVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgY29sb3ItaW50ZXJwb2xhdGlvbi1maWx0ZXJzPSJzUkdCIj48ZmVGbG9vZCBmbG9vZC1vcGFjaXR5PSIwIiByZXN1bHQ9IkJhY2tncm91bmRJbWFnZUZpeCIvPjxmZUJsZW5kIGluPSJTb3VyY2VHcmFwaGljIiBpbjI9IkJhY2tncm91bmRJbWFnZUZpeCIgcmVzdWx0PSJzaGFwZSIvPjxmZUdhdXNzaWFuQmx1ciBzdGREZXZpYXRpb249IjE0Mi4zOTEiIHJlc3VsdD0iZWZmZWN0MV9mb3JlZ3JvdW5kQmx1cl8wXzEiLz48L2ZpbHRlcj48L2RlZnM+PC9zdmc+');
+}
+
+.testimonials .avatar {
+    aspect-ratio: auto;
+    border-radius: 0;
+    background: none;
+}
+  </style>
+<style>.hero__header {
+  text-align: center;
+  background: none;
+  --section-bg-size: cover;
+  --_hero-poster-max-width: var(--hero-poster-max-width, var(--width-xl));
+
+  h1, h2, h3, h4, h5, h6 {
+    font-size: var(--text-size-heading-fluid-lg);
+    align-items: center;
+  }
+
+  .hero__actions {
+    justify-content: center;
+  }
+
+  .hero__copy {
+    font-size: var(--text-size-fluid-xl);
+  }
+}
+
+.hero--cover {
+  background-color: var(--section-bg-color, transparent);
+  background-image: var(--section-bg-img, none);
+  background-size: var(--section-bg-size, cover);
+
+  &.de {
+    --section-bg-color: var(--bg-level1);
+  }
+
+  .hero__row {
+    padding-inline: var(--container-padding);
+  }
+}
+
+.hero--stack {
+  .hero__row {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-7xl);
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-size: var(--text-size-heading-fluid-lg);
+    text-wrap: balance;
+  }
+
+  p {
+    max-inline-size: var(--width-paragraph-max-width);
+    margin-inline: auto;
+    text-wrap: balance;
+  }
+}
+
+.hero--switcher {
+  .hero__row {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--spacing-7xl);
+
+    .hero__copy {
+      justify-content: center;
+    }
+  }
+}
+
+.hero--inset, .hero--overlap {
+  .hero__row {
+    gap: 0;
+  }
+
+  .hero__copy {
+    background-color: var(--section-bg-color, var(--bg-level1));
+    background-image: var(--section-bg-img, none);
+    background-size: var(--section-bg-size, cover);
+    padding: var(--spacing-9xl) var(--container-padding) var(--spacing-11xl);
+  }
+
+  .hero__asset {
+    padding-inline: var(--container-padding);
+    margin-block-start: calc(var(--spacing-9xl) * -1);
+  }
+}
+
+.hero--inset {
+  padding-block-start: var(--spacing-4xl);
+
+  .hero__row {
+    overflow: hidden;
+  }
+}
+
+.hero--overlap {
+  padding-block-start: 0;
+
+  &.hero--switcher {
+    padding-block: 0;
+  }
+}
+
+.with-play {
+  display: block;
+}
+
+.hero--cover .hero__container,
+.hero--inset .hero__container,
+.hero--cover.hero--switcher .hero__row.hero__container,
+.hero--overlap.hero--switcher .hero__row.hero__container,
+.hero--overlap.hero--stack .hero__container :is(.hero__copy, .hero__asset) > * {
+  inline-size: min(100%, var(--container-max-width-desktop));
+  margin-inline: auto;
+}
+.hero--stack .hero__container .hero__asset {
+  .external-video,
+  .feature__asset:has(video),
+  :is(.with-play) {
+    inline-size: min(100%, var(--_hero-poster-max-width));
+    margin-inline: auto;
+
+    img, iframe, video {
+      overflow: hidden;
+      border-radius: var(--radius-sm);
+    }
+  }
+}
+
+@media (min-width: 768px /** --breakpoint-md */) {
+
+  .hero--stack {
+    h1, h2, h3, h4, h5, h6 {
+      font-size: var(--text-size-heading-fluid-xl);
+      font-weight: var(--font-weight-display-alpha);
+    }
+  }
+
+  .hero--switcher .hero__row {
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-7xl);
+    text-align: left;
+
+    h1, h2, h3, h4, h5, h6 {
+      align-items: flex-start;
+    }
+
+    .feature__asset--bleed {
+      /* frame */
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      aspect-ratio: var(--w, 4) / var(--h, 3);
+      overflow: visible;
+
+      > * {
+        border: 0;
+        object-fit: cover;
+        object-position: var(--x, 50%) var(--y, 50%);
+        position: absolute;
+        inset-block-start: 0;
+        inset-inline-start: 0;
+        inline-size: auto;
+        block-size: 100%;
+        max-inline-size: none;
+      }
+    }
+
+    .feature__asset--3\:4 { --w: 3; --h: 4}
+    .feature__asset--4\:5 { --w: 4; --h: 5}
+    .feature__asset--1\:1 { --w: 1; --h: 1}
+    .feature__asset--4\:3 { --w: 4; --h: 3}
+    .feature__asset--16\:9 { --w: 16; --h: 9}
+    .feature__asset--2\:1 { --w: 2; --h: 1}
+
+    .hero__actions {
+      justify-content: flex-start;
+    }
+  }
+
+  .hero--switcher.hero--inset .hero__row,
+  .hero--switcher.hero--overlap {
+    background-color: var(--section-bg-color, var(--bg-level1));
+    background-image: var(--section-bg-img, none);
+    background-size: var(--section-bg-size, cover);
+    padding-block: var(--spacing-7xl);
+  }
+
+  .hero--switcher.hero--inset,
+  .hero--switcher.hero--overlap {
+    .hero__row {
+      padding-inline: var(--container-padding);
+    }
+
+    .hero__copy {
+      padding: 0;
+      background: none;
+    }
+
+    .hero__asset {
+      margin-block-start: 0;
+      padding: 0;
+      align-self: center;
+    }
+  }
+
+  .hero--inset {
+    padding-inline: var(--container-padding);
+
+    .hero__copy {
+      border-radius: var(--radius-md);
+    }
+
+    &.hero--switcher {
+      .hero__row {
+        border-radius: var(--radius-md);
+      }
+    }
+  }
+}
+</style>
+<style>.feature-texts {
+  background-color: var(--section-bg-color, var(--bg-level0));
+  background-image: var(--section-bg-img, none);
+  background-size: var(--section-bg-size, cover);
+
+  .feature-texts__content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-7xl);
+  }
+
+  .feature-texts__copy {
+    flex: 1 0 100%;
+    max-width: var(--width-xl);
+    font-size: var(--text-size-fluid-xl);
+  }
+
+  .feature-text__grid {
+    --min-item-size: 20rem;
+  }
+
+  .feature-texts__actions {
+    justify-content: center;
+    flex: 1 0 100%;
+  }
+
+  &.feature-texts--simpleIcons01,
+  &.feature-texts--centerMockup02 {
+
+    .feature-texts__copy {
+      text-align: center;
+      margin-inline: auto;
+
+      h1, h2, h3, h4, h5, h6 {
+        align-items: center;
+      }
+
+      :is(h1, h2, h3, h4, h5, h6, p) {
+        text-wrap: balance;
+      }
+    }
+  }
+
+  &.feature-texts--iconCards02 {
+    .feature-texts__content {
+      flex-flow: row wrap;
+      align-items: start;
+
+    }
+
+    .feature-texts__copy {
+      flex: 1;
+      min-width: min(var(--width-2xs), 100%);
+    }
+
+    .feature-text__grid {
+      flex: 2;
+      min-width: min(var(--width-2xs), 100%);
+    }
+  }
+
+  &.feature-texts--iconsAndImage01 {
+    .feature-texts__content {
+      flex-flow: row wrap;
+    }
+
+    .feature-text__grid {
+      --min-item-size: 15rem;
+      flex: 1;
+      min-width: min(var(--width-sm), 100%);
+      align-self: center;
+    }
+
+    .feature-texts__asset {
+      flex: 1;
+      min-width: min(var(--width-sm), 100%);
+    }
+  }
+
+  &.feature-texts--iconsAndMockup06 {
+    .feature-texts__content {
+      flex-flow: row wrap;
+    }
+
+    .feature-text__grid {
+      --min-item-size:  100%;
+      flex: 1;
+      min-width: min(var(--width-sm), 100%);
+      align-self: center;
+    }
+
+    .feature-texts__asset {
+      flex: 1;
+      min-width: min(var(--width-sm), 100%);
+    }
+  }
+
+  &.feature-texts--centerMockup02 {
+    .feature-texts__copy {
+      order: 1;
+    }
+
+    .feature-text__grid {
+      order: 3;
+    }
+
+    .feature-texts__asset {
+      order: 2;
+    }
+
+    .feature-texts__actions {
+      order: 4;
+    }
+  }
+}
+.feature-texts--icon-small {
+  --icon-size: var(--spacing-3xl);
+}
+.feature-texts--icon-medium {
+  --icon-size: 36px;
+}
+.feature-texts--icon-large {
+  --icon-size: var(--spacing-6xl);
+}
+</style>
+<style>.features {
+  background-color: var(--section-bg-color, var(--bg-level0));
+  background-image: var(--section-bg-img, none);
+  background-size: var(--section-bg-size, cover);
+  overflow-x: hidden;
+
+  .features__copy {
+    text-align: center;
+
+    h2, h3, h4, h5, h6 {
+      align-items: center;
+    }
+
+    :is(h1, h2, h3, h4, h5, h6, p) {
+      text-wrap: balance;
+    }
+  }
+
+  li p {
+    margin: 0;
+  }
+
+  blockquote p {
+    font-size: var(--text-size-heading-fluid-lg);
+  }
+
+  .feature.switcher {
+    align-items: center;
+  }
+
+  .feature.switcher .feature__text {
+    justify-content: center;
+  }
+
+  @media screen and (min-width: 768px) {
+    .feature__asset--bleed {
+      /* frame */
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      aspect-ratio: var(--w, 4) / var(--h, 3);
+      overflow: visible;
+
+      > * {
+        border: 0;
+        object-fit: cover;
+        object-position: var(--x, 50%) var(--y, 50%);
+        position: absolute;
+        inset-block-start: 0;
+        inline-size: auto;
+        block-size: 100%;
+        max-inline-size: none;
+      }
+    }
+
+    .features__list > :nth-child(odd) .feature .feature__asset--bleed > * {
+      inset-inline-start: 0;
+    }
+
+    .features__list > :nth-child(even) .feature {
+      flex-direction: row-reverse;
+
+      .feature__asset--bleed > * {
+        inset-inline-end: 0;
+      }
+    }
+
+    &.features--layout2 {
+      .features__list > :nth-child(odd) .feature {
+        flex-direction: row-reverse;
+
+        .feature__asset--bleed > * {
+          inset-inline: auto 0;
+        }
+      }
+
+      .features__list > :nth-child(even) .feature {
+        flex-direction: row;
+
+        .feature__asset--bleed > * {
+          inset-inline: 0 auto;
+        }
+      }
+    }
+
+    .feature__asset--3\:4 { --w: 3; --h: 4}
+    .feature__asset--4\:5 { --w: 4; --h: 5}
+    .feature__asset--1\:1 { --w: 1; --h: 1}
+    .feature__asset--4\:3 { --w: 4; --h: 3}
+    .feature__asset--16\:9 { --w: 16; --h: 9}
+    .feature__asset--2\:1 { --w: 2; --h: 1}
+  }
+}
+</style>
+<style>.custom__block {
+  background-color: var(--section-bg-color, var(--bg-level0));
+  background-image: var(--section-bg-img, none);
+  background-size: var(--section-bg-size, cover);
+  padding-block: var(--spacing-7xl);
+}
+</style>
+<style>.testimonials {
+  --person-center-max-width: none;
+
+  blockquote {
+    margin: 0;
+  }
+
+  .quote {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: stretch;
+  }
+
+  .testimonial {
+    flex: 1 1 auto;
+  }
+
+  .quote__media {
+    flex: 1 0 100%;
+
+    img {
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+
+  .testimonials__copy {
+    text-align: center;
+    margin-block-end: var(--spacing-4xl);
+
+    :is(h1, h2, h3, h4, h5, h6, p) {
+      text-wrap: balance;
+    }
+  }
+
+  .testimonials__actions {
+    justify-content: center;
+    margin-block-start: var(--spacing-4xl);
+  }
+
+  .testimonial__list.grid {
+    --min-item-size: 20rem;
+  }
+
+  .quote--cardWithMedia {
+    background: var(--bg-level1);
+    gap: 0;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+
+    .testimonial {
+      padding: var(--spacing-7xl);
+    }
+  }
+
+  .quote--card {
+    background: var(--bg-level1);
+    padding: var(--spacing-7xl);
+    border-radius: var(--radius-lg);
+  }
+}
+
+@media (min-width: 768px /** --breakpoint-md */) {
+  .testimonials {
+    .testimonial {
+      flex-basis: 60%;
+    }
+
+    .quote__media {
+      flex-basis: 40%;
+    }
+  }
+}
+</style>
+<style>.cta__block {
+  margin-block: var(--spacing-7xl);
+  text-align: center;
+  background-color: var(--section-bg-color, var(--bg-level0));
+  background-image: var(--section-bg-img, none);
+  background-size: var(--section-bg-size, cover);
+
+  .cta__copy {
+    font-size: var(--text-size-fluid-xl);
+    color: var(--text-default);
+
+    :is(h1, h2, h3, h4, h5, h6, p) {
+      text-wrap: balance;
+    }
+  }
+
+  .cta__actions {
+    justify-content: center;
+    margin-block-start: var(--spacing-4xl);
+
+    > * {
+      flex: 1 1 100%;
+    }
+  }
+
+  .cta__form {
+    width: 100%;
+    max-width: 840px;
+    margin-inline: auto;
+  }
+
+  &.cta--containedCentered, &.cta--twoColContained {
+    background: none;
+
+    .cta__row {
+      background-color: var(--section-bg-color, var(--bg-level1));
+      background-image: var(--section-bg-img, none);
+      background-size: var(--section-bg-size, cover);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+    }
+
+    &.le .cta__row {
+      background-color: var(--section-bg-color, var(--bg-level3));
+    }
+  }
+
+  &.cta--containedCentered, &.cta--fullCentered {
+    .cta__row {
+      padding: var(--spacing-5xl) var(--spacing-3xl);
+    }
+  }
+
+  &.cta--twoColContained {
+    text-align: left;
+
+    .cta__row {
+      padding: 0;
+      row-gap: 0;
+    }
+
+    .cta__actions {
+      justify-content: start;
+    }
+
+    .cta__copy {
+      padding: var(--spacing-5xl) var(--spacing-3xl);
+      justify-content: center;
+    }
+
+    .cta__asset {
+      --w: 32;
+      --h: 27;
+      --x: left;
+      --y: top;
+      --switcher-threshold: var(--breakpoint-lg);
+    }
+  }
+}
+
+@media (min-width: 576px /** --breakpoint-sm */) {
+  .cta__block {
+    margin-block: var(--spacing-9xl);
+
+    &.cta--containedCentered, &.cta--fullCentered {
+      .cta__row {
+        padding: var(--spacing-7xl);
+      }
+    }
+
+    &.cta--twoColContained {
+      .cta__copy {
+        padding: var(--spacing-7xl);
+      }
+
+      .cta__asset {
+        margin-block-start: var(--spacing-6xl);
+      }
+    }
+
+    .cta__actions > * {
+      flex: 0 1 auto;
+    }
+  }
+}
+
+</style>
+</head>
+
+<body class="">
+<script>window.dataLayer = window.dataLayer || [];</script>
+        <noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-57574Z"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <script>window.shoelaceThemeUrl = "https:\/\/sc.hudl.com\/cms\/assets\/brand-5\/css\/shoelace.min.css?id=afac3f285097e28acf9a956845033057";
+window.brand5BaseUrl = "\/cms\/assets\/brand-5\/";</script>
+  <header class="mainnav mainnav--hide-mobile de mainnav--de mainnav--hasSubnav elite-header">
+  <a href="#maincontent" class="skip-nav">Skip to main content</a>
+  <svg style="display:none;">
+    <symbol id="chevron" viewBox="0 0 16 16">
+      <path fill="currentColor" stroke="currentColor" stroke-width=".4" d="m8 5 4.711 4.711-.679.68L8 6.359 3.968 10.39l-.68-.68z"/>
+    </symbol>
+    <symbol id="arrow_right_alt" viewBox="0 -960 960 960">
+      <path fill="currentColor" d="m560-240-56-58 142-142H160v-80h486L504-662l56-58 240 240-240 240Z"/>
+    </symbol>
+  </svg>
+
+  <a href="https://www.hudl.com/en_gb/" class="mainnav__sitename" title="Home" data-qa-id="site-logo">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 87.2 28.5"><title>Hudl</title><style>.st0{fill:#ff6300}.st1{fill:#232a31}</style><path d="M14.5 4.6c-1.8-1.5-4-2.6-6.4-3q-.9.45-1.8 1.2h-.1C4.1 2.2 1.8 3.1.7 5c-1.2 2-.7 4.5.8 6v.1c-.1.6-.1 1.2-.1 1.8 0 3.5 1.4 6.6 3.7 9 .1.1.2 0 .2-.1-.5-1.4-.8-2.8-.8-4.4 0-1.8.4-3.4 1-4.9 0 0 0-.1.1-.1 1.4-.2 2.8-1 3.6-2.4.5-1 .6-2 .5-3v-.1c1.4-1 3-1.7 4.7-2.1.2 0 .2-.2.1-.2" class="st0"/><path d="M6.9 16.7c-.5 2.3-.3 4.8.6 7.1.6.4 1.3.7 1.9.9l.1.1c.5 2.1 2.4 3.7 4.7 3.7s4.2-1.6 4.7-3.7c0 0 0-.1.1-.1.5-.2 1.1-.5 1.6-.8 3-1.7 5.1-4.5 5.9-7.6 0-.1-.1-.2-.2-.1-.9 1.1-2.1 2.1-3.4 2.9-1.5.9-3.1 1.4-4.8 1.6H18c-.9-1.1-2.3-1.9-3.8-1.9-1.1 0-2 .3-2.8.9h-.1q-2.4-1.05-4.2-3c0-.1-.1-.1-.2 0" class="st0"/><path d="M21.2 17.2c2.2-.8 4.3-2.2 5.8-4.1 0-.7 0-1.4-.1-2.1v-.1c1.6-1.5 2-4 .8-5.9-1.1-2-3.5-2.8-5.6-2.2H22c-.5-.4-1-.7-1.5-1C17.5.1 14-.3 10.9.5c-.1 0-.1.2 0 .2q2.1.45 4.2 1.5c1.5.9 2.8 2 3.8 3.3v.1c-.5 1.3-.5 2.9.3 4.3.5.9 1.3 1.6 2.2 2 0 0 .1 0 .1.1.2 1.7 0 3.4-.5 5.1.1.1.1.1.2.1" class="st0"/><path d="M40.8 24.7v-9.6c0-1-.5-1.6-1.7-1.6-.4 0-.8.1-1.2.2v11h-5.5V2.6H38v7.2c.8-.3 1.7-.5 2.7-.5 3.7 0 5.6 1.9 5.6 5.2v10.2zm14.8.4c-4.7 0-7-1.7-7-5.9V9.5h5.5v9.7c0 1 .5 1.4 1.5 1.4.5 0 .9-.1 1.2-.1v-11h5.5v14.4c-1.5.7-4.2 1.2-6.7 1.2m16.9 0c-5.2 0-8-2.8-8-8 0-4.7 2.4-7.7 7.2-7.7.5 0 1.2.1 1.6.2v-7h5.5V24c-1.3.6-3.6 1.1-6.3 1.1m.8-11.5c-.2-.1-.6-.2-1-.2-1.5 0-2.3 1.4-2.3 3.6 0 2.6.8 3.8 2.4 3.8.4 0 .7 0 .9-.1zm8.3 11.1V2.6h5.5v22.1z" class="st1"/></svg>
+
+  </a>
+
+  <button class="mainnav__toggle">
+    <svg class="mainnav__toggle__open" fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="8 8 22 22">
+      <title>Menu</title>
+      <rect fill="currentColor" x="8" y="8" width="22" height="3" />
+      <rect fill="currentColor" x="8" y="17" width="18" height="3" />
+      <rect fill="currentColor" x="8" y="26" width="20" height="3" />
+    </svg>
+    <svg class="mainnav__toggle__close" fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="8 8 22 22">
+      <title>Close</title>
+      <path fill-rule="evenodd" clip-rule="evenodd" d="M29.57 10.67a.9.9 0 000-1.26l-.98-.98a.9.9 0 00-1.26 0L19 16.76l-8.33-8.33a.9.9 0 00-1.26 0l-.98.98a.9.9 0 000 1.26L16.76 19l-8.33 8.33a.9.9 0 000 1.26l.98.98a.9.9 0 001.26 0L19 21.24l8.33 8.33a.9.9 0 001.26 0l.98-.98a.9.9 0 000-1.26L21.24 19l8.33-8.33z" fill="currentColor" />
+    </svg>
+  </button>
+
+  <nav id="site-navigation" class="mainnav__items">
+    <div class="mainnav__container mainnav__container--horizontal-compact">
+          <a href="#" class="mainnav__item mainnav__item--expandable">
+        Organisations &amp; Sports
+        <svg class="mainnav__item__disclosure">
+          <use xlink:href="#chevron"></use>
+        </svg>
+      </a>
+              <div class="subnav" hidden>
+        <div class="subnav__inner">
+                  <div class="subnav__group half-split">
+        <div class="subnav__group subnav__group--first">
+      <p class="subnav__heading">Browse by Organisation</p>
+        <ul class="subnav__items">
+  <li>
+    <a href="https://www.hudl.com/en_gb/solutions/professional" class="subnavitem subnavitem--icon" >
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="19" fill="none">
+  <path fill="currentColor" fill-rule="evenodd" d="M18.315 9.288c.39-.353.487-.631.487-.82s-.096-.467-.487-.82c-.39-.353-1.003-.71-1.835-1.028-1.658-.634-4.007-1.045-6.645-1.045s-4.987.41-6.644 1.045c-.832.318-1.446.675-1.836 1.028s-.487.632-.487.82c0 .189.096.467.487.82.39.353 1.004.71 1.836 1.029 1.657.633 4.006 1.044 6.644 1.044s4.987-.41 6.645-1.044c.832-.318 1.445-.676 1.835-1.029m-8.48 2.94c5.432 0 9.835-1.683 9.835-3.76s-4.403-3.76-9.835-3.76S0 6.39 0 8.468s4.403 3.76 9.835 3.76" clip-rule="evenodd"></path>
+  <path fill="currentColor" fill-rule="evenodd" d="M9.735 9.48c-1.693 0-3.206.172-4.265.44a8 8 0 0 0-.248.067.185.185 0 0 1-.228-.12l-.153-.483a.177.177 0 0 1 .118-.225q.144-.042.298-.08c1.148-.29 2.737-.466 4.478-.466 1.842 0 3.517.196 4.68.52.097.026.15.127.122.222l-.147.485a.184.184 0 0 1-.226.123c-1.06-.291-2.642-.482-4.429-.482" clip-rule="evenodd"></path>
+  <path fill="currentColor" fill-rule="evenodd" d="M9.903 7.745c-2.57 0-4.87.343-6.486.882a10 10 0 0 0-.478.173.184.184 0 0 1-.238-.098l-.195-.467A.18.18 0 0 1 2.603 8q.258-.102.539-.196c1.728-.576 4.126-.927 6.76-.927 2.838 0 5.406.407 7.157 1.068.093.035.139.14.102.233l-.188.47a.184.184 0 0 1-.235.103c-1.621-.608-4.07-1.006-6.835-1.006" clip-rule="evenodd"></path>
+  <path fill="currentColor" fill-rule="evenodd" d="M19.307 8.628a.36.36 0 0 1 .281.427l-1.67 8.07a.36.36 0 0 1-.197.252l-.032.016c-2.028.976-4.772 1.489-7.598 1.507-2.83.018-5.783-.458-8.236-1.499l-.035-.015a.36.36 0 0 1-.214-.265L.075 9.049a.36.36 0 0 1 .288-.423L.505 8.6a.36.36 0 0 1 .423.287l1.443 7.61c.023.12.105.222.22.267 2.242.873 4.91 1.285 7.494 1.268 2.571-.016 5.023-.457 6.867-1.256a.35.35 0 0 0 .205-.255l1.581-7.642a.36.36 0 0 1 .428-.28zM1.736 1.142a.18.18 0 0 1 .252-.166l3.904 1.673a.18.18 0 0 1 .007.33l-3.193 1.52a.18.18 0 0 0-.103.163v1.745c0 .1-.08.181-.18.181h-.507a.18.18 0 0 1-.18-.18zM2.603 3.3c0 .133.139.22.259.164l.93-.444a.18.18 0 0 0-.006-.33l-.93-.398a.18.18 0 0 0-.253.166zM8.533.274a.18.18 0 0 1 .252-.166l3.905 1.673a.18.18 0 0 1 .007.33L9.504 3.63a.18.18 0 0 0-.103.163V5.25c0 .1-.08.181-.18.181h-.507a.18.18 0 0 1-.18-.18zm.868 2.159c0 .132.139.22.259.163l.93-.444a.18.18 0 0 0-.006-.329l-.93-.399a.18.18 0 0 0-.253.166zm6.075-1.291a.18.18 0 0 1 .252-.166l3.905 1.673a.18.18 0 0 1 .006.33l-3.192 1.52a.18.18 0 0 0-.103.163v1.456c0 .1-.081.18-.181.18h-.506a.18.18 0 0 1-.181-.18zm.868 2.158c0 .133.138.22.258.164l.931-.444a.18.18 0 0 0-.006-.33l-.931-.398a.18.18 0 0 0-.252.166z" clip-rule="evenodd"></path>
+  <path fill="currentColor" fill-rule="evenodd" d="m10 12-9-2 1 7 8 1.5 7.5-1.5 1.5-7zm-1.177 2.751c0-.045.016-.089.048-.12a1.374 1.374 0 0 1 1.928 0 .17.17 0 0 1 .049.12v1.925c0 .1.08.181.18.181h.506c.1 0 .181-.08.181-.18v-2.054a.72.72 0 0 0-.168-.46 2.24 2.24 0 0 0-3.424 0 .7.7 0 0 0-.168.46v2.053c0 .1.08.181.18.181h.507c.1 0 .18-.08.18-.18z" clip-rule="evenodd"></path>
+</svg>
+
+
+    <div class="subnavitem__label">Pro Suite</div>
+      <div class="subnavitem__desc">An end-to-end platform, designed for the world’s top organisations.</div>
+  </a>
+  </li>
+  <li>
+    <a href="https://www.hudl.com/en_gb/sports/football/clubs-and-communities" class="subnavitem subnavitem--icon" >
+      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="13" fill="none">
+  <path fill="currentColor" fill-rule="evenodd" d="M5.464 3.536A3.535 3.535 0 0 0 9 7.07 3.535 3.535 0 1 0 9 0a3.536 3.536 0 0 0-3.536 3.536m7.567-2.342c.4.688.629 1.488.629 2.342a4.64 4.64 0 0 1-1.051 2.948q.375.185.707.407.17.02.344.02a2.893 2.893 0 1 0-.63-5.717M1.447 4.019A2.892 2.892 0 0 0 4.683 6.89q.333-.222.707-.407a4.64 4.64 0 0 1-1.05-2.948c0-.854.229-1.654.63-2.342a2.893 2.893 0 0 0-3.523 2.825m12.877 3.739c.703.788 1.105 1.76 1.105 2.85q0 .328-.01.642h1.967a.593.593 0 0 0 .59-.573s.024-.321.024-.874c0-1.228-.855-2.189-2.13-2.696-.452.324-.977.55-1.546.651M0 9.803a12 12 0 0 0 .026.875.6.6 0 0 0 .593.572h1.963q-.01-.314-.01-.642c0-1.09.4-2.062 1.104-2.85a3.8 3.8 0 0 1-1.546-.651C.855 7.614 0 8.575 0 9.803m9-1.627c-1.007 0-1.94-.32-2.7-.865-1.56.62-2.604 1.794-2.604 3.297 0 .676.039 1.202.039 1.202.017.312.29.565.594.565h9.349c.31 0 .576-.25.59-.566 0 0 .035-.527.035-1.201 0-1.503-1.045-2.678-2.603-3.297a4.62 4.62 0 0 1-2.7.865" clip-rule="evenodd"></path>
+</svg>
+
+
+    <div class="subnavitem__label">Clubs and Communities</div>
+      <div class="subnavitem__desc">Football tools for clubs at every level.</div>
+  </a>
+  </li>
+  <li>
+    <a href="https://www.hudl.com/en_gb/solutions/university" class="subnavitem subnavitem--icon" >
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="21" fill="none">
+  <path fill="currentColor" fill-rule="evenodd" d="M9.565.274a.18.18 0 0 1 .252-.166l4.298 1.842a.18.18 0 0 1 .007.33l-3.51 1.671a.18.18 0 0 0-.104.163v1.608c0 .1-.08.181-.18.181h-.582a.18.18 0 0 1-.18-.18zm.944 2.395c0 .133.138.22.258.163l1.066-.507a.18.18 0 0 0-.007-.33l-1.065-.457a.18.18 0 0 0-.252.167z" clip-rule="evenodd"></path>
+  <path stroke="currentColor" d="M15.283 20.37v-9.435h2.648c.867 0 1.57.702 1.57 1.569v7.866ZM2.069 10.935h2.648v9.435H.5v-7.866c0-.867.702-1.57 1.569-1.57zm11.844-1.37c0-1.92-1.752-3.478-3.913-3.478S6.087 7.644 6.087 9.565" style="display:inline"></path>
+  <path fill="currentColor" fill-rule="evenodd" d="M4.348 9.11c0-.23.185-.414.414-.414h10.477c.228 0 .413.185.413.413v11.347a.414.414 0 0 1-.413.414H4.762a.414.414 0 0 1-.414-.414Zm4.47 7.05a.17.17 0 0 0-.049.12v2.115c0 .1-.08.18-.18.18h-.582a.18.18 0 0 1-.18-.18v-2.249c0-.182.064-.36.182-.499a2.436 2.436 0 0 1 3.722 0c.118.14.183.317.183.5v2.248c0 .1-.081.18-.181.18h-.582a.18.18 0 0 1-.18-.18V16.28a.17.17 0 0 0-.05-.12 1.493 1.493 0 0 0-2.103 0m-2.631-4.856a.1.1 0 0 0-.1.1v.67a.1.1 0 0 0 .1.1h7.626a.1.1 0 0 0 .1-.1v-.67a.1.1 0 0 0-.1-.1z" clip-rule="evenodd" style="display:inline"></path>
+  <path fill="currentColor" d="M16.522 13.144a.1.1 0 0 1 .1-.1h1.539a.1.1 0 0 1 .1.1v.669a.1.1 0 0 1-.1.1h-1.54a.1.1 0 0 1-.1-.1zm-14.783 0a.1.1 0 0 1 .1-.1h1.54a.1.1 0 0 1 .1.1v.669a.1.1 0 0 1-.1.1h-1.54a.1.1 0 0 1-.1-.1z"></path>
+</svg>
+
+
+    <div class="subnavitem__label">Universities</div>
+      <div class="subnavitem__desc">Advanced video and data solutions — with every team on one invoice and one platform.</div>
+  </a>
+  </li>
+  <li>
+    <a href="https://www.hudl.com/en_gb/products/wyscout/football-api" class="subnavitem subnavitem--icon" >
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none">
+  <path d="M5 21q-.824 0-1.412-.587A1.93 1.93 0 0 1 3 19V5q0-.824.587-1.412A1.93 1.93 0 0 1 5 3h9v2H5v14h14v-9h2v9q0 .824-.587 1.413A1.93 1.93 0 0 1 19 21zm2-4h2v-7H7zm4 0h2V7h-2zm4 0h2v-4h-2zm2-8V7h-2V5h2V3h2v2h2v2h-2v2z" fill="currentColor"></path>
+</svg>
+
+
+    <div class="subnavitem__label">Data Licensing</div>
+      <div class="subnavitem__desc">Comprehensive football datasets that power business needs.</div>
+  </a>
+  </li>
+  <li>
+    <a href="https://www.hudl.com/en_gb/solutions/player-agencies" class="subnavitem subnavitem--icon" >
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+  <path d="M3.942 20.5q-.588 0-1.015-.427a1.4 1.4 0 0 1-.427-1.015v-4.506h7.563v1.385h3.904v-1.385H21.5v4.506q0 .588-.427 1.015a1.4 1.4 0 0 1-1.015.427zm7.256-5.698v-1.635h1.635v1.635zM2.5 13.417V7.942q0-.588.427-1.015A1.4 1.4 0 0 1 3.942 6.5H8.5V4.443q0-.589.427-1.016A1.4 1.4 0 0 1 9.942 3h4.116q.588 0 1.015.427t.427 1.015V6.5h4.558q.588 0 1.015.427t.427 1.015v5.475h-7.533v-1.384h-3.904v1.384zM9.635 6.5h4.73V4.443a.3.3 0 0 0-.096-.212.3.3 0 0 0-.211-.096H9.942a.3.3 0 0 0-.211.096.3.3 0 0 0-.096.212z" fill="currentColor"></path>
+</svg>
+
+
+    <div class="subnavitem__label">Player Agencies</div>
+      <div class="subnavitem__desc">Scout smarter, not harder, with world-class recruitment insights.</div>
+  </a>
+  </li>
+</ul>
+  </div>
+      <div class="subnav__group subnav__group--second subnav__group--accent">
+      <p class="subnav__heading">Browse by Sport</p>
+        <div class="subnav__group ">
+        <ul class="subnav__items">
+  <li>
+    <a href="https://www.hudl.com/en_gb/sports/basketball" class="subnavitem subnavitem--icon" >
+      <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 32 32" fill="none">
+  <path fill-rule="evenodd" clip-rule="evenodd" d="M16 3C8.82 3 3 8.82 3 16s5.82 13 13 13 13-5.82 13-13S23.18 3 16 3m10.952 9.933c-2.17-1.062-4.473-1.283-5.276-1.288q-.217-1.095-.586-2.153c.968-.005 2.315-.153 3.267-1.207a11.36 11.36 0 0 1 2.595 4.648m.42 3.067c0 .973-.122 1.916-.352 2.817-1.334-2.154-3.067-3.208-4.97-3.424a22 22 0 0 0-.213-2.783c3.71.102 4.848 1.104 5.421 1.784q.115.784.115 1.606m-6.571-6.95c-.582-.93-1.407-2.876-2.528-4.04 2.043.416 3.891 1.457 5.374 2.808-.331.552-1.02 1.232-2.774 1.232zm-4.049-4.397c.794.633 1.954 1.95 2.838 4.07-2.553-.06-3.99-.353-5.952-1.674-1.045-.706-2.26-.926-3.301-.914A11.3 11.3 0 0 1 16 4.623q.383.005.752.03m-7.71 2.353c.98-.204 2.225-.14 4.103 1.045.37.251 2.71 1.666 6.772 1.517.22.637.416 1.338.57 2.103-7.894.314-13.978 3.76-15.847 4.856a11.34 11.34 0 0 1 4.401-9.52M4.745 17.661c4.992-2.834 10.668-4.911 15.906-5.051.127.845.204 1.763.217 2.753-2.337.22-4.746 2.205-6.347 4.078-1.462 1.712-4.274 4.253-5.897 5.209a11.32 11.32 0 0 1-3.879-6.989m4.818 7.72c1.826-.893 4.125-3.276 4.698-3.952 3.54-4.1 5.693-4.881 6.594-5.03-.09 2.94-.735 6.483-2.265 10.677a11.37 11.37 0 0 1-9.028-1.695m10.476 1.253c.446-1.173 1.87-5.43 2.005-10.196 2.439.412 3.909 2.43 4.516 3.785a11.4 11.4 0 0 1-6.52 6.41" fill="currentColor"></path>
+</svg>
+
+
+    <div class="subnavitem__label">Basketball</div>
+  </a>
+  </li>
+  <li>
+    <a href="https://www.hudl.com/en_gb/sports/field-hockey" class="subnavitem subnavitem--icon" >
+      <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 32 32" fill="none">
+  <path fill-rule="evenodd" clip-rule="evenodd" d="M9.606 19.065c0-2.808-1.457-4.49-3.59-4.49S3 16.775 3 18.908s.4 6.479 4.813 8.229q.095.031.247.09c.882.333 3.163 1.193 5.79.343-.038-.654-.072-.888-.255-1.924-.87.342-1.5.287-2.698.182l-.39-.034c-5.782-.48-5.914-5.161-5.837-7.63.076-2.472 2.995-2.247 3.143-.45.128 1.534.485 5.387 3.59 5.387 2.103 0 2.887-1.183 3.55-2.182l.04-.061.383-.575c.75-1.124 2.337-3.506 3.84-5.79l1.368 2.46c-.324.568-.54.896-.741 1.202a15 15 0 0 0-.474.753c.086-.013.127-.02.168-.022.092-.006.185.01.796.022.346.008.501.006.667.003.087-.002.176-.003.297-.003 2.653-4.58 5.484-10.087 6.832-12.71.425-.826.703-1.366.781-1.5.672-1.16-2.62-3.74-3.594-2.244-.434.67-2.049 3.075-3.948 5.903-3.157 4.7-7.101 10.57-7.722 11.605-1.121 1.873-4.04 1.911-4.04-.897m13.913 6.283a3.586 3.586 0 1 0-7.172.002 3.586 3.586 0 0 0 7.172-.002m1.351-.004a4.935 4.935 0 0 0-4.936-4.937 4.935 4.935 0 0 0-4.937 4.937 4.935 4.935 0 0 0 4.937 4.937 4.935 4.935 0 0 0 4.936-4.937m-.896-14.36s-.71-2.99-1.347-1.796c-.089.17-.297.51-.582.96l1.058 2.379c.518-.926.87-1.542.87-1.542m-2.608 4.602.909-1.602-1.1-2.477c-.34.527-.723 1.11-1.122 1.72z" fill="currentColor"></path>
+</svg>
+
+
+    <div class="subnavitem__label">Field Hockey</div>
+  </a>
+  </li>
+  <li>
+    <a href="https://www.hudl.com/en_gb/sports/football" class="subnavitem subnavitem--icon" >
+      <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 32 32" fill="none">
+  <path fill-rule="evenodd" clip-rule="evenodd" d="M16 3C8.82 3 3 8.82 3 16s5.82 13 13 13 13-5.82 13-13S23.18 3 16 3m11.237 14.767c-.85.956-2.426 1.678-3.335 1.984-.552-.735-1.521-2.056-2.184-2.952.128-1.661.476-5.098.54-6.64.692-.328 1.784-.727 2.944-.85a11.32 11.32 0 0 1 2.035 8.458m-11.772.604c-1.381-1.092-3.998-3.255-5.056-4.002.196-1.075.616-3.62.829-4.848 1.546-.646 4.728-1.924 5.973-2.387.913.603 3.135 2.294 4.087 3.02-.098 1.436-.37 4.512-.468 5.935-1.062.446-4.32 1.806-5.365 2.282M16 4.627q.84.002 1.657.123c-.153.442-.357 1.054-.523 1.53-1.563.565-5.183 2.026-6.444 2.532-.816-.187-2.146-.485-2.987-.582A11.32 11.32 0 0 1 16 4.627M4.75 14.322c.378.629 1.011 1.678 1.351 2.268-.267 1.14-.408 2.86-.454 4.117a11.3 11.3 0 0 1-1.02-4.703q.002-.86.123-1.682m1.78 7.983c-.123-2.29.234-4.606.434-5.774.79-.408 2.013-1.045 2.787-1.444 1.312 1.028 4.46 3.44 5.514 4.214 0 1.245 0 3.225.013 4.244-1.279.603-3.599 1.538-5.795 1.776a11.5 11.5 0 0 1-2.953-3.016m4.007 3.674c1.372-.208 3.832-.675 5.357-1.652 1.67.565 3.836.637 4.766.595v1.597c-.93.552-2.96.858-4.499.858-1.984-.004-4.006-.51-5.624-1.398m11.05.068v-1.733c0-.939 1.8-2.68 2.472-3.615 1.41-.434 2.422-.994 3.034-1.449-.876 2.94-3.65 5.383-5.506 6.797" fill="currentColor"></path>
+</svg>
+
+
+    <div class="subnavitem__label">Football</div>
+  </a>
+  </li>
+  <li>
+    <a href="https://www.hudl.com/en_gb/sports/ice-hockey" class="subnavitem subnavitem--icon" >
+      <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 32 32" fill="none">
+  <path fill-rule="evenodd" clip-rule="evenodd" d="M20.384 12.553c1.487-2.846 4.27-8.2 4.755-9.185.582-1.181 3.13.803 2.838 1.47-.123.28-1 2.213-1.982 4.382a1324 1324 0 0 0-2.943 6.515c-.027.068-.18.294-.367.569-.106.155-.223.326-.334.494-.357.59-.717 1.151-1.088 1.728-.4.625-.813 1.267-1.244 1.98H18.31c.496-.829 1.09-1.685 1.645-2.484.684-.985 1.307-1.883 1.61-2.533q-.058-.028-.127-.066c-.266-.145-.64-.348-.847.058-1.24 1.988-3.093 4.397-4.376 4.529-1.657.17-6.832-2.367-8.858-3.382-2.016-1.01-2.796 1.094-3.038 1.748l-.004.01c-1.118 2.367-.714 3.48-.34 3.684 2.383 1.389 4.777 2.134 6.983 2.82l.805.252v1.852c-3.766-.882-6.488-2.416-7.756-3.13q-.214-.122-.372-.209c-2.337-1.286-1.726-3.21-.88-5.87q.033-.109.069-.218c1.074-3.4 3.573-2.962 4.486-2.588.436.18 1.118.499 1.917.873 2.238 1.05 5.389 2.526 6.585 2.526 1.543 0 3.82-4.434 4.387-5.537l.074-.143a.5.5 0 0 1 .11-.145m-7.418 13.944c0 1.118 2.452 2.027 5.477 2.027s5.48-.91 5.476-2.027V23.66c0-1.117-2.451-2.026-5.476-2.026s-5.477.905-5.477 2.026zm9.33-2.438c0-.672-1.725-1.215-3.853-1.215s-3.854.548-3.854 1.219 1.725 1.215 3.854 1.215c2.132 0 3.853-.548 3.853-1.22" fill="currentColor"></path>
+</svg>
+
+
+    <div class="subnavitem__label">Ice Hockey</div>
+  </a>
+  </li>
+  <li>
+    <a href="https://www.hudl.com/en_gb/sports/rugby" class="subnavitem subnavitem--icon" >
+      <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 32 32" fill="none">
+  <path fill-rule="evenodd" clip-rule="evenodd" d="M27.072 5.617a4.5 4.5 0 0 0-.72-.984c-2.8-2.876-11.885-2.165-17.882 3.832-5.993 5.995-6.724 15.199-3.828 17.879.282.261.613.494.98.694 1.86 1.021 4.727 1.25 7.81.543 3.077-.706 6.369-2.344 9.093-5.069a19.1 19.1 0 0 0 4.955-8.68c.834-3.256.642-6.311-.408-8.215M5.169 23.958c-1.38-3.17.02-9.656 4.583-14.219 4.58-4.58 11.021-6.311 14.301-4.546-2.173.261-4.86 1.446-7.598 3.365-1.184-.526-3.59.47-5.465 2.325-1.785 1.764-2.439 3.876-2.05 5.008-2.153 2.896-3.485 5.772-3.77 8.067m5.747-10.967c1.352-1.77 2.602-3.02 4.163-3.334 1.72.364-2.03 2.292-3.75 4.996-.36.576-1.765.106-.413-1.662m-4.37 12.446c-.593-2.002.772-5.302 3.378-8.73 1.184.184 3.223-.653 4.873-2.283 1.585-1.568 2.435-3.541 2.345-4.763 3.149-2.25 6.253-3.52 8.292-3.124.65 2.765-2.108 7.777-6.614 12.278-4.256 4.257-9.33 7.116-12.274 6.622m17.425-7.684a18.5 18.5 0 0 1-2.728 3.485 18.1 18.1 0 0 1-4.077 3.043c-2.549 1.4-5.24 2.095-7.438 2.07 3.035-.943 6.687-3.267 10.024-6.604 3.345-3.346 5.67-7.006 6.609-10.049.078 2.37-.723 5.306-2.39 8.055" fill="currentColor"></path>
+</svg>
+
+
+    <div class="subnavitem__label">Rugby</div>
+  </a>
+  </li>
+  <li>
+    <a href="https://www.hudl.com/en_gb/sports/volleyball" class="subnavitem subnavitem--icon" >
+      <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 32 32" fill="none">
+  <path fill-rule="evenodd" clip-rule="evenodd" d="M16 3C8.82 3 3 8.82 3 16s5.82 13 13 13 13-5.82 13-13S23.18 3 16 3m11.377 13q-.002.789-.106 1.546c-.918-.67-3.322-2.506-4.563-3.08.128-.968.43-6.262-4.979-9.707 5.46.828 9.648 5.544 9.648 11.241M16 4.623h.047l.131.08c-1.397.46-6.776 2.72-11.126 8.204C6.399 8.132 10.787 4.623 16 4.623M4.67 15.006c1.567-2.145 6.712-7.953 12.579-9.559a11.6 11.6 0 0 1 2.745 3.004c-1.572.526-8.497 3.186-14.241 12.498A11.35 11.35 0 0 1 4.623 16c0-.336.021-.667.047-.994M6.275 21.9c1.377-2.286 6.679-9.903 14.143-12.711.701 1.342 1.177 2.961 1.24 4.886-6.622 3.177-10.85 9.278-11.997 11.368A11.4 11.4 0 0 1 6.275 21.9m17.742 2.17a11.35 11.35 0 0 1-3.9 2.533q-.024-.022-.056-.043c-2.557-1.053-5.021-3.721-6.075-5.09a33 33 0 0 1 2.966-2.888c1.72 1.789 5.344 4.66 7.065 5.489m-13.395 1.955a27.6 27.6 0 0 1 2.574-3.64c1.292 1.81 3.76 3.789 5.315 4.707a11.4 11.4 0 0 1-2.511.28 11.3 11.3 0 0 1-5.378-1.347m14.155-2.791c-1.856-.854-5.603-4.176-6.925-5.4 1.78-1.427 3.246-2.31 3.837-2.65.883.454 3.87 2.302 5.319 3.687a11.3 11.3 0 0 1-2.23 4.363" fill="currentColor"></path>
+</svg>
+
+
+    <div class="subnavitem__label">Volleyball</div>
+  </a>
+  </li>
+</ul>
+  </div>
+  </div>
+  </div>
+                </div>
+      </div>
+      </div>
+    <div class="mainnav__container mainnav__container--horizontal mainnav--product-categories">
+          <a href="#" class="mainnav__item mainnav__item--expandable">
+        Products
+        <svg class="mainnav__item__disclosure">
+          <use xlink:href="#chevron"></use>
+        </svg>
+      </a>
+              <div class="subnav" hidden>
+        <div class="subnav__inner">
+                  <div class="subnav__group">
+      <p class="subnav__heading">Browse by Product Category</p>
+        <ul class="subnav__grouped__items subnav__tabs">
+  <li>
+        <a href="#" class="subnavitem subnavitem--icon subnav__tabs__tab--expandable subnav__tabs__tab--expanded" data-name="team">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 224 224" fill="none">
+  <path d="m118.699 95.484-41.256 37.144c-.78.709-1.205 1.63-1.205 2.694l.283 34.875c-8.931 2.198-16.941 8.436-19.352 20.132-1.913 9.428.497 19.636 7.514 26.228C69.787 221.377 76.45 224 83.54 224s13.681-2.623 18.785-7.372c7.018-6.522 9.428-16.658 7.585-26.015-2.269-11.838-10.208-18.005-19.14-20.345l-.283-28.638a3.66 3.66 0 0 1 1.205-2.693l39.271-35.372M92.967 205.853c-5.033 5.033-13.823 5.033-18.856 0-5.175-5.175-5.175-13.681 0-18.856 5.033-5.032 13.823-5.032 18.856 0 5.033 5.033 5.175 13.681 0 18.856m55.575-169.985c-1.418 1.418-3.616 1.418-5.033 0l-5.033-5.033c-1.418-1.417-1.418-3.615 0-5.033l24.81-24.739c1.418-1.417 3.615-1.417 5.033 0l24.81 24.81c1.418 1.418 1.418 3.616 0 5.033l-5.033 5.033c-1.418 1.418-3.615 1.418-5.033 0l-10.137-10.137v38.492c0 .992-.425 1.984-1.205 2.623L150.385 85.7c-1.489 1.276-3.119 1.276-5.033-.283l-5.884-3.97c-1.276-1.488-1.205-3.686.284-5.033l17.792-15.878c.78-.638 1.205-1.63 1.205-2.623V25.66z" fill="currentColor"></path>
+  <path d="M130.114 103.777c14.816 12.263 21.054 28.851 21.195 41.965-4.536 1.205-8.86 3.473-12.476 7.017-10.703 10.704-10.703 28.213 0 38.917 5.388 5.387 12.405 8.01 19.494 8.01s14.106-2.694 19.423-8.01a27.46 27.46 0 0 0 8.081-19.494c0-7.372-2.836-14.248-8.081-19.423-3.545-3.544-7.798-5.741-12.264-6.946-.212-29.56-24.101-73.155-89.458-73.155H55.542L65.75 62.451c1.418-1.418 1.418-3.616 0-5.033l-5.033-5.033c-1.418-1.418-3.615-1.418-5.033 0l-24.81 24.88c-1.418 1.418-1.418 3.616 0 5.034l24.81 24.81c1.418 1.418 3.615 1.418 5.033 0l5.033-5.033c1.418-1.418 1.418-3.615 0-5.033L55.542 86.835h20.486c17.226 0 30.977 3.474 41.823 8.932m49.904 85.914c-5.246 5.175-13.681 5.175-18.856 0s-5.175-13.681 0-18.856c5.175-5.174 13.681-5.174 18.856 0 2.552 2.552 3.899 5.884 3.899 9.428s-1.418 6.947-3.899 9.428" fill="url(#ydbwnffyym-a)"></path>
+  <defs>
+    <linearGradient id="ydbwnffyym-a" x1="78.438" y1="70.886" x2="153.152" y2="202.947" gradientUnits="userSpaceOnUse">
+      <stop offset=".08" stop-color="#ff3c00"></stop>
+      <stop offset=".91" stop-color="#ff8b00"></stop>
+    </linearGradient>
+  </defs>
+</svg>
+
+        
+            <div class="subnavitem__label">Team Performance</div>
+      <svg class="subnavitem__disclosure"><use xlink:href="#chevron"></use></svg>
+    </a>
+  </li>
+  <li>
+        <a href="#" class="subnavitem subnavitem--icon subnav__tabs__tab--expandable" data-name="athlete">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 224 224" fill="none">
+  <path d="M103.895 105.471c19.162 0 39.193 4.594 53.734 16.036 13.128 10.329 20.874 25.44 20.874 45.254v43.27a3.7 3.7 0 0 1-3.696 3.697h-7.013a3.7 3.7 0 0 1-3.696-3.697V176.41l-30.604 29.952-3.697 3.669c-.706.707-1.848.707-2.582 0l-3.75-3.588-38.568-36.855a1.89 1.89 0 0 0-2.582 0l-54.06 52.919c-.734.706-1.903.706-2.61-.028l-3.75-3.832-3.751-3.832c-.707-.734-.707-1.903.027-2.609l60.311-59.034 3.697-3.615c.707-.707 1.848-.707 2.582 0l3.75 3.56 38.541 36.829a1.89 1.89 0 0 0 2.582 0l33.621-32.942c-1.957-10.519-7.121-18.373-14.513-24.19-11.117-8.752-27.533-12.937-44.819-12.937h-.381c-17.259 0-33.703 4.185-44.82 12.937-8.724 6.877-14.404 16.607-15.274 30.251-.136 2.038-1.767 3.696-3.805 3.696H32.63c-2.038 0-3.696-1.658-3.614-3.696.897-18.02 8.507-31.882 20.792-41.558 14.541-11.442 34.545-16.036 53.707-16.036zm101.815 9.051a1.87 1.87 0 0 1 2.609.027l3.778 3.833 3.751 3.778c.734.734.707 1.902-.027 2.636l-26.555 25.821c-1.087 1.06-2.935.435-3.288-1.006-.952-3.805-2.419-7.311-3.914-10.763a1.88 1.88 0 0 1 .407-2.066zM103.705 1.292c10.464 0 20.629 3.642 28.104 11.198 7.474 7.583 11.551 18.292 11.551 31.202 0 12.231-2.691 25.033-8.725 35.116-6.169 10.301-16.443 18.51-30.93 18.51s-24.76-8.209-30.93-18.51C66.74 68.725 64.05 55.923 64.05 43.692c0-12.91 4.05-23.619 11.551-31.202s17.64-11.198 28.104-11.198m0 14.405c-7.148 0-13.427 2.447-17.857 6.958-4.349 4.403-7.366 11.253-7.366 21.064 0 10.383 2.338 20.44 6.687 27.724 4.24 7.094 10.355 11.497 18.563 11.497 8.236 0 14.324-4.403 18.564-11.497 4.349-7.257 6.686-17.314 6.686-27.723 0-9.812-3.017-16.661-7.393-21.065-4.43-4.484-10.736-6.958-17.884-6.958" fill="currentColor"></path>
+  <path d="m164.098 176.41-30.604 29.952-3.697 3.669c-.706.707-1.848.707-2.582 0l-3.75-3.588-38.568-36.855a1.89 1.89 0 0 0-2.582 0l-54.06 52.918c-.734.707-1.903.707-2.61-.027l-3.75-3.832-3.751-3.832c-.707-.734-.707-1.903.027-2.61l60.311-59.034 3.697-3.614c.707-.707 1.848-.707 2.582 0l3.75 3.56 38.541 36.828c.734.68 1.848.68 2.582 0l33.621-32.941m42.455-42.482a1.87 1.87 0 0 1 2.609.027l3.778 3.833 3.751 3.778c.734.733.707 1.902-.027 2.636l-26.555 25.821c-1.087 1.06-2.935.434-3.288-1.006-.952-3.805-2.419-7.311-3.914-10.763a1.88 1.88 0 0 1 .407-2.066z" fill="url(#nhyizjsdoo-a)"></path>
+  <defs>
+    <linearGradient id="nhyizjsdoo-a" x1="40.023" y1="73.916" x2="167.414" y2="230.47" gradientUnits="userSpaceOnUse">
+      <stop offset=".08" stop-color="#ff3c00"></stop>
+      <stop offset=".91" stop-color="#ff8b00"></stop>
+    </linearGradient>
+  </defs>
+</svg>
+
+        
+            <div class="subnavitem__label">Athlete Performance</div>
+      <svg class="subnavitem__disclosure"><use xlink:href="#chevron"></use></svg>
+    </a>
+  </li>
+  <li>
+        <a href="#" class="subnavitem subnavitem--icon subnav__tabs__tab--expandable" data-name="scouting">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 224 224" fill="none">
+  <path d="M57.427 173.178a41 41 0 0 0-3.357 3.805 7.34 7.34 0 0 1-5.52 2.835c-2.09.075-4.253-.746-5.745-2.313l-3.357-3.506c-15.742-17.457-24.321-39.764-24.321-63.04 0-57.445 51.775-103.028 111.16-92.584 37.153 6.565 67.367 35.81 75.051 72.739 6.192 29.991-2.014 58.116-18.949 78.931l25.365 25.365c1.492 1.492 1.492 3.805 0 5.297l-5.297 5.297c-1.492 1.492-3.804 1.492-5.297 0l-25.141-25.142c-16.637 14.996-38.645 24.172-62.742 24.172-15.07 0-33.273-5.894-46.329-12.31-2.238-1.119-2.835-4.028-1.194-5.893l4.775-5.894c1.12-1.268 2.91-1.567 4.476-.821 10.743 5.521 25.216 9.923 38.272 9.923 43.643 0 79.155-35.512 79.155-79.155 0-48.94-44.688-87.66-95.419-77.588-26.26 5.222-48.492 24.097-57.818 49.164-10.295 27.753-4.7 57.37 12.981 78.782" fill="currentColor"></path>
+  <path d="M48.177 161.39c2.387-2.238 4.923-4.327 7.535-6.118 17.531-11.862 38.868-14.324 53.64-14.324 13.727 0 32.975 2.164 49.686 11.862 2.089 1.194 2.387 4.104.671 5.819l-5.446 5.521c-1.193 1.194-2.909 1.418-4.401.597-10.818-5.745-24.918-8.878-40.51-8.878-17.98 0-34.02 4.178-45.285 11.787-3.655 2.462-7.162 5.745-9.997 9.401a7.35 7.35 0 0 1-5.52 2.835c-2.09.074-4.253-.747-5.745-2.313l-4.625-4.849 10.071-11.34zm62.891-112.801c8.803.373 16.935 3.357 22.978 9.027 6.49 6.043 10.519 15.144 10.519 27.305s-2.91 24.246-8.803 33.348-14.697 15.144-26.559 15.144-20.74-6.043-26.56-15.144c-5.893-9.102-8.803-21.262-8.803-33.348s4.104-21.262 10.52-27.305c6.192-5.82 14.473-8.803 23.5-9.102h3.208zM123.9 68.508c-4.029-3.805-9.326-4.85-13.131-4.999h-2.611c-3.954.15-9.325 1.12-13.503 4.999-3.88 3.656-5.82 9.176-5.82 16.413 0 9.773 2.314 18.949 6.417 25.29 4.849 7.461 10.295 8.356 14.025 8.356s9.251-.895 14.026-8.356c4.028-6.266 6.416-15.517 6.416-25.29 0-7.237-1.94-12.758-5.819-16.413" fill="url(#bbaqvvfvth-a)"></path>
+  <defs>
+    <linearGradient id="bbaqvvfvth-a" x1="61.978" y1="84.622" x2="120.393" y2="157.809" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#ff3c00"></stop>
+      <stop offset=".9" stop-color="#ff8b00"></stop>
+    </linearGradient>
+  </defs>
+</svg>
+
+        
+            <div class="subnavitem__label">Scouting &amp; Recruiting</div>
+      <svg class="subnavitem__disclosure"><use xlink:href="#chevron"></use></svg>
+    </a>
+  </li>
+  <li>
+        <a href="#" class="subnavitem subnavitem--icon subnav__tabs__tab--expandable" data-name="automated">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 224 224" fill="none">
+  <path d="M213.995 190.098H59.127a3.287 3.287 0 0 1-3.32-3.319v-38.701l-44.342 22.769c-2.19 1.129-4.846-.464-4.846-2.92V56.14c0-2.456 2.655-4.116 4.846-2.921l108.932 55.893c2.39 1.262 2.39 4.647 0 5.908l-30.668 15.733c-2.19 1.128-4.846-.465-4.846-2.921v-7.435c0-1.261.664-2.389 1.792-2.987l10.356-5.31-77.136-39.697v79.194l44.343-22.769c2.191-1.129 4.846.464 4.846 2.921v45.006h135.021V47.178H69.085v16.065c0 2.522-2.722 4.115-4.913 2.92l-6.638-3.65a3.38 3.38 0 0 1-1.726-2.921v-22.37c0-1.86 1.46-3.32 3.319-3.32h154.935a3.287 3.287 0 0 1 3.319 3.32v149.557a3.287 3.287 0 0 1-3.319 3.319z" fill="currentColor"></path>
+  <path d="m55.808 148.079-44.343 22.769c-2.19 1.129-4.846-.464-4.846-2.92V56.141c0-2.456 2.655-4.116 4.846-2.921l108.932 55.893c2.39 1.262 2.39 4.647 0 5.908l-30.668 15.733c-2.19 1.128-4.846-.465-4.846-2.921v-7.435c0-1.261.664-2.389 1.792-2.987l10.356-5.31-77.136-39.697v79.194l44.343-22.769c2.191-1.129 4.846.464 4.846 2.921v9.758z" fill="url(#exobtsyxgt-a)"></path>
+  <defs>
+    <linearGradient id="exobtsyxgt-a" x1="8.478" y1="64.837" x2="66.562" y2="142.835" gradientUnits="userSpaceOnUse">
+      <stop offset=".08" stop-color="#ff3c00"></stop>
+      <stop offset=".91" stop-color="#ff8b00"></stop>
+    </linearGradient>
+  </defs>
+</svg>
+
+        
+            <div class="subnavitem__label">Automated Capture</div>
+      <svg class="subnavitem__disclosure"><use xlink:href="#chevron"></use></svg>
+    </a>
+  </li>
+  <li>
+        <a href="https://www.hudl.com/en_gb/products" class="subnavitem subnavitem--icon not-expandable">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 20 20" fill="none">
+  <path fill="#009CE3" d="M11.122 4.063c0-.173.14-.313.312-.313h4.504c.172 0 .312.14.312.313v4.592c0 .172-.14.312-.312.312h-4.504a.31.31 0 0 1-.312-.312zm-7.372 0c0-.173.14-.313.313-.313h4.503c.172 0 .312.14.312.313v4.592c0 .172-.14.312-.312.312H4.062a.31.31 0 0 1-.312-.312zm7.372 7.282c0-.173.14-.312.312-.312h4.504c.172 0 .312.14.312.312v4.592c0 .173-.14.313-.312.313h-4.504a.31.31 0 0 1-.312-.312zm-7.372 0c0-.173.14-.312.313-.312h4.503c.172 0 .312.14.312.312v4.592c0 .173-.14.313-.312.313H4.062a.31.31 0 0 1-.312-.312z"></path>
+</svg>
+
+        
+            <div class="subnavitem__label">View All Products</div>
+      <svg class="subnavitem__disclosure"><use xlink:href="#chevron"></use></svg>
+    </a>
+  </li>
+</ul>
+<div class="subnav__items subnav__grouped__flyout is-open" data-content="subnav-team">
+  <a href="#" class="mobile-menu-back-toggle mobile-only"><svg class="subnavitem__disclosure"><use xlink:href="#chevron"></use></svg>Back</a>
+  <p class="subnavitem subnavitem__non-link">
+    <span class="subnavitem__label">Team Performance Products</span>
+    <span class="subnavitem__desc"></span>
+  </p>
+  <ul class="subnav__items">
+  <li>
+      <a href="https://www.hudl.com/en_gb/products/hudl" class="subnavitem subnavitem--icon" >
+      <img loading="lazy" src="https://static.hudl.com/craft/productAssets/hudl_icon.svg?mtime=20200626111011" alt="" height="32" width="32">
+
+    <div class="subnavitem__label">Hudl</div>
+      <div class="subnavitem__desc">Online and mobile platform for video sharing and review</div>
+  </a>
+<ul class="subnav__items">
+  <li>
+    <a href="https://www.hudl.com/en_gb/products/assist" class="subnavitem subnavitem--icon" >
+      <img loading="lazy" src="https://static.hudl.com/craft/productAssets/assist_icon.svg?mtime=20200626110642" alt="" height="32" width="32">
+
+    <div class="subnavitem__label">Assist</div>
+      <div class="subnavitem__desc">Stats and reports done for you</div>
+  </a>
+  </li>
+</ul>
+  </li>
+  <li>
+      <a href="https://www.hudl.com/en_gb/products/sportscode" class="subnavitem subnavitem--icon" >
+      <img loading="lazy" src="https://static.hudl.com/craft/productAssets/sportscode_icon.svg?mtime=20200626111334" alt="" height="32" width="32">
+
+    <div class="subnavitem__label">Sportscode</div>
+      <div class="subnavitem__desc">Customizable performance analysis</div>
+  </a>
+<ul class="subnav__items">
+  <li>
+    <a href="https://www.hudl.com/en_gb/products/replay" class="subnavitem subnavitem--icon" >
+      <img loading="lazy" src="https://static.hudl.com/craft/productAssets/replay_icon.svg?mtime=20200626111119" alt="" height="32" width="32">
+
+    <div class="subnavitem__label">Replay</div>
+      <div class="subnavitem__desc">Instant replay for teams using Sportscode</div>
+  </a>
+  </li>
+  <li>
+    <a href="https://www.hudl.com/en_gb/products/insight" class="subnavitem subnavitem--icon" >
+      <img loading="lazy" src="https://static.hudl.com/craft/productAssets/insight_icon.svg?mtime=20220419162437" alt="" height="32" width="32">
+
+    <div class="subnavitem__label">Insight</div>
+      <div class="subnavitem__desc">Custom analytics transforming data into tactical insight</div>
+  </a>
+  </li>
+  <li>
+    <a href="https://www.hudl.com/en_gb/products/studio" class="subnavitem subnavitem--icon" >
+      <img loading="lazy" src="https://static.hudl.com/craft/productAssets/studio-icon.svg?mtime=20210304100215" alt="" height="32" width="32">
+
+    <div class="subnavitem__label">Studio</div>
+      <div class="subnavitem__desc">Telestration platform for visual tactical review</div>
+  </a>
+  </li>
+</ul>
+  </li>
+  <li>
+    <a href="https://www.hudl.com/en_gb/products/instat" class="subnavitem subnavitem--icon" >
+      <img loading="lazy" src="https://static.hudl.com/craft/productAssets/instat_icon-orange.svg?mtime=20230719144815" alt="" height="32" width="32">
+
+    <div class="subnavitem__label">Instat</div>
+      <div class="subnavitem__desc">Video and data solution for analysis and scouting</div>
+  </a>
+  </li>
+  <li>
+    <a href="https://www.hudl.com/en_gb/products/volleymetrics" class="subnavitem subnavitem--icon" >
+      <img loading="lazy" src="https://static.hudl.com/craft/productAssets/volleymetrics_icon.svg?mtime=20200626111716" alt="" height="32" width="32">
+
+    <div class="subnavitem__label">Volleymetrics</div>
+      <div class="subnavitem__desc">Advanced analytics for college and pro volleyball teams</div>
+  </a>
+  </li>
+  <li>
+    <a href="https://www.hudl.com/en_gb/products/balltime" class="subnavitem subnavitem--icon" >
+      <img loading="lazy" src="https://static.hudl.com/craft/productAssets/balltime_icon.png" alt="" height="32" width="32">
+
+    <div class="subnavitem__label">Balltime</div>
+      <div class="subnavitem__desc">AI Volleyball tool and stats for individuals</div>
+  </a>
+  </li>
+  <li>
+    <a href="https://www.hudl.com/en_gb/products/statsbomb" class="subnavitem subnavitem--icon" >
+      <img loading="lazy" src="https://static.hudl.com/craft/productAssets/statsbomb_icon.svg" alt="" height="32" width="32">
+
+    <div class="subnavitem__label">Statsbomb</div>
+      <div class="subnavitem__desc">The worldʼs most advanced insights for team analysis in global football</div>
+  </a>
+  </li>
+  <li>
+      <a href="https://www.hudl.com/en_gb/products/fastmodel" class="subnavitem subnavitem--icon" >
+      <img loading="lazy" src="https://static.hudl.com/craft/productAssets/fastmodel_icon.svg" alt="" height="32" width="32">
+
+    <div class="subnavitem__label">Fastmodel</div>
+      <div class="subnavitem__desc">Scouting, recruiting, and diagramming tools for high-level basketball</div>
+  </a>
+<ul class="subnav__items">
+  <li>
+    <a href="https://www.hudl.com/en_gb/products/fastmodel#s-1373874" class="subnavitem subnavitem--icon" >
+      <img loading="lazy" src="https://static.hudl.com/craft/productAssets/fastmodel_icon.svg" alt="" height="32" width="32">
+
+    <div class="subnavitem__label">FastDraw</div>
+      <div class="subnavitem__desc">Play diagramming software to quickly draw, organise, and share key plays and playbooks</div>
+  </a>
+  </li>
+  <li>
+    <a href="https://www.hudl.com/en_gb/products/fastmodel#s-1373884" class="subnavitem subnavitem--icon" >
+      <img loading="lazy" src="https://static.hudl.com/craft/productAssets/fastmodel_icon.svg" alt="" height="32" width="32">
+
+    <div class="subnavitem__label">FastScout</div>
+      <div class="subnavitem__desc">Software for creating custom scouting reports, leveraging player stats and automated opponent breakdowns</div>
+  </a>
+  </li>
+</ul>
+  </li>
+  <li>
+    <a href="https://www.hudl.com/en_gb/products/data/tracking-data" class="subnavitem subnavitem--icon" >
+      <img loading="lazy" src="https://static.hudl.com/craft/productAssets/hudl_icon.svg?mtime=20200626111011" alt="" height="32" width="32">
+
+    <div class="subnavitem__label">Hudl Tracking Data</div>
+      <div class="subnavitem__desc">Player locations, physical and off-ball metrics for any player.</div>
+  </a>
+  </li>
+</ul>
+      <div class="subnav__feature-item">
+      <p class="subnav__heading">Case Study</p>
+              <p class="subnav__img">
+          <img loading="lazy" src="https://static.hudl.com/craft/palmeiras-featured-new.jpg" alt="Two men in light green Palmeiras athletic shirts are sitting at a desk in an office, reviewing sports video and data on two open laptops.">
+        </p>
+            <p class="subnavitem subnavitem__non-link">
+        <span class="subnavitem__label">How Hudl Helped Palmeiras Conquer South America</span>
+        <span class="subnavitem__desc">Hudl technology powered Palmeiras to football excellence, helping them conquer South America with innovative performance analysis tools.</span>
+        <a href="/blog/striving-for-excellence-how-hudl-helped-palmeiras-conquer-south-america" class="subnavitem__cta">See the case study<svg class="subnavitem__disclosure"><use xlink:href="#arrow_right_alt"></use></svg></a>
+      </p>
+    </div>
+  </div>
+<div class="subnav__items subnav__grouped__flyout" data-content="subnav-athlete">
+  <a href="#" class="mobile-menu-back-toggle mobile-only"><svg class="subnavitem__disclosure"><use xlink:href="#chevron"></use></svg>Back</a>
+  <p class="subnavitem subnavitem__non-link">
+    <span class="subnavitem__label">Athlete Performance Products</span>
+    <span class="subnavitem__desc">Athlete Performance data that works together—wearables and software for smarter training and peak performance.</span>
+  </p>
+  <ul class="subnav__items">
+  <li>
+    <a href="https://www.hudl.com/en_gb/products/wimu" class="subnavitem subnavitem--icon" >
+      <img loading="lazy" src="https://static.hudl.com/craft/productAssets/wimu-icon-v2.svg?mtime=20230131151103" alt="" height="32" width="32">
+
+    <div class="subnavitem__label">WIMU</div>
+      <div class="subnavitem__desc">Elite-level wearable performance tracking</div>
+  </a>
+  </li>
+  <li>
+    <a href="https://www.hudl.com/en_gb/products/titan" class="subnavitem subnavitem--icon" >
+      <img loading="lazy" src="https://static.hudl.com/craft/productAssets/titan-web-icon.svg" alt="" height="32" width="32">
+
+    <div class="subnavitem__label">Titan</div>
+      <div class="subnavitem__desc">Accessible wearable performance tracking</div>
+  </a>
+  </li>
+  <li>
+    <a href="https://www.hudl.com/en_gb/products/signal" class="subnavitem subnavitem--icon" >
+      <img loading="lazy" src="https://static.hudl.com/craft/productAssets/signal-icon.svg" alt="" height="32" width="32">
+
+    <div class="subnavitem__label">Signal</div>
+      <div class="subnavitem__desc">Integrated cloud-based athlete monitoring platform</div>
+  </a>
+  </li>
+  <li>
+    <a href="https://www.hudl.com/en_gb/products/adi" class="subnavitem subnavitem--icon" >
+      <img loading="lazy" src="https://static.hudl.com/craft/productAssets/ADI-Web-Icon.svg" alt="" height="32" width="32">
+
+    <div class="subnavitem__label">ADI</div>
+      <div class="subnavitem__desc">Advanced multidirectional movement analysis for elite teams</div>
+  </a>
+  </li>
+</ul>
+      <div class="subnav__feature-item">
+      <p class="subnav__heading">Blog</p>
+              <p class="subnav__img">
+          <img loading="lazy" src="https://static.hudl.com/craft/fulham-fc-casae-study-action.webp" alt="Three Fulham FC players wearing black Hudl-branded GPS tracking vests during an outdoor training session.">
+        </p>
+            <p class="subnavitem subnavitem__non-link">
+        <span class="subnavitem__label">How Hudl Signal Prepares Fulham FC for the Premier League</span>
+        <span class="subnavitem__desc">Learn how Fulham FC use Hudl Signal to keep their players fit and healthy for the intense demands of Premier League action.</span>
+        <a href="/blog/hudl-signal-fulham-fc" class="subnavitem__cta">Learn more<svg class="subnavitem__disclosure"><use xlink:href="#arrow_right_alt"></use></svg></a>
+      </p>
+    </div>
+  </div>
+<div class="subnav__items subnav__grouped__flyout" data-content="subnav-scouting">
+  <a href="#" class="mobile-menu-back-toggle mobile-only"><svg class="subnavitem__disclosure"><use xlink:href="#chevron"></use></svg>Back</a>
+  <p class="subnavitem subnavitem__non-link">
+    <span class="subnavitem__label">Scouting &amp; Recruiting Products</span>
+    <span class="subnavitem__desc">We help teams and talent find each other—our deep video and data library make it easy.</span>
+  </p>
+  <ul class="subnav__items">
+  <li>
+      <a href="https://www.hudl.com/en_gb/products/wyscout" class="subnavitem subnavitem--icon" >
+      <img loading="lazy" src="https://static.hudl.com/craft/productAssets/hudlwyscout-icon_v2.svg" alt="" height="32" width="32">
+
+    <div class="subnavitem__label">Wyscout</div>
+      <div class="subnavitem__desc">The world’s largest football video and stats database</div>
+  </a>
+<ul class="subnav__items">
+  <li>
+    <a href="https://www.hudl.com/en_gb/products/wyscout/data-api" class="subnavitem subnavitem--icon" >
+      <img loading="lazy" src="https://static.hudl.com/craft/productAssets/hudlwyscout-icon_v2.svg" alt="" height="32" width="32">
+
+    <div class="subnavitem__label">Wyscout Data</div>
+      <div class="subnavitem__desc">Comprehensive football data API for performance, scouting and recruitment analysis</div>
+  </a>
+  </li>
+</ul>
+  </li>
+  <li>
+    <a href="https://www.hudl.com/en_gb/products/data/tracking-data" class="subnavitem subnavitem--icon" >
+      <img loading="lazy" src="https://static.hudl.com/craft/productAssets/hudl_icon.svg?mtime=20200626111011" alt="" height="32" width="32">
+
+    <div class="subnavitem__label">Hudl Tracking Data</div>
+      <div class="subnavitem__desc">Player locations, physical and off-ball metrics for any player.</div>
+  </a>
+  </li>
+  <li>
+    <a href="https://www.hudl.com/en_gb/products/statsbomb" class="subnavitem subnavitem--icon" >
+      <img loading="lazy" src="https://static.hudl.com/craft/productAssets/statsbomb_icon.svg" alt="" height="32" width="32">
+
+    <div class="subnavitem__label">Statsbomb</div>
+      <div class="subnavitem__desc">The world’s most advanced insights for scouting and recruitment analysis in global football</div>
+  </a>
+  </li>
+  <li>
+    <a href="https://www.hudl.com/en_gb/products/instat" class="subnavitem subnavitem--icon" >
+      <img loading="lazy" src="https://static.hudl.com/craft/productAssets/instat_icon-orange.svg?mtime=20230719144815" alt="" height="32" width="32">
+
+    <div class="subnavitem__label">Instat</div>
+      <div class="subnavitem__desc">Video and data solution for analysis and scouting</div>
+  </a>
+  </li>
+  <li>
+      <a href="https://www.hudl.com/en_gb/products/fastmodel" class="subnavitem subnavitem--icon" >
+      <img loading="lazy" src="https://static.hudl.com/craft/productAssets/fastmodel_icon.svg" alt="" height="32" width="32">
+
+    <div class="subnavitem__label">Fastmodel</div>
+      <div class="subnavitem__desc">Scouting, recruiting, and diagramming tools for high-level basketball</div>
+  </a>
+<ul class="subnav__items">
+  <li>
+    <a href="https://www.hudl.com/en_gb/products/fastmodel#s-1373893" class="subnavitem subnavitem--icon" >
+      <img loading="lazy" src="https://static.hudl.com/craft/productAssets/fastmodel_icon.svg" alt="" height="32" width="32">
+
+    <div class="subnavitem__label">FastRecruit</div>
+      <div class="subnavitem__desc">Provides scouts and recruiters with comprehensive tools to evaluate talent and construct rosters</div>
+  </a>
+  </li>
+</ul>
+  </li>
+  <li>
+    <a href="https://www.hudl.com/en_gb/products/balltime" class="subnavitem subnavitem--icon" >
+      <img loading="lazy" src="https://static.hudl.com/craft/productAssets/balltime_icon.png" alt="" height="32" width="32">
+
+    <div class="subnavitem__label">Balltime</div>
+      <div class="subnavitem__desc">AI Volleyball tool and stats for individuals</div>
+  </a>
+  </li>
+  <li>
+    <a href="https://www.hudl.com/en_gb/products/volleymetrics" class="subnavitem subnavitem--icon" >
+      <img loading="lazy" src="https://static.hudl.com/craft/productAssets/volleymetrics_icon.svg?mtime=20200626111716" alt="" height="32" width="32">
+
+    <div class="subnavitem__label">Volleymetrics</div>
+      <div class="subnavitem__desc">Advanced analytics for college and pro volleyball teams</div>
+  </a>
+  </li>
+</ul>
+      <div class="subnav__feature-item">
+      <p class="subnav__heading">Blog</p>
+              <p class="subnav__img">
+          <img loading="lazy" src="https://static.hudl.com/craft/_1350xAUTO_crop_center-center_none_ns/Emerging-Leagues-_-Featured-Image-Blog.jpg" alt="A soccer player in a navy blue kit is captured mid-action striking a ball, overlaid with a large circular radar chart showing performance metrics and statistical data. The background features stylized tactical diagrams with directional arrows and player position markers in orange and blue.">
+        </p>
+            <p class="subnavitem subnavitem__non-link">
+        <span class="subnavitem__label">Emerging Talent: Finding Value in Europe’s Development Leagues</span>
+        <span class="subnavitem__desc">We combine Statsbomb event data with Hudl physical metrics to identify four high-potential players ready to make the jump to Europe’s top leagues.</span>
+        <a href="/blog/emerging-talent-development-leagues" class="subnavitem__cta">Learn more<svg class="subnavitem__disclosure"><use xlink:href="#arrow_right_alt"></use></svg></a>
+      </p>
+    </div>
+  </div>
+<div class="subnav__items subnav__grouped__flyout" data-content="subnav-automated">
+  <a href="#" class="mobile-menu-back-toggle mobile-only"><svg class="subnavitem__disclosure"><use xlink:href="#chevron"></use></svg>Back</a>
+  <p class="subnavitem subnavitem__non-link">
+    <span class="subnavitem__label">Automated Capture Products</span>
+    <span class="subnavitem__desc">Our smart cameras can automatically capture, livestream and upload your video to your Hudl platform.</span>
+  </p>
+  <ul class="subnav__items">
+  <li>
+      <a href="https://www.hudl.com/en_gb/products/focus" class="subnavitem subnavitem--icon" >
+      <img loading="lazy" src="https://static.hudl.com/craft/productAssets/focus_icon.svg?mtime=20230719150357" alt="" height="32" width="32">
+
+    <div class="subnavitem__label">Hudl Focus</div>
+      <div class="subnavitem__desc">Our Focus sports cameras automatically capture, upload and livestream every minute of the action without you lifting a finger.</div>
+  </a>
+<ul class="subnav__items">
+  <li>
+    <a href="https://www.hudl.com/en_gb/products/focus/indoor" class="subnavitem subnavitem--icon" >
+      <img loading="lazy" src="https://static.hudl.com/craft/productAssets/focus-indoor_icon.svg?mtime=20230719150357" alt="" height="32" width="32">
+
+    <div class="subnavitem__label">Focus Indoor</div>
+      <div class="subnavitem__desc">Go-to smart camera for basketball, volleyball and other indoor sports</div>
+  </a>
+  </li>
+  <li>
+    <a href="https://www.hudl.com/en_gb/products/focus/outdoor" class="subnavitem subnavitem--icon" >
+      <img loading="lazy" src="https://static.hudl.com/craft/productAssets/focus-outdoor_icon.svg?mtime=20230719150358" alt="" height="32" width="32">
+
+    <div class="subnavitem__label">Focus Outdoor</div>
+      <div class="subnavitem__desc">Our outdoor camera adjusts for changes in light, weather and
+                    more to capture every play</div>
+  </a>
+  </li>
+  <li>
+    <a href="https://www.hudl.com/en_gb/products/focus/flex" class="subnavitem subnavitem--icon" >
+      <img loading="lazy" src="https://static.hudl.com/craft/productAssets/focus-flex_icon.svg?mtime=20230719150357" alt="" height="32" width="32">
+
+    <div class="subnavitem__label">Focus Flex</div>
+      <div class="subnavitem__desc">A portable camera to record on-the-go</div>
+  </a>
+  </li>
+</ul>
+  </li>
+</ul>
+      <div class="subnav__feature-item">
+      <p class="subnav__heading">Customer Spotlight</p>
+              <p class="subnav__img">
+          <img loading="lazy" src="https://static.hudl.com/craft/nav-callouts/FAI-2400x1260.webp" alt="A man in an Ireland national team jacket standing outdoors behind a laptop featuring the Ireland and Hudl logos.">
+        </p>
+            <p class="subnavitem subnavitem__non-link">
+        <span class="subnavitem__label">A Whole New Angle for the FAI</span>
+        <span class="subnavitem__desc">Discover how the Football Association of Ireland uses Focus Flex to automate their capture workflow and provide tactical video to coaches across 11 national teams.</span>
+        <a href="/blog/hudl-focus-flex-football-association-ireland" class="subnavitem__cta">Read the story<svg class="subnavitem__disclosure"><use xlink:href="#arrow_right_alt"></use></svg></a>
+      </p>
+    </div>
+  </div>
+  </div>
+                </div>
+      </div>
+      </div>
+    <div class="mainnav__container mainnav__container--vertical">
+          <a href="#" class="mainnav__item mainnav__item--expandable">
+        Resources &amp; Support
+        <svg class="mainnav__item__disclosure">
+          <use xlink:href="#chevron"></use>
+        </svg>
+      </a>
+              <div class="subnav" hidden>
+        <div class="subnav__inner">
+                  <div class="subnav__group">
+        <ul class="subnav__items">
+  <li>
+    <a href="https://support.hudl.com/s/" class="subnavitem " >
+    <div class="subnavitem__label">Help Center</div>
+      <div class="subnavitem__desc">Tackle your technical questions with tutorials and videos.</div>
+  </a>
+  </li>
+  <li>
+    <a href="https://www.hudl.com/en_gb/solutions/professional/education/academy" class="subnavitem " >
+    <div class="subnavitem__label">Hudl Academy</div>
+      <div class="subnavitem__desc">Free video-based courses for mastering Hudl and Sportscode</div>
+  </a>
+  </li>
+  <li>
+    <a href="/blog/elite" class="subnavitem " >
+    <div class="subnavitem__label">Hudl Blog</div>
+      <div class="subnavitem__desc">Articles full of tips, testimonials and ideas for performance analysis</div>
+  </a>
+  </li>
+</ul>
+  </div>
+                </div>
+      </div>
+      </div>
+    <a href="https://www.hudl.com/en_gb/contact/sales/professional" class="mainnav__btn mainnav__btn--primary mobile-only mobile-menu-cta">Contact Us</a>
+</nav>
+
+  <div class="mainnav__actions">
+    <div class="language-globe"><div class="l10n-selector" data-controller="l10n-selector">
+	<svg width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+		<g fill="none" fill-rule="evenodd" stroke="currentColor">
+			<circle stroke-width="1.5" cx="9.5" cy="9.5" r="8.75"/>
+			<path d="M1.5 9.5h16M1.5 5.5h16M1.5 13.5h16"/>
+			<path d="M10.5.55a15 15 0 010 18M8.5.55a15 15 0 000 18"/>
+		</g>
+	</svg>
+	<button class="l10n-selector__label" data-target="l10n-selector.label"></button>
+	<select
+		aria-label="Language selector"
+		data-target="l10n-selector.dropdown"
+		data-action="l10n-selector#change"></select>
+</div>
+</div>
+
+          <a class="mainnav__btn mainnav__btn--secondary" href="https://www.hudl.com/en_gb/contact/sales/professional">Contact Us</a>
+    
+    <div class="mainnav__container mainnav__container--vertical mainnav__btn mainnav__btn--primary mainnav--login">
+    <a href="#" class="mainnav__item mainnav__item--expandable" data-qa-id="login-select">
+      Log in
+      <svg class="mainnav__item__disclosure">
+        <use xlink:href="#chevron"></use>
+      </svg>
+    </a>
+    <div class="mainnav__sub subnav subnav--login subnav--vertical-desktop" hidden>
+      <div class="subnav__inner">
+        <div class="subnav__group">
+          <div class="subnav__items">            <a
+              href="https://classic.statsbomb.hudl.com/?utm_content=statsbomb_primary&amp;utm_source=www.hudl.com&amp;utm_medium=login_dropdown&amp;utm_campaign=platform_logins"
+              class="subnav__item subnavitem subnavitem--icon"
+              data-qa-id="login-statsbomb">
+                            <img src="https://static.hudl.com/craft/productAssets/statsbomb_icon.svg" width="240" height="240" alt loading="lazy">
+                            <span class="subnavitem__label">Statsbomb</span>
+            </a>            <div class="subnav__divider" role="separator"></div>            <a
+              href="https://www.hudl.com/login?utm_content=hudl&amp;utm_source=www.hudl.com&amp;utm_medium=login_dropdown&amp;utm_campaign=platform_logins"
+              class="subnav__item subnavitem"
+              data-qa-id="login-hudl">
+                            <span class="subnavitem__label">Hudl</span>
+            </a>            <a
+              href="https://wyscout.hudl.com/app/?utm_content=wyscout&amp;utm_source=www.hudl.com&amp;utm_medium=login_dropdown&amp;utm_campaign=platform_logins"
+              class="subnav__item subnavitem"
+              data-qa-id="login-wyscout">
+                            <span class="subnavitem__label">Wyscout</span>
+            </a>            <a
+              href="https://portal.volleymetrics.hudl.com/?utm_content=volleymetrics&amp;utm_source=www.hudl.com&amp;utm_medium=login_dropdown&amp;utm_campaign=platform_logins"
+              class="subnav__item subnavitem"
+              data-qa-id="login-volleymetrics">
+                            <span class="subnavitem__label">Volleymetrics</span>
+            </a>            <a
+              href="https://app.wimucloud.com/?utm_content=signal&amp;utm_source=www.hudl.com&amp;utm_medium=login_dropdown&amp;utm_campaign=platform_logins"
+              class="subnav__item subnavitem"
+              data-qa-id="login-signal">
+                            <span class="subnavitem__label">Signal</span>
+            </a>            <a
+              href="https://basketball.instatscout.com/?utm_content=instatbasketball&amp;utm_source=www.hudl.com&amp;utm_medium=login_dropdown&amp;utm_campaign=platform_logins"
+              class="subnav__item subnavitem"
+              data-qa-id="login-instatbasketball">
+                            <span class="subnavitem__label">Instat for Basketball</span>
+            </a>            <a
+              href="https://hockey.instatscout.com/?utm_content=instathockey&amp;utm_source=www.hudl.com&amp;utm_medium=login_dropdown&amp;utm_campaign=platform_logins"
+              class="subnav__item subnavitem"
+              data-qa-id="login-instathockey">
+                            <span class="subnavitem__label">Instat for Ice Hockey</span>
+            </a>            <a
+              href="https://iq-amf.statsbomb.com/?utm_content=iq&amp;utm_source=www.hudl.com&amp;utm_medium=login_dropdown&amp;utm_campaign=platform_logins"
+              class="subnav__item subnavitem"
+              data-qa-id="login-iq">
+                            <span class="subnavitem__label">IQ for American Football</span>
+            </a>            <a
+              href="https://app.balltime.com/?utm_content=balltime&amp;utm_source=www.hudl.com&amp;utm_medium=login_dropdown&amp;utm_campaign=platform_logins"
+              class="subnav__item subnavitem"
+              data-qa-id="login-balltime">
+                            <span class="subnavitem__label">Balltime</span>
+            </a>            <a
+              href="https://stats.integratedbionics.com/?utm_content=titan&amp;utm_source=www.hudl.com&amp;utm_medium=login_dropdown&amp;utm_campaign=platform_logins"
+              class="subnav__item subnavitem"
+              data-qa-id="login-titan">
+                            <span class="subnavitem__label">Titan</span>
+            </a>            <a
+              href="https://fastscout.fastmodelsports.com?utm_content=fastscout&amp;utm_source=www.hudl.com&amp;utm_medium=login_dropdown&amp;utm_campaign=platform_logins"
+              class="subnav__item subnavitem"
+              data-qa-id="login-fastscout">
+                            <span class="subnavitem__label">FastScout</span>
+            </a>            <a
+              href="https://fastrecruit.fastmodelsports.com?utm_content=fastrecruit&amp;utm_source=www.hudl.com&amp;utm_medium=login_dropdown&amp;utm_campaign=platform_logins"
+              class="subnav__item subnavitem"
+              data-qa-id="login-fastrecruit">
+                            <span class="subnavitem__label">FastRecruit</span>
+            </a>            <a
+              href="https://fastdraw.fastmodelsports.com?utm_content=fastdraw&amp;utm_source=www.hudl.com&amp;utm_medium=login_dropdown&amp;utm_campaign=platform_logins"
+              class="subnav__item subnavitem"
+              data-qa-id="login-fastdraw">
+                            <span class="subnavitem__label">FastDraw</span>
+            </a>          </div>
+        </div>
+      </div>
+    </div>
+</div>
+  </div>
+</header>
+
+<script>
+	(function() {
+    function dropdowns(selector) {
+      const itemExpandableClass = selector + "__item--expandable";
+      const itemExpandedClass = selector + "__item--expanded";
+      const hideMobileClass =  selector + "--hide-mobile";
+      var mainNavEl = document.querySelector("." + selector);
+
+      // Early return if there is no element to operate on
+      if (!mainNavEl) { return; }
+
+      function collapse(el) {
+        el.classList.remove(itemExpandedClass);
+        el.nextElementSibling.setAttribute("hidden", true);
+        el.setAttribute('aria-expanded', false);
+        el.nextElementSibling.setAttribute("aria-hidden", true);
+      }
+
+      function expand(el) {
+        // Collapse siblings
+        mainNavEl
+          .querySelectorAll("." + itemExpandableClass)
+          .forEach((siblingEl) => {
+            if (siblingEl !== el) {
+              collapse(siblingEl);
+            }
+          });
+        el.classList.add(itemExpandedClass);
+        el.nextElementSibling.removeAttribute("hidden");
+        el.setAttribute('aria-expanded', true);
+        el.nextElementSibling.setAttribute("aria-hidden", false);
+      }
+
+      function toggle(el) {
+        if (el.classList.contains(itemExpandedClass)) {
+          collapse(el);
+        } else {
+          expand(el);
+        }
+      }
+
+      function collapseAll() {
+        mainNavEl.querySelectorAll("." + itemExpandableClass).forEach((el) => { collapse(el); });
+        mainNavEl.classList.add(hideMobileClass);
+      }
+
+      // Close dropdown if click event occurs outside of the mainNavEl or if the escape key is pressed
+      document.addEventListener('click', function(event) {
+          if (!mainNavEl.contains(event.target)) {
+            collapseAll();
+          }
+      });
+      document.addEventListener('keydown', function(event){
+        if(event.key === "Escape"){
+          collapseAll();
+        }
+      });
+
+      // Aria Labels
+      mainNavEl.querySelectorAll("." + itemExpandableClass).forEach((el) => {
+        el.setAttribute('aria-haspopup', true);
+        el.setAttribute('aria-expanded', false);
+        el.nextElementSibling.setAttribute("aria-hidden", true);
+      });
+
+      // Add click events
+      // Mobile hamburger toggle
+      mainNavEl.querySelector("." + selector + "__toggle").addEventListener("click", (e) => {
+        mainNavEl.classList.toggle(hideMobileClass);
+      });
+      // Dropdown items
+      mainNavEl.querySelectorAll("." + itemExpandableClass).forEach((el) => {
+        el.addEventListener("click", (e) => {
+          e.preventDefault();
+          toggle(e.currentTarget);
+        });
+      });
+    }
+
+    function tabs(selector) {
+      const tabExpandableClass = selector + "__tab--expandable";
+      const tabExpandedClass = selector + "__tab--expanded";
+      var tabbedNavEl = document.querySelector("." + selector);
+
+      // Early return if there is no element to operate on
+      if (!tabbedNavEl) { return; }
+
+      let expandableTabs = document.querySelectorAll("." + tabExpandableClass);
+      let flyoutMenus = document.querySelectorAll(".subnav__grouped__flyout");
+
+      expandableTabs.forEach((el) => {
+        el.addEventListener('click', function(e) {
+          e.preventDefault();
+          let currentTabData = document.querySelector('.subnav__grouped__flyout[data-content="subnav-' + this.dataset.name + '"]');
+
+          // hide all other flyouts and remove active state
+          flyoutMenus.forEach((fl) => {
+            if (fl !== currentTabData) {
+              fl.classList.remove('show-mobile', 'is-open');
+            }
+          })
+
+          document.querySelector("." + tabExpandedClass).classList.remove(tabExpandedClass);
+
+          // show selected flyout and add active state
+          currentTabData.classList.add('show-mobile', 'is-open');
+          currentTabData.getElementsByClassName('subnavitem--icon')[0].focus();
+          this.classList.add(tabExpandedClass);
+        });
+      })
+
+      // wire up mobile close toggles on flyouts
+      let closeToggle = document.querySelectorAll('.mobile-menu-back-toggle');
+      closeToggle.forEach((el) => {
+        el.addEventListener('click', function(e) {
+          e.preventDefault();
+          closeFlyouts();
+          let currentTabData = el.closest('.subnav__grouped__flyout[data-content]');
+          let lastTab = document.querySelector('.subnav__tabs__tab--expandable[data-name="' + currentTabData.dataset.content.replace('subnav-', '') + '"]');
+          lastTab.focus();
+        })
+      })
+
+      function closeFlyouts() {
+        flyoutMenus.forEach((fl) => {
+          fl.classList.remove('show-mobile');
+        })
+      }
+
+      // reset all flyouts if mobile toggle is closed
+      document.querySelector(".mainnav__toggle").addEventListener("click", (e) => {
+        closeFlyouts();
+      });
+
+    }
+
+
+
+    document.addEventListener("DOMContentLoaded", function(event) {
+      dropdowns('secondary-nav');
+      // Sticky Subnavigation
+      var subnavigation = document.querySelector('.secondary-nav');
+      // Early return if there is no element to operate on
+      if (!subnavigation) { return false; }
+
+      var subnavIsSticky = false;
+      var subnavHeight = subnavigation.offsetTop;
+      var parent = subnavigation.parentElement;
+
+      function stick() {
+        subnavIsSticky = true;
+        subnavigation.classList.add('secondary-nav--sticky');
+        parent.classList.add('main--subnav-sticky');
+      }
+
+      function unstick() {
+        subnavIsSticky = false;
+        subnavigation.classList.remove('secondary-nav--sticky');
+        parent.classList.remove('main--subnav-sticky');
+      }
+
+      // check initial location and stick if necessary
+      if (document.documentElement.scrollTop > subnavHeight && !subnavIsSticky) { stick(); }
+
+      // update on scroll
+      window.onscroll = function() {
+        if (document.documentElement.scrollTop > subnavHeight && !subnavIsSticky) { stick(); }
+        if (document.documentElement.scrollTop < (subnavHeight + 1)  && subnavIsSticky) { unstick(); }
+      }
+    });
+
+    // init dropdowns
+    function init() {
+      dropdowns('mainnav');
+      tabs('subnav__tabs');
+    }
+    init();
+
+  })();
+</script>
+          <section class="secondary-nav secondary-nav--hide-mobile" id="secondary-nav">
+    <div class="row constrained align-middle">
+      <div class="secondary-nav__items" role="navigation" aria-label="sub-navigation">
+
+        <div class="secondary-nav__left">
+                                    <a href="https://www.hudl.com/en_gb/products/statsbomb" class="secondary-nav__product">
+                <img src="https://static.hudl.com/craft/productAssets/statsbomb_icon.svg" alt="" class="secondary-nav__product--icon">
+                <span>Hudl Statsbomb</span>
+              </a>
+                              </div>
+
+        <div class="mobile-only">
+                                                                                                      
+
+<a class="secondary-nav__cta" href="#s_form">Get Started</a>                             </div>
+
+        <button class="secondary-nav__toggle">
+          <svg>
+            <title>expand/collapse icon</title>
+            <use xlink:href="#chevron"></use>
+          </svg>
+        </button>
+
+        <div class="secondary-nav__right subnavigation">
+          
+                            <div class="secondary-nav__container">
+    <button class="secondary-nav__item secondary-nav__item--expandable">
+        Products
+        <svg class="secondary-nav__item__disclosure">
+            <title>expand/collapse icon</title>
+            <use xlink:href="#chevron"></use>
+        </svg>
+    </button>
+
+    <div class="secondary-nav__dropdown subnav" hidden>
+        <div class="subnav__items">
+                    <a class="secondary-nav__dropdown__item subnavitem subnavitem__label" href="https://www.hudl.com/en_gb/products/statsbomb">
+                Advanced Football Data
+            </a>
+                    <a class="secondary-nav__dropdown__item subnavitem subnavitem__label" href="https://www.hudl.com/en_gb/products/statsbomb/platform">
+                Analysis &amp; Video Platform
+            </a>
+                </div>
+    </div>
+</div>
+
+              
+          
+                            <a class="secondary-nav__item" href="https://www.hudl.com/en_gb/products/statsbomb/faq">FAQ</a>               
+          
+                            <a class="secondary-nav__item" href="https://courses.statsbomb.com/">Courses</a>               
+          
+                            <a class="secondary-nav__item" href="/blog/elite/statsbomb">Blog</a>               
+          
+                            
+
+<a class="secondary-nav__cta" href="#s_form">Get Started</a>   
+              
+                  </div>
+      </div>
+    </div>
+  </section>
+  <main id="maincontent">
+<div id="s-1390398" class="hero__header hero--cover hero--stack section de" style="--section-bg-img: url(&#039;https://static.hudl.com/craft/products-statsbomb-hero-header-1.webp&#039;);">  <div class="hero__row hero__container">
+    <div class="hero__copy stack--md">        <h1>  The World’s Most Advanced Football Data for Professional Teams
+</h1>
+<p>Hudl Statsbomb creates the best data in the industry, informing the work of the data analysis and data science communities, empowering them to make better decisions faster.</p>
+    </div>  </div>
+</div><div id="s-1390400" class="feature-texts feature-texts--simpleIcons01 section le feature-texts--centered feature-texts--icon-medium" style="--section-bg-color: #f9fafb;">  <div class="container">
+    <div class="feature-texts__content">        <div class="feature-texts__copy stack--md">
+          <h2>  Power your player recruitment, tactical analysis, and performance evaluation with the best football data ever created and world-class data science that works harder and smarter for you.
+</h2>
+
+        </div>      <div class="feature-text__grid grid">        <div class="feature-text" id="s-1390402">
+<sl-icon class="icon" name="docs"></sl-icon>
+  <div class="feature-text__content">
+    <p class="feature-text__text">
+      Over 3,400 events per match, across 190+ competitions, combined with player-location data for 40+ key leagues at no extra cost.
+    </p>
+    
+    <div class="cluster">
+                  
+          </div>
+  </div>
+</div>
+        <div class="feature-text" id="s-1390403">
+<sl-icon class="icon" name="globe"></sl-icon>
+  <div class="feature-text__content">
+    <p class="feature-text__text">
+      Providing professional teams worldwide with unmatched insights.
+    </p>
+    
+    <div class="cluster">
+                  
+          </div>
+  </div>
+</div>
+        <div class="feature-text" id="s-1390404">
+<sl-icon class="icon" name="sprint"></sl-icon>
+  <div class="feature-text__content">
+    <p class="feature-text__text">
+      Driving quicker, more-informed strategic decisions.
+    </p>
+    
+    <div class="cluster">
+                  
+          </div>
+  </div>
+</div>
+      </div>    </div>
+  </div>
+</div><div id="s-1390405" class="section features features--layout2 le">  <div class="features__list stack--xl">    <div class="container">
+      <div class="feature switcher" id="s-1390406">
+  <div class="feature__text stack--md">      <h2>  Unrivalled Data Quality
+</h2>
+<p>More granular detail. The highest level of accuracy. Unwavering consistency — that’s why no-one offers clubs and organ­i­sa­tions better quality data than Hudl Statsbomb.</p>
+        <ul>
+<li>Collected by AI and pitch detection computer vision</li>
+<li>Validated with manual interventions from expert collectors</li>
+<li>Pressures across every competition</li>
+<li>Pass Footedness and Pass Height for next-level analysis</li>
+</ul>  </div>    <div class="feature__asset">
+      <img src="https://static.hudl.com/craft/products-statsbomb-unrivaled-data-quality.webp" width="1495" height="820" alt="Two men in an office setting, both looking at computer monitors that display sports analytics data. Both are seated at desks with multiple monitors, displaying detailed graphics related to sports, including heatmaps, player movement, and statistical visualizations. In the top left, an overlay shows a blue and red heatmap over a soccer field diagram, and below it, another overlay shows a scatter plot of various shapes and colors, representing player actions or positions on a field.">
+  </div>
+</div>
+    </div>  </div>
+</div>
+<div id="s-1390413" class="custom__block de section-data-modelling">
+  <div class="container">
+    <div class="custom__row">
+      <div class="stack--lg">
+    <div class="stack--md" style="text-align: center; text-wrap: balance; margin-inline: auto; max-width: var(--width-xl); font-size: var(--text-size-fluid-lg);">
+        <h2>World-Class Data Modelling At Your Fingertips</h2>
+        <p>Designed to drive decisions, not just dashboards. Hudl Statsbomb’s trusted models—created by our cutting-edge data science department—turn data into fast, contextual insights that do the heavy lifting for you.</p>
+    </div>
+    <div class="grid">
+        <div class="card">
+            <div class="frame">
+                <iframe width="560" height="315" src="https://www.youtube.com/embed/P-0sIh66ekE?si=-pob4-xILa5Fr_zF&amp;enablejsapi=1" title="What is xG? Hudl Statsbomb's expected goals model explained" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+            </div>
+            <div class="card__body">
+                <p class="card__title">The Most Accurate Expected Goals (xG) Model in Football</p>
+                <p class="card__text">Our xG model leads the industry because it sees what others miss - from shot impact height to goalkeeper and defender locations captured by freeze-frame functionality, unique data points deliver the most accurate and trustworthy outputs.</p>
+            </div>
+        </div>
+        <div class="card">
+            <div class="frame">
+                <iframe width="560" height="315" src="https://www.youtube.com/embed/mpwqvzsxBhc?si=WG8HgIJufq0KBqWl&amp;enablejsapi=1" title="On-Ball Value (OBV) | Evaluating player actions in football" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+            </div>
+            <div class="card__body">
+                <p class="card__title">Exclusive Access to On-Ball Value (OBV)</p>
+                <p class="card__text">A possession-state model unique to Hudl Statsbomb, that determines the value of every action that takes place on the football pitch based on the +/- impact it has on the team’s likelihood of scoring and conceding.</p>
+            </div>
+        </div>
+        <div class="card">
+            <div class="frame">
+                <iframe width="560" height="315" src="https://www.youtube.com/embed/xYPlmzxK4B0?si=MxE0DZQy8BQDo5dL&amp;enablejsapi=1" title="Header Oriented Performance System | Measuring a player's ability to win aerial duels" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+            </div>
+            <div class="card__body">
+                <p class="card__title">HOPS: Beyond Basic Aerial Statistics</p>
+                <p class="card__text">Identify aerial dominance with our unique skill-based model - the Header Oriented Performance System - measuring who players win headers against, not merely how many they win, revealing true aerial specialists, even when raw numbers don't.</p>
+            </div>
+        </div>
+    </div>
+</div>
+    </div>
+  </div>
+</div>
+<div id="s-1390414" class="section features features--layout1 le">  <div class="features__list stack--xl">    <div class="container">
+      <div class="feature switcher" id="s-1390415">
+  <div class="feature__text stack--md">      <h2>  Flexible Delivery
+</h2>
+<p>No bottlenecks. No dead ends or delays. Just data where and when you need it. </p>
+        <ul>
+<li>An advanced-but-intuitive <a href="https://www.hudl.com/en_gb/products/statsbomb/platform">analytics platform</a> with customisable data visualisation tools and integrated video.</li>
+<li>Easy-to-use APIs for direct integration into internal platforms.</li>
+<li>Ready-made file formats like JSON, XML, and CSV for use across third-party tools.</li>
+</ul>  </div>    <div class="feature__asset">
+      <img src="https://static.hudl.com/craft/IQ_Soccer_LaptopClose_Mock-min.webp" width="1162" height="761" alt="A silver laptop is open on a light-colored desk, displaying a detailed analytics dashboard on its screen. The dashboard features a prominent circular target-like graphic with concentric rings of red and orange, likely representing performance or risk levels. Various charts, graphs, and data lists are also visible on the screen, indicating a comprehensive data analysis tool. In the background, out of focus, a large window reveals a blurred outdoor scene with greenery and what appears to be part of a red track or seating. A small potted plant and a dark object are also visible on the desk.">
+  </div>
+</div>
+    </div>    <div class="container">
+      <div class="feature switcher" id="s-1390421">
+  <div class="feature__text stack--md">      <h2>  Your Complete Data Toolkit
+</h2>
+<p>Every Hudl Statsbomb product has been built to solve real-life problems and unlock real-life opportunities.</p>
+        <ul>
+<li>360 data: Now bundled with our event data at no extra cost. Get deeper contextual analysis with over 3,000 events per game and 50+ additional metrics across 40+ key leagues.</li>
+<li>Academy data: Custom collection ensures consistent, high quality data across all levels of your organisation.</li>
+</ul>  </div>    <div class="feature__asset">
+      <img src="https://static.hudl.com/craft/freeze-frames-arsenal-vs-southampton-1.png" width="1320" height="613" alt="Three rectangular panels display soccer field diagrams from an aerial perspective, each showing different zones of activity. The fields are dark grey with white lines and goals. Each panel features numerous small red and blue dots, representing players or actions, scattered across parts of the field. Additionally, each panel has a white, fan-shaped overlay with concentric circles, indicating an area of focus or influence. The white overlay and the distribution of red and blue dots differ in each of the three diagrams, suggesting distinct tactical scenarios or analytical views.">
+  </div>
+</div>
+    </div>  </div>
+</div><div id="s-1390426" class="feature-texts feature-texts--simpleIcons01 section le flush-top feature-texts--icon-large">  <div class="container">
+    <div class="feature-texts__content">      <div class="feature-text__grid grid">        <div class="feature-text" id="s-1390427">
+<sl-icon class="icon" name="support_agent"></sl-icon>
+  <div class="feature-text__content">
+    <p class="feature-text__text">
+      Gold Standard Customer Care
+    </p>
+    <p>Access online step-by-step guides, a full Python and R code library, and API connection help—all backed by a dedicated Customer Solutions team focused on helping you get the most from your data.</p>
+    <div class="cluster">
+                  
+          </div>
+  </div>
+</div>
+        <div class="feature-text" id="s-1390428">
+<sl-icon class="icon" name="rule_settings"></sl-icon>
+  <div class="feature-text__content">
+    <p class="feature-text__text">
+      Effortless Integration across the Hudl Pro Suite
+    </p>
+    <p>Hudl Statsbomb data flows natively through Hudl Sportscode, Studio, and Insight to give you a single unified platform for joined-up pre, post and live custom analysis.</p>
+    <div class="cluster">
+                  
+          </div>
+  </div>
+</div>
+      </div>    </div>
+  </div>
+</div><div id="s-1390429" class="testimonials section de section-partner">  <div class="container">    <div class="testimonials__copy stack">
+      <h2>  Football’s Most Trusted Partner
+</h2>
+<p>Don’t take our word for it, listen to what professionals within the game had to say:</p>
+    </div>    <div class="testimonial__list grid">        <div class="quote quote--card">
+  <figure class="testimonial">
+    <blockquote>
+      <p>“Statsbomb is obviously the best provider of data analytics and is much better than other providers.”</p>
+    </blockquote>
+          <p></p>
+            <figcaption>
+      <div class="person person--2xl">
+                <div>
+          <div class="avatar">
+            <img src="https://static.hudl.com/craft/Malmo_FF_logo.png" width="72" height="108">
+          </div>
+        </div>
+                        <div>
+                    <div class="person__name">Malmö FF </div>
+                              <div class="person__description"> </div>
+                  </div>
+              </div>
+    </figcaption>
+      </figure>
+  </div>
+        <div class="quote quote--card">
+  <figure class="testimonial">
+    <blockquote>
+      <p>“Hudl Statsbomb Data has enabled us to design advanced metrics and tailor them to our club’s philosophy for opposition analysis and player recruitment.”</p>
+    </blockquote>
+          <p></p>
+            <figcaption>
+      <div class="person person--2xl">
+                <div>
+          <div class="avatar">
+            <img src="https://static.hudl.com/craft/Club_Brugge_KV_logo.png" width="80" height="104">
+          </div>
+        </div>
+                        <div>
+                    <div class="person__name">Club Brugge </div>
+                              <div class="person__description"> </div>
+                  </div>
+              </div>
+    </figcaption>
+      </figure>
+  </div>
+    </div>  </div>
+</div><div id="s-1390433" class="cta__block cta--form le">    <a id="s_form"></a>
+      <div class="container">
+    <div class="cta__row stack">
+      <div class="cta__copy stack--sm">          <h2>  Ready to get started?
+</h2>
+<p>Whether you’re a seasoned pro or just starting your data-driven analysis journey, Statsbomb has the solution.</p><p>Fill out this form to get in touch with our sales team.</p>
+        <div class="cta__form">
+            <div class="hs-form-frame" data-region="na1" data-form-id="0194cf26-2b2f-4b4f-8cbf-534e5c07c8b6" data-portal-id="48941102"></div>
+        </div>      </div>    </div>
+  </div>
+</div></main>
+  <footer class="site-footer" tx-tags="site-footer">
+    <nav class="container footer-links" aria-label="Footer links">
+    <div class="column">
+        <p class="footer-links-label"><a href="https://www.hudl.com/en_gb/sports">Sports</a></p>
+        <ul>
+            <li><a href="https://www.hudl.com/en_gb/sports/football">Football</a></li>
+            <li><a href="https://www.hudl.com/en_gb/sports/basketball">Basketball</a></li>
+            <li><a href="https://www.hudl.com/en_gb/sports/volleyball">Volleyball</a></li>
+            <li><a href="https://www.hudl.com/en_gb/sports/rugby">Rugby</a></li>
+            <li><a href="https://www.hudl.com/en_gb/sports/ice-hockey">Ice Hockey</a></li>
+            <li><a href="https://www.hudl.com/en_gb/sports/field-hockey">Field Hockey</a></li>
+        </ul>
+    </div>
+    <div class="column">
+        <p class="footer-links-label"><a href="https://www.hudl.com/en_gb/products">Products</a></p>
+        <ul>
+            <li><a href="https://www.hudl.com/en_gb/products/studio">Studio</a></li>
+            <li><a href="https://www.hudl.com/en_gb/products/sportscode">Sportscode</a></li>
+            <li><a href="https://www.hudl.com/en_gb/products/insight">Insight</a></li>
+            <li><a href="https://www.hudl.com/en_gb/products/replay">Replay</a></li>
+            <li><a href="https://www.hudl.com/en_gb/products/wyscout">Wyscout</a></li>
+            <li><a href="https://www.hudl.com/en_gb/products/wyscout/data-api">Wyscout Data</a></li>
+            <li><a href="https://www.hudl.com/en_gb/products/focus/flex">Focus Flex</a></li>
+            <li><a href="https://www.hudl.com/en_gb/products/hudl">Hudl</a></li>
+            <li><a href="https://www.hudl.com/en_gb/products/volleymetrics">Volleymetrics</a></li>
+            <li><a href="https://www.hudl.com/en_gb/products/assist">Assist</a></li>
+            <li><a href="https://www.hudl.com/en_gb/products/coda">Coda</a></li>
+            <li><a href="https://www.hudl.com/en_gb/products/wimu">WIMU</a></li>
+            <li><a href="https://www.hudl.com/en_gb/products/titan">Titan</a></li>
+            <li><a href="https://www.hudl.com/en_gb/products/signal">Signal</a></li>
+            <li><a href="https://www.hudl.com/en_gb/products/instat">Instat</a></li>
+            <li><a href="https://www.hudl.com/en_gb/products/statsbomb">Statsbomb</a></li>
+            <li><a href="https://www.hudl.com/en_gb/products/balltime">Balltime</a></li>
+            <li><a href="https://www.hudl.com/en_gb/products/fastmodel">Fastmodel</a></li>
+            <li><a href="https://www.hudl.com/en_gb/products/adi">ADI</a></li>
+            <li><a href="/releases">Release Notes</a></li>
+        </ul>
+    </div>
+    <div class="column">
+        <p class="footer-links-label"><span>Organisations</span></p>
+        <ul>
+            <li><a href="https://www.hudl.com/en_gb/solutions/university">Universities</a></li>
+            <li><a href="https://www.hudl.com/en_gb/products/wyscout/football-api">Data Licensing and Media</a></li>
+            <li><a href="https://www.hudl.com/en_gb/solutions/professional">Clubs, Leagues and Federations</a></li>
+        </ul>
+    </div>
+    <div class="column">
+        <p class="footer-links-label"><a href="https://www.hudl.com/en_gb/about">About</a></p>
+        <ul>
+            <li><a href="/advertise">Advertise</a></li>
+            <li><a href="/newsroom">Press</a></li>
+            <li><a href="/blog/elite/company-news">Company News</a></li>
+            <li><a href="https://www.hudl.com/en_gb/jobs">Careers</a></li>
+            <li><a href="/about/events">Events</a></li>
+        </ul>
+    </div>
+    <div class="column">
+        <p class="footer-links-label"><a href="/contact">Contact</a></p>
+        <ul>
+            <li><a href="https://support.hudl.com/s/">Support</a></li>
+            <li><a href="/blog/elite">Blog</a></li>
+        </ul>
+    </div>
+    <div class="column">
+        <p class="footer-links-label"><a href="/logins">Login</a></p>
+        <p class="footer-links-label"><a href="https://www.hudl.com/en_gb/contact/sales/professional">Contact Sales</a></p>
+    </div>
+</nav>
+
+    <div class="container">
+        <hr>
+    </div>
+
+    <div class="container">
+    <div class="column">
+        <p>
+            <a class="tiny-link" href="/privacy">Privacy Policy</a> &nbsp; | &nbsp;
+<a class="tiny-link" href="/terms">Terms &amp; Conditions</a> &nbsp; | &nbsp;
+<a class="tiny-link" href="/eula">Software License Agreement</a> &nbsp; | &nbsp;
+<a class="tiny-link" href="/privacy/us-states#your-rights">Do Not Sell or Share My Personal Information</a> &nbsp; | &nbsp;
+<a class="tiny-link" href="https://www.hudl.com/en_gb/cookies">Cookies</a> &nbsp; | &nbsp;
+<a class="tiny-link" href="https://www.hudl.com/en_gb/security">Security</a>
+<br>
+Hudl is a product and service of Hudl, Inc. All text and design © 2007-2026. All rights reserved.
+<br>
+<a class="text-de-text-nonessential hover:text-de-text-subtle" href="/modern-slavery-statement">Modern Slavery Statement</a>
+            •
+<a
+    href="https://beian.miit.gov.cn/"
+    target="_blank"
+    rel="nofollow noreferrer noopener"
+    class="notranslate text-de-text-nonessential hover:text-de-text-subtle">
+    京ICP备19028463号-2
+</a>
+•
+<a
+    href="https://beian.miit.gov.cn/"
+    target="_blank"
+    rel="nofollow noreferrer noopener"
+    class="notranslate text-de-text-nonessential hover:text-de-text-subtle">
+    京ICP备19028463号-3
+</a>
+                    </p>
+
+        <div class="l10n-selector" data-controller="l10n-selector">
+	<button class="l10n-selector__label" data-target="l10n-selector.label"></button>
+	<select
+		aria-label="Language selector"
+		data-target="l10n-selector.dropdown"
+		data-action="l10n-selector#change"></select>
+</div>
+
+        <div class="social-icons">
+    <a href="https://www.facebook.com/hudlanalysis/" target="_blank" title="Hudl Analysis on Facebook">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 256 256" fill="none">
+  <path fill="#fff" d="M256 128C256 57.3076 198.692 -7.3058e-05 128 -7.3058e-05C57.3077 -7.3058e-05 0 57.3076 0 128C0 188.029 41.3261 238.398 97.0783 252.231V167.115H70.6836V128H97.0783V111.145C97.0783 67.5783 116.794 47.385 159.567 47.385C167.676 47.385 181.668 48.9748 187.393 50.5651V86.0231C184.371 85.7052 179.124 85.5459 172.605 85.5459C151.617 85.5459 143.507 93.4963 143.507 114.167V128H185.316L178.134 167.115H143.507V255.062C206.885 247.408 256 193.443 256 128Z"></path>
+</svg>
+
+    </a>
+    <a href="https://x.com/hudlanalysis" target="_blank" title="@HudlAnalysis on X">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 251 256" fill="none">
+  <path fill="#fff" d="M149.002 108.343L242.207 0H220.12L139.191 94.0726L74.5525 0H0L97.7457 142.254L0 255.869H22.0878L107.552 156.525L175.814 255.869H250.367L148.997 108.343H149.002ZM118.75 143.508L108.846 129.342L30.0463 16.6274H63.9718L127.564 107.592L137.468 121.757L220.131 239.997H186.205L118.75 143.513V143.508Z"></path>
+</svg>
+
+    </a>
+</div>
+    </div>
+</div>
+</footer>
+<script src="https://js.hsforms.net/forms/embed/48941102.js" defer></script>
+<script src="https://sc.hudl.com/cms/assets/brand-5/js/main.js?id=b6be013135626a10f4ceea0fca39b227"></script>
+
+</body>
+</html>
+<!-- Cached by Blitz on 2026-07-01T14:54:22-05:00 -->

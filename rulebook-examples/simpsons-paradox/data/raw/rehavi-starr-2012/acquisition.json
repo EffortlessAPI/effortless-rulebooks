@@ -1,0 +1,17 @@
+{
+  "candidate_id": "cand-exp-rehavi-starr-2012",
+  "proposed_study_id": "rehavi-starr-2012",
+  "acquisition_status": "landing_saved",
+  "attempted_at": "2026-07-07T03:41:48+00:00",
+  "catalog_source_url": "https://www.ussc.gov/research/datafiles/commission-datafiles",
+  "resolved_urls": [
+    "https://doi.org/10.1257/jep.34.2.68",
+    "https://www.aeaweb.org/articles/pdf/doi/10.1257/jep.34.2.68",
+    "https://www.ussc.gov/research/datafiles/commission-datafiles"
+  ],
+  "files": [
+    "openalex-metadata.json",
+    "source-1.html"
+  ],
+  "dois": []
+}

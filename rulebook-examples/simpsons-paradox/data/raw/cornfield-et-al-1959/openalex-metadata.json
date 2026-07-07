@@ -1,0 +1,1092 @@
+{
+  "id": "https://openalex.org/W1965241331",
+  "doi": "https://doi.org/10.1002/ajim.4700130108",
+  "title": "Indirect corrections for confounding under multiplicative and additive risk models",
+  "display_name": "Indirect corrections for confounding under multiplicative and additive risk models",
+  "relevance_score": 246.08871,
+  "publication_year": 1988,
+  "publication_date": "1988-01-01",
+  "ids": {
+    "openalex": "https://openalex.org/W1965241331",
+    "doi": "https://doi.org/10.1002/ajim.4700130108",
+    "mag": "1965241331",
+    "pmid": "https://pubmed.ncbi.nlm.nih.gov/3344751"
+  },
+  "language": "en",
+  "primary_location": {
+    "id": "doi:10.1002/ajim.4700130108",
+    "is_oa": false,
+    "landing_page_url": "https://doi.org/10.1002/ajim.4700130108",
+    "pdf_url": null,
+    "source": {
+      "id": "https://openalex.org/S109435702",
+      "display_name": "American Journal of Industrial Medicine",
+      "issn_l": "0271-3586",
+      "issn": [
+        "0271-3586",
+        "1097-0274"
+      ],
+      "is_oa": false,
+      "is_in_doaj": false,
+      "is_core": true,
+      "host_organization": "https://openalex.org/P4310320595",
+      "host_organization_name": "Wiley",
+      "host_organization_lineage": [
+        "https://openalex.org/P4310320595"
+      ],
+      "host_organization_lineage_names": [
+        "Wiley"
+      ],
+      "type": "journal"
+    },
+    "license": null,
+    "license_id": null,
+    "version": "publishedVersion",
+    "is_accepted": true,
+    "is_published": true,
+    "raw_source_name": "American Journal of Industrial Medicine",
+    "raw_type": "journal-article"
+  },
+  "type": "article",
+  "indexed_in": [
+    "crossref",
+    "pubmed"
+  ],
+  "open_access": {
+    "is_oa": false,
+    "oa_status": "closed",
+    "oa_url": null,
+    "any_repository_has_fulltext": false
+  },
+  "authorships": [
+    {
+      "author_position": "first",
+      "author": {
+        "id": "https://openalex.org/A5071811696",
+        "display_name": "Mitchell H. Gail",
+        "orcid": "https://orcid.org/0000-0002-3919-3263"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I4210140884",
+          "display_name": "National Cancer Institute",
+          "ror": "https://ror.org/040gcmg81",
+          "country_code": "US",
+          "type": "government",
+          "lineage": [
+            "https://openalex.org/I1299022934",
+            "https://openalex.org/I1299303238",
+            "https://openalex.org/I4210140884"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": true,
+      "raw_author_name": "M. H. Gail",
+      "raw_affiliation_strings": [
+        "Epidemiologic Methods Section, National Cancer Institute, Bethesda, Maryland 20892"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Epidemiologic Methods Section, National Cancer Institute, Bethesda, Maryland 20892",
+          "institution_ids": [
+            "https://openalex.org/I4210140884"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5000421571",
+        "display_name": "Sholom Wacholder",
+        "orcid": null
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I4210140884",
+          "display_name": "National Cancer Institute",
+          "ror": "https://ror.org/040gcmg81",
+          "country_code": "US",
+          "type": "government",
+          "lineage": [
+            "https://openalex.org/I1299022934",
+            "https://openalex.org/I1299303238",
+            "https://openalex.org/I4210140884"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "S. Wacholder",
+      "raw_affiliation_strings": [
+        "Epidemiologic Methods Section, Biostatistics Branch, National Cancer Institute, Bethesda, Maryland"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Epidemiologic Methods Section, Biostatistics Branch, National Cancer Institute, Bethesda, Maryland",
+          "institution_ids": [
+            "https://openalex.org/I4210140884"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "last",
+      "author": {
+        "id": "https://openalex.org/A5047604155",
+        "display_name": "Jay H. Lubin",
+        "orcid": "https://orcid.org/0000-0001-7362-8702"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I4210140884",
+          "display_name": "National Cancer Institute",
+          "ror": "https://ror.org/040gcmg81",
+          "country_code": "US",
+          "type": "government",
+          "lineage": [
+            "https://openalex.org/I1299022934",
+            "https://openalex.org/I1299303238",
+            "https://openalex.org/I4210140884"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "J. H. Lubin",
+      "raw_affiliation_strings": [
+        "Epidemiologic Methods Section, Biostatistics Branch, National Cancer Institute, Bethesda, Maryland"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Epidemiologic Methods Section, Biostatistics Branch, National Cancer Institute, Bethesda, Maryland",
+          "institution_ids": [
+            "https://openalex.org/I4210140884"
+          ]
+        }
+      ]
+    }
+  ],
+  "institutions": [],
+  "countries_distinct_count": 1,
+  "institutions_distinct_count": 3,
+  "corresponding_author_ids": [
+    "https://openalex.org/A5071811696"
+  ],
+  "corresponding_institution_ids": [
+    "https://openalex.org/I4210140884"
+  ],
+  "apc_list": {
+    "value": 4020,
+    "currency": "USD",
+    "value_usd": 4020
+  },
+  "apc_paid": null,
+  "fwci": 3.1199,
+  "has_fulltext": false,
+  "cited_by_count": 62,
+  "citation_normalized_percentile": {
+    "value": 0.91922006,
+    "is_in_top_1_percent": false,
+    "is_in_top_10_percent": true
+  },
+  "cited_by_percentile_year": {
+    "min": 89,
+    "max": 99
+  },
+  "biblio": {
+    "volume": "13",
+    "issue": "1",
+    "first_page": "119",
+    "last_page": "130"
+  },
+  "is_retracted": false,
+  "is_paratext": false,
+  "is_xpac": false,
+  "primary_topic": {
+    "id": "https://openalex.org/T10243",
+    "display_name": "Statistical Methods and Bayesian Inference",
+    "score": 0.9779999852180481,
+    "subfield": {
+      "id": "https://openalex.org/subfields/2613",
+      "display_name": "Statistics and Probability"
+    },
+    "field": {
+      "id": "https://openalex.org/fields/26",
+      "display_name": "Mathematics"
+    },
+    "domain": {
+      "id": "https://openalex.org/domains/3",
+      "display_name": "Physical Sciences"
+    }
+  },
+  "topics": [
+    {
+      "id": "https://openalex.org/T10243",
+      "display_name": "Statistical Methods and Bayesian Inference",
+      "score": 0.9779999852180481,
+      "subfield": {
+        "id": "https://openalex.org/subfields/2613",
+        "display_name": "Statistics and Probability"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/26",
+        "display_name": "Mathematics"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/3",
+        "display_name": "Physical Sciences"
+      }
+    },
+    {
+      "id": "https://openalex.org/T10845",
+      "display_name": "Advanced Causal Inference Techniques",
+      "score": 0.9746999740600586,
+      "subfield": {
+        "id": "https://openalex.org/subfields/2613",
+        "display_name": "Statistics and Probability"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/26",
+        "display_name": "Mathematics"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/3",
+        "display_name": "Physical Sciences"
+      }
+    },
+    {
+      "id": "https://openalex.org/T10804",
+      "display_name": "Health Systems, Economic Evaluations, Quality of Life",
+      "score": 0.9686999917030334,
+      "subfield": {
+        "id": "https://openalex.org/subfields/2002",
+        "display_name": "Economics and Econometrics"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/20",
+        "display_name": "Economics, Econometrics and Finance"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/2",
+        "display_name": "Social Sciences"
+      }
+    }
+  ],
+  "keywords": [
+    {
+      "id": "https://openalex.org/keywords/confounding",
+      "display_name": "Confounding",
+      "score": 0.8833446502685547
+    },
+    {
+      "id": "https://openalex.org/keywords/multiplicative-function",
+      "display_name": "Multiplicative function",
+      "score": 0.768718957901001
+    },
+    {
+      "id": "https://openalex.org/keywords/relative-risk",
+      "display_name": "Relative risk",
+      "score": 0.7165282368659973
+    },
+    {
+      "id": "https://openalex.org/keywords/medicine",
+      "display_name": "Medicine",
+      "score": 0.6919522285461426
+    },
+    {
+      "id": "https://openalex.org/keywords/additive-model",
+      "display_name": "Additive model",
+      "score": 0.5580548644065857
+    },
+    {
+      "id": "https://openalex.org/keywords/statistics",
+      "display_name": "Statistics",
+      "score": 0.555331826210022
+    },
+    {
+      "id": "https://openalex.org/keywords/absolute-risk-reduction",
+      "display_name": "Absolute risk reduction",
+      "score": 0.4346190094947815
+    },
+    {
+      "id": "https://openalex.org/keywords/econometrics",
+      "display_name": "Econometrics",
+      "score": 0.42648929357528687
+    },
+    {
+      "id": "https://openalex.org/keywords/risk-factor",
+      "display_name": "Risk factor",
+      "score": 0.42518937587738037
+    },
+    {
+      "id": "https://openalex.org/keywords/confidence-interval",
+      "display_name": "Confidence interval",
+      "score": 0.30479633808135986
+    },
+    {
+      "id": "https://openalex.org/keywords/mathematics",
+      "display_name": "Mathematics",
+      "score": 0.27293139696121216
+    },
+    {
+      "id": "https://openalex.org/keywords/internal-medicine",
+      "display_name": "Internal medicine",
+      "score": 0.09306007623672485
+    }
+  ],
+  "concepts": [
+    {
+      "id": "https://openalex.org/C77350462",
+      "wikidata": "https://www.wikidata.org/wiki/Q1125472",
+      "display_name": "Confounding",
+      "level": 2,
+      "score": 0.8833446502685547
+    },
+    {
+      "id": "https://openalex.org/C42747912",
+      "wikidata": "https://www.wikidata.org/wiki/Q1048447",
+      "display_name": "Multiplicative function",
+      "level": 2,
+      "score": 0.768718957901001
+    },
+    {
+      "id": "https://openalex.org/C82789193",
+      "wikidata": "https://www.wikidata.org/wiki/Q2142611",
+      "display_name": "Relative risk",
+      "level": 3,
+      "score": 0.7165282368659973
+    },
+    {
+      "id": "https://openalex.org/C71924100",
+      "wikidata": "https://www.wikidata.org/wiki/Q11190",
+      "display_name": "Medicine",
+      "level": 0,
+      "score": 0.6919522285461426
+    },
+    {
+      "id": "https://openalex.org/C203223496",
+      "wikidata": "https://www.wikidata.org/wiki/Q4681344",
+      "display_name": "Additive model",
+      "level": 2,
+      "score": 0.5580548644065857
+    },
+    {
+      "id": "https://openalex.org/C105795698",
+      "wikidata": "https://www.wikidata.org/wiki/Q12483",
+      "display_name": "Statistics",
+      "level": 1,
+      "score": 0.555331826210022
+    },
+    {
+      "id": "https://openalex.org/C120195587",
+      "wikidata": "https://www.wikidata.org/wiki/Q2138790",
+      "display_name": "Absolute risk reduction",
+      "level": 3,
+      "score": 0.4346190094947815
+    },
+    {
+      "id": "https://openalex.org/C149782125",
+      "wikidata": "https://www.wikidata.org/wiki/Q160039",
+      "display_name": "Econometrics",
+      "level": 1,
+      "score": 0.42648929357528687
+    },
+    {
+      "id": "https://openalex.org/C50440223",
+      "wikidata": "https://www.wikidata.org/wiki/Q1475848",
+      "display_name": "Risk factor",
+      "level": 2,
+      "score": 0.42518937587738037
+    },
+    {
+      "id": "https://openalex.org/C44249647",
+      "wikidata": "https://www.wikidata.org/wiki/Q208498",
+      "display_name": "Confidence interval",
+      "level": 2,
+      "score": 0.30479633808135986
+    },
+    {
+      "id": "https://openalex.org/C33923547",
+      "wikidata": "https://www.wikidata.org/wiki/Q395",
+      "display_name": "Mathematics",
+      "level": 0,
+      "score": 0.27293139696121216
+    },
+    {
+      "id": "https://openalex.org/C126322002",
+      "wikidata": "https://www.wikidata.org/wiki/Q11180",
+      "display_name": "Internal medicine",
+      "level": 1,
+      "score": 0.09306007623672485
+    },
+    {
+      "id": "https://openalex.org/C134306372",
+      "wikidata": "https://www.wikidata.org/wiki/Q7754",
+      "display_name": "Mathematical analysis",
+      "level": 1,
+      "score": 0.0
+    }
+  ],
+  "mesh": [
+    {
+      "descriptor_ui": "D004812",
+      "descriptor_name": "Epidemiologic Methods",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D004812",
+      "descriptor_name": "Epidemiologic Methods",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D004812",
+      "descriptor_name": "Epidemiologic Methods",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D006801",
+      "descriptor_name": "Humans",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D006801",
+      "descriptor_name": "Humans",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D006801",
+      "descriptor_name": "Humans",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D008175",
+      "descriptor_name": "Lung Neoplasms",
+      "qualifier_ui": "Q000401",
+      "qualifier_name": "mortality",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D008175",
+      "descriptor_name": "Lung Neoplasms",
+      "qualifier_ui": "Q000401",
+      "qualifier_name": "mortality",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D008175",
+      "descriptor_name": "Lung Neoplasms",
+      "qualifier_ui": "Q000401",
+      "qualifier_name": "mortality",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D008433",
+      "descriptor_name": "Mathematics",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D008433",
+      "descriptor_name": "Mathematics",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D008433",
+      "descriptor_name": "Mathematics",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D008962",
+      "descriptor_name": "Models, Theoretical",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D008962",
+      "descriptor_name": "Models, Theoretical",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D008962",
+      "descriptor_name": "Models, Theoretical",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D009784",
+      "descriptor_name": "Occupational Diseases",
+      "qualifier_ui": "Q000209",
+      "qualifier_name": "etiology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D009784",
+      "descriptor_name": "Occupational Diseases",
+      "qualifier_ui": "Q000209",
+      "qualifier_name": "etiology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D009784",
+      "descriptor_name": "Occupational Diseases",
+      "qualifier_ui": "Q000209",
+      "qualifier_name": "etiology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D012307",
+      "descriptor_name": "Risk Factors",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D012307",
+      "descriptor_name": "Risk Factors",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D012307",
+      "descriptor_name": "Risk Factors",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D012907",
+      "descriptor_name": "Smoking",
+      "qualifier_ui": "Q000453",
+      "qualifier_name": "epidemiology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D012907",
+      "descriptor_name": "Smoking",
+      "qualifier_ui": "Q000453",
+      "qualifier_name": "epidemiology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D012907",
+      "descriptor_name": "Smoking",
+      "qualifier_ui": "Q000453",
+      "qualifier_name": "epidemiology",
+      "is_major_topic": false
+    }
+  ],
+  "locations_count": 2,
+  "locations": [
+    {
+      "id": "doi:10.1002/ajim.4700130108",
+      "is_oa": false,
+      "landing_page_url": "https://doi.org/10.1002/ajim.4700130108",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S109435702",
+        "display_name": "American Journal of Industrial Medicine",
+        "issn_l": "0271-3586",
+        "issn": [
+          "0271-3586",
+          "1097-0274"
+        ],
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": true,
+        "host_organization": "https://openalex.org/P4310320595",
+        "host_organization_name": "Wiley",
+        "host_organization_lineage": [
+          "https://openalex.org/P4310320595"
+        ],
+        "host_organization_lineage_names": [
+          "Wiley"
+        ],
+        "type": "journal"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "publishedVersion",
+      "is_accepted": true,
+      "is_published": true,
+      "raw_source_name": "American Journal of Industrial Medicine",
+      "raw_type": "journal-article"
+    },
+    {
+      "id": "pmid:3344751",
+      "is_oa": false,
+      "landing_page_url": "https://pubmed.ncbi.nlm.nih.gov/3344751",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4306525036",
+        "display_name": "PubMed",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I1299303238",
+        "host_organization_name": "National Institutes of Health",
+        "host_organization_lineage": [
+          "https://openalex.org/I1299303238"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "publishedVersion",
+      "is_accepted": true,
+      "is_published": true,
+      "raw_source_name": "American journal of industrial medicine",
+      "raw_type": null
+    }
+  ],
+  "best_oa_location": null,
+  "sustainable_development_goals": [
+    {
+      "id": "https://metadata.un.org/sdg/3",
+      "display_name": "Good health and well-being",
+      "score": 0.8500000238418579
+    }
+  ],
+  "awards": [],
+  "funders": [],
+  "has_content": {
+    "pdf": false,
+    "grobid_xml": false
+  },
+  "content_urls": null,
+  "referenced_works_count": 16,
+  "referenced_works": [
+    "https://openalex.org/W84018622",
+    "https://openalex.org/W1883951148",
+    "https://openalex.org/W1910926186",
+    "https://openalex.org/W1943930181",
+    "https://openalex.org/W2003603025",
+    "https://openalex.org/W2005526508",
+    "https://openalex.org/W2024325632",
+    "https://openalex.org/W2084099818",
+    "https://openalex.org/W2094178079",
+    "https://openalex.org/W2118891145",
+    "https://openalex.org/W2123166093",
+    "https://openalex.org/W2142792774",
+    "https://openalex.org/W2145839366",
+    "https://openalex.org/W2162503246",
+    "https://openalex.org/W2309987205",
+    "https://openalex.org/W4293874313"
+  ],
+  "related_works": [
+    "https://openalex.org/W2080282135",
+    "https://openalex.org/W136305685",
+    "https://openalex.org/W2322333854",
+    "https://openalex.org/W2068080465",
+    "https://openalex.org/W1939395444",
+    "https://openalex.org/W1991696101",
+    "https://openalex.org/W2023736075",
+    "https://openalex.org/W1927711487",
+    "https://openalex.org/W1967012269",
+    "https://openalex.org/W1965241331"
+  ],
+  "abstract_inverted_index": {
+    "We": [
+      0,
+      56,
+      94
+    ],
+    "define": [
+      1
+    ],
+    "a": [
+      2,
+      21,
+      40
+    ],
+    "multiplicative": [
+      3,
+      27
+    ],
+    "model": [
+      4,
+      8,
+      66,
+      113
+    ],
+    "and": [
+      5,
+      16,
+      46,
+      53,
+      71,
+      121
+    ],
+    "an": [
+      6,
+      129
+    ],
+    "additive": [
+      7,
+      64
+    ],
+    "for": [
+      9,
+      67,
+      72,
+      114
+    ],
+    "the": [
+      10,
+      18,
+      26,
+      29,
+      63,
+      68,
+      73,
+      111,
+      115,
+      119,
+      139
+    ],
+    "hazards": [
+      11
+    ],
+    "associated": [
+      12
+    ],
+    "jointly": [
+      13
+    ],
+    "with": [
+      14,
+      17
+    ],
+    "exposure": [
+      15,
+      120,
+      133
+    ],
+    "presence": [
+      19
+    ],
+    "of": [
+      20,
+      39,
+      106,
+      118,
+      131,
+      138
+    ],
+    "confounder": [
+      22
+    ],
+    "like": [
+      23
+    ],
+    "smoking.": [
+      24
+    ],
+    "Under": [
+      25
+    ],
+    "model,": [
+      28
+    ],
+    "crude": [
+      30,
+      104
+    ],
+    "relative": [
+      31,
+      75
+    ],
+    "risk": [
+      32,
+      65,
+      69,
+      107
+    ],
+    "may": [
+      33,
+      84,
+      99
+    ],
+    "be": [
+      34,
+      85,
+      100
+    ],
+    "adjusted": [
+      35
+    ],
+    "indirectly,": [
+      36
+    ],
+    "by": [
+      37,
+      43,
+      48
+    ],
+    "means": [
+      38
+    ],
+    "factor": [
+      41
+    ],
+    "proposed": [
+      42
+    ],
+    "Axelson": [
+      44
+    ],
+    "[1978],": [
+      45
+    ],
+    "implicitly": [
+      47
+    ],
+    "Cornfield": [
+      49
+    ],
+    "et": [
+      50
+    ],
+    "al.": [
+      51
+    ],
+    "[1959]": [
+      52
+    ],
+    "Schlesselman": [
+      54
+    ],
+    "[1978].": [
+      55
+    ],
+    "present": [
+      57
+    ],
+    "corresponding": [
+      58
+    ],
+    "indirect": [
+      59,
+      97
+    ],
+    "correction": [
+      60
+    ],
+    "formulas": [
+      61
+    ],
+    "under": [
+      62,
+      80
+    ],
+    "difference": [
+      70
+    ],
+    "excess": [
+      74
+    ],
+    "risk.": [
+      76
+    ],
+    "Conditions": [
+      77
+    ],
+    "are": [
+      78,
+      126,
+      141
+    ],
+    "established": [
+      79
+    ],
+    "which": [
+      81
+    ],
+    "these": [
+      82
+    ],
+    "corrections": [
+      83,
+      98
+    ],
+    "applied": [
+      86
+    ],
+    "to": [
+      87,
+      134
+    ],
+    "age-adjusted": [
+      88
+    ],
+    "rates": [
+      89
+    ],
+    "from": [
+      90
+    ],
+    "composite": [
+      91
+    ],
+    "study": [
+      92
+    ],
+    "populations.": [
+      93
+    ],
+    "demonstrate": [
+      95
+    ],
+    "that": [
+      96
+    ],
+    "no": [
+      101
+    ],
+    "better": [
+      102
+    ],
+    "than": [
+      103
+    ],
+    "measures": [
+      105
+    ],
+    "if": [
+      108
+    ],
+    "one": [
+      109
+    ],
+    "assumes": [
+      110
+    ],
+    "wrong": [
+      112
+    ],
+    "joint": [
+      116
+    ],
+    "action": [
+      117
+    ],
+    "confounding": [
+      122
+    ],
+    "factors.": [
+      123
+    ],
+    "These": [
+      124
+    ],
+    "results": [
+      125
+    ],
+    "illustrated": [
+      127
+    ],
+    "on": [
+      128
+    ],
+    "example": [
+      130
+    ],
+    "occupational": [
+      132
+    ],
+    "vermiculite.": [
+      135
+    ],
+    "The": [
+      136
+    ],
+    "limitations": [
+      137
+    ],
+    "techniques": [
+      140
+    ],
+    "discussed.": [
+      142
+    ]
+  },
+  "counts_by_year": [
+    {
+      "year": 2025,
+      "cited_by_count": 4
+    },
+    {
+      "year": 2024,
+      "cited_by_count": 3
+    },
+    {
+      "year": 2021,
+      "cited_by_count": 5
+    },
+    {
+      "year": 2020,
+      "cited_by_count": 1
+    },
+    {
+      "year": 2019,
+      "cited_by_count": 1
+    },
+    {
+      "year": 2018,
+      "cited_by_count": 2
+    },
+    {
+      "year": 2017,
+      "cited_by_count": 1
+    },
+    {
+      "year": 2015,
+      "cited_by_count": 2
+    },
+    {
+      "year": 2014,
+      "cited_by_count": 4
+    },
+    {
+      "year": 2013,
+      "cited_by_count": 6
+    }
+  ],
+  "updated_date": "2026-05-21T06:26:12.895304",
+  "created_date": "2025-10-10T00:00:00"
+}

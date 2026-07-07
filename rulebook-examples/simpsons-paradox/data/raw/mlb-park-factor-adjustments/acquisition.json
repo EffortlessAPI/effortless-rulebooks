@@ -1,0 +1,17 @@
+{
+  "candidate_id": "cand-exp-mlb-park-factor-adjustments",
+  "proposed_study_id": "mlb-park-factor-adjustments",
+  "acquisition_status": "landing_saved",
+  "attempted_at": "2026-07-07T03:45:03+00:00",
+  "catalog_source_url": "https://baseballsavant.mlb.com/",
+  "resolved_urls": [
+    "https://doi.org/10.1177/03635465241262339",
+    "https://journals.sagepub.com/doi/pdf/10.1177/03635465241262339?download=true",
+    "https://baseballsavant.mlb.com/"
+  ],
+  "files": [
+    "openalex-metadata.json",
+    "source-1.html"
+  ],
+  "dois": []
+}

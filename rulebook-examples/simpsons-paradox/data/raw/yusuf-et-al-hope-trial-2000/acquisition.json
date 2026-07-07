@@ -1,0 +1,16 @@
+{
+  "candidate_id": "cand-exp-yusuf-et-al-hope-trial-2000",
+  "proposed_study_id": "yusuf-et-al-hope-trial-2000",
+  "acquisition_status": "portal_manual",
+  "attempted_at": "2026-07-07T03:44:07+00:00",
+  "catalog_source_url": "https://biolincc.nhlbi.nih.gov/studies/hope/",
+  "resolved_urls": [
+    "https://doi.org/10.1136/bmj.c869",
+    "https://www.bmj.com/content/bmj/340/bmj.c869.full.pdf",
+    "https://biolincc.nhlbi.nih.gov/studies/hope/"
+  ],
+  "files": [
+    "openalex-metadata.json"
+  ],
+  "dois": []
+}

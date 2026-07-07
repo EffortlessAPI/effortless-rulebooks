@@ -1,0 +1,16 @@
+{
+  "candidate_id": "cand-exp-women-s-health-initiative-2002",
+  "proposed_study_id": "women-s-health-initiative-2002",
+  "acquisition_status": "portal_manual",
+  "attempted_at": "2026-07-07T03:43:55+00:00",
+  "catalog_source_url": "https://biolincc.nhlbi.nih.gov/studies/whi/",
+  "resolved_urls": [
+    "https://doi.org/10.1001/jama.288.3.321",
+    "https://jamanetwork.com/journals/jama/articlepdf/195120/joc21036.pdf",
+    "https://biolincc.nhlbi.nih.gov/studies/whi/"
+  ],
+  "files": [
+    "openalex-metadata.json"
+  ],
+  "dois": []
+}

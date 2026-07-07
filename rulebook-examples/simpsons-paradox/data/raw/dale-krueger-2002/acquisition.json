@@ -1,0 +1,16 @@
+{
+  "candidate_id": "cand-exp-dale-krueger-2002",
+  "proposed_study_id": "dale-krueger-2002",
+  "acquisition_status": "manual_only",
+  "attempted_at": "2026-07-07T03:42:14+00:00",
+  "catalog_source_url": null,
+  "resolved_urls": [
+    "https://doi.org/10.1001/jamaoncol.2015.0735",
+    "http://hdl.handle.net/11343/59029"
+  ],
+  "files": [
+    "openalex-search.html",
+    "openalex-metadata.json"
+  ],
+  "dois": []
+}

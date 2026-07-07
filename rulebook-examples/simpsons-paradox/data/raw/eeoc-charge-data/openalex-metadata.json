@@ -1,0 +1,912 @@
+{
+  "id": "https://openalex.org/W2051641155",
+  "doi": "https://doi.org/10.1111/j.1540-5893.2008.00341.x",
+  "title": "Settling for Less? Organizational Determinants of Discrimination-Charge Outcomes",
+  "display_name": "Settling for Less? Organizational Determinants of Discrimination-Charge Outcomes",
+  "relevance_score": 88.66873,
+  "publication_year": 2008,
+  "publication_date": "2008-05-19",
+  "ids": {
+    "openalex": "https://openalex.org/W2051641155",
+    "doi": "https://doi.org/10.1111/j.1540-5893.2008.00341.x",
+    "mag": "2051641155"
+  },
+  "language": "en",
+  "primary_location": {
+    "id": "doi:10.1111/j.1540-5893.2008.00341.x",
+    "is_oa": true,
+    "landing_page_url": "https://doi.org/10.1111/j.1540-5893.2008.00341.x",
+    "pdf_url": "https://onlinelibrary.wiley.com/doi/pdfdirect/10.1111/j.1540-5893.2008.00341.x",
+    "source": {
+      "id": "https://openalex.org/S44706263",
+      "display_name": "Law & Society Review",
+      "issn_l": "0023-9216",
+      "issn": [
+        "0023-9216",
+        "1540-5893"
+      ],
+      "is_oa": false,
+      "is_in_doaj": false,
+      "is_core": true,
+      "host_organization": "https://openalex.org/P4310311721",
+      "host_organization_name": "Cambridge University Press",
+      "host_organization_lineage": [
+        "https://openalex.org/P4310311721",
+        "https://openalex.org/P4310311702"
+      ],
+      "host_organization_lineage_names": [
+        "Cambridge University Press",
+        "University of Cambridge"
+      ],
+      "type": "journal"
+    },
+    "license": null,
+    "license_id": null,
+    "version": "publishedVersion",
+    "is_accepted": true,
+    "is_published": true,
+    "raw_source_name": "Law &amp; Society Review",
+    "raw_type": "journal-article"
+  },
+  "type": "article",
+  "indexed_in": [
+    "crossref"
+  ],
+  "open_access": {
+    "is_oa": true,
+    "oa_status": "bronze",
+    "oa_url": "https://onlinelibrary.wiley.com/doi/pdfdirect/10.1111/j.1540-5893.2008.00341.x",
+    "any_repository_has_fulltext": false
+  },
+  "authorships": [
+    {
+      "author_position": "first",
+      "author": {
+        "id": "https://openalex.org/A5032847215",
+        "display_name": "C. Elizabeth Hirsh",
+        "orcid": "https://orcid.org/0000-0001-6701-0164"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I205783295",
+          "display_name": "Cornell University",
+          "ror": "https://ror.org/05bnh6r87",
+          "country_code": "US",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I205783295"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": true,
+      "raw_author_name": "C. Elizabeth Hirsh",
+      "raw_affiliation_strings": [
+        "Department of Sociology at Cornell University"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Department of Sociology at Cornell University",
+          "institution_ids": [
+            "https://openalex.org/I205783295"
+          ]
+        }
+      ]
+    }
+  ],
+  "institutions": [],
+  "countries_distinct_count": 1,
+  "institutions_distinct_count": 1,
+  "corresponding_author_ids": [
+    "https://openalex.org/A5032847215"
+  ],
+  "corresponding_institution_ids": [
+    "https://openalex.org/I205783295"
+  ],
+  "apc_list": {
+    "value": 2580,
+    "currency": "USD",
+    "value_usd": 2580
+  },
+  "apc_paid": null,
+  "fwci": 10.1158,
+  "has_fulltext": true,
+  "cited_by_count": 49,
+  "citation_normalized_percentile": {
+    "value": 0.97890532,
+    "is_in_top_1_percent": false,
+    "is_in_top_10_percent": true
+  },
+  "cited_by_percentile_year": {
+    "min": 90,
+    "max": 98
+  },
+  "biblio": {
+    "volume": "42",
+    "issue": "2",
+    "first_page": "239",
+    "last_page": "274"
+  },
+  "is_retracted": false,
+  "is_paratext": false,
+  "is_xpac": false,
+  "primary_topic": {
+    "id": "https://openalex.org/T11047",
+    "display_name": "Gender Diversity and Inequality",
+    "score": 0.9898999929428101,
+    "subfield": {
+      "id": "https://openalex.org/subfields/3318",
+      "display_name": "Gender Studies"
+    },
+    "field": {
+      "id": "https://openalex.org/fields/33",
+      "display_name": "Social Sciences"
+    },
+    "domain": {
+      "id": "https://openalex.org/domains/2",
+      "display_name": "Social Sciences"
+    }
+  },
+  "topics": [
+    {
+      "id": "https://openalex.org/T11047",
+      "display_name": "Gender Diversity and Inequality",
+      "score": 0.9898999929428101,
+      "subfield": {
+        "id": "https://openalex.org/subfields/3318",
+        "display_name": "Gender Studies"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/33",
+        "display_name": "Social Sciences"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/2",
+        "display_name": "Social Sciences"
+      }
+    },
+    {
+      "id": "https://openalex.org/T12185",
+      "display_name": "Regulation and Compliance Studies",
+      "score": 0.9868999719619751,
+      "subfield": {
+        "id": "https://openalex.org/subfields/1408",
+        "display_name": "Strategy and Management"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/14",
+        "display_name": "Business, Management and Accounting"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/2",
+        "display_name": "Social Sciences"
+      }
+    },
+    {
+      "id": "https://openalex.org/T11762",
+      "display_name": "Law, Economics, and Judicial Systems",
+      "score": 0.9819999933242798,
+      "subfield": {
+        "id": "https://openalex.org/subfields/2002",
+        "display_name": "Economics and Econometrics"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/20",
+        "display_name": "Economics, Econometrics and Finance"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/2",
+        "display_name": "Social Sciences"
+      }
+    }
+  ],
+  "keywords": [
+    {
+      "id": "https://openalex.org/keywords/plaintiff",
+      "display_name": "Plaintiff",
+      "score": 0.8165249824523926
+    },
+    {
+      "id": "https://openalex.org/keywords/equal-employment-opportunity",
+      "display_name": "Equal employment opportunity",
+      "score": 0.7466803789138794
+    },
+    {
+      "id": "https://openalex.org/keywords/damages",
+      "display_name": "Damages",
+      "score": 0.7176028490066528
+    },
+    {
+      "id": "https://openalex.org/keywords/commission",
+      "display_name": "Commission",
+      "score": 0.7100189924240112
+    },
+    {
+      "id": "https://openalex.org/keywords/business",
+      "display_name": "Business",
+      "score": 0.5568531155586243
+    },
+    {
+      "id": "https://openalex.org/keywords/charge",
+      "display_name": "Charge (physics)",
+      "score": 0.5091196894645691
+    },
+    {
+      "id": "https://openalex.org/keywords/demographic-economics",
+      "display_name": "Demographic economics",
+      "score": 0.4105275571346283
+    },
+    {
+      "id": "https://openalex.org/keywords/labour-economics",
+      "display_name": "Labour economics",
+      "score": 0.36485427618026733
+    },
+    {
+      "id": "https://openalex.org/keywords/economics",
+      "display_name": "Economics",
+      "score": 0.2672712504863739
+    },
+    {
+      "id": "https://openalex.org/keywords/law",
+      "display_name": "Law",
+      "score": 0.26106148958206177
+    },
+    {
+      "id": "https://openalex.org/keywords/political-science",
+      "display_name": "Political science",
+      "score": 0.19440051913261414
+    },
+    {
+      "id": "https://openalex.org/keywords/finance",
+      "display_name": "Finance",
+      "score": 0.17374572157859802
+    }
+  ],
+  "concepts": [
+    {
+      "id": "https://openalex.org/C97460637",
+      "wikidata": "https://www.wikidata.org/wiki/Q468489",
+      "display_name": "Plaintiff",
+      "level": 2,
+      "score": 0.8165249824523926
+    },
+    {
+      "id": "https://openalex.org/C2780870317",
+      "wikidata": "https://www.wikidata.org/wiki/Q5384153",
+      "display_name": "Equal employment opportunity",
+      "level": 3,
+      "score": 0.7466803789138794
+    },
+    {
+      "id": "https://openalex.org/C2777381055",
+      "wikidata": "https://www.wikidata.org/wiki/Q308922",
+      "display_name": "Damages",
+      "level": 2,
+      "score": 0.7176028490066528
+    },
+    {
+      "id": "https://openalex.org/C2776034101",
+      "wikidata": "https://www.wikidata.org/wiki/Q1509347",
+      "display_name": "Commission",
+      "level": 2,
+      "score": 0.7100189924240112
+    },
+    {
+      "id": "https://openalex.org/C144133560",
+      "wikidata": "https://www.wikidata.org/wiki/Q4830453",
+      "display_name": "Business",
+      "level": 0,
+      "score": 0.5568531155586243
+    },
+    {
+      "id": "https://openalex.org/C188082385",
+      "wikidata": "https://www.wikidata.org/wiki/Q73792",
+      "display_name": "Charge (physics)",
+      "level": 2,
+      "score": 0.5091196894645691
+    },
+    {
+      "id": "https://openalex.org/C4249254",
+      "wikidata": "https://www.wikidata.org/wiki/Q3044431",
+      "display_name": "Demographic economics",
+      "level": 1,
+      "score": 0.4105275571346283
+    },
+    {
+      "id": "https://openalex.org/C145236788",
+      "wikidata": "https://www.wikidata.org/wiki/Q28161",
+      "display_name": "Labour economics",
+      "level": 1,
+      "score": 0.36485427618026733
+    },
+    {
+      "id": "https://openalex.org/C162324750",
+      "wikidata": "https://www.wikidata.org/wiki/Q8134",
+      "display_name": "Economics",
+      "level": 0,
+      "score": 0.2672712504863739
+    },
+    {
+      "id": "https://openalex.org/C199539241",
+      "wikidata": "https://www.wikidata.org/wiki/Q7748",
+      "display_name": "Law",
+      "level": 1,
+      "score": 0.26106148958206177
+    },
+    {
+      "id": "https://openalex.org/C17744445",
+      "wikidata": "https://www.wikidata.org/wiki/Q36442",
+      "display_name": "Political science",
+      "level": 0,
+      "score": 0.19440051913261414
+    },
+    {
+      "id": "https://openalex.org/C10138342",
+      "wikidata": "https://www.wikidata.org/wiki/Q43015",
+      "display_name": "Finance",
+      "level": 1,
+      "score": 0.17374572157859802
+    },
+    {
+      "id": "https://openalex.org/C121332964",
+      "wikidata": "https://www.wikidata.org/wiki/Q413",
+      "display_name": "Physics",
+      "level": 0,
+      "score": 0.0
+    },
+    {
+      "id": "https://openalex.org/C62520636",
+      "wikidata": "https://www.wikidata.org/wiki/Q944",
+      "display_name": "Quantum mechanics",
+      "level": 1,
+      "score": 0.0
+    }
+  ],
+  "mesh": [],
+  "locations_count": 1,
+  "locations": [
+    {
+      "id": "doi:10.1111/j.1540-5893.2008.00341.x",
+      "is_oa": true,
+      "landing_page_url": "https://doi.org/10.1111/j.1540-5893.2008.00341.x",
+      "pdf_url": "https://onlinelibrary.wiley.com/doi/pdfdirect/10.1111/j.1540-5893.2008.00341.x",
+      "source": {
+        "id": "https://openalex.org/S44706263",
+        "display_name": "Law & Society Review",
+        "issn_l": "0023-9216",
+        "issn": [
+          "0023-9216",
+          "1540-5893"
+        ],
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": true,
+        "host_organization": "https://openalex.org/P4310311721",
+        "host_organization_name": "Cambridge University Press",
+        "host_organization_lineage": [
+          "https://openalex.org/P4310311721",
+          "https://openalex.org/P4310311702"
+        ],
+        "host_organization_lineage_names": [
+          "Cambridge University Press",
+          "University of Cambridge"
+        ],
+        "type": "journal"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "publishedVersion",
+      "is_accepted": true,
+      "is_published": true,
+      "raw_source_name": "Law &amp; Society Review",
+      "raw_type": "journal-article"
+    }
+  ],
+  "best_oa_location": {
+    "id": "doi:10.1111/j.1540-5893.2008.00341.x",
+    "is_oa": true,
+    "landing_page_url": "https://doi.org/10.1111/j.1540-5893.2008.00341.x",
+    "pdf_url": "https://onlinelibrary.wiley.com/doi/pdfdirect/10.1111/j.1540-5893.2008.00341.x",
+    "source": {
+      "id": "https://openalex.org/S44706263",
+      "display_name": "Law & Society Review",
+      "issn_l": "0023-9216",
+      "issn": [
+        "0023-9216",
+        "1540-5893"
+      ],
+      "is_oa": false,
+      "is_in_doaj": false,
+      "is_core": true,
+      "host_organization": "https://openalex.org/P4310311721",
+      "host_organization_name": "Cambridge University Press",
+      "host_organization_lineage": [
+        "https://openalex.org/P4310311721",
+        "https://openalex.org/P4310311702"
+      ],
+      "host_organization_lineage_names": [
+        "Cambridge University Press",
+        "University of Cambridge"
+      ],
+      "type": "journal"
+    },
+    "license": null,
+    "license_id": null,
+    "version": "publishedVersion",
+    "is_accepted": true,
+    "is_published": true,
+    "raw_source_name": "Law &amp; Society Review",
+    "raw_type": "journal-article"
+  },
+  "sustainable_development_goals": [],
+  "awards": [],
+  "funders": [],
+  "has_content": {
+    "grobid_xml": true,
+    "pdf": true
+  },
+  "content_urls": {
+    "pdf": "https://content.openalex.org/works/W2051641155.pdf",
+    "grobid_xml": "https://content.openalex.org/works/W2051641155.grobid-xml"
+  },
+  "referenced_works_count": 46,
+  "referenced_works": [
+    "https://openalex.org/W7300410",
+    "https://openalex.org/W599977678",
+    "https://openalex.org/W606464038",
+    "https://openalex.org/W1485334518",
+    "https://openalex.org/W1548977671",
+    "https://openalex.org/W1571203227",
+    "https://openalex.org/W1596956552",
+    "https://openalex.org/W1840993321",
+    "https://openalex.org/W1971808603",
+    "https://openalex.org/W1974112763",
+    "https://openalex.org/W1978493062",
+    "https://openalex.org/W2000416441",
+    "https://openalex.org/W2016382728",
+    "https://openalex.org/W2040225104",
+    "https://openalex.org/W2043165607",
+    "https://openalex.org/W2048156704",
+    "https://openalex.org/W2059693541",
+    "https://openalex.org/W2064503570",
+    "https://openalex.org/W2067094199",
+    "https://openalex.org/W2072438200",
+    "https://openalex.org/W2088511526",
+    "https://openalex.org/W2100493461",
+    "https://openalex.org/W2112226703",
+    "https://openalex.org/W2127580982",
+    "https://openalex.org/W2137761841",
+    "https://openalex.org/W2148929755",
+    "https://openalex.org/W2187954370",
+    "https://openalex.org/W2279521881",
+    "https://openalex.org/W2323263179",
+    "https://openalex.org/W2736643333",
+    "https://openalex.org/W2760138940",
+    "https://openalex.org/W2883178130",
+    "https://openalex.org/W3010904406",
+    "https://openalex.org/W3121302341",
+    "https://openalex.org/W3122500871",
+    "https://openalex.org/W3122659426",
+    "https://openalex.org/W3123177553",
+    "https://openalex.org/W3123601855",
+    "https://openalex.org/W3125188161",
+    "https://openalex.org/W3125675585",
+    "https://openalex.org/W4246168342",
+    "https://openalex.org/W4246894433",
+    "https://openalex.org/W4249516776",
+    "https://openalex.org/W4256232952",
+    "https://openalex.org/W4300648631",
+    "https://openalex.org/W6695271040"
+  ],
+  "related_works": [
+    "https://openalex.org/W4249213921",
+    "https://openalex.org/W112490490",
+    "https://openalex.org/W4366371413",
+    "https://openalex.org/W4388175161",
+    "https://openalex.org/W1998899210",
+    "https://openalex.org/W2908869680",
+    "https://openalex.org/W4388330625",
+    "https://openalex.org/W128176526",
+    "https://openalex.org/W41031176",
+    "https://openalex.org/W37852695"
+  ],
+  "abstract_inverted_index": {
+    "Although": [
+      0
+    ],
+    "more": [
+      1,
+      126
+    ],
+    "than": [
+      2,
+      18
+    ],
+    "60,000": [
+      3
+    ],
+    "workers": [
+      4
+    ],
+    "formally": [
+      5
+    ],
+    "charge": [
+      6,
+      53,
+      83,
+      110
+    ],
+    "their": [
+      7,
+      137
+    ],
+    "employers": [
+      8,
+      107,
+      116
+    ],
+    "with": [
+      9
+    ],
+    "unlawful": [
+      10
+    ],
+    "sex": [
+      11
+    ],
+    "or": [
+      12
+    ],
+    "race": [
+      13
+    ],
+    "employment": [
+      14
+    ],
+    "discrimination": [
+      15,
+      52
+    ],
+    "annually,": [
+      16
+    ],
+    "fewer": [
+      17
+    ],
+    "one": [
+      19
+    ],
+    "in": [
+      20,
+      24,
+      113
+    ],
+    "five": [
+      21
+    ],
+    "charges": [
+      22
+    ],
+    "results": [
+      23
+    ],
+    "outcomes": [
+      25
+    ],
+    "favorable": [
+      26,
+      82
+    ],
+    "to": [
+      27,
+      51,
+      119,
+      128,
+      135
+    ],
+    "the": [
+      28,
+      57,
+      64,
+      77
+    ],
+    "complainant.": [
+      29
+    ],
+    "Building": [
+      30
+    ],
+    "on": [
+      31,
+      76
+    ],
+    "sociolegal": [
+      32
+    ],
+    "and": [
+      33,
+      71,
+      88,
+      101,
+      132
+    ],
+    "organizational": [
+      34
+    ],
+    "theory,": [
+      35
+    ],
+    "this": [
+      36
+    ],
+    "study": [
+      37
+    ],
+    "examines": [
+      38
+    ],
+    "how": [
+      39
+    ],
+    "employing": [
+      40
+    ],
+    "organizations": [
+      41
+    ],
+    "avoid": [
+      42
+    ],
+    "unfavorable": [
+      43,
+      109
+    ],
+    "discrimination-charge": [
+      44
+    ],
+    "outcomes.": [
+      45,
+      111
+    ],
+    "Using": [
+      46
+    ],
+    "EEO-1": [
+      47
+    ],
+    "establishment": [
+      48,
+      99
+    ],
+    "reports": [
+      49
+    ],
+    "matched": [
+      50
+    ],
+    "data": [
+      54
+    ],
+    "provided": [
+      55
+    ],
+    "by": [
+      56
+    ],
+    "Equal": [
+      58
+    ],
+    "Employment": [
+      59
+    ],
+    "Opportunity": [
+      60
+    ],
+    "Commission,": [
+      61
+    ],
+    "I": [
+      62,
+      94
+    ],
+    "assess": [
+      63
+    ],
+    "effect": [
+      65
+    ],
+    "of": [
+      66,
+      73,
+      103
+    ],
+    "employers'": [
+      67
+    ],
+    "legal": [
+      68,
+      74,
+      97,
+      104
+    ],
+    "experience,": [
+      69,
+      98
+    ],
+    "resources,": [
+      70
+    ],
+    "indicators": [
+      72,
+      102
+    ],
+    "compliance": [
+      75,
+      105
+    ],
+    "likelihood": [
+      78
+    ],
+    "that": [
+      79,
+      96
+    ],
+    "complainants": [
+      80
+    ],
+    "receive": [
+      81,
+      133
+    ],
+    "outcomes,": [
+      84
+    ],
+    "benefits,": [
+      85
+    ],
+    "monetary": [
+      86,
+      130
+    ],
+    "settlements,": [
+      87
+    ],
+    "policy": [
+      89
+    ],
+    "change": [
+      90,
+      136
+    ],
+    "mandates.": [
+      91
+    ],
+    "In": [
+      92
+    ],
+    "general,": [
+      93
+    ],
+    "find": [
+      95
+    ],
+    "size,": [
+      100
+    ],
+    "insulate": [
+      106
+    ],
+    "from": [
+      108
+    ],
+    "However,": [
+      112
+    ],
+    "situations": [
+      114
+    ],
+    "where": [
+      115
+    ],
+    "are": [
+      117,
+      125
+    ],
+    "willing": [
+      118
+    ],
+    "settle": [
+      120
+    ],
+    "claims,": [
+      121
+    ],
+    "legally": [
+      122
+    ],
+    "experienced": [
+      123
+    ],
+    "establishments": [
+      124
+    ],
+    "likely": [
+      127
+    ],
+    "pay": [
+      129
+    ],
+    "damages": [
+      131
+    ],
+    "mandates": [
+      134
+    ],
+    "workplace": [
+      138
+    ],
+    "policies.": [
+      139
+    ]
+  },
+  "counts_by_year": [
+    {
+      "year": 2026,
+      "cited_by_count": 1
+    },
+    {
+      "year": 2025,
+      "cited_by_count": 1
+    },
+    {
+      "year": 2023,
+      "cited_by_count": 2
+    },
+    {
+      "year": 2022,
+      "cited_by_count": 3
+    },
+    {
+      "year": 2021,
+      "cited_by_count": 2
+    },
+    {
+      "year": 2020,
+      "cited_by_count": 4
+    },
+    {
+      "year": 2019,
+      "cited_by_count": 1
+    },
+    {
+      "year": 2018,
+      "cited_by_count": 1
+    },
+    {
+      "year": 2016,
+      "cited_by_count": 2
+    },
+    {
+      "year": 2015,
+      "cited_by_count": 2
+    },
+    {
+      "year": 2014,
+      "cited_by_count": 3
+    },
+    {
+      "year": 2013,
+      "cited_by_count": 5
+    },
+    {
+      "year": 2012,
+      "cited_by_count": 4
+    }
+  ],
+  "updated_date": "2026-05-29T09:21:14.243279",
+  "created_date": "2025-10-10T00:00:00"
+}

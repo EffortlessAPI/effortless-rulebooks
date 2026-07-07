@@ -1,0 +1,14 @@
+{
+  "candidate_id": "cand-exp-finn-achilles-1990",
+  "proposed_study_id": "finn-achilles-1990",
+  "acquisition_status": "manual_only",
+  "attempted_at": "2026-07-07T03:47:41+00:00",
+  "catalog_source_url": null,
+  "resolved_urls": [
+    "https://doi.org/10.3102/00028312027003557"
+  ],
+  "files": [],
+  "dois": [
+    "10.3102/00028312027003557"
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "candidate_id": "cand-exp-autor-levy-murnane-2003",
+  "proposed_study_id": "autor-levy-murnane-2003",
+  "acquisition_status": "landing_saved",
+  "attempted_at": "2026-07-07T03:40:26+00:00",
+  "catalog_source_url": "https://www.onetonline.org/",
+  "resolved_urls": [
+    "https://doi.org/10.1257/aer.99.2.58",
+    "https://www.onetonline.org/"
+  ],
+  "files": [
+    "openalex-metadata.json",
+    "source-1.html"
+  ],
+  "dois": []
+}

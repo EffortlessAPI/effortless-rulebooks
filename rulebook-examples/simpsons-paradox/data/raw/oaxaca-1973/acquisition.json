@@ -1,0 +1,15 @@
+{
+  "candidate_id": "cand-exp-oaxaca-1973",
+  "proposed_study_id": "oaxaca-1973",
+  "acquisition_status": "manual_only",
+  "attempted_at": "2026-07-07T03:39:50+00:00",
+  "catalog_source_url": null,
+  "resolved_urls": [
+    "https://doi.org/10.1177/1536867x0800800401",
+    "https://journals.sagepub.com/doi/pdf/10.1177/1536867X0800800401"
+  ],
+  "files": [
+    "openalex-metadata.json"
+  ],
+  "dois": []
+}

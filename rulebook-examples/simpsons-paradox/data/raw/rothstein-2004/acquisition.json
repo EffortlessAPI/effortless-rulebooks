@@ -1,0 +1,16 @@
+{
+  "candidate_id": "cand-exp-rothstein-2004",
+  "proposed_study_id": "rothstein-2004",
+  "acquisition_status": "downloaded",
+  "attempted_at": "2026-07-07T03:43:31+00:00",
+  "catalog_source_url": null,
+  "resolved_urls": [
+    "https://doi.org/10.3386/w11216",
+    "https://doi.org/10.3386/w11216"
+  ],
+  "files": [
+    "openalex-search.pdf",
+    "openalex-metadata.json"
+  ],
+  "dois": []
+}

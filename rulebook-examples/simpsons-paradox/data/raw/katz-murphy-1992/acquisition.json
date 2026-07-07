@@ -1,0 +1,16 @@
+{
+  "candidate_id": "cand-exp-katz-murphy-1992",
+  "proposed_study_id": "katz-murphy-1992",
+  "acquisition_status": "portal_manual",
+  "attempted_at": "2026-07-07T03:40:29+00:00",
+  "catalog_source_url": "https://www.bls.gov/cps/",
+  "resolved_urls": [
+    "https://doi.org/10.1006/redy.1997.0008",
+    "https://www.bls.gov/cps/"
+  ],
+  "files": [
+    "openalex-metadata.json",
+    "source-1.html"
+  ],
+  "dois": []
+}

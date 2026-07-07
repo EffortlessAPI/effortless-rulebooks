@@ -1,0 +1,16 @@
+{
+  "candidate_id": "cand-exp-nfl-quarterback-rating-by-game-situation-2010",
+  "proposed_study_id": "nfl-quarterback-rating-by-game-situation-2010",
+  "acquisition_status": "metadata_only",
+  "attempted_at": "2026-07-07T03:44:45+00:00",
+  "catalog_source_url": "https://www.pro-football-reference.com/",
+  "resolved_urls": [
+    "https://doi.org/10.1257/jep.14.3.75",
+    "https://www.aeaweb.org/articles/pdf/doi/10.1257/jep.14.3.75",
+    "https://www.pro-football-reference.com/"
+  ],
+  "files": [
+    "openalex-metadata.json"
+  ],
+  "dois": []
+}

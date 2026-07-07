@@ -1,0 +1,17 @@
+{
+  "candidate_id": "cand-exp-soccer-expected-goals",
+  "proposed_study_id": "soccer-expected-goals",
+  "acquisition_status": "downloaded",
+  "attempted_at": "2026-07-07T03:44:54+00:00",
+  "catalog_source_url": "https://fbref.com/en/",
+  "resolved_urls": [
+    "https://doi.org/10.1515/jqas-2018-0020",
+    "https://www.degruyter.com/downloadpdf/journals/jqas/15/2/article-p97.pdf",
+    "https://fbref.com/en/"
+  ],
+  "files": [
+    "openalex-search.pdf",
+    "openalex-metadata.json"
+  ],
+  "dois": []
+}

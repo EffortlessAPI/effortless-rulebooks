@@ -1,0 +1,1119 @@
+{
+  "id": "https://openalex.org/W3135767981",
+  "doi": "https://doi.org/10.1093/qje/qjab027",
+  "title": "Affirmative Action, Mismatch, and Economic Mobility after California\u2019s Proposition 209",
+  "display_name": "Affirmative Action, Mismatch, and Economic Mobility after California\u2019s Proposition 209",
+  "relevance_score": 40.792343,
+  "publication_year": 2021,
+  "publication_date": "2021-08-12",
+  "ids": {
+    "openalex": "https://openalex.org/W3135767981",
+    "doi": "https://doi.org/10.1093/qje/qjab027",
+    "mag": "3135767981"
+  },
+  "language": "en",
+  "primary_location": {
+    "id": "doi:10.1093/qje/qjab027",
+    "is_oa": false,
+    "landing_page_url": "https://doi.org/10.1093/qje/qjab027",
+    "pdf_url": null,
+    "source": {
+      "id": "https://openalex.org/S203860005",
+      "display_name": "The Quarterly Journal of Economics",
+      "issn_l": "0033-5533",
+      "issn": [
+        "0033-5533",
+        "1531-4650"
+      ],
+      "is_oa": false,
+      "is_in_doaj": false,
+      "is_core": true,
+      "host_organization": "https://openalex.org/P4310311648",
+      "host_organization_name": "Oxford University Press",
+      "host_organization_lineage": [
+        "https://openalex.org/P4310311648",
+        "https://openalex.org/P4310311647"
+      ],
+      "host_organization_lineage_names": [
+        "Oxford University Press",
+        "University of Oxford"
+      ],
+      "type": "journal"
+    },
+    "license": null,
+    "license_id": null,
+    "version": "publishedVersion",
+    "is_accepted": true,
+    "is_published": true,
+    "raw_source_name": "The Quarterly Journal of Economics",
+    "raw_type": "journal-article"
+  },
+  "type": "article",
+  "indexed_in": [
+    "crossref"
+  ],
+  "open_access": {
+    "is_oa": true,
+    "oa_status": "green",
+    "oa_url": "https://escholarship.org/uc/item/2w21n06w",
+    "any_repository_has_fulltext": true
+  },
+  "authorships": [
+    {
+      "author_position": "first",
+      "author": {
+        "id": "https://openalex.org/A5049747479",
+        "display_name": "Zachary Bleemer",
+        "orcid": "https://orcid.org/0000-0001-8269-7929"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I95457486",
+          "display_name": "University of California, Berkeley",
+          "ror": "https://ror.org/01an7q238",
+          "country_code": "US",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I95457486"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": true,
+      "raw_author_name": "Zachary Bleemer",
+      "raw_affiliation_strings": [
+        "University of California, Berkeley, United States"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "University of California, Berkeley, United States",
+          "institution_ids": [
+            "https://openalex.org/I95457486"
+          ]
+        }
+      ]
+    }
+  ],
+  "institutions": [],
+  "countries_distinct_count": 1,
+  "institutions_distinct_count": 1,
+  "corresponding_author_ids": [
+    "https://openalex.org/A5049747479"
+  ],
+  "corresponding_institution_ids": [
+    "https://openalex.org/I95457486"
+  ],
+  "apc_list": {
+    "value": 6977,
+    "currency": "USD",
+    "value_usd": 6977
+  },
+  "apc_paid": null,
+  "fwci": 45.4156,
+  "has_fulltext": true,
+  "cited_by_count": 146,
+  "citation_normalized_percentile": {
+    "value": 0.99887946,
+    "is_in_top_1_percent": true,
+    "is_in_top_10_percent": true
+  },
+  "cited_by_percentile_year": {
+    "min": 96,
+    "max": 100
+  },
+  "biblio": {
+    "volume": "137",
+    "issue": "1",
+    "first_page": "115",
+    "last_page": "160"
+  },
+  "is_retracted": false,
+  "is_paratext": false,
+  "is_xpac": false,
+  "primary_topic": {
+    "id": "https://openalex.org/T10267",
+    "display_name": "Higher Education Research Studies",
+    "score": 0.9998000264167786,
+    "subfield": {
+      "id": "https://openalex.org/subfields/3304",
+      "display_name": "Education"
+    },
+    "field": {
+      "id": "https://openalex.org/fields/33",
+      "display_name": "Social Sciences"
+    },
+    "domain": {
+      "id": "https://openalex.org/domains/2",
+      "display_name": "Social Sciences"
+    }
+  },
+  "topics": [
+    {
+      "id": "https://openalex.org/T10267",
+      "display_name": "Higher Education Research Studies",
+      "score": 0.9998000264167786,
+      "subfield": {
+        "id": "https://openalex.org/subfields/3304",
+        "display_name": "Education"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/33",
+        "display_name": "Social Sciences"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/2",
+        "display_name": "Social Sciences"
+      }
+    },
+    {
+      "id": "https://openalex.org/T10674",
+      "display_name": "School Choice and Performance",
+      "score": 0.9922999739646912,
+      "subfield": {
+        "id": "https://openalex.org/subfields/3304",
+        "display_name": "Education"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/33",
+        "display_name": "Social Sciences"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/2",
+        "display_name": "Social Sciences"
+      }
+    },
+    {
+      "id": "https://openalex.org/T12354",
+      "display_name": "Innovations in Educational Methods",
+      "score": 0.9801999926567078,
+      "subfield": {
+        "id": "https://openalex.org/subfields/3304",
+        "display_name": "Education"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/33",
+        "display_name": "Social Sciences"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/2",
+        "display_name": "Social Sciences"
+      }
+    }
+  ],
+  "keywords": [
+    {
+      "id": "https://openalex.org/keywords/affirmative-action",
+      "display_name": "Affirmative action",
+      "score": 0.9199708700180054
+    },
+    {
+      "id": "https://openalex.org/keywords/underrepresented-minority",
+      "display_name": "Underrepresented Minority",
+      "score": 0.5855256915092468
+    },
+    {
+      "id": "https://openalex.org/keywords/regression-discontinuity-design",
+      "display_name": "Regression discontinuity design",
+      "score": 0.5441452264785767
+    },
+    {
+      "id": "https://openalex.org/keywords/demographic-economics",
+      "display_name": "Demographic economics",
+      "score": 0.5375964045524597
+    },
+    {
+      "id": "https://openalex.org/keywords/margin",
+      "display_name": "Margin (machine learning)",
+      "score": 0.5090345740318298
+    },
+    {
+      "id": "https://openalex.org/keywords/educational-attainment",
+      "display_name": "Educational attainment",
+      "score": 0.43198055028915405
+    },
+    {
+      "id": "https://openalex.org/keywords/proposition",
+      "display_name": "Proposition",
+      "score": 0.4265742301940918
+    },
+    {
+      "id": "https://openalex.org/keywords/political-science",
+      "display_name": "Political science",
+      "score": 0.36015692353248596
+    },
+    {
+      "id": "https://openalex.org/keywords/economics",
+      "display_name": "Economics",
+      "score": 0.2443838119506836
+    },
+    {
+      "id": "https://openalex.org/keywords/medical-education",
+      "display_name": "Medical education",
+      "score": 0.22763565182685852
+    },
+    {
+      "id": "https://openalex.org/keywords/medicine",
+      "display_name": "Medicine",
+      "score": 0.176618754863739
+    },
+    {
+      "id": "https://openalex.org/keywords/law",
+      "display_name": "Law",
+      "score": 0.13998088240623474
+    },
+    {
+      "id": "https://openalex.org/keywords/mathematics",
+      "display_name": "Mathematics",
+      "score": 0.11576396226882935
+    },
+    {
+      "id": "https://openalex.org/keywords/statistics",
+      "display_name": "Statistics",
+      "score": 0.08727684617042542
+    }
+  ],
+  "concepts": [
+    {
+      "id": "https://openalex.org/C2777732099",
+      "wikidata": "https://www.wikidata.org/wiki/Q214244",
+      "display_name": "Affirmative action",
+      "level": 2,
+      "score": 0.9199708700180054
+    },
+    {
+      "id": "https://openalex.org/C2910734998",
+      "wikidata": "https://www.wikidata.org/wiki/Q25305118",
+      "display_name": "Underrepresented Minority",
+      "level": 2,
+      "score": 0.5855256915092468
+    },
+    {
+      "id": "https://openalex.org/C66912227",
+      "wikidata": "https://www.wikidata.org/wiki/Q2138712",
+      "display_name": "Regression discontinuity design",
+      "level": 2,
+      "score": 0.5441452264785767
+    },
+    {
+      "id": "https://openalex.org/C4249254",
+      "wikidata": "https://www.wikidata.org/wiki/Q3044431",
+      "display_name": "Demographic economics",
+      "level": 1,
+      "score": 0.5375964045524597
+    },
+    {
+      "id": "https://openalex.org/C774472",
+      "wikidata": "https://www.wikidata.org/wiki/Q6760393",
+      "display_name": "Margin (machine learning)",
+      "level": 2,
+      "score": 0.5090345740318298
+    },
+    {
+      "id": "https://openalex.org/C2779297142",
+      "wikidata": "https://www.wikidata.org/wiki/Q3276412",
+      "display_name": "Educational attainment",
+      "level": 2,
+      "score": 0.43198055028915405
+    },
+    {
+      "id": "https://openalex.org/C2777152325",
+      "wikidata": "https://www.wikidata.org/wiki/Q108163",
+      "display_name": "Proposition",
+      "level": 2,
+      "score": 0.4265742301940918
+    },
+    {
+      "id": "https://openalex.org/C17744445",
+      "wikidata": "https://www.wikidata.org/wiki/Q36442",
+      "display_name": "Political science",
+      "level": 0,
+      "score": 0.36015692353248596
+    },
+    {
+      "id": "https://openalex.org/C162324750",
+      "wikidata": "https://www.wikidata.org/wiki/Q8134",
+      "display_name": "Economics",
+      "level": 0,
+      "score": 0.2443838119506836
+    },
+    {
+      "id": "https://openalex.org/C509550671",
+      "wikidata": "https://www.wikidata.org/wiki/Q126945",
+      "display_name": "Medical education",
+      "level": 1,
+      "score": 0.22763565182685852
+    },
+    {
+      "id": "https://openalex.org/C71924100",
+      "wikidata": "https://www.wikidata.org/wiki/Q11190",
+      "display_name": "Medicine",
+      "level": 0,
+      "score": 0.176618754863739
+    },
+    {
+      "id": "https://openalex.org/C199539241",
+      "wikidata": "https://www.wikidata.org/wiki/Q7748",
+      "display_name": "Law",
+      "level": 1,
+      "score": 0.13998088240623474
+    },
+    {
+      "id": "https://openalex.org/C33923547",
+      "wikidata": "https://www.wikidata.org/wiki/Q395",
+      "display_name": "Mathematics",
+      "level": 0,
+      "score": 0.11576396226882935
+    },
+    {
+      "id": "https://openalex.org/C105795698",
+      "wikidata": "https://www.wikidata.org/wiki/Q12483",
+      "display_name": "Statistics",
+      "level": 1,
+      "score": 0.08727684617042542
+    },
+    {
+      "id": "https://openalex.org/C41008148",
+      "wikidata": "https://www.wikidata.org/wiki/Q21198",
+      "display_name": "Computer science",
+      "level": 0,
+      "score": 0.0
+    },
+    {
+      "id": "https://openalex.org/C138885662",
+      "wikidata": "https://www.wikidata.org/wiki/Q5891",
+      "display_name": "Philosophy",
+      "level": 0,
+      "score": 0.0
+    },
+    {
+      "id": "https://openalex.org/C111472728",
+      "wikidata": "https://www.wikidata.org/wiki/Q9471",
+      "display_name": "Epistemology",
+      "level": 1,
+      "score": 0.0
+    },
+    {
+      "id": "https://openalex.org/C119857082",
+      "wikidata": "https://www.wikidata.org/wiki/Q2539",
+      "display_name": "Machine learning",
+      "level": 1,
+      "score": 0.0
+    }
+  ],
+  "mesh": [],
+  "locations_count": 4,
+  "locations": [
+    {
+      "id": "doi:10.1093/qje/qjab027",
+      "is_oa": false,
+      "landing_page_url": "https://doi.org/10.1093/qje/qjab027",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S203860005",
+        "display_name": "The Quarterly Journal of Economics",
+        "issn_l": "0033-5533",
+        "issn": [
+          "0033-5533",
+          "1531-4650"
+        ],
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": true,
+        "host_organization": "https://openalex.org/P4310311648",
+        "host_organization_name": "Oxford University Press",
+        "host_organization_lineage": [
+          "https://openalex.org/P4310311648",
+          "https://openalex.org/P4310311647"
+        ],
+        "host_organization_lineage_names": [
+          "Oxford University Press",
+          "University of Oxford"
+        ],
+        "type": "journal"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "publishedVersion",
+      "is_accepted": true,
+      "is_published": true,
+      "raw_source_name": "The Quarterly Journal of Economics",
+      "raw_type": "journal-article"
+    },
+    {
+      "id": "pmh:oai:escholarship.org/ark:/13030/qt2w21n06w",
+      "is_oa": true,
+      "landing_page_url": "https://escholarship.org/uc/item/2w21n06w",
+      "pdf_url": "https://escholarship.org/uc/item/2w21n06w",
+      "source": {
+        "id": "https://openalex.org/S4306400115",
+        "display_name": "eScholarship (California Digital Library)",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I2801248553",
+        "host_organization_name": "California Digital Library",
+        "host_organization_lineage": [
+          "https://openalex.org/I2801248553"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": "cc-by-nc-nd",
+      "license_id": "https://openalex.org/licenses/cc-by-nc-nd",
+      "version": "submittedVersion",
+      "is_accepted": false,
+      "is_published": false,
+      "raw_source_name": "",
+      "raw_type": "article"
+    },
+    {
+      "id": "pmh:oai:RePEc:cdl:cshedu:qt2w21n06w",
+      "is_oa": false,
+      "landing_page_url": null,
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4306401271",
+        "display_name": "RePEc: Research Papers in Economics",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I77793887",
+        "host_organization_name": "Federal Reserve Bank of St. Louis",
+        "host_organization_lineage": [
+          "https://openalex.org/I77793887"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "submittedVersion",
+      "is_accepted": false,
+      "is_published": false,
+      "raw_source_name": null,
+      "raw_type": "preprint"
+    },
+    {
+      "id": "pmh:oai:RePEc:oup:qjecon:v:137:y:2022:i:1:p:115-160.",
+      "is_oa": false,
+      "landing_page_url": "http://hdl.handle.net/10.1093/qje/qjab027",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4306401271",
+        "display_name": "RePEc: Research Papers in Economics",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I77793887",
+        "host_organization_name": "Federal Reserve Bank of St. Louis",
+        "host_organization_lineage": [
+          "https://openalex.org/I77793887"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "submittedVersion",
+      "is_accepted": false,
+      "is_published": false,
+      "raw_source_name": null,
+      "raw_type": "article"
+    }
+  ],
+  "best_oa_location": {
+    "id": "pmh:oai:escholarship.org/ark:/13030/qt2w21n06w",
+    "is_oa": true,
+    "landing_page_url": "https://escholarship.org/uc/item/2w21n06w",
+    "pdf_url": "https://escholarship.org/uc/item/2w21n06w",
+    "source": {
+      "id": "https://openalex.org/S4306400115",
+      "display_name": "eScholarship (California Digital Library)",
+      "issn_l": null,
+      "issn": null,
+      "is_oa": false,
+      "is_in_doaj": false,
+      "is_core": false,
+      "host_organization": "https://openalex.org/I2801248553",
+      "host_organization_name": "California Digital Library",
+      "host_organization_lineage": [
+        "https://openalex.org/I2801248553"
+      ],
+      "host_organization_lineage_names": [],
+      "type": "repository"
+    },
+    "license": "cc-by-nc-nd",
+    "license_id": "https://openalex.org/licenses/cc-by-nc-nd",
+    "version": "submittedVersion",
+    "is_accepted": false,
+    "is_published": false,
+    "raw_source_name": "",
+    "raw_type": "article"
+  },
+  "sustainable_development_goals": [
+    {
+      "score": 0.7200000286102295,
+      "id": "https://metadata.un.org/sdg/8",
+      "display_name": "Decent work and economic growth"
+    }
+  ],
+  "awards": [],
+  "funders": [
+    {
+      "id": "https://openalex.org/F4320314633",
+      "display_name": "National Academy of Education",
+      "ror": "https://ror.org/02530bn33"
+    }
+  ],
+  "has_content": {
+    "grobid_xml": true,
+    "pdf": true
+  },
+  "content_urls": {
+    "pdf": "https://content.openalex.org/works/W3135767981.pdf",
+    "grobid_xml": "https://content.openalex.org/works/W3135767981.grobid-xml"
+  },
+  "referenced_works_count": 69,
+  "referenced_works": [
+    "https://openalex.org/W204319728",
+    "https://openalex.org/W245370074",
+    "https://openalex.org/W652062710",
+    "https://openalex.org/W1484598383",
+    "https://openalex.org/W1516383085",
+    "https://openalex.org/W1537287213",
+    "https://openalex.org/W1563616879",
+    "https://openalex.org/W1639391176",
+    "https://openalex.org/W1789624439",
+    "https://openalex.org/W1820006092",
+    "https://openalex.org/W1840589595",
+    "https://openalex.org/W1969043080",
+    "https://openalex.org/W1974120882",
+    "https://openalex.org/W1992947841",
+    "https://openalex.org/W1996046340",
+    "https://openalex.org/W1998191912",
+    "https://openalex.org/W2001597962",
+    "https://openalex.org/W2007251698",
+    "https://openalex.org/W2037039536",
+    "https://openalex.org/W2079460503",
+    "https://openalex.org/W2094975045",
+    "https://openalex.org/W2103560305",
+    "https://openalex.org/W2104176024",
+    "https://openalex.org/W2121870194",
+    "https://openalex.org/W2135059402",
+    "https://openalex.org/W2139122730",
+    "https://openalex.org/W2139581603",
+    "https://openalex.org/W2147302568",
+    "https://openalex.org/W2158388644",
+    "https://openalex.org/W2159082004",
+    "https://openalex.org/W2166257424",
+    "https://openalex.org/W2166432178",
+    "https://openalex.org/W2170777936",
+    "https://openalex.org/W2270233281",
+    "https://openalex.org/W2304955216",
+    "https://openalex.org/W2322054090",
+    "https://openalex.org/W2460048542",
+    "https://openalex.org/W2791425443",
+    "https://openalex.org/W2795053111",
+    "https://openalex.org/W2810621440",
+    "https://openalex.org/W2993056580",
+    "https://openalex.org/W3003754357",
+    "https://openalex.org/W3007051557",
+    "https://openalex.org/W3009361711",
+    "https://openalex.org/W3015914401",
+    "https://openalex.org/W3023939415",
+    "https://openalex.org/W3086043434",
+    "https://openalex.org/W3090128981",
+    "https://openalex.org/W3121853310",
+    "https://openalex.org/W3123476113",
+    "https://openalex.org/W3123816425",
+    "https://openalex.org/W3123971517",
+    "https://openalex.org/W3124362211",
+    "https://openalex.org/W3125244926",
+    "https://openalex.org/W3157714364",
+    "https://openalex.org/W3164735103",
+    "https://openalex.org/W4211143879",
+    "https://openalex.org/W4237261954",
+    "https://openalex.org/W4285475077",
+    "https://openalex.org/W4398971887",
+    "https://openalex.org/W6638657367",
+    "https://openalex.org/W6649978963",
+    "https://openalex.org/W6756116734",
+    "https://openalex.org/W6774597725",
+    "https://openalex.org/W6784069229",
+    "https://openalex.org/W6789377154",
+    "https://openalex.org/W6795462370",
+    "https://openalex.org/W6808800251",
+    "https://openalex.org/W6868373922"
+  ],
+  "related_works": [
+    "https://openalex.org/W3122115737",
+    "https://openalex.org/W1568702712",
+    "https://openalex.org/W640333583",
+    "https://openalex.org/W2914285022",
+    "https://openalex.org/W2124542705",
+    "https://openalex.org/W2336282899",
+    "https://openalex.org/W2349990005",
+    "https://openalex.org/W3119593500",
+    "https://openalex.org/W2041863100",
+    "https://openalex.org/W3122806528"
+  ],
+  "abstract_inverted_index": {
+    "Abstract": [
+      0
+    ],
+    "Proposition": [
+      1
+    ],
+    "209": [
+      2
+    ],
+    "banned": [
+      3
+    ],
+    "race-based": [
+      4
+    ],
+    "affirmative": [
+      5,
+      41,
+      124,
+      148
+    ],
+    "action": [
+      6,
+      42,
+      125
+    ],
+    "at": [
+      7
+    ],
+    "California": [
+      8,
+      29
+    ],
+    "public": [
+      9
+    ],
+    "universities": [
+      10
+    ],
+    "in": [
+      11,
+      76,
+      89,
+      113
+    ],
+    "1998.": [
+      12
+    ],
+    "Using": [
+      13
+    ],
+    "a": [
+      14,
+      19
+    ],
+    "difference-in-differences": [
+      15
+    ],
+    "research": [
+      16
+    ],
+    "design": [
+      17
+    ],
+    "and": [
+      18,
+      35,
+      75,
+      92,
+      142,
+      152,
+      165
+    ],
+    "newly": [
+      20
+    ],
+    "constructed": [
+      21
+    ],
+    "longitudinal": [
+      22
+    ],
+    "database": [
+      23
+    ],
+    "linking": [
+      24
+    ],
+    "all": [
+      25
+    ],
+    "1994\u20132002": [
+      26
+    ],
+    "University": [
+      27
+    ],
+    "of": [
+      28,
+      129
+    ],
+    "applicants": [
+      30,
+      48,
+      157
+    ],
+    "to": [
+      31,
+      49,
+      66,
+      135
+    ],
+    "their": [
+      32,
+      70,
+      90
+    ],
+    "educational": [
+      33,
+      64,
+      151
+    ],
+    "experiences": [
+      34
+    ],
+    "wages,": [
+      36
+    ],
+    "I": [
+      37
+    ],
+    "show": [
+      38
+    ],
+    "that": [
+      39,
+      58,
+      147
+    ],
+    "ending": [
+      40
+    ],
+    "caused": [
+      43
+    ],
+    "underrepresented": [
+      44
+    ],
+    "minority": [
+      45
+    ],
+    "(URM)": [
+      46
+    ],
+    "freshman": [
+      47
+    ],
+    "cascade": [
+      50,
+      60
+    ],
+    "into": [
+      51
+    ],
+    "lower-quality": [
+      52
+    ],
+    "colleges.": [
+      53
+    ],
+    "The": [
+      54
+    ],
+    "\u201cmismatch": [
+      55
+    ],
+    "hypothesis\u201d": [
+      56
+    ],
+    "implies": [
+      57
+    ],
+    "this": [
+      59
+    ],
+    "would": [
+      61
+    ],
+    "provide": [
+      62
+    ],
+    "net": [
+      63,
+      150,
+      160
+    ],
+    "benefits": [
+      65,
+      154
+    ],
+    "URM": [
+      67,
+      85,
+      108,
+      131,
+      156
+    ],
+    "applicants,": [
+      68
+    ],
+    "but": [
+      69
+    ],
+    "degree": [
+      71
+    ],
+    "attainment": [
+      72
+    ],
+    "declined": [
+      73
+    ],
+    "overall": [
+      74
+    ],
+    "STEM": [
+      77,
+      114
+    ],
+    "fields,": [
+      78
+    ],
+    "especially": [
+      79
+    ],
+    "among": [
+      80,
+      99
+    ],
+    "less": [
+      81
+    ],
+    "academically": [
+      82
+    ],
+    "qualified": [
+      83,
+      130
+    ],
+    "applicants.": [
+      84,
+      101,
+      167
+    ],
+    "applicants\u2019": [
+      86
+    ],
+    "average": [
+      87
+    ],
+    "wages": [
+      88
+    ],
+    "twenties": [
+      91
+    ],
+    "thirties": [
+      93
+    ],
+    "subsequently": [
+      94
+    ],
+    "declined,": [
+      95
+    ],
+    "driven": [
+      96
+    ],
+    "by": [
+      97,
+      107
+    ],
+    "declines": [
+      98,
+      103
+    ],
+    "Hispanic": [
+      100
+    ],
+    "These": [
+      102
+    ],
+    "are": [
+      104
+    ],
+    "not": [
+      105
+    ],
+    "explained": [
+      106
+    ],
+    "students'": [
+      109
+    ],
+    "performance": [
+      110
+    ],
+    "or": [
+      111
+    ],
+    "persistence": [
+      112
+    ],
+    "course": [
+      115
+    ],
+    "sequences,": [
+      116
+    ],
+    "which": [
+      117
+    ],
+    "were": [
+      118
+    ],
+    "unchanged": [
+      119
+    ],
+    "after": [
+      120
+    ],
+    "Prop": [
+      121
+    ],
+    "209.": [
+      122
+    ],
+    "Ending": [
+      123
+    ],
+    "also": [
+      126
+    ],
+    "deterred": [
+      127
+    ],
+    "thousands": [
+      128
+    ],
+    "students": [
+      132
+    ],
+    "from": [
+      133
+    ],
+    "applying": [
+      134
+    ],
+    "any": [
+      136
+    ],
+    "UC": [
+      137
+    ],
+    "campus.": [
+      138
+    ],
+    "Complementary": [
+      139
+    ],
+    "regression": [
+      140
+    ],
+    "discontinuity": [
+      141
+    ],
+    "institutional": [
+      143
+    ],
+    "value-added": [
+      144
+    ],
+    "analyses": [
+      145
+    ],
+    "suggest": [
+      146
+    ],
+    "action\u2019s": [
+      149
+    ],
+    "wage": [
+      153
+    ],
+    "for": [
+      155,
+      162
+    ],
+    "exceed": [
+      158
+    ],
+    "its": [
+      159
+    ],
+    "costs": [
+      161
+    ],
+    "on-the-margin": [
+      163
+    ],
+    "white": [
+      164
+    ],
+    "Asian": [
+      166
+    ]
+  },
+  "counts_by_year": [
+    {
+      "year": 2026,
+      "cited_by_count": 14
+    },
+    {
+      "year": 2025,
+      "cited_by_count": 33
+    },
+    {
+      "year": 2024,
+      "cited_by_count": 24
+    },
+    {
+      "year": 2023,
+      "cited_by_count": 44
+    },
+    {
+      "year": 2022,
+      "cited_by_count": 24
+    },
+    {
+      "year": 2021,
+      "cited_by_count": 4
+    },
+    {
+      "year": 2020,
+      "cited_by_count": 3
+    }
+  ],
+  "updated_date": "2026-06-26T08:34:08.712188",
+  "created_date": "2025-10-10T00:00:00"
+}

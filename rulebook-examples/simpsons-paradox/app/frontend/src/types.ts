@@ -74,6 +74,8 @@ export interface TreatmentRanking {
   treatment_b: string;
   pooled_rate_a: number;
   pooled_rate_b: number;
+  pooled_rate_from_weights_a: number | null;
+  pooled_rate_from_weights_b: number | null;
   pooled_winner: string;
   stratum_count: number;
   strata_won_by_a: number;
@@ -233,6 +235,9 @@ export interface CorpusCatalogSummary {
   high_priority_count: number;
   import_session_ready: boolean;
   catalog_witness_note: string;
+  data_ready_count?: number;
+  encode_pipeline_ready_count?: number;
+  expansion_candidate_count?: number;
 }
 
 export interface CandidateStudyRow {
@@ -254,11 +259,17 @@ export interface CandidateStudyRow {
   is_imported: boolean;
   observed_distortion_type: string | null;
   type_prediction_match: boolean | null;
+  data_acquisition_status?: string;
+  reversal_mechanism?: string;
+  paradox_confirmation?: string;
+  expansion_wave?: string | null;
+  is_data_ready?: boolean;
 }
 
 export interface DomainExpansionTarget {
   domain_target_id: string;
   domain: string;
+  legacy_domain_alias?: string | null;
   target_min_count: number;
   current_imported_count: number;
   candidate_queued_count: number;

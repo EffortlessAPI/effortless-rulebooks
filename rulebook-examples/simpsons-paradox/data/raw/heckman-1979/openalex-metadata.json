@@ -1,0 +1,864 @@
+{
+  "id": "https://openalex.org/W2031811990",
+  "doi": "https://doi.org/10.1111/1467-6419.00104",
+  "title": "The Heckman Correction for Sample Selection and Its Critique",
+  "display_name": "The Heckman Correction for Sample Selection and Its Critique",
+  "relevance_score": 717.1479,
+  "publication_year": 2000,
+  "publication_date": "2000-02-01",
+  "ids": {
+    "openalex": "https://openalex.org/W2031811990",
+    "doi": "https://doi.org/10.1111/1467-6419.00104",
+    "mag": "2031811990"
+  },
+  "language": "en",
+  "primary_location": {
+    "id": "doi:10.1111/1467-6419.00104",
+    "is_oa": false,
+    "landing_page_url": "https://doi.org/10.1111/1467-6419.00104",
+    "pdf_url": null,
+    "source": {
+      "id": "https://openalex.org/S124549413",
+      "display_name": "Journal of Economic Surveys",
+      "issn_l": "0950-0804",
+      "issn": [
+        "0950-0804",
+        "1467-6419"
+      ],
+      "is_oa": false,
+      "is_in_doaj": false,
+      "is_core": true,
+      "host_organization": "https://openalex.org/P4310320595",
+      "host_organization_name": "Wiley",
+      "host_organization_lineage": [
+        "https://openalex.org/P4310320595"
+      ],
+      "host_organization_lineage_names": [
+        "Wiley"
+      ],
+      "type": "journal"
+    },
+    "license": null,
+    "license_id": null,
+    "version": "publishedVersion",
+    "is_accepted": true,
+    "is_published": true,
+    "raw_source_name": "Journal of Economic Surveys",
+    "raw_type": "journal-article"
+  },
+  "type": "article",
+  "indexed_in": [
+    "crossref"
+  ],
+  "open_access": {
+    "is_oa": false,
+    "oa_status": "closed",
+    "oa_url": null,
+    "any_repository_has_fulltext": false
+  },
+  "authorships": [
+    {
+      "author_position": "first",
+      "author": {
+        "id": "https://openalex.org/A5021305844",
+        "display_name": "Patrick A. Puhani",
+        "orcid": "https://orcid.org/0000-0003-0289-3087"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I202963720",
+          "display_name": "University of St.Gallen",
+          "ror": "https://ror.org/0561a3s31",
+          "country_code": "CH",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I202963720"
+          ]
+        }
+      ],
+      "countries": [
+        "CH"
+      ],
+      "is_corresponding": true,
+      "raw_author_name": "Patrick Puhani",
+      "raw_affiliation_strings": [
+        "SIAW, University of St. Gallen*"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "SIAW, University of St. Gallen*",
+          "institution_ids": [
+            "https://openalex.org/I202963720"
+          ]
+        }
+      ]
+    }
+  ],
+  "institutions": [],
+  "countries_distinct_count": 1,
+  "institutions_distinct_count": 1,
+  "corresponding_author_ids": [
+    "https://openalex.org/A5021305844"
+  ],
+  "corresponding_institution_ids": [
+    "https://openalex.org/I202963720"
+  ],
+  "apc_list": {
+    "value": 3860,
+    "currency": "USD",
+    "value_usd": 3860
+  },
+  "apc_paid": null,
+  "fwci": 41.9783,
+  "has_fulltext": false,
+  "cited_by_count": 1099,
+  "citation_normalized_percentile": {
+    "value": 0.9989249,
+    "is_in_top_1_percent": true,
+    "is_in_top_10_percent": true
+  },
+  "cited_by_percentile_year": {
+    "min": 99,
+    "max": 100
+  },
+  "biblio": {
+    "volume": "14",
+    "issue": "1",
+    "first_page": "53",
+    "last_page": "68"
+  },
+  "is_retracted": false,
+  "is_paratext": false,
+  "is_xpac": false,
+  "primary_topic": {
+    "id": "https://openalex.org/T11161",
+    "display_name": "Consumer Market Behavior and Pricing",
+    "score": 0.9907000064849854,
+    "subfield": {
+      "id": "https://openalex.org/subfields/1406",
+      "display_name": "Marketing"
+    },
+    "field": {
+      "id": "https://openalex.org/fields/14",
+      "display_name": "Business, Management and Accounting"
+    },
+    "domain": {
+      "id": "https://openalex.org/domains/2",
+      "display_name": "Social Sciences"
+    }
+  },
+  "topics": [
+    {
+      "id": "https://openalex.org/T11161",
+      "display_name": "Consumer Market Behavior and Pricing",
+      "score": 0.9907000064849854,
+      "subfield": {
+        "id": "https://openalex.org/subfields/1406",
+        "display_name": "Marketing"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/14",
+        "display_name": "Business, Management and Accounting"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/2",
+        "display_name": "Social Sciences"
+      }
+    },
+    {
+      "id": "https://openalex.org/T11898",
+      "display_name": "Economics of Agriculture and Food Markets",
+      "score": 0.9869999885559082,
+      "subfield": {
+        "id": "https://openalex.org/subfields/2002",
+        "display_name": "Economics and Econometrics"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/20",
+        "display_name": "Economics, Econometrics and Finance"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/2",
+        "display_name": "Social Sciences"
+      }
+    },
+    {
+      "id": "https://openalex.org/T11911",
+      "display_name": "Spatial and Panel Data Analysis",
+      "score": 0.9804999828338623,
+      "subfield": {
+        "id": "https://openalex.org/subfields/2002",
+        "display_name": "Economics and Econometrics"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/20",
+        "display_name": "Economics, Econometrics and Finance"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/2",
+        "display_name": "Social Sciences"
+      }
+    }
+  ],
+  "keywords": [
+    {
+      "id": "https://openalex.org/keywords/collinearity",
+      "display_name": "Collinearity",
+      "score": 0.8821884393692017
+    },
+    {
+      "id": "https://openalex.org/keywords/estimator",
+      "display_name": "Estimator",
+      "score": 0.7646327018737793
+    },
+    {
+      "id": "https://openalex.org/keywords/econometrics",
+      "display_name": "Econometrics",
+      "score": 0.7082271575927734
+    },
+    {
+      "id": "https://openalex.org/keywords/monte-carlo-method",
+      "display_name": "Monte Carlo method",
+      "score": 0.4890745282173157
+    },
+    {
+      "id": "https://openalex.org/keywords/selection",
+      "display_name": "Selection (genetic algorithm)",
+      "score": 0.4827239215373993
+    },
+    {
+      "id": "https://openalex.org/keywords/economics",
+      "display_name": "Economics",
+      "score": 0.48176002502441406
+    },
+    {
+      "id": "https://openalex.org/keywords/statistics",
+      "display_name": "Statistics",
+      "score": 0.4395671486854553
+    },
+    {
+      "id": "https://openalex.org/keywords/sample",
+      "display_name": "Sample (material)",
+      "score": 0.4393016993999481
+    },
+    {
+      "id": "https://openalex.org/keywords/model-selection",
+      "display_name": "Model selection",
+      "score": 0.4334251880645752
+    },
+    {
+      "id": "https://openalex.org/keywords/estimation",
+      "display_name": "Estimation",
+      "score": 0.42516955733299255
+    },
+    {
+      "id": "https://openalex.org/keywords/wage",
+      "display_name": "Wage",
+      "score": 0.41269636154174805
+    },
+    {
+      "id": "https://openalex.org/keywords/mathematics",
+      "display_name": "Mathematics",
+      "score": 0.4046039581298828
+    },
+    {
+      "id": "https://openalex.org/keywords/computer-science",
+      "display_name": "Computer science",
+      "score": 0.23820146918296814
+    }
+  ],
+  "concepts": [
+    {
+      "id": "https://openalex.org/C106192678",
+      "wikidata": "https://www.wikidata.org/wiki/Q1419761",
+      "display_name": "Collinearity",
+      "level": 2,
+      "score": 0.8821884393692017
+    },
+    {
+      "id": "https://openalex.org/C185429906",
+      "wikidata": "https://www.wikidata.org/wiki/Q1130160",
+      "display_name": "Estimator",
+      "level": 2,
+      "score": 0.7646327018737793
+    },
+    {
+      "id": "https://openalex.org/C149782125",
+      "wikidata": "https://www.wikidata.org/wiki/Q160039",
+      "display_name": "Econometrics",
+      "level": 1,
+      "score": 0.7082271575927734
+    },
+    {
+      "id": "https://openalex.org/C19499675",
+      "wikidata": "https://www.wikidata.org/wiki/Q232207",
+      "display_name": "Monte Carlo method",
+      "level": 2,
+      "score": 0.4890745282173157
+    },
+    {
+      "id": "https://openalex.org/C81917197",
+      "wikidata": "https://www.wikidata.org/wiki/Q628760",
+      "display_name": "Selection (genetic algorithm)",
+      "level": 2,
+      "score": 0.4827239215373993
+    },
+    {
+      "id": "https://openalex.org/C162324750",
+      "wikidata": "https://www.wikidata.org/wiki/Q8134",
+      "display_name": "Economics",
+      "level": 0,
+      "score": 0.48176002502441406
+    },
+    {
+      "id": "https://openalex.org/C105795698",
+      "wikidata": "https://www.wikidata.org/wiki/Q12483",
+      "display_name": "Statistics",
+      "level": 1,
+      "score": 0.4395671486854553
+    },
+    {
+      "id": "https://openalex.org/C198531522",
+      "wikidata": "https://www.wikidata.org/wiki/Q485146",
+      "display_name": "Sample (material)",
+      "level": 2,
+      "score": 0.4393016993999481
+    },
+    {
+      "id": "https://openalex.org/C93959086",
+      "wikidata": "https://www.wikidata.org/wiki/Q6888345",
+      "display_name": "Model selection",
+      "level": 2,
+      "score": 0.4334251880645752
+    },
+    {
+      "id": "https://openalex.org/C96250715",
+      "wikidata": "https://www.wikidata.org/wiki/Q965330",
+      "display_name": "Estimation",
+      "level": 2,
+      "score": 0.42516955733299255
+    },
+    {
+      "id": "https://openalex.org/C2777388388",
+      "wikidata": "https://www.wikidata.org/wiki/Q6821213",
+      "display_name": "Wage",
+      "level": 2,
+      "score": 0.41269636154174805
+    },
+    {
+      "id": "https://openalex.org/C33923547",
+      "wikidata": "https://www.wikidata.org/wiki/Q395",
+      "display_name": "Mathematics",
+      "level": 0,
+      "score": 0.4046039581298828
+    },
+    {
+      "id": "https://openalex.org/C41008148",
+      "wikidata": "https://www.wikidata.org/wiki/Q21198",
+      "display_name": "Computer science",
+      "level": 0,
+      "score": 0.23820146918296814
+    },
+    {
+      "id": "https://openalex.org/C187736073",
+      "wikidata": "https://www.wikidata.org/wiki/Q2920921",
+      "display_name": "Management",
+      "level": 1,
+      "score": 0.0
+    },
+    {
+      "id": "https://openalex.org/C185592680",
+      "wikidata": "https://www.wikidata.org/wiki/Q2329",
+      "display_name": "Chemistry",
+      "level": 0,
+      "score": 0.0
+    },
+    {
+      "id": "https://openalex.org/C154945302",
+      "wikidata": "https://www.wikidata.org/wiki/Q11660",
+      "display_name": "Artificial intelligence",
+      "level": 1,
+      "score": 0.0
+    },
+    {
+      "id": "https://openalex.org/C43617362",
+      "wikidata": "https://www.wikidata.org/wiki/Q170050",
+      "display_name": "Chromatography",
+      "level": 1,
+      "score": 0.0
+    },
+    {
+      "id": "https://openalex.org/C34447519",
+      "wikidata": "https://www.wikidata.org/wiki/Q179522",
+      "display_name": "Market economy",
+      "level": 1,
+      "score": 0.0
+    }
+  ],
+  "mesh": [],
+  "locations_count": 2,
+  "locations": [
+    {
+      "id": "doi:10.1111/1467-6419.00104",
+      "is_oa": false,
+      "landing_page_url": "https://doi.org/10.1111/1467-6419.00104",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S124549413",
+        "display_name": "Journal of Economic Surveys",
+        "issn_l": "0950-0804",
+        "issn": [
+          "0950-0804",
+          "1467-6419"
+        ],
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": true,
+        "host_organization": "https://openalex.org/P4310320595",
+        "host_organization_name": "Wiley",
+        "host_organization_lineage": [
+          "https://openalex.org/P4310320595"
+        ],
+        "host_organization_lineage_names": [
+          "Wiley"
+        ],
+        "type": "journal"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "publishedVersion",
+      "is_accepted": true,
+      "is_published": true,
+      "raw_source_name": "Journal of Economic Surveys",
+      "raw_type": "journal-article"
+    },
+    {
+      "id": "pmh:oai:RePEc:bla:jecsur:v:14:y:2000:i:1:p:53-68",
+      "is_oa": false,
+      "landing_page_url": "http://www.blackwell-synergy.com/servlet/useragent?func=synergy&amp;synergyAction=showTOC&amp;journalCode=&amp;volume=14&amp;issue=1&amp;year=2000&amp;part=null",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4306401271",
+        "display_name": "RePEc: Research Papers in Economics",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I77793887",
+        "host_organization_name": "Federal Reserve Bank of St. Louis",
+        "host_organization_lineage": [
+          "https://openalex.org/I77793887"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "submittedVersion",
+      "is_accepted": false,
+      "is_published": false,
+      "raw_source_name": "",
+      "raw_type": "article"
+    }
+  ],
+  "best_oa_location": null,
+  "sustainable_development_goals": [
+    {
+      "display_name": "Decent work and economic growth",
+      "id": "https://metadata.un.org/sdg/8",
+      "score": 0.7300000190734863
+    }
+  ],
+  "awards": [],
+  "funders": [],
+  "has_content": {
+    "grobid_xml": false,
+    "pdf": false
+  },
+  "content_urls": null,
+  "referenced_works_count": 33,
+  "referenced_works": [
+    "https://openalex.org/W1487848695",
+    "https://openalex.org/W1509394355",
+    "https://openalex.org/W1584855941",
+    "https://openalex.org/W1592576206",
+    "https://openalex.org/W1603639660",
+    "https://openalex.org/W1963928868",
+    "https://openalex.org/W1968348789",
+    "https://openalex.org/W1971401263",
+    "https://openalex.org/W1975776109",
+    "https://openalex.org/W1977205699",
+    "https://openalex.org/W1986250339",
+    "https://openalex.org/W1996148734",
+    "https://openalex.org/W1998516017",
+    "https://openalex.org/W2013249925",
+    "https://openalex.org/W2016983945",
+    "https://openalex.org/W2020372301",
+    "https://openalex.org/W2042265279",
+    "https://openalex.org/W2044758663",
+    "https://openalex.org/W2048997388",
+    "https://openalex.org/W2058744048",
+    "https://openalex.org/W2060661782",
+    "https://openalex.org/W2073209353",
+    "https://openalex.org/W2075943408",
+    "https://openalex.org/W2078658856",
+    "https://openalex.org/W2079239849",
+    "https://openalex.org/W2081556442",
+    "https://openalex.org/W2083979183",
+    "https://openalex.org/W2108818539",
+    "https://openalex.org/W2135577570",
+    "https://openalex.org/W2139122730",
+    "https://openalex.org/W2398235127",
+    "https://openalex.org/W3122614520",
+    "https://openalex.org/W3141065972"
+  ],
+  "related_works": [
+    "https://openalex.org/W2159670039",
+    "https://openalex.org/W4226120311",
+    "https://openalex.org/W2058928070",
+    "https://openalex.org/W3016530894",
+    "https://openalex.org/W4233429336",
+    "https://openalex.org/W4256422528",
+    "https://openalex.org/W3196914014",
+    "https://openalex.org/W4235291650",
+    "https://openalex.org/W3122756976",
+    "https://openalex.org/W1977205699"
+  ],
+  "abstract_inverted_index": {
+    "This": [
+      0
+    ],
+    "paper": [
+      1
+    ],
+    "gives": [
+      2,
+      85
+    ],
+    "a": [
+      3
+    ],
+    "short": [
+      4
+    ],
+    "overview": [
+      5
+    ],
+    "of": [
+      6,
+      13,
+      64,
+      79
+    ],
+    "Monte": [
+      7
+    ],
+    "Carlo": [
+      8
+    ],
+    "studies": [
+      9
+    ],
+    "on": [
+      10,
+      56
+    ],
+    "the": [
+      11,
+      62,
+      67,
+      75,
+      82,
+      96,
+      100,
+      104
+    ],
+    "usefulness": [
+      12
+    ],
+    "Heckman\u2019s": [
+      14
+    ],
+    "(1976,": [
+      15
+    ],
+    "1979)": [
+      16
+    ],
+    "two\u2010step": [
+      17,
+      77
+    ],
+    "estimator": [
+      18,
+      58,
+      71
+    ],
+    "for": [
+      19,
+      48
+    ],
+    "estimating": [
+      20,
+      34
+    ],
+    "selection": [
+      21
+    ],
+    "models.": [
+      22
+    ],
+    "Such": [
+      23
+    ],
+    "models": [
+      24
+    ],
+    "occur": [
+      25
+    ],
+    "frequently": [
+      26
+    ],
+    "in": [
+      27,
+      31
+    ],
+    "empirical": [
+      28
+    ],
+    "work,": [
+      29
+    ],
+    "especially": [
+      30
+    ],
+    "microeconometrics": [
+      32
+    ],
+    "when": [
+      33
+    ],
+    "wage": [
+      35
+    ],
+    "equations": [
+      36
+    ],
+    "or": [
+      37
+    ],
+    "consumer": [
+      38
+    ],
+    "expenditures.": [
+      39
+    ],
+    "It": [
+      40
+    ],
+    "is": [
+      41,
+      51,
+      72,
+      99
+    ],
+    "shown": [
+      42
+    ],
+    "that": [
+      43
+    ],
+    "exploratory": [
+      44
+    ],
+    "work": [
+      45
+    ],
+    "to": [
+      46,
+      59,
+      74
+    ],
+    "check": [
+      47
+    ],
+    "collinearity": [
+      49,
+      65,
+      90
+    ],
+    "problems": [
+      50,
+      91
+    ],
+    "strongly": [
+      52
+    ],
+    "recommended": [
+      53
+    ],
+    "before": [
+      54
+    ],
+    "deciding": [
+      55
+    ],
+    "which": [
+      57
+    ],
+    "apply.": [
+      60
+    ],
+    "In": [
+      61
+    ],
+    "absence": [
+      63
+    ],
+    "problems,": [
+      66
+    ],
+    "full\u2010information": [
+      68
+    ],
+    "maximum": [
+      69
+    ],
+    "likelihood": [
+      70
+    ],
+    "preferable": [
+      73
+    ],
+    "limited\u2010information": [
+      76
+    ],
+    "method": [
+      78
+    ],
+    "Heckman,": [
+      80
+    ],
+    "although": [
+      81
+    ],
+    "latter": [
+      83
+    ],
+    "also": [
+      84
+    ],
+    "reasonable": [
+      86
+    ],
+    "results.": [
+      87
+    ],
+    "If,": [
+      88
+    ],
+    "however,": [
+      89
+    ],
+    "prevail,": [
+      92
+    ],
+    "subsample": [
+      93
+    ],
+    "OLS": [
+      94
+    ],
+    "(or": [
+      95
+    ],
+    "Two\u2010Part": [
+      97
+    ],
+    "Model)": [
+      98
+    ],
+    "most": [
+      101
+    ],
+    "robust": [
+      102
+    ],
+    "amongst": [
+      103
+    ],
+    "simple\u2010to\u2010calculate": [
+      105
+    ],
+    "estimators.": [
+      106
+    ]
+  },
+  "counts_by_year": [
+    {
+      "year": 2026,
+      "cited_by_count": 22
+    },
+    {
+      "year": 2025,
+      "cited_by_count": 35
+    },
+    {
+      "year": 2024,
+      "cited_by_count": 44
+    },
+    {
+      "year": 2023,
+      "cited_by_count": 39
+    },
+    {
+      "year": 2022,
+      "cited_by_count": 47
+    },
+    {
+      "year": 2021,
+      "cited_by_count": 44
+    },
+    {
+      "year": 2020,
+      "cited_by_count": 49
+    },
+    {
+      "year": 2019,
+      "cited_by_count": 43
+    },
+    {
+      "year": 2018,
+      "cited_by_count": 51
+    },
+    {
+      "year": 2017,
+      "cited_by_count": 44
+    },
+    {
+      "year": 2016,
+      "cited_by_count": 64
+    },
+    {
+      "year": 2015,
+      "cited_by_count": 70
+    },
+    {
+      "year": 2014,
+      "cited_by_count": 82
+    },
+    {
+      "year": 2013,
+      "cited_by_count": 65
+    },
+    {
+      "year": 2012,
+      "cited_by_count": 58
+    }
+  ],
+  "updated_date": "2026-07-02T09:51:11.867554",
+  "created_date": "2025-10-10T00:00:00"
+}

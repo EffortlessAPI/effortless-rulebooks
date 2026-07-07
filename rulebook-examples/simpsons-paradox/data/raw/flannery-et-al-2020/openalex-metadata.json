@@ -1,0 +1,2449 @@
+{
+  "id": "https://openalex.org/W4211031111",
+  "doi": "https://doi.org/10.15585/mmwr.rr6908a1",
+  "title": "Prevention and Control of Seasonal Influenza with Vaccines: Recommendations of the Advisory Committee on Immunization Practices \u2014 United States, 2020\u201321 Influenza Season",
+  "display_name": "Prevention and Control of Seasonal Influenza with Vaccines: Recommendations of the Advisory Committee on Immunization Practices \u2014 United States, 2020\u201321 Influenza Season",
+  "relevance_score": 84.55286,
+  "publication_year": 2020,
+  "publication_date": "2020-08-20",
+  "ids": {
+    "openalex": "https://openalex.org/W4211031111",
+    "doi": "https://doi.org/10.15585/mmwr.rr6908a1",
+    "pmid": "https://pubmed.ncbi.nlm.nih.gov/32820746"
+  },
+  "language": "en",
+  "primary_location": {
+    "id": "doi:10.15585/mmwr.rr6908a1",
+    "is_oa": true,
+    "landing_page_url": "https://doi.org/10.15585/mmwr.rr6908a1",
+    "pdf_url": "https://www.cdc.gov/mmwr/volumes/69/rr/pdfs/rr6908a1-H.pdf",
+    "source": {
+      "id": "https://openalex.org/S4210169956",
+      "display_name": "MMWR Recommendations and Reports",
+      "issn_l": "1057-5987",
+      "issn": [
+        "1057-5987",
+        "1545-8601"
+      ],
+      "is_oa": true,
+      "is_in_doaj": false,
+      "is_core": true,
+      "host_organization": null,
+      "host_organization_name": null,
+      "host_organization_lineage": [],
+      "host_organization_lineage_names": [],
+      "type": "journal"
+    },
+    "license": "public-domain",
+    "license_id": "https://openalex.org/licenses/public-domain",
+    "version": "publishedVersion",
+    "is_accepted": true,
+    "is_published": true,
+    "raw_source_name": "MMWR. Recommendations and Reports",
+    "raw_type": "journal-article"
+  },
+  "type": "article",
+  "indexed_in": [
+    "crossref",
+    "pubmed"
+  ],
+  "open_access": {
+    "is_oa": true,
+    "oa_status": "diamond",
+    "oa_url": "https://www.cdc.gov/mmwr/volumes/69/rr/pdfs/rr6908a1-H.pdf",
+    "any_repository_has_fulltext": true
+  },
+  "authorships": [
+    {
+      "author_position": "first",
+      "author": {
+        "id": "https://openalex.org/A5008244699",
+        "display_name": "Lisa A. Grohskopf",
+        "orcid": null
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I19085752",
+          "display_name": "National Center for Immunization and Respiratory Diseases",
+          "ror": "https://ror.org/05je2tx78",
+          "country_code": "US",
+          "type": "facility",
+          "lineage": [
+            "https://openalex.org/I1289490764",
+            "https://openalex.org/I1289490764",
+            "https://openalex.org/I1299022934",
+            "https://openalex.org/I1299022934",
+            "https://openalex.org/I19085752",
+            "https://openalex.org/I4210109567"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": true,
+      "raw_author_name": "Lisa A. Grohskopf",
+      "raw_affiliation_strings": [
+        "Influenza Division, National Center for Immunization and Respiratory Diseases, CDC;"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Influenza Division, National Center for Immunization and Respiratory Diseases, CDC;",
+          "institution_ids": [
+            "https://openalex.org/I19085752"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5069704188",
+        "display_name": "Elif Alyanak",
+        "orcid": "https://orcid.org/0000-0002-5894-3904"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I1325736334",
+          "display_name": "Battelle",
+          "ror": "https://ror.org/01h5tnr73",
+          "country_code": "US",
+          "type": "nonprofit",
+          "lineage": [
+            "https://openalex.org/I1325736334"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I19085752",
+          "display_name": "National Center for Immunization and Respiratory Diseases",
+          "ror": "https://ror.org/05je2tx78",
+          "country_code": "US",
+          "type": "facility",
+          "lineage": [
+            "https://openalex.org/I1289490764",
+            "https://openalex.org/I1289490764",
+            "https://openalex.org/I1299022934",
+            "https://openalex.org/I1299022934",
+            "https://openalex.org/I19085752",
+            "https://openalex.org/I4210109567"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Elif Alyanak",
+      "raw_affiliation_strings": [
+        "Battelle Memorial Institute, Atlanta, Georgia;",
+        "Influenza Division, National Center for Immunization and Respiratory Diseases, CDC;"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Battelle Memorial Institute, Atlanta, Georgia;",
+          "institution_ids": [
+            "https://openalex.org/I1325736334"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Influenza Division, National Center for Immunization and Respiratory Diseases, CDC;",
+          "institution_ids": [
+            "https://openalex.org/I19085752"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5046057748",
+        "display_name": "Karen R. Broder",
+        "orcid": null
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I4210121439",
+          "display_name": "National Center for Emerging and Zoonotic Infectious Diseases",
+          "ror": "https://ror.org/02ggwpx62",
+          "country_code": "US",
+          "type": "facility",
+          "lineage": [
+            "https://openalex.org/I1289490764",
+            "https://openalex.org/I1299022934",
+            "https://openalex.org/I4210109567",
+            "https://openalex.org/I4210121439"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Karen R. Broder",
+      "raw_affiliation_strings": [
+        "Immunization Safety Office, National Center for Emerging and Zoonotic Infectious Diseases, CDC;"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Immunization Safety Office, National Center for Emerging and Zoonotic Infectious Diseases, CDC;",
+          "institution_ids": [
+            "https://openalex.org/I4210121439"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5071766558",
+        "display_name": "Lenee Blanton",
+        "orcid": "https://orcid.org/0000-0002-6791-4312"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I19085752",
+          "display_name": "National Center for Immunization and Respiratory Diseases",
+          "ror": "https://ror.org/05je2tx78",
+          "country_code": "US",
+          "type": "facility",
+          "lineage": [
+            "https://openalex.org/I1289490764",
+            "https://openalex.org/I1289490764",
+            "https://openalex.org/I1299022934",
+            "https://openalex.org/I1299022934",
+            "https://openalex.org/I19085752",
+            "https://openalex.org/I4210109567"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Lenee H. Blanton",
+      "raw_affiliation_strings": [
+        "Influenza Division, National Center for Immunization and Respiratory Diseases, CDC;"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Influenza Division, National Center for Immunization and Respiratory Diseases, CDC;",
+          "institution_ids": [
+            "https://openalex.org/I19085752"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5090955836",
+        "display_name": "Alicia M. Fry",
+        "orcid": "https://orcid.org/0000-0002-3208-9308"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I19085752",
+          "display_name": "National Center for Immunization and Respiratory Diseases",
+          "ror": "https://ror.org/05je2tx78",
+          "country_code": "US",
+          "type": "facility",
+          "lineage": [
+            "https://openalex.org/I1289490764",
+            "https://openalex.org/I1289490764",
+            "https://openalex.org/I1299022934",
+            "https://openalex.org/I1299022934",
+            "https://openalex.org/I19085752",
+            "https://openalex.org/I4210109567"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Alicia M. Fry",
+      "raw_affiliation_strings": [
+        "Influenza Division, National Center for Immunization and Respiratory Diseases, CDC;"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Influenza Division, National Center for Immunization and Respiratory Diseases, CDC;",
+          "institution_ids": [
+            "https://openalex.org/I19085752"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5088165245",
+        "display_name": "Daniel B. Jernigan",
+        "orcid": "https://orcid.org/0000-0002-0653-2433"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I19085752",
+          "display_name": "National Center for Immunization and Respiratory Diseases",
+          "ror": "https://ror.org/05je2tx78",
+          "country_code": "US",
+          "type": "facility",
+          "lineage": [
+            "https://openalex.org/I1289490764",
+            "https://openalex.org/I1289490764",
+            "https://openalex.org/I1299022934",
+            "https://openalex.org/I1299022934",
+            "https://openalex.org/I19085752",
+            "https://openalex.org/I4210109567"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Daniel B. Jernigan",
+      "raw_affiliation_strings": [
+        "Influenza Division, National Center for Immunization and Respiratory Diseases, CDC;"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Influenza Division, National Center for Immunization and Respiratory Diseases, CDC;",
+          "institution_ids": [
+            "https://openalex.org/I19085752"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "last",
+      "author": {
+        "id": "https://openalex.org/A5001978364",
+        "display_name": "Robert L. Atmar",
+        "orcid": "https://orcid.org/0000-0001-9989-6772"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I181547552",
+          "display_name": "Baylor College of Medicine",
+          "ror": "https://ror.org/02pttbw34",
+          "country_code": "US",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I181547552",
+            "https://openalex.org/I2801539370"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Robert L. Atmar",
+      "raw_affiliation_strings": [
+        "Baylor College of Medicine, Houston, Texas"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Baylor College of Medicine, Houston, Texas",
+          "institution_ids": [
+            "https://openalex.org/I181547552"
+          ]
+        }
+      ]
+    }
+  ],
+  "institutions": [],
+  "countries_distinct_count": 1,
+  "institutions_distinct_count": 4,
+  "corresponding_author_ids": [
+    "https://openalex.org/A5008244699"
+  ],
+  "corresponding_institution_ids": [
+    "https://openalex.org/I19085752"
+  ],
+  "apc_list": null,
+  "apc_paid": null,
+  "fwci": 39.8531,
+  "has_fulltext": true,
+  "cited_by_count": 334,
+  "citation_normalized_percentile": {
+    "value": 0.9988024,
+    "is_in_top_1_percent": true,
+    "is_in_top_10_percent": true
+  },
+  "cited_by_percentile_year": {
+    "min": 99,
+    "max": 100
+  },
+  "biblio": {
+    "volume": "69",
+    "issue": "8",
+    "first_page": "1",
+    "last_page": "24"
+  },
+  "is_retracted": false,
+  "is_paratext": false,
+  "is_xpac": false,
+  "primary_topic": {
+    "id": "https://openalex.org/T10167",
+    "display_name": "Influenza Virus Research Studies",
+    "score": 1.0,
+    "subfield": {
+      "id": "https://openalex.org/subfields/2713",
+      "display_name": "Epidemiology"
+    },
+    "field": {
+      "id": "https://openalex.org/fields/27",
+      "display_name": "Medicine"
+    },
+    "domain": {
+      "id": "https://openalex.org/domains/4",
+      "display_name": "Health Sciences"
+    }
+  },
+  "topics": [
+    {
+      "id": "https://openalex.org/T10167",
+      "display_name": "Influenza Virus Research Studies",
+      "score": 1.0,
+      "subfield": {
+        "id": "https://openalex.org/subfields/2713",
+        "display_name": "Epidemiology"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/27",
+        "display_name": "Medicine"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/4",
+        "display_name": "Health Sciences"
+      }
+    },
+    {
+      "id": "https://openalex.org/T11243",
+      "display_name": "Respiratory viral infections research",
+      "score": 0.9987999796867371,
+      "subfield": {
+        "id": "https://openalex.org/subfields/2713",
+        "display_name": "Epidemiology"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/27",
+        "display_name": "Medicine"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/4",
+        "display_name": "Health Sciences"
+      }
+    },
+    {
+      "id": "https://openalex.org/T10976",
+      "display_name": "Viral gastroenteritis research and epidemiology",
+      "score": 0.9832000136375427,
+      "subfield": {
+        "id": "https://openalex.org/subfields/2725",
+        "display_name": "Infectious Diseases"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/27",
+        "display_name": "Medicine"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/4",
+        "display_name": "Health Sciences"
+      }
+    }
+  ],
+  "keywords": [
+    {
+      "id": "https://openalex.org/keywords/medicine",
+      "display_name": "Medicine",
+      "score": 0.8712529540061951
+    },
+    {
+      "id": "https://openalex.org/keywords/live-attenuated-influenza-vaccine",
+      "display_name": "Live attenuated influenza vaccine",
+      "score": 0.8414871692657471
+    },
+    {
+      "id": "https://openalex.org/keywords/advisory-committee",
+      "display_name": "Advisory committee",
+      "score": 0.7732268571853638
+    },
+    {
+      "id": "https://openalex.org/keywords/vaccination",
+      "display_name": "Vaccination",
+      "score": 0.7653015851974487
+    },
+    {
+      "id": "https://openalex.org/keywords/immunization",
+      "display_name": "Immunization",
+      "score": 0.7118281722068787
+    },
+    {
+      "id": "https://openalex.org/keywords/influenza-vaccine",
+      "display_name": "Influenza vaccine",
+      "score": 0.6508309841156006
+    },
+    {
+      "id": "https://openalex.org/keywords/seasonal-influenza",
+      "display_name": "Seasonal influenza",
+      "score": 0.638006865978241
+    },
+    {
+      "id": "https://openalex.org/keywords/influenza-season",
+      "display_name": "Influenza season",
+      "score": 0.5382525324821472
+    },
+    {
+      "id": "https://openalex.org/keywords/family-medicine",
+      "display_name": "Family medicine",
+      "score": 0.44406041502952576
+    },
+    {
+      "id": "https://openalex.org/keywords/pandemic",
+      "display_name": "Pandemic",
+      "score": 0.4210507571697235
+    },
+    {
+      "id": "https://openalex.org/keywords/human-mortality-from-h5n1",
+      "display_name": "Human mortality from H5N1",
+      "score": 0.4175242781639099
+    },
+    {
+      "id": "https://openalex.org/keywords/inactivated-vaccine",
+      "display_name": "Inactivated vaccine",
+      "score": 0.41593965888023376
+    },
+    {
+      "id": "https://openalex.org/keywords/virology",
+      "display_name": "Virology",
+      "score": 0.3947727382183075
+    },
+    {
+      "id": "https://openalex.org/keywords/immunology",
+      "display_name": "Immunology",
+      "score": 0.36169716715812683
+    },
+    {
+      "id": "https://openalex.org/keywords/environmental-health",
+      "display_name": "Environmental health",
+      "score": 0.3598809242248535
+    },
+    {
+      "id": "https://openalex.org/keywords/coronavirus-disease-2019",
+      "display_name": "Coronavirus disease 2019 (COVID-19)",
+      "score": 0.161665678024292
+    },
+    {
+      "id": "https://openalex.org/keywords/internal-medicine",
+      "display_name": "Internal medicine",
+      "score": 0.1164301335811615
+    },
+    {
+      "id": "https://openalex.org/keywords/disease",
+      "display_name": "Disease",
+      "score": 0.10524186491966248
+    },
+    {
+      "id": "https://openalex.org/keywords/infectious-disease",
+      "display_name": "Infectious disease (medical specialty)",
+      "score": 0.09194090962409973
+    },
+    {
+      "id": "https://openalex.org/keywords/antigen",
+      "display_name": "Antigen",
+      "score": 0.05847811698913574
+    }
+  ],
+  "concepts": [
+    {
+      "id": "https://openalex.org/C71924100",
+      "wikidata": "https://www.wikidata.org/wiki/Q11190",
+      "display_name": "Medicine",
+      "level": 0,
+      "score": 0.8712529540061951
+    },
+    {
+      "id": "https://openalex.org/C133239900",
+      "wikidata": "https://www.wikidata.org/wiki/Q2043512",
+      "display_name": "Live attenuated influenza vaccine",
+      "level": 4,
+      "score": 0.8414871692657471
+    },
+    {
+      "id": "https://openalex.org/C3017489713",
+      "wikidata": "https://www.wikidata.org/wiki/Q4686866",
+      "display_name": "Advisory committee",
+      "level": 2,
+      "score": 0.7732268571853638
+    },
+    {
+      "id": "https://openalex.org/C22070199",
+      "wikidata": "https://www.wikidata.org/wiki/Q192995",
+      "display_name": "Vaccination",
+      "level": 2,
+      "score": 0.7653015851974487
+    },
+    {
+      "id": "https://openalex.org/C2780801004",
+      "wikidata": "https://www.wikidata.org/wiki/Q1415366",
+      "display_name": "Immunization",
+      "level": 3,
+      "score": 0.7118281722068787
+    },
+    {
+      "id": "https://openalex.org/C2780689484",
+      "wikidata": "https://www.wikidata.org/wiki/Q383260",
+      "display_name": "Influenza vaccine",
+      "level": 3,
+      "score": 0.6508309841156006
+    },
+    {
+      "id": "https://openalex.org/C3018751465",
+      "wikidata": "https://www.wikidata.org/wiki/Q4120645",
+      "display_name": "Seasonal influenza",
+      "level": 5,
+      "score": 0.638006865978241
+    },
+    {
+      "id": "https://openalex.org/C2911097425",
+      "wikidata": "https://www.wikidata.org/wiki/Q4120645",
+      "display_name": "Influenza season",
+      "level": 4,
+      "score": 0.5382525324821472
+    },
+    {
+      "id": "https://openalex.org/C512399662",
+      "wikidata": "https://www.wikidata.org/wiki/Q3505712",
+      "display_name": "Family medicine",
+      "level": 1,
+      "score": 0.44406041502952576
+    },
+    {
+      "id": "https://openalex.org/C89623803",
+      "wikidata": "https://www.wikidata.org/wiki/Q12184",
+      "display_name": "Pandemic",
+      "level": 5,
+      "score": 0.4210507571697235
+    },
+    {
+      "id": "https://openalex.org/C192805744",
+      "wikidata": "https://www.wikidata.org/wiki/Q5937890",
+      "display_name": "Human mortality from H5N1",
+      "level": 5,
+      "score": 0.4175242781639099
+    },
+    {
+      "id": "https://openalex.org/C2776872762",
+      "wikidata": "https://www.wikidata.org/wiki/Q3560939",
+      "display_name": "Inactivated vaccine",
+      "level": 3,
+      "score": 0.41593965888023376
+    },
+    {
+      "id": "https://openalex.org/C159047783",
+      "wikidata": "https://www.wikidata.org/wiki/Q7215",
+      "display_name": "Virology",
+      "level": 1,
+      "score": 0.3947727382183075
+    },
+    {
+      "id": "https://openalex.org/C203014093",
+      "wikidata": "https://www.wikidata.org/wiki/Q101929",
+      "display_name": "Immunology",
+      "level": 1,
+      "score": 0.36169716715812683
+    },
+    {
+      "id": "https://openalex.org/C99454951",
+      "wikidata": "https://www.wikidata.org/wiki/Q932068",
+      "display_name": "Environmental health",
+      "level": 1,
+      "score": 0.3598809242248535
+    },
+    {
+      "id": "https://openalex.org/C3008058167",
+      "wikidata": "https://www.wikidata.org/wiki/Q84263196",
+      "display_name": "Coronavirus disease 2019 (COVID-19)",
+      "level": 4,
+      "score": 0.161665678024292
+    },
+    {
+      "id": "https://openalex.org/C126322002",
+      "wikidata": "https://www.wikidata.org/wiki/Q11180",
+      "display_name": "Internal medicine",
+      "level": 1,
+      "score": 0.1164301335811615
+    },
+    {
+      "id": "https://openalex.org/C2779134260",
+      "wikidata": "https://www.wikidata.org/wiki/Q12136",
+      "display_name": "Disease",
+      "level": 2,
+      "score": 0.10524186491966248
+    },
+    {
+      "id": "https://openalex.org/C524204448",
+      "wikidata": "https://www.wikidata.org/wiki/Q788926",
+      "display_name": "Infectious disease (medical specialty)",
+      "level": 3,
+      "score": 0.09194090962409973
+    },
+    {
+      "id": "https://openalex.org/C147483822",
+      "wikidata": "https://www.wikidata.org/wiki/Q103537",
+      "display_name": "Antigen",
+      "level": 2,
+      "score": 0.05847811698913574
+    },
+    {
+      "id": "https://openalex.org/C3116431",
+      "wikidata": "https://www.wikidata.org/wiki/Q31728",
+      "display_name": "Public administration",
+      "level": 1,
+      "score": 0.0
+    },
+    {
+      "id": "https://openalex.org/C17744445",
+      "wikidata": "https://www.wikidata.org/wiki/Q36442",
+      "display_name": "Political science",
+      "level": 0,
+      "score": 0.0
+    }
+  ],
+  "mesh": [
+    {
+      "descriptor_ui": "D000293",
+      "descriptor_name": "Adolescent",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000293",
+      "descriptor_name": "Adolescent",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000293",
+      "descriptor_name": "Adolescent",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000328",
+      "descriptor_name": "Adult",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000328",
+      "descriptor_name": "Adult",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000328",
+      "descriptor_name": "Adult",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000368",
+      "descriptor_name": "Aged",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000368",
+      "descriptor_name": "Aged",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000368",
+      "descriptor_name": "Aged",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D002487",
+      "descriptor_name": "Centers for Disease Control and Prevention, U.S.",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D002487",
+      "descriptor_name": "Centers for Disease Control and Prevention, U.S.",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D002487",
+      "descriptor_name": "Centers for Disease Control and Prevention, U.S.",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D002648",
+      "descriptor_name": "Child",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D002648",
+      "descriptor_name": "Child",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D002648",
+      "descriptor_name": "Child",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D002675",
+      "descriptor_name": "Child, Preschool",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D002675",
+      "descriptor_name": "Child, Preschool",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D002675",
+      "descriptor_name": "Child, Preschool",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D005260",
+      "descriptor_name": "Female",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D005260",
+      "descriptor_name": "Female",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D005260",
+      "descriptor_name": "Female",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D006801",
+      "descriptor_name": "Humans",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D006801",
+      "descriptor_name": "Humans",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D006801",
+      "descriptor_name": "Humans",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D007115",
+      "descriptor_name": "Immunization Schedule",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D007115",
+      "descriptor_name": "Immunization Schedule",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D007115",
+      "descriptor_name": "Immunization Schedule",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D007223",
+      "descriptor_name": "Infant",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D007223",
+      "descriptor_name": "Infant",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D007223",
+      "descriptor_name": "Infant",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D007251",
+      "descriptor_name": "Influenza, Human",
+      "qualifier_ui": "Q000453",
+      "qualifier_name": "epidemiology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D007251",
+      "descriptor_name": "Influenza, Human",
+      "qualifier_ui": "Q000453",
+      "qualifier_name": "epidemiology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D007251",
+      "descriptor_name": "Influenza, Human",
+      "qualifier_ui": "Q000453",
+      "qualifier_name": "epidemiology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D007251",
+      "descriptor_name": "Influenza, Human",
+      "qualifier_ui": "Q000517",
+      "qualifier_name": "prevention & control",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D007251",
+      "descriptor_name": "Influenza, Human",
+      "qualifier_ui": "Q000517",
+      "qualifier_name": "prevention & control",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D007251",
+      "descriptor_name": "Influenza, Human",
+      "qualifier_ui": "Q000517",
+      "qualifier_name": "prevention & control",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D007252",
+      "descriptor_name": "Influenza Vaccines",
+      "qualifier_ui": "Q000009",
+      "qualifier_name": "adverse effects",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D007252",
+      "descriptor_name": "Influenza Vaccines",
+      "qualifier_ui": "Q000009",
+      "qualifier_name": "adverse effects",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D007252",
+      "descriptor_name": "Influenza Vaccines",
+      "qualifier_ui": "Q000009",
+      "qualifier_name": "adverse effects",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D007252",
+      "descriptor_name": "Influenza Vaccines",
+      "qualifier_ui": "Q000627",
+      "qualifier_name": "therapeutic use",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D007252",
+      "descriptor_name": "Influenza Vaccines",
+      "qualifier_ui": "Q000627",
+      "qualifier_name": "therapeutic use",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D007252",
+      "descriptor_name": "Influenza Vaccines",
+      "qualifier_ui": "Q000627",
+      "qualifier_name": "therapeutic use",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D008297",
+      "descriptor_name": "Male",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D008297",
+      "descriptor_name": "Male",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D008297",
+      "descriptor_name": "Male",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D008875",
+      "descriptor_name": "Middle Aged",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D008875",
+      "descriptor_name": "Middle Aged",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D008875",
+      "descriptor_name": "Middle Aged",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D009981",
+      "descriptor_name": "Influenza B virus",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D009981",
+      "descriptor_name": "Influenza B virus",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D009981",
+      "descriptor_name": "Influenza B virus",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D011247",
+      "descriptor_name": "Pregnancy",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D011247",
+      "descriptor_name": "Pregnancy",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D011247",
+      "descriptor_name": "Pregnancy",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D012621",
+      "descriptor_name": "Seasons",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D012621",
+      "descriptor_name": "Seasons",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D012621",
+      "descriptor_name": "Seasons",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D014481",
+      "descriptor_name": "United States",
+      "qualifier_ui": "Q000453",
+      "qualifier_name": "epidemiology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D014481",
+      "descriptor_name": "United States",
+      "qualifier_ui": "Q000453",
+      "qualifier_name": "epidemiology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D014481",
+      "descriptor_name": "United States",
+      "qualifier_ui": "Q000453",
+      "qualifier_name": "epidemiology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D014613",
+      "descriptor_name": "Vaccines, Attenuated",
+      "qualifier_ui": "Q000627",
+      "qualifier_name": "therapeutic use",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D014613",
+      "descriptor_name": "Vaccines, Attenuated",
+      "qualifier_ui": "Q000627",
+      "qualifier_name": "therapeutic use",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D014613",
+      "descriptor_name": "Vaccines, Attenuated",
+      "qualifier_ui": "Q000627",
+      "qualifier_name": "therapeutic use",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D016032",
+      "descriptor_name": "Randomized Controlled Trials as Topic",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D016032",
+      "descriptor_name": "Randomized Controlled Trials as Topic",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D016032",
+      "descriptor_name": "Randomized Controlled Trials as Topic",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D018570",
+      "descriptor_name": "Risk Assessment",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D018570",
+      "descriptor_name": "Risk Assessment",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D018570",
+      "descriptor_name": "Risk Assessment",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D026683",
+      "descriptor_name": "Advisory Committees",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D026683",
+      "descriptor_name": "Advisory Committees",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D026683",
+      "descriptor_name": "Advisory Committees",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D053118",
+      "descriptor_name": "Influenza A Virus, H1N1 Subtype",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D053118",
+      "descriptor_name": "Influenza A Virus, H1N1 Subtype",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D053118",
+      "descriptor_name": "Influenza A Virus, H1N1 Subtype",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D053122",
+      "descriptor_name": "Influenza A Virus, H3N2 Subtype",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D053122",
+      "descriptor_name": "Influenza A Virus, H3N2 Subtype",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D053122",
+      "descriptor_name": "Influenza A Virus, H3N2 Subtype",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D055815",
+      "descriptor_name": "Young Adult",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D055815",
+      "descriptor_name": "Young Adult",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D055815",
+      "descriptor_name": "Young Adult",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    }
+  ],
+  "locations_count": 3,
+  "locations": [
+    {
+      "id": "doi:10.15585/mmwr.rr6908a1",
+      "is_oa": true,
+      "landing_page_url": "https://doi.org/10.15585/mmwr.rr6908a1",
+      "pdf_url": "https://www.cdc.gov/mmwr/volumes/69/rr/pdfs/rr6908a1-H.pdf",
+      "source": {
+        "id": "https://openalex.org/S4210169956",
+        "display_name": "MMWR Recommendations and Reports",
+        "issn_l": "1057-5987",
+        "issn": [
+          "1057-5987",
+          "1545-8601"
+        ],
+        "is_oa": true,
+        "is_in_doaj": false,
+        "is_core": true,
+        "host_organization": null,
+        "host_organization_name": null,
+        "host_organization_lineage": [],
+        "host_organization_lineage_names": [],
+        "type": "journal"
+      },
+      "license": "public-domain",
+      "license_id": "https://openalex.org/licenses/public-domain",
+      "version": "publishedVersion",
+      "is_accepted": true,
+      "is_published": true,
+      "raw_source_name": "MMWR. Recommendations and Reports",
+      "raw_type": "journal-article"
+    },
+    {
+      "id": "pmid:32820746",
+      "is_oa": false,
+      "landing_page_url": "https://pubmed.ncbi.nlm.nih.gov/32820746",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4306525036",
+        "display_name": "PubMed",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I1299303238",
+        "host_organization_name": "National Institutes of Health",
+        "host_organization_lineage": [
+          "https://openalex.org/I1299303238"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "publishedVersion",
+      "is_accepted": true,
+      "is_published": true,
+      "raw_source_name": "MMWR. Recommendations and reports : Morbidity and mortality weekly report. Recommendations and reports",
+      "raw_type": null
+    },
+    {
+      "id": "pmh:oai:pubmedcentral.nih.gov:7439976",
+      "is_oa": true,
+      "landing_page_url": "https://www.ncbi.nlm.nih.gov/pmc/articles/7439976",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S2764455111",
+        "display_name": "PubMed Central",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": true,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I1299303238",
+        "host_organization_name": "National Institutes of Health",
+        "host_organization_lineage": [
+          "https://openalex.org/I1299303238"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": "cc-by",
+      "license_id": "https://openalex.org/licenses/cc-by",
+      "version": "submittedVersion",
+      "is_accepted": false,
+      "is_published": false,
+      "raw_source_name": "MMWR Recomm Rep",
+      "raw_type": "Text"
+    }
+  ],
+  "best_oa_location": {
+    "id": "doi:10.15585/mmwr.rr6908a1",
+    "is_oa": true,
+    "landing_page_url": "https://doi.org/10.15585/mmwr.rr6908a1",
+    "pdf_url": "https://www.cdc.gov/mmwr/volumes/69/rr/pdfs/rr6908a1-H.pdf",
+    "source": {
+      "id": "https://openalex.org/S4210169956",
+      "display_name": "MMWR Recommendations and Reports",
+      "issn_l": "1057-5987",
+      "issn": [
+        "1057-5987",
+        "1545-8601"
+      ],
+      "is_oa": true,
+      "is_in_doaj": false,
+      "is_core": true,
+      "host_organization": null,
+      "host_organization_name": null,
+      "host_organization_lineage": [],
+      "host_organization_lineage_names": [],
+      "type": "journal"
+    },
+    "license": "public-domain",
+    "license_id": "https://openalex.org/licenses/public-domain",
+    "version": "publishedVersion",
+    "is_accepted": true,
+    "is_published": true,
+    "raw_source_name": "MMWR. Recommendations and Reports",
+    "raw_type": "journal-article"
+  },
+  "sustainable_development_goals": [
+    {
+      "display_name": "Good health and well-being",
+      "id": "https://metadata.un.org/sdg/3",
+      "score": 0.8500000238418579
+    }
+  ],
+  "awards": [],
+  "funders": [],
+  "has_content": {
+    "grobid_xml": true,
+    "pdf": true
+  },
+  "content_urls": {
+    "pdf": "https://content.openalex.org/works/W4211031111.pdf",
+    "grobid_xml": "https://content.openalex.org/works/W4211031111.grobid-xml"
+  },
+  "referenced_works_count": 89,
+  "referenced_works": [
+    "https://openalex.org/W24991951",
+    "https://openalex.org/W200674132",
+    "https://openalex.org/W315561072",
+    "https://openalex.org/W938793334",
+    "https://openalex.org/W1514280421",
+    "https://openalex.org/W1534255965",
+    "https://openalex.org/W1577134145",
+    "https://openalex.org/W1684165365",
+    "https://openalex.org/W1905652260",
+    "https://openalex.org/W1969303209",
+    "https://openalex.org/W1974047133",
+    "https://openalex.org/W1982855609",
+    "https://openalex.org/W1986138427",
+    "https://openalex.org/W1987973326",
+    "https://openalex.org/W1990928236",
+    "https://openalex.org/W2006305009",
+    "https://openalex.org/W2009533952",
+    "https://openalex.org/W2010303963",
+    "https://openalex.org/W2017713299",
+    "https://openalex.org/W2020148757",
+    "https://openalex.org/W2031517195",
+    "https://openalex.org/W2033369847",
+    "https://openalex.org/W2038467534",
+    "https://openalex.org/W2057597232",
+    "https://openalex.org/W2062068716",
+    "https://openalex.org/W2079496423",
+    "https://openalex.org/W2079566283",
+    "https://openalex.org/W2080636255",
+    "https://openalex.org/W2085474162",
+    "https://openalex.org/W2096023567",
+    "https://openalex.org/W2098749611",
+    "https://openalex.org/W2109057963",
+    "https://openalex.org/W2109801797",
+    "https://openalex.org/W2114499619",
+    "https://openalex.org/W2124193075",
+    "https://openalex.org/W2124750800",
+    "https://openalex.org/W2134242383",
+    "https://openalex.org/W2141109368",
+    "https://openalex.org/W2141289158",
+    "https://openalex.org/W2145425064",
+    "https://openalex.org/W2148111882",
+    "https://openalex.org/W2151926553",
+    "https://openalex.org/W2164949714",
+    "https://openalex.org/W2168805652",
+    "https://openalex.org/W2170249205",
+    "https://openalex.org/W2258623704",
+    "https://openalex.org/W2328728812",
+    "https://openalex.org/W2334675164",
+    "https://openalex.org/W2341134958",
+    "https://openalex.org/W2344972074",
+    "https://openalex.org/W2410976609",
+    "https://openalex.org/W2412866631",
+    "https://openalex.org/W2433310369",
+    "https://openalex.org/W2498599964",
+    "https://openalex.org/W2566650836",
+    "https://openalex.org/W2591695960",
+    "https://openalex.org/W2703965028",
+    "https://openalex.org/W2737756360",
+    "https://openalex.org/W2740085567",
+    "https://openalex.org/W2746465596",
+    "https://openalex.org/W2755102405",
+    "https://openalex.org/W2756306165",
+    "https://openalex.org/W2760564386",
+    "https://openalex.org/W2761673924",
+    "https://openalex.org/W2774380382",
+    "https://openalex.org/W2785073138",
+    "https://openalex.org/W2791099574",
+    "https://openalex.org/W2791818497",
+    "https://openalex.org/W2792196997",
+    "https://openalex.org/W2802538780",
+    "https://openalex.org/W2888663600",
+    "https://openalex.org/W2890167384",
+    "https://openalex.org/W2912473805",
+    "https://openalex.org/W2948147686",
+    "https://openalex.org/W2955782784",
+    "https://openalex.org/W2966990444",
+    "https://openalex.org/W2973829310",
+    "https://openalex.org/W2980375171",
+    "https://openalex.org/W3004738625",
+    "https://openalex.org/W3004775012",
+    "https://openalex.org/W3014199470",
+    "https://openalex.org/W3196888555",
+    "https://openalex.org/W4206387576",
+    "https://openalex.org/W4211222382",
+    "https://openalex.org/W4249394873",
+    "https://openalex.org/W4250036684",
+    "https://openalex.org/W4300543706",
+    "https://openalex.org/W6674767030",
+    "https://openalex.org/W6731194702"
+  ],
+  "related_works": [
+    "https://openalex.org/W4301207092",
+    "https://openalex.org/W2917832416",
+    "https://openalex.org/W2043765043",
+    "https://openalex.org/W4229810677",
+    "https://openalex.org/W1984349242",
+    "https://openalex.org/W2785073138",
+    "https://openalex.org/W4298153383",
+    "https://openalex.org/W4293102569",
+    "https://openalex.org/W4211031111",
+    "https://openalex.org/W2774184961"
+  ],
+  "abstract_inverted_index": {
+    "This": [
+      0
+    ],
+    "report": [
+      1,
+      112,
+      136,
+      331
+    ],
+    "updates": [
+      2,
+      133,
+      151
+    ],
+    "the": [
+      3,
+      7,
+      15,
+      22,
+      82,
+      89,
+      107,
+      138,
+      143,
+      153,
+      202,
+      212,
+      244,
+      291,
+      315,
+      325,
+      336,
+      341,
+      349,
+      353,
+      360,
+      366
+    ],
+    "2019-20": [
+      4
+    ],
+    "recommendations": [
+      5,
+      108,
+      221,
+      334,
+      361,
+      379
+    ],
+    "of": [
+      6,
+      17,
+      91,
+      118,
+      145,
+      166,
+      194,
+      209,
+      214,
+      224,
+      249,
+      262,
+      270,
+      284,
+      287,
+      293,
+      298,
+      338,
+      345,
+      359
+    ],
+    "Advisory": [
+      8
+    ],
+    "Committee": [
+      9
+    ],
+    "on": [
+      10,
+      121,
+      314,
+      333
+    ],
+    "Immunization": [
+      11
+    ],
+    "Practices": [
+      12
+    ],
+    "(ACIP)": [
+      13
+    ],
+    "regarding": [
+      14
+    ],
+    "use": [
+      16,
+      208,
+      337
+    ],
+    "seasonal": [
+      18,
+      346
+    ],
+    "influenza": [
+      19,
+      32,
+      59,
+      63,
+      69,
+      78,
+      148,
+      154,
+      156,
+      159,
+      169,
+      199,
+      215,
+      239,
+      274,
+      294,
+      308,
+      347,
+      383,
+      401
+    ],
+    "vaccines": [
+      20,
+      60,
+      79,
+      149,
+      181,
+      339,
+      384
+    ],
+    "in": [
+      21,
+      100,
+      110,
+      211,
+      290,
+      352
+    ],
+    "United": [
+      23,
+      354
+    ],
+    "States": [
+      24
+    ],
+    "(MMWR": [
+      25
+    ],
+    "Recomm": [
+      26
+    ],
+    "Rep": [
+      27
+    ],
+    "2019;68[No.": [
+      28
+    ],
+    "RR-3]).": [
+      29
+    ],
+    "Routine": [
+      30
+    ],
+    "annual": [
+      31
+    ],
+    "vaccination": [
+      33,
+      200,
+      223,
+      261,
+      309
+    ],
+    "is": [
+      34,
+      95,
+      327
+    ],
+    "recommended": [
+      35
+    ],
+    "for": [
+      36,
+      81,
+      184,
+      321,
+      335,
+      340,
+      414
+    ],
+    "all": [
+      37
+    ],
+    "persons": [
+      38,
+      185,
+      225,
+      263
+    ],
+    "aged": [
+      39,
+      186,
+      264
+    ],
+    "\u22656": [
+      40,
+      265
+    ],
+    "months": [
+      41,
+      266
+    ],
+    "who": [
+      42,
+      229
+    ],
+    "do": [
+      43
+    ],
+    "not": [
+      44
+    ],
+    "have": [
+      45
+    ],
+    "contraindications.": [
+      46
+    ],
+    "For": [
+      47
+    ],
+    "each": [
+      48
+    ],
+    "recipient,": [
+      49
+    ],
+    "a": [
+      50,
+      363
+    ],
+    "licensed": [
+      51,
+      183
+    ],
+    "and": [
+      52,
+      66,
+      103,
+      128,
+      158,
+      174,
+      196,
+      201,
+      219,
+      288,
+      296,
+      302,
+      343,
+      362,
+      388,
+      394,
+      405
+    ],
+    "age-appropriate": [
+      53
+    ],
+    "vaccine": [
+      54,
+      64,
+      70,
+      322
+    ],
+    "should": [
+      55,
+      409
+    ],
+    "be": [
+      56,
+      75,
+      86,
+      98,
+      280
+    ],
+    "used.": [
+      57
+    ],
+    "Inactivated": [
+      58
+    ],
+    "(IIVs),": [
+      61
+    ],
+    "recombinant": [
+      62
+    ],
+    "(RIV4),": [
+      65
+    ],
+    "live": [
+      67
+    ],
+    "attenuated": [
+      68
+    ],
+    "(LAIV4)": [
+      71
+    ],
+    "are": [
+      72,
+      177,
+      182,
+      374,
+      397
+    ],
+    "expected": [
+      73,
+      96
+    ],
+    "to": [
+      74,
+      97,
+      106,
+      134,
+      152,
+      198,
+      267,
+      365,
+      381
+    ],
+    "available.": [
+      76
+    ],
+    "Most": [
+      77
+    ],
+    "available": [
+      80,
+      99,
+      328,
+      375,
+      398
+    ],
+    "2020-21": [
+      83,
+      146,
+      238,
+      350
+    ],
+    "season": [
+      84,
+      240,
+      351
+    ],
+    "will": [
+      85,
+      241,
+      275
+    ],
+    "quadrivalent,": [
+      87
+    ],
+    "with": [
+      88,
+      226,
+      243,
+      255,
+      282
+    ],
+    "exception": [
+      90
+    ],
+    "MF59-adjuvanted": [
+      92
+    ],
+    "IIV,": [
+      93
+    ],
+    "which": [
+      94
+    ],
+    "both": [
+      101
+    ],
+    "quadrivalent": [
+      102
+    ],
+    "trivalent": [
+      104
+    ],
+    "formulations.Updates": [
+      105
+    ],
+    "described": [
+      109
+    ],
+    "this": [
+      111,
+      135,
+      411
+    ],
+    "reflect": [
+      113
+    ],
+    "discussions": [
+      114
+    ],
+    "during": [
+      115,
+      324,
+      348
+    ],
+    "public": [
+      116
+    ],
+    "meetings": [
+      117
+    ],
+    "ACIP": [
+      119
+    ],
+    "held": [
+      120
+    ],
+    "October": [
+      122
+    ],
+    "23,": [
+      123
+    ],
+    "2019;": [
+      124
+    ],
+    "February": [
+      125
+    ],
+    "26,": [
+      126
+    ],
+    "2020;": [
+      127
+    ],
+    "June": [
+      129
+    ],
+    "24,": [
+      130
+    ],
+    "2020.": [
+      131
+    ],
+    "Primary": [
+      132
+    ],
+    "include": [
+      137,
+      191
+    ],
+    "following": [
+      139
+    ],
+    "two": [
+      140,
+      167
+    ],
+    "items.": [
+      141
+    ],
+    "First,": [
+      142
+    ],
+    "composition": [
+      144
+    ],
+    "U.S.": [
+      147,
+      316
+    ],
+    "includes": [
+      150
+    ],
+    "A(H1N1)pdm09,": [
+      155
+    ],
+    "A(H3N2),": [
+      157
+    ],
+    "B/Victoria": [
+      160
+    ],
+    "lineage": [
+      161
+    ],
+    "components.": [
+      162
+    ],
+    "Second,": [
+      163
+    ],
+    "recent": [
+      164,
+      368
+    ],
+    "licensures": [
+      165
+    ],
+    "new": [
+      168,
+      180
+    ],
+    "vaccines,": [
+      170
+    ],
+    "Fluzone": [
+      171
+    ],
+    "High-Dose": [
+      172
+    ],
+    "Quadrivalent": [
+      173
+    ],
+    "Fluad": [
+      175
+    ],
+    "Quadrivalent,": [
+      176
+    ],
+    "discussed.": [
+      178
+    ],
+    "Both": [
+      179
+    ],
+    "\u226565": [
+      187
+    ],
+    "years.": [
+      188
+    ],
+    "Additional": [
+      189
+    ],
+    "changes": [
+      190
+    ],
+    "updated": [
+      192,
+      205,
+      220
+    ],
+    "discussion": [
+      193,
+      206
+    ],
+    "contraindications": [
+      195
+    ],
+    "precautions": [
+      197
+    ],
+    "accompanying": [
+      203
+    ],
+    "Table,": [
+      204
+    ],
+    "concerning": [
+      207,
+      222
+    ],
+    "LAIV4": [
+      210
+    ],
+    "setting": [
+      213
+    ],
+    "antiviral": [
+      216
+    ],
+    "medication": [
+      217
+    ],
+    "use,": [
+      218
+    ],
+    "egg": [
+      227
+    ],
+    "allergy": [
+      228
+    ],
+    "receive": [
+      230
+    ],
+    "either": [
+      231
+    ],
+    "cell": [
+      232
+    ],
+    "culture-based": [
+      233
+    ],
+    "IIV4": [
+      234
+    ],
+    "(ccIIV4)": [
+      235
+    ],
+    "or": [
+      236,
+      246
+    ],
+    "RIV4.The": [
+      237
+    ],
+    "coincide": [
+      242
+    ],
+    "continued": [
+      245
+    ],
+    "recurrent": [
+      247
+    ],
+    "circulation": [
+      248
+    ],
+    "SARS-CoV-2": [
+      250
+    ],
+    "(the": [
+      251
+    ],
+    "novel": [
+      252
+    ],
+    "coronavirus": [
+      253,
+      256
+    ],
+    "associated": [
+      254
+    ],
+    "disease": [
+      257
+    ],
+    "2019": [
+      258
+    ],
+    "[COVID-19]).": [
+      259
+    ],
+    "Influenza": [
+      260
+    ],
+    "reduce": [
+      268,
+      276
+    ],
+    "prevalence": [
+      269
+    ],
+    "illness": [
+      271,
+      295
+    ],
+    "caused": [
+      272
+    ],
+    "by": [
+      273
+    ],
+    "symptoms": [
+      277
+    ],
+    "that": [
+      278
+    ],
+    "might": [
+      279
+    ],
+    "confused": [
+      281
+    ],
+    "those": [
+      283
+    ],
+    "COVID-19.": [
+      285
+    ],
+    "Prevention": [
+      286
+    ],
+    "reduction": [
+      289,
+      297
+    ],
+    "severity": [
+      292
+    ],
+    "outpatient": [
+      299
+    ],
+    "illnesses,": [
+      300
+    ],
+    "hospitalizations,": [
+      301
+    ],
+    "intensive": [
+      303
+    ],
+    "care": [
+      304,
+      318,
+      407
+    ],
+    "unit": [
+      305
+    ],
+    "admissions": [
+      306
+    ],
+    "through": [
+      307
+    ],
+    "also": [
+      310
+    ],
+    "could": [
+      311
+    ],
+    "alleviate": [
+      312
+    ],
+    "stress": [
+      313
+    ],
+    "health": [
+      317,
+      406
+    ],
+    "system.": [
+      319
+    ],
+    "Guidance": [
+      320
+    ],
+    "planning": [
+      323
+    ],
+    "pandemic": [
+      326
+    ],
+    "at": [
+      329,
+      376
+    ],
+    "https://www.cdc.gov/vaccines/pandemic-guidance/index.html.This": [
+      330
+    ],
+    "focuses": [
+      332
+    ],
+    "prevention": [
+      342
+    ],
+    "control": [
+      344
+    ],
+    "States.": [
+      355
+    ],
+    "A": [
+      356
+    ],
+    "brief": [
+      357
+    ],
+    "summary": [
+      358
+    ],
+    "link": [
+      364
+    ],
+    "most": [
+      367
+    ],
+    "Background": [
+      369
+    ],
+    "Document": [
+      370
+    ],
+    "containing": [
+      371
+    ],
+    "additional": [
+      372,
+      415
+    ],
+    "information": [
+      373,
+      396
+    ],
+    "https://www.cdc.gov/vaccines/hcp/acip-recs/vacc-specific/flu.html.": [
+      377
+    ],
+    "These": [
+      378
+    ],
+    "apply": [
+      380
+    ],
+    "U.S.-licensed": [
+      382
+    ],
+    "used": [
+      385
+    ],
+    "within": [
+      386
+    ],
+    "Food": [
+      387
+    ],
+    "Drug": [
+      389
+    ],
+    "Administration": [
+      390
+    ],
+    "(FDA)-licensed": [
+      391
+    ],
+    "indications.": [
+      392
+    ],
+    "Updates": [
+      393
+    ],
+    "other": [
+      395
+    ],
+    "from": [
+      399
+    ],
+    "CDC's": [
+      400
+    ],
+    "website": [
+      402
+    ],
+    "(https://www.cdc.gov/flu).": [
+      403
+    ],
+    "Vaccination": [
+      404
+    ],
+    "providers": [
+      408
+    ],
+    "check": [
+      410
+    ],
+    "site": [
+      412
+    ],
+    "periodically": [
+      413
+    ],
+    "information.": [
+      416
+    ]
+  },
+  "counts_by_year": [
+    {
+      "year": 2026,
+      "cited_by_count": 10
+    },
+    {
+      "year": 2025,
+      "cited_by_count": 18
+    },
+    {
+      "year": 2024,
+      "cited_by_count": 33
+    },
+    {
+      "year": 2023,
+      "cited_by_count": 43
+    },
+    {
+      "year": 2022,
+      "cited_by_count": 94
+    },
+    {
+      "year": 2021,
+      "cited_by_count": 110
+    },
+    {
+      "year": 2020,
+      "cited_by_count": 26
+    }
+  ],
+  "updated_date": "2026-07-03T08:13:44.112507",
+  "created_date": "2025-10-10T00:00:00"
+}

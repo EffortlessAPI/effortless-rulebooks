@@ -1,0 +1,12 @@
+{
+  "candidate_id": "cand-exp-johari-koomen-pekelis-walsh-2017",
+  "proposed_study_id": "johari-koomen-pekelis-walsh-2017",
+  "acquisition_status": "blocked",
+  "attempted_at": "2026-07-07T03:47:12+00:00",
+  "catalog_source_url": "https://github.com/Optimizely/stats-engine",
+  "resolved_urls": [
+    "https://github.com/Optimizely/stats-engine"
+  ],
+  "files": [],
+  "dois": []
+}

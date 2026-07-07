@@ -1,0 +1,414 @@
+{
+  "id": "https://openalex.org/W1555317822",
+  "doi": "https://doi.org/10.3386/w11216",
+  "title": "Competition Among Public Schools: A Reply to Rothstein (2004)",
+  "display_name": "Competition Among Public Schools: A Reply to Rothstein (2004)",
+  "relevance_score": 897.41986,
+  "publication_year": 2005,
+  "publication_date": "2005-03-01",
+  "ids": {
+    "openalex": "https://openalex.org/W1555317822",
+    "doi": "https://doi.org/10.3386/w11216",
+    "mag": "1555317822"
+  },
+  "language": "en",
+  "primary_location": {
+    "id": "doi:10.3386/w11216",
+    "is_oa": true,
+    "landing_page_url": "http://doi.org/10.3386/w11216",
+    "pdf_url": "https://doi.org/10.3386/w11216",
+    "source": {
+      "id": "https://openalex.org/S2809516038",
+      "display_name": "National Bureau of Economic Research",
+      "issn_l": null,
+      "issn": null,
+      "is_oa": false,
+      "is_in_doaj": false,
+      "is_core": false,
+      "host_organization": null,
+      "host_organization_name": null,
+      "host_organization_lineage": [
+        "https://openalex.org/P4322614461"
+      ],
+      "host_organization_lineage_names": [
+        "National Bureau of Economic Research"
+      ],
+      "type": "repository"
+    },
+    "license": null,
+    "license_id": null,
+    "version": "publishedVersion",
+    "is_accepted": true,
+    "is_published": true,
+    "raw_source_name": "National Bureau of Economic Research",
+    "raw_type": "report"
+  },
+  "type": "report",
+  "indexed_in": [
+    "crossref"
+  ],
+  "open_access": {
+    "is_oa": true,
+    "oa_status": "green",
+    "oa_url": "https://doi.org/10.3386/w11216",
+    "any_repository_has_fulltext": true
+  },
+  "authorships": [
+    {
+      "author_position": "first",
+      "author": {
+        "id": "https://openalex.org/A5017204458",
+        "display_name": "Caroline Hoxby",
+        "orcid": "https://orcid.org/0000-0001-6988-8413"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I1286498122",
+          "display_name": "Hoover Institution",
+          "ror": "https://ror.org/04ce9mt19",
+          "country_code": "US",
+          "type": "facility",
+          "lineage": [
+            "https://openalex.org/I1286498122"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I1321305853",
+          "display_name": "National Bureau of Economic Research",
+          "ror": "https://ror.org/04grmx538",
+          "country_code": "US",
+          "type": "nonprofit",
+          "lineage": [
+            "https://openalex.org/I1321305853"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I97018004",
+          "display_name": "Stanford University",
+          "ror": "https://ror.org/00f54p054",
+          "country_code": "US",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I97018004"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": true,
+      "raw_author_name": "Caroline Hoxby",
+      "raw_affiliation_strings": [
+        "National Bureau of Economic Research (NBER)",
+        "Stanford University",
+        "Hoover Institution"
+      ],
+      "affiliations": [
+        {
+          "raw_affiliation_string": "National Bureau of Economic Research (NBER)",
+          "institution_ids": [
+            "https://openalex.org/I1321305853"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Stanford University",
+          "institution_ids": [
+            "https://openalex.org/I97018004"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Hoover Institution",
+          "institution_ids": [
+            "https://openalex.org/I1286498122"
+          ]
+        }
+      ]
+    }
+  ],
+  "institutions": [],
+  "countries_distinct_count": 1,
+  "institutions_distinct_count": 1,
+  "corresponding_author_ids": [
+    "https://openalex.org/A5017204458"
+  ],
+  "corresponding_institution_ids": [
+    "https://openalex.org/I1286498122",
+    "https://openalex.org/I1321305853",
+    "https://openalex.org/I97018004"
+  ],
+  "apc_list": null,
+  "apc_paid": null,
+  "fwci": null,
+  "has_fulltext": true,
+  "cited_by_count": 41,
+  "citation_normalized_percentile": null,
+  "cited_by_percentile_year": null,
+  "biblio": {
+    "volume": null,
+    "issue": null,
+    "first_page": null,
+    "last_page": null
+  },
+  "is_retracted": false,
+  "is_paratext": false,
+  "is_xpac": false,
+  "primary_topic": {
+    "id": "https://openalex.org/T10674",
+    "display_name": "School Choice and Performance",
+    "score": 0.9824000000953674,
+    "subfield": {
+      "id": "https://openalex.org/subfields/3304",
+      "display_name": "Education"
+    },
+    "field": {
+      "id": "https://openalex.org/fields/33",
+      "display_name": "Social Sciences"
+    },
+    "domain": {
+      "id": "https://openalex.org/domains/2",
+      "display_name": "Social Sciences"
+    }
+  },
+  "topics": [
+    {
+      "id": "https://openalex.org/T10674",
+      "display_name": "School Choice and Performance",
+      "score": 0.9824000000953674,
+      "subfield": {
+        "id": "https://openalex.org/subfields/3304",
+        "display_name": "Education"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/33",
+        "display_name": "Social Sciences"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/2",
+        "display_name": "Social Sciences"
+      }
+    }
+  ],
+  "keywords": [
+    {
+      "id": "https://openalex.org/keywords/competition",
+      "display_name": "Competition (biology)",
+      "score": 0.7915607690811157
+    },
+    {
+      "id": "https://openalex.org/keywords/political-science",
+      "display_name": "Political science",
+      "score": 0.34164857864379883
+    },
+    {
+      "id": "https://openalex.org/keywords/business",
+      "display_name": "Business",
+      "score": 0.3225228786468506
+    },
+    {
+      "id": "https://openalex.org/keywords/biology",
+      "display_name": "Biology",
+      "score": 0.10614576935768127
+    },
+    {
+      "id": "https://openalex.org/keywords/ecology",
+      "display_name": "Ecology",
+      "score": 0.050550103187561035
+    }
+  ],
+  "concepts": [
+    {
+      "id": "https://openalex.org/C91306197",
+      "wikidata": "https://www.wikidata.org/wiki/Q45767",
+      "display_name": "Competition (biology)",
+      "level": 2,
+      "score": 0.7915607690811157
+    },
+    {
+      "id": "https://openalex.org/C17744445",
+      "wikidata": "https://www.wikidata.org/wiki/Q36442",
+      "display_name": "Political science",
+      "level": 0,
+      "score": 0.34164857864379883
+    },
+    {
+      "id": "https://openalex.org/C144133560",
+      "wikidata": "https://www.wikidata.org/wiki/Q4830453",
+      "display_name": "Business",
+      "level": 0,
+      "score": 0.3225228786468506
+    },
+    {
+      "id": "https://openalex.org/C86803240",
+      "wikidata": "https://www.wikidata.org/wiki/Q420",
+      "display_name": "Biology",
+      "level": 0,
+      "score": 0.10614576935768127
+    },
+    {
+      "id": "https://openalex.org/C18903297",
+      "wikidata": "https://www.wikidata.org/wiki/Q7150",
+      "display_name": "Ecology",
+      "level": 1,
+      "score": 0.050550103187561035
+    }
+  ],
+  "mesh": [],
+  "locations_count": 1,
+  "locations": [
+    {
+      "id": "doi:10.3386/w11216",
+      "is_oa": true,
+      "landing_page_url": "http://doi.org/10.3386/w11216",
+      "pdf_url": "https://doi.org/10.3386/w11216",
+      "source": {
+        "id": "https://openalex.org/S2809516038",
+        "display_name": "National Bureau of Economic Research",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": null,
+        "host_organization_name": null,
+        "host_organization_lineage": [
+          "https://openalex.org/P4322614461"
+        ],
+        "host_organization_lineage_names": [
+          "National Bureau of Economic Research"
+        ],
+        "type": "repository"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "publishedVersion",
+      "is_accepted": true,
+      "is_published": true,
+      "raw_source_name": "National Bureau of Economic Research",
+      "raw_type": "report"
+    }
+  ],
+  "best_oa_location": {
+    "id": "doi:10.3386/w11216",
+    "is_oa": true,
+    "landing_page_url": "http://doi.org/10.3386/w11216",
+    "pdf_url": "https://doi.org/10.3386/w11216",
+    "source": {
+      "id": "https://openalex.org/S2809516038",
+      "display_name": "National Bureau of Economic Research",
+      "issn_l": null,
+      "issn": null,
+      "is_oa": false,
+      "is_in_doaj": false,
+      "is_core": false,
+      "host_organization": null,
+      "host_organization_name": null,
+      "host_organization_lineage": [
+        "https://openalex.org/P4322614461"
+      ],
+      "host_organization_lineage_names": [
+        "National Bureau of Economic Research"
+      ],
+      "type": "repository"
+    },
+    "license": null,
+    "license_id": null,
+    "version": "publishedVersion",
+    "is_accepted": true,
+    "is_published": true,
+    "raw_source_name": "National Bureau of Economic Research",
+    "raw_type": "report"
+  },
+  "sustainable_development_goals": [
+    {
+      "id": "https://metadata.un.org/sdg/4",
+      "score": 0.4699999988079071,
+      "display_name": "Quality Education"
+    }
+  ],
+  "awards": [],
+  "funders": [],
+  "has_content": {
+    "grobid_xml": true,
+    "pdf": true
+  },
+  "content_urls": {
+    "pdf": "https://content.openalex.org/works/W1555317822.pdf",
+    "grobid_xml": "https://content.openalex.org/works/W1555317822.grobid-xml"
+  },
+  "referenced_works_count": 8,
+  "referenced_works": [
+    "https://openalex.org/W1555317822",
+    "https://openalex.org/W1958733516",
+    "https://openalex.org/W1975383176",
+    "https://openalex.org/W1980727296",
+    "https://openalex.org/W2085224150",
+    "https://openalex.org/W2138110879",
+    "https://openalex.org/W3124133911",
+    "https://openalex.org/W4231116227"
+  ],
+  "related_works": [
+    "https://openalex.org/W2362070364",
+    "https://openalex.org/W2148233695",
+    "https://openalex.org/W2387424126",
+    "https://openalex.org/W2348875674",
+    "https://openalex.org/W2366623717",
+    "https://openalex.org/W2365824682",
+    "https://openalex.org/W2347554713",
+    "https://openalex.org/W2371195448",
+    "https://openalex.org/W2388999324",
+    "https://openalex.org/W2789821731"
+  ],
+  "abstract_inverted_index": {
+    "Rothstein": [
+      0,
+      5
+    ],
+    "has": [
+      1
+    ],
+    "produced": [
+      2
+    ],
+    "two": [
+      3
+    ],
+    "comments,": [
+      4
+    ],
+    "(": [
+      6
+    ]
+  },
+  "counts_by_year": [
+    {
+      "year": 2022,
+      "cited_by_count": 1
+    },
+    {
+      "year": 2021,
+      "cited_by_count": 1
+    },
+    {
+      "year": 2019,
+      "cited_by_count": 1
+    },
+    {
+      "year": 2015,
+      "cited_by_count": 1
+    },
+    {
+      "year": 2014,
+      "cited_by_count": 2
+    },
+    {
+      "year": 2013,
+      "cited_by_count": 2
+    },
+    {
+      "year": 2012,
+      "cited_by_count": 1
+    }
+  ],
+  "updated_date": "2026-03-25T13:04:00.132906",
+  "created_date": "2025-10-10T00:00:00"
+}

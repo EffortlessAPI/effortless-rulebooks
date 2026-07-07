@@ -1,0 +1,833 @@
+{
+  "id": "https://openalex.org/W4214954093",
+  "doi": "https://doi.org/10.15585/mmwr.ss6710a1",
+  "title": "Surveillance for Foodborne Disease Outbreaks \u2014 United States, 2009\u20132015",
+  "display_name": "Surveillance for Foodborne Disease Outbreaks \u2014 United States, 2009\u20132015",
+  "relevance_score": 142.0254,
+  "publication_year": 2018,
+  "publication_date": "2018-07-26",
+  "ids": {
+    "openalex": "https://openalex.org/W4214954093",
+    "doi": "https://doi.org/10.15585/mmwr.ss6710a1"
+  },
+  "language": "en",
+  "primary_location": {
+    "id": "doi:10.15585/mmwr.ss6710a1",
+    "is_oa": true,
+    "landing_page_url": "https://doi.org/10.15585/mmwr.ss6710a1",
+    "pdf_url": "https://www.cdc.gov/mmwr/volumes/67/ss/pdfs/ss6710a1-H.pdf",
+    "source": {
+      "id": "https://openalex.org/S4210189843",
+      "display_name": "MMWR Surveillance Summaries",
+      "issn_l": "1545-8636",
+      "issn": [
+        "1545-8636",
+        "1546-0738"
+      ],
+      "is_oa": false,
+      "is_in_doaj": false,
+      "is_core": true,
+      "host_organization": "https://openalex.org/P4310315581",
+      "host_organization_name": "Centers for Disease Control and Prevention",
+      "host_organization_lineage": [
+        "https://openalex.org/P4310315581"
+      ],
+      "host_organization_lineage_names": [
+        "Centers for Disease Control and Prevention"
+      ],
+      "type": "journal"
+    },
+    "license": "public-domain",
+    "license_id": "https://openalex.org/licenses/public-domain",
+    "version": "publishedVersion",
+    "is_accepted": true,
+    "is_published": true,
+    "raw_source_name": "MMWR. Surveillance Summaries",
+    "raw_type": "journal-article"
+  },
+  "type": "article",
+  "indexed_in": [
+    "crossref"
+  ],
+  "open_access": {
+    "is_oa": true,
+    "oa_status": "hybrid",
+    "oa_url": "https://www.cdc.gov/mmwr/volumes/67/ss/pdfs/ss6710a1-H.pdf",
+    "any_repository_has_fulltext": false
+  },
+  "authorships": [
+    {
+      "author_position": "first",
+      "author": {
+        "id": "https://openalex.org/A5009105024",
+        "display_name": "Daniel Dewey-Mattia",
+        "orcid": null
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I4210121439",
+          "display_name": "National Center for Emerging and Zoonotic Infectious Diseases",
+          "ror": "https://ror.org/02ggwpx62",
+          "country_code": "US",
+          "type": "facility",
+          "lineage": [
+            "https://openalex.org/I1289490764",
+            "https://openalex.org/I1299022934",
+            "https://openalex.org/I4210109567",
+            "https://openalex.org/I4210121439"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Daniel Dewey-Mattia",
+      "raw_affiliation_strings": [
+        "National Center for Emerging and Zoonotic Infectious Diseases, CDC"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "National Center for Emerging and Zoonotic Infectious Diseases, CDC",
+          "institution_ids": [
+            "https://openalex.org/I4210121439"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5001117541",
+        "display_name": "Karunya Manikonda",
+        "orcid": null
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I4210121439",
+          "display_name": "National Center for Emerging and Zoonotic Infectious Diseases",
+          "ror": "https://ror.org/02ggwpx62",
+          "country_code": "US",
+          "type": "facility",
+          "lineage": [
+            "https://openalex.org/I1289490764",
+            "https://openalex.org/I1299022934",
+            "https://openalex.org/I4210109567",
+            "https://openalex.org/I4210121439"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Karunya Manikonda",
+      "raw_affiliation_strings": [
+        "National Center for Emerging and Zoonotic Infectious Diseases, CDC"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "National Center for Emerging and Zoonotic Infectious Diseases, CDC",
+          "institution_ids": [
+            "https://openalex.org/I4210121439"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5067685734",
+        "display_name": "Aron J. Hall",
+        "orcid": "https://orcid.org/0000-0001-7250-1013"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I19085752",
+          "display_name": "National Center for Immunization and Respiratory Diseases",
+          "ror": "https://ror.org/05je2tx78",
+          "country_code": "US",
+          "type": "facility",
+          "lineage": [
+            "https://openalex.org/I1289490764",
+            "https://openalex.org/I1289490764",
+            "https://openalex.org/I1299022934",
+            "https://openalex.org/I1299022934",
+            "https://openalex.org/I19085752",
+            "https://openalex.org/I4210109567"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Aron J. Hall",
+      "raw_affiliation_strings": [
+        "National Center for Immunization and Respiratory Diseases, CDC"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "National Center for Immunization and Respiratory Diseases, CDC",
+          "institution_ids": [
+            "https://openalex.org/I19085752"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5103551628",
+        "display_name": "Matthew E. Wise",
+        "orcid": null
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I4210121439",
+          "display_name": "National Center for Emerging and Zoonotic Infectious Diseases",
+          "ror": "https://ror.org/02ggwpx62",
+          "country_code": "US",
+          "type": "facility",
+          "lineage": [
+            "https://openalex.org/I1289490764",
+            "https://openalex.org/I1299022934",
+            "https://openalex.org/I4210109567",
+            "https://openalex.org/I4210121439"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Matthew E. Wise",
+      "raw_affiliation_strings": [
+        "National Center for Emerging and Zoonotic Infectious Diseases, CDC"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "National Center for Emerging and Zoonotic Infectious Diseases, CDC",
+          "institution_ids": [
+            "https://openalex.org/I4210121439"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "last",
+      "author": {
+        "id": "https://openalex.org/A5103050568",
+        "display_name": "Samuel J. Crowe",
+        "orcid": "https://orcid.org/0000-0002-2742-8686"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I4210121439",
+          "display_name": "National Center for Emerging and Zoonotic Infectious Diseases",
+          "ror": "https://ror.org/02ggwpx62",
+          "country_code": "US",
+          "type": "facility",
+          "lineage": [
+            "https://openalex.org/I1289490764",
+            "https://openalex.org/I1299022934",
+            "https://openalex.org/I4210109567",
+            "https://openalex.org/I4210121439"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Samuel J. Crowe",
+      "raw_affiliation_strings": [
+        "National Center for Emerging and Zoonotic Infectious Diseases, CDC"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "National Center for Emerging and Zoonotic Infectious Diseases, CDC",
+          "institution_ids": [
+            "https://openalex.org/I4210121439"
+          ]
+        }
+      ]
+    }
+  ],
+  "institutions": [],
+  "countries_distinct_count": 1,
+  "institutions_distinct_count": 5,
+  "corresponding_author_ids": [],
+  "corresponding_institution_ids": [],
+  "apc_list": null,
+  "apc_paid": null,
+  "fwci": 36.8084,
+  "has_fulltext": true,
+  "cited_by_count": 581,
+  "citation_normalized_percentile": {
+    "value": 0.9991211,
+    "is_in_top_1_percent": true,
+    "is_in_top_10_percent": true
+  },
+  "cited_by_percentile_year": {
+    "min": 90,
+    "max": 100
+  },
+  "biblio": {
+    "volume": "67",
+    "issue": "10",
+    "first_page": "1",
+    "last_page": "11"
+  },
+  "is_retracted": false,
+  "is_paratext": false,
+  "is_xpac": false,
+  "primary_topic": {
+    "id": "https://openalex.org/T10976",
+    "display_name": "Viral gastroenteritis research and epidemiology",
+    "score": 0.9997000098228455,
+    "subfield": {
+      "id": "https://openalex.org/subfields/2725",
+      "display_name": "Infectious Diseases"
+    },
+    "field": {
+      "id": "https://openalex.org/fields/27",
+      "display_name": "Medicine"
+    },
+    "domain": {
+      "id": "https://openalex.org/domains/4",
+      "display_name": "Health Sciences"
+    }
+  },
+  "topics": [
+    {
+      "id": "https://openalex.org/T10976",
+      "display_name": "Viral gastroenteritis research and epidemiology",
+      "score": 0.9997000098228455,
+      "subfield": {
+        "id": "https://openalex.org/subfields/2725",
+        "display_name": "Infectious Diseases"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/27",
+        "display_name": "Medicine"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/4",
+        "display_name": "Health Sciences"
+      }
+    },
+    {
+      "id": "https://openalex.org/T11957",
+      "display_name": "Food Safety and Hygiene",
+      "score": 0.9990000128746033,
+      "subfield": {
+        "id": "https://openalex.org/subfields/1106",
+        "display_name": "Food Science"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/11",
+        "display_name": "Agricultural and Biological Sciences"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/1",
+        "display_name": "Life Sciences"
+      }
+    },
+    {
+      "id": "https://openalex.org/T10486",
+      "display_name": "Salmonella and Campylobacter epidemiology",
+      "score": 0.9973999857902527,
+      "subfield": {
+        "id": "https://openalex.org/subfields/1106",
+        "display_name": "Food Science"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/11",
+        "display_name": "Agricultural and Biological Sciences"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/1",
+        "display_name": "Life Sciences"
+      }
+    }
+  ],
+  "keywords": [
+    {
+      "id": "https://openalex.org/keywords/outbreak",
+      "display_name": "Outbreak",
+      "score": 0.9650901556015015
+    },
+    {
+      "id": "https://openalex.org/keywords/medicine",
+      "display_name": "Medicine",
+      "score": 0.7401435375213623
+    },
+    {
+      "id": "https://openalex.org/keywords/norovirus",
+      "display_name": "Norovirus",
+      "score": 0.580070972442627
+    },
+    {
+      "id": "https://openalex.org/keywords/environmental-health",
+      "display_name": "Environmental health",
+      "score": 0.5509226322174072
+    },
+    {
+      "id": "https://openalex.org/keywords/disease",
+      "display_name": "Disease",
+      "score": 0.47926661372184753
+    },
+    {
+      "id": "https://openalex.org/keywords/salmonella",
+      "display_name": "Salmonella",
+      "score": 0.4361845850944519
+    },
+    {
+      "id": "https://openalex.org/keywords/salmonella-food-poisoning",
+      "display_name": "Salmonella Food Poisoning",
+      "score": 0.4310632646083832
+    },
+    {
+      "id": "https://openalex.org/keywords/disease-surveillance",
+      "display_name": "Disease surveillance",
+      "score": 0.4287581741809845
+    },
+    {
+      "id": "https://openalex.org/keywords/food-poisoning",
+      "display_name": "Food poisoning",
+      "score": 0.4181329905986786
+    },
+    {
+      "id": "https://openalex.org/keywords/etiology",
+      "display_name": "Etiology",
+      "score": 0.4118097126483917
+    },
+    {
+      "id": "https://openalex.org/keywords/virology",
+      "display_name": "Virology",
+      "score": 0.22531655430793762
+    },
+    {
+      "id": "https://openalex.org/keywords/biology",
+      "display_name": "Biology",
+      "score": 0.0841352641582489
+    },
+    {
+      "id": "https://openalex.org/keywords/internal-medicine",
+      "display_name": "Internal medicine",
+      "score": 0.08006387948989868
+    },
+    {
+      "id": "https://openalex.org/keywords/pathology",
+      "display_name": "Pathology",
+      "score": 0.07544064521789551
+    }
+  ],
+  "concepts": [
+    {
+      "id": "https://openalex.org/C116675565",
+      "wikidata": "https://www.wikidata.org/wiki/Q3241045",
+      "display_name": "Outbreak",
+      "level": 2,
+      "score": 0.9650901556015015
+    },
+    {
+      "id": "https://openalex.org/C71924100",
+      "wikidata": "https://www.wikidata.org/wiki/Q11190",
+      "display_name": "Medicine",
+      "level": 0,
+      "score": 0.7401435375213623
+    },
+    {
+      "id": "https://openalex.org/C2778750513",
+      "wikidata": "https://www.wikidata.org/wiki/Q1142751",
+      "display_name": "Norovirus",
+      "level": 3,
+      "score": 0.580070972442627
+    },
+    {
+      "id": "https://openalex.org/C99454951",
+      "wikidata": "https://www.wikidata.org/wiki/Q932068",
+      "display_name": "Environmental health",
+      "level": 1,
+      "score": 0.5509226322174072
+    },
+    {
+      "id": "https://openalex.org/C2779134260",
+      "wikidata": "https://www.wikidata.org/wiki/Q12136",
+      "display_name": "Disease",
+      "level": 2,
+      "score": 0.47926661372184753
+    },
+    {
+      "id": "https://openalex.org/C2781065037",
+      "wikidata": "https://www.wikidata.org/wiki/Q150839",
+      "display_name": "Salmonella",
+      "level": 3,
+      "score": 0.4361845850944519
+    },
+    {
+      "id": "https://openalex.org/C2910776193",
+      "wikidata": "https://www.wikidata.org/wiki/Q326648",
+      "display_name": "Salmonella Food Poisoning",
+      "level": 4,
+      "score": 0.4310632646083832
+    },
+    {
+      "id": "https://openalex.org/C2776480101",
+      "wikidata": "https://www.wikidata.org/wiki/Q3555250",
+      "display_name": "Disease surveillance",
+      "level": 3,
+      "score": 0.4287581741809845
+    },
+    {
+      "id": "https://openalex.org/C2776876274",
+      "wikidata": "https://www.wikidata.org/wiki/Q272002",
+      "display_name": "Food poisoning",
+      "level": 2,
+      "score": 0.4181329905986786
+    },
+    {
+      "id": "https://openalex.org/C137627325",
+      "wikidata": "https://www.wikidata.org/wiki/Q156318",
+      "display_name": "Etiology",
+      "level": 2,
+      "score": 0.4118097126483917
+    },
+    {
+      "id": "https://openalex.org/C159047783",
+      "wikidata": "https://www.wikidata.org/wiki/Q7215",
+      "display_name": "Virology",
+      "level": 1,
+      "score": 0.22531655430793762
+    },
+    {
+      "id": "https://openalex.org/C86803240",
+      "wikidata": "https://www.wikidata.org/wiki/Q420",
+      "display_name": "Biology",
+      "level": 0,
+      "score": 0.0841352641582489
+    },
+    {
+      "id": "https://openalex.org/C126322002",
+      "wikidata": "https://www.wikidata.org/wiki/Q11180",
+      "display_name": "Internal medicine",
+      "level": 1,
+      "score": 0.08006387948989868
+    },
+    {
+      "id": "https://openalex.org/C142724271",
+      "wikidata": "https://www.wikidata.org/wiki/Q7208",
+      "display_name": "Pathology",
+      "level": 1,
+      "score": 0.07544064521789551
+    },
+    {
+      "id": "https://openalex.org/C54355233",
+      "wikidata": "https://www.wikidata.org/wiki/Q7162",
+      "display_name": "Genetics",
+      "level": 1,
+      "score": 0.0
+    },
+    {
+      "id": "https://openalex.org/C523546767",
+      "wikidata": "https://www.wikidata.org/wiki/Q10876",
+      "display_name": "Bacteria",
+      "level": 2,
+      "score": 0.0
+    }
+  ],
+  "mesh": [],
+  "locations_count": 1,
+  "locations": [
+    {
+      "id": "doi:10.15585/mmwr.ss6710a1",
+      "is_oa": true,
+      "landing_page_url": "https://doi.org/10.15585/mmwr.ss6710a1",
+      "pdf_url": "https://www.cdc.gov/mmwr/volumes/67/ss/pdfs/ss6710a1-H.pdf",
+      "source": {
+        "id": "https://openalex.org/S4210189843",
+        "display_name": "MMWR Surveillance Summaries",
+        "issn_l": "1545-8636",
+        "issn": [
+          "1545-8636",
+          "1546-0738"
+        ],
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": true,
+        "host_organization": "https://openalex.org/P4310315581",
+        "host_organization_name": "Centers for Disease Control and Prevention",
+        "host_organization_lineage": [
+          "https://openalex.org/P4310315581"
+        ],
+        "host_organization_lineage_names": [
+          "Centers for Disease Control and Prevention"
+        ],
+        "type": "journal"
+      },
+      "license": "public-domain",
+      "license_id": "https://openalex.org/licenses/public-domain",
+      "version": "publishedVersion",
+      "is_accepted": true,
+      "is_published": true,
+      "raw_source_name": "MMWR. Surveillance Summaries",
+      "raw_type": "journal-article"
+    }
+  ],
+  "best_oa_location": {
+    "id": "doi:10.15585/mmwr.ss6710a1",
+    "is_oa": true,
+    "landing_page_url": "https://doi.org/10.15585/mmwr.ss6710a1",
+    "pdf_url": "https://www.cdc.gov/mmwr/volumes/67/ss/pdfs/ss6710a1-H.pdf",
+    "source": {
+      "id": "https://openalex.org/S4210189843",
+      "display_name": "MMWR Surveillance Summaries",
+      "issn_l": "1545-8636",
+      "issn": [
+        "1545-8636",
+        "1546-0738"
+      ],
+      "is_oa": false,
+      "is_in_doaj": false,
+      "is_core": true,
+      "host_organization": "https://openalex.org/P4310315581",
+      "host_organization_name": "Centers for Disease Control and Prevention",
+      "host_organization_lineage": [
+        "https://openalex.org/P4310315581"
+      ],
+      "host_organization_lineage_names": [
+        "Centers for Disease Control and Prevention"
+      ],
+      "type": "journal"
+    },
+    "license": "public-domain",
+    "license_id": "https://openalex.org/licenses/public-domain",
+    "version": "publishedVersion",
+    "is_accepted": true,
+    "is_published": true,
+    "raw_source_name": "MMWR. Surveillance Summaries",
+    "raw_type": "journal-article"
+  },
+  "sustainable_development_goals": [
+    {
+      "id": "https://metadata.un.org/sdg/2",
+      "score": 0.75,
+      "display_name": "Zero hunger"
+    }
+  ],
+  "awards": [],
+  "funders": [],
+  "has_content": {
+    "grobid_xml": false,
+    "pdf": false
+  },
+  "content_urls": null,
+  "referenced_works_count": 11,
+  "referenced_works": [
+    "https://openalex.org/W21358861",
+    "https://openalex.org/W1992375315",
+    "https://openalex.org/W2128591134",
+    "https://openalex.org/W2161463970",
+    "https://openalex.org/W2567852773",
+    "https://openalex.org/W2605374828",
+    "https://openalex.org/W2756880704",
+    "https://openalex.org/W3031566888",
+    "https://openalex.org/W3149659392",
+    "https://openalex.org/W6600853129",
+    "https://openalex.org/W6684042261"
+  ],
+  "related_works": [
+    "https://openalex.org/W2354650317",
+    "https://openalex.org/W215080466",
+    "https://openalex.org/W2067546590",
+    "https://openalex.org/W2319555042",
+    "https://openalex.org/W1986806571",
+    "https://openalex.org/W2593422296",
+    "https://openalex.org/W2887482581",
+    "https://openalex.org/W2168214739",
+    "https://openalex.org/W1979078450",
+    "https://openalex.org/W2168836631"
+  ],
+  "abstract_inverted_index": {
+    "This": [
+      0
+    ],
+    "report": [
+      1,
+      26
+    ],
+    "summarizes": [
+      2
+    ],
+    "foodborne": [
+      3
+    ],
+    "disease": [
+      4
+    ],
+    "outbreaks": [
+      5,
+      31,
+      42
+    ],
+    "reported": [
+      6
+    ],
+    "in": [
+      7,
+      11
+    ],
+    "the": [
+      8,
+      13,
+      44
+    ],
+    "United": [
+      9
+    ],
+    "States": [
+      10
+    ],
+    "which": [
+      12
+    ],
+    "first": [
+      14
+    ],
+    "illness": [
+      15
+    ],
+    "occurred": [
+      16
+    ],
+    "between": [
+      17
+    ],
+    "January": [
+      18
+    ],
+    "1,": [
+      19
+    ],
+    "2009,": [
+      20
+    ],
+    "and": [
+      21,
+      37
+    ],
+    "December": [
+      22
+    ],
+    "31,": [
+      23
+    ],
+    "2015.": [
+      24
+    ],
+    "The": [
+      25
+    ],
+    "highlights": [
+      27
+    ],
+    "a": [
+      28
+    ],
+    "few": [
+      29
+    ],
+    "large": [
+      30
+    ],
+    "as": [
+      32,
+      34
+    ],
+    "well": [
+      33
+    ],
+    "novel": [
+      35
+    ],
+    "foods": [
+      36
+    ],
+    "food-pathogen": [
+      38
+    ],
+    "pairs": [
+      39
+    ],
+    "responsible": [
+      40
+    ],
+    "for": [
+      41
+    ],
+    "during": [
+      43
+    ],
+    "reporting": [
+      45
+    ],
+    "period.": [
+      46
+    ]
+  },
+  "counts_by_year": [
+    {
+      "year": 2026,
+      "cited_by_count": 19
+    },
+    {
+      "year": 2025,
+      "cited_by_count": 58
+    },
+    {
+      "year": 2024,
+      "cited_by_count": 77
+    },
+    {
+      "year": 2023,
+      "cited_by_count": 79
+    },
+    {
+      "year": 2022,
+      "cited_by_count": 87
+    },
+    {
+      "year": 2021,
+      "cited_by_count": 113
+    },
+    {
+      "year": 2020,
+      "cited_by_count": 82
+    },
+    {
+      "year": 2019,
+      "cited_by_count": 52
+    },
+    {
+      "year": 2018,
+      "cited_by_count": 5
+    },
+    {
+      "year": 2015,
+      "cited_by_count": 4
+    },
+    {
+      "year": 2013,
+      "cited_by_count": 1
+    }
+  ],
+  "updated_date": "2026-06-17T08:01:34.144755",
+  "created_date": "2025-10-10T00:00:00"
+}

@@ -1,0 +1,16 @@
+{
+  "candidate_id": "cand-exp-polack-et-al-2020",
+  "proposed_study_id": "polack-et-al-2020",
+  "acquisition_status": "metadata_only",
+  "attempted_at": "2026-07-07T03:45:32+00:00",
+  "catalog_source_url": "https://www.pfizer.com/research/clinical-trials/pfizer-clinical-trial-data-sharing",
+  "resolved_urls": [
+    "https://doi.org/10.1016/s2214-109x(20)30488-5",
+    "http://www.thelancet.com/article/S2214109X20304885/pdf",
+    "https://www.pfizer.com/research/clinical-trials/pfizer-clinical-trial-data-sharing"
+  ],
+  "files": [
+    "openalex-metadata.json"
+  ],
+  "dois": []
+}

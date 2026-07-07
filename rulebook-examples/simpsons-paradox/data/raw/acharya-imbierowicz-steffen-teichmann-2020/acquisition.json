@@ -1,0 +1,14 @@
+{
+  "candidate_id": "cand-exp-acharya-imbierowicz-steffen-teichmann-2020",
+  "proposed_study_id": "acharya-imbierowicz-steffen-teichmann-2020",
+  "acquisition_status": "landing_saved",
+  "attempted_at": "2026-07-07T03:48:12+00:00",
+  "catalog_source_url": "https://fred.stlouisfed.org/",
+  "resolved_urls": [
+    "https://fred.stlouisfed.org/"
+  ],
+  "files": [
+    "source-1.html"
+  ],
+  "dois": []
+}

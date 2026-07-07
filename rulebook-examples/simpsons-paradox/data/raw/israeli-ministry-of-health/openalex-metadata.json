@@ -1,0 +1,1898 @@
+{
+  "id": "https://openalex.org/W4318685275",
+  "doi": "https://doi.org/10.1016/s0140-6736(22)02585-5",
+  "title": "Cooling cities through urban green infrastructure: a health impact assessment of European cities",
+  "display_name": "Cooling cities through urban green infrastructure: a health impact assessment of European cities",
+  "relevance_score": 195.8026,
+  "publication_year": 2023,
+  "publication_date": "2023-01-31",
+  "ids": {
+    "openalex": "https://openalex.org/W4318685275",
+    "doi": "https://doi.org/10.1016/s0140-6736(22)02585-5",
+    "pmid": "https://pubmed.ncbi.nlm.nih.gov/36736334"
+  },
+  "language": "en",
+  "primary_location": {
+    "id": "doi:10.1016/s0140-6736(22)02585-5",
+    "is_oa": false,
+    "landing_page_url": "https://doi.org/10.1016/s0140-6736(22)02585-5",
+    "pdf_url": null,
+    "source": {
+      "id": "https://openalex.org/S49861241",
+      "display_name": "The Lancet",
+      "issn_l": "0140-6736",
+      "issn": [
+        "0140-6736",
+        "1474-547X"
+      ],
+      "is_oa": false,
+      "is_in_doaj": false,
+      "is_core": true,
+      "host_organization": "https://openalex.org/P4310320990",
+      "host_organization_name": "Elsevier BV",
+      "host_organization_lineage": [
+        "https://openalex.org/P4310320990"
+      ],
+      "host_organization_lineage_names": [
+        "Elsevier BV"
+      ],
+      "type": "journal"
+    },
+    "license": null,
+    "license_id": null,
+    "version": "publishedVersion",
+    "is_accepted": true,
+    "is_published": true,
+    "raw_source_name": "The Lancet",
+    "raw_type": "journal-article"
+  },
+  "type": "article",
+  "indexed_in": [
+    "crossref",
+    "datacite",
+    "pubmed"
+  ],
+  "open_access": {
+    "is_oa": true,
+    "oa_status": "green",
+    "oa_url": "https://researchonline.lshtm.ac.uk/id/eprint/4668939/1/Iungman_etal_2023_Cooling-cities-through-urban-green.pdf",
+    "any_repository_has_fulltext": true
+  },
+  "authorships": [
+    {
+      "author_position": "first",
+      "author": {
+        "id": "https://openalex.org/A5015786309",
+        "display_name": "Tamara Iungman",
+        "orcid": "https://orcid.org/0000-0002-0713-7750"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I4210148332",
+          "display_name": "Barcelona Institute for Global Health",
+          "ror": "https://ror.org/03hjgt059",
+          "country_code": "ES",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I4210148332",
+            "https://openalex.org/I4387153040"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I170486558",
+          "display_name": "Pompeu Fabra University",
+          "ror": "https://ror.org/04n0g0b29",
+          "country_code": "ES",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I170486558"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I4210154894",
+          "display_name": "Centro de Investigaci\u00f3n Biom\u00e9dica en Red de Epidemiolog\u00eda y Salud P\u00fablica",
+          "ror": "https://ror.org/050q0kv47",
+          "country_code": "ES",
+          "type": "facility",
+          "lineage": [
+            "https://openalex.org/I2801357902",
+            "https://openalex.org/I4210115082",
+            "https://openalex.org/I4210154894",
+            "https://openalex.org/I4387152914"
+          ]
+        }
+      ],
+      "countries": [
+        "ES"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Tamara Iungman",
+      "raw_affiliation_strings": [
+        "Institute for Global Health, Barcelona, Spain; Department of Experimental and Health Sciences, Universitat Pompeu Fabra, Barcelona, Spain; CIBER Epidemiolog\u00eda y Salud P\u00fablica (CIBERESP), Madrid, Spain",
+        "Institute for Global Health (ISGlobal), Barcelona, Spain",
+        "Department of Experimental and Health Sciences, Universitat Pompeu Fabra, Barcelona, Spain",
+        "CIBER Epidemiolog\u00eda y Salud P\u00fablica (CIBERESP), Madrid, Spain"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Institute for Global Health, Barcelona, Spain; Department of Experimental and Health Sciences, Universitat Pompeu Fabra, Barcelona, Spain; CIBER Epidemiolog\u00eda y Salud P\u00fablica (CIBERESP), Madrid, Spain",
+          "institution_ids": []
+        },
+        {
+          "raw_affiliation_string": "Institute for Global Health (ISGlobal), Barcelona, Spain",
+          "institution_ids": [
+            "https://openalex.org/I4210148332"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Department of Experimental and Health Sciences, Universitat Pompeu Fabra, Barcelona, Spain",
+          "institution_ids": [
+            "https://openalex.org/I170486558"
+          ]
+        },
+        {
+          "raw_affiliation_string": "CIBER Epidemiolog\u00eda y Salud P\u00fablica (CIBERESP), Madrid, Spain",
+          "institution_ids": [
+            "https://openalex.org/I4210154894"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5052350019",
+        "display_name": "Marta Cirach",
+        "orcid": "https://orcid.org/0000-0002-5518-1529"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I4210154894",
+          "display_name": "Centro de Investigaci\u00f3n Biom\u00e9dica en Red de Epidemiolog\u00eda y Salud P\u00fablica",
+          "ror": "https://ror.org/050q0kv47",
+          "country_code": "ES",
+          "type": "facility",
+          "lineage": [
+            "https://openalex.org/I2801357902",
+            "https://openalex.org/I4210115082",
+            "https://openalex.org/I4210154894",
+            "https://openalex.org/I4387152914"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I170486558",
+          "display_name": "Pompeu Fabra University",
+          "ror": "https://ror.org/04n0g0b29",
+          "country_code": "ES",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I170486558"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I4210148332",
+          "display_name": "Barcelona Institute for Global Health",
+          "ror": "https://ror.org/03hjgt059",
+          "country_code": "ES",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I4210148332",
+            "https://openalex.org/I4387153040"
+          ]
+        }
+      ],
+      "countries": [
+        "ES"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Marta Cirach",
+      "raw_affiliation_strings": [
+        "Institute for Global Health, Barcelona, Spain; Department of Experimental and Health Sciences, Universitat Pompeu Fabra, Barcelona, Spain; CIBER Epidemiolog\u00eda y Salud P\u00fablica (CIBERESP), Madrid, Spain",
+        "Institute for Global Health (ISGlobal), Barcelona, Spain",
+        "Department of Experimental and Health Sciences, Universitat Pompeu Fabra, Barcelona, Spain",
+        "CIBER Epidemiolog\u00eda y Salud P\u00fablica (CIBERESP), Madrid, Spain"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Institute for Global Health, Barcelona, Spain; Department of Experimental and Health Sciences, Universitat Pompeu Fabra, Barcelona, Spain; CIBER Epidemiolog\u00eda y Salud P\u00fablica (CIBERESP), Madrid, Spain",
+          "institution_ids": []
+        },
+        {
+          "raw_affiliation_string": "Institute for Global Health (ISGlobal), Barcelona, Spain",
+          "institution_ids": [
+            "https://openalex.org/I4210148332"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Department of Experimental and Health Sciences, Universitat Pompeu Fabra, Barcelona, Spain",
+          "institution_ids": [
+            "https://openalex.org/I170486558"
+          ]
+        },
+        {
+          "raw_affiliation_string": "CIBER Epidemiolog\u00eda y Salud P\u00fablica (CIBERESP), Madrid, Spain",
+          "institution_ids": [
+            "https://openalex.org/I4210154894"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5001944961",
+        "display_name": "Federica Marando",
+        "orcid": "https://orcid.org/0000-0002-8285-4012"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I4210118689",
+          "display_name": "Joint Research Centre",
+          "ror": "https://ror.org/02qezmz13",
+          "country_code": "IT",
+          "type": "government",
+          "lineage": [
+            "https://openalex.org/I1320481043",
+            "https://openalex.org/I2800387288",
+            "https://openalex.org/I4210118689",
+            "https://openalex.org/I4210161702"
+          ]
+        }
+      ],
+      "countries": [
+        "IT"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Federica Marando",
+      "raw_affiliation_strings": [
+        "European Commission-Joint Research Centre, Ispra, Italy",
+        "European Commission -Joint Research Centre, Ispra, Italy"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "European Commission-Joint Research Centre, Ispra, Italy",
+          "institution_ids": [
+            "https://openalex.org/I4210118689"
+          ]
+        },
+        {
+          "raw_affiliation_string": "European Commission -Joint Research Centre, Ispra, Italy",
+          "institution_ids": [
+            "https://openalex.org/I4210118689"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5032115151",
+        "display_name": "Evelise Pereira Barboza",
+        "orcid": "https://orcid.org/0000-0002-2995-7418"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I170486558",
+          "display_name": "Pompeu Fabra University",
+          "ror": "https://ror.org/04n0g0b29",
+          "country_code": "ES",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I170486558"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I4210148332",
+          "display_name": "Barcelona Institute for Global Health",
+          "ror": "https://ror.org/03hjgt059",
+          "country_code": "ES",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I4210148332",
+            "https://openalex.org/I4387153040"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I4210154894",
+          "display_name": "Centro de Investigaci\u00f3n Biom\u00e9dica en Red de Epidemiolog\u00eda y Salud P\u00fablica",
+          "ror": "https://ror.org/050q0kv47",
+          "country_code": "ES",
+          "type": "facility",
+          "lineage": [
+            "https://openalex.org/I2801357902",
+            "https://openalex.org/I4210115082",
+            "https://openalex.org/I4210154894",
+            "https://openalex.org/I4387152914"
+          ]
+        }
+      ],
+      "countries": [
+        "ES"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Evelise Pereira Barboza",
+      "raw_affiliation_strings": [
+        "Institute for Global Health, Barcelona, Spain; Department of Experimental and Health Sciences, Universitat Pompeu Fabra, Barcelona, Spain; CIBER Epidemiolog\u00eda y Salud P\u00fablica (CIBERESP), Madrid, Spain",
+        "Institute for Global Health (ISGlobal), Barcelona, Spain",
+        "CIBER Epidemiolog\u00eda y Salud P\u00fablica (CIBERESP), Madrid, Spain",
+        "Department of Experimental and Health Sciences, Universitat Pompeu Fabra, Barcelona, Spain"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Institute for Global Health, Barcelona, Spain; Department of Experimental and Health Sciences, Universitat Pompeu Fabra, Barcelona, Spain; CIBER Epidemiolog\u00eda y Salud P\u00fablica (CIBERESP), Madrid, Spain",
+          "institution_ids": []
+        },
+        {
+          "raw_affiliation_string": "Institute for Global Health (ISGlobal), Barcelona, Spain",
+          "institution_ids": [
+            "https://openalex.org/I4210148332"
+          ]
+        },
+        {
+          "raw_affiliation_string": "CIBER Epidemiolog\u00eda y Salud P\u00fablica (CIBERESP), Madrid, Spain",
+          "institution_ids": [
+            "https://openalex.org/I4210154894"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Department of Experimental and Health Sciences, Universitat Pompeu Fabra, Barcelona, Spain",
+          "institution_ids": [
+            "https://openalex.org/I170486558"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5005944336",
+        "display_name": "Sasha Khomenko",
+        "orcid": null
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I4210148332",
+          "display_name": "Barcelona Institute for Global Health",
+          "ror": "https://ror.org/03hjgt059",
+          "country_code": "ES",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I4210148332",
+            "https://openalex.org/I4387153040"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I4210154894",
+          "display_name": "Centro de Investigaci\u00f3n Biom\u00e9dica en Red de Epidemiolog\u00eda y Salud P\u00fablica",
+          "ror": "https://ror.org/050q0kv47",
+          "country_code": "ES",
+          "type": "facility",
+          "lineage": [
+            "https://openalex.org/I2801357902",
+            "https://openalex.org/I4210115082",
+            "https://openalex.org/I4210154894",
+            "https://openalex.org/I4387152914"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I170486558",
+          "display_name": "Pompeu Fabra University",
+          "ror": "https://ror.org/04n0g0b29",
+          "country_code": "ES",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I170486558"
+          ]
+        }
+      ],
+      "countries": [
+        "ES"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Sasha Khomenko",
+      "raw_affiliation_strings": [
+        "Institute for Global Health, Barcelona, Spain; Department of Experimental and Health Sciences, Universitat Pompeu Fabra, Barcelona, Spain; CIBER Epidemiolog\u00eda y Salud P\u00fablica (CIBERESP), Madrid, Spain",
+        "CIBER Epidemiolog\u00eda y Salud P\u00fablica (CIBERESP), Madrid, Spain",
+        "Department of Experimental and Health Sciences, Universitat Pompeu Fabra, Barcelona, Spain",
+        "Institute for Global Health (ISGlobal), Barcelona, Spain"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Institute for Global Health, Barcelona, Spain; Department of Experimental and Health Sciences, Universitat Pompeu Fabra, Barcelona, Spain; CIBER Epidemiolog\u00eda y Salud P\u00fablica (CIBERESP), Madrid, Spain",
+          "institution_ids": []
+        },
+        {
+          "raw_affiliation_string": "CIBER Epidemiolog\u00eda y Salud P\u00fablica (CIBERESP), Madrid, Spain",
+          "institution_ids": [
+            "https://openalex.org/I4210154894"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Department of Experimental and Health Sciences, Universitat Pompeu Fabra, Barcelona, Spain",
+          "institution_ids": [
+            "https://openalex.org/I170486558"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Institute for Global Health (ISGlobal), Barcelona, Spain",
+          "institution_ids": [
+            "https://openalex.org/I4210148332"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5060326875",
+        "display_name": "Pierre Masselot",
+        "orcid": "https://orcid.org/0000-0002-7326-1290"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I4210089966",
+          "display_name": "London School of Hygiene & Tropical Medicine",
+          "ror": "https://ror.org/00a0jsq62",
+          "country_code": "GB",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I124357947",
+            "https://openalex.org/I4210089966"
+          ]
+        }
+      ],
+      "countries": [
+        "GB"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Pierre Masselot",
+      "raw_affiliation_strings": [
+        "Department of Public Health, Environments and Society, London School of Hygiene & Tropical Medicine, London, UK",
+        "Department of Public Health, Environments and Society, London School of Hygiene and Tropical Medicine (LSHTM), London, UK"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Department of Public Health, Environments and Society, London School of Hygiene & Tropical Medicine, London, UK",
+          "institution_ids": [
+            "https://openalex.org/I4210089966"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Department of Public Health, Environments and Society, London School of Hygiene and Tropical Medicine (LSHTM), London, UK",
+          "institution_ids": [
+            "https://openalex.org/I4210089966"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5042569643",
+        "display_name": "Marcos Quijal-Zamorano",
+        "orcid": "https://orcid.org/0000-0003-4603-5877"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I4210148332",
+          "display_name": "Barcelona Institute for Global Health",
+          "ror": "https://ror.org/03hjgt059",
+          "country_code": "ES",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I4210148332",
+            "https://openalex.org/I4387153040"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I170486558",
+          "display_name": "Pompeu Fabra University",
+          "ror": "https://ror.org/04n0g0b29",
+          "country_code": "ES",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I170486558"
+          ]
+        }
+      ],
+      "countries": [
+        "ES"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Marcos Quijal-Zamorano",
+      "raw_affiliation_strings": [
+        "Institute for Global Health, Barcelona, Spain; Department of Experimental and Health Sciences, Universitat Pompeu Fabra, Barcelona, Spain",
+        "Institute for Global Health (ISGlobal), Barcelona, Spain",
+        "Department of Experimental and Health Sciences, Universitat Pompeu Fabra, Barcelona, Spain"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Institute for Global Health, Barcelona, Spain; Department of Experimental and Health Sciences, Universitat Pompeu Fabra, Barcelona, Spain",
+          "institution_ids": [
+            "https://openalex.org/I170486558"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Institute for Global Health (ISGlobal), Barcelona, Spain",
+          "institution_ids": [
+            "https://openalex.org/I4210148332"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Department of Experimental and Health Sciences, Universitat Pompeu Fabra, Barcelona, Spain",
+          "institution_ids": [
+            "https://openalex.org/I170486558"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5082967060",
+        "display_name": "Natalie Mueller",
+        "orcid": "https://orcid.org/0000-0002-8456-2339"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I4210148332",
+          "display_name": "Barcelona Institute for Global Health",
+          "ror": "https://ror.org/03hjgt059",
+          "country_code": "ES",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I4210148332",
+            "https://openalex.org/I4387153040"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I4210154894",
+          "display_name": "Centro de Investigaci\u00f3n Biom\u00e9dica en Red de Epidemiolog\u00eda y Salud P\u00fablica",
+          "ror": "https://ror.org/050q0kv47",
+          "country_code": "ES",
+          "type": "facility",
+          "lineage": [
+            "https://openalex.org/I2801357902",
+            "https://openalex.org/I4210115082",
+            "https://openalex.org/I4210154894",
+            "https://openalex.org/I4387152914"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I170486558",
+          "display_name": "Pompeu Fabra University",
+          "ror": "https://ror.org/04n0g0b29",
+          "country_code": "ES",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I170486558"
+          ]
+        }
+      ],
+      "countries": [
+        "ES"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Natalie Mueller",
+      "raw_affiliation_strings": [
+        "Institute for Global Health, Barcelona, Spain; Department of Experimental and Health Sciences, Universitat Pompeu Fabra, Barcelona, Spain; CIBER Epidemiolog\u00eda y Salud P\u00fablica (CIBERESP), Madrid, Spain",
+        "Institute for Global Health (ISGlobal), Barcelona, Spain",
+        "CIBER Epidemiolog\u00eda y Salud P\u00fablica (CIBERESP), Madrid, Spain",
+        "Department of Experimental and Health Sciences, Universitat Pompeu Fabra, Barcelona, Spain"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Institute for Global Health, Barcelona, Spain; Department of Experimental and Health Sciences, Universitat Pompeu Fabra, Barcelona, Spain; CIBER Epidemiolog\u00eda y Salud P\u00fablica (CIBERESP), Madrid, Spain",
+          "institution_ids": []
+        },
+        {
+          "raw_affiliation_string": "Institute for Global Health (ISGlobal), Barcelona, Spain",
+          "institution_ids": [
+            "https://openalex.org/I4210148332"
+          ]
+        },
+        {
+          "raw_affiliation_string": "CIBER Epidemiolog\u00eda y Salud P\u00fablica (CIBERESP), Madrid, Spain",
+          "institution_ids": [
+            "https://openalex.org/I4210154894"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Department of Experimental and Health Sciences, Universitat Pompeu Fabra, Barcelona, Spain",
+          "institution_ids": [
+            "https://openalex.org/I170486558"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5027193250",
+        "display_name": "Antonio Gasparrini",
+        "orcid": "https://orcid.org/0000-0002-2271-3568"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I4210089966",
+          "display_name": "London School of Hygiene & Tropical Medicine",
+          "ror": "https://ror.org/00a0jsq62",
+          "country_code": "GB",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I124357947",
+            "https://openalex.org/I4210089966"
+          ]
+        }
+      ],
+      "countries": [
+        "GB"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Antonio Gasparrini",
+      "raw_affiliation_strings": [
+        "Department of Public Health, Environments and Society, London School of Hygiene & Tropical Medicine, London, UK; Centre on Climate Change and Planetary Health, London School of Hygiene & Tropical Medicine, London, UK; Centre for Statistical Methodology, London School of Hygiene & Tropical Medicine, London, UK",
+        "Centre for Statistical Methodology, London School of Hygiene & Tropical Medicine (LSHTM), London, UK",
+        "Department of Public Health, Environments and Society, London School of Hygiene and Tropical Medicine (LSHTM), London, UK",
+        "Centre on Climate Change and Planetary Health, London School of Hygiene & Tropical Medicine (LSHTM), London, UK"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Department of Public Health, Environments and Society, London School of Hygiene & Tropical Medicine, London, UK; Centre on Climate Change and Planetary Health, London School of Hygiene & Tropical Medicine, London, UK; Centre for Statistical Methodology, London School of Hygiene & Tropical Medicine, London, UK",
+          "institution_ids": []
+        },
+        {
+          "raw_affiliation_string": "Centre for Statistical Methodology, London School of Hygiene & Tropical Medicine (LSHTM), London, UK",
+          "institution_ids": [
+            "https://openalex.org/I4210089966"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Department of Public Health, Environments and Society, London School of Hygiene and Tropical Medicine (LSHTM), London, UK",
+          "institution_ids": [
+            "https://openalex.org/I4210089966"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Centre on Climate Change and Planetary Health, London School of Hygiene & Tropical Medicine (LSHTM), London, UK",
+          "institution_ids": [
+            "https://openalex.org/I4210089966"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5068042887",
+        "display_name": "Jos\u00e9 Urquiza",
+        "orcid": "https://orcid.org/0000-0003-2220-607X"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I4210154894",
+          "display_name": "Centro de Investigaci\u00f3n Biom\u00e9dica en Red de Epidemiolog\u00eda y Salud P\u00fablica",
+          "ror": "https://ror.org/050q0kv47",
+          "country_code": "ES",
+          "type": "facility",
+          "lineage": [
+            "https://openalex.org/I2801357902",
+            "https://openalex.org/I4210115082",
+            "https://openalex.org/I4210154894",
+            "https://openalex.org/I4387152914"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I170486558",
+          "display_name": "Pompeu Fabra University",
+          "ror": "https://ror.org/04n0g0b29",
+          "country_code": "ES",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I170486558"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I4210148332",
+          "display_name": "Barcelona Institute for Global Health",
+          "ror": "https://ror.org/03hjgt059",
+          "country_code": "ES",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I4210148332",
+            "https://openalex.org/I4387153040"
+          ]
+        }
+      ],
+      "countries": [
+        "ES"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Jos\u00e9 Urquiza",
+      "raw_affiliation_strings": [
+        "Institute for Global Health, Barcelona, Spain; Department of Experimental and Health Sciences, Universitat Pompeu Fabra, Barcelona, Spain; CIBER Epidemiolog\u00eda y Salud P\u00fablica (CIBERESP), Madrid, Spain",
+        "Institute for Global Health (ISGlobal), Barcelona, Spain",
+        "Department of Experimental and Health Sciences, Universitat Pompeu Fabra, Barcelona, Spain",
+        "CIBER Epidemiolog\u00eda y Salud P\u00fablica (CIBERESP), Madrid, Spain"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Institute for Global Health, Barcelona, Spain; Department of Experimental and Health Sciences, Universitat Pompeu Fabra, Barcelona, Spain; CIBER Epidemiolog\u00eda y Salud P\u00fablica (CIBERESP), Madrid, Spain",
+          "institution_ids": []
+        },
+        {
+          "raw_affiliation_string": "Institute for Global Health (ISGlobal), Barcelona, Spain",
+          "institution_ids": [
+            "https://openalex.org/I4210148332"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Department of Experimental and Health Sciences, Universitat Pompeu Fabra, Barcelona, Spain",
+          "institution_ids": [
+            "https://openalex.org/I170486558"
+          ]
+        },
+        {
+          "raw_affiliation_string": "CIBER Epidemiolog\u00eda y Salud P\u00fablica (CIBERESP), Madrid, Spain",
+          "institution_ids": [
+            "https://openalex.org/I4210154894"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5033965436",
+        "display_name": "Mehdi P. Heris",
+        "orcid": "https://orcid.org/0000-0002-4418-5030"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I174216632",
+          "display_name": "City University of New York",
+          "ror": "https://ror.org/00453a208",
+          "country_code": "US",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I174216632"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I39694355",
+          "display_name": "Hunter College",
+          "ror": "https://ror.org/00g2xk477",
+          "country_code": "US",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I39694355"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Mehdi Heris",
+      "raw_affiliation_strings": [
+        "Hunter College, City University of New York, New York, NY, USA",
+        "Hunter College City University of New York"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Hunter College, City University of New York, New York, NY, USA",
+          "institution_ids": [
+            "https://openalex.org/I39694355",
+            "https://openalex.org/I174216632"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Hunter College City University of New York",
+          "institution_ids": [
+            "https://openalex.org/I39694355",
+            "https://openalex.org/I174216632"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5003209816",
+        "display_name": "Meelan Thondoo",
+        "orcid": "https://orcid.org/0000-0001-9053-3123"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I4210158597",
+          "display_name": "MRC Epidemiology Unit",
+          "ror": "https://ror.org/052578691",
+          "country_code": "GB",
+          "type": "facility",
+          "lineage": [
+            "https://openalex.org/I241749",
+            "https://openalex.org/I4210087105",
+            "https://openalex.org/I4210158597",
+            "https://openalex.org/I90344618"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I4210148332",
+          "display_name": "Barcelona Institute for Global Health",
+          "ror": "https://ror.org/03hjgt059",
+          "country_code": "ES",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I4210148332",
+            "https://openalex.org/I4387153040"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I241749",
+          "display_name": "University of Cambridge",
+          "ror": "https://ror.org/013meh722",
+          "country_code": "GB",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I241749"
+          ]
+        }
+      ],
+      "countries": [
+        "ES",
+        "GB"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Meelan Thondoo",
+      "raw_affiliation_strings": [
+        "Institute for Global Health, Barcelona, Spain; MRC Epidemiology Unit, University of Cambridge School of Clinical Medicine, Cambridge, UK",
+        "Institute for Global Health (ISGlobal), Barcelona, Spain",
+        "MRC Epidemiology Unit, University of Cambridge School of Clinical Medicine, Cambridge, UK"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Institute for Global Health, Barcelona, Spain; MRC Epidemiology Unit, University of Cambridge School of Clinical Medicine, Cambridge, UK",
+          "institution_ids": []
+        },
+        {
+          "raw_affiliation_string": "Institute for Global Health (ISGlobal), Barcelona, Spain",
+          "institution_ids": [
+            "https://openalex.org/I4210148332"
+          ]
+        },
+        {
+          "raw_affiliation_string": "MRC Epidemiology Unit, University of Cambridge School of Clinical Medicine, Cambridge, UK",
+          "institution_ids": [
+            "https://openalex.org/I4210158597",
+            "https://openalex.org/I241749"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "last",
+      "author": {
+        "id": "https://openalex.org/A5023963030",
+        "display_name": "Mark Nieuwenhuijsen",
+        "orcid": "https://orcid.org/0000-0001-9461-7981"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I4210154894",
+          "display_name": "Centro de Investigaci\u00f3n Biom\u00e9dica en Red de Epidemiolog\u00eda y Salud P\u00fablica",
+          "ror": "https://ror.org/050q0kv47",
+          "country_code": "ES",
+          "type": "facility",
+          "lineage": [
+            "https://openalex.org/I2801357902",
+            "https://openalex.org/I4210115082",
+            "https://openalex.org/I4210154894",
+            "https://openalex.org/I4387152914"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I4210148332",
+          "display_name": "Barcelona Institute for Global Health",
+          "ror": "https://ror.org/03hjgt059",
+          "country_code": "ES",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I4210148332",
+            "https://openalex.org/I4387153040"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I170486558",
+          "display_name": "Pompeu Fabra University",
+          "ror": "https://ror.org/04n0g0b29",
+          "country_code": "ES",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I170486558"
+          ]
+        }
+      ],
+      "countries": [
+        "ES"
+      ],
+      "is_corresponding": true,
+      "raw_author_name": "Mark Nieuwenhuijsen",
+      "raw_affiliation_strings": [
+        "Institute for Global Health, Barcelona, Spain; Department of Experimental and Health Sciences, Universitat Pompeu Fabra, Barcelona, Spain; CIBER Epidemiolog\u00eda y Salud P\u00fablica (CIBERESP), Madrid, Spain. Electronic address: mark.nieuwenhuijsen@isglobal.org",
+        "Department of Experimental and Health Sciences, Universitat Pompeu Fabra, Barcelona, Spain",
+        "CIBER Epidemiolog\u00eda y Salud P\u00fablica (CIBERESP), Madrid, Spain",
+        "Institute for Global Health (ISGlobal), Barcelona, Spain"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Institute for Global Health, Barcelona, Spain; Department of Experimental and Health Sciences, Universitat Pompeu Fabra, Barcelona, Spain; CIBER Epidemiolog\u00eda y Salud P\u00fablica (CIBERESP), Madrid, Spain. Electronic address: mark.nieuwenhuijsen@isglobal.org",
+          "institution_ids": []
+        },
+        {
+          "raw_affiliation_string": "Department of Experimental and Health Sciences, Universitat Pompeu Fabra, Barcelona, Spain",
+          "institution_ids": [
+            "https://openalex.org/I170486558"
+          ]
+        },
+        {
+          "raw_affiliation_string": "CIBER Epidemiolog\u00eda y Salud P\u00fablica (CIBERESP), Madrid, Spain",
+          "institution_ids": [
+            "https://openalex.org/I4210154894"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Institute for Global Health (ISGlobal), Barcelona, Spain",
+          "institution_ids": [
+            "https://openalex.org/I4210148332"
+          ]
+        }
+      ]
+    }
+  ],
+  "institutions": [],
+  "countries_distinct_count": 4,
+  "institutions_distinct_count": 9,
+  "corresponding_author_ids": [
+    "https://openalex.org/A5023963030"
+  ],
+  "corresponding_institution_ids": [
+    "https://openalex.org/I170486558",
+    "https://openalex.org/I4210148332",
+    "https://openalex.org/I4210154894"
+  ],
+  "apc_list": {
+    "value": 6830,
+    "currency": "USD",
+    "value_usd": 6830
+  },
+  "apc_paid": null,
+  "fwci": 54.5704,
+  "has_fulltext": true,
+  "cited_by_count": 511,
+  "citation_normalized_percentile": {
+    "value": 0.999944,
+    "is_in_top_1_percent": true,
+    "is_in_top_10_percent": true
+  },
+  "cited_by_percentile_year": {
+    "min": 99,
+    "max": 100
+  },
+  "biblio": {
+    "volume": "401",
+    "issue": "10376",
+    "first_page": "577",
+    "last_page": "589"
+  },
+  "is_retracted": false,
+  "is_paratext": false,
+  "is_xpac": false,
+  "primary_topic": {
+    "id": "https://openalex.org/T10766",
+    "display_name": "Urban Heat Island Mitigation",
+    "score": 0.5622000098228455,
+    "subfield": {
+      "id": "https://openalex.org/subfields/2305",
+      "display_name": "Environmental Engineering"
+    },
+    "field": {
+      "id": "https://openalex.org/fields/23",
+      "display_name": "Environmental Science"
+    },
+    "domain": {
+      "id": "https://openalex.org/domains/3",
+      "display_name": "Physical Sciences"
+    }
+  },
+  "topics": [
+    {
+      "id": "https://openalex.org/T10766",
+      "display_name": "Urban Heat Island Mitigation",
+      "score": 0.5622000098228455,
+      "subfield": {
+        "id": "https://openalex.org/subfields/2305",
+        "display_name": "Environmental Engineering"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/23",
+        "display_name": "Environmental Science"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/3",
+        "display_name": "Physical Sciences"
+      }
+    },
+    {
+      "id": "https://openalex.org/T11244",
+      "display_name": "Climate Change and Health Impacts",
+      "score": 0.34790000319480896,
+      "subfield": {
+        "id": "https://openalex.org/subfields/2307",
+        "display_name": "Health, Toxicology and Mutagenesis"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/23",
+        "display_name": "Environmental Science"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/3",
+        "display_name": "Physical Sciences"
+      }
+    },
+    {
+      "id": "https://openalex.org/T10692",
+      "display_name": "Urban Green Space and Health",
+      "score": 0.05220000073313713,
+      "subfield": {
+        "id": "https://openalex.org/subfields/2307",
+        "display_name": "Health, Toxicology and Mutagenesis"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/23",
+        "display_name": "Environmental Science"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/3",
+        "display_name": "Physical Sciences"
+      }
+    }
+  ],
+  "keywords": [
+    {
+      "id": "https://openalex.org/keywords/population",
+      "display_name": "Population",
+      "score": 0.5350331664085388
+    },
+    {
+      "id": "https://openalex.org/keywords/urban-heat-island",
+      "display_name": "Urban heat island",
+      "score": 0.5103025436401367
+    },
+    {
+      "id": "https://openalex.org/keywords/public-health",
+      "display_name": "Public health",
+      "score": 0.5042418241500854
+    },
+    {
+      "id": "https://openalex.org/keywords/climate-change",
+      "display_name": "Climate change",
+      "score": 0.47073209285736084
+    },
+    {
+      "id": "https://openalex.org/keywords/demography",
+      "display_name": "Demography",
+      "score": 0.46507927775382996
+    },
+    {
+      "id": "https://openalex.org/keywords/medicine",
+      "display_name": "Medicine",
+      "score": 0.45107075572013855
+    },
+    {
+      "id": "https://openalex.org/keywords/environmental-science",
+      "display_name": "Environmental science",
+      "score": 0.40507155656814575
+    },
+    {
+      "id": "https://openalex.org/keywords/geography",
+      "display_name": "Geography",
+      "score": 0.4014604687690735
+    },
+    {
+      "id": "https://openalex.org/keywords/environmental-health",
+      "display_name": "Environmental health",
+      "score": 0.38498055934906006
+    },
+    {
+      "id": "https://openalex.org/keywords/climatology",
+      "display_name": "Climatology",
+      "score": 0.32557541131973267
+    },
+    {
+      "id": "https://openalex.org/keywords/meteorology",
+      "display_name": "Meteorology",
+      "score": 0.18684706091880798
+    }
+  ],
+  "concepts": [
+    {
+      "id": "https://openalex.org/C2908647359",
+      "wikidata": "https://www.wikidata.org/wiki/Q2625603",
+      "display_name": "Population",
+      "level": 2,
+      "score": 0.5350331664085388
+    },
+    {
+      "id": "https://openalex.org/C54005896",
+      "wikidata": "https://www.wikidata.org/wiki/Q215712",
+      "display_name": "Urban heat island",
+      "level": 2,
+      "score": 0.5103025436401367
+    },
+    {
+      "id": "https://openalex.org/C138816342",
+      "wikidata": "https://www.wikidata.org/wiki/Q189603",
+      "display_name": "Public health",
+      "level": 2,
+      "score": 0.5042418241500854
+    },
+    {
+      "id": "https://openalex.org/C132651083",
+      "wikidata": "https://www.wikidata.org/wiki/Q7942",
+      "display_name": "Climate change",
+      "level": 2,
+      "score": 0.47073209285736084
+    },
+    {
+      "id": "https://openalex.org/C149923435",
+      "wikidata": "https://www.wikidata.org/wiki/Q37732",
+      "display_name": "Demography",
+      "level": 1,
+      "score": 0.46507927775382996
+    },
+    {
+      "id": "https://openalex.org/C71924100",
+      "wikidata": "https://www.wikidata.org/wiki/Q11190",
+      "display_name": "Medicine",
+      "level": 0,
+      "score": 0.45107075572013855
+    },
+    {
+      "id": "https://openalex.org/C39432304",
+      "wikidata": "https://www.wikidata.org/wiki/Q188847",
+      "display_name": "Environmental science",
+      "level": 0,
+      "score": 0.40507155656814575
+    },
+    {
+      "id": "https://openalex.org/C205649164",
+      "wikidata": "https://www.wikidata.org/wiki/Q1071",
+      "display_name": "Geography",
+      "level": 0,
+      "score": 0.4014604687690735
+    },
+    {
+      "id": "https://openalex.org/C99454951",
+      "wikidata": "https://www.wikidata.org/wiki/Q932068",
+      "display_name": "Environmental health",
+      "level": 1,
+      "score": 0.38498055934906006
+    },
+    {
+      "id": "https://openalex.org/C49204034",
+      "wikidata": "https://www.wikidata.org/wiki/Q52139",
+      "display_name": "Climatology",
+      "level": 1,
+      "score": 0.32557541131973267
+    },
+    {
+      "id": "https://openalex.org/C153294291",
+      "wikidata": "https://www.wikidata.org/wiki/Q25261",
+      "display_name": "Meteorology",
+      "level": 1,
+      "score": 0.18684706091880798
+    },
+    {
+      "id": "https://openalex.org/C18903297",
+      "wikidata": "https://www.wikidata.org/wiki/Q7150",
+      "display_name": "Ecology",
+      "level": 1,
+      "score": 0.0
+    },
+    {
+      "id": "https://openalex.org/C86803240",
+      "wikidata": "https://www.wikidata.org/wiki/Q420",
+      "display_name": "Biology",
+      "level": 0,
+      "score": 0.0
+    },
+    {
+      "id": "https://openalex.org/C144024400",
+      "wikidata": "https://www.wikidata.org/wiki/Q21201",
+      "display_name": "Sociology",
+      "level": 0,
+      "score": 0.0
+    },
+    {
+      "id": "https://openalex.org/C127313418",
+      "wikidata": "https://www.wikidata.org/wiki/Q1069",
+      "display_name": "Geology",
+      "level": 0,
+      "score": 0.0
+    },
+    {
+      "id": "https://openalex.org/C159110408",
+      "wikidata": "https://www.wikidata.org/wiki/Q121176",
+      "display_name": "Nursing",
+      "level": 1,
+      "score": 0.0
+    }
+  ],
+  "mesh": [
+    {
+      "descriptor_ui": "D000328",
+      "descriptor_name": "Adult",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000328",
+      "descriptor_name": "Adult",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000328",
+      "descriptor_name": "Adult",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000328",
+      "descriptor_name": "Adult",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D002947",
+      "descriptor_name": "Cities",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D002947",
+      "descriptor_name": "Cities",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D002947",
+      "descriptor_name": "Cities",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D002947",
+      "descriptor_name": "Cities",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D003080",
+      "descriptor_name": "Cold Temperature",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D003080",
+      "descriptor_name": "Cold Temperature",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D003080",
+      "descriptor_name": "Cold Temperature",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D003080",
+      "descriptor_name": "Cold Temperature",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D006358",
+      "descriptor_name": "Hot Temperature",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D006358",
+      "descriptor_name": "Hot Temperature",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D006358",
+      "descriptor_name": "Hot Temperature",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D006358",
+      "descriptor_name": "Hot Temperature",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D006801",
+      "descriptor_name": "Humans",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D006801",
+      "descriptor_name": "Humans",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D006801",
+      "descriptor_name": "Humans",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D006801",
+      "descriptor_name": "Humans",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D012621",
+      "descriptor_name": "Seasons",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D012621",
+      "descriptor_name": "Seasons",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D012621",
+      "descriptor_name": "Seasons",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D012621",
+      "descriptor_name": "Seasons",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D062489",
+      "descriptor_name": "Health Impact Assessment",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D062489",
+      "descriptor_name": "Health Impact Assessment",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D062489",
+      "descriptor_name": "Health Impact Assessment",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D062489",
+      "descriptor_name": "Health Impact Assessment",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": true
+    }
+  ],
+  "locations_count": 6,
+  "locations": [
+    {
+      "id": "doi:10.1016/s0140-6736(22)02585-5",
+      "is_oa": false,
+      "landing_page_url": "https://doi.org/10.1016/s0140-6736(22)02585-5",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S49861241",
+        "display_name": "The Lancet",
+        "issn_l": "0140-6736",
+        "issn": [
+          "0140-6736",
+          "1474-547X"
+        ],
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": true,
+        "host_organization": "https://openalex.org/P4310320990",
+        "host_organization_name": "Elsevier BV",
+        "host_organization_lineage": [
+          "https://openalex.org/P4310320990"
+        ],
+        "host_organization_lineage_names": [
+          "Elsevier BV"
+        ],
+        "type": "journal"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "publishedVersion",
+      "is_accepted": true,
+      "is_published": true,
+      "raw_source_name": "The Lancet",
+      "raw_type": "journal-article"
+    },
+    {
+      "id": "pmid:36736334",
+      "is_oa": false,
+      "landing_page_url": "https://pubmed.ncbi.nlm.nih.gov/36736334",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4306525036",
+        "display_name": "PubMed",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I1299303238",
+        "host_organization_name": "National Institutes of Health",
+        "host_organization_lineage": [
+          "https://openalex.org/I1299303238"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "publishedVersion",
+      "is_accepted": true,
+      "is_published": true,
+      "raw_source_name": "Lancet (London, England)",
+      "raw_type": null
+    },
+    {
+      "id": "pmh:oai:researchonline.lshtm.ac.uk:4668939",
+      "is_oa": true,
+      "landing_page_url": "https://researchonline.lshtm.ac.uk/view/creators/lshpm4.html>;",
+      "pdf_url": "https://researchonline.lshtm.ac.uk/id/eprint/4668939/1/Iungman_etal_2023_Cooling-cities-through-urban-green.pdf",
+      "source": {
+        "id": "https://openalex.org/S4306402527",
+        "display_name": "LSHTM Research Online (London School of Hygiene and Tropical Medicine)",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I4210089966",
+        "host_organization_name": "London School of Hygiene & Tropical Medicine",
+        "host_organization_lineage": [
+          "https://openalex.org/I4210089966"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "submittedVersion",
+      "is_accepted": false,
+      "is_published": false,
+      "raw_source_name": null,
+      "raw_type": "Article"
+    },
+    {
+      "id": "pmh:oai:zenodo.org:8318810",
+      "is_oa": true,
+      "landing_page_url": "https://zenodo.org/record/8318810",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4306400562",
+        "display_name": "Zenodo (CERN European Organization for Nuclear Research)",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": true,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I67311998",
+        "host_organization_name": "European Organization for Nuclear Research",
+        "host_organization_lineage": [
+          "https://openalex.org/I67311998"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": "cc-by",
+      "license_id": "https://openalex.org/licenses/cc-by",
+      "version": "submittedVersion",
+      "is_accepted": false,
+      "is_published": false,
+      "raw_source_name": "",
+      "raw_type": "info:eu-repo/semantics/review"
+    },
+    {
+      "id": "doi:10.5281/zenodo.8318810",
+      "is_oa": true,
+      "landing_page_url": "https://doi.org/10.5281/zenodo.8318810",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4306400562",
+        "display_name": "Zenodo (CERN European Organization for Nuclear Research)",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": true,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I67311998",
+        "host_organization_name": "European Organization for Nuclear Research",
+        "host_organization_lineage": [
+          "https://openalex.org/I67311998"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": "cc-by",
+      "license_id": "https://openalex.org/licenses/cc-by",
+      "version": null,
+      "is_accepted": false,
+      "is_published": null,
+      "raw_source_name": null,
+      "raw_type": "PeerReview"
+    },
+    {
+      "id": "doi:10.5281/zenodo.8318901",
+      "is_oa": true,
+      "landing_page_url": "https://doi.org/10.5281/zenodo.8318901",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4306400562",
+        "display_name": "Zenodo (CERN European Organization for Nuclear Research)",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": true,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I67311998",
+        "host_organization_name": "European Organization for Nuclear Research",
+        "host_organization_lineage": [
+          "https://openalex.org/I67311998"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": "cc-by",
+      "license_id": "https://openalex.org/licenses/cc-by",
+      "version": null,
+      "is_accepted": false,
+      "is_published": null,
+      "raw_source_name": null,
+      "raw_type": "PeerReview"
+    }
+  ],
+  "best_oa_location": {
+    "id": "pmh:oai:researchonline.lshtm.ac.uk:4668939",
+    "is_oa": true,
+    "landing_page_url": "https://researchonline.lshtm.ac.uk/view/creators/lshpm4.html>;",
+    "pdf_url": "https://researchonline.lshtm.ac.uk/id/eprint/4668939/1/Iungman_etal_2023_Cooling-cities-through-urban-green.pdf",
+    "source": {
+      "id": "https://openalex.org/S4306402527",
+      "display_name": "LSHTM Research Online (London School of Hygiene and Tropical Medicine)",
+      "issn_l": null,
+      "issn": null,
+      "is_oa": false,
+      "is_in_doaj": false,
+      "is_core": false,
+      "host_organization": "https://openalex.org/I4210089966",
+      "host_organization_name": "London School of Hygiene & Tropical Medicine",
+      "host_organization_lineage": [
+        "https://openalex.org/I4210089966"
+      ],
+      "host_organization_lineage_names": [],
+      "type": "repository"
+    },
+    "license": null,
+    "license_id": null,
+    "version": "submittedVersion",
+    "is_accepted": false,
+    "is_published": false,
+    "raw_source_name": null,
+    "raw_type": "Article"
+  },
+  "sustainable_development_goals": [
+    {
+      "display_name": "Climate action",
+      "id": "https://metadata.un.org/sdg/13",
+      "score": 0.41999998688697815
+    }
+  ],
+  "awards": [
+    {
+      "id": "https://openalex.org/G2962740481",
+      "display_name": "GO GREEN: Resilient Optimal Urban natural, Technological and Environmental Solutions",
+      "funder_award_id": "869764",
+      "funder_id": "https://openalex.org/F4320320300",
+      "funder_display_name": "European Commission"
+    },
+    {
+      "id": "https://openalex.org/G3332871658",
+      "display_name": "Current and future temperature-related mortality and morbidity in the UK: a public health and climate change perspective",
+      "funder_award_id": "MR/V034162/1",
+      "funder_id": "https://openalex.org/F4320334626",
+      "funder_display_name": "Medical Research Council"
+    },
+    {
+      "id": "https://openalex.org/G3423777635",
+      "display_name": null,
+      "funder_award_id": "CEX2018-000806-S",
+      "funder_id": "https://openalex.org/F4320315803",
+      "funder_display_name": "Centres de Recerca de Catalunya"
+    },
+    {
+      "id": "https://openalex.org/G3436972154",
+      "display_name": "Exposure to heat and air pollution in EUrope \u2013 cardiopulmonary impacts and benefits of mitigation and adaptation",
+      "funder_award_id": "820655",
+      "funder_id": "https://openalex.org/F4320320300",
+      "funder_display_name": "European Commission"
+    },
+    {
+      "id": "https://openalex.org/G3507498045",
+      "display_name": "Signs of Early Adaptation to Climate Change",
+      "funder_award_id": "865564",
+      "funder_id": "https://openalex.org/F4320320300",
+      "funder_display_name": "European Commission"
+    },
+    {
+      "id": "https://openalex.org/G3921184880",
+      "display_name": null,
+      "funder_award_id": "865564",
+      "funder_id": "https://openalex.org/F4320332999",
+      "funder_display_name": "Horizon 2020 Framework Programme"
+    },
+    {
+      "id": "https://openalex.org/G43203158",
+      "display_name": null,
+      "funder_award_id": "Centro de Excelencia Severo Ochoa 2019-2023",
+      "funder_id": "https://openalex.org/F4320322930",
+      "funder_display_name": "Ministerio de Ciencia e Innovaci\u00f3n"
+    },
+    {
+      "id": "https://openalex.org/G589846866",
+      "display_name": null,
+      "funder_award_id": "CEX2018-000806-S",
+      "funder_id": "https://openalex.org/F4320322930",
+      "funder_display_name": "Ministerio de Ciencia e Innovaci\u00f3n"
+    },
+    {
+      "id": "https://openalex.org/G6328075693",
+      "display_name": null,
+      "funder_award_id": "CEX2018-000806-S",
+      "funder_id": "https://openalex.org/F4320321505",
+      "funder_display_name": "Generalitat de Catalunya"
+    },
+    {
+      "id": "https://openalex.org/G7232073370",
+      "display_name": null,
+      "funder_award_id": "2019-2023",
+      "funder_id": "https://openalex.org/F4320320300",
+      "funder_display_name": "European Commission"
+    },
+    {
+      "id": "https://openalex.org/G7268868823",
+      "display_name": null,
+      "funder_award_id": "MR/R013349/1",
+      "funder_id": "https://openalex.org/F4320334626",
+      "funder_display_name": "Medical Research Council"
+    },
+    {
+      "id": "https://openalex.org/G7333524316",
+      "display_name": null,
+      "funder_award_id": "MR/V034162/1",
+      "funder_id": "https://openalex.org/F4320334626",
+      "funder_display_name": "Medical Research Council"
+    },
+    {
+      "id": "https://openalex.org/G7681482071",
+      "display_name": "The case time series design: a new tool for big data analysis",
+      "funder_award_id": "MR/R013349/1",
+      "funder_id": "https://openalex.org/F4320334626",
+      "funder_display_name": "Medical Research Council"
+    }
+  ],
+  "funders": [
+    {
+      "id": "https://openalex.org/F4320315803",
+      "display_name": "Centres de Recerca de Catalunya",
+      "ror": null
+    },
+    {
+      "id": "https://openalex.org/F4320320300",
+      "display_name": "European Commission",
+      "ror": "https://ror.org/00k4n6c32"
+    },
+    {
+      "id": "https://openalex.org/F4320321505",
+      "display_name": "Generalitat de Catalunya",
+      "ror": "https://ror.org/01bg62x04"
+    },
+    {
+      "id": "https://openalex.org/F4320322930",
+      "display_name": "Ministerio de Ciencia e Innovaci\u00f3n",
+      "ror": "https://ror.org/034900433"
+    },
+    {
+      "id": "https://openalex.org/F4320332999",
+      "display_name": "Horizon 2020 Framework Programme",
+      "ror": "https://ror.org/00k4n6c32"
+    },
+    {
+      "id": "https://openalex.org/F4320334626",
+      "display_name": "Medical Research Council",
+      "ror": "https://ror.org/03x94j517"
+    }
+  ],
+  "has_content": {
+    "grobid_xml": false,
+    "pdf": true
+  },
+  "content_urls": {
+    "pdf": "https://content.openalex.org/works/W4318685275.pdf"
+  },
+  "referenced_works_count": 70,
+  "referenced_works": [
+    "https://openalex.org/W633947642",
+    "https://openalex.org/W1158780870",
+    "https://openalex.org/W1825012110",
+    "https://openalex.org/W1966687859",
+    "https://openalex.org/W1979357475",
+    "https://openalex.org/W1983643661",
+    "https://openalex.org/W1995600630",
+    "https://openalex.org/W2015180254",
+    "https://openalex.org/W2019384528",
+    "https://openalex.org/W2021600729",
+    "https://openalex.org/W2022981541",
+    "https://openalex.org/W2027776000",
+    "https://openalex.org/W2042804440",
+    "https://openalex.org/W2046536154",
+    "https://openalex.org/W2056348586",
+    "https://openalex.org/W2059449677",
+    "https://openalex.org/W2073503865",
+    "https://openalex.org/W2103205750",
+    "https://openalex.org/W2109078197",
+    "https://openalex.org/W2120060955",
+    "https://openalex.org/W2123032020",
+    "https://openalex.org/W2127880144",
+    "https://openalex.org/W2299591296",
+    "https://openalex.org/W2390286429",
+    "https://openalex.org/W2414186644",
+    "https://openalex.org/W2471341387",
+    "https://openalex.org/W2584823719",
+    "https://openalex.org/W2613867520",
+    "https://openalex.org/W2765212168",
+    "https://openalex.org/W2768445831",
+    "https://openalex.org/W2787099735",
+    "https://openalex.org/W2790682854",
+    "https://openalex.org/W2807891057",
+    "https://openalex.org/W2896604211",
+    "https://openalex.org/W2896874325",
+    "https://openalex.org/W2903235937",
+    "https://openalex.org/W2907203129",
+    "https://openalex.org/W2914354669",
+    "https://openalex.org/W2919773291",
+    "https://openalex.org/W2923210967",
+    "https://openalex.org/W2940030399",
+    "https://openalex.org/W2966577045",
+    "https://openalex.org/W2983903153",
+    "https://openalex.org/W2984834071",
+    "https://openalex.org/W2995556153",
+    "https://openalex.org/W3005451570",
+    "https://openalex.org/W3036762856",
+    "https://openalex.org/W3121594490",
+    "https://openalex.org/W3124277867",
+    "https://openalex.org/W3128406885",
+    "https://openalex.org/W3133640587",
+    "https://openalex.org/W3157203066",
+    "https://openalex.org/W3159020957",
+    "https://openalex.org/W3181727369",
+    "https://openalex.org/W3182134355",
+    "https://openalex.org/W3189518887",
+    "https://openalex.org/W3190604034",
+    "https://openalex.org/W3192133823",
+    "https://openalex.org/W3192714106",
+    "https://openalex.org/W3198229496",
+    "https://openalex.org/W3206343595",
+    "https://openalex.org/W3216255298",
+    "https://openalex.org/W4205733185",
+    "https://openalex.org/W4214709758",
+    "https://openalex.org/W4220957565",
+    "https://openalex.org/W4293125193",
+    "https://openalex.org/W6627489689",
+    "https://openalex.org/W6678311770",
+    "https://openalex.org/W6794240760",
+    "https://openalex.org/W6803632254"
+  ],
+  "related_works": [
+    "https://openalex.org/W2899084033",
+    "https://openalex.org/W2748952813",
+    "https://openalex.org/W1035282666",
+    "https://openalex.org/W2931054357",
+    "https://openalex.org/W3016189291",
+    "https://openalex.org/W3016391874",
+    "https://openalex.org/W2348615237",
+    "https://openalex.org/W2968275104",
+    "https://openalex.org/W4366825003",
+    "https://openalex.org/W3211789319"
+  ],
+  "abstract_inverted_index": null,
+  "counts_by_year": [
+    {
+      "year": 2026,
+      "cited_by_count": 78
+    },
+    {
+      "year": 2025,
+      "cited_by_count": 182
+    },
+    {
+      "year": 2024,
+      "cited_by_count": 182
+    },
+    {
+      "year": 2023,
+      "cited_by_count": 69
+    }
+  ],
+  "updated_date": "2026-07-04T07:58:01.006859",
+  "created_date": "2025-10-10T00:00:00"
+}

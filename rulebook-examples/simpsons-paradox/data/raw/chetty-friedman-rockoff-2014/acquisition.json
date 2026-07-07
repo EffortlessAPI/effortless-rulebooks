@@ -1,0 +1,16 @@
+{
+  "candidate_id": "cand-exp-chetty-friedman-rockoff-2014",
+  "proposed_study_id": "chetty-friedman-rockoff-2014",
+  "acquisition_status": "downloaded",
+  "attempted_at": "2026-07-07T03:41:14+00:00",
+  "catalog_source_url": null,
+  "resolved_urls": [
+    "https://doi.org/10.3386/w20657",
+    "https://doi.org/10.3386/w20657"
+  ],
+  "files": [
+    "openalex-search.pdf",
+    "openalex-metadata.json"
+  ],
+  "dois": []
+}

@@ -1,0 +1,468 @@
+{
+  "id": "https://openalex.org/W585319306",
+  "doi": "https://doi.org/10.2307/1143133",
+  "title": "Comparative Review of Death Sentences: An Empirical Study of the Georgia Experience",
+  "display_name": "Comparative Review of Death Sentences: An Empirical Study of the Georgia Experience",
+  "relevance_score": 555.9717,
+  "publication_year": 1983,
+  "publication_date": "1983-01-01",
+  "ids": {
+    "openalex": "https://openalex.org/W585319306",
+    "doi": "https://doi.org/10.2307/1143133",
+    "mag": "585319306"
+  },
+  "language": "en",
+  "primary_location": {
+    "id": "doi:10.2307/1143133",
+    "is_oa": false,
+    "landing_page_url": "https://doi.org/10.2307/1143133",
+    "pdf_url": null,
+    "source": {
+      "id": "https://openalex.org/S66810094",
+      "display_name": "The Journal of Criminal Law and Criminology (1973-)",
+      "issn_l": "0091-4169",
+      "issn": [
+        "0091-4169",
+        "2160-0325"
+      ],
+      "is_oa": false,
+      "is_in_doaj": false,
+      "is_core": false,
+      "host_organization": "https://openalex.org/P4310316702",
+      "host_organization_name": "Northwestern University School of Law",
+      "host_organization_lineage": [
+        "https://openalex.org/P4310316702"
+      ],
+      "host_organization_lineage_names": [
+        "Northwestern University School of Law"
+      ],
+      "type": "journal"
+    },
+    "license": null,
+    "license_id": null,
+    "version": "publishedVersion",
+    "is_accepted": true,
+    "is_published": true,
+    "raw_source_name": "The Journal of Criminal Law and Criminology (1973-)",
+    "raw_type": "journal-article"
+  },
+  "type": "article",
+  "indexed_in": [
+    "crossref"
+  ],
+  "open_access": {
+    "is_oa": false,
+    "oa_status": "closed",
+    "oa_url": null,
+    "any_repository_has_fulltext": false
+  },
+  "authorships": [
+    {
+      "author_position": "first",
+      "author": {
+        "id": "https://openalex.org/A5040676040",
+        "display_name": "David C. Baldus",
+        "orcid": null
+      },
+      "institutions": [],
+      "countries": [],
+      "is_corresponding": false,
+      "raw_author_name": "David C. Baldus",
+      "raw_affiliation_strings": [],
+      "raw_orcid": null,
+      "affiliations": []
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5051704921",
+        "display_name": "Charles A. Pulaski",
+        "orcid": null
+      },
+      "institutions": [],
+      "countries": [],
+      "is_corresponding": false,
+      "raw_author_name": "Charles Pulaski",
+      "raw_affiliation_strings": [],
+      "raw_orcid": null,
+      "affiliations": []
+    },
+    {
+      "author_position": "last",
+      "author": {
+        "id": "https://openalex.org/A5103525653",
+        "display_name": "George Woodworth",
+        "orcid": null
+      },
+      "institutions": [],
+      "countries": [],
+      "is_corresponding": false,
+      "raw_author_name": "George Woodworth",
+      "raw_affiliation_strings": [],
+      "raw_orcid": null,
+      "affiliations": []
+    }
+  ],
+  "institutions": [],
+  "countries_distinct_count": 0,
+  "institutions_distinct_count": 3,
+  "corresponding_author_ids": [],
+  "corresponding_institution_ids": [],
+  "apc_list": null,
+  "apc_paid": null,
+  "fwci": 3.2905,
+  "has_fulltext": false,
+  "cited_by_count": 269,
+  "citation_normalized_percentile": {
+    "value": 0.91805583,
+    "is_in_top_1_percent": false,
+    "is_in_top_10_percent": true
+  },
+  "cited_by_percentile_year": {
+    "min": 97,
+    "max": 100
+  },
+  "biblio": {
+    "volume": "74",
+    "issue": "3",
+    "first_page": "661",
+    "last_page": "661"
+  },
+  "is_retracted": false,
+  "is_paratext": false,
+  "is_xpac": false,
+  "primary_topic": {
+    "id": "https://openalex.org/T11388",
+    "display_name": "Grief, Bereavement, and Mental Health",
+    "score": 0.9843000173568726,
+    "subfield": {
+      "id": "https://openalex.org/subfields/3203",
+      "display_name": "Clinical Psychology"
+    },
+    "field": {
+      "id": "https://openalex.org/fields/32",
+      "display_name": "Psychology"
+    },
+    "domain": {
+      "id": "https://openalex.org/domains/2",
+      "display_name": "Social Sciences"
+    }
+  },
+  "topics": [
+    {
+      "id": "https://openalex.org/T11388",
+      "display_name": "Grief, Bereavement, and Mental Health",
+      "score": 0.9843000173568726,
+      "subfield": {
+        "id": "https://openalex.org/subfields/3203",
+        "display_name": "Clinical Psychology"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/32",
+        "display_name": "Psychology"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/2",
+        "display_name": "Social Sciences"
+      }
+    },
+    {
+      "id": "https://openalex.org/T12521",
+      "display_name": "Death Anxiety and Social Exclusion",
+      "score": 0.9607999920845032,
+      "subfield": {
+        "id": "https://openalex.org/subfields/3207",
+        "display_name": "Social Psychology"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/32",
+        "display_name": "Psychology"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/2",
+        "display_name": "Social Sciences"
+      }
+    },
+    {
+      "id": "https://openalex.org/T10994",
+      "display_name": "Terrorism, Counterterrorism, and Political Violence",
+      "score": 0.9049000144004822,
+      "subfield": {
+        "id": "https://openalex.org/subfields/3312",
+        "display_name": "Sociology and Political Science"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/33",
+        "display_name": "Social Sciences"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/2",
+        "display_name": "Social Sciences"
+      }
+    }
+  ],
+  "keywords": [
+    {
+      "id": "https://openalex.org/keywords/psychology",
+      "display_name": "Psychology",
+      "score": 0.46939295530319214
+    }
+  ],
+  "concepts": [
+    {
+      "id": "https://openalex.org/C15744967",
+      "wikidata": "https://www.wikidata.org/wiki/Q9418",
+      "display_name": "Psychology",
+      "level": 0,
+      "score": 0.46939295530319214
+    }
+  ],
+  "mesh": [],
+  "locations_count": 2,
+  "locations": [
+    {
+      "id": "doi:10.2307/1143133",
+      "is_oa": false,
+      "landing_page_url": "https://doi.org/10.2307/1143133",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S66810094",
+        "display_name": "The Journal of Criminal Law and Criminology (1973-)",
+        "issn_l": "0091-4169",
+        "issn": [
+          "0091-4169",
+          "2160-0325"
+        ],
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/P4310316702",
+        "host_organization_name": "Northwestern University School of Law",
+        "host_organization_lineage": [
+          "https://openalex.org/P4310316702"
+        ],
+        "host_organization_lineage_names": [
+          "Northwestern University School of Law"
+        ],
+        "type": "journal"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "publishedVersion",
+      "is_accepted": true,
+      "is_published": true,
+      "raw_source_name": "The Journal of Criminal Law and Criminology (1973-)",
+      "raw_type": "journal-article"
+    },
+    {
+      "id": "pmh:oai:scholarlycommons.law.northwestern.edu:jclc-6378",
+      "is_oa": false,
+      "landing_page_url": "https://scholarlycommons.law.northwestern.edu/jclc/vol74/iss3/2",
+      "pdf_url": null,
+      "source": null,
+      "license": null,
+      "license_id": null,
+      "version": "submittedVersion",
+      "is_accepted": false,
+      "is_published": false,
+      "raw_source_name": "Journal of Criminal Law and Criminology",
+      "raw_type": "text"
+    }
+  ],
+  "best_oa_location": null,
+  "sustainable_development_goals": [
+    {
+      "display_name": "Peace, Justice and strong institutions",
+      "score": 0.44999998807907104,
+      "id": "https://metadata.un.org/sdg/16"
+    }
+  ],
+  "awards": [],
+  "funders": [],
+  "has_content": {
+    "grobid_xml": false,
+    "pdf": false
+  },
+  "content_urls": null,
+  "referenced_works_count": 0,
+  "referenced_works": [],
+  "related_works": [
+    "https://openalex.org/W2899084033",
+    "https://openalex.org/W2748952813",
+    "https://openalex.org/W2931662336",
+    "https://openalex.org/W2077865380",
+    "https://openalex.org/W2134894512",
+    "https://openalex.org/W2053487507",
+    "https://openalex.org/W2765597752",
+    "https://openalex.org/W2083375246",
+    "https://openalex.org/W2067108088",
+    "https://openalex.org/W2085372204"
+  ],
+  "abstract_inverted_index": {
+    "David": [
+      0
+    ],
+    "C.": [
+      1
+    ],
+    "Baldus,": [
+      2
+    ],
+    "Charles": [
+      3
+    ],
+    "Pulaski,": [
+      4
+    ],
+    "George": [
+      5
+    ],
+    "Woodworth,": [
+      6
+    ],
+    "Comparative": [
+      7
+    ],
+    "Review": [
+      8
+    ],
+    "of": [
+      9,
+      15,
+      21
+    ],
+    "Death": [
+      10
+    ],
+    "Sentences:": [
+      11
+    ],
+    "An": [
+      12
+    ],
+    "Empirical": [
+      13
+    ],
+    "Study": [
+      14
+    ],
+    "the": [
+      16
+    ],
+    "Georgia": [
+      17
+    ],
+    "Experience,": [
+      18
+    ],
+    "The": [
+      19
+    ],
+    "Journal": [
+      20
+    ],
+    "Criminal": [
+      22
+    ],
+    "Law": [
+      23
+    ],
+    "and": [
+      24
+    ],
+    "Criminology": [
+      25
+    ],
+    "(1973-),": [
+      26
+    ],
+    "Vol.": [
+      27
+    ],
+    "74,": [
+      28
+    ],
+    "No.": [
+      29
+    ],
+    "3": [
+      30
+    ],
+    "(Autumn,": [
+      31
+    ],
+    "1983),": [
+      32
+    ],
+    "pp.": [
+      33
+    ],
+    "661-753": [
+      34
+    ]
+  },
+  "counts_by_year": [
+    {
+      "year": 2026,
+      "cited_by_count": 2
+    },
+    {
+      "year": 2025,
+      "cited_by_count": 20
+    },
+    {
+      "year": 2024,
+      "cited_by_count": 12
+    },
+    {
+      "year": 2023,
+      "cited_by_count": 11
+    },
+    {
+      "year": 2022,
+      "cited_by_count": 5
+    },
+    {
+      "year": 2021,
+      "cited_by_count": 5
+    },
+    {
+      "year": 2020,
+      "cited_by_count": 14
+    },
+    {
+      "year": 2019,
+      "cited_by_count": 9
+    },
+    {
+      "year": 2018,
+      "cited_by_count": 8
+    },
+    {
+      "year": 2017,
+      "cited_by_count": 12
+    },
+    {
+      "year": 2016,
+      "cited_by_count": 13
+    },
+    {
+      "year": 2015,
+      "cited_by_count": 13
+    },
+    {
+      "year": 2014,
+      "cited_by_count": 12
+    },
+    {
+      "year": 2013,
+      "cited_by_count": 13
+    },
+    {
+      "year": 2012,
+      "cited_by_count": 7
+    }
+  ],
+  "updated_date": "2026-06-11T09:08:48.828518",
+  "created_date": "2025-10-10T00:00:00"
+}

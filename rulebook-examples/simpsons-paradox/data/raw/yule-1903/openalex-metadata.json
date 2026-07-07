@@ -1,0 +1,487 @@
+{
+  "id": "https://openalex.org/W2063841934",
+  "doi": "https://doi.org/10.1093/biomet/2.2.121",
+  "title": "NOTES ON THE THEORY OF ASSOCIATION OF ATTRIBUTES IN STATISTICS",
+  "display_name": "NOTES ON THE THEORY OF ASSOCIATION OF ATTRIBUTES IN STATISTICS",
+  "relevance_score": 367.96942,
+  "publication_year": 1903,
+  "publication_date": "1903-01-01",
+  "ids": {
+    "openalex": "https://openalex.org/W2063841934",
+    "doi": "https://doi.org/10.1093/biomet/2.2.121",
+    "mag": "2063841934"
+  },
+  "language": "en",
+  "primary_location": {
+    "id": "doi:10.1093/biomet/2.2.121",
+    "is_oa": false,
+    "landing_page_url": "https://doi.org/10.1093/biomet/2.2.121",
+    "pdf_url": null,
+    "source": {
+      "id": "https://openalex.org/S172180718",
+      "display_name": "Biometrika",
+      "issn_l": "0006-3444",
+      "issn": [
+        "0006-3444",
+        "1464-3510"
+      ],
+      "is_oa": false,
+      "is_in_doaj": false,
+      "is_core": true,
+      "host_organization": "https://openalex.org/P4310311648",
+      "host_organization_name": "Oxford University Press",
+      "host_organization_lineage": [
+        "https://openalex.org/P4310311648",
+        "https://openalex.org/P4310311647"
+      ],
+      "host_organization_lineage_names": [
+        "Oxford University Press",
+        "University of Oxford"
+      ],
+      "type": "journal"
+    },
+    "license": null,
+    "license_id": null,
+    "version": "publishedVersion",
+    "is_accepted": true,
+    "is_published": true,
+    "raw_source_name": "Biometrika",
+    "raw_type": "journal-article"
+  },
+  "type": "article",
+  "indexed_in": [
+    "crossref"
+  ],
+  "open_access": {
+    "is_oa": false,
+    "oa_status": "closed",
+    "oa_url": null,
+    "any_repository_has_fulltext": false
+  },
+  "authorships": [
+    {
+      "author_position": "first",
+      "author": {
+        "id": "https://openalex.org/A5006180284",
+        "display_name": "G. Undy Yule",
+        "orcid": null
+      },
+      "institutions": [],
+      "countries": [],
+      "is_corresponding": true,
+      "raw_author_name": "G. UNDY YULE",
+      "raw_affiliation_strings": [],
+      "raw_orcid": null,
+      "affiliations": []
+    }
+  ],
+  "institutions": [],
+  "countries_distinct_count": 0,
+  "institutions_distinct_count": 0,
+  "corresponding_author_ids": [
+    "https://openalex.org/A5006180284"
+  ],
+  "corresponding_institution_ids": [],
+  "apc_list": {
+    "value": 2582,
+    "currency": "GBP",
+    "value_usd": 3167
+  },
+  "apc_paid": null,
+  "fwci": 48.6667,
+  "has_fulltext": false,
+  "cited_by_count": 466,
+  "citation_normalized_percentile": {
+    "value": 1.0,
+    "is_in_top_1_percent": true,
+    "is_in_top_10_percent": true
+  },
+  "cited_by_percentile_year": {
+    "min": 99,
+    "max": 100
+  },
+  "biblio": {
+    "volume": "2",
+    "issue": "2",
+    "first_page": "121",
+    "last_page": "134"
+  },
+  "is_retracted": false,
+  "is_paratext": false,
+  "is_xpac": false,
+  "primary_topic": {
+    "id": "https://openalex.org/T11871",
+    "display_name": "Advanced Statistical Methods and Models",
+    "score": 0.8698999881744385,
+    "subfield": {
+      "id": "https://openalex.org/subfields/2613",
+      "display_name": "Statistics and Probability"
+    },
+    "field": {
+      "id": "https://openalex.org/fields/26",
+      "display_name": "Mathematics"
+    },
+    "domain": {
+      "id": "https://openalex.org/domains/3",
+      "display_name": "Physical Sciences"
+    }
+  },
+  "topics": [
+    {
+      "id": "https://openalex.org/T11871",
+      "display_name": "Advanced Statistical Methods and Models",
+      "score": 0.8698999881744385,
+      "subfield": {
+        "id": "https://openalex.org/subfields/2613",
+        "display_name": "Statistics and Probability"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/26",
+        "display_name": "Mathematics"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/3",
+        "display_name": "Physical Sciences"
+      }
+    }
+  ],
+  "keywords": [
+    {
+      "id": "https://openalex.org/keywords/mathematics",
+      "display_name": "Mathematics",
+      "score": 0.8272392153739929
+    },
+    {
+      "id": "https://openalex.org/keywords/statistics",
+      "display_name": "Statistics",
+      "score": 0.6020985841751099
+    },
+    {
+      "id": "https://openalex.org/keywords/association",
+      "display_name": "Association (psychology)",
+      "score": 0.5000956058502197
+    },
+    {
+      "id": "https://openalex.org/keywords/volume",
+      "display_name": "Volume (thermodynamics)",
+      "score": 0.4365420639514923
+    },
+    {
+      "id": "https://openalex.org/keywords/epistemology",
+      "display_name": "Epistemology",
+      "score": 0.16615256667137146
+    },
+    {
+      "id": "https://openalex.org/keywords/philosophy",
+      "display_name": "Philosophy",
+      "score": 0.07322818040847778
+    }
+  ],
+  "concepts": [
+    {
+      "id": "https://openalex.org/C33923547",
+      "wikidata": "https://www.wikidata.org/wiki/Q395",
+      "display_name": "Mathematics",
+      "level": 0,
+      "score": 0.8272392153739929
+    },
+    {
+      "id": "https://openalex.org/C105795698",
+      "wikidata": "https://www.wikidata.org/wiki/Q12483",
+      "display_name": "Statistics",
+      "level": 1,
+      "score": 0.6020985841751099
+    },
+    {
+      "id": "https://openalex.org/C142853389",
+      "wikidata": "https://www.wikidata.org/wiki/Q744778",
+      "display_name": "Association (psychology)",
+      "level": 2,
+      "score": 0.5000956058502197
+    },
+    {
+      "id": "https://openalex.org/C20556612",
+      "wikidata": "https://www.wikidata.org/wiki/Q4469374",
+      "display_name": "Volume (thermodynamics)",
+      "level": 2,
+      "score": 0.4365420639514923
+    },
+    {
+      "id": "https://openalex.org/C111472728",
+      "wikidata": "https://www.wikidata.org/wiki/Q9471",
+      "display_name": "Epistemology",
+      "level": 1,
+      "score": 0.16615256667137146
+    },
+    {
+      "id": "https://openalex.org/C138885662",
+      "wikidata": "https://www.wikidata.org/wiki/Q5891",
+      "display_name": "Philosophy",
+      "level": 0,
+      "score": 0.07322818040847778
+    },
+    {
+      "id": "https://openalex.org/C62520636",
+      "wikidata": "https://www.wikidata.org/wiki/Q944",
+      "display_name": "Quantum mechanics",
+      "level": 1,
+      "score": 0.0
+    },
+    {
+      "id": "https://openalex.org/C121332964",
+      "wikidata": "https://www.wikidata.org/wiki/Q413",
+      "display_name": "Physics",
+      "level": 0,
+      "score": 0.0
+    }
+  ],
+  "mesh": [],
+  "locations_count": 1,
+  "locations": [
+    {
+      "id": "doi:10.1093/biomet/2.2.121",
+      "is_oa": false,
+      "landing_page_url": "https://doi.org/10.1093/biomet/2.2.121",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S172180718",
+        "display_name": "Biometrika",
+        "issn_l": "0006-3444",
+        "issn": [
+          "0006-3444",
+          "1464-3510"
+        ],
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": true,
+        "host_organization": "https://openalex.org/P4310311648",
+        "host_organization_name": "Oxford University Press",
+        "host_organization_lineage": [
+          "https://openalex.org/P4310311648",
+          "https://openalex.org/P4310311647"
+        ],
+        "host_organization_lineage_names": [
+          "Oxford University Press",
+          "University of Oxford"
+        ],
+        "type": "journal"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "publishedVersion",
+      "is_accepted": true,
+      "is_published": true,
+      "raw_source_name": "Biometrika",
+      "raw_type": "journal-article"
+    }
+  ],
+  "best_oa_location": null,
+  "sustainable_development_goals": [],
+  "awards": [],
+  "funders": [],
+  "has_content": {
+    "grobid_xml": false,
+    "pdf": false
+  },
+  "content_urls": null,
+  "referenced_works_count": 0,
+  "referenced_works": [],
+  "related_works": [
+    "https://openalex.org/W1979597421",
+    "https://openalex.org/W2007980826",
+    "https://openalex.org/W2061531152",
+    "https://openalex.org/W3002753104",
+    "https://openalex.org/W2077600819",
+    "https://openalex.org/W2142036596",
+    "https://openalex.org/W2072657027",
+    "https://openalex.org/W2600246793",
+    "https://openalex.org/W4238204885",
+    "https://openalex.org/W2963966623"
+  ],
+  "abstract_inverted_index": {
+    "NOTES": [
+      0
+    ],
+    "ON": [
+      1
+    ],
+    "THE": [
+      2
+    ],
+    "THEORY": [
+      3
+    ],
+    "OF": [
+      4,
+      6
+    ],
+    "ASSOCIATION": [
+      5
+    ],
+    "ATTRIBUTES": [
+      7
+    ],
+    "IN": [
+      8
+    ],
+    "STATISTICS": [
+      9
+    ],
+    "Get": [
+      10
+    ],
+    "access": [
+      11
+    ],
+    "G.": [
+      12,
+      15
+    ],
+    "UNDY": [
+      13,
+      16
+    ],
+    "YULE": [
+      14,
+      17
+    ],
+    "Search": [
+      18
+    ],
+    "for": [
+      19
+    ],
+    "other": [
+      20
+    ],
+    "works": [
+      21
+    ],
+    "by": [
+      22
+    ],
+    "this": [
+      23
+    ],
+    "author": [
+      24
+    ],
+    "on:": [
+      25
+    ],
+    "Oxford": [
+      26
+    ],
+    "Academic": [
+      27
+    ],
+    "Google": [
+      28
+    ],
+    "Scholar": [
+      29
+    ],
+    "Biometrika,": [
+      30
+    ],
+    "Volume": [
+      31
+    ],
+    "2,": [
+      32,
+      34
+    ],
+    "Issue": [
+      33
+    ],
+    "February": [
+      35,
+      42
+    ],
+    "1903,": [
+      36
+    ],
+    "Pages": [
+      37
+    ],
+    "121\u2013134,": [
+      38
+    ],
+    "https://doi.org/10.1093/biomet/2.2.121": [
+      39
+    ],
+    "Published:": [
+      40
+    ],
+    "01": [
+      41
+    ],
+    "1903": [
+      43
+    ]
+  },
+  "counts_by_year": [
+    {
+      "year": 2026,
+      "cited_by_count": 17
+    },
+    {
+      "year": 2025,
+      "cited_by_count": 11
+    },
+    {
+      "year": 2024,
+      "cited_by_count": 18
+    },
+    {
+      "year": 2023,
+      "cited_by_count": 14
+    },
+    {
+      "year": 2022,
+      "cited_by_count": 14
+    },
+    {
+      "year": 2021,
+      "cited_by_count": 15
+    },
+    {
+      "year": 2020,
+      "cited_by_count": 60
+    },
+    {
+      "year": 2019,
+      "cited_by_count": 18
+    },
+    {
+      "year": 2018,
+      "cited_by_count": 15
+    },
+    {
+      "year": 2017,
+      "cited_by_count": 12
+    },
+    {
+      "year": 2016,
+      "cited_by_count": 18
+    },
+    {
+      "year": 2015,
+      "cited_by_count": 16
+    },
+    {
+      "year": 2014,
+      "cited_by_count": 21
+    },
+    {
+      "year": 2013,
+      "cited_by_count": 16
+    },
+    {
+      "year": 2012,
+      "cited_by_count": 22
+    }
+  ],
+  "updated_date": "2026-07-02T09:51:11.867554",
+  "created_date": "2016-06-24T00:00:00"
+}

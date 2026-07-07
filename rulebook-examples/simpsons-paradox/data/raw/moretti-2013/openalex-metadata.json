@@ -1,0 +1,730 @@
+{
+  "id": "https://openalex.org/W2395475834",
+  "doi": "https://doi.org/10.63744/wknp3j4rpa7f",
+  "title": "In Praise of Overstating the Case: A review of Franco Moretti, Distant Reading (London: Verso, 2013)",
+  "display_name": "In Praise of Overstating the Case: A review of Franco Moretti, Distant Reading (London: Verso, 2013)",
+  "relevance_score": 296.39328,
+  "publication_year": 2014,
+  "publication_date": "2014-04-17",
+  "ids": {
+    "openalex": "https://openalex.org/W2395475834",
+    "doi": "https://doi.org/10.63744/wknp3j4rpa7f",
+    "mag": "2395475834"
+  },
+  "language": "en",
+  "primary_location": {
+    "id": "doi:10.63744/wknp3j4rpa7f",
+    "is_oa": true,
+    "landing_page_url": "https://doi.org/10.63744/wknp3j4rpa7f",
+    "pdf_url": null,
+    "source": {
+      "id": "https://openalex.org/S166472302",
+      "display_name": "Digital humanities quarterly",
+      "issn_l": "1938-4122",
+      "issn": [
+        "1938-4122"
+      ],
+      "is_oa": true,
+      "is_in_doaj": true,
+      "is_core": true,
+      "host_organization": "https://openalex.org/P4310318535",
+      "host_organization_name": "Alliance of Digital Humanities Organizations",
+      "host_organization_lineage": [
+        "https://openalex.org/P4310318535"
+      ],
+      "host_organization_lineage_names": [
+        "Alliance of Digital Humanities Organizations"
+      ],
+      "type": "journal"
+    },
+    "license": "cc-by-nd",
+    "license_id": "https://openalex.org/licenses/cc-by-nd",
+    "version": "publishedVersion",
+    "is_accepted": true,
+    "is_published": true,
+    "raw_source_name": "Digital Humanities Quarterly",
+    "raw_type": "journal-article"
+  },
+  "type": "review",
+  "indexed_in": [
+    "crossref",
+    "doaj"
+  ],
+  "open_access": {
+    "is_oa": true,
+    "oa_status": "diamond",
+    "oa_url": "https://doi.org/10.63744/wknp3j4rpa7f",
+    "any_repository_has_fulltext": true
+  },
+  "authorships": [
+    {
+      "author_position": "first",
+      "author": {
+        "id": "https://openalex.org/A5036623086",
+        "display_name": "Shawna Ross",
+        "orcid": "https://orcid.org/0000-0002-5485-7822"
+      },
+      "institutions": [],
+      "countries": [],
+      "is_corresponding": true,
+      "raw_author_name": "Shawna Ross",
+      "raw_affiliation_strings": [],
+      "raw_orcid": null,
+      "affiliations": []
+    }
+  ],
+  "institutions": [],
+  "countries_distinct_count": 0,
+  "institutions_distinct_count": 1,
+  "corresponding_author_ids": [
+    "https://openalex.org/A5036623086"
+  ],
+  "corresponding_institution_ids": [],
+  "apc_list": null,
+  "apc_paid": null,
+  "fwci": 59.7835,
+  "has_fulltext": false,
+  "cited_by_count": 41,
+  "citation_normalized_percentile": {
+    "value": 0.99844774,
+    "is_in_top_1_percent": true,
+    "is_in_top_10_percent": true
+  },
+  "cited_by_percentile_year": {
+    "min": 89,
+    "max": 100
+  },
+  "biblio": {
+    "volume": "8",
+    "issue": "1",
+    "first_page": null,
+    "last_page": null
+  },
+  "is_retracted": false,
+  "is_paratext": false,
+  "is_xpac": false,
+  "primary_topic": {
+    "id": "https://openalex.org/T13743",
+    "display_name": "Italian Literature and Culture",
+    "score": 0.05490000173449516,
+    "subfield": {
+      "id": "https://openalex.org/subfields/1200",
+      "display_name": "General Arts and Humanities"
+    },
+    "field": {
+      "id": "https://openalex.org/fields/12",
+      "display_name": "Arts and Humanities"
+    },
+    "domain": {
+      "id": "https://openalex.org/domains/2",
+      "display_name": "Social Sciences"
+    }
+  },
+  "topics": [
+    {
+      "id": "https://openalex.org/T13743",
+      "display_name": "Italian Literature and Culture",
+      "score": 0.05490000173449516,
+      "subfield": {
+        "id": "https://openalex.org/subfields/1200",
+        "display_name": "General Arts and Humanities"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/12",
+        "display_name": "Arts and Humanities"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/2",
+        "display_name": "Social Sciences"
+      }
+    }
+  ],
+  "keywords": [
+    {
+      "id": "https://openalex.org/keywords/praise",
+      "display_name": "Praise",
+      "score": 0.950832724571228
+    },
+    {
+      "id": "https://openalex.org/keywords/reading",
+      "display_name": "Reading (process)",
+      "score": 0.6919044852256775
+    },
+    {
+      "id": "https://openalex.org/keywords/art",
+      "display_name": "Art",
+      "score": 0.4483078718185425
+    },
+    {
+      "id": "https://openalex.org/keywords/literature",
+      "display_name": "Literature",
+      "score": 0.3127044439315796
+    },
+    {
+      "id": "https://openalex.org/keywords/philosophy",
+      "display_name": "Philosophy",
+      "score": 0.16711559891700745
+    },
+    {
+      "id": "https://openalex.org/keywords/linguistics",
+      "display_name": "Linguistics",
+      "score": 0.12304764986038208
+    }
+  ],
+  "concepts": [
+    {
+      "id": "https://openalex.org/C2775868214",
+      "wikidata": "https://www.wikidata.org/wiki/Q1208425",
+      "display_name": "Praise",
+      "level": 2,
+      "score": 0.950832724571228
+    },
+    {
+      "id": "https://openalex.org/C554936623",
+      "wikidata": "https://www.wikidata.org/wiki/Q199657",
+      "display_name": "Reading (process)",
+      "level": 2,
+      "score": 0.6919044852256775
+    },
+    {
+      "id": "https://openalex.org/C142362112",
+      "wikidata": "https://www.wikidata.org/wiki/Q735",
+      "display_name": "Art",
+      "level": 0,
+      "score": 0.4483078718185425
+    },
+    {
+      "id": "https://openalex.org/C124952713",
+      "wikidata": "https://www.wikidata.org/wiki/Q8242",
+      "display_name": "Literature",
+      "level": 1,
+      "score": 0.3127044439315796
+    },
+    {
+      "id": "https://openalex.org/C138885662",
+      "wikidata": "https://www.wikidata.org/wiki/Q5891",
+      "display_name": "Philosophy",
+      "level": 0,
+      "score": 0.16711559891700745
+    },
+    {
+      "id": "https://openalex.org/C41895202",
+      "wikidata": "https://www.wikidata.org/wiki/Q8162",
+      "display_name": "Linguistics",
+      "level": 1,
+      "score": 0.12304764986038208
+    }
+  ],
+  "mesh": [],
+  "locations_count": 2,
+  "locations": [
+    {
+      "id": "doi:10.63744/wknp3j4rpa7f",
+      "is_oa": true,
+      "landing_page_url": "https://doi.org/10.63744/wknp3j4rpa7f",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S166472302",
+        "display_name": "Digital humanities quarterly",
+        "issn_l": "1938-4122",
+        "issn": [
+          "1938-4122"
+        ],
+        "is_oa": true,
+        "is_in_doaj": true,
+        "is_core": true,
+        "host_organization": "https://openalex.org/P4310318535",
+        "host_organization_name": "Alliance of Digital Humanities Organizations",
+        "host_organization_lineage": [
+          "https://openalex.org/P4310318535"
+        ],
+        "host_organization_lineage_names": [
+          "Alliance of Digital Humanities Organizations"
+        ],
+        "type": "journal"
+      },
+      "license": "cc-by-nd",
+      "license_id": "https://openalex.org/licenses/cc-by-nd",
+      "version": "publishedVersion",
+      "is_accepted": true,
+      "is_published": true,
+      "raw_source_name": "Digital Humanities Quarterly",
+      "raw_type": "journal-article"
+    },
+    {
+      "id": "mag:2395475834",
+      "is_oa": true,
+      "landing_page_url": "https://dblp.uni-trier.de/db/journals/dhq/dhq8.html#Ross14",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S166472302",
+        "display_name": "Digital humanities quarterly",
+        "issn_l": "1938-4122",
+        "issn": [
+          "1938-4122"
+        ],
+        "is_oa": true,
+        "is_in_doaj": true,
+        "is_core": true,
+        "host_organization": "https://openalex.org/P4310318535",
+        "host_organization_name": "Alliance of Digital Humanities Organizations",
+        "host_organization_lineage": [
+          "https://openalex.org/P4310318535"
+        ],
+        "host_organization_lineage_names": [
+          "Alliance of Digital Humanities Organizations"
+        ],
+        "type": "journal"
+      },
+      "license": "cc-by-nd",
+      "license_id": "https://openalex.org/licenses/cc-by-nd",
+      "version": null,
+      "is_accepted": false,
+      "is_published": null,
+      "raw_source_name": "Digital humanities quarterly",
+      "raw_type": null
+    }
+  ],
+  "best_oa_location": {
+    "id": "doi:10.63744/wknp3j4rpa7f",
+    "is_oa": true,
+    "landing_page_url": "https://doi.org/10.63744/wknp3j4rpa7f",
+    "pdf_url": null,
+    "source": {
+      "id": "https://openalex.org/S166472302",
+      "display_name": "Digital humanities quarterly",
+      "issn_l": "1938-4122",
+      "issn": [
+        "1938-4122"
+      ],
+      "is_oa": true,
+      "is_in_doaj": true,
+      "is_core": true,
+      "host_organization": "https://openalex.org/P4310318535",
+      "host_organization_name": "Alliance of Digital Humanities Organizations",
+      "host_organization_lineage": [
+        "https://openalex.org/P4310318535"
+      ],
+      "host_organization_lineage_names": [
+        "Alliance of Digital Humanities Organizations"
+      ],
+      "type": "journal"
+    },
+    "license": "cc-by-nd",
+    "license_id": "https://openalex.org/licenses/cc-by-nd",
+    "version": "publishedVersion",
+    "is_accepted": true,
+    "is_published": true,
+    "raw_source_name": "Digital Humanities Quarterly",
+    "raw_type": "journal-article"
+  },
+  "sustainable_development_goals": [
+    {
+      "score": 0.6000000238418579,
+      "id": "https://metadata.un.org/sdg/4",
+      "display_name": "Quality Education"
+    }
+  ],
+  "awards": [],
+  "funders": [],
+  "has_content": {
+    "pdf": false,
+    "grobid_xml": false
+  },
+  "content_urls": null,
+  "referenced_works_count": 0,
+  "referenced_works": [],
+  "related_works": [],
+  "abstract_inverted_index": {
+    "This": [
+      0
+    ],
+    "review": [
+      1
+    ],
+    "of": [
+      2,
+      15,
+      29,
+      36,
+      43,
+      56,
+      69,
+      96,
+      105,
+      114,
+      140
+    ],
+    "Franco": [
+      3
+    ],
+    "Moretti's": [
+      4
+    ],
+    "Distant": [
+      5,
+      134
+    ],
+    "Reading": [
+      6,
+      135
+    ],
+    "summarizes": [
+      7
+    ],
+    "Moretti\u2019s": [
+      8,
+      27,
+      48,
+      83
+    ],
+    "major": [
+      9
+    ],
+    "arguments": [
+      10
+    ],
+    "within": [
+      11
+    ],
+    "the": [
+      12,
+      19,
+      41,
+      92,
+      102,
+      110,
+      138
+    ],
+    "larger": [
+      13
+    ],
+    "context": [
+      14
+    ],
+    "recent": [
+      16
+    ],
+    "debates": [
+      17
+    ],
+    "in": [
+      18
+    ],
+    "digital": [
+      20,
+      87,
+      142
+    ],
+    "humanities.": [
+      21
+    ],
+    "Particular": [
+      22
+    ],
+    "attention": [
+      23
+    ],
+    "is": [
+      24,
+      71
+    ],
+    "given": [
+      25
+    ],
+    "to": [
+      26,
+      32,
+      40,
+      124
+    ],
+    "uptake": [
+      28
+    ],
+    "Immanuel": [
+      30
+    ],
+    "Wallerstein,": [
+      31
+    ],
+    "his": [
+      33,
+      106,
+      125
+    ],
+    "controversial": [
+      34
+    ],
+    "critique": [
+      35
+    ],
+    "close": [
+      37
+    ],
+    "reading,": [
+      38
+    ],
+    "and": [
+      39,
+      78,
+      117,
+      122,
+      131,
+      145
+    ],
+    "variety": [
+      42
+    ],
+    "digital-humanistic": [
+      44
+    ],
+    "methods": [
+      45
+    ],
+    "that": [
+      46,
+      119
+    ],
+    "comprise": [
+      47
+    ],
+    "quantitative": [
+      49,
+      97
+    ],
+    "formalism.": [
+      50
+    ],
+    "Most": [
+      51
+    ],
+    "valuable": [
+      52
+    ],
+    "as": [
+      53,
+      75
+    ],
+    "an": [
+      54,
+      76
+    ],
+    "artifact": [
+      55
+    ],
+    "literary-critical": [
+      57
+    ],
+    "history": [
+      58
+    ],
+    "rather": [
+      59
+    ],
+    "than": [
+      60
+    ],
+    "a": [
+      61,
+      86
+    ],
+    "how-to": [
+      62
+    ],
+    "guide": [
+      63
+    ],
+    "or": [
+      64
+    ],
+    "theoretical": [
+      65
+    ],
+    "treatise,": [
+      66
+    ],
+    "this": [
+      67
+    ],
+    "hodgepodge": [
+      68
+    ],
+    "essays": [
+      70
+    ],
+    "at": [
+      72
+    ],
+    "its": [
+      73,
+      146
+    ],
+    "best": [
+      74
+    ],
+    "audacious": [
+      77
+    ],
+    "defensive": [
+      79
+    ],
+    "academic": [
+      80
+    ],
+    "memoir": [
+      81
+    ],
+    "tracing": [
+      82
+    ],
+    "transformation": [
+      84
+    ],
+    "into": [
+      85
+    ],
+    "humanist.": [
+      88
+    ],
+    "As": [
+      89
+    ],
+    "Moretti": [
+      90
+    ],
+    "champions": [
+      91
+    ],
+    "broad": [
+      93
+    ],
+    "explanatory": [
+      94
+    ],
+    "power": [
+      95
+    ],
+    "literary": [
+      98,
+      143
+    ],
+    "analysis,": [
+      99
+    ],
+    "he": [
+      100
+    ],
+    "overestimates": [
+      101
+    ],
+    "scientific": [
+      103
+    ],
+    "objectivity": [
+      104
+    ],
+    "analyses": [
+      107
+    ],
+    "while": [
+      108
+    ],
+    "undervaluing": [
+      109
+    ],
+    "productively": [
+      111
+    ],
+    "suggestive": [
+      112
+    ],
+    "stories": [
+      113
+    ],
+    "doubt,": [
+      115
+    ],
+    "failure,": [
+      116
+    ],
+    "compromise": [
+      118
+    ],
+    "lend": [
+      120
+    ],
+    "nuance": [
+      121
+    ],
+    "depth": [
+      123
+    ],
+    "hypotheses.": [
+      126
+    ],
+    "Combative,": [
+      127
+    ],
+    "absorbing,": [
+      128
+    ],
+    "highly": [
+      129
+    ],
+    "topical,": [
+      130
+    ],
+    "unevenly": [
+      132
+    ],
+    "persuasive,": [
+      133
+    ],
+    "embodies": [
+      136
+    ],
+    "both": [
+      137
+    ],
+    "optimism": [
+      139
+    ],
+    "early": [
+      141
+    ],
+    "studies": [
+      144
+    ],
+    "perils.": [
+      147
+    ]
+  },
+  "counts_by_year": [
+    {
+      "year": 2023,
+      "cited_by_count": 1
+    },
+    {
+      "year": 2021,
+      "cited_by_count": 1
+    },
+    {
+      "year": 2019,
+      "cited_by_count": 1
+    },
+    {
+      "year": 2018,
+      "cited_by_count": 34
+    },
+    {
+      "year": 2017,
+      "cited_by_count": 3
+    },
+    {
+      "year": 2015,
+      "cited_by_count": 1
+    }
+  ],
+  "updated_date": "2026-05-21T06:26:12.895304",
+  "created_date": "2016-06-24T00:00:00"
+}

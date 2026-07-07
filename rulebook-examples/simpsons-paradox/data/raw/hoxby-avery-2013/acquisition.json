@@ -1,0 +1,16 @@
+{
+  "candidate_id": "cand-exp-hoxby-avery-2013",
+  "proposed_study_id": "hoxby-avery-2013",
+  "acquisition_status": "downloaded",
+  "attempted_at": "2026-07-07T03:43:18+00:00",
+  "catalog_source_url": null,
+  "resolved_urls": [
+    "https://doi.org/10.3386/w23618",
+    "https://doi.org/10.3386/w23618"
+  ],
+  "files": [
+    "openalex-search.pdf",
+    "openalex-metadata.json"
+  ],
+  "dois": []
+}

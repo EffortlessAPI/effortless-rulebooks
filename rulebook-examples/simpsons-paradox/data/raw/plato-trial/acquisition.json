@@ -1,0 +1,17 @@
+{
+  "candidate_id": "cand-exp-plato-trial",
+  "proposed_study_id": "plato-trial",
+  "acquisition_status": "landing_saved",
+  "attempted_at": "2026-07-07T03:43:44+00:00",
+  "catalog_source_url": "https://www.clinicaltrialsdata.com/",
+  "resolved_urls": [
+    "https://doi.org/10.1016/s0140-6736(17)32155-4",
+    "http://www.thelancet.com/article/S0140673617321554/pdf",
+    "https://www.clinicaltrialsdata.com/"
+  ],
+  "files": [
+    "openalex-metadata.json",
+    "source-1.html"
+  ],
+  "dois": []
+}

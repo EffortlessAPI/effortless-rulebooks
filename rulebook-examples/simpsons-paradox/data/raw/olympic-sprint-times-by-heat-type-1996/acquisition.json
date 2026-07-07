@@ -1,0 +1,16 @@
+{
+  "candidate_id": "cand-exp-olympic-sprint-times-by-heat-type-1996",
+  "proposed_study_id": "olympic-sprint-times-by-heat-type-1996",
+  "acquisition_status": "landing_saved",
+  "attempted_at": "2026-07-07T03:45:07+00:00",
+  "catalog_source_url": "https://worldathletics.org/records/by-discipline/sprints/",
+  "resolved_urls": [
+    "https://doi.org/10.1038/s42255-020-0251-4",
+    "https://worldathletics.org/records/by-discipline/sprints/"
+  ],
+  "files": [
+    "openalex-metadata.json",
+    "source-1.html"
+  ],
+  "dois": []
+}

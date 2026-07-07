@@ -16,6 +16,20 @@ const STATUS_COLORS: Record<string, string> = {
   rejected: '#ea4335',
 };
 
+const DATA_STATUS_COLORS: Record<string, string> = {
+  downloaded: '#137333',
+  manual_only: '#f9ab00',
+  not_started: '#c5221f',
+  blocked: '#9aa0a6',
+};
+
+const CONFIRMATION_COLORS: Record<string, string> = {
+  confirmed: '#137333',
+  plausible: '#1a73e8',
+  pending: '#9aa0a6',
+  not_applicable: '#dadce0',
+};
+
 export function ImportCatalogView() {
   const [summary, setSummary] = useState<CorpusCatalogSummary | null>(null);
   const [candidates, setCandidates] = useState<CandidateStudyRow[]>([]);
@@ -55,8 +69,8 @@ export function ImportCatalogView() {
     <div style={{ padding: '1.5rem', maxWidth: 1100 }}>
       <h2 style={{ margin: '0 0 .25rem' }}>Import Backlog</h2>
       <p style={{ color: '#888', margin: '0 0 1.25rem', fontSize: 14 }}>
-        Curated catalog of published Simpson&apos;s-paradox-eligible studies. Loop 51–54 prep —
-        encode candidates using the six-step template, then flip catalog status to imported.
+        Curated catalog from loops 51–67 — expansion-wave-1 candidates from{' '}
+        <code>corpus-expansion-plan.md</code>. Track data acquisition separately from encoding.
       </p>
 
       <div
@@ -74,6 +88,12 @@ export function ImportCatalogView() {
           <Cell table="CorpusCatalogSummary" col="imported_count">{summary.imported_count}</Cell> imported ·{' '}
           <Cell table="CorpusCatalogSummary" col="candidate_count">{summary.candidate_count}</Cell> candidates ·{' '}
           <Cell table="CorpusCatalogSummary" col="ready_to_encode_count">{summary.ready_to_encode_count}</Cell> encode-ready ·{' '}
+          {summary.data_ready_count != null && (
+            <><Cell table="CorpusCatalogSummary" col="data_ready_count">{summary.data_ready_count}</Cell> data-ready · </>
+          )}
+          {summary.expansion_candidate_count != null && (
+            <><Cell table="CorpusCatalogSummary" col="expansion_candidate_count">{summary.expansion_candidate_count}</Cell> expansion-wave-1 · </>
+          )}
           <Cell table="CorpusCatalogSummary" col="blocked_count">{summary.blocked_count}</Cell> blocked
         </div>
       </div>
@@ -147,6 +167,8 @@ export function ImportCatalogView() {
           <tr style={{ borderBottom: '2px solid #ddd', textAlign: 'left' }}>
             <th style={{ padding: '6px 8px' }}>Pri</th>
             <th style={{ padding: '6px 8px' }}>Status</th>
+            <th style={{ padding: '6px 8px' }}>Data</th>
+            <th style={{ padding: '6px 8px' }}>Confirm</th>
             <th style={{ padding: '6px 8px' }}>Title</th>
             <th style={{ padding: '6px 8px' }}>Domain</th>
             <th style={{ padding: '6px 8px' }}>Stratum var</th>
@@ -163,9 +185,18 @@ export function ImportCatalogView() {
               <td style={{ padding: '6px 8px', color: STATUS_COLORS[row.ingestion_status] ?? '#333' }}>
                 <Cell table="CandidateStudyCatalog" col="ingestion_status">{row.ingestion_status}</Cell>
               </td>
-              <td style={{ padding: '6px 8px', maxWidth: 280 }}>
+              <td style={{ padding: '6px 8px', color: DATA_STATUS_COLORS[row.data_acquisition_status ?? ''] ?? '#333', fontSize: 12 }}>
+                {row.data_acquisition_status ?? '—'}
+              </td>
+              <td style={{ padding: '6px 8px', color: CONFIRMATION_COLORS[row.paradox_confirmation ?? ''] ?? '#333', fontSize: 12 }}>
+                {row.paradox_confirmation ?? '—'}
+              </td>
+              <td style={{ padding: '6px 8px', maxWidth: 240 }}>
                 <div>{row.title}</div>
                 <div style={{ color: '#888', fontSize: 11 }}>{row.data_source_note}</div>
+                {row.reversal_mechanism && (
+                  <div style={{ color: '#666', fontSize: 11, marginTop: 2 }}>{row.reversal_mechanism}</div>
+                )}
               </td>
               <td style={{ padding: '6px 8px' }}>{row.domain}</td>
               <td style={{ padding: '6px 8px', fontFamily: 'monospace', fontSize: 12 }}>

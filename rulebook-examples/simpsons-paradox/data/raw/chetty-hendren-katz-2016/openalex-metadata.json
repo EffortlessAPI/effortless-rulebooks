@@ -1,0 +1,1302 @@
+{
+  "id": "https://openalex.org/W1484598383",
+  "doi": "https://doi.org/10.1257/aer.20150572",
+  "title": "The Effects of Exposure to Better Neighborhoods on Children: New Evidence from the Moving to Opportunity Experiment",
+  "display_name": "The Effects of Exposure to Better Neighborhoods on Children: New Evidence from the Moving to Opportunity Experiment",
+  "relevance_score": 163.59972,
+  "publication_year": 2016,
+  "publication_date": "2016-03-28",
+  "ids": {
+    "openalex": "https://openalex.org/W1484598383",
+    "doi": "https://doi.org/10.1257/aer.20150572",
+    "mag": "1484598383",
+    "pmid": "https://pubmed.ncbi.nlm.nih.gov/29546974"
+  },
+  "language": "en",
+  "primary_location": {
+    "id": "doi:10.1257/aer.20150572",
+    "is_oa": true,
+    "landing_page_url": "https://doi.org/10.1257/aer.20150572",
+    "pdf_url": "https://www.aeaweb.org/articles/pdf/doi/10.1257/aer.20150572",
+    "source": {
+      "id": "https://openalex.org/S23254222",
+      "display_name": "American Economic Review",
+      "issn_l": "0002-8282",
+      "issn": [
+        "0002-8282",
+        "1944-7981"
+      ],
+      "is_oa": false,
+      "is_in_doaj": false,
+      "is_core": true,
+      "host_organization": "https://openalex.org/P4310315912",
+      "host_organization_name": "American Economic Association",
+      "host_organization_lineage": [
+        "https://openalex.org/P4310315912"
+      ],
+      "host_organization_lineage_names": [
+        "American Economic Association"
+      ],
+      "type": "journal"
+    },
+    "license": null,
+    "license_id": null,
+    "version": "publishedVersion",
+    "is_accepted": true,
+    "is_published": true,
+    "raw_source_name": "American Economic Review",
+    "raw_type": "journal-article"
+  },
+  "type": "article",
+  "indexed_in": [
+    "crossref",
+    "pubmed"
+  ],
+  "open_access": {
+    "is_oa": true,
+    "oa_status": "bronze",
+    "oa_url": "https://www.aeaweb.org/articles/pdf/doi/10.1257/aer.20150572",
+    "any_repository_has_fulltext": true
+  },
+  "authorships": [
+    {
+      "author_position": "first",
+      "author": {
+        "id": "https://openalex.org/A5051484328",
+        "display_name": "Raj Chetty",
+        "orcid": "https://orcid.org/0000-0001-8610-8546"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I97018004",
+          "display_name": "Stanford University",
+          "ror": "https://ror.org/00f54p054",
+          "country_code": "US",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I97018004"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Raj Chetty",
+      "raw_affiliation_strings": [
+        "Department of Economics, Stanford University, Landau 323, Stanford, CA 94305, and NBER (e-mail: )"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Department of Economics, Stanford University, Landau 323, Stanford, CA 94305, and NBER (e-mail: )",
+          "institution_ids": [
+            "https://openalex.org/I97018004"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5008884407",
+        "display_name": "Nathaniel Hendren",
+        "orcid": "https://orcid.org/0000-0002-6385-6506"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I136199984",
+          "display_name": "Harvard University",
+          "ror": "https://ror.org/03vek6s52",
+          "country_code": "US",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I136199984"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Nathaniel Hendren",
+      "raw_affiliation_strings": [
+        "Department of Economics, Harvard University, Littauer Center, 1805 Cambridge Street, Cambridge, MA 02138, and NBER (e-mail: )"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Department of Economics, Harvard University, Littauer Center, 1805 Cambridge Street, Cambridge, MA 02138, and NBER (e-mail: )",
+          "institution_ids": [
+            "https://openalex.org/I136199984"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "last",
+      "author": {
+        "id": "https://openalex.org/A5111429542",
+        "display_name": "Lawrence F. Katz",
+        "orcid": null
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I136199984",
+          "display_name": "Harvard University",
+          "ror": "https://ror.org/03vek6s52",
+          "country_code": "US",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I136199984"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Lawrence F. Katz",
+      "raw_affiliation_strings": [
+        "Department of Economics, Harvard University, Littauer Center, 1805 Cambridge Street, Cambridge, MA 02138, and NBER (e-mail: )"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Department of Economics, Harvard University, Littauer Center, 1805 Cambridge Street, Cambridge, MA 02138, and NBER (e-mail: )",
+          "institution_ids": [
+            "https://openalex.org/I136199984"
+          ]
+        }
+      ]
+    }
+  ],
+  "institutions": [],
+  "countries_distinct_count": 1,
+  "institutions_distinct_count": 2,
+  "corresponding_author_ids": [],
+  "corresponding_institution_ids": [],
+  "apc_list": null,
+  "apc_paid": null,
+  "fwci": 647.0176,
+  "has_fulltext": true,
+  "cited_by_count": 2285,
+  "citation_normalized_percentile": {
+    "value": 1.0,
+    "is_in_top_1_percent": true,
+    "is_in_top_10_percent": true
+  },
+  "cited_by_percentile_year": {
+    "min": 96,
+    "max": 100
+  },
+  "biblio": {
+    "volume": "106",
+    "issue": "4",
+    "first_page": "855",
+    "last_page": "902"
+  },
+  "is_retracted": false,
+  "is_paratext": false,
+  "is_xpac": false,
+  "primary_topic": {
+    "id": "https://openalex.org/T11645",
+    "display_name": "Urban, Neighborhood, and Segregation Studies",
+    "score": 0.9757000207901001,
+    "subfield": {
+      "id": "https://openalex.org/subfields/3312",
+      "display_name": "Sociology and Political Science"
+    },
+    "field": {
+      "id": "https://openalex.org/fields/33",
+      "display_name": "Social Sciences"
+    },
+    "domain": {
+      "id": "https://openalex.org/domains/2",
+      "display_name": "Social Sciences"
+    }
+  },
+  "topics": [
+    {
+      "id": "https://openalex.org/T11645",
+      "display_name": "Urban, Neighborhood, and Segregation Studies",
+      "score": 0.9757000207901001,
+      "subfield": {
+        "id": "https://openalex.org/subfields/3312",
+        "display_name": "Sociology and Political Science"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/33",
+        "display_name": "Social Sciences"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/2",
+        "display_name": "Social Sciences"
+      }
+    },
+    {
+      "id": "https://openalex.org/T10632",
+      "display_name": "Housing Market and Economics",
+      "score": 0.006200000178068876,
+      "subfield": {
+        "id": "https://openalex.org/subfields/2002",
+        "display_name": "Economics and Econometrics"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/20",
+        "display_name": "Economics, Econometrics and Finance"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/2",
+        "display_name": "Social Sciences"
+      }
+    },
+    {
+      "id": "https://openalex.org/T11014",
+      "display_name": "Regional Economics and Spatial Analysis",
+      "score": 0.0034000000450760126,
+      "subfield": {
+        "id": "https://openalex.org/subfields/2002",
+        "display_name": "Economics and Econometrics"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/20",
+        "display_name": "Economics, Econometrics and Finance"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/2",
+        "display_name": "Social Sciences"
+      }
+    }
+  ],
+  "keywords": [
+    {
+      "id": "https://openalex.org/keywords/psychology",
+      "display_name": "Psychology",
+      "score": 0.37720388174057007
+    },
+    {
+      "id": "https://openalex.org/keywords/environmental-health",
+      "display_name": "Environmental health",
+      "score": 0.3503308892250061
+    },
+    {
+      "id": "https://openalex.org/keywords/medicine",
+      "display_name": "Medicine",
+      "score": 0.1678062081336975
+    }
+  ],
+  "concepts": [
+    {
+      "id": "https://openalex.org/C15744967",
+      "wikidata": "https://www.wikidata.org/wiki/Q9418",
+      "display_name": "Psychology",
+      "level": 0,
+      "score": 0.37720388174057007
+    },
+    {
+      "id": "https://openalex.org/C99454951",
+      "wikidata": "https://www.wikidata.org/wiki/Q932068",
+      "display_name": "Environmental health",
+      "level": 1,
+      "score": 0.3503308892250061
+    },
+    {
+      "id": "https://openalex.org/C71924100",
+      "wikidata": "https://www.wikidata.org/wiki/Q11190",
+      "display_name": "Medicine",
+      "level": 0,
+      "score": 0.1678062081336975
+    }
+  ],
+  "mesh": [
+    {
+      "descriptor_ui": "D000293",
+      "descriptor_name": "Adolescent",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000293",
+      "descriptor_name": "Adolescent",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000293",
+      "descriptor_name": "Adolescent",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D001723",
+      "descriptor_name": "Birth Rate",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D001723",
+      "descriptor_name": "Birth Rate",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D001723",
+      "descriptor_name": "Birth Rate",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D002648",
+      "descriptor_name": "Child",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D002648",
+      "descriptor_name": "Child",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D002648",
+      "descriptor_name": "Child",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D002675",
+      "descriptor_name": "Child, Preschool",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D002675",
+      "descriptor_name": "Child, Preschool",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D002675",
+      "descriptor_name": "Child, Preschool",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D004522",
+      "descriptor_name": "Educational Status",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D004522",
+      "descriptor_name": "Educational Status",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D004522",
+      "descriptor_name": "Educational Status",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D005260",
+      "descriptor_name": "Female",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D005260",
+      "descriptor_name": "Female",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D005260",
+      "descriptor_name": "Female",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D006798",
+      "descriptor_name": "Housing",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D006798",
+      "descriptor_name": "Housing",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D006798",
+      "descriptor_name": "Housing",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D006801",
+      "descriptor_name": "Humans",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D006801",
+      "descriptor_name": "Humans",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D006801",
+      "descriptor_name": "Humans",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D007086",
+      "descriptor_name": "Illegitimacy",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D007086",
+      "descriptor_name": "Illegitimacy",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D007086",
+      "descriptor_name": "Illegitimacy",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D007182",
+      "descriptor_name": "Income",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D007182",
+      "descriptor_name": "Income",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D007182",
+      "descriptor_name": "Income",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D008393",
+      "descriptor_name": "Marriage",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D008393",
+      "descriptor_name": "Marriage",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D008393",
+      "descriptor_name": "Marriage",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D011203",
+      "descriptor_name": "Poverty",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D011203",
+      "descriptor_name": "Poverty",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D011203",
+      "descriptor_name": "Poverty",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D011247",
+      "descriptor_name": "Pregnancy",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D011247",
+      "descriptor_name": "Pregnancy",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D011247",
+      "descriptor_name": "Pregnancy",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D012111",
+      "descriptor_name": "Residence Characteristics",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D012111",
+      "descriptor_name": "Residence Characteristics",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D012111",
+      "descriptor_name": "Residence Characteristics",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D012937",
+      "descriptor_name": "Social Mobility",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D012937",
+      "descriptor_name": "Social Mobility",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D012937",
+      "descriptor_name": "Social Mobility",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D014481",
+      "descriptor_name": "United States",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D014481",
+      "descriptor_name": "United States",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D014481",
+      "descriptor_name": "United States",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D055815",
+      "descriptor_name": "Young Adult",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D055815",
+      "descriptor_name": "Young Adult",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D055815",
+      "descriptor_name": "Young Adult",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D064890",
+      "descriptor_name": "Social Determinants of Health",
+      "qualifier_ui": "Q000191",
+      "qualifier_name": "economics",
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D064890",
+      "descriptor_name": "Social Determinants of Health",
+      "qualifier_ui": "Q000191",
+      "qualifier_name": "economics",
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D064890",
+      "descriptor_name": "Social Determinants of Health",
+      "qualifier_ui": "Q000191",
+      "qualifier_name": "economics",
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D064890",
+      "descriptor_name": "Social Determinants of Health",
+      "qualifier_ui": "Q000706",
+      "qualifier_name": "statistics & numerical data",
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D064890",
+      "descriptor_name": "Social Determinants of Health",
+      "qualifier_ui": "Q000706",
+      "qualifier_name": "statistics & numerical data",
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D064890",
+      "descriptor_name": "Social Determinants of Health",
+      "qualifier_ui": "Q000706",
+      "qualifier_name": "statistics & numerical data",
+      "is_major_topic": true
+    }
+  ],
+  "locations_count": 4,
+  "locations": [
+    {
+      "id": "doi:10.1257/aer.20150572",
+      "is_oa": true,
+      "landing_page_url": "https://doi.org/10.1257/aer.20150572",
+      "pdf_url": "https://www.aeaweb.org/articles/pdf/doi/10.1257/aer.20150572",
+      "source": {
+        "id": "https://openalex.org/S23254222",
+        "display_name": "American Economic Review",
+        "issn_l": "0002-8282",
+        "issn": [
+          "0002-8282",
+          "1944-7981"
+        ],
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": true,
+        "host_organization": "https://openalex.org/P4310315912",
+        "host_organization_name": "American Economic Association",
+        "host_organization_lineage": [
+          "https://openalex.org/P4310315912"
+        ],
+        "host_organization_lineage_names": [
+          "American Economic Association"
+        ],
+        "type": "journal"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "publishedVersion",
+      "is_accepted": true,
+      "is_published": true,
+      "raw_source_name": "American Economic Review",
+      "raw_type": "journal-article"
+    },
+    {
+      "id": "pmid:29546974",
+      "is_oa": false,
+      "landing_page_url": "https://pubmed.ncbi.nlm.nih.gov/29546974",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4306525036",
+        "display_name": "PubMed",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I1299303238",
+        "host_organization_name": "National Institutes of Health",
+        "host_organization_lineage": [
+          "https://openalex.org/I1299303238"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "publishedVersion",
+      "is_accepted": true,
+      "is_published": true,
+      "raw_source_name": "The American economic review",
+      "raw_type": null
+    },
+    {
+      "id": "pmh:oai:dash.harvard.edu:1/30367426",
+      "is_oa": true,
+      "landing_page_url": "http://nrs.harvard.edu/urn-3:HUL.InstRepos:30367426",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4306401540",
+        "display_name": "Digital Access to Scholarship at Harvard (DASH) (Harvard University)",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I136199984",
+        "host_organization_name": "Harvard University",
+        "host_organization_lineage": [
+          "https://openalex.org/I136199984"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": "cc-by",
+      "license_id": "https://openalex.org/licenses/cc-by",
+      "version": "submittedVersion",
+      "is_accepted": false,
+      "is_published": false,
+      "raw_source_name": "",
+      "raw_type": "Journal Article"
+    },
+    {
+      "id": "pmh:oai:RePEc:aea:aecrev:v:106:y:2016:i:4:p:855-902",
+      "is_oa": false,
+      "landing_page_url": "http://www.aeaweb.org/articles.php?doi=10.1257/aer.20150572",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4306401271",
+        "display_name": "RePEc: Research Papers in Economics",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I77793887",
+        "host_organization_name": "Federal Reserve Bank of St. Louis",
+        "host_organization_lineage": [
+          "https://openalex.org/I77793887"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "submittedVersion",
+      "is_accepted": false,
+      "is_published": false,
+      "raw_source_name": null,
+      "raw_type": "article"
+    }
+  ],
+  "best_oa_location": {
+    "id": "doi:10.1257/aer.20150572",
+    "is_oa": true,
+    "landing_page_url": "https://doi.org/10.1257/aer.20150572",
+    "pdf_url": "https://www.aeaweb.org/articles/pdf/doi/10.1257/aer.20150572",
+    "source": {
+      "id": "https://openalex.org/S23254222",
+      "display_name": "American Economic Review",
+      "issn_l": "0002-8282",
+      "issn": [
+        "0002-8282",
+        "1944-7981"
+      ],
+      "is_oa": false,
+      "is_in_doaj": false,
+      "is_core": true,
+      "host_organization": "https://openalex.org/P4310315912",
+      "host_organization_name": "American Economic Association",
+      "host_organization_lineage": [
+        "https://openalex.org/P4310315912"
+      ],
+      "host_organization_lineage_names": [
+        "American Economic Association"
+      ],
+      "type": "journal"
+    },
+    "license": null,
+    "license_id": null,
+    "version": "publishedVersion",
+    "is_accepted": true,
+    "is_published": true,
+    "raw_source_name": "American Economic Review",
+    "raw_type": "journal-article"
+  },
+  "sustainable_development_goals": [
+    {
+      "score": 0.7799999713897705,
+      "id": "https://metadata.un.org/sdg/1",
+      "display_name": "No poverty"
+    }
+  ],
+  "awards": [
+    {
+      "id": "https://openalex.org/G1446567963",
+      "display_name": null,
+      "funder_award_id": "R01 AG031259",
+      "funder_id": "https://openalex.org/F4320337337",
+      "funder_display_name": "National Institute on Aging"
+    }
+  ],
+  "funders": [
+    {
+      "id": "https://openalex.org/F4320306076",
+      "display_name": "National Science Foundation",
+      "ror": "https://ror.org/021nxhr62"
+    },
+    {
+      "id": "https://openalex.org/F4320311571",
+      "display_name": "Laura and John Arnold Foundation",
+      "ror": "https://ror.org/04hqxh742"
+    },
+    {
+      "id": "https://openalex.org/F4320337337",
+      "display_name": "National Institute on Aging",
+      "ror": "https://ror.org/049v75w11"
+    }
+  ],
+  "has_content": {
+    "pdf": true,
+    "grobid_xml": true
+  },
+  "content_urls": {
+    "pdf": "https://content.openalex.org/works/W1484598383.pdf",
+    "grobid_xml": "https://content.openalex.org/works/W1484598383.grobid-xml"
+  },
+  "referenced_works_count": 57,
+  "referenced_works": [
+    "https://openalex.org/W197841719",
+    "https://openalex.org/W291004932",
+    "https://openalex.org/W1490948437",
+    "https://openalex.org/W1505245189",
+    "https://openalex.org/W1550044200",
+    "https://openalex.org/W1577411356",
+    "https://openalex.org/W1731306270",
+    "https://openalex.org/W1821431844",
+    "https://openalex.org/W1965016332",
+    "https://openalex.org/W1967609415",
+    "https://openalex.org/W1976049077",
+    "https://openalex.org/W1986762259",
+    "https://openalex.org/W1988893322",
+    "https://openalex.org/W1990914822",
+    "https://openalex.org/W1994413315",
+    "https://openalex.org/W2004877893",
+    "https://openalex.org/W2020651036",
+    "https://openalex.org/W2027910825",
+    "https://openalex.org/W2031567143",
+    "https://openalex.org/W2034283054",
+    "https://openalex.org/W2085491458",
+    "https://openalex.org/W2102873396",
+    "https://openalex.org/W2116429669",
+    "https://openalex.org/W2119015354",
+    "https://openalex.org/W2120406225",
+    "https://openalex.org/W2127629883",
+    "https://openalex.org/W2131148121",
+    "https://openalex.org/W2132213835",
+    "https://openalex.org/W2133901188",
+    "https://openalex.org/W2135730600",
+    "https://openalex.org/W2137213617",
+    "https://openalex.org/W2138290169",
+    "https://openalex.org/W2138315275",
+    "https://openalex.org/W2139564895",
+    "https://openalex.org/W2147920244",
+    "https://openalex.org/W2157325805",
+    "https://openalex.org/W2157800636",
+    "https://openalex.org/W2159123627",
+    "https://openalex.org/W2164075909",
+    "https://openalex.org/W2167853313",
+    "https://openalex.org/W2249470430",
+    "https://openalex.org/W2252684988",
+    "https://openalex.org/W2475145434",
+    "https://openalex.org/W2479399230",
+    "https://openalex.org/W2536610420",
+    "https://openalex.org/W2891580543",
+    "https://openalex.org/W3023556012",
+    "https://openalex.org/W3122125573",
+    "https://openalex.org/W3122659046",
+    "https://openalex.org/W3122812335",
+    "https://openalex.org/W3123199285",
+    "https://openalex.org/W3123534837",
+    "https://openalex.org/W3124658416",
+    "https://openalex.org/W3142489146",
+    "https://openalex.org/W4242292742",
+    "https://openalex.org/W4247179485",
+    "https://openalex.org/W4251625459"
+  ],
+  "related_works": [
+    "https://openalex.org/W4391375266",
+    "https://openalex.org/W2748952813",
+    "https://openalex.org/W2931662336",
+    "https://openalex.org/W2077865380",
+    "https://openalex.org/W3006817050",
+    "https://openalex.org/W4401768695",
+    "https://openalex.org/W2765597752",
+    "https://openalex.org/W2134894512",
+    "https://openalex.org/W2083375246",
+    "https://openalex.org/W2067108088"
+  ],
+  "abstract_inverted_index": {
+    "The": [
+      0,
+      68
+    ],
+    "Moving": [
+      1,
+      55
+    ],
+    "to": [
+      2,
+      12,
+      18,
+      36,
+      87
+    ],
+    "Opportunity": [
+      3
+    ],
+    "(MTO)": [
+      4
+    ],
+    "experiment": [
+      5
+    ],
+    "offered": [
+      6
+    ],
+    "randomly": [
+      7
+    ],
+    "selected": [
+      8
+    ],
+    "families": [
+      9
+    ],
+    "housing": [
+      10,
+      16
+    ],
+    "vouchers": [
+      11
+    ],
+    "move": [
+      13,
+      80
+    ],
+    "from": [
+      14,
+      73
+    ],
+    "high-poverty": [
+      15
+    ],
+    "projects": [
+      17
+    ],
+    "lower-poverty": [
+      19,
+      38
+    ],
+    "neighborhoods.": [
+      20
+    ],
+    "We": [
+      21,
+      32
+    ],
+    "analyze": [
+      22
+    ],
+    "MTO's": [
+      23
+    ],
+    "impacts": [
+      24
+    ],
+    "on": [
+      25
+    ],
+    "children's": [
+      26
+    ],
+    "long-term": [
+      27,
+      98
+    ],
+    "outcomes": [
+      28
+    ],
+    "using": [
+      29
+    ],
+    "tax": [
+      30
+    ],
+    "data.": [
+      31
+    ],
+    "find": [
+      33
+    ],
+    "that": [
+      34,
+      82
+    ],
+    "moving": [
+      35,
+      74
+    ],
+    "a": [
+      37
+    ],
+    "neighborhood": [
+      39
+    ],
+    "when": [
+      40,
+      78
+    ],
+    "young": [
+      41
+    ],
+    "(before": [
+      42
+    ],
+    "age": [
+      43,
+      77
+    ],
+    "13)": [
+      44
+    ],
+    "increases": [
+      45
+    ],
+    "college": [
+      46
+    ],
+    "attendance": [
+      47
+    ],
+    "and": [
+      48,
+      50
+    ],
+    "earnings": [
+      49
+    ],
+    "reduces": [
+      51
+    ],
+    "single": [
+      52
+    ],
+    "parenthood": [
+      53
+    ],
+    "rates.": [
+      54
+    ],
+    "as": [
+      56
+    ],
+    "an": [
+      57,
+      93
+    ],
+    "adolescent": [
+      58
+    ],
+    "has": [
+      59
+    ],
+    "slightly": [
+      60
+    ],
+    "negative": [
+      61
+    ],
+    "impacts,": [
+      62
+    ],
+    "perhaps": [
+      63
+    ],
+    "because": [
+      64
+    ],
+    "of": [
+      65,
+      85,
+      96
+    ],
+    "disruption": [
+      66
+    ],
+    "effects.": [
+      67
+    ],
+    "decline": [
+      69
+    ],
+    "in": [
+      70
+    ],
+    "the": [
+      71,
+      76,
+      83
+    ],
+    "gains": [
+      72
+    ],
+    "with": [
+      75
+    ],
+    "children": [
+      79
+    ],
+    "suggests": [
+      81
+    ],
+    "duration": [
+      84
+    ],
+    "exposure": [
+      86
+    ],
+    "better": [
+      88
+    ],
+    "environments": [
+      89
+    ],
+    "during": [
+      90
+    ],
+    "childhood": [
+      91
+    ],
+    "is": [
+      92
+    ],
+    "important": [
+      94
+    ],
+    "determinant": [
+      95
+    ],
+    "children\u2019s": [
+      97
+    ],
+    "outcomes.": [
+      99
+    ]
+  },
+  "counts_by_year": [
+    {
+      "year": 2026,
+      "cited_by_count": 107
+    },
+    {
+      "year": 2025,
+      "cited_by_count": 237
+    },
+    {
+      "year": 2024,
+      "cited_by_count": 280
+    },
+    {
+      "year": 2023,
+      "cited_by_count": 249
+    },
+    {
+      "year": 2022,
+      "cited_by_count": 251
+    },
+    {
+      "year": 2021,
+      "cited_by_count": 270
+    },
+    {
+      "year": 2020,
+      "cited_by_count": 212
+    },
+    {
+      "year": 2019,
+      "cited_by_count": 267
+    },
+    {
+      "year": 2018,
+      "cited_by_count": 160
+    },
+    {
+      "year": 2017,
+      "cited_by_count": 117
+    },
+    {
+      "year": 2016,
+      "cited_by_count": 98
+    },
+    {
+      "year": 2015,
+      "cited_by_count": 26
+    },
+    {
+      "year": 2014,
+      "cited_by_count": 3
+    },
+    {
+      "year": 2013,
+      "cited_by_count": 5
+    }
+  ],
+  "updated_date": "2026-07-05T07:55:05.734416",
+  "created_date": "2025-10-10T00:00:00"
+}

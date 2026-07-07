@@ -1,0 +1,17 @@
+{
+  "candidate_id": "cand-exp-marathon-finishing-times-by-age-and-temperature-boston-marat",
+  "proposed_study_id": "marathon-finishing-times-by-age-and-temperature-boston-marat",
+  "acquisition_status": "landing_saved",
+  "attempted_at": "2026-07-07T03:44:34+00:00",
+  "catalog_source_url": "https://www.baa.org/races/boston-marathon/results",
+  "resolved_urls": [
+    "https://doi.org/10.3390/ijerph16101777",
+    "https://www.mdpi.com/1660-4601/16/10/1777/pdf",
+    "https://www.baa.org/races/boston-marathon/results"
+  ],
+  "files": [
+    "openalex-metadata.json",
+    "source-1.html"
+  ],
+  "dois": []
+}

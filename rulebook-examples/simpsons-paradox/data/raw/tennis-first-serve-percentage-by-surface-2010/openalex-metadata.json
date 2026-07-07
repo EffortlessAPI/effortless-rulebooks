@@ -1,0 +1,1857 @@
+{
+  "id": "https://openalex.org/W4319460963",
+  "doi": "https://doi.org/10.1007/s40279-022-01807-8",
+  "title": "Physical Demands of Tennis Across the Different Court Surfaces, Performance Levels and Sexes: A Systematic Review with Meta-analysis",
+  "display_name": "Physical Demands of Tennis Across the Different Court Surfaces, Performance Levels and Sexes: A Systematic Review with Meta-analysis",
+  "relevance_score": 161.38441,
+  "publication_year": 2023,
+  "publication_date": "2023-02-08",
+  "ids": {
+    "openalex": "https://openalex.org/W4319460963",
+    "doi": "https://doi.org/10.1007/s40279-022-01807-8",
+    "pmid": "https://pubmed.ncbi.nlm.nih.gov/36752978"
+  },
+  "language": "en",
+  "primary_location": {
+    "id": "doi:10.1007/s40279-022-01807-8",
+    "is_oa": false,
+    "landing_page_url": "https://doi.org/10.1007/s40279-022-01807-8",
+    "pdf_url": null,
+    "source": {
+      "id": "https://openalex.org/S137994755",
+      "display_name": "Sports Medicine",
+      "issn_l": "0112-1642",
+      "issn": [
+        "0112-1642",
+        "1179-2035"
+      ],
+      "is_oa": false,
+      "is_in_doaj": false,
+      "is_core": true,
+      "host_organization": "https://openalex.org/P4310319900",
+      "host_organization_name": "Springer Science+Business Media",
+      "host_organization_lineage": [
+        "https://openalex.org/P4310319900",
+        "https://openalex.org/P4310319965"
+      ],
+      "host_organization_lineage_names": [
+        "Springer Science+Business Media",
+        "Springer Nature"
+      ],
+      "type": "journal"
+    },
+    "license": null,
+    "license_id": null,
+    "version": "publishedVersion",
+    "is_accepted": true,
+    "is_published": true,
+    "raw_source_name": "Sports Medicine",
+    "raw_type": "journal-article"
+  },
+  "type": "review",
+  "indexed_in": [
+    "crossref",
+    "pubmed"
+  ],
+  "open_access": {
+    "is_oa": true,
+    "oa_status": "green",
+    "oa_url": "https://research.rug.nl/en/publications/cf228e47-6823-4cb7-a8a7-2df252af962d",
+    "any_repository_has_fulltext": true
+  },
+  "authorships": [
+    {
+      "author_position": "first",
+      "author": {
+        "id": "https://openalex.org/A5023264927",
+        "display_name": "Babette M Pluim",
+        "orcid": "https://orcid.org/0000-0003-0655-8980"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I4210101582",
+          "display_name": "Academic Center for Evidence-Based Sports Medicine",
+          "ror": "https://ror.org/017ecm653",
+          "country_code": "NL",
+          "type": "other",
+          "lineage": [
+            "https://openalex.org/I4210101582"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I4210119043",
+          "display_name": "Royal Dutch Lawn Tennis Federation",
+          "ror": "https://ror.org/02jhjfr59",
+          "country_code": "NL",
+          "type": "other",
+          "lineage": [
+            "https://openalex.org/I4210119043"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I4210165347",
+          "display_name": "Health & Safety in Sports",
+          "ror": "https://ror.org/05m962h09",
+          "country_code": "NL",
+          "type": "other",
+          "lineage": [
+            "https://openalex.org/I4210165347"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I69552723",
+          "display_name": "University of Pretoria",
+          "ror": "https://ror.org/00g0p6g84",
+          "country_code": "ZA",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I69552723"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I887064364",
+          "display_name": "University of Amsterdam",
+          "ror": "https://ror.org/04dkp9463",
+          "country_code": "NL",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I887064364"
+          ]
+        }
+      ],
+      "countries": [
+        "NL",
+        "ZA"
+      ],
+      "is_corresponding": true,
+      "raw_author_name": "Babette M. Pluim",
+      "raw_affiliation_strings": [
+        "Academic Center for Evidence-based Sports Medicine, ACES, Amsterdam, The Netherlands. b.pluim@knltb.nl",
+        "Amsterdam Collaboration on Health and Safety in Sports (ACHSS), IOC Research Center of Excellence, Amsterdam, The Netherlands. b.pluim@knltb.nl",
+        "Department of Orthopaedic Surgery and Sports Medicine, Amsterdam UMC location University of Amsterdam, Amsterdam, The Netherlands. b.pluim@knltb.nl",
+        "Medical Department, Royal Netherlands Lawn Tennis Association (KNLTB), Amstelveen, The Netherlands. b.pluim@knltb.nl",
+        "Section Sports Medicine, Faculty of Health Sciences, University of Pretoria, Pretoria, South Africa. b.pluim@knltb.nl",
+        "Section Sports Medicine, Faculty of Health Sciences, University of Pretoria, Pretoria, South Africa"
+      ],
+      "raw_orcid": "https://orcid.org/0000-0003-0655-8980",
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Academic Center for Evidence-based Sports Medicine, ACES, Amsterdam, The Netherlands. b.pluim@knltb.nl",
+          "institution_ids": [
+            "https://openalex.org/I4210101582"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Amsterdam Collaboration on Health and Safety in Sports (ACHSS), IOC Research Center of Excellence, Amsterdam, The Netherlands. b.pluim@knltb.nl",
+          "institution_ids": [
+            "https://openalex.org/I4210165347"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Department of Orthopaedic Surgery and Sports Medicine, Amsterdam UMC location University of Amsterdam, Amsterdam, The Netherlands. b.pluim@knltb.nl",
+          "institution_ids": [
+            "https://openalex.org/I887064364"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Medical Department, Royal Netherlands Lawn Tennis Association (KNLTB), Amstelveen, The Netherlands. b.pluim@knltb.nl",
+          "institution_ids": [
+            "https://openalex.org/I4210119043"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Section Sports Medicine, Faculty of Health Sciences, University of Pretoria, Pretoria, South Africa. b.pluim@knltb.nl",
+          "institution_ids": [
+            "https://openalex.org/I69552723"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Section Sports Medicine, Faculty of Health Sciences, University of Pretoria, Pretoria, South Africa",
+          "institution_ids": [
+            "https://openalex.org/I69552723"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5014060465",
+        "display_name": "Marleen G. T. Jansen",
+        "orcid": "https://orcid.org/0000-0002-8441-7748"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I1334415907",
+          "display_name": "University Medical Center Groningen",
+          "ror": "https://ror.org/03cv38k47",
+          "country_code": "NL",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I1334415907"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I169381384",
+          "display_name": "University of Groningen",
+          "ror": "https://ror.org/012p63287",
+          "country_code": "NL",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I169381384"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I4210119043",
+          "display_name": "Royal Dutch Lawn Tennis Federation",
+          "ror": "https://ror.org/02jhjfr59",
+          "country_code": "NL",
+          "type": "other",
+          "lineage": [
+            "https://openalex.org/I4210119043"
+          ]
+        }
+      ],
+      "countries": [
+        "NL"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Marleen G. T. Jansen",
+      "raw_affiliation_strings": [
+        "Centre for Human Movement Sciences, University Medical Centre Groningen, University of Groningen, Groningen, The Netherlands",
+        "Toptennis Department, Royal Netherlands Lawn Tennis Association (KNLTB), Amstelveen, The Netherlands"
+      ],
+      "raw_orcid": "https://orcid.org/0000-0002-8441-7748",
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Centre for Human Movement Sciences, University Medical Centre Groningen, University of Groningen, Groningen, The Netherlands",
+          "institution_ids": [
+            "https://openalex.org/I1334415907",
+            "https://openalex.org/I169381384"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Toptennis Department, Royal Netherlands Lawn Tennis Association (KNLTB), Amstelveen, The Netherlands",
+          "institution_ids": [
+            "https://openalex.org/I4210119043"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5059381302",
+        "display_name": "Samuel J. Williamson",
+        "orcid": "https://orcid.org/0000-0002-3533-0603"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I145166766",
+          "display_name": "English Institute of Sport",
+          "ror": "https://ror.org/01dwyxv59",
+          "country_code": "GB",
+          "type": "government",
+          "lineage": [
+            "https://openalex.org/I145166766"
+          ]
+        }
+      ],
+      "countries": [
+        "GB"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Samuel Williamson",
+      "raw_affiliation_strings": [
+        "English Institute of Sport, London, UK"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "English Institute of Sport, London, UK",
+          "institution_ids": [
+            "https://openalex.org/I145166766"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5015286860",
+        "display_name": "Cain Berry",
+        "orcid": null
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I4210144387",
+          "display_name": "Lawn Tennis Association",
+          "ror": "https://ror.org/039vmy627",
+          "country_code": "GB",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I4210144387"
+          ]
+        }
+      ],
+      "countries": [
+        "GB"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Cain Berry",
+      "raw_affiliation_strings": [
+        "Lawn Tennis Association, London, UK"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Lawn Tennis Association, London, UK",
+          "institution_ids": [
+            "https://openalex.org/I4210144387"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5091889077",
+        "display_name": "Silvia Camporesi",
+        "orcid": "https://orcid.org/0000-0003-4135-1723"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I129774422",
+          "display_name": "University of Vienna",
+          "ror": "https://ror.org/03prydq77",
+          "country_code": "AT",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I129774422"
+          ]
+        }
+      ],
+      "countries": [
+        "AT"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Silvia Camporesi",
+      "raw_affiliation_strings": [
+        "Department of Political Science, University of Vienna, Vienna, Austria"
+      ],
+      "raw_orcid": "https://orcid.org/0000-0003-4135-1723",
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Department of Political Science, University of Vienna, Vienna, Austria",
+          "institution_ids": [
+            "https://openalex.org/I129774422"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5060060561",
+        "display_name": "Kristina Fagher",
+        "orcid": "https://orcid.org/0000-0002-9524-7553"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I187531555",
+          "display_name": "Lund University",
+          "ror": "https://ror.org/012a77v79",
+          "country_code": "SE",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I187531555"
+          ]
+        }
+      ],
+      "countries": [
+        "SE"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Kristina Fagher",
+      "raw_affiliation_strings": [
+        "Rehabilitation Medicine Research Group, Department of Health Sciences, Lund University, Lund, Sweden"
+      ],
+      "raw_orcid": "https://orcid.org/0000-0002-9524-7553",
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Rehabilitation Medicine Research Group, Department of Health Sciences, Lund University, Lund, Sweden",
+          "institution_ids": [
+            "https://openalex.org/I187531555"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5031672146",
+        "display_name": "Neil Heron",
+        "orcid": "https://orcid.org/0000-0002-4123-9806"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I56007636",
+          "display_name": "Keele University",
+          "ror": "https://ror.org/00340yn33",
+          "country_code": "GB",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I56007636"
+          ]
+        }
+      ],
+      "countries": [
+        "GB"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Neil Heron",
+      "raw_affiliation_strings": [
+        "Centre for Public Health, Queen's University Belfast, Belfast, Northern Ireland",
+        "School of Medicine, Keele University, Staffordshire, UK"
+      ],
+      "raw_orcid": "https://orcid.org/0000-0002-4123-9806",
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Centre for Public Health, Queen's University Belfast, Belfast, Northern Ireland",
+          "institution_ids": []
+        },
+        {
+          "raw_affiliation_string": "School of Medicine, Keele University, Staffordshire, UK",
+          "institution_ids": [
+            "https://openalex.org/I56007636"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5054351657",
+        "display_name": "Dina C. Janse van Rensburg",
+        "orcid": "https://orcid.org/0000-0003-1058-6992"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I69552723",
+          "display_name": "University of Pretoria",
+          "ror": "https://ror.org/00g0p6g84",
+          "country_code": "ZA",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I69552723"
+          ]
+        }
+      ],
+      "countries": [
+        "ZA"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Dina C. Janse van Rensburg",
+      "raw_affiliation_strings": [
+        "Medical Committee, World Netball, Manchester, UK",
+        "Section Sports Medicine, Faculty of Health Sciences, University of Pretoria, Pretoria, South Africa"
+      ],
+      "raw_orcid": "https://orcid.org/0000-0003-1058-6992",
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Medical Committee, World Netball, Manchester, UK",
+          "institution_ids": []
+        },
+        {
+          "raw_affiliation_string": "Section Sports Medicine, Faculty of Health Sciences, University of Pretoria, Pretoria, South Africa",
+          "institution_ids": [
+            "https://openalex.org/I69552723"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5039924373",
+        "display_name": "V\u00edctor Moreno-P\u00e9rez",
+        "orcid": "https://orcid.org/0000-0003-3357-0045"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I111262870",
+          "display_name": "Universitat de Miguel Hern\u00e1ndez d'Elx",
+          "ror": "https://ror.org/01azzms13",
+          "country_code": "ES",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I111262870"
+          ]
+        }
+      ],
+      "countries": [
+        "ES"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "V\u00edctor Moreno-P\u00e9rez",
+      "raw_affiliation_strings": [
+        "Center for Translational Research in Physiotherapy, Department of Pathology and Surgery, Miguel Hern\u00e1ndez University of Elche, San Joan, Spain"
+      ],
+      "raw_orcid": "https://orcid.org/0000-0003-3357-0045",
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Center for Translational Research in Physiotherapy, Department of Pathology and Surgery, Miguel Hern\u00e1ndez University of Elche, San Joan, Spain",
+          "institution_ids": [
+            "https://openalex.org/I111262870"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5063272424",
+        "display_name": "Andrew Murray",
+        "orcid": "https://orcid.org/0000-0003-3327-8028"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I1303153112",
+          "display_name": "European Bioinformatics Institute",
+          "ror": "https://ror.org/02catss52",
+          "country_code": "GB",
+          "type": "facility",
+          "lineage": [
+            "https://openalex.org/I1303153112",
+            "https://openalex.org/I4210138560"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I98677209",
+          "display_name": "University of Edinburgh",
+          "ror": "https://ror.org/01nrxwf90",
+          "country_code": "GB",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I98677209"
+          ]
+        }
+      ],
+      "countries": [
+        "GB"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Andrew Murray",
+      "raw_affiliation_strings": [
+        "European Tour Health and Performance Institute, European Tour Golf, Virginia Water, UK",
+        "Sport and Exercise, University of Edinburgh. Pleasance, Edinburgh, UK"
+      ],
+      "raw_orcid": "https://orcid.org/0000-0003-3327-8028",
+      "affiliations": [
+        {
+          "raw_affiliation_string": "European Tour Health and Performance Institute, European Tour Golf, Virginia Water, UK",
+          "institution_ids": [
+            "https://openalex.org/I1303153112"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Sport and Exercise, University of Edinburgh. Pleasance, Edinburgh, UK",
+          "institution_ids": [
+            "https://openalex.org/I98677209"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5053819580",
+        "display_name": "Se\u00e1n O\u2019Connor",
+        "orcid": "https://orcid.org/0000-0001-6805-8899"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I126231945",
+          "display_name": "Queen's University Belfast",
+          "ror": "https://ror.org/00hswnk62",
+          "country_code": "GB",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I126231945"
+          ]
+        }
+      ],
+      "countries": [
+        "GB"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Se\u00e1n R. O\u2019Connor",
+      "raw_affiliation_strings": [
+        "School of Psychology, Queen's University Belfast, Belfast, UK"
+      ],
+      "raw_orcid": "https://orcid.org/0000-0001-6805-8899",
+      "affiliations": [
+        {
+          "raw_affiliation_string": "School of Psychology, Queen's University Belfast, Belfast, UK",
+          "institution_ids": [
+            "https://openalex.org/I126231945"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5091423525",
+        "display_name": "F\u00e1bio Carlos Lucas de Oliveira",
+        "orcid": "https://orcid.org/0000-0002-7127-6560"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I76903346",
+          "display_name": "University of Coimbra",
+          "ror": "https://ror.org/04z8k9a98",
+          "country_code": "PT",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I76903346"
+          ]
+        }
+      ],
+      "countries": [
+        "PT"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "F\u00e1bio C. L. de Oliveira",
+      "raw_affiliation_strings": [
+        "Research Unit in Sport and Physical Activity (CIDAF), Faculty of Sport Sciences and Physical Education, University of Coimbra, Coimbra, Portugal"
+      ],
+      "raw_orcid": "https://orcid.org/0000-0002-7127-6560",
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Research Unit in Sport and Physical Activity (CIDAF), Faculty of Sport Sciences and Physical Education, University of Coimbra, Coimbra, Portugal",
+          "institution_ids": [
+            "https://openalex.org/I76903346"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5075889613",
+        "display_name": "Machar Reid",
+        "orcid": "https://orcid.org/0000-0002-7196-3731"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I2802464748",
+          "display_name": "Sports Medicine Australia",
+          "ror": "https://ror.org/04zbaa003",
+          "country_code": "AU",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I2802464748"
+          ]
+        }
+      ],
+      "countries": [
+        "AU"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Machar Reid",
+      "raw_affiliation_strings": [
+        "Tennis Australia, Melbourne, VIC, Australia"
+      ],
+      "raw_orcid": "https://orcid.org/0000-0002-7196-3731",
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Tennis Australia, Melbourne, VIC, Australia",
+          "institution_ids": [
+            "https://openalex.org/I2802464748"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5064239696",
+        "display_name": "Miriam van Reijen",
+        "orcid": "https://orcid.org/0000-0002-0858-857X"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I2799961962",
+          "display_name": "Nederlands Olympisch Comit\u00e9 Nederlandse Sport Federatie",
+          "ror": "https://ror.org/017f19q81",
+          "country_code": "NL",
+          "type": "other",
+          "lineage": [
+            "https://openalex.org/I2799961962"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I4210119043",
+          "display_name": "Royal Dutch Lawn Tennis Federation",
+          "ror": "https://ror.org/02jhjfr59",
+          "country_code": "NL",
+          "type": "other",
+          "lineage": [
+            "https://openalex.org/I4210119043"
+          ]
+        }
+      ],
+      "countries": [
+        "NL"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Miriam van Reijen",
+      "raw_affiliation_strings": [
+        "National Olympic Committee TeamNL, Arnhem, The Netherlands",
+        "Toptennis Department, Royal Netherlands Lawn Tennis Association (KNLTB), Amstelveen, The Netherlands"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "National Olympic Committee TeamNL, Arnhem, The Netherlands",
+          "institution_ids": [
+            "https://openalex.org/I2799961962"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Toptennis Department, Royal Netherlands Lawn Tennis Association (KNLTB), Amstelveen, The Netherlands",
+          "institution_ids": [
+            "https://openalex.org/I4210119043"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5037898319",
+        "display_name": "Tobias Saueressig",
+        "orcid": "https://orcid.org/0000-0002-3332-3856"
+      },
+      "institutions": [],
+      "countries": [],
+      "is_corresponding": false,
+      "raw_author_name": "Tobias Saueressig",
+      "raw_affiliation_strings": [
+        "Physio Meets Science GmbH, Leimen, Germany"
+      ],
+      "raw_orcid": "https://orcid.org/0000-0002-3332-3856",
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Physio Meets Science GmbH, Leimen, Germany",
+          "institution_ids": []
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5027751300",
+        "display_name": "Linda Schoonmade",
+        "orcid": "https://orcid.org/0000-0002-2407-5977"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I865915315",
+          "display_name": "Vrije Universiteit Amsterdam",
+          "ror": "https://ror.org/008xxew50",
+          "country_code": "NL",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I865915315"
+          ]
+        }
+      ],
+      "countries": [
+        "NL"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Linda J. Schoonmade",
+      "raw_affiliation_strings": [
+        "University Library, Vrije Universiteit Amsterdam, Amsterdam, The Netherlands"
+      ],
+      "raw_orcid": "https://orcid.org/0000-0002-2407-5977",
+      "affiliations": [
+        {
+          "raw_affiliation_string": "University Library, Vrije Universiteit Amsterdam, Amsterdam, The Netherlands",
+          "institution_ids": [
+            "https://openalex.org/I865915315"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5006002384",
+        "display_name": "Jane S Thornton",
+        "orcid": "https://orcid.org/0000-0002-3519-7101"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I125749732",
+          "display_name": "Western University",
+          "ror": "https://ror.org/02grkyz14",
+          "country_code": "CA",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I125749732"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I4210129194",
+          "display_name": "Fowler Kennedy Sport Medicine Clinic",
+          "ror": "https://ror.org/03hf41361",
+          "country_code": "CA",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I4210129194"
+          ]
+        }
+      ],
+      "countries": [
+        "CA"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Jane S. Thornton",
+      "raw_affiliation_strings": [
+        "Fowler Kennedy Sport Medicine Clinic, Western University, London, ON, Canada",
+        "Return to Health and Performance Lab, Western Centre for Public Health and Family Medicine, Schulich School of Medicine and Dentistry, Western University, London, ON, Canada"
+      ],
+      "raw_orcid": "https://orcid.org/0000-0002-3519-7101",
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Fowler Kennedy Sport Medicine Clinic, Western University, London, ON, Canada",
+          "institution_ids": [
+            "https://openalex.org/I4210129194",
+            "https://openalex.org/I125749732"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Return to Health and Performance Lab, Western Centre for Public Health and Family Medicine, Schulich School of Medicine and Dentistry, Western University, London, ON, Canada",
+          "institution_ids": [
+            "https://openalex.org/I125749732"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5085788101",
+        "display_name": "Nick Webborn",
+        "orcid": "https://orcid.org/0000-0003-3636-5557"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I143804889",
+          "display_name": "Loughborough University",
+          "ror": "https://ror.org/04vg4w365",
+          "country_code": "GB",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I143804889"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I4210160272",
+          "display_name": "International Paralympic Committee",
+          "ror": "https://ror.org/05mknav37",
+          "country_code": "DE",
+          "type": "nonprofit",
+          "lineage": [
+            "https://openalex.org/I4210160272"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I71637028",
+          "display_name": "University of Brighton",
+          "ror": "https://ror.org/04kp2b655",
+          "country_code": "GB",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I71637028"
+          ]
+        }
+      ],
+      "countries": [
+        "DE",
+        "GB"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Nick Webborn",
+      "raw_affiliation_strings": [
+        "Centre for Sport and Exercise Science and Medicine (SESAME), School of Sport and Service Management, University of Brighton, Brighton, UK",
+        "IPC Medical Committee, Bonn, Germany",
+        "School of Sport, Exercise and Health Sciences, Loughborough University, Loughborough, UK"
+      ],
+      "raw_orcid": "https://orcid.org/0000-0003-3636-5557",
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Centre for Sport and Exercise Science and Medicine (SESAME), School of Sport and Service Management, University of Brighton, Brighton, UK",
+          "institution_ids": [
+            "https://openalex.org/I71637028"
+          ]
+        },
+        {
+          "raw_affiliation_string": "IPC Medical Committee, Bonn, Germany",
+          "institution_ids": [
+            "https://openalex.org/I4210160272"
+          ]
+        },
+        {
+          "raw_affiliation_string": "School of Sport, Exercise and Health Sciences, Loughborough University, Loughborough, UK",
+          "institution_ids": [
+            "https://openalex.org/I143804889"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "last",
+      "author": {
+        "id": "https://openalex.org/A5020960452",
+        "display_name": "Clare L. Ardern",
+        "orcid": "https://orcid.org/0000-0001-8102-3631"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I141945490",
+          "display_name": "University of British Columbia",
+          "ror": "https://ror.org/03rmrcq20",
+          "country_code": "CA",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I141945490"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I196829312",
+          "display_name": "La Trobe University",
+          "ror": "https://ror.org/01rxfrp27",
+          "country_code": "AU",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I196829312"
+          ]
+        }
+      ],
+      "countries": [
+        "AU",
+        "CA"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Clare L. Ardern",
+      "raw_affiliation_strings": [
+        "Department of Family Practice, University of British Columbia, Vancouver, BC, Canada",
+        "Sport and Exercise Medicine Research Centre, La Trobe University, Melbourne, VIC, Australia"
+      ],
+      "raw_orcid": "https://orcid.org/0000-0001-8102-3631",
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Department of Family Practice, University of British Columbia, Vancouver, BC, Canada",
+          "institution_ids": [
+            "https://openalex.org/I141945490"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Sport and Exercise Medicine Research Centre, La Trobe University, Melbourne, VIC, Australia",
+          "institution_ids": [
+            "https://openalex.org/I196829312"
+          ]
+        }
+      ]
+    }
+  ],
+  "institutions": [],
+  "countries_distinct_count": 10,
+  "institutions_distinct_count": 27,
+  "corresponding_author_ids": [
+    "https://openalex.org/A5023264927"
+  ],
+  "corresponding_institution_ids": [
+    "https://openalex.org/I4210101582",
+    "https://openalex.org/I4210119043",
+    "https://openalex.org/I4210165347",
+    "https://openalex.org/I69552723",
+    "https://openalex.org/I887064364"
+  ],
+  "apc_list": {
+    "value": 3990,
+    "currency": "EUR",
+    "value_usd": 5190
+  },
+  "apc_paid": null,
+  "fwci": 6.846,
+  "has_fulltext": true,
+  "cited_by_count": 71,
+  "citation_normalized_percentile": {
+    "value": 0.9802938,
+    "is_in_top_1_percent": false,
+    "is_in_top_10_percent": true
+  },
+  "cited_by_percentile_year": {
+    "min": 89,
+    "max": 100
+  },
+  "biblio": {
+    "volume": "53",
+    "issue": "4",
+    "first_page": "807",
+    "last_page": "836"
+  },
+  "is_retracted": false,
+  "is_paratext": false,
+  "is_xpac": false,
+  "primary_topic": {
+    "id": "https://openalex.org/T12677",
+    "display_name": "Sports Dynamics and Biomechanics",
+    "score": 0.36480000615119934,
+    "subfield": {
+      "id": "https://openalex.org/subfields/2204",
+      "display_name": "Biomedical Engineering"
+    },
+    "field": {
+      "id": "https://openalex.org/fields/22",
+      "display_name": "Engineering"
+    },
+    "domain": {
+      "id": "https://openalex.org/domains/3",
+      "display_name": "Physical Sciences"
+    }
+  },
+  "topics": [
+    {
+      "id": "https://openalex.org/T12677",
+      "display_name": "Sports Dynamics and Biomechanics",
+      "score": 0.36480000615119934,
+      "subfield": {
+        "id": "https://openalex.org/subfields/2204",
+        "display_name": "Biomedical Engineering"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/22",
+        "display_name": "Engineering"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/3",
+        "display_name": "Physical Sciences"
+      }
+    },
+    {
+      "id": "https://openalex.org/T10157",
+      "display_name": "Sports Performance and Training",
+      "score": 0.21570000052452087,
+      "subfield": {
+        "id": "https://openalex.org/subfields/2732",
+        "display_name": "Orthopedics and Sports Medicine"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/27",
+        "display_name": "Medicine"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/4",
+        "display_name": "Health Sciences"
+      }
+    },
+    {
+      "id": "https://openalex.org/T10813",
+      "display_name": "Sport Psychology and Performance",
+      "score": 0.06469999998807907,
+      "subfield": {
+        "id": "https://openalex.org/subfields/3204",
+        "display_name": "Developmental and Educational Psychology"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/32",
+        "display_name": "Psychology"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/2",
+        "display_name": "Social Sciences"
+      }
+    }
+  ],
+  "keywords": [
+    {
+      "id": "https://openalex.org/keywords/meta-analysis",
+      "display_name": "Meta-analysis",
+      "score": 0.7690758109092712
+    },
+    {
+      "id": "https://openalex.org/keywords/confidence-interval",
+      "display_name": "Confidence interval",
+      "score": 0.66554194688797
+    },
+    {
+      "id": "https://openalex.org/keywords/cinahl",
+      "display_name": "CINAHL",
+      "score": 0.635705828666687
+    },
+    {
+      "id": "https://openalex.org/keywords/scopus",
+      "display_name": "Scopus",
+      "score": 0.5035805106163025
+    },
+    {
+      "id": "https://openalex.org/keywords/sports-medicine",
+      "display_name": "Sports medicine",
+      "score": 0.4660989046096802
+    },
+    {
+      "id": "https://openalex.org/keywords/demography",
+      "display_name": "Demography",
+      "score": 0.4614625573158264
+    },
+    {
+      "id": "https://openalex.org/keywords/pooled-variance",
+      "display_name": "Pooled variance",
+      "score": 0.45729222893714905
+    },
+    {
+      "id": "https://openalex.org/keywords/medicine",
+      "display_name": "Medicine",
+      "score": 0.44333186745643616
+    },
+    {
+      "id": "https://openalex.org/keywords/physical-therapy",
+      "display_name": "Physical therapy",
+      "score": 0.4268649220466614
+    },
+    {
+      "id": "https://openalex.org/keywords/subgroup-analysis",
+      "display_name": "Subgroup analysis",
+      "score": 0.4156808853149414
+    },
+    {
+      "id": "https://openalex.org/keywords/psychology",
+      "display_name": "Psychology",
+      "score": 0.3924807608127594
+    },
+    {
+      "id": "https://openalex.org/keywords/medline",
+      "display_name": "MEDLINE",
+      "score": 0.36598342657089233
+    },
+    {
+      "id": "https://openalex.org/keywords/psychological-intervention",
+      "display_name": "Psychological intervention",
+      "score": 0.24245059490203857
+    },
+    {
+      "id": "https://openalex.org/keywords/internal-medicine",
+      "display_name": "Internal medicine",
+      "score": 0.08554360270500183
+    }
+  ],
+  "concepts": [
+    {
+      "id": "https://openalex.org/C95190672",
+      "wikidata": "https://www.wikidata.org/wiki/Q815382",
+      "display_name": "Meta-analysis",
+      "level": 2,
+      "score": 0.7690758109092712
+    },
+    {
+      "id": "https://openalex.org/C44249647",
+      "wikidata": "https://www.wikidata.org/wiki/Q208498",
+      "display_name": "Confidence interval",
+      "level": 2,
+      "score": 0.66554194688797
+    },
+    {
+      "id": "https://openalex.org/C2781145037",
+      "wikidata": "https://www.wikidata.org/wiki/Q5011772",
+      "display_name": "CINAHL",
+      "level": 3,
+      "score": 0.635705828666687
+    },
+    {
+      "id": "https://openalex.org/C83867959",
+      "wikidata": "https://www.wikidata.org/wiki/Q371467",
+      "display_name": "Scopus",
+      "level": 3,
+      "score": 0.5035805106163025
+    },
+    {
+      "id": "https://openalex.org/C43893838",
+      "wikidata": "https://www.wikidata.org/wiki/Q840545",
+      "display_name": "Sports medicine",
+      "level": 2,
+      "score": 0.4660989046096802
+    },
+    {
+      "id": "https://openalex.org/C149923435",
+      "wikidata": "https://www.wikidata.org/wiki/Q37732",
+      "display_name": "Demography",
+      "level": 1,
+      "score": 0.4614625573158264
+    },
+    {
+      "id": "https://openalex.org/C143781015",
+      "wikidata": "https://www.wikidata.org/wiki/Q7228635",
+      "display_name": "Pooled variance",
+      "level": 3,
+      "score": 0.45729222893714905
+    },
+    {
+      "id": "https://openalex.org/C71924100",
+      "wikidata": "https://www.wikidata.org/wiki/Q11190",
+      "display_name": "Medicine",
+      "level": 0,
+      "score": 0.44333186745643616
+    },
+    {
+      "id": "https://openalex.org/C1862650",
+      "wikidata": "https://www.wikidata.org/wiki/Q186005",
+      "display_name": "Physical therapy",
+      "level": 1,
+      "score": 0.4268649220466614
+    },
+    {
+      "id": "https://openalex.org/C187960798",
+      "wikidata": "https://www.wikidata.org/wiki/Q7631152",
+      "display_name": "Subgroup analysis",
+      "level": 3,
+      "score": 0.4156808853149414
+    },
+    {
+      "id": "https://openalex.org/C15744967",
+      "wikidata": "https://www.wikidata.org/wiki/Q9418",
+      "display_name": "Psychology",
+      "level": 0,
+      "score": 0.3924807608127594
+    },
+    {
+      "id": "https://openalex.org/C2779473830",
+      "wikidata": "https://www.wikidata.org/wiki/Q1540899",
+      "display_name": "MEDLINE",
+      "level": 2,
+      "score": 0.36598342657089233
+    },
+    {
+      "id": "https://openalex.org/C27415008",
+      "wikidata": "https://www.wikidata.org/wiki/Q7256382",
+      "display_name": "Psychological intervention",
+      "level": 2,
+      "score": 0.24245059490203857
+    },
+    {
+      "id": "https://openalex.org/C126322002",
+      "wikidata": "https://www.wikidata.org/wiki/Q11180",
+      "display_name": "Internal medicine",
+      "level": 1,
+      "score": 0.08554360270500183
+    },
+    {
+      "id": "https://openalex.org/C199539241",
+      "wikidata": "https://www.wikidata.org/wiki/Q7748",
+      "display_name": "Law",
+      "level": 1,
+      "score": 0.0
+    },
+    {
+      "id": "https://openalex.org/C118552586",
+      "wikidata": "https://www.wikidata.org/wiki/Q7867",
+      "display_name": "Psychiatry",
+      "level": 1,
+      "score": 0.0
+    },
+    {
+      "id": "https://openalex.org/C144024400",
+      "wikidata": "https://www.wikidata.org/wiki/Q21201",
+      "display_name": "Sociology",
+      "level": 0,
+      "score": 0.0
+    },
+    {
+      "id": "https://openalex.org/C17744445",
+      "wikidata": "https://www.wikidata.org/wiki/Q36442",
+      "display_name": "Political science",
+      "level": 0,
+      "score": 0.0
+    }
+  ],
+  "mesh": [
+    {
+      "descriptor_ui": "D000328",
+      "descriptor_name": "Adult",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000328",
+      "descriptor_name": "Adult",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000328",
+      "descriptor_name": "Adult",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D003163",
+      "descriptor_name": "Competitive Behavior",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D003163",
+      "descriptor_name": "Competitive Behavior",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D003163",
+      "descriptor_name": "Competitive Behavior",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D003430",
+      "descriptor_name": "Cross-Sectional Studies",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D003430",
+      "descriptor_name": "Cross-Sectional Studies",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D003430",
+      "descriptor_name": "Cross-Sectional Studies",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D005260",
+      "descriptor_name": "Female",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D005260",
+      "descriptor_name": "Female",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D005260",
+      "descriptor_name": "Female",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D006801",
+      "descriptor_name": "Humans",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D006801",
+      "descriptor_name": "Humans",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D006801",
+      "descriptor_name": "Humans",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D008297",
+      "descriptor_name": "Male",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D008297",
+      "descriptor_name": "Male",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D008297",
+      "descriptor_name": "Male",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D013715",
+      "descriptor_name": "Tennis",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D013715",
+      "descriptor_name": "Tennis",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D013715",
+      "descriptor_name": "Tennis",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": true
+    }
+  ],
+  "locations_count": 8,
+  "locations": [
+    {
+      "id": "doi:10.1007/s40279-022-01807-8",
+      "is_oa": false,
+      "landing_page_url": "https://doi.org/10.1007/s40279-022-01807-8",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S137994755",
+        "display_name": "Sports Medicine",
+        "issn_l": "0112-1642",
+        "issn": [
+          "0112-1642",
+          "1179-2035"
+        ],
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": true,
+        "host_organization": "https://openalex.org/P4310319900",
+        "host_organization_name": "Springer Science+Business Media",
+        "host_organization_lineage": [
+          "https://openalex.org/P4310319900",
+          "https://openalex.org/P4310319965"
+        ],
+        "host_organization_lineage_names": [
+          "Springer Science+Business Media",
+          "Springer Nature"
+        ],
+        "type": "journal"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "publishedVersion",
+      "is_accepted": true,
+      "is_published": true,
+      "raw_source_name": "Sports Medicine",
+      "raw_type": "journal-article"
+    },
+    {
+      "id": "pmid:36752978",
+      "is_oa": false,
+      "landing_page_url": "https://pubmed.ncbi.nlm.nih.gov/36752978",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4306525036",
+        "display_name": "PubMed",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I1299303238",
+        "host_organization_name": "National Institutes of Health",
+        "host_organization_lineage": [
+          "https://openalex.org/I1299303238"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "publishedVersion",
+      "is_accepted": true,
+      "is_published": true,
+      "raw_source_name": "Sports medicine (Auckland, N.Z.)",
+      "raw_type": null
+    },
+    {
+      "id": "pmh:oai:pure.rug.nl:openaire_cris_publications/cf228e47-6823-4cb7-a8a7-2df252af962d",
+      "is_oa": true,
+      "landing_page_url": "https://research.rug.nl/en/publications/cf228e47-6823-4cb7-a8a7-2df252af962d",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4306400420",
+        "display_name": "University of Groningen research database (University of Groningen / Centre for Information Technology)",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I169381384",
+        "host_organization_name": "University of Groningen",
+        "host_organization_lineage": [
+          "https://openalex.org/I169381384"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": "other-oa",
+      "license_id": "https://openalex.org/licenses/other-oa",
+      "version": "publishedVersion",
+      "is_accepted": true,
+      "is_published": true,
+      "raw_source_name": "Pluim, B M, Jansen, M G T, Williamson, S, Berry, C, Camporesi, S, Fagher, K, Heron, N, van Rensburg, D C J, Moreno-P\u00e9rez, V, Murray, A, O\u2019Connor, S R, de Oliveira, F C L, Reid, M, van Reijen, M, Saueressig, T, Schoonmade, L J, Thornton, J S, Webborn, N & Ardern, C L 2023, 'Physical Demands of Tennis Across the Different Court Surfaces, Performance Levels and Sexes : A Systematic Review with Meta-analysis', Sports Medicine, vol. 53, no. 4, pp. 807-836. https://doi.org/10.1007/s40279-022-01807-8",
+      "raw_type": "info:eu-repo/semantics/review"
+    },
+    {
+      "id": "pmh:oai:pure.qub.ac.uk/portal:openaire/25e2b6d3-42d9-4910-a648-2ee6f4e6662f",
+      "is_oa": true,
+      "landing_page_url": "https://pure.qub.ac.uk/en/publications/25e2b6d3-42d9-4910-a648-2ee6f4e6662f",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4306402319",
+        "display_name": "Research Portal (Queen's University Belfast)",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I126231945",
+        "host_organization_name": "Queen's University Belfast",
+        "host_organization_lineage": [
+          "https://openalex.org/I126231945"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": "other-oa",
+      "license_id": "https://openalex.org/licenses/other-oa",
+      "version": "acceptedVersion",
+      "is_accepted": true,
+      "is_published": false,
+      "raw_source_name": "Pluim, B M, Jansen, M G T, Williamson, S, Berry, C, Camporesi, S, Fagher, K, Heron, N, van Rensburg, D C J, Moreno-P\u00e9rez, V, Murray, A, O'Connor, S R, de Oliveira, F C L, Reid, M, van Reijen, M, Saueressig, T, Schoonmade, L J, Thornton, J S, Webborn, N & Ardern, C L 2023, 'Physical demands of tennis across the different court surfaces, performance levels, and sexes: a systematic review with meta-analysis : A Systematic Review with Meta-analysis', Sports Medicine. https://doi.org/10.1007/s40279-022-01807-8",
+      "raw_type": "info:eu-repo/semantics/review"
+    },
+    {
+      "id": "pmh:oai:eprints.keele.ac.uk:12000",
+      "is_oa": true,
+      "landing_page_url": "https://eprints.keele.ac.uk/id/eprint/12000/1/Physical%20demands%20of%20tennis_Final%20accepted%20version.pdf",
+      "pdf_url": "https://keele-repository.worktribe.com/preview/464038/Physical%20demands%20of%20tennis_Final%20accepted%20version.pdf",
+      "source": {
+        "id": "https://openalex.org/S4306402149",
+        "display_name": "Keele Research Repository (Keele University)",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I56007636",
+        "host_organization_name": "Keele University",
+        "host_organization_lineage": [
+          "https://openalex.org/I56007636"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": "cc-by",
+      "license_id": "https://openalex.org/licenses/cc-by",
+      "version": "submittedVersion",
+      "is_accepted": false,
+      "is_published": false,
+      "raw_source_name": "",
+      "raw_type": "Article"
+    },
+    {
+      "id": "pmh:oai:repository.up.ac.za:2263/89432",
+      "is_oa": true,
+      "landing_page_url": "https://repository.up.ac.za/handle/2263/89432",
+      "pdf_url": "https://repository.up.ac.za/bitstream/2263/89432/1/Pluim_Physical_2023.pdf",
+      "source": {
+        "id": "https://openalex.org/S4306401870",
+        "display_name": "UpSpace Institutional Repository (University of Pretoria)",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I69552723",
+        "host_organization_name": "University of Pretoria",
+        "host_organization_lineage": [
+          "https://openalex.org/I69552723"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "submittedVersion",
+      "is_accepted": false,
+      "is_published": false,
+      "raw_source_name": "",
+      "raw_type": "Postprint Article"
+    },
+    {
+      "id": "pmh:oai:lup.lub.lu.se:be6228aa-f21b-4105-91e2-fb898dd93cf2",
+      "is_oa": false,
+      "landing_page_url": "https://lup.lub.lu.se/record/be6228aa-f21b-4105-91e2-fb898dd93cf2",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4306400536",
+        "display_name": "Lund University Publications (Lund University)",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I187531555",
+        "host_organization_name": "Lund University",
+        "host_organization_lineage": [
+          "https://openalex.org/I187531555"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "submittedVersion",
+      "is_accepted": false,
+      "is_published": false,
+      "raw_source_name": "ISSN: 0112-1642",
+      "raw_type": "contributiontojournal/systematicreview"
+    },
+    {
+      "id": "pmh:oai:pure.rug.nl:openaire/cf228e47-6823-4cb7-a8a7-2df252af962d",
+      "is_oa": true,
+      "landing_page_url": "https://hdl.handle.net/11370/cf228e47-6823-4cb7-a8a7-2df252af962d",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4306400420",
+        "display_name": "University of Groningen research database (University of Groningen / Centre for Information Technology)",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I169381384",
+        "host_organization_name": "University of Groningen",
+        "host_organization_lineage": [
+          "https://openalex.org/I169381384"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": "other-oa",
+      "license_id": "https://openalex.org/licenses/other-oa",
+      "version": "submittedVersion",
+      "is_accepted": false,
+      "is_published": false,
+      "raw_source_name": "Pluim, B M, Jansen, M G T, Williamson, S, Berry, C, Camporesi, S, Fagher, K, Heron, N, van Rensburg, D C J, Moreno-P\u00e9rez, V, Murray, A, O\u2019Connor, S R, de Oliveira, F C L, Reid, M, van Reijen, M, Saueressig, T, Schoonmade, L J, Thornton, J S, Webborn, N & Ardern, C L 2023, 'Physical Demands of Tennis Across the Different Court Surfaces, Performance Levels and Sexes : A Systematic Review with Meta-analysis', Sports Medicine, vol. 53, no. 4, pp. 807-836. https://doi.org/10.1007/s40279-022-01807-8",
+      "raw_type": "info:eu-repo/semantics/review"
+    }
+  ],
+  "best_oa_location": {
+    "id": "pmh:oai:pure.rug.nl:openaire_cris_publications/cf228e47-6823-4cb7-a8a7-2df252af962d",
+    "is_oa": true,
+    "landing_page_url": "https://research.rug.nl/en/publications/cf228e47-6823-4cb7-a8a7-2df252af962d",
+    "pdf_url": null,
+    "source": {
+      "id": "https://openalex.org/S4306400420",
+      "display_name": "University of Groningen research database (University of Groningen / Centre for Information Technology)",
+      "issn_l": null,
+      "issn": null,
+      "is_oa": false,
+      "is_in_doaj": false,
+      "is_core": false,
+      "host_organization": "https://openalex.org/I169381384",
+      "host_organization_name": "University of Groningen",
+      "host_organization_lineage": [
+        "https://openalex.org/I169381384"
+      ],
+      "host_organization_lineage_names": [],
+      "type": "repository"
+    },
+    "license": "other-oa",
+    "license_id": "https://openalex.org/licenses/other-oa",
+    "version": "publishedVersion",
+    "is_accepted": true,
+    "is_published": true,
+    "raw_source_name": "Pluim, B M, Jansen, M G T, Williamson, S, Berry, C, Camporesi, S, Fagher, K, Heron, N, van Rensburg, D C J, Moreno-P\u00e9rez, V, Murray, A, O\u2019Connor, S R, de Oliveira, F C L, Reid, M, van Reijen, M, Saueressig, T, Schoonmade, L J, Thornton, J S, Webborn, N & Ardern, C L 2023, 'Physical Demands of Tennis Across the Different Court Surfaces, Performance Levels and Sexes : A Systematic Review with Meta-analysis', Sports Medicine, vol. 53, no. 4, pp. 807-836. https://doi.org/10.1007/s40279-022-01807-8",
+    "raw_type": "info:eu-repo/semantics/review"
+  },
+  "sustainable_development_goals": [
+    {
+      "id": "https://metadata.un.org/sdg/5",
+      "display_name": "Gender equality",
+      "score": 0.4699999988079071
+    }
+  ],
+  "awards": [],
+  "funders": [
+    {
+      "id": "https://openalex.org/F4320320357",
+      "display_name": "Queen's University Belfast",
+      "ror": "https://ror.org/00hswnk62"
+    },
+    {
+      "id": "https://openalex.org/F4320321832",
+      "display_name": "Queen's University",
+      "ror": "https://ror.org/02y72wh86"
+    }
+  ],
+  "has_content": {
+    "grobid_xml": false,
+    "pdf": false
+  },
+  "content_urls": null,
+  "referenced_works_count": 90,
+  "referenced_works": [
+    "https://openalex.org/W1481963410",
+    "https://openalex.org/W1598602811",
+    "https://openalex.org/W1983858987",
+    "https://openalex.org/W1993385799",
+    "https://openalex.org/W2014411687",
+    "https://openalex.org/W2023587445",
+    "https://openalex.org/W2045256335",
+    "https://openalex.org/W2082725472",
+    "https://openalex.org/W2092694783",
+    "https://openalex.org/W2107328434",
+    "https://openalex.org/W2111119162",
+    "https://openalex.org/W2111259645",
+    "https://openalex.org/W2112177358",
+    "https://openalex.org/W2119578990",
+    "https://openalex.org/W2121822717",
+    "https://openalex.org/W2124499500",
+    "https://openalex.org/W2125817113",
+    "https://openalex.org/W2129356619",
+    "https://openalex.org/W2133129249",
+    "https://openalex.org/W2139168999",
+    "https://openalex.org/W2139825452",
+    "https://openalex.org/W2143525071",
+    "https://openalex.org/W2150276692",
+    "https://openalex.org/W2164657108",
+    "https://openalex.org/W2171209478",
+    "https://openalex.org/W2186569194",
+    "https://openalex.org/W2291570477",
+    "https://openalex.org/W2302946690",
+    "https://openalex.org/W2328359983",
+    "https://openalex.org/W2341486223",
+    "https://openalex.org/W2347466801",
+    "https://openalex.org/W2414338986",
+    "https://openalex.org/W2464924628",
+    "https://openalex.org/W2469330645",
+    "https://openalex.org/W2471940872",
+    "https://openalex.org/W2475471808",
+    "https://openalex.org/W2554142834",
+    "https://openalex.org/W2560438049",
+    "https://openalex.org/W2567362164",
+    "https://openalex.org/W2576917530",
+    "https://openalex.org/W2613434320",
+    "https://openalex.org/W2613863017",
+    "https://openalex.org/W2653074838",
+    "https://openalex.org/W2699349460",
+    "https://openalex.org/W2716339208",
+    "https://openalex.org/W2753136465",
+    "https://openalex.org/W2765710460",
+    "https://openalex.org/W2766375282",
+    "https://openalex.org/W2767724893",
+    "https://openalex.org/W2769704477",
+    "https://openalex.org/W2772489469",
+    "https://openalex.org/W2786657691",
+    "https://openalex.org/W2799781896",
+    "https://openalex.org/W2800269223",
+    "https://openalex.org/W2804371931",
+    "https://openalex.org/W2807831458",
+    "https://openalex.org/W2884348741",
+    "https://openalex.org/W2885740122",
+    "https://openalex.org/W2894492573",
+    "https://openalex.org/W2896058136",
+    "https://openalex.org/W2899491067",
+    "https://openalex.org/W2906464177",
+    "https://openalex.org/W2927177841",
+    "https://openalex.org/W2938172562",
+    "https://openalex.org/W2964877025",
+    "https://openalex.org/W2982511588",
+    "https://openalex.org/W2982641150",
+    "https://openalex.org/W3038099782",
+    "https://openalex.org/W3043848135",
+    "https://openalex.org/W3106060387",
+    "https://openalex.org/W3123893780",
+    "https://openalex.org/W3124292078",
+    "https://openalex.org/W3135261498",
+    "https://openalex.org/W3136610714",
+    "https://openalex.org/W3168973268",
+    "https://openalex.org/W3172055031",
+    "https://openalex.org/W3173603138",
+    "https://openalex.org/W3202861356",
+    "https://openalex.org/W4214876466",
+    "https://openalex.org/W4231781903",
+    "https://openalex.org/W4240199252",
+    "https://openalex.org/W4240484632",
+    "https://openalex.org/W4281667846",
+    "https://openalex.org/W4283695319",
+    "https://openalex.org/W4289029621",
+    "https://openalex.org/W4296384872",
+    "https://openalex.org/W6721430697",
+    "https://openalex.org/W6798510520",
+    "https://openalex.org/W6823370851",
+    "https://openalex.org/W6834417365"
+  ],
+  "related_works": [
+    "https://openalex.org/W4389095033",
+    "https://openalex.org/W3140300071",
+    "https://openalex.org/W4233273178",
+    "https://openalex.org/W2152890669",
+    "https://openalex.org/W2552566180",
+    "https://openalex.org/W4380081217",
+    "https://openalex.org/W4210604288",
+    "https://openalex.org/W2018488738",
+    "https://openalex.org/W2120516750",
+    "https://openalex.org/W4309875107"
+  ],
+  "abstract_inverted_index": null,
+  "counts_by_year": [
+    {
+      "year": 2026,
+      "cited_by_count": 15
+    },
+    {
+      "year": 2025,
+      "cited_by_count": 23
+    },
+    {
+      "year": 2024,
+      "cited_by_count": 24
+    },
+    {
+      "year": 2023,
+      "cited_by_count": 8
+    },
+    {
+      "year": 2021,
+      "cited_by_count": 1
+    }
+  ],
+  "updated_date": "2026-07-06T08:01:05.025921",
+  "created_date": "2025-10-10T00:00:00"
+}

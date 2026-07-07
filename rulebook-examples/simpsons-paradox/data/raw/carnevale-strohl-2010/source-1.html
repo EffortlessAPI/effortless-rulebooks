@@ -1,0 +1,1299 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html lang="en">
+<head>
+<!-- Meta and Title info is defined in GeneralPubInfo file --> 
+<!-- General Title and Meta Info -->
+
+<!-- General Title and Meta Info -->
+
+
+
+<!-- Layout for the Meta information -->
+
+
+	<link rel="stylesheet" type="text/css" href="css/bps.css">
+<link href="/js/bootstrap/css/bootstrap.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+<script src="https://kit.fontawesome.com/57025de0a9.js" crossorigin="anonymous"></script> 
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+<!-- Include all compiled plugins (below), or include individual files as needed --> 
+   <script src="/programs/SLDS/js/jquery-3.6.0.js"></script>
+    <script src="/programs/SLDS/js/SLDSmenu.js"></script>
+	<script src="/js/bootstrap/js/bootstrap.js"></script><META http-equiv='Content-Type' content='text/html; charset=ISO-8859-1'>
+<META NAME='keywords' content='Beginning Postsecondary Students Longitudinal Study, BPS, students, families, postsecondary, education, demographic, characteristics'>
+<META NAME='description' content='The Beginning Postsecondary Students Longitudinal Study (BPS) currently surveys cohorts of first-time, beginning students at three points in time: at the end of their first year, and then three and six years after first starting in postsecondary education.'>
+<META NAME='rating' CONTENT='General'>
+<META NAME='ROBOTS' CONTENT='ALL'>
+<META NAME='DC.Title' CONTENT='Beginning Postsecondary Students Longitudinal Study (BPS) - Overview'>
+<META NAME='DC.Description' CONTENT='The Beginning Postsecondary Students Longitudinal Study (BPS) currently surveys cohorts of first-time, beginning students at three points in time: at the end of their first year, and then three and six years after first starting in postsecondary education.'>
+<META NAME='DC.Publisher' CONTENT='National Center for Education Statistics'>
+<META NAME='DC.Language' SCHEME='RFC1766' CONTENT='EN'>
+<title>Beginning Postsecondary Students Longitudinal Study (BPS) - Overview</title>
+
+<!-- Master Style sheet from root of site --> 
+
+<script type="text/javascript" src="https://www.amcharts.com/lib/3/amcharts.js"></script> 
+<script type="text/javascript" src="https://www.amcharts.com/lib/3/serial.js"></script> 
+<script type="text/javascript" src="https://www.amcharts.com/lib/3/plugins/export/export.min.js"></script>
+<link rel="stylesheet" href="https://www.amcharts.com/lib/3/plugins/export/export.css" type="text/css" media="all" />
+<script type="text/javascript" src="https://www.amcharts.com/lib/3/themes/light.js"></script> 
+
+<!-- Chart code --> 
+<script type="text/javascript">
+    //NPSAS
+var chart = AmCharts.makeChart("chartdiv", {
+    "type": "serial",
+    "theme": "light",
+    "legend": {
+        "enabled": false
+    },
+    "balloon": {
+    "enabled": false
+  },
+    "dataProvider": [{
+        "year": 1987,
+        "NPSAS:87": 1,
+        "txt1": "NPSAS:<br>87"
+    }, {
+        "year": 1990,
+        "NPSAS:90": 1,
+        "txt2": "NPSAS:<br>90"
+    }, {
+        "year": 1992,
+        "NPSAS:90": 3,
+		"txt2": "BPS:90/92"
+    }, {"year": 1993,
+        "NPSAS:93": 1,
+        "txt3": "NPSAS:93"
+    }, {"year": 1994,
+        "NPSAS:90": 5,
+        "txt2": "BPS:90/94",
+        "NPSAS:93": 3,
+        "txt3": "B&B:93/94<br>PETS"
+    }, {"year": 1996,
+        "NPSAS:96": 1,
+        "txt4": "NPSAS:96"
+    }, {"year": 1997,
+        "NPSAS:93": 5,
+        "txt3": "B&B:93/97"
+    }, {"year": 1998,
+        "NPSAS:96": 3,
+        "txt4": "BPS:96/98"
+    }, {"year": 2000,
+        "NPSAS:2000": 1,
+        "txt5": "NPSAS:2000"
+    }, {"year": 2001,
+        "NPSAS:96": 5,
+        "txt4": "BPS:96/01",
+        "NPSAS:2000": 3,
+        "txt5": "B&B:00/01"
+    }, {"year": 2003,
+        "NPSAS:93": 7,
+        "txt3": "B&B:93/03"
+    }, {"year": 2004,
+        "NPSAS:04": 1,
+        "txt6": "NPSAS:04"
+    }, {"year": 2006,
+        "NPSAS:04": 3,
+        "txt6": "BPS:04/06"
+    }, {"year": 2008,
+        "NPSAS:08": 1,
+        "txt7": "NPSAS:08"
+    }, {"year": 2009,
+        "NPSAS:08": 2,
+        "txt7": "B&B:08/09<br>PETS",
+        "NPSAS:04": 5,
+        "txt6": "BPS:04/09<br>PETS"
+    }, {"year": 2012,
+        "NPSAS:12": 1,
+        "txt8": "NPSAS:12",
+        "NPSAS:08": 4,
+        "txt7": "B&B:08/12"
+    }, {"year": 2014,
+        "NPSAS:12": 3,
+        "txt8": "BPS:12/14"
+    }, {"year": 2015,
+        "NPSAS:96": 11,
+        "txt4": "Federal Student<br>Aid Supplement<br>March 2015",
+        "NPSAS:04": 7,
+        "txt6": "Federal Student<br>Aid Supplement<br>March 2015"
+    }, {"year": 2016,
+        "NPSAS:16": 1,
+        "txt9": "NPSAS:16"
+    }, {"year": 2017,
+        "NPSAS:12": 5,
+        "txt8": "BPS:12/17<br>PETS",
+        "NPSAS:16": 3,
+        "txt9": "B&B:16/17"
+    }, {"year": 2018,
+        "NPSAS:18-AC": 1,
+        "txt10": "NPSAS:<br>18-AC",
+        "NPSAS:08": 7,
+        "txt7": "B&B:08/18"
+    }, {"year": 2020,
+        "NPSAS:20": 1,
+        "txt11": "NPSAS:20",
+        "NPSAS:16": 5,
+        "txt9": "B&B:16/20"
+    }, {"year": 2022,
+        "NPSAS:20": 3,
+        "txt11": "BPS:20/22"
+    }, {"year": 2025,
+        "NPSAS:20": 5,
+        "txt11": "BPS:20/25*"
+    }, {"year": 2026,
+        "NPSAS:16": 7,
+        "txt9": "B&B:16/26<br>(anticipated)"
+    }],
+	"valueAxes": [{
+        "axisColor": "#000000",
+        "axisThickness": 2,
+        "axisAlpha": 1,
+        "maximum": 26,
+        "minimum": 1,
+        "axisAlpha": 0,
+        "dashLength": 5,
+        "gridCount": 26,
+        "position": "left",
+        "title": "Number of years followed"
+     }],
+    "startDuration": 0.5,
+    "graphs": [{
+        "labelText": "[[txt1]]",
+        "bullet": "round",
+        "title": "NPSAS:87",
+        "valueField": "NPSAS:87",
+		"fillAlphas": 0,
+		"bulletColor": "#000000",
+		"lineColor": "#000000",
+        "fontSize": 9,
+    }, {
+        "labelText": "[[txt2]]",
+        "bullet": "round",
+        "title": "NPSAS:90",
+        "valueField": "NPSAS:90",
+		"fillAlphas": 0,
+		"bulletColor": "#7dcb29",
+		"lineColor": "#7dcb29",
+        "fontSize": 9,
+    }, {
+        "labelText": "[[txt3]]",
+        "bullet": "round",
+        "title": "NPSAS:93",
+        "valueField": "NPSAS:93",
+		"fillAlphas": 0,
+		"bulletColor": "#0086ee",
+		"lineColor": "#0086ee",
+        "fontSize": 9,
+    }, {
+        "labelText": "[[txt4]]",
+        "bullet": "round",
+        "title": "NPSAS:96",
+        "valueField": "NPSAS:96",
+		"fillAlphas": 0,
+		"bulletColor": "#7dcb29",
+		"lineColor": "#7dcb29",
+        "fontSize": 9,
+    }, {
+        "labelText": "[[txt5]]",
+        "bullet": "round",
+        "title": "NPSAS:2000",
+        "valueField": "NPSAS:2000",
+		"fillAlphas": 0,
+		"bulletColor": "#0086ee",
+		"lineColor": "#0086ee",
+        "fontSize": 9,
+    }, {
+        "labelText": "[[txt6]]",
+        "bullet": "round",
+        "title": "NPSAS:04",
+        "valueField": "NPSAS:04",
+		"fillAlphas": 0,
+		"bulletColor": "#7dcb29",
+		"lineColor": "#7dcb29",
+        "fontSize": 9,
+    }, {
+        "labelText": "[[txt7]]",
+        "bullet": "round",
+        "title": "NPSAS:08",
+        "valueField": "NPSAS:08",
+		"fillAlphas": 0,
+		"bulletColor": "#0086ee",
+		"lineColor": "#0086ee",
+        "fontSize": 9,
+    }, {
+        "labelText": "[[txt8]]",
+        "bullet": "round",
+        "title": "NPSAS:12",
+        "valueField": "NPSAS:12",
+		"fillAlphas": 0,
+		"bulletColor": "#7dcb29",
+		"lineColor": "#7dcb29",
+        "fontSize": 9,
+    }, {
+        "labelText": "[[txt9]]",
+        "bullet": "round",
+        "title": "NPSAS:16",
+        "valueField": "NPSAS:16",
+		"fillAlphas": 0,
+		"bulletColor": "#0086ee",
+		"lineColor": "#0086ee",
+        "fontSize": 9,
+    }, {
+        "labelText": "[[txt10]]",
+        "bullet": "round",
+        "title": "NPSAS:18-AC",
+        "valueField": "NPSAS:18-AC",
+		"fillAlphas": 0,
+		"bulletColor": "#000000",
+		"lineColor": "#000000",
+        "fontSize": 9,
+    }, {
+        "labelText": "[[txt11]]",
+        "bullet": "round",
+        "title": "NPSAS:20",
+        "valueField": "NPSAS:20",
+		"fillAlphas": 0,
+		"bulletColor": "#7dcb29",
+		"lineColor": "#7dcb29",
+        "fontSize": 9,
+    },],
+    "chartCursor": {
+        "cursorAlpha": 0,
+        "zoomable": false
+    },
+    "categoryField": "year",
+    "categoryAxis": {
+        "gridPosition": "start",
+        "axisAlpha": 0,
+        "fillAlpha": 0.05,
+        "fillColor": "#000000",
+        "gridAlpha": 0,
+        "position": "bottom",
+        "fontSize": 9
+    },
+    "export": {
+    	"enabled": false,
+        "position": "bottom-right"
+     }
+});
+    //BPS
+var chart = AmCharts.makeChart("bpsdiv", {
+    "type": "serial",
+    "theme": "light",
+    "legend": {
+        "enabled": false
+    },
+    "balloon": {
+        "enabled": false
+    },
+    "dataProvider": [{
+        "year": 1987,
+        "NPSAS:87": 1,
+        "txt1": "NPSAS:<br>87"
+    }, {
+        "year": 1990,
+        "NPSAS:90": 1,
+        "txt2": "NPSAS:<br>90"
+    }, {
+        "year": 1992,
+        "NPSAS:90": 3,
+        "txt2": "BPS:90/92"
+    }, {
+        "year": 1993,
+        "NPSAS:93": 1,
+        "txt3": "NPSAS:93"
+    }, {
+        "year": 1994,
+        "NPSAS:90": 5,
+        "txt2": "BPS:90/94"
+    }, {
+        "year": 1996,
+        "NPSAS:96": 1,
+        "txt4": "NPSAS:96"
+    }, {
+        "year": 2000,
+        "NPSAS:2000": 1,
+        "txt5": "NPSAS:2000"
+    }, {
+        "year": 2001,
+        "NPSAS:96": 5,
+        "txt4": "BPS:96/01"
+    }, {
+        "year": 2004,
+        "NPSAS:04": 1,
+        "txt6": "NPSAS:04"
+    }, {
+        "year": 2006,
+        "NPSAS:04": 3,
+        "txt6": "BPS:04/06"
+    }, {
+        "year": 2008,
+        "NPSAS:08": 1,
+        "txt7": "NPSAS:08"
+    }, {
+        "year": 2009,
+        "NPSAS:04": 5,
+        "txt6": "BPS:04/09<br>PETS"
+    }, {
+        "year": 2012,
+        "NPSAS:12": 1,
+        "txt8": "NPSAS:12"
+    }, {
+        "year": 2014,
+        "NPSAS:12": 3,
+        "txt8": "BPS:12/14"
+    }, {
+        "year": 2015,
+        "NPSAS:96": 11,
+        "txt4": "Federal Student<br>Aid Supplement<br>March 2015",
+        "NPSAS:04": 7,
+        "txt6": "Federal Student<br>Aid Supplement<br>March 2015"
+    }, {
+        "year": 2016,
+        "NPSAS:16": 1,
+        "txt9": "NPSAS:16"
+    }, {
+        "year": 2017,
+        "NPSAS:12": 5,
+        "txt8": "BPS:12/17<br>PETS"
+    }, {
+        "year": 2018,
+        "NPSAS:18-AC": 1,
+        "txt10": "NPSAS:<br>18-AC"
+    }, {
+        "year": 2020,
+        "NPSAS:20": 1,
+        "txt11": "NPSAS:20"
+    }, {
+        "year": 2022,
+        "NPSAS:20": 3,
+        "txt11": "BPS:20/22"
+    }, {
+        "year": 2025,
+        "NPSAS:20": 5,
+        "txt11": "BPS:20/25*"
+    }],
+    "valueAxes": [{
+        "axisColor": "#000000",
+        "axisThickness": 2,
+        "axisAlpha": 1,
+        "maximum": 26,
+        "minimum": 1,
+        "axisAlpha": 0,
+        "dashLength": 5,
+        "gridCount": 26,
+        "position": "left",
+        "title": "Number of years followed"
+    }],
+    "startDuration": 0.5,
+    "graphs": [{
+        "labelText": "[[txt1]]",
+        "bullet": "round",
+        "title": "NPSAS:87",
+        "valueField": "NPSAS:87",
+        "fillAlphas": 0,
+        "bulletColor": "#000000",
+        "lineColor": "#000000",
+        "fontSize": 9,
+    }, {
+        "labelText": "[[txt2]]",
+        "bullet": "round",
+        "title": "NPSAS:90",
+        "valueField": "NPSAS:90",
+        "fillAlphas": 0,
+        "bulletColor": "#7dcb29",
+        "lineColor": "#7dcb29",
+        "fontSize": 9,
+    }, {
+        "labelText": "[[txt3]]",
+        "bullet": "round",
+        "title": "NPSAS:93",
+        "valueField": "NPSAS:93",
+        "fillAlphas": 0,
+        "bulletColor": "#000000",
+        "lineColor": "#000000",
+        "fontSize": 9,
+    }, {
+        "labelText": "[[txt4]]",
+        "bullet": "round",
+        "title": "NPSAS:96",
+        "valueField": "NPSAS:96",
+        "fillAlphas": 0,
+        "bulletColor": "#7dcb29",
+        "lineColor": "#7dcb29",
+        "fontSize": 9,
+    }, {
+        "labelText": "[[txt5]]",
+        "bullet": "round",
+        "title": "NPSAS:2000",
+        "valueField": "NPSAS:2000",
+        "fillAlphas": 0,
+        "bulletColor": "#000000",
+        "lineColor": "#000000",
+        "fontSize": 9,
+    }, {
+        "labelText": "[[txt6]]",
+        "bullet": "round",
+        "title": "NPSAS:04",
+        "valueField": "NPSAS:04",
+        "fillAlphas": 0,
+        "bulletColor": "#7dcb29",
+        "lineColor": "#7dcb29",
+        "fontSize": 9,
+    }, {
+        "labelText": "[[txt7]]",
+        "bullet": "round",
+        "title": "NPSAS:08",
+        "valueField": "NPSAS:08",
+        "fillAlphas": 0,
+        "bulletColor": "#000000",
+        "lineColor": "#000000",
+        "fontSize": 9,
+    }, {
+        "labelText": "[[txt8]]",
+        "bullet": "round",
+        "title": "NPSAS:12",
+        "valueField": "NPSAS:12",
+        "fillAlphas": 0,
+        "bulletColor": "#7dcb29",
+        "lineColor": "#7dcb29",
+        "fontSize": 9,
+    }, {
+        "labelText": "[[txt9]]",
+        "bullet": "round",
+        "title": "NPSAS:16",
+        "valueField": "NPSAS:16",
+        "fillAlphas": 0,
+        "bulletColor": "#000000",
+        "lineColor": "#000000",
+        "fontSize": 9,
+    }, {
+        "labelText": "[[txt10]]",
+        "bullet": "round",
+        "title": "NPSAS:18-AC",
+        "valueField": "NPSAS:18-AC",
+        "fillAlphas": 0,
+        "bulletColor": "#000000",
+        "lineColor": "#000000",
+        "fontSize": 9,
+    }, {
+        "labelText": "[[txt11]]",
+        "bullet": "round",
+        "title": "NPSAS:20",
+        "valueField": "NPSAS:20",
+        "fillAlphas": 0,
+        "bulletColor": "#7dcb29",
+        "lineColor": "#7dcb29",
+        "fontSize": 9,
+    }, ],
+    "chartCursor": {
+        "cursorAlpha": 0,
+        "zoomable": false
+    },
+    "categoryField": "year",
+    "categoryAxis": {
+        "gridPosition": "start",
+        "axisAlpha": 0,
+        "fillAlpha": 0.05,
+        "fillColor": "#000000",
+        "gridAlpha": 0,
+        "position": "bottom",
+        "fontSize": 9
+    },
+    "export": {
+        "enabled": false,
+        "position": "bottom-right"
+    }
+});
+    //B&B
+var chart = AmCharts.makeChart("bbdiv", {
+    "type": "serial",
+    "theme": "light",
+    "legend": {
+        "enabled": false
+    },
+    "balloon": {
+        "enabled": false
+    },
+    "dataProvider": [{
+        "year": 1987,
+        "NPSAS:87": 1,
+        "txt1": "NPSAS:<br>87"
+
+    }, {
+        "year": 1990,
+        "NPSAS:90": 1,
+        "txt2": "NPSAS:<br>90"
+    }, {
+        "year": 1993,
+        "NPSAS:93": 1,
+        "txt3": "NPSAS:93"
+    }, {
+        "year": 1994,
+        "NPSAS:93": 3,
+        "txt3": "B&B:93/94<br>PETS"
+    }, {
+        "year": 1996,
+        "NPSAS:96": 1,
+        "txt4": "NPSAS:96"
+    }, {
+        "year": 1997,
+        "NPSAS:93": 5,
+        "txt3": "B&B:93/97"
+    }, {
+        "year": 2000,
+        "NPSAS:2000": 1,
+        "txt5": "NPSAS:2000"
+    }, {
+        "year": 2001,
+        "NPSAS:2000": 3,
+        "txt5": "B&B:00/01"
+    }, {
+        "year": 2003,
+        "NPSAS:93": 7,
+        "txt3": "B&B:93/03"
+    }, {
+        "year": 2004,
+        "NPSAS:04": 1,
+        "txt6": "NPSAS:04"
+    }, {
+        "year": 2008,
+        "NPSAS:08": 1,
+        "txt7": "NPSAS:08"
+    }, {
+        "year": 2009,
+        "NPSAS:08": 2,
+        "txt7": "B&B:08/09<br>PETS"
+    }, {
+        "year": 2012,
+        "NPSAS:12": 1,
+        "txt8": "NPSAS:12",
+        "NPSAS:08": 4,
+        "txt7": "B&B:08/12"
+    },  {
+        "year": 2016,
+        "NPSAS:16": 1,
+        "txt9": "NPSAS:16"
+    }, {
+        "year": 2017,
+        "NPSAS:16": 3,
+        "txt9": "B&B:16/17"
+    }, {
+        "year": 2018,
+        "NPSAS:18-AC": 1,
+        "txt10": "NPSAS:<br>18-AC",
+        "NPSAS:08": 7,
+        "txt7": "B&B:08/18"
+    }, {
+        "year": 2020,
+        "NPSAS:20": 1,
+        "txt11": "NPSAS:20",
+        "NPSAS:16": 5,
+        "txt9": "B&B:16/20"
+    }, {
+        "year": 2026,
+        "NPSAS:16": 7,
+        "txt9": "B&B:16/26<br>(anticipated)"
+    }],
+    "valueAxes": [{
+        "axisColor": "#000000",
+        "axisThickness": 2,
+        "axisAlpha": 1,
+        "maximum": 26,
+        "minimum": 1,
+        "axisAlpha": 0,
+        "dashLength": 5,
+        "gridCount": 26,
+        "position": "left",
+        "title": "Number of years followed"
+    }],
+    "startDuration": 0.5,
+    "graphs": [{
+        "labelText": "[[txt1]]",
+        "bullet": "round",
+        "title": "NPSAS:87",
+        "valueField": "NPSAS:87",
+        "fillAlphas": 0,
+        "bulletColor": "#000000",
+        "lineColor": "#000000",
+        "fontSize": 9,
+    }, {
+        "labelText": "[[txt2]]",
+        "bullet": "round",
+        "title": "NPSAS:90",
+        "valueField": "NPSAS:90",
+        "fillAlphas": 0,
+        "bulletColor": "#000000",
+        "lineColor": "#000000",
+        "fontSize": 9,
+    }, {
+        "labelText": "[[txt3]]",
+        "bullet": "round",
+        "title": "NPSAS:93",
+        "valueField": "NPSAS:93",
+        "fillAlphas": 0,
+        "bulletColor": "#0086ee",
+        "lineColor": "#0086ee",
+        "fontSize": 9,
+    }, {
+        "labelText": "[[txt4]]",
+        "bullet": "round",
+        "title": "NPSAS:96",
+        "valueField": "NPSAS:96",
+        "fillAlphas": 0,
+        "bulletColor": "#000000",
+        "lineColor": "#000000",
+        "fontSize": 9,
+    }, {
+        "labelText": "[[txt5]]",
+        "bullet": "round",
+        "title": "NPSAS:2000",
+        "valueField": "NPSAS:2000",
+        "fillAlphas": 0,
+        "bulletColor": "#0086ee",
+        "lineColor": "#0086ee",
+        "fontSize": 9,
+    }, {
+        "labelText": "[[txt6]]",
+        "bullet": "round",
+        "title": "NPSAS:04",
+        "valueField": "NPSAS:04",
+        "fillAlphas": 0,
+        "bulletColor": "#000000",
+        "lineColor": "#000000",
+        "fontSize": 9,
+    }, {
+        "labelText": "[[txt7]]",
+        "bullet": "round",
+        "title": "NPSAS:08",
+        "valueField": "NPSAS:08",
+        "fillAlphas": 0,
+        "bulletColor": "#0086ee",
+        "lineColor": "#0086ee",
+        "fontSize": 9,
+    }, {
+        "labelText": "[[txt8]]",
+        "bullet": "round",
+        "title": "NPSAS:12",
+        "valueField": "NPSAS:12",
+        "fillAlphas": 0,
+        "bulletColor": "#000000",
+        "lineColor": "#000000",
+        "fontSize": 9,
+    }, {
+        "labelText": "[[txt9]]",
+        "bullet": "round",
+        "title": "NPSAS:16",
+        "valueField": "NPSAS:16",
+        "fillAlphas": 0,
+        "bulletColor": "#0086ee",
+        "lineColor": "#0086ee",
+        "fontSize": 9,
+    }, {
+        "labelText": "[[txt10]]",
+        "bullet": "round",
+        "title": "NPSAS:18-AC",
+        "valueField": "NPSAS:18-AC",
+        "fillAlphas": 0,
+        "bulletColor": "#000000",
+        "lineColor": "#000000",
+        "fontSize": 9,
+    }, {
+        "labelText": "[[txt11]]",
+        "bullet": "round",
+        "title": "NPSAS:20",
+        "valueField": "NPSAS:20",
+        "fillAlphas": 0,
+        "bulletColor": "#0086ee",
+        "lineColor": "#0086ee",
+        "fontSize": 9,
+    }, ],
+    "chartCursor": {
+        "cursorAlpha": 0,
+        "zoomable": false
+    },
+    "categoryField": "year",
+    "categoryAxis": {
+        "gridPosition": "start",
+        "axisAlpha": 0,
+        "fillAlpha": 0.05,
+        "fillColor": "#000000",
+        "gridAlpha": 0,
+        "position": "bottom",
+        "fontSize": 9
+    },
+    "export": {
+        "enabled": false,
+        "position": "bottom-right"
+    }
+});
+//PETS
+var chart = AmCharts.makeChart("petsdiv", {
+    "type": "serial",
+    "theme": "light",
+    "legend": {
+        "enabled": false
+    },
+    "balloon": {
+        "enabled": false
+    },
+    "dataProvider": [{
+        "year": 1987,
+        "NPSAS:87": 1,
+        "txt1": "NPSAS:<br>87"
+    }, {
+        "year": 1990,
+        "NPSAS:90": 1,
+        "txt2": "NPSAS:<br>90"
+    }, {
+        "year": 1993,
+        "NPSAS:93": 1,
+        "txt3": "NPSAS:93"
+    }, {
+        "year": 1994,
+        "NPSAS:93": 3,
+        "txt3": "B&B:93/94<br>PETS"
+    }, {
+    //    "year": 1996,
+    //    "NPSAS:96": 1,
+    //    "txt4": "NPSAS:96"
+    //}, {
+        "year": 2000,
+        "NPSAS:2000": 1,
+        "txt5": "NPSAS:2000"
+    }, {
+        "year": 2004,
+        "NPSAS:04": 1,
+        "txt6": "NPSAS:04"
+    }, {
+        "year": 2008,
+        "NPSAS:08": 1,
+        "txt7": "NPSAS:08"
+    }, {
+        "year": 2009,
+        "NPSAS:08": 2,
+        "txt7": "B&B:08/09<br>PETS",
+        "NPSAS:04": 5,
+        "txt6": "BPS:04/09<br>PETS"
+    }, {
+        "year": 2012,
+        "NPSAS:12": 1,
+        "txt8": "NPSAS:12"
+    },  {
+        "year": 2015,
+        //"NPSAS:96": 11,
+        //"txt4": "Federal Student<br>Aid Supplement<br>March 2015",
+        "NPSAS:04": 7,
+        "txt6": "Federal Student<br>Aid Supplement<br>March 2015"
+    }, {
+        "year": 2016,
+        "NPSAS:16": 1,
+        "txt9": "NPSAS:16"
+    }, {
+        "year": 2017,
+        "NPSAS:12": 5,
+        "txt8": "BPS:12/17<br>PETS"
+    }, {
+        "year": 2018,
+        "NPSAS:18-AC": 1,
+        "txt10": "NPSAS:<br>18-AC"
+    }, {
+        "year": 2020,
+        "NPSAS:20": 1,
+        "txt11": "NPSAS:20"
+    }],
+    "valueAxes": [{
+        "axisColor": "#000000",
+        "axisThickness": 2,
+        "axisAlpha": 1,
+        "maximum": 26,
+        "minimum": 1,
+        "axisAlpha": 0,
+        "dashLength": 5,
+        "gridCount": 26,
+        "position": "left",
+        "title": "Number of years followed"
+    }],
+    "startDuration": 0.5,
+    "graphs": [{
+        "labelText": "[[txt1]]",
+        "bullet": "round",
+        "title": "NPSAS:87",
+        "valueField": "NPSAS:87",
+        "fillAlphas": 0,
+        "bulletColor": "#000000",
+        "lineColor": "#000000",
+        "fontSize": 9,
+    }, {
+        "labelText": "[[txt2]]",
+        "bullet": "round",
+        "title": "NPSAS:90",
+        "valueField": "NPSAS:90",
+        "fillAlphas": 0,
+        "bulletColor": "#7dcb29",
+        "lineColor": "#7dcb29",
+        "fontSize": 9,
+    }, {
+        "labelText": "[[txt3]]",
+        "bullet": "round",
+        "title": "NPSAS:93",
+        "valueField": "NPSAS:93",
+        "fillAlphas": 0,
+        "bulletColor": "#0086ee",
+        "lineColor": "#0086ee",
+        "fontSize": 9,
+    }, {
+        "labelText": "[[txt4]]",
+        "bullet": "round",
+        "title": "NPSAS:96",
+        "valueField": "NPSAS:96",
+        "fillAlphas": 0,
+        "bulletColor": "#7dcb29",
+        "lineColor": "#7dcb29",
+        "fontSize": 9,
+    }, {
+        "labelText": "[[txt5]]",
+        "bullet": "round",
+        "title": "NPSAS:2000",
+        "valueField": "NPSAS:2000",
+        "fillAlphas": 0,
+        "bulletColor": "#0086ee",
+        "lineColor": "#0086ee",
+        "fontSize": 9,
+    }, {
+        "labelText": "[[txt6]]",
+        "bullet": "round",
+        "title": "NPSAS:04",
+        "valueField": "NPSAS:04",
+        "fillAlphas": 0,
+        "bulletColor": "#7dcb29",
+        "lineColor": "#7dcb29",
+        "fontSize": 9,
+    }, {
+        "labelText": "[[txt7]]",
+        "bullet": "round",
+        "title": "NPSAS:08",
+        "valueField": "NPSAS:08",
+        "fillAlphas": 0,
+        "bulletColor": "#0086ee",
+        "lineColor": "#0086ee",
+        "fontSize": 9,
+    }, {
+        "labelText": "[[txt8]]",
+        "bullet": "round",
+        "title": "NPSAS:12",
+        "valueField": "NPSAS:12",
+        "fillAlphas": 0,
+        "bulletColor": "#7dcb29",
+        "lineColor": "#7dcb29",
+        "fontSize": 9,
+    }, {
+        "labelText": "[[txt9]]",
+        "bullet": "round",
+        "title": "NPSAS:16",
+        "valueField": "NPSAS:16",
+        "fillAlphas": 0,
+        "bulletColor": "#0086ee",
+        "lineColor": "#0086ee",
+        "fontSize": 9,
+    }, {
+        "labelText": "[[txt10]]",
+        "bullet": "round",
+        "title": "NPSAS:18-AC",
+        "valueField": "NPSAS:18-AC",
+        "fillAlphas": 0,
+        "bulletColor": "#000000",
+        "lineColor": "#000000",
+        "fontSize": 9,
+    }, {
+        "labelText": "[[txt11]]",
+        "bullet": "round",
+        "title": "NPSAS:20",
+        "valueField": "NPSAS:20",
+        "fillAlphas": 0,
+        "bulletColor": "#0086ee",
+        "lineColor": "#0086ee",
+        "fontSize": 9,
+    }, ],
+    "chartCursor": {
+        "cursorAlpha": 0,
+        "zoomable": false
+    },
+    "categoryField": "year",
+    "categoryAxis": {
+        "gridPosition": "start",
+        "axisAlpha": 0,
+        "fillAlpha": 0.05,
+        "fillColor": "#000000",
+        "gridAlpha": 0,
+        "position": "bottom",
+        "fontSize": 9
+    },
+    "export": {
+        "enabled": false,
+        "position": "bottom-right"
+    }
+});
+
+  </script>
+<style type="text/css">
+#chartdiv, #bpsdiv, #bbdiv, #petsdiv {
+    width: 100%;
+    height: 350px;
+}
+.amcharts-chart-div a {
+    display: none !important;
+}
+</style>
+<style>
+.breadcrumb {
+    color: #576F7F;
+    font-size: 1em;
+    font-weight: bold;
+    background: none;
+}
+.breadcrumb a {
+    text-decoration: none;
+    font-weight: normal;
+}
+.breadcrumb a:after {
+    font-family: "Font Awesome 6 Pro";
+    content: "\f054";
+    margin: auto 6px;
+}
+.breadcrumb a:hover {
+    text-decoration: underline;
+}
+</style>
+</head>
+
+<!-- Main NCES Header  -->
+<!-- Start Header -->
+
+<div class="headContents">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+	<link rel="icon" type="image/png" sizes="32x32" href="/images/favicons/IESfavicon_32px.png">
+	<link rel="icon" type="image/png" sizes="128x128" href="/images/favicons/IESfavicon_128px.png">
+	<link rel="icon" type="image/png" sizes="152x152" href="/images/favicons/IESfavicon_152px.png">
+	<link rel="icon" type="image/png" sizes="167x167" href="/images/favicons/IESfavicon_167px.png">
+	<link rel="icon" type="image/png" sizes="180x180" href="/images/favicons/IESfavicon_180px.png">
+	<link rel="icon" type="image/png" sizes="192x192" href="/images/favicons/IESfavicon_192px.png">
+	<link rel="icon" type="image/png" sizes="196x196" href="/images/favicons/IESfavicon_196px.png">
+	<link href='//fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
+	<link href="/css/main.css" rel="stylesheet" type="text/css" />
+	<link href="/css/IES_Core_0004.css" rel="stylesheet" type="text/css" />
+	<link href="/css/IES_Mobile_0004.css" rel="stylesheet" type="text/css" />
+</div>
+
+	<!-- Google Tag Manager (GTM, the new way to manage tags and analytics) -->
+	<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+		new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+		j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+		'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+		})(window,document,'script','dataLayer','GTM-KLQ8LQNJ');
+	</script>
+</div>
+
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KLQ8LQNJ"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+
+<script type="text/javascript" src="/js/customevents.js"></script>
+
+<script type="text/javascript" src="/js/jquery-3.5.1.min.js"></script>
+<script type="text/javascript">
+	//<![CDATA[
+	var $$i = jQuery.noConflict(true);
+	//]]>
+</script>
+<script type="text/javascript" src="/js/hfsNav.js?v=02"></script>
+<script type="text/javascript" src="/js/nav_0005.js"></script>
+<script type="text/javascript" src="/js/importBlogPosts.js"></script>
+<script type="text/javascript" src="/js/main.js"></script>
+
+
+<link href="https://ies.ed.gov/sites/default/files/assets/legacy-override-nces.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="https://ies.ed.gov/sites/default/files/assets/ies-header-footer-elements.js"></script>
+
+<div class="nces">
+
+<ies-header></ies-header>
+
+<!-- End Header -->
+
+<!-- Start Body -->
+
+<!-- Body Tag  -->
+<body>
+<div role="main">
+  <div class="MainContent"> 
+    
+    
+    <!-- Banner Goes Here  -->
+    <div class="row bpshdr">
+      <div class="breadcrumb"> <a href="https://nces.ed.gov">Home</a> <a href="https://nces.ed.gov/surveys">Surveys &amp; Programs</a> <a href="https://nces.ed.gov/surveys/lsb/#postsecondary-studies">LSB</a> BPS </div>
+      <div class="col-md-6"><a href="index.asp" style="color: #575757 !important; text-decoration: none !important;"><img src="images/bps_logo.png" alt="Beginning Postsecondary Students Longitudinal Study (BPS)" />
+        <div style="padding-top: 10px;">Beginning Postsecondary<br />
+          Students (BPS)</div>
+        </a> </div>
+      <div class="col-md-6 pull-right">
+        <form action="/search/" method="GET" id="form1" name="form1" class="pull-right">
+          <input type=hidden name="output" value="xml_no_dtd">
+          <input type=hidden name="client" value="nces">
+          <input type=hidden name="site" value="nces">
+          <input type=hidden name="sitesearch" value="nces.ed.gov/surveys/bps/">
+          <input type="text" name="q" id="npsSiteSearch" class="form-control" value="Search BPS" onClick="this.value=''" />
+          <input name="Submit" class="btn" type="submit" value="Go" />
+        </form>
+      </div>
+    </div>
+    <p><strong>The Beginning Postsecondary Students Longitudinal Study (BPS)</strong> currently surveys cohorts of first-time, beginning students at three points in time: at the end of their first year, and then three and six years after first starting in postsecondary education. </p>
+    
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="bpsM container">
+      <nav class="navbar">
+        <div class="container-fluid"> 
+          <!-- Brand and toggle get grouped for better mobile display -->
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button>
+          </div>
+          
+          <!-- Collect the nav links, forms, and other content for toggling -->
+          
+          <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+              <li> <a href="index.asp" role="button" class="bps-selected" aria-expanded="false">Home</a> </li>
+            </ul>
+            <ul class="nav navbar-nav">
+              <li class="dropdown1"> <a href="#" class="dropdown-toggle" data-hover="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Survey Design</a>
+                <ul class="dropdown-menu mega-dropdown-menu">
+                  <li> <a href="about.asp">Survey Design and Methodology </a> </li>
+                </ul>
+              </li>
+            </ul>
+            <ul class="nav navbar-nav">
+              <li> <a href="datapractice.asp" role="button" aria-expanded="false">Data in Practice</a> </li>
+            </ul>
+            <ul class="nav navbar-nav">
+              <li class="dropdown1"> <a href="availabledata.asp" class="dropdown-toggle" data-hover="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Available Data</a>
+                <ul class="dropdown-menu mega-dropdown-menu">
+                  <li> <a href="/datalab">DataLab</a> <a href="/datalab/TablesLibrary">DataLab Tables Library</a> <a href="tablesaddl.asp">User-Requested Tables</a> </li>
+                </ul>
+              </li>
+            </ul>
+            <ul class="nav navbar-nav">
+              <li> <a href="/pubsearch/getpubcats.asp?sid=014" role="button" aria-expanded="false">Publications</a> </li>
+            </ul>
+            <ul class="nav navbar-nav">
+              <li class="dropdown1"> <a href="#" class="dropdown-toggle" data-hover="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Resources</a>
+                <ul class="dropdown-menu mega-dropdown-menu">
+                  <li> <a href="https://nces.ed.gov/bibliography/?bps">Bibliography</a> <a href="/training/datauser">Distance Learning Training Module</a> </li>
+                </ul>
+              </li>
+            </ul>
+            <ul class="nav navbar-nav">
+              <li> <a href="contact.asp" role="button" aria-expanded="false">Contact</a> </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+    </div>
+    
+    <!-- Navigation Starts here  -->
+    
+    <div id="copy"> 
+      <!-- Page Text Starts Here  --> 
+      <!--<h1>Overview</h1>--> 
+      
+      <!--Carousel Wrapper-->
+      <div id="carousel-example-2" class="carousel slide" data-ride="carousel" data-interval="20000"> 
+        
+        <!--Slides-->
+        <div class="carousel-inner">
+          <div class="item active">
+            <div class="carousel-caption"> <a href="/pubsearch/pubsinfo.asp?pubid=2019401">What types of awards are attained at any institution by beginning students who first enroll in 4-year institutions?</a><br />
+              <span>59% of 2011&ndash;12 beginning college students who first enrolled at 4-year institutions had completed a bachelor's degree at any institution by 2017, compared to 6% who completed an associate's degree, and 2% who had completed a certificate.</span> </div>
+          </div>
+          <div class="item">
+            <div class="carousel-caption"> <a href="/pubsearch/pubsinfo.asp?pubid=2019401">What percentage of beginning students complete a certificate at their first institution within 6 years?</a><br />
+              <span>6% of 2011&ndash;12 beginning college students attained a certificate at their first institution by 2017.</span> </div>
+          </div>
+          <div class="item">
+            <div class="carousel-caption"> <a href="/pubsearch/pubsinfo.asp?pubid=2019401">What types of awards are attained at their first institution by beginning students who first enroll in 4-year institutions?</a><br />
+              <span>51% of 2011&ndash;12 beginning college students who first enrolled at 4-year institutions had completed a bachelor's degree at their first institution by 2017, compared to 4% who completed an associate's degree, and 1% who had completed a certificate.</span> </div>
+          </div>
+          <div class="item">
+            <div class="carousel-caption"> <a href="/pubsearch/pubsinfo.asp?pubid=2019401">What percentage of beginning students complete a bachelor's degree at any institution within 6 years?</a><br />
+              <span>37% of 2011&ndash;12 beginning college students attained a bachelor's degree at any institution by 2017.</span> </div>
+          </div>
+          <div class="item">
+            <div class="carousel-caption"> <a href="/pubsearch/pubsinfo.asp?pubid=2019401">What percentage of beginning students complete an associate's degree at their first institution within 6 years?</a><br />
+              <span>11% of 2011&ndash;12 beginning college students attained an associate's degree at their first institution by 2017.</span> </div>
+          </div>
+          <div class="item">
+            <div class="carousel-caption"> <a href="/pubsearch/pubsinfo.asp?pubid=2019401">What percentage of beginning students complete a certificate at any institution within 6 years?</a><br />
+              <span>9% of 2011&ndash;12 beginning college students attained a certificate at any institution by 2017.</span> </div>
+          </div>
+          <div class="item">
+            <div class="carousel-caption"> <a href="/pubsearch/pubsinfo.asp?pubid=2019401">What types of awards are attained at any institution by beginning students who first enroll in public 2-year institutions?</a><br />
+              <span>8% of 2011&ndash;12 beginning college students who first enrolled at public 2-year institutions had completed a certificate at any institution by 2017, compared to 18% who completed an associate's degree, and 13% who had completed a bachelor's degree.</span> </div>
+          </div>
+          <div class="item">
+            <div class="carousel-caption"> <a href="/pubsearch/pubsinfo.asp?pubid=2019401">What percentage of beginning students complete an associate's degree at any institution within 6 years?</a><br />
+              <span>11% of 2011&ndash;12 beginning college students attained an associate's degree at any institution by 2017.</span> </div>
+          </div>
+          <div class="item">
+            <div class="carousel-caption"> <a href="/pubsearch/pubsinfo.asp?pubid=2019401">What types of awards are attained at their first institution by beginning students who first enroll in public 2-year institutions?</a><br />
+              <span>5% of 2011&ndash;12 beginning college students who first enrolled at public 2-year institutions had completed a certificate at their first institution by 2017, compared to 22% who completed an associate's degree.</span> </div>
+          </div>
+          <div class="item">
+            <div class="carousel-caption"> <a href="/pubsearch/pubsinfo.asp?pubid=2019401">What percentage of beginning students complete a bachelor's degree at their first institution within 6 years?</a><br />
+              <span>27% of 2011&ndash;12 beginning college students attained a bachelor's degree at their first institution by 2017.</span> </div>
+          </div>
+        </div>
+        <!--/.Slides--> 
+        <!--Controls--> 
+        <a class="carousel-control-prev" data-target="#carousel-example-2" role="button" data-slide="prev"> <i class="fas fa-chevron-left"></i> <span class="sr-only">Previous</span> </a> <a class="carousel-control-next" data-target="#carousel-example-2" role="button" data-slide="next"> <i class="fas fa-chevron-right"></i> <span class="sr-only">Next</span> </a> </div>
+      <!--/.Carousel Wrapper--> 
+      <script src="inc/bpsQuestions_inc.js" language="javascript"></script>
+      <div id="usage_agreement" style='display:none;' >
+        <div align="right"><a href="javascript:PrintAgreement('usage_agreement','0','0')" style="color:#2f4e8e; font-size:11px">Print Page</a></div>
+        <br />
+        <div align="center">
+          <p style="border-bottom:#2f4e8e 5px solid; color:#2f4e8e"><strong>NCES DATA&nbsp;USAGE&nbsp;AGREEMENT</strong></p>
+        </div>
+        <p>Under law, public use data collected and distributed by the National Center for Education Statistics (NCES) may be used only for statistical purposes. Any effort to determine the identity of any reported case by public-use data users is prohibited by law. Violations are subject to Class E felony charges of a fine up to $250,000 and/or a prison term up to 5 years.</p>
+        <p>NCES does all it can to assure that the identity of data subjects cannot be disclosed. All direct identifiers, as well as any characteristics that might lead to identification, are omitted or modified in the dataset to protect the true characteristics of individual cases. Any intentional identification or disclosure of a person or institution violates the assurances of confidentiality given to the providers of the information. Therefore, users shall:</p>
+        <ul>
+          <li>Use the data in this dataset for statistical purposes only.</li>
+          <li>Make no use of the identity of any person or institution discovered inadvertently, and advise NCES of any such discovery.</li>
+          <li>Not link this dataset with individually identifiable data from other NCES or non-NCES datasets.</li>
+        </ul>
+        <p>To proceed you must signify your agreement to comply with the above-stated statutorily based requirements. This window will close and the selected application will appear when you signify your agreement. </p>
+        <div align="center" style="border-bottom:#2f4e8e 5px solid">
+          <p><a href="javascript:DoAgree();" style="color:#2f4e8e;">I agree to the terms above.</a></p>
+          <p><a href="javascript:DoNotAgree();" style="color:#2f4e8e;">I do not agree. Close window.</a></p>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+		<p><strong>Beginning Postsecondary Students (BPS) Features</strong></p>
+        <ul>
+          <li> The cohorts for each BPS study are drawn from the National Postsecondary Student Aid Study (NPSAS)</li>
+          <li>BPS tracks students' paths through postsecondary education and helps answer questions of policy interest</li>
+          <li>Students are surveyed beginning in their first year of postsecondary education and followed up at the end of their third and sixth years after entry into postsecondary education </li>
+          <li>The final dataset for the most recent completed BPS study, BPS 12/17, contains information on approximately 22,500 students</li>
+          <li>The current BPS cohort, BPS 20/22, began postsecondary education in the 2019-20 academic year and will next be invited to complete surveys in 2022, and 2025</li>
+        </ul>
+        <p><a href="/datalab" style="text-transform: uppercase;
+    font-weight: 900;
+    color: #000000;
+    margin-left: 10px;
+    margin-right: 10px;
+    text-decoration: none;">
+           <img src="/surveys/nsopf/images/dl_logo.png" alt="NCES DataLab">
+                            <span>DataLab</span>
+                        </a></p>
+        <div style="margin-left: 10px;">
+          <p>Create tables and graphs quickly and efficiently.</p>
+          <p>Create complex tables and run linear and logistic regressions.</p>
+          <p>Create trend tables.</p>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <p><strong>What's New</strong></p>
+        <ul>
+			<li>2020/2022 Beginning Postsecondary Students data are now available in <a href="https://nces.ed.gov/datalab">DataLab</a>.<br/>
+			Conducted by the National Center for Education Statistics (NCES) at the U.S. Department of Education, BPS:20/22 is the first follow-up of a cohort of first-time beginning students (FTBs) originally identified during the 2019&ndash;20 National Postsecondary Student Aid Study (NPSAS:20) and covers 3 years of students' experiences, from their first year of postsecondary education in the 2019&ndash;20 academic year through the 2021&ndash;22 academic year. The BPS:20/22 data include approximately 22,320 total respondents, representing the approximately 3.3 million undergraduates who were first-time postsecondary students enrolled in the 2019&ndash;20 academic year. The data are nationally representative of FTBs from the 2019&ndash;20 academic year and can be used to create state-representative estimates for FTB students who began at institutions in 7 states (California, Florida, Georgia, New York, North Carolina, Pennsylvania, and Texas).</li>
+			<li>PETS data for the 2012/2017 Beginning Postsecondary Students Longitudinal Study is now available.<br />
+            The newly released BPS:12/17 transcript data are now available for restricted-use license holders. BPS:12 PETS is the third data release for a study of a nationally representative sample of first-time beginning postsecondary students who were surveyed 3 times over 6 academic years, in 2011&ndash;12, 2014, and 2017. Postsecondary academic transcripts were requested from all institutions attended by sample members. These transcript data include detailed information, by institution attended and by time periods, on enrollment, degree programs, fields of study, course taking, credit accumulation, and academic performance. For more information, go to: <a href="/pubsearch/pubsinfo.asp?pubid=2021177">https://nces.ed.gov/pubsearch/pubsinfo.asp?pubid=2021177</a>. </li>
+        </ul>
+        <h3 style="float: right;"><a href="whatsnew.asp" style="color: #015539 !important;">Additional announcements</a></h3>
+      </div>
+    </div>
+    <div class="row" style="background: #eee; margin: 20px auto;">
+      <div class="col-md-4">
+        <h3>Related Longitudinal Studies</h3>
+      </div>
+      <div class="col-md-4"><a href="/surveys/B&amp;B" class="logoLink"><img src="images/B&amp;B.png" alt="BPS" class="pull-left" style="width: 66px;padding: 10px 10px 10px 0;" />
+        <h3>Baccalaureate<br />
+          and Beyond</h3>
+        </a></div>
+      <div class="col-md-4"><a href="/surveys/npsas" class="logoLink"><img src="images/NPSAS.png" alt="NPSAS" class="pull-left" style="width: 66px; padding: 10px 10px 10px 0;" />
+        <h3>National Postsecondary<br />
+          Student Aid Study</h3>
+        </a></div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <h2>Historical Background</h2>
+        <ul class="nav nav-tabs">
+          <li><a data-toggle="tab" data-target="#npsasTab" href="javascript:void(0);">NPSAS</a></li>
+          <li class="active"><a data-toggle="tab" data-target="#bpsTab" href="javascript:void(0);">BPS</a></li>
+          <li><a data-toggle="tab" data-target="#bbTab" href="javascript:void(0);">B&amp;B</a></li>
+          <li><a data-toggle="tab" data-target="#petsTab" href="javascript:void(0);">PETS</a></li>
+        </ul>
+        <div class="tab-content">
+          <div id="npsasTab" class="tab-pane fade in">
+            <p>The National Postsecondary Student Aid Study (NPSAS) is a study of financial aid that NCES has conducted since 1987. The study collects comprehensive data about how students and their families pay for postsecondary education and also serves as the foundation and base year cohort for the Beginning Postsecondary Students Longitudinal Study (BPS) and Baccalaureate and Beyond Longitudinal Study (B&amp;B).</p>
+            <div id="chartdiv"></div>
+          </div>
+          <div id="bpsTab" class="tab-pane fade in active">
+            <p>The Beginning Postsecondary Students Longitudinal Study (BPS) tracks first-time students' pathways through postsecondary education over the course of six years, focusing on persistence and degree attainment, transition to employment, and school and work experiences. National Postsecondary Student Aid Study (NPSAS) administrations in 1990, 1996, 2004, 2012, and 2020 (forthcoming) identified the BPS cohorts. </p>
+            <div id="bpsdiv"></div>
+          </div>
+          <div id="bbTab" class="tab-pane fade in">
+            <p>The Baccalaureate and Beyond Longitudinal Study (B&amp;B) follows bachelor's degree recipients over the course of 10 years, collecting data on workforce participation, income and debt repayment, and graduate school patterns. National Postsecondary Student Aid Study (NPSAS) administrations in 1993, 2000, 2008, and 2016 identified the B&amp;B cohorts.</p>
+            <div id="bbdiv"></div>
+          </div>
+          <div id="petsTab" class="tab-pane fade in">
+            <p>NCES collects transcript data from postsecondary institutions for various longitudinal studies, including the Beginning Postsecondary Students (BPS) and Baccalaureate and Beyond (B&amp;B) longitudinal studies. Postsecondary Education Transcript Study (PETS) collections allow further examination of course-taking patterns, credit transfer, student momentum and attrition, and the connections among students' education choices, occupations, and wages. Transcripts were most recently collected for the BPS:12 cohort. Postsecondary education transcript collections include:</p>
+            <ul>
+              <li>1984 &ndash; NLS-72</li>
+              <li>1993 &ndash; HS&amp;B</li>
+              <li>1994 &ndash; B&amp;B:93</li>
+              <li>2000 &ndash; NELS:88</li>
+              <li>2010 &ndash; BPS:04</li>
+              <li>2010 &ndash; B&amp;B:08</li>
+              <li>2014 &ndash; ELS:2002</li>
+              <li>2017 &ndash; HSLS:09</li>
+              <li>2018 &ndash; BPS:12</li>
+            </ul>
+            <div id="petsdiv"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row" style="padding: 10px; background: #eee; margin-bottom: 10px;">
+      <div class="col-md-9"> <a href="/surveys/npsas/">NPSAS &ndash; National Postsecondary Student Aid Study<br />
+        <a href="/surveys/npsas/"> NPSAS:AC &ndash; National Postsecondary Student Aid Study: Administrative Collection</a><br />
+        BPS &ndash; Beginning Postsecondary Students Longitudinal Study<br />
+        <a href="/surveys/b&b/">B&amp;B &ndash; Baccalaureate and Beyond Longitudinal Study</a><br />
+        <a href="/surveys/pets/">PETS &ndash; Postsecondary Education Transcript Studies</a> </div>
+      <div class="col-md-3"> *Awarded but not yet funded </div>
+    </div>
+  </div>
+  <div style="clear: both;"></div>
+  <!-- End Body -->
+
+
+</div>
+
+
+<ies-footer></ies-footer> 
+  
+  <!-- Publication Footer Ends Here   --> 
+</div>
+</body>
+</html><script id="f5_cspm">(function(){var f5_cspm={f5_p:'NODMGDOJLGIBEAGILOKGNAMFMIHBBPLLFLGLFBGBCMIGPGHMHMHNJLCJPJMGGMDOMKEBDPKNAAHDABJGNMIAILDNAAAJAFNOFEEDEAGPMFIKCANEDFGBJOIJNKOFJCCE',setCharAt:function(str,index,chr){if(index>str.length-1)return str;return str.substr(0,index)+chr+str.substr(index+1);},get_byte:function(str,i){var s=(i/16)|0;i=(i&15);s=s*32;return((str.charCodeAt(i+16+s)-65)<<4)|(str.charCodeAt(i+s)-65);},set_byte:function(str,i,b){var s=(i/16)|0;i=(i&15);s=s*32;str=f5_cspm.setCharAt(str,(i+16+s),String.fromCharCode((b>>4)+65));str=f5_cspm.setCharAt(str,(i+s),String.fromCharCode((b&15)+65));return str;},set_latency:function(str,latency){latency=latency&0xffff;str=f5_cspm.set_byte(str,40,(latency>>8));str=f5_cspm.set_byte(str,41,(latency&0xff));str=f5_cspm.set_byte(str,35,2);return str;},wait_perf_data:function(){try{var wp=window.performance.timing;if(wp.loadEventEnd>0){var res=wp.loadEventEnd-wp.navigationStart;if(res<60001){var cookie_val=f5_cspm.set_latency(f5_cspm.f5_p,res);window.document.cookie='f5avr0284328824aaaaaaaaaaaaaaaa_cspm_='+encodeURIComponent(cookie_val)+';path=/;'+'';}
+return;}}
+catch(err){return;}
+setTimeout(f5_cspm.wait_perf_data,100);return;},go:function(){var chunk=window.document.cookie.split(/\s*;\s*/);for(var i=0;i<chunk.length;++i){var pair=chunk[i].split(/\s*=\s*/);if(pair[0]=='f5_cspm'&&pair[1]=='1234')
+{var d=new Date();d.setTime(d.getTime()-1000);window.document.cookie='f5_cspm=;expires='+d.toUTCString()+';path=/;'+';';setTimeout(f5_cspm.wait_perf_data,100);}}}}
+f5_cspm.go();}());</script>

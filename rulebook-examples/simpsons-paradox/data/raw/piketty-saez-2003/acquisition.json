@@ -1,0 +1,19 @@
+{
+  "candidate_id": "cand-exp-piketty-saez-2003",
+  "proposed_study_id": "piketty-saez-2003",
+  "acquisition_status": "landing_saved",
+  "attempted_at": "2026-07-07T03:40:16+00:00",
+  "catalog_source_url": "https://www.irs.gov/statistics",
+  "resolved_urls": [
+    "https://doi.org/10.1162/rest_a_00200",
+    "https://direct.mit.edu/rest/article-pdf/94/2/371/1916908/rest_a_00200.pdf",
+    "https://www.irs.gov/statistics",
+    "https://eml.berkeley.edu/~saez/"
+  ],
+  "files": [
+    "openalex-metadata.json",
+    "source-1.html",
+    "source-2.html"
+  ],
+  "dois": []
+}

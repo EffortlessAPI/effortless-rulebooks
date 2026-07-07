@@ -1,57 +1,21 @@
 {
-  "generated_at": "2026-05-26 21:34 UTC",
+  "generated_at": "2026-07-02 01:30 UTC",
   "totals": {
-    "PASS": 1,
+    "PASS": 0,
     "PARSER": 0,
     "CONFIG": 0,
-    "OTHER": 0,
-    "NO_LOG": 27
+    "OTHER": 1,
+    "NO_LOG": 12
   },
   "domains": [
     {
-      "domain": "acme-corporation",
+      "domain": "causal-autoimmune-architecture",
       "status": "NO_LOG",
-      "root_cause": "No log on disk \u2014 run build-all-domains.sh --domain acme-corporation",
+      "root_cause": "No log on disk \u2014 run build-all-domains.sh --domain causal-autoimmune-architecture",
       "first_error": "",
       "missing_ops": [],
       "missing_funcs": [],
       "log_path": ""
-    },
-    {
-      "domain": "acme-llc",
-      "status": "NO_LOG",
-      "root_cause": "No log on disk \u2014 run build-all-domains.sh --domain acme-llc",
-      "first_error": "",
-      "missing_ops": [],
-      "missing_funcs": [],
-      "log_path": ""
-    },
-    {
-      "domain": "community-event-planner",
-      "status": "NO_LOG",
-      "root_cause": "No log on disk \u2014 run build-all-domains.sh --domain community-event-planner",
-      "first_error": "",
-      "missing_ops": [],
-      "missing_funcs": [],
-      "log_path": ""
-    },
-    {
-      "domain": "customer-crm",
-      "status": "NO_LOG",
-      "root_cause": "No log on disk \u2014 run build-all-domains.sh --domain customer-crm",
-      "first_error": "",
-      "missing_ops": [],
-      "missing_funcs": [],
-      "log_path": ""
-    },
-    {
-      "domain": "customer-fullname",
-      "status": "PASS",
-      "root_cause": "",
-      "first_error": "",
-      "missing_ops": [],
-      "missing_funcs": [],
-      "log_path": "orchestration/build-status/logs/customer-fullname.log"
     },
     {
       "domain": "effortless-banking",
@@ -63,45 +27,9 @@
       "log_path": ""
     },
     {
-      "domain": "effortless-rulesbooks",
+      "domain": "effortless-rulebooks",
       "status": "NO_LOG",
-      "root_cause": "No log on disk \u2014 run build-all-domains.sh --domain effortless-rulesbooks",
-      "first_error": "",
-      "missing_ops": [],
-      "missing_funcs": [],
-      "log_path": ""
-    },
-    {
-      "domain": "expense-approval",
-      "status": "NO_LOG",
-      "root_cause": "No log on disk \u2014 run build-all-domains.sh --domain expense-approval",
-      "first_error": "",
-      "missing_ops": [],
-      "missing_funcs": [],
-      "log_path": ""
-    },
-    {
-      "domain": "fantasy-football",
-      "status": "NO_LOG",
-      "root_cause": "No log on disk \u2014 run build-all-domains.sh --domain fantasy-football",
-      "first_error": "",
-      "missing_ops": [],
-      "missing_funcs": [],
-      "log_path": ""
-    },
-    {
-      "domain": "guessing-game",
-      "status": "NO_LOG",
-      "root_cause": "No log on disk \u2014 run build-all-domains.sh --domain guessing-game",
-      "first_error": "",
-      "missing_ops": [],
-      "missing_funcs": [],
-      "log_path": ""
-    },
-    {
-      "domain": "gym-trainer-invoicing",
-      "status": "NO_LOG",
-      "root_cause": "No log on disk \u2014 run build-all-domains.sh --domain gym-trainer-invoicing",
+      "root_cause": "No log on disk \u2014 run build-all-domains.sh --domain effortless-rulebooks",
       "first_error": "",
       "missing_ops": [],
       "missing_funcs": [],
@@ -109,12 +37,12 @@
     },
     {
       "domain": "intelligence-taxonomy",
-      "status": "NO_LOG",
-      "root_cause": "No log on disk \u2014 run build-all-domains.sh --domain intelligence-taxonomy",
-      "first_error": "",
+      "status": "OTHER",
+      "root_cause": "ERROR: Proxy request failed with status InternalServerError: {",
+      "first_error": "ERROR: Proxy request failed with status InternalServerError: {",
       "missing_ops": [],
       "missing_funcs": [],
-      "log_path": ""
+      "log_path": "orchestration/build-status/logs/intelligence-taxonomy.log"
     },
     {
       "domain": "is-everything-a-language",
@@ -126,135 +54,72 @@
       "log_path": ""
     },
     {
-      "domain": "talisman-advanced",
+      "domain": "naive-set-theory",
       "status": "NO_LOG",
-      "root_cause": "No log on disk \u2014 run build-all-domains.sh --domain talisman-advanced",
+      "root_cause": "No log on disk \u2014 run build-all-domains.sh --domain naive-set-theory",
       "first_error": "",
       "missing_ops": [],
       "missing_funcs": [],
       "log_path": ""
     },
     {
-      "domain": "talisman-basic",
+      "domain": "planar-unit-discovery",
       "status": "NO_LOG",
-      "root_cause": "No log on disk \u2014 run build-all-domains.sh --domain talisman-basic",
+      "root_cause": "No log on disk \u2014 run build-all-domains.sh --domain planar-unit-discovery",
       "first_error": "",
       "missing_ops": [],
       "missing_funcs": [],
       "log_path": ""
     },
     {
-      "domain": "job-search-rag",
+      "domain": "ross-style-business-rules",
       "status": "NO_LOG",
-      "root_cause": "No log on disk \u2014 run build-all-domains.sh --domain job-search-rag",
+      "root_cause": "No log on disk \u2014 run build-all-domains.sh --domain ross-style-business-rules",
       "first_error": "",
       "missing_ops": [],
       "missing_funcs": [],
       "log_path": ""
     },
     {
-      "domain": "mechanical-kitchen-timer",
+      "domain": "simpsons-paradox",
       "status": "NO_LOG",
-      "root_cause": "No log on disk \u2014 run build-all-domains.sh --domain mechanical-kitchen-timer",
+      "root_cause": "No log on disk \u2014 run build-all-domains.sh --domain simpsons-paradox",
       "first_error": "",
       "missing_ops": [],
       "missing_funcs": [],
       "log_path": ""
     },
     {
-      "domain": "naked-claude-vs-effortless-claude",
+      "domain": "talismans-special-solutions",
       "status": "NO_LOG",
-      "root_cause": "No log on disk \u2014 run build-all-domains.sh --domain naked-claude-vs-effortless-claude",
+      "root_cause": "No log on disk \u2014 run build-all-domains.sh --domain talismans-special-solutions",
       "first_error": "",
       "missing_ops": [],
       "missing_funcs": [],
       "log_path": ""
     },
     {
-      "domain": "nakedclaude-v1",
+      "domain": "tiling-the-plane",
       "status": "NO_LOG",
-      "root_cause": "No log on disk \u2014 run build-all-domains.sh --domain nakedclaude-v1",
+      "root_cause": "No log on disk \u2014 run build-all-domains.sh --domain tiling-the-plane",
       "first_error": "",
       "missing_ops": [],
       "missing_funcs": [],
       "log_path": ""
     },
     {
-      "domain": "nakedclaude-v2",
+      "domain": "traffic-ticket-contest",
       "status": "NO_LOG",
-      "root_cause": "No log on disk \u2014 run build-all-domains.sh --domain nakedclaude-v2",
+      "root_cause": "No log on disk \u2014 run build-all-domains.sh --domain traffic-ticket-contest",
       "first_error": "",
       "missing_ops": [],
       "missing_funcs": [],
       "log_path": ""
     },
     {
-      "domain": "nakedclaude-v3",
+      "domain": "veritasium-power-laws-and-fractals",
       "status": "NO_LOG",
-      "root_cause": "No log on disk \u2014 run build-all-domains.sh --domain nakedclaude-v3",
-      "first_error": "",
-      "missing_ops": [],
-      "missing_funcs": [],
-      "log_path": ""
-    },
-    {
-      "domain": "nakedclaude-v4",
-      "status": "NO_LOG",
-      "root_cause": "No log on disk \u2014 run build-all-domains.sh --domain nakedclaude-v4",
-      "first_error": "",
-      "missing_ops": [],
-      "missing_funcs": [],
-      "log_path": ""
-    },
-    {
-      "domain": "product-inventory",
-      "status": "NO_LOG",
-      "root_cause": "No log on disk \u2014 run build-all-domains.sh --domain product-inventory",
-      "first_error": "",
-      "missing_ops": [],
-      "missing_funcs": [],
-      "log_path": ""
-    },
-    {
-      "domain": "star-trek",
-      "status": "NO_LOG",
-      "root_cause": "No log on disk \u2014 run build-all-domains.sh --domain star-trek",
-      "first_error": "",
-      "missing_ops": [],
-      "missing_funcs": [],
-      "log_path": ""
-    },
-    {
-      "domain": "therapist-helper-portal",
-      "status": "NO_LOG",
-      "root_cause": "No log on disk \u2014 run build-all-domains.sh --domain therapist-helper-portal",
-      "first_error": "",
-      "missing_ops": [],
-      "missing_funcs": [],
-      "log_path": ""
-    },
-    {
-      "domain": "volunteer-shift-scheduler",
-      "status": "NO_LOG",
-      "root_cause": "No log on disk \u2014 run build-all-domains.sh --domain volunteer-shift-scheduler",
-      "first_error": "",
-      "missing_ops": [],
-      "missing_funcs": [],
-      "log_path": ""
-    },
-    {
-      "domain": "volunteer-shift-scheduler-demo",
-      "status": "NO_LOG",
-      "root_cause": "No log on disk \u2014 run build-all-domains.sh --domain volunteer-shift-scheduler-demo",
-      "first_error": "",
-      "missing_ops": [],
-      "missing_funcs": [],
-      "log_path": ""
-    },
-    {
-      "domain": "wedding-seating-optimizer",
-      "status": "NO_LOG",
-      "root_cause": "No log on disk \u2014 run build-all-domains.sh --domain wedding-seating-optimizer",
+      "root_cause": "No log on disk \u2014 run build-all-domains.sh --domain veritasium-power-laws-and-fractals",
       "first_error": "",
       "missing_ops": [],
       "missing_funcs": [],

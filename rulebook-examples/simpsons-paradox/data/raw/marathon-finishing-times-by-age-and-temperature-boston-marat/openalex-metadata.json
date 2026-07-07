@@ -1,0 +1,1361 @@
+{
+  "id": "https://openalex.org/W2945606257",
+  "doi": "https://doi.org/10.3390/ijerph16101777",
+  "title": "Performance and Pacing of Age Groups in Half-Marathon and Marathon",
+  "display_name": "Performance and Pacing of Age Groups in Half-Marathon and Marathon",
+  "relevance_score": 325.60828,
+  "publication_year": 2019,
+  "publication_date": "2019-05-20",
+  "ids": {
+    "openalex": "https://openalex.org/W2945606257",
+    "doi": "https://doi.org/10.3390/ijerph16101777",
+    "mag": "2945606257",
+    "pmid": "https://pubmed.ncbi.nlm.nih.gov/31137495"
+  },
+  "language": "en",
+  "primary_location": {
+    "id": "doi:10.3390/ijerph16101777",
+    "is_oa": true,
+    "landing_page_url": "https://doi.org/10.3390/ijerph16101777",
+    "pdf_url": "https://www.mdpi.com/1660-4601/16/10/1777/pdf",
+    "source": {
+      "id": "https://openalex.org/S15239247",
+      "display_name": "International Journal of Environmental Research and Public Health",
+      "issn_l": "1660-4601",
+      "issn": [
+        "1660-4601",
+        "1661-7827"
+      ],
+      "is_oa": true,
+      "is_in_doaj": false,
+      "is_core": true,
+      "host_organization": "https://openalex.org/P4310310987",
+      "host_organization_name": "Multidisciplinary Digital Publishing Institute",
+      "host_organization_lineage": [
+        "https://openalex.org/P4310310987"
+      ],
+      "host_organization_lineage_names": [
+        "Multidisciplinary Digital Publishing Institute"
+      ],
+      "type": "journal"
+    },
+    "license": "cc-by",
+    "license_id": "https://openalex.org/licenses/cc-by",
+    "version": "publishedVersion",
+    "is_accepted": true,
+    "is_published": true,
+    "raw_source_name": "International Journal of Environmental Research and Public Health",
+    "raw_type": "journal-article"
+  },
+  "type": "article",
+  "indexed_in": [
+    "crossref",
+    "datacite",
+    "doaj",
+    "pubmed"
+  ],
+  "open_access": {
+    "is_oa": true,
+    "oa_status": "gold",
+    "oa_url": "https://www.mdpi.com/1660-4601/16/10/1777/pdf",
+    "any_repository_has_fulltext": true
+  },
+  "authorships": [
+    {
+      "author_position": "first",
+      "author": {
+        "id": "https://openalex.org/A5063352552",
+        "display_name": "Pantelis \u03a4. Nikolaidis",
+        "orcid": "https://orcid.org/0000-0001-8030-7122"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I4210094138",
+          "display_name": "University of West Attica",
+          "ror": "https://ror.org/00r2r5k05",
+          "country_code": "GR",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I4210094138"
+          ]
+        }
+      ],
+      "countries": [
+        "GR"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Pantelis Theodoros Nikolaidis",
+      "raw_affiliation_strings": [
+        "Exercise Physiology Laboratory, 18450 Nikaia, Greece",
+        "School of Health and Caring Sciences, University of West Attica, 12243 Egaleo, Greece"
+      ],
+      "raw_orcid": "https://orcid.org/0000-0001-8030-7122",
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Exercise Physiology Laboratory, 18450 Nikaia, Greece",
+          "institution_ids": []
+        },
+        {
+          "raw_affiliation_string": "School of Health and Caring Sciences, University of West Attica, 12243 Egaleo, Greece",
+          "institution_ids": [
+            "https://openalex.org/I4210094138"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5065848555",
+        "display_name": "Ivan \u010cuk",
+        "orcid": "https://orcid.org/0000-0001-7819-4384"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I170253739",
+          "display_name": "Singidunum University",
+          "ror": "https://ror.org/017v7rz39",
+          "country_code": "RS",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I170253739"
+          ]
+        }
+      ],
+      "countries": [
+        "RS"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Ivan Cuk",
+      "raw_affiliation_strings": [
+        "Faculty of Physical Education and Sports Management, Singidunum University, 1100 Belgrade, Serbia"
+      ],
+      "raw_orcid": "https://orcid.org/0000-0001-7819-4384",
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Faculty of Physical Education and Sports Management, Singidunum University, 1100 Belgrade, Serbia",
+          "institution_ids": [
+            "https://openalex.org/I170253739"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5089136249",
+        "display_name": "Thomas Rosemann",
+        "orcid": "https://orcid.org/0000-0002-6436-6306"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I202697423",
+          "display_name": "University of Zurich",
+          "ror": "https://ror.org/02crff812",
+          "country_code": "CH",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I202697423"
+          ]
+        }
+      ],
+      "countries": [
+        "CH"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Thomas Rosemann",
+      "raw_affiliation_strings": [
+        "Institute of Primary Care, University of Zurich, 8091 Zurich, Switzerland"
+      ],
+      "raw_orcid": "https://orcid.org/0000-0002-6436-6306",
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Institute of Primary Care, University of Zurich, 8091 Zurich, Switzerland",
+          "institution_ids": [
+            "https://openalex.org/I202697423"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "last",
+      "author": {
+        "id": "https://openalex.org/A5015669294",
+        "display_name": "Beat Knechtle",
+        "orcid": "https://orcid.org/0000-0002-2412-9103"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I202697423",
+          "display_name": "University of Zurich",
+          "ror": "https://ror.org/02crff812",
+          "country_code": "CH",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I202697423"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I4210117381",
+          "display_name": "Medbase",
+          "ror": "https://ror.org/02g4bxh77",
+          "country_code": "CH",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I4210117381"
+          ]
+        }
+      ],
+      "countries": [
+        "CH"
+      ],
+      "is_corresponding": true,
+      "raw_author_name": "Beat Knechtle",
+      "raw_affiliation_strings": [
+        "Institute of Primary Care, University of Zurich, 8091 Zurich, Switzerland",
+        "Medbase St. Gallen Am Vadianplatz, 9001 St. Gallen, Switzerland"
+      ],
+      "raw_orcid": "https://orcid.org/0000-0002-2412-9103",
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Institute of Primary Care, University of Zurich, 8091 Zurich, Switzerland",
+          "institution_ids": [
+            "https://openalex.org/I202697423"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Medbase St. Gallen Am Vadianplatz, 9001 St. Gallen, Switzerland",
+          "institution_ids": [
+            "https://openalex.org/I4210117381"
+          ]
+        }
+      ]
+    }
+  ],
+  "institutions": [],
+  "countries_distinct_count": 3,
+  "institutions_distinct_count": 4,
+  "corresponding_author_ids": [
+    "https://openalex.org/A5015669294"
+  ],
+  "corresponding_institution_ids": [
+    "https://openalex.org/I202697423",
+    "https://openalex.org/I4210117381"
+  ],
+  "apc_list": {
+    "value": 2500,
+    "currency": "CHF",
+    "value_usd": 2707
+  },
+  "apc_paid": {
+    "value": 2500,
+    "currency": "CHF",
+    "value_usd": 2707
+  },
+  "fwci": 3.7629,
+  "has_fulltext": true,
+  "cited_by_count": 32,
+  "citation_normalized_percentile": {
+    "value": 0.93232186,
+    "is_in_top_1_percent": false,
+    "is_in_top_10_percent": true
+  },
+  "cited_by_percentile_year": {
+    "min": 90,
+    "max": 99
+  },
+  "biblio": {
+    "volume": "16",
+    "issue": "10",
+    "first_page": "1777",
+    "last_page": "1777"
+  },
+  "is_retracted": false,
+  "is_paratext": false,
+  "is_xpac": false,
+  "primary_topic": {
+    "id": "https://openalex.org/T10157",
+    "display_name": "Sports Performance and Training",
+    "score": 0.9995999932289124,
+    "subfield": {
+      "id": "https://openalex.org/subfields/2732",
+      "display_name": "Orthopedics and Sports Medicine"
+    },
+    "field": {
+      "id": "https://openalex.org/fields/27",
+      "display_name": "Medicine"
+    },
+    "domain": {
+      "id": "https://openalex.org/domains/4",
+      "display_name": "Health Sciences"
+    }
+  },
+  "topics": [
+    {
+      "id": "https://openalex.org/T10157",
+      "display_name": "Sports Performance and Training",
+      "score": 0.9995999932289124,
+      "subfield": {
+        "id": "https://openalex.org/subfields/2732",
+        "display_name": "Orthopedics and Sports Medicine"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/27",
+        "display_name": "Medicine"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/4",
+        "display_name": "Health Sciences"
+      }
+    },
+    {
+      "id": "https://openalex.org/T11922",
+      "display_name": "Cardiovascular Effects of Exercise",
+      "score": 0.9983999729156494,
+      "subfield": {
+        "id": "https://openalex.org/subfields/2705",
+        "display_name": "Cardiology and Cardiovascular Medicine"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/27",
+        "display_name": "Medicine"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/4",
+        "display_name": "Health Sciences"
+      }
+    },
+    {
+      "id": "https://openalex.org/T11209",
+      "display_name": "Cardiovascular and exercise physiology",
+      "score": 0.9983000159263611,
+      "subfield": {
+        "id": "https://openalex.org/subfields/2707",
+        "display_name": "Complementary and alternative medicine"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/27",
+        "display_name": "Medicine"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/4",
+        "display_name": "Health Sciences"
+      }
+    }
+  ],
+  "keywords": [
+    {
+      "id": "https://openalex.org/keywords/age-groups",
+      "display_name": "Age groups",
+      "score": 0.5936771631240845
+    },
+    {
+      "id": "https://openalex.org/keywords/demography",
+      "display_name": "Demography",
+      "score": 0.5169665217399597
+    },
+    {
+      "id": "https://openalex.org/keywords/medicine",
+      "display_name": "Medicine",
+      "score": 0.51017165184021
+    }
+  ],
+  "concepts": [
+    {
+      "id": "https://openalex.org/C2986834420",
+      "wikidata": "https://www.wikidata.org/wiki/Q5932254",
+      "display_name": "Age groups",
+      "level": 2,
+      "score": 0.5936771631240845
+    },
+    {
+      "id": "https://openalex.org/C149923435",
+      "wikidata": "https://www.wikidata.org/wiki/Q37732",
+      "display_name": "Demography",
+      "level": 1,
+      "score": 0.5169665217399597
+    },
+    {
+      "id": "https://openalex.org/C71924100",
+      "wikidata": "https://www.wikidata.org/wiki/Q11190",
+      "display_name": "Medicine",
+      "level": 0,
+      "score": 0.51017165184021
+    },
+    {
+      "id": "https://openalex.org/C144024400",
+      "wikidata": "https://www.wikidata.org/wiki/Q21201",
+      "display_name": "Sociology",
+      "level": 0,
+      "score": 0.0
+    }
+  ],
+  "mesh": [
+    {
+      "descriptor_ui": "D000328",
+      "descriptor_name": "Adult",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000328",
+      "descriptor_name": "Adult",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000328",
+      "descriptor_name": "Adult",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000367",
+      "descriptor_name": "Age Factors",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D000367",
+      "descriptor_name": "Age Factors",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D000367",
+      "descriptor_name": "Age Factors",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D005260",
+      "descriptor_name": "Female",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D005260",
+      "descriptor_name": "Female",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D005260",
+      "descriptor_name": "Female",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D006801",
+      "descriptor_name": "Humans",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D006801",
+      "descriptor_name": "Humans",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D006801",
+      "descriptor_name": "Humans",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D008297",
+      "descriptor_name": "Male",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D008297",
+      "descriptor_name": "Male",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D008297",
+      "descriptor_name": "Male",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D008875",
+      "descriptor_name": "Middle Aged",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D008875",
+      "descriptor_name": "Middle Aged",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D008875",
+      "descriptor_name": "Middle Aged",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D012420",
+      "descriptor_name": "Running",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D012420",
+      "descriptor_name": "Running",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D012420",
+      "descriptor_name": "Running",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D013997",
+      "descriptor_name": "Time Factors",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D013997",
+      "descriptor_name": "Time Factors",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D013997",
+      "descriptor_name": "Time Factors",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D054874",
+      "descriptor_name": "Athletic Performance",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D054874",
+      "descriptor_name": "Athletic Performance",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D054874",
+      "descriptor_name": "Athletic Performance",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": true
+    }
+  ],
+  "locations_count": 8,
+  "locations": [
+    {
+      "id": "doi:10.3390/ijerph16101777",
+      "is_oa": true,
+      "landing_page_url": "https://doi.org/10.3390/ijerph16101777",
+      "pdf_url": "https://www.mdpi.com/1660-4601/16/10/1777/pdf",
+      "source": {
+        "id": "https://openalex.org/S15239247",
+        "display_name": "International Journal of Environmental Research and Public Health",
+        "issn_l": "1660-4601",
+        "issn": [
+          "1660-4601",
+          "1661-7827"
+        ],
+        "is_oa": true,
+        "is_in_doaj": false,
+        "is_core": true,
+        "host_organization": "https://openalex.org/P4310310987",
+        "host_organization_name": "Multidisciplinary Digital Publishing Institute",
+        "host_organization_lineage": [
+          "https://openalex.org/P4310310987"
+        ],
+        "host_organization_lineage_names": [
+          "Multidisciplinary Digital Publishing Institute"
+        ],
+        "type": "journal"
+      },
+      "license": "cc-by",
+      "license_id": "https://openalex.org/licenses/cc-by",
+      "version": "publishedVersion",
+      "is_accepted": true,
+      "is_published": true,
+      "raw_source_name": "International Journal of Environmental Research and Public Health",
+      "raw_type": "journal-article"
+    },
+    {
+      "id": "pmid:31137495",
+      "is_oa": false,
+      "landing_page_url": "https://pubmed.ncbi.nlm.nih.gov/31137495",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4306525036",
+        "display_name": "PubMed",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I1299303238",
+        "host_organization_name": "National Institutes of Health",
+        "host_organization_lineage": [
+          "https://openalex.org/I1299303238"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "publishedVersion",
+      "is_accepted": true,
+      "is_published": true,
+      "raw_source_name": "International journal of environmental research and public health",
+      "raw_type": null
+    },
+    {
+      "id": "pmh:oai:www.zora.uzh.ch:171214",
+      "is_oa": true,
+      "landing_page_url": null,
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4306401281",
+        "display_name": "Zurich Open Repository and Archive (University of Zurich)",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I202697423",
+        "host_organization_name": "University of Zurich",
+        "host_organization_lineage": [
+          "https://openalex.org/I202697423"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": "cc-by",
+      "license_id": "https://openalex.org/licenses/cc-by",
+      "version": "acceptedVersion",
+      "is_accepted": true,
+      "is_published": false,
+      "raw_source_name": "Nikolaidis, Pantelis Theodoros; Cuk, Ivan; Rosemann, Thomas; Knechtle, Beat  (2019). Performance and Pacing of Age Groups in Half-Marathon and Marathon.  International Journal of Environmental Research and Public Health, 16(10):1777.",
+      "raw_type": "info:eu-repo/semantics/article"
+    },
+    {
+      "id": "pmh:oai:RePEc:gam:jijerp:v:16:y:2019:i:10:p:1777-:d:232640",
+      "is_oa": false,
+      "landing_page_url": "https://www.mdpi.com/1660-4601/16/10/1777/",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4306401271",
+        "display_name": "RePEc: Research Papers in Economics",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I77793887",
+        "host_organization_name": "Federal Reserve Bank of St. Louis",
+        "host_organization_lineage": [
+          "https://openalex.org/I77793887"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "submittedVersion",
+      "is_accepted": false,
+      "is_published": false,
+      "raw_source_name": null,
+      "raw_type": "article"
+    },
+    {
+      "id": "pmh:oai:doaj.org/article:2c66fb9889ce43d4b2281296d2c7f9a3",
+      "is_oa": false,
+      "landing_page_url": "https://doaj.org/article/2c66fb9889ce43d4b2281296d2c7f9a3",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4306401280",
+        "display_name": "DOAJ (DOAJ: Directory of Open Access Journals)",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": null,
+        "host_organization_name": null,
+        "host_organization_lineage": [],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "submittedVersion",
+      "is_accepted": false,
+      "is_published": false,
+      "raw_source_name": "International Journal of Environmental Research and Public Health, Vol 16, Iss 10, p 1777 (2019)",
+      "raw_type": "article"
+    },
+    {
+      "id": "pmh:oai:mdpi.com:/1660-4601/16/10/1777/",
+      "is_oa": true,
+      "landing_page_url": "http://dx.doi.org/10.3390/ijerph16101777",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4306400947",
+        "display_name": "MDPI (MDPI AG)",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": true,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I4210097602",
+        "host_organization_name": "Multidisciplinary Digital Publishing Institute (Switzerland)",
+        "host_organization_lineage": [
+          "https://openalex.org/I4210097602"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": "cc-by",
+      "license_id": "https://openalex.org/licenses/cc-by",
+      "version": "submittedVersion",
+      "is_accepted": false,
+      "is_published": false,
+      "raw_source_name": "International Journal of Environmental Research and Public Health",
+      "raw_type": "Text"
+    },
+    {
+      "id": "pmh:oai:pubmedcentral.nih.gov:6572072",
+      "is_oa": true,
+      "landing_page_url": "https://www.ncbi.nlm.nih.gov/pmc/articles/6572072",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S2764455111",
+        "display_name": "PubMed Central",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": true,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I1299303238",
+        "host_organization_name": "National Institutes of Health",
+        "host_organization_lineage": [
+          "https://openalex.org/I1299303238"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": "cc-by",
+      "license_id": "https://openalex.org/licenses/cc-by",
+      "version": "submittedVersion",
+      "is_accepted": false,
+      "is_published": false,
+      "raw_source_name": "Int J Environ Res Public Health",
+      "raw_type": "Text"
+    },
+    {
+      "id": "doi:10.5167/uzh-171214",
+      "is_oa": true,
+      "landing_page_url": "https://doi.org/10.5167/uzh-171214",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S7407051291",
+        "display_name": "Universit\u00e4t Z\u00fcrich, ZORA",
+        "issn_l": null,
+        "issn": [],
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": null,
+        "host_organization_name": null,
+        "host_organization_lineage": [],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": null,
+      "license_id": null,
+      "version": null,
+      "is_accepted": false,
+      "is_published": null,
+      "raw_source_name": null,
+      "raw_type": "JournalArticle"
+    }
+  ],
+  "best_oa_location": {
+    "id": "doi:10.3390/ijerph16101777",
+    "is_oa": true,
+    "landing_page_url": "https://doi.org/10.3390/ijerph16101777",
+    "pdf_url": "https://www.mdpi.com/1660-4601/16/10/1777/pdf",
+    "source": {
+      "id": "https://openalex.org/S15239247",
+      "display_name": "International Journal of Environmental Research and Public Health",
+      "issn_l": "1660-4601",
+      "issn": [
+        "1660-4601",
+        "1661-7827"
+      ],
+      "is_oa": true,
+      "is_in_doaj": false,
+      "is_core": true,
+      "host_organization": "https://openalex.org/P4310310987",
+      "host_organization_name": "Multidisciplinary Digital Publishing Institute",
+      "host_organization_lineage": [
+        "https://openalex.org/P4310310987"
+      ],
+      "host_organization_lineage_names": [
+        "Multidisciplinary Digital Publishing Institute"
+      ],
+      "type": "journal"
+    },
+    "license": "cc-by",
+    "license_id": "https://openalex.org/licenses/cc-by",
+    "version": "publishedVersion",
+    "is_accepted": true,
+    "is_published": true,
+    "raw_source_name": "International Journal of Environmental Research and Public Health",
+    "raw_type": "journal-article"
+  },
+  "sustainable_development_goals": [],
+  "awards": [],
+  "funders": [],
+  "has_content": {
+    "pdf": true,
+    "grobid_xml": true
+  },
+  "content_urls": {
+    "pdf": "https://content.openalex.org/works/W2945606257.pdf",
+    "grobid_xml": "https://content.openalex.org/works/W2945606257.grobid-xml"
+  },
+  "referenced_works_count": 31,
+  "referenced_works": [
+    "https://openalex.org/W1750872931",
+    "https://openalex.org/W1970998445",
+    "https://openalex.org/W1983987201",
+    "https://openalex.org/W1991395672",
+    "https://openalex.org/W2050462655",
+    "https://openalex.org/W2063356449",
+    "https://openalex.org/W2076719927",
+    "https://openalex.org/W2080401212",
+    "https://openalex.org/W2121197172",
+    "https://openalex.org/W2161445120",
+    "https://openalex.org/W2254705526",
+    "https://openalex.org/W2266587799",
+    "https://openalex.org/W2288752066",
+    "https://openalex.org/W2565251155",
+    "https://openalex.org/W2586922672",
+    "https://openalex.org/W2587167574",
+    "https://openalex.org/W2587528911",
+    "https://openalex.org/W2605651261",
+    "https://openalex.org/W2735512663",
+    "https://openalex.org/W2747752879",
+    "https://openalex.org/W2763709039",
+    "https://openalex.org/W2765482983",
+    "https://openalex.org/W2766024079",
+    "https://openalex.org/W2784598358",
+    "https://openalex.org/W2799425396",
+    "https://openalex.org/W2810081679",
+    "https://openalex.org/W2884888896",
+    "https://openalex.org/W2898951806",
+    "https://openalex.org/W2915221788",
+    "https://openalex.org/W2921550909",
+    "https://openalex.org/W2924799216"
+  ],
+  "related_works": [
+    "https://openalex.org/W2748952813",
+    "https://openalex.org/W3031052312",
+    "https://openalex.org/W4389568370",
+    "https://openalex.org/W3032375762",
+    "https://openalex.org/W1995515455",
+    "https://openalex.org/W2080531066",
+    "https://openalex.org/W2586801360",
+    "https://openalex.org/W3108674512",
+    "https://openalex.org/W1506200166",
+    "https://openalex.org/W2012600241"
+  ],
+  "abstract_inverted_index": {
+    "The": [
+      0
+    ],
+    "aim": [
+      1
+    ],
+    "of": [
+      2
+    ],
+    "the": [
+      3,
+      9,
+      29,
+      48,
+      93,
+      98,
+      101,
+      105,
+      129,
+      139,
+      144,
+      151,
+      155,
+      168,
+      174
+    ],
+    "present": [
+      4
+    ],
+    "study": [
+      5
+    ],
+    "was": [
+      6,
+      97,
+      136,
+      157
+    ],
+    "to": [
+      7,
+      20
+    ],
+    "examine": [
+      8
+    ],
+    "age-related": [
+      10
+    ],
+    "differences": [
+      11
+    ],
+    "in": [
+      12,
+      16,
+      28,
+      117,
+      138,
+      143,
+      150,
+      154,
+      167
+    ],
+    "performance": [
+      13
+    ],
+    "and": [
+      14,
+      36,
+      100,
+      121,
+      183
+    ],
+    "pacing": [
+      15,
+      116,
+      180
+    ],
+    "a": [
+      17,
+      21,
+      114,
+      177
+    ],
+    "half-marathon": [
+      18,
+      32,
+      152,
+      169
+    ],
+    "compared": [
+      19
+    ],
+    "marathon.": [
+      22
+    ],
+    "All": [
+      23,
+      110
+    ],
+    "finishers": [
+      24,
+      166
+    ],
+    "(n": [
+      25,
+      33,
+      38
+    ],
+    "=": [
+      26,
+      34,
+      39
+    ],
+    "9137)": [
+      27
+    ],
+    "Ljubljana": [
+      30
+    ],
+    "2017": [
+      31
+    ],
+    "7258)": [
+      35
+    ],
+    "marathon": [
+      37,
+      156
+    ],
+    "1853)": [
+      40
+    ],
+    "with": [
+      41,
+      123
+    ],
+    "available": [
+      42
+    ],
+    "data": [
+      43
+    ],
+    "on": [
+      44
+    ],
+    "split": [
+      45
+    ],
+    "times": [
+      46
+    ],
+    "during": [
+      47
+    ],
+    "races,": [
+      49
+    ],
+    "were": [
+      50,
+      55
+    ],
+    "analysed": [
+      51
+    ],
+    "for": [
+      52,
+      159
+    ],
+    "pacing.": [
+      53
+    ],
+    "Half-marathoners": [
+      54
+    ],
+    "slower": [
+      56,
+      127
+    ],
+    "than": [
+      57,
+      128,
+      153,
+      181
+    ],
+    "marathoners": [
+      58
+    ],
+    "among": [
+      59,
+      75
+    ],
+    "women,": [
+      60
+    ],
+    "(2.77": [
+      61
+    ],
+    "\u00b1": [
+      62,
+      66,
+      78,
+      82
+    ],
+    "0.35": [
+      63
+    ],
+    "versus": [
+      64,
+      80
+    ],
+    "2.86": [
+      65
+    ],
+    "0.39": [
+      67
+    ],
+    "m\u00b7s\u22121": [
+      68,
+      84
+    ],
+    "respectively,": [
+      69,
+      85
+    ],
+    "p": [
+      70,
+      86
+    ],
+    "&lt;": [
+      71,
+      87,
+      108
+    ],
+    "0.001),": [
+      72
+    ],
+    "but": [
+      73,
+      141
+    ],
+    "faster": [
+      74
+    ],
+    "men": [
+      76
+    ],
+    "(3.14": [
+      77
+    ],
+    "0.45": [
+      79
+    ],
+    "3.08": [
+      81
+    ],
+    "0.46": [
+      83
+    ],
+    "0.001).": [
+      88,
+      109
+    ],
+    "In": [
+      89,
+      163
+    ],
+    "both": [
+      90,
+      118
+    ],
+    "race": [
+      91,
+      119
+    ],
+    "distances,": [
+      92
+    ],
+    "&lt;25": [
+      94
+    ],
+    "age": [
+      95,
+      103,
+      111,
+      161
+    ],
+    "group": [
+      96,
+      104
+    ],
+    "fastest": [
+      99
+    ],
+    "&gt;54": [
+      102
+    ],
+    "slowest": [
+      106
+    ],
+    "(p": [
+      107
+    ],
+    "groups": [
+      112
+    ],
+    "presented": [
+      113,
+      176
+    ],
+    "positive": [
+      115
+    ],
+    "distances": [
+      120
+    ],
+    "genders,": [
+      122
+    ],
+    "each": [
+      124
+    ],
+    "segment": [
+      125
+    ],
+    "being": [
+      126
+    ],
+    "previous": [
+      130
+    ],
+    "one.": [
+      131
+    ],
+    "However,": [
+      132
+    ],
+    "an": [
+      133,
+      187
+    ],
+    "end": [
+      134,
+      188
+    ],
+    "spurt": [
+      135
+    ],
+    "observed": [
+      137
+    ],
+    "marathon,": [
+      140
+    ],
+    "not": [
+      142,
+      185
+    ],
+    "half-marathon.": [
+      145
+    ],
+    "A": [
+      146
+    ],
+    "more": [
+      147,
+      178
+    ],
+    "even": [
+      148,
+      179
+    ],
+    "pace": [
+      149
+    ],
+    "shown": [
+      158
+    ],
+    "most": [
+      160
+    ],
+    "groups.": [
+      162
+    ],
+    "summary,": [
+      164
+    ],
+    "age-group": [
+      165
+    ],
+    "decreased": [
+      170
+    ],
+    "running": [
+      171
+    ],
+    "speed": [
+      172
+    ],
+    "across": [
+      173
+    ],
+    "race,": [
+      175
+    ],
+    "marathoners,": [
+      182
+    ],
+    "did": [
+      184
+    ],
+    "show": [
+      186
+    ],
+    "spurt.": [
+      189
+    ]
+  },
+  "counts_by_year": [
+    {
+      "year": 2025,
+      "cited_by_count": 4
+    },
+    {
+      "year": 2024,
+      "cited_by_count": 3
+    },
+    {
+      "year": 2023,
+      "cited_by_count": 5
+    },
+    {
+      "year": 2022,
+      "cited_by_count": 5
+    },
+    {
+      "year": 2021,
+      "cited_by_count": 5
+    },
+    {
+      "year": 2020,
+      "cited_by_count": 9
+    },
+    {
+      "year": 2019,
+      "cited_by_count": 1
+    }
+  ],
+  "updated_date": "2026-07-02T09:51:11.867554",
+  "created_date": "2025-10-10T00:00:00"
+}

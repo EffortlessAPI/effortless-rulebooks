@@ -1,0 +1,630 @@
+{
+  "id": "https://openalex.org/W2086380415",
+  "doi": "https://doi.org/10.2139/ssrn.2460719",
+  "title": "Made in China, Sold in Norway: Local Labor Market Effects of an Import Shock",
+  "display_name": "Made in China, Sold in Norway: Local Labor Market Effects of an Import Shock",
+  "relevance_score": 119.86057,
+  "publication_year": 2014,
+  "publication_date": "2014-01-01",
+  "ids": {
+    "openalex": "https://openalex.org/W2086380415",
+    "doi": "https://doi.org/10.2139/ssrn.2460719",
+    "mag": "2086380415"
+  },
+  "language": "en",
+  "primary_location": {
+    "id": "doi:10.2139/ssrn.2460719",
+    "is_oa": true,
+    "landing_page_url": "https://doi.org/10.2139/ssrn.2460719",
+    "pdf_url": null,
+    "source": {
+      "id": "https://openalex.org/S4210172589",
+      "display_name": "SSRN Electronic Journal",
+      "issn_l": "1556-5068",
+      "issn": [
+        "1556-5068"
+      ],
+      "is_oa": true,
+      "is_in_doaj": false,
+      "is_core": false,
+      "host_organization": "https://openalex.org/I1318003438",
+      "host_organization_name": "RELX Group (Netherlands)",
+      "host_organization_lineage": [
+        "https://openalex.org/I1318003438"
+      ],
+      "host_organization_lineage_names": [],
+      "type": "repository"
+    },
+    "license": null,
+    "license_id": null,
+    "version": "publishedVersion",
+    "is_accepted": true,
+    "is_published": true,
+    "raw_source_name": "SSRN Electronic Journal",
+    "raw_type": "journal-article"
+  },
+  "type": "article",
+  "indexed_in": [
+    "crossref"
+  ],
+  "open_access": {
+    "is_oa": true,
+    "oa_status": "green",
+    "oa_url": "https://doi.org/10.2139/ssrn.2460719",
+    "any_repository_has_fulltext": true
+  },
+  "authorships": [
+    {
+      "author_position": "first",
+      "author": {
+        "id": "https://openalex.org/A5023577793",
+        "display_name": "Ragnhild Balsvik",
+        "orcid": null
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I931913249",
+          "display_name": "Norwegian School of Economics",
+          "ror": "https://ror.org/04v53s997",
+          "country_code": "NO",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I931913249"
+          ]
+        }
+      ],
+      "countries": [
+        "NO"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Ragnhild Balsvik",
+      "raw_affiliation_strings": [
+        "NHH Norwegian School of Economics - Department of Economics, Helleveien 30, N-5035 Bergen, Norway",
+        "Norwegian School of Economics (NHH) - Department of Economics"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "NHH Norwegian School of Economics - Department of Economics, Helleveien 30, N-5035 Bergen, Norway",
+          "institution_ids": [
+            "https://openalex.org/I931913249"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Norwegian School of Economics (NHH) - Department of Economics",
+          "institution_ids": [
+            "https://openalex.org/I931913249"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5031372444",
+        "display_name": "Sissel Jensen",
+        "orcid": null
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I931913249",
+          "display_name": "Norwegian School of Economics",
+          "ror": "https://ror.org/04v53s997",
+          "country_code": "NO",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I931913249"
+          ]
+        }
+      ],
+      "countries": [
+        "NO"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Sissel Jensen",
+      "raw_affiliation_strings": [
+        "NHH Norwegian School of Economics - Department of Economics, Helleveien 30, N-5035 Bergen, Norway",
+        "Norwegian School of Economics (NHH) - Department of Economics"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "NHH Norwegian School of Economics - Department of Economics, Helleveien 30, N-5035 Bergen, Norway",
+          "institution_ids": [
+            "https://openalex.org/I931913249"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Norwegian School of Economics (NHH) - Department of Economics",
+          "institution_ids": [
+            "https://openalex.org/I931913249"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "last",
+      "author": {
+        "id": "https://openalex.org/A5025896273",
+        "display_name": "Kjell G. Salvanes",
+        "orcid": "https://orcid.org/0000-0002-6381-4496"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I197518295",
+          "display_name": "IZA - Institute of Labor Economics",
+          "ror": "https://ror.org/029s44460",
+          "country_code": "DE",
+          "type": "nonprofit",
+          "lineage": [
+            "https://openalex.org/I197518295"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I931913249",
+          "display_name": "Norwegian School of Economics",
+          "ror": "https://ror.org/04v53s997",
+          "country_code": "NO",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I931913249"
+          ]
+        }
+      ],
+      "countries": [
+        "DE",
+        "NO"
+      ],
+      "is_corresponding": true,
+      "raw_author_name": "Kjell G. Salvanes",
+      "raw_affiliation_strings": [
+        "IZA Institute of Labor Economics, P.O. Box 7240, Bonn, D-53072, Germany",
+        "NHH Norwegian School of Economics - Department of Economics, Helleveien 30, N-5035 Bergen, Norway",
+        "IZA Institute of Labor Economics",
+        "Norwegian School of Economics (NHH) - Department of Economics"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "IZA Institute of Labor Economics, P.O. Box 7240, Bonn, D-53072, Germany",
+          "institution_ids": [
+            "https://openalex.org/I197518295"
+          ]
+        },
+        {
+          "raw_affiliation_string": "NHH Norwegian School of Economics - Department of Economics, Helleveien 30, N-5035 Bergen, Norway",
+          "institution_ids": [
+            "https://openalex.org/I931913249"
+          ]
+        },
+        {
+          "raw_affiliation_string": "IZA Institute of Labor Economics",
+          "institution_ids": [
+            "https://openalex.org/I197518295"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Norwegian School of Economics (NHH) - Department of Economics",
+          "institution_ids": [
+            "https://openalex.org/I931913249"
+          ]
+        }
+      ]
+    }
+  ],
+  "institutions": [],
+  "countries_distinct_count": 2,
+  "institutions_distinct_count": 3,
+  "corresponding_author_ids": [
+    "https://openalex.org/A5025896273"
+  ],
+  "corresponding_institution_ids": [
+    "https://openalex.org/I197518295",
+    "https://openalex.org/I931913249"
+  ],
+  "apc_list": null,
+  "apc_paid": null,
+  "fwci": null,
+  "has_fulltext": false,
+  "cited_by_count": 82,
+  "citation_normalized_percentile": null,
+  "cited_by_percentile_year": null,
+  "biblio": {
+    "volume": null,
+    "issue": null,
+    "first_page": null,
+    "last_page": null
+  },
+  "is_retracted": false,
+  "is_paratext": false,
+  "is_xpac": false,
+  "primary_topic": {
+    "id": "https://openalex.org/T10128",
+    "display_name": "Global trade and economics",
+    "score": 0.9997000098228455,
+    "subfield": {
+      "id": "https://openalex.org/subfields/2000",
+      "display_name": "General Economics, Econometrics and Finance"
+    },
+    "field": {
+      "id": "https://openalex.org/fields/20",
+      "display_name": "Economics, Econometrics and Finance"
+    },
+    "domain": {
+      "id": "https://openalex.org/domains/2",
+      "display_name": "Social Sciences"
+    }
+  },
+  "topics": [
+    {
+      "id": "https://openalex.org/T10128",
+      "display_name": "Global trade and economics",
+      "score": 0.9997000098228455,
+      "subfield": {
+        "id": "https://openalex.org/subfields/2000",
+        "display_name": "General Economics, Econometrics and Finance"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/20",
+        "display_name": "Economics, Econometrics and Finance"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/2",
+        "display_name": "Social Sciences"
+      }
+    },
+    {
+      "id": "https://openalex.org/T11770",
+      "display_name": "Fiscal Policy and Economic Growth",
+      "score": 0.9804999828338623,
+      "subfield": {
+        "id": "https://openalex.org/subfields/2002",
+        "display_name": "Economics and Econometrics"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/20",
+        "display_name": "Economics, Econometrics and Finance"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/2",
+        "display_name": "Social Sciences"
+      }
+    },
+    {
+      "id": "https://openalex.org/T13825",
+      "display_name": "Economic Policies and Impacts",
+      "score": 0.9763000011444092,
+      "subfield": {
+        "id": "https://openalex.org/subfields/2002",
+        "display_name": "Economics and Econometrics"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/20",
+        "display_name": "Economics, Econometrics and Finance"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/2",
+        "display_name": "Social Sciences"
+      }
+    }
+  ],
+  "keywords": [
+    {
+      "id": "https://openalex.org/keywords/china",
+      "display_name": "China",
+      "score": 0.7072542309761047
+    },
+    {
+      "id": "https://openalex.org/keywords/shock",
+      "display_name": "Shock (circulatory)",
+      "score": 0.6631525158882141
+    },
+    {
+      "id": "https://openalex.org/keywords/business",
+      "display_name": "Business",
+      "score": 0.4800868630409241
+    },
+    {
+      "id": "https://openalex.org/keywords/economics",
+      "display_name": "Economics",
+      "score": 0.4118977189064026
+    },
+    {
+      "id": "https://openalex.org/keywords/labour-economics",
+      "display_name": "Labour economics",
+      "score": 0.3524113595485687
+    },
+    {
+      "id": "https://openalex.org/keywords/political-science",
+      "display_name": "Political science",
+      "score": 0.11197355389595032
+    },
+    {
+      "id": "https://openalex.org/keywords/law",
+      "display_name": "Law",
+      "score": 0.07662463188171387
+    }
+  ],
+  "concepts": [
+    {
+      "id": "https://openalex.org/C191935318",
+      "wikidata": "https://www.wikidata.org/wiki/Q148",
+      "display_name": "China",
+      "level": 2,
+      "score": 0.7072542309761047
+    },
+    {
+      "id": "https://openalex.org/C2781300812",
+      "wikidata": "https://www.wikidata.org/wiki/Q178061",
+      "display_name": "Shock (circulatory)",
+      "level": 2,
+      "score": 0.6631525158882141
+    },
+    {
+      "id": "https://openalex.org/C144133560",
+      "wikidata": "https://www.wikidata.org/wiki/Q4830453",
+      "display_name": "Business",
+      "level": 0,
+      "score": 0.4800868630409241
+    },
+    {
+      "id": "https://openalex.org/C162324750",
+      "wikidata": "https://www.wikidata.org/wiki/Q8134",
+      "display_name": "Economics",
+      "level": 0,
+      "score": 0.4118977189064026
+    },
+    {
+      "id": "https://openalex.org/C145236788",
+      "wikidata": "https://www.wikidata.org/wiki/Q28161",
+      "display_name": "Labour economics",
+      "level": 1,
+      "score": 0.3524113595485687
+    },
+    {
+      "id": "https://openalex.org/C17744445",
+      "wikidata": "https://www.wikidata.org/wiki/Q36442",
+      "display_name": "Political science",
+      "level": 0,
+      "score": 0.11197355389595032
+    },
+    {
+      "id": "https://openalex.org/C199539241",
+      "wikidata": "https://www.wikidata.org/wiki/Q7748",
+      "display_name": "Law",
+      "level": 1,
+      "score": 0.07662463188171387
+    },
+    {
+      "id": "https://openalex.org/C71924100",
+      "wikidata": "https://www.wikidata.org/wiki/Q11190",
+      "display_name": "Medicine",
+      "level": 0,
+      "score": 0.0
+    },
+    {
+      "id": "https://openalex.org/C126322002",
+      "wikidata": "https://www.wikidata.org/wiki/Q11180",
+      "display_name": "Internal medicine",
+      "level": 1,
+      "score": 0.0
+    }
+  ],
+  "mesh": [],
+  "locations_count": 1,
+  "locations": [
+    {
+      "id": "doi:10.2139/ssrn.2460719",
+      "is_oa": true,
+      "landing_page_url": "https://doi.org/10.2139/ssrn.2460719",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4210172589",
+        "display_name": "SSRN Electronic Journal",
+        "issn_l": "1556-5068",
+        "issn": [
+          "1556-5068"
+        ],
+        "is_oa": true,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I1318003438",
+        "host_organization_name": "RELX Group (Netherlands)",
+        "host_organization_lineage": [
+          "https://openalex.org/I1318003438"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "publishedVersion",
+      "is_accepted": true,
+      "is_published": true,
+      "raw_source_name": "SSRN Electronic Journal",
+      "raw_type": "journal-article"
+    }
+  ],
+  "best_oa_location": {
+    "id": "doi:10.2139/ssrn.2460719",
+    "is_oa": true,
+    "landing_page_url": "https://doi.org/10.2139/ssrn.2460719",
+    "pdf_url": null,
+    "source": {
+      "id": "https://openalex.org/S4210172589",
+      "display_name": "SSRN Electronic Journal",
+      "issn_l": "1556-5068",
+      "issn": [
+        "1556-5068"
+      ],
+      "is_oa": true,
+      "is_in_doaj": false,
+      "is_core": false,
+      "host_organization": "https://openalex.org/I1318003438",
+      "host_organization_name": "RELX Group (Netherlands)",
+      "host_organization_lineage": [
+        "https://openalex.org/I1318003438"
+      ],
+      "host_organization_lineage_names": [],
+      "type": "repository"
+    },
+    "license": null,
+    "license_id": null,
+    "version": "publishedVersion",
+    "is_accepted": true,
+    "is_published": true,
+    "raw_source_name": "SSRN Electronic Journal",
+    "raw_type": "journal-article"
+  },
+  "sustainable_development_goals": [
+    {
+      "id": "https://metadata.un.org/sdg/8",
+      "score": 0.7699999809265137,
+      "display_name": "Decent work and economic growth"
+    }
+  ],
+  "awards": [],
+  "funders": [],
+  "has_content": {
+    "pdf": false,
+    "grobid_xml": false
+  },
+  "content_urls": null,
+  "referenced_works_count": 69,
+  "referenced_works": [
+    "https://openalex.org/W72016080",
+    "https://openalex.org/W98885250",
+    "https://openalex.org/W164576603",
+    "https://openalex.org/W171130034",
+    "https://openalex.org/W197361271",
+    "https://openalex.org/W224394791",
+    "https://openalex.org/W228142308",
+    "https://openalex.org/W338489414",
+    "https://openalex.org/W1518905352",
+    "https://openalex.org/W1551074054",
+    "https://openalex.org/W1581314733",
+    "https://openalex.org/W1731512856",
+    "https://openalex.org/W1790337597",
+    "https://openalex.org/W1849552674",
+    "https://openalex.org/W1856166306",
+    "https://openalex.org/W1873848185",
+    "https://openalex.org/W1940722735",
+    "https://openalex.org/W1968881902",
+    "https://openalex.org/W1985954450",
+    "https://openalex.org/W2011883215",
+    "https://openalex.org/W2029320109",
+    "https://openalex.org/W2030037690",
+    "https://openalex.org/W2030836361",
+    "https://openalex.org/W2031642610",
+    "https://openalex.org/W2045742039",
+    "https://openalex.org/W2061191340",
+    "https://openalex.org/W2083389057",
+    "https://openalex.org/W2086380415",
+    "https://openalex.org/W2087002294",
+    "https://openalex.org/W2097916756",
+    "https://openalex.org/W2106958987",
+    "https://openalex.org/W2116937292",
+    "https://openalex.org/W2127936559",
+    "https://openalex.org/W2131080689",
+    "https://openalex.org/W2132154762",
+    "https://openalex.org/W2139291112",
+    "https://openalex.org/W2140234065",
+    "https://openalex.org/W2141630795",
+    "https://openalex.org/W2148587764",
+    "https://openalex.org/W2152065848",
+    "https://openalex.org/W2153281510",
+    "https://openalex.org/W2153365214",
+    "https://openalex.org/W2160983121",
+    "https://openalex.org/W2163783058",
+    "https://openalex.org/W2163920208",
+    "https://openalex.org/W2167287316",
+    "https://openalex.org/W2249115532",
+    "https://openalex.org/W2558325214",
+    "https://openalex.org/W2747478874",
+    "https://openalex.org/W2889640263",
+    "https://openalex.org/W3110962494",
+    "https://openalex.org/W3121205444",
+    "https://openalex.org/W3121593539",
+    "https://openalex.org/W3122404814",
+    "https://openalex.org/W3122718503",
+    "https://openalex.org/W3122927893",
+    "https://openalex.org/W3123398635",
+    "https://openalex.org/W3123419609",
+    "https://openalex.org/W3123536342",
+    "https://openalex.org/W3124796732",
+    "https://openalex.org/W3125002920",
+    "https://openalex.org/W3125034490",
+    "https://openalex.org/W3125045204",
+    "https://openalex.org/W3125048723",
+    "https://openalex.org/W3125179269",
+    "https://openalex.org/W3125362695",
+    "https://openalex.org/W3148975945",
+    "https://openalex.org/W4229626717",
+    "https://openalex.org/W4233254730"
+  ],
+  "related_works": [
+    "https://openalex.org/W2350270224",
+    "https://openalex.org/W2354620178",
+    "https://openalex.org/W600967366",
+    "https://openalex.org/W2383989146",
+    "https://openalex.org/W2351486628",
+    "https://openalex.org/W2390481881",
+    "https://openalex.org/W2791039681",
+    "https://openalex.org/W2483714098",
+    "https://openalex.org/W2804125163",
+    "https://openalex.org/W2901234653"
+  ],
+  "abstract_inverted_index": null,
+  "counts_by_year": [
+    {
+      "year": 2025,
+      "cited_by_count": 4
+    },
+    {
+      "year": 2024,
+      "cited_by_count": 5
+    },
+    {
+      "year": 2023,
+      "cited_by_count": 5
+    },
+    {
+      "year": 2022,
+      "cited_by_count": 6
+    },
+    {
+      "year": 2021,
+      "cited_by_count": 6
+    },
+    {
+      "year": 2020,
+      "cited_by_count": 4
+    },
+    {
+      "year": 2019,
+      "cited_by_count": 7
+    },
+    {
+      "year": 2018,
+      "cited_by_count": 8
+    },
+    {
+      "year": 2017,
+      "cited_by_count": 5
+    },
+    {
+      "year": 2016,
+      "cited_by_count": 4
+    },
+    {
+      "year": 2015,
+      "cited_by_count": 17
+    },
+    {
+      "year": 2014,
+      "cited_by_count": 11
+    }
+  ],
+  "updated_date": "2026-06-16T07:32:37.131356",
+  "created_date": "2025-10-10T00:00:00"
+}

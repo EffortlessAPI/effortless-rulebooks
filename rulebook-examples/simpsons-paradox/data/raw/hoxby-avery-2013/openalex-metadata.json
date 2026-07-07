@@ -1,0 +1,1688 @@
+{
+  "id": "https://openalex.org/W2739137144",
+  "doi": "https://doi.org/10.3386/w23618",
+  "title": "Mobility Report Cards: The Role of Colleges in Intergenerational Mobility",
+  "display_name": "Mobility Report Cards: The Role of Colleges in Intergenerational Mobility",
+  "relevance_score": 65.00631,
+  "publication_year": 2017,
+  "publication_date": "2017-07-01",
+  "ids": {
+    "openalex": "https://openalex.org/W2739137144",
+    "doi": "https://doi.org/10.3386/w23618",
+    "mag": "2739137144"
+  },
+  "language": "en",
+  "primary_location": {
+    "id": "doi:10.3386/w23618",
+    "is_oa": true,
+    "landing_page_url": "https://doi.org/10.3386/w23618",
+    "pdf_url": "https://doi.org/10.3386/w23618",
+    "source": {
+      "id": "https://openalex.org/S2809516038",
+      "display_name": "National Bureau of Economic Research",
+      "issn_l": null,
+      "issn": null,
+      "is_oa": false,
+      "is_in_doaj": false,
+      "is_core": false,
+      "host_organization": null,
+      "host_organization_name": null,
+      "host_organization_lineage": [
+        "https://openalex.org/P4322614461"
+      ],
+      "host_organization_lineage_names": [
+        "National Bureau of Economic Research"
+      ],
+      "type": "repository"
+    },
+    "license": null,
+    "license_id": null,
+    "version": "publishedVersion",
+    "is_accepted": true,
+    "is_published": true,
+    "raw_source_name": "National Bureau of Economic Research",
+    "raw_type": "report"
+  },
+  "type": "preprint",
+  "indexed_in": [
+    "crossref"
+  ],
+  "open_access": {
+    "is_oa": true,
+    "oa_status": "green",
+    "oa_url": "https://doi.org/10.3386/w23618",
+    "any_repository_has_fulltext": true
+  },
+  "authorships": [
+    {
+      "author_position": "first",
+      "author": {
+        "id": "https://openalex.org/A5051484328",
+        "display_name": "Raj Chetty",
+        "orcid": "https://orcid.org/0000-0001-8610-8546"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I1300891529",
+          "display_name": "United States Department of the Treasury",
+          "ror": "https://ror.org/028t43p77",
+          "country_code": "US",
+          "type": "government",
+          "lineage": [
+            "https://openalex.org/I1300891529"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I1321305853",
+          "display_name": "National Bureau of Economic Research",
+          "ror": "https://ror.org/04grmx538",
+          "country_code": "US",
+          "type": "nonprofit",
+          "lineage": [
+            "https://openalex.org/I1321305853"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I27804330",
+          "display_name": "Brown University",
+          "ror": "https://ror.org/05gq02987",
+          "country_code": "US",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I27804330"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I95457486",
+          "display_name": "University of California, Berkeley",
+          "ror": "https://ror.org/01an7q238",
+          "country_code": "US",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I95457486"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I97018004",
+          "display_name": "Stanford University",
+          "ror": "https://ror.org/00f54p054",
+          "country_code": "US",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I97018004"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Raj Chetty",
+      "raw_affiliation_strings": [
+        "Department of Economics University of California, Berkeley 530 Evans Hall, #3880 Berkeley, CA 94720",
+        "NATIONAL BUREAU OF ECONOMIC RESEARCH 1050 Massachusetts Avenue Cambridge, MA 02138",
+        "Department of Economis Robinson Hall",
+        "U.S. Department of the Treasury 1500 Pennsylvania Avenue, NW Washington, D.C. 20220",
+        "Brown University Providence, RI 02912 and NBER",
+        "Department of Economics Stanford University 579 Serra Mall Stanford, CA 94305 and",
+        "Department of Economics University of California, Berkeley 530 Evans Hall #3880 Berkeley, CA 94720"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Department of Economics University of California, Berkeley 530 Evans Hall, #3880 Berkeley, CA 94720",
+          "institution_ids": [
+            "https://openalex.org/I95457486"
+          ]
+        },
+        {
+          "raw_affiliation_string": "NATIONAL BUREAU OF ECONOMIC RESEARCH 1050 Massachusetts Avenue Cambridge, MA 02138",
+          "institution_ids": [
+            "https://openalex.org/I1321305853"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Department of Economis Robinson Hall",
+          "institution_ids": []
+        },
+        {
+          "raw_affiliation_string": "U.S. Department of the Treasury 1500 Pennsylvania Avenue, NW Washington, D.C. 20220",
+          "institution_ids": [
+            "https://openalex.org/I1300891529"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Brown University Providence, RI 02912 and NBER",
+          "institution_ids": [
+            "https://openalex.org/I27804330"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Department of Economics Stanford University 579 Serra Mall Stanford, CA 94305 and",
+          "institution_ids": [
+            "https://openalex.org/I97018004"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Department of Economics University of California, Berkeley 530 Evans Hall #3880 Berkeley, CA 94720",
+          "institution_ids": [
+            "https://openalex.org/I95457486"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5080908193",
+        "display_name": "John N. Friedman",
+        "orcid": null
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I1300891529",
+          "display_name": "United States Department of the Treasury",
+          "ror": "https://ror.org/028t43p77",
+          "country_code": "US",
+          "type": "government",
+          "lineage": [
+            "https://openalex.org/I1300891529"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I1321305853",
+          "display_name": "National Bureau of Economic Research",
+          "ror": "https://ror.org/04grmx538",
+          "country_code": "US",
+          "type": "nonprofit",
+          "lineage": [
+            "https://openalex.org/I1321305853"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I27804330",
+          "display_name": "Brown University",
+          "ror": "https://ror.org/05gq02987",
+          "country_code": "US",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I27804330"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I95457486",
+          "display_name": "University of California, Berkeley",
+          "ror": "https://ror.org/01an7q238",
+          "country_code": "US",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I95457486"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I97018004",
+          "display_name": "Stanford University",
+          "ror": "https://ror.org/00f54p054",
+          "country_code": "US",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I97018004"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "John Friedman",
+      "raw_affiliation_strings": [
+        "Department of Economics Stanford University 579 Serra Mall Stanford, CA 94305 and",
+        "NATIONAL BUREAU OF ECONOMIC RESEARCH 1050 Massachusetts Avenue Cambridge, MA 02138",
+        "Department of Economics University of California, Berkeley 530 Evans Hall, #3880 Berkeley, CA 94720",
+        "Department of Economis Robinson Hall",
+        "Brown University Providence, RI 02912 and NBER",
+        "Department of Economics University of California, Berkeley 530 Evans Hall #3880 Berkeley, CA 94720",
+        "U.S. Department of the Treasury 1500 Pennsylvania Avenue, NW Washington, D.C. 20220"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Department of Economics Stanford University 579 Serra Mall Stanford, CA 94305 and",
+          "institution_ids": [
+            "https://openalex.org/I97018004"
+          ]
+        },
+        {
+          "raw_affiliation_string": "NATIONAL BUREAU OF ECONOMIC RESEARCH 1050 Massachusetts Avenue Cambridge, MA 02138",
+          "institution_ids": [
+            "https://openalex.org/I1321305853"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Department of Economics University of California, Berkeley 530 Evans Hall, #3880 Berkeley, CA 94720",
+          "institution_ids": [
+            "https://openalex.org/I95457486"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Department of Economis Robinson Hall",
+          "institution_ids": []
+        },
+        {
+          "raw_affiliation_string": "Brown University Providence, RI 02912 and NBER",
+          "institution_ids": [
+            "https://openalex.org/I27804330"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Department of Economics University of California, Berkeley 530 Evans Hall #3880 Berkeley, CA 94720",
+          "institution_ids": [
+            "https://openalex.org/I95457486"
+          ]
+        },
+        {
+          "raw_affiliation_string": "U.S. Department of the Treasury 1500 Pennsylvania Avenue, NW Washington, D.C. 20220",
+          "institution_ids": [
+            "https://openalex.org/I1300891529"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5017685817",
+        "display_name": "Emmanuel Saez",
+        "orcid": null
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I1300891529",
+          "display_name": "United States Department of the Treasury",
+          "ror": "https://ror.org/028t43p77",
+          "country_code": "US",
+          "type": "government",
+          "lineage": [
+            "https://openalex.org/I1300891529"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I1321305853",
+          "display_name": "National Bureau of Economic Research",
+          "ror": "https://ror.org/04grmx538",
+          "country_code": "US",
+          "type": "nonprofit",
+          "lineage": [
+            "https://openalex.org/I1321305853"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I27804330",
+          "display_name": "Brown University",
+          "ror": "https://ror.org/05gq02987",
+          "country_code": "US",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I27804330"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I95457486",
+          "display_name": "University of California, Berkeley",
+          "ror": "https://ror.org/01an7q238",
+          "country_code": "US",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I95457486"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I97018004",
+          "display_name": "Stanford University",
+          "ror": "https://ror.org/00f54p054",
+          "country_code": "US",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I97018004"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Emmanuel Saez",
+      "raw_affiliation_strings": [
+        "Department of Economics University of California, Berkeley 530 Evans Hall, #3880 Berkeley, CA 94720",
+        "Brown University Providence, RI 02912 and NBER",
+        "Department of Economis Robinson Hall",
+        "U.S. Department of the Treasury 1500 Pennsylvania Avenue, NW Washington, D.C. 20220",
+        "Department of Economics University of California, Berkeley 530 Evans Hall #3880 Berkeley, CA 94720",
+        "Department of Economics Stanford University 579 Serra Mall Stanford, CA 94305 and",
+        "NATIONAL BUREAU OF ECONOMIC RESEARCH 1050 Massachusetts Avenue Cambridge, MA 02138"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Department of Economics University of California, Berkeley 530 Evans Hall, #3880 Berkeley, CA 94720",
+          "institution_ids": [
+            "https://openalex.org/I95457486"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Brown University Providence, RI 02912 and NBER",
+          "institution_ids": [
+            "https://openalex.org/I27804330"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Department of Economis Robinson Hall",
+          "institution_ids": []
+        },
+        {
+          "raw_affiliation_string": "U.S. Department of the Treasury 1500 Pennsylvania Avenue, NW Washington, D.C. 20220",
+          "institution_ids": [
+            "https://openalex.org/I1300891529"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Department of Economics University of California, Berkeley 530 Evans Hall #3880 Berkeley, CA 94720",
+          "institution_ids": [
+            "https://openalex.org/I95457486"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Department of Economics Stanford University 579 Serra Mall Stanford, CA 94305 and",
+          "institution_ids": [
+            "https://openalex.org/I97018004"
+          ]
+        },
+        {
+          "raw_affiliation_string": "NATIONAL BUREAU OF ECONOMIC RESEARCH 1050 Massachusetts Avenue Cambridge, MA 02138",
+          "institution_ids": [
+            "https://openalex.org/I1321305853"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5073088056",
+        "display_name": "Nicholas Turner",
+        "orcid": null
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I1300891529",
+          "display_name": "United States Department of the Treasury",
+          "ror": "https://ror.org/028t43p77",
+          "country_code": "US",
+          "type": "government",
+          "lineage": [
+            "https://openalex.org/I1300891529"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I1321305853",
+          "display_name": "National Bureau of Economic Research",
+          "ror": "https://ror.org/04grmx538",
+          "country_code": "US",
+          "type": "nonprofit",
+          "lineage": [
+            "https://openalex.org/I1321305853"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I27804330",
+          "display_name": "Brown University",
+          "ror": "https://ror.org/05gq02987",
+          "country_code": "US",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I27804330"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I95457486",
+          "display_name": "University of California, Berkeley",
+          "ror": "https://ror.org/01an7q238",
+          "country_code": "US",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I95457486"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I97018004",
+          "display_name": "Stanford University",
+          "ror": "https://ror.org/00f54p054",
+          "country_code": "US",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I97018004"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Nicholas Turner",
+      "raw_affiliation_strings": [
+        "NATIONAL BUREAU OF ECONOMIC RESEARCH 1050 Massachusetts Avenue Cambridge, MA 02138",
+        "Department of Economis Robinson Hall",
+        "Brown University Providence, RI 02912 and NBER",
+        "Department of Economics University of California, Berkeley 530 Evans Hall, #3880 Berkeley, CA 94720",
+        "Department of Economics University of California, Berkeley 530 Evans Hall #3880 Berkeley, CA 94720",
+        "Department of Economics Stanford University 579 Serra Mall Stanford, CA 94305 and",
+        "U.S. Department of the Treasury 1500 Pennsylvania Avenue, NW Washington, D.C. 20220"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "NATIONAL BUREAU OF ECONOMIC RESEARCH 1050 Massachusetts Avenue Cambridge, MA 02138",
+          "institution_ids": [
+            "https://openalex.org/I1321305853"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Department of Economis Robinson Hall",
+          "institution_ids": []
+        },
+        {
+          "raw_affiliation_string": "Brown University Providence, RI 02912 and NBER",
+          "institution_ids": [
+            "https://openalex.org/I27804330"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Department of Economics University of California, Berkeley 530 Evans Hall, #3880 Berkeley, CA 94720",
+          "institution_ids": [
+            "https://openalex.org/I95457486"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Department of Economics University of California, Berkeley 530 Evans Hall #3880 Berkeley, CA 94720",
+          "institution_ids": [
+            "https://openalex.org/I95457486"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Department of Economics Stanford University 579 Serra Mall Stanford, CA 94305 and",
+          "institution_ids": [
+            "https://openalex.org/I97018004"
+          ]
+        },
+        {
+          "raw_affiliation_string": "U.S. Department of the Treasury 1500 Pennsylvania Avenue, NW Washington, D.C. 20220",
+          "institution_ids": [
+            "https://openalex.org/I1300891529"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "last",
+      "author": {
+        "id": "https://openalex.org/A5054542670",
+        "display_name": "Danny Yagan",
+        "orcid": null
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I1300891529",
+          "display_name": "United States Department of the Treasury",
+          "ror": "https://ror.org/028t43p77",
+          "country_code": "US",
+          "type": "government",
+          "lineage": [
+            "https://openalex.org/I1300891529"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I1321305853",
+          "display_name": "National Bureau of Economic Research",
+          "ror": "https://ror.org/04grmx538",
+          "country_code": "US",
+          "type": "nonprofit",
+          "lineage": [
+            "https://openalex.org/I1321305853"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I27804330",
+          "display_name": "Brown University",
+          "ror": "https://ror.org/05gq02987",
+          "country_code": "US",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I27804330"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I95457486",
+          "display_name": "University of California, Berkeley",
+          "ror": "https://ror.org/01an7q238",
+          "country_code": "US",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I95457486"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I97018004",
+          "display_name": "Stanford University",
+          "ror": "https://ror.org/00f54p054",
+          "country_code": "US",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I97018004"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Danny Yagan",
+      "raw_affiliation_strings": [
+        "Department of Economis Robinson Hall",
+        "Department of Economics Stanford University 579 Serra Mall Stanford, CA 94305 and",
+        "Department of Economics University of California, Berkeley 530 Evans Hall #3880 Berkeley, CA 94720",
+        "Brown University Providence, RI 02912 and NBER",
+        "Department of Economics University of California, Berkeley 530 Evans Hall, #3880 Berkeley, CA 94720",
+        "U.S. Department of the Treasury 1500 Pennsylvania Avenue, NW Washington, D.C. 20220",
+        "NATIONAL BUREAU OF ECONOMIC RESEARCH 1050 Massachusetts Avenue Cambridge, MA 02138"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Department of Economis Robinson Hall",
+          "institution_ids": []
+        },
+        {
+          "raw_affiliation_string": "Department of Economics Stanford University 579 Serra Mall Stanford, CA 94305 and",
+          "institution_ids": [
+            "https://openalex.org/I97018004"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Department of Economics University of California, Berkeley 530 Evans Hall #3880 Berkeley, CA 94720",
+          "institution_ids": [
+            "https://openalex.org/I95457486"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Brown University Providence, RI 02912 and NBER",
+          "institution_ids": [
+            "https://openalex.org/I27804330"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Department of Economics University of California, Berkeley 530 Evans Hall, #3880 Berkeley, CA 94720",
+          "institution_ids": [
+            "https://openalex.org/I95457486"
+          ]
+        },
+        {
+          "raw_affiliation_string": "U.S. Department of the Treasury 1500 Pennsylvania Avenue, NW Washington, D.C. 20220",
+          "institution_ids": [
+            "https://openalex.org/I1300891529"
+          ]
+        },
+        {
+          "raw_affiliation_string": "NATIONAL BUREAU OF ECONOMIC RESEARCH 1050 Massachusetts Avenue Cambridge, MA 02138",
+          "institution_ids": [
+            "https://openalex.org/I1321305853"
+          ]
+        }
+      ]
+    }
+  ],
+  "institutions": [],
+  "countries_distinct_count": 1,
+  "institutions_distinct_count": 5,
+  "corresponding_author_ids": [],
+  "corresponding_institution_ids": [],
+  "apc_list": null,
+  "apc_paid": null,
+  "fwci": null,
+  "has_fulltext": true,
+  "cited_by_count": 618,
+  "citation_normalized_percentile": null,
+  "cited_by_percentile_year": null,
+  "biblio": {
+    "volume": null,
+    "issue": null,
+    "first_page": null,
+    "last_page": null
+  },
+  "is_retracted": false,
+  "is_paratext": false,
+  "is_xpac": false,
+  "primary_topic": {
+    "id": "https://openalex.org/T12088",
+    "display_name": "Intergenerational and Educational Inequality Studies",
+    "score": 0.9983999729156494,
+    "subfield": {
+      "id": "https://openalex.org/subfields/3312",
+      "display_name": "Sociology and Political Science"
+    },
+    "field": {
+      "id": "https://openalex.org/fields/33",
+      "display_name": "Social Sciences"
+    },
+    "domain": {
+      "id": "https://openalex.org/domains/2",
+      "display_name": "Social Sciences"
+    }
+  },
+  "topics": [
+    {
+      "id": "https://openalex.org/T12088",
+      "display_name": "Intergenerational and Educational Inequality Studies",
+      "score": 0.9983999729156494,
+      "subfield": {
+        "id": "https://openalex.org/subfields/3312",
+        "display_name": "Sociology and Political Science"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/33",
+        "display_name": "Social Sciences"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/2",
+        "display_name": "Social Sciences"
+      }
+    },
+    {
+      "id": "https://openalex.org/T11645",
+      "display_name": "Urban, Neighborhood, and Segregation Studies",
+      "score": 0.9487000107765198,
+      "subfield": {
+        "id": "https://openalex.org/subfields/3312",
+        "display_name": "Sociology and Political Science"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/33",
+        "display_name": "Social Sciences"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/2",
+        "display_name": "Social Sciences"
+      }
+    },
+    {
+      "id": "https://openalex.org/T10235",
+      "display_name": "Health disparities and outcomes",
+      "score": 0.9462000131607056,
+      "subfield": {
+        "id": "https://openalex.org/subfields/3306",
+        "display_name": "Health"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/33",
+        "display_name": "Social Sciences"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/2",
+        "display_name": "Social Sciences"
+      }
+    }
+  ],
+  "keywords": [
+    {
+      "id": "https://openalex.org/keywords/earnings",
+      "display_name": "Earnings",
+      "score": 0.7614983320236206
+    },
+    {
+      "id": "https://openalex.org/keywords/social-mobility",
+      "display_name": "Social mobility",
+      "score": 0.6179758310317993
+    },
+    {
+      "id": "https://openalex.org/keywords/demographic-economics",
+      "display_name": "Demographic economics",
+      "score": 0.6078632473945618
+    },
+    {
+      "id": "https://openalex.org/keywords/elite",
+      "display_name": "Elite",
+      "score": 0.4997892379760742
+    },
+    {
+      "id": "https://openalex.org/keywords/descriptive-statistics",
+      "display_name": "Descriptive statistics",
+      "score": 0.47549164295196533
+    },
+    {
+      "id": "https://openalex.org/keywords/league-table",
+      "display_name": "League table",
+      "score": 0.47094476222991943
+    },
+    {
+      "id": "https://openalex.org/keywords/demography",
+      "display_name": "Demography",
+      "score": 0.3768741488456726
+    },
+    {
+      "id": "https://openalex.org/keywords/political-science",
+      "display_name": "Political science",
+      "score": 0.35169413685798645
+    },
+    {
+      "id": "https://openalex.org/keywords/geography",
+      "display_name": "Geography",
+      "score": 0.34887993335723877
+    },
+    {
+      "id": "https://openalex.org/keywords/economics",
+      "display_name": "Economics",
+      "score": 0.2864528000354767
+    },
+    {
+      "id": "https://openalex.org/keywords/sociology",
+      "display_name": "Sociology",
+      "score": 0.19343289732933044
+    },
+    {
+      "id": "https://openalex.org/keywords/mathematics",
+      "display_name": "Mathematics",
+      "score": 0.10467582941055298
+    },
+    {
+      "id": "https://openalex.org/keywords/accounting",
+      "display_name": "Accounting",
+      "score": 0.10453543066978455
+    },
+    {
+      "id": "https://openalex.org/keywords/statistics",
+      "display_name": "Statistics",
+      "score": 0.09657758474349976
+    }
+  ],
+  "concepts": [
+    {
+      "id": "https://openalex.org/C2781426361",
+      "wikidata": "https://www.wikidata.org/wiki/Q5326940",
+      "display_name": "Earnings",
+      "level": 2,
+      "score": 0.7614983320236206
+    },
+    {
+      "id": "https://openalex.org/C37129596",
+      "wikidata": "https://www.wikidata.org/wiki/Q194417",
+      "display_name": "Social mobility",
+      "level": 2,
+      "score": 0.6179758310317993
+    },
+    {
+      "id": "https://openalex.org/C4249254",
+      "wikidata": "https://www.wikidata.org/wiki/Q3044431",
+      "display_name": "Demographic economics",
+      "level": 1,
+      "score": 0.6078632473945618
+    },
+    {
+      "id": "https://openalex.org/C2775987171",
+      "wikidata": "https://www.wikidata.org/wiki/Q192797",
+      "display_name": "Elite",
+      "level": 3,
+      "score": 0.4997892379760742
+    },
+    {
+      "id": "https://openalex.org/C39896193",
+      "wikidata": "https://www.wikidata.org/wiki/Q380344",
+      "display_name": "Descriptive statistics",
+      "level": 2,
+      "score": 0.47549164295196533
+    },
+    {
+      "id": "https://openalex.org/C3020552257",
+      "wikidata": "https://www.wikidata.org/wiki/Q6509135",
+      "display_name": "League table",
+      "level": 2,
+      "score": 0.47094476222991943
+    },
+    {
+      "id": "https://openalex.org/C149923435",
+      "wikidata": "https://www.wikidata.org/wiki/Q37732",
+      "display_name": "Demography",
+      "level": 1,
+      "score": 0.3768741488456726
+    },
+    {
+      "id": "https://openalex.org/C17744445",
+      "wikidata": "https://www.wikidata.org/wiki/Q36442",
+      "display_name": "Political science",
+      "level": 0,
+      "score": 0.35169413685798645
+    },
+    {
+      "id": "https://openalex.org/C205649164",
+      "wikidata": "https://www.wikidata.org/wiki/Q1071",
+      "display_name": "Geography",
+      "level": 0,
+      "score": 0.34887993335723877
+    },
+    {
+      "id": "https://openalex.org/C162324750",
+      "wikidata": "https://www.wikidata.org/wiki/Q8134",
+      "display_name": "Economics",
+      "level": 0,
+      "score": 0.2864528000354767
+    },
+    {
+      "id": "https://openalex.org/C144024400",
+      "wikidata": "https://www.wikidata.org/wiki/Q21201",
+      "display_name": "Sociology",
+      "level": 0,
+      "score": 0.19343289732933044
+    },
+    {
+      "id": "https://openalex.org/C33923547",
+      "wikidata": "https://www.wikidata.org/wiki/Q395",
+      "display_name": "Mathematics",
+      "level": 0,
+      "score": 0.10467582941055298
+    },
+    {
+      "id": "https://openalex.org/C121955636",
+      "wikidata": "https://www.wikidata.org/wiki/Q4116214",
+      "display_name": "Accounting",
+      "level": 1,
+      "score": 0.10453543066978455
+    },
+    {
+      "id": "https://openalex.org/C105795698",
+      "wikidata": "https://www.wikidata.org/wiki/Q12483",
+      "display_name": "Statistics",
+      "level": 1,
+      "score": 0.09657758474349976
+    },
+    {
+      "id": "https://openalex.org/C94625758",
+      "wikidata": "https://www.wikidata.org/wiki/Q7163",
+      "display_name": "Politics",
+      "level": 2,
+      "score": 0.0
+    },
+    {
+      "id": "https://openalex.org/C167562979",
+      "wikidata": "https://www.wikidata.org/wiki/Q271857",
+      "display_name": "Classical economics",
+      "level": 1,
+      "score": 0.0
+    },
+    {
+      "id": "https://openalex.org/C199539241",
+      "wikidata": "https://www.wikidata.org/wiki/Q7748",
+      "display_name": "Law",
+      "level": 1,
+      "score": 0.0
+    }
+  ],
+  "mesh": [],
+  "locations_count": 1,
+  "locations": [
+    {
+      "id": "doi:10.3386/w23618",
+      "is_oa": true,
+      "landing_page_url": "https://doi.org/10.3386/w23618",
+      "pdf_url": "https://doi.org/10.3386/w23618",
+      "source": {
+        "id": "https://openalex.org/S2809516038",
+        "display_name": "National Bureau of Economic Research",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": null,
+        "host_organization_name": null,
+        "host_organization_lineage": [
+          "https://openalex.org/P4322614461"
+        ],
+        "host_organization_lineage_names": [
+          "National Bureau of Economic Research"
+        ],
+        "type": "repository"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "publishedVersion",
+      "is_accepted": true,
+      "is_published": true,
+      "raw_source_name": "National Bureau of Economic Research",
+      "raw_type": "report"
+    }
+  ],
+  "best_oa_location": {
+    "id": "doi:10.3386/w23618",
+    "is_oa": true,
+    "landing_page_url": "https://doi.org/10.3386/w23618",
+    "pdf_url": "https://doi.org/10.3386/w23618",
+    "source": {
+      "id": "https://openalex.org/S2809516038",
+      "display_name": "National Bureau of Economic Research",
+      "issn_l": null,
+      "issn": null,
+      "is_oa": false,
+      "is_in_doaj": false,
+      "is_core": false,
+      "host_organization": null,
+      "host_organization_name": null,
+      "host_organization_lineage": [
+        "https://openalex.org/P4322614461"
+      ],
+      "host_organization_lineage_names": [
+        "National Bureau of Economic Research"
+      ],
+      "type": "repository"
+    },
+    "license": null,
+    "license_id": null,
+    "version": "publishedVersion",
+    "is_accepted": true,
+    "is_published": true,
+    "raw_source_name": "National Bureau of Economic Research",
+    "raw_type": "report"
+  },
+  "sustainable_development_goals": [
+    {
+      "display_name": "No poverty",
+      "score": 0.7300000190734863,
+      "id": "https://metadata.un.org/sdg/1"
+    }
+  ],
+  "awards": [],
+  "funders": [
+    {
+      "id": "https://openalex.org/F4320306137",
+      "display_name": "Bill and Melinda Gates Foundation",
+      "ror": "https://ror.org/0456r8d26"
+    },
+    {
+      "id": "https://openalex.org/F4320306139",
+      "display_name": "Robert Wood Johnson Foundation",
+      "ror": "https://ror.org/02ymmdj85"
+    },
+    {
+      "id": "https://openalex.org/F4320306151",
+      "display_name": "Alfred P. Sloan Foundation",
+      "ror": "https://ror.org/052csg198"
+    },
+    {
+      "id": "https://openalex.org/F4320306819",
+      "display_name": "Sage Foundation",
+      "ror": null
+    },
+    {
+      "id": "https://openalex.org/F4320308931",
+      "display_name": "U.S. Department of the Treasury",
+      "ror": "https://ror.org/028t43p77"
+    },
+    {
+      "id": "https://openalex.org/F4320311571",
+      "display_name": "Laura and John Arnold Foundation",
+      "ror": "https://ror.org/04hqxh742"
+    },
+    {
+      "id": "https://openalex.org/F4320315936",
+      "display_name": "Washington Center for Equitable Growth",
+      "ror": "https://ror.org/05hw40m44"
+    },
+    {
+      "id": "https://openalex.org/F4320332564",
+      "display_name": "University of California, Davis",
+      "ror": "https://ror.org/05rrcem69"
+    }
+  ],
+  "has_content": {
+    "grobid_xml": true,
+    "pdf": true
+  },
+  "content_urls": {
+    "pdf": "https://content.openalex.org/works/W2739137144.pdf",
+    "grobid_xml": "https://content.openalex.org/works/W2739137144.grobid-xml"
+  },
+  "referenced_works_count": 37,
+  "referenced_works": [
+    "https://openalex.org/W62087154",
+    "https://openalex.org/W103453367",
+    "https://openalex.org/W133780848",
+    "https://openalex.org/W1480659293",
+    "https://openalex.org/W1574903529",
+    "https://openalex.org/W1575988068",
+    "https://openalex.org/W1580804840",
+    "https://openalex.org/W1587225073",
+    "https://openalex.org/W1601136252",
+    "https://openalex.org/W1601326273",
+    "https://openalex.org/W1969292440",
+    "https://openalex.org/W1973477639",
+    "https://openalex.org/W2024692342",
+    "https://openalex.org/W2037039536",
+    "https://openalex.org/W2044111293",
+    "https://openalex.org/W2075664771",
+    "https://openalex.org/W2084719416",
+    "https://openalex.org/W2090949540",
+    "https://openalex.org/W2094975045",
+    "https://openalex.org/W2100077359",
+    "https://openalex.org/W2105584013",
+    "https://openalex.org/W2138790619",
+    "https://openalex.org/W2139302720",
+    "https://openalex.org/W2144427781",
+    "https://openalex.org/W2151951881",
+    "https://openalex.org/W2171287604",
+    "https://openalex.org/W2408664382",
+    "https://openalex.org/W2562670863",
+    "https://openalex.org/W3125729990",
+    "https://openalex.org/W4214520487",
+    "https://openalex.org/W4229723758",
+    "https://openalex.org/W4238880841",
+    "https://openalex.org/W4300590325",
+    "https://openalex.org/W6605545976",
+    "https://openalex.org/W6671890516",
+    "https://openalex.org/W6682772290",
+    "https://openalex.org/W6991016165"
+  ],
+  "related_works": [
+    "https://openalex.org/W3173976592",
+    "https://openalex.org/W650538140",
+    "https://openalex.org/W4386010110",
+    "https://openalex.org/W2322432826",
+    "https://openalex.org/W2047008865",
+    "https://openalex.org/W2943855857",
+    "https://openalex.org/W1531633990",
+    "https://openalex.org/W2514187005",
+    "https://openalex.org/W4230236565",
+    "https://openalex.org/W2936349341"
+  ],
+  "abstract_inverted_index": {
+    "We": [
+      0,
+      22
+    ],
+    "characterize": [
+      1
+    ],
+    "intergenerational": [
+      2
+    ],
+    "income": [
+      3,
+      47,
+      68,
+      111
+    ],
+    "mobility": [
+      4,
+      137,
+      165
+    ],
+    "at": [
+      5,
+      93,
+      140,
+      168,
+      190,
+      197
+    ],
+    "each": [
+      6
+    ],
+    "college": [
+      7,
+      18,
+      59,
+      83
+    ],
+    "in": [
+      8,
+      41,
+      65,
+      108
+    ],
+    "the": [
+      9,
+      42,
+      46,
+      66,
+      82,
+      109,
+      115,
+      147,
+      177,
+      200,
+      219
+    ],
+    "United": [
+      10
+    ],
+    "States": [
+      11
+    ],
+    "using": [
+      12
+    ],
+    "data": [
+      13
+    ],
+    "for": [
+      14
+    ],
+    "over": [
+      15
+    ],
+    "30": [
+      16
+    ],
+    "million": [
+      17
+    ],
+    "students": [
+      19,
+      89,
+      103,
+      180
+    ],
+    "from": [
+      20,
+      72,
+      106,
+      181
+    ],
+    "1999-2013.": [
+      21
+    ],
+    "document": [
+      23
+    ],
+    "four": [
+      24
+    ],
+    "results.": [
+      25
+    ],
+    "First,": [
+      26
+    ],
+    "access": [
+      27,
+      124
+    ],
+    "to": [
+      28,
+      54,
+      162
+    ],
+    "colleges": [
+      29,
+      121,
+      128,
+      198,
+      226
+    ],
+    "varies": [
+      30,
+      125
+    ],
+    "greatly": [
+      31
+    ],
+    "by": [
+      32
+    ],
+    "parent": [
+      33
+    ],
+    "income.": [
+      34
+    ],
+    "For": [
+      35
+    ],
+    "example,": [
+      36
+    ],
+    "children": [
+      37,
+      71
+    ],
+    "whose": [
+      38,
+      62
+    ],
+    "parents": [
+      39,
+      63
+    ],
+    "are": [
+      40,
+      49,
+      64,
+      90,
+      138,
+      166
+    ],
+    "top": [
+      43,
+      116,
+      163
+    ],
+    "1%": [
+      44
+    ],
+    "of": [
+      45,
+      98,
+      102,
+      134,
+      150,
+      158,
+      179,
+      203,
+      234
+    ],
+    "distribution": [
+      48
+    ],
+    "77": [
+      50
+    ],
+    "times": [
+      51
+    ],
+    "more": [
+      52
+    ],
+    "likely": [
+      53
+    ],
+    "attend": [
+      55
+    ],
+    "an": [
+      56
+    ],
+    "Ivy": [
+      57,
+      173
+    ],
+    "League": [
+      58,
+      174
+    ],
+    "than": [
+      60
+    ],
+    "those": [
+      61
+    ],
+    "bottom": [
+      67,
+      110
+    ],
+    "quintile.": [
+      69
+    ],
+    "Second,": [
+      70
+    ],
+    "low-and": [
+      73
+    ],
+    "high-income": [
+      74
+    ],
+    "families": [
+      75,
+      107,
+      183
+    ],
+    "have": [
+      76
+    ],
+    "similar": [
+      77,
+      130
+    ],
+    "earnings": [
+      78,
+      131
+    ],
+    "outcomes": [
+      79
+    ],
+    "conditional": [
+      80
+    ],
+    "on": [
+      81,
+      216
+    ],
+    "they": [
+      84
+    ],
+    "attend,": [
+      85
+    ],
+    "indicating": [
+      86
+    ],
+    "that": [
+      87,
+      227
+    ],
+    "low-income": [
+      88,
+      123,
+      182
+    ],
+    "not": [
+      91,
+      185,
+      211
+    ],
+    "mismatched": [
+      92
+    ],
+    "selective": [
+      94
+    ],
+    "colleges.": [
+      95,
+      156
+    ],
+    "Third,": [
+      96
+    ],
+    "rates": [
+      97,
+      202
+    ],
+    "upward": [
+      99,
+      235
+    ],
+    "mobilitythe": [
+      100
+    ],
+    "fraction": [
+      101,
+      178
+    ],
+    "who": [
+      104
+    ],
+    "come": [
+      105
+    ],
+    "quintile": [
+      112,
+      117,
+      136,
+      161
+    ],
+    "and": [
+      113,
+      153
+    ],
+    "reach": [
+      114
+    ],
+    "-differ": [
+      118
+    ],
+    "substantially": [
+      119,
+      187
+    ],
+    "across": [
+      120,
+      127
+    ],
+    "because": [
+      122
+    ],
+    "significantly": [
+      126
+    ],
+    "with": [
+      129,
+      199
+    ],
+    "outcomes.": [
+      132
+    ],
+    "Rates": [
+      133,
+      157
+    ],
+    "bottom-to-top": [
+      135
+    ],
+    "highest": [
+      139,
+      167,
+      201
+    ],
+    "certain": [
+      141
+    ],
+    "mid-tier": [
+      142
+    ],
+    "public": [
+      143
+    ],
+    "universities,": [
+      144
+    ],
+    "such": [
+      145,
+      171
+    ],
+    "as": [
+      146,
+      172,
+      231
+    ],
+    "City": [
+      148
+    ],
+    "University": [
+      149
+    ],
+    "New": [
+      151
+    ],
+    "York": [
+      152
+    ],
+    "California": [
+      154
+    ],
+    "State": [
+      155
+    ],
+    "upper-tail": [
+      159
+    ],
+    "(bottom": [
+      160
+    ],
+    "1%)": [
+      164
+    ],
+    "elite": [
+      169,
+      191
+    ],
+    "colleges,": [
+      170,
+      193
+    ],
+    "universities.": [
+      175
+    ],
+    "Fourth,": [
+      176
+    ],
+    "did": [
+      184
+    ],
+    "change": [
+      186
+    ],
+    "between": [
+      188
+    ],
+    "2000-2011": [
+      189
+    ],
+    "private": [
+      192
+    ],
+    "but": [
+      194
+    ],
+    "fell": [
+      195
+    ],
+    "sharply": [
+      196
+    ],
+    "bottom-to-top-quintile": [
+      204
+    ],
+    "mobility.": [
+      205,
+      236
+    ],
+    "Although": [
+      206
+    ],
+    "our": [
+      207
+    ],
+    "descriptive": [
+      208
+    ],
+    "analysis": [
+      209
+    ],
+    "does": [
+      210
+    ],
+    "identify": [
+      212
+    ],
+    "colleges'": [
+      213
+    ],
+    "causal": [
+      214
+    ],
+    "effects": [
+      215
+    ],
+    "students'": [
+      217
+    ],
+    "outcomes,": [
+      218
+    ],
+    "publicly": [
+      220
+    ],
+    "available": [
+      221
+    ],
+    "statistics": [
+      222
+    ],
+    "constructed": [
+      223
+    ],
+    "here": [
+      224
+    ],
+    "highlight": [
+      225
+    ],
+    "deserve": [
+      228
+    ],
+    "further": [
+      229
+    ],
+    "study": [
+      230
+    ],
+    "potential": [
+      232
+    ],
+    "engines": [
+      233
+    ]
+  },
+  "counts_by_year": [
+    {
+      "year": 2026,
+      "cited_by_count": 14
+    },
+    {
+      "year": 2025,
+      "cited_by_count": 44
+    },
+    {
+      "year": 2024,
+      "cited_by_count": 64
+    },
+    {
+      "year": 2023,
+      "cited_by_count": 59
+    },
+    {
+      "year": 2022,
+      "cited_by_count": 92
+    },
+    {
+      "year": 2021,
+      "cited_by_count": 109
+    },
+    {
+      "year": 2020,
+      "cited_by_count": 102
+    },
+    {
+      "year": 2019,
+      "cited_by_count": 55
+    },
+    {
+      "year": 2018,
+      "cited_by_count": 51
+    },
+    {
+      "year": 2017,
+      "cited_by_count": 22
+    },
+    {
+      "year": 2016,
+      "cited_by_count": 3
+    },
+    {
+      "year": 2015,
+      "cited_by_count": 2
+    },
+    {
+      "year": 2014,
+      "cited_by_count": 1
+    }
+  ],
+  "updated_date": "2026-06-26T08:34:08.712188",
+  "created_date": "2025-10-10T00:00:00"
+}

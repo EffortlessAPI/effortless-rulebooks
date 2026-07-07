@@ -1,0 +1,1170 @@
+{
+  "id": "https://openalex.org/W3126113144",
+  "doi": "https://doi.org/10.1257/jep.23.1.77",
+  "title": "Deciphering the Liquidity and Credit Crunch 2007\u20132008",
+  "display_name": "Deciphering the Liquidity and Credit Crunch 2007\u20132008",
+  "relevance_score": 352.32785,
+  "publication_year": 2009,
+  "publication_date": "2009-01-01",
+  "ids": {
+    "openalex": "https://openalex.org/W3126113144",
+    "doi": "https://doi.org/10.1257/jep.23.1.77",
+    "mag": "3126113144"
+  },
+  "language": "en",
+  "primary_location": {
+    "id": "doi:10.1257/jep.23.1.77",
+    "is_oa": true,
+    "landing_page_url": "https://doi.org/10.1257/jep.23.1.77",
+    "pdf_url": "https://www.aeaweb.org/articles/pdf/doi/10.1257/jep.23.1.77",
+    "source": {
+      "id": "https://openalex.org/S72880728",
+      "display_name": "The Journal of Economic Perspectives",
+      "issn_l": "0895-3309",
+      "issn": [
+        "0895-3309",
+        "1944-7965"
+      ],
+      "is_oa": false,
+      "is_in_doaj": false,
+      "is_core": true,
+      "host_organization": "https://openalex.org/P4310315912",
+      "host_organization_name": "American Economic Association",
+      "host_organization_lineage": [
+        "https://openalex.org/P4310315912"
+      ],
+      "host_organization_lineage_names": [
+        "American Economic Association"
+      ],
+      "type": "journal"
+    },
+    "license": "other-oa",
+    "license_id": "https://openalex.org/licenses/other-oa",
+    "version": "publishedVersion",
+    "is_accepted": true,
+    "is_published": true,
+    "raw_source_name": "Journal of Economic Perspectives",
+    "raw_type": "journal-article"
+  },
+  "type": "article",
+  "indexed_in": [
+    "crossref"
+  ],
+  "open_access": {
+    "is_oa": true,
+    "oa_status": "hybrid",
+    "oa_url": "https://www.aeaweb.org/articles/pdf/doi/10.1257/jep.23.1.77",
+    "any_repository_has_fulltext": false
+  },
+  "authorships": [
+    {
+      "author_position": "first",
+      "author": {
+        "id": "https://openalex.org/A5034194808",
+        "display_name": "Markus K. Brunnermeier",
+        "orcid": null
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I20089843",
+          "display_name": "Princeton University",
+          "ror": "https://ror.org/00hx57361",
+          "country_code": "US",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I20089843"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": true,
+      "raw_author_name": "Markus K Brunnermeier",
+      "raw_affiliation_strings": [
+        "Princeton University, Princeton, New Jersey"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Princeton University, Princeton, New Jersey",
+          "institution_ids": [
+            "https://openalex.org/I20089843"
+          ]
+        }
+      ]
+    }
+  ],
+  "institutions": [],
+  "countries_distinct_count": 1,
+  "institutions_distinct_count": 1,
+  "corresponding_author_ids": [
+    "https://openalex.org/A5034194808"
+  ],
+  "corresponding_institution_ids": [
+    "https://openalex.org/I20089843"
+  ],
+  "apc_list": null,
+  "apc_paid": null,
+  "fwci": 376.9085,
+  "has_fulltext": true,
+  "cited_by_count": 3408,
+  "citation_normalized_percentile": {
+    "value": 1.0,
+    "is_in_top_1_percent": true,
+    "is_in_top_10_percent": true
+  },
+  "cited_by_percentile_year": {
+    "min": 99,
+    "max": 100
+  },
+  "biblio": {
+    "volume": "23",
+    "issue": "1",
+    "first_page": "77",
+    "last_page": "100"
+  },
+  "is_retracted": false,
+  "is_paratext": false,
+  "is_xpac": false,
+  "primary_topic": {
+    "id": "https://openalex.org/T10127",
+    "display_name": "Banking stability, regulation, efficiency",
+    "score": 0.9997000098228455,
+    "subfield": {
+      "id": "https://openalex.org/subfields/2003",
+      "display_name": "Finance"
+    },
+    "field": {
+      "id": "https://openalex.org/fields/20",
+      "display_name": "Economics, Econometrics and Finance"
+    },
+    "domain": {
+      "id": "https://openalex.org/domains/2",
+      "display_name": "Social Sciences"
+    }
+  },
+  "topics": [
+    {
+      "id": "https://openalex.org/T10127",
+      "display_name": "Banking stability, regulation, efficiency",
+      "score": 0.9997000098228455,
+      "subfield": {
+        "id": "https://openalex.org/subfields/2003",
+        "display_name": "Finance"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/20",
+        "display_name": "Economics, Econometrics and Finance"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/2",
+        "display_name": "Social Sciences"
+      }
+    },
+    {
+      "id": "https://openalex.org/T10632",
+      "display_name": "Housing Market and Economics",
+      "score": 0.9976000189781189,
+      "subfield": {
+        "id": "https://openalex.org/subfields/2002",
+        "display_name": "Economics and Econometrics"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/20",
+        "display_name": "Economics, Econometrics and Finance"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/2",
+        "display_name": "Social Sciences"
+      }
+    },
+    {
+      "id": "https://openalex.org/T11496",
+      "display_name": "Credit Risk and Financial Regulations",
+      "score": 0.994700014591217,
+      "subfield": {
+        "id": "https://openalex.org/subfields/2003",
+        "display_name": "Finance"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/20",
+        "display_name": "Economics, Econometrics and Finance"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/2",
+        "display_name": "Social Sciences"
+      }
+    }
+  ],
+  "keywords": [
+    {
+      "id": "https://openalex.org/keywords/market-liquidity",
+      "display_name": "Market liquidity",
+      "score": 0.6828622817993164
+    },
+    {
+      "id": "https://openalex.org/keywords/stock-market",
+      "display_name": "Stock market",
+      "score": 0.6384360194206238
+    },
+    {
+      "id": "https://openalex.org/keywords/credit-crunch",
+      "display_name": "Credit crunch",
+      "score": 0.5700454711914062
+    },
+    {
+      "id": "https://openalex.org/keywords/financial-system",
+      "display_name": "Financial system",
+      "score": 0.5579560995101929
+    },
+    {
+      "id": "https://openalex.org/keywords/financial-crisis",
+      "display_name": "Financial crisis",
+      "score": 0.5544713735580444
+    },
+    {
+      "id": "https://openalex.org/keywords/economics",
+      "display_name": "Economics",
+      "score": 0.5432764887809753
+    },
+    {
+      "id": "https://openalex.org/keywords/economic-bubble",
+      "display_name": "Economic bubble",
+      "score": 0.5076574087142944
+    },
+    {
+      "id": "https://openalex.org/keywords/crunch",
+      "display_name": "Crunch",
+      "score": 0.506280779838562
+    },
+    {
+      "id": "https://openalex.org/keywords/default",
+      "display_name": "Default",
+      "score": 0.4888424277305603
+    },
+    {
+      "id": "https://openalex.org/keywords/liquidity-crisis",
+      "display_name": "Liquidity crisis",
+      "score": 0.4768487215042114
+    },
+    {
+      "id": "https://openalex.org/keywords/monetary-economics",
+      "display_name": "Monetary economics",
+      "score": 0.43729260563850403
+    },
+    {
+      "id": "https://openalex.org/keywords/market-capitalization",
+      "display_name": "Market capitalization",
+      "score": 0.4292055368423462
+    },
+    {
+      "id": "https://openalex.org/keywords/business",
+      "display_name": "Business",
+      "score": 0.35365796089172363
+    },
+    {
+      "id": "https://openalex.org/keywords/finance",
+      "display_name": "Finance",
+      "score": 0.2867427468299866
+    },
+    {
+      "id": "https://openalex.org/keywords/keynesian-economics",
+      "display_name": "Keynesian economics",
+      "score": 0.11536276340484619
+    }
+  ],
+  "concepts": [
+    {
+      "id": "https://openalex.org/C183582576",
+      "wikidata": "https://www.wikidata.org/wiki/Q184783",
+      "display_name": "Market liquidity",
+      "level": 2,
+      "score": 0.6828622817993164
+    },
+    {
+      "id": "https://openalex.org/C2780299701",
+      "wikidata": "https://www.wikidata.org/wiki/Q475000",
+      "display_name": "Stock market",
+      "level": 3,
+      "score": 0.6384360194206238
+    },
+    {
+      "id": "https://openalex.org/C180879305",
+      "wikidata": "https://www.wikidata.org/wiki/Q590998",
+      "display_name": "Credit crunch",
+      "level": 2,
+      "score": 0.5700454711914062
+    },
+    {
+      "id": "https://openalex.org/C73283319",
+      "wikidata": "https://www.wikidata.org/wiki/Q1416617",
+      "display_name": "Financial system",
+      "level": 1,
+      "score": 0.5579560995101929
+    },
+    {
+      "id": "https://openalex.org/C2778300220",
+      "wikidata": "https://www.wikidata.org/wiki/Q114380",
+      "display_name": "Financial crisis",
+      "level": 2,
+      "score": 0.5544713735580444
+    },
+    {
+      "id": "https://openalex.org/C162324750",
+      "wikidata": "https://www.wikidata.org/wiki/Q8134",
+      "display_name": "Economics",
+      "level": 0,
+      "score": 0.5432764887809753
+    },
+    {
+      "id": "https://openalex.org/C201543015",
+      "wikidata": "https://www.wikidata.org/wiki/Q207781",
+      "display_name": "Economic bubble",
+      "level": 2,
+      "score": 0.5076574087142944
+    },
+    {
+      "id": "https://openalex.org/C2780614964",
+      "wikidata": "https://www.wikidata.org/wiki/Q811154",
+      "display_name": "Crunch",
+      "level": 2,
+      "score": 0.506280779838562
+    },
+    {
+      "id": "https://openalex.org/C69637215",
+      "wikidata": "https://www.wikidata.org/wiki/Q702362",
+      "display_name": "Default",
+      "level": 2,
+      "score": 0.4888424277305603
+    },
+    {
+      "id": "https://openalex.org/C176923680",
+      "wikidata": "https://www.wikidata.org/wiki/Q3002739",
+      "display_name": "Liquidity crisis",
+      "level": 3,
+      "score": 0.4768487215042114
+    },
+    {
+      "id": "https://openalex.org/C556758197",
+      "wikidata": "https://www.wikidata.org/wiki/Q580018",
+      "display_name": "Monetary economics",
+      "level": 1,
+      "score": 0.43729260563850403
+    },
+    {
+      "id": "https://openalex.org/C193445137",
+      "wikidata": "https://www.wikidata.org/wiki/Q471719",
+      "display_name": "Market capitalization",
+      "level": 4,
+      "score": 0.4292055368423462
+    },
+    {
+      "id": "https://openalex.org/C144133560",
+      "wikidata": "https://www.wikidata.org/wiki/Q4830453",
+      "display_name": "Business",
+      "level": 0,
+      "score": 0.35365796089172363
+    },
+    {
+      "id": "https://openalex.org/C10138342",
+      "wikidata": "https://www.wikidata.org/wiki/Q43015",
+      "display_name": "Finance",
+      "level": 1,
+      "score": 0.2867427468299866
+    },
+    {
+      "id": "https://openalex.org/C165556158",
+      "wikidata": "https://www.wikidata.org/wiki/Q83937",
+      "display_name": "Keynesian economics",
+      "level": 1,
+      "score": 0.11536276340484619
+    },
+    {
+      "id": "https://openalex.org/C86803240",
+      "wikidata": "https://www.wikidata.org/wiki/Q420",
+      "display_name": "Biology",
+      "level": 0,
+      "score": 0.0
+    },
+    {
+      "id": "https://openalex.org/C151730666",
+      "wikidata": "https://www.wikidata.org/wiki/Q7205",
+      "display_name": "Paleontology",
+      "level": 1,
+      "score": 0.0
+    },
+    {
+      "id": "https://openalex.org/C71924100",
+      "wikidata": "https://www.wikidata.org/wiki/Q11190",
+      "display_name": "Medicine",
+      "level": 0,
+      "score": 0.0
+    },
+    {
+      "id": "https://openalex.org/C1862650",
+      "wikidata": "https://www.wikidata.org/wiki/Q186005",
+      "display_name": "Physical therapy",
+      "level": 1,
+      "score": 0.0
+    },
+    {
+      "id": "https://openalex.org/C2780762169",
+      "wikidata": "https://www.wikidata.org/wiki/Q5905368",
+      "display_name": "Horse",
+      "level": 2,
+      "score": 0.0
+    }
+  ],
+  "mesh": [],
+  "locations_count": 2,
+  "locations": [
+    {
+      "id": "doi:10.1257/jep.23.1.77",
+      "is_oa": true,
+      "landing_page_url": "https://doi.org/10.1257/jep.23.1.77",
+      "pdf_url": "https://www.aeaweb.org/articles/pdf/doi/10.1257/jep.23.1.77",
+      "source": {
+        "id": "https://openalex.org/S72880728",
+        "display_name": "The Journal of Economic Perspectives",
+        "issn_l": "0895-3309",
+        "issn": [
+          "0895-3309",
+          "1944-7965"
+        ],
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": true,
+        "host_organization": "https://openalex.org/P4310315912",
+        "host_organization_name": "American Economic Association",
+        "host_organization_lineage": [
+          "https://openalex.org/P4310315912"
+        ],
+        "host_organization_lineage_names": [
+          "American Economic Association"
+        ],
+        "type": "journal"
+      },
+      "license": "other-oa",
+      "license_id": "https://openalex.org/licenses/other-oa",
+      "version": "publishedVersion",
+      "is_accepted": true,
+      "is_published": true,
+      "raw_source_name": "Journal of Economic Perspectives",
+      "raw_type": "journal-article"
+    },
+    {
+      "id": "pmh:oai:RePEc:aea:jecper:v:23:y:2009:i:1:p:77-100",
+      "is_oa": false,
+      "landing_page_url": "http://www.aeaweb.org/articles.php?doi=10.1257/jep.23.1.77",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4306401271",
+        "display_name": "RePEc: Research Papers in Economics",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I77793887",
+        "host_organization_name": "Federal Reserve Bank of St. Louis",
+        "host_organization_lineage": [
+          "https://openalex.org/I77793887"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "submittedVersion",
+      "is_accepted": false,
+      "is_published": false,
+      "raw_source_name": null,
+      "raw_type": "article"
+    }
+  ],
+  "best_oa_location": {
+    "id": "doi:10.1257/jep.23.1.77",
+    "is_oa": true,
+    "landing_page_url": "https://doi.org/10.1257/jep.23.1.77",
+    "pdf_url": "https://www.aeaweb.org/articles/pdf/doi/10.1257/jep.23.1.77",
+    "source": {
+      "id": "https://openalex.org/S72880728",
+      "display_name": "The Journal of Economic Perspectives",
+      "issn_l": "0895-3309",
+      "issn": [
+        "0895-3309",
+        "1944-7965"
+      ],
+      "is_oa": false,
+      "is_in_doaj": false,
+      "is_core": true,
+      "host_organization": "https://openalex.org/P4310315912",
+      "host_organization_name": "American Economic Association",
+      "host_organization_lineage": [
+        "https://openalex.org/P4310315912"
+      ],
+      "host_organization_lineage_names": [
+        "American Economic Association"
+      ],
+      "type": "journal"
+    },
+    "license": "other-oa",
+    "license_id": "https://openalex.org/licenses/other-oa",
+    "version": "publishedVersion",
+    "is_accepted": true,
+    "is_published": true,
+    "raw_source_name": "Journal of Economic Perspectives",
+    "raw_type": "journal-article"
+  },
+  "sustainable_development_goals": [],
+  "awards": [],
+  "funders": [],
+  "has_content": {
+    "grobid_xml": true,
+    "pdf": true
+  },
+  "content_urls": {
+    "pdf": "https://content.openalex.org/works/W3126113144.pdf",
+    "grobid_xml": "https://content.openalex.org/works/W3126113144.grobid-xml"
+  },
+  "referenced_works_count": 181,
+  "referenced_works": [
+    "https://openalex.org/W188819657",
+    "https://openalex.org/W1504668859",
+    "https://openalex.org/W1513281941",
+    "https://openalex.org/W1513892715",
+    "https://openalex.org/W1519724524",
+    "https://openalex.org/W1537143241",
+    "https://openalex.org/W1545420549",
+    "https://openalex.org/W1551378646",
+    "https://openalex.org/W1557832879",
+    "https://openalex.org/W1594052238",
+    "https://openalex.org/W1755645811",
+    "https://openalex.org/W1933529014",
+    "https://openalex.org/W1973949468",
+    "https://openalex.org/W1986247581",
+    "https://openalex.org/W1990576602",
+    "https://openalex.org/W1996087428",
+    "https://openalex.org/W1997825294",
+    "https://openalex.org/W1998907816",
+    "https://openalex.org/W2000578291",
+    "https://openalex.org/W2001372965",
+    "https://openalex.org/W2008761220",
+    "https://openalex.org/W2009554484",
+    "https://openalex.org/W2011133454",
+    "https://openalex.org/W2019222975",
+    "https://openalex.org/W2019524785",
+    "https://openalex.org/W2021433139",
+    "https://openalex.org/W2024330008",
+    "https://openalex.org/W2024590303",
+    "https://openalex.org/W2030843854",
+    "https://openalex.org/W2047394894",
+    "https://openalex.org/W2047582865",
+    "https://openalex.org/W2050031929",
+    "https://openalex.org/W2051251035",
+    "https://openalex.org/W2052144207",
+    "https://openalex.org/W2054047333",
+    "https://openalex.org/W2055054443",
+    "https://openalex.org/W2055721995",
+    "https://openalex.org/W2056697644",
+    "https://openalex.org/W2060190277",
+    "https://openalex.org/W2069666581",
+    "https://openalex.org/W2074432612",
+    "https://openalex.org/W2077487325",
+    "https://openalex.org/W2078568465",
+    "https://openalex.org/W2082663565",
+    "https://openalex.org/W2083570628",
+    "https://openalex.org/W2085933430",
+    "https://openalex.org/W2087892965",
+    "https://openalex.org/W2090344050",
+    "https://openalex.org/W2093136496",
+    "https://openalex.org/W2094111076",
+    "https://openalex.org/W2096826067",
+    "https://openalex.org/W2096877346",
+    "https://openalex.org/W2100116030",
+    "https://openalex.org/W2105311940",
+    "https://openalex.org/W2106986439",
+    "https://openalex.org/W2111137386",
+    "https://openalex.org/W2113831982",
+    "https://openalex.org/W2114111702",
+    "https://openalex.org/W2114863544",
+    "https://openalex.org/W2115379396",
+    "https://openalex.org/W2115765254",
+    "https://openalex.org/W2117847415",
+    "https://openalex.org/W2118624385",
+    "https://openalex.org/W2120510350",
+    "https://openalex.org/W2120874332",
+    "https://openalex.org/W2123572934",
+    "https://openalex.org/W2125327333",
+    "https://openalex.org/W2125991987",
+    "https://openalex.org/W2133414330",
+    "https://openalex.org/W2135064758",
+    "https://openalex.org/W2135353344",
+    "https://openalex.org/W2136743763",
+    "https://openalex.org/W2139283999",
+    "https://openalex.org/W2142108331",
+    "https://openalex.org/W2145229627",
+    "https://openalex.org/W2145284181",
+    "https://openalex.org/W2146726203",
+    "https://openalex.org/W2147246231",
+    "https://openalex.org/W2147827649",
+    "https://openalex.org/W2150133863",
+    "https://openalex.org/W2151496581",
+    "https://openalex.org/W2152007396",
+    "https://openalex.org/W2154082892",
+    "https://openalex.org/W2154117776",
+    "https://openalex.org/W2154267219",
+    "https://openalex.org/W2154763780",
+    "https://openalex.org/W2154946469",
+    "https://openalex.org/W2155896993",
+    "https://openalex.org/W2157509893",
+    "https://openalex.org/W2158355061",
+    "https://openalex.org/W2161410734",
+    "https://openalex.org/W2162337502",
+    "https://openalex.org/W2166315388",
+    "https://openalex.org/W2167043875",
+    "https://openalex.org/W2235011776",
+    "https://openalex.org/W2321610319",
+    "https://openalex.org/W2475756458",
+    "https://openalex.org/W2796635882",
+    "https://openalex.org/W2955748848",
+    "https://openalex.org/W3020857451",
+    "https://openalex.org/W3021700394",
+    "https://openalex.org/W3022189757",
+    "https://openalex.org/W3023018440",
+    "https://openalex.org/W3121143455",
+    "https://openalex.org/W3121329161",
+    "https://openalex.org/W3121434163",
+    "https://openalex.org/W3121486081",
+    "https://openalex.org/W3121562128",
+    "https://openalex.org/W3121588266",
+    "https://openalex.org/W3121630491",
+    "https://openalex.org/W3121674274",
+    "https://openalex.org/W3121699385",
+    "https://openalex.org/W3121720171",
+    "https://openalex.org/W3121830457",
+    "https://openalex.org/W3121908371",
+    "https://openalex.org/W3121936044",
+    "https://openalex.org/W3121947376",
+    "https://openalex.org/W3121961470",
+    "https://openalex.org/W3121977162",
+    "https://openalex.org/W3122043753",
+    "https://openalex.org/W3122255740",
+    "https://openalex.org/W3122465048",
+    "https://openalex.org/W3122527755",
+    "https://openalex.org/W3122580964",
+    "https://openalex.org/W3122589966",
+    "https://openalex.org/W3122637852",
+    "https://openalex.org/W3122661688",
+    "https://openalex.org/W3122675873",
+    "https://openalex.org/W3122766348",
+    "https://openalex.org/W3122855903",
+    "https://openalex.org/W3122945869",
+    "https://openalex.org/W3123010909",
+    "https://openalex.org/W3123115626",
+    "https://openalex.org/W3123303156",
+    "https://openalex.org/W3123397063",
+    "https://openalex.org/W3123443428",
+    "https://openalex.org/W3123464181",
+    "https://openalex.org/W3123475994",
+    "https://openalex.org/W3123489841",
+    "https://openalex.org/W3123579755",
+    "https://openalex.org/W3123627679",
+    "https://openalex.org/W3123634782",
+    "https://openalex.org/W3123661710",
+    "https://openalex.org/W3123703631",
+    "https://openalex.org/W3123714927",
+    "https://openalex.org/W3123759279",
+    "https://openalex.org/W3123762072",
+    "https://openalex.org/W3123842146",
+    "https://openalex.org/W3123869108",
+    "https://openalex.org/W3124136865",
+    "https://openalex.org/W3124204681",
+    "https://openalex.org/W3124269015",
+    "https://openalex.org/W3124346356",
+    "https://openalex.org/W3124550790",
+    "https://openalex.org/W3124605046",
+    "https://openalex.org/W3124607804",
+    "https://openalex.org/W3124784886",
+    "https://openalex.org/W3124815295",
+    "https://openalex.org/W3124914565",
+    "https://openalex.org/W3124923630",
+    "https://openalex.org/W3125000257",
+    "https://openalex.org/W3125014072",
+    "https://openalex.org/W3125080144",
+    "https://openalex.org/W3125123459",
+    "https://openalex.org/W3125521824",
+    "https://openalex.org/W3125551856",
+    "https://openalex.org/W3125555882",
+    "https://openalex.org/W3125582549",
+    "https://openalex.org/W3125586564",
+    "https://openalex.org/W3125636817",
+    "https://openalex.org/W3125698534",
+    "https://openalex.org/W3125733608",
+    "https://openalex.org/W3125775620",
+    "https://openalex.org/W3125893735",
+    "https://openalex.org/W3125933947",
+    "https://openalex.org/W3126116310",
+    "https://openalex.org/W4236584637",
+    "https://openalex.org/W4241749579",
+    "https://openalex.org/W4248503640",
+    "https://openalex.org/W4298863114",
+    "https://openalex.org/W4401545442"
+  ],
+  "related_works": [
+    "https://openalex.org/W3121388931",
+    "https://openalex.org/W1566526030",
+    "https://openalex.org/W2461041382",
+    "https://openalex.org/W2232938009",
+    "https://openalex.org/W3123890598",
+    "https://openalex.org/W2186156893",
+    "https://openalex.org/W1592583008",
+    "https://openalex.org/W2060074667",
+    "https://openalex.org/W2006620398",
+    "https://openalex.org/W76836464"
+  ],
+  "abstract_inverted_index": {
+    "The": [
+      0,
+      30
+    ],
+    "financial": [
+      1,
+      14,
+      137
+    ],
+    "market": [
+      2,
+      58,
+      95,
+      104,
+      126,
+      149
+    ],
+    "turmoil": [
+      3,
+      134
+    ],
+    "in": [
+      4,
+      45,
+      123,
+      135,
+      162
+    ],
+    "2007": [
+      5
+    ],
+    "and": [
+      6,
+      20,
+      109,
+      133,
+      139,
+      154
+    ],
+    "2008": [
+      7
+    ],
+    "has": [
+      8
+    ],
+    "led": [
+      9
+    ],
+    "to": [
+      10,
+      22,
+      38,
+      88,
+      115,
+      127
+    ],
+    "the": [
+      11,
+      17,
+      27,
+      33,
+      53,
+      56,
+      61,
+      72,
+      89,
+      102,
+      117,
+      124,
+      136,
+      146,
+      159
+    ],
+    "most": [
+      12
+    ],
+    "severe": [
+      13
+    ],
+    "crisis": [
+      15,
+      160
+    ],
+    "since": [
+      16
+    ],
+    "Great": [
+      18
+    ],
+    "Depression": [
+      19
+    ],
+    "threatens": [
+      21
+    ],
+    "have": [
+      23
+    ],
+    "large": [
+      24,
+      77,
+      131
+    ],
+    "repercussions": [
+      25
+    ],
+    "on": [
+      26,
+      78
+    ],
+    "real": [
+      28
+    ],
+    "economy.": [
+      29
+    ],
+    "bursting": [
+      31
+    ],
+    "of": [
+      32,
+      60,
+      92,
+      148
+    ],
+    "housing": [
+      34
+    ],
+    "bubble": [
+      35
+    ],
+    "forced": [
+      36
+    ],
+    "banks": [
+      37,
+      63
+    ],
+    "write": [
+      39
+    ],
+    "down": [
+      40
+    ],
+    "several": [
+      41
+    ],
+    "hundred": [
+      42
+    ],
+    "billion": [
+      43
+    ],
+    "dollars": [
+      44
+    ],
+    "bad": [
+      46
+    ],
+    "loans": [
+      47
+    ],
+    "caused": [
+      48,
+      121
+    ],
+    "by": [
+      49,
+      65
+    ],
+    "mortgage": [
+      50,
+      74,
+      125
+    ],
+    "delinquencies.": [
+      51
+    ],
+    "At": [
+      52
+    ],
+    "same": [
+      54
+    ],
+    "time,": [
+      55
+    ],
+    "stock": [
+      57,
+      94,
+      103
+    ],
+    "capitalization": [
+      59
+    ],
+    "major": [
+      62
+    ],
+    "declined": [
+      64
+    ],
+    "more": [
+      66
+    ],
+    "than": [
+      67
+    ],
+    "twice": [
+      68
+    ],
+    "as": [
+      69
+    ],
+    "much.": [
+      70
+    ],
+    "While": [
+      71
+    ],
+    "overall": [
+      73
+    ],
+    "losses": [
+      75,
+      122
+    ],
+    "are": [
+      76,
+      83
+    ],
+    "an": [
+      79,
+      106
+    ],
+    "absolute": [
+      80
+    ],
+    "scale,": [
+      81
+    ],
+    "they": [
+      82
+    ],
+    "still": [
+      84
+    ],
+    "relatively": [
+      85
+    ],
+    "modest": [
+      86
+    ],
+    "compared": [
+      87
+    ],
+    "$8": [
+      90
+    ],
+    "trillion": [
+      91
+    ],
+    "U.S.": [
+      93
+    ],
+    "wealth": [
+      96
+    ],
+    "lost": [
+      97
+    ],
+    "between": [
+      98
+    ],
+    "October": [
+      99,
+      110
+    ],
+    "2007,": [
+      100
+    ],
+    "when": [
+      101
+    ],
+    "reached": [
+      105
+    ],
+    "all-time": [
+      107
+    ],
+    "high,": [
+      108
+    ],
+    "2008.": [
+      111
+    ],
+    "This": [
+      112
+    ],
+    "paper": [
+      113
+    ],
+    "attempts": [
+      114
+    ],
+    "explain": [
+      116,
+      145
+    ],
+    "economic": [
+      118,
+      142
+    ],
+    "mechanisms": [
+      119
+    ],
+    "that": [
+      120,
+      144,
+      156
+    ],
+    "amplify": [
+      128
+    ],
+    "into": [
+      129
+    ],
+    "such": [
+      130
+    ],
+    "dislocations": [
+      132
+    ],
+    "markets,": [
+      138
+    ],
+    "describes": [
+      140
+    ],
+    "common": [
+      141
+    ],
+    "threads": [
+      143
+    ],
+    "plethora": [
+      147
+    ],
+    "declines,": [
+      150
+    ],
+    "liquidity": [
+      151
+    ],
+    "dry-ups,": [
+      152
+    ],
+    "defaults,": [
+      153
+    ],
+    "bailouts": [
+      155
+    ],
+    "occurred": [
+      157
+    ],
+    "after": [
+      158
+    ],
+    "broke": [
+      161
+    ],
+    "summer": [
+      163
+    ],
+    "2007.": [
+      164
+    ]
+  },
+  "counts_by_year": [
+    {
+      "year": 2026,
+      "cited_by_count": 65
+    },
+    {
+      "year": 2025,
+      "cited_by_count": 128
+    },
+    {
+      "year": 2024,
+      "cited_by_count": 112
+    },
+    {
+      "year": 2023,
+      "cited_by_count": 108
+    },
+    {
+      "year": 2022,
+      "cited_by_count": 97
+    },
+    {
+      "year": 2021,
+      "cited_by_count": 149
+    },
+    {
+      "year": 2020,
+      "cited_by_count": 152
+    },
+    {
+      "year": 2019,
+      "cited_by_count": 161
+    },
+    {
+      "year": 2018,
+      "cited_by_count": 180
+    },
+    {
+      "year": 2017,
+      "cited_by_count": 175
+    },
+    {
+      "year": 2016,
+      "cited_by_count": 173
+    },
+    {
+      "year": 2015,
+      "cited_by_count": 253
+    },
+    {
+      "year": 2014,
+      "cited_by_count": 285
+    },
+    {
+      "year": 2013,
+      "cited_by_count": 293
+    },
+    {
+      "year": 2012,
+      "cited_by_count": 344
+    }
+  ],
+  "updated_date": "2026-07-04T07:58:01.006859",
+  "created_date": "2025-10-10T00:00:00"
+}

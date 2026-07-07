@@ -1,0 +1,18 @@
+{
+  "candidate_id": "cand-exp-flannery-et-al-2020",
+  "proposed_study_id": "flannery-et-al-2020",
+  "acquisition_status": "downloaded",
+  "attempted_at": "2026-07-07T03:45:43+00:00",
+  "catalog_source_url": "https://www.cdc.gov/flu/vaccines-work/vaccine-effectiveness.htm",
+  "resolved_urls": [
+    "https://doi.org/10.15585/mmwr.rr6908a1",
+    "https://www.cdc.gov/mmwr/volumes/69/rr/pdfs/rr6908a1-H.pdf",
+    "https://www.cdc.gov/flu/vaccines-work/vaccine-effectiveness.htm"
+  ],
+  "files": [
+    "openalex-search.pdf",
+    "openalex-metadata.json",
+    "source-1.html"
+  ],
+  "dois": []
+}

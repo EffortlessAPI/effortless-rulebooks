@@ -1,0 +1,787 @@
+{
+  "id": "https://openalex.org/W2115560384",
+  "doi": "https://doi.org/10.1080/01402380701834747",
+  "title": "Changing Values among Western Publics from 1970 to 2006",
+  "display_name": "Changing Values among Western Publics from 1970 to 2006",
+  "relevance_score": 1085.3325,
+  "publication_year": 2008,
+  "publication_date": "2008-01-01",
+  "ids": {
+    "openalex": "https://openalex.org/W2115560384",
+    "doi": "https://doi.org/10.1080/01402380701834747",
+    "mag": "2115560384"
+  },
+  "language": "en",
+  "primary_location": {
+    "id": "doi:10.1080/01402380701834747",
+    "is_oa": false,
+    "landing_page_url": "https://doi.org/10.1080/01402380701834747",
+    "pdf_url": null,
+    "source": {
+      "id": "https://openalex.org/S179028992",
+      "display_name": "West European Politics",
+      "issn_l": "0140-2382",
+      "issn": [
+        "0140-2382",
+        "1743-9655"
+      ],
+      "is_oa": false,
+      "is_in_doaj": false,
+      "is_core": true,
+      "host_organization": "https://openalex.org/P4310320547",
+      "host_organization_name": "Taylor & Francis",
+      "host_organization_lineage": [
+        "https://openalex.org/P4310320547"
+      ],
+      "host_organization_lineage_names": [
+        "Taylor & Francis"
+      ],
+      "type": "journal"
+    },
+    "license": null,
+    "license_id": null,
+    "version": "publishedVersion",
+    "is_accepted": true,
+    "is_published": true,
+    "raw_source_name": "West European Politics",
+    "raw_type": "journal-article"
+  },
+  "type": "article",
+  "indexed_in": [
+    "crossref"
+  ],
+  "open_access": {
+    "is_oa": false,
+    "oa_status": "closed",
+    "oa_url": null,
+    "any_repository_has_fulltext": false
+  },
+  "authorships": [
+    {
+      "author_position": "first",
+      "author": {
+        "id": "https://openalex.org/A5113510904",
+        "display_name": "Ronald Inglehart",
+        "orcid": null
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I258284569",
+          "display_name": "Wockhardt (United States)",
+          "ror": "https://ror.org/059j7sj66",
+          "country_code": "US",
+          "type": "company",
+          "lineage": [
+            "https://openalex.org/I258284569",
+            "https://openalex.org/I4210102159"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": true,
+      "raw_author_name": "Ronald F. Inglehart",
+      "raw_affiliation_strings": [
+        "Correspondenceringlehart@gmail.com",
+        "Political Science"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Correspondenceringlehart@gmail.com",
+          "institution_ids": [
+            "https://openalex.org/I258284569"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Political Science",
+          "institution_ids": []
+        }
+      ]
+    }
+  ],
+  "institutions": [],
+  "countries_distinct_count": 1,
+  "institutions_distinct_count": 1,
+  "corresponding_author_ids": [
+    "https://openalex.org/A5113510904"
+  ],
+  "corresponding_institution_ids": [
+    "https://openalex.org/I258284569"
+  ],
+  "apc_list": null,
+  "apc_paid": null,
+  "fwci": 82.0882,
+  "has_fulltext": false,
+  "cited_by_count": 1010,
+  "citation_normalized_percentile": {
+    "value": 0.99941656,
+    "is_in_top_1_percent": true,
+    "is_in_top_10_percent": true
+  },
+  "cited_by_percentile_year": {
+    "min": 99,
+    "max": 100
+  },
+  "biblio": {
+    "volume": "31",
+    "issue": "1-2",
+    "first_page": "130",
+    "last_page": "146"
+  },
+  "is_retracted": false,
+  "is_paratext": false,
+  "is_xpac": false,
+  "primary_topic": {
+    "id": "https://openalex.org/T11239",
+    "display_name": "Social Capital and Networks",
+    "score": 0.9771000146865845,
+    "subfield": {
+      "id": "https://openalex.org/subfields/3312",
+      "display_name": "Sociology and Political Science"
+    },
+    "field": {
+      "id": "https://openalex.org/fields/33",
+      "display_name": "Social Sciences"
+    },
+    "domain": {
+      "id": "https://openalex.org/domains/2",
+      "display_name": "Social Sciences"
+    }
+  },
+  "topics": [
+    {
+      "id": "https://openalex.org/T11239",
+      "display_name": "Social Capital and Networks",
+      "score": 0.9771000146865845,
+      "subfield": {
+        "id": "https://openalex.org/subfields/3312",
+        "display_name": "Sociology and Political Science"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/33",
+        "display_name": "Social Sciences"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/2",
+        "display_name": "Social Sciences"
+      }
+    },
+    {
+      "id": "https://openalex.org/T12312",
+      "display_name": "Culture, Economy, and Development Studies",
+      "score": 0.9725000262260437,
+      "subfield": {
+        "id": "https://openalex.org/subfields/3317",
+        "display_name": "Demography"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/33",
+        "display_name": "Social Sciences"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/2",
+        "display_name": "Social Sciences"
+      }
+    },
+    {
+      "id": "https://openalex.org/T12088",
+      "display_name": "Intergenerational and Educational Inequality Studies",
+      "score": 0.9610999822616577,
+      "subfield": {
+        "id": "https://openalex.org/subfields/3312",
+        "display_name": "Sociology and Political Science"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/33",
+        "display_name": "Social Sciences"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/2",
+        "display_name": "Social Sciences"
+      }
+    }
+  ],
+  "keywords": [
+    {
+      "id": "https://openalex.org/keywords/publics",
+      "display_name": "Publics",
+      "score": 0.7164124250411987
+    },
+    {
+      "id": "https://openalex.org/keywords/existentialism",
+      "display_name": "Existentialism",
+      "score": 0.650898814201355
+    },
+    {
+      "id": "https://openalex.org/keywords/value",
+      "display_name": "Value (mathematics)",
+      "score": 0.6078336834907532
+    },
+    {
+      "id": "https://openalex.org/keywords/cohort",
+      "display_name": "Cohort",
+      "score": 0.4773021936416626
+    },
+    {
+      "id": "https://openalex.org/keywords/world-values-survey",
+      "display_name": "World Values Survey",
+      "score": 0.46196454763412476
+    },
+    {
+      "id": "https://openalex.org/keywords/political-science",
+      "display_name": "Political science",
+      "score": 0.4052168130874634
+    },
+    {
+      "id": "https://openalex.org/keywords/demographic-economics",
+      "display_name": "Demographic economics",
+      "score": 0.39262107014656067
+    },
+    {
+      "id": "https://openalex.org/keywords/sociology",
+      "display_name": "Sociology",
+      "score": 0.3550451993942261
+    },
+    {
+      "id": "https://openalex.org/keywords/development-economics",
+      "display_name": "Development economics",
+      "score": 0.34591808915138245
+    },
+    {
+      "id": "https://openalex.org/keywords/political-economy",
+      "display_name": "Political economy",
+      "score": 0.3274760842323303
+    },
+    {
+      "id": "https://openalex.org/keywords/economics",
+      "display_name": "Economics",
+      "score": 0.20112022757530212
+    },
+    {
+      "id": "https://openalex.org/keywords/politics",
+      "display_name": "Politics",
+      "score": 0.12698739767074585
+    },
+    {
+      "id": "https://openalex.org/keywords/law",
+      "display_name": "Law",
+      "score": 0.08726918697357178
+    }
+  ],
+  "concepts": [
+    {
+      "id": "https://openalex.org/C2776663400",
+      "wikidata": "https://www.wikidata.org/wiki/Q7258081",
+      "display_name": "Publics",
+      "level": 3,
+      "score": 0.7164124250411987
+    },
+    {
+      "id": "https://openalex.org/C127882523",
+      "wikidata": "https://www.wikidata.org/wiki/Q38066",
+      "display_name": "Existentialism",
+      "level": 2,
+      "score": 0.650898814201355
+    },
+    {
+      "id": "https://openalex.org/C2776291640",
+      "wikidata": "https://www.wikidata.org/wiki/Q2912517",
+      "display_name": "Value (mathematics)",
+      "level": 2,
+      "score": 0.6078336834907532
+    },
+    {
+      "id": "https://openalex.org/C72563966",
+      "wikidata": "https://www.wikidata.org/wiki/Q1303415",
+      "display_name": "Cohort",
+      "level": 2,
+      "score": 0.4773021936416626
+    },
+    {
+      "id": "https://openalex.org/C184048983",
+      "wikidata": "https://www.wikidata.org/wiki/Q1316242",
+      "display_name": "World Values Survey",
+      "level": 2,
+      "score": 0.46196454763412476
+    },
+    {
+      "id": "https://openalex.org/C17744445",
+      "wikidata": "https://www.wikidata.org/wiki/Q36442",
+      "display_name": "Political science",
+      "level": 0,
+      "score": 0.4052168130874634
+    },
+    {
+      "id": "https://openalex.org/C4249254",
+      "wikidata": "https://www.wikidata.org/wiki/Q3044431",
+      "display_name": "Demographic economics",
+      "level": 1,
+      "score": 0.39262107014656067
+    },
+    {
+      "id": "https://openalex.org/C144024400",
+      "wikidata": "https://www.wikidata.org/wiki/Q21201",
+      "display_name": "Sociology",
+      "level": 0,
+      "score": 0.3550451993942261
+    },
+    {
+      "id": "https://openalex.org/C47768531",
+      "wikidata": "https://www.wikidata.org/wiki/Q1127188",
+      "display_name": "Development economics",
+      "level": 1,
+      "score": 0.34591808915138245
+    },
+    {
+      "id": "https://openalex.org/C138921699",
+      "wikidata": "https://www.wikidata.org/wiki/Q47555",
+      "display_name": "Political economy",
+      "level": 1,
+      "score": 0.3274760842323303
+    },
+    {
+      "id": "https://openalex.org/C162324750",
+      "wikidata": "https://www.wikidata.org/wiki/Q8134",
+      "display_name": "Economics",
+      "level": 0,
+      "score": 0.20112022757530212
+    },
+    {
+      "id": "https://openalex.org/C94625758",
+      "wikidata": "https://www.wikidata.org/wiki/Q7163",
+      "display_name": "Politics",
+      "level": 2,
+      "score": 0.12698739767074585
+    },
+    {
+      "id": "https://openalex.org/C199539241",
+      "wikidata": "https://www.wikidata.org/wiki/Q7748",
+      "display_name": "Law",
+      "level": 1,
+      "score": 0.08726918697357178
+    },
+    {
+      "id": "https://openalex.org/C119857082",
+      "wikidata": "https://www.wikidata.org/wiki/Q2539",
+      "display_name": "Machine learning",
+      "level": 1,
+      "score": 0.0
+    },
+    {
+      "id": "https://openalex.org/C41008148",
+      "wikidata": "https://www.wikidata.org/wiki/Q21198",
+      "display_name": "Computer science",
+      "level": 0,
+      "score": 0.0
+    },
+    {
+      "id": "https://openalex.org/C71924100",
+      "wikidata": "https://www.wikidata.org/wiki/Q11190",
+      "display_name": "Medicine",
+      "level": 0,
+      "score": 0.0
+    },
+    {
+      "id": "https://openalex.org/C126322002",
+      "wikidata": "https://www.wikidata.org/wiki/Q11180",
+      "display_name": "Internal medicine",
+      "level": 1,
+      "score": 0.0
+    }
+  ],
+  "mesh": [],
+  "locations_count": 1,
+  "locations": [
+    {
+      "id": "doi:10.1080/01402380701834747",
+      "is_oa": false,
+      "landing_page_url": "https://doi.org/10.1080/01402380701834747",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S179028992",
+        "display_name": "West European Politics",
+        "issn_l": "0140-2382",
+        "issn": [
+          "0140-2382",
+          "1743-9655"
+        ],
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": true,
+        "host_organization": "https://openalex.org/P4310320547",
+        "host_organization_name": "Taylor & Francis",
+        "host_organization_lineage": [
+          "https://openalex.org/P4310320547"
+        ],
+        "host_organization_lineage_names": [
+          "Taylor & Francis"
+        ],
+        "type": "journal"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "publishedVersion",
+      "is_accepted": true,
+      "is_published": true,
+      "raw_source_name": "West European Politics",
+      "raw_type": "journal-article"
+    }
+  ],
+  "best_oa_location": null,
+  "sustainable_development_goals": [
+    {
+      "display_name": "No poverty",
+      "id": "https://metadata.un.org/sdg/1",
+      "score": 0.6800000071525574
+    }
+  ],
+  "awards": [],
+  "funders": [],
+  "has_content": {
+    "grobid_xml": false,
+    "pdf": false
+  },
+  "content_urls": null,
+  "referenced_works_count": 20,
+  "referenced_works": [
+    "https://openalex.org/W28866446",
+    "https://openalex.org/W1971334151",
+    "https://openalex.org/W1971918029",
+    "https://openalex.org/W2004409126",
+    "https://openalex.org/W2005758936",
+    "https://openalex.org/W2045097718",
+    "https://openalex.org/W2084528250",
+    "https://openalex.org/W2101498657",
+    "https://openalex.org/W2111964893",
+    "https://openalex.org/W2120275167",
+    "https://openalex.org/W2154914877",
+    "https://openalex.org/W2222843863",
+    "https://openalex.org/W2318169422",
+    "https://openalex.org/W2737365268",
+    "https://openalex.org/W3216307858",
+    "https://openalex.org/W4211222200",
+    "https://openalex.org/W4229607611",
+    "https://openalex.org/W4298037036",
+    "https://openalex.org/W4299448508",
+    "https://openalex.org/W4360586574"
+  ],
+  "related_works": [
+    "https://openalex.org/W2991823240",
+    "https://openalex.org/W2493872841",
+    "https://openalex.org/W3168503264",
+    "https://openalex.org/W2036535694",
+    "https://openalex.org/W4300782144",
+    "https://openalex.org/W2012209553",
+    "https://openalex.org/W1873404572",
+    "https://openalex.org/W2603026865",
+    "https://openalex.org/W2385364491",
+    "https://openalex.org/W2493844831"
+  ],
+  "abstract_inverted_index": {
+    "In": [
+      0
+    ],
+    "1971": [
+      1
+    ],
+    "it": [
+      2,
+      22
+    ],
+    "was": [
+      3
+    ],
+    "hypothesised": [
+      4
+    ],
+    "that": [
+      5,
+      25,
+      69,
+      76
+    ],
+    "intergenerational": [
+      6,
+      82
+    ],
+    "value": [
+      7
+    ],
+    "changes": [
+      8,
+      28,
+      72
+    ],
+    "were": [
+      9
+    ],
+    "taking": [
+      10
+    ],
+    "place.": [
+      11
+    ],
+    "More": [
+      12
+    ],
+    "than": [
+      13
+    ],
+    "a": [
+      14,
+      79
+    ],
+    "generation": [
+      15
+    ],
+    "has": [
+      16
+    ],
+    "passed": [
+      17
+    ],
+    "since": [
+      18
+    ],
+    "then,": [
+      19
+    ],
+    "and": [
+      20,
+      49,
+      75
+    ],
+    "today": [
+      21
+    ],
+    "seems": [
+      23
+    ],
+    "clear": [
+      24
+    ],
+    "the": [
+      26,
+      59,
+      67
+    ],
+    "predicted": [
+      27
+    ],
+    "have": [
+      29
+    ],
+    "occurred.": [
+      30
+    ],
+    "A": [
+      31
+    ],
+    "large": [
+      32
+    ],
+    "body": [
+      33
+    ],
+    "of": [
+      34,
+      47,
+      54,
+      81,
+      88
+    ],
+    "evidence,": [
+      35
+    ],
+    "analysed": [
+      36
+    ],
+    "using": [
+      37
+    ],
+    "three": [
+      38
+    ],
+    "different": [
+      39
+    ],
+    "approaches": [
+      40
+    ],
+    "\u2013": [
+      41,
+      63
+    ],
+    "(1)": [
+      42
+    ],
+    "cohort": [
+      43
+    ],
+    "analysis;": [
+      44
+    ],
+    "(2)": [
+      45
+    ],
+    "comparisons": [
+      46
+    ],
+    "rich": [
+      48
+    ],
+    "poor": [
+      50
+    ],
+    "countries;": [
+      51
+    ],
+    "(3)": [
+      52
+    ],
+    "examination": [
+      53
+    ],
+    "actual": [
+      55
+    ],
+    "trends": [
+      56
+    ],
+    "observed": [
+      57
+    ],
+    "over": [
+      58
+    ],
+    "past": [
+      60
+    ],
+    "35": [
+      61
+    ],
+    "years": [
+      62
+    ],
+    "all": [
+      64
+    ],
+    "points": [
+      65
+    ],
+    "to": [
+      66
+    ],
+    "conclusion": [
+      68
+    ],
+    "major": [
+      70
+    ],
+    "cultural": [
+      71
+    ],
+    "are": [
+      73
+    ],
+    "occurring,": [
+      74
+    ],
+    "they": [
+      77
+    ],
+    "reflect": [
+      78
+    ],
+    "process": [
+      80
+    ],
+    "change": [
+      83
+    ],
+    "linked": [
+      84
+    ],
+    "with": [
+      85
+    ],
+    "rising": [
+      86
+    ],
+    "levels": [
+      87
+    ],
+    "existential": [
+      89
+    ],
+    "security.": [
+      90
+    ]
+  },
+  "counts_by_year": [
+    {
+      "year": 2026,
+      "cited_by_count": 14
+    },
+    {
+      "year": 2025,
+      "cited_by_count": 49
+    },
+    {
+      "year": 2024,
+      "cited_by_count": 88
+    },
+    {
+      "year": 2023,
+      "cited_by_count": 76
+    },
+    {
+      "year": 2022,
+      "cited_by_count": 77
+    },
+    {
+      "year": 2021,
+      "cited_by_count": 78
+    },
+    {
+      "year": 2020,
+      "cited_by_count": 73
+    },
+    {
+      "year": 2019,
+      "cited_by_count": 79
+    },
+    {
+      "year": 2018,
+      "cited_by_count": 65
+    },
+    {
+      "year": 2017,
+      "cited_by_count": 55
+    },
+    {
+      "year": 2016,
+      "cited_by_count": 65
+    },
+    {
+      "year": 2015,
+      "cited_by_count": 65
+    },
+    {
+      "year": 2014,
+      "cited_by_count": 61
+    },
+    {
+      "year": 2013,
+      "cited_by_count": 43
+    },
+    {
+      "year": 2012,
+      "cited_by_count": 45
+    }
+  ],
+  "updated_date": "2026-07-02T09:51:11.867554",
+  "created_date": "2025-10-10T00:00:00"
+}

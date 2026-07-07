@@ -1,0 +1,2750 @@
+{
+  "id": "https://openalex.org/W2032541700",
+  "doi": "https://doi.org/10.1136/bmj.c869",
+  "title": "CONSORT 2010 Explanation and Elaboration: updated guidelines for reporting parallel group randomised trials",
+  "display_name": "CONSORT 2010 Explanation and Elaboration: updated guidelines for reporting parallel group randomised trials",
+  "relevance_score": 683.3596,
+  "publication_year": 2010,
+  "publication_date": "2010-03-23",
+  "ids": {
+    "openalex": "https://openalex.org/W2032541700",
+    "doi": "https://doi.org/10.1136/bmj.c869",
+    "mag": "2032541700",
+    "pmid": "https://pubmed.ncbi.nlm.nih.gov/20332511"
+  },
+  "language": "en",
+  "primary_location": {
+    "id": "doi:10.1136/bmj.c869",
+    "is_oa": true,
+    "landing_page_url": "https://doi.org/10.1136/bmj.c869",
+    "pdf_url": "https://www.bmj.com/content/bmj/340/bmj.c869.full.pdf",
+    "source": {
+      "id": "https://openalex.org/S192814187",
+      "display_name": "BMJ",
+      "issn_l": "0959-8138",
+      "issn": [
+        "0959-8138"
+      ],
+      "is_oa": false,
+      "is_in_doaj": false,
+      "is_core": true,
+      "host_organization": "https://openalex.org/P4310319945",
+      "host_organization_name": "BMJ",
+      "host_organization_lineage": [
+        "https://openalex.org/P4310319945"
+      ],
+      "host_organization_lineage_names": [
+        "BMJ"
+      ],
+      "type": "journal"
+    },
+    "license": "other-oa",
+    "license_id": "https://openalex.org/licenses/other-oa",
+    "version": "publishedVersion",
+    "is_accepted": true,
+    "is_published": true,
+    "raw_source_name": "BMJ",
+    "raw_type": "journal-article"
+  },
+  "type": "review",
+  "indexed_in": [
+    "crossref",
+    "datacite",
+    "pubmed"
+  ],
+  "open_access": {
+    "is_oa": true,
+    "oa_status": "hybrid",
+    "oa_url": "https://www.bmj.com/content/bmj/340/bmj.c869.full.pdf",
+    "any_repository_has_fulltext": true
+  },
+  "authorships": [
+    {
+      "author_position": "first",
+      "author": {
+        "id": "https://openalex.org/A5068353058",
+        "display_name": "David Moher",
+        "orcid": "https://orcid.org/0000-0003-2434-4206"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I2800722420",
+          "display_name": "Ottawa Hospital",
+          "ror": "https://ror.org/03c62dg59",
+          "country_code": "CA",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I2800722420"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I4388482656",
+          "display_name": "Ottawa Hospital Research Institute",
+          "ror": "https://ror.org/05jtef216",
+          "country_code": null,
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I153718931",
+            "https://openalex.org/I2800722420",
+            "https://openalex.org/I4388482656"
+          ]
+        }
+      ],
+      "countries": [
+        "CA"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "D. Moher",
+      "raw_affiliation_strings": [
+        "Ottawa Methods Centre, Clinical Epidemiology Program, Ottawa Hospital Research Institute, Ottawa Hospital, Ottawa, Ontario, Canada. dmoher@ohri.ca",
+        "Ottawa Methods Centre, Clinical Epidemiology Program, Ottawa Hospital Research Institute, Ottawa Hospital, Ottawa, Ontario, Canada, K1H 8L6"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Ottawa Methods Centre, Clinical Epidemiology Program, Ottawa Hospital Research Institute, Ottawa Hospital, Ottawa, Ontario, Canada. dmoher@ohri.ca",
+          "institution_ids": [
+            "https://openalex.org/I2800722420",
+            "https://openalex.org/I4388482656"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Ottawa Methods Centre, Clinical Epidemiology Program, Ottawa Hospital Research Institute, Ottawa Hospital, Ottawa, Ontario, Canada, K1H 8L6",
+          "institution_ids": [
+            "https://openalex.org/I2800722420",
+            "https://openalex.org/I4388482656"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5049975458",
+        "display_name": "Sally Hopewell",
+        "orcid": "https://orcid.org/0000-0002-6881-6984"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I40120149",
+          "display_name": "University of Oxford",
+          "ror": "https://ror.org/052gg0110",
+          "country_code": "GB",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I40120149"
+          ]
+        }
+      ],
+      "countries": [
+        "GB"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "S. Hopewell",
+      "raw_affiliation_strings": [
+        "Centre for Statistics in Medicine, University of Oxford, Wolfson College, Oxford"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Centre for Statistics in Medicine, University of Oxford, Wolfson College, Oxford",
+          "institution_ids": [
+            "https://openalex.org/I40120149"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5056315210",
+        "display_name": "Kenneth F. Schulz",
+        "orcid": "https://orcid.org/0000-0003-2596-7616"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I1290866511",
+          "display_name": "Family Health International 360",
+          "ror": "https://ror.org/007kp6q87",
+          "country_code": "US",
+          "type": "nonprofit",
+          "lineage": [
+            "https://openalex.org/I1290866511"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I4210090916",
+          "display_name": "Triangle",
+          "ror": "https://ror.org/00fhbr831",
+          "country_code": "US",
+          "type": "nonprofit",
+          "lineage": [
+            "https://openalex.org/I4210090916"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "K. F Schulz",
+      "raw_affiliation_strings": [
+        "Family Health International, Research Triangle Park, NC 27709, USA",
+        "Family Health International Research Triangle Park, NC 27709 USA"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Family Health International, Research Triangle Park, NC 27709, USA",
+          "institution_ids": [
+            "https://openalex.org/I1290866511",
+            "https://openalex.org/I4210090916"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Family Health International Research Triangle Park, NC 27709 USA",
+          "institution_ids": [
+            "https://openalex.org/I4210090916"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5114376236",
+        "display_name": "V\u00edctor M. Montori",
+        "orcid": "https://orcid.org/0000-0003-0595-2898"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I4210146710",
+          "display_name": "Mayo Clinic in Florida",
+          "ror": "https://ror.org/03zzw1w08",
+          "country_code": "US",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I1330342723",
+            "https://openalex.org/I4210146710"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "V. Montori",
+      "raw_affiliation_strings": [
+        "UK Knowledge and Encounter Research Unit, Mayo Clinic, Rochester, MN, USA"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "UK Knowledge and Encounter Research Unit, Mayo Clinic, Rochester, MN, USA",
+          "institution_ids": [
+            "https://openalex.org/I4210146710"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5002375158",
+        "display_name": "Peter C G\u00f8tzsche",
+        "orcid": "https://orcid.org/0000-0002-2108-7016"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I2802709434",
+          "display_name": "Rigshospitalet",
+          "ror": "https://ror.org/03mchdq19",
+          "country_code": "DK",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I2802567020",
+            "https://openalex.org/I2802709434",
+            "https://openalex.org/I4210145385"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I4210139775",
+          "display_name": "Cochrane",
+          "ror": "https://ror.org/048ztsn21",
+          "country_code": "DK",
+          "type": "other",
+          "lineage": [
+            "https://openalex.org/I4210139775"
+          ]
+        }
+      ],
+      "countries": [
+        "DK"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "P. C Gotzsche",
+      "raw_affiliation_strings": [
+        "The Nordic Cochrane Centre, Rigshospitalet, Blegdamsvej 9, Copenhagen, Denmark"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "The Nordic Cochrane Centre, Rigshospitalet, Blegdamsvej 9, Copenhagen, Denmark",
+          "institution_ids": [
+            "https://openalex.org/I4210139775",
+            "https://openalex.org/I2802709434"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5040874215",
+        "display_name": "P.J. Devereaux",
+        "orcid": "https://orcid.org/0000-0003-2935-637X"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I2801259263",
+          "display_name": "McMaster University Medical Centre",
+          "ror": "https://ror.org/05jyrng31",
+          "country_code": "CA",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I2801259263",
+            "https://openalex.org/I76442945"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I2802362269",
+          "display_name": "Health Sciences Centre",
+          "ror": "https://ror.org/05pr37258",
+          "country_code": "CA",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I110535807",
+            "https://openalex.org/I2802362269"
+          ]
+        }
+      ],
+      "countries": [
+        "CA"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "P J Devereaux",
+      "raw_affiliation_strings": [
+        "McMaster University Health Sciences Centre, Hamilton, Canada"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "McMaster University Health Sciences Centre, Hamilton, Canada",
+          "institution_ids": [
+            "https://openalex.org/I2801259263",
+            "https://openalex.org/I2802362269"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5057505939",
+        "display_name": "Diana Elbourne",
+        "orcid": "https://orcid.org/0000-0003-3044-4545"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I4210089966",
+          "display_name": "London School of Hygiene & Tropical Medicine",
+          "ror": "https://ror.org/00a0jsq62",
+          "country_code": "GB",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I124357947",
+            "https://openalex.org/I4210089966"
+          ]
+        }
+      ],
+      "countries": [
+        "GB"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "D. Elbourne",
+      "raw_affiliation_strings": [
+        "Medical Statistics Unit, London School of Hygiene and Tropical Medicine, London"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Medical Statistics Unit, London School of Hygiene and Tropical Medicine, London",
+          "institution_ids": [
+            "https://openalex.org/I4210089966"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5077161809",
+        "display_name": "Matthias Egger",
+        "orcid": "https://orcid.org/0000-0001-7462-5132"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I118564535",
+          "display_name": "University of Bern",
+          "ror": "https://ror.org/02k7v4d05",
+          "country_code": "CH",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I118564535"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I4210135124",
+          "display_name": "Institute of Social and Preventive Medicine",
+          "ror": "https://ror.org/038esz880",
+          "country_code": "CH",
+          "type": "facility",
+          "lineage": [
+            "https://openalex.org/I2802229882",
+            "https://openalex.org/I4210135124",
+            "https://openalex.org/I97565354"
+          ]
+        }
+      ],
+      "countries": [
+        "CH"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "M. Egger",
+      "raw_affiliation_strings": [
+        "Institute of Social and Preventive Medicine (ISPM), University of Bern, Switzerland",
+        "Institute of Social and Preventive Medicine (ISPM), University of Bern, Switzerland;"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Institute of Social and Preventive Medicine (ISPM), University of Bern, Switzerland",
+          "institution_ids": [
+            "https://openalex.org/I4210135124",
+            "https://openalex.org/I118564535"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Institute of Social and Preventive Medicine (ISPM), University of Bern, Switzerland;",
+          "institution_ids": [
+            "https://openalex.org/I4210135124",
+            "https://openalex.org/I118564535"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "last",
+      "author": {
+        "id": "https://openalex.org/A5112320499",
+        "display_name": "Doug Altman",
+        "orcid": null
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I40120149",
+          "display_name": "University of Oxford",
+          "ror": "https://ror.org/052gg0110",
+          "country_code": "GB",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I40120149"
+          ]
+        }
+      ],
+      "countries": [
+        "GB"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "D. G Altman",
+      "raw_affiliation_strings": [
+        "Centre for Statistics in Medicine, University of Oxford, Wolfson College, Oxford"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Centre for Statistics in Medicine, University of Oxford, Wolfson College, Oxford",
+          "institution_ids": [
+            "https://openalex.org/I40120149"
+          ]
+        }
+      ]
+    }
+  ],
+  "institutions": [],
+  "countries_distinct_count": 5,
+  "institutions_distinct_count": 13,
+  "corresponding_author_ids": [],
+  "corresponding_institution_ids": [],
+  "apc_list": null,
+  "apc_paid": null,
+  "fwci": 321.6312,
+  "has_fulltext": true,
+  "cited_by_count": 9064,
+  "citation_normalized_percentile": {
+    "value": 0.99990527,
+    "is_in_top_1_percent": true,
+    "is_in_top_10_percent": true
+  },
+  "cited_by_percentile_year": {
+    "min": 99,
+    "max": 100
+  },
+  "biblio": {
+    "volume": "340",
+    "issue": "mar23 1",
+    "first_page": "c869",
+    "last_page": "c869"
+  },
+  "is_retracted": false,
+  "is_paratext": false,
+  "is_xpac": false,
+  "primary_topic": {
+    "id": "https://openalex.org/T10206",
+    "display_name": "Meta-analysis and systematic reviews",
+    "score": 0.9994999766349792,
+    "subfield": {
+      "id": "https://openalex.org/subfields/1804",
+      "display_name": "Statistics, Probability and Uncertainty"
+    },
+    "field": {
+      "id": "https://openalex.org/fields/18",
+      "display_name": "Decision Sciences"
+    },
+    "domain": {
+      "id": "https://openalex.org/domains/2",
+      "display_name": "Social Sciences"
+    }
+  },
+  "topics": [
+    {
+      "id": "https://openalex.org/T10206",
+      "display_name": "Meta-analysis and systematic reviews",
+      "score": 0.9994999766349792,
+      "subfield": {
+        "id": "https://openalex.org/subfields/1804",
+        "display_name": "Statistics, Probability and Uncertainty"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/18",
+        "display_name": "Decision Sciences"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/2",
+        "display_name": "Social Sciences"
+      }
+    },
+    {
+      "id": "https://openalex.org/T10804",
+      "display_name": "Health Systems, Economic Evaluations, Quality of Life",
+      "score": 0.9948999881744385,
+      "subfield": {
+        "id": "https://openalex.org/subfields/2002",
+        "display_name": "Economics and Econometrics"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/20",
+        "display_name": "Economics, Econometrics and Finance"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/2",
+        "display_name": "Social Sciences"
+      }
+    },
+    {
+      "id": "https://openalex.org/T12168",
+      "display_name": "Health and Medical Research Impacts",
+      "score": 0.986299991607666,
+      "subfield": {
+        "id": "https://openalex.org/subfields/2739",
+        "display_name": "Public Health, Environmental and Occupational Health"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/27",
+        "display_name": "Medicine"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/4",
+        "display_name": "Health Sciences"
+      }
+    }
+  ],
+  "keywords": [
+    {
+      "id": "https://openalex.org/keywords/consolidated-standards-of-reporting-trials",
+      "display_name": "Consolidated Standards of Reporting Trials",
+      "score": 0.9361565113067627
+    },
+    {
+      "id": "https://openalex.org/keywords/checklist",
+      "display_name": "Checklist",
+      "score": 0.7593505382537842
+    },
+    {
+      "id": "https://openalex.org/keywords/critical-appraisal",
+      "display_name": "Critical appraisal",
+      "score": 0.5683582425117493
+    },
+    {
+      "id": "https://openalex.org/keywords/randomized-controlled-trial",
+      "display_name": "Randomized controlled trial",
+      "score": 0.48913055658340454
+    },
+    {
+      "id": "https://openalex.org/keywords/systematic-review",
+      "display_name": "Systematic review",
+      "score": 0.4758041799068451
+    },
+    {
+      "id": "https://openalex.org/keywords/medicine",
+      "display_name": "Medicine",
+      "score": 0.45023900270462036
+    },
+    {
+      "id": "https://openalex.org/keywords/statement",
+      "display_name": "Statement (logic)",
+      "score": 0.44631797075271606
+    },
+    {
+      "id": "https://openalex.org/keywords/psychological-intervention",
+      "display_name": "Psychological intervention",
+      "score": 0.440940797328949
+    },
+    {
+      "id": "https://openalex.org/keywords/medline",
+      "display_name": "MEDLINE",
+      "score": 0.3867241144180298
+    },
+    {
+      "id": "https://openalex.org/keywords/alternative-medicine",
+      "display_name": "Alternative medicine",
+      "score": 0.3765915632247925
+    },
+    {
+      "id": "https://openalex.org/keywords/family-medicine",
+      "display_name": "Family medicine",
+      "score": 0.3673902153968811
+    },
+    {
+      "id": "https://openalex.org/keywords/psychology",
+      "display_name": "Psychology",
+      "score": 0.3546421527862549
+    },
+    {
+      "id": "https://openalex.org/keywords/nursing",
+      "display_name": "Nursing",
+      "score": 0.12199327349662781
+    },
+    {
+      "id": "https://openalex.org/keywords/political-science",
+      "display_name": "Political science",
+      "score": 0.0826863944530487
+    },
+    {
+      "id": "https://openalex.org/keywords/surgery",
+      "display_name": "Surgery",
+      "score": 0.08264344930648804
+    }
+  ],
+  "concepts": [
+    {
+      "id": "https://openalex.org/C49290038",
+      "wikidata": "https://www.wikidata.org/wiki/Q2994654",
+      "display_name": "Consolidated Standards of Reporting Trials",
+      "level": 3,
+      "score": 0.9361565113067627
+    },
+    {
+      "id": "https://openalex.org/C2779356329",
+      "wikidata": "https://www.wikidata.org/wiki/Q922625",
+      "display_name": "Checklist",
+      "level": 2,
+      "score": 0.7593505382537842
+    },
+    {
+      "id": "https://openalex.org/C152541439",
+      "wikidata": "https://www.wikidata.org/wiki/Q5186693",
+      "display_name": "Critical appraisal",
+      "level": 3,
+      "score": 0.5683582425117493
+    },
+    {
+      "id": "https://openalex.org/C168563851",
+      "wikidata": "https://www.wikidata.org/wiki/Q1436668",
+      "display_name": "Randomized controlled trial",
+      "level": 2,
+      "score": 0.48913055658340454
+    },
+    {
+      "id": "https://openalex.org/C189708586",
+      "wikidata": "https://www.wikidata.org/wiki/Q1504425",
+      "display_name": "Systematic review",
+      "level": 3,
+      "score": 0.4758041799068451
+    },
+    {
+      "id": "https://openalex.org/C71924100",
+      "wikidata": "https://www.wikidata.org/wiki/Q11190",
+      "display_name": "Medicine",
+      "level": 0,
+      "score": 0.45023900270462036
+    },
+    {
+      "id": "https://openalex.org/C2777026412",
+      "wikidata": "https://www.wikidata.org/wiki/Q2684591",
+      "display_name": "Statement (logic)",
+      "level": 2,
+      "score": 0.44631797075271606
+    },
+    {
+      "id": "https://openalex.org/C27415008",
+      "wikidata": "https://www.wikidata.org/wiki/Q7256382",
+      "display_name": "Psychological intervention",
+      "level": 2,
+      "score": 0.440940797328949
+    },
+    {
+      "id": "https://openalex.org/C2779473830",
+      "wikidata": "https://www.wikidata.org/wiki/Q1540899",
+      "display_name": "MEDLINE",
+      "level": 2,
+      "score": 0.3867241144180298
+    },
+    {
+      "id": "https://openalex.org/C204787440",
+      "wikidata": "https://www.wikidata.org/wiki/Q188504",
+      "display_name": "Alternative medicine",
+      "level": 2,
+      "score": 0.3765915632247925
+    },
+    {
+      "id": "https://openalex.org/C512399662",
+      "wikidata": "https://www.wikidata.org/wiki/Q3505712",
+      "display_name": "Family medicine",
+      "level": 1,
+      "score": 0.3673902153968811
+    },
+    {
+      "id": "https://openalex.org/C15744967",
+      "wikidata": "https://www.wikidata.org/wiki/Q9418",
+      "display_name": "Psychology",
+      "level": 0,
+      "score": 0.3546421527862549
+    },
+    {
+      "id": "https://openalex.org/C159110408",
+      "wikidata": "https://www.wikidata.org/wiki/Q121176",
+      "display_name": "Nursing",
+      "level": 1,
+      "score": 0.12199327349662781
+    },
+    {
+      "id": "https://openalex.org/C17744445",
+      "wikidata": "https://www.wikidata.org/wiki/Q36442",
+      "display_name": "Political science",
+      "level": 0,
+      "score": 0.0826863944530487
+    },
+    {
+      "id": "https://openalex.org/C141071460",
+      "wikidata": "https://www.wikidata.org/wiki/Q40821",
+      "display_name": "Surgery",
+      "level": 1,
+      "score": 0.08264344930648804
+    },
+    {
+      "id": "https://openalex.org/C142724271",
+      "wikidata": "https://www.wikidata.org/wiki/Q7208",
+      "display_name": "Pathology",
+      "level": 1,
+      "score": 0.0
+    },
+    {
+      "id": "https://openalex.org/C199539241",
+      "wikidata": "https://www.wikidata.org/wiki/Q7748",
+      "display_name": "Law",
+      "level": 1,
+      "score": 0.0
+    },
+    {
+      "id": "https://openalex.org/C180747234",
+      "wikidata": "https://www.wikidata.org/wiki/Q23373",
+      "display_name": "Cognitive psychology",
+      "level": 1,
+      "score": 0.0
+    }
+  ],
+  "mesh": [
+    {
+      "descriptor_ui": "D012107",
+      "descriptor_name": "Research Design",
+      "qualifier_ui": "Q000592",
+      "qualifier_name": "standards",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D012107",
+      "descriptor_name": "Research Design",
+      "qualifier_ui": "Q000592",
+      "qualifier_name": "standards",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D012107",
+      "descriptor_name": "Research Design",
+      "qualifier_ui": "Q000592",
+      "qualifier_name": "standards",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D016032",
+      "descriptor_name": "Randomized Controlled Trials as Topic",
+      "qualifier_ui": "Q000592",
+      "qualifier_name": "standards",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D016032",
+      "descriptor_name": "Randomized Controlled Trials as Topic",
+      "qualifier_ui": "Q000592",
+      "qualifier_name": "standards",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D016032",
+      "descriptor_name": "Randomized Controlled Trials as Topic",
+      "qualifier_ui": "Q000592",
+      "qualifier_name": "standards",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D017410",
+      "descriptor_name": "Practice Guidelines as Topic",
+      "qualifier_ui": "Q000592",
+      "qualifier_name": "standards",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D017410",
+      "descriptor_name": "Practice Guidelines as Topic",
+      "qualifier_ui": "Q000592",
+      "qualifier_name": "standards",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D017410",
+      "descriptor_name": "Practice Guidelines as Topic",
+      "qualifier_ui": "Q000592",
+      "qualifier_name": "standards",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D032921",
+      "descriptor_name": "Consensus",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D032921",
+      "descriptor_name": "Consensus",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D032921",
+      "descriptor_name": "Consensus",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    }
+  ],
+  "locations_count": 19,
+  "locations": [
+    {
+      "id": "doi:10.1136/bmj.c869",
+      "is_oa": true,
+      "landing_page_url": "https://doi.org/10.1136/bmj.c869",
+      "pdf_url": "https://www.bmj.com/content/bmj/340/bmj.c869.full.pdf",
+      "source": {
+        "id": "https://openalex.org/S192814187",
+        "display_name": "BMJ",
+        "issn_l": "0959-8138",
+        "issn": [
+          "0959-8138"
+        ],
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": true,
+        "host_organization": "https://openalex.org/P4310319945",
+        "host_organization_name": "BMJ",
+        "host_organization_lineage": [
+          "https://openalex.org/P4310319945"
+        ],
+        "host_organization_lineage_names": [
+          "BMJ"
+        ],
+        "type": "journal"
+      },
+      "license": "other-oa",
+      "license_id": "https://openalex.org/licenses/other-oa",
+      "version": "publishedVersion",
+      "is_accepted": true,
+      "is_published": true,
+      "raw_source_name": "BMJ",
+      "raw_type": "journal-article"
+    },
+    {
+      "id": "pmid:20332511",
+      "is_oa": false,
+      "landing_page_url": "https://pubmed.ncbi.nlm.nih.gov/20332511",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4306525036",
+        "display_name": "PubMed",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I1299303238",
+        "host_organization_name": "National Institutes of Health",
+        "host_organization_lineage": [
+          "https://openalex.org/I1299303238"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "publishedVersion",
+      "is_accepted": true,
+      "is_published": true,
+      "raw_source_name": "BMJ (Clinical research ed.)",
+      "raw_type": null
+    },
+    {
+      "id": "pmid:22036893",
+      "is_oa": false,
+      "landing_page_url": "https://pubmed.ncbi.nlm.nih.gov/22036893",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4306525036",
+        "display_name": "PubMed",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I1299303238",
+        "host_organization_name": "National Institutes of Health",
+        "host_organization_lineage": [
+          "https://openalex.org/I1299303238"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "publishedVersion",
+      "is_accepted": true,
+      "is_published": true,
+      "raw_source_name": "International journal of surgery (London, England)",
+      "raw_type": null
+    },
+    {
+      "id": "pmh:oai:researchonline.lshtm.ac.uk:3948",
+      "is_oa": false,
+      "landing_page_url": "https://researchonline.lshtm.ac.uk/view/creators/emsudelb.html>;",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4306402527",
+        "display_name": "LSHTM Research Online (London School of Hygiene and Tropical Medicine)",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I4210089966",
+        "host_organization_name": "London School of Hygiene & Tropical Medicine",
+        "host_organization_lineage": [
+          "https://openalex.org/I4210089966"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "acceptedVersion",
+      "is_accepted": true,
+      "is_published": false,
+      "raw_source_name": null,
+      "raw_type": "Article"
+    },
+    {
+      "id": "pmh:doi:10.5281/zenodo.20308613",
+      "is_oa": true,
+      "landing_page_url": "https://www.bmj.com/rapid-response/2011/11/02/citation-bias-consort-comments-blinding",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4406922384",
+        "display_name": "Open MIND",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": null,
+        "host_organization_name": null,
+        "host_organization_lineage": [],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": "cc-by",
+      "license_id": "https://openalex.org/licenses/cc-by",
+      "version": "submittedVersion",
+      "is_accepted": false,
+      "is_published": false,
+      "raw_source_name": null,
+      "raw_type": "Report"
+    },
+    {
+      "id": "pmh:oai:boris.unibe.ch:1150",
+      "is_oa": false,
+      "landing_page_url": "https://boris.unibe.ch/1150/",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4306401086",
+        "display_name": "Bern Open Repository and Information System (University of Bern)",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I118564535",
+        "host_organization_name": "University of Bern",
+        "host_organization_lineage": [
+          "https://openalex.org/I118564535"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "submittedVersion",
+      "is_accepted": false,
+      "is_published": false,
+      "raw_source_name": "Moher, David; Hopewell, Sally; Schulz, Kenneth F; Montori, Victor; G\u00f8tzsche, Peter C; Devereaux, P J; Elbourne, Diana; Egger, Matthias; Altman, Douglas G (2010). CONSORT 2010 Explanation and Elaboration: Updated guidelines for reporting parallel group randomised trials. Journal of clinical epidemiology, 63(8), e1-e37. New York, N.Y.: Elsevier 10.1016/j.jclinepi.2010.03.004 &lt;http://dx.doi.org/10.1016/j.jclinepi.2010.03.004&gt;",
+      "raw_type": "info:eu-repo/semantics/article"
+    },
+    {
+      "id": "pmh:oai:boris.unibe.ch:1151",
+      "is_oa": true,
+      "landing_page_url": "https://boris.unibe.ch/1151/",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4306401086",
+        "display_name": "Bern Open Repository and Information System (University of Bern)",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I118564535",
+        "host_organization_name": "University of Bern",
+        "host_organization_lineage": [
+          "https://openalex.org/I118564535"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": "cc-by-nc",
+      "license_id": "https://openalex.org/licenses/cc-by-nc",
+      "version": "submittedVersion",
+      "is_accepted": false,
+      "is_published": false,
+      "raw_source_name": "Moher, David; Hopewell, Sally; Schulz, Kenneth F; Montori, Victor; G\u00f8tzsche, Peter C; Devereaux, P J; Elbourne, Diana; Egger, Matthias; Altman, Douglas G (2010). CONSORT 2010 explanation and elaboration: updated guidelines for reporting parallel group randomised trials. BMJ, 340, c869. London: BMJ Publishing Group 10.1136/bmj.c869 &lt;http://dx.doi.org/10.1136/bmj.c869&gt;",
+      "raw_type": "info:eu-repo/semantics/article"
+    },
+    {
+      "id": "pmh:oai:boris.unibe.ch:7297",
+      "is_oa": true,
+      "landing_page_url": "https://boris.unibe.ch/7297/",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4306401747",
+        "display_name": "BORIS (University Library Bern)",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I4210103840",
+        "host_organization_name": "Nakuru County Council",
+        "host_organization_lineage": [
+          "https://openalex.org/I4210103840"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": "cc-by-nc",
+      "license_id": "https://openalex.org/licenses/cc-by-nc",
+      "version": "submittedVersion",
+      "is_accepted": false,
+      "is_published": false,
+      "raw_source_name": "Moher, David; Hopewell, Sally; Schulz, Kenneth F; Montori, Victor; G\u00f8tzsche, Peter C; Devereaux, P J; Elbourne, Diana; Egger, Matthias; Altman, Douglas G; CONSORT, (2012). CONSORT 2010 explanation and elaboration: updated guidelines for reporting parallel group randomised trials. International journal of surgery, 10(1), pp. 28-55. Oxford: Oxford University Press 10.1016/j.ijsu.2011.10.001 &lt;http://dx.doi.org/10.1016/j.ijsu.2011.10.001&gt;",
+      "raw_type": "info:eu-repo/semantics/article"
+    },
+    {
+      "id": "pmh:oai:digital.library.adelaide.edu.au:2440/63828",
+      "is_oa": false,
+      "landing_page_url": "http://hdl.handle.net/2440/63828",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4306401835",
+        "display_name": "Adelaide Research & Scholarship (AR&S) (University of Adelaide)",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I5681781",
+        "host_organization_name": "The University of Adelaide",
+        "host_organization_lineage": [
+          "https://openalex.org/I5681781"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "submittedVersion",
+      "is_accepted": false,
+      "is_published": false,
+      "raw_source_name": "http://dx.doi.org/10.1136/bmj.c869",
+      "raw_type": "Journal article"
+    },
+    {
+      "id": "pmh:oai:open-archive.highwire.org:bmj:340/mar23_1/c869",
+      "is_oa": false,
+      "landing_page_url": "http://www.bmj.com/cgi/content/short/340/mar23_1/c869",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4406923041",
+        "display_name": "HighWire Press Open Archive",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": null,
+        "host_organization_name": null,
+        "host_organization_lineage": [],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "submittedVersion",
+      "is_accepted": false,
+      "is_published": false,
+      "raw_source_name": "",
+      "raw_type": "TEXT"
+    },
+    {
+      "id": "pmh:oai:ora.ox.ac.uk:uuid:10d3cc44-2af0-484e-a194-a94c7662523e",
+      "is_oa": false,
+      "landing_page_url": "https://ora.ox.ac.uk/objects/uuid:10d3cc44-2af0-484e-a194-a94c7662523e",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4306402636",
+        "display_name": "Oxford University Research Archive (ORA) (University of Oxford)",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I40120149",
+        "host_organization_name": "University of Oxford",
+        "host_organization_lineage": [
+          "https://openalex.org/I40120149"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "submittedVersion",
+      "is_accepted": false,
+      "is_published": false,
+      "raw_source_name": "Symplectic Elements at Oxford",
+      "raw_type": "Journal article"
+    },
+    {
+      "id": "pmh:oai:ora.ox.ac.uk:uuid:267e679a-36ce-44bd-a430-8f392489bd96",
+      "is_oa": false,
+      "landing_page_url": "https://ora.ox.ac.uk/objects/uuid:267e679a-36ce-44bd-a430-8f392489bd96",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4306402636",
+        "display_name": "Oxford University Research Archive (ORA) (University of Oxford)",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I40120149",
+        "host_organization_name": "University of Oxford",
+        "host_organization_lineage": [
+          "https://openalex.org/I40120149"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "submittedVersion",
+      "is_accepted": false,
+      "is_published": false,
+      "raw_source_name": "Symplectic Elements at Oxford",
+      "raw_type": "Journal article"
+    },
+    {
+      "id": "pmh:oai:ora.ox.ac.uk:uuid:a359497e-12b5-4d4c-8f40-cd3111f2ca7a",
+      "is_oa": false,
+      "landing_page_url": "https://ora.ox.ac.uk/objects/uuid:a359497e-12b5-4d4c-8f40-cd3111f2ca7a",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4306402636",
+        "display_name": "Oxford University Research Archive (ORA) (University of Oxford)",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I40120149",
+        "host_organization_name": "University of Oxford",
+        "host_organization_lineage": [
+          "https://openalex.org/I40120149"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "submittedVersion",
+      "is_accepted": false,
+      "is_published": false,
+      "raw_source_name": "Symplectic Elements at Oxford",
+      "raw_type": "Journal article"
+    },
+    {
+      "id": "pmh:oai:ora.ox.ac.uk:uuid:d45909cf-4920-41fe-86d2-70a93ded6cb2",
+      "is_oa": false,
+      "landing_page_url": "https://ora.ox.ac.uk/objects/uuid:d45909cf-4920-41fe-86d2-70a93ded6cb2",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4306402636",
+        "display_name": "Oxford University Research Archive (ORA) (University of Oxford)",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I40120149",
+        "host_organization_name": "University of Oxford",
+        "host_organization_lineage": [
+          "https://openalex.org/I40120149"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "submittedVersion",
+      "is_accepted": false,
+      "is_published": false,
+      "raw_source_name": "Symplectic Elements at Oxford",
+      "raw_type": "Journal article"
+    },
+    {
+      "id": "pmh:oai:ora.ox.ac.uk:uuid:fcaeeebd-8e19-49bc-89ba-5f7c75266c34",
+      "is_oa": false,
+      "landing_page_url": "https://ora.ox.ac.uk/objects/uuid:fcaeeebd-8e19-49bc-89ba-5f7c75266c34",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4306402636",
+        "display_name": "Oxford University Research Archive (ORA) (University of Oxford)",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I40120149",
+        "host_organization_name": "University of Oxford",
+        "host_organization_lineage": [
+          "https://openalex.org/I40120149"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "submittedVersion",
+      "is_accepted": false,
+      "is_published": false,
+      "raw_source_name": "PubMed (http://www.ncbi.nlm.nih.gov/pubmed/)",
+      "raw_type": "Journal article"
+    },
+    {
+      "id": "pmh:oai:pubmedcentral.nih.gov:2844943",
+      "is_oa": true,
+      "landing_page_url": "https://www.ncbi.nlm.nih.gov/pmc/articles/2844943",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S2764455111",
+        "display_name": "PubMed Central",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": true,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I1299303238",
+        "host_organization_name": "National Institutes of Health",
+        "host_organization_lineage": [
+          "https://openalex.org/I1299303238"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": "other-oa",
+      "license_id": "https://openalex.org/licenses/other-oa",
+      "version": "submittedVersion",
+      "is_accepted": false,
+      "is_published": false,
+      "raw_source_name": "BMJ",
+      "raw_type": "Text"
+    },
+    {
+      "id": "pmh:oai:pure.atira.dk:openaire_cris_publications/7d4c8eb7-9b7b-41b1-8b14-1ee4cf8f1621",
+      "is_oa": false,
+      "landing_page_url": "https://researchprofiles.ku.dk/da/publications/7d4c8eb7-9b7b-41b1-8b14-1ee4cf8f1621",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4306401983",
+        "display_name": "Research at the University of Copenhagen (University of Copenhagen)",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I124055696",
+        "host_organization_name": "University of Copenhagen",
+        "host_organization_lineage": [
+          "https://openalex.org/I124055696"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "submittedVersion",
+      "is_accepted": false,
+      "is_published": false,
+      "raw_source_name": "Moher , D , Hopewell , S , Schulz , K F , Montori , V , G\u00f8tzsche , P C , Devereaux , P J , Elbourne , D , Egger , M & Altman , D G 2010 , ' CONSORT 2010 explanation and elaboration: updated guidelines for reporting parallel group randomised trials ' , B M J , vol. 340 , pp. c869 .",
+      "raw_type": "article"
+    },
+    {
+      "id": "doi:10.5281/zenodo.20308613",
+      "is_oa": true,
+      "landing_page_url": "https://doi.org/10.5281/zenodo.20308613",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4306400562",
+        "display_name": "Zenodo (CERN European Organization for Nuclear Research)",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": true,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I67311998",
+        "host_organization_name": "European Organization for Nuclear Research",
+        "host_organization_lineage": [
+          "https://openalex.org/I67311998"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": "cc-by",
+      "license_id": "https://openalex.org/licenses/cc-by",
+      "version": null,
+      "is_accepted": false,
+      "is_published": null,
+      "raw_source_name": null,
+      "raw_type": "Report"
+    },
+    {
+      "id": "doi:10.5281/zenodo.20308614",
+      "is_oa": true,
+      "landing_page_url": "https://doi.org/10.5281/zenodo.20308614",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4306400562",
+        "display_name": "Zenodo (CERN European Organization for Nuclear Research)",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": true,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I67311998",
+        "host_organization_name": "European Organization for Nuclear Research",
+        "host_organization_lineage": [
+          "https://openalex.org/I67311998"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": "cc-by",
+      "license_id": "https://openalex.org/licenses/cc-by",
+      "version": null,
+      "is_accepted": false,
+      "is_published": null,
+      "raw_source_name": null,
+      "raw_type": "Report"
+    }
+  ],
+  "best_oa_location": {
+    "id": "doi:10.1136/bmj.c869",
+    "is_oa": true,
+    "landing_page_url": "https://doi.org/10.1136/bmj.c869",
+    "pdf_url": "https://www.bmj.com/content/bmj/340/bmj.c869.full.pdf",
+    "source": {
+      "id": "https://openalex.org/S192814187",
+      "display_name": "BMJ",
+      "issn_l": "0959-8138",
+      "issn": [
+        "0959-8138"
+      ],
+      "is_oa": false,
+      "is_in_doaj": false,
+      "is_core": true,
+      "host_organization": "https://openalex.org/P4310319945",
+      "host_organization_name": "BMJ",
+      "host_organization_lineage": [
+        "https://openalex.org/P4310319945"
+      ],
+      "host_organization_lineage_names": [
+        "BMJ"
+      ],
+      "type": "journal"
+    },
+    "license": "other-oa",
+    "license_id": "https://openalex.org/licenses/other-oa",
+    "version": "publishedVersion",
+    "is_accepted": true,
+    "is_published": true,
+    "raw_source_name": "BMJ",
+    "raw_type": "journal-article"
+  },
+  "sustainable_development_goals": [],
+  "awards": [],
+  "funders": [
+    {
+      "id": "https://openalex.org/F4320309370",
+      "display_name": "University of Pennsylvania",
+      "ror": "https://ror.org/00b30xv10"
+    },
+    {
+      "id": "https://openalex.org/F4320310145",
+      "display_name": "Johns Hopkins University",
+      "ror": "https://ror.org/00za53h95"
+    },
+    {
+      "id": "https://openalex.org/F4320311323",
+      "display_name": "Ottawa Hospital Research Institute",
+      "ror": "https://ror.org/03c62dg59"
+    },
+    {
+      "id": "https://openalex.org/F4320311526",
+      "display_name": "McMaster University",
+      "ror": "https://ror.org/02fa3aq29"
+    },
+    {
+      "id": "https://openalex.org/F4320319990",
+      "display_name": "National Institute for Health and Care Research",
+      "ror": "https://ror.org/0187kwz08"
+    },
+    {
+      "id": "https://openalex.org/F4320320290",
+      "display_name": "University of Oxford",
+      "ror": "https://ror.org/052gg0110"
+    },
+    {
+      "id": "https://openalex.org/F4320320893",
+      "display_name": "Institut National de la Sant\u00e9 et de la Recherche M\u00e9dicale",
+      "ror": "https://ror.org/02vjkv261"
+    },
+    {
+      "id": "https://openalex.org/F4320332669",
+      "display_name": "Johns Hopkins Bloomberg School of Public Health",
+      "ror": "https://ror.org/00za53h95"
+    },
+    {
+      "id": "https://openalex.org/F4320332688",
+      "display_name": "University of California, Irvine",
+      "ror": "https://ror.org/04gyf1771"
+    },
+    {
+      "id": "https://openalex.org/F4320334506",
+      "display_name": "Canadian Institutes of Health Research",
+      "ror": "https://ror.org/01gavpb45"
+    }
+  ],
+  "has_content": {
+    "grobid_xml": true,
+    "pdf": true
+  },
+  "content_urls": {
+    "pdf": "https://content.openalex.org/works/W2032541700.pdf",
+    "grobid_xml": "https://content.openalex.org/works/W2032541700.grobid-xml"
+  },
+  "referenced_works_count": 422,
+  "referenced_works": [
+    "https://openalex.org/W17392044",
+    "https://openalex.org/W21478844",
+    "https://openalex.org/W24151698",
+    "https://openalex.org/W89189279",
+    "https://openalex.org/W143697486",
+    "https://openalex.org/W155746043",
+    "https://openalex.org/W162343679",
+    "https://openalex.org/W178760352",
+    "https://openalex.org/W184447267",
+    "https://openalex.org/W234749742",
+    "https://openalex.org/W236069726",
+    "https://openalex.org/W313369389",
+    "https://openalex.org/W1492309945",
+    "https://openalex.org/W1501619595",
+    "https://openalex.org/W1505444180",
+    "https://openalex.org/W1525161423",
+    "https://openalex.org/W1526504767",
+    "https://openalex.org/W1529485074",
+    "https://openalex.org/W1542906077",
+    "https://openalex.org/W1561293316",
+    "https://openalex.org/W1571733640",
+    "https://openalex.org/W1577524338",
+    "https://openalex.org/W1580484836",
+    "https://openalex.org/W1590018298",
+    "https://openalex.org/W1590792821",
+    "https://openalex.org/W1593173821",
+    "https://openalex.org/W1603089833",
+    "https://openalex.org/W1603253966",
+    "https://openalex.org/W1605394602",
+    "https://openalex.org/W1663134060",
+    "https://openalex.org/W1665976007",
+    "https://openalex.org/W1666521091",
+    "https://openalex.org/W1770229812",
+    "https://openalex.org/W1790337787",
+    "https://openalex.org/W1822304021",
+    "https://openalex.org/W1886252892",
+    "https://openalex.org/W1887056411",
+    "https://openalex.org/W1914452183",
+    "https://openalex.org/W1919332000",
+    "https://openalex.org/W1953040456",
+    "https://openalex.org/W1963531169",
+    "https://openalex.org/W1965791977",
+    "https://openalex.org/W1965875998",
+    "https://openalex.org/W1968817382",
+    "https://openalex.org/W1970046651",
+    "https://openalex.org/W1970394039",
+    "https://openalex.org/W1970582751",
+    "https://openalex.org/W1971701254",
+    "https://openalex.org/W1971785694",
+    "https://openalex.org/W1972054739",
+    "https://openalex.org/W1972203198",
+    "https://openalex.org/W1972328044",
+    "https://openalex.org/W1972847562",
+    "https://openalex.org/W1972933224",
+    "https://openalex.org/W1975205242",
+    "https://openalex.org/W1976050365",
+    "https://openalex.org/W1976529478",
+    "https://openalex.org/W1977833499",
+    "https://openalex.org/W1978108654",
+    "https://openalex.org/W1980061532",
+    "https://openalex.org/W1981501248",
+    "https://openalex.org/W1982017364",
+    "https://openalex.org/W1982375973",
+    "https://openalex.org/W1982803242",
+    "https://openalex.org/W1982885757",
+    "https://openalex.org/W1982900907",
+    "https://openalex.org/W1983802385",
+    "https://openalex.org/W1984052453",
+    "https://openalex.org/W1984355009",
+    "https://openalex.org/W1985523305",
+    "https://openalex.org/W1985907276",
+    "https://openalex.org/W1986360186",
+    "https://openalex.org/W1986710551",
+    "https://openalex.org/W1987186637",
+    "https://openalex.org/W1988269318",
+    "https://openalex.org/W1989337293",
+    "https://openalex.org/W1993398606",
+    "https://openalex.org/W1993690981",
+    "https://openalex.org/W1994059850",
+    "https://openalex.org/W1994151990",
+    "https://openalex.org/W1995425481",
+    "https://openalex.org/W1996063904",
+    "https://openalex.org/W1996932065",
+    "https://openalex.org/W2000034135",
+    "https://openalex.org/W2000190182",
+    "https://openalex.org/W2000231175",
+    "https://openalex.org/W2000712401",
+    "https://openalex.org/W2002725602",
+    "https://openalex.org/W2003645085",
+    "https://openalex.org/W2005659980",
+    "https://openalex.org/W2005813320",
+    "https://openalex.org/W2006780292",
+    "https://openalex.org/W2006892788",
+    "https://openalex.org/W2008023699",
+    "https://openalex.org/W2008448172",
+    "https://openalex.org/W2009341450",
+    "https://openalex.org/W2011932878",
+    "https://openalex.org/W2013256551",
+    "https://openalex.org/W2015610252",
+    "https://openalex.org/W2015712245",
+    "https://openalex.org/W2016816944",
+    "https://openalex.org/W2017766892",
+    "https://openalex.org/W2017874571",
+    "https://openalex.org/W2018174443",
+    "https://openalex.org/W2019398887",
+    "https://openalex.org/W2023482608",
+    "https://openalex.org/W2023676419",
+    "https://openalex.org/W2023797366",
+    "https://openalex.org/W2023839473",
+    "https://openalex.org/W2023939201",
+    "https://openalex.org/W2024833577",
+    "https://openalex.org/W2025837572",
+    "https://openalex.org/W2026250491",
+    "https://openalex.org/W2027666532",
+    "https://openalex.org/W2028021641",
+    "https://openalex.org/W2028280803",
+    "https://openalex.org/W2029454383",
+    "https://openalex.org/W2029621055",
+    "https://openalex.org/W2031626074",
+    "https://openalex.org/W2032525770",
+    "https://openalex.org/W2033156884",
+    "https://openalex.org/W2033209427",
+    "https://openalex.org/W2033289105",
+    "https://openalex.org/W2033890227",
+    "https://openalex.org/W2035262623",
+    "https://openalex.org/W2035289733",
+    "https://openalex.org/W2036152124",
+    "https://openalex.org/W2036246082",
+    "https://openalex.org/W2036833745",
+    "https://openalex.org/W2038252730",
+    "https://openalex.org/W2038826970",
+    "https://openalex.org/W2039217762",
+    "https://openalex.org/W2039764078",
+    "https://openalex.org/W2039964888",
+    "https://openalex.org/W2040766064",
+    "https://openalex.org/W2041009524",
+    "https://openalex.org/W2041033959",
+    "https://openalex.org/W2041912865",
+    "https://openalex.org/W2043229633",
+    "https://openalex.org/W2043372177",
+    "https://openalex.org/W2044308347",
+    "https://openalex.org/W2044763202",
+    "https://openalex.org/W2044786825",
+    "https://openalex.org/W2045127388",
+    "https://openalex.org/W2045714826",
+    "https://openalex.org/W2046292029",
+    "https://openalex.org/W2050580617",
+    "https://openalex.org/W2050737299",
+    "https://openalex.org/W2051984800",
+    "https://openalex.org/W2052320243",
+    "https://openalex.org/W2055146603",
+    "https://openalex.org/W2056590595",
+    "https://openalex.org/W2056651344",
+    "https://openalex.org/W2056884277",
+    "https://openalex.org/W2057185077",
+    "https://openalex.org/W2057408185",
+    "https://openalex.org/W2057453104",
+    "https://openalex.org/W2057484054",
+    "https://openalex.org/W2057811795",
+    "https://openalex.org/W2058223996",
+    "https://openalex.org/W2058369556",
+    "https://openalex.org/W2059740079",
+    "https://openalex.org/W2059767522",
+    "https://openalex.org/W2059796825",
+    "https://openalex.org/W2060345484",
+    "https://openalex.org/W2060825762",
+    "https://openalex.org/W2061717662",
+    "https://openalex.org/W2062631953",
+    "https://openalex.org/W2062950267",
+    "https://openalex.org/W2063007022",
+    "https://openalex.org/W2063318435",
+    "https://openalex.org/W2065524140",
+    "https://openalex.org/W2065610115",
+    "https://openalex.org/W2066382523",
+    "https://openalex.org/W2067316800",
+    "https://openalex.org/W2067873025",
+    "https://openalex.org/W2068456795",
+    "https://openalex.org/W2068484088",
+    "https://openalex.org/W2068959829",
+    "https://openalex.org/W2069068974",
+    "https://openalex.org/W2069578934",
+    "https://openalex.org/W2069825350",
+    "https://openalex.org/W2071603181",
+    "https://openalex.org/W2071654623",
+    "https://openalex.org/W2071929822",
+    "https://openalex.org/W2072165789",
+    "https://openalex.org/W2074736802",
+    "https://openalex.org/W2075689530",
+    "https://openalex.org/W2076470946",
+    "https://openalex.org/W2076682535",
+    "https://openalex.org/W2077182043",
+    "https://openalex.org/W2077585290",
+    "https://openalex.org/W2077901096",
+    "https://openalex.org/W2078110114",
+    "https://openalex.org/W2078991421",
+    "https://openalex.org/W2079565252",
+    "https://openalex.org/W2080813431",
+    "https://openalex.org/W2081040380",
+    "https://openalex.org/W2081207262",
+    "https://openalex.org/W2082690726",
+    "https://openalex.org/W2083081439",
+    "https://openalex.org/W2083472170",
+    "https://openalex.org/W2083923088",
+    "https://openalex.org/W2084016568",
+    "https://openalex.org/W2084639013",
+    "https://openalex.org/W2084817509",
+    "https://openalex.org/W2085051179",
+    "https://openalex.org/W2086407709",
+    "https://openalex.org/W2086481317",
+    "https://openalex.org/W2086813900",
+    "https://openalex.org/W2087073645",
+    "https://openalex.org/W2087425662",
+    "https://openalex.org/W2088357285",
+    "https://openalex.org/W2091684260",
+    "https://openalex.org/W2091861078",
+    "https://openalex.org/W2091959199",
+    "https://openalex.org/W2092233783",
+    "https://openalex.org/W2093318388",
+    "https://openalex.org/W2094104004",
+    "https://openalex.org/W2094244190",
+    "https://openalex.org/W2094594107",
+    "https://openalex.org/W2095551096",
+    "https://openalex.org/W2095687684",
+    "https://openalex.org/W2097027506",
+    "https://openalex.org/W2097112083",
+    "https://openalex.org/W2097213874",
+    "https://openalex.org/W2097713347",
+    "https://openalex.org/W2098267128",
+    "https://openalex.org/W2098631889",
+    "https://openalex.org/W2098805226",
+    "https://openalex.org/W2102330235",
+    "https://openalex.org/W2103761883",
+    "https://openalex.org/W2104109727",
+    "https://openalex.org/W2104312285",
+    "https://openalex.org/W2105494532",
+    "https://openalex.org/W2105662053",
+    "https://openalex.org/W2106228247",
+    "https://openalex.org/W2108153775",
+    "https://openalex.org/W2108233388",
+    "https://openalex.org/W2108349766",
+    "https://openalex.org/W2108432873",
+    "https://openalex.org/W2108696783",
+    "https://openalex.org/W2108882489",
+    "https://openalex.org/W2109861453",
+    "https://openalex.org/W2110841701",
+    "https://openalex.org/W2111149452",
+    "https://openalex.org/W2112249411",
+    "https://openalex.org/W2113089341",
+    "https://openalex.org/W2115176304",
+    "https://openalex.org/W2115373328",
+    "https://openalex.org/W2115416118",
+    "https://openalex.org/W2116081674",
+    "https://openalex.org/W2118177305",
+    "https://openalex.org/W2118984152",
+    "https://openalex.org/W2119858271",
+    "https://openalex.org/W2120747541",
+    "https://openalex.org/W2120844381",
+    "https://openalex.org/W2121208311",
+    "https://openalex.org/W2121361638",
+    "https://openalex.org/W2122523415",
+    "https://openalex.org/W2122659928",
+    "https://openalex.org/W2122666323",
+    "https://openalex.org/W2124796577",
+    "https://openalex.org/W2126207591",
+    "https://openalex.org/W2126296885",
+    "https://openalex.org/W2126607332",
+    "https://openalex.org/W2127153601",
+    "https://openalex.org/W2127297180",
+    "https://openalex.org/W2128376476",
+    "https://openalex.org/W2128859532",
+    "https://openalex.org/W2129163943",
+    "https://openalex.org/W2130524354",
+    "https://openalex.org/W2132425160",
+    "https://openalex.org/W2132474789",
+    "https://openalex.org/W2133326664",
+    "https://openalex.org/W2133774931",
+    "https://openalex.org/W2134120248",
+    "https://openalex.org/W2134430160",
+    "https://openalex.org/W2135444901",
+    "https://openalex.org/W2136284733",
+    "https://openalex.org/W2136992691",
+    "https://openalex.org/W2137946805",
+    "https://openalex.org/W2138086225",
+    "https://openalex.org/W2138201488",
+    "https://openalex.org/W2138919074",
+    "https://openalex.org/W2139003935",
+    "https://openalex.org/W2140359845",
+    "https://openalex.org/W2140613751",
+    "https://openalex.org/W2140878721",
+    "https://openalex.org/W2142947341",
+    "https://openalex.org/W2142960568",
+    "https://openalex.org/W2143426482",
+    "https://openalex.org/W2144328535",
+    "https://openalex.org/W2144376568",
+    "https://openalex.org/W2144441836",
+    "https://openalex.org/W2144504916",
+    "https://openalex.org/W2144873669",
+    "https://openalex.org/W2145538152",
+    "https://openalex.org/W2146001292",
+    "https://openalex.org/W2147581820",
+    "https://openalex.org/W2148459077",
+    "https://openalex.org/W2151166219",
+    "https://openalex.org/W2151231052",
+    "https://openalex.org/W2151297032",
+    "https://openalex.org/W2151802259",
+    "https://openalex.org/W2152240392",
+    "https://openalex.org/W2152340675",
+    "https://openalex.org/W2152740900",
+    "https://openalex.org/W2152835319",
+    "https://openalex.org/W2152938409",
+    "https://openalex.org/W2154305527",
+    "https://openalex.org/W2159096825",
+    "https://openalex.org/W2160414137",
+    "https://openalex.org/W2160426739",
+    "https://openalex.org/W2160643831",
+    "https://openalex.org/W2160795579",
+    "https://openalex.org/W2161095279",
+    "https://openalex.org/W2161566871",
+    "https://openalex.org/W2163641338",
+    "https://openalex.org/W2164145340",
+    "https://openalex.org/W2165690041",
+    "https://openalex.org/W2167165853",
+    "https://openalex.org/W2168485493",
+    "https://openalex.org/W2168698481",
+    "https://openalex.org/W2169875012",
+    "https://openalex.org/W2171978667",
+    "https://openalex.org/W2182135153",
+    "https://openalex.org/W2183923650",
+    "https://openalex.org/W2186657631",
+    "https://openalex.org/W2199588943",
+    "https://openalex.org/W2307997912",
+    "https://openalex.org/W2312773749",
+    "https://openalex.org/W2316873690",
+    "https://openalex.org/W2318379585",
+    "https://openalex.org/W2318631122",
+    "https://openalex.org/W2320350515",
+    "https://openalex.org/W2321020623",
+    "https://openalex.org/W2323146903",
+    "https://openalex.org/W2326922056",
+    "https://openalex.org/W2328115497",
+    "https://openalex.org/W2334392282",
+    "https://openalex.org/W2334676122",
+    "https://openalex.org/W2338711949",
+    "https://openalex.org/W2394622560",
+    "https://openalex.org/W2395127140",
+    "https://openalex.org/W2399599595",
+    "https://openalex.org/W2409519589",
+    "https://openalex.org/W2409754168",
+    "https://openalex.org/W2414671015",
+    "https://openalex.org/W2414795604",
+    "https://openalex.org/W2415962943",
+    "https://openalex.org/W2497721881",
+    "https://openalex.org/W2570837184",
+    "https://openalex.org/W2582931416",
+    "https://openalex.org/W2599076725",
+    "https://openalex.org/W2605024877",
+    "https://openalex.org/W2623858190",
+    "https://openalex.org/W2743892243",
+    "https://openalex.org/W2757137225",
+    "https://openalex.org/W2777547597",
+    "https://openalex.org/W2795972393",
+    "https://openalex.org/W2796025486",
+    "https://openalex.org/W2811157820",
+    "https://openalex.org/W2886835383",
+    "https://openalex.org/W3025704319",
+    "https://openalex.org/W3121173933",
+    "https://openalex.org/W3139845868",
+    "https://openalex.org/W3144591421",
+    "https://openalex.org/W3148899958",
+    "https://openalex.org/W4229753260",
+    "https://openalex.org/W4230154981",
+    "https://openalex.org/W4230899951",
+    "https://openalex.org/W4231489345",
+    "https://openalex.org/W4233584693",
+    "https://openalex.org/W4234383590",
+    "https://openalex.org/W4235175030",
+    "https://openalex.org/W4235381648",
+    "https://openalex.org/W4236235286",
+    "https://openalex.org/W4236805817",
+    "https://openalex.org/W4239786471",
+    "https://openalex.org/W4242330461",
+    "https://openalex.org/W4243305219",
+    "https://openalex.org/W4244086206",
+    "https://openalex.org/W4245306666",
+    "https://openalex.org/W4245428103",
+    "https://openalex.org/W4246640125",
+    "https://openalex.org/W4246920126",
+    "https://openalex.org/W4247545969",
+    "https://openalex.org/W4248033032",
+    "https://openalex.org/W4248490960",
+    "https://openalex.org/W4248673528",
+    "https://openalex.org/W4248748067",
+    "https://openalex.org/W4248949215",
+    "https://openalex.org/W4250065778",
+    "https://openalex.org/W4250630426",
+    "https://openalex.org/W4256316034",
+    "https://openalex.org/W4256338628",
+    "https://openalex.org/W4285719527",
+    "https://openalex.org/W4290109733",
+    "https://openalex.org/W4290355867",
+    "https://openalex.org/W4297975344",
+    "https://openalex.org/W4301655662",
+    "https://openalex.org/W6607328868",
+    "https://openalex.org/W6631352552",
+    "https://openalex.org/W6645689795",
+    "https://openalex.org/W6657916804",
+    "https://openalex.org/W6661989096",
+    "https://openalex.org/W6664903230",
+    "https://openalex.org/W6667436935",
+    "https://openalex.org/W6672053876",
+    "https://openalex.org/W6672267992",
+    "https://openalex.org/W6674079599",
+    "https://openalex.org/W6677754315",
+    "https://openalex.org/W6681276380",
+    "https://openalex.org/W6682599442",
+    "https://openalex.org/W6682678594",
+    "https://openalex.org/W6808739484",
+    "https://openalex.org/W6849698886",
+    "https://openalex.org/W7073735132",
+    "https://openalex.org/W7073870466",
+    "https://openalex.org/W7074001577",
+    "https://openalex.org/W7074072182"
+  ],
+  "related_works": [
+    "https://openalex.org/W4234875088",
+    "https://openalex.org/W1596653299",
+    "https://openalex.org/W2789645607",
+    "https://openalex.org/W3124148945",
+    "https://openalex.org/W2167191881",
+    "https://openalex.org/W4286214506",
+    "https://openalex.org/W4323793248",
+    "https://openalex.org/W2756578555",
+    "https://openalex.org/W3109170811",
+    "https://openalex.org/W2099892634"
+  ],
+  "abstract_inverted_index": {
+    "Overwhelming": [
+      0
+    ],
+    "evidence": [
+      1
+    ],
+    "shows": [
+      2
+    ],
+    "the": [
+      3,
+      21,
+      62,
+      84,
+      94,
+      138,
+      151,
+      163,
+      166,
+      191,
+      195,
+      205,
+      216,
+      223,
+      228,
+      256,
+      262,
+      271,
+      313
+    ],
+    "quality": [
+      4,
+      95
+    ],
+    "of": [
+      5,
+      7,
+      25,
+      48,
+      69,
+      79,
+      88,
+      96,
+      98,
+      113,
+      148,
+      162,
+      194,
+      227,
+      261,
+      284,
+      297,
+      324
+    ],
+    "reporting": [
+      6,
+      40,
+      97,
+      124,
+      247,
+      286,
+      323
+    ],
+    "randomised": [
+      8,
+      325
+    ],
+    "controlled": [
+      9
+    ],
+    "trials": [
+      10
+    ],
+    "(RCTs)": [
+      11
+    ],
+    "is": [
+      12,
+      54,
+      213
+    ],
+    "not": [
+      13
+    ],
+    "optimal.": [
+      14
+    ],
+    "Without": [
+      15
+    ],
+    "transparent": [
+      16
+    ],
+    "reporting,": [
+      17
+    ],
+    "readers": [
+      18
+    ],
+    "cannot": [
+      19
+    ],
+    "judge": [
+      20
+    ],
+    "reliability": [
+      22
+    ],
+    "and": [
+      23,
+      41,
+      81,
+      106,
+      116,
+      131,
+      146,
+      160,
+      172,
+      183,
+      212,
+      225,
+      231,
+      251,
+      259,
+      273,
+      278,
+      309,
+      312
+    ],
+    "validity": [
+      24
+    ],
+    "trial": [
+      26,
+      178
+    ],
+    "findings": [
+      27
+    ],
+    "nor": [
+      28
+    ],
+    "extract": [
+      29
+    ],
+    "information": [
+      30
+    ],
+    "for": [
+      31,
+      65,
+      123,
+      275
+    ],
+    "systematic": [
+      32,
+      52
+    ],
+    "reviews.": [
+      33
+    ],
+    "Recent": [
+      34
+    ],
+    "methodological": [
+      35
+    ],
+    "analyses": [
+      36
+    ],
+    "indicate": [
+      37
+    ],
+    "that": [
+      38,
+      119,
+      158,
+      237
+    ],
+    "inadequate": [
+      39
+    ],
+    "design": [
+      42
+    ],
+    "are": [
+      43,
+      60,
+      300
+    ],
+    "associated": [
+      44,
+      314
+    ],
+    "with": [
+      45
+    ],
+    "biased": [
+      46
+    ],
+    "estimates": [
+      47
+    ],
+    "treatment": [
+      49
+    ],
+    "effects.": [
+      50
+    ],
+    "Such": [
+      51
+    ],
+    "error": [
+      53
+    ],
+    "seriously": [
+      55
+    ],
+    "damaging": [
+      56
+    ],
+    "to": [
+      57,
+      72,
+      92,
+      174,
+      235,
+      254,
+      291,
+      321
+    ],
+    "RCTs,": [
+      58
+    ],
+    "which": [
+      59
+    ],
+    "considered": [
+      61
+    ],
+    "gold": [
+      63
+    ],
+    "standard": [
+      64
+    ],
+    "evaluating": [
+      66
+    ],
+    "interventions": [
+      67
+    ],
+    "because": [
+      68
+    ],
+    "their": [
+      70
+    ],
+    "ability": [
+      71
+    ],
+    "minimise": [
+      73
+    ],
+    "or": [
+      74,
+      176
+    ],
+    "avoid": [
+      75
+    ],
+    "bias.": [
+      76,
+      248
+    ],
+    "A": [
+      77,
+      180
+    ],
+    "group": [
+      78
+    ],
+    "scientists": [
+      80
+    ],
+    "editors": [
+      82
+    ],
+    "developed": [
+      83
+    ],
+    "CONSORT": [
+      85,
+      139,
+      153,
+      167,
+      181,
+      196,
+      206,
+      217,
+      263,
+      303
+    ],
+    "(Consolidated": [
+      86
+    ],
+    "Standards": [
+      87
+    ],
+    "Reporting": [
+      89
+    ],
+    "Trials)": [
+      90
+    ],
+    "statement": [
+      91,
+      111,
+      142,
+      168,
+      207
+    ],
+    "improve": [
+      93,
+      322
+    ],
+    "RCTs.": [
+      99,
+      149
+    ],
+    "It": [
+      100,
+      269
+    ],
+    "was": [
+      101,
+      186
+    ],
+    "first": [
+      102
+    ],
+    "published": [
+      103,
+      187,
+      214
+    ],
+    "in": [
+      104,
+      108,
+      188,
+      202
+    ],
+    "1996": [
+      105
+    ],
+    "updated": [
+      107,
+      279
+    ],
+    "2001.": [
+      109
+    ],
+    "The": [
+      110,
+      141,
+      302
+    ],
+    "consists": [
+      112
+    ],
+    "a": [
+      114
+    ],
+    "checklist": [
+      115,
+      230,
+      280
+    ],
+    "flow": [
+      117,
+      298
+    ],
+    "diagram": [
+      118
+    ],
+    "authors": [
+      120
+    ],
+    "can": [
+      121
+    ],
+    "use": [
+      122
+    ],
+    "an": [
+      125,
+      199
+    ],
+    "RCT.": [
+      126
+    ],
+    "Many": [
+      127
+    ],
+    "leading": [
+      128
+    ],
+    "medical": [
+      129
+    ],
+    "journals": [
+      130
+    ],
+    "major": [
+      132
+    ],
+    "international": [
+      133
+    ],
+    "editorial": [
+      134
+    ],
+    "groups": [
+      135
+    ],
+    "have": [
+      136,
+      238
+    ],
+    "endorsed": [
+      137
+    ],
+    "statement.": [
+      140,
+      197
+    ],
+    "facilitates": [
+      143
+    ],
+    "critical": [
+      144
+    ],
+    "appraisal": [
+      145
+    ],
+    "interpretation": [
+      147
+    ],
+    "During": [
+      150
+    ],
+    "2001": [
+      152,
+      189,
+      192
+    ],
+    "revision,": [
+      154
+    ],
+    "it": [
+      155
+    ],
+    "became": [
+      156
+    ],
+    "clear": [
+      157
+    ],
+    "explanation": [
+      159,
+      182
+    ],
+    "elaboration": [
+      161,
+      184,
+      252,
+      310
+    ],
+    "principles": [
+      164
+    ],
+    "underlying": [
+      165
+    ],
+    "would": [
+      169
+    ],
+    "help": [
+      170
+    ],
+    "investigators": [
+      171
+    ],
+    "others": [
+      173
+    ],
+    "write": [
+      175
+    ],
+    "appraise": [
+      177
+    ],
+    "reports.": [
+      179
+    ],
+    "article": [
+      185
+    ],
+    "alongside": [
+      190
+    ],
+    "version": [
+      193
+    ],
+    "After": [
+      198
+    ],
+    "expert": [
+      200
+    ],
+    "meeting": [
+      201
+    ],
+    "January": [
+      203
+    ],
+    "2007,": [
+      204
+    ],
+    "has": [
+      208
+    ],
+    "been": [
+      209,
+      266
+    ],
+    "further": [
+      210
+    ],
+    "revised": [
+      211,
+      307
+    ],
+    "as": [
+      215,
+      244
+    ],
+    "2010": [
+      218,
+      304
+    ],
+    "Statement.": [
+      219
+    ],
+    "This": [
+      220,
+      249
+    ],
+    "update": [
+      221
+    ],
+    "improves": [
+      222
+    ],
+    "wording": [
+      224
+    ],
+    "clarity": [
+      226
+    ],
+    "previous": [
+      229
+    ],
+    "incorporates": [
+      232
+    ],
+    "recommendations": [
+      233
+    ],
+    "related": [
+      234
+    ],
+    "topics": [
+      236
+    ],
+    "only": [
+      239
+    ],
+    "recently": [
+      240
+    ],
+    "received": [
+      241
+    ],
+    "recognition,": [
+      242
+    ],
+    "such": [
+      243
+    ],
+    "selective": [
+      245
+    ],
+    "outcome": [
+      246
+    ],
+    "explanatory": [
+      250,
+      308
+    ],
+    "document-intended": [
+      253
+    ],
+    "enhance": [
+      255
+    ],
+    "use,": [
+      257
+    ],
+    "understanding,": [
+      258
+    ],
+    "dissemination": [
+      260
+    ],
+    "statement-has": [
+      264
+    ],
+    "also": [
+      265
+    ],
+    "extensively": [
+      267
+    ],
+    "revised.": [
+      268
+    ],
+    "presents": [
+      270
+    ],
+    "meaning": [
+      272
+    ],
+    "rationale": [
+      274
+    ],
+    "each": [
+      276
+    ],
+    "new": [
+      277
+    ],
+    "item": [
+      281
+    ],
+    "providing": [
+      282
+    ],
+    "examples": [
+      283,
+      296
+    ],
+    "good": [
+      285
+    ],
+    "and,": [
+      287
+    ],
+    "where": [
+      288
+    ],
+    "possible,": [
+      289
+    ],
+    "references": [
+      290
+    ],
+    "relevant": [
+      292
+    ],
+    "empirical": [
+      293
+    ],
+    "studies.": [
+      294
+    ],
+    "Several": [
+      295
+    ],
+    "diagrams": [
+      299
+    ],
+    "included.": [
+      301
+    ],
+    "Statement,": [
+      305
+    ],
+    "this": [
+      306
+    ],
+    "document,": [
+      311
+    ],
+    "website": [
+      315
+    ],
+    "(www.consort-statement.org)": [
+      316
+    ],
+    "should": [
+      317
+    ],
+    "be": [
+      318
+    ],
+    "helpful": [
+      319
+    ],
+    "resources": [
+      320
+    ],
+    "trials.": [
+      326
+    ]
+  },
+  "counts_by_year": [
+    {
+      "year": 2026,
+      "cited_by_count": 185
+    },
+    {
+      "year": 2025,
+      "cited_by_count": 646
+    },
+    {
+      "year": 2024,
+      "cited_by_count": 926
+    },
+    {
+      "year": 2023,
+      "cited_by_count": 711
+    },
+    {
+      "year": 2022,
+      "cited_by_count": 778
+    },
+    {
+      "year": 2021,
+      "cited_by_count": 844
+    },
+    {
+      "year": 2020,
+      "cited_by_count": 809
+    },
+    {
+      "year": 2019,
+      "cited_by_count": 654
+    },
+    {
+      "year": 2018,
+      "cited_by_count": 486
+    },
+    {
+      "year": 2017,
+      "cited_by_count": 530
+    },
+    {
+      "year": 2016,
+      "cited_by_count": 461
+    },
+    {
+      "year": 2015,
+      "cited_by_count": 510
+    },
+    {
+      "year": 2014,
+      "cited_by_count": 468
+    },
+    {
+      "year": 2013,
+      "cited_by_count": 411
+    },
+    {
+      "year": 2012,
+      "cited_by_count": 304
+    }
+  ],
+  "updated_date": "2026-07-05T07:55:05.734416",
+  "created_date": "2016-06-24T00:00:00"
+}

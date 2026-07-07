@@ -1,0 +1,1866 @@
+{
+  "id": "https://openalex.org/W2142495742",
+  "doi": "https://doi.org/10.1093/aje/kwn164",
+  "title": "Constructing Inverse Probability Weights for Marginal Structural Models",
+  "display_name": "Constructing Inverse Probability Weights for Marginal Structural Models",
+  "relevance_score": 167.54948,
+  "publication_year": 2008,
+  "publication_date": "2008-07-15",
+  "ids": {
+    "openalex": "https://openalex.org/W2142495742",
+    "doi": "https://doi.org/10.1093/aje/kwn164",
+    "mag": "2142495742",
+    "pmid": "https://pubmed.ncbi.nlm.nih.gov/18682488"
+  },
+  "language": "en",
+  "primary_location": {
+    "id": "doi:10.1093/aje/kwn164",
+    "is_oa": true,
+    "landing_page_url": "https://doi.org/10.1093/aje/kwn164",
+    "pdf_url": "https://academic.oup.com/aje/article-pdf/168/6/656/200801/kwn164.pdf",
+    "source": {
+      "id": "https://openalex.org/S170967050",
+      "display_name": "American Journal of Epidemiology",
+      "issn_l": "0002-9262",
+      "issn": [
+        "0002-9262",
+        "1476-6256"
+      ],
+      "is_oa": false,
+      "is_in_doaj": false,
+      "is_core": true,
+      "host_organization": "https://openalex.org/P4310311648",
+      "host_organization_name": "Oxford University Press",
+      "host_organization_lineage": [
+        "https://openalex.org/P4310311648",
+        "https://openalex.org/P4310311647"
+      ],
+      "host_organization_lineage_names": [
+        "Oxford University Press",
+        "University of Oxford"
+      ],
+      "type": "journal"
+    },
+    "license": null,
+    "license_id": null,
+    "version": "publishedVersion",
+    "is_accepted": true,
+    "is_published": true,
+    "raw_source_name": "American Journal of Epidemiology",
+    "raw_type": "journal-article"
+  },
+  "type": "article",
+  "indexed_in": [
+    "crossref",
+    "pubmed"
+  ],
+  "open_access": {
+    "is_oa": true,
+    "oa_status": "bronze",
+    "oa_url": "https://academic.oup.com/aje/article-pdf/168/6/656/200801/kwn164.pdf",
+    "any_repository_has_fulltext": true
+  },
+  "authorships": [
+    {
+      "author_position": "first",
+      "author": {
+        "id": "https://openalex.org/A5101692794",
+        "display_name": "Stephen R. Cole",
+        "orcid": "https://orcid.org/0000-0003-2117-1311"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I145311948",
+          "display_name": "Johns Hopkins University",
+          "ror": "https://ror.org/00za53h95",
+          "country_code": "US",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I145311948"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "S. R. Cole",
+      "raw_affiliation_strings": [
+        "Department of Epidemiology, Johns Hopkins Bloomberg School of Public Health, Baltimore, MD, USA. cole@unc.edu",
+        "Department of Epidemiology; Johns Hopkins Bloomberg School of Public Health; Baltimore MD"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Department of Epidemiology, Johns Hopkins Bloomberg School of Public Health, Baltimore, MD, USA. cole@unc.edu",
+          "institution_ids": [
+            "https://openalex.org/I145311948"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Department of Epidemiology; Johns Hopkins Bloomberg School of Public Health; Baltimore MD",
+          "institution_ids": [
+            "https://openalex.org/I145311948"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "last",
+      "author": {
+        "id": "https://openalex.org/A5084268825",
+        "display_name": "Miguel A. Hern\u00e1n",
+        "orcid": "https://orcid.org/0000-0003-1619-8456"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I136199984",
+          "display_name": "Harvard University",
+          "ror": "https://ror.org/03vek6s52",
+          "country_code": "US",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I136199984"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I4210092658",
+          "display_name": "Harvard\u2013MIT Division of Health Sciences and Technology",
+          "ror": "https://ror.org/00jjeh629",
+          "country_code": "US",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I4210092658"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "M. A. Hernan",
+      "raw_affiliation_strings": [
+        "Department of Epidemiology, Harvard School of Public Health, Boston, MA",
+        "Harvard\u2013MIT Division of Health Sciences and Technology, Cambridge, MA"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Department of Epidemiology, Harvard School of Public Health, Boston, MA",
+          "institution_ids": [
+            "https://openalex.org/I136199984"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Harvard\u2013MIT Division of Health Sciences and Technology, Cambridge, MA",
+          "institution_ids": [
+            "https://openalex.org/I4210092658"
+          ]
+        }
+      ]
+    }
+  ],
+  "institutions": [],
+  "countries_distinct_count": 1,
+  "institutions_distinct_count": 3,
+  "corresponding_author_ids": [],
+  "corresponding_institution_ids": [],
+  "apc_list": {
+    "value": 4450,
+    "currency": "USD",
+    "value_usd": 4450
+  },
+  "apc_paid": null,
+  "fwci": 33.7889,
+  "has_fulltext": true,
+  "cited_by_count": 2703,
+  "citation_normalized_percentile": {
+    "value": 0.9982838,
+    "is_in_top_1_percent": true,
+    "is_in_top_10_percent": true
+  },
+  "cited_by_percentile_year": {
+    "min": 99,
+    "max": 100
+  },
+  "biblio": {
+    "volume": "168",
+    "issue": "6",
+    "first_page": "656",
+    "last_page": "664"
+  },
+  "is_retracted": false,
+  "is_paratext": false,
+  "is_xpac": false,
+  "primary_topic": {
+    "id": "https://openalex.org/T10845",
+    "display_name": "Advanced Causal Inference Techniques",
+    "score": 0.9995999932289124,
+    "subfield": {
+      "id": "https://openalex.org/subfields/2613",
+      "display_name": "Statistics and Probability"
+    },
+    "field": {
+      "id": "https://openalex.org/fields/26",
+      "display_name": "Mathematics"
+    },
+    "domain": {
+      "id": "https://openalex.org/domains/3",
+      "display_name": "Physical Sciences"
+    }
+  },
+  "topics": [
+    {
+      "id": "https://openalex.org/T10845",
+      "display_name": "Advanced Causal Inference Techniques",
+      "score": 0.9995999932289124,
+      "subfield": {
+        "id": "https://openalex.org/subfields/2613",
+        "display_name": "Statistics and Probability"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/26",
+        "display_name": "Mathematics"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/3",
+        "display_name": "Physical Sciences"
+      }
+    },
+    {
+      "id": "https://openalex.org/T10243",
+      "display_name": "Statistical Methods and Bayesian Inference",
+      "score": 0.9800999760627747,
+      "subfield": {
+        "id": "https://openalex.org/subfields/2613",
+        "display_name": "Statistics and Probability"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/26",
+        "display_name": "Mathematics"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/3",
+        "display_name": "Physical Sciences"
+      }
+    },
+    {
+      "id": "https://openalex.org/T10136",
+      "display_name": "Statistical Methods and Inference",
+      "score": 0.9779000282287598,
+      "subfield": {
+        "id": "https://openalex.org/subfields/2613",
+        "display_name": "Statistics and Probability"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/26",
+        "display_name": "Mathematics"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/3",
+        "display_name": "Physical Sciences"
+      }
+    }
+  ],
+  "keywords": [
+    {
+      "id": "https://openalex.org/keywords/marginal-structural-model",
+      "display_name": "Marginal structural model",
+      "score": 0.948815643787384
+    },
+    {
+      "id": "https://openalex.org/keywords/weighting",
+      "display_name": "Weighting",
+      "score": 0.8591938018798828
+    },
+    {
+      "id": "https://openalex.org/keywords/inverse-probability-weighting",
+      "display_name": "Inverse probability weighting",
+      "score": 0.7921212911605835
+    },
+    {
+      "id": "https://openalex.org/keywords/confounding",
+      "display_name": "Confounding",
+      "score": 0.709016740322113
+    },
+    {
+      "id": "https://openalex.org/keywords/inverse-probability",
+      "display_name": "Inverse probability",
+      "score": 0.6175569891929626
+    },
+    {
+      "id": "https://openalex.org/keywords/statistics",
+      "display_name": "Statistics",
+      "score": 0.6079527735710144
+    },
+    {
+      "id": "https://openalex.org/keywords/econometrics",
+      "display_name": "Econometrics",
+      "score": 0.5381075143814087
+    },
+    {
+      "id": "https://openalex.org/keywords/truncation",
+      "display_name": "Truncation (statistics)",
+      "score": 0.48118215799331665
+    },
+    {
+      "id": "https://openalex.org/keywords/consistency",
+      "display_name": "Consistency (knowledge bases)",
+      "score": 0.42941558361053467
+    },
+    {
+      "id": "https://openalex.org/keywords/computer-science",
+      "display_name": "Computer science",
+      "score": 0.4270193874835968
+    },
+    {
+      "id": "https://openalex.org/keywords/marginal-distribution",
+      "display_name": "Marginal distribution",
+      "score": 0.42324337363243103
+    },
+    {
+      "id": "https://openalex.org/keywords/contrast",
+      "display_name": "Contrast (vision)",
+      "score": 0.4128299653530121
+    },
+    {
+      "id": "https://openalex.org/keywords/mathematics",
+      "display_name": "Mathematics",
+      "score": 0.3849331736564636
+    },
+    {
+      "id": "https://openalex.org/keywords/estimator",
+      "display_name": "Estimator",
+      "score": 0.37746450304985046
+    },
+    {
+      "id": "https://openalex.org/keywords/medicine",
+      "display_name": "Medicine",
+      "score": 0.273038387298584
+    },
+    {
+      "id": "https://openalex.org/keywords/random-variable",
+      "display_name": "Random variable",
+      "score": 0.18102586269378662
+    },
+    {
+      "id": "https://openalex.org/keywords/artificial-intelligence",
+      "display_name": "Artificial intelligence",
+      "score": 0.13296261429786682
+    },
+    {
+      "id": "https://openalex.org/keywords/posterior-probability",
+      "display_name": "Posterior probability",
+      "score": 0.12117248773574829
+    }
+  ],
+  "concepts": [
+    {
+      "id": "https://openalex.org/C26831200",
+      "wikidata": "https://www.wikidata.org/wiki/Q16963953",
+      "display_name": "Marginal structural model",
+      "level": 3,
+      "score": 0.948815643787384
+    },
+    {
+      "id": "https://openalex.org/C183115368",
+      "wikidata": "https://www.wikidata.org/wiki/Q856577",
+      "display_name": "Weighting",
+      "level": 2,
+      "score": 0.8591938018798828
+    },
+    {
+      "id": "https://openalex.org/C2779915747",
+      "wikidata": "https://www.wikidata.org/wiki/Q17058619",
+      "display_name": "Inverse probability weighting",
+      "level": 3,
+      "score": 0.7921212911605835
+    },
+    {
+      "id": "https://openalex.org/C77350462",
+      "wikidata": "https://www.wikidata.org/wiki/Q1125472",
+      "display_name": "Confounding",
+      "level": 2,
+      "score": 0.709016740322113
+    },
+    {
+      "id": "https://openalex.org/C35981017",
+      "wikidata": "https://www.wikidata.org/wiki/Q6060409",
+      "display_name": "Inverse probability",
+      "level": 4,
+      "score": 0.6175569891929626
+    },
+    {
+      "id": "https://openalex.org/C105795698",
+      "wikidata": "https://www.wikidata.org/wiki/Q12483",
+      "display_name": "Statistics",
+      "level": 1,
+      "score": 0.6079527735710144
+    },
+    {
+      "id": "https://openalex.org/C149782125",
+      "wikidata": "https://www.wikidata.org/wiki/Q160039",
+      "display_name": "Econometrics",
+      "level": 1,
+      "score": 0.5381075143814087
+    },
+    {
+      "id": "https://openalex.org/C106195933",
+      "wikidata": "https://www.wikidata.org/wiki/Q7847935",
+      "display_name": "Truncation (statistics)",
+      "level": 2,
+      "score": 0.48118215799331665
+    },
+    {
+      "id": "https://openalex.org/C2776436953",
+      "wikidata": "https://www.wikidata.org/wiki/Q5163215",
+      "display_name": "Consistency (knowledge bases)",
+      "level": 2,
+      "score": 0.42941558361053467
+    },
+    {
+      "id": "https://openalex.org/C41008148",
+      "wikidata": "https://www.wikidata.org/wiki/Q21198",
+      "display_name": "Computer science",
+      "level": 0,
+      "score": 0.4270193874835968
+    },
+    {
+      "id": "https://openalex.org/C165216359",
+      "wikidata": "https://www.wikidata.org/wiki/Q670653",
+      "display_name": "Marginal distribution",
+      "level": 3,
+      "score": 0.42324337363243103
+    },
+    {
+      "id": "https://openalex.org/C2776502983",
+      "wikidata": "https://www.wikidata.org/wiki/Q690182",
+      "display_name": "Contrast (vision)",
+      "level": 2,
+      "score": 0.4128299653530121
+    },
+    {
+      "id": "https://openalex.org/C33923547",
+      "wikidata": "https://www.wikidata.org/wiki/Q395",
+      "display_name": "Mathematics",
+      "level": 0,
+      "score": 0.3849331736564636
+    },
+    {
+      "id": "https://openalex.org/C185429906",
+      "wikidata": "https://www.wikidata.org/wiki/Q1130160",
+      "display_name": "Estimator",
+      "level": 2,
+      "score": 0.37746450304985046
+    },
+    {
+      "id": "https://openalex.org/C71924100",
+      "wikidata": "https://www.wikidata.org/wiki/Q11190",
+      "display_name": "Medicine",
+      "level": 0,
+      "score": 0.273038387298584
+    },
+    {
+      "id": "https://openalex.org/C122123141",
+      "wikidata": "https://www.wikidata.org/wiki/Q176623",
+      "display_name": "Random variable",
+      "level": 2,
+      "score": 0.18102586269378662
+    },
+    {
+      "id": "https://openalex.org/C154945302",
+      "wikidata": "https://www.wikidata.org/wiki/Q11660",
+      "display_name": "Artificial intelligence",
+      "level": 1,
+      "score": 0.13296261429786682
+    },
+    {
+      "id": "https://openalex.org/C57830394",
+      "wikidata": "https://www.wikidata.org/wiki/Q278079",
+      "display_name": "Posterior probability",
+      "level": 3,
+      "score": 0.12117248773574829
+    },
+    {
+      "id": "https://openalex.org/C107673813",
+      "wikidata": "https://www.wikidata.org/wiki/Q812534",
+      "display_name": "Bayesian probability",
+      "level": 2,
+      "score": 0.0
+    },
+    {
+      "id": "https://openalex.org/C126838900",
+      "wikidata": "https://www.wikidata.org/wiki/Q77604",
+      "display_name": "Radiology",
+      "level": 1,
+      "score": 0.0
+    }
+  ],
+  "mesh": [
+    {
+      "descriptor_ui": "D000163",
+      "descriptor_name": "Acquired Immunodeficiency Syndrome",
+      "qualifier_ui": "Q000188",
+      "qualifier_name": "drug therapy",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000163",
+      "descriptor_name": "Acquired Immunodeficiency Syndrome",
+      "qualifier_ui": "Q000188",
+      "qualifier_name": "drug therapy",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000163",
+      "descriptor_name": "Acquired Immunodeficiency Syndrome",
+      "qualifier_ui": "Q000188",
+      "qualifier_name": "drug therapy",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000163",
+      "descriptor_name": "Acquired Immunodeficiency Syndrome",
+      "qualifier_ui": "Q000188",
+      "qualifier_name": "drug therapy",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000163",
+      "descriptor_name": "Acquired Immunodeficiency Syndrome",
+      "qualifier_ui": "Q000453",
+      "qualifier_name": "epidemiology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000163",
+      "descriptor_name": "Acquired Immunodeficiency Syndrome",
+      "qualifier_ui": "Q000453",
+      "qualifier_name": "epidemiology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000163",
+      "descriptor_name": "Acquired Immunodeficiency Syndrome",
+      "qualifier_ui": "Q000453",
+      "qualifier_name": "epidemiology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000163",
+      "descriptor_name": "Acquired Immunodeficiency Syndrome",
+      "qualifier_ui": "Q000453",
+      "qualifier_name": "epidemiology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D005260",
+      "descriptor_name": "Female",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D005260",
+      "descriptor_name": "Female",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D005260",
+      "descriptor_name": "Female",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D005260",
+      "descriptor_name": "Female",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D006801",
+      "descriptor_name": "Humans",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D006801",
+      "descriptor_name": "Humans",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D006801",
+      "descriptor_name": "Humans",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D006801",
+      "descriptor_name": "Humans",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D008297",
+      "descriptor_name": "Male",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D008297",
+      "descriptor_name": "Male",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D008297",
+      "descriptor_name": "Male",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D008297",
+      "descriptor_name": "Male",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D011336",
+      "descriptor_name": "Probability",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D011336",
+      "descriptor_name": "Probability",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D011336",
+      "descriptor_name": "Probability",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D011336",
+      "descriptor_name": "Probability",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D015337",
+      "descriptor_name": "Multicenter Studies as Topic",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D015337",
+      "descriptor_name": "Multicenter Studies as Topic",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D015337",
+      "descriptor_name": "Multicenter Studies as Topic",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D015337",
+      "descriptor_name": "Multicenter Studies as Topic",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D015497",
+      "descriptor_name": "HIV-1",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D015497",
+      "descriptor_name": "HIV-1",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D015497",
+      "descriptor_name": "HIV-1",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D015497",
+      "descriptor_name": "HIV-1",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D015982",
+      "descriptor_name": "Bias",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D015982",
+      "descriptor_name": "Bias",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D015982",
+      "descriptor_name": "Bias",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D015982",
+      "descriptor_name": "Bias",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D015986",
+      "descriptor_name": "Confounding Factors, Epidemiologic",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D015986",
+      "descriptor_name": "Confounding Factors, Epidemiologic",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D015986",
+      "descriptor_name": "Confounding Factors, Epidemiologic",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D015986",
+      "descriptor_name": "Confounding Factors, Epidemiologic",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D016015",
+      "descriptor_name": "Logistic Models",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D016015",
+      "descriptor_name": "Logistic Models",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D016015",
+      "descriptor_name": "Logistic Models",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D016015",
+      "descriptor_name": "Logistic Models",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D023241",
+      "descriptor_name": "Antiretroviral Therapy, Highly Active",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D023241",
+      "descriptor_name": "Antiretroviral Therapy, Highly Active",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D023241",
+      "descriptor_name": "Antiretroviral Therapy, Highly Active",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D023241",
+      "descriptor_name": "Antiretroviral Therapy, Highly Active",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    }
+  ],
+  "locations_count": 3,
+  "locations": [
+    {
+      "id": "doi:10.1093/aje/kwn164",
+      "is_oa": true,
+      "landing_page_url": "https://doi.org/10.1093/aje/kwn164",
+      "pdf_url": "https://academic.oup.com/aje/article-pdf/168/6/656/200801/kwn164.pdf",
+      "source": {
+        "id": "https://openalex.org/S170967050",
+        "display_name": "American Journal of Epidemiology",
+        "issn_l": "0002-9262",
+        "issn": [
+          "0002-9262",
+          "1476-6256"
+        ],
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": true,
+        "host_organization": "https://openalex.org/P4310311648",
+        "host_organization_name": "Oxford University Press",
+        "host_organization_lineage": [
+          "https://openalex.org/P4310311648",
+          "https://openalex.org/P4310311647"
+        ],
+        "host_organization_lineage_names": [
+          "Oxford University Press",
+          "University of Oxford"
+        ],
+        "type": "journal"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "publishedVersion",
+      "is_accepted": true,
+      "is_published": true,
+      "raw_source_name": "American Journal of Epidemiology",
+      "raw_type": "journal-article"
+    },
+    {
+      "id": "pmid:18682488",
+      "is_oa": false,
+      "landing_page_url": "https://pubmed.ncbi.nlm.nih.gov/18682488",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4306525036",
+        "display_name": "PubMed",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I1299303238",
+        "host_organization_name": "National Institutes of Health",
+        "host_organization_lineage": [
+          "https://openalex.org/I1299303238"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "publishedVersion",
+      "is_accepted": true,
+      "is_published": true,
+      "raw_source_name": "American journal of epidemiology",
+      "raw_type": null
+    },
+    {
+      "id": "pmh:oai:pubmedcentral.nih.gov:2732954",
+      "is_oa": true,
+      "landing_page_url": "https://www.ncbi.nlm.nih.gov/pmc/articles/2732954",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S2764455111",
+        "display_name": "PubMed Central",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": true,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I1299303238",
+        "host_organization_name": "National Institutes of Health",
+        "host_organization_lineage": [
+          "https://openalex.org/I1299303238"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "submittedVersion",
+      "is_accepted": false,
+      "is_published": false,
+      "raw_source_name": "Am J Epidemiol",
+      "raw_type": "Text"
+    }
+  ],
+  "best_oa_location": {
+    "id": "doi:10.1093/aje/kwn164",
+    "is_oa": true,
+    "landing_page_url": "https://doi.org/10.1093/aje/kwn164",
+    "pdf_url": "https://academic.oup.com/aje/article-pdf/168/6/656/200801/kwn164.pdf",
+    "source": {
+      "id": "https://openalex.org/S170967050",
+      "display_name": "American Journal of Epidemiology",
+      "issn_l": "0002-9262",
+      "issn": [
+        "0002-9262",
+        "1476-6256"
+      ],
+      "is_oa": false,
+      "is_in_doaj": false,
+      "is_core": true,
+      "host_organization": "https://openalex.org/P4310311648",
+      "host_organization_name": "Oxford University Press",
+      "host_organization_lineage": [
+        "https://openalex.org/P4310311648",
+        "https://openalex.org/P4310311647"
+      ],
+      "host_organization_lineage_names": [
+        "Oxford University Press",
+        "University of Oxford"
+      ],
+      "type": "journal"
+    },
+    "license": null,
+    "license_id": null,
+    "version": "publishedVersion",
+    "is_accepted": true,
+    "is_published": true,
+    "raw_source_name": "American Journal of Epidemiology",
+    "raw_type": "journal-article"
+  },
+  "sustainable_development_goals": [
+    {
+      "display_name": "Good health and well-being",
+      "id": "https://metadata.un.org/sdg/3",
+      "score": 0.7200000286102295
+    }
+  ],
+  "awards": [
+    {
+      "id": "https://openalex.org/G1052830664",
+      "display_name": null,
+      "funder_award_id": "M01 RR000722",
+      "funder_id": "https://openalex.org/F4320337375",
+      "funder_display_name": "National Center for Research Resources"
+    },
+    {
+      "id": "https://openalex.org/G1089263533",
+      "display_name": null,
+      "funder_award_id": "U01 AI035004",
+      "funder_id": "https://openalex.org/F4320337355",
+      "funder_display_name": "National Institute of Allergy and Infectious Diseases"
+    },
+    {
+      "id": "https://openalex.org/G1290148215",
+      "display_name": null,
+      "funder_award_id": "U01-AI-31834",
+      "funder_id": "https://openalex.org/F4320337355",
+      "funder_display_name": "National Institute of Allergy and Infectious Diseases"
+    },
+    {
+      "id": "https://openalex.org/G1709146599",
+      "display_name": null,
+      "funder_award_id": "R01-AI073127",
+      "funder_id": "https://openalex.org/F4320337355",
+      "funder_display_name": "National Institute of Allergy and Infectious Diseases"
+    },
+    {
+      "id": "https://openalex.org/G1745876707",
+      "display_name": null,
+      "funder_award_id": "U01 AI034994",
+      "funder_id": "https://openalex.org/F4320337355",
+      "funder_display_name": "National Institute of Allergy and Infectious Diseases"
+    },
+    {
+      "id": "https://openalex.org/G1824646956",
+      "display_name": null,
+      "funder_award_id": "R03-AI071763",
+      "funder_id": "https://openalex.org/F4320337355",
+      "funder_display_name": "National Institute of Allergy and Infectious Diseases"
+    },
+    {
+      "id": "https://openalex.org/G1897502031",
+      "display_name": null,
+      "funder_award_id": "UO1-AI-35042",
+      "funder_id": "https://openalex.org/F4320337355",
+      "funder_display_name": "National Institute of Allergy and Infectious Diseases"
+    },
+    {
+      "id": "https://openalex.org/G2088232294",
+      "display_name": null,
+      "funder_award_id": "U01 AI035041",
+      "funder_id": "https://openalex.org/F4320337355",
+      "funder_display_name": "National Institute of Allergy and Infectious Diseases"
+    },
+    {
+      "id": "https://openalex.org/G2250093134",
+      "display_name": null,
+      "funder_award_id": "U01-AI-34994",
+      "funder_id": "https://openalex.org/F4320337355",
+      "funder_display_name": "National Institute of Allergy and Infectious Diseases"
+    },
+    {
+      "id": "https://openalex.org/G2273088713",
+      "display_name": null,
+      "funder_award_id": "UO1-AI-35043",
+      "funder_id": "https://openalex.org/F4320337355",
+      "funder_display_name": "National Institute of Allergy and Infectious Diseases"
+    },
+    {
+      "id": "https://openalex.org/G2502761100",
+      "display_name": null,
+      "funder_award_id": "U01 AI035040",
+      "funder_id": "https://openalex.org/F4320337355",
+      "funder_display_name": "National Institute of Allergy and Infectious Diseases"
+    },
+    {
+      "id": "https://openalex.org/G2763326629",
+      "display_name": null,
+      "funder_award_id": "UO1-AI-35041",
+      "funder_id": "https://openalex.org/F4320337355",
+      "funder_display_name": "National Institute of Allergy and Infectious Diseases"
+    },
+    {
+      "id": "https://openalex.org/G2821333946",
+      "display_name": null,
+      "funder_award_id": "U01 AI037984",
+      "funder_id": "https://openalex.org/F4320337355",
+      "funder_display_name": "National Institute of Allergy and Infectious Diseases"
+    },
+    {
+      "id": "https://openalex.org/G2974984737",
+      "display_name": null,
+      "funder_award_id": "U01 HD032632",
+      "funder_id": "https://openalex.org/F4320337611",
+      "funder_display_name": "Eunice Kennedy Shriver National Institute of Child Health and Human Development"
+    },
+    {
+      "id": "https://openalex.org/G350159640",
+      "display_name": null,
+      "funder_award_id": "R03 AI071763",
+      "funder_id": "https://openalex.org/F4320337355",
+      "funder_display_name": "National Institute of Allergy and Infectious Diseases"
+    },
+    {
+      "id": "https://openalex.org/G3634354056",
+      "display_name": null,
+      "funder_award_id": "AI-34989",
+      "funder_id": "https://openalex.org/F4320337355",
+      "funder_display_name": "National Institute of Allergy and Infectious Diseases"
+    },
+    {
+      "id": "https://openalex.org/G4425006385",
+      "display_name": null,
+      "funder_award_id": "U01 AI034989",
+      "funder_id": "https://openalex.org/F4320337355",
+      "funder_display_name": "National Institute of Allergy and Infectious Diseases"
+    },
+    {
+      "id": "https://openalex.org/G4538066223",
+      "display_name": null,
+      "funder_award_id": "U01-AI-34993",
+      "funder_id": "https://openalex.org/F4320337355",
+      "funder_display_name": "National Institute of Allergy and Infectious Diseases"
+    },
+    {
+      "id": "https://openalex.org/G4672393962",
+      "display_name": null,
+      "funder_award_id": "U01 AI034993",
+      "funder_id": "https://openalex.org/F4320337355",
+      "funder_display_name": "National Institute of Allergy and Infectious Diseases"
+    },
+    {
+      "id": "https://openalex.org/G4921040464",
+      "display_name": null,
+      "funder_award_id": "U01 AI042590",
+      "funder_id": "https://openalex.org/F4320337355",
+      "funder_display_name": "National Institute of Allergy and Infectious Diseases"
+    },
+    {
+      "id": "https://openalex.org/G5460346187",
+      "display_name": null,
+      "funder_award_id": "UO1-AI-35040",
+      "funder_id": "https://openalex.org/F4320337355",
+      "funder_display_name": "National Institute of Allergy and Infectious Diseases"
+    },
+    {
+      "id": "https://openalex.org/G6458467676",
+      "display_name": null,
+      "funder_award_id": "U01 AI035039",
+      "funder_id": "https://openalex.org/F4320337355",
+      "funder_display_name": "National Institute of Allergy and Infectious Diseases"
+    },
+    {
+      "id": "https://openalex.org/G6680823072",
+      "display_name": null,
+      "funder_award_id": "5-MO1-RR-00722",
+      "funder_id": "https://openalex.org/F4320337375",
+      "funder_display_name": "National Center for Research Resources"
+    },
+    {
+      "id": "https://openalex.org/G7014930664",
+      "display_name": null,
+      "funder_award_id": "U01-AI-35004",
+      "funder_id": "https://openalex.org/F4320337355",
+      "funder_display_name": "National Institute of Allergy and Infectious Diseases"
+    },
+    {
+      "id": "https://openalex.org/G7186930501",
+      "display_name": null,
+      "funder_award_id": "R01 AI073127",
+      "funder_id": "https://openalex.org/F4320337355",
+      "funder_display_name": "National Institute of Allergy and Infectious Diseases"
+    },
+    {
+      "id": "https://openalex.org/G7233160662",
+      "display_name": null,
+      "funder_award_id": "U01 AI035042",
+      "funder_id": "https://openalex.org/F4320337355",
+      "funder_display_name": "National Institute of Allergy and Infectious Diseases"
+    },
+    {
+      "id": "https://openalex.org/G7378308708",
+      "display_name": null,
+      "funder_award_id": "U01-AI-42590",
+      "funder_id": "https://openalex.org/F4320337355",
+      "funder_display_name": "National Institute of Allergy and Infectious Diseases"
+    },
+    {
+      "id": "https://openalex.org/G7389751813",
+      "display_name": null,
+      "funder_award_id": "UO1-AI-37613",
+      "funder_id": "https://openalex.org/F4320337355",
+      "funder_display_name": "National Institute of Allergy and Infectious Diseases"
+    },
+    {
+      "id": "https://openalex.org/G7641168466",
+      "display_name": null,
+      "funder_award_id": "U01 AI031834",
+      "funder_id": "https://openalex.org/F4320337355",
+      "funder_display_name": "National Institute of Allergy and Infectious Diseases"
+    },
+    {
+      "id": "https://openalex.org/G781171898",
+      "display_name": null,
+      "funder_award_id": "U01 AI035043",
+      "funder_id": "https://openalex.org/F4320337355",
+      "funder_display_name": "National Institute of Allergy and Infectious Diseases"
+    },
+    {
+      "id": "https://openalex.org/G785659916",
+      "display_name": null,
+      "funder_award_id": "UO1-AI-35039",
+      "funder_id": "https://openalex.org/F4320337355",
+      "funder_display_name": "National Institute of Allergy and Infectious Diseases"
+    },
+    {
+      "id": "https://openalex.org/G8245159732",
+      "display_name": null,
+      "funder_award_id": "U01-HD-32632",
+      "funder_id": "https://openalex.org/F4320337611",
+      "funder_display_name": "Eunice Kennedy Shriver National Institute of Child Health and Human Development"
+    },
+    {
+      "id": "https://openalex.org/G8414267644",
+      "display_name": null,
+      "funder_award_id": "UO1-AI-37984",
+      "funder_id": "https://openalex.org/F4320337355",
+      "funder_display_name": "National Institute of Allergy and Infectious Diseases"
+    },
+    {
+      "id": "https://openalex.org/G8709419444",
+      "display_name": null,
+      "funder_award_id": "U01 AI037613",
+      "funder_id": "https://openalex.org/F4320337355",
+      "funder_display_name": "National Institute of Allergy and Infectious Diseases"
+    }
+  ],
+  "funders": [
+    {
+      "id": "https://openalex.org/F4320337351",
+      "display_name": "National Cancer Institute",
+      "ror": "https://ror.org/040gcmg81"
+    },
+    {
+      "id": "https://openalex.org/F4320337355",
+      "display_name": "National Institute of Allergy and Infectious Diseases",
+      "ror": "https://ror.org/043z4tv69"
+    },
+    {
+      "id": "https://openalex.org/F4320337375",
+      "display_name": "National Center for Research Resources",
+      "ror": "https://ror.org/04pw6fb54"
+    },
+    {
+      "id": "https://openalex.org/F4320337376",
+      "display_name": "NIH Clinical Center",
+      "ror": "https://ror.org/04vfsmv21"
+    },
+    {
+      "id": "https://openalex.org/F4320337611",
+      "display_name": "Eunice Kennedy Shriver National Institute of Child Health and Human Development",
+      "ror": "https://ror.org/04byxyr05"
+    }
+  ],
+  "has_content": {
+    "grobid_xml": true,
+    "pdf": true
+  },
+  "content_urls": {
+    "pdf": "https://content.openalex.org/works/W2142495742.pdf",
+    "grobid_xml": "https://content.openalex.org/works/W2142495742.grobid-xml"
+  },
+  "referenced_works_count": 41,
+  "referenced_works": [
+    "https://openalex.org/W1601979579",
+    "https://openalex.org/W1917216281",
+    "https://openalex.org/W1963805911",
+    "https://openalex.org/W1978209044",
+    "https://openalex.org/W1979048892",
+    "https://openalex.org/W1985429455",
+    "https://openalex.org/W1992882281",
+    "https://openalex.org/W2005740232",
+    "https://openalex.org/W2008417518",
+    "https://openalex.org/W2008557562",
+    "https://openalex.org/W2009187570",
+    "https://openalex.org/W2010536690",
+    "https://openalex.org/W2012229269",
+    "https://openalex.org/W2031392253",
+    "https://openalex.org/W2031668171",
+    "https://openalex.org/W2043192813",
+    "https://openalex.org/W2073179351",
+    "https://openalex.org/W2076082444",
+    "https://openalex.org/W2078282044",
+    "https://openalex.org/W2087373687",
+    "https://openalex.org/W2106548201",
+    "https://openalex.org/W2113002312",
+    "https://openalex.org/W2113375444",
+    "https://openalex.org/W2115004354",
+    "https://openalex.org/W2116312562",
+    "https://openalex.org/W2116926841",
+    "https://openalex.org/W2117740478",
+    "https://openalex.org/W2123017979",
+    "https://openalex.org/W2127578660",
+    "https://openalex.org/W2128984831",
+    "https://openalex.org/W2136543019",
+    "https://openalex.org/W2137883402",
+    "https://openalex.org/W2142078851",
+    "https://openalex.org/W2146676275",
+    "https://openalex.org/W2149723077",
+    "https://openalex.org/W2149848064",
+    "https://openalex.org/W2154055907",
+    "https://openalex.org/W2157493438",
+    "https://openalex.org/W2160710924",
+    "https://openalex.org/W2319643888",
+    "https://openalex.org/W4256092668"
+  ],
+  "related_works": [
+    "https://openalex.org/W2091956653",
+    "https://openalex.org/W4389281082",
+    "https://openalex.org/W3107118966",
+    "https://openalex.org/W2767878215",
+    "https://openalex.org/W4213205664",
+    "https://openalex.org/W2058054829",
+    "https://openalex.org/W2142495742",
+    "https://openalex.org/W1878724292",
+    "https://openalex.org/W2760001378",
+    "https://openalex.org/W1999968123"
+  ],
+  "abstract_inverted_index": {
+    "The": [
+      0,
+      121
+    ],
+    "method": [
+      1,
+      167
+    ],
+    "of": [
+      2,
+      23,
+      30,
+      43,
+      46,
+      55,
+      58,
+      98,
+      114,
+      149,
+      186
+    ],
+    "inverse": [
+      3
+    ],
+    "probability": [
+      4,
+      174
+    ],
+    "weighting": [
+      5,
+      67,
+      175
+    ],
+    "(henceforth,": [
+      6
+    ],
+    "weighting)": [
+      7
+    ],
+    "can": [
+      8,
+      68
+    ],
+    "be": [
+      9
+    ],
+    "used": [
+      10,
+      33
+    ],
+    "to": [
+      11,
+      34,
+      96,
+      133,
+      152,
+      168
+    ],
+    "adjust": [
+      12,
+      70
+    ],
+    "for": [
+      13,
+      71,
+      111,
+      203
+    ],
+    "measured": [
+      14,
+      72
+    ],
+    "confounding": [
+      15,
+      154
+    ],
+    "and": [
+      16,
+      27,
+      108,
+      119,
+      142,
+      164,
+      198
+    ],
+    "selection": [
+      17
+    ],
+    "bias": [
+      18,
+      141
+    ],
+    "under": [
+      19
+    ],
+    "the": [
+      20,
+      31,
+      44,
+      56,
+      82,
+      85,
+      90,
+      150
+    ],
+    "four": [
+      21
+    ],
+    "assumptions": [
+      22,
+      88
+    ],
+    "consistency,": [
+      24
+    ],
+    "exchangeability,": [
+      25
+    ],
+    "positivity,": [
+      26
+    ],
+    "no": [
+      28
+    ],
+    "misspecification": [
+      29
+    ],
+    "model": [
+      32
+    ],
+    "estimate": [
+      35
+    ],
+    "weights.": [
+      36
+    ],
+    "In": [
+      37
+    ],
+    "recent": [
+      38
+    ],
+    "years,": [
+      39
+    ],
+    "several": [
+      40
+    ],
+    "published": [
+      41
+    ],
+    "estimates": [
+      42
+    ],
+    "effect": [
+      45
+    ],
+    "time-varying": [
+      47,
+      73
+    ],
+    "exposures": [
+      48,
+      187
+    ],
+    "have": [
+      49
+    ],
+    "been": [
+      50
+    ],
+    "based": [
+      51
+    ],
+    "on": [
+      52
+    ],
+    "weighted": [
+      53
+    ],
+    "estimation": [
+      54
+    ],
+    "parameters": [
+      57
+    ],
+    "marginal": [
+      59
+    ],
+    "structural": [
+      60
+    ],
+    "models": [
+      61
+    ],
+    "because,": [
+      62
+    ],
+    "unlike": [
+      63
+    ],
+    "standard": [
+      64
+    ],
+    "statistical": [
+      65
+    ],
+    "methods,": [
+      66,
+      196
+    ],
+    "appropriately": [
+      69
+    ],
+    "confounders": [
+      74
+    ],
+    "affected": [
+      75
+    ],
+    "by": [
+      76
+    ],
+    "prior": [
+      77
+    ],
+    "exposure.": [
+      78
+    ],
+    "As": [
+      79
+    ],
+    "an": [
+      80,
+      127,
+      162
+    ],
+    "example,": [
+      81
+    ],
+    "authors": [
+      83,
+      122
+    ],
+    "describe": [
+      84,
+      123
+    ],
+    "last": [
+      86
+    ],
+    "three": [
+      87
+    ],
+    "using": [
+      89
+    ],
+    "change": [
+      91
+    ],
+    "in": [
+      92
+    ],
+    "viral": [
+      93
+    ],
+    "load": [
+      94
+    ],
+    "due": [
+      95
+    ],
+    "initiation": [
+      97
+    ],
+    "antiretroviral": [
+      99
+    ],
+    "therapy": [
+      100
+    ],
+    "among": [
+      101
+    ],
+    "918": [
+      102
+    ],
+    "human": [
+      103
+    ],
+    "immunodeficiency": [
+      104
+    ],
+    "virus-infected": [
+      105
+    ],
+    "US": [
+      106
+    ],
+    "men": [
+      107
+    ],
+    "women": [
+      109
+    ],
+    "followed": [
+      110
+    ],
+    "a": [
+      112,
+      138,
+      147,
+      177
+    ],
+    "median": [
+      113
+    ],
+    "5.8": [
+      115
+    ],
+    "years": [
+      116
+    ],
+    "between": [
+      117,
+      140
+    ],
+    "1996": [
+      118
+    ],
+    "2005.": [
+      120
+    ],
+    "possible": [
+      124
+    ],
+    "tradeoffs": [
+      125
+    ],
+    "that": [
+      126,
+      181,
+      188
+    ],
+    "epidemiologist": [
+      128
+    ],
+    "may": [
+      129,
+      182
+    ],
+    "encounter": [
+      130
+    ],
+    "when": [
+      131
+    ],
+    "attempting": [
+      132
+    ],
+    "make": [
+      134
+    ],
+    "inferences.": [
+      135
+    ],
+    "For": [
+      136
+    ],
+    "instance,": [
+      137
+    ],
+    "tradeoff": [
+      139
+    ],
+    "precision": [
+      143
+    ],
+    "is": [
+      144,
+      155,
+      159
+    ],
+    "illustrated": [
+      145
+    ],
+    "as": [
+      146,
+      161,
+      193
+    ],
+    "function": [
+      148
+    ],
+    "extent": [
+      151
+    ],
+    "which": [
+      153
+    ],
+    "controlled.": [
+      156
+    ],
+    "Weight": [
+      157
+    ],
+    "truncation": [
+      158
+    ],
+    "presented": [
+      160
+    ],
+    "informal": [
+      163
+    ],
+    "easily": [
+      165
+    ],
+    "implemented": [
+      166
+    ],
+    "deal": [
+      169
+    ],
+    "with": [
+      170,
+      194
+    ],
+    "these": [
+      171
+    ],
+    "tradeoffs.": [
+      172
+    ],
+    "Inverse": [
+      173
+    ],
+    "provides": [
+      176
+    ],
+    "powerful": [
+      178
+    ],
+    "methodological": [
+      179
+    ],
+    "tool": [
+      180
+    ],
+    "uncover": [
+      183
+    ],
+    "causal": [
+      184
+    ],
+    "effects": [
+      185
+    ],
+    "are": [
+      189,
+      201
+    ],
+    "otherwise": [
+      190
+    ],
+    "obscured.": [
+      191
+    ],
+    "However,": [
+      192
+    ],
+    "all": [
+      195
+    ],
+    "diagnostics": [
+      197
+    ],
+    "sensitivity": [
+      199
+    ],
+    "analyses": [
+      200
+    ],
+    "essential": [
+      202
+    ],
+    "proper": [
+      204
+    ],
+    "use.": [
+      205
+    ]
+  },
+  "counts_by_year": [
+    {
+      "year": 2026,
+      "cited_by_count": 126
+    },
+    {
+      "year": 2025,
+      "cited_by_count": 240
+    },
+    {
+      "year": 2024,
+      "cited_by_count": 227
+    },
+    {
+      "year": 2023,
+      "cited_by_count": 232
+    },
+    {
+      "year": 2022,
+      "cited_by_count": 264
+    },
+    {
+      "year": 2021,
+      "cited_by_count": 247
+    },
+    {
+      "year": 2020,
+      "cited_by_count": 240
+    },
+    {
+      "year": 2019,
+      "cited_by_count": 205
+    },
+    {
+      "year": 2018,
+      "cited_by_count": 155
+    },
+    {
+      "year": 2017,
+      "cited_by_count": 151
+    },
+    {
+      "year": 2016,
+      "cited_by_count": 134
+    },
+    {
+      "year": 2015,
+      "cited_by_count": 126
+    },
+    {
+      "year": 2014,
+      "cited_by_count": 93
+    },
+    {
+      "year": 2013,
+      "cited_by_count": 83
+    },
+    {
+      "year": 2012,
+      "cited_by_count": 65
+    }
+  ],
+  "updated_date": "2026-07-05T07:55:05.734416",
+  "created_date": "2025-10-10T00:00:00"
+}

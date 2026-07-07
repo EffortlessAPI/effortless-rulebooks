@@ -1,0 +1,794 @@
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+        <title>
+            BioLINCC: Systolic Blood Pressure Intervention Trial (SPRINT)
+        </title>
+
+        
+            <link href="/static/compiled/css/bootstrap.6e7671654bd9.css" rel="stylesheet" type="text/css" media="all" />
+		<link href="/static/fontawesomefree/css/all.min.275b491a8803.css" rel="stylesheet" type="text/css">
+		<link href="/static/compiled/css/base.9ebe16e21b2d.css" rel="stylesheet" type="text/css" media="all" />
+        
+
+        <link rel="icon" href="/static/img/favicon.4ab56f109ee7.ico">
+
+        <!-- Flash of Unstyled Content (FOUC) fix:
+             If JS is enabled, mark <body> with the class "js", then hide it. Once the
+             page has been fully loaded, unhide it. This prevents FOUC (at least for
+             users who haven't disabled JS) -->
+        <style type="text/css">body.js { display:none; }</style>
+        <script type="text/javascript">document.onload = function () {document.body.className='js'};</script>
+
+        
+        
+    </head>
+
+    <body class="current-studies">
+        <div id="skipLink">
+            <a href="#skipTo" class="visually-hidden-focusable">Skip to Main Content</a>
+        </div>
+        <!-- begin header -->
+        <div class="header" role="banner">
+            <section id="review-banner" class="reviewBanner" aria-label="Repository under review">
+                <div class="container-lg">
+                    <div class="row">
+			<div class="review-banner__header-text py-1 py-sm-2  text-start text-sm-center lh-sm">
+			    This repository is under review for potential modification in compliance with Administration directives.
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section id="usa-banner" class="nihBanner" aria-label="Official government website">
+                <div class="container-lg">
+                    <div class="row">
+                        <div class="usa-banner__header-text py-2">
+                            <img class="me-2" src="/static/img/usa-banner-flag-icon.png" alt="" /> An official website of the United States government
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <div class="container-lg">
+		<div class="d-flex align-items-center justify-content-between">
+		    <a class="nciLogo" href="https://www.nhlbi.nih.gov" title="NHLBI Home">
+			<img src="/static/img/nhlbi.8d204961f916.svg" alt="National Heart, Lung, and Blood Institute">
+		    </a>
+		    <div>
+			<div class="cf d-none d-lg-inline-block me-2" role="search">
+			    <form action="/media/search" method="get">
+				<div class="input-group">
+				    <label for="q" class="visually-hidden">Search:</label>
+				    <input name="q" id="q" type="text" class="form-control rounded-start" value=""/>
+				    <button class="cta-green input-group-text">Search</button>
+				</div>
+			    </form>
+			</div>
+
+                        
+                            <a href="/login/?next=/studies/sprint/" class="btn btn-secondary mb-1 text-nowrap">
+				<!-- Optional person-circle icon to make it easier to see the Log In button. HTML copied from https://icons.getbootstrap.com/icons/person-circle/ but the ims-bootstrap package has a bootstrap_icon template tag that this could be called from -->
+				<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
+				    <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0"></path>
+				    <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1">          </path>
+				</svg>
+				Log In</a>
+                        
+                    </div>
+		</div>
+	    </div>
+        </div>
+        <div class="ribbon">
+            <div class="container-lg">
+                <h1 id="biolincc-name">Biologic Specimen and Data Repository Information Coordinating Center</h1>
+            </div>
+        </div>
+        </div>
+        <!-- end header -->
+
+        <!-- begin main navbar -->
+
+        <nav class="navbar navbar-expand-xxl navbar-dark navbar-main">
+            <div class="container-lg">
+                <!-- navbar toggler -->
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#main-nav" aria-controls="main-nav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span><span class="ms-2 fw-bold">Menu</span>
+                </button>
+
+                <!-- navbar links -->
+                <div class="collapse navbar-collapse" id="main-nav">
+                    <ul class="navbar-nav">
+                        <li class="nav-item ">
+                            <a class="nav-link" href="/home/">Home <span class="visually-hidden">(current)</span></a>
+                        </li>
+
+                        <li class="nav-item dropdown">
+                            <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                About BioLINCC
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a class="dropdown-item " href="/about/">About Us</a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item " href="/faq/">FAQ</a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item " href="/contact/">Contact Us</a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item " href="/glossary/">Glossary</a>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <li class="nav-item dropdown">
+                            <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                Biospecimen and Data Resources
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a class="dropdown-item " href="/resource_overview/">Overview</a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item " href="/studies/">Studies</a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item " href="/teaching/">Teaching Datasets - Public Use Datasets</a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item " href="/data-renewal/">Renew Existing Data Use Agreement</a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item " href="/publications/">Publications</a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item " href="/funding_opportunities/">Funding Opportunities</a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item " href="/nonbiolincc_resources/">Non-BioLINCC Resources</a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="/media/guidelines/covid_faq.pdf?link_time=2026-07-06_23:44:13.924385">Covid-19 Resources</a>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <li class="nav-item dropdown">
+                            <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Procedures and Forms</a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a class="dropdown-item d-flex" href="/media/BioLINCC_User_Guide_05Jan2026.pdf?link_time=2026-07-06_23:44:13.924425">
+					<img src="/static/img/icons/pdf-white.2a1b7f30ebc5.svg" alt="PDF" class="me-1">
+					BioLINCC Users Guide
+				    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item " href="/website_forms/">Form Templates</a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item " href="/website_templates/">Agreement Templates</a>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <li class="nav-item dropdown">
+                            <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Build/Submit New Collection</a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a class="dropdown-item" href="https://osp.od.nih.gov/wp-content/uploads/Informed-Consent-Resource-for-Secondary-Research-with-Data-and-Biospecimens.pdf?link_time=2026-07-06_23:44:13.924452">
+                                        Informed Consent Considerations
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item " href="/nhlbi_biorepository_guide/">NHLBI Biorepository Guide</a>
+                                </li>
+                                <li class="dropdown-item ">
+                                    <a href="/submit_datasets/">Submit Datasets</a>
+                                </li>
+                                <li class="dropdown-item ">
+                                    <a href="/submit_biospecimens_and_datasets/">Submit Biospecimens and Datasets</a>
+                                </li>
+                            </ul>
+                        </li>
+
+                        
+                    </ul>
+		    <div class="cf mb-2 d-xxl-none" role="search">
+			<form action="/media/search" method="get">
+			    <div class="input-group">
+				<label for="q" class="visually-hidden">Search:</label>
+				<input name="q" id="q" type="text" class="form-control rounded-start" value=""/>
+				<button class="btn btn-outline-light input-group-text py-1">Search</button>
+			    </div>
+			</form>
+		    </div>
+
+                </div>
+            </div>
+        </nav>
+        <!-- end main navbar -->
+
+        
+            <div class="container-fluid bg-white" role="navigation">
+                <div class="container-lg breadcrumbs">
+                    
+    
+                        <a href="/home/">Home</a>
+                    
+    
+        <a href="/studies/">Studies</a>
+    
+     <a href="/studies/sprint/">Systolic Blood Pressure Intervention Trial (SPRINT)</a>
+
+                </div>
+            </div>
+        
+
+        <main class="main" id="skipTo" role="main">
+            
+
+	    
+		<div class="message-box">
+		    
+
+		</div>
+	    
+
+            
+    <div class="container-lg">
+        <div class="row detail-title-row">
+            <div class="col-md-7 col-lg-8 col-xl-9">
+                <h1 id="study-title" class="detail-title-row">
+                    
+                    Systolic Blood Pressure Intervention Trial (SPRINT)
+                </h1>
+                
+            </div>
+            
+                <div class="col-md-5 col-lg-4 col-xl-3">
+                    <button class="req-btn btn btn-primary" name="request" value="Request" onclick="window.location='/requests/type/sprint/'">Request Specimens and/or Data</button>
+                    <p class="help-notes">Note that you will be prompted to log in or register an account</p>
+                </div>
+            
+        </div>
+        
+        <div class="row">
+            <div class="col-md-7 col-lg-8 col-xl-9">
+                <div class="row study-info-row">
+                    <div class="col-md-12 study-box">
+                        
+                            <div class="row">
+                                <div class="col-lg-4">
+                                    <p>
+                                        <b>Accession Number</b><br>
+                                        HLB02021925a
+                                    </p>
+                                </div>
+                            </div>
+                        
+                        <div class="row">
+                            <div class="col-lg-4">
+                                <p>
+                                    <b>Study Type</b><br>
+                                    Clinical Trial
+                                </p>
+                            </div>
+                            <div class="col-lg-4">
+                                <p>
+                                    <b>Collection Type</b><br>
+                                    Open BioLINCC Study
+                                    
+                                        <em class="form-text collection-type-help">See bottom of this webpage for request information</em>
+                                    
+                                </p>
+                            </div>
+                            
+                                <div class="col-lg-4">
+                                    <p>
+                                        <b>Study Period</b><br>
+                                        October 2010 – July 2016
+                                    </p>
+                                </div>
+                            
+                        </div>
+                        <div class="row">
+                            
+                                <div class="col-lg-4">
+                                    <p>
+                                        <b>NHLBI Division</b><br>
+                                        DCVS
+                                    </p>
+                                </div>
+                            
+                            
+                                <div class="col-lg-4">
+                                    <p>
+                                        <b>Dataset(s) Last Updated</b><br>
+                                        December 18, 2025
+                                    </p>
+                                </div>
+                            
+                        </div>
+                        
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <p>
+                                        <b>Study Website</b><br>
+                                        <a href="https://www.sprinttrial.org/public/dspHome.cfm">
+                                            https://www.sprinttrial.org/public/dspHome.cfm
+                                        </a>
+                                    </p>
+                                </div>
+                            </div>
+                        
+                        <div class="row">
+                            <div class="col-md-12">
+                                <p>
+                                    <b>Clinical Trial URLs</b><br>
+                                    
+                                        <span class="text-break">
+
+
+    <a href="https://clinicaltrials.gov/study/NCT01206062">
+        NCT01206062
+    </a>
+    <br>
+
+</span>
+                                    
+                                </p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <p>
+                                    <b>Primary Publication URLs</b><br>
+                                    
+                                        <span class="text-break">
+
+
+    <a href="https://www.ncbi.nlm.nih.gov/pubmed/26551272">
+        26551272
+    </a>
+    <br>
+
+</span>
+                                    
+                                </p>
+                            </div>
+                        </div>
+                        
+                        
+                        
+                        
+                    </div>
+                </div>
+                <div class="row study-info-row">
+                    <h2 class="study-info-heading ps-0">Consent</h2>
+                    <div class="col-md-12 study-box">
+                        <div class="row">
+                            
+                                <div class="col-md-12">
+                                    <p>
+                                        <b>Commercial Use Data Restrictions</b>
+                                        <span class="badge bg-secondary">No</span>
+                                    </p>
+                                </div>
+                            
+                            
+                                <div class="col-md-12">
+                                    <p>
+                                        <b>Data Restrictions Based On Area Of Research</b>
+                                        <span class="badge bg-secondary">No</span>
+                                    </p>
+                                </div>
+                            
+                            
+                                <div class="col-md-12">
+                                    <p>
+                                        <b>Commercial Use Specimen Restrictions</b>
+                                        <span class="badge bg-secondary">No</span>
+                                    </p>
+                                </div>
+                            
+                            
+                                <div class="col-md-12">
+                                    <p>
+                                        <b>Non-Genetic Use Specimen Restrictions Based On Area Of Use</b>
+                                        <span class="badge bg-secondary">Yes</span>
+                                    </p>
+                                </div>
+                            
+                            
+                                <div class="col-md-12">
+                                    <p>
+                                        <b>Genetic Use Of Specimens Allowed?</b>
+                                        <span class="badge bg-secondary">Yes, For Some Specimens</span>
+                                    </p>
+                                </div>
+                            
+                            
+                                <div class="col-md-12">
+                                    <p>
+                                        <b>Genetic Use Area Of Research Restrictions</b>
+                                        <span class="badge bg-secondary">Yes</span>
+                                    </p>
+                                </div>
+                            
+                            
+                                <div class="col-md-12">
+                                    <p>
+                                        <b>Specific Consent Restrictions</b><br>
+                                        Use of biospecimens in non-genetic or genetic research is tiered to (1) research related to hypertension, heart and vascular disease, kidney disease, memory and brain disorders, and their risk factors, or (2) research for any major disease, health condition or risk factors.
+                                    </p>
+                                </div>
+                            
+                        </div>
+                    </div>
+                </div>
+                <div id="study-info" class="row">
+                    <div class="col-sm-12">
+                        
+                            
+                                <h2 class="study-info-heading">Available Data</h2>
+                            
+                            <p>The available data include all elements of the previously released SPRINT Primary Outcome Paper (SPRINT-POP) data, the full SPRINT clinical data including the MRI and MIND data, and select ancillary study data (Ambulatory Blood Pressure Monitoring, APOL1, Acute Kidney Injury, ASK, Heart, FAST, PWV, Renal Resistance, Biomarkers, Plasma AD, MIND).</p>
+                        
+                        
+                            <h2 class="study-info-heading">Objectives</h2>
+                            <p>The Systolic Blood Pressure Trial (SPRINT) was conducted to test the hypothesis that treating systolic blood pressure to a target of less than 120 mm Hg, as compared to a target of less than 140 mm Hg, would reduce the incidence of cardiovascular disease.</p>
+                        
+                        
+                            <h2 class="study-info-heading">Background</h2>
+                            <p>Hypertension is a highly prevalent condition among adults and is a leading risk factor for myocardial infarction and stroke. Further, isolated systolic hypertension is the most common form of hypertension in adults over 50 years of age. Observational studies have shown a monotonic increase in cardiovascular risk with systolic blood pressures above 115 mm Hg; however, general population clinical trials have only documented the benefits of lowering systolic blood pressure to a target of 150 mm Hg. A 2007 expert panel sponsored by the National Heart, Lung, and Blood Institute designated the hypothesis that lowering the systolic blood pressure goal to a level &lt;120 mm Hg as the most important hypothesis to test in reducing hypertension related complications in those without diabetes.</p>
+                        
+                        
+                            <h2 class="study-info-heading">Participants</h2>
+                            <p>Eligible participants were adults 50 years of age or more with a systolic blood pressure of 130 to 180 mm Hg with an increased risk of cardiovascular disease but without diabetes or a history of stroke. Increased cardiovascular risk was defined by one or more of the following: clinical or subclinical cardiovascular disease other than stroke; chronic kidney disease, excluding polycystic kidney disease, with an estimated glomerular filtration rate (eGFR) of 20 to less than 60 ml per minute per 1.73 m2 of body surface area as calculated by the four variable Modification of Diet in Renal Disease equation; a 10-year risk of cardiovascular disease of 15% or greater on the basis of the Framingham risk score; or an age of 75 years or older. A total of 9361 participants were enrolled, with 4,678 randomized to the intensive-treatment group and 4,683 randomized to the standard-treatment group.</p>
+                        
+                        
+                        
+                            <h2 class="study-info-heading">Design</h2>
+                            <p>SPRINT was a randomized, single blinded (outcome adjudicators were blinded to treatment assignment) treatment trial with participants randomized to a systolic blood-pressure target of either less than 140 mm Hg (the standard-treatment group) or less than 120 mm Hg (the intensive-treatment group). Following randomization, baseline hypertensive regimens were adjusted in accordance with study treatment algorithms established for each group. The study formulary included all major classes of antihypertensive agents. Investigators could prescribe other antihypertensive medications, but the use of drug classes with the strongest evidence for reduction in cardiovascular outcomes was encouraged. This included thiazide-type diuretics as the first-line agent, loop diuretics for participants with advanced chronic kidney disease, and beta-adrenergic blockers for participants with coronary artery disease. Medications for participants in the intensive-treatment group were adjusted on a monthly basis to target a systolic blood pressure of less than 120 mm Hg. Medications for participants in the standard-treatment group were adjusted to target a systolic blood pressure of 135 to 139 mm Hg, and the dose was reduced if systolic blood pressure was less than 130 mm Hg on a single visit or less than 135 mm Hg on two consecutive visits. Lifestyle modification was encouraged as part of the management strategy.</p>
+<p>Participants were seen monthly for the first 3 months and every 3 months thereafter. Demographic data were collected at baseline. Clinical and laboratory data were obtained at baseline and every 3 months thereafter. A structured interview was used in both groups every 3 months to obtain self-reported cardiovascular disease outcomes. Medical records and electrocardiograms were obtained for documentation of events. Incidences of hypotension, syncope, injurious falls, electrolyte abnormalities, and bradycardia that were evaluated in an emergency department were included in adverse event reporting. Occurrences of acute kidney injury or acute renal failure requiring hospitalization were also monitored.</p>
+<p>The primary outcome was a composite outcome of myocardial infarction, other acute coronary syndromes, stroke, heart failure, or death from cardiovascular causes.</p>
+                        
+                        
+                            <h2 class="study-info-heading">Conclusions</h2>
+                            <p>The blood pressure intervention was stopped in August of 2015 (median follow-up of 3.26 years) after the cardiovascular outcome results exceeded the boundary for efficacy at two consecutive time points. Compared with a systolic blood pressure target of less than 140 mm Hg, an intensive systolic blood pressure target of 120 mm Hg resulted in lower rates of fatal and nonfatal major cardiovascular events and death from any cause. Significantly higher rates of some adverse events were observed in the intensive-treatment group.</p>
+<p>N Engl J Med 2015; 373:2103-2116 DOI: 10.1056/NEJMoa1511939</p>
+                        
+                        
+                        
+                        
+                            <h2 class="study-info-heading">Additional Details</h2>
+                            <div id="additional-details-accordion" role="tablist" aria-multiselectable="true">
+                                
+                                    <div class="card">
+                                        <div class="card-header clickable-card-header" role="tab" id="heading-1">
+                                            <h3 class="card-title">
+                                                <a class="accordion-button collapsed" role="button" data-bs-toggle="collapse" data-parent="#additional-details-accordion" href="#collapse-1" aria-expanded="false" aria-controls="collapse-1" id="study-population-card-title">
+                                                    Study Population
+                                                </a>
+                                            </h3>
+                                        </div>
+                                        <div id="collapse-1" class="card-collapse collapse" role="tabpanel" aria-labelledby="heading-1">
+                                            <div class="card-body">
+                                                
+                                                
+                                                    
+                                                        
+                                                            <div class="row">
+                                                                <div class="col-md-12">
+                                                                    <b>Subjects:</b><br>
+                                                                    <p>Intensive-treatment group: 4,678 subjects<br>Standard-treatment group: 4,683 subjects</p>
+                                                                </div>
+                                                            </div>
+                                                        
+                                                    
+                                                
+                                                    
+                                                        
+                                                            <div class="row">
+                                                                <div class="col-md-12">
+                                                                    <b>Age:</b><br>
+                                                                    <table><thead><tr><th style="background-color:#E7E7E7;border-color:black;border-width:1.0pt;padding:0in 3.35pt;width:96.0pt;"><p style="margin-left:0in;text-align:center;">&nbsp;</p></th><th style="background-color:#E7E7E7;border-color:black;border-width:1.0pt;padding:0in 3.35pt;vertical-align:bottom;width:96.5pt;"><p style="margin-left:0in;text-align:center;"><span style="color:black;"><strong>Intensive</strong></span></p></th><th style="background-color:#E7E7E7;border-color:black;border-width:1.0pt;padding:0in 3.35pt;vertical-align:bottom;width:96.5pt;"><p style="margin-left:0in;text-align:center;"><span style="color:black;"><strong>Standard</strong></span></p></th><th style="background-color:#E7E7E7;border-color:black;border-width:1.0pt;padding:0in 3.35pt;vertical-align:bottom;width:75.75pt;"><p style="margin-left:0in;text-align:center;"><span style="color:black;"><strong>Total Subjects</strong></span></p></th></tr></thead><tbody><tr><td style="background-color:#E7E7E7;border-bottom:1.0pt solid black;border-left:1.0pt solid black;padding:0in 3.35pt;vertical-align:top;width:96.0pt;"><p style="margin-left:0in;"><span style="color:black;"><strong>45-50</strong></span></p></td><td style="background-color:white;border-bottom:1.0pt solid black;border-left:1.0pt solid black;padding:0in 3.35pt;vertical-align:bottom;width:96.5pt;"><p style="margin-left:0in;text-align:right;"><span style="color:black;">47</span></p></td><td style="background-color:white;border-bottom:1.0pt solid black;border-left:1.0pt solid black;padding:0in 3.35pt;vertical-align:bottom;width:96.5pt;"><p style="margin-left:0in;text-align:right;"><span style="color:black;">66</span></p></td><td style="background-color:white;border-color:black;border-width:1.0pt;padding:0in 3.35pt;vertical-align:bottom;width:75.75pt;"><p style="margin-left:0in;text-align:right;"><span style="color:black;">113</span></p></td></tr><tr><td style="background-color:#E7E7E7;border-bottom:1.0pt solid black;border-left:1.0pt solid black;padding:0in 3.35pt;vertical-align:top;width:96.0pt;"><p style="margin-left:0in;"><span style="color:black;"><strong>51-55</strong></span></p></td><td style="background-color:white;border-bottom:1.0pt solid black;border-left:1.0pt solid black;padding:0in 3.35pt;vertical-align:bottom;width:96.5pt;"><p style="margin-left:0in;text-align:right;"><span style="color:black;">375</span></p></td><td style="background-color:white;border-bottom:1.0pt solid black;border-left:1.0pt solid black;padding:0in 3.35pt;vertical-align:bottom;width:96.5pt;"><p style="margin-left:0in;text-align:right;"><span style="color:black;">393</span></p></td><td style="background-color:white;border-color:black;border-width:1.0pt;padding:0in 3.35pt;vertical-align:bottom;width:75.75pt;"><p style="margin-left:0in;text-align:right;"><span style="color:black;">768</span></p></td></tr><tr><td style="background-color:#E7E7E7;border-bottom:1.0pt solid black;border-left:1.0pt solid black;padding:0in 3.35pt;vertical-align:top;width:96.0pt;"><p style="margin-left:0in;"><span style="color:black;"><strong>56-60</strong></span></p></td><td style="background-color:white;border-bottom:1.0pt solid black;border-left:1.0pt solid black;padding:0in 3.35pt;vertical-align:bottom;width:96.5pt;"><p style="margin-left:0in;text-align:right;"><span style="color:black;">727</span></p></td><td style="background-color:white;border-bottom:1.0pt solid black;border-left:1.0pt solid black;padding:0in 3.35pt;vertical-align:bottom;width:96.5pt;"><p style="margin-left:0in;text-align:right;"><span style="color:black;">707</span></p></td><td style="background-color:white;border-color:black;border-width:1.0pt;padding:0in 3.35pt;vertical-align:bottom;width:75.75pt;"><p style="margin-left:0in;text-align:right;"><span style="color:black;">1,434</span></p></td></tr><tr><td style="background-color:#E7E7E7;border-bottom:1.0pt solid black;border-left:1.0pt solid black;padding:0in 3.35pt;vertical-align:top;width:96.0pt;"><p style="margin-left:0in;"><span style="color:black;"><strong>61-65</strong></span></p></td><td style="background-color:white;border-bottom:1.0pt solid black;border-left:1.0pt solid black;padding:0in 3.35pt;vertical-align:bottom;width:96.5pt;"><p style="margin-left:0in;text-align:right;"><span style="color:black;">954</span></p></td><td style="background-color:white;border-bottom:1.0pt solid black;border-left:1.0pt solid black;padding:0in 3.35pt;vertical-align:bottom;width:96.5pt;"><p style="margin-left:0in;text-align:right;"><span style="color:black;">959</span></p></td><td style="background-color:white;border-color:black;border-width:1.0pt;padding:0in 3.35pt;vertical-align:bottom;width:75.75pt;"><p style="margin-left:0in;text-align:right;"><span style="color:black;">1,913</span></p></td></tr><tr><td style="background-color:#E7E7E7;border-bottom:1.0pt solid black;border-left:1.0pt solid black;padding:0in 3.35pt;vertical-align:top;width:96.0pt;"><p style="margin-left:0in;"><span style="color:black;"><strong>66-70</strong></span></p></td><td style="background-color:white;border-bottom:1.0pt solid black;border-left:1.0pt solid black;padding:0in 3.35pt;vertical-align:bottom;width:96.5pt;"><p style="margin-left:0in;text-align:right;"><span style="color:black;">714</span></p></td><td style="background-color:white;border-bottom:1.0pt solid black;border-left:1.0pt solid black;padding:0in 3.35pt;vertical-align:bottom;width:96.5pt;"><p style="margin-left:0in;text-align:right;"><span style="color:black;">706</span></p></td><td style="background-color:white;border-color:black;border-width:1.0pt;padding:0in 3.35pt;vertical-align:bottom;width:75.75pt;"><p style="margin-left:0in;text-align:right;"><span style="color:black;">1,420</span></p></td></tr><tr><td style="background-color:#E7E7E7;border-bottom:1.0pt solid black;border-left:1.0pt solid black;padding:0in 3.35pt;vertical-align:top;width:96.0pt;"><p style="margin-left:0in;"><span style="color:black;"><strong>71-75</strong></span></p></td><td style="background-color:white;border-bottom:1.0pt solid black;border-left:1.0pt solid black;padding:0in 3.35pt;vertical-align:bottom;width:96.5pt;"><p style="margin-left:0in;text-align:right;"><span style="color:black;">705</span></p></td><td style="background-color:white;border-bottom:1.0pt solid black;border-left:1.0pt solid black;padding:0in 3.35pt;vertical-align:bottom;width:96.5pt;"><p style="margin-left:0in;text-align:right;"><span style="color:black;">675</span></p></td><td style="background-color:white;border-color:black;border-width:1.0pt;padding:0in 3.35pt;vertical-align:bottom;width:75.75pt;"><p style="margin-left:0in;text-align:right;"><span style="color:black;">1,380</span></p></td></tr><tr><td style="background-color:#E7E7E7;border-bottom:1.0pt solid black;border-left:1.0pt solid black;padding:0in 3.35pt;vertical-align:top;width:96.0pt;"><p style="margin-left:0in;"><span style="color:black;"><strong>76-80</strong></span></p></td><td style="background-color:white;border-bottom:1.0pt solid black;border-left:1.0pt solid black;padding:0in 3.35pt;vertical-align:bottom;width:96.5pt;"><p style="margin-left:0in;text-align:right;"><span style="color:black;">674</span></p></td><td style="background-color:white;border-bottom:1.0pt solid black;border-left:1.0pt solid black;padding:0in 3.35pt;vertical-align:bottom;width:96.5pt;"><p style="margin-left:0in;text-align:right;"><span style="color:black;">705</span></p></td><td style="background-color:white;border-color:black;border-width:1.0pt;padding:0in 3.35pt;vertical-align:bottom;width:75.75pt;"><p style="margin-left:0in;text-align:right;"><span style="color:black;">1,379</span></p></td></tr><tr><td style="background-color:#E7E7E7;border-bottom:1.0pt solid black;border-left:1.0pt solid black;padding:0in 3.35pt;vertical-align:top;width:96.0pt;"><p style="margin-left:0in;"><span style="color:black;"><strong>80+</strong></span></p></td><td style="background-color:white;border-bottom:1.0pt solid black;border-left:1.0pt solid black;padding:0in 3.35pt;vertical-align:bottom;width:96.5pt;"><p style="margin-left:0in;text-align:right;"><span style="color:black;">482</span></p></td><td style="background-color:white;border-bottom:1.0pt solid black;border-left:1.0pt solid black;padding:0in 3.35pt;vertical-align:bottom;width:96.5pt;"><p style="margin-left:0in;text-align:right;"><span style="color:black;">472</span></p></td><td style="background-color:white;border-color:black;border-width:1.0pt;padding:0in 3.35pt;vertical-align:bottom;width:75.75pt;"><p style="margin-left:0in;text-align:right;"><span style="color:black;">954</span></p></td></tr></tbody></table>
+                                                                </div>
+                                                            </div>
+                                                        
+                                                    
+                                                
+                                                    
+                                                        
+                                                            <div class="row">
+                                                                <div class="col-md-12">
+                                                                    <b>Sex:</b><br>
+                                                                    <table><thead><tr><th style="background-color:#E7E7E7;border-color:black;border-width:1.0pt;padding:0in 3.35pt;width:96.0pt;"><p style="margin-left:0in;text-align:center;">&nbsp;</p></th><th style="background-color:#E7E7E7;border-color:black;border-width:1.0pt;padding:0in 3.35pt;vertical-align:bottom;width:96.5pt;"><p style="margin-left:0in;text-align:center;"><span style="color:black;"><strong>Intensive</strong></span></p></th><th style="background-color:#E7E7E7;border-color:black;border-width:1.0pt;padding:0in 3.35pt;vertical-align:bottom;width:96.5pt;"><p style="margin-left:0in;text-align:center;"><span style="color:black;"><strong>Standard</strong></span></p></th><th style="background-color:#E7E7E7;border-color:black;border-width:1.0pt;padding:0in 3.35pt;vertical-align:bottom;width:75.75pt;"><p style="margin-left:0in;text-align:center;"><span style="color:black;"><strong>Total Subjects</strong></span></p></th></tr></thead><tbody><tr><td style="background-color:#E7E7E7;border-bottom:1.0pt solid black;border-left:1.0pt solid black;padding:0in 3.35pt;vertical-align:top;width:96.0pt;"><p style="margin-left:0in;"><span style="color:black;"><strong>Male</strong></span></p></td><td style="background-color:white;border-bottom:1.0pt solid black;border-left:1.0pt solid black;padding:0in 3.35pt;vertical-align:bottom;width:96.5pt;"><p style="margin-left:0in;text-align:right;"><span style="color:black;">2,994</span></p></td><td style="background-color:white;border-bottom:1.0pt solid black;border-left:1.0pt solid black;padding:0in 3.35pt;vertical-align:bottom;width:96.5pt;"><p style="margin-left:0in;text-align:right;"><span style="color:black;">3,035</span></p></td><td style="background-color:white;border-color:black;border-width:1.0pt;padding:0in 3.35pt;vertical-align:bottom;width:75.75pt;"><p style="margin-left:0in;text-align:right;"><span style="color:black;">6,029</span></p></td></tr><tr><td style="background-color:#E7E7E7;border-bottom:1.0pt solid black;border-left:1.0pt solid black;padding:0in 3.35pt;vertical-align:top;width:96.0pt;"><p style="margin-left:0in;"><span style="color:black;"><strong>Female</strong></span></p></td><td style="background-color:white;border-bottom:1.0pt solid black;border-left:1.0pt solid black;padding:0in 3.35pt;vertical-align:bottom;width:96.5pt;"><p style="margin-left:0in;text-align:right;"><span style="color:black;">1,684</span></p></td><td style="background-color:white;border-bottom:1.0pt solid black;border-left:1.0pt solid black;padding:0in 3.35pt;vertical-align:bottom;width:96.5pt;"><p style="margin-left:0in;text-align:right;"><span style="color:black;">1,648</span></p></td><td style="background-color:white;border-color:black;border-width:1.0pt;padding:0in 3.35pt;vertical-align:bottom;width:75.75pt;"><p style="margin-left:0in;text-align:right;"><span style="color:black;">3,332</span></p></td></tr></tbody></table>
+                                                                </div>
+                                                            </div>
+                                                        
+                                                    
+                                                
+                                                    
+                                                        
+                                                            <div class="row">
+                                                                <div class="col-md-12">
+                                                                    <b>Race:</b><br>
+                                                                    <table><thead><tr><th style="background-color:#E7E7E7;border-color:black;border-width:1.0pt;padding:0in 3.35pt;width:96.0pt;"><p style="margin-left:0in;text-align:center;">&nbsp;</p></th><th style="background-color:#E7E7E7;border-color:black;border-width:1.0pt;padding:0in 3.35pt;vertical-align:bottom;width:96.5pt;"><p style="margin-left:0in;text-align:center;"><span style="color:black;"><strong>Intensive</strong></span></p></th><th style="background-color:#E7E7E7;border-color:black;border-width:1.0pt;padding:0in 3.35pt;vertical-align:bottom;width:96.5pt;"><p style="margin-left:0in;text-align:center;"><span style="color:black;"><strong>Standard</strong></span></p></th><th style="background-color:#E7E7E7;border-color:black;border-width:1.0pt;padding:0in 3.35pt;vertical-align:bottom;width:75.75pt;"><p style="margin-left:0in;text-align:center;"><span style="color:black;"><strong>Total Subjects</strong></span></p></th></tr></thead><tbody><tr><td style="background-color:#E7E7E7;border-bottom:1.0pt solid black;border-left:1.0pt solid black;padding:0in 3.35pt;vertical-align:top;width:96.0pt;"><p style="margin-left:0in;"><span style="color:black;"><strong>White</strong></span></p></td><td style="background-color:white;border-bottom:1.0pt solid black;border-left:1.0pt solid black;padding:0in 3.35pt;vertical-align:bottom;width:96.5pt;"><p style="margin-left:0in;text-align:right;"><span style="color:black;">3,037</span></p></td><td style="background-color:white;border-bottom:1.0pt solid black;border-left:1.0pt solid black;padding:0in 3.35pt;vertical-align:bottom;width:96.5pt;"><p style="margin-left:0in;text-align:right;"><span style="color:black;">3,034</span></p></td><td style="background-color:white;border-color:black;border-width:1.0pt;padding:0in 3.35pt;vertical-align:bottom;width:75.75pt;"><p style="margin-left:0in;text-align:right;"><span style="color:black;">6,071</span></p></td></tr><tr><td style="background-color:#E7E7E7;border-bottom:1.0pt solid black;border-left:1.0pt solid black;padding:0in 3.35pt;vertical-align:top;width:96.0pt;"><p style="margin-left:0in;"><span style="color:black;"><strong>Black</strong></span></p></td><td style="background-color:white;border-bottom:1.0pt solid black;border-left:1.0pt solid black;padding:0in 3.35pt;vertical-align:bottom;width:96.5pt;"><p style="margin-left:0in;text-align:right;"><span style="color:black;">1,444</span></p></td><td style="background-color:white;border-bottom:1.0pt solid black;border-left:1.0pt solid black;padding:0in 3.35pt;vertical-align:bottom;width:96.5pt;"><p style="margin-left:0in;text-align:right;"><span style="color:black;">1,481</span></p></td><td style="background-color:white;border-color:black;border-width:1.0pt;padding:0in 3.35pt;vertical-align:bottom;width:75.75pt;"><p style="margin-left:0in;text-align:right;"><span style="color:black;">2,925</span></p></td></tr><tr><td style="background-color:#E7E7E7;border-bottom:1.0pt solid black;border-left:1.0pt solid black;padding:0in 3.35pt;vertical-align:top;width:96.0pt;"><p style="margin-left:0in;"><span style="color:black;"><strong>American Indian/Alaska Native</strong></span></p></td><td style="background-color:white;border-bottom:1.0pt solid black;border-left:1.0pt solid black;padding:0in 3.35pt;vertical-align:bottom;width:96.5pt;"><p style="margin-left:0in;text-align:right;"><span style="color:black;">*S</span></p></td><td style="background-color:white;border-bottom:1.0pt solid black;border-left:1.0pt solid black;padding:0in 3.35pt;vertical-align:bottom;width:96.5pt;"><p style="margin-left:0in;text-align:right;"><span style="color:black;">*S</span></p></td><td style="background-color:white;border-color:black;border-width:1.0pt;padding:0in 3.35pt;vertical-align:bottom;width:75.75pt;"><p style="margin-left:0in;text-align:right;"><span style="color:black;">14</span></p></td></tr><tr><td style="background-color:#E7E7E7;border-bottom:1.0pt solid black;border-left:1.0pt solid black;padding:0in 3.35pt;vertical-align:top;width:96.0pt;"><p style="margin-left:0in;"><span style="color:black;"><strong>Native Hawaiian/Pacific Islander</strong></span></p></td><td style="background-color:white;border-bottom:1.0pt solid black;border-left:1.0pt solid black;padding:0in 3.35pt;vertical-align:bottom;width:96.5pt;"><p style="margin-left:0in;text-align:right;"><span style="color:black;">*S</span></p></td><td style="background-color:white;border-bottom:1.0pt solid black;border-left:1.0pt solid black;padding:0in 3.35pt;vertical-align:bottom;width:96.5pt;"><p style="margin-left:0in;text-align:right;"><span style="color:black;">*S</span></p></td><td style="background-color:white;border-color:black;border-width:1.0pt;padding:0in 3.35pt;vertical-align:bottom;width:75.75pt;"><p style="margin-left:0in;text-align:right;"><span style="color:black;">11</span></p></td></tr><tr><td style="background-color:#E7E7E7;border-bottom:1.0pt solid black;border-left:1.0pt solid black;padding:0in 3.35pt;vertical-align:top;width:96.0pt;"><p style="margin-left:0in;"><span style="color:black;"><strong>Asian</strong></span></p></td><td style="background-color:white;border-bottom:1.0pt solid black;border-left:1.0pt solid black;padding:0in 3.35pt;vertical-align:bottom;width:96.5pt;"><p style="margin-left:0in;text-align:right;"><span style="color:black;">45</span></p></td><td style="background-color:white;border-bottom:1.0pt solid black;border-left:1.0pt solid black;padding:0in 3.35pt;vertical-align:bottom;width:96.5pt;"><p style="margin-left:0in;text-align:right;"><span style="color:black;">31</span></p></td><td style="background-color:white;border-color:black;border-width:1.0pt;padding:0in 3.35pt;vertical-align:bottom;width:75.75pt;"><p style="margin-left:0in;text-align:right;"><span style="color:black;">76</span></p></td></tr><tr><td style="background-color:#E7E7E7;border-bottom:1.0pt solid black;border-left:1.0pt solid black;padding:0in 3.35pt;vertical-align:top;width:96.0pt;"><p style="margin-left:0in;"><span style="color:black;"><strong>Other</strong></span></p></td><td style="background-color:white;border-bottom:1.0pt solid black;border-left:1.0pt solid black;padding:0in 3.35pt;vertical-align:bottom;width:96.5pt;"><p style="margin-left:0in;text-align:right;"><span style="color:black;">115</span></p></td><td style="background-color:white;border-bottom:1.0pt solid black;border-left:1.0pt solid black;padding:0in 3.35pt;vertical-align:bottom;width:96.5pt;"><p style="margin-left:0in;text-align:right;"><span style="color:black;">101</span></p></td><td style="background-color:white;border-color:black;border-width:1.0pt;padding:0in 3.35pt;vertical-align:bottom;width:75.75pt;"><p style="margin-left:0in;text-align:right;"><span style="color:black;">216</span></p></td></tr><tr><td style="background-color:#E7E7E7;border-bottom:1.0pt solid black;border-left:1.0pt solid black;padding:0in 3.35pt;vertical-align:top;width:96.0pt;"><p style="margin-left:0in;"><span style="color:black;"><strong>Mixed</strong></span></p></td><td style="background-color:white;border-bottom:1.0pt solid black;border-left:1.0pt solid black;padding:0in 3.35pt;vertical-align:bottom;width:96.5pt;"><p style="margin-left:0in;text-align:right;"><span style="color:black;">22</span></p></td><td style="background-color:white;border-bottom:1.0pt solid black;border-left:1.0pt solid black;padding:0in 3.35pt;vertical-align:bottom;width:96.5pt;"><p style="margin-left:0in;text-align:right;"><span style="color:black;">24</span></p></td><td style="background-color:white;border-color:black;border-width:1.0pt;padding:0in 3.35pt;vertical-align:bottom;width:75.75pt;"><p style="margin-left:0in;text-align:right;"><span style="color:black;">46</span></p></td></tr><tr><td style="background-color:#E7E7E7;border-bottom:1.0pt solid black;border-left:1.0pt solid black;padding:0in 3.35pt;vertical-align:top;width:96.0pt;"><p style="margin-left:0in;"><span style="color:black;"><strong>Unknown/Missing</strong></span></p></td><td style="background-color:white;border-bottom:1.0pt solid black;border-left:1.0pt solid black;padding:0in 3.35pt;vertical-align:bottom;width:96.5pt;"><p style="margin-left:0in;text-align:right;"><span style="color:black;">1</span></p></td><td style="background-color:white;border-bottom:1.0pt solid black;border-left:1.0pt solid black;padding:0in 3.35pt;vertical-align:bottom;width:96.5pt;"><p style="margin-left:0in;text-align:right;"><span style="color:black;">1</span></p></td><td style="background-color:white;border-color:black;border-width:1.0pt;padding:0in 3.35pt;vertical-align:bottom;width:75.75pt;"><p style="margin-left:0in;text-align:right;"><span style="color:black;">2</span></p></td></tr></tbody></table><p>*Values have been suppressed due to low counts</p>
+                                                                </div>
+                                                            </div>
+                                                        
+                                                    
+                                                
+                                            </div>
+                                        </div>
+                                    </div>
+                                
+                                    <div class="card">
+                                        <div class="card-header clickable-card-header" role="tab" id="heading-2">
+                                            <h3 class="card-title">
+                                                <a class="accordion-button collapsed" role="button" data-bs-toggle="collapse" data-parent="#additional-details-accordion" href="#collapse-2" aria-expanded="false" aria-controls="collapse-2" id="available-biospecimens-card-title">
+                                                    Available Biospecimens
+                                                </a>
+                                            </h3>
+                                        </div>
+                                        <div id="collapse-2" class="card-collapse collapse" role="tabpanel" aria-labelledby="heading-2">
+                                            <div class="card-body">
+                                                
+                                                    <p>
+                                                        Please note that biospecimen availability is subject to review by the NHLBI, BioLINCC, and the NHLBI Biorepository.
+                                                        Certain biospecimens may not be made available for your request.
+							The <a href="/media/BioLINCC_User_Guide_05Jan2026.pdf?link_time=2026-07-06_23:44:13.924425">BioLINCC Users Guide</a>
+                                                        describes the components of the review process
+                                                    </p>
+                                                
+                                                
+                                                    
+                                                        
+                                                            <div class="row">
+                                                                <div class="col-md-12">
+                                                                    <b>Material Types:</b><br>
+                                                                    <p>Serum, Plasma, DNA, Liquid Urine, Urine Pellets</p>
+                                                                </div>
+                                                            </div>
+                                                        
+                                                    
+                                                
+                                                    
+                                                        
+                                                            <div class="row">
+                                                                <div class="col-md-12">
+                                                                    <b>General Freeze/Thaw Status:</b><br>
+                                                                    <p>05/20/2026</p><p>Serum - 88% unthawed, 11% 1 thaw, 0.01% 2 thaws</p><p>Plasma - 80% unthawed, 20% 1 thaw</p><p>DNA - Majority 1 thaw</p><p>Urine - Majority unthawed</p><p>Urine Pellets - Unthawed</p>
+                                                                </div>
+                                                            </div>
+                                                        
+                                                    
+                                                
+                                                    
+                                                        
+                                                            <div class="row">
+                                                                <div class="col-md-12">
+                                                                    <b>Visits (Vials):</b><br>
+                                                                    <p>05/20/2026</p><table><thead><tr><th style="background-color:#E7E7E7;border-color:black;border-width:1.0pt;padding:0in 3.35pt;width:96.0pt;"><p style="margin-left:0in;text-align:center;">&nbsp;</p></th><th style="background-color:#E7E7E7;border-color:black;border-width:1.0pt;padding:0in 3.35pt;vertical-align:bottom;width:96.5pt;"><p style="margin-left:0in;text-align:center;"><span style="color:black;"><strong>Serum</strong></span></p></th><th style="background-color:#E7E7E7;border-color:black;border-width:1.0pt;padding:0in 3.35pt;vertical-align:bottom;width:96.5pt;"><p style="margin-left:0in;text-align:center;"><span style="color:black;"><strong>Plasma</strong></span></p></th><th style="background-color:#E7E7E7;border-color:black;border-width:1.0pt;padding:0in 3.35pt;vertical-align:bottom;width:96.5pt;"><p style="margin-left:0in;text-align:center;"><span style="color:black;"><strong>DNA</strong></span></p></th><th style="background-color:#E7E7E7;border-color:black;border-width:1.0pt;padding:0in 3.35pt;vertical-align:bottom;width:96.5pt;"><p style="margin-left:0in;text-align:center;"><span style="color:black;"><strong>Urine</strong></span></p></th><th style="background-color:#E7E7E7;border-color:black;border-width:1.0pt;padding:0in 3.35pt;vertical-align:bottom;width:96.5pt;"><p style="margin-left:0in;text-align:center;"><span style="color:black;"><strong>Urine - Pellets</strong></span></p></th><th style="background-color:#E7E7E7;border-color:black;border-width:1.0pt;padding:0in 3.35pt;vertical-align:bottom;width:96.5pt;"><p style="margin-left:0in;text-align:center;"><span style="color:black;"><strong>Total Vials</strong></span></p></th></tr></thead><tbody><tr><td style="background-color:#E7E7E7;border-bottom:1.0pt solid black;border-left:1.0pt solid black;padding:0in 3.35pt;vertical-align:top;width:96.0pt;"><p style="margin-left:0in;"><span style="color:black;"><strong>Randomization</strong></span></p></td><td style="background-color:white;border-bottom:1.0pt solid black;border-left:1.0pt solid black;padding:0in 3.35pt;vertical-align:bottom;width:96.5pt;"><p style="margin-left:0in;text-align:right;"><span style="color:black;">39,246</span></p></td><td style="background-color:white;border-bottom:1.0pt solid black;border-left:1.0pt solid black;padding:0in 3.35pt;vertical-align:bottom;width:96.5pt;"><p style="margin-left:0in;text-align:right;"><span style="color:black;">34,062</span></p></td><td style="background-color:white;border-bottom:1.0pt solid black;border-left:1.0pt solid black;padding:0in 3.35pt;vertical-align:bottom;width:96.5pt;"><p style="margin-left:0in;text-align:right;"><span style="color:black;">41,195</span></p></td><td style="background-color:white;border-bottom:1.0pt solid black;border-left:1.0pt solid black;padding:0in 3.35pt;vertical-align:bottom;width:96.5pt;"><p style="margin-left:0in;text-align:right;"><span style="color:black;">29,646</span></p></td><td style="background-color:white;border-bottom:1.0pt solid black;border-left:1.0pt solid black;padding:0in 3.35pt;vertical-align:bottom;width:96.5pt;"><p style="margin-left:0in;text-align:right;"><span style="color:black;">8,661</span></p></td><td style="background-color:white;border-color:black;border-width:1.0pt;padding:0in 3.35pt;vertical-align:bottom;width:96.5pt;"><p style="margin-left:0in;text-align:right;"><span style="color:black;">152,810</span></p></td></tr><tr><td style="background-color:#E7E7E7;border-bottom:1.0pt solid black;border-left:1.0pt solid black;padding:0in 3.35pt;vertical-align:top;width:96.0pt;"><p style="margin-left:0in;"><span style="color:black;"><strong>Year 1</strong></span></p></td><td style="background-color:white;border-bottom:1.0pt solid black;border-left:1.0pt solid black;padding:0in 3.35pt;vertical-align:bottom;width:96.5pt;"><p style="margin-left:0in;text-align:right;"><span style="color:black;">38,140</span></p></td><td style="background-color:white;border-bottom:1.0pt solid black;border-left:1.0pt solid black;padding:0in 3.35pt;vertical-align:bottom;width:96.5pt;"><p style="margin-left:0in;text-align:right;"><span style="color:black;">43,739</span></p></td><td style="background-color:white;border-bottom:1.0pt solid black;border-left:1.0pt solid black;padding:0in 3.35pt;vertical-align:bottom;width:96.5pt;"><p style="margin-left:0in;text-align:right;"><span style="color:black;">.</span></p></td><td style="background-color:white;border-bottom:1.0pt solid black;border-left:1.0pt solid black;padding:0in 3.35pt;vertical-align:bottom;width:96.5pt;"><p style="margin-left:0in;text-align:right;"><span style="color:black;">30,191</span></p></td><td style="background-color:white;border-bottom:1.0pt solid black;border-left:1.0pt solid black;padding:0in 3.35pt;vertical-align:bottom;width:96.5pt;"><p style="margin-left:0in;text-align:right;"><span style="color:black;">7,838</span></p></td><td style="background-color:white;border-color:black;border-width:1.0pt;padding:0in 3.35pt;vertical-align:bottom;width:96.5pt;"><p style="margin-left:0in;text-align:right;"><span style="color:black;">119,908</span></p></td></tr><tr><td style="background-color:#E7E7E7;border-bottom:1.0pt solid black;border-left:1.0pt solid black;padding:0in 3.35pt;vertical-align:top;width:96.0pt;"><p style="margin-left:0in;"><span style="color:black;"><strong>Year 2</strong></span></p></td><td style="background-color:white;border-bottom:1.0pt solid black;border-left:1.0pt solid black;padding:0in 3.35pt;vertical-align:bottom;width:96.5pt;"><p style="margin-left:0in;text-align:right;"><span style="color:black;">36,469</span></p></td><td style="background-color:white;border-bottom:1.0pt solid black;border-left:1.0pt solid black;padding:0in 3.35pt;vertical-align:bottom;width:96.5pt;"><p style="margin-left:0in;text-align:right;"><span style="color:black;">31,368</span></p></td><td style="background-color:white;border-bottom:1.0pt solid black;border-left:1.0pt solid black;padding:0in 3.35pt;vertical-align:bottom;width:96.5pt;"><p style="margin-left:0in;text-align:right;"><span style="color:black;">.</span></p></td><td style="background-color:white;border-bottom:1.0pt solid black;border-left:1.0pt solid black;padding:0in 3.35pt;vertical-align:bottom;width:96.5pt;"><p style="margin-left:0in;text-align:right;"><span style="color:black;">30,485</span></p></td><td style="background-color:white;border-bottom:1.0pt solid black;border-left:1.0pt solid black;padding:0in 3.35pt;vertical-align:bottom;width:96.5pt;"><p style="margin-left:0in;text-align:right;"><span style="color:black;">7,570</span></p></td><td style="background-color:white;border-color:black;border-width:1.0pt;padding:0in 3.35pt;vertical-align:bottom;width:96.5pt;"><p style="margin-left:0in;text-align:right;"><span style="color:black;">105,892</span></p></td></tr><tr><td style="background-color:#E7E7E7;border-bottom:1.0pt solid black;border-left:1.0pt solid black;padding:0in 3.35pt;vertical-align:top;width:96.0pt;"><p style="margin-left:0in;"><span style="color:black;"><strong>Year 4</strong></span></p></td><td style="background-color:white;border-bottom:1.0pt solid black;border-left:1.0pt solid black;padding:0in 3.35pt;vertical-align:bottom;width:96.5pt;"><p style="margin-left:0in;text-align:right;"><span style="color:black;">11,383</span></p></td><td style="background-color:white;border-bottom:1.0pt solid black;border-left:1.0pt solid black;padding:0in 3.35pt;vertical-align:bottom;width:96.5pt;"><p style="margin-left:0in;text-align:right;"><span style="color:black;">12,107</span></p></td><td style="background-color:white;border-bottom:1.0pt solid black;border-left:1.0pt solid black;padding:0in 3.35pt;vertical-align:bottom;width:96.5pt;"><p style="margin-left:0in;text-align:right;"><span style="color:black;">.</span></p></td><td style="background-color:white;border-bottom:1.0pt solid black;border-left:1.0pt solid black;padding:0in 3.35pt;vertical-align:bottom;width:96.5pt;"><p style="margin-left:0in;text-align:right;"><span style="color:black;">9,478</span></p></td><td style="background-color:white;border-bottom:1.0pt solid black;border-left:1.0pt solid black;padding:0in 3.35pt;vertical-align:bottom;width:96.5pt;"><p style="margin-left:0in;text-align:right;"><span style="color:black;">2,471</span></p></td><td style="background-color:white;border-color:black;border-width:1.0pt;padding:0in 3.35pt;vertical-align:bottom;width:96.5pt;"><p style="margin-left:0in;text-align:right;"><span style="color:black;">35,439</span></p></td></tr><tr><td style="background-color:#E7E7E7;border-bottom:1.0pt solid black;border-left:1.0pt solid black;padding:0in 3.35pt;vertical-align:top;width:96.0pt;"><p style="margin-left:0in;"><span style="color:black;"><strong>Close Out</strong></span></p></td><td style="background-color:white;border-bottom:1.0pt solid black;border-left:1.0pt solid black;padding:0in 3.35pt;vertical-align:bottom;width:96.5pt;"><p style="margin-left:0in;text-align:right;"><span style="color:black;">20,470</span></p></td><td style="background-color:white;border-bottom:1.0pt solid black;border-left:1.0pt solid black;padding:0in 3.35pt;vertical-align:bottom;width:96.5pt;"><p style="margin-left:0in;text-align:right;"><span style="color:black;">21,074</span></p></td><td style="background-color:white;border-bottom:1.0pt solid black;border-left:1.0pt solid black;padding:0in 3.35pt;vertical-align:bottom;width:96.5pt;"><p style="margin-left:0in;text-align:right;"><span style="color:black;">.</span></p></td><td style="background-color:white;border-bottom:1.0pt solid black;border-left:1.0pt solid black;padding:0in 3.35pt;vertical-align:bottom;width:96.5pt;"><p style="margin-left:0in;text-align:right;"><span style="color:black;">17,988</span></p></td><td style="background-color:white;border-bottom:1.0pt solid black;border-left:1.0pt solid black;padding:0in 3.35pt;vertical-align:bottom;width:96.5pt;"><p style="margin-left:0in;text-align:right;"><span style="color:black;">4,516</span></p></td><td style="background-color:white;border-color:black;border-width:1.0pt;padding:0in 3.35pt;vertical-align:bottom;width:96.5pt;"><p style="margin-left:0in;text-align:right;"><span style="color:black;">64,048</span></p></td></tr></tbody></table>
+                                                                </div>
+                                                            </div>
+                                                        
+                                                    
+                                                
+                                                    
+                                                        
+                                                            <div class="row">
+                                                                <div class="col-md-12">
+                                                                    <b>Visits (Subjects):</b><br>
+                                                                    <p>05/20/2026</p><table><thead><tr><th style="background-color:#E7E7E7;border-color:black;border-width:1.0pt;padding:0in 3.35pt;width:96.0pt;" rowspan="2"><p style="margin-left:0in;text-align:center;">&nbsp;</p></th><th style="background-color:#E7E7E7;border-color:black;border-width:1.0pt;padding:0in 3.35pt;vertical-align:bottom;width:193.0pt;" colspan="2"><p style="margin-left:0in;text-align:center;"><span style="color:black;"><strong>Serum</strong></span></p></th></tr><tr><th style="background-color:#E7E7E7;border-bottom:1.0pt solid black;border-left:1.0pt solid black;padding:0in 3.35pt;vertical-align:bottom;width:96.5pt;"><p style="margin-left:0in;text-align:center;"><span style="color:black;"><strong>Total number of subjects</strong></span></p></th><th style="background-color:#E7E7E7;border-color:black;border-width:1.0pt;padding:0in 3.35pt;vertical-align:bottom;width:96.5pt;"><p style="margin-left:0in;text-align:center;"><span style="color:black;"><strong>Average volume (mL) per subject</strong></span></p></th></tr></thead><tbody><tr><td style="background-color:#E7E7E7;border-bottom:1.0pt solid black;border-left:1.0pt solid black;padding:0in 3.35pt;vertical-align:top;width:96.0pt;"><p style="margin-left:0in;"><span style="color:black;"><strong>Randomization</strong></span></p></td><td style="background-color:white;border-bottom:1.0pt solid black;border-left:1.0pt solid black;padding:0in 3.35pt;vertical-align:bottom;width:96.5pt;"><p style="margin-left:0in;text-align:right;"><span style="color:black;">8,792</span></p></td><td style="background-color:white;border-color:black;border-width:1.0pt;padding:0in 3.35pt;vertical-align:bottom;width:96.5pt;"><p style="margin-left:0in;text-align:right;"><span style="color:black;">2.27</span></p></td></tr><tr><td style="background-color:#E7E7E7;border-bottom:1.0pt solid black;border-left:1.0pt solid black;padding:0in 3.35pt;vertical-align:top;width:96.0pt;"><p style="margin-left:0in;"><span style="color:black;"><strong>Year 1</strong></span></p></td><td style="background-color:white;border-bottom:1.0pt solid black;border-left:1.0pt solid black;padding:0in 3.35pt;vertical-align:bottom;width:96.5pt;"><p style="margin-left:0in;text-align:right;"><span style="color:black;">8,058</span></p></td><td style="background-color:white;border-color:black;border-width:1.0pt;padding:0in 3.35pt;vertical-align:bottom;width:96.5pt;"><p style="margin-left:0in;text-align:right;"><span style="color:black;">2.53</span></p></td></tr><tr><td style="background-color:#E7E7E7;border-bottom:1.0pt solid black;border-left:1.0pt solid black;padding:0in 3.35pt;vertical-align:top;width:96.0pt;"><p style="margin-left:0in;"><span style="color:black;"><strong>Year 2</strong></span></p></td><td style="background-color:white;border-bottom:1.0pt solid black;border-left:1.0pt solid black;padding:0in 3.35pt;vertical-align:bottom;width:96.5pt;"><p style="margin-left:0in;text-align:right;"><span style="color:black;">7,702</span></p></td><td style="background-color:white;border-color:black;border-width:1.0pt;padding:0in 3.35pt;vertical-align:bottom;width:96.5pt;"><p style="margin-left:0in;text-align:right;"><span style="color:black;">2.48</span></p></td></tr><tr><td style="background-color:#E7E7E7;border-bottom:1.0pt solid black;border-left:1.0pt solid black;padding:0in 3.35pt;vertical-align:top;width:96.0pt;"><p style="margin-left:0in;"><span style="color:black;"><strong>Year 4</strong></span></p></td><td style="background-color:white;border-bottom:1.0pt solid black;border-left:1.0pt solid black;padding:0in 3.35pt;vertical-align:bottom;width:96.5pt;"><p style="margin-left:0in;text-align:right;"><span style="color:black;">2,569</span></p></td><td style="background-color:white;border-color:black;border-width:1.0pt;padding:0in 3.35pt;vertical-align:bottom;width:96.5pt;"><p style="margin-left:0in;text-align:right;"><span style="color:black;">2.43</span></p></td></tr><tr><td style="background-color:#E7E7E7;border-bottom:1.0pt solid black;border-left:1.0pt solid black;padding:0in 3.35pt;vertical-align:top;width:96.0pt;"><p style="margin-left:0in;"><span style="color:black;"><strong>Close Out</strong></span></p></td><td style="background-color:white;border-bottom:1.0pt solid black;border-left:1.0pt solid black;padding:0in 3.35pt;vertical-align:bottom;width:96.5pt;"><p style="margin-left:0in;text-align:right;"><span style="color:black;">4,550</span></p></td><td style="background-color:white;border-color:black;border-width:1.0pt;padding:0in 3.35pt;vertical-align:bottom;width:96.5pt;"><p style="margin-left:0in;text-align:right;"><span style="color:black;">2.41</span></p></td></tr></tbody></table><p>&nbsp;</p><table><thead><tr><th style="background-color:#E7E7E7;border-color:black;border-width:1.0pt;padding:0in 3.35pt;width:96.0pt;" rowspan="2"><p style="margin-left:0in;text-align:center;">&nbsp;</p></th><th style="background-color:#E7E7E7;border-color:black;border-width:1.0pt;padding:0in 3.35pt;vertical-align:bottom;width:193.0pt;" colspan="2"><p style="margin-left:0in;text-align:center;"><span style="color:black;"><strong>Plasma</strong></span></p></th></tr><tr><th style="background-color:#E7E7E7;border-bottom:1.0pt solid black;border-left:1.0pt solid black;padding:0in 3.35pt;vertical-align:bottom;width:96.5pt;"><p style="margin-left:0in;text-align:center;"><span style="color:black;"><strong>Total number of subjects</strong></span></p></th><th style="background-color:#E7E7E7;border-color:black;border-width:1.0pt;padding:0in 3.35pt;vertical-align:bottom;width:96.5pt;"><p style="margin-left:0in;text-align:center;"><span style="color:black;"><strong>Average volume (mL) per subject</strong></span></p></th></tr></thead><tbody><tr><td style="background-color:#E7E7E7;border-bottom:1.0pt solid black;border-left:1.0pt solid black;padding:0in 3.35pt;vertical-align:top;width:96.0pt;"><p style="margin-left:0in;"><span style="color:black;"><strong>Randomization</strong></span></p></td><td style="background-color:white;border-bottom:1.0pt solid black;border-left:1.0pt solid black;padding:0in 3.35pt;vertical-align:bottom;width:96.5pt;"><p style="margin-left:0in;text-align:right;"><span style="color:black;">8,755</span></p></td><td style="background-color:white;border-color:black;border-width:1.0pt;padding:0in 3.35pt;vertical-align:bottom;width:96.5pt;"><p style="margin-left:0in;text-align:right;"><span style="color:black;">1.70</span></p></td></tr><tr><td style="background-color:#E7E7E7;border-bottom:1.0pt solid black;border-left:1.0pt solid black;padding:0in 3.35pt;vertical-align:top;width:96.0pt;"><p style="margin-left:0in;"><span style="color:black;"><strong>Year 1</strong></span></p></td><td style="background-color:white;border-bottom:1.0pt solid black;border-left:1.0pt solid black;padding:0in 3.35pt;vertical-align:bottom;width:96.5pt;"><p style="margin-left:0in;text-align:right;"><span style="color:black;">8,028</span></p></td><td style="background-color:white;border-color:black;border-width:1.0pt;padding:0in 3.35pt;vertical-align:bottom;width:96.5pt;"><p style="margin-left:0in;text-align:right;"><span style="color:black;">2.61</span></p></td></tr><tr><td style="background-color:#E7E7E7;border-bottom:1.0pt solid black;border-left:1.0pt solid black;padding:0in 3.35pt;vertical-align:top;width:96.0pt;"><p style="margin-left:0in;"><span style="color:black;"><strong>Year 2</strong></span></p></td><td style="background-color:white;border-bottom:1.0pt solid black;border-left:1.0pt solid black;padding:0in 3.35pt;vertical-align:bottom;width:96.5pt;"><p style="margin-left:0in;text-align:right;"><span style="color:black;">7,699</span></p></td><td style="background-color:white;border-color:black;border-width:1.0pt;padding:0in 3.35pt;vertical-align:bottom;width:96.5pt;"><p style="margin-left:0in;text-align:right;"><span style="color:black;">1.98</span></p></td></tr><tr><td style="background-color:#E7E7E7;border-bottom:1.0pt solid black;border-left:1.0pt solid black;padding:0in 3.35pt;vertical-align:top;width:96.0pt;"><p style="margin-left:0in;"><span style="color:black;"><strong>Year 4</strong></span></p></td><td style="background-color:white;border-bottom:1.0pt solid black;border-left:1.0pt solid black;padding:0in 3.35pt;vertical-align:bottom;width:96.5pt;"><p style="margin-left:0in;text-align:right;"><span style="color:black;">2,571</span></p></td><td style="background-color:white;border-color:black;border-width:1.0pt;padding:0in 3.35pt;vertical-align:bottom;width:96.5pt;"><p style="margin-left:0in;text-align:right;"><span style="color:black;">2.51</span></p></td></tr><tr><td style="background-color:#E7E7E7;border-bottom:1.0pt solid black;border-left:1.0pt solid black;padding:0in 3.35pt;vertical-align:top;width:96.0pt;"><p style="margin-left:0in;"><span style="color:black;"><strong>Close Out</strong></span></p></td><td style="background-color:white;border-bottom:1.0pt solid black;border-left:1.0pt solid black;padding:0in 3.35pt;vertical-align:bottom;width:96.5pt;"><p style="margin-left:0in;text-align:right;"><span style="color:black;">4,552</span></p></td><td style="background-color:white;border-color:black;border-width:1.0pt;padding:0in 3.35pt;vertical-align:bottom;width:96.5pt;"><p style="margin-left:0in;text-align:right;"><span style="color:black;">2.45</span></p></td></tr></tbody></table><p>&nbsp;</p><table><thead><tr><th style="background-color:#E7E7E7;border-color:black;border-width:1.0pt;padding:0in 3.35pt;width:96.0pt;" rowspan="2"><p style="margin-left:0in;text-align:center;">&nbsp;</p></th><th style="background-color:#E7E7E7;border-color:black;border-width:1.0pt;padding:0in 3.35pt;vertical-align:bottom;width:193.0pt;" colspan="2"><p style="margin-left:0in;text-align:center;"><span style="color:black;"><strong>DNA</strong></span></p></th></tr><tr><th style="background-color:#E7E7E7;border-bottom:1.0pt solid black;border-left:1.0pt solid black;padding:0in 3.35pt;vertical-align:bottom;width:96.5pt;"><p style="margin-left:0in;text-align:center;"><span style="color:black;"><strong>Total number of subjects</strong></span></p></th><th style="background-color:#E7E7E7;border-color:black;border-width:1.0pt;padding:0in 3.35pt;vertical-align:bottom;width:96.5pt;"><p style="margin-left:0in;text-align:center;"><span style="color:black;"><strong>Average mass (ug) per subject</strong></span></p></th></tr></thead><tbody><tr><td style="background-color:#E7E7E7;border-bottom:1.0pt solid black;border-left:1.0pt solid black;padding:0in 3.35pt;vertical-align:top;width:96.0pt;"><p style="margin-left:0in;"><span style="color:black;"><strong>Randomization</strong></span></p></td><td style="background-color:white;border-bottom:1.0pt solid black;border-left:1.0pt solid black;padding:0in 3.35pt;vertical-align:bottom;width:96.5pt;"><p style="margin-left:0in;text-align:right;"><span style="color:black;">8,459</span></p></td><td style="background-color:white;border-color:black;border-width:1.0pt;padding:0in 3.35pt;vertical-align:bottom;width:96.5pt;"><p style="margin-left:0in;text-align:right;"><span style="color:black;">162.33</span></p></td></tr></tbody></table><p>&nbsp;</p><table><thead><tr><th style="background-color:#E7E7E7;border-color:black;border-width:1.0pt;padding:0in 3.35pt;width:96.0pt;" rowspan="2"><p style="margin-left:0in;text-align:center;">&nbsp;</p></th><th style="background-color:#E7E7E7;border-color:black;border-width:1.0pt;padding:0in 3.35pt;vertical-align:bottom;width:193.0pt;" colspan="2"><p style="margin-left:0in;text-align:center;"><span style="color:black;"><strong>Urine</strong></span></p></th></tr><tr><th style="background-color:#E7E7E7;border-bottom:1.0pt solid black;border-left:1.0pt solid black;padding:0in 3.35pt;vertical-align:bottom;width:96.5pt;"><p style="margin-left:0in;text-align:center;"><span style="color:black;"><strong>Total number of subjects</strong></span></p></th><th style="background-color:#E7E7E7;border-color:black;border-width:1.0pt;padding:0in 3.35pt;vertical-align:bottom;width:96.5pt;"><p style="margin-left:0in;text-align:center;"><span style="color:black;"><strong>Average volume (mL) per subject</strong></span></p></th></tr></thead><tbody><tr><td style="background-color:#E7E7E7;border-bottom:1.0pt solid black;border-left:1.0pt solid black;padding:0in 3.35pt;vertical-align:top;width:96.0pt;"><p style="margin-left:0in;"><span style="color:black;"><strong>Randomization</strong></span></p></td><td style="background-color:white;border-bottom:1.0pt solid black;border-left:1.0pt solid black;padding:0in 3.35pt;vertical-align:bottom;width:96.5pt;"><p style="margin-left:0in;text-align:right;"><span style="color:black;">8,770</span></p></td><td style="background-color:white;border-color:black;border-width:1.0pt;padding:0in 3.35pt;vertical-align:bottom;width:96.5pt;"><p style="margin-left:0in;text-align:right;"><span style="color:black;">5.04</span></p></td></tr><tr><td style="background-color:#E7E7E7;border-bottom:1.0pt solid black;border-left:1.0pt solid black;padding:0in 3.35pt;vertical-align:top;width:96.0pt;"><p style="margin-left:0in;"><span style="color:black;"><strong>Year 1</strong></span></p></td><td style="background-color:white;border-bottom:1.0pt solid black;border-left:1.0pt solid black;padding:0in 3.35pt;vertical-align:bottom;width:96.5pt;"><p style="margin-left:0in;text-align:right;"><span style="color:black;">7,972</span></p></td><td style="background-color:white;border-color:black;border-width:1.0pt;padding:0in 3.35pt;vertical-align:bottom;width:96.5pt;"><p style="margin-left:0in;text-align:right;"><span style="color:black;">5.57</span></p></td></tr><tr><td style="background-color:#E7E7E7;border-bottom:1.0pt solid black;border-left:1.0pt solid black;padding:0in 3.35pt;vertical-align:top;width:96.0pt;"><p style="margin-left:0in;"><span style="color:black;"><strong>Year 2</strong></span></p></td><td style="background-color:white;border-bottom:1.0pt solid black;border-left:1.0pt solid black;padding:0in 3.35pt;vertical-align:bottom;width:96.5pt;"><p style="margin-left:0in;text-align:right;"><span style="color:black;">7,688</span></p></td><td style="background-color:white;border-color:black;border-width:1.0pt;padding:0in 3.35pt;vertical-align:bottom;width:96.5pt;"><p style="margin-left:0in;text-align:right;"><span style="color:black;">5.92</span></p></td></tr><tr><td style="background-color:#E7E7E7;border-bottom:1.0pt solid black;border-left:1.0pt solid black;padding:0in 3.35pt;vertical-align:top;width:96.0pt;"><p style="margin-left:0in;"><span style="color:black;"><strong>Year 4</strong></span></p></td><td style="background-color:white;border-bottom:1.0pt solid black;border-left:1.0pt solid black;padding:0in 3.35pt;vertical-align:bottom;width:96.5pt;"><p style="margin-left:0in;text-align:right;"><span style="color:black;">2,558</span></p></td><td style="background-color:white;border-color:black;border-width:1.0pt;padding:0in 3.35pt;vertical-align:bottom;width:96.5pt;"><p style="margin-left:0in;text-align:right;"><span style="color:black;">5.39</span></p></td></tr><tr><td style="background-color:#E7E7E7;border-bottom:1.0pt solid black;border-left:1.0pt solid black;padding:0in 3.35pt;vertical-align:top;width:96.0pt;"><p style="margin-left:0in;"><span style="color:black;"><strong>Close Out</strong></span></p></td><td style="background-color:white;border-bottom:1.0pt solid black;border-left:1.0pt solid black;padding:0in 3.35pt;vertical-align:bottom;width:96.5pt;"><p style="margin-left:0in;text-align:right;"><span style="color:black;">4,536</span></p></td><td style="background-color:white;border-color:black;border-width:1.0pt;padding:0in 3.35pt;vertical-align:bottom;width:96.5pt;"><p style="margin-left:0in;text-align:right;"><span style="color:black;">5.89</span></p></td></tr></tbody></table><p>&nbsp;</p><table><thead><tr><th style="background-color:#E7E7E7;border-color:black;border-width:1.0pt;padding:0in 3.35pt;width:96.0pt;" rowspan="2"><p style="margin-left:0in;text-align:center;">&nbsp;</p></th><th style="background-color:#E7E7E7;border-color:black;border-width:1.0pt;padding:0in 3.35pt;vertical-align:bottom;width:193.0pt;" colspan="2"><p style="margin-left:0in;text-align:center;"><span style="color:black;"><strong>Urine - Pellets</strong></span></p></th></tr><tr><th style="background-color:#E7E7E7;border-bottom:1.0pt solid black;border-left:1.0pt solid black;padding:0in 3.35pt;vertical-align:bottom;width:96.5pt;"><p style="margin-left:0in;text-align:center;"><span style="color:black;"><strong>Total number of subjects</strong></span></p></th><th style="background-color:#E7E7E7;border-color:black;border-width:1.0pt;padding:0in 3.35pt;vertical-align:bottom;width:96.5pt;"><p style="margin-left:0in;text-align:center;"><span style="color:black;"><strong>Average vials per subject</strong></span></p></th></tr></thead><tbody><tr><td style="background-color:#E7E7E7;border-bottom:1.0pt solid black;border-left:1.0pt solid black;padding:0in 3.35pt;vertical-align:top;width:96.0pt;"><p style="margin-left:0in;"><span style="color:black;"><strong>Randomization</strong></span></p></td><td style="background-color:white;border-bottom:1.0pt solid black;border-left:1.0pt solid black;padding:0in 3.35pt;vertical-align:bottom;width:96.5pt;"><p style="margin-left:0in;text-align:right;"><span style="color:black;">8,629</span></p></td><td style="background-color:white;border-color:black;border-width:1.0pt;padding:0in 3.35pt;vertical-align:bottom;width:96.5pt;"><p style="margin-left:0in;text-align:right;"><span style="color:black;">1.00</span></p></td></tr><tr><td style="background-color:#E7E7E7;border-bottom:1.0pt solid black;border-left:1.0pt solid black;padding:0in 3.35pt;vertical-align:top;width:96.0pt;"><p style="margin-left:0in;"><span style="color:black;"><strong>Year 1</strong></span></p></td><td style="background-color:white;border-bottom:1.0pt solid black;border-left:1.0pt solid black;padding:0in 3.35pt;vertical-align:bottom;width:96.5pt;"><p style="margin-left:0in;text-align:right;"><span style="color:black;">7,800</span></p></td><td style="background-color:white;border-color:black;border-width:1.0pt;padding:0in 3.35pt;vertical-align:bottom;width:96.5pt;"><p style="margin-left:0in;text-align:right;"><span style="color:black;">1.00</span></p></td></tr><tr><td style="background-color:#E7E7E7;border-bottom:1.0pt solid black;border-left:1.0pt solid black;padding:0in 3.35pt;vertical-align:top;width:96.0pt;"><p style="margin-left:0in;"><span style="color:black;"><strong>Year 2</strong></span></p></td><td style="background-color:white;border-bottom:1.0pt solid black;border-left:1.0pt solid black;padding:0in 3.35pt;vertical-align:bottom;width:96.5pt;"><p style="margin-left:0in;text-align:right;"><span style="color:black;">7,537</span></p></td><td style="background-color:white;border-color:black;border-width:1.0pt;padding:0in 3.35pt;vertical-align:bottom;width:96.5pt;"><p style="margin-left:0in;text-align:right;"><span style="color:black;">1.00</span></p></td></tr><tr><td style="background-color:#E7E7E7;border-bottom:1.0pt solid black;border-left:1.0pt solid black;padding:0in 3.35pt;vertical-align:top;width:96.0pt;"><p style="margin-left:0in;"><span style="color:black;"><strong>Year 4</strong></span></p></td><td style="background-color:white;border-bottom:1.0pt solid black;border-left:1.0pt solid black;padding:0in 3.35pt;vertical-align:bottom;width:96.5pt;"><p style="margin-left:0in;text-align:right;"><span style="color:black;">2,114</span></p></td><td style="background-color:white;border-color:black;border-width:1.0pt;padding:0in 3.35pt;vertical-align:bottom;width:96.5pt;"><p style="margin-left:0in;text-align:right;"><span style="color:black;">1.17</span></p></td></tr><tr><td style="background-color:#E7E7E7;border-bottom:1.0pt solid black;border-left:1.0pt solid black;padding:0in 3.35pt;vertical-align:top;width:96.0pt;"><p style="margin-left:0in;"><span style="color:black;"><strong>Close Out</strong></span></p></td><td style="background-color:white;border-bottom:1.0pt solid black;border-left:1.0pt solid black;padding:0in 3.35pt;vertical-align:bottom;width:96.5pt;"><p style="margin-left:0in;text-align:right;"><span style="color:black;">4,511</span></p></td><td style="background-color:white;border-color:black;border-width:1.0pt;padding:0in 3.35pt;vertical-align:bottom;width:96.5pt;"><p style="margin-left:0in;text-align:right;"><span style="color:black;">1.00</span></p></td></tr></tbody></table>
+                                                                </div>
+                                                            </div>
+                                                        
+                                                    
+                                                
+                                            </div>
+                                        </div>
+                                    </div>
+                                
+                            </div>
+                        
+                        
+                            <button class="btn btn-primary" name="request" value="Request" onclick="window.location='/requests/type/sprint/'">Request Specimens and/or Data</button>
+                            <p class="help-notes">
+                                Please note that researchers must be registered on this site to submit
+                                a request, and you will be prompted to log in.  If you are not
+                                registered on this site, you can do so via the Request button.
+                                Registration is quick, easy and free.
+                            </p>
+                        
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-5 col-lg-4 col-xl-3">
+                <div class="row detail-aside-row">
+                    <div class="col-md-12">
+                        <h2 class="detail-aside-heading">Resources Available</h2>
+                        
+                            Specimens and Study Datasets
+                        
+                    </div>
+                </div>
+                
+                    <div class="row detail-aside-row">
+                        <div class="col-md-12">
+                            <h2 class="detail-aside-heading"><a href="/catalog/sprint/">Study Catalog</a></h2>
+                        </div>
+                    </div>
+                
+                
+                    <div class="row detail-aside-row">
+                        <div class="col-md-12">
+                            <h2 class="detail-aside-heading"><a href="/publications/?studies.raw=Systolic+Blood+Pressure+Intervention+Trial+%28SPRINT%29">Study Publications (276)</a></h2>
+                        </div>
+                    </div>
+                
+                
+                    <div class="row detail-aside-row"
+                        
+                            
+                        
+                    >
+                        
+                            
+                                <div class="col-md-12">
+                                    <h2 class="detail-aside-heading">Materials Available</h2>
+                                    <ul class="list-unstyled detail-aside-list">
+                                        
+                                            <li>DNA</li>
+                                        
+                                            <li>Plasma</li>
+                                        
+                                            <li>Serum</li>
+                                        
+                                            <li>Urine</li>
+                                        
+                                            <li>Urine Pellet/Sediment</li>
+                                        
+                                        
+                                        
+                                            <li><a id="material-link" href="#available-biospecimens-card-title">More Details</a></li>
+                                        
+                                    </ul>
+                                </div>
+                            
+                        
+                    </div>
+                
+                
+                    
+                        <div class="row detail-aside-row">
+                            <div class="col-md-12">
+                                <h2 class="detail-aside-heading">Study Documents</h2>
+                                <ul class="list-unstyled detail-aside-list">
+                                    
+                                        <li><img src='/static/img/icons/pdf.svg' alt='PDF' class='file-type-icon' /> <a href="/media/studies/sprint/data_dictionary/SPRINT_2020b.pdf?link_time=2026-07-06_23:44:13.924471">Data Dictionary (PDF - 2.6 MB)</a></li>
+                                    
+                                    
+                                        <li><img src='/static/img/icons/pdf.svg' alt='PDF' class='file-type-icon' /> <a href="/media/studies/sprint/Ancillary Studies Data Dictionary.pdf?link_time=2026-07-06_23:44:13.924498">Ancillary Studies Data Dictionary (PDF - 2.8 MB)</a></li>
+                                    
+                                        <li><img src='/static/img/icons/pdf.svg' alt='PDF' class='file-type-icon' /> <a href="/media/studies/sprint/SPRINT_Forms.pdf?link_time=2026-07-06_23:44:13.924533">SPRINT Forms (PDF - 973.8 KB)</a></li>
+                                    
+                                        <li><img src='/static/img/icons/pdf.svg' alt='PDF' class='file-type-icon' /> <a href="/media/studies/sprint/SPRINT_Guide_to_Use_of_Data_Sets.pdf?link_time=2026-07-06_23:44:13.924580">SPRINT Guide to Use of Data Sets (PDF - 173.3 KB)</a></li>
+                                    
+                                        <li><img src='/static/img/icons/pdf.svg' alt='PDF' class='file-type-icon' /> <a href="/media/studies/sprint/SPRINT_Manual_of_Procedures.pdf?link_time=2026-07-06_23:44:13.924605">SPRINT Manual of Procedures (PDF - 9.2 MB)</a></li>
+                                    
+                                        <li><img src='/static/img/icons/pdf.svg' alt='PDF' class='file-type-icon' /> <a href="/media/studies/sprint/SPRINT_Protocol.pdf?link_time=2026-07-06_23:44:13.924634">SPRINT Protocol (PDF - 2.1 MB)</a></li>
+                                    
+                                    
+                                    
+                                </ul>
+                                <div class="section">
+                                    <p class="help-notes">
+                                        Persons using assistive technology may not be able to fully access information in the study documents. For assistance,
+                                        <a href="/contact/">Contact BioLINCC</a> and include the web address and/or publication title in your message. If you need help accessing information
+                                        in different file formats such as PDF, XLS, DOC, see <a href="/fileformats/">Instructions for Downloading Viewers and Players</a>.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    
+                
+            </div>
+        </div>
+    </div>
+
+        </main>
+
+        
+
+<footer role="contentinfo">
+    <div class="footer" >
+        <a class="returntop" href="#skipTo">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" role="img" aria-labelledby="return-label">
+                <path fill-rule="evenodd" d="M8 12a.5.5 0 0 0 .5-.5V5.707l2.146 2.147a.5.5 0 0 0 .708-.708l-3-3a.5.5 0 0 0-.708 0l-3 3a.5.5 0 1 0 .708.708L7.5 5.707V11.5a.5.5 0 0 0 .5.5z"/>
+            </svg>
+            <span id="return-label">Back to Top</span>
+        </a>
+        <div class="container-lg">
+            <div class="row mx-xl-5">
+                <div class="col-md-3 offset-xl-1 col-xl-3">
+                    <h6>About this Website</h6>
+                    <ul>
+                        <li><a href="/about/">About Us</a></li>
+                        <li><a href="/faq/">FAQ</a></li>
+                        <li><a href="/glossary/">Glossary</a></li>
+                        <li><a href="/contact/">Contact</a></li>
+                        
+                    </ul>
+                </div>
+                <div class="col-md-5 col-xl-4">
+                    <h6>Related Government Websites</h6>
+                    <ul>
+                        <li><a href="https://www.nhlbi.nih.gov/">National Heart, Lung, and Blood Institute</a></li>
+                        <li><a href="https://www.nih.gov/">National Institutes of Health</a></li>
+                        <li><a href="https://www.hhs.gov/">U.S. Department of Health &amp; Human Services</a></li>
+                        <li><a href="https://www.usa.gov/">USA.gov</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4 col-xl-4">
+                    <h6>Web Policies &amp; Notices</h6>
+                    <ul>
+                        <li><a href="/privacy/">Privacy Policy</a></li>
+                        <li><a href="/accessibility/">Accessibility</a></li>
+			<li><a href="https://www.nhlbi.nih.gov/about/contact/website-privacy-and-accessibility">FOIA</a></li>
+                        <li><a href="https://www.hhs.gov/vulnerability-disclosure-policy/index.html">HHS Vulnerability Disclosure</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="footer-second" class="footer pb-3">
+        <div class="container-lg">
+            <div class="row mx-lg-5">
+                <div class="col-md-3" id="footer-second-logo">
+                    <a aria-label="home" href="/">
+                        <img src="/static/img/NHLBI_HHS_Lockup_white.b85dd54f600e.svg" alt="National Heart, Lung, and Blood Home" loading="lazy">
+                    </a>
+                </div>
+                <div class="col-md-6 d-flex align-items-center justify-content-md-center pt-3 pt-md-0">
+                    <a href="https://www.nhlbi.nih.gov/contact" class="fw-bold pe-3">Contact NHLBI</a>
+                </div>
+                <div class="col-md-3 d-flex justify-content-md-end align-items-center pt-3 pt-md-0">
+                    <a href="https://twitter.com/nih_nhlbi?lang=en" class="social-icon" target="_blank" rel="nofollow noopener noreferrer"><img src="/static/img/icons/ico-twitter-white.3739e423844b.svg" alt="NHLBI Twitter social media" loading="lazy"></a>
+                    <a href="https://www.youtube.com/user/NHLBI" class="social-icon" target="_blank" rel="nofollow noopener noreferrer"><img src="/static/img/icons/ico-youtube-white.55a9d1d3e78f.svg" class="social-icon" alt="NHLBI Youtube social media" loading="lazy"></a>
+                    <a href="https://www.linkedin.com/company/national-heart-lung-and-blood-institute" class="social-icon" target="_blank" rel="nofollow noopener noreferrer"><img src="/static/img/icons/linkedin-brands.08074c35aeb6.svg" alt="NHLBI LinkedIn social media" loading="lazy"></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+        <script type="text/javascript" src="/static/compiled/js/base.20062462c329.js" charset="utf-8"></script>
+
+        
+    
+        
+    <script type="text/javascript" src="/static/compiled/js/study_detail.58a8218afca5.js" charset="utf-8"></script>
+
+
+        <!-- FOUC fix (see comment in head block) -->
+        <script type="text/javascript">document.body.style.display="flex";</script>
+        
+
+
+
+
+
+
+
+    </body>
+</html>

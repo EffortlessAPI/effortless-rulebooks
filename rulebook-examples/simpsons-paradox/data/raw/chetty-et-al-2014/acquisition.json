@@ -1,0 +1,18 @@
+{
+  "candidate_id": "cand-exp-chetty-et-al-2014",
+  "proposed_study_id": "chetty-et-al-2014",
+  "acquisition_status": "portal_manual",
+  "attempted_at": "2026-07-07T03:39:55+00:00",
+  "catalog_source_url": "https://opportunityinsights.org/data/",
+  "resolved_urls": [
+    "https://doi.org/10.1111/ecoj.12599",
+    "http://hdl.handle.net/2434/620175",
+    "https://opportunityinsights.org/data/"
+  ],
+  "files": [
+    "openalex-search.html",
+    "openalex-metadata.json",
+    "source-1.html"
+  ],
+  "dois": []
+}

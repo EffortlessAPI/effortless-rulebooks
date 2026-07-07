@@ -1,0 +1,17 @@
+{
+  "candidate_id": "cand-exp-heckman-1979",
+  "proposed_study_id": "heckman-1979",
+  "acquisition_status": "portal_manual",
+  "attempted_at": "2026-07-07T03:40:31+00:00",
+  "catalog_source_url": "https://nlsinfo.org/",
+  "resolved_urls": [
+    "https://doi.org/10.1111/1467-6419.00104",
+    "https://nlsinfo.org/",
+    "https://psidonline.isr.umich.edu/"
+  ],
+  "files": [
+    "openalex-metadata.json",
+    "source-1.html"
+  ],
+  "dois": []
+}

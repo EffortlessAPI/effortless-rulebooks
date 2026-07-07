@@ -1,0 +1,18 @@
+{
+  "candidate_id": "cand-exp-long-2004",
+  "proposed_study_id": "long-2004",
+  "acquisition_status": "downloaded",
+  "attempted_at": "2026-07-07T03:42:01+00:00",
+  "catalog_source_url": "https://nlsinfo.org/",
+  "resolved_urls": [
+    "https://doi.org/10.1182/blood-2017-06-788349",
+    "https://ashpublications.org/blood/article-pdf/130/25/2728/1404373/blood788349.pdf",
+    "https://nlsinfo.org/"
+  ],
+  "files": [
+    "openalex-search.pdf",
+    "openalex-metadata.json",
+    "source-1.html"
+  ],
+  "dois": []
+}

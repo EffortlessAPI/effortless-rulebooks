@@ -1,0 +1,3114 @@
+{
+  "id": "https://openalex.org/W3013671288",
+  "doi": "https://doi.org/10.1007/s00134-020-06022-5",
+  "title": "Surviving Sepsis Campaign: guidelines on the management of critically ill adults with Coronavirus Disease 2019 (COVID-19)",
+  "display_name": "Surviving Sepsis Campaign: guidelines on the management of critically ill adults with Coronavirus Disease 2019 (COVID-19)",
+  "relevance_score": 220.71863,
+  "publication_year": 2020,
+  "publication_date": "2020-03-28",
+  "ids": {
+    "openalex": "https://openalex.org/W3013671288",
+    "doi": "https://doi.org/10.1007/s00134-020-06022-5",
+    "mag": "3013671288",
+    "pmid": "https://pubmed.ncbi.nlm.nih.gov/32222812"
+  },
+  "language": "en",
+  "primary_location": {
+    "id": "doi:10.1007/s00134-020-06022-5",
+    "is_oa": true,
+    "landing_page_url": "https://doi.org/10.1007/s00134-020-06022-5",
+    "pdf_url": "https://link.springer.com/content/pdf/10.1007/s00134-020-06022-5.pdf",
+    "source": {
+      "id": "https://openalex.org/S198804558",
+      "display_name": "Intensive Care Medicine",
+      "issn_l": "0342-4642",
+      "issn": [
+        "0342-4642",
+        "1432-1238"
+      ],
+      "is_oa": false,
+      "is_in_doaj": false,
+      "is_core": true,
+      "host_organization": "https://openalex.org/P4310319900",
+      "host_organization_name": "Springer Science+Business Media",
+      "host_organization_lineage": [
+        "https://openalex.org/P4310319900",
+        "https://openalex.org/P4310319965"
+      ],
+      "host_organization_lineage_names": [
+        "Springer Science+Business Media",
+        "Springer Nature"
+      ],
+      "type": "journal"
+    },
+    "license": null,
+    "license_id": null,
+    "version": "publishedVersion",
+    "is_accepted": true,
+    "is_published": true,
+    "raw_source_name": "Intensive Care Medicine",
+    "raw_type": "journal-article"
+  },
+  "type": "article",
+  "indexed_in": [
+    "crossref",
+    "pubmed"
+  ],
+  "open_access": {
+    "is_oa": true,
+    "oa_status": "bronze",
+    "oa_url": "https://link.springer.com/content/pdf/10.1007/s00134-020-06022-5.pdf",
+    "any_repository_has_fulltext": true
+  },
+  "authorships": [
+    {
+      "author_position": "first",
+      "author": {
+        "id": "https://openalex.org/A5020157030",
+        "display_name": "Waleed Alhazzani",
+        "orcid": "https://orcid.org/0000-0001-8076-9626"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I4210161256",
+          "display_name": "Impact",
+          "ror": "https://ror.org/05d9dsr70",
+          "country_code": "CA",
+          "type": "nonprofit",
+          "lineage": [
+            "https://openalex.org/I4210161256"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I98251732",
+          "display_name": "McMaster University",
+          "ror": "https://ror.org/02fa3aq29",
+          "country_code": "CA",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I98251732"
+          ]
+        }
+      ],
+      "countries": [
+        "CA"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Waleed Alhazzani",
+      "raw_affiliation_strings": [
+        "Department of Health Research Methods, Evidence, and Impact, McMaster University, Hamilton, Canada",
+        "Department of Medicine, McMaster University, Hamilton, Canada"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Department of Health Research Methods, Evidence, and Impact, McMaster University, Hamilton, Canada",
+          "institution_ids": [
+            "https://openalex.org/I98251732",
+            "https://openalex.org/I4210161256"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Department of Medicine, McMaster University, Hamilton, Canada",
+          "institution_ids": [
+            "https://openalex.org/I98251732"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5045762489",
+        "display_name": "Morten Hylander M\u00f8ller",
+        "orcid": "https://orcid.org/0000-0002-6378-9673"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I2802567020",
+          "display_name": "Copenhagen University Hospital",
+          "ror": "https://ror.org/05bpbnx46",
+          "country_code": "DK",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I2802567020"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I2802709434",
+          "display_name": "Rigshospitalet",
+          "ror": "https://ror.org/03mchdq19",
+          "country_code": "DK",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I2802567020",
+            "https://openalex.org/I2802709434",
+            "https://openalex.org/I4210145385"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I4210148920",
+          "display_name": "Danish Cancer Society",
+          "ror": "https://ror.org/03ytt7k16",
+          "country_code": "DK",
+          "type": "nonprofit",
+          "lineage": [
+            "https://openalex.org/I4210148920"
+          ]
+        }
+      ],
+      "countries": [
+        "DK"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Morten Hylander M\u00f8ller",
+      "raw_affiliation_strings": [
+        "Department of Intensive Care, Copenhagen University Hospital Rigshospitalet, 4131, Copenhagen, Denmark",
+        "Scandinavian Society of Anaesthesiology and Intensive Care Medicine (SSAI), Copenhagen, Denmark"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Department of Intensive Care, Copenhagen University Hospital Rigshospitalet, 4131, Copenhagen, Denmark",
+          "institution_ids": [
+            "https://openalex.org/I2802567020",
+            "https://openalex.org/I2802709434"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Scandinavian Society of Anaesthesiology and Intensive Care Medicine (SSAI), Copenhagen, Denmark",
+          "institution_ids": [
+            "https://openalex.org/I4210148920"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5021200051",
+        "display_name": "Yaseen M. Arabi",
+        "orcid": "https://orcid.org/0000-0001-5735-6241"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I185203018",
+          "display_name": "King Saud bin Abdulaziz University for Health Sciences",
+          "ror": "https://ror.org/0149jvn88",
+          "country_code": "SA",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I185203018"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I4210095597",
+          "display_name": "King Abdullah International Medical Research Center",
+          "ror": "https://ror.org/009p8zv69",
+          "country_code": "SA",
+          "type": "facility",
+          "lineage": [
+            "https://openalex.org/I4210095597"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I4517696",
+          "display_name": "National Guard Health Affairs",
+          "ror": "https://ror.org/02pecpe58",
+          "country_code": "SA",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I4517696"
+          ]
+        }
+      ],
+      "countries": [
+        "SA"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Yaseen M. Arabi",
+      "raw_affiliation_strings": [
+        "Intensive Care Department, Ministry of National Guard Health Affairs, King Saud Bin Abdulaziz University for Health Sciences, King Abdullah International Medical Research Center, Riyadh, Kingdom of Saudi Arabia"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Intensive Care Department, Ministry of National Guard Health Affairs, King Saud Bin Abdulaziz University for Health Sciences, King Abdullah International Medical Research Center, Riyadh, Kingdom of Saudi Arabia",
+          "institution_ids": [
+            "https://openalex.org/I185203018",
+            "https://openalex.org/I4517696",
+            "https://openalex.org/I4210095597"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5084198418",
+        "display_name": "Mark Loeb",
+        "orcid": "https://orcid.org/0000-0003-2315-5390"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I4210161256",
+          "display_name": "Impact",
+          "ror": "https://ror.org/05d9dsr70",
+          "country_code": "CA",
+          "type": "nonprofit",
+          "lineage": [
+            "https://openalex.org/I4210161256"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I98251732",
+          "display_name": "McMaster University",
+          "ror": "https://ror.org/02fa3aq29",
+          "country_code": "CA",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I98251732"
+          ]
+        }
+      ],
+      "countries": [
+        "CA"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Mark Loeb",
+      "raw_affiliation_strings": [
+        "Department of Health Research Methods, Evidence, and Impact, McMaster University, Hamilton, Canada",
+        "Department of Medicine, McMaster University, Hamilton, Canada"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Department of Health Research Methods, Evidence, and Impact, McMaster University, Hamilton, Canada",
+          "institution_ids": [
+            "https://openalex.org/I98251732",
+            "https://openalex.org/I4210161256"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Department of Medicine, McMaster University, Hamilton, Canada",
+          "institution_ids": [
+            "https://openalex.org/I98251732"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5056404361",
+        "display_name": "Michelle N. Gong",
+        "orcid": "https://orcid.org/0000-0001-7952-5384"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I129975664",
+          "display_name": "Albert Einstein College of Medicine",
+          "ror": "https://ror.org/05cf8a891",
+          "country_code": "US",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I129975664",
+            "https://openalex.org/I4210112371"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I4210112371",
+          "display_name": "Montefiore Health System",
+          "ror": "https://ror.org/01x0e6k76",
+          "country_code": "US",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I4210112371"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Michelle Ng Gong",
+      "raw_affiliation_strings": [
+        "Division of Critical Care Medicine, Division of Pulmonary Medicine, Department of Medicine, Montefiore Healthcare System/Albert Einstein College of Medicine, Bronx, NY, USA"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Division of Critical Care Medicine, Division of Pulmonary Medicine, Department of Medicine, Montefiore Healthcare System/Albert Einstein College of Medicine, Bronx, NY, USA",
+          "institution_ids": [
+            "https://openalex.org/I4210112371",
+            "https://openalex.org/I129975664"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5077525366",
+        "display_name": "Eddy Fan",
+        "orcid": "https://orcid.org/0000-0002-1210-9914"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I185261750",
+          "display_name": "University of Toronto",
+          "ror": "https://ror.org/03dbr7087",
+          "country_code": "CA",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I185261750"
+          ]
+        }
+      ],
+      "countries": [
+        "CA"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Eddy Fan",
+      "raw_affiliation_strings": [
+        "Interdepartmental Division of Critical Care Medicine, Institute of Health Policy, Management and Evaluation, University of Toronto, Toronto, Canada"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Interdepartmental Division of Critical Care Medicine, Institute of Health Policy, Management and Evaluation, University of Toronto, Toronto, Canada",
+          "institution_ids": [
+            "https://openalex.org/I185261750"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5046311498",
+        "display_name": "Simon Oczkowski",
+        "orcid": null
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I4210161256",
+          "display_name": "Impact",
+          "ror": "https://ror.org/05d9dsr70",
+          "country_code": "CA",
+          "type": "nonprofit",
+          "lineage": [
+            "https://openalex.org/I4210161256"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I98251732",
+          "display_name": "McMaster University",
+          "ror": "https://ror.org/02fa3aq29",
+          "country_code": "CA",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I98251732"
+          ]
+        }
+      ],
+      "countries": [
+        "CA"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Simon Oczkowski",
+      "raw_affiliation_strings": [
+        "Department of Health Research Methods, Evidence, and Impact, McMaster University, Hamilton, Canada",
+        "Department of Medicine, McMaster University, Hamilton, Canada"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Department of Health Research Methods, Evidence, and Impact, McMaster University, Hamilton, Canada",
+          "institution_ids": [
+            "https://openalex.org/I98251732",
+            "https://openalex.org/I4210161256"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Department of Medicine, McMaster University, Hamilton, Canada",
+          "institution_ids": [
+            "https://openalex.org/I98251732"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5000157972",
+        "display_name": "Mitchell M. Levy",
+        "orcid": "https://orcid.org/0000-0001-8556-2405"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I196272386",
+          "display_name": "Providence College",
+          "ror": "https://ror.org/00rxpqe74",
+          "country_code": "US",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I196272386"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I27804330",
+          "display_name": "Brown University",
+          "ror": "https://ror.org/05gq02987",
+          "country_code": "US",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I27804330"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I2800446032",
+          "display_name": "Rhode Island Hospital",
+          "ror": "https://ror.org/01aw9fv09",
+          "country_code": "US",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I2800446032",
+            "https://openalex.org/I4210151747"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Mitchell M. Levy",
+      "raw_affiliation_strings": [
+        "Rhode Island Hospital, Providence, RI, USA",
+        "Warren Alpert School of Medicine, Brown University, Providence, RI, USA"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Rhode Island Hospital, Providence, RI, USA",
+          "institution_ids": [
+            "https://openalex.org/I2800446032",
+            "https://openalex.org/I196272386"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Warren Alpert School of Medicine, Brown University, Providence, RI, USA",
+          "institution_ids": [
+            "https://openalex.org/I27804330"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5114374894",
+        "display_name": "Lennie Derde",
+        "orcid": "https://orcid.org/0000-0002-3577-5629"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I193662353",
+          "display_name": "Utrecht University",
+          "ror": "https://ror.org/04pp8hn57",
+          "country_code": "NL",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I193662353"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I3018483916",
+          "display_name": "University Medical Center Utrecht",
+          "ror": "https://ror.org/0575yy874",
+          "country_code": "NL",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I3018483916"
+          ]
+        }
+      ],
+      "countries": [
+        "NL"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Lennie Derde",
+      "raw_affiliation_strings": [
+        "Department of Intensive Care Medicine, University Medical Center Utrecht, Utrecht University, Utrecht, The Netherlands",
+        "Julius Center for Health Sciences and Primary Care, Utrecht, The Netherlands"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Department of Intensive Care Medicine, University Medical Center Utrecht, Utrecht University, Utrecht, The Netherlands",
+          "institution_ids": [
+            "https://openalex.org/I3018483916",
+            "https://openalex.org/I193662353"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Julius Center for Health Sciences and Primary Care, Utrecht, The Netherlands",
+          "institution_ids": []
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5018268726",
+        "display_name": "Amy Dzierba",
+        "orcid": "https://orcid.org/0000-0002-1527-6830"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I1340179700",
+          "display_name": "NewYork\u2013Presbyterian Hospital",
+          "ror": "https://ror.org/03gzbrs57",
+          "country_code": "US",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I1340179700"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I2801107848",
+          "display_name": "New York Hospital Queens",
+          "ror": "https://ror.org/01j17xg39",
+          "country_code": "US",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I2801107848"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I78577930",
+          "display_name": "Columbia University",
+          "ror": "https://ror.org/00hj8s172",
+          "country_code": "US",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I78577930"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Amy Dzierba",
+      "raw_affiliation_strings": [
+        "Department of Pharmacy, NewYork-Presbyterian Hospital, Columbia University Irving Medical Center, New York, NY, USA"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Department of Pharmacy, NewYork-Presbyterian Hospital, Columbia University Irving Medical Center, New York, NY, USA",
+          "institution_ids": [
+            "https://openalex.org/I2801107848",
+            "https://openalex.org/I78577930",
+            "https://openalex.org/I1340179700"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5012294390",
+        "display_name": "Bin Du",
+        "orcid": "https://orcid.org/0000-0001-6237-2895"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I200296433",
+          "display_name": "Chinese Academy of Medical Sciences & Peking Union Medical College",
+          "ror": "https://ror.org/02drdmm93",
+          "country_code": "CN",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I200296433"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I2801228662",
+          "display_name": "Peking Union Medical College Hospital",
+          "ror": "https://ror.org/04jztag35",
+          "country_code": "CN",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I2801228662"
+          ]
+        }
+      ],
+      "countries": [
+        "CN"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Bin Du",
+      "raw_affiliation_strings": [
+        "Medical ICU, Peking Union Medical College Hospital, 1 Shuai Fu Yuan, Beijing, 100730, China"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Medical ICU, Peking Union Medical College Hospital, 1 Shuai Fu Yuan, Beijing, 100730, China",
+          "institution_ids": [
+            "https://openalex.org/I200296433",
+            "https://openalex.org/I2801228662"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5036280973",
+        "display_name": "Michael S. Aboodi",
+        "orcid": null
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I129975664",
+          "display_name": "Albert Einstein College of Medicine",
+          "ror": "https://ror.org/05cf8a891",
+          "country_code": "US",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I129975664",
+            "https://openalex.org/I4210112371"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I4210112371",
+          "display_name": "Montefiore Health System",
+          "ror": "https://ror.org/01x0e6k76",
+          "country_code": "US",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I4210112371"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Michael Aboodi",
+      "raw_affiliation_strings": [
+        "Division of Critical Care Medicine, Division of Pulmonary Medicine, Department of Medicine, Montefiore Healthcare System/Albert Einstein College of Medicine, Bronx, NY, USA"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Division of Critical Care Medicine, Division of Pulmonary Medicine, Department of Medicine, Montefiore Healthcare System/Albert Einstein College of Medicine, Bronx, NY, USA",
+          "institution_ids": [
+            "https://openalex.org/I4210112371",
+            "https://openalex.org/I129975664"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5082294777",
+        "display_name": "Hannah Wunsch",
+        "orcid": "https://orcid.org/0000-0001-5477-8422"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I1323843004",
+          "display_name": "Sunnybrook Health Science Centre",
+          "ror": "https://ror.org/03wefcv03",
+          "country_code": "CA",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I1323843004"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I185261750",
+          "display_name": "University of Toronto",
+          "ror": "https://ror.org/03dbr7087",
+          "country_code": "CA",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I185261750"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I2802362269",
+          "display_name": "Health Sciences Centre",
+          "ror": "https://ror.org/05pr37258",
+          "country_code": "CA",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I110535807",
+            "https://openalex.org/I2802362269"
+          ]
+        }
+      ],
+      "countries": [
+        "CA"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Hannah Wunsch",
+      "raw_affiliation_strings": [
+        "Department of Anesthesia and Interdepartmental Division of Critical Care Medicine, University of Toronto, Toronto, ON, Canada",
+        "Department of Critical Care Medicine, Sunnybrook Health Sciences Centre, Toronto, ON, Canada"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Department of Anesthesia and Interdepartmental Division of Critical Care Medicine, University of Toronto, Toronto, ON, Canada",
+          "institution_ids": [
+            "https://openalex.org/I185261750"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Department of Critical Care Medicine, Sunnybrook Health Sciences Centre, Toronto, ON, Canada",
+          "institution_ids": [
+            "https://openalex.org/I1323843004",
+            "https://openalex.org/I2802362269"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5086871368",
+        "display_name": "Maurizio Cecconi",
+        "orcid": "https://orcid.org/0000-0002-4376-6538"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I1339471597",
+          "display_name": "Humanitas University",
+          "ror": "https://ror.org/020dggs04",
+          "country_code": "IT",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I1339471597"
+          ]
+        }
+      ],
+      "countries": [
+        "IT"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Maurizio Cecconi",
+      "raw_affiliation_strings": [
+        "Department of Anesthesia and Intensive Care, Humanitas Clinical and Research Center, Rozzano, Milan, Italy",
+        "Department of Biomedical Science, Humanitas University, Pieve Emanuele, Milan, Italy"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Department of Anesthesia and Intensive Care, Humanitas Clinical and Research Center, Rozzano, Milan, Italy",
+          "institution_ids": [
+            "https://openalex.org/I1339471597"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Department of Biomedical Science, Humanitas University, Pieve Emanuele, Milan, Italy",
+          "institution_ids": [
+            "https://openalex.org/I1339471597"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5029655014",
+        "display_name": "Younsuck Koh",
+        "orcid": "https://orcid.org/0000-0001-5066-2027"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I116631150",
+          "display_name": "Ulsan College",
+          "ror": "https://ror.org/02tec3785",
+          "country_code": "KR",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I116631150"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I2801680663",
+          "display_name": "Asan Medical Center",
+          "ror": "https://ror.org/03s5q0090",
+          "country_code": "KR",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I2801680663",
+            "https://openalex.org/I4210167194"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I40542001",
+          "display_name": "University of Ulsan",
+          "ror": "https://ror.org/02c2f8975",
+          "country_code": "KR",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I40542001"
+          ]
+        }
+      ],
+      "countries": [
+        "KR"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Younsuck Koh",
+      "raw_affiliation_strings": [
+        "Department of Pulmonary and Critical Care Medicine, Asan Medical Center, University of Ulsan College of Medicine, Seoul, Korea"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Department of Pulmonary and Critical Care Medicine, Asan Medical Center, University of Ulsan College of Medicine, Seoul, Korea",
+          "institution_ids": [
+            "https://openalex.org/I40542001",
+            "https://openalex.org/I2801680663",
+            "https://openalex.org/I116631150"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5020215482",
+        "display_name": "Daniel S. Chertow",
+        "orcid": "https://orcid.org/0000-0002-1675-1728"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I4210134534",
+          "display_name": "National Institute of Allergy and Infectious Diseases",
+          "ror": "https://ror.org/043z4tv69",
+          "country_code": "US",
+          "type": "facility",
+          "lineage": [
+            "https://openalex.org/I1299022934",
+            "https://openalex.org/I1299303238",
+            "https://openalex.org/I4210134534"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I4210155647",
+          "display_name": "National Institutes of Health Clinical Center",
+          "ror": "https://ror.org/04vfsmv21",
+          "country_code": "US",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I1299022934",
+            "https://openalex.org/I1299303238",
+            "https://openalex.org/I4210155647"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Daniel S. Chertow",
+      "raw_affiliation_strings": [
+        "Critical Care Medicine Department, National Institutes of Health Clinical Center and Laboratory of Immunoregulation, National Institute of Allergy and Infectious Diseases, Baltimore, USA"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Critical Care Medicine Department, National Institutes of Health Clinical Center and Laboratory of Immunoregulation, National Institute of Allergy and Infectious Diseases, Baltimore, USA",
+          "institution_ids": [
+            "https://openalex.org/I4210134534",
+            "https://openalex.org/I4210155647"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5042729842",
+        "display_name": "Kathryn Maitland",
+        "orcid": "https://orcid.org/0000-0002-0007-0645"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I47508984",
+          "display_name": "Imperial College London",
+          "ror": "https://ror.org/041kmwe10",
+          "country_code": "GB",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I47508984"
+          ]
+        }
+      ],
+      "countries": [
+        "GB"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Kathryn Maitland",
+      "raw_affiliation_strings": [
+        "Faculty of Medicine, Imperial College, London, UK"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Faculty of Medicine, Imperial College, London, UK",
+          "institution_ids": [
+            "https://openalex.org/I47508984"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5018275896",
+        "display_name": "Fayez Alshamsi",
+        "orcid": "https://orcid.org/0000-0002-9121-4279"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I201726411",
+          "display_name": "United Arab Emirates University",
+          "ror": "https://ror.org/01km6p862",
+          "country_code": "AE",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I201726411"
+          ]
+        }
+      ],
+      "countries": [
+        "AE"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Fayez Alshamsi",
+      "raw_affiliation_strings": [
+        "Department of Internal Medicine, College of Medicine and Health Sciences, United Arab Emirates University, PO Box 17666, Al Ain, United Arab Emirates"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Department of Internal Medicine, College of Medicine and Health Sciences, United Arab Emirates University, PO Box 17666, Al Ain, United Arab Emirates",
+          "institution_ids": [
+            "https://openalex.org/I201726411"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5019000744",
+        "display_name": "Emilie P. Belley\u2010C\u00f4t\u00e9",
+        "orcid": "https://orcid.org/0000-0002-5071-076X"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I2802834092",
+          "display_name": "Population Health Research Institute",
+          "ror": "https://ror.org/03kwaeq96",
+          "country_code": "CA",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I2802834092"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I98251732",
+          "display_name": "McMaster University",
+          "ror": "https://ror.org/02fa3aq29",
+          "country_code": "CA",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I98251732"
+          ]
+        }
+      ],
+      "countries": [
+        "CA"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Emilie Belley-Cote",
+      "raw_affiliation_strings": [
+        "Department of Medicine, McMaster University, Hamilton, Canada",
+        "Population Health Research Institute, Hamilton, Canada"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Department of Medicine, McMaster University, Hamilton, Canada",
+          "institution_ids": [
+            "https://openalex.org/I98251732"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Population Health Research Institute, Hamilton, Canada",
+          "institution_ids": [
+            "https://openalex.org/I2802834092"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5081872852",
+        "display_name": "Massimiliano Greco",
+        "orcid": "https://orcid.org/0000-0003-1003-4637"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I1339471597",
+          "display_name": "Humanitas University",
+          "ror": "https://ror.org/020dggs04",
+          "country_code": "IT",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I1339471597"
+          ]
+        }
+      ],
+      "countries": [
+        "IT"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Massimiliano Greco",
+      "raw_affiliation_strings": [
+        "Department of Anesthesia and Intensive Care, Humanitas Clinical and Research Center, Rozzano, Milan, Italy",
+        "Department of Biomedical Science, Humanitas University, Pieve Emanuele, Milan, Italy"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Department of Anesthesia and Intensive Care, Humanitas Clinical and Research Center, Rozzano, Milan, Italy",
+          "institution_ids": [
+            "https://openalex.org/I1339471597"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Department of Biomedical Science, Humanitas University, Pieve Emanuele, Milan, Italy",
+          "institution_ids": [
+            "https://openalex.org/I1339471597"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5028093949",
+        "display_name": "Matthew Laundy",
+        "orcid": "https://orcid.org/0000-0002-6386-9323"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I165862685",
+          "display_name": "St George's, University of London",
+          "ror": "https://ror.org/040f08y74",
+          "country_code": "GB",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I124357947",
+            "https://openalex.org/I165862685"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I2801196673",
+          "display_name": "St George\u2019s University Hospitals NHS Foundation Trust",
+          "ror": "https://ror.org/039zedc16",
+          "country_code": "GB",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I2801196673"
+          ]
+        }
+      ],
+      "countries": [
+        "GB"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Matthew Laundy",
+      "raw_affiliation_strings": [
+        "Microbiology and Infection Control, St George's University Hospitals NHS Foundation Trust & St George's University of London, London, UK"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Microbiology and Infection Control, St George's University Hospitals NHS Foundation Trust & St George's University of London, London, UK",
+          "institution_ids": [
+            "https://openalex.org/I2801196673",
+            "https://openalex.org/I165862685"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5028584248",
+        "display_name": "Jill S. Morgan",
+        "orcid": "https://orcid.org/0000-0002-6672-9406"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I2800556163",
+          "display_name": "Emory University Hospital",
+          "ror": "https://ror.org/05dm4ck87",
+          "country_code": "US",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I132943300",
+            "https://openalex.org/I2800556163"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Jill S. Morgan",
+      "raw_affiliation_strings": [
+        "Emory University Hospital, Atlanta, USA"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Emory University Hospital, Atlanta, USA",
+          "institution_ids": [
+            "https://openalex.org/I2800556163"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5059451655",
+        "display_name": "Jozef Kesecio\u011flu",
+        "orcid": "https://orcid.org/0000-0002-3007-8445"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I193662353",
+          "display_name": "Utrecht University",
+          "ror": "https://ror.org/04pp8hn57",
+          "country_code": "NL",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I193662353"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I3018483916",
+          "display_name": "University Medical Center Utrecht",
+          "ror": "https://ror.org/0575yy874",
+          "country_code": "NL",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I3018483916"
+          ]
+        }
+      ],
+      "countries": [
+        "NL"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Jozef Kesecioglu",
+      "raw_affiliation_strings": [
+        "Department of Intensive Care Medicine, University Medical Center Utrecht, Utrecht University, Utrecht, The Netherlands"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Department of Intensive Care Medicine, University Medical Center Utrecht, Utrecht University, Utrecht, The Netherlands",
+          "institution_ids": [
+            "https://openalex.org/I3018483916",
+            "https://openalex.org/I193662353"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5008543119",
+        "display_name": "Allison McGeer",
+        "orcid": "https://orcid.org/0000-0001-5647-6137"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I185261750",
+          "display_name": "University of Toronto",
+          "ror": "https://ror.org/03dbr7087",
+          "country_code": "CA",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I185261750"
+          ]
+        }
+      ],
+      "countries": [
+        "CA"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Allison McGeer",
+      "raw_affiliation_strings": [
+        "Division of Infectious Diseases, University of Toronto, Toronto, Canada"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Division of Infectious Diseases, University of Toronto, Toronto, Canada",
+          "institution_ids": [
+            "https://openalex.org/I185261750"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5025031461",
+        "display_name": "Leonard A. Mermel",
+        "orcid": "https://orcid.org/0000-0002-8898-7406"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I27804330",
+          "display_name": "Brown University",
+          "ror": "https://ror.org/05gq02987",
+          "country_code": "US",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I27804330"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Leonard Mermel",
+      "raw_affiliation_strings": [
+        "Warren Alpert School of Medicine, Brown University, Providence, RI, USA"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Warren Alpert School of Medicine, Brown University, Providence, RI, USA",
+          "institution_ids": [
+            "https://openalex.org/I27804330"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5067232021",
+        "display_name": "Manoj J. Mammen",
+        "orcid": "https://orcid.org/0000-0003-0343-3234"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I63190737",
+          "display_name": "University at Buffalo, State University of New York",
+          "ror": "https://ror.org/01y64my43",
+          "country_code": "US",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I63190737"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Manoj J. Mammen",
+      "raw_affiliation_strings": [
+        "Department of Medicine, Jacobs School of Medicine and Biomedical Sciences, State University of New York at Buffalo, Buffalo, USA"
+      ],
+      "raw_orcid": "https://orcid.org/0000-0003-0343-3234",
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Department of Medicine, Jacobs School of Medicine and Biomedical Sciences, State University of New York at Buffalo, Buffalo, USA",
+          "institution_ids": [
+            "https://openalex.org/I63190737"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5072981488",
+        "display_name": "Paul Alexander",
+        "orcid": null
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I4210161256",
+          "display_name": "Impact",
+          "ror": "https://ror.org/05d9dsr70",
+          "country_code": "CA",
+          "type": "nonprofit",
+          "lineage": [
+            "https://openalex.org/I4210161256"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I98251732",
+          "display_name": "McMaster University",
+          "ror": "https://ror.org/02fa3aq29",
+          "country_code": "CA",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I98251732"
+          ]
+        }
+      ],
+      "countries": [
+        "CA"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Paul E. Alexander",
+      "raw_affiliation_strings": [
+        "Department of Health Research Methods, Evidence, and Impact, McMaster University, Hamilton, Canada",
+        "GUIDE Research Methods Group, Hamilton, Canada"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Department of Health Research Methods, Evidence, and Impact, McMaster University, Hamilton, Canada",
+          "institution_ids": [
+            "https://openalex.org/I98251732",
+            "https://openalex.org/I4210161256"
+          ]
+        },
+        {
+          "raw_affiliation_string": "GUIDE Research Methods Group, Hamilton, Canada",
+          "institution_ids": []
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5017276306",
+        "display_name": "Amy S. Arrington",
+        "orcid": null
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I181547552",
+          "display_name": "Baylor College of Medicine",
+          "ror": "https://ror.org/02pttbw34",
+          "country_code": "US",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I181547552",
+            "https://openalex.org/I2801539370"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I4210147586",
+          "display_name": "Texas Children's Hospital",
+          "ror": "https://ror.org/05cz92x43",
+          "country_code": "US",
+          "type": "funder",
+          "lineage": [
+            "https://openalex.org/I4210147586"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Amy Arrington",
+      "raw_affiliation_strings": [
+        "Houston Children's Hospital, Baylor College of Medicine, Houston, USA"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Houston Children's Hospital, Baylor College of Medicine, Houston, USA",
+          "institution_ids": [
+            "https://openalex.org/I4210147586",
+            "https://openalex.org/I181547552"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5004221938",
+        "display_name": "John Centofanti",
+        "orcid": null
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I98251732",
+          "display_name": "McMaster University",
+          "ror": "https://ror.org/02fa3aq29",
+          "country_code": "CA",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I98251732"
+          ]
+        }
+      ],
+      "countries": [
+        "CA"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "John E. Centofanti",
+      "raw_affiliation_strings": [
+        "Department of Anesthesia, McMaster University, Hamilton, Canada"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Department of Anesthesia, McMaster University, Hamilton, Canada",
+          "institution_ids": [
+            "https://openalex.org/I98251732"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5088222616",
+        "display_name": "Giuseppe Citerio",
+        "orcid": "https://orcid.org/0000-0002-5374-3161"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I4210110840",
+          "display_name": "Azienda Ospedaliera San Gerardo",
+          "ror": "https://ror.org/01xf83457",
+          "country_code": "IT",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I4210110840"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I66752286",
+          "display_name": "University of Milano-Bicocca",
+          "ror": "https://ror.org/01ynf4891",
+          "country_code": "IT",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I66752286"
+          ]
+        }
+      ],
+      "countries": [
+        "IT"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Giuseppe Citerio",
+      "raw_affiliation_strings": [
+        "ASST-Monza, Desio and San Gerardo Hospital, Monza, Italy",
+        "Department of Medicine and Surgery, Milano-Bicocca University, Milan, Italy"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "ASST-Monza, Desio and San Gerardo Hospital, Monza, Italy",
+          "institution_ids": [
+            "https://openalex.org/I4210110840"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Department of Medicine and Surgery, Milano-Bicocca University, Milan, Italy",
+          "institution_ids": [
+            "https://openalex.org/I66752286"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5017209256",
+        "display_name": "Bandar Baw",
+        "orcid": null
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I2802517405",
+          "display_name": "King Abdulaziz Medical City",
+          "ror": "https://ror.org/009djsq06",
+          "country_code": "SA",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I2802517405"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I98251732",
+          "display_name": "McMaster University",
+          "ror": "https://ror.org/02fa3aq29",
+          "country_code": "CA",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I98251732"
+          ]
+        }
+      ],
+      "countries": [
+        "CA",
+        "SA"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Bandar Baw",
+      "raw_affiliation_strings": [
+        "Department of Emergency Medicine, King Abdulaziz Medical City, Riyadh, Saudi Arabia",
+        "Department of Medicine, McMaster University, Hamilton, Canada"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Department of Emergency Medicine, King Abdulaziz Medical City, Riyadh, Saudi Arabia",
+          "institution_ids": [
+            "https://openalex.org/I2802517405"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Department of Medicine, McMaster University, Hamilton, Canada",
+          "institution_ids": [
+            "https://openalex.org/I98251732"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5042044329",
+        "display_name": "Ziad A. Memish",
+        "orcid": "https://orcid.org/0000-0002-5099-0714"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I2801066305",
+          "display_name": "King Saud Medical City",
+          "ror": "https://ror.org/03aj9rj02",
+          "country_code": "SA",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I2801066305"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I4210127754",
+          "display_name": "Ministry of Health",
+          "ror": "https://ror.org/030atj633",
+          "country_code": "SA",
+          "type": "government",
+          "lineage": [
+            "https://openalex.org/I4210127754"
+          ]
+        }
+      ],
+      "countries": [
+        "SA"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Ziad A. Memish",
+      "raw_affiliation_strings": [
+        "Director, Research and Innovation Centre, King Saud Medical City, Ministry of Health, Riyadh, Kingdom of Saudi Arabia"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Director, Research and Innovation Centre, King Saud Medical City, Ministry of Health, Riyadh, Kingdom of Saudi Arabia",
+          "institution_ids": [
+            "https://openalex.org/I2801066305",
+            "https://openalex.org/I4210127754"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5077404933",
+        "display_name": "Naomi Hammond",
+        "orcid": "https://orcid.org/0000-0002-6559-7747"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I2800079252",
+          "display_name": "Royal North Shore Hospital",
+          "ror": "https://ror.org/02gs2e959",
+          "country_code": "AU",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I2800079252"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I31746571",
+          "display_name": "UNSW Sydney",
+          "ror": "https://ror.org/03r8z3t63",
+          "country_code": "AU",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I31746571"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I4210110309",
+          "display_name": "The George Institute for Global Health",
+          "ror": "https://ror.org/023331s46",
+          "country_code": "AU",
+          "type": "facility",
+          "lineage": [
+            "https://openalex.org/I4210110309"
+          ]
+        }
+      ],
+      "countries": [
+        "AU"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Naomi Hammond",
+      "raw_affiliation_strings": [
+        "Critical Care Division, The George Institute for Global Health and UNSW, Sydney, Australia",
+        "Malcolm Fisher Department of Intensive Care, Royal North Shore Hospital, Sydney, Australia"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Critical Care Division, The George Institute for Global Health and UNSW, Sydney, Australia",
+          "institution_ids": [
+            "https://openalex.org/I4210110309",
+            "https://openalex.org/I31746571"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Malcolm Fisher Department of Intensive Care, Royal North Shore Hospital, Sydney, Australia",
+          "institution_ids": [
+            "https://openalex.org/I2800079252"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5052964435",
+        "display_name": "Frederick G. Hayden",
+        "orcid": "https://orcid.org/0000-0001-8707-0375"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I51556381",
+          "display_name": "University of Virginia",
+          "ror": "https://ror.org/0153tk833",
+          "country_code": "US",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I51556381"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Frederick G. Hayden",
+      "raw_affiliation_strings": [
+        "Division of Infectious Diseases and International Health, Department of Medicine, University, of Virginia, School of Medicine, Charlottesville, VA, USA"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Division of Infectious Diseases and International Health, Department of Medicine, University, of Virginia, School of Medicine, Charlottesville, VA, USA",
+          "institution_ids": [
+            "https://openalex.org/I51556381"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5101900346",
+        "display_name": "Laura Evans",
+        "orcid": "https://orcid.org/0000-0002-3176-6493"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I201448701",
+          "display_name": "University of Washington",
+          "ror": "https://ror.org/00cvxb145",
+          "country_code": "US",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I201448701"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I58610484",
+          "display_name": "Seattle University",
+          "ror": "https://ror.org/02jqc0m91",
+          "country_code": "US",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I58610484"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Laura Evans",
+      "raw_affiliation_strings": [
+        "Division of Pulmonary, Critical Care, and Sleep Medicine, University of Washington, Seattle, USA"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Division of Pulmonary, Critical Care, and Sleep Medicine, University of Washington, Seattle, USA",
+          "institution_ids": [
+            "https://openalex.org/I58610484",
+            "https://openalex.org/I201448701"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "last",
+      "author": {
+        "id": "https://openalex.org/A5083275742",
+        "display_name": "Andrew Rhodes",
+        "orcid": "https://orcid.org/0000-0002-8737-574X"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I165862685",
+          "display_name": "St George's, University of London",
+          "ror": "https://ror.org/040f08y74",
+          "country_code": "GB",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I124357947",
+            "https://openalex.org/I165862685"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I2801196673",
+          "display_name": "St George\u2019s University Hospitals NHS Foundation Trust",
+          "ror": "https://ror.org/039zedc16",
+          "country_code": "GB",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I2801196673"
+          ]
+        }
+      ],
+      "countries": [
+        "GB"
+      ],
+      "is_corresponding": true,
+      "raw_author_name": "Andrew Rhodes",
+      "raw_affiliation_strings": [
+        "Adult Critical Care, St George's University Hospitals NHS Foundation Trust & St George's University of London, London, UK. andrewrhodes@nhs.net",
+        "Adult Critical Care, St George's University Hospitals NHS Foundation Trust & St George's University of London, London, UK"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Adult Critical Care, St George's University Hospitals NHS Foundation Trust & St George's University of London, London, UK. andrewrhodes@nhs.net",
+          "institution_ids": [
+            "https://openalex.org/I2801196673"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Adult Critical Care, St George's University Hospitals NHS Foundation Trust & St George's University of London, London, UK",
+          "institution_ids": [
+            "https://openalex.org/I2801196673",
+            "https://openalex.org/I165862685"
+          ]
+        }
+      ]
+    }
+  ],
+  "institutions": [],
+  "countries_distinct_count": 11,
+  "institutions_distinct_count": 49,
+  "corresponding_author_ids": [
+    "https://openalex.org/A5083275742"
+  ],
+  "corresponding_institution_ids": [
+    "https://openalex.org/I165862685",
+    "https://openalex.org/I2801196673"
+  ],
+  "apc_list": {
+    "value": 3690,
+    "currency": "EUR",
+    "value_usd": 4790
+  },
+  "apc_paid": null,
+  "fwci": 51.1501,
+  "has_fulltext": true,
+  "cited_by_count": 2195,
+  "citation_normalized_percentile": {
+    "value": 0.99815705,
+    "is_in_top_1_percent": true,
+    "is_in_top_10_percent": true
+  },
+  "cited_by_percentile_year": {
+    "min": 98,
+    "max": 100
+  },
+  "biblio": {
+    "volume": "46",
+    "issue": "5",
+    "first_page": "854",
+    "last_page": "887"
+  },
+  "is_retracted": false,
+  "is_paratext": false,
+  "is_xpac": false,
+  "primary_topic": {
+    "id": "https://openalex.org/T10041",
+    "display_name": "COVID-19 Clinical Research Studies",
+    "score": 0.5394999980926514,
+    "subfield": {
+      "id": "https://openalex.org/subfields/2725",
+      "display_name": "Infectious Diseases"
+    },
+    "field": {
+      "id": "https://openalex.org/fields/27",
+      "display_name": "Medicine"
+    },
+    "domain": {
+      "id": "https://openalex.org/domains/4",
+      "display_name": "Health Sciences"
+    }
+  },
+  "topics": [
+    {
+      "id": "https://openalex.org/T10041",
+      "display_name": "COVID-19 Clinical Research Studies",
+      "score": 0.5394999980926514,
+      "subfield": {
+        "id": "https://openalex.org/subfields/2725",
+        "display_name": "Infectious Diseases"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/27",
+        "display_name": "Medicine"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/4",
+        "display_name": "Health Sciences"
+      }
+    },
+    {
+      "id": "https://openalex.org/T10990",
+      "display_name": "Infection Control and Ventilation",
+      "score": 0.07180000096559525,
+      "subfield": {
+        "id": "https://openalex.org/subfields/2740",
+        "display_name": "Pulmonary and Respiratory Medicine"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/27",
+        "display_name": "Medicine"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/4",
+        "display_name": "Health Sciences"
+      }
+    },
+    {
+      "id": "https://openalex.org/T10322",
+      "display_name": "Respiratory Support and Mechanisms",
+      "score": 0.058400001376867294,
+      "subfield": {
+        "id": "https://openalex.org/subfields/2740",
+        "display_name": "Pulmonary and Respiratory Medicine"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/27",
+        "display_name": "Medicine"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/4",
+        "display_name": "Health Sciences"
+      }
+    }
+  ],
+  "keywords": [
+    {
+      "id": "https://openalex.org/keywords/medicine",
+      "display_name": "Medicine",
+      "score": 0.8239011764526367
+    },
+    {
+      "id": "https://openalex.org/keywords/intensive-care-medicine",
+      "display_name": "Intensive care medicine",
+      "score": 0.6589395999908447
+    },
+    {
+      "id": "https://openalex.org/keywords/medline",
+      "display_name": "MEDLINE",
+      "score": 0.49674421548843384
+    },
+    {
+      "id": "https://openalex.org/keywords/health-care",
+      "display_name": "Health care",
+      "score": 0.48515090346336365
+    },
+    {
+      "id": "https://openalex.org/keywords/best-practice",
+      "display_name": "Best practice",
+      "score": 0.4542182385921478
+    },
+    {
+      "id": "https://openalex.org/keywords/intensive-care",
+      "display_name": "Intensive care",
+      "score": 0.45240694284439087
+    },
+    {
+      "id": "https://openalex.org/keywords/anesthesiology",
+      "display_name": "Anesthesiology",
+      "score": 0.4292866289615631
+    },
+    {
+      "id": "https://openalex.org/keywords/coronavirus-disease-2019",
+      "display_name": "Coronavirus disease 2019 (COVID-19)",
+      "score": 0.4227354824542999
+    },
+    {
+      "id": "https://openalex.org/keywords/grading",
+      "display_name": "Grading (engineering)",
+      "score": 0.41756880283355713
+    },
+    {
+      "id": "https://openalex.org/keywords/pandemic",
+      "display_name": "Pandemic",
+      "score": 0.4162665903568268
+    },
+    {
+      "id": "https://openalex.org/keywords/critically-ill",
+      "display_name": "Critically ill",
+      "score": 0.4153779447078705
+    },
+    {
+      "id": "https://openalex.org/keywords/disease",
+      "display_name": "Disease",
+      "score": 0.3552812933921814
+    },
+    {
+      "id": "https://openalex.org/keywords/medical-emergency",
+      "display_name": "Medical emergency",
+      "score": 0.33025750517845154
+    },
+    {
+      "id": "https://openalex.org/keywords/infectious-disease",
+      "display_name": "Infectious disease (medical specialty)",
+      "score": 0.2801245450973511
+    }
+  ],
+  "concepts": [
+    {
+      "id": "https://openalex.org/C71924100",
+      "wikidata": "https://www.wikidata.org/wiki/Q11190",
+      "display_name": "Medicine",
+      "level": 0,
+      "score": 0.8239011764526367
+    },
+    {
+      "id": "https://openalex.org/C177713679",
+      "wikidata": "https://www.wikidata.org/wiki/Q679690",
+      "display_name": "Intensive care medicine",
+      "level": 1,
+      "score": 0.6589395999908447
+    },
+    {
+      "id": "https://openalex.org/C2779473830",
+      "wikidata": "https://www.wikidata.org/wiki/Q1540899",
+      "display_name": "MEDLINE",
+      "level": 2,
+      "score": 0.49674421548843384
+    },
+    {
+      "id": "https://openalex.org/C160735492",
+      "wikidata": "https://www.wikidata.org/wiki/Q31207",
+      "display_name": "Health care",
+      "level": 2,
+      "score": 0.48515090346336365
+    },
+    {
+      "id": "https://openalex.org/C184356942",
+      "wikidata": "https://www.wikidata.org/wiki/Q830382",
+      "display_name": "Best practice",
+      "level": 2,
+      "score": 0.4542182385921478
+    },
+    {
+      "id": "https://openalex.org/C2987404301",
+      "wikidata": "https://www.wikidata.org/wiki/Q679690",
+      "display_name": "Intensive care",
+      "level": 2,
+      "score": 0.45240694284439087
+    },
+    {
+      "id": "https://openalex.org/C2779526319",
+      "wikidata": "https://www.wikidata.org/wiki/Q615057",
+      "display_name": "Anesthesiology",
+      "level": 2,
+      "score": 0.4292866289615631
+    },
+    {
+      "id": "https://openalex.org/C3008058167",
+      "wikidata": "https://www.wikidata.org/wiki/Q84263196",
+      "display_name": "Coronavirus disease 2019 (COVID-19)",
+      "level": 4,
+      "score": 0.4227354824542999
+    },
+    {
+      "id": "https://openalex.org/C2777286243",
+      "wikidata": "https://www.wikidata.org/wiki/Q5591926",
+      "display_name": "Grading (engineering)",
+      "level": 2,
+      "score": 0.41756880283355713
+    },
+    {
+      "id": "https://openalex.org/C89623803",
+      "wikidata": "https://www.wikidata.org/wiki/Q12184",
+      "display_name": "Pandemic",
+      "level": 5,
+      "score": 0.4162665903568268
+    },
+    {
+      "id": "https://openalex.org/C2991859549",
+      "wikidata": "https://www.wikidata.org/wiki/Q679690",
+      "display_name": "Critically ill",
+      "level": 2,
+      "score": 0.4153779447078705
+    },
+    {
+      "id": "https://openalex.org/C2779134260",
+      "wikidata": "https://www.wikidata.org/wiki/Q12136",
+      "display_name": "Disease",
+      "level": 2,
+      "score": 0.3552812933921814
+    },
+    {
+      "id": "https://openalex.org/C545542383",
+      "wikidata": "https://www.wikidata.org/wiki/Q2751242",
+      "display_name": "Medical emergency",
+      "level": 1,
+      "score": 0.33025750517845154
+    },
+    {
+      "id": "https://openalex.org/C524204448",
+      "wikidata": "https://www.wikidata.org/wiki/Q788926",
+      "display_name": "Infectious disease (medical specialty)",
+      "level": 3,
+      "score": 0.2801245450973511
+    },
+    {
+      "id": "https://openalex.org/C162324750",
+      "wikidata": "https://www.wikidata.org/wiki/Q8134",
+      "display_name": "Economics",
+      "level": 0,
+      "score": 0.0
+    },
+    {
+      "id": "https://openalex.org/C17744445",
+      "wikidata": "https://www.wikidata.org/wiki/Q36442",
+      "display_name": "Political science",
+      "level": 0,
+      "score": 0.0
+    },
+    {
+      "id": "https://openalex.org/C42219234",
+      "wikidata": "https://www.wikidata.org/wiki/Q131130",
+      "display_name": "Anesthesia",
+      "level": 1,
+      "score": 0.0
+    },
+    {
+      "id": "https://openalex.org/C127413603",
+      "wikidata": "https://www.wikidata.org/wiki/Q11023",
+      "display_name": "Engineering",
+      "level": 0,
+      "score": 0.0
+    },
+    {
+      "id": "https://openalex.org/C199539241",
+      "wikidata": "https://www.wikidata.org/wiki/Q7748",
+      "display_name": "Law",
+      "level": 1,
+      "score": 0.0
+    },
+    {
+      "id": "https://openalex.org/C147176958",
+      "wikidata": "https://www.wikidata.org/wiki/Q77590",
+      "display_name": "Civil engineering",
+      "level": 1,
+      "score": 0.0
+    },
+    {
+      "id": "https://openalex.org/C50522688",
+      "wikidata": "https://www.wikidata.org/wiki/Q189833",
+      "display_name": "Economic growth",
+      "level": 1,
+      "score": 0.0
+    },
+    {
+      "id": "https://openalex.org/C142724271",
+      "wikidata": "https://www.wikidata.org/wiki/Q7208",
+      "display_name": "Pathology",
+      "level": 1,
+      "score": 0.0
+    },
+    {
+      "id": "https://openalex.org/C187736073",
+      "wikidata": "https://www.wikidata.org/wiki/Q2920921",
+      "display_name": "Management",
+      "level": 1,
+      "score": 0.0
+    }
+  ],
+  "mesh": [
+    {
+      "descriptor_ui": "D000086382",
+      "descriptor_name": "COVID-19",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000086382",
+      "descriptor_name": "COVID-19",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000086382",
+      "descriptor_name": "COVID-19",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000086382",
+      "descriptor_name": "COVID-19",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D003422",
+      "descriptor_name": "Critical Care",
+      "qualifier_ui": "Q000592",
+      "qualifier_name": "standards",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D003422",
+      "descriptor_name": "Critical Care",
+      "qualifier_ui": "Q000592",
+      "qualifier_name": "standards",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D003422",
+      "descriptor_name": "Critical Care",
+      "qualifier_ui": "Q000592",
+      "qualifier_name": "standards",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D003422",
+      "descriptor_name": "Critical Care",
+      "qualifier_ui": "Q000592",
+      "qualifier_name": "standards",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D006801",
+      "descriptor_name": "Humans",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D006801",
+      "descriptor_name": "Humans",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D006801",
+      "descriptor_name": "Humans",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D006801",
+      "descriptor_name": "Humans",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D007362",
+      "descriptor_name": "Intensive Care Units",
+      "qualifier_ui": "Q000592",
+      "qualifier_name": "standards",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D007362",
+      "descriptor_name": "Intensive Care Units",
+      "qualifier_ui": "Q000592",
+      "qualifier_name": "standards",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D007362",
+      "descriptor_name": "Intensive Care Units",
+      "qualifier_ui": "Q000592",
+      "qualifier_name": "standards",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D007362",
+      "descriptor_name": "Intensive Care Units",
+      "qualifier_ui": "Q000592",
+      "qualifier_name": "standards",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D011024",
+      "descriptor_name": "Pneumonia, Viral",
+      "qualifier_ui": "Q000517",
+      "qualifier_name": "prevention & control",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D011024",
+      "descriptor_name": "Pneumonia, Viral",
+      "qualifier_ui": "Q000517",
+      "qualifier_name": "prevention & control",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D011024",
+      "descriptor_name": "Pneumonia, Viral",
+      "qualifier_ui": "Q000517",
+      "qualifier_name": "prevention & control",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D011024",
+      "descriptor_name": "Pneumonia, Viral",
+      "qualifier_ui": "Q000517",
+      "qualifier_name": "prevention & control",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D011024",
+      "descriptor_name": "Pneumonia, Viral",
+      "qualifier_ui": "Q000628",
+      "qualifier_name": "therapy",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D011024",
+      "descriptor_name": "Pneumonia, Viral",
+      "qualifier_ui": "Q000628",
+      "qualifier_name": "therapy",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D011024",
+      "descriptor_name": "Pneumonia, Viral",
+      "qualifier_ui": "Q000628",
+      "qualifier_name": "therapy",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D011024",
+      "descriptor_name": "Pneumonia, Viral",
+      "qualifier_ui": "Q000628",
+      "qualifier_name": "therapy",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D017741",
+      "descriptor_name": "Survivors",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D017741",
+      "descriptor_name": "Survivors",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D017741",
+      "descriptor_name": "Survivors",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D017741",
+      "descriptor_name": "Survivors",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D018352",
+      "descriptor_name": "Coronavirus Infections",
+      "qualifier_ui": "Q000517",
+      "qualifier_name": "prevention & control",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D018352",
+      "descriptor_name": "Coronavirus Infections",
+      "qualifier_ui": "Q000517",
+      "qualifier_name": "prevention & control",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D018352",
+      "descriptor_name": "Coronavirus Infections",
+      "qualifier_ui": "Q000517",
+      "qualifier_name": "prevention & control",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D018352",
+      "descriptor_name": "Coronavirus Infections",
+      "qualifier_ui": "Q000517",
+      "qualifier_name": "prevention & control",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D018352",
+      "descriptor_name": "Coronavirus Infections",
+      "qualifier_ui": "Q000628",
+      "qualifier_name": "therapy",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D018352",
+      "descriptor_name": "Coronavirus Infections",
+      "qualifier_ui": "Q000628",
+      "qualifier_name": "therapy",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D018352",
+      "descriptor_name": "Coronavirus Infections",
+      "qualifier_ui": "Q000628",
+      "qualifier_name": "therapy",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D018352",
+      "descriptor_name": "Coronavirus Infections",
+      "qualifier_ui": "Q000628",
+      "qualifier_name": "therapy",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D018805",
+      "descriptor_name": "Sepsis",
+      "qualifier_ui": "Q000175",
+      "qualifier_name": "diagnosis",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D018805",
+      "descriptor_name": "Sepsis",
+      "qualifier_ui": "Q000175",
+      "qualifier_name": "diagnosis",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D018805",
+      "descriptor_name": "Sepsis",
+      "qualifier_ui": "Q000175",
+      "qualifier_name": "diagnosis",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D018805",
+      "descriptor_name": "Sepsis",
+      "qualifier_ui": "Q000175",
+      "qualifier_name": "diagnosis",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D018805",
+      "descriptor_name": "Sepsis",
+      "qualifier_ui": "Q000209",
+      "qualifier_name": "etiology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D018805",
+      "descriptor_name": "Sepsis",
+      "qualifier_ui": "Q000209",
+      "qualifier_name": "etiology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D018805",
+      "descriptor_name": "Sepsis",
+      "qualifier_ui": "Q000209",
+      "qualifier_name": "etiology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D018805",
+      "descriptor_name": "Sepsis",
+      "qualifier_ui": "Q000209",
+      "qualifier_name": "etiology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D018805",
+      "descriptor_name": "Sepsis",
+      "qualifier_ui": "Q000628",
+      "qualifier_name": "therapy",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D018805",
+      "descriptor_name": "Sepsis",
+      "qualifier_ui": "Q000628",
+      "qualifier_name": "therapy",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D018805",
+      "descriptor_name": "Sepsis",
+      "qualifier_ui": "Q000628",
+      "qualifier_name": "therapy",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D018805",
+      "descriptor_name": "Sepsis",
+      "qualifier_ui": "Q000628",
+      "qualifier_name": "therapy",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D058873",
+      "descriptor_name": "Pandemics",
+      "qualifier_ui": "Q000517",
+      "qualifier_name": "prevention & control",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D058873",
+      "descriptor_name": "Pandemics",
+      "qualifier_ui": "Q000517",
+      "qualifier_name": "prevention & control",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D058873",
+      "descriptor_name": "Pandemics",
+      "qualifier_ui": "Q000517",
+      "qualifier_name": "prevention & control",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D058873",
+      "descriptor_name": "Pandemics",
+      "qualifier_ui": "Q000517",
+      "qualifier_name": "prevention & control",
+      "is_major_topic": false
+    }
+  ],
+  "locations_count": 7,
+  "locations": [
+    {
+      "id": "doi:10.1007/s00134-020-06022-5",
+      "is_oa": true,
+      "landing_page_url": "https://doi.org/10.1007/s00134-020-06022-5",
+      "pdf_url": "https://link.springer.com/content/pdf/10.1007/s00134-020-06022-5.pdf",
+      "source": {
+        "id": "https://openalex.org/S198804558",
+        "display_name": "Intensive Care Medicine",
+        "issn_l": "0342-4642",
+        "issn": [
+          "0342-4642",
+          "1432-1238"
+        ],
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": true,
+        "host_organization": "https://openalex.org/P4310319900",
+        "host_organization_name": "Springer Science+Business Media",
+        "host_organization_lineage": [
+          "https://openalex.org/P4310319900",
+          "https://openalex.org/P4310319965"
+        ],
+        "host_organization_lineage_names": [
+          "Springer Science+Business Media",
+          "Springer Nature"
+        ],
+        "type": "journal"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "publishedVersion",
+      "is_accepted": true,
+      "is_published": true,
+      "raw_source_name": "Intensive Care Medicine",
+      "raw_type": "journal-article"
+    },
+    {
+      "id": "pmid:32222812",
+      "is_oa": false,
+      "landing_page_url": "https://pubmed.ncbi.nlm.nih.gov/32222812",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4306525036",
+        "display_name": "PubMed",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I1299303238",
+        "host_organization_name": "National Institutes of Health",
+        "host_organization_lineage": [
+          "https://openalex.org/I1299303238"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "publishedVersion",
+      "is_accepted": true,
+      "is_published": true,
+      "raw_source_name": "Intensive care medicine",
+      "raw_type": null
+    },
+    {
+      "id": "pmh:oai:openaccess.sgul.ac.uk:113176",
+      "is_oa": false,
+      "landing_page_url": null,
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4306400552",
+        "display_name": "St George's Online Research Archive (St George's University of London)",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I165862685",
+        "host_organization_name": "St George's, University of London",
+        "host_organization_lineage": [
+          "https://openalex.org/I165862685"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "acceptedVersion",
+      "is_accepted": true,
+      "is_published": false,
+      "raw_source_name": "",
+      "raw_type": "Article"
+    },
+    {
+      "id": "pmh:oai:boa.unimib.it:10281/266819",
+      "is_oa": false,
+      "landing_page_url": "http://hdl.handle.net/10281/266819",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4306401259",
+        "display_name": "BOA (University of Milano-Bicocca)",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I66752286",
+        "host_organization_name": "University of Milano-Bicocca",
+        "host_organization_lineage": [
+          "https://openalex.org/I66752286"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "submittedVersion",
+      "is_accepted": false,
+      "is_published": false,
+      "raw_source_name": null,
+      "raw_type": "info:eu-repo/semantics/article"
+    },
+    {
+      "id": "pmh:oai:europepmc.org:6062548",
+      "is_oa": false,
+      "landing_page_url": "https://www.ncbi.nlm.nih.gov/pmc/articles/7101866",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4306400806",
+        "display_name": "Europe PMC (PubMed Central)",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I1303153112",
+        "host_organization_name": "European Bioinformatics Institute",
+        "host_organization_lineage": [
+          "https://openalex.org/I1303153112"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "submittedVersion",
+      "is_accepted": false,
+      "is_published": false,
+      "raw_source_name": null,
+      "raw_type": "Text"
+    },
+    {
+      "id": "pmh:oai:pure.atira.dk:openaire_cris_publications/98432300-b599-4897-ae67-60a93bc35408",
+      "is_oa": true,
+      "landing_page_url": "https://researchprofiles.ku.dk/da/publications/98432300-b599-4897-ae67-60a93bc35408",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4306401983",
+        "display_name": "Research at the University of Copenhagen (University of Copenhagen)",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I124055696",
+        "host_organization_name": "University of Copenhagen",
+        "host_organization_lineage": [
+          "https://openalex.org/I124055696"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": "other-oa",
+      "license_id": "https://openalex.org/licenses/other-oa",
+      "version": "submittedVersion",
+      "is_accepted": false,
+      "is_published": false,
+      "raw_source_name": "Alhazzani , W , M\u00f8ller , M H , Arabi , Y M , Loeb , M , Gong , M N , Fan , E , Oczkowski , S , Levy , M M , Derde , L , Dzierba , A , Du , B , Aboodi , M , Wunsch , H , Cecconi , M , Koh , Y , Chertow , D S , Maitland , K , Alshamsi , F , Belley-Cote , E , Greco , M , Laundy , M , Morgan , J S , Kesecioglu , J , McGeer , A , Mermel , L , Mammen , M J , Alexander , P E , Arrington , A , Centofanti , J E , Citerio , G , Baw , B , Memish , Z A , Hammond , N , Hayden , F G , Evans , L & Rhodes , A 2020 , ' Surviving Sepsis Campaign : guidelines on the management of critically ill adults with Coronavirus Disease 2019 (COVID-19) ' , Intensive Care Medicine , vol. 46 , no. 5 , pp. 854-887 . https://doi.org/10.1007/s00134-020-06022-5",
+      "raw_type": "article"
+    },
+    {
+      "id": "pmh:oai:spiral.imperial.ac.uk:10044/1/78523",
+      "is_oa": false,
+      "landing_page_url": "http://hdl.handle.net/10044/1/78523",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4306401396",
+        "display_name": "Spiral (Imperial College London)",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I47508984",
+        "host_organization_name": "Imperial College London",
+        "host_organization_lineage": [
+          "https://openalex.org/I47508984"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "submittedVersion",
+      "is_accepted": false,
+      "is_published": false,
+      "raw_source_name": "887",
+      "raw_type": "Journal Article"
+    }
+  ],
+  "best_oa_location": {
+    "id": "doi:10.1007/s00134-020-06022-5",
+    "is_oa": true,
+    "landing_page_url": "https://doi.org/10.1007/s00134-020-06022-5",
+    "pdf_url": "https://link.springer.com/content/pdf/10.1007/s00134-020-06022-5.pdf",
+    "source": {
+      "id": "https://openalex.org/S198804558",
+      "display_name": "Intensive Care Medicine",
+      "issn_l": "0342-4642",
+      "issn": [
+        "0342-4642",
+        "1432-1238"
+      ],
+      "is_oa": false,
+      "is_in_doaj": false,
+      "is_core": true,
+      "host_organization": "https://openalex.org/P4310319900",
+      "host_organization_name": "Springer Science+Business Media",
+      "host_organization_lineage": [
+        "https://openalex.org/P4310319900",
+        "https://openalex.org/P4310319965"
+      ],
+      "host_organization_lineage_names": [
+        "Springer Science+Business Media",
+        "Springer Nature"
+      ],
+      "type": "journal"
+    },
+    "license": null,
+    "license_id": null,
+    "version": "publishedVersion",
+    "is_accepted": true,
+    "is_published": true,
+    "raw_source_name": "Intensive Care Medicine",
+    "raw_type": "journal-article"
+  },
+  "sustainable_development_goals": [
+    {
+      "display_name": "Partnerships for the goals",
+      "id": "https://metadata.un.org/sdg/17",
+      "score": 0.44999998807907104
+    }
+  ],
+  "awards": [],
+  "funders": [],
+  "has_content": {
+    "grobid_xml": true,
+    "pdf": true
+  },
+  "content_urls": {
+    "pdf": "https://content.openalex.org/works/W3013671288.pdf",
+    "grobid_xml": "https://content.openalex.org/works/W3013671288.grobid-xml"
+  },
+  "referenced_works_count": 229,
+  "referenced_works": [
+    "https://openalex.org/W140022133",
+    "https://openalex.org/W233737654",
+    "https://openalex.org/W1029930422",
+    "https://openalex.org/W1505641753",
+    "https://openalex.org/W1536584715",
+    "https://openalex.org/W1550141797",
+    "https://openalex.org/W1557580289",
+    "https://openalex.org/W1565812032",
+    "https://openalex.org/W1693866076",
+    "https://openalex.org/W1761204585",
+    "https://openalex.org/W1776212794",
+    "https://openalex.org/W1801943812",
+    "https://openalex.org/W1869071094",
+    "https://openalex.org/W1906551224",
+    "https://openalex.org/W1910082990",
+    "https://openalex.org/W1912388125",
+    "https://openalex.org/W1945961678",
+    "https://openalex.org/W1964402677",
+    "https://openalex.org/W1974404062",
+    "https://openalex.org/W1977330440",
+    "https://openalex.org/W1984700895",
+    "https://openalex.org/W1995121548",
+    "https://openalex.org/W1995615618",
+    "https://openalex.org/W1999510841",
+    "https://openalex.org/W2005094081",
+    "https://openalex.org/W2009020381",
+    "https://openalex.org/W2009713463",
+    "https://openalex.org/W2010149513",
+    "https://openalex.org/W2015102952",
+    "https://openalex.org/W2017248106",
+    "https://openalex.org/W2017713675",
+    "https://openalex.org/W2031084806",
+    "https://openalex.org/W2034093808",
+    "https://openalex.org/W2034411609",
+    "https://openalex.org/W2034462612",
+    "https://openalex.org/W2035692177",
+    "https://openalex.org/W2037454769",
+    "https://openalex.org/W2044691782",
+    "https://openalex.org/W2047586716",
+    "https://openalex.org/W2053299848",
+    "https://openalex.org/W2054076340",
+    "https://openalex.org/W2055958485",
+    "https://openalex.org/W2057492478",
+    "https://openalex.org/W2065972370",
+    "https://openalex.org/W2070189409",
+    "https://openalex.org/W2072149071",
+    "https://openalex.org/W2083815143",
+    "https://openalex.org/W2084978770",
+    "https://openalex.org/W2088343584",
+    "https://openalex.org/W2095807050",
+    "https://openalex.org/W2096074908",
+    "https://openalex.org/W2096238447",
+    "https://openalex.org/W2096883458",
+    "https://openalex.org/W2103741738",
+    "https://openalex.org/W2106589588",
+    "https://openalex.org/W2109520345",
+    "https://openalex.org/W2109704422",
+    "https://openalex.org/W2110217426",
+    "https://openalex.org/W2118855455",
+    "https://openalex.org/W2120076396",
+    "https://openalex.org/W2120852203",
+    "https://openalex.org/W2122731291",
+    "https://openalex.org/W2123977448",
+    "https://openalex.org/W2125766343",
+    "https://openalex.org/W2126313057",
+    "https://openalex.org/W2126385340",
+    "https://openalex.org/W2126468223",
+    "https://openalex.org/W2129481996",
+    "https://openalex.org/W2130505261",
+    "https://openalex.org/W2131310052",
+    "https://openalex.org/W2133701960",
+    "https://openalex.org/W2135400982",
+    "https://openalex.org/W2138011822",
+    "https://openalex.org/W2139350281",
+    "https://openalex.org/W2139603860",
+    "https://openalex.org/W2141439301",
+    "https://openalex.org/W2142441287",
+    "https://openalex.org/W2143748013",
+    "https://openalex.org/W2144049007",
+    "https://openalex.org/W2148218430",
+    "https://openalex.org/W2148822770",
+    "https://openalex.org/W2150120685",
+    "https://openalex.org/W2154040053",
+    "https://openalex.org/W2154581887",
+    "https://openalex.org/W2161088942",
+    "https://openalex.org/W2165010366",
+    "https://openalex.org/W2168401967",
+    "https://openalex.org/W2169283873",
+    "https://openalex.org/W2171355496",
+    "https://openalex.org/W2218096687",
+    "https://openalex.org/W2225294925",
+    "https://openalex.org/W2293429114",
+    "https://openalex.org/W2302077120",
+    "https://openalex.org/W2314787815",
+    "https://openalex.org/W2315194987",
+    "https://openalex.org/W2323852841",
+    "https://openalex.org/W2329899462",
+    "https://openalex.org/W2333411966",
+    "https://openalex.org/W2391719988",
+    "https://openalex.org/W2411743997",
+    "https://openalex.org/W2412520468",
+    "https://openalex.org/W2436190911",
+    "https://openalex.org/W2460100043",
+    "https://openalex.org/W2461163170",
+    "https://openalex.org/W2513092212",
+    "https://openalex.org/W2517170939",
+    "https://openalex.org/W2527672914",
+    "https://openalex.org/W2528915441",
+    "https://openalex.org/W2531389434",
+    "https://openalex.org/W2554520077",
+    "https://openalex.org/W2584454916",
+    "https://openalex.org/W2590886410",
+    "https://openalex.org/W2597070792",
+    "https://openalex.org/W2607574742",
+    "https://openalex.org/W2610582798",
+    "https://openalex.org/W2617008052",
+    "https://openalex.org/W2707065610",
+    "https://openalex.org/W2739506637",
+    "https://openalex.org/W2743061486",
+    "https://openalex.org/W2749127765",
+    "https://openalex.org/W2753000083",
+    "https://openalex.org/W2753524873",
+    "https://openalex.org/W2758688195",
+    "https://openalex.org/W2766327047",
+    "https://openalex.org/W2766389771",
+    "https://openalex.org/W2766778527",
+    "https://openalex.org/W2769689735",
+    "https://openalex.org/W2775550787",
+    "https://openalex.org/W2775883273",
+    "https://openalex.org/W2782802766",
+    "https://openalex.org/W2789560201",
+    "https://openalex.org/W2791599184",
+    "https://openalex.org/W2796022095",
+    "https://openalex.org/W2801508025",
+    "https://openalex.org/W2802255180",
+    "https://openalex.org/W2802319261",
+    "https://openalex.org/W2802347208",
+    "https://openalex.org/W2803603947",
+    "https://openalex.org/W2804754774",
+    "https://openalex.org/W2883874817",
+    "https://openalex.org/W2885384920",
+    "https://openalex.org/W2886952166",
+    "https://openalex.org/W2886956604",
+    "https://openalex.org/W2893584036",
+    "https://openalex.org/W2896805966",
+    "https://openalex.org/W2896849124",
+    "https://openalex.org/W2898599437",
+    "https://openalex.org/W2900798599",
+    "https://openalex.org/W2904354111",
+    "https://openalex.org/W2911047707",
+    "https://openalex.org/W2911459233",
+    "https://openalex.org/W2912774204",
+    "https://openalex.org/W2913747529",
+    "https://openalex.org/W2915869464",
+    "https://openalex.org/W2923561136",
+    "https://openalex.org/W2925114149",
+    "https://openalex.org/W2938654265",
+    "https://openalex.org/W2943458540",
+    "https://openalex.org/W2944755457",
+    "https://openalex.org/W2952178284",
+    "https://openalex.org/W2953166801",
+    "https://openalex.org/W2953390211",
+    "https://openalex.org/W2955112665",
+    "https://openalex.org/W2962814950",
+    "https://openalex.org/W2962855397",
+    "https://openalex.org/W2965088939",
+    "https://openalex.org/W2971605747",
+    "https://openalex.org/W2971897270",
+    "https://openalex.org/W2976638728",
+    "https://openalex.org/W2977278846",
+    "https://openalex.org/W2978883317",
+    "https://openalex.org/W2980403271",
+    "https://openalex.org/W2981657433",
+    "https://openalex.org/W2988255546",
+    "https://openalex.org/W2991491848",
+    "https://openalex.org/W2994116020",
+    "https://openalex.org/W2997481555",
+    "https://openalex.org/W3000413850",
+    "https://openalex.org/W3001118548",
+    "https://openalex.org/W3001195213",
+    "https://openalex.org/W3001911146",
+    "https://openalex.org/W3002108456",
+    "https://openalex.org/W3003637715",
+    "https://openalex.org/W3004164092",
+    "https://openalex.org/W3004479334",
+    "https://openalex.org/W3004626187",
+    "https://openalex.org/W3005079553",
+    "https://openalex.org/W3005212621",
+    "https://openalex.org/W3005570206",
+    "https://openalex.org/W3005617185",
+    "https://openalex.org/W3005838342",
+    "https://openalex.org/W3005875949",
+    "https://openalex.org/W3006065484",
+    "https://openalex.org/W3006564542",
+    "https://openalex.org/W3006932277",
+    "https://openalex.org/W3007114958",
+    "https://openalex.org/W3007273493",
+    "https://openalex.org/W3007376489",
+    "https://openalex.org/W3007497549",
+    "https://openalex.org/W3008028633",
+    "https://openalex.org/W3008090866",
+    "https://openalex.org/W3008421357",
+    "https://openalex.org/W3008763357",
+    "https://openalex.org/W3008827533",
+    "https://openalex.org/W3009314935",
+    "https://openalex.org/W3009389929",
+    "https://openalex.org/W3009577418",
+    "https://openalex.org/W3009579310",
+    "https://openalex.org/W3009655369",
+    "https://openalex.org/W3009885589",
+    "https://openalex.org/W3009951436",
+    "https://openalex.org/W3010569238",
+    "https://openalex.org/W3011047309",
+    "https://openalex.org/W3011379523",
+    "https://openalex.org/W3011445852",
+    "https://openalex.org/W3011610993",
+    "https://openalex.org/W3011632109",
+    "https://openalex.org/W3011885014",
+    "https://openalex.org/W3012379316",
+    "https://openalex.org/W3012421327",
+    "https://openalex.org/W3016538467",
+    "https://openalex.org/W3016555942",
+    "https://openalex.org/W3023757607",
+    "https://openalex.org/W3035808329",
+    "https://openalex.org/W3123072329",
+    "https://openalex.org/W3165656738",
+    "https://openalex.org/W3216146939",
+    "https://openalex.org/W4236317939",
+    "https://openalex.org/W4293111375"
+  ],
+  "related_works": [
+    "https://openalex.org/W2002383399",
+    "https://openalex.org/W2357927218",
+    "https://openalex.org/W644644594",
+    "https://openalex.org/W2418691150",
+    "https://openalex.org/W2316939297",
+    "https://openalex.org/W3030000905",
+    "https://openalex.org/W2062770424",
+    "https://openalex.org/W2095959453",
+    "https://openalex.org/W2042093486",
+    "https://openalex.org/W2055637978"
+  ],
+  "abstract_inverted_index": null,
+  "counts_by_year": [
+    {
+      "year": 2026,
+      "cited_by_count": 23
+    },
+    {
+      "year": 2025,
+      "cited_by_count": 50
+    },
+    {
+      "year": 2024,
+      "cited_by_count": 100
+    },
+    {
+      "year": 2023,
+      "cited_by_count": 163
+    },
+    {
+      "year": 2022,
+      "cited_by_count": 347
+    },
+    {
+      "year": 2021,
+      "cited_by_count": 636
+    },
+    {
+      "year": 2020,
+      "cited_by_count": 869
+    },
+    {
+      "year": 2019,
+      "cited_by_count": 5
+    }
+  ],
+  "updated_date": "2026-07-02T09:51:11.867554",
+  "created_date": "2025-10-10T00:00:00"
+}

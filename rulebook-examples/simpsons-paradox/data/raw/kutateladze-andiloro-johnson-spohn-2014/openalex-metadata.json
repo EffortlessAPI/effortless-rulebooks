@@ -1,0 +1,1206 @@
+{
+  "id": "https://openalex.org/W3111105858",
+  "doi": "https://doi.org/10.1056/nejmms2025396",
+  "title": "How Structural Racism Works \u2014 Racist Policies as a Root Cause of U.S. Racial Health Inequities",
+  "display_name": "How Structural Racism Works \u2014 Racist Policies as a Root Cause of U.S. Racial Health Inequities",
+  "relevance_score": 151.627,
+  "publication_year": 2020,
+  "publication_date": "2020-12-16",
+  "ids": {
+    "openalex": "https://openalex.org/W3111105858",
+    "doi": "https://doi.org/10.1056/nejmms2025396",
+    "mag": "3111105858",
+    "pmid": "https://pubmed.ncbi.nlm.nih.gov/33326717"
+  },
+  "language": "en",
+  "primary_location": {
+    "id": "doi:10.1056/nejmms2025396",
+    "is_oa": true,
+    "landing_page_url": "https://doi.org/10.1056/nejmms2025396",
+    "pdf_url": "https://www.nejm.org/doi/pdf/10.1056/NEJMms2025396?articleTools=true",
+    "source": {
+      "id": "https://openalex.org/S62468778",
+      "display_name": "New England Journal of Medicine",
+      "issn_l": "0028-4793",
+      "issn": [
+        "0028-4793",
+        "1533-4406"
+      ],
+      "is_oa": false,
+      "is_in_doaj": false,
+      "is_core": true,
+      "host_organization": "https://openalex.org/P4310320239",
+      "host_organization_name": "Massachusetts Medical Society",
+      "host_organization_lineage": [
+        "https://openalex.org/P4310320239"
+      ],
+      "host_organization_lineage_names": [
+        "Massachusetts Medical Society"
+      ],
+      "type": "journal"
+    },
+    "license": null,
+    "license_id": null,
+    "version": "publishedVersion",
+    "is_accepted": true,
+    "is_published": true,
+    "raw_source_name": "New England Journal of Medicine",
+    "raw_type": "journal-article"
+  },
+  "type": "article",
+  "indexed_in": [
+    "crossref",
+    "pubmed"
+  ],
+  "open_access": {
+    "is_oa": true,
+    "oa_status": "bronze",
+    "oa_url": "https://www.nejm.org/doi/pdf/10.1056/NEJMms2025396?articleTools=true",
+    "any_repository_has_fulltext": true
+  },
+  "authorships": [
+    {
+      "author_position": "first",
+      "author": {
+        "id": "https://openalex.org/A5037440291",
+        "display_name": "Zinzi Bailey",
+        "orcid": "https://orcid.org/0000-0002-5708-3754"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I145608581",
+          "display_name": "University of Miami",
+          "ror": "https://ror.org/02dgjyy92",
+          "country_code": "US",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I145608581"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Zinzi D. Bailey",
+      "raw_affiliation_strings": [
+        "From the University of Miami Miller School of Medicine, Miami (Z.D.B.); and the FXB Center for Health and Human Rights, Harvard University, Boston (J.M.F., M.T.B.)",
+        "University of Miami Miller School of Medicine, Miami"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "From the University of Miami Miller School of Medicine, Miami (Z.D.B.); and the FXB Center for Health and Human Rights, Harvard University, Boston (J.M.F., M.T.B.)",
+          "institution_ids": [
+            "https://openalex.org/I145608581"
+          ]
+        },
+        {
+          "raw_affiliation_string": "University of Miami Miller School of Medicine, Miami",
+          "institution_ids": [
+            "https://openalex.org/I145608581"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5080864331",
+        "display_name": "Justin M. Feldman",
+        "orcid": "https://orcid.org/0000-0002-8316-1947"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I136199984",
+          "display_name": "Harvard University",
+          "ror": "https://ror.org/03vek6s52",
+          "country_code": "US",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I136199984"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I145608581",
+          "display_name": "University of Miami",
+          "ror": "https://ror.org/02dgjyy92",
+          "country_code": "US",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I145608581"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Justin M. Feldman",
+      "raw_affiliation_strings": [
+        "From the University of Miami Miller School of Medicine, Miami (Z.D.B.); and the FXB Center for Health and Human Rights, Harvard University, Boston (J.M.F., M.T.B.)",
+        "FXB Center for Health and Human Rights, Harvard University, Boston"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "From the University of Miami Miller School of Medicine, Miami (Z.D.B.); and the FXB Center for Health and Human Rights, Harvard University, Boston (J.M.F., M.T.B.)",
+          "institution_ids": [
+            "https://openalex.org/I145608581"
+          ]
+        },
+        {
+          "raw_affiliation_string": "FXB Center for Health and Human Rights, Harvard University, Boston",
+          "institution_ids": [
+            "https://openalex.org/I136199984"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "last",
+      "author": {
+        "id": "https://openalex.org/A5019209326",
+        "display_name": "Mary T. Bassett",
+        "orcid": "https://orcid.org/0000-0002-7810-4163"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I136199984",
+          "display_name": "Harvard University",
+          "ror": "https://ror.org/03vek6s52",
+          "country_code": "US",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I136199984"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I145608581",
+          "display_name": "University of Miami",
+          "ror": "https://ror.org/02dgjyy92",
+          "country_code": "US",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I145608581"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Mary T. Bassett",
+      "raw_affiliation_strings": [
+        "From the University of Miami Miller School of Medicine, Miami (Z.D.B.); and the FXB Center for Health and Human Rights, Harvard University, Boston (J.M.F., M.T.B.)",
+        "FXB Center for Health and Human Rights, Harvard University, Boston"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "From the University of Miami Miller School of Medicine, Miami (Z.D.B.); and the FXB Center for Health and Human Rights, Harvard University, Boston (J.M.F., M.T.B.)",
+          "institution_ids": [
+            "https://openalex.org/I145608581"
+          ]
+        },
+        {
+          "raw_affiliation_string": "FXB Center for Health and Human Rights, Harvard University, Boston",
+          "institution_ids": [
+            "https://openalex.org/I136199984"
+          ]
+        }
+      ]
+    }
+  ],
+  "institutions": [],
+  "countries_distinct_count": 1,
+  "institutions_distinct_count": 2,
+  "corresponding_author_ids": [],
+  "corresponding_institution_ids": [],
+  "apc_list": null,
+  "apc_paid": null,
+  "fwci": 328.5937,
+  "has_fulltext": true,
+  "cited_by_count": 1573,
+  "citation_normalized_percentile": {
+    "value": 0.99996595,
+    "is_in_top_1_percent": true,
+    "is_in_top_10_percent": true
+  },
+  "cited_by_percentile_year": {
+    "min": 89,
+    "max": 100
+  },
+  "biblio": {
+    "volume": "384",
+    "issue": "8",
+    "first_page": "768",
+    "last_page": "773"
+  },
+  "is_retracted": false,
+  "is_paratext": false,
+  "is_xpac": false,
+  "primary_topic": {
+    "id": "https://openalex.org/T10652",
+    "display_name": "Racial and Ethnic Identity Research",
+    "score": 0.9994999766349792,
+    "subfield": {
+      "id": "https://openalex.org/subfields/3312",
+      "display_name": "Sociology and Political Science"
+    },
+    "field": {
+      "id": "https://openalex.org/fields/33",
+      "display_name": "Social Sciences"
+    },
+    "domain": {
+      "id": "https://openalex.org/domains/2",
+      "display_name": "Social Sciences"
+    }
+  },
+  "topics": [
+    {
+      "id": "https://openalex.org/T10652",
+      "display_name": "Racial and Ethnic Identity Research",
+      "score": 0.9994999766349792,
+      "subfield": {
+        "id": "https://openalex.org/subfields/3312",
+        "display_name": "Sociology and Political Science"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/33",
+        "display_name": "Social Sciences"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/2",
+        "display_name": "Social Sciences"
+      }
+    },
+    {
+      "id": "https://openalex.org/T11610",
+      "display_name": "Food Security and Health in Diverse Populations",
+      "score": 0.9908999800682068,
+      "subfield": {
+        "id": "https://openalex.org/subfields/3600",
+        "display_name": "General Health Professions"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/36",
+        "display_name": "Health Professions"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/4",
+        "display_name": "Health Sciences"
+      }
+    },
+    {
+      "id": "https://openalex.org/T10762",
+      "display_name": "Migration, Health and Trauma",
+      "score": 0.9901000261306763,
+      "subfield": {
+        "id": "https://openalex.org/subfields/3203",
+        "display_name": "Clinical Psychology"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/32",
+        "display_name": "Psychology"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/2",
+        "display_name": "Social Sciences"
+      }
+    }
+  ],
+  "keywords": [
+    {
+      "id": "https://openalex.org/keywords/racism",
+      "display_name": "Racism",
+      "score": 0.8885749578475952
+    },
+    {
+      "id": "https://openalex.org/keywords/sociology",
+      "display_name": "Sociology",
+      "score": 0.5274192094802856
+    },
+    {
+      "id": "https://openalex.org/keywords/criminology",
+      "display_name": "Criminology",
+      "score": 0.503940999507904
+    },
+    {
+      "id": "https://openalex.org/keywords/population",
+      "display_name": "Population",
+      "score": 0.420653760433197
+    },
+    {
+      "id": "https://openalex.org/keywords/political-science",
+      "display_name": "Political science",
+      "score": 0.3896973729133606
+    },
+    {
+      "id": "https://openalex.org/keywords/gender-studies",
+      "display_name": "Gender studies",
+      "score": 0.35997650027275085
+    }
+  ],
+  "concepts": [
+    {
+      "id": "https://openalex.org/C139838865",
+      "wikidata": "https://www.wikidata.org/wiki/Q8461",
+      "display_name": "Racism",
+      "level": 2,
+      "score": 0.8885749578475952
+    },
+    {
+      "id": "https://openalex.org/C144024400",
+      "wikidata": "https://www.wikidata.org/wiki/Q21201",
+      "display_name": "Sociology",
+      "level": 0,
+      "score": 0.5274192094802856
+    },
+    {
+      "id": "https://openalex.org/C73484699",
+      "wikidata": "https://www.wikidata.org/wiki/Q161733",
+      "display_name": "Criminology",
+      "level": 1,
+      "score": 0.503940999507904
+    },
+    {
+      "id": "https://openalex.org/C2908647359",
+      "wikidata": "https://www.wikidata.org/wiki/Q2625603",
+      "display_name": "Population",
+      "level": 2,
+      "score": 0.420653760433197
+    },
+    {
+      "id": "https://openalex.org/C17744445",
+      "wikidata": "https://www.wikidata.org/wiki/Q36442",
+      "display_name": "Political science",
+      "level": 0,
+      "score": 0.3896973729133606
+    },
+    {
+      "id": "https://openalex.org/C107993555",
+      "wikidata": "https://www.wikidata.org/wiki/Q1662673",
+      "display_name": "Gender studies",
+      "level": 1,
+      "score": 0.35997650027275085
+    },
+    {
+      "id": "https://openalex.org/C149923435",
+      "wikidata": "https://www.wikidata.org/wiki/Q37732",
+      "display_name": "Demography",
+      "level": 1,
+      "score": 0.0
+    }
+  ],
+  "mesh": [
+    {
+      "descriptor_ui": "D001741",
+      "descriptor_name": "Black or African American",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D001741",
+      "descriptor_name": "Black or African American",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D001741",
+      "descriptor_name": "Black or African American",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D001741",
+      "descriptor_name": "Black or African American",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D002961",
+      "descriptor_name": "Civil Rights",
+      "qualifier_ui": "Q000266",
+      "qualifier_name": "history",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D002961",
+      "descriptor_name": "Civil Rights",
+      "qualifier_ui": "Q000266",
+      "qualifier_name": "history",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D002961",
+      "descriptor_name": "Civil Rights",
+      "qualifier_ui": "Q000266",
+      "qualifier_name": "history",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D002961",
+      "descriptor_name": "Civil Rights",
+      "qualifier_ui": "Q000266",
+      "qualifier_name": "history",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D002961",
+      "descriptor_name": "Civil Rights",
+      "qualifier_ui": "Q000331",
+      "qualifier_name": "legislation & jurisprudence",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D002961",
+      "descriptor_name": "Civil Rights",
+      "qualifier_ui": "Q000331",
+      "qualifier_name": "legislation & jurisprudence",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D002961",
+      "descriptor_name": "Civil Rights",
+      "qualifier_ui": "Q000331",
+      "qualifier_name": "legislation & jurisprudence",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D002961",
+      "descriptor_name": "Civil Rights",
+      "qualifier_ui": "Q000331",
+      "qualifier_name": "legislation & jurisprudence",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D006798",
+      "descriptor_name": "Housing",
+      "qualifier_ui": "Q000266",
+      "qualifier_name": "history",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D006798",
+      "descriptor_name": "Housing",
+      "qualifier_ui": "Q000266",
+      "qualifier_name": "history",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D006798",
+      "descriptor_name": "Housing",
+      "qualifier_ui": "Q000266",
+      "qualifier_name": "history",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D006798",
+      "descriptor_name": "Housing",
+      "qualifier_ui": "Q000266",
+      "qualifier_name": "history",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D006798",
+      "descriptor_name": "Housing",
+      "qualifier_ui": "Q000331",
+      "qualifier_name": "legislation & jurisprudence",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D006798",
+      "descriptor_name": "Housing",
+      "qualifier_ui": "Q000331",
+      "qualifier_name": "legislation & jurisprudence",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D006798",
+      "descriptor_name": "Housing",
+      "qualifier_ui": "Q000331",
+      "qualifier_name": "legislation & jurisprudence",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D006798",
+      "descriptor_name": "Housing",
+      "qualifier_ui": "Q000331",
+      "qualifier_name": "legislation & jurisprudence",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D006801",
+      "descriptor_name": "Humans",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D006801",
+      "descriptor_name": "Humans",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D006801",
+      "descriptor_name": "Humans",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D006801",
+      "descriptor_name": "Humans",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D011640",
+      "descriptor_name": "Public Policy",
+      "qualifier_ui": "Q000266",
+      "qualifier_name": "history",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D011640",
+      "descriptor_name": "Public Policy",
+      "qualifier_ui": "Q000266",
+      "qualifier_name": "history",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D011640",
+      "descriptor_name": "Public Policy",
+      "qualifier_ui": "Q000266",
+      "qualifier_name": "history",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D011640",
+      "descriptor_name": "Public Policy",
+      "qualifier_ui": "Q000266",
+      "qualifier_name": "history",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D012577",
+      "descriptor_name": "Schools, Medical",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D012577",
+      "descriptor_name": "Schools, Medical",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D012577",
+      "descriptor_name": "Schools, Medical",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D012577",
+      "descriptor_name": "Schools, Medical",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D014481",
+      "descriptor_name": "United States",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D014481",
+      "descriptor_name": "United States",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D014481",
+      "descriptor_name": "United States",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D014481",
+      "descriptor_name": "United States",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D049671",
+      "descriptor_name": "History, 18th Century",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D049671",
+      "descriptor_name": "History, 18th Century",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D049671",
+      "descriptor_name": "History, 18th Century",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D049671",
+      "descriptor_name": "History, 18th Century",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D049673",
+      "descriptor_name": "History, 20th Century",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D049673",
+      "descriptor_name": "History, 20th Century",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D049673",
+      "descriptor_name": "History, 20th Century",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D049673",
+      "descriptor_name": "History, 20th Century",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D063505",
+      "descriptor_name": "Racism",
+      "qualifier_ui": "Q000266",
+      "qualifier_name": "history",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D063505",
+      "descriptor_name": "Racism",
+      "qualifier_ui": "Q000266",
+      "qualifier_name": "history",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D063505",
+      "descriptor_name": "Racism",
+      "qualifier_ui": "Q000266",
+      "qualifier_name": "history",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D063505",
+      "descriptor_name": "Racism",
+      "qualifier_ui": "Q000266",
+      "qualifier_name": "history",
+      "is_major_topic": false
+    }
+  ],
+  "locations_count": 3,
+  "locations": [
+    {
+      "id": "doi:10.1056/nejmms2025396",
+      "is_oa": true,
+      "landing_page_url": "https://doi.org/10.1056/nejmms2025396",
+      "pdf_url": "https://www.nejm.org/doi/pdf/10.1056/NEJMms2025396?articleTools=true",
+      "source": {
+        "id": "https://openalex.org/S62468778",
+        "display_name": "New England Journal of Medicine",
+        "issn_l": "0028-4793",
+        "issn": [
+          "0028-4793",
+          "1533-4406"
+        ],
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": true,
+        "host_organization": "https://openalex.org/P4310320239",
+        "host_organization_name": "Massachusetts Medical Society",
+        "host_organization_lineage": [
+          "https://openalex.org/P4310320239"
+        ],
+        "host_organization_lineage_names": [
+          "Massachusetts Medical Society"
+        ],
+        "type": "journal"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "publishedVersion",
+      "is_accepted": true,
+      "is_published": true,
+      "raw_source_name": "New England Journal of Medicine",
+      "raw_type": "journal-article"
+    },
+    {
+      "id": "pmid:33326717",
+      "is_oa": false,
+      "landing_page_url": "https://pubmed.ncbi.nlm.nih.gov/33326717",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4306525036",
+        "display_name": "PubMed",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I1299303238",
+        "host_organization_name": "National Institutes of Health",
+        "host_organization_lineage": [
+          "https://openalex.org/I1299303238"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "publishedVersion",
+      "is_accepted": true,
+      "is_published": true,
+      "raw_source_name": "The New England journal of medicine",
+      "raw_type": null
+    },
+    {
+      "id": "pmh:oai:pubmedcentral.nih.gov:11393777",
+      "is_oa": true,
+      "landing_page_url": "https://www.ncbi.nlm.nih.gov/pmc/articles/11393777",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S2764455111",
+        "display_name": "PubMed Central",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": true,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I1299303238",
+        "host_organization_name": "National Institutes of Health",
+        "host_organization_lineage": [
+          "https://openalex.org/I1299303238"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "submittedVersion",
+      "is_accepted": false,
+      "is_published": false,
+      "raw_source_name": "N Engl J Med",
+      "raw_type": "Text"
+    }
+  ],
+  "best_oa_location": {
+    "id": "doi:10.1056/nejmms2025396",
+    "is_oa": true,
+    "landing_page_url": "https://doi.org/10.1056/nejmms2025396",
+    "pdf_url": "https://www.nejm.org/doi/pdf/10.1056/NEJMms2025396?articleTools=true",
+    "source": {
+      "id": "https://openalex.org/S62468778",
+      "display_name": "New England Journal of Medicine",
+      "issn_l": "0028-4793",
+      "issn": [
+        "0028-4793",
+        "1533-4406"
+      ],
+      "is_oa": false,
+      "is_in_doaj": false,
+      "is_core": true,
+      "host_organization": "https://openalex.org/P4310320239",
+      "host_organization_name": "Massachusetts Medical Society",
+      "host_organization_lineage": [
+        "https://openalex.org/P4310320239"
+      ],
+      "host_organization_lineage_names": [
+        "Massachusetts Medical Society"
+      ],
+      "type": "journal"
+    },
+    "license": null,
+    "license_id": null,
+    "version": "publishedVersion",
+    "is_accepted": true,
+    "is_published": true,
+    "raw_source_name": "New England Journal of Medicine",
+    "raw_type": "journal-article"
+  },
+  "sustainable_development_goals": [
+    {
+      "score": 0.5799999833106995,
+      "id": "https://metadata.un.org/sdg/10",
+      "display_name": "Reduced inequalities"
+    }
+  ],
+  "awards": [
+    {
+      "id": "https://openalex.org/G8201855705",
+      "display_name": null,
+      "funder_award_id": "L60 MD014557",
+      "funder_id": "https://openalex.org/F4320337534",
+      "funder_display_name": "National Institute on Minority Health and Health Disparities"
+    }
+  ],
+  "funders": [
+    {
+      "id": "https://openalex.org/F4320337534",
+      "display_name": "National Institute on Minority Health and Health Disparities",
+      "ror": "https://ror.org/0493hgw16"
+    }
+  ],
+  "has_content": {
+    "grobid_xml": true,
+    "pdf": true
+  },
+  "content_urls": {
+    "pdf": "https://content.openalex.org/works/W3111105858.pdf",
+    "grobid_xml": "https://content.openalex.org/works/W3111105858.grobid-xml"
+  },
+  "referenced_works_count": 34,
+  "referenced_works": [
+    "https://openalex.org/W1543226302",
+    "https://openalex.org/W1780647134",
+    "https://openalex.org/W1872690150",
+    "https://openalex.org/W1918881530",
+    "https://openalex.org/W2018955353",
+    "https://openalex.org/W2023220694",
+    "https://openalex.org/W2073220103",
+    "https://openalex.org/W2097768735",
+    "https://openalex.org/W2122889339",
+    "https://openalex.org/W2123823546",
+    "https://openalex.org/W2318723339",
+    "https://openalex.org/W2324215897",
+    "https://openalex.org/W2473931794",
+    "https://openalex.org/W2598043244",
+    "https://openalex.org/W2604748569",
+    "https://openalex.org/W2738344722",
+    "https://openalex.org/W2738475533",
+    "https://openalex.org/W2771710652",
+    "https://openalex.org/W2796283155",
+    "https://openalex.org/W2805191333",
+    "https://openalex.org/W2884834238",
+    "https://openalex.org/W2888893574",
+    "https://openalex.org/W2890792344",
+    "https://openalex.org/W2896334718",
+    "https://openalex.org/W2907260560",
+    "https://openalex.org/W2952808728",
+    "https://openalex.org/W2971894355",
+    "https://openalex.org/W2979296990",
+    "https://openalex.org/W2995082294",
+    "https://openalex.org/W3034688634",
+    "https://openalex.org/W3122864926",
+    "https://openalex.org/W4230955257",
+    "https://openalex.org/W4232738856",
+    "https://openalex.org/W4245243670"
+  ],
+  "related_works": [
+    "https://openalex.org/W4391375266",
+    "https://openalex.org/W2748952813",
+    "https://openalex.org/W2105605948",
+    "https://openalex.org/W3010601015",
+    "https://openalex.org/W2734575630",
+    "https://openalex.org/W572239203",
+    "https://openalex.org/W4361975234",
+    "https://openalex.org/W1926426742",
+    "https://openalex.org/W4236527700",
+    "https://openalex.org/W4291155953"
+  ],
+  "abstract_inverted_index": {
+    "In": [
+      0
+    ],
+    "the": [
+      1,
+      14,
+      21,
+      31,
+      45,
+      49,
+      52,
+      83
+    ],
+    "5": [
+      2
+    ],
+    "years": [
+      3
+    ],
+    "since": [
+      4
+    ],
+    "one": [
+      5
+    ],
+    "of": [
+      6,
+      44,
+      55
+    ],
+    "us": [
+      7
+    ],
+    "published": [
+      8
+    ],
+    "\"#Black": [
+      9
+    ],
+    "LivesMatter": [
+      10
+    ],
+    "-A": [
+      11
+    ],
+    "Challenge": [
+      12
+    ],
+    "to": [
+      13
+    ],
+    "Medical": [
+      15
+    ],
+    "and": [
+      16,
+      27,
+      71
+    ],
+    "Public": [
+      17
+    ],
+    "Health": [
+      18
+    ],
+    "Communities\"": [
+      19
+    ],
+    "in": [
+      20,
+      74
+    ],
+    "Journal,": [
+      22
+    ],
+    "Elected": [
+      23
+    ],
+    "officials,": [
+      24
+    ],
+    "corporate": [
+      25
+    ],
+    "leaders,": [
+      26
+    ],
+    "academics": [
+      28
+    ],
+    "alike": [
+      29
+    ],
+    "use": [
+      30
+    ],
+    "slogan": [
+      32
+    ],
+    "\"Black": [
+      33
+    ],
+    "Lives": [
+      34
+    ],
+    "Matter,\"": [
+      35
+    ],
+    "which": [
+      36
+    ],
+    "has": [
+      37,
+      67
+    ],
+    "also": [
+      38
+    ],
+    "been": [
+      39
+    ],
+    "widely": [
+      40
+    ],
+    "adopted": [
+      41
+    ],
+    "by": [
+      42,
+      48,
+      82
+    ],
+    "members": [
+      43
+    ],
+    "public,": [
+      46
+    ],
+    "who": [
+      47
+    ],
+    "millions": [
+      50
+    ],
+    "protested": [
+      51
+    ],
+    "extrajudicial": [
+      53
+    ],
+    "killing": [
+      54
+    ],
+    "George": [
+      56
+    ],
+    "Floyd.": [
+      57
+    ],
+    "2": [
+      58
+    ],
+    "With": [
+      59
+    ],
+    "this": [
+      60
+    ],
+    "change": [
+      61
+    ],
+    "comes": [
+      62
+    ],
+    "growing": [
+      63
+    ],
+    "recognition": [
+      64
+    ],
+    "that": [
+      65
+    ],
+    "racism": [
+      66
+    ],
+    "a": [
+      68
+    ],
+    "structural": [
+      69
+    ],
+    "basis": [
+      70
+    ],
+    "is": [
+      72,
+      80
+    ],
+    "embedded": [
+      73
+    ],
+    "long-standing": [
+      75
+    ],
+    "social": [
+      76
+    ],
+    "policy.": [
+      77
+    ],
+    "This": [
+      78
+    ],
+    "framing": [
+      79
+    ],
+    "captured": [
+      81
+    ],
+    "term": [
+      84
+    ],
+    "\"structural": [
+      85
+    ],
+    "racism.\"": [
+      86
+    ]
+  },
+  "counts_by_year": [
+    {
+      "year": 2026,
+      "cited_by_count": 83
+    },
+    {
+      "year": 2025,
+      "cited_by_count": 236
+    },
+    {
+      "year": 2024,
+      "cited_by_count": 315
+    },
+    {
+      "year": 2023,
+      "cited_by_count": 358
+    },
+    {
+      "year": 2022,
+      "cited_by_count": 389
+    },
+    {
+      "year": 2021,
+      "cited_by_count": 189
+    },
+    {
+      "year": 2020,
+      "cited_by_count": 1
+    }
+  ],
+  "updated_date": "2026-07-02T09:51:11.867554",
+  "created_date": "2025-10-10T00:00:00"
+}

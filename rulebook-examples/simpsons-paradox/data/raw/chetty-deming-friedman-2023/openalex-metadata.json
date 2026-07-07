@@ -1,0 +1,1132 @@
+{
+  "id": "https://openalex.org/W4401424496",
+  "doi": "https://doi.org/10.1111/asap.12417",
+  "title": "How much do we need college admission tests?",
+  "display_name": "How much do we need college admission tests?",
+  "relevance_score": 10.219897,
+  "publication_year": 2024,
+  "publication_date": "2024-08-08",
+  "ids": {
+    "openalex": "https://openalex.org/W4401424496",
+    "doi": "https://doi.org/10.1111/asap.12417"
+  },
+  "language": "en",
+  "primary_location": {
+    "id": "doi:10.1111/asap.12417",
+    "is_oa": true,
+    "landing_page_url": "https://doi.org/10.1111/asap.12417",
+    "pdf_url": "https://onlinelibrary.wiley.com/doi/pdfdirect/10.1111/asap.12417",
+    "source": {
+      "id": "https://openalex.org/S90526950",
+      "display_name": "Analyses of Social Issues and Public Policy",
+      "issn_l": "1529-7489",
+      "issn": [
+        "1529-7489",
+        "1530-2415"
+      ],
+      "is_oa": false,
+      "is_in_doaj": false,
+      "is_core": true,
+      "host_organization": "https://openalex.org/P4310320595",
+      "host_organization_name": "Wiley",
+      "host_organization_lineage": [
+        "https://openalex.org/P4310320595"
+      ],
+      "host_organization_lineage_names": [
+        "Wiley"
+      ],
+      "type": "journal"
+    },
+    "license": "cc-by-nc-nd",
+    "license_id": "https://openalex.org/licenses/cc-by-nc-nd",
+    "version": "publishedVersion",
+    "is_accepted": true,
+    "is_published": true,
+    "raw_source_name": "Analyses of Social Issues and Public Policy",
+    "raw_type": "journal-article"
+  },
+  "type": "article",
+  "indexed_in": [
+    "crossref"
+  ],
+  "open_access": {
+    "is_oa": true,
+    "oa_status": "hybrid",
+    "oa_url": "https://onlinelibrary.wiley.com/doi/pdfdirect/10.1111/asap.12417",
+    "any_repository_has_fulltext": false
+  },
+  "authorships": [
+    {
+      "author_position": "first",
+      "author": {
+        "id": "https://openalex.org/A5067761090",
+        "display_name": "Geoffrey Maruyama",
+        "orcid": "https://orcid.org/0000-0002-8367-6625"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I130238516",
+          "display_name": "University of Minnesota",
+          "ror": "https://ror.org/017zqws13",
+          "country_code": "US",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I130238516"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I4210101327",
+          "display_name": "Twin Cities Orthopedics",
+          "ror": "https://ror.org/01en4s460",
+          "country_code": "US",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I4210101327"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": true,
+      "raw_author_name": "Geoffrey Maruyama",
+      "raw_affiliation_strings": [
+        "Department of Educational Psychology University of Minnesota: Twin Cities  Minneapolis Minnesota USA",
+        "Department of Educational Psychology, University of Minnesota: Twin Cities, Minneapolis, Minnesota, USA"
+      ],
+      "raw_orcid": "https://orcid.org/0000-0002-8367-6625",
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Department of Educational Psychology University of Minnesota: Twin Cities  Minneapolis Minnesota USA",
+          "institution_ids": [
+            "https://openalex.org/I130238516"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Department of Educational Psychology, University of Minnesota: Twin Cities, Minneapolis, Minnesota, USA",
+          "institution_ids": [
+            "https://openalex.org/I4210101327",
+            "https://openalex.org/I130238516"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5094146404",
+        "display_name": "Miguel A. Ovies\u2010Bocanegra",
+        "orcid": null
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I111979921",
+          "display_name": "Northwestern University",
+          "ror": "https://ror.org/000e0be47",
+          "country_code": "US",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I111979921"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Miguel A. Ovies\u2010Bocanegra",
+      "raw_affiliation_strings": [
+        "School of Education and Social Policy Northwestern University  Evanston Illinois USA",
+        "School of Education and Social Policy, Northwestern University, Evanston, Illinois, USA"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "School of Education and Social Policy Northwestern University  Evanston Illinois USA",
+          "institution_ids": [
+            "https://openalex.org/I111979921"
+          ]
+        },
+        {
+          "raw_affiliation_string": "School of Education and Social Policy, Northwestern University, Evanston, Illinois, USA",
+          "institution_ids": [
+            "https://openalex.org/I111979921"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5011085426",
+        "display_name": "Tai Do",
+        "orcid": "https://orcid.org/0000-0002-4421-3740"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I130238516",
+          "display_name": "University of Minnesota",
+          "ror": "https://ror.org/017zqws13",
+          "country_code": "US",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I130238516"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I4210101327",
+          "display_name": "Twin Cities Orthopedics",
+          "ror": "https://ror.org/01en4s460",
+          "country_code": "US",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I4210101327"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Tai Do",
+      "raw_affiliation_strings": [
+        "Department of Educational Psychology University of Minnesota: Twin Cities  Minneapolis Minnesota USA",
+        "Department of Educational Psychology, University of Minnesota: Twin Cities, Minneapolis, Minnesota, USA"
+      ],
+      "raw_orcid": "https://orcid.org/0000-0002-4421-3740",
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Department of Educational Psychology University of Minnesota: Twin Cities  Minneapolis Minnesota USA",
+          "institution_ids": [
+            "https://openalex.org/I130238516"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Department of Educational Psychology, University of Minnesota: Twin Cities, Minneapolis, Minnesota, USA",
+          "institution_ids": [
+            "https://openalex.org/I4210101327",
+            "https://openalex.org/I130238516"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5017157538",
+        "display_name": "Marisa C. Peczuh",
+        "orcid": "https://orcid.org/0000-0003-0086-1292"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I130238516",
+          "display_name": "University of Minnesota",
+          "ror": "https://ror.org/017zqws13",
+          "country_code": "US",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I130238516"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I4210101327",
+          "display_name": "Twin Cities Orthopedics",
+          "ror": "https://ror.org/01en4s460",
+          "country_code": "US",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I4210101327"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Marisa C. Peczuh",
+      "raw_affiliation_strings": [
+        "Department of Educational Psychology University of Minnesota: Twin Cities  Minneapolis Minnesota USA",
+        "Department of Educational Psychology, University of Minnesota: Twin Cities, Minneapolis, Minnesota, USA"
+      ],
+      "raw_orcid": "https://orcid.org/0000-0003-0086-1292",
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Department of Educational Psychology University of Minnesota: Twin Cities  Minneapolis Minnesota USA",
+          "institution_ids": [
+            "https://openalex.org/I130238516"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Department of Educational Psychology, University of Minnesota: Twin Cities, Minneapolis, Minnesota, USA",
+          "institution_ids": [
+            "https://openalex.org/I4210101327",
+            "https://openalex.org/I130238516"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "last",
+      "author": {
+        "id": "https://openalex.org/A5039333230",
+        "display_name": "Shelby Weisen",
+        "orcid": "https://orcid.org/0000-0002-5138-2622"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I130238516",
+          "display_name": "University of Minnesota",
+          "ror": "https://ror.org/017zqws13",
+          "country_code": "US",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I130238516"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I4210101327",
+          "display_name": "Twin Cities Orthopedics",
+          "ror": "https://ror.org/01en4s460",
+          "country_code": "US",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I4210101327"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Shelby Weisen",
+      "raw_affiliation_strings": [
+        "Department of Educational Psychology University of Minnesota: Twin Cities  Minneapolis Minnesota USA",
+        "Department of Educational Psychology, University of Minnesota: Twin Cities, Minneapolis, Minnesota, USA"
+      ],
+      "raw_orcid": "https://orcid.org/0000-0002-5138-2622",
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Department of Educational Psychology University of Minnesota: Twin Cities  Minneapolis Minnesota USA",
+          "institution_ids": [
+            "https://openalex.org/I130238516"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Department of Educational Psychology, University of Minnesota: Twin Cities, Minneapolis, Minnesota, USA",
+          "institution_ids": [
+            "https://openalex.org/I4210101327",
+            "https://openalex.org/I130238516"
+          ]
+        }
+      ]
+    }
+  ],
+  "institutions": [],
+  "countries_distinct_count": 1,
+  "institutions_distinct_count": 5,
+  "corresponding_author_ids": [
+    "https://openalex.org/A5067761090"
+  ],
+  "corresponding_institution_ids": [
+    "https://openalex.org/I130238516",
+    "https://openalex.org/I4210101327"
+  ],
+  "apc_list": {
+    "value": 3140,
+    "currency": "USD",
+    "value_usd": 3140
+  },
+  "apc_paid": {
+    "value": 3140,
+    "currency": "USD",
+    "value_usd": 3140
+  },
+  "fwci": 9.4604,
+  "has_fulltext": true,
+  "cited_by_count": 5,
+  "citation_normalized_percentile": {
+    "value": 0.97812636,
+    "is_in_top_1_percent": false,
+    "is_in_top_10_percent": true
+  },
+  "cited_by_percentile_year": {
+    "min": 95,
+    "max": 98
+  },
+  "biblio": {
+    "volume": "24",
+    "issue": "3",
+    "first_page": "1288",
+    "last_page": "1308"
+  },
+  "is_retracted": false,
+  "is_paratext": false,
+  "is_xpac": false,
+  "primary_topic": {
+    "id": "https://openalex.org/T10267",
+    "display_name": "Higher Education Research Studies",
+    "score": 0.9294000267982483,
+    "subfield": {
+      "id": "https://openalex.org/subfields/3304",
+      "display_name": "Education"
+    },
+    "field": {
+      "id": "https://openalex.org/fields/33",
+      "display_name": "Social Sciences"
+    },
+    "domain": {
+      "id": "https://openalex.org/domains/2",
+      "display_name": "Social Sciences"
+    }
+  },
+  "topics": [
+    {
+      "id": "https://openalex.org/T10267",
+      "display_name": "Higher Education Research Studies",
+      "score": 0.9294000267982483,
+      "subfield": {
+        "id": "https://openalex.org/subfields/3304",
+        "display_name": "Education"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/33",
+        "display_name": "Social Sciences"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/2",
+        "display_name": "Social Sciences"
+      }
+    }
+  ],
+  "keywords": [
+    {
+      "id": "https://openalex.org/keywords/graduation",
+      "display_name": "Graduation (instrument)",
+      "score": 0.7732371091842651
+    },
+    {
+      "id": "https://openalex.org/keywords/scrutiny",
+      "display_name": "Scrutiny",
+      "score": 0.7508888244628906
+    },
+    {
+      "id": "https://openalex.org/keywords/test",
+      "display_name": "Test (biology)",
+      "score": 0.6155481338500977
+    },
+    {
+      "id": "https://openalex.org/keywords/psychology",
+      "display_name": "Psychology",
+      "score": 0.5765042304992676
+    },
+    {
+      "id": "https://openalex.org/keywords/medical-education",
+      "display_name": "Medical education",
+      "score": 0.4428722560405731
+    },
+    {
+      "id": "https://openalex.org/keywords/medicine",
+      "display_name": "Medicine",
+      "score": 0.32824867963790894
+    },
+    {
+      "id": "https://openalex.org/keywords/political-science",
+      "display_name": "Political science",
+      "score": 0.22983622550964355
+    },
+    {
+      "id": "https://openalex.org/keywords/law",
+      "display_name": "Law",
+      "score": 0.11361974477767944
+    }
+  ],
+  "concepts": [
+    {
+      "id": "https://openalex.org/C2779529714",
+      "wikidata": "https://www.wikidata.org/wiki/Q2632744",
+      "display_name": "Graduation (instrument)",
+      "level": 2,
+      "score": 0.7732371091842651
+    },
+    {
+      "id": "https://openalex.org/C2776050585",
+      "wikidata": "https://www.wikidata.org/wiki/Q7439360",
+      "display_name": "Scrutiny",
+      "level": 2,
+      "score": 0.7508888244628906
+    },
+    {
+      "id": "https://openalex.org/C2777267654",
+      "wikidata": "https://www.wikidata.org/wiki/Q3519023",
+      "display_name": "Test (biology)",
+      "level": 2,
+      "score": 0.6155481338500977
+    },
+    {
+      "id": "https://openalex.org/C15744967",
+      "wikidata": "https://www.wikidata.org/wiki/Q9418",
+      "display_name": "Psychology",
+      "level": 0,
+      "score": 0.5765042304992676
+    },
+    {
+      "id": "https://openalex.org/C509550671",
+      "wikidata": "https://www.wikidata.org/wiki/Q126945",
+      "display_name": "Medical education",
+      "level": 1,
+      "score": 0.4428722560405731
+    },
+    {
+      "id": "https://openalex.org/C71924100",
+      "wikidata": "https://www.wikidata.org/wiki/Q11190",
+      "display_name": "Medicine",
+      "level": 0,
+      "score": 0.32824867963790894
+    },
+    {
+      "id": "https://openalex.org/C17744445",
+      "wikidata": "https://www.wikidata.org/wiki/Q36442",
+      "display_name": "Political science",
+      "level": 0,
+      "score": 0.22983622550964355
+    },
+    {
+      "id": "https://openalex.org/C199539241",
+      "wikidata": "https://www.wikidata.org/wiki/Q7748",
+      "display_name": "Law",
+      "level": 1,
+      "score": 0.11361974477767944
+    },
+    {
+      "id": "https://openalex.org/C86803240",
+      "wikidata": "https://www.wikidata.org/wiki/Q420",
+      "display_name": "Biology",
+      "level": 0,
+      "score": 0.0
+    },
+    {
+      "id": "https://openalex.org/C2524010",
+      "wikidata": "https://www.wikidata.org/wiki/Q8087",
+      "display_name": "Geometry",
+      "level": 1,
+      "score": 0.0
+    },
+    {
+      "id": "https://openalex.org/C151730666",
+      "wikidata": "https://www.wikidata.org/wiki/Q7205",
+      "display_name": "Paleontology",
+      "level": 1,
+      "score": 0.0
+    },
+    {
+      "id": "https://openalex.org/C33923547",
+      "wikidata": "https://www.wikidata.org/wiki/Q395",
+      "display_name": "Mathematics",
+      "level": 0,
+      "score": 0.0
+    }
+  ],
+  "mesh": [],
+  "locations_count": 1,
+  "locations": [
+    {
+      "id": "doi:10.1111/asap.12417",
+      "is_oa": true,
+      "landing_page_url": "https://doi.org/10.1111/asap.12417",
+      "pdf_url": "https://onlinelibrary.wiley.com/doi/pdfdirect/10.1111/asap.12417",
+      "source": {
+        "id": "https://openalex.org/S90526950",
+        "display_name": "Analyses of Social Issues and Public Policy",
+        "issn_l": "1529-7489",
+        "issn": [
+          "1529-7489",
+          "1530-2415"
+        ],
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": true,
+        "host_organization": "https://openalex.org/P4310320595",
+        "host_organization_name": "Wiley",
+        "host_organization_lineage": [
+          "https://openalex.org/P4310320595"
+        ],
+        "host_organization_lineage_names": [
+          "Wiley"
+        ],
+        "type": "journal"
+      },
+      "license": "cc-by-nc-nd",
+      "license_id": "https://openalex.org/licenses/cc-by-nc-nd",
+      "version": "publishedVersion",
+      "is_accepted": true,
+      "is_published": true,
+      "raw_source_name": "Analyses of Social Issues and Public Policy",
+      "raw_type": "journal-article"
+    }
+  ],
+  "best_oa_location": {
+    "id": "doi:10.1111/asap.12417",
+    "is_oa": true,
+    "landing_page_url": "https://doi.org/10.1111/asap.12417",
+    "pdf_url": "https://onlinelibrary.wiley.com/doi/pdfdirect/10.1111/asap.12417",
+    "source": {
+      "id": "https://openalex.org/S90526950",
+      "display_name": "Analyses of Social Issues and Public Policy",
+      "issn_l": "1529-7489",
+      "issn": [
+        "1529-7489",
+        "1530-2415"
+      ],
+      "is_oa": false,
+      "is_in_doaj": false,
+      "is_core": true,
+      "host_organization": "https://openalex.org/P4310320595",
+      "host_organization_name": "Wiley",
+      "host_organization_lineage": [
+        "https://openalex.org/P4310320595"
+      ],
+      "host_organization_lineage_names": [
+        "Wiley"
+      ],
+      "type": "journal"
+    },
+    "license": "cc-by-nc-nd",
+    "license_id": "https://openalex.org/licenses/cc-by-nc-nd",
+    "version": "publishedVersion",
+    "is_accepted": true,
+    "is_published": true,
+    "raw_source_name": "Analyses of Social Issues and Public Policy",
+    "raw_type": "journal-article"
+  },
+  "sustainable_development_goals": [],
+  "awards": [],
+  "funders": [
+    {
+      "id": "https://openalex.org/F4320324604",
+      "display_name": "Fundaci\u00f3n Para La Innovaci\u00f3n Y La Prospectiva En Salud En Espa\u00f1a",
+      "ror": "https://ror.org/04v8d4779"
+    }
+  ],
+  "has_content": {
+    "pdf": true,
+    "grobid_xml": true
+  },
+  "content_urls": {
+    "pdf": "https://content.openalex.org/works/W4401424496.pdf",
+    "grobid_xml": "https://content.openalex.org/works/W4401424496.grobid-xml"
+  },
+  "referenced_works_count": 15,
+  "referenced_works": [
+    "https://openalex.org/W235134114",
+    "https://openalex.org/W635504449",
+    "https://openalex.org/W2036879191",
+    "https://openalex.org/W2080906079",
+    "https://openalex.org/W2106716958",
+    "https://openalex.org/W2143056822",
+    "https://openalex.org/W2155561716",
+    "https://openalex.org/W2187986241",
+    "https://openalex.org/W2315411634",
+    "https://openalex.org/W2525285723",
+    "https://openalex.org/W2800999725",
+    "https://openalex.org/W3006007725",
+    "https://openalex.org/W4234744528",
+    "https://openalex.org/W4243833784",
+    "https://openalex.org/W4385190606"
+  ],
+  "related_works": [
+    "https://openalex.org/W4391375266",
+    "https://openalex.org/W2748952813",
+    "https://openalex.org/W1987888524",
+    "https://openalex.org/W2415594679",
+    "https://openalex.org/W2377126482",
+    "https://openalex.org/W4400813213",
+    "https://openalex.org/W2358960096",
+    "https://openalex.org/W2371805091",
+    "https://openalex.org/W3032723942",
+    "https://openalex.org/W2373669060"
+  ],
+  "abstract_inverted_index": {
+    "Abstract": [
+      0
+    ],
+    "Scrutiny": [
+      1
+    ],
+    "about": [
+      2,
+      194
+    ],
+    "and": [
+      3,
+      47,
+      59,
+      74,
+      134,
+      181,
+      183,
+      188
+    ],
+    "controversy": [
+      4,
+      39
+    ],
+    "regarding": [
+      5
+    ],
+    "the": [
+      6,
+      38,
+      57,
+      88,
+      155,
+      173,
+      195
+    ],
+    "use": [
+      7,
+      196
+    ],
+    "of": [
+      8,
+      80,
+      90,
+      101,
+      157,
+      175,
+      186,
+      197
+    ],
+    "college": [
+      9,
+      85,
+      96,
+      127,
+      136,
+      164,
+      198
+    ],
+    "admissions": [
+      10,
+      30,
+      81,
+      128,
+      199
+    ],
+    "tests": [
+      11,
+      82,
+      103,
+      129,
+      151,
+      168,
+      200
+    ],
+    "have": [
+      12,
+      49,
+      61,
+      67
+    ],
+    "increased": [
+      13
+    ],
+    "since": [
+      14
+    ],
+    "COVID\u201019": [
+      15
+    ],
+    "eliminated": [
+      16
+    ],
+    "mass": [
+      17
+    ],
+    "face\u2010to\u2010face": [
+      18
+    ],
+    "testing.": [
+      19
+    ],
+    "At": [
+      20
+    ],
+    "that": [
+      21
+    ],
+    "time,": [
+      22
+    ],
+    "many": [
+      23
+    ],
+    "selective": [
+      24,
+      45,
+      117
+    ],
+    "colleges": [
+      25,
+      46
+    ],
+    "chose": [
+      26
+    ],
+    "to": [
+      27,
+      132,
+      154,
+      170,
+      172,
+      184
+    ],
+    "make": [
+      28
+    ],
+    "their": [
+      29,
+      142
+    ],
+    "decisions": [
+      31
+    ],
+    "without": [
+      32
+    ],
+    "using": [
+      33
+    ],
+    "such": [
+      34
+    ],
+    "tests.": [
+      35
+    ],
+    "More": [
+      36
+    ],
+    "recently,": [
+      37
+    ],
+    "has": [
+      40
+    ],
+    "been": [
+      41
+    ],
+    "sustained": [
+      42
+    ],
+    "as": [
+      43
+    ],
+    "some": [
+      44
+    ],
+    "universities": [
+      48
+    ],
+    "reinstated": [
+      50
+    ],
+    "requiring": [
+      51
+    ],
+    "test": [
+      52,
+      72
+    ],
+    "scores.": [
+      53
+    ],
+    "These": [
+      54,
+      190
+    ],
+    "tests,": [
+      55
+    ],
+    "primarily": [
+      56
+    ],
+    "ACT": [
+      58,
+      102,
+      126,
+      150,
+      167
+    ],
+    "SAT,": [
+      60
+    ],
+    "received": [
+      62
+    ],
+    "empirical": [
+      63
+    ],
+    "support": [
+      64
+    ],
+    "but": [
+      65
+    ],
+    "also": [
+      66
+    ],
+    "faced": [
+      68
+    ],
+    "substantial": [
+      69
+    ],
+    "criticism": [
+      70
+    ],
+    "from": [
+      71
+    ],
+    "critics": [
+      73
+    ],
+    "researchers.": [
+      75
+    ],
+    "This": [
+      76
+    ],
+    "paper": [
+      77
+    ],
+    "examines": [
+      78
+    ],
+    "contributions": [
+      79
+    ],
+    "for": [
+      83,
+      94,
+      107,
+      138,
+      141
+    ],
+    "predicting": [
+      84
+    ],
+    "outcomes": [
+      86,
+      106
+    ],
+    "in": [
+      87,
+      177
+    ],
+    "presence": [
+      89
+    ],
+    "additional": [
+      91
+    ],
+    "information": [
+      92
+    ],
+    "available": [
+      93
+    ],
+    "making": [
+      95
+    ],
+    "decisions.": [
+      97
+    ],
+    "We": [
+      98
+    ],
+    "investigate": [
+      99
+    ],
+    "relations": [
+      100
+    ],
+    "with": [
+      104,
+      161
+    ],
+    "academic": [
+      105
+    ],
+    "four": [
+      108
+    ],
+    "successive": [
+      109
+    ],
+    "(2011\u20132014)": [
+      110
+    ],
+    "first\u2010year": [
+      111,
+      158
+    ],
+    "cohorts": [
+      112
+    ],
+    "at": [
+      113
+    ],
+    "a": [
+      114
+    ],
+    "large,": [
+      115
+    ],
+    "moderately": [
+      116
+    ],
+    "Midwestern": [
+      118
+    ],
+    "Research": [
+      119
+    ],
+    "1": [
+      120
+    ],
+    "university.": [
+      121
+    ],
+    "Analyses": [
+      122
+    ],
+    "examine": [
+      123
+    ],
+    "how": [
+      124
+    ],
+    "strongly": [
+      125
+    ],
+    "are": [
+      130
+    ],
+    "related": [
+      131
+    ],
+    "short\u2010": [
+      133
+    ],
+    "long\u2010term": [
+      135
+    ],
+    "success": [
+      137
+    ],
+    "students": [
+      139
+    ],
+    "controlling": [
+      140
+    ],
+    "backgrounds": [
+      143
+    ],
+    "(citizenship,": [
+      144
+    ],
+    "race/ethnicity,": [
+      145
+    ],
+    "first\u2010generation,": [
+      146
+    ],
+    "sex,": [
+      147
+    ],
+    "socio\u2010economic": [
+      148
+    ],
+    "status).": [
+      149
+    ],
+    "contributed": [
+      152
+    ],
+    "modestly": [
+      153
+    ],
+    "prediction": [
+      156,
+      174,
+      185
+    ],
+    "performance.": [
+      159
+    ],
+    "However,": [
+      160
+    ],
+    "first": [
+      162
+    ],
+    "year": [
+      163
+    ],
+    "GPA": [
+      165,
+      176
+    ],
+    "included,": [
+      166
+    ],
+    "failed": [
+      169
+    ],
+    "add": [
+      171
+    ],
+    "years": [
+      178
+    ],
+    "2,": [
+      179
+    ],
+    "3,": [
+      180
+    ],
+    "4,": [
+      182
+    ],
+    "dropout": [
+      187
+    ],
+    "graduation.": [
+      189
+    ],
+    "findings": [
+      191
+    ],
+    "inform": [
+      192
+    ],
+    "conversations": [
+      193
+    ],
+    "post\u2010COVID.": [
+      201
+    ]
+  },
+  "counts_by_year": [
+    {
+      "year": 2026,
+      "cited_by_count": 1
+    },
+    {
+      "year": 2025,
+      "cited_by_count": 4
+    }
+  ],
+  "updated_date": "2026-05-21T06:26:12.895304",
+  "created_date": "2025-10-10T00:00:00"
+}

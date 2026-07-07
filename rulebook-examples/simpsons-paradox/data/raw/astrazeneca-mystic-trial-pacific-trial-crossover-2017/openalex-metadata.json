@@ -1,0 +1,3252 @@
+{
+  "id": "https://openalex.org/W3016210953",
+  "doi": "https://doi.org/10.1001/jamaoncol.2020.0237",
+  "title": "Durvalumab With or Without Tremelimumab vs Standard Chemotherapy in First-line Treatment of Metastatic Non\u2013Small Cell Lung Cancer",
+  "display_name": "Durvalumab With or Without Tremelimumab vs Standard Chemotherapy in First-line Treatment of Metastatic Non\u2013Small Cell Lung Cancer",
+  "relevance_score": 168.24153,
+  "publication_year": 2020,
+  "publication_date": "2020-04-09",
+  "ids": {
+    "openalex": "https://openalex.org/W3016210953",
+    "doi": "https://doi.org/10.1001/jamaoncol.2020.0237",
+    "mag": "3016210953",
+    "pmid": "https://pubmed.ncbi.nlm.nih.gov/32271377"
+  },
+  "language": "en",
+  "primary_location": {
+    "id": "doi:10.1001/jamaoncol.2020.0237",
+    "is_oa": true,
+    "landing_page_url": "https://doi.org/10.1001/jamaoncol.2020.0237",
+    "pdf_url": null,
+    "source": {
+      "id": "https://openalex.org/S2756165422",
+      "display_name": "JAMA Oncology",
+      "issn_l": "2374-2437",
+      "issn": [
+        "2374-2437",
+        "2374-2445"
+      ],
+      "is_oa": false,
+      "is_in_doaj": false,
+      "is_core": true,
+      "host_organization": "https://openalex.org/P4310320259",
+      "host_organization_name": "American Medical Association",
+      "host_organization_lineage": [
+        "https://openalex.org/P4310320259"
+      ],
+      "host_organization_lineage_names": [
+        "American Medical Association"
+      ],
+      "type": "journal"
+    },
+    "license": "cc-by-nc-nd",
+    "license_id": "https://openalex.org/licenses/cc-by-nc-nd",
+    "version": "publishedVersion",
+    "is_accepted": true,
+    "is_published": true,
+    "raw_source_name": "JAMA Oncology",
+    "raw_type": "journal-article"
+  },
+  "type": "article",
+  "indexed_in": [
+    "crossref",
+    "pubmed"
+  ],
+  "open_access": {
+    "is_oa": true,
+    "oa_status": "hybrid",
+    "oa_url": "https://doi.org/10.1001/jamaoncol.2020.0237",
+    "any_repository_has_fulltext": true
+  },
+  "authorships": [
+    {
+      "author_position": "first",
+      "author": {
+        "id": "https://openalex.org/A5075877134",
+        "display_name": "Naiyer A. Rizvi",
+        "orcid": "https://orcid.org/0000-0002-1134-7494"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I2799503643",
+          "display_name": "Columbia University Irving Medical Center",
+          "ror": "https://ror.org/01esghr10",
+          "country_code": "US",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I2799503643"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": true,
+      "raw_author_name": "Naiyer A. Rizvi",
+      "raw_affiliation_strings": [
+        "Division of Hematology/Oncology, Columbia University Medical Center, New York, New York"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Division of Hematology/Oncology, Columbia University Medical Center, New York, New York",
+          "institution_ids": [
+            "https://openalex.org/I2799503643"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5064697305",
+        "display_name": "Byoung Chul Cho",
+        "orcid": "https://orcid.org/0000-0002-5562-270X"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I193775966",
+          "display_name": "Yonsei University",
+          "ror": "https://ror.org/01wjejq96",
+          "country_code": "KR",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I193775966"
+          ]
+        }
+      ],
+      "countries": [
+        "KR"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Byoung Chul Cho",
+      "raw_affiliation_strings": [
+        "Yonsei Cancer Center, Yonsei University College of Medicine, Seoul, South Korea"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Yonsei Cancer Center, Yonsei University College of Medicine, Seoul, South Korea",
+          "institution_ids": [
+            "https://openalex.org/I193775966"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5072753291",
+        "display_name": "Niels Reinmuth",
+        "orcid": "https://orcid.org/0000-0002-7369-4512"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I4210125421",
+          "display_name": "Asklepios Fachkliniken M\u00fcnchen-Gauting",
+          "ror": "https://ror.org/02v4fpg03",
+          "country_code": "DE",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I4210125421"
+          ]
+        }
+      ],
+      "countries": [
+        "DE"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Niels Reinmuth",
+      "raw_affiliation_strings": [
+        "Asklepios Lung Clinic, Munich-Gauting, Germany"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Asklepios Lung Clinic, Munich-Gauting, Germany",
+          "institution_ids": [
+            "https://openalex.org/I4210125421"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5005962138",
+        "display_name": "Ki Hyeong Lee",
+        "orcid": "https://orcid.org/0000-0002-7830-5950"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I4210161026",
+          "display_name": "Chungbuk National University Hospital",
+          "ror": "https://ror.org/05529q263",
+          "country_code": "KR",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I163753206",
+            "https://openalex.org/I4210161026"
+          ]
+        }
+      ],
+      "countries": [
+        "KR"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Ki Hyeong Lee",
+      "raw_affiliation_strings": [
+        "Chungbuk National University Hospital, Chungbuk National University College of Medicine, Cheongju, South Korea"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Chungbuk National University Hospital, Chungbuk National University College of Medicine, Cheongju, South Korea",
+          "institution_ids": [
+            "https://openalex.org/I4210161026"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5019233587",
+        "display_name": "Alexander Luft",
+        "orcid": null
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I4210092247",
+          "display_name": "Leningrad Regional Cancer Center",
+          "ror": "https://ror.org/00hkez230",
+          "country_code": "RU",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I4210092247"
+          ]
+        }
+      ],
+      "countries": [
+        "RU"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Alexander Luft",
+      "raw_affiliation_strings": [
+        "Department of Oncology No. 1 (Thoracic Surgery), Leningrad Regional Clinical Hospital, St Petersburg, Russia"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Department of Oncology No. 1 (Thoracic Surgery), Leningrad Regional Clinical Hospital, St Petersburg, Russia",
+          "institution_ids": [
+            "https://openalex.org/I4210092247"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5034739279",
+        "display_name": "Myung\u2010Ju Ahn",
+        "orcid": "https://orcid.org/0000-0002-5740-9654"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I2802194831",
+          "display_name": "Samsung Medical Center",
+          "ror": "https://ror.org/05a15z872",
+          "country_code": "KR",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I2250650973",
+            "https://openalex.org/I2802194831"
+          ]
+        }
+      ],
+      "countries": [
+        "KR"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Myung-Ju Ahn",
+      "raw_affiliation_strings": [
+        "Department of Hematology and Oncology, Samsung Medical Center, Seoul, South Korea"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Department of Hematology and Oncology, Samsung Medical Center, Seoul, South Korea",
+          "institution_ids": [
+            "https://openalex.org/I2802194831"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5060747022",
+        "display_name": "Michel M. van den Heuvel",
+        "orcid": "https://orcid.org/0000-0002-6372-2153"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I2898336195",
+          "display_name": "The Netherlands Cancer Institute",
+          "ror": "https://ror.org/03xqtf034",
+          "country_code": "NL",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I2898336195"
+          ]
+        }
+      ],
+      "countries": [
+        "NL"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Michel M. van den Heuvel",
+      "raw_affiliation_strings": [
+        "Nederlands Kanker Instituut\u2013Antoni van Leeuwenhoekziekenhuis, Amsterdam, the Netherlands"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Nederlands Kanker Instituut\u2013Antoni van Leeuwenhoekziekenhuis, Amsterdam, the Netherlands",
+          "institution_ids": [
+            "https://openalex.org/I2898336195"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5027946288",
+        "display_name": "Manuel Cobo",
+        "orcid": "https://orcid.org/0000-0003-3402-1144"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I4210164724",
+          "display_name": "Instituto de Investigaci\u00f3n Biom\u00e9dica de M\u00e1laga",
+          "ror": "https://ror.org/05n3asa33",
+          "country_code": "ES",
+          "type": "facility",
+          "lineage": [
+            "https://openalex.org/I4210164724"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I4210108548",
+          "display_name": "Hospital Regional Universitario de M\u00e1laga",
+          "ror": "https://ror.org/01mqsmm97",
+          "country_code": "ES",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I4210108548"
+          ]
+        }
+      ],
+      "countries": [
+        "ES"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Manuel Cobo",
+      "raw_affiliation_strings": [
+        "Hospital Regional Universitario de M\u00e1laga, Instituto de Investigaci\u00f3n Biom\u00e9dica de M\u00e1laga (IBIMA), M\u00e1laga, Spain"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Hospital Regional Universitario de M\u00e1laga, Instituto de Investigaci\u00f3n Biom\u00e9dica de M\u00e1laga (IBIMA), M\u00e1laga, Spain",
+          "institution_ids": [
+            "https://openalex.org/I4210164724",
+            "https://openalex.org/I4210108548"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5103181418",
+        "display_name": "David Vicente",
+        "orcid": "https://orcid.org/0000-0002-6210-090X"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I4210090436",
+          "display_name": "Hospital Universitario Virgen Macarena",
+          "ror": "https://ror.org/016p83279",
+          "country_code": "ES",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I4210090436"
+          ]
+        }
+      ],
+      "countries": [
+        "ES"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "David Vicente",
+      "raw_affiliation_strings": [
+        "Department of Medical Oncology, Hospital Universitario Virgen Macarena, Seville, Spain"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Department of Medical Oncology, Hospital Universitario Virgen Macarena, Seville, Spain",
+          "institution_ids": [
+            "https://openalex.org/I4210090436"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5004445796",
+        "display_name": "Alexey Smolin",
+        "orcid": "https://orcid.org/0000-0002-3023-0515"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I4210122729",
+          "display_name": "Burdenko Neurosurgery Institute",
+          "ror": "https://ror.org/02t1t6n83",
+          "country_code": "RU",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I1313323035",
+            "https://openalex.org/I4210110862",
+            "https://openalex.org/I4210122729"
+          ]
+        }
+      ],
+      "countries": [
+        "RU"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Alexey Smolin",
+      "raw_affiliation_strings": [
+        "Department of Radiology, Burdenko Main Military Clinical Hospital, Moscow, Russia"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Department of Radiology, Burdenko Main Military Clinical Hospital, Moscow, Russia",
+          "institution_ids": [
+            "https://openalex.org/I4210122729"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5035686789",
+        "display_name": "Vladimir Moiseyenko",
+        "orcid": "https://orcid.org/0000-0003-4807-7915"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I4210120731",
+          "display_name": "City Clinical Oncology Center",
+          "ror": "https://ror.org/02jwr3j75",
+          "country_code": "RU",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I4210120731"
+          ]
+        }
+      ],
+      "countries": [
+        "RU"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Vladimir Moiseyenko",
+      "raw_affiliation_strings": [
+        "Oncological Clinical Research Center, St Petersburg, Russia"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Oncological Clinical Research Center, St Petersburg, Russia",
+          "institution_ids": [
+            "https://openalex.org/I4210120731"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5046273815",
+        "display_name": "Scott Antonia",
+        "orcid": "https://orcid.org/0000-0002-6686-3824"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I3019308854",
+          "display_name": "Moffitt Cancer Center",
+          "ror": "https://ror.org/01xf75524",
+          "country_code": "US",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I3019308854"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Scott J. Antonia",
+      "raw_affiliation_strings": [
+        "H. Lee Moffitt Cancer Center and Research Institute, Tampa, Florida"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "H. Lee Moffitt Cancer Center and Research Institute, Tampa, Florida",
+          "institution_ids": [
+            "https://openalex.org/I3019308854"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5009585365",
+        "display_name": "Sylvestre Le Moulec",
+        "orcid": "https://orcid.org/0000-0003-4189-0890"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I4210134409",
+          "display_name": "Institut Bergoni\u00e9",
+          "ror": "https://ror.org/02yw1f353",
+          "country_code": "FR",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I4210134409"
+          ]
+        }
+      ],
+      "countries": [
+        "FR"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Sylvestre Le Moulec",
+      "raw_affiliation_strings": [
+        "Department of Medical Oncology, Institut Bergoni\u00e9, Bordeaux, France"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Department of Medical Oncology, Institut Bergoni\u00e9, Bordeaux, France",
+          "institution_ids": [
+            "https://openalex.org/I4210134409"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5109940930",
+        "display_name": "G. Robinet",
+        "orcid": null
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I4210132604",
+          "display_name": "Centre Hospitalier R\u00e9gional Universitaire de Brest",
+          "ror": "https://ror.org/03evbwn87",
+          "country_code": "FR",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I154526488",
+            "https://openalex.org/I4210105774",
+            "https://openalex.org/I4210132604",
+            "https://openalex.org/I4210161065"
+          ]
+        }
+      ],
+      "countries": [
+        "FR"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Gilles Robinet",
+      "raw_affiliation_strings": [
+        "Service de Pneumologie, Centre Hospitalier R\u00e9gional Universitaire de Brest\u2013H\u00f4pital Morvan, Brest, France"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Service de Pneumologie, Centre Hospitalier R\u00e9gional Universitaire de Brest\u2013H\u00f4pital Morvan, Brest, France",
+          "institution_ids": [
+            "https://openalex.org/I4210132604"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5084295219",
+        "display_name": "Ronald B. Natale",
+        "orcid": null
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I1282927834",
+          "display_name": "Cedars-Sinai Medical Center",
+          "ror": "https://ror.org/02pammg90",
+          "country_code": "US",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I1282927834"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Ronald Natale",
+      "raw_affiliation_strings": [
+        "Cedars-Sinai Comprehensive Cancer Center, Los Angeles, California"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Cedars-Sinai Comprehensive Cancer Center, Los Angeles, California",
+          "institution_ids": [
+            "https://openalex.org/I1282927834"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5067734724",
+        "display_name": "Jeffrey Schneider",
+        "orcid": null
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I1289739345",
+          "display_name": "Winthrop-University Hospital",
+          "ror": "https://ror.org/03eksqx74",
+          "country_code": "US",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I1289739345"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Jeffrey Schneider",
+      "raw_affiliation_strings": [
+        "Department of Hematology and Oncology, NYU Winthrop Hospital, Mineola, New York"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Department of Hematology and Oncology, NYU Winthrop Hospital, Mineola, New York",
+          "institution_ids": [
+            "https://openalex.org/I1289739345"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5075347427",
+        "display_name": "Frances A. Shepherd",
+        "orcid": "https://orcid.org/0000-0002-3610-3533"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I2802654988",
+          "display_name": "Princess Margaret Cancer Centre",
+          "ror": "https://ror.org/03zayce58",
+          "country_code": "CA",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I1325899441",
+            "https://openalex.org/I2802654988"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I185261750",
+          "display_name": "University of Toronto",
+          "ror": "https://ror.org/03dbr7087",
+          "country_code": "CA",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I185261750"
+          ]
+        }
+      ],
+      "countries": [
+        "CA"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Frances A. Shepherd",
+      "raw_affiliation_strings": [
+        "Princess Margaret Cancer Centre and the Department of Medicine, University of Toronto, Toronto, Ontario, Canada"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Princess Margaret Cancer Centre and the Department of Medicine, University of Toronto, Toronto, Ontario, Canada",
+          "institution_ids": [
+            "https://openalex.org/I2802654988",
+            "https://openalex.org/I185261750"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5053546904",
+        "display_name": "Sarayut Lucien Geater",
+        "orcid": "https://orcid.org/0000-0002-3494-8268"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I131868736",
+          "display_name": "Prince of Songkla University",
+          "ror": "https://ror.org/0575ycz84",
+          "country_code": "TH",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I131868736"
+          ]
+        }
+      ],
+      "countries": [
+        "TH"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Sarayut Lucien Geater",
+      "raw_affiliation_strings": [
+        "Department of Internal Medicine, Prince of Songkla University, Songkhla, Thailand"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Department of Internal Medicine, Prince of Songkla University, Songkhla, Thailand",
+          "institution_ids": [
+            "https://openalex.org/I131868736"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5060287300",
+        "display_name": "Edward B. Garon",
+        "orcid": "https://orcid.org/0000-0001-7077-8801"
+      },
+      "institutions": [],
+      "countries": [],
+      "is_corresponding": false,
+      "raw_author_name": "Edward B. Garon",
+      "raw_affiliation_strings": [
+        "David Geffen School of Medicine, University of California/TRIO-US Network, Los Angeles"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "David Geffen School of Medicine, University of California/TRIO-US Network, Los Angeles",
+          "institution_ids": []
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5067386747",
+        "display_name": "Edward S. Kim",
+        "orcid": "https://orcid.org/0000-0001-8351-1196"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I4210100342",
+          "display_name": "Levine Cancer Institute",
+          "ror": "https://ror.org/0174nh398",
+          "country_code": "US",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I1334069289",
+            "https://openalex.org/I4210100342"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Edward S. Kim",
+      "raw_affiliation_strings": [
+        "Levine Cancer Institute, Atrium Health, Charlotte, North Carolina"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Levine Cancer Institute, Atrium Health, Charlotte, North Carolina",
+          "institution_ids": [
+            "https://openalex.org/I4210100342"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5028192791",
+        "display_name": "Sarah B. Goldberg",
+        "orcid": "https://orcid.org/0000-0002-0920-1381"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I2802730090",
+          "display_name": "Yale Cancer Center",
+          "ror": "https://ror.org/03j7sze86",
+          "country_code": "US",
+          "type": "facility",
+          "lineage": [
+            "https://openalex.org/I2802730090",
+            "https://openalex.org/I4210117499",
+            "https://openalex.org/I4210165192"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Sarah B. Goldberg",
+      "raw_affiliation_strings": [
+        "Yale School of Medicine and Yale Cancer Center, New Haven, Connecticut"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Yale School of Medicine and Yale Cancer Center, New Haven, Connecticut",
+          "institution_ids": [
+            "https://openalex.org/I2802730090"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5100648645",
+        "display_name": "Kazuhiko Nakagawa",
+        "orcid": "https://orcid.org/0000-0003-1284-9776"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I916559398",
+          "display_name": "Kindai University",
+          "ror": "https://ror.org/05kt9ap64",
+          "country_code": "JP",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I916559398"
+          ]
+        }
+      ],
+      "countries": [
+        "JP"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Kazuhiko Nakagawa",
+      "raw_affiliation_strings": [
+        "Faculty of Medicine, Department of Medical Oncology, Kindai University, Osaka, Japan"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Faculty of Medicine, Department of Medical Oncology, Kindai University, Osaka, Japan",
+          "institution_ids": [
+            "https://openalex.org/I916559398"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5046158954",
+        "display_name": "Rajiv Raja",
+        "orcid": "https://orcid.org/0000-0002-4663-0951"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I4210150756",
+          "display_name": "AstraZeneca (United States)",
+          "ror": "https://ror.org/043cec594",
+          "country_code": "US",
+          "type": "company",
+          "lineage": [
+            "https://openalex.org/I105036370",
+            "https://openalex.org/I4210150756"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Rajiv Raja",
+      "raw_affiliation_strings": [
+        "AstraZeneca, Gaithersburg, Maryland"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "AstraZeneca, Gaithersburg, Maryland",
+          "institution_ids": [
+            "https://openalex.org/I4210150756"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5009504777",
+        "display_name": "Brandon W. Higgs",
+        "orcid": "https://orcid.org/0000-0002-2951-0245"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I4210150756",
+          "display_name": "AstraZeneca (United States)",
+          "ror": "https://ror.org/043cec594",
+          "country_code": "US",
+          "type": "company",
+          "lineage": [
+            "https://openalex.org/I105036370",
+            "https://openalex.org/I4210150756"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Brandon W. Higgs",
+      "raw_affiliation_strings": [
+        "AstraZeneca, Gaithersburg, Maryland"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "AstraZeneca, Gaithersburg, Maryland",
+          "institution_ids": [
+            "https://openalex.org/I4210150756"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5113878413",
+        "display_name": "Anne-Marie Boothman",
+        "orcid": null
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I105036370",
+          "display_name": "AstraZeneca (United Kingdom)",
+          "ror": "https://ror.org/04r9x1a08",
+          "country_code": "GB",
+          "type": "company",
+          "lineage": [
+            "https://openalex.org/I105036370"
+          ]
+        }
+      ],
+      "countries": [
+        "GB"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Anne-Marie Boothman",
+      "raw_affiliation_strings": [
+        "AstraZeneca, Cambridge, United Kingdom"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "AstraZeneca, Cambridge, United Kingdom",
+          "institution_ids": [
+            "https://openalex.org/I105036370"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5034255925",
+        "display_name": "Luping Zhao",
+        "orcid": "https://orcid.org/0000-0001-5711-1324"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I4210150756",
+          "display_name": "AstraZeneca (United States)",
+          "ror": "https://ror.org/043cec594",
+          "country_code": "US",
+          "type": "company",
+          "lineage": [
+            "https://openalex.org/I105036370",
+            "https://openalex.org/I4210150756"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Luping Zhao",
+      "raw_affiliation_strings": [
+        "AstraZeneca, Gaithersburg, Maryland"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "AstraZeneca, Gaithersburg, Maryland",
+          "institution_ids": [
+            "https://openalex.org/I4210150756"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5031167598",
+        "display_name": "Urban Scheuring",
+        "orcid": "https://orcid.org/0000-0001-7771-0877"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I105036370",
+          "display_name": "AstraZeneca (United Kingdom)",
+          "ror": "https://ror.org/04r9x1a08",
+          "country_code": "GB",
+          "type": "company",
+          "lineage": [
+            "https://openalex.org/I105036370"
+          ]
+        }
+      ],
+      "countries": [
+        "GB"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Urban Scheuring",
+      "raw_affiliation_strings": [
+        "AstraZeneca, Cambridge, United Kingdom"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "AstraZeneca, Cambridge, United Kingdom",
+          "institution_ids": [
+            "https://openalex.org/I105036370"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5057370294",
+        "display_name": "Paul K. Stockman",
+        "orcid": "https://orcid.org/0000-0002-0445-4830"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I105036370",
+          "display_name": "AstraZeneca (United Kingdom)",
+          "ror": "https://ror.org/04r9x1a08",
+          "country_code": "GB",
+          "type": "company",
+          "lineage": [
+            "https://openalex.org/I105036370"
+          ]
+        }
+      ],
+      "countries": [
+        "GB"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Paul K. Stockman",
+      "raw_affiliation_strings": [
+        "AstraZeneca, Cambridge, United Kingdom"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "AstraZeneca, Cambridge, United Kingdom",
+          "institution_ids": [
+            "https://openalex.org/I105036370"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5063821551",
+        "display_name": "Vikram K. Chand",
+        "orcid": null
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I4210150756",
+          "display_name": "AstraZeneca (United States)",
+          "ror": "https://ror.org/043cec594",
+          "country_code": "US",
+          "type": "company",
+          "lineage": [
+            "https://openalex.org/I105036370",
+            "https://openalex.org/I4210150756"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Vikram K. Chand",
+      "raw_affiliation_strings": [
+        "AstraZeneca, Gaithersburg, Maryland"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "AstraZeneca, Gaithersburg, Maryland",
+          "institution_ids": [
+            "https://openalex.org/I4210150756"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5063300526",
+        "display_name": "Solange Peters",
+        "orcid": "https://orcid.org/0000-0002-0412-7143"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I2802229882",
+          "display_name": "University Hospital of Lausanne",
+          "ror": "https://ror.org/05a353079",
+          "country_code": "CH",
+          "type": "funder",
+          "lineage": [
+            "https://openalex.org/I2802229882"
+          ]
+        }
+      ],
+      "countries": [
+        "CH"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Solange Peters",
+      "raw_affiliation_strings": [
+        "Department of Oncology, Centre Hospitalier Universitaire Vaudois, Lausanne University, Lausanne, Switzerland"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Department of Oncology, Centre Hospitalier Universitaire Vaudois, Lausanne University, Lausanne, Switzerland",
+          "institution_ids": [
+            "https://openalex.org/I2802229882"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "last",
+      "author": {
+        "id": null,
+        "display_name": "for the MYSTIC Investigators",
+        "orcid": null
+      },
+      "institutions": [],
+      "countries": [],
+      "is_corresponding": false,
+      "raw_author_name": "for the MYSTIC Investigators",
+      "raw_affiliation_strings": [],
+      "raw_orcid": null,
+      "affiliations": []
+    }
+  ],
+  "institutions": [],
+  "countries_distinct_count": 12,
+  "institutions_distinct_count": 26,
+  "corresponding_author_ids": [
+    "https://openalex.org/A5075877134"
+  ],
+  "corresponding_institution_ids": [
+    "https://openalex.org/I2799503643"
+  ],
+  "apc_list": null,
+  "apc_paid": null,
+  "fwci": 37.6304,
+  "has_fulltext": true,
+  "cited_by_count": 628,
+  "citation_normalized_percentile": {
+    "value": 0.99818138,
+    "is_in_top_1_percent": true,
+    "is_in_top_10_percent": true
+  },
+  "cited_by_percentile_year": {
+    "min": 89,
+    "max": 100
+  },
+  "biblio": {
+    "volume": "6",
+    "issue": "5",
+    "first_page": "661",
+    "last_page": "661"
+  },
+  "is_retracted": false,
+  "is_paratext": false,
+  "is_xpac": false,
+  "primary_topic": {
+    "id": "https://openalex.org/T10158",
+    "display_name": "Cancer Immunotherapy and Biomarkers",
+    "score": 0.786300003528595,
+    "subfield": {
+      "id": "https://openalex.org/subfields/2730",
+      "display_name": "Oncology"
+    },
+    "field": {
+      "id": "https://openalex.org/fields/27",
+      "display_name": "Medicine"
+    },
+    "domain": {
+      "id": "https://openalex.org/domains/4",
+      "display_name": "Health Sciences"
+    }
+  },
+  "topics": [
+    {
+      "id": "https://openalex.org/T10158",
+      "display_name": "Cancer Immunotherapy and Biomarkers",
+      "score": 0.786300003528595,
+      "subfield": {
+        "id": "https://openalex.org/subfields/2730",
+        "display_name": "Oncology"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/27",
+        "display_name": "Medicine"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/4",
+        "display_name": "Health Sciences"
+      }
+    },
+    {
+      "id": "https://openalex.org/T10417",
+      "display_name": "Lung Cancer Treatments and Mutations",
+      "score": 0.07249999791383743,
+      "subfield": {
+        "id": "https://openalex.org/subfields/2740",
+        "display_name": "Pulmonary and Respiratory Medicine"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/27",
+        "display_name": "Medicine"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/4",
+        "display_name": "Health Sciences"
+      }
+    },
+    {
+      "id": "https://openalex.org/T12334",
+      "display_name": "Lung Cancer Research Studies",
+      "score": 0.03660000115633011,
+      "subfield": {
+        "id": "https://openalex.org/subfields/2730",
+        "display_name": "Oncology"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/27",
+        "display_name": "Medicine"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/4",
+        "display_name": "Health Sciences"
+      }
+    }
+  ],
+  "keywords": [
+    {
+      "id": "https://openalex.org/keywords/durvalumab",
+      "display_name": "Durvalumab",
+      "score": 0.9802761077880859
+    },
+    {
+      "id": "https://openalex.org/keywords/tremelimumab",
+      "display_name": "Tremelimumab",
+      "score": 0.9671176671981812
+    },
+    {
+      "id": "https://openalex.org/keywords/medicine",
+      "display_name": "Medicine",
+      "score": 0.8942326307296753
+    },
+    {
+      "id": "https://openalex.org/keywords/internal-medicine",
+      "display_name": "Internal medicine",
+      "score": 0.614205539226532
+    },
+    {
+      "id": "https://openalex.org/keywords/oncology",
+      "display_name": "Oncology",
+      "score": 0.6098441481590271
+    },
+    {
+      "id": "https://openalex.org/keywords/lung-cancer",
+      "display_name": "Lung cancer",
+      "score": 0.5779741406440735
+    },
+    {
+      "id": "https://openalex.org/keywords/chemotherapy",
+      "display_name": "Chemotherapy",
+      "score": 0.5609663128852844
+    },
+    {
+      "id": "https://openalex.org/keywords/cancer",
+      "display_name": "Cancer",
+      "score": 0.42770764231681824
+    },
+    {
+      "id": "https://openalex.org/keywords/immunotherapy",
+      "display_name": "Immunotherapy",
+      "score": 0.3045935034751892
+    },
+    {
+      "id": "https://openalex.org/keywords/nivolumab",
+      "display_name": "Nivolumab",
+      "score": 0.12281379103660583
+    },
+    {
+      "id": "https://openalex.org/keywords/ipilimumab",
+      "display_name": "Ipilimumab",
+      "score": 0.09554266929626465
+    }
+  ],
+  "concepts": [
+    {
+      "id": "https://openalex.org/C2777742743",
+      "wikidata": "https://www.wikidata.org/wiki/Q19904005",
+      "display_name": "Durvalumab",
+      "level": 5,
+      "score": 0.9802761077880859
+    },
+    {
+      "id": "https://openalex.org/C2778650287",
+      "wikidata": "https://www.wikidata.org/wiki/Q7838098",
+      "display_name": "Tremelimumab",
+      "level": 5,
+      "score": 0.9671176671981812
+    },
+    {
+      "id": "https://openalex.org/C71924100",
+      "wikidata": "https://www.wikidata.org/wiki/Q11190",
+      "display_name": "Medicine",
+      "level": 0,
+      "score": 0.8942326307296753
+    },
+    {
+      "id": "https://openalex.org/C126322002",
+      "wikidata": "https://www.wikidata.org/wiki/Q11180",
+      "display_name": "Internal medicine",
+      "level": 1,
+      "score": 0.614205539226532
+    },
+    {
+      "id": "https://openalex.org/C143998085",
+      "wikidata": "https://www.wikidata.org/wiki/Q162555",
+      "display_name": "Oncology",
+      "level": 1,
+      "score": 0.6098441481590271
+    },
+    {
+      "id": "https://openalex.org/C2776256026",
+      "wikidata": "https://www.wikidata.org/wiki/Q47912",
+      "display_name": "Lung cancer",
+      "level": 2,
+      "score": 0.5779741406440735
+    },
+    {
+      "id": "https://openalex.org/C2776694085",
+      "wikidata": "https://www.wikidata.org/wiki/Q974135",
+      "display_name": "Chemotherapy",
+      "level": 2,
+      "score": 0.5609663128852844
+    },
+    {
+      "id": "https://openalex.org/C121608353",
+      "wikidata": "https://www.wikidata.org/wiki/Q12078",
+      "display_name": "Cancer",
+      "level": 2,
+      "score": 0.42770764231681824
+    },
+    {
+      "id": "https://openalex.org/C2777701055",
+      "wikidata": "https://www.wikidata.org/wiki/Q1427096",
+      "display_name": "Immunotherapy",
+      "level": 3,
+      "score": 0.3045935034751892
+    },
+    {
+      "id": "https://openalex.org/C2780030458",
+      "wikidata": "https://www.wikidata.org/wiki/Q7041828",
+      "display_name": "Nivolumab",
+      "level": 4,
+      "score": 0.12281379103660583
+    },
+    {
+      "id": "https://openalex.org/C2781433595",
+      "wikidata": "https://www.wikidata.org/wiki/Q2459042",
+      "display_name": "Ipilimumab",
+      "level": 4,
+      "score": 0.09554266929626465
+    }
+  ],
+  "mesh": [
+    {
+      "descriptor_ui": "D000074322",
+      "descriptor_name": "Antineoplastic Agents, Immunological",
+      "qualifier_ui": "Q000494",
+      "qualifier_name": "pharmacology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000074322",
+      "descriptor_name": "Antineoplastic Agents, Immunological",
+      "qualifier_ui": "Q000494",
+      "qualifier_name": "pharmacology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000074322",
+      "descriptor_name": "Antineoplastic Agents, Immunological",
+      "qualifier_ui": "Q000494",
+      "qualifier_name": "pharmacology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000074322",
+      "descriptor_name": "Antineoplastic Agents, Immunological",
+      "qualifier_ui": "Q000627",
+      "qualifier_name": "therapeutic use",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000074322",
+      "descriptor_name": "Antineoplastic Agents, Immunological",
+      "qualifier_ui": "Q000627",
+      "qualifier_name": "therapeutic use",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000074322",
+      "descriptor_name": "Antineoplastic Agents, Immunological",
+      "qualifier_ui": "Q000627",
+      "qualifier_name": "therapeutic use",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000328",
+      "descriptor_name": "Adult",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000328",
+      "descriptor_name": "Adult",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000328",
+      "descriptor_name": "Adult",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000368",
+      "descriptor_name": "Aged",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000368",
+      "descriptor_name": "Aged",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000368",
+      "descriptor_name": "Aged",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000369",
+      "descriptor_name": "Aged, 80 and over",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000369",
+      "descriptor_name": "Aged, 80 and over",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000369",
+      "descriptor_name": "Aged, 80 and over",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000911",
+      "descriptor_name": "Antibodies, Monoclonal",
+      "qualifier_ui": "Q000494",
+      "qualifier_name": "pharmacology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000911",
+      "descriptor_name": "Antibodies, Monoclonal",
+      "qualifier_ui": "Q000494",
+      "qualifier_name": "pharmacology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000911",
+      "descriptor_name": "Antibodies, Monoclonal",
+      "qualifier_ui": "Q000494",
+      "qualifier_name": "pharmacology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000911",
+      "descriptor_name": "Antibodies, Monoclonal",
+      "qualifier_ui": "Q000627",
+      "qualifier_name": "therapeutic use",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000911",
+      "descriptor_name": "Antibodies, Monoclonal",
+      "qualifier_ui": "Q000627",
+      "qualifier_name": "therapeutic use",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000911",
+      "descriptor_name": "Antibodies, Monoclonal",
+      "qualifier_ui": "Q000627",
+      "qualifier_name": "therapeutic use",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000971",
+      "descriptor_name": "Antineoplastic Combined Chemotherapy Protocols",
+      "qualifier_ui": "Q000494",
+      "qualifier_name": "pharmacology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000971",
+      "descriptor_name": "Antineoplastic Combined Chemotherapy Protocols",
+      "qualifier_ui": "Q000494",
+      "qualifier_name": "pharmacology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000971",
+      "descriptor_name": "Antineoplastic Combined Chemotherapy Protocols",
+      "qualifier_ui": "Q000494",
+      "qualifier_name": "pharmacology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000971",
+      "descriptor_name": "Antineoplastic Combined Chemotherapy Protocols",
+      "qualifier_ui": "Q000627",
+      "qualifier_name": "therapeutic use",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000971",
+      "descriptor_name": "Antineoplastic Combined Chemotherapy Protocols",
+      "qualifier_ui": "Q000627",
+      "qualifier_name": "therapeutic use",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000971",
+      "descriptor_name": "Antineoplastic Combined Chemotherapy Protocols",
+      "qualifier_ui": "Q000627",
+      "qualifier_name": "therapeutic use",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D002289",
+      "descriptor_name": "Carcinoma, Non-Small-Cell Lung",
+      "qualifier_ui": "Q000188",
+      "qualifier_name": "drug therapy",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D002289",
+      "descriptor_name": "Carcinoma, Non-Small-Cell Lung",
+      "qualifier_ui": "Q000188",
+      "qualifier_name": "drug therapy",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D002289",
+      "descriptor_name": "Carcinoma, Non-Small-Cell Lung",
+      "qualifier_ui": "Q000188",
+      "qualifier_name": "drug therapy",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D002289",
+      "descriptor_name": "Carcinoma, Non-Small-Cell Lung",
+      "qualifier_ui": "Q000473",
+      "qualifier_name": "pathology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D002289",
+      "descriptor_name": "Carcinoma, Non-Small-Cell Lung",
+      "qualifier_ui": "Q000473",
+      "qualifier_name": "pathology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D002289",
+      "descriptor_name": "Carcinoma, Non-Small-Cell Lung",
+      "qualifier_ui": "Q000473",
+      "qualifier_name": "pathology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D005260",
+      "descriptor_name": "Female",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D005260",
+      "descriptor_name": "Female",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D005260",
+      "descriptor_name": "Female",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D006801",
+      "descriptor_name": "Humans",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D006801",
+      "descriptor_name": "Humans",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D006801",
+      "descriptor_name": "Humans",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D008175",
+      "descriptor_name": "Lung Neoplasms",
+      "qualifier_ui": "Q000188",
+      "qualifier_name": "drug therapy",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D008175",
+      "descriptor_name": "Lung Neoplasms",
+      "qualifier_ui": "Q000188",
+      "qualifier_name": "drug therapy",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D008175",
+      "descriptor_name": "Lung Neoplasms",
+      "qualifier_ui": "Q000188",
+      "qualifier_name": "drug therapy",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D008175",
+      "descriptor_name": "Lung Neoplasms",
+      "qualifier_ui": "Q000473",
+      "qualifier_name": "pathology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D008175",
+      "descriptor_name": "Lung Neoplasms",
+      "qualifier_ui": "Q000473",
+      "qualifier_name": "pathology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D008175",
+      "descriptor_name": "Lung Neoplasms",
+      "qualifier_ui": "Q000473",
+      "qualifier_name": "pathology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D008297",
+      "descriptor_name": "Male",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D008297",
+      "descriptor_name": "Male",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D008297",
+      "descriptor_name": "Male",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D008875",
+      "descriptor_name": "Middle Aged",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D008875",
+      "descriptor_name": "Middle Aged",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D008875",
+      "descriptor_name": "Middle Aged",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D009362",
+      "descriptor_name": "Neoplasm Metastasis",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D009362",
+      "descriptor_name": "Neoplasm Metastasis",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D009362",
+      "descriptor_name": "Neoplasm Metastasis",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D061067",
+      "descriptor_name": "Antibodies, Monoclonal, Humanized",
+      "qualifier_ui": "Q000494",
+      "qualifier_name": "pharmacology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D061067",
+      "descriptor_name": "Antibodies, Monoclonal, Humanized",
+      "qualifier_ui": "Q000494",
+      "qualifier_name": "pharmacology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D061067",
+      "descriptor_name": "Antibodies, Monoclonal, Humanized",
+      "qualifier_ui": "Q000494",
+      "qualifier_name": "pharmacology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D061067",
+      "descriptor_name": "Antibodies, Monoclonal, Humanized",
+      "qualifier_ui": "Q000627",
+      "qualifier_name": "therapeutic use",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D061067",
+      "descriptor_name": "Antibodies, Monoclonal, Humanized",
+      "qualifier_ui": "Q000627",
+      "qualifier_name": "therapeutic use",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D061067",
+      "descriptor_name": "Antibodies, Monoclonal, Humanized",
+      "qualifier_ui": "Q000627",
+      "qualifier_name": "therapeutic use",
+      "is_major_topic": false
+    }
+  ],
+  "locations_count": 8,
+  "locations": [
+    {
+      "id": "doi:10.1001/jamaoncol.2020.0237",
+      "is_oa": true,
+      "landing_page_url": "https://doi.org/10.1001/jamaoncol.2020.0237",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S2756165422",
+        "display_name": "JAMA Oncology",
+        "issn_l": "2374-2437",
+        "issn": [
+          "2374-2437",
+          "2374-2445"
+        ],
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": true,
+        "host_organization": "https://openalex.org/P4310320259",
+        "host_organization_name": "American Medical Association",
+        "host_organization_lineage": [
+          "https://openalex.org/P4310320259"
+        ],
+        "host_organization_lineage_names": [
+          "American Medical Association"
+        ],
+        "type": "journal"
+      },
+      "license": "cc-by-nc-nd",
+      "license_id": "https://openalex.org/licenses/cc-by-nc-nd",
+      "version": "publishedVersion",
+      "is_accepted": true,
+      "is_published": true,
+      "raw_source_name": "JAMA Oncology",
+      "raw_type": "journal-article"
+    },
+    {
+      "id": "pmid:32271377",
+      "is_oa": false,
+      "landing_page_url": "https://pubmed.ncbi.nlm.nih.gov/32271377",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4306525036",
+        "display_name": "PubMed",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I1299303238",
+        "host_organization_name": "National Institutes of Health",
+        "host_organization_lineage": [
+          "https://openalex.org/I1299303238"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "publishedVersion",
+      "is_accepted": true,
+      "is_published": true,
+      "raw_source_name": "JAMA oncology",
+      "raw_type": null
+    },
+    {
+      "id": "pmh:oai:serval.unil.ch:BIB_E92D7568B2CF",
+      "is_oa": false,
+      "landing_page_url": "https://serval.unil.ch/notice/serval:BIB_E92D7568B2CF",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4306401797",
+        "display_name": "SERVAL (Universit\u00e9 de Lausanne)",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I4210093590",
+        "host_organization_name": "Swiss School of Archaeology in Greece",
+        "host_organization_lineage": [
+          "https://openalex.org/I4210093590"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "publishedVersion",
+      "is_accepted": true,
+      "is_published": true,
+      "raw_source_name": "JAMA oncology, vol. 6, no. 5, pp. 661-674",
+      "raw_type": "info:eu-repo/semantics/article"
+    },
+    {
+      "id": "pmh:oai:iris.unil.ch:iris/242956",
+      "is_oa": true,
+      "landing_page_url": "https://iris.unil.ch/handle/iris/242956",
+      "pdf_url": "https://iris.unil.ch/bitstreams/03189bfa-f0b5-40c0-98f9-1916afd0fbe1/download",
+      "source": {
+        "id": "https://openalex.org/S7407055444",
+        "display_name": "IRIS",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": null,
+        "host_organization_name": null,
+        "host_organization_lineage": [],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": "cc-by-nc-nd",
+      "license_id": "https://openalex.org/licenses/cc-by-nc-nd",
+      "version": "submittedVersion",
+      "is_accepted": false,
+      "is_published": false,
+      "raw_source_name": null,
+      "raw_type": "journal article"
+    },
+    {
+      "id": "pmh:oai:repository.ubn.ru.nl:2066/225429",
+      "is_oa": true,
+      "landing_page_url": "https://hdl.handle.net/2066/225429",
+      "pdf_url": "https://repository.ubn.ru.nl//bitstream/handle/2066/225429/225429.pdf",
+      "source": {
+        "id": "https://openalex.org/S4306401067",
+        "display_name": "Radboud Repository (Radboud University)",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I145872427",
+        "host_organization_name": "Radboud University Nijmegen",
+        "host_organization_lineage": [
+          "https://openalex.org/I145872427"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "submittedVersion",
+      "is_accepted": false,
+      "is_published": false,
+      "raw_source_name": "",
+      "raw_type": "Article / Letter to editor"
+    },
+    {
+      "id": "pmh:oai:www.repositoriosalud.es:10668/15348",
+      "is_oa": true,
+      "landing_page_url": "http://hdl.handle.net/10668/15348",
+      "pdf_url": "https://jamanetwork.com/journals/jamaoncology/articlepdf/2763864/jamaoncology_rizvi_2020_oi_200006_1601398452.54701.pdf",
+      "source": {
+        "id": "https://openalex.org/S4377196114",
+        "display_name": "RISalud Institutional Health Repository of Andaluc\u00eda",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": null,
+        "host_organization_name": null,
+        "host_organization_lineage": [],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": "cc-by-nc-nd",
+      "license_id": "https://openalex.org/licenses/cc-by-nc-nd",
+      "version": "submittedVersion",
+      "is_accepted": false,
+      "is_published": false,
+      "raw_source_name": "",
+      "raw_type": "research article"
+    },
+    {
+      "id": "pmh:oai:pubmedcentral.nih.gov:7146551",
+      "is_oa": true,
+      "landing_page_url": "https://www.ncbi.nlm.nih.gov/pmc/articles/7146551",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S2764455111",
+        "display_name": "PubMed Central",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": true,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I1299303238",
+        "host_organization_name": "National Institutes of Health",
+        "host_organization_lineage": [
+          "https://openalex.org/I1299303238"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": "cc-by-nc-nd",
+      "license_id": "https://openalex.org/licenses/cc-by-nc-nd",
+      "version": "submittedVersion",
+      "is_accepted": false,
+      "is_published": false,
+      "raw_source_name": "JAMA Oncol",
+      "raw_type": "Text"
+    },
+    {
+      "id": "pmh:ru:oai:repository.ubn.ru.nl:2066/225429",
+      "is_oa": true,
+      "landing_page_url": "http://hdl.handle.net/2066/225429",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4306401843",
+        "display_name": "Data Archiving and Networked Services (DANS)",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I1322597698",
+        "host_organization_name": "Royal Netherlands Academy of Arts and Sciences",
+        "host_organization_lineage": [
+          "https://openalex.org/I1322597698"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": "other-oa",
+      "license_id": "https://openalex.org/licenses/other-oa",
+      "version": "submittedVersion",
+      "is_accepted": false,
+      "is_published": false,
+      "raw_source_name": "Jama Oncology, 6, 661 - 674",
+      "raw_type": "info:eu-repo/semantics/article"
+    }
+  ],
+  "best_oa_location": {
+    "id": "doi:10.1001/jamaoncol.2020.0237",
+    "is_oa": true,
+    "landing_page_url": "https://doi.org/10.1001/jamaoncol.2020.0237",
+    "pdf_url": null,
+    "source": {
+      "id": "https://openalex.org/S2756165422",
+      "display_name": "JAMA Oncology",
+      "issn_l": "2374-2437",
+      "issn": [
+        "2374-2437",
+        "2374-2445"
+      ],
+      "is_oa": false,
+      "is_in_doaj": false,
+      "is_core": true,
+      "host_organization": "https://openalex.org/P4310320259",
+      "host_organization_name": "American Medical Association",
+      "host_organization_lineage": [
+        "https://openalex.org/P4310320259"
+      ],
+      "host_organization_lineage_names": [
+        "American Medical Association"
+      ],
+      "type": "journal"
+    },
+    "license": "cc-by-nc-nd",
+    "license_id": "https://openalex.org/licenses/cc-by-nc-nd",
+    "version": "publishedVersion",
+    "is_accepted": true,
+    "is_published": true,
+    "raw_source_name": "JAMA Oncology",
+    "raw_type": "journal-article"
+  },
+  "sustainable_development_goals": [
+    {
+      "id": "https://metadata.un.org/sdg/3",
+      "display_name": "Good health and well-being",
+      "score": 0.5
+    }
+  ],
+  "awards": [
+    {
+      "id": "https://openalex.org/G7816401740",
+      "display_name": null,
+      "funder_award_id": "UL1 TR001863",
+      "funder_id": "https://openalex.org/F4320337472",
+      "funder_display_name": "National Center for Advancing Translational Sciences"
+    }
+  ],
+  "funders": [
+    {
+      "id": "https://openalex.org/F4320307770",
+      "display_name": "AstraZeneca",
+      "ror": "https://ror.org/04r9x1a08"
+    },
+    {
+      "id": "https://openalex.org/F4320337472",
+      "display_name": "National Center for Advancing Translational Sciences",
+      "ror": "https://ror.org/04pw6fb54"
+    }
+  ],
+  "has_content": {
+    "pdf": false,
+    "grobid_xml": false
+  },
+  "content_urls": null,
+  "referenced_works_count": 46,
+  "referenced_works": [
+    "https://openalex.org/W1990639292",
+    "https://openalex.org/W2019607817",
+    "https://openalex.org/W2030395337",
+    "https://openalex.org/W2049553585",
+    "https://openalex.org/W2067904749",
+    "https://openalex.org/W2076668534",
+    "https://openalex.org/W2099725888",
+    "https://openalex.org/W2104347254",
+    "https://openalex.org/W2104885590",
+    "https://openalex.org/W2112621029",
+    "https://openalex.org/W2123176392",
+    "https://openalex.org/W2156353875",
+    "https://openalex.org/W2167191456",
+    "https://openalex.org/W2260067559",
+    "https://openalex.org/W2293531514",
+    "https://openalex.org/W2311550469",
+    "https://openalex.org/W2527905628",
+    "https://openalex.org/W2561075927",
+    "https://openalex.org/W2635951006",
+    "https://openalex.org/W2734373861",
+    "https://openalex.org/W2753065806",
+    "https://openalex.org/W2762891971",
+    "https://openalex.org/W2791290180",
+    "https://openalex.org/W2796582438",
+    "https://openalex.org/W2797675588",
+    "https://openalex.org/W2805354595",
+    "https://openalex.org/W2886963239",
+    "https://openalex.org/W2892640821",
+    "https://openalex.org/W2893824814",
+    "https://openalex.org/W2898110679",
+    "https://openalex.org/W2898138718",
+    "https://openalex.org/W2898187558",
+    "https://openalex.org/W2898241205",
+    "https://openalex.org/W2898522386",
+    "https://openalex.org/W2909248871",
+    "https://openalex.org/W2909679049",
+    "https://openalex.org/W2916451481",
+    "https://openalex.org/W2925446385",
+    "https://openalex.org/W2946386783",
+    "https://openalex.org/W2952953974",
+    "https://openalex.org/W2976744492",
+    "https://openalex.org/W3008027480",
+    "https://openalex.org/W4234746319",
+    "https://openalex.org/W4242589154",
+    "https://openalex.org/W6744878310",
+    "https://openalex.org/W6774499490"
+  ],
+  "related_works": [
+    "https://openalex.org/W4380149783",
+    "https://openalex.org/W2188594974",
+    "https://openalex.org/W3167754811",
+    "https://openalex.org/W3005499534",
+    "https://openalex.org/W4385951209",
+    "https://openalex.org/W4386501485",
+    "https://openalex.org/W3041684384",
+    "https://openalex.org/W2898717093",
+    "https://openalex.org/W2770548457",
+    "https://openalex.org/W3183686564"
+  ],
+  "abstract_inverted_index": {
+    "Importance:": [
+      0
+    ],
+    "Checkpoint": [
+      1
+    ],
+    "inhibitors": [
+      2
+    ],
+    "targeting": [
+      3
+    ],
+    "programmed": [
+      4
+    ],
+    "cell": [
+      5,
+      31,
+      53,
+      83
+    ],
+    "death": [
+      6,
+      402
+    ],
+    "1": [
+      7
+    ],
+    "or": [
+      8,
+      14,
+      39,
+      91,
+      105,
+      150,
+      360,
+      435,
+      438
+    ],
+    "its": [
+      9,
+      424
+    ],
+    "ligand": [
+      10
+    ],
+    "(PD-L1)": [
+      11
+    ],
+    "as": [
+      12,
+      44
+    ],
+    "monotherapies": [
+      13
+    ],
+    "in": [
+      15,
+      26,
+      75,
+      163,
+      363,
+      403,
+      446
+    ],
+    "combination": [
+      16
+    ],
+    "with": [
+      17,
+      28,
+      38,
+      42,
+      50,
+      79,
+      100,
+      126,
+      165,
+      227,
+      242,
+      250,
+      271,
+      293,
+      303,
+      316,
+      320,
+      372,
+      382,
+      395,
+      431,
+      440,
+      448,
+      470
+    ],
+    "anti-cytotoxic": [
+      18
+    ],
+    "T-lymphocyte-associated": [
+      19
+    ],
+    "antigen": [
+      20
+    ],
+    "4": [
+      21,
+      131,
+      137,
+      144,
+      148
+    ],
+    "have": [
+      22
+    ],
+    "shown": [
+      23
+    ],
+    "clinical": [
+      24,
+      65
+    ],
+    "activity": [
+      25
+    ],
+    "patients": [
+      27,
+      49,
+      164,
+      211,
+      226,
+      315,
+      368,
+      378,
+      391,
+      447
+    ],
+    "metastatic": [
+      29,
+      51,
+      81
+    ],
+    "non-small": [
+      30,
+      52,
+      82
+    ],
+    "lung": [
+      32,
+      54,
+      84
+    ],
+    "cancer.": [
+      33,
+      55
+    ],
+    "Objective:": [
+      34
+    ],
+    "To": [
+      35
+    ],
+    "compare": [
+      36
+    ],
+    "durvalumab,": [
+      37,
+      101,
+      373
+    ],
+    "without": [
+      40
+    ],
+    "tremelimumab,": [
+      41,
+      104,
+      385
+    ],
+    "chemotherapy": [
+      43,
+      251,
+      304,
+      335,
+      434,
+      445
+    ],
+    "a": [
+      45,
+      321,
+      458
+    ],
+    "first-line": [
+      46
+    ],
+    "treatment": [
+      47,
+      73,
+      99,
+      125,
+      222,
+      371,
+      381,
+      394
+    ],
+    "for": [
+      48,
+      176,
+      186,
+      330,
+      466
+    ],
+    "Design,": [
+      56
+    ],
+    "Setting,": [
+      57
+    ],
+    "and": [
+      58,
+      156,
+      180,
+      182,
+      206,
+      216,
+      386,
+      408,
+      414
+    ],
+    "Participants:": [
+      59
+    ],
+    "This": [
+      60
+    ],
+    "open-label,": [
+      61
+    ],
+    "phase": [
+      62,
+      417
+    ],
+    "3": [
+      63,
+      359,
+      409,
+      418
+    ],
+    "randomized": [
+      64,
+      96,
+      121
+    ],
+    "trial": [
+      66
+    ],
+    "(MYSTIC)": [
+      67
+    ],
+    "was": [
+      68,
+      199,
+      236,
+      265,
+      287
+    ],
+    "conducted": [
+      69
+    ],
+    "at": [
+      70
+    ],
+    "203": [
+      71
+    ],
+    "cancer": [
+      72,
+      85
+    ],
+    "centers": [
+      74
+    ],
+    "17": [
+      76
+    ],
+    "countries.": [
+      77
+    ],
+    "Patients": [
+      78,
+      119
+    ],
+    "treatment-naive,": [
+      80
+    ],
+    "who": [
+      86,
+      369,
+      379,
+      392
+    ],
+    "had": [
+      87
+    ],
+    "no": [
+      88
+    ],
+    "sensitizing": [
+      89
+    ],
+    "EGFR": [
+      90
+    ],
+    "ALK": [
+      92
+    ],
+    "genetic": [
+      93
+    ],
+    "alterations": [
+      94
+    ],
+    "were": [
+      95,
+      108,
+      120,
+      172,
+      212,
+      219
+    ],
+    "to": [
+      97,
+      114,
+      123,
+      147,
+      401
+    ],
+    "receive": [
+      98,
+      124
+    ],
+    "durvalumab": [
+      102,
+      127,
+      133,
+      177,
+      187,
+      243,
+      272,
+      294,
+      331,
+      383,
+      432,
+      441,
+      471
+    ],
+    "plus": [
+      103,
+      139,
+      188,
+      273,
+      295,
+      332,
+      384,
+      442,
+      472
+    ],
+    "chemotherapy.": [
+      106,
+      153,
+      191,
+      396
+    ],
+    "Data": [
+      107
+    ],
+    "collected": [
+      109
+    ],
+    "from": [
+      110
+    ],
+    "July": [
+      111,
+      203
+    ],
+    "21,": [
+      112,
+      204
+    ],
+    "2015,": [
+      113,
+      205
+    ],
+    "October": [
+      115
+    ],
+    "30,": [
+      116
+    ],
+    "2018.": [
+      117
+    ],
+    "Interventions:": [
+      118
+    ],
+    "(1:1:1)": [
+      122
+    ],
+    "(20": [
+      128,
+      134
+    ],
+    "mg/kg": [
+      129,
+      135,
+      142
+    ],
+    "every": [
+      130,
+      136,
+      143
+    ],
+    "weeks),": [
+      132
+    ],
+    "weeks)": [
+      138
+    ],
+    "tremelimumab": [
+      140,
+      189,
+      274,
+      296,
+      333,
+      443
+    ],
+    "(1": [
+      141
+    ],
+    "weeks,": [
+      145
+    ],
+    "up": [
+      146
+    ],
+    "doses),": [
+      149
+    ],
+    "platinum-based": [
+      151
+    ],
+    "doublet": [
+      152
+    ],
+    "Main": [
+      154
+    ],
+    "Outcomes": [
+      155
+    ],
+    "Measures:": [
+      157
+    ],
+    "The": [
+      158,
+      416
+    ],
+    "primary": [
+      159,
+      425
+    ],
+    "end": [
+      160,
+      426
+    ],
+    "points,": [
+      161
+    ],
+    "assessed": [
+      162
+    ],
+    "\u226525%": [
+      166,
+      228,
+      449
+    ],
+    "of": [
+      167,
+      193,
+      229,
+      357,
+      366,
+      376,
+      389,
+      428,
+      450,
+      461
+    ],
+    "tumor": [
+      168,
+      195,
+      230,
+      451
+    ],
+    "cells": [
+      169,
+      231,
+      452
+    ],
+    "expressing": [
+      170,
+      232,
+      453
+    ],
+    "PD-L1,": [
+      171,
+      233
+    ],
+    "overall": [
+      173
+    ],
+    "survival": [
+      174,
+      184
+    ],
+    "(OS)": [
+      175
+    ],
+    "vs": [
+      178,
+      190,
+      244,
+      276,
+      297,
+      334,
+      343,
+      433,
+      444
+    ],
+    "chemotherapy,": [
+      179,
+      277
+    ],
+    "OS": [
+      181,
+      235,
+      264,
+      329,
+      430,
+      437,
+      468
+    ],
+    "progression-free": [
+      183
+    ],
+    "(PFS)": [
+      185
+    ],
+    "Analysis": [
+      192
+    ],
+    "blood": [
+      194
+    ],
+    "mutational": [
+      196
+    ],
+    "burden": [
+      197
+    ],
+    "(bTMB)": [
+      198
+    ],
+    "exploratory.": [
+      200
+    ],
+    "Results:": [
+      201
+    ],
+    "Between": [
+      202
+    ],
+    "June": [
+      207
+    ],
+    "8,": [
+      208
+    ],
+    "2016,": [
+      209
+    ],
+    "1118": [
+      210
+    ],
+    "randomized.": [
+      213
+    ],
+    "Baseline": [
+      214
+    ],
+    "demographic": [
+      215
+    ],
+    "disease": [
+      217
+    ],
+    "characteristics": [
+      218
+    ],
+    "balanced": [
+      220
+    ],
+    "between": [
+      221
+    ],
+    "groups.": [
+      223
+    ],
+    "Among": [
+      224,
+      313
+    ],
+    "488": [
+      225
+    ],
+    "median": [
+      234
+    ],
+    "16.3": [
+      237
+    ],
+    "months": [
+      238,
+      246,
+      267,
+      289,
+      299,
+      339,
+      345
+    ],
+    "(95%": [
+      239,
+      247,
+      268,
+      290,
+      300
+    ],
+    "CI,": [
+      240,
+      248,
+      257,
+      269,
+      280,
+      291,
+      301,
+      308,
+      341,
+      347,
+      352
+    ],
+    "12.2-20.8)": [
+      241
+    ],
+    "12.9": [
+      245
+    ],
+    "10.5-15.0)": [
+      249
+    ],
+    "(hazard": [
+      252
+    ],
+    "ratio": [
+      253
+    ],
+    "[HR],": [
+      254
+    ],
+    "0.76;": [
+      255
+    ],
+    "97.54%": [
+      256
+    ],
+    "0.56-1.02;": [
+      258
+    ],
+    "P": [
+      259,
+      282,
+      310
+    ],
+    "=": [
+      260,
+      283,
+      311
+    ],
+    ".04": [
+      261
+    ],
+    "[nonsignificant]).": [
+      262
+    ],
+    "Median": [
+      263,
+      285
+    ],
+    "11.9": [
+      266
+    ],
+    "9.0-17.7)": [
+      270
+    ],
+    "(HR": [
+      275
+    ],
+    "0.85;": [
+      278
+    ],
+    "98.77%": [
+      279
+    ],
+    "0.61-1.17;": [
+      281
+    ],
+    ".20).": [
+      284
+    ],
+    "PFS": [
+      286,
+      439
+    ],
+    "3.9": [
+      288
+    ],
+    "2.8-5.0)": [
+      292
+    ],
+    "5.4": [
+      298
+    ],
+    "4.6-5.8)": [
+      302
+    ],
+    "(HR,": [
+      305
+    ],
+    "1.05;": [
+      306
+    ],
+    "99.5%": [
+      307
+    ],
+    "0.72-1.53;": [
+      309
+    ],
+    ".71).": [
+      312
+    ],
+    "809": [
+      314
+    ],
+    "evaluable": [
+      317
+    ],
+    "bTMB,": [
+      318
+    ],
+    "those": [
+      319
+    ],
+    "bTMB": [
+      322,
+      459
+    ],
+    "\u226520": [
+      323,
+      462
+    ],
+    "mutations": [
+      324,
+      463
+    ],
+    "per": [
+      325,
+      464
+    ],
+    "megabase": [
+      326,
+      465
+    ],
+    "showed": [
+      327
+    ],
+    "improved": [
+      328,
+      429,
+      436
+    ],
+    "(median": [
+      336
+    ],
+    "OS,": [
+      337
+    ],
+    "21.9": [
+      338
+    ],
+    "[95%": [
+      340,
+      346
+    ],
+    "11.4-32.8]": [
+      342
+    ],
+    "10.0": [
+      344
+    ],
+    "8.1-11.7];": [
+      348
+    ],
+    "HR,": [
+      349
+    ],
+    "0.49;": [
+      350
+    ],
+    "95%": [
+      351
+    ],
+    "0.32-0.74).": [
+      353
+    ],
+    "Treatment-related": [
+      354
+    ],
+    "adverse": [
+      355,
+      398
+    ],
+    "events": [
+      356,
+      399
+    ],
+    "grade": [
+      358
+    ],
+    "higher": [
+      361
+    ],
+    "occurred": [
+      362
+    ],
+    "55": [
+      364
+    ],
+    "(14.9%)": [
+      365
+    ],
+    "369": [
+      367
+    ],
+    "received": [
+      370,
+      380,
+      393
+    ],
+    "85": [
+      374
+    ],
+    "(22.9%)": [
+      375
+    ],
+    "371": [
+      377
+    ],
+    "119": [
+      387
+    ],
+    "(33.8%)": [
+      388
+    ],
+    "352": [
+      390
+    ],
+    "These": [
+      397
+    ],
+    "led": [
+      400
+    ],
+    "2": [
+      404
+    ],
+    "(0.5%),": [
+      405
+    ],
+    "6": [
+      406
+    ],
+    "(1.6%),": [
+      407
+    ],
+    "(0.9%)": [
+      410
+    ],
+    "patients,": [
+      411
+    ],
+    "respectively.": [
+      412
+    ],
+    "Conclusions": [
+      413
+    ],
+    "Relevance:": [
+      415
+    ],
+    "MYSTIC": [
+      419
+    ],
+    "study": [
+      420
+    ],
+    "did": [
+      421
+    ],
+    "not": [
+      422
+    ],
+    "meet": [
+      423
+    ],
+    "points": [
+      427
+    ],
+    "PD-L1.": [
+      454
+    ],
+    "Exploratory": [
+      455
+    ],
+    "analyses": [
+      456
+    ],
+    "identified": [
+      457
+    ],
+    "threshold": [
+      460
+    ],
+    "optimal": [
+      467
+    ],
+    "benefit": [
+      469
+    ],
+    "tremelimumab.": [
+      473
+    ],
+    "Trial": [
+      474
+    ],
+    "Registration:": [
+      475
+    ],
+    "ClinicalT": [
+      476
+    ],
+    "rials.gov": [
+      477
+    ],
+    "Identifier:": [
+      478
+    ],
+    "NCT02453282.": [
+      479
+    ]
+  },
+  "counts_by_year": [
+    {
+      "year": 2026,
+      "cited_by_count": 16
+    },
+    {
+      "year": 2025,
+      "cited_by_count": 68
+    },
+    {
+      "year": 2024,
+      "cited_by_count": 95
+    },
+    {
+      "year": 2023,
+      "cited_by_count": 140
+    },
+    {
+      "year": 2022,
+      "cited_by_count": 131
+    },
+    {
+      "year": 2021,
+      "cited_by_count": 129
+    },
+    {
+      "year": 2020,
+      "cited_by_count": 47
+    },
+    {
+      "year": 2019,
+      "cited_by_count": 1
+    },
+    {
+      "year": 2013,
+      "cited_by_count": 1
+    }
+  ],
+  "updated_date": "2026-07-02T09:51:11.867554",
+  "created_date": "2020-04-17T00:00:00"
+}

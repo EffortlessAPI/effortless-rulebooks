@@ -1,0 +1,1036 @@
+{
+  "id": "https://openalex.org/W3045595131",
+  "doi": "https://doi.org/10.1093/biosci/biaa072",
+  "title": "Gender Differences in Grant Submissions across Science and Engineering Fields at the NSF",
+  "display_name": "Gender Differences in Grant Submissions across Science and Engineering Fields at the NSF",
+  "relevance_score": 111.058945,
+  "publication_year": 2020,
+  "publication_date": "2020-06-10",
+  "ids": {
+    "openalex": "https://openalex.org/W3045595131",
+    "doi": "https://doi.org/10.1093/biosci/biaa072",
+    "mag": "3045595131",
+    "pmid": "https://pubmed.ncbi.nlm.nih.gov/32973410"
+  },
+  "language": "en",
+  "primary_location": {
+    "id": "doi:10.1093/biosci/biaa072",
+    "is_oa": true,
+    "landing_page_url": "https://doi.org/10.1093/biosci/biaa072",
+    "pdf_url": "https://academic.oup.com/bioscience/article-pdf/70/9/814/33750232/biaa072.pdf",
+    "source": {
+      "id": "https://openalex.org/S121830084",
+      "display_name": "BioScience",
+      "issn_l": "0006-3568",
+      "issn": [
+        "0006-3568",
+        "1525-3244"
+      ],
+      "is_oa": false,
+      "is_in_doaj": false,
+      "is_core": true,
+      "host_organization": "https://openalex.org/P4310311648",
+      "host_organization_name": "Oxford University Press",
+      "host_organization_lineage": [
+        "https://openalex.org/P4310311648",
+        "https://openalex.org/P4310311647"
+      ],
+      "host_organization_lineage_names": [
+        "Oxford University Press",
+        "University of Oxford"
+      ],
+      "type": "journal"
+    },
+    "license": "cc-by-nc",
+    "license_id": "https://openalex.org/licenses/cc-by-nc",
+    "version": "publishedVersion",
+    "is_accepted": true,
+    "is_published": true,
+    "raw_source_name": "BioScience",
+    "raw_type": "journal-article"
+  },
+  "type": "article",
+  "indexed_in": [
+    "crossref",
+    "pubmed"
+  ],
+  "open_access": {
+    "is_oa": true,
+    "oa_status": "hybrid",
+    "oa_url": "https://academic.oup.com/bioscience/article-pdf/70/9/814/33750232/biaa072.pdf",
+    "any_repository_has_fulltext": true
+  },
+  "authorships": [
+    {
+      "author_position": "first",
+      "author": {
+        "id": "https://openalex.org/A5032471004",
+        "display_name": "Leslie J. Rissler",
+        "orcid": null
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I1311060795",
+          "display_name": "U.S. National Science Foundation",
+          "ror": "https://ror.org/021nxhr62",
+          "country_code": "US",
+          "type": "government",
+          "lineage": [
+            "https://openalex.org/I1311060795"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": true,
+      "raw_author_name": "Leslie J RissleR",
+      "raw_affiliation_strings": [
+        "Division of Environmental Biology, National Science Foundation, Alexandria, Virginia",
+        "Rissler and Hale contributed equally to this paper"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Division of Environmental Biology, National Science Foundation, Alexandria, Virginia",
+          "institution_ids": [
+            "https://openalex.org/I1311060795"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Rissler and Hale contributed equally to this paper",
+          "institution_ids": []
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5022299053",
+        "display_name": "Katherine Hale",
+        "orcid": null
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I1311060795",
+          "display_name": "U.S. National Science Foundation",
+          "ror": "https://ror.org/021nxhr62",
+          "country_code": "US",
+          "type": "government",
+          "lineage": [
+            "https://openalex.org/I1311060795"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I4210135159",
+          "display_name": "National Center for Science and Engineering Statistics",
+          "ror": "https://ror.org/0445wmv88",
+          "country_code": "US",
+          "type": "government",
+          "lineage": [
+            "https://openalex.org/I1311060795",
+            "https://openalex.org/I4210134327",
+            "https://openalex.org/I4210135159"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Katherine L Hale",
+      "raw_affiliation_strings": [
+        "National Center for Science and Engineering Statistics, part of the National Science Foundation, Alexandria, Virginia",
+        "Rissler and Hale contributed equally to this paper"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "National Center for Science and Engineering Statistics, part of the National Science Foundation, Alexandria, Virginia",
+          "institution_ids": [
+            "https://openalex.org/I1311060795",
+            "https://openalex.org/I4210135159"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Rissler and Hale contributed equally to this paper",
+          "institution_ids": []
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5066761711",
+        "display_name": "Nina R. Joffe",
+        "orcid": null
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I10052268",
+          "display_name": "New Mexico State University",
+          "ror": "https://ror.org/00hpz7z43",
+          "country_code": "US",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I10052268"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Nina R Joffe",
+      "raw_affiliation_strings": [
+        "Department of Biology, New Mexico State University, Las Cruces"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Department of Biology, New Mexico State University, Las Cruces",
+          "institution_ids": [
+            "https://openalex.org/I10052268"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "last",
+      "author": {
+        "id": "https://openalex.org/A5084949875",
+        "display_name": "Nicholas M. Caruso",
+        "orcid": "https://orcid.org/0000-0002-1059-6907"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I859038795",
+          "display_name": "Virginia Tech",
+          "ror": "https://ror.org/02smfhw86",
+          "country_code": "US",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I859038795"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Nicholas M Caruso",
+      "raw_affiliation_strings": [
+        "Department of Fish and Wildlife, Virginia Tech, Blacksburg, Virginia"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Department of Fish and Wildlife, Virginia Tech, Blacksburg, Virginia",
+          "institution_ids": [
+            "https://openalex.org/I859038795"
+          ]
+        }
+      ]
+    }
+  ],
+  "institutions": [],
+  "countries_distinct_count": 1,
+  "institutions_distinct_count": 4,
+  "corresponding_author_ids": [
+    "https://openalex.org/A5032471004"
+  ],
+  "corresponding_institution_ids": [
+    "https://openalex.org/I1311060795"
+  ],
+  "apc_list": {
+    "value": 4705,
+    "currency": "USD",
+    "value_usd": 4705
+  },
+  "apc_paid": {
+    "value": 4705,
+    "currency": "USD",
+    "value_usd": 4705
+  },
+  "fwci": 4.7718,
+  "has_fulltext": true,
+  "cited_by_count": 46,
+  "citation_normalized_percentile": {
+    "value": 0.95690227,
+    "is_in_top_1_percent": false,
+    "is_in_top_10_percent": true
+  },
+  "cited_by_percentile_year": {
+    "min": 95,
+    "max": 99
+  },
+  "biblio": {
+    "volume": "70",
+    "issue": "9",
+    "first_page": "814",
+    "last_page": "820"
+  },
+  "is_retracted": false,
+  "is_paratext": false,
+  "is_xpac": false,
+  "primary_topic": {
+    "id": "https://openalex.org/T12168",
+    "display_name": "Health and Medical Research Impacts",
+    "score": 0.9959999918937683,
+    "subfield": {
+      "id": "https://openalex.org/subfields/2739",
+      "display_name": "Public Health, Environmental and Occupational Health"
+    },
+    "field": {
+      "id": "https://openalex.org/fields/27",
+      "display_name": "Medicine"
+    },
+    "domain": {
+      "id": "https://openalex.org/domains/4",
+      "display_name": "Health Sciences"
+    }
+  },
+  "topics": [
+    {
+      "id": "https://openalex.org/T12168",
+      "display_name": "Health and Medical Research Impacts",
+      "score": 0.9959999918937683,
+      "subfield": {
+        "id": "https://openalex.org/subfields/2739",
+        "display_name": "Public Health, Environmental and Occupational Health"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/27",
+        "display_name": "Medicine"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/4",
+        "display_name": "Health Sciences"
+      }
+    },
+    {
+      "id": "https://openalex.org/T10102",
+      "display_name": "scientometrics and bibliometrics research",
+      "score": 0.9857000112533569,
+      "subfield": {
+        "id": "https://openalex.org/subfields/1804",
+        "display_name": "Statistics, Probability and Uncertainty"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/18",
+        "display_name": "Decision Sciences"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/2",
+        "display_name": "Social Sciences"
+      }
+    },
+    {
+      "id": "https://openalex.org/T10843",
+      "display_name": "Diversity and Career in Medicine",
+      "score": 0.9824000000953674,
+      "subfield": {
+        "id": "https://openalex.org/subfields/3318",
+        "display_name": "Gender Studies"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/33",
+        "display_name": "Social Sciences"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/2",
+        "display_name": "Social Sciences"
+      }
+    }
+  ],
+  "keywords": [
+    {
+      "id": "https://openalex.org/keywords/science-and-engineering",
+      "display_name": "Science and engineering",
+      "score": 0.6376082897186279
+    },
+    {
+      "id": "https://openalex.org/keywords/engineering-ethics",
+      "display_name": "Engineering ethics",
+      "score": 0.4376314878463745
+    },
+    {
+      "id": "https://openalex.org/keywords/political-science",
+      "display_name": "Political science",
+      "score": 0.371057391166687
+    },
+    {
+      "id": "https://openalex.org/keywords/engineering",
+      "display_name": "Engineering",
+      "score": 0.34056851267814636
+    },
+    {
+      "id": "https://openalex.org/keywords/library-science",
+      "display_name": "Library science",
+      "score": 0.33525776863098145
+    },
+    {
+      "id": "https://openalex.org/keywords/computer-science",
+      "display_name": "Computer science",
+      "score": 0.16382968425750732
+    }
+  ],
+  "concepts": [
+    {
+      "id": "https://openalex.org/C2993955422",
+      "wikidata": "https://www.wikidata.org/wiki/Q11023",
+      "display_name": "Science and engineering",
+      "level": 2,
+      "score": 0.6376082897186279
+    },
+    {
+      "id": "https://openalex.org/C55587333",
+      "wikidata": "https://www.wikidata.org/wiki/Q1133029",
+      "display_name": "Engineering ethics",
+      "level": 1,
+      "score": 0.4376314878463745
+    },
+    {
+      "id": "https://openalex.org/C17744445",
+      "wikidata": "https://www.wikidata.org/wiki/Q36442",
+      "display_name": "Political science",
+      "level": 0,
+      "score": 0.371057391166687
+    },
+    {
+      "id": "https://openalex.org/C127413603",
+      "wikidata": "https://www.wikidata.org/wiki/Q11023",
+      "display_name": "Engineering",
+      "level": 0,
+      "score": 0.34056851267814636
+    },
+    {
+      "id": "https://openalex.org/C161191863",
+      "wikidata": "https://www.wikidata.org/wiki/Q199655",
+      "display_name": "Library science",
+      "level": 1,
+      "score": 0.33525776863098145
+    },
+    {
+      "id": "https://openalex.org/C41008148",
+      "wikidata": "https://www.wikidata.org/wiki/Q21198",
+      "display_name": "Computer science",
+      "level": 0,
+      "score": 0.16382968425750732
+    }
+  ],
+  "mesh": [],
+  "locations_count": 4,
+  "locations": [
+    {
+      "id": "doi:10.1093/biosci/biaa072",
+      "is_oa": true,
+      "landing_page_url": "https://doi.org/10.1093/biosci/biaa072",
+      "pdf_url": "https://academic.oup.com/bioscience/article-pdf/70/9/814/33750232/biaa072.pdf",
+      "source": {
+        "id": "https://openalex.org/S121830084",
+        "display_name": "BioScience",
+        "issn_l": "0006-3568",
+        "issn": [
+          "0006-3568",
+          "1525-3244"
+        ],
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": true,
+        "host_organization": "https://openalex.org/P4310311648",
+        "host_organization_name": "Oxford University Press",
+        "host_organization_lineage": [
+          "https://openalex.org/P4310311648",
+          "https://openalex.org/P4310311647"
+        ],
+        "host_organization_lineage_names": [
+          "Oxford University Press",
+          "University of Oxford"
+        ],
+        "type": "journal"
+      },
+      "license": "cc-by-nc",
+      "license_id": "https://openalex.org/licenses/cc-by-nc",
+      "version": "publishedVersion",
+      "is_accepted": true,
+      "is_published": true,
+      "raw_source_name": "BioScience",
+      "raw_type": "journal-article"
+    },
+    {
+      "id": "pmid:32973410",
+      "is_oa": false,
+      "landing_page_url": "https://pubmed.ncbi.nlm.nih.gov/32973410",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4306525036",
+        "display_name": "PubMed",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I1299303238",
+        "host_organization_name": "National Institutes of Health",
+        "host_organization_lineage": [
+          "https://openalex.org/I1299303238"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "publishedVersion",
+      "is_accepted": true,
+      "is_published": true,
+      "raw_source_name": "Bioscience",
+      "raw_type": null
+    },
+    {
+      "id": "pmh:oai:pubmedcentral.nih.gov:7498325",
+      "is_oa": true,
+      "landing_page_url": "https://www.ncbi.nlm.nih.gov/pmc/articles/7498325",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S2764455111",
+        "display_name": "PubMed Central",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": true,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I1299303238",
+        "host_organization_name": "National Institutes of Health",
+        "host_organization_lineage": [
+          "https://openalex.org/I1299303238"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "submittedVersion",
+      "is_accepted": false,
+      "is_published": false,
+      "raw_source_name": "Bioscience",
+      "raw_type": "Text"
+    },
+    {
+      "id": "pmh:oai:vtechworks.lib.vt.edu:10919/101063",
+      "is_oa": true,
+      "landing_page_url": "http://hdl.handle.net/10919/101063",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4306400248",
+        "display_name": "VTechWorks (Virginia Tech)",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I859038795",
+        "host_organization_name": "Virginia Tech",
+        "host_organization_lineage": [
+          "https://openalex.org/I859038795"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": "cc-by-nc",
+      "license_id": "https://openalex.org/licenses/cc-by-nc",
+      "version": "submittedVersion",
+      "is_accepted": false,
+      "is_published": false,
+      "raw_source_name": null,
+      "raw_type": "Article - Refereed"
+    }
+  ],
+  "best_oa_location": {
+    "id": "doi:10.1093/biosci/biaa072",
+    "is_oa": true,
+    "landing_page_url": "https://doi.org/10.1093/biosci/biaa072",
+    "pdf_url": "https://academic.oup.com/bioscience/article-pdf/70/9/814/33750232/biaa072.pdf",
+    "source": {
+      "id": "https://openalex.org/S121830084",
+      "display_name": "BioScience",
+      "issn_l": "0006-3568",
+      "issn": [
+        "0006-3568",
+        "1525-3244"
+      ],
+      "is_oa": false,
+      "is_in_doaj": false,
+      "is_core": true,
+      "host_organization": "https://openalex.org/P4310311648",
+      "host_organization_name": "Oxford University Press",
+      "host_organization_lineage": [
+        "https://openalex.org/P4310311648",
+        "https://openalex.org/P4310311647"
+      ],
+      "host_organization_lineage_names": [
+        "Oxford University Press",
+        "University of Oxford"
+      ],
+      "type": "journal"
+    },
+    "license": "cc-by-nc",
+    "license_id": "https://openalex.org/licenses/cc-by-nc",
+    "version": "publishedVersion",
+    "is_accepted": true,
+    "is_published": true,
+    "raw_source_name": "BioScience",
+    "raw_type": "journal-article"
+  },
+  "sustainable_development_goals": [
+    {
+      "score": 0.5099999904632568,
+      "id": "https://metadata.un.org/sdg/5",
+      "display_name": "Gender equality"
+    }
+  ],
+  "awards": [],
+  "funders": [
+    {
+      "id": "https://openalex.org/F4320306076",
+      "display_name": "National Science Foundation",
+      "ror": "https://ror.org/021nxhr62"
+    }
+  ],
+  "has_content": {
+    "pdf": true,
+    "grobid_xml": true
+  },
+  "content_urls": {
+    "pdf": "https://content.openalex.org/works/W3045595131.pdf",
+    "grobid_xml": "https://content.openalex.org/works/W3045595131.grobid-xml"
+  },
+  "referenced_works_count": 54,
+  "referenced_works": [
+    "https://openalex.org/W14700002",
+    "https://openalex.org/W204071738",
+    "https://openalex.org/W643969986",
+    "https://openalex.org/W1506720534",
+    "https://openalex.org/W1535340835",
+    "https://openalex.org/W1543190566",
+    "https://openalex.org/W1577520517",
+    "https://openalex.org/W1977926544",
+    "https://openalex.org/W1994543706",
+    "https://openalex.org/W2016243644",
+    "https://openalex.org/W2022090872",
+    "https://openalex.org/W2028692834",
+    "https://openalex.org/W2028821797",
+    "https://openalex.org/W2047869069",
+    "https://openalex.org/W2051213584",
+    "https://openalex.org/W2064854140",
+    "https://openalex.org/W2102051387",
+    "https://openalex.org/W2103319483",
+    "https://openalex.org/W2108100200",
+    "https://openalex.org/W2132705870",
+    "https://openalex.org/W2133561842",
+    "https://openalex.org/W2135968010",
+    "https://openalex.org/W2136945077",
+    "https://openalex.org/W2152573571",
+    "https://openalex.org/W2153329836",
+    "https://openalex.org/W2162236906",
+    "https://openalex.org/W2185262060",
+    "https://openalex.org/W2189890581",
+    "https://openalex.org/W2190014864",
+    "https://openalex.org/W2192858698",
+    "https://openalex.org/W2469437592",
+    "https://openalex.org/W2478543110",
+    "https://openalex.org/W2530828552",
+    "https://openalex.org/W2564429091",
+    "https://openalex.org/W2580263176",
+    "https://openalex.org/W2582743722",
+    "https://openalex.org/W2591894463",
+    "https://openalex.org/W2740350579",
+    "https://openalex.org/W2800174757",
+    "https://openalex.org/W2800701210",
+    "https://openalex.org/W2801166449",
+    "https://openalex.org/W2884288553",
+    "https://openalex.org/W2901594300",
+    "https://openalex.org/W2913543586",
+    "https://openalex.org/W2936689460",
+    "https://openalex.org/W2996959394",
+    "https://openalex.org/W3004456587",
+    "https://openalex.org/W3006753318",
+    "https://openalex.org/W3009668711",
+    "https://openalex.org/W3134853862",
+    "https://openalex.org/W4247039117",
+    "https://openalex.org/W6630200727",
+    "https://openalex.org/W6632449751",
+    "https://openalex.org/W6682697214"
+  ],
+  "related_works": [
+    "https://openalex.org/W2748952813",
+    "https://openalex.org/W2955725829",
+    "https://openalex.org/W2949263084",
+    "https://openalex.org/W2743539335",
+    "https://openalex.org/W594353338",
+    "https://openalex.org/W2922049016",
+    "https://openalex.org/W4390697879",
+    "https://openalex.org/W2724734218",
+    "https://openalex.org/W4382466601",
+    "https://openalex.org/W2382929921"
+  ],
+  "abstract_inverted_index": {
+    "There": [
+      0
+    ],
+    "has": [
+      1
+    ],
+    "been": [
+      2
+    ],
+    "great": [
+      3
+    ],
+    "growth": [
+      4
+    ],
+    "in": [
+      5,
+      8,
+      17,
+      39,
+      64,
+      90,
+      125,
+      143
+    ],
+    "women's": [
+      6
+    ],
+    "participation": [
+      7
+    ],
+    "the": [
+      9,
+      32,
+      46,
+      80,
+      105,
+      136
+    ],
+    "US": [
+      10
+    ],
+    "academic": [
+      11,
+      26
+    ],
+    "doctoral": [
+      12
+    ],
+    "workforce,": [
+      13
+    ],
+    "but": [
+      14,
+      79,
+      93,
+      110,
+      129
+    ],
+    "underrepresentation": [
+      15
+    ],
+    "remains": [
+      16
+    ],
+    "all": [
+      18,
+      127
+    ],
+    "science": [
+      19,
+      140,
+      144
+    ],
+    "and": [
+      20,
+      37,
+      50,
+      145
+    ],
+    "engineering": [
+      21
+    ],
+    "fields,": [
+      22
+    ],
+    "especially": [
+      23
+    ],
+    "at": [
+      24,
+      104
+    ],
+    "high": [
+      25
+    ],
+    "ranks.": [
+      27
+    ],
+    "We": [
+      28,
+      67
+    ],
+    "obtained": [
+      29
+    ],
+    "estimates": [
+      30
+    ],
+    "of": [
+      31,
+      34,
+      56,
+      82,
+      138
+    ],
+    "numbers": [
+      33,
+      53
+    ],
+    "professorial": [
+      35
+    ],
+    "women": [
+      36,
+      70,
+      83,
+      111
+    ],
+    "men": [
+      38,
+      100,
+      116
+    ],
+    "fields": [
+      40,
+      128
+    ],
+    "likely": [
+      41,
+      73,
+      98,
+      114
+    ],
+    "to": [
+      42,
+      60,
+      74,
+      101,
+      117
+    ],
+    "seek": [
+      43
+    ],
+    "funding": [
+      44
+    ],
+    "from": [
+      45
+    ],
+    "National": [
+      47
+    ],
+    "Science": [
+      48
+    ],
+    "Foundation": [
+      49
+    ],
+    "aligned": [
+      51
+    ],
+    "those": [
+      52
+    ],
+    "with": [
+      54
+    ],
+    "each": [
+      55
+    ],
+    "six": [
+      57
+    ],
+    "research": [
+      58,
+      107,
+      119,
+      141
+    ],
+    "directorates": [
+      59
+    ],
+    "investigate": [
+      61
+    ],
+    "temporal": [
+      62
+    ],
+    "trends": [
+      63
+    ],
+    "submission": [
+      65
+    ],
+    "patterns.": [
+      66
+    ],
+    "found": [
+      68
+    ],
+    "that": [
+      69
+    ],
+    "are": [
+      71,
+      96,
+      112
+    ],
+    "as": [
+      72,
+      77,
+      97,
+      99,
+      120
+    ],
+    "be": [
+      75,
+      102
+    ],
+    "funded": [
+      76
+    ],
+    "men,": [
+      78
+    ],
+    "percentage": [
+      81
+    ],
+    "submitting": [
+      84
+    ],
+    "proposals": [
+      85
+    ],
+    "was": [
+      86
+    ],
+    "less": [
+      87,
+      113
+    ],
+    "than": [
+      88,
+      115
+    ],
+    "expected": [
+      89
+    ],
+    "every": [
+      91
+    ],
+    "field": [
+      92
+    ],
+    "engineering.": [
+      94,
+      130,
+      146
+    ],
+    "Women": [
+      95
+    ],
+    "employed": [
+      103
+    ],
+    "most": [
+      106
+    ],
+    "active": [
+      108
+    ],
+    "institutions,": [
+      109
+    ],
+    "self-report": [
+      118
+    ],
+    "their": [
+      121
+    ],
+    "primary": [
+      122
+    ],
+    "work": [
+      123,
+      132
+    ],
+    "activity": [
+      124
+    ],
+    "almost": [
+      126
+    ],
+    "This": [
+      131
+    ],
+    "imbalance": [
+      133
+    ],
+    "ultimately": [
+      134
+    ],
+    "limits": [
+      135
+    ],
+    "diversity": [
+      137
+    ],
+    "basic": [
+      139
+    ],
+    "ideas": [
+      142
+    ]
+  },
+  "counts_by_year": [
+    {
+      "year": 2026,
+      "cited_by_count": 1
+    },
+    {
+      "year": 2025,
+      "cited_by_count": 9
+    },
+    {
+      "year": 2024,
+      "cited_by_count": 9
+    },
+    {
+      "year": 2023,
+      "cited_by_count": 7
+    },
+    {
+      "year": 2022,
+      "cited_by_count": 7
+    },
+    {
+      "year": 2021,
+      "cited_by_count": 10
+    },
+    {
+      "year": 2020,
+      "cited_by_count": 3
+    }
+  ],
+  "updated_date": "2026-07-02T09:51:11.867554",
+  "created_date": "2020-08-03T00:00:00"
+}

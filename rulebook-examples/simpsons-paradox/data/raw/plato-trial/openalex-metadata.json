@@ -1,0 +1,4105 @@
+{
+  "id": "https://openalex.org/W2748517697",
+  "doi": "https://doi.org/10.1016/s0140-6736(17)32155-4",
+  "title": "Guided de-escalation of antiplatelet treatment in patients with acute coronary syndrome undergoing percutaneous coronary intervention (TROPICAL-ACS): a randomised, open-label, multicentre trial",
+  "display_name": "Guided de-escalation of antiplatelet treatment in patients with acute coronary syndrome undergoing percutaneous coronary intervention (TROPICAL-ACS): a randomised, open-label, multicentre trial",
+  "relevance_score": 163.47893,
+  "publication_year": 2017,
+  "publication_date": "2017-08-28",
+  "ids": {
+    "openalex": "https://openalex.org/W2748517697",
+    "doi": "https://doi.org/10.1016/s0140-6736(17)32155-4",
+    "mag": "2748517697",
+    "pmid": "https://pubmed.ncbi.nlm.nih.gov/28855078"
+  },
+  "language": "en",
+  "primary_location": {
+    "id": "doi:10.1016/s0140-6736(17)32155-4",
+    "is_oa": true,
+    "landing_page_url": "https://doi.org/10.1016/s0140-6736(17)32155-4",
+    "pdf_url": "http://www.thelancet.com/article/S0140673617321554/pdf",
+    "source": {
+      "id": "https://openalex.org/S49861241",
+      "display_name": "The Lancet",
+      "issn_l": "0140-6736",
+      "issn": [
+        "0140-6736",
+        "1474-547X"
+      ],
+      "is_oa": false,
+      "is_in_doaj": false,
+      "is_core": true,
+      "host_organization": "https://openalex.org/P4310320990",
+      "host_organization_name": "Elsevier BV",
+      "host_organization_lineage": [
+        "https://openalex.org/P4310320990"
+      ],
+      "host_organization_lineage_names": [
+        "Elsevier BV"
+      ],
+      "type": "journal"
+    },
+    "license": null,
+    "license_id": null,
+    "version": "publishedVersion",
+    "is_accepted": true,
+    "is_published": true,
+    "raw_source_name": "The Lancet",
+    "raw_type": "journal-article"
+  },
+  "type": "article",
+  "indexed_in": [
+    "crossref",
+    "pubmed"
+  ],
+  "open_access": {
+    "is_oa": true,
+    "oa_status": "bronze",
+    "oa_url": "http://www.thelancet.com/article/S0140673617321554/pdf",
+    "any_repository_has_fulltext": false
+  },
+  "authorships": [
+    {
+      "author_position": "first",
+      "author": {
+        "id": "https://openalex.org/A5078073832",
+        "display_name": "Dirk Sibbing",
+        "orcid": "https://orcid.org/0000-0002-0698-2696"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I3018771216",
+          "display_name": "LMU Klinikum",
+          "ror": "https://ror.org/02jet3w32",
+          "country_code": "DE",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I3018771216",
+            "https://openalex.org/I8204097"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I4210127591",
+          "display_name": "German Centre for Cardiovascular Research",
+          "ror": "https://ror.org/031t5w623",
+          "country_code": "DE",
+          "type": "facility",
+          "lineage": [
+            "https://openalex.org/I4210127591",
+            "https://openalex.org/I4405256427"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I4210148371",
+          "display_name": "Deutsches Herzzentrum M\u00fcnchen",
+          "ror": "https://ror.org/04hbwba26",
+          "country_code": "DE",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I4210148371",
+            "https://openalex.org/I62916508"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I8204097",
+          "display_name": "Ludwig-Maximilians-Universit\u00e4t M\u00fcnchen",
+          "ror": "https://ror.org/05591te55",
+          "country_code": "DE",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I8204097"
+          ]
+        }
+      ],
+      "countries": [
+        "DE"
+      ],
+      "is_corresponding": true,
+      "raw_author_name": "Dirk Sibbing",
+      "raw_affiliation_strings": [
+        "Department of Cardiology, LMU M\u00fcnchen, Munich, Germany; DZHK (German Centre for Cardiovascular Research), Munich Heart Alliance, Munich, Germany. Electronic address: dirk.sibbing@med.uni-muenchen.de",
+        "DZHK (German Centre for Cardiovascular Research), Munich Heart Alliance, Munich, Germany",
+        "Department of Cardiology, LMU M\u00fcnchen, Munich, Germany"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Department of Cardiology, LMU M\u00fcnchen, Munich, Germany; DZHK (German Centre for Cardiovascular Research), Munich Heart Alliance, Munich, Germany. Electronic address: dirk.sibbing@med.uni-muenchen.de",
+          "institution_ids": [
+            "https://openalex.org/I8204097",
+            "https://openalex.org/I4210148371",
+            "https://openalex.org/I4210127591"
+          ]
+        },
+        {
+          "raw_affiliation_string": "DZHK (German Centre for Cardiovascular Research), Munich Heart Alliance, Munich, Germany",
+          "institution_ids": [
+            "https://openalex.org/I4210127591"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Department of Cardiology, LMU M\u00fcnchen, Munich, Germany",
+          "institution_ids": [
+            "https://openalex.org/I3018771216",
+            "https://openalex.org/I8204097"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5012467226",
+        "display_name": "D\u00e1niel Aradi",
+        "orcid": "https://orcid.org/0000-0003-1833-2516"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I101202996",
+          "display_name": "Semmelweis University",
+          "ror": "https://ror.org/01g9ty582",
+          "country_code": "HU",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I101202996"
+          ]
+        }
+      ],
+      "countries": [
+        "HU"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "D\u00e1niel Aradi",
+      "raw_affiliation_strings": [
+        "Heart Centre Balatonf\u00fcred and Heart and Vascular Centre, Semmelweis University, Budapest, Hungary"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Heart Centre Balatonf\u00fcred and Heart and Vascular Centre, Semmelweis University, Budapest, Hungary",
+          "institution_ids": [
+            "https://openalex.org/I101202996"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5058517274",
+        "display_name": "Claudius Jacobshagen",
+        "orcid": null
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I74656192",
+          "display_name": "University of G\u00f6ttingen",
+          "ror": "https://ror.org/01y9bpm73",
+          "country_code": "DE",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I74656192"
+          ]
+        }
+      ],
+      "countries": [
+        "DE"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Claudius Jacobshagen",
+      "raw_affiliation_strings": [
+        "Department of Cardiology und Pneumology, Heart Centre/Georg-August-University G\u00f6ttingen, G\u00f6ttingen, Germany"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Department of Cardiology und Pneumology, Heart Centre/Georg-August-University G\u00f6ttingen, G\u00f6ttingen, Germany",
+          "institution_ids": [
+            "https://openalex.org/I74656192"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5032412677",
+        "display_name": "Lisa Gro\u00df",
+        "orcid": null
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I3018771216",
+          "display_name": "LMU Klinikum",
+          "ror": "https://ror.org/02jet3w32",
+          "country_code": "DE",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I3018771216",
+            "https://openalex.org/I8204097"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I8204097",
+          "display_name": "Ludwig-Maximilians-Universit\u00e4t M\u00fcnchen",
+          "ror": "https://ror.org/05591te55",
+          "country_code": "DE",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I8204097"
+          ]
+        }
+      ],
+      "countries": [
+        "DE"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Lisa Gross",
+      "raw_affiliation_strings": [
+        "Department of Cardiology, LMU M\u00fcnchen, Munich, Germany"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Department of Cardiology, LMU M\u00fcnchen, Munich, Germany",
+          "institution_ids": [
+            "https://openalex.org/I3018771216",
+            "https://openalex.org/I8204097"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5068846586",
+        "display_name": "Dietmar Trenk",
+        "orcid": "https://orcid.org/0000-0003-0505-7121"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I4210133302",
+          "display_name": "Universit\u00e4ts-Herzzentrum Freiburg-Bad Krozingen",
+          "ror": "https://ror.org/02w6m7e50",
+          "country_code": "DE",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I2801240073",
+            "https://openalex.org/I4210133302"
+          ]
+        }
+      ],
+      "countries": [
+        "DE"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Dietmar Trenk",
+      "raw_affiliation_strings": [
+        "Department of Cardiology and Angiology II, University Heart Centre Freiburg, Bad Krozingen, Germany"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Department of Cardiology and Angiology II, University Heart Centre Freiburg, Bad Krozingen, Germany",
+          "institution_ids": [
+            "https://openalex.org/I4210133302"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5090714953",
+        "display_name": "Tobias Geisler",
+        "orcid": "https://orcid.org/0000-0002-8864-6038"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I4210125796",
+          "display_name": "University Children's Hospital T\u00fcbingen",
+          "ror": "https://ror.org/03esvmb28",
+          "country_code": "DE",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I4210094118",
+            "https://openalex.org/I4210125796"
+          ]
+        }
+      ],
+      "countries": [
+        "DE"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Tobias Geisler",
+      "raw_affiliation_strings": [
+        "University Hospital T\u00fcbingen, Department of Cardiology and Cardiovascular Disease, T\u00fcbingen, Germany"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "University Hospital T\u00fcbingen, Department of Cardiology and Cardiovascular Disease, T\u00fcbingen, Germany",
+          "institution_ids": [
+            "https://openalex.org/I4210125796"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5026854902",
+        "display_name": "Martin Orban",
+        "orcid": "https://orcid.org/0000-0001-9830-1941"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I3018771216",
+          "display_name": "LMU Klinikum",
+          "ror": "https://ror.org/02jet3w32",
+          "country_code": "DE",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I3018771216",
+            "https://openalex.org/I8204097"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I8204097",
+          "display_name": "Ludwig-Maximilians-Universit\u00e4t M\u00fcnchen",
+          "ror": "https://ror.org/05591te55",
+          "country_code": "DE",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I8204097"
+          ]
+        }
+      ],
+      "countries": [
+        "DE"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Martin Orban",
+      "raw_affiliation_strings": [
+        "Department of Cardiology, LMU M\u00fcnchen, Munich, Germany"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Department of Cardiology, LMU M\u00fcnchen, Munich, Germany",
+          "institution_ids": [
+            "https://openalex.org/I3018771216",
+            "https://openalex.org/I8204097"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5039606590",
+        "display_name": "Martin Hadamitzky",
+        "orcid": "https://orcid.org/0000-0001-6267-1692"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I4210105663",
+          "display_name": "Deutsches Herzzentrum der Charit\u00e9",
+          "ror": "https://ror.org/01mmady97",
+          "country_code": "DE",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I4210105663",
+            "https://openalex.org/I7877124"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I4210148371",
+          "display_name": "Deutsches Herzzentrum M\u00fcnchen",
+          "ror": "https://ror.org/04hbwba26",
+          "country_code": "DE",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I4210148371",
+            "https://openalex.org/I62916508"
+          ]
+        }
+      ],
+      "countries": [
+        "DE"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Martin Hadamitzky",
+      "raw_affiliation_strings": [
+        "Department of Radiology, Deutsches Herzzentrum, M\u00fcnchen, Germany"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Department of Radiology, Deutsches Herzzentrum, M\u00fcnchen, Germany",
+          "institution_ids": [
+            "https://openalex.org/I4210105663",
+            "https://openalex.org/I4210148371"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5086692319",
+        "display_name": "B\u00e9la Merkely",
+        "orcid": "https://orcid.org/0000-0001-6514-0723"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I101202996",
+          "display_name": "Semmelweis University",
+          "ror": "https://ror.org/01g9ty582",
+          "country_code": "HU",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I101202996"
+          ]
+        }
+      ],
+      "countries": [
+        "HU"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "B\u00e9la Merkely",
+      "raw_affiliation_strings": [
+        "Heart and Vascular Centre, University of Semmelweis, Budapest, Hungary"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Heart and Vascular Centre, University of Semmelweis, Budapest, Hungary",
+          "institution_ids": [
+            "https://openalex.org/I101202996"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5015803547",
+        "display_name": "R\u00f3bert G\u00e1bor Kiss",
+        "orcid": "https://orcid.org/0000-0003-0514-7530"
+      },
+      "institutions": [],
+      "countries": [],
+      "is_corresponding": false,
+      "raw_author_name": "R\u00f3bert G\u00e1bor Kiss",
+      "raw_affiliation_strings": [
+        "Department of Cardiology, Military Hospital, Budapest, Hungary"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Department of Cardiology, Military Hospital, Budapest, Hungary",
+          "institution_ids": []
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5073075473",
+        "display_name": "Andr\u00e1s Kom\u00f3csi",
+        "orcid": "https://orcid.org/0000-0002-8170-1778"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I79741316",
+          "display_name": "University of Pecs",
+          "ror": "https://ror.org/037b5pv06",
+          "country_code": "HU",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I79741316"
+          ]
+        }
+      ],
+      "countries": [
+        "HU"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Andr\u00e1s Kom\u00f3csi",
+      "raw_affiliation_strings": [
+        "Department of Interventional Cardiology, Heart Institute, University of P\u00e9cs, P\u00e9cs, Hungary"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Department of Interventional Cardiology, Heart Institute, University of P\u00e9cs, P\u00e9cs, Hungary",
+          "institution_ids": [
+            "https://openalex.org/I79741316"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5070827922",
+        "display_name": "Csaba Andr\u00e1s D\u00e9zsi",
+        "orcid": "https://orcid.org/0000-0002-7203-0423"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I4210146066",
+          "display_name": "Petz Alad\u00e1r Megyei Oktat\u00f3 K\u00f3rh\u00e1z",
+          "ror": "https://ror.org/03vqk1b90",
+          "country_code": "HU",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I4210146066"
+          ]
+        }
+      ],
+      "countries": [
+        "HU"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Csaba A D\u00e9zsi",
+      "raw_affiliation_strings": [
+        "Department of Cardiology, Petz Alad\u00e1r County Teaching Hospital, Gy\u0151r, Hungary"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Department of Cardiology, Petz Alad\u00e1r County Teaching Hospital, Gy\u0151r, Hungary",
+          "institution_ids": [
+            "https://openalex.org/I4210146066"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5024120001",
+        "display_name": "Lesca M. Holdt",
+        "orcid": "https://orcid.org/0000-0001-5735-4975"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I3018771216",
+          "display_name": "LMU Klinikum",
+          "ror": "https://ror.org/02jet3w32",
+          "country_code": "DE",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I3018771216",
+            "https://openalex.org/I8204097"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I8204097",
+          "display_name": "Ludwig-Maximilians-Universit\u00e4t M\u00fcnchen",
+          "ror": "https://ror.org/05591te55",
+          "country_code": "DE",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I8204097"
+          ]
+        }
+      ],
+      "countries": [
+        "DE"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Lesca Holdt",
+      "raw_affiliation_strings": [
+        "Institute of Laboratory Medicine, University Hospital, LMU Munich, Munich, Germany"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Institute of Laboratory Medicine, University Hospital, LMU Munich, Munich, Germany",
+          "institution_ids": [
+            "https://openalex.org/I3018771216",
+            "https://openalex.org/I8204097"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5068746352",
+        "display_name": "Stephan B. Felix",
+        "orcid": "https://orcid.org/0000-0002-0744-091X"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I2799318839",
+          "display_name": "Universit\u00e4tsmedizin Greifswald",
+          "ror": "https://ror.org/025vngs54",
+          "country_code": "DE",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I2799318839"
+          ]
+        }
+      ],
+      "countries": [
+        "DE"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Stephan B Felix",
+      "raw_affiliation_strings": [
+        "Department of Internal Medicine B, University Medicine Greifswald, Germany and DZHK, Greifswald, Germany"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Department of Internal Medicine B, University Medicine Greifswald, Germany and DZHK, Greifswald, Germany",
+          "institution_ids": [
+            "https://openalex.org/I2799318839"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5011329696",
+        "display_name": "Rados\u0142aw Parma",
+        "orcid": "https://orcid.org/0000-0002-7304-7315"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I166182418",
+          "display_name": "Medical University of Silesia",
+          "ror": "https://ror.org/005k7hp45",
+          "country_code": "PL",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I166182418"
+          ]
+        }
+      ],
+      "countries": [
+        "PL"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Radoslaw Parma",
+      "raw_affiliation_strings": [
+        "3rd Department of Cardiology, Medical University of Silesia, Katowice, Poland"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "3rd Department of Cardiology, Medical University of Silesia, Katowice, Poland",
+          "institution_ids": [
+            "https://openalex.org/I166182418"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5059085598",
+        "display_name": "Mariusz K\u0142opotowski",
+        "orcid": "https://orcid.org/0000-0002-4316-5417"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I4210136231",
+          "display_name": "Institute of Cardiology",
+          "ror": "https://ror.org/03h2xy876",
+          "country_code": "PL",
+          "type": "facility",
+          "lineage": [
+            "https://openalex.org/I4210136231"
+          ]
+        }
+      ],
+      "countries": [
+        "PL"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Mariusz Klopotowski",
+      "raw_affiliation_strings": [
+        "Department of Interventional Cardiology and Angiology, Institute of Cardiology, Warsaw, Poland"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Department of Interventional Cardiology and Angiology, Institute of Cardiology, Warsaw, Poland",
+          "institution_ids": [
+            "https://openalex.org/I4210136231"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5070285488",
+        "display_name": "Robert H. G. Schwinger",
+        "orcid": null
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I4210109620",
+          "display_name": "Klinikum Weiden",
+          "ror": "https://ror.org/02506kf89",
+          "country_code": "DE",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I4210109620"
+          ]
+        }
+      ],
+      "countries": [
+        "DE"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Robert H G Schwinger",
+      "raw_affiliation_strings": [
+        "Medizinische Klinik II, Klinikum Weiden, Kliniken Nordoberpfalz AG, Weiden, Germany"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Medizinische Klinik II, Klinikum Weiden, Kliniken Nordoberpfalz AG, Weiden, Germany",
+          "institution_ids": [
+            "https://openalex.org/I4210109620"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5023790190",
+        "display_name": "Johannes Rieber",
+        "orcid": null
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I3019520666",
+          "display_name": "M\u00fcnchen Klinik Bogenhausen",
+          "ror": "https://ror.org/011x7hd11",
+          "country_code": "DE",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I3019520666",
+            "https://openalex.org/I4210121101"
+          ]
+        }
+      ],
+      "countries": [
+        "DE"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Johannes Rieber",
+      "raw_affiliation_strings": [
+        "Heart Centre Munich-Bogenhausen, Department of Cardiology and Intensive Care Medicine, Munich, Germany"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Heart Centre Munich-Bogenhausen, Department of Cardiology and Intensive Care Medicine, Munich, Germany",
+          "institution_ids": [
+            "https://openalex.org/I3019520666"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5077862111",
+        "display_name": "Kurt Huber",
+        "orcid": "https://orcid.org/0000-0002-7934-5524"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I109570744",
+          "display_name": "Sigmund Freud Privatuniversit\u00e4t Wien",
+          "ror": "https://ror.org/04hwbg047",
+          "country_code": "AT",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I109570744"
+          ]
+        }
+      ],
+      "countries": [
+        "AT"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Kurt Huber",
+      "raw_affiliation_strings": [
+        "3rd Medical Department, Cardiology and Intensive Care Medicine, and Sigmund Freud Private University, Medical School, Wien, Austria"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "3rd Medical Department, Cardiology and Intensive Care Medicine, and Sigmund Freud Private University, Medical School, Wien, Austria",
+          "institution_ids": [
+            "https://openalex.org/I109570744"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5102012040",
+        "display_name": "Franz\u2010Josef Neumann",
+        "orcid": "https://orcid.org/0000-0002-0921-8351"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I4210133302",
+          "display_name": "Universit\u00e4ts-Herzzentrum Freiburg-Bad Krozingen",
+          "ror": "https://ror.org/02w6m7e50",
+          "country_code": "DE",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I2801240073",
+            "https://openalex.org/I4210133302"
+          ]
+        }
+      ],
+      "countries": [
+        "DE"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Franz-Josef Neumann",
+      "raw_affiliation_strings": [
+        "Department of Cardiology and Angiology II, University Heart Centre Freiburg, Bad Krozingen, Germany"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Department of Cardiology and Angiology II, University Heart Centre Freiburg, Bad Krozingen, Germany",
+          "institution_ids": [
+            "https://openalex.org/I4210133302"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5063780377",
+        "display_name": "\u0141ukasz Ko\u0142towski",
+        "orcid": "https://orcid.org/0000-0003-0477-2094"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I268303160",
+          "display_name": "Medical University of Warsaw",
+          "ror": "https://ror.org/04p2y4s44",
+          "country_code": "PL",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I268303160"
+          ]
+        }
+      ],
+      "countries": [
+        "PL"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Lukasz Koltowski",
+      "raw_affiliation_strings": [
+        "1st Department of Cardiology, Medical University of Warsaw, Warsaw, Poland"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "1st Department of Cardiology, Medical University of Warsaw, Warsaw, Poland",
+          "institution_ids": [
+            "https://openalex.org/I268303160"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5070212671",
+        "display_name": "Julinda Mehilli",
+        "orcid": "https://orcid.org/0000-0002-8750-5567"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I3018771216",
+          "display_name": "LMU Klinikum",
+          "ror": "https://ror.org/02jet3w32",
+          "country_code": "DE",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I3018771216",
+            "https://openalex.org/I8204097"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I4210127591",
+          "display_name": "German Centre for Cardiovascular Research",
+          "ror": "https://ror.org/031t5w623",
+          "country_code": "DE",
+          "type": "facility",
+          "lineage": [
+            "https://openalex.org/I4210127591",
+            "https://openalex.org/I4405256427"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I4210148371",
+          "display_name": "Deutsches Herzzentrum M\u00fcnchen",
+          "ror": "https://ror.org/04hbwba26",
+          "country_code": "DE",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I4210148371",
+            "https://openalex.org/I62916508"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I8204097",
+          "display_name": "Ludwig-Maximilians-Universit\u00e4t M\u00fcnchen",
+          "ror": "https://ror.org/05591te55",
+          "country_code": "DE",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I8204097"
+          ]
+        }
+      ],
+      "countries": [
+        "DE"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Julinda Mehilli",
+      "raw_affiliation_strings": [
+        "Department of Cardiology, LMU M\u00fcnchen, Munich, Germany; DZHK (German Centre for Cardiovascular Research), Munich Heart Alliance, Munich, Germany",
+        "Department of Cardiology, LMU M\u00fcnchen, Munich, Germany",
+        "DZHK (German Centre for Cardiovascular Research), Munich Heart Alliance, Munich, Germany"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Department of Cardiology, LMU M\u00fcnchen, Munich, Germany; DZHK (German Centre for Cardiovascular Research), Munich Heart Alliance, Munich, Germany",
+          "institution_ids": [
+            "https://openalex.org/I8204097",
+            "https://openalex.org/I4210148371",
+            "https://openalex.org/I4210127591"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Department of Cardiology, LMU M\u00fcnchen, Munich, Germany",
+          "institution_ids": [
+            "https://openalex.org/I3018771216",
+            "https://openalex.org/I8204097"
+          ]
+        },
+        {
+          "raw_affiliation_string": "DZHK (German Centre for Cardiovascular Research), Munich Heart Alliance, Munich, Germany",
+          "institution_ids": [
+            "https://openalex.org/I4210127591"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5076996249",
+        "display_name": "Zenon Huczek",
+        "orcid": "https://orcid.org/0000-0002-5912-2649"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I268303160",
+          "display_name": "Medical University of Warsaw",
+          "ror": "https://ror.org/04p2y4s44",
+          "country_code": "PL",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I268303160"
+          ]
+        }
+      ],
+      "countries": [
+        "PL"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Zenon Huczek",
+      "raw_affiliation_strings": [
+        "1st Department of Cardiology, Medical University of Warsaw, Warsaw, Poland"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "1st Department of Cardiology, Medical University of Warsaw, Warsaw, Poland",
+          "institution_ids": [
+            "https://openalex.org/I268303160"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5007093669",
+        "display_name": "Steffen Ma\u00dfberg",
+        "orcid": "https://orcid.org/0000-0001-7387-3986"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I3018771216",
+          "display_name": "LMU Klinikum",
+          "ror": "https://ror.org/02jet3w32",
+          "country_code": "DE",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I3018771216",
+            "https://openalex.org/I8204097"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I4210127591",
+          "display_name": "German Centre for Cardiovascular Research",
+          "ror": "https://ror.org/031t5w623",
+          "country_code": "DE",
+          "type": "facility",
+          "lineage": [
+            "https://openalex.org/I4210127591",
+            "https://openalex.org/I4405256427"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I4210148371",
+          "display_name": "Deutsches Herzzentrum M\u00fcnchen",
+          "ror": "https://ror.org/04hbwba26",
+          "country_code": "DE",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I4210148371",
+            "https://openalex.org/I62916508"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I8204097",
+          "display_name": "Ludwig-Maximilians-Universit\u00e4t M\u00fcnchen",
+          "ror": "https://ror.org/05591te55",
+          "country_code": "DE",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I8204097"
+          ]
+        }
+      ],
+      "countries": [
+        "DE"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Steffen Massberg",
+      "raw_affiliation_strings": [
+        "Department of Cardiology, LMU M\u00fcnchen, Munich, Germany; DZHK (German Centre for Cardiovascular Research), Munich Heart Alliance, Munich, Germany",
+        "Department of Cardiology, LMU M\u00fcnchen, Munich, Germany",
+        "DZHK (German Centre for Cardiovascular Research), Munich Heart Alliance, Munich, Germany"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Department of Cardiology, LMU M\u00fcnchen, Munich, Germany; DZHK (German Centre for Cardiovascular Research), Munich Heart Alliance, Munich, Germany",
+          "institution_ids": [
+            "https://openalex.org/I8204097",
+            "https://openalex.org/I4210148371",
+            "https://openalex.org/I4210127591"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Department of Cardiology, LMU M\u00fcnchen, Munich, Germany",
+          "institution_ids": [
+            "https://openalex.org/I3018771216",
+            "https://openalex.org/I8204097"
+          ]
+        },
+        {
+          "raw_affiliation_string": "DZHK (German Centre for Cardiovascular Research), Munich Heart Alliance, Munich, Germany",
+          "institution_ids": [
+            "https://openalex.org/I4210127591"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5011329696",
+        "display_name": "Rados\u0142aw Parma",
+        "orcid": "https://orcid.org/0000-0002-7304-7315"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I166182418",
+          "display_name": "Medical University of Silesia",
+          "ror": "https://ror.org/005k7hp45",
+          "country_code": "PL",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I166182418"
+          ]
+        }
+      ],
+      "countries": [
+        "PL"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Radoslaw Parma",
+      "raw_affiliation_strings": [
+        "3rd Department of Cardiology, Medical University of Silesia, Katowice, Poland"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "3rd Department of Cardiology, Medical University of Silesia, Katowice, Poland",
+          "institution_ids": [
+            "https://openalex.org/I166182418"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": null,
+        "display_name": "Zofia Parma",
+        "orcid": null
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I166182418",
+          "display_name": "Medical University of Silesia",
+          "ror": "https://ror.org/005k7hp45",
+          "country_code": "PL",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I166182418"
+          ]
+        }
+      ],
+      "countries": [
+        "PL"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Zofia Parma",
+      "raw_affiliation_strings": [
+        "3rd Department of Cardiology, Medical University of Silesia, Katowice, Poland"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "3rd Department of Cardiology, Medical University of Silesia, Katowice, Poland",
+          "institution_ids": [
+            "https://openalex.org/I166182418"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5071273910",
+        "display_name": "Maciej Lesiak",
+        "orcid": "https://orcid.org/0000-0003-2630-5016"
+      },
+      "institutions": [],
+      "countries": [],
+      "is_corresponding": false,
+      "raw_author_name": "Maciej Lesiak",
+      "raw_affiliation_strings": [],
+      "raw_orcid": null,
+      "affiliations": []
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5005212470",
+        "display_name": "Anna Komosa",
+        "orcid": "https://orcid.org/0000-0002-4085-1569"
+      },
+      "institutions": [],
+      "countries": [],
+      "is_corresponding": false,
+      "raw_author_name": "Anna Komosa",
+      "raw_affiliation_strings": [],
+      "raw_orcid": null,
+      "affiliations": []
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5076996249",
+        "display_name": "Zenon Huczek",
+        "orcid": "https://orcid.org/0000-0002-5912-2649"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I268303160",
+          "display_name": "Medical University of Warsaw",
+          "ror": "https://ror.org/04p2y4s44",
+          "country_code": "PL",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I268303160"
+          ]
+        }
+      ],
+      "countries": [
+        "PL"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Zenon Huczek",
+      "raw_affiliation_strings": [
+        "1st Department of Cardiology, Medical University of Warsaw, Warsaw, Poland"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "1st Department of Cardiology, Medical University of Warsaw, Warsaw, Poland",
+          "institution_ids": [
+            "https://openalex.org/I268303160"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5063780377",
+        "display_name": "\u0141ukasz Ko\u0142towski",
+        "orcid": "https://orcid.org/0000-0003-0477-2094"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I268303160",
+          "display_name": "Medical University of Warsaw",
+          "ror": "https://ror.org/04p2y4s44",
+          "country_code": "PL",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I268303160"
+          ]
+        }
+      ],
+      "countries": [
+        "PL"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Lukasz Koltowski",
+      "raw_affiliation_strings": [
+        "1st Department of Cardiology, Medical University of Warsaw, Warsaw, Poland"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "1st Department of Cardiology, Medical University of Warsaw, Warsaw, Poland",
+          "institution_ids": [
+            "https://openalex.org/I268303160"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5010270019",
+        "display_name": "Micha\u0142 Kowara",
+        "orcid": "https://orcid.org/0000-0003-3689-4192"
+      },
+      "institutions": [],
+      "countries": [],
+      "is_corresponding": false,
+      "raw_author_name": "Michal Kowara",
+      "raw_affiliation_strings": [],
+      "raw_orcid": null,
+      "affiliations": []
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5085574277",
+        "display_name": "Bartosz Rymuza",
+        "orcid": null
+      },
+      "institutions": [],
+      "countries": [],
+      "is_corresponding": false,
+      "raw_author_name": "Bartosz Rymuza",
+      "raw_affiliation_strings": [],
+      "raw_orcid": null,
+      "affiliations": []
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5059085598",
+        "display_name": "Mariusz K\u0142opotowski",
+        "orcid": "https://orcid.org/0000-0002-4316-5417"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I4210136231",
+          "display_name": "Institute of Cardiology",
+          "ror": "https://ror.org/03h2xy876",
+          "country_code": "PL",
+          "type": "facility",
+          "lineage": [
+            "https://openalex.org/I4210136231"
+          ]
+        }
+      ],
+      "countries": [
+        "PL"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Mariusz Klopotowski",
+      "raw_affiliation_strings": [
+        "Department of Interventional Cardiology and Angiology, Institute of Cardiology, Warsaw, Poland"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Department of Interventional Cardiology and Angiology, Institute of Cardiology, Warsaw, Poland",
+          "institution_ids": [
+            "https://openalex.org/I4210136231"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5063799377",
+        "display_name": "\u0141ukasz A. Ma\u0142ek",
+        "orcid": "https://orcid.org/0000-0002-9586-0163"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I268303160",
+          "display_name": "Medical University of Warsaw",
+          "ror": "https://ror.org/04p2y4s44",
+          "country_code": "PL",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I268303160"
+          ]
+        }
+      ],
+      "countries": [
+        "PL"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Lukasz Malek",
+      "raw_affiliation_strings": [
+        "1st Department of Cardiology, Medical University of Warsaw, Warsaw, Poland"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "1st Department of Cardiology, Medical University of Warsaw, Warsaw, Poland",
+          "institution_ids": [
+            "https://openalex.org/I268303160"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5012467226",
+        "display_name": "D\u00e1niel Aradi",
+        "orcid": "https://orcid.org/0000-0003-1833-2516"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I101202996",
+          "display_name": "Semmelweis University",
+          "ror": "https://ror.org/01g9ty582",
+          "country_code": "HU",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I101202996"
+          ]
+        }
+      ],
+      "countries": [
+        "HU"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Daniel Aradi",
+      "raw_affiliation_strings": [
+        "Heart Centre Balatonf\u00fcred and Heart and Vascular Centre, Semmelweis University, Budapest, Hungary"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Heart Centre Balatonf\u00fcred and Heart and Vascular Centre, Semmelweis University, Budapest, Hungary",
+          "institution_ids": [
+            "https://openalex.org/I101202996"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5109036044",
+        "display_name": "G\u00e1bor Veress",
+        "orcid": null
+      },
+      "institutions": [],
+      "countries": [],
+      "is_corresponding": false,
+      "raw_author_name": "G\u00e1bor Veress",
+      "raw_affiliation_strings": [
+        "Department of Cardiology, Military Hospital, Budapest, Hungary"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Department of Cardiology, Military Hospital, Budapest, Hungary",
+          "institution_ids": []
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5066539762",
+        "display_name": "Andr\u00e1s D\u00f6me D\u00e9zsi",
+        "orcid": null
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I4210146066",
+          "display_name": "Petz Alad\u00e1r Megyei Oktat\u00f3 K\u00f3rh\u00e1z",
+          "ror": "https://ror.org/03vqk1b90",
+          "country_code": "HU",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I4210146066"
+          ]
+        }
+      ],
+      "countries": [
+        "HU"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Andr\u00e1s D\u00f6me D\u00e9zsi",
+      "raw_affiliation_strings": [
+        "Department of Cardiology, Petz Alad\u00e1r County Teaching Hospital, Gy\u0151r, Hungary"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Department of Cardiology, Petz Alad\u00e1r County Teaching Hospital, Gy\u0151r, Hungary",
+          "institution_ids": [
+            "https://openalex.org/I4210146066"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5086692319",
+        "display_name": "B\u00e9la Merkely",
+        "orcid": "https://orcid.org/0000-0001-6514-0723"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I101202996",
+          "display_name": "Semmelweis University",
+          "ror": "https://ror.org/01g9ty582",
+          "country_code": "HU",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I101202996"
+          ]
+        }
+      ],
+      "countries": [
+        "HU"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "B\u00e9la Merkely",
+      "raw_affiliation_strings": [
+        "Heart and Vascular Centre, University of Semmelweis, Budapest, Hungary"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Heart and Vascular Centre, University of Semmelweis, Budapest, Hungary",
+          "institution_ids": [
+            "https://openalex.org/I101202996"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5026204720",
+        "display_name": "\u00c1rp\u00e1d Lux",
+        "orcid": "https://orcid.org/0000-0002-7048-5619"
+      },
+      "institutions": [],
+      "countries": [],
+      "is_corresponding": false,
+      "raw_author_name": "\u00c1rp\u00e1d Lux",
+      "raw_affiliation_strings": [],
+      "raw_orcid": null,
+      "affiliations": []
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5015803547",
+        "display_name": "R\u00f3bert G\u00e1bor Kiss",
+        "orcid": "https://orcid.org/0000-0003-0514-7530"
+      },
+      "institutions": [],
+      "countries": [],
+      "is_corresponding": false,
+      "raw_author_name": "R\u00f3bert G\u00e1bor Kiss",
+      "raw_affiliation_strings": [
+        "Department of Cardiology, Military Hospital, Budapest, Hungary"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Department of Cardiology, Military Hospital, Budapest, Hungary",
+          "institution_ids": []
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5006283505",
+        "display_name": "Judit Papp",
+        "orcid": null
+      },
+      "institutions": [],
+      "countries": [],
+      "is_corresponding": false,
+      "raw_author_name": "Judit Papp",
+      "raw_affiliation_strings": [],
+      "raw_orcid": null,
+      "affiliations": []
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5032644224",
+        "display_name": "Andrea Kov\u00e1cs",
+        "orcid": "https://orcid.org/0000-0002-1799-6743"
+      },
+      "institutions": [],
+      "countries": [],
+      "is_corresponding": false,
+      "raw_author_name": "Andrea Kov\u00e1cs",
+      "raw_affiliation_strings": [],
+      "raw_orcid": null,
+      "affiliations": []
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5070827922",
+        "display_name": "Csaba Andr\u00e1s D\u00e9zsi",
+        "orcid": "https://orcid.org/0000-0002-7203-0423"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I4210146066",
+          "display_name": "Petz Alad\u00e1r Megyei Oktat\u00f3 K\u00f3rh\u00e1z",
+          "ror": "https://ror.org/03vqk1b90",
+          "country_code": "HU",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I4210146066"
+          ]
+        }
+      ],
+      "countries": [
+        "HU"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Csaba Andr\u00e1s D\u00e9zsi",
+      "raw_affiliation_strings": [
+        "Department of Cardiology, Petz Alad\u00e1r County Teaching Hospital, Gy\u0151r, Hungary"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Department of Cardiology, Petz Alad\u00e1r County Teaching Hospital, Gy\u0151r, Hungary",
+          "institution_ids": [
+            "https://openalex.org/I4210146066"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5056348559",
+        "display_name": "Sayour Amer",
+        "orcid": null
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I101202996",
+          "display_name": "Semmelweis University",
+          "ror": "https://ror.org/01g9ty582",
+          "country_code": "HU",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I101202996"
+          ]
+        }
+      ],
+      "countries": [
+        "HU"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Sayour Amer",
+      "raw_affiliation_strings": [
+        "Heart and Vascular Centre, University of Semmelweis, Budapest, Hungary"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Heart and Vascular Centre, University of Semmelweis, Budapest, Hungary",
+          "institution_ids": [
+            "https://openalex.org/I101202996"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5023974390",
+        "display_name": "Zolt\u00e1n Ruzsa",
+        "orcid": "https://orcid.org/0000-0002-2474-5723"
+      },
+      "institutions": [],
+      "countries": [],
+      "is_corresponding": false,
+      "raw_author_name": "Zolt\u00e1n Ruzsa",
+      "raw_affiliation_strings": [],
+      "raw_orcid": null,
+      "affiliations": []
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5028779602",
+        "display_name": "Szil\u00e1rd R\u00f3na",
+        "orcid": null
+      },
+      "institutions": [],
+      "countries": [],
+      "is_corresponding": false,
+      "raw_author_name": "Szil\u00e1rd R\u00f3na",
+      "raw_affiliation_strings": [],
+      "raw_orcid": null,
+      "affiliations": []
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5073075473",
+        "display_name": "Andr\u00e1s Kom\u00f3csi",
+        "orcid": "https://orcid.org/0000-0002-8170-1778"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I79741316",
+          "display_name": "University of Pecs",
+          "ror": "https://ror.org/037b5pv06",
+          "country_code": "HU",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I79741316"
+          ]
+        }
+      ],
+      "countries": [
+        "HU"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Andr\u00e1s Kom\u00f3csi",
+      "raw_affiliation_strings": [
+        "Department of Interventional Cardiology, Heart Institute, University of P\u00e9cs, P\u00e9cs, Hungary"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Department of Interventional Cardiology, Heart Institute, University of P\u00e9cs, P\u00e9cs, Hungary",
+          "institution_ids": [
+            "https://openalex.org/I79741316"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5062934696",
+        "display_name": "Ren\u00e1ta Ili",
+        "orcid": null
+      },
+      "institutions": [],
+      "countries": [],
+      "is_corresponding": false,
+      "raw_author_name": "Ren\u00e1ta Ili",
+      "raw_affiliation_strings": [],
+      "raw_orcid": null,
+      "affiliations": []
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5008587276",
+        "display_name": "Imre Ungi",
+        "orcid": "https://orcid.org/0000-0002-2011-0069"
+      },
+      "institutions": [],
+      "countries": [],
+      "is_corresponding": false,
+      "raw_author_name": "Imre Ungi",
+      "raw_affiliation_strings": [],
+      "raw_orcid": null,
+      "affiliations": []
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5105462999",
+        "display_name": "Ferenc Nagy",
+        "orcid": "https://orcid.org/0000-0003-3741-1818"
+      },
+      "institutions": [],
+      "countries": [],
+      "is_corresponding": false,
+      "raw_author_name": "Ferenc Nagy",
+      "raw_affiliation_strings": [],
+      "raw_orcid": null,
+      "affiliations": []
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5031424552",
+        "display_name": "Robert Zweiker",
+        "orcid": "https://orcid.org/0000-0001-5407-9832"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I4210109620",
+          "display_name": "Klinikum Weiden",
+          "ror": "https://ror.org/02506kf89",
+          "country_code": "DE",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I4210109620"
+          ]
+        }
+      ],
+      "countries": [
+        "DE"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Robert Zweiker",
+      "raw_affiliation_strings": [
+        "Medizinische Klinik II, Klinikum Weiden, Kliniken Nordoberpfalz AG, Weiden, Germany"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Medizinische Klinik II, Klinikum Weiden, Kliniken Nordoberpfalz AG, Weiden, Germany",
+          "institution_ids": [
+            "https://openalex.org/I4210109620"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5071253688",
+        "display_name": "G\u00e1bor T\u00f3th-Gayor",
+        "orcid": null
+      },
+      "institutions": [],
+      "countries": [],
+      "is_corresponding": false,
+      "raw_author_name": "G\u00e1bor T\u00f3th-Gayor",
+      "raw_affiliation_strings": [
+        "Department of Cardiology, Military Hospital, Budapest, Hungary"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Department of Cardiology, Military Hospital, Budapest, Hungary",
+          "institution_ids": []
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5077862111",
+        "display_name": "Kurt Huber",
+        "orcid": "https://orcid.org/0000-0002-7934-5524"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I109570744",
+          "display_name": "Sigmund Freud Privatuniversit\u00e4t Wien",
+          "ror": "https://ror.org/04hwbg047",
+          "country_code": "AT",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I109570744"
+          ]
+        }
+      ],
+      "countries": [
+        "AT"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Kurt Huber",
+      "raw_affiliation_strings": [
+        "3rd Medical Department, Cardiology and Intensive Care Medicine, and Sigmund Freud Private University, Medical School, Wien, Austria"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "3rd Medical Department, Cardiology and Intensive Care Medicine, and Sigmund Freud Private University, Medical School, Wien, Austria",
+          "institution_ids": [
+            "https://openalex.org/I109570744"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5074632243",
+        "display_name": "Paul M. Haller",
+        "orcid": "https://orcid.org/0000-0002-7714-4446"
+      },
+      "institutions": [],
+      "countries": [],
+      "is_corresponding": false,
+      "raw_author_name": "Paul Haller",
+      "raw_affiliation_strings": [],
+      "raw_orcid": null,
+      "affiliations": []
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5069956889",
+        "display_name": "Wolfgang von Scheidt",
+        "orcid": "https://orcid.org/0000-0003-4740-7783"
+      },
+      "institutions": [],
+      "countries": [],
+      "is_corresponding": false,
+      "raw_author_name": "Wolfgang von Scheidt",
+      "raw_affiliation_strings": [],
+      "raw_orcid": null,
+      "affiliations": []
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5065821537",
+        "display_name": "A. Bl\u00fcthgen",
+        "orcid": null
+      },
+      "institutions": [],
+      "countries": [],
+      "is_corresponding": false,
+      "raw_author_name": "Andreas Bl\u00fcthgen",
+      "raw_affiliation_strings": [],
+      "raw_orcid": null,
+      "affiliations": []
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5102012040",
+        "display_name": "Franz\u2010Josef Neumann",
+        "orcid": "https://orcid.org/0000-0002-0921-8351"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I4210133302",
+          "display_name": "Universit\u00e4ts-Herzzentrum Freiburg-Bad Krozingen",
+          "ror": "https://ror.org/02w6m7e50",
+          "country_code": "DE",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I2801240073",
+            "https://openalex.org/I4210133302"
+          ]
+        }
+      ],
+      "countries": [
+        "DE"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Franz-Josef Neumann",
+      "raw_affiliation_strings": [
+        "Department of Cardiology and Angiology II, University Heart Centre Freiburg, Bad Krozingen, Germany"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Department of Cardiology and Angiology II, University Heart Centre Freiburg, Bad Krozingen, Germany",
+          "institution_ids": [
+            "https://openalex.org/I4210133302"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5068846586",
+        "display_name": "Dietmar Trenk",
+        "orcid": "https://orcid.org/0000-0003-0505-7121"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I4210133302",
+          "display_name": "Universit\u00e4ts-Herzzentrum Freiburg-Bad Krozingen",
+          "ror": "https://ror.org/02w6m7e50",
+          "country_code": "DE",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I2801240073",
+            "https://openalex.org/I4210133302"
+          ]
+        }
+      ],
+      "countries": [
+        "DE"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Dietmar Trenk",
+      "raw_affiliation_strings": [
+        "Department of Cardiology and Angiology II, University Heart Centre Freiburg, Bad Krozingen, Germany"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Department of Cardiology and Angiology II, University Heart Centre Freiburg, Bad Krozingen, Germany",
+          "institution_ids": [
+            "https://openalex.org/I4210133302"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5108568577",
+        "display_name": "Stefan Leggewie",
+        "orcid": null
+      },
+      "institutions": [],
+      "countries": [],
+      "is_corresponding": false,
+      "raw_author_name": "Stefan Leggewie",
+      "raw_affiliation_strings": [],
+      "raw_orcid": null,
+      "affiliations": []
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5069933073",
+        "display_name": "Hans Ulrich Kreider-Stempfle",
+        "orcid": null
+      },
+      "institutions": [],
+      "countries": [],
+      "is_corresponding": false,
+      "raw_author_name": "Hans Ulrich Kreider-Stempfle",
+      "raw_affiliation_strings": [],
+      "raw_orcid": null,
+      "affiliations": []
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5059336715",
+        "display_name": "T. Remp",
+        "orcid": null
+      },
+      "institutions": [],
+      "countries": [],
+      "is_corresponding": false,
+      "raw_author_name": "Thomas Remp",
+      "raw_affiliation_strings": [],
+      "raw_orcid": null,
+      "affiliations": []
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5057805683",
+        "display_name": "Kaffer Kara",
+        "orcid": null
+      },
+      "institutions": [],
+      "countries": [],
+      "is_corresponding": false,
+      "raw_author_name": "Kaffer Kara",
+      "raw_affiliation_strings": [],
+      "raw_orcid": null,
+      "affiliations": []
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5043893807",
+        "display_name": "Andreas M\u00fcgge",
+        "orcid": "https://orcid.org/0000-0001-9548-6995"
+      },
+      "institutions": [],
+      "countries": [],
+      "is_corresponding": false,
+      "raw_author_name": "Andreas M\u00fcgge",
+      "raw_affiliation_strings": [],
+      "raw_orcid": null,
+      "affiliations": []
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5079008202",
+        "display_name": "Alexander Wutzler",
+        "orcid": "https://orcid.org/0000-0003-4562-4848"
+      },
+      "institutions": [],
+      "countries": [],
+      "is_corresponding": false,
+      "raw_author_name": "Alexander Wutzler",
+      "raw_affiliation_strings": [],
+      "raw_orcid": null,
+      "affiliations": []
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5109439965",
+        "display_name": "Stephan Fichtlscherer",
+        "orcid": null
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I2799318839",
+          "display_name": "Universit\u00e4tsmedizin Greifswald",
+          "ror": "https://ror.org/025vngs54",
+          "country_code": "DE",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I2799318839"
+          ]
+        }
+      ],
+      "countries": [
+        "DE"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Stephan Fichtlscherer",
+      "raw_affiliation_strings": [
+        "Department of Internal Medicine B, University Medicine Greifswald, Germany and DZHK, Greifswald, Germany"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Department of Internal Medicine B, University Medicine Greifswald, Germany and DZHK, Greifswald, Germany",
+          "institution_ids": [
+            "https://openalex.org/I2799318839"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5061907666",
+        "display_name": "Andreas M. Zeiher",
+        "orcid": "https://orcid.org/0000-0003-1711-5819"
+      },
+      "institutions": [],
+      "countries": [],
+      "is_corresponding": false,
+      "raw_author_name": "Andreas M. Zeiher",
+      "raw_affiliation_strings": [],
+      "raw_orcid": null,
+      "affiliations": []
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5109985171",
+        "display_name": "Florian Seeger",
+        "orcid": null
+      },
+      "institutions": [],
+      "countries": [],
+      "is_corresponding": false,
+      "raw_author_name": "Florian Seeger",
+      "raw_affiliation_strings": [],
+      "raw_orcid": null,
+      "affiliations": []
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5024510648",
+        "display_name": "Martin Hinterseer",
+        "orcid": "https://orcid.org/0000-0001-7165-1095"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I4210105663",
+          "display_name": "Deutsches Herzzentrum der Charit\u00e9",
+          "ror": "https://ror.org/01mmady97",
+          "country_code": "DE",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I4210105663",
+            "https://openalex.org/I7877124"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I4210148371",
+          "display_name": "Deutsches Herzzentrum M\u00fcnchen",
+          "ror": "https://ror.org/04hbwba26",
+          "country_code": "DE",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I4210148371",
+            "https://openalex.org/I62916508"
+          ]
+        }
+      ],
+      "countries": [
+        "DE"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Martin Hinterseer",
+      "raw_affiliation_strings": [
+        "Department of Radiology, Deutsches Herzzentrum, M\u00fcnchen, Germany"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Department of Radiology, Deutsches Herzzentrum, M\u00fcnchen, Germany",
+          "institution_ids": [
+            "https://openalex.org/I4210105663",
+            "https://openalex.org/I4210148371"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5103285063",
+        "display_name": "Andreas K\u00f6nig",
+        "orcid": "https://orcid.org/0000-0002-1515-5158"
+      },
+      "institutions": [],
+      "countries": [],
+      "is_corresponding": false,
+      "raw_author_name": "Andreas K\u00f6nig",
+      "raw_affiliation_strings": [],
+      "raw_orcid": null,
+      "affiliations": []
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5010425460",
+        "display_name": "Susanne Lederle",
+        "orcid": null
+      },
+      "institutions": [],
+      "countries": [],
+      "is_corresponding": false,
+      "raw_author_name": "Susanne Lederle",
+      "raw_affiliation_strings": [],
+      "raw_orcid": null,
+      "affiliations": []
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5058517274",
+        "display_name": "Claudius Jacobshagen",
+        "orcid": null
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I74656192",
+          "display_name": "University of G\u00f6ttingen",
+          "ror": "https://ror.org/01y9bpm73",
+          "country_code": "DE",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I74656192"
+          ]
+        }
+      ],
+      "countries": [
+        "DE"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Claudius Jacobshagen",
+      "raw_affiliation_strings": [
+        "Department of Cardiology und Pneumology, Heart Centre/Georg-August-University G\u00f6ttingen, G\u00f6ttingen, Germany"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Department of Cardiology und Pneumology, Heart Centre/Georg-August-University G\u00f6ttingen, G\u00f6ttingen, Germany",
+          "institution_ids": [
+            "https://openalex.org/I74656192"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5107896017",
+        "display_name": "Frauke Czepluch",
+        "orcid": null
+      },
+      "institutions": [],
+      "countries": [],
+      "is_corresponding": false,
+      "raw_author_name": "Frauke Czepluch",
+      "raw_affiliation_strings": [],
+      "raw_orcid": null,
+      "affiliations": []
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5090637595",
+        "display_name": "Lars S. Maier",
+        "orcid": "https://orcid.org/0000-0001-9915-4429"
+      },
+      "institutions": [],
+      "countries": [],
+      "is_corresponding": false,
+      "raw_author_name": "Lars Maier",
+      "raw_affiliation_strings": [],
+      "raw_orcid": null,
+      "affiliations": []
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5110835750",
+        "display_name": "Wolfgang Schillinger",
+        "orcid": null
+      },
+      "institutions": [],
+      "countries": [],
+      "is_corresponding": false,
+      "raw_author_name": "Wolfgang Schillinger",
+      "raw_affiliation_strings": [],
+      "raw_orcid": null,
+      "affiliations": []
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5020872201",
+        "display_name": "Samuel Sossalla",
+        "orcid": "https://orcid.org/0000-0001-8034-2673"
+      },
+      "institutions": [],
+      "countries": [],
+      "is_corresponding": false,
+      "raw_author_name": "Samuel Sossalla",
+      "raw_affiliation_strings": [],
+      "raw_orcid": null,
+      "affiliations": []
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5105988258",
+        "display_name": "Astrid Hummel",
+        "orcid": null
+      },
+      "institutions": [],
+      "countries": [],
+      "is_corresponding": false,
+      "raw_author_name": "Astrid Hummel",
+      "raw_affiliation_strings": [],
+      "raw_orcid": null,
+      "affiliations": []
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5068746352",
+        "display_name": "Stephan B. Felix",
+        "orcid": "https://orcid.org/0000-0002-0744-091X"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I2799318839",
+          "display_name": "Universit\u00e4tsmedizin Greifswald",
+          "ror": "https://ror.org/025vngs54",
+          "country_code": "DE",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I2799318839"
+          ]
+        }
+      ],
+      "countries": [
+        "DE"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Stephan Felix",
+      "raw_affiliation_strings": [
+        "Department of Internal Medicine B, University Medicine Greifswald, Germany and DZHK, Greifswald, Germany"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Department of Internal Medicine B, University Medicine Greifswald, Germany and DZHK, Greifswald, Germany",
+          "institution_ids": [
+            "https://openalex.org/I2799318839"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5082796931",
+        "display_name": "Mahir Karakas",
+        "orcid": "https://orcid.org/0000-0002-5715-2959"
+      },
+      "institutions": [],
+      "countries": [],
+      "is_corresponding": false,
+      "raw_author_name": "Mahir Karakas",
+      "raw_affiliation_strings": [],
+      "raw_orcid": null,
+      "affiliations": []
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5111385893",
+        "display_name": "Karsten Sydow",
+        "orcid": null
+      },
+      "institutions": [],
+      "countries": [],
+      "is_corresponding": false,
+      "raw_author_name": "Karsten Sydow",
+      "raw_affiliation_strings": [],
+      "raw_orcid": null,
+      "affiliations": []
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5087159018",
+        "display_name": "Tanja K. Rudolph",
+        "orcid": "https://orcid.org/0000-0001-8839-7476"
+      },
+      "institutions": [],
+      "countries": [],
+      "is_corresponding": false,
+      "raw_author_name": "Tanja Rudolph",
+      "raw_affiliation_strings": [],
+      "raw_orcid": null,
+      "affiliations": []
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5079453349",
+        "display_name": "Marcel Halbach",
+        "orcid": "https://orcid.org/0000-0002-6361-5825"
+      },
+      "institutions": [],
+      "countries": [],
+      "is_corresponding": false,
+      "raw_author_name": "Marcel Halbach",
+      "raw_affiliation_strings": [],
+      "raw_orcid": null,
+      "affiliations": []
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5088608614",
+        "display_name": "Tommaso Gori",
+        "orcid": "https://orcid.org/0000-0003-2917-6707"
+      },
+      "institutions": [],
+      "countries": [],
+      "is_corresponding": false,
+      "raw_author_name": "Tommaso Gori",
+      "raw_affiliation_strings": [],
+      "raw_orcid": null,
+      "affiliations": []
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5113521673",
+        "display_name": "Thomas M\u00fcnzel",
+        "orcid": null
+      },
+      "institutions": [],
+      "countries": [],
+      "is_corresponding": false,
+      "raw_author_name": "Thomas M\u00fcnzel",
+      "raw_affiliation_strings": [],
+      "raw_orcid": null,
+      "affiliations": []
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5111635076",
+        "display_name": "Andreas E. May",
+        "orcid": null
+      },
+      "institutions": [],
+      "countries": [],
+      "is_corresponding": false,
+      "raw_author_name": "Andreas May",
+      "raw_affiliation_strings": [],
+      "raw_orcid": null,
+      "affiliations": []
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5067061807",
+        "display_name": "Carsten-Manuel Gerstenberg",
+        "orcid": null
+      },
+      "institutions": [],
+      "countries": [],
+      "is_corresponding": false,
+      "raw_author_name": "Carsten-Manuel Gerstenberg",
+      "raw_affiliation_strings": [],
+      "raw_orcid": null,
+      "affiliations": []
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5050331385",
+        "display_name": "D\u00e1vid Pilecky",
+        "orcid": "https://orcid.org/0000-0001-7232-9698"
+      },
+      "institutions": [],
+      "countries": [],
+      "is_corresponding": false,
+      "raw_author_name": "David Pilecky",
+      "raw_affiliation_strings": [],
+      "raw_orcid": null,
+      "affiliations": []
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5023790190",
+        "display_name": "Johannes Rieber",
+        "orcid": null
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I3019520666",
+          "display_name": "M\u00fcnchen Klinik Bogenhausen",
+          "ror": "https://ror.org/011x7hd11",
+          "country_code": "DE",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I3019520666",
+            "https://openalex.org/I4210121101"
+          ]
+        }
+      ],
+      "countries": [
+        "DE"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Johannes Rieber",
+      "raw_affiliation_strings": [
+        "Heart Centre Munich-Bogenhausen, Department of Cardiology and Intensive Care Medicine, Munich, Germany"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Heart Centre Munich-Bogenhausen, Department of Cardiology and Intensive Care Medicine, Munich, Germany",
+          "institution_ids": [
+            "https://openalex.org/I3019520666"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5060522655",
+        "display_name": "Markus Deichstetter",
+        "orcid": null
+      },
+      "institutions": [],
+      "countries": [],
+      "is_corresponding": false,
+      "raw_author_name": "Markus Deichstetter",
+      "raw_affiliation_strings": [],
+      "raw_orcid": null,
+      "affiliations": []
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5078073832",
+        "display_name": "Dirk Sibbing",
+        "orcid": "https://orcid.org/0000-0002-0698-2696"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I3018771216",
+          "display_name": "LMU Klinikum",
+          "ror": "https://ror.org/02jet3w32",
+          "country_code": "DE",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I3018771216",
+            "https://openalex.org/I8204097"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I4210127591",
+          "display_name": "German Centre for Cardiovascular Research",
+          "ror": "https://ror.org/031t5w623",
+          "country_code": "DE",
+          "type": "facility",
+          "lineage": [
+            "https://openalex.org/I4210127591",
+            "https://openalex.org/I4405256427"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I4210148371",
+          "display_name": "Deutsches Herzzentrum M\u00fcnchen",
+          "ror": "https://ror.org/04hbwba26",
+          "country_code": "DE",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I4210148371",
+            "https://openalex.org/I62916508"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I8204097",
+          "display_name": "Ludwig-Maximilians-Universit\u00e4t M\u00fcnchen",
+          "ror": "https://ror.org/05591te55",
+          "country_code": "DE",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I8204097"
+          ]
+        }
+      ],
+      "countries": [
+        "DE"
+      ],
+      "is_corresponding": true,
+      "raw_author_name": "Dirk Sibbing",
+      "raw_affiliation_strings": [
+        "Department of Cardiology, LMU M\u00fcnchen, Munich, Germany; DZHK (German Centre for Cardiovascular Research), Munich Heart Alliance, Munich, Germany. Electronic address: dirk.sibbing@med.uni-muenchen.de",
+        "Department of Cardiology, LMU M\u00fcnchen, Munich, Germany",
+        "DZHK (German Centre for Cardiovascular Research), Munich Heart Alliance, Munich, Germany"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Department of Cardiology, LMU M\u00fcnchen, Munich, Germany; DZHK (German Centre for Cardiovascular Research), Munich Heart Alliance, Munich, Germany. Electronic address: dirk.sibbing@med.uni-muenchen.de",
+          "institution_ids": [
+            "https://openalex.org/I8204097",
+            "https://openalex.org/I4210148371",
+            "https://openalex.org/I4210127591"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Department of Cardiology, LMU M\u00fcnchen, Munich, Germany",
+          "institution_ids": [
+            "https://openalex.org/I3018771216",
+            "https://openalex.org/I8204097"
+          ]
+        },
+        {
+          "raw_affiliation_string": "DZHK (German Centre for Cardiovascular Research), Munich Heart Alliance, Munich, Germany",
+          "institution_ids": [
+            "https://openalex.org/I4210127591"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5070212671",
+        "display_name": "Julinda Mehilli",
+        "orcid": "https://orcid.org/0000-0002-8750-5567"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I3018771216",
+          "display_name": "LMU Klinikum",
+          "ror": "https://ror.org/02jet3w32",
+          "country_code": "DE",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I3018771216",
+            "https://openalex.org/I8204097"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I4210127591",
+          "display_name": "German Centre for Cardiovascular Research",
+          "ror": "https://ror.org/031t5w623",
+          "country_code": "DE",
+          "type": "facility",
+          "lineage": [
+            "https://openalex.org/I4210127591",
+            "https://openalex.org/I4405256427"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I4210148371",
+          "display_name": "Deutsches Herzzentrum M\u00fcnchen",
+          "ror": "https://ror.org/04hbwba26",
+          "country_code": "DE",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I4210148371",
+            "https://openalex.org/I62916508"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I8204097",
+          "display_name": "Ludwig-Maximilians-Universit\u00e4t M\u00fcnchen",
+          "ror": "https://ror.org/05591te55",
+          "country_code": "DE",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I8204097"
+          ]
+        }
+      ],
+      "countries": [
+        "DE"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Julinda Mehilli",
+      "raw_affiliation_strings": [
+        "Department of Cardiology, LMU M\u00fcnchen, Munich, Germany; DZHK (German Centre for Cardiovascular Research), Munich Heart Alliance, Munich, Germany",
+        "DZHK (German Centre for Cardiovascular Research), Munich Heart Alliance, Munich, Germany",
+        "Department of Cardiology, LMU M\u00fcnchen, Munich, Germany"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Department of Cardiology, LMU M\u00fcnchen, Munich, Germany; DZHK (German Centre for Cardiovascular Research), Munich Heart Alliance, Munich, Germany",
+          "institution_ids": [
+            "https://openalex.org/I8204097",
+            "https://openalex.org/I4210148371",
+            "https://openalex.org/I4210127591"
+          ]
+        },
+        {
+          "raw_affiliation_string": "DZHK (German Centre for Cardiovascular Research), Munich Heart Alliance, Munich, Germany",
+          "institution_ids": [
+            "https://openalex.org/I4210127591"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Department of Cardiology, LMU M\u00fcnchen, Munich, Germany",
+          "institution_ids": [
+            "https://openalex.org/I3018771216",
+            "https://openalex.org/I8204097"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5032412677",
+        "display_name": "Lisa Gro\u00df",
+        "orcid": null
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I3018771216",
+          "display_name": "LMU Klinikum",
+          "ror": "https://ror.org/02jet3w32",
+          "country_code": "DE",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I3018771216",
+            "https://openalex.org/I8204097"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I8204097",
+          "display_name": "Ludwig-Maximilians-Universit\u00e4t M\u00fcnchen",
+          "ror": "https://ror.org/05591te55",
+          "country_code": "DE",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I8204097"
+          ]
+        }
+      ],
+      "countries": [
+        "DE"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Lisa Gross",
+      "raw_affiliation_strings": [
+        "Department of Cardiology, LMU M\u00fcnchen, Munich, Germany"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Department of Cardiology, LMU M\u00fcnchen, Munich, Germany",
+          "institution_ids": [
+            "https://openalex.org/I3018771216",
+            "https://openalex.org/I8204097"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5019224180",
+        "display_name": "Stefan K\u00e4\u00e4b",
+        "orcid": "https://orcid.org/0000-0001-8824-3581"
+      },
+      "institutions": [],
+      "countries": [],
+      "is_corresponding": false,
+      "raw_author_name": "Stefan K\u00e4\u00e4b",
+      "raw_affiliation_strings": [],
+      "raw_orcid": null,
+      "affiliations": []
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5051458048",
+        "display_name": "Anja L\u00f6w",
+        "orcid": null
+      },
+      "institutions": [],
+      "countries": [],
+      "is_corresponding": false,
+      "raw_author_name": "Anja L\u00f6w",
+      "raw_affiliation_strings": [],
+      "raw_orcid": null,
+      "affiliations": []
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5026854902",
+        "display_name": "Martin Orban",
+        "orcid": "https://orcid.org/0000-0001-9830-1941"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I3018771216",
+          "display_name": "LMU Klinikum",
+          "ror": "https://ror.org/02jet3w32",
+          "country_code": "DE",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I3018771216",
+            "https://openalex.org/I8204097"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I8204097",
+          "display_name": "Ludwig-Maximilians-Universit\u00e4t M\u00fcnchen",
+          "ror": "https://ror.org/05591te55",
+          "country_code": "DE",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I8204097"
+          ]
+        }
+      ],
+      "countries": [
+        "DE"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Martin Orban",
+      "raw_affiliation_strings": [
+        "Department of Cardiology, LMU M\u00fcnchen, Munich, Germany"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Department of Cardiology, LMU M\u00fcnchen, Munich, Germany",
+          "institution_ids": [
+            "https://openalex.org/I3018771216",
+            "https://openalex.org/I8204097"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5108641763",
+        "display_name": "Matthias Orban",
+        "orcid": null
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I3018771216",
+          "display_name": "LMU Klinikum",
+          "ror": "https://ror.org/02jet3w32",
+          "country_code": "DE",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I3018771216",
+            "https://openalex.org/I8204097"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I8204097",
+          "display_name": "Ludwig-Maximilians-Universit\u00e4t M\u00fcnchen",
+          "ror": "https://ror.org/05591te55",
+          "country_code": "DE",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I8204097"
+          ]
+        }
+      ],
+      "countries": [
+        "DE"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Matthias Orban",
+      "raw_affiliation_strings": [
+        "Department of Cardiology, LMU M\u00fcnchen, Munich, Germany"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Department of Cardiology, LMU M\u00fcnchen, Munich, Germany",
+          "institution_ids": [
+            "https://openalex.org/I3018771216",
+            "https://openalex.org/I8204097"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5018688491",
+        "display_name": "Stefan M. Sattler",
+        "orcid": "https://orcid.org/0000-0003-3558-8329"
+      },
+      "institutions": [],
+      "countries": [],
+      "is_corresponding": false,
+      "raw_author_name": "Stefan Sattler",
+      "raw_affiliation_strings": [],
+      "raw_orcid": null,
+      "affiliations": []
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5035145624",
+        "display_name": "Sabine Deuschl",
+        "orcid": null
+      },
+      "institutions": [],
+      "countries": [],
+      "is_corresponding": false,
+      "raw_author_name": "Sabine Deuschl",
+      "raw_affiliation_strings": [],
+      "raw_orcid": null,
+      "affiliations": []
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5085927011",
+        "display_name": "Daniel Teupser",
+        "orcid": null
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I101202996",
+          "display_name": "Semmelweis University",
+          "ror": "https://ror.org/01g9ty582",
+          "country_code": "HU",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I101202996"
+          ]
+        }
+      ],
+      "countries": [
+        "HU"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Daniel Teupser",
+      "raw_affiliation_strings": [
+        "Heart Centre Balatonf\u00fcred and Heart and Vascular Centre, Semmelweis University, Budapest, Hungary"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Heart Centre Balatonf\u00fcred and Heart and Vascular Centre, Semmelweis University, Budapest, Hungary",
+          "institution_ids": [
+            "https://openalex.org/I101202996"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5024120001",
+        "display_name": "Lesca M. Holdt",
+        "orcid": "https://orcid.org/0000-0001-5735-4975"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I3018771216",
+          "display_name": "LMU Klinikum",
+          "ror": "https://ror.org/02jet3w32",
+          "country_code": "DE",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I3018771216",
+            "https://openalex.org/I8204097"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I8204097",
+          "display_name": "Ludwig-Maximilians-Universit\u00e4t M\u00fcnchen",
+          "ror": "https://ror.org/05591te55",
+          "country_code": "DE",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I8204097"
+          ]
+        }
+      ],
+      "countries": [
+        "DE"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Lesca Holdt",
+      "raw_affiliation_strings": [
+        "Institute of Laboratory Medicine, University Hospital, LMU Munich, Munich, Germany"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Institute of Laboratory Medicine, University Hospital, LMU Munich, Munich, Germany",
+          "institution_ids": [
+            "https://openalex.org/I3018771216",
+            "https://openalex.org/I8204097"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5033843573",
+        "display_name": "Harald Mudra",
+        "orcid": "https://orcid.org/0000-0002-8520-7849"
+      },
+      "institutions": [],
+      "countries": [],
+      "is_corresponding": false,
+      "raw_author_name": "Harald Mudra",
+      "raw_affiliation_strings": [],
+      "raw_orcid": null,
+      "affiliations": []
+    }
+  ],
+  "institutions": [],
+  "countries_distinct_count": 4,
+  "institutions_distinct_count": 18,
+  "corresponding_author_ids": [
+    "https://openalex.org/A5078073832"
+  ],
+  "corresponding_institution_ids": [
+    "https://openalex.org/I3018771216",
+    "https://openalex.org/I4210127591",
+    "https://openalex.org/I4210148371",
+    "https://openalex.org/I8204097"
+  ],
+  "apc_list": {
+    "value": 6830,
+    "currency": "USD",
+    "value_usd": 6830
+  },
+  "apc_paid": null,
+  "fwci": 42.9286,
+  "has_fulltext": true,
+  "cited_by_count": 592,
+  "citation_normalized_percentile": {
+    "value": 0.99893601,
+    "is_in_top_1_percent": true,
+    "is_in_top_10_percent": true
+  },
+  "cited_by_percentile_year": {
+    "min": 99,
+    "max": 100
+  },
+  "biblio": {
+    "volume": "390",
+    "issue": "10104",
+    "first_page": "1747",
+    "last_page": "1757"
+  },
+  "is_retracted": false,
+  "is_paratext": false,
+  "is_xpac": false,
+  "primary_topic": {
+    "id": "https://openalex.org/T11064",
+    "display_name": "Antiplatelet Therapy and Cardiovascular Diseases",
+    "score": 0.9732999801635742,
+    "subfield": {
+      "id": "https://openalex.org/subfields/2705",
+      "display_name": "Cardiology and Cardiovascular Medicine"
+    },
+    "field": {
+      "id": "https://openalex.org/fields/27",
+      "display_name": "Medicine"
+    },
+    "domain": {
+      "id": "https://openalex.org/domains/4",
+      "display_name": "Health Sciences"
+    }
+  },
+  "topics": [
+    {
+      "id": "https://openalex.org/T11064",
+      "display_name": "Antiplatelet Therapy and Cardiovascular Diseases",
+      "score": 0.9732999801635742,
+      "subfield": {
+        "id": "https://openalex.org/subfields/2705",
+        "display_name": "Cardiology and Cardiovascular Medicine"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/27",
+        "display_name": "Medicine"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/4",
+        "display_name": "Health Sciences"
+      }
+    },
+    {
+      "id": "https://openalex.org/T10292",
+      "display_name": "Acute Myocardial Infarction Research",
+      "score": 0.011800000444054604,
+      "subfield": {
+        "id": "https://openalex.org/subfields/2705",
+        "display_name": "Cardiology and Cardiovascular Medicine"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/27",
+        "display_name": "Medicine"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/4",
+        "display_name": "Health Sciences"
+      }
+    },
+    {
+      "id": "https://openalex.org/T10065",
+      "display_name": "Atrial Fibrillation Management and Outcomes",
+      "score": 0.0024999999441206455,
+      "subfield": {
+        "id": "https://openalex.org/subfields/2705",
+        "display_name": "Cardiology and Cardiovascular Medicine"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/27",
+        "display_name": "Medicine"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/4",
+        "display_name": "Health Sciences"
+      }
+    }
+  ],
+  "keywords": [
+    {
+      "id": "https://openalex.org/keywords/prasugrel",
+      "display_name": "Prasugrel",
+      "score": 0.9385350942611694
+    },
+    {
+      "id": "https://openalex.org/keywords/medicine",
+      "display_name": "Medicine",
+      "score": 0.9289945363998413
+    },
+    {
+      "id": "https://openalex.org/keywords/clopidogrel",
+      "display_name": "Clopidogrel",
+      "score": 0.8908056616783142
+    },
+    {
+      "id": "https://openalex.org/keywords/acute-coronary-syndrome",
+      "display_name": "Acute coronary syndrome",
+      "score": 0.8077723979949951
+    },
+    {
+      "id": "https://openalex.org/keywords/percutaneous-coronary-intervention",
+      "display_name": "Percutaneous coronary intervention",
+      "score": 0.771537184715271
+    },
+    {
+      "id": "https://openalex.org/keywords/ticagrelor",
+      "display_name": "Ticagrelor",
+      "score": 0.7140769362449646
+    },
+    {
+      "id": "https://openalex.org/keywords/internal-medicine",
+      "display_name": "Internal medicine",
+      "score": 0.5719543099403381
+    },
+    {
+      "id": "https://openalex.org/keywords/conventional-pci",
+      "display_name": "Conventional PCI",
+      "score": 0.4939649701118469
+    },
+    {
+      "id": "https://openalex.org/keywords/clinical-endpoint",
+      "display_name": "Clinical endpoint",
+      "score": 0.44483253359794617
+    },
+    {
+      "id": "https://openalex.org/keywords/myocardial-infarction",
+      "display_name": "Myocardial infarction",
+      "score": 0.43763431906700134
+    },
+    {
+      "id": "https://openalex.org/keywords/randomized-controlled-trial",
+      "display_name": "Randomized controlled trial",
+      "score": 0.35946011543273926
+    }
+  ],
+  "concepts": [
+    {
+      "id": "https://openalex.org/C2777028646",
+      "wikidata": "https://www.wikidata.org/wiki/Q416232",
+      "display_name": "Prasugrel",
+      "level": 4,
+      "score": 0.9385350942611694
+    },
+    {
+      "id": "https://openalex.org/C71924100",
+      "wikidata": "https://www.wikidata.org/wiki/Q11190",
+      "display_name": "Medicine",
+      "level": 0,
+      "score": 0.9289945363998413
+    },
+    {
+      "id": "https://openalex.org/C2777849778",
+      "wikidata": "https://www.wikidata.org/wiki/Q410237",
+      "display_name": "Clopidogrel",
+      "level": 3,
+      "score": 0.8908056616783142
+    },
+    {
+      "id": "https://openalex.org/C2777698277",
+      "wikidata": "https://www.wikidata.org/wiki/Q266018",
+      "display_name": "Acute coronary syndrome",
+      "level": 3,
+      "score": 0.8077723979949951
+    },
+    {
+      "id": "https://openalex.org/C2780400711",
+      "wikidata": "https://www.wikidata.org/wiki/Q2008344",
+      "display_name": "Percutaneous coronary intervention",
+      "level": 3,
+      "score": 0.771537184715271
+    },
+    {
+      "id": "https://openalex.org/C2780890252",
+      "wikidata": "https://www.wikidata.org/wiki/Q420542",
+      "display_name": "Ticagrelor",
+      "level": 4,
+      "score": 0.7140769362449646
+    },
+    {
+      "id": "https://openalex.org/C126322002",
+      "wikidata": "https://www.wikidata.org/wiki/Q11180",
+      "display_name": "Internal medicine",
+      "level": 1,
+      "score": 0.5719543099403381
+    },
+    {
+      "id": "https://openalex.org/C45393284",
+      "wikidata": "https://www.wikidata.org/wiki/Q191012",
+      "display_name": "Conventional PCI",
+      "level": 3,
+      "score": 0.4939649701118469
+    },
+    {
+      "id": "https://openalex.org/C203092338",
+      "wikidata": "https://www.wikidata.org/wiki/Q1340863",
+      "display_name": "Clinical endpoint",
+      "level": 3,
+      "score": 0.44483253359794617
+    },
+    {
+      "id": "https://openalex.org/C500558357",
+      "wikidata": "https://www.wikidata.org/wiki/Q12152",
+      "display_name": "Myocardial infarction",
+      "level": 2,
+      "score": 0.43763431906700134
+    },
+    {
+      "id": "https://openalex.org/C168563851",
+      "wikidata": "https://www.wikidata.org/wiki/Q1436668",
+      "display_name": "Randomized controlled trial",
+      "level": 2,
+      "score": 0.35946011543273926
+    }
+  ],
+  "mesh": [
+    {
+      "descriptor_ui": "D000068799",
+      "descriptor_name": "Prasugrel Hydrochloride",
+      "qualifier_ui": "Q000008",
+      "qualifier_name": "administration & dosage",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000068799",
+      "descriptor_name": "Prasugrel Hydrochloride",
+      "qualifier_ui": "Q000008",
+      "qualifier_name": "administration & dosage",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000068799",
+      "descriptor_name": "Prasugrel Hydrochloride",
+      "qualifier_ui": "Q000008",
+      "qualifier_name": "administration & dosage",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000068799",
+      "descriptor_name": "Prasugrel Hydrochloride",
+      "qualifier_ui": "Q000009",
+      "qualifier_name": "adverse effects",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000068799",
+      "descriptor_name": "Prasugrel Hydrochloride",
+      "qualifier_ui": "Q000009",
+      "qualifier_name": "adverse effects",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000068799",
+      "descriptor_name": "Prasugrel Hydrochloride",
+      "qualifier_ui": "Q000009",
+      "qualifier_name": "adverse effects",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000077144",
+      "descriptor_name": "Clopidogrel",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000077144",
+      "descriptor_name": "Clopidogrel",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000077144",
+      "descriptor_name": "Clopidogrel",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D004334",
+      "descriptor_name": "Drug Administration Schedule",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D004334",
+      "descriptor_name": "Drug Administration Schedule",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D004334",
+      "descriptor_name": "Drug Administration Schedule",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D005060",
+      "descriptor_name": "Europe",
+      "qualifier_ui": "Q000453",
+      "qualifier_name": "epidemiology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D005060",
+      "descriptor_name": "Europe",
+      "qualifier_ui": "Q000453",
+      "qualifier_name": "epidemiology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D005060",
+      "descriptor_name": "Europe",
+      "qualifier_ui": "Q000453",
+      "qualifier_name": "epidemiology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D005260",
+      "descriptor_name": "Female",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D005260",
+      "descriptor_name": "Female",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D005260",
+      "descriptor_name": "Female",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D006470",
+      "descriptor_name": "Hemorrhage",
+      "qualifier_ui": "Q000139",
+      "qualifier_name": "chemically induced",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D006470",
+      "descriptor_name": "Hemorrhage",
+      "qualifier_ui": "Q000139",
+      "qualifier_name": "chemically induced",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D006470",
+      "descriptor_name": "Hemorrhage",
+      "qualifier_ui": "Q000139",
+      "qualifier_name": "chemically induced",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D006470",
+      "descriptor_name": "Hemorrhage",
+      "qualifier_ui": "Q000453",
+      "qualifier_name": "epidemiology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D006470",
+      "descriptor_name": "Hemorrhage",
+      "qualifier_ui": "Q000453",
+      "qualifier_name": "epidemiology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D006470",
+      "descriptor_name": "Hemorrhage",
+      "qualifier_ui": "Q000453",
+      "qualifier_name": "epidemiology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D006801",
+      "descriptor_name": "Humans",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D006801",
+      "descriptor_name": "Humans",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D006801",
+      "descriptor_name": "Humans",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D008297",
+      "descriptor_name": "Male",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D008297",
+      "descriptor_name": "Male",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D008297",
+      "descriptor_name": "Male",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D008875",
+      "descriptor_name": "Middle Aged",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D008875",
+      "descriptor_name": "Middle Aged",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D008875",
+      "descriptor_name": "Middle Aged",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D009203",
+      "descriptor_name": "Myocardial Infarction",
+      "qualifier_ui": "Q000453",
+      "qualifier_name": "epidemiology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D009203",
+      "descriptor_name": "Myocardial Infarction",
+      "qualifier_ui": "Q000453",
+      "qualifier_name": "epidemiology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D009203",
+      "descriptor_name": "Myocardial Infarction",
+      "qualifier_ui": "Q000453",
+      "qualifier_name": "epidemiology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D010975",
+      "descriptor_name": "Platelet Aggregation Inhibitors",
+      "qualifier_ui": "Q000008",
+      "qualifier_name": "administration & dosage",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D010975",
+      "descriptor_name": "Platelet Aggregation Inhibitors",
+      "qualifier_ui": "Q000008",
+      "qualifier_name": "administration & dosage",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D010975",
+      "descriptor_name": "Platelet Aggregation Inhibitors",
+      "qualifier_ui": "Q000008",
+      "qualifier_name": "administration & dosage",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D010975",
+      "descriptor_name": "Platelet Aggregation Inhibitors",
+      "qualifier_ui": "Q000009",
+      "qualifier_name": "adverse effects",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D010975",
+      "descriptor_name": "Platelet Aggregation Inhibitors",
+      "qualifier_ui": "Q000009",
+      "qualifier_name": "adverse effects",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D010975",
+      "descriptor_name": "Platelet Aggregation Inhibitors",
+      "qualifier_ui": "Q000009",
+      "qualifier_name": "adverse effects",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D010979",
+      "descriptor_name": "Platelet Function Tests",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D010979",
+      "descriptor_name": "Platelet Function Tests",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D010979",
+      "descriptor_name": "Platelet Function Tests",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D013988",
+      "descriptor_name": "Ticlopidine",
+      "qualifier_ui": "Q000008",
+      "qualifier_name": "administration & dosage",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D013988",
+      "descriptor_name": "Ticlopidine",
+      "qualifier_ui": "Q000008",
+      "qualifier_name": "administration & dosage",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D013988",
+      "descriptor_name": "Ticlopidine",
+      "qualifier_ui": "Q000008",
+      "qualifier_name": "administration & dosage",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D013988",
+      "descriptor_name": "Ticlopidine",
+      "qualifier_ui": "Q000009",
+      "qualifier_name": "adverse effects",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D013988",
+      "descriptor_name": "Ticlopidine",
+      "qualifier_ui": "Q000009",
+      "qualifier_name": "adverse effects",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D013988",
+      "descriptor_name": "Ticlopidine",
+      "qualifier_ui": "Q000009",
+      "qualifier_name": "adverse effects",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D013988",
+      "descriptor_name": "Ticlopidine",
+      "qualifier_ui": "Q000031",
+      "qualifier_name": "analogs & derivatives",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D013988",
+      "descriptor_name": "Ticlopidine",
+      "qualifier_ui": "Q000031",
+      "qualifier_name": "analogs & derivatives",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D013988",
+      "descriptor_name": "Ticlopidine",
+      "qualifier_ui": "Q000031",
+      "qualifier_name": "analogs & derivatives",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D016903",
+      "descriptor_name": "Drug Monitoring",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D016903",
+      "descriptor_name": "Drug Monitoring",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D016903",
+      "descriptor_name": "Drug Monitoring",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D020521",
+      "descriptor_name": "Stroke",
+      "qualifier_ui": "Q000453",
+      "qualifier_name": "epidemiology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D020521",
+      "descriptor_name": "Stroke",
+      "qualifier_ui": "Q000453",
+      "qualifier_name": "epidemiology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D020521",
+      "descriptor_name": "Stroke",
+      "qualifier_ui": "Q000453",
+      "qualifier_name": "epidemiology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D054058",
+      "descriptor_name": "Acute Coronary Syndrome",
+      "qualifier_ui": "Q000453",
+      "qualifier_name": "epidemiology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D054058",
+      "descriptor_name": "Acute Coronary Syndrome",
+      "qualifier_ui": "Q000453",
+      "qualifier_name": "epidemiology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D054058",
+      "descriptor_name": "Acute Coronary Syndrome",
+      "qualifier_ui": "Q000453",
+      "qualifier_name": "epidemiology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D054058",
+      "descriptor_name": "Acute Coronary Syndrome",
+      "qualifier_ui": "Q000628",
+      "qualifier_name": "therapy",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D054058",
+      "descriptor_name": "Acute Coronary Syndrome",
+      "qualifier_ui": "Q000628",
+      "qualifier_name": "therapy",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D054058",
+      "descriptor_name": "Acute Coronary Syndrome",
+      "qualifier_ui": "Q000628",
+      "qualifier_name": "therapy",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D062645",
+      "descriptor_name": "Percutaneous Coronary Intervention",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D062645",
+      "descriptor_name": "Percutaneous Coronary Intervention",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D062645",
+      "descriptor_name": "Percutaneous Coronary Intervention",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": true
+    }
+  ],
+  "locations_count": 4,
+  "locations": [
+    {
+      "id": "doi:10.1016/s0140-6736(17)32155-4",
+      "is_oa": true,
+      "landing_page_url": "https://doi.org/10.1016/s0140-6736(17)32155-4",
+      "pdf_url": "http://www.thelancet.com/article/S0140673617321554/pdf",
+      "source": {
+        "id": "https://openalex.org/S49861241",
+        "display_name": "The Lancet",
+        "issn_l": "0140-6736",
+        "issn": [
+          "0140-6736",
+          "1474-547X"
+        ],
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": true,
+        "host_organization": "https://openalex.org/P4310320990",
+        "host_organization_name": "Elsevier BV",
+        "host_organization_lineage": [
+          "https://openalex.org/P4310320990"
+        ],
+        "host_organization_lineage_names": [
+          "Elsevier BV"
+        ],
+        "type": "journal"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "publishedVersion",
+      "is_accepted": true,
+      "is_published": true,
+      "raw_source_name": "The Lancet",
+      "raw_type": "journal-article"
+    },
+    {
+      "id": "pmid:28855078",
+      "is_oa": false,
+      "landing_page_url": "https://pubmed.ncbi.nlm.nih.gov/28855078",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4306525036",
+        "display_name": "PubMed",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I1299303238",
+        "host_organization_name": "National Institutes of Health",
+        "host_organization_lineage": [
+          "https://openalex.org/I1299303238"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "publishedVersion",
+      "is_accepted": true,
+      "is_published": true,
+      "raw_source_name": "Lancet (London, England)",
+      "raw_type": null
+    },
+    {
+      "id": "pmh:oai:real.mtak.hu:63663",
+      "is_oa": false,
+      "landing_page_url": null,
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4306400081",
+        "display_name": "Repository of the Academy's Library (Library of the Hungarian Academy of Sciences)",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I4210140733",
+        "host_organization_name": "Library and Information Centre of the Hungarian Academy of Sciences",
+        "host_organization_lineage": [
+          "https://openalex.org/I4210140733"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "acceptedVersion",
+      "is_accepted": true,
+      "is_published": false,
+      "raw_source_name": "",
+      "raw_type": "Article"
+    },
+    {
+      "id": "pmh:oai:mediatum.ub.tum.de:node/1446988",
+      "is_oa": false,
+      "landing_page_url": "https://mediatum.ub.tum.de/1446988",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4306400453",
+        "display_name": "mediaTUM \u2013 the media and publications repository of the Technical University Munich (Technical University Munich)",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I62916508",
+        "host_organization_name": "Technical University of Munich",
+        "host_organization_lineage": [
+          "https://openalex.org/I62916508"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "submittedVersion",
+      "is_accepted": false,
+      "is_published": false,
+      "raw_source_name": "",
+      "raw_type": "article"
+    }
+  ],
+  "best_oa_location": {
+    "id": "doi:10.1016/s0140-6736(17)32155-4",
+    "is_oa": true,
+    "landing_page_url": "https://doi.org/10.1016/s0140-6736(17)32155-4",
+    "pdf_url": "http://www.thelancet.com/article/S0140673617321554/pdf",
+    "source": {
+      "id": "https://openalex.org/S49861241",
+      "display_name": "The Lancet",
+      "issn_l": "0140-6736",
+      "issn": [
+        "0140-6736",
+        "1474-547X"
+      ],
+      "is_oa": false,
+      "is_in_doaj": false,
+      "is_core": true,
+      "host_organization": "https://openalex.org/P4310320990",
+      "host_organization_name": "Elsevier BV",
+      "host_organization_lineage": [
+        "https://openalex.org/P4310320990"
+      ],
+      "host_organization_lineage_names": [
+        "Elsevier BV"
+      ],
+      "type": "journal"
+    },
+    "license": null,
+    "license_id": null,
+    "version": "publishedVersion",
+    "is_accepted": true,
+    "is_published": true,
+    "raw_source_name": "The Lancet",
+    "raw_type": "journal-article"
+  },
+  "sustainable_development_goals": [
+    {
+      "id": "https://metadata.un.org/sdg/3",
+      "display_name": "Good health and well-being",
+      "score": 0.7599999904632568
+    }
+  ],
+  "awards": [],
+  "funders": [
+    {
+      "id": "https://openalex.org/F4320307758",
+      "display_name": "Eli Lilly and Company",
+      "ror": "https://ror.org/01qat3289"
+    },
+    {
+      "id": "https://openalex.org/F4320321613",
+      "display_name": "Technische Universit\u00e4t Dresden",
+      "ror": "https://ror.org/042aqky30"
+    },
+    {
+      "id": "https://openalex.org/F4320334790",
+      "display_name": "Daiichi Sankyo Company",
+      "ror": "https://ror.org/027y26122"
+    },
+    {
+      "id": "https://openalex.org/F4320338262",
+      "display_name": "Daiichi Sankyo Europe",
+      "ror": null
+    }
+  ],
+  "has_content": {
+    "grobid_xml": true,
+    "pdf": true
+  },
+  "content_urls": {
+    "pdf": "https://content.openalex.org/works/W2748517697.pdf",
+    "grobid_xml": "https://content.openalex.org/works/W2748517697.grobid-xml"
+  },
+  "referenced_works_count": 39,
+  "referenced_works": [
+    "https://openalex.org/W906589",
+    "https://openalex.org/W144700851",
+    "https://openalex.org/W1160749305",
+    "https://openalex.org/W1508517441",
+    "https://openalex.org/W1966635021",
+    "https://openalex.org/W1976318241",
+    "https://openalex.org/W1981835402",
+    "https://openalex.org/W1990018236",
+    "https://openalex.org/W2052713441",
+    "https://openalex.org/W2058635451",
+    "https://openalex.org/W2087150869",
+    "https://openalex.org/W2103798306",
+    "https://openalex.org/W2104595603",
+    "https://openalex.org/W2105397247",
+    "https://openalex.org/W2110108344",
+    "https://openalex.org/W2116274343",
+    "https://openalex.org/W2121205446",
+    "https://openalex.org/W2122779695",
+    "https://openalex.org/W2131181128",
+    "https://openalex.org/W2140501627",
+    "https://openalex.org/W2145323902",
+    "https://openalex.org/W2149011208",
+    "https://openalex.org/W2157833432",
+    "https://openalex.org/W2158537546",
+    "https://openalex.org/W2161785946",
+    "https://openalex.org/W2162508946",
+    "https://openalex.org/W2169387542",
+    "https://openalex.org/W2284874790",
+    "https://openalex.org/W2493314352",
+    "https://openalex.org/W2509918966",
+    "https://openalex.org/W2511494980",
+    "https://openalex.org/W2526257621",
+    "https://openalex.org/W2538454170",
+    "https://openalex.org/W2589776936",
+    "https://openalex.org/W2614154720",
+    "https://openalex.org/W2736768805",
+    "https://openalex.org/W2885841032",
+    "https://openalex.org/W4211104669",
+    "https://openalex.org/W4293577771"
+  ],
+  "related_works": [
+    "https://openalex.org/W3105177000",
+    "https://openalex.org/W2327917129",
+    "https://openalex.org/W2544293786",
+    "https://openalex.org/W3033594501",
+    "https://openalex.org/W1860213950",
+    "https://openalex.org/W2618010215",
+    "https://openalex.org/W3111413290",
+    "https://openalex.org/W3011174347",
+    "https://openalex.org/W3034103768",
+    "https://openalex.org/W3156987116"
+  ],
+  "abstract_inverted_index": null,
+  "counts_by_year": [
+    {
+      "year": 2026,
+      "cited_by_count": 24
+    },
+    {
+      "year": 2025,
+      "cited_by_count": 44
+    },
+    {
+      "year": 2024,
+      "cited_by_count": 40
+    },
+    {
+      "year": 2023,
+      "cited_by_count": 65
+    },
+    {
+      "year": 2022,
+      "cited_by_count": 89
+    },
+    {
+      "year": 2021,
+      "cited_by_count": 87
+    },
+    {
+      "year": 2020,
+      "cited_by_count": 63
+    },
+    {
+      "year": 2019,
+      "cited_by_count": 77
+    },
+    {
+      "year": 2018,
+      "cited_by_count": 81
+    },
+    {
+      "year": 2017,
+      "cited_by_count": 18
+    }
+  ],
+  "updated_date": "2026-07-04T07:58:01.006859",
+  "created_date": "2025-10-10T00:00:00"
+}

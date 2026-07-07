@@ -1,0 +1,17 @@
+{
+  "candidate_id": "cand-exp-brame-bushway-paternoster-turner-2014",
+  "proposed_study_id": "brame-bushway-paternoster-turner-2014",
+  "acquisition_status": "portal_manual",
+  "attempted_at": "2026-07-07T03:41:35+00:00",
+  "catalog_source_url": "https://nlsinfo.org/",
+  "resolved_urls": [
+    "https://doi.org/10.1073/pnas.1821204116",
+    "https://www.pnas.org/content/pnas/116/34/16793.full.pdf",
+    "https://nlsinfo.org/"
+  ],
+  "files": [
+    "openalex-metadata.json",
+    "source-1.html"
+  ],
+  "dois": []
+}

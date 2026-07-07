@@ -1,0 +1,1795 @@
+{
+  "id": "https://openalex.org/W3133676924",
+  "doi": "https://doi.org/10.1038/s41392-021-00527-1",
+  "title": "COVID-19 in early 2021: current status and looking forward",
+  "display_name": "COVID-19 in early 2021: current status and looking forward",
+  "relevance_score": 123.73114,
+  "publication_year": 2021,
+  "publication_date": "2021-03-08",
+  "ids": {
+    "openalex": "https://openalex.org/W3133676924",
+    "doi": "https://doi.org/10.1038/s41392-021-00527-1",
+    "mag": "3133676924",
+    "pmid": "https://pubmed.ncbi.nlm.nih.gov/33686059"
+  },
+  "language": "en",
+  "primary_location": {
+    "id": "doi:10.1038/s41392-021-00527-1",
+    "is_oa": true,
+    "landing_page_url": "https://doi.org/10.1038/s41392-021-00527-1",
+    "pdf_url": "https://www.nature.com/articles/s41392-021-00527-1.pdf",
+    "source": {
+      "id": "https://openalex.org/S2739142469",
+      "display_name": "Signal Transduction and Targeted Therapy",
+      "issn_l": "2059-3635",
+      "issn": [
+        "2059-3635",
+        "2095-9907"
+      ],
+      "is_oa": true,
+      "is_in_doaj": true,
+      "is_core": true,
+      "host_organization": "https://openalex.org/P4310319965",
+      "host_organization_name": "Springer Nature",
+      "host_organization_lineage": [
+        "https://openalex.org/P4310319965"
+      ],
+      "host_organization_lineage_names": [
+        "Springer Nature"
+      ],
+      "type": "journal"
+    },
+    "license": "cc-by",
+    "license_id": "https://openalex.org/licenses/cc-by",
+    "version": "publishedVersion",
+    "is_accepted": true,
+    "is_published": true,
+    "raw_source_name": "Signal Transduction and Targeted Therapy",
+    "raw_type": "journal-article"
+  },
+  "type": "review",
+  "indexed_in": [
+    "crossref",
+    "doaj",
+    "pubmed"
+  ],
+  "open_access": {
+    "is_oa": true,
+    "oa_status": "gold",
+    "oa_url": "https://www.nature.com/articles/s41392-021-00527-1.pdf",
+    "any_repository_has_fulltext": true
+  },
+  "authorships": [
+    {
+      "author_position": "first",
+      "author": {
+        "id": "https://openalex.org/A5019373631",
+        "display_name": "Chengdi Wang",
+        "orcid": "https://orcid.org/0000-0002-5284-2889"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I24185976",
+          "display_name": "Sichuan University",
+          "ror": "https://ror.org/011ashp19",
+          "country_code": "CN",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I24185976"
+          ]
+        }
+      ],
+      "countries": [
+        "CN"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Chengdi Wang",
+      "raw_affiliation_strings": [
+        "Department of Respiratory and Critical Care Medicine, National Clinical Research Center for Geriatrics, Frontiers Science Center for Disease-related Molecular Network, West China Hospital, West China Medical School, Sichuan University, Chengdu, China"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Department of Respiratory and Critical Care Medicine, National Clinical Research Center for Geriatrics, Frontiers Science Center for Disease-related Molecular Network, West China Hospital, West China Medical School, Sichuan University, Chengdu, China",
+          "institution_ids": [
+            "https://openalex.org/I24185976"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5005290590",
+        "display_name": "Zhoufeng Wang",
+        "orcid": "https://orcid.org/0000-0002-7881-1837"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I24185976",
+          "display_name": "Sichuan University",
+          "ror": "https://ror.org/011ashp19",
+          "country_code": "CN",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I24185976"
+          ]
+        }
+      ],
+      "countries": [
+        "CN"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Zhoufeng Wang",
+      "raw_affiliation_strings": [
+        "Department of Respiratory and Critical Care Medicine, National Clinical Research Center for Geriatrics, Frontiers Science Center for Disease-related Molecular Network, West China Hospital, West China Medical School, Sichuan University, Chengdu, China"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Department of Respiratory and Critical Care Medicine, National Clinical Research Center for Geriatrics, Frontiers Science Center for Disease-related Molecular Network, West China Hospital, West China Medical School, Sichuan University, Chengdu, China",
+          "institution_ids": [
+            "https://openalex.org/I24185976"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5100458577",
+        "display_name": "Guangyu Wang",
+        "orcid": "https://orcid.org/0000-0003-1312-884X"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I139759216",
+          "display_name": "Beijing University of Posts and Telecommunications",
+          "ror": "https://ror.org/04w9fbh59",
+          "country_code": "CN",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I139759216"
+          ]
+        }
+      ],
+      "countries": [
+        "CN"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Guangyu Wang",
+      "raw_affiliation_strings": [
+        "School of Information and Communication Engineering, Beijing University of Posts and Telecommunications, Beijing, China"
+      ],
+      "raw_orcid": "https://orcid.org/0000-0003-1312-884X",
+      "affiliations": [
+        {
+          "raw_affiliation_string": "School of Information and Communication Engineering, Beijing University of Posts and Telecommunications, Beijing, China",
+          "institution_ids": [
+            "https://openalex.org/I139759216"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5110708981",
+        "display_name": "Johnson Yiu\u2010Nam Lau",
+        "orcid": null
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I14243506",
+          "display_name": "Hong Kong Polytechnic University",
+          "ror": "https://ror.org/0030zas98",
+          "country_code": "HK",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I14243506"
+          ]
+        }
+      ],
+      "countries": [
+        "HK"
+      ],
+      "is_corresponding": true,
+      "raw_author_name": "Johnson Yiu-Nam Lau",
+      "raw_affiliation_strings": [
+        "Department of Applied Biology and Chemical Technology, Hong Kong Polytechnic University, Hong Kong, China. johnsonynlau@aol.com",
+        "Department of Applied Biology and Chemical Technology, Hong Kong Polytechnic University, Hong Kong, China"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Department of Applied Biology and Chemical Technology, Hong Kong Polytechnic University, Hong Kong, China. johnsonynlau@aol.com",
+          "institution_ids": [
+            "https://openalex.org/I14243506"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Department of Applied Biology and Chemical Technology, Hong Kong Polytechnic University, Hong Kong, China",
+          "institution_ids": [
+            "https://openalex.org/I14243506"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5100432232",
+        "display_name": "Kang Zhang",
+        "orcid": "https://orcid.org/0000-0002-4549-1697"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I111950717",
+          "display_name": "Macau University of Science and Technology",
+          "ror": "https://ror.org/03jqs2n27",
+          "country_code": "MO",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I111950717",
+            "https://openalex.org/I4391767947"
+          ]
+        }
+      ],
+      "countries": [
+        "MO"
+      ],
+      "is_corresponding": true,
+      "raw_author_name": "Kang Zhang",
+      "raw_affiliation_strings": [
+        "Center for Biomedicine and Innovations, Faculty of Medicine, Macau University of Science and Technology, and University Hospital, Macau, China. kang.zhang@gmail.com",
+        "Center for Biomedicine and Innovations, Faculty of Medicine, Macau University of Science and Technology, and University Hospital, Macau, China"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Center for Biomedicine and Innovations, Faculty of Medicine, Macau University of Science and Technology, and University Hospital, Macau, China. kang.zhang@gmail.com",
+          "institution_ids": [
+            "https://openalex.org/I111950717"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Center for Biomedicine and Innovations, Faculty of Medicine, Macau University of Science and Technology, and University Hospital, Macau, China",
+          "institution_ids": [
+            "https://openalex.org/I111950717"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "last",
+      "author": {
+        "id": "https://openalex.org/A5100367626",
+        "display_name": "Weimin Li",
+        "orcid": "https://orcid.org/0000-0003-0985-0311"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I24185976",
+          "display_name": "Sichuan University",
+          "ror": "https://ror.org/011ashp19",
+          "country_code": "CN",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I24185976"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I4210089761",
+          "display_name": "West China Hospital of Sichuan University",
+          "ror": "https://ror.org/007mrxy13",
+          "country_code": "CN",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I4210089761"
+          ]
+        }
+      ],
+      "countries": [
+        "CN"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Weimin Li",
+      "raw_affiliation_strings": [
+        "Department of Respiratory and Critical Care Medicine, National Clinical Research Center for Geriatrics, Frontiers Science Center for Disease-related Molecular Network, West China Hospital, West China Medical School, Sichuan University, Chengdu, China. weimi003@scu.edu.cn",
+        "Department of Respiratory and Critical Care Medicine, National Clinical Research Center for Geriatrics, Frontiers Science Center for Disease-related Molecular Network, West China Hospital, West China Medical School, Sichuan University, Chengdu, China"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Department of Respiratory and Critical Care Medicine, National Clinical Research Center for Geriatrics, Frontiers Science Center for Disease-related Molecular Network, West China Hospital, West China Medical School, Sichuan University, Chengdu, China. weimi003@scu.edu.cn",
+          "institution_ids": [
+            "https://openalex.org/I24185976",
+            "https://openalex.org/I4210089761"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Department of Respiratory and Critical Care Medicine, National Clinical Research Center for Geriatrics, Frontiers Science Center for Disease-related Molecular Network, West China Hospital, West China Medical School, Sichuan University, Chengdu, China",
+          "institution_ids": [
+            "https://openalex.org/I24185976"
+          ]
+        }
+      ]
+    }
+  ],
+  "institutions": [],
+  "countries_distinct_count": 3,
+  "institutions_distinct_count": 5,
+  "corresponding_author_ids": [
+    "https://openalex.org/A5100432232",
+    "https://openalex.org/A5110708981"
+  ],
+  "corresponding_institution_ids": [
+    "https://openalex.org/I111950717",
+    "https://openalex.org/I14243506"
+  ],
+  "apc_list": {
+    "value": 1935,
+    "currency": "GBP",
+    "value_usd": 2373
+  },
+  "apc_paid": {
+    "value": 1935,
+    "currency": "GBP",
+    "value_usd": 2373
+  },
+  "fwci": 46.6528,
+  "has_fulltext": true,
+  "cited_by_count": 359,
+  "citation_normalized_percentile": {
+    "value": 0.99955902,
+    "is_in_top_1_percent": true,
+    "is_in_top_10_percent": true
+  },
+  "cited_by_percentile_year": {
+    "min": 98,
+    "max": 100
+  },
+  "biblio": {
+    "volume": "6",
+    "issue": "1",
+    "first_page": "114",
+    "last_page": "114"
+  },
+  "is_retracted": false,
+  "is_paratext": false,
+  "is_xpac": false,
+  "primary_topic": {
+    "id": "https://openalex.org/T11775",
+    "display_name": "COVID-19 diagnosis using AI",
+    "score": 0.9998000264167786,
+    "subfield": {
+      "id": "https://openalex.org/subfields/2741",
+      "display_name": "Radiology, Nuclear Medicine and Imaging"
+    },
+    "field": {
+      "id": "https://openalex.org/fields/27",
+      "display_name": "Medicine"
+    },
+    "domain": {
+      "id": "https://openalex.org/domains/4",
+      "display_name": "Health Sciences"
+    }
+  },
+  "topics": [
+    {
+      "id": "https://openalex.org/T11775",
+      "display_name": "COVID-19 diagnosis using AI",
+      "score": 0.9998000264167786,
+      "subfield": {
+        "id": "https://openalex.org/subfields/2741",
+        "display_name": "Radiology, Nuclear Medicine and Imaging"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/27",
+        "display_name": "Medicine"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/4",
+        "display_name": "Health Sciences"
+      }
+    },
+    {
+      "id": "https://openalex.org/T10118",
+      "display_name": "SARS-CoV-2 and COVID-19 Research",
+      "score": 0.9997000098228455,
+      "subfield": {
+        "id": "https://openalex.org/subfields/2725",
+        "display_name": "Infectious Diseases"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/27",
+        "display_name": "Medicine"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/4",
+        "display_name": "Health Sciences"
+      }
+    },
+    {
+      "id": "https://openalex.org/T10041",
+      "display_name": "COVID-19 Clinical Research Studies",
+      "score": 0.9994000196456909,
+      "subfield": {
+        "id": "https://openalex.org/subfields/2725",
+        "display_name": "Infectious Diseases"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/27",
+        "display_name": "Medicine"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/4",
+        "display_name": "Health Sciences"
+      }
+    }
+  ],
+  "keywords": [
+    {
+      "id": "https://openalex.org/keywords/pandemic",
+      "display_name": "Pandemic",
+      "score": 0.8077778816223145
+    },
+    {
+      "id": "https://openalex.org/keywords/coronavirus-disease-2019",
+      "display_name": "Coronavirus disease 2019 (COVID-19)",
+      "score": 0.6978384256362915
+    },
+    {
+      "id": "https://openalex.org/keywords/severe-acute-respiratory-syndrome-coronavirus-2",
+      "display_name": "Severe acute respiratory syndrome coronavirus 2 (SARS-CoV-2)",
+      "score": 0.6336507201194763
+    },
+    {
+      "id": "https://openalex.org/keywords/outbreak",
+      "display_name": "Outbreak",
+      "score": 0.5119825005531311
+    },
+    {
+      "id": "https://openalex.org/keywords/2019-20-coronavirus-outbreak",
+      "display_name": "2019-20 coronavirus outbreak",
+      "score": 0.5035416483879089
+    },
+    {
+      "id": "https://openalex.org/keywords/pneumonia",
+      "display_name": "Pneumonia",
+      "score": 0.4950996935367584
+    },
+    {
+      "id": "https://openalex.org/keywords/disease",
+      "display_name": "Disease",
+      "score": 0.4936557710170746
+    },
+    {
+      "id": "https://openalex.org/keywords/coronavirus",
+      "display_name": "Coronavirus",
+      "score": 0.4553234875202179
+    },
+    {
+      "id": "https://openalex.org/keywords/virology",
+      "display_name": "Virology",
+      "score": 0.428066223859787
+    },
+    {
+      "id": "https://openalex.org/keywords/medicine",
+      "display_name": "Medicine",
+      "score": 0.4189158082008362
+    },
+    {
+      "id": "https://openalex.org/keywords/intensive-care-medicine",
+      "display_name": "Intensive care medicine",
+      "score": 0.33726152777671814
+    },
+    {
+      "id": "https://openalex.org/keywords/infectious-disease",
+      "display_name": "Infectious disease (medical specialty)",
+      "score": 0.2810726761817932
+    },
+    {
+      "id": "https://openalex.org/keywords/pathology",
+      "display_name": "Pathology",
+      "score": 0.1661015748977661
+    }
+  ],
+  "concepts": [
+    {
+      "id": "https://openalex.org/C89623803",
+      "wikidata": "https://www.wikidata.org/wiki/Q12184",
+      "display_name": "Pandemic",
+      "level": 5,
+      "score": 0.8077778816223145
+    },
+    {
+      "id": "https://openalex.org/C3008058167",
+      "wikidata": "https://www.wikidata.org/wiki/Q84263196",
+      "display_name": "Coronavirus disease 2019 (COVID-19)",
+      "level": 4,
+      "score": 0.6978384256362915
+    },
+    {
+      "id": "https://openalex.org/C3007834351",
+      "wikidata": "https://www.wikidata.org/wiki/Q82069695",
+      "display_name": "Severe acute respiratory syndrome coronavirus 2 (SARS-CoV-2)",
+      "level": 5,
+      "score": 0.6336507201194763
+    },
+    {
+      "id": "https://openalex.org/C116675565",
+      "wikidata": "https://www.wikidata.org/wiki/Q3241045",
+      "display_name": "Outbreak",
+      "level": 2,
+      "score": 0.5119825005531311
+    },
+    {
+      "id": "https://openalex.org/C3006700255",
+      "wikidata": "https://www.wikidata.org/wiki/Q81068910",
+      "display_name": "2019-20 coronavirus outbreak",
+      "level": 3,
+      "score": 0.5035416483879089
+    },
+    {
+      "id": "https://openalex.org/C2777914695",
+      "wikidata": "https://www.wikidata.org/wiki/Q12192",
+      "display_name": "Pneumonia",
+      "level": 2,
+      "score": 0.4950996935367584
+    },
+    {
+      "id": "https://openalex.org/C2779134260",
+      "wikidata": "https://www.wikidata.org/wiki/Q12136",
+      "display_name": "Disease",
+      "level": 2,
+      "score": 0.4936557710170746
+    },
+    {
+      "id": "https://openalex.org/C2777648638",
+      "wikidata": "https://www.wikidata.org/wiki/Q57751738",
+      "display_name": "Coronavirus",
+      "level": 5,
+      "score": 0.4553234875202179
+    },
+    {
+      "id": "https://openalex.org/C159047783",
+      "wikidata": "https://www.wikidata.org/wiki/Q7215",
+      "display_name": "Virology",
+      "level": 1,
+      "score": 0.428066223859787
+    },
+    {
+      "id": "https://openalex.org/C71924100",
+      "wikidata": "https://www.wikidata.org/wiki/Q11190",
+      "display_name": "Medicine",
+      "level": 0,
+      "score": 0.4189158082008362
+    },
+    {
+      "id": "https://openalex.org/C177713679",
+      "wikidata": "https://www.wikidata.org/wiki/Q679690",
+      "display_name": "Intensive care medicine",
+      "level": 1,
+      "score": 0.33726152777671814
+    },
+    {
+      "id": "https://openalex.org/C524204448",
+      "wikidata": "https://www.wikidata.org/wiki/Q788926",
+      "display_name": "Infectious disease (medical specialty)",
+      "level": 3,
+      "score": 0.2810726761817932
+    },
+    {
+      "id": "https://openalex.org/C142724271",
+      "wikidata": "https://www.wikidata.org/wiki/Q7208",
+      "display_name": "Pathology",
+      "level": 1,
+      "score": 0.1661015748977661
+    },
+    {
+      "id": "https://openalex.org/C126322002",
+      "wikidata": "https://www.wikidata.org/wiki/Q11180",
+      "display_name": "Internal medicine",
+      "level": 1,
+      "score": 0.0
+    }
+  ],
+  "mesh": [
+    {
+      "descriptor_ui": "D000086382",
+      "descriptor_name": "COVID-19",
+      "qualifier_ui": "Q000175",
+      "qualifier_name": "diagnosis",
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D000086382",
+      "descriptor_name": "COVID-19",
+      "qualifier_ui": "Q000175",
+      "qualifier_name": "diagnosis",
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D000086382",
+      "descriptor_name": "COVID-19",
+      "qualifier_ui": "Q000175",
+      "qualifier_name": "diagnosis",
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D000086382",
+      "descriptor_name": "COVID-19",
+      "qualifier_ui": "Q000453",
+      "qualifier_name": "epidemiology",
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D000086382",
+      "descriptor_name": "COVID-19",
+      "qualifier_ui": "Q000453",
+      "qualifier_name": "epidemiology",
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D000086382",
+      "descriptor_name": "COVID-19",
+      "qualifier_ui": "Q000453",
+      "qualifier_name": "epidemiology",
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D000086382",
+      "descriptor_name": "COVID-19",
+      "qualifier_ui": "Q000473",
+      "qualifier_name": "pathology",
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D000086382",
+      "descriptor_name": "COVID-19",
+      "qualifier_ui": "Q000473",
+      "qualifier_name": "pathology",
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D000086382",
+      "descriptor_name": "COVID-19",
+      "qualifier_ui": "Q000473",
+      "qualifier_name": "pathology",
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D000086382",
+      "descriptor_name": "COVID-19",
+      "qualifier_ui": "Q000628",
+      "qualifier_name": "therapy",
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D000086382",
+      "descriptor_name": "COVID-19",
+      "qualifier_ui": "Q000628",
+      "qualifier_name": "therapy",
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D000086382",
+      "descriptor_name": "COVID-19",
+      "qualifier_ui": "Q000628",
+      "qualifier_name": "therapy",
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D000086402",
+      "descriptor_name": "SARS-CoV-2",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D000086402",
+      "descriptor_name": "SARS-CoV-2",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D000086402",
+      "descriptor_name": "SARS-CoV-2",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D001185",
+      "descriptor_name": "Artificial Intelligence",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D001185",
+      "descriptor_name": "Artificial Intelligence",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D001185",
+      "descriptor_name": "Artificial Intelligence",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D003936",
+      "descriptor_name": "Diagnosis, Computer-Assisted",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D003936",
+      "descriptor_name": "Diagnosis, Computer-Assisted",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D003936",
+      "descriptor_name": "Diagnosis, Computer-Assisted",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D006801",
+      "descriptor_name": "Humans",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D006801",
+      "descriptor_name": "Humans",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D006801",
+      "descriptor_name": "Humans",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D058873",
+      "descriptor_name": "Pandemics",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D058873",
+      "descriptor_name": "Pandemics",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D058873",
+      "descriptor_name": "Pandemics",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": true
+    }
+  ],
+  "locations_count": 5,
+  "locations": [
+    {
+      "id": "doi:10.1038/s41392-021-00527-1",
+      "is_oa": true,
+      "landing_page_url": "https://doi.org/10.1038/s41392-021-00527-1",
+      "pdf_url": "https://www.nature.com/articles/s41392-021-00527-1.pdf",
+      "source": {
+        "id": "https://openalex.org/S2739142469",
+        "display_name": "Signal Transduction and Targeted Therapy",
+        "issn_l": "2059-3635",
+        "issn": [
+          "2059-3635",
+          "2095-9907"
+        ],
+        "is_oa": true,
+        "is_in_doaj": true,
+        "is_core": true,
+        "host_organization": "https://openalex.org/P4310319965",
+        "host_organization_name": "Springer Nature",
+        "host_organization_lineage": [
+          "https://openalex.org/P4310319965"
+        ],
+        "host_organization_lineage_names": [
+          "Springer Nature"
+        ],
+        "type": "journal"
+      },
+      "license": "cc-by",
+      "license_id": "https://openalex.org/licenses/cc-by",
+      "version": "publishedVersion",
+      "is_accepted": true,
+      "is_published": true,
+      "raw_source_name": "Signal Transduction and Targeted Therapy",
+      "raw_type": "journal-article"
+    },
+    {
+      "id": "pmid:33686059",
+      "is_oa": false,
+      "landing_page_url": "https://pubmed.ncbi.nlm.nih.gov/33686059",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4306525036",
+        "display_name": "PubMed",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I1299303238",
+        "host_organization_name": "National Institutes of Health",
+        "host_organization_lineage": [
+          "https://openalex.org/I1299303238"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "publishedVersion",
+      "is_accepted": true,
+      "is_published": true,
+      "raw_source_name": "Signal transduction and targeted therapy",
+      "raw_type": null
+    },
+    {
+      "id": "pmh:oai:doaj.org/article:9346806226ff4e269c7728df8890588f",
+      "is_oa": true,
+      "landing_page_url": "https://doaj.org/article/9346806226ff4e269c7728df8890588f",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4306401280",
+        "display_name": "DOAJ (DOAJ: Directory of Open Access Journals)",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": null,
+        "host_organization_name": null,
+        "host_organization_lineage": [],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": "cc-by-sa",
+      "license_id": "https://openalex.org/licenses/cc-by-sa",
+      "version": "submittedVersion",
+      "is_accepted": false,
+      "is_published": false,
+      "raw_source_name": "Signal Transduction and Targeted Therapy, Vol 6, Iss 1, Pp 1-14 (2021)",
+      "raw_type": "article"
+    },
+    {
+      "id": "pmh:oai:ira.lib.polyu.edu.hk:10397/90742",
+      "is_oa": true,
+      "landing_page_url": "http://hdl.handle.net/10397/90742",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4306400205",
+        "display_name": "PolyU Institutional Research Archive (Hong Kong Polytechnic University)",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I14243506",
+        "host_organization_name": "Hong Kong Polytechnic University",
+        "host_organization_lineage": [
+          "https://openalex.org/I14243506"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": "cc-by",
+      "license_id": "https://openalex.org/licenses/cc-by",
+      "version": "submittedVersion",
+      "is_accepted": false,
+      "is_published": false,
+      "raw_source_name": null,
+      "raw_type": "Journal/Magazine Article"
+    },
+    {
+      "id": "pmh:oai:pubmedcentral.nih.gov:7938042",
+      "is_oa": true,
+      "landing_page_url": "https://www.ncbi.nlm.nih.gov/pmc/articles/7938042",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S2764455111",
+        "display_name": "PubMed Central",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": true,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I1299303238",
+        "host_organization_name": "National Institutes of Health",
+        "host_organization_lineage": [
+          "https://openalex.org/I1299303238"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": "cc-by",
+      "license_id": "https://openalex.org/licenses/cc-by",
+      "version": "submittedVersion",
+      "is_accepted": false,
+      "is_published": false,
+      "raw_source_name": "Signal Transduct Target Ther",
+      "raw_type": "Text"
+    }
+  ],
+  "best_oa_location": {
+    "id": "doi:10.1038/s41392-021-00527-1",
+    "is_oa": true,
+    "landing_page_url": "https://doi.org/10.1038/s41392-021-00527-1",
+    "pdf_url": "https://www.nature.com/articles/s41392-021-00527-1.pdf",
+    "source": {
+      "id": "https://openalex.org/S2739142469",
+      "display_name": "Signal Transduction and Targeted Therapy",
+      "issn_l": "2059-3635",
+      "issn": [
+        "2059-3635",
+        "2095-9907"
+      ],
+      "is_oa": true,
+      "is_in_doaj": true,
+      "is_core": true,
+      "host_organization": "https://openalex.org/P4310319965",
+      "host_organization_name": "Springer Nature",
+      "host_organization_lineage": [
+        "https://openalex.org/P4310319965"
+      ],
+      "host_organization_lineage_names": [
+        "Springer Nature"
+      ],
+      "type": "journal"
+    },
+    "license": "cc-by",
+    "license_id": "https://openalex.org/licenses/cc-by",
+    "version": "publishedVersion",
+    "is_accepted": true,
+    "is_published": true,
+    "raw_source_name": "Signal Transduction and Targeted Therapy",
+    "raw_type": "journal-article"
+  },
+  "sustainable_development_goals": [
+    {
+      "display_name": "Good health and well-being",
+      "id": "https://metadata.un.org/sdg/3",
+      "score": 0.800000011920929
+    }
+  ],
+  "awards": [
+    {
+      "id": "https://openalex.org/G1143354430",
+      "display_name": null,
+      "funder_award_id": "2020HXBH084",
+      "funder_id": "https://openalex.org/F4320336042",
+      "funder_display_name": "West China Hospital, Sichuan University"
+    },
+    {
+      "id": "https://openalex.org/G1305378067",
+      "display_name": null,
+      "funder_award_id": "2020YFG0473",
+      "funder_id": "https://openalex.org/F4320336042",
+      "funder_display_name": "West China Hospital, Sichuan University"
+    },
+    {
+      "id": "https://openalex.org/G1364993657",
+      "display_name": null,
+      "funder_award_id": "91859203",
+      "funder_id": "https://openalex.org/F4320336042",
+      "funder_display_name": "West China Hospital, Sichuan University"
+    },
+    {
+      "id": "https://openalex.org/G1787050398",
+      "display_name": null,
+      "funder_award_id": "2020HXBH084",
+      "funder_id": "https://openalex.org/F4320321001",
+      "funder_display_name": "National Natural Science Foundation of China"
+    },
+    {
+      "id": "https://openalex.org/G1940787696",
+      "display_name": null,
+      "funder_award_id": "81871890",
+      "funder_id": "https://openalex.org/F4320336042",
+      "funder_display_name": "West China Hospital, Sichuan University"
+    },
+    {
+      "id": "https://openalex.org/G2105677867",
+      "display_name": null,
+      "funder_award_id": "91859203",
+      "funder_id": "https://openalex.org/F4320322990",
+      "funder_display_name": "Sichuan University"
+    },
+    {
+      "id": "https://openalex.org/G2140691490",
+      "display_name": null,
+      "funder_award_id": "2020YFG0473",
+      "funder_id": "https://openalex.org/F4320321001",
+      "funder_display_name": "National Natural Science Foundation of China"
+    },
+    {
+      "id": "https://openalex.org/G2433919987",
+      "display_name": null,
+      "funder_award_id": "91859203",
+      "funder_id": "https://openalex.org/F4320321001",
+      "funder_display_name": "National Natural Science Foundation of China"
+    },
+    {
+      "id": "https://openalex.org/G3649563500",
+      "display_name": null,
+      "funder_award_id": "91859203, 81871890",
+      "funder_id": "https://openalex.org/F4320321001",
+      "funder_display_name": "National Natural Science Foundation of China"
+    },
+    {
+      "id": "https://openalex.org/G4110071649",
+      "display_name": null,
+      "funder_award_id": "2020YFG0473",
+      "funder_id": "https://openalex.org/F4320322990",
+      "funder_display_name": "Sichuan University"
+    },
+    {
+      "id": "https://openalex.org/G4293939929",
+      "display_name": null,
+      "funder_award_id": "81871890",
+      "funder_id": "https://openalex.org/F4320321001",
+      "funder_display_name": "National Natural Science Foundation of China"
+    },
+    {
+      "id": "https://openalex.org/G4306158568",
+      "display_name": null,
+      "funder_award_id": "91859203",
+      "funder_id": "https://openalex.org/F4320333335",
+      "funder_display_name": "Sichuan Province Science and Technology Support Program"
+    },
+    {
+      "id": "https://openalex.org/G5295294463",
+      "display_name": null,
+      "funder_award_id": "0035/2020/A",
+      "funder_id": "https://openalex.org/F4320323893",
+      "funder_display_name": "Fundo para o Desenvolvimento das Ci\u00eancias e da Tecnologia"
+    },
+    {
+      "id": "https://openalex.org/G5482360479",
+      "display_name": null,
+      "funder_award_id": "2020HXBH084",
+      "funder_id": "https://openalex.org/F4320322990",
+      "funder_display_name": "Sichuan University"
+    },
+    {
+      "id": "https://openalex.org/G5902902880",
+      "display_name": null,
+      "funder_award_id": "2020YFG0473",
+      "funder_id": "https://openalex.org/F4320333335",
+      "funder_display_name": "Sichuan Province Science and Technology Support Program"
+    },
+    {
+      "id": "https://openalex.org/G6519801276",
+      "display_name": null,
+      "funder_award_id": "2020HXBH084",
+      "funder_id": "https://openalex.org/F4320333335",
+      "funder_display_name": "Sichuan Province Science and Technology Support Program"
+    },
+    {
+      "id": "https://openalex.org/G6915549130",
+      "display_name": null,
+      "funder_award_id": "81871890",
+      "funder_id": "https://openalex.org/F4320333335",
+      "funder_display_name": "Sichuan Province Science and Technology Support Program"
+    },
+    {
+      "id": "https://openalex.org/G8766712716",
+      "display_name": null,
+      "funder_award_id": "81871890",
+      "funder_id": "https://openalex.org/F4320322990",
+      "funder_display_name": "Sichuan University"
+    }
+  ],
+  "funders": [
+    {
+      "id": "https://openalex.org/F4320321001",
+      "display_name": "National Natural Science Foundation of China",
+      "ror": "https://ror.org/01h0zpd94"
+    },
+    {
+      "id": "https://openalex.org/F4320322990",
+      "display_name": "Sichuan University",
+      "ror": "https://ror.org/011ashp19"
+    },
+    {
+      "id": "https://openalex.org/F4320323893",
+      "display_name": "Fundo para o Desenvolvimento das Ci\u00eancias e da Tecnologia",
+      "ror": "https://ror.org/05vna4324"
+    },
+    {
+      "id": "https://openalex.org/F4320333335",
+      "display_name": "Sichuan Province Science and Technology Support Program",
+      "ror": null
+    },
+    {
+      "id": "https://openalex.org/F4320336042",
+      "display_name": "West China Hospital, Sichuan University",
+      "ror": "https://ror.org/007mrxy13"
+    }
+  ],
+  "has_content": {
+    "grobid_xml": true,
+    "pdf": true
+  },
+  "content_urls": {
+    "pdf": "https://content.openalex.org/works/W3133676924.pdf",
+    "grobid_xml": "https://content.openalex.org/works/W3133676924.grobid-xml"
+  },
+  "referenced_works_count": 123,
+  "referenced_works": [
+    "https://openalex.org/W1993859345",
+    "https://openalex.org/W2005094081",
+    "https://openalex.org/W2038245972",
+    "https://openalex.org/W3001118548",
+    "https://openalex.org/W3001897055",
+    "https://openalex.org/W3002539152",
+    "https://openalex.org/W3003191692",
+    "https://openalex.org/W3003465021",
+    "https://openalex.org/W3003668884",
+    "https://openalex.org/W3004318991",
+    "https://openalex.org/W3005403371",
+    "https://openalex.org/W3005409321",
+    "https://openalex.org/W3005489812",
+    "https://openalex.org/W3005679569",
+    "https://openalex.org/W3005690553",
+    "https://openalex.org/W3005827208",
+    "https://openalex.org/W3006495046",
+    "https://openalex.org/W3006873276",
+    "https://openalex.org/W3006936240",
+    "https://openalex.org/W3007104434",
+    "https://openalex.org/W3007104924",
+    "https://openalex.org/W3007189521",
+    "https://openalex.org/W3007446911",
+    "https://openalex.org/W3008090866",
+    "https://openalex.org/W3008429297",
+    "https://openalex.org/W3008443627",
+    "https://openalex.org/W3008818676",
+    "https://openalex.org/W3008827533",
+    "https://openalex.org/W3009314935",
+    "https://openalex.org/W3009885589",
+    "https://openalex.org/W3010267415",
+    "https://openalex.org/W3010338568",
+    "https://openalex.org/W3010345301",
+    "https://openalex.org/W3010441732",
+    "https://openalex.org/W3010538497",
+    "https://openalex.org/W3010819577",
+    "https://openalex.org/W3010930696",
+    "https://openalex.org/W3011559677",
+    "https://openalex.org/W3011610993",
+    "https://openalex.org/W3012099172",
+    "https://openalex.org/W3012180666",
+    "https://openalex.org/W3012186724",
+    "https://openalex.org/W3012290165",
+    "https://openalex.org/W3012310845",
+    "https://openalex.org/W3012415734",
+    "https://openalex.org/W3012619627",
+    "https://openalex.org/W3012756997",
+    "https://openalex.org/W3012788818",
+    "https://openalex.org/W3012818885",
+    "https://openalex.org/W3012846954",
+    "https://openalex.org/W3012849736",
+    "https://openalex.org/W3012970918",
+    "https://openalex.org/W3013018205",
+    "https://openalex.org/W3013174684",
+    "https://openalex.org/W3013233995",
+    "https://openalex.org/W3013547516",
+    "https://openalex.org/W3013671288",
+    "https://openalex.org/W3013689008",
+    "https://openalex.org/W3013742505",
+    "https://openalex.org/W3013758358",
+    "https://openalex.org/W3013967887",
+    "https://openalex.org/W3015444032",
+    "https://openalex.org/W3015840999",
+    "https://openalex.org/W3015988827",
+    "https://openalex.org/W3016144243",
+    "https://openalex.org/W3016278820",
+    "https://openalex.org/W3017074757",
+    "https://openalex.org/W3017966133",
+    "https://openalex.org/W3018257933",
+    "https://openalex.org/W3018782651",
+    "https://openalex.org/W3020653337",
+    "https://openalex.org/W3021544284",
+    "https://openalex.org/W3021923959",
+    "https://openalex.org/W3022917947",
+    "https://openalex.org/W3023082818",
+    "https://openalex.org/W3023552416",
+    "https://openalex.org/W3023606094",
+    "https://openalex.org/W3024643080",
+    "https://openalex.org/W3025948831",
+    "https://openalex.org/W3026418408",
+    "https://openalex.org/W3027138240",
+    "https://openalex.org/W3030784613",
+    "https://openalex.org/W3033219406",
+    "https://openalex.org/W3041319886",
+    "https://openalex.org/W3042270788",
+    "https://openalex.org/W3042383115",
+    "https://openalex.org/W3042833857",
+    "https://openalex.org/W3043722389",
+    "https://openalex.org/W3045526555",
+    "https://openalex.org/W3045578670",
+    "https://openalex.org/W3047695917",
+    "https://openalex.org/W3048446898",
+    "https://openalex.org/W3048620154",
+    "https://openalex.org/W3081892744",
+    "https://openalex.org/W3082102108",
+    "https://openalex.org/W3083677331",
+    "https://openalex.org/W3083750089",
+    "https://openalex.org/W3090717270",
+    "https://openalex.org/W3091868035",
+    "https://openalex.org/W3092766467",
+    "https://openalex.org/W3093367571",
+    "https://openalex.org/W3096064145",
+    "https://openalex.org/W3102227170",
+    "https://openalex.org/W3102328262",
+    "https://openalex.org/W3104989674",
+    "https://openalex.org/W3109433923",
+    "https://openalex.org/W3109912694",
+    "https://openalex.org/W3111255098",
+    "https://openalex.org/W3111590711",
+    "https://openalex.org/W3113091155",
+    "https://openalex.org/W3113734454",
+    "https://openalex.org/W3115737775",
+    "https://openalex.org/W3117658643",
+    "https://openalex.org/W3118769331",
+    "https://openalex.org/W3126003079",
+    "https://openalex.org/W3127329393",
+    "https://openalex.org/W3128154910",
+    "https://openalex.org/W4205483821",
+    "https://openalex.org/W4206798761",
+    "https://openalex.org/W4210642183",
+    "https://openalex.org/W4212891121",
+    "https://openalex.org/W4225711802",
+    "https://openalex.org/W4400801787"
+  ],
+  "related_works": [
+    "https://openalex.org/W3127156785",
+    "https://openalex.org/W4205754011",
+    "https://openalex.org/W3009669391",
+    "https://openalex.org/W4200329650",
+    "https://openalex.org/W4205215807",
+    "https://openalex.org/W3005417802",
+    "https://openalex.org/W4226296940",
+    "https://openalex.org/W3028835529",
+    "https://openalex.org/W3036314732",
+    "https://openalex.org/W3134376730"
+  ],
+  "abstract_inverted_index": {
+    "Since": [
+      0
+    ],
+    "the": [
+      1,
+      12,
+      17,
+      62,
+      97,
+      118,
+      122,
+      133,
+      153,
+      169,
+      183,
+      205,
+      218
+    ],
+    "first": [
+      2
+    ],
+    "description": [
+      3
+    ],
+    "of": [
+      4,
+      27,
+      50,
+      71,
+      86,
+      91,
+      96,
+      124,
+      126,
+      160,
+      172,
+      175,
+      185
+    ],
+    "a": [
+      5,
+      23,
+      84,
+      147,
+      158,
+      173
+    ],
+    "coronavirus-related": [
+      6
+    ],
+    "pneumonia": [
+      7
+    ],
+    "outbreak": [
+      8
+    ],
+    "in": [
+      9,
+      33,
+      61,
+      74,
+      89,
+      164,
+      210,
+      217
+    ],
+    "December": [
+      10
+    ],
+    "2019,": [
+      11
+    ],
+    "virus": [
+      13,
+      154
+    ],
+    "SARS-CoV-2": [
+      14
+    ],
+    "that": [
+      15,
+      117,
+      135,
+      179,
+      213
+    ],
+    "causes": [
+      16
+    ],
+    "infection/disease": [
+      18
+    ],
+    "(COVID-19)": [
+      19
+    ],
+    "has": [
+      20
+    ],
+    "evolved": [
+      21
+    ],
+    "into": [
+      22
+    ],
+    "pandemic,": [
+      24
+    ],
+    "and": [
+      25,
+      44,
+      67,
+      78,
+      94,
+      99,
+      114,
+      141,
+      144,
+      189,
+      207
+    ],
+    "as": [
+      26
+    ],
+    "today,": [
+      28
+    ],
+    ">100": [
+      29
+    ],
+    "million": [
+      30,
+      46
+    ],
+    "people": [
+      31,
+      47
+    ],
+    "globally": [
+      32
+    ],
+    "over": [
+      34
+    ],
+    "210": [
+      35
+    ],
+    "countries": [
+      36
+    ],
+    "have": [
+      37,
+      41,
+      48,
+      58
+    ],
+    "been": [
+      38,
+      42
+    ],
+    "confirmed": [
+      39
+    ],
+    "to": [
+      40,
+      197
+    ],
+    "infected": [
+      43
+    ],
+    "two": [
+      45
+    ],
+    "died": [
+      49
+    ],
+    "COVID-19.": [
+      51
+    ],
+    "This": [
+      52,
+      201
+    ],
+    "brief": [
+      53
+    ],
+    "review": [
+      54,
+      202
+    ],
+    "summarized": [
+      55
+    ],
+    "what": [
+      56
+    ],
+    "we": [
+      57,
+      105,
+      166
+    ],
+    "hitherto": [
+      59
+    ],
+    "learned": [
+      60
+    ],
+    "following": [
+      63
+    ],
+    "areas:": [
+      64
+    ],
+    "epidemiology,": [
+      65
+    ],
+    "virology,": [
+      66
+    ],
+    "pathogenesis,": [
+      68
+    ],
+    "diagnosis,": [
+      69,
+      76
+    ],
+    "use": [
+      70
+    ],
+    "artificial": [
+      72
+    ],
+    "intelligence": [
+      73
+    ],
+    "assisting": [
+      75
+    ],
+    "treatment,": [
+      77
+    ],
+    "vaccine": [
+      79
+    ],
+    "development.": [
+      80
+    ],
+    "As": [
+      81,
+      157
+    ],
+    "there": [
+      82,
+      136
+    ],
+    "are": [
+      83,
+      137
+    ],
+    "number": [
+      85,
+      159,
+      174
+    ],
+    "parallel": [
+      87
+    ],
+    "developments": [
+      88,
+      161
+    ],
+    "each": [
+      90
+    ],
+    "these": [
+      92,
+      127,
+      186,
+      211
+    ],
+    "areas": [
+      93,
+      212
+    ],
+    "some": [
+      95,
+      108,
+      125
+    ],
+    "development": [
+      98,
+      113,
+      208
+    ],
+    "deployment": [
+      100
+    ],
+    "were": [
+      101,
+      162
+    ],
+    "at": [
+      102
+    ],
+    "unprecedented": [
+      103
+    ],
+    "speed,": [
+      104
+    ],
+    "also": [
+      106,
+      167,
+      203
+    ],
+    "provided": [
+      107,
+      168
+    ],
+    "specific": [
+      109,
+      170
+    ],
+    "dates": [
+      110,
+      171
+    ],
+    "for": [
+      111
+    ],
+    "certain": [
+      112
+    ],
+    "milestones": [
+      115
+    ],
+    "so": [
+      116,
+      178
+    ],
+    "readers": [
+      119,
+      180
+    ],
+    "can": [
+      120,
+      181
+    ],
+    "appreciate": [
+      121,
+      182
+    ],
+    "timing": [
+      123
+    ],
+    "critical": [
+      128,
+      176
+    ],
+    "events.": [
+      129
+    ],
+    "Of": [
+      130
+    ],
+    "note": [
+      131
+    ],
+    "is": [
+      132,
+      194
+    ],
+    "fact": [
+      134
+    ],
+    "diagnostics,": [
+      138
+    ],
+    "antiviral": [
+      139
+    ],
+    "drugs,": [
+      140
+    ],
+    "vaccines": [
+      142
+    ],
+    "developed": [
+      143
+    ],
+    "approved": [
+      145
+    ],
+    "by": [
+      146
+    ],
+    "regulatory": [
+      148
+    ],
+    "within": [
+      149
+    ],
+    "1": [
+      150
+    ],
+    "year": [
+      151
+    ],
+    "after": [
+      152
+    ],
+    "was": [
+      155
+    ],
+    "discovered.": [
+      156
+    ],
+    "conducted": [
+      163
+    ],
+    "parallel,": [
+      165
+    ],
+    "events": [
+      177
+    ],
+    "evolution": [
+      184
+    ],
+    "research": [
+      187,
+      206
+    ],
+    "data": [
+      188
+    ],
+    "our": [
+      190
+    ],
+    "understanding.": [
+      191
+    ],
+    "The": [
+      192
+    ],
+    "world": [
+      193
+    ],
+    "working": [
+      195
+    ],
+    "together": [
+      196
+    ],
+    "combat": [
+      198
+    ],
+    "this": [
+      199
+    ],
+    "pandemic.": [
+      200
+    ],
+    "highlights": [
+      204
+    ],
+    "directions": [
+      209
+    ],
+    "will": [
+      214
+    ],
+    "evolve": [
+      215
+    ],
+    "rapidly": [
+      216
+    ],
+    "near": [
+      219
+    ],
+    "future.": [
+      220
+    ]
+  },
+  "counts_by_year": [
+    {
+      "year": 2026,
+      "cited_by_count": 3
+    },
+    {
+      "year": 2025,
+      "cited_by_count": 24
+    },
+    {
+      "year": 2024,
+      "cited_by_count": 48
+    },
+    {
+      "year": 2023,
+      "cited_by_count": 86
+    },
+    {
+      "year": 2022,
+      "cited_by_count": 116
+    },
+    {
+      "year": 2021,
+      "cited_by_count": 82
+    }
+  ],
+  "updated_date": "2026-07-02T09:51:11.867554",
+  "created_date": "2025-10-10T00:00:00"
+}

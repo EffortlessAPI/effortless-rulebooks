@@ -1,0 +1,6808 @@
+{
+  "id": "https://openalex.org/W2148287035",
+  "doi": "https://doi.org/10.1001/jamaoncol.2015.0735",
+  "title": "The Global Burden of Cancer 2013",
+  "display_name": "The Global Burden of Cancer 2013",
+  "relevance_score": 182.28888,
+  "publication_year": 2015,
+  "publication_date": "2015-05-28",
+  "ids": {
+    "openalex": "https://openalex.org/W2148287035",
+    "doi": "https://doi.org/10.1001/jamaoncol.2015.0735",
+    "mag": "2148287035",
+    "pmid": "https://pubmed.ncbi.nlm.nih.gov/26181261"
+  },
+  "language": "en",
+  "primary_location": {
+    "id": "doi:10.1001/jamaoncol.2015.0735",
+    "is_oa": false,
+    "landing_page_url": "https://doi.org/10.1001/jamaoncol.2015.0735",
+    "pdf_url": null,
+    "source": {
+      "id": "https://openalex.org/S2756165422",
+      "display_name": "JAMA Oncology",
+      "issn_l": "2374-2437",
+      "issn": [
+        "2374-2437",
+        "2374-2445"
+      ],
+      "is_oa": false,
+      "is_in_doaj": false,
+      "is_core": true,
+      "host_organization": "https://openalex.org/P4310320259",
+      "host_organization_name": "American Medical Association",
+      "host_organization_lineage": [
+        "https://openalex.org/P4310320259"
+      ],
+      "host_organization_lineage_names": [
+        "American Medical Association"
+      ],
+      "type": "journal"
+    },
+    "license": null,
+    "license_id": null,
+    "version": "publishedVersion",
+    "is_accepted": true,
+    "is_published": true,
+    "raw_source_name": "JAMA Oncology",
+    "raw_type": "journal-article"
+  },
+  "type": "article",
+  "indexed_in": [
+    "crossref",
+    "pubmed"
+  ],
+  "open_access": {
+    "is_oa": true,
+    "oa_status": "green",
+    "oa_url": "http://hdl.handle.net/11343/59029",
+    "any_repository_has_fulltext": true
+  },
+  "authorships": [
+    {
+      "author_position": "first",
+      "author": {
+        "id": "https://openalex.org/A5071734794",
+        "display_name": "Christina Fitzmaurice",
+        "orcid": "https://orcid.org/0000-0002-6802-3394"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I201448701",
+          "display_name": "University of Washington",
+          "ror": "https://ror.org/00cvxb145",
+          "country_code": "US",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I201448701"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I3143470655",
+          "display_name": "Institute for Health Metrics and Evaluation",
+          "ror": "https://ror.org/02684h094",
+          "country_code": "US",
+          "type": "facility",
+          "lineage": [
+            "https://openalex.org/I3143470655"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Christina Fitzmaurice",
+      "raw_affiliation_strings": [
+        "Division of Hematology, Department of Medicine, University of Washington, Seattle2Institute for Health Metrics and Evaluation, University of Washington, Seattle"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Division of Hematology, Department of Medicine, University of Washington, Seattle2Institute for Health Metrics and Evaluation, University of Washington, Seattle",
+          "institution_ids": [
+            "https://openalex.org/I3143470655",
+            "https://openalex.org/I201448701"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5075273762",
+        "display_name": "Daniel Dicker",
+        "orcid": null
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I201448701",
+          "display_name": "University of Washington",
+          "ror": "https://ror.org/00cvxb145",
+          "country_code": "US",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I201448701"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I3143470655",
+          "display_name": "Institute for Health Metrics and Evaluation",
+          "ror": "https://ror.org/02684h094",
+          "country_code": "US",
+          "type": "facility",
+          "lineage": [
+            "https://openalex.org/I3143470655"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Daniel Dicker",
+      "raw_affiliation_strings": [
+        "Institute for Health Metrics and Evaluation, University of Washington, Seattle"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Institute for Health Metrics and Evaluation, University of Washington, Seattle",
+          "institution_ids": [
+            "https://openalex.org/I3143470655",
+            "https://openalex.org/I201448701"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5112013677",
+        "display_name": "Amanda Pain",
+        "orcid": null
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I201448701",
+          "display_name": "University of Washington",
+          "ror": "https://ror.org/00cvxb145",
+          "country_code": "US",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I201448701"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I3143470655",
+          "display_name": "Institute for Health Metrics and Evaluation",
+          "ror": "https://ror.org/02684h094",
+          "country_code": "US",
+          "type": "facility",
+          "lineage": [
+            "https://openalex.org/I3143470655"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Amanda Pain",
+      "raw_affiliation_strings": [
+        "Institute for Health Metrics and Evaluation, University of Washington, Seattle"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Institute for Health Metrics and Evaluation, University of Washington, Seattle",
+          "institution_ids": [
+            "https://openalex.org/I3143470655",
+            "https://openalex.org/I201448701"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5089389151",
+        "display_name": "Hannah Hamavid",
+        "orcid": null
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I201448701",
+          "display_name": "University of Washington",
+          "ror": "https://ror.org/00cvxb145",
+          "country_code": "US",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I201448701"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I3143470655",
+          "display_name": "Institute for Health Metrics and Evaluation",
+          "ror": "https://ror.org/02684h094",
+          "country_code": "US",
+          "type": "facility",
+          "lineage": [
+            "https://openalex.org/I3143470655"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Hannah Hamavid",
+      "raw_affiliation_strings": [
+        "Institute for Health Metrics and Evaluation, University of Washington, Seattle"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Institute for Health Metrics and Evaluation, University of Washington, Seattle",
+          "institution_ids": [
+            "https://openalex.org/I3143470655",
+            "https://openalex.org/I201448701"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5056631987",
+        "display_name": "Maziar Moradi\u2010Lakeh",
+        "orcid": "https://orcid.org/0000-0001-7381-5305"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I161106909",
+          "display_name": "Iran University of Medical Sciences",
+          "ror": "https://ror.org/03w04rv71",
+          "country_code": "IR",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I161106909"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I3143470655",
+          "display_name": "Institute for Health Metrics and Evaluation",
+          "ror": "https://ror.org/02684h094",
+          "country_code": "US",
+          "type": "facility",
+          "lineage": [
+            "https://openalex.org/I3143470655"
+          ]
+        }
+      ],
+      "countries": [
+        "IR",
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Maziar Moradi-Lakeh",
+      "raw_affiliation_strings": [
+        "Institute for Health Metrics and Evaluation, University of Washington, Seattle3Gastrointestinal and Liver Disease Research Center, Iran University of Medical Sciences, Tehran, Iran"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Institute for Health Metrics and Evaluation, University of Washington, Seattle3Gastrointestinal and Liver Disease Research Center, Iran University of Medical Sciences, Tehran, Iran",
+          "institution_ids": [
+            "https://openalex.org/I3143470655",
+            "https://openalex.org/I161106909"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5111878874",
+        "display_name": "Michael F MacIntyre",
+        "orcid": null
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I201448701",
+          "display_name": "University of Washington",
+          "ror": "https://ror.org/00cvxb145",
+          "country_code": "US",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I201448701"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I3143470655",
+          "display_name": "Institute for Health Metrics and Evaluation",
+          "ror": "https://ror.org/02684h094",
+          "country_code": "US",
+          "type": "facility",
+          "lineage": [
+            "https://openalex.org/I3143470655"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Michael F. MacIntyre",
+      "raw_affiliation_strings": [
+        "Institute for Health Metrics and Evaluation, University of Washington, Seattle"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Institute for Health Metrics and Evaluation, University of Washington, Seattle",
+          "institution_ids": [
+            "https://openalex.org/I3143470655",
+            "https://openalex.org/I201448701"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5085268925",
+        "display_name": "Christine A. Allen",
+        "orcid": null
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I201448701",
+          "display_name": "University of Washington",
+          "ror": "https://ror.org/00cvxb145",
+          "country_code": "US",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I201448701"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I3143470655",
+          "display_name": "Institute for Health Metrics and Evaluation",
+          "ror": "https://ror.org/02684h094",
+          "country_code": "US",
+          "type": "facility",
+          "lineage": [
+            "https://openalex.org/I3143470655"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Christine Allen",
+      "raw_affiliation_strings": [
+        "Institute for Health Metrics and Evaluation, University of Washington, Seattle"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Institute for Health Metrics and Evaluation, University of Washington, Seattle",
+          "institution_ids": [
+            "https://openalex.org/I3143470655",
+            "https://openalex.org/I201448701"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5089420110",
+        "display_name": "Gillian M Hansen",
+        "orcid": null
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I201448701",
+          "display_name": "University of Washington",
+          "ror": "https://ror.org/00cvxb145",
+          "country_code": "US",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I201448701"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I3143470655",
+          "display_name": "Institute for Health Metrics and Evaluation",
+          "ror": "https://ror.org/02684h094",
+          "country_code": "US",
+          "type": "facility",
+          "lineage": [
+            "https://openalex.org/I3143470655"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Gillian Hansen",
+      "raw_affiliation_strings": [
+        "Institute for Health Metrics and Evaluation, University of Washington, Seattle"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Institute for Health Metrics and Evaluation, University of Washington, Seattle",
+          "institution_ids": [
+            "https://openalex.org/I3143470655",
+            "https://openalex.org/I201448701"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5024116198",
+        "display_name": "Rachel Woodbrook",
+        "orcid": "https://orcid.org/0000-0002-4548-944X"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I201448701",
+          "display_name": "University of Washington",
+          "ror": "https://ror.org/00cvxb145",
+          "country_code": "US",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I201448701"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I3143470655",
+          "display_name": "Institute for Health Metrics and Evaluation",
+          "ror": "https://ror.org/02684h094",
+          "country_code": "US",
+          "type": "facility",
+          "lineage": [
+            "https://openalex.org/I3143470655"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Rachel Woodbrook",
+      "raw_affiliation_strings": [
+        "Institute for Health Metrics and Evaluation, University of Washington, Seattle"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Institute for Health Metrics and Evaluation, University of Washington, Seattle",
+          "institution_ids": [
+            "https://openalex.org/I3143470655",
+            "https://openalex.org/I201448701"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5064898198",
+        "display_name": "Charles Wolfe",
+        "orcid": "https://orcid.org/0000-0001-8264-0981"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I183935753",
+          "display_name": "King's College London",
+          "ror": "https://ror.org/0220mzb33",
+          "country_code": "GB",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I124357947",
+            "https://openalex.org/I183935753"
+          ]
+        }
+      ],
+      "countries": [
+        "GB"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Charles Wolfe",
+      "raw_affiliation_strings": [
+        "King\u2019s College London, London, England"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "King\u2019s College London, London, England",
+          "institution_ids": [
+            "https://openalex.org/I183935753"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5037074884",
+        "display_name": "Randah R Hamadeh",
+        "orcid": "https://orcid.org/0000-0002-4205-1354"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I53218197",
+          "display_name": "Arabian Gulf University",
+          "ror": "https://ror.org/04gd4wn47",
+          "country_code": "BH",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I53218197"
+          ]
+        }
+      ],
+      "countries": [
+        "BH"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Randah R. Hamadeh",
+      "raw_affiliation_strings": [
+        "Arabian Gulf University, Manama, Bahrain"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Arabian Gulf University, Manama, Bahrain",
+          "institution_ids": [
+            "https://openalex.org/I53218197"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5063328302",
+        "display_name": "Ami R. Moore",
+        "orcid": "https://orcid.org/0000-0002-6422-4383"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I123534392",
+          "display_name": "University of North Texas",
+          "ror": "https://ror.org/00v97ad02",
+          "country_code": "US",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I123534392"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Ami Moore",
+      "raw_affiliation_strings": [
+        "University of North Texas, Denton"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "University of North Texas, Denton",
+          "institution_ids": [
+            "https://openalex.org/I123534392"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5106235769",
+        "display_name": "Andrea Werdecker",
+        "orcid": null
+      },
+      "institutions": [],
+      "countries": [],
+      "is_corresponding": false,
+      "raw_author_name": "Andrea Werdecker",
+      "raw_affiliation_strings": [
+        "Institute of Medical Sociology and Social Medicine, Marburg, Germany"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Institute of Medical Sociology and Social Medicine, Marburg, Germany",
+          "institution_ids": []
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5070628953",
+        "display_name": "Bradford D. Gessner",
+        "orcid": "https://orcid.org/0000-0002-6216-7194"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I4210095164",
+          "display_name": "Agence de M\u00e9decine Pr\u00e9ventive",
+          "ror": "https://ror.org/00kar4g50",
+          "country_code": "FR",
+          "type": "nonprofit",
+          "lineage": [
+            "https://openalex.org/I4210095164"
+          ]
+        }
+      ],
+      "countries": [
+        "FR"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Bradford D. Gessner",
+      "raw_affiliation_strings": [
+        "Agence de Medecine Preventive, Paris, France"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Agence de Medecine Preventive, Paris, France",
+          "institution_ids": [
+            "https://openalex.org/I4210095164"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5083330157",
+        "display_name": "Braden Te Ao",
+        "orcid": "https://orcid.org/0000-0002-1050-200X"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I39854758",
+          "display_name": "Auckland University of Technology",
+          "ror": "https://ror.org/01zvqw119",
+          "country_code": "NZ",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I39854758"
+          ]
+        }
+      ],
+      "countries": [
+        "NZ"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Braden Te Ao",
+      "raw_affiliation_strings": [
+        "Department of Biostatistics and Epidemiology, School of Public Health and Psychosocial Studies, Auckland University of Technology, Auckland, New Zealand"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Department of Biostatistics and Epidemiology, School of Public Health and Psychosocial Studies, Auckland University of Technology, Auckland, New Zealand",
+          "institution_ids": [
+            "https://openalex.org/I39854758"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5110634511",
+        "display_name": "Brian J. McMahon",
+        "orcid": "https://orcid.org/0000-0002-2347-7771"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I1339531966",
+          "display_name": "Alaska Native Tribal Health Consortium",
+          "ror": "https://ror.org/029es6637",
+          "country_code": "US",
+          "type": "nonprofit",
+          "lineage": [
+            "https://openalex.org/I1339531966"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Brian McMahon",
+      "raw_affiliation_strings": [
+        "Liver Disease and Hepatitis Program, Alaska Native Tribal Health Consortium, Anchorage, Alaska"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Liver Disease and Hepatitis Program, Alaska Native Tribal Health Consortium, Anchorage, Alaska",
+          "institution_ids": [
+            "https://openalex.org/I1339531966"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5018706822",
+        "display_name": "Chant\u00e9 Karimkhani",
+        "orcid": "https://orcid.org/0000-0003-2347-7576"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I78577930",
+          "display_name": "Columbia University",
+          "ror": "https://ror.org/00hj8s172",
+          "country_code": "US",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I78577930"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Chante Karimkhani",
+      "raw_affiliation_strings": [
+        "College of Physicians and Surgeons, Columbia University, New York, New York"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "College of Physicians and Surgeons, Columbia University, New York, New York",
+          "institution_ids": [
+            "https://openalex.org/I78577930"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5045461726",
+        "display_name": "Chuanhua Yu",
+        "orcid": "https://orcid.org/0000-0002-5467-2481"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I37461747",
+          "display_name": "Wuhan University",
+          "ror": "https://ror.org/033vjfk17",
+          "country_code": "CN",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I37461747"
+          ]
+        }
+      ],
+      "countries": [
+        "CN"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Chuanhua Yu",
+      "raw_affiliation_strings": [
+        "Department of Epidemiology and Biostatistics, School of Public Health, Wuhan University, Wuhan, China"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Department of Epidemiology and Biostatistics, School of Public Health, Wuhan University, Wuhan, China",
+          "institution_ids": [
+            "https://openalex.org/I37461747"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5066895396",
+        "display_name": "Graham Cooke",
+        "orcid": "https://orcid.org/0000-0001-6475-5056"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I47508984",
+          "display_name": "Imperial College London",
+          "ror": "https://ror.org/041kmwe10",
+          "country_code": "GB",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I47508984"
+          ]
+        }
+      ],
+      "countries": [
+        "GB"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Graham S. Cooke",
+      "raw_affiliation_strings": [
+        "Imperial College London, London, England"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Imperial College London, London, England",
+          "institution_ids": [
+            "https://openalex.org/I47508984"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5051083926",
+        "display_name": "David C. Schwebel",
+        "orcid": "https://orcid.org/0000-0002-2141-8970"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I32389192",
+          "display_name": "University of Alabama at Birmingham",
+          "ror": "https://ror.org/008s83205",
+          "country_code": "US",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I32389192"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "David C. Schwebel",
+      "raw_affiliation_strings": [
+        "Department of Psychology, University of Alabama at Birmingham, Birmingham, Alabama"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Department of Psychology, University of Alabama at Birmingham, Birmingham, Alabama",
+          "institution_ids": [
+            "https://openalex.org/I32389192"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5074232978",
+        "display_name": "David O. Carpenter",
+        "orcid": "https://orcid.org/0000-0003-4841-394X"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I392282",
+          "display_name": "University at Albany, State University of New York",
+          "ror": "https://ror.org/012zs8222",
+          "country_code": "US",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I392282"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "David O. Carpenter",
+      "raw_affiliation_strings": [
+        "Institute for Health and the Environment, University at Albany, Rensselaer, New York"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Institute for Health and the Environment, University at Albany, Rensselaer, New York",
+          "institution_ids": [
+            "https://openalex.org/I392282"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5101537076",
+        "display_name": "David M. Pereira",
+        "orcid": "https://orcid.org/0000-0003-0384-7592"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I4210138594",
+          "display_name": "Rede de Qu\u00edmica e Tecnologia",
+          "ror": "https://ror.org/04j14t006",
+          "country_code": "PT",
+          "type": "nonprofit",
+          "lineage": [
+            "https://openalex.org/I4210138594"
+          ]
+        }
+      ],
+      "countries": [
+        "PT"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "David M. Pereira",
+      "raw_affiliation_strings": [
+        "Laborat\u00f3rio de Farmacognosia, Departamento de Ci\u00eancias Qu\u00edmicas, Faculdade de Farm\u00e1cia, University do Porto, REQUIMTE/LAQV, Porto, Portugal"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Laborat\u00f3rio de Farmacognosia, Departamento de Ci\u00eancias Qu\u00edmicas, Faculdade de Farm\u00e1cia, University do Porto, REQUIMTE/LAQV, Porto, Portugal",
+          "institution_ids": [
+            "https://openalex.org/I4210138594"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5043031415",
+        "display_name": "Denis Nash",
+        "orcid": "https://orcid.org/0000-0002-3280-5386"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I174216632",
+          "display_name": "City University of New York",
+          "ror": "https://ror.org/00453a208",
+          "country_code": "US",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I174216632"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I39694355",
+          "display_name": "Hunter College",
+          "ror": "https://ror.org/00g2xk477",
+          "country_code": "US",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I39694355"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Denis Nash",
+      "raw_affiliation_strings": [
+        "School of Public Health, Hunter College Campus, City University of New York, New York"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "School of Public Health, Hunter College Campus, City University of New York, New York",
+          "institution_ids": [
+            "https://openalex.org/I39694355",
+            "https://openalex.org/I174216632"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5108149652",
+        "display_name": "Dhruv S Kazi",
+        "orcid": null
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I180670191",
+          "display_name": "University of California, San Francisco",
+          "ror": "https://ror.org/043mz5j54",
+          "country_code": "US",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I180670191"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Dhruv S. Kazi",
+      "raw_affiliation_strings": [
+        "University of California, San Francisco"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "University of California, San Francisco",
+          "institution_ids": [
+            "https://openalex.org/I180670191"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5112366971",
+        "display_name": "Diego De Leo",
+        "orcid": null
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I11701301",
+          "display_name": "Griffith University",
+          "ror": "https://ror.org/02sc3r913",
+          "country_code": "AU",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I11701301"
+          ]
+        }
+      ],
+      "countries": [
+        "AU"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Diego De Leo",
+      "raw_affiliation_strings": [
+        "Griffith University, Brisbane, Australia"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Griffith University, Brisbane, Australia",
+          "institution_ids": [
+            "https://openalex.org/I11701301"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5108113045",
+        "display_name": "Dietrich Pla\u00df",
+        "orcid": "https://orcid.org/0009-0001-3242-9712"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I4210128716",
+          "display_name": "German Environment Agency",
+          "ror": "https://ror.org/0329ynx05",
+          "country_code": "DE",
+          "type": "funder",
+          "lineage": [
+            "https://openalex.org/I4210128716"
+          ]
+        }
+      ],
+      "countries": [
+        "DE"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Dietrich Plass",
+      "raw_affiliation_strings": [
+        "Federal Environment Agency Section on Exposure Assessment and Environmental Health Indicators, Berlin, Germany"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Federal Environment Agency Section on Exposure Assessment and Environmental Health Indicators, Berlin, Germany",
+          "institution_ids": [
+            "https://openalex.org/I4210128716"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5062229437",
+        "display_name": "Kingsley Nnanna Ukwaja",
+        "orcid": "https://orcid.org/0000-0002-1974-8735"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I4210162024",
+          "display_name": "Federal Teaching Hospital Abakaliki",
+          "ror": "https://ror.org/05txvbe22",
+          "country_code": "NG",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I4210162024"
+          ]
+        }
+      ],
+      "countries": [
+        "NG"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Kingsley N. Ukwaja",
+      "raw_affiliation_strings": [
+        "Department of Internal Medicine, Federal Teaching Hospital, Abakaliki, Nigeria"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Department of Internal Medicine, Federal Teaching Hospital, Abakaliki, Nigeria",
+          "institution_ids": [
+            "https://openalex.org/I4210162024"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5019204402",
+        "display_name": "George D. Thurston",
+        "orcid": "https://orcid.org/0000-0001-9429-2267"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I57206974",
+          "display_name": "New York University",
+          "ror": "https://ror.org/0190ak572",
+          "country_code": "US",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I57206974"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "George D. Thurston",
+      "raw_affiliation_strings": [
+        "Nelson Institute of Environmental Medicine, New York University School of Medicine, Tuxedo, New York"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Nelson Institute of Environmental Medicine, New York University School of Medicine, Tuxedo, New York",
+          "institution_ids": [
+            "https://openalex.org/I57206974"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5091316371",
+        "display_name": "Kim Yun Jin",
+        "orcid": null
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I2800396189",
+          "display_name": "Southern University College",
+          "ror": "https://ror.org/03c3mm140",
+          "country_code": "MY",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I2800396189"
+          ]
+        }
+      ],
+      "countries": [
+        "MY"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Kim Yun Jin",
+      "raw_affiliation_strings": [
+        "Faculty of Chinese Medicine, Southern University College, Johor, Malaysia"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Faculty of Chinese Medicine, Southern University College, Johor, Malaysia",
+          "institution_ids": [
+            "https://openalex.org/I2800396189"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5079975741",
+        "display_name": "Edgar P. Simard",
+        "orcid": "https://orcid.org/0000-0001-8093-2067"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I150468666",
+          "display_name": "Emory University",
+          "ror": "https://ror.org/03czfpz43",
+          "country_code": "US",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I150468666"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Edgar P. Simard",
+      "raw_affiliation_strings": [
+        "Rollins School of Public Health, Emory University, Atlanta, Georgia"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Rollins School of Public Health, Emory University, Atlanta, Georgia",
+          "institution_ids": [
+            "https://openalex.org/I150468666"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5109133768",
+        "display_name": "Edward J Mills",
+        "orcid": "https://orcid.org/0000-0002-3108-613X"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I153718931",
+          "display_name": "University of Ottawa",
+          "ror": "https://ror.org/03c4mmv16",
+          "country_code": "CA",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I153718931"
+          ]
+        }
+      ],
+      "countries": [
+        "CA"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Edward Mills",
+      "raw_affiliation_strings": [
+        "University of Ottawa, Ottawa, Ontario, Canada"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "University of Ottawa, Ottawa, Ontario, Canada",
+          "institution_ids": [
+            "https://openalex.org/I153718931"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5043927754",
+        "display_name": "Eun\u2010Kee Park",
+        "orcid": "https://orcid.org/0000-0002-9240-1113"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I90735388",
+          "display_name": "Kosin University",
+          "ror": "https://ror.org/024b57v39",
+          "country_code": "KR",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I90735388"
+          ]
+        }
+      ],
+      "countries": [
+        "KR"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Eun-Kee Park",
+      "raw_affiliation_strings": [
+        "Department of Medical Humanities and Social Medicine, Kosin University College of Medicine, Busan, South Korea"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Department of Medical Humanities and Social Medicine, Kosin University College of Medicine, Busan, South Korea",
+          "institution_ids": [
+            "https://openalex.org/I90735388"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5050215170",
+        "display_name": "Ferr\u00e1n Catal\u00e1-L\u00f3pez",
+        "orcid": "https://orcid.org/0000-0002-3833-9312"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I4210098440",
+          "display_name": "Ministry of Health",
+          "ror": "https://ror.org/00y6q9n79",
+          "country_code": "ES",
+          "type": "government",
+          "lineage": [
+            "https://openalex.org/I4210098440"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I4210142787",
+          "display_name": "Agencia Espa\u00f1ola de Medicamentos y Productos Sanitarios",
+          "ror": "https://ror.org/043fs9135",
+          "country_code": "ES",
+          "type": "government",
+          "lineage": [
+            "https://openalex.org/I4210098440",
+            "https://openalex.org/I4210142787"
+          ]
+        }
+      ],
+      "countries": [
+        "ES"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Ferr\u00e1n Catal\u00e1-L\u00f3pez",
+      "raw_affiliation_strings": [
+        "Division of Pharmacoepidemiology and Pharmacovigilance, Spanish Medicines and Healthcare Products Agency (AEMPS), Ministry of Health, Madrid, Spain"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Division of Pharmacoepidemiology and Pharmacovigilance, Spanish Medicines and Healthcare Products Agency (AEMPS), Ministry of Health, Madrid, Spain",
+          "institution_ids": [
+            "https://openalex.org/I4210098440",
+            "https://openalex.org/I4210142787"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5046928237",
+        "display_name": "Gabrielle deVeber",
+        "orcid": null
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I185261750",
+          "display_name": "University of Toronto",
+          "ror": "https://ror.org/03dbr7087",
+          "country_code": "CA",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I185261750"
+          ]
+        }
+      ],
+      "countries": [
+        "CA"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Gabrielle deVeber",
+      "raw_affiliation_strings": [
+        "University of Toronto, Toronto, Ontario, Canada"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "University of Toronto, Toronto, Ontario, Canada",
+          "institution_ids": [
+            "https://openalex.org/I185261750"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5033406993",
+        "display_name": "Carolyn Gotay",
+        "orcid": "https://orcid.org/0000-0001-6861-5392"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I141945490",
+          "display_name": "University of British Columbia",
+          "ror": "https://ror.org/03rmrcq20",
+          "country_code": "CA",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I141945490"
+          ]
+        }
+      ],
+      "countries": [
+        "CA"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Carolyn Gotay",
+      "raw_affiliation_strings": [
+        "School of Population and Public Health, University of British Columbia, Vancouver, British Columbia, Canada"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "School of Population and Public Health, University of British Columbia, Vancouver, British Columbia, Canada",
+          "institution_ids": [
+            "https://openalex.org/I141945490"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5034566394",
+        "display_name": "Gulfaraz Khan",
+        "orcid": "https://orcid.org/0000-0001-6836-1783"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I201726411",
+          "display_name": "United Arab Emirates University",
+          "ror": "https://ror.org/01km6p862",
+          "country_code": "AE",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I201726411"
+          ]
+        }
+      ],
+      "countries": [
+        "AE"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Gulfaraz Khan",
+      "raw_affiliation_strings": [
+        "Department of Microbiology & Immunology, College of Medicine and Health Sciences, United Arab Emirates University, Al-Ain, United Arab Emirates"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Department of Microbiology & Immunology, College of Medicine and Health Sciences, United Arab Emirates University, Al-Ain, United Arab Emirates",
+          "institution_ids": [
+            "https://openalex.org/I201726411"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5054327179",
+        "display_name": "Hung Chak Ho",
+        "orcid": "https://orcid.org/0000-0002-6505-3504"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I129975664",
+          "display_name": "Albert Einstein College of Medicine",
+          "ror": "https://ror.org/05cf8a891",
+          "country_code": "US",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I129975664",
+            "https://openalex.org/I4210112371"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "H. Dean Hosgood",
+      "raw_affiliation_strings": [
+        "Albert Einstein College of Medicine, Bronx, New York"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Albert Einstein College of Medicine, Bronx, New York",
+          "institution_ids": [
+            "https://openalex.org/I129975664"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5041755179",
+        "display_name": "Itamar S Santos",
+        "orcid": "https://orcid.org/0000-0003-3212-8466"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I17974374",
+          "display_name": "Universidade de S\u00e3o Paulo",
+          "ror": "https://ror.org/036rp1748",
+          "country_code": "BR",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I17974374"
+          ]
+        }
+      ],
+      "countries": [
+        "BR"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Itamar S. Santos",
+      "raw_affiliation_strings": [
+        "Centre for Clinical and Epidemiological Research, University of S\u00e3o Paulo, S\u00e3o Paulo, Brazil"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Centre for Clinical and Epidemiological Research, University of S\u00e3o Paulo, S\u00e3o Paulo, Brazil",
+          "institution_ids": [
+            "https://openalex.org/I17974374"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5051473154",
+        "display_name": "Janet L Leasher",
+        "orcid": "https://orcid.org/0000-0002-8779-5162"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I203088144",
+          "display_name": "Nova Southeastern University",
+          "ror": "https://ror.org/042bbge36",
+          "country_code": "US",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I203088144"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Janet L. Leasher",
+      "raw_affiliation_strings": [
+        "Nova Southeastern University, Fort Lauderdale, Florida"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Nova Southeastern University, Fort Lauderdale, Florida",
+          "institution_ids": [
+            "https://openalex.org/I203088144"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5046999547",
+        "display_name": "Jasvinder A. Singh",
+        "orcid": "https://orcid.org/0000-0003-3485-0006"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I32389192",
+          "display_name": "University of Alabama at Birmingham",
+          "ror": "https://ror.org/008s83205",
+          "country_code": "US",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I32389192"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Jasvinder Singh",
+      "raw_affiliation_strings": [
+        "Division of Clinical Immunology and Rheumatology, University of Alabama at Birmingham, Birmingham, Alabama"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Division of Clinical Immunology and Rheumatology, University of Alabama at Birmingham, Birmingham, Alabama",
+          "institution_ids": [
+            "https://openalex.org/I32389192"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5082965916",
+        "display_name": "James Leigh",
+        "orcid": "https://orcid.org/0000-0002-0171-4019"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I129604602",
+          "display_name": "The University of Sydney",
+          "ror": "https://ror.org/0384j8v12",
+          "country_code": "AU",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I129604602"
+          ]
+        }
+      ],
+      "countries": [
+        "AU"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "James Leigh",
+      "raw_affiliation_strings": [
+        "University of Sydney, Sydney, Australia"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "University of Sydney, Sydney, Australia",
+          "institution_ids": [
+            "https://openalex.org/I129604602"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5082561940",
+        "display_name": "Jost B. Jonas",
+        "orcid": "https://orcid.org/0000-0003-2972-5227"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I177802217",
+          "display_name": "University of Mannheim",
+          "ror": "https://ror.org/031bsb921",
+          "country_code": "DE",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I177802217"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I223822909",
+          "display_name": "Heidelberg University",
+          "ror": "https://ror.org/038t36y30",
+          "country_code": "DE",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I223822909"
+          ]
+        }
+      ],
+      "countries": [
+        "DE"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Jost B. Jonas",
+      "raw_affiliation_strings": [
+        "Department of Ophthalmology, University of Heidelberg, Mannheim, Germany"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Department of Ophthalmology, University of Heidelberg, Mannheim, Germany",
+          "institution_ids": [
+            "https://openalex.org/I177802217",
+            "https://openalex.org/I223822909"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5056537129",
+        "display_name": "Juan Sanabria",
+        "orcid": "https://orcid.org/0000-0002-7114-2327"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I179638627",
+          "display_name": "Cancer Treatment Centers of America",
+          "ror": "https://ror.org/045ns1x37",
+          "country_code": "US",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I179638627"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I58956616",
+          "display_name": "Case Western Reserve University",
+          "ror": "https://ror.org/051fd9666",
+          "country_code": "US",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I58956616"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Juan Sanabria",
+      "raw_affiliation_strings": [
+        "Department of Surgery, Case Western Reserve University, Cleveland, Ohio38Nutrition and Preventive Medicine, Chicago Medical School at Cancer Treatment Centers of America, Rosalind Franklin University, Chicago, Illinois"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Department of Surgery, Case Western Reserve University, Cleveland, Ohio38Nutrition and Preventive Medicine, Chicago Medical School at Cancer Treatment Centers of America, Rosalind Franklin University, Chicago, Illinois",
+          "institution_ids": [
+            "https://openalex.org/I179638627",
+            "https://openalex.org/I58956616"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5059987720",
+        "display_name": "Justin Beardsley",
+        "orcid": "https://orcid.org/0000-0003-1978-1559"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I4210150114",
+          "display_name": "Oxford University Clinical Research Unit",
+          "ror": "https://ror.org/05rehad94",
+          "country_code": "VN",
+          "type": "facility",
+          "lineage": [
+            "https://openalex.org/I40120149",
+            "https://openalex.org/I4210150114",
+            "https://openalex.org/I87048295"
+          ]
+        }
+      ],
+      "countries": [
+        "VN"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Justin Beardsley",
+      "raw_affiliation_strings": [
+        "Nuffield Department of Medicine, Oxford University, Ho Chi Minh City, Vietnam"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Nuffield Department of Medicine, Oxford University, Ho Chi Minh City, Vietnam",
+          "institution_ids": [
+            "https://openalex.org/I4210150114"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5005327758",
+        "display_name": "Kathryn H. Jacobsen",
+        "orcid": "https://orcid.org/0000-0002-4198-6246"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I162714631",
+          "display_name": "George Mason University",
+          "ror": "https://ror.org/02jqj7156",
+          "country_code": "US",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I162714631"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Kathryn H. Jacobsen",
+      "raw_affiliation_strings": [
+        "Department of Global and Community Health, George Mason University, Fairfax, Virginia"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Department of Global and Community Health, George Mason University, Fairfax, Virginia",
+          "institution_ids": [
+            "https://openalex.org/I162714631"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5076551859",
+        "display_name": "Ken Takahashi",
+        "orcid": "https://orcid.org/0000-0002-7310-2257"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I188700360",
+          "display_name": "University of Occupational and Environmental Health Japan",
+          "ror": "https://ror.org/020p3h829",
+          "country_code": "JP",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I188700360"
+          ]
+        }
+      ],
+      "countries": [
+        "JP"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Ken Takahashi",
+      "raw_affiliation_strings": [
+        "Department of Environmental Epidemiology, University of Occupational and Environmental Health, Kitakyushu, Japan"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Department of Environmental Epidemiology, University of Occupational and Environmental Health, Kitakyushu, Japan",
+          "institution_ids": [
+            "https://openalex.org/I188700360"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5031872428",
+        "display_name": "Richard C. Franklin",
+        "orcid": "https://orcid.org/0000-0003-1864-4552"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I86467917",
+          "display_name": "James Cook University",
+          "ror": "https://ror.org/04gsp2c11",
+          "country_code": "AU",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I86467917"
+          ]
+        }
+      ],
+      "countries": [
+        "AU"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Richard C. Franklin",
+      "raw_affiliation_strings": [
+        "College of Public Health, Medical and Veterinary Sciences, James Cook University, Townsville, Australia"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "College of Public Health, Medical and Veterinary Sciences, James Cook University, Townsville, Australia",
+          "institution_ids": [
+            "https://openalex.org/I86467917"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5026345640",
+        "display_name": "Luca Ronfani",
+        "orcid": "https://orcid.org/0000-0001-5710-3914"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I2799929701",
+          "display_name": "IRCCS Materno Infantile Burlo Garofolo",
+          "ror": "https://ror.org/03t1jzs40",
+          "country_code": "IT",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I2799929701",
+            "https://openalex.org/I4210153126"
+          ]
+        }
+      ],
+      "countries": [
+        "IT"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Luca Ronfani",
+      "raw_affiliation_strings": [
+        "Institute for Maternal and Child Health IRCCS Burlo Garofolo, Trieste, Italy"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Institute for Maternal and Child Health IRCCS Burlo Garofolo, Trieste, Italy",
+          "institution_ids": [
+            "https://openalex.org/I2799929701"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5059150956",
+        "display_name": "Marcella Montico",
+        "orcid": "https://orcid.org/0000-0003-0377-8232"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I2799929701",
+          "display_name": "IRCCS Materno Infantile Burlo Garofolo",
+          "ror": "https://ror.org/03t1jzs40",
+          "country_code": "IT",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I2799929701",
+            "https://openalex.org/I4210153126"
+          ]
+        }
+      ],
+      "countries": [
+        "IT"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Marcella Montico",
+      "raw_affiliation_strings": [
+        "Institute for Maternal and Child Health IRCCS Burlo Garofolo, Trieste, Italy"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Institute for Maternal and Child Health IRCCS Burlo Garofolo, Trieste, Italy",
+          "institution_ids": [
+            "https://openalex.org/I2799929701"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5080662298",
+        "display_name": "Luigi Naldi",
+        "orcid": "https://orcid.org/0000-0002-3160-2835"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I4210106645",
+          "display_name": "Ospedale Papa Giovanni XXIII",
+          "ror": "https://ror.org/01savtv33",
+          "country_code": "IT",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I4210106645"
+          ]
+        }
+      ],
+      "countries": [
+        "IT"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Luigi Naldi",
+      "raw_affiliation_strings": [
+        "Azienda Ospedaliera papa Giovanni XXIII, Bergamo, Italy"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Azienda Ospedaliera papa Giovanni XXIII, Bergamo, Italy",
+          "institution_ids": [
+            "https://openalex.org/I4210106645"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5034928512",
+        "display_name": "Marcello Tonelli",
+        "orcid": "https://orcid.org/0000-0002-0846-3187"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I168635309",
+          "display_name": "University of Calgary",
+          "ror": "https://ror.org/03yjb2x39",
+          "country_code": "CA",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I168635309"
+          ]
+        }
+      ],
+      "countries": [
+        "CA"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Marcello Tonelli",
+      "raw_affiliation_strings": [
+        "University of Calgary, Calgary, Alberta, Canada"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "University of Calgary, Calgary, Alberta, Canada",
+          "institution_ids": [
+            "https://openalex.org/I168635309"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5024313662",
+        "display_name": "Johanna M. Geleijnse",
+        "orcid": "https://orcid.org/0000-0001-7638-0589"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I913481162",
+          "display_name": "Wageningen University & Research",
+          "ror": "https://ror.org/04qw24q55",
+          "country_code": "NL",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I913481162"
+          ]
+        }
+      ],
+      "countries": [
+        "NL"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Johanna Geleijnse",
+      "raw_affiliation_strings": [
+        "Division of Human Nutrition, Wageningen University, Wageningen, the Netherlands"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Division of Human Nutrition, Wageningen University, Wageningen, the Netherlands",
+          "institution_ids": [
+            "https://openalex.org/I913481162"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5033289218",
+        "display_name": "Max Petzold",
+        "orcid": "https://orcid.org/0000-0003-4908-2169"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I192619145",
+          "display_name": "University of the Witwatersrand",
+          "ror": "https://ror.org/03rp50x72",
+          "country_code": "ZA",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I192619145"
+          ]
+        }
+      ],
+      "countries": [
+        "ZA"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Max Petzold",
+      "raw_affiliation_strings": [
+        "Centre for Applied Biostatistics, Sahlgrenska Academy, University of Gothenburg, Gothenburg, Sweden48School of Public Health, University of the Witwatersrand, Johannesburg, South Africa"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Centre for Applied Biostatistics, Sahlgrenska Academy, University of Gothenburg, Gothenburg, Sweden48School of Public Health, University of the Witwatersrand, Johannesburg, South Africa",
+          "institution_ids": [
+            "https://openalex.org/I192619145"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5088219447",
+        "display_name": "Mark G. Shrime",
+        "orcid": "https://orcid.org/0000-0002-3546-9867"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I2801851002",
+          "display_name": "Harvard University Press",
+          "ror": "https://ror.org/006v7bf86",
+          "country_code": "US",
+          "type": "other",
+          "lineage": [
+            "https://openalex.org/I136199984",
+            "https://openalex.org/I2801851002"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Mark G Shrime",
+      "raw_affiliation_strings": [
+        "Harvard University, Boston, Massachusetts"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Harvard University, Boston, Massachusetts",
+          "institution_ids": [
+            "https://openalex.org/I2801851002"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5068476816",
+        "display_name": "Mustafa Z Younis",
+        "orcid": "https://orcid.org/0000-0001-8448-808X"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I61937129",
+          "display_name": "Jackson State University",
+          "ror": "https://ror.org/01ecnnp60",
+          "country_code": "US",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I4210141039",
+            "https://openalex.org/I61937129"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Mustafa Younis",
+      "raw_affiliation_strings": [
+        "Jackson State University, Jackson, Mississippi"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Jackson State University, Jackson, Mississippi",
+          "institution_ids": [
+            "https://openalex.org/I61937129"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5082936913",
+        "display_name": "Naohiro Yonemoto",
+        "orcid": "https://orcid.org/0000-0003-3637-2095"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I4210103779",
+          "display_name": "National Center of Neurology and Psychiatry",
+          "ror": "https://ror.org/0254bmq54",
+          "country_code": "JP",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I4210103779"
+          ]
+        }
+      ],
+      "countries": [
+        "JP"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Naohiro Yonemoto",
+      "raw_affiliation_strings": [
+        "National Center of Neurology and Psychiatry, Kodira, Japan"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "National Center of Neurology and Psychiatry, Kodira, Japan",
+          "institution_ids": [
+            "https://openalex.org/I4210103779"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5015542973",
+        "display_name": "Nicholas J. K. Breitborde",
+        "orcid": "https://orcid.org/0000-0002-9877-3719"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I138006243",
+          "display_name": "University of Arizona",
+          "ror": "https://ror.org/03m2x1q45",
+          "country_code": "US",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I138006243"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Nicholas Breitborde",
+      "raw_affiliation_strings": [
+        "University of Arizona, Tucson"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "University of Arizona, Tucson",
+          "institution_ids": [
+            "https://openalex.org/I138006243"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5064862948",
+        "display_name": "Paul Yip",
+        "orcid": "https://orcid.org/0000-0003-1596-4120"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I889458895",
+          "display_name": "University of Hong Kong",
+          "ror": "https://ror.org/02zhqgq86",
+          "country_code": "HK",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I889458895"
+          ]
+        }
+      ],
+      "countries": [
+        "HK"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Paul Yip",
+      "raw_affiliation_strings": [
+        "The University of Hong Kong, Hong Kong, China"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "The University of Hong Kong, Hong Kong, China",
+          "institution_ids": [
+            "https://openalex.org/I889458895"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5045376487",
+        "display_name": "Farshad Pourmalek",
+        "orcid": "https://orcid.org/0000-0002-2134-0771"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I141945490",
+          "display_name": "University of British Columbia",
+          "ror": "https://ror.org/03rmrcq20",
+          "country_code": "CA",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I141945490"
+          ]
+        }
+      ],
+      "countries": [
+        "CA"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Farshad Pourmalek",
+      "raw_affiliation_strings": [
+        "Faculty of Medicine, University of British Columbia, Vancouver, British Columbia, Canada"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Faculty of Medicine, University of British Columbia, Vancouver, British Columbia, Canada",
+          "institution_ids": [
+            "https://openalex.org/I141945490"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5023008381",
+        "display_name": "Paulo A. Lotufo",
+        "orcid": "https://orcid.org/0000-0002-4856-8450"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I17974374",
+          "display_name": "Universidade de S\u00e3o Paulo",
+          "ror": "https://ror.org/036rp1748",
+          "country_code": "BR",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I17974374"
+          ]
+        }
+      ],
+      "countries": [
+        "BR"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Paulo A. Lotufo",
+      "raw_affiliation_strings": [
+        "Centre for Clinical and Epidemiological Research, University of S\u00e3o Paulo, S\u00e3o Paulo, Brazil"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Centre for Clinical and Epidemiological Research, University of S\u00e3o Paulo, S\u00e3o Paulo, Brazil",
+          "institution_ids": [
+            "https://openalex.org/I17974374"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5089768281",
+        "display_name": "Alireza Esteghamati",
+        "orcid": "https://orcid.org/0000-0001-5114-3982"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I70640408",
+          "display_name": "Tehran University of Medical Sciences",
+          "ror": "https://ror.org/01c4pz451",
+          "country_code": "IR",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I70640408"
+          ]
+        }
+      ],
+      "countries": [
+        "IR"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Alireza Esteghamati",
+      "raw_affiliation_strings": [
+        "Endocrinology and Metabolism Research Center, Tehran University of Medical Sciences, Tehran, Iran"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Endocrinology and Metabolism Research Center, Tehran University of Medical Sciences, Tehran, Iran",
+          "institution_ids": [
+            "https://openalex.org/I70640408"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5014800121",
+        "display_name": "Graeme J. Hankey",
+        "orcid": "https://orcid.org/0000-0002-6044-7328"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I177877127",
+          "display_name": "The University of Western Australia",
+          "ror": "https://ror.org/047272k79",
+          "country_code": "AU",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I177877127"
+          ]
+        }
+      ],
+      "countries": [
+        "AU"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Graeme J. Hankey",
+      "raw_affiliation_strings": [
+        "School of Medicine and Pharmacology, University of Western Australia, School of Medicine and Pharmacology, Perth, Australia"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "School of Medicine and Pharmacology, University of Western Australia, School of Medicine and Pharmacology, Perth, Australia",
+          "institution_ids": [
+            "https://openalex.org/I177877127"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5017879318",
+        "display_name": "Raghib Ali",
+        "orcid": "https://orcid.org/0000-0002-8225-4674"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I40120149",
+          "display_name": "University of Oxford",
+          "ror": "https://ror.org/052gg0110",
+          "country_code": "GB",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I40120149"
+          ]
+        }
+      ],
+      "countries": [
+        "GB"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Raghib Ali",
+      "raw_affiliation_strings": [
+        "Nuffield Department of Population Health, University of Oxford, Oxford, England"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Nuffield Department of Population Health, University of Oxford, Oxford, England",
+          "institution_ids": [
+            "https://openalex.org/I40120149"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5089331919",
+        "display_name": "Raimundas Lunevi\u010dius",
+        "orcid": "https://orcid.org/0000-0003-3295-0142"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I146655781",
+          "display_name": "University of Liverpool",
+          "ror": "https://ror.org/04xs57h96",
+          "country_code": "GB",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I146655781"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I2799272705",
+          "display_name": "Aintree University Hospitals NHS Foundation Trust",
+          "ror": "https://ror.org/02h67vt10",
+          "country_code": "GB",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I2799272705"
+          ]
+        }
+      ],
+      "countries": [
+        "GB"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Raimundas Lunevicius",
+      "raw_affiliation_strings": [
+        "Department of Neuropsychopharmacology, Aintree University Hospital NHS Foundation Trust, Liverpool, England"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Department of Neuropsychopharmacology, Aintree University Hospital NHS Foundation Trust, Liverpool, England",
+          "institution_ids": [
+            "https://openalex.org/I2799272705",
+            "https://openalex.org/I146655781"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5014214187",
+        "display_name": "Reza Malekzadeh",
+        "orcid": "https://orcid.org/0000-0003-1043-3814"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I70640408",
+          "display_name": "Tehran University of Medical Sciences",
+          "ror": "https://ror.org/01c4pz451",
+          "country_code": "IR",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I70640408"
+          ]
+        }
+      ],
+      "countries": [
+        "IR"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Reza Malekzadeh",
+      "raw_affiliation_strings": [
+        "Digestive Disease Research Institute, Tehran University of Medical Sciences, Tehran, Iran"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Digestive Disease Research Institute, Tehran University of Medical Sciences, Tehran, Iran",
+          "institution_ids": [
+            "https://openalex.org/I70640408"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5107942247",
+        "display_name": "Robert P Dellavalle",
+        "orcid": null
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I4210148403",
+          "display_name": "VA Eastern Colorado Health Care System",
+          "ror": "https://ror.org/04d7ez939",
+          "country_code": "US",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I1322918889",
+            "https://openalex.org/I2799886695",
+            "https://openalex.org/I4210113540",
+            "https://openalex.org/I4210148403"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Robert Dellavalle",
+      "raw_affiliation_strings": [
+        "Veterans Affairs Eastern Colorado Health Care System, Denver61Department of Dermatology, University of Colorado School of Medicine, Denver"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Veterans Affairs Eastern Colorado Health Care System, Denver61Department of Dermatology, University of Colorado School of Medicine, Denver",
+          "institution_ids": [
+            "https://openalex.org/I4210148403"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5107241262",
+        "display_name": "Robert Weintraub",
+        "orcid": null
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I1321649718",
+          "display_name": "Royal Children's Hospital",
+          "ror": "https://ror.org/02rktxt32",
+          "country_code": "AU",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I1321649718"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I165779595",
+          "display_name": "The University of Melbourne",
+          "ror": "https://ror.org/01ej9dk98",
+          "country_code": "AU",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I165779595"
+          ]
+        }
+      ],
+      "countries": [
+        "AU"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Robert Weintraub",
+      "raw_affiliation_strings": [
+        "University of Melbourne, Melbourne, Australia63Royal Children\u2019s Hospital, Melbourne, Australia"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "University of Melbourne, Melbourne, Australia63Royal Children\u2019s Hospital, Melbourne, Australia",
+          "institution_ids": [
+            "https://openalex.org/I1321649718",
+            "https://openalex.org/I165779595"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5089070827",
+        "display_name": "Robyn Lucas",
+        "orcid": "https://orcid.org/0000-0003-2736-3541"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I118347636",
+          "display_name": "Australian National University",
+          "ror": "https://ror.org/019wvm592",
+          "country_code": "AU",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I118347636"
+          ]
+        }
+      ],
+      "countries": [
+        "AU"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Robyn Lucas",
+      "raw_affiliation_strings": [
+        "National Centre for Epidemiology and Population Health, Research School of Population Health, The Australian National University, Canberra, Australia"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "National Centre for Epidemiology and Population Health, Research School of Population Health, The Australian National University, Canberra, Australia",
+          "institution_ids": [
+            "https://openalex.org/I118347636"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5046756604",
+        "display_name": "Roderick J. Hay",
+        "orcid": "https://orcid.org/0000-0002-5835-1167"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I4210099032",
+          "display_name": "Foundation for International Environmental Law and Development",
+          "ror": "https://ror.org/0130wtk42",
+          "country_code": "GB",
+          "type": "nonprofit",
+          "lineage": [
+            "https://openalex.org/I4210099032"
+          ]
+        }
+      ],
+      "countries": [
+        "GB"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Roderick Hay",
+      "raw_affiliation_strings": [
+        "International Foundation for Dermatology, London, England"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "International Foundation for Dermatology, London, England",
+          "institution_ids": [
+            "https://openalex.org/I4210099032"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5089795664",
+        "display_name": "David Rojas\u2010Rueda",
+        "orcid": "https://orcid.org/0000-0001-5854-2484"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I4210092159",
+          "display_name": "Center for Research in Environmental Epidemiology",
+          "ror": "https://ror.org/00ftv8552",
+          "country_code": "ES",
+          "type": "facility",
+          "lineage": [
+            "https://openalex.org/I4210092159"
+          ]
+        }
+      ],
+      "countries": [
+        "ES"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "David Rojas-Rueda",
+      "raw_affiliation_strings": [
+        "Centre of Research in Environmental Epidemiology (CREAL), Barcelona, Spain"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Centre of Research in Environmental Epidemiology (CREAL), Barcelona, Spain",
+          "institution_ids": [
+            "https://openalex.org/I4210092159"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5110469704",
+        "display_name": "Ronny Westerman",
+        "orcid": null
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I161103922",
+          "display_name": "Philipps University of Marburg",
+          "ror": "https://ror.org/01rdrb571",
+          "country_code": "DE",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I161103922"
+          ]
+        }
+      ],
+      "countries": [
+        "DE"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Ronny Westerman",
+      "raw_affiliation_strings": [
+        "University of Marburg, Marburg, Germany"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "University of Marburg, Marburg, Germany",
+          "institution_ids": [
+            "https://openalex.org/I161103922"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5064996587",
+        "display_name": "Sadaf G Sepanlou",
+        "orcid": "https://orcid.org/0000-0002-3669-5129"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I4210108448",
+          "display_name": "Shariati Hospital",
+          "ror": "https://ror.org/01rb4vv49",
+          "country_code": "IR",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I4210108448"
+          ]
+        }
+      ],
+      "countries": [
+        "IR"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Sadaf G. Sepanlou",
+      "raw_affiliation_strings": [
+        "Digestive Diseases Research Institute, Shariati Hospital, Tehran, Iran"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Digestive Diseases Research Institute, Shariati Hospital, Tehran, Iran",
+          "institution_ids": [
+            "https://openalex.org/I4210108448"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5002363544",
+        "display_name": "Sandra Nolte",
+        "orcid": "https://orcid.org/0000-0001-6185-9423"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I7877124",
+          "display_name": "Charit\u00e9 - Universit\u00e4tsmedizin Berlin",
+          "ror": "https://ror.org/001w7jn25",
+          "country_code": "DE",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I7877124"
+          ]
+        }
+      ],
+      "countries": [
+        "DE"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Sandra Nolte",
+      "raw_affiliation_strings": [
+        "Charit\u00e9 University Medicine Berlin, Berlin, Germany"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Charit\u00e9 University Medicine Berlin, Berlin, Germany",
+          "institution_ids": [
+            "https://openalex.org/I7877124"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5012744052",
+        "display_name": "Scott B. Patten",
+        "orcid": "https://orcid.org/0000-0001-9871-4041"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I168635309",
+          "display_name": "University of Calgary",
+          "ror": "https://ror.org/03yjb2x39",
+          "country_code": "CA",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I168635309"
+          ]
+        }
+      ],
+      "countries": [
+        "CA"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Scott Patten",
+      "raw_affiliation_strings": [
+        "Department of Community Health Sciences, University of Calgary, Calgary, Alberta, Canada"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Department of Community Health Sciences, University of Calgary, Calgary, Alberta, Canada",
+          "institution_ids": [
+            "https://openalex.org/I168635309"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5009705170",
+        "display_name": "Scott Weichenthal",
+        "orcid": "https://orcid.org/0000-0002-9634-5323"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I1288894424",
+          "display_name": "Health Canada",
+          "ror": "https://ror.org/05p8nb362",
+          "country_code": "CA",
+          "type": "government",
+          "lineage": [
+            "https://openalex.org/I1288894424"
+          ]
+        }
+      ],
+      "countries": [
+        "CA"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Scott Weichenthal",
+      "raw_affiliation_strings": [
+        "Air Health Science Division, Health Canada, Ottawa, Ontario, Canada"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Air Health Science Division, Health Canada, Ottawa, Ontario, Canada",
+          "institution_ids": [
+            "https://openalex.org/I1288894424"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5012390350",
+        "display_name": "Semaw Ferede Abera",
+        "orcid": "https://orcid.org/0000-0002-9284-1231"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I74813324",
+          "display_name": "Mekelle University",
+          "ror": "https://ror.org/04bpyvy69",
+          "country_code": "ET",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I74813324"
+          ]
+        }
+      ],
+      "countries": [
+        "ET"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Semaw Ferede Abera",
+      "raw_affiliation_strings": [
+        "College of Health Sciences, Mekelle University, Mekelle, Ethiopia"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "College of Health Sciences, Mekelle University, Mekelle, Ethiopia",
+          "institution_ids": [
+            "https://openalex.org/I74813324"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5109210029",
+        "display_name": "Seyed-Mohammad Fereshtehnejad",
+        "orcid": null
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I28166907",
+          "display_name": "Karolinska Institutet",
+          "ror": "https://ror.org/056d84691",
+          "country_code": "SE",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I28166907"
+          ]
+        }
+      ],
+      "countries": [
+        "SE"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Seyed-Mohammad Fereshtehnejad",
+      "raw_affiliation_strings": [
+        "Department of Neurobiology Care Sciences and Society (NVS), Karolinska Institutet, Stockholm, Sweden"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Department of Neurobiology Care Sciences and Society (NVS), Karolinska Institutet, Stockholm, Sweden",
+          "institution_ids": [
+            "https://openalex.org/I28166907"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5027320930",
+        "display_name": "Ivy Shiue",
+        "orcid": "https://orcid.org/0000-0003-1788-3009"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I32394136",
+          "display_name": "Northumbria University",
+          "ror": "https://ror.org/049e6bc10",
+          "country_code": "GB",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I32394136"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I98677209",
+          "display_name": "University of Edinburgh",
+          "ror": "https://ror.org/01nrxwf90",
+          "country_code": "GB",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I98677209"
+          ]
+        }
+      ],
+      "countries": [
+        "GB"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Ivy Shiue",
+      "raw_affiliation_strings": [
+        "Northumbria University, Newcastle upon Tyne, England75University of Edinburgh, Edinburgh, Scotland"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Northumbria University, Newcastle upon Tyne, England75University of Edinburgh, Edinburgh, Scotland",
+          "institution_ids": [
+            "https://openalex.org/I32394136",
+            "https://openalex.org/I98677209"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5008850617",
+        "display_name": "Tim Driscoll",
+        "orcid": "https://orcid.org/0000-0003-0057-2490"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I129604602",
+          "display_name": "The University of Sydney",
+          "ror": "https://ror.org/0384j8v12",
+          "country_code": "AU",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I129604602"
+          ]
+        }
+      ],
+      "countries": [
+        "AU"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Tim Driscoll",
+      "raw_affiliation_strings": [
+        "Sydney School of Public Health, University of Sydney, Sydney, Australia"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Sydney School of Public Health, University of Sydney, Sydney, Australia",
+          "institution_ids": [
+            "https://openalex.org/I129604602"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5029755207",
+        "display_name": "Tommi Vasankari",
+        "orcid": "https://orcid.org/0000-0001-7209-9351"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I4210166137",
+          "display_name": "Urho Kaleva Kekkonen Institute",
+          "ror": "https://ror.org/05ydecq02",
+          "country_code": "FI",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I4210166137"
+          ]
+        }
+      ],
+      "countries": [
+        "FI"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Tommi Vasankari",
+      "raw_affiliation_strings": [
+        "UKK Institute for Health Promotion Research, Tampere, Finland"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "UKK Institute for Health Promotion Research, Tampere, Finland",
+          "institution_ids": [
+            "https://openalex.org/I4210166137"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5105767766",
+        "display_name": "Ubai Alsharif",
+        "orcid": "https://orcid.org/0000-0002-4024-3950"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I7877124",
+          "display_name": "Charit\u00e9 - Universit\u00e4tsmedizin Berlin",
+          "ror": "https://ror.org/001w7jn25",
+          "country_code": "DE",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I7877124"
+          ]
+        }
+      ],
+      "countries": [
+        "DE"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Ubai Alsharif",
+      "raw_affiliation_strings": [
+        "Charit\u00e9\u2013Universit\u00e4tsmedizin Berlin, Berlin, Germany"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Charit\u00e9\u2013Universit\u00e4tsmedizin Berlin, Berlin, Germany",
+          "institution_ids": [
+            "https://openalex.org/I7877124"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5008056695",
+        "display_name": "Vafa Rahimi\u2010Movaghar",
+        "orcid": "https://orcid.org/0000-0001-7347-8767"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I70640408",
+          "display_name": "Tehran University of Medical Sciences",
+          "ror": "https://ror.org/01c4pz451",
+          "country_code": "IR",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I70640408"
+          ]
+        }
+      ],
+      "countries": [
+        "IR"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Vafa Rahimi-Movaghar",
+      "raw_affiliation_strings": [
+        "Sina Trauma and Surgery Research Center, Tehran University of Medical Sciences, Tehran, Iran"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Sina Trauma and Surgery Research Center, Tehran University of Medical Sciences, Tehran, Iran",
+          "institution_ids": [
+            "https://openalex.org/I70640408"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5071914447",
+        "display_name": "Vasily Vlassov",
+        "orcid": "https://orcid.org/0000-0001-5203-549X"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I118501908",
+          "display_name": "National Research University Higher School of Economics",
+          "ror": "https://ror.org/055f7t516",
+          "country_code": "RU",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I118501908"
+          ]
+        }
+      ],
+      "countries": [
+        "RU"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Vasiliy V. Vlassov",
+      "raw_affiliation_strings": [
+        "National Research University Higher School of Economics, Moscow, Russia"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "National Research University Higher School of Economics, Moscow, Russia",
+          "institution_ids": [
+            "https://openalex.org/I118501908"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5105973810",
+        "display_name": "Wagner Marcenes",
+        "orcid": null
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I166337079",
+          "display_name": "Queen Mary University of London",
+          "ror": "https://ror.org/026zzn846",
+          "country_code": "GB",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I124357947",
+            "https://openalex.org/I166337079"
+          ]
+        }
+      ],
+      "countries": [
+        "GB"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "W. S. Marcenes",
+      "raw_affiliation_strings": [
+        "Barts and The London School of Medicine and Dentistry, University of London, London, England"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Barts and The London School of Medicine and Dentistry, University of London, London, England",
+          "institution_ids": [
+            "https://openalex.org/I166337079"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": null,
+        "display_name": "Wubegzier Mekonnen",
+        "orcid": null
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I4537092",
+          "display_name": "Addis Ababa University",
+          "ror": "https://ror.org/038b8e254",
+          "country_code": "ET",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I4537092"
+          ]
+        }
+      ],
+      "countries": [
+        "ET"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Wubegzier Mekonnen",
+      "raw_affiliation_strings": [
+        "School of Public Health, Addis Ababa University, Addis Ababa, Ethiopia"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "School of Public Health, Addis Ababa University, Addis Ababa, Ethiopia",
+          "institution_ids": [
+            "https://openalex.org/I4537092"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5054844551",
+        "display_name": "Yohannes Adama Melaku",
+        "orcid": "https://orcid.org/0000-0002-3051-7313"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I74813324",
+          "display_name": "Mekelle University",
+          "ror": "https://ror.org/04bpyvy69",
+          "country_code": "ET",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I74813324"
+          ]
+        }
+      ],
+      "countries": [
+        "ET"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Yohannes Adama Melaku",
+      "raw_affiliation_strings": [
+        "College of Health Sciences, School of Public Health, Mekelle University, Mekelle, Ethiopia"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "College of Health Sciences, School of Public Health, Mekelle University, Mekelle, Ethiopia",
+          "institution_ids": [
+            "https://openalex.org/I74813324"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5042987784",
+        "display_name": "Yuichiro Yano",
+        "orcid": "https://orcid.org/0000-0002-2565-7290"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I111979921",
+          "display_name": "Northwestern University",
+          "ror": "https://ror.org/000e0be47",
+          "country_code": "US",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I111979921"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Yuichiro Yano",
+      "raw_affiliation_strings": [
+        "Department of Preventive Medicine, Northwestern University, Chicago, Illinois"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Department of Preventive Medicine, Northwestern University, Chicago, Illinois",
+          "institution_ids": [
+            "https://openalex.org/I111979921"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5072019647",
+        "display_name": "Al Artaman",
+        "orcid": null
+      },
+      "institutions": [],
+      "countries": [],
+      "is_corresponding": false,
+      "raw_author_name": "Al Artaman",
+      "raw_affiliation_strings": [
+        "Windsor, Ontario, Canada"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Windsor, Ontario, Canada",
+          "institution_ids": []
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5080693617",
+        "display_name": "Ismael Campos\u2010Nonato",
+        "orcid": "https://orcid.org/0000-0001-5939-3396"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I2801851002",
+          "display_name": "Harvard University Press",
+          "ror": "https://ror.org/006v7bf86",
+          "country_code": "US",
+          "type": "other",
+          "lineage": [
+            "https://openalex.org/I136199984",
+            "https://openalex.org/I2801851002"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Ismael Campos",
+      "raw_affiliation_strings": [
+        "Harvard University, Boston, Massachusetts"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Harvard University, Boston, Massachusetts",
+          "institution_ids": [
+            "https://openalex.org/I2801851002"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5003754424",
+        "display_name": "Jennifer H MacLachlan",
+        "orcid": "https://orcid.org/0000-0002-7654-4536"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I4210088630",
+          "display_name": "Victorian Infectious Diseases Reference Laboratory",
+          "ror": "https://ror.org/005ynf375",
+          "country_code": "AU",
+          "type": "facility",
+          "lineage": [
+            "https://openalex.org/I4210088630"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I4210105123",
+          "display_name": "Peter Doherty Institute",
+          "ror": "https://ror.org/016899r71",
+          "country_code": "AU",
+          "type": "facility",
+          "lineage": [
+            "https://openalex.org/I1320473756",
+            "https://openalex.org/I165779595",
+            "https://openalex.org/I4210105123",
+            "https://openalex.org/I4210158168"
+          ]
+        }
+      ],
+      "countries": [
+        "AU"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Jennifer MacLachlan",
+      "raw_affiliation_strings": [
+        "Victorian Infectious Diseases Reference Laboratory (VIDRL), The Peter Doherty Institute for Infection and Immunity, WHO Collaborating Centre for Viral Hepatitis, Melbourne, Australia"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Victorian Infectious Diseases Reference Laboratory (VIDRL), The Peter Doherty Institute for Infection and Immunity, WHO Collaborating Centre for Viral Hepatitis, Melbourne, Australia",
+          "institution_ids": [
+            "https://openalex.org/I4210105123",
+            "https://openalex.org/I4210088630"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5112752493",
+        "display_name": "Ulrich M\u00fceller",
+        "orcid": null
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I161103922",
+          "display_name": "Philipps University of Marburg",
+          "ror": "https://ror.org/01rdrb571",
+          "country_code": "DE",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I161103922"
+          ]
+        }
+      ],
+      "countries": [
+        "DE"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Ulrich Mueller",
+      "raw_affiliation_strings": [
+        "Philipps-University Marburg, Marburg, Germany"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Philipps-University Marburg, Marburg, Germany",
+          "institution_ids": [
+            "https://openalex.org/I161103922"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5100372590",
+        "display_name": "Daniel Kim",
+        "orcid": "https://orcid.org/0000-0001-8907-6420"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I12912129",
+          "display_name": "Northeastern University",
+          "ror": "https://ror.org/04t5xt781",
+          "country_code": "US",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I12912129"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Daniel Kim",
+      "raw_affiliation_strings": [
+        "Department of Health Sciences, Northeastern University, Boston, Massachusetts"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Department of Health Sciences, Northeastern University, Boston, Massachusetts",
+          "institution_ids": [
+            "https://openalex.org/I12912129"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5002432559",
+        "display_name": "Matias Trillini",
+        "orcid": "https://orcid.org/0000-0003-1859-1729"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I19630809",
+          "display_name": "Mario Negri Institute for Pharmacological Research",
+          "ror": "https://ror.org/05aspc753",
+          "country_code": "IT",
+          "type": "nonprofit",
+          "lineage": [
+            "https://openalex.org/I19630809",
+            "https://openalex.org/I4210110338",
+            "https://openalex.org/I4210153126"
+          ]
+        }
+      ],
+      "countries": [
+        "IT"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Matias Trillini",
+      "raw_affiliation_strings": [
+        "Mario Negri Institute for pharmacological Research, Ranica, Italy"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Mario Negri Institute for pharmacological Research, Ranica, Italy",
+          "institution_ids": [
+            "https://openalex.org/I19630809"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5108122112",
+        "display_name": "Babak Eshrati",
+        "orcid": null
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I133903919",
+          "display_name": "Arak University of Medical Sciences",
+          "ror": "https://ror.org/056mgfb42",
+          "country_code": "IR",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I133903919"
+          ]
+        }
+      ],
+      "countries": [
+        "IR"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Babak Eshrati",
+      "raw_affiliation_strings": [
+        "Arak University of Medical Sciences and Health Affairs, Arak, Iran"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Arak University of Medical Sciences and Health Affairs, Arak, Iran",
+          "institution_ids": [
+            "https://openalex.org/I133903919"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5020273160",
+        "display_name": "Hywel C Williams",
+        "orcid": "https://orcid.org/0000-0002-5646-3093"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I142263535",
+          "display_name": "University of Nottingham",
+          "ror": "https://ror.org/01ee9ar58",
+          "country_code": "GB",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I142263535"
+          ]
+        }
+      ],
+      "countries": [
+        "GB"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Hywel C. Williams",
+      "raw_affiliation_strings": [
+        "University of Nottingham, Nottingham, England"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "University of Nottingham, Nottingham, England",
+          "institution_ids": [
+            "https://openalex.org/I142263535"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5082274727",
+        "display_name": "Kenji Shibuya",
+        "orcid": "https://orcid.org/0000-0003-2528-7530"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I74801974",
+          "display_name": "The University of Tokyo",
+          "ror": "https://ror.org/057zh3y96",
+          "country_code": "JP",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I74801974"
+          ]
+        }
+      ],
+      "countries": [
+        "JP"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Kenji Shibuya",
+      "raw_affiliation_strings": [
+        "University of Tokyo, Tokyo, Japan"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "University of Tokyo, Tokyo, Japan",
+          "institution_ids": [
+            "https://openalex.org/I74801974"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5005629692",
+        "display_name": "Rakhi Dandona",
+        "orcid": "https://orcid.org/0000-0003-0926-788X"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I74653059",
+          "display_name": "Public Health Foundation of India",
+          "ror": "https://ror.org/058s20p71",
+          "country_code": "IN",
+          "type": "nonprofit",
+          "lineage": [
+            "https://openalex.org/I74653059"
+          ]
+        }
+      ],
+      "countries": [
+        "IN"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Rakhi Dandona",
+      "raw_affiliation_strings": [
+        "Public Health Foundation of India, National Capital Region, India"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Public Health Foundation of India, National Capital Region, India",
+          "institution_ids": [
+            "https://openalex.org/I74653059"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5076239319",
+        "display_name": "Kinnari Murthy",
+        "orcid": null
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I74653059",
+          "display_name": "Public Health Foundation of India",
+          "ror": "https://ror.org/058s20p71",
+          "country_code": "IN",
+          "type": "nonprofit",
+          "lineage": [
+            "https://openalex.org/I74653059"
+          ]
+        }
+      ],
+      "countries": [
+        "IN"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Kinnari Murthy",
+      "raw_affiliation_strings": [
+        "Public Health Foundation of India, National Capital Region, India"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Public Health Foundation of India, National Capital Region, India",
+          "institution_ids": [
+            "https://openalex.org/I74653059"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": null,
+        "display_name": "Benjamin Cowie",
+        "orcid": null
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I4210088630",
+          "display_name": "Victorian Infectious Diseases Reference Laboratory",
+          "ror": "https://ror.org/005ynf375",
+          "country_code": "AU",
+          "type": "facility",
+          "lineage": [
+            "https://openalex.org/I4210088630"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I4210105123",
+          "display_name": "Peter Doherty Institute",
+          "ror": "https://ror.org/016899r71",
+          "country_code": "AU",
+          "type": "facility",
+          "lineage": [
+            "https://openalex.org/I1320473756",
+            "https://openalex.org/I165779595",
+            "https://openalex.org/I4210105123",
+            "https://openalex.org/I4210158168"
+          ]
+        }
+      ],
+      "countries": [
+        "AU"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Benjamin Cowie",
+      "raw_affiliation_strings": [
+        "Victorian Infectious Diseases Reference Laboratory (VIDRL), The Peter Doherty Institute for Infection and Immunity, WHO Collaborating Centre for Viral Hepatitis, Melbourne, Australia"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Victorian Infectious Diseases Reference Laboratory (VIDRL), The Peter Doherty Institute for Infection and Immunity, WHO Collaborating Centre for Viral Hepatitis, Melbourne, Australia",
+          "institution_ids": [
+            "https://openalex.org/I4210105123",
+            "https://openalex.org/I4210088630"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5039387424",
+        "display_name": "Azmeraw T. Amare",
+        "orcid": "https://orcid.org/0000-0002-7940-0335"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I169381384",
+          "display_name": "University of Groningen",
+          "ror": "https://ror.org/012p63287",
+          "country_code": "NL",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I169381384"
+          ]
+        }
+      ],
+      "countries": [
+        "NL"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Azmeraw T. Amare",
+      "raw_affiliation_strings": [
+        "Department of Epidemiology, University of Groningen, Groningen, the Netherlands"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Department of Epidemiology, University of Groningen, Groningen, the Netherlands",
+          "institution_ids": [
+            "https://openalex.org/I169381384"
+          ]
+        }
+      ]
+    }
+  ],
+  "institutions": [],
+  "countries_distinct_count": 33,
+  "institutions_distinct_count": 102,
+  "corresponding_author_ids": [],
+  "corresponding_institution_ids": [],
+  "apc_list": null,
+  "apc_paid": null,
+  "fwci": 164.7062,
+  "has_fulltext": true,
+  "cited_by_count": 2762,
+  "citation_normalized_percentile": {
+    "value": 0.99978894,
+    "is_in_top_1_percent": true,
+    "is_in_top_10_percent": true
+  },
+  "cited_by_percentile_year": {
+    "min": 99,
+    "max": 100
+  },
+  "biblio": {
+    "volume": "1",
+    "issue": "4",
+    "first_page": "505",
+    "last_page": "505"
+  },
+  "is_retracted": false,
+  "is_paratext": false,
+  "is_xpac": false,
+  "primary_topic": {
+    "id": "https://openalex.org/T10556",
+    "display_name": "Global Cancer Incidence and Screening",
+    "score": 0.5335999727249146,
+    "subfield": {
+      "id": "https://openalex.org/subfields/2730",
+      "display_name": "Oncology"
+    },
+    "field": {
+      "id": "https://openalex.org/fields/27",
+      "display_name": "Medicine"
+    },
+    "domain": {
+      "id": "https://openalex.org/domains/4",
+      "display_name": "Health Sciences"
+    }
+  },
+  "topics": [
+    {
+      "id": "https://openalex.org/T10556",
+      "display_name": "Global Cancer Incidence and Screening",
+      "score": 0.5335999727249146,
+      "subfield": {
+        "id": "https://openalex.org/subfields/2730",
+        "display_name": "Oncology"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/27",
+        "display_name": "Medicine"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/4",
+        "display_name": "Health Sciences"
+      }
+    },
+    {
+      "id": "https://openalex.org/T12103",
+      "display_name": "Cancer Risks and Factors",
+      "score": 0.057500001043081284,
+      "subfield": {
+        "id": "https://openalex.org/subfields/2730",
+        "display_name": "Oncology"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/27",
+        "display_name": "Medicine"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/4",
+        "display_name": "Health Sciences"
+      }
+    },
+    {
+      "id": "https://openalex.org/T14078",
+      "display_name": "Multiple and Secondary Primary Cancers",
+      "score": 0.04780000075697899,
+      "subfield": {
+        "id": "https://openalex.org/subfields/2713",
+        "display_name": "Epidemiology"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/27",
+        "display_name": "Medicine"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/4",
+        "display_name": "Health Sciences"
+      }
+    }
+  ],
+  "keywords": [
+    {
+      "id": "https://openalex.org/keywords/medicine",
+      "display_name": "Medicine",
+      "score": 0.9272911548614502
+    },
+    {
+      "id": "https://openalex.org/keywords/cancer",
+      "display_name": "Cancer",
+      "score": 0.531629204750061
+    },
+    {
+      "id": "https://openalex.org/keywords/medline",
+      "display_name": "MEDLINE",
+      "score": 0.4528515934944153
+    },
+    {
+      "id": "https://openalex.org/keywords/internal-medicine",
+      "display_name": "Internal medicine",
+      "score": 0.25630009174346924
+    }
+  ],
+  "concepts": [
+    {
+      "id": "https://openalex.org/C71924100",
+      "wikidata": "https://www.wikidata.org/wiki/Q11190",
+      "display_name": "Medicine",
+      "level": 0,
+      "score": 0.9272911548614502
+    },
+    {
+      "id": "https://openalex.org/C121608353",
+      "wikidata": "https://www.wikidata.org/wiki/Q12078",
+      "display_name": "Cancer",
+      "level": 2,
+      "score": 0.531629204750061
+    },
+    {
+      "id": "https://openalex.org/C2779473830",
+      "wikidata": "https://www.wikidata.org/wiki/Q1540899",
+      "display_name": "MEDLINE",
+      "level": 2,
+      "score": 0.4528515934944153
+    },
+    {
+      "id": "https://openalex.org/C126322002",
+      "wikidata": "https://www.wikidata.org/wiki/Q11180",
+      "display_name": "Internal medicine",
+      "level": 1,
+      "score": 0.25630009174346924
+    },
+    {
+      "id": "https://openalex.org/C17744445",
+      "wikidata": "https://www.wikidata.org/wiki/Q36442",
+      "display_name": "Political science",
+      "level": 0,
+      "score": 0.0
+    },
+    {
+      "id": "https://openalex.org/C199539241",
+      "wikidata": "https://www.wikidata.org/wiki/Q7748",
+      "display_name": "Law",
+      "level": 1,
+      "score": 0.0
+    }
+  ],
+  "mesh": [
+    {
+      "descriptor_ui": "D000293",
+      "descriptor_name": "Adolescent",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000293",
+      "descriptor_name": "Adolescent",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000293",
+      "descriptor_name": "Adolescent",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000293",
+      "descriptor_name": "Adolescent",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000293",
+      "descriptor_name": "Adolescent",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000328",
+      "descriptor_name": "Adult",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000328",
+      "descriptor_name": "Adult",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000328",
+      "descriptor_name": "Adult",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000328",
+      "descriptor_name": "Adult",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000328",
+      "descriptor_name": "Adult",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000367",
+      "descriptor_name": "Age Factors",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000367",
+      "descriptor_name": "Age Factors",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000367",
+      "descriptor_name": "Age Factors",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000367",
+      "descriptor_name": "Age Factors",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000367",
+      "descriptor_name": "Age Factors",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000368",
+      "descriptor_name": "Aged",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000368",
+      "descriptor_name": "Aged",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000368",
+      "descriptor_name": "Aged",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000368",
+      "descriptor_name": "Aged",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000368",
+      "descriptor_name": "Aged",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000369",
+      "descriptor_name": "Aged, 80 and over",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000369",
+      "descriptor_name": "Aged, 80 and over",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000369",
+      "descriptor_name": "Aged, 80 and over",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000369",
+      "descriptor_name": "Aged, 80 and over",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000369",
+      "descriptor_name": "Aged, 80 and over",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D002648",
+      "descriptor_name": "Child",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D002648",
+      "descriptor_name": "Child",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D002648",
+      "descriptor_name": "Child",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D002648",
+      "descriptor_name": "Child",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D002648",
+      "descriptor_name": "Child",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D002675",
+      "descriptor_name": "Child, Preschool",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D002675",
+      "descriptor_name": "Child, Preschool",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D002675",
+      "descriptor_name": "Child, Preschool",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D002675",
+      "descriptor_name": "Child, Preschool",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D002675",
+      "descriptor_name": "Child, Preschool",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D004185",
+      "descriptor_name": "Disability Evaluation",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D004185",
+      "descriptor_name": "Disability Evaluation",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D004185",
+      "descriptor_name": "Disability Evaluation",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D004185",
+      "descriptor_name": "Disability Evaluation",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D004185",
+      "descriptor_name": "Disability Evaluation",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D005260",
+      "descriptor_name": "Female",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D005260",
+      "descriptor_name": "Female",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D005260",
+      "descriptor_name": "Female",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D005260",
+      "descriptor_name": "Female",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D005260",
+      "descriptor_name": "Female",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D006801",
+      "descriptor_name": "Humans",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D006801",
+      "descriptor_name": "Humans",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D006801",
+      "descriptor_name": "Humans",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D006801",
+      "descriptor_name": "Humans",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D006801",
+      "descriptor_name": "Humans",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D008017",
+      "descriptor_name": "Life Expectancy",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D008017",
+      "descriptor_name": "Life Expectancy",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D008017",
+      "descriptor_name": "Life Expectancy",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D008017",
+      "descriptor_name": "Life Expectancy",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D008017",
+      "descriptor_name": "Life Expectancy",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D008297",
+      "descriptor_name": "Male",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D008297",
+      "descriptor_name": "Male",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D008297",
+      "descriptor_name": "Male",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D008297",
+      "descriptor_name": "Male",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D008297",
+      "descriptor_name": "Male",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D008875",
+      "descriptor_name": "Middle Aged",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D008875",
+      "descriptor_name": "Middle Aged",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D008875",
+      "descriptor_name": "Middle Aged",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D008875",
+      "descriptor_name": "Middle Aged",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D008875",
+      "descriptor_name": "Middle Aged",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D009369",
+      "descriptor_name": "Neoplasms",
+      "qualifier_ui": "Q000175",
+      "qualifier_name": "diagnosis",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D009369",
+      "descriptor_name": "Neoplasms",
+      "qualifier_ui": "Q000175",
+      "qualifier_name": "diagnosis",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D009369",
+      "descriptor_name": "Neoplasms",
+      "qualifier_ui": "Q000175",
+      "qualifier_name": "diagnosis",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D009369",
+      "descriptor_name": "Neoplasms",
+      "qualifier_ui": "Q000175",
+      "qualifier_name": "diagnosis",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D009369",
+      "descriptor_name": "Neoplasms",
+      "qualifier_ui": "Q000175",
+      "qualifier_name": "diagnosis",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D009369",
+      "descriptor_name": "Neoplasms",
+      "qualifier_ui": "Q000401",
+      "qualifier_name": "mortality",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D009369",
+      "descriptor_name": "Neoplasms",
+      "qualifier_ui": "Q000401",
+      "qualifier_name": "mortality",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D009369",
+      "descriptor_name": "Neoplasms",
+      "qualifier_ui": "Q000401",
+      "qualifier_name": "mortality",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D009369",
+      "descriptor_name": "Neoplasms",
+      "qualifier_ui": "Q000401",
+      "qualifier_name": "mortality",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D009369",
+      "descriptor_name": "Neoplasms",
+      "qualifier_ui": "Q000401",
+      "qualifier_name": "mortality",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D009369",
+      "descriptor_name": "Neoplasms",
+      "qualifier_ui": "Q000453",
+      "qualifier_name": "epidemiology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D009369",
+      "descriptor_name": "Neoplasms",
+      "qualifier_ui": "Q000453",
+      "qualifier_name": "epidemiology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D009369",
+      "descriptor_name": "Neoplasms",
+      "qualifier_ui": "Q000453",
+      "qualifier_name": "epidemiology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D009369",
+      "descriptor_name": "Neoplasms",
+      "qualifier_ui": "Q000453",
+      "qualifier_name": "epidemiology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D009369",
+      "descriptor_name": "Neoplasms",
+      "qualifier_ui": "Q000453",
+      "qualifier_name": "epidemiology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D011379",
+      "descriptor_name": "Prognosis",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D011379",
+      "descriptor_name": "Prognosis",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D011379",
+      "descriptor_name": "Prognosis",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D011379",
+      "descriptor_name": "Prognosis",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D011379",
+      "descriptor_name": "Prognosis",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D012307",
+      "descriptor_name": "Risk Factors",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D012307",
+      "descriptor_name": "Risk Factors",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D012307",
+      "descriptor_name": "Risk Factors",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D012307",
+      "descriptor_name": "Risk Factors",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D012307",
+      "descriptor_name": "Risk Factors",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D012737",
+      "descriptor_name": "Sex Factors",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D012737",
+      "descriptor_name": "Sex Factors",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D012737",
+      "descriptor_name": "Sex Factors",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D012737",
+      "descriptor_name": "Sex Factors",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D012737",
+      "descriptor_name": "Sex Factors",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D013997",
+      "descriptor_name": "Time Factors",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D013997",
+      "descriptor_name": "Time Factors",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D013997",
+      "descriptor_name": "Time Factors",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D013997",
+      "descriptor_name": "Time Factors",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D013997",
+      "descriptor_name": "Time Factors",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D014943",
+      "descriptor_name": "Global Health",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D014943",
+      "descriptor_name": "Global Health",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D014943",
+      "descriptor_name": "Global Health",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D014943",
+      "descriptor_name": "Global Health",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D014943",
+      "descriptor_name": "Global Health",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D015994",
+      "descriptor_name": "Incidence",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D015994",
+      "descriptor_name": "Incidence",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D015994",
+      "descriptor_name": "Incidence",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D015994",
+      "descriptor_name": "Incidence",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D015994",
+      "descriptor_name": "Incidence",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D015995",
+      "descriptor_name": "Prevalence",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D015995",
+      "descriptor_name": "Prevalence",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D015995",
+      "descriptor_name": "Prevalence",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D015995",
+      "descriptor_name": "Prevalence",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D015995",
+      "descriptor_name": "Prevalence",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D017677",
+      "descriptor_name": "Age Distribution",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D017677",
+      "descriptor_name": "Age Distribution",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D017677",
+      "descriptor_name": "Age Distribution",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D017677",
+      "descriptor_name": "Age Distribution",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D017677",
+      "descriptor_name": "Age Distribution",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D017678",
+      "descriptor_name": "Sex Distribution",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D017678",
+      "descriptor_name": "Sex Distribution",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D017678",
+      "descriptor_name": "Sex Distribution",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D017678",
+      "descriptor_name": "Sex Distribution",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D017678",
+      "descriptor_name": "Sex Distribution",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D055815",
+      "descriptor_name": "Young Adult",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D055815",
+      "descriptor_name": "Young Adult",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D055815",
+      "descriptor_name": "Young Adult",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D055815",
+      "descriptor_name": "Young Adult",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D055815",
+      "descriptor_name": "Young Adult",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    }
+  ],
+  "locations_count": 12,
+  "locations": [
+    {
+      "id": "doi:10.1001/jamaoncol.2015.0735",
+      "is_oa": false,
+      "landing_page_url": "https://doi.org/10.1001/jamaoncol.2015.0735",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S2756165422",
+        "display_name": "JAMA Oncology",
+        "issn_l": "2374-2437",
+        "issn": [
+          "2374-2437",
+          "2374-2445"
+        ],
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": true,
+        "host_organization": "https://openalex.org/P4310320259",
+        "host_organization_name": "American Medical Association",
+        "host_organization_lineage": [
+          "https://openalex.org/P4310320259"
+        ],
+        "host_organization_lineage_names": [
+          "American Medical Association"
+        ],
+        "type": "journal"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "publishedVersion",
+      "is_accepted": true,
+      "is_published": true,
+      "raw_source_name": "JAMA Oncology",
+      "raw_type": "journal-article"
+    },
+    {
+      "id": "pmid:26181261",
+      "is_oa": false,
+      "landing_page_url": "https://pubmed.ncbi.nlm.nih.gov/26181261",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4306525036",
+        "display_name": "PubMed",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I1299303238",
+        "host_organization_name": "National Institutes of Health",
+        "host_organization_lineage": [
+          "https://openalex.org/I1299303238"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "publishedVersion",
+      "is_accepted": true,
+      "is_published": true,
+      "raw_source_name": "JAMA oncology",
+      "raw_type": null
+    },
+    {
+      "id": "pmh:oai:jupiter.its.unimelb.edu.au:11343/59029",
+      "is_oa": true,
+      "landing_page_url": "http://hdl.handle.net/11343/59029",
+      "pdf_url": "http://hdl.handle.net/11343/59029",
+      "source": {
+        "id": "https://openalex.org/S4377196259",
+        "display_name": "Minerva Access (University of Melbourne)",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I165779595",
+        "host_organization_name": "The University of Melbourne",
+        "host_organization_lineage": [
+          "https://openalex.org/I165779595"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "submittedVersion",
+      "is_accepted": false,
+      "is_published": false,
+      "raw_source_name": "",
+      "raw_type": "Journal Article"
+    },
+    {
+      "id": "pmh:oai:pure.atira.dk:publications/b9c06b82-10be-4099-bd3a-875c33416fd5",
+      "is_oa": true,
+      "landing_page_url": "https://www.ncbi.nlm.nih.gov/pmc/articles/4500822",
+      "pdf_url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4500822/pdf/emss-64123.pdf",
+      "source": {
+        "id": "https://openalex.org/S4306402492",
+        "display_name": "UWA Profiles and Research Repository (UWA)",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I177877127",
+        "host_organization_name": "The University of Western Australia",
+        "host_organization_lineage": [
+          "https://openalex.org/I177877127"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": "other-oa",
+      "license_id": "https://openalex.org/licenses/other-oa",
+      "version": "submittedVersion",
+      "is_accepted": false,
+      "is_published": false,
+      "raw_source_name": "2015, 'The Global Burden of Cancer 2013', JAMA Oncology, vol. 1, no. 4, pp. 505-27. https://doi.org/10.1001/jamaoncol.2015.0735",
+      "raw_type": "info:eu-repo/semantics/article"
+    },
+    {
+      "id": "pmh:oai:nsuworks.nova.edu:hpd_opt_facarticles-1070",
+      "is_oa": false,
+      "landing_page_url": "https://nsuworks.nova.edu/hpd_opt_facarticles/71",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4377196410",
+        "display_name": "NSUWorks (Nova Southeastern University)",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I203088144",
+        "host_organization_name": "Nova Southeastern University",
+        "host_organization_lineage": [
+          "https://openalex.org/I203088144"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "submittedVersion",
+      "is_accepted": false,
+      "is_published": false,
+      "raw_source_name": "Faculty Articles",
+      "raw_type": "article"
+    },
+    {
+      "id": "pmh:oai:cris.unibo.it:11585/547763",
+      "is_oa": false,
+      "landing_page_url": "http://hdl.handle.net/11585/547763",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4306402579",
+        "display_name": "Archivio istituzionale della ricerca (Alma Mater Studiorum Universit\u00e0 di Bologna)",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I4210117483",
+        "host_organization_name": "Istituto di Ematologia di Bologna",
+        "host_organization_lineage": [
+          "https://openalex.org/I4210117483"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "submittedVersion",
+      "is_accepted": false,
+      "is_published": false,
+      "raw_source_name": "",
+      "raw_type": "info:eu-repo/semantics/article"
+    },
+    {
+      "id": "pmh:oai:digital.library.adelaide.edu.au:2440/96290",
+      "is_oa": false,
+      "landing_page_url": "http://hdl.handle.net/2440/96290",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4306401835",
+        "display_name": "Adelaide Research & Scholarship (AR&S) (University of Adelaide)",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I5681781",
+        "host_organization_name": "The University of Adelaide",
+        "host_organization_lineage": [
+          "https://openalex.org/I5681781"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "submittedVersion",
+      "is_accepted": false,
+      "is_published": false,
+      "raw_source_name": "http://dx.doi.org/10.1001/jamaoncol.2015.0735",
+      "raw_type": "Journal article"
+    },
+    {
+      "id": "pmh:oai:dro.deakin.edu.au:DU:30081334",
+      "is_oa": false,
+      "landing_page_url": null,
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4306402457",
+        "display_name": "Deakin Research Online (Deakin University)",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I149704539",
+        "host_organization_name": "Deakin University",
+        "host_organization_lineage": [
+          "https://openalex.org/I149704539"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "submittedVersion",
+      "is_accepted": false,
+      "is_published": false,
+      "raw_source_name": "",
+      "raw_type": "Journal Article"
+    },
+    {
+      "id": "pmh:oai:kclpure.kcl.ac.uk:publications/99385a87-0bc5-4062-a325-5f9168b3ce66",
+      "is_oa": false,
+      "landing_page_url": "https://kclpure.kcl.ac.uk/portal/en/publications/99385a87-0bc5-4062-a325-5f9168b3ce66",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4306400216",
+        "display_name": "Research Portal (King's College London)",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I183935753",
+        "host_organization_name": "King's College London",
+        "host_organization_lineage": [
+          "https://openalex.org/I183935753"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "submittedVersion",
+      "is_accepted": false,
+      "is_published": false,
+      "raw_source_name": "Fitzmaurice, C, Dicker, D, Pain, A, Hamavid, H, Moradi-Lakeh, M, MacIntyre, M F, Allen, C, Hansen, G, Woodbrook, R, Wolfe, C, Hamadeh, R R, Moore, A, Werdecker, A, Gessner, B D, Te Ao, B, McMahon, B, Karimkhani, C, Yu, C, Cooke, G S, Schwebel, D C, Carpenter, D O, Pereira, D M, Nash, D, Kazi, D S, De Leo, D, Plass, D, Ukwaja, K N, Thurston, G D, Jin, K Y, Simard, E P, Mills, E, Park, E K, Catal\u00e1-L\u00f3pez, F, DeVeber, G, Gotay, C, Khan, G, Hosgood, H D, Santos, I S, Leasher, J L, Singh, J, Leigh, J, Jonas, J B, Sanabria, J, Beardsley, J, Jacobsen, K H, Takahashi, K, Franklin, R C, Ronfani, L, Montico, M, Naldi, L, Tonelli, M, Geleijnse, J, Petzold, M, Shrime, M G, Younis, M, Yonemoto, N, Breitborde, N, Yip, P, Pourmalek, F, Lotufo, P A, Esteghamati, A, Hankey, G J, Ali, R, Lunevicius, R, Malekzadeh, R, Dellavalle, R, Weintraub, R, Lucas, R, Hay, R, Rojas-Rueda, D, Westerman, R, Sepanlou, S G, Nolte, S, Patten, S, Weichenthal, S, Abera, S F, Fereshtehnejad, S M, Shiue, I, Driscoll, T, Vasankari, T, Alsharif, U, Rahimi-Movaghar, V, Vlassov, V V, Marcenes, W S, Mekonnen, W, Melaku, Y A, Yano, Y, Artaman, A, Campos, I, MacLachlan, J, Mueller, U, Kim, D, Trillini, M, Eshrati, B, Williams, H C, Shibuya, K, Dandona, R, Murthy, K, Cowie, B, Amare, A T, Antonio, C A, Casta\u00f1eda-Orjuela, C, Van Gool, C H, Violante, F, Oh, I H, Deribe, K, Soreide, K, Knibbs, L, Kereselidze, M, Green, M, Cardenas, R, Roy, N, Tillmann, T, Li, Y, Krueger, H, Monasta, L, Dey, S, Sheikhbahaei, S, Hafezi-Nejad, N, Kumar, G A, Sreeramareddy, C T, Dandona, L, Wang, H, Vollset, S E, Mokdad, A, Salomon, J A, Lozano, R, Vos, T, Forouzanfar, M, Lopez, A, Murray, C & Naghavi, M 2015, 'The Global Burden of Cancer 2013', JAMA Oncology, vol. 1, no. 4, pp. 505-527. https://doi.org/10.1001/jamaoncol.2015.0735",
+      "raw_type": "info:eu-repo/semantics/article"
+    },
+    {
+      "id": "pmh:oai:rivm.openrepository.com:10029/649106",
+      "is_oa": false,
+      "landing_page_url": "https://rivm.openrepository.com/handle/10029/649106",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4306401681",
+        "display_name": "Rivm (National Institute for Public Health and the Environment)",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I4210104433",
+        "host_organization_name": "National Institute for Public Health and the Environment",
+        "host_organization_lineage": [
+          "https://openalex.org/I4210104433"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "submittedVersion",
+      "is_accepted": false,
+      "is_published": false,
+      "raw_source_name": null,
+      "raw_type": "Article"
+    },
+    {
+      "id": "pmh:oai:spiral.imperial.ac.uk:10044/1/58521",
+      "is_oa": false,
+      "landing_page_url": "http://hdl.handle.net/10044/1/58521",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4306401396",
+        "display_name": "Spiral (Imperial College London)",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I47508984",
+        "host_organization_name": "Imperial College London",
+        "host_organization_lineage": [
+          "https://openalex.org/I47508984"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "submittedVersion",
+      "is_accepted": false,
+      "is_published": false,
+      "raw_source_name": "527",
+      "raw_type": "Journal Article"
+    },
+    {
+      "id": "pmh:wur:oai:library.wur.nl:wurpubs/493098",
+      "is_oa": true,
+      "landing_page_url": "https://research.wur.nl/en/publications/the-global-burden-of-cancer-2013",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4306401843",
+        "display_name": "Data Archiving and Networked Services (DANS)",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I1322597698",
+        "host_organization_name": "Royal Netherlands Academy of Arts and Sciences",
+        "host_organization_lineage": [
+          "https://openalex.org/I1322597698"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": "other-oa",
+      "license_id": "https://openalex.org/licenses/other-oa",
+      "version": "submittedVersion",
+      "is_accepted": false,
+      "is_published": false,
+      "raw_source_name": "JAMA Oncology, 1(4), 505 - 527",
+      "raw_type": "info:eu-repo/semantics/article"
+    }
+  ],
+  "best_oa_location": {
+    "id": "pmh:oai:jupiter.its.unimelb.edu.au:11343/59029",
+    "is_oa": true,
+    "landing_page_url": "http://hdl.handle.net/11343/59029",
+    "pdf_url": "http://hdl.handle.net/11343/59029",
+    "source": {
+      "id": "https://openalex.org/S4377196259",
+      "display_name": "Minerva Access (University of Melbourne)",
+      "issn_l": null,
+      "issn": null,
+      "is_oa": false,
+      "is_in_doaj": false,
+      "is_core": false,
+      "host_organization": "https://openalex.org/I165779595",
+      "host_organization_name": "The University of Melbourne",
+      "host_organization_lineage": [
+        "https://openalex.org/I165779595"
+      ],
+      "host_organization_lineage_names": [],
+      "type": "repository"
+    },
+    "license": null,
+    "license_id": null,
+    "version": "submittedVersion",
+    "is_accepted": false,
+    "is_published": false,
+    "raw_source_name": "",
+    "raw_type": "Journal Article"
+  },
+  "sustainable_development_goals": [
+    {
+      "id": "https://metadata.un.org/sdg/3",
+      "score": 0.47999998927116394,
+      "display_name": "Good health and well-being"
+    }
+  ],
+  "awards": [
+    {
+      "id": "https://openalex.org/G194863298",
+      "display_name": null,
+      "funder_award_id": "ES00260",
+      "funder_id": "https://openalex.org/F4320337361",
+      "funder_display_name": "National Institute of Environmental Health Sciences"
+    },
+    {
+      "id": "https://openalex.org/G2099427675",
+      "display_name": null,
+      "funder_award_id": "P30 ES000260",
+      "funder_id": "https://openalex.org/F4320337361",
+      "funder_display_name": "National Institute of Environmental Health Sciences"
+    },
+    {
+      "id": "https://openalex.org/G3482381666",
+      "display_name": "Epidemiological mapping of podoconiosis in Ethiopia .",
+      "funder_award_id": "099876",
+      "funder_id": "https://openalex.org/F4320311904",
+      "funder_display_name": "Wellcome Trust"
+    },
+    {
+      "id": "https://openalex.org/G6233359028",
+      "display_name": null,
+      "funder_award_id": "5T32HL007093",
+      "funder_id": "https://openalex.org/F4320332161",
+      "funder_display_name": "National Institutes of Health"
+    },
+    {
+      "id": "https://openalex.org/G7199851963",
+      "display_name": null,
+      "funder_award_id": "T32 HL007093",
+      "funder_id": "https://openalex.org/F4320337338",
+      "funder_display_name": "National Heart, Lung, and Blood Institute"
+    },
+    {
+      "id": "https://openalex.org/G8602801229",
+      "display_name": null,
+      "funder_award_id": "ES00260",
+      "funder_id": "https://openalex.org/F4320332161",
+      "funder_display_name": "National Institutes of Health"
+    },
+    {
+      "id": "https://openalex.org/G8643804672",
+      "display_name": null,
+      "funder_award_id": "ACF-2013-17-013",
+      "funder_id": "https://openalex.org/F4320319990",
+      "funder_display_name": "National Institute for Health and Care Research"
+    }
+  ],
+  "funders": [
+    {
+      "id": "https://openalex.org/F4320306127",
+      "display_name": "U.S. Department of Veterans Affairs",
+      "ror": "https://ror.org/05rsv9s98"
+    },
+    {
+      "id": "https://openalex.org/F4320306137",
+      "display_name": "Bill and Melinda Gates Foundation",
+      "ror": "https://ror.org/0456r8d26"
+    },
+    {
+      "id": "https://openalex.org/F4320309423",
+      "display_name": "Jackson State University",
+      "ror": "https://ror.org/01ecnnp60"
+    },
+    {
+      "id": "https://openalex.org/F4320309475",
+      "display_name": "Northwestern University",
+      "ror": "https://ror.org/000e0be47"
+    },
+    {
+      "id": "https://openalex.org/F4320309622",
+      "display_name": "Harvard University",
+      "ror": "https://ror.org/03vek6s52"
+    },
+    {
+      "id": "https://openalex.org/F4320310905",
+      "display_name": "Philipps-Universit\u00e4t Marburg",
+      "ror": "https://ror.org/01rdrb571"
+    },
+    {
+      "id": "https://openalex.org/F4320311600",
+      "display_name": "Regeneron Pharmaceuticals",
+      "ror": "https://ror.org/02f51rf24"
+    },
+    {
+      "id": "https://openalex.org/F4320311737",
+      "display_name": "Northumbria University",
+      "ror": "https://ror.org/049e6bc10"
+    },
+    {
+      "id": "https://openalex.org/F4320311904",
+      "display_name": "Wellcome Trust",
+      "ror": "https://ror.org/029chgv08"
+    },
+    {
+      "id": "https://openalex.org/F4320313332",
+      "display_name": "Faculty of Medicine, University of British Columbia",
+      "ror": null
+    },
+    {
+      "id": "https://openalex.org/F4320315116",
+      "display_name": "Institute for Health Metrics and Evaluation",
+      "ror": "https://ror.org/02684h094"
+    },
+    {
+      "id": "https://openalex.org/F4320316226",
+      "display_name": "Istituto di Ricerche Farmacologiche Mario Negri - IRCCS",
+      "ror": "https://ror.org/05aspc753"
+    },
+    {
+      "id": "https://openalex.org/F4320319990",
+      "display_name": "National Institute for Health and Care Research",
+      "ror": "https://ror.org/0187kwz08"
+    },
+    {
+      "id": "https://openalex.org/F4320320286",
+      "display_name": "University College London",
+      "ror": "https://ror.org/02jx3x895"
+    },
+    {
+      "id": "https://openalex.org/F4320320290",
+      "display_name": "University of Oxford",
+      "ror": "https://ror.org/052gg0110"
+    },
+    {
+      "id": "https://openalex.org/F4320320431",
+      "display_name": "Australian National University",
+      "ror": "https://ror.org/019wvm592"
+    },
+    {
+      "id": "https://openalex.org/F4320320725",
+      "display_name": "Public Health Foundation of India",
+      "ror": "https://ror.org/058s20p71"
+    },
+    {
+      "id": "https://openalex.org/F4320320933",
+      "display_name": "Rijksuniversiteit Groningen",
+      "ror": "https://ror.org/012p63287"
+    },
+    {
+      "id": "https://openalex.org/F4320320982",
+      "display_name": "James Cook University",
+      "ror": "https://ror.org/04gsp2c11"
+    },
+    {
+      "id": "https://openalex.org/F4320320984",
+      "display_name": "University of Queensland",
+      "ror": "https://ror.org/00rqy9422"
+    },
+    {
+      "id": "https://openalex.org/F4320321332",
+      "display_name": "Kyung Hee University",
+      "ror": "https://ror.org/01zqcg218"
+    },
+    {
+      "id": "https://openalex.org/F4320321398",
+      "display_name": "Universiti Tunku Abdul Rahman",
+      "ror": "https://ror.org/050pq4m56"
+    },
+    {
+      "id": "https://openalex.org/F4320322170",
+      "display_name": "University of Hong Kong",
+      "ror": "https://ror.org/02zhqgq86"
+    },
+    {
+      "id": "https://openalex.org/F4320322315",
+      "display_name": "Karolinska Institutet",
+      "ror": "https://ror.org/056d84691"
+    },
+    {
+      "id": "https://openalex.org/F4320322670",
+      "display_name": "Tehran University of Medical Sciences and Health Services",
+      "ror": "https://ror.org/01c4pz451"
+    },
+    {
+      "id": "https://openalex.org/F4320323078",
+      "display_name": "Universitetet i Bergen",
+      "ror": "https://ror.org/03zga2b32"
+    },
+    {
+      "id": "https://openalex.org/F4320323421",
+      "display_name": "G\u00f6teborgs Universitet",
+      "ror": "https://ror.org/01tm6cn81"
+    },
+    {
+      "id": "https://openalex.org/F4320323553",
+      "display_name": "Universit\u00e0 di Bologna",
+      "ror": "https://ror.org/01111rn36"
+    },
+    {
+      "id": "https://openalex.org/F4320324165",
+      "display_name": "Arak University of Medical Sciences",
+      "ror": "https://ror.org/056mgfb42"
+    },
+    {
+      "id": "https://openalex.org/F4320324261",
+      "display_name": "National Research University Higher School of Economics",
+      "ror": "https://ror.org/055f7t516"
+    },
+    {
+      "id": "https://openalex.org/F4320324410",
+      "display_name": "University of the Philippines",
+      "ror": "https://ror.org/02hqkr514"
+    },
+    {
+      "id": "https://openalex.org/F4320324791",
+      "display_name": "Addis Ababa University",
+      "ror": "https://ror.org/038b8e254"
+    },
+    {
+      "id": "https://openalex.org/F4320325740",
+      "display_name": "Mekelle University",
+      "ror": "https://ror.org/04bpyvy69"
+    },
+    {
+      "id": "https://openalex.org/F4320325772",
+      "display_name": "National Center of Neurology and Psychiatry",
+      "ror": "https://ror.org/0254bmq54"
+    },
+    {
+      "id": "https://openalex.org/F4320332161",
+      "display_name": "National Institutes of Health",
+      "ror": "https://ror.org/01cwqze88"
+    },
+    {
+      "id": "https://openalex.org/F4320332193",
+      "display_name": "Genentech",
+      "ror": "https://ror.org/04gndp242"
+    },
+    {
+      "id": "https://openalex.org/F4320332585",
+      "display_name": "Allergan",
+      "ror": "https://ror.org/00wthd003"
+    },
+    {
+      "id": "https://openalex.org/F4320334392",
+      "display_name": "Health Canada",
+      "ror": "https://ror.org/05p8nb362"
+    },
+    {
+      "id": "https://openalex.org/F4320334952",
+      "display_name": "Wageningen University and Research",
+      "ror": "https://ror.org/04qw24q55"
+    },
+    {
+      "id": "https://openalex.org/F4320335010",
+      "display_name": "Barts and The London School of Medicine and Dentistry",
+      "ror": "https://ror.org/026zzn846"
+    },
+    {
+      "id": "https://openalex.org/F4320335047",
+      "display_name": "Sahlgrenska Akademin",
+      "ror": "https://ror.org/01tm6cn81"
+    },
+    {
+      "id": "https://openalex.org/F4320337083",
+      "display_name": "Faculty of Medicine and Health, University of Sydney",
+      "ror": null
+    },
+    {
+      "id": "https://openalex.org/F4320337338",
+      "display_name": "National Heart, Lung, and Blood Institute",
+      "ror": "https://ror.org/012pb6c26"
+    },
+    {
+      "id": "https://openalex.org/F4320337361",
+      "display_name": "National Institute of Environmental Health Sciences",
+      "ror": "https://ror.org/00j4k1h63"
+    },
+    {
+      "id": "https://openalex.org/F4320337868",
+      "display_name": "University of Colorado School of Medicine, Anschutz Medical Campus",
+      "ror": "https://ror.org/03wmf1y16"
+    },
+    {
+      "id": "https://openalex.org/F4320338067",
+      "display_name": "Institute of Infection and Immunity",
+      "ror": "https://ror.org/05wdecy17"
+    }
+  ],
+  "has_content": {
+    "grobid_xml": false,
+    "pdf": true
+  },
+  "content_urls": {
+    "pdf": "https://content.openalex.org/works/W2148287035.pdf"
+  },
+  "referenced_works_count": 62,
+  "referenced_works": [
+    "https://openalex.org/W1492157159",
+    "https://openalex.org/W1506544057",
+    "https://openalex.org/W1813500400",
+    "https://openalex.org/W1964473827",
+    "https://openalex.org/W1965340883",
+    "https://openalex.org/W1980680559",
+    "https://openalex.org/W1987282451",
+    "https://openalex.org/W1997974523",
+    "https://openalex.org/W2000336618",
+    "https://openalex.org/W2004364591",
+    "https://openalex.org/W2006541420",
+    "https://openalex.org/W2010705030",
+    "https://openalex.org/W2010954655",
+    "https://openalex.org/W2011356668",
+    "https://openalex.org/W2027574239",
+    "https://openalex.org/W2029036450",
+    "https://openalex.org/W2035707074",
+    "https://openalex.org/W2038378347",
+    "https://openalex.org/W2039621565",
+    "https://openalex.org/W2045760301",
+    "https://openalex.org/W2072617091",
+    "https://openalex.org/W2078197314",
+    "https://openalex.org/W2080220969",
+    "https://openalex.org/W2080520717",
+    "https://openalex.org/W2088164589",
+    "https://openalex.org/W2088235498",
+    "https://openalex.org/W2090024638",
+    "https://openalex.org/W2091525701",
+    "https://openalex.org/W2094333691",
+    "https://openalex.org/W2096808350",
+    "https://openalex.org/W2097950056",
+    "https://openalex.org/W2098082628",
+    "https://openalex.org/W2103406187",
+    "https://openalex.org/W2107053205",
+    "https://openalex.org/W2108344016",
+    "https://openalex.org/W2108361166",
+    "https://openalex.org/W2109588006",
+    "https://openalex.org/W2110052313",
+    "https://openalex.org/W2112657305",
+    "https://openalex.org/W2125065061",
+    "https://openalex.org/W2127817296",
+    "https://openalex.org/W2132682305",
+    "https://openalex.org/W2136007084",
+    "https://openalex.org/W2143686678",
+    "https://openalex.org/W2150071355",
+    "https://openalex.org/W2154220906",
+    "https://openalex.org/W2158517305",
+    "https://openalex.org/W2163710303",
+    "https://openalex.org/W2163987497",
+    "https://openalex.org/W2168630917",
+    "https://openalex.org/W2172251459",
+    "https://openalex.org/W2258565022",
+    "https://openalex.org/W2312782750",
+    "https://openalex.org/W2317301418",
+    "https://openalex.org/W2334978547",
+    "https://openalex.org/W3134530972",
+    "https://openalex.org/W3143569680",
+    "https://openalex.org/W4232052606",
+    "https://openalex.org/W4233402810",
+    "https://openalex.org/W4236703347",
+    "https://openalex.org/W4236911991",
+    "https://openalex.org/W4252761589"
+  ],
+  "related_works": [
+    "https://openalex.org/W2748952813",
+    "https://openalex.org/W3031052312",
+    "https://openalex.org/W4389568370",
+    "https://openalex.org/W3032375762",
+    "https://openalex.org/W1995515455",
+    "https://openalex.org/W2080531066",
+    "https://openalex.org/W3108674512",
+    "https://openalex.org/W1506200166",
+    "https://openalex.org/W1489783725",
+    "https://openalex.org/W2148612803"
+  ],
+  "abstract_inverted_index": {
+    "IMPORTANCE:": [
+      0
+    ],
+    "Cancer": [
+      1,
+      75,
+      128,
+      398,
+      448
+    ],
+    "is": [
+      2,
+      419
+    ],
+    "among": [
+      3
+    ],
+    "the": [
+      4,
+      65,
+      78,
+      161,
+      180,
+      206,
+      230,
+      249,
+      261,
+      444
+    ],
+    "leading": [
+      5,
+      207,
+      231,
+      250,
+      262
+    ],
+    "causes": [
+      6
+    ],
+    "of": [
+      7,
+      12,
+      39,
+      64,
+      68,
+      94,
+      122,
+      163,
+      182,
+      252,
+      264,
+      392,
+      447
+    ],
+    "death": [
+      8,
+      95,
+      123,
+      235,
+      277
+    ],
+    "worldwide.": [
+      9
+    ],
+    "Current": [
+      10
+    ],
+    "estimates": [
+      11,
+      119,
+      124,
+      146,
+      455
+    ],
+    "cancer": [
+      13,
+      25,
+      81,
+      165,
+      194,
+      204,
+      210,
+      218,
+      228,
+      234,
+      247,
+      259,
+      297,
+      307,
+      317,
+      327,
+      340,
+      351,
+      372,
+      438,
+      461
+    ],
+    "burden": [
+      14
+    ],
+    "in": [
+      15,
+      50,
+      236,
+      286,
+      290,
+      381,
+      390,
+      412,
+      460
+    ],
+    "individual": [
+      16
+    ],
+    "countries": [
+      17,
+      52,
+      294,
+      383,
+      414
+    ],
+    "and": [
+      18,
+      43,
+      105,
+      120,
+      175,
+      184,
+      199,
+      216,
+      225,
+      238,
+      275,
+      337,
+      349,
+      362,
+      373,
+      384,
+      407,
+      436,
+      465
+    ],
+    "regions": [
+      19
+    ],
+    "are": [
+      20,
+      430
+    ],
+    "necessary": [
+      21
+    ],
+    "to": [
+      22,
+      57,
+      113,
+      117,
+      125,
+      403,
+      423,
+      432,
+      456
+    ],
+    "inform": [
+      23
+    ],
+    "local": [
+      24
+    ],
+    "control": [
+      26
+    ],
+    "strategies.": [
+      27
+    ],
+    "OBJECTIVE:": [
+      28
+    ],
+    "To": [
+      29
+    ],
+    "estimate": [
+      30
+    ],
+    "mortality,": [
+      31
+    ],
+    "incidence,": [
+      32
+    ],
+    "years": [
+      33,
+      38
+    ],
+    "lived": [
+      34
+    ],
+    "with": [
+      35,
+      147,
+      170,
+      240,
+      426,
+      434,
+      453
+    ],
+    "disability": [
+      36,
+      148
+    ],
+    "(YLDs),": [
+      37
+    ],
+    "life": [
+      40,
+      173
+    ],
+    "lost": [
+      41
+    ],
+    "(YLLs),": [
+      42
+    ],
+    "disability-adjusted": [
+      44
+    ],
+    "life-years": [
+      45
+    ],
+    "(DALYs)": [
+      46
+    ],
+    "for": [
+      47,
+      80,
+      92,
+      137,
+      209,
+      214,
+      219,
+      233,
+      283,
+      295,
+      365
+    ],
+    "28": [
+      48
+    ],
+    "cancers": [
+      49,
+      367
+    ],
+    "188": [
+      51,
+      393
+    ],
+    "by": [
+      53,
+      143,
+      159,
+      377,
+      386
+    ],
+    "sex": [
+      54
+    ],
+    "from": [
+      55,
+      153
+    ],
+    "1990": [
+      56,
+      361
+    ],
+    "2013.": [
+      58
+    ],
+    "EVIDENCE": [
+      59
+    ],
+    "REVIEW:": [
+      60
+    ],
+    "The": [
+      61,
+      108,
+      417,
+      440
+    ],
+    "general": [
+      62
+    ],
+    "methodology": [
+      63
+    ],
+    "Global": [
+      66,
+      445
+    ],
+    "Burden": [
+      67,
+      446
+    ],
+    "Disease": [
+      69
+    ],
+    "(GBD)": [
+      70
+    ],
+    "2013": [
+      71,
+      188,
+      287
+    ],
+    "study": [
+      72
+    ],
+    "was": [
+      73,
+      130,
+      205,
+      229,
+      248,
+      260
+    ],
+    "used.": [
+      74
+    ],
+    "registries": [
+      76
+    ],
+    "were": [
+      77,
+      111,
+      141,
+      151,
+      157,
+      177,
+      190,
+      288
+    ],
+    "source": [
+      79
+    ],
+    "incidence": [
+      82,
+      88,
+      115,
+      126,
+      211,
+      269,
+      408
+    ],
+    "data": [
+      83,
+      96,
+      116
+    ],
+    "as": [
+      84,
+      86,
+      135,
+      179
+    ],
+    "well": [
+      85
+    ],
+    "mortality": [
+      87,
+      118
+    ],
+    "(MI)": [
+      89
+    ],
+    "ratios.": [
+      90
+    ],
+    "Sources": [
+      91
+    ],
+    "cause": [
+      93,
+      121,
+      208,
+      232,
+      251,
+      263
+    ],
+    "include": [
+      97
+    ],
+    "vital": [
+      98
+    ],
+    "registration": [
+      99
+    ],
+    "system": [
+      100
+    ],
+    "data,": [
+      101
+    ],
+    "verbal": [
+      102
+    ],
+    "autopsy": [
+      103
+    ],
+    "studies,": [
+      104
+    ],
+    "other": [
+      106
+    ],
+    "sources.": [
+      107
+    ],
+    "MI": [
+      109,
+      133
+    ],
+    "ratios": [
+      110,
+      134
+    ],
+    "used": [
+      112
+    ],
+    "transform": [
+      114
+    ],
+    "estimates.": [
+      127
+    ],
+    "prevalence": [
+      129,
+      145
+    ],
+    "estimated": [
+      131,
+      164
+    ],
+    "using": [
+      132
+    ],
+    "surrogates": [
+      136
+    ],
+    "survival": [
+      138
+    ],
+    "data;": [
+      139
+    ],
+    "YLDs": [
+      140,
+      183
+    ],
+    "calculated": [
+      142,
+      178
+    ],
+    "multiplying": [
+      144,
+      160
+    ],
+    "weights,": [
+      149
+    ],
+    "which": [
+      150
+    ],
+    "derived": [
+      152
+    ],
+    "population-based": [
+      154
+    ],
+    "surveys;": [
+      155
+    ],
+    "YLLs": [
+      156
+    ],
+    "computed": [
+      158
+    ],
+    "number": [
+      162
+    ],
+    "deaths": [
+      166
+    ],
+    "at": [
+      167
+    ],
+    "each": [
+      168
+    ],
+    "age": [
+      169
+    ],
+    "a": [
+      171,
+      400,
+      420
+    ],
+    "reference": [
+      172
+    ],
+    "expectancy;": [
+      174
+    ],
+    "DALYs": [
+      176,
+      253,
+      265
+    ],
+    "sum": [
+      181
+    ],
+    "YLLs.": [
+      185
+    ],
+    "FINDINGS:": [
+      186
+    ],
+    "In": [
+      187
+    ],
+    "there": [
+      189
+    ],
+    "14.9": [
+      191
+    ],
+    "million": [
+      192,
+      197,
+      201,
+      242
+    ],
+    "incident": [
+      193
+    ],
+    "cases,": [
+      195
+    ],
+    "8.2": [
+      196
+    ],
+    "deaths,": [
+      198
+    ],
+    "196.3": [
+      200
+    ],
+    "DALYs.": [
+      202
+    ],
+    "Prostate": [
+      203
+    ],
+    "(1.4": [
+      212
+    ],
+    "million)": [
+      213
+    ],
+    "men": [
+      215,
+      237
+    ],
+    "breast": [
+      217,
+      258
+    ],
+    "women": [
+      220
+    ],
+    "(1.8": [
+      221
+    ],
+    "million).": [
+      222,
+      255,
+      267
+    ],
+    "Tracheal,": [
+      223
+    ],
+    "bronchus,": [
+      224
+    ],
+    "lung": [
+      226
+    ],
+    "(TBL)": [
+      227
+    ],
+    "women,": [
+      239,
+      257
+    ],
+    "1.6": [
+      241
+    ],
+    "deaths.": [
+      243
+    ],
+    "For": [
+      244,
+      256
+    ],
+    "men,": [
+      245
+    ],
+    "TBL": [
+      246
+    ],
+    "(24.9": [
+      254
+    ],
+    "(13.1": [
+      266
+    ],
+    "Age-standardized": [
+      268
+    ],
+    "rates": [
+      270,
+      278,
+      409
+    ],
+    "(ASIRs)": [
+      271
+    ],
+    "per": [
+      272,
+      280
+    ],
+    "100": [
+      273,
+      281
+    ],
+    "000": [
+      274,
+      282
+    ],
+    "age-standardized": [
+      276
+    ],
+    "(ASDRs)": [
+      279
+    ],
+    "both": [
+      284
+    ],
+    "sexes": [
+      285
+    ],
+    "higher": [
+      289
+    ],
+    "developing": [
+      291,
+      424
+    ],
+    "vs": [
+      292,
+      300,
+      304,
+      310,
+      314,
+      320,
+      324,
+      330,
+      334,
+      343,
+      347,
+      354,
+      358
+    ],
+    "developed": [
+      293
+    ],
+    "stomach": [
+      296
+    ],
+    "(ASIR,": [
+      298,
+      308,
+      318,
+      328,
+      341,
+      352
+    ],
+    "17": [
+      299
+    ],
+    "14;": [
+      301
+    ],
+    "ASDR,": [
+      302,
+      312,
+      322,
+      332,
+      345,
+      356
+    ],
+    "15": [
+      303,
+      309
+    ],
+    "11),": [
+      305
+    ],
+    "liver": [
+      306
+    ],
+    "7;": [
+      311
+    ],
+    "16": [
+      313
+    ],
+    "7),": [
+      315
+    ],
+    "esophageal": [
+      316
+    ],
+    "9": [
+      319,
+      323
+    ],
+    "4;": [
+      321
+    ],
+    "4),": [
+      325
+    ],
+    "cervical": [
+      326
+    ],
+    "8": [
+      329
+    ],
+    "5;": [
+      331
+    ],
+    "4": [
+      333
+    ],
+    "2),": [
+      335,
+      348
+    ],
+    "lip": [
+      336
+    ],
+    "oral": [
+      338
+    ],
+    "cavity": [
+      339
+    ],
+    "7": [
+      342
+    ],
+    "6;": [
+      344
+    ],
+    "2": [
+      346
+    ],
+    "nasopharyngeal": [
+      350
+    ],
+    "1.5": [
+      353
+    ],
+    "0.4;": [
+      355
+    ],
+    "1.2": [
+      357
+    ],
+    "0.3).": [
+      359
+    ],
+    "Between": [
+      360
+    ],
+    "2013,": [
+      363
+    ],
+    "ASIRs": [
+      364
+    ],
+    "all": [
+      366,
+      451
+    ],
+    "combined": [
+      368
+    ],
+    "(except": [
+      369
+    ],
+    "nonmelanoma": [
+      370
+    ],
+    "skin": [
+      371
+    ],
+    "Kaposi": [
+      374
+    ],
+    "sarcoma)": [
+      375
+    ],
+    "increased": [
+      376,
+      411
+    ],
+    "more": [
+      378,
+      387
+    ],
+    "than": [
+      379,
+      388
+    ],
+    "10%": [
+      380,
+      389
+    ],
+    "113": [
+      382
+    ],
+    "decreased": [
+      385
+    ],
+    "12": [
+      391
+    ],
+    "countries.": [
+      394
+    ],
+    "CONCLUSIONS": [
+      395
+    ],
+    "AND": [
+      396
+    ],
+    "RELEVANCE:": [
+      397
+    ],
+    "poses": [
+      399
+    ],
+    "major": [
+      401
+    ],
+    "threat": [
+      402,
+      422
+    ],
+    "public": [
+      404
+    ],
+    "health": [
+      405,
+      427
+    ],
+    "worldwide,": [
+      406
+    ],
+    "have": [
+      410
+    ],
+    "most": [
+      413
+    ],
+    "since": [
+      415
+    ],
+    "1990.": [
+      416
+    ],
+    "trend": [
+      418
+    ],
+    "particular": [
+      421
+    ],
+    "nations": [
+      425
+    ],
+    "systems": [
+      428
+    ],
+    "that": [
+      429
+    ],
+    "ill-equipped": [
+      431
+    ],
+    "deal": [
+      433
+    ],
+    "complex": [
+      435
+    ],
+    "expensive": [
+      437
+    ],
+    "treatments.": [
+      439
+    ],
+    "annual": [
+      441
+    ],
+    "update": [
+      442
+    ],
+    "on": [
+      443
+    ],
+    "will": [
+      449
+    ],
+    "provide": [
+      450
+    ],
+    "stakeholders": [
+      452
+    ],
+    "timely": [
+      454
+    ],
+    "guide": [
+      457
+    ],
+    "policy": [
+      458
+    ],
+    "efforts": [
+      459
+    ],
+    "prevention,": [
+      462
+    ],
+    "screening,": [
+      463
+    ],
+    "treatment,": [
+      464
+    ],
+    "palliation.": [
+      466
+    ]
+  },
+  "counts_by_year": [
+    {
+      "year": 2026,
+      "cited_by_count": 15
+    },
+    {
+      "year": 2025,
+      "cited_by_count": 99
+    },
+    {
+      "year": 2024,
+      "cited_by_count": 144
+    },
+    {
+      "year": 2023,
+      "cited_by_count": 187
+    },
+    {
+      "year": 2022,
+      "cited_by_count": 210
+    },
+    {
+      "year": 2021,
+      "cited_by_count": 287
+    },
+    {
+      "year": 2020,
+      "cited_by_count": 334
+    },
+    {
+      "year": 2019,
+      "cited_by_count": 327
+    },
+    {
+      "year": 2018,
+      "cited_by_count": 417
+    },
+    {
+      "year": 2017,
+      "cited_by_count": 421
+    },
+    {
+      "year": 2016,
+      "cited_by_count": 277
+    },
+    {
+      "year": 2015,
+      "cited_by_count": 41
+    }
+  ],
+  "updated_date": "2026-07-04T07:58:01.006859",
+  "created_date": "2016-06-24T00:00:00"
+}

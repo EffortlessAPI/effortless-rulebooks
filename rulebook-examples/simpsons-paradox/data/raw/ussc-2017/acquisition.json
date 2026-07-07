@@ -1,0 +1,17 @@
+{
+  "candidate_id": "cand-exp-ussc-2017",
+  "proposed_study_id": "ussc-2017",
+  "acquisition_status": "landing_saved",
+  "attempted_at": "2026-07-07T03:41:29+00:00",
+  "catalog_source_url": "https://www.ussc.gov/research/research-reports/demographic-differences-sentencing",
+  "resolved_urls": [
+    "https://doi.org/10.3390/s24175586",
+    "https://www.mdpi.com/1424-8220/24/17/5586/pdf?version=1724921490",
+    "https://www.ussc.gov/research/research-reports/demographic-differences-sentencing"
+  ],
+  "files": [
+    "openalex-metadata.json",
+    "source-1.html"
+  ],
+  "dois": []
+}

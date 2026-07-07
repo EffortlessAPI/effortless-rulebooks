@@ -1,0 +1,5561 @@
+{
+  "id": "https://openalex.org/W3130938027",
+  "doi": "https://doi.org/10.1016/s2214-109x(20)30488-5",
+  "title": "The Lancet Global Health Commission on Global Eye Health: vision beyond 2020",
+  "display_name": "The Lancet Global Health Commission on Global Eye Health: vision beyond 2020",
+  "relevance_score": 216.92064,
+  "publication_year": 2021,
+  "publication_date": "2021-02-17",
+  "ids": {
+    "openalex": "https://openalex.org/W3130938027",
+    "doi": "https://doi.org/10.1016/s2214-109x(20)30488-5",
+    "mag": "3130938027",
+    "pmid": "https://pubmed.ncbi.nlm.nih.gov/33607016"
+  },
+  "language": "en",
+  "primary_location": {
+    "id": "doi:10.1016/s2214-109x(20)30488-5",
+    "is_oa": true,
+    "landing_page_url": "https://doi.org/10.1016/s2214-109x(20)30488-5",
+    "pdf_url": "http://www.thelancet.com/article/S2214109X20304885/pdf",
+    "source": {
+      "id": "https://openalex.org/S4210176958",
+      "display_name": "The Lancet Global Health",
+      "issn_l": "2214-109X",
+      "issn": [
+        "2214-109X",
+        "2572-116X"
+      ],
+      "is_oa": true,
+      "is_in_doaj": true,
+      "is_core": true,
+      "host_organization": "https://openalex.org/P4310320990",
+      "host_organization_name": "Elsevier BV",
+      "host_organization_lineage": [
+        "https://openalex.org/P4310320990"
+      ],
+      "host_organization_lineage_names": [
+        "Elsevier BV"
+      ],
+      "type": "journal"
+    },
+    "license": "public-domain",
+    "license_id": "https://openalex.org/licenses/public-domain",
+    "version": "publishedVersion",
+    "is_accepted": true,
+    "is_published": true,
+    "raw_source_name": "The Lancet Global Health",
+    "raw_type": "journal-article"
+  },
+  "type": "review",
+  "indexed_in": [
+    "crossref",
+    "doaj",
+    "pubmed"
+  ],
+  "open_access": {
+    "is_oa": true,
+    "oa_status": "gold",
+    "oa_url": "http://www.thelancet.com/article/S2214109X20304885/pdf",
+    "any_repository_has_fulltext": true
+  },
+  "authorships": [
+    {
+      "author_position": "first",
+      "author": {
+        "id": "https://openalex.org/A5078494522",
+        "display_name": "Matthew J. Burton",
+        "orcid": "https://orcid.org/0000-0003-1872-9169"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I45129253",
+          "display_name": "University College London",
+          "ror": "https://ror.org/02jx3x895",
+          "country_code": "GB",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I124357947",
+            "https://openalex.org/I45129253"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I34931013",
+          "display_name": "National Institute for Health Research",
+          "ror": "https://ror.org/0187kwz08",
+          "country_code": "GB",
+          "type": "funder",
+          "lineage": [
+            "https://openalex.org/I34931013"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I1325675289",
+          "display_name": "Moorfields Eye Hospital NHS Foundation Trust",
+          "ror": "https://ror.org/03zaddr67",
+          "country_code": "GB",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I1325675289"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I4210089966",
+          "display_name": "London School of Hygiene & Tropical Medicine",
+          "ror": "https://ror.org/00a0jsq62",
+          "country_code": "GB",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I124357947",
+            "https://openalex.org/I4210089966"
+          ]
+        }
+      ],
+      "countries": [
+        "GB"
+      ],
+      "is_corresponding": true,
+      "raw_author_name": "Matthew J Burton",
+      "raw_affiliation_strings": [
+        "International Centre for Eye Health, London School of Hygiene & Tropical Medicine, London, UK; National Institute for Health Research Biomedical Research Centre for Ophthalmology at Moorfields Eye Hospital NHS Foundation Trust and UCL Institute of Ophthalmology, London, UK. Electronic address: matthew.burton@lshtm.ac.uk",
+        "National Institute for Health Research Biomedical Research Centre for Ophthalmology at Moorfields Eye Hospital NHS Foundation Trust and UCL Institute of Ophthalmology, London, UK",
+        "International Centre for Eye Health, London School of Hygiene & Tropical Medicine, London, UK"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "International Centre for Eye Health, London School of Hygiene & Tropical Medicine, London, UK; National Institute for Health Research Biomedical Research Centre for Ophthalmology at Moorfields Eye Hospital NHS Foundation Trust and UCL Institute of Ophthalmology, London, UK. Electronic address: matthew.burton@lshtm.ac.uk",
+          "institution_ids": []
+        },
+        {
+          "raw_affiliation_string": "National Institute for Health Research Biomedical Research Centre for Ophthalmology at Moorfields Eye Hospital NHS Foundation Trust and UCL Institute of Ophthalmology, London, UK",
+          "institution_ids": [
+            "https://openalex.org/I1325675289",
+            "https://openalex.org/I45129253",
+            "https://openalex.org/I34931013"
+          ]
+        },
+        {
+          "raw_affiliation_string": "International Centre for Eye Health, London School of Hygiene & Tropical Medicine, London, UK",
+          "institution_ids": [
+            "https://openalex.org/I4210089966"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5007901272",
+        "display_name": "Jacqueline Ramke",
+        "orcid": "https://orcid.org/0000-0002-5764-1306"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I154130895",
+          "display_name": "University of Auckland",
+          "ror": "https://ror.org/03b94tp07",
+          "country_code": "NZ",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I154130895"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I4210089966",
+          "display_name": "London School of Hygiene & Tropical Medicine",
+          "ror": "https://ror.org/00a0jsq62",
+          "country_code": "GB",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I124357947",
+            "https://openalex.org/I4210089966"
+          ]
+        }
+      ],
+      "countries": [
+        "GB",
+        "NZ"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Jacqueline Ramke",
+      "raw_affiliation_strings": [
+        "International Centre for Eye Health, London School of Hygiene & Tropical Medicine, London, UK; School of Optometry and Vision Science, University of Auckland, Auckland, New Zealand",
+        "International Centre for Eye Health, London School of Hygiene & Tropical Medicine, London, UK",
+        "School of Optometry and Vision Science, University of Auckland, Auckland, New Zealand"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "International Centre for Eye Health, London School of Hygiene & Tropical Medicine, London, UK; School of Optometry and Vision Science, University of Auckland, Auckland, New Zealand",
+          "institution_ids": []
+        },
+        {
+          "raw_affiliation_string": "International Centre for Eye Health, London School of Hygiene & Tropical Medicine, London, UK",
+          "institution_ids": [
+            "https://openalex.org/I4210089966"
+          ]
+        },
+        {
+          "raw_affiliation_string": "School of Optometry and Vision Science, University of Auckland, Auckland, New Zealand",
+          "institution_ids": [
+            "https://openalex.org/I154130895"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5034207993",
+        "display_name": "Ana Patr\u00edcia Marques",
+        "orcid": "https://orcid.org/0000-0001-8242-7021"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I4210089966",
+          "display_name": "London School of Hygiene & Tropical Medicine",
+          "ror": "https://ror.org/00a0jsq62",
+          "country_code": "GB",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I124357947",
+            "https://openalex.org/I4210089966"
+          ]
+        }
+      ],
+      "countries": [
+        "GB"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Ana Patricia Marques",
+      "raw_affiliation_strings": [
+        "International Centre for Eye Health, London School of Hygiene & Tropical Medicine, London, UK"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "International Centre for Eye Health, London School of Hygiene & Tropical Medicine, London, UK",
+          "institution_ids": [
+            "https://openalex.org/I4210089966"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5045824020",
+        "display_name": "Rupert Bourne",
+        "orcid": "https://orcid.org/0000-0002-8169-1645"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I2802466933",
+          "display_name": "Cambridge University Hospitals NHS Foundation Trust",
+          "ror": "https://ror.org/04v54gj93",
+          "country_code": "GB",
+          "type": "funder",
+          "lineage": [
+            "https://openalex.org/I2802466933"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I51216347",
+          "display_name": "Anglia Ruskin University",
+          "ror": "https://ror.org/0009t4v78",
+          "country_code": "GB",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I51216347"
+          ]
+        }
+      ],
+      "countries": [
+        "GB"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Rupert R A Bourne",
+      "raw_affiliation_strings": [
+        "Vision and Eye Research Institute, Anglia Ruskin University, Cambridge, UK; Department of Ophthalmology, Cambridge University Hospitals, Cambridge, UK",
+        "Department of Ophthalmology, Cambridge University Hospitals, Cambridge, UK",
+        "Vision and Eye Research Institute, Anglia Ruskin University, Cambridge, UK"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Vision and Eye Research Institute, Anglia Ruskin University, Cambridge, UK; Department of Ophthalmology, Cambridge University Hospitals, Cambridge, UK",
+          "institution_ids": []
+        },
+        {
+          "raw_affiliation_string": "Department of Ophthalmology, Cambridge University Hospitals, Cambridge, UK",
+          "institution_ids": [
+            "https://openalex.org/I2802466933"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Vision and Eye Research Institute, Anglia Ruskin University, Cambridge, UK",
+          "institution_ids": [
+            "https://openalex.org/I51216347"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5065787198",
+        "display_name": "Nathan Congdon",
+        "orcid": "https://orcid.org/0000-0001-9866-3416"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I126231945",
+          "display_name": "Queen's University Belfast",
+          "ror": "https://ror.org/00hswnk62",
+          "country_code": "GB",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I126231945"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I157773358",
+          "display_name": "Sun Yat-sen University",
+          "ror": "https://ror.org/0064kty71",
+          "country_code": "CN",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I157773358"
+          ]
+        }
+      ],
+      "countries": [
+        "CN",
+        "GB"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Nathan Congdon",
+      "raw_affiliation_strings": [
+        "Centre for Public Health, Queen's University Belfast, Belfast, UK; Zhongshan Ophthalmic Center, Sun Yat-sen University, Guangzhou, China",
+        "Centre for Public Health, Queen's University Belfast, Belfast, UK",
+        "Zhongshan Ophthalmic Center, Sun Yat-sen University, Guangzhou, China"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Centre for Public Health, Queen's University Belfast, Belfast, UK; Zhongshan Ophthalmic Center, Sun Yat-sen University, Guangzhou, China",
+          "institution_ids": []
+        },
+        {
+          "raw_affiliation_string": "Centre for Public Health, Queen's University Belfast, Belfast, UK",
+          "institution_ids": [
+            "https://openalex.org/I126231945"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Zhongshan Ophthalmic Center, Sun Yat-sen University, Guangzhou, China",
+          "institution_ids": [
+            "https://openalex.org/I157773358"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5025538830",
+        "display_name": "Iain Jones",
+        "orcid": "https://orcid.org/0000-0003-4643-4480"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I4210103552",
+          "display_name": "Sightsavers",
+          "ror": "https://ror.org/014wxtx83",
+          "country_code": "GB",
+          "type": "nonprofit",
+          "lineage": [
+            "https://openalex.org/I4210103552"
+          ]
+        }
+      ],
+      "countries": [
+        "GB"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Iain Jones",
+      "raw_affiliation_strings": [
+        "Sightsavers, Haywards Heath, UK"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Sightsavers, Haywards Heath, UK",
+          "institution_ids": [
+            "https://openalex.org/I4210103552"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5001263866",
+        "display_name": "Brandon A M Ah Tong",
+        "orcid": null
+      },
+      "institutions": [],
+      "countries": [],
+      "is_corresponding": false,
+      "raw_author_name": "Brandon A M Ah Tong",
+      "raw_affiliation_strings": [
+        "The Fred Hollows Foundation, Melbourne, Australia"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "The Fred Hollows Foundation, Melbourne, Australia",
+          "institution_ids": []
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5066006680",
+        "display_name": "Simon Arunga",
+        "orcid": "https://orcid.org/0000-0002-1049-3086"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I141930137",
+          "display_name": "Mbarara University of Science and Technology",
+          "ror": "https://ror.org/01bkn5154",
+          "country_code": "UG",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I141930137"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I4210089966",
+          "display_name": "London School of Hygiene & Tropical Medicine",
+          "ror": "https://ror.org/00a0jsq62",
+          "country_code": "GB",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I124357947",
+            "https://openalex.org/I4210089966"
+          ]
+        }
+      ],
+      "countries": [
+        "GB",
+        "UG"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Simon Arunga",
+      "raw_affiliation_strings": [
+        "International Centre for Eye Health, London School of Hygiene & Tropical Medicine, London, UK; Department of Ophthalmology, Mbarara University of Science and Technology, Mbarara, Uganda",
+        "Department of Ophthalmology, Mbarara University of Science and Technology, Mbarara, Uganda",
+        "International Centre for Eye Health, London School of Hygiene & Tropical Medicine, London, UK"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "International Centre for Eye Health, London School of Hygiene & Tropical Medicine, London, UK; Department of Ophthalmology, Mbarara University of Science and Technology, Mbarara, Uganda",
+          "institution_ids": [
+            "https://openalex.org/I141930137"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Department of Ophthalmology, Mbarara University of Science and Technology, Mbarara, Uganda",
+          "institution_ids": [
+            "https://openalex.org/I141930137"
+          ]
+        },
+        {
+          "raw_affiliation_string": "International Centre for Eye Health, London School of Hygiene & Tropical Medicine, London, UK",
+          "institution_ids": [
+            "https://openalex.org/I4210089966"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5011852985",
+        "display_name": "Damodar Bachani",
+        "orcid": "https://orcid.org/0000-0001-8259-5527"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I4210148677",
+          "display_name": "Ministry of Health and Family Welfare",
+          "ror": "https://ror.org/04pqetg36",
+          "country_code": "IN",
+          "type": "funder",
+          "lineage": [
+            "https://openalex.org/I2799351866",
+            "https://openalex.org/I4210148677"
+          ]
+        }
+      ],
+      "countries": [
+        "IN"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Damodar Bachani",
+      "raw_affiliation_strings": [
+        "John Snow India, New Delhi, India; Ministry of Health and Family Welfare, New Delhi, India",
+        "John Snow India, New Delhi, India",
+        "Ministry of Health and Family Welfare, New Delhi, India"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "John Snow India, New Delhi, India; Ministry of Health and Family Welfare, New Delhi, India",
+          "institution_ids": []
+        },
+        {
+          "raw_affiliation_string": "John Snow India, New Delhi, India",
+          "institution_ids": []
+        },
+        {
+          "raw_affiliation_string": "Ministry of Health and Family Welfare, New Delhi, India",
+          "institution_ids": [
+            "https://openalex.org/I4210148677"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5049421261",
+        "display_name": "Covadonga Bascar\u00e1n",
+        "orcid": "https://orcid.org/0000-0002-5662-3325"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I4210089966",
+          "display_name": "London School of Hygiene & Tropical Medicine",
+          "ror": "https://ror.org/00a0jsq62",
+          "country_code": "GB",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I124357947",
+            "https://openalex.org/I4210089966"
+          ]
+        }
+      ],
+      "countries": [
+        "GB"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Covadonga Bascaran",
+      "raw_affiliation_strings": [
+        "International Centre for Eye Health, London School of Hygiene & Tropical Medicine, London, UK"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "International Centre for Eye Health, London School of Hygiene & Tropical Medicine, London, UK",
+          "institution_ids": [
+            "https://openalex.org/I4210089966"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5082152492",
+        "display_name": "Andrew Bastawrous",
+        "orcid": "https://orcid.org/0000-0001-8179-556X"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I4210089966",
+          "display_name": "London School of Hygiene & Tropical Medicine",
+          "ror": "https://ror.org/00a0jsq62",
+          "country_code": "GB",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I124357947",
+            "https://openalex.org/I4210089966"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I4210129677",
+          "display_name": "London Vision Clinic",
+          "ror": "https://ror.org/036mshe20",
+          "country_code": "GB",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I4210129677"
+          ]
+        }
+      ],
+      "countries": [
+        "GB"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Andrew Bastawrous",
+      "raw_affiliation_strings": [
+        "International Centre for Eye Health, London School of Hygiene & Tropical Medicine, London, UK; Peek Vision, London, UK",
+        "Peek Vision, London, UK",
+        "International Centre for Eye Health, London School of Hygiene & Tropical Medicine, London, UK"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "International Centre for Eye Health, London School of Hygiene & Tropical Medicine, London, UK; Peek Vision, London, UK",
+          "institution_ids": []
+        },
+        {
+          "raw_affiliation_string": "Peek Vision, London, UK",
+          "institution_ids": [
+            "https://openalex.org/I4210129677"
+          ]
+        },
+        {
+          "raw_affiliation_string": "International Centre for Eye Health, London School of Hygiene & Tropical Medicine, London, UK",
+          "institution_ids": [
+            "https://openalex.org/I4210089966"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5013048286",
+        "display_name": "Karl Blanchet",
+        "orcid": "https://orcid.org/0000-0003-0498-8020"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I114457229",
+          "display_name": "University of Geneva",
+          "ror": "https://ror.org/01swzsf04",
+          "country_code": "CH",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I114457229"
+          ]
+        }
+      ],
+      "countries": [
+        "CH"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Karl Blanchet",
+      "raw_affiliation_strings": [
+        "Geneva Centre of Humanitarian Studies, University of Geneva, Geneva, Switzerland"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Geneva Centre of Humanitarian Studies, University of Geneva, Geneva, Switzerland",
+          "institution_ids": [
+            "https://openalex.org/I114457229"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5082582215",
+        "display_name": "Tasanee Braithwaite",
+        "orcid": "https://orcid.org/0000-0002-3025-4066"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I1324925910",
+          "display_name": "St Thomas' Hospital",
+          "ror": "https://ror.org/054gk2851",
+          "country_code": "GB",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I1324925910",
+            "https://openalex.org/I200166805",
+            "https://openalex.org/I4210111135"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I4210089966",
+          "display_name": "London School of Hygiene & Tropical Medicine",
+          "ror": "https://ror.org/00a0jsq62",
+          "country_code": "GB",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I124357947",
+            "https://openalex.org/I4210089966"
+          ]
+        }
+      ],
+      "countries": [
+        "GB"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Tasanee Braithwaite",
+      "raw_affiliation_strings": [
+        "International Centre for Eye Health, London School of Hygiene & Tropical Medicine, London, UK; The Medical Eye Unit, St Thomas' Hospital, London, UK",
+        "The Medical Eye Unit, St Thomas' Hospital, London, UK",
+        "International Centre for Eye Health, London School of Hygiene & Tropical Medicine, London, UK"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "International Centre for Eye Health, London School of Hygiene & Tropical Medicine, London, UK; The Medical Eye Unit, St Thomas' Hospital, London, UK",
+          "institution_ids": []
+        },
+        {
+          "raw_affiliation_string": "The Medical Eye Unit, St Thomas' Hospital, London, UK",
+          "institution_ids": [
+            "https://openalex.org/I1324925910"
+          ]
+        },
+        {
+          "raw_affiliation_string": "International Centre for Eye Health, London School of Hygiene & Tropical Medicine, London, UK",
+          "institution_ids": [
+            "https://openalex.org/I4210089966"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5060441030",
+        "display_name": "John Buch\u00e1n",
+        "orcid": "https://orcid.org/0000-0003-1005-7011"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I2799390153",
+          "display_name": "Leeds Teaching Hospitals NHS Trust",
+          "ror": "https://ror.org/00v4dac24",
+          "country_code": "GB",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I2799390153"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I4210089966",
+          "display_name": "London School of Hygiene & Tropical Medicine",
+          "ror": "https://ror.org/00a0jsq62",
+          "country_code": "GB",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I124357947",
+            "https://openalex.org/I4210089966"
+          ]
+        }
+      ],
+      "countries": [
+        "GB"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "John C Buchan",
+      "raw_affiliation_strings": [
+        "International Centre for Eye Health, London School of Hygiene & Tropical Medicine, London, UK; Leeds Teaching Hospitals NHS Trust, Leeds, UK",
+        "Leeds Teaching Hospitals NHS Trust, Leeds, UK",
+        "International Centre for Eye Health, London School of Hygiene & Tropical Medicine, London, UK"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "International Centre for Eye Health, London School of Hygiene & Tropical Medicine, London, UK; Leeds Teaching Hospitals NHS Trust, Leeds, UK",
+          "institution_ids": []
+        },
+        {
+          "raw_affiliation_string": "Leeds Teaching Hospitals NHS Trust, Leeds, UK",
+          "institution_ids": [
+            "https://openalex.org/I2799390153"
+          ]
+        },
+        {
+          "raw_affiliation_string": "International Centre for Eye Health, London School of Hygiene & Tropical Medicine, London, UK",
+          "institution_ids": [
+            "https://openalex.org/I4210089966"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5013596229",
+        "display_name": "John Cairns",
+        "orcid": "https://orcid.org/0000-0001-6442-0440"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I4210089966",
+          "display_name": "London School of Hygiene & Tropical Medicine",
+          "ror": "https://ror.org/00a0jsq62",
+          "country_code": "GB",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I124357947",
+            "https://openalex.org/I4210089966"
+          ]
+        }
+      ],
+      "countries": [
+        "GB"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "John Cairns",
+      "raw_affiliation_strings": [
+        "Department of Health Services Research and Policy, London School of Hygiene & Tropical Medicine, London, UK"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Department of Health Services Research and Policy, London School of Hygiene & Tropical Medicine, London, UK",
+          "institution_ids": [
+            "https://openalex.org/I4210089966"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5083604304",
+        "display_name": "Anasaini Cama",
+        "orcid": "https://orcid.org/0000-0002-0364-0789"
+      },
+      "institutions": [],
+      "countries": [],
+      "is_corresponding": false,
+      "raw_author_name": "Anasaini Cama",
+      "raw_affiliation_strings": [
+        "Pacific Eye Care Society, Suva, Fiji"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Pacific Eye Care Society, Suva, Fiji",
+          "institution_ids": []
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5018172265",
+        "display_name": "Margarida Chagunda",
+        "orcid": null
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I4210166169",
+          "display_name": "Ministry of Health",
+          "ror": "https://ror.org/059f2k568",
+          "country_code": "MZ",
+          "type": "government",
+          "lineage": [
+            "https://openalex.org/I4210166169"
+          ]
+        }
+      ],
+      "countries": [
+        "MZ"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Margarida Chagunda",
+      "raw_affiliation_strings": [
+        "Ministry of Health, Maputo, Mozambique"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Ministry of Health, Maputo, Mozambique",
+          "institution_ids": [
+            "https://openalex.org/I4210166169"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5047066531",
+        "display_name": "Chimgee Chuluunkhuu",
+        "orcid": "https://orcid.org/0000-0002-4128-4981"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I4210154022",
+          "display_name": "Ulaanbaatar International University",
+          "ror": "https://ror.org/04q5v8a44",
+          "country_code": "MN",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I4210154022"
+          ]
+        }
+      ],
+      "countries": [
+        "MN"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Chimgee Chuluunkhuu",
+      "raw_affiliation_strings": [
+        "Orbis International, Ulaanbaatar, Mongolia; Mongolian Ophthalmology Society, Ulaanbaatar, Mongolia",
+        "Mongolian Ophthalmology Society, Ulaanbaatar, Mongolia",
+        "Orbis International, Ulaanbaatar, Mongolia"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Orbis International, Ulaanbaatar, Mongolia; Mongolian Ophthalmology Society, Ulaanbaatar, Mongolia",
+          "institution_ids": []
+        },
+        {
+          "raw_affiliation_string": "Mongolian Ophthalmology Society, Ulaanbaatar, Mongolia",
+          "institution_ids": []
+        },
+        {
+          "raw_affiliation_string": "Orbis International, Ulaanbaatar, Mongolia",
+          "institution_ids": [
+            "https://openalex.org/I4210154022"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5074285849",
+        "display_name": "Andrew Cooper",
+        "orcid": "https://orcid.org/0000-0002-8516-8333"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I4210110111",
+          "display_name": "Catalyst Health Economics Consultants Ltd",
+          "ror": "https://ror.org/01yft1b10",
+          "country_code": "GB",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I4210110111"
+          ]
+        }
+      ],
+      "countries": [
+        "GB"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Andrew Cooper",
+      "raw_affiliation_strings": [
+        "Vision Catalyst Fund, London, UK"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Vision Catalyst Fund, London, UK",
+          "institution_ids": [
+            "https://openalex.org/I4210110111"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5035529173",
+        "display_name": "Jessica Crofts-Lawrence",
+        "orcid": null
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I267131422",
+          "display_name": "International Agency for the Prevention of Blindness",
+          "ror": "https://ror.org/00xv4ev28",
+          "country_code": "GB",
+          "type": "nonprofit",
+          "lineage": [
+            "https://openalex.org/I267131422"
+          ]
+        }
+      ],
+      "countries": [
+        "GB"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Jessica Crofts-Lawrence",
+      "raw_affiliation_strings": [
+        "International Agency for the Prevention of Blindness, London, UK"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "International Agency for the Prevention of Blindness, London, UK",
+          "institution_ids": [
+            "https://openalex.org/I267131422"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5043873549",
+        "display_name": "William H. Dean",
+        "orcid": "https://orcid.org/0000-0002-3042-8281"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I4210089966",
+          "display_name": "London School of Hygiene & Tropical Medicine",
+          "ror": "https://ror.org/00a0jsq62",
+          "country_code": "GB",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I124357947",
+            "https://openalex.org/I4210089966"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I157614274",
+          "display_name": "University of Cape Town",
+          "ror": "https://ror.org/03p74gp79",
+          "country_code": "ZA",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I157614274"
+          ]
+        }
+      ],
+      "countries": [
+        "GB",
+        "ZA"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "William H Dean",
+      "raw_affiliation_strings": [
+        "International Centre for Eye Health, London School of Hygiene & Tropical Medicine, London, UK; Division of Ophthalmology, University of Cape Town, Cape Town, South Africa",
+        "International Centre for Eye Health, London School of Hygiene & Tropical Medicine, London, UK",
+        "Division of Ophthalmology, University of Cape Town, Cape Town, South Africa"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "International Centre for Eye Health, London School of Hygiene & Tropical Medicine, London, UK; Division of Ophthalmology, University of Cape Town, Cape Town, South Africa",
+          "institution_ids": []
+        },
+        {
+          "raw_affiliation_string": "International Centre for Eye Health, London School of Hygiene & Tropical Medicine, London, UK",
+          "institution_ids": [
+            "https://openalex.org/I4210089966"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Division of Ophthalmology, University of Cape Town, Cape Town, South Africa",
+          "institution_ids": [
+            "https://openalex.org/I157614274"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5074056939",
+        "display_name": "Alastair K. Denniston",
+        "orcid": "https://orcid.org/0000-0001-7849-0087"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I2799307867",
+          "display_name": "Queen Elizabeth Hospital Birmingham",
+          "ror": "https://ror.org/048emj907",
+          "country_code": "GB",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I1308923049",
+            "https://openalex.org/I2799307867"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I4210142469",
+          "display_name": "Health Data Research UK",
+          "ror": "https://ror.org/04rtjaj74",
+          "country_code": "GB",
+          "type": "nonprofit",
+          "lineage": [
+            "https://openalex.org/I4210142469"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I1308923049",
+          "display_name": "University Hospitals Birmingham NHS Foundation Trust",
+          "ror": "https://ror.org/014ja3n03",
+          "country_code": "GB",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I1308923049"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I1325675289",
+          "display_name": "Moorfields Eye Hospital NHS Foundation Trust",
+          "ror": "https://ror.org/03zaddr67",
+          "country_code": "GB",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I1325675289"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I45129253",
+          "display_name": "University College London",
+          "ror": "https://ror.org/02jx3x895",
+          "country_code": "GB",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I124357947",
+            "https://openalex.org/I45129253"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I34931013",
+          "display_name": "National Institute for Health Research",
+          "ror": "https://ror.org/0187kwz08",
+          "country_code": "GB",
+          "type": "funder",
+          "lineage": [
+            "https://openalex.org/I34931013"
+          ]
+        }
+      ],
+      "countries": [
+        "GB"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Alastair K Denniston",
+      "raw_affiliation_strings": [
+        "National Institute for Health Research Biomedical Research Centre for Ophthalmology at Moorfields Eye Hospital NHS Foundation Trust and UCL Institute of Ophthalmology, London, UK; Ophthalmology Department, University Hospital Birmingham NHS Foundation Trust, Queen Elizabeth Hospital Birmingham, Birmingham, UK; Health Data Research UK, London, UK",
+        "Ophthalmology Department, University Hospital Birmingham NHS Foundation Trust, Queen Elizabeth Hospital Birmingham, Birmingham, UK",
+        "National Institute for Health Research Biomedical Research Centre for Ophthalmology at Moorfields Eye Hospital NHS Foundation Trust and UCL Institute of Ophthalmology, London, UK",
+        "Health Data Research UK, London, UK"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "National Institute for Health Research Biomedical Research Centre for Ophthalmology at Moorfields Eye Hospital NHS Foundation Trust and UCL Institute of Ophthalmology, London, UK; Ophthalmology Department, University Hospital Birmingham NHS Foundation Trust, Queen Elizabeth Hospital Birmingham, Birmingham, UK; Health Data Research UK, London, UK",
+          "institution_ids": []
+        },
+        {
+          "raw_affiliation_string": "Ophthalmology Department, University Hospital Birmingham NHS Foundation Trust, Queen Elizabeth Hospital Birmingham, Birmingham, UK",
+          "institution_ids": [
+            "https://openalex.org/I1308923049",
+            "https://openalex.org/I2799307867"
+          ]
+        },
+        {
+          "raw_affiliation_string": "National Institute for Health Research Biomedical Research Centre for Ophthalmology at Moorfields Eye Hospital NHS Foundation Trust and UCL Institute of Ophthalmology, London, UK",
+          "institution_ids": [
+            "https://openalex.org/I1325675289",
+            "https://openalex.org/I45129253",
+            "https://openalex.org/I34931013"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Health Data Research UK, London, UK",
+          "institution_ids": [
+            "https://openalex.org/I4210142469"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5008939020",
+        "display_name": "Joshua R. Ehrlich",
+        "orcid": "https://orcid.org/0000-0002-0607-3564"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I27837315",
+          "display_name": "University of Michigan\u2013Ann Arbor",
+          "ror": "https://ror.org/00jmfr291",
+          "country_code": "US",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I27837315"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Joshua R Ehrlich",
+      "raw_affiliation_strings": [
+        "Department of Ophthalmology and Visual Sciences, University of Michigan, Ann Arbor, MI, USA; Institute for Healthcare Policy and Innovation, University of Michigan, Ann Arbor, MI, USA",
+        "Institute for Healthcare Policy and Innovation, University of Michigan, Ann Arbor, MI, USA",
+        "Department of Ophthalmology and Visual Sciences, University of Michigan, Ann Arbor, MI, USA"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Department of Ophthalmology and Visual Sciences, University of Michigan, Ann Arbor, MI, USA; Institute for Healthcare Policy and Innovation, University of Michigan, Ann Arbor, MI, USA",
+          "institution_ids": []
+        },
+        {
+          "raw_affiliation_string": "Institute for Healthcare Policy and Innovation, University of Michigan, Ann Arbor, MI, USA",
+          "institution_ids": [
+            "https://openalex.org/I27837315"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Department of Ophthalmology and Visual Sciences, University of Michigan, Ann Arbor, MI, USA",
+          "institution_ids": [
+            "https://openalex.org/I27837315"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5081280153",
+        "display_name": "Paul M. Emerson",
+        "orcid": "https://orcid.org/0000-0002-6478-8816"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I150468666",
+          "display_name": "Emory University",
+          "ror": "https://ror.org/03czfpz43",
+          "country_code": "US",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I150468666"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I4210147724",
+          "display_name": "International Trachoma Initiative",
+          "ror": "https://ror.org/045jt2189",
+          "country_code": "US",
+          "type": "nonprofit",
+          "lineage": [
+            "https://openalex.org/I4210147724"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Paul M Emerson",
+      "raw_affiliation_strings": [
+        "International Trachoma Initiative and Rollins School of Public Health, Emory University, Atlanta, GA, USA"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "International Trachoma Initiative and Rollins School of Public Health, Emory University, Atlanta, GA, USA",
+          "institution_ids": [
+            "https://openalex.org/I4210147724",
+            "https://openalex.org/I150468666"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5091162454",
+        "display_name": "Jennifer Evans",
+        "orcid": "https://orcid.org/0000-0002-6137-2030"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I4210089966",
+          "display_name": "London School of Hygiene & Tropical Medicine",
+          "ror": "https://ror.org/00a0jsq62",
+          "country_code": "GB",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I124357947",
+            "https://openalex.org/I4210089966"
+          ]
+        }
+      ],
+      "countries": [
+        "GB"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Jennifer R Evans",
+      "raw_affiliation_strings": [
+        "International Centre for Eye Health, London School of Hygiene & Tropical Medicine, London, UK"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "International Centre for Eye Health, London School of Hygiene & Tropical Medicine, London, UK",
+          "institution_ids": [
+            "https://openalex.org/I4210089966"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5035107070",
+        "display_name": "Kevin D. Frick",
+        "orcid": "https://orcid.org/0000-0002-0178-5319"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I145311948",
+          "display_name": "Johns Hopkins University",
+          "ror": "https://ror.org/00za53h95",
+          "country_code": "US",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I145311948"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Kevin D Frick",
+      "raw_affiliation_strings": [
+        "Carey Business School, Johns Hopkins University, Baltimore, MD, USA"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Carey Business School, Johns Hopkins University, Baltimore, MD, USA",
+          "institution_ids": [
+            "https://openalex.org/I145311948"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5061735128",
+        "display_name": "David S. Friedman",
+        "orcid": "https://orcid.org/0000-0002-2055-5797"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I1287163989",
+          "display_name": "Massachusetts Eye and Ear Infirmary",
+          "ror": "https://ror.org/04g3dn724",
+          "country_code": "US",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I1287163989"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I136199984",
+          "display_name": "Harvard University",
+          "ror": "https://ror.org/03vek6s52",
+          "country_code": "US",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I136199984"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "David S Friedman",
+      "raw_affiliation_strings": [
+        "Massachusetts Eye and Ear, Harvard Ophthalmology, Harvard Medical School, Boston, MA, USA"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Massachusetts Eye and Ear, Harvard Ophthalmology, Harvard Medical School, Boston, MA, USA",
+          "institution_ids": [
+            "https://openalex.org/I1287163989",
+            "https://openalex.org/I136199984"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5048703076",
+        "display_name": "Jo\u00e3o M. Furtado",
+        "orcid": "https://orcid.org/0000-0003-2490-5747"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I17974374",
+          "display_name": "Universidade de S\u00e3o Paulo",
+          "ror": "https://ror.org/036rp1748",
+          "country_code": "BR",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I17974374"
+          ]
+        }
+      ],
+      "countries": [
+        "BR"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Jo\u00e3o M Furtado",
+      "raw_affiliation_strings": [
+        "Ribeir\u00e3o Preto Medical School, University of S\u00e3o Paulo, S\u00e3o Paulo, Brazil"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Ribeir\u00e3o Preto Medical School, University of S\u00e3o Paulo, S\u00e3o Paulo, Brazil",
+          "institution_ids": [
+            "https://openalex.org/I17974374"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5005545586",
+        "display_name": "Michael Gichangi",
+        "orcid": "https://orcid.org/0000-0002-7655-3416"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I4210117370",
+          "display_name": "Ministry of Health",
+          "ror": "https://ror.org/02eyff421",
+          "country_code": "KE",
+          "type": "government",
+          "lineage": [
+            "https://openalex.org/I4210117370"
+          ]
+        }
+      ],
+      "countries": [
+        "KE"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Michael M Gichangi",
+      "raw_affiliation_strings": [
+        "Ophthalmic Services Unit, Ministry of Health, Nairobi, Kenya"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Ophthalmic Services Unit, Ministry of Health, Nairobi, Kenya",
+          "institution_ids": [
+            "https://openalex.org/I4210117370"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5037393599",
+        "display_name": "Stephen Gichuhi",
+        "orcid": "https://orcid.org/0000-0002-7062-4869"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I12859529",
+          "display_name": "University of Nairobi",
+          "ror": "https://ror.org/02y9nww90",
+          "country_code": "KE",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I12859529"
+          ]
+        }
+      ],
+      "countries": [
+        "KE"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Stephen Gichuhi",
+      "raw_affiliation_strings": [
+        "Department of Ophthalmology, University of Nairobi, Nairobi, Kenya"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Department of Ophthalmology, University of Nairobi, Nairobi, Kenya",
+          "institution_ids": [
+            "https://openalex.org/I12859529"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5009610980",
+        "display_name": "Suzanne Gilbert",
+        "orcid": "https://orcid.org/0000-0002-0087-9313"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I200774251",
+          "display_name": "Seva Foundation",
+          "ror": "https://ror.org/02nxg5d30",
+          "country_code": "US",
+          "type": "nonprofit",
+          "lineage": [
+            "https://openalex.org/I200774251"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Suzanne S Gilbert",
+      "raw_affiliation_strings": [
+        "Research and Strategy, Seva Foundation, Berkeley, CA, USA"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Research and Strategy, Seva Foundation, Berkeley, CA, USA",
+          "institution_ids": [
+            "https://openalex.org/I200774251"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5039937073",
+        "display_name": "Reeta Gurung",
+        "orcid": "https://orcid.org/0000-0003-1753-5848"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I2801297833",
+          "display_name": "Tilganga Institute of Ophthalmology",
+          "ror": "https://ror.org/03m8b9646",
+          "country_code": "NP",
+          "type": "nonprofit",
+          "lineage": [
+            "https://openalex.org/I2801297833"
+          ]
+        }
+      ],
+      "countries": [
+        "NP"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Reeta Gurung",
+      "raw_affiliation_strings": [
+        "Tilganga Institute of Ophthalmology, Kathmandu, Nepal"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Tilganga Institute of Ophthalmology, Kathmandu, Nepal",
+          "institution_ids": [
+            "https://openalex.org/I2801297833"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5077547536",
+        "display_name": "Esmael Habtamu",
+        "orcid": "https://orcid.org/0000-0001-6161-8427"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I4210089966",
+          "display_name": "London School of Hygiene & Tropical Medicine",
+          "ror": "https://ror.org/00a0jsq62",
+          "country_code": "GB",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I124357947",
+            "https://openalex.org/I4210089966"
+          ]
+        }
+      ],
+      "countries": [
+        "GB"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Esmael Habtamu",
+      "raw_affiliation_strings": [
+        "International Centre for Eye Health, London School of Hygiene & Tropical Medicine, London, UK; Eyu-Ethiopia Eye Health Research, Training, and Service Centre, Bahirdar, Ethiopia",
+        "Eyu-Ethiopia Eye Health Research, Training, and Service Centre, Bahirdar, Ethiopia",
+        "International Centre for Eye Health, London School of Hygiene & Tropical Medicine, London, UK"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "International Centre for Eye Health, London School of Hygiene & Tropical Medicine, London, UK; Eyu-Ethiopia Eye Health Research, Training, and Service Centre, Bahirdar, Ethiopia",
+          "institution_ids": []
+        },
+        {
+          "raw_affiliation_string": "Eyu-Ethiopia Eye Health Research, Training, and Service Centre, Bahirdar, Ethiopia",
+          "institution_ids": []
+        },
+        {
+          "raw_affiliation_string": "International Centre for Eye Health, London School of Hygiene & Tropical Medicine, London, UK",
+          "institution_ids": [
+            "https://openalex.org/I4210089966"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5072354679",
+        "display_name": "Peter W. H. Holland",
+        "orcid": "https://orcid.org/0000-0003-1533-9376"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I267131422",
+          "display_name": "International Agency for the Prevention of Blindness",
+          "ror": "https://ror.org/00xv4ev28",
+          "country_code": "GB",
+          "type": "nonprofit",
+          "lineage": [
+            "https://openalex.org/I267131422"
+          ]
+        }
+      ],
+      "countries": [
+        "GB"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Peter Holland",
+      "raw_affiliation_strings": [
+        "International Agency for the Prevention of Blindness, London, UK"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "International Agency for the Prevention of Blindness, London, UK",
+          "institution_ids": [
+            "https://openalex.org/I267131422"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5082561940",
+        "display_name": "Jost B. Jonas",
+        "orcid": "https://orcid.org/0000-0003-2972-5227"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I223822909",
+          "display_name": "Heidelberg University",
+          "ror": "https://ror.org/038t36y30",
+          "country_code": "DE",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I223822909"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I4210165657",
+          "display_name": "Institute of Molecular and Clinical Ophthalmology Basel",
+          "ror": "https://ror.org/05e715194",
+          "country_code": "CH",
+          "type": "nonprofit",
+          "lineage": [
+            "https://openalex.org/I4210165657"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I2802164966",
+          "display_name": "University Hospital Heidelberg",
+          "ror": "https://ror.org/013czdx64",
+          "country_code": "DE",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I2802164966"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I4210156450",
+          "display_name": "University Medical Centre Mannheim",
+          "ror": "https://ror.org/05sxbyd35",
+          "country_code": "DE",
+          "type": "funder",
+          "lineage": [
+            "https://openalex.org/I4210156450"
+          ]
+        }
+      ],
+      "countries": [
+        "CH",
+        "DE"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Jost B Jonas",
+      "raw_affiliation_strings": [
+        "Institute of Clinical and Scientific Ophthalmology and Acupuncture Jonas and Panda, Heidelberg, Germany; Department of Ophthalmology, Medical Faculty Mannheim, Heidelberg University, Mannheim, Germany; Institute of Molecular and Clinical Ophthalmology Basel, Basel, Switzerland",
+        "Institute of Molecular and Clinical Ophthalmology Basel, Basel, Switzerland",
+        "Department of Ophthalmology, Medical Faculty Mannheim, Heidelberg University, Mannheim, Germany",
+        "Institute of Clinical and Scientific Ophthalmology and Acupuncture Jonas and Panda, Heidelberg, Germany"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Institute of Clinical and Scientific Ophthalmology and Acupuncture Jonas and Panda, Heidelberg, Germany; Department of Ophthalmology, Medical Faculty Mannheim, Heidelberg University, Mannheim, Germany; Institute of Molecular and Clinical Ophthalmology Basel, Basel, Switzerland",
+          "institution_ids": []
+        },
+        {
+          "raw_affiliation_string": "Institute of Molecular and Clinical Ophthalmology Basel, Basel, Switzerland",
+          "institution_ids": [
+            "https://openalex.org/I4210165657"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Department of Ophthalmology, Medical Faculty Mannheim, Heidelberg University, Mannheim, Germany",
+          "institution_ids": [
+            "https://openalex.org/I4210156450",
+            "https://openalex.org/I223822909",
+            "https://openalex.org/I2802164966"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Institute of Clinical and Scientific Ophthalmology and Acupuncture Jonas and Panda, Heidelberg, Germany",
+          "institution_ids": []
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5003259452",
+        "display_name": "Pearse A. Keane",
+        "orcid": "https://orcid.org/0000-0002-9239-745X"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I45129253",
+          "display_name": "University College London",
+          "ror": "https://ror.org/02jx3x895",
+          "country_code": "GB",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I124357947",
+            "https://openalex.org/I45129253"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I1325675289",
+          "display_name": "Moorfields Eye Hospital NHS Foundation Trust",
+          "ror": "https://ror.org/03zaddr67",
+          "country_code": "GB",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I1325675289"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I34931013",
+          "display_name": "National Institute for Health Research",
+          "ror": "https://ror.org/0187kwz08",
+          "country_code": "GB",
+          "type": "funder",
+          "lineage": [
+            "https://openalex.org/I34931013"
+          ]
+        }
+      ],
+      "countries": [
+        "GB"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Pearse A Keane",
+      "raw_affiliation_strings": [
+        "National Institute for Health Research Biomedical Research Centre for Ophthalmology at Moorfields Eye Hospital NHS Foundation Trust and UCL Institute of Ophthalmology, London, UK"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "National Institute for Health Research Biomedical Research Centre for Ophthalmology at Moorfields Eye Hospital NHS Foundation Trust and UCL Institute of Ophthalmology, London, UK",
+          "institution_ids": [
+            "https://openalex.org/I1325675289",
+            "https://openalex.org/I45129253",
+            "https://openalex.org/I34931013"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5071601092",
+        "display_name": "Lisa Keay",
+        "orcid": "https://orcid.org/0000-0003-2215-0678"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I31746571",
+          "display_name": "UNSW Sydney",
+          "ror": "https://ror.org/03r8z3t63",
+          "country_code": "AU",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I31746571"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I4210110309",
+          "display_name": "The George Institute for Global Health",
+          "ror": "https://ror.org/023331s46",
+          "country_code": "AU",
+          "type": "facility",
+          "lineage": [
+            "https://openalex.org/I4210110309"
+          ]
+        }
+      ],
+      "countries": [
+        "AU"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Lisa Keay",
+      "raw_affiliation_strings": [
+        "School of Optometry and Vision Science, University of New South Wales, Sydney, Australia; George Institute for Global Health, University of New South Wales, Sydney, Australia",
+        "School of Optometry and Vision Science, University of New South Wales, Sydney, Australia",
+        "George Institute for Global Health, University of New South Wales, Sydney, Australia"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "School of Optometry and Vision Science, University of New South Wales, Sydney, Australia; George Institute for Global Health, University of New South Wales, Sydney, Australia",
+          "institution_ids": []
+        },
+        {
+          "raw_affiliation_string": "School of Optometry and Vision Science, University of New South Wales, Sydney, Australia",
+          "institution_ids": [
+            "https://openalex.org/I31746571"
+          ]
+        },
+        {
+          "raw_affiliation_string": "George Institute for Global Health, University of New South Wales, Sydney, Australia",
+          "institution_ids": [
+            "https://openalex.org/I4210110309",
+            "https://openalex.org/I31746571"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5064126550",
+        "display_name": "Rohit Khanna",
+        "orcid": "https://orcid.org/0000-0002-8698-5562"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I31746571",
+          "display_name": "UNSW Sydney",
+          "ror": "https://ror.org/03r8z3t63",
+          "country_code": "AU",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I31746571"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I2801255070",
+          "display_name": "L V Prasad Eye Institute",
+          "ror": "https://ror.org/01w8z9742",
+          "country_code": "IN",
+          "type": "funder",
+          "lineage": [
+            "https://openalex.org/I2801255070"
+          ]
+        }
+      ],
+      "countries": [
+        "AU",
+        "IN"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Rohit C Khanna",
+      "raw_affiliation_strings": [
+        "School of Optometry and Vision Science, University of New South Wales, Sydney, Australia; Gullapalli Pratibha Rao International Centre for Advancement of Rural Eye Care, LV Prasad Eye Institute, Hyderabad, India; Brien Holden Eye Research Centre, LV Prasad Eye Institute, Hyderabad, India",
+        "Brien Holden Eye Research Centre, LV Prasad Eye Institute, Hyderabad, India",
+        "Gullapalli Pratibha Rao International Centre for Advancement of Rural Eye Care, LV Prasad Eye Institute, Hyderabad, India",
+        "School of Optometry and Vision Science, University of New South Wales, Sydney, Australia"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "School of Optometry and Vision Science, University of New South Wales, Sydney, Australia; Gullapalli Pratibha Rao International Centre for Advancement of Rural Eye Care, LV Prasad Eye Institute, Hyderabad, India; Brien Holden Eye Research Centre, LV Prasad Eye Institute, Hyderabad, India",
+          "institution_ids": []
+        },
+        {
+          "raw_affiliation_string": "Brien Holden Eye Research Centre, LV Prasad Eye Institute, Hyderabad, India",
+          "institution_ids": [
+            "https://openalex.org/I2801255070"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Gullapalli Pratibha Rao International Centre for Advancement of Rural Eye Care, LV Prasad Eye Institute, Hyderabad, India",
+          "institution_ids": [
+            "https://openalex.org/I2801255070"
+          ]
+        },
+        {
+          "raw_affiliation_string": "School of Optometry and Vision Science, University of New South Wales, Sydney, Australia",
+          "institution_ids": [
+            "https://openalex.org/I31746571"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5069175872",
+        "display_name": "Peng T. Khaw",
+        "orcid": "https://orcid.org/0000-0002-8087-2268"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I45129253",
+          "display_name": "University College London",
+          "ror": "https://ror.org/02jx3x895",
+          "country_code": "GB",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I124357947",
+            "https://openalex.org/I45129253"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I34931013",
+          "display_name": "National Institute for Health Research",
+          "ror": "https://ror.org/0187kwz08",
+          "country_code": "GB",
+          "type": "funder",
+          "lineage": [
+            "https://openalex.org/I34931013"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I1325675289",
+          "display_name": "Moorfields Eye Hospital NHS Foundation Trust",
+          "ror": "https://ror.org/03zaddr67",
+          "country_code": "GB",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I1325675289"
+          ]
+        }
+      ],
+      "countries": [
+        "GB"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Peng Tee Khaw",
+      "raw_affiliation_strings": [
+        "National Institute for Health Research Biomedical Research Centre for Ophthalmology at Moorfields Eye Hospital NHS Foundation Trust and UCL Institute of Ophthalmology, London, UK"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "National Institute for Health Research Biomedical Research Centre for Ophthalmology at Moorfields Eye Hospital NHS Foundation Trust and UCL Institute of Ophthalmology, London, UK",
+          "institution_ids": [
+            "https://openalex.org/I1325675289",
+            "https://openalex.org/I45129253",
+            "https://openalex.org/I34931013"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5091416564",
+        "display_name": "Hannah Kuper",
+        "orcid": "https://orcid.org/0000-0002-8952-0023"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I4210089966",
+          "display_name": "London School of Hygiene & Tropical Medicine",
+          "ror": "https://ror.org/00a0jsq62",
+          "country_code": "GB",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I124357947",
+            "https://openalex.org/I4210089966"
+          ]
+        }
+      ],
+      "countries": [
+        "GB"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Hannah Kuper",
+      "raw_affiliation_strings": [
+        "International Centre for Evidence in Disability, London School of Hygiene & Tropical Medicine, London, UK"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "International Centre for Evidence in Disability, London School of Hygiene & Tropical Medicine, London, UK",
+          "institution_ids": [
+            "https://openalex.org/I4210089966"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5082048195",
+        "display_name": "Fatima Kyari",
+        "orcid": "https://orcid.org/0000-0002-5080-2154"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I8033065",
+          "display_name": "University of Abuja",
+          "ror": "https://ror.org/007e69832",
+          "country_code": "NG",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I8033065"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I4210089966",
+          "display_name": "London School of Hygiene & Tropical Medicine",
+          "ror": "https://ror.org/00a0jsq62",
+          "country_code": "GB",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I124357947",
+            "https://openalex.org/I4210089966"
+          ]
+        }
+      ],
+      "countries": [
+        "GB",
+        "NG"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Fatima Kyari",
+      "raw_affiliation_strings": [
+        "International Centre for Eye Health, London School of Hygiene & Tropical Medicine, London, UK; College of Health Sciences, University of Abuja, Abuja, Nigeria",
+        "College of Health Sciences, University of Abuja, Abuja, Nigeria",
+        "International Centre for Eye Health, London School of Hygiene & Tropical Medicine, London, UK"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "International Centre for Eye Health, London School of Hygiene & Tropical Medicine, London, UK; College of Health Sciences, University of Abuja, Abuja, Nigeria",
+          "institution_ids": []
+        },
+        {
+          "raw_affiliation_string": "College of Health Sciences, University of Abuja, Abuja, Nigeria",
+          "institution_ids": [
+            "https://openalex.org/I8033065"
+          ]
+        },
+        {
+          "raw_affiliation_string": "International Centre for Eye Health, London School of Hygiene & Tropical Medicine, London, UK",
+          "institution_ids": [
+            "https://openalex.org/I4210089966"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5009488482",
+        "display_name": "Van Charles Lansingh",
+        "orcid": "https://orcid.org/0000-0002-0090-4195"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I4210119763",
+          "display_name": "Universidad Mexicana",
+          "ror": "https://ror.org/02p06pt44",
+          "country_code": "MX",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I4210119763"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I4210090398",
+          "display_name": "Instituto Mexicano de Oftalmolog\u00eda IAP",
+          "ror": "https://ror.org/00d619908",
+          "country_code": "MX",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I4210090398"
+          ]
+        }
+      ],
+      "countries": [
+        "MX"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Van C Lansingh",
+      "raw_affiliation_strings": [
+        "Instituto Mexicano de Oftalmologia, Queretaro, Mexico; Centro Mexicano de Salud Visual Preventiva, Mexico City, Mexico; Help Me See, New York, NY, USA",
+        "Centro Mexicano de Salud Visual Preventiva, Mexico City, Mexico",
+        "Instituto Mexicano de Oftalmologia, Queretaro, Mexico",
+        "Help Me See, New York, NY, USA"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Instituto Mexicano de Oftalmologia, Queretaro, Mexico; Centro Mexicano de Salud Visual Preventiva, Mexico City, Mexico; Help Me See, New York, NY, USA",
+          "institution_ids": []
+        },
+        {
+          "raw_affiliation_string": "Centro Mexicano de Salud Visual Preventiva, Mexico City, Mexico",
+          "institution_ids": [
+            "https://openalex.org/I4210119763"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Instituto Mexicano de Oftalmologia, Queretaro, Mexico",
+          "institution_ids": [
+            "https://openalex.org/I4210090398"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Help Me See, New York, NY, USA",
+          "institution_ids": []
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5043761232",
+        "display_name": "Islay Mactaggart",
+        "orcid": "https://orcid.org/0000-0001-6287-0384"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I4210089966",
+          "display_name": "London School of Hygiene & Tropical Medicine",
+          "ror": "https://ror.org/00a0jsq62",
+          "country_code": "GB",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I124357947",
+            "https://openalex.org/I4210089966"
+          ]
+        }
+      ],
+      "countries": [
+        "GB"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Islay Mactaggart",
+      "raw_affiliation_strings": [
+        "International Centre for Eye Health, London School of Hygiene & Tropical Medicine, London, UK; International Centre for Evidence in Disability, London School of Hygiene & Tropical Medicine, London, UK",
+        "International Centre for Eye Health, London School of Hygiene & Tropical Medicine, London, UK",
+        "International Centre for Evidence in Disability, London School of Hygiene & Tropical Medicine, London, UK"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "International Centre for Eye Health, London School of Hygiene & Tropical Medicine, London, UK; International Centre for Evidence in Disability, London School of Hygiene & Tropical Medicine, London, UK",
+          "institution_ids": []
+        },
+        {
+          "raw_affiliation_string": "International Centre for Eye Health, London School of Hygiene & Tropical Medicine, London, UK",
+          "institution_ids": [
+            "https://openalex.org/I4210089966"
+          ]
+        },
+        {
+          "raw_affiliation_string": "International Centre for Evidence in Disability, London School of Hygiene & Tropical Medicine, London, UK",
+          "institution_ids": [
+            "https://openalex.org/I4210089966"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5047151819",
+        "display_name": "Milka Mafwiri",
+        "orcid": "https://orcid.org/0000-0003-0575-2861"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I154840374",
+          "display_name": "Muhimbili University of Health and Allied Sciences",
+          "ror": "https://ror.org/027pr6c67",
+          "country_code": "TZ",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I154840374"
+          ]
+        }
+      ],
+      "countries": [
+        "TZ"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Milka M Mafwiri",
+      "raw_affiliation_strings": [
+        "Department of Ophthalmology, Muhimbili University of Health and Allied Sciences, Dar es Salaam, Tanzania"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Department of Ophthalmology, Muhimbili University of Health and Allied Sciences, Dar es Salaam, Tanzania",
+          "institution_ids": [
+            "https://openalex.org/I154840374"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5019239831",
+        "display_name": "Wanjiku Mathenge",
+        "orcid": "https://orcid.org/0000-0003-4186-0640"
+      },
+      "institutions": [],
+      "countries": [],
+      "is_corresponding": false,
+      "raw_author_name": "Wanjiku Mathenge",
+      "raw_affiliation_strings": [
+        "Rwanda International Institute of Ophthalmology, Kigali, Rwanda"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Rwanda International Institute of Ophthalmology, Kigali, Rwanda",
+          "institution_ids": []
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5020086165",
+        "display_name": "Ian McCormick",
+        "orcid": "https://orcid.org/0000-0002-7360-3844"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I4210089966",
+          "display_name": "London School of Hygiene & Tropical Medicine",
+          "ror": "https://ror.org/00a0jsq62",
+          "country_code": "GB",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I124357947",
+            "https://openalex.org/I4210089966"
+          ]
+        }
+      ],
+      "countries": [
+        "GB"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Ian McCormick",
+      "raw_affiliation_strings": [
+        "International Centre for Eye Health, London School of Hygiene & Tropical Medicine, London, UK"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "International Centre for Eye Health, London School of Hygiene & Tropical Medicine, London, UK",
+          "institution_ids": [
+            "https://openalex.org/I4210089966"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5062123208",
+        "display_name": "Priya Morjaria",
+        "orcid": "https://orcid.org/0000-0003-1648-1948"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I4210089966",
+          "display_name": "London School of Hygiene & Tropical Medicine",
+          "ror": "https://ror.org/00a0jsq62",
+          "country_code": "GB",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I124357947",
+            "https://openalex.org/I4210089966"
+          ]
+        }
+      ],
+      "countries": [
+        "GB"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Priya Morjaria",
+      "raw_affiliation_strings": [
+        "International Centre for Eye Health, London School of Hygiene & Tropical Medicine, London, UK"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "International Centre for Eye Health, London School of Hygiene & Tropical Medicine, London, UK",
+          "institution_ids": [
+            "https://openalex.org/I4210089966"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5004072701",
+        "display_name": "Lizette Mowatt",
+        "orcid": "https://orcid.org/0000-0002-0628-8629"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I4210152492",
+          "display_name": "University Hospital of the West Indies",
+          "ror": "https://ror.org/04s8a8w57",
+          "country_code": "JM",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I4210152492"
+          ]
+        }
+      ],
+      "countries": [
+        "JM"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Lizette Mowatt",
+      "raw_affiliation_strings": [
+        "University Hospital of the West Indies, Kingston, Jamaica"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "University Hospital of the West Indies, Kingston, Jamaica",
+          "institution_ids": [
+            "https://openalex.org/I4210152492"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5013241287",
+        "display_name": "Debbie Muirhead",
+        "orcid": null
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I165779595",
+          "display_name": "University of Melbourne",
+          "ror": "https://ror.org/01ej9dk98",
+          "country_code": "AU",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I165779595"
+          ]
+        }
+      ],
+      "countries": [
+        "AU"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Debbie Muirhead",
+      "raw_affiliation_strings": [
+        "The Fred Hollows Foundation, Melbourne, Australia; Nossal Institute for Global Health, University of Melbourne, Melbourne, VIC, Australia",
+        "Nossal Institute for Global Health, University of Melbourne, Melbourne, VIC, Australia",
+        "The Fred Hollows Foundation, Melbourne, Australia"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "The Fred Hollows Foundation, Melbourne, Australia; Nossal Institute for Global Health, University of Melbourne, Melbourne, VIC, Australia",
+          "institution_ids": []
+        },
+        {
+          "raw_affiliation_string": "Nossal Institute for Global Health, University of Melbourne, Melbourne, VIC, Australia",
+          "institution_ids": [
+            "https://openalex.org/I165779595"
+          ]
+        },
+        {
+          "raw_affiliation_string": "The Fred Hollows Foundation, Melbourne, Australia",
+          "institution_ids": []
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5080028911",
+        "display_name": "G. V. S. Murthy",
+        "orcid": "https://orcid.org/0000-0002-5695-866X"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I4210089966",
+          "display_name": "London School of Hygiene & Tropical Medicine",
+          "ror": "https://ror.org/00a0jsq62",
+          "country_code": "GB",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I124357947",
+            "https://openalex.org/I4210089966"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I4210156591",
+          "display_name": "Indian Institute of Public Health Gandhinagar",
+          "ror": "https://ror.org/0592ben86",
+          "country_code": "IN",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I4210156591"
+          ]
+        }
+      ],
+      "countries": [
+        "GB",
+        "IN"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Gudlavalleti V S Murthy",
+      "raw_affiliation_strings": [
+        "International Centre for Eye Health, London School of Hygiene & Tropical Medicine, London, UK; Indian Institute of Public Health, Hyderabad, India",
+        "Indian Institute of Public Health, Hyderabad, India",
+        "International Centre for Eye Health, London School of Hygiene & Tropical Medicine, London, UK"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "International Centre for Eye Health, London School of Hygiene & Tropical Medicine, London, UK; Indian Institute of Public Health, Hyderabad, India",
+          "institution_ids": []
+        },
+        {
+          "raw_affiliation_string": "Indian Institute of Public Health, Hyderabad, India",
+          "institution_ids": [
+            "https://openalex.org/I4210156591"
+          ]
+        },
+        {
+          "raw_affiliation_string": "International Centre for Eye Health, London School of Hygiene & Tropical Medicine, London, UK",
+          "institution_ids": [
+            "https://openalex.org/I4210089966"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5002377550",
+        "display_name": "Nyawira Mwangi",
+        "orcid": "https://orcid.org/0000-0002-8236-470X"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I4210089966",
+          "display_name": "London School of Hygiene & Tropical Medicine",
+          "ror": "https://ror.org/00a0jsq62",
+          "country_code": "GB",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I124357947",
+            "https://openalex.org/I4210089966"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I116082035",
+          "display_name": "Kenya Medical Training College",
+          "ror": "https://ror.org/02ccxj712",
+          "country_code": "KE",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I116082035"
+          ]
+        }
+      ],
+      "countries": [
+        "GB",
+        "KE"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Nyawira Mwangi",
+      "raw_affiliation_strings": [
+        "International Centre for Eye Health, London School of Hygiene & Tropical Medicine, London, UK; Kenya Medical Training College, Nairobi, Kenya",
+        "International Centre for Eye Health, London School of Hygiene & Tropical Medicine, London, UK",
+        "Kenya Medical Training College, Nairobi, Kenya"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "International Centre for Eye Health, London School of Hygiene & Tropical Medicine, London, UK; Kenya Medical Training College, Nairobi, Kenya",
+          "institution_ids": []
+        },
+        {
+          "raw_affiliation_string": "International Centre for Eye Health, London School of Hygiene & Tropical Medicine, London, UK",
+          "institution_ids": [
+            "https://openalex.org/I4210089966"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Kenya Medical Training College, Nairobi, Kenya",
+          "institution_ids": [
+            "https://openalex.org/I116082035"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5056938989",
+        "display_name": "Daksha Patel",
+        "orcid": "https://orcid.org/0000-0002-8246-652X"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I4210089966",
+          "display_name": "London School of Hygiene & Tropical Medicine",
+          "ror": "https://ror.org/00a0jsq62",
+          "country_code": "GB",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I124357947",
+            "https://openalex.org/I4210089966"
+          ]
+        }
+      ],
+      "countries": [
+        "GB"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Daksha B Patel",
+      "raw_affiliation_strings": [
+        "International Centre for Eye Health, London School of Hygiene & Tropical Medicine, London, UK"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "International Centre for Eye Health, London School of Hygiene & Tropical Medicine, London, UK",
+          "institution_ids": [
+            "https://openalex.org/I4210089966"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5018227698",
+        "display_name": "T\u00fcnde Pet\u0151",
+        "orcid": "https://orcid.org/0000-0001-6265-0381"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I126231945",
+          "display_name": "Queen's University Belfast",
+          "ror": "https://ror.org/00hswnk62",
+          "country_code": "GB",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I126231945"
+          ]
+        }
+      ],
+      "countries": [
+        "GB"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Tunde Peto",
+      "raw_affiliation_strings": [
+        "Centre for Public Health, Queen's University Belfast, Belfast, UK"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Centre for Public Health, Queen's University Belfast, Belfast, UK",
+          "institution_ids": [
+            "https://openalex.org/I126231945"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5112660386",
+        "display_name": "Babar Qureshi",
+        "orcid": null
+      },
+      "institutions": [],
+      "countries": [],
+      "is_corresponding": false,
+      "raw_author_name": "Babar M Qureshi",
+      "raw_affiliation_strings": [
+        "Christian Blind Mission, Cambridge, UK"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Christian Blind Mission, Cambridge, UK",
+          "institution_ids": []
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5038330866",
+        "display_name": "Solange Rios Salom\u00e3o",
+        "orcid": "https://orcid.org/0000-0002-3436-5599"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I88273585",
+          "display_name": "Universidade Federal de S\u00e3o Paulo",
+          "ror": "https://ror.org/02k5swt12",
+          "country_code": "BR",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I88273585"
+          ]
+        }
+      ],
+      "countries": [
+        "BR"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Solange R Salom\u00e3o",
+      "raw_affiliation_strings": [
+        "Departamento de Oftalmologia e Ci\u00eancias Visuais, Escola Paulista de Medicina, Universidade Federal de S\u00e3o Paulo, S\u00e3o Paulo, Brazil"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Departamento de Oftalmologia e Ci\u00eancias Visuais, Escola Paulista de Medicina, Universidade Federal de S\u00e3o Paulo, S\u00e3o Paulo, Brazil",
+          "institution_ids": [
+            "https://openalex.org/I88273585"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5033795479",
+        "display_name": "Virginia Sarah",
+        "orcid": "https://orcid.org/0000-0003-2080-3890"
+      },
+      "institutions": [],
+      "countries": [],
+      "is_corresponding": false,
+      "raw_author_name": "Virginia Sarah",
+      "raw_affiliation_strings": [
+        "The Fred Hollows Foundation, London, UK"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "The Fred Hollows Foundation, London, UK",
+          "institution_ids": []
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5086821333",
+        "display_name": "Bernadetha Shilio",
+        "orcid": null
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I4210113047",
+          "display_name": "Ministry of Health, Community Development, Gender, Elderly and Children",
+          "ror": "https://ror.org/02465hh03",
+          "country_code": "TZ",
+          "type": "government",
+          "lineage": [
+            "https://openalex.org/I4210113047"
+          ]
+        }
+      ],
+      "countries": [
+        "TZ"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Bernadetha R Shilio",
+      "raw_affiliation_strings": [
+        "Department of Curative Services, Ministry of Health Community Development, Gender, Elderly, and Children, Dodoma, Tanzania"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Department of Curative Services, Ministry of Health Community Development, Gender, Elderly, and Children, Dodoma, Tanzania",
+          "institution_ids": [
+            "https://openalex.org/I4210113047"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5073636405",
+        "display_name": "Anthony W. Solomon",
+        "orcid": "https://orcid.org/0000-0001-7101-6649"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I1298973761",
+          "display_name": "Drugs for Neglected Diseases Initiative",
+          "ror": "https://ror.org/022mz6y25",
+          "country_code": "CH",
+          "type": "nonprofit",
+          "lineage": [
+            "https://openalex.org/I1298973761"
+          ]
+        }
+      ],
+      "countries": [
+        "CH"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Anthony W Solomon",
+      "raw_affiliation_strings": [
+        "Department of Control of Neglected Tropical Diseases, WHO, Geneva, Switzerland"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Department of Control of Neglected Tropical Diseases, WHO, Geneva, Switzerland",
+          "institution_ids": [
+            "https://openalex.org/I1298973761"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5083815937",
+        "display_name": "Bonnielin K. Swenor",
+        "orcid": "https://orcid.org/0000-0002-6044-0951"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I2799853436",
+          "display_name": "Johns Hopkins Medicine",
+          "ror": "https://ror.org/037zgn354",
+          "country_code": "US",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I2799853436"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I145311948",
+          "display_name": "Johns Hopkins University",
+          "ror": "https://ror.org/00za53h95",
+          "country_code": "US",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I145311948"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Bonnielin K Swenor",
+      "raw_affiliation_strings": [
+        "Dana Center for Preventive Ophthalmology, Wilmer Eye Institute, Johns Hopkins University, Baltimore, MD, USA; Department of Epidemiology, Johns Hopkins Bloomberg School of Public Health, Johns Hopkins University, Baltimore, MD, USA",
+        "Dana Center for Preventive Ophthalmology, Wilmer Eye Institute, Johns Hopkins University, Baltimore, MD, USA",
+        "Department of Epidemiology, Johns Hopkins Bloomberg School of Public Health, Johns Hopkins University, Baltimore, MD, USA"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Dana Center for Preventive Ophthalmology, Wilmer Eye Institute, Johns Hopkins University, Baltimore, MD, USA; Department of Epidemiology, Johns Hopkins Bloomberg School of Public Health, Johns Hopkins University, Baltimore, MD, USA",
+          "institution_ids": []
+        },
+        {
+          "raw_affiliation_string": "Dana Center for Preventive Ophthalmology, Wilmer Eye Institute, Johns Hopkins University, Baltimore, MD, USA",
+          "institution_ids": [
+            "https://openalex.org/I2799853436",
+            "https://openalex.org/I145311948"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Department of Epidemiology, Johns Hopkins Bloomberg School of Public Health, Johns Hopkins University, Baltimore, MD, USA",
+          "institution_ids": [
+            "https://openalex.org/I145311948"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5072708362",
+        "display_name": "Hugh R. Taylor",
+        "orcid": "https://orcid.org/0000-0002-9437-784X"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I165779595",
+          "display_name": "University of Melbourne",
+          "ror": "https://ror.org/01ej9dk98",
+          "country_code": "AU",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I165779595"
+          ]
+        }
+      ],
+      "countries": [
+        "AU"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Hugh R Taylor",
+      "raw_affiliation_strings": [
+        "Melbourne School of Population and Global Health, University of Melbourne, Melbourne, VIC, Australia"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Melbourne School of Population and Global Health, University of Melbourne, Melbourne, VIC, Australia",
+          "institution_ids": [
+            "https://openalex.org/I165779595"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5109274315",
+        "display_name": "Ningli Wang",
+        "orcid": null
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I183519381",
+          "display_name": "Capital Medical University",
+          "ror": "https://ror.org/013xs5b60",
+          "country_code": "CN",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I183519381"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I1294606314",
+          "display_name": "Beijing Tongren Hospital",
+          "ror": "https://ror.org/013e4n276",
+          "country_code": "CN",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I1294606314"
+          ]
+        }
+      ],
+      "countries": [
+        "CN"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Ningli Wang",
+      "raw_affiliation_strings": [
+        "Beijing Institute of Ophthalmology, Beijing Tongren Eye Center, Beijing Tongren Hospital, Capital Medical University, Beijing, China; Beijing Ophthalmology and Visual Sciences Key Laboratory, Beijing, China",
+        "Beijing Institute of Ophthalmology, Beijing Tongren Eye Center, Beijing Tongren Hospital, Capital Medical University, Beijing, China",
+        "Beijing Ophthalmology and Visual Sciences Key Laboratory, Beijing, China"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Beijing Institute of Ophthalmology, Beijing Tongren Eye Center, Beijing Tongren Hospital, Capital Medical University, Beijing, China; Beijing Ophthalmology and Visual Sciences Key Laboratory, Beijing, China",
+          "institution_ids": []
+        },
+        {
+          "raw_affiliation_string": "Beijing Institute of Ophthalmology, Beijing Tongren Eye Center, Beijing Tongren Hospital, Capital Medical University, Beijing, China",
+          "institution_ids": [
+            "https://openalex.org/I1294606314",
+            "https://openalex.org/I183519381"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Beijing Ophthalmology and Visual Sciences Key Laboratory, Beijing, China",
+          "institution_ids": []
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5059298670",
+        "display_name": "Aubrey Webson",
+        "orcid": null
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I1286959531",
+          "display_name": "United Nations",
+          "ror": "https://ror.org/006kxhp52",
+          "country_code": "US",
+          "type": "funder",
+          "lineage": [
+            "https://openalex.org/I1286959531"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Aubrey Webson",
+      "raw_affiliation_strings": [
+        "Permanent Mission of Antigua and Barbuda to the United Nation, New York, NY, USA"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Permanent Mission of Antigua and Barbuda to the United Nation, New York, NY, USA",
+          "institution_ids": [
+            "https://openalex.org/I1286959531"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5089206390",
+        "display_name": "Sheila K. West",
+        "orcid": "https://orcid.org/0000-0003-0818-8100"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I2799853436",
+          "display_name": "Johns Hopkins Medicine",
+          "ror": "https://ror.org/037zgn354",
+          "country_code": "US",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I2799853436"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I145311948",
+          "display_name": "Johns Hopkins University",
+          "ror": "https://ror.org/00za53h95",
+          "country_code": "US",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I145311948"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Sheila K West",
+      "raw_affiliation_strings": [
+        "Dana Center for Preventive Ophthalmology, Wilmer Eye Institute, Johns Hopkins University, Baltimore, MD, USA"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Dana Center for Preventive Ophthalmology, Wilmer Eye Institute, Johns Hopkins University, Baltimore, MD, USA",
+          "institution_ids": [
+            "https://openalex.org/I2799853436",
+            "https://openalex.org/I145311948"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5072258594",
+        "display_name": "Tien Yin Wong",
+        "orcid": "https://orcid.org/0000-0002-8448-1264"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I2799299286",
+          "display_name": "Singapore National Eye Center",
+          "ror": "https://ror.org/029nvrb94",
+          "country_code": "SG",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I2799299286"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I4210126319",
+          "display_name": "Duke-NUS Medical School",
+          "ror": "https://ror.org/02j1m6098",
+          "country_code": "SG",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I165932596",
+            "https://openalex.org/I170897317",
+            "https://openalex.org/I4210126319"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I4210116917",
+          "display_name": "Singapore Eye Research Institute",
+          "ror": "https://ror.org/02crz6e12",
+          "country_code": "SG",
+          "type": "facility",
+          "lineage": [
+            "https://openalex.org/I4210116917"
+          ]
+        }
+      ],
+      "countries": [
+        "SG"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Tien Yin Wong",
+      "raw_affiliation_strings": [
+        "Singapore Eye Research Institute, Singapore National Eye Center, Singapore; Duke-NUS Medical School, Singapore",
+        "Duke-NUS Medical School, Singapore",
+        "Singapore Eye Research Institute, Singapore National Eye Center, Singapore"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Singapore Eye Research Institute, Singapore National Eye Center, Singapore; Duke-NUS Medical School, Singapore",
+          "institution_ids": []
+        },
+        {
+          "raw_affiliation_string": "Duke-NUS Medical School, Singapore",
+          "institution_ids": [
+            "https://openalex.org/I4210126319"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Singapore Eye Research Institute, Singapore National Eye Center, Singapore",
+          "institution_ids": [
+            "https://openalex.org/I2799299286",
+            "https://openalex.org/I4210116917"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5050640031",
+        "display_name": "Richard Wormald",
+        "orcid": "https://orcid.org/0000-0001-8723-0148"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I34931013",
+          "display_name": "National Institute for Health Research",
+          "ror": "https://ror.org/0187kwz08",
+          "country_code": "GB",
+          "type": "funder",
+          "lineage": [
+            "https://openalex.org/I34931013"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I4210089966",
+          "display_name": "London School of Hygiene & Tropical Medicine",
+          "ror": "https://ror.org/00a0jsq62",
+          "country_code": "GB",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I124357947",
+            "https://openalex.org/I4210089966"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I45129253",
+          "display_name": "University College London",
+          "ror": "https://ror.org/02jx3x895",
+          "country_code": "GB",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I124357947",
+            "https://openalex.org/I45129253"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I1325675289",
+          "display_name": "Moorfields Eye Hospital NHS Foundation Trust",
+          "ror": "https://ror.org/03zaddr67",
+          "country_code": "GB",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I1325675289"
+          ]
+        }
+      ],
+      "countries": [
+        "GB"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Richard Wormald",
+      "raw_affiliation_strings": [
+        "International Centre for Eye Health, London School of Hygiene & Tropical Medicine, London, UK; National Institute for Health Research Biomedical Research Centre for Ophthalmology at Moorfields Eye Hospital NHS Foundation Trust and UCL Institute of Ophthalmology, London, UK",
+        "National Institute for Health Research Biomedical Research Centre for Ophthalmology at Moorfields Eye Hospital NHS Foundation Trust and UCL Institute of Ophthalmology, London, UK",
+        "International Centre for Eye Health, London School of Hygiene & Tropical Medicine, London, UK"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "International Centre for Eye Health, London School of Hygiene & Tropical Medicine, London, UK; National Institute for Health Research Biomedical Research Centre for Ophthalmology at Moorfields Eye Hospital NHS Foundation Trust and UCL Institute of Ophthalmology, London, UK",
+          "institution_ids": []
+        },
+        {
+          "raw_affiliation_string": "National Institute for Health Research Biomedical Research Centre for Ophthalmology at Moorfields Eye Hospital NHS Foundation Trust and UCL Institute of Ophthalmology, London, UK",
+          "institution_ids": [
+            "https://openalex.org/I1325675289",
+            "https://openalex.org/I45129253",
+            "https://openalex.org/I34931013"
+          ]
+        },
+        {
+          "raw_affiliation_string": "International Centre for Eye Health, London School of Hygiene & Tropical Medicine, London, UK",
+          "institution_ids": [
+            "https://openalex.org/I4210089966"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5110847271",
+        "display_name": "Sumrana Yasmin",
+        "orcid": null
+      },
+      "institutions": [],
+      "countries": [],
+      "is_corresponding": false,
+      "raw_author_name": "Sumrana Yasmin",
+      "raw_affiliation_strings": [
+        "Sightsavers, Islamabad, Pakistan"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Sightsavers, Islamabad, Pakistan",
+          "institution_ids": []
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5075766899",
+        "display_name": "Mayinuer Yusufu",
+        "orcid": "https://orcid.org/0000-0002-4860-0318"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I1294606314",
+          "display_name": "Beijing Tongren Hospital",
+          "ror": "https://ror.org/013e4n276",
+          "country_code": "CN",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I1294606314"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I183519381",
+          "display_name": "Capital Medical University",
+          "ror": "https://ror.org/013xs5b60",
+          "country_code": "CN",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I183519381"
+          ]
+        }
+      ],
+      "countries": [
+        "CN"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Mayinuer Yusufu",
+      "raw_affiliation_strings": [
+        "Beijing Institute of Ophthalmology, Beijing Tongren Eye Center, Beijing Tongren Hospital, Capital Medical University, Beijing, China; Beijing Ophthalmology and Visual Sciences Key Laboratory, Beijing, China",
+        "Beijing Institute of Ophthalmology, Beijing Tongren Eye Center, Beijing Tongren Hospital, Capital Medical University, Beijing, China",
+        "Beijing Ophthalmology and Visual Sciences Key Laboratory, Beijing, China"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Beijing Institute of Ophthalmology, Beijing Tongren Eye Center, Beijing Tongren Hospital, Capital Medical University, Beijing, China; Beijing Ophthalmology and Visual Sciences Key Laboratory, Beijing, China",
+          "institution_ids": []
+        },
+        {
+          "raw_affiliation_string": "Beijing Institute of Ophthalmology, Beijing Tongren Eye Center, Beijing Tongren Hospital, Capital Medical University, Beijing, China",
+          "institution_ids": [
+            "https://openalex.org/I1294606314",
+            "https://openalex.org/I183519381"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Beijing Ophthalmology and Visual Sciences Key Laboratory, Beijing, China",
+          "institution_ids": []
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5060528815",
+        "display_name": "Juan Carlos Silva",
+        "orcid": "https://orcid.org/0000-0003-4855-5008"
+      },
+      "institutions": [],
+      "countries": [],
+      "is_corresponding": false,
+      "raw_author_name": "Juan Carlos Silva",
+      "raw_affiliation_strings": [
+        "Pan American Health Organization, Bogot\u00e1, Colombia"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Pan American Health Organization, Bogot\u00e1, Colombia",
+          "institution_ids": []
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5014317720",
+        "display_name": "Serge Resnikoff",
+        "orcid": "https://orcid.org/0000-0002-5866-4446"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I2801349370",
+          "display_name": "Brien Holden Vision Institute",
+          "ror": "https://ror.org/00g1p6865",
+          "country_code": "AU",
+          "type": "nonprofit",
+          "lineage": [
+            "https://openalex.org/I2801349370"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I31746571",
+          "display_name": "UNSW Sydney",
+          "ror": "https://ror.org/03r8z3t63",
+          "country_code": "AU",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I31746571"
+          ]
+        }
+      ],
+      "countries": [
+        "AU"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Serge Resnikoff",
+      "raw_affiliation_strings": [
+        "School of Optometry and Vision Science, University of New South Wales, Sydney, Australia; Brien Holden Vision Institute, University of New South of Wales, Sydney, Australia",
+        "School of Optometry and Vision Science, University of New South Wales, Sydney, Australia",
+        "Brien Holden Vision Institute, University of New South of Wales, Sydney, Australia"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "School of Optometry and Vision Science, University of New South Wales, Sydney, Australia; Brien Holden Vision Institute, University of New South of Wales, Sydney, Australia",
+          "institution_ids": []
+        },
+        {
+          "raw_affiliation_string": "School of Optometry and Vision Science, University of New South Wales, Sydney, Australia",
+          "institution_ids": [
+            "https://openalex.org/I31746571"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Brien Holden Vision Institute, University of New South of Wales, Sydney, Australia",
+          "institution_ids": [
+            "https://openalex.org/I2801349370"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5075173721",
+        "display_name": "Thulasiraj Ravilla",
+        "orcid": "https://orcid.org/0000-0002-1935-7443"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I2800958399",
+          "display_name": "Aravind Eye Hospital",
+          "ror": "https://ror.org/05vg07g77",
+          "country_code": "IN",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I2800958399"
+          ]
+        }
+      ],
+      "countries": [
+        "IN"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Thulasiraj Ravilla",
+      "raw_affiliation_strings": [
+        "LAICO-Aravind Eye Care System, Madurai, India"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "LAICO-Aravind Eye Care System, Madurai, India",
+          "institution_ids": [
+            "https://openalex.org/I2800958399"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5023438771",
+        "display_name": "Clare Gilbert",
+        "orcid": "https://orcid.org/0000-0003-3514-6248"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I4210089966",
+          "display_name": "London School of Hygiene & Tropical Medicine",
+          "ror": "https://ror.org/00a0jsq62",
+          "country_code": "GB",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I124357947",
+            "https://openalex.org/I4210089966"
+          ]
+        }
+      ],
+      "countries": [
+        "GB"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Clare E Gilbert",
+      "raw_affiliation_strings": [
+        "International Centre for Eye Health, London School of Hygiene & Tropical Medicine, London, UK"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "International Centre for Eye Health, London School of Hygiene & Tropical Medicine, London, UK",
+          "institution_ids": [
+            "https://openalex.org/I4210089966"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5075248766",
+        "display_name": "Allen Foster",
+        "orcid": "https://orcid.org/0000-0003-2368-4436"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I4210089966",
+          "display_name": "London School of Hygiene & Tropical Medicine",
+          "ror": "https://ror.org/00a0jsq62",
+          "country_code": "GB",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I124357947",
+            "https://openalex.org/I4210089966"
+          ]
+        }
+      ],
+      "countries": [
+        "GB"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Allen Foster",
+      "raw_affiliation_strings": [
+        "International Centre for Eye Health, London School of Hygiene & Tropical Medicine, London, UK"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "International Centre for Eye Health, London School of Hygiene & Tropical Medicine, London, UK",
+          "institution_ids": [
+            "https://openalex.org/I4210089966"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "last",
+      "author": {
+        "id": "https://openalex.org/A5049133048",
+        "display_name": "Hannah Faal",
+        "orcid": "https://orcid.org/0000-0002-9099-7400"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I3970730",
+          "display_name": "University of Calabar",
+          "ror": "https://ror.org/05qderh61",
+          "country_code": "NG",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I3970730"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I4210127310",
+          "display_name": "Africa Health Research Institute",
+          "ror": "https://ror.org/034m6ke32",
+          "country_code": "ZA",
+          "type": "facility",
+          "lineage": [
+            "https://openalex.org/I4210127310",
+            "https://openalex.org/I87048295"
+          ]
+        }
+      ],
+      "countries": [
+        "NG",
+        "ZA"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Hannah B Faal",
+      "raw_affiliation_strings": [
+        "Department of Ophthalmology, University of Calabar, Calabar, Nigeria; Africa Vision Research Institute, Durban, South Africa",
+        "Department of Ophthalmology, University of Calabar, Calabar, Nigeria",
+        "Africa Vision Research Institute, Durban, South Africa"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Department of Ophthalmology, University of Calabar, Calabar, Nigeria; Africa Vision Research Institute, Durban, South Africa",
+          "institution_ids": []
+        },
+        {
+          "raw_affiliation_string": "Department of Ophthalmology, University of Calabar, Calabar, Nigeria",
+          "institution_ids": [
+            "https://openalex.org/I3970730"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Africa Vision Research Institute, Durban, South Africa",
+          "institution_ids": [
+            "https://openalex.org/I4210127310"
+          ]
+        }
+      ]
+    }
+  ],
+  "institutions": [],
+  "countries_distinct_count": 20,
+  "institutions_distinct_count": 64,
+  "corresponding_author_ids": [
+    "https://openalex.org/A5078494522"
+  ],
+  "corresponding_institution_ids": [
+    "https://openalex.org/I1325675289",
+    "https://openalex.org/I34931013",
+    "https://openalex.org/I4210089966",
+    "https://openalex.org/I45129253"
+  ],
+  "apc_list": {
+    "value": 5000,
+    "currency": "USD",
+    "value_usd": 5000
+  },
+  "apc_paid": {
+    "value": 5000,
+    "currency": "USD",
+    "value_usd": 5000
+  },
+  "fwci": 175.3512,
+  "has_fulltext": true,
+  "cited_by_count": 1532,
+  "citation_normalized_percentile": {
+    "value": 0.99995585,
+    "is_in_top_1_percent": true,
+    "is_in_top_10_percent": true
+  },
+  "cited_by_percentile_year": {
+    "min": 90,
+    "max": 100
+  },
+  "biblio": {
+    "volume": "9",
+    "issue": "4",
+    "first_page": "e489",
+    "last_page": "e551"
+  },
+  "is_retracted": false,
+  "is_paratext": false,
+  "is_xpac": false,
+  "primary_topic": {
+    "id": "https://openalex.org/T12599",
+    "display_name": "Retinal and Optic Conditions",
+    "score": 0.9897000193595886,
+    "subfield": {
+      "id": "https://openalex.org/subfields/2731",
+      "display_name": "Ophthalmology"
+    },
+    "field": {
+      "id": "https://openalex.org/fields/27",
+      "display_name": "Medicine"
+    },
+    "domain": {
+      "id": "https://openalex.org/domains/4",
+      "display_name": "Health Sciences"
+    }
+  },
+  "topics": [
+    {
+      "id": "https://openalex.org/T12599",
+      "display_name": "Retinal and Optic Conditions",
+      "score": 0.9897000193595886,
+      "subfield": {
+        "id": "https://openalex.org/subfields/2731",
+        "display_name": "Ophthalmology"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/27",
+        "display_name": "Medicine"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/4",
+        "display_name": "Health Sciences"
+      }
+    },
+    {
+      "id": "https://openalex.org/T10209",
+      "display_name": "Global Maternal and Child Health",
+      "score": 0.9783999919891357,
+      "subfield": {
+        "id": "https://openalex.org/subfields/2735",
+        "display_name": "Pediatrics, Perinatology and Child Health"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/27",
+        "display_name": "Medicine"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/4",
+        "display_name": "Health Sciences"
+      }
+    },
+    {
+      "id": "https://openalex.org/T12402",
+      "display_name": "Travel-related health issues",
+      "score": 0.9502999782562256,
+      "subfield": {
+        "id": "https://openalex.org/subfields/2739",
+        "display_name": "Public Health, Environmental and Occupational Health"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/27",
+        "display_name": "Medicine"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/4",
+        "display_name": "Health Sciences"
+      }
+    }
+  ],
+  "keywords": [
+    {
+      "id": "https://openalex.org/keywords/global-health",
+      "display_name": "Global health",
+      "score": 0.702949047088623
+    },
+    {
+      "id": "https://openalex.org/keywords/commission",
+      "display_name": "Commission",
+      "score": 0.6288673877716064
+    },
+    {
+      "id": "https://openalex.org/keywords/optometry",
+      "display_name": "Optometry",
+      "score": 0.5688199996948242
+    },
+    {
+      "id": "https://openalex.org/keywords/medicine",
+      "display_name": "Medicine",
+      "score": 0.38058537244796753
+    },
+    {
+      "id": "https://openalex.org/keywords/political-science",
+      "display_name": "Political science",
+      "score": 0.3657270073890686
+    },
+    {
+      "id": "https://openalex.org/keywords/public-health",
+      "display_name": "Public health",
+      "score": 0.25134146213531494
+    },
+    {
+      "id": "https://openalex.org/keywords/law",
+      "display_name": "Law",
+      "score": 0.07386773824691772
+    },
+    {
+      "id": "https://openalex.org/keywords/nursing",
+      "display_name": "Nursing",
+      "score": 0.060389190912246704
+    }
+  ],
+  "concepts": [
+    {
+      "id": "https://openalex.org/C46578552",
+      "wikidata": "https://www.wikidata.org/wiki/Q2725393",
+      "display_name": "Global health",
+      "level": 3,
+      "score": 0.702949047088623
+    },
+    {
+      "id": "https://openalex.org/C2776034101",
+      "wikidata": "https://www.wikidata.org/wiki/Q1509347",
+      "display_name": "Commission",
+      "level": 2,
+      "score": 0.6288673877716064
+    },
+    {
+      "id": "https://openalex.org/C119767625",
+      "wikidata": "https://www.wikidata.org/wiki/Q618211",
+      "display_name": "Optometry",
+      "level": 1,
+      "score": 0.5688199996948242
+    },
+    {
+      "id": "https://openalex.org/C71924100",
+      "wikidata": "https://www.wikidata.org/wiki/Q11190",
+      "display_name": "Medicine",
+      "level": 0,
+      "score": 0.38058537244796753
+    },
+    {
+      "id": "https://openalex.org/C17744445",
+      "wikidata": "https://www.wikidata.org/wiki/Q36442",
+      "display_name": "Political science",
+      "level": 0,
+      "score": 0.3657270073890686
+    },
+    {
+      "id": "https://openalex.org/C138816342",
+      "wikidata": "https://www.wikidata.org/wiki/Q189603",
+      "display_name": "Public health",
+      "level": 2,
+      "score": 0.25134146213531494
+    },
+    {
+      "id": "https://openalex.org/C199539241",
+      "wikidata": "https://www.wikidata.org/wiki/Q7748",
+      "display_name": "Law",
+      "level": 1,
+      "score": 0.07386773824691772
+    },
+    {
+      "id": "https://openalex.org/C159110408",
+      "wikidata": "https://www.wikidata.org/wiki/Q121176",
+      "display_name": "Nursing",
+      "level": 1,
+      "score": 0.060389190912246704
+    }
+  ],
+  "mesh": [
+    {
+      "descriptor_ui": "D000071219",
+      "descriptor_name": "Global Burden of Disease",
+      "qualifier_ui": "Q000191",
+      "qualifier_name": "economics",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000071219",
+      "descriptor_name": "Global Burden of Disease",
+      "qualifier_ui": "Q000191",
+      "qualifier_name": "economics",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000071219",
+      "descriptor_name": "Global Burden of Disease",
+      "qualifier_ui": "Q000191",
+      "qualifier_name": "economics",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000071219",
+      "descriptor_name": "Global Burden of Disease",
+      "qualifier_ui": "Q000191",
+      "qualifier_name": "economics",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000071219",
+      "descriptor_name": "Global Burden of Disease",
+      "qualifier_ui": "Q000191",
+      "qualifier_name": "economics",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000071219",
+      "descriptor_name": "Global Burden of Disease",
+      "qualifier_ui": "Q000191",
+      "qualifier_name": "economics",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000076502",
+      "descriptor_name": "Sustainable Development",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D000076502",
+      "descriptor_name": "Sustainable Development",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D000076502",
+      "descriptor_name": "Sustainable Development",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D000076502",
+      "descriptor_name": "Sustainable Development",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D000076502",
+      "descriptor_name": "Sustainable Development",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D000076502",
+      "descriptor_name": "Sustainable Development",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D001766",
+      "descriptor_name": "Blindness",
+      "qualifier_ui": "Q000191",
+      "qualifier_name": "economics",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D001766",
+      "descriptor_name": "Blindness",
+      "qualifier_ui": "Q000191",
+      "qualifier_name": "economics",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D001766",
+      "descriptor_name": "Blindness",
+      "qualifier_ui": "Q000191",
+      "qualifier_name": "economics",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D001766",
+      "descriptor_name": "Blindness",
+      "qualifier_ui": "Q000191",
+      "qualifier_name": "economics",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D001766",
+      "descriptor_name": "Blindness",
+      "qualifier_ui": "Q000191",
+      "qualifier_name": "economics",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D001766",
+      "descriptor_name": "Blindness",
+      "qualifier_ui": "Q000191",
+      "qualifier_name": "economics",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D001766",
+      "descriptor_name": "Blindness",
+      "qualifier_ui": "Q000209",
+      "qualifier_name": "etiology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D001766",
+      "descriptor_name": "Blindness",
+      "qualifier_ui": "Q000209",
+      "qualifier_name": "etiology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D001766",
+      "descriptor_name": "Blindness",
+      "qualifier_ui": "Q000209",
+      "qualifier_name": "etiology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D001766",
+      "descriptor_name": "Blindness",
+      "qualifier_ui": "Q000209",
+      "qualifier_name": "etiology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D001766",
+      "descriptor_name": "Blindness",
+      "qualifier_ui": "Q000209",
+      "qualifier_name": "etiology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D001766",
+      "descriptor_name": "Blindness",
+      "qualifier_ui": "Q000209",
+      "qualifier_name": "etiology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D001766",
+      "descriptor_name": "Blindness",
+      "qualifier_ui": "Q000517",
+      "qualifier_name": "prevention & control",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D001766",
+      "descriptor_name": "Blindness",
+      "qualifier_ui": "Q000517",
+      "qualifier_name": "prevention & control",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D001766",
+      "descriptor_name": "Blindness",
+      "qualifier_ui": "Q000517",
+      "qualifier_name": "prevention & control",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D001766",
+      "descriptor_name": "Blindness",
+      "qualifier_ui": "Q000517",
+      "qualifier_name": "prevention & control",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D001766",
+      "descriptor_name": "Blindness",
+      "qualifier_ui": "Q000517",
+      "qualifier_name": "prevention & control",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D001766",
+      "descriptor_name": "Blindness",
+      "qualifier_ui": "Q000517",
+      "qualifier_name": "prevention & control",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D005128",
+      "descriptor_name": "Eye Diseases",
+      "qualifier_ui": "Q000150",
+      "qualifier_name": "complications",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D005128",
+      "descriptor_name": "Eye Diseases",
+      "qualifier_ui": "Q000150",
+      "qualifier_name": "complications",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D005128",
+      "descriptor_name": "Eye Diseases",
+      "qualifier_ui": "Q000150",
+      "qualifier_name": "complications",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D005128",
+      "descriptor_name": "Eye Diseases",
+      "qualifier_ui": "Q000150",
+      "qualifier_name": "complications",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D005128",
+      "descriptor_name": "Eye Diseases",
+      "qualifier_ui": "Q000150",
+      "qualifier_name": "complications",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D005128",
+      "descriptor_name": "Eye Diseases",
+      "qualifier_ui": "Q000150",
+      "qualifier_name": "complications",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D005128",
+      "descriptor_name": "Eye Diseases",
+      "qualifier_ui": "Q000175",
+      "qualifier_name": "diagnosis",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D005128",
+      "descriptor_name": "Eye Diseases",
+      "qualifier_ui": "Q000175",
+      "qualifier_name": "diagnosis",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D005128",
+      "descriptor_name": "Eye Diseases",
+      "qualifier_ui": "Q000175",
+      "qualifier_name": "diagnosis",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D005128",
+      "descriptor_name": "Eye Diseases",
+      "qualifier_ui": "Q000175",
+      "qualifier_name": "diagnosis",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D005128",
+      "descriptor_name": "Eye Diseases",
+      "qualifier_ui": "Q000175",
+      "qualifier_name": "diagnosis",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D005128",
+      "descriptor_name": "Eye Diseases",
+      "qualifier_ui": "Q000175",
+      "qualifier_name": "diagnosis",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D005128",
+      "descriptor_name": "Eye Diseases",
+      "qualifier_ui": "Q000453",
+      "qualifier_name": "epidemiology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D005128",
+      "descriptor_name": "Eye Diseases",
+      "qualifier_ui": "Q000453",
+      "qualifier_name": "epidemiology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D005128",
+      "descriptor_name": "Eye Diseases",
+      "qualifier_ui": "Q000453",
+      "qualifier_name": "epidemiology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D005128",
+      "descriptor_name": "Eye Diseases",
+      "qualifier_ui": "Q000453",
+      "qualifier_name": "epidemiology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D005128",
+      "descriptor_name": "Eye Diseases",
+      "qualifier_ui": "Q000453",
+      "qualifier_name": "epidemiology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D005128",
+      "descriptor_name": "Eye Diseases",
+      "qualifier_ui": "Q000453",
+      "qualifier_name": "epidemiology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D005128",
+      "descriptor_name": "Eye Diseases",
+      "qualifier_ui": "Q000628",
+      "qualifier_name": "therapy",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D005128",
+      "descriptor_name": "Eye Diseases",
+      "qualifier_ui": "Q000628",
+      "qualifier_name": "therapy",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D005128",
+      "descriptor_name": "Eye Diseases",
+      "qualifier_ui": "Q000628",
+      "qualifier_name": "therapy",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D005128",
+      "descriptor_name": "Eye Diseases",
+      "qualifier_ui": "Q000628",
+      "qualifier_name": "therapy",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D005128",
+      "descriptor_name": "Eye Diseases",
+      "qualifier_ui": "Q000628",
+      "qualifier_name": "therapy",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D005128",
+      "descriptor_name": "Eye Diseases",
+      "qualifier_ui": "Q000628",
+      "qualifier_name": "therapy",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D006297",
+      "descriptor_name": "Health Services Accessibility",
+      "qualifier_ui": "Q000191",
+      "qualifier_name": "economics",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D006297",
+      "descriptor_name": "Health Services Accessibility",
+      "qualifier_ui": "Q000191",
+      "qualifier_name": "economics",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D006297",
+      "descriptor_name": "Health Services Accessibility",
+      "qualifier_ui": "Q000191",
+      "qualifier_name": "economics",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D006297",
+      "descriptor_name": "Health Services Accessibility",
+      "qualifier_ui": "Q000191",
+      "qualifier_name": "economics",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D006297",
+      "descriptor_name": "Health Services Accessibility",
+      "qualifier_ui": "Q000191",
+      "qualifier_name": "economics",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D006297",
+      "descriptor_name": "Health Services Accessibility",
+      "qualifier_ui": "Q000191",
+      "qualifier_name": "economics",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D006297",
+      "descriptor_name": "Health Services Accessibility",
+      "qualifier_ui": "Q000458",
+      "qualifier_name": "organization & administration",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D006297",
+      "descriptor_name": "Health Services Accessibility",
+      "qualifier_ui": "Q000458",
+      "qualifier_name": "organization & administration",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D006297",
+      "descriptor_name": "Health Services Accessibility",
+      "qualifier_ui": "Q000458",
+      "qualifier_name": "organization & administration",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D006297",
+      "descriptor_name": "Health Services Accessibility",
+      "qualifier_ui": "Q000458",
+      "qualifier_name": "organization & administration",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D006297",
+      "descriptor_name": "Health Services Accessibility",
+      "qualifier_ui": "Q000458",
+      "qualifier_name": "organization & administration",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D006297",
+      "descriptor_name": "Health Services Accessibility",
+      "qualifier_ui": "Q000458",
+      "qualifier_name": "organization & administration",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D006801",
+      "descriptor_name": "Humans",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D006801",
+      "descriptor_name": "Humans",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D006801",
+      "descriptor_name": "Humans",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D006801",
+      "descriptor_name": "Humans",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D006801",
+      "descriptor_name": "Humans",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D006801",
+      "descriptor_name": "Humans",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D011787",
+      "descriptor_name": "Quality of Health Care",
+      "qualifier_ui": "Q000191",
+      "qualifier_name": "economics",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D011787",
+      "descriptor_name": "Quality of Health Care",
+      "qualifier_ui": "Q000191",
+      "qualifier_name": "economics",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D011787",
+      "descriptor_name": "Quality of Health Care",
+      "qualifier_ui": "Q000191",
+      "qualifier_name": "economics",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D011787",
+      "descriptor_name": "Quality of Health Care",
+      "qualifier_ui": "Q000191",
+      "qualifier_name": "economics",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D011787",
+      "descriptor_name": "Quality of Health Care",
+      "qualifier_ui": "Q000191",
+      "qualifier_name": "economics",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D011787",
+      "descriptor_name": "Quality of Health Care",
+      "qualifier_ui": "Q000191",
+      "qualifier_name": "economics",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D011787",
+      "descriptor_name": "Quality of Health Care",
+      "qualifier_ui": "Q000458",
+      "qualifier_name": "organization & administration",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D011787",
+      "descriptor_name": "Quality of Health Care",
+      "qualifier_ui": "Q000458",
+      "qualifier_name": "organization & administration",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D011787",
+      "descriptor_name": "Quality of Health Care",
+      "qualifier_ui": "Q000458",
+      "qualifier_name": "organization & administration",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D011787",
+      "descriptor_name": "Quality of Health Care",
+      "qualifier_ui": "Q000458",
+      "qualifier_name": "organization & administration",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D011787",
+      "descriptor_name": "Quality of Health Care",
+      "qualifier_ui": "Q000458",
+      "qualifier_name": "organization & administration",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D011787",
+      "descriptor_name": "Quality of Health Care",
+      "qualifier_ui": "Q000458",
+      "qualifier_name": "organization & administration",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D011788",
+      "descriptor_name": "Quality of Life",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D011788",
+      "descriptor_name": "Quality of Life",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D011788",
+      "descriptor_name": "Quality of Life",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D011788",
+      "descriptor_name": "Quality of Life",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D011788",
+      "descriptor_name": "Quality of Life",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D011788",
+      "descriptor_name": "Quality of Life",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D014943",
+      "descriptor_name": "Global Health",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D014943",
+      "descriptor_name": "Global Health",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D014943",
+      "descriptor_name": "Global Health",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D014943",
+      "descriptor_name": "Global Health",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D014943",
+      "descriptor_name": "Global Health",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D014943",
+      "descriptor_name": "Global Health",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D017281",
+      "descriptor_name": "Cost of Illness",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D017281",
+      "descriptor_name": "Cost of Illness",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D017281",
+      "descriptor_name": "Cost of Illness",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D017281",
+      "descriptor_name": "Cost of Illness",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D017281",
+      "descriptor_name": "Cost of Illness",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D017281",
+      "descriptor_name": "Cost of Illness",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D026683",
+      "descriptor_name": "Advisory Committees",
+      "qualifier_ui": "Q000458",
+      "qualifier_name": "organization & administration",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D026683",
+      "descriptor_name": "Advisory Committees",
+      "qualifier_ui": "Q000458",
+      "qualifier_name": "organization & administration",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D026683",
+      "descriptor_name": "Advisory Committees",
+      "qualifier_ui": "Q000458",
+      "qualifier_name": "organization & administration",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D026683",
+      "descriptor_name": "Advisory Committees",
+      "qualifier_ui": "Q000458",
+      "qualifier_name": "organization & administration",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D026683",
+      "descriptor_name": "Advisory Committees",
+      "qualifier_ui": "Q000458",
+      "qualifier_name": "organization & administration",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D026683",
+      "descriptor_name": "Advisory Committees",
+      "qualifier_ui": "Q000458",
+      "qualifier_name": "organization & administration",
+      "is_major_topic": false
+    }
+  ],
+  "locations_count": 12,
+  "locations": [
+    {
+      "id": "doi:10.1016/s2214-109x(20)30488-5",
+      "is_oa": true,
+      "landing_page_url": "https://doi.org/10.1016/s2214-109x(20)30488-5",
+      "pdf_url": "http://www.thelancet.com/article/S2214109X20304885/pdf",
+      "source": {
+        "id": "https://openalex.org/S4210176958",
+        "display_name": "The Lancet Global Health",
+        "issn_l": "2214-109X",
+        "issn": [
+          "2214-109X",
+          "2572-116X"
+        ],
+        "is_oa": true,
+        "is_in_doaj": true,
+        "is_core": true,
+        "host_organization": "https://openalex.org/P4310320990",
+        "host_organization_name": "Elsevier BV",
+        "host_organization_lineage": [
+          "https://openalex.org/P4310320990"
+        ],
+        "host_organization_lineage_names": [
+          "Elsevier BV"
+        ],
+        "type": "journal"
+      },
+      "license": "public-domain",
+      "license_id": "https://openalex.org/licenses/public-domain",
+      "version": "publishedVersion",
+      "is_accepted": true,
+      "is_published": true,
+      "raw_source_name": "The Lancet Global Health",
+      "raw_type": "journal-article"
+    },
+    {
+      "id": "pmid:33607016",
+      "is_oa": false,
+      "landing_page_url": "https://pubmed.ncbi.nlm.nih.gov/33607016",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4306525036",
+        "display_name": "PubMed",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I1299303238",
+        "host_organization_name": "National Institutes of Health",
+        "host_organization_lineage": [
+          "https://openalex.org/I1299303238"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "publishedVersion",
+      "is_accepted": true,
+      "is_published": true,
+      "raw_source_name": "The Lancet. Global health",
+      "raw_type": null
+    },
+    {
+      "id": "pmh:oai:pure.atira.dk:openaire_cris_publications/a84075fe-d673-4aa0-bac8-78ba90643f1b",
+      "is_oa": true,
+      "landing_page_url": "https://research.birmingham.ac.uk/en/publications/a84075fe-d673-4aa0-bac8-78ba90643f1b",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4306402634",
+        "display_name": "University of Birmingham Research Portal (University of Birmingham)",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I79619799",
+        "host_organization_name": "University of Birmingham",
+        "host_organization_lineage": [
+          "https://openalex.org/I79619799"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": "cc-by",
+      "license_id": "https://openalex.org/licenses/cc-by",
+      "version": "publishedVersion",
+      "is_accepted": true,
+      "is_published": true,
+      "raw_source_name": "Burton, M J, Ramke, J, Marques, A P, Bourne, R R A, Congdon, N, Jones, I, Ah Tong, B A M, Arunga, S, Bachani, D, Bascaran, C, Bastawrous, A, Blanchet, K, Braithwaite, T, Buchan, J C, Cairns, J, Cama, A, Chagunda, M, Chuluunkhuu, C, Cooper, A, Crofts-Lawrence, J, Dean, W H, Denniston, A K, Ehrlich, J R, Emerson, P M, Evans, J R, Frick, K D, Friedman, D S, Furtado, J M, Gichangi, M M, Gichuhi, S, Gilbert, S S, Gurung, R, Habtamu, E, Holland, P, Jonas, J B, Keane, P A, Keay, L, Khanna, R C, Khaw, P T, Kuper, H, Kyari, F, Lansingh, V C, Mactaggart, I, Mafwiri, M M, Mathenge, W, McCormick, I, Morjaria, P, Mowatt, L, Muirhead, D, Murthy, G V S, Mwangi, N, Patel, D B, Peto, T, Qureshi, B M, Salom\u00e3o, S R, Sarah, V, Shilio, B R, Solomon, A W, Swenor, B K, Taylor, H R, Wang, N, Webson, A, West, S K, Wong, T Y, Wormald, R, Yasmin, S, Yusufu, M, Silva, J C, Resnikoff, S, Ravilla, T, Gilbert, C E, Foster, A & Faal, H B 2021, 'The Lancet Global Health Commission on Global Eye Health : vision beyond 2020', The Lancet Global Health, vol. 9, no. 4, pp. e489-e551. https://doi.org/10.1016/S2214-109X(20)30488-5",
+      "raw_type": "info:eu-repo/semantics/publishedVersion"
+    },
+    {
+      "id": "pmh:oai:researchonline.lshtm.ac.uk:4659682",
+      "is_oa": false,
+      "landing_page_url": "https://orcid.org/0000-0003-1872-9169>;",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4306402527",
+        "display_name": "LSHTM Research Online (London School of Hygiene and Tropical Medicine)",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I4210089966",
+        "host_organization_name": "London School of Hygiene & Tropical Medicine",
+        "host_organization_lineage": [
+          "https://openalex.org/I4210089966"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "acceptedVersion",
+      "is_accepted": true,
+      "is_published": false,
+      "raw_source_name": null,
+      "raw_type": "Article"
+    },
+    {
+      "id": "pmh:oai:pure.qub.ac.uk/portal:publications/199f9bfc-f076-4f4c-9e87-8a152d4425cb",
+      "is_oa": true,
+      "landing_page_url": "https://pure.qub.ac.uk/en/publications/199f9bfc-f076-4f4c-9e87-8a152d4425cb",
+      "pdf_url": "https://pureadmin.qub.ac.uk/ws/files/238844850/lance.pdf",
+      "source": {
+        "id": "https://openalex.org/S4306402319",
+        "display_name": "Research Portal (Queen's University Belfast)",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I126231945",
+        "host_organization_name": "Queen's University Belfast",
+        "host_organization_lineage": [
+          "https://openalex.org/I126231945"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": "cc-by",
+      "license_id": "https://openalex.org/licenses/cc-by",
+      "version": "submittedVersion",
+      "is_accepted": false,
+      "is_published": false,
+      "raw_source_name": "Burton , M J , Ramke , J , Marques , A P , Bourne , R R A , Congdon , N , Jones , I , Ah Tong , B A M , Arunga , S , Bachani , D , Bascaran , C , Bastawrous , A , Blanchet , K , Braithwaite , T , Buchan , J C , Cairns , J , Cama , A , Chagunda , M , Chuluunkhuu , C , Cooper , A , Crofts-Lawrence , J , Dean , W H , Denniston , A K , Ehrlich , J R , Emerson , P M , Evans , J R , Frick , K D , Friedman , D S , Furtado , J M , Gichangi , M M , Gichuhi , S , Gilbert , S S , Gurung , R , Habtamu , E , Holland , P , Jonas , J B , Keane , P A , Keay , L , Khanna , R C , Khaw , P T , Kuper , H , Kyari , F , Lansingh , V C , Mactaggart , I , Mafwiri , M M , Mathenge , W , McCormick , I , Morjaria , P , Mowatt , L , Muirhead , D , Murthy , G V S , Mwangi , N , Patel , D B , Peto , T , Qureshi , B M , Salom\u00e3o , S R , Sarah , V , Shilio , B R , Solomon , A W , Swenor , B K , Taylor , H R , Wang , N , Webson , A , West , S K , Wong , T Y , Wormald , R , Yasmin , S , Yusufu , M , Silva , J C , Resnikoff , S , Ravilla , T , Gilbert , C E , Foster , A &amp; Faal , H B 2021 , ' The Lancet Global Health Commission on Global Eye Health: vision beyond 2020 ' , The Lancet. Global health , vol. 9 , no. 4 , pp. e489-e551 . https://doi.org/10.1016/S2214-109X(20)30488-5",
+      "raw_type": "article"
+    },
+    {
+      "id": "pmh:oai:arro.anglia.ac.uk:706501",
+      "is_oa": false,
+      "landing_page_url": "https://arro.anglia.ac.uk/id/eprint/706501/1/Burton_et_al_2021.pdf",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4306402145",
+        "display_name": "Anglia Ruskin Research Online (Anglia Ruskin University)",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I51216347",
+        "host_organization_name": "Anglia Ruskin University",
+        "host_organization_lineage": [
+          "https://openalex.org/I51216347"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "submittedVersion",
+      "is_accepted": false,
+      "is_published": false,
+      "raw_source_name": "",
+      "raw_type": "Journal Article"
+    },
+    {
+      "id": "pmh:oai:eprints.ucl.ac.uk.OAI2:10122410",
+      "is_oa": false,
+      "landing_page_url": "https://discovery.ucl.ac.uk/id/eprint/10122410/",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4306400024",
+        "display_name": "UCL Discovery (University College London)",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I45129253",
+        "host_organization_name": "University College London",
+        "host_organization_lineage": [
+          "https://openalex.org/I45129253"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "submittedVersion",
+      "is_accepted": false,
+      "is_published": false,
+      "raw_source_name": "   The Lancet Global Health       (2021)     (In press).  ",
+      "raw_type": "Article"
+    },
+    {
+      "id": "pmh:oai:figshare.com:article/23780694",
+      "is_oa": true,
+      "landing_page_url": "https://figshare.com/articles/journal_contribution/The_Lancet_Global_Health_Commission_on_Global_Eye_Health_vision_beyond_2020/23780694",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4306402621",
+        "display_name": "INDIGO (University of Illinois at Chicago)",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I39422238",
+        "host_organization_name": "University of Illinois Chicago",
+        "host_organization_lineage": [
+          "https://openalex.org/I39422238"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": "cc-by",
+      "license_id": "https://openalex.org/licenses/cc-by",
+      "version": "submittedVersion",
+      "is_accepted": false,
+      "is_published": false,
+      "raw_source_name": "",
+      "raw_type": "Text"
+    },
+    {
+      "id": "pmh:oai:jupiter.its.unimelb.edu.au:11343/280247",
+      "is_oa": true,
+      "landing_page_url": "http://hdl.handle.net/11343/280247",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4306402500",
+        "display_name": "Minerva Access (University of Melbourne)",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I165779595",
+        "host_organization_name": "The University of Melbourne",
+        "host_organization_lineage": [
+          "https://openalex.org/I165779595"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": "cc-by",
+      "license_id": "https://openalex.org/licenses/cc-by",
+      "version": "submittedVersion",
+      "is_accepted": false,
+      "is_published": false,
+      "raw_source_name": "",
+      "raw_type": "Journal Article"
+    },
+    {
+      "id": "pmh:oai:kclpure.kcl.ac.uk:publications/fe3e06da-2faf-407a-8495-92d4c0918540",
+      "is_oa": false,
+      "landing_page_url": "https://kclpure.kcl.ac.uk/portal/en/publications/fe3e06da-2faf-407a-8495-92d4c0918540",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4306400216",
+        "display_name": "Research Portal (King's College London)",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I183935753",
+        "host_organization_name": "King's College London",
+        "host_organization_lineage": [
+          "https://openalex.org/I183935753"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "submittedVersion",
+      "is_accepted": false,
+      "is_published": false,
+      "raw_source_name": "Burton, M J, Ramke, J, Marques, A P, Bourne, R R A, Congdon, N, Jones, I, Ah Tong, B A M, Arunga, S, Bachani, D, Bascaran, C, Bastawrous, A, Blanchet, K, Braithwaite, T, Buchan, J C, Cairns, J, Cama, A, Chagunda, M, Chuluunkhuu, C, Cooper, A, Crofts-Lawrence, J, Dean, W H, Denniston, A K, Ehrlich, J R, Emerson, P M, Evans, J R, Frick, K D, Friedman, D S, Furtado, J M, Gichangi, M M, Gichuhi, S, Gilbert, S S, Gurung, R, Habtamu, E, Holland, P, Jonas, J B, Keane, P A, Keay, L, Khanna, R C, Khaw, P T, Kuper, H, Kyari, F, Lansingh, V C, Mactaggart, I, Mafwiri, M M, Mathenge, W, McCormick, I, Morjaria, P, Mowatt, L, Muirhead, D, Murthy, G V S, Mwangi, N, Patel, D B, Peto, T, Qureshi, B M, Salom\u00e3o, S R, Sarah, V, Shilio, B R, Solomon, A W, Swenor, B K, Taylor, H R, Wang, N, Webson, A, West, S K, Wong, T Y, Wormald, R, Yasmin, S, Yusufu, M, Silva, J C, Resnikoff, S, Ravilla, T, Gilbert, C E, Foster, A & Faal, H B 2021, 'The Lancet Global Health Commission on Global Eye Health : vision beyond 2020', The Lancet. Global health, vol. 9, no. 4, pp. e489-e551. https://doi.org/10.1016/S2214-109X(20)30488-5",
+      "raw_type": "info:eu-repo/semantics/review"
+    },
+    {
+      "id": "pmh:oai:pubmedcentral.nih.gov:7966694",
+      "is_oa": true,
+      "landing_page_url": "https://www.ncbi.nlm.nih.gov/pmc/articles/7966694",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S2764455111",
+        "display_name": "PubMed Central",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": true,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I1299303238",
+        "host_organization_name": "National Institutes of Health",
+        "host_organization_lineage": [
+          "https://openalex.org/I1299303238"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": "cc-by",
+      "license_id": "https://openalex.org/licenses/cc-by",
+      "version": "submittedVersion",
+      "is_accepted": false,
+      "is_published": false,
+      "raw_source_name": "Lancet Glob Health",
+      "raw_type": "Text"
+    },
+    {
+      "id": "pmh:oai:unige.ch:aou:unige:176255",
+      "is_oa": true,
+      "landing_page_url": "https://archive-ouverte.unige.ch/unige:176255",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4306402259",
+        "display_name": "Archive ouverte UNIGE (University of Geneva)",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I114457229",
+        "host_organization_name": "University of Geneva",
+        "host_organization_lineage": [
+          "https://openalex.org/I114457229"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": "cc-by",
+      "license_id": "https://openalex.org/licenses/cc-by",
+      "version": "submittedVersion",
+      "is_accepted": false,
+      "is_published": false,
+      "raw_source_name": "ISSN: 2214-109X",
+      "raw_type": "info:eu-repo/semantics/article"
+    }
+  ],
+  "best_oa_location": {
+    "id": "doi:10.1016/s2214-109x(20)30488-5",
+    "is_oa": true,
+    "landing_page_url": "https://doi.org/10.1016/s2214-109x(20)30488-5",
+    "pdf_url": "http://www.thelancet.com/article/S2214109X20304885/pdf",
+    "source": {
+      "id": "https://openalex.org/S4210176958",
+      "display_name": "The Lancet Global Health",
+      "issn_l": "2214-109X",
+      "issn": [
+        "2214-109X",
+        "2572-116X"
+      ],
+      "is_oa": true,
+      "is_in_doaj": true,
+      "is_core": true,
+      "host_organization": "https://openalex.org/P4310320990",
+      "host_organization_name": "Elsevier BV",
+      "host_organization_lineage": [
+        "https://openalex.org/P4310320990"
+      ],
+      "host_organization_lineage_names": [
+        "Elsevier BV"
+      ],
+      "type": "journal"
+    },
+    "license": "public-domain",
+    "license_id": "https://openalex.org/licenses/public-domain",
+    "version": "publishedVersion",
+    "is_accepted": true,
+    "is_published": true,
+    "raw_source_name": "The Lancet Global Health",
+    "raw_type": "journal-article"
+  },
+  "sustainable_development_goals": [
+    {
+      "display_name": "Reduced inequalities",
+      "id": "https://metadata.un.org/sdg/10",
+      "score": 0.75
+    }
+  ],
+  "awards": [
+    {
+      "id": "https://openalex.org/G1875192810",
+      "display_name": null,
+      "funder_award_id": "AMS-SGCL6-Keane",
+      "funder_id": "https://openalex.org/F4320320241",
+      "funder_display_name": "Academy of Medical Sciences"
+    },
+    {
+      "id": "https://openalex.org/G2692166097",
+      "display_name": "Binocular OCT \u2013 Reinventing the Eye Examination",
+      "funder_award_id": "CS-2014-14-023",
+      "funder_id": "https://openalex.org/F4320319990",
+      "funder_display_name": "National Institute for Health and Care Research"
+    },
+    {
+      "id": "https://openalex.org/G3904103241",
+      "display_name": null,
+      "funder_award_id": "CL-2010-18-004",
+      "funder_id": "https://openalex.org/F4320319990",
+      "funder_display_name": "National Institute for Health and Care Research"
+    },
+    {
+      "id": "https://openalex.org/G3991745523",
+      "display_name": "NIHR Senior Investigator Award",
+      "funder_award_id": "NF-SI-0512-10101",
+      "funder_id": "https://openalex.org/F4320319990",
+      "funder_display_name": "National Institute for Health and Care Research"
+    },
+    {
+      "id": "https://openalex.org/G4919056562",
+      "display_name": null,
+      "funder_award_id": "TU/ASG/R-SPEH-113",
+      "funder_id": "https://openalex.org/F4320313467",
+      "funder_display_name": "Alan Turing Institute"
+    },
+    {
+      "id": "https://openalex.org/G5975105131",
+      "display_name": null,
+      "funder_award_id": "GR001061",
+      "funder_id": "https://openalex.org/F4320329812",
+      "funder_display_name": "Moorfields Eye Charity"
+    },
+    {
+      "id": "https://openalex.org/G8366910209",
+      "display_name": null,
+      "funder_award_id": "20190426_PH2",
+      "funder_id": "https://openalex.org/F4320311904",
+      "funder_display_name": "Wellcome Trust"
+    }
+  ],
+  "funders": [
+    {
+      "id": "https://openalex.org/F4320307856",
+      "display_name": "World Health Organization",
+      "ror": "https://ror.org/01f80g185"
+    },
+    {
+      "id": "https://openalex.org/F4320311904",
+      "display_name": "Wellcome Trust",
+      "ror": "https://ror.org/029chgv08"
+    },
+    {
+      "id": "https://openalex.org/F4320313467",
+      "display_name": "Alan Turing Institute",
+      "ror": "https://ror.org/035dkdb55"
+    },
+    {
+      "id": "https://openalex.org/F4320315064",
+      "display_name": "Fred Hollows Foundation",
+      "ror": null
+    },
+    {
+      "id": "https://openalex.org/F4320317155",
+      "display_name": "Queen Elizabeth Diamond Jubilee Trust",
+      "ror": null
+    },
+    {
+      "id": "https://openalex.org/F4320318924",
+      "display_name": "Seva Foundation",
+      "ror": "https://ror.org/02nxg5d30"
+    },
+    {
+      "id": "https://openalex.org/F4320319990",
+      "display_name": "National Institute for Health and Care Research",
+      "ror": "https://ror.org/0187kwz08"
+    },
+    {
+      "id": "https://openalex.org/F4320320241",
+      "display_name": "Academy of Medical Sciences",
+      "ror": "https://ror.org/00c489v88"
+    },
+    {
+      "id": "https://openalex.org/F4320329812",
+      "display_name": "Moorfields Eye Charity",
+      "ror": "https://ror.org/017hm5p20"
+    }
+  ],
+  "has_content": {
+    "pdf": true,
+    "grobid_xml": true
+  },
+  "content_urls": {
+    "pdf": "https://content.openalex.org/works/W3130938027.pdf",
+    "grobid_xml": "https://content.openalex.org/works/W3130938027.grobid-xml"
+  },
+  "referenced_works_count": 351,
+  "referenced_works": [
+    "https://openalex.org/W43902372",
+    "https://openalex.org/W148934646",
+    "https://openalex.org/W150618871",
+    "https://openalex.org/W907337771",
+    "https://openalex.org/W1506734603",
+    "https://openalex.org/W1531145246",
+    "https://openalex.org/W1543801259",
+    "https://openalex.org/W1550637996",
+    "https://openalex.org/W1551228934",
+    "https://openalex.org/W1561963843",
+    "https://openalex.org/W1565588667",
+    "https://openalex.org/W1620526681",
+    "https://openalex.org/W1626693558",
+    "https://openalex.org/W1692031358",
+    "https://openalex.org/W1803202584",
+    "https://openalex.org/W1824725778",
+    "https://openalex.org/W1838879621",
+    "https://openalex.org/W1844180523",
+    "https://openalex.org/W1859192274",
+    "https://openalex.org/W1867547351",
+    "https://openalex.org/W1895764576",
+    "https://openalex.org/W1896934990",
+    "https://openalex.org/W1926107616",
+    "https://openalex.org/W1952780592",
+    "https://openalex.org/W1964141724",
+    "https://openalex.org/W1964175664",
+    "https://openalex.org/W1969235685",
+    "https://openalex.org/W1969623974",
+    "https://openalex.org/W1971744310",
+    "https://openalex.org/W1974204056",
+    "https://openalex.org/W1974264820",
+    "https://openalex.org/W1975207191",
+    "https://openalex.org/W1976750666",
+    "https://openalex.org/W1978344898",
+    "https://openalex.org/W1978371596",
+    "https://openalex.org/W1982553974",
+    "https://openalex.org/W1983024515",
+    "https://openalex.org/W1985109560",
+    "https://openalex.org/W1985282719",
+    "https://openalex.org/W1985514153",
+    "https://openalex.org/W1985567154",
+    "https://openalex.org/W1988065397",
+    "https://openalex.org/W1992142391",
+    "https://openalex.org/W1995218001",
+    "https://openalex.org/W1997548489",
+    "https://openalex.org/W1998079594",
+    "https://openalex.org/W1998900477",
+    "https://openalex.org/W2000936340",
+    "https://openalex.org/W2004108081",
+    "https://openalex.org/W2010834590",
+    "https://openalex.org/W2012369352",
+    "https://openalex.org/W2012826488",
+    "https://openalex.org/W2013800293",
+    "https://openalex.org/W2014081790",
+    "https://openalex.org/W2016069471",
+    "https://openalex.org/W2016657376",
+    "https://openalex.org/W2017447508",
+    "https://openalex.org/W2019292148",
+    "https://openalex.org/W2019944319",
+    "https://openalex.org/W2023498662",
+    "https://openalex.org/W2024107612",
+    "https://openalex.org/W2026059616",
+    "https://openalex.org/W2026637773",
+    "https://openalex.org/W2027805475",
+    "https://openalex.org/W2029036450",
+    "https://openalex.org/W2029745439",
+    "https://openalex.org/W2032537145",
+    "https://openalex.org/W2036632636",
+    "https://openalex.org/W2037483151",
+    "https://openalex.org/W2039361921",
+    "https://openalex.org/W2041623550",
+    "https://openalex.org/W2043427737",
+    "https://openalex.org/W2047934476",
+    "https://openalex.org/W2049745461",
+    "https://openalex.org/W2050757985",
+    "https://openalex.org/W2050999493",
+    "https://openalex.org/W2053265010",
+    "https://openalex.org/W2057266151",
+    "https://openalex.org/W2059925801",
+    "https://openalex.org/W2060909700",
+    "https://openalex.org/W2061514401",
+    "https://openalex.org/W2063584859",
+    "https://openalex.org/W2066396060",
+    "https://openalex.org/W2066837365",
+    "https://openalex.org/W2072852299",
+    "https://openalex.org/W2073780791",
+    "https://openalex.org/W2074099014",
+    "https://openalex.org/W2075258360",
+    "https://openalex.org/W2077664504",
+    "https://openalex.org/W2086100244",
+    "https://openalex.org/W2091235110",
+    "https://openalex.org/W2093582344",
+    "https://openalex.org/W2096286742",
+    "https://openalex.org/W2097052222",
+    "https://openalex.org/W2097387720",
+    "https://openalex.org/W2098690293",
+    "https://openalex.org/W2099327766",
+    "https://openalex.org/W2100409487",
+    "https://openalex.org/W2101722234",
+    "https://openalex.org/W2103367637",
+    "https://openalex.org/W2104372971",
+    "https://openalex.org/W2106311978",
+    "https://openalex.org/W2107548548",
+    "https://openalex.org/W2108233815",
+    "https://openalex.org/W2108344016",
+    "https://openalex.org/W2109171625",
+    "https://openalex.org/W2109471482",
+    "https://openalex.org/W2109853056",
+    "https://openalex.org/W2109914816",
+    "https://openalex.org/W2110496681",
+    "https://openalex.org/W2111727998",
+    "https://openalex.org/W2112672701",
+    "https://openalex.org/W2115455518",
+    "https://openalex.org/W2115705498",
+    "https://openalex.org/W2118177152",
+    "https://openalex.org/W2118544998",
+    "https://openalex.org/W2118806012",
+    "https://openalex.org/W2119775317",
+    "https://openalex.org/W2119830072",
+    "https://openalex.org/W2119852447",
+    "https://openalex.org/W2123338644",
+    "https://openalex.org/W2123597547",
+    "https://openalex.org/W2125083791",
+    "https://openalex.org/W2125529058",
+    "https://openalex.org/W2128248134",
+    "https://openalex.org/W2132813512",
+    "https://openalex.org/W2133261514",
+    "https://openalex.org/W2135568042",
+    "https://openalex.org/W2137660945",
+    "https://openalex.org/W2138480916",
+    "https://openalex.org/W2138756262",
+    "https://openalex.org/W2139726867",
+    "https://openalex.org/W2140961859",
+    "https://openalex.org/W2143408474",
+    "https://openalex.org/W2144821515",
+    "https://openalex.org/W2147713803",
+    "https://openalex.org/W2148039314",
+    "https://openalex.org/W2148602524",
+    "https://openalex.org/W2152509086",
+    "https://openalex.org/W2156075373",
+    "https://openalex.org/W2156100400",
+    "https://openalex.org/W2158543557",
+    "https://openalex.org/W2158858943",
+    "https://openalex.org/W2160226180",
+    "https://openalex.org/W2160510982",
+    "https://openalex.org/W2160605010",
+    "https://openalex.org/W2161233536",
+    "https://openalex.org/W2163543793",
+    "https://openalex.org/W2165318802",
+    "https://openalex.org/W2166587039",
+    "https://openalex.org/W2166637362",
+    "https://openalex.org/W2168569872",
+    "https://openalex.org/W2168894369",
+    "https://openalex.org/W2169961704",
+    "https://openalex.org/W2171969519",
+    "https://openalex.org/W2200149290",
+    "https://openalex.org/W2251607930",
+    "https://openalex.org/W2256528525",
+    "https://openalex.org/W2263495255",
+    "https://openalex.org/W2263500212",
+    "https://openalex.org/W2277370197",
+    "https://openalex.org/W2301857173",
+    "https://openalex.org/W2311644281",
+    "https://openalex.org/W2317161874",
+    "https://openalex.org/W2329777699",
+    "https://openalex.org/W2334714286",
+    "https://openalex.org/W2336687435",
+    "https://openalex.org/W2346457436",
+    "https://openalex.org/W2395825725",
+    "https://openalex.org/W2412247133",
+    "https://openalex.org/W2419225911",
+    "https://openalex.org/W2422351559",
+    "https://openalex.org/W2431946582",
+    "https://openalex.org/W2462776788",
+    "https://openalex.org/W2467292721",
+    "https://openalex.org/W2519603001",
+    "https://openalex.org/W2548247194",
+    "https://openalex.org/W2550218430",
+    "https://openalex.org/W2552484663",
+    "https://openalex.org/W2557867537",
+    "https://openalex.org/W2593233873",
+    "https://openalex.org/W2599076725",
+    "https://openalex.org/W2606534641",
+    "https://openalex.org/W2606594862",
+    "https://openalex.org/W2611061209",
+    "https://openalex.org/W2726140147",
+    "https://openalex.org/W2734934781",
+    "https://openalex.org/W2736690046",
+    "https://openalex.org/W2741346289",
+    "https://openalex.org/W2741434685",
+    "https://openalex.org/W2746660326",
+    "https://openalex.org/W2750147234",
+    "https://openalex.org/W2751884637",
+    "https://openalex.org/W2754772047",
+    "https://openalex.org/W2761604622",
+    "https://openalex.org/W2764102578",
+    "https://openalex.org/W2764218365",
+    "https://openalex.org/W2768136079",
+    "https://openalex.org/W2771589343",
+    "https://openalex.org/W2771599919",
+    "https://openalex.org/W2772246762",
+    "https://openalex.org/W2773048374",
+    "https://openalex.org/W2776631847",
+    "https://openalex.org/W2778936624",
+    "https://openalex.org/W2781651179",
+    "https://openalex.org/W2782634340",
+    "https://openalex.org/W2783277211",
+    "https://openalex.org/W2790118669",
+    "https://openalex.org/W2790941992",
+    "https://openalex.org/W2791748958",
+    "https://openalex.org/W2799584540",
+    "https://openalex.org/W2800930375",
+    "https://openalex.org/W2801646962",
+    "https://openalex.org/W2804271650",
+    "https://openalex.org/W2805355611",
+    "https://openalex.org/W2805665012",
+    "https://openalex.org/W2805668815",
+    "https://openalex.org/W2806867109",
+    "https://openalex.org/W2808348512",
+    "https://openalex.org/W2810831802",
+    "https://openalex.org/W2846058884",
+    "https://openalex.org/W2882985347",
+    "https://openalex.org/W2883323624",
+    "https://openalex.org/W2884807300",
+    "https://openalex.org/W2886281300",
+    "https://openalex.org/W2886656163",
+    "https://openalex.org/W2887023377",
+    "https://openalex.org/W2888288819",
+    "https://openalex.org/W2888424632",
+    "https://openalex.org/W2888941161",
+    "https://openalex.org/W2889999228",
+    "https://openalex.org/W2891125414",
+    "https://openalex.org/W2891519262",
+    "https://openalex.org/W2892906463",
+    "https://openalex.org/W2892928297",
+    "https://openalex.org/W2893161180",
+    "https://openalex.org/W2894282665",
+    "https://openalex.org/W2894540918",
+    "https://openalex.org/W2895885902",
+    "https://openalex.org/W2898521241",
+    "https://openalex.org/W2903248753",
+    "https://openalex.org/W2903777691",
+    "https://openalex.org/W2904265813",
+    "https://openalex.org/W2904410189",
+    "https://openalex.org/W2911098778",
+    "https://openalex.org/W2912340220",
+    "https://openalex.org/W2912654919",
+    "https://openalex.org/W2912681376",
+    "https://openalex.org/W2913052258",
+    "https://openalex.org/W2914216544",
+    "https://openalex.org/W2916364889",
+    "https://openalex.org/W2917882936",
+    "https://openalex.org/W2924091208",
+    "https://openalex.org/W2937819617",
+    "https://openalex.org/W2941926021",
+    "https://openalex.org/W2942702693",
+    "https://openalex.org/W2946831176",
+    "https://openalex.org/W2948382730",
+    "https://openalex.org/W2950561132",
+    "https://openalex.org/W2952732182",
+    "https://openalex.org/W2952927910",
+    "https://openalex.org/W2952956506",
+    "https://openalex.org/W2952994340",
+    "https://openalex.org/W2954850454",
+    "https://openalex.org/W2965776993",
+    "https://openalex.org/W2967399835",
+    "https://openalex.org/W2968617104",
+    "https://openalex.org/W2969916402",
+    "https://openalex.org/W2971891052",
+    "https://openalex.org/W2972805264",
+    "https://openalex.org/W2972861492",
+    "https://openalex.org/W2972869264",
+    "https://openalex.org/W2972935203",
+    "https://openalex.org/W2972946335",
+    "https://openalex.org/W2974196484",
+    "https://openalex.org/W2975103023",
+    "https://openalex.org/W2979757921",
+    "https://openalex.org/W2979911801",
+    "https://openalex.org/W2980192851",
+    "https://openalex.org/W2989643191",
+    "https://openalex.org/W2994300430",
+    "https://openalex.org/W2994957823",
+    "https://openalex.org/W2995065646",
+    "https://openalex.org/W2995884008",
+    "https://openalex.org/W2997368720",
+    "https://openalex.org/W2997985721",
+    "https://openalex.org/W2998828292",
+    "https://openalex.org/W2999928623",
+    "https://openalex.org/W3000620964",
+    "https://openalex.org/W3001477424",
+    "https://openalex.org/W3001608637",
+    "https://openalex.org/W3003987518",
+    "https://openalex.org/W3008735477",
+    "https://openalex.org/W3011612315",
+    "https://openalex.org/W3014021504",
+    "https://openalex.org/W3020479072",
+    "https://openalex.org/W3025602797",
+    "https://openalex.org/W3026040428",
+    "https://openalex.org/W3030595625",
+    "https://openalex.org/W3033114905",
+    "https://openalex.org/W3040938450",
+    "https://openalex.org/W3048834103",
+    "https://openalex.org/W3048858159",
+    "https://openalex.org/W3081735885",
+    "https://openalex.org/W3083260541",
+    "https://openalex.org/W3089653673",
+    "https://openalex.org/W3096398024",
+    "https://openalex.org/W3110054227",
+    "https://openalex.org/W3110220146",
+    "https://openalex.org/W3124152787",
+    "https://openalex.org/W3132436110",
+    "https://openalex.org/W3134431802",
+    "https://openalex.org/W3134523414",
+    "https://openalex.org/W4205775408",
+    "https://openalex.org/W4210624226",
+    "https://openalex.org/W4210736684",
+    "https://openalex.org/W4211020962",
+    "https://openalex.org/W4211108838",
+    "https://openalex.org/W4211205882",
+    "https://openalex.org/W4232527520",
+    "https://openalex.org/W4233972052",
+    "https://openalex.org/W4236033522",
+    "https://openalex.org/W4240661191",
+    "https://openalex.org/W4240786947",
+    "https://openalex.org/W4255264591",
+    "https://openalex.org/W4255271122",
+    "https://openalex.org/W4321258345",
+    "https://openalex.org/W6601761347",
+    "https://openalex.org/W6624143033",
+    "https://openalex.org/W6632040164",
+    "https://openalex.org/W6632866056",
+    "https://openalex.org/W6636431212",
+    "https://openalex.org/W6637482142",
+    "https://openalex.org/W6639699932",
+    "https://openalex.org/W6675829115",
+    "https://openalex.org/W6676171027",
+    "https://openalex.org/W6677498249",
+    "https://openalex.org/W6684541602",
+    "https://openalex.org/W6684807685",
+    "https://openalex.org/W6692158807",
+    "https://openalex.org/W6692871926",
+    "https://openalex.org/W6718006580",
+    "https://openalex.org/W6736244252",
+    "https://openalex.org/W6742079386",
+    "https://openalex.org/W6743506921",
+    "https://openalex.org/W6757209840",
+    "https://openalex.org/W6768809235",
+    "https://openalex.org/W6771719721",
+    "https://openalex.org/W6775402277",
+    "https://openalex.org/W6777558947",
+    "https://openalex.org/W6814457868"
+  ],
+  "related_works": [
+    "https://openalex.org/W4391375266",
+    "https://openalex.org/W2899084033",
+    "https://openalex.org/W2748952813",
+    "https://openalex.org/W3031052312",
+    "https://openalex.org/W4389568370",
+    "https://openalex.org/W3032375762",
+    "https://openalex.org/W1995515455",
+    "https://openalex.org/W2080531066",
+    "https://openalex.org/W3108674512",
+    "https://openalex.org/W1506200166"
+  ],
+  "abstract_inverted_index": {
+    "There": [
+      0
+    ],
+    "is": [
+      1,
+      37
+    ],
+    "extensive": [
+      2
+    ],
+    "evidence": [
+      3
+    ],
+    "showing": [
+      4
+    ],
+    "that": [
+      5
+    ],
+    "improving": [
+      6,
+      23
+    ],
+    "eye": [
+      7,
+      35
+    ],
+    "health": [
+      8,
+      36,
+      48
+    ],
+    "contributes": [
+      9
+    ],
+    "directly": [
+      10
+    ],
+    "and": [
+      11,
+      22,
+      27,
+      30,
+      32,
+      40
+    ],
+    "indirectly": [
+      12
+    ],
+    "to": [
+      13,
+      50
+    ],
+    "achieving": [
+      14
+    ],
+    "many": [
+      15
+    ],
+    "Sustainable": [
+      16
+    ],
+    "Development": [
+      17
+    ],
+    "Goals,": [
+      18
+    ],
+    "including": [
+      19
+    ],
+    "reducing": [
+      20
+    ],
+    "poverty": [
+      21
+    ],
+    "work": [
+      24
+    ],
+    "productivity,": [
+      25
+    ],
+    "general": [
+      26
+    ],
+    "mental": [
+      28
+    ],
+    "health,": [
+      29
+    ],
+    "education": [
+      31
+    ],
+    "equity.": [
+      33
+    ],
+    "Improving": [
+      34
+    ],
+    "a": [
+      38
+    ],
+    "practical": [
+      39
+    ],
+    "cost-effective": [
+      41
+    ],
+    "way": [
+      42
+    ],
+    "of": [
+      43
+    ],
+    "unlocking": [
+      44
+    ],
+    "human": [
+      45
+    ],
+    "potential.": [
+      46
+    ],
+    "Eye": [
+      47
+    ],
+    "needs": [
+      49
+    ],
+    "be": [
+      51
+    ],
+    "reframed": [
+      52
+    ],
+    "as": [
+      53
+    ],
+    "an": [
+      54
+    ],
+    "enabling,": [
+      55
+    ],
+    "cross-cutting": [
+      56
+    ],
+    "issue": [
+      57
+    ],
+    "within": [
+      58
+    ],
+    "the": [
+      59
+    ],
+    "sustainable": [
+      60
+    ],
+    "development": [
+      61
+    ],
+    "framework.": [
+      62
+    ]
+  },
+  "counts_by_year": [
+    {
+      "year": 2026,
+      "cited_by_count": 198
+    },
+    {
+      "year": 2025,
+      "cited_by_count": 383
+    },
+    {
+      "year": 2024,
+      "cited_by_count": 354
+    },
+    {
+      "year": 2023,
+      "cited_by_count": 279
+    },
+    {
+      "year": 2022,
+      "cited_by_count": 224
+    },
+    {
+      "year": 2021,
+      "cited_by_count": 93
+    },
+    {
+      "year": 2018,
+      "cited_by_count": 1
+    }
+  ],
+  "updated_date": "2026-07-06T08:01:05.025921",
+  "created_date": "2025-10-10T00:00:00"
+}

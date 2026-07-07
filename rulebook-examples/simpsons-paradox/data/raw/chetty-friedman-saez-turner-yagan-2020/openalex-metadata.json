@@ -1,0 +1,1199 @@
+{
+  "id": "https://openalex.org/W3140142950",
+  "doi": "https://doi.org/10.1111/soc4.12884",
+  "title": "Is America coming apart? Socioeconomic segregation in neighborhoods, schools, workplaces, and social networks, 1970\u20132020",
+  "display_name": "Is America coming apart? Socioeconomic segregation in neighborhoods, schools, workplaces, and social networks, 1970\u20132020",
+  "relevance_score": 87.333496,
+  "publication_year": 2021,
+  "publication_date": "2021-04-07",
+  "ids": {
+    "openalex": "https://openalex.org/W3140142950",
+    "doi": "https://doi.org/10.1111/soc4.12884",
+    "mag": "3140142950"
+  },
+  "language": "en",
+  "primary_location": {
+    "id": "doi:10.1111/soc4.12884",
+    "is_oa": true,
+    "landing_page_url": "https://doi.org/10.1111/soc4.12884",
+    "pdf_url": "https://onlinelibrary.wiley.com/doi/pdfdirect/10.1111/soc4.12884",
+    "source": {
+      "id": "https://openalex.org/S100176667",
+      "display_name": "Sociology Compass",
+      "issn_l": "1751-9020",
+      "issn": [
+        "1751-9020"
+      ],
+      "is_oa": false,
+      "is_in_doaj": false,
+      "is_core": true,
+      "host_organization": "https://openalex.org/P4310320595",
+      "host_organization_name": "Wiley",
+      "host_organization_lineage": [
+        "https://openalex.org/P4310320595"
+      ],
+      "host_organization_lineage_names": [
+        "Wiley"
+      ],
+      "type": "journal"
+    },
+    "license": "cc-by-nc",
+    "license_id": "https://openalex.org/licenses/cc-by-nc",
+    "version": "publishedVersion",
+    "is_accepted": true,
+    "is_published": true,
+    "raw_source_name": "Sociology Compass",
+    "raw_type": "journal-article"
+  },
+  "type": "article",
+  "indexed_in": [
+    "crossref"
+  ],
+  "open_access": {
+    "is_oa": true,
+    "oa_status": "hybrid",
+    "oa_url": "https://onlinelibrary.wiley.com/doi/pdfdirect/10.1111/soc4.12884",
+    "any_repository_has_fulltext": false
+  },
+  "authorships": [
+    {
+      "author_position": "first",
+      "author": {
+        "id": "https://openalex.org/A5000824901",
+        "display_name": "Jonathan Mijs",
+        "orcid": "https://orcid.org/0000-0002-7895-0028"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I2801851002",
+          "display_name": "Harvard University Press",
+          "ror": "https://ror.org/006v7bf86",
+          "country_code": "US",
+          "type": "other",
+          "lineage": [
+            "https://openalex.org/I136199984",
+            "https://openalex.org/I2801851002"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I913958620",
+          "display_name": "Erasmus University Rotterdam",
+          "ror": "https://ror.org/057w15z03",
+          "country_code": "NL",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I913958620"
+          ]
+        }
+      ],
+      "countries": [
+        "NL",
+        "US"
+      ],
+      "is_corresponding": true,
+      "raw_author_name": "Jonathan J. B. Mijs",
+      "raw_affiliation_strings": [
+        "Department of Public Administration and Sociology Erasmus University Rotterdam  Rotterdam The Netherlands",
+        "Department of Sociology Harvard University  Cambridge Massachusetts USA",
+        "Department of Sociology, Harvard University, Cambridge, Massachusetts, USA",
+        "Department of Public Administration and Sociology, Erasmus University Rotterdam, Rotterdam, The Netherlands"
+      ],
+      "raw_orcid": "https://orcid.org/0000-0002-7895-0028",
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Department of Public Administration and Sociology Erasmus University Rotterdam  Rotterdam The Netherlands",
+          "institution_ids": [
+            "https://openalex.org/I913958620"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Department of Sociology Harvard University  Cambridge Massachusetts USA",
+          "institution_ids": [
+            "https://openalex.org/I2801851002"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Department of Sociology, Harvard University, Cambridge, Massachusetts, USA",
+          "institution_ids": [
+            "https://openalex.org/I2801851002"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Department of Public Administration and Sociology, Erasmus University Rotterdam, Rotterdam, The Netherlands",
+          "institution_ids": [
+            "https://openalex.org/I913958620"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "last",
+      "author": {
+        "id": "https://openalex.org/A5091488720",
+        "display_name": "Elizabeth Roe",
+        "orcid": "https://orcid.org/0000-0002-3904-4751"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I1316535847",
+          "display_name": "Beth Israel Deaconess Medical Center",
+          "ror": "https://ror.org/04drvxt59",
+          "country_code": "US",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I1316535847"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I2801851002",
+          "display_name": "Harvard University Press",
+          "ror": "https://ror.org/006v7bf86",
+          "country_code": "US",
+          "type": "other",
+          "lineage": [
+            "https://openalex.org/I136199984",
+            "https://openalex.org/I2801851002"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I4210162526",
+          "display_name": "Deaconess Hospital",
+          "ror": "https://ror.org/05vtzqy31",
+          "country_code": "US",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I4210162526"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Elizabeth L. Roe",
+      "raw_affiliation_strings": [
+        "Department of Sociology Harvard University  Cambridge Massachusetts USA",
+        "Richard A. and Susan F. Smith Center for Outcomes Research in Cardiology Beth Israel Deaconess Medical Center  Boston Massachusetts USA",
+        "Richard A. and Susan F. Smith Center for Outcomes Research in Cardiology, Beth Israel Deaconess Medical Center, Boston, Massachusetts, USA",
+        "Department of Sociology, Harvard University, Cambridge, Massachusetts, USA"
+      ],
+      "raw_orcid": "https://orcid.org/0000-0002-3904-4751",
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Department of Sociology Harvard University  Cambridge Massachusetts USA",
+          "institution_ids": [
+            "https://openalex.org/I2801851002"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Richard A. and Susan F. Smith Center for Outcomes Research in Cardiology Beth Israel Deaconess Medical Center  Boston Massachusetts USA",
+          "institution_ids": [
+            "https://openalex.org/I4210162526"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Richard A. and Susan F. Smith Center for Outcomes Research in Cardiology, Beth Israel Deaconess Medical Center, Boston, Massachusetts, USA",
+          "institution_ids": [
+            "https://openalex.org/I4210162526",
+            "https://openalex.org/I1316535847"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Department of Sociology, Harvard University, Cambridge, Massachusetts, USA",
+          "institution_ids": [
+            "https://openalex.org/I2801851002"
+          ]
+        }
+      ]
+    }
+  ],
+  "institutions": [],
+  "countries_distinct_count": 2,
+  "institutions_distinct_count": 4,
+  "corresponding_author_ids": [
+    "https://openalex.org/A5000824901"
+  ],
+  "corresponding_institution_ids": [
+    "https://openalex.org/I2801851002",
+    "https://openalex.org/I913958620"
+  ],
+  "apc_list": {
+    "value": 3040,
+    "currency": "USD",
+    "value_usd": 3040
+  },
+  "apc_paid": {
+    "value": 3040,
+    "currency": "USD",
+    "value_usd": 3040
+  },
+  "fwci": 16.2016,
+  "has_fulltext": true,
+  "cited_by_count": 90,
+  "citation_normalized_percentile": {
+    "value": 0.99055579,
+    "is_in_top_1_percent": true,
+    "is_in_top_10_percent": true
+  },
+  "cited_by_percentile_year": {
+    "min": 95,
+    "max": 100
+  },
+  "biblio": {
+    "volume": "15",
+    "issue": "6",
+    "first_page": null,
+    "last_page": null
+  },
+  "is_retracted": false,
+  "is_paratext": false,
+  "is_xpac": false,
+  "primary_topic": {
+    "id": "https://openalex.org/T11645",
+    "display_name": "Urban, Neighborhood, and Segregation Studies",
+    "score": 0.9994000196456909,
+    "subfield": {
+      "id": "https://openalex.org/subfields/3312",
+      "display_name": "Sociology and Political Science"
+    },
+    "field": {
+      "id": "https://openalex.org/fields/33",
+      "display_name": "Social Sciences"
+    },
+    "domain": {
+      "id": "https://openalex.org/domains/2",
+      "display_name": "Social Sciences"
+    }
+  },
+  "topics": [
+    {
+      "id": "https://openalex.org/T11645",
+      "display_name": "Urban, Neighborhood, and Segregation Studies",
+      "score": 0.9994000196456909,
+      "subfield": {
+        "id": "https://openalex.org/subfields/3312",
+        "display_name": "Sociology and Political Science"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/33",
+        "display_name": "Social Sciences"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/2",
+        "display_name": "Social Sciences"
+      }
+    },
+    {
+      "id": "https://openalex.org/T10674",
+      "display_name": "School Choice and Performance",
+      "score": 0.9966999888420105,
+      "subfield": {
+        "id": "https://openalex.org/subfields/3304",
+        "display_name": "Education"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/33",
+        "display_name": "Social Sciences"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/2",
+        "display_name": "Social Sciences"
+      }
+    },
+    {
+      "id": "https://openalex.org/T12088",
+      "display_name": "Intergenerational and Educational Inequality Studies",
+      "score": 0.9959999918937683,
+      "subfield": {
+        "id": "https://openalex.org/subfields/3312",
+        "display_name": "Sociology and Political Science"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/33",
+        "display_name": "Social Sciences"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/2",
+        "display_name": "Social Sciences"
+      }
+    }
+  ],
+  "keywords": [
+    {
+      "id": "https://openalex.org/keywords/socioeconomic-status",
+      "display_name": "Socioeconomic status",
+      "score": 0.7525396943092346
+    },
+    {
+      "id": "https://openalex.org/keywords/scholarship",
+      "display_name": "Scholarship",
+      "score": 0.7062687873840332
+    },
+    {
+      "id": "https://openalex.org/keywords/inequality",
+      "display_name": "Inequality",
+      "score": 0.611318051815033
+    },
+    {
+      "id": "https://openalex.org/keywords/friendship",
+      "display_name": "Friendship",
+      "score": 0.5705222487449646
+    },
+    {
+      "id": "https://openalex.org/keywords/sociology",
+      "display_name": "Sociology",
+      "score": 0.567684531211853
+    },
+    {
+      "id": "https://openalex.org/keywords/economic-inequality",
+      "display_name": "Economic inequality",
+      "score": 0.5671302080154419
+    },
+    {
+      "id": "https://openalex.org/keywords/politics",
+      "display_name": "Politics",
+      "score": 0.5285407900810242
+    },
+    {
+      "id": "https://openalex.org/keywords/social-inequality",
+      "display_name": "Social inequality",
+      "score": 0.5148395895957947
+    },
+    {
+      "id": "https://openalex.org/keywords/demographic-economics",
+      "display_name": "Demographic economics",
+      "score": 0.46535593271255493
+    },
+    {
+      "id": "https://openalex.org/keywords/economic-growth",
+      "display_name": "Economic growth",
+      "score": 0.37019917368888855
+    },
+    {
+      "id": "https://openalex.org/keywords/political-science",
+      "display_name": "Political science",
+      "score": 0.30190566182136536
+    },
+    {
+      "id": "https://openalex.org/keywords/social-science",
+      "display_name": "Social science",
+      "score": 0.2587287425994873
+    },
+    {
+      "id": "https://openalex.org/keywords/economics",
+      "display_name": "Economics",
+      "score": 0.23739668726921082
+    },
+    {
+      "id": "https://openalex.org/keywords/demography",
+      "display_name": "Demography",
+      "score": 0.13082396984100342
+    },
+    {
+      "id": "https://openalex.org/keywords/population",
+      "display_name": "Population",
+      "score": 0.12235870957374573
+    },
+    {
+      "id": "https://openalex.org/keywords/law",
+      "display_name": "Law",
+      "score": 0.09878548979759216
+    }
+  ],
+  "concepts": [
+    {
+      "id": "https://openalex.org/C147077947",
+      "wikidata": "https://www.wikidata.org/wiki/Q1515895",
+      "display_name": "Socioeconomic status",
+      "level": 3,
+      "score": 0.7525396943092346
+    },
+    {
+      "id": "https://openalex.org/C2778061430",
+      "wikidata": "https://www.wikidata.org/wiki/Q188823",
+      "display_name": "Scholarship",
+      "level": 2,
+      "score": 0.7062687873840332
+    },
+    {
+      "id": "https://openalex.org/C45555294",
+      "wikidata": "https://www.wikidata.org/wiki/Q28113351",
+      "display_name": "Inequality",
+      "level": 2,
+      "score": 0.611318051815033
+    },
+    {
+      "id": "https://openalex.org/C2778736484",
+      "wikidata": "https://www.wikidata.org/wiki/Q491",
+      "display_name": "Friendship",
+      "level": 2,
+      "score": 0.5705222487449646
+    },
+    {
+      "id": "https://openalex.org/C144024400",
+      "wikidata": "https://www.wikidata.org/wiki/Q21201",
+      "display_name": "Sociology",
+      "level": 0,
+      "score": 0.567684531211853
+    },
+    {
+      "id": "https://openalex.org/C513380476",
+      "wikidata": "https://www.wikidata.org/wiki/Q5055020",
+      "display_name": "Economic inequality",
+      "level": 3,
+      "score": 0.5671302080154419
+    },
+    {
+      "id": "https://openalex.org/C94625758",
+      "wikidata": "https://www.wikidata.org/wiki/Q7163",
+      "display_name": "Politics",
+      "level": 2,
+      "score": 0.5285407900810242
+    },
+    {
+      "id": "https://openalex.org/C165148211",
+      "wikidata": "https://www.wikidata.org/wiki/Q5431887",
+      "display_name": "Social inequality",
+      "level": 3,
+      "score": 0.5148395895957947
+    },
+    {
+      "id": "https://openalex.org/C4249254",
+      "wikidata": "https://www.wikidata.org/wiki/Q3044431",
+      "display_name": "Demographic economics",
+      "level": 1,
+      "score": 0.46535593271255493
+    },
+    {
+      "id": "https://openalex.org/C50522688",
+      "wikidata": "https://www.wikidata.org/wiki/Q189833",
+      "display_name": "Economic growth",
+      "level": 1,
+      "score": 0.37019917368888855
+    },
+    {
+      "id": "https://openalex.org/C17744445",
+      "wikidata": "https://www.wikidata.org/wiki/Q36442",
+      "display_name": "Political science",
+      "level": 0,
+      "score": 0.30190566182136536
+    },
+    {
+      "id": "https://openalex.org/C36289849",
+      "wikidata": "https://www.wikidata.org/wiki/Q34749",
+      "display_name": "Social science",
+      "level": 1,
+      "score": 0.2587287425994873
+    },
+    {
+      "id": "https://openalex.org/C162324750",
+      "wikidata": "https://www.wikidata.org/wiki/Q8134",
+      "display_name": "Economics",
+      "level": 0,
+      "score": 0.23739668726921082
+    },
+    {
+      "id": "https://openalex.org/C149923435",
+      "wikidata": "https://www.wikidata.org/wiki/Q37732",
+      "display_name": "Demography",
+      "level": 1,
+      "score": 0.13082396984100342
+    },
+    {
+      "id": "https://openalex.org/C2908647359",
+      "wikidata": "https://www.wikidata.org/wiki/Q2625603",
+      "display_name": "Population",
+      "level": 2,
+      "score": 0.12235870957374573
+    },
+    {
+      "id": "https://openalex.org/C199539241",
+      "wikidata": "https://www.wikidata.org/wiki/Q7748",
+      "display_name": "Law",
+      "level": 1,
+      "score": 0.09878548979759216
+    },
+    {
+      "id": "https://openalex.org/C33923547",
+      "wikidata": "https://www.wikidata.org/wiki/Q395",
+      "display_name": "Mathematics",
+      "level": 0,
+      "score": 0.0
+    },
+    {
+      "id": "https://openalex.org/C134306372",
+      "wikidata": "https://www.wikidata.org/wiki/Q7754",
+      "display_name": "Mathematical analysis",
+      "level": 1,
+      "score": 0.0
+    }
+  ],
+  "mesh": [],
+  "locations_count": 2,
+  "locations": [
+    {
+      "id": "doi:10.1111/soc4.12884",
+      "is_oa": true,
+      "landing_page_url": "https://doi.org/10.1111/soc4.12884",
+      "pdf_url": "https://onlinelibrary.wiley.com/doi/pdfdirect/10.1111/soc4.12884",
+      "source": {
+        "id": "https://openalex.org/S100176667",
+        "display_name": "Sociology Compass",
+        "issn_l": "1751-9020",
+        "issn": [
+          "1751-9020"
+        ],
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": true,
+        "host_organization": "https://openalex.org/P4310320595",
+        "host_organization_name": "Wiley",
+        "host_organization_lineage": [
+          "https://openalex.org/P4310320595"
+        ],
+        "host_organization_lineage_names": [
+          "Wiley"
+        ],
+        "type": "journal"
+      },
+      "license": "cc-by-nc",
+      "license_id": "https://openalex.org/licenses/cc-by-nc",
+      "version": "publishedVersion",
+      "is_accepted": true,
+      "is_published": true,
+      "raw_source_name": "Sociology Compass",
+      "raw_type": "journal-article"
+    },
+    {
+      "id": "pmh:oai:pure.eur.nl:openaire_cris_publications/1e274e4a-0a43-41ea-8408-db4b3a47eb18",
+      "is_oa": false,
+      "landing_page_url": "https://pure.eur.nl/en/publications/1e274e4a-0a43-41ea-8408-db4b3a47eb18",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4306401266",
+        "display_name": "EUR Research Repository (Erasmus University Rotterdam)",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I913958620",
+        "host_organization_name": "Erasmus University Rotterdam",
+        "host_organization_lineage": [
+          "https://openalex.org/I913958620"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "publishedVersion",
+      "is_accepted": true,
+      "is_published": true,
+      "raw_source_name": "Mijs, J J B & Roe, E L 2021, 'Is America coming apart? Socioeconomic segregation in neighborhoods, schools, workplaces, and social networks, 1970\u20132020', Sociology Compass, vol. 15, no. 6, e12884. https://doi.org/10.1111/soc4.12884",
+      "raw_type": "info:eu-repo/semantics/article"
+    }
+  ],
+  "best_oa_location": {
+    "id": "doi:10.1111/soc4.12884",
+    "is_oa": true,
+    "landing_page_url": "https://doi.org/10.1111/soc4.12884",
+    "pdf_url": "https://onlinelibrary.wiley.com/doi/pdfdirect/10.1111/soc4.12884",
+    "source": {
+      "id": "https://openalex.org/S100176667",
+      "display_name": "Sociology Compass",
+      "issn_l": "1751-9020",
+      "issn": [
+        "1751-9020"
+      ],
+      "is_oa": false,
+      "is_in_doaj": false,
+      "is_core": true,
+      "host_organization": "https://openalex.org/P4310320595",
+      "host_organization_name": "Wiley",
+      "host_organization_lineage": [
+        "https://openalex.org/P4310320595"
+      ],
+      "host_organization_lineage_names": [
+        "Wiley"
+      ],
+      "type": "journal"
+    },
+    "license": "cc-by-nc",
+    "license_id": "https://openalex.org/licenses/cc-by-nc",
+    "version": "publishedVersion",
+    "is_accepted": true,
+    "is_published": true,
+    "raw_source_name": "Sociology Compass",
+    "raw_type": "journal-article"
+  },
+  "sustainable_development_goals": [
+    {
+      "id": "https://metadata.un.org/sdg/1",
+      "display_name": "No poverty",
+      "score": 0.7699999809265137
+    }
+  ],
+  "awards": [],
+  "funders": [
+    {
+      "id": "https://openalex.org/F4320309622",
+      "display_name": "Harvard University",
+      "ror": "https://ror.org/03vek6s52"
+    }
+  ],
+  "has_content": {
+    "grobid_xml": false,
+    "pdf": true
+  },
+  "content_urls": {
+    "pdf": "https://content.openalex.org/works/W3140142950.pdf"
+  },
+  "referenced_works_count": 116,
+  "referenced_works": [
+    "https://openalex.org/W298734231",
+    "https://openalex.org/W587157628",
+    "https://openalex.org/W624573107",
+    "https://openalex.org/W1428138109",
+    "https://openalex.org/W1483776474",
+    "https://openalex.org/W1515154043",
+    "https://openalex.org/W1532170681",
+    "https://openalex.org/W1544736791",
+    "https://openalex.org/W1545256310",
+    "https://openalex.org/W1547744861",
+    "https://openalex.org/W1548714850",
+    "https://openalex.org/W1553084829",
+    "https://openalex.org/W1561264382",
+    "https://openalex.org/W1584692350",
+    "https://openalex.org/W1756943006",
+    "https://openalex.org/W1982087261",
+    "https://openalex.org/W1993173565",
+    "https://openalex.org/W2004200931",
+    "https://openalex.org/W2011493602",
+    "https://openalex.org/W2014298777",
+    "https://openalex.org/W2020374404",
+    "https://openalex.org/W2025132111",
+    "https://openalex.org/W2025539815",
+    "https://openalex.org/W2030014252",
+    "https://openalex.org/W2093929429",
+    "https://openalex.org/W2100052779",
+    "https://openalex.org/W2100864092",
+    "https://openalex.org/W2104117291",
+    "https://openalex.org/W2106383918",
+    "https://openalex.org/W2109733935",
+    "https://openalex.org/W2115499712",
+    "https://openalex.org/W2122216841",
+    "https://openalex.org/W2124749854",
+    "https://openalex.org/W2128473601",
+    "https://openalex.org/W2129197979",
+    "https://openalex.org/W2129450259",
+    "https://openalex.org/W2130354913",
+    "https://openalex.org/W2131782296",
+    "https://openalex.org/W2133614211",
+    "https://openalex.org/W2133875312",
+    "https://openalex.org/W2137265810",
+    "https://openalex.org/W2143846756",
+    "https://openalex.org/W2145790315",
+    "https://openalex.org/W2146057620",
+    "https://openalex.org/W2150840957",
+    "https://openalex.org/W2151589159",
+    "https://openalex.org/W2151796354",
+    "https://openalex.org/W2153706962",
+    "https://openalex.org/W2157471356",
+    "https://openalex.org/W2160420871",
+    "https://openalex.org/W2167251216",
+    "https://openalex.org/W2170694647",
+    "https://openalex.org/W2183239052",
+    "https://openalex.org/W2188049814",
+    "https://openalex.org/W2189189882",
+    "https://openalex.org/W2195136954",
+    "https://openalex.org/W2270988321",
+    "https://openalex.org/W2275386377",
+    "https://openalex.org/W2278875620",
+    "https://openalex.org/W2283724848",
+    "https://openalex.org/W2314001648",
+    "https://openalex.org/W2335604361",
+    "https://openalex.org/W2342541864",
+    "https://openalex.org/W2384641823",
+    "https://openalex.org/W2414236374",
+    "https://openalex.org/W2462206443",
+    "https://openalex.org/W2464471576",
+    "https://openalex.org/W2481607471",
+    "https://openalex.org/W2556556396",
+    "https://openalex.org/W2562670863",
+    "https://openalex.org/W2576856875",
+    "https://openalex.org/W2579438956",
+    "https://openalex.org/W2619335810",
+    "https://openalex.org/W2729463998",
+    "https://openalex.org/W2739137144",
+    "https://openalex.org/W2743817073",
+    "https://openalex.org/W2762801800",
+    "https://openalex.org/W2767736630",
+    "https://openalex.org/W2770891216",
+    "https://openalex.org/W2793461726",
+    "https://openalex.org/W2813703984",
+    "https://openalex.org/W2895830303",
+    "https://openalex.org/W2895945674",
+    "https://openalex.org/W2914274646",
+    "https://openalex.org/W2945987857",
+    "https://openalex.org/W2946013779",
+    "https://openalex.org/W2948075708",
+    "https://openalex.org/W2950036706",
+    "https://openalex.org/W2950201790",
+    "https://openalex.org/W2973136925",
+    "https://openalex.org/W3006007725",
+    "https://openalex.org/W3007914569",
+    "https://openalex.org/W3009834725",
+    "https://openalex.org/W3016010946",
+    "https://openalex.org/W3023525046",
+    "https://openalex.org/W3108624252",
+    "https://openalex.org/W3115798628",
+    "https://openalex.org/W3119775080",
+    "https://openalex.org/W3122258882",
+    "https://openalex.org/W3122340468",
+    "https://openalex.org/W3124401164",
+    "https://openalex.org/W3125541162",
+    "https://openalex.org/W3134662579",
+    "https://openalex.org/W3159501940",
+    "https://openalex.org/W3217475152",
+    "https://openalex.org/W4229573252",
+    "https://openalex.org/W4236627622",
+    "https://openalex.org/W4237029207",
+    "https://openalex.org/W4238550665",
+    "https://openalex.org/W4242161550",
+    "https://openalex.org/W4247009129",
+    "https://openalex.org/W4248515765",
+    "https://openalex.org/W4250171607",
+    "https://openalex.org/W4294862317",
+    "https://openalex.org/W6633516698",
+    "https://openalex.org/W6756411073"
+  ],
+  "related_works": [
+    "https://openalex.org/W561612769",
+    "https://openalex.org/W1964514847",
+    "https://openalex.org/W3045500699",
+    "https://openalex.org/W3207110656",
+    "https://openalex.org/W3151629863",
+    "https://openalex.org/W2352101273",
+    "https://openalex.org/W2777808200",
+    "https://openalex.org/W2088927579",
+    "https://openalex.org/W2795542530",
+    "https://openalex.org/W4212966703"
+  ],
+  "abstract_inverted_index": {
+    "Abstract": [
+      0
+    ],
+    "As": [
+      1
+    ],
+    "income": [
+      2,
+      86
+    ],
+    "inequality": [
+      3,
+      75,
+      87
+    ],
+    "in": [
+      4,
+      56,
+      62,
+      120
+    ],
+    "the": [
+      5,
+      16,
+      21,
+      35,
+      38,
+      66,
+      114,
+      130,
+      147
+    ],
+    "United": [
+      6,
+      152
+    ],
+    "States": [
+      7,
+      153
+    ],
+    "has": [
+      8
+    ],
+    "reached": [
+      9
+    ],
+    "an": [
+      10
+    ],
+    "all\u2010time": [
+      11
+    ],
+    "high,": [
+      12
+    ],
+    "commentators": [
+      13
+    ],
+    "from": [
+      14
+    ],
+    "across": [
+      15,
+      95
+    ],
+    "political": [
+      17
+    ],
+    "spectrum": [
+      18
+    ],
+    "warn": [
+      19
+    ],
+    "about": [
+      20
+    ],
+    "social": [
+      22,
+      78,
+      149
+    ],
+    "implications": [
+      23
+    ],
+    "of": [
+      24,
+      53,
+      72,
+      85
+    ],
+    "these": [
+      25
+    ],
+    "economic": [
+      26,
+      74
+    ],
+    "changes.": [
+      27
+    ],
+    "America,": [
+      28
+    ],
+    "they": [
+      29
+    ],
+    "fear,": [
+      30
+    ],
+    "is": [
+      31,
+      154
+    ],
+    "\u201ccoming": [
+      32
+    ],
+    "apart\u201d": [
+      33
+    ],
+    "as": [
+      34
+    ],
+    "gap": [
+      36
+    ],
+    "between": [
+      37
+    ],
+    "rich": [
+      39,
+      132
+    ],
+    "and": [
+      40,
+      60,
+      99,
+      107,
+      110,
+      113,
+      133,
+      144
+    ],
+    "poor": [
+      41,
+      134
+    ],
+    "grows": [
+      42
+    ],
+    "into": [
+      43
+    ],
+    "a": [
+      44,
+      50,
+      155
+    ],
+    "fault": [
+      45
+    ],
+    "line.": [
+      46
+    ],
+    "This": [
+      47
+    ],
+    "paper": [
+      48
+    ],
+    "provides": [
+      49
+    ],
+    "comprehensive": [
+      51
+    ],
+    "review": [
+      52,
+      122
+    ],
+    "empirical": [
+      54
+    ],
+    "scholarship": [
+      55
+    ],
+    "sociology,": [
+      57
+    ],
+    "education,": [
+      58,
+      109
+    ],
+    "demography,": [
+      59
+    ],
+    "economics": [
+      61
+    ],
+    "order": [
+      63
+    ],
+    "to": [
+      64,
+      125,
+      129,
+      140,
+      145
+    ],
+    "address": [
+      65
+    ],
+    "question:": [
+      67
+    ],
+    "How": [
+      68
+    ],
+    "have": [
+      69,
+      88
+    ],
+    "five": [
+      70
+    ],
+    "decades": [
+      71
+    ],
+    "growing": [
+      73,
+      83
+    ],
+    "shaped": [
+      76
+    ],
+    "America's": [
+      77
+    ],
+    "landscape?": [
+      79
+    ],
+    "We": [
+      80
+    ],
+    "find": [
+      81
+    ],
+    "that": [
+      82
+    ],
+    "levels": [
+      84
+    ],
+    "been": [
+      89
+    ],
+    "accompanied": [
+      90
+    ],
+    "by": [
+      91
+    ],
+    "increasing": [
+      92
+    ],
+    "socioeconomic": [
+      93
+    ],
+    "segregation": [
+      94
+    ],
+    "(1)": [
+      96
+    ],
+    "friendship": [
+      97
+    ],
+    "networks": [
+      98
+    ],
+    "romantic": [
+      100
+    ],
+    "partners,": [
+      101
+    ],
+    "(2)": [
+      102
+    ],
+    "residential": [
+      103
+    ],
+    "neighborhoods,": [
+      104
+    ],
+    "(3)": [
+      105
+    ],
+    "K\u201012": [
+      106
+    ],
+    "university": [
+      108
+    ],
+    "(4)": [
+      111
+    ],
+    "workplaces": [
+      112
+    ],
+    "labor": [
+      115
+    ],
+    "market.": [
+      116
+    ],
+    "The": [
+      117,
+      151
+    ],
+    "trends": [
+      118
+    ],
+    "documented": [
+      119
+    ],
+    "this": [
+      121
+    ],
+    "give": [
+      123
+    ],
+    "substance": [
+      124
+    ],
+    "commentators'": [
+      126
+    ],
+    "concerns:": [
+      127
+    ],
+    "compared": [
+      128
+    ],
+    "1970s,": [
+      131
+    ],
+    "Americans": [
+      135
+    ],
+    "today": [
+      136
+    ],
+    "are": [
+      137
+    ],
+    "less": [
+      138
+    ],
+    "likely": [
+      139
+    ],
+    "know": [
+      141
+    ],
+    "one": [
+      142
+    ],
+    "another": [
+      143
+    ],
+    "share": [
+      146
+    ],
+    "same": [
+      148
+    ],
+    "spaces.": [
+      150
+    ],
+    "nation": [
+      156
+    ],
+    "divided.": [
+      157
+    ]
+  },
+  "counts_by_year": [
+    {
+      "year": 2026,
+      "cited_by_count": 13
+    },
+    {
+      "year": 2025,
+      "cited_by_count": 32
+    },
+    {
+      "year": 2024,
+      "cited_by_count": 22
+    },
+    {
+      "year": 2023,
+      "cited_by_count": 13
+    },
+    {
+      "year": 2022,
+      "cited_by_count": 7
+    },
+    {
+      "year": 2021,
+      "cited_by_count": 3
+    }
+  ],
+  "updated_date": "2026-07-02T09:51:11.867554",
+  "created_date": "2025-10-10T00:00:00"
+}

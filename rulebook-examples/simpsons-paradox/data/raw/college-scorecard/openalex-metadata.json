@@ -1,0 +1,296 @@
+{
+  "id": "https://openalex.org/W2976658492",
+  "doi": "https://doi.org/10.1007/978-94-017-8905-9_300042",
+  "title": "American Higher Education",
+  "display_name": "American Higher Education",
+  "relevance_score": 77.83778,
+  "publication_year": 2020,
+  "publication_date": "2020-01-01",
+  "ids": {
+    "openalex": "https://openalex.org/W2976658492",
+    "doi": "https://doi.org/10.1007/978-94-017-8905-9_300042",
+    "mag": "2976658492"
+  },
+  "language": "en",
+  "primary_location": {
+    "id": "doi:10.1007/978-94-017-8905-9_300042",
+    "is_oa": false,
+    "landing_page_url": "https://doi.org/10.1007/978-94-017-8905-9_300042",
+    "pdf_url": null,
+    "source": null,
+    "license": null,
+    "license_id": null,
+    "version": "publishedVersion",
+    "is_accepted": true,
+    "is_published": true,
+    "raw_source_name": "The International Encyclopedia of Higher Education Systems and Institutions",
+    "raw_type": "book-chapter"
+  },
+  "type": "book-chapter",
+  "indexed_in": [
+    "crossref"
+  ],
+  "open_access": {
+    "is_oa": true,
+    "oa_status": "green",
+    "oa_url": "https://scholarworks.iu.edu/journals/index.php/iusbgrj/article/download/29693/34258",
+    "any_repository_has_fulltext": true
+  },
+  "authorships": [
+    {
+      "author_position": "first",
+      "author": {
+        "id": null,
+        "display_name": "Garcia, Francisco J.",
+        "orcid": null
+      },
+      "institutions": [],
+      "countries": [],
+      "is_corresponding": true,
+      "raw_author_name": "Garcia, Francisco J.",
+      "raw_affiliation_strings": [],
+      "raw_orcid": null,
+      "affiliations": []
+    }
+  ],
+  "institutions": [],
+  "countries_distinct_count": 0,
+  "institutions_distinct_count": 0,
+  "corresponding_author_ids": [],
+  "corresponding_institution_ids": [],
+  "apc_list": null,
+  "apc_paid": null,
+  "fwci": 5.666,
+  "has_fulltext": true,
+  "cited_by_count": 31,
+  "citation_normalized_percentile": {
+    "value": 0.95177862,
+    "is_in_top_1_percent": false,
+    "is_in_top_10_percent": true
+  },
+  "cited_by_percentile_year": {
+    "min": 89,
+    "max": 98
+  },
+  "biblio": {
+    "volume": null,
+    "issue": null,
+    "first_page": "128",
+    "last_page": "128"
+  },
+  "is_retracted": false,
+  "is_paratext": false,
+  "is_xpac": false,
+  "primary_topic": {
+    "id": "https://openalex.org/T10546",
+    "display_name": "Higher Education Governance and Development",
+    "score": 0.07639999687671661,
+    "subfield": {
+      "id": "https://openalex.org/subfields/3320",
+      "display_name": "Political Science and International Relations"
+    },
+    "field": {
+      "id": "https://openalex.org/fields/33",
+      "display_name": "Social Sciences"
+    },
+    "domain": {
+      "id": "https://openalex.org/domains/2",
+      "display_name": "Social Sciences"
+    }
+  },
+  "topics": [
+    {
+      "id": "https://openalex.org/T10546",
+      "display_name": "Higher Education Governance and Development",
+      "score": 0.07639999687671661,
+      "subfield": {
+        "id": "https://openalex.org/subfields/3320",
+        "display_name": "Political Science and International Relations"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/33",
+        "display_name": "Social Sciences"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/2",
+        "display_name": "Social Sciences"
+      }
+    }
+  ],
+  "keywords": [
+    {
+      "id": "https://openalex.org/keywords/mathematics-education",
+      "display_name": "Mathematics education",
+      "score": 0.3395487070083618
+    },
+    {
+      "id": "https://openalex.org/keywords/political-science",
+      "display_name": "Political science",
+      "score": 0.32710590958595276
+    },
+    {
+      "id": "https://openalex.org/keywords/psychology",
+      "display_name": "Psychology",
+      "score": 0.24791023135185242
+    }
+  ],
+  "concepts": [
+    {
+      "id": "https://openalex.org/C145420912",
+      "wikidata": "https://www.wikidata.org/wiki/Q853077",
+      "display_name": "Mathematics education",
+      "level": 1,
+      "score": 0.3395487070083618
+    },
+    {
+      "id": "https://openalex.org/C17744445",
+      "wikidata": "https://www.wikidata.org/wiki/Q36442",
+      "display_name": "Political science",
+      "level": 0,
+      "score": 0.32710590958595276
+    },
+    {
+      "id": "https://openalex.org/C15744967",
+      "wikidata": "https://www.wikidata.org/wiki/Q9418",
+      "display_name": "Psychology",
+      "level": 0,
+      "score": 0.24791023135185242
+    }
+  ],
+  "mesh": [],
+  "locations_count": 2,
+  "locations": [
+    {
+      "id": "doi:10.1007/978-94-017-8905-9_300042",
+      "is_oa": false,
+      "landing_page_url": "https://doi.org/10.1007/978-94-017-8905-9_300042",
+      "pdf_url": null,
+      "source": null,
+      "license": null,
+      "license_id": null,
+      "version": "publishedVersion",
+      "is_accepted": true,
+      "is_published": true,
+      "raw_source_name": "The International Encyclopedia of Higher Education Systems and Institutions",
+      "raw_type": "book-chapter"
+    },
+    {
+      "id": "pmh:oai:ojs.scholarworks.iu.edu:article/29693",
+      "is_oa": true,
+      "landing_page_url": "https://scholarworks.iu.edu/journals/index.php/iusbgrj/article/view/29693",
+      "pdf_url": "https://scholarworks.iu.edu/journals/index.php/iusbgrj/article/download/29693/34258",
+      "source": {
+        "id": "https://openalex.org/S4306402335",
+        "display_name": "Indiana Magazine of History (Indiana University)",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I592451",
+        "host_organization_name": "Indiana University",
+        "host_organization_lineage": [
+          "https://openalex.org/I592451"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": "cc-by",
+      "license_id": "https://openalex.org/licenses/cc-by",
+      "version": "submittedVersion",
+      "is_accepted": false,
+      "is_published": false,
+      "raw_source_name": "2373-8308",
+      "raw_type": "info:eu-repo/semantics/article"
+    }
+  ],
+  "best_oa_location": {
+    "id": "pmh:oai:ojs.scholarworks.iu.edu:article/29693",
+    "is_oa": true,
+    "landing_page_url": "https://scholarworks.iu.edu/journals/index.php/iusbgrj/article/view/29693",
+    "pdf_url": "https://scholarworks.iu.edu/journals/index.php/iusbgrj/article/download/29693/34258",
+    "source": {
+      "id": "https://openalex.org/S4306402335",
+      "display_name": "Indiana Magazine of History (Indiana University)",
+      "issn_l": null,
+      "issn": null,
+      "is_oa": false,
+      "is_in_doaj": false,
+      "is_core": false,
+      "host_organization": "https://openalex.org/I592451",
+      "host_organization_name": "Indiana University",
+      "host_organization_lineage": [
+        "https://openalex.org/I592451"
+      ],
+      "host_organization_lineage_names": [],
+      "type": "repository"
+    },
+    "license": "cc-by",
+    "license_id": "https://openalex.org/licenses/cc-by",
+    "version": "submittedVersion",
+    "is_accepted": false,
+    "is_published": false,
+    "raw_source_name": "2373-8308",
+    "raw_type": "info:eu-repo/semantics/article"
+  },
+  "sustainable_development_goals": [
+    {
+      "id": "https://metadata.un.org/sdg/4",
+      "display_name": "Quality Education",
+      "score": 0.4099999964237213
+    }
+  ],
+  "awards": [],
+  "funders": [],
+  "has_content": {
+    "pdf": true,
+    "grobid_xml": true
+  },
+  "content_urls": {
+    "pdf": "https://content.openalex.org/works/W2976658492.pdf",
+    "grobid_xml": "https://content.openalex.org/works/W2976658492.grobid-xml"
+  },
+  "referenced_works_count": 0,
+  "referenced_works": [],
+  "related_works": [
+    "https://openalex.org/W2899084033",
+    "https://openalex.org/W2748952813",
+    "https://openalex.org/W2955725829",
+    "https://openalex.org/W2949263084",
+    "https://openalex.org/W2743539335",
+    "https://openalex.org/W594353338",
+    "https://openalex.org/W2922049016",
+    "https://openalex.org/W2724734218",
+    "https://openalex.org/W4382466601",
+    "https://openalex.org/W2955504986"
+  ],
+  "abstract_inverted_index": null,
+  "counts_by_year": [
+    {
+      "year": 2022,
+      "cited_by_count": 2
+    },
+    {
+      "year": 2019,
+      "cited_by_count": 3
+    },
+    {
+      "year": 2017,
+      "cited_by_count": 1
+    },
+    {
+      "year": 2016,
+      "cited_by_count": 2
+    },
+    {
+      "year": 2014,
+      "cited_by_count": 1
+    },
+    {
+      "year": 2012,
+      "cited_by_count": 4
+    }
+  ],
+  "updated_date": "2026-07-02T09:51:11.867554",
+  "created_date": "2025-10-10T00:00:00"
+}

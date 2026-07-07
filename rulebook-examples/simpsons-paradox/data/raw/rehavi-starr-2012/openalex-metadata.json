@@ -1,0 +1,965 @@
+{
+  "id": "https://openalex.org/W3023101082",
+  "doi": "https://doi.org/10.1257/jep.34.2.68",
+  "title": "Race Discrimination: An Economic Perspective",
+  "display_name": "Race Discrimination: An Economic Perspective",
+  "relevance_score": 35.95383,
+  "publication_year": 2020,
+  "publication_date": "2020-05-01",
+  "ids": {
+    "openalex": "https://openalex.org/W3023101082",
+    "doi": "https://doi.org/10.1257/jep.34.2.68",
+    "mag": "3023101082"
+  },
+  "language": "en",
+  "primary_location": {
+    "id": "doi:10.1257/jep.34.2.68",
+    "is_oa": true,
+    "landing_page_url": "https://doi.org/10.1257/jep.34.2.68",
+    "pdf_url": "https://www.aeaweb.org/articles/pdf/doi/10.1257/jep.34.2.68",
+    "source": {
+      "id": "https://openalex.org/S72880728",
+      "display_name": "The Journal of Economic Perspectives",
+      "issn_l": "0895-3309",
+      "issn": [
+        "0895-3309",
+        "1944-7965"
+      ],
+      "is_oa": true,
+      "is_in_doaj": false,
+      "is_core": true,
+      "host_organization": "https://openalex.org/P4310315912",
+      "host_organization_name": "American Economic Association",
+      "host_organization_lineage": [
+        "https://openalex.org/P4310315912"
+      ],
+      "host_organization_lineage_names": [
+        "American Economic Association"
+      ],
+      "type": "journal"
+    },
+    "license": null,
+    "license_id": null,
+    "version": "publishedVersion",
+    "is_accepted": true,
+    "is_published": true,
+    "raw_source_name": "Journal of Economic Perspectives",
+    "raw_type": "journal-article"
+  },
+  "type": "article",
+  "indexed_in": [
+    "crossref"
+  ],
+  "open_access": {
+    "is_oa": true,
+    "oa_status": "diamond",
+    "oa_url": "https://www.aeaweb.org/articles/pdf/doi/10.1257/jep.34.2.68",
+    "any_repository_has_fulltext": false
+  },
+  "authorships": [
+    {
+      "author_position": "first",
+      "author": {
+        "id": "https://openalex.org/A5023869901",
+        "display_name": "Kevin Lang",
+        "orcid": "https://orcid.org/0000-0002-8497-1706"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I111088046",
+          "display_name": "Boston University",
+          "ror": "https://ror.org/05qwgg493",
+          "country_code": "US",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I111088046"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Kevin Lang",
+      "raw_affiliation_strings": [
+        "Kevin Lang is Professor of Economics, Boston University, Boston, Massachusetts"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Kevin Lang is Professor of Economics, Boston University, Boston, Massachusetts",
+          "institution_ids": [
+            "https://openalex.org/I111088046"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "last",
+      "author": {
+        "id": "https://openalex.org/A5071758519",
+        "display_name": "Ariella Kahn-Lang Spitzer",
+        "orcid": null
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I66531908",
+          "display_name": "Mathematica Policy Research",
+          "ror": "https://ror.org/02403vr89",
+          "country_code": "US",
+          "type": "facility",
+          "lineage": [
+            "https://openalex.org/I66531908"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Ariella Kahn-Lang Spitzer",
+      "raw_affiliation_strings": [
+        "Ariella Kahn-Lang Spitzer is a Human Services Researcher, Mathematica Policy Research, Cambridge, Massachusetts"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Ariella Kahn-Lang Spitzer is a Human Services Researcher, Mathematica Policy Research, Cambridge, Massachusetts",
+          "institution_ids": [
+            "https://openalex.org/I66531908"
+          ]
+        }
+      ]
+    }
+  ],
+  "institutions": [],
+  "countries_distinct_count": 1,
+  "institutions_distinct_count": 2,
+  "corresponding_author_ids": [],
+  "corresponding_institution_ids": [],
+  "apc_list": null,
+  "apc_paid": null,
+  "fwci": 37.8749,
+  "has_fulltext": true,
+  "cited_by_count": 220,
+  "citation_normalized_percentile": {
+    "value": 0.99721682,
+    "is_in_top_1_percent": true,
+    "is_in_top_10_percent": true
+  },
+  "cited_by_percentile_year": {
+    "min": 90,
+    "max": 100
+  },
+  "biblio": {
+    "volume": "34",
+    "issue": "2",
+    "first_page": "68",
+    "last_page": "89"
+  },
+  "is_retracted": false,
+  "is_paratext": false,
+  "is_xpac": false,
+  "primary_topic": {
+    "id": "https://openalex.org/T12970",
+    "display_name": "Names, Identity, and Discrimination Research",
+    "score": 0.9975000023841858,
+    "subfield": {
+      "id": "https://openalex.org/subfields/3312",
+      "display_name": "Sociology and Political Science"
+    },
+    "field": {
+      "id": "https://openalex.org/fields/33",
+      "display_name": "Social Sciences"
+    },
+    "domain": {
+      "id": "https://openalex.org/domains/2",
+      "display_name": "Social Sciences"
+    }
+  },
+  "topics": [
+    {
+      "id": "https://openalex.org/T12970",
+      "display_name": "Names, Identity, and Discrimination Research",
+      "score": 0.9975000023841858,
+      "subfield": {
+        "id": "https://openalex.org/subfields/3312",
+        "display_name": "Sociology and Political Science"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/33",
+        "display_name": "Social Sciences"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/2",
+        "display_name": "Social Sciences"
+      }
+    },
+    {
+      "id": "https://openalex.org/T11762",
+      "display_name": "Law, Economics, and Judicial Systems",
+      "score": 0.9835000038146973,
+      "subfield": {
+        "id": "https://openalex.org/subfields/2002",
+        "display_name": "Economics and Econometrics"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/20",
+        "display_name": "Economics, Econometrics and Finance"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/2",
+        "display_name": "Social Sciences"
+      }
+    },
+    {
+      "id": "https://openalex.org/T10208",
+      "display_name": "Labor market dynamics and wage inequality",
+      "score": 0.9753000140190125,
+      "subfield": {
+        "id": "https://openalex.org/subfields/2002",
+        "display_name": "Economics and Econometrics"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/20",
+        "display_name": "Economics, Econometrics and Finance"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/2",
+        "display_name": "Social Sciences"
+      }
+    }
+  ],
+  "keywords": [
+    {
+      "id": "https://openalex.org/keywords/statistical-discrimination",
+      "display_name": "Statistical discrimination",
+      "score": 0.949745774269104
+    },
+    {
+      "id": "https://openalex.org/keywords/race",
+      "display_name": "Race (biology)",
+      "score": 0.7649454474449158
+    },
+    {
+      "id": "https://openalex.org/keywords/perspective",
+      "display_name": "Perspective (graphical)",
+      "score": 0.7247021198272705
+    },
+    {
+      "id": "https://openalex.org/keywords/price-discrimination",
+      "display_name": "Price discrimination",
+      "score": 0.595055341720581
+    },
+    {
+      "id": "https://openalex.org/keywords/employment-discrimination",
+      "display_name": "Employment discrimination",
+      "score": 0.5873727798461914
+    },
+    {
+      "id": "https://openalex.org/keywords/economics",
+      "display_name": "Economics",
+      "score": 0.5228448510169983
+    },
+    {
+      "id": "https://openalex.org/keywords/positive-economics",
+      "display_name": "Positive economics",
+      "score": 0.49378570914268494
+    },
+    {
+      "id": "https://openalex.org/keywords/economic-justice",
+      "display_name": "Economic Justice",
+      "score": 0.48510468006134033
+    },
+    {
+      "id": "https://openalex.org/keywords/racism",
+      "display_name": "Racism",
+      "score": 0.481403112411499
+    },
+    {
+      "id": "https://openalex.org/keywords/criminology",
+      "display_name": "Criminology",
+      "score": 0.38658568263053894
+    },
+    {
+      "id": "https://openalex.org/keywords/public-economics",
+      "display_name": "Public economics",
+      "score": 0.32430562376976013
+    },
+    {
+      "id": "https://openalex.org/keywords/sociology",
+      "display_name": "Sociology",
+      "score": 0.3182964324951172
+    },
+    {
+      "id": "https://openalex.org/keywords/labour-economics",
+      "display_name": "Labour economics",
+      "score": 0.2555848956108093
+    },
+    {
+      "id": "https://openalex.org/keywords/political-science",
+      "display_name": "Political science",
+      "score": 0.2536042332649231
+    },
+    {
+      "id": "https://openalex.org/keywords/neoclassical-economics",
+      "display_name": "Neoclassical economics",
+      "score": 0.18518489599227905
+    },
+    {
+      "id": "https://openalex.org/keywords/law",
+      "display_name": "Law",
+      "score": 0.1661018431186676
+    },
+    {
+      "id": "https://openalex.org/keywords/microeconomics",
+      "display_name": "Microeconomics",
+      "score": 0.1460045874118805
+    },
+    {
+      "id": "https://openalex.org/keywords/computer-science",
+      "display_name": "Computer science",
+      "score": 0.07125386595726013
+    },
+    {
+      "id": "https://openalex.org/keywords/gender-studies",
+      "display_name": "Gender studies",
+      "score": 0.06537637114524841
+    },
+    {
+      "id": "https://openalex.org/keywords/artificial-intelligence",
+      "display_name": "Artificial intelligence",
+      "score": 0.06437653303146362
+    }
+  ],
+  "concepts": [
+    {
+      "id": "https://openalex.org/C2781437166",
+      "wikidata": "https://www.wikidata.org/wiki/Q7604391",
+      "display_name": "Statistical discrimination",
+      "level": 2,
+      "score": 0.949745774269104
+    },
+    {
+      "id": "https://openalex.org/C76509639",
+      "wikidata": "https://www.wikidata.org/wiki/Q918036",
+      "display_name": "Race (biology)",
+      "level": 2,
+      "score": 0.7649454474449158
+    },
+    {
+      "id": "https://openalex.org/C12713177",
+      "wikidata": "https://www.wikidata.org/wiki/Q1900281",
+      "display_name": "Perspective (graphical)",
+      "level": 2,
+      "score": 0.7247021198272705
+    },
+    {
+      "id": "https://openalex.org/C101472132",
+      "wikidata": "https://www.wikidata.org/wiki/Q835678",
+      "display_name": "Price discrimination",
+      "level": 2,
+      "score": 0.595055341720581
+    },
+    {
+      "id": "https://openalex.org/C2994519032",
+      "wikidata": "https://www.wikidata.org/wiki/Q2606784",
+      "display_name": "Employment discrimination",
+      "level": 2,
+      "score": 0.5873727798461914
+    },
+    {
+      "id": "https://openalex.org/C162324750",
+      "wikidata": "https://www.wikidata.org/wiki/Q8134",
+      "display_name": "Economics",
+      "level": 0,
+      "score": 0.5228448510169983
+    },
+    {
+      "id": "https://openalex.org/C118084267",
+      "wikidata": "https://www.wikidata.org/wiki/Q26110",
+      "display_name": "Positive economics",
+      "level": 1,
+      "score": 0.49378570914268494
+    },
+    {
+      "id": "https://openalex.org/C139621336",
+      "wikidata": "https://www.wikidata.org/wiki/Q3190382",
+      "display_name": "Economic Justice",
+      "level": 2,
+      "score": 0.48510468006134033
+    },
+    {
+      "id": "https://openalex.org/C139838865",
+      "wikidata": "https://www.wikidata.org/wiki/Q8461",
+      "display_name": "Racism",
+      "level": 2,
+      "score": 0.481403112411499
+    },
+    {
+      "id": "https://openalex.org/C73484699",
+      "wikidata": "https://www.wikidata.org/wiki/Q161733",
+      "display_name": "Criminology",
+      "level": 1,
+      "score": 0.38658568263053894
+    },
+    {
+      "id": "https://openalex.org/C100001284",
+      "wikidata": "https://www.wikidata.org/wiki/Q2248246",
+      "display_name": "Public economics",
+      "level": 1,
+      "score": 0.32430562376976013
+    },
+    {
+      "id": "https://openalex.org/C144024400",
+      "wikidata": "https://www.wikidata.org/wiki/Q21201",
+      "display_name": "Sociology",
+      "level": 0,
+      "score": 0.3182964324951172
+    },
+    {
+      "id": "https://openalex.org/C145236788",
+      "wikidata": "https://www.wikidata.org/wiki/Q28161",
+      "display_name": "Labour economics",
+      "level": 1,
+      "score": 0.2555848956108093
+    },
+    {
+      "id": "https://openalex.org/C17744445",
+      "wikidata": "https://www.wikidata.org/wiki/Q36442",
+      "display_name": "Political science",
+      "level": 0,
+      "score": 0.2536042332649231
+    },
+    {
+      "id": "https://openalex.org/C133425853",
+      "wikidata": "https://www.wikidata.org/wiki/Q60571",
+      "display_name": "Neoclassical economics",
+      "level": 1,
+      "score": 0.18518489599227905
+    },
+    {
+      "id": "https://openalex.org/C199539241",
+      "wikidata": "https://www.wikidata.org/wiki/Q7748",
+      "display_name": "Law",
+      "level": 1,
+      "score": 0.1661018431186676
+    },
+    {
+      "id": "https://openalex.org/C175444787",
+      "wikidata": "https://www.wikidata.org/wiki/Q39072",
+      "display_name": "Microeconomics",
+      "level": 1,
+      "score": 0.1460045874118805
+    },
+    {
+      "id": "https://openalex.org/C41008148",
+      "wikidata": "https://www.wikidata.org/wiki/Q21198",
+      "display_name": "Computer science",
+      "level": 0,
+      "score": 0.07125386595726013
+    },
+    {
+      "id": "https://openalex.org/C107993555",
+      "wikidata": "https://www.wikidata.org/wiki/Q1662673",
+      "display_name": "Gender studies",
+      "level": 1,
+      "score": 0.06537637114524841
+    },
+    {
+      "id": "https://openalex.org/C154945302",
+      "wikidata": "https://www.wikidata.org/wiki/Q11660",
+      "display_name": "Artificial intelligence",
+      "level": 1,
+      "score": 0.06437653303146362
+    }
+  ],
+  "mesh": [],
+  "locations_count": 3,
+  "locations": [
+    {
+      "id": "doi:10.1257/jep.34.2.68",
+      "is_oa": true,
+      "landing_page_url": "https://doi.org/10.1257/jep.34.2.68",
+      "pdf_url": "https://www.aeaweb.org/articles/pdf/doi/10.1257/jep.34.2.68",
+      "source": {
+        "id": "https://openalex.org/S72880728",
+        "display_name": "The Journal of Economic Perspectives",
+        "issn_l": "0895-3309",
+        "issn": [
+          "0895-3309",
+          "1944-7965"
+        ],
+        "is_oa": true,
+        "is_in_doaj": false,
+        "is_core": true,
+        "host_organization": "https://openalex.org/P4310315912",
+        "host_organization_name": "American Economic Association",
+        "host_organization_lineage": [
+          "https://openalex.org/P4310315912"
+        ],
+        "host_organization_lineage_names": [
+          "American Economic Association"
+        ],
+        "type": "journal"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "publishedVersion",
+      "is_accepted": true,
+      "is_published": true,
+      "raw_source_name": "Journal of Economic Perspectives",
+      "raw_type": "journal-article"
+    },
+    {
+      "id": "pmh:oai:RePEc:aea:jecper:v:34:y:2020:i:2:p:68-89",
+      "is_oa": false,
+      "landing_page_url": "https://www.aeaweb.org/doi/10.1257/jep.34.2.68",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4306401271",
+        "display_name": "RePEc: Research Papers in Economics",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I77793887",
+        "host_organization_name": "Federal Reserve Bank of St. Louis",
+        "host_organization_lineage": [
+          "https://openalex.org/I77793887"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "submittedVersion",
+      "is_accepted": false,
+      "is_published": false,
+      "raw_source_name": null,
+      "raw_type": "article"
+    },
+    {
+      "id": "pmh:oai:RePEc:mpr:mprres:7821adedb2e441ef85021895d6e2efdd",
+      "is_oa": false,
+      "landing_page_url": "https://www.aeaweb.org/articles?id=10.1257/jep.34.2.68",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4306401271",
+        "display_name": "RePEc: Research Papers in Economics",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I77793887",
+        "host_organization_name": "Federal Reserve Bank of St. Louis",
+        "host_organization_lineage": [
+          "https://openalex.org/I77793887"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "submittedVersion",
+      "is_accepted": false,
+      "is_published": false,
+      "raw_source_name": null,
+      "raw_type": "preprint"
+    }
+  ],
+  "best_oa_location": {
+    "id": "doi:10.1257/jep.34.2.68",
+    "is_oa": true,
+    "landing_page_url": "https://doi.org/10.1257/jep.34.2.68",
+    "pdf_url": "https://www.aeaweb.org/articles/pdf/doi/10.1257/jep.34.2.68",
+    "source": {
+      "id": "https://openalex.org/S72880728",
+      "display_name": "The Journal of Economic Perspectives",
+      "issn_l": "0895-3309",
+      "issn": [
+        "0895-3309",
+        "1944-7965"
+      ],
+      "is_oa": true,
+      "is_in_doaj": false,
+      "is_core": true,
+      "host_organization": "https://openalex.org/P4310315912",
+      "host_organization_name": "American Economic Association",
+      "host_organization_lineage": [
+        "https://openalex.org/P4310315912"
+      ],
+      "host_organization_lineage_names": [
+        "American Economic Association"
+      ],
+      "type": "journal"
+    },
+    "license": null,
+    "license_id": null,
+    "version": "publishedVersion",
+    "is_accepted": true,
+    "is_published": true,
+    "raw_source_name": "Journal of Economic Perspectives",
+    "raw_type": "journal-article"
+  },
+  "sustainable_development_goals": [
+    {
+      "id": "https://metadata.un.org/sdg/10",
+      "score": 0.5,
+      "display_name": "Reduced inequalities"
+    }
+  ],
+  "awards": [],
+  "funders": [],
+  "has_content": {
+    "grobid_xml": true,
+    "pdf": true
+  },
+  "content_urls": {
+    "pdf": "https://content.openalex.org/works/W3023101082.pdf",
+    "grobid_xml": "https://content.openalex.org/works/W3023101082.grobid-xml"
+  },
+  "referenced_works_count": 36,
+  "referenced_works": [
+    "https://openalex.org/W595171225",
+    "https://openalex.org/W658736243",
+    "https://openalex.org/W1508150464",
+    "https://openalex.org/W1593348544",
+    "https://openalex.org/W1832095938",
+    "https://openalex.org/W1950999096",
+    "https://openalex.org/W1968037762",
+    "https://openalex.org/W2007819340",
+    "https://openalex.org/W2038045334",
+    "https://openalex.org/W2057659248",
+    "https://openalex.org/W2070698138",
+    "https://openalex.org/W2077769800",
+    "https://openalex.org/W2081040435",
+    "https://openalex.org/W2098265062",
+    "https://openalex.org/W2104413756",
+    "https://openalex.org/W2115163516",
+    "https://openalex.org/W2118377490",
+    "https://openalex.org/W2129858705",
+    "https://openalex.org/W2135544201",
+    "https://openalex.org/W2139936751",
+    "https://openalex.org/W2150543474",
+    "https://openalex.org/W2162868537",
+    "https://openalex.org/W2499817314",
+    "https://openalex.org/W2544671155",
+    "https://openalex.org/W2580022961",
+    "https://openalex.org/W2738372003",
+    "https://openalex.org/W2951112740",
+    "https://openalex.org/W3002922038",
+    "https://openalex.org/W3022629323",
+    "https://openalex.org/W3122561658",
+    "https://openalex.org/W3123135512",
+    "https://openalex.org/W3123609487",
+    "https://openalex.org/W3123775444",
+    "https://openalex.org/W3123791405",
+    "https://openalex.org/W3125789530",
+    "https://openalex.org/W3126028293"
+  ],
+  "related_works": [
+    "https://openalex.org/W3106553454",
+    "https://openalex.org/W3148074727",
+    "https://openalex.org/W3023101082",
+    "https://openalex.org/W3148021038",
+    "https://openalex.org/W2324526521",
+    "https://openalex.org/W2353894412",
+    "https://openalex.org/W4388699091",
+    "https://openalex.org/W3125709818",
+    "https://openalex.org/W4386709252",
+    "https://openalex.org/W150495422"
+  ],
+  "abstract_inverted_index": {
+    "We": [
+      0,
+      23,
+      49
+    ],
+    "review": [
+      1
+    ],
+    "the": [
+      2,
+      10,
+      53,
+      66,
+      74,
+      89,
+      98
+    ],
+    "empirical": [
+      3
+    ],
+    "literature": [
+      4
+    ],
+    "in": [
+      5,
+      9,
+      102,
+      107
+    ],
+    "economics": [
+      6
+    ],
+    "on": [
+      7,
+      19,
+      45,
+      105
+    ],
+    "discrimination": [
+      8,
+      20,
+      96,
+      106
+    ],
+    "labor": [
+      11,
+      35
+    ],
+    "market": [
+      12
+    ],
+    "and": [
+      13,
+      37,
+      51,
+      56,
+      95,
+      97
+    ],
+    "criminal": [
+      14
+    ],
+    "justice": [
+      15
+    ],
+    "system,": [
+      16
+    ],
+    "focusing": [
+      17
+    ],
+    "primarily": [
+      18
+    ],
+    "by": [
+      21,
+      81
+    ],
+    "race.": [
+      22
+    ],
+    "then": [
+      24
+    ],
+    "discuss": [
+      25
+    ],
+    "theoretical": [
+      26
+    ],
+    "models": [
+      27,
+      32,
+      38
+    ],
+    "of": [
+      28,
+      33,
+      39,
+      65,
+      68,
+      100
+    ],
+    "taste-based": [
+      29
+    ],
+    "discrimination,": [
+      30,
+      41,
+      69
+    ],
+    "particularly": [
+      31
+    ],
+    "frictional": [
+      34
+    ],
+    "markets": [
+      36
+    ],
+    "statistical": [
+      40,
+      47
+    ],
+    "including": [
+      42
+    ],
+    "recent": [
+      43
+    ],
+    "work": [
+      44
+    ],
+    "invalid": [
+      46
+    ],
+    "discrimination.": [
+      48,
+      82
+    ],
+    "explore": [
+      50
+    ],
+    "evaluate": [
+      52
+    ],
+    "evidence": [
+      54,
+      64
+    ],
+    "for": [
+      55
+    ],
+    "against": [
+      57
+    ],
+    "these": [
+      58
+    ],
+    "theories.": [
+      59
+    ],
+    "Although": [
+      60
+    ],
+    "there": [
+      61
+    ],
+    "is": [
+      62,
+      71
+    ],
+    "substantial": [
+      63
+    ],
+    "existence": [
+      67
+    ],
+    "little": [
+      70
+    ],
+    "known": [
+      72
+    ],
+    "about": [
+      73
+    ],
+    "extent": [
+      75
+    ],
+    "to": [
+      76
+    ],
+    "which": [
+      77
+    ],
+    "disparities": [
+      78,
+      94,
+      101
+    ],
+    "are": [
+      79
+    ],
+    "driven": [
+      80
+    ],
+    "Finally,": [
+      83
+    ],
+    "we": [
+      84
+    ],
+    "argue": [
+      85
+    ],
+    "that": [
+      86
+    ],
+    "economists": [
+      87
+    ],
+    "miss": [
+      88
+    ],
+    "important": [
+      90
+    ],
+    "self-enforcing": [
+      91
+    ],
+    "relationship": [
+      92
+    ],
+    "between": [
+      93
+    ],
+    "effect": [
+      99
+    ],
+    "one": [
+      103
+    ],
+    "domain": [
+      104
+    ],
+    "other": [
+      108
+    ],
+    "domains.": [
+      109
+    ]
+  },
+  "counts_by_year": [
+    {
+      "year": 2026,
+      "cited_by_count": 13
+    },
+    {
+      "year": 2025,
+      "cited_by_count": 44
+    },
+    {
+      "year": 2024,
+      "cited_by_count": 55
+    },
+    {
+      "year": 2023,
+      "cited_by_count": 45
+    },
+    {
+      "year": 2022,
+      "cited_by_count": 33
+    },
+    {
+      "year": 2021,
+      "cited_by_count": 19
+    },
+    {
+      "year": 2020,
+      "cited_by_count": 10
+    },
+    {
+      "year": 2019,
+      "cited_by_count": 1
+    }
+  ],
+  "updated_date": "2026-07-03T08:13:44.112507",
+  "created_date": "2025-10-10T00:00:00"
+}

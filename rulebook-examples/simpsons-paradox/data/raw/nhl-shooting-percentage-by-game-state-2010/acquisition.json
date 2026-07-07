@@ -1,0 +1,17 @@
+{
+  "candidate_id": "cand-exp-nhl-shooting-percentage-by-game-state-2010",
+  "proposed_study_id": "nhl-shooting-percentage-by-game-state-2010",
+  "acquisition_status": "landing_saved",
+  "attempted_at": "2026-07-07T03:44:50+00:00",
+  "catalog_source_url": "https://www.naturalstattrick.com/",
+  "resolved_urls": [
+    "https://doi.org/10.3390/data9020029",
+    "https://www.mdpi.com/2306-5729/9/2/29/pdf?version=1706775405",
+    "https://www.naturalstattrick.com/"
+  ],
+  "files": [
+    "openalex-metadata.json",
+    "source-1.html"
+  ],
+  "dois": []
+}

@@ -1,0 +1,1384 @@
+{
+  "id": "https://openalex.org/W4296764420",
+  "doi": "https://doi.org/10.3390/v14092012",
+  "title": "Atypical and Unique Transmission of Monkeypox Virus during the 2022 Outbreak: An Overview of the Current State of Knowledge",
+  "display_name": "Atypical and Unique Transmission of Monkeypox Virus during the 2022 Outbreak: An Overview of the Current State of Knowledge",
+  "relevance_score": 45.1048,
+  "publication_year": 2022,
+  "publication_date": "2022-09-11",
+  "ids": {
+    "openalex": "https://openalex.org/W4296764420",
+    "doi": "https://doi.org/10.3390/v14092012",
+    "pmid": "https://pubmed.ncbi.nlm.nih.gov/36146818"
+  },
+  "language": "en",
+  "primary_location": {
+    "id": "doi:10.3390/v14092012",
+    "is_oa": true,
+    "landing_page_url": "https://doi.org/10.3390/v14092012",
+    "pdf_url": "https://www.mdpi.com/1999-4915/14/9/2012/pdf?version=1662884960",
+    "source": {
+      "id": "https://openalex.org/S55776271",
+      "display_name": "Viruses",
+      "issn_l": "1999-4915",
+      "issn": [
+        "1999-4915"
+      ],
+      "is_oa": true,
+      "is_in_doaj": true,
+      "is_core": true,
+      "host_organization": "https://openalex.org/P4310310987",
+      "host_organization_name": "Multidisciplinary Digital Publishing Institute",
+      "host_organization_lineage": [
+        "https://openalex.org/P4310310987"
+      ],
+      "host_organization_lineage_names": [
+        "Multidisciplinary Digital Publishing Institute"
+      ],
+      "type": "journal"
+    },
+    "license": "cc-by",
+    "license_id": "https://openalex.org/licenses/cc-by",
+    "version": "publishedVersion",
+    "is_accepted": true,
+    "is_published": true,
+    "raw_source_name": "Viruses",
+    "raw_type": "journal-article"
+  },
+  "type": "review",
+  "indexed_in": [
+    "crossref",
+    "doaj",
+    "pubmed"
+  ],
+  "open_access": {
+    "is_oa": true,
+    "oa_status": "gold",
+    "oa_url": "https://www.mdpi.com/1999-4915/14/9/2012/pdf?version=1662884960",
+    "any_repository_has_fulltext": true
+  },
+  "authorships": [
+    {
+      "author_position": "first",
+      "author": {
+        "id": "https://openalex.org/A5048719968",
+        "display_name": "Jade C. Riopelle",
+        "orcid": "https://orcid.org/0000-0001-8821-8722"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I1299303238",
+          "display_name": "National Institutes of Health",
+          "ror": "https://ror.org/01cwqze88",
+          "country_code": "US",
+          "type": "government",
+          "lineage": [
+            "https://openalex.org/I1299022934",
+            "https://openalex.org/I1299303238"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I4210134534",
+          "display_name": "National Institute of Allergy and Infectious Diseases",
+          "ror": "https://ror.org/043z4tv69",
+          "country_code": "US",
+          "type": "facility",
+          "lineage": [
+            "https://openalex.org/I1299022934",
+            "https://openalex.org/I1299303238",
+            "https://openalex.org/I4210134534"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": true,
+      "raw_author_name": "Jade C. Riopelle",
+      "raw_affiliation_strings": [
+        "Laboratory of Virology, Division of Intramural Research, National Institute of Allergy and Infectious Diseases, National Institutes of Health, Hamilton, MT 59840, USA"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Laboratory of Virology, Division of Intramural Research, National Institute of Allergy and Infectious Diseases, National Institutes of Health, Hamilton, MT 59840, USA",
+          "institution_ids": [
+            "https://openalex.org/I4210134534",
+            "https://openalex.org/I1299303238"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5035082890",
+        "display_name": "Vincent J. Munster",
+        "orcid": "https://orcid.org/0000-0002-2288-3196"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I1299303238",
+          "display_name": "National Institutes of Health",
+          "ror": "https://ror.org/01cwqze88",
+          "country_code": "US",
+          "type": "government",
+          "lineage": [
+            "https://openalex.org/I1299022934",
+            "https://openalex.org/I1299303238"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I4210134534",
+          "display_name": "National Institute of Allergy and Infectious Diseases",
+          "ror": "https://ror.org/043z4tv69",
+          "country_code": "US",
+          "type": "facility",
+          "lineage": [
+            "https://openalex.org/I1299022934",
+            "https://openalex.org/I1299303238",
+            "https://openalex.org/I4210134534"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": true,
+      "raw_author_name": "Vincent J. Munster",
+      "raw_affiliation_strings": [
+        "Laboratory of Virology, Division of Intramural Research, National Institute of Allergy and Infectious Diseases, National Institutes of Health, Hamilton, MT 59840, USA"
+      ],
+      "raw_orcid": "https://orcid.org/0000-0002-2288-3196",
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Laboratory of Virology, Division of Intramural Research, National Institute of Allergy and Infectious Diseases, National Institutes of Health, Hamilton, MT 59840, USA",
+          "institution_ids": [
+            "https://openalex.org/I4210134534",
+            "https://openalex.org/I1299303238"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "last",
+      "author": {
+        "id": "https://openalex.org/A5032868168",
+        "display_name": "Julia R. Port",
+        "orcid": "https://orcid.org/0000-0002-0489-6591"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I1299303238",
+          "display_name": "National Institutes of Health",
+          "ror": "https://ror.org/01cwqze88",
+          "country_code": "US",
+          "type": "government",
+          "lineage": [
+            "https://openalex.org/I1299022934",
+            "https://openalex.org/I1299303238"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I4210134534",
+          "display_name": "National Institute of Allergy and Infectious Diseases",
+          "ror": "https://ror.org/043z4tv69",
+          "country_code": "US",
+          "type": "facility",
+          "lineage": [
+            "https://openalex.org/I1299022934",
+            "https://openalex.org/I1299303238",
+            "https://openalex.org/I4210134534"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": true,
+      "raw_author_name": "Julia R. Port",
+      "raw_affiliation_strings": [
+        "Laboratory of Virology, Division of Intramural Research, National Institute of Allergy and Infectious Diseases, National Institutes of Health, Hamilton, MT 59840, USA"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Laboratory of Virology, Division of Intramural Research, National Institute of Allergy and Infectious Diseases, National Institutes of Health, Hamilton, MT 59840, USA",
+          "institution_ids": [
+            "https://openalex.org/I4210134534",
+            "https://openalex.org/I1299303238"
+          ]
+        }
+      ]
+    }
+  ],
+  "institutions": [],
+  "countries_distinct_count": 1,
+  "institutions_distinct_count": 2,
+  "corresponding_author_ids": [
+    "https://openalex.org/A5032868168",
+    "https://openalex.org/A5035082890",
+    "https://openalex.org/A5048719968"
+  ],
+  "corresponding_institution_ids": [
+    "https://openalex.org/I1299303238",
+    "https://openalex.org/I4210134534"
+  ],
+  "apc_list": {
+    "value": 2600,
+    "currency": "CHF",
+    "value_usd": 2815
+  },
+  "apc_paid": {
+    "value": 2600,
+    "currency": "CHF",
+    "value_usd": 2815
+  },
+  "fwci": 3.2062,
+  "has_fulltext": true,
+  "cited_by_count": 47,
+  "citation_normalized_percentile": {
+    "value": 0.93331105,
+    "is_in_top_1_percent": false,
+    "is_in_top_10_percent": true
+  },
+  "cited_by_percentile_year": {
+    "min": 98,
+    "max": 100
+  },
+  "biblio": {
+    "volume": "14",
+    "issue": "9",
+    "first_page": "2012",
+    "last_page": "2012"
+  },
+  "is_retracted": false,
+  "is_paratext": false,
+  "is_xpac": false,
+  "primary_topic": {
+    "id": "https://openalex.org/T11767",
+    "display_name": "Poxvirus research and outbreaks",
+    "score": 1.0,
+    "subfield": {
+      "id": "https://openalex.org/subfields/2406",
+      "display_name": "Virology"
+    },
+    "field": {
+      "id": "https://openalex.org/fields/24",
+      "display_name": "Immunology and Microbiology"
+    },
+    "domain": {
+      "id": "https://openalex.org/domains/1",
+      "display_name": "Life Sciences"
+    }
+  },
+  "topics": [
+    {
+      "id": "https://openalex.org/T11767",
+      "display_name": "Poxvirus research and outbreaks",
+      "score": 1.0,
+      "subfield": {
+        "id": "https://openalex.org/subfields/2406",
+        "display_name": "Virology"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/24",
+        "display_name": "Immunology and Microbiology"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/1",
+        "display_name": "Life Sciences"
+      }
+    },
+    {
+      "id": "https://openalex.org/T11515",
+      "display_name": "Bacillus and Francisella bacterial research",
+      "score": 0.9972000122070312,
+      "subfield": {
+        "id": "https://openalex.org/subfields/1312",
+        "display_name": "Molecular Biology"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/13",
+        "display_name": "Biochemistry, Genetics and Molecular Biology"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/1",
+        "display_name": "Life Sciences"
+      }
+    },
+    {
+      "id": "https://openalex.org/T10625",
+      "display_name": "Herpesvirus Infections and Treatments",
+      "score": 0.9927999973297119,
+      "subfield": {
+        "id": "https://openalex.org/subfields/2713",
+        "display_name": "Epidemiology"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/27",
+        "display_name": "Medicine"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/4",
+        "display_name": "Health Sciences"
+      }
+    }
+  ],
+  "keywords": [
+    {
+      "id": "https://openalex.org/keywords/monkeypox",
+      "display_name": "Monkeypox",
+      "score": 0.9795531630516052
+    },
+    {
+      "id": "https://openalex.org/keywords/outbreak",
+      "display_name": "Outbreak",
+      "score": 0.8508070707321167
+    },
+    {
+      "id": "https://openalex.org/keywords/transmission",
+      "display_name": "Transmission (telecommunications)",
+      "score": 0.6950150728225708
+    },
+    {
+      "id": "https://openalex.org/keywords/smallpox",
+      "display_name": "Smallpox",
+      "score": 0.5845680832862854
+    },
+    {
+      "id": "https://openalex.org/keywords/public-health",
+      "display_name": "Public health",
+      "score": 0.5005881786346436
+    },
+    {
+      "id": "https://openalex.org/keywords/virology",
+      "display_name": "Virology",
+      "score": 0.47158634662628174
+    },
+    {
+      "id": "https://openalex.org/keywords/epidemiology",
+      "display_name": "Epidemiology",
+      "score": 0.42274224758148193
+    },
+    {
+      "id": "https://openalex.org/keywords/environmental-health",
+      "display_name": "Environmental health",
+      "score": 0.4012157618999481
+    },
+    {
+      "id": "https://openalex.org/keywords/medicine",
+      "display_name": "Medicine",
+      "score": 0.34738120436668396
+    },
+    {
+      "id": "https://openalex.org/keywords/geography",
+      "display_name": "Geography",
+      "score": 0.3299791216850281
+    },
+    {
+      "id": "https://openalex.org/keywords/vaccination",
+      "display_name": "Vaccination",
+      "score": 0.25579071044921875
+    },
+    {
+      "id": "https://openalex.org/keywords/biology",
+      "display_name": "Biology",
+      "score": 0.22584569454193115
+    },
+    {
+      "id": "https://openalex.org/keywords/vaccinia",
+      "display_name": "Vaccinia",
+      "score": 0.18204620480537415
+    },
+    {
+      "id": "https://openalex.org/keywords/pathology",
+      "display_name": "Pathology",
+      "score": 0.09016448259353638
+    }
+  ],
+  "concepts": [
+    {
+      "id": "https://openalex.org/C2778011067",
+      "wikidata": "https://www.wikidata.org/wiki/Q382370",
+      "display_name": "Monkeypox",
+      "level": 5,
+      "score": 0.9795531630516052
+    },
+    {
+      "id": "https://openalex.org/C116675565",
+      "wikidata": "https://www.wikidata.org/wiki/Q3241045",
+      "display_name": "Outbreak",
+      "level": 2,
+      "score": 0.8508070707321167
+    },
+    {
+      "id": "https://openalex.org/C761482",
+      "wikidata": "https://www.wikidata.org/wiki/Q118093",
+      "display_name": "Transmission (telecommunications)",
+      "level": 2,
+      "score": 0.6950150728225708
+    },
+    {
+      "id": "https://openalex.org/C2778417375",
+      "wikidata": "https://www.wikidata.org/wiki/Q12214",
+      "display_name": "Smallpox",
+      "level": 3,
+      "score": 0.5845680832862854
+    },
+    {
+      "id": "https://openalex.org/C138816342",
+      "wikidata": "https://www.wikidata.org/wiki/Q189603",
+      "display_name": "Public health",
+      "level": 2,
+      "score": 0.5005881786346436
+    },
+    {
+      "id": "https://openalex.org/C159047783",
+      "wikidata": "https://www.wikidata.org/wiki/Q7215",
+      "display_name": "Virology",
+      "level": 1,
+      "score": 0.47158634662628174
+    },
+    {
+      "id": "https://openalex.org/C107130276",
+      "wikidata": "https://www.wikidata.org/wiki/Q133805",
+      "display_name": "Epidemiology",
+      "level": 2,
+      "score": 0.42274224758148193
+    },
+    {
+      "id": "https://openalex.org/C99454951",
+      "wikidata": "https://www.wikidata.org/wiki/Q932068",
+      "display_name": "Environmental health",
+      "level": 1,
+      "score": 0.4012157618999481
+    },
+    {
+      "id": "https://openalex.org/C71924100",
+      "wikidata": "https://www.wikidata.org/wiki/Q11190",
+      "display_name": "Medicine",
+      "level": 0,
+      "score": 0.34738120436668396
+    },
+    {
+      "id": "https://openalex.org/C205649164",
+      "wikidata": "https://www.wikidata.org/wiki/Q1071",
+      "display_name": "Geography",
+      "level": 0,
+      "score": 0.3299791216850281
+    },
+    {
+      "id": "https://openalex.org/C22070199",
+      "wikidata": "https://www.wikidata.org/wiki/Q192995",
+      "display_name": "Vaccination",
+      "level": 2,
+      "score": 0.25579071044921875
+    },
+    {
+      "id": "https://openalex.org/C86803240",
+      "wikidata": "https://www.wikidata.org/wiki/Q420",
+      "display_name": "Biology",
+      "level": 0,
+      "score": 0.22584569454193115
+    },
+    {
+      "id": "https://openalex.org/C2781356689",
+      "wikidata": "https://www.wikidata.org/wiki/Q1986297",
+      "display_name": "Vaccinia",
+      "level": 4,
+      "score": 0.18204620480537415
+    },
+    {
+      "id": "https://openalex.org/C142724271",
+      "wikidata": "https://www.wikidata.org/wiki/Q7208",
+      "display_name": "Pathology",
+      "level": 1,
+      "score": 0.09016448259353638
+    },
+    {
+      "id": "https://openalex.org/C119599485",
+      "wikidata": "https://www.wikidata.org/wiki/Q43035",
+      "display_name": "Electrical engineering",
+      "level": 1,
+      "score": 0.0
+    },
+    {
+      "id": "https://openalex.org/C55493867",
+      "wikidata": "https://www.wikidata.org/wiki/Q7094",
+      "display_name": "Biochemistry",
+      "level": 1,
+      "score": 0.0
+    },
+    {
+      "id": "https://openalex.org/C40767141",
+      "wikidata": "https://www.wikidata.org/wiki/Q285697",
+      "display_name": "Recombinant DNA",
+      "level": 3,
+      "score": 0.0
+    },
+    {
+      "id": "https://openalex.org/C127413603",
+      "wikidata": "https://www.wikidata.org/wiki/Q11023",
+      "display_name": "Engineering",
+      "level": 0,
+      "score": 0.0
+    },
+    {
+      "id": "https://openalex.org/C104317684",
+      "wikidata": "https://www.wikidata.org/wiki/Q7187",
+      "display_name": "Gene",
+      "level": 2,
+      "score": 0.0
+    }
+  ],
+  "mesh": [
+    {
+      "descriptor_ui": "D004196",
+      "descriptor_name": "Disease Outbreaks",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D004196",
+      "descriptor_name": "Disease Outbreaks",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D004196",
+      "descriptor_name": "Disease Outbreaks",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D004196",
+      "descriptor_name": "Disease Outbreaks",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D006801",
+      "descriptor_name": "Humans",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D006801",
+      "descriptor_name": "Humans",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D006801",
+      "descriptor_name": "Humans",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D006801",
+      "descriptor_name": "Humans",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D008993",
+      "descriptor_name": "Monkeypox virus",
+      "qualifier_ui": "Q000235",
+      "qualifier_name": "genetics",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D008993",
+      "descriptor_name": "Monkeypox virus",
+      "qualifier_ui": "Q000235",
+      "qualifier_name": "genetics",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D008993",
+      "descriptor_name": "Monkeypox virus",
+      "qualifier_ui": "Q000235",
+      "qualifier_name": "genetics",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D008993",
+      "descriptor_name": "Monkeypox virus",
+      "qualifier_ui": "Q000235",
+      "qualifier_name": "genetics",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D012899",
+      "descriptor_name": "Smallpox",
+      "qualifier_ui": "Q000517",
+      "qualifier_name": "prevention & control",
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D012899",
+      "descriptor_name": "Smallpox",
+      "qualifier_ui": "Q000517",
+      "qualifier_name": "prevention & control",
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D012899",
+      "descriptor_name": "Smallpox",
+      "qualifier_ui": "Q000517",
+      "qualifier_name": "prevention & control",
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D012899",
+      "descriptor_name": "Smallpox",
+      "qualifier_ui": "Q000517",
+      "qualifier_name": "prevention & control",
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D012901",
+      "descriptor_name": "Variola virus",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D012901",
+      "descriptor_name": "Variola virus",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D012901",
+      "descriptor_name": "Variola virus",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D012901",
+      "descriptor_name": "Variola virus",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D045908",
+      "descriptor_name": "Mpox (monkeypox)",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D045908",
+      "descriptor_name": "Mpox, Monkeypox",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D045908",
+      "descriptor_name": "Mpox (monkeypox)",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D045908",
+      "descriptor_name": "Mpox, Monkeypox",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": true
+    }
+  ],
+  "locations_count": 5,
+  "locations": [
+    {
+      "id": "doi:10.3390/v14092012",
+      "is_oa": true,
+      "landing_page_url": "https://doi.org/10.3390/v14092012",
+      "pdf_url": "https://www.mdpi.com/1999-4915/14/9/2012/pdf?version=1662884960",
+      "source": {
+        "id": "https://openalex.org/S55776271",
+        "display_name": "Viruses",
+        "issn_l": "1999-4915",
+        "issn": [
+          "1999-4915"
+        ],
+        "is_oa": true,
+        "is_in_doaj": true,
+        "is_core": true,
+        "host_organization": "https://openalex.org/P4310310987",
+        "host_organization_name": "Multidisciplinary Digital Publishing Institute",
+        "host_organization_lineage": [
+          "https://openalex.org/P4310310987"
+        ],
+        "host_organization_lineage_names": [
+          "Multidisciplinary Digital Publishing Institute"
+        ],
+        "type": "journal"
+      },
+      "license": "cc-by",
+      "license_id": "https://openalex.org/licenses/cc-by",
+      "version": "publishedVersion",
+      "is_accepted": true,
+      "is_published": true,
+      "raw_source_name": "Viruses",
+      "raw_type": "journal-article"
+    },
+    {
+      "id": "pmid:36146818",
+      "is_oa": false,
+      "landing_page_url": "https://pubmed.ncbi.nlm.nih.gov/36146818",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4306525036",
+        "display_name": "PubMed",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I1299303238",
+        "host_organization_name": "National Institutes of Health",
+        "host_organization_lineage": [
+          "https://openalex.org/I1299303238"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "publishedVersion",
+      "is_accepted": true,
+      "is_published": true,
+      "raw_source_name": "Viruses",
+      "raw_type": null
+    },
+    {
+      "id": "pmh:oai:doaj.org/article:c531a0133e924a57b62b7041ba12b145",
+      "is_oa": true,
+      "landing_page_url": "https://doaj.org/article/c531a0133e924a57b62b7041ba12b145",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4306401280",
+        "display_name": "DOAJ (DOAJ: Directory of Open Access Journals)",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": null,
+        "host_organization_name": null,
+        "host_organization_lineage": [],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": "cc-by-sa",
+      "license_id": "https://openalex.org/licenses/cc-by-sa",
+      "version": "submittedVersion",
+      "is_accepted": false,
+      "is_published": false,
+      "raw_source_name": "Viruses, Vol 14, Iss 9, p 2012 (2022)",
+      "raw_type": "article"
+    },
+    {
+      "id": "pmh:oai:mdpi.com:/1999-4915/14/9/2012/",
+      "is_oa": true,
+      "landing_page_url": "https://dx.doi.org/10.3390/v14092012",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4306400947",
+        "display_name": "MDPI (MDPI AG)",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": true,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I4210097602",
+        "host_organization_name": "Multidisciplinary Digital Publishing Institute (Switzerland)",
+        "host_organization_lineage": [
+          "https://openalex.org/I4210097602"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": "cc-by",
+      "license_id": "https://openalex.org/licenses/cc-by",
+      "version": "submittedVersion",
+      "is_accepted": false,
+      "is_published": false,
+      "raw_source_name": "Viruses; Volume 14; Issue 9; Pages: 2012",
+      "raw_type": "Text"
+    },
+    {
+      "id": "pmh:oai:pubmedcentral.nih.gov:9501469",
+      "is_oa": true,
+      "landing_page_url": "https://www.ncbi.nlm.nih.gov/pmc/articles/9501469",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S2764455111",
+        "display_name": "PubMed Central",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": true,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I1299303238",
+        "host_organization_name": "National Institutes of Health",
+        "host_organization_lineage": [
+          "https://openalex.org/I1299303238"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": "cc-by",
+      "license_id": "https://openalex.org/licenses/cc-by",
+      "version": "submittedVersion",
+      "is_accepted": false,
+      "is_published": false,
+      "raw_source_name": "Viruses",
+      "raw_type": "Text"
+    }
+  ],
+  "best_oa_location": {
+    "id": "doi:10.3390/v14092012",
+    "is_oa": true,
+    "landing_page_url": "https://doi.org/10.3390/v14092012",
+    "pdf_url": "https://www.mdpi.com/1999-4915/14/9/2012/pdf?version=1662884960",
+    "source": {
+      "id": "https://openalex.org/S55776271",
+      "display_name": "Viruses",
+      "issn_l": "1999-4915",
+      "issn": [
+        "1999-4915"
+      ],
+      "is_oa": true,
+      "is_in_doaj": true,
+      "is_core": true,
+      "host_organization": "https://openalex.org/P4310310987",
+      "host_organization_name": "Multidisciplinary Digital Publishing Institute",
+      "host_organization_lineage": [
+        "https://openalex.org/P4310310987"
+      ],
+      "host_organization_lineage_names": [
+        "Multidisciplinary Digital Publishing Institute"
+      ],
+      "type": "journal"
+    },
+    "license": "cc-by",
+    "license_id": "https://openalex.org/licenses/cc-by",
+    "version": "publishedVersion",
+    "is_accepted": true,
+    "is_published": true,
+    "raw_source_name": "Viruses",
+    "raw_type": "journal-article"
+  },
+  "sustainable_development_goals": [
+    {
+      "id": "https://metadata.un.org/sdg/3",
+      "score": 0.5600000023841858,
+      "display_name": "Good health and well-being"
+    }
+  ],
+  "awards": [],
+  "funders": [
+    {
+      "id": "https://openalex.org/F4320332161",
+      "display_name": "National Institutes of Health",
+      "ror": "https://ror.org/01cwqze88"
+    },
+    {
+      "id": "https://openalex.org/F4320337355",
+      "display_name": "National Institute of Allergy and Infectious Diseases",
+      "ror": "https://ror.org/043z4tv69"
+    }
+  ],
+  "has_content": {
+    "pdf": true,
+    "grobid_xml": true
+  },
+  "content_urls": {
+    "pdf": "https://content.openalex.org/works/W4296764420.pdf",
+    "grobid_xml": "https://content.openalex.org/works/W4296764420.grobid-xml"
+  },
+  "referenced_works_count": 117,
+  "referenced_works": [
+    "https://openalex.org/W1519266993",
+    "https://openalex.org/W1535457238",
+    "https://openalex.org/W1665930980",
+    "https://openalex.org/W1747387320",
+    "https://openalex.org/W1842008289",
+    "https://openalex.org/W1857507340",
+    "https://openalex.org/W1894682364",
+    "https://openalex.org/W1925702649",
+    "https://openalex.org/W1973795375",
+    "https://openalex.org/W1980306823",
+    "https://openalex.org/W1988718625",
+    "https://openalex.org/W1996213609",
+    "https://openalex.org/W1996230967",
+    "https://openalex.org/W2011732718",
+    "https://openalex.org/W2012788756",
+    "https://openalex.org/W2026211433",
+    "https://openalex.org/W2043441417",
+    "https://openalex.org/W2054733388",
+    "https://openalex.org/W2063860759",
+    "https://openalex.org/W2065473088",
+    "https://openalex.org/W2067752514",
+    "https://openalex.org/W2069251911",
+    "https://openalex.org/W2077718042",
+    "https://openalex.org/W2079905192",
+    "https://openalex.org/W2089731941",
+    "https://openalex.org/W2094804408",
+    "https://openalex.org/W2103806178",
+    "https://openalex.org/W2104943039",
+    "https://openalex.org/W2108567012",
+    "https://openalex.org/W2110204999",
+    "https://openalex.org/W2117005850",
+    "https://openalex.org/W2134425829",
+    "https://openalex.org/W2134695993",
+    "https://openalex.org/W2146815491",
+    "https://openalex.org/W2148045713",
+    "https://openalex.org/W2155151751",
+    "https://openalex.org/W2159677037",
+    "https://openalex.org/W2162797950",
+    "https://openalex.org/W2166738609",
+    "https://openalex.org/W2167467846",
+    "https://openalex.org/W2168127024",
+    "https://openalex.org/W2175927045",
+    "https://openalex.org/W2303586930",
+    "https://openalex.org/W2356434920",
+    "https://openalex.org/W2463820852",
+    "https://openalex.org/W2467171715",
+    "https://openalex.org/W2564477152",
+    "https://openalex.org/W2587951944",
+    "https://openalex.org/W2614081736",
+    "https://openalex.org/W2750215872",
+    "https://openalex.org/W2759843597",
+    "https://openalex.org/W2761794775",
+    "https://openalex.org/W2762975092",
+    "https://openalex.org/W2765453497",
+    "https://openalex.org/W2890756572",
+    "https://openalex.org/W2892719383",
+    "https://openalex.org/W2906775370",
+    "https://openalex.org/W2908909438",
+    "https://openalex.org/W2911196418",
+    "https://openalex.org/W2921532547",
+    "https://openalex.org/W2939806851",
+    "https://openalex.org/W2952959748",
+    "https://openalex.org/W2955071890",
+    "https://openalex.org/W2980065097",
+    "https://openalex.org/W2980545745",
+    "https://openalex.org/W3005209336",
+    "https://openalex.org/W3005235420",
+    "https://openalex.org/W3006150186",
+    "https://openalex.org/W3013868197",
+    "https://openalex.org/W3019117051",
+    "https://openalex.org/W3024417582",
+    "https://openalex.org/W3082913327",
+    "https://openalex.org/W3095572728",
+    "https://openalex.org/W3139347754",
+    "https://openalex.org/W3156458251",
+    "https://openalex.org/W3190485073",
+    "https://openalex.org/W4211060053",
+    "https://openalex.org/W4232751829",
+    "https://openalex.org/W4235984157",
+    "https://openalex.org/W4236868619",
+    "https://openalex.org/W4247460913",
+    "https://openalex.org/W4281389038",
+    "https://openalex.org/W4281477179",
+    "https://openalex.org/W4281666791",
+    "https://openalex.org/W4281710382",
+    "https://openalex.org/W4281731739",
+    "https://openalex.org/W4281780892",
+    "https://openalex.org/W4281893638",
+    "https://openalex.org/W4282555424",
+    "https://openalex.org/W4282938041",
+    "https://openalex.org/W4283010076",
+    "https://openalex.org/W4283360071",
+    "https://openalex.org/W4283371495",
+    "https://openalex.org/W4283388283",
+    "https://openalex.org/W4283771170",
+    "https://openalex.org/W4285594459",
+    "https://openalex.org/W4286472082",
+    "https://openalex.org/W4288077872",
+    "https://openalex.org/W4289527641",
+    "https://openalex.org/W4289918654",
+    "https://openalex.org/W4290987229",
+    "https://openalex.org/W4291677837",
+    "https://openalex.org/W4291794924",
+    "https://openalex.org/W4292485450",
+    "https://openalex.org/W4292767390",
+    "https://openalex.org/W4292854801",
+    "https://openalex.org/W4293104283",
+    "https://openalex.org/W4296249910",
+    "https://openalex.org/W4296804257",
+    "https://openalex.org/W4302219047",
+    "https://openalex.org/W6637250117",
+    "https://openalex.org/W6639205372",
+    "https://openalex.org/W6640097654",
+    "https://openalex.org/W6676059713",
+    "https://openalex.org/W6698015778",
+    "https://openalex.org/W6755333806",
+    "https://openalex.org/W7073798538"
+  ],
+  "related_works": [
+    "https://openalex.org/W4281844484",
+    "https://openalex.org/W4234367905",
+    "https://openalex.org/W60396435",
+    "https://openalex.org/W4250881600",
+    "https://openalex.org/W4387785109",
+    "https://openalex.org/W4293728112",
+    "https://openalex.org/W1508548703",
+    "https://openalex.org/W2088524605",
+    "https://openalex.org/W4296143185",
+    "https://openalex.org/W4309506968"
+  ],
+  "abstract_inverted_index": {
+    "An": [
+      0
+    ],
+    "ongoing": [
+      1
+    ],
+    "monkeypox": [
+      2,
+      27,
+      55,
+      87
+    ],
+    "outbreak": [
+      3
+    ],
+    "in": [
+      4,
+      9,
+      32,
+      88
+    ],
+    "non-endemic": [
+      5,
+      89
+    ],
+    "countries": [
+      6
+    ],
+    "has": [
+      7,
+      28
+    ],
+    "resulted": [
+      8
+    ],
+    "the": [
+      10,
+      21,
+      50,
+      65,
+      84,
+      107,
+      123
+    ],
+    "declaration": [
+      11
+    ],
+    "of": [
+      12,
+      17,
+      34,
+      86,
+      94,
+      106,
+      109
+    ],
+    "a": [
+      13,
+      58,
+      103
+    ],
+    "public": [
+      14
+    ],
+    "health": [
+      15
+    ],
+    "emergency": [
+      16
+    ],
+    "international": [
+      18
+    ],
+    "concern": [
+      19
+    ],
+    "by": [
+      20
+    ],
+    "World": [
+      22
+    ],
+    "Health": [
+      23
+    ],
+    "Organization": [
+      24
+    ],
+    "(WHO).": [
+      25
+    ],
+    "Though": [
+      26
+    ],
+    "long": [
+      29
+    ],
+    "been": [
+      30
+    ],
+    "endemic": [
+      31
+    ],
+    "regions": [
+      33
+    ],
+    "sub-Saharan": [
+      35
+    ],
+    "Africa,": [
+      36
+    ],
+    "relatively": [
+      37
+    ],
+    "little": [
+      38
+    ],
+    "is": [
+      39
+    ],
+    "known": [
+      40
+    ],
+    "about": [
+      41,
+      64
+    ],
+    "its": [
+      42
+    ],
+    "ecology,": [
+      43
+    ],
+    "epidemiology,": [
+      44
+    ],
+    "and": [
+      45,
+      56,
+      74,
+      79,
+      98,
+      117
+    ],
+    "transmission.": [
+      46
+    ],
+    "Here,": [
+      47
+    ],
+    "we": [
+      48
+    ],
+    "consider": [
+      49
+    ],
+    "relevant": [
+      51
+    ],
+    "research": [
+      52
+    ],
+    "on": [
+      53
+    ],
+    "both": [
+      54
+    ],
+    "smallpox,": [
+      57
+    ],
+    "close": [
+      59
+    ],
+    "relative,": [
+      60
+    ],
+    "to": [
+      61,
+      113,
+      121
+    ],
+    "make": [
+      62
+    ],
+    "inferences": [
+      63
+    ],
+    "current": [
+      66,
+      124
+    ],
+    "outbreak.": [
+      67,
+      125
+    ],
+    "Undetected": [
+      68
+    ],
+    "circulation": [
+      69
+    ],
+    "combined": [
+      70,
+      101
+    ],
+    "with": [
+      71,
+      102
+    ],
+    "atypical": [
+      72
+    ],
+    "transmission": [
+      73
+    ],
+    "case": [
+      75
+    ],
+    "presentation,": [
+      76
+    ],
+    "including": [
+      77
+    ],
+    "mild": [
+      78
+    ],
+    "asymptomatic": [
+      80
+    ],
+    "disease,": [
+      81
+    ],
+    "have": [
+      82
+    ],
+    "facilitated": [
+      83
+    ],
+    "spread": [
+      85
+    ],
+    "regions.": [
+      90
+    ],
+    "A": [
+      91
+    ],
+    "broader": [
+      92
+    ],
+    "availability": [
+      93
+    ],
+    "diagnostics,": [
+      95
+    ],
+    "enhanced": [
+      96
+    ],
+    "surveillance,": [
+      97
+    ],
+    "targeted": [
+      99
+    ],
+    "education,": [
+      100
+    ],
+    "better": [
+      104
+    ],
+    "understanding": [
+      105
+    ],
+    "routes": [
+      108
+    ],
+    "transmission,": [
+      110
+    ],
+    "are": [
+      111
+    ],
+    "critical": [
+      112
+    ],
+    "identify": [
+      114
+    ],
+    "at-risk": [
+      115
+    ],
+    "populations": [
+      116
+    ],
+    "design": [
+      118
+    ],
+    "science-based": [
+      119
+    ],
+    "countermeasures": [
+      120
+    ],
+    "control": [
+      122
+    ]
+  },
+  "counts_by_year": [
+    {
+      "year": 2026,
+      "cited_by_count": 3
+    },
+    {
+      "year": 2025,
+      "cited_by_count": 8
+    },
+    {
+      "year": 2024,
+      "cited_by_count": 10
+    },
+    {
+      "year": 2023,
+      "cited_by_count": 17
+    },
+    {
+      "year": 2022,
+      "cited_by_count": 9
+    }
+  ],
+  "updated_date": "2026-07-06T08:01:05.025921",
+  "created_date": "2025-10-10T00:00:00"
+}

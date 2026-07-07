@@ -1,0 +1,1405 @@
+{
+  "id": "https://openalex.org/W3021625863",
+  "doi": "https://doi.org/10.1086/684581",
+  "title": "Carbon Taxes, Path Dependency, and Directed Technical Change: Evidence from the Auto Industry",
+  "display_name": "Carbon Taxes, Path Dependency, and Directed Technical Change: Evidence from the Auto Industry",
+  "relevance_score": 301.32578,
+  "publication_year": 2016,
+  "publication_date": "2016-01-05",
+  "ids": {
+    "openalex": "https://openalex.org/W3021625863",
+    "doi": "https://doi.org/10.1086/684581",
+    "mag": "3021625863"
+  },
+  "language": "en",
+  "primary_location": {
+    "id": "doi:10.1086/684581",
+    "is_oa": false,
+    "landing_page_url": "https://doi.org/10.1086/684581",
+    "pdf_url": null,
+    "source": {
+      "id": "https://openalex.org/S95323914",
+      "display_name": "Journal of Political Economy",
+      "issn_l": "0022-3808",
+      "issn": [
+        "0022-3808",
+        "1537-534X"
+      ],
+      "is_oa": false,
+      "is_in_doaj": false,
+      "is_core": true,
+      "host_organization": "https://openalex.org/P4310315672",
+      "host_organization_name": "University of Chicago Press",
+      "host_organization_lineage": [
+        "https://openalex.org/P4310315672",
+        "https://openalex.org/P4310315690"
+      ],
+      "host_organization_lineage_names": [
+        "University of Chicago Press",
+        "University of Chicago"
+      ],
+      "type": "journal"
+    },
+    "license": null,
+    "license_id": null,
+    "version": "publishedVersion",
+    "is_accepted": true,
+    "is_published": true,
+    "raw_source_name": "Journal of Political Economy",
+    "raw_type": "journal-article"
+  },
+  "type": "article",
+  "indexed_in": [
+    "crossref",
+    "datacite"
+  ],
+  "open_access": {
+    "is_oa": true,
+    "oa_status": "green",
+    "oa_url": "https://researchonline.lse.ac.uk/id/eprint/62722/7/Audit_query_8203.pdf",
+    "any_repository_has_fulltext": true
+  },
+  "authorships": [
+    {
+      "author_position": "first",
+      "author": {
+        "id": "https://openalex.org/A5084984675",
+        "display_name": "Philippe Aghion",
+        "orcid": "https://orcid.org/0000-0002-9019-1677"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I109736498",
+          "display_name": "Canadian Institute for Advanced Research",
+          "ror": "https://ror.org/01sdtdd95",
+          "country_code": "CA",
+          "type": "facility",
+          "lineage": [
+            "https://openalex.org/I109736498"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I1321305853",
+          "display_name": "National Bureau of Economic Research",
+          "ror": "https://ror.org/04grmx538",
+          "country_code": "US",
+          "type": "nonprofit",
+          "lineage": [
+            "https://openalex.org/I1321305853"
+          ]
+        }
+      ],
+      "countries": [
+        "CA",
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Philippe Aghion",
+      "raw_affiliation_strings": [
+        "Harvard University, National Bureau of Economic Research, and Canadian Institute for Advanced Research"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Harvard University, National Bureau of Economic Research, and Canadian Institute for Advanced Research",
+          "institution_ids": [
+            "https://openalex.org/I109736498",
+            "https://openalex.org/I1321305853"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5064959356",
+        "display_name": "Antoine Dechezlepr\u00eatre",
+        "orcid": "https://orcid.org/0000-0003-2477-816X"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I909854389",
+          "display_name": "London School of Economics and Political Science",
+          "ror": "https://ror.org/0090zs177",
+          "country_code": "GB",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I124357947",
+            "https://openalex.org/I909854389"
+          ]
+        }
+      ],
+      "countries": [
+        "GB"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Antoine Dechezlepr\u00eatre",
+      "raw_affiliation_strings": [
+        "Grantham Research Institute and Centre for Economic Performance, London School of Economics"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Grantham Research Institute and Centre for Economic Performance, London School of Economics",
+          "institution_ids": [
+            "https://openalex.org/I909854389"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5037735995",
+        "display_name": "David H\u00e9mous",
+        "orcid": "https://orcid.org/0000-0001-6024-5294"
+      },
+      "institutions": [],
+      "countries": [],
+      "is_corresponding": false,
+      "raw_author_name": "David H\u00e9mous",
+      "raw_affiliation_strings": [
+        "INSEAD"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "INSEAD",
+          "institution_ids": []
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5014870225",
+        "display_name": "Ralf Martin",
+        "orcid": "https://orcid.org/0000-0001-6467-1442"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I909854389",
+          "display_name": "London School of Economics and Political Science",
+          "ror": "https://ror.org/0090zs177",
+          "country_code": "GB",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I124357947",
+            "https://openalex.org/I909854389"
+          ]
+        }
+      ],
+      "countries": [
+        "GB"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Ralf Martin",
+      "raw_affiliation_strings": [
+        "Imperial College, Grantham Institute, and Centre for Economic Performance, London School of Economics"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Imperial College, Grantham Institute, and Centre for Economic Performance, London School of Economics",
+          "institution_ids": [
+            "https://openalex.org/I909854389"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "last",
+      "author": {
+        "id": "https://openalex.org/A5004443266",
+        "display_name": "John Van Reenen",
+        "orcid": "https://orcid.org/0000-0001-9153-2907"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I1321305853",
+          "display_name": "National Bureau of Economic Research",
+          "ror": "https://ror.org/04grmx538",
+          "country_code": "US",
+          "type": "nonprofit",
+          "lineage": [
+            "https://openalex.org/I1321305853"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I909854389",
+          "display_name": "London School of Economics and Political Science",
+          "ror": "https://ror.org/0090zs177",
+          "country_code": "GB",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I124357947",
+            "https://openalex.org/I909854389"
+          ]
+        }
+      ],
+      "countries": [
+        "GB",
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "John Van Reenen",
+      "raw_affiliation_strings": [
+        "Centre for Economic Performance, London School of Economics, and National Bureau of Economic Research"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Centre for Economic Performance, London School of Economics, and National Bureau of Economic Research",
+          "institution_ids": [
+            "https://openalex.org/I1321305853",
+            "https://openalex.org/I909854389"
+          ]
+        }
+      ]
+    }
+  ],
+  "institutions": [],
+  "countries_distinct_count": 3,
+  "institutions_distinct_count": 3,
+  "corresponding_author_ids": [],
+  "corresponding_institution_ids": [],
+  "apc_list": null,
+  "apc_paid": null,
+  "fwci": 200.4486,
+  "has_fulltext": true,
+  "cited_by_count": 1377,
+  "citation_normalized_percentile": {
+    "value": 0.99976897,
+    "is_in_top_1_percent": true,
+    "is_in_top_10_percent": true
+  },
+  "cited_by_percentile_year": {
+    "min": 96,
+    "max": 100
+  },
+  "biblio": {
+    "volume": "124",
+    "issue": "1",
+    "first_page": "1",
+    "last_page": "51"
+  },
+  "is_retracted": false,
+  "is_paratext": false,
+  "is_xpac": false,
+  "primary_topic": {
+    "id": "https://openalex.org/T10471",
+    "display_name": "Climate Change Policy and Economics",
+    "score": 0.9993000030517578,
+    "subfield": {
+      "id": "https://openalex.org/subfields/2002",
+      "display_name": "Economics and Econometrics"
+    },
+    "field": {
+      "id": "https://openalex.org/fields/20",
+      "display_name": "Economics, Econometrics and Finance"
+    },
+    "domain": {
+      "id": "https://openalex.org/domains/2",
+      "display_name": "Social Sciences"
+    }
+  },
+  "topics": [
+    {
+      "id": "https://openalex.org/T10471",
+      "display_name": "Climate Change Policy and Economics",
+      "score": 0.9993000030517578,
+      "subfield": {
+        "id": "https://openalex.org/subfields/2002",
+        "display_name": "Economics and Econometrics"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/20",
+        "display_name": "Economics, Econometrics and Finance"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/2",
+        "display_name": "Social Sciences"
+      }
+    },
+    {
+      "id": "https://openalex.org/T10438",
+      "display_name": "Energy, Environment, Economic Growth",
+      "score": 0.9991000294685364,
+      "subfield": {
+        "id": "https://openalex.org/subfields/2002",
+        "display_name": "Economics and Econometrics"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/20",
+        "display_name": "Economics, Econometrics and Finance"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/2",
+        "display_name": "Social Sciences"
+      }
+    },
+    {
+      "id": "https://openalex.org/T12617",
+      "display_name": "Energy, Environment, and Transportation Policies",
+      "score": 0.9983000159263611,
+      "subfield": {
+        "id": "https://openalex.org/subfields/2105",
+        "display_name": "Renewable Energy, Sustainability and the Environment"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/21",
+        "display_name": "Energy"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/3",
+        "display_name": "Physical Sciences"
+      }
+    }
+  ],
+  "keywords": [
+    {
+      "id": "https://openalex.org/keywords/clean-technology",
+      "display_name": "Clean technology",
+      "score": 0.7084458470344543
+    },
+    {
+      "id": "https://openalex.org/keywords/path-dependency",
+      "display_name": "Path dependency",
+      "score": 0.6616210341453552
+    },
+    {
+      "id": "https://openalex.org/keywords/technical-change",
+      "display_name": "Technical change",
+      "score": 0.6275652050971985
+    },
+    {
+      "id": "https://openalex.org/keywords/auto-industry",
+      "display_name": "Auto industry",
+      "score": 0.6057835817337036
+    },
+    {
+      "id": "https://openalex.org/keywords/carbon-tax",
+      "display_name": "Carbon tax",
+      "score": 0.5936737060546875
+    },
+    {
+      "id": "https://openalex.org/keywords/industrial-organization",
+      "display_name": "Industrial organization",
+      "score": 0.5487821102142334
+    },
+    {
+      "id": "https://openalex.org/keywords/panel-data",
+      "display_name": "Panel data",
+      "score": 0.5195541977882385
+    },
+    {
+      "id": "https://openalex.org/keywords/climate-change",
+      "display_name": "Climate change",
+      "score": 0.4898645579814911
+    },
+    {
+      "id": "https://openalex.org/keywords/path",
+      "display_name": "Path (computing)",
+      "score": 0.4650002717971802
+    },
+    {
+      "id": "https://openalex.org/keywords/face",
+      "display_name": "Face (sociological concept)",
+      "score": 0.4598556160926819
+    },
+    {
+      "id": "https://openalex.org/keywords/economics",
+      "display_name": "Economics",
+      "score": 0.43777772784233093
+    },
+    {
+      "id": "https://openalex.org/keywords/construct",
+      "display_name": "Construct (python library)",
+      "score": 0.43182751536369324
+    },
+    {
+      "id": "https://openalex.org/keywords/technological-change",
+      "display_name": "Technological change",
+      "score": 0.41480880975723267
+    },
+    {
+      "id": "https://openalex.org/keywords/business",
+      "display_name": "Business",
+      "score": 0.37890541553497314
+    },
+    {
+      "id": "https://openalex.org/keywords/natural-resource-economics",
+      "display_name": "Natural resource economics",
+      "score": 0.32736605405807495
+    },
+    {
+      "id": "https://openalex.org/keywords/economic-system",
+      "display_name": "Economic system",
+      "score": 0.1838182806968689
+    },
+    {
+      "id": "https://openalex.org/keywords/computer-science",
+      "display_name": "Computer science",
+      "score": 0.14341497421264648
+    },
+    {
+      "id": "https://openalex.org/keywords/econometrics",
+      "display_name": "Econometrics",
+      "score": 0.13899561762809753
+    },
+    {
+      "id": "https://openalex.org/keywords/engineering",
+      "display_name": "Engineering",
+      "score": 0.13338366150856018
+    },
+    {
+      "id": "https://openalex.org/keywords/macroeconomics",
+      "display_name": "Macroeconomics",
+      "score": 0.13103285431861877
+    }
+  ],
+  "concepts": [
+    {
+      "id": "https://openalex.org/C2780520809",
+      "wikidata": "https://www.wikidata.org/wiki/Q1099456",
+      "display_name": "Clean technology",
+      "level": 2,
+      "score": 0.7084458470344543
+    },
+    {
+      "id": "https://openalex.org/C2992749281",
+      "wikidata": "https://www.wikidata.org/wiki/Q1093521",
+      "display_name": "Path dependency",
+      "level": 2,
+      "score": 0.6616210341453552
+    },
+    {
+      "id": "https://openalex.org/C2777098202",
+      "wikidata": "https://www.wikidata.org/wiki/Q7692324",
+      "display_name": "Technical change",
+      "level": 3,
+      "score": 0.6275652050971985
+    },
+    {
+      "id": "https://openalex.org/C2989374701",
+      "wikidata": "https://www.wikidata.org/wiki/Q190117",
+      "display_name": "Auto industry",
+      "level": 3,
+      "score": 0.6057835817337036
+    },
+    {
+      "id": "https://openalex.org/C2778976125",
+      "wikidata": "https://www.wikidata.org/wiki/Q288401",
+      "display_name": "Carbon tax",
+      "level": 3,
+      "score": 0.5936737060546875
+    },
+    {
+      "id": "https://openalex.org/C40700",
+      "wikidata": "https://www.wikidata.org/wiki/Q1411783",
+      "display_name": "Industrial organization",
+      "level": 1,
+      "score": 0.5487821102142334
+    },
+    {
+      "id": "https://openalex.org/C6422946",
+      "wikidata": "https://www.wikidata.org/wiki/Q857354",
+      "display_name": "Panel data",
+      "level": 2,
+      "score": 0.5195541977882385
+    },
+    {
+      "id": "https://openalex.org/C132651083",
+      "wikidata": "https://www.wikidata.org/wiki/Q7942",
+      "display_name": "Climate change",
+      "level": 2,
+      "score": 0.4898645579814911
+    },
+    {
+      "id": "https://openalex.org/C2777735758",
+      "wikidata": "https://www.wikidata.org/wiki/Q817765",
+      "display_name": "Path (computing)",
+      "level": 2,
+      "score": 0.4650002717971802
+    },
+    {
+      "id": "https://openalex.org/C2779304628",
+      "wikidata": "https://www.wikidata.org/wiki/Q3503480",
+      "display_name": "Face (sociological concept)",
+      "level": 2,
+      "score": 0.4598556160926819
+    },
+    {
+      "id": "https://openalex.org/C162324750",
+      "wikidata": "https://www.wikidata.org/wiki/Q8134",
+      "display_name": "Economics",
+      "level": 0,
+      "score": 0.43777772784233093
+    },
+    {
+      "id": "https://openalex.org/C2780801425",
+      "wikidata": "https://www.wikidata.org/wiki/Q5164392",
+      "display_name": "Construct (python library)",
+      "level": 2,
+      "score": 0.43182751536369324
+    },
+    {
+      "id": "https://openalex.org/C137996800",
+      "wikidata": "https://www.wikidata.org/wiki/Q762702",
+      "display_name": "Technological change",
+      "level": 2,
+      "score": 0.41480880975723267
+    },
+    {
+      "id": "https://openalex.org/C144133560",
+      "wikidata": "https://www.wikidata.org/wiki/Q4830453",
+      "display_name": "Business",
+      "level": 0,
+      "score": 0.37890541553497314
+    },
+    {
+      "id": "https://openalex.org/C175605778",
+      "wikidata": "https://www.wikidata.org/wiki/Q3299701",
+      "display_name": "Natural resource economics",
+      "level": 1,
+      "score": 0.32736605405807495
+    },
+    {
+      "id": "https://openalex.org/C74363100",
+      "wikidata": "https://www.wikidata.org/wiki/Q273005",
+      "display_name": "Economic system",
+      "level": 1,
+      "score": 0.1838182806968689
+    },
+    {
+      "id": "https://openalex.org/C41008148",
+      "wikidata": "https://www.wikidata.org/wiki/Q21198",
+      "display_name": "Computer science",
+      "level": 0,
+      "score": 0.14341497421264648
+    },
+    {
+      "id": "https://openalex.org/C149782125",
+      "wikidata": "https://www.wikidata.org/wiki/Q160039",
+      "display_name": "Econometrics",
+      "level": 1,
+      "score": 0.13899561762809753
+    },
+    {
+      "id": "https://openalex.org/C127413603",
+      "wikidata": "https://www.wikidata.org/wiki/Q11023",
+      "display_name": "Engineering",
+      "level": 0,
+      "score": 0.13338366150856018
+    },
+    {
+      "id": "https://openalex.org/C139719470",
+      "wikidata": "https://www.wikidata.org/wiki/Q39680",
+      "display_name": "Macroeconomics",
+      "level": 1,
+      "score": 0.13103285431861877
+    },
+    {
+      "id": "https://openalex.org/C146978453",
+      "wikidata": "https://www.wikidata.org/wiki/Q3798668",
+      "display_name": "Aerospace engineering",
+      "level": 1,
+      "score": 0.0
+    },
+    {
+      "id": "https://openalex.org/C86803240",
+      "wikidata": "https://www.wikidata.org/wiki/Q420",
+      "display_name": "Biology",
+      "level": 0,
+      "score": 0.0
+    },
+    {
+      "id": "https://openalex.org/C17744445",
+      "wikidata": "https://www.wikidata.org/wiki/Q36442",
+      "display_name": "Political science",
+      "level": 0,
+      "score": 0.0
+    },
+    {
+      "id": "https://openalex.org/C526921623",
+      "wikidata": "https://www.wikidata.org/wiki/Q190117",
+      "display_name": "Automotive industry",
+      "level": 2,
+      "score": 0.0
+    },
+    {
+      "id": "https://openalex.org/C36289849",
+      "wikidata": "https://www.wikidata.org/wiki/Q34749",
+      "display_name": "Social science",
+      "level": 1,
+      "score": 0.0
+    },
+    {
+      "id": "https://openalex.org/C199539241",
+      "wikidata": "https://www.wikidata.org/wiki/Q7748",
+      "display_name": "Law",
+      "level": 1,
+      "score": 0.0
+    },
+    {
+      "id": "https://openalex.org/C204983608",
+      "wikidata": "https://www.wikidata.org/wiki/Q2111958",
+      "display_name": "Productivity",
+      "level": 2,
+      "score": 0.0
+    },
+    {
+      "id": "https://openalex.org/C18903297",
+      "wikidata": "https://www.wikidata.org/wiki/Q7150",
+      "display_name": "Ecology",
+      "level": 1,
+      "score": 0.0
+    },
+    {
+      "id": "https://openalex.org/C199360897",
+      "wikidata": "https://www.wikidata.org/wiki/Q9143",
+      "display_name": "Programming language",
+      "level": 1,
+      "score": 0.0
+    },
+    {
+      "id": "https://openalex.org/C144024400",
+      "wikidata": "https://www.wikidata.org/wiki/Q21201",
+      "display_name": "Sociology",
+      "level": 0,
+      "score": 0.0
+    }
+  ],
+  "mesh": [],
+  "locations_count": 7,
+  "locations": [
+    {
+      "id": "doi:10.1086/684581",
+      "is_oa": false,
+      "landing_page_url": "https://doi.org/10.1086/684581",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S95323914",
+        "display_name": "Journal of Political Economy",
+        "issn_l": "0022-3808",
+        "issn": [
+          "0022-3808",
+          "1537-534X"
+        ],
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": true,
+        "host_organization": "https://openalex.org/P4310315672",
+        "host_organization_name": "University of Chicago Press",
+        "host_organization_lineage": [
+          "https://openalex.org/P4310315672",
+          "https://openalex.org/P4310315690"
+        ],
+        "host_organization_lineage_names": [
+          "University of Chicago Press",
+          "University of Chicago"
+        ],
+        "type": "journal"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "publishedVersion",
+      "is_accepted": true,
+      "is_published": true,
+      "raw_source_name": "Journal of Political Economy",
+      "raw_type": "journal-article"
+    },
+    {
+      "id": "pmh:oai:www.zora.uzh.ch:123729",
+      "is_oa": false,
+      "landing_page_url": null,
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4306401281",
+        "display_name": "Zurich Open Repository and Archive (University of Zurich)",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I202697423",
+        "host_organization_name": "University of Zurich",
+        "host_organization_lineage": [
+          "https://openalex.org/I202697423"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "acceptedVersion",
+      "is_accepted": true,
+      "is_published": false,
+      "raw_source_name": "Aghion, Philippe; Dechezlepr\u00eatre, Antoine; H\u00e9mous, David; Martin, Ralf; Van Reenen, John  (2016). Carbon Taxes, Path Dependency, and Directed Technical Change: Evidence from the Auto Industry.  Journal of Political Economy, 124(1):1-51.",
+      "raw_type": "info:eu-repo/semantics/article"
+    },
+    {
+      "id": "pmh:oai:researchonline.lse.ac.uk:62722",
+      "is_oa": true,
+      "landing_page_url": "https://orcid.org/0000-0002-9019-1677>,",
+      "pdf_url": "https://researchonline.lse.ac.uk/id/eprint/62722/7/Audit_query_8203.pdf",
+      "source": {
+        "id": "https://openalex.org/S4306401594",
+        "display_name": "London School of Economics and Political Science Research Online (London School of Economics and Political Science)",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I909854389",
+        "host_organization_name": "London School of Economics and Political Science",
+        "host_organization_lineage": [
+          "https://openalex.org/I909854389"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": "other-oa",
+      "license_id": "https://openalex.org/licenses/other-oa",
+      "version": "submittedVersion",
+      "is_accepted": false,
+      "is_published": false,
+      "raw_source_name": null,
+      "raw_type": "Article"
+    },
+    {
+      "id": "pmh:oai:spiral.imperial.ac.uk:10044/1/10282",
+      "is_oa": true,
+      "landing_page_url": "http://hdl.handle.net/10044/1/10282",
+      "pdf_url": "http://hdl.handle.net/10044/1/10282",
+      "source": {
+        "id": "https://openalex.org/S4306401396",
+        "display_name": "Spiral (Imperial College London)",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I47508984",
+        "host_organization_name": "Imperial College London",
+        "host_organization_lineage": [
+          "https://openalex.org/I47508984"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": "other-oa",
+      "license_id": "https://openalex.org/licenses/other-oa",
+      "version": "submittedVersion",
+      "is_accepted": false,
+      "is_published": false,
+      "raw_source_name": "51",
+      "raw_type": "Journal Article"
+    },
+    {
+      "id": "pmh:oai:dash.harvard.edu:1/27759048",
+      "is_oa": true,
+      "landing_page_url": "http://nrs.harvard.edu/urn-3:HUL.InstRepos:27759048",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4306401540",
+        "display_name": "Digital Access to Scholarship at Harvard (DASH) (Harvard University)",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I136199984",
+        "host_organization_name": "Harvard University",
+        "host_organization_lineage": [
+          "https://openalex.org/I136199984"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": "cc-by",
+      "license_id": "https://openalex.org/licenses/cc-by",
+      "version": "submittedVersion",
+      "is_accepted": false,
+      "is_published": false,
+      "raw_source_name": "",
+      "raw_type": "Journal Article"
+    },
+    {
+      "id": "pmh:oai:RePEc:ucp:jpolec:doi:10.1086/684581",
+      "is_oa": false,
+      "landing_page_url": "http://doi.org/10.1086/684581",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4306401271",
+        "display_name": "RePEc: Research Papers in Economics",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I77793887",
+        "host_organization_name": "Federal Reserve Bank of St. Louis",
+        "host_organization_lineage": [
+          "https://openalex.org/I77793887"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "submittedVersion",
+      "is_accepted": false,
+      "is_published": false,
+      "raw_source_name": null,
+      "raw_type": "article"
+    },
+    {
+      "id": "doi:10.5167/uzh-123729",
+      "is_oa": true,
+      "landing_page_url": "https://doi.org/10.5167/uzh-123729",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S7407051291",
+        "display_name": "Universit\u00e4t Z\u00fcrich, ZORA",
+        "issn_l": null,
+        "issn": [],
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": null,
+        "host_organization_name": null,
+        "host_organization_lineage": [],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": null,
+      "license_id": null,
+      "version": null,
+      "is_accepted": false,
+      "is_published": null,
+      "raw_source_name": null,
+      "raw_type": "JournalArticle"
+    }
+  ],
+  "best_oa_location": {
+    "id": "pmh:oai:researchonline.lse.ac.uk:62722",
+    "is_oa": true,
+    "landing_page_url": "https://orcid.org/0000-0002-9019-1677>,",
+    "pdf_url": "https://researchonline.lse.ac.uk/id/eprint/62722/7/Audit_query_8203.pdf",
+    "source": {
+      "id": "https://openalex.org/S4306401594",
+      "display_name": "London School of Economics and Political Science Research Online (London School of Economics and Political Science)",
+      "issn_l": null,
+      "issn": null,
+      "is_oa": false,
+      "is_in_doaj": false,
+      "is_core": false,
+      "host_organization": "https://openalex.org/I909854389",
+      "host_organization_name": "London School of Economics and Political Science",
+      "host_organization_lineage": [
+        "https://openalex.org/I909854389"
+      ],
+      "host_organization_lineage_names": [],
+      "type": "repository"
+    },
+    "license": "other-oa",
+    "license_id": "https://openalex.org/licenses/other-oa",
+    "version": "submittedVersion",
+    "is_accepted": false,
+    "is_published": false,
+    "raw_source_name": null,
+    "raw_type": "Article"
+  },
+  "sustainable_development_goals": [
+    {
+      "id": "https://metadata.un.org/sdg/9",
+      "display_name": "Industry, innovation and infrastructure",
+      "score": 0.4399999976158142
+    }
+  ],
+  "awards": [
+    {
+      "id": "https://openalex.org/G4771825002",
+      "display_name": null,
+      "funder_award_id": "ES/I015760/1",
+      "funder_id": "https://openalex.org/F4320334630",
+      "funder_display_name": "Economic and Social Research Council"
+    },
+    {
+      "id": "https://openalex.org/G4880584255",
+      "display_name": null,
+      "funder_award_id": "ES/M010341/1",
+      "funder_id": "https://openalex.org/F4320334630",
+      "funder_display_name": "Economic and Social Research Council"
+    },
+    {
+      "id": "https://openalex.org/G8860778660",
+      "display_name": null,
+      "funder_award_id": "ES/K006576/1",
+      "funder_id": "https://openalex.org/F4320334630",
+      "funder_display_name": "Economic and Social Research Council"
+    }
+  ],
+  "funders": [
+    {
+      "id": "https://openalex.org/F4320310266",
+      "display_name": "Grantham Foundation for the Protection of the Environment",
+      "ror": "https://ror.org/04mm88136"
+    },
+    {
+      "id": "https://openalex.org/F4320334630",
+      "display_name": "Economic and Social Research Council",
+      "ror": "https://ror.org/03n0ht308"
+    }
+  ],
+  "has_content": {
+    "grobid_xml": true,
+    "pdf": true
+  },
+  "content_urls": {
+    "pdf": "https://content.openalex.org/works/W3021625863.pdf",
+    "grobid_xml": "https://content.openalex.org/works/W3021625863.grobid-xml"
+  },
+  "referenced_works_count": 94,
+  "referenced_works": [
+    "https://openalex.org/W572296127",
+    "https://openalex.org/W1490118959",
+    "https://openalex.org/W1495063011",
+    "https://openalex.org/W1507285921",
+    "https://openalex.org/W1515142069",
+    "https://openalex.org/W1516710914",
+    "https://openalex.org/W1527697097",
+    "https://openalex.org/W1530265405",
+    "https://openalex.org/W1532238678",
+    "https://openalex.org/W1544428325",
+    "https://openalex.org/W1577726433",
+    "https://openalex.org/W1584737211",
+    "https://openalex.org/W1603357035",
+    "https://openalex.org/W1603390981",
+    "https://openalex.org/W1604177546",
+    "https://openalex.org/W1618969555",
+    "https://openalex.org/W1911302792",
+    "https://openalex.org/W1971959487",
+    "https://openalex.org/W1978907431",
+    "https://openalex.org/W1986486096",
+    "https://openalex.org/W1987105504",
+    "https://openalex.org/W1989393566",
+    "https://openalex.org/W1993064816",
+    "https://openalex.org/W1995773633",
+    "https://openalex.org/W1996982693",
+    "https://openalex.org/W2006836554",
+    "https://openalex.org/W2019395439",
+    "https://openalex.org/W2022928046",
+    "https://openalex.org/W2027325936",
+    "https://openalex.org/W2028695272",
+    "https://openalex.org/W2035757940",
+    "https://openalex.org/W2043391753",
+    "https://openalex.org/W2044603577",
+    "https://openalex.org/W2045441387",
+    "https://openalex.org/W2048552964",
+    "https://openalex.org/W2056651849",
+    "https://openalex.org/W2056909456",
+    "https://openalex.org/W2061218764",
+    "https://openalex.org/W2062836973",
+    "https://openalex.org/W2065881698",
+    "https://openalex.org/W2082967230",
+    "https://openalex.org/W2092857881",
+    "https://openalex.org/W2096067571",
+    "https://openalex.org/W2097259059",
+    "https://openalex.org/W2099232986",
+    "https://openalex.org/W2099697360",
+    "https://openalex.org/W2101669237",
+    "https://openalex.org/W2106315213",
+    "https://openalex.org/W2113918172",
+    "https://openalex.org/W2116017346",
+    "https://openalex.org/W2121376657",
+    "https://openalex.org/W2122570075",
+    "https://openalex.org/W2130788273",
+    "https://openalex.org/W2133726565",
+    "https://openalex.org/W2142068978",
+    "https://openalex.org/W2146674103",
+    "https://openalex.org/W2165429918",
+    "https://openalex.org/W2167996633",
+    "https://openalex.org/W2171065180",
+    "https://openalex.org/W2172078338",
+    "https://openalex.org/W2268909535",
+    "https://openalex.org/W2321211564",
+    "https://openalex.org/W2792151223",
+    "https://openalex.org/W2798213597",
+    "https://openalex.org/W2892282411",
+    "https://openalex.org/W3021167344",
+    "https://openalex.org/W3022056392",
+    "https://openalex.org/W3022441191",
+    "https://openalex.org/W3023275250",
+    "https://openalex.org/W3121137513",
+    "https://openalex.org/W3121511026",
+    "https://openalex.org/W3121537911",
+    "https://openalex.org/W3121791131",
+    "https://openalex.org/W3122153822",
+    "https://openalex.org/W3122226698",
+    "https://openalex.org/W3122424070",
+    "https://openalex.org/W3122728595",
+    "https://openalex.org/W3123018877",
+    "https://openalex.org/W3123746759",
+    "https://openalex.org/W3123846525",
+    "https://openalex.org/W3124119164",
+    "https://openalex.org/W3124160225",
+    "https://openalex.org/W3124567902",
+    "https://openalex.org/W3124708297",
+    "https://openalex.org/W3124855123",
+    "https://openalex.org/W3124940997",
+    "https://openalex.org/W3125519429",
+    "https://openalex.org/W3125560468",
+    "https://openalex.org/W3125788478",
+    "https://openalex.org/W3125829307",
+    "https://openalex.org/W3145364531",
+    "https://openalex.org/W3149284139",
+    "https://openalex.org/W3215435344",
+    "https://openalex.org/W4252149510"
+  ],
+  "related_works": [
+    "https://openalex.org/W2004895496",
+    "https://openalex.org/W2201676263",
+    "https://openalex.org/W2329094263",
+    "https://openalex.org/W2023960212",
+    "https://openalex.org/W3013783403",
+    "https://openalex.org/W2077498299",
+    "https://openalex.org/W2716129",
+    "https://openalex.org/W3123257818",
+    "https://openalex.org/W3021625863",
+    "https://openalex.org/W2151850242"
+  ],
+  "abstract_inverted_index": {
+    "Can": [
+      0
+    ],
+    "directed": [
+      1
+    ],
+    "technical": [
+      2
+    ],
+    "change": [
+      3
+    ],
+    "be": [
+      4
+    ],
+    "used": [
+      5
+    ],
+    "to": [
+      6,
+      45,
+      92,
+      96
+    ],
+    "combat": [
+      7
+    ],
+    "climate": [
+      8
+    ],
+    "change?": [
+      9
+    ],
+    "We": [
+      10,
+      40,
+      84
+    ],
+    "construct": [
+      11
+    ],
+    "new": [
+      12
+    ],
+    "firm-level": [
+      13
+    ],
+    "panel": [
+      14
+    ],
+    "data": [
+      15
+    ],
+    "on": [
+      16
+    ],
+    "auto": [
+      17
+    ],
+    "industry": [
+      18
+    ],
+    "innovation": [
+      19,
+      71,
+      82
+    ],
+    "distinguishing": [
+      20
+    ],
+    "between": [
+      21
+    ],
+    "\u201cdirty\u201d": [
+      22
+    ],
+    "(internal": [
+      23
+    ],
+    "combustion": [
+      24
+    ],
+    "engine)": [
+      25
+    ],
+    "and": [
+      26,
+      31,
+      77
+    ],
+    "\u201cclean\u201d": [
+      27
+    ],
+    "(e.g.,": [
+      28
+    ],
+    "electric,": [
+      29
+    ],
+    "hybrid,": [
+      30
+    ],
+    "hydrogen)": [
+      32
+    ],
+    "patents": [
+      33
+    ],
+    "across": [
+      34
+    ],
+    "80": [
+      35
+    ],
+    "countries": [
+      36
+    ],
+    "over": [
+      37
+    ],
+    "several": [
+      38
+    ],
+    "decades.": [
+      39
+    ],
+    "show": [
+      41
+    ],
+    "that": [
+      42
+    ],
+    "firms": [
+      43
+    ],
+    "tend": [
+      44
+    ],
+    "innovate": [
+      46
+    ],
+    "more": [
+      47
+    ],
+    "in": [
+      48,
+      52,
+      67,
+      88
+    ],
+    "clean": [
+      49,
+      94
+    ],
+    "(and": [
+      50
+    ],
+    "less": [
+      51
+    ],
+    "dirty)": [
+      53
+    ],
+    "technologies": [
+      54,
+      95
+    ],
+    "when": [
+      55
+    ],
+    "they": [
+      56
+    ],
+    "face": [
+      57
+    ],
+    "higher": [
+      58
+    ],
+    "tax-inclusive": [
+      59
+    ],
+    "fuel": [
+      60
+    ],
+    "prices.": [
+      61
+    ],
+    "Furthermore,": [
+      62
+    ],
+    "there": [
+      63
+    ],
+    "is": [
+      64
+    ],
+    "path": [
+      65
+    ],
+    "dependence": [
+      66
+    ],
+    "the": [
+      68,
+      79,
+      86
+    ],
+    "type": [
+      69
+    ],
+    "of": [
+      70
+    ],
+    "(clean/dirty)": [
+      72
+    ],
+    "both": [
+      73
+    ],
+    "from": [
+      74,
+      78
+    ],
+    "aggregate": [
+      75
+    ],
+    "spillovers": [
+      76
+    ],
+    "firm\u2019s": [
+      80
+    ],
+    "own": [
+      81
+    ],
+    "history.": [
+      83
+    ],
+    "simulate": [
+      85
+    ],
+    "increases": [
+      87
+    ],
+    "carbon": [
+      89
+    ],
+    "taxes": [
+      90
+    ],
+    "needed": [
+      91
+    ],
+    "allow": [
+      93
+    ],
+    "overtake": [
+      97
+    ],
+    "dirty": [
+      98
+    ],
+    "technologies.": [
+      99
+    ]
+  },
+  "counts_by_year": [
+    {
+      "year": 2026,
+      "cited_by_count": 258
+    },
+    {
+      "year": 2025,
+      "cited_by_count": 266
+    },
+    {
+      "year": 2024,
+      "cited_by_count": 188
+    },
+    {
+      "year": 2023,
+      "cited_by_count": 179
+    },
+    {
+      "year": 2022,
+      "cited_by_count": 127
+    },
+    {
+      "year": 2021,
+      "cited_by_count": 82
+    },
+    {
+      "year": 2020,
+      "cited_by_count": 80
+    },
+    {
+      "year": 2019,
+      "cited_by_count": 54
+    },
+    {
+      "year": 2018,
+      "cited_by_count": 42
+    },
+    {
+      "year": 2017,
+      "cited_by_count": 38
+    },
+    {
+      "year": 2016,
+      "cited_by_count": 23
+    },
+    {
+      "year": 2015,
+      "cited_by_count": 16
+    },
+    {
+      "year": 2014,
+      "cited_by_count": 9
+    },
+    {
+      "year": 2013,
+      "cited_by_count": 3
+    },
+    {
+      "year": 2012,
+      "cited_by_count": 8
+    }
+  ],
+  "updated_date": "2026-07-05T07:55:05.734416",
+  "created_date": "2025-10-10T00:00:00"
+}

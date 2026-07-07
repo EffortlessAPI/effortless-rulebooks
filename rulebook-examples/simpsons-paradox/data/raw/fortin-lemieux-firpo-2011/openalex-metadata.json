@@ -1,0 +1,773 @@
+{
+  "id": "https://openalex.org/W2272692359",
+  "doi": "https://doi.org/10.1111/ilr.12014",
+  "title": "Inter\u2010country wage differences in the European Union",
+  "display_name": "Inter\u2010country wage differences in the European Union",
+  "relevance_score": 135.96419,
+  "publication_year": 2016,
+  "publication_date": "2016-06-21",
+  "ids": {
+    "openalex": "https://openalex.org/W2272692359",
+    "doi": "https://doi.org/10.1111/ilr.12014",
+    "mag": "2272692359"
+  },
+  "language": "en",
+  "primary_location": {
+    "id": "doi:10.1111/ilr.12014",
+    "is_oa": false,
+    "landing_page_url": "https://doi.org/10.1111/ilr.12014",
+    "pdf_url": null,
+    "source": {
+      "id": "https://openalex.org/S50174339",
+      "display_name": "International Labour Review",
+      "issn_l": "0020-7780",
+      "issn": [
+        "0020-7780",
+        "1564-913X"
+      ],
+      "is_oa": false,
+      "is_in_doaj": true,
+      "is_core": true,
+      "host_organization": "https://openalex.org/P4310320595",
+      "host_organization_name": "Wiley",
+      "host_organization_lineage": [
+        "https://openalex.org/P4310320595"
+      ],
+      "host_organization_lineage_names": [
+        "Wiley"
+      ],
+      "type": "journal"
+    },
+    "license": null,
+    "license_id": null,
+    "version": "publishedVersion",
+    "is_accepted": true,
+    "is_published": true,
+    "raw_source_name": "International Labour Review",
+    "raw_type": "journal-article"
+  },
+  "type": "article",
+  "indexed_in": [
+    "crossref",
+    "doaj"
+  ],
+  "open_access": {
+    "is_oa": false,
+    "oa_status": "closed",
+    "oa_url": null,
+    "any_repository_has_fulltext": false
+  },
+  "authorships": [
+    {
+      "author_position": "first",
+      "author": {
+        "id": "https://openalex.org/A5052783068",
+        "display_name": "Jo\u00e3o Pereira",
+        "orcid": "https://orcid.org/0000-0002-5429-0109"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I21803372",
+          "display_name": "University of \u00c9vora",
+          "ror": "https://ror.org/02gyps716",
+          "country_code": "PT",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I21803372"
+          ]
+        }
+      ],
+      "countries": [
+        "PT"
+      ],
+      "is_corresponding": true,
+      "raw_author_name": "Jo\u00e3o PEREIRA",
+      "raw_affiliation_strings": [
+        "Department of Economics University of \u00c9vora  Portugal"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Department of Economics University of \u00c9vora  Portugal",
+          "institution_ids": [
+            "https://openalex.org/I21803372"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "last",
+      "author": {
+        "id": "https://openalex.org/A5053287345",
+        "display_name": "Aurora Galego",
+        "orcid": "https://orcid.org/0000-0002-0376-0078"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I21803372",
+          "display_name": "University of \u00c9vora",
+          "ror": "https://ror.org/02gyps716",
+          "country_code": "PT",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I21803372"
+          ]
+        }
+      ],
+      "countries": [
+        "PT"
+      ],
+      "is_corresponding": true,
+      "raw_author_name": "Aurora GALEGO",
+      "raw_affiliation_strings": [
+        "Department of Economics University of \u00c9vora  Portugal"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Department of Economics University of \u00c9vora  Portugal",
+          "institution_ids": [
+            "https://openalex.org/I21803372"
+          ]
+        }
+      ]
+    }
+  ],
+  "institutions": [],
+  "countries_distinct_count": 1,
+  "institutions_distinct_count": 2,
+  "corresponding_author_ids": [
+    "https://openalex.org/A5052783068",
+    "https://openalex.org/A5053287345"
+  ],
+  "corresponding_institution_ids": [
+    "https://openalex.org/I21803372"
+  ],
+  "apc_list": {
+    "value": 2940,
+    "currency": "USD",
+    "value_usd": 2940
+  },
+  "apc_paid": null,
+  "fwci": 5.1877,
+  "has_fulltext": false,
+  "cited_by_count": 12,
+  "citation_normalized_percentile": {
+    "value": 0.95734365,
+    "is_in_top_1_percent": false,
+    "is_in_top_10_percent": true
+  },
+  "cited_by_percentile_year": {
+    "min": 89,
+    "max": 98
+  },
+  "biblio": {
+    "volume": "157",
+    "issue": "1",
+    "first_page": "101",
+    "last_page": "128"
+  },
+  "is_retracted": false,
+  "is_paratext": false,
+  "is_xpac": false,
+  "primary_topic": {
+    "id": "https://openalex.org/T10208",
+    "display_name": "Labor market dynamics and wage inequality",
+    "score": 0.9951000213623047,
+    "subfield": {
+      "id": "https://openalex.org/subfields/2002",
+      "display_name": "Economics and Econometrics"
+    },
+    "field": {
+      "id": "https://openalex.org/fields/20",
+      "display_name": "Economics, Econometrics and Finance"
+    },
+    "domain": {
+      "id": "https://openalex.org/domains/2",
+      "display_name": "Social Sciences"
+    }
+  },
+  "topics": [
+    {
+      "id": "https://openalex.org/T10208",
+      "display_name": "Labor market dynamics and wage inequality",
+      "score": 0.9951000213623047,
+      "subfield": {
+        "id": "https://openalex.org/subfields/2002",
+        "display_name": "Economics and Econometrics"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/20",
+        "display_name": "Economics, Econometrics and Finance"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/2",
+        "display_name": "Social Sciences"
+      }
+    },
+    {
+      "id": "https://openalex.org/T10128",
+      "display_name": "Global trade and economics",
+      "score": 0.9810000061988831,
+      "subfield": {
+        "id": "https://openalex.org/subfields/2000",
+        "display_name": "General Economics, Econometrics and Finance"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/20",
+        "display_name": "Economics, Econometrics and Finance"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/2",
+        "display_name": "Social Sciences"
+      }
+    },
+    {
+      "id": "https://openalex.org/T12851",
+      "display_name": "Firm Innovation and Growth",
+      "score": 0.9485999941825867,
+      "subfield": {
+        "id": "https://openalex.org/subfields/2002",
+        "display_name": "Economics and Econometrics"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/20",
+        "display_name": "Economics, Econometrics and Finance"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/2",
+        "display_name": "Social Sciences"
+      }
+    }
+  ],
+  "keywords": [
+    {
+      "id": "https://openalex.org/keywords/wage",
+      "display_name": "Wage",
+      "score": 0.8565002083778381
+    },
+    {
+      "id": "https://openalex.org/keywords/distribution",
+      "display_name": "Distribution (mathematics)",
+      "score": 0.6187120079994202
+    },
+    {
+      "id": "https://openalex.org/keywords/economics",
+      "display_name": "Economics",
+      "score": 0.6126100420951843
+    },
+    {
+      "id": "https://openalex.org/keywords/labour-economics",
+      "display_name": "Labour economics",
+      "score": 0.537848174571991
+    },
+    {
+      "id": "https://openalex.org/keywords/demographic-economics",
+      "display_name": "Demographic economics",
+      "score": 0.448140412569046
+    },
+    {
+      "id": "https://openalex.org/keywords/european-union",
+      "display_name": "European union",
+      "score": 0.4281502664089203
+    },
+    {
+      "id": "https://openalex.org/keywords/international-trade",
+      "display_name": "International trade",
+      "score": 0.0836004912853241
+    },
+    {
+      "id": "https://openalex.org/keywords/mathematics",
+      "display_name": "Mathematics",
+      "score": 0.0577617883682251
+    }
+  ],
+  "concepts": [
+    {
+      "id": "https://openalex.org/C2777388388",
+      "wikidata": "https://www.wikidata.org/wiki/Q6821213",
+      "display_name": "Wage",
+      "level": 2,
+      "score": 0.8565002083778381
+    },
+    {
+      "id": "https://openalex.org/C110121322",
+      "wikidata": "https://www.wikidata.org/wiki/Q865811",
+      "display_name": "Distribution (mathematics)",
+      "level": 2,
+      "score": 0.6187120079994202
+    },
+    {
+      "id": "https://openalex.org/C162324750",
+      "wikidata": "https://www.wikidata.org/wiki/Q8134",
+      "display_name": "Economics",
+      "level": 0,
+      "score": 0.6126100420951843
+    },
+    {
+      "id": "https://openalex.org/C145236788",
+      "wikidata": "https://www.wikidata.org/wiki/Q28161",
+      "display_name": "Labour economics",
+      "level": 1,
+      "score": 0.537848174571991
+    },
+    {
+      "id": "https://openalex.org/C4249254",
+      "wikidata": "https://www.wikidata.org/wiki/Q3044431",
+      "display_name": "Demographic economics",
+      "level": 1,
+      "score": 0.448140412569046
+    },
+    {
+      "id": "https://openalex.org/C2910001868",
+      "wikidata": "https://www.wikidata.org/wiki/Q458",
+      "display_name": "European union",
+      "level": 2,
+      "score": 0.4281502664089203
+    },
+    {
+      "id": "https://openalex.org/C155202549",
+      "wikidata": "https://www.wikidata.org/wiki/Q178803",
+      "display_name": "International trade",
+      "level": 1,
+      "score": 0.0836004912853241
+    },
+    {
+      "id": "https://openalex.org/C33923547",
+      "wikidata": "https://www.wikidata.org/wiki/Q395",
+      "display_name": "Mathematics",
+      "level": 0,
+      "score": 0.0577617883682251
+    },
+    {
+      "id": "https://openalex.org/C134306372",
+      "wikidata": "https://www.wikidata.org/wiki/Q7754",
+      "display_name": "Mathematical analysis",
+      "level": 1,
+      "score": 0.0
+    }
+  ],
+  "mesh": [],
+  "locations_count": 2,
+  "locations": [
+    {
+      "id": "doi:10.1111/ilr.12014",
+      "is_oa": false,
+      "landing_page_url": "https://doi.org/10.1111/ilr.12014",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S50174339",
+        "display_name": "International Labour Review",
+        "issn_l": "0020-7780",
+        "issn": [
+          "0020-7780",
+          "1564-913X"
+        ],
+        "is_oa": false,
+        "is_in_doaj": true,
+        "is_core": true,
+        "host_organization": "https://openalex.org/P4310320595",
+        "host_organization_name": "Wiley",
+        "host_organization_lineage": [
+          "https://openalex.org/P4310320595"
+        ],
+        "host_organization_lineage_names": [
+          "Wiley"
+        ],
+        "type": "journal"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "publishedVersion",
+      "is_accepted": true,
+      "is_published": true,
+      "raw_source_name": "International Labour Review",
+      "raw_type": "journal-article"
+    },
+    {
+      "id": "pmh:oai:dspace.uevora.pt:10174/23361",
+      "is_oa": false,
+      "landing_page_url": "http://hdl.handle.net/10174/23361",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4306402433",
+        "display_name": "Portuguese National Funding Agency for Science, Research and Technology (RCAAP Project by FCT)",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": null,
+        "host_organization_name": null,
+        "host_organization_lineage": [],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "submittedVersion",
+      "is_accepted": false,
+      "is_published": false,
+      "raw_source_name": null,
+      "raw_type": "journal article"
+    }
+  ],
+  "best_oa_location": null,
+  "sustainable_development_goals": [
+    {
+      "id": "https://metadata.un.org/sdg/8",
+      "score": 0.7599999904632568,
+      "display_name": "Decent work and economic growth"
+    }
+  ],
+  "awards": [],
+  "funders": [
+    {
+      "id": "https://openalex.org/F4320320300",
+      "display_name": "European Commission",
+      "ror": "https://ror.org/00k4n6c32"
+    },
+    {
+      "id": "https://openalex.org/F4320334779",
+      "display_name": "Funda\u00e7\u00e3o para a Ci\u00eancia e a Tecnologia",
+      "ror": "https://ror.org/00snfqn58"
+    }
+  ],
+  "has_content": {
+    "grobid_xml": false,
+    "pdf": false
+  },
+  "content_urls": null,
+  "referenced_works_count": 36,
+  "referenced_works": [
+    "https://openalex.org/W767677153",
+    "https://openalex.org/W1479922966",
+    "https://openalex.org/W1527400035",
+    "https://openalex.org/W1577001291",
+    "https://openalex.org/W1595738328",
+    "https://openalex.org/W1597161912",
+    "https://openalex.org/W1963965317",
+    "https://openalex.org/W1981183884",
+    "https://openalex.org/W2029394297",
+    "https://openalex.org/W2029718398",
+    "https://openalex.org/W2046953410",
+    "https://openalex.org/W2062427523",
+    "https://openalex.org/W2082215513",
+    "https://openalex.org/W2087789757",
+    "https://openalex.org/W2095516703",
+    "https://openalex.org/W2105753640",
+    "https://openalex.org/W2112231177",
+    "https://openalex.org/W2113640535",
+    "https://openalex.org/W2141257535",
+    "https://openalex.org/W2160081815",
+    "https://openalex.org/W2162752858",
+    "https://openalex.org/W2162775446",
+    "https://openalex.org/W2166799637",
+    "https://openalex.org/W2170121699",
+    "https://openalex.org/W2582413624",
+    "https://openalex.org/W2626090933",
+    "https://openalex.org/W3023632619",
+    "https://openalex.org/W3121359605",
+    "https://openalex.org/W3122484243",
+    "https://openalex.org/W3122937458",
+    "https://openalex.org/W3123613870",
+    "https://openalex.org/W3123830302",
+    "https://openalex.org/W4211053332",
+    "https://openalex.org/W4241502104",
+    "https://openalex.org/W4302077115",
+    "https://openalex.org/W6675776296"
+  ],
+  "related_works": [
+    "https://openalex.org/W2766463957",
+    "https://openalex.org/W3125712150",
+    "https://openalex.org/W1531270253",
+    "https://openalex.org/W1987430257",
+    "https://openalex.org/W2083061677",
+    "https://openalex.org/W2127336856",
+    "https://openalex.org/W2263636791",
+    "https://openalex.org/W3125362703",
+    "https://openalex.org/W2890860559",
+    "https://openalex.org/W1521002209"
+  ],
+  "abstract_inverted_index": {
+    "Abstract": [
+      0
+    ],
+    "This": [
+      1,
+      57
+    ],
+    "article": [
+      2
+    ],
+    "investigates": [
+      3
+    ],
+    "the": [
+      4,
+      14,
+      18,
+      50,
+      70,
+      80
+    ],
+    "determinants": [
+      5
+    ],
+    "of": [
+      6,
+      85
+    ],
+    "wage": [
+      7,
+      15,
+      38,
+      46,
+      51
+    ],
+    "gaps": [
+      8
+    ],
+    "between": [
+      9,
+      66
+    ],
+    "European": [
+      10
+    ],
+    "Union": [
+      11
+    ],
+    "countries": [
+      12
+    ],
+    "along": [
+      13
+    ],
+    "distribution,": [
+      16
+    ],
+    "applying": [
+      17
+    ],
+    "methodology": [
+      19
+    ],
+    "proposed": [
+      20
+    ],
+    "by": [
+      21,
+      77
+    ],
+    "Firpo,": [
+      22
+    ],
+    "Fortin": [
+      23
+    ],
+    "and": [
+      24,
+      27,
+      30,
+      40
+    ],
+    "Lemieux": [
+      25,
+      29
+    ],
+    "(2009)": [
+      26
+    ],
+    "Fortin,": [
+      28
+    ],
+    "Firpo": [
+      31
+    ],
+    "(2011).": [
+      32
+    ],
+    "The": [
+      33
+    ],
+    "authors": [
+      34
+    ],
+    "conclude": [
+      35
+    ],
+    "that": [
+      36,
+      49
+    ],
+    "both": [
+      37
+    ],
+    "structure": [
+      39,
+      52
+    ],
+    "composition": [
+      41,
+      71
+    ],
+    "effects": [
+      42
+    ],
+    "contribute": [
+      43
+    ],
+    "to": [
+      44,
+      62,
+      93
+    ],
+    "explaining": [
+      45
+    ],
+    "differentials,": [
+      47
+    ],
+    "but": [
+      48
+    ],
+    "effect": [
+      53,
+      59,
+      72
+    ],
+    "is": [
+      54
+    ],
+    "more": [
+      55
+    ],
+    "important.": [
+      56
+    ],
+    "latter": [
+      58
+    ],
+    "would": [
+      60
+    ],
+    "appear": [
+      61
+    ],
+    "derive": [
+      63
+    ],
+    "from": [
+      64
+    ],
+    "differences": [
+      65,
+      78
+    ],
+    "unknown": [
+      67
+    ],
+    "factors,": [
+      68
+    ],
+    "while": [
+      69
+    ],
+    "can": [
+      73
+    ],
+    "largely": [
+      74
+    ],
+    "be": [
+      75
+    ],
+    "explained": [
+      76
+    ],
+    "in": [
+      79
+    ],
+    "following": [
+      81
+    ],
+    "areas:": [
+      82
+    ],
+    "education,": [
+      83
+    ],
+    "proportion": [
+      84
+    ],
+    "workers": [
+      86
+    ],
+    "with": [
+      87
+    ],
+    "supervisory": [
+      88
+    ],
+    "responsibilities,": [
+      89
+    ],
+    "occupational": [
+      90
+    ],
+    "structure,": [
+      91
+    ],
+    "and,": [
+      92
+    ],
+    "a": [
+      94
+    ],
+    "lesser": [
+      95
+    ],
+    "extent,": [
+      96
+    ],
+    "industrial": [
+      97
+    ],
+    "structure.": [
+      98
+    ]
+  },
+  "counts_by_year": [
+    {
+      "year": 2026,
+      "cited_by_count": 1
+    },
+    {
+      "year": 2025,
+      "cited_by_count": 1
+    },
+    {
+      "year": 2024,
+      "cited_by_count": 2
+    },
+    {
+      "year": 2022,
+      "cited_by_count": 3
+    },
+    {
+      "year": 2021,
+      "cited_by_count": 1
+    },
+    {
+      "year": 2019,
+      "cited_by_count": 2
+    },
+    {
+      "year": 2018,
+      "cited_by_count": 2
+    }
+  ],
+  "updated_date": "2026-05-21T06:26:12.895304",
+  "created_date": "2025-10-10T00:00:00"
+}

@@ -1,0 +1,17 @@
+{
+  "candidate_id": "cand-exp-angrist-pischke-2009",
+  "proposed_study_id": "angrist-pischke-2009",
+  "acquisition_status": "portal_manual",
+  "attempted_at": "2026-07-07T03:40:35+00:00",
+  "catalog_source_url": "https://nlsinfo.org/",
+  "resolved_urls": [
+    "https://doi.org/10.1093/qje/qjs020",
+    "https://academic.oup.com/qje/article-pdf/127/3/1057/30456845/qjs020.pdf",
+    "https://nlsinfo.org/"
+  ],
+  "files": [
+    "openalex-metadata.json",
+    "source-1.html"
+  ],
+  "dois": []
+}

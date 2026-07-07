@@ -1,0 +1,1069 @@
+{
+  "id": "https://openalex.org/W4383558127",
+  "doi": "https://doi.org/10.1145/3580507.3597715",
+  "title": "Confidence and College Applications: Evidence from a Randomized Intervention",
+  "display_name": "Confidence and College Applications: Evidence from a Randomized Intervention",
+  "relevance_score": 71.75042,
+  "publication_year": 2023,
+  "publication_date": "2023-07-07",
+  "ids": {
+    "openalex": "https://openalex.org/W4383558127",
+    "doi": "https://doi.org/10.1145/3580507.3597715"
+  },
+  "language": "en",
+  "primary_location": {
+    "id": "doi:10.1145/3580507.3597715",
+    "is_oa": false,
+    "landing_page_url": "https://doi.org/10.1145/3580507.3597715",
+    "pdf_url": null,
+    "source": null,
+    "license": null,
+    "license_id": null,
+    "version": "publishedVersion",
+    "is_accepted": true,
+    "is_published": true,
+    "raw_source_name": "Proceedings of the 24th ACM Conference on Economics and Computation",
+    "raw_type": "proceedings-article"
+  },
+  "type": "article",
+  "indexed_in": [
+    "crossref",
+    "datacite"
+  ],
+  "open_access": {
+    "is_oa": true,
+    "oa_status": "green",
+    "oa_url": "https://www.econstor.eu/bitstream/10419/282069/1/377.pdf",
+    "any_repository_has_fulltext": true
+  },
+  "authorships": [
+    {
+      "author_position": "first",
+      "author": {
+        "id": "https://openalex.org/A5024490957",
+        "display_name": "Rustamdjan Hakimov",
+        "orcid": "https://orcid.org/0000-0002-5425-4554"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I97565354",
+          "display_name": "University of Lausanne",
+          "ror": "https://ror.org/019whta54",
+          "country_code": "CH",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I97565354"
+          ]
+        }
+      ],
+      "countries": [
+        "CH"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Rustamdjan Hakimov",
+      "raw_affiliation_strings": [
+        "University of Lausanne, Lausanne, Switzerland"
+      ],
+      "raw_orcid": "https://orcid.org/0000-0002-5425-4554",
+      "affiliations": [
+        {
+          "raw_affiliation_string": "University of Lausanne, Lausanne, Switzerland",
+          "institution_ids": [
+            "https://openalex.org/I97565354"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5044177304",
+        "display_name": "Renke Schmacker",
+        "orcid": "https://orcid.org/0000-0002-1822-0277"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I97565354",
+          "display_name": "University of Lausanne",
+          "ror": "https://ror.org/019whta54",
+          "country_code": "CH",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I97565354"
+          ]
+        }
+      ],
+      "countries": [
+        "CH"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Renke Schmacker",
+      "raw_affiliation_strings": [
+        "University of Lausanne, Lausanne, Switzerland"
+      ],
+      "raw_orcid": "https://orcid.org/0000-0002-1822-0277",
+      "affiliations": [
+        {
+          "raw_affiliation_string": "University of Lausanne, Lausanne, Switzerland",
+          "institution_ids": [
+            "https://openalex.org/I97565354"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "last",
+      "author": {
+        "id": "https://openalex.org/A5045412548",
+        "display_name": "Camille Terrier",
+        "orcid": "https://orcid.org/0000-0002-3693-0862"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I166337079",
+          "display_name": "Queen Mary University of London",
+          "ror": "https://ror.org/026zzn846",
+          "country_code": "GB",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I124357947",
+            "https://openalex.org/I166337079"
+          ]
+        }
+      ],
+      "countries": [
+        "GB"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Camille Terrier",
+      "raw_affiliation_strings": [
+        "Queen Mary University London, London, United Kingdom"
+      ],
+      "raw_orcid": "https://orcid.org/0000-0002-3693-0862",
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Queen Mary University London, London, United Kingdom",
+          "institution_ids": [
+            "https://openalex.org/I166337079"
+          ]
+        }
+      ]
+    }
+  ],
+  "institutions": [],
+  "countries_distinct_count": 2,
+  "institutions_distinct_count": 2,
+  "corresponding_author_ids": [],
+  "corresponding_institution_ids": [],
+  "apc_list": null,
+  "apc_paid": null,
+  "fwci": 13.5133,
+  "has_fulltext": true,
+  "cited_by_count": 16,
+  "citation_normalized_percentile": {
+    "value": 0.98838067,
+    "is_in_top_1_percent": false,
+    "is_in_top_10_percent": true
+  },
+  "cited_by_percentile_year": {
+    "min": 94,
+    "max": 99
+  },
+  "biblio": {
+    "volume": null,
+    "issue": null,
+    "first_page": "851",
+    "last_page": "851"
+  },
+  "is_retracted": false,
+  "is_paratext": false,
+  "is_xpac": false,
+  "primary_topic": {
+    "id": "https://openalex.org/T10267",
+    "display_name": "Higher Education Research Studies",
+    "score": 0.9330000281333923,
+    "subfield": {
+      "id": "https://openalex.org/subfields/3304",
+      "display_name": "Education"
+    },
+    "field": {
+      "id": "https://openalex.org/fields/33",
+      "display_name": "Social Sciences"
+    },
+    "domain": {
+      "id": "https://openalex.org/domains/2",
+      "display_name": "Social Sciences"
+    }
+  },
+  "topics": [
+    {
+      "id": "https://openalex.org/T10267",
+      "display_name": "Higher Education Research Studies",
+      "score": 0.9330000281333923,
+      "subfield": {
+        "id": "https://openalex.org/subfields/3304",
+        "display_name": "Education"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/33",
+        "display_name": "Social Sciences"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/2",
+        "display_name": "Social Sciences"
+      }
+    },
+    {
+      "id": "https://openalex.org/T11544",
+      "display_name": "Gender, Labor, and Family Dynamics",
+      "score": 0.9277999997138977,
+      "subfield": {
+        "id": "https://openalex.org/subfields/3318",
+        "display_name": "Gender Studies"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/33",
+        "display_name": "Social Sciences"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/2",
+        "display_name": "Social Sciences"
+      }
+    }
+  ],
+  "keywords": [
+    {
+      "id": "https://openalex.org/keywords/socioeconomic-status",
+      "display_name": "Socioeconomic status",
+      "score": 0.7203511595726013
+    },
+    {
+      "id": "https://openalex.org/keywords/elite",
+      "display_name": "Elite",
+      "score": 0.6778148412704468
+    },
+    {
+      "id": "https://openalex.org/keywords/psychology",
+      "display_name": "Psychology",
+      "score": 0.5605000257492065
+    },
+    {
+      "id": "https://openalex.org/keywords/rank",
+      "display_name": "Rank (graph theory)",
+      "score": 0.5365386605262756
+    },
+    {
+      "id": "https://openalex.org/keywords/intervention",
+      "display_name": "Intervention (counseling)",
+      "score": 0.5058841109275818
+    },
+    {
+      "id": "https://openalex.org/keywords/perception",
+      "display_name": "Perception",
+      "score": 0.4632619023323059
+    },
+    {
+      "id": "https://openalex.org/keywords/confidence-interval",
+      "display_name": "Confidence interval",
+      "score": 0.41656601428985596
+    },
+    {
+      "id": "https://openalex.org/keywords/social-psychology",
+      "display_name": "Social psychology",
+      "score": 0.3637958765029907
+    },
+    {
+      "id": "https://openalex.org/keywords/demography",
+      "display_name": "Demography",
+      "score": 0.2969498336315155
+    },
+    {
+      "id": "https://openalex.org/keywords/sociology",
+      "display_name": "Sociology",
+      "score": 0.15886449813842773
+    },
+    {
+      "id": "https://openalex.org/keywords/statistics",
+      "display_name": "Statistics",
+      "score": 0.14535734057426453
+    },
+    {
+      "id": "https://openalex.org/keywords/political-science",
+      "display_name": "Political science",
+      "score": 0.13718295097351074
+    },
+    {
+      "id": "https://openalex.org/keywords/mathematics",
+      "display_name": "Mathematics",
+      "score": 0.10455536842346191
+    },
+    {
+      "id": "https://openalex.org/keywords/population",
+      "display_name": "Population",
+      "score": 0.0814301073551178
+    }
+  ],
+  "concepts": [
+    {
+      "id": "https://openalex.org/C147077947",
+      "wikidata": "https://www.wikidata.org/wiki/Q1515895",
+      "display_name": "Socioeconomic status",
+      "level": 3,
+      "score": 0.7203511595726013
+    },
+    {
+      "id": "https://openalex.org/C2775987171",
+      "wikidata": "https://www.wikidata.org/wiki/Q192797",
+      "display_name": "Elite",
+      "level": 3,
+      "score": 0.6778148412704468
+    },
+    {
+      "id": "https://openalex.org/C15744967",
+      "wikidata": "https://www.wikidata.org/wiki/Q9418",
+      "display_name": "Psychology",
+      "level": 0,
+      "score": 0.5605000257492065
+    },
+    {
+      "id": "https://openalex.org/C164226766",
+      "wikidata": "https://www.wikidata.org/wiki/Q7293202",
+      "display_name": "Rank (graph theory)",
+      "level": 2,
+      "score": 0.5365386605262756
+    },
+    {
+      "id": "https://openalex.org/C2780665704",
+      "wikidata": "https://www.wikidata.org/wiki/Q959298",
+      "display_name": "Intervention (counseling)",
+      "level": 2,
+      "score": 0.5058841109275818
+    },
+    {
+      "id": "https://openalex.org/C26760741",
+      "wikidata": "https://www.wikidata.org/wiki/Q160402",
+      "display_name": "Perception",
+      "level": 2,
+      "score": 0.4632619023323059
+    },
+    {
+      "id": "https://openalex.org/C44249647",
+      "wikidata": "https://www.wikidata.org/wiki/Q208498",
+      "display_name": "Confidence interval",
+      "level": 2,
+      "score": 0.41656601428985596
+    },
+    {
+      "id": "https://openalex.org/C77805123",
+      "wikidata": "https://www.wikidata.org/wiki/Q161272",
+      "display_name": "Social psychology",
+      "level": 1,
+      "score": 0.3637958765029907
+    },
+    {
+      "id": "https://openalex.org/C149923435",
+      "wikidata": "https://www.wikidata.org/wiki/Q37732",
+      "display_name": "Demography",
+      "level": 1,
+      "score": 0.2969498336315155
+    },
+    {
+      "id": "https://openalex.org/C144024400",
+      "wikidata": "https://www.wikidata.org/wiki/Q21201",
+      "display_name": "Sociology",
+      "level": 0,
+      "score": 0.15886449813842773
+    },
+    {
+      "id": "https://openalex.org/C105795698",
+      "wikidata": "https://www.wikidata.org/wiki/Q12483",
+      "display_name": "Statistics",
+      "level": 1,
+      "score": 0.14535734057426453
+    },
+    {
+      "id": "https://openalex.org/C17744445",
+      "wikidata": "https://www.wikidata.org/wiki/Q36442",
+      "display_name": "Political science",
+      "level": 0,
+      "score": 0.13718295097351074
+    },
+    {
+      "id": "https://openalex.org/C33923547",
+      "wikidata": "https://www.wikidata.org/wiki/Q395",
+      "display_name": "Mathematics",
+      "level": 0,
+      "score": 0.10455536842346191
+    },
+    {
+      "id": "https://openalex.org/C2908647359",
+      "wikidata": "https://www.wikidata.org/wiki/Q2625603",
+      "display_name": "Population",
+      "level": 2,
+      "score": 0.0814301073551178
+    },
+    {
+      "id": "https://openalex.org/C114614502",
+      "wikidata": "https://www.wikidata.org/wiki/Q76592",
+      "display_name": "Combinatorics",
+      "level": 1,
+      "score": 0.0
+    },
+    {
+      "id": "https://openalex.org/C199539241",
+      "wikidata": "https://www.wikidata.org/wiki/Q7748",
+      "display_name": "Law",
+      "level": 1,
+      "score": 0.0
+    },
+    {
+      "id": "https://openalex.org/C169760540",
+      "wikidata": "https://www.wikidata.org/wiki/Q207011",
+      "display_name": "Neuroscience",
+      "level": 1,
+      "score": 0.0
+    },
+    {
+      "id": "https://openalex.org/C94625758",
+      "wikidata": "https://www.wikidata.org/wiki/Q7163",
+      "display_name": "Politics",
+      "level": 2,
+      "score": 0.0
+    },
+    {
+      "id": "https://openalex.org/C118552586",
+      "wikidata": "https://www.wikidata.org/wiki/Q7867",
+      "display_name": "Psychiatry",
+      "level": 1,
+      "score": 0.0
+    }
+  ],
+  "mesh": [],
+  "locations_count": 7,
+  "locations": [
+    {
+      "id": "doi:10.1145/3580507.3597715",
+      "is_oa": false,
+      "landing_page_url": "https://doi.org/10.1145/3580507.3597715",
+      "pdf_url": null,
+      "source": null,
+      "license": null,
+      "license_id": null,
+      "version": "publishedVersion",
+      "is_accepted": true,
+      "is_published": true,
+      "raw_source_name": "Proceedings of the 24th ACM Conference on Economics and Computation",
+      "raw_type": "proceedings-article"
+    },
+    {
+      "id": "pmh:oai:econstor.eu:10419/282069",
+      "is_oa": true,
+      "landing_page_url": "http://hdl.handle.net/10419/282069",
+      "pdf_url": "https://www.econstor.eu/bitstream/10419/282069/1/377.pdf",
+      "source": {
+        "id": "https://openalex.org/S4306401696",
+        "display_name": "Econstor (Econstor)",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": null,
+        "host_organization_name": null,
+        "host_organization_lineage": [],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "submittedVersion",
+      "is_accepted": false,
+      "is_published": false,
+      "raw_source_name": "",
+      "raw_type": "doc-type:workingPaper"
+    },
+    {
+      "id": "pmh:oai:econstor.eu:10419/284312",
+      "is_oa": true,
+      "landing_page_url": "http://hdl.handle.net/10419/284312",
+      "pdf_url": "https://www.econstor.eu/bitstream/10419/284312/1/wp962.pdf",
+      "source": {
+        "id": "https://openalex.org/S4306401696",
+        "display_name": "Econstor (Econstor)",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": null,
+        "host_organization_name": null,
+        "host_organization_lineage": [],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "submittedVersion",
+      "is_accepted": false,
+      "is_published": false,
+      "raw_source_name": "",
+      "raw_type": "doc-type:workingPaper"
+    },
+    {
+      "id": "pmh:oai:epub.ub.uni-muenchen.de:94450",
+      "is_oa": true,
+      "landing_page_url": "http://nbn-resolving.de/urn:nbn:de:bvb:19-epub-94450-2",
+      "pdf_url": "https://epub.ub.uni-muenchen.de/94450/1/377.pdf",
+      "source": null,
+      "license": null,
+      "license_id": null,
+      "version": "submittedVersion",
+      "is_accepted": false,
+      "is_published": false,
+      "raw_source_name": "",
+      "raw_type": "doc-type:workingPaper"
+    },
+    {
+      "id": "pmh:oai:RePEc:rco:dpaper:377",
+      "is_oa": false,
+      "landing_page_url": null,
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4306401271",
+        "display_name": "RePEc: Research Papers in Economics",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I77793887",
+        "host_organization_name": "Federal Reserve Bank of St. Louis",
+        "host_organization_lineage": [
+          "https://openalex.org/I77793887"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "submittedVersion",
+      "is_accepted": false,
+      "is_published": false,
+      "raw_source_name": null,
+      "raw_type": "preprint"
+    },
+    {
+      "id": "pmh:oai:econstor.eu:10419/268275",
+      "is_oa": false,
+      "landing_page_url": "http://hdl.handle.net/10419/268275",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4306401696",
+        "display_name": "Econstor (Econstor)",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": null,
+        "host_organization_name": null,
+        "host_organization_lineage": [],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "submittedVersion",
+      "is_accepted": false,
+      "is_published": false,
+      "raw_source_name": "",
+      "raw_type": "doc-type:workingPaper"
+    },
+    {
+      "id": "doi:10.5282/ubm/epub.94450",
+      "is_oa": true,
+      "landing_page_url": "https://doi.org/10.5282/ubm/epub.94450",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S7407052039",
+        "display_name": "Universit\u00e4tsbibliothek der LMU",
+        "issn_l": null,
+        "issn": [],
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": null,
+        "host_organization_name": null,
+        "host_organization_lineage": [],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": null,
+      "license_id": null,
+      "version": null,
+      "is_accepted": false,
+      "is_published": null,
+      "raw_source_name": null,
+      "raw_type": "article-journal"
+    }
+  ],
+  "best_oa_location": {
+    "id": "pmh:oai:econstor.eu:10419/282069",
+    "is_oa": true,
+    "landing_page_url": "http://hdl.handle.net/10419/282069",
+    "pdf_url": "https://www.econstor.eu/bitstream/10419/282069/1/377.pdf",
+    "source": {
+      "id": "https://openalex.org/S4306401696",
+      "display_name": "Econstor (Econstor)",
+      "issn_l": null,
+      "issn": null,
+      "is_oa": false,
+      "is_in_doaj": false,
+      "is_core": false,
+      "host_organization": null,
+      "host_organization_name": null,
+      "host_organization_lineage": [],
+      "host_organization_lineage_names": [],
+      "type": "repository"
+    },
+    "license": null,
+    "license_id": null,
+    "version": "submittedVersion",
+    "is_accepted": false,
+    "is_published": false,
+    "raw_source_name": "",
+    "raw_type": "doc-type:workingPaper"
+  },
+  "sustainable_development_goals": [],
+  "awards": [
+    {
+      "id": "https://openalex.org/G5114839132",
+      "display_name": "TRR 190: Rationalit\u00e4t und Wettbewerb: Die \u00f6konomische Leistungsf\u00e4higkeit von Individuen und Unternehmen",
+      "funder_award_id": "280092119",
+      "funder_id": "https://openalex.org/F4320320879",
+      "funder_display_name": "Deutsche Forschungsgemeinschaft"
+    },
+    {
+      "id": "https://openalex.org/G5302339824",
+      "display_name": null,
+      "funder_award_id": "TRR 190",
+      "funder_id": "https://openalex.org/F4320320879",
+      "funder_display_name": "Deutsche Forschungsgemeinschaft"
+    },
+    {
+      "id": "https://openalex.org/G5688254516",
+      "display_name": null,
+      "funder_award_id": "CRC TRR 190",
+      "funder_id": "https://openalex.org/F4320306076",
+      "funder_display_name": "National Science Foundation"
+    },
+    {
+      "id": "https://openalex.org/G7070194571",
+      "display_name": null,
+      "funder_award_id": "CRC TRR 190",
+      "funder_id": "https://openalex.org/F4320320879",
+      "funder_display_name": "Deutsche Forschungsgemeinschaft"
+    },
+    {
+      "id": "https://openalex.org/G825332225",
+      "display_name": "Behavioral considerations in market design: Dynamic matching mechanisms",
+      "funder_award_id": "189152",
+      "funder_id": "https://openalex.org/F4320320924",
+      "funder_display_name": "Schweizerischer Nationalfonds zur F\u00f6rderung der Wissenschaftlichen Forschung"
+    }
+  ],
+  "funders": [
+    {
+      "id": "https://openalex.org/F4320306076",
+      "display_name": "National Science Foundation",
+      "ror": "https://ror.org/021nxhr62"
+    },
+    {
+      "id": "https://openalex.org/F4320320879",
+      "display_name": "Deutsche Forschungsgemeinschaft",
+      "ror": "https://ror.org/018mejw64"
+    },
+    {
+      "id": "https://openalex.org/F4320320924",
+      "display_name": "Schweizerischer Nationalfonds zur F\u00f6rderung der Wissenschaftlichen Forschung",
+      "ror": "https://ror.org/00yjd3n13"
+    },
+    {
+      "id": "https://openalex.org/F4320323831",
+      "display_name": "Universit\u00e9 de Lausanne",
+      "ror": "https://ror.org/019whta54"
+    }
+  ],
+  "has_content": {
+    "pdf": true,
+    "grobid_xml": true
+  },
+  "content_urls": {
+    "pdf": "https://content.openalex.org/works/W4383558127.pdf",
+    "grobid_xml": "https://content.openalex.org/works/W4383558127.grobid-xml"
+  },
+  "referenced_works_count": 0,
+  "referenced_works": [],
+  "related_works": [
+    "https://openalex.org/W3173976592",
+    "https://openalex.org/W650538140",
+    "https://openalex.org/W4386010110",
+    "https://openalex.org/W2322432826",
+    "https://openalex.org/W2047008865",
+    "https://openalex.org/W2943855857",
+    "https://openalex.org/W1531633990",
+    "https://openalex.org/W1589465577",
+    "https://openalex.org/W2350164584",
+    "https://openalex.org/W2171731378"
+  ],
+  "abstract_inverted_index": {
+    "Access": [
+      0
+    ],
+    "to": [
+      1,
+      27,
+      92
+    ],
+    "elite": [
+      2,
+      30
+    ],
+    "colleges": [
+      3,
+      53
+    ],
+    "varies": [
+      4
+    ],
+    "drastically": [
+      5
+    ],
+    "based": [
+      6
+    ],
+    "on": [
+      7,
+      122,
+      127
+    ],
+    "gender": [
+      8
+    ],
+    "and": [
+      9,
+      54,
+      60,
+      79,
+      112
+    ],
+    "socioeconomic": [
+      10
+    ],
+    "status": [
+      11
+    ],
+    "(SES).": [
+      12
+    ],
+    "In": [
+      13
+    ],
+    "the": [
+      14,
+      35,
+      45,
+      67,
+      76,
+      84,
+      123
+    ],
+    "U.S.,": [
+      15
+    ],
+    "children": [
+      16
+    ],
+    "from": [
+      17,
+      34
+    ],
+    "top": [
+      18
+    ],
+    "1%": [
+      19
+    ],
+    "income": [
+      20,
+      38
+    ],
+    "families": [
+      21
+    ],
+    "are": [
+      22
+    ],
+    "77": [
+      23
+    ],
+    "times": [
+      24
+    ],
+    "more": [
+      25
+    ],
+    "likely": [
+      26
+    ],
+    "attend": [
+      28
+    ],
+    "an": [
+      29
+    ],
+    "institution": [
+      31
+    ],
+    "than": [
+      32,
+      57
+    ],
+    "those": [
+      33
+    ],
+    "bottom": [
+      36
+    ],
+    "20%": [
+      37
+    ],
+    "bracket": [
+      39
+    ],
+    "[Chetty": [
+      40
+    ],
+    "et": [
+      41,
+      101
+    ],
+    "al.": [
+      42,
+      102
+    ],
+    "2017].": [
+      43,
+      62
+    ],
+    "At": [
+      44
+    ],
+    "same": [
+      46
+    ],
+    "time,": [
+      47
+    ],
+    "females": [
+      48
+    ],
+    "disproportionately": [
+      49
+    ],
+    "enter": [
+      50
+    ],
+    "less": [
+      51
+    ],
+    "selective": [
+      52
+    ],
+    "lower-paying": [
+      55
+    ],
+    "jobs": [
+      56
+    ],
+    "men": [
+      58
+    ],
+    "[Blau": [
+      59
+    ],
+    "Kahn": [
+      61
+    ],
+    "We": [
+      63
+    ],
+    "investigate": [
+      64
+    ],
+    "\"misconfidence\"": [
+      65
+    ],
+    "---": [
+      66
+    ],
+    "difference": [
+      68
+    ],
+    "between": [
+      69,
+      110
+    ],
+    "student": [
+      70
+    ],
+    "perception": [
+      71
+    ],
+    "of": [
+      72,
+      119,
+      125
+    ],
+    "their": [
+      73,
+      80,
+      97
+    ],
+    "rank": [
+      74,
+      82
+    ],
+    "in": [
+      75,
+      83
+    ],
+    "grade": [
+      77
+    ],
+    "distribution": [
+      78
+    ],
+    "real": [
+      81
+    ],
+    "distribution.": [
+      85
+    ],
+    "It": [
+      86
+    ],
+    "is": [
+      87,
+      116
+    ],
+    "very": [
+      88
+    ],
+    "common": [
+      89
+    ],
+    "for": [
+      90
+    ],
+    "individuals": [
+      91
+    ],
+    "have": [
+      93
+    ],
+    "biased": [
+      94
+    ],
+    "beliefs": [
+      95
+    ],
+    "about": [
+      96
+    ],
+    "own": [
+      98
+    ],
+    "abilities": [
+      99
+    ],
+    "[M\u00f6bius": [
+      100
+    ],
+    "2022].": [
+      103
+    ],
+    "While": [
+      104
+    ],
+    "several": [
+      105
+    ],
+    "studies": [
+      106
+    ],
+    "show": [
+      107
+    ],
+    "a": [
+      108,
+      117
+    ],
+    "correlation": [
+      109
+    ],
+    "confidence": [
+      111
+    ],
+    "educational": [
+      113
+    ],
+    "choices,": [
+      114
+    ],
+    "there": [
+      115
+    ],
+    "lack": [
+      118
+    ],
+    "causal": [
+      120
+    ],
+    "evidence": [
+      121
+    ],
+    "impact": [
+      124
+    ],
+    "misconfidence": [
+      126
+    ],
+    "college": [
+      128
+    ],
+    "choices.": [
+      129
+    ]
+  },
+  "counts_by_year": [
+    {
+      "year": 2026,
+      "cited_by_count": 3
+    },
+    {
+      "year": 2025,
+      "cited_by_count": 9
+    },
+    {
+      "year": 2024,
+      "cited_by_count": 2
+    },
+    {
+      "year": 2023,
+      "cited_by_count": 2
+    }
+  ],
+  "updated_date": "2026-07-05T07:55:05.734416",
+  "created_date": "2025-10-10T00:00:00"
+}

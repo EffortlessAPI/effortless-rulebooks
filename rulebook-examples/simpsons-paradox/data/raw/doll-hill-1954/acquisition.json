@@ -1,0 +1,16 @@
+{
+  "candidate_id": "cand-exp-doll-hill-1954",
+  "proposed_study_id": "doll-hill-1954",
+  "acquisition_status": "metadata_only",
+  "attempted_at": "2026-07-07T03:45:26+00:00",
+  "catalog_source_url": "https://www.ctsu.ox.ac.uk/research/uk-doctors-cohort",
+  "resolved_urls": [
+    "https://doi.org/10.1136/bmj.1.5395.1399",
+    "https://www.bmj.com/content/bmj/1/5395/1399.full.pdf",
+    "https://www.ctsu.ox.ac.uk/research/uk-doctors-cohort"
+  ],
+  "files": [
+    "openalex-metadata.json"
+  ],
+  "dois": []
+}

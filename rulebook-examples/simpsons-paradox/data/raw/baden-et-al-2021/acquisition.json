@@ -1,0 +1,18 @@
+{
+  "candidate_id": "cand-exp-baden-et-al-2021",
+  "proposed_study_id": "baden-et-al-2021",
+  "acquisition_status": "downloaded",
+  "attempted_at": "2026-07-07T03:45:38+00:00",
+  "catalog_source_url": "https://vivli.org/",
+  "resolved_urls": [
+    "https://doi.org/10.1038/s41392-021-00527-1",
+    "https://www.nature.com/articles/s41392-021-00527-1.pdf",
+    "https://vivli.org/"
+  ],
+  "files": [
+    "openalex-search.pdf",
+    "openalex-metadata.json",
+    "source-1.html"
+  ],
+  "dois": []
+}

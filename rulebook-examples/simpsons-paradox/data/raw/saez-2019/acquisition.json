@@ -1,0 +1,17 @@
+{
+  "candidate_id": "cand-exp-saez-2019",
+  "proposed_study_id": "saez-2019",
+  "acquisition_status": "downloaded",
+  "attempted_at": "2026-07-07T03:41:04+00:00",
+  "catalog_source_url": "https://www.irs.gov/statistics/soi-tax-stats-individual-income-tax-statistics",
+  "resolved_urls": [
+    "https://doi.org/10.1007/s00134-020-06022-5",
+    "https://link.springer.com/content/pdf/10.1007/s00134-020-06022-5.pdf",
+    "https://www.irs.gov/statistics/soi-tax-stats-individual-income-tax-statistics"
+  ],
+  "files": [
+    "openalex-search.pdf",
+    "openalex-metadata.json"
+  ],
+  "dois": []
+}

@@ -1,0 +1,1419 @@
+{
+  "id": "https://openalex.org/W2079244546",
+  "doi": "https://doi.org/10.1111/j.1467-8624.1998.tb06163.x",
+  "title": "A Prospective Longitudinal Study of Attachment Disorganization/Disorientation",
+  "display_name": "A Prospective Longitudinal Study of Attachment Disorganization/Disorientation",
+  "relevance_score": 41.072163,
+  "publication_year": 1998,
+  "publication_date": "1998-08-01",
+  "ids": {
+    "openalex": "https://openalex.org/W2079244546",
+    "doi": "https://doi.org/10.1111/j.1467-8624.1998.tb06163.x",
+    "mag": "2079244546",
+    "pmid": "https://pubmed.ncbi.nlm.nih.gov/9768489"
+  },
+  "language": "en",
+  "primary_location": {
+    "id": "doi:10.1111/j.1467-8624.1998.tb06163.x",
+    "is_oa": true,
+    "landing_page_url": "https://doi.org/10.1111/j.1467-8624.1998.tb06163.x",
+    "pdf_url": "https://onlinelibrary.wiley.com/doi/pdfdirect/10.1111/j.1467-8624.1998.tb06163.x",
+    "source": {
+      "id": "https://openalex.org/S109723506",
+      "display_name": "Child Development",
+      "issn_l": "0009-3920",
+      "issn": [
+        "0009-3920",
+        "1467-8624"
+      ],
+      "is_oa": false,
+      "is_in_doaj": false,
+      "is_core": true,
+      "host_organization": "https://openalex.org/P4310320595",
+      "host_organization_name": "Wiley",
+      "host_organization_lineage": [
+        "https://openalex.org/P4310320595"
+      ],
+      "host_organization_lineage_names": [
+        "Wiley"
+      ],
+      "type": "journal"
+    },
+    "license": null,
+    "license_id": null,
+    "version": "publishedVersion",
+    "is_accepted": true,
+    "is_published": true,
+    "raw_source_name": "Child Development",
+    "raw_type": "journal-article"
+  },
+  "type": "article",
+  "indexed_in": [
+    "crossref",
+    "pubmed"
+  ],
+  "open_access": {
+    "is_oa": true,
+    "oa_status": "bronze",
+    "oa_url": "https://onlinelibrary.wiley.com/doi/pdfdirect/10.1111/j.1467-8624.1998.tb06163.x",
+    "any_repository_has_fulltext": false
+  },
+  "authorships": [
+    {
+      "author_position": "first",
+      "author": {
+        "id": "https://openalex.org/A5089572199",
+        "display_name": "Elizabeth A. Carlson",
+        "orcid": "https://orcid.org/0000-0002-4028-0401"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I130238516",
+          "display_name": "University of Minnesota",
+          "ror": "https://ror.org/017zqws13",
+          "country_code": "US",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I130238516"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": true,
+      "raw_author_name": "Elizabeth A Carlson",
+      "raw_affiliation_strings": [
+        "Institute of Child Development, University of Minnesota , 51 East River Road, Minneapolis, MN 55455",
+        "Institute of Child Development, University of Minnesota, 51 East River Road, Minneapolis, MN 55455"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Institute of Child Development, University of Minnesota , 51 East River Road, Minneapolis, MN 55455",
+          "institution_ids": [
+            "https://openalex.org/I130238516"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Institute of Child Development, University of Minnesota, 51 East River Road, Minneapolis, MN 55455",
+          "institution_ids": [
+            "https://openalex.org/I130238516"
+          ]
+        }
+      ]
+    }
+  ],
+  "institutions": [],
+  "countries_distinct_count": 1,
+  "institutions_distinct_count": 1,
+  "corresponding_author_ids": [
+    "https://openalex.org/A5089572199"
+  ],
+  "corresponding_institution_ids": [
+    "https://openalex.org/I130238516"
+  ],
+  "apc_list": {
+    "value": 4070,
+    "currency": "USD",
+    "value_usd": 4070
+  },
+  "apc_paid": null,
+  "fwci": 17.8765,
+  "has_fulltext": true,
+  "cited_by_count": 801,
+  "citation_normalized_percentile": {
+    "value": 0.9949373,
+    "is_in_top_1_percent": true,
+    "is_in_top_10_percent": true
+  },
+  "cited_by_percentile_year": {
+    "min": 99,
+    "max": 100
+  },
+  "biblio": {
+    "volume": "69",
+    "issue": "4",
+    "first_page": "1107",
+    "last_page": "1128"
+  },
+  "is_retracted": false,
+  "is_paratext": false,
+  "is_xpac": false,
+  "primary_topic": {
+    "id": "https://openalex.org/T10426",
+    "display_name": "Child Abuse and Trauma",
+    "score": 0.9994999766349792,
+    "subfield": {
+      "id": "https://openalex.org/subfields/3203",
+      "display_name": "Clinical Psychology"
+    },
+    "field": {
+      "id": "https://openalex.org/fields/32",
+      "display_name": "Psychology"
+    },
+    "domain": {
+      "id": "https://openalex.org/domains/2",
+      "display_name": "Social Sciences"
+    }
+  },
+  "topics": [
+    {
+      "id": "https://openalex.org/T10426",
+      "display_name": "Child Abuse and Trauma",
+      "score": 0.9994999766349792,
+      "subfield": {
+        "id": "https://openalex.org/subfields/3203",
+        "display_name": "Clinical Psychology"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/32",
+        "display_name": "Psychology"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/2",
+        "display_name": "Social Sciences"
+      }
+    },
+    {
+      "id": "https://openalex.org/T10677",
+      "display_name": "Attachment and Relationship Dynamics",
+      "score": 0.9994999766349792,
+      "subfield": {
+        "id": "https://openalex.org/subfields/3207",
+        "display_name": "Social Psychology"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/32",
+        "display_name": "Psychology"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/2",
+        "display_name": "Social Sciences"
+      }
+    },
+    {
+      "id": "https://openalex.org/T10182",
+      "display_name": "Child and Adolescent Psychosocial and Emotional Development",
+      "score": 0.9987999796867371,
+      "subfield": {
+        "id": "https://openalex.org/subfields/3203",
+        "display_name": "Clinical Psychology"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/32",
+        "display_name": "Psychology"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/2",
+        "display_name": "Social Sciences"
+      }
+    }
+  ],
+  "keywords": [
+    {
+      "id": "https://openalex.org/keywords/psychology",
+      "display_name": "Psychology",
+      "score": 0.8370972275733948
+    },
+    {
+      "id": "https://openalex.org/keywords/developmental-psychology",
+      "display_name": "Developmental psychology",
+      "score": 0.5327795743942261
+    },
+    {
+      "id": "https://openalex.org/keywords/longitudinal-study",
+      "display_name": "Longitudinal study",
+      "score": 0.483590304851532
+    },
+    {
+      "id": "https://openalex.org/keywords/cognitive-psychology",
+      "display_name": "Cognitive psychology",
+      "score": 0.38205409049987793
+    }
+  ],
+  "concepts": [
+    {
+      "id": "https://openalex.org/C15744967",
+      "wikidata": "https://www.wikidata.org/wiki/Q9418",
+      "display_name": "Psychology",
+      "level": 0,
+      "score": 0.8370972275733948
+    },
+    {
+      "id": "https://openalex.org/C138496976",
+      "wikidata": "https://www.wikidata.org/wiki/Q175002",
+      "display_name": "Developmental psychology",
+      "level": 1,
+      "score": 0.5327795743942261
+    },
+    {
+      "id": "https://openalex.org/C2777895361",
+      "wikidata": "https://www.wikidata.org/wiki/Q1758614",
+      "display_name": "Longitudinal study",
+      "level": 2,
+      "score": 0.483590304851532
+    },
+    {
+      "id": "https://openalex.org/C180747234",
+      "wikidata": "https://www.wikidata.org/wiki/Q23373",
+      "display_name": "Cognitive psychology",
+      "level": 1,
+      "score": 0.38205409049987793
+    },
+    {
+      "id": "https://openalex.org/C33923547",
+      "wikidata": "https://www.wikidata.org/wiki/Q395",
+      "display_name": "Mathematics",
+      "level": 0,
+      "score": 0.0
+    },
+    {
+      "id": "https://openalex.org/C105795698",
+      "wikidata": "https://www.wikidata.org/wiki/Q12483",
+      "display_name": "Statistics",
+      "level": 1,
+      "score": 0.0
+    }
+  ],
+  "mesh": [
+    {
+      "descriptor_ui": "D000293",
+      "descriptor_name": "Adolescent",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000293",
+      "descriptor_name": "Adolescent",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000293",
+      "descriptor_name": "Adolescent",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000328",
+      "descriptor_name": "Adult",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000328",
+      "descriptor_name": "Adult",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000328",
+      "descriptor_name": "Adult",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D002648",
+      "descriptor_name": "Child",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D002648",
+      "descriptor_name": "Child",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D002648",
+      "descriptor_name": "Child",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D002649",
+      "descriptor_name": "Child Abuse",
+      "qualifier_ui": "Q000523",
+      "qualifier_name": "psychology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D002649",
+      "descriptor_name": "Child Abuse",
+      "qualifier_ui": "Q000523",
+      "qualifier_name": "psychology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D002649",
+      "descriptor_name": "Child Abuse",
+      "qualifier_ui": "Q000523",
+      "qualifier_name": "psychology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D002653",
+      "descriptor_name": "Child Behavior Disorders",
+      "qualifier_ui": "Q000209",
+      "qualifier_name": "etiology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D002653",
+      "descriptor_name": "Child Behavior Disorders",
+      "qualifier_ui": "Q000209",
+      "qualifier_name": "etiology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D002653",
+      "descriptor_name": "Child Behavior Disorders",
+      "qualifier_ui": "Q000209",
+      "qualifier_name": "etiology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D002675",
+      "descriptor_name": "Child, Preschool",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D002675",
+      "descriptor_name": "Child, Preschool",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D002675",
+      "descriptor_name": "Child, Preschool",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D004213",
+      "descriptor_name": "Dissociative Disorders",
+      "qualifier_ui": "Q000209",
+      "qualifier_name": "etiology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D004213",
+      "descriptor_name": "Dissociative Disorders",
+      "qualifier_ui": "Q000209",
+      "qualifier_name": "etiology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D004213",
+      "descriptor_name": "Dissociative Disorders",
+      "qualifier_ui": "Q000209",
+      "qualifier_name": "etiology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D005260",
+      "descriptor_name": "Female",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D005260",
+      "descriptor_name": "Female",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D005260",
+      "descriptor_name": "Female",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D006801",
+      "descriptor_name": "Humans",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D006801",
+      "descriptor_name": "Humans",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D006801",
+      "descriptor_name": "Humans",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D007223",
+      "descriptor_name": "Infant",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D007223",
+      "descriptor_name": "Infant",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D007223",
+      "descriptor_name": "Infant",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D008297",
+      "descriptor_name": "Male",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D008297",
+      "descriptor_name": "Male",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D008297",
+      "descriptor_name": "Male",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D008425",
+      "descriptor_name": "Maternal Behavior",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D008425",
+      "descriptor_name": "Maternal Behavior",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D008425",
+      "descriptor_name": "Maternal Behavior",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D008960",
+      "descriptor_name": "Models, Psychological",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D008960",
+      "descriptor_name": "Models, Psychological",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D008960",
+      "descriptor_name": "Models, Psychological",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D009034",
+      "descriptor_name": "Mother-Child Relations",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D009034",
+      "descriptor_name": "Mother-Child Relations",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D009034",
+      "descriptor_name": "Mother-Child Relations",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D009769",
+      "descriptor_name": "Object Attachment",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D009769",
+      "descriptor_name": "Object Attachment",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D009769",
+      "descriptor_name": "Object Attachment",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D010553",
+      "descriptor_name": "Personality Development",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D010553",
+      "descriptor_name": "Personality Development",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D010553",
+      "descriptor_name": "Personality Development",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D011446",
+      "descriptor_name": "Prospective Studies",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D011446",
+      "descriptor_name": "Prospective Studies",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D011446",
+      "descriptor_name": "Prospective Studies",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D012044",
+      "descriptor_name": "Regression Analysis",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D012044",
+      "descriptor_name": "Regression Analysis",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D012044",
+      "descriptor_name": "Regression Analysis",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D012917",
+      "descriptor_name": "Social Adjustment",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D012917",
+      "descriptor_name": "Social Adjustment",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D012917",
+      "descriptor_name": "Social Adjustment",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D012951",
+      "descriptor_name": "Socialization",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D012951",
+      "descriptor_name": "Socialization",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D012951",
+      "descriptor_name": "Socialization",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D013694",
+      "descriptor_name": "Temperament",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D013694",
+      "descriptor_name": "Temperament",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D013694",
+      "descriptor_name": "Temperament",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D016009",
+      "descriptor_name": "Chi-Square Distribution",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D016009",
+      "descriptor_name": "Chi-Square Distribution",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D016009",
+      "descriptor_name": "Chi-Square Distribution",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D018730",
+      "descriptor_name": "Infant Behavior",
+      "qualifier_ui": "Q000145",
+      "qualifier_name": "classification",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D018730",
+      "descriptor_name": "Infant Behavior",
+      "qualifier_ui": "Q000145",
+      "qualifier_name": "classification",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D018730",
+      "descriptor_name": "Infant Behavior",
+      "qualifier_ui": "Q000145",
+      "qualifier_name": "classification",
+      "is_major_topic": false
+    }
+  ],
+  "locations_count": 2,
+  "locations": [
+    {
+      "id": "doi:10.1111/j.1467-8624.1998.tb06163.x",
+      "is_oa": true,
+      "landing_page_url": "https://doi.org/10.1111/j.1467-8624.1998.tb06163.x",
+      "pdf_url": "https://onlinelibrary.wiley.com/doi/pdfdirect/10.1111/j.1467-8624.1998.tb06163.x",
+      "source": {
+        "id": "https://openalex.org/S109723506",
+        "display_name": "Child Development",
+        "issn_l": "0009-3920",
+        "issn": [
+          "0009-3920",
+          "1467-8624"
+        ],
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": true,
+        "host_organization": "https://openalex.org/P4310320595",
+        "host_organization_name": "Wiley",
+        "host_organization_lineage": [
+          "https://openalex.org/P4310320595"
+        ],
+        "host_organization_lineage_names": [
+          "Wiley"
+        ],
+        "type": "journal"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "publishedVersion",
+      "is_accepted": true,
+      "is_published": true,
+      "raw_source_name": "Child Development",
+      "raw_type": "journal-article"
+    },
+    {
+      "id": "pmid:9768489",
+      "is_oa": false,
+      "landing_page_url": "https://pubmed.ncbi.nlm.nih.gov/9768489",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4306525036",
+        "display_name": "PubMed",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I1299303238",
+        "host_organization_name": "National Institutes of Health",
+        "host_organization_lineage": [
+          "https://openalex.org/I1299303238"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "publishedVersion",
+      "is_accepted": true,
+      "is_published": true,
+      "raw_source_name": "Child development",
+      "raw_type": null
+    }
+  ],
+  "best_oa_location": {
+    "id": "doi:10.1111/j.1467-8624.1998.tb06163.x",
+    "is_oa": true,
+    "landing_page_url": "https://doi.org/10.1111/j.1467-8624.1998.tb06163.x",
+    "pdf_url": "https://onlinelibrary.wiley.com/doi/pdfdirect/10.1111/j.1467-8624.1998.tb06163.x",
+    "source": {
+      "id": "https://openalex.org/S109723506",
+      "display_name": "Child Development",
+      "issn_l": "0009-3920",
+      "issn": [
+        "0009-3920",
+        "1467-8624"
+      ],
+      "is_oa": false,
+      "is_in_doaj": false,
+      "is_core": true,
+      "host_organization": "https://openalex.org/P4310320595",
+      "host_organization_name": "Wiley",
+      "host_organization_lineage": [
+        "https://openalex.org/P4310320595"
+      ],
+      "host_organization_lineage_names": [
+        "Wiley"
+      ],
+      "type": "journal"
+    },
+    "license": null,
+    "license_id": null,
+    "version": "publishedVersion",
+    "is_accepted": true,
+    "is_published": true,
+    "raw_source_name": "Child Development",
+    "raw_type": "journal-article"
+  },
+  "sustainable_development_goals": [
+    {
+      "id": "https://metadata.un.org/sdg/16",
+      "display_name": "Peace, Justice and strong institutions",
+      "score": 0.4699999988079071
+    }
+  ],
+  "awards": [],
+  "funders": [
+    {
+      "id": "https://openalex.org/F4320332161",
+      "display_name": "National Institutes of Health",
+      "ror": "https://ror.org/01cwqze88"
+    },
+    {
+      "id": "https://openalex.org/F4320337346",
+      "display_name": "National Institute of Mental Health",
+      "ror": "https://ror.org/04xeg9z08"
+    }
+  ],
+  "has_content": {
+    "pdf": true,
+    "grobid_xml": true
+  },
+  "content_urls": {
+    "pdf": "https://content.openalex.org/works/W2079244546.pdf",
+    "grobid_xml": "https://content.openalex.org/works/W2079244546.grobid-xml"
+  },
+  "referenced_works_count": 70,
+  "referenced_works": [
+    "https://openalex.org/W604577007",
+    "https://openalex.org/W1415897012",
+    "https://openalex.org/W1599447873",
+    "https://openalex.org/W1720881856",
+    "https://openalex.org/W1872693690",
+    "https://openalex.org/W1876961161",
+    "https://openalex.org/W1966136342",
+    "https://openalex.org/W1974150133",
+    "https://openalex.org/W1978567370",
+    "https://openalex.org/W1979082087",
+    "https://openalex.org/W1984820007",
+    "https://openalex.org/W1991717994",
+    "https://openalex.org/W1992193527",
+    "https://openalex.org/W1997600957",
+    "https://openalex.org/W1999082494",
+    "https://openalex.org/W2000318094",
+    "https://openalex.org/W2002650468",
+    "https://openalex.org/W2004007808",
+    "https://openalex.org/W2005322735",
+    "https://openalex.org/W2005802872",
+    "https://openalex.org/W2009372896",
+    "https://openalex.org/W2011817422",
+    "https://openalex.org/W2014888521",
+    "https://openalex.org/W2016667558",
+    "https://openalex.org/W2031285727",
+    "https://openalex.org/W2033858045",
+    "https://openalex.org/W2040789382",
+    "https://openalex.org/W2042802920",
+    "https://openalex.org/W2053154970",
+    "https://openalex.org/W2064385417",
+    "https://openalex.org/W2065311552",
+    "https://openalex.org/W2065460772",
+    "https://openalex.org/W2072697973",
+    "https://openalex.org/W2076462186",
+    "https://openalex.org/W2076582199",
+    "https://openalex.org/W2082787634",
+    "https://openalex.org/W2088671985",
+    "https://openalex.org/W2090280719",
+    "https://openalex.org/W2107841045",
+    "https://openalex.org/W2110030389",
+    "https://openalex.org/W2133219501",
+    "https://openalex.org/W2148555975",
+    "https://openalex.org/W2150621887",
+    "https://openalex.org/W2150733301",
+    "https://openalex.org/W2154950251",
+    "https://openalex.org/W2159450761",
+    "https://openalex.org/W2163283024",
+    "https://openalex.org/W2168526847",
+    "https://openalex.org/W2169114581",
+    "https://openalex.org/W2250432376",
+    "https://openalex.org/W2313877811",
+    "https://openalex.org/W2462859348",
+    "https://openalex.org/W2565464355",
+    "https://openalex.org/W2594678088",
+    "https://openalex.org/W2762376175",
+    "https://openalex.org/W2763578340",
+    "https://openalex.org/W2779225231",
+    "https://openalex.org/W2783291863",
+    "https://openalex.org/W2785478211",
+    "https://openalex.org/W2902080364",
+    "https://openalex.org/W2902217587",
+    "https://openalex.org/W2963545501",
+    "https://openalex.org/W4210895374",
+    "https://openalex.org/W4242488023",
+    "https://openalex.org/W4245414222",
+    "https://openalex.org/W4250347235",
+    "https://openalex.org/W4252514620",
+    "https://openalex.org/W4299927410",
+    "https://openalex.org/W4301300814",
+    "https://openalex.org/W6746843643"
+  ],
+  "related_works": [
+    "https://openalex.org/W2748952813",
+    "https://openalex.org/W2931662336",
+    "https://openalex.org/W2077865380",
+    "https://openalex.org/W2134894512",
+    "https://openalex.org/W2053487507",
+    "https://openalex.org/W2765597752",
+    "https://openalex.org/W2083375246",
+    "https://openalex.org/W2067108088",
+    "https://openalex.org/W2085372204",
+    "https://openalex.org/W2769102919"
+  ],
+  "abstract_inverted_index": {
+    "The": [
+      0,
+      15,
+      139
+    ],
+    "research": [
+      1
+    ],
+    "explores": [
+      2
+    ],
+    "the": [
+      3,
+      52,
+      56,
+      129
+    ],
+    "antecedents": [
+      4,
+      38,
+      66
+    ],
+    "and": [
+      5,
+      28,
+      39,
+      70,
+      75,
+      103,
+      113,
+      116,
+      118,
+      134,
+      137
+    ],
+    "consequences": [
+      6,
+      42
+    ],
+    "of": [
+      7,
+      17,
+      36,
+      78,
+      88,
+      147,
+      155,
+      160
+    ],
+    "attachment": [
+      8,
+      18,
+      59,
+      89
+    ],
+    "disorganization": [
+      9,
+      60,
+      90,
+      126
+    ],
+    "from": [
+      10,
+      43
+    ],
+    "a": [
+      11,
+      144,
+      158
+    ],
+    "prospective": [
+      12
+    ],
+    "longitudinal": [
+      13,
+      57
+    ],
+    "perspective.": [
+      14
+    ],
+    "relations": [
+      16,
+      130
+    ],
+    "disorganization/disorientation": [
+      19
+    ],
+    "to": [
+      20,
+      40,
+      46,
+      97
+    ],
+    "endogenous": [
+      21,
+      84
+    ],
+    "(e.g.,": [
+      22,
+      30,
+      67
+    ],
+    "maternal": [
+      23,
+      31,
+      68
+    ],
+    "medical": [
+      24
+    ],
+    "history,": [
+      25
+    ],
+    "infant": [
+      26,
+      34,
+      76
+    ],
+    "temperament)": [
+      27
+    ],
+    "environmental": [
+      29,
+      65
+    ],
+    "caregiving": [
+      32,
+      73
+    ],
+    "quality,": [
+      33,
+      74
+    ],
+    "history": [
+      35,
+      77,
+      87
+    ],
+    "abuse)": [
+      37
+    ],
+    "behavioral": [
+      41
+    ],
+    "24": [
+      44,
+      102
+    ],
+    "months": [
+      45
+    ],
+    "19": [
+      47
+    ],
+    "years": [
+      48
+    ],
+    "are": [
+      49,
+      141
+    ],
+    "examined.": [
+      50
+    ],
+    "For": [
+      51
+    ],
+    "157": [
+      53
+    ],
+    "participants": [
+      54
+    ],
+    "in": [
+      55,
+      109,
+      120,
+      153,
+      165
+    ],
+    "study,": [
+      58
+    ],
+    "was": [
+      61,
+      91
+    ],
+    "correlated": [
+      62,
+      92
+    ],
+    "significantly": [
+      63
+    ],
+    "with": [
+      64,
+      82,
+      93
+    ],
+    "relationship": [
+      69,
+      99
+    ],
+    "risk": [
+      71
+    ],
+    "status,": [
+      72
+    ],
+    "maltreatment),": [
+      79
+    ],
+    "but": [
+      80
+    ],
+    "not": [
+      81
+    ],
+    "available": [
+      83
+    ],
+    "antecedents.": [
+      85
+    ],
+    "Infant": [
+      86
+    ],
+    "consequent": [
+      94
+    ],
+    "variables": [
+      95
+    ],
+    "related": [
+      96
+    ],
+    "mother-child": [
+      98
+    ],
+    "quality": [
+      100
+    ],
+    "at": [
+      101
+    ],
+    "42": [
+      104
+    ],
+    "months,": [
+      105
+    ],
+    "child": [
+      106
+    ],
+    "behavior": [
+      107
+    ],
+    "problems": [
+      108
+    ],
+    "preschool,": [
+      110
+    ],
+    "elementary": [
+      111
+    ],
+    "school": [
+      112
+    ],
+    "high": [
+      114
+    ],
+    "school,": [
+      115
+    ],
+    "psychopathology": [
+      117,
+      136
+    ],
+    "dissociation": [
+      119
+    ],
+    "adolescence.": [
+      121
+    ],
+    "Structural": [
+      122
+    ],
+    "models": [
+      123
+    ],
+    "suggest": [
+      124
+    ],
+    "that": [
+      125,
+      149
+    ],
+    "may": [
+      127
+    ],
+    "mediate": [
+      128
+    ],
+    "between": [
+      131
+    ],
+    "early": [
+      132
+    ],
+    "experience": [
+      133
+    ],
+    "later": [
+      135
+    ],
+    "dissociation.": [
+      138
+    ],
+    "findings": [
+      140
+    ],
+    "considered": [
+      142
+    ],
+    "within": [
+      143
+    ],
+    "developmental": [
+      145
+    ],
+    "view": [
+      146
+    ],
+    "psychopathology,": [
+      148
+    ],
+    "is,": [
+      150
+    ],
+    "pathology": [
+      151
+    ],
+    "defined": [
+      152
+    ],
+    "terms": [
+      154
+    ],
+    "process,": [
+      156
+    ],
+    "as": [
+      157
+    ],
+    "pattern": [
+      159
+    ],
+    "adaptation": [
+      161
+    ],
+    "constructed": [
+      162
+    ],
+    "by": [
+      163
+    ],
+    "individuals": [
+      164
+    ],
+    "their": [
+      166
+    ],
+    "environments.": [
+      167
+    ]
+  },
+  "counts_by_year": [
+    {
+      "year": 2026,
+      "cited_by_count": 9
+    },
+    {
+      "year": 2025,
+      "cited_by_count": 9
+    },
+    {
+      "year": 2024,
+      "cited_by_count": 15
+    },
+    {
+      "year": 2023,
+      "cited_by_count": 20
+    },
+    {
+      "year": 2022,
+      "cited_by_count": 19
+    },
+    {
+      "year": 2021,
+      "cited_by_count": 40
+    },
+    {
+      "year": 2020,
+      "cited_by_count": 29
+    },
+    {
+      "year": 2019,
+      "cited_by_count": 30
+    },
+    {
+      "year": 2018,
+      "cited_by_count": 20
+    },
+    {
+      "year": 2017,
+      "cited_by_count": 34
+    },
+    {
+      "year": 2016,
+      "cited_by_count": 36
+    },
+    {
+      "year": 2015,
+      "cited_by_count": 54
+    },
+    {
+      "year": 2014,
+      "cited_by_count": 38
+    },
+    {
+      "year": 2013,
+      "cited_by_count": 42
+    },
+    {
+      "year": 2012,
+      "cited_by_count": 48
+    }
+  ],
+  "updated_date": "2026-05-21T06:26:12.895304",
+  "created_date": "2025-10-10T00:00:00"
+}

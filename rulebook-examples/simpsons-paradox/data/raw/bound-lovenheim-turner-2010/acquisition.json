@@ -1,0 +1,16 @@
+{
+  "candidate_id": "cand-exp-bound-lovenheim-turner-2010",
+  "proposed_study_id": "bound-lovenheim-turner-2010",
+  "acquisition_status": "portal_manual",
+  "attempted_at": "2026-07-07T03:43:23+00:00",
+  "catalog_source_url": "https://nces.ed.gov/",
+  "resolved_urls": [
+    "https://doi.org/10.4324/9780203074091-14",
+    "https://nces.ed.gov/"
+  ],
+  "files": [
+    "openalex-metadata.json",
+    "source-1.html"
+  ],
+  "dois": []
+}

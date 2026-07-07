@@ -1,0 +1,19 @@
+{
+  "candidate_id": "cand-exp-tennis-first-serve-percentage-by-surface-2010",
+  "proposed_study_id": "tennis-first-serve-percentage-by-surface-2010",
+  "acquisition_status": "landing_saved",
+  "attempted_at": "2026-07-07T03:44:38+00:00",
+  "catalog_source_url": "https://www.atptour.com/en/stats",
+  "resolved_urls": [
+    "https://doi.org/10.1007/s40279-022-01807-8",
+    "https://research.rug.nl/en/publications/cf228e47-6823-4cb7-a8a7-2df252af962d",
+    "https://www.atptour.com/en/stats",
+    "https://www.wtatennis.com/stats"
+  ],
+  "files": [
+    "openalex-search.html",
+    "openalex-metadata.json",
+    "source-2.html"
+  ],
+  "dois": []
+}

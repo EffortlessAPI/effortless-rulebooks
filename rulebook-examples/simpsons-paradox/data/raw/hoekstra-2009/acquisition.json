@@ -1,0 +1,16 @@
+{
+  "candidate_id": "cand-exp-hoekstra-2009",
+  "proposed_study_id": "hoekstra-2009",
+  "acquisition_status": "downloaded",
+  "attempted_at": "2026-07-07T03:42:12+00:00",
+  "catalog_source_url": null,
+  "resolved_urls": [
+    "https://doi.org/10.15585/mmwr.ss6710a1",
+    "https://www.cdc.gov/mmwr/volumes/67/ss/pdfs/ss6710a1-H.pdf"
+  ],
+  "files": [
+    "openalex-search.pdf",
+    "openalex-metadata.json"
+  ],
+  "dois": []
+}

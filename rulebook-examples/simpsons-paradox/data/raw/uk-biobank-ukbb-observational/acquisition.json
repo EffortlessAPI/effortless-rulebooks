@@ -1,0 +1,17 @@
+{
+  "candidate_id": "cand-exp-uk-biobank-ukbb-observational",
+  "proposed_study_id": "uk-biobank-ukbb-observational",
+  "acquisition_status": "downloaded",
+  "attempted_at": "2026-07-07T03:44:17+00:00",
+  "catalog_source_url": "https://www.ukbiobank.ac.uk/",
+  "resolved_urls": [
+    "https://doi.org/10.1038/s41586-022-05473-8",
+    "https://www.nature.com/articles/s41586-022-05473-8.pdf",
+    "https://www.ukbiobank.ac.uk/"
+  ],
+  "files": [
+    "openalex-search.pdf",
+    "openalex-metadata.json"
+  ],
+  "dois": []
+}

@@ -1,0 +1,633 @@
+{
+  "id": "https://openalex.org/W3022576169",
+  "doi": "https://doi.org/10.1006/redy.1997.0008",
+  "title": "Explaining Rising Wage Inequality: Explorations with a Dynamic General Equilibrium Model of Labor Earnings with Heterogeneous Agents",
+  "display_name": "Explaining Rising Wage Inequality: Explorations with a Dynamic General Equilibrium Model of Labor Earnings with Heterogeneous Agents",
+  "relevance_score": 365.8671,
+  "publication_year": 1998,
+  "publication_date": "1998-01-01",
+  "ids": {
+    "openalex": "https://openalex.org/W3022576169",
+    "doi": "https://doi.org/10.1006/redy.1997.0008",
+    "mag": "3022576169"
+  },
+  "language": "en",
+  "primary_location": {
+    "id": "doi:10.1006/redy.1997.0008",
+    "is_oa": false,
+    "landing_page_url": "https://doi.org/10.1006/redy.1997.0008",
+    "pdf_url": null,
+    "source": {
+      "id": "https://openalex.org/S163499366",
+      "display_name": "Review of Economic Dynamics",
+      "issn_l": "1094-2025",
+      "issn": [
+        "1094-2025",
+        "1096-6099"
+      ],
+      "is_oa": false,
+      "is_in_doaj": false,
+      "is_core": true,
+      "host_organization": "https://openalex.org/P4310320990",
+      "host_organization_name": "Elsevier BV",
+      "host_organization_lineage": [
+        "https://openalex.org/P4310320990"
+      ],
+      "host_organization_lineage_names": [
+        "Elsevier BV"
+      ],
+      "type": "journal"
+    },
+    "license": null,
+    "license_id": null,
+    "version": "publishedVersion",
+    "is_accepted": true,
+    "is_published": true,
+    "raw_source_name": "Review of Economic Dynamics",
+    "raw_type": "journal-article"
+  },
+  "type": "article",
+  "indexed_in": [
+    "crossref"
+  ],
+  "open_access": {
+    "is_oa": false,
+    "oa_status": "closed",
+    "oa_url": null,
+    "any_repository_has_fulltext": false
+  },
+  "authorships": [
+    {
+      "author_position": "first",
+      "author": {
+        "id": "https://openalex.org/A5058726534",
+        "display_name": "James J. Heckman",
+        "orcid": "https://orcid.org/0000-0002-0399-662X"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I40347166",
+          "display_name": "University of Chicago",
+          "ror": "https://ror.org/024mw5h28",
+          "country_code": "US",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I40347166"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "James J Heckman",
+      "raw_affiliation_strings": [
+        "Department of Economics, University of Chicago, Chicago, Illinois, 60637"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Department of Economics, University of Chicago, Chicago, Illinois, 60637",
+          "institution_ids": [
+            "https://openalex.org/I40347166"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5038201139",
+        "display_name": "Lance Lochner",
+        "orcid": "https://orcid.org/0009-0006-6980-8894"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I40347166",
+          "display_name": "University of Chicago",
+          "ror": "https://ror.org/024mw5h28",
+          "country_code": "US",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I40347166"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Lance Lochner",
+      "raw_affiliation_strings": [
+        "Department of Economics, University of Chicago, Chicago, Illinois, 60637"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Department of Economics, University of Chicago, Chicago, Illinois, 60637",
+          "institution_ids": [
+            "https://openalex.org/I40347166"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "last",
+      "author": {
+        "id": "https://openalex.org/A5071083801",
+        "display_name": "Christopher Taber",
+        "orcid": null
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I111979921",
+          "display_name": "Northwestern University",
+          "ror": "https://ror.org/000e0be47",
+          "country_code": "US",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I111979921"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Christopher Taber",
+      "raw_affiliation_strings": [
+        "Department of Economics and Institute for Policy Research, Northwestern University, Evanston, Illinois, 60208"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Department of Economics and Institute for Policy Research, Northwestern University, Evanston, Illinois, 60208",
+          "institution_ids": [
+            "https://openalex.org/I111979921"
+          ]
+        }
+      ]
+    }
+  ],
+  "institutions": [],
+  "countries_distinct_count": 1,
+  "institutions_distinct_count": 3,
+  "corresponding_author_ids": [],
+  "corresponding_institution_ids": [],
+  "apc_list": {
+    "value": 3050,
+    "currency": "USD",
+    "value_usd": 3050
+  },
+  "apc_paid": null,
+  "fwci": 58.3518,
+  "has_fulltext": false,
+  "cited_by_count": 842,
+  "citation_normalized_percentile": {
+    "value": 0.99863185,
+    "is_in_top_1_percent": true,
+    "is_in_top_10_percent": true
+  },
+  "cited_by_percentile_year": {
+    "min": 98,
+    "max": 100
+  },
+  "biblio": {
+    "volume": "1",
+    "issue": "1",
+    "first_page": "1",
+    "last_page": "58"
+  },
+  "is_retracted": false,
+  "is_paratext": false,
+  "is_xpac": false,
+  "primary_topic": {
+    "id": "https://openalex.org/T10208",
+    "display_name": "Labor market dynamics and wage inequality",
+    "score": 0.9994000196456909,
+    "subfield": {
+      "id": "https://openalex.org/subfields/2002",
+      "display_name": "Economics and Econometrics"
+    },
+    "field": {
+      "id": "https://openalex.org/fields/20",
+      "display_name": "Economics, Econometrics and Finance"
+    },
+    "domain": {
+      "id": "https://openalex.org/domains/2",
+      "display_name": "Social Sciences"
+    }
+  },
+  "topics": [
+    {
+      "id": "https://openalex.org/T10208",
+      "display_name": "Labor market dynamics and wage inequality",
+      "score": 0.9994000196456909,
+      "subfield": {
+        "id": "https://openalex.org/subfields/2002",
+        "display_name": "Economics and Econometrics"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/20",
+        "display_name": "Economics, Econometrics and Finance"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/2",
+        "display_name": "Social Sciences"
+      }
+    },
+    {
+      "id": "https://openalex.org/T10393",
+      "display_name": "Economic Growth and Productivity",
+      "score": 0.9944000244140625,
+      "subfield": {
+        "id": "https://openalex.org/subfields/2002",
+        "display_name": "Economics and Econometrics"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/20",
+        "display_name": "Economics, Econometrics and Finance"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/2",
+        "display_name": "Social Sciences"
+      }
+    },
+    {
+      "id": "https://openalex.org/T12137",
+      "display_name": "Economic theories and models",
+      "score": 0.9909999966621399,
+      "subfield": {
+        "id": "https://openalex.org/subfields/2002",
+        "display_name": "Economics and Econometrics"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/20",
+        "display_name": "Economics, Econometrics and Finance"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/2",
+        "display_name": "Social Sciences"
+      }
+    }
+  ],
+  "keywords": [
+    {
+      "id": "https://openalex.org/keywords/economics",
+      "display_name": "Economics",
+      "score": 0.8320827484130859
+    },
+    {
+      "id": "https://openalex.org/keywords/earnings",
+      "display_name": "Earnings",
+      "score": 0.7255555391311646
+    },
+    {
+      "id": "https://openalex.org/keywords/human-capital",
+      "display_name": "Human capital",
+      "score": 0.696393609046936
+    },
+    {
+      "id": "https://openalex.org/keywords/wage",
+      "display_name": "Wage",
+      "score": 0.6903760433197021
+    },
+    {
+      "id": "https://openalex.org/keywords/general-equilibrium-theory",
+      "display_name": "General equilibrium theory",
+      "score": 0.5748987197875977
+    },
+    {
+      "id": "https://openalex.org/keywords/labour-economics",
+      "display_name": "Labour economics",
+      "score": 0.5306984782218933
+    },
+    {
+      "id": "https://openalex.org/keywords/inequality",
+      "display_name": "Inequality",
+      "score": 0.4856054186820984
+    },
+    {
+      "id": "https://openalex.org/keywords/econometrics",
+      "display_name": "Econometrics",
+      "score": 0.3819888234138489
+    },
+    {
+      "id": "https://openalex.org/keywords/macroeconomics",
+      "display_name": "Macroeconomics",
+      "score": 0.22086438536643982
+    }
+  ],
+  "concepts": [
+    {
+      "id": "https://openalex.org/C162324750",
+      "wikidata": "https://www.wikidata.org/wiki/Q8134",
+      "display_name": "Economics",
+      "level": 0,
+      "score": 0.8320827484130859
+    },
+    {
+      "id": "https://openalex.org/C2781426361",
+      "wikidata": "https://www.wikidata.org/wiki/Q5326940",
+      "display_name": "Earnings",
+      "level": 2,
+      "score": 0.7255555391311646
+    },
+    {
+      "id": "https://openalex.org/C2776943663",
+      "wikidata": "https://www.wikidata.org/wiki/Q165687",
+      "display_name": "Human capital",
+      "level": 2,
+      "score": 0.696393609046936
+    },
+    {
+      "id": "https://openalex.org/C2777388388",
+      "wikidata": "https://www.wikidata.org/wiki/Q6821213",
+      "display_name": "Wage",
+      "level": 2,
+      "score": 0.6903760433197021
+    },
+    {
+      "id": "https://openalex.org/C103382277",
+      "wikidata": "https://www.wikidata.org/wiki/Q282640",
+      "display_name": "General equilibrium theory",
+      "level": 2,
+      "score": 0.5748987197875977
+    },
+    {
+      "id": "https://openalex.org/C145236788",
+      "wikidata": "https://www.wikidata.org/wiki/Q28161",
+      "display_name": "Labour economics",
+      "level": 1,
+      "score": 0.5306984782218933
+    },
+    {
+      "id": "https://openalex.org/C45555294",
+      "wikidata": "https://www.wikidata.org/wiki/Q28113351",
+      "display_name": "Inequality",
+      "level": 2,
+      "score": 0.4856054186820984
+    },
+    {
+      "id": "https://openalex.org/C149782125",
+      "wikidata": "https://www.wikidata.org/wiki/Q160039",
+      "display_name": "Econometrics",
+      "level": 1,
+      "score": 0.3819888234138489
+    },
+    {
+      "id": "https://openalex.org/C139719470",
+      "wikidata": "https://www.wikidata.org/wiki/Q39680",
+      "display_name": "Macroeconomics",
+      "level": 1,
+      "score": 0.22086438536643982
+    },
+    {
+      "id": "https://openalex.org/C33923547",
+      "wikidata": "https://www.wikidata.org/wiki/Q395",
+      "display_name": "Mathematics",
+      "level": 0,
+      "score": 0.0
+    },
+    {
+      "id": "https://openalex.org/C134306372",
+      "wikidata": "https://www.wikidata.org/wiki/Q7754",
+      "display_name": "Mathematical analysis",
+      "level": 1,
+      "score": 0.0
+    },
+    {
+      "id": "https://openalex.org/C50522688",
+      "wikidata": "https://www.wikidata.org/wiki/Q189833",
+      "display_name": "Economic growth",
+      "level": 1,
+      "score": 0.0
+    },
+    {
+      "id": "https://openalex.org/C121955636",
+      "wikidata": "https://www.wikidata.org/wiki/Q4116214",
+      "display_name": "Accounting",
+      "level": 1,
+      "score": 0.0
+    }
+  ],
+  "mesh": [],
+  "locations_count": 2,
+  "locations": [
+    {
+      "id": "doi:10.1006/redy.1997.0008",
+      "is_oa": false,
+      "landing_page_url": "https://doi.org/10.1006/redy.1997.0008",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S163499366",
+        "display_name": "Review of Economic Dynamics",
+        "issn_l": "1094-2025",
+        "issn": [
+          "1094-2025",
+          "1096-6099"
+        ],
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": true,
+        "host_organization": "https://openalex.org/P4310320990",
+        "host_organization_name": "Elsevier BV",
+        "host_organization_lineage": [
+          "https://openalex.org/P4310320990"
+        ],
+        "host_organization_lineage_names": [
+          "Elsevier BV"
+        ],
+        "type": "journal"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "publishedVersion",
+      "is_accepted": true,
+      "is_published": true,
+      "raw_source_name": "Review of Economic Dynamics",
+      "raw_type": "journal-article"
+    },
+    {
+      "id": "pmh:oai:RePEc:red:issued:v:1:y:1998:i:1:p:1-58",
+      "is_oa": false,
+      "landing_page_url": "http://doi.org/10.1006/redy.1997.0008",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4306401271",
+        "display_name": "RePEc: Research Papers in Economics",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I77793887",
+        "host_organization_name": "Federal Reserve Bank of St. Louis",
+        "host_organization_lineage": [
+          "https://openalex.org/I77793887"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "submittedVersion",
+      "is_accepted": false,
+      "is_published": false,
+      "raw_source_name": "",
+      "raw_type": "article"
+    }
+  ],
+  "best_oa_location": null,
+  "sustainable_development_goals": [
+    {
+      "score": 0.75,
+      "display_name": "Decent work and economic growth",
+      "id": "https://metadata.un.org/sdg/8"
+    }
+  ],
+  "awards": [],
+  "funders": [],
+  "has_content": {
+    "grobid_xml": false,
+    "pdf": false
+  },
+  "content_urls": null,
+  "referenced_works_count": 57,
+  "referenced_works": [
+    "https://openalex.org/W65771526",
+    "https://openalex.org/W179963684",
+    "https://openalex.org/W184464978",
+    "https://openalex.org/W1490571554",
+    "https://openalex.org/W1492857820",
+    "https://openalex.org/W1509387413",
+    "https://openalex.org/W1531224470",
+    "https://openalex.org/W1538443123",
+    "https://openalex.org/W1573841344",
+    "https://openalex.org/W1576129150",
+    "https://openalex.org/W1886305637",
+    "https://openalex.org/W1967242039",
+    "https://openalex.org/W1989142946",
+    "https://openalex.org/W1991953143",
+    "https://openalex.org/W1999562528",
+    "https://openalex.org/W2011583789",
+    "https://openalex.org/W2012187419",
+    "https://openalex.org/W2013037544",
+    "https://openalex.org/W2016846642",
+    "https://openalex.org/W2034311186",
+    "https://openalex.org/W2047273630",
+    "https://openalex.org/W2073066345",
+    "https://openalex.org/W2075368726",
+    "https://openalex.org/W2076596522",
+    "https://openalex.org/W2084538591",
+    "https://openalex.org/W2086001270",
+    "https://openalex.org/W2086192158",
+    "https://openalex.org/W2086648808",
+    "https://openalex.org/W2103661861",
+    "https://openalex.org/W2107497267",
+    "https://openalex.org/W2117735259",
+    "https://openalex.org/W2122153309",
+    "https://openalex.org/W2127503409",
+    "https://openalex.org/W2138992063",
+    "https://openalex.org/W2142858054",
+    "https://openalex.org/W2151207452",
+    "https://openalex.org/W2168392782",
+    "https://openalex.org/W2168467968",
+    "https://openalex.org/W2169050695",
+    "https://openalex.org/W3122269790",
+    "https://openalex.org/W3122491918",
+    "https://openalex.org/W3122676602",
+    "https://openalex.org/W3122679871",
+    "https://openalex.org/W3123858999",
+    "https://openalex.org/W3124380383",
+    "https://openalex.org/W3124645835",
+    "https://openalex.org/W3124684532",
+    "https://openalex.org/W3125035438",
+    "https://openalex.org/W3125603447",
+    "https://openalex.org/W3125938803",
+    "https://openalex.org/W3150043298",
+    "https://openalex.org/W4253177366",
+    "https://openalex.org/W4298220021",
+    "https://openalex.org/W6629327028",
+    "https://openalex.org/W6630104666",
+    "https://openalex.org/W6634524942",
+    "https://openalex.org/W7073777628"
+  ],
+  "related_works": [
+    "https://openalex.org/W3143912227",
+    "https://openalex.org/W2201179150",
+    "https://openalex.org/W2164470400",
+    "https://openalex.org/W2036542809",
+    "https://openalex.org/W2006643822",
+    "https://openalex.org/W2000589556",
+    "https://openalex.org/W1967488928",
+    "https://openalex.org/W2020842431",
+    "https://openalex.org/W3122017808",
+    "https://openalex.org/W3123815718"
+  ],
+  "abstract_inverted_index": null,
+  "counts_by_year": [
+    {
+      "year": 2026,
+      "cited_by_count": 2
+    },
+    {
+      "year": 2025,
+      "cited_by_count": 16
+    },
+    {
+      "year": 2024,
+      "cited_by_count": 12
+    },
+    {
+      "year": 2023,
+      "cited_by_count": 21
+    },
+    {
+      "year": 2022,
+      "cited_by_count": 27
+    },
+    {
+      "year": 2021,
+      "cited_by_count": 27
+    },
+    {
+      "year": 2020,
+      "cited_by_count": 45
+    },
+    {
+      "year": 2019,
+      "cited_by_count": 20
+    },
+    {
+      "year": 2018,
+      "cited_by_count": 28
+    },
+    {
+      "year": 2017,
+      "cited_by_count": 45
+    },
+    {
+      "year": 2016,
+      "cited_by_count": 29
+    },
+    {
+      "year": 2015,
+      "cited_by_count": 36
+    },
+    {
+      "year": 2014,
+      "cited_by_count": 39
+    },
+    {
+      "year": 2013,
+      "cited_by_count": 43
+    },
+    {
+      "year": 2012,
+      "cited_by_count": 35
+    }
+  ],
+  "updated_date": "2026-06-11T09:08:48.828518",
+  "created_date": "2025-10-10T00:00:00"
+}

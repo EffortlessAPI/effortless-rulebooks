@@ -1,0 +1,1645 @@
+{
+  "id": "https://openalex.org/W2614168425",
+  "doi": "https://doi.org/10.1056/nejm198908103210629",
+  "title": "Preliminary Report: Effect of Encainide and Flecainide on Mortality in a Randomized Trial of Arrhythmia Suppression after Myocardial Infarction",
+  "display_name": "Preliminary Report: Effect of Encainide and Flecainide on Mortality in a Randomized Trial of Arrhythmia Suppression after Myocardial Infarction",
+  "relevance_score": 273.96695,
+  "publication_year": 1989,
+  "publication_date": "1989-08-10",
+  "ids": {
+    "openalex": "https://openalex.org/W2614168425",
+    "doi": "https://doi.org/10.1056/nejm198908103210629",
+    "mag": "2614168425",
+    "pmid": "https://pubmed.ncbi.nlm.nih.gov/2473403"
+  },
+  "language": "en",
+  "primary_location": {
+    "id": "doi:10.1056/nejm198908103210629",
+    "is_oa": false,
+    "landing_page_url": "https://doi.org/10.1056/nejm198908103210629",
+    "pdf_url": null,
+    "source": {
+      "id": "https://openalex.org/S62468778",
+      "display_name": "New England Journal of Medicine",
+      "issn_l": "0028-4793",
+      "issn": [
+        "0028-4793",
+        "1533-4406"
+      ],
+      "is_oa": false,
+      "is_in_doaj": false,
+      "is_core": true,
+      "host_organization": "https://openalex.org/P4310320239",
+      "host_organization_name": "Massachusetts Medical Society",
+      "host_organization_lineage": [
+        "https://openalex.org/P4310320239"
+      ],
+      "host_organization_lineage_names": [
+        "Massachusetts Medical Society"
+      ],
+      "type": "journal"
+    },
+    "license": null,
+    "license_id": null,
+    "version": "publishedVersion",
+    "is_accepted": true,
+    "is_published": true,
+    "raw_source_name": "New England Journal of Medicine",
+    "raw_type": "journal-article"
+  },
+  "type": "article",
+  "indexed_in": [
+    "crossref",
+    "pubmed"
+  ],
+  "open_access": {
+    "is_oa": false,
+    "oa_status": "closed",
+    "oa_url": null,
+    "any_repository_has_fulltext": false
+  },
+  "authorships": [
+    {
+      "author_position": "first",
+      "author": {
+        "id": null,
+        "display_name": "The Cardiac Arrhythmia Suppression Trial (CAST) Investigators",
+        "orcid": null
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I4210092360",
+          "display_name": "The Coordinating Center",
+          "ror": "https://ror.org/00fzvsb30",
+          "country_code": "US",
+          "type": "other",
+          "lineage": [
+            "https://openalex.org/I4210092360"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": true,
+      "raw_author_name": "The Cardiac Arrhythmia Suppression Trial (CAST) Investigators",
+      "raw_affiliation_strings": [
+        "CAST Coordinating Center 1107 NE 45th, Rm. 505 Seattle, WA 98105"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "CAST Coordinating Center 1107 NE 45th, Rm. 505 Seattle, WA 98105",
+          "institution_ids": [
+            "https://openalex.org/I4210092360"
+          ]
+        }
+      ]
+    }
+  ],
+  "institutions": [],
+  "countries_distinct_count": 1,
+  "institutions_distinct_count": 1,
+  "corresponding_author_ids": [],
+  "corresponding_institution_ids": [
+    "https://openalex.org/I4210092360"
+  ],
+  "apc_list": null,
+  "apc_paid": null,
+  "fwci": 149.2378,
+  "has_fulltext": false,
+  "cited_by_count": 3312,
+  "citation_normalized_percentile": {
+    "value": 1.0,
+    "is_in_top_1_percent": true,
+    "is_in_top_10_percent": true
+  },
+  "cited_by_percentile_year": {
+    "min": 99,
+    "max": 100
+  },
+  "biblio": {
+    "volume": "321",
+    "issue": "6",
+    "first_page": "406",
+    "last_page": "412"
+  },
+  "is_retracted": false,
+  "is_paratext": false,
+  "is_xpac": false,
+  "primary_topic": {
+    "id": "https://openalex.org/T10217",
+    "display_name": "Cardiac electrophysiology and arrhythmias",
+    "score": 0.9998999834060669,
+    "subfield": {
+      "id": "https://openalex.org/subfields/2705",
+      "display_name": "Cardiology and Cardiovascular Medicine"
+    },
+    "field": {
+      "id": "https://openalex.org/fields/27",
+      "display_name": "Medicine"
+    },
+    "domain": {
+      "id": "https://openalex.org/domains/4",
+      "display_name": "Health Sciences"
+    }
+  },
+  "topics": [
+    {
+      "id": "https://openalex.org/T10217",
+      "display_name": "Cardiac electrophysiology and arrhythmias",
+      "score": 0.9998999834060669,
+      "subfield": {
+        "id": "https://openalex.org/subfields/2705",
+        "display_name": "Cardiology and Cardiovascular Medicine"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/27",
+        "display_name": "Medicine"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/4",
+        "display_name": "Health Sciences"
+      }
+    },
+    {
+      "id": "https://openalex.org/T11217",
+      "display_name": "Cardiac Arrhythmias and Treatments",
+      "score": 0.9958999752998352,
+      "subfield": {
+        "id": "https://openalex.org/subfields/2705",
+        "display_name": "Cardiology and Cardiovascular Medicine"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/27",
+        "display_name": "Medicine"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/4",
+        "display_name": "Health Sciences"
+      }
+    },
+    {
+      "id": "https://openalex.org/T10598",
+      "display_name": "Cardiac pacing and defibrillation studies",
+      "score": 0.9923999905586243,
+      "subfield": {
+        "id": "https://openalex.org/subfields/2705",
+        "display_name": "Cardiology and Cardiovascular Medicine"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/27",
+        "display_name": "Medicine"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/4",
+        "display_name": "Health Sciences"
+      }
+    }
+  ],
+  "keywords": [
+    {
+      "id": "https://openalex.org/keywords/flecainide",
+      "display_name": "Flecainide",
+      "score": 0.9495903849601746
+    },
+    {
+      "id": "https://openalex.org/keywords/medicine",
+      "display_name": "Medicine",
+      "score": 0.9311352968215942
+    },
+    {
+      "id": "https://openalex.org/keywords/cardiology",
+      "display_name": "Cardiology",
+      "score": 0.685865044593811
+    },
+    {
+      "id": "https://openalex.org/keywords/internal-medicine",
+      "display_name": "Internal medicine",
+      "score": 0.6713186502456665
+    },
+    {
+      "id": "https://openalex.org/keywords/myocardial-infarction",
+      "display_name": "Myocardial infarction",
+      "score": 0.6524864435195923
+    },
+    {
+      "id": "https://openalex.org/keywords/placebo",
+      "display_name": "Placebo",
+      "score": 0.6076897382736206
+    },
+    {
+      "id": "https://openalex.org/keywords/qt-interval",
+      "display_name": "QT interval",
+      "score": 0.5043627023696899
+    },
+    {
+      "id": "https://openalex.org/keywords/proarrhythmia",
+      "display_name": "Proarrhythmia",
+      "score": 0.493375688791275
+    },
+    {
+      "id": "https://openalex.org/keywords/anesthesia",
+      "display_name": "Anesthesia",
+      "score": 0.4920048415660858
+    },
+    {
+      "id": "https://openalex.org/keywords/asymptomatic",
+      "display_name": "Asymptomatic",
+      "score": 0.48270535469055176
+    },
+    {
+      "id": "https://openalex.org/keywords/sudden-death",
+      "display_name": "Sudden death",
+      "score": 0.46590954065322876
+    },
+    {
+      "id": "https://openalex.org/keywords/antiarrhythmic-agent",
+      "display_name": "Antiarrhythmic agent",
+      "score": 0.42355209589004517
+    },
+    {
+      "id": "https://openalex.org/keywords/confidence-interval",
+      "display_name": "Confidence interval",
+      "score": 0.42288652062416077
+    },
+    {
+      "id": "https://openalex.org/keywords/heart-disease",
+      "display_name": "Heart disease",
+      "score": 0.22473615407943726
+    },
+    {
+      "id": "https://openalex.org/keywords/atrial-fibrillation",
+      "display_name": "Atrial fibrillation",
+      "score": 0.13286706805229187
+    }
+  ],
+  "concepts": [
+    {
+      "id": "https://openalex.org/C2779837460",
+      "wikidata": "https://www.wikidata.org/wiki/Q421381",
+      "display_name": "Flecainide",
+      "level": 3,
+      "score": 0.9495903849601746
+    },
+    {
+      "id": "https://openalex.org/C71924100",
+      "wikidata": "https://www.wikidata.org/wiki/Q11190",
+      "display_name": "Medicine",
+      "level": 0,
+      "score": 0.9311352968215942
+    },
+    {
+      "id": "https://openalex.org/C164705383",
+      "wikidata": "https://www.wikidata.org/wiki/Q10379",
+      "display_name": "Cardiology",
+      "level": 1,
+      "score": 0.685865044593811
+    },
+    {
+      "id": "https://openalex.org/C126322002",
+      "wikidata": "https://www.wikidata.org/wiki/Q11180",
+      "display_name": "Internal medicine",
+      "level": 1,
+      "score": 0.6713186502456665
+    },
+    {
+      "id": "https://openalex.org/C500558357",
+      "wikidata": "https://www.wikidata.org/wiki/Q12152",
+      "display_name": "Myocardial infarction",
+      "level": 2,
+      "score": 0.6524864435195923
+    },
+    {
+      "id": "https://openalex.org/C27081682",
+      "wikidata": "https://www.wikidata.org/wiki/Q269829",
+      "display_name": "Placebo",
+      "level": 3,
+      "score": 0.6076897382736206
+    },
+    {
+      "id": "https://openalex.org/C118441451",
+      "wikidata": "https://www.wikidata.org/wiki/Q12074763",
+      "display_name": "QT interval",
+      "level": 2,
+      "score": 0.5043627023696899
+    },
+    {
+      "id": "https://openalex.org/C2777008848",
+      "wikidata": "https://www.wikidata.org/wiki/Q7246836",
+      "display_name": "Proarrhythmia",
+      "level": 3,
+      "score": 0.493375688791275
+    },
+    {
+      "id": "https://openalex.org/C42219234",
+      "wikidata": "https://www.wikidata.org/wiki/Q131130",
+      "display_name": "Anesthesia",
+      "level": 1,
+      "score": 0.4920048415660858
+    },
+    {
+      "id": "https://openalex.org/C2777910003",
+      "wikidata": "https://www.wikidata.org/wiki/Q1707292",
+      "display_name": "Asymptomatic",
+      "level": 2,
+      "score": 0.48270535469055176
+    },
+    {
+      "id": "https://openalex.org/C2993353509",
+      "wikidata": "https://www.wikidata.org/wiki/Q411867",
+      "display_name": "Sudden death",
+      "level": 2,
+      "score": 0.46590954065322876
+    },
+    {
+      "id": "https://openalex.org/C2778131192",
+      "wikidata": "https://www.wikidata.org/wiki/Q241549",
+      "display_name": "Antiarrhythmic agent",
+      "level": 3,
+      "score": 0.42355209589004517
+    },
+    {
+      "id": "https://openalex.org/C44249647",
+      "wikidata": "https://www.wikidata.org/wiki/Q208498",
+      "display_name": "Confidence interval",
+      "level": 2,
+      "score": 0.42288652062416077
+    },
+    {
+      "id": "https://openalex.org/C2780074459",
+      "wikidata": "https://www.wikidata.org/wiki/Q389735",
+      "display_name": "Heart disease",
+      "level": 2,
+      "score": 0.22473615407943726
+    },
+    {
+      "id": "https://openalex.org/C2779161974",
+      "wikidata": "https://www.wikidata.org/wiki/Q815819",
+      "display_name": "Atrial fibrillation",
+      "level": 2,
+      "score": 0.13286706805229187
+    },
+    {
+      "id": "https://openalex.org/C204787440",
+      "wikidata": "https://www.wikidata.org/wiki/Q188504",
+      "display_name": "Alternative medicine",
+      "level": 2,
+      "score": 0.0
+    },
+    {
+      "id": "https://openalex.org/C142724271",
+      "wikidata": "https://www.wikidata.org/wiki/Q7208",
+      "display_name": "Pathology",
+      "level": 1,
+      "score": 0.0
+    }
+  ],
+  "mesh": [
+    {
+      "descriptor_ui": "D000368",
+      "descriptor_name": "Aged",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000368",
+      "descriptor_name": "Aged",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000368",
+      "descriptor_name": "Aged",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000813",
+      "descriptor_name": "Anilides",
+      "qualifier_ui": "Q000009",
+      "qualifier_name": "adverse effects",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000813",
+      "descriptor_name": "Anilides",
+      "qualifier_ui": "Q000009",
+      "qualifier_name": "adverse effects",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000813",
+      "descriptor_name": "Anilides",
+      "qualifier_ui": "Q000009",
+      "qualifier_name": "adverse effects",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000889",
+      "descriptor_name": "Anti-Arrhythmia Agents",
+      "qualifier_ui": "Q000009",
+      "qualifier_name": "adverse effects",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000889",
+      "descriptor_name": "Anti-Arrhythmia Agents",
+      "qualifier_ui": "Q000009",
+      "qualifier_name": "adverse effects",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000889",
+      "descriptor_name": "Anti-Arrhythmia Agents",
+      "qualifier_ui": "Q000009",
+      "qualifier_name": "adverse effects",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D001145",
+      "descriptor_name": "Arrhythmias, Cardiac",
+      "qualifier_ui": "Q000188",
+      "qualifier_name": "drug therapy",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D001145",
+      "descriptor_name": "Arrhythmias, Cardiac",
+      "qualifier_ui": "Q000188",
+      "qualifier_name": "drug therapy",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D001145",
+      "descriptor_name": "Arrhythmias, Cardiac",
+      "qualifier_ui": "Q000188",
+      "qualifier_name": "drug therapy",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D001145",
+      "descriptor_name": "Arrhythmias, Cardiac",
+      "qualifier_ui": "Q000401",
+      "qualifier_name": "mortality",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D001145",
+      "descriptor_name": "Arrhythmias, Cardiac",
+      "qualifier_ui": "Q000401",
+      "qualifier_name": "mortality",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D001145",
+      "descriptor_name": "Arrhythmias, Cardiac",
+      "qualifier_ui": "Q000401",
+      "qualifier_name": "mortality",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D002986",
+      "descriptor_name": "Clinical Trials as Topic",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D002986",
+      "descriptor_name": "Clinical Trials as Topic",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D002986",
+      "descriptor_name": "Clinical Trials as Topic",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D003645",
+      "descriptor_name": "Death, Sudden",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D003645",
+      "descriptor_name": "Death, Sudden",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D003645",
+      "descriptor_name": "Death, Sudden",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D005117",
+      "descriptor_name": "Cardiac Complexes, Premature",
+      "qualifier_ui": "Q000188",
+      "qualifier_name": "drug therapy",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D005117",
+      "descriptor_name": "Cardiac Complexes, Premature",
+      "qualifier_ui": "Q000188",
+      "qualifier_name": "drug therapy",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D005117",
+      "descriptor_name": "Cardiac Complexes, Premature",
+      "qualifier_ui": "Q000188",
+      "qualifier_name": "drug therapy",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D005117",
+      "descriptor_name": "Cardiac Complexes, Premature",
+      "qualifier_ui": "Q000401",
+      "qualifier_name": "mortality",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D005117",
+      "descriptor_name": "Cardiac Complexes, Premature",
+      "qualifier_ui": "Q000401",
+      "qualifier_name": "mortality",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D005117",
+      "descriptor_name": "Cardiac Complexes, Premature",
+      "qualifier_ui": "Q000401",
+      "qualifier_name": "mortality",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D005260",
+      "descriptor_name": "Female",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D005260",
+      "descriptor_name": "Female",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D005260",
+      "descriptor_name": "Female",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D005424",
+      "descriptor_name": "Flecainide",
+      "qualifier_ui": "Q000009",
+      "qualifier_name": "adverse effects",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D005424",
+      "descriptor_name": "Flecainide",
+      "qualifier_ui": "Q000009",
+      "qualifier_name": "adverse effects",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D005424",
+      "descriptor_name": "Flecainide",
+      "qualifier_ui": "Q000009",
+      "qualifier_name": "adverse effects",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D005500",
+      "descriptor_name": "Follow-Up Studies",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D005500",
+      "descriptor_name": "Follow-Up Studies",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D005500",
+      "descriptor_name": "Follow-Up Studies",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D006801",
+      "descriptor_name": "Humans",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D006801",
+      "descriptor_name": "Humans",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D006801",
+      "descriptor_name": "Humans",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D008297",
+      "descriptor_name": "Male",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D008297",
+      "descriptor_name": "Male",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D008297",
+      "descriptor_name": "Male",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D008875",
+      "descriptor_name": "Middle Aged",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D008875",
+      "descriptor_name": "Middle Aged",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D008875",
+      "descriptor_name": "Middle Aged",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D009203",
+      "descriptor_name": "Myocardial Infarction",
+      "qualifier_ui": "Q000150",
+      "qualifier_name": "complications",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D009203",
+      "descriptor_name": "Myocardial Infarction",
+      "qualifier_ui": "Q000150",
+      "qualifier_name": "complications",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D009203",
+      "descriptor_name": "Myocardial Infarction",
+      "qualifier_ui": "Q000150",
+      "qualifier_name": "complications",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D010640",
+      "descriptor_name": "Phenothiazines",
+      "qualifier_ui": "Q000009",
+      "qualifier_name": "adverse effects",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D010640",
+      "descriptor_name": "Phenothiazines",
+      "qualifier_ui": "Q000009",
+      "qualifier_name": "adverse effects",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D010640",
+      "descriptor_name": "Phenothiazines",
+      "qualifier_ui": "Q000009",
+      "qualifier_name": "adverse effects",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D011897",
+      "descriptor_name": "Random Allocation",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D011897",
+      "descriptor_name": "Random Allocation",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D011897",
+      "descriptor_name": "Random Allocation",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D016293",
+      "descriptor_name": "Moricizine",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D016293",
+      "descriptor_name": "Moricizine",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D016293",
+      "descriptor_name": "Moricizine",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D016700",
+      "descriptor_name": "Encainide",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D016700",
+      "descriptor_name": "Encainide",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D016700",
+      "descriptor_name": "Encainide",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    }
+  ],
+  "locations_count": 2,
+  "locations": [
+    {
+      "id": "doi:10.1056/nejm198908103210629",
+      "is_oa": false,
+      "landing_page_url": "https://doi.org/10.1056/nejm198908103210629",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S62468778",
+        "display_name": "New England Journal of Medicine",
+        "issn_l": "0028-4793",
+        "issn": [
+          "0028-4793",
+          "1533-4406"
+        ],
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": true,
+        "host_organization": "https://openalex.org/P4310320239",
+        "host_organization_name": "Massachusetts Medical Society",
+        "host_organization_lineage": [
+          "https://openalex.org/P4310320239"
+        ],
+        "host_organization_lineage_names": [
+          "Massachusetts Medical Society"
+        ],
+        "type": "journal"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "publishedVersion",
+      "is_accepted": true,
+      "is_published": true,
+      "raw_source_name": "New England Journal of Medicine",
+      "raw_type": "journal-article"
+    },
+    {
+      "id": "pmid:2473403",
+      "is_oa": false,
+      "landing_page_url": "https://pubmed.ncbi.nlm.nih.gov/2473403",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4306525036",
+        "display_name": "PubMed",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I1299303238",
+        "host_organization_name": "National Institutes of Health",
+        "host_organization_lineage": [
+          "https://openalex.org/I1299303238"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "publishedVersion",
+      "is_accepted": true,
+      "is_published": true,
+      "raw_source_name": "The New England journal of medicine",
+      "raw_type": null
+    }
+  ],
+  "best_oa_location": null,
+  "sustainable_development_goals": [
+    {
+      "display_name": "Good health and well-being",
+      "id": "https://metadata.un.org/sdg/3",
+      "score": 0.8899999856948853
+    }
+  ],
+  "awards": [],
+  "funders": [],
+  "has_content": {
+    "grobid_xml": false,
+    "pdf": false
+  },
+  "content_urls": null,
+  "referenced_works_count": 29,
+  "referenced_works": [
+    "https://openalex.org/W1583610974",
+    "https://openalex.org/W1985888466",
+    "https://openalex.org/W1989046474",
+    "https://openalex.org/W1990639292",
+    "https://openalex.org/W2010442481",
+    "https://openalex.org/W2028201641",
+    "https://openalex.org/W2035105123",
+    "https://openalex.org/W2036599060",
+    "https://openalex.org/W2039880258",
+    "https://openalex.org/W2070526088",
+    "https://openalex.org/W2071139455",
+    "https://openalex.org/W2089152540",
+    "https://openalex.org/W2094892482",
+    "https://openalex.org/W2109010241",
+    "https://openalex.org/W2111874843",
+    "https://openalex.org/W2126843316",
+    "https://openalex.org/W2141289234",
+    "https://openalex.org/W2141803614",
+    "https://openalex.org/W2147184646",
+    "https://openalex.org/W2147216906",
+    "https://openalex.org/W2168564324",
+    "https://openalex.org/W2323888635",
+    "https://openalex.org/W2401594906",
+    "https://openalex.org/W2438479055",
+    "https://openalex.org/W4210762119",
+    "https://openalex.org/W4211160446",
+    "https://openalex.org/W4235788903",
+    "https://openalex.org/W4242589154",
+    "https://openalex.org/W6664903230"
+  ],
+  "related_works": [
+    "https://openalex.org/W2110061674",
+    "https://openalex.org/W3141942007",
+    "https://openalex.org/W2071584338",
+    "https://openalex.org/W2072732939",
+    "https://openalex.org/W1994487732",
+    "https://openalex.org/W2012321520",
+    "https://openalex.org/W2414934100",
+    "https://openalex.org/W2037817991",
+    "https://openalex.org/W2155100341",
+    "https://openalex.org/W2410084981"
+  ],
+  "abstract_inverted_index": {
+    "The": [
+      0,
+      29
+    ],
+    "occurrence": [
+      1
+    ],
+    "of": [
+      2,
+      8,
+      39,
+      67,
+      81,
+      90,
+      101,
+      103,
+      122,
+      125,
+      137,
+      154,
+      163,
+      173,
+      198,
+      204,
+      220,
+      225,
+      248
+    ],
+    "ventricular": [
+      3,
+      53,
+      58,
+      255,
+      270
+    ],
+    "premature": [
+      4,
+      59
+    ],
+    "depolarizations": [
+      5
+    ],
+    "in": [
+      6,
+      46,
+      245,
+      268
+    ],
+    "survivors": [
+      7
+    ],
+    "myocardial": [
+      9,
+      64,
+      258
+    ],
+    "infarction": [
+      10
+    ],
+    "is": [
+      11,
+      26,
+      35,
+      286
+    ],
+    "a": [
+      12,
+      134
+    ],
+    "risk": [
+      13,
+      25
+    ],
+    "factor": [
+      14
+    ],
+    "for": [
+      15,
+      76,
+      151,
+      192,
+      283
+    ],
+    "subsequent": [
+      16
+    ],
+    "sudden": [
+      17
+    ],
+    "death,": [
+      18
+    ],
+    "but": [
+      19
+    ],
+    "whether": [
+      20
+    ],
+    "antiarrhythmic": [
+      21,
+      40,
+      284
+    ],
+    "therapy": [
+      22,
+      41,
+      285
+    ],
+    "reduces": [
+      23
+    ],
+    "the": [
+      24,
+      37,
+      77,
+      82,
+      99,
+      104,
+      127,
+      142,
+      152,
+      193,
+      223,
+      226,
+      246
+    ],
+    "not": [
+      27
+    ],
+    "known.": [
+      28
+    ],
+    "Cardiac": [
+      30
+    ],
+    "Arrhythmia": [
+      31
+    ],
+    "Suppression": [
+      32
+    ],
+    "Trial": [
+      33
+    ],
+    "(CAST)": [
+      34
+    ],
+    "evaluating": [
+      36
+    ],
+    "effect": [
+      38
+    ],
+    "(encainide,": [
+      42
+    ],
+    "flecainide,": [
+      43
+    ],
+    "or": [
+      44,
+      50,
+      56,
+      117,
+      168,
+      252
+    ],
+    "moricizine)": [
+      45
+    ],
+    "patients": [
+      47,
+      72,
+      128,
+      143,
+      165,
+      249,
+      278
+    ],
+    "with": [
+      48,
+      130,
+      250
+    ],
+    "asymptomatic": [
+      49,
+      251
+    ],
+    "mildly": [
+      51
+    ],
+    "symptomatic": [
+      52,
+      254
+    ],
+    "arrhythmia": [
+      54,
+      92,
+      140,
+      157,
+      256
+    ],
+    "(six": [
+      55
+    ],
+    "more": [
+      57
+    ],
+    "beats": [
+      60
+    ],
+    "per": [
+      61
+    ],
+    "hour)": [
+      62
+    ],
+    "after": [
+      63,
+      257
+    ],
+    "infarction.": [
+      65
+    ],
+    "As": [
+      66
+    ],
+    "March": [
+      68
+    ],
+    "30,": [
+      69
+    ],
+    "1989,": [
+      70
+    ],
+    "2309": [
+      71
+    ],
+    "had": [
+      73,
+      87,
+      109,
+      133
+    ],
+    "been": [
+      74,
+      110,
+      233
+    ],
+    "recruited": [
+      75
+    ],
+    "initial": [
+      78,
+      88
+    ],
+    "drug-titration": [
+      79
+    ],
+    "phase": [
+      80
+    ],
+    "study:": [
+      83
+    ],
+    "1727": [
+      84
+    ],
+    "(75": [
+      85
+    ],
+    "percent)": [
+      86
+    ],
+    "suppression": [
+      89
+    ],
+    "their": [
+      91
+    ],
+    "(as": [
+      93
+    ],
+    "assessed": [
+      94
+    ],
+    "by": [
+      95
+    ],
+    "Holter": [
+      96
+    ],
+    "recording)": [
+      97
+    ],
+    "through": [
+      98
+    ],
+    "use": [
+      100
+    ],
+    "one": [
+      102
+    ],
+    "three": [
+      105
+    ],
+    "study": [
+      106
+    ],
+    "drugs": [
+      107,
+      263
+    ],
+    "and": [
+      108,
+      148,
+      158,
+      202,
+      230
+    ],
+    "randomly": [
+      111
+    ],
+    "assigned": [
+      112,
+      144
+    ],
+    "to": [
+      113,
+      145,
+      187,
+      217,
+      276
+    ],
+    "receive": [
+      114
+    ],
+    "active": [
+      115,
+      131
+    ],
+    "drug": [
+      116,
+      132
+    ],
+    "placebo.": [
+      118,
+      146
+    ],
+    "During": [
+      119
+    ],
+    "an": [
+      120
+    ],
+    "average": [
+      121
+    ],
+    "10": [
+      123
+    ],
+    "months": [
+      124
+    ],
+    "follow-up,": [
+      126
+    ],
+    "treated": [
+      129
+    ],
+    "higher": [
+      135,
+      194
+    ],
+    "rate": [
+      136
+    ],
+    "death": [
+      138
+    ],
+    "from": [
+      139,
+      156
+    ],
+    "than": [
+      141
+    ],
+    "Encainide": [
+      147
+    ],
+    "flecainide": [
+      149,
+      169,
+      231,
+      241
+    ],
+    "accounted": [
+      150,
+      191
+    ],
+    "excess": [
+      153
+    ],
+    "deaths": [
+      155
+    ],
+    "nonfatal": [
+      159
+    ],
+    "cardiac": [
+      160
+    ],
+    "arrests": [
+      161
+    ],
+    "(33": [
+      162
+    ],
+    "730": [
+      164,
+      199
+    ],
+    "taking": [
+      166,
+      175
+    ],
+    "encainide": [
+      167,
+      229,
+      239
+    ],
+    "[4.5": [
+      170
+    ],
+    "percent];": [
+      171,
+      178
+    ],
+    "9": [
+      172
+    ],
+    "725": [
+      174,
+      205
+    ],
+    "placebo": [
+      176
+    ],
+    "[1.2": [
+      177
+    ],
+    "relative": [
+      179,
+      209
+    ],
+    "risk,": [
+      180,
+      210
+    ],
+    "3.6;": [
+      181
+    ],
+    "95": [
+      182,
+      212
+    ],
+    "percent": [
+      183,
+      213
+    ],
+    "confidence": [
+      184,
+      214
+    ],
+    "interval,": [
+      185,
+      215
+    ],
+    "1.7": [
+      186
+    ],
+    "8.5).": [
+      188
+    ],
+    "They": [
+      189
+    ],
+    "also": [
+      190
+    ],
+    "total": [
+      195
+    ],
+    "mortality": [
+      196
+    ],
+    "(56": [
+      197
+    ],
+    "[7.7": [
+      200
+    ],
+    "percent]": [
+      201
+    ],
+    "22": [
+      203
+    ],
+    "[3.0": [
+      206
+    ],
+    "percent],": [
+      207
+    ],
+    "respectively;": [
+      208
+    ],
+    "2.5;": [
+      211
+    ],
+    "1.6": [
+      216
+    ],
+    "4.5).": [
+      218
+    ],
+    "Because": [
+      219
+    ],
+    "these": [
+      221,
+      262,
+      273
+    ],
+    "results,": [
+      222
+    ],
+    "part": [
+      224
+    ],
+    "trial": [
+      227
+    ],
+    "involving": [
+      228
+    ],
+    "has": [
+      232
+    ],
+    "discontinued.": [
+      234
+    ],
+    "We": [
+      235
+    ],
+    "conclude": [
+      236
+    ],
+    "that": [
+      237
+    ],
+    "neither": [
+      238
+    ],
+    "nor": [
+      240
+    ],
+    "should": [
+      242
+    ],
+    "be": [
+      243,
+      265,
+      281
+    ],
+    "used": [
+      244
+    ],
+    "treatment": [
+      247
+    ],
+    "minimally": [
+      253
+    ],
+    "infarction,": [
+      259
+    ],
+    "even": [
+      260
+    ],
+    "though": [
+      261
+    ],
+    "may": [
+      264
+    ],
+    "effective": [
+      266
+    ],
+    "initially": [
+      267
+    ],
+    "suppressing": [
+      269
+    ],
+    "arrhythmia.": [
+      271
+    ],
+    "Whether": [
+      272
+    ],
+    "results": [
+      274
+    ],
+    "apply": [
+      275
+    ],
+    "other": [
+      277
+    ],
+    "who": [
+      279
+    ],
+    "might": [
+      280
+    ],
+    "candidates": [
+      282
+    ],
+    "unknown.": [
+      287
+    ]
+  },
+  "counts_by_year": [
+    {
+      "year": 2026,
+      "cited_by_count": 18
+    },
+    {
+      "year": 2025,
+      "cited_by_count": 32
+    },
+    {
+      "year": 2024,
+      "cited_by_count": 45
+    },
+    {
+      "year": 2023,
+      "cited_by_count": 33
+    },
+    {
+      "year": 2022,
+      "cited_by_count": 28
+    },
+    {
+      "year": 2021,
+      "cited_by_count": 37
+    },
+    {
+      "year": 2020,
+      "cited_by_count": 39
+    },
+    {
+      "year": 2019,
+      "cited_by_count": 42
+    },
+    {
+      "year": 2018,
+      "cited_by_count": 49
+    },
+    {
+      "year": 2017,
+      "cited_by_count": 65
+    },
+    {
+      "year": 2016,
+      "cited_by_count": 64
+    },
+    {
+      "year": 2015,
+      "cited_by_count": 79
+    },
+    {
+      "year": 2014,
+      "cited_by_count": 71
+    },
+    {
+      "year": 2013,
+      "cited_by_count": 85
+    },
+    {
+      "year": 2012,
+      "cited_by_count": 113
+    }
+  ],
+  "updated_date": "2026-06-23T13:55:30.953635",
+  "created_date": "2025-10-10T00:00:00"
+}

@@ -1,0 +1,894 @@
+{
+  "id": "https://openalex.org/W2017805851",
+  "doi": "https://doi.org/10.1103/physrevlett.102.226401",
+  "title": "Accurate Band Gaps of Semiconductors and Insulators with a Semilocal Exchange-Correlation Potential",
+  "display_name": "Accurate Band Gaps of Semiconductors and Insulators with a Semilocal Exchange-Correlation Potential",
+  "relevance_score": 478.9333,
+  "publication_year": 2009,
+  "publication_date": "2009-06-03",
+  "ids": {
+    "openalex": "https://openalex.org/W2017805851",
+    "doi": "https://doi.org/10.1103/physrevlett.102.226401",
+    "mag": "2017805851",
+    "pmid": "https://pubmed.ncbi.nlm.nih.gov/19658882"
+  },
+  "language": "en",
+  "primary_location": {
+    "id": "doi:10.1103/physrevlett.102.226401",
+    "is_oa": false,
+    "landing_page_url": "https://doi.org/10.1103/physrevlett.102.226401",
+    "pdf_url": null,
+    "source": {
+      "id": "https://openalex.org/S24807848",
+      "display_name": "Physical Review Letters",
+      "issn_l": "0031-9007",
+      "issn": [
+        "0031-9007",
+        "1079-7114",
+        "1092-0145"
+      ],
+      "is_oa": false,
+      "is_in_doaj": false,
+      "is_core": true,
+      "host_organization": "https://openalex.org/P4310320261",
+      "host_organization_name": "American Physical Society",
+      "host_organization_lineage": [
+        "https://openalex.org/P4310320261"
+      ],
+      "host_organization_lineage_names": [
+        "American Physical Society"
+      ],
+      "type": "journal"
+    },
+    "license": null,
+    "license_id": null,
+    "version": "publishedVersion",
+    "is_accepted": true,
+    "is_published": true,
+    "raw_source_name": "Physical Review Letters",
+    "raw_type": "journal-article"
+  },
+  "type": "article",
+  "indexed_in": [
+    "crossref",
+    "pubmed"
+  ],
+  "open_access": {
+    "is_oa": false,
+    "oa_status": "closed",
+    "oa_url": null,
+    "any_repository_has_fulltext": false
+  },
+  "authorships": [
+    {
+      "author_position": "first",
+      "author": {
+        "id": "https://openalex.org/A5017964919",
+        "display_name": "Fabien Tran",
+        "orcid": "https://orcid.org/0000-0003-4673-1987"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I145847075",
+          "display_name": "TU Wien",
+          "ror": "https://ror.org/04d836q62",
+          "country_code": "AT",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I145847075"
+          ]
+        }
+      ],
+      "countries": [
+        "AT"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Fabien Tran",
+      "raw_affiliation_strings": [
+        "Institute of Materials Chemistry, Vienna University of Technology, Getreidemarkt 9/165-TC, A-1060 Vienna, Austria",
+        "Institute of Materials Chemistry, Vienna University of Technology, Getreidemarkt 9/165-TC, A-1060 Vienna (Austria)"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Institute of Materials Chemistry, Vienna University of Technology, Getreidemarkt 9/165-TC, A-1060 Vienna, Austria",
+          "institution_ids": [
+            "https://openalex.org/I145847075"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Institute of Materials Chemistry, Vienna University of Technology, Getreidemarkt 9/165-TC, A-1060 Vienna (Austria)",
+          "institution_ids": [
+            "https://openalex.org/I145847075"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "last",
+      "author": {
+        "id": "https://openalex.org/A5082762917",
+        "display_name": "Peter Blaha",
+        "orcid": "https://orcid.org/0000-0001-5849-5788"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I145847075",
+          "display_name": "TU Wien",
+          "ror": "https://ror.org/04d836q62",
+          "country_code": "AT",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I145847075"
+          ]
+        }
+      ],
+      "countries": [
+        "AT"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Peter Blaha",
+      "raw_affiliation_strings": [
+        "Institute of Materials Chemistry, Vienna University of Technology, Getreidemarkt 9/165-TC, A-1060 Vienna, Austria",
+        "Institute of Materials Chemistry, Vienna University of Technology, Getreidemarkt 9/165-TC, A-1060 Vienna (Austria)"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Institute of Materials Chemistry, Vienna University of Technology, Getreidemarkt 9/165-TC, A-1060 Vienna, Austria",
+          "institution_ids": [
+            "https://openalex.org/I145847075"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Institute of Materials Chemistry, Vienna University of Technology, Getreidemarkt 9/165-TC, A-1060 Vienna (Austria)",
+          "institution_ids": [
+            "https://openalex.org/I145847075"
+          ]
+        }
+      ]
+    }
+  ],
+  "institutions": [],
+  "countries_distinct_count": 1,
+  "institutions_distinct_count": 1,
+  "corresponding_author_ids": [],
+  "corresponding_institution_ids": [
+    "https://openalex.org/I145847075"
+  ],
+  "apc_list": {
+    "value": 3750,
+    "currency": "USD",
+    "value_usd": 3750
+  },
+  "apc_paid": null,
+  "fwci": 54.7745,
+  "has_fulltext": false,
+  "cited_by_count": 5955,
+  "citation_normalized_percentile": {
+    "value": 0.99987999,
+    "is_in_top_1_percent": true,
+    "is_in_top_10_percent": true
+  },
+  "cited_by_percentile_year": {
+    "min": 99,
+    "max": 100
+  },
+  "biblio": {
+    "volume": "102",
+    "issue": "22",
+    "first_page": "226401",
+    "last_page": "226401"
+  },
+  "is_retracted": false,
+  "is_paratext": false,
+  "is_xpac": false,
+  "primary_topic": {
+    "id": "https://openalex.org/T10413",
+    "display_name": "High-pressure geophysics and materials",
+    "score": 0.9995999932289124,
+    "subfield": {
+      "id": "https://openalex.org/subfields/1908",
+      "display_name": "Geophysics"
+    },
+    "field": {
+      "id": "https://openalex.org/fields/19",
+      "display_name": "Earth and Planetary Sciences"
+    },
+    "domain": {
+      "id": "https://openalex.org/domains/3",
+      "display_name": "Physical Sciences"
+    }
+  },
+  "topics": [
+    {
+      "id": "https://openalex.org/T10413",
+      "display_name": "High-pressure geophysics and materials",
+      "score": 0.9995999932289124,
+      "subfield": {
+        "id": "https://openalex.org/subfields/1908",
+        "display_name": "Geophysics"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/19",
+        "display_name": "Earth and Planetary Sciences"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/3",
+        "display_name": "Physical Sciences"
+      }
+    },
+    {
+      "id": "https://openalex.org/T12875",
+      "display_name": "Thermal Expansion and Ionic Conductivity",
+      "score": 0.9995999932289124,
+      "subfield": {
+        "id": "https://openalex.org/subfields/2505",
+        "display_name": "Materials Chemistry"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/25",
+        "display_name": "Materials Science"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/3",
+        "display_name": "Physical Sciences"
+      }
+    },
+    {
+      "id": "https://openalex.org/T10002",
+      "display_name": "Advanced Chemical Physics Studies",
+      "score": 0.9994999766349792,
+      "subfield": {
+        "id": "https://openalex.org/subfields/3107",
+        "display_name": "Atomic and Molecular Physics, and Optics"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/31",
+        "display_name": "Physics and Astronomy"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/3",
+        "display_name": "Physical Sciences"
+      }
+    }
+  ],
+  "keywords": [
+    {
+      "id": "https://openalex.org/keywords/semiconductor",
+      "display_name": "Semiconductor",
+      "score": 0.7380057573318481
+    },
+    {
+      "id": "https://openalex.org/keywords/band-gap",
+      "display_name": "Band gap",
+      "score": 0.6693179607391357
+    },
+    {
+      "id": "https://openalex.org/keywords/condensed-matter-physics",
+      "display_name": "Condensed matter physics",
+      "score": 0.5823859572410583
+    },
+    {
+      "id": "https://openalex.org/keywords/local-density-approximation",
+      "display_name": "Local-density approximation",
+      "score": 0.5812116265296936
+    },
+    {
+      "id": "https://openalex.org/keywords/hybrid-functional",
+      "display_name": "Hybrid functional",
+      "score": 0.5784912109375
+    },
+    {
+      "id": "https://openalex.org/keywords/physics",
+      "display_name": "Physics",
+      "score": 0.5409385561943054
+    },
+    {
+      "id": "https://openalex.org/keywords/direct-and-indirect-band-gaps",
+      "display_name": "Direct and indirect band gaps",
+      "score": 0.45409199595451355
+    },
+    {
+      "id": "https://openalex.org/keywords/density-functional-theory",
+      "display_name": "Density functional theory",
+      "score": 0.41076529026031494
+    },
+    {
+      "id": "https://openalex.org/keywords/materials-science",
+      "display_name": "Materials science",
+      "score": 0.37399083375930786
+    },
+    {
+      "id": "https://openalex.org/keywords/electronic-structure",
+      "display_name": "Electronic structure",
+      "score": 0.2689995765686035
+    },
+    {
+      "id": "https://openalex.org/keywords/quantum-mechanics",
+      "display_name": "Quantum mechanics",
+      "score": 0.20602548122406006
+    }
+  ],
+  "concepts": [
+    {
+      "id": "https://openalex.org/C108225325",
+      "wikidata": "https://www.wikidata.org/wiki/Q11456",
+      "display_name": "Semiconductor",
+      "level": 2,
+      "score": 0.7380057573318481
+    },
+    {
+      "id": "https://openalex.org/C181966813",
+      "wikidata": "https://www.wikidata.org/wiki/Q806352",
+      "display_name": "Band gap",
+      "level": 2,
+      "score": 0.6693179607391357
+    },
+    {
+      "id": "https://openalex.org/C26873012",
+      "wikidata": "https://www.wikidata.org/wiki/Q214781",
+      "display_name": "Condensed matter physics",
+      "level": 1,
+      "score": 0.5823859572410583
+    },
+    {
+      "id": "https://openalex.org/C9249130",
+      "wikidata": "https://www.wikidata.org/wiki/Q898241",
+      "display_name": "Local-density approximation",
+      "level": 3,
+      "score": 0.5812116265296936
+    },
+    {
+      "id": "https://openalex.org/C22693506",
+      "wikidata": "https://www.wikidata.org/wiki/Q3075290",
+      "display_name": "Hybrid functional",
+      "level": 3,
+      "score": 0.5784912109375
+    },
+    {
+      "id": "https://openalex.org/C121332964",
+      "wikidata": "https://www.wikidata.org/wiki/Q413",
+      "display_name": "Physics",
+      "level": 0,
+      "score": 0.5409385561943054
+    },
+    {
+      "id": "https://openalex.org/C193154288",
+      "wikidata": "https://www.wikidata.org/wiki/Q959336",
+      "display_name": "Direct and indirect band gaps",
+      "level": 3,
+      "score": 0.45409199595451355
+    },
+    {
+      "id": "https://openalex.org/C152365726",
+      "wikidata": "https://www.wikidata.org/wiki/Q1048589",
+      "display_name": "Density functional theory",
+      "level": 2,
+      "score": 0.41076529026031494
+    },
+    {
+      "id": "https://openalex.org/C192562407",
+      "wikidata": "https://www.wikidata.org/wiki/Q228736",
+      "display_name": "Materials science",
+      "level": 0,
+      "score": 0.37399083375930786
+    },
+    {
+      "id": "https://openalex.org/C86025842",
+      "wikidata": "https://www.wikidata.org/wiki/Q5358432",
+      "display_name": "Electronic structure",
+      "level": 2,
+      "score": 0.2689995765686035
+    },
+    {
+      "id": "https://openalex.org/C62520636",
+      "wikidata": "https://www.wikidata.org/wiki/Q944",
+      "display_name": "Quantum mechanics",
+      "level": 1,
+      "score": 0.20602548122406006
+    }
+  ],
+  "mesh": [],
+  "locations_count": 2,
+  "locations": [
+    {
+      "id": "doi:10.1103/physrevlett.102.226401",
+      "is_oa": false,
+      "landing_page_url": "https://doi.org/10.1103/physrevlett.102.226401",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S24807848",
+        "display_name": "Physical Review Letters",
+        "issn_l": "0031-9007",
+        "issn": [
+          "0031-9007",
+          "1079-7114",
+          "1092-0145"
+        ],
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": true,
+        "host_organization": "https://openalex.org/P4310320261",
+        "host_organization_name": "American Physical Society",
+        "host_organization_lineage": [
+          "https://openalex.org/P4310320261"
+        ],
+        "host_organization_lineage_names": [
+          "American Physical Society"
+        ],
+        "type": "journal"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "publishedVersion",
+      "is_accepted": true,
+      "is_published": true,
+      "raw_source_name": "Physical Review Letters",
+      "raw_type": "journal-article"
+    },
+    {
+      "id": "pmid:19658882",
+      "is_oa": false,
+      "landing_page_url": "https://pubmed.ncbi.nlm.nih.gov/19658882",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4306525036",
+        "display_name": "PubMed",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I1299303238",
+        "host_organization_name": "National Institutes of Health",
+        "host_organization_lineage": [
+          "https://openalex.org/I1299303238"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "publishedVersion",
+      "is_accepted": true,
+      "is_published": true,
+      "raw_source_name": "Physical review letters",
+      "raw_type": null
+    }
+  ],
+  "best_oa_location": null,
+  "sustainable_development_goals": [],
+  "awards": [],
+  "funders": [],
+  "has_content": {
+    "pdf": false,
+    "grobid_xml": false
+  },
+  "content_urls": null,
+  "referenced_works_count": 35,
+  "referenced_works": [
+    "https://openalex.org/W1654360698",
+    "https://openalex.org/W1963899178",
+    "https://openalex.org/W1964543711",
+    "https://openalex.org/W1964734263",
+    "https://openalex.org/W1966156734",
+    "https://openalex.org/W1981368803",
+    "https://openalex.org/W1984513944",
+    "https://openalex.org/W1986577084",
+    "https://openalex.org/W1996845210",
+    "https://openalex.org/W2004117188",
+    "https://openalex.org/W2017425597",
+    "https://openalex.org/W2025792184",
+    "https://openalex.org/W2032912527",
+    "https://openalex.org/W2038357918",
+    "https://openalex.org/W2039488279",
+    "https://openalex.org/W2040844136",
+    "https://openalex.org/W2045162020",
+    "https://openalex.org/W2048181870",
+    "https://openalex.org/W2049079467",
+    "https://openalex.org/W2049681700",
+    "https://openalex.org/W2054704030",
+    "https://openalex.org/W2055026040",
+    "https://openalex.org/W2057484842",
+    "https://openalex.org/W2058014257",
+    "https://openalex.org/W2062317107",
+    "https://openalex.org/W2062830106",
+    "https://openalex.org/W2067992238",
+    "https://openalex.org/W2071056016",
+    "https://openalex.org/W2077391932",
+    "https://openalex.org/W2085448972",
+    "https://openalex.org/W2086458318",
+    "https://openalex.org/W2086781268",
+    "https://openalex.org/W2088264583",
+    "https://openalex.org/W2230728100",
+    "https://openalex.org/W2619609791"
+  ],
+  "related_works": [
+    "https://openalex.org/W2071965345",
+    "https://openalex.org/W3127016026",
+    "https://openalex.org/W2025208242",
+    "https://openalex.org/W2004864163",
+    "https://openalex.org/W1981189860",
+    "https://openalex.org/W4200278253",
+    "https://openalex.org/W1991357896",
+    "https://openalex.org/W2056258795",
+    "https://openalex.org/W2027226851",
+    "https://openalex.org/W2406861146"
+  ],
+  "abstract_inverted_index": {
+    "A": [
+      0
+    ],
+    "modified": [
+      1
+    ],
+    "version": [
+      2
+    ],
+    "of": [
+      3,
+      25,
+      38,
+      57,
+      93
+    ],
+    "the": [
+      4,
+      23,
+      58,
+      62,
+      66,
+      70,
+      79,
+      91
+    ],
+    "exchange": [
+      5,
+      75
+    ],
+    "potential": [
+      6
+    ],
+    "proposed": [
+      7
+    ],
+    "by": [
+      8
+    ],
+    "Becke": [
+      9
+    ],
+    "and": [
+      10,
+      49,
+      55,
+      96
+    ],
+    "Johnson": [
+      11
+    ],
+    "[J.": [
+      12
+    ],
+    "Chem.": [
+      13
+    ],
+    "Phys.": [
+      14
+    ],
+    "124,": [
+      15
+    ],
+    "221101": [
+      16
+    ],
+    "(2006)10.1063/1.2213970]": [
+      17
+    ],
+    "is": [
+      18,
+      32,
+      56
+    ],
+    "tested": [
+      19
+    ],
+    "on": [
+      20
+    ],
+    "solids": [
+      21,
+      39
+    ],
+    "for": [
+      22,
+      35,
+      83
+    ],
+    "calculation": [
+      24
+    ],
+    "band": [
+      26,
+      44
+    ],
+    "gaps.": [
+      27
+    ],
+    "The": [
+      28
+    ],
+    "agreement": [
+      29,
+      63
+    ],
+    "with": [
+      30,
+      65
+    ],
+    "experiment": [
+      31
+    ],
+    "very": [
+      33,
+      89,
+      114
+    ],
+    "good": [
+      34
+    ],
+    "all": [
+      36
+    ],
+    "types": [
+      37
+    ],
+    "we": [
+      40
+    ],
+    "considered": [
+      41
+    ],
+    "(e.g.,": [
+      42
+    ],
+    "wide": [
+      43
+    ],
+    "gap": [
+      45
+    ],
+    "insulators,": [
+      46
+    ],
+    "sp": [
+      47
+    ],
+    "semiconductors,": [
+      48
+    ],
+    "strongly": [
+      50
+    ],
+    "correlated": [
+      51
+    ],
+    "3d": [
+      52
+    ],
+    "transition-metal": [
+      53
+    ],
+    "oxides)": [
+      54
+    ],
+    "same": [
+      59
+    ],
+    "order": [
+      60
+    ],
+    "as": [
+      61
+    ],
+    "obtained": [
+      64
+    ],
+    "hybrid": [
+      67
+    ],
+    "functionals": [
+      68
+    ],
+    "or": [
+      69
+    ],
+    "GW": [
+      71
+    ],
+    "methods.": [
+      72
+    ],
+    "This": [
+      73
+    ],
+    "semilocal": [
+      74
+    ],
+    "potential,": [
+      76
+    ],
+    "which": [
+      77,
+      100
+    ],
+    "recovers": [
+      78
+    ],
+    "local-density": [
+      80
+    ],
+    "approximation": [
+      81
+    ],
+    "(LDA)": [
+      82
+    ],
+    "a": [
+      84
+    ],
+    "constant": [
+      85
+    ],
+    "electron": [
+      86
+    ],
+    "density,": [
+      87
+    ],
+    "mimics": [
+      88
+    ],
+    "well": [
+      90
+    ],
+    "behavior": [
+      92
+    ],
+    "orbital-dependent": [
+      94
+    ],
+    "potentials": [
+      95
+    ],
+    "leads": [
+      97
+    ],
+    "to": [
+      98,
+      113
+    ],
+    "calculations": [
+      99
+    ],
+    "are": [
+      101
+    ],
+    "barely": [
+      102
+    ],
+    "more": [
+      103
+    ],
+    "expensive": [
+      104
+    ],
+    "than": [
+      105
+    ],
+    "LDA": [
+      106
+    ],
+    "calculations.": [
+      107
+    ],
+    "Therefore,": [
+      108
+    ],
+    "it": [
+      109
+    ],
+    "can": [
+      110
+    ],
+    "be": [
+      111
+    ],
+    "applied": [
+      112
+    ],
+    "large": [
+      115
+    ],
+    "systems": [
+      116
+    ],
+    "in": [
+      117
+    ],
+    "an": [
+      118
+    ],
+    "efficient": [
+      119
+    ],
+    "way.": [
+      120
+    ]
+  },
+  "counts_by_year": [
+    {
+      "year": 2026,
+      "cited_by_count": 319
+    },
+    {
+      "year": 2025,
+      "cited_by_count": 582
+    },
+    {
+      "year": 2024,
+      "cited_by_count": 631
+    },
+    {
+      "year": 2023,
+      "cited_by_count": 496
+    },
+    {
+      "year": 2022,
+      "cited_by_count": 489
+    },
+    {
+      "year": 2021,
+      "cited_by_count": 512
+    },
+    {
+      "year": 2020,
+      "cited_by_count": 537
+    },
+    {
+      "year": 2019,
+      "cited_by_count": 432
+    },
+    {
+      "year": 2018,
+      "cited_by_count": 387
+    },
+    {
+      "year": 2017,
+      "cited_by_count": 352
+    },
+    {
+      "year": 2016,
+      "cited_by_count": 343
+    },
+    {
+      "year": 2015,
+      "cited_by_count": 275
+    },
+    {
+      "year": 2014,
+      "cited_by_count": 243
+    },
+    {
+      "year": 2013,
+      "cited_by_count": 170
+    },
+    {
+      "year": 2012,
+      "cited_by_count": 118
+    }
+  ],
+  "updated_date": "2026-07-05T07:55:05.734416",
+  "created_date": "2025-10-10T00:00:00"
+}

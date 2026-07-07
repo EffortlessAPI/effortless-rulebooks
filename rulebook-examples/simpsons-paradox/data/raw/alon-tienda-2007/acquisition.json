@@ -1,0 +1,17 @@
+{
+  "candidate_id": "cand-exp-alon-tienda-2007",
+  "proposed_study_id": "alon-tienda-2007",
+  "acquisition_status": "portal_manual",
+  "attempted_at": "2026-07-07T03:42:08+00:00",
+  "catalog_source_url": "https://nces.ed.gov/surveys/nels88/",
+  "resolved_urls": [
+    "https://doi.org/10.1093/sf/sou111",
+    "https://academic.oup.com/sf/article-pdf/93/4/1451/17164384/sou111.pdf",
+    "https://nces.ed.gov/surveys/nels88/"
+  ],
+  "files": [
+    "openalex-metadata.json",
+    "source-1.html"
+  ],
+  "dois": []
+}

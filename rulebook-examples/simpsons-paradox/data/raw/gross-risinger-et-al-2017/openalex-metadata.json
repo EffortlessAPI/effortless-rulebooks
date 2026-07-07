@@ -1,0 +1,1811 @@
+{
+  "id": "https://openalex.org/W3006332078",
+  "doi": "https://doi.org/10.1111/nph.16485",
+  "title": "Plant responses to rising vapor pressure deficit",
+  "display_name": "Plant responses to rising vapor pressure deficit",
+  "relevance_score": 489.74857,
+  "publication_year": 2020,
+  "publication_date": "2020-02-17",
+  "ids": {
+    "openalex": "https://openalex.org/W3006332078",
+    "doi": "https://doi.org/10.1111/nph.16485",
+    "mag": "3006332078",
+    "pmid": "https://pubmed.ncbi.nlm.nih.gov/32064613"
+  },
+  "language": "en",
+  "primary_location": {
+    "id": "doi:10.1111/nph.16485",
+    "is_oa": false,
+    "landing_page_url": "https://doi.org/10.1111/nph.16485",
+    "pdf_url": null,
+    "source": {
+      "id": "https://openalex.org/S58631098",
+      "display_name": "New Phytologist",
+      "issn_l": "0028-646X",
+      "issn": [
+        "0028-646X",
+        "1469-8137"
+      ],
+      "is_oa": false,
+      "is_in_doaj": false,
+      "is_core": true,
+      "host_organization": "https://openalex.org/P4310320595",
+      "host_organization_name": "Wiley",
+      "host_organization_lineage": [
+        "https://openalex.org/P4310320595"
+      ],
+      "host_organization_lineage_names": [
+        "Wiley"
+      ],
+      "type": "journal"
+    },
+    "license": null,
+    "license_id": null,
+    "version": "publishedVersion",
+    "is_accepted": true,
+    "is_published": true,
+    "raw_source_name": "New Phytologist",
+    "raw_type": "journal-article"
+  },
+  "type": "review",
+  "indexed_in": [
+    "crossref",
+    "pubmed"
+  ],
+  "open_access": {
+    "is_oa": true,
+    "oa_status": "green",
+    "oa_url": "https://www.dora.lib4ri.ch/wsl/islandora/object/wsl%3A22824",
+    "any_repository_has_fulltext": true
+  },
+  "authorships": [
+    {
+      "author_position": "first",
+      "author": {
+        "id": "https://openalex.org/A5075690626",
+        "display_name": "Charlotte Grossiord",
+        "orcid": "https://orcid.org/0000-0002-9113-3671"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I2800262456",
+          "display_name": "Swiss Federal Institute for Forest, Snow and Landscape Research",
+          "ror": "https://ror.org/04bs5yc70",
+          "country_code": "CH",
+          "type": "facility",
+          "lineage": [
+            "https://openalex.org/I2799323385",
+            "https://openalex.org/I2800262456"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I5124864",
+          "display_name": "\u00c9cole Polytechnique F\u00e9d\u00e9rale de Lausanne",
+          "ror": "https://ror.org/02s376052",
+          "country_code": "CH",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I2799323385",
+            "https://openalex.org/I5124864"
+          ]
+        }
+      ],
+      "countries": [
+        "CH"
+      ],
+      "is_corresponding": true,
+      "raw_author_name": "Charlotte Grossiord",
+      "raw_affiliation_strings": [
+        "Swiss Federal Institute for Forest, Snow and Landscape Research WSL Z\u00fcrcherstrasse 111 8903 Birmensdorf Switzerland",
+        "\u00c9cole Polytechnique F\u00e9d\u00e9rale de Lausanne EPFL School of Architecture, Civil and Environmental Engineering ENAC 1015 Lausanne Switzerland"
+      ],
+      "raw_orcid": "https://orcid.org/0000-0002-9113-3671",
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Swiss Federal Institute for Forest, Snow and Landscape Research WSL Z\u00fcrcherstrasse 111 8903 Birmensdorf Switzerland",
+          "institution_ids": [
+            "https://openalex.org/I2800262456"
+          ]
+        },
+        {
+          "raw_affiliation_string": "\u00c9cole Polytechnique F\u00e9d\u00e9rale de Lausanne EPFL School of Architecture, Civil and Environmental Engineering ENAC 1015 Lausanne Switzerland",
+          "institution_ids": [
+            "https://openalex.org/I5124864"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5043701943",
+        "display_name": "Thomas N. Buckley",
+        "orcid": "https://orcid.org/0000-0001-7610-7136"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I84218800",
+          "display_name": "University of California, Davis",
+          "ror": "https://ror.org/05rrcem69",
+          "country_code": "US",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I84218800"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Thomas N. Buckley",
+      "raw_affiliation_strings": [
+        "Department of Plant Sciences University of California, Davis Davis CA 95616 USA",
+        "Department of Plant Sciences, University of California, Davis, Davis, CA, 95616 USA"
+      ],
+      "raw_orcid": "https://orcid.org/0000-0001-7610-7136",
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Department of Plant Sciences University of California, Davis Davis CA 95616 USA",
+          "institution_ids": [
+            "https://openalex.org/I84218800"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Department of Plant Sciences, University of California, Davis, Davis, CA, 95616 USA",
+          "institution_ids": [
+            "https://openalex.org/I84218800"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5009680531",
+        "display_name": "Lucas A. Cernusak",
+        "orcid": "https://orcid.org/0000-0002-7575-5526"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I86467917",
+          "display_name": "James Cook University",
+          "ror": "https://ror.org/04gsp2c11",
+          "country_code": "AU",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I86467917"
+          ]
+        }
+      ],
+      "countries": [
+        "AU"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Lucas A. Cernusak",
+      "raw_affiliation_strings": [
+        "College of Science and Engineering James Cook University Cairns Qld 4814 Australia",
+        "College of Science and Engineering, James Cook University, Cairns, Qld, 4814 Australia"
+      ],
+      "raw_orcid": "https://orcid.org/0000-0002-7575-5526",
+      "affiliations": [
+        {
+          "raw_affiliation_string": "College of Science and Engineering James Cook University Cairns Qld 4814 Australia",
+          "institution_ids": [
+            "https://openalex.org/I86467917"
+          ]
+        },
+        {
+          "raw_affiliation_string": "College of Science and Engineering, James Cook University, Cairns, Qld, 4814 Australia",
+          "institution_ids": [
+            "https://openalex.org/I86467917"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5002137519",
+        "display_name": "Kimberly A. Novick",
+        "orcid": "https://orcid.org/0000-0002-8431-0879"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I4210119109",
+          "display_name": "Indiana University Bloomington",
+          "ror": "https://ror.org/02k40bc56",
+          "country_code": "US",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I4210119109",
+            "https://openalex.org/I592451"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Kimberly A. Novick",
+      "raw_affiliation_strings": [
+        "School of Public and Environmental Affairs Indiana University Bloomington Bloomington IN 47405 USA",
+        "School of Public and Environmental Affairs, Indiana University Bloomington, Bloomington, IN, 47405 USA"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "School of Public and Environmental Affairs Indiana University Bloomington Bloomington IN 47405 USA",
+          "institution_ids": [
+            "https://openalex.org/I4210119109"
+          ]
+        },
+        {
+          "raw_affiliation_string": "School of Public and Environmental Affairs, Indiana University Bloomington, Bloomington, IN, 47405 USA",
+          "institution_ids": [
+            "https://openalex.org/I4210119109"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5065467022",
+        "display_name": "Benjamin Poulter",
+        "orcid": "https://orcid.org/0000-0002-9493-8600"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I1306266525",
+          "display_name": "Goddard Space Flight Center",
+          "ror": "https://ror.org/0171mag52",
+          "country_code": "US",
+          "type": "facility",
+          "lineage": [
+            "https://openalex.org/I1306266525",
+            "https://openalex.org/I4210124779"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Benjamin Poulter",
+      "raw_affiliation_strings": [
+        "Biospheric Sciences Lab NASA Goddard Space Flight Center Greenbelt MD 20771 USA",
+        "Biospheric Sciences Lab, NASA Goddard Space Flight Center, Greenbelt, MD, 20771 USA"
+      ],
+      "raw_orcid": "https://orcid.org/0000-0002-9493-8600",
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Biospheric Sciences Lab NASA Goddard Space Flight Center Greenbelt MD 20771 USA",
+          "institution_ids": [
+            "https://openalex.org/I1306266525"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Biospheric Sciences Lab, NASA Goddard Space Flight Center, Greenbelt, MD, 20771 USA",
+          "institution_ids": [
+            "https://openalex.org/I1306266525"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5075157279",
+        "display_name": "Rolf Siegwolf",
+        "orcid": "https://orcid.org/0000-0002-0249-0651"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I2800262456",
+          "display_name": "Swiss Federal Institute for Forest, Snow and Landscape Research",
+          "ror": "https://ror.org/04bs5yc70",
+          "country_code": "CH",
+          "type": "facility",
+          "lineage": [
+            "https://openalex.org/I2799323385",
+            "https://openalex.org/I2800262456"
+          ]
+        }
+      ],
+      "countries": [
+        "CH"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Rolf T. W. Siegwolf",
+      "raw_affiliation_strings": [
+        "Swiss Federal Institute for Forest, Snow and Landscape Research WSL Z\u00fcrcherstrasse 111 8903 Birmensdorf Switzerland"
+      ],
+      "raw_orcid": "https://orcid.org/0000-0002-0249-0651",
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Swiss Federal Institute for Forest, Snow and Landscape Research WSL Z\u00fcrcherstrasse 111 8903 Birmensdorf Switzerland",
+          "institution_ids": [
+            "https://openalex.org/I2800262456"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5010178935",
+        "display_name": "John S. Sperry",
+        "orcid": "https://orcid.org/0000-0001-7881-7393"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I223532165",
+          "display_name": "University of Utah",
+          "ror": "https://ror.org/03r0ha626",
+          "country_code": "US",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I223532165"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "John S. Sperry",
+      "raw_affiliation_strings": [
+        "Department of Biology University of Utah Salt Lake City UT 84112 USA",
+        "Department of Biology, University of Utah, Salt Lake City, UT, 84112 USA"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Department of Biology University of Utah Salt Lake City UT 84112 USA",
+          "institution_ids": [
+            "https://openalex.org/I223532165"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Department of Biology, University of Utah, Salt Lake City, UT, 84112 USA",
+          "institution_ids": [
+            "https://openalex.org/I223532165"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "last",
+      "author": {
+        "id": "https://openalex.org/A5007050438",
+        "display_name": "Nate G. McDowell",
+        "orcid": "https://orcid.org/0000-0002-2178-2254"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I142606810",
+          "display_name": "Pacific Northwest National Laboratory",
+          "ror": "https://ror.org/05h992307",
+          "country_code": "US",
+          "type": "facility",
+          "lineage": [
+            "https://openalex.org/I1325736334",
+            "https://openalex.org/I1330989302",
+            "https://openalex.org/I142606810",
+            "https://openalex.org/I39565521"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Nate G. McDowell",
+      "raw_affiliation_strings": [
+        "Earth Systems Science Division Pacific Northwest National Laboratory Richland WA 99354 USA",
+        "Earth Systems Science Division, Pacific Northwest National Laboratory, Richland, WA, 99354 USA"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Earth Systems Science Division Pacific Northwest National Laboratory Richland WA 99354 USA",
+          "institution_ids": [
+            "https://openalex.org/I142606810"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Earth Systems Science Division, Pacific Northwest National Laboratory, Richland, WA, 99354 USA",
+          "institution_ids": [
+            "https://openalex.org/I142606810"
+          ]
+        }
+      ]
+    }
+  ],
+  "institutions": [],
+  "countries_distinct_count": 3,
+  "institutions_distinct_count": 8,
+  "corresponding_author_ids": [
+    "https://openalex.org/A5075690626"
+  ],
+  "corresponding_institution_ids": [
+    "https://openalex.org/I2800262456",
+    "https://openalex.org/I5124864"
+  ],
+  "apc_list": {
+    "value": 5510,
+    "currency": "USD",
+    "value_usd": 5510
+  },
+  "apc_paid": null,
+  "fwci": 90.1333,
+  "has_fulltext": true,
+  "cited_by_count": 2134,
+  "citation_normalized_percentile": {
+    "value": 0.99982982,
+    "is_in_top_1_percent": true,
+    "is_in_top_10_percent": true
+  },
+  "cited_by_percentile_year": {
+    "min": 99,
+    "max": 100
+  },
+  "biblio": {
+    "volume": "226",
+    "issue": "6",
+    "first_page": "1550",
+    "last_page": "1566"
+  },
+  "is_retracted": false,
+  "is_paratext": false,
+  "is_xpac": false,
+  "primary_topic": {
+    "id": "https://openalex.org/T10266",
+    "display_name": "Plant Water Relations and Carbon Dynamics",
+    "score": 1.0,
+    "subfield": {
+      "id": "https://openalex.org/subfields/2306",
+      "display_name": "Global and Planetary Change"
+    },
+    "field": {
+      "id": "https://openalex.org/fields/23",
+      "display_name": "Environmental Science"
+    },
+    "domain": {
+      "id": "https://openalex.org/domains/3",
+      "display_name": "Physical Sciences"
+    }
+  },
+  "topics": [
+    {
+      "id": "https://openalex.org/T10266",
+      "display_name": "Plant Water Relations and Carbon Dynamics",
+      "score": 1.0,
+      "subfield": {
+        "id": "https://openalex.org/subfields/2306",
+        "display_name": "Global and Planetary Change"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/23",
+        "display_name": "Environmental Science"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/3",
+        "display_name": "Physical Sciences"
+      }
+    },
+    {
+      "id": "https://openalex.org/T10029",
+      "display_name": "Climate variability and models",
+      "score": 0.9993000030517578,
+      "subfield": {
+        "id": "https://openalex.org/subfields/2306",
+        "display_name": "Global and Planetary Change"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/23",
+        "display_name": "Environmental Science"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/3",
+        "display_name": "Physical Sciences"
+      }
+    },
+    {
+      "id": "https://openalex.org/T11760",
+      "display_name": "Plant responses to elevated CO2",
+      "score": 0.9987999796867371,
+      "subfield": {
+        "id": "https://openalex.org/subfields/1110",
+        "display_name": "Plant Science"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/11",
+        "display_name": "Agricultural and Biological Sciences"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/1",
+        "display_name": "Life Sciences"
+      }
+    }
+  ],
+  "keywords": [
+    {
+      "id": "https://openalex.org/keywords/vapour-pressure-deficit",
+      "display_name": "Vapour Pressure Deficit",
+      "score": 0.912606418132782
+    },
+    {
+      "id": "https://openalex.org/keywords/biome",
+      "display_name": "Biome",
+      "score": 0.788622260093689
+    },
+    {
+      "id": "https://openalex.org/keywords/transpiration",
+      "display_name": "Transpiration",
+      "score": 0.7591659426689148
+    },
+    {
+      "id": "https://openalex.org/keywords/environmental-science",
+      "display_name": "Environmental science",
+      "score": 0.7166880369186401
+    },
+    {
+      "id": "https://openalex.org/keywords/stomatal-conductance",
+      "display_name": "Stomatal conductance",
+      "score": 0.5972140431404114
+    },
+    {
+      "id": "https://openalex.org/keywords/ecosystem",
+      "display_name": "Ecosystem",
+      "score": 0.5516624450683594
+    },
+    {
+      "id": "https://openalex.org/keywords/photosynthesis",
+      "display_name": "Photosynthesis",
+      "score": 0.5236677527427673
+    },
+    {
+      "id": "https://openalex.org/keywords/atmospheric-sciences",
+      "display_name": "Atmospheric sciences",
+      "score": 0.5137642621994019
+    },
+    {
+      "id": "https://openalex.org/keywords/climate-change",
+      "display_name": "Climate change",
+      "score": 0.44416165351867676
+    },
+    {
+      "id": "https://openalex.org/keywords/ecology",
+      "display_name": "Ecology",
+      "score": 0.42292284965515137
+    },
+    {
+      "id": "https://openalex.org/keywords/biology",
+      "display_name": "Biology",
+      "score": 0.3734307885169983
+    },
+    {
+      "id": "https://openalex.org/keywords/agronomy",
+      "display_name": "Agronomy",
+      "score": 0.33103716373443604
+    },
+    {
+      "id": "https://openalex.org/keywords/botany",
+      "display_name": "Botany",
+      "score": 0.15674343705177307
+    }
+  ],
+  "concepts": [
+    {
+      "id": "https://openalex.org/C14331020",
+      "wikidata": "https://www.wikidata.org/wiki/Q907795",
+      "display_name": "Vapour Pressure Deficit",
+      "level": 4,
+      "score": 0.912606418132782
+    },
+    {
+      "id": "https://openalex.org/C89920630",
+      "wikidata": "https://www.wikidata.org/wiki/Q101998",
+      "display_name": "Biome",
+      "level": 3,
+      "score": 0.788622260093689
+    },
+    {
+      "id": "https://openalex.org/C157517311",
+      "wikidata": "https://www.wikidata.org/wiki/Q167980",
+      "display_name": "Transpiration",
+      "level": 3,
+      "score": 0.7591659426689148
+    },
+    {
+      "id": "https://openalex.org/C39432304",
+      "wikidata": "https://www.wikidata.org/wiki/Q188847",
+      "display_name": "Environmental science",
+      "level": 0,
+      "score": 0.7166880369186401
+    },
+    {
+      "id": "https://openalex.org/C2781045423",
+      "wikidata": "https://www.wikidata.org/wiki/Q7618701",
+      "display_name": "Stomatal conductance",
+      "level": 3,
+      "score": 0.5972140431404114
+    },
+    {
+      "id": "https://openalex.org/C110872660",
+      "wikidata": "https://www.wikidata.org/wiki/Q37813",
+      "display_name": "Ecosystem",
+      "level": 2,
+      "score": 0.5516624450683594
+    },
+    {
+      "id": "https://openalex.org/C183688256",
+      "wikidata": "https://www.wikidata.org/wiki/Q11982",
+      "display_name": "Photosynthesis",
+      "level": 2,
+      "score": 0.5236677527427673
+    },
+    {
+      "id": "https://openalex.org/C91586092",
+      "wikidata": "https://www.wikidata.org/wiki/Q757520",
+      "display_name": "Atmospheric sciences",
+      "level": 1,
+      "score": 0.5137642621994019
+    },
+    {
+      "id": "https://openalex.org/C132651083",
+      "wikidata": "https://www.wikidata.org/wiki/Q7942",
+      "display_name": "Climate change",
+      "level": 2,
+      "score": 0.44416165351867676
+    },
+    {
+      "id": "https://openalex.org/C18903297",
+      "wikidata": "https://www.wikidata.org/wiki/Q7150",
+      "display_name": "Ecology",
+      "level": 1,
+      "score": 0.42292284965515137
+    },
+    {
+      "id": "https://openalex.org/C86803240",
+      "wikidata": "https://www.wikidata.org/wiki/Q420",
+      "display_name": "Biology",
+      "level": 0,
+      "score": 0.3734307885169983
+    },
+    {
+      "id": "https://openalex.org/C6557445",
+      "wikidata": "https://www.wikidata.org/wiki/Q173113",
+      "display_name": "Agronomy",
+      "level": 1,
+      "score": 0.33103716373443604
+    },
+    {
+      "id": "https://openalex.org/C59822182",
+      "wikidata": "https://www.wikidata.org/wiki/Q441",
+      "display_name": "Botany",
+      "level": 1,
+      "score": 0.15674343705177307
+    },
+    {
+      "id": "https://openalex.org/C127313418",
+      "wikidata": "https://www.wikidata.org/wiki/Q1069",
+      "display_name": "Geology",
+      "level": 0,
+      "score": 0.0
+    }
+  ],
+  "mesh": [
+    {
+      "descriptor_ui": "D014867",
+      "descriptor_name": "Water",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D014867",
+      "descriptor_name": "Water",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D014867",
+      "descriptor_name": "Water",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D017753",
+      "descriptor_name": "Ecosystem",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D017753",
+      "descriptor_name": "Ecosystem",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D017753",
+      "descriptor_name": "Ecosystem",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D018515",
+      "descriptor_name": "Plant Leaves",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D018515",
+      "descriptor_name": "Plant Leaves",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D018515",
+      "descriptor_name": "Plant Leaves",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D018526",
+      "descriptor_name": "Plant Transpiration",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D018526",
+      "descriptor_name": "Plant Transpiration",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D018526",
+      "descriptor_name": "Plant Transpiration",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D054046",
+      "descriptor_name": "Plant Stomata",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D054046",
+      "descriptor_name": "Plant Stomata",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D054046",
+      "descriptor_name": "Plant Stomata",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D055548",
+      "descriptor_name": "Vapor Pressure",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D055548",
+      "descriptor_name": "Vapor Pressure",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D055548",
+      "descriptor_name": "Vapor Pressure",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    }
+  ],
+  "locations_count": 5,
+  "locations": [
+    {
+      "id": "doi:10.1111/nph.16485",
+      "is_oa": false,
+      "landing_page_url": "https://doi.org/10.1111/nph.16485",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S58631098",
+        "display_name": "New Phytologist",
+        "issn_l": "0028-646X",
+        "issn": [
+          "0028-646X",
+          "1469-8137"
+        ],
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": true,
+        "host_organization": "https://openalex.org/P4310320595",
+        "host_organization_name": "Wiley",
+        "host_organization_lineage": [
+          "https://openalex.org/P4310320595"
+        ],
+        "host_organization_lineage_names": [
+          "Wiley"
+        ],
+        "type": "journal"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "publishedVersion",
+      "is_accepted": true,
+      "is_published": true,
+      "raw_source_name": "New Phytologist",
+      "raw_type": "journal-article"
+    },
+    {
+      "id": "pmid:32064613",
+      "is_oa": false,
+      "landing_page_url": "https://pubmed.ncbi.nlm.nih.gov/32064613",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4306525036",
+        "display_name": "PubMed",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I1299303238",
+        "host_organization_name": "National Institutes of Health",
+        "host_organization_lineage": [
+          "https://openalex.org/I1299303238"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "publishedVersion",
+      "is_accepted": true,
+      "is_published": true,
+      "raw_source_name": "The New phytologist",
+      "raw_type": null
+    },
+    {
+      "id": "pmh:oai:dora:wsl_22824",
+      "is_oa": true,
+      "landing_page_url": "https://www.dora.lib4ri.ch/wsl/islandora/object/wsl%3A22824",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4306401379",
+        "display_name": "DORA WSL (Swiss Federal Institute for Forest, Snow and Landscape Research)",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I2800262456",
+        "host_organization_name": "Swiss Federal Institute for Forest, Snow and Landscape Research",
+        "host_organization_lineage": [
+          "https://openalex.org/I2800262456"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": "other-oa",
+      "license_id": "https://openalex.org/licenses/other-oa",
+      "version": "submittedVersion",
+      "is_accepted": false,
+      "is_published": false,
+      "raw_source_name": "New Phytologist",
+      "raw_type": "info:eu-repo/semantics/article"
+    },
+    {
+      "id": "pmh:oai:infoscience.epfl.ch:276268",
+      "is_oa": true,
+      "landing_page_url": "https://infoscience.epfl.ch/handle/20.500.14299/167312",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4306400487",
+        "display_name": "Infoscience (Ecole Polytechnique F\u00e9d\u00e9rale de Lausanne)",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": true,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": null,
+        "host_organization_name": null,
+        "host_organization_lineage": [],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": "cc-by-nc-nd",
+      "license_id": "https://openalex.org/licenses/cc-by-nc-nd",
+      "version": "submittedVersion",
+      "is_accepted": false,
+      "is_published": false,
+      "raw_source_name": null,
+      "raw_type": "review"
+    },
+    {
+      "id": "pmh:oai:researchonline.jcu.edu.au:65827",
+      "is_oa": false,
+      "landing_page_url": null,
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4377196350",
+        "display_name": "ResearchOnline - JCU (James Cook University)",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I86467917",
+        "host_organization_name": "James Cook University",
+        "host_organization_lineage": [
+          "https://openalex.org/I86467917"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "submittedVersion",
+      "is_accepted": false,
+      "is_published": false,
+      "raw_source_name": null,
+      "raw_type": "Article"
+    }
+  ],
+  "best_oa_location": {
+    "id": "pmh:oai:dora:wsl_22824",
+    "is_oa": true,
+    "landing_page_url": "https://www.dora.lib4ri.ch/wsl/islandora/object/wsl%3A22824",
+    "pdf_url": null,
+    "source": {
+      "id": "https://openalex.org/S4306401379",
+      "display_name": "DORA WSL (Swiss Federal Institute for Forest, Snow and Landscape Research)",
+      "issn_l": null,
+      "issn": null,
+      "is_oa": false,
+      "is_in_doaj": false,
+      "is_core": false,
+      "host_organization": "https://openalex.org/I2800262456",
+      "host_organization_name": "Swiss Federal Institute for Forest, Snow and Landscape Research",
+      "host_organization_lineage": [
+        "https://openalex.org/I2800262456"
+      ],
+      "host_organization_lineage_names": [],
+      "type": "repository"
+    },
+    "license": "other-oa",
+    "license_id": "https://openalex.org/licenses/other-oa",
+    "version": "submittedVersion",
+    "is_accepted": false,
+    "is_published": false,
+    "raw_source_name": "New Phytologist",
+    "raw_type": "info:eu-repo/semantics/article"
+  },
+  "sustainable_development_goals": [
+    {
+      "score": 0.7099999785423279,
+      "id": "https://metadata.un.org/sdg/13",
+      "display_name": "Climate action"
+    }
+  ],
+  "awards": [
+    {
+      "id": "https://openalex.org/G1087827091",
+      "display_name": null,
+      "funder_award_id": "Grant 2017\u201067013\u201026191",
+      "funder_id": "https://openalex.org/F4320332299",
+      "funder_display_name": "National Institute of Food and Agriculture"
+    },
+    {
+      "id": "https://openalex.org/G1893495116",
+      "display_name": "Integrated Adaptations to Moisture Supply and Cross-over in Whole-plant Growth among Eucalyptus Species Along an Australian Rainfall Gradient",
+      "funder_award_id": "1557906",
+      "funder_id": "https://openalex.org/F4320306076",
+      "funder_display_name": "National Science Foundation"
+    },
+    {
+      "id": "https://openalex.org/G2128131297",
+      "display_name": null,
+      "funder_award_id": "2017-67013",
+      "funder_id": "https://openalex.org/F4320332299",
+      "funder_display_name": "National Institute of Food and Agriculture"
+    },
+    {
+      "id": "https://openalex.org/G4237673862",
+      "display_name": null,
+      "funder_award_id": "Award 1552747",
+      "funder_id": "https://openalex.org/F4320309090",
+      "funder_display_name": "Center for Hierarchical Manufacturing, National Science Foundation"
+    },
+    {
+      "id": "https://openalex.org/G5243086163",
+      "display_name": null,
+      "funder_award_id": "Award 1557906",
+      "funder_id": "https://openalex.org/F4320309090",
+      "funder_display_name": "Center for Hierarchical Manufacturing, National Science Foundation"
+    },
+    {
+      "id": "https://openalex.org/G5684973463",
+      "display_name": null,
+      "funder_award_id": "5231.00639.001.01",
+      "funder_id": "https://openalex.org/F4320320924",
+      "funder_display_name": "Schweizerischer Nationalfonds zur F\u00f6rderung der Wissenschaftlichen Forschung"
+    },
+    {
+      "id": "https://openalex.org/G7336333201",
+      "display_name": "Tagung der Johann Jakob Christoph von Grimmelshausen- Gesellschaft.",
+      "funder_award_id": "26191",
+      "funder_id": "https://openalex.org/F4320320924",
+      "funder_display_name": "Schweizerischer Nationalfonds zur F\u00f6rderung der Wissenschaftlichen Forschung"
+    },
+    {
+      "id": "https://openalex.org/G8026232906",
+      "display_name": null,
+      "funder_award_id": "1016439",
+      "funder_id": "https://openalex.org/F4320332299",
+      "funder_display_name": "National Institute of Food and Agriculture"
+    },
+    {
+      "id": "https://openalex.org/G8090239137",
+      "display_name": "CAREER: A network-oriented research and education plan to explore links between forest cover and temperature in the eastern United States",
+      "funder_award_id": "1552747",
+      "funder_id": "https://openalex.org/F4320306076",
+      "funder_display_name": "National Science Foundation"
+    }
+  ],
+  "funders": [
+    {
+      "id": "https://openalex.org/F4320306076",
+      "display_name": "National Science Foundation",
+      "ror": "https://ror.org/021nxhr62"
+    },
+    {
+      "id": "https://openalex.org/F4320306101",
+      "display_name": "National Aeronautics and Space Administration",
+      "ror": "https://ror.org/027ka1x80"
+    },
+    {
+      "id": "https://openalex.org/F4320306114",
+      "display_name": "U.S. Department of Agriculture",
+      "ror": "https://ror.org/01na82s61"
+    },
+    {
+      "id": "https://openalex.org/F4320309090",
+      "display_name": "Center for Hierarchical Manufacturing, National Science Foundation",
+      "ror": "https://ror.org/043trmd87"
+    },
+    {
+      "id": "https://openalex.org/F4320320924",
+      "display_name": "Schweizerischer Nationalfonds zur F\u00f6rderung der Wissenschaftlichen Forschung",
+      "ror": "https://ror.org/00yjd3n13"
+    },
+    {
+      "id": "https://openalex.org/F4320332299",
+      "display_name": "National Institute of Food and Agriculture",
+      "ror": "https://ror.org/05qx3fv49"
+    }
+  ],
+  "has_content": {
+    "grobid_xml": false,
+    "pdf": false
+  },
+  "content_urls": null,
+  "referenced_works_count": 186,
+  "referenced_works": [
+    "https://openalex.org/W99419795",
+    "https://openalex.org/W1182682356",
+    "https://openalex.org/W1209269186",
+    "https://openalex.org/W1423700092",
+    "https://openalex.org/W1483518999",
+    "https://openalex.org/W1572071058",
+    "https://openalex.org/W1625551903",
+    "https://openalex.org/W1702089477",
+    "https://openalex.org/W1790776195",
+    "https://openalex.org/W1817234195",
+    "https://openalex.org/W1867005924",
+    "https://openalex.org/W1953946380",
+    "https://openalex.org/W1964655373",
+    "https://openalex.org/W1964934958",
+    "https://openalex.org/W1966236320",
+    "https://openalex.org/W1967839820",
+    "https://openalex.org/W1969974566",
+    "https://openalex.org/W1978897219",
+    "https://openalex.org/W1982896806",
+    "https://openalex.org/W1984583435",
+    "https://openalex.org/W1986793977",
+    "https://openalex.org/W1987204069",
+    "https://openalex.org/W1994772730",
+    "https://openalex.org/W2000901137",
+    "https://openalex.org/W2001024731",
+    "https://openalex.org/W2002627299",
+    "https://openalex.org/W2005763135",
+    "https://openalex.org/W2006563460",
+    "https://openalex.org/W2007721261",
+    "https://openalex.org/W2013228246",
+    "https://openalex.org/W2016534030",
+    "https://openalex.org/W2019493625",
+    "https://openalex.org/W2020687302",
+    "https://openalex.org/W2022910575",
+    "https://openalex.org/W2024040398",
+    "https://openalex.org/W2027770563",
+    "https://openalex.org/W2028371349",
+    "https://openalex.org/W2035962295",
+    "https://openalex.org/W2040085089",
+    "https://openalex.org/W2041087096",
+    "https://openalex.org/W2041889312",
+    "https://openalex.org/W2043642306",
+    "https://openalex.org/W2044963123",
+    "https://openalex.org/W2046723667",
+    "https://openalex.org/W2048193677",
+    "https://openalex.org/W2048605790",
+    "https://openalex.org/W2048941066",
+    "https://openalex.org/W2050154176",
+    "https://openalex.org/W2050410078",
+    "https://openalex.org/W2053314509",
+    "https://openalex.org/W2060123827",
+    "https://openalex.org/W2060402909",
+    "https://openalex.org/W2063402863",
+    "https://openalex.org/W2064967259",
+    "https://openalex.org/W2066163557",
+    "https://openalex.org/W2067156694",
+    "https://openalex.org/W2068914580",
+    "https://openalex.org/W2082883986",
+    "https://openalex.org/W2086710305",
+    "https://openalex.org/W2087391968",
+    "https://openalex.org/W2089205843",
+    "https://openalex.org/W2090808450",
+    "https://openalex.org/W2096409528",
+    "https://openalex.org/W2096466966",
+    "https://openalex.org/W2097763465",
+    "https://openalex.org/W2100174116",
+    "https://openalex.org/W2101119038",
+    "https://openalex.org/W2101493446",
+    "https://openalex.org/W2101836973",
+    "https://openalex.org/W2103053104",
+    "https://openalex.org/W2106632946",
+    "https://openalex.org/W2111205969",
+    "https://openalex.org/W2112456155",
+    "https://openalex.org/W2112926110",
+    "https://openalex.org/W2112931509",
+    "https://openalex.org/W2113891847",
+    "https://openalex.org/W2114814430",
+    "https://openalex.org/W2115226384",
+    "https://openalex.org/W2115921954",
+    "https://openalex.org/W2119519527",
+    "https://openalex.org/W2120802181",
+    "https://openalex.org/W2123855284",
+    "https://openalex.org/W2124423037",
+    "https://openalex.org/W2126860661",
+    "https://openalex.org/W2128183889",
+    "https://openalex.org/W2130616805",
+    "https://openalex.org/W2132798258",
+    "https://openalex.org/W2133934206",
+    "https://openalex.org/W2134289299",
+    "https://openalex.org/W2134916126",
+    "https://openalex.org/W2134983771",
+    "https://openalex.org/W2137999170",
+    "https://openalex.org/W2139738409",
+    "https://openalex.org/W2140131090",
+    "https://openalex.org/W2143027326",
+    "https://openalex.org/W2144720528",
+    "https://openalex.org/W2146514017",
+    "https://openalex.org/W2146719438",
+    "https://openalex.org/W2147654971",
+    "https://openalex.org/W2148750799",
+    "https://openalex.org/W2148792280",
+    "https://openalex.org/W2149279250",
+    "https://openalex.org/W2149328408",
+    "https://openalex.org/W2149436006",
+    "https://openalex.org/W2150608780",
+    "https://openalex.org/W2150866414",
+    "https://openalex.org/W2153427373",
+    "https://openalex.org/W2155343321",
+    "https://openalex.org/W2156443784",
+    "https://openalex.org/W2156890274",
+    "https://openalex.org/W2157402903",
+    "https://openalex.org/W2158683657",
+    "https://openalex.org/W2159386641",
+    "https://openalex.org/W2161828152",
+    "https://openalex.org/W2162704895",
+    "https://openalex.org/W2162746887",
+    "https://openalex.org/W2162897147",
+    "https://openalex.org/W2163455450",
+    "https://openalex.org/W2163563924",
+    "https://openalex.org/W2165315122",
+    "https://openalex.org/W2165968558",
+    "https://openalex.org/W2167613999",
+    "https://openalex.org/W2168086690",
+    "https://openalex.org/W2168377718",
+    "https://openalex.org/W2168380737",
+    "https://openalex.org/W2169245074",
+    "https://openalex.org/W2253348189",
+    "https://openalex.org/W2297128263",
+    "https://openalex.org/W2319342965",
+    "https://openalex.org/W2324714574",
+    "https://openalex.org/W2324927021",
+    "https://openalex.org/W2335452896",
+    "https://openalex.org/W2368623739",
+    "https://openalex.org/W2395475340",
+    "https://openalex.org/W2414958488",
+    "https://openalex.org/W2469266298",
+    "https://openalex.org/W2494125619",
+    "https://openalex.org/W2495207521",
+    "https://openalex.org/W2518297365",
+    "https://openalex.org/W2519304901",
+    "https://openalex.org/W2520650461",
+    "https://openalex.org/W2520778777",
+    "https://openalex.org/W2540203417",
+    "https://openalex.org/W2541448370",
+    "https://openalex.org/W2553436524",
+    "https://openalex.org/W2554629652",
+    "https://openalex.org/W2572951874",
+    "https://openalex.org/W2583125522",
+    "https://openalex.org/W2583460602",
+    "https://openalex.org/W2585302824",
+    "https://openalex.org/W2619039664",
+    "https://openalex.org/W2739908304",
+    "https://openalex.org/W2747319455",
+    "https://openalex.org/W2752228728",
+    "https://openalex.org/W2774876962",
+    "https://openalex.org/W2775346165",
+    "https://openalex.org/W2785348225",
+    "https://openalex.org/W2788451230",
+    "https://openalex.org/W2803003999",
+    "https://openalex.org/W2807601540",
+    "https://openalex.org/W2810277975",
+    "https://openalex.org/W2855927225",
+    "https://openalex.org/W2888017031",
+    "https://openalex.org/W2888626335",
+    "https://openalex.org/W2888893908",
+    "https://openalex.org/W2890402581",
+    "https://openalex.org/W2896624969",
+    "https://openalex.org/W2903274913",
+    "https://openalex.org/W2909148626",
+    "https://openalex.org/W2909240355",
+    "https://openalex.org/W2909751734",
+    "https://openalex.org/W2911664326",
+    "https://openalex.org/W2913707046",
+    "https://openalex.org/W2922141434",
+    "https://openalex.org/W2930370859",
+    "https://openalex.org/W2944572249",
+    "https://openalex.org/W2947468225",
+    "https://openalex.org/W2969017260",
+    "https://openalex.org/W2972351687",
+    "https://openalex.org/W2975724454",
+    "https://openalex.org/W2977042633",
+    "https://openalex.org/W4230303737",
+    "https://openalex.org/W4242039034",
+    "https://openalex.org/W6603898899",
+    "https://openalex.org/W6672275024",
+    "https://openalex.org/W6733237516"
+  ],
+  "related_works": [
+    "https://openalex.org/W2327421635",
+    "https://openalex.org/W2303945795",
+    "https://openalex.org/W2364294440",
+    "https://openalex.org/W2065782362",
+    "https://openalex.org/W202317677",
+    "https://openalex.org/W4206627481",
+    "https://openalex.org/W2512713712",
+    "https://openalex.org/W2362170410",
+    "https://openalex.org/W2020632847",
+    "https://openalex.org/W2302700958"
+  ],
+  "abstract_inverted_index": {
+    "Recent": [
+      0
+    ],
+    "decades": [
+      1
+    ],
+    "have": [
+      2,
+      59
+    ],
+    "been": [
+      3,
+      21,
+      36
+    ],
+    "characterized": [
+      4
+    ],
+    "by": [
+      5
+    ],
+    "increasing": [
+      6
+    ],
+    "temperatures": [
+      7
+    ],
+    "worldwide,": [
+      8
+    ],
+    "resulting": [
+      9
+    ],
+    "in": [
+      10,
+      14,
+      31,
+      42,
+      98,
+      134,
+      184
+    ],
+    "an": [
+      11,
+      24
+    ],
+    "exponential": [
+      12
+    ],
+    "climb": [
+      13
+    ],
+    "vapor": [
+      15
+    ],
+    "pressure": [
+      16
+    ],
+    "deficit": [
+      17
+    ],
+    "(VPD).": [
+      18
+    ],
+    "VPD": [
+      19,
+      94,
+      105,
+      146,
+      179
+    ],
+    "has": [
+      20,
+      35,
+      138
+    ],
+    "identified": [
+      22
+    ],
+    "as": [
+      23,
+      38
+    ],
+    "increasingly": [
+      25
+    ],
+    "important": [
+      26
+    ],
+    "driver": [
+      27
+    ],
+    "of": [
+      28,
+      48,
+      64,
+      85,
+      111,
+      122,
+      129,
+      145,
+      159,
+      174,
+      177,
+      189
+    ],
+    "plant": [
+      29,
+      45,
+      65,
+      160,
+      181
+    ],
+    "functioning": [
+      30,
+      66
+    ],
+    "terrestrial": [
+      32,
+      81
+    ],
+    "biomes": [
+      33
+    ],
+    "and": [
+      34,
+      74,
+      95,
+      117,
+      119,
+      125,
+      131,
+      151,
+      153,
+      172,
+      186
+    ],
+    "established": [
+      37
+    ],
+    "a": [
+      39,
+      103,
+      109,
+      163,
+      168
+    ],
+    "major": [
+      40
+    ],
+    "contributor": [
+      41
+    ],
+    "recent": [
+      43
+    ],
+    "drought-induced": [
+      44
+    ],
+    "mortality": [
+      46
+    ],
+    "independent": [
+      47
+    ],
+    "other": [
+      49
+    ],
+    "drivers": [
+      50
+    ],
+    "associated": [
+      51
+    ],
+    "with": [
+      52
+    ],
+    "climate": [
+      53,
+      190
+    ],
+    "change.": [
+      54
+    ],
+    "Despite": [
+      55
+    ],
+    "this,": [
+      56
+    ],
+    "few": [
+      57
+    ],
+    "studies": [
+      58
+    ],
+    "isolated": [
+      60
+    ],
+    "the": [
+      61,
+      139,
+      149,
+      175
+    ],
+    "physiological": [
+      62
+    ],
+    "response": [
+      63
+    ],
+    "to": [
+      67,
+      76,
+      108,
+      162
+    ],
+    "high": [
+      68,
+      93,
+      178
+    ],
+    "VPD,": [
+      69
+    ],
+    "thus": [
+      70
+    ],
+    "limiting": [
+      71
+    ],
+    "our": [
+      72
+    ],
+    "understanding": [
+      73
+    ],
+    "ability": [
+      75
+    ],
+    "predict": [
+      77
+    ],
+    "future": [
+      78
+    ],
+    "impacts": [
+      79,
+      113,
+      176,
+      191
+    ],
+    "on": [
+      80,
+      180
+    ],
+    "ecosystems.": [
+      82
+    ],
+    "An": [
+      83
+    ],
+    "abundance": [
+      84
+    ],
+    "evidence": [
+      86
+    ],
+    "suggests": [
+      87
+    ],
+    "that": [
+      88
+    ],
+    "stomatal": [
+      89
+    ],
+    "conductance": [
+      90
+    ],
+    "declines": [
+      91
+    ],
+    "under": [
+      92
+    ],
+    "transpiration": [
+      96
+    ],
+    "increases": [
+      97
+    ],
+    "most": [
+      99
+    ],
+    "species": [
+      100
+    ],
+    "up": [
+      101
+    ],
+    "until": [
+      102
+    ],
+    "given": [
+      104
+    ],
+    "threshold,": [
+      106
+    ],
+    "leading": [
+      107
+    ],
+    "cascade": [
+      110
+    ],
+    "subsequent": [
+      112
+    ],
+    "including": [
+      114
+    ],
+    "reduced": [
+      115
+    ],
+    "photosynthesis": [
+      116
+    ],
+    "growth,": [
+      118
+    ],
+    "higher": [
+      120
+    ],
+    "risks": [
+      121
+    ],
+    "carbon": [
+      123
+    ],
+    "starvation": [
+      124
+    ],
+    "hydraulic": [
+      126,
+      132
+    ],
+    "failure.": [
+      127
+    ],
+    "Incorporation": [
+      128
+    ],
+    "photosynthetic": [
+      130
+    ],
+    "traits": [
+      133
+    ],
+    "'next-generation'": [
+      135
+    ],
+    "land-surface": [
+      136
+    ],
+    "models": [
+      137
+    ],
+    "greatest": [
+      140
+    ],
+    "potential": [
+      141
+    ],
+    "for": [
+      142
+    ],
+    "improved": [
+      143
+    ],
+    "prediction": [
+      144
+    ],
+    "responses": [
+      147,
+      161
+    ],
+    "at": [
+      148
+    ],
+    "plant-": [
+      150
+    ],
+    "global-scale,": [
+      152
+    ],
+    "will": [
+      154
+    ],
+    "yield": [
+      155
+    ],
+    "more": [
+      156
+    ],
+    "mechanistic": [
+      157
+    ],
+    "simulations": [
+      158
+    ],
+    "changing": [
+      164
+    ],
+    "climate.": [
+      165
+    ],
+    "By": [
+      166
+    ],
+    "providing": [
+      167
+    ],
+    "fully": [
+      169
+    ],
+    "integrated": [
+      170
+    ],
+    "framework": [
+      171
+    ],
+    "evaluation": [
+      173
+    ],
+    "function,": [
+      182
+    ],
+    "improvements": [
+      183
+    ],
+    "forecasting": [
+      185
+    ],
+    "long-term": [
+      187
+    ],
+    "projections": [
+      188
+    ],
+    "can": [
+      192
+    ],
+    "be": [
+      193
+    ],
+    "made.": [
+      194
+    ]
+  },
+  "counts_by_year": [
+    {
+      "year": 2026,
+      "cited_by_count": 316
+    },
+    {
+      "year": 2025,
+      "cited_by_count": 469
+    },
+    {
+      "year": 2024,
+      "cited_by_count": 450
+    },
+    {
+      "year": 2023,
+      "cited_by_count": 341
+    },
+    {
+      "year": 2022,
+      "cited_by_count": 331
+    },
+    {
+      "year": 2021,
+      "cited_by_count": 174
+    },
+    {
+      "year": 2020,
+      "cited_by_count": 52
+    }
+  ],
+  "updated_date": "2026-07-06T08:01:05.025921",
+  "created_date": "2025-10-10T00:00:00"
+}

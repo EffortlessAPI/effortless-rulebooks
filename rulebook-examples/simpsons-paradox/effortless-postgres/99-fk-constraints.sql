@@ -81,6 +81,11 @@ ALTER TABLE researchers DROP CONSTRAINT IF EXISTS fk_researchers_illustrates_con
 ALTER TABLE researchers ADD CONSTRAINT fk_researchers_illustrates_conclusion
   FOREIGN KEY (illustrates_conclusion) REFERENCES conclusions (conclusion_id);
 
+-- DomainExpansionTargets
+ALTER TABLE domain_expansion_targets DROP CONSTRAINT IF EXISTS fk_domain_expansion_targets_domain;
+ALTER TABLE domain_expansion_targets ADD CONSTRAINT fk_domain_expansion_targets_domain
+  FOREIGN KEY (domain) REFERENCES corpus_domains (domain_id);
+
 -- DiscoveryHypotheses
 ALTER TABLE discovery_hypotheses DROP CONSTRAINT IF EXISTS fk_discovery_hypotheses_registered_in_loop;
 ALTER TABLE discovery_hypotheses ADD CONSTRAINT fk_discovery_hypotheses_registered_in_loop
@@ -91,4 +96,4 @@ ALTER TABLE discovery_findings DROP CONSTRAINT IF EXISTS fk_discovery_findings_w
 ALTER TABLE discovery_findings ADD CONSTRAINT fk_discovery_findings_witnessed_in_loop
   FOREIGN KEY (witnessed_in_loop) REFERENCES loops (loop_id);
 
--- 17 FK constraint(s) declared (off unless EFFORTLESS_ENFORCE_FKS=true).
+-- 18 FK constraint(s) declared (off unless EFFORTLESS_ENFORCE_FKS=true).

@@ -1,0 +1,18 @@
+{
+  "candidate_id": "cand-exp-spohn-2000",
+  "proposed_study_id": "spohn-2000",
+  "acquisition_status": "downloaded",
+  "attempted_at": "2026-07-07T03:41:22+00:00",
+  "catalog_source_url": "https://bjs.ojp.gov/data-collection/federal-justice-statistics-program-fjsp",
+  "resolved_urls": [
+    "https://doi.org/10.1214/10-aop550",
+    "https://projecteuclid.org/journals/annals-of-probability/volume-39/issue-1/Current-fluctuations-for-TASEP--A-proof-of-the-Pr%c3%a4hoferSpohn/10.1214/10-AOP550.pdf",
+    "https://bjs.ojp.gov/data-collection/federal-justice-statistics-program-fjsp"
+  ],
+  "files": [
+    "openalex-search.pdf",
+    "openalex-metadata.json",
+    "source-1.html"
+  ],
+  "dois": []
+}

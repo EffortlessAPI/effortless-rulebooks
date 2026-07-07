@@ -1,0 +1,17 @@
+{
+  "candidate_id": "cand-exp-sprint-research-group-2015",
+  "proposed_study_id": "sprint-research-group-2015",
+  "acquisition_status": "portal_manual",
+  "attempted_at": "2026-07-07T03:44:11+00:00",
+  "catalog_source_url": "https://biolincc.nhlbi.nih.gov/studies/sprint/",
+  "resolved_urls": [
+    "https://doi.org/10.1016/s0140-6736(16)31679-8",
+    "http://www.thelancet.com/article/S0140673616316798/pdf",
+    "https://biolincc.nhlbi.nih.gov/studies/sprint/"
+  ],
+  "files": [
+    "openalex-metadata.json",
+    "source-1.html"
+  ],
+  "dois": []
+}

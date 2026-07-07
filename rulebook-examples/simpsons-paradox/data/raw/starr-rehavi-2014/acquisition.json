@@ -1,0 +1,17 @@
+{
+  "candidate_id": "cand-exp-starr-rehavi-2014",
+  "proposed_study_id": "starr-rehavi-2014",
+  "acquisition_status": "landing_saved",
+  "attempted_at": "2026-07-07T03:41:26+00:00",
+  "catalog_source_url": "https://www.ussc.gov/research/datafiles/commission-datafiles",
+  "resolved_urls": [
+    "https://doi.org/10.1146/annurev-criminol-011518-024815",
+    "https://www.annualreviews.org/doi/pdf/10.1146/annurev-criminol-011518-024815",
+    "https://www.ussc.gov/research/datafiles/commission-datafiles"
+  ],
+  "files": [
+    "openalex-metadata.json",
+    "source-1.html"
+  ],
+  "dois": []
+}

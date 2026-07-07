@@ -1,0 +1,17 @@
+{
+  "candidate_id": "cand-exp-allhat-collaborative-research-group-2002",
+  "proposed_study_id": "allhat-collaborative-research-group-2002",
+  "acquisition_status": "portal_manual",
+  "attempted_at": "2026-07-07T03:43:38+00:00",
+  "catalog_source_url": "https://biolincc.nhlbi.nih.gov/studies/allhat/",
+  "resolved_urls": [
+    "https://doi.org/10.1111/j.1524-6175.2002.02045.x",
+    "https://onlinelibrary.wiley.com/doi/pdfdirect/10.1111/j.1524-6175.2002.02045.x",
+    "https://biolincc.nhlbi.nih.gov/studies/allhat/"
+  ],
+  "files": [
+    "openalex-metadata.json",
+    "source-1.html"
+  ],
+  "dois": []
+}

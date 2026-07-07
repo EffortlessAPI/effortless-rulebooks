@@ -1,0 +1,475 @@
+<head>
+<link rel="stylesheet" href="style.css?20221027"> 
+<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0">
+<meta charset="UTF-8"><style>
+input.brackettg ~div.bracket>div>div.serieslg {
+	visibility: collapse;
+	height: 0px;
+}
+
+input.brackettg ~div.bracket>div>a>div.serieslg {
+	visibility: collapse;
+	height: 0px;
+}
+
+input.brackettg:checked ~div.bracket>div>div.serieslg {
+	visibility: visible;
+	height: auto;
+}
+
+input.brackettg:checked ~div.bracket>div>a>div.serieslg {
+	visibility: visible;
+	height: auto;
+}
+
+input.brackettg ~div.bracket>div>div.seriessm {
+	visibility: visible;
+	height: auto;
+}
+
+input.brackettg ~div.bracket>div>a>div.seriessm {
+	visibility: visible;
+	height: auto;
+}
+
+input.brackettg:checked ~div.bracket>div>div.seriessm {
+	visibility: collapse;
+	height: 0px;
+}
+
+input.brackettg:checked ~div.bracket>div>a>div.seriessm {
+	visibility: collapse;
+	height: 0px;
+}
+
+input.brackettg ~div.bracket>div {
+	position: relative;
+	top: 25%;
+	height: 3em;
+}
+
+input.brackettg:checked ~div.bracket>div {
+	top: auto;
+	height: initial;
+}
+
+input.brackettg ~div>div>img.bgimgpl {
+	top: -10%
+}
+
+input.brackettg:checked ~div>div>img.bgimgpl {
+	top: 0
+}
+
+input.brackettg:checked ~div>center>#bracketlb:after {
+	content: url(/images/rollup.png);
+}
+
+input.brackettg ~div>center>#bracketlb:after {
+	content: url(/images/rolldown.png);
+}
+
+input.brackettg {
+	display: none;
+}
+input.brackettg:checked ~div.bracket{display: grid; align-items: center; justify-items: center; grid-template:
+'s30111 s30111 . . s30131 s30131'
+'s30111 s30111 . . s30131 s30131'
+'. s30211 s30211 s30221 s30221 .'
+'. s30211 s30211 s30221 s30221 .'
+'s30121 s30121 . . s30141 s30141'
+'s30121 s30121 s30311 s30311 s30141 s30141'
+'. . s30311 s30311 . .'
+'. . s30411 s30411 . .'
+'. . s30411 s30411 . .'
+'. . s30321 s30321 . .'
+'s30151 s30151 s30321 s30321 s30171 s30171'
+'s30151 s30151 . . s30171 s30171'
+'. s30231 s30231 s30241 s30241 .'
+'. s30231 s30231 s30241 s30241 .'
+'s30161 s30161 . . s30181 s30181'
+'s30161 s30161 . . s30181 s30181'; grid-template-columns: repeat(6, minmax(0, 1fr));}
+input.brackettg ~div.bracket{display: grid; align-items: center; justify-items: center; grid-template:
+'s30111 s30111 . . s30131 s30131'
+'s30111 s30111 . . s30131 s30131'
+'. s30211 s30211 s30221 s30221 .'
+'. s30211 s30211 s30221 s30221 .'
+'s30121 s30121 . . s30141 s30141'
+'s30121 s30121 s30311 s30311 s30141 s30141'
+'. . s30311 s30311 . .'
+'. . s30411 s30411 . .'
+'. . s30411 s30411 . .'
+'. . s30321 s30321 . .'
+'s30151 s30151 s30321 s30321 s30171 s30171'
+'s30151 s30151 . . s30171 s30171'
+'. s30231 s30231 s30241 s30241 .'
+'. s30231 s30231 s30241 s30241 .'
+'s30161 s30161 . . s30181 s30181'
+'s30161 s30161 . . s30181 s30181'; grid-template-columns: repeat(6, minmax(0, 1fr));}
+div.bracket > div {scale: 0.95;}
+@media only screen and (min-width: 360px) { div.bracket > div {scale: 1;}}
+@media only screen and (min-width: 770px) { 
+div.s30211, div.s30221, div.s30321 { justify-self: left; }
+div.s30231, div.s30241, div.s30311 { justify-self: right; }
+input.brackettg:checked ~div.bracket{grid-template:
+	's30111 . . . s30151'
+'s30111 . . . s30151'
+'s30111 s30211 . s30231 s30151'
+'. s30211 . s30231 .'
+'s30121 s30211 . s30231 s30161'
+'s30121 . . . s30161'
+'s30121 s30311 s30411 s30321 s30161'
+'. s30311 s30411 s30321 .'
+'s30131 s30311 s30411 s30321 s30171'
+'s30131 . . . s30171'
+'s30131 s30221 . s30241 s30171'
+'. s30221 . s30241 .'
+'s30141 s30221 . s30241 s30181'
+'s30141 . . . s30181'
+'s30141 . . . s30181'; grid-template-columns: repeat(5, minmax(0, 1fr));}
+input.brackettg ~div.bracket{grid-template:
+'s30111 . . . s30151'
+'s30111 s30211 . s30231 s30151'
+'s30121 s30211 . s30231 s30161'
+'s30121 s30311 s30411 s30321 s30161'
+'s30131 s30311 s30411 s30321 s30171'
+'s30131 s30221 . s30241 s30171'
+'s30141 s30221 . s30241 s30181'
+'s30141 . . . s30181'; grid-template-columns: repeat(5, minmax(0, 1fr));}
+}
+@media only screen and (min-width: 1180px) { 
+div.s30211, div.s30221, div.s30321 { justify-self: center; }
+div.s30231, div.s30241, div.s30311 { justify-self: center; }
+input.brackettg:checked ~div.bracket{grid-template:
+	's30111 . . . . . s30151'
+	's30111 . . . . . s30151'
+	's30111 s30211 . . . s30231 s30151'
+	'. s30211 . . . s30231 .'
+	's30121 s30211 . . . s30231 s30161'
+	's30121 . . . . . s30161'
+	's30121 . s30311 s30411 s30321 . s30161'
+	'. . s30311 s30411 s30321 . .'
+	's30131 . s30311 s30411 s30321 . s30171'
+	's30131 . . . . . s30171'
+	's30131 s30221 . . . s30241 s30171'
+	'. s30221 . . . s30241 .'
+	's30141 s30221 . . . s30241 s30181'
+	's30141 . . . . . s30181'
+'s30141 . . . . . s30181'; grid-template-columns: repeat(7, minmax(0, 1fr));}
+input.brackettg ~div.bracket{grid-template:
+	's30111 . . . . . s30151'
+	's30111 s30211 . . . s30231 s30151'
+	's30121 s30211 . . . s30231 s30161'
+	's30121 . s30311 s30411 s30321 . s30161'
+	's30131 . s30311 s30411 s30321 . s30171'
+	's30131 s30221 . . . s30241 s30171'
+	's30141 s30221 . . . s30241 s30181'
+'s30141 . . . . . s30181'; grid-template-columns: repeat(7, minmax(0, 1fr));}}
+</style>
+
+<title>Natural Stat Trick</title><script type="text/javascript" charset="utf8" src="/DataTables-1.10.3/media/js/jquery.js"></script>
+<meta name="google-site-verification" content="Dz3ygFqwgXt1YcqZerRGm3QEfsOeC2nrsyY03-0UW-0" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<div style="position:relative; min-height:100%"><script>
+$(window).scroll(function(e){ 
+$el = $('.headertxtsticky'); 
+if ($(this).scrollTop() > 92 && $el.css('display') != 'block'){ 
+  $('.headertxtsticky').css({'display': 'block'}); 
+}
+if ($(this).scrollTop() < 92 && $el.css('display') == 'block')
+{
+  $('.headertxtsticky').css({'display': 'none'}); 
+} 
+});
+</script>
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-55321726-1', 'auto');
+ga('require', 'displayfeatures');
+ga('send', 'pageview');
+</script>
+<script type="text/javascript" src="//static.addtoany.com/menu/page.js"></script>
+<div class="headertxtsticky" id=headertxtsticky>
+Natural Stat Trick</div>
+<div class=headertxt id=headertxt>
+<img style="position:relative; top:-25px" src="/images/newlogo.png"> <div style="float:right; display: inline-table; min-height: 40px; text-align: right; padding: 5px; font-size: 0.5em;"><a class=menu href="/login.php">Login</a><br>
+</div>
+<div class=menubox><ul class=menu><li class=menu><a href="#" class=menu>Games</a><ul class=menu><li><a href="#" class=menu>East </a><ul class=menu><li><a href="games.php?team=BOS" class=menu>Boston&nbsp;Bruins</a></li><li><a href="games.php?team=BUF" class=menu>Buffalo&nbsp;Sabres</a></li><li><a href="games.php?team=CAR" class=menu>Carolina&nbsp;Hurricanes</a></li><li><a href="games.php?team=CBJ" class=menu>Columbus&nbsp;Blue&nbsp;Jackets</a></li><li><a href="games.php?team=DET" class=menu>Detroit&nbsp;Red&nbsp;Wings</a></li><li><a href="games.php?team=FLA" class=menu>Florida&nbsp;Panthers</a></li><li><a href="games.php?team=MTL" class=menu>Montreal&nbsp;Canadiens</a></li><li><a href="games.php?team=N.J" class=menu>New&nbsp;Jersey&nbsp;Devils</a></li><li><a href="games.php?team=NYI" class=menu>New&nbsp;York&nbsp;Islanders</a></li><li><a href="games.php?team=NYR" class=menu>New&nbsp;York&nbsp;Rangers</a></li><li><a href="games.php?team=OTT" class=menu>Ottawa&nbsp;Senators</a></li><li><a href="games.php?team=PHI" class=menu>Philadelphia&nbsp;Flyers</a></li><li><a href="games.php?team=PIT" class=menu>Pittsburgh&nbsp;Penguins</a></li><li><a href="games.php?team=T.B" class=menu>Tampa&nbsp;Bay&nbsp;Lightning</a></li><li><a href="games.php?team=TOR" class=menu>Toronto&nbsp;Maple&nbsp;Leafs</a></li><li><a href="games.php?team=WSH" class=menu>Washington&nbsp;Capitals</a></li></ul></li>
+<li><a href="#" class=menu>West</a><ul class=menu style="top: -100%"><li><a href="games.php?team=ANA" class=menu>Anaheim&nbsp;Ducks</a></li><li><a href="games.php?team=CGY" class=menu>Calgary&nbsp;Flames</a></li><li><a href="games.php?team=CHI" class=menu>Chicago&nbsp;Blackhawks</a></li><li><a href="games.php?team=COL" class=menu>Colorado&nbsp;Avalanche</a></li><li><a href="games.php?team=DAL" class=menu>Dallas&nbsp;Stars</a></li><li><a href="games.php?team=EDM" class=menu>Edmonton&nbsp;Oilers</a></li><li><a href="games.php?team=L.A" class=menu>Los&nbsp;Angeles&nbsp;Kings</a></li><li><a href="games.php?team=MIN" class=menu>Minnesota&nbsp;Wild</a></li><li><a href="games.php?team=NSH" class=menu>Nashville&nbsp;Predators</a></li><li><a href="games.php?team=S.J" class=menu>San&nbsp;Jose&nbsp;Sharks</a></li><li><a href="games.php?team=SEA" class=menu>Seattle&nbsp;Kraken</a></li><li><a href="games.php?team=STL" class=menu>St&nbsp;Louis&nbsp;Blues</a></li><li><a href="games.php?team=UTA" class=menu>Utah&nbsp;Mammoth</a></li><li><a href="games.php?team=VAN" class=menu>Vancouver&nbsp;Canucks</a></li><li><a href="games.php?team=VGK" class=menu>Vegas&nbsp;Golden&nbsp;Knights</a></li><li><a href="games.php?team=WPG" class=menu>Winnipeg&nbsp;Jets</a></li></ul></li>
+<li><a href="games.php" class=menu>All&nbsp;Teams</a></li></ul></li>
+<li class=menu><a href="#" class=menu>Players</a><ul class=menu><li><a href="playerteams.php?stdoi=oi" class=menu>On-Ice</a></li><li><a href="playerteams.php?stdoi=std" class=menu>Individual</a></li><li><a href="playerteams.php?stdoi=g" class=menu>Goalies</a></li><li><a href="playerteams.php?stdoi=bio" class=menu>Bios</a></li><li><a href="pairings.php" class=menu>Defensive&nbsp;Pairs</a></li><li><a href="playercompare.php" class=menu>Compare</a></li><li><a href="playerlist.php" class=menu>Player&nbsp;Index</a></li><li><a href="linestats.php" class=menu>Line&nbsp;Tool</a></li><li><a href="shiftperformance.php" class=menu>Shift&nbsp;Performance</a></li></ul></li><li class=menu><a href="#" class=menu>Teams</a><ul class=menu><li><a href="#" class=menu>Team&nbsp;Reports</a><ul class=menu><li><a href="#" class=menu>East </a><ul class=menu><li><a href="teamreport.php?team=BOS" class=menu>Boston&nbsp;Bruins</a></li><li><a href="teamreport.php?team=BUF" class=menu>Buffalo&nbsp;Sabres</a></li><li><a href="teamreport.php?team=CAR" class=menu>Carolina&nbsp;Hurricanes</a></li><li><a href="teamreport.php?team=CBJ" class=menu>Columbus&nbsp;Blue&nbsp;Jackets</a></li><li><a href="teamreport.php?team=DET" class=menu>Detroit&nbsp;Red&nbsp;Wings</a></li><li><a href="teamreport.php?team=FLA" class=menu>Florida&nbsp;Panthers</a></li><li><a href="teamreport.php?team=MTL" class=menu>Montreal&nbsp;Canadiens</a></li><li><a href="teamreport.php?team=N.J" class=menu>New&nbsp;Jersey&nbsp;Devils</a></li><li><a href="teamreport.php?team=NYI" class=menu>New&nbsp;York&nbsp;Islanders</a></li><li><a href="teamreport.php?team=NYR" class=menu>New&nbsp;York&nbsp;Rangers</a></li><li><a href="teamreport.php?team=OTT" class=menu>Ottawa&nbsp;Senators</a></li><li><a href="teamreport.php?team=PHI" class=menu>Philadelphia&nbsp;Flyers</a></li><li><a href="teamreport.php?team=PIT" class=menu>Pittsburgh&nbsp;Penguins</a></li><li><a href="teamreport.php?team=T.B" class=menu>Tampa&nbsp;Bay&nbsp;Lightning</a></li><li><a href="teamreport.php?team=TOR" class=menu>Toronto&nbsp;Maple&nbsp;Leafs</a></li><li><a href="teamreport.php?team=WSH" class=menu>Washington&nbsp;Capitals</a></li></ul></li>
+<li><a href="#" class=menu>West</a><ul class=menu style="top: -100%"><li><a href="teamreport.php?team=ANA" class=menu>Anaheim&nbsp;Ducks</a></li><li><a href="teamreport.php?team=CGY" class=menu>Calgary&nbsp;Flames</a></li><li><a href="teamreport.php?team=CHI" class=menu>Chicago&nbsp;Blackhawks</a></li><li><a href="teamreport.php?team=COL" class=menu>Colorado&nbsp;Avalanche</a></li><li><a href="teamreport.php?team=DAL" class=menu>Dallas&nbsp;Stars</a></li><li><a href="teamreport.php?team=EDM" class=menu>Edmonton&nbsp;Oilers</a></li><li><a href="teamreport.php?team=L.A" class=menu>Los&nbsp;Angeles&nbsp;Kings</a></li><li><a href="teamreport.php?team=MIN" class=menu>Minnesota&nbsp;Wild</a></li><li><a href="teamreport.php?team=NSH" class=menu>Nashville&nbsp;Predators</a></li><li><a href="teamreport.php?team=S.J" class=menu>San&nbsp;Jose&nbsp;Sharks</a></li><li><a href="teamreport.php?team=SEA" class=menu>Seattle&nbsp;Kraken</a></li><li><a href="teamreport.php?team=STL" class=menu>St&nbsp;Louis&nbsp;Blues</a></li><li><a href="teamreport.php?team=UTA" class=menu>Utah&nbsp;Mammoth</a></li><li><a href="teamreport.php?team=VAN" class=menu>Vancouver&nbsp;Canucks</a></li><li><a href="teamreport.php?team=VGK" class=menu>Vegas&nbsp;Golden&nbsp;Knights</a></li><li><a href="teamreport.php?team=WPG" class=menu>Winnipeg&nbsp;Jets</a></li></ul></li>
+</ul></li>
+<li><a href="teamtable.php" class=menu>Season&nbsp;Stats</a></li><li><a href="standings.php" class=menu>Standings</a></li></ul></li><li class=menu><a href="#" class=menu>Tools</a><ul class=menu><li>Available&nbsp;to&nbsp;Early<br>Access&nbsp;Subcribers:<br><font size=-2 color=#585858><i>&nbsp;&nbsp;&nbsp;Rolling&nbsp;Average&nbsp;Charts</i></font></li></ul></li><li class=menu><a href="#" class=menu>Trivia</a><ul class=menu><li><a href="teamstreaks.php" class=menu>Team&nbsp;Streaks</a></li><li><a href="altstandings.php" class=menu>Alternate&nbsp;Standings</a></li><li><a href="playernumbers.php" class=menu>Player&nbsp;Numbers</a></li></ul></li></ul>
+</div>
+</div>
+<div style="margin:5px; padding:5px; min-height:25px;"><div style=" display: inline-block; ">
+<a href="game.php?season=20252026&game=30416&view=limited" style="text-decoration:none"><div class=boxscore>
+Hurricanes&nbsp;&nbsp;&nbsp;<span style="float: right;">3</span>
+<br>Golden Knights&nbsp;&nbsp;&nbsp;<span style="float: right;">0</span>
+<br><center>Final</center>
+<center>CAR Wins 4 - 2</center>
+</div>
+</a>
+</div>
+</div>
+<div style="width: 100%; overflow: auto;">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- Header Responsive -->
+ <center>
+<ins class="adsbygoogle"
+     style="display:block;min-width:400px;max-width:970px;width:100%;height:90px"
+     data-ad-client="ca-pub-8142307985704945"
+     data-ad-slot="8680455719"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+ </center>
+</div>
+<div style="padding-bottom:50px;"><input type="radio" class="rdall button" name="rdo" value="all" id="rdall">
+<input type="radio" class="rdev button" name="rdo" value="ev" id="rdev">
+<input type="radio" class="rd5v5 button" name="rdo" value="5v5" id="rd5v5" checked>
+<input type="radio" class="rdsva button" name="rdo" value="sva" id="rdsva">
+<div class="content bs">
+<input type="checkbox" class="brackettg" id="brackettg" checked><div class="bracket">
+<div class=s30111 style="grid-area:s30111;">
+<a href="game.php?season=20252026&game=30110" style="text-decoration:none"><div class="boxscore seriessm" style="display: grid; grid-template-columns: 1fr 1fr;">
+<span style="justify-self: left;">BUF 4</span>
+<span style="justify-self: right;">2 BOS</span>
+</div>
+<div class="boxscore serieslg">
+Sabres<span style="float: right;">4</span>
+<div style="display: flex; justify-content: space-evenly;"><img src="/images/logos/20252026/BUF_Big.jpg" style="max-height:16px; max-width:16px; object-fit: scale-down;"><img src="/images/logos/20252026/BOS_Big.jpg" style="max-height:16px; max-width:16px; object-fit: scale-down;"><img src="/images/logos/20252026/BUF_Big.jpg" style="max-height:16px; max-width:16px; object-fit: scale-down;"><img src="/images/logos/20252026/BUF_Big.jpg" style="max-height:16px; max-width:16px; object-fit: scale-down;"><img src="/images/logos/20252026/BOS_Big.jpg" style="max-height:16px; max-width:16px; object-fit: scale-down;"><img src="/images/logos/20252026/BUF_Big.jpg" style="max-height:16px; max-width:16px; object-fit: scale-down;"></div>Bruins<span style="float: right;">2</span>
+</div>
+</a>
+</div>
+<div class=s30121 style="grid-area:s30121;">
+<a href="game.php?season=20252026&game=30120" style="text-decoration:none"><div class="boxscore seriessm" style="display: grid; grid-template-columns: 1fr 1fr;">
+<span style="justify-self: left;">TBL 3</span>
+<span style="justify-self: right;">4 MTL</span>
+</div>
+<div class="boxscore serieslg">
+Lightning<span style="float: right;">3</span>
+<div style="display: flex; justify-content: space-evenly;"><img src="/images/logos/20252026/MTL_Big.jpg" style="max-height:16px; max-width:16px; object-fit: scale-down;"><img src="/images/logos/20252026/T.B_Big.jpg" style="max-height:16px; max-width:16px; object-fit: scale-down;"><img src="/images/logos/20252026/MTL_Big.jpg" style="max-height:16px; max-width:16px; object-fit: scale-down;"><img src="/images/logos/20252026/T.B_Big.jpg" style="max-height:16px; max-width:16px; object-fit: scale-down;"><img src="/images/logos/20252026/MTL_Big.jpg" style="max-height:16px; max-width:16px; object-fit: scale-down;"><img src="/images/logos/20252026/T.B_Big.jpg" style="max-height:16px; max-width:16px; object-fit: scale-down;"><img src="/images/logos/20252026/MTL_Big.jpg" style="max-height:16px; max-width:16px; object-fit: scale-down;"></div>Canadiens<span style="float: right;">4</span>
+</div>
+</a>
+</div>
+<div class=s30131 style="grid-area:s30131;">
+<a href="game.php?season=20252026&game=30130" style="text-decoration:none"><div class="boxscore seriessm" style="display: grid; grid-template-columns: 1fr 1fr;">
+<span style="justify-self: left;">CAR 4</span>
+<span style="justify-self: right;">0 OTT</span>
+</div>
+<div class="boxscore serieslg">
+Hurricanes<span style="float: right;">4</span>
+<div style="display: flex; justify-content: space-evenly;"><img src="/images/logos/20252026/CAR_Big.jpg" style="max-height:16px; max-width:16px; object-fit: scale-down;"><img src="/images/logos/20252026/CAR_Big.jpg" style="max-height:16px; max-width:16px; object-fit: scale-down;"><img src="/images/logos/20252026/CAR_Big.jpg" style="max-height:16px; max-width:16px; object-fit: scale-down;"><img src="/images/logos/20252026/CAR_Big.jpg" style="max-height:16px; max-width:16px; object-fit: scale-down;"></div>Senators<span style="float: right;">0</span>
+</div>
+</a>
+</div>
+<div class=s30141 style="grid-area:s30141;">
+<a href="game.php?season=20252026&game=30140" style="text-decoration:none"><div class="boxscore seriessm" style="display: grid; grid-template-columns: 1fr 1fr;">
+<span style="justify-self: left;">PIT 2</span>
+<span style="justify-self: right;">4 PHI</span>
+</div>
+<div class="boxscore serieslg">
+Penguins<span style="float: right;">2</span>
+<div style="display: flex; justify-content: space-evenly;"><img src="/images/logos/20252026/PHI_Big.jpg" style="max-height:16px; max-width:16px; object-fit: scale-down;"><img src="/images/logos/20252026/PHI_Big.jpg" style="max-height:16px; max-width:16px; object-fit: scale-down;"><img src="/images/logos/20252026/PHI_Big.jpg" style="max-height:16px; max-width:16px; object-fit: scale-down;"><img src="/images/logos/20252026/PIT_Big.jpg" style="max-height:16px; max-width:16px; object-fit: scale-down;"><img src="/images/logos/20252026/PIT_Big.jpg" style="max-height:16px; max-width:16px; object-fit: scale-down;"><img src="/images/logos/20252026/PHI_Big.jpg" style="max-height:16px; max-width:16px; object-fit: scale-down;"></div>Flyers<span style="float: right;">4</span>
+</div>
+</a>
+</div>
+<div class=s30151 style="grid-area:s30151;">
+<a href="game.php?season=20252026&game=30150" style="text-decoration:none"><div class="boxscore seriessm" style="display: grid; grid-template-columns: 1fr 1fr;">
+<span style="justify-self: left;">COL 4</span>
+<span style="justify-self: right;">0 LAK</span>
+</div>
+<div class="boxscore serieslg">
+Avalanche<span style="float: right;">4</span>
+<div style="display: flex; justify-content: space-evenly;"><img src="/images/logos/20252026/COL_Big.jpg" style="max-height:16px; max-width:16px; object-fit: scale-down;"><img src="/images/logos/20252026/COL_Big.jpg" style="max-height:16px; max-width:16px; object-fit: scale-down;"><img src="/images/logos/20252026/COL_Big.jpg" style="max-height:16px; max-width:16px; object-fit: scale-down;"><img src="/images/logos/20252026/COL_Big.jpg" style="max-height:16px; max-width:16px; object-fit: scale-down;"></div>Kings<span style="float: right;">0</span>
+</div>
+</a>
+</div>
+<div class=s30161 style="grid-area:s30161;">
+<a href="game.php?season=20252026&game=30160" style="text-decoration:none"><div class="boxscore seriessm" style="display: grid; grid-template-columns: 1fr 1fr;">
+<span style="justify-self: left;">DAL 2</span>
+<span style="justify-self: right;">4 MIN</span>
+</div>
+<div class="boxscore serieslg">
+Stars<span style="float: right;">2</span>
+<div style="display: flex; justify-content: space-evenly;"><img src="/images/logos/20252026/MIN_Big.jpg" style="max-height:16px; max-width:16px; object-fit: scale-down;"><img src="/images/logos/20252026/DAL_Big.jpg" style="max-height:16px; max-width:16px; object-fit: scale-down;"><img src="/images/logos/20252026/DAL_Big.jpg" style="max-height:16px; max-width:16px; object-fit: scale-down;"><img src="/images/logos/20252026/MIN_Big.jpg" style="max-height:16px; max-width:16px; object-fit: scale-down;"><img src="/images/logos/20252026/MIN_Big.jpg" style="max-height:16px; max-width:16px; object-fit: scale-down;"><img src="/images/logos/20252026/MIN_Big.jpg" style="max-height:16px; max-width:16px; object-fit: scale-down;"></div>Wild<span style="float: right;">4</span>
+</div>
+</a>
+</div>
+<div class=s30171 style="grid-area:s30171;">
+<a href="game.php?season=20252026&game=30170" style="text-decoration:none"><div class="boxscore seriessm" style="display: grid; grid-template-columns: 1fr 1fr;">
+<span style="justify-self: left;">VGK 4</span>
+<span style="justify-self: right;">2 UTA</span>
+</div>
+<div class="boxscore serieslg">
+Golden Knights<span style="float: right;">4</span>
+<div style="display: flex; justify-content: space-evenly;"><img src="/images/logos/20252026/VGK_Big.jpg" style="max-height:16px; max-width:16px; object-fit: scale-down;"><img src="/images/logos/20252026/UTA_Big.jpg" style="max-height:16px; max-width:16px; object-fit: scale-down;"><img src="/images/logos/20252026/UTA_Big.jpg" style="max-height:16px; max-width:16px; object-fit: scale-down;"><img src="/images/logos/20252026/VGK_Big.jpg" style="max-height:16px; max-width:16px; object-fit: scale-down;"><img src="/images/logos/20252026/VGK_Big.jpg" style="max-height:16px; max-width:16px; object-fit: scale-down;"><img src="/images/logos/20252026/VGK_Big.jpg" style="max-height:16px; max-width:16px; object-fit: scale-down;"></div>Mammoth<span style="float: right;">2</span>
+</div>
+</a>
+</div>
+<div class=s30181 style="grid-area:s30181;">
+<a href="game.php?season=20252026&game=30180" style="text-decoration:none"><div class="boxscore seriessm" style="display: grid; grid-template-columns: 1fr 1fr;">
+<span style="justify-self: left;">EDM 2</span>
+<span style="justify-self: right;">4 ANA</span>
+</div>
+<div class="boxscore serieslg">
+Oilers<span style="float: right;">2</span>
+<div style="display: flex; justify-content: space-evenly;"><img src="/images/logos/20252026/EDM_Big.jpg" style="max-height:16px; max-width:16px; object-fit: scale-down;"><img src="/images/logos/20252026/ANA_Big.jpg" style="max-height:16px; max-width:16px; object-fit: scale-down;"><img src="/images/logos/20252026/ANA_Big.jpg" style="max-height:16px; max-width:16px; object-fit: scale-down;"><img src="/images/logos/20252026/ANA_Big.jpg" style="max-height:16px; max-width:16px; object-fit: scale-down;"><img src="/images/logos/20252026/EDM_Big.jpg" style="max-height:16px; max-width:16px; object-fit: scale-down;"><img src="/images/logos/20252026/ANA_Big.jpg" style="max-height:16px; max-width:16px; object-fit: scale-down;"></div>Ducks<span style="float: right;">4</span>
+</div>
+</a>
+</div>
+<div class=s30211 style="grid-area:s30211;">
+<a href="game.php?season=20252026&game=30210" style="text-decoration:none"><div class="boxscore seriessm" style="display: grid; grid-template-columns: 1fr 1fr;">
+<span style="justify-self: left;">BUF 3</span>
+<span style="justify-self: right;">4 MTL</span>
+</div>
+<div class="boxscore serieslg">
+Sabres<span style="float: right;">3</span>
+<div style="display: flex; justify-content: space-evenly;"><img src="/images/logos/20252026/BUF_Big.jpg" style="max-height:16px; max-width:16px; object-fit: scale-down;"><img src="/images/logos/20252026/MTL_Big.jpg" style="max-height:16px; max-width:16px; object-fit: scale-down;"><img src="/images/logos/20252026/MTL_Big.jpg" style="max-height:16px; max-width:16px; object-fit: scale-down;"><img src="/images/logos/20252026/BUF_Big.jpg" style="max-height:16px; max-width:16px; object-fit: scale-down;"><img src="/images/logos/20252026/MTL_Big.jpg" style="max-height:16px; max-width:16px; object-fit: scale-down;"><img src="/images/logos/20252026/BUF_Big.jpg" style="max-height:16px; max-width:16px; object-fit: scale-down;"><img src="/images/logos/20252026/MTL_Big.jpg" style="max-height:16px; max-width:16px; object-fit: scale-down;"></div>Canadiens<span style="float: right;">4</span>
+</div>
+</a>
+</div>
+<div class=s30221 style="grid-area:s30221;">
+<a href="game.php?season=20252026&game=30220" style="text-decoration:none"><div class="boxscore seriessm" style="display: grid; grid-template-columns: 1fr 1fr;">
+<span style="justify-self: left;">CAR 4</span>
+<span style="justify-self: right;">0 PHI</span>
+</div>
+<div class="boxscore serieslg">
+Hurricanes<span style="float: right;">4</span>
+<div style="display: flex; justify-content: space-evenly;"><img src="/images/logos/20252026/CAR_Big.jpg" style="max-height:16px; max-width:16px; object-fit: scale-down;"><img src="/images/logos/20252026/CAR_Big.jpg" style="max-height:16px; max-width:16px; object-fit: scale-down;"><img src="/images/logos/20252026/CAR_Big.jpg" style="max-height:16px; max-width:16px; object-fit: scale-down;"><img src="/images/logos/20252026/CAR_Big.jpg" style="max-height:16px; max-width:16px; object-fit: scale-down;"></div>Flyers<span style="float: right;">0</span>
+</div>
+</a>
+</div>
+<div class=s30231 style="grid-area:s30231;">
+<a href="game.php?season=20252026&game=30230" style="text-decoration:none"><div class="boxscore seriessm" style="display: grid; grid-template-columns: 1fr 1fr;">
+<span style="justify-self: left;">COL 4</span>
+<span style="justify-self: right;">1 MIN</span>
+</div>
+<div class="boxscore serieslg">
+Avalanche<span style="float: right;">4</span>
+<div style="display: flex; justify-content: space-evenly;"><img src="/images/logos/20252026/COL_Big.jpg" style="max-height:16px; max-width:16px; object-fit: scale-down;"><img src="/images/logos/20252026/COL_Big.jpg" style="max-height:16px; max-width:16px; object-fit: scale-down;"><img src="/images/logos/20252026/MIN_Big.jpg" style="max-height:16px; max-width:16px; object-fit: scale-down;"><img src="/images/logos/20252026/COL_Big.jpg" style="max-height:16px; max-width:16px; object-fit: scale-down;"><img src="/images/logos/20252026/COL_Big.jpg" style="max-height:16px; max-width:16px; object-fit: scale-down;"></div>Wild<span style="float: right;">1</span>
+</div>
+</a>
+</div>
+<div class=s30241 style="grid-area:s30241;">
+<a href="game.php?season=20252026&game=30240" style="text-decoration:none"><div class="boxscore seriessm" style="display: grid; grid-template-columns: 1fr 1fr;">
+<span style="justify-self: left;">VGK 4</span>
+<span style="justify-self: right;">2 ANA</span>
+</div>
+<div class="boxscore serieslg">
+Golden Knights<span style="float: right;">4</span>
+<div style="display: flex; justify-content: space-evenly;"><img src="/images/logos/20252026/VGK_Big.jpg" style="max-height:16px; max-width:16px; object-fit: scale-down;"><img src="/images/logos/20252026/ANA_Big.jpg" style="max-height:16px; max-width:16px; object-fit: scale-down;"><img src="/images/logos/20252026/VGK_Big.jpg" style="max-height:16px; max-width:16px; object-fit: scale-down;"><img src="/images/logos/20252026/ANA_Big.jpg" style="max-height:16px; max-width:16px; object-fit: scale-down;"><img src="/images/logos/20252026/VGK_Big.jpg" style="max-height:16px; max-width:16px; object-fit: scale-down;"><img src="/images/logos/20252026/VGK_Big.jpg" style="max-height:16px; max-width:16px; object-fit: scale-down;"></div>Ducks<span style="float: right;">2</span>
+</div>
+</a>
+</div>
+<div class=s30311 style="grid-area:s30311;">
+<a href="game.php?season=20252026&game=30310" style="text-decoration:none"><div class="boxscore seriessm" style="display: grid; grid-template-columns: 1fr 1fr;">
+<span style="justify-self: left;">CAR 4</span>
+<span style="justify-self: right;">1 MTL</span>
+</div>
+<div class="boxscore serieslg">
+Hurricanes<span style="float: right;">4</span>
+<div style="display: flex; justify-content: space-evenly;"><img src="/images/logos/20252026/MTL_Big.jpg" style="max-height:16px; max-width:16px; object-fit: scale-down;"><img src="/images/logos/20252026/CAR_Big.jpg" style="max-height:16px; max-width:16px; object-fit: scale-down;"><img src="/images/logos/20252026/CAR_Big.jpg" style="max-height:16px; max-width:16px; object-fit: scale-down;"><img src="/images/logos/20252026/CAR_Big.jpg" style="max-height:16px; max-width:16px; object-fit: scale-down;"><img src="/images/logos/20252026/CAR_Big.jpg" style="max-height:16px; max-width:16px; object-fit: scale-down;"></div>Canadiens<span style="float: right;">1</span>
+</div>
+</a>
+</div>
+<div class=s30321 style="grid-area:s30321;">
+<a href="game.php?season=20252026&game=30320" style="text-decoration:none"><div class="boxscore seriessm" style="display: grid; grid-template-columns: 1fr 1fr;">
+<span style="justify-self: left;">COL 0</span>
+<span style="justify-self: right;">4 VGK</span>
+</div>
+<div class="boxscore serieslg">
+Avalanche<span style="float: right;">0</span>
+<div style="display: flex; justify-content: space-evenly;"><img src="/images/logos/20252026/VGK_Big.jpg" style="max-height:16px; max-width:16px; object-fit: scale-down;"><img src="/images/logos/20252026/VGK_Big.jpg" style="max-height:16px; max-width:16px; object-fit: scale-down;"><img src="/images/logos/20252026/VGK_Big.jpg" style="max-height:16px; max-width:16px; object-fit: scale-down;"><img src="/images/logos/20252026/VGK_Big.jpg" style="max-height:16px; max-width:16px; object-fit: scale-down;"></div>Golden Knights<span style="float: right;">4</span>
+</div>
+</a>
+</div>
+<div class=s30411 style="grid-area:s30411;">
+<a href="game.php?season=20252026&game=30410" style="text-decoration:none"><div class="boxscore seriessm" style="display: grid; grid-template-columns: 1fr 1fr;">
+<span style="justify-self: left;">CAR 4</span>
+<span style="justify-self: right;">2 VGK</span>
+</div>
+<div class="boxscore serieslg">
+Hurricanes<span style="float: right;">4</span>
+<div style="display: flex; justify-content: space-evenly;"><img src="/images/logos/20252026/VGK_Big.jpg" style="max-height:16px; max-width:16px; object-fit: scale-down;"><img src="/images/logos/20252026/CAR_Big.jpg" style="max-height:16px; max-width:16px; object-fit: scale-down;"><img src="/images/logos/20252026/VGK_Big.jpg" style="max-height:16px; max-width:16px; object-fit: scale-down;"><img src="/images/logos/20252026/CAR_Big.jpg" style="max-height:16px; max-width:16px; object-fit: scale-down;"><img src="/images/logos/20252026/CAR_Big.jpg" style="max-height:16px; max-width:16px; object-fit: scale-down;"><img src="/images/logos/20252026/CAR_Big.jpg" style="max-height:16px; max-width:16px; object-fit: scale-down;"></div>Golden Knights<span style="float: right;">2</span>
+</div>
+</a>
+</div>
+</div>
+<div class="rollup"><center><label for="brackettg" id="bracketlb"></label></center></div><div class="bgimg" style="width: 100%; left: 0px;"><div style="aspect-ratio: 250/250;min-height: 500px; width: 100%;"><img class="bgimg bgimgpl" src="/images/logos/20252026/playoffs.jpg" style="min-width: 250px; min-height: 250px;"></div></div></div>
+<style type="text/css">
+input.g30416tg ~div.g30416tb { visibility:collapse; height:0px;}
+input.g30416tg:checked ~div.g30416tb { visibility:visible; height:310px; } 
+input.g30416tg ~div>div>img.bgimg { top:-25% }
+input.g30416tg:checked ~div>div>img.bgimg { top:0 } 
+input.g30416tg:checked ~div>center>#g30416lb:after { content:url(/images/rollup.png); } 
+input.g30416tg ~div>center>#g30416lb:after { content:url(/images/rolldown.png); } 
+input.g30416tg { display: none; }
+</style>
+<div class="content bs">
+<table class=boxscore>
+<tr><td style="text-align: left">Hurricanes</td><td class=score>3</td><td class=status>Final</td><td class=score>0</td><td style="text-align: right">Golden Knights</td></tr>
+<tr><td style="text-align: left"><div class="all stats"><b>Corsi</b>: 44, <b>Fenwick</b>: 36, <b>Shots</b>: 23, <b>Scoring Chances</b>: 21, <b>High Danger Chances</b>: 9, <b>Expected Goals</b>: 2.81</div>
+<div class="ev stats"><b>Corsi</b>: 38, <b>Fenwick</b>: 30, <b>Shots</b>: 20, <b>Scoring Chances</b>: 17, <b>High Danger Chances</b>: 7, <b>Expected Goals</b>: 2.41</div>
+<div class="v5 stats"><b>Corsi</b>: 35, <b>Fenwick</b>: 28, <b>Shots</b>: 18, <b>Scoring Chances</b>: 16, <b>High Danger Chances</b>: 7, <b>Expected Goals</b>: 1.62</div>
+<div class="sva stats"><b>Corsi</b>: 38.95, <b>Fenwick</b>: 30.88, <b>Shots</b>: 19.83, <b>Scoring Chances</b>: 17.66, <b>High Danger Chances</b>: 7.8, <b>Expected Goals</b>: 1.8</div></td>
+<td colspan=3 style="font-size:0.7em">CAR Wins 4 - 2</td>
+<td style="text-align: right"><div class="all stats"><b>Corsi</b>: 50, <b>Fenwick</b>: 37, <b>Shots</b>: 22, <b>Scoring Chances</b>: 27, <b>High Danger Chances</b>: 10, <b>Expected Goals</b>: 3.28</div>
+<div class="ev stats"><b>Corsi</b>: 38, <b>Fenwick</b>: 27, <b>Shots</b>: 15, <b>Scoring Chances</b>: 18, <b>High Danger Chances</b>: 7, <b>Expected Goals</b>: 1.72</div>
+<div class="v5 stats"><b>Corsi</b>: 28, <b>Fenwick</b>: 20, <b>Shots</b>: 10, <b>Scoring Chances</b>: 13, <b>High Danger Chances</b>: 4, <b>Expected Goals</b>: 1.16</div>
+<div class="sva stats"><b>Corsi</b>: 24.47, <b>Fenwick</b>: 17.64, <b>Shots</b>: 8.92, <b>Scoring Chances</b>: 11.52, <b>High Danger Chances</b>: 3.53, <b>Expected Goals</b>: 1.03</div></td></tr>
+</table>
+<span class=buttonspan><label class=button for=rdall>All&nbsp;Situations</label>
+<label class=button for=rdev>Even&nbsp;Strength</label>
+<label class=button for=rd5v5>5&nbsp;on&nbsp;5</label>
+<label class=button for=rdsva>Score&nbsp;&&nbsp;Venue&nbsp;Adjusted&nbsp;5&nbsp;on&nbsp;5</label></span>
+<span class=boxscore><font size=-1><a href="/game.php?season=20252026&game=30416&view=limited">Limited&nbsp;Report</a><br><a href="/game.php?season=20252026&game=30416">Full&nbsp;Report</a><br><a href="game.php?season=20252026&game=30410">Series&nbsp;Report</a></font></span>
+<input type=checkbox class=g30416tg id=g30416tg>
+<div class="gtb g30416tb" style="margin-top: 5px">
+<center>Corsi</center>
+<div class="all" style="width:100%"><table style="width:100%; border-collapse: initial"><tr><td style="width:50px">44</td><td><div style="width:46.8%;" class=abar>46.8%</div><div style="width:53.2%;" class=hbar>53.2%</div></td><td style="width:50px">50</td></tr></table></div>
+<div class="ev" style="width:100%"><table style="width:100%; border-collapse: initial"><tr><td style="width:50px">38</td><td><div style="width:50%;" class=abar>50%</div><div style="width:50%;" class=hbar>50%</div></td><td style="width:50px">38</td></tr></table></div>
+<div class="v5" style="width:100%"><table style="width:100%; border-collapse: initial"><tr><td style="width:50px">35</td><td><div style="width:55.6%;" class=abar>55.6%</div><div style="width:44.4%;" class=hbar>44.4%</div></td><td style="width:50px">28</td></tr></table></div>
+<div class="sva" style="width:100%"><table style="width:100%; border-collapse: initial"><tr><td style="width:50px">38.95</td><td><div style="width:61.4%;" class=abar>61.4%</div><div style="width:38.6%;" class=hbar>38.6%</div></td><td style="width:50px">24.47</td></tr></table></div>
+<center>Fenwick</center>
+<div class="all" style="width:100%"><table style="width:100%; border-collapse: initial"><tr><td style="width:50px">36</td><td><div style="width:49.3%;" class=abar>49.3%</div><div style="width:50.7%;" class=hbar>50.7%</div></td><td style="width:50px">37</td></tr></table></div>
+<div class="ev" style="width:100%"><table style="width:100%; border-collapse: initial"><tr><td style="width:50px">30</td><td><div style="width:52.6%;" class=abar>52.6%</div><div style="width:47.4%;" class=hbar>47.4%</div></td><td style="width:50px">27</td></tr></table></div>
+<div class="v5" style="width:100%"><table style="width:100%; border-collapse: initial"><tr><td style="width:50px">28</td><td><div style="width:58.3%;" class=abar>58.3%</div><div style="width:41.7%;" class=hbar>41.7%</div></td><td style="width:50px">20</td></tr></table></div>
+<div class="sva" style="width:100%"><table style="width:100%; border-collapse: initial"><tr><td style="width:50px">30.88</td><td><div style="width:63.6%;" class=abar>63.6%</div><div style="width:36.4%;" class=hbar>36.4%</div></td><td style="width:50px">17.64</td></tr></table></div>
+<center>Shots</center>
+<div class="all" style="width:100%"><table style="width:100%; border-collapse: initial"><tr><td style="width:50px">23</td><td><div style="width:51.1%;" class=abar>51.1%</div><div style="width:48.9%;" class=hbar>48.9%</div></td><td style="width:50px">22</td></tr></table></div>
+<div class="ev" style="width:100%"><table style="width:100%; border-collapse: initial"><tr><td style="width:50px">20</td><td><div style="width:57.1%;" class=abar>57.1%</div><div style="width:42.9%;" class=hbar>42.9%</div></td><td style="width:50px">15</td></tr></table></div>
+<div class="v5" style="width:100%"><table style="width:100%; border-collapse: initial"><tr><td style="width:50px">18</td><td><div style="width:64.3%;" class=abar>64.3%</div><div style="width:35.7%;" class=hbar>35.7%</div></td><td style="width:50px">10</td></tr></table></div>
+<div class="sva" style="width:100%"><table style="width:100%; border-collapse: initial"><tr><td style="width:50px">19.83</td><td><div style="width:69%;" class=abar>69%</div><div style="width:31%;" class=hbar>31%</div></td><td style="width:50px">8.92</td></tr></table></div>
+<center>Scoring Chances</center>
+<div class="all" style="width:100%"><table style="width:100%; border-collapse: initial"><tr><td style="width:50px">21</td><td><div style="width:43.8%;" class=abar>43.8%</div><div style="width:56.2%;" class=hbar>56.2%</div></td><td style="width:50px">27</td></tr></table></div>
+<div class="ev" style="width:100%"><table style="width:100%; border-collapse: initial"><tr><td style="width:50px">17</td><td><div style="width:48.6%;" class=abar>48.6%</div><div style="width:51.4%;" class=hbar>51.4%</div></td><td style="width:50px">18</td></tr></table></div>
+<div class="v5" style="width:100%"><table style="width:100%; border-collapse: initial"><tr><td style="width:50px">16</td><td><div style="width:55.2%;" class=abar>55.2%</div><div style="width:44.8%;" class=hbar>44.8%</div></td><td style="width:50px">13</td></tr></table></div>
+<div class="sva" style="width:100%"><table style="width:100%; border-collapse: initial"><tr><td style="width:50px">17.66</td><td><div style="width:60.5%;" class=abar>60.5%</div><div style="width:39.5%;" class=hbar>39.5%</div></td><td style="width:50px">11.52</td></tr></table></div>
+<center>High Danger Chances</center>
+<div class="all" style="width:100%"><table style="width:100%; border-collapse: initial"><tr><td style="width:50px">9</td><td><div style="width:47.4%;" class=abar>47.4%</div><div style="width:52.6%;" class=hbar>52.6%</div></td><td style="width:50px">10</td></tr></table></div>
+<div class="ev" style="width:100%"><table style="width:100%; border-collapse: initial"><tr><td style="width:50px">7</td><td><div style="width:50%;" class=abar>50%</div><div style="width:50%;" class=hbar>50%</div></td><td style="width:50px">7</td></tr></table></div>
+<div class="v5" style="width:100%"><table style="width:100%; border-collapse: initial"><tr><td style="width:50px">7</td><td><div style="width:63.6%;" class=abar>63.6%</div><div style="width:36.4%;" class=hbar>36.4%</div></td><td style="width:50px">4</td></tr></table></div>
+<div class="sva" style="width:100%"><table style="width:100%; border-collapse: initial"><tr><td style="width:50px">7.8</td><td><div style="width:68.8%;" class=abar>68.8%</div><div style="width:31.2%;" class=hbar>31.2%</div></td><td style="width:50px">3.53</td></tr></table></div>
+<center>Expected Goals</center>
+<div class="all" style="width:100%"><table style="width:100%; border-collapse: initial"><tr><td style="width:50px">2.81</td><td><div style="width:46.1%;" class=abar>46.1%</div><div style="width:53.9%;" class=hbar>53.9%</div></td><td style="width:50px">3.28</td></tr></table></div>
+<div class="ev" style="width:100%"><table style="width:100%; border-collapse: initial"><tr><td style="width:50px">2.41</td><td><div style="width:58.4%;" class=abar>58.4%</div><div style="width:41.6%;" class=hbar>41.6%</div></td><td style="width:50px">1.72</td></tr></table></div>
+<div class="v5" style="width:100%"><table style="width:100%; border-collapse: initial"><tr><td style="width:50px">1.62</td><td><div style="width:58.3%;" class=abar>58.3%</div><div style="width:41.7%;" class=hbar>41.7%</div></td><td style="width:50px">1.16</td></tr></table></div>
+<div class="sva" style="width:100%"><table style="width:100%; border-collapse: initial"><tr><td style="width:50px">1.8</td><td><div style="width:63.6%;" class=abar>63.6%</div><div style="width:36.4%;" class=hbar>36.4%</div></td><td style="width:50px">1.03</td></tr></table></div>
+</div> 
+<div class=rollup><center><label for=g30416tg id=g30416lb></label></center></div>
+<div class="bgimg bgimgl"><div style="aspect-ratio: 407/250;min-height: 250px;"><img class=bgimg src="/images/logos/20252026/CAR_Big.jpg" style="min-width: 407px; min-height: 250px;"></div></div><div class="bgimg bgimgr"><div style="aspect-ratio: 250/338;min-height: 338px;"><img class=bgimg src="/images/logos/20252026/VGK_Big.jpg" style="min-width: 250px; min-height: 338px;"></div></div></div>
+</div>
+<div class=footer id=footer>
+<div style="float:right; padding: 0.4em;"><a class=menu href="/glossary.php" style="vertical-align:middle;">Glossary</a> <a class=menu href="/contact.php" style="vertical-align:middle;">Contact</a> <a class=menu href="/privacy.php" style="vertical-align:middle;">Privacy</a> <a class=menu href="/scraping.php" style="vertical-align:middle;">Scraping</a> <a href="https://www.patreon.com/NaturalStatTrick"><img src="/images/become_a_patron_button.png" style="vertical-align:middle;"></a>
+<a href="https://bsky.app/profile/naturalstattrick.com"><img src="/images/bsky_social.png" style="vertical-align:middle;"></a>
+</div>
+</div>
+</div></body><script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a173da6a3ae6d1a6',t:'MTc4MzM5NTg5Mg=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>

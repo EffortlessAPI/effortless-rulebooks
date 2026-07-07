@@ -1,0 +1,15 @@
+{
+  "_comment": "Stable DR-number ledger for rulebook-to-rulespeak. Auto-maintained; feed this file back in on the next build to keep rule numbers stable. Numbers in 'Retired' are tombstones and are never reissued. Hand-edit an Assignments number only to deliberately re-pin a rule.",
+  "NextId": 9,
+  "Assignments": {
+    "Intelligences.AssessmentCount": 1,
+    "Intelligences.TotalWeightedScore": 2,
+    "Intelligences.TaxonomyClass": 3,
+    "Assessments.IntelligenceName": 4,
+    "Assessments.CapabilityName": 5,
+    "Assessments.CapabilityTier": 6,
+    "Assessments.CapabilityWeight": 7,
+    "Assessments.WeightedScore": 8
+  },
+  "Retired": []
+}

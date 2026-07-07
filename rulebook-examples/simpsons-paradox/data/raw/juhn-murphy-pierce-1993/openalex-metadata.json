@@ -1,0 +1,1237 @@
+{
+  "id": "https://openalex.org/W2114570477",
+  "doi": "https://doi.org/10.3386/w11628",
+  "title": "Rising Wage Inequality: The Role of Composition and Prices",
+  "display_name": "Rising Wage Inequality: The Role of Composition and Prices",
+  "relevance_score": 476.2284,
+  "publication_year": 2005,
+  "publication_date": "2005-09-01",
+  "ids": {
+    "openalex": "https://openalex.org/W2114570477",
+    "doi": "https://doi.org/10.3386/w11628",
+    "mag": "2114570477"
+  },
+  "language": "en",
+  "primary_location": {
+    "id": "doi:10.3386/w11628",
+    "is_oa": true,
+    "landing_page_url": "https://doi.org/10.3386/w11628",
+    "pdf_url": "https://doi.org/10.3386/w11628",
+    "source": {
+      "id": "https://openalex.org/S2809516038",
+      "display_name": "National Bureau of Economic Research",
+      "issn_l": null,
+      "issn": null,
+      "is_oa": false,
+      "is_in_doaj": false,
+      "is_core": false,
+      "host_organization": null,
+      "host_organization_name": null,
+      "host_organization_lineage": [
+        "https://openalex.org/P4322614461"
+      ],
+      "host_organization_lineage_names": [
+        "National Bureau of Economic Research"
+      ],
+      "type": "repository"
+    },
+    "license": null,
+    "license_id": null,
+    "version": "publishedVersion",
+    "is_accepted": true,
+    "is_published": true,
+    "raw_source_name": "National Bureau of Economic Research",
+    "raw_type": "report"
+  },
+  "type": "report",
+  "indexed_in": [
+    "crossref"
+  ],
+  "open_access": {
+    "is_oa": true,
+    "oa_status": "green",
+    "oa_url": "https://doi.org/10.3386/w11628",
+    "any_repository_has_fulltext": true
+  },
+  "authorships": [
+    {
+      "author_position": "first",
+      "author": {
+        "id": "https://openalex.org/A5029839974",
+        "display_name": "David Autor",
+        "orcid": null
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I1321305853",
+          "display_name": "National Bureau of Economic Research",
+          "ror": "https://ror.org/04grmx538",
+          "country_code": "US",
+          "type": "nonprofit",
+          "lineage": [
+            "https://openalex.org/I1321305853"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I197518295",
+          "display_name": "IZA - Institute of Labor Economics",
+          "ror": "https://ror.org/029s44460",
+          "country_code": "DE",
+          "type": "nonprofit",
+          "lineage": [
+            "https://openalex.org/I197518295"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I197817023",
+          "display_name": "International Paper (United States)",
+          "ror": "https://ror.org/03q6w3828",
+          "country_code": "US",
+          "type": "company",
+          "lineage": [
+            "https://openalex.org/I197817023"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I4210110987",
+          "display_name": "IIT@MIT",
+          "ror": "https://ror.org/01wp8zh54",
+          "country_code": "US",
+          "type": "facility",
+          "lineage": [
+            "https://openalex.org/I30771326",
+            "https://openalex.org/I4210110987"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I63966007",
+          "display_name": "Massachusetts Institute of Technology",
+          "ror": "https://ror.org/042nb2s44",
+          "country_code": "US",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I63966007"
+          ]
+        }
+      ],
+      "countries": [
+        "DE",
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "David Autor",
+      "raw_affiliation_strings": [
+        "MIT Department of Economics 50 Memorial Drive, E52-371 Cambridge, MA 02142-1347",
+        "NBER Working Paper No. 11628",
+        "Massachusetts Institute of Technology (MIT) - Department of Economics",
+        "IZA Institute of Labor Economics",
+        "National Bureau of Economic Research (NBER)"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "MIT Department of Economics 50 Memorial Drive, E52-371 Cambridge, MA 02142-1347",
+          "institution_ids": [
+            "https://openalex.org/I4210110987"
+          ]
+        },
+        {
+          "raw_affiliation_string": "NBER Working Paper No. 11628",
+          "institution_ids": [
+            "https://openalex.org/I197817023"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Massachusetts Institute of Technology (MIT) - Department of Economics",
+          "institution_ids": [
+            "https://openalex.org/I63966007"
+          ]
+        },
+        {
+          "raw_affiliation_string": "IZA Institute of Labor Economics",
+          "institution_ids": [
+            "https://openalex.org/I197518295"
+          ]
+        },
+        {
+          "raw_affiliation_string": "National Bureau of Economic Research (NBER)",
+          "institution_ids": [
+            "https://openalex.org/I1321305853"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5111429542",
+        "display_name": "Lawrence F. Katz",
+        "orcid": null
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I1321305853",
+          "display_name": "National Bureau of Economic Research",
+          "ror": "https://ror.org/04grmx538",
+          "country_code": "US",
+          "type": "nonprofit",
+          "lineage": [
+            "https://openalex.org/I1321305853"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I136199984",
+          "display_name": "Harvard University",
+          "ror": "https://ror.org/03vek6s52",
+          "country_code": "US",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I136199984"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I197817023",
+          "display_name": "International Paper (United States)",
+          "ror": "https://ror.org/03q6w3828",
+          "country_code": "US",
+          "type": "company",
+          "lineage": [
+            "https://openalex.org/I197817023"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Lawrence Katz",
+      "raw_affiliation_strings": [
+        "Harvard University Littauer Center Cambridge, MA 02138",
+        "NBER Working Paper No. 11628",
+        "Harvard University - Department of Economics",
+        "National Bureau of Economic Research (NBER)"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Harvard University Littauer Center Cambridge, MA 02138",
+          "institution_ids": [
+            "https://openalex.org/I136199984"
+          ]
+        },
+        {
+          "raw_affiliation_string": "NBER Working Paper No. 11628",
+          "institution_ids": [
+            "https://openalex.org/I197817023"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Harvard University - Department of Economics",
+          "institution_ids": [
+            "https://openalex.org/I136199984"
+          ]
+        },
+        {
+          "raw_affiliation_string": "National Bureau of Economic Research (NBER)",
+          "institution_ids": [
+            "https://openalex.org/I1321305853"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "last",
+      "author": {
+        "id": "https://openalex.org/A5078669538",
+        "display_name": "Melissa S. Kearney",
+        "orcid": "https://orcid.org/0000-0001-8542-1290"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I115283149",
+          "display_name": "Brookings Institution",
+          "ror": "https://ror.org/04aj4sh46",
+          "country_code": "US",
+          "type": "nonprofit",
+          "lineage": [
+            "https://openalex.org/I115283149"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I1321305853",
+          "display_name": "National Bureau of Economic Research",
+          "ror": "https://ror.org/04grmx538",
+          "country_code": "US",
+          "type": "nonprofit",
+          "lineage": [
+            "https://openalex.org/I1321305853"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I197817023",
+          "display_name": "International Paper (United States)",
+          "ror": "https://ror.org/03q6w3828",
+          "country_code": "US",
+          "type": "company",
+          "lineage": [
+            "https://openalex.org/I197817023"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I66946132",
+          "display_name": "University of Maryland, College Park",
+          "ror": "https://ror.org/047s2c258",
+          "country_code": "US",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I66946132"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Melissa Kearney",
+      "raw_affiliation_strings": [
+        "NBER Working Paper No. 11628",
+        "The Brookings Institution 1775 Massachusetts Avenue NW Washington, DC 20036",
+        "National Bureau of Economic Research (NBER)",
+        "University of Maryland - Department of Economics"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "NBER Working Paper No. 11628",
+          "institution_ids": [
+            "https://openalex.org/I197817023"
+          ]
+        },
+        {
+          "raw_affiliation_string": "The Brookings Institution 1775 Massachusetts Avenue NW Washington, DC 20036",
+          "institution_ids": [
+            "https://openalex.org/I115283149"
+          ]
+        },
+        {
+          "raw_affiliation_string": "National Bureau of Economic Research (NBER)",
+          "institution_ids": [
+            "https://openalex.org/I1321305853"
+          ]
+        },
+        {
+          "raw_affiliation_string": "University of Maryland - Department of Economics",
+          "institution_ids": [
+            "https://openalex.org/I66946132"
+          ]
+        }
+      ]
+    }
+  ],
+  "institutions": [],
+  "countries_distinct_count": 2,
+  "institutions_distinct_count": 3,
+  "corresponding_author_ids": [],
+  "corresponding_institution_ids": [],
+  "apc_list": null,
+  "apc_paid": null,
+  "fwci": null,
+  "has_fulltext": true,
+  "cited_by_count": 193,
+  "citation_normalized_percentile": null,
+  "cited_by_percentile_year": null,
+  "biblio": {
+    "volume": null,
+    "issue": null,
+    "first_page": null,
+    "last_page": null
+  },
+  "is_retracted": false,
+  "is_paratext": false,
+  "is_xpac": false,
+  "primary_topic": {
+    "id": "https://openalex.org/T10208",
+    "display_name": "Labor market dynamics and wage inequality",
+    "score": 0.9991999864578247,
+    "subfield": {
+      "id": "https://openalex.org/subfields/2002",
+      "display_name": "Economics and Econometrics"
+    },
+    "field": {
+      "id": "https://openalex.org/fields/20",
+      "display_name": "Economics, Econometrics and Finance"
+    },
+    "domain": {
+      "id": "https://openalex.org/domains/2",
+      "display_name": "Social Sciences"
+    }
+  },
+  "topics": [
+    {
+      "id": "https://openalex.org/T10208",
+      "display_name": "Labor market dynamics and wage inequality",
+      "score": 0.9991999864578247,
+      "subfield": {
+        "id": "https://openalex.org/subfields/2002",
+        "display_name": "Economics and Econometrics"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/20",
+        "display_name": "Economics, Econometrics and Finance"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/2",
+        "display_name": "Social Sciences"
+      }
+    },
+    {
+      "id": "https://openalex.org/T10446",
+      "display_name": "Income, Poverty, and Inequality",
+      "score": 0.98580002784729,
+      "subfield": {
+        "id": "https://openalex.org/subfields/3312",
+        "display_name": "Sociology and Political Science"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/33",
+        "display_name": "Social Sciences"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/2",
+        "display_name": "Social Sciences"
+      }
+    },
+    {
+      "id": "https://openalex.org/T11770",
+      "display_name": "Fiscal Policy and Economic Growth",
+      "score": 0.9805999994277954,
+      "subfield": {
+        "id": "https://openalex.org/subfields/2002",
+        "display_name": "Economics and Econometrics"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/20",
+        "display_name": "Economics, Econometrics and Finance"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/2",
+        "display_name": "Social Sciences"
+      }
+    }
+  ],
+  "keywords": [
+    {
+      "id": "https://openalex.org/keywords/composition",
+      "display_name": "Composition (language)",
+      "score": 0.7305364608764648
+    },
+    {
+      "id": "https://openalex.org/keywords/inequality",
+      "display_name": "Inequality",
+      "score": 0.6407620906829834
+    },
+    {
+      "id": "https://openalex.org/keywords/wage-inequality",
+      "display_name": "Wage inequality",
+      "score": 0.6251178979873657
+    },
+    {
+      "id": "https://openalex.org/keywords/economics",
+      "display_name": "Economics",
+      "score": 0.602759599685669
+    },
+    {
+      "id": "https://openalex.org/keywords/wage",
+      "display_name": "Wage",
+      "score": 0.5024230480194092
+    },
+    {
+      "id": "https://openalex.org/keywords/labour-economics",
+      "display_name": "Labour economics",
+      "score": 0.497679740190506
+    },
+    {
+      "id": "https://openalex.org/keywords/mathematics",
+      "display_name": "Mathematics",
+      "score": 0.18725472688674927
+    },
+    {
+      "id": "https://openalex.org/keywords/art",
+      "display_name": "Art",
+      "score": 0.067312091588974
+    }
+  ],
+  "concepts": [
+    {
+      "id": "https://openalex.org/C40231798",
+      "wikidata": "https://www.wikidata.org/wiki/Q1333743",
+      "display_name": "Composition (language)",
+      "level": 2,
+      "score": 0.7305364608764648
+    },
+    {
+      "id": "https://openalex.org/C45555294",
+      "wikidata": "https://www.wikidata.org/wiki/Q28113351",
+      "display_name": "Inequality",
+      "level": 2,
+      "score": 0.6407620906829834
+    },
+    {
+      "id": "https://openalex.org/C2994086107",
+      "wikidata": "https://www.wikidata.org/wiki/Q5055020",
+      "display_name": "Wage inequality",
+      "level": 3,
+      "score": 0.6251178979873657
+    },
+    {
+      "id": "https://openalex.org/C162324750",
+      "wikidata": "https://www.wikidata.org/wiki/Q8134",
+      "display_name": "Economics",
+      "level": 0,
+      "score": 0.602759599685669
+    },
+    {
+      "id": "https://openalex.org/C2777388388",
+      "wikidata": "https://www.wikidata.org/wiki/Q6821213",
+      "display_name": "Wage",
+      "level": 2,
+      "score": 0.5024230480194092
+    },
+    {
+      "id": "https://openalex.org/C145236788",
+      "wikidata": "https://www.wikidata.org/wiki/Q28161",
+      "display_name": "Labour economics",
+      "level": 1,
+      "score": 0.497679740190506
+    },
+    {
+      "id": "https://openalex.org/C33923547",
+      "wikidata": "https://www.wikidata.org/wiki/Q395",
+      "display_name": "Mathematics",
+      "level": 0,
+      "score": 0.18725472688674927
+    },
+    {
+      "id": "https://openalex.org/C142362112",
+      "wikidata": "https://www.wikidata.org/wiki/Q735",
+      "display_name": "Art",
+      "level": 0,
+      "score": 0.067312091588974
+    },
+    {
+      "id": "https://openalex.org/C124952713",
+      "wikidata": "https://www.wikidata.org/wiki/Q8242",
+      "display_name": "Literature",
+      "level": 1,
+      "score": 0.0
+    },
+    {
+      "id": "https://openalex.org/C134306372",
+      "wikidata": "https://www.wikidata.org/wiki/Q7754",
+      "display_name": "Mathematical analysis",
+      "level": 1,
+      "score": 0.0
+    }
+  ],
+  "mesh": [],
+  "locations_count": 1,
+  "locations": [
+    {
+      "id": "doi:10.3386/w11628",
+      "is_oa": true,
+      "landing_page_url": "https://doi.org/10.3386/w11628",
+      "pdf_url": "https://doi.org/10.3386/w11628",
+      "source": {
+        "id": "https://openalex.org/S2809516038",
+        "display_name": "National Bureau of Economic Research",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": null,
+        "host_organization_name": null,
+        "host_organization_lineage": [
+          "https://openalex.org/P4322614461"
+        ],
+        "host_organization_lineage_names": [
+          "National Bureau of Economic Research"
+        ],
+        "type": "repository"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "publishedVersion",
+      "is_accepted": true,
+      "is_published": true,
+      "raw_source_name": "National Bureau of Economic Research",
+      "raw_type": "report"
+    }
+  ],
+  "best_oa_location": {
+    "id": "doi:10.3386/w11628",
+    "is_oa": true,
+    "landing_page_url": "https://doi.org/10.3386/w11628",
+    "pdf_url": "https://doi.org/10.3386/w11628",
+    "source": {
+      "id": "https://openalex.org/S2809516038",
+      "display_name": "National Bureau of Economic Research",
+      "issn_l": null,
+      "issn": null,
+      "is_oa": false,
+      "is_in_doaj": false,
+      "is_core": false,
+      "host_organization": null,
+      "host_organization_name": null,
+      "host_organization_lineage": [
+        "https://openalex.org/P4322614461"
+      ],
+      "host_organization_lineage_names": [
+        "National Bureau of Economic Research"
+      ],
+      "type": "repository"
+    },
+    "license": null,
+    "license_id": null,
+    "version": "publishedVersion",
+    "is_accepted": true,
+    "is_published": true,
+    "raw_source_name": "National Bureau of Economic Research",
+    "raw_type": "report"
+  },
+  "sustainable_development_goals": [
+    {
+      "display_name": "Decent work and economic growth",
+      "id": "https://metadata.un.org/sdg/8",
+      "score": 0.7099999785423279
+    }
+  ],
+  "awards": [],
+  "funders": [],
+  "has_content": {
+    "grobid_xml": true,
+    "pdf": true
+  },
+  "content_urls": {
+    "pdf": "https://content.openalex.org/works/W2114570477.pdf",
+    "grobid_xml": "https://content.openalex.org/works/W2114570477.grobid-xml"
+  },
+  "referenced_works_count": 58,
+  "referenced_works": [
+    "https://openalex.org/W1498062457",
+    "https://openalex.org/W1515906603",
+    "https://openalex.org/W1516430439",
+    "https://openalex.org/W1520725430",
+    "https://openalex.org/W1538443123",
+    "https://openalex.org/W1555034039",
+    "https://openalex.org/W1574541894",
+    "https://openalex.org/W1601261096",
+    "https://openalex.org/W1665885429",
+    "https://openalex.org/W1963965317",
+    "https://openalex.org/W1983738081",
+    "https://openalex.org/W2029394297",
+    "https://openalex.org/W2034946021",
+    "https://openalex.org/W2037740716",
+    "https://openalex.org/W2042248782",
+    "https://openalex.org/W2062427523",
+    "https://openalex.org/W2082574861",
+    "https://openalex.org/W2085303506",
+    "https://openalex.org/W2095516703",
+    "https://openalex.org/W2102292466",
+    "https://openalex.org/W2107497267",
+    "https://openalex.org/W2112551343",
+    "https://openalex.org/W2129553541",
+    "https://openalex.org/W2131594146",
+    "https://openalex.org/W2133685243",
+    "https://openalex.org/W2142816736",
+    "https://openalex.org/W2145246914",
+    "https://openalex.org/W2160803192",
+    "https://openalex.org/W2162741948",
+    "https://openalex.org/W2167358193",
+    "https://openalex.org/W2168835874",
+    "https://openalex.org/W2889961431",
+    "https://openalex.org/W2977359998",
+    "https://openalex.org/W3121268715",
+    "https://openalex.org/W3121981493",
+    "https://openalex.org/W3122449408",
+    "https://openalex.org/W3122494132",
+    "https://openalex.org/W3123596187",
+    "https://openalex.org/W3123803383",
+    "https://openalex.org/W3124074988",
+    "https://openalex.org/W3124684532",
+    "https://openalex.org/W3125610463",
+    "https://openalex.org/W3125744351",
+    "https://openalex.org/W3126134467",
+    "https://openalex.org/W3141398012",
+    "https://openalex.org/W4230726089",
+    "https://openalex.org/W6631178850",
+    "https://openalex.org/W6633124320",
+    "https://openalex.org/W6659931920",
+    "https://openalex.org/W6671908532",
+    "https://openalex.org/W6672162470",
+    "https://openalex.org/W6673886971",
+    "https://openalex.org/W6674615469",
+    "https://openalex.org/W6675396585",
+    "https://openalex.org/W6675973921",
+    "https://openalex.org/W6679765932",
+    "https://openalex.org/W6683249986",
+    "https://openalex.org/W6823589455"
+  ],
+  "related_works": [
+    "https://openalex.org/W3122730017",
+    "https://openalex.org/W1998922219",
+    "https://openalex.org/W3170876460",
+    "https://openalex.org/W3125298439",
+    "https://openalex.org/W3006668771",
+    "https://openalex.org/W2303610337",
+    "https://openalex.org/W3124871767",
+    "https://openalex.org/W4285697643",
+    "https://openalex.org/W4230660422",
+    "https://openalex.org/W1534981923"
+  ],
+  "abstract_inverted_index": {
+    "During": [
+      0
+    ],
+    "the": [
+      1,
+      7,
+      15,
+      46,
+      70,
+      89,
+      99,
+      106,
+      114,
+      124,
+      150,
+      160,
+      164,
+      183
+    ],
+    "early": [
+      2
+    ],
+    "1980s,": [
+      3
+    ],
+    "earnings": [
+      4,
+      147,
+      165
+    ],
+    "inequality": [
+      5,
+      33,
+      40,
+      97,
+      148,
+      181
+    ],
+    "in": [
+      6,
+      28,
+      140
+    ],
+    "U.S.": [
+      8
+    ],
+    "labor": [
+      9,
+      74,
+      85,
+      141
+    ],
+    "market": [
+      10,
+      86
+    ],
+    "rose": [
+      11
+    ],
+    "relatively": [
+      12
+    ],
+    "uniformly": [
+      13
+    ],
+    "throughout": [
+      14
+    ],
+    "wage": [
+      16,
+      197
+    ],
+    "distribution.": [
+      17
+    ],
+    "But": [
+      18,
+      152
+    ],
+    "this": [
+      19
+    ],
+    "uniformity": [
+      20
+    ],
+    "gave": [
+      21
+    ],
+    "way": [
+      22
+    ],
+    "to": [
+      23,
+      51,
+      68,
+      88
+    ],
+    "a": [
+      24,
+      58,
+      169
+    ],
+    "significant": [
+      25
+    ],
+    "divergence": [
+      26,
+      93
+    ],
+    "starting": [
+      27
+    ],
+    "1987,": [
+      29
+    ],
+    "with": [
+      30
+    ],
+    "upper-tail": [
+      31
+    ],
+    "(90/50)": [
+      32
+    ],
+    "rising": [
+      34
+    ],
+    "steadily": [
+      35
+    ],
+    "and": [
+      36,
+      56,
+      65,
+      81,
+      83,
+      91,
+      122,
+      132,
+      201
+    ],
+    "lower": [
+      37,
+      161
+    ],
+    "tail": [
+      38,
+      180
+    ],
+    "(50/10)": [
+      39
+    ],
+    "either": [
+      41
+    ],
+    "flattening": [
+      42
+    ],
+    "or": [
+      43
+    ],
+    "compressing": [
+      44
+    ],
+    "for": [
+      45
+    ],
+    "next": [
+      47
+    ],
+    "16": [
+      48
+    ],
+    "years": [
+      49
+    ],
+    "(1987": [
+      50
+    ],
+    "2003).": [
+      52
+    ],
+    "This": [
+      53
+    ],
+    "paper": [
+      54
+    ],
+    "applies": [
+      55
+    ],
+    "extends": [
+      57
+    ],
+    "quantile": [
+      59,
+      109
+    ],
+    "decomposition": [
+      60,
+      110
+    ],
+    "technique": [
+      61
+    ],
+    "proposed": [
+      62,
+      128
+    ],
+    "by": [
+      63,
+      129,
+      167,
+      190,
+      199
+    ],
+    "Machado": [
+      64
+    ],
+    "Mata": [
+      66
+    ],
+    "(2005)": [
+      67
+    ],
+    "evaluate": [
+      69
+    ],
+    "role": [
+      71
+    ],
+    "of": [
+      72,
+      79,
+      94,
+      113,
+      163,
+      178
+    ],
+    "changing": [
+      73,
+      84
+    ],
+    "force": [
+      75,
+      142
+    ],
+    "composition": [
+      76,
+      143
+    ],
+    "(in": [
+      77
+    ],
+    "terms": [
+      78
+    ],
+    "education": [
+      80
+    ],
+    "experience)": [
+      82
+    ],
+    "prices": [
+      87
+    ],
+    "expansion": [
+      90
+    ],
+    "subsequent": [
+      92
+    ],
+    "upper-and": [
+      95
+    ],
+    "lower-tail": [
+      96,
+      172
+    ],
+    "over": [
+      98
+    ],
+    "last": [
+      100
+    ],
+    "three": [
+      101
+    ],
+    "decades": [
+      102
+    ],
+    "We": [
+      103
+    ],
+    "show": [
+      104
+    ],
+    "that": [
+      105,
+      138
+    ],
+    "extended": [
+      107
+    ],
+    "Machado-Mata": [
+      108
+    ],
+    "corrects": [
+      111
+    ],
+    "shortcomings": [
+      112
+    ],
+    "original": [
+      115
+    ],
+    "Juhn-Murphy-Pierce": [
+      116
+    ],
+    "(1993)": [
+      117
+    ],
+    "full": [
+      118
+    ],
+    "distribution": [
+      119,
+      166
+    ],
+    "accounting": [
+      120
+    ],
+    "method": [
+      121
+    ],
+    "nests": [
+      123
+    ],
+    "kernel": [
+      125
+    ],
+    "reweighting": [
+      126
+    ],
+    "approach": [
+      127
+    ],
+    "DiNardo,": [
+      130
+    ],
+    "Fortin": [
+      131
+    ],
+    "Lemieux": [
+      133
+    ],
+    "(1996).": [
+      134
+    ],
+    "Our": [
+      135
+    ],
+    "analysis": [
+      136
+    ],
+    "reveals": [
+      137
+    ],
+    "shifts": [
+      139,
+      155
+    ],
+    "have": [
+      144,
+      156
+    ],
+    "positively": [
+      145
+    ],
+    "impacted": [
+      146
+    ],
+    "during": [
+      149
+    ],
+    "1990s.": [
+      151
+    ],
+    "these": [
+      153
+    ],
+    "compositional": [
+      154
+    ],
+    "primarily": [
+      157
+    ],
+    "operated": [
+      158
+    ],
+    "on": [
+      159
+    ],
+    "half": [
+      162
+    ],
+    "muting": [
+      168
+    ],
+    "contemporaneous,": [
+      170
+    ],
+    "countervailing": [
+      171
+    ],
+    "price": [
+      173,
+      193,
+      203
+    ],
+    "compression.": [
+      174
+    ],
+    "The": [
+      175
+    ],
+    "steady": [
+      176
+    ],
+    "rise": [
+      177
+    ],
+    "upper": [
+      179
+    ],
+    "since": [
+      182
+    ],
+    "late": [
+      184
+    ],
+    "1970s": [
+      185
+    ],
+    "appears": [
+      186
+    ],
+    "almost": [
+      187
+    ],
+    "entirely": [
+      188
+    ],
+    "explained": [
+      189
+    ],
+    "ongoing": [
+      191
+    ],
+    "between-group": [
+      192
+    ],
+    "changes": [
+      194
+    ],
+    "(particularly": [
+      195
+    ],
+    "increasing": [
+      196
+    ],
+    "differentials": [
+      198
+    ],
+    "education)": [
+      200
+    ],
+    "residual": [
+      202
+    ],
+    "changes.": [
+      204
+    ]
+  },
+  "counts_by_year": [
+    {
+      "year": 2025,
+      "cited_by_count": 4
+    },
+    {
+      "year": 2024,
+      "cited_by_count": 8
+    },
+    {
+      "year": 2023,
+      "cited_by_count": 5
+    },
+    {
+      "year": 2022,
+      "cited_by_count": 8
+    },
+    {
+      "year": 2021,
+      "cited_by_count": 2
+    },
+    {
+      "year": 2020,
+      "cited_by_count": 2
+    },
+    {
+      "year": 2019,
+      "cited_by_count": 3
+    },
+    {
+      "year": 2018,
+      "cited_by_count": 6
+    },
+    {
+      "year": 2017,
+      "cited_by_count": 7
+    },
+    {
+      "year": 2016,
+      "cited_by_count": 8
+    },
+    {
+      "year": 2015,
+      "cited_by_count": 7
+    },
+    {
+      "year": 2014,
+      "cited_by_count": 6
+    },
+    {
+      "year": 2013,
+      "cited_by_count": 6
+    },
+    {
+      "year": 2012,
+      "cited_by_count": 17
+    }
+  ],
+  "updated_date": "2026-06-11T09:08:48.828518",
+  "created_date": "2025-10-10T00:00:00"
+}

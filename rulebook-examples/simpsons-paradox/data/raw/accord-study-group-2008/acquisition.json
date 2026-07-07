@@ -1,0 +1,17 @@
+{
+  "candidate_id": "cand-exp-accord-study-group-2008",
+  "proposed_study_id": "accord-study-group-2008",
+  "acquisition_status": "portal_manual",
+  "attempted_at": "2026-07-07T03:43:34+00:00",
+  "catalog_source_url": "https://biolincc.nhlbi.nih.gov/studies/accord/",
+  "resolved_urls": [
+    "https://doi.org/10.1257/jep.23.1.77",
+    "https://www.aeaweb.org/articles/pdf/doi/10.1257/jep.23.1.77",
+    "https://biolincc.nhlbi.nih.gov/studies/accord/"
+  ],
+  "files": [
+    "openalex-metadata.json",
+    "source-1.html"
+  ],
+  "dois": []
+}

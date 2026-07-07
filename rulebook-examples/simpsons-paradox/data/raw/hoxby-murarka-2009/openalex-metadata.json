@@ -1,0 +1,1067 @@
+{
+  "id": "https://openalex.org/W2150083067",
+  "doi": "https://doi.org/10.1093/qje/qjr017",
+  "title": "Accountability and Flexibility in Public Schools: Evidence from Boston's Charters And Pilots",
+  "display_name": "Accountability and Flexibility in Public Schools: Evidence from Boston's Charters And Pilots",
+  "relevance_score": 72.98082,
+  "publication_year": 2011,
+  "publication_date": "2011-05-01",
+  "ids": {
+    "openalex": "https://openalex.org/W2150083067",
+    "doi": "https://doi.org/10.1093/qje/qjr017",
+    "mag": "2150083067"
+  },
+  "language": "en",
+  "primary_location": {
+    "id": "doi:10.1093/qje/qjr017",
+    "is_oa": true,
+    "landing_page_url": "https://doi.org/10.1093/qje/qjr017",
+    "pdf_url": "https://academic.oup.com/qje/article-pdf/126/2/699/17090256/qjr017.pdf",
+    "source": {
+      "id": "https://openalex.org/S203860005",
+      "display_name": "The Quarterly Journal of Economics",
+      "issn_l": "0033-5533",
+      "issn": [
+        "0033-5533",
+        "1531-4650"
+      ],
+      "is_oa": false,
+      "is_in_doaj": false,
+      "is_core": true,
+      "host_organization": "https://openalex.org/P4310311648",
+      "host_organization_name": "Oxford University Press",
+      "host_organization_lineage": [
+        "https://openalex.org/P4310311648",
+        "https://openalex.org/P4310311647"
+      ],
+      "host_organization_lineage_names": [
+        "Oxford University Press",
+        "University of Oxford"
+      ],
+      "type": "journal"
+    },
+    "license": null,
+    "license_id": null,
+    "version": "publishedVersion",
+    "is_accepted": true,
+    "is_published": true,
+    "raw_source_name": "The Quarterly Journal of Economics",
+    "raw_type": "journal-article"
+  },
+  "type": "article",
+  "indexed_in": [
+    "crossref"
+  ],
+  "open_access": {
+    "is_oa": true,
+    "oa_status": "bronze",
+    "oa_url": "https://academic.oup.com/qje/article-pdf/126/2/699/17090256/qjr017.pdf",
+    "any_repository_has_fulltext": false
+  },
+  "authorships": [
+    {
+      "author_position": "first",
+      "author": {
+        "id": "https://openalex.org/A5021223042",
+        "display_name": "Atila Abdulkadiro\u011flu",
+        "orcid": "https://orcid.org/0000-0003-0450-2967"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I170897317",
+          "display_name": "Duke University",
+          "ror": "https://ror.org/00py81415",
+          "country_code": "US",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I170897317"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "A. Abdulkadiroglu",
+      "raw_affiliation_strings": [
+        "Duke University#TAB#"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Duke University#TAB#",
+          "institution_ids": [
+            "https://openalex.org/I170897317"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5109581806",
+        "display_name": "Joshua D. Angrist",
+        "orcid": null
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I63966007",
+          "display_name": "Massachusetts Institute of Technology",
+          "ror": "https://ror.org/042nb2s44",
+          "country_code": "US",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I63966007"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "J. D. Angrist",
+      "raw_affiliation_strings": [
+        "Massachusetts Institute Of Technology#TAB#"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Massachusetts Institute Of Technology#TAB#",
+          "institution_ids": [
+            "https://openalex.org/I63966007"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5046914847",
+        "display_name": "Susan Dynarski",
+        "orcid": null
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I27837315",
+          "display_name": "University of Michigan",
+          "ror": "https://ror.org/00jmfr291",
+          "country_code": "US",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I27837315"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "S. M. Dynarski",
+      "raw_affiliation_strings": [
+        "\u2020University of Michigan"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "\u2020University of Michigan",
+          "institution_ids": [
+            "https://openalex.org/I27837315"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5062724412",
+        "display_name": "Thomas J. Kane",
+        "orcid": "https://orcid.org/0009-0008-1297-5426"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I2801851002",
+          "display_name": "Harvard University Press",
+          "ror": "https://ror.org/006v7bf86",
+          "country_code": "US",
+          "type": "other",
+          "lineage": [
+            "https://openalex.org/I136199984",
+            "https://openalex.org/I2801851002"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "T. J. Kane",
+      "raw_affiliation_strings": [
+        "Harvard University ,"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Harvard University ,",
+          "institution_ids": [
+            "https://openalex.org/I2801851002"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "last",
+      "author": {
+        "id": "https://openalex.org/A5020702454",
+        "display_name": "Pushpa Pathak",
+        "orcid": null
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I63966007",
+          "display_name": "Massachusetts Institute of Technology",
+          "ror": "https://ror.org/042nb2s44",
+          "country_code": "US",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I63966007"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "P. A. Pathak",
+      "raw_affiliation_strings": [
+        "Massachusetts Institute Of Technology#TAB#"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Massachusetts Institute Of Technology#TAB#",
+          "institution_ids": [
+            "https://openalex.org/I63966007"
+          ]
+        }
+      ]
+    }
+  ],
+  "institutions": [],
+  "countries_distinct_count": 1,
+  "institutions_distinct_count": 5,
+  "corresponding_author_ids": [],
+  "corresponding_institution_ids": [],
+  "apc_list": {
+    "value": 6977,
+    "currency": "USD",
+    "value_usd": 6977
+  },
+  "apc_paid": null,
+  "fwci": 137.3038,
+  "has_fulltext": true,
+  "cited_by_count": 510,
+  "citation_normalized_percentile": {
+    "value": 0.99965783,
+    "is_in_top_1_percent": true,
+    "is_in_top_10_percent": true
+  },
+  "cited_by_percentile_year": {
+    "min": 99,
+    "max": 100
+  },
+  "biblio": {
+    "volume": "126",
+    "issue": "2",
+    "first_page": "699",
+    "last_page": "748"
+  },
+  "is_retracted": false,
+  "is_paratext": false,
+  "is_xpac": false,
+  "primary_topic": {
+    "id": "https://openalex.org/T10674",
+    "display_name": "School Choice and Performance",
+    "score": 0.998199999332428,
+    "subfield": {
+      "id": "https://openalex.org/subfields/3304",
+      "display_name": "Education"
+    },
+    "field": {
+      "id": "https://openalex.org/fields/33",
+      "display_name": "Social Sciences"
+    },
+    "domain": {
+      "id": "https://openalex.org/domains/2",
+      "display_name": "Social Sciences"
+    }
+  },
+  "topics": [
+    {
+      "id": "https://openalex.org/T10674",
+      "display_name": "School Choice and Performance",
+      "score": 0.998199999332428,
+      "subfield": {
+        "id": "https://openalex.org/subfields/3304",
+        "display_name": "Education"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/33",
+        "display_name": "Social Sciences"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/2",
+        "display_name": "Social Sciences"
+      }
+    },
+    {
+      "id": "https://openalex.org/T11770",
+      "display_name": "Fiscal Policy and Economic Growth",
+      "score": 0.9754999876022339,
+      "subfield": {
+        "id": "https://openalex.org/subfields/2002",
+        "display_name": "Economics and Econometrics"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/20",
+        "display_name": "Economics, Econometrics and Finance"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/2",
+        "display_name": "Social Sciences"
+      }
+    },
+    {
+      "id": "https://openalex.org/T10991",
+      "display_name": "Game Theory and Voting Systems",
+      "score": 0.9718000292778015,
+      "subfield": {
+        "id": "https://openalex.org/subfields/2002",
+        "display_name": "Economics and Econometrics"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/20",
+        "display_name": "Economics, Econometrics and Finance"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/2",
+        "display_name": "Social Sciences"
+      }
+    }
+  ],
+  "keywords": [
+    {
+      "id": "https://openalex.org/keywords/charter",
+      "display_name": "Charter",
+      "score": 0.8983705043792725
+    },
+    {
+      "id": "https://openalex.org/keywords/lottery",
+      "display_name": "Lottery",
+      "score": 0.8004041910171509
+    },
+    {
+      "id": "https://openalex.org/keywords/attendance",
+      "display_name": "Attendance",
+      "score": 0.6979323029518127
+    },
+    {
+      "id": "https://openalex.org/keywords/accountability",
+      "display_name": "Accountability",
+      "score": 0.6548492312431335
+    },
+    {
+      "id": "https://openalex.org/keywords/independence",
+      "display_name": "Independence (probability theory)",
+      "score": 0.5084868669509888
+    },
+    {
+      "id": "https://openalex.org/keywords/school-district",
+      "display_name": "School district",
+      "score": 0.5044795274734497
+    },
+    {
+      "id": "https://openalex.org/keywords/flexibility",
+      "display_name": "Flexibility (engineering)",
+      "score": 0.4750549793243408
+    },
+    {
+      "id": "https://openalex.org/keywords/public-administration",
+      "display_name": "Public administration",
+      "score": 0.4318055212497711
+    },
+    {
+      "id": "https://openalex.org/keywords/political-science",
+      "display_name": "Political science",
+      "score": 0.3910413980484009
+    },
+    {
+      "id": "https://openalex.org/keywords/mathematics-education",
+      "display_name": "Mathematics education",
+      "score": 0.34923750162124634
+    },
+    {
+      "id": "https://openalex.org/keywords/psychology",
+      "display_name": "Psychology",
+      "score": 0.33933380246162415
+    },
+    {
+      "id": "https://openalex.org/keywords/economics",
+      "display_name": "Economics",
+      "score": 0.19849881529808044
+    },
+    {
+      "id": "https://openalex.org/keywords/law",
+      "display_name": "Law",
+      "score": 0.12419039011001587
+    },
+    {
+      "id": "https://openalex.org/keywords/mathematics",
+      "display_name": "Mathematics",
+      "score": 0.09405437111854553
+    },
+    {
+      "id": "https://openalex.org/keywords/management",
+      "display_name": "Management",
+      "score": 0.09381100535392761
+    },
+    {
+      "id": "https://openalex.org/keywords/statistics",
+      "display_name": "Statistics",
+      "score": 0.07034638524055481
+    }
+  ],
+  "concepts": [
+    {
+      "id": "https://openalex.org/C2777596936",
+      "wikidata": "https://www.wikidata.org/wiki/Q727002",
+      "display_name": "Charter",
+      "level": 2,
+      "score": 0.8983705043792725
+    },
+    {
+      "id": "https://openalex.org/C2777340749",
+      "wikidata": "https://www.wikidata.org/wiki/Q6684955",
+      "display_name": "Lottery",
+      "level": 2,
+      "score": 0.8004041910171509
+    },
+    {
+      "id": "https://openalex.org/C2778173179",
+      "wikidata": "https://www.wikidata.org/wiki/Q25339289",
+      "display_name": "Attendance",
+      "level": 2,
+      "score": 0.6979323029518127
+    },
+    {
+      "id": "https://openalex.org/C2776007630",
+      "wikidata": "https://www.wikidata.org/wiki/Q2798912",
+      "display_name": "Accountability",
+      "level": 2,
+      "score": 0.6548492312431335
+    },
+    {
+      "id": "https://openalex.org/C35651441",
+      "wikidata": "https://www.wikidata.org/wiki/Q625303",
+      "display_name": "Independence (probability theory)",
+      "level": 2,
+      "score": 0.5084868669509888
+    },
+    {
+      "id": "https://openalex.org/C2992462468",
+      "wikidata": "https://www.wikidata.org/wiki/Q398141",
+      "display_name": "School district",
+      "level": 2,
+      "score": 0.5044795274734497
+    },
+    {
+      "id": "https://openalex.org/C2780598303",
+      "wikidata": "https://www.wikidata.org/wiki/Q65921492",
+      "display_name": "Flexibility (engineering)",
+      "level": 2,
+      "score": 0.4750549793243408
+    },
+    {
+      "id": "https://openalex.org/C3116431",
+      "wikidata": "https://www.wikidata.org/wiki/Q31728",
+      "display_name": "Public administration",
+      "level": 1,
+      "score": 0.4318055212497711
+    },
+    {
+      "id": "https://openalex.org/C17744445",
+      "wikidata": "https://www.wikidata.org/wiki/Q36442",
+      "display_name": "Political science",
+      "level": 0,
+      "score": 0.3910413980484009
+    },
+    {
+      "id": "https://openalex.org/C145420912",
+      "wikidata": "https://www.wikidata.org/wiki/Q853077",
+      "display_name": "Mathematics education",
+      "level": 1,
+      "score": 0.34923750162124634
+    },
+    {
+      "id": "https://openalex.org/C15744967",
+      "wikidata": "https://www.wikidata.org/wiki/Q9418",
+      "display_name": "Psychology",
+      "level": 0,
+      "score": 0.33933380246162415
+    },
+    {
+      "id": "https://openalex.org/C162324750",
+      "wikidata": "https://www.wikidata.org/wiki/Q8134",
+      "display_name": "Economics",
+      "level": 0,
+      "score": 0.19849881529808044
+    },
+    {
+      "id": "https://openalex.org/C199539241",
+      "wikidata": "https://www.wikidata.org/wiki/Q7748",
+      "display_name": "Law",
+      "level": 1,
+      "score": 0.12419039011001587
+    },
+    {
+      "id": "https://openalex.org/C33923547",
+      "wikidata": "https://www.wikidata.org/wiki/Q395",
+      "display_name": "Mathematics",
+      "level": 0,
+      "score": 0.09405437111854553
+    },
+    {
+      "id": "https://openalex.org/C187736073",
+      "wikidata": "https://www.wikidata.org/wiki/Q2920921",
+      "display_name": "Management",
+      "level": 1,
+      "score": 0.09381100535392761
+    },
+    {
+      "id": "https://openalex.org/C105795698",
+      "wikidata": "https://www.wikidata.org/wiki/Q12483",
+      "display_name": "Statistics",
+      "level": 1,
+      "score": 0.07034638524055481
+    },
+    {
+      "id": "https://openalex.org/C175444787",
+      "wikidata": "https://www.wikidata.org/wiki/Q39072",
+      "display_name": "Microeconomics",
+      "level": 1,
+      "score": 0.0
+    }
+  ],
+  "mesh": [],
+  "locations_count": 2,
+  "locations": [
+    {
+      "id": "doi:10.1093/qje/qjr017",
+      "is_oa": true,
+      "landing_page_url": "https://doi.org/10.1093/qje/qjr017",
+      "pdf_url": "https://academic.oup.com/qje/article-pdf/126/2/699/17090256/qjr017.pdf",
+      "source": {
+        "id": "https://openalex.org/S203860005",
+        "display_name": "The Quarterly Journal of Economics",
+        "issn_l": "0033-5533",
+        "issn": [
+          "0033-5533",
+          "1531-4650"
+        ],
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": true,
+        "host_organization": "https://openalex.org/P4310311648",
+        "host_organization_name": "Oxford University Press",
+        "host_organization_lineage": [
+          "https://openalex.org/P4310311648",
+          "https://openalex.org/P4310311647"
+        ],
+        "host_organization_lineage_names": [
+          "Oxford University Press",
+          "University of Oxford"
+        ],
+        "type": "journal"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "publishedVersion",
+      "is_accepted": true,
+      "is_published": true,
+      "raw_source_name": "The Quarterly Journal of Economics",
+      "raw_type": "journal-article"
+    },
+    {
+      "id": "pmh:oai:RePEc:oup:qjecon:v:126:y:2011:i:2:p:699-748",
+      "is_oa": false,
+      "landing_page_url": "http://hdl.handle.net/10.1093/qje/qjr017",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4306401271",
+        "display_name": "RePEc: Research Papers in Economics",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I77793887",
+        "host_organization_name": "Federal Reserve Bank of St. Louis",
+        "host_organization_lineage": [
+          "https://openalex.org/I77793887"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "submittedVersion",
+      "is_accepted": false,
+      "is_published": false,
+      "raw_source_name": null,
+      "raw_type": "article"
+    }
+  ],
+  "best_oa_location": {
+    "id": "doi:10.1093/qje/qjr017",
+    "is_oa": true,
+    "landing_page_url": "https://doi.org/10.1093/qje/qjr017",
+    "pdf_url": "https://academic.oup.com/qje/article-pdf/126/2/699/17090256/qjr017.pdf",
+    "source": {
+      "id": "https://openalex.org/S203860005",
+      "display_name": "The Quarterly Journal of Economics",
+      "issn_l": "0033-5533",
+      "issn": [
+        "0033-5533",
+        "1531-4650"
+      ],
+      "is_oa": false,
+      "is_in_doaj": false,
+      "is_core": true,
+      "host_organization": "https://openalex.org/P4310311648",
+      "host_organization_name": "Oxford University Press",
+      "host_organization_lineage": [
+        "https://openalex.org/P4310311648",
+        "https://openalex.org/P4310311647"
+      ],
+      "host_organization_lineage_names": [
+        "Oxford University Press",
+        "University of Oxford"
+      ],
+      "type": "journal"
+    },
+    "license": null,
+    "license_id": null,
+    "version": "publishedVersion",
+    "is_accepted": true,
+    "is_published": true,
+    "raw_source_name": "The Quarterly Journal of Economics",
+    "raw_type": "journal-article"
+  },
+  "sustainable_development_goals": [],
+  "awards": [
+    {
+      "id": "https://openalex.org/G6671297155",
+      "display_name": null,
+      "funder_award_id": "CAREER",
+      "funder_id": "https://openalex.org/F4320306076",
+      "funder_display_name": "National Science Foundation"
+    }
+  ],
+  "funders": [
+    {
+      "id": "https://openalex.org/F4320306076",
+      "display_name": "National Science Foundation",
+      "ror": "https://ror.org/021nxhr62"
+    },
+    {
+      "id": "https://openalex.org/F4320309369",
+      "display_name": "Massachusetts Institute of Technology",
+      "ror": "https://ror.org/042nb2s44"
+    },
+    {
+      "id": "https://openalex.org/F4320309622",
+      "display_name": "Harvard University",
+      "ror": "https://ror.org/03vek6s52"
+    },
+    {
+      "id": "https://openalex.org/F4320338050",
+      "display_name": "Rappaport Institute for Greater Boston, Harvard Kennedy School",
+      "ror": null
+    }
+  ],
+  "has_content": {
+    "pdf": true,
+    "grobid_xml": true
+  },
+  "content_urls": {
+    "pdf": "https://content.openalex.org/works/W2150083067.pdf",
+    "grobid_xml": "https://content.openalex.org/works/W2150083067.grobid-xml"
+  },
+  "referenced_works_count": 44,
+  "referenced_works": [
+    "https://openalex.org/W47288910",
+    "https://openalex.org/W60537560",
+    "https://openalex.org/W64300892",
+    "https://openalex.org/W233925783",
+    "https://openalex.org/W332943688",
+    "https://openalex.org/W585486177",
+    "https://openalex.org/W599441115",
+    "https://openalex.org/W1509285446",
+    "https://openalex.org/W1522168453",
+    "https://openalex.org/W1562661406",
+    "https://openalex.org/W1599415996",
+    "https://openalex.org/W1958733516",
+    "https://openalex.org/W1967993709",
+    "https://openalex.org/W1975789158",
+    "https://openalex.org/W1989740241",
+    "https://openalex.org/W1993002445",
+    "https://openalex.org/W2034080748",
+    "https://openalex.org/W2044116340",
+    "https://openalex.org/W2046468826",
+    "https://openalex.org/W2062754614",
+    "https://openalex.org/W2081180585",
+    "https://openalex.org/W2099274660",
+    "https://openalex.org/W2104780889",
+    "https://openalex.org/W2110013180",
+    "https://openalex.org/W2128934789",
+    "https://openalex.org/W2138290169",
+    "https://openalex.org/W2155275815",
+    "https://openalex.org/W2157247323",
+    "https://openalex.org/W2159501395",
+    "https://openalex.org/W2161746708",
+    "https://openalex.org/W2162297205",
+    "https://openalex.org/W2313914504",
+    "https://openalex.org/W2568201814",
+    "https://openalex.org/W2891105981",
+    "https://openalex.org/W2904733517",
+    "https://openalex.org/W3121478035",
+    "https://openalex.org/W3121556564",
+    "https://openalex.org/W3123095377",
+    "https://openalex.org/W3123159236",
+    "https://openalex.org/W3124133911",
+    "https://openalex.org/W3124664771",
+    "https://openalex.org/W3142869804",
+    "https://openalex.org/W3144040573",
+    "https://openalex.org/W4246607039"
+  ],
+  "related_works": [
+    "https://openalex.org/W2004731113",
+    "https://openalex.org/W1556639976",
+    "https://openalex.org/W2366147166",
+    "https://openalex.org/W2394167907",
+    "https://openalex.org/W2139765960",
+    "https://openalex.org/W2128949092",
+    "https://openalex.org/W2357035722",
+    "https://openalex.org/W2368351749",
+    "https://openalex.org/W2358800538",
+    "https://openalex.org/W2066997075"
+  ],
+  "abstract_inverted_index": {
+    "We": [
+      0,
+      18
+    ],
+    "use": [
+      1
+    ],
+    "student": [
+      2,
+      14
+    ],
+    "assignment": [
+      3,
+      91
+    ],
+    "lotteries": [
+      4,
+      92
+    ],
+    "to": [
+      5,
+      94
+    ],
+    "estimate": [
+      6
+    ],
+    "the": [
+      7,
+      32,
+      40
+    ],
+    "effect": [
+      8
+    ],
+    "of": [
+      9,
+      31,
+      34
+    ],
+    "charter": [
+      10,
+      35,
+      62
+    ],
+    "school": [
+      11,
+      75
+    ],
+    "attendance": [
+      12
+    ],
+    "on": [
+      13
+    ],
+    "achievement": [
+      15
+    ],
+    "in": [
+      16,
+      39,
+      64
+    ],
+    "Boston.": [
+      17
+    ],
+    "also": [
+      19
+    ],
+    "evaluate": [
+      20
+    ],
+    "a": [
+      21
+    ],
+    "related": [
+      22
+    ],
+    "alternative,": [
+      23
+    ],
+    "Boston's": [
+      24
+    ],
+    "pilot": [
+      25,
+      74
+    ],
+    "schools.": [
+      26
+    ],
+    "Pilot": [
+      27
+    ],
+    "schools": [
+      28,
+      36,
+      88
+    ],
+    "have": [
+      29
+    ],
+    "some": [
+      30,
+      49,
+      83
+    ],
+    "independence": [
+      33
+    ],
+    "but": [
+      37
+    ],
+    "are": [
+      38,
+      46,
+      77
+    ],
+    "Boston": [
+      41
+    ],
+    "Public": [
+      42
+    ],
+    "School": [
+      43
+    ],
+    "district": [
+      44
+    ],
+    "and": [
+      45,
+      57,
+      66,
+      80
+    ],
+    "covered": [
+      47
+    ],
+    "by": [
+      48
+    ],
+    "collective": [
+      50
+    ],
+    "bargaining": [
+      51
+    ],
+    "provisions.": [
+      52
+    ],
+    "Lottery": [
+      53
+    ],
+    "estimates": [
+      54,
+      72
+    ],
+    "show": [
+      55
+    ],
+    "large": [
+      56
+    ],
+    "significant": [
+      58,
+      84
+    ],
+    "score": [
+      59
+    ],
+    "gains": [
+      60,
+      97
+    ],
+    "for": [
+      61,
+      73
+    ],
+    "students": [
+      63,
+      76
+    ],
+    "middle": [
+      65
+    ],
+    "high": [
+      67
+    ],
+    "school.": [
+      68
+    ],
+    "In": [
+      69
+    ],
+    "contrast,": [
+      70
+    ],
+    "lottery": [
+      71
+    ],
+    "mostly": [
+      78
+    ],
+    "small": [
+      79
+    ],
+    "insignificant,": [
+      81
+    ],
+    "with": [
+      82,
+      89
+    ],
+    "negative": [
+      85
+    ],
+    "effects.": [
+      86
+    ],
+    "Charter": [
+      87
+    ],
+    "binding": [
+      90
+    ],
+    "appear": [
+      93
+    ],
+    "generate": [
+      95
+    ],
+    "larger": [
+      96
+    ],
+    "than": [
+      98
+    ],
+    "other": [
+      99
+    ],
+    "charters.": [
+      100
+    ]
+  },
+  "counts_by_year": [
+    {
+      "year": 2026,
+      "cited_by_count": 8
+    },
+    {
+      "year": 2025,
+      "cited_by_count": 18
+    },
+    {
+      "year": 2024,
+      "cited_by_count": 24
+    },
+    {
+      "year": 2023,
+      "cited_by_count": 36
+    },
+    {
+      "year": 2022,
+      "cited_by_count": 29
+    },
+    {
+      "year": 2021,
+      "cited_by_count": 34
+    },
+    {
+      "year": 2020,
+      "cited_by_count": 38
+    },
+    {
+      "year": 2019,
+      "cited_by_count": 35
+    },
+    {
+      "year": 2018,
+      "cited_by_count": 36
+    },
+    {
+      "year": 2017,
+      "cited_by_count": 47
+    },
+    {
+      "year": 2016,
+      "cited_by_count": 53
+    },
+    {
+      "year": 2015,
+      "cited_by_count": 44
+    },
+    {
+      "year": 2014,
+      "cited_by_count": 37
+    },
+    {
+      "year": 2013,
+      "cited_by_count": 33
+    },
+    {
+      "year": 2012,
+      "cited_by_count": 23
+    }
+  ],
+  "updated_date": "2026-06-11T09:08:48.828518",
+  "created_date": "2016-06-24T00:00:00"
+}

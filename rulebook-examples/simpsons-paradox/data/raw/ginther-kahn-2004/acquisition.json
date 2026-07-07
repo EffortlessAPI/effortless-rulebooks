@@ -1,0 +1,17 @@
+{
+  "candidate_id": "cand-exp-ginther-kahn-2004",
+  "proposed_study_id": "ginther-kahn-2004",
+  "acquisition_status": "downloaded",
+  "attempted_at": "2026-07-07T03:46:31+00:00",
+  "catalog_source_url": "https://ncses.nsf.gov/surveys/doctoral-recipients",
+  "resolved_urls": [
+    "https://doi.org/10.1257/aer.100.2.348",
+    "http://www.nber.org/papers/w15707.pdf",
+    "https://ncses.nsf.gov/surveys/doctoral-recipients"
+  ],
+  "files": [
+    "openalex-search.pdf",
+    "openalex-metadata.json"
+  ],
+  "dois": []
+}

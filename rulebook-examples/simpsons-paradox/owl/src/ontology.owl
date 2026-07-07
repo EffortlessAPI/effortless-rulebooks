@@ -252,6 +252,58 @@ effortless-ntwf:typePredictionMatch a owl:DatatypeProperty ;
     rdfs:comment "TRUE when observed type matches expected (imported rows only)." .
     # calculated: calculated
 
+effortless-ntwf:expectedSignFlip a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:CandidateStudyCatalog ;
+    rdfs:range xsd:boolean ;
+    rdfs:label "ExpectedSignFlip" ;
+    rdfs:comment "TRUE when curator tagged ExpectedDistortionType as A or B (sign-flip expectation)." .
+    # calculated: calculated
+
+effortless-ntwf:observedSignFlipType a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:CandidateStudyCatalog ;
+    rdfs:range xsd:boolean ;
+    rdfs:label "ObservedSignFlipType" ;
+    rdfs:comment "TRUE when observed DistortionType is A or B (imported rows only)." .
+    # calculated: calculated
+
+effortless-ntwf:signFlipPredictionMatch a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:CandidateStudyCatalog ;
+    rdfs:range xsd:boolean ;
+    rdfs:label "SignFlipPredictionMatch" ;
+    rdfs:comment "TRUE when Expected A∪B and observed is A∪B — weaker flip-type prediction test." .
+    # calculated: calculated
+
+effortless-ntwf:dataAcquisitionStatus a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:CandidateStudyCatalog ;
+    rdfs:range xsd:string ;
+    rdfs:label "DataAcquisitionStatus" ;
+    rdfs:comment "not_started | downloaded | manual_only | blocked" .
+
+effortless-ntwf:reversalMechanism a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:CandidateStudyCatalog ;
+    rdfs:range xsd:string ;
+    rdfs:label "ReversalMechanism" ;
+    rdfs:comment "Plain-language reversal mechanism from expansion plan." .
+
+effortless-ntwf:paradoxConfirmation a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:CandidateStudyCatalog ;
+    rdfs:range xsd:string ;
+    rdfs:label "ParadoxConfirmation" ;
+    rdfs:comment "confirmed | plausible | pending | not_applicable" .
+
+effortless-ntwf:expansionWave a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:CandidateStudyCatalog ;
+    rdfs:range xsd:string ;
+    rdfs:label "ExpansionWave" ;
+    rdfs:comment "Catalog wave tag; loop-67 expansion rows = expansion-wave-1." .
+
+effortless-ntwf:isDataReady a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:CandidateStudyCatalog ;
+    rdfs:range xsd:boolean ;
+    rdfs:label "IsDataReady" ;
+    rdfs:comment "TRUE when stratified data is downloaded or available from published tables." .
+    # calculated: calculated
+
 # === Class: CaseCells ===
 effortless-ntwf:CaseCells a owl:Class ;
     rdfs:label "CaseCells" ;
@@ -528,11 +580,117 @@ effortless-ntwf:importSessionReady a owl:DatatypeProperty ;
     rdfs:comment "TRUE when backlog is large enough for a bulk import session." .
     # calculated: calculated
 
+effortless-ntwf:typePredictionMatchCount a owl:DatatypeProperty ;
+    rdfs:range xsd:integer ;
+    rdfs:label "TypePredictionMatchCount" ;
+    rdfs:comment "Imported catalog rows where ObservedDistortionType exactly matches ExpectedDistortionType." .
+    # calculated: aggregation
+
+effortless-ntwf:typePredictionMismatchCount a owl:DatatypeProperty ;
+    rdfs:range xsd:integer ;
+    rdfs:label "TypePredictionMismatchCount" ;
+    rdfs:comment "Imported catalog rows where exact type prediction failed." .
+    # calculated: aggregation
+
+effortless-ntwf:signFlipPredictionEligibleCount a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:CorpusCatalogSummary ;
+    rdfs:range xsd:integer ;
+    rdfs:label "SignFlipPredictionEligibleCount" ;
+    rdfs:comment "Imported rows where ExpectedDistortionType was A or B." .
+    # calculated: aggregation
+
+effortless-ntwf:signFlipPredictionMatchCount a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:CorpusCatalogSummary ;
+    rdfs:range xsd:integer ;
+    rdfs:label "SignFlipPredictionMatchCount" ;
+    rdfs:comment "Expected A∪B rows where observed type is also A∪B." .
+    # calculated: aggregation
+
+effortless-ntwf:typePredictionMatchRate a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "TypePredictionMatchRate" ;
+    rdfs:comment "Exact-match rate across imported catalog rows." .
+    # calculated: calculated
+
+effortless-ntwf:signFlipPredictionMatchRate a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "SignFlipPredictionMatchRate" ;
+    rdfs:comment "Sign-flip-type match rate among Expected A∪B rows." .
+    # calculated: calculated
+
 effortless-ntwf:catalogWitnessNote a owl:DatatypeProperty ;
     rdfs:range xsd:string ;
     rdfs:label "CatalogWitnessNote" ;
     rdfs:comment "Human-readable readiness summary." .
     # calculated: calculated
+
+effortless-ntwf:catalogPredictionWitnessNote a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "CatalogPredictionWitnessNote" ;
+    rdfs:comment "Loop-65 type-prediction audit summary." .
+    # calculated: calculated
+
+effortless-ntwf:dataReadyCount a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:CorpusCatalogSummary ;
+    rdfs:range xsd:integer ;
+    rdfs:label "DataReadyCount" ;
+    rdfs:comment "Candidates with IsDataReady=TRUE." .
+    # calculated: aggregation
+
+effortless-ntwf:encodePipelineReadyCount a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:CorpusCatalogSummary ;
+    rdfs:range xsd:integer ;
+    rdfs:label "EncodePipelineReadyCount" ;
+    rdfs:comment "Candidates both data-ready and encode-ready." .
+    # calculated: aggregation
+
+effortless-ntwf:expansionCandidateCount a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:CorpusCatalogSummary ;
+    rdfs:range xsd:integer ;
+    rdfs:label "ExpansionCandidateCount" ;
+    rdfs:comment "Loop-67 expansion-wave-1 candidates." .
+    # calculated: aggregation
+
+# === Class: CorpusDomains ===
+effortless-ntwf:CorpusDomains a owl:Class ;
+    rdfs:label "CorpusDomains" ;
+    rdfs:comment "Table: CorpusDomains — canonical expansion-domain slugs from corpus-expansion-plan.md (loop-67)." .
+
+effortless-ntwf:domainId a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:CorpusDomains ;
+    rdfs:range xsd:string ;
+    rdfs:label "DomainId" ;
+    rdfs:comment "Unique slug (matches CandidateStudyCatalog.Domain for expansion wave)." .
+
+effortless-ntwf:name a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "Name" ;
+    rdfs:comment "Display label." .
+    # calculated: calculated
+
+effortless-ntwf:displayName a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:CorpusDomains ;
+    rdfs:range xsd:string ;
+    rdfs:label "DisplayName" ;
+    rdfs:comment "Human-readable domain name." .
+
+effortless-ntwf:expansionTarget a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:CorpusDomains ;
+    rdfs:range xsd:integer ;
+    rdfs:label "ExpansionTarget" ;
+    rdfs:comment "Target study count from corpus-expansion-plan.md." .
+
+effortless-ntwf:legacyStudiesDomain a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:CorpusDomains ;
+    rdfs:range xsd:string ;
+    rdfs:label "LegacyStudiesDomain" ;
+    rdfs:comment "Studies.Domain alias for counting already-imported corpus rows." .
+
+effortless-ntwf:planSourceSection a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:CorpusDomains ;
+    rdfs:range xsd:string ;
+    rdfs:label "PlanSourceSection" ;
+    rdfs:comment "Section heading in corpus-expansion-plan.md." .
 
 # === Class: DiscoveryFindings ===
 effortless-ntwf:DiscoveryFindings a owl:Class ;
@@ -654,6 +812,12 @@ effortless-ntwf:domain a owl:DatatypeProperty ;
     rdfs:label "Domain" ;
     rdfs:comment "Domain tag matching Studies.Domain." .
 
+effortless-ntwf:legacyDomainAlias a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:DomainExpansionTargets ;
+    rdfs:range xsd:string ;
+    rdfs:label "LegacyDomainAlias" ;
+    rdfs:comment "Studies.Domain slug for legacy imported corpus rows." .
+
 effortless-ntwf:targetMinCount a owl:DatatypeProperty ;
     rdfs:domain effortless-ntwf:DomainExpansionTargets ;
     rdfs:range xsd:integer ;
@@ -664,7 +828,7 @@ effortless-ntwf:currentImportedCount a owl:DatatypeProperty ;
     rdfs:domain effortless-ntwf:DomainExpansionTargets ;
     rdfs:range xsd:integer ;
     rdfs:label "CurrentImportedCount" ;
-    rdfs:comment "Real studies already in corpus." .
+    rdfs:comment "Real studies in corpus matching LegacyDomainAlias (or Domain when no alias)." .
     # calculated: aggregation
 
 effortless-ntwf:candidateQueuedCount a owl:DatatypeProperty ;
@@ -1033,7 +1197,7 @@ effortless-ntwf:protectsConclusionCategory a owl:DatatypeProperty ;
 # === Class: Loops ===
 effortless-ntwf:Loops a owl:Class ;
     rdfs:label "Loops" ;
-    rdfs:comment "Table: Loops — build history and forward plan, carried as a first-class entity inside the model. Each row documents what new concept is introduced, what was witnessed, and (for planned rows) the next empirical question. Loops 62+ are the corpus-scale research sweep: pre-register in DiscoveryHypotheses, run against vw_* views, LoopReview at end of each turn before committing vocabulary." .
+    rdfs:comment "Table: Loops — build history and forward plan, carried as a first-class entity inside the model. Each row documents what new concept is introduced, what was witnessed, and (for planned rows) the next empirical question. Loops 62–67 are the corpus-scale research sweep + catalog expansion. Loops 68+ are the expansion encode waves: pre-register in DiscoveryHypotheses, encode via StudyImportTemplate, LoopReview at end of each turn before committing vocabulary." .
 
 effortless-ntwf:loopId a owl:DatatypeProperty ;
     rdfs:domain effortless-ntwf:Loops ;
@@ -1593,11 +1757,140 @@ effortless-ntwf:colliderSelectionLatentOnlyCount a owl:DatatypeProperty ;
     rdfs:comment "Latent-only flips among collider/selection studies." .
     # calculated: calculated
 
+effortless-ntwf:explainedConfounderCount a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:ModelSummary ;
+    rdfs:range xsd:integer ;
+    rdfs:label "ExplainedConfounderCount" ;
+    rdfs:comment "Count of TreatmentRankings rows where IsParadoxExplained=TRUE (should equal ConfounderSignFlipCount)." .
+    # calculated: aggregation
+
+effortless-ntwf:contestedOrMediatorExplainedCount a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:ModelSummary ;
+    rdfs:range xsd:integer ;
+    rdfs:label "ContestedOrMediatorExplainedCount" ;
+    rdfs:comment "Count of contested or mediator sign-flip rows where IsParadoxExplained=TRUE (should be zero)." .
+    # calculated: aggregation
+
 effortless-ntwf:discoveryWitnessNote a owl:DatatypeProperty ;
     rdfs:domain effortless-ntwf:ModelSummary ;
     rdfs:range xsd:string ;
     rdfs:label "DiscoveryWitnessNote" ;
-    rdfs:comment "One-line summary of loop-61 empirical discovery findings." .
+    rdfs:comment "Research sweep synthesis rollup (loops 61–66)." .
+    # calculated: calculated
+
+effortless-ntwf:typePredictionMatchCount a owl:DatatypeProperty ;
+    rdfs:range xsd:integer ;
+    rdfs:label "TypePredictionMatchCount" ;
+    rdfs:comment "Lookup: CorpusCatalogSummary.TypePredictionMatchCount." .
+    # calculated: lookup
+
+effortless-ntwf:typePredictionMismatchCount a owl:DatatypeProperty ;
+    rdfs:range xsd:integer ;
+    rdfs:label "TypePredictionMismatchCount" ;
+    rdfs:comment "Lookup: CorpusCatalogSummary.TypePredictionMismatchCount." .
+    # calculated: lookup
+
+effortless-ntwf:typePredictionMatchRate a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "TypePredictionMatchRate" ;
+    rdfs:comment "Lookup: CorpusCatalogSummary.TypePredictionMatchRate." .
+    # calculated: lookup
+
+effortless-ntwf:signFlipPredictionMatchRate a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "SignFlipPredictionMatchRate" ;
+    rdfs:comment "Lookup: CorpusCatalogSummary.SignFlipPredictionMatchRate." .
+    # calculated: lookup
+
+effortless-ntwf:catalogPredictionWitnessNote a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "CatalogPredictionWitnessNote" ;
+    rdfs:comment "Lookup: CorpusCatalogSummary.CatalogPredictionWitnessNote." .
+    # calculated: lookup
+
+effortless-ntwf:highImbalanceSignFlipThreshold a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:ModelSummary ;
+    rdfs:range xsd:string ;
+    rdfs:label "HighImbalanceSignFlipThreshold" ;
+    rdfs:comment "max_stratum_imbalance cutoff for geometry-controlled domain screening (loop-66). Set from corpus median by customize SQL." .
+
+effortless-ntwf:economicsHighImbalanceSignFlipCount a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:ModelSummary ;
+    rdfs:range xsd:string ;
+    rdfs:label "EconomicsHighImbalanceSignFlipCount" ;
+    rdfs:comment "Sign-flip count among economics studies with max_stratum_imbalance >= threshold." .
+
+effortless-ntwf:epidemiologyHighImbalanceSignFlipRate a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:ModelSummary ;
+    rdfs:range xsd:string ;
+    rdfs:label "EpidemiologyHighImbalanceSignFlipRate" ;
+    rdfs:comment "Sign-flip rate among high-imbalance epidemiology studies." .
+
+effortless-ntwf:legalHighImbalanceSignFlipRate a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:ModelSummary ;
+    rdfs:range xsd:string ;
+    rdfs:label "LegalHighImbalanceSignFlipRate" ;
+    rdfs:comment "Sign-flip rate among high-imbalance legal studies." .
+
+effortless-ntwf:sportsHighImbalanceSignFlipRate a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:ModelSummary ;
+    rdfs:range xsd:string ;
+    rdfs:label "SportsHighImbalanceSignFlipRate" ;
+    rdfs:comment "Sign-flip rate among high-imbalance sports studies." .
+
+effortless-ntwf:domainFlipGapSurvivesGeometryControl a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:ModelSummary ;
+    rdfs:range xsd:boolean ;
+    rdfs:label "DomainFlipGapSurvivesGeometryControl" ;
+    rdfs:comment "TRUE when economics stays flip-free and epidemiology/legal/sports remain elevated under high-imbalance conditioning." .
+
+effortless-ntwf:cPlusAvgDistortion a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:ModelSummary ;
+    rdfs:range xsd:string ;
+    rdfs:label "CPlusAvgDistortion" ;
+    rdfs:comment "Mean AllocationDistortion among Type-C+ studies." .
+    # calculated: calculated
+
+effortless-ntwf:cMinusAvgDistortion a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:ModelSummary ;
+    rdfs:range xsd:string ;
+    rdfs:label "CMinusAvgDistortion" ;
+    rdfs:comment "Mean AllocationDistortion among Type-C- studies." .
+    # calculated: calculated
+
+effortless-ntwf:typeDAvgDistortion a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:ModelSummary ;
+    rdfs:range xsd:string ;
+    rdfs:label "TypeDAvgDistortion" ;
+    rdfs:comment "Mean AllocationDistortion among Type-D studies." .
+    # calculated: calculated
+
+effortless-ntwf:sweepFragileCount a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:ModelSummary ;
+    rdfs:range xsd:integer ;
+    rdfs:label "SweepFragileCount" ;
+    rdfs:comment "Type-D studies with signal_purity=1, allocation_distortion=0, sweep_pooled_gap_range>0.3, allocation_fragility>=10." .
+    # calculated: calculated
+
+effortless-ntwf:expansionWave1EconomicsExpectedACount a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:ModelSummary ;
+    rdfs:range xsd:integer ;
+    rdfs:label "ExpansionWave1EconomicsExpectedACount" ;
+    rdfs:comment "Imported expansion-wave-1 economics catalog rows tagged Expected A." .
+    # calculated: calculated
+
+effortless-ntwf:expansionWave1EconomicsExpectedADCount a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:ModelSummary ;
+    rdfs:range xsd:integer ;
+    rdfs:label "ExpansionWave1EconomicsExpectedADCount" ;
+    rdfs:comment "Expansion-wave-1 economics Expected-A imports observed as Type D." .
+    # calculated: calculated
+
+effortless-ntwf:economicsExpectedAMismatchRate a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:ModelSummary ;
+    rdfs:range xsd:string ;
+    rdfs:label "EconomicsExpectedAMismatchRate" ;
+    rdfs:comment "Fraction of expansion-wave-1 economics Expected-A imports observed as Type D." .
     # calculated: calculated
 
 # === Class: PhaseDiagramSummary ===

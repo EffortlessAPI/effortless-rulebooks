@@ -1,0 +1,14 @@
+{
+  "candidate_id": "cand-exp-framingham-heart-study",
+  "proposed_study_id": "framingham-heart-study",
+  "acquisition_status": "landing_saved",
+  "attempted_at": "2026-07-07T03:47:23+00:00",
+  "catalog_source_url": "https://www.framinghamheartstudy.org/fhs-for-researchers/data-available-overview/",
+  "resolved_urls": [
+    "https://www.framinghamheartstudy.org/fhs-for-researchers/data-available-overview/"
+  ],
+  "files": [
+    "source-1.html"
+  ],
+  "dois": []
+}

@@ -1,0 +1,1996 @@
+{
+  "id": "https://openalex.org/W4401485155",
+  "doi": "https://doi.org/10.1177/03635465241262339",
+  "title": "Fastball Quality After Ulnar Collateral Ligament Reconstruction in Major League Baseball Pitchers",
+  "display_name": "Fastball Quality After Ulnar Collateral Ligament Reconstruction in Major League Baseball Pitchers",
+  "relevance_score": 26.863123,
+  "publication_year": 2024,
+  "publication_date": "2024-08-01",
+  "ids": {
+    "openalex": "https://openalex.org/W4401485155",
+    "doi": "https://doi.org/10.1177/03635465241262339",
+    "pmid": "https://pubmed.ncbi.nlm.nih.gov/39126190"
+  },
+  "language": "en",
+  "primary_location": {
+    "id": "doi:10.1177/03635465241262339",
+    "is_oa": true,
+    "landing_page_url": "https://doi.org/10.1177/03635465241262339",
+    "pdf_url": "https://journals.sagepub.com/doi/pdf/10.1177/03635465241262339?download=true",
+    "source": {
+      "id": "https://openalex.org/S154904565",
+      "display_name": "The American Journal of Sports Medicine",
+      "issn_l": "0363-5465",
+      "issn": [
+        "0363-5465",
+        "1552-3365"
+      ],
+      "is_oa": false,
+      "is_in_doaj": false,
+      "is_core": true,
+      "host_organization": "https://openalex.org/P4310320017",
+      "host_organization_name": "SAGE Publishing",
+      "host_organization_lineage": [
+        "https://openalex.org/P4310320017"
+      ],
+      "host_organization_lineage_names": [
+        "SAGE Publishing"
+      ],
+      "type": "journal"
+    },
+    "license": null,
+    "license_id": null,
+    "version": "publishedVersion",
+    "is_accepted": true,
+    "is_published": true,
+    "raw_source_name": "The American Journal of Sports Medicine",
+    "raw_type": "journal-article"
+  },
+  "type": "article",
+  "indexed_in": [
+    "crossref",
+    "pubmed"
+  ],
+  "open_access": {
+    "is_oa": true,
+    "oa_status": "bronze",
+    "oa_url": "https://journals.sagepub.com/doi/pdf/10.1177/03635465241262339?download=true",
+    "any_repository_has_fulltext": false
+  },
+  "authorships": [
+    {
+      "author_position": "first",
+      "author": {
+        "id": "https://openalex.org/A5100698518",
+        "display_name": "Yi Lu",
+        "orcid": "https://orcid.org/0000-0002-8948-8561"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I3020100970",
+          "display_name": "Chang Gung Memorial Hospital",
+          "ror": "https://ror.org/02verss31",
+          "country_code": "TW",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I3020100970"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I4210116208",
+          "display_name": "Linkou Chang Gung Memorial Hospital",
+          "ror": "https://ror.org/02dnn6q67",
+          "country_code": "TW",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I3020100970",
+            "https://openalex.org/I4210116208"
+          ]
+        }
+      ],
+      "countries": [
+        "TW"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Yi Lu",
+      "raw_affiliation_strings": [
+        "Bone and Joint Research Center, Linkou Chang Gung Memorial Hospital, Taoyuan, Taiwan",
+        "Comprehensive Sports Medicine Center, Chang Gung Memorial Hospital, Taoyuan, Taiwan",
+        "Department of Orthopedic Surgery, Linkou Chang Gung Memorial Hospital, Taoyuan, Taiwan"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Bone and Joint Research Center, Linkou Chang Gung Memorial Hospital, Taoyuan, Taiwan",
+          "institution_ids": [
+            "https://openalex.org/I4210116208"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Comprehensive Sports Medicine Center, Chang Gung Memorial Hospital, Taoyuan, Taiwan",
+          "institution_ids": [
+            "https://openalex.org/I3020100970"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Department of Orthopedic Surgery, Linkou Chang Gung Memorial Hospital, Taoyuan, Taiwan",
+          "institution_ids": [
+            "https://openalex.org/I4210116208"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5100767286",
+        "display_name": "Poyu Chen",
+        "orcid": "https://orcid.org/0000-0003-1342-813X"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I173093425",
+          "display_name": "Chang Gung University",
+          "ror": "https://ror.org/00d80zx46",
+          "country_code": "TW",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I173093425"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I4210116208",
+          "display_name": "Linkou Chang Gung Memorial Hospital",
+          "ror": "https://ror.org/02dnn6q67",
+          "country_code": "TW",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I3020100970",
+            "https://openalex.org/I4210116208"
+          ]
+        }
+      ],
+      "countries": [
+        "TW"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Poyu Chen",
+      "raw_affiliation_strings": [
+        "Department of Occupational Therapy and Graduate Institute of Behavioral Sciences, College of Medicine, Chang Gung University, Taoyuan, Taiwan",
+        "Department of Orthopedic Surgery, Linkou Chang Gung Memorial Hospital, Taoyuan, Taiwan"
+      ],
+      "raw_orcid": "https://orcid.org/0000-0003-1342-813X",
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Department of Occupational Therapy and Graduate Institute of Behavioral Sciences, College of Medicine, Chang Gung University, Taoyuan, Taiwan",
+          "institution_ids": [
+            "https://openalex.org/I173093425"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Department of Orthopedic Surgery, Linkou Chang Gung Memorial Hospital, Taoyuan, Taiwan",
+          "institution_ids": [
+            "https://openalex.org/I4210116208"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5057120179",
+        "display_name": "Huan Sheu",
+        "orcid": null
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I3020100970",
+          "display_name": "Chang Gung Memorial Hospital",
+          "ror": "https://ror.org/02verss31",
+          "country_code": "TW",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I3020100970"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I4210093734",
+          "display_name": "Taoyuan Chang Gung Memorial Hospital",
+          "ror": "https://ror.org/00fk9d670",
+          "country_code": "TW",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I4210093734"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I4210116208",
+          "display_name": "Linkou Chang Gung Memorial Hospital",
+          "ror": "https://ror.org/02dnn6q67",
+          "country_code": "TW",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I3020100970",
+            "https://openalex.org/I4210116208"
+          ]
+        }
+      ],
+      "countries": [
+        "TW"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Huan Sheu",
+      "raw_affiliation_strings": [
+        "Bone and Joint Research Center, Linkou Chang Gung Memorial Hospital, Taoyuan, Taiwan",
+        "Comprehensive Sports Medicine Center, Chang Gung Memorial Hospital, Taoyuan, Taiwan",
+        "Department of Orthopedic Surgery, Taoyuan Chang Gung Memorial Hospital, Taoyuan, Taiwan"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Bone and Joint Research Center, Linkou Chang Gung Memorial Hospital, Taoyuan, Taiwan",
+          "institution_ids": [
+            "https://openalex.org/I4210116208"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Comprehensive Sports Medicine Center, Chang Gung Memorial Hospital, Taoyuan, Taiwan",
+          "institution_ids": [
+            "https://openalex.org/I3020100970"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Department of Orthopedic Surgery, Taoyuan Chang Gung Memorial Hospital, Taoyuan, Taiwan",
+          "institution_ids": [
+            "https://openalex.org/I4210093734"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5060773531",
+        "display_name": "Cheng\u2010Pang Yang",
+        "orcid": "https://orcid.org/0009-0007-8547-4561"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I3020100970",
+          "display_name": "Chang Gung Memorial Hospital",
+          "ror": "https://ror.org/02verss31",
+          "country_code": "TW",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I3020100970"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I4210116208",
+          "display_name": "Linkou Chang Gung Memorial Hospital",
+          "ror": "https://ror.org/02dnn6q67",
+          "country_code": "TW",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I3020100970",
+            "https://openalex.org/I4210116208"
+          ]
+        }
+      ],
+      "countries": [
+        "TW"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Cheng-Pang Yang",
+      "raw_affiliation_strings": [
+        "Bone and Joint Research Center, Linkou Chang Gung Memorial Hospital, Taoyuan, Taiwan",
+        "Comprehensive Sports Medicine Center, Chang Gung Memorial Hospital, Taoyuan, Taiwan",
+        "Department of Orthopedic Surgery, Linkou Chang Gung Memorial Hospital, Taoyuan, Taiwan"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Bone and Joint Research Center, Linkou Chang Gung Memorial Hospital, Taoyuan, Taiwan",
+          "institution_ids": [
+            "https://openalex.org/I4210116208"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Comprehensive Sports Medicine Center, Chang Gung Memorial Hospital, Taoyuan, Taiwan",
+          "institution_ids": [
+            "https://openalex.org/I3020100970"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Department of Orthopedic Surgery, Linkou Chang Gung Memorial Hospital, Taoyuan, Taiwan",
+          "institution_ids": [
+            "https://openalex.org/I4210116208"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5101956930",
+        "display_name": "You-Hung Cheng",
+        "orcid": "https://orcid.org/0000-0002-5910-1231"
+      },
+      "institutions": [],
+      "countries": [],
+      "is_corresponding": false,
+      "raw_author_name": "You-Hung Cheng",
+      "raw_affiliation_strings": [
+        "Department of Orthopedic Surgery, New Taipei Municipal Tucheng Hospital, New Taipei City, Taiwan"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Department of Orthopedic Surgery, New Taipei Municipal Tucheng Hospital, New Taipei City, Taiwan",
+          "institution_ids": []
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5038563788",
+        "display_name": "Alvin Chao\u2010Yu Chen",
+        "orcid": "https://orcid.org/0000-0003-0111-490X"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I3020100970",
+          "display_name": "Chang Gung Memorial Hospital",
+          "ror": "https://ror.org/02verss31",
+          "country_code": "TW",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I3020100970"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I4210116208",
+          "display_name": "Linkou Chang Gung Memorial Hospital",
+          "ror": "https://ror.org/02dnn6q67",
+          "country_code": "TW",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I3020100970",
+            "https://openalex.org/I4210116208"
+          ]
+        }
+      ],
+      "countries": [
+        "TW"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Alvin Chao-Yu Chen",
+      "raw_affiliation_strings": [
+        "Bone and Joint Research Center, Linkou Chang Gung Memorial Hospital, Taoyuan, Taiwan",
+        "Comprehensive Sports Medicine Center, Chang Gung Memorial Hospital, Taoyuan, Taiwan",
+        "Department of Orthopedic Surgery, Linkou Chang Gung Memorial Hospital, Taoyuan, Taiwan"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Bone and Joint Research Center, Linkou Chang Gung Memorial Hospital, Taoyuan, Taiwan",
+          "institution_ids": [
+            "https://openalex.org/I4210116208"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Comprehensive Sports Medicine Center, Chang Gung Memorial Hospital, Taoyuan, Taiwan",
+          "institution_ids": [
+            "https://openalex.org/I3020100970"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Department of Orthopedic Surgery, Linkou Chang Gung Memorial Hospital, Taoyuan, Taiwan",
+          "institution_ids": [
+            "https://openalex.org/I4210116208"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "last",
+      "author": {
+        "id": "https://openalex.org/A5041208748",
+        "display_name": "Chih\u2010Hao Chiu",
+        "orcid": "https://orcid.org/0000-0001-9415-5115"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I173093425",
+          "display_name": "Chang Gung University",
+          "ror": "https://ror.org/00d80zx46",
+          "country_code": "TW",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I173093425"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I3020100970",
+          "display_name": "Chang Gung Memorial Hospital",
+          "ror": "https://ror.org/02verss31",
+          "country_code": "TW",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I3020100970"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I4210116208",
+          "display_name": "Linkou Chang Gung Memorial Hospital",
+          "ror": "https://ror.org/02dnn6q67",
+          "country_code": "TW",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I3020100970",
+            "https://openalex.org/I4210116208"
+          ]
+        }
+      ],
+      "countries": [
+        "TW"
+      ],
+      "is_corresponding": true,
+      "raw_author_name": "Joe Chih-Hao Chiu",
+      "raw_affiliation_strings": [
+        "Bone and Joint Research Center, Linkou Chang Gung Memorial Hospital, Taoyuan, Taiwan",
+        "Chang Gung University College of Medicine, Taoyuan, Taiwan",
+        "Comprehensive Sports Medicine Center, Chang Gung Memorial Hospital, Taoyuan, Taiwan",
+        "Department of Orthopedic Surgery, Linkou Chang Gung Memorial Hospital, Taoyuan, Taiwan"
+      ],
+      "raw_orcid": "https://orcid.org/0000-0001-9415-5115",
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Bone and Joint Research Center, Linkou Chang Gung Memorial Hospital, Taoyuan, Taiwan",
+          "institution_ids": [
+            "https://openalex.org/I4210116208"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Chang Gung University College of Medicine, Taoyuan, Taiwan",
+          "institution_ids": [
+            "https://openalex.org/I173093425"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Comprehensive Sports Medicine Center, Chang Gung Memorial Hospital, Taoyuan, Taiwan",
+          "institution_ids": [
+            "https://openalex.org/I3020100970"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Department of Orthopedic Surgery, Linkou Chang Gung Memorial Hospital, Taoyuan, Taiwan",
+          "institution_ids": [
+            "https://openalex.org/I4210116208"
+          ]
+        }
+      ]
+    }
+  ],
+  "institutions": [],
+  "countries_distinct_count": 1,
+  "institutions_distinct_count": 7,
+  "corresponding_author_ids": [
+    "https://openalex.org/A5041208748"
+  ],
+  "corresponding_institution_ids": [
+    "https://openalex.org/I173093425",
+    "https://openalex.org/I3020100970",
+    "https://openalex.org/I4210116208"
+  ],
+  "apc_list": null,
+  "apc_paid": null,
+  "fwci": 1.0864,
+  "has_fulltext": true,
+  "cited_by_count": 5,
+  "citation_normalized_percentile": {
+    "value": 0.79822083,
+    "is_in_top_1_percent": false,
+    "is_in_top_10_percent": false
+  },
+  "cited_by_percentile_year": {
+    "min": 95,
+    "max": 99
+  },
+  "biblio": {
+    "volume": "52",
+    "issue": "10",
+    "first_page": "2611",
+    "last_page": "2619"
+  },
+  "is_retracted": false,
+  "is_paratext": false,
+  "is_xpac": false,
+  "primary_topic": {
+    "id": "https://openalex.org/T11427",
+    "display_name": "Elbow and Forearm Trauma Treatment",
+    "score": 0.5250999927520752,
+    "subfield": {
+      "id": "https://openalex.org/subfields/2742",
+      "display_name": "Rehabilitation"
+    },
+    "field": {
+      "id": "https://openalex.org/fields/27",
+      "display_name": "Medicine"
+    },
+    "domain": {
+      "id": "https://openalex.org/domains/4",
+      "display_name": "Health Sciences"
+    }
+  },
+  "topics": [
+    {
+      "id": "https://openalex.org/T11427",
+      "display_name": "Elbow and Forearm Trauma Treatment",
+      "score": 0.5250999927520752,
+      "subfield": {
+        "id": "https://openalex.org/subfields/2742",
+        "display_name": "Rehabilitation"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/27",
+        "display_name": "Medicine"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/4",
+        "display_name": "Health Sciences"
+      }
+    },
+    {
+      "id": "https://openalex.org/T10280",
+      "display_name": "Shoulder Injury and Treatment",
+      "score": 0.4641000032424927,
+      "subfield": {
+        "id": "https://openalex.org/subfields/2746",
+        "display_name": "Surgery"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/27",
+        "display_name": "Medicine"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/4",
+        "display_name": "Health Sciences"
+      }
+    },
+    {
+      "id": "https://openalex.org/T11068",
+      "display_name": "Tendon Structure and Treatment",
+      "score": 0.002400000113993883,
+      "subfield": {
+        "id": "https://openalex.org/subfields/2732",
+        "display_name": "Orthopedics and Sports Medicine"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/27",
+        "display_name": "Medicine"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/4",
+        "display_name": "Health Sciences"
+      }
+    }
+  ],
+  "keywords": [
+    {
+      "id": "https://openalex.org/keywords/elbow",
+      "display_name": "Elbow",
+      "score": 0.7925713062286377
+    },
+    {
+      "id": "https://openalex.org/keywords/ligament",
+      "display_name": "Ligament",
+      "score": 0.6891577243804932
+    },
+    {
+      "id": "https://openalex.org/keywords/throwing",
+      "display_name": "Throwing",
+      "score": 0.5988463163375854
+    },
+    {
+      "id": "https://openalex.org/keywords/league",
+      "display_name": "League",
+      "score": 0.5689206123352051
+    },
+    {
+      "id": "https://openalex.org/keywords/collateral",
+      "display_name": "Collateral",
+      "score": 0.566409707069397
+    },
+    {
+      "id": "https://openalex.org/keywords/physical-medicine-and-rehabilitation",
+      "display_name": "Physical medicine and rehabilitation",
+      "score": 0.46900248527526855
+    },
+    {
+      "id": "https://openalex.org/keywords/medicine",
+      "display_name": "Medicine",
+      "score": 0.4415213167667389
+    },
+    {
+      "id": "https://openalex.org/keywords/orthodontics",
+      "display_name": "Orthodontics",
+      "score": 0.3665120303630829
+    },
+    {
+      "id": "https://openalex.org/keywords/engineering",
+      "display_name": "Engineering",
+      "score": 0.2665744423866272
+    },
+    {
+      "id": "https://openalex.org/keywords/anatomy",
+      "display_name": "Anatomy",
+      "score": 0.2030767798423767
+    },
+    {
+      "id": "https://openalex.org/keywords/aeronautics",
+      "display_name": "Aeronautics",
+      "score": 0.16684406995773315
+    },
+    {
+      "id": "https://openalex.org/keywords/economics",
+      "display_name": "Economics",
+      "score": 0.07335597276687622
+    }
+  ],
+  "concepts": [
+    {
+      "id": "https://openalex.org/C2781184374",
+      "wikidata": "https://www.wikidata.org/wiki/Q42586",
+      "display_name": "Elbow",
+      "level": 2,
+      "score": 0.7925713062286377
+    },
+    {
+      "id": "https://openalex.org/C2779753412",
+      "wikidata": "https://www.wikidata.org/wiki/Q39888",
+      "display_name": "Ligament",
+      "level": 2,
+      "score": 0.6891577243804932
+    },
+    {
+      "id": "https://openalex.org/C207451115",
+      "wikidata": "https://www.wikidata.org/wiki/Q12898216",
+      "display_name": "Throwing",
+      "level": 2,
+      "score": 0.5988463163375854
+    },
+    {
+      "id": "https://openalex.org/C207456731",
+      "wikidata": "https://www.wikidata.org/wiki/Q660818",
+      "display_name": "League",
+      "level": 2,
+      "score": 0.5689206123352051
+    },
+    {
+      "id": "https://openalex.org/C2777910564",
+      "wikidata": "https://www.wikidata.org/wiki/Q694563",
+      "display_name": "Collateral",
+      "level": 2,
+      "score": 0.566409707069397
+    },
+    {
+      "id": "https://openalex.org/C99508421",
+      "wikidata": "https://www.wikidata.org/wiki/Q2678675",
+      "display_name": "Physical medicine and rehabilitation",
+      "level": 1,
+      "score": 0.46900248527526855
+    },
+    {
+      "id": "https://openalex.org/C71924100",
+      "wikidata": "https://www.wikidata.org/wiki/Q11190",
+      "display_name": "Medicine",
+      "level": 0,
+      "score": 0.4415213167667389
+    },
+    {
+      "id": "https://openalex.org/C29694066",
+      "wikidata": "https://www.wikidata.org/wiki/Q118301",
+      "display_name": "Orthodontics",
+      "level": 1,
+      "score": 0.3665120303630829
+    },
+    {
+      "id": "https://openalex.org/C127413603",
+      "wikidata": "https://www.wikidata.org/wiki/Q11023",
+      "display_name": "Engineering",
+      "level": 0,
+      "score": 0.2665744423866272
+    },
+    {
+      "id": "https://openalex.org/C105702510",
+      "wikidata": "https://www.wikidata.org/wiki/Q514",
+      "display_name": "Anatomy",
+      "level": 1,
+      "score": 0.2030767798423767
+    },
+    {
+      "id": "https://openalex.org/C178802073",
+      "wikidata": "https://www.wikidata.org/wiki/Q8421",
+      "display_name": "Aeronautics",
+      "level": 1,
+      "score": 0.16684406995773315
+    },
+    {
+      "id": "https://openalex.org/C162324750",
+      "wikidata": "https://www.wikidata.org/wiki/Q8134",
+      "display_name": "Economics",
+      "level": 0,
+      "score": 0.07335597276687622
+    },
+    {
+      "id": "https://openalex.org/C121332964",
+      "wikidata": "https://www.wikidata.org/wiki/Q413",
+      "display_name": "Physics",
+      "level": 0,
+      "score": 0.0
+    },
+    {
+      "id": "https://openalex.org/C1276947",
+      "wikidata": "https://www.wikidata.org/wiki/Q333",
+      "display_name": "Astronomy",
+      "level": 1,
+      "score": 0.0
+    },
+    {
+      "id": "https://openalex.org/C10138342",
+      "wikidata": "https://www.wikidata.org/wiki/Q43015",
+      "display_name": "Finance",
+      "level": 1,
+      "score": 0.0
+    }
+  ],
+  "mesh": [
+    {
+      "descriptor_ui": "D000070637",
+      "descriptor_name": "Collateral Ligament, Ulnar",
+      "qualifier_ui": "Q000293",
+      "qualifier_name": "injuries",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000070637",
+      "descriptor_name": "Collateral Ligament, Ulnar",
+      "qualifier_ui": "Q000293",
+      "qualifier_name": "injuries",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000070637",
+      "descriptor_name": "Collateral Ligament, Ulnar",
+      "qualifier_ui": "Q000293",
+      "qualifier_name": "injuries",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000070637",
+      "descriptor_name": "Collateral Ligament, Ulnar",
+      "qualifier_ui": "Q000601",
+      "qualifier_name": "surgery",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000070637",
+      "descriptor_name": "Collateral Ligament, Ulnar",
+      "qualifier_ui": "Q000601",
+      "qualifier_name": "surgery",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000070637",
+      "descriptor_name": "Collateral Ligament, Ulnar",
+      "qualifier_ui": "Q000601",
+      "qualifier_name": "surgery",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000070638",
+      "descriptor_name": "Ulnar Collateral Ligament Reconstruction",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D000070638",
+      "descriptor_name": "Ulnar Collateral Ligament Reconstruction",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D000070638",
+      "descriptor_name": "Ulnar Collateral Ligament Reconstruction",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D000328",
+      "descriptor_name": "Adult",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000328",
+      "descriptor_name": "Adult",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000328",
+      "descriptor_name": "Adult",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D001484",
+      "descriptor_name": "Baseball",
+      "qualifier_ui": "Q000293",
+      "qualifier_name": "injuries",
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D001484",
+      "descriptor_name": "Baseball",
+      "qualifier_ui": "Q000293",
+      "qualifier_name": "injuries",
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D001484",
+      "descriptor_name": "Baseball",
+      "qualifier_ui": "Q000293",
+      "qualifier_name": "injuries",
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D006801",
+      "descriptor_name": "Humans",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D006801",
+      "descriptor_name": "Humans",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D006801",
+      "descriptor_name": "Humans",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D008297",
+      "descriptor_name": "Male",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D008297",
+      "descriptor_name": "Male",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D008297",
+      "descriptor_name": "Male",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D012189",
+      "descriptor_name": "Retrospective Studies",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D012189",
+      "descriptor_name": "Retrospective Studies",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D012189",
+      "descriptor_name": "Retrospective Studies",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D016022",
+      "descriptor_name": "Case-Control Studies",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D016022",
+      "descriptor_name": "Case-Control Studies",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D016022",
+      "descriptor_name": "Case-Control Studies",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D054874",
+      "descriptor_name": "Athletic Performance",
+      "qualifier_ui": "Q000502",
+      "qualifier_name": "physiology",
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D054874",
+      "descriptor_name": "Athletic Performance",
+      "qualifier_ui": "Q000502",
+      "qualifier_name": "physiology",
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D054874",
+      "descriptor_name": "Athletic Performance",
+      "qualifier_ui": "Q000502",
+      "qualifier_name": "physiology",
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D055815",
+      "descriptor_name": "Young Adult",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D055815",
+      "descriptor_name": "Young Adult",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D055815",
+      "descriptor_name": "Young Adult",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    }
+  ],
+  "locations_count": 2,
+  "locations": [
+    {
+      "id": "doi:10.1177/03635465241262339",
+      "is_oa": true,
+      "landing_page_url": "https://doi.org/10.1177/03635465241262339",
+      "pdf_url": "https://journals.sagepub.com/doi/pdf/10.1177/03635465241262339?download=true",
+      "source": {
+        "id": "https://openalex.org/S154904565",
+        "display_name": "The American Journal of Sports Medicine",
+        "issn_l": "0363-5465",
+        "issn": [
+          "0363-5465",
+          "1552-3365"
+        ],
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": true,
+        "host_organization": "https://openalex.org/P4310320017",
+        "host_organization_name": "SAGE Publishing",
+        "host_organization_lineage": [
+          "https://openalex.org/P4310320017"
+        ],
+        "host_organization_lineage_names": [
+          "SAGE Publishing"
+        ],
+        "type": "journal"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "publishedVersion",
+      "is_accepted": true,
+      "is_published": true,
+      "raw_source_name": "The American Journal of Sports Medicine",
+      "raw_type": "journal-article"
+    },
+    {
+      "id": "pmid:39126190",
+      "is_oa": false,
+      "landing_page_url": "https://pubmed.ncbi.nlm.nih.gov/39126190",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4306525036",
+        "display_name": "PubMed",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I1299303238",
+        "host_organization_name": "National Institutes of Health",
+        "host_organization_lineage": [
+          "https://openalex.org/I1299303238"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "publishedVersion",
+      "is_accepted": true,
+      "is_published": true,
+      "raw_source_name": "The American journal of sports medicine",
+      "raw_type": null
+    }
+  ],
+  "best_oa_location": {
+    "id": "doi:10.1177/03635465241262339",
+    "is_oa": true,
+    "landing_page_url": "https://doi.org/10.1177/03635465241262339",
+    "pdf_url": "https://journals.sagepub.com/doi/pdf/10.1177/03635465241262339?download=true",
+    "source": {
+      "id": "https://openalex.org/S154904565",
+      "display_name": "The American Journal of Sports Medicine",
+      "issn_l": "0363-5465",
+      "issn": [
+        "0363-5465",
+        "1552-3365"
+      ],
+      "is_oa": false,
+      "is_in_doaj": false,
+      "is_core": true,
+      "host_organization": "https://openalex.org/P4310320017",
+      "host_organization_name": "SAGE Publishing",
+      "host_organization_lineage": [
+        "https://openalex.org/P4310320017"
+      ],
+      "host_organization_lineage_names": [
+        "SAGE Publishing"
+      ],
+      "type": "journal"
+    },
+    "license": null,
+    "license_id": null,
+    "version": "publishedVersion",
+    "is_accepted": true,
+    "is_published": true,
+    "raw_source_name": "The American Journal of Sports Medicine",
+    "raw_type": "journal-article"
+  },
+  "sustainable_development_goals": [],
+  "awards": [
+    {
+      "id": "https://openalex.org/G2771197605",
+      "display_name": null,
+      "funder_award_id": "MOST 111-2628-B-182A-016",
+      "funder_id": "https://openalex.org/F2461203286",
+      "funder_display_name": "National Science and Technology Council"
+    },
+    {
+      "id": "https://openalex.org/G2803063983",
+      "display_name": null,
+      "funder_award_id": "NSTC112-2628-B-182A-002",
+      "funder_id": "https://openalex.org/F2461203286",
+      "funder_display_name": "National Science and Technology Council"
+    },
+    {
+      "id": "https://openalex.org/G5105052998",
+      "display_name": null,
+      "funder_award_id": "CMRPG5K0092",
+      "funder_id": "https://openalex.org/F4320322767",
+      "funder_display_name": "Chang Gung Medical Foundation"
+    },
+    {
+      "id": "https://openalex.org/G5862615322",
+      "display_name": null,
+      "funder_award_id": "CMRPG3M2031",
+      "funder_id": "https://openalex.org/F4320323441",
+      "funder_display_name": "Chang Gung Memorial Hospital, Linkou"
+    },
+    {
+      "id": "https://openalex.org/G666117224",
+      "display_name": null,
+      "funder_award_id": "CMRPG5K0092",
+      "funder_id": "https://openalex.org/F4320323441",
+      "funder_display_name": "Chang Gung Memorial Hospital, Linkou"
+    }
+  ],
+  "funders": [
+    {
+      "id": "https://openalex.org/F2461203286",
+      "display_name": "National Science and Technology Council",
+      "ror": "https://ror.org/02kv4zf79"
+    },
+    {
+      "id": "https://openalex.org/F4320312863",
+      "display_name": "American Orthopaedic Society for Sports Medicine",
+      "ror": "https://ror.org/03vaf0k11"
+    },
+    {
+      "id": "https://openalex.org/F4320322767",
+      "display_name": "Chang Gung Medical Foundation",
+      "ror": "https://ror.org/02verss31"
+    },
+    {
+      "id": "https://openalex.org/F4320323441",
+      "display_name": "Chang Gung Memorial Hospital, Linkou",
+      "ror": "https://ror.org/02dnn6q67"
+    }
+  ],
+  "has_content": {
+    "grobid_xml": true,
+    "pdf": true
+  },
+  "content_urls": {
+    "pdf": "https://content.openalex.org/works/W4401485155.pdf",
+    "grobid_xml": "https://content.openalex.org/works/W4401485155.grobid-xml"
+  },
+  "referenced_works_count": 40,
+  "referenced_works": [
+    "https://openalex.org/W1517792771",
+    "https://openalex.org/W1975450673",
+    "https://openalex.org/W1992352836",
+    "https://openalex.org/W2009130373",
+    "https://openalex.org/W2022892960",
+    "https://openalex.org/W2028398671",
+    "https://openalex.org/W2062949912",
+    "https://openalex.org/W2102861996",
+    "https://openalex.org/W2113149345",
+    "https://openalex.org/W2152325090",
+    "https://openalex.org/W2168016353",
+    "https://openalex.org/W2168647011",
+    "https://openalex.org/W2208276687",
+    "https://openalex.org/W2301976363",
+    "https://openalex.org/W2307899010",
+    "https://openalex.org/W2324140197",
+    "https://openalex.org/W2463021960",
+    "https://openalex.org/W2526807023",
+    "https://openalex.org/W2603978100",
+    "https://openalex.org/W2736797154",
+    "https://openalex.org/W2800287380",
+    "https://openalex.org/W2802188637",
+    "https://openalex.org/W2810925101",
+    "https://openalex.org/W2895115942",
+    "https://openalex.org/W2910692453",
+    "https://openalex.org/W2911423500",
+    "https://openalex.org/W2988348127",
+    "https://openalex.org/W3042042271",
+    "https://openalex.org/W3093952897",
+    "https://openalex.org/W3114702414",
+    "https://openalex.org/W3139369285",
+    "https://openalex.org/W3198261198",
+    "https://openalex.org/W3202964821",
+    "https://openalex.org/W4220763697",
+    "https://openalex.org/W4225131032",
+    "https://openalex.org/W4281692438",
+    "https://openalex.org/W4286262534",
+    "https://openalex.org/W4292092739",
+    "https://openalex.org/W4292295301",
+    "https://openalex.org/W4385234275"
+  ],
+  "related_works": [
+    "https://openalex.org/W2757445715",
+    "https://openalex.org/W4239855920",
+    "https://openalex.org/W2283787251",
+    "https://openalex.org/W2514960685",
+    "https://openalex.org/W3036195892",
+    "https://openalex.org/W2062531374",
+    "https://openalex.org/W2885031771",
+    "https://openalex.org/W2232935647",
+    "https://openalex.org/W3138014359",
+    "https://openalex.org/W2373588286"
+  ],
+  "abstract_inverted_index": {
+    "Background:": [
+      0
+    ],
+    "The": [
+      1,
+      95
+    ],
+    "ulnar": [
+      2
+    ],
+    "collateral": [
+      3
+    ],
+    "ligament": [
+      4
+    ],
+    "(UCL)": [
+      5
+    ],
+    "is": [
+      6,
+      19
+    ],
+    "essential": [
+      7
+    ],
+    "for": [
+      8
+    ],
+    "elbow": [
+      9
+    ],
+    "stability": [
+      10
+    ],
+    "during": [
+      11,
+      151
+    ],
+    "pitching.": [
+      12
+    ],
+    "In": [
+      13
+    ],
+    "professional": [
+      14
+    ],
+    "baseball,": [
+      15
+    ],
+    "the": [
+      16,
+      20,
+      74,
+      139,
+      152,
+      190,
+      223,
+      238,
+      251,
+      322,
+      331,
+      341
+    ],
+    "fastball": [
+      17
+    ],
+    "(FB)": [
+      18
+    ],
+    "most": [
+      21
+    ],
+    "commonly": [
+      22
+    ],
+    "used": [
+      23
+    ],
+    "pitch,": [
+      24
+    ],
+    "making": [
+      25
+    ],
+    "postrecovery": [
+      26
+    ],
+    "FB": [
+      27,
+      57,
+      158,
+      175,
+      200,
+      234,
+      275,
+      287,
+      318
+    ],
+    "performance": [
+      28,
+      49,
+      84,
+      148,
+      262,
+      344
+    ],
+    "after": [
+      29
+    ],
+    "UCL": [
+      30
+    ],
+    "reconstruction": [
+      31
+    ],
+    "(UCLR)": [
+      32
+    ],
+    "a": [
+      33,
+      194,
+      211
+    ],
+    "crucial": [
+      34
+    ],
+    "aspect": [
+      35
+    ],
+    "to": [
+      36,
+      226,
+      269
+    ],
+    "consider.": [
+      37
+    ],
+    "Hypotheses:": [
+      38
+    ],
+    "(1)": [
+      39
+    ],
+    "Pitchers": [
+      40
+    ],
+    "undergoing": [
+      41
+    ],
+    "UCLR": [
+      42,
+      107,
+      125,
+      191
+    ],
+    "would": [
+      43,
+      67
+    ],
+    "show": [
+      44
+    ],
+    "no": [
+      45,
+      64,
+      255,
+      303
+    ],
+    "significant": [
+      46,
+      65,
+      256,
+      282
+    ],
+    "changes": [
+      47,
+      215
+    ],
+    "in": [
+      48,
+      70,
+      146,
+      216,
+      237,
+      260,
+      286,
+      293
+    ],
+    "metrics": [
+      50,
+      72,
+      132,
+      149,
+      320
+    ],
+    "compared": [
+      51,
+      137
+    ],
+    "with": [
+      52,
+      55,
+      214
+    ],
+    "nonoperated": [
+      53
+    ],
+    "pitchers": [
+      54,
+      76,
+      103,
+      123
+    ],
+    "similar": [
+      56
+    ],
+    "velocity": [
+      58,
+      201,
+      276
+    ],
+    "and": [
+      59,
+      62,
+      82,
+      112,
+      133,
+      141,
+      173,
+      202,
+      210,
+      241,
+      277,
+      291,
+      321
+    ],
+    "spin": [
+      60,
+      278
+    ],
+    "rate,": [
+      61
+    ],
+    "(2)": [
+      63
+    ],
+    "variance": [
+      66
+    ],
+    "be": [
+      68
+    ],
+    "found": [
+      69,
+      259
+    ],
+    "these": [
+      71,
+      261,
+      300
+    ],
+    "within": [
+      73,
+      189
+    ],
+    "operated": [
+      75
+    ],
+    "concerning": [
+      77,
+      312
+    ],
+    "their": [
+      78
+    ],
+    "preinjury": [
+      79
+    ],
+    "anthropometric": [
+      80,
+      134,
+      324
+    ],
+    "characteristics": [
+      81
+    ],
+    "pitching": [
+      83,
+      167,
+      319,
+      339,
+      343
+    ],
+    "metrics.": [
+      85,
+      263
+    ],
+    "Study": [
+      86
+    ],
+    "Design:": [
+      87
+    ],
+    "Cohort": [
+      88
+    ],
+    "study;": [
+      89
+    ],
+    "Level": [
+      90
+    ],
+    "of": [
+      91,
+      121
+    ],
+    "evidence,": [
+      92
+    ],
+    "3.": [
+      93
+    ],
+    "Methods:": [
+      94
+    ],
+    "study": [
+      96,
+      140
+    ],
+    "included": [
+      97
+    ],
+    "91": [
+      98
+    ],
+    "Major": [
+      99
+    ],
+    "League": [
+      100
+    ],
+    "Baseball": [
+      101
+    ],
+    "(MLB)": [
+      102
+    ],
+    "who": [
+      104
+    ],
+    "underwent": [
+      105
+    ],
+    "primary": [
+      106
+    ],
+    "between": [
+      108,
+      138,
+      197,
+      233,
+      316
+    ],
+    "January": [
+      109
+    ],
+    "1,": [
+      110
+    ],
+    "2015,": [
+      111
+    ],
+    "December": [
+      113
+    ],
+    "31,": [
+      114
+    ],
+    "2021.": [
+      115
+    ],
+    "A": [
+      116,
+      228
+    ],
+    "matched": [
+      117
+    ],
+    "1:1": [
+      118
+    ],
+    "control": [
+      119,
+      142
+    ],
+    "group": [
+      120,
+      192
+    ],
+    "MLB": [
+      122
+    ],
+    "without": [
+      124
+    ],
+    "injuries": [
+      126
+    ],
+    "was": [
+      127,
+      231
+    ],
+    "established.": [
+      128
+    ],
+    "Publicly": [
+      129
+    ],
+    "available": [
+      130
+    ],
+    "pitch": [
+      131
+    ],
+    "data": [
+      135
+    ],
+    "were": [
+      136,
+      258,
+      266,
+      284,
+      302,
+      310
+    ],
+    "groups.": [
+      143
+    ],
+    "Results:": [
+      144
+    ],
+    "Disparities": [
+      145
+    ],
+    "several": [
+      147
+    ],
+    "emerged": [
+      150
+    ],
+    "first": [
+      153
+    ],
+    "postreturn": [
+      154,
+      253,
+      298
+    ],
+    "year": [
+      155,
+      225,
+      240
+    ],
+    "(PRY1),": [
+      156
+    ],
+    "including": [
+      157
+    ],
+    "use": [
+      159,
+      235,
+      288
+    ],
+    "percentage": [
+      160,
+      236
+    ],
+    "(": [
+      161,
+      169,
+      183,
+      206,
+      218,
+      246
+    ],
+    "P": [
+      162,
+      170,
+      184,
+      207,
+      219,
+      247
+    ],
+    "=": [
+      163,
+      171,
+      220,
+      248
+    ],
+    ".029),": [
+      164
+    ],
+    "fielder": [
+      165
+    ],
+    "independent": [
+      166
+    ],
+    "(FIP)": [
+      168
+    ],
+    ".021),": [
+      172
+    ],
+    "standardized": [
+      174
+    ],
+    "runs": [
+      176
+    ],
+    "above": [
+      177
+    ],
+    "average": [
+      178
+    ],
+    "per": [
+      179
+    ],
+    "100": [
+      180
+    ],
+    "pitches": [
+      181
+    ],
+    "(wFB/C)": [
+      182
+    ],
+    "&lt;": [
+      185,
+      208
+    ],
+    ".001).": [
+      186
+    ],
+    "Subgroup": [
+      187
+    ],
+    "analysis": [
+      188
+    ],
+    "revealed": [
+      193
+    ],
+    "negative": [
+      195,
+      229
+    ],
+    "correlation": [
+      196,
+      213,
+      230
+    ],
+    "presurgery": [
+      198
+    ],
+    "mean": [
+      199
+    ],
+    "its": [
+      203,
+      242
+    ],
+    "subsequent": [
+      204
+    ],
+    "change": [
+      205,
+      243
+    ],
+    ".001)": [
+      209
+    ],
+    "positive": [
+      212
+    ],
+    "FIP": [
+      217
+    ],
+    ".025)": [
+      221
+    ],
+    "from": [
+      222
+    ],
+    "index": [
+      224,
+      239
+    ],
+    "PRY1.": [
+      227,
+      294
+    ],
+    "observed": [
+      232,
+      285
+    ],
+    "by": [
+      244,
+      296,
+      351
+    ],
+    "PRY1": [
+      245
+    ],
+    ".002).": [
+      249
+    ],
+    "By": [
+      250
+    ],
+    "second": [
+      252,
+      297
+    ],
+    "year,": [
+      254,
+      299
+    ],
+    "differences": [
+      257,
+      283,
+      301
+    ],
+    "No": [
+      264,
+      306
+    ],
+    "factors": [
+      265,
+      309
+    ],
+    "significantly": [
+      267
+    ],
+    "related": [
+      268
+    ],
+    "prolonged": [
+      270,
+      313
+    ],
+    "recovery": [
+      271,
+      314
+    ],
+    "time.": [
+      272
+    ],
+    "Conclusion:": [
+      273
+    ],
+    "Although": [
+      274
+    ],
+    "rate": [
+      279
+    ],
+    "remained": [
+      280
+    ],
+    "consistent,": [
+      281
+    ],
+    "percentage,": [
+      289
+    ],
+    "FIP,": [
+      290
+    ],
+    "wFB/C": [
+      292
+    ],
+    "However,": [
+      295
+    ],
+    "longer": [
+      304
+    ],
+    "significant.": [
+      305
+    ],
+    "specific": [
+      307
+    ],
+    "risk": [
+      308
+    ],
+    "identified": [
+      311
+    ],
+    "time": [
+      315
+    ],
+    "pre-UCLR": [
+      317
+    ],
+    "physical": [
+      323
+    ],
+    "data.": [
+      325
+    ],
+    "These": [
+      326
+    ],
+    "results": [
+      327
+    ],
+    "suggest": [
+      328
+    ],
+    "that": [
+      329
+    ],
+    "although": [
+      330
+    ],
+    "short-term": [
+      332
+    ],
+    "postsurgery": [
+      333
+    ],
+    "period": [
+      334
+    ],
+    "may": [
+      335
+    ],
+    "affect": [
+      336
+    ],
+    "more": [
+      337
+    ],
+    "specialized": [
+      338
+    ],
+    "metrics,": [
+      340,
+      345
+    ],
+    "basic": [
+      342
+    ],
+    "as": [
+      346
+    ],
+    "hypothesized,": [
+      347
+    ],
+    "remain": [
+      348
+    ],
+    "largely": [
+      349
+    ],
+    "unaffected": [
+      350
+    ],
+    "UCLR.": [
+      352
+    ]
+  },
+  "counts_by_year": [
+    {
+      "year": 2026,
+      "cited_by_count": 3
+    },
+    {
+      "year": 2025,
+      "cited_by_count": 2
+    }
+  ],
+  "updated_date": "2026-06-15T08:34:33.830935",
+  "created_date": "2025-10-10T00:00:00"
+}

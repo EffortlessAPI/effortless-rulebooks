@@ -1,0 +1,3228 @@
+{
+  "id": "https://openalex.org/W2404212513",
+  "doi": "https://doi.org/10.1111/j.1524-6175.2002.02045.x",
+  "title": "Original Papers. Success and Predictors of Blood Pressure Control in Diverse North American Settings: The Antihypertensive and Lipid\u2010Lowering Treatment to Prevent Heart Attack Trial (ALLHAT)",
+  "display_name": "Original Papers. Success and Predictors of Blood Pressure Control in Diverse North American Settings: The Antihypertensive and Lipid\u2010Lowering Treatment to Prevent Heart Attack Trial (ALLHAT)",
+  "relevance_score": 454.82846,
+  "publication_year": 2002,
+  "publication_date": "2002-11-01",
+  "ids": {
+    "openalex": "https://openalex.org/W2404212513",
+    "doi": "https://doi.org/10.1111/j.1524-6175.2002.02045.x",
+    "mag": "2404212513",
+    "pmid": "https://pubmed.ncbi.nlm.nih.gov/12461301"
+  },
+  "language": "en",
+  "primary_location": {
+    "id": "doi:10.1111/j.1524-6175.2002.02045.x",
+    "is_oa": true,
+    "landing_page_url": "https://doi.org/10.1111/j.1524-6175.2002.02045.x",
+    "pdf_url": "https://onlinelibrary.wiley.com/doi/pdfdirect/10.1111/j.1524-6175.2002.02045.x",
+    "source": {
+      "id": "https://openalex.org/S154226970",
+      "display_name": "Journal of Clinical Hypertension",
+      "issn_l": "1524-6175",
+      "issn": [
+        "1524-6175",
+        "1751-7176"
+      ],
+      "is_oa": false,
+      "is_in_doaj": true,
+      "is_core": true,
+      "host_organization": "https://openalex.org/P4310320595",
+      "host_organization_name": "Wiley",
+      "host_organization_lineage": [
+        "https://openalex.org/P4310320595"
+      ],
+      "host_organization_lineage_names": [
+        "Wiley"
+      ],
+      "type": "journal"
+    },
+    "license": null,
+    "license_id": null,
+    "version": "publishedVersion",
+    "is_accepted": true,
+    "is_published": true,
+    "raw_source_name": "The Journal of Clinical Hypertension",
+    "raw_type": "journal-article"
+  },
+  "type": "article",
+  "indexed_in": [
+    "crossref",
+    "doaj",
+    "pubmed"
+  ],
+  "open_access": {
+    "is_oa": true,
+    "oa_status": "bronze",
+    "oa_url": "https://onlinelibrary.wiley.com/doi/pdfdirect/10.1111/j.1524-6175.2002.02045.x",
+    "any_repository_has_fulltext": false
+  },
+  "authorships": [
+    {
+      "author_position": "first",
+      "author": {
+        "id": "https://openalex.org/A5006628692",
+        "display_name": "William C. Cushman",
+        "orcid": "https://orcid.org/0000-0001-7162-2972"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I160606119",
+          "display_name": "University of Tennessee Health Science Center",
+          "ror": "https://ror.org/0011qv509",
+          "country_code": "US",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I160606119"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I2799886695",
+          "display_name": "Veterans Health Administration",
+          "ror": "https://ror.org/05eq41471",
+          "country_code": "US",
+          "type": "government",
+          "lineage": [
+            "https://openalex.org/I1322918889",
+            "https://openalex.org/I2799886695"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I4210112625",
+          "display_name": "Collaborative Research Group",
+          "ror": "https://ror.org/02c5sgb74",
+          "country_code": "AU",
+          "type": "facility",
+          "lineage": [
+            "https://openalex.org/I4210112625"
+          ]
+        }
+      ],
+      "countries": [
+        "AU",
+        "US"
+      ],
+      "is_corresponding": true,
+      "raw_author_name": "William C. Cushman",
+      "raw_affiliation_strings": [
+        "Professor of Preventive Medicine and Medicine, University of Tennessee College of Medicine, 1030 Jefferson Avenue, Memphis, TN 38104",
+        "Preventive Medicine Section (111Q), Veterans Affairs Medical Center,",
+        "Collaborative Research Group"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Professor of Preventive Medicine and Medicine, University of Tennessee College of Medicine, 1030 Jefferson Avenue, Memphis, TN 38104",
+          "institution_ids": [
+            "https://openalex.org/I160606119"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Preventive Medicine Section (111Q), Veterans Affairs Medical Center,",
+          "institution_ids": [
+            "https://openalex.org/I2799886695"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Collaborative Research Group",
+          "institution_ids": [
+            "https://openalex.org/I4210112625"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5110095916",
+        "display_name": "Charles E. Ford",
+        "orcid": "https://orcid.org/0000-0002-2911-6168"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I160606119",
+          "display_name": "University of Tennessee Health Science Center",
+          "ror": "https://ror.org/0011qv509",
+          "country_code": "US",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I160606119"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I2799886695",
+          "display_name": "Veterans Health Administration",
+          "ror": "https://ror.org/05eq41471",
+          "country_code": "US",
+          "type": "government",
+          "lineage": [
+            "https://openalex.org/I1322918889",
+            "https://openalex.org/I2799886695"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I4210112625",
+          "display_name": "Collaborative Research Group",
+          "ror": "https://ror.org/02c5sgb74",
+          "country_code": "AU",
+          "type": "facility",
+          "lineage": [
+            "https://openalex.org/I4210112625"
+          ]
+        }
+      ],
+      "countries": [
+        "AU",
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Charles E. Ford",
+      "raw_affiliation_strings": [
+        "Preventive Medicine Section (111Q), Veterans Affairs Medical Center,",
+        "Collaborative Research Group",
+        "Professor of Preventive Medicine and Medicine, University of Tennessee College of Medicine, 1030 Jefferson Avenue, Memphis, TN 38104"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Preventive Medicine Section (111Q), Veterans Affairs Medical Center,",
+          "institution_ids": [
+            "https://openalex.org/I2799886695"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Collaborative Research Group",
+          "institution_ids": [
+            "https://openalex.org/I4210112625"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Professor of Preventive Medicine and Medicine, University of Tennessee College of Medicine, 1030 Jefferson Avenue, Memphis, TN 38104",
+          "institution_ids": [
+            "https://openalex.org/I160606119"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5108422519",
+        "display_name": "Jeffrey A. Cutler",
+        "orcid": null
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I160606119",
+          "display_name": "University of Tennessee Health Science Center",
+          "ror": "https://ror.org/0011qv509",
+          "country_code": "US",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I160606119"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I2799886695",
+          "display_name": "Veterans Health Administration",
+          "ror": "https://ror.org/05eq41471",
+          "country_code": "US",
+          "type": "government",
+          "lineage": [
+            "https://openalex.org/I1322918889",
+            "https://openalex.org/I2799886695"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I4210112625",
+          "display_name": "Collaborative Research Group",
+          "ror": "https://ror.org/02c5sgb74",
+          "country_code": "AU",
+          "type": "facility",
+          "lineage": [
+            "https://openalex.org/I4210112625"
+          ]
+        }
+      ],
+      "countries": [
+        "AU",
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Jeffrey A. Cutler",
+      "raw_affiliation_strings": [
+        "Professor of Preventive Medicine and Medicine, University of Tennessee College of Medicine, 1030 Jefferson Avenue, Memphis, TN 38104",
+        "Preventive Medicine Section (111Q), Veterans Affairs Medical Center,",
+        "Collaborative Research Group"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Professor of Preventive Medicine and Medicine, University of Tennessee College of Medicine, 1030 Jefferson Avenue, Memphis, TN 38104",
+          "institution_ids": [
+            "https://openalex.org/I160606119"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Preventive Medicine Section (111Q), Veterans Affairs Medical Center,",
+          "institution_ids": [
+            "https://openalex.org/I2799886695"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Collaborative Research Group",
+          "institution_ids": [
+            "https://openalex.org/I4210112625"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5088410308",
+        "display_name": "Karen L. Margolis",
+        "orcid": "https://orcid.org/0000-0003-1862-7402"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I160606119",
+          "display_name": "University of Tennessee Health Science Center",
+          "ror": "https://ror.org/0011qv509",
+          "country_code": "US",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I160606119"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I2799886695",
+          "display_name": "Veterans Health Administration",
+          "ror": "https://ror.org/05eq41471",
+          "country_code": "US",
+          "type": "government",
+          "lineage": [
+            "https://openalex.org/I1322918889",
+            "https://openalex.org/I2799886695"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I4210112625",
+          "display_name": "Collaborative Research Group",
+          "ror": "https://ror.org/02c5sgb74",
+          "country_code": "AU",
+          "type": "facility",
+          "lineage": [
+            "https://openalex.org/I4210112625"
+          ]
+        }
+      ],
+      "countries": [
+        "AU",
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Karen L. Margolis",
+      "raw_affiliation_strings": [
+        "Professor of Preventive Medicine and Medicine, University of Tennessee College of Medicine, 1030 Jefferson Avenue, Memphis, TN 38104",
+        "Preventive Medicine Section (111Q), Veterans Affairs Medical Center,",
+        "Collaborative Research Group"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Professor of Preventive Medicine and Medicine, University of Tennessee College of Medicine, 1030 Jefferson Avenue, Memphis, TN 38104",
+          "institution_ids": [
+            "https://openalex.org/I160606119"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Preventive Medicine Section (111Q), Veterans Affairs Medical Center,",
+          "institution_ids": [
+            "https://openalex.org/I2799886695"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Collaborative Research Group",
+          "institution_ids": [
+            "https://openalex.org/I4210112625"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5042299275",
+        "display_name": "Barry R. Davis",
+        "orcid": "https://orcid.org/0000-0002-6943-5673"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I160606119",
+          "display_name": "University of Tennessee Health Science Center",
+          "ror": "https://ror.org/0011qv509",
+          "country_code": "US",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I160606119"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I2799886695",
+          "display_name": "Veterans Health Administration",
+          "ror": "https://ror.org/05eq41471",
+          "country_code": "US",
+          "type": "government",
+          "lineage": [
+            "https://openalex.org/I1322918889",
+            "https://openalex.org/I2799886695"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I4210112625",
+          "display_name": "Collaborative Research Group",
+          "ror": "https://ror.org/02c5sgb74",
+          "country_code": "AU",
+          "type": "facility",
+          "lineage": [
+            "https://openalex.org/I4210112625"
+          ]
+        }
+      ],
+      "countries": [
+        "AU",
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Barry R. Davis",
+      "raw_affiliation_strings": [
+        "Preventive Medicine Section (111Q), Veterans Affairs Medical Center,",
+        "Collaborative Research Group",
+        "Professor of Preventive Medicine and Medicine, University of Tennessee College of Medicine, 1030 Jefferson Avenue, Memphis, TN 38104"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Preventive Medicine Section (111Q), Veterans Affairs Medical Center,",
+          "institution_ids": [
+            "https://openalex.org/I2799886695"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Collaborative Research Group",
+          "institution_ids": [
+            "https://openalex.org/I4210112625"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Professor of Preventive Medicine and Medicine, University of Tennessee College of Medicine, 1030 Jefferson Avenue, Memphis, TN 38104",
+          "institution_ids": [
+            "https://openalex.org/I160606119"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5015724516",
+        "display_name": "Richard H. Grimm",
+        "orcid": null
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I160606119",
+          "display_name": "University of Tennessee Health Science Center",
+          "ror": "https://ror.org/0011qv509",
+          "country_code": "US",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I160606119"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I2799886695",
+          "display_name": "Veterans Health Administration",
+          "ror": "https://ror.org/05eq41471",
+          "country_code": "US",
+          "type": "government",
+          "lineage": [
+            "https://openalex.org/I1322918889",
+            "https://openalex.org/I2799886695"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I4210112625",
+          "display_name": "Collaborative Research Group",
+          "ror": "https://ror.org/02c5sgb74",
+          "country_code": "AU",
+          "type": "facility",
+          "lineage": [
+            "https://openalex.org/I4210112625"
+          ]
+        }
+      ],
+      "countries": [
+        "AU",
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Richard H. Grimm",
+      "raw_affiliation_strings": [
+        "Preventive Medicine Section (111Q), Veterans Affairs Medical Center,",
+        "Collaborative Research Group",
+        "Professor of Preventive Medicine and Medicine, University of Tennessee College of Medicine, 1030 Jefferson Avenue, Memphis, TN 38104"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Preventive Medicine Section (111Q), Veterans Affairs Medical Center,",
+          "institution_ids": [
+            "https://openalex.org/I2799886695"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Collaborative Research Group",
+          "institution_ids": [
+            "https://openalex.org/I4210112625"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Professor of Preventive Medicine and Medicine, University of Tennessee College of Medicine, 1030 Jefferson Avenue, Memphis, TN 38104",
+          "institution_ids": [
+            "https://openalex.org/I160606119"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5108779552",
+        "display_name": "Henry R. Black",
+        "orcid": null
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I160606119",
+          "display_name": "University of Tennessee Health Science Center",
+          "ror": "https://ror.org/0011qv509",
+          "country_code": "US",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I160606119"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I2799886695",
+          "display_name": "Veterans Health Administration",
+          "ror": "https://ror.org/05eq41471",
+          "country_code": "US",
+          "type": "government",
+          "lineage": [
+            "https://openalex.org/I1322918889",
+            "https://openalex.org/I2799886695"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I4210112625",
+          "display_name": "Collaborative Research Group",
+          "ror": "https://ror.org/02c5sgb74",
+          "country_code": "AU",
+          "type": "facility",
+          "lineage": [
+            "https://openalex.org/I4210112625"
+          ]
+        }
+      ],
+      "countries": [
+        "AU",
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Henry R. Black",
+      "raw_affiliation_strings": [
+        "Collaborative Research Group",
+        "Preventive Medicine Section (111Q), Veterans Affairs Medical Center,",
+        "Professor of Preventive Medicine and Medicine, University of Tennessee College of Medicine, 1030 Jefferson Avenue, Memphis, TN 38104"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Collaborative Research Group",
+          "institution_ids": [
+            "https://openalex.org/I4210112625"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Preventive Medicine Section (111Q), Veterans Affairs Medical Center,",
+          "institution_ids": [
+            "https://openalex.org/I2799886695"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Professor of Preventive Medicine and Medicine, University of Tennessee College of Medicine, 1030 Jefferson Avenue, Memphis, TN 38104",
+          "institution_ids": [
+            "https://openalex.org/I160606119"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5112730554",
+        "display_name": "Bruce P. Hamilton",
+        "orcid": null
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I160606119",
+          "display_name": "University of Tennessee Health Science Center",
+          "ror": "https://ror.org/0011qv509",
+          "country_code": "US",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I160606119"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I2799886695",
+          "display_name": "Veterans Health Administration",
+          "ror": "https://ror.org/05eq41471",
+          "country_code": "US",
+          "type": "government",
+          "lineage": [
+            "https://openalex.org/I1322918889",
+            "https://openalex.org/I2799886695"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I4210112625",
+          "display_name": "Collaborative Research Group",
+          "ror": "https://ror.org/02c5sgb74",
+          "country_code": "AU",
+          "type": "facility",
+          "lineage": [
+            "https://openalex.org/I4210112625"
+          ]
+        }
+      ],
+      "countries": [
+        "AU",
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Bruce P. Hamilton",
+      "raw_affiliation_strings": [
+        "Professor of Preventive Medicine and Medicine, University of Tennessee College of Medicine, 1030 Jefferson Avenue, Memphis, TN 38104",
+        "Collaborative Research Group",
+        "Preventive Medicine Section (111Q), Veterans Affairs Medical Center,"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Professor of Preventive Medicine and Medicine, University of Tennessee College of Medicine, 1030 Jefferson Avenue, Memphis, TN 38104",
+          "institution_ids": [
+            "https://openalex.org/I160606119"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Collaborative Research Group",
+          "institution_ids": [
+            "https://openalex.org/I4210112625"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Preventive Medicine Section (111Q), Veterans Affairs Medical Center,",
+          "institution_ids": [
+            "https://openalex.org/I2799886695"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5017453452",
+        "display_name": "Joanne Holland",
+        "orcid": null
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I160606119",
+          "display_name": "University of Tennessee Health Science Center",
+          "ror": "https://ror.org/0011qv509",
+          "country_code": "US",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I160606119"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I2799886695",
+          "display_name": "Veterans Health Administration",
+          "ror": "https://ror.org/05eq41471",
+          "country_code": "US",
+          "type": "government",
+          "lineage": [
+            "https://openalex.org/I1322918889",
+            "https://openalex.org/I2799886695"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I4210112625",
+          "display_name": "Collaborative Research Group",
+          "ror": "https://ror.org/02c5sgb74",
+          "country_code": "AU",
+          "type": "facility",
+          "lineage": [
+            "https://openalex.org/I4210112625"
+          ]
+        }
+      ],
+      "countries": [
+        "AU",
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Joanne Holland",
+      "raw_affiliation_strings": [
+        "Preventive Medicine Section (111Q), Veterans Affairs Medical Center,",
+        "Collaborative Research Group",
+        "Professor of Preventive Medicine and Medicine, University of Tennessee College of Medicine, 1030 Jefferson Avenue, Memphis, TN 38104"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Preventive Medicine Section (111Q), Veterans Affairs Medical Center,",
+          "institution_ids": [
+            "https://openalex.org/I2799886695"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Collaborative Research Group",
+          "institution_ids": [
+            "https://openalex.org/I4210112625"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Professor of Preventive Medicine and Medicine, University of Tennessee College of Medicine, 1030 Jefferson Avenue, Memphis, TN 38104",
+          "institution_ids": [
+            "https://openalex.org/I160606119"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5113524179",
+        "display_name": "Chuke Nwachuku",
+        "orcid": null
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I160606119",
+          "display_name": "University of Tennessee Health Science Center",
+          "ror": "https://ror.org/0011qv509",
+          "country_code": "US",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I160606119"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I2799886695",
+          "display_name": "Veterans Health Administration",
+          "ror": "https://ror.org/05eq41471",
+          "country_code": "US",
+          "type": "government",
+          "lineage": [
+            "https://openalex.org/I1322918889",
+            "https://openalex.org/I2799886695"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I4210112625",
+          "display_name": "Collaborative Research Group",
+          "ror": "https://ror.org/02c5sgb74",
+          "country_code": "AU",
+          "type": "facility",
+          "lineage": [
+            "https://openalex.org/I4210112625"
+          ]
+        }
+      ],
+      "countries": [
+        "AU",
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Chuke Nwachuku",
+      "raw_affiliation_strings": [
+        "Professor of Preventive Medicine and Medicine, University of Tennessee College of Medicine, 1030 Jefferson Avenue, Memphis, TN 38104",
+        "Preventive Medicine Section (111Q), Veterans Affairs Medical Center,",
+        "Collaborative Research Group"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Professor of Preventive Medicine and Medicine, University of Tennessee College of Medicine, 1030 Jefferson Avenue, Memphis, TN 38104",
+          "institution_ids": [
+            "https://openalex.org/I160606119"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Preventive Medicine Section (111Q), Veterans Affairs Medical Center,",
+          "institution_ids": [
+            "https://openalex.org/I2799886695"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Collaborative Research Group",
+          "institution_ids": [
+            "https://openalex.org/I4210112625"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5043591193",
+        "display_name": "Vasilios Papademetriou",
+        "orcid": "https://orcid.org/0000-0002-2882-2757"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I160606119",
+          "display_name": "University of Tennessee Health Science Center",
+          "ror": "https://ror.org/0011qv509",
+          "country_code": "US",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I160606119"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I2799886695",
+          "display_name": "Veterans Health Administration",
+          "ror": "https://ror.org/05eq41471",
+          "country_code": "US",
+          "type": "government",
+          "lineage": [
+            "https://openalex.org/I1322918889",
+            "https://openalex.org/I2799886695"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I4210112625",
+          "display_name": "Collaborative Research Group",
+          "ror": "https://ror.org/02c5sgb74",
+          "country_code": "AU",
+          "type": "facility",
+          "lineage": [
+            "https://openalex.org/I4210112625"
+          ]
+        }
+      ],
+      "countries": [
+        "AU",
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Vasilios Papademetriou",
+      "raw_affiliation_strings": [
+        "Collaborative Research Group",
+        "Professor of Preventive Medicine and Medicine, University of Tennessee College of Medicine, 1030 Jefferson Avenue, Memphis, TN 38104",
+        "Preventive Medicine Section (111Q), Veterans Affairs Medical Center,"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Collaborative Research Group",
+          "institution_ids": [
+            "https://openalex.org/I4210112625"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Professor of Preventive Medicine and Medicine, University of Tennessee College of Medicine, 1030 Jefferson Avenue, Memphis, TN 38104",
+          "institution_ids": [
+            "https://openalex.org/I160606119"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Preventive Medicine Section (111Q), Veterans Affairs Medical Center,",
+          "institution_ids": [
+            "https://openalex.org/I2799886695"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5080292021",
+        "display_name": "Jeffrey L. Probstfield",
+        "orcid": "https://orcid.org/0000-0002-4899-9971"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I160606119",
+          "display_name": "University of Tennessee Health Science Center",
+          "ror": "https://ror.org/0011qv509",
+          "country_code": "US",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I160606119"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I2799886695",
+          "display_name": "Veterans Health Administration",
+          "ror": "https://ror.org/05eq41471",
+          "country_code": "US",
+          "type": "government",
+          "lineage": [
+            "https://openalex.org/I1322918889",
+            "https://openalex.org/I2799886695"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I4210112625",
+          "display_name": "Collaborative Research Group",
+          "ror": "https://ror.org/02c5sgb74",
+          "country_code": "AU",
+          "type": "facility",
+          "lineage": [
+            "https://openalex.org/I4210112625"
+          ]
+        }
+      ],
+      "countries": [
+        "AU",
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Jeffrey Probstfield",
+      "raw_affiliation_strings": [
+        "Collaborative Research Group",
+        "Professor of Preventive Medicine and Medicine, University of Tennessee College of Medicine, 1030 Jefferson Avenue, Memphis, TN 38104",
+        "Preventive Medicine Section (111Q), Veterans Affairs Medical Center,"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Collaborative Research Group",
+          "institution_ids": [
+            "https://openalex.org/I4210112625"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Professor of Preventive Medicine and Medicine, University of Tennessee College of Medicine, 1030 Jefferson Avenue, Memphis, TN 38104",
+          "institution_ids": [
+            "https://openalex.org/I160606119"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Preventive Medicine Section (111Q), Veterans Affairs Medical Center,",
+          "institution_ids": [
+            "https://openalex.org/I2799886695"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5112140635",
+        "display_name": "Jackson I. Wright",
+        "orcid": null
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I160606119",
+          "display_name": "University of Tennessee Health Science Center",
+          "ror": "https://ror.org/0011qv509",
+          "country_code": "US",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I160606119"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I2799886695",
+          "display_name": "Veterans Health Administration",
+          "ror": "https://ror.org/05eq41471",
+          "country_code": "US",
+          "type": "government",
+          "lineage": [
+            "https://openalex.org/I1322918889",
+            "https://openalex.org/I2799886695"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I4210112625",
+          "display_name": "Collaborative Research Group",
+          "ror": "https://ror.org/02c5sgb74",
+          "country_code": "AU",
+          "type": "facility",
+          "lineage": [
+            "https://openalex.org/I4210112625"
+          ]
+        }
+      ],
+      "countries": [
+        "AU",
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Jackson I. Wright",
+      "raw_affiliation_strings": [
+        "Preventive Medicine Section (111Q), Veterans Affairs Medical Center,",
+        "Collaborative Research Group",
+        "Professor of Preventive Medicine and Medicine, University of Tennessee College of Medicine, 1030 Jefferson Avenue, Memphis, TN 38104"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Preventive Medicine Section (111Q), Veterans Affairs Medical Center,",
+          "institution_ids": [
+            "https://openalex.org/I2799886695"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Collaborative Research Group",
+          "institution_ids": [
+            "https://openalex.org/I4210112625"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Professor of Preventive Medicine and Medicine, University of Tennessee College of Medicine, 1030 Jefferson Avenue, Memphis, TN 38104",
+          "institution_ids": [
+            "https://openalex.org/I160606119"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5111695784",
+        "display_name": "Michael H. Alderman",
+        "orcid": null
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I160606119",
+          "display_name": "University of Tennessee Health Science Center",
+          "ror": "https://ror.org/0011qv509",
+          "country_code": "US",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I160606119"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I2799886695",
+          "display_name": "Veterans Health Administration",
+          "ror": "https://ror.org/05eq41471",
+          "country_code": "US",
+          "type": "government",
+          "lineage": [
+            "https://openalex.org/I1322918889",
+            "https://openalex.org/I2799886695"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I4210112625",
+          "display_name": "Collaborative Research Group",
+          "ror": "https://ror.org/02c5sgb74",
+          "country_code": "AU",
+          "type": "facility",
+          "lineage": [
+            "https://openalex.org/I4210112625"
+          ]
+        }
+      ],
+      "countries": [
+        "AU",
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Michael H. Alderman",
+      "raw_affiliation_strings": [
+        "Collaborative Research Group",
+        "Preventive Medicine Section (111Q), Veterans Affairs Medical Center,",
+        "Professor of Preventive Medicine and Medicine, University of Tennessee College of Medicine, 1030 Jefferson Avenue, Memphis, TN 38104"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Collaborative Research Group",
+          "institution_ids": [
+            "https://openalex.org/I4210112625"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Preventive Medicine Section (111Q), Veterans Affairs Medical Center,",
+          "institution_ids": [
+            "https://openalex.org/I2799886695"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Professor of Preventive Medicine and Medicine, University of Tennessee College of Medicine, 1030 Jefferson Avenue, Memphis, TN 38104",
+          "institution_ids": [
+            "https://openalex.org/I160606119"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5113560614",
+        "display_name": "Robert Weiss",
+        "orcid": "https://orcid.org/0000-0003-4451-8373"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I160606119",
+          "display_name": "University of Tennessee Health Science Center",
+          "ror": "https://ror.org/0011qv509",
+          "country_code": "US",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I160606119"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I2799886695",
+          "display_name": "Veterans Health Administration",
+          "ror": "https://ror.org/05eq41471",
+          "country_code": "US",
+          "type": "government",
+          "lineage": [
+            "https://openalex.org/I1322918889",
+            "https://openalex.org/I2799886695"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I4210112625",
+          "display_name": "Collaborative Research Group",
+          "ror": "https://ror.org/02c5sgb74",
+          "country_code": "AU",
+          "type": "facility",
+          "lineage": [
+            "https://openalex.org/I4210112625"
+          ]
+        }
+      ],
+      "countries": [
+        "AU",
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Robert J. Weiss",
+      "raw_affiliation_strings": [
+        "Preventive Medicine Section (111Q), Veterans Affairs Medical Center,",
+        "Collaborative Research Group",
+        "Professor of Preventive Medicine and Medicine, University of Tennessee College of Medicine, 1030 Jefferson Avenue, Memphis, TN 38104"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Preventive Medicine Section (111Q), Veterans Affairs Medical Center,",
+          "institution_ids": [
+            "https://openalex.org/I2799886695"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Collaborative Research Group",
+          "institution_ids": [
+            "https://openalex.org/I4210112625"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Professor of Preventive Medicine and Medicine, University of Tennessee College of Medicine, 1030 Jefferson Avenue, Memphis, TN 38104",
+          "institution_ids": [
+            "https://openalex.org/I160606119"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5046150575",
+        "display_name": "Linda B. Piller",
+        "orcid": null
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I160606119",
+          "display_name": "University of Tennessee Health Science Center",
+          "ror": "https://ror.org/0011qv509",
+          "country_code": "US",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I160606119"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I2799886695",
+          "display_name": "Veterans Health Administration",
+          "ror": "https://ror.org/05eq41471",
+          "country_code": "US",
+          "type": "government",
+          "lineage": [
+            "https://openalex.org/I1322918889",
+            "https://openalex.org/I2799886695"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I4210112625",
+          "display_name": "Collaborative Research Group",
+          "ror": "https://ror.org/02c5sgb74",
+          "country_code": "AU",
+          "type": "facility",
+          "lineage": [
+            "https://openalex.org/I4210112625"
+          ]
+        }
+      ],
+      "countries": [
+        "AU",
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Linda Piller",
+      "raw_affiliation_strings": [
+        "Professor of Preventive Medicine and Medicine, University of Tennessee College of Medicine, 1030 Jefferson Avenue, Memphis, TN 38104",
+        "Collaborative Research Group",
+        "Preventive Medicine Section (111Q), Veterans Affairs Medical Center,"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Professor of Preventive Medicine and Medicine, University of Tennessee College of Medicine, 1030 Jefferson Avenue, Memphis, TN 38104",
+          "institution_ids": [
+            "https://openalex.org/I160606119"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Collaborative Research Group",
+          "institution_ids": [
+            "https://openalex.org/I4210112625"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Preventive Medicine Section (111Q), Veterans Affairs Medical Center,",
+          "institution_ids": [
+            "https://openalex.org/I2799886695"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5064710824",
+        "display_name": "Judy Bettencourt",
+        "orcid": null
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I160606119",
+          "display_name": "University of Tennessee Health Science Center",
+          "ror": "https://ror.org/0011qv509",
+          "country_code": "US",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I160606119"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I2799886695",
+          "display_name": "Veterans Health Administration",
+          "ror": "https://ror.org/05eq41471",
+          "country_code": "US",
+          "type": "government",
+          "lineage": [
+            "https://openalex.org/I1322918889",
+            "https://openalex.org/I2799886695"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I4210112625",
+          "display_name": "Collaborative Research Group",
+          "ror": "https://ror.org/02c5sgb74",
+          "country_code": "AU",
+          "type": "facility",
+          "lineage": [
+            "https://openalex.org/I4210112625"
+          ]
+        }
+      ],
+      "countries": [
+        "AU",
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Judy Bettencourt",
+      "raw_affiliation_strings": [
+        "Collaborative Research Group",
+        "Preventive Medicine Section (111Q), Veterans Affairs Medical Center,",
+        "Professor of Preventive Medicine and Medicine, University of Tennessee College of Medicine, 1030 Jefferson Avenue, Memphis, TN 38104"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Collaborative Research Group",
+          "institution_ids": [
+            "https://openalex.org/I4210112625"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Preventive Medicine Section (111Q), Veterans Affairs Medical Center,",
+          "institution_ids": [
+            "https://openalex.org/I2799886695"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Professor of Preventive Medicine and Medicine, University of Tennessee College of Medicine, 1030 Jefferson Avenue, Memphis, TN 38104",
+          "institution_ids": [
+            "https://openalex.org/I160606119"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "last",
+      "author": {
+        "id": "https://openalex.org/A5066804601",
+        "display_name": "Sandra Walsh",
+        "orcid": "https://orcid.org/0000-0002-8761-4333"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I160606119",
+          "display_name": "University of Tennessee Health Science Center",
+          "ror": "https://ror.org/0011qv509",
+          "country_code": "US",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I160606119"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I2799886695",
+          "display_name": "Veterans Health Administration",
+          "ror": "https://ror.org/05eq41471",
+          "country_code": "US",
+          "type": "government",
+          "lineage": [
+            "https://openalex.org/I1322918889",
+            "https://openalex.org/I2799886695"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I4210112625",
+          "display_name": "Collaborative Research Group",
+          "ror": "https://ror.org/02c5sgb74",
+          "country_code": "AU",
+          "type": "facility",
+          "lineage": [
+            "https://openalex.org/I4210112625"
+          ]
+        }
+      ],
+      "countries": [
+        "AU",
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Sandra M. Walsh",
+      "raw_affiliation_strings": [
+        "Professor of Preventive Medicine and Medicine, University of Tennessee College of Medicine, 1030 Jefferson Avenue, Memphis, TN 38104",
+        "Preventive Medicine Section (111Q), Veterans Affairs Medical Center,",
+        "Collaborative Research Group"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Professor of Preventive Medicine and Medicine, University of Tennessee College of Medicine, 1030 Jefferson Avenue, Memphis, TN 38104",
+          "institution_ids": [
+            "https://openalex.org/I160606119"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Preventive Medicine Section (111Q), Veterans Affairs Medical Center,",
+          "institution_ids": [
+            "https://openalex.org/I2799886695"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Collaborative Research Group",
+          "institution_ids": [
+            "https://openalex.org/I4210112625"
+          ]
+        }
+      ]
+    }
+  ],
+  "institutions": [],
+  "countries_distinct_count": 2,
+  "institutions_distinct_count": 18,
+  "corresponding_author_ids": [
+    "https://openalex.org/A5006628692"
+  ],
+  "corresponding_institution_ids": [
+    "https://openalex.org/I160606119",
+    "https://openalex.org/I2799886695",
+    "https://openalex.org/I4210112625"
+  ],
+  "apc_list": null,
+  "apc_paid": null,
+  "fwci": 25.8854,
+  "has_fulltext": true,
+  "cited_by_count": 985,
+  "citation_normalized_percentile": {
+    "value": 0.99718088,
+    "is_in_top_1_percent": true,
+    "is_in_top_10_percent": true
+  },
+  "cited_by_percentile_year": {
+    "min": 99,
+    "max": 100
+  },
+  "biblio": {
+    "volume": "4",
+    "issue": "6",
+    "first_page": "393",
+    "last_page": "404"
+  },
+  "is_retracted": false,
+  "is_paratext": false,
+  "is_xpac": false,
+  "primary_topic": {
+    "id": "https://openalex.org/T10144",
+    "display_name": "Blood Pressure and Hypertension Studies",
+    "score": 0.7387999892234802,
+    "subfield": {
+      "id": "https://openalex.org/subfields/2705",
+      "display_name": "Cardiology and Cardiovascular Medicine"
+    },
+    "field": {
+      "id": "https://openalex.org/fields/27",
+      "display_name": "Medicine"
+    },
+    "domain": {
+      "id": "https://openalex.org/domains/4",
+      "display_name": "Health Sciences"
+    }
+  },
+  "topics": [
+    {
+      "id": "https://openalex.org/T10144",
+      "display_name": "Blood Pressure and Hypertension Studies",
+      "score": 0.7387999892234802,
+      "subfield": {
+        "id": "https://openalex.org/subfields/2705",
+        "display_name": "Cardiology and Cardiovascular Medicine"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/27",
+        "display_name": "Medicine"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/4",
+        "display_name": "Health Sciences"
+      }
+    },
+    {
+      "id": "https://openalex.org/T13522",
+      "display_name": "Cardiovascular Health and Risk Factors",
+      "score": 0.020600000396370888,
+      "subfield": {
+        "id": "https://openalex.org/subfields/2705",
+        "display_name": "Cardiology and Cardiovascular Medicine"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/27",
+        "display_name": "Medicine"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/4",
+        "display_name": "Health Sciences"
+      }
+    },
+    {
+      "id": "https://openalex.org/T11620",
+      "display_name": "Medication Adherence and Compliance",
+      "score": 0.012500000186264515,
+      "subfield": {
+        "id": "https://openalex.org/subfields/2714",
+        "display_name": "Family Practice"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/27",
+        "display_name": "Medicine"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/4",
+        "display_name": "Health Sciences"
+      }
+    }
+  ],
+  "keywords": [
+    {
+      "id": "https://openalex.org/keywords/medicine",
+      "display_name": "Medicine",
+      "score": 0.9385626316070557
+    },
+    {
+      "id": "https://openalex.org/keywords/blood-pressure",
+      "display_name": "Blood pressure",
+      "score": 0.8386582136154175
+    },
+    {
+      "id": "https://openalex.org/keywords/lisinopril",
+      "display_name": "Lisinopril",
+      "score": 0.7748004198074341
+    },
+    {
+      "id": "https://openalex.org/keywords/amlodipine",
+      "display_name": "Amlodipine",
+      "score": 0.5913398265838623
+    },
+    {
+      "id": "https://openalex.org/keywords/chlorthalidone",
+      "display_name": "Chlorthalidone",
+      "score": 0.5808814764022827
+    },
+    {
+      "id": "https://openalex.org/keywords/internal-medicine",
+      "display_name": "Internal medicine",
+      "score": 0.5573251247406006
+    },
+    {
+      "id": "https://openalex.org/keywords/population",
+      "display_name": "Population",
+      "score": 0.518571674823761
+    },
+    {
+      "id": "https://openalex.org/keywords/clinical-trial",
+      "display_name": "Clinical trial",
+      "score": 0.46032822132110596
+    },
+    {
+      "id": "https://openalex.org/keywords/prehypertension",
+      "display_name": "Prehypertension",
+      "score": 0.4598349928855896
+    },
+    {
+      "id": "https://openalex.org/keywords/cardiology",
+      "display_name": "Cardiology",
+      "score": 0.4465149939060211
+    },
+    {
+      "id": "https://openalex.org/keywords/randomized-controlled-trial",
+      "display_name": "Randomized controlled trial",
+      "score": 0.41927847266197205
+    },
+    {
+      "id": "https://openalex.org/keywords/emergency-medicine",
+      "display_name": "Emergency medicine",
+      "score": 0.32767462730407715
+    },
+    {
+      "id": "https://openalex.org/keywords/angiotensin-converting-enzyme",
+      "display_name": "Angiotensin-converting enzyme",
+      "score": 0.2376270592212677
+    },
+    {
+      "id": "https://openalex.org/keywords/environmental-health",
+      "display_name": "Environmental health",
+      "score": 0.08445736765861511
+    }
+  ],
+  "concepts": [
+    {
+      "id": "https://openalex.org/C71924100",
+      "wikidata": "https://www.wikidata.org/wiki/Q11190",
+      "display_name": "Medicine",
+      "level": 0,
+      "score": 0.9385626316070557
+    },
+    {
+      "id": "https://openalex.org/C84393581",
+      "wikidata": "https://www.wikidata.org/wiki/Q82642",
+      "display_name": "Blood pressure",
+      "level": 2,
+      "score": 0.8386582136154175
+    },
+    {
+      "id": "https://openalex.org/C2777880890",
+      "wikidata": "https://www.wikidata.org/wiki/Q412208",
+      "display_name": "Lisinopril",
+      "level": 4,
+      "score": 0.7748004198074341
+    },
+    {
+      "id": "https://openalex.org/C2779646130",
+      "wikidata": "https://www.wikidata.org/wiki/Q411347",
+      "display_name": "Amlodipine",
+      "level": 3,
+      "score": 0.5913398265838623
+    },
+    {
+      "id": "https://openalex.org/C2780427769",
+      "wikidata": "https://www.wikidata.org/wiki/Q425289",
+      "display_name": "Chlorthalidone",
+      "level": 3,
+      "score": 0.5808814764022827
+    },
+    {
+      "id": "https://openalex.org/C126322002",
+      "wikidata": "https://www.wikidata.org/wiki/Q11180",
+      "display_name": "Internal medicine",
+      "level": 1,
+      "score": 0.5573251247406006
+    },
+    {
+      "id": "https://openalex.org/C2908647359",
+      "wikidata": "https://www.wikidata.org/wiki/Q2625603",
+      "display_name": "Population",
+      "level": 2,
+      "score": 0.518571674823761
+    },
+    {
+      "id": "https://openalex.org/C535046627",
+      "wikidata": "https://www.wikidata.org/wiki/Q30612",
+      "display_name": "Clinical trial",
+      "level": 2,
+      "score": 0.46032822132110596
+    },
+    {
+      "id": "https://openalex.org/C118190526",
+      "wikidata": "https://www.wikidata.org/wiki/Q7239981",
+      "display_name": "Prehypertension",
+      "level": 3,
+      "score": 0.4598349928855896
+    },
+    {
+      "id": "https://openalex.org/C164705383",
+      "wikidata": "https://www.wikidata.org/wiki/Q10379",
+      "display_name": "Cardiology",
+      "level": 1,
+      "score": 0.4465149939060211
+    },
+    {
+      "id": "https://openalex.org/C168563851",
+      "wikidata": "https://www.wikidata.org/wiki/Q1436668",
+      "display_name": "Randomized controlled trial",
+      "level": 2,
+      "score": 0.41927847266197205
+    },
+    {
+      "id": "https://openalex.org/C194828623",
+      "wikidata": "https://www.wikidata.org/wiki/Q2861470",
+      "display_name": "Emergency medicine",
+      "level": 1,
+      "score": 0.32767462730407715
+    },
+    {
+      "id": "https://openalex.org/C27016395",
+      "wikidata": "https://www.wikidata.org/wiki/Q128861",
+      "display_name": "Angiotensin-converting enzyme",
+      "level": 3,
+      "score": 0.2376270592212677
+    },
+    {
+      "id": "https://openalex.org/C99454951",
+      "wikidata": "https://www.wikidata.org/wiki/Q932068",
+      "display_name": "Environmental health",
+      "level": 1,
+      "score": 0.08445736765861511
+    }
+  ],
+  "mesh": [
+    {
+      "descriptor_ui": "D000368",
+      "descriptor_name": "Aged",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000368",
+      "descriptor_name": "Aged",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000368",
+      "descriptor_name": "Aged",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000959",
+      "descriptor_name": "Antihypertensive Agents",
+      "qualifier_ui": "Q000627",
+      "qualifier_name": "therapeutic use",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000959",
+      "descriptor_name": "Antihypertensive Agents",
+      "qualifier_ui": "Q000627",
+      "qualifier_name": "therapeutic use",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000959",
+      "descriptor_name": "Antihypertensive Agents",
+      "qualifier_ui": "Q000627",
+      "qualifier_name": "therapeutic use",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D002170",
+      "descriptor_name": "Canada",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D002170",
+      "descriptor_name": "Canada",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D002170",
+      "descriptor_name": "Canada",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D002752",
+      "descriptor_name": "Chlorthalidone",
+      "qualifier_ui": "Q000627",
+      "qualifier_name": "therapeutic use",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D002752",
+      "descriptor_name": "Chlorthalidone",
+      "qualifier_ui": "Q000627",
+      "qualifier_name": "therapeutic use",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D002752",
+      "descriptor_name": "Chlorthalidone",
+      "qualifier_ui": "Q000627",
+      "qualifier_name": "therapeutic use",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D004311",
+      "descriptor_name": "Double-Blind Method",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D004311",
+      "descriptor_name": "Double-Blind Method",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D004311",
+      "descriptor_name": "Double-Blind Method",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D005260",
+      "descriptor_name": "Female",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D005260",
+      "descriptor_name": "Female",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D005260",
+      "descriptor_name": "Female",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D006801",
+      "descriptor_name": "Humans",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D006801",
+      "descriptor_name": "Humans",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D006801",
+      "descriptor_name": "Humans",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D006973",
+      "descriptor_name": "Hypertension",
+      "qualifier_ui": "Q000150",
+      "qualifier_name": "complications",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D006973",
+      "descriptor_name": "Hypertension",
+      "qualifier_ui": "Q000150",
+      "qualifier_name": "complications",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D006973",
+      "descriptor_name": "Hypertension",
+      "qualifier_ui": "Q000150",
+      "qualifier_name": "complications",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D006973",
+      "descriptor_name": "Hypertension",
+      "qualifier_ui": "Q000188",
+      "qualifier_name": "drug therapy",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D006973",
+      "descriptor_name": "Hypertension",
+      "qualifier_ui": "Q000188",
+      "qualifier_name": "drug therapy",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D006973",
+      "descriptor_name": "Hypertension",
+      "qualifier_ui": "Q000188",
+      "qualifier_name": "drug therapy",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D006973",
+      "descriptor_name": "Hypertension",
+      "qualifier_ui": "Q000208",
+      "qualifier_name": "ethnology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D006973",
+      "descriptor_name": "Hypertension",
+      "qualifier_ui": "Q000208",
+      "qualifier_name": "ethnology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D006973",
+      "descriptor_name": "Hypertension",
+      "qualifier_ui": "Q000208",
+      "qualifier_name": "ethnology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D008297",
+      "descriptor_name": "Male",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D008297",
+      "descriptor_name": "Male",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D008297",
+      "descriptor_name": "Male",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D008875",
+      "descriptor_name": "Middle Aged",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D008875",
+      "descriptor_name": "Middle Aged",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D008875",
+      "descriptor_name": "Middle Aged",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D009203",
+      "descriptor_name": "Myocardial Infarction",
+      "qualifier_ui": "Q000208",
+      "qualifier_name": "ethnology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D009203",
+      "descriptor_name": "Myocardial Infarction",
+      "qualifier_ui": "Q000208",
+      "qualifier_name": "ethnology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D009203",
+      "descriptor_name": "Myocardial Infarction",
+      "qualifier_ui": "Q000208",
+      "qualifier_name": "ethnology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D009203",
+      "descriptor_name": "Myocardial Infarction",
+      "qualifier_ui": "Q000517",
+      "qualifier_name": "prevention & control",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D009203",
+      "descriptor_name": "Myocardial Infarction",
+      "qualifier_ui": "Q000517",
+      "qualifier_name": "prevention & control",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D009203",
+      "descriptor_name": "Myocardial Infarction",
+      "qualifier_ui": "Q000517",
+      "qualifier_name": "prevention & control",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D012307",
+      "descriptor_name": "Risk Factors",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D012307",
+      "descriptor_name": "Risk Factors",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D012307",
+      "descriptor_name": "Risk Factors",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D014481",
+      "descriptor_name": "United States",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D014481",
+      "descriptor_name": "United States",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D014481",
+      "descriptor_name": "United States",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D014900",
+      "descriptor_name": "West Indies",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D014900",
+      "descriptor_name": "West Indies",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D014900",
+      "descriptor_name": "West Indies",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D016015",
+      "descriptor_name": "Logistic Models",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D016015",
+      "descriptor_name": "Logistic Models",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D016015",
+      "descriptor_name": "Logistic Models",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D016896",
+      "descriptor_name": "Treatment Outcome",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D016896",
+      "descriptor_name": "Treatment Outcome",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D016896",
+      "descriptor_name": "Treatment Outcome",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D017292",
+      "descriptor_name": "Doxazosin",
+      "qualifier_ui": "Q000627",
+      "qualifier_name": "therapeutic use",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D017292",
+      "descriptor_name": "Doxazosin",
+      "qualifier_ui": "Q000627",
+      "qualifier_name": "therapeutic use",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D017292",
+      "descriptor_name": "Doxazosin",
+      "qualifier_ui": "Q000627",
+      "qualifier_name": "therapeutic use",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D017311",
+      "descriptor_name": "Amlodipine",
+      "qualifier_ui": "Q000627",
+      "qualifier_name": "therapeutic use",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D017311",
+      "descriptor_name": "Amlodipine",
+      "qualifier_ui": "Q000627",
+      "qualifier_name": "therapeutic use",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D017311",
+      "descriptor_name": "Amlodipine",
+      "qualifier_ui": "Q000627",
+      "qualifier_name": "therapeutic use",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D017706",
+      "descriptor_name": "Lisinopril",
+      "qualifier_ui": "Q000627",
+      "qualifier_name": "therapeutic use",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D017706",
+      "descriptor_name": "Lisinopril",
+      "qualifier_ui": "Q000627",
+      "qualifier_name": "therapeutic use",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D017706",
+      "descriptor_name": "Lisinopril",
+      "qualifier_ui": "Q000627",
+      "qualifier_name": "therapeutic use",
+      "is_major_topic": false
+    }
+  ],
+  "locations_count": 2,
+  "locations": [
+    {
+      "id": "doi:10.1111/j.1524-6175.2002.02045.x",
+      "is_oa": true,
+      "landing_page_url": "https://doi.org/10.1111/j.1524-6175.2002.02045.x",
+      "pdf_url": "https://onlinelibrary.wiley.com/doi/pdfdirect/10.1111/j.1524-6175.2002.02045.x",
+      "source": {
+        "id": "https://openalex.org/S154226970",
+        "display_name": "Journal of Clinical Hypertension",
+        "issn_l": "1524-6175",
+        "issn": [
+          "1524-6175",
+          "1751-7176"
+        ],
+        "is_oa": false,
+        "is_in_doaj": true,
+        "is_core": true,
+        "host_organization": "https://openalex.org/P4310320595",
+        "host_organization_name": "Wiley",
+        "host_organization_lineage": [
+          "https://openalex.org/P4310320595"
+        ],
+        "host_organization_lineage_names": [
+          "Wiley"
+        ],
+        "type": "journal"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "publishedVersion",
+      "is_accepted": true,
+      "is_published": true,
+      "raw_source_name": "The Journal of Clinical Hypertension",
+      "raw_type": "journal-article"
+    },
+    {
+      "id": "pmid:12461301",
+      "is_oa": false,
+      "landing_page_url": "https://pubmed.ncbi.nlm.nih.gov/12461301",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4306525036",
+        "display_name": "PubMed",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I1299303238",
+        "host_organization_name": "National Institutes of Health",
+        "host_organization_lineage": [
+          "https://openalex.org/I1299303238"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "publishedVersion",
+      "is_accepted": true,
+      "is_published": true,
+      "raw_source_name": "Journal of clinical hypertension (Greenwich, Conn.)",
+      "raw_type": null
+    }
+  ],
+  "best_oa_location": {
+    "id": "doi:10.1111/j.1524-6175.2002.02045.x",
+    "is_oa": true,
+    "landing_page_url": "https://doi.org/10.1111/j.1524-6175.2002.02045.x",
+    "pdf_url": "https://onlinelibrary.wiley.com/doi/pdfdirect/10.1111/j.1524-6175.2002.02045.x",
+    "source": {
+      "id": "https://openalex.org/S154226970",
+      "display_name": "Journal of Clinical Hypertension",
+      "issn_l": "1524-6175",
+      "issn": [
+        "1524-6175",
+        "1751-7176"
+      ],
+      "is_oa": false,
+      "is_in_doaj": true,
+      "is_core": true,
+      "host_organization": "https://openalex.org/P4310320595",
+      "host_organization_name": "Wiley",
+      "host_organization_lineage": [
+        "https://openalex.org/P4310320595"
+      ],
+      "host_organization_lineage_names": [
+        "Wiley"
+      ],
+      "type": "journal"
+    },
+    "license": null,
+    "license_id": null,
+    "version": "publishedVersion",
+    "is_accepted": true,
+    "is_published": true,
+    "raw_source_name": "The Journal of Clinical Hypertension",
+    "raw_type": "journal-article"
+  },
+  "sustainable_development_goals": [
+    {
+      "score": 0.8299999833106995,
+      "id": "https://metadata.un.org/sdg/3",
+      "display_name": "Good health and well-being"
+    }
+  ],
+  "awards": [],
+  "funders": [
+    {
+      "id": "https://openalex.org/F4320307115",
+      "display_name": "Bristol-Myers Squibb",
+      "ror": "https://ror.org/00gtmwv55"
+    },
+    {
+      "id": "https://openalex.org/F4320307765",
+      "display_name": "Pfizer",
+      "ror": "https://ror.org/01xdqrp08"
+    },
+    {
+      "id": "https://openalex.org/F4320307770",
+      "display_name": "AstraZeneca",
+      "ror": "https://ror.org/04r9x1a08"
+    },
+    {
+      "id": "https://openalex.org/F4320337338",
+      "display_name": "National Heart, Lung, and Blood Institute",
+      "ror": "https://ror.org/012pb6c26"
+    }
+  ],
+  "has_content": {
+    "pdf": true,
+    "grobid_xml": true
+  },
+  "content_urls": {
+    "pdf": "https://content.openalex.org/works/W2404212513.pdf",
+    "grobid_xml": "https://content.openalex.org/works/W2404212513.grobid-xml"
+  },
+  "referenced_works_count": 22,
+  "referenced_works": [
+    "https://openalex.org/W1971690837",
+    "https://openalex.org/W1976068063",
+    "https://openalex.org/W2017147119",
+    "https://openalex.org/W2024149425",
+    "https://openalex.org/W2026073799",
+    "https://openalex.org/W2038833639",
+    "https://openalex.org/W2051375482",
+    "https://openalex.org/W2060253215",
+    "https://openalex.org/W2067868110",
+    "https://openalex.org/W2075862502",
+    "https://openalex.org/W2085363319",
+    "https://openalex.org/W2107631049",
+    "https://openalex.org/W2112295862",
+    "https://openalex.org/W2133217116",
+    "https://openalex.org/W2134270369",
+    "https://openalex.org/W2141982285",
+    "https://openalex.org/W2145964826",
+    "https://openalex.org/W2166089332",
+    "https://openalex.org/W3022929210",
+    "https://openalex.org/W4235435263",
+    "https://openalex.org/W4242459468",
+    "https://openalex.org/W4302766818"
+  ],
+  "related_works": [
+    "https://openalex.org/W2355432567",
+    "https://openalex.org/W2100778881",
+    "https://openalex.org/W2374398096",
+    "https://openalex.org/W1981255881",
+    "https://openalex.org/W2231808942",
+    "https://openalex.org/W2992111795",
+    "https://openalex.org/W2018529896",
+    "https://openalex.org/W2101505142",
+    "https://openalex.org/W2292165947",
+    "https://openalex.org/W2214438106"
+  ],
+  "abstract_inverted_index": {
+    "CONTEXT:": [
+      0
+    ],
+    "Blood": [
+      1,
+      321
+    ],
+    "pressure": [
+      2,
+      38,
+      53,
+      188,
+      214,
+      262,
+      285,
+      296,
+      322,
+      343,
+      361,
+      385,
+      401
+    ],
+    "control": [
+      3,
+      23,
+      39,
+      54,
+      189,
+      215,
+      227,
+      323,
+      366
+    ],
+    "(<140/90": [
+      4,
+      190,
+      216
+    ],
+    "mm": [
+      5,
+      191,
+      217,
+      265,
+      288,
+      299,
+      403
+    ],
+    "Hg)": [
+      6
+    ],
+    "rates": [
+      7,
+      24
+    ],
+    "for": [
+      8,
+      199,
+      379
+    ],
+    "hypertension": [
+      9,
+      58,
+      132,
+      396
+    ],
+    "fall": [
+      10
+    ],
+    "far": [
+      11
+    ],
+    "short": [
+      12
+    ],
+    "of": [
+      13,
+      18,
+      51,
+      90,
+      109,
+      123,
+      210,
+      222,
+      257,
+      270,
+      275,
+      292,
+      306,
+      335,
+      350,
+      393
+    ],
+    "the": [
+      14,
+      47,
+      113,
+      118,
+      208,
+      220,
+      255,
+      277,
+      303,
+      312,
+      391,
+      406
+    ],
+    "US": [
+      15
+    ],
+    "national": [
+      16
+    ],
+    "goal": [
+      17
+    ],
+    "50%": [
+      19
+    ],
+    "or": [
+      20,
+      128,
+      159,
+      316
+    ],
+    "more.": [
+      21
+    ],
+    "Achievable": [
+      22
+    ],
+    "in": [
+      25,
+      55,
+      64,
+      96,
+      103,
+      112,
+      228,
+      267,
+      290,
+      301,
+      347,
+      355
+    ],
+    "varied": [
+      26,
+      324
+    ],
+    "practice": [
+      27,
+      66,
+      328,
+      357
+    ],
+    "settings": [
+      28
+    ],
+    "and": [
+      29,
+      32,
+      49,
+      71,
+      99,
+      117,
+      133,
+      175,
+      204,
+      219,
+      311,
+      330,
+      332,
+      371
+    ],
+    "geographic": [
+      30,
+      326
+    ],
+    "regions": [
+      31
+    ],
+    "factors": [
+      33
+    ],
+    "that": [
+      34,
+      341,
+      390
+    ],
+    "predict": [
+      35
+    ],
+    "improved": [
+      36,
+      280
+    ],
+    "blood": [
+      37,
+      52,
+      187,
+      206,
+      213,
+      261,
+      284,
+      295,
+      342,
+      360,
+      369,
+      384,
+      400
+    ],
+    "are": [
+      40,
+      202,
+      377
+    ],
+    "not": [
+      41
+    ],
+    "well": [
+      42
+    ],
+    "identified.": [
+      43
+    ],
+    "OBJECTIVE:": [
+      44
+    ],
+    "To": [
+      45
+    ],
+    "determine": [
+      46
+    ],
+    "success": [
+      48
+    ],
+    "predictors": [
+      50
+    ],
+    "a": [
+      56,
+      61,
+      80,
+      87,
+      351,
+      399
+    ],
+    "large": [
+      57
+    ],
+    "trial": [
+      59,
+      85
+    ],
+    "involving": [
+      60
+    ],
+    "multiethnic": [
+      62,
+      352
+    ],
+    "population": [
+      63,
+      354
+    ],
+    "diverse": [
+      65,
+      356
+    ],
+    "settings.": [
+      67,
+      358
+    ],
+    "DESIGN:": [
+      68
+    ],
+    "The": [
+      69,
+      196
+    ],
+    "Antihypertensive": [
+      70
+    ],
+    "Lipid-Lowering": [
+      72
+    ],
+    "Treatment": [
+      73
+    ],
+    "to": [
+      74,
+      148,
+      185,
+      225,
+      281,
+      365,
+      382
+    ],
+    "Prevent": [
+      75
+    ],
+    "Heart": [
+      76
+    ],
+    "Attack": [
+      77
+    ],
+    "Trial": [
+      78
+    ],
+    "is": [
+      79,
+      362,
+      388
+    ],
+    "randomized,": [
+      81
+    ],
+    "double-blind,": [
+      82
+    ],
+    "active-controlled": [
+      83
+    ],
+    "clinical": [
+      84,
+      333
+    ],
+    "with": [
+      86,
+      131,
+      395,
+      405
+    ],
+    "mean": [
+      88,
+      304
+    ],
+    "follow-up": [
+      89,
+      100
+    ],
+    "4.9": [
+      91
+    ],
+    "years.": [
+      92
+    ],
+    "Participant": [
+      93
+    ],
+    "enrollment": [
+      94
+    ],
+    "began": [
+      95
+    ],
+    "February": [
+      97
+    ],
+    "1994": [
+      98
+    ],
+    "was": [
+      101,
+      167,
+      236,
+      263,
+      286,
+      297,
+      309,
+      319
+    ],
+    "completed": [
+      102
+    ],
+    "March": [
+      104
+    ],
+    "2002.": [
+      105
+    ],
+    "SETTING:": [
+      106
+    ],
+    "A": [
+      107,
+      121
+    ],
+    "total": [
+      108,
+      122
+    ],
+    "623": [
+      110
+    ],
+    "centers": [
+      111
+    ],
+    "United": [
+      114
+    ],
+    "States,": [
+      115
+    ],
+    "Canada,": [
+      116
+    ],
+    "Caribbean.": [
+      119
+    ],
+    "PARTICIPANTS:": [
+      120
+    ],
+    "33,357": [
+      124
+    ],
+    "participants": [
+      125,
+      211
+    ],
+    "(aged": [
+      126
+    ],
+    ">": [
+      127,
+      315
+    ],
+    "=55": [
+      129
+    ],
+    "years)": [
+      130
+    ],
+    "at": [
+      134,
+      252,
+      372
+    ],
+    "least": [
+      135,
+      373
+    ],
+    "one": [
+      136
+    ],
+    "other": [
+      137,
+      165,
+      179
+    ],
+    "coronary": [
+      138
+    ],
+    "heart": [
+      139
+    ],
+    "disease": [
+      140
+    ],
+    "risk": [
+      141
+    ],
+    "factor.": [
+      142
+    ],
+    "INTERVENTIONS:": [
+      143
+    ],
+    "Participants": [
+      144
+    ],
+    "were": [
+      145,
+      170,
+      181,
+      240,
+      247
+    ],
+    "randomly": [
+      146
+    ],
+    "assigned": [
+      147
+    ],
+    "receive": [
+      149
+    ],
+    "(double-blind)": [
+      150
+    ],
+    "chlorthalidone,": [
+      151
+    ],
+    "12.5-25": [
+      152
+    ],
+    "mg/d": [
+      153,
+      157,
+      162
+    ],
+    "(n=15,255),": [
+      154
+    ],
+    "amlodipine": [
+      155
+    ],
+    "2.5-10": [
+      156
+    ],
+    "(n=9048),": [
+      158
+    ],
+    "lisinopril": [
+      160
+    ],
+    "10-40": [
+      161
+    ],
+    "(n=9054)": [
+      163
+    ],
+    "after": [
+      164
+    ],
+    "medication": [
+      166
+    ],
+    "discontinued.": [
+      168
+    ],
+    "Doses": [
+      169
+    ],
+    "increased": [
+      171
+    ],
+    "within": [
+      172
+    ],
+    "these": [
+      173
+    ],
+    "ranges": [
+      174
+    ],
+    "additional": [
+      176
+    ],
+    "drugs": [
+      177,
+      223,
+      307,
+      318
+    ],
+    "from": [
+      178
+    ],
+    "classes": [
+      180
+    ],
+    "added": [
+      182
+    ],
+    "as": [
+      183
+    ],
+    "needed": [
+      184
+    ],
+    "achieve": [
+      186,
+      226,
+      383,
+      398
+    ],
+    "Hg).": [
+      192
+    ],
+    "MAIN": [
+      193
+    ],
+    "OUTCOME": [
+      194
+    ],
+    "MEASURES:": [
+      195
+    ],
+    "outcome": [
+      197
+    ],
+    "measures": [
+      198
+    ],
+    "this": [
+      200
+    ],
+    "report": [
+      201
+    ],
+    "systolic": [
+      203
+    ],
+    "diastolic": [
+      205,
+      294,
+      368
+    ],
+    "pressure,": [
+      207,
+      370
+    ],
+    "proportion": [
+      209
+    ],
+    "achieving": [
+      212
+    ],
+    "Hg),": [
+      218
+    ],
+    "number": [
+      221,
+      305
+    ],
+    "required": [
+      224,
+      378
+    ],
+    "all": [
+      229
+    ],
+    "three": [
+      230
+    ],
+    "groups": [
+      231
+    ],
+    "combined.": [
+      232
+    ],
+    "RESULTS:": [
+      233
+    ],
+    "Mean": [
+      234
+    ],
+    "age": [
+      235
+    ],
+    "67": [
+      237
+    ],
+    "years,": [
+      238
+    ],
+    "47%": [
+      239
+    ],
+    "women,": [
+      241
+    ],
+    "35%": [
+      242
+    ],
+    "black,": [
+      243
+    ],
+    "36%": [
+      244
+    ],
+    "diabetic;": [
+      245
+    ],
+    "90%": [
+      246
+    ],
+    "on": [
+      248,
+      314
+    ],
+    "antihypertensive": [
+      249,
+      375,
+      407
+    ],
+    "drug": [
+      250
+    ],
+    "treatment": [
+      251
+    ],
+    "entry.": [
+      253
+    ],
+    "At": [
+      254
+    ],
+    "first": [
+      256
+    ],
+    "two": [
+      258,
+      348,
+      374
+    ],
+    "pre-randomization": [
+      259
+    ],
+    "visits,": [
+      260
+    ],
+    "<140/90": [
+      264,
+      402
+    ],
+    "Hg": [
+      266,
+      289,
+      300,
+      404
+    ],
+    "only": [
+      268
+    ],
+    "27.4%": [
+      269
+    ],
+    "participants.": [
+      271,
+      336
+    ],
+    "After": [
+      272
+    ],
+    "5": [
+      273
+    ],
+    "years": [
+      274
+    ],
+    "follow-up,": [
+      276
+    ],
+    "percent": [
+      278,
+      313
+    ],
+    "controlled": [
+      279,
+      346
+    ],
+    "66%.": [
+      282
+    ],
+    "Systolic": [
+      283,
+      359
+    ],
+    "<140": [
+      287
+    ],
+    "67%": [
+      291
+    ],
+    "participants,": [
+      293
+    ],
+    "<90": [
+      298
+    ],
+    "92%,": [
+      302
+    ],
+    "prescribed": [
+      308
+    ],
+    "2.0+/-1.0,": [
+      310
+    ],
+    "=2": [
+      317
+    ],
+    "63%.": [
+      320
+    ],
+    "by": [
+      325
+    ],
+    "regions,": [
+      327
+    ],
+    "settings,": [
+      329
+    ],
+    "demographic": [
+      331
+    ],
+    "characteristics": [
+      334
+    ],
+    "CONCLUSIONS:": [
+      337
+    ],
+    "These": [
+      338
+    ],
+    "data": [
+      339
+    ],
+    "demonstrate": [
+      340
+    ],
+    "may": [
+      344
+    ],
+    "be": [
+      345
+    ],
+    "thirds": [
+      349
+    ],
+    "hypertensive": [
+      353
+    ],
+    "more": [
+      363
+    ],
+    "difficult": [
+      364
+    ],
+    "than": [
+      367
+    ],
+    "medications": [
+      376,
+      408
+    ],
+    "most": [
+      380
+    ],
+    "patients": [
+      381
+    ],
+    "control.": [
+      386
+    ],
+    "It": [
+      387
+    ],
+    "likely": [
+      389
+    ],
+    "majority": [
+      392
+    ],
+    "people": [
+      394
+    ],
+    "could": [
+      397
+    ],
+    "available": [
+      409
+    ],
+    "today.": [
+      410
+    ]
+  },
+  "counts_by_year": [
+    {
+      "year": 2026,
+      "cited_by_count": 5
+    },
+    {
+      "year": 2025,
+      "cited_by_count": 14
+    },
+    {
+      "year": 2024,
+      "cited_by_count": 10
+    },
+    {
+      "year": 2023,
+      "cited_by_count": 19
+    },
+    {
+      "year": 2022,
+      "cited_by_count": 15
+    },
+    {
+      "year": 2021,
+      "cited_by_count": 11
+    },
+    {
+      "year": 2020,
+      "cited_by_count": 14
+    },
+    {
+      "year": 2019,
+      "cited_by_count": 29
+    },
+    {
+      "year": 2018,
+      "cited_by_count": 21
+    },
+    {
+      "year": 2017,
+      "cited_by_count": 29
+    },
+    {
+      "year": 2016,
+      "cited_by_count": 48
+    },
+    {
+      "year": 2015,
+      "cited_by_count": 35
+    },
+    {
+      "year": 2014,
+      "cited_by_count": 55
+    },
+    {
+      "year": 2013,
+      "cited_by_count": 77
+    },
+    {
+      "year": 2012,
+      "cited_by_count": 69
+    }
+  ],
+  "updated_date": "2026-05-28T09:10:13.091523",
+  "created_date": "2016-06-24T00:00:00"
+}

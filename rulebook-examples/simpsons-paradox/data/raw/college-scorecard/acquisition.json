@@ -1,0 +1,18 @@
+{
+  "candidate_id": "cand-exp-college-scorecard",
+  "proposed_study_id": "college-scorecard",
+  "acquisition_status": "downloaded",
+  "attempted_at": "2026-07-07T03:42:24+00:00",
+  "catalog_source_url": "https://collegescorecard.ed.gov/data/",
+  "resolved_urls": [
+    "https://doi.org/10.1007/978-94-017-8905-9_300042",
+    "https://scholarworks.iu.edu/journals/index.php/iusbgrj/article/download/29693/34258",
+    "https://collegescorecard.ed.gov/data/"
+  ],
+  "files": [
+    "openalex-search.pdf",
+    "openalex-metadata.json",
+    "source-1.html"
+  ],
+  "dois": []
+}

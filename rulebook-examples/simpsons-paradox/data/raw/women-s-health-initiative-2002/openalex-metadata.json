@@ -1,0 +1,2449 @@
+{
+  "id": "https://openalex.org/W1593442063",
+  "doi": "https://doi.org/10.1001/jama.288.3.321",
+  "title": "Risks and Benefits of Estrogen Plus Progestin in Healthy Postmenopausal Women: Principal Results From the Women's Health Initiative Randomized Controlled Trial",
+  "display_name": "Risks and Benefits of Estrogen Plus Progestin in Healthy Postmenopausal Women: Principal Results From the Women's Health Initiative Randomized Controlled Trial",
+  "relevance_score": 2640.3801,
+  "publication_year": 2002,
+  "publication_date": "2002-07-17",
+  "ids": {
+    "openalex": "https://openalex.org/W1593442063",
+    "doi": "https://doi.org/10.1001/jama.288.3.321",
+    "mag": "1593442063",
+    "pmid": "https://pubmed.ncbi.nlm.nih.gov/12117397"
+  },
+  "language": "en",
+  "primary_location": {
+    "id": "doi:10.1001/jama.288.3.321",
+    "is_oa": true,
+    "landing_page_url": "https://doi.org/10.1001/jama.288.3.321",
+    "pdf_url": "https://jamanetwork.com/journals/jama/articlepdf/195120/joc21036.pdf",
+    "source": {
+      "id": "https://openalex.org/S172573765",
+      "display_name": "JAMA",
+      "issn_l": "0098-7484",
+      "issn": [
+        "0098-7484",
+        "1538-3598"
+      ],
+      "is_oa": false,
+      "is_in_doaj": false,
+      "is_core": true,
+      "host_organization": "https://openalex.org/P4310320259",
+      "host_organization_name": "American Medical Association",
+      "host_organization_lineage": [
+        "https://openalex.org/P4310320259"
+      ],
+      "host_organization_lineage_names": [
+        "American Medical Association"
+      ],
+      "type": "journal"
+    },
+    "license": null,
+    "license_id": null,
+    "version": "publishedVersion",
+    "is_accepted": true,
+    "is_published": true,
+    "raw_source_name": "JAMA: The Journal of the American Medical Association",
+    "raw_type": "journal-article"
+  },
+  "type": "article",
+  "indexed_in": [
+    "crossref",
+    "pubmed"
+  ],
+  "open_access": {
+    "is_oa": true,
+    "oa_status": "bronze",
+    "oa_url": "https://jamanetwork.com/journals/jama/articlepdf/195120/joc21036.pdf",
+    "any_repository_has_fulltext": null
+  },
+  "authorships": [
+    {
+      "author_position": "first",
+      "author": {
+        "id": null,
+        "display_name": "Writing Group for the Women's Health Initiative Investigators",
+        "orcid": null
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I4210106489",
+          "display_name": "National Heart Lung and Blood Institute",
+          "ror": "https://ror.org/012pb6c26",
+          "country_code": "US",
+          "type": "facility",
+          "lineage": [
+            "https://openalex.org/I1299022934",
+            "https://openalex.org/I1299303238",
+            "https://openalex.org/I4210106489"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I4210148317",
+          "display_name": "Women's Health Initiative",
+          "ror": "https://ror.org/05f7khr13",
+          "country_code": "US",
+          "type": "government",
+          "lineage": [
+            "https://openalex.org/I4210148317"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": true,
+      "raw_author_name": "Writing Group for the Women's Health Initiative Investigators",
+      "raw_affiliation_strings": [
+        "Division of Women's Health Initiative, National Heart, Lung, and Blood Institute, 6705 Rockledge Dr, One Rockledge Ctr, Suite 300, Bethesda, MD 20817, USA.rossouw@nih.gov"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Division of Women's Health Initiative, National Heart, Lung, and Blood Institute, 6705 Rockledge Dr, One Rockledge Ctr, Suite 300, Bethesda, MD 20817, USA.rossouw@nih.gov",
+          "institution_ids": [
+            "https://openalex.org/I4210148317",
+            "https://openalex.org/I4210106489"
+          ]
+        }
+      ]
+    }
+  ],
+  "institutions": [],
+  "countries_distinct_count": 1,
+  "institutions_distinct_count": 2,
+  "corresponding_author_ids": [],
+  "corresponding_institution_ids": [
+    "https://openalex.org/I4210106489",
+    "https://openalex.org/I4210148317"
+  ],
+  "apc_list": null,
+  "apc_paid": null,
+  "fwci": 552.1123,
+  "has_fulltext": true,
+  "cited_by_count": 15835,
+  "citation_normalized_percentile": {
+    "value": 1.0,
+    "is_in_top_1_percent": true,
+    "is_in_top_10_percent": true
+  },
+  "cited_by_percentile_year": {
+    "min": 99,
+    "max": 100
+  },
+  "biblio": {
+    "volume": "288",
+    "issue": "3",
+    "first_page": "321",
+    "last_page": "333"
+  },
+  "is_retracted": false,
+  "is_paratext": false,
+  "is_xpac": false,
+  "primary_topic": {
+    "id": "https://openalex.org/T10694",
+    "display_name": "Menopause: Health Impacts and Treatments",
+    "score": 0.8985000252723694,
+    "subfield": {
+      "id": "https://openalex.org/subfields/2712",
+      "display_name": "Endocrinology, Diabetes and Metabolism"
+    },
+    "field": {
+      "id": "https://openalex.org/fields/27",
+      "display_name": "Medicine"
+    },
+    "domain": {
+      "id": "https://openalex.org/domains/4",
+      "display_name": "Health Sciences"
+    }
+  },
+  "topics": [
+    {
+      "id": "https://openalex.org/T10694",
+      "display_name": "Menopause: Health Impacts and Treatments",
+      "score": 0.8985000252723694,
+      "subfield": {
+        "id": "https://openalex.org/subfields/2712",
+        "display_name": "Endocrinology, Diabetes and Metabolism"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/27",
+        "display_name": "Medicine"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/4",
+        "display_name": "Health Sciences"
+      }
+    },
+    {
+      "id": "https://openalex.org/T10756",
+      "display_name": "Estrogen and related hormone effects",
+      "score": 0.05249999836087227,
+      "subfield": {
+        "id": "https://openalex.org/subfields/1311",
+        "display_name": "Genetics"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/13",
+        "display_name": "Biochemistry, Genetics and Molecular Biology"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/1",
+        "display_name": "Life Sciences"
+      }
+    },
+    {
+      "id": "https://openalex.org/T13097",
+      "display_name": "Male Breast Health Studies",
+      "score": 0.011099999770522118,
+      "subfield": {
+        "id": "https://openalex.org/subfields/2739",
+        "display_name": "Public Health, Environmental and Occupational Health"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/27",
+        "display_name": "Medicine"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/4",
+        "display_name": "Health Sciences"
+      }
+    }
+  ],
+  "keywords": [
+    {
+      "id": "https://openalex.org/keywords/medicine",
+      "display_name": "Medicine",
+      "score": 0.9540859460830688
+    },
+    {
+      "id": "https://openalex.org/keywords/womens-health-initiative",
+      "display_name": "Women's Health Initiative",
+      "score": 0.8339024782180786
+    },
+    {
+      "id": "https://openalex.org/keywords/medroxyprogesterone-acetate",
+      "display_name": "Medroxyprogesterone acetate",
+      "score": 0.7046223878860474
+    },
+    {
+      "id": "https://openalex.org/keywords/hazard-ratio",
+      "display_name": "Hazard ratio",
+      "score": 0.6143937706947327
+    },
+    {
+      "id": "https://openalex.org/keywords/randomized-controlled-trial",
+      "display_name": "Randomized controlled trial",
+      "score": 0.5246223211288452
+    },
+    {
+      "id": "https://openalex.org/keywords/placebo",
+      "display_name": "Placebo",
+      "score": 0.49460145831108093
+    },
+    {
+      "id": "https://openalex.org/keywords/hormone-therapy",
+      "display_name": "Hormone therapy",
+      "score": 0.4931885600090027
+    },
+    {
+      "id": "https://openalex.org/keywords/gynecology",
+      "display_name": "Gynecology",
+      "score": 0.45091938972473145
+    },
+    {
+      "id": "https://openalex.org/keywords/endometrial-cancer",
+      "display_name": "Endometrial cancer",
+      "score": 0.4448341727256775
+    },
+    {
+      "id": "https://openalex.org/keywords/adverse-effect",
+      "display_name": "Adverse effect",
+      "score": 0.4438949227333069
+    },
+    {
+      "id": "https://openalex.org/keywords/stroke",
+      "display_name": "Stroke (engine)",
+      "score": 0.4391353726387024
+    },
+    {
+      "id": "https://openalex.org/keywords/hormone-replacement-therapy",
+      "display_name": "Hormone replacement therapy (female-to-male)",
+      "score": 0.42526137828826904
+    },
+    {
+      "id": "https://openalex.org/keywords/internal-medicine",
+      "display_name": "Internal medicine",
+      "score": 0.41724205017089844
+    },
+    {
+      "id": "https://openalex.org/keywords/breast-cancer",
+      "display_name": "Breast cancer",
+      "score": 0.39874112606048584
+    },
+    {
+      "id": "https://openalex.org/keywords/estrogen",
+      "display_name": "Estrogen",
+      "score": 0.34684327244758606
+    },
+    {
+      "id": "https://openalex.org/keywords/observational-study",
+      "display_name": "Observational study",
+      "score": 0.2898944020271301
+    },
+    {
+      "id": "https://openalex.org/keywords/confidence-interval",
+      "display_name": "Confidence interval",
+      "score": 0.28498566150665283
+    },
+    {
+      "id": "https://openalex.org/keywords/cancer",
+      "display_name": "Cancer",
+      "score": 0.2046312391757965
+    }
+  ],
+  "concepts": [
+    {
+      "id": "https://openalex.org/C71924100",
+      "wikidata": "https://www.wikidata.org/wiki/Q11190",
+      "display_name": "Medicine",
+      "level": 0,
+      "score": 0.9540859460830688
+    },
+    {
+      "id": "https://openalex.org/C2780733421",
+      "wikidata": "https://www.wikidata.org/wiki/Q1451732",
+      "display_name": "Women's Health Initiative",
+      "level": 3,
+      "score": 0.8339024782180786
+    },
+    {
+      "id": "https://openalex.org/C2776306185",
+      "wikidata": "https://www.wikidata.org/wiki/Q2823834",
+      "display_name": "Medroxyprogesterone acetate",
+      "level": 3,
+      "score": 0.7046223878860474
+    },
+    {
+      "id": "https://openalex.org/C207103383",
+      "wikidata": "https://www.wikidata.org/wiki/Q3930246",
+      "display_name": "Hazard ratio",
+      "level": 3,
+      "score": 0.6143937706947327
+    },
+    {
+      "id": "https://openalex.org/C168563851",
+      "wikidata": "https://www.wikidata.org/wiki/Q1436668",
+      "display_name": "Randomized controlled trial",
+      "level": 2,
+      "score": 0.5246223211288452
+    },
+    {
+      "id": "https://openalex.org/C27081682",
+      "wikidata": "https://www.wikidata.org/wiki/Q269829",
+      "display_name": "Placebo",
+      "level": 3,
+      "score": 0.49460145831108093
+    },
+    {
+      "id": "https://openalex.org/C2780275930",
+      "wikidata": "https://www.wikidata.org/wiki/Q1628266",
+      "display_name": "Hormone therapy",
+      "level": 4,
+      "score": 0.4931885600090027
+    },
+    {
+      "id": "https://openalex.org/C29456083",
+      "wikidata": "https://www.wikidata.org/wiki/Q1221899",
+      "display_name": "Gynecology",
+      "level": 1,
+      "score": 0.45091938972473145
+    },
+    {
+      "id": "https://openalex.org/C2777088508",
+      "wikidata": "https://www.wikidata.org/wiki/Q944777",
+      "display_name": "Endometrial cancer",
+      "level": 3,
+      "score": 0.4448341727256775
+    },
+    {
+      "id": "https://openalex.org/C197934379",
+      "wikidata": "https://www.wikidata.org/wiki/Q2047938",
+      "display_name": "Adverse effect",
+      "level": 2,
+      "score": 0.4438949227333069
+    },
+    {
+      "id": "https://openalex.org/C2780645631",
+      "wikidata": "https://www.wikidata.org/wiki/Q671554",
+      "display_name": "Stroke (engine)",
+      "level": 2,
+      "score": 0.4391353726387024
+    },
+    {
+      "id": "https://openalex.org/C2780159708",
+      "wikidata": "https://www.wikidata.org/wiki/Q17003363",
+      "display_name": "Hormone replacement therapy (female-to-male)",
+      "level": 3,
+      "score": 0.42526137828826904
+    },
+    {
+      "id": "https://openalex.org/C126322002",
+      "wikidata": "https://www.wikidata.org/wiki/Q11180",
+      "display_name": "Internal medicine",
+      "level": 1,
+      "score": 0.41724205017089844
+    },
+    {
+      "id": "https://openalex.org/C530470458",
+      "wikidata": "https://www.wikidata.org/wiki/Q128581",
+      "display_name": "Breast cancer",
+      "level": 3,
+      "score": 0.39874112606048584
+    },
+    {
+      "id": "https://openalex.org/C2777164284",
+      "wikidata": "https://www.wikidata.org/wiki/Q277954",
+      "display_name": "Estrogen",
+      "level": 2,
+      "score": 0.34684327244758606
+    },
+    {
+      "id": "https://openalex.org/C23131810",
+      "wikidata": "https://www.wikidata.org/wiki/Q818574",
+      "display_name": "Observational study",
+      "level": 2,
+      "score": 0.2898944020271301
+    },
+    {
+      "id": "https://openalex.org/C44249647",
+      "wikidata": "https://www.wikidata.org/wiki/Q208498",
+      "display_name": "Confidence interval",
+      "level": 2,
+      "score": 0.28498566150665283
+    },
+    {
+      "id": "https://openalex.org/C121608353",
+      "wikidata": "https://www.wikidata.org/wiki/Q12078",
+      "display_name": "Cancer",
+      "level": 2,
+      "score": 0.2046312391757965
+    },
+    {
+      "id": "https://openalex.org/C204787440",
+      "wikidata": "https://www.wikidata.org/wiki/Q188504",
+      "display_name": "Alternative medicine",
+      "level": 2,
+      "score": 0.0
+    },
+    {
+      "id": "https://openalex.org/C127413603",
+      "wikidata": "https://www.wikidata.org/wiki/Q11023",
+      "display_name": "Engineering",
+      "level": 0,
+      "score": 0.0
+    },
+    {
+      "id": "https://openalex.org/C142724271",
+      "wikidata": "https://www.wikidata.org/wiki/Q7208",
+      "display_name": "Pathology",
+      "level": 1,
+      "score": 0.0
+    },
+    {
+      "id": "https://openalex.org/C2779279991",
+      "wikidata": "https://www.wikidata.org/wiki/Q6058681",
+      "display_name": "Testosterone (patch)",
+      "level": 2,
+      "score": 0.0
+    },
+    {
+      "id": "https://openalex.org/C78519656",
+      "wikidata": "https://www.wikidata.org/wiki/Q101333",
+      "display_name": "Mechanical engineering",
+      "level": 1,
+      "score": 0.0
+    }
+  ],
+  "mesh": [
+    {
+      "descriptor_ui": "D000368",
+      "descriptor_name": "Aged",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000368",
+      "descriptor_name": "Aged",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000368",
+      "descriptor_name": "Aged",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D001943",
+      "descriptor_name": "Breast Neoplasms",
+      "qualifier_ui": "Q000453",
+      "qualifier_name": "epidemiology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D001943",
+      "descriptor_name": "Breast Neoplasms",
+      "qualifier_ui": "Q000453",
+      "qualifier_name": "epidemiology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D001943",
+      "descriptor_name": "Breast Neoplasms",
+      "qualifier_ui": "Q000453",
+      "qualifier_name": "epidemiology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D001943",
+      "descriptor_name": "Breast Neoplasms",
+      "qualifier_ui": "Q000517",
+      "qualifier_name": "prevention & control",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D001943",
+      "descriptor_name": "Breast Neoplasms",
+      "qualifier_ui": "Q000517",
+      "qualifier_name": "prevention & control",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D001943",
+      "descriptor_name": "Breast Neoplasms",
+      "qualifier_ui": "Q000517",
+      "qualifier_name": "prevention & control",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D003327",
+      "descriptor_name": "Coronary Disease",
+      "qualifier_ui": "Q000453",
+      "qualifier_name": "epidemiology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D003327",
+      "descriptor_name": "Coronary Disease",
+      "qualifier_ui": "Q000453",
+      "qualifier_name": "epidemiology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D003327",
+      "descriptor_name": "Coronary Disease",
+      "qualifier_ui": "Q000453",
+      "qualifier_name": "epidemiology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D003327",
+      "descriptor_name": "Coronary Disease",
+      "qualifier_ui": "Q000517",
+      "qualifier_name": "prevention & control",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D003327",
+      "descriptor_name": "Coronary Disease",
+      "qualifier_ui": "Q000517",
+      "qualifier_name": "prevention & control",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D003327",
+      "descriptor_name": "Coronary Disease",
+      "qualifier_ui": "Q000517",
+      "qualifier_name": "prevention & control",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D004966",
+      "descriptor_name": "Estrogens, Conjugated (USP)",
+      "qualifier_ui": "Q000009",
+      "qualifier_name": "adverse effects",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D004966",
+      "descriptor_name": "Estrogens, Conjugated (USP)",
+      "qualifier_ui": "Q000009",
+      "qualifier_name": "adverse effects",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D004966",
+      "descriptor_name": "Estrogens, Conjugated (USP)",
+      "qualifier_ui": "Q000009",
+      "qualifier_name": "adverse effects",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D004966",
+      "descriptor_name": "Estrogens, Conjugated (USP)",
+      "qualifier_ui": "Q000627",
+      "qualifier_name": "therapeutic use",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D004966",
+      "descriptor_name": "Estrogens, Conjugated (USP)",
+      "qualifier_ui": "Q000627",
+      "qualifier_name": "therapeutic use",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D004966",
+      "descriptor_name": "Estrogens, Conjugated (USP)",
+      "qualifier_ui": "Q000627",
+      "qualifier_name": "therapeutic use",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D005260",
+      "descriptor_name": "Female",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D005260",
+      "descriptor_name": "Female",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D005260",
+      "descriptor_name": "Female",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D006801",
+      "descriptor_name": "Humans",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D006801",
+      "descriptor_name": "Humans",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D006801",
+      "descriptor_name": "Humans",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D008875",
+      "descriptor_name": "Middle Aged",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D008875",
+      "descriptor_name": "Middle Aged",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D008875",
+      "descriptor_name": "Middle Aged",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D009203",
+      "descriptor_name": "Myocardial Infarction",
+      "qualifier_ui": "Q000453",
+      "qualifier_name": "epidemiology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D009203",
+      "descriptor_name": "Myocardial Infarction",
+      "qualifier_ui": "Q000453",
+      "qualifier_name": "epidemiology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D009203",
+      "descriptor_name": "Myocardial Infarction",
+      "qualifier_ui": "Q000453",
+      "qualifier_name": "epidemiology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D011655",
+      "descriptor_name": "Pulmonary Embolism",
+      "qualifier_ui": "Q000453",
+      "qualifier_name": "epidemiology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D011655",
+      "descriptor_name": "Pulmonary Embolism",
+      "qualifier_ui": "Q000453",
+      "qualifier_name": "epidemiology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D011655",
+      "descriptor_name": "Pulmonary Embolism",
+      "qualifier_ui": "Q000453",
+      "qualifier_name": "epidemiology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D012306",
+      "descriptor_name": "Risk",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D012306",
+      "descriptor_name": "Risk",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D012306",
+      "descriptor_name": "Risk",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D013927",
+      "descriptor_name": "Thrombosis",
+      "qualifier_ui": "Q000453",
+      "qualifier_name": "epidemiology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D013927",
+      "descriptor_name": "Thrombosis",
+      "qualifier_ui": "Q000453",
+      "qualifier_name": "epidemiology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D013927",
+      "descriptor_name": "Thrombosis",
+      "qualifier_ui": "Q000453",
+      "qualifier_name": "epidemiology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D015179",
+      "descriptor_name": "Colorectal Neoplasms",
+      "qualifier_ui": "Q000453",
+      "qualifier_name": "epidemiology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D015179",
+      "descriptor_name": "Colorectal Neoplasms",
+      "qualifier_ui": "Q000453",
+      "qualifier_name": "epidemiology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D015179",
+      "descriptor_name": "Colorectal Neoplasms",
+      "qualifier_ui": "Q000453",
+      "qualifier_name": "epidemiology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D015914",
+      "descriptor_name": "Estrogen Replacement Therapy",
+      "qualifier_ui": "Q000009",
+      "qualifier_name": "adverse effects",
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D015914",
+      "descriptor_name": "Estrogen Replacement Therapy",
+      "qualifier_ui": "Q000009",
+      "qualifier_name": "adverse effects",
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D015914",
+      "descriptor_name": "Estrogen Replacement Therapy",
+      "qualifier_ui": "Q000009",
+      "qualifier_name": "adverse effects",
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D016016",
+      "descriptor_name": "Proportional Hazards Models",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D016016",
+      "descriptor_name": "Proportional Hazards Models",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D016016",
+      "descriptor_name": "Proportional Hazards Models",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D016019",
+      "descriptor_name": "Survival Analysis",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D016019",
+      "descriptor_name": "Survival Analysis",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D016019",
+      "descriptor_name": "Survival Analysis",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D016889",
+      "descriptor_name": "Endometrial Neoplasms",
+      "qualifier_ui": "Q000453",
+      "qualifier_name": "epidemiology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D016889",
+      "descriptor_name": "Endometrial Neoplasms",
+      "qualifier_ui": "Q000453",
+      "qualifier_name": "epidemiology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D016889",
+      "descriptor_name": "Endometrial Neoplasms",
+      "qualifier_ui": "Q000453",
+      "qualifier_name": "epidemiology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D016896",
+      "descriptor_name": "Treatment Outcome",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D016896",
+      "descriptor_name": "Treatment Outcome",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D016896",
+      "descriptor_name": "Treatment Outcome",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D017258",
+      "descriptor_name": "Medroxyprogesterone Acetate",
+      "qualifier_ui": "Q000009",
+      "qualifier_name": "adverse effects",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D017258",
+      "descriptor_name": "Medroxyprogesterone Acetate",
+      "qualifier_ui": "Q000009",
+      "qualifier_name": "adverse effects",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D017258",
+      "descriptor_name": "Medroxyprogesterone Acetate",
+      "qualifier_ui": "Q000009",
+      "qualifier_name": "adverse effects",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D017258",
+      "descriptor_name": "Medroxyprogesterone Acetate",
+      "qualifier_ui": "Q000627",
+      "qualifier_name": "therapeutic use",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D017258",
+      "descriptor_name": "Medroxyprogesterone Acetate",
+      "qualifier_ui": "Q000627",
+      "qualifier_name": "therapeutic use",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D017258",
+      "descriptor_name": "Medroxyprogesterone Acetate",
+      "qualifier_ui": "Q000627",
+      "qualifier_name": "therapeutic use",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D017698",
+      "descriptor_name": "Postmenopause",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D017698",
+      "descriptor_name": "Postmenopause",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D017698",
+      "descriptor_name": "Postmenopause",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D020521",
+      "descriptor_name": "Stroke",
+      "qualifier_ui": "Q000453",
+      "qualifier_name": "epidemiology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D020521",
+      "descriptor_name": "Stroke",
+      "qualifier_ui": "Q000453",
+      "qualifier_name": "epidemiology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D020521",
+      "descriptor_name": "Stroke",
+      "qualifier_ui": "Q000453",
+      "qualifier_name": "epidemiology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D026661",
+      "descriptor_name": "Clinical Trials Data Monitoring Committees",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D026661",
+      "descriptor_name": "Clinical Trials Data Monitoring Committees",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D026661",
+      "descriptor_name": "Clinical Trials Data Monitoring Committees",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D045167",
+      "descriptor_name": "Progesterone Congeners",
+      "qualifier_ui": "Q000009",
+      "qualifier_name": "adverse effects",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D045167",
+      "descriptor_name": "Progesterone Congeners",
+      "qualifier_ui": "Q000009",
+      "qualifier_name": "adverse effects",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D045167",
+      "descriptor_name": "Progesterone Congeners",
+      "qualifier_ui": "Q000009",
+      "qualifier_name": "adverse effects",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D045167",
+      "descriptor_name": "Progesterone Congeners",
+      "qualifier_ui": "Q000627",
+      "qualifier_name": "therapeutic use",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D045167",
+      "descriptor_name": "Progesterone Congeners",
+      "qualifier_ui": "Q000627",
+      "qualifier_name": "therapeutic use",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D045167",
+      "descriptor_name": "Progesterone Congeners",
+      "qualifier_ui": "Q000627",
+      "qualifier_name": "therapeutic use",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D050723",
+      "descriptor_name": "Fractures, Bone",
+      "qualifier_ui": "Q000453",
+      "qualifier_name": "epidemiology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D050723",
+      "descriptor_name": "Fractures, Bone",
+      "qualifier_ui": "Q000453",
+      "qualifier_name": "epidemiology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D050723",
+      "descriptor_name": "Fractures, Bone",
+      "qualifier_ui": "Q000453",
+      "qualifier_name": "epidemiology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D050723",
+      "descriptor_name": "Fractures, Bone",
+      "qualifier_ui": "Q000517",
+      "qualifier_name": "prevention & control",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D050723",
+      "descriptor_name": "Fractures, Bone",
+      "qualifier_ui": "Q000517",
+      "qualifier_name": "prevention & control",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D050723",
+      "descriptor_name": "Fractures, Bone",
+      "qualifier_ui": "Q000517",
+      "qualifier_name": "prevention & control",
+      "is_major_topic": false
+    }
+  ],
+  "locations_count": 5,
+  "locations": [
+    {
+      "id": "doi:10.1001/jama.288.3.321",
+      "is_oa": true,
+      "landing_page_url": "https://doi.org/10.1001/jama.288.3.321",
+      "pdf_url": "https://jamanetwork.com/journals/jama/articlepdf/195120/joc21036.pdf",
+      "source": {
+        "id": "https://openalex.org/S172573765",
+        "display_name": "JAMA",
+        "issn_l": "0098-7484",
+        "issn": [
+          "0098-7484",
+          "1538-3598"
+        ],
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": true,
+        "host_organization": "https://openalex.org/P4310320259",
+        "host_organization_name": "American Medical Association",
+        "host_organization_lineage": [
+          "https://openalex.org/P4310320259"
+        ],
+        "host_organization_lineage_names": [
+          "American Medical Association"
+        ],
+        "type": "journal"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "publishedVersion",
+      "is_accepted": true,
+      "is_published": true,
+      "raw_source_name": "JAMA: The Journal of the American Medical Association",
+      "raw_type": "journal-article"
+    },
+    {
+      "id": "pmid:12117397",
+      "is_oa": false,
+      "landing_page_url": "https://pubmed.ncbi.nlm.nih.gov/12117397",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4306525036",
+        "display_name": "PubMed",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I1299303238",
+        "host_organization_name": "National Institutes of Health",
+        "host_organization_lineage": [
+          "https://openalex.org/I1299303238"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "publishedVersion",
+      "is_accepted": true,
+      "is_published": true,
+      "raw_source_name": "JAMA",
+      "raw_type": null
+    },
+    {
+      "id": "pmh:oai:escholarship.org:ark:/13030/qt3mr6f93p",
+      "is_oa": true,
+      "landing_page_url": "https://escholarship.org/uc/item/3mr6f93p",
+      "pdf_url": "https://escholarship.org/content/qt3mr6f93p/qt3mr6f93p.pdf?t=prll4c",
+      "source": null,
+      "license": null,
+      "license_id": null,
+      "version": "submittedVersion",
+      "is_accepted": false,
+      "is_published": false,
+      "raw_source_name": "JAMA, vol 288, iss 3",
+      "raw_type": "article"
+    },
+    {
+      "id": "pmh:oai:escholarship.umassmed.edu:wfc_pp-1400",
+      "is_oa": false,
+      "landing_page_url": "https://escholarship.umassmed.edu/wfc_pp/401",
+      "pdf_url": null,
+      "source": null,
+      "license": null,
+      "license_id": null,
+      "version": "submittedVersion",
+      "is_accepted": false,
+      "is_published": false,
+      "raw_source_name": "Women\u2019s Health Research Faculty Publications",
+      "raw_type": "text"
+    },
+    {
+      "id": "pmh:qt3mr6f93p",
+      "is_oa": false,
+      "landing_page_url": "http://www.escholarship.org/uc/item/3mr6f93p",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4306400115",
+        "display_name": "eScholarship (California Digital Library)",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I2801248553",
+        "host_organization_name": "California Digital Library",
+        "host_organization_lineage": [
+          "https://openalex.org/I2801248553"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "submittedVersion",
+      "is_accepted": false,
+      "is_published": false,
+      "raw_source_name": "Writing Group for the Women's Health Initiative Investigators,. (2002). Risks and Benefits of Estrogen Plus Progestin in Healthy Postmenopausal Women: Principal Results From the Women's Health Initiative Randomized Controlled Trial. JAMA: The Journal of the American Medical Association, 288(3), 321 - 333. doi: 10.1001/jama.288.3.321. UC San Diego: Retrieved from: http://www.escholarship.org/uc/item/3mr6f93p",
+      "raw_type": "article"
+    }
+  ],
+  "best_oa_location": {
+    "id": "doi:10.1001/jama.288.3.321",
+    "is_oa": true,
+    "landing_page_url": "https://doi.org/10.1001/jama.288.3.321",
+    "pdf_url": "https://jamanetwork.com/journals/jama/articlepdf/195120/joc21036.pdf",
+    "source": {
+      "id": "https://openalex.org/S172573765",
+      "display_name": "JAMA",
+      "issn_l": "0098-7484",
+      "issn": [
+        "0098-7484",
+        "1538-3598"
+      ],
+      "is_oa": false,
+      "is_in_doaj": false,
+      "is_core": true,
+      "host_organization": "https://openalex.org/P4310320259",
+      "host_organization_name": "American Medical Association",
+      "host_organization_lineage": [
+        "https://openalex.org/P4310320259"
+      ],
+      "host_organization_lineage_names": [
+        "American Medical Association"
+      ],
+      "type": "journal"
+    },
+    "license": null,
+    "license_id": null,
+    "version": "publishedVersion",
+    "is_accepted": true,
+    "is_published": true,
+    "raw_source_name": "JAMA: The Journal of the American Medical Association",
+    "raw_type": "journal-article"
+  },
+  "sustainable_development_goals": [
+    {
+      "id": "https://metadata.un.org/sdg/3",
+      "display_name": "Good health and well-being",
+      "score": 0.8399999737739563
+    }
+  ],
+  "awards": [],
+  "funders": [
+    {
+      "id": "https://openalex.org/F4320307765",
+      "display_name": "Pfizer",
+      "ror": "https://ror.org/01xdqrp08"
+    }
+  ],
+  "has_content": {
+    "grobid_xml": true,
+    "pdf": true
+  },
+  "content_urls": {
+    "pdf": "https://content.openalex.org/works/W1593442063.pdf",
+    "grobid_xml": "https://content.openalex.org/works/W1593442063.grobid-xml"
+  },
+  "referenced_works_count": 55,
+  "referenced_works": [
+    "https://openalex.org/W24748014",
+    "https://openalex.org/W1496740139",
+    "https://openalex.org/W1621104316",
+    "https://openalex.org/W1966701899",
+    "https://openalex.org/W1969239561",
+    "https://openalex.org/W1969373624",
+    "https://openalex.org/W1970191521",
+    "https://openalex.org/W1971867327",
+    "https://openalex.org/W1979976642",
+    "https://openalex.org/W1982203775",
+    "https://openalex.org/W1990582690",
+    "https://openalex.org/W1995802267",
+    "https://openalex.org/W1997504879",
+    "https://openalex.org/W1997512708",
+    "https://openalex.org/W2007771530",
+    "https://openalex.org/W2027077515",
+    "https://openalex.org/W2029897298",
+    "https://openalex.org/W2046983302",
+    "https://openalex.org/W2051034159",
+    "https://openalex.org/W2051388846",
+    "https://openalex.org/W2054318265",
+    "https://openalex.org/W2054694263",
+    "https://openalex.org/W2059707463",
+    "https://openalex.org/W2063031738",
+    "https://openalex.org/W2063131612",
+    "https://openalex.org/W2064671008",
+    "https://openalex.org/W2073031659",
+    "https://openalex.org/W2075572846",
+    "https://openalex.org/W2089951546",
+    "https://openalex.org/W2099491597",
+    "https://openalex.org/W2101153384",
+    "https://openalex.org/W2107544225",
+    "https://openalex.org/W2113259481",
+    "https://openalex.org/W2113264115",
+    "https://openalex.org/W2116645872",
+    "https://openalex.org/W2125678264",
+    "https://openalex.org/W2143015087",
+    "https://openalex.org/W2148997863",
+    "https://openalex.org/W2165664908",
+    "https://openalex.org/W2166556886",
+    "https://openalex.org/W2172094497",
+    "https://openalex.org/W2290627980",
+    "https://openalex.org/W2323247839",
+    "https://openalex.org/W2327578951",
+    "https://openalex.org/W2332056249",
+    "https://openalex.org/W2401448179",
+    "https://openalex.org/W2469416225",
+    "https://openalex.org/W2607238143",
+    "https://openalex.org/W3022279537",
+    "https://openalex.org/W3024732449",
+    "https://openalex.org/W4234544838",
+    "https://openalex.org/W4247083842",
+    "https://openalex.org/W4253625890",
+    "https://openalex.org/W7073685945",
+    "https://openalex.org/W7075611791"
+  ],
+  "related_works": [
+    "https://openalex.org/W2346433325",
+    "https://openalex.org/W2793981385",
+    "https://openalex.org/W2464042990",
+    "https://openalex.org/W2739258728",
+    "https://openalex.org/W2154120147",
+    "https://openalex.org/W2041658447",
+    "https://openalex.org/W2024640198",
+    "https://openalex.org/W2418567242",
+    "https://openalex.org/W2086416077",
+    "https://openalex.org/W2119198452"
+  ],
+  "abstract_inverted_index": {
+    "CONTEXT:": [
+      0
+    ],
+    "Despite": [
+      1
+    ],
+    "decades": [
+      2
+    ],
+    "of": [
+      3,
+      9,
+      31,
+      48,
+      142,
+      176,
+      179,
+      191,
+      396,
+      417,
+      460,
+      479
+    ],
+    "accumulated": [
+      4
+    ],
+    "observational": [
+      5
+    ],
+    "evidence,": [
+      6
+    ],
+    "the": [
+      7,
+      25,
+      32,
+      40,
+      49,
+      132,
+      140,
+      147,
+      181,
+      189,
+      198,
+      206,
+      214,
+      227,
+      342,
+      400,
+      438,
+      451,
+      464
+    ],
+    "balance": [
+      8,
+      141
+    ],
+    "risks": [
+      10,
+      30,
+      143,
+      219,
+      347,
+      412
+    ],
+    "and": [
+      11,
+      29,
+      124,
+      144,
+      162,
+      183,
+      213,
+      293,
+      320,
+      338,
+      368,
+      387,
+      463
+    ],
+    "benefits": [
+      12,
+      28,
+      145,
+      414
+    ],
+    "for": [
+      13,
+      201,
+      209,
+      309,
+      315,
+      325,
+      330,
+      335,
+      341,
+      422,
+      453,
+      457,
+      476
+    ],
+    "hormone": [
+      14,
+      37
+    ],
+    "use": [
+      15,
+      416
+    ],
+    "in": [
+      16,
+      39,
+      63,
+      84,
+      99,
+      399,
+      444
+    ],
+    "healthy": [
+      17,
+      428
+    ],
+    "postmenopausal": [
+      18,
+      66,
+      429
+    ],
+    "women": [
+      19,
+      67
+    ],
+    "remains": [
+      20
+    ],
+    "uncertain.": [
+      21
+    ],
+    "OBJECTIVE:": [
+      22
+    ],
+    "To": [
+      23
+    ],
+    "assess": [
+      24
+    ],
+    "major": [
+      26,
+      228
+    ],
+    "health": [
+      27,
+      411
+    ],
+    "most": [
+      33
+    ],
+    "commonly": [
+      34
+    ],
+    "used": [
+      35
+    ],
+    "combined": [
+      36,
+      331,
+      418
+    ],
+    "preparation": [
+      38
+    ],
+    "United": [
+      41
+    ],
+    "States.": [
+      42
+    ],
+    "DESIGN:": [
+      43
+    ],
+    "Estrogen": [
+      44
+    ],
+    "plus": [
+      45,
+      94,
+      151,
+      193,
+      355,
+      420
+    ],
+    "progestin": [
+      46,
+      194,
+      356,
+      421
+    ],
+    "component": [
+      47
+    ],
+    "Women's": [
+      50
+    ],
+    "Health": [
+      51
+    ],
+    "Initiative,": [
+      52
+    ],
+    "a": [
+      53,
+      174,
+      454
+    ],
+    "randomized": [
+      54
+    ],
+    "controlled": [
+      55
+    ],
+    "primary": [
+      56,
+      114,
+      133,
+      149,
+      458,
+      477
+    ],
+    "prevention": [
+      57,
+      459,
+      478
+    ],
+    "trial": [
+      58,
+      190,
+      446
+    ],
+    "(planned": [
+      59
+    ],
+    "duration,": [
+      60
+    ],
+    "8.5": [
+      61
+    ],
+    "years)": [
+      62
+    ],
+    "which": [
+      64
+    ],
+    "16608": [
+      65
+    ],
+    "aged": [
+      68
+    ],
+    "50-79": [
+      69
+    ],
+    "years": [
+      70,
+      178
+    ],
+    "with": [
+      71,
+      127,
+      250,
+      257,
+      263,
+      269,
+      276,
+      283,
+      290,
+      301,
+      450
+    ],
+    "an": [
+      72,
+      423
+    ],
+    "intact": [
+      73
+    ],
+    "uterus": [
+      74
+    ],
+    "at": [
+      75
+    ],
+    "baseline": [
+      76
+    ],
+    "were": [
+      77,
+      244,
+      312,
+      357,
+      382
+    ],
+    "recruited": [
+      78
+    ],
+    "by": [
+      79
+    ],
+    "40": [
+      80
+    ],
+    "US": [
+      81,
+      430
+    ],
+    "clinical": [
+      82,
+      229
+    ],
+    "centers": [
+      83
+    ],
+    "1993-1998.": [
+      85
+    ],
+    "INTERVENTIONS:": [
+      86
+    ],
+    "Participants": [
+      87
+    ],
+    "received": [
+      88
+    ],
+    "conjugated": [
+      89
+    ],
+    "equine": [
+      90
+    ],
+    "estrogens,": [
+      91
+    ],
+    "0.625": [
+      92
+    ],
+    "mg/d,": [
+      93,
+      98
+    ],
+    "medroxyprogesterone": [
+      95
+    ],
+    "acetate,": [
+      96
+    ],
+    "2.5": [
+      97
+    ],
+    "1": [
+      100
+    ],
+    "tablet": [
+      101
+    ],
+    "(n": [
+      102,
+      107
+    ],
+    "=": [
+      103,
+      108
+    ],
+    "8506)": [
+      104
+    ],
+    "or": [
+      105,
+      474
+    ],
+    "placebo": [
+      106,
+      196
+    ],
+    "8102).": [
+      109
+    ],
+    "MAIN": [
+      110
+    ],
+    "OUTCOMES": [
+      111
+    ],
+    "MEASURES:": [
+      112
+    ],
+    "The": [
+      113,
+      392,
+      440
+    ],
+    "outcome": [
+      115
+    ],
+    "was": [
+      116,
+      403,
+      434
+    ],
+    "coronary": [
+      117
+    ],
+    "heart": [
+      118
+    ],
+    "disease": [
+      119,
+      318
+    ],
+    "(CHD)": [
+      120
+    ],
+    "(nonfatal": [
+      121
+    ],
+    "myocardial": [
+      122
+    ],
+    "infarction": [
+      123
+    ],
+    "CHD": [
+      125,
+      360
+    ],
+    "death),": [
+      126
+    ],
+    "invasive": [
+      128,
+      202,
+      371
+    ],
+    "breast": [
+      129,
+      203,
+      253,
+      372
+    ],
+    "cancer": [
+      130,
+      204
+    ],
+    "as": [
+      131,
+      245
+    ],
+    "adverse": [
+      134,
+      211
+    ],
+    "outcome.": [
+      135
+    ],
+    "A": [
+      136
+    ],
+    "global": [
+      137,
+      215,
+      343,
+      401
+    ],
+    "index": [
+      138,
+      216,
+      402
+    ],
+    "summarizing": [
+      139
+    ],
+    "included": [
+      146,
+      398
+    ],
+    "2": [
+      148
+    ],
+    "outcomes": [
+      150,
+      230,
+      311
+    ],
+    "stroke,": [
+      152,
+      260
+    ],
+    "pulmonary": [
+      153
+    ],
+    "embolism": [
+      154
+    ],
+    "(PE),": [
+      155
+    ],
+    "endometrial": [
+      156,
+      279
+    ],
+    "cancer,": [
+      157,
+      159,
+      254,
+      273,
+      280,
+      327
+    ],
+    "colorectal": [
+      158,
+      272,
+      385
+    ],
+    "hip": [
+      160,
+      286,
+      390
+    ],
+    "fracture,": [
+      161,
+      287
+    ],
+    "death": [
+      163,
+      294
+    ],
+    "due": [
+      164,
+      295
+    ],
+    "to": [
+      165,
+      296,
+      353
+    ],
+    "other": [
+      166,
+      297
+    ],
+    "causes.": [
+      167
+    ],
+    "RESULTS:": [
+      168
+    ],
+    "On": [
+      169
+    ],
+    "May": [
+      170
+    ],
+    "31,": [
+      171
+    ],
+    "2002,": [
+      172
+    ],
+    "after": [
+      173
+    ],
+    "mean": [
+      175
+    ],
+    "5.2": [
+      177
+    ],
+    "follow-up,": [
+      180
+    ],
+    "data": [
+      182,
+      225
+    ],
+    "safety": [
+      184
+    ],
+    "monitoring": [
+      185
+    ],
+    "board": [
+      186
+    ],
+    "recommended": [
+      187
+    ],
+    "stopping": [
+      188,
+      207
+    ],
+    "estrogen": [
+      192,
+      354,
+      419
+    ],
+    "vs": [
+      195
+    ],
+    "because": [
+      197
+    ],
+    "test": [
+      199
+    ],
+    "statistic": [
+      200,
+      217
+    ],
+    "exceeded": [
+      205,
+      413
+    ],
+    "boundary": [
+      208
+    ],
+    "this": [
+      210,
+      445,
+      468
+    ],
+    "effect": [
+      212
+    ],
+    "supported": [
+      218
+    ],
+    "exceeding": [
+      220
+    ],
+    "benefits.": [
+      221
+    ],
+    "This": [
+      222
+    ],
+    "report": [
+      223
+    ],
+    "includes": [
+      224
+    ],
+    "on": [
+      226
+    ],
+    "through": [
+      231
+    ],
+    "April": [
+      232
+    ],
+    "30,": [
+      233
+    ],
+    "2002.": [
+      234
+    ],
+    "Estimated": [
+      235
+    ],
+    "hazard": [
+      236
+    ],
+    "ratios": [
+      237
+    ],
+    "(HRs)": [
+      238
+    ],
+    "(nominal": [
+      239,
+      306
+    ],
+    "95%": [
+      240,
+      307
+    ],
+    "confidence": [
+      241
+    ],
+    "intervals": [
+      242
+    ],
+    "[CIs])": [
+      243
+    ],
+    "follows:": [
+      246
+    ],
+    "CHD,": [
+      247
+    ],
+    "1.29": [
+      248
+    ],
+    "(1.02-1.63)": [
+      249
+    ],
+    "286": [
+      251
+    ],
+    "cases;": [
+      252,
+      259,
+      265,
+      271,
+      278,
+      285,
+      292
+    ],
+    "1.26": [
+      255
+    ],
+    "(1.00-1.59)": [
+      256
+    ],
+    "290": [
+      258
+    ],
+    "1.41": [
+      261
+    ],
+    "(1.07-1.85)": [
+      262
+    ],
+    "212": [
+      264
+    ],
+    "PE,": [
+      266
+    ],
+    "2.13": [
+      267
+    ],
+    "(1.39-3.25)": [
+      268
+    ],
+    "101": [
+      270
+    ],
+    "0.63": [
+      274
+    ],
+    "(0.43-0.92)": [
+      275
+    ],
+    "112": [
+      277
+    ],
+    "0.83": [
+      281
+    ],
+    "(0.47-1.47)": [
+      282
+    ],
+    "47": [
+      284
+    ],
+    "0.66": [
+      288
+    ],
+    "(0.45-0.98)": [
+      289
+    ],
+    "106": [
+      291
+    ],
+    "causes,": [
+      298
+    ],
+    "0.92": [
+      299
+    ],
+    "(0.74-1.14)": [
+      300
+    ],
+    "331": [
+      302
+    ],
+    "cases.": [
+      303
+    ],
+    "Corresponding": [
+      304
+    ],
+    "HRs": [
+      305
+    ],
+    "CIs)": [
+      308
+    ],
+    "composite": [
+      310
+    ],
+    "1.22": [
+      313
+    ],
+    "(1.09-1.36)": [
+      314
+    ],
+    "total": [
+      316,
+      326,
+      336
+    ],
+    "cardiovascular": [
+      317
+    ],
+    "(arterial": [
+      319
+    ],
+    "venous": [
+      321
+    ],
+    "disease),": [
+      322
+    ],
+    "1.03": [
+      323
+    ],
+    "(0.90-1.17)": [
+      324
+    ],
+    "0.76": [
+      328
+    ],
+    "(0.69-0.85)": [
+      329
+    ],
+    "fractures,": [
+      332
+    ],
+    "0.98": [
+      333
+    ],
+    "(0.82-1.18)": [
+      334
+    ],
+    "mortality,": [
+      337
+    ],
+    "1.15": [
+      339
+    ],
+    "(1.03-1.28)": [
+      340
+    ],
+    "index.": [
+      344
+    ],
+    "Absolute": [
+      345
+    ],
+    "excess": [
+      346,
+      394
+    ],
+    "per": [
+      348,
+      378,
+      405
+    ],
+    "10": [
+      349,
+      379,
+      406
+    ],
+    "000": [
+      350,
+      380,
+      407
+    ],
+    "person-years": [
+      351,
+      381
+    ],
+    "attributable": [
+      352
+    ],
+    "7": [
+      358
+    ],
+    "more": [
+      359,
+      363,
+      366,
+      370
+    ],
+    "events,": [
+      361
+    ],
+    "8": [
+      362,
+      365,
+      369
+    ],
+    "strokes,": [
+      364
+    ],
+    "PEs,": [
+      367
+    ],
+    "cancers,": [
+      373
+    ],
+    "while": [
+      374
+    ],
+    "absolute": [
+      375,
+      393
+    ],
+    "risk": [
+      376,
+      395
+    ],
+    "reductions": [
+      377
+    ],
+    "6": [
+      383
+    ],
+    "fewer": [
+      384,
+      389
+    ],
+    "cancers": [
+      386
+    ],
+    "5": [
+      388
+    ],
+    "fractures.": [
+      391
+    ],
+    "events": [
+      397
+    ],
+    "19": [
+      404
+    ],
+    "person-years.": [
+      408
+    ],
+    "CONCLUSIONS:": [
+      409
+    ],
+    "Overall": [
+      410
+    ],
+    "from": [
+      415
+    ],
+    "average": [
+      424
+    ],
+    "5.2-year": [
+      425
+    ],
+    "follow-up": [
+      426
+    ],
+    "among": [
+      427
+    ],
+    "women.": [
+      431
+    ],
+    "All-cause": [
+      432
+    ],
+    "mortality": [
+      433
+    ],
+    "not": [
+      435,
+      448,
+      471
+    ],
+    "affected": [
+      436
+    ],
+    "during": [
+      437
+    ],
+    "trial.": [
+      439
+    ],
+    "risk-benefit": [
+      441
+    ],
+    "profile": [
+      442
+    ],
+    "found": [
+      443
+    ],
+    "is": [
+      447
+    ],
+    "consistent": [
+      449
+    ],
+    "requirements": [
+      452
+    ],
+    "viable": [
+      455
+    ],
+    "intervention": [
+      456
+    ],
+    "chronic": [
+      461
+    ],
+    "diseases,": [
+      462
+    ],
+    "results": [
+      465
+    ],
+    "indicate": [
+      466
+    ],
+    "that": [
+      467
+    ],
+    "regimen": [
+      469
+    ],
+    "should": [
+      470
+    ],
+    "be": [
+      472
+    ],
+    "initiated": [
+      473
+    ],
+    "continued": [
+      475
+    ],
+    "CHD.": [
+      480
+    ]
+  },
+  "counts_by_year": [
+    {
+      "year": 2026,
+      "cited_by_count": 158
+    },
+    {
+      "year": 2025,
+      "cited_by_count": 347
+    },
+    {
+      "year": 2024,
+      "cited_by_count": 357
+    },
+    {
+      "year": 2023,
+      "cited_by_count": 372
+    },
+    {
+      "year": 2022,
+      "cited_by_count": 470
+    },
+    {
+      "year": 2021,
+      "cited_by_count": 469
+    },
+    {
+      "year": 2020,
+      "cited_by_count": 454
+    },
+    {
+      "year": 2019,
+      "cited_by_count": 446
+    },
+    {
+      "year": 2018,
+      "cited_by_count": 448
+    },
+    {
+      "year": 2017,
+      "cited_by_count": 452
+    },
+    {
+      "year": 2016,
+      "cited_by_count": 485
+    },
+    {
+      "year": 2015,
+      "cited_by_count": 568
+    },
+    {
+      "year": 2014,
+      "cited_by_count": 545
+    },
+    {
+      "year": 2013,
+      "cited_by_count": 690
+    },
+    {
+      "year": 2012,
+      "cited_by_count": 710
+    }
+  ],
+  "updated_date": "2026-07-04T07:58:01.006859",
+  "created_date": "2025-10-10T00:00:00"
+}

@@ -1,0 +1,2660 @@
+{
+  "id": "https://openalex.org/W2127951128",
+  "doi": "https://doi.org/10.1164/rccm.201204-0596pp",
+  "title": "Global Strategy for the Diagnosis, Management, and Prevention of Chronic Obstructive Pulmonary Disease",
+  "display_name": "Global Strategy for the Diagnosis, Management, and Prevention of Chronic Obstructive Pulmonary Disease",
+  "relevance_score": 182.68646,
+  "publication_year": 2012,
+  "publication_date": "2012-08-09",
+  "ids": {
+    "openalex": "https://openalex.org/W2127951128",
+    "doi": "https://doi.org/10.1164/rccm.201204-0596pp",
+    "mag": "2127951128",
+    "pmid": "https://pubmed.ncbi.nlm.nih.gov/22878278"
+  },
+  "language": "en",
+  "primary_location": {
+    "id": "doi:10.1164/rccm.201204-0596pp",
+    "is_oa": false,
+    "landing_page_url": "https://doi.org/10.1164/rccm.201204-0596pp",
+    "pdf_url": null,
+    "source": {
+      "id": "https://openalex.org/S93356601",
+      "display_name": "American Journal of Respiratory and Critical Care Medicine",
+      "issn_l": "1073-449X",
+      "issn": [
+        "1073-449X",
+        "1535-4970"
+      ],
+      "is_oa": false,
+      "is_in_doaj": false,
+      "is_core": true,
+      "host_organization": "https://openalex.org/P4310316311",
+      "host_organization_name": "American Thoracic Society",
+      "host_organization_lineage": [
+        "https://openalex.org/P4310316311"
+      ],
+      "host_organization_lineage_names": [
+        "American Thoracic Society"
+      ],
+      "type": "journal"
+    },
+    "license": null,
+    "license_id": null,
+    "version": "publishedVersion",
+    "is_accepted": true,
+    "is_published": true,
+    "raw_source_name": "American Journal of Respiratory and Critical Care Medicine",
+    "raw_type": "journal-article"
+  },
+  "type": "review",
+  "indexed_in": [
+    "crossref",
+    "pubmed"
+  ],
+  "open_access": {
+    "is_oa": true,
+    "oa_status": "green",
+    "oa_url": "http://ajrccm.atsjournals.org/content/187/4/347.full.pdf+html",
+    "any_repository_has_fulltext": true
+  },
+  "authorships": [
+    {
+      "author_position": "first",
+      "author": {
+        "id": "https://openalex.org/A5083312029",
+        "display_name": "J\u00f8rgen Vestbo",
+        "orcid": "https://orcid.org/0000-0001-6355-6362"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I177969490",
+          "display_name": "University of Southern Denmark",
+          "ror": "https://ror.org/03yrrjy16",
+          "country_code": "DK",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I177969490"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I2799725268",
+          "display_name": "Manchester Academic Health Science Centre",
+          "ror": "https://ror.org/04rrkhs81",
+          "country_code": "GB",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I2799725268"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I2801498763",
+          "display_name": "Odense University Hospital",
+          "ror": "https://ror.org/00ey0ed83",
+          "country_code": "DK",
+          "type": "funder",
+          "lineage": [
+            "https://openalex.org/I2801498763"
+          ]
+        }
+      ],
+      "countries": [
+        "DK",
+        "GB"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "J\u00f8rgen Vestbo",
+      "raw_affiliation_strings": [
+        "Manchester Academic Health Sciences Centre, South Manchester University Hospital NHS Foundation Trust, Manchester, United Kingdom",
+        "Odense University Hospital and University of Southern Denmark, Odense, Denmark",
+        "Manchester Academic Sciences Health Centre, Respiratory Research Group, University of Manchester, University Hospital South Manchester, Southmoor Road, Manchester M23 9LT, UK"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Manchester Academic Health Sciences Centre, South Manchester University Hospital NHS Foundation Trust, Manchester, United Kingdom",
+          "institution_ids": [
+            "https://openalex.org/I2799725268"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Odense University Hospital and University of Southern Denmark, Odense, Denmark",
+          "institution_ids": [
+            "https://openalex.org/I177969490",
+            "https://openalex.org/I2801498763"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Manchester Academic Sciences Health Centre, Respiratory Research Group, University of Manchester, University Hospital South Manchester, Southmoor Road, Manchester M23 9LT, UK",
+          "institution_ids": [
+            "https://openalex.org/I2799725268"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5064137195",
+        "display_name": "Suzanne S. Hurd",
+        "orcid": null
+      },
+      "institutions": [],
+      "countries": [],
+      "is_corresponding": false,
+      "raw_author_name": "Suzanne S. Hurd",
+      "raw_affiliation_strings": [
+        "Global Initiative for Chronic Obstructive Lung Disease, Vancouver, Washington"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Global Initiative for Chronic Obstructive Lung Disease, Vancouver, Washington",
+          "institution_ids": []
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5054165025",
+        "display_name": "\u00c0lvar Agust\u00ed",
+        "orcid": "https://orcid.org/0000-0003-3271-3788"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I71999127",
+          "display_name": "Universitat de Barcelona",
+          "ror": "https://ror.org/021018s57",
+          "country_code": "ES",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I71999127"
+          ]
+        }
+      ],
+      "countries": [
+        "ES"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Alvar G. Agust\u00ed",
+      "raw_affiliation_strings": [
+        "Hospital Cl\u00ednic, Universitat de Barcelona, Barcelona, Spain"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Hospital Cl\u00ednic, Universitat de Barcelona, Barcelona, Spain",
+          "institution_ids": [
+            "https://openalex.org/I71999127"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5000958944",
+        "display_name": "Paul Jones",
+        "orcid": "https://orcid.org/0000-0001-6087-9182"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I165862685",
+          "display_name": "St George's, University of London",
+          "ror": "https://ror.org/040f08y74",
+          "country_code": "GB",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I124357947",
+            "https://openalex.org/I165862685"
+          ]
+        }
+      ],
+      "countries": [
+        "GB"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Paul W. Jones",
+      "raw_affiliation_strings": [
+        "St George\u2019s Hospital Medical School, London, United Kingdom"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "St George\u2019s Hospital Medical School, London, United Kingdom",
+          "institution_ids": [
+            "https://openalex.org/I165862685"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5059684830",
+        "display_name": "Claus Vogelmeier",
+        "orcid": "https://orcid.org/0000-0002-9798-2527"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I200763008",
+          "display_name": "Justus-Liebig-Universit\u00e4t Gie\u00dfen",
+          "ror": "https://ror.org/033eqas34",
+          "country_code": "DE",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I200763008"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I268975460",
+          "display_name": "Universit\u00e4tsklinikum Gie\u00dfen und Marburg",
+          "ror": "https://ror.org/032nzv584",
+          "country_code": "DE",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I268975460"
+          ]
+        }
+      ],
+      "countries": [
+        "DE"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Claus Vogelmeier",
+      "raw_affiliation_strings": [
+        "University of Gie\u00dfen and Marburg School of Medicine, Marburg Germany"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "University of Gie\u00dfen and Marburg School of Medicine, Marburg Germany",
+          "institution_ids": [
+            "https://openalex.org/I268975460",
+            "https://openalex.org/I200763008"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5052712328",
+        "display_name": "Antonio Anzueto",
+        "orcid": "https://orcid.org/0000-0002-7007-588X"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I165951966",
+          "display_name": "The University of Texas at San Antonio Health Science Center",
+          "ror": "https://ror.org/02f6dcw23",
+          "country_code": "US",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I165951966",
+            "https://openalex.org/I45438204"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Antonio Anzueto",
+      "raw_affiliation_strings": [
+        "University of Texas Health Science Center, San Antonio, Texas"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "University of Texas Health Science Center, San Antonio, Texas",
+          "institution_ids": [
+            "https://openalex.org/I165951966"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5030258071",
+        "display_name": "Peter J. Barnes",
+        "orcid": "https://orcid.org/0000-0002-5122-4018"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I2801572420",
+          "display_name": "British Lung Foundation",
+          "ror": "https://ror.org/05qnwyb92",
+          "country_code": "GB",
+          "type": "nonprofit",
+          "lineage": [
+            "https://openalex.org/I2801572420"
+          ]
+        }
+      ],
+      "countries": [
+        "GB"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Peter J. Barnes",
+      "raw_affiliation_strings": [
+        "National Heart and Lung Institute, London, United Kingdom"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "National Heart and Lung Institute, London, United Kingdom",
+          "institution_ids": [
+            "https://openalex.org/I2801572420"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5010278392",
+        "display_name": "Leonardo M. Fabbri",
+        "orcid": "https://orcid.org/0000-0001-8894-1689"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I122346577",
+          "display_name": "University of Modena and Reggio Emilia",
+          "ror": "https://ror.org/02d4c4y02",
+          "country_code": "IT",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I122346577"
+          ]
+        }
+      ],
+      "countries": [
+        "IT"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Leonardo M. Fabbri",
+      "raw_affiliation_strings": [
+        "University of Modena and Reggio Emilia, Modena, Italy"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "University of Modena and Reggio Emilia, Modena, Italy",
+          "institution_ids": [
+            "https://openalex.org/I122346577"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5100767595",
+        "display_name": "Fernando J. Mart\u00ednez",
+        "orcid": "https://orcid.org/0000-0002-2412-3182"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I27837315",
+          "display_name": "University of Michigan",
+          "ror": "https://ror.org/00jmfr291",
+          "country_code": "US",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I27837315"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Fernando J. Martinez",
+      "raw_affiliation_strings": [
+        "University of Michigan School of Medicine, Ann Arbor, Michigan"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "University of Michigan School of Medicine, Ann Arbor, Michigan",
+          "institution_ids": [
+            "https://openalex.org/I27837315"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5081243390",
+        "display_name": "Masaharu Nishimura",
+        "orcid": "https://orcid.org/0000-0002-6456-4361"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I205349734",
+          "display_name": "Hokkaido University",
+          "ror": "https://ror.org/02e16g702",
+          "country_code": "JP",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I205349734"
+          ]
+        }
+      ],
+      "countries": [
+        "JP"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Masaharu Nishimura",
+      "raw_affiliation_strings": [
+        "Hokkaido University School of Medicine, Sapporo, Japan"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Hokkaido University School of Medicine, Sapporo, Japan",
+          "institution_ids": [
+            "https://openalex.org/I205349734"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5010056224",
+        "display_name": "Robert A. Stockley",
+        "orcid": "https://orcid.org/0000-0003-3726-1207"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I4210136696",
+          "display_name": "NIHR Surgical Reconstruction and Microbiology Research Centre",
+          "ror": "https://ror.org/042sjcz88",
+          "country_code": "GB",
+          "type": "facility",
+          "lineage": [
+            "https://openalex.org/I34931013",
+            "https://openalex.org/I4210136696"
+          ]
+        }
+      ],
+      "countries": [
+        "GB"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Robert A. Stockley",
+      "raw_affiliation_strings": [
+        "University Hospitals Birmingham, Birmingham, United Kingdom; and"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "University Hospitals Birmingham, Birmingham, United Kingdom; and",
+          "institution_ids": [
+            "https://openalex.org/I4210136696"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5042188739",
+        "display_name": "Don D. Sin",
+        "orcid": "https://orcid.org/0000-0002-0756-6643"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I141945490",
+          "display_name": "University of British Columbia",
+          "ror": "https://ror.org/03rmrcq20",
+          "country_code": "CA",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I141945490"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I2801362399",
+          "display_name": "St. Paul's Hospital",
+          "ror": "https://ror.org/00wzdr059",
+          "country_code": "CA",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I2801362399"
+          ]
+        }
+      ],
+      "countries": [
+        "CA"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Don D. Sin",
+      "raw_affiliation_strings": [
+        "St Paul\u2019s Hospital, Vancouver, Canada",
+        "University of British Columbia"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "St Paul\u2019s Hospital, Vancouver, Canada",
+          "institution_ids": [
+            "https://openalex.org/I2801362399"
+          ]
+        },
+        {
+          "raw_affiliation_string": "University of British Columbia",
+          "institution_ids": [
+            "https://openalex.org/I141945490"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "last",
+      "author": {
+        "id": "https://openalex.org/A5110223271",
+        "display_name": "Roberto Rodr\u00edguez-Roisin",
+        "orcid": null
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I71999127",
+          "display_name": "Universitat de Barcelona",
+          "ror": "https://ror.org/021018s57",
+          "country_code": "ES",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I71999127"
+          ]
+        }
+      ],
+      "countries": [
+        "ES"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Roberto Rodriguez-Roisin",
+      "raw_affiliation_strings": [
+        "Hospital Cl\u00ednic, Universitat de Barcelona, Barcelona, Spain"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Hospital Cl\u00ednic, Universitat de Barcelona, Barcelona, Spain",
+          "institution_ids": [
+            "https://openalex.org/I71999127"
+          ]
+        }
+      ]
+    }
+  ],
+  "institutions": [],
+  "countries_distinct_count": 8,
+  "institutions_distinct_count": 15,
+  "corresponding_author_ids": [],
+  "corresponding_institution_ids": [],
+  "apc_list": null,
+  "apc_paid": null,
+  "fwci": 1150.9848,
+  "has_fulltext": true,
+  "cited_by_count": 16101,
+  "citation_normalized_percentile": {
+    "value": 1.0,
+    "is_in_top_1_percent": true,
+    "is_in_top_10_percent": true
+  },
+  "cited_by_percentile_year": {
+    "min": 99,
+    "max": 100
+  },
+  "biblio": {
+    "volume": "187",
+    "issue": "4",
+    "first_page": "347",
+    "last_page": "365"
+  },
+  "is_retracted": false,
+  "is_paratext": false,
+  "is_xpac": false,
+  "primary_topic": {
+    "id": "https://openalex.org/T10143",
+    "display_name": "Chronic Obstructive Pulmonary Disease (COPD) Research",
+    "score": 1.0,
+    "subfield": {
+      "id": "https://openalex.org/subfields/2740",
+      "display_name": "Pulmonary and Respiratory Medicine"
+    },
+    "field": {
+      "id": "https://openalex.org/fields/27",
+      "display_name": "Medicine"
+    },
+    "domain": {
+      "id": "https://openalex.org/domains/4",
+      "display_name": "Health Sciences"
+    }
+  },
+  "topics": [
+    {
+      "id": "https://openalex.org/T10143",
+      "display_name": "Chronic Obstructive Pulmonary Disease (COPD) Research",
+      "score": 1.0,
+      "subfield": {
+        "id": "https://openalex.org/subfields/2740",
+        "display_name": "Pulmonary and Respiratory Medicine"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/27",
+        "display_name": "Medicine"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/4",
+        "display_name": "Health Sciences"
+      }
+    },
+    {
+      "id": "https://openalex.org/T10322",
+      "display_name": "Respiratory Support and Mechanisms",
+      "score": 0.9975000023841858,
+      "subfield": {
+        "id": "https://openalex.org/subfields/2740",
+        "display_name": "Pulmonary and Respiratory Medicine"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/27",
+        "display_name": "Medicine"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/4",
+        "display_name": "Health Sciences"
+      }
+    },
+    {
+      "id": "https://openalex.org/T10051",
+      "display_name": "Asthma and respiratory diseases",
+      "score": 0.9848999977111816,
+      "subfield": {
+        "id": "https://openalex.org/subfields/2737",
+        "display_name": "Physiology"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/27",
+        "display_name": "Medicine"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/4",
+        "display_name": "Health Sciences"
+      }
+    }
+  ],
+  "keywords": [
+    {
+      "id": "https://openalex.org/keywords/medicine",
+      "display_name": "Medicine",
+      "score": 0.9656769037246704
+    },
+    {
+      "id": "https://openalex.org/keywords/pulmonary-disease",
+      "display_name": "Pulmonary disease",
+      "score": 0.8013339042663574
+    },
+    {
+      "id": "https://openalex.org/keywords/copd",
+      "display_name": "COPD",
+      "score": 0.6485558748245239
+    },
+    {
+      "id": "https://openalex.org/keywords/intensive-care-medicine",
+      "display_name": "Intensive care medicine",
+      "score": 0.6456799507141113
+    },
+    {
+      "id": "https://openalex.org/keywords/disease-management",
+      "display_name": "Disease management",
+      "score": 0.5511153340339661
+    },
+    {
+      "id": "https://openalex.org/keywords/management-strategy",
+      "display_name": "Management strategy",
+      "score": 0.4185114800930023
+    },
+    {
+      "id": "https://openalex.org/keywords/disease",
+      "display_name": "Disease",
+      "score": 0.34827229380607605
+    },
+    {
+      "id": "https://openalex.org/keywords/internal-medicine",
+      "display_name": "Internal medicine",
+      "score": 0.2381497323513031
+    }
+  ],
+  "concepts": [
+    {
+      "id": "https://openalex.org/C71924100",
+      "wikidata": "https://www.wikidata.org/wiki/Q11190",
+      "display_name": "Medicine",
+      "level": 0,
+      "score": 0.9656769037246704
+    },
+    {
+      "id": "https://openalex.org/C2992779976",
+      "wikidata": "https://www.wikidata.org/wiki/Q3286546",
+      "display_name": "Pulmonary disease",
+      "level": 2,
+      "score": 0.8013339042663574
+    },
+    {
+      "id": "https://openalex.org/C2776780178",
+      "wikidata": "https://www.wikidata.org/wiki/Q199804",
+      "display_name": "COPD",
+      "level": 2,
+      "score": 0.6485558748245239
+    },
+    {
+      "id": "https://openalex.org/C177713679",
+      "wikidata": "https://www.wikidata.org/wiki/Q679690",
+      "display_name": "Intensive care medicine",
+      "level": 1,
+      "score": 0.6456799507141113
+    },
+    {
+      "id": "https://openalex.org/C2982889124",
+      "wikidata": "https://www.wikidata.org/wiki/Q107439039",
+      "display_name": "Disease management",
+      "level": 4,
+      "score": 0.5511153340339661
+    },
+    {
+      "id": "https://openalex.org/C2988054608",
+      "wikidata": "https://www.wikidata.org/wiki/Q2920921",
+      "display_name": "Management strategy",
+      "level": 2,
+      "score": 0.4185114800930023
+    },
+    {
+      "id": "https://openalex.org/C2779134260",
+      "wikidata": "https://www.wikidata.org/wiki/Q12136",
+      "display_name": "Disease",
+      "level": 2,
+      "score": 0.34827229380607605
+    },
+    {
+      "id": "https://openalex.org/C126322002",
+      "wikidata": "https://www.wikidata.org/wiki/Q11180",
+      "display_name": "Internal medicine",
+      "level": 1,
+      "score": 0.2381497323513031
+    },
+    {
+      "id": "https://openalex.org/C144133560",
+      "wikidata": "https://www.wikidata.org/wiki/Q4830453",
+      "display_name": "Business",
+      "level": 0,
+      "score": 0.0
+    },
+    {
+      "id": "https://openalex.org/C178550888",
+      "wikidata": "https://www.wikidata.org/wiki/Q2043282",
+      "display_name": "Business administration",
+      "level": 1,
+      "score": 0.0
+    },
+    {
+      "id": "https://openalex.org/C2779734285",
+      "wikidata": "https://www.wikidata.org/wiki/Q11085",
+      "display_name": "Parkinson's disease",
+      "level": 3,
+      "score": 0.0
+    }
+  ],
+  "mesh": [
+    {
+      "descriptor_ui": "D006801",
+      "descriptor_name": "Humans",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D006801",
+      "descriptor_name": "Humans",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D006801",
+      "descriptor_name": "Humans",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D012307",
+      "descriptor_name": "Risk Factors",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D012307",
+      "descriptor_name": "Risk Factors",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D012307",
+      "descriptor_name": "Risk Factors",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D012720",
+      "descriptor_name": "Severity of Illness Index",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D012720",
+      "descriptor_name": "Severity of Illness Index",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D012720",
+      "descriptor_name": "Severity of Illness Index",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D013147",
+      "descriptor_name": "Spirometry",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D013147",
+      "descriptor_name": "Spirometry",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D013147",
+      "descriptor_name": "Spirometry",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D014943",
+      "descriptor_name": "Global Health",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D014943",
+      "descriptor_name": "Global Health",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D014943",
+      "descriptor_name": "Global Health",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D017410",
+      "descriptor_name": "Practice Guidelines as Topic",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D017410",
+      "descriptor_name": "Practice Guidelines as Topic",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D017410",
+      "descriptor_name": "Practice Guidelines as Topic",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D029424",
+      "descriptor_name": "Pulmonary Disease, Chronic Obstructive",
+      "qualifier_ui": "Q000175",
+      "qualifier_name": "diagnosis",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D029424",
+      "descriptor_name": "Pulmonary Disease, Chronic Obstructive",
+      "qualifier_ui": "Q000175",
+      "qualifier_name": "diagnosis",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D029424",
+      "descriptor_name": "Pulmonary Disease, Chronic Obstructive",
+      "qualifier_ui": "Q000175",
+      "qualifier_name": "diagnosis",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D029424",
+      "descriptor_name": "Pulmonary Disease, Chronic Obstructive",
+      "qualifier_ui": "Q000517",
+      "qualifier_name": "prevention & control",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D029424",
+      "descriptor_name": "Pulmonary Disease, Chronic Obstructive",
+      "qualifier_ui": "Q000517",
+      "qualifier_name": "prevention & control",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D029424",
+      "descriptor_name": "Pulmonary Disease, Chronic Obstructive",
+      "qualifier_ui": "Q000517",
+      "qualifier_name": "prevention & control",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D029424",
+      "descriptor_name": "Pulmonary Disease, Chronic Obstructive",
+      "qualifier_ui": "Q000628",
+      "qualifier_name": "therapy",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D029424",
+      "descriptor_name": "Pulmonary Disease, Chronic Obstructive",
+      "qualifier_ui": "Q000628",
+      "qualifier_name": "therapy",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D029424",
+      "descriptor_name": "Pulmonary Disease, Chronic Obstructive",
+      "qualifier_ui": "Q000628",
+      "qualifier_name": "therapy",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D038622",
+      "descriptor_name": "Internationality",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D038622",
+      "descriptor_name": "Internationality",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D038622",
+      "descriptor_name": "Internationality",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    }
+  ],
+  "locations_count": 6,
+  "locations": [
+    {
+      "id": "doi:10.1164/rccm.201204-0596pp",
+      "is_oa": false,
+      "landing_page_url": "https://doi.org/10.1164/rccm.201204-0596pp",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S93356601",
+        "display_name": "American Journal of Respiratory and Critical Care Medicine",
+        "issn_l": "1073-449X",
+        "issn": [
+          "1073-449X",
+          "1535-4970"
+        ],
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": true,
+        "host_organization": "https://openalex.org/P4310316311",
+        "host_organization_name": "American Thoracic Society",
+        "host_organization_lineage": [
+          "https://openalex.org/P4310316311"
+        ],
+        "host_organization_lineage_names": [
+          "American Thoracic Society"
+        ],
+        "type": "journal"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "publishedVersion",
+      "is_accepted": true,
+      "is_published": true,
+      "raw_source_name": "American Journal of Respiratory and Critical Care Medicine",
+      "raw_type": "journal-article"
+    },
+    {
+      "id": "pmid:22878278",
+      "is_oa": false,
+      "landing_page_url": "https://pubmed.ncbi.nlm.nih.gov/22878278",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4306525036",
+        "display_name": "PubMed",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I1299303238",
+        "host_organization_name": "National Institutes of Health",
+        "host_organization_lineage": [
+          "https://openalex.org/I1299303238"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "publishedVersion",
+      "is_accepted": true,
+      "is_published": true,
+      "raw_source_name": "American journal of respiratory and critical care medicine",
+      "raw_type": null
+    },
+    {
+      "id": "pmh:oai:pure.atira.dk:openaire_cris_publications/514ccafe-04b0-43ab-9e75-048e50e075d5",
+      "is_oa": false,
+      "landing_page_url": "https://research.manchester.ac.uk/en/publications/514ccafe-04b0-43ab-9e75-048e50e075d5",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4306400662",
+        "display_name": "Research Explorer (The University of Manchester)",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I28407311",
+        "host_organization_name": "University of Manchester",
+        "host_organization_lineage": [
+          "https://openalex.org/I28407311"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "publishedVersion",
+      "is_accepted": true,
+      "is_published": true,
+      "raw_source_name": "Vestbo, J, Vestbo, J, Hurd, S S, Agust\u00ed, A G, Jones, P W, Vogelmeier, C, Anzueto, A, Barnes, P J, Fabbri, L M, Martinez, F J, Nishimura, M, Stockley, R A, Sin, D D & Rodriguez-Roisin, R 2013, 'Global strategy for the diagnosis, management, and prevention of chronic obstructive pulmonary disease GOLD executive summary', American Journal of Respiratory and Critical Care Medicine, vol. 187, no. 4, pp. 347-365. https://doi.org/10.1164/rccm.201204-0596PP",
+      "raw_type": "info:eu-repo/semantics/article"
+    },
+    {
+      "id": "pmh:oai:sdu.dk:publications/0dd3d1a6-7cac-4abb-ba3b-0b634a9d1792",
+      "is_oa": false,
+      "landing_page_url": "https://portal.findresearcher.sdu.dk/da/publications/0dd3d1a6-7cac-4abb-ba3b-0b634a9d1792",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4306400423",
+        "display_name": "University of Southern Denmark Research Portal (University of Southern Denmark)",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I177969490",
+        "host_organization_name": "University of Southern Denmark",
+        "host_organization_lineage": [
+          "https://openalex.org/I177969490"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "publishedVersion",
+      "is_accepted": true,
+      "is_published": true,
+      "raw_source_name": "Vestbo, J, Hurd, S S, Agusti, A G, Jones, P W, Vogelmeier, C, Anzueto, A, Barnes, P J, Fabbri, L M, Martinez, F J, Nishimura, M, Stockley, R A, Sin, D D & Rodriguez-Roisin, R 2013, 'Global Strategy for the Diagnosis, Management and Prevention of Chronic Obstructive Pulmonary Disease, GOLD Executive Summary', American Journal of Respiratory and Critical Care Medicine, vol. 187, no. 4, pp. 347-365. https://doi.org/10.1164/rccm.201204-0596PP",
+      "raw_type": "info:eu-repo/semantics/article"
+    },
+    {
+      "id": "pmh:oai:pure.atira.dk:publications/514ccafe-04b0-43ab-9e75-048e50e075d5",
+      "is_oa": true,
+      "landing_page_url": "https://www.research.manchester.ac.uk/portal/en/publications/global-strategy-for-the-diagnosis-management-and-prevention-of-chronic-obstructive-pulmonary-disease-gold-executive-summary(514ccafe-04b0-43ab-9e75-048e50e075d5).html",
+      "pdf_url": "http://ajrccm.atsjournals.org/content/187/4/347.full.pdf+html",
+      "source": {
+        "id": "https://openalex.org/S4306400662",
+        "display_name": "Research Explorer (The University of Manchester)",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I28407311",
+        "host_organization_name": "University of Manchester",
+        "host_organization_lineage": [
+          "https://openalex.org/I28407311"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "submittedVersion",
+      "is_accepted": false,
+      "is_published": false,
+      "raw_source_name": "Vestbo, J, Vestbo, J, Hurd, S S, Agust\u00ed, A G, Jones, P W, Vogelmeier, C, Anzueto, A, Barnes, P J, Fabbri, L M, Martinez, F J, Nishimura, M, Stockley, R A, Sin, D D & Rodriguez-Roisin, R 2013, 'Global strategy for the diagnosis, management, and prevention of chronic obstructive pulmonary disease GOLD executive summary', American Journal of Respiratory and Critical Care Medicine, vol. 187, no. 4, pp. 347-365. https://doi.org/10.1164/rccm.201204-0596PP",
+      "raw_type": "info:eu-repo/semantics/article"
+    },
+    {
+      "id": "pmh:oai:iris.unimore.it:11380/904090",
+      "is_oa": true,
+      "landing_page_url": "http://hdl.handle.net/11380/904090",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4306400718",
+        "display_name": "IRIS UNIMORE (University of Modena and Reggio Emilia)",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I122346577",
+        "host_organization_name": "University of Modena and Reggio Emilia",
+        "host_organization_lineage": [
+          "https://openalex.org/I122346577"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": "cc-by",
+      "license_id": "https://openalex.org/licenses/cc-by",
+      "version": "submittedVersion",
+      "is_accepted": false,
+      "is_published": false,
+      "raw_source_name": null,
+      "raw_type": "info:eu-repo/semantics/article"
+    }
+  ],
+  "best_oa_location": {
+    "id": "pmh:oai:pure.atira.dk:publications/514ccafe-04b0-43ab-9e75-048e50e075d5",
+    "is_oa": true,
+    "landing_page_url": "https://www.research.manchester.ac.uk/portal/en/publications/global-strategy-for-the-diagnosis-management-and-prevention-of-chronic-obstructive-pulmonary-disease-gold-executive-summary(514ccafe-04b0-43ab-9e75-048e50e075d5).html",
+    "pdf_url": "http://ajrccm.atsjournals.org/content/187/4/347.full.pdf+html",
+    "source": {
+      "id": "https://openalex.org/S4306400662",
+      "display_name": "Research Explorer (The University of Manchester)",
+      "issn_l": null,
+      "issn": null,
+      "is_oa": false,
+      "is_in_doaj": false,
+      "is_core": false,
+      "host_organization": "https://openalex.org/I28407311",
+      "host_organization_name": "University of Manchester",
+      "host_organization_lineage": [
+        "https://openalex.org/I28407311"
+      ],
+      "host_organization_lineage_names": [],
+      "type": "repository"
+    },
+    "license": null,
+    "license_id": null,
+    "version": "submittedVersion",
+    "is_accepted": false,
+    "is_published": false,
+    "raw_source_name": "Vestbo, J, Vestbo, J, Hurd, S S, Agust\u00ed, A G, Jones, P W, Vogelmeier, C, Anzueto, A, Barnes, P J, Fabbri, L M, Martinez, F J, Nishimura, M, Stockley, R A, Sin, D D & Rodriguez-Roisin, R 2013, 'Global strategy for the diagnosis, management, and prevention of chronic obstructive pulmonary disease GOLD executive summary', American Journal of Respiratory and Critical Care Medicine, vol. 187, no. 4, pp. 347-365. https://doi.org/10.1164/rccm.201204-0596PP",
+    "raw_type": "info:eu-repo/semantics/article"
+  },
+  "sustainable_development_goals": [
+    {
+      "score": 0.4300000071525574,
+      "display_name": "Partnerships for the goals",
+      "id": "https://metadata.un.org/sdg/17"
+    }
+  ],
+  "awards": [
+    {
+      "id": "https://openalex.org/G959482419",
+      "display_name": "NIHR Senior Investigator Award",
+      "funder_award_id": "NF-SI-0611-10148",
+      "funder_id": "https://openalex.org/F4320319990",
+      "funder_display_name": "National Institute for Health and Care Research"
+    }
+  ],
+  "funders": [
+    {
+      "id": "https://openalex.org/F4320319990",
+      "display_name": "National Institute for Health and Care Research",
+      "ror": "https://ror.org/0187kwz08"
+    }
+  ],
+  "has_content": {
+    "pdf": true,
+    "grobid_xml": true
+  },
+  "content_urls": {
+    "pdf": "https://content.openalex.org/works/W2127951128.pdf",
+    "grobid_xml": "https://content.openalex.org/works/W2127951128.grobid-xml"
+  },
+  "referenced_works_count": 770,
+  "referenced_works": [
+    "https://openalex.org/W14198678",
+    "https://openalex.org/W27724600",
+    "https://openalex.org/W36968363",
+    "https://openalex.org/W48620461",
+    "https://openalex.org/W57229621",
+    "https://openalex.org/W58518567",
+    "https://openalex.org/W67364711",
+    "https://openalex.org/W87834436",
+    "https://openalex.org/W105312897",
+    "https://openalex.org/W107954301",
+    "https://openalex.org/W116496630",
+    "https://openalex.org/W139152004",
+    "https://openalex.org/W151379835",
+    "https://openalex.org/W178928073",
+    "https://openalex.org/W188982345",
+    "https://openalex.org/W199030424",
+    "https://openalex.org/W201532632",
+    "https://openalex.org/W203985185",
+    "https://openalex.org/W287874598",
+    "https://openalex.org/W578570186",
+    "https://openalex.org/W981585237",
+    "https://openalex.org/W1496026319",
+    "https://openalex.org/W1497098097",
+    "https://openalex.org/W1498620534",
+    "https://openalex.org/W1503927696",
+    "https://openalex.org/W1509609699",
+    "https://openalex.org/W1511655009",
+    "https://openalex.org/W1534736802",
+    "https://openalex.org/W1541516594",
+    "https://openalex.org/W1543757893",
+    "https://openalex.org/W1547990636",
+    "https://openalex.org/W1568878097",
+    "https://openalex.org/W1578068615",
+    "https://openalex.org/W1583327662",
+    "https://openalex.org/W1667862756",
+    "https://openalex.org/W1690452867",
+    "https://openalex.org/W1730235132",
+    "https://openalex.org/W1744311214",
+    "https://openalex.org/W1793308124",
+    "https://openalex.org/W1803518525",
+    "https://openalex.org/W1805172352",
+    "https://openalex.org/W1809529821",
+    "https://openalex.org/W1836470756",
+    "https://openalex.org/W1842157187",
+    "https://openalex.org/W1847217811",
+    "https://openalex.org/W1862992937",
+    "https://openalex.org/W1865292579",
+    "https://openalex.org/W1873214859",
+    "https://openalex.org/W1883021630",
+    "https://openalex.org/W1892949664",
+    "https://openalex.org/W1894919597",
+    "https://openalex.org/W1903005360",
+    "https://openalex.org/W1906590143",
+    "https://openalex.org/W1920721512",
+    "https://openalex.org/W1928093944",
+    "https://openalex.org/W1929470552",
+    "https://openalex.org/W1929769541",
+    "https://openalex.org/W1950113648",
+    "https://openalex.org/W1955383587",
+    "https://openalex.org/W1959243535",
+    "https://openalex.org/W1960263711",
+    "https://openalex.org/W1962936268",
+    "https://openalex.org/W1963710622",
+    "https://openalex.org/W1963743970",
+    "https://openalex.org/W1964164058",
+    "https://openalex.org/W1964350575",
+    "https://openalex.org/W1964408074",
+    "https://openalex.org/W1964964949",
+    "https://openalex.org/W1965237664",
+    "https://openalex.org/W1965632753",
+    "https://openalex.org/W1965713984",
+    "https://openalex.org/W1966224713",
+    "https://openalex.org/W1967188184",
+    "https://openalex.org/W1968406824",
+    "https://openalex.org/W1969227156",
+    "https://openalex.org/W1969490421",
+    "https://openalex.org/W1969502320",
+    "https://openalex.org/W1969665190",
+    "https://openalex.org/W1970203735",
+    "https://openalex.org/W1970232637",
+    "https://openalex.org/W1971801931",
+    "https://openalex.org/W1972255710",
+    "https://openalex.org/W1972718711",
+    "https://openalex.org/W1973380621",
+    "https://openalex.org/W1973530626",
+    "https://openalex.org/W1973546492",
+    "https://openalex.org/W1973710167",
+    "https://openalex.org/W1973742535",
+    "https://openalex.org/W1974992337",
+    "https://openalex.org/W1975707290",
+    "https://openalex.org/W1975803576",
+    "https://openalex.org/W1976214447",
+    "https://openalex.org/W1976285959",
+    "https://openalex.org/W1976321904",
+    "https://openalex.org/W1976335180",
+    "https://openalex.org/W1977276041",
+    "https://openalex.org/W1978722138",
+    "https://openalex.org/W1978722218",
+    "https://openalex.org/W1979026688",
+    "https://openalex.org/W1979099938",
+    "https://openalex.org/W1979518810",
+    "https://openalex.org/W1980359426",
+    "https://openalex.org/W1980789906",
+    "https://openalex.org/W1981149710",
+    "https://openalex.org/W1981332436",
+    "https://openalex.org/W1981378561",
+    "https://openalex.org/W1981681632",
+    "https://openalex.org/W1981878902",
+    "https://openalex.org/W1982193727",
+    "https://openalex.org/W1982749548",
+    "https://openalex.org/W1983387970",
+    "https://openalex.org/W1983567231",
+    "https://openalex.org/W1983701497",
+    "https://openalex.org/W1984378055",
+    "https://openalex.org/W1985096201",
+    "https://openalex.org/W1986083986",
+    "https://openalex.org/W1986142113",
+    "https://openalex.org/W1986334265",
+    "https://openalex.org/W1987138414",
+    "https://openalex.org/W1987555297",
+    "https://openalex.org/W1988645485",
+    "https://openalex.org/W1989309889",
+    "https://openalex.org/W1989448936",
+    "https://openalex.org/W1989738601",
+    "https://openalex.org/W1990045721",
+    "https://openalex.org/W1990099661",
+    "https://openalex.org/W1990674750",
+    "https://openalex.org/W1991648511",
+    "https://openalex.org/W1992041137",
+    "https://openalex.org/W1992525727",
+    "https://openalex.org/W1993094117",
+    "https://openalex.org/W1993165834",
+    "https://openalex.org/W1993402824",
+    "https://openalex.org/W1993774985",
+    "https://openalex.org/W1993790465",
+    "https://openalex.org/W1994205314",
+    "https://openalex.org/W1994706088",
+    "https://openalex.org/W1994771738",
+    "https://openalex.org/W1995385974",
+    "https://openalex.org/W1995818471",
+    "https://openalex.org/W1995902693",
+    "https://openalex.org/W1996136023",
+    "https://openalex.org/W1996214993",
+    "https://openalex.org/W1996753343",
+    "https://openalex.org/W1997243264",
+    "https://openalex.org/W1997404684",
+    "https://openalex.org/W1997631109",
+    "https://openalex.org/W1997709939",
+    "https://openalex.org/W1998218749",
+    "https://openalex.org/W1998547311",
+    "https://openalex.org/W1998627865",
+    "https://openalex.org/W1999132346",
+    "https://openalex.org/W1999226863",
+    "https://openalex.org/W1999957902",
+    "https://openalex.org/W2000430593",
+    "https://openalex.org/W2000498200",
+    "https://openalex.org/W2001118906",
+    "https://openalex.org/W2001280173",
+    "https://openalex.org/W2002131329",
+    "https://openalex.org/W2002726093",
+    "https://openalex.org/W2004065539",
+    "https://openalex.org/W2004307030",
+    "https://openalex.org/W2005117940",
+    "https://openalex.org/W2005455250",
+    "https://openalex.org/W2005976577",
+    "https://openalex.org/W2006193143",
+    "https://openalex.org/W2006734783",
+    "https://openalex.org/W2007111702",
+    "https://openalex.org/W2007128509",
+    "https://openalex.org/W2007402405",
+    "https://openalex.org/W2007543639",
+    "https://openalex.org/W2007561683",
+    "https://openalex.org/W2007664092",
+    "https://openalex.org/W2007810665",
+    "https://openalex.org/W2009727547",
+    "https://openalex.org/W2009933261",
+    "https://openalex.org/W2010263302",
+    "https://openalex.org/W2010442512",
+    "https://openalex.org/W2010760854",
+    "https://openalex.org/W2011866978",
+    "https://openalex.org/W2011878094",
+    "https://openalex.org/W2012284731",
+    "https://openalex.org/W2012519534",
+    "https://openalex.org/W2012556907",
+    "https://openalex.org/W2012772633",
+    "https://openalex.org/W2013181711",
+    "https://openalex.org/W2013853444",
+    "https://openalex.org/W2013981256",
+    "https://openalex.org/W2014090163",
+    "https://openalex.org/W2014209668",
+    "https://openalex.org/W2014266602",
+    "https://openalex.org/W2014323379",
+    "https://openalex.org/W2014651672",
+    "https://openalex.org/W2015022520",
+    "https://openalex.org/W2015588423",
+    "https://openalex.org/W2015850770",
+    "https://openalex.org/W2016406628",
+    "https://openalex.org/W2016540408",
+    "https://openalex.org/W2017482669",
+    "https://openalex.org/W2017483359",
+    "https://openalex.org/W2017694734",
+    "https://openalex.org/W2017844222",
+    "https://openalex.org/W2018794918",
+    "https://openalex.org/W2019601163",
+    "https://openalex.org/W2019691009",
+    "https://openalex.org/W2019862627",
+    "https://openalex.org/W2019902477",
+    "https://openalex.org/W2020539152",
+    "https://openalex.org/W2020852059",
+    "https://openalex.org/W2022483951",
+    "https://openalex.org/W2022584773",
+    "https://openalex.org/W2022821656",
+    "https://openalex.org/W2024182441",
+    "https://openalex.org/W2024554442",
+    "https://openalex.org/W2024879415",
+    "https://openalex.org/W2024960729",
+    "https://openalex.org/W2024987870",
+    "https://openalex.org/W2025624155",
+    "https://openalex.org/W2026697880",
+    "https://openalex.org/W2027183169",
+    "https://openalex.org/W2027954146",
+    "https://openalex.org/W2027998544",
+    "https://openalex.org/W2028213575",
+    "https://openalex.org/W2028504820",
+    "https://openalex.org/W2029092599",
+    "https://openalex.org/W2029114978",
+    "https://openalex.org/W2030698901",
+    "https://openalex.org/W2030788115",
+    "https://openalex.org/W2031479986",
+    "https://openalex.org/W2031596375",
+    "https://openalex.org/W2032916639",
+    "https://openalex.org/W2033380992",
+    "https://openalex.org/W2034569022",
+    "https://openalex.org/W2034751196",
+    "https://openalex.org/W2035236156",
+    "https://openalex.org/W2036327819",
+    "https://openalex.org/W2036668098",
+    "https://openalex.org/W2037212022",
+    "https://openalex.org/W2037377025",
+    "https://openalex.org/W2037490315",
+    "https://openalex.org/W2037531835",
+    "https://openalex.org/W2038485127",
+    "https://openalex.org/W2038563503",
+    "https://openalex.org/W2039262820",
+    "https://openalex.org/W2039721686",
+    "https://openalex.org/W2040338567",
+    "https://openalex.org/W2040782437",
+    "https://openalex.org/W2040854754",
+    "https://openalex.org/W2041369332",
+    "https://openalex.org/W2042792363",
+    "https://openalex.org/W2042848969",
+    "https://openalex.org/W2044081787",
+    "https://openalex.org/W2044222765",
+    "https://openalex.org/W2044803705",
+    "https://openalex.org/W2044871409",
+    "https://openalex.org/W2045590962",
+    "https://openalex.org/W2045616259",
+    "https://openalex.org/W2045749557",
+    "https://openalex.org/W2046013007",
+    "https://openalex.org/W2046306214",
+    "https://openalex.org/W2046470493",
+    "https://openalex.org/W2046501576",
+    "https://openalex.org/W2047068604",
+    "https://openalex.org/W2047317673",
+    "https://openalex.org/W2047925380",
+    "https://openalex.org/W2048010666",
+    "https://openalex.org/W2048059264",
+    "https://openalex.org/W2048254190",
+    "https://openalex.org/W2048571011",
+    "https://openalex.org/W2049010326",
+    "https://openalex.org/W2049565302",
+    "https://openalex.org/W2049781356",
+    "https://openalex.org/W2050159088",
+    "https://openalex.org/W2050340342",
+    "https://openalex.org/W2050716480",
+    "https://openalex.org/W2051124533",
+    "https://openalex.org/W2051156839",
+    "https://openalex.org/W2051394653",
+    "https://openalex.org/W2052869930",
+    "https://openalex.org/W2052977441",
+    "https://openalex.org/W2053025766",
+    "https://openalex.org/W2053457282",
+    "https://openalex.org/W2054043722",
+    "https://openalex.org/W2054326668",
+    "https://openalex.org/W2054350954",
+    "https://openalex.org/W2054495497",
+    "https://openalex.org/W2054931962",
+    "https://openalex.org/W2055669586",
+    "https://openalex.org/W2056267346",
+    "https://openalex.org/W2056703408",
+    "https://openalex.org/W2056765555",
+    "https://openalex.org/W2056824829",
+    "https://openalex.org/W2057880056",
+    "https://openalex.org/W2058010615",
+    "https://openalex.org/W2058052338",
+    "https://openalex.org/W2058505955",
+    "https://openalex.org/W2058566154",
+    "https://openalex.org/W2059828719",
+    "https://openalex.org/W2060124518",
+    "https://openalex.org/W2060578352",
+    "https://openalex.org/W2061083890",
+    "https://openalex.org/W2061693875",
+    "https://openalex.org/W2062131199",
+    "https://openalex.org/W2062624289",
+    "https://openalex.org/W2062734776",
+    "https://openalex.org/W2063292280",
+    "https://openalex.org/W2063524111",
+    "https://openalex.org/W2063581278",
+    "https://openalex.org/W2063608157",
+    "https://openalex.org/W2063830163",
+    "https://openalex.org/W2063945670",
+    "https://openalex.org/W2064497600",
+    "https://openalex.org/W2064497840",
+    "https://openalex.org/W2064864590",
+    "https://openalex.org/W2065175624",
+    "https://openalex.org/W2065753743",
+    "https://openalex.org/W2065763883",
+    "https://openalex.org/W2065952275",
+    "https://openalex.org/W2066161938",
+    "https://openalex.org/W2066247603",
+    "https://openalex.org/W2066725335",
+    "https://openalex.org/W2066781195",
+    "https://openalex.org/W2066880035",
+    "https://openalex.org/W2067022398",
+    "https://openalex.org/W2067349568",
+    "https://openalex.org/W2068362303",
+    "https://openalex.org/W2068420419",
+    "https://openalex.org/W2068789291",
+    "https://openalex.org/W2070032500",
+    "https://openalex.org/W2070344495",
+    "https://openalex.org/W2070504561",
+    "https://openalex.org/W2070822542",
+    "https://openalex.org/W2070935883",
+    "https://openalex.org/W2071002463",
+    "https://openalex.org/W2072373248",
+    "https://openalex.org/W2073206823",
+    "https://openalex.org/W2073432936",
+    "https://openalex.org/W2074251558",
+    "https://openalex.org/W2077398059",
+    "https://openalex.org/W2077523026",
+    "https://openalex.org/W2077661160",
+    "https://openalex.org/W2078010422",
+    "https://openalex.org/W2078622144",
+    "https://openalex.org/W2078669720",
+    "https://openalex.org/W2078734285",
+    "https://openalex.org/W2078854698",
+    "https://openalex.org/W2079451238",
+    "https://openalex.org/W2080270645",
+    "https://openalex.org/W2080420512",
+    "https://openalex.org/W2080522207",
+    "https://openalex.org/W2080904647",
+    "https://openalex.org/W2081284626",
+    "https://openalex.org/W2081866466",
+    "https://openalex.org/W2081920314",
+    "https://openalex.org/W2082150979",
+    "https://openalex.org/W2082258623",
+    "https://openalex.org/W2082385790",
+    "https://openalex.org/W2082671815",
+    "https://openalex.org/W2083646577",
+    "https://openalex.org/W2083756305",
+    "https://openalex.org/W2084702877",
+    "https://openalex.org/W2085032985",
+    "https://openalex.org/W2085069191",
+    "https://openalex.org/W2086593276",
+    "https://openalex.org/W2087010189",
+    "https://openalex.org/W2087261542",
+    "https://openalex.org/W2087573979",
+    "https://openalex.org/W2088022718",
+    "https://openalex.org/W2088802642",
+    "https://openalex.org/W2088889277",
+    "https://openalex.org/W2089016319",
+    "https://openalex.org/W2089695818",
+    "https://openalex.org/W2089870621",
+    "https://openalex.org/W2089985569",
+    "https://openalex.org/W2090085954",
+    "https://openalex.org/W2090110893",
+    "https://openalex.org/W2090242336",
+    "https://openalex.org/W2090380171",
+    "https://openalex.org/W2090456858",
+    "https://openalex.org/W2091169917",
+    "https://openalex.org/W2092157736",
+    "https://openalex.org/W2093218391",
+    "https://openalex.org/W2093921175",
+    "https://openalex.org/W2094545748",
+    "https://openalex.org/W2094759104",
+    "https://openalex.org/W2094851162",
+    "https://openalex.org/W2095688896",
+    "https://openalex.org/W2095955239",
+    "https://openalex.org/W2096189541",
+    "https://openalex.org/W2096264103",
+    "https://openalex.org/W2096411413",
+    "https://openalex.org/W2096506125",
+    "https://openalex.org/W2096517093",
+    "https://openalex.org/W2096634454",
+    "https://openalex.org/W2097223780",
+    "https://openalex.org/W2097243317",
+    "https://openalex.org/W2097279301",
+    "https://openalex.org/W2097667004",
+    "https://openalex.org/W2097914397",
+    "https://openalex.org/W2098115046",
+    "https://openalex.org/W2098643589",
+    "https://openalex.org/W2099186890",
+    "https://openalex.org/W2099233141",
+    "https://openalex.org/W2099327384",
+    "https://openalex.org/W2099380423",
+    "https://openalex.org/W2099507082",
+    "https://openalex.org/W2099676542",
+    "https://openalex.org/W2100273457",
+    "https://openalex.org/W2100607777",
+    "https://openalex.org/W2100847633",
+    "https://openalex.org/W2100984068",
+    "https://openalex.org/W2101081697",
+    "https://openalex.org/W2101182707",
+    "https://openalex.org/W2101787490",
+    "https://openalex.org/W2101874379",
+    "https://openalex.org/W2102197472",
+    "https://openalex.org/W2102215494",
+    "https://openalex.org/W2102246586",
+    "https://openalex.org/W2102293088",
+    "https://openalex.org/W2102435137",
+    "https://openalex.org/W2102443712",
+    "https://openalex.org/W2102638720",
+    "https://openalex.org/W2103562581",
+    "https://openalex.org/W2103614815",
+    "https://openalex.org/W2103809903",
+    "https://openalex.org/W2104008477",
+    "https://openalex.org/W2104636056",
+    "https://openalex.org/W2104718264",
+    "https://openalex.org/W2104902995",
+    "https://openalex.org/W2104982541",
+    "https://openalex.org/W2105249258",
+    "https://openalex.org/W2105597463",
+    "https://openalex.org/W2105623125",
+    "https://openalex.org/W2105843214",
+    "https://openalex.org/W2106060515",
+    "https://openalex.org/W2106592687",
+    "https://openalex.org/W2106667384",
+    "https://openalex.org/W2107045802",
+    "https://openalex.org/W2107345178",
+    "https://openalex.org/W2107547750",
+    "https://openalex.org/W2107752151",
+    "https://openalex.org/W2107792698",
+    "https://openalex.org/W2107829061",
+    "https://openalex.org/W2107932739",
+    "https://openalex.org/W2108032660",
+    "https://openalex.org/W2108242825",
+    "https://openalex.org/W2108363565",
+    "https://openalex.org/W2108426443",
+    "https://openalex.org/W2108461280",
+    "https://openalex.org/W2108580199",
+    "https://openalex.org/W2108600759",
+    "https://openalex.org/W2108660186",
+    "https://openalex.org/W2108687941",
+    "https://openalex.org/W2109027442",
+    "https://openalex.org/W2109685586",
+    "https://openalex.org/W2110367477",
+    "https://openalex.org/W2110378267",
+    "https://openalex.org/W2110783271",
+    "https://openalex.org/W2111052933",
+    "https://openalex.org/W2112278267",
+    "https://openalex.org/W2112318617",
+    "https://openalex.org/W2112334970",
+    "https://openalex.org/W2112355851",
+    "https://openalex.org/W2112575820",
+    "https://openalex.org/W2112884668",
+    "https://openalex.org/W2113163333",
+    "https://openalex.org/W2114064535",
+    "https://openalex.org/W2114152921",
+    "https://openalex.org/W2114361524",
+    "https://openalex.org/W2114423036",
+    "https://openalex.org/W2114477742",
+    "https://openalex.org/W2114554989",
+    "https://openalex.org/W2114742328",
+    "https://openalex.org/W2115081503",
+    "https://openalex.org/W2115405712",
+    "https://openalex.org/W2115819588",
+    "https://openalex.org/W2116141140",
+    "https://openalex.org/W2116525742",
+    "https://openalex.org/W2116784557",
+    "https://openalex.org/W2117331512",
+    "https://openalex.org/W2117389430",
+    "https://openalex.org/W2117531535",
+    "https://openalex.org/W2117739911",
+    "https://openalex.org/W2117837864",
+    "https://openalex.org/W2117985971",
+    "https://openalex.org/W2118094121",
+    "https://openalex.org/W2118127048",
+    "https://openalex.org/W2118175126",
+    "https://openalex.org/W2118197762",
+    "https://openalex.org/W2118228748",
+    "https://openalex.org/W2118269576",
+    "https://openalex.org/W2119217752",
+    "https://openalex.org/W2119274006",
+    "https://openalex.org/W2119348698",
+    "https://openalex.org/W2119374724",
+    "https://openalex.org/W2119507404",
+    "https://openalex.org/W2119767177",
+    "https://openalex.org/W2120157356",
+    "https://openalex.org/W2120374931",
+    "https://openalex.org/W2120439286",
+    "https://openalex.org/W2120629366",
+    "https://openalex.org/W2120751909",
+    "https://openalex.org/W2121628310",
+    "https://openalex.org/W2121914298",
+    "https://openalex.org/W2121954647",
+    "https://openalex.org/W2122237864",
+    "https://openalex.org/W2122340958",
+    "https://openalex.org/W2122716433",
+    "https://openalex.org/W2122735209",
+    "https://openalex.org/W2123272986",
+    "https://openalex.org/W2123518252",
+    "https://openalex.org/W2123597424",
+    "https://openalex.org/W2123772972",
+    "https://openalex.org/W2123875676",
+    "https://openalex.org/W2123964203",
+    "https://openalex.org/W2124386100",
+    "https://openalex.org/W2124531969",
+    "https://openalex.org/W2124879124",
+    "https://openalex.org/W2125078269",
+    "https://openalex.org/W2125522165",
+    "https://openalex.org/W2126091215",
+    "https://openalex.org/W2126254202",
+    "https://openalex.org/W2126306907",
+    "https://openalex.org/W2126475210",
+    "https://openalex.org/W2126640108",
+    "https://openalex.org/W2126805313",
+    "https://openalex.org/W2126980111",
+    "https://openalex.org/W2127327473",
+    "https://openalex.org/W2127355287",
+    "https://openalex.org/W2127789103",
+    "https://openalex.org/W2128057589",
+    "https://openalex.org/W2128211698",
+    "https://openalex.org/W2128275266",
+    "https://openalex.org/W2128351272",
+    "https://openalex.org/W2128508977",
+    "https://openalex.org/W2128723998",
+    "https://openalex.org/W2129546035",
+    "https://openalex.org/W2130052573",
+    "https://openalex.org/W2130894454",
+    "https://openalex.org/W2131068365",
+    "https://openalex.org/W2131351862",
+    "https://openalex.org/W2131452204",
+    "https://openalex.org/W2131626846",
+    "https://openalex.org/W2132128923",
+    "https://openalex.org/W2132286439",
+    "https://openalex.org/W2133119676",
+    "https://openalex.org/W2133343848",
+    "https://openalex.org/W2133437456",
+    "https://openalex.org/W2134188826",
+    "https://openalex.org/W2134510484",
+    "https://openalex.org/W2135298892",
+    "https://openalex.org/W2135422079",
+    "https://openalex.org/W2135819121",
+    "https://openalex.org/W2135931646",
+    "https://openalex.org/W2135939624",
+    "https://openalex.org/W2136304412",
+    "https://openalex.org/W2136536066",
+    "https://openalex.org/W2136564431",
+    "https://openalex.org/W2137056115",
+    "https://openalex.org/W2137068416",
+    "https://openalex.org/W2137344221",
+    "https://openalex.org/W2137576594",
+    "https://openalex.org/W2137969357",
+    "https://openalex.org/W2138312725",
+    "https://openalex.org/W2138336750",
+    "https://openalex.org/W2138788116",
+    "https://openalex.org/W2138944121",
+    "https://openalex.org/W2138958247",
+    "https://openalex.org/W2139302805",
+    "https://openalex.org/W2139347600",
+    "https://openalex.org/W2139602324",
+    "https://openalex.org/W2140066904",
+    "https://openalex.org/W2140606165",
+    "https://openalex.org/W2140760909",
+    "https://openalex.org/W2141034778",
+    "https://openalex.org/W2141086527",
+    "https://openalex.org/W2141468446",
+    "https://openalex.org/W2142025108",
+    "https://openalex.org/W2142096203",
+    "https://openalex.org/W2142243105",
+    "https://openalex.org/W2142250980",
+    "https://openalex.org/W2142284998",
+    "https://openalex.org/W2142724633",
+    "https://openalex.org/W2142784036",
+    "https://openalex.org/W2142927175",
+    "https://openalex.org/W2143105809",
+    "https://openalex.org/W2143454168",
+    "https://openalex.org/W2143535152",
+    "https://openalex.org/W2143663708",
+    "https://openalex.org/W2143891168",
+    "https://openalex.org/W2143904820",
+    "https://openalex.org/W2144292494",
+    "https://openalex.org/W2144682743",
+    "https://openalex.org/W2144711807",
+    "https://openalex.org/W2144851830",
+    "https://openalex.org/W2144966714",
+    "https://openalex.org/W2145152803",
+    "https://openalex.org/W2145367992",
+    "https://openalex.org/W2145466675",
+    "https://openalex.org/W2145964444",
+    "https://openalex.org/W2146120854",
+    "https://openalex.org/W2146291311",
+    "https://openalex.org/W2146319740",
+    "https://openalex.org/W2146670786",
+    "https://openalex.org/W2146831409",
+    "https://openalex.org/W2146985504",
+    "https://openalex.org/W2147089345",
+    "https://openalex.org/W2147404147",
+    "https://openalex.org/W2147412968",
+    "https://openalex.org/W2148913902",
+    "https://openalex.org/W2149199480",
+    "https://openalex.org/W2149296107",
+    "https://openalex.org/W2149734931",
+    "https://openalex.org/W2150051820",
+    "https://openalex.org/W2150447279",
+    "https://openalex.org/W2150613910",
+    "https://openalex.org/W2150729282",
+    "https://openalex.org/W2151004340",
+    "https://openalex.org/W2151087479",
+    "https://openalex.org/W2151949719",
+    "https://openalex.org/W2152008424",
+    "https://openalex.org/W2152418649",
+    "https://openalex.org/W2153240783",
+    "https://openalex.org/W2153602120",
+    "https://openalex.org/W2153983778",
+    "https://openalex.org/W2154476916",
+    "https://openalex.org/W2154547937",
+    "https://openalex.org/W2154638299",
+    "https://openalex.org/W2154643045",
+    "https://openalex.org/W2154881752",
+    "https://openalex.org/W2154888143",
+    "https://openalex.org/W2155134516",
+    "https://openalex.org/W2155286376",
+    "https://openalex.org/W2155341981",
+    "https://openalex.org/W2155478916",
+    "https://openalex.org/W2155638685",
+    "https://openalex.org/W2155736919",
+    "https://openalex.org/W2155767904",
+    "https://openalex.org/W2155875954",
+    "https://openalex.org/W2155882577",
+    "https://openalex.org/W2155981983",
+    "https://openalex.org/W2156248782",
+    "https://openalex.org/W2156448376",
+    "https://openalex.org/W2156823014",
+    "https://openalex.org/W2157070216",
+    "https://openalex.org/W2157196517",
+    "https://openalex.org/W2157202254",
+    "https://openalex.org/W2157339687",
+    "https://openalex.org/W2157407723",
+    "https://openalex.org/W2157495913",
+    "https://openalex.org/W2157633127",
+    "https://openalex.org/W2157968241",
+    "https://openalex.org/W2158320806",
+    "https://openalex.org/W2158351251",
+    "https://openalex.org/W2158380210",
+    "https://openalex.org/W2158553376",
+    "https://openalex.org/W2158617085",
+    "https://openalex.org/W2158795682",
+    "https://openalex.org/W2158906808",
+    "https://openalex.org/W2159117980",
+    "https://openalex.org/W2159393897",
+    "https://openalex.org/W2159445530",
+    "https://openalex.org/W2159448749",
+    "https://openalex.org/W2159480781",
+    "https://openalex.org/W2159765471",
+    "https://openalex.org/W2159978779",
+    "https://openalex.org/W2160426586",
+    "https://openalex.org/W2160488228",
+    "https://openalex.org/W2160747860",
+    "https://openalex.org/W2161071119",
+    "https://openalex.org/W2161114559",
+    "https://openalex.org/W2161243447",
+    "https://openalex.org/W2162627911",
+    "https://openalex.org/W2162672497",
+    "https://openalex.org/W2162859596",
+    "https://openalex.org/W2162863647",
+    "https://openalex.org/W2163870873",
+    "https://openalex.org/W2164386461",
+    "https://openalex.org/W2164405525",
+    "https://openalex.org/W2164632930",
+    "https://openalex.org/W2165022274",
+    "https://openalex.org/W2165340553",
+    "https://openalex.org/W2165608792",
+    "https://openalex.org/W2166001073",
+    "https://openalex.org/W2166048049",
+    "https://openalex.org/W2166424804",
+    "https://openalex.org/W2166432084",
+    "https://openalex.org/W2166580747",
+    "https://openalex.org/W2166876109",
+    "https://openalex.org/W2166930051",
+    "https://openalex.org/W2167258521",
+    "https://openalex.org/W2167377685",
+    "https://openalex.org/W2167472479",
+    "https://openalex.org/W2167544636",
+    "https://openalex.org/W2168046003",
+    "https://openalex.org/W2168315832",
+    "https://openalex.org/W2168603724",
+    "https://openalex.org/W2168796298",
+    "https://openalex.org/W2168881969",
+    "https://openalex.org/W2169598367",
+    "https://openalex.org/W2169927995",
+    "https://openalex.org/W2170075933",
+    "https://openalex.org/W2170298115",
+    "https://openalex.org/W2170622033",
+    "https://openalex.org/W2170673314",
+    "https://openalex.org/W2170749916",
+    "https://openalex.org/W2171233964",
+    "https://openalex.org/W2171383864",
+    "https://openalex.org/W2171821208",
+    "https://openalex.org/W2172071634",
+    "https://openalex.org/W2172149859",
+    "https://openalex.org/W2187359559",
+    "https://openalex.org/W2236436255",
+    "https://openalex.org/W2245167416",
+    "https://openalex.org/W2268275976",
+    "https://openalex.org/W2312609348",
+    "https://openalex.org/W2317485334",
+    "https://openalex.org/W2318340572",
+    "https://openalex.org/W2319554819",
+    "https://openalex.org/W2321215777",
+    "https://openalex.org/W2322866941",
+    "https://openalex.org/W2327550906",
+    "https://openalex.org/W2328147592",
+    "https://openalex.org/W2329158407",
+    "https://openalex.org/W2329899462",
+    "https://openalex.org/W2334704549",
+    "https://openalex.org/W2336046822",
+    "https://openalex.org/W2336647043",
+    "https://openalex.org/W2338429321",
+    "https://openalex.org/W2339696769",
+    "https://openalex.org/W2343934094",
+    "https://openalex.org/W2360271441",
+    "https://openalex.org/W2394828170",
+    "https://openalex.org/W2396065379",
+    "https://openalex.org/W2396179855",
+    "https://openalex.org/W2398120434",
+    "https://openalex.org/W2399299426",
+    "https://openalex.org/W2400217583",
+    "https://openalex.org/W2403358125",
+    "https://openalex.org/W2405427629",
+    "https://openalex.org/W2406610221",
+    "https://openalex.org/W2407979233",
+    "https://openalex.org/W2411755187",
+    "https://openalex.org/W2412197110",
+    "https://openalex.org/W2414621439",
+    "https://openalex.org/W2416851550",
+    "https://openalex.org/W2417679295",
+    "https://openalex.org/W2418435238",
+    "https://openalex.org/W2418520082",
+    "https://openalex.org/W2443681588",
+    "https://openalex.org/W2468689159",
+    "https://openalex.org/W2504703873",
+    "https://openalex.org/W2515280055",
+    "https://openalex.org/W2592495259",
+    "https://openalex.org/W2598807980",
+    "https://openalex.org/W2613729619",
+    "https://openalex.org/W2623034849",
+    "https://openalex.org/W2765712609",
+    "https://openalex.org/W2978357093",
+    "https://openalex.org/W3006035094",
+    "https://openalex.org/W3078121364",
+    "https://openalex.org/W3215119582",
+    "https://openalex.org/W4230664530",
+    "https://openalex.org/W4234337151",
+    "https://openalex.org/W4236132672",
+    "https://openalex.org/W4240191731",
+    "https://openalex.org/W4241935536",
+    "https://openalex.org/W4244703446",
+    "https://openalex.org/W4249938147",
+    "https://openalex.org/W4285719527"
+  ],
+  "related_works": [
+    "https://openalex.org/W2326585857",
+    "https://openalex.org/W142525846",
+    "https://openalex.org/W2312602415",
+    "https://openalex.org/W2312864656",
+    "https://openalex.org/W2472126364",
+    "https://openalex.org/W2320098543",
+    "https://openalex.org/W2585009645",
+    "https://openalex.org/W2333131755",
+    "https://openalex.org/W4401482945",
+    "https://openalex.org/W2372297656"
+  ],
+  "abstract_inverted_index": {
+    "Chronic": [
+      0,
+      17
+    ],
+    "obstructive": [
+      1
+    ],
+    "pulmonary": [
+      2
+    ],
+    "disease": [
+      3
+    ],
+    "(COPD)": [
+      4
+    ],
+    "is": [
+      5,
+      70,
+      140
+    ],
+    "a": [
+      6,
+      143,
+      188,
+      212
+    ],
+    "global": [
+      7
+    ],
+    "health": [
+      8
+    ],
+    "problem,": [
+      9
+    ],
+    "and": [
+      10,
+      30,
+      81,
+      118,
+      133,
+      138,
+      155,
+      158,
+      173,
+      179,
+      187,
+      234,
+      240
+    ],
+    "since": [
+      11
+    ],
+    "2001,": [
+      12
+    ],
+    "the": [
+      13,
+      28,
+      38,
+      42,
+      47,
+      55,
+      62,
+      73,
+      95,
+      98,
+      192,
+      203,
+      228,
+      244
+    ],
+    "Global": [
+      14
+    ],
+    "Initiative": [
+      15
+    ],
+    "for": [
+      16,
+      27,
+      72
+    ],
+    "Obstructive": [
+      18
+    ],
+    "Lung": [
+      19
+    ],
+    "Disease": [
+      20
+    ],
+    "(GOLD)": [
+      21
+    ],
+    "has": [
+      22,
+      51
+    ],
+    "published": [
+      23
+    ],
+    "its": [
+      24
+    ],
+    "strategy": [
+      25
+    ],
+    "document": [
+      26,
+      49,
+      92,
+      193,
+      209
+    ],
+    "diagnosis": [
+      29,
+      75
+    ],
+    "management": [
+      31,
+      160,
+      195,
+      245
+    ],
+    "of": [
+      32,
+      41,
+      46,
+      54,
+      76,
+      86,
+      88,
+      97,
+      106,
+      111,
+      116,
+      131,
+      135,
+      161,
+      176,
+      181,
+      196,
+      205,
+      217,
+      230,
+      246
+    ],
+    "COPD.": [
+      33,
+      218,
+      247
+    ],
+    "This": [
+      34
+    ],
+    "executive": [
+      35
+    ],
+    "summary": [
+      36
+    ],
+    "presents": [
+      37
+    ],
+    "main": [
+      39
+    ],
+    "contents": [
+      40
+    ],
+    "second": [
+      43
+    ],
+    "5-year": [
+      44
+    ],
+    "revision": [
+      45
+    ],
+    "GOLD": [
+      48,
+      66,
+      220
+    ],
+    "that": [
+      50,
+      68,
+      94,
+      145
+    ],
+    "implemented": [
+      52
+    ],
+    "some": [
+      53
+    ],
+    "vast": [
+      56
+    ],
+    "knowledge": [
+      57
+    ],
+    "about": [
+      58
+    ],
+    "COPD": [
+      59,
+      77,
+      101,
+      149,
+      162,
+      201,
+      226
+    ],
+    "accumulated": [
+      60
+    ],
+    "over": [
+      61
+    ],
+    "last": [
+      63
+    ],
+    "years.": [
+      64
+    ],
+    "Today,": [
+      65
+    ],
+    "recommends": [
+      67
+    ],
+    "spirometry": [
+      69
+    ],
+    "required": [
+      71
+    ],
+    "clinical": [
+      74
+    ],
+    "to": [
+      78,
+      82,
+      128,
+      170,
+      224,
+      227
+    ],
+    "avoid": [
+      79
+    ],
+    "misdiagnosis": [
+      80
+    ],
+    "ensure": [
+      83
+    ],
+    "proper": [
+      84
+    ],
+    "evaluation": [
+      85
+    ],
+    "severity": [
+      87,
+      110
+    ],
+    "airflow": [
+      89,
+      112
+    ],
+    "limitation.": [
+      90
+    ],
+    "The": [
+      91,
+      121,
+      207,
+      219
+    ],
+    "highlights": [
+      93
+    ],
+    "assessment": [
+      96,
+      105,
+      165
+    ],
+    "patient": [
+      99
+    ],
+    "with": [
+      100,
+      148
+    ],
+    "should": [
+      102
+    ],
+    "always": [
+      103
+    ],
+    "include": [
+      104
+    ],
+    "(1)": [
+      107
+    ],
+    "symptoms,": [
+      108
+    ],
+    "(2)": [
+      109
+    ],
+    "limitation,": [
+      113
+    ],
+    "(3)": [
+      114
+    ],
+    "history": [
+      115
+    ],
+    "exacerbations,": [
+      117,
+      137
+    ],
+    "(4)": [
+      119
+    ],
+    "comorbidities.": [
+      120,
+      206
+    ],
+    "first": [
+      122
+    ],
+    "three": [
+      123
+    ],
+    "points": [
+      124
+    ],
+    "can": [
+      125
+    ],
+    "be": [
+      126
+    ],
+    "used": [
+      127
+    ],
+    "evaluate": [
+      129
+    ],
+    "level": [
+      130
+    ],
+    "symptoms": [
+      132,
+      172
+    ],
+    "risk": [
+      134,
+      175
+    ],
+    "future": [
+      136,
+      238
+    ],
+    "this": [
+      139,
+      164
+    ],
+    "done": [
+      141
+    ],
+    "in": [
+      142,
+      166,
+      191,
+      202
+    ],
+    "way": [
+      144
+    ],
+    "splits": [
+      146
+    ],
+    "patients": [
+      147
+    ],
+    "into": [
+      150
+    ],
+    "four": [
+      151
+    ],
+    "categories-A,": [
+      152
+    ],
+    "B,": [
+      153
+    ],
+    "C,": [
+      154
+    ],
+    "D.": [
+      156
+    ],
+    "Nonpharmacologic": [
+      157
+    ],
+    "pharmacologic": [
+      159
+    ],
+    "match": [
+      163
+    ],
+    "an": [
+      167
+    ],
+    "evidence-based": [
+      168
+    ],
+    "attempt": [
+      169
+    ],
+    "relieve": [
+      171
+    ],
+    "reduce": [
+      174
+    ],
+    "exacerbations.": [
+      177
+    ],
+    "Identification": [
+      178
+    ],
+    "treatment": [
+      180
+    ],
+    "comorbidities": [
+      182,
+      197
+    ],
+    "must": [
+      183
+    ],
+    "have": [
+      184
+    ],
+    "high": [
+      185
+    ],
+    "priority,": [
+      186
+    ],
+    "separate": [
+      189
+    ],
+    "section": [
+      190,
+      214
+    ],
+    "addresses": [
+      194
+    ],
+    "as": [
+      198,
+      200
+    ],
+    "well": [
+      199
+    ],
+    "presence": [
+      204
+    ],
+    "revised": [
+      208
+    ],
+    "also": [
+      210
+    ],
+    "contains": [
+      211
+    ],
+    "new": [
+      213
+    ],
+    "on": [
+      215,
+      243
+    ],
+    "exacerbations": [
+      216
+    ],
+    "initiative": [
+      221
+    ],
+    "will": [
+      222,
+      235
+    ],
+    "continue": [
+      223
+    ],
+    "bring": [
+      225
+    ],
+    "attention": [
+      229
+    ],
+    "all": [
+      231
+    ],
+    "relevant": [
+      232
+    ],
+    "shareholders": [
+      233
+    ],
+    "hopefully": [
+      236
+    ],
+    "inspire": [
+      237
+    ],
+    "national": [
+      239
+    ],
+    "local": [
+      241
+    ],
+    "guidelines": [
+      242
+    ]
+  },
+  "counts_by_year": [
+    {
+      "year": 2026,
+      "cited_by_count": 50
+    },
+    {
+      "year": 2025,
+      "cited_by_count": 163
+    },
+    {
+      "year": 2024,
+      "cited_by_count": 241
+    },
+    {
+      "year": 2023,
+      "cited_by_count": 272
+    },
+    {
+      "year": 2022,
+      "cited_by_count": 324
+    },
+    {
+      "year": 2021,
+      "cited_by_count": 736
+    },
+    {
+      "year": 2020,
+      "cited_by_count": 801
+    },
+    {
+      "year": 2019,
+      "cited_by_count": 818
+    },
+    {
+      "year": 2018,
+      "cited_by_count": 855
+    },
+    {
+      "year": 2017,
+      "cited_by_count": 1170
+    },
+    {
+      "year": 2016,
+      "cited_by_count": 1223
+    },
+    {
+      "year": 2015,
+      "cited_by_count": 1352
+    },
+    {
+      "year": 2014,
+      "cited_by_count": 1390
+    },
+    {
+      "year": 2013,
+      "cited_by_count": 1156
+    },
+    {
+      "year": 2012,
+      "cited_by_count": 930
+    }
+  ],
+  "updated_date": "2026-07-04T07:58:01.006859",
+  "created_date": "2016-06-24T00:00:00"
+}

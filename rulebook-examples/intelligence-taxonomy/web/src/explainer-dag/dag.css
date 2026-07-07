@@ -160,6 +160,27 @@
   pointer-events: auto;
 }
 
+/* Portaled variant: rendered into <body> and positioned `fixed` off the trigger
+   glyph's measured rect (see DagHoverCard). This is what stops ANY overflow:hidden
+   / overflow:auto ancestor (a flow track, a table, a bar) from clipping the card —
+   z-index alone can't escape an overflow clip, only leaving that stacking/clipping
+   context can. The inline style supplies left/top (already clamped inside all four
+   viewport edges) and a --dag-card-maxh budget for the card to cap its height to. */
+.dag-hovercard-shell-fixed {
+  position: fixed;
+  top: auto;
+  right: auto;
+  z-index: 1000;
+}
+/* The visible card caps to the space the JS measured (--dag-card-maxh, minus the
+   SAFETY ring) and scrolls internally — so even a tall card placed near the top
+   or bottom edge stays fully on-screen instead of running off it. */
+.dag-hovercard-shell-fixed .dag-hovercard {
+  max-height: calc(var(--dag-card-maxh, 80vh) - 30px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
 .dag-hovercard {
   display: block;
   width: 360px;
@@ -247,6 +268,10 @@
   font-weight: 500;
 }
 .dag-hovercard-english-text::first-letter { text-transform: uppercase; }
+.dag-hovercard-english-text.dag-hovercard-muted {
+  color: #999; font-weight: 400; font-style: italic;
+}
+.dag-hovercard-english-text.dag-hovercard-muted::first-letter { text-transform: none; }
 
 .dag-hovercard-formula {
   margin-bottom: 10px;
@@ -321,11 +346,32 @@
   vertical-align: baseline;
   border: 1px solid transparent;
   transition: background 100ms ease, border-color 100ms ease;
+  position: relative;
 }
 .fc:hover { text-decoration: none; }
 
 .fc-glyph { font-size: 11px; opacity: 0.85; font-weight: 700; }
-.fc-table { font-weight: 400; opacity: 0.7; font-style: italic; margin-right: 1px; }
+.fc-table {
+  position: absolute;
+  bottom: calc(100% + 4px);
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  font-size: 10px;
+  font-weight: 500;
+  font-style: normal;
+  letter-spacing: 0.04em;
+  color: #fff;
+  background: rgba(30, 35, 50, 0.85);
+  padding: 2px 6px;
+  border-radius: 4px;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 150ms ease;
+}
+.fc:hover .fc-table {
+  opacity: 1;
+}
 .fc-name  { font-weight: 500; }
 
 .fc-chip { /* inline-formula variant */ }
@@ -450,6 +496,12 @@
   margin: 0 0 1em;
 }
 .dag-subtitle-table { font-weight: 600; color: #555; }
+/* The owning-table name in a field's subtitle is a link up to the table page. */
+.dag-subtitle-table-link {
+  text-decoration: none;
+  border-bottom: 1px solid color-mix(in srgb, currentColor 30%, transparent);
+}
+.dag-subtitle-table-link:hover { color: var(--dag-rel); border-bottom-color: var(--dag-rel); }
 .dag-subtitle-human { font-style: italic; }
 
 .dag-description {
@@ -510,6 +562,25 @@
   background: #fff; border: 1px solid #d4dded; color: var(--dag-raw);
   padding: 1px 6px; border-radius: 3px; font-size: 12px;
 }
+/* The related-table name inside the relationship card body — clickable. */
+.dag-gt-rel-link {
+  color: var(--dag-rel);
+  font-weight: 700;
+  text-decoration: none;
+  border-bottom: 1px solid color-mix(in srgb, var(--dag-rel) 40%, transparent);
+}
+.dag-gt-rel-link:hover { border-bottom-color: var(--dag-rel); }
+/* A small "Open TargetTable →" button beneath the relationship blurb. */
+.dag-gt-rel-cta { margin: 0.8em 0 0; }
+.dag-gt-rel-btn {
+  display: inline-flex; align-items: center;
+  font-size: 13px; font-weight: 600;
+  color: #fff; background: var(--dag-rel);
+  padding: 5px 12px; border-radius: 6px;
+  text-decoration: none;
+  transition: filter 120ms ease;
+}
+.dag-gt-rel-btn:hover { filter: brightness(1.08); }
 
 /* ─── Formula card ───────────────────────────────────────────────────────── */
 
@@ -603,6 +674,7 @@
 }
 .dag-input {
   display: block;
+  position: relative;
   padding: 1em 1.1em;
   background: var(--card);
   border: 1px solid var(--border);
@@ -633,9 +705,23 @@
   color: var(--fg);
 }
 .dag-input-table {
-  font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em;
-  color: var(--muted);
-  margin-left: auto;
+  position: absolute;
+  top: 6px;
+  right: 10px;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+  color: #fff;
+  background: rgba(30, 35, 50, 0.75);
+  padding: 1px 6px;
+  border-radius: 4px;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 150ms ease;
+}
+.dag-input:hover .dag-input-table {
+  opacity: 1;
 }
 .dag-input-english {
   margin: 0;
@@ -680,3 +766,346 @@
   font-size: 12px;
   padding: 4px 9px 5px;
 }
+
+/* ── XLSX download icon (sibling of DagToggle) ────────────────────────── */
+.dag-xlsx-download {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px 4px 8px;
+  border: 1px solid #d0d7de;
+  border-radius: 999px;
+  background: #fff;
+  color: #1F7244;
+  font-size: 12px;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 120ms ease, border-color 120ms ease;
+}
+.dag-xlsx-download:hover {
+  background: #f0faf4;
+  border-color: #1F7244;
+}
+.dag-xlsx-download svg { display: block; }
+.dag-xlsx-label { letter-spacing: 0.02em; }
+
+/* ── Narration toggle (Formula ⇄ RuleSpeak) ──────────────────────────────────
+   Mirrors the provenance-graph toggle; the choice is remembered in localStorage.
+   RuleSpeak gets its own accent (deep green — the "obligation / rule" register). */
+:root {
+  --dag-rs:    #1f6b46;  /* RuleSpeak green */
+  --dag-rs-bg: #e8f3ec;
+}
+/* ── Top bar: back · home · breadcrumb  +  global narration slider ─────────── */
+.dag-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 0.2em 0 1.1em;
+  flex-wrap: wrap;
+}
+.dag-nav-left {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  font-size: 13px;
+}
+.dag-home {
+  border: 1px solid #e0e0e0;
+  background: #fff;
+  color: var(--fg, #222);
+  font-size: 13px;
+  font-weight: 600;
+  padding: 4px 12px;
+  border-radius: 7px;
+  cursor: pointer;
+  transition: background 120ms ease, border-color 120ms ease;
+}
+.dag-home:hover { background: #f5f7fa; border-color: #cfd6dd; }
+.dag-crumb-trail { display: inline-flex; align-items: center; gap: 6px; }
+.dag-crumb-index-link,
+.dag-crumb-table-link {
+  color: var(--dag-calc);
+  font-weight: 600;
+  text-decoration: none;
+}
+.dag-crumb-index-link:hover,
+.dag-crumb-table-link:hover { text-decoration: underline; }
+
+/* ── Doc-element visibility: each part of a field's documentation shows only
+      when the page container carries its `show-<key>` flag. All independent —
+      any combination can be on at once. The classes are computed synchronously
+      from localStorage at render (dagPrefs.docElementClasses), so the first
+      paint is already correct (no flash of the wrong sections). Mirrors the
+      rulespeak HtmlRenderer element-gating, scoped here to `.dag-page`. ──────── */
+.dag-page .elem { display: none; }
+.dag-page.show-rulespeak .elem-rulespeak { display: block; }
+.dag-page.show-english   .elem-english   { display: block; }
+.dag-page.show-formula   .elem-formula   { display: block; }
+.dag-page.show-desc      .elem-desc      { display: block; }
+.dag-page.show-inputs    .elem-inputs    { display: block; }
+.dag-page.show-consumers .elem-consumers { display: block; }
+
+/* ── The gear: a ⚙︎ button (top-right of the bar) opening a popup of independent
+      doc-element checkboxes. Ported from rulebook-to-rulespeak's HtmlRenderer so
+      both tools present identically, using the explainer's --dag-* palette. ──── */
+.dag-gear-wrap { position: relative; flex: none; }
+.dag-gear {
+  flex: none;
+  width: 34px;
+  height: 34px;
+  border-radius: 9px;
+  border: 1px solid #e0e0e0;
+  background: #fff;
+  cursor: pointer;
+  font-size: 17px;
+  line-height: 1;
+  color: #777;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 120ms ease, border-color 120ms ease, box-shadow 120ms ease, background 120ms ease;
+}
+.dag-gear:hover {
+  color: var(--fg, #222);
+  border-color: var(--dag-calc);
+  box-shadow: 0 1px 4px rgba(90, 58, 160, 0.15);
+}
+.dag-gear[aria-expanded='true'] {
+  background: var(--dag-calc);
+  color: #fff;
+  border-color: var(--dag-calc);
+}
+
+.dag-gear-pop {
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  z-index: 120;
+  width: 290px;
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  box-shadow: 0 10px 32px rgba(20, 20, 40, 0.18);
+  padding: 12px;
+}
+.dag-gear-pop-title {
+  margin: 2px 4px 8px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #777;
+}
+.dag-gear-opt {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  column-gap: 9px;
+  align-items: baseline;
+  padding: 7px 6px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.dag-gear-opt:hover { background: var(--dag-calc-bg); }
+.dag-gear-opt input {
+  grid-row: 1 / span 2;
+  align-self: center;
+  width: 16px;
+  height: 16px;
+  accent-color: var(--dag-calc);
+  cursor: pointer;
+}
+.dag-gear-opt-label { font-weight: 600; font-size: 14px; color: var(--fg, #222); }
+.dag-gear-opt-hint { grid-column: 2; font-size: 12px; color: #777; line-height: 1.35; }
+.dag-gear-reset {
+  margin: 8px 4px 2px;
+  border: 0;
+  background: transparent;
+  color: var(--dag-calc);
+  font: 600 12px/1 inherit;
+  cursor: pointer;
+  padding: 4px;
+}
+.dag-gear-reset:hover { text-decoration: underline; }
+
+/* In-prose clickable field reference (the words themselves become a quiet link
+   in the English / RuleSpeak text). Type-tinted underline; no glyph, no relabel. */
+.fc-inline {
+  text-decoration: none;
+  color: inherit;
+  border-bottom: 1.5px dotted currentColor;
+  cursor: pointer;
+  transition: background-color 100ms ease, border-color 100ms ease;
+  border-radius: 2px;
+  padding: 0 1px;
+}
+.fc-inline:hover { background: rgba(0,0,0,0.05); }
+.fc-inline-raw    { color: var(--dag-raw); }
+.fc-inline-calc   { color: var(--dag-calc); }
+.fc-inline-agg    { color: var(--dag-agg); }
+.fc-inline-rel    { color: var(--dag-rel); }
+.fc-inline-lookup { color: var(--dag-lookup); }
+
+/* ── RuleSpeak card ──────────────────────────────────────────────────────────
+   The declarative-rule counterpart of the formula card. */
+.dag-rulespeak { border-left: 4px solid var(--dag-rs); }
+.dag-rs-rule { background: var(--dag-rs-bg); }
+.dag-rs-rule .dag-english-label { color: var(--dag-rs); }
+.dag-rs-rule .dag-english-text { color: #16341f; }
+.dag-rs-rule .dag-rs-kw { color: var(--dag-rs); font-weight: 800; }
+.dag-rs-mech { color: #b45309; font-weight: 700; text-transform: none; letter-spacing: 0; }
+
+.dag-input-rulespeak .dag-rs-kw { color: var(--dag-rs); font-weight: 700; }
+
+.dag-rs-obligations { margin-top: 0.4em; }
+.dag-rs-obl-list { margin: 6px 0 0; padding-left: 1.1em; }
+.dag-rs-obl {
+  margin: 4px 0;
+  line-height: 1.4;
+  color: #2a1c4a;
+}
+.dag-rs-obl .dag-rs-kw { color: var(--dag-rs); font-weight: 800; }
+.dag-rs-obl-hard     { list-style: "● "; }
+.dag-rs-obl-soft     { list-style: "○ "; }
+.dag-rs-obl-override { list-style: "◐ "; }
+
+/* ── Tables index (ontology landing) ─────────────────────────────────────────
+   A responsive grid of table cards; click a card to open that table's columns. */
+.dag-table-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 12px;
+}
+.dag-table-card {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 12px 14px;
+  border: 1px solid #e6e6ea;
+  border-left: 4px solid var(--dag-calc);
+  border-radius: 8px;
+  background: #fff;
+  text-decoration: none;
+  color: var(--fg, #222);
+  transition: box-shadow 120ms ease, border-color 120ms ease, transform 80ms ease;
+}
+.dag-table-card:hover {
+  box-shadow: 0 3px 10px rgba(90,58,160,0.14);
+  border-left-color: var(--dag-calc);
+  transform: translateY(-1px);
+}
+.dag-table-card-name { font-weight: 700; font-size: 15px; }
+.dag-table-card-human { font-size: 12px; color: var(--muted, #888); }
+.dag-table-card-counts { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 4px; }
+.dag-pill-calc { background: var(--dag-calc-bg); color: var(--dag-calc); }
+.dag-pill-rel  { background: var(--dag-rel-bg);  color: var(--dag-rel); }
+.dag-table-card-desc {
+  font-size: 12px;
+  color: #666;
+  margin-top: 4px;
+  line-height: 1.4;
+}
+
+/* ── Table page (a table's columns) ──────────────────────────────────────────
+   One row per column; click a row to open that column's DAG page. */
+.dag-col-list { display: flex; flex-direction: column; gap: 6px; }
+.dag-col {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 9px 12px;
+  border: 1px solid #ececf0;
+  border-left: 3px solid #ddd;
+  border-radius: 7px;
+  background: #fff;
+  text-decoration: none;
+  color: var(--fg, #222);
+  transition: box-shadow 120ms ease, border-color 120ms ease, background 120ms ease;
+}
+.dag-col:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.08); background: #fcfcff; }
+.dag-col-raw    { border-left-color: var(--dag-raw); }
+.dag-col-calc   { border-left-color: var(--dag-calc); }
+.dag-col-agg    { border-left-color: var(--dag-agg); }
+.dag-col-rel    { border-left-color: var(--dag-rel); }
+.dag-col-lookup { border-left-color: var(--dag-lookup); }
+.dag-col-head { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.dag-col-name { font-weight: 700; font-size: 14px; }
+.dag-col-human { font-size: 12px; color: var(--muted, #999); }
+.dag-col-null { margin-left: auto; }
+.dag-col-rule { font-size: 13px; color: #333; line-height: 1.4; }
+.dag-col-rule.dag-col-rulespeak .dag-rs-kw { color: var(--dag-rs); font-weight: 800; }
+.dag-col-desc { font-size: 12px; color: #777; line-height: 1.4; }
+/* Relationship rows: the field link fills the row, with a sibling chip linking
+   to the table it points at (anchors can't nest, so they sit side by side). */
+.dag-col-rel-wrap {
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+  padding: 0;            /* inner links own the padding */
+  overflow: hidden;
+}
+.dag-col-rel-main {
+  flex: 1 1 auto;
+  display: flex; flex-direction: column; gap: 3px;
+  padding: 9px 12px;
+  text-decoration: none; color: inherit;
+  border-radius: 7px 0 0 7px;
+  transition: background 120ms ease;
+}
+.dag-col-rel-main:hover { background: #fcfcff; }
+.dag-col-rel-target {
+  flex: 0 0 auto;
+  align-self: stretch;
+  display: flex; align-items: center;
+  padding: 0 14px;
+  font-size: 13px; font-weight: 700;
+  color: var(--dag-rel);
+  text-decoration: none;
+  background: color-mix(in srgb, var(--dag-rel) 8%, #fff);
+  border-left: 1px solid color-mix(in srgb, var(--dag-rel) 25%, transparent);
+  transition: background 120ms ease;
+  white-space: nowrap;
+}
+.dag-col-rel-target:hover { background: color-mix(in srgb, var(--dag-rel) 16%, #fff); }
+
+/* ── RuleTree: nested outline for priority ladders & AND/OR rules ────────────
+   RuleSpeak lays multi-condition / priority rules out as a list, not a run-on
+   sentence. Cases are numbered; AND/OR groups nest as indented bullets. */
+.dag-rt { font-size: 15px; line-height: 1.5; color: #16341f; }
+.dag-rt-headline { margin: 0 0 8px; font-weight: 600; }
+.dag-rt-cases {
+  margin: 0; padding-left: 1.4em;
+  display: flex; flex-direction: column; gap: 6px;
+}
+.dag-rt-case { padding-left: 2px; }
+.dag-rt-case::marker { color: var(--dag-rs); font-weight: 700; }
+.dag-rt-else { color: #555; }
+.dag-rt-case-val .dag-rt-val { color: var(--dag-rs); font-weight: 700; }
+.dag-rt-if { color: #888; font-style: italic; }
+
+/* AND/OR group: a label then an indented bullet list of children. */
+.dag-rt-group { display: inline-block; }
+.dag-rt-group-label {
+  font-size: 12px; text-transform: uppercase; letter-spacing: 0.05em;
+  color: var(--dag-rs); font-weight: 700;
+}
+.dag-rt-any > .dag-rt-group-label { color: #9a6708; }   /* OR = amber, AND = green */
+.dag-rt-children {
+  margin: 3px 0 2px; padding-left: 1.3em;
+  list-style: none;
+  border-left: 2px solid #d7e7dd;
+}
+.dag-rt-child {
+  position: relative; padding: 2px 0 2px 2px;
+}
+.dag-rt-child::before {
+  content: "•"; color: var(--dag-rs);
+  position: absolute; left: -0.9em;
+}
+.dag-rt-any > .dag-rt-children { border-left-color: #ecdcc0; }
+.dag-rt-any .dag-rt-child::before { color: #9a6708; }
+.dag-rt-cond-block { margin-top: 4px; }
+.dag-rt-leaf { color: #16341f; }

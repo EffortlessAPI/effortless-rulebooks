@@ -1,0 +1,595 @@
+{
+  "id": "https://openalex.org/W3088291724",
+  "doi": "https://doi.org/10.4324/9780203074091-14",
+  "title": "Longitudinal Pathways to College Persistence and Completion: Student, Institutional, and Public Policy Perspectives",
+  "display_name": "Longitudinal Pathways to College Persistence and Completion: Student, Institutional, and Public Policy Perspectives",
+  "relevance_score": 126.931755,
+  "publication_year": 2013,
+  "publication_date": "2013-07-18",
+  "ids": {
+    "openalex": "https://openalex.org/W3088291724",
+    "doi": "https://doi.org/10.4324/9780203074091-14",
+    "mag": "3088291724"
+  },
+  "language": "en",
+  "primary_location": {
+    "id": "doi:10.4324/9780203074091-14",
+    "is_oa": false,
+    "landing_page_url": "https://doi.org/10.4324/9780203074091-14",
+    "pdf_url": null,
+    "source": null,
+    "license": null,
+    "license_id": null,
+    "version": "publishedVersion",
+    "is_accepted": true,
+    "is_published": true,
+    "raw_source_name": "The State of College Access and Completion",
+    "raw_type": "book-chapter"
+  },
+  "type": "book-chapter",
+  "indexed_in": [
+    "crossref"
+  ],
+  "open_access": {
+    "is_oa": false,
+    "oa_status": "closed",
+    "oa_url": null,
+    "any_repository_has_fulltext": false
+  },
+  "authorships": [],
+  "institutions": [],
+  "countries_distinct_count": 0,
+  "institutions_distinct_count": 0,
+  "corresponding_author_ids": [],
+  "corresponding_institution_ids": [],
+  "apc_list": null,
+  "apc_paid": null,
+  "fwci": 2.6076,
+  "has_fulltext": false,
+  "cited_by_count": 6,
+  "citation_normalized_percentile": {
+    "value": 0.92720349,
+    "is_in_top_1_percent": false,
+    "is_in_top_10_percent": true
+  },
+  "cited_by_percentile_year": {
+    "min": 89,
+    "max": 96
+  },
+  "biblio": {
+    "volume": null,
+    "issue": null,
+    "first_page": "152",
+    "last_page": "177"
+  },
+  "is_retracted": false,
+  "is_paratext": false,
+  "is_xpac": false,
+  "primary_topic": {
+    "id": "https://openalex.org/T10267",
+    "display_name": "Higher Education Research Studies",
+    "score": 1.0,
+    "subfield": {
+      "id": "https://openalex.org/subfields/3304",
+      "display_name": "Education"
+    },
+    "field": {
+      "id": "https://openalex.org/fields/33",
+      "display_name": "Social Sciences"
+    },
+    "domain": {
+      "id": "https://openalex.org/domains/2",
+      "display_name": "Social Sciences"
+    }
+  },
+  "topics": [
+    {
+      "id": "https://openalex.org/T10267",
+      "display_name": "Higher Education Research Studies",
+      "score": 1.0,
+      "subfield": {
+        "id": "https://openalex.org/subfields/3304",
+        "display_name": "Education"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/33",
+        "display_name": "Social Sciences"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/2",
+        "display_name": "Social Sciences"
+      }
+    },
+    {
+      "id": "https://openalex.org/T10546",
+      "display_name": "Higher Education Governance and Development",
+      "score": 0.9016000032424927,
+      "subfield": {
+        "id": "https://openalex.org/subfields/3320",
+        "display_name": "Political Science and International Relations"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/33",
+        "display_name": "Social Sciences"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/2",
+        "display_name": "Social Sciences"
+      }
+    }
+  ],
+  "keywords": [
+    {
+      "id": "https://openalex.org/keywords/persistence",
+      "display_name": "Persistence (discontinuity)",
+      "score": 0.7686569094657898
+    },
+    {
+      "id": "https://openalex.org/keywords/political-science",
+      "display_name": "Political science",
+      "score": 0.5064340829849243
+    },
+    {
+      "id": "https://openalex.org/keywords/public-administration",
+      "display_name": "Public administration",
+      "score": 0.3742522895336151
+    },
+    {
+      "id": "https://openalex.org/keywords/psychology",
+      "display_name": "Psychology",
+      "score": 0.35804152488708496
+    },
+    {
+      "id": "https://openalex.org/keywords/engineering",
+      "display_name": "Engineering",
+      "score": 0.0658893883228302
+    }
+  ],
+  "concepts": [
+    {
+      "id": "https://openalex.org/C2781009140",
+      "wikidata": "https://www.wikidata.org/wiki/Q7170389",
+      "display_name": "Persistence (discontinuity)",
+      "level": 2,
+      "score": 0.7686569094657898
+    },
+    {
+      "id": "https://openalex.org/C17744445",
+      "wikidata": "https://www.wikidata.org/wiki/Q36442",
+      "display_name": "Political science",
+      "level": 0,
+      "score": 0.5064340829849243
+    },
+    {
+      "id": "https://openalex.org/C3116431",
+      "wikidata": "https://www.wikidata.org/wiki/Q31728",
+      "display_name": "Public administration",
+      "level": 1,
+      "score": 0.3742522895336151
+    },
+    {
+      "id": "https://openalex.org/C15744967",
+      "wikidata": "https://www.wikidata.org/wiki/Q9418",
+      "display_name": "Psychology",
+      "level": 0,
+      "score": 0.35804152488708496
+    },
+    {
+      "id": "https://openalex.org/C127413603",
+      "wikidata": "https://www.wikidata.org/wiki/Q11023",
+      "display_name": "Engineering",
+      "level": 0,
+      "score": 0.0658893883228302
+    },
+    {
+      "id": "https://openalex.org/C187320778",
+      "wikidata": "https://www.wikidata.org/wiki/Q1349130",
+      "display_name": "Geotechnical engineering",
+      "level": 1,
+      "score": 0.0
+    }
+  ],
+  "mesh": [],
+  "locations_count": 1,
+  "locations": [
+    {
+      "id": "doi:10.4324/9780203074091-14",
+      "is_oa": false,
+      "landing_page_url": "https://doi.org/10.4324/9780203074091-14",
+      "pdf_url": null,
+      "source": null,
+      "license": null,
+      "license_id": null,
+      "version": "publishedVersion",
+      "is_accepted": true,
+      "is_published": true,
+      "raw_source_name": "The State of College Access and Completion",
+      "raw_type": "book-chapter"
+    }
+  ],
+  "best_oa_location": null,
+  "sustainable_development_goals": [],
+  "awards": [],
+  "funders": [],
+  "has_content": {
+    "grobid_xml": false,
+    "pdf": false
+  },
+  "content_urls": null,
+  "referenced_works_count": 1,
+  "referenced_works": [
+    "https://openalex.org/W2663162"
+  ],
+  "related_works": [
+    "https://openalex.org/W2748952813",
+    "https://openalex.org/W1995895161",
+    "https://openalex.org/W2352063914",
+    "https://openalex.org/W1822185412",
+    "https://openalex.org/W2047377442",
+    "https://openalex.org/W2017131795",
+    "https://openalex.org/W3205546307",
+    "https://openalex.org/W4387835727",
+    "https://openalex.org/W2589957347",
+    "https://openalex.org/W4214656181"
+  ],
+  "abstract_inverted_index": {
+    "Applied": [
+      0
+    ],
+    "research": [
+      1
+    ],
+    "in": [
+      2,
+      35,
+      43,
+      55,
+      68,
+      110
+    ],
+    "the": [
+      3,
+      28,
+      44,
+      116
+    ],
+    "\ufb01": [
+      4
+    ],
+    "eld": [
+      5
+    ],
+    "of": [
+      6,
+      19,
+      32,
+      118,
+      131
+    ],
+    "higher": [
+      7
+    ],
+    "education": [
+      8
+    ],
+    "is": [
+      9,
+      27,
+      103
+    ],
+    "often": [
+      10
+    ],
+    "driven": [
+      11
+    ],
+    "by": [
+      12,
+      52
+    ],
+    "concerns": [
+      13
+    ],
+    "\npressing": [
+      14
+    ],
+    "to": [
+      15,
+      21,
+      94,
+      107
+    ],
+    "postsecondary": [
+      16,
+      36
+    ],
+    "institutions": [
+      17,
+      90
+    ],
+    "and": [
+      18,
+      30,
+      80,
+      124
+    ],
+    "interest": [
+      20
+    ],
+    "public": [
+      22
+    ],
+    "policymakers.": [
+      23
+    ],
+    "One": [
+      24
+    ],
+    "\nsuch": [
+      25
+    ],
+    "issue": [
+      26
+    ],
+    "retention": [
+      29,
+      123
+    ],
+    "graduation": [
+      31,
+      125
+    ],
+    "students": [
+      33,
+      82
+    ],
+    "enrolled": [
+      34
+    ],
+    "\neducation.": [
+      37
+    ],
+    "Research": [
+      38
+    ],
+    "shows": [
+      39
+    ],
+    "that": [
+      40
+    ],
+    "increased": [
+      41
+    ],
+    "enrollments": [
+      42
+    ],
+    "last": [
+      45
+    ],
+    "few": [
+      46
+    ],
+    "decades": [
+      47
+    ],
+    "have": [
+      48,
+      127
+    ],
+    "\nnot": [
+      49
+    ],
+    "been": [
+      50
+    ],
+    "followed": [
+      51
+    ],
+    "similar": [
+      53
+    ],
+    "increases": [
+      54
+    ],
+    "college": [
+      56,
+      69
+    ],
+    "completion": [
+      57,
+      70
+    ],
+    "(Bound,": [
+      58
+    ],
+    "Lovenheim,": [
+      59
+    ],
+    "\n&": [
+      60
+    ],
+    "Turner,": [
+      61
+    ],
+    "2010;": [
+      62
+    ],
+    "Reason,": [
+      63
+    ],
+    "2009).": [
+      64
+    ],
+    "Large": [
+      65
+    ],
+    "disparities": [
+      66
+    ],
+    "remain": [
+      67
+    ],
+    "\nrates": [
+      71
+    ],
+    "among": [
+      72
+    ],
+    "ethnic": [
+      73
+    ],
+    "groups": [
+      74
+    ],
+    "as": [
+      75,
+      77,
+      99
+    ],
+    "well": [
+      76
+    ],
+    "between": [
+      78
+    ],
+    "traditional": [
+      79
+    ],
+    "nontraditional": [
+      81
+    ],
+    "(Radford,": [
+      83
+    ],
+    "Berkner,": [
+      84
+    ],
+    "Wheeless,": [
+      85
+    ],
+    "&": [
+      86
+    ],
+    "Shepherd,": [
+      87
+    ],
+    "2010).": [
+      88
+    ],
+    "Postsecondary": [
+      89
+    ],
+    "\nhave": [
+      91
+    ],
+    "clear": [
+      92
+    ],
+    "incentives": [
+      93
+    ],
+    "focus": [
+      95
+    ],
+    "on": [
+      96
+    ],
+    "student": [
+      97,
+      101,
+      106,
+      122
+    ],
+    "retention,": [
+      98
+    ],
+    "every": [
+      100
+    ],
+    "retained": [
+      102
+    ],
+    "\none": [
+      104
+    ],
+    "less": [
+      105
+    ],
+    "be": [
+      108
+    ],
+    "recruited": [
+      109
+    ],
+    "successive": [
+      111
+    ],
+    "classes.": [
+      112
+    ],
+    "In": [
+      113
+    ],
+    "addition,": [
+      114
+    ],
+    "with": [
+      115
+    ],
+    "rise": [
+      117
+    ],
+    "\ncollege": [
+      119
+    ],
+    "rankings": [
+      120
+    ],
+    "publications,": [
+      121
+    ],
+    "rates": [
+      126
+    ],
+    "become": [
+      128
+    ],
+    "\nimportant": [
+      129
+    ],
+    "indicators": [
+      130
+    ],
+    "institutional": [
+      132
+    ],
+    "quality.": [
+      133
+    ]
+  },
+  "counts_by_year": [
+    {
+      "year": 2020,
+      "cited_by_count": 1
+    },
+    {
+      "year": 2019,
+      "cited_by_count": 2
+    },
+    {
+      "year": 2018,
+      "cited_by_count": 1
+    },
+    {
+      "year": 2016,
+      "cited_by_count": 1
+    },
+    {
+      "year": 2013,
+      "cited_by_count": 1
+    }
+  ],
+  "updated_date": "2025-11-06T03:46:38.306776",
+  "created_date": "2025-10-10T00:00:00"
+}

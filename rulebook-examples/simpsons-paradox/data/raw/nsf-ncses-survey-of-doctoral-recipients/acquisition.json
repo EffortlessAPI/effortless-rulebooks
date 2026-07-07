@@ -1,0 +1,16 @@
+{
+  "candidate_id": "cand-exp-nsf-ncses-survey-of-doctoral-recipients",
+  "proposed_study_id": "nsf-ncses-survey-of-doctoral-recipients",
+  "acquisition_status": "metadata_only",
+  "attempted_at": "2026-07-07T03:46:44+00:00",
+  "catalog_source_url": "https://ncses.nsf.gov/surveys/doctoral-recipients",
+  "resolved_urls": [
+    "https://doi.org/10.1093/biosci/biaa072",
+    "https://academic.oup.com/bioscience/article-pdf/70/9/814/33750232/biaa072.pdf",
+    "https://ncses.nsf.gov/surveys/doctoral-recipients"
+  ],
+  "files": [
+    "openalex-metadata.json"
+  ],
+  "dois": []
+}

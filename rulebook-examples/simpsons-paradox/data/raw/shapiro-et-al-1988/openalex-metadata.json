@@ -1,0 +1,1104 @@
+{
+  "id": "https://openalex.org/W2076823895",
+  "doi": "https://doi.org/10.1257/aer.89.1.306",
+  "title": "Overconfidence and Excess Entry: An Experimental Approach",
+  "display_name": "Overconfidence and Excess Entry: An Experimental Approach",
+  "relevance_score": 583.92206,
+  "publication_year": 1999,
+  "publication_date": "1999-03-01",
+  "ids": {
+    "openalex": "https://openalex.org/W2076823895",
+    "doi": "https://doi.org/10.1257/aer.89.1.306",
+    "mag": "2076823895"
+  },
+  "language": "en",
+  "primary_location": {
+    "id": "doi:10.1257/aer.89.1.306",
+    "is_oa": false,
+    "landing_page_url": "https://doi.org/10.1257/aer.89.1.306",
+    "pdf_url": null,
+    "source": {
+      "id": "https://openalex.org/S23254222",
+      "display_name": "American Economic Review",
+      "issn_l": "0002-8282",
+      "issn": [
+        "0002-8282",
+        "1944-7981"
+      ],
+      "is_oa": false,
+      "is_in_doaj": false,
+      "is_core": true,
+      "host_organization": "https://openalex.org/P4310315912",
+      "host_organization_name": "American Economic Association",
+      "host_organization_lineage": [
+        "https://openalex.org/P4310315912"
+      ],
+      "host_organization_lineage_names": [
+        "American Economic Association"
+      ],
+      "type": "journal"
+    },
+    "license": null,
+    "license_id": null,
+    "version": "publishedVersion",
+    "is_accepted": true,
+    "is_published": true,
+    "raw_source_name": "American Economic Review",
+    "raw_type": "journal-article"
+  },
+  "type": "article",
+  "indexed_in": [
+    "crossref"
+  ],
+  "open_access": {
+    "is_oa": false,
+    "oa_status": "closed",
+    "oa_url": null,
+    "any_repository_has_fulltext": false
+  },
+  "authorships": [
+    {
+      "author_position": "first",
+      "author": {
+        "id": "https://openalex.org/A5024087833",
+        "display_name": "Colin F. Camerer",
+        "orcid": "https://orcid.org/0000-0003-4049-1871"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I122411786",
+          "display_name": "California Institute of Technology",
+          "ror": "https://ror.org/05dxps055",
+          "country_code": "US",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I122411786"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Colin Camerer",
+      "raw_affiliation_strings": [
+        "Division of the Humanities and Social Sciences 228-77, California Institute of Technology, Pasadena, CA 91125"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Division of the Humanities and Social Sciences 228-77, California Institute of Technology, Pasadena, CA 91125",
+          "institution_ids": [
+            "https://openalex.org/I122411786"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "last",
+      "author": {
+        "id": "https://openalex.org/A5042439493",
+        "display_name": "Dan Lovallo",
+        "orcid": "https://orcid.org/0000-0002-3782-6805"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I79576946",
+          "display_name": "University of Pennsylvania",
+          "ror": "https://ror.org/00b30xv10",
+          "country_code": "US",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I79576946"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Dan Lovallo",
+      "raw_affiliation_strings": [
+        "Wharton School, University of Pennsylvania, Philadelphia, PA 19104"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Wharton School, University of Pennsylvania, Philadelphia, PA 19104",
+          "institution_ids": [
+            "https://openalex.org/I79576946"
+          ]
+        }
+      ]
+    }
+  ],
+  "institutions": [],
+  "countries_distinct_count": 1,
+  "institutions_distinct_count": 2,
+  "corresponding_author_ids": [],
+  "corresponding_institution_ids": [],
+  "apc_list": null,
+  "apc_paid": null,
+  "fwci": 13.2056,
+  "has_fulltext": false,
+  "cited_by_count": 2272,
+  "citation_normalized_percentile": {
+    "value": 0.99603175,
+    "is_in_top_1_percent": true,
+    "is_in_top_10_percent": true
+  },
+  "cited_by_percentile_year": {
+    "min": 99,
+    "max": 100
+  },
+  "biblio": {
+    "volume": "89",
+    "issue": "1",
+    "first_page": "306",
+    "last_page": "318"
+  },
+  "is_retracted": false,
+  "is_paratext": false,
+  "is_xpac": false,
+  "primary_topic": {
+    "id": "https://openalex.org/T10315",
+    "display_name": "Decision-Making and Behavioral Economics",
+    "score": 0.995199978351593,
+    "subfield": {
+      "id": "https://openalex.org/subfields/1800",
+      "display_name": "General Decision Sciences"
+    },
+    "field": {
+      "id": "https://openalex.org/fields/18",
+      "display_name": "Decision Sciences"
+    },
+    "domain": {
+      "id": "https://openalex.org/domains/2",
+      "display_name": "Social Sciences"
+    }
+  },
+  "topics": [
+    {
+      "id": "https://openalex.org/T10315",
+      "display_name": "Decision-Making and Behavioral Economics",
+      "score": 0.995199978351593,
+      "subfield": {
+        "id": "https://openalex.org/subfields/1800",
+        "display_name": "General Decision Sciences"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/18",
+        "display_name": "Decision Sciences"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/2",
+        "display_name": "Social Sciences"
+      }
+    },
+    {
+      "id": "https://openalex.org/T10646",
+      "display_name": "Experimental Behavioral Economics Studies",
+      "score": 0.9836999773979187,
+      "subfield": {
+        "id": "https://openalex.org/subfields/3311",
+        "display_name": "Safety Research"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/33",
+        "display_name": "Social Sciences"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/2",
+        "display_name": "Social Sciences"
+      }
+    },
+    {
+      "id": "https://openalex.org/T10047",
+      "display_name": "Financial Markets and Investment Strategies",
+      "score": 0.9794999957084656,
+      "subfield": {
+        "id": "https://openalex.org/subfields/2003",
+        "display_name": "Finance"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/20",
+        "display_name": "Economics, Econometrics and Finance"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/2",
+        "display_name": "Social Sciences"
+      }
+    }
+  ],
+  "keywords": [
+    {
+      "id": "https://openalex.org/keywords/overconfidence-effect",
+      "display_name": "Overconfidence effect",
+      "score": 0.8673722743988037
+    },
+    {
+      "id": "https://openalex.org/keywords/futures-contract",
+      "display_name": "Futures contract",
+      "score": 0.660885751247406
+    },
+    {
+      "id": "https://openalex.org/keywords/economics",
+      "display_name": "Economics",
+      "score": 0.6489251255989075
+    },
+    {
+      "id": "https://openalex.org/keywords/census",
+      "display_name": "Census",
+      "score": 0.5479370355606079
+    },
+    {
+      "id": "https://openalex.org/keywords/trait",
+      "display_name": "Trait",
+      "score": 0.5470893383026123
+    },
+    {
+      "id": "https://openalex.org/keywords/demographic-economics",
+      "display_name": "Demographic economics",
+      "score": 0.39750394225120544
+    },
+    {
+      "id": "https://openalex.org/keywords/financial-economics",
+      "display_name": "Financial economics",
+      "score": 0.36890268325805664
+    },
+    {
+      "id": "https://openalex.org/keywords/econometrics",
+      "display_name": "Econometrics",
+      "score": 0.36638736724853516
+    },
+    {
+      "id": "https://openalex.org/keywords/demography",
+      "display_name": "Demography",
+      "score": 0.25902897119522095
+    },
+    {
+      "id": "https://openalex.org/keywords/psychology",
+      "display_name": "Psychology",
+      "score": 0.23790934681892395
+    },
+    {
+      "id": "https://openalex.org/keywords/social-psychology",
+      "display_name": "Social psychology",
+      "score": 0.21066239476203918
+    },
+    {
+      "id": "https://openalex.org/keywords/sociology",
+      "display_name": "Sociology",
+      "score": 0.1847606599330902
+    },
+    {
+      "id": "https://openalex.org/keywords/population",
+      "display_name": "Population",
+      "score": 0.11790421605110168
+    }
+  ],
+  "concepts": [
+    {
+      "id": "https://openalex.org/C51110983",
+      "wikidata": "https://www.wikidata.org/wiki/Q16503490",
+      "display_name": "Overconfidence effect",
+      "level": 2,
+      "score": 0.8673722743988037
+    },
+    {
+      "id": "https://openalex.org/C106306483",
+      "wikidata": "https://www.wikidata.org/wiki/Q183984",
+      "display_name": "Futures contract",
+      "level": 2,
+      "score": 0.660885751247406
+    },
+    {
+      "id": "https://openalex.org/C162324750",
+      "wikidata": "https://www.wikidata.org/wiki/Q8134",
+      "display_name": "Economics",
+      "level": 0,
+      "score": 0.6489251255989075
+    },
+    {
+      "id": "https://openalex.org/C52130261",
+      "wikidata": "https://www.wikidata.org/wiki/Q39825",
+      "display_name": "Census",
+      "level": 3,
+      "score": 0.5479370355606079
+    },
+    {
+      "id": "https://openalex.org/C106934330",
+      "wikidata": "https://www.wikidata.org/wiki/Q1971873",
+      "display_name": "Trait",
+      "level": 2,
+      "score": 0.5470893383026123
+    },
+    {
+      "id": "https://openalex.org/C4249254",
+      "wikidata": "https://www.wikidata.org/wiki/Q3044431",
+      "display_name": "Demographic economics",
+      "level": 1,
+      "score": 0.39750394225120544
+    },
+    {
+      "id": "https://openalex.org/C106159729",
+      "wikidata": "https://www.wikidata.org/wiki/Q2294553",
+      "display_name": "Financial economics",
+      "level": 1,
+      "score": 0.36890268325805664
+    },
+    {
+      "id": "https://openalex.org/C149782125",
+      "wikidata": "https://www.wikidata.org/wiki/Q160039",
+      "display_name": "Econometrics",
+      "level": 1,
+      "score": 0.36638736724853516
+    },
+    {
+      "id": "https://openalex.org/C149923435",
+      "wikidata": "https://www.wikidata.org/wiki/Q37732",
+      "display_name": "Demography",
+      "level": 1,
+      "score": 0.25902897119522095
+    },
+    {
+      "id": "https://openalex.org/C15744967",
+      "wikidata": "https://www.wikidata.org/wiki/Q9418",
+      "display_name": "Psychology",
+      "level": 0,
+      "score": 0.23790934681892395
+    },
+    {
+      "id": "https://openalex.org/C77805123",
+      "wikidata": "https://www.wikidata.org/wiki/Q161272",
+      "display_name": "Social psychology",
+      "level": 1,
+      "score": 0.21066239476203918
+    },
+    {
+      "id": "https://openalex.org/C144024400",
+      "wikidata": "https://www.wikidata.org/wiki/Q21201",
+      "display_name": "Sociology",
+      "level": 0,
+      "score": 0.1847606599330902
+    },
+    {
+      "id": "https://openalex.org/C2908647359",
+      "wikidata": "https://www.wikidata.org/wiki/Q2625603",
+      "display_name": "Population",
+      "level": 2,
+      "score": 0.11790421605110168
+    },
+    {
+      "id": "https://openalex.org/C41008148",
+      "wikidata": "https://www.wikidata.org/wiki/Q21198",
+      "display_name": "Computer science",
+      "level": 0,
+      "score": 0.0
+    },
+    {
+      "id": "https://openalex.org/C199360897",
+      "wikidata": "https://www.wikidata.org/wiki/Q9143",
+      "display_name": "Programming language",
+      "level": 1,
+      "score": 0.0
+    }
+  ],
+  "mesh": [],
+  "locations_count": 4,
+  "locations": [
+    {
+      "id": "doi:10.1257/aer.89.1.306",
+      "is_oa": false,
+      "landing_page_url": "https://doi.org/10.1257/aer.89.1.306",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S23254222",
+        "display_name": "American Economic Review",
+        "issn_l": "0002-8282",
+        "issn": [
+          "0002-8282",
+          "1944-7981"
+        ],
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": true,
+        "host_organization": "https://openalex.org/P4310315912",
+        "host_organization_name": "American Economic Association",
+        "host_organization_lineage": [
+          "https://openalex.org/P4310315912"
+        ],
+        "host_organization_lineage_names": [
+          "American Economic Association"
+        ],
+        "type": "journal"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "publishedVersion",
+      "is_accepted": true,
+      "is_published": true,
+      "raw_source_name": "American Economic Review",
+      "raw_type": "journal-article"
+    },
+    {
+      "id": "pmh:oai:authors.library.caltech.edu:21995",
+      "is_oa": false,
+      "landing_page_url": "https://authors.library.caltech.edu/21995/1/AER_Overconfidence%5B1%5D.pdf",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4306402161",
+        "display_name": "CaltechAUTHORS (California Institute of Technology)",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I122411786",
+        "host_organization_name": "California Institute of Technology",
+        "host_organization_lineage": [
+          "https://openalex.org/I122411786"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "submittedVersion",
+      "is_accepted": false,
+      "is_published": false,
+      "raw_source_name": "",
+      "raw_type": "Article"
+    },
+    {
+      "id": "pmh:oai:authors.library.caltech.edu:80455",
+      "is_oa": false,
+      "landing_page_url": "https://authors.library.caltech.edu/80455/",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4306402161",
+        "display_name": "CaltechAUTHORS (California Institute of Technology)",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I122411786",
+        "host_organization_name": "California Institute of Technology",
+        "host_organization_lineage": [
+          "https://openalex.org/I122411786"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "submittedVersion",
+      "is_accepted": false,
+      "is_published": false,
+      "raw_source_name": "",
+      "raw_type": "Report or Paper"
+    },
+    {
+      "id": "pmh:oai:RePEc:aea:aecrev:v:89:y:1999:i:1:p:306-318",
+      "is_oa": false,
+      "landing_page_url": "http://www.aeaweb.org/articles.php?doi=10.1257/aer.89.1.306",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4306401271",
+        "display_name": "RePEc: Research Papers in Economics",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I77793887",
+        "host_organization_name": "Federal Reserve Bank of St. Louis",
+        "host_organization_lineage": [
+          "https://openalex.org/I77793887"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "submittedVersion",
+      "is_accepted": false,
+      "is_published": false,
+      "raw_source_name": null,
+      "raw_type": "article"
+    }
+  ],
+  "best_oa_location": null,
+  "sustainable_development_goals": [
+    {
+      "score": 0.6299999952316284,
+      "display_name": "No poverty",
+      "id": "https://metadata.un.org/sdg/1"
+    }
+  ],
+  "awards": [],
+  "funders": [],
+  "has_content": {
+    "pdf": false,
+    "grobid_xml": false
+  },
+  "content_urls": null,
+  "referenced_works_count": 33,
+  "referenced_works": [
+    "https://openalex.org/W1491257626",
+    "https://openalex.org/W1492132755",
+    "https://openalex.org/W1542241213",
+    "https://openalex.org/W1571972078",
+    "https://openalex.org/W1829007683",
+    "https://openalex.org/W1914821066",
+    "https://openalex.org/W1982314020",
+    "https://openalex.org/W1983278247",
+    "https://openalex.org/W1998891651",
+    "https://openalex.org/W2003838343",
+    "https://openalex.org/W2017483422",
+    "https://openalex.org/W2017563734",
+    "https://openalex.org/W2038315614",
+    "https://openalex.org/W2038552289",
+    "https://openalex.org/W2051008856",
+    "https://openalex.org/W2054947276",
+    "https://openalex.org/W2068518527",
+    "https://openalex.org/W2071426783",
+    "https://openalex.org/W2076192758",
+    "https://openalex.org/W2136542494",
+    "https://openalex.org/W2145046219",
+    "https://openalex.org/W2146365378",
+    "https://openalex.org/W2156094085",
+    "https://openalex.org/W2171975196",
+    "https://openalex.org/W2337346947",
+    "https://openalex.org/W2507089378",
+    "https://openalex.org/W2798412970",
+    "https://openalex.org/W2914202243",
+    "https://openalex.org/W2951112740",
+    "https://openalex.org/W3020998977",
+    "https://openalex.org/W3124354447",
+    "https://openalex.org/W4231855809",
+    "https://openalex.org/W4237403557"
+  ],
+  "related_works": [
+    "https://openalex.org/W4233814322",
+    "https://openalex.org/W4235697092",
+    "https://openalex.org/W4376270372",
+    "https://openalex.org/W2075366185",
+    "https://openalex.org/W3123403352",
+    "https://openalex.org/W2016175128",
+    "https://openalex.org/W621729589",
+    "https://openalex.org/W1536454482",
+    "https://openalex.org/W2490791185",
+    "https://openalex.org/W2145033651"
+  ],
+  "abstract_inverted_index": {
+    "Psychological": [
+      0
+    ],
+    "studies": [
+      1,
+      104
+    ],
+    "show": [
+      2,
+      105
+    ],
+    "that": [
+      3,
+      106,
+      135
+    ],
+    "most": [
+      4,
+      107
+    ],
+    "people": [
+      5,
+      60
+    ],
+    "are": [
+      6,
+      63,
+      156
+    ],
+    "overconfident": [
+      7
+    ],
+    "about": [
+      8,
+      16
+    ],
+    "their": [
+      9,
+      17,
+      33
+    ],
+    "own": [
+      10
+    ],
+    "relative": [
+      11
+    ],
+    "abilities,": [
+      12
+    ],
+    "and": [
+      13,
+      23,
+      87,
+      145,
+      167
+    ],
+    "unreasonably": [
+      14
+    ],
+    "optimistic": [
+      15,
+      83
+    ],
+    "futures": [
+      18
+    ],
+    "(e.g.": [
+      19
+    ],
+    "Shelly": [
+      20
+    ],
+    "E.": [
+      21
+    ],
+    "Taylor": [
+      22
+    ],
+    "J.D.": [
+      24
+    ],
+    "Brown,": [
+      25
+    ],
+    "1988;": [
+      26
+    ],
+    "Neil": [
+      27
+    ],
+    "D.": [
+      28,
+      165
+    ],
+    "Weinstein,": [
+      29
+    ],
+    "1980).": [
+      30
+    ],
+    "When": [
+      31
+    ],
+    "assessing": [
+      32
+    ],
+    "position": [
+      34
+    ],
+    "in": [
+      35,
+      92
+    ],
+    "a": [
+      36,
+      56,
+      112
+    ],
+    "distribution": [
+      37
+    ],
+    "of": [
+      38,
+      59,
+      68,
+      125,
+      138,
+      153
+    ],
+    "peers": [
+      39
+    ],
+    "on": [
+      40
+    ],
+    "almost": [
+      41
+    ],
+    "any": [
+      42
+    ],
+    "positive": [
+      43
+    ],
+    "trait--": [
+      44
+    ],
+    "like": [
+      45
+    ],
+    "driving": [
+      46
+    ],
+    "ability": [
+      47
+    ],
+    "(Ola": [
+      48
+    ],
+    "Svenson,": [
+      49
+    ],
+    "1981": [
+      50
+    ],
+    "),": [
+      51
+    ],
+    "income": [
+      52
+    ],
+    "prospects,": [
+      53
+    ],
+    "or": [
+      54,
+      100
+    ],
+    "longevity--": [
+      55
+    ],
+    "vast": [
+      57
+    ],
+    "majority": [
+      58
+    ],
+    "say": [
+      61
+    ],
+    "they": [
+      62
+    ],
+    "above": [
+      64
+    ],
+    "the": [
+      65,
+      75,
+      122
+    ],
+    "average,": [
+      66
+    ],
+    "although": [
+      67
+    ],
+    "course,": [
+      69
+    ],
+    "only": [
+      70
+    ],
+    "half": [
+      71
+    ],
+    "can": [
+      72
+    ],
+    "be": [
+      73
+    ],
+    "(if": [
+      74
+    ],
+    "trait": [
+      76
+    ],
+    "is": [
+      77
+    ],
+    "symmetrically": [
+      78
+    ],
+    "distributed).&#13;\\nThis": [
+      79
+    ],
+    "paper": [
+      80
+    ],
+    "explores": [
+      81
+    ],
+    "whether": [
+      82
+    ],
+    "biases": [
+      84
+    ],
+    "could": [
+      85
+    ],
+    "plausibly": [
+      86
+    ],
+    "predictably": [
+      88
+    ],
+    "influence": [
+      89
+    ],
+    "economic": [
+      90
+    ],
+    "behavior": [
+      91
+    ],
+    "one": [
+      93
+    ],
+    "particular": [
+      94
+    ],
+    "setting--": [
+      95
+    ],
+    "entry": [
+      96
+    ],
+    "into": [
+      97
+    ],
+    "competitive": [
+      98
+    ],
+    "games": [
+      99
+    ],
+    "markets.": [
+      101
+    ],
+    "Many": [
+      102
+    ],
+    "empirical": [
+      103
+    ],
+    "new": [
+      108
+    ],
+    "businesses": [
+      109
+    ],
+    "fail": [
+      110
+    ],
+    "within": [
+      111,
+      142,
+      149
+    ],
+    "few": [
+      113
+    ],
+    "years.": [
+      114,
+      151
+    ],
+    "For": [
+      115
+    ],
+    "example,": [
+      116
+    ],
+    "using": [
+      117
+    ],
+    "plant": [
+      118
+    ],
+    "level": [
+      119
+    ],
+    "data": [
+      120
+    ],
+    "from": [
+      121
+    ],
+    "U.S.": [
+      123
+    ],
+    "Census": [
+      124
+    ],
+    "Manufacturers": [
+      126
+    ],
+    "spanning": [
+      127
+    ],
+    "1963-1982,": [
+      128
+    ],
+    "Timothy": [
+      129
+    ],
+    "Dunne": [
+      130,
+      160
+    ],
+    "et": [
+      131,
+      161
+    ],
+    "al.": [
+      132
+    ],
+    "(1988)": [
+      133
+    ],
+    "estimated": [
+      134
+    ],
+    "61.5": [
+      136
+    ],
+    "percent": [
+      137,
+      147
+    ],
+    "all": [
+      139
+    ],
+    "entrants": [
+      140
+    ],
+    "exited": [
+      141,
+      148
+    ],
+    "five": [
+      143
+    ],
+    "years": [
+      144
+    ],
+    "79.6": [
+      146
+    ],
+    "10": [
+      150
+    ],
+    "Most": [
+      152
+    ],
+    "these": [
+      154
+    ],
+    "exits": [
+      155
+    ],
+    "failures": [
+      157
+    ],
+    "(see": [
+      158
+    ],
+    "also": [
+      159
+    ],
+    "al.,": [
+      162
+    ],
+    "1989a,": [
+      163
+    ],
+    "1989b;": [
+      164
+    ],
+    "Shapiro": [
+      166
+    ],
+    "R.S.": [
+      168
+    ],
+    "Khemani,": [
+      169
+    ],
+    "1987).": [
+      170
+    ]
+  },
+  "counts_by_year": [
+    {
+      "year": 2026,
+      "cited_by_count": 30
+    },
+    {
+      "year": 2025,
+      "cited_by_count": 80
+    },
+    {
+      "year": 2024,
+      "cited_by_count": 117
+    },
+    {
+      "year": 2023,
+      "cited_by_count": 94
+    },
+    {
+      "year": 2022,
+      "cited_by_count": 106
+    },
+    {
+      "year": 2021,
+      "cited_by_count": 111
+    },
+    {
+      "year": 2020,
+      "cited_by_count": 97
+    },
+    {
+      "year": 2019,
+      "cited_by_count": 104
+    },
+    {
+      "year": 2018,
+      "cited_by_count": 106
+    },
+    {
+      "year": 2017,
+      "cited_by_count": 94
+    },
+    {
+      "year": 2016,
+      "cited_by_count": 139
+    },
+    {
+      "year": 2015,
+      "cited_by_count": 112
+    },
+    {
+      "year": 2014,
+      "cited_by_count": 101
+    },
+    {
+      "year": 2013,
+      "cited_by_count": 104
+    },
+    {
+      "year": 2012,
+      "cited_by_count": 119
+    }
+  ],
+  "updated_date": "2026-07-02T09:51:11.867554",
+  "created_date": "2025-10-10T00:00:00"
+}

@@ -1,0 +1,17 @@
+{
+  "candidate_id": "cand-exp-chetty-hendren-katz-2016",
+  "proposed_study_id": "chetty-hendren-katz-2016",
+  "acquisition_status": "landing_saved",
+  "attempted_at": "2026-07-07T03:40:56+00:00",
+  "catalog_source_url": "https://opportunityinsights.org/",
+  "resolved_urls": [
+    "https://doi.org/10.1257/aer.20150572",
+    "https://www.aeaweb.org/articles/pdf/doi/10.1257/aer.20150572",
+    "https://opportunityinsights.org/"
+  ],
+  "files": [
+    "openalex-metadata.json",
+    "source-1.html"
+  ],
+  "dois": []
+}

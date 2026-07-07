@@ -1,0 +1,16 @@
+{
+  "candidate_id": "cand-exp-western-2006",
+  "proposed_study_id": "western-2006",
+  "acquisition_status": "portal_manual",
+  "attempted_at": "2026-07-07T03:41:33+00:00",
+  "catalog_source_url": "https://nlsinfo.org/",
+  "resolved_urls": [
+    "https://doi.org/10.1080/01402380701834747",
+    "https://nlsinfo.org/"
+  ],
+  "files": [
+    "openalex-metadata.json",
+    "source-1.html"
+  ],
+  "dois": []
+}

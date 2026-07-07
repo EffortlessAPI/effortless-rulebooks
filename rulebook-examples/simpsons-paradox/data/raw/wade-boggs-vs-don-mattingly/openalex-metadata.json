@@ -1,0 +1,1118 @@
+{
+  "id": "https://openalex.org/W2529690302",
+  "doi": null,
+  "title": "Media and literary representations of Latinos in baseball and baseball fiction",
+  "display_name": "Media and literary representations of Latinos in baseball and baseball fiction",
+  "relevance_score": 11.399245,
+  "publication_year": 2015,
+  "publication_date": "2015-07-31",
+  "ids": {
+    "openalex": "https://openalex.org/W2529690302",
+    "mag": "2529690302"
+  },
+  "language": "en",
+  "primary_location": {
+    "id": "pmh:oai:uta-ir.tdl.org:10106/25151",
+    "is_oa": true,
+    "landing_page_url": "http://hdl.handle.net/10106/25151",
+    "pdf_url": "http://hdl.handle.net/10106/25151",
+    "source": {
+      "id": "https://openalex.org/S4306400392",
+      "display_name": "UTA ResearchCommons (University of Texas Arlington)",
+      "issn_l": null,
+      "issn": null,
+      "is_oa": false,
+      "is_in_doaj": false,
+      "is_core": false,
+      "host_organization": "https://openalex.org/I189196454",
+      "host_organization_name": "The University of Texas at Arlington",
+      "host_organization_lineage": [
+        "https://openalex.org/I189196454"
+      ],
+      "host_organization_lineage_names": [],
+      "type": "repository"
+    },
+    "license": null,
+    "license_id": null,
+    "version": "submittedVersion",
+    "is_accepted": false,
+    "is_published": false,
+    "raw_source_name": "",
+    "raw_type": "M.A."
+  },
+  "type": "article",
+  "indexed_in": [],
+  "open_access": {
+    "is_oa": true,
+    "oa_status": "green",
+    "oa_url": "http://hdl.handle.net/10106/25151",
+    "any_repository_has_fulltext": true
+  },
+  "authorships": [
+    {
+      "author_position": "first",
+      "author": {
+        "id": "https://openalex.org/A5082394116",
+        "display_name": "Mihir Dilip Parekh",
+        "orcid": null
+      },
+      "institutions": [],
+      "countries": [],
+      "is_corresponding": true,
+      "raw_author_name": "Mihir Dilip Parekh",
+      "raw_affiliation_strings": [],
+      "affiliations": []
+    }
+  ],
+  "institutions": [],
+  "countries_distinct_count": 0,
+  "institutions_distinct_count": 1,
+  "corresponding_author_ids": [
+    "https://openalex.org/A5082394116"
+  ],
+  "corresponding_institution_ids": [],
+  "apc_list": null,
+  "apc_paid": null,
+  "fwci": 0.0,
+  "has_fulltext": true,
+  "cited_by_count": 0,
+  "citation_normalized_percentile": {
+    "value": 0.30149167,
+    "is_in_top_1_percent": false,
+    "is_in_top_10_percent": false
+  },
+  "cited_by_percentile_year": null,
+  "biblio": {
+    "volume": null,
+    "issue": null,
+    "first_page": null,
+    "last_page": null
+  },
+  "is_retracted": false,
+  "is_paratext": false,
+  "is_xpac": false,
+  "primary_topic": {
+    "id": "https://openalex.org/T14518",
+    "display_name": "American Sports and Literature",
+    "score": 1.0,
+    "subfield": {
+      "id": "https://openalex.org/subfields/1202",
+      "display_name": "History"
+    },
+    "field": {
+      "id": "https://openalex.org/fields/12",
+      "display_name": "Arts and Humanities"
+    },
+    "domain": {
+      "id": "https://openalex.org/domains/2",
+      "display_name": "Social Sciences"
+    }
+  },
+  "topics": [
+    {
+      "id": "https://openalex.org/T14518",
+      "display_name": "American Sports and Literature",
+      "score": 1.0,
+      "subfield": {
+        "id": "https://openalex.org/subfields/1202",
+        "display_name": "History"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/12",
+        "display_name": "Arts and Humanities"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/2",
+        "display_name": "Social Sciences"
+      }
+    },
+    {
+      "id": "https://openalex.org/T14217",
+      "display_name": "American Literature and Humor Studies",
+      "score": 0.9932000041007996,
+      "subfield": {
+        "id": "https://openalex.org/subfields/1208",
+        "display_name": "Literature and Literary Theory"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/12",
+        "display_name": "Arts and Humanities"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/2",
+        "display_name": "Social Sciences"
+      }
+    },
+    {
+      "id": "https://openalex.org/T13174",
+      "display_name": "American and British Literature Analysis",
+      "score": 0.9842000007629395,
+      "subfield": {
+        "id": "https://openalex.org/subfields/1208",
+        "display_name": "Literature and Literary Theory"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/12",
+        "display_name": "Arts and Humanities"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/2",
+        "display_name": "Social Sciences"
+      }
+    }
+  ],
+  "keywords": [
+    {
+      "id": "https://openalex.org/keywords/advertising",
+      "display_name": "Advertising",
+      "score": 0.4568195939064026
+    },
+    {
+      "id": "https://openalex.org/keywords/psychology",
+      "display_name": "Psychology",
+      "score": 0.34860464930534363
+    },
+    {
+      "id": "https://openalex.org/keywords/literature",
+      "display_name": "Literature",
+      "score": 0.34160590171813965
+    },
+    {
+      "id": "https://openalex.org/keywords/art",
+      "display_name": "Art",
+      "score": 0.3368229866027832
+    },
+    {
+      "id": "https://openalex.org/keywords/aesthetics",
+      "display_name": "Aesthetics",
+      "score": 0.33259737491607666
+    },
+    {
+      "id": "https://openalex.org/keywords/business",
+      "display_name": "Business",
+      "score": 0.1483754813671112
+    }
+  ],
+  "concepts": [
+    {
+      "id": "https://openalex.org/C112698675",
+      "wikidata": "https://www.wikidata.org/wiki/Q37038",
+      "display_name": "Advertising",
+      "level": 1,
+      "score": 0.4568195939064026
+    },
+    {
+      "id": "https://openalex.org/C15744967",
+      "wikidata": "https://www.wikidata.org/wiki/Q9418",
+      "display_name": "Psychology",
+      "level": 0,
+      "score": 0.34860464930534363
+    },
+    {
+      "id": "https://openalex.org/C124952713",
+      "wikidata": "https://www.wikidata.org/wiki/Q8242",
+      "display_name": "Literature",
+      "level": 1,
+      "score": 0.34160590171813965
+    },
+    {
+      "id": "https://openalex.org/C142362112",
+      "wikidata": "https://www.wikidata.org/wiki/Q735",
+      "display_name": "Art",
+      "level": 0,
+      "score": 0.3368229866027832
+    },
+    {
+      "id": "https://openalex.org/C107038049",
+      "wikidata": "https://www.wikidata.org/wiki/Q35986",
+      "display_name": "Aesthetics",
+      "level": 1,
+      "score": 0.33259737491607666
+    },
+    {
+      "id": "https://openalex.org/C144133560",
+      "wikidata": "https://www.wikidata.org/wiki/Q4830453",
+      "display_name": "Business",
+      "level": 0,
+      "score": 0.1483754813671112
+    }
+  ],
+  "mesh": [],
+  "locations_count": 2,
+  "locations": [
+    {
+      "id": "pmh:oai:uta-ir.tdl.org:10106/25151",
+      "is_oa": true,
+      "landing_page_url": "http://hdl.handle.net/10106/25151",
+      "pdf_url": "http://hdl.handle.net/10106/25151",
+      "source": {
+        "id": "https://openalex.org/S4306400392",
+        "display_name": "UTA ResearchCommons (University of Texas Arlington)",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I189196454",
+        "host_organization_name": "The University of Texas at Arlington",
+        "host_organization_lineage": [
+          "https://openalex.org/I189196454"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "submittedVersion",
+      "is_accepted": false,
+      "is_published": false,
+      "raw_source_name": "",
+      "raw_type": "M.A."
+    },
+    {
+      "id": "mag:2529690302",
+      "is_oa": false,
+      "landing_page_url": "https://rc.library.uta.edu/uta-ir/handle/10106/25151",
+      "pdf_url": null,
+      "source": null,
+      "license": null,
+      "license_id": null,
+      "version": null,
+      "is_accepted": false,
+      "is_published": null,
+      "raw_source_name": null,
+      "raw_type": null
+    }
+  ],
+  "best_oa_location": {
+    "id": "pmh:oai:uta-ir.tdl.org:10106/25151",
+    "is_oa": true,
+    "landing_page_url": "http://hdl.handle.net/10106/25151",
+    "pdf_url": "http://hdl.handle.net/10106/25151",
+    "source": {
+      "id": "https://openalex.org/S4306400392",
+      "display_name": "UTA ResearchCommons (University of Texas Arlington)",
+      "issn_l": null,
+      "issn": null,
+      "is_oa": false,
+      "is_in_doaj": false,
+      "is_core": false,
+      "host_organization": "https://openalex.org/I189196454",
+      "host_organization_name": "The University of Texas at Arlington",
+      "host_organization_lineage": [
+        "https://openalex.org/I189196454"
+      ],
+      "host_organization_lineage_names": [],
+      "type": "repository"
+    },
+    "license": null,
+    "license_id": null,
+    "version": "submittedVersion",
+    "is_accepted": false,
+    "is_published": false,
+    "raw_source_name": "",
+    "raw_type": "M.A."
+  },
+  "sustainable_development_goals": [
+    {
+      "id": "https://metadata.un.org/sdg/4",
+      "display_name": "Quality Education",
+      "score": 0.6100000143051147
+    }
+  ],
+  "awards": [],
+  "funders": [],
+  "has_content": {
+    "grobid_xml": true,
+    "pdf": true
+  },
+  "content_urls": {
+    "pdf": "https://content.openalex.org/works/W2529690302.pdf",
+    "grobid_xml": "https://content.openalex.org/works/W2529690302.grobid-xml"
+  },
+  "referenced_works_count": 16,
+  "referenced_works": [
+    "https://openalex.org/W158460026",
+    "https://openalex.org/W420728179",
+    "https://openalex.org/W559987230",
+    "https://openalex.org/W564579379",
+    "https://openalex.org/W594996736",
+    "https://openalex.org/W612025419",
+    "https://openalex.org/W612759260",
+    "https://openalex.org/W632691132",
+    "https://openalex.org/W652505748",
+    "https://openalex.org/W1488171902",
+    "https://openalex.org/W1508806413",
+    "https://openalex.org/W1598041126",
+    "https://openalex.org/W1996464303",
+    "https://openalex.org/W2012537852",
+    "https://openalex.org/W2029467997",
+    "https://openalex.org/W2498544387"
+  ],
+  "related_works": [
+    "https://openalex.org/W3020805289",
+    "https://openalex.org/W346808855",
+    "https://openalex.org/W1748025314",
+    "https://openalex.org/W1488930420",
+    "https://openalex.org/W2963048643",
+    "https://openalex.org/W46113420",
+    "https://openalex.org/W2160826952",
+    "https://openalex.org/W636808419",
+    "https://openalex.org/W1966929683",
+    "https://openalex.org/W2725083364",
+    "https://openalex.org/W2261204302",
+    "https://openalex.org/W2602351060",
+    "https://openalex.org/W2268675468",
+    "https://openalex.org/W111606322",
+    "https://openalex.org/W607863116",
+    "https://openalex.org/W28225395",
+    "https://openalex.org/W2783529914",
+    "https://openalex.org/W2134604562"
+  ],
+  "abstract_inverted_index": {
+    "The": [
+      0,
+      108,
+      138,
+      143,
+      247
+    ],
+    "first": [
+      1
+    ],
+    "chapter": [
+      2
+    ],
+    "of": [
+      3,
+      10,
+      52,
+      98,
+      105,
+      130,
+      160,
+      168,
+      182,
+      199,
+      220,
+      229,
+      269,
+      307
+    ],
+    "this": [
+      4,
+      161
+    ],
+    "project": [
+      5
+    ],
+    "looks": [
+      6,
+      47
+    ],
+    "at": [
+      7,
+      48
+    ],
+    "media": [
+      8,
+      50,
+      76,
+      87
+    ],
+    "representations": [
+      9
+    ],
+    "two": [
+      11,
+      159
+    ],
+    "Mexican-born": [
+      12
+    ],
+    "baseball": [
+      13,
+      55,
+      202,
+      272,
+      289,
+      292
+    ],
+    "players": [
+      14,
+      56
+    ],
+    "\u2013": [
+      15,
+      22,
+      137,
+      146
+    ],
+    "Fernando": [
+      16
+    ],
+    "Valenzuela": [
+      17
+    ],
+    "and": [
+      18,
+      33,
+      42,
+      57,
+      100,
+      120,
+      142,
+      155,
+      206,
+      232,
+      239,
+      259,
+      316
+    ],
+    "Teodoro": [
+      19
+    ],
+    "\u201cTeddy\u201d": [
+      20
+    ],
+    "Higuera": [
+      21
+    ],
+    "pitchers": [
+      23,
+      113
+    ],
+    "who": [
+      24,
+      280
+    ],
+    "made": [
+      25
+    ],
+    "their": [
+      26,
+      39,
+      58,
+      267
+    ],
+    "big": [
+      27
+    ],
+    "league": [
+      28
+    ],
+    "debuts": [
+      29
+    ],
+    "in": [
+      30,
+      96,
+      103,
+      201,
+      211,
+      236,
+      266,
+      287,
+      311
+    ],
+    "the": [
+      31,
+      68,
+      128,
+      188,
+      218,
+      302,
+      312
+    ],
+    "1980s": [
+      32,
+      73
+    ],
+    "garnered": [
+      34
+    ],
+    "significant": [
+      35
+    ],
+    "attention": [
+      36,
+      79
+    ],
+    "due": [
+      37
+    ],
+    "to": [
+      38,
+      164,
+      243,
+      296
+    ],
+    "stellar": [
+      40
+    ],
+    "play": [
+      41
+    ],
+    "ethnic": [
+      43,
+      118
+    ],
+    "backgrounds.": [
+      44
+    ],
+    "Chapter": [
+      45,
+      158
+    ],
+    "one": [
+      46
+    ],
+    "U.S.": [
+      49,
+      74
+    ],
+    "narratives": [
+      51,
+      88,
+      109
+    ],
+    "these": [
+      53,
+      61
+    ],
+    "Mexican": [
+      54
+    ],
+    "focus": [
+      59
+    ],
+    "on": [
+      60,
+      80,
+      282
+    ],
+    "foreign": [
+      62
+    ],
+    "athletes\u2019": [
+      63
+    ],
+    "bodies": [
+      64
+    ],
+    "when": [
+      65,
+      89
+    ],
+    "presenting": [
+      66
+    ],
+    "them": [
+      67
+    ],
+    "American": [
+      69
+    ],
+    "public,": [
+      70
+    ],
+    "arguing": [
+      71
+    ],
+    "that": [
+      72,
+      186,
+      224,
+      285,
+      310
+    ],
+    "news": [
+      75
+    ],
+    "focuses": [
+      77
+    ],
+    "its": [
+      78
+    ],
+    "each": [
+      81,
+      133
+    ],
+    "pitcher\u2019s": [
+      82
+    ],
+    "body": [
+      83,
+      94,
+      102
+    ],
+    "but": [
+      84
+    ],
+    "constructs": [
+      85
+    ],
+    "differing": [
+      86
+    ],
+    "doing": [
+      90
+    ],
+    "so,": [
+      91
+    ],
+    "with": [
+      92
+    ],
+    "Valenzuela\u2019s": [
+      93
+    ],
+    "discussed": [
+      95
+    ],
+    "terms": [
+      97,
+      104
+    ],
+    "culture": [
+      99
+    ],
+    "Higuera\u2019s": [
+      101
+    ],
+    "on-field": [
+      106
+    ],
+    "performance.": [
+      107
+    ],
+    "differ": [
+      110
+    ],
+    "despite": [
+      111
+    ],
+    "both": [
+      112,
+      237
+    ],
+    "sharing": [
+      114
+    ],
+    "nearly": [
+      115
+    ],
+    "identical": [
+      116
+    ],
+    "builds,": [
+      117
+    ],
+    "backgrounds,": [
+      119
+    ],
+    "rags-to-riches": [
+      121
+    ],
+    "stories.": [
+      122
+    ],
+    "This": [
+      123
+    ],
+    "study": [
+      124,
+      162
+    ],
+    "utilizes": [
+      125
+    ],
+    "articles": [
+      126
+    ],
+    "between": [
+      127
+    ],
+    "years": [
+      129
+    ],
+    "1980-1994": [
+      131
+    ],
+    "from": [
+      132,
+      150,
+      172
+    ],
+    "player\u2019s": [
+      134
+    ],
+    "\u201chometown\u201d": [
+      135
+    ],
+    "newspapers": [
+      136
+    ],
+    "Los": [
+      139
+    ],
+    "Angeles": [
+      140
+    ],
+    "Times": [
+      141
+    ],
+    "Milwaukee": [
+      144
+    ],
+    "Journal": [
+      145
+    ],
+    "as": [
+      147,
+      149,
+      274
+    ],
+    "well": [
+      148
+    ],
+    "national": [
+      151
+    ],
+    "publications": [
+      152
+    ],
+    "Sports": [
+      153
+    ],
+    "Illustrated": [
+      154
+    ],
+    "Sporting": [
+      156
+    ],
+    "News.": [
+      157
+    ],
+    "shifts": [
+      163
+    ],
+    "a": [
+      165,
+      221,
+      227,
+      244,
+      270,
+      275
+    ],
+    "literary": [
+      166
+    ],
+    "analysis": [
+      167
+    ],
+    "three": [
+      169
+    ],
+    "short": [
+      170,
+      230,
+      249
+    ],
+    "stories": [
+      171,
+      231
+    ],
+    "Robert": [
+      173
+    ],
+    "Paul": [
+      174
+    ],
+    "Moreira\u2019s": [
+      175,
+      215
+    ],
+    "2013": [
+      176
+    ],
+    "text,": [
+      177
+    ],
+    "\u00a1Arriba": [
+      178
+    ],
+    "Baseball!": [
+      179
+    ],
+    "A": [
+      180
+    ],
+    "Collection": [
+      181
+    ],
+    "Latino/a": [
+      183
+    ],
+    "Baseball": [
+      184
+    ],
+    "Fiction,": [
+      185
+    ],
+    "challenge": [
+      187
+    ],
+    "traditional": [
+      189
+    ],
+    "narrative": [
+      190
+    ],
+    "largely": [
+      191
+    ],
+    "established": [
+      192
+    ],
+    "by": [
+      193
+    ],
+    "white,": [
+      194
+    ],
+    "male": [
+      195
+    ],
+    "authors.": [
+      196
+    ],
+    "Previous": [
+      197
+    ],
+    "portrayals": [
+      198
+    ],
+    "Latinos": [
+      200
+    ],
+    "literature": [
+      203
+    ],
+    "are": [
+      204,
+      314
+    ],
+    "limited": [
+      205
+    ],
+    "often": [
+      207
+    ],
+    "appear": [
+      208
+    ],
+    "negative": [
+      209
+    ],
+    "or": [
+      210
+    ],
+    "an": [
+      212
+    ],
+    "unflattering": [
+      213
+    ],
+    "light.": [
+      214
+    ],
+    "anthology": [
+      216
+    ],
+    "marks": [
+      217
+    ],
+    "arrival": [
+      219
+    ],
+    "Latino": [
+      222,
+      245,
+      271,
+      278,
+      308
+    ],
+    "counter-narrative": [
+      223
+    ],
+    "brings": [
+      225
+    ],
+    "together": [
+      226
+    ],
+    "collection": [
+      228
+    ],
+    "several": [
+      233
+    ],
+    "poems,": [
+      234
+    ],
+    "penned": [
+      235
+    ],
+    "English": [
+      238
+    ],
+    "Spanish,": [
+      240
+    ],
+    "giving": [
+      241
+    ],
+    "voice": [
+      242,
+      295
+    ],
+    "experience.": [
+      246
+    ],
+    "selected": [
+      248
+    ],
+    "stories,": [
+      250
+    ],
+    "Dagoberto": [
+      251
+    ],
+    "Gilb\u2019s": [
+      252
+    ],
+    "\u201cUncle": [
+      253
+    ],
+    "Rock,\u201d": [
+      254
+    ],
+    "Wayne": [
+      255
+    ],
+    "Rapp\u2019s": [
+      256
+    ],
+    "\u201cChasing": [
+      257
+    ],
+    "Chato,\u201d": [
+      258
+    ],
+    "Nelson": [
+      260
+    ],
+    "Denis\u2019s": [
+      261
+    ],
+    "\u201cJuan": [
+      262
+    ],
+    "Bobo\u201d": [
+      263
+    ],
+    "find": [
+      264
+    ],
+    "commonality": [
+      265
+    ],
+    "use": [
+      268
+    ],
+    "history": [
+      273
+    ],
+    "backdrop": [
+      276
+    ],
+    "for": [
+      277
+    ],
+    "protagonists": [
+      279
+    ],
+    "embark": [
+      281
+    ],
+    "coming-of-age": [
+      283
+    ],
+    "journeys": [
+      284
+    ],
+    "culminate": [
+      286
+    ],
+    "dramatic": [
+      288
+    ],
+    "moments.": [
+      290
+    ],
+    "These": [
+      291
+    ],
+    "moments": [
+      293
+    ],
+    "give": [
+      294
+    ],
+    "characters": [
+      297,
+      309
+    ],
+    "previously": [
+      298
+    ],
+    "lacking": [
+      299
+    ],
+    "agency,": [
+      300
+    ],
+    "all": [
+      301
+    ],
+    "while": [
+      303
+    ],
+    "providing": [
+      304
+    ],
+    "positive": [
+      305
+    ],
+    "constructions": [
+      306
+    ],
+    "past": [
+      313
+    ],
+    "few": [
+      315
+    ],
+    "far": [
+      317
+    ],
+    "between.": [
+      318
+    ]
+  },
+  "counts_by_year": [],
+  "updated_date": "2025-11-06T04:12:42.849631",
+  "created_date": "2025-10-10T00:00:00"
+}

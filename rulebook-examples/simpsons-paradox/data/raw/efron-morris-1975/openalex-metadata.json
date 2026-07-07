@@ -1,0 +1,587 @@
+{
+  "id": "https://openalex.org/W2129468517",
+  "doi": "https://doi.org/10.1007/bf00140871",
+  "title": "Analysis of the Gibbs sampler for a model related to James-Stein estimators",
+  "display_name": "Analysis of the Gibbs sampler for a model related to James-Stein estimators",
+  "relevance_score": 147.98634,
+  "publication_year": 1996,
+  "publication_date": "1996-09-01",
+  "ids": {
+    "openalex": "https://openalex.org/W2129468517",
+    "doi": "https://doi.org/10.1007/bf00140871",
+    "mag": "2129468517"
+  },
+  "language": "en",
+  "primary_location": {
+    "id": "doi:10.1007/bf00140871",
+    "is_oa": false,
+    "landing_page_url": "https://doi.org/10.1007/bf00140871",
+    "pdf_url": null,
+    "source": {
+      "id": "https://openalex.org/S5437875",
+      "display_name": "Statistics and Computing",
+      "issn_l": "0960-3174",
+      "issn": [
+        "0960-3174",
+        "1573-1375"
+      ],
+      "is_oa": false,
+      "is_in_doaj": false,
+      "is_core": true,
+      "host_organization": "https://openalex.org/P4310319900",
+      "host_organization_name": "Springer Science+Business Media",
+      "host_organization_lineage": [
+        "https://openalex.org/P4310319900",
+        "https://openalex.org/P4310319965"
+      ],
+      "host_organization_lineage_names": [
+        "Springer Science+Business Media",
+        "Springer Nature"
+      ],
+      "type": "journal"
+    },
+    "license": null,
+    "license_id": null,
+    "version": "publishedVersion",
+    "is_accepted": true,
+    "is_published": true,
+    "raw_source_name": "Statistics and Computing",
+    "raw_type": "journal-article"
+  },
+  "type": "article",
+  "indexed_in": [
+    "crossref"
+  ],
+  "open_access": {
+    "is_oa": false,
+    "oa_status": "closed",
+    "oa_url": null,
+    "any_repository_has_fulltext": false
+  },
+  "authorships": [
+    {
+      "author_position": "first",
+      "author": {
+        "id": "https://openalex.org/A5077911233",
+        "display_name": "Jeffrey S. Rosenthal",
+        "orcid": "https://orcid.org/0000-0002-5118-6808"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I185261750",
+          "display_name": "University of Toronto",
+          "ror": "https://ror.org/03dbr7087",
+          "country_code": "CA",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I185261750"
+          ]
+        }
+      ],
+      "countries": [
+        "CA"
+      ],
+      "is_corresponding": true,
+      "raw_author_name": "Jeffrey S. Rosenthal",
+      "raw_affiliation_strings": [
+        "Department of Statistics, University of Toronto, M5S 1A1, Toronto, Ontario, Canada",
+        "Department of Statistics, University #N#of Toronto, Toronto, #N#Canada"
+      ],
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Department of Statistics, University of Toronto, M5S 1A1, Toronto, Ontario, Canada",
+          "institution_ids": [
+            "https://openalex.org/I185261750"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Department of Statistics, University #N#of Toronto, Toronto, #N#Canada",
+          "institution_ids": [
+            "https://openalex.org/I185261750"
+          ]
+        }
+      ]
+    }
+  ],
+  "institutions": [],
+  "countries_distinct_count": 1,
+  "institutions_distinct_count": 1,
+  "corresponding_author_ids": [
+    "https://openalex.org/A5077911233"
+  ],
+  "corresponding_institution_ids": [
+    "https://openalex.org/I185261750"
+  ],
+  "apc_list": {
+    "value": 2090,
+    "currency": "EUR",
+    "value_usd": 2690
+  },
+  "apc_paid": null,
+  "fwci": 3.4155,
+  "has_fulltext": false,
+  "cited_by_count": 77,
+  "citation_normalized_percentile": {
+    "value": 0.93299366,
+    "is_in_top_1_percent": false,
+    "is_in_top_10_percent": true
+  },
+  "cited_by_percentile_year": {
+    "min": 90,
+    "max": 98
+  },
+  "biblio": {
+    "volume": "6",
+    "issue": "3",
+    "first_page": "269",
+    "last_page": "275"
+  },
+  "is_retracted": false,
+  "is_paratext": false,
+  "is_xpac": false,
+  "primary_topic": {
+    "id": "https://openalex.org/T11901",
+    "display_name": "Bayesian Methods and Mixture Models",
+    "score": 0.9994999766349792,
+    "subfield": {
+      "id": "https://openalex.org/subfields/1702",
+      "display_name": "Artificial Intelligence"
+    },
+    "field": {
+      "id": "https://openalex.org/fields/17",
+      "display_name": "Computer Science"
+    },
+    "domain": {
+      "id": "https://openalex.org/domains/3",
+      "display_name": "Physical Sciences"
+    }
+  },
+  "topics": [
+    {
+      "id": "https://openalex.org/T11901",
+      "display_name": "Bayesian Methods and Mixture Models",
+      "score": 0.9994999766349792,
+      "subfield": {
+        "id": "https://openalex.org/subfields/1702",
+        "display_name": "Artificial Intelligence"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/17",
+        "display_name": "Computer Science"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/3",
+        "display_name": "Physical Sciences"
+      }
+    },
+    {
+      "id": "https://openalex.org/T10243",
+      "display_name": "Statistical Methods and Bayesian Inference",
+      "score": 0.9991000294685364,
+      "subfield": {
+        "id": "https://openalex.org/subfields/2613",
+        "display_name": "Statistics and Probability"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/26",
+        "display_name": "Mathematics"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/3",
+        "display_name": "Physical Sciences"
+      }
+    },
+    {
+      "id": "https://openalex.org/T12056",
+      "display_name": "Markov Chains and Monte Carlo Methods",
+      "score": 0.9991000294685364,
+      "subfield": {
+        "id": "https://openalex.org/subfields/2613",
+        "display_name": "Statistics and Probability"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/26",
+        "display_name": "Mathematics"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/3",
+        "display_name": "Physical Sciences"
+      }
+    }
+  ],
+  "keywords": [
+    {
+      "id": "https://openalex.org/keywords/gibbs-sampling",
+      "display_name": "Gibbs sampling",
+      "score": 0.8735998868942261
+    },
+    {
+      "id": "https://openalex.org/keywords/estimator",
+      "display_name": "Estimator",
+      "score": 0.7128902077674866
+    },
+    {
+      "id": "https://openalex.org/keywords/markov-chain",
+      "display_name": "Markov chain",
+      "score": 0.6230089068412781
+    },
+    {
+      "id": "https://openalex.org/keywords/mathematics",
+      "display_name": "Mathematics",
+      "score": 0.6068803071975708
+    },
+    {
+      "id": "https://openalex.org/keywords/bayes-theorem",
+      "display_name": "Bayes' theorem",
+      "score": 0.6043861508369446
+    },
+    {
+      "id": "https://openalex.org/keywords/markov-chain-monte-carlo",
+      "display_name": "Markov chain Monte Carlo",
+      "score": 0.5505346655845642
+    },
+    {
+      "id": "https://openalex.org/keywords/range",
+      "display_name": "Range (aeronautics)",
+      "score": 0.5378081202507019
+    },
+    {
+      "id": "https://openalex.org/keywords/applied-mathematics",
+      "display_name": "Applied mathematics",
+      "score": 0.491195410490036
+    },
+    {
+      "id": "https://openalex.org/keywords/convergence",
+      "display_name": "Convergence (economics)",
+      "score": 0.4761914312839508
+    },
+    {
+      "id": "https://openalex.org/keywords/posterior-probability",
+      "display_name": "Posterior probability",
+      "score": 0.44306710362434387
+    },
+    {
+      "id": "https://openalex.org/keywords/metropolis\u2013hastings-algorithm",
+      "display_name": "Metropolis\u2013Hastings algorithm",
+      "score": 0.4215908944606781
+    },
+    {
+      "id": "https://openalex.org/keywords/statistics",
+      "display_name": "Statistics",
+      "score": 0.37873169779777527
+    },
+    {
+      "id": "https://openalex.org/keywords/bayesian-probability",
+      "display_name": "Bayesian probability",
+      "score": 0.34478506445884705
+    },
+    {
+      "id": "https://openalex.org/keywords/econometrics",
+      "display_name": "Econometrics",
+      "score": 0.3383593261241913
+    },
+    {
+      "id": "https://openalex.org/keywords/economics",
+      "display_name": "Economics",
+      "score": 0.07317161560058594
+    }
+  ],
+  "concepts": [
+    {
+      "id": "https://openalex.org/C158424031",
+      "wikidata": "https://www.wikidata.org/wiki/Q1191905",
+      "display_name": "Gibbs sampling",
+      "level": 3,
+      "score": 0.8735998868942261
+    },
+    {
+      "id": "https://openalex.org/C185429906",
+      "wikidata": "https://www.wikidata.org/wiki/Q1130160",
+      "display_name": "Estimator",
+      "level": 2,
+      "score": 0.7128902077674866
+    },
+    {
+      "id": "https://openalex.org/C98763669",
+      "wikidata": "https://www.wikidata.org/wiki/Q176645",
+      "display_name": "Markov chain",
+      "level": 2,
+      "score": 0.6230089068412781
+    },
+    {
+      "id": "https://openalex.org/C33923547",
+      "wikidata": "https://www.wikidata.org/wiki/Q395",
+      "display_name": "Mathematics",
+      "level": 0,
+      "score": 0.6068803071975708
+    },
+    {
+      "id": "https://openalex.org/C207201462",
+      "wikidata": "https://www.wikidata.org/wiki/Q182505",
+      "display_name": "Bayes' theorem",
+      "level": 3,
+      "score": 0.6043861508369446
+    },
+    {
+      "id": "https://openalex.org/C111350023",
+      "wikidata": "https://www.wikidata.org/wiki/Q1191869",
+      "display_name": "Markov chain Monte Carlo",
+      "level": 3,
+      "score": 0.5505346655845642
+    },
+    {
+      "id": "https://openalex.org/C204323151",
+      "wikidata": "https://www.wikidata.org/wiki/Q905424",
+      "display_name": "Range (aeronautics)",
+      "level": 2,
+      "score": 0.5378081202507019
+    },
+    {
+      "id": "https://openalex.org/C28826006",
+      "wikidata": "https://www.wikidata.org/wiki/Q33521",
+      "display_name": "Applied mathematics",
+      "level": 1,
+      "score": 0.491195410490036
+    },
+    {
+      "id": "https://openalex.org/C2777303404",
+      "wikidata": "https://www.wikidata.org/wiki/Q759757",
+      "display_name": "Convergence (economics)",
+      "level": 2,
+      "score": 0.4761914312839508
+    },
+    {
+      "id": "https://openalex.org/C57830394",
+      "wikidata": "https://www.wikidata.org/wiki/Q278079",
+      "display_name": "Posterior probability",
+      "level": 3,
+      "score": 0.44306710362434387
+    },
+    {
+      "id": "https://openalex.org/C204693719",
+      "wikidata": "https://www.wikidata.org/wiki/Q910810",
+      "display_name": "Metropolis\u2013Hastings algorithm",
+      "level": 4,
+      "score": 0.4215908944606781
+    },
+    {
+      "id": "https://openalex.org/C105795698",
+      "wikidata": "https://www.wikidata.org/wiki/Q12483",
+      "display_name": "Statistics",
+      "level": 1,
+      "score": 0.37873169779777527
+    },
+    {
+      "id": "https://openalex.org/C107673813",
+      "wikidata": "https://www.wikidata.org/wiki/Q812534",
+      "display_name": "Bayesian probability",
+      "level": 2,
+      "score": 0.34478506445884705
+    },
+    {
+      "id": "https://openalex.org/C149782125",
+      "wikidata": "https://www.wikidata.org/wiki/Q160039",
+      "display_name": "Econometrics",
+      "level": 1,
+      "score": 0.3383593261241913
+    },
+    {
+      "id": "https://openalex.org/C162324750",
+      "wikidata": "https://www.wikidata.org/wiki/Q8134",
+      "display_name": "Economics",
+      "level": 0,
+      "score": 0.07317161560058594
+    },
+    {
+      "id": "https://openalex.org/C159985019",
+      "wikidata": "https://www.wikidata.org/wiki/Q181790",
+      "display_name": "Composite material",
+      "level": 1,
+      "score": 0.0
+    },
+    {
+      "id": "https://openalex.org/C192562407",
+      "wikidata": "https://www.wikidata.org/wiki/Q228736",
+      "display_name": "Materials science",
+      "level": 0,
+      "score": 0.0
+    },
+    {
+      "id": "https://openalex.org/C50522688",
+      "wikidata": "https://www.wikidata.org/wiki/Q189833",
+      "display_name": "Economic growth",
+      "level": 1,
+      "score": 0.0
+    }
+  ],
+  "mesh": [],
+  "locations_count": 2,
+  "locations": [
+    {
+      "id": "doi:10.1007/bf00140871",
+      "is_oa": false,
+      "landing_page_url": "https://doi.org/10.1007/bf00140871",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S5437875",
+        "display_name": "Statistics and Computing",
+        "issn_l": "0960-3174",
+        "issn": [
+          "0960-3174",
+          "1573-1375"
+        ],
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": true,
+        "host_organization": "https://openalex.org/P4310319900",
+        "host_organization_name": "Springer Science+Business Media",
+        "host_organization_lineage": [
+          "https://openalex.org/P4310319900",
+          "https://openalex.org/P4310319965"
+        ],
+        "host_organization_lineage_names": [
+          "Springer Science+Business Media",
+          "Springer Nature"
+        ],
+        "type": "journal"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "publishedVersion",
+      "is_accepted": true,
+      "is_published": true,
+      "raw_source_name": "Statistics and Computing",
+      "raw_type": "journal-article"
+    },
+    {
+      "id": "pmh:oai:CiteSeerX.psu:10.1.1.50.5268",
+      "is_oa": false,
+      "landing_page_url": "http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.50.5268",
+      "pdf_url": null,
+      "source": null,
+      "license": null,
+      "license_id": null,
+      "version": "submittedVersion",
+      "is_accepted": false,
+      "is_published": false,
+      "raw_source_name": "http://utstat.toronto.edu/reports/tech.reports/94-13.ps.Z",
+      "raw_type": "text"
+    }
+  ],
+  "best_oa_location": null,
+  "sustainable_development_goals": [],
+  "awards": [],
+  "funders": [],
+  "has_content": {
+    "pdf": false,
+    "grobid_xml": false
+  },
+  "content_urls": null,
+  "referenced_works_count": 31,
+  "referenced_works": [
+    "https://openalex.org/W109881820",
+    "https://openalex.org/W1515461433",
+    "https://openalex.org/W1535118437",
+    "https://openalex.org/W1584444527",
+    "https://openalex.org/W1973594349",
+    "https://openalex.org/W1978450239",
+    "https://openalex.org/W1998060273",
+    "https://openalex.org/W2010766788",
+    "https://openalex.org/W2017488093",
+    "https://openalex.org/W2020999234",
+    "https://openalex.org/W2022004112",
+    "https://openalex.org/W2028493795",
+    "https://openalex.org/W2046811824",
+    "https://openalex.org/W2056760934",
+    "https://openalex.org/W2072857774",
+    "https://openalex.org/W2077788215",
+    "https://openalex.org/W2083875149",
+    "https://openalex.org/W2096295934",
+    "https://openalex.org/W2106285343",
+    "https://openalex.org/W2113132439",
+    "https://openalex.org/W2136796925",
+    "https://openalex.org/W2138309709",
+    "https://openalex.org/W2146764432",
+    "https://openalex.org/W2147922136",
+    "https://openalex.org/W2152977846",
+    "https://openalex.org/W2162898443",
+    "https://openalex.org/W2505595203",
+    "https://openalex.org/W2796291475",
+    "https://openalex.org/W3204157529",
+    "https://openalex.org/W4302114916",
+    "https://openalex.org/W4388289831"
+  ],
+  "related_works": [
+    "https://openalex.org/W2071668645",
+    "https://openalex.org/W4250051631",
+    "https://openalex.org/W2914481316",
+    "https://openalex.org/W2734477693",
+    "https://openalex.org/W3125971950",
+    "https://openalex.org/W2116700007",
+    "https://openalex.org/W1526222228",
+    "https://openalex.org/W3198356641",
+    "https://openalex.org/W1579866848",
+    "https://openalex.org/W2066716418"
+  ],
+  "abstract_inverted_index": null,
+  "counts_by_year": [
+    {
+      "year": 2025,
+      "cited_by_count": 2
+    },
+    {
+      "year": 2024,
+      "cited_by_count": 1
+    },
+    {
+      "year": 2023,
+      "cited_by_count": 1
+    },
+    {
+      "year": 2022,
+      "cited_by_count": 3
+    },
+    {
+      "year": 2021,
+      "cited_by_count": 3
+    },
+    {
+      "year": 2020,
+      "cited_by_count": 6
+    },
+    {
+      "year": 2019,
+      "cited_by_count": 4
+    },
+    {
+      "year": 2018,
+      "cited_by_count": 1
+    },
+    {
+      "year": 2017,
+      "cited_by_count": 3
+    },
+    {
+      "year": 2016,
+      "cited_by_count": 1
+    },
+    {
+      "year": 2015,
+      "cited_by_count": 1
+    },
+    {
+      "year": 2014,
+      "cited_by_count": 4
+    },
+    {
+      "year": 2013,
+      "cited_by_count": 3
+    },
+    {
+      "year": 2012,
+      "cited_by_count": 2
+    }
+  ],
+  "updated_date": "2026-04-04T16:13:02.066488",
+  "created_date": "2025-10-10T00:00:00"
+}

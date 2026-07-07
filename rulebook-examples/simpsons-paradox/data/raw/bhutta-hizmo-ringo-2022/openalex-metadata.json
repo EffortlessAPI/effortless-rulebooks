@@ -1,0 +1,843 @@
+{
+  "id": "https://openalex.org/W4407365124",
+  "doi": "https://doi.org/10.1111/jofi.13428",
+  "title": "The Impact of Minority Representation at Mortgage Lenders",
+  "display_name": "The Impact of Minority Representation at Mortgage Lenders",
+  "relevance_score": 17.949892,
+  "publication_year": 2025,
+  "publication_date": "2025-02-11",
+  "ids": {
+    "openalex": "https://openalex.org/W4407365124",
+    "doi": "https://doi.org/10.1111/jofi.13428"
+  },
+  "language": "en",
+  "primary_location": {
+    "id": "doi:10.1111/jofi.13428",
+    "is_oa": true,
+    "landing_page_url": "https://doi.org/10.1111/jofi.13428",
+    "pdf_url": "https://onlinelibrary.wiley.com/doi/pdfdirect/10.1111/jofi.13428",
+    "source": {
+      "id": "https://openalex.org/S5353659",
+      "display_name": "The Journal of Finance",
+      "issn_l": "0022-1082",
+      "issn": [
+        "0022-1082",
+        "1540-6261"
+      ],
+      "is_oa": false,
+      "is_in_doaj": false,
+      "is_core": true,
+      "host_organization": "https://openalex.org/P4310320595",
+      "host_organization_name": "Wiley",
+      "host_organization_lineage": [
+        "https://openalex.org/P4310320595"
+      ],
+      "host_organization_lineage_names": [
+        "Wiley"
+      ],
+      "type": "journal"
+    },
+    "license": null,
+    "license_id": null,
+    "version": "publishedVersion",
+    "is_accepted": true,
+    "is_published": true,
+    "raw_source_name": "The Journal of Finance",
+    "raw_type": "journal-article"
+  },
+  "type": "article",
+  "indexed_in": [
+    "crossref"
+  ],
+  "open_access": {
+    "is_oa": true,
+    "oa_status": "bronze",
+    "oa_url": "https://onlinelibrary.wiley.com/doi/pdfdirect/10.1111/jofi.13428",
+    "any_repository_has_fulltext": false
+  },
+  "authorships": [
+    {
+      "author_position": "first",
+      "author": {
+        "id": "https://openalex.org/A5016567938",
+        "display_name": "W. Scott Frame",
+        "orcid": null
+      },
+      "institutions": [],
+      "countries": [],
+      "is_corresponding": false,
+      "raw_author_name": "W. SCOTT FRAME",
+      "raw_affiliation_strings": [],
+      "raw_orcid": null,
+      "affiliations": []
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5057293734",
+        "display_name": "Ruidi Huang",
+        "orcid": "https://orcid.org/0000-0002-6061-5889"
+      },
+      "institutions": [],
+      "countries": [],
+      "is_corresponding": false,
+      "raw_author_name": "RUIDI HUANG",
+      "raw_affiliation_strings": [],
+      "raw_orcid": null,
+      "affiliations": []
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5076425927",
+        "display_name": "Erica Xuewei Jiang",
+        "orcid": null
+      },
+      "institutions": [],
+      "countries": [],
+      "is_corresponding": false,
+      "raw_author_name": "ERICA XUEWEI JIANG",
+      "raw_affiliation_strings": [],
+      "raw_orcid": null,
+      "affiliations": []
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5082578648",
+        "display_name": "Yeonjoon Lee",
+        "orcid": "https://orcid.org/0000-0002-5010-8277"
+      },
+      "institutions": [],
+      "countries": [],
+      "is_corresponding": false,
+      "raw_author_name": "YEONJOON LEE",
+      "raw_affiliation_strings": [],
+      "raw_orcid": null,
+      "affiliations": []
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5080364560",
+        "display_name": "Will Shuo Liu",
+        "orcid": null
+      },
+      "institutions": [],
+      "countries": [],
+      "is_corresponding": false,
+      "raw_author_name": "WILL SHUO LIU",
+      "raw_affiliation_strings": [],
+      "raw_orcid": null,
+      "affiliations": []
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5070621402",
+        "display_name": "Erik J. Mayer",
+        "orcid": "https://orcid.org/0000-0003-0730-8529"
+      },
+      "institutions": [],
+      "countries": [],
+      "is_corresponding": false,
+      "raw_author_name": "ERIK J. MAYER",
+      "raw_affiliation_strings": [],
+      "raw_orcid": null,
+      "affiliations": []
+    },
+    {
+      "author_position": "last",
+      "author": {
+        "id": "https://openalex.org/A5077942930",
+        "display_name": "Adi Sunderam",
+        "orcid": null
+      },
+      "institutions": [],
+      "countries": [],
+      "is_corresponding": true,
+      "raw_author_name": "ADI SUNDERAM",
+      "raw_affiliation_strings": [],
+      "raw_orcid": null,
+      "affiliations": []
+    }
+  ],
+  "institutions": [],
+  "countries_distinct_count": 0,
+  "institutions_distinct_count": 7,
+  "corresponding_author_ids": [
+    "https://openalex.org/A5077942930"
+  ],
+  "corresponding_institution_ids": [],
+  "apc_list": {
+    "value": 4020,
+    "currency": "USD",
+    "value_usd": 4020
+  },
+  "apc_paid": null,
+  "fwci": 25.5941,
+  "has_fulltext": true,
+  "cited_by_count": 11,
+  "citation_normalized_percentile": {
+    "value": 0.99289222,
+    "is_in_top_1_percent": true,
+    "is_in_top_10_percent": true
+  },
+  "cited_by_percentile_year": {
+    "min": 90,
+    "max": 99
+  },
+  "biblio": {
+    "volume": "80",
+    "issue": "2",
+    "first_page": "1209",
+    "last_page": "1260"
+  },
+  "is_retracted": false,
+  "is_paratext": false,
+  "is_xpac": false,
+  "primary_topic": {
+    "id": "https://openalex.org/T10632",
+    "display_name": "Housing Market and Economics",
+    "score": 0.9959999918937683,
+    "subfield": {
+      "id": "https://openalex.org/subfields/2002",
+      "display_name": "Economics and Econometrics"
+    },
+    "field": {
+      "id": "https://openalex.org/fields/20",
+      "display_name": "Economics, Econometrics and Finance"
+    },
+    "domain": {
+      "id": "https://openalex.org/domains/2",
+      "display_name": "Social Sciences"
+    }
+  },
+  "topics": [
+    {
+      "id": "https://openalex.org/T10632",
+      "display_name": "Housing Market and Economics",
+      "score": 0.9959999918937683,
+      "subfield": {
+        "id": "https://openalex.org/subfields/2002",
+        "display_name": "Economics and Econometrics"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/20",
+        "display_name": "Economics, Econometrics and Finance"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/2",
+        "display_name": "Social Sciences"
+      }
+    },
+    {
+      "id": "https://openalex.org/T10127",
+      "display_name": "Banking stability, regulation, efficiency",
+      "score": 0.9868999719619751,
+      "subfield": {
+        "id": "https://openalex.org/subfields/2003",
+        "display_name": "Finance"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/20",
+        "display_name": "Economics, Econometrics and Finance"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/2",
+        "display_name": "Social Sciences"
+      }
+    },
+    {
+      "id": "https://openalex.org/T14094",
+      "display_name": "Italy: Economic History and Contemporary Issues",
+      "score": 0.9330000281333923,
+      "subfield": {
+        "id": "https://openalex.org/subfields/2002",
+        "display_name": "Economics and Econometrics"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/20",
+        "display_name": "Economics, Econometrics and Finance"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/2",
+        "display_name": "Social Sciences"
+      }
+    }
+  ],
+  "keywords": [
+    {
+      "id": "https://openalex.org/keywords/secondary-mortgage-market",
+      "display_name": "Secondary mortgage market",
+      "score": 0.6495727300643921
+    },
+    {
+      "id": "https://openalex.org/keywords/shared-appreciation-mortgage",
+      "display_name": "Shared appreciation mortgage",
+      "score": 0.6345041394233704
+    },
+    {
+      "id": "https://openalex.org/keywords/mortgage-underwriting",
+      "display_name": "Mortgage underwriting",
+      "score": 0.627781867980957
+    },
+    {
+      "id": "https://openalex.org/keywords/collateralized-mortgage-obligation",
+      "display_name": "Collateralized mortgage obligation",
+      "score": 0.6215402483940125
+    },
+    {
+      "id": "https://openalex.org/keywords/representation",
+      "display_name": "Representation (politics)",
+      "score": 0.564761757850647
+    },
+    {
+      "id": "https://openalex.org/keywords/business",
+      "display_name": "Business",
+      "score": 0.5168474316596985
+    },
+    {
+      "id": "https://openalex.org/keywords/loan-to-value-ratio",
+      "display_name": "Loan-to-value ratio",
+      "score": 0.5160979628562927
+    },
+    {
+      "id": "https://openalex.org/keywords/financial-system",
+      "display_name": "Financial system",
+      "score": 0.46097224950790405
+    },
+    {
+      "id": "https://openalex.org/keywords/mortgage-insurance",
+      "display_name": "Mortgage insurance",
+      "score": 0.39786919951438904
+    },
+    {
+      "id": "https://openalex.org/keywords/actuarial-science",
+      "display_name": "Actuarial science",
+      "score": 0.2548395097255707
+    },
+    {
+      "id": "https://openalex.org/keywords/political-science",
+      "display_name": "Political science",
+      "score": 0.19758716225624084
+    },
+    {
+      "id": "https://openalex.org/keywords/politics",
+      "display_name": "Politics",
+      "score": 0.06936737895011902
+    }
+  ],
+  "concepts": [
+    {
+      "id": "https://openalex.org/C179691888",
+      "wikidata": "https://www.wikidata.org/wiki/Q1641464",
+      "display_name": "Secondary mortgage market",
+      "level": 5,
+      "score": 0.6495727300643921
+    },
+    {
+      "id": "https://openalex.org/C138893092",
+      "wikidata": "https://www.wikidata.org/wiki/Q7489541",
+      "display_name": "Shared appreciation mortgage",
+      "level": 5,
+      "score": 0.6345041394233704
+    },
+    {
+      "id": "https://openalex.org/C43039823",
+      "wikidata": "https://www.wikidata.org/wiki/Q6914671",
+      "display_name": "Mortgage underwriting",
+      "level": 5,
+      "score": 0.627781867980957
+    },
+    {
+      "id": "https://openalex.org/C104353511",
+      "wikidata": "https://www.wikidata.org/wiki/Q5146002",
+      "display_name": "Collateralized mortgage obligation",
+      "level": 5,
+      "score": 0.6215402483940125
+    },
+    {
+      "id": "https://openalex.org/C2776359362",
+      "wikidata": "https://www.wikidata.org/wiki/Q2145286",
+      "display_name": "Representation (politics)",
+      "level": 3,
+      "score": 0.564761757850647
+    },
+    {
+      "id": "https://openalex.org/C144133560",
+      "wikidata": "https://www.wikidata.org/wiki/Q4830453",
+      "display_name": "Business",
+      "level": 0,
+      "score": 0.5168474316596985
+    },
+    {
+      "id": "https://openalex.org/C165060548",
+      "wikidata": "https://www.wikidata.org/wiki/Q555344",
+      "display_name": "Loan-to-value ratio",
+      "level": 5,
+      "score": 0.5160979628562927
+    },
+    {
+      "id": "https://openalex.org/C73283319",
+      "wikidata": "https://www.wikidata.org/wiki/Q1416617",
+      "display_name": "Financial system",
+      "level": 1,
+      "score": 0.46097224950790405
+    },
+    {
+      "id": "https://openalex.org/C97330809",
+      "wikidata": "https://www.wikidata.org/wiki/Q4202997",
+      "display_name": "Mortgage insurance",
+      "level": 4,
+      "score": 0.39786919951438904
+    },
+    {
+      "id": "https://openalex.org/C162118730",
+      "wikidata": "https://www.wikidata.org/wiki/Q1128453",
+      "display_name": "Actuarial science",
+      "level": 1,
+      "score": 0.2548395097255707
+    },
+    {
+      "id": "https://openalex.org/C17744445",
+      "wikidata": "https://www.wikidata.org/wiki/Q36442",
+      "display_name": "Political science",
+      "level": 0,
+      "score": 0.19758716225624084
+    },
+    {
+      "id": "https://openalex.org/C94625758",
+      "wikidata": "https://www.wikidata.org/wiki/Q7163",
+      "display_name": "Politics",
+      "level": 2,
+      "score": 0.06936737895011902
+    },
+    {
+      "id": "https://openalex.org/C22738907",
+      "wikidata": "https://www.wikidata.org/wiki/Q3813256",
+      "display_name": "Casualty insurance",
+      "level": 3,
+      "score": 0.0
+    },
+    {
+      "id": "https://openalex.org/C199539241",
+      "wikidata": "https://www.wikidata.org/wiki/Q7748",
+      "display_name": "Law",
+      "level": 1,
+      "score": 0.0
+    },
+    {
+      "id": "https://openalex.org/C68799949",
+      "wikidata": "https://www.wikidata.org/wiki/Q977871",
+      "display_name": "Insurance policy",
+      "level": 2,
+      "score": 0.0
+    }
+  ],
+  "mesh": [],
+  "locations_count": 1,
+  "locations": [
+    {
+      "id": "doi:10.1111/jofi.13428",
+      "is_oa": true,
+      "landing_page_url": "https://doi.org/10.1111/jofi.13428",
+      "pdf_url": "https://onlinelibrary.wiley.com/doi/pdfdirect/10.1111/jofi.13428",
+      "source": {
+        "id": "https://openalex.org/S5353659",
+        "display_name": "The Journal of Finance",
+        "issn_l": "0022-1082",
+        "issn": [
+          "0022-1082",
+          "1540-6261"
+        ],
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": true,
+        "host_organization": "https://openalex.org/P4310320595",
+        "host_organization_name": "Wiley",
+        "host_organization_lineage": [
+          "https://openalex.org/P4310320595"
+        ],
+        "host_organization_lineage_names": [
+          "Wiley"
+        ],
+        "type": "journal"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "publishedVersion",
+      "is_accepted": true,
+      "is_published": true,
+      "raw_source_name": "The Journal of Finance",
+      "raw_type": "journal-article"
+    }
+  ],
+  "best_oa_location": {
+    "id": "doi:10.1111/jofi.13428",
+    "is_oa": true,
+    "landing_page_url": "https://doi.org/10.1111/jofi.13428",
+    "pdf_url": "https://onlinelibrary.wiley.com/doi/pdfdirect/10.1111/jofi.13428",
+    "source": {
+      "id": "https://openalex.org/S5353659",
+      "display_name": "The Journal of Finance",
+      "issn_l": "0022-1082",
+      "issn": [
+        "0022-1082",
+        "1540-6261"
+      ],
+      "is_oa": false,
+      "is_in_doaj": false,
+      "is_core": true,
+      "host_organization": "https://openalex.org/P4310320595",
+      "host_organization_name": "Wiley",
+      "host_organization_lineage": [
+        "https://openalex.org/P4310320595"
+      ],
+      "host_organization_lineage_names": [
+        "Wiley"
+      ],
+      "type": "journal"
+    },
+    "license": null,
+    "license_id": null,
+    "version": "publishedVersion",
+    "is_accepted": true,
+    "is_published": true,
+    "raw_source_name": "The Journal of Finance",
+    "raw_type": "journal-article"
+  },
+  "sustainable_development_goals": [],
+  "awards": [],
+  "funders": [],
+  "has_content": {
+    "pdf": true,
+    "grobid_xml": true
+  },
+  "content_urls": {
+    "pdf": "https://content.openalex.org/works/W4407365124.pdf",
+    "grobid_xml": "https://content.openalex.org/works/W4407365124.grobid-xml"
+  },
+  "referenced_works_count": 54,
+  "referenced_works": [
+    "https://openalex.org/W111324831",
+    "https://openalex.org/W568409357",
+    "https://openalex.org/W1498604664",
+    "https://openalex.org/W1529451712",
+    "https://openalex.org/W1556513643",
+    "https://openalex.org/W1989650553",
+    "https://openalex.org/W2003616672",
+    "https://openalex.org/W2004733943",
+    "https://openalex.org/W2105762482",
+    "https://openalex.org/W2143342576",
+    "https://openalex.org/W2148364377",
+    "https://openalex.org/W2157053543",
+    "https://openalex.org/W2166626454",
+    "https://openalex.org/W2231000380",
+    "https://openalex.org/W2320916292",
+    "https://openalex.org/W2465290420",
+    "https://openalex.org/W2465587637",
+    "https://openalex.org/W2603785580",
+    "https://openalex.org/W2616248647",
+    "https://openalex.org/W2770743945",
+    "https://openalex.org/W2790778429",
+    "https://openalex.org/W2848286189",
+    "https://openalex.org/W2965278148",
+    "https://openalex.org/W2971175341",
+    "https://openalex.org/W3023035274",
+    "https://openalex.org/W3023101082",
+    "https://openalex.org/W3082574654",
+    "https://openalex.org/W3122246491",
+    "https://openalex.org/W3122253784",
+    "https://openalex.org/W3122301113",
+    "https://openalex.org/W3122612836",
+    "https://openalex.org/W3123127232",
+    "https://openalex.org/W3123383467",
+    "https://openalex.org/W3123634543",
+    "https://openalex.org/W3124131021",
+    "https://openalex.org/W3124226976",
+    "https://openalex.org/W3124925128",
+    "https://openalex.org/W3126127371",
+    "https://openalex.org/W3163872933",
+    "https://openalex.org/W3177154218",
+    "https://openalex.org/W3186014115",
+    "https://openalex.org/W3202377308",
+    "https://openalex.org/W3216898060",
+    "https://openalex.org/W4205810599",
+    "https://openalex.org/W4250212716",
+    "https://openalex.org/W4285144040",
+    "https://openalex.org/W4316171137",
+    "https://openalex.org/W4387172619",
+    "https://openalex.org/W4387579989",
+    "https://openalex.org/W4392782511",
+    "https://openalex.org/W4392954719",
+    "https://openalex.org/W4398755685",
+    "https://openalex.org/W4400989283",
+    "https://openalex.org/W6633096910"
+  ],
+  "related_works": [
+    "https://openalex.org/W1538547924",
+    "https://openalex.org/W2253153237",
+    "https://openalex.org/W3123264909",
+    "https://openalex.org/W2291645728",
+    "https://openalex.org/W2606157610",
+    "https://openalex.org/W2513926026",
+    "https://openalex.org/W2122706235",
+    "https://openalex.org/W2129818294",
+    "https://openalex.org/W3123212185",
+    "https://openalex.org/W2901584124"
+  ],
+  "abstract_inverted_index": {
+    "ABSTRACT": [
+      0
+    ],
+    "We": [
+      1
+    ],
+    "study": [
+      2
+    ],
+    "links": [
+      3
+    ],
+    "between": [
+      4
+    ],
+    "the": [
+      5
+    ],
+    "labor": [
+      6
+    ],
+    "market": [
+      7
+    ],
+    "for": [
+      8
+    ],
+    "loan": [
+      9,
+      23,
+      32,
+      64,
+      76,
+      91
+    ],
+    "officers": [
+      10,
+      77,
+      92
+    ],
+    "and": [
+      11,
+      47
+    ],
+    "access": [
+      12,
+      96
+    ],
+    "to": [
+      13,
+      22,
+      39,
+      48,
+      70,
+      97
+    ],
+    "mortgage": [
+      14,
+      20,
+      41
+    ],
+    "credit.": [
+      15,
+      98
+    ],
+    "Using": [
+      16
+    ],
+    "novel": [
+      17
+    ],
+    "data": [
+      18
+    ],
+    "matching": [
+      19
+    ],
+    "applications": [
+      21,
+      45
+    ],
+    "officers,": [
+      24
+    ],
+    "we": [
+      25
+    ],
+    "find": [
+      26
+    ],
+    "that": [
+      27
+    ],
+    "minorities": [
+      28
+    ],
+    "are": [
+      29,
+      36,
+      56
+    ],
+    "underrepresented": [
+      30
+    ],
+    "among": [
+      31,
+      90
+    ],
+    "officers.": [
+      33,
+      65
+    ],
+    "Minority": [
+      34
+    ],
+    "borrowers": [
+      35,
+      60
+    ],
+    "less": [
+      37
+    ],
+    "likely": [
+      38
+    ],
+    "complete": [
+      40
+    ],
+    "applications,": [
+      42
+    ],
+    "have": [
+      43,
+      78
+    ],
+    "completed": [
+      44
+    ],
+    "approved,": [
+      46
+    ],
+    "ultimately": [
+      49
+    ],
+    "take": [
+      50
+    ],
+    "up": [
+      51
+    ],
+    "a": [
+      52
+    ],
+    "loan.": [
+      53
+    ],
+    "These": [
+      54,
+      66
+    ],
+    "disparities": [
+      55
+    ],
+    "reduced": [
+      57
+    ],
+    "when": [
+      58
+    ],
+    "minority": [
+      59,
+      63,
+      75,
+      83,
+      88,
+      94
+    ],
+    "work": [
+      61
+    ],
+    "with": [
+      62,
+      82
+    ],
+    "pairings": [
+      67
+    ],
+    "also": [
+      68
+    ],
+    "lead": [
+      69
+    ],
+    "lower": [
+      71
+    ],
+    "default": [
+      72
+    ],
+    "rates,": [
+      73
+    ],
+    "suggesting": [
+      74
+    ],
+    "an": [
+      79
+    ],
+    "informational": [
+      80
+    ],
+    "advantage": [
+      81
+    ],
+    "borrowers.": [
+      84
+    ],
+    "Our": [
+      85
+    ],
+    "results": [
+      86
+    ],
+    "suggest": [
+      87
+    ],
+    "underrepresentation": [
+      89
+    ],
+    "reduces": [
+      93
+    ],
+    "borrowers\u2019": [
+      95
+    ]
+  },
+  "counts_by_year": [
+    {
+      "year": 2026,
+      "cited_by_count": 3
+    },
+    {
+      "year": 2025,
+      "cited_by_count": 7
+    },
+    {
+      "year": 2024,
+      "cited_by_count": 1
+    }
+  ],
+  "updated_date": "2026-05-21T06:26:12.895304",
+  "created_date": "2025-10-10T00:00:00"
+}

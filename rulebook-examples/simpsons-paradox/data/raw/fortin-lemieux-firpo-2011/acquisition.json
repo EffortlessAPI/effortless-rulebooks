@@ -1,0 +1,15 @@
+{
+  "candidate_id": "cand-exp-fortin-lemieux-firpo-2011",
+  "proposed_study_id": "fortin-lemieux-firpo-2011",
+  "acquisition_status": "portal_manual",
+  "attempted_at": "2026-07-07T03:41:11+00:00",
+  "catalog_source_url": "https://ipums.org/cps",
+  "resolved_urls": [
+    "https://doi.org/10.1111/ilr.12014",
+    "https://ipums.org/cps"
+  ],
+  "files": [
+    "openalex-metadata.json"
+  ],
+  "dois": []
+}

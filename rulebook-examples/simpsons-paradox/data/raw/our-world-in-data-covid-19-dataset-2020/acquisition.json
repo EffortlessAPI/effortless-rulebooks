@@ -1,0 +1,17 @@
+{
+  "candidate_id": "cand-exp-our-world-in-data-covid-19-dataset-2020",
+  "proposed_study_id": "our-world-in-data-covid-19-dataset-2020",
+  "acquisition_status": "landing_saved",
+  "attempted_at": "2026-07-07T03:46:01+00:00",
+  "catalog_source_url": "https://ourworldindata.org/covid-deaths",
+  "resolved_urls": [
+    "https://doi.org/10.1136/bmj.m1328",
+    "https://www.bmj.com/content/bmj/369/bmj.m1328.full.pdf",
+    "https://ourworldindata.org/covid-deaths"
+  ],
+  "files": [
+    "openalex-metadata.json",
+    "source-1.html"
+  ],
+  "dois": []
+}

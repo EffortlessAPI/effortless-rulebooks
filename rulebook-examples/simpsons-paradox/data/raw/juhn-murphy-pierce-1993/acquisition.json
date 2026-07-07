@@ -1,0 +1,18 @@
+{
+  "candidate_id": "cand-exp-juhn-murphy-pierce-1993",
+  "proposed_study_id": "juhn-murphy-pierce-1993",
+  "acquisition_status": "downloaded",
+  "attempted_at": "2026-07-07T03:40:21+00:00",
+  "catalog_source_url": "https://www.nber.org/data/morg.html",
+  "resolved_urls": [
+    "https://doi.org/10.3386/w11628",
+    "https://doi.org/10.3386/w11628",
+    "https://www.nber.org/data/morg.html"
+  ],
+  "files": [
+    "openalex-search.pdf",
+    "openalex-metadata.json",
+    "source-1.html"
+  ],
+  "dois": []
+}

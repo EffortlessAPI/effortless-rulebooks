@@ -1,0 +1,18 @@
+{
+  "candidate_id": "cand-exp-soccer-pass-completion-by-league-2017",
+  "proposed_study_id": "soccer-pass-completion-by-league-2017",
+  "acquisition_status": "downloaded",
+  "attempted_at": "2026-07-07T03:44:28+00:00",
+  "catalog_source_url": "https://statsbomb.com/data/",
+  "resolved_urls": [
+    "https://doi.org/10.1145/3580305.3599924",
+    "https://lirias.kuleuven.be/retrieve/c29f20c5-d2a1-46c1-9dc1-416920493452",
+    "https://statsbomb.com/data/"
+  ],
+  "files": [
+    "openalex-search.pdf",
+    "openalex-metadata.json",
+    "source-1.html"
+  ],
+  "dois": []
+}

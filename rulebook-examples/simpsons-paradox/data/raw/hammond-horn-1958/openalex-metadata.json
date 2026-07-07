@@ -1,0 +1,490 @@
+{
+  "id": "https://openalex.org/W2167424816",
+  "doi": "https://doi.org/10.1001/jama.251.21.2840",
+  "title": "Landmark article March 15, 1958: Smoking and death rates--report on forty-four months of follow-up of 187,783 men. By E. Cuyler Hammond and Daniel Horn",
+  "display_name": "Landmark article March 15, 1958: Smoking and death rates--report on forty-four months of follow-up of 187,783 men. By E. Cuyler Hammond and Daniel Horn",
+  "relevance_score": 218.81734,
+  "publication_year": 1984,
+  "publication_date": "1984-06-01",
+  "ids": {
+    "openalex": "https://openalex.org/W2167424816",
+    "doi": "https://doi.org/10.1001/jama.251.21.2840",
+    "mag": "2167424816",
+    "pmid": "https://pubmed.ncbi.nlm.nih.gov/6371275"
+  },
+  "language": "en",
+  "primary_location": {
+    "id": "doi:10.1001/jama.251.21.2840",
+    "is_oa": false,
+    "landing_page_url": "https://doi.org/10.1001/jama.251.21.2840",
+    "pdf_url": null,
+    "source": {
+      "id": "https://openalex.org/S172573765",
+      "display_name": "JAMA",
+      "issn_l": "0098-7484",
+      "issn": [
+        "0098-7484",
+        "1538-3598"
+      ],
+      "is_oa": false,
+      "is_in_doaj": false,
+      "is_core": true,
+      "host_organization": "https://openalex.org/P4310320259",
+      "host_organization_name": "American Medical Association",
+      "host_organization_lineage": [
+        "https://openalex.org/P4310320259"
+      ],
+      "host_organization_lineage_names": [
+        "American Medical Association"
+      ],
+      "type": "journal"
+    },
+    "license": null,
+    "license_id": null,
+    "version": "publishedVersion",
+    "is_accepted": true,
+    "is_published": true,
+    "raw_source_name": "JAMA: The Journal of the American Medical Association",
+    "raw_type": "journal-article"
+  },
+  "type": "article",
+  "indexed_in": [
+    "crossref",
+    "pubmed"
+  ],
+  "open_access": {
+    "is_oa": false,
+    "oa_status": "closed",
+    "oa_url": null,
+    "any_repository_has_fulltext": false
+  },
+  "authorships": [
+    {
+      "author_position": "first",
+      "author": {
+        "id": "https://openalex.org/A5069308257",
+        "display_name": "Edward Hammond",
+        "orcid": "https://orcid.org/0000-0001-7405-8684"
+      },
+      "institutions": [],
+      "countries": [],
+      "is_corresponding": true,
+      "raw_author_name": "E. C. Hammond",
+      "raw_affiliation_strings": [],
+      "affiliations": []
+    }
+  ],
+  "institutions": [],
+  "countries_distinct_count": 0,
+  "institutions_distinct_count": 1,
+  "corresponding_author_ids": [
+    "https://openalex.org/A5069308257"
+  ],
+  "corresponding_institution_ids": [],
+  "apc_list": null,
+  "apc_paid": null,
+  "fwci": 0.6197,
+  "has_fulltext": false,
+  "cited_by_count": 15,
+  "citation_normalized_percentile": {
+    "value": 0.67782496,
+    "is_in_top_1_percent": false,
+    "is_in_top_10_percent": false
+  },
+  "cited_by_percentile_year": {
+    "min": 90,
+    "max": 95
+  },
+  "biblio": {
+    "volume": "251",
+    "issue": "21",
+    "first_page": "2840",
+    "last_page": "2853"
+  },
+  "is_retracted": false,
+  "is_paratext": false,
+  "is_xpac": false,
+  "primary_topic": {
+    "id": "https://openalex.org/T10060",
+    "display_name": "Smoking Behavior and Cessation",
+    "score": 0.08560000360012054,
+    "subfield": {
+      "id": "https://openalex.org/subfields/2737",
+      "display_name": "Physiology"
+    },
+    "field": {
+      "id": "https://openalex.org/fields/27",
+      "display_name": "Medicine"
+    },
+    "domain": {
+      "id": "https://openalex.org/domains/4",
+      "display_name": "Health Sciences"
+    }
+  },
+  "topics": [
+    {
+      "id": "https://openalex.org/T10060",
+      "display_name": "Smoking Behavior and Cessation",
+      "score": 0.08560000360012054,
+      "subfield": {
+        "id": "https://openalex.org/subfields/2737",
+        "display_name": "Physiology"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/27",
+        "display_name": "Medicine"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/4",
+        "display_name": "Health Sciences"
+      }
+    },
+    {
+      "id": "https://openalex.org/T14400",
+      "display_name": "Medical Coding and Health Information",
+      "score": 0.01850000023841858,
+      "subfield": {
+        "id": "https://openalex.org/subfields/3605",
+        "display_name": "Health Information Management"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/36",
+        "display_name": "Health Professions"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/4",
+        "display_name": "Health Sciences"
+      }
+    },
+    {
+      "id": "https://openalex.org/T14090",
+      "display_name": "Health and Conflict Studies",
+      "score": 0.014100000262260437,
+      "subfield": {
+        "id": "https://openalex.org/subfields/3600",
+        "display_name": "General Health Professions"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/36",
+        "display_name": "Health Professions"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/4",
+        "display_name": "Health Sciences"
+      }
+    }
+  ],
+  "keywords": [
+    {
+      "id": "https://openalex.org/keywords/medicine",
+      "display_name": "Medicine",
+      "score": 0.9795012474060059
+    },
+    {
+      "id": "https://openalex.org/keywords/french-horn",
+      "display_name": "French horn",
+      "score": 0.7701497077941895
+    },
+    {
+      "id": "https://openalex.org/keywords/demography",
+      "display_name": "Demography",
+      "score": 0.4344819188117981
+    },
+    {
+      "id": "https://openalex.org/keywords/gerontology",
+      "display_name": "Gerontology",
+      "score": 0.3517206311225891
+    }
+  ],
+  "concepts": [
+    {
+      "id": "https://openalex.org/C71924100",
+      "wikidata": "https://www.wikidata.org/wiki/Q11190",
+      "display_name": "Medicine",
+      "level": 0,
+      "score": 0.9795012474060059
+    },
+    {
+      "id": "https://openalex.org/C152076505",
+      "wikidata": "https://www.wikidata.org/wiki/Q1126540",
+      "display_name": "French horn",
+      "level": 2,
+      "score": 0.7701497077941895
+    },
+    {
+      "id": "https://openalex.org/C149923435",
+      "wikidata": "https://www.wikidata.org/wiki/Q37732",
+      "display_name": "Demography",
+      "level": 1,
+      "score": 0.4344819188117981
+    },
+    {
+      "id": "https://openalex.org/C74909509",
+      "wikidata": "https://www.wikidata.org/wiki/Q10387",
+      "display_name": "Gerontology",
+      "level": 1,
+      "score": 0.3517206311225891
+    },
+    {
+      "id": "https://openalex.org/C19417346",
+      "wikidata": "https://www.wikidata.org/wiki/Q7922",
+      "display_name": "Pedagogy",
+      "level": 1,
+      "score": 0.0
+    },
+    {
+      "id": "https://openalex.org/C15744967",
+      "wikidata": "https://www.wikidata.org/wiki/Q9418",
+      "display_name": "Psychology",
+      "level": 0,
+      "score": 0.0
+    },
+    {
+      "id": "https://openalex.org/C144024400",
+      "wikidata": "https://www.wikidata.org/wiki/Q21201",
+      "display_name": "Sociology",
+      "level": 0,
+      "score": 0.0
+    }
+  ],
+  "mesh": [
+    {
+      "descriptor_ui": "D006801",
+      "descriptor_name": "Humans",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D006801",
+      "descriptor_name": "Humans",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D006801",
+      "descriptor_name": "Humans",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D008297",
+      "descriptor_name": "Male",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D008297",
+      "descriptor_name": "Male",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D008297",
+      "descriptor_name": "Male",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D009026",
+      "descriptor_name": "Mortality",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D009026",
+      "descriptor_name": "Mortality",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D009026",
+      "descriptor_name": "Mortality",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D012907",
+      "descriptor_name": "Smoking",
+      "qualifier_ui": "Q000266",
+      "qualifier_name": "history",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D012907",
+      "descriptor_name": "Smoking",
+      "qualifier_ui": "Q000266",
+      "qualifier_name": "history",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D012907",
+      "descriptor_name": "Smoking",
+      "qualifier_ui": "Q000266",
+      "qualifier_name": "history",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D014481",
+      "descriptor_name": "United States",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D014481",
+      "descriptor_name": "United States",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D014481",
+      "descriptor_name": "United States",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D049673",
+      "descriptor_name": "History, 20th Century",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D049673",
+      "descriptor_name": "History, 20th Century",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D049673",
+      "descriptor_name": "History, 20th Century",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    }
+  ],
+  "locations_count": 2,
+  "locations": [
+    {
+      "id": "doi:10.1001/jama.251.21.2840",
+      "is_oa": false,
+      "landing_page_url": "https://doi.org/10.1001/jama.251.21.2840",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S172573765",
+        "display_name": "JAMA",
+        "issn_l": "0098-7484",
+        "issn": [
+          "0098-7484",
+          "1538-3598"
+        ],
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": true,
+        "host_organization": "https://openalex.org/P4310320259",
+        "host_organization_name": "American Medical Association",
+        "host_organization_lineage": [
+          "https://openalex.org/P4310320259"
+        ],
+        "host_organization_lineage_names": [
+          "American Medical Association"
+        ],
+        "type": "journal"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "publishedVersion",
+      "is_accepted": true,
+      "is_published": true,
+      "raw_source_name": "JAMA: The Journal of the American Medical Association",
+      "raw_type": "journal-article"
+    },
+    {
+      "id": "pmid:6371275",
+      "is_oa": false,
+      "landing_page_url": "https://pubmed.ncbi.nlm.nih.gov/6371275",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4306525036",
+        "display_name": "PubMed",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I1299303238",
+        "host_organization_name": "National Institutes of Health",
+        "host_organization_lineage": [
+          "https://openalex.org/I1299303238"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "publishedVersion",
+      "is_accepted": true,
+      "is_published": true,
+      "raw_source_name": "JAMA",
+      "raw_type": null
+    }
+  ],
+  "best_oa_location": null,
+  "sustainable_development_goals": [
+    {
+      "display_name": "Good health and well-being",
+      "id": "https://metadata.un.org/sdg/3",
+      "score": 0.800000011920929
+    }
+  ],
+  "awards": [],
+  "funders": [],
+  "has_content": {
+    "pdf": false,
+    "grobid_xml": false
+  },
+  "content_urls": null,
+  "referenced_works_count": 0,
+  "referenced_works": [],
+  "related_works": [
+    "https://openalex.org/W2748952813",
+    "https://openalex.org/W3031052312",
+    "https://openalex.org/W4389568370",
+    "https://openalex.org/W3032375762",
+    "https://openalex.org/W1995515455",
+    "https://openalex.org/W2080531066",
+    "https://openalex.org/W2586801360",
+    "https://openalex.org/W3108674512",
+    "https://openalex.org/W1506200166",
+    "https://openalex.org/W2604872355"
+  ],
+  "abstract_inverted_index": null,
+  "counts_by_year": [
+    {
+      "year": 2025,
+      "cited_by_count": 1
+    },
+    {
+      "year": 2019,
+      "cited_by_count": 1
+    },
+    {
+      "year": 2018,
+      "cited_by_count": 1
+    }
+  ],
+  "updated_date": "2026-03-03T08:47:05.690250",
+  "created_date": "2025-10-10T00:00:00"
+}

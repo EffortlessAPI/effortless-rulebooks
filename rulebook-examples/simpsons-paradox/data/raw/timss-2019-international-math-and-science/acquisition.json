@@ -1,0 +1,14 @@
+{
+  "candidate_id": "cand-exp-timss-2019-international-math-and-science",
+  "proposed_study_id": "timss-2019-international-math-and-science",
+  "acquisition_status": "landing_saved",
+  "attempted_at": "2026-07-07T03:47:49+00:00",
+  "catalog_source_url": "https://timssandpirls.bc.edu/timss2019/international-database/",
+  "resolved_urls": [
+    "https://timssandpirls.bc.edu/timss2019/international-database/"
+  ],
+  "files": [
+    "source-1.html"
+  ],
+  "dois": []
+}

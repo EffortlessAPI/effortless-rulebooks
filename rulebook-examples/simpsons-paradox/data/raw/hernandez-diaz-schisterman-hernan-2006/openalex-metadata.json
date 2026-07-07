@@ -1,0 +1,1301 @@
+{
+  "id": "https://openalex.org/W2089198100",
+  "doi": "https://doi.org/10.1186/1471-2288-8-70",
+  "title": "Reducing bias through directed acyclic graphs",
+  "display_name": "Reducing bias through directed acyclic graphs",
+  "relevance_score": 136.84581,
+  "publication_year": 2008,
+  "publication_date": "2008-10-30",
+  "ids": {
+    "openalex": "https://openalex.org/W2089198100",
+    "doi": "https://doi.org/10.1186/1471-2288-8-70",
+    "mag": "2089198100",
+    "pmid": "https://pubmed.ncbi.nlm.nih.gov/18973665"
+  },
+  "language": "en",
+  "primary_location": {
+    "id": "doi:10.1186/1471-2288-8-70",
+    "is_oa": true,
+    "landing_page_url": "https://doi.org/10.1186/1471-2288-8-70",
+    "pdf_url": "https://bmcmedresmethodol.biomedcentral.com/counter/pdf/10.1186/1471-2288-8-70",
+    "source": {
+      "id": "https://openalex.org/S185874209",
+      "display_name": "BMC Medical Research Methodology",
+      "issn_l": "1471-2288",
+      "issn": [
+        "1471-2288"
+      ],
+      "is_oa": true,
+      "is_in_doaj": true,
+      "is_core": true,
+      "host_organization": "https://openalex.org/P4310320256",
+      "host_organization_name": "BioMed Central",
+      "host_organization_lineage": [
+        "https://openalex.org/P4310320256",
+        "https://openalex.org/P4310319965"
+      ],
+      "host_organization_lineage_names": [
+        "BioMed Central",
+        "Springer Nature"
+      ],
+      "type": "journal"
+    },
+    "license": "cc-by",
+    "license_id": "https://openalex.org/licenses/cc-by",
+    "version": "publishedVersion",
+    "is_accepted": true,
+    "is_published": true,
+    "raw_source_name": "BMC Medical Research Methodology",
+    "raw_type": "journal-article"
+  },
+  "type": "article",
+  "indexed_in": [
+    "crossref",
+    "doaj",
+    "pubmed"
+  ],
+  "open_access": {
+    "is_oa": true,
+    "oa_status": "gold",
+    "oa_url": "https://bmcmedresmethodol.biomedcentral.com/counter/pdf/10.1186/1471-2288-8-70",
+    "any_repository_has_fulltext": true
+  },
+  "authorships": [
+    {
+      "author_position": "first",
+      "author": {
+        "id": "https://openalex.org/A5034465718",
+        "display_name": "Ian Shrier",
+        "orcid": "https://orcid.org/0000-0001-9914-3498"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I2801824472",
+          "display_name": "Jewish General Hospital",
+          "ror": "https://ror.org/056jjra10",
+          "country_code": "CA",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I2801824472",
+            "https://openalex.org/I2801902503",
+            "https://openalex.org/I4210139015",
+            "https://openalex.org/I4405256057"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I5023651",
+          "display_name": "McGill University",
+          "ror": "https://ror.org/01pxwe438",
+          "country_code": "CA",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I5023651"
+          ]
+        }
+      ],
+      "countries": [
+        "CA"
+      ],
+      "is_corresponding": true,
+      "raw_author_name": "Ian Shrier",
+      "raw_affiliation_strings": [
+        "Centre for Clinical Epidemiology and Community Studies, SMBD-Jewish General Hospital, McGill University, Montreal, Canada. ian.shrier@mcgill.ca",
+        "Centre for Clinical Epidemiology and Community Studies, SMBD-Jewish General Hospital, McGill University, Montreal, Canada"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Centre for Clinical Epidemiology and Community Studies, SMBD-Jewish General Hospital, McGill University, Montreal, Canada. ian.shrier@mcgill.ca",
+          "institution_ids": [
+            "https://openalex.org/I2801824472"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Centre for Clinical Epidemiology and Community Studies, SMBD-Jewish General Hospital, McGill University, Montreal, Canada",
+          "institution_ids": [
+            "https://openalex.org/I2801824472",
+            "https://openalex.org/I5023651"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "last",
+      "author": {
+        "id": "https://openalex.org/A5072578581",
+        "display_name": "Robert W. Platt",
+        "orcid": "https://orcid.org/0000-0002-5981-8443"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I5023651",
+          "display_name": "McGill University",
+          "ror": "https://ror.org/01pxwe438",
+          "country_code": "CA",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I5023651"
+          ]
+        }
+      ],
+      "countries": [
+        "CA"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Robert W Platt",
+      "raw_affiliation_strings": [
+        "Department of Epidemiology and Biostatistics, McGill University, Montreal, Canada",
+        "Department of Epidemiology & Biostatistics, McGill University, Montreal, Canada"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Department of Epidemiology and Biostatistics, McGill University, Montreal, Canada",
+          "institution_ids": [
+            "https://openalex.org/I5023651"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Department of Epidemiology & Biostatistics, McGill University, Montreal, Canada",
+          "institution_ids": [
+            "https://openalex.org/I5023651"
+          ]
+        }
+      ]
+    }
+  ],
+  "institutions": [],
+  "countries_distinct_count": 1,
+  "institutions_distinct_count": 2,
+  "corresponding_author_ids": [
+    "https://openalex.org/A5034465718"
+  ],
+  "corresponding_institution_ids": [
+    "https://openalex.org/I2801824472",
+    "https://openalex.org/I5023651"
+  ],
+  "apc_list": {
+    "value": 1790,
+    "currency": "GBP",
+    "value_usd": 2195
+  },
+  "apc_paid": {
+    "value": 1790,
+    "currency": "GBP",
+    "value_usd": 2195
+  },
+  "fwci": 10.35,
+  "has_fulltext": true,
+  "cited_by_count": 1412,
+  "citation_normalized_percentile": {
+    "value": 0.98517825,
+    "is_in_top_1_percent": false,
+    "is_in_top_10_percent": true
+  },
+  "cited_by_percentile_year": {
+    "min": 99,
+    "max": 100
+  },
+  "biblio": {
+    "volume": "8",
+    "issue": "1",
+    "first_page": "70",
+    "last_page": "70"
+  },
+  "is_retracted": false,
+  "is_paratext": false,
+  "is_xpac": false,
+  "primary_topic": {
+    "id": "https://openalex.org/T10845",
+    "display_name": "Advanced Causal Inference Techniques",
+    "score": 0.9710999727249146,
+    "subfield": {
+      "id": "https://openalex.org/subfields/2613",
+      "display_name": "Statistics and Probability"
+    },
+    "field": {
+      "id": "https://openalex.org/fields/26",
+      "display_name": "Mathematics"
+    },
+    "domain": {
+      "id": "https://openalex.org/domains/3",
+      "display_name": "Physical Sciences"
+    }
+  },
+  "topics": [
+    {
+      "id": "https://openalex.org/T10845",
+      "display_name": "Advanced Causal Inference Techniques",
+      "score": 0.9710999727249146,
+      "subfield": {
+        "id": "https://openalex.org/subfields/2613",
+        "display_name": "Statistics and Probability"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/26",
+        "display_name": "Mathematics"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/3",
+        "display_name": "Physical Sciences"
+      }
+    },
+    {
+      "id": "https://openalex.org/T10243",
+      "display_name": "Statistical Methods and Bayesian Inference",
+      "score": 0.005499999970197678,
+      "subfield": {
+        "id": "https://openalex.org/subfields/2613",
+        "display_name": "Statistics and Probability"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/26",
+        "display_name": "Mathematics"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/3",
+        "display_name": "Physical Sciences"
+      }
+    },
+    {
+      "id": "https://openalex.org/T14374",
+      "display_name": "Statistical Methods in Epidemiology",
+      "score": 0.00279999990016222,
+      "subfield": {
+        "id": "https://openalex.org/subfields/2613",
+        "display_name": "Statistics and Probability"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/26",
+        "display_name": "Mathematics"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/3",
+        "display_name": "Physical Sciences"
+      }
+    }
+  ],
+  "keywords": [
+    {
+      "id": "https://openalex.org/keywords/directed-acyclic-graph",
+      "display_name": "Directed acyclic graph",
+      "score": 0.8872076272964478
+    },
+    {
+      "id": "https://openalex.org/keywords/confounding",
+      "display_name": "Confounding",
+      "score": 0.849510669708252
+    },
+    {
+      "id": "https://openalex.org/keywords/causal-inference",
+      "display_name": "Causal inference",
+      "score": 0.5761852264404297
+    },
+    {
+      "id": "https://openalex.org/keywords/selection-bias",
+      "display_name": "Selection bias",
+      "score": 0.5273281931877136
+    },
+    {
+      "id": "https://openalex.org/keywords/computer-science",
+      "display_name": "Computer science",
+      "score": 0.5042482614517212
+    },
+    {
+      "id": "https://openalex.org/keywords/outcome",
+      "display_name": "Outcome (game theory)",
+      "score": 0.4897572994232178
+    },
+    {
+      "id": "https://openalex.org/keywords/econometrics",
+      "display_name": "Econometrics",
+      "score": 0.43889909982681274
+    },
+    {
+      "id": "https://openalex.org/keywords/simple",
+      "display_name": "Simple (philosophy)",
+      "score": 0.43376410007476807
+    },
+    {
+      "id": "https://openalex.org/keywords/causality",
+      "display_name": "Causality (physics)",
+      "score": 0.41927361488342285
+    },
+    {
+      "id": "https://openalex.org/keywords/statistics",
+      "display_name": "Statistics",
+      "score": 0.35689547657966614
+    },
+    {
+      "id": "https://openalex.org/keywords/mathematics",
+      "display_name": "Mathematics",
+      "score": 0.23443931341171265
+    },
+    {
+      "id": "https://openalex.org/keywords/algorithm",
+      "display_name": "Algorithm",
+      "score": 0.20388641953468323
+    }
+  ],
+  "concepts": [
+    {
+      "id": "https://openalex.org/C74197172",
+      "wikidata": "https://www.wikidata.org/wiki/Q1195339",
+      "display_name": "Directed acyclic graph",
+      "level": 2,
+      "score": 0.8872076272964478
+    },
+    {
+      "id": "https://openalex.org/C77350462",
+      "wikidata": "https://www.wikidata.org/wiki/Q1125472",
+      "display_name": "Confounding",
+      "level": 2,
+      "score": 0.849510669708252
+    },
+    {
+      "id": "https://openalex.org/C158600405",
+      "wikidata": "https://www.wikidata.org/wiki/Q5054566",
+      "display_name": "Causal inference",
+      "level": 2,
+      "score": 0.5761852264404297
+    },
+    {
+      "id": "https://openalex.org/C40423286",
+      "wikidata": "https://www.wikidata.org/wiki/Q284172",
+      "display_name": "Selection bias",
+      "level": 2,
+      "score": 0.5273281931877136
+    },
+    {
+      "id": "https://openalex.org/C41008148",
+      "wikidata": "https://www.wikidata.org/wiki/Q21198",
+      "display_name": "Computer science",
+      "level": 0,
+      "score": 0.5042482614517212
+    },
+    {
+      "id": "https://openalex.org/C148220186",
+      "wikidata": "https://www.wikidata.org/wiki/Q7111912",
+      "display_name": "Outcome (game theory)",
+      "level": 2,
+      "score": 0.4897572994232178
+    },
+    {
+      "id": "https://openalex.org/C149782125",
+      "wikidata": "https://www.wikidata.org/wiki/Q160039",
+      "display_name": "Econometrics",
+      "level": 1,
+      "score": 0.43889909982681274
+    },
+    {
+      "id": "https://openalex.org/C2780586882",
+      "wikidata": "https://www.wikidata.org/wiki/Q7520643",
+      "display_name": "Simple (philosophy)",
+      "level": 2,
+      "score": 0.43376410007476807
+    },
+    {
+      "id": "https://openalex.org/C64357122",
+      "wikidata": "https://www.wikidata.org/wiki/Q1149766",
+      "display_name": "Causality (physics)",
+      "level": 2,
+      "score": 0.41927361488342285
+    },
+    {
+      "id": "https://openalex.org/C105795698",
+      "wikidata": "https://www.wikidata.org/wiki/Q12483",
+      "display_name": "Statistics",
+      "level": 1,
+      "score": 0.35689547657966614
+    },
+    {
+      "id": "https://openalex.org/C33923547",
+      "wikidata": "https://www.wikidata.org/wiki/Q395",
+      "display_name": "Mathematics",
+      "level": 0,
+      "score": 0.23443931341171265
+    },
+    {
+      "id": "https://openalex.org/C11413529",
+      "wikidata": "https://www.wikidata.org/wiki/Q8366",
+      "display_name": "Algorithm",
+      "level": 1,
+      "score": 0.20388641953468323
+    },
+    {
+      "id": "https://openalex.org/C144237770",
+      "wikidata": "https://www.wikidata.org/wiki/Q747534",
+      "display_name": "Mathematical economics",
+      "level": 1,
+      "score": 0.0
+    },
+    {
+      "id": "https://openalex.org/C121332964",
+      "wikidata": "https://www.wikidata.org/wiki/Q413",
+      "display_name": "Physics",
+      "level": 0,
+      "score": 0.0
+    },
+    {
+      "id": "https://openalex.org/C138885662",
+      "wikidata": "https://www.wikidata.org/wiki/Q5891",
+      "display_name": "Philosophy",
+      "level": 0,
+      "score": 0.0
+    },
+    {
+      "id": "https://openalex.org/C111472728",
+      "wikidata": "https://www.wikidata.org/wiki/Q9471",
+      "display_name": "Epistemology",
+      "level": 1,
+      "score": 0.0
+    },
+    {
+      "id": "https://openalex.org/C62520636",
+      "wikidata": "https://www.wikidata.org/wiki/Q944",
+      "display_name": "Quantum mechanics",
+      "level": 1,
+      "score": 0.0
+    }
+  ],
+  "mesh": [
+    {
+      "descriptor_ui": "D003196",
+      "descriptor_name": "Computer Graphics",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D003196",
+      "descriptor_name": "Computer Graphics",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D003196",
+      "descriptor_name": "Computer Graphics",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D006801",
+      "descriptor_name": "Humans",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D006801",
+      "descriptor_name": "Humans",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D006801",
+      "descriptor_name": "Humans",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D015233",
+      "descriptor_name": "Models, Statistical",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D015233",
+      "descriptor_name": "Models, Statistical",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D015233",
+      "descriptor_name": "Models, Statistical",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D015982",
+      "descriptor_name": "Bias",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D015982",
+      "descriptor_name": "Bias",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D015982",
+      "descriptor_name": "Bias",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D015986",
+      "descriptor_name": "Confounding Factors, Epidemiologic",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D015986",
+      "descriptor_name": "Confounding Factors, Epidemiologic",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D015986",
+      "descriptor_name": "Confounding Factors, Epidemiologic",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": true
+    }
+  ],
+  "locations_count": 5,
+  "locations": [
+    {
+      "id": "doi:10.1186/1471-2288-8-70",
+      "is_oa": true,
+      "landing_page_url": "https://doi.org/10.1186/1471-2288-8-70",
+      "pdf_url": "https://bmcmedresmethodol.biomedcentral.com/counter/pdf/10.1186/1471-2288-8-70",
+      "source": {
+        "id": "https://openalex.org/S185874209",
+        "display_name": "BMC Medical Research Methodology",
+        "issn_l": "1471-2288",
+        "issn": [
+          "1471-2288"
+        ],
+        "is_oa": true,
+        "is_in_doaj": true,
+        "is_core": true,
+        "host_organization": "https://openalex.org/P4310320256",
+        "host_organization_name": "BioMed Central",
+        "host_organization_lineage": [
+          "https://openalex.org/P4310320256",
+          "https://openalex.org/P4310319965"
+        ],
+        "host_organization_lineage_names": [
+          "BioMed Central",
+          "Springer Nature"
+        ],
+        "type": "journal"
+      },
+      "license": "cc-by",
+      "license_id": "https://openalex.org/licenses/cc-by",
+      "version": "publishedVersion",
+      "is_accepted": true,
+      "is_published": true,
+      "raw_source_name": "BMC Medical Research Methodology",
+      "raw_type": "journal-article"
+    },
+    {
+      "id": "pmid:18973665",
+      "is_oa": false,
+      "landing_page_url": "https://pubmed.ncbi.nlm.nih.gov/18973665",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4306525036",
+        "display_name": "PubMed",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I1299303238",
+        "host_organization_name": "National Institutes of Health",
+        "host_organization_lineage": [
+          "https://openalex.org/I1299303238"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "publishedVersion",
+      "is_accepted": true,
+      "is_published": true,
+      "raw_source_name": "BMC medical research methodology",
+      "raw_type": null
+    },
+    {
+      "id": "pmh:oai:doaj.org/article:7d6303e7d5ef482284a0a1cca8afd60c",
+      "is_oa": true,
+      "landing_page_url": "https://doaj.org/article/7d6303e7d5ef482284a0a1cca8afd60c",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4306401280",
+        "display_name": "DOAJ (DOAJ: Directory of Open Access Journals)",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": null,
+        "host_organization_name": null,
+        "host_organization_lineage": [],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": "cc-by-sa",
+      "license_id": "https://openalex.org/licenses/cc-by-sa",
+      "version": "submittedVersion",
+      "is_accepted": false,
+      "is_published": false,
+      "raw_source_name": "BMC Medical Research Methodology, Vol 8, Iss 1, p 70 (2008)",
+      "raw_type": "article"
+    },
+    {
+      "id": "pmh:oai:escholarship.mcgill.ca:k930c2587",
+      "is_oa": false,
+      "landing_page_url": "https://escholarship.mcgill.ca/concern/articles/k930c2587",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4306401568",
+        "display_name": "eScholarship@McGill (McGill)",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I5023651",
+        "host_organization_name": "McGill University",
+        "host_organization_lineage": [
+          "https://openalex.org/I5023651"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "submittedVersion",
+      "is_accepted": false,
+      "is_published": false,
+      "raw_source_name": "https://link.springer.com/journal/12874",
+      "raw_type": "Article"
+    },
+    {
+      "id": "pmh:oai:pubmedcentral.nih.gov:2601045",
+      "is_oa": true,
+      "landing_page_url": "https://www.ncbi.nlm.nih.gov/pmc/articles/2601045",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S2764455111",
+        "display_name": "PubMed Central",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": true,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I1299303238",
+        "host_organization_name": "National Institutes of Health",
+        "host_organization_lineage": [
+          "https://openalex.org/I1299303238"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": "cc-by",
+      "license_id": "https://openalex.org/licenses/cc-by",
+      "version": "submittedVersion",
+      "is_accepted": false,
+      "is_published": false,
+      "raw_source_name": "BMC Med Res Methodol",
+      "raw_type": "Text"
+    }
+  ],
+  "best_oa_location": {
+    "id": "doi:10.1186/1471-2288-8-70",
+    "is_oa": true,
+    "landing_page_url": "https://doi.org/10.1186/1471-2288-8-70",
+    "pdf_url": "https://bmcmedresmethodol.biomedcentral.com/counter/pdf/10.1186/1471-2288-8-70",
+    "source": {
+      "id": "https://openalex.org/S185874209",
+      "display_name": "BMC Medical Research Methodology",
+      "issn_l": "1471-2288",
+      "issn": [
+        "1471-2288"
+      ],
+      "is_oa": true,
+      "is_in_doaj": true,
+      "is_core": true,
+      "host_organization": "https://openalex.org/P4310320256",
+      "host_organization_name": "BioMed Central",
+      "host_organization_lineage": [
+        "https://openalex.org/P4310320256",
+        "https://openalex.org/P4310319965"
+      ],
+      "host_organization_lineage_names": [
+        "BioMed Central",
+        "Springer Nature"
+      ],
+      "type": "journal"
+    },
+    "license": "cc-by",
+    "license_id": "https://openalex.org/licenses/cc-by",
+    "version": "publishedVersion",
+    "is_accepted": true,
+    "is_published": true,
+    "raw_source_name": "BMC Medical Research Methodology",
+    "raw_type": "journal-article"
+  },
+  "sustainable_development_goals": [
+    {
+      "id": "https://metadata.un.org/sdg/3",
+      "display_name": "Good health and well-being",
+      "score": 0.8100000023841858
+    }
+  ],
+  "awards": [],
+  "funders": [
+    {
+      "id": "https://openalex.org/F4320310638",
+      "display_name": "McGill University",
+      "ror": "https://ror.org/01pxwe438"
+    },
+    {
+      "id": "https://openalex.org/F4320314794",
+      "display_name": "McGill University Health Centre",
+      "ror": "https://ror.org/04cpxjv19"
+    }
+  ],
+  "has_content": {
+    "pdf": true,
+    "grobid_xml": true
+  },
+  "content_urls": {
+    "pdf": "https://content.openalex.org/works/W2089198100.pdf",
+    "grobid_xml": "https://content.openalex.org/works/W2089198100.grobid-xml"
+  },
+  "referenced_works_count": 36,
+  "referenced_works": [
+    "https://openalex.org/W51272494",
+    "https://openalex.org/W145117889",
+    "https://openalex.org/W199402906",
+    "https://openalex.org/W284239745",
+    "https://openalex.org/W1524326598",
+    "https://openalex.org/W1831078002",
+    "https://openalex.org/W1971048436",
+    "https://openalex.org/W1978108654",
+    "https://openalex.org/W1978209044",
+    "https://openalex.org/W1990538023",
+    "https://openalex.org/W1992882281",
+    "https://openalex.org/W2008557562",
+    "https://openalex.org/W2009187570",
+    "https://openalex.org/W2062594082",
+    "https://openalex.org/W2075200608",
+    "https://openalex.org/W2113002312",
+    "https://openalex.org/W2127234468",
+    "https://openalex.org/W2136399003",
+    "https://openalex.org/W2143891888",
+    "https://openalex.org/W2150300473",
+    "https://openalex.org/W2151688269",
+    "https://openalex.org/W2155304757",
+    "https://openalex.org/W2157524492",
+    "https://openalex.org/W2166897940",
+    "https://openalex.org/W2168686129",
+    "https://openalex.org/W2169619449",
+    "https://openalex.org/W2487700872",
+    "https://openalex.org/W3021292282",
+    "https://openalex.org/W3133236490",
+    "https://openalex.org/W4240211860",
+    "https://openalex.org/W4256092668",
+    "https://openalex.org/W4294553991",
+    "https://openalex.org/W4302423442",
+    "https://openalex.org/W6631500773",
+    "https://openalex.org/W7039612861",
+    "https://openalex.org/W7075292137"
+  ],
+  "related_works": [
+    "https://openalex.org/W2522397181",
+    "https://openalex.org/W4220807758",
+    "https://openalex.org/W3023719900",
+    "https://openalex.org/W4287798354",
+    "https://openalex.org/W3035083705",
+    "https://openalex.org/W3019817584",
+    "https://openalex.org/W2030287811",
+    "https://openalex.org/W4386534229",
+    "https://openalex.org/W3002087755",
+    "https://openalex.org/W4386150491"
+  ],
+  "abstract_inverted_index": {
+    "BACKGROUND:": [
+      0
+    ],
+    "The": [
+      1,
+      49,
+      116
+    ],
+    "objective": [
+      2
+    ],
+    "of": [
+      3,
+      13,
+      38,
+      52,
+      75,
+      118,
+      131,
+      145,
+      166
+    ],
+    "most": [
+      4
+    ],
+    "biomedical": [
+      5
+    ],
+    "research": [
+      6
+    ],
+    "is": [
+      7,
+      121,
+      160
+    ],
+    "to": [
+      8,
+      22,
+      85,
+      98,
+      110,
+      122,
+      128,
+      135,
+      154,
+      162
+    ],
+    "determine": [
+      9
+    ],
+    "an": [
+      10,
+      16,
+      19
+    ],
+    "unbiased": [
+      11
+    ],
+    "estimate": [
+      12,
+      171
+    ],
+    "effect": [
+      14,
+      170
+    ],
+    "for": [
+      15,
+      43,
+      54,
+      168
+    ],
+    "exposure": [
+      17
+    ],
+    "on": [
+      18
+    ],
+    "outcome,": [
+      20
+    ],
+    "i.e.": [
+      21
+    ],
+    "make": [
+      23
+    ],
+    "causal": [
+      24,
+      77
+    ],
+    "inferences": [
+      25
+    ],
+    "about": [
+      26
+    ],
+    "the": [
+      27,
+      73,
+      76,
+      107,
+      113,
+      129,
+      138,
+      149,
+      164,
+      169,
+      173
+    ],
+    "exposure.": [
+      28
+    ],
+    "Recent": [
+      29
+    ],
+    "developments": [
+      30
+    ],
+    "in": [
+      31,
+      172
+    ],
+    "epidemiology": [
+      32
+    ],
+    "have": [
+      33,
+      71,
+      106
+    ],
+    "shown": [
+      34
+    ],
+    "that": [
+      35
+    ],
+    "traditional": [
+      36,
+      50,
+      100
+    ],
+    "methods": [
+      37,
+      51
+    ],
+    "identifying": [
+      39
+    ],
+    "confounding": [
+      40,
+      44,
+      155
+    ],
+    "and": [
+      41,
+      61,
+      93,
+      133,
+      156
+    ],
+    "adjusting": [
+      42,
+      53
+    ],
+    "may": [
+      45,
+      57,
+      96
+    ],
+    "be": [
+      46
+    ],
+    "inadequate.": [
+      47
+    ],
+    "DISCUSSION:": [
+      48
+    ],
+    "\"potential": [
+      55
+    ],
+    "confounders\"": [
+      56
+    ],
+    "introduce": [
+      58
+    ],
+    "conditional": [
+      59
+    ],
+    "associations": [
+      60
+    ],
+    "bias": [
+      62,
+      158,
+      167
+    ],
+    "rather": [
+      63
+    ],
+    "than": [
+      64
+    ],
+    "minimize": [
+      65
+    ],
+    "it.": [
+      66
+    ],
+    "Although": [
+      67
+    ],
+    "previous": [
+      68
+    ],
+    "published": [
+      69
+    ],
+    "articles": [
+      70
+    ],
+    "discussed": [
+      72,
+      159
+    ],
+    "role": [
+      74
+    ],
+    "directed": [
+      78
+    ],
+    "acyclic": [
+      79
+    ],
+    "graph": [
+      80
+    ],
+    "approach": [
+      81,
+      127,
+      153
+    ],
+    "(DAGs)": [
+      82
+    ],
+    "with": [
+      83
+    ],
+    "respect": [
+      84
+    ],
+    "confounding,": [
+      86
+    ],
+    "many": [
+      87
+    ],
+    "clinical": [
+      88
+    ],
+    "problems": [
+      89
+    ],
+    "require": [
+      90
+    ],
+    "complicated": [
+      91
+    ],
+    "DAGs": [
+      92
+    ],
+    "therefore": [
+      94
+    ],
+    "investigators": [
+      95
+    ],
+    "continue": [
+      97
+    ],
+    "use": [
+      99,
+      112,
+      130
+    ],
+    "practices": [
+      101
+    ],
+    "because": [
+      102
+    ],
+    "they": [
+      103
+    ],
+    "do": [
+      104
+    ],
+    "not": [
+      105
+    ],
+    "tools": [
+      108
+    ],
+    "necessary": [
+      109
+    ],
+    "properly": [
+      111
+    ],
+    "DAG": [
+      114,
+      152
+    ],
+    "approach.": [
+      115
+    ],
+    "purpose": [
+      117
+    ],
+    "this": [
+      119
+    ],
+    "manuscript": [
+      120
+    ],
+    "demonstrate": [
+      123
+    ],
+    "a": [
+      124,
+      142
+    ],
+    "simple": [
+      125,
+      150
+    ],
+    "6-step": [
+      126,
+      151
+    ],
+    "DAGs,": [
+      132
+    ],
+    "also": [
+      134
+    ],
+    "explain": [
+      136
+    ],
+    "why": [
+      137
+    ],
+    "method": [
+      139
+    ],
+    "works": [
+      140
+    ],
+    "from": [
+      141
+    ],
+    "conceptual": [
+      143
+    ],
+    "point": [
+      144
+    ],
+    "view.": [
+      146
+    ],
+    "SUMMARY:": [
+      147
+    ],
+    "Using": [
+      148
+    ],
+    "selection": [
+      157
+    ],
+    "likely": [
+      161
+    ],
+    "reduce": [
+      163
+    ],
+    "degree": [
+      165
+    ],
+    "chosen": [
+      174
+    ],
+    "statistical": [
+      175
+    ],
+    "model.": [
+      176
+    ]
+  },
+  "counts_by_year": [
+    {
+      "year": 2026,
+      "cited_by_count": 39
+    },
+    {
+      "year": 2025,
+      "cited_by_count": 99
+    },
+    {
+      "year": 2024,
+      "cited_by_count": 133
+    },
+    {
+      "year": 2023,
+      "cited_by_count": 155
+    },
+    {
+      "year": 2022,
+      "cited_by_count": 131
+    },
+    {
+      "year": 2021,
+      "cited_by_count": 178
+    },
+    {
+      "year": 2020,
+      "cited_by_count": 150
+    },
+    {
+      "year": 2019,
+      "cited_by_count": 107
+    },
+    {
+      "year": 2018,
+      "cited_by_count": 81
+    },
+    {
+      "year": 2017,
+      "cited_by_count": 62
+    },
+    {
+      "year": 2016,
+      "cited_by_count": 73
+    },
+    {
+      "year": 2015,
+      "cited_by_count": 61
+    },
+    {
+      "year": 2014,
+      "cited_by_count": 46
+    },
+    {
+      "year": 2013,
+      "cited_by_count": 41
+    },
+    {
+      "year": 2012,
+      "cited_by_count": 20
+    }
+  ],
+  "updated_date": "2026-07-04T07:58:01.006859",
+  "created_date": "2025-10-10T00:00:00"
+}

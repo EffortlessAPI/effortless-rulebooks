@@ -1,0 +1,18 @@
+{
+  "candidate_id": "cand-exp-hernandez-diaz-schisterman-hernan-2006",
+  "proposed_study_id": "hernandez-diaz-schisterman-hernan-2006",
+  "acquisition_status": "downloaded",
+  "attempted_at": "2026-07-07T03:46:06+00:00",
+  "catalog_source_url": "https://www.cdc.gov/nchs/data_access/vitalstatsonline.htm",
+  "resolved_urls": [
+    "https://doi.org/10.1186/1471-2288-8-70",
+    "https://bmcmedresmethodol.biomedcentral.com/counter/pdf/10.1186/1471-2288-8-70",
+    "https://www.cdc.gov/nchs/data_access/vitalstatsonline.htm"
+  ],
+  "files": [
+    "openalex-search.pdf",
+    "openalex-metadata.json",
+    "source-1.html"
+  ],
+  "dois": []
+}

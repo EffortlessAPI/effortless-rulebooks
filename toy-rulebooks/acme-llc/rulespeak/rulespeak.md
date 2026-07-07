@@ -12,7 +12,7 @@ _Smallest viable rulebook with a calculated field — the "Hello, formulas" tuto
 | Term | Description | Narrative Comment |
 |------|-------------|-------------------|
 | **Customer** | A customer is identified by its name. | — |
-| Name | Computed as the email address with every the literal “@” replaced by a hyphen. | _Identifier for the customer._ |
+| Name | Computed as the email address with every “@” replaced by a hyphen. | _Identifier for the customer._ |
 | Initials | Computed as the first 1 character(s) of the first name, followed by the first 1 character(s) of the last name. | _Customer initials — the first letter of FirstName followed by the first letter of LastName._ |
 | Full Name | Computed as the first name, followed by a space, followed by the last name. | _Full name is computed from the first and last name of the customer_ |
 | **ERB Version** | An ERB version is identified by its name. | — |
@@ -34,7 +34,7 @@ but clunky — a flag for an optional downstream reword pass, not a defect._
 
 | ID | Declarative rule |
 |----|------------------|
-| **DR-1 Name** | A customer's name is computed as the email address with every the literal “@” replaced by a hyphen. |
+| **DR-1 Name** | A customer's name is computed as the email address with every “@” replaced by a hyphen. |
 | **DR-2 Initials** | A customer's initials is computed as the first 1 character(s) of the first name, followed by the first 1 character(s) of the last name. |
 | **DR-3 Full Name** | A customer's full name is computed as the first name, followed by a space, followed by the last name. |
 

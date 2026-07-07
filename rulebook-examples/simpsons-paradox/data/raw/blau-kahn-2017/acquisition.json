@@ -1,0 +1,17 @@
+{
+  "candidate_id": "cand-exp-blau-kahn-2017",
+  "proposed_study_id": "blau-kahn-2017",
+  "acquisition_status": "downloaded",
+  "attempted_at": "2026-07-07T03:39:44+00:00",
+  "catalog_source_url": "https://ipums.org/cps",
+  "resolved_urls": [
+    "https://doi.org/10.1145/3580507.3597715",
+    "https://www.econstor.eu/bitstream/10419/282069/1/377.pdf",
+    "https://ipums.org/cps"
+  ],
+  "files": [
+    "openalex-search.pdf",
+    "openalex-metadata.json"
+  ],
+  "dois": []
+}

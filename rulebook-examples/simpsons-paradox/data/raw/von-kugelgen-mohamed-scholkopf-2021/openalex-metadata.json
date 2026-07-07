@@ -1,0 +1,1176 @@
+{
+  "id": "https://openalex.org/W4416329723",
+  "doi": "https://doi.org/10.1088/2058-9565/ae20b8",
+  "title": "Quantum algorithms for causal estimands",
+  "display_name": "Quantum algorithms for causal estimands",
+  "relevance_score": 3.948448,
+  "publication_year": 2025,
+  "publication_date": "2025-11-18",
+  "ids": {
+    "openalex": "https://openalex.org/W4416329723",
+    "doi": "https://doi.org/10.1088/2058-9565/ae20b8"
+  },
+  "language": "en",
+  "primary_location": {
+    "id": "doi:10.1088/2058-9565/ae20b8",
+    "is_oa": true,
+    "landing_page_url": "https://doi.org/10.1088/2058-9565/ae20b8",
+    "pdf_url": null,
+    "source": {
+      "id": "https://openalex.org/S4210177720",
+      "display_name": "Quantum Science and Technology",
+      "issn_l": "2058-9565",
+      "issn": [
+        "2058-9565"
+      ],
+      "is_oa": false,
+      "is_in_doaj": false,
+      "is_core": true,
+      "host_organization": "https://openalex.org/P4310320083",
+      "host_organization_name": "IOP Publishing",
+      "host_organization_lineage": [
+        "https://openalex.org/P4310320083",
+        "https://openalex.org/P4310311669"
+      ],
+      "host_organization_lineage_names": [
+        "IOP Publishing",
+        "Institute of Physics"
+      ],
+      "type": "journal"
+    },
+    "license": "cc-by",
+    "license_id": "https://openalex.org/licenses/cc-by",
+    "version": "publishedVersion",
+    "is_accepted": true,
+    "is_published": true,
+    "raw_source_name": "Quantum Science and Technology",
+    "raw_type": "journal-article"
+  },
+  "type": "article",
+  "indexed_in": [
+    "arxiv",
+    "crossref"
+  ],
+  "open_access": {
+    "is_oa": true,
+    "oa_status": "hybrid",
+    "oa_url": "https://doi.org/10.1088/2058-9565/ae20b8",
+    "any_repository_has_fulltext": true
+  },
+  "authorships": [
+    {
+      "author_position": "first",
+      "author": {
+        "id": "https://openalex.org/A5120409381",
+        "display_name": "Rishi S Goel",
+        "orcid": "https://orcid.org/0009-0000-5392-9575"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I165143802",
+          "display_name": "The University of Queensland",
+          "ror": "https://ror.org/00rqy9422",
+          "country_code": "AU",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I165143802"
+          ]
+        }
+      ],
+      "countries": [
+        "AU"
+      ],
+      "is_corresponding": true,
+      "raw_author_name": "Rishi Goel",
+      "raw_affiliation_strings": [
+        "The University of Queensland, St Lucia, Brisbane, Queensland, 4067, AUSTRALIA"
+      ],
+      "raw_orcid": "https://orcid.org/0009-0000-5392-9575",
+      "affiliations": [
+        {
+          "raw_affiliation_string": "The University of Queensland, St Lucia, Brisbane, Queensland, 4067, AUSTRALIA",
+          "institution_ids": [
+            "https://openalex.org/I165143802"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5003702407",
+        "display_name": "Casey R. Myers",
+        "orcid": "https://orcid.org/0000-0002-8838-7523"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I177877127",
+          "display_name": "The University of Western Australia",
+          "ror": "https://ror.org/047272k79",
+          "country_code": "AU",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I177877127"
+          ]
+        }
+      ],
+      "countries": [
+        "AU"
+      ],
+      "is_corresponding": true,
+      "raw_author_name": "Casey R Myers",
+      "raw_affiliation_strings": [
+        "School of Physics, Mathematics and Computing, The University of Western Australia, 35 Stirling Hwy, Crawley WA 6009, Perth, Western Australia, 6009, AUSTRALIA"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "School of Physics, Mathematics and Computing, The University of Western Australia, 35 Stirling Hwy, Crawley WA 6009, Perth, Western Australia, 6009, AUSTRALIA",
+          "institution_ids": [
+            "https://openalex.org/I177877127"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "last",
+      "author": {
+        "id": "https://openalex.org/A5053296144",
+        "display_name": "Sally Shrapnel",
+        "orcid": "https://orcid.org/0000-0001-8407-7176"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I165143802",
+          "display_name": "The University of Queensland",
+          "ror": "https://ror.org/00rqy9422",
+          "country_code": "AU",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I165143802"
+          ]
+        }
+      ],
+      "countries": [
+        "AU"
+      ],
+      "is_corresponding": true,
+      "raw_author_name": "Sally Shrapnel",
+      "raw_affiliation_strings": [
+        "The University of Queensland, St Lucia, Brisbane, Queensland, 4067, AUSTRALIA"
+      ],
+      "raw_orcid": "https://orcid.org/0000-0001-8407-7176",
+      "affiliations": [
+        {
+          "raw_affiliation_string": "The University of Queensland, St Lucia, Brisbane, Queensland, 4067, AUSTRALIA",
+          "institution_ids": [
+            "https://openalex.org/I165143802"
+          ]
+        }
+      ]
+    }
+  ],
+  "institutions": [],
+  "countries_distinct_count": 1,
+  "institutions_distinct_count": 2,
+  "corresponding_author_ids": [
+    "https://openalex.org/A5003702407",
+    "https://openalex.org/A5053296144",
+    "https://openalex.org/A5120409381"
+  ],
+  "corresponding_institution_ids": [
+    "https://openalex.org/I165143802",
+    "https://openalex.org/I177877127"
+  ],
+  "apc_list": null,
+  "apc_paid": null,
+  "fwci": 0.0,
+  "has_fulltext": true,
+  "cited_by_count": 0,
+  "citation_normalized_percentile": {
+    "value": 0.18030347,
+    "is_in_top_1_percent": false,
+    "is_in_top_10_percent": false
+  },
+  "cited_by_percentile_year": null,
+  "biblio": {
+    "volume": "11",
+    "issue": "1",
+    "first_page": "015024",
+    "last_page": "015024"
+  },
+  "is_retracted": false,
+  "is_paratext": false,
+  "is_xpac": false,
+  "primary_topic": {
+    "id": "https://openalex.org/T10682",
+    "display_name": "Quantum Computing Algorithms and Architecture",
+    "score": 0.7516999840736389,
+    "subfield": {
+      "id": "https://openalex.org/subfields/1702",
+      "display_name": "Artificial Intelligence"
+    },
+    "field": {
+      "id": "https://openalex.org/fields/17",
+      "display_name": "Computer Science"
+    },
+    "domain": {
+      "id": "https://openalex.org/domains/3",
+      "display_name": "Physical Sciences"
+    }
+  },
+  "topics": [
+    {
+      "id": "https://openalex.org/T10682",
+      "display_name": "Quantum Computing Algorithms and Architecture",
+      "score": 0.7516999840736389,
+      "subfield": {
+        "id": "https://openalex.org/subfields/1702",
+        "display_name": "Artificial Intelligence"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/17",
+        "display_name": "Computer Science"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/3",
+        "display_name": "Physical Sciences"
+      }
+    },
+    {
+      "id": "https://openalex.org/T10020",
+      "display_name": "Quantum Information and Cryptography",
+      "score": 0.06390000134706497,
+      "subfield": {
+        "id": "https://openalex.org/subfields/1702",
+        "display_name": "Artificial Intelligence"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/17",
+        "display_name": "Computer Science"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/3",
+        "display_name": "Physical Sciences"
+      }
+    },
+    {
+      "id": "https://openalex.org/T11804",
+      "display_name": "Quantum many-body systems",
+      "score": 0.049400001764297485,
+      "subfield": {
+        "id": "https://openalex.org/subfields/3107",
+        "display_name": "Atomic and Molecular Physics, and Optics"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/31",
+        "display_name": "Physics and Astronomy"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/3",
+        "display_name": "Physical Sciences"
+      }
+    }
+  ],
+  "keywords": [
+    {
+      "id": "https://openalex.org/keywords/counterfactual-thinking",
+      "display_name": "Counterfactual thinking",
+      "score": 0.660099983215332
+    },
+    {
+      "id": "https://openalex.org/keywords/spurious-relationship",
+      "display_name": "Spurious relationship",
+      "score": 0.5656999945640564
+    },
+    {
+      "id": "https://openalex.org/keywords/quantum-algorithm",
+      "display_name": "Quantum algorithm",
+      "score": 0.5286999940872192
+    },
+    {
+      "id": "https://openalex.org/keywords/estimator",
+      "display_name": "Estimator",
+      "score": 0.524399995803833
+    },
+    {
+      "id": "https://openalex.org/keywords/quantum-phase-estimation-algorithm",
+      "display_name": "Quantum phase estimation algorithm",
+      "score": 0.4851999878883362
+    },
+    {
+      "id": "https://openalex.org/keywords/quantum",
+      "display_name": "Quantum",
+      "score": 0.4584999978542328
+    },
+    {
+      "id": "https://openalex.org/keywords/causal-model",
+      "display_name": "Causal model",
+      "score": 0.4237000048160553
+    },
+    {
+      "id": "https://openalex.org/keywords/quantum-machine-learning",
+      "display_name": "Quantum machine learning",
+      "score": 0.3801000118255615
+    }
+  ],
+  "concepts": [
+    {
+      "id": "https://openalex.org/C108650721",
+      "wikidata": "https://www.wikidata.org/wiki/Q1783253",
+      "display_name": "Counterfactual thinking",
+      "level": 2,
+      "score": 0.660099983215332
+    },
+    {
+      "id": "https://openalex.org/C97256817",
+      "wikidata": "https://www.wikidata.org/wiki/Q1462316",
+      "display_name": "Spurious relationship",
+      "level": 2,
+      "score": 0.5656999945640564
+    },
+    {
+      "id": "https://openalex.org/C137019171",
+      "wikidata": "https://www.wikidata.org/wiki/Q2623817",
+      "display_name": "Quantum algorithm",
+      "level": 3,
+      "score": 0.5286999940872192
+    },
+    {
+      "id": "https://openalex.org/C185429906",
+      "wikidata": "https://www.wikidata.org/wiki/Q1130160",
+      "display_name": "Estimator",
+      "level": 2,
+      "score": 0.524399995803833
+    },
+    {
+      "id": "https://openalex.org/C192122513",
+      "wikidata": "https://www.wikidata.org/wiki/Q2835770",
+      "display_name": "Quantum phase estimation algorithm",
+      "level": 5,
+      "score": 0.4851999878883362
+    },
+    {
+      "id": "https://openalex.org/C84114770",
+      "wikidata": "https://www.wikidata.org/wiki/Q46344",
+      "display_name": "Quantum",
+      "level": 2,
+      "score": 0.4584999978542328
+    },
+    {
+      "id": "https://openalex.org/C41008148",
+      "wikidata": "https://www.wikidata.org/wiki/Q21198",
+      "display_name": "Computer science",
+      "level": 0,
+      "score": 0.4494999945163727
+    },
+    {
+      "id": "https://openalex.org/C11413529",
+      "wikidata": "https://www.wikidata.org/wiki/Q8366",
+      "display_name": "Algorithm",
+      "level": 1,
+      "score": 0.4462999999523163
+    },
+    {
+      "id": "https://openalex.org/C11671645",
+      "wikidata": "https://www.wikidata.org/wiki/Q5054567",
+      "display_name": "Causal model",
+      "level": 2,
+      "score": 0.4237000048160553
+    },
+    {
+      "id": "https://openalex.org/C33923547",
+      "wikidata": "https://www.wikidata.org/wiki/Q395",
+      "display_name": "Mathematics",
+      "level": 0,
+      "score": 0.41999998688697815
+    },
+    {
+      "id": "https://openalex.org/C2779094486",
+      "wikidata": "https://www.wikidata.org/wiki/Q18811578",
+      "display_name": "Quantum machine learning",
+      "level": 4,
+      "score": 0.3801000118255615
+    },
+    {
+      "id": "https://openalex.org/C2776436953",
+      "wikidata": "https://www.wikidata.org/wiki/Q5163215",
+      "display_name": "Consistency (knowledge bases)",
+      "level": 2,
+      "score": 0.37540000677108765
+    },
+    {
+      "id": "https://openalex.org/C148220186",
+      "wikidata": "https://www.wikidata.org/wiki/Q7111912",
+      "display_name": "Outcome (game theory)",
+      "level": 2,
+      "score": 0.33809998631477356
+    },
+    {
+      "id": "https://openalex.org/C15706264",
+      "wikidata": "https://www.wikidata.org/wiki/Q230883",
+      "display_name": "Quantum state",
+      "level": 3,
+      "score": 0.33390000462532043
+    },
+    {
+      "id": "https://openalex.org/C74193536",
+      "wikidata": "https://www.wikidata.org/wiki/Q574844",
+      "display_name": "Kernel (algebra)",
+      "level": 2,
+      "score": 0.3212999999523163
+    },
+    {
+      "id": "https://openalex.org/C80444323",
+      "wikidata": "https://www.wikidata.org/wiki/Q2878974",
+      "display_name": "Theoretical computer science",
+      "level": 1,
+      "score": 0.3102000057697296
+    },
+    {
+      "id": "https://openalex.org/C163504300",
+      "wikidata": "https://www.wikidata.org/wiki/Q2364925",
+      "display_name": "Causal structure",
+      "level": 2,
+      "score": 0.2996000051498413
+    },
+    {
+      "id": "https://openalex.org/C43682372",
+      "wikidata": "https://www.wikidata.org/wiki/Q7269080",
+      "display_name": "Quantum operation",
+      "level": 4,
+      "score": 0.29739999771118164
+    },
+    {
+      "id": "https://openalex.org/C11255438",
+      "wikidata": "https://www.wikidata.org/wiki/Q7269085",
+      "display_name": "Quantum process",
+      "level": 4,
+      "score": 0.29179999232292175
+    },
+    {
+      "id": "https://openalex.org/C64357122",
+      "wikidata": "https://www.wikidata.org/wiki/Q1149766",
+      "display_name": "Causality (physics)",
+      "level": 2,
+      "score": 0.27559998631477356
+    },
+    {
+      "id": "https://openalex.org/C137002209",
+      "wikidata": "https://www.wikidata.org/wiki/Q898521",
+      "display_name": "Hidden variable theory",
+      "level": 3,
+      "score": 0.2703000009059906
+    },
+    {
+      "id": "https://openalex.org/C185142706",
+      "wikidata": "https://www.wikidata.org/wiki/Q1134404",
+      "display_name": "Covariance matrix",
+      "level": 2,
+      "score": 0.26350000500679016
+    },
+    {
+      "id": "https://openalex.org/C71889745",
+      "wikidata": "https://www.wikidata.org/wiki/Q1783264",
+      "display_name": "Counterfactual conditional",
+      "level": 3,
+      "score": 0.258899986743927
+    },
+    {
+      "id": "https://openalex.org/C58053490",
+      "wikidata": "https://www.wikidata.org/wiki/Q176555",
+      "display_name": "Quantum computer",
+      "level": 3,
+      "score": 0.2549000084400177
+    }
+  ],
+  "mesh": [],
+  "locations_count": 3,
+  "locations": [
+    {
+      "id": "doi:10.1088/2058-9565/ae20b8",
+      "is_oa": true,
+      "landing_page_url": "https://doi.org/10.1088/2058-9565/ae20b8",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4210177720",
+        "display_name": "Quantum Science and Technology",
+        "issn_l": "2058-9565",
+        "issn": [
+          "2058-9565"
+        ],
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": true,
+        "host_organization": "https://openalex.org/P4310320083",
+        "host_organization_name": "IOP Publishing",
+        "host_organization_lineage": [
+          "https://openalex.org/P4310320083",
+          "https://openalex.org/P4310311669"
+        ],
+        "host_organization_lineage_names": [
+          "IOP Publishing",
+          "Institute of Physics"
+        ],
+        "type": "journal"
+      },
+      "license": "cc-by",
+      "license_id": "https://openalex.org/licenses/cc-by",
+      "version": "publishedVersion",
+      "is_accepted": true,
+      "is_published": true,
+      "raw_source_name": "Quantum Science and Technology",
+      "raw_type": "journal-article"
+    },
+    {
+      "id": "pmh:oai:pure.atira.dk:openaire/c134b79d-dcfe-48b3-94ab-9a84ca44cbd3",
+      "is_oa": true,
+      "landing_page_url": "https://admin.research-repository.uwa.edu.au/en/publications/c134b79d-dcfe-48b3-94ab-9a84ca44cbd3",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4306402523",
+        "display_name": "UWA Profiles and Research Repository (University of Western Australia)",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I177877127",
+        "host_organization_name": "The University of Western Australia",
+        "host_organization_lineage": [
+          "https://openalex.org/I177877127"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": "cc-by",
+      "license_id": "https://openalex.org/licenses/cc-by",
+      "version": "publishedVersion",
+      "is_accepted": true,
+      "is_published": true,
+      "raw_source_name": "Goel, R, Myers, C R & Shrapnel, S 2026, 'Quantum algorithms for causal estimands', Quantum Science and Technology, vol. 11, no. 1, 015024. https://doi.org/10.1088/2058-9565/ae20b8",
+      "raw_type": "info:eu-repo/semantics/article"
+    },
+    {
+      "id": "pmh:oai:arXiv.org:2505.12873",
+      "is_oa": true,
+      "landing_page_url": "http://arxiv.org/abs/2505.12873",
+      "pdf_url": "https://arxiv.org/pdf/2505.12873",
+      "source": {
+        "id": "https://openalex.org/S4306400194",
+        "display_name": "arXiv (Cornell University)",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": true,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I205783295",
+        "host_organization_name": "Cornell University",
+        "host_organization_lineage": [
+          "https://openalex.org/I205783295"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "submittedVersion",
+      "is_accepted": false,
+      "is_published": false,
+      "raw_source_name": null,
+      "raw_type": "text"
+    }
+  ],
+  "best_oa_location": {
+    "id": "doi:10.1088/2058-9565/ae20b8",
+    "is_oa": true,
+    "landing_page_url": "https://doi.org/10.1088/2058-9565/ae20b8",
+    "pdf_url": null,
+    "source": {
+      "id": "https://openalex.org/S4210177720",
+      "display_name": "Quantum Science and Technology",
+      "issn_l": "2058-9565",
+      "issn": [
+        "2058-9565"
+      ],
+      "is_oa": false,
+      "is_in_doaj": false,
+      "is_core": true,
+      "host_organization": "https://openalex.org/P4310320083",
+      "host_organization_name": "IOP Publishing",
+      "host_organization_lineage": [
+        "https://openalex.org/P4310320083",
+        "https://openalex.org/P4310311669"
+      ],
+      "host_organization_lineage_names": [
+        "IOP Publishing",
+        "Institute of Physics"
+      ],
+      "type": "journal"
+    },
+    "license": "cc-by",
+    "license_id": "https://openalex.org/licenses/cc-by",
+    "version": "publishedVersion",
+    "is_accepted": true,
+    "is_published": true,
+    "raw_source_name": "Quantum Science and Technology",
+    "raw_type": "journal-article"
+  },
+  "sustainable_development_goals": [],
+  "awards": [],
+  "funders": [],
+  "has_content": {
+    "grobid_xml": false,
+    "pdf": false
+  },
+  "content_urls": null,
+  "referenced_works_count": 43,
+  "referenced_works": [
+    "https://openalex.org/W1492999010",
+    "https://openalex.org/W1516659296",
+    "https://openalex.org/W1964992876",
+    "https://openalex.org/W1978938623",
+    "https://openalex.org/W1986160866",
+    "https://openalex.org/W1988369744",
+    "https://openalex.org/W2012501405",
+    "https://openalex.org/W2015904350",
+    "https://openalex.org/W2049910836",
+    "https://openalex.org/W2058701696",
+    "https://openalex.org/W2064790857",
+    "https://openalex.org/W2087942425",
+    "https://openalex.org/W2103956991",
+    "https://openalex.org/W2257937122",
+    "https://openalex.org/W2559394418",
+    "https://openalex.org/W2792946961",
+    "https://openalex.org/W2945077829",
+    "https://openalex.org/W3090365491",
+    "https://openalex.org/W3096052452",
+    "https://openalex.org/W3111162498",
+    "https://openalex.org/W3126838958",
+    "https://openalex.org/W3134858253",
+    "https://openalex.org/W3135588948",
+    "https://openalex.org/W3158182757",
+    "https://openalex.org/W3162603073",
+    "https://openalex.org/W3209237089",
+    "https://openalex.org/W3211813227",
+    "https://openalex.org/W3212169067",
+    "https://openalex.org/W3212990387",
+    "https://openalex.org/W4213212652",
+    "https://openalex.org/W4283020809",
+    "https://openalex.org/W4285593754",
+    "https://openalex.org/W4289528791",
+    "https://openalex.org/W4292063383",
+    "https://openalex.org/W4296126438",
+    "https://openalex.org/W4302010812",
+    "https://openalex.org/W4310898209",
+    "https://openalex.org/W4378740448",
+    "https://openalex.org/W4381248286",
+    "https://openalex.org/W4383198288",
+    "https://openalex.org/W4386881177",
+    "https://openalex.org/W4392877631",
+    "https://openalex.org/W4405498154"
+  ],
+  "related_works": [],
+  "abstract_inverted_index": {
+    "Abstract": [
+      0
+    ],
+    "Modern": [
+      1
+    ],
+    "machine": [
+      2
+    ],
+    "learning": [
+      3
+    ],
+    "(ML)": [
+      4
+    ],
+    "methods": [
+      5
+    ],
+    "typically": [
+      6,
+      66
+    ],
+    "fail": [
+      7
+    ],
+    "to": [
+      8,
+      24,
+      45,
+      78,
+      127,
+      182
+    ],
+    "adequately": [
+      9
+    ],
+    "capture": [
+      10
+    ],
+    "causal": [
+      11,
+      42,
+      63,
+      81,
+      100,
+      185
+    ],
+    "information.": [
+      12
+    ],
+    "Consequently,": [
+      13
+    ],
+    "such": [
+      14
+    ],
+    "models": [
+      15
+    ],
+    "do": [
+      16
+    ],
+    "not": [
+      17
+    ],
+    "handle": [
+      18
+    ],
+    "data": [
+      19
+    ],
+    "distributional": [
+      20
+    ],
+    "shifts,": [
+      21
+    ],
+    "are": [
+      22,
+      65,
+      115
+    ],
+    "vulnerable": [
+      23
+    ],
+    "adversarial": [
+      25
+    ],
+    "examples,": [
+      26
+    ],
+    "and": [
+      27,
+      33,
+      102,
+      111,
+      149,
+      159
+    ],
+    "often": [
+      28
+    ],
+    "learn": [
+      29
+    ],
+    "spurious": [
+      30
+    ],
+    "correlations": [
+      31
+    ],
+    "(Sch\u00f6lkopf": [
+      32
+    ],
+    "von": [
+      34
+    ],
+    "K\u00fcgelgen": [
+      35
+    ],
+    "2022": [
+      36
+    ],
+    "(arXiv:2204.00607)": [
+      37
+    ],
+    "[cs.AI]).": [
+      38
+    ],
+    "Causal": [
+      39
+    ],
+    "ML,": [
+      40
+    ],
+    "or": [
+      41
+    ],
+    "inference,": [
+      43
+    ],
+    "aims": [
+      44
+    ],
+    "solve": [
+      46
+    ],
+    "these": [
+      47,
+      80,
+      107,
+      119,
+      188
+    ],
+    "issues": [
+      48
+    ],
+    "by": [
+      49,
+      196
+    ],
+    "estimating": [
+      50
+    ],
+    "the": [
+      51,
+      140,
+      144,
+      165,
+      183,
+      191
+    ],
+    "expected": [
+      52
+    ],
+    "outcome": [
+      53
+    ],
+    "of": [
+      54,
+      97,
+      118,
+      164
+    ],
+    "counterfactual": [
+      55
+    ],
+    "events,": [
+      56
+    ],
+    "using": [
+      57
+    ],
+    "observational": [
+      58
+    ],
+    "and/or": [
+      59
+    ],
+    "interventional": [
+      60
+    ],
+    "data,": [
+      61
+    ],
+    "where": [
+      62
+    ],
+    "relationships": [
+      64
+    ],
+    "depicted": [
+      67
+    ],
+    "as": [
+      68,
+      77
+    ],
+    "directed": [
+      69
+    ],
+    "acyclic": [
+      70
+    ],
+    "graphs.": [
+      71
+    ],
+    "It": [
+      72
+    ],
+    "is": [
+      73,
+      167,
+      172,
+      180
+    ],
+    "an": [
+      74
+    ],
+    "open": [
+      75
+    ],
+    "question": [
+      76
+    ],
+    "whether": [
+      79
+    ],
+    "algorithms": [
+      82,
+      105,
+      158,
+      189
+    ],
+    "provide": [
+      83
+    ],
+    "opportunities": [
+      84
+    ],
+    "for": [
+      85,
+      106,
+      139,
+      146
+    ],
+    "quantum": [
+      86,
+      104,
+      129,
+      133,
+      176,
+      197
+    ],
+    "enhancement.": [
+      87
+    ],
+    "In": [
+      88
+    ],
+    "this": [
+      89
+    ],
+    "paper": [
+      90
+    ],
+    "we": [
+      91
+    ],
+    "consider": [
+      92
+    ],
+    "a": [
+      93,
+      128,
+      175
+    ],
+    "recently": [
+      94
+    ],
+    "developed": [
+      95
+    ],
+    "family": [
+      96
+    ],
+    "non-parametric,": [
+      98
+    ],
+    "continuous": [
+      99
+    ],
+    "estimators": [
+      101,
+      141,
+      166
+    ],
+    "derive": [
+      103
+    ],
+    "tasks.": [
+      108
+    ],
+    "Kernel": [
+      109
+    ],
+    "evaluation": [
+      110,
+      148
+    ],
+    "large": [
+      112
+    ],
+    "matrix": [
+      113
+    ],
+    "inversion": [
+      114
+    ],
+    "critical": [
+      116
+    ],
+    "sub-routines": [
+      117
+    ],
+    "classical": [
+      120
+    ],
+    "algorithms,": [
+      121,
+      135
+    ],
+    "which": [
+      122
+    ],
+    "makes": [
+      123
+    ],
+    "them": [
+      124
+    ],
+    "particularly": [
+      125
+    ],
+    "amenable": [
+      126
+    ],
+    "treatment.": [
+      130
+    ],
+    "Unlike": [
+      131
+    ],
+    "other": [
+      132
+    ],
+    "ML": [
+      134
+    ],
+    "closed": [
+      136
+    ],
+    "form": [
+      137
+    ],
+    "solutions": [
+      138
+    ],
+    "exist,": [
+      142
+    ],
+    "negating": [
+      143
+    ],
+    "need": [
+      145
+    ],
+    "gradient": [
+      147
+    ],
+    "variational": [
+      150
+    ],
+    "learning.": [
+      151
+    ],
+    "We": [
+      152
+    ],
+    "describe": [
+      153
+    ],
+    "several": [
+      154
+    ],
+    "new": [
+      155
+    ],
+    "hybrid": [
+      156
+    ],
+    "quantum\u2013classical": [
+      157
+    ],
+    "show": [
+      160
+    ],
+    "that": [
+      161,
+      179
+    ],
+    "uniform": [
+      162
+    ],
+    "consistency": [
+      163
+    ],
+    "retained.": [
+      168
+    ],
+    "Furthermore,": [
+      169
+    ],
+    "if": [
+      170
+    ],
+    "one": [
+      171
+    ],
+    "satisfied": [
+      173
+    ],
+    "with": [
+      174
+    ],
+    "state": [
+      177
+    ],
+    "output": [
+      178
+    ],
+    "proportional": [
+      181
+    ],
+    "true": [
+      184
+    ],
+    "estimand,": [
+      186
+    ],
+    "then": [
+      187
+    ],
+    "inherit": [
+      190
+    ],
+    "exponential": [
+      192
+    ],
+    "complexity": [
+      193
+    ],
+    "advantages": [
+      194
+    ],
+    "given": [
+      195
+    ],
+    "linear": [
+      198
+    ],
+    "system": [
+      199
+    ],
+    "solvers.": [
+      200
+    ]
+  },
+  "counts_by_year": [],
+  "updated_date": "2026-07-04T07:58:01.006859",
+  "created_date": "2025-11-19T00:00:00"
+}

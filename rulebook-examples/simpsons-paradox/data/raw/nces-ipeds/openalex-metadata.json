@@ -1,0 +1,1085 @@
+{
+  "id": "https://openalex.org/W1893667868",
+  "doi": "https://doi.org/10.7916/d82805qw",
+  "title": "What We Know About Community College Low-Income and Minority Student Outcomes: Descriptive Statistics from National Surveys",
+  "display_name": "What We Know About Community College Low-Income and Minority Student Outcomes: Descriptive Statistics from National Surveys",
+  "relevance_score": 192.98901,
+  "publication_year": 2005,
+  "publication_date": "2005-01-01",
+  "ids": {
+    "openalex": "https://openalex.org/W1893667868",
+    "doi": "https://doi.org/10.7916/d82805qw",
+    "mag": "1893667868"
+  },
+  "language": "en",
+  "primary_location": {
+    "id": "pmh:oai:vtechworks.lib.vt.edu:10919/90842",
+    "is_oa": true,
+    "landing_page_url": "http://hdl.handle.net/10919/90842",
+    "pdf_url": "http://hdl.handle.net/10919/90842",
+    "source": {
+      "id": "https://openalex.org/S4306400248",
+      "display_name": "VTechWorks (Virginia Tech)",
+      "issn_l": null,
+      "issn": null,
+      "is_oa": false,
+      "is_in_doaj": false,
+      "is_core": false,
+      "host_organization": "https://openalex.org/I859038795",
+      "host_organization_name": "Virginia Tech",
+      "host_organization_lineage": [
+        "https://openalex.org/I859038795"
+      ],
+      "host_organization_lineage_names": [],
+      "type": "repository"
+    },
+    "license": null,
+    "license_id": null,
+    "version": "submittedVersion",
+    "is_accepted": false,
+    "is_published": false,
+    "raw_source_name": null,
+    "raw_type": "Report"
+  },
+  "type": "article",
+  "indexed_in": [
+    "datacite"
+  ],
+  "open_access": {
+    "is_oa": true,
+    "oa_status": "green",
+    "oa_url": "http://hdl.handle.net/10919/90842",
+    "any_repository_has_fulltext": true
+  },
+  "authorships": [
+    {
+      "author_position": "first",
+      "author": {
+        "id": "https://openalex.org/A5109524966",
+        "display_name": "Thomas Bailey",
+        "orcid": null
+      },
+      "institutions": [],
+      "countries": [],
+      "is_corresponding": false,
+      "raw_author_name": "Bailey, Thomas R.",
+      "raw_affiliation_strings": [],
+      "raw_orcid": null,
+      "affiliations": []
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5105142313",
+        "display_name": "Davis Jenkins",
+        "orcid": null
+      },
+      "institutions": [],
+      "countries": [],
+      "is_corresponding": false,
+      "raw_author_name": "Jenkins, Paul Davis",
+      "raw_affiliation_strings": [],
+      "raw_orcid": null,
+      "affiliations": []
+    },
+    {
+      "author_position": "last",
+      "author": {
+        "id": "https://openalex.org/A5074681609",
+        "display_name": "Timothy Leinbach",
+        "orcid": null
+      },
+      "institutions": [],
+      "countries": [],
+      "is_corresponding": false,
+      "raw_author_name": "Leinbach, D. Timothy",
+      "raw_affiliation_strings": [],
+      "raw_orcid": null,
+      "affiliations": []
+    }
+  ],
+  "institutions": [],
+  "countries_distinct_count": 0,
+  "institutions_distinct_count": 0,
+  "corresponding_author_ids": [],
+  "corresponding_institution_ids": [],
+  "apc_list": null,
+  "apc_paid": null,
+  "fwci": 13.7489,
+  "has_fulltext": true,
+  "cited_by_count": 107,
+  "citation_normalized_percentile": {
+    "value": 0.98353767,
+    "is_in_top_1_percent": false,
+    "is_in_top_10_percent": true
+  },
+  "cited_by_percentile_year": {
+    "min": 97,
+    "max": 99
+  },
+  "biblio": {
+    "volume": null,
+    "issue": null,
+    "first_page": null,
+    "last_page": null
+  },
+  "is_retracted": false,
+  "is_paratext": false,
+  "is_xpac": false,
+  "primary_topic": {
+    "id": "https://openalex.org/T10267",
+    "display_name": "Higher Education Research Studies",
+    "score": 0.9997000098228455,
+    "subfield": {
+      "id": "https://openalex.org/subfields/3304",
+      "display_name": "Education"
+    },
+    "field": {
+      "id": "https://openalex.org/fields/33",
+      "display_name": "Social Sciences"
+    },
+    "domain": {
+      "id": "https://openalex.org/domains/2",
+      "display_name": "Social Sciences"
+    }
+  },
+  "topics": [
+    {
+      "id": "https://openalex.org/T10267",
+      "display_name": "Higher Education Research Studies",
+      "score": 0.9997000098228455,
+      "subfield": {
+        "id": "https://openalex.org/subfields/3304",
+        "display_name": "Education"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/33",
+        "display_name": "Social Sciences"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/2",
+        "display_name": "Social Sciences"
+      }
+    },
+    {
+      "id": "https://openalex.org/T10546",
+      "display_name": "Higher Education Governance and Development",
+      "score": 0.9516000151634216,
+      "subfield": {
+        "id": "https://openalex.org/subfields/3320",
+        "display_name": "Political Science and International Relations"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/33",
+        "display_name": "Social Sciences"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/2",
+        "display_name": "Social Sciences"
+      }
+    },
+    {
+      "id": "https://openalex.org/T11039",
+      "display_name": "Evaluation of Teaching Practices",
+      "score": 0.9003999829292297,
+      "subfield": {
+        "id": "https://openalex.org/subfields/3304",
+        "display_name": "Education"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/33",
+        "display_name": "Social Sciences"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/2",
+        "display_name": "Social Sciences"
+      }
+    }
+  ],
+  "keywords": [
+    {
+      "id": "https://openalex.org/keywords/descriptive-statistics",
+      "display_name": "Descriptive statistics",
+      "score": 0.7405492067337036
+    },
+    {
+      "id": "https://openalex.org/keywords/statistics-education",
+      "display_name": "Statistics education",
+      "score": 0.6082473397254944
+    },
+    {
+      "id": "https://openalex.org/keywords/community-college",
+      "display_name": "Community college",
+      "score": 0.5194172859191895
+    },
+    {
+      "id": "https://openalex.org/keywords/psychology",
+      "display_name": "Psychology",
+      "score": 0.3993167579174042
+    },
+    {
+      "id": "https://openalex.org/keywords/statistics",
+      "display_name": "Statistics",
+      "score": 0.35706228017807007
+    },
+    {
+      "id": "https://openalex.org/keywords/sociology",
+      "display_name": "Sociology",
+      "score": 0.32695311307907104
+    },
+    {
+      "id": "https://openalex.org/keywords/political-science",
+      "display_name": "Political science",
+      "score": 0.3234594166278839
+    },
+    {
+      "id": "https://openalex.org/keywords/geography",
+      "display_name": "Geography",
+      "score": 0.32317379117012024
+    },
+    {
+      "id": "https://openalex.org/keywords/medical-education",
+      "display_name": "Medical education",
+      "score": 0.3200027346611023
+    },
+    {
+      "id": "https://openalex.org/keywords/mathematics-education",
+      "display_name": "Mathematics education",
+      "score": 0.2964756190776825
+    },
+    {
+      "id": "https://openalex.org/keywords/medicine",
+      "display_name": "Medicine",
+      "score": 0.1411667764186859
+    },
+    {
+      "id": "https://openalex.org/keywords/mathematics",
+      "display_name": "Mathematics",
+      "score": 0.11702102422714233
+    }
+  ],
+  "concepts": [
+    {
+      "id": "https://openalex.org/C39896193",
+      "wikidata": "https://www.wikidata.org/wiki/Q380344",
+      "display_name": "Descriptive statistics",
+      "level": 2,
+      "score": 0.7405492067337036
+    },
+    {
+      "id": "https://openalex.org/C182109673",
+      "wikidata": "https://www.wikidata.org/wiki/Q7604437",
+      "display_name": "Statistics education",
+      "level": 2,
+      "score": 0.6082473397254944
+    },
+    {
+      "id": "https://openalex.org/C2985172591",
+      "wikidata": "https://www.wikidata.org/wiki/Q1336920",
+      "display_name": "Community college",
+      "level": 2,
+      "score": 0.5194172859191895
+    },
+    {
+      "id": "https://openalex.org/C15744967",
+      "wikidata": "https://www.wikidata.org/wiki/Q9418",
+      "display_name": "Psychology",
+      "level": 0,
+      "score": 0.3993167579174042
+    },
+    {
+      "id": "https://openalex.org/C105795698",
+      "wikidata": "https://www.wikidata.org/wiki/Q12483",
+      "display_name": "Statistics",
+      "level": 1,
+      "score": 0.35706228017807007
+    },
+    {
+      "id": "https://openalex.org/C144024400",
+      "wikidata": "https://www.wikidata.org/wiki/Q21201",
+      "display_name": "Sociology",
+      "level": 0,
+      "score": 0.32695311307907104
+    },
+    {
+      "id": "https://openalex.org/C17744445",
+      "wikidata": "https://www.wikidata.org/wiki/Q36442",
+      "display_name": "Political science",
+      "level": 0,
+      "score": 0.3234594166278839
+    },
+    {
+      "id": "https://openalex.org/C205649164",
+      "wikidata": "https://www.wikidata.org/wiki/Q1071",
+      "display_name": "Geography",
+      "level": 0,
+      "score": 0.32317379117012024
+    },
+    {
+      "id": "https://openalex.org/C509550671",
+      "wikidata": "https://www.wikidata.org/wiki/Q126945",
+      "display_name": "Medical education",
+      "level": 1,
+      "score": 0.3200027346611023
+    },
+    {
+      "id": "https://openalex.org/C145420912",
+      "wikidata": "https://www.wikidata.org/wiki/Q853077",
+      "display_name": "Mathematics education",
+      "level": 1,
+      "score": 0.2964756190776825
+    },
+    {
+      "id": "https://openalex.org/C71924100",
+      "wikidata": "https://www.wikidata.org/wiki/Q11190",
+      "display_name": "Medicine",
+      "level": 0,
+      "score": 0.1411667764186859
+    },
+    {
+      "id": "https://openalex.org/C33923547",
+      "wikidata": "https://www.wikidata.org/wiki/Q395",
+      "display_name": "Mathematics",
+      "level": 0,
+      "score": 0.11702102422714233
+    }
+  ],
+  "mesh": [],
+  "locations_count": 4,
+  "locations": [
+    {
+      "id": "pmh:oai:vtechworks.lib.vt.edu:10919/90842",
+      "is_oa": true,
+      "landing_page_url": "http://hdl.handle.net/10919/90842",
+      "pdf_url": "http://hdl.handle.net/10919/90842",
+      "source": {
+        "id": "https://openalex.org/S4306400248",
+        "display_name": "VTechWorks (Virginia Tech)",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I859038795",
+        "host_organization_name": "Virginia Tech",
+        "host_organization_lineage": [
+          "https://openalex.org/I859038795"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "submittedVersion",
+      "is_accepted": false,
+      "is_published": false,
+      "raw_source_name": null,
+      "raw_type": "Report"
+    },
+    {
+      "id": "pmh:oai:academiccommons.columbia.edu:10.7916/D82805QW",
+      "is_oa": false,
+      "landing_page_url": "https://doi.org/10.7916/D82805QW",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4306402601",
+        "display_name": "Columbia Academic Commons (Columbia University)",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I78577930",
+        "host_organization_name": "Columbia University",
+        "host_organization_lineage": [
+          "https://openalex.org/I78577930"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "submittedVersion",
+      "is_accepted": false,
+      "is_published": false,
+      "raw_source_name": "",
+      "raw_type": "Reports"
+    },
+    {
+      "id": "doi:10.7916/d82805qw",
+      "is_oa": true,
+      "landing_page_url": "https://doi.org/10.7916/d82805qw",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4306402601",
+        "display_name": "Columbia Academic Commons (Columbia University)",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I78577930",
+        "host_organization_name": "Columbia University",
+        "host_organization_lineage": [
+          "https://openalex.org/I78577930"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": null,
+      "license_id": null,
+      "version": null,
+      "is_accepted": false,
+      "is_published": null,
+      "raw_source_name": null,
+      "raw_type": "article-journal"
+    },
+    {
+      "id": "mag:1893667868",
+      "is_oa": false,
+      "landing_page_url": "http://files.eric.ed.gov/fulltext/ED484354.pdf",
+      "pdf_url": null,
+      "source": null,
+      "license": null,
+      "license_id": null,
+      "version": null,
+      "is_accepted": false,
+      "is_published": null,
+      "raw_source_name": null,
+      "raw_type": null
+    }
+  ],
+  "best_oa_location": {
+    "id": "pmh:oai:vtechworks.lib.vt.edu:10919/90842",
+    "is_oa": true,
+    "landing_page_url": "http://hdl.handle.net/10919/90842",
+    "pdf_url": "http://hdl.handle.net/10919/90842",
+    "source": {
+      "id": "https://openalex.org/S4306400248",
+      "display_name": "VTechWorks (Virginia Tech)",
+      "issn_l": null,
+      "issn": null,
+      "is_oa": false,
+      "is_in_doaj": false,
+      "is_core": false,
+      "host_organization": "https://openalex.org/I859038795",
+      "host_organization_name": "Virginia Tech",
+      "host_organization_lineage": [
+        "https://openalex.org/I859038795"
+      ],
+      "host_organization_lineage_names": [],
+      "type": "repository"
+    },
+    "license": null,
+    "license_id": null,
+    "version": "submittedVersion",
+    "is_accepted": false,
+    "is_published": false,
+    "raw_source_name": null,
+    "raw_type": "Report"
+  },
+  "sustainable_development_goals": [
+    {
+      "id": "https://metadata.un.org/sdg/1",
+      "score": 0.6700000166893005,
+      "display_name": "No poverty"
+    }
+  ],
+  "awards": [],
+  "funders": [],
+  "has_content": {
+    "grobid_xml": true,
+    "pdf": true
+  },
+  "content_urls": {
+    "pdf": "https://content.openalex.org/works/W1893667868.pdf",
+    "grobid_xml": "https://content.openalex.org/works/W1893667868.grobid-xml"
+  },
+  "referenced_works_count": 3,
+  "referenced_works": [
+    "https://openalex.org/W1566999787",
+    "https://openalex.org/W1795066263",
+    "https://openalex.org/W2159447424"
+  ],
+  "related_works": [
+    "https://openalex.org/W1972677302",
+    "https://openalex.org/W2162897826",
+    "https://openalex.org/W86547894",
+    "https://openalex.org/W51610557",
+    "https://openalex.org/W2106542208",
+    "https://openalex.org/W2064278577",
+    "https://openalex.org/W2028883490",
+    "https://openalex.org/W1583288583",
+    "https://openalex.org/W2663162",
+    "https://openalex.org/W2107063431",
+    "https://openalex.org/W2037162238",
+    "https://openalex.org/W1505203270",
+    "https://openalex.org/W149736300",
+    "https://openalex.org/W2132525145",
+    "https://openalex.org/W2113928737",
+    "https://openalex.org/W2028181338",
+    "https://openalex.org/W1990688007",
+    "https://openalex.org/W1564199318",
+    "https://openalex.org/W1480666269",
+    "https://openalex.org/W1980619632"
+  ],
+  "abstract_inverted_index": {
+    "This": [
+      0
+    ],
+    "report": [
+      1
+    ],
+    "summarizes": [
+      2
+    ],
+    "the": [
+      3,
+      24,
+      45,
+      82,
+      88,
+      101,
+      108,
+      119,
+      126
+    ],
+    "latest": [
+      4
+    ],
+    "available": [
+      5
+    ],
+    "national": [
+      6,
+      138
+    ],
+    "statistics": [
+      7,
+      60
+    ],
+    "on": [
+      8,
+      140
+    ],
+    "access": [
+      9
+    ],
+    "and": [
+      10,
+      15,
+      44,
+      64,
+      70,
+      75,
+      98,
+      147,
+      170,
+      175,
+      190,
+      193,
+      211
+    ],
+    "attainment": [
+      11,
+      123,
+      192
+    ],
+    "by": [
+      12,
+      67,
+      96,
+      130,
+      144,
+      173
+    ],
+    "low": [
+      13
+    ],
+    "income": [
+      14,
+      146
+    ],
+    "minority": [
+      16,
+      174
+    ],
+    "community": [
+      17,
+      114
+    ],
+    "college": [
+      18
+    ],
+    "students.": [
+      19
+    ],
+    "The": [
+      20,
+      54,
+      160
+    ],
+    "data": [
+      21,
+      56,
+      139,
+      163
+    ],
+    "come": [
+      22
+    ],
+    "from": [
+      23,
+      164
+    ],
+    "National": [
+      25
+    ],
+    "Center": [
+      26
+    ],
+    "for": [
+      27,
+      198
+    ],
+    "Education": [
+      28,
+      33
+    ],
+    "Statistics'": [
+      29
+    ],
+    "(NCES)": [
+      30
+    ],
+    "Integrated": [
+      31
+    ],
+    "Postsecondary": [
+      32,
+      48
+    ],
+    "Data": [
+      34
+    ],
+    "System": [
+      35
+    ],
+    "(IPEDS)": [
+      36
+    ],
+    "annual": [
+      37
+    ],
+    "surveys": [
+      38
+    ],
+    "of": [
+      39,
+      61,
+      86,
+      91,
+      93,
+      111,
+      121,
+      128,
+      135,
+      142,
+      201
+    ],
+    "all": [
+      40,
+      213
+    ],
+    "postsecondary": [
+      41,
+      209
+    ],
+    "educational": [
+      42
+    ],
+    "institutions,": [
+      43
+    ],
+    "NCES": [
+      46
+    ],
+    "Beginning": [
+      47
+    ],
+    "Students": [
+      49
+    ],
+    "Longitudinal": [
+      50
+    ],
+    "Study": [
+      51
+    ],
+    "1996-2001": [
+      52
+    ],
+    "(BPS:96/01).": [
+      53
+    ],
+    "IPEDS": [
+      55
+    ],
+    "provide": [
+      57
+    ],
+    "longitudinal": [
+      58
+    ],
+    "trend": [
+      59
+    ],
+    "actual": [
+      62
+    ],
+    "enrollments": [
+      63
+    ],
+    "degrees": [
+      65
+    ],
+    "awarded": [
+      66
+    ],
+    "institution": [
+      68,
+      104
+    ],
+    "type": [
+      69
+    ],
+    "student": [
+      71,
+      145,
+      177
+    ],
+    "characteristics": [
+      72
+    ],
+    "between": [
+      73
+    ],
+    "1992": [
+      74
+    ],
+    "2002.": [
+      76
+    ],
+    "From": [
+      77
+    ],
+    "this": [
+      78
+    ],
+    "we": [
+      79,
+      99,
+      150
+    ],
+    "learn": [
+      80
+    ],
+    "about": [
+      81
+    ],
+    "overall": [
+      83
+    ],
+    "enrollment": [
+      84,
+      129,
+      143,
+      168,
+      210
+    ],
+    "rates": [
+      85,
+      102,
+      172,
+      188
+    ],
+    "minorities,": [
+      87
+    ],
+    "total": [
+      89
+    ],
+    "number": [
+      90
+    ],
+    "types": [
+      92,
+      105,
+      134,
+      200
+    ],
+    "credentials": [
+      94
+    ],
+    "earned": [
+      95
+    ],
+    "race/ethnicity,": [
+      97
+    ],
+    "compare": [
+      100
+    ],
+    "across": [
+      103,
+      212
+    ],
+    "to": [
+      106,
+      125,
+      152,
+      166,
+      181,
+      195
+    ],
+    "assess": [
+      107
+    ],
+    "relative": [
+      109,
+      124
+    ],
+    "achievement": [
+      110,
+      187
+    ],
+    "students": [
+      112,
+      202
+    ],
+    "at": [
+      113,
+      132,
+      154
+    ],
+    "colleges.": [
+      115
+    ],
+    "We": [
+      116
+    ],
+    "also": [
+      117
+    ],
+    "estimate": [
+      118
+    ],
+    "rate": [
+      120,
+      127
+    ],
+    "degree": [
+      122
+    ],
+    "race/ethnicity": [
+      131
+    ],
+    "different": [
+      133,
+      199
+    ],
+    "institutions.": [
+      136
+    ],
+    "For": [
+      137
+    ],
+    "patterns": [
+      141,
+      169
+    ],
+    "program": [
+      148
+    ],
+    "type,": [
+      149
+    ],
+    "need": [
+      151
+    ],
+    "look": [
+      153
+    ],
+    "survey": [
+      155
+    ],
+    "datasets": [
+      156
+    ],
+    "such": [
+      157
+    ],
+    "as": [
+      158
+    ],
+    "BPS:96/01.": [
+      159
+    ],
+    "authors": [
+      161
+    ],
+    "use": [
+      162
+    ],
+    "BPS:96/01": [
+      165,
+      183
+    ],
+    "describe": [
+      167
+    ],
+    "completion": [
+      171
+    ],
+    "low-income": [
+      176
+    ],
+    "characteristics.": [
+      178
+    ],
+    "In": [
+      179
+    ],
+    "contrast": [
+      180
+    ],
+    "IPEDS,": [
+      182
+    ],
+    "provides": [
+      184
+    ],
+    "us": [
+      185
+    ],
+    "with": [
+      186
+    ],
+    "(degree": [
+      189
+    ],
+    "certificate": [
+      191
+    ],
+    "transfer": [
+      194
+    ],
+    "baccalaureate": [
+      196
+    ],
+    "institutions)": [
+      197
+    ],
+    "after": [
+      203
+    ],
+    "six": [
+      204
+    ],
+    "years,": [
+      205
+    ],
+    "since": [
+      206
+    ],
+    "beginning": [
+      207
+    ],
+    "their": [
+      208
+    ],
+    "institutions": [
+      214
+    ],
+    "in": [
+      215
+    ],
+    "which": [
+      216
+    ],
+    "they": [
+      217
+    ],
+    "enrolled": [
+      218
+    ],
+    "during": [
+      219
+    ],
+    "that": [
+      220
+    ],
+    "time": [
+      221
+    ],
+    "period.": [
+      222
+    ]
+  },
+  "counts_by_year": [
+    {
+      "year": 2024,
+      "cited_by_count": 5
+    },
+    {
+      "year": 2023,
+      "cited_by_count": 4
+    },
+    {
+      "year": 2022,
+      "cited_by_count": 4
+    },
+    {
+      "year": 2021,
+      "cited_by_count": 5
+    },
+    {
+      "year": 2020,
+      "cited_by_count": 4
+    },
+    {
+      "year": 2019,
+      "cited_by_count": 10
+    },
+    {
+      "year": 2018,
+      "cited_by_count": 12
+    },
+    {
+      "year": 2017,
+      "cited_by_count": 6
+    },
+    {
+      "year": 2016,
+      "cited_by_count": 8
+    },
+    {
+      "year": 2015,
+      "cited_by_count": 8
+    },
+    {
+      "year": 2014,
+      "cited_by_count": 11
+    },
+    {
+      "year": 2013,
+      "cited_by_count": 6
+    },
+    {
+      "year": 2012,
+      "cited_by_count": 7
+    }
+  ],
+  "updated_date": "2026-07-02T09:51:11.867554",
+  "created_date": "2025-10-10T00:00:00"
+}

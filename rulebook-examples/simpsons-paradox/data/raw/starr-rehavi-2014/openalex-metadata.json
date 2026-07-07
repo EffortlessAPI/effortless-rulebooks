@@ -1,0 +1,1175 @@
+{
+  "id": "https://openalex.org/W2911098993",
+  "doi": "https://doi.org/10.1146/annurev-criminol-011518-024815",
+  "title": "Cumulative Disadvantage in the American Criminal Justice System",
+  "display_name": "Cumulative Disadvantage in the American Criminal Justice System",
+  "relevance_score": 54.168964,
+  "publication_year": 2019,
+  "publication_date": "2019-01-13",
+  "ids": {
+    "openalex": "https://openalex.org/W2911098993",
+    "doi": "https://doi.org/10.1146/annurev-criminol-011518-024815",
+    "mag": "2911098993"
+  },
+  "language": "en",
+  "primary_location": {
+    "id": "doi:10.1146/annurev-criminol-011518-024815",
+    "is_oa": true,
+    "landing_page_url": "https://doi.org/10.1146/annurev-criminol-011518-024815",
+    "pdf_url": "https://www.annualreviews.org/doi/pdf/10.1146/annurev-criminol-011518-024815",
+    "source": {
+      "id": "https://openalex.org/S4210217772",
+      "display_name": "Annual Review of Criminology",
+      "issn_l": "2572-4568",
+      "issn": [
+        "2572-4568"
+      ],
+      "is_oa": false,
+      "is_in_doaj": false,
+      "is_core": true,
+      "host_organization": "https://openalex.org/P4310320373",
+      "host_organization_name": "Annual Reviews",
+      "host_organization_lineage": [
+        "https://openalex.org/P4310320373"
+      ],
+      "host_organization_lineage_names": [
+        "Annual Reviews"
+      ],
+      "type": "journal"
+    },
+    "license": null,
+    "license_id": null,
+    "version": "publishedVersion",
+    "is_accepted": true,
+    "is_published": true,
+    "raw_source_name": "Annual Review of Criminology",
+    "raw_type": "journal-article"
+  },
+  "type": "article",
+  "indexed_in": [
+    "crossref"
+  ],
+  "open_access": {
+    "is_oa": true,
+    "oa_status": "bronze",
+    "oa_url": "https://www.annualreviews.org/doi/pdf/10.1146/annurev-criminol-011518-024815",
+    "any_repository_has_fulltext": false
+  },
+  "authorships": [
+    {
+      "author_position": "first",
+      "author": {
+        "id": "https://openalex.org/A5015064919",
+        "display_name": "Megan C. Kurlychek",
+        "orcid": "https://orcid.org/0000-0003-3791-3391"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I392282",
+          "display_name": "University at Albany, State University of New York",
+          "ror": "https://ror.org/012zs8222",
+          "country_code": "US",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I392282"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": true,
+      "raw_author_name": "Megan C. Kurlychek",
+      "raw_affiliation_strings": [
+        "School of Criminal Justice, University at Albany, Albany, New York 12222, USA;"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "School of Criminal Justice, University at Albany, Albany, New York 12222, USA;",
+          "institution_ids": [
+            "https://openalex.org/I392282"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "last",
+      "author": {
+        "id": "https://openalex.org/A5102801136",
+        "display_name": "Brian D. Johnson",
+        "orcid": "https://orcid.org/0000-0003-4404-0365"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I66946132",
+          "display_name": "University of Maryland, College Park",
+          "ror": "https://ror.org/047s2c258",
+          "country_code": "US",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I66946132"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Brian D. Johnson",
+      "raw_affiliation_strings": [
+        "Department of Criminology and Criminal Justice, University of Maryland, College Park, MD 20742, USA"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Department of Criminology and Criminal Justice, University of Maryland, College Park, MD 20742, USA",
+          "institution_ids": [
+            "https://openalex.org/I66946132"
+          ]
+        }
+      ]
+    }
+  ],
+  "institutions": [],
+  "countries_distinct_count": 1,
+  "institutions_distinct_count": 2,
+  "corresponding_author_ids": [
+    "https://openalex.org/A5015064919"
+  ],
+  "corresponding_institution_ids": [
+    "https://openalex.org/I392282"
+  ],
+  "apc_list": null,
+  "apc_paid": null,
+  "fwci": 46.877,
+  "has_fulltext": true,
+  "cited_by_count": 247,
+  "citation_normalized_percentile": {
+    "value": 0.998339,
+    "is_in_top_1_percent": true,
+    "is_in_top_10_percent": true
+  },
+  "cited_by_percentile_year": {
+    "min": 98,
+    "max": 100
+  },
+  "biblio": {
+    "volume": "2",
+    "issue": "1",
+    "first_page": "291",
+    "last_page": "319"
+  },
+  "is_retracted": false,
+  "is_paratext": false,
+  "is_xpac": false,
+  "primary_topic": {
+    "id": "https://openalex.org/T10318",
+    "display_name": "Criminal Justice and Corrections Analysis",
+    "score": 0.9998999834060669,
+    "subfield": {
+      "id": "https://openalex.org/subfields/3312",
+      "display_name": "Sociology and Political Science"
+    },
+    "field": {
+      "id": "https://openalex.org/fields/33",
+      "display_name": "Social Sciences"
+    },
+    "domain": {
+      "id": "https://openalex.org/domains/2",
+      "display_name": "Social Sciences"
+    }
+  },
+  "topics": [
+    {
+      "id": "https://openalex.org/T10318",
+      "display_name": "Criminal Justice and Corrections Analysis",
+      "score": 0.9998999834060669,
+      "subfield": {
+        "id": "https://openalex.org/subfields/3312",
+        "display_name": "Sociology and Political Science"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/33",
+        "display_name": "Social Sciences"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/2",
+        "display_name": "Social Sciences"
+      }
+    },
+    {
+      "id": "https://openalex.org/T10574",
+      "display_name": "Crime Patterns and Interventions",
+      "score": 0.9994999766349792,
+      "subfield": {
+        "id": "https://openalex.org/subfields/3312",
+        "display_name": "Sociology and Political Science"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/33",
+        "display_name": "Social Sciences"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/2",
+        "display_name": "Social Sciences"
+      }
+    },
+    {
+      "id": "https://openalex.org/T10565",
+      "display_name": "Psychopathy, Forensic Psychiatry, Sexual Offending",
+      "score": 0.9850000143051147,
+      "subfield": {
+        "id": "https://openalex.org/subfields/3203",
+        "display_name": "Clinical Psychology"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/32",
+        "display_name": "Psychology"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/2",
+        "display_name": "Social Sciences"
+      }
+    }
+  ],
+  "keywords": [
+    {
+      "id": "https://openalex.org/keywords/disadvantage",
+      "display_name": "Disadvantage",
+      "score": 0.9051311016082764
+    },
+    {
+      "id": "https://openalex.org/keywords/criminal-justice",
+      "display_name": "Criminal justice",
+      "score": 0.8640143871307373
+    },
+    {
+      "id": "https://openalex.org/keywords/scholarship",
+      "display_name": "Scholarship",
+      "score": 0.7937941551208496
+    },
+    {
+      "id": "https://openalex.org/keywords/punishment",
+      "display_name": "Punishment (psychology)",
+      "score": 0.7223333120346069
+    },
+    {
+      "id": "https://openalex.org/keywords/criminology",
+      "display_name": "Criminology",
+      "score": 0.7084294557571411
+    },
+    {
+      "id": "https://openalex.org/keywords/life-course-approach",
+      "display_name": "Life course approach",
+      "score": 0.6373493671417236
+    },
+    {
+      "id": "https://openalex.org/keywords/economic-justice",
+      "display_name": "Economic Justice",
+      "score": 0.5244434475898743
+    },
+    {
+      "id": "https://openalex.org/keywords/theory-of-criminal-justice",
+      "display_name": "Theory of criminal justice",
+      "score": 0.5167149901390076
+    },
+    {
+      "id": "https://openalex.org/keywords/inequality",
+      "display_name": "Inequality",
+      "score": 0.4673120677471161
+    },
+    {
+      "id": "https://openalex.org/keywords/sociology",
+      "display_name": "Sociology",
+      "score": 0.4502618908882141
+    },
+    {
+      "id": "https://openalex.org/keywords/empirical-research",
+      "display_name": "Empirical research",
+      "score": 0.4336732029914856
+    },
+    {
+      "id": "https://openalex.org/keywords/political-science",
+      "display_name": "Political science",
+      "score": 0.4218190610408783
+    },
+    {
+      "id": "https://openalex.org/keywords/work",
+      "display_name": "Work (physics)",
+      "score": 0.4101041555404663
+    },
+    {
+      "id": "https://openalex.org/keywords/law",
+      "display_name": "Law",
+      "score": 0.34921732544898987
+    },
+    {
+      "id": "https://openalex.org/keywords/psychology",
+      "display_name": "Psychology",
+      "score": 0.29125481843948364
+    },
+    {
+      "id": "https://openalex.org/keywords/social-psychology",
+      "display_name": "Social psychology",
+      "score": 0.2499401867389679
+    },
+    {
+      "id": "https://openalex.org/keywords/epistemology",
+      "display_name": "Epistemology",
+      "score": 0.09175068140029907
+    }
+  ],
+  "concepts": [
+    {
+      "id": "https://openalex.org/C2777673361",
+      "wikidata": "https://www.wikidata.org/wiki/Q5281228",
+      "display_name": "Disadvantage",
+      "level": 2,
+      "score": 0.9051311016082764
+    },
+    {
+      "id": "https://openalex.org/C102587632",
+      "wikidata": "https://www.wikidata.org/wiki/Q117488",
+      "display_name": "Criminal justice",
+      "level": 2,
+      "score": 0.8640143871307373
+    },
+    {
+      "id": "https://openalex.org/C2778061430",
+      "wikidata": "https://www.wikidata.org/wiki/Q188823",
+      "display_name": "Scholarship",
+      "level": 2,
+      "score": 0.7937941551208496
+    },
+    {
+      "id": "https://openalex.org/C2779295839",
+      "wikidata": "https://www.wikidata.org/wiki/Q3544090",
+      "display_name": "Punishment (psychology)",
+      "level": 2,
+      "score": 0.7223333120346069
+    },
+    {
+      "id": "https://openalex.org/C73484699",
+      "wikidata": "https://www.wikidata.org/wiki/Q161733",
+      "display_name": "Criminology",
+      "level": 1,
+      "score": 0.7084294557571411
+    },
+    {
+      "id": "https://openalex.org/C1691868",
+      "wikidata": "https://www.wikidata.org/wiki/Q1811049",
+      "display_name": "Life course approach",
+      "level": 2,
+      "score": 0.6373493671417236
+    },
+    {
+      "id": "https://openalex.org/C139621336",
+      "wikidata": "https://www.wikidata.org/wiki/Q3190382",
+      "display_name": "Economic Justice",
+      "level": 2,
+      "score": 0.5244434475898743
+    },
+    {
+      "id": "https://openalex.org/C185052227",
+      "wikidata": "https://www.wikidata.org/wiki/Q2352967",
+      "display_name": "Theory of criminal justice",
+      "level": 3,
+      "score": 0.5167149901390076
+    },
+    {
+      "id": "https://openalex.org/C45555294",
+      "wikidata": "https://www.wikidata.org/wiki/Q28113351",
+      "display_name": "Inequality",
+      "level": 2,
+      "score": 0.4673120677471161
+    },
+    {
+      "id": "https://openalex.org/C144024400",
+      "wikidata": "https://www.wikidata.org/wiki/Q21201",
+      "display_name": "Sociology",
+      "level": 0,
+      "score": 0.4502618908882141
+    },
+    {
+      "id": "https://openalex.org/C120936955",
+      "wikidata": "https://www.wikidata.org/wiki/Q2155640",
+      "display_name": "Empirical research",
+      "level": 2,
+      "score": 0.4336732029914856
+    },
+    {
+      "id": "https://openalex.org/C17744445",
+      "wikidata": "https://www.wikidata.org/wiki/Q36442",
+      "display_name": "Political science",
+      "level": 0,
+      "score": 0.4218190610408783
+    },
+    {
+      "id": "https://openalex.org/C18762648",
+      "wikidata": "https://www.wikidata.org/wiki/Q42213",
+      "display_name": "Work (physics)",
+      "level": 2,
+      "score": 0.4101041555404663
+    },
+    {
+      "id": "https://openalex.org/C199539241",
+      "wikidata": "https://www.wikidata.org/wiki/Q7748",
+      "display_name": "Law",
+      "level": 1,
+      "score": 0.34921732544898987
+    },
+    {
+      "id": "https://openalex.org/C15744967",
+      "wikidata": "https://www.wikidata.org/wiki/Q9418",
+      "display_name": "Psychology",
+      "level": 0,
+      "score": 0.29125481843948364
+    },
+    {
+      "id": "https://openalex.org/C77805123",
+      "wikidata": "https://www.wikidata.org/wiki/Q161272",
+      "display_name": "Social psychology",
+      "level": 1,
+      "score": 0.2499401867389679
+    },
+    {
+      "id": "https://openalex.org/C111472728",
+      "wikidata": "https://www.wikidata.org/wiki/Q9471",
+      "display_name": "Epistemology",
+      "level": 1,
+      "score": 0.09175068140029907
+    },
+    {
+      "id": "https://openalex.org/C33923547",
+      "wikidata": "https://www.wikidata.org/wiki/Q395",
+      "display_name": "Mathematics",
+      "level": 0,
+      "score": 0.0
+    },
+    {
+      "id": "https://openalex.org/C127413603",
+      "wikidata": "https://www.wikidata.org/wiki/Q11023",
+      "display_name": "Engineering",
+      "level": 0,
+      "score": 0.0
+    },
+    {
+      "id": "https://openalex.org/C134306372",
+      "wikidata": "https://www.wikidata.org/wiki/Q7754",
+      "display_name": "Mathematical analysis",
+      "level": 1,
+      "score": 0.0
+    },
+    {
+      "id": "https://openalex.org/C138885662",
+      "wikidata": "https://www.wikidata.org/wiki/Q5891",
+      "display_name": "Philosophy",
+      "level": 0,
+      "score": 0.0
+    },
+    {
+      "id": "https://openalex.org/C78519656",
+      "wikidata": "https://www.wikidata.org/wiki/Q101333",
+      "display_name": "Mechanical engineering",
+      "level": 1,
+      "score": 0.0
+    }
+  ],
+  "mesh": [],
+  "locations_count": 1,
+  "locations": [
+    {
+      "id": "doi:10.1146/annurev-criminol-011518-024815",
+      "is_oa": true,
+      "landing_page_url": "https://doi.org/10.1146/annurev-criminol-011518-024815",
+      "pdf_url": "https://www.annualreviews.org/doi/pdf/10.1146/annurev-criminol-011518-024815",
+      "source": {
+        "id": "https://openalex.org/S4210217772",
+        "display_name": "Annual Review of Criminology",
+        "issn_l": "2572-4568",
+        "issn": [
+          "2572-4568"
+        ],
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": true,
+        "host_organization": "https://openalex.org/P4310320373",
+        "host_organization_name": "Annual Reviews",
+        "host_organization_lineage": [
+          "https://openalex.org/P4310320373"
+        ],
+        "host_organization_lineage_names": [
+          "Annual Reviews"
+        ],
+        "type": "journal"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "publishedVersion",
+      "is_accepted": true,
+      "is_published": true,
+      "raw_source_name": "Annual Review of Criminology",
+      "raw_type": "journal-article"
+    }
+  ],
+  "best_oa_location": {
+    "id": "doi:10.1146/annurev-criminol-011518-024815",
+    "is_oa": true,
+    "landing_page_url": "https://doi.org/10.1146/annurev-criminol-011518-024815",
+    "pdf_url": "https://www.annualreviews.org/doi/pdf/10.1146/annurev-criminol-011518-024815",
+    "source": {
+      "id": "https://openalex.org/S4210217772",
+      "display_name": "Annual Review of Criminology",
+      "issn_l": "2572-4568",
+      "issn": [
+        "2572-4568"
+      ],
+      "is_oa": false,
+      "is_in_doaj": false,
+      "is_core": true,
+      "host_organization": "https://openalex.org/P4310320373",
+      "host_organization_name": "Annual Reviews",
+      "host_organization_lineage": [
+        "https://openalex.org/P4310320373"
+      ],
+      "host_organization_lineage_names": [
+        "Annual Reviews"
+      ],
+      "type": "journal"
+    },
+    "license": null,
+    "license_id": null,
+    "version": "publishedVersion",
+    "is_accepted": true,
+    "is_published": true,
+    "raw_source_name": "Annual Review of Criminology",
+    "raw_type": "journal-article"
+  },
+  "sustainable_development_goals": [
+    {
+      "id": "https://metadata.un.org/sdg/16",
+      "display_name": "Peace, Justice and strong institutions",
+      "score": 0.5600000023841858
+    }
+  ],
+  "awards": [],
+  "funders": [],
+  "has_content": {
+    "pdf": true,
+    "grobid_xml": true
+  },
+  "content_urls": {
+    "pdf": "https://content.openalex.org/works/W2911098993.pdf",
+    "grobid_xml": "https://content.openalex.org/works/W2911098993.grobid-xml"
+  },
+  "referenced_works_count": 214,
+  "referenced_works": [
+    "https://openalex.org/W6082454",
+    "https://openalex.org/W162052040",
+    "https://openalex.org/W173278695",
+    "https://openalex.org/W424468684",
+    "https://openalex.org/W602482060",
+    "https://openalex.org/W613247130",
+    "https://openalex.org/W751520756",
+    "https://openalex.org/W1493303833",
+    "https://openalex.org/W1504391138",
+    "https://openalex.org/W1508510344",
+    "https://openalex.org/W1514881684",
+    "https://openalex.org/W1521847411",
+    "https://openalex.org/W1521965447",
+    "https://openalex.org/W1549951304",
+    "https://openalex.org/W1559128078",
+    "https://openalex.org/W1578163789",
+    "https://openalex.org/W1581113130",
+    "https://openalex.org/W1590614699",
+    "https://openalex.org/W1670010726",
+    "https://openalex.org/W1674370667",
+    "https://openalex.org/W1726123508",
+    "https://openalex.org/W1810743338",
+    "https://openalex.org/W1832344270",
+    "https://openalex.org/W1872690150",
+    "https://openalex.org/W1906377621",
+    "https://openalex.org/W1941750990",
+    "https://openalex.org/W1945324297",
+    "https://openalex.org/W1950985211",
+    "https://openalex.org/W1966178283",
+    "https://openalex.org/W1966721996",
+    "https://openalex.org/W1966947718",
+    "https://openalex.org/W1968260755",
+    "https://openalex.org/W1969049606",
+    "https://openalex.org/W1970998741",
+    "https://openalex.org/W1979776067",
+    "https://openalex.org/W1985099175",
+    "https://openalex.org/W1986038916",
+    "https://openalex.org/W1989770370",
+    "https://openalex.org/W1990921180",
+    "https://openalex.org/W1991670169",
+    "https://openalex.org/W1991745889",
+    "https://openalex.org/W1992465642",
+    "https://openalex.org/W1994091640",
+    "https://openalex.org/W1995776697",
+    "https://openalex.org/W1996272633",
+    "https://openalex.org/W1996334890",
+    "https://openalex.org/W1996567772",
+    "https://openalex.org/W1997598311",
+    "https://openalex.org/W1999235597",
+    "https://openalex.org/W2000510480",
+    "https://openalex.org/W2004610555",
+    "https://openalex.org/W2005147757",
+    "https://openalex.org/W2008246996",
+    "https://openalex.org/W2008656711",
+    "https://openalex.org/W2011825169",
+    "https://openalex.org/W2013286110",
+    "https://openalex.org/W2013703840",
+    "https://openalex.org/W2017675882",
+    "https://openalex.org/W2018465418",
+    "https://openalex.org/W2025050982",
+    "https://openalex.org/W2025406649",
+    "https://openalex.org/W2026294735",
+    "https://openalex.org/W2034627686",
+    "https://openalex.org/W2036901256",
+    "https://openalex.org/W2039187635",
+    "https://openalex.org/W2039834472",
+    "https://openalex.org/W2042588354",
+    "https://openalex.org/W2043342276",
+    "https://openalex.org/W2044256871",
+    "https://openalex.org/W2045937711",
+    "https://openalex.org/W2046333254",
+    "https://openalex.org/W2048208744",
+    "https://openalex.org/W2049201463",
+    "https://openalex.org/W2052334556",
+    "https://openalex.org/W2054946501",
+    "https://openalex.org/W2055091648",
+    "https://openalex.org/W2055586316",
+    "https://openalex.org/W2056270938",
+    "https://openalex.org/W2058914725",
+    "https://openalex.org/W2059639299",
+    "https://openalex.org/W2060319909",
+    "https://openalex.org/W2061165131",
+    "https://openalex.org/W2061910278",
+    "https://openalex.org/W2062091583",
+    "https://openalex.org/W2062601651",
+    "https://openalex.org/W2063164662",
+    "https://openalex.org/W2065560731",
+    "https://openalex.org/W2065739679",
+    "https://openalex.org/W2068091034",
+    "https://openalex.org/W2069144694",
+    "https://openalex.org/W2069547644",
+    "https://openalex.org/W2070937137",
+    "https://openalex.org/W2071484490",
+    "https://openalex.org/W2072400929",
+    "https://openalex.org/W2073496933",
+    "https://openalex.org/W2074412058",
+    "https://openalex.org/W2075042263",
+    "https://openalex.org/W2075575651",
+    "https://openalex.org/W2076902772",
+    "https://openalex.org/W2077319189",
+    "https://openalex.org/W2080478996",
+    "https://openalex.org/W2080643893",
+    "https://openalex.org/W2081040435",
+    "https://openalex.org/W2081382352",
+    "https://openalex.org/W2082675166",
+    "https://openalex.org/W2082754072",
+    "https://openalex.org/W2082790630",
+    "https://openalex.org/W2085856709",
+    "https://openalex.org/W2086480141",
+    "https://openalex.org/W2086517394",
+    "https://openalex.org/W2089292816",
+    "https://openalex.org/W2090482080",
+    "https://openalex.org/W2092189539",
+    "https://openalex.org/W2093312587",
+    "https://openalex.org/W2094641039",
+    "https://openalex.org/W2095572675",
+    "https://openalex.org/W2096314767",
+    "https://openalex.org/W2097855976",
+    "https://openalex.org/W2098660806",
+    "https://openalex.org/W2099738580",
+    "https://openalex.org/W2101665746",
+    "https://openalex.org/W2101681608",
+    "https://openalex.org/W2102614766",
+    "https://openalex.org/W2103172460",
+    "https://openalex.org/W2104010676",
+    "https://openalex.org/W2104756321",
+    "https://openalex.org/W2105050599",
+    "https://openalex.org/W2105139781",
+    "https://openalex.org/W2105252545",
+    "https://openalex.org/W2106028444",
+    "https://openalex.org/W2109862115",
+    "https://openalex.org/W2113756863",
+    "https://openalex.org/W2114148841",
+    "https://openalex.org/W2118512134",
+    "https://openalex.org/W2118718142",
+    "https://openalex.org/W2119397297",
+    "https://openalex.org/W2120942716",
+    "https://openalex.org/W2131124269",
+    "https://openalex.org/W2132751817",
+    "https://openalex.org/W2134991030",
+    "https://openalex.org/W2135086757",
+    "https://openalex.org/W2140907289",
+    "https://openalex.org/W2142573495",
+    "https://openalex.org/W2143670127",
+    "https://openalex.org/W2145880240",
+    "https://openalex.org/W2147746483",
+    "https://openalex.org/W2148291003",
+    "https://openalex.org/W2149604961",
+    "https://openalex.org/W2153806925",
+    "https://openalex.org/W2154328836",
+    "https://openalex.org/W2155267066",
+    "https://openalex.org/W2157657259",
+    "https://openalex.org/W2157757373",
+    "https://openalex.org/W2160459066",
+    "https://openalex.org/W2160908590",
+    "https://openalex.org/W2163583898",
+    "https://openalex.org/W2164952226",
+    "https://openalex.org/W2166146931",
+    "https://openalex.org/W2166766120",
+    "https://openalex.org/W2166986843",
+    "https://openalex.org/W2167559628",
+    "https://openalex.org/W2170145824",
+    "https://openalex.org/W2188654316",
+    "https://openalex.org/W2294608144",
+    "https://openalex.org/W2302303476",
+    "https://openalex.org/W2315115729",
+    "https://openalex.org/W2316295342",
+    "https://openalex.org/W2318785592",
+    "https://openalex.org/W2322562421",
+    "https://openalex.org/W2322761390",
+    "https://openalex.org/W2326919484",
+    "https://openalex.org/W2327252012",
+    "https://openalex.org/W2328743291",
+    "https://openalex.org/W2329461091",
+    "https://openalex.org/W2334326770",
+    "https://openalex.org/W2340479053",
+    "https://openalex.org/W2418810625",
+    "https://openalex.org/W2462771193",
+    "https://openalex.org/W2471246592",
+    "https://openalex.org/W2489094975",
+    "https://openalex.org/W2507513207",
+    "https://openalex.org/W2585109242",
+    "https://openalex.org/W2602532010",
+    "https://openalex.org/W2602689536",
+    "https://openalex.org/W2624558746",
+    "https://openalex.org/W2758238479",
+    "https://openalex.org/W2762455919",
+    "https://openalex.org/W2767620303",
+    "https://openalex.org/W2793883898",
+    "https://openalex.org/W2795471866",
+    "https://openalex.org/W2795875025",
+    "https://openalex.org/W2809185524",
+    "https://openalex.org/W2897301633",
+    "https://openalex.org/W2903311270",
+    "https://openalex.org/W3121146561",
+    "https://openalex.org/W3121384762",
+    "https://openalex.org/W3121654114",
+    "https://openalex.org/W3122603709",
+    "https://openalex.org/W3122796548",
+    "https://openalex.org/W3124612188",
+    "https://openalex.org/W3125629653",
+    "https://openalex.org/W3128631334",
+    "https://openalex.org/W3186404406",
+    "https://openalex.org/W3193694722",
+    "https://openalex.org/W4235405782",
+    "https://openalex.org/W4236053889",
+    "https://openalex.org/W4239493086",
+    "https://openalex.org/W4242270153",
+    "https://openalex.org/W4245234008",
+    "https://openalex.org/W4292887282",
+    "https://openalex.org/W4299931511",
+    "https://openalex.org/W4300775533",
+    "https://openalex.org/W4388169448",
+    "https://openalex.org/W4388436247"
+  ],
+  "related_works": [
+    "https://openalex.org/W2146057528",
+    "https://openalex.org/W2088236111",
+    "https://openalex.org/W1514721401",
+    "https://openalex.org/W2610677535",
+    "https://openalex.org/W69317908",
+    "https://openalex.org/W2791693731",
+    "https://openalex.org/W40675642",
+    "https://openalex.org/W2798365317",
+    "https://openalex.org/W4386906535",
+    "https://openalex.org/W2995332304"
+  ],
+  "abstract_inverted_index": {
+    "Research": [
+      0
+    ],
+    "on": [
+      1,
+      17,
+      70,
+      91,
+      121
+    ],
+    "inequality": [
+      2
+    ],
+    "in": [
+      3,
+      20,
+      38,
+      48,
+      63,
+      148
+    ],
+    "punishment": [
+      4
+    ],
+    "has": [
+      5,
+      15
+    ],
+    "a": [
+      6,
+      112
+    ],
+    "long": [
+      7
+    ],
+    "and": [
+      8,
+      67,
+      94,
+      97,
+      134,
+      147
+    ],
+    "storied": [
+      9
+    ],
+    "history,": [
+      10
+    ],
+    "yet": [
+      11
+    ],
+    "the": [
+      12,
+      49,
+      58,
+      64,
+      71,
+      79,
+      88,
+      95,
+      122,
+      130,
+      145
+    ],
+    "overwhelming": [
+      13
+    ],
+    "focus": [
+      14
+    ],
+    "been": [
+      16
+    ],
+    "episodic": [
+      18
+    ],
+    "disparity": [
+      19
+    ],
+    "isolated": [
+      21
+    ],
+    "stages": [
+      22,
+      77
+    ],
+    "of": [
+      23,
+      34,
+      57,
+      60,
+      73,
+      78,
+      104,
+      142
+    ],
+    "criminal": [
+      24,
+      50,
+      80,
+      131
+    ],
+    "case": [
+      25
+    ],
+    "processing": [
+      26
+    ],
+    "(e.g.,": [
+      27
+    ],
+    "arrest,": [
+      28
+    ],
+    "prosecution,": [
+      29,
+      93
+    ],
+    "or": [
+      30
+    ],
+    "sentencing).": [
+      31
+    ],
+    "Although": [
+      32
+    ],
+    "theories": [
+      33
+    ],
+    "cumulative": [
+      35,
+      61,
+      74
+    ],
+    "disadvantage": [
+      36,
+      62,
+      143
+    ],
+    "exist": [
+      37
+    ],
+    "criminology,": [
+      39
+    ],
+    "they": [
+      40
+    ],
+    "are": [
+      41,
+      106
+    ],
+    "seldom": [
+      42
+    ],
+    "adapted": [
+      43
+    ],
+    "to": [
+      44,
+      139
+    ],
+    "account": [
+      45
+    ],
+    "for": [
+      46,
+      114
+    ],
+    "treatment": [
+      47
+    ],
+    "justice": [
+      51,
+      81,
+      132
+    ],
+    "system.": [
+      52,
+      82
+    ],
+    "We": [
+      53,
+      109
+    ],
+    "provide": [
+      54
+    ],
+    "an": [
+      55
+    ],
+    "overview": [
+      56
+    ],
+    "concept": [
+      59
+    ],
+    "life": [
+      65,
+      150
+    ],
+    "course": [
+      66
+    ],
+    "review": [
+      68
+    ],
+    "evidence": [
+      69
+    ],
+    "development": [
+      72
+    ],
+    "disadvantages": [
+      75,
+      126
+    ],
+    "across": [
+      76
+    ],
+    "In": [
+      83
+    ],
+    "doing": [
+      84
+    ],
+    "so,": [
+      85
+    ],
+    "we": [
+      86
+    ],
+    "appraise": [
+      87
+    ],
+    "empirical": [
+      89
+    ],
+    "research": [
+      90,
+      116
+    ],
+    "policing,": [
+      92
+    ],
+    "courts": [
+      96
+    ],
+    "consider": [
+      98
+    ],
+    "how": [
+      99,
+      135
+    ],
+    "these": [
+      100,
+      136
+    ],
+    "largely": [
+      101
+    ],
+    "separate": [
+      102
+    ],
+    "bodies": [
+      103
+    ],
+    "scholarship": [
+      105
+    ],
+    "inherently": [
+      107
+    ],
+    "connected.": [
+      108
+    ],
+    "conclude": [
+      110
+    ],
+    "with": [
+      111,
+      129
+    ],
+    "call": [
+      113
+    ],
+    "future": [
+      115
+    ],
+    "that": [
+      117,
+      124
+    ],
+    "focuses": [
+      118
+    ],
+    "more": [
+      119
+    ],
+    "explicitly": [
+      120
+    ],
+    "ways": [
+      123
+    ],
+    "life-course": [
+      125
+    ],
+    "shape": [
+      127
+    ],
+    "contact": [
+      128
+    ],
+    "system": [
+      133,
+      146
+    ],
+    "processes": [
+      137
+    ],
+    "work": [
+      138
+    ],
+    "perpetuate": [
+      140
+    ],
+    "patterns": [
+      141
+    ],
+    "within": [
+      144
+    ],
+    "subsequent": [
+      149
+    ],
+    "outcomes.": [
+      151
+    ]
+  },
+  "counts_by_year": [
+    {
+      "year": 2026,
+      "cited_by_count": 25
+    },
+    {
+      "year": 2025,
+      "cited_by_count": 60
+    },
+    {
+      "year": 2024,
+      "cited_by_count": 44
+    },
+    {
+      "year": 2023,
+      "cited_by_count": 30
+    },
+    {
+      "year": 2022,
+      "cited_by_count": 47
+    },
+    {
+      "year": 2021,
+      "cited_by_count": 25
+    },
+    {
+      "year": 2020,
+      "cited_by_count": 10
+    },
+    {
+      "year": 2019,
+      "cited_by_count": 6
+    }
+  ],
+  "updated_date": "2026-06-30T13:55:48.251075",
+  "created_date": "2025-10-10T00:00:00"
+}

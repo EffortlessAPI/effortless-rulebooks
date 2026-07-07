@@ -1,0 +1,15 @@
+{
+  "candidate_id": "cand-exp-hoxby-murarka-2009",
+  "proposed_study_id": "hoxby-murarka-2009",
+  "acquisition_status": "manual_only",
+  "attempted_at": "2026-07-07T03:43:28+00:00",
+  "catalog_source_url": null,
+  "resolved_urls": [
+    "https://doi.org/10.1093/qje/qjr017",
+    "https://academic.oup.com/qje/article-pdf/126/2/699/17090256/qjr017.pdf"
+  ],
+  "files": [
+    "openalex-metadata.json"
+  ],
+  "dois": []
+}

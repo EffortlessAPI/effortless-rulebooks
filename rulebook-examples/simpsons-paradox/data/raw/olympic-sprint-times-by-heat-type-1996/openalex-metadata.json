@@ -1,0 +1,824 @@
+{
+  "id": "https://openalex.org/W3047131348",
+  "doi": "https://doi.org/10.1038/s42255-020-0251-4",
+  "title": "Skeletal muscle energy metabolism during exercise",
+  "display_name": "Skeletal muscle energy metabolism during exercise",
+  "relevance_score": 180.09204,
+  "publication_year": 2020,
+  "publication_date": "2020-08-03",
+  "ids": {
+    "openalex": "https://openalex.org/W3047131348",
+    "doi": "https://doi.org/10.1038/s42255-020-0251-4",
+    "mag": "3047131348",
+    "pmid": "https://pubmed.ncbi.nlm.nih.gov/32747792"
+  },
+  "language": "en",
+  "primary_location": {
+    "id": "doi:10.1038/s42255-020-0251-4",
+    "is_oa": false,
+    "landing_page_url": "https://doi.org/10.1038/s42255-020-0251-4",
+    "pdf_url": null,
+    "source": {
+      "id": "https://openalex.org/S4210232714",
+      "display_name": "Nature Metabolism",
+      "issn_l": "2522-5812",
+      "issn": [
+        "2522-5812"
+      ],
+      "is_oa": false,
+      "is_in_doaj": false,
+      "is_core": true,
+      "host_organization": "https://openalex.org/P4310319908",
+      "host_organization_name": "Nature Portfolio",
+      "host_organization_lineage": [
+        "https://openalex.org/P4310319908",
+        "https://openalex.org/P4310319965"
+      ],
+      "host_organization_lineage_names": [
+        "Nature Portfolio",
+        "Springer Nature"
+      ],
+      "type": "journal"
+    },
+    "license": null,
+    "license_id": null,
+    "version": "publishedVersion",
+    "is_accepted": true,
+    "is_published": true,
+    "raw_source_name": "Nature Metabolism",
+    "raw_type": "journal-article"
+  },
+  "type": "review",
+  "indexed_in": [
+    "crossref",
+    "pubmed"
+  ],
+  "open_access": {
+    "is_oa": false,
+    "oa_status": "closed",
+    "oa_url": null,
+    "any_repository_has_fulltext": false
+  },
+  "authorships": [
+    {
+      "author_position": "first",
+      "author": {
+        "id": "https://openalex.org/A5074136388",
+        "display_name": "Mark Hargreaves",
+        "orcid": "https://orcid.org/0000-0002-3694-5335"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I165779595",
+          "display_name": "The University of Melbourne",
+          "ror": "https://ror.org/01ej9dk98",
+          "country_code": "AU",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I165779595"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I71270174",
+          "display_name": "Victoria University",
+          "ror": "https://ror.org/04j757h98",
+          "country_code": "AU",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I71270174"
+          ]
+        }
+      ],
+      "countries": [
+        "AU"
+      ],
+      "is_corresponding": true,
+      "raw_author_name": "Mark Hargreaves",
+      "raw_affiliation_strings": [
+        "Department of Physiology, University of Melbourne, Melbourne, Victoria, Australia. m.hargreaves@unimelb.edu.au",
+        "Department of Physiology, University of Melbourne, Melbourne, Victoria, Australia"
+      ],
+      "raw_orcid": "https://orcid.org/0000-0002-3694-5335",
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Department of Physiology, University of Melbourne, Melbourne, Victoria, Australia. m.hargreaves@unimelb.edu.au",
+          "institution_ids": [
+            "https://openalex.org/I71270174",
+            "https://openalex.org/I165779595"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Department of Physiology, University of Melbourne, Melbourne, Victoria, Australia",
+          "institution_ids": [
+            "https://openalex.org/I165779595"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "last",
+      "author": {
+        "id": "https://openalex.org/A5047046365",
+        "display_name": "Lawrence L. Spriet",
+        "orcid": "https://orcid.org/0000-0002-0164-2385"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I79817857",
+          "display_name": "University of Guelph",
+          "ror": "https://ror.org/01r7awg59",
+          "country_code": "CA",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I79817857"
+          ]
+        }
+      ],
+      "countries": [
+        "CA"
+      ],
+      "is_corresponding": true,
+      "raw_author_name": "Lawrence L. Spriet",
+      "raw_affiliation_strings": [
+        "Department of Human Health and Nutritional Sciences, University of Guelph, Guelph, Ontario, Canada. lspriet@uoguelph.ca",
+        "Department of Human Health and Nutritional Sciences, University of Guelph, Guelph, Ontario, Canada"
+      ],
+      "raw_orcid": "https://orcid.org/0000-0002-0164-2385",
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Department of Human Health and Nutritional Sciences, University of Guelph, Guelph, Ontario, Canada. lspriet@uoguelph.ca",
+          "institution_ids": [
+            "https://openalex.org/I79817857"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Department of Human Health and Nutritional Sciences, University of Guelph, Guelph, Ontario, Canada",
+          "institution_ids": [
+            "https://openalex.org/I79817857"
+          ]
+        }
+      ]
+    }
+  ],
+  "institutions": [],
+  "countries_distinct_count": 2,
+  "institutions_distinct_count": 3,
+  "corresponding_author_ids": [
+    "https://openalex.org/A5047046365",
+    "https://openalex.org/A5074136388"
+  ],
+  "corresponding_institution_ids": [
+    "https://openalex.org/I165779595",
+    "https://openalex.org/I71270174",
+    "https://openalex.org/I79817857"
+  ],
+  "apc_list": {
+    "value": 9750,
+    "currency": "EUR",
+    "value_usd": 11690
+  },
+  "apc_paid": null,
+  "fwci": 54.7113,
+  "has_fulltext": true,
+  "cited_by_count": 1188,
+  "citation_normalized_percentile": {
+    "value": 0.99979789,
+    "is_in_top_1_percent": true,
+    "is_in_top_10_percent": true
+  },
+  "cited_by_percentile_year": {
+    "min": 99,
+    "max": 100
+  },
+  "biblio": {
+    "volume": "2",
+    "issue": "9",
+    "first_page": "817",
+    "last_page": "828"
+  },
+  "is_retracted": false,
+  "is_paratext": false,
+  "is_xpac": false,
+  "primary_topic": {
+    "id": "https://openalex.org/T11399",
+    "display_name": "Muscle metabolism and nutrition",
+    "score": 0.9997000098228455,
+    "subfield": {
+      "id": "https://openalex.org/subfields/1307",
+      "display_name": "Cell Biology"
+    },
+    "field": {
+      "id": "https://openalex.org/fields/13",
+      "display_name": "Biochemistry, Genetics and Molecular Biology"
+    },
+    "domain": {
+      "id": "https://openalex.org/domains/1",
+      "display_name": "Life Sciences"
+    }
+  },
+  "topics": [
+    {
+      "id": "https://openalex.org/T11399",
+      "display_name": "Muscle metabolism and nutrition",
+      "score": 0.9997000098228455,
+      "subfield": {
+        "id": "https://openalex.org/subfields/1307",
+        "display_name": "Cell Biology"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/13",
+        "display_name": "Biochemistry, Genetics and Molecular Biology"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/1",
+        "display_name": "Life Sciences"
+      }
+    },
+    {
+      "id": "https://openalex.org/T11457",
+      "display_name": "Adipose Tissue and Metabolism",
+      "score": 0.9991000294685364,
+      "subfield": {
+        "id": "https://openalex.org/subfields/2737",
+        "display_name": "Physiology"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/27",
+        "display_name": "Medicine"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/4",
+        "display_name": "Health Sciences"
+      }
+    },
+    {
+      "id": "https://openalex.org/T12267",
+      "display_name": "Diet and metabolism studies",
+      "score": 0.9970999956130981,
+      "subfield": {
+        "id": "https://openalex.org/subfields/2737",
+        "display_name": "Physiology"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/27",
+        "display_name": "Medicine"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/4",
+        "display_name": "Health Sciences"
+      }
+    }
+  ],
+  "keywords": [
+    {
+      "id": "https://openalex.org/keywords/energy-metabolism",
+      "display_name": "Energy metabolism",
+      "score": 0.7739468216896057
+    },
+    {
+      "id": "https://openalex.org/keywords/skeletal-muscle",
+      "display_name": "Skeletal muscle",
+      "score": 0.6881252527236938
+    },
+    {
+      "id": "https://openalex.org/keywords/metabolism",
+      "display_name": "Metabolism",
+      "score": 0.5348203778266907
+    },
+    {
+      "id": "https://openalex.org/keywords/physical-medicine-and-rehabilitation",
+      "display_name": "Physical medicine and rehabilitation",
+      "score": 0.4342813491821289
+    },
+    {
+      "id": "https://openalex.org/keywords/medicine",
+      "display_name": "Medicine",
+      "score": 0.3750506341457367
+    },
+    {
+      "id": "https://openalex.org/keywords/internal-medicine",
+      "display_name": "Internal medicine",
+      "score": 0.30007773637771606
+    }
+  ],
+  "concepts": [
+    {
+      "id": "https://openalex.org/C2986317502",
+      "wikidata": "https://www.wikidata.org/wiki/Q570714",
+      "display_name": "Energy metabolism",
+      "level": 2,
+      "score": 0.7739468216896057
+    },
+    {
+      "id": "https://openalex.org/C2779959927",
+      "wikidata": "https://www.wikidata.org/wiki/Q1048687",
+      "display_name": "Skeletal muscle",
+      "level": 2,
+      "score": 0.6881252527236938
+    },
+    {
+      "id": "https://openalex.org/C62231903",
+      "wikidata": "https://www.wikidata.org/wiki/Q1057",
+      "display_name": "Metabolism",
+      "level": 2,
+      "score": 0.5348203778266907
+    },
+    {
+      "id": "https://openalex.org/C99508421",
+      "wikidata": "https://www.wikidata.org/wiki/Q2678675",
+      "display_name": "Physical medicine and rehabilitation",
+      "level": 1,
+      "score": 0.4342813491821289
+    },
+    {
+      "id": "https://openalex.org/C71924100",
+      "wikidata": "https://www.wikidata.org/wiki/Q11190",
+      "display_name": "Medicine",
+      "level": 0,
+      "score": 0.3750506341457367
+    },
+    {
+      "id": "https://openalex.org/C126322002",
+      "wikidata": "https://www.wikidata.org/wiki/Q11180",
+      "display_name": "Internal medicine",
+      "level": 1,
+      "score": 0.30007773637771606
+    }
+  ],
+  "mesh": [
+    {
+      "descriptor_ui": "D000818",
+      "descriptor_name": "Animals",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000818",
+      "descriptor_name": "Animals",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000818",
+      "descriptor_name": "Animals",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D004734",
+      "descriptor_name": "Energy Metabolism",
+      "qualifier_ui": "Q000502",
+      "qualifier_name": "physiology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D004734",
+      "descriptor_name": "Energy Metabolism",
+      "qualifier_ui": "Q000502",
+      "qualifier_name": "physiology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D004734",
+      "descriptor_name": "Energy Metabolism",
+      "qualifier_ui": "Q000502",
+      "qualifier_name": "physiology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D005082",
+      "descriptor_name": "Physical Exertion",
+      "qualifier_ui": "Q000502",
+      "qualifier_name": "physiology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D005082",
+      "descriptor_name": "Physical Exertion",
+      "qualifier_ui": "Q000502",
+      "qualifier_name": "physiology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D005082",
+      "descriptor_name": "Physical Exertion",
+      "qualifier_ui": "Q000502",
+      "qualifier_name": "physiology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D006801",
+      "descriptor_name": "Humans",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D006801",
+      "descriptor_name": "Humans",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D006801",
+      "descriptor_name": "Humans",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D015444",
+      "descriptor_name": "Exercise",
+      "qualifier_ui": "Q000502",
+      "qualifier_name": "physiology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D015444",
+      "descriptor_name": "Exercise",
+      "qualifier_ui": "Q000502",
+      "qualifier_name": "physiology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D015444",
+      "descriptor_name": "Exercise",
+      "qualifier_ui": "Q000502",
+      "qualifier_name": "physiology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D018482",
+      "descriptor_name": "Muscle, Skeletal",
+      "qualifier_ui": "Q000502",
+      "qualifier_name": "physiology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D018482",
+      "descriptor_name": "Muscle, Skeletal",
+      "qualifier_ui": "Q000502",
+      "qualifier_name": "physiology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D018482",
+      "descriptor_name": "Muscle, Skeletal",
+      "qualifier_ui": "Q000502",
+      "qualifier_name": "physiology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D054874",
+      "descriptor_name": "Athletic Performance",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D054874",
+      "descriptor_name": "Athletic Performance",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D054874",
+      "descriptor_name": "Athletic Performance",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    }
+  ],
+  "locations_count": 2,
+  "locations": [
+    {
+      "id": "doi:10.1038/s42255-020-0251-4",
+      "is_oa": false,
+      "landing_page_url": "https://doi.org/10.1038/s42255-020-0251-4",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4210232714",
+        "display_name": "Nature Metabolism",
+        "issn_l": "2522-5812",
+        "issn": [
+          "2522-5812"
+        ],
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": true,
+        "host_organization": "https://openalex.org/P4310319908",
+        "host_organization_name": "Nature Portfolio",
+        "host_organization_lineage": [
+          "https://openalex.org/P4310319908",
+          "https://openalex.org/P4310319965"
+        ],
+        "host_organization_lineage_names": [
+          "Nature Portfolio",
+          "Springer Nature"
+        ],
+        "type": "journal"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "publishedVersion",
+      "is_accepted": true,
+      "is_published": true,
+      "raw_source_name": "Nature Metabolism",
+      "raw_type": "journal-article"
+    },
+    {
+      "id": "pmid:32747792",
+      "is_oa": false,
+      "landing_page_url": "https://pubmed.ncbi.nlm.nih.gov/32747792",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4306525036",
+        "display_name": "PubMed",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I1299303238",
+        "host_organization_name": "National Institutes of Health",
+        "host_organization_lineage": [
+          "https://openalex.org/I1299303238"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "publishedVersion",
+      "is_accepted": true,
+      "is_published": true,
+      "raw_source_name": "Nature metabolism",
+      "raw_type": null
+    }
+  ],
+  "best_oa_location": null,
+  "sustainable_development_goals": [
+    {
+      "display_name": "Zero hunger",
+      "id": "https://metadata.un.org/sdg/2",
+      "score": 0.6000000238418579
+    }
+  ],
+  "awards": [],
+  "funders": [],
+  "has_content": {
+    "pdf": false,
+    "grobid_xml": false
+  },
+  "content_urls": null,
+  "referenced_works_count": 197,
+  "referenced_works": [
+    "https://openalex.org/W23629222",
+    "https://openalex.org/W39388130",
+    "https://openalex.org/W41915871",
+    "https://openalex.org/W49901276",
+    "https://openalex.org/W118527734",
+    "https://openalex.org/W120694138",
+    "https://openalex.org/W137976010",
+    "https://openalex.org/W152338347",
+    "https://openalex.org/W1546125227",
+    "https://openalex.org/W1570844120",
+    "https://openalex.org/W1573193689",
+    "https://openalex.org/W1575462042",
+    "https://openalex.org/W1762467620",
+    "https://openalex.org/W1802125465",
+    "https://openalex.org/W1820085648",
+    "https://openalex.org/W1839260472",
+    "https://openalex.org/W1867506741",
+    "https://openalex.org/W1880822625",
+    "https://openalex.org/W1885213424",
+    "https://openalex.org/W1894420075",
+    "https://openalex.org/W1895065960",
+    "https://openalex.org/W1899526384",
+    "https://openalex.org/W1905411699",
+    "https://openalex.org/W1923443500",
+    "https://openalex.org/W1926015747",
+    "https://openalex.org/W1943795552",
+    "https://openalex.org/W1944599761",
+    "https://openalex.org/W1945029457",
+    "https://openalex.org/W1946719579",
+    "https://openalex.org/W1951532834",
+    "https://openalex.org/W1952062595",
+    "https://openalex.org/W1955688674",
+    "https://openalex.org/W1957764688",
+    "https://openalex.org/W1961005447",
+    "https://openalex.org/W1965610624",
+    "https://openalex.org/W1971762851",
+    "https://openalex.org/W1978729529",
+    "https://openalex.org/W1979208993",
+    "https://openalex.org/W1980100048",
+    "https://openalex.org/W1980412809",
+    "https://openalex.org/W1981117508",
+    "https://openalex.org/W1982683820",
+    "https://openalex.org/W1986260549",
+    "https://openalex.org/W1986838242",
+    "https://openalex.org/W1990617364",
+    "https://openalex.org/W1991928071",
+    "https://openalex.org/W1992166949",
+    "https://openalex.org/W1992547263",
+    "https://openalex.org/W1995381409",
+    "https://openalex.org/W2000958877",
+    "https://openalex.org/W2002281411",
+    "https://openalex.org/W2004655740",
+    "https://openalex.org/W2004691285",
+    "https://openalex.org/W2008500674",
+    "https://openalex.org/W2010282509",
+    "https://openalex.org/W2011985622",
+    "https://openalex.org/W2020128482",
+    "https://openalex.org/W2022188608",
+    "https://openalex.org/W2027072654",
+    "https://openalex.org/W2027943229",
+    "https://openalex.org/W2030137409",
+    "https://openalex.org/W2032643935",
+    "https://openalex.org/W2032786086",
+    "https://openalex.org/W2034531025",
+    "https://openalex.org/W2036154727",
+    "https://openalex.org/W2039735584",
+    "https://openalex.org/W2041824571",
+    "https://openalex.org/W2044677175",
+    "https://openalex.org/W2046244973",
+    "https://openalex.org/W2047684905",
+    "https://openalex.org/W2050322496",
+    "https://openalex.org/W2052714480",
+    "https://openalex.org/W2052857097",
+    "https://openalex.org/W2055139913",
+    "https://openalex.org/W2057127647",
+    "https://openalex.org/W2063106718",
+    "https://openalex.org/W2064751005",
+    "https://openalex.org/W2066042684",
+    "https://openalex.org/W2067440307",
+    "https://openalex.org/W2069763517",
+    "https://openalex.org/W2080013991",
+    "https://openalex.org/W2080782826",
+    "https://openalex.org/W2081416523",
+    "https://openalex.org/W2090180390",
+    "https://openalex.org/W2094587672",
+    "https://openalex.org/W2097949187",
+    "https://openalex.org/W2102397442",
+    "https://openalex.org/W2103982975",
+    "https://openalex.org/W2105174204",
+    "https://openalex.org/W2105880387",
+    "https://openalex.org/W2107520997",
+    "https://openalex.org/W2107621770",
+    "https://openalex.org/W2108577381",
+    "https://openalex.org/W2109008701",
+    "https://openalex.org/W2110369563",
+    "https://openalex.org/W2110388775",
+    "https://openalex.org/W2110476541",
+    "https://openalex.org/W2113529945",
+    "https://openalex.org/W2113645942",
+    "https://openalex.org/W2114466562",
+    "https://openalex.org/W2115059371",
+    "https://openalex.org/W2115547268",
+    "https://openalex.org/W2115760680",
+    "https://openalex.org/W2115873346",
+    "https://openalex.org/W2116055648",
+    "https://openalex.org/W2117245896",
+    "https://openalex.org/W2117396891",
+    "https://openalex.org/W2117642435",
+    "https://openalex.org/W2121873746",
+    "https://openalex.org/W2122078756",
+    "https://openalex.org/W2122584155",
+    "https://openalex.org/W2125438466",
+    "https://openalex.org/W2126315232",
+    "https://openalex.org/W2128477744",
+    "https://openalex.org/W2129233896",
+    "https://openalex.org/W2129670071",
+    "https://openalex.org/W2129961360",
+    "https://openalex.org/W2131771191",
+    "https://openalex.org/W2131915711",
+    "https://openalex.org/W2133244276",
+    "https://openalex.org/W2133799272",
+    "https://openalex.org/W2134005714",
+    "https://openalex.org/W2134103812",
+    "https://openalex.org/W2134258073",
+    "https://openalex.org/W2134276001",
+    "https://openalex.org/W2134334767",
+    "https://openalex.org/W2135191741",
+    "https://openalex.org/W2135240313",
+    "https://openalex.org/W2136280068",
+    "https://openalex.org/W2140306649",
+    "https://openalex.org/W2140452303",
+    "https://openalex.org/W2140558936",
+    "https://openalex.org/W2141050227",
+    "https://openalex.org/W2143586287",
+    "https://openalex.org/W2143870509",
+    "https://openalex.org/W2144193033",
+    "https://openalex.org/W2144829197",
+    "https://openalex.org/W2146776933",
+    "https://openalex.org/W2148473068",
+    "https://openalex.org/W2149069857",
+    "https://openalex.org/W2151030494",
+    "https://openalex.org/W2151747858",
+    "https://openalex.org/W2156026771",
+    "https://openalex.org/W2160894592",
+    "https://openalex.org/W2163785511",
+    "https://openalex.org/W2165253460",
+    "https://openalex.org/W2167217629",
+    "https://openalex.org/W2170377446",
+    "https://openalex.org/W2171451222",
+    "https://openalex.org/W2171898953",
+    "https://openalex.org/W2177016730",
+    "https://openalex.org/W2185042170",
+    "https://openalex.org/W2187633183",
+    "https://openalex.org/W2190841046",
+    "https://openalex.org/W2200256792",
+    "https://openalex.org/W2216177017",
+    "https://openalex.org/W2220702228",
+    "https://openalex.org/W2256833960",
+    "https://openalex.org/W2312302060",
+    "https://openalex.org/W2329610177",
+    "https://openalex.org/W2333426586",
+    "https://openalex.org/W2339728476",
+    "https://openalex.org/W2416285441",
+    "https://openalex.org/W2419194122",
+    "https://openalex.org/W2460944061",
+    "https://openalex.org/W2463802757",
+    "https://openalex.org/W2482292220",
+    "https://openalex.org/W2519870099",
+    "https://openalex.org/W2531807162",
+    "https://openalex.org/W2557219951",
+    "https://openalex.org/W2562509757",
+    "https://openalex.org/W2599053467",
+    "https://openalex.org/W2614394717",
+    "https://openalex.org/W2618310410",
+    "https://openalex.org/W2760346911",
+    "https://openalex.org/W2791163366",
+    "https://openalex.org/W2791581924",
+    "https://openalex.org/W2883886248",
+    "https://openalex.org/W2888009838",
+    "https://openalex.org/W2900726092",
+    "https://openalex.org/W2910866187",
+    "https://openalex.org/W2912468419",
+    "https://openalex.org/W2935591242",
+    "https://openalex.org/W2949339202",
+    "https://openalex.org/W2950312087",
+    "https://openalex.org/W2965921488",
+    "https://openalex.org/W2979287870",
+    "https://openalex.org/W2979309969",
+    "https://openalex.org/W2987709331",
+    "https://openalex.org/W2994462640",
+    "https://openalex.org/W3005118413",
+    "https://openalex.org/W3008887675",
+    "https://openalex.org/W3016091186",
+    "https://openalex.org/W4232795266",
+    "https://openalex.org/W6606281159",
+    "https://openalex.org/W7074218996",
+    "https://openalex.org/W7075616367"
+  ],
+  "related_works": [
+    "https://openalex.org/W1966504330",
+    "https://openalex.org/W1979139803",
+    "https://openalex.org/W2037631372",
+    "https://openalex.org/W2030889776",
+    "https://openalex.org/W2159000141",
+    "https://openalex.org/W1978297557",
+    "https://openalex.org/W1974041167",
+    "https://openalex.org/W2391409986",
+    "https://openalex.org/W2947662853",
+    "https://openalex.org/W2412775339"
+  ],
+  "abstract_inverted_index": null,
+  "counts_by_year": [
+    {
+      "year": 2026,
+      "cited_by_count": 124
+    },
+    {
+      "year": 2025,
+      "cited_by_count": 290
+    },
+    {
+      "year": 2024,
+      "cited_by_count": 273
+    },
+    {
+      "year": 2023,
+      "cited_by_count": 225
+    },
+    {
+      "year": 2022,
+      "cited_by_count": 159
+    },
+    {
+      "year": 2021,
+      "cited_by_count": 104
+    },
+    {
+      "year": 2020,
+      "cited_by_count": 12
+    }
+  ],
+  "updated_date": "2026-07-05T07:55:05.734416",
+  "created_date": "2025-10-10T00:00:00"
+}

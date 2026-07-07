@@ -1,0 +1,1500 @@
+{
+  "id": "https://openalex.org/W3123015728",
+  "doi": "https://doi.org/10.1257/jel.20160995",
+  "title": "The Gender Wage Gap: Extent, Trends, and Explanations",
+  "display_name": "The Gender Wage Gap: Extent, Trends, and Explanations",
+  "relevance_score": 96.55147,
+  "publication_year": 2017,
+  "publication_date": "2017-09-01",
+  "ids": {
+    "openalex": "https://openalex.org/W3123015728",
+    "doi": "https://doi.org/10.1257/jel.20160995",
+    "mag": "3123015728"
+  },
+  "language": "en",
+  "primary_location": {
+    "id": "doi:10.1257/jel.20160995",
+    "is_oa": true,
+    "landing_page_url": "https://doi.org/10.1257/jel.20160995",
+    "pdf_url": "https://www.aeaweb.org/articles/pdf/doi/10.1257/jel.20160995",
+    "source": {
+      "id": "https://openalex.org/S127708089",
+      "display_name": "Journal of Economic Literature",
+      "issn_l": "0022-0515",
+      "issn": [
+        "0022-0515",
+        "1547-1101",
+        "2328-8175"
+      ],
+      "is_oa": false,
+      "is_in_doaj": false,
+      "is_core": true,
+      "host_organization": "https://openalex.org/P4310315912",
+      "host_organization_name": "American Economic Association",
+      "host_organization_lineage": [
+        "https://openalex.org/P4310315912"
+      ],
+      "host_organization_lineage_names": [
+        "American Economic Association"
+      ],
+      "type": "journal"
+    },
+    "license": null,
+    "license_id": null,
+    "version": "publishedVersion",
+    "is_accepted": true,
+    "is_published": true,
+    "raw_source_name": "Journal of Economic Literature",
+    "raw_type": "journal-article"
+  },
+  "type": "article",
+  "indexed_in": [
+    "crossref"
+  ],
+  "open_access": {
+    "is_oa": true,
+    "oa_status": "bronze",
+    "oa_url": "https://www.aeaweb.org/articles/pdf/doi/10.1257/jel.20160995",
+    "any_repository_has_fulltext": false
+  },
+  "authorships": [
+    {
+      "author_position": "first",
+      "author": {
+        "id": "https://openalex.org/A5039468467",
+        "display_name": "Francine D. Blau",
+        "orcid": "https://orcid.org/0000-0001-6646-3794"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I205783295",
+          "display_name": "Cornell University",
+          "ror": "https://ror.org/05bnh6r87",
+          "country_code": "US",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I205783295"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Francine D. Blau",
+      "raw_affiliation_strings": [
+        "Cornell University, NBER, IZA, DIW, and CESifo"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Cornell University, NBER, IZA, DIW, and CESifo",
+          "institution_ids": [
+            "https://openalex.org/I205783295"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "last",
+      "author": {
+        "id": "https://openalex.org/A5069811162",
+        "display_name": "Lawrence M. Kahn",
+        "orcid": "https://orcid.org/0000-0001-5291-4304"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I205783295",
+          "display_name": "Cornell University",
+          "ror": "https://ror.org/05bnh6r87",
+          "country_code": "US",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I205783295"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Lawrence M. Kahn",
+      "raw_affiliation_strings": [
+        "Cornell University, IZA, CESifo, and NCER (Australia)"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Cornell University, IZA, CESifo, and NCER (Australia)",
+          "institution_ids": [
+            "https://openalex.org/I205783295"
+          ]
+        }
+      ]
+    }
+  ],
+  "institutions": [],
+  "countries_distinct_count": 1,
+  "institutions_distinct_count": 1,
+  "corresponding_author_ids": [],
+  "corresponding_institution_ids": [
+    "https://openalex.org/I205783295"
+  ],
+  "apc_list": null,
+  "apc_paid": null,
+  "fwci": 947.0875,
+  "has_fulltext": true,
+  "cited_by_count": 2932,
+  "citation_normalized_percentile": {
+    "value": 1.0,
+    "is_in_top_1_percent": true,
+    "is_in_top_10_percent": true
+  },
+  "cited_by_percentile_year": {
+    "min": 89,
+    "max": 100
+  },
+  "biblio": {
+    "volume": "55",
+    "issue": "3",
+    "first_page": "789",
+    "last_page": "865"
+  },
+  "is_retracted": false,
+  "is_paratext": false,
+  "is_xpac": false,
+  "primary_topic": {
+    "id": "https://openalex.org/T10208",
+    "display_name": "Labor market dynamics and wage inequality",
+    "score": 0.9997000098228455,
+    "subfield": {
+      "id": "https://openalex.org/subfields/2002",
+      "display_name": "Economics and Econometrics"
+    },
+    "field": {
+      "id": "https://openalex.org/fields/20",
+      "display_name": "Economics, Econometrics and Finance"
+    },
+    "domain": {
+      "id": "https://openalex.org/domains/2",
+      "display_name": "Social Sciences"
+    }
+  },
+  "topics": [
+    {
+      "id": "https://openalex.org/T10208",
+      "display_name": "Labor market dynamics and wage inequality",
+      "score": 0.9997000098228455,
+      "subfield": {
+        "id": "https://openalex.org/subfields/2002",
+        "display_name": "Economics and Econometrics"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/20",
+        "display_name": "Economics, Econometrics and Finance"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/2",
+        "display_name": "Social Sciences"
+      }
+    },
+    {
+      "id": "https://openalex.org/T11631",
+      "display_name": "Retirement, Disability, and Employment",
+      "score": 0.9976000189781189,
+      "subfield": {
+        "id": "https://openalex.org/subfields/3317",
+        "display_name": "Demography"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/33",
+        "display_name": "Social Sciences"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/2",
+        "display_name": "Social Sciences"
+      }
+    },
+    {
+      "id": "https://openalex.org/T12088",
+      "display_name": "Intergenerational and Educational Inequality Studies",
+      "score": 0.9966999888420105,
+      "subfield": {
+        "id": "https://openalex.org/subfields/3312",
+        "display_name": "Sociology and Political Science"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/33",
+        "display_name": "Social Sciences"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/2",
+        "display_name": "Social Sciences"
+      }
+    }
+  ],
+  "keywords": [
+    {
+      "id": "https://openalex.org/keywords/microdata",
+      "display_name": "Microdata (statistics)",
+      "score": 0.7895073890686035
+    },
+    {
+      "id": "https://openalex.org/keywords/wage",
+      "display_name": "Wage",
+      "score": 0.6918020248413086
+    },
+    {
+      "id": "https://openalex.org/keywords/human-capital",
+      "display_name": "Human capital",
+      "score": 0.6822461485862732
+    },
+    {
+      "id": "https://openalex.org/keywords/economics",
+      "display_name": "Economics",
+      "score": 0.6454017162322998
+    },
+    {
+      "id": "https://openalex.org/keywords/salience",
+      "display_name": "Salience (neuroscience)",
+      "score": 0.6093325614929199
+    },
+    {
+      "id": "https://openalex.org/keywords/demographic-economics",
+      "display_name": "Demographic economics",
+      "score": 0.5800681710243225
+    },
+    {
+      "id": "https://openalex.org/keywords/gender-gap",
+      "display_name": "Gender gap",
+      "score": 0.4622513949871063
+    },
+    {
+      "id": "https://openalex.org/keywords/labour-economics",
+      "display_name": "Labour economics",
+      "score": 0.46147629618644714
+    },
+    {
+      "id": "https://openalex.org/keywords/occupational-segregation",
+      "display_name": "Occupational segregation",
+      "score": 0.4552229642868042
+    },
+    {
+      "id": "https://openalex.org/keywords/panel-study-of-income-dynamics",
+      "display_name": "Panel Study of Income Dynamics",
+      "score": 0.4293113648891449
+    },
+    {
+      "id": "https://openalex.org/keywords/distribution",
+      "display_name": "Distribution (mathematics)",
+      "score": 0.4100069999694824
+    },
+    {
+      "id": "https://openalex.org/keywords/population",
+      "display_name": "Population",
+      "score": 0.25816673040390015
+    },
+    {
+      "id": "https://openalex.org/keywords/psychology",
+      "display_name": "Psychology",
+      "score": 0.24399638175964355
+    },
+    {
+      "id": "https://openalex.org/keywords/demography",
+      "display_name": "Demography",
+      "score": 0.10467499494552612
+    },
+    {
+      "id": "https://openalex.org/keywords/sociology",
+      "display_name": "Sociology",
+      "score": 0.09334081411361694
+    }
+  ],
+  "concepts": [
+    {
+      "id": "https://openalex.org/C2778355071",
+      "wikidata": "https://www.wikidata.org/wiki/Q1933849",
+      "display_name": "Microdata (statistics)",
+      "level": 4,
+      "score": 0.7895073890686035
+    },
+    {
+      "id": "https://openalex.org/C2777388388",
+      "wikidata": "https://www.wikidata.org/wiki/Q6821213",
+      "display_name": "Wage",
+      "level": 2,
+      "score": 0.6918020248413086
+    },
+    {
+      "id": "https://openalex.org/C2776943663",
+      "wikidata": "https://www.wikidata.org/wiki/Q165687",
+      "display_name": "Human capital",
+      "level": 2,
+      "score": 0.6822461485862732
+    },
+    {
+      "id": "https://openalex.org/C162324750",
+      "wikidata": "https://www.wikidata.org/wiki/Q8134",
+      "display_name": "Economics",
+      "level": 0,
+      "score": 0.6454017162322998
+    },
+    {
+      "id": "https://openalex.org/C108154423",
+      "wikidata": "https://www.wikidata.org/wiki/Q1469792",
+      "display_name": "Salience (neuroscience)",
+      "level": 2,
+      "score": 0.6093325614929199
+    },
+    {
+      "id": "https://openalex.org/C4249254",
+      "wikidata": "https://www.wikidata.org/wiki/Q3044431",
+      "display_name": "Demographic economics",
+      "level": 1,
+      "score": 0.5800681710243225
+    },
+    {
+      "id": "https://openalex.org/C2986619947",
+      "wikidata": "https://www.wikidata.org/wiki/Q30103150",
+      "display_name": "Gender gap",
+      "level": 2,
+      "score": 0.4622513949871063
+    },
+    {
+      "id": "https://openalex.org/C145236788",
+      "wikidata": "https://www.wikidata.org/wiki/Q28161",
+      "display_name": "Labour economics",
+      "level": 1,
+      "score": 0.46147629618644714
+    },
+    {
+      "id": "https://openalex.org/C2778395451",
+      "wikidata": "https://www.wikidata.org/wiki/Q16934342",
+      "display_name": "Occupational segregation",
+      "level": 3,
+      "score": 0.4552229642868042
+    },
+    {
+      "id": "https://openalex.org/C2777169553",
+      "wikidata": "https://www.wikidata.org/wiki/Q7130814",
+      "display_name": "Panel Study of Income Dynamics",
+      "level": 2,
+      "score": 0.4293113648891449
+    },
+    {
+      "id": "https://openalex.org/C110121322",
+      "wikidata": "https://www.wikidata.org/wiki/Q865811",
+      "display_name": "Distribution (mathematics)",
+      "level": 2,
+      "score": 0.4100069999694824
+    },
+    {
+      "id": "https://openalex.org/C2908647359",
+      "wikidata": "https://www.wikidata.org/wiki/Q2625603",
+      "display_name": "Population",
+      "level": 2,
+      "score": 0.25816673040390015
+    },
+    {
+      "id": "https://openalex.org/C15744967",
+      "wikidata": "https://www.wikidata.org/wiki/Q9418",
+      "display_name": "Psychology",
+      "level": 0,
+      "score": 0.24399638175964355
+    },
+    {
+      "id": "https://openalex.org/C149923435",
+      "wikidata": "https://www.wikidata.org/wiki/Q37732",
+      "display_name": "Demography",
+      "level": 1,
+      "score": 0.10467499494552612
+    },
+    {
+      "id": "https://openalex.org/C144024400",
+      "wikidata": "https://www.wikidata.org/wiki/Q21201",
+      "display_name": "Sociology",
+      "level": 0,
+      "score": 0.09334081411361694
+    },
+    {
+      "id": "https://openalex.org/C33923547",
+      "wikidata": "https://www.wikidata.org/wiki/Q395",
+      "display_name": "Mathematics",
+      "level": 0,
+      "score": 0.0
+    },
+    {
+      "id": "https://openalex.org/C50522688",
+      "wikidata": "https://www.wikidata.org/wiki/Q189833",
+      "display_name": "Economic growth",
+      "level": 1,
+      "score": 0.0
+    },
+    {
+      "id": "https://openalex.org/C52130261",
+      "wikidata": "https://www.wikidata.org/wiki/Q39825",
+      "display_name": "Census",
+      "level": 3,
+      "score": 0.0
+    },
+    {
+      "id": "https://openalex.org/C180747234",
+      "wikidata": "https://www.wikidata.org/wiki/Q23373",
+      "display_name": "Cognitive psychology",
+      "level": 1,
+      "score": 0.0
+    },
+    {
+      "id": "https://openalex.org/C134306372",
+      "wikidata": "https://www.wikidata.org/wiki/Q7754",
+      "display_name": "Mathematical analysis",
+      "level": 1,
+      "score": 0.0
+    }
+  ],
+  "mesh": [],
+  "locations_count": 2,
+  "locations": [
+    {
+      "id": "doi:10.1257/jel.20160995",
+      "is_oa": true,
+      "landing_page_url": "https://doi.org/10.1257/jel.20160995",
+      "pdf_url": "https://www.aeaweb.org/articles/pdf/doi/10.1257/jel.20160995",
+      "source": {
+        "id": "https://openalex.org/S127708089",
+        "display_name": "Journal of Economic Literature",
+        "issn_l": "0022-0515",
+        "issn": [
+          "0022-0515",
+          "1547-1101",
+          "2328-8175"
+        ],
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": true,
+        "host_organization": "https://openalex.org/P4310315912",
+        "host_organization_name": "American Economic Association",
+        "host_organization_lineage": [
+          "https://openalex.org/P4310315912"
+        ],
+        "host_organization_lineage_names": [
+          "American Economic Association"
+        ],
+        "type": "journal"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "publishedVersion",
+      "is_accepted": true,
+      "is_published": true,
+      "raw_source_name": "Journal of Economic Literature",
+      "raw_type": "journal-article"
+    },
+    {
+      "id": "pmh:oai:RePEc:aea:jeclit:v:55:y:2017:i:3:p:789-865",
+      "is_oa": false,
+      "landing_page_url": "https://www.aeaweb.org/articles?id=10.1257/jel.20160995",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4306401271",
+        "display_name": "RePEc: Research Papers in Economics",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I77793887",
+        "host_organization_name": "Federal Reserve Bank of St. Louis",
+        "host_organization_lineage": [
+          "https://openalex.org/I77793887"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "submittedVersion",
+      "is_accepted": false,
+      "is_published": false,
+      "raw_source_name": null,
+      "raw_type": "article"
+    }
+  ],
+  "best_oa_location": {
+    "id": "doi:10.1257/jel.20160995",
+    "is_oa": true,
+    "landing_page_url": "https://doi.org/10.1257/jel.20160995",
+    "pdf_url": "https://www.aeaweb.org/articles/pdf/doi/10.1257/jel.20160995",
+    "source": {
+      "id": "https://openalex.org/S127708089",
+      "display_name": "Journal of Economic Literature",
+      "issn_l": "0022-0515",
+      "issn": [
+        "0022-0515",
+        "1547-1101",
+        "2328-8175"
+      ],
+      "is_oa": false,
+      "is_in_doaj": false,
+      "is_core": true,
+      "host_organization": "https://openalex.org/P4310315912",
+      "host_organization_name": "American Economic Association",
+      "host_organization_lineage": [
+        "https://openalex.org/P4310315912"
+      ],
+      "host_organization_lineage_names": [
+        "American Economic Association"
+      ],
+      "type": "journal"
+    },
+    "license": null,
+    "license_id": null,
+    "version": "publishedVersion",
+    "is_accepted": true,
+    "is_published": true,
+    "raw_source_name": "Journal of Economic Literature",
+    "raw_type": "journal-article"
+  },
+  "sustainable_development_goals": [
+    {
+      "score": 0.5299999713897705,
+      "display_name": "Gender equality",
+      "id": "https://metadata.un.org/sdg/5"
+    }
+  ],
+  "awards": [],
+  "funders": [],
+  "has_content": {
+    "pdf": true,
+    "grobid_xml": true
+  },
+  "content_urls": {
+    "pdf": "https://content.openalex.org/works/W3123015728.pdf",
+    "grobid_xml": "https://content.openalex.org/works/W3123015728.grobid-xml"
+  },
+  "referenced_works_count": 277,
+  "referenced_works": [
+    "https://openalex.org/W1713009",
+    "https://openalex.org/W149523820",
+    "https://openalex.org/W178936761",
+    "https://openalex.org/W408077702",
+    "https://openalex.org/W1019281328",
+    "https://openalex.org/W1480355997",
+    "https://openalex.org/W1485579369",
+    "https://openalex.org/W1487574743",
+    "https://openalex.org/W1503397861",
+    "https://openalex.org/W1507349782",
+    "https://openalex.org/W1513281941",
+    "https://openalex.org/W1513338056",
+    "https://openalex.org/W1519655387",
+    "https://openalex.org/W1522244297",
+    "https://openalex.org/W1524129366",
+    "https://openalex.org/W1528109329",
+    "https://openalex.org/W1529285312",
+    "https://openalex.org/W1542245260",
+    "https://openalex.org/W1555404792",
+    "https://openalex.org/W1556031951",
+    "https://openalex.org/W1556513643",
+    "https://openalex.org/W1563405305",
+    "https://openalex.org/W1564695699",
+    "https://openalex.org/W1567929074",
+    "https://openalex.org/W1577001291",
+    "https://openalex.org/W1582840427",
+    "https://openalex.org/W1583804681",
+    "https://openalex.org/W1599229036",
+    "https://openalex.org/W1605090192",
+    "https://openalex.org/W1608267803",
+    "https://openalex.org/W1608417949",
+    "https://openalex.org/W1750844808",
+    "https://openalex.org/W1785871644",
+    "https://openalex.org/W1835902752",
+    "https://openalex.org/W1848748976",
+    "https://openalex.org/W1865298556",
+    "https://openalex.org/W1894565480",
+    "https://openalex.org/W1912833058",
+    "https://openalex.org/W1963965317",
+    "https://openalex.org/W1965798607",
+    "https://openalex.org/W1970219862",
+    "https://openalex.org/W1972390636",
+    "https://openalex.org/W1974247515",
+    "https://openalex.org/W1978637367",
+    "https://openalex.org/W1979250677",
+    "https://openalex.org/W1980460943",
+    "https://openalex.org/W1980509697",
+    "https://openalex.org/W1984374867",
+    "https://openalex.org/W1984497559",
+    "https://openalex.org/W1986037606",
+    "https://openalex.org/W1988252947",
+    "https://openalex.org/W1990535218",
+    "https://openalex.org/W1991418004",
+    "https://openalex.org/W1992333423",
+    "https://openalex.org/W1992430762",
+    "https://openalex.org/W1994298590",
+    "https://openalex.org/W1994724028",
+    "https://openalex.org/W1995877113",
+    "https://openalex.org/W1997093205",
+    "https://openalex.org/W1998853773",
+    "https://openalex.org/W1999635645",
+    "https://openalex.org/W2002520138",
+    "https://openalex.org/W2007033923",
+    "https://openalex.org/W2010185677",
+    "https://openalex.org/W2010776907",
+    "https://openalex.org/W2014060834",
+    "https://openalex.org/W2015264926",
+    "https://openalex.org/W2016519157",
+    "https://openalex.org/W2019009063",
+    "https://openalex.org/W2020662823",
+    "https://openalex.org/W2021377652",
+    "https://openalex.org/W2021640427",
+    "https://openalex.org/W2022970814",
+    "https://openalex.org/W2024474758",
+    "https://openalex.org/W2025626688",
+    "https://openalex.org/W2027786603",
+    "https://openalex.org/W2028538877",
+    "https://openalex.org/W2029394297",
+    "https://openalex.org/W2034666356",
+    "https://openalex.org/W2036461847",
+    "https://openalex.org/W2038088414",
+    "https://openalex.org/W2038960993",
+    "https://openalex.org/W2048593579",
+    "https://openalex.org/W2050183924",
+    "https://openalex.org/W2050921061",
+    "https://openalex.org/W2052375218",
+    "https://openalex.org/W2052939803",
+    "https://openalex.org/W2053050300",
+    "https://openalex.org/W2053586811",
+    "https://openalex.org/W2055419096",
+    "https://openalex.org/W2055474216",
+    "https://openalex.org/W2060506020",
+    "https://openalex.org/W2066552145",
+    "https://openalex.org/W2067516326",
+    "https://openalex.org/W2070415764",
+    "https://openalex.org/W2075382077",
+    "https://openalex.org/W2078001550",
+    "https://openalex.org/W2078395828",
+    "https://openalex.org/W2079588333",
+    "https://openalex.org/W2080358256",
+    "https://openalex.org/W2082574861",
+    "https://openalex.org/W2083777191",
+    "https://openalex.org/W2083917913",
+    "https://openalex.org/W2084404364",
+    "https://openalex.org/W2087789757",
+    "https://openalex.org/W2088212458",
+    "https://openalex.org/W2088329451",
+    "https://openalex.org/W2088478928",
+    "https://openalex.org/W2090061297",
+    "https://openalex.org/W2090707589",
+    "https://openalex.org/W2090779312",
+    "https://openalex.org/W2092718166",
+    "https://openalex.org/W2096663221",
+    "https://openalex.org/W2097240475",
+    "https://openalex.org/W2100217005",
+    "https://openalex.org/W2103059843",
+    "https://openalex.org/W2103172460",
+    "https://openalex.org/W2107338156",
+    "https://openalex.org/W2108816987",
+    "https://openalex.org/W2109357873",
+    "https://openalex.org/W2111109274",
+    "https://openalex.org/W2111460086",
+    "https://openalex.org/W2112231177",
+    "https://openalex.org/W2112634440",
+    "https://openalex.org/W2113003036",
+    "https://openalex.org/W2113532537",
+    "https://openalex.org/W2114932053",
+    "https://openalex.org/W2117231788",
+    "https://openalex.org/W2117770175",
+    "https://openalex.org/W2118270738",
+    "https://openalex.org/W2119851103",
+    "https://openalex.org/W2120040351",
+    "https://openalex.org/W2123230090",
+    "https://openalex.org/W2125384660",
+    "https://openalex.org/W2126854401",
+    "https://openalex.org/W2128989629",
+    "https://openalex.org/W2129401100",
+    "https://openalex.org/W2130472470",
+    "https://openalex.org/W2132407976",
+    "https://openalex.org/W2134267121",
+    "https://openalex.org/W2136083845",
+    "https://openalex.org/W2136727795",
+    "https://openalex.org/W2136989022",
+    "https://openalex.org/W2137116110",
+    "https://openalex.org/W2137752108",
+    "https://openalex.org/W2139122730",
+    "https://openalex.org/W2140139522",
+    "https://openalex.org/W2140534852",
+    "https://openalex.org/W2144383963",
+    "https://openalex.org/W2145585688",
+    "https://openalex.org/W2147443490",
+    "https://openalex.org/W2147745683",
+    "https://openalex.org/W2148273822",
+    "https://openalex.org/W2149408269",
+    "https://openalex.org/W2149734665",
+    "https://openalex.org/W2152828853",
+    "https://openalex.org/W2153742907",
+    "https://openalex.org/W2153991661",
+    "https://openalex.org/W2158117696",
+    "https://openalex.org/W2159549133",
+    "https://openalex.org/W2160434973",
+    "https://openalex.org/W2161036189",
+    "https://openalex.org/W2161727366",
+    "https://openalex.org/W2161800660",
+    "https://openalex.org/W2163759748",
+    "https://openalex.org/W2165608010",
+    "https://openalex.org/W2167387225",
+    "https://openalex.org/W2170508806",
+    "https://openalex.org/W2171538645",
+    "https://openalex.org/W2186334872",
+    "https://openalex.org/W2188038858",
+    "https://openalex.org/W2196857869",
+    "https://openalex.org/W2197118637",
+    "https://openalex.org/W2215739503",
+    "https://openalex.org/W2254353856",
+    "https://openalex.org/W2254472157",
+    "https://openalex.org/W2256114103",
+    "https://openalex.org/W2278397019",
+    "https://openalex.org/W2295196858",
+    "https://openalex.org/W2316443908",
+    "https://openalex.org/W2546713402",
+    "https://openalex.org/W2564429091",
+    "https://openalex.org/W2751780733",
+    "https://openalex.org/W2889619450",
+    "https://openalex.org/W2892380133",
+    "https://openalex.org/W2896395915",
+    "https://openalex.org/W2898956505",
+    "https://openalex.org/W2903590133",
+    "https://openalex.org/W2951225967",
+    "https://openalex.org/W3021594427",
+    "https://openalex.org/W3021641065",
+    "https://openalex.org/W3023004739",
+    "https://openalex.org/W3023422662",
+    "https://openalex.org/W3121323193",
+    "https://openalex.org/W3121425285",
+    "https://openalex.org/W3121485340",
+    "https://openalex.org/W3121489563",
+    "https://openalex.org/W3121544778",
+    "https://openalex.org/W3121567073",
+    "https://openalex.org/W3121598770",
+    "https://openalex.org/W3121679446",
+    "https://openalex.org/W3121739682",
+    "https://openalex.org/W3121840975",
+    "https://openalex.org/W3121847523",
+    "https://openalex.org/W3121853310",
+    "https://openalex.org/W3121973123",
+    "https://openalex.org/W3122084578",
+    "https://openalex.org/W3122105648",
+    "https://openalex.org/W3122123805",
+    "https://openalex.org/W3122347311",
+    "https://openalex.org/W3122360222",
+    "https://openalex.org/W3122524412",
+    "https://openalex.org/W3122543542",
+    "https://openalex.org/W3122561658",
+    "https://openalex.org/W3122611795",
+    "https://openalex.org/W3122619350",
+    "https://openalex.org/W3122704454",
+    "https://openalex.org/W3122889739",
+    "https://openalex.org/W3123046637",
+    "https://openalex.org/W3123135512",
+    "https://openalex.org/W3123141791",
+    "https://openalex.org/W3123288494",
+    "https://openalex.org/W3123306174",
+    "https://openalex.org/W3123416764",
+    "https://openalex.org/W3123464667",
+    "https://openalex.org/W3123700179",
+    "https://openalex.org/W3123732209",
+    "https://openalex.org/W3123833951",
+    "https://openalex.org/W3124049559",
+    "https://openalex.org/W3124140801",
+    "https://openalex.org/W3124196235",
+    "https://openalex.org/W3124328763",
+    "https://openalex.org/W3124385752",
+    "https://openalex.org/W3124476625",
+    "https://openalex.org/W3124477989",
+    "https://openalex.org/W3124501066",
+    "https://openalex.org/W3124560702",
+    "https://openalex.org/W3124657568",
+    "https://openalex.org/W3124658967",
+    "https://openalex.org/W3124723350",
+    "https://openalex.org/W3124868588",
+    "https://openalex.org/W3124990081",
+    "https://openalex.org/W3125062562",
+    "https://openalex.org/W3125104509",
+    "https://openalex.org/W3125110355",
+    "https://openalex.org/W3125172220",
+    "https://openalex.org/W3125298439",
+    "https://openalex.org/W3125643792",
+    "https://openalex.org/W3125672514",
+    "https://openalex.org/W3125725550",
+    "https://openalex.org/W3125778116",
+    "https://openalex.org/W3125869385",
+    "https://openalex.org/W3125878898",
+    "https://openalex.org/W3125879418",
+    "https://openalex.org/W3125904683",
+    "https://openalex.org/W3125927633",
+    "https://openalex.org/W3126034453",
+    "https://openalex.org/W3126134627",
+    "https://openalex.org/W3144180007",
+    "https://openalex.org/W3144285875",
+    "https://openalex.org/W3148151571",
+    "https://openalex.org/W3162626252",
+    "https://openalex.org/W4206098806",
+    "https://openalex.org/W4230566859",
+    "https://openalex.org/W4231165370",
+    "https://openalex.org/W4231176603",
+    "https://openalex.org/W4232068434",
+    "https://openalex.org/W4232647522",
+    "https://openalex.org/W4238817359",
+    "https://openalex.org/W4246141009",
+    "https://openalex.org/W4247140771",
+    "https://openalex.org/W4251446432",
+    "https://openalex.org/W4253260352",
+    "https://openalex.org/W4255345322",
+    "https://openalex.org/W4285719527",
+    "https://openalex.org/W4286779346",
+    "https://openalex.org/W4401545442"
+  ],
+  "related_works": [
+    "https://openalex.org/W3124882577",
+    "https://openalex.org/W2045945431",
+    "https://openalex.org/W3121353175",
+    "https://openalex.org/W2035955891",
+    "https://openalex.org/W3203187887",
+    "https://openalex.org/W3122407243",
+    "https://openalex.org/W2160234577",
+    "https://openalex.org/W2777701466",
+    "https://openalex.org/W2534596198",
+    "https://openalex.org/W2029929704"
+  ],
+  "abstract_inverted_index": {
+    "Using": [
+      0
+    ],
+    "Panel": [
+      1
+    ],
+    "Study": [
+      2
+    ],
+    "of": [
+      3,
+      20,
+      44,
+      72,
+      112,
+      164,
+      188,
+      207,
+      220
+    ],
+    "Income": [
+      4
+    ],
+    "Dynamics": [
+      5
+    ],
+    "(PSID)": [
+      6
+    ],
+    "microdata": [
+      7
+    ],
+    "over": [
+      8
+    ],
+    "the": [
+      9,
+      18,
+      24,
+      45,
+      61,
+      70,
+      73,
+      78,
+      89,
+      94,
+      103,
+      106,
+      113,
+      128,
+      161,
+      189,
+      201,
+      205,
+      221
+    ],
+    "1980\u20132010": [
+      10
+    ],
+    "period,": [
+      11
+    ],
+    "we": [
+      12
+    ],
+    "provide": [
+      13
+    ],
+    "new": [
+      14
+    ],
+    "empirical": [
+      15
+    ],
+    "evidence": [
+      16,
+      173,
+      203
+    ],
+    "on": [
+      17,
+      171,
+      204
+    ],
+    "extent": [
+      19
+    ],
+    "and": [
+      21,
+      54,
+      82,
+      134,
+      151,
+      160,
+      168,
+      230
+    ],
+    "trends": [
+      22
+    ],
+    "in": [
+      23,
+      52,
+      127,
+      139,
+      149,
+      157,
+      195
+    ],
+    "gender": [
+      25,
+      46,
+      50,
+      62,
+      158,
+      162,
+      193,
+      222
+    ],
+    "wage": [
+      26,
+      47,
+      74
+    ],
+    "gap,": [
+      27,
+      48,
+      224
+    ],
+    "which": [
+      28
+    ],
+    "declined": [
+      29,
+      65
+    ],
+    "considerably": [
+      30,
+      225
+    ],
+    "during": [
+      31
+    ],
+    "this": [
+      32
+    ],
+    "time.": [
+      33
+    ],
+    "By": [
+      34
+    ],
+    "2010,": [
+      35
+    ],
+    "conventional": [
+      36
+    ],
+    "human": [
+      37
+    ],
+    "capital": [
+      38
+    ],
+    "variables": [
+      39
+    ],
+    "taken": [
+      40
+    ],
+    "together": [
+      41
+    ],
+    "explained": [
+      42
+    ],
+    "little": [
+      43
+    ],
+    "while": [
+      49
+    ],
+    "differences": [
+      51,
+      148,
+      156,
+      194
+    ],
+    "occupation": [
+      53,
+      229
+    ],
+    "industry": [
+      55,
+      231
+    ],
+    "continued": [
+      56
+    ],
+    "to": [
+      57,
+      96,
+      117,
+      144,
+      199,
+      217,
+      236,
+      239
+    ],
+    "be": [
+      58,
+      179
+    ],
+    "important.": [
+      59
+    ],
+    "Moreover,": [
+      60
+    ],
+    "pay": [
+      63,
+      223
+    ],
+    "gap": [
+      64
+    ],
+    "much": [
+      66
+    ],
+    "more": [
+      67
+    ],
+    "slowly": [
+      68
+    ],
+    "at": [
+      69,
+      77,
+      88
+    ],
+    "top": [
+      71
+    ],
+    "distribution": [
+      75
+    ],
+    "than": [
+      76
+    ],
+    "middle": [
+      79
+    ],
+    "or": [
+      80,
+      183
+    ],
+    "bottom": [
+      81
+    ],
+    "by": [
+      83
+    ],
+    "2010": [
+      84
+    ],
+    "was": [
+      85
+    ],
+    "noticeably": [
+      86
+    ],
+    "higher": [
+      87
+    ],
+    "top.": [
+      90
+    ],
+    "We": [
+      91,
+      108
+    ],
+    "then": [
+      92
+    ],
+    "survey": [
+      93
+    ],
+    "literature": [
+      95
+    ],
+    "identify": [
+      97
+    ],
+    "what": [
+      98
+    ],
+    "has": [
+      99
+    ],
+    "been": [
+      100
+    ],
+    "learned": [
+      101
+    ],
+    "about": [
+      102
+    ],
+    "explanations": [
+      104,
+      115,
+      191
+    ],
+    "for": [
+      105,
+      192,
+      214
+    ],
+    "gap.": [
+      107
+    ],
+    "conclude": [
+      109
+    ],
+    "that": [
+      110,
+      176,
+      211
+    ],
+    "many": [
+      111
+    ],
+    "traditional": [
+      114
+    ],
+    "continue": [
+      116
+    ],
+    "have": [
+      118
+    ],
+    "salience.": [
+      119
+    ],
+    "Although": [
+      120
+    ],
+    "human-capital": [
+      121
+    ],
+    "factors": [
+      122,
+      209
+    ],
+    "are": [
+      123
+    ],
+    "now": [
+      124
+    ],
+    "relatively": [
+      125
+    ],
+    "unimportant": [
+      126
+    ],
+    "aggregate,": [
+      129
+    ],
+    "women's": [
+      130
+    ],
+    "work": [
+      131
+    ],
+    "force": [
+      132
+    ],
+    "interruptions": [
+      133
+    ],
+    "shorter": [
+      135
+    ],
+    "hours": [
+      136
+    ],
+    "remain": [
+      137,
+      166
+    ],
+    "significant": [
+      138
+    ],
+    "high-skilled": [
+      140
+    ],
+    "occupations,": [
+      141
+    ],
+    "possibly": [
+      142
+    ],
+    "due": [
+      143
+    ],
+    "compensating": [
+      145
+    ],
+    "differentials.": [
+      146
+    ],
+    "Gender": [
+      147
+    ],
+    "occupations": [
+      150
+    ],
+    "industries,": [
+      152
+    ],
+    "as": [
+      153,
+      155
+    ],
+    "well": [
+      154
+    ],
+    "roles": [
+      159
+    ],
+    "division": [
+      163
+    ],
+    "labor": [
+      165
+    ],
+    "important,": [
+      167
+    ],
+    "research": [
+      169
+    ],
+    "based": [
+      170
+    ],
+    "experimental": [
+      172
+    ],
+    "strongly": [
+      174
+    ],
+    "suggests": [
+      175,
+      210
+    ],
+    "discrimination": [
+      177
+    ],
+    "cannot": [
+      178
+    ],
+    "discounted.": [
+      180
+    ],
+    "Psychological": [
+      181
+    ],
+    "attributes": [
+      182
+    ],
+    "noncognitive": [
+      184
+    ],
+    "skills": [
+      185
+    ],
+    "comprise": [
+      186
+    ],
+    "one": [
+      187
+    ],
+    "newer": [
+      190
+    ],
+    "outcomes.": [
+      196
+    ],
+    "Our": [
+      197
+    ],
+    "effort": [
+      198
+    ],
+    "assess": [
+      200
+    ],
+    "quantitative": [
+      202
+    ],
+    "importance": [
+      206
+    ],
+    "these": [
+      208,
+      240
+    ],
+    "they": [
+      212,
+      234
+    ],
+    "account": [
+      213
+    ],
+    "a": [
+      215
+    ],
+    "small": [
+      216
+    ],
+    "moderate": [
+      218
+    ],
+    "portion": [
+      219
+    ],
+    "smaller": [
+      226
+    ],
+    "than,": [
+      227
+    ],
+    "say,": [
+      228
+    ],
+    "effects,": [
+      232
+    ],
+    "though": [
+      233
+    ],
+    "appear": [
+      235
+    ],
+    "modestly": [
+      237
+    ],
+    "contribute": [
+      238
+    ],
+    "differences.": [
+      241
+    ],
+    "(": [
+      242
+    ],
+    "JEL": [
+      243
+    ],
+    "I26,": [
+      244
+    ],
+    "J16,": [
+      245
+    ],
+    "J24,": [
+      246
+    ],
+    "J31,": [
+      247
+    ],
+    "J71)": [
+      248
+    ]
+  },
+  "counts_by_year": [
+    {
+      "year": 2026,
+      "cited_by_count": 193
+    },
+    {
+      "year": 2025,
+      "cited_by_count": 503
+    },
+    {
+      "year": 2024,
+      "cited_by_count": 429
+    },
+    {
+      "year": 2023,
+      "cited_by_count": 393
+    },
+    {
+      "year": 2022,
+      "cited_by_count": 356
+    },
+    {
+      "year": 2021,
+      "cited_by_count": 343
+    },
+    {
+      "year": 2020,
+      "cited_by_count": 346
+    },
+    {
+      "year": 2019,
+      "cited_by_count": 197
+    },
+    {
+      "year": 2018,
+      "cited_by_count": 118
+    },
+    {
+      "year": 2017,
+      "cited_by_count": 34
+    },
+    {
+      "year": 2016,
+      "cited_by_count": 12
+    },
+    {
+      "year": 2015,
+      "cited_by_count": 3
+    },
+    {
+      "year": 2013,
+      "cited_by_count": 1
+    }
+  ],
+  "updated_date": "2026-07-04T07:58:01.006859",
+  "created_date": "2025-10-10T00:00:00"
+}

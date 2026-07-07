@@ -1,0 +1,14 @@
+{
+  "candidate_id": "cand-exp-hmda",
+  "proposed_study_id": "hmda",
+  "acquisition_status": "landing_saved",
+  "attempted_at": "2026-07-07T03:47:55+00:00",
+  "catalog_source_url": "https://ffiec.cfpb.gov/data-browser/",
+  "resolved_urls": [
+    "https://ffiec.cfpb.gov/data-browser/"
+  ],
+  "files": [
+    "source-1.html"
+  ],
+  "dois": []
+}

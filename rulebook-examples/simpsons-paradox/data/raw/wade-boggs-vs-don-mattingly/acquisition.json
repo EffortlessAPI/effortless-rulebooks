@@ -1,0 +1,15 @@
+{
+  "candidate_id": "cand-exp-wade-boggs-vs-don-mattingly",
+  "proposed_study_id": "wade-boggs-vs-don-mattingly",
+  "acquisition_status": "landing_saved",
+  "attempted_at": "2026-07-07T03:44:59+00:00",
+  "catalog_source_url": null,
+  "resolved_urls": [
+    "http://hdl.handle.net/10106/25151"
+  ],
+  "files": [
+    "openalex-search.html",
+    "openalex-metadata.json"
+  ],
+  "dois": []
+}

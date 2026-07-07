@@ -1,0 +1,18 @@
+{
+  "candidate_id": "cand-exp-von-kugelgen-mohamed-scholkopf-2021",
+  "proposed_study_id": "von-kugelgen-mohamed-scholkopf-2021",
+  "acquisition_status": "portal_manual",
+  "attempted_at": "2026-07-07T03:45:10+00:00",
+  "catalog_source_url": "https://www.who.int/data",
+  "resolved_urls": [
+    "https://doi.org/10.1088/2058-9565/ae20b8",
+    "https://doi.org/10.1088/2058-9565/ae20b8",
+    "https://www.who.int/data"
+  ],
+  "files": [
+    "openalex-search.html",
+    "openalex-metadata.json",
+    "source-1.html"
+  ],
+  "dois": []
+}

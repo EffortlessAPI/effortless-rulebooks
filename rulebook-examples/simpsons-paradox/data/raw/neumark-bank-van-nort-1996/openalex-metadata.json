@@ -1,0 +1,977 @@
+{
+  "id": "https://openalex.org/W1991418004",
+  "doi": "https://doi.org/10.1257/aer.90.4.715",
+  "title": "Orchestrating Impartiality: The Impact of \u201cBlind\u201d Auditions on Female Musicians",
+  "display_name": "Orchestrating Impartiality: The Impact of \u201cBlind\u201d Auditions on Female Musicians",
+  "relevance_score": 76.870415,
+  "publication_year": 2000,
+  "publication_date": "2000-09-01",
+  "ids": {
+    "openalex": "https://openalex.org/W1991418004",
+    "doi": "https://doi.org/10.1257/aer.90.4.715",
+    "mag": "1991418004"
+  },
+  "language": "en",
+  "primary_location": {
+    "id": "doi:10.1257/aer.90.4.715",
+    "is_oa": true,
+    "landing_page_url": "https://doi.org/10.1257/aer.90.4.715",
+    "pdf_url": "https://www.aeaweb.org/articles/pdf/doi/10.1257/aer.90.4.715",
+    "source": {
+      "id": "https://openalex.org/S23254222",
+      "display_name": "American Economic Review",
+      "issn_l": "0002-8282",
+      "issn": [
+        "0002-8282",
+        "1944-7981"
+      ],
+      "is_oa": false,
+      "is_in_doaj": false,
+      "is_core": true,
+      "host_organization": "https://openalex.org/P4310315912",
+      "host_organization_name": "American Economic Association",
+      "host_organization_lineage": [
+        "https://openalex.org/P4310315912"
+      ],
+      "host_organization_lineage_names": [
+        "American Economic Association"
+      ],
+      "type": "journal"
+    },
+    "license": "public-domain",
+    "license_id": "https://openalex.org/licenses/public-domain",
+    "version": "publishedVersion",
+    "is_accepted": true,
+    "is_published": true,
+    "raw_source_name": "American Economic Review",
+    "raw_type": "journal-article"
+  },
+  "type": "article",
+  "indexed_in": [
+    "crossref"
+  ],
+  "open_access": {
+    "is_oa": true,
+    "oa_status": "hybrid",
+    "oa_url": "https://www.aeaweb.org/articles/pdf/doi/10.1257/aer.90.4.715",
+    "any_repository_has_fulltext": true
+  },
+  "authorships": [
+    {
+      "author_position": "first",
+      "author": {
+        "id": "https://openalex.org/A5000387389",
+        "display_name": "Claudia Goldin",
+        "orcid": "https://orcid.org/0000-0003-3842-1604"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I2801851002",
+          "display_name": "Harvard University Press",
+          "ror": "https://ror.org/006v7bf86",
+          "country_code": "US",
+          "type": "other",
+          "lineage": [
+            "https://openalex.org/I136199984",
+            "https://openalex.org/I2801851002"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Claudia Goldin",
+      "raw_affiliation_strings": [
+        "Department of Economics, Harvard University, Cambridge, MA 02183",
+        "HARVARD U"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Department of Economics, Harvard University, Cambridge, MA 02183",
+          "institution_ids": [
+            "https://openalex.org/I2801851002"
+          ]
+        },
+        {
+          "raw_affiliation_string": "HARVARD U",
+          "institution_ids": []
+        }
+      ]
+    },
+    {
+      "author_position": "last",
+      "author": {
+        "id": "https://openalex.org/A5020534592",
+        "display_name": "Cecilia Elena Rouse",
+        "orcid": null
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I1318617081",
+          "display_name": "Woodrow Wilson International Center for Scholars",
+          "ror": "https://ror.org/00whzh260",
+          "country_code": "US",
+          "type": "facility",
+          "lineage": [
+            "https://openalex.org/I103187081",
+            "https://openalex.org/I1318617081"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I20089843",
+          "display_name": "Princeton University",
+          "ror": "https://ror.org/00hx57361",
+          "country_code": "US",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I20089843"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Cecilia Rouse",
+      "raw_affiliation_strings": [
+        "Woodrow Wilson School, Princeton University, Princeton, NJ 08544"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Woodrow Wilson School, Princeton University, Princeton, NJ 08544",
+          "institution_ids": [
+            "https://openalex.org/I1318617081",
+            "https://openalex.org/I20089843"
+          ]
+        }
+      ]
+    }
+  ],
+  "institutions": [],
+  "countries_distinct_count": 1,
+  "institutions_distinct_count": 3,
+  "corresponding_author_ids": [],
+  "corresponding_institution_ids": [],
+  "apc_list": null,
+  "apc_paid": null,
+  "fwci": 31.7256,
+  "has_fulltext": true,
+  "cited_by_count": 1760,
+  "citation_normalized_percentile": {
+    "value": 0.99525855,
+    "is_in_top_1_percent": true,
+    "is_in_top_10_percent": true
+  },
+  "cited_by_percentile_year": {
+    "min": 99,
+    "max": 100
+  },
+  "biblio": {
+    "volume": "90",
+    "issue": "4",
+    "first_page": "715",
+    "last_page": "741"
+  },
+  "is_retracted": false,
+  "is_paratext": false,
+  "is_xpac": false,
+  "primary_topic": {
+    "id": "https://openalex.org/T11674",
+    "display_name": "Sports Analytics and Performance",
+    "score": 0.979200005531311,
+    "subfield": {
+      "id": "https://openalex.org/subfields/2002",
+      "display_name": "Economics and Econometrics"
+    },
+    "field": {
+      "id": "https://openalex.org/fields/20",
+      "display_name": "Economics, Econometrics and Finance"
+    },
+    "domain": {
+      "id": "https://openalex.org/domains/2",
+      "display_name": "Social Sciences"
+    }
+  },
+  "topics": [
+    {
+      "id": "https://openalex.org/T11674",
+      "display_name": "Sports Analytics and Performance",
+      "score": 0.979200005531311,
+      "subfield": {
+        "id": "https://openalex.org/subfields/2002",
+        "display_name": "Economics and Econometrics"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/20",
+        "display_name": "Economics, Econometrics and Finance"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/2",
+        "display_name": "Social Sciences"
+      }
+    },
+    {
+      "id": "https://openalex.org/T10632",
+      "display_name": "Housing Market and Economics",
+      "score": 0.9670000076293945,
+      "subfield": {
+        "id": "https://openalex.org/subfields/2002",
+        "display_name": "Economics and Econometrics"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/20",
+        "display_name": "Economics, Econometrics and Finance"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/2",
+        "display_name": "Social Sciences"
+      }
+    },
+    {
+      "id": "https://openalex.org/T10208",
+      "display_name": "Labor market dynamics and wage inequality",
+      "score": 0.9603999853134155,
+      "subfield": {
+        "id": "https://openalex.org/subfields/2002",
+        "display_name": "Economics and Econometrics"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/20",
+        "display_name": "Economics, Econometrics and Finance"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/2",
+        "display_name": "Social Sciences"
+      }
+    }
+  ],
+  "keywords": [
+    {
+      "id": "https://openalex.org/keywords/impartiality",
+      "display_name": "Impartiality",
+      "score": 0.946063756942749
+    },
+    {
+      "id": "https://openalex.org/keywords/symphony",
+      "display_name": "Symphony",
+      "score": 0.8127383589744568
+    },
+    {
+      "id": "https://openalex.org/keywords/jury",
+      "display_name": "Jury",
+      "score": 0.65650475025177
+    },
+    {
+      "id": "https://openalex.org/keywords/identity",
+      "display_name": "Identity (music)",
+      "score": 0.5571225881576538
+    },
+    {
+      "id": "https://openalex.org/keywords/test",
+      "display_name": "Test (biology)",
+      "score": 0.4276609420776367
+    },
+    {
+      "id": "https://openalex.org/keywords/psychology",
+      "display_name": "Psychology",
+      "score": 0.38672930002212524
+    },
+    {
+      "id": "https://openalex.org/keywords/economics",
+      "display_name": "Economics",
+      "score": 0.3432864844799042
+    },
+    {
+      "id": "https://openalex.org/keywords/social-psychology",
+      "display_name": "Social psychology",
+      "score": 0.3309776186943054
+    },
+    {
+      "id": "https://openalex.org/keywords/political-science",
+      "display_name": "Political science",
+      "score": 0.3071165084838867
+    },
+    {
+      "id": "https://openalex.org/keywords/law",
+      "display_name": "Law",
+      "score": 0.29576241970062256
+    },
+    {
+      "id": "https://openalex.org/keywords/aesthetics",
+      "display_name": "Aesthetics",
+      "score": 0.22284016013145447
+    },
+    {
+      "id": "https://openalex.org/keywords/art",
+      "display_name": "Art",
+      "score": 0.19599878787994385
+    },
+    {
+      "id": "https://openalex.org/keywords/art-history",
+      "display_name": "Art history",
+      "score": 0.08163690567016602
+    }
+  ],
+  "concepts": [
+    {
+      "id": "https://openalex.org/C2780564088",
+      "wikidata": "https://www.wikidata.org/wiki/Q3149193",
+      "display_name": "Impartiality",
+      "level": 2,
+      "score": 0.946063756942749
+    },
+    {
+      "id": "https://openalex.org/C16277566",
+      "wikidata": "https://www.wikidata.org/wiki/Q9734",
+      "display_name": "Symphony",
+      "level": 2,
+      "score": 0.8127383589744568
+    },
+    {
+      "id": "https://openalex.org/C2776119841",
+      "wikidata": "https://www.wikidata.org/wiki/Q837675",
+      "display_name": "Jury",
+      "level": 2,
+      "score": 0.65650475025177
+    },
+    {
+      "id": "https://openalex.org/C2778355321",
+      "wikidata": "https://www.wikidata.org/wiki/Q17079427",
+      "display_name": "Identity (music)",
+      "level": 2,
+      "score": 0.5571225881576538
+    },
+    {
+      "id": "https://openalex.org/C2777267654",
+      "wikidata": "https://www.wikidata.org/wiki/Q3519023",
+      "display_name": "Test (biology)",
+      "level": 2,
+      "score": 0.4276609420776367
+    },
+    {
+      "id": "https://openalex.org/C15744967",
+      "wikidata": "https://www.wikidata.org/wiki/Q9418",
+      "display_name": "Psychology",
+      "level": 0,
+      "score": 0.38672930002212524
+    },
+    {
+      "id": "https://openalex.org/C162324750",
+      "wikidata": "https://www.wikidata.org/wiki/Q8134",
+      "display_name": "Economics",
+      "level": 0,
+      "score": 0.3432864844799042
+    },
+    {
+      "id": "https://openalex.org/C77805123",
+      "wikidata": "https://www.wikidata.org/wiki/Q161272",
+      "display_name": "Social psychology",
+      "level": 1,
+      "score": 0.3309776186943054
+    },
+    {
+      "id": "https://openalex.org/C17744445",
+      "wikidata": "https://www.wikidata.org/wiki/Q36442",
+      "display_name": "Political science",
+      "level": 0,
+      "score": 0.3071165084838867
+    },
+    {
+      "id": "https://openalex.org/C199539241",
+      "wikidata": "https://www.wikidata.org/wiki/Q7748",
+      "display_name": "Law",
+      "level": 1,
+      "score": 0.29576241970062256
+    },
+    {
+      "id": "https://openalex.org/C107038049",
+      "wikidata": "https://www.wikidata.org/wiki/Q35986",
+      "display_name": "Aesthetics",
+      "level": 1,
+      "score": 0.22284016013145447
+    },
+    {
+      "id": "https://openalex.org/C142362112",
+      "wikidata": "https://www.wikidata.org/wiki/Q735",
+      "display_name": "Art",
+      "level": 0,
+      "score": 0.19599878787994385
+    },
+    {
+      "id": "https://openalex.org/C52119013",
+      "wikidata": "https://www.wikidata.org/wiki/Q50637",
+      "display_name": "Art history",
+      "level": 1,
+      "score": 0.08163690567016602
+    },
+    {
+      "id": "https://openalex.org/C151730666",
+      "wikidata": "https://www.wikidata.org/wiki/Q7205",
+      "display_name": "Paleontology",
+      "level": 1,
+      "score": 0.0
+    },
+    {
+      "id": "https://openalex.org/C86803240",
+      "wikidata": "https://www.wikidata.org/wiki/Q420",
+      "display_name": "Biology",
+      "level": 0,
+      "score": 0.0
+    }
+  ],
+  "mesh": [],
+  "locations_count": 5,
+  "locations": [
+    {
+      "id": "doi:10.1257/aer.90.4.715",
+      "is_oa": true,
+      "landing_page_url": "https://doi.org/10.1257/aer.90.4.715",
+      "pdf_url": "https://www.aeaweb.org/articles/pdf/doi/10.1257/aer.90.4.715",
+      "source": {
+        "id": "https://openalex.org/S23254222",
+        "display_name": "American Economic Review",
+        "issn_l": "0002-8282",
+        "issn": [
+          "0002-8282",
+          "1944-7981"
+        ],
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": true,
+        "host_organization": "https://openalex.org/P4310315912",
+        "host_organization_name": "American Economic Association",
+        "host_organization_lineage": [
+          "https://openalex.org/P4310315912"
+        ],
+        "host_organization_lineage_names": [
+          "American Economic Association"
+        ],
+        "type": "journal"
+      },
+      "license": "public-domain",
+      "license_id": "https://openalex.org/licenses/public-domain",
+      "version": "publishedVersion",
+      "is_accepted": true,
+      "is_published": true,
+      "raw_source_name": "American Economic Review",
+      "raw_type": "journal-article"
+    },
+    {
+      "id": "pmh:oai:dash.harvard.edu:1/30703974",
+      "is_oa": true,
+      "landing_page_url": "http://nrs.harvard.edu/urn-3:HUL.InstRepos:30703974",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4306401540",
+        "display_name": "Digital Access to Scholarship at Harvard (DASH) (Harvard University)",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I136199984",
+        "host_organization_name": "Harvard University",
+        "host_organization_lineage": [
+          "https://openalex.org/I136199984"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": "cc-by",
+      "license_id": "https://openalex.org/licenses/cc-by",
+      "version": "submittedVersion",
+      "is_accepted": false,
+      "is_published": false,
+      "raw_source_name": "",
+      "raw_type": "Journal Article"
+    },
+    {
+      "id": "pmh:oai:RePEc:aea:aecrev:v:90:y:2000:i:4:p:715-741",
+      "is_oa": false,
+      "landing_page_url": "http://www.aeaweb.org/articles.php?doi=10.1257/aer.90.4.715",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4306401271",
+        "display_name": "RePEc: Research Papers in Economics",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I77793887",
+        "host_organization_name": "Federal Reserve Bank of St. Louis",
+        "host_organization_lineage": [
+          "https://openalex.org/I77793887"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "submittedVersion",
+      "is_accepted": false,
+      "is_published": false,
+      "raw_source_name": null,
+      "raw_type": "article"
+    },
+    {
+      "id": "pmh:oai:RePEc:pri:indrel:dsp01ns064602n",
+      "is_oa": false,
+      "landing_page_url": "http://arks.princeton.edu/ark:/88435/dsp01ns064602n",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4306401271",
+        "display_name": "RePEc: Research Papers in Economics",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I77793887",
+        "host_organization_name": "Federal Reserve Bank of St. Louis",
+        "host_organization_lineage": [
+          "https://openalex.org/I77793887"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "submittedVersion",
+      "is_accepted": false,
+      "is_published": false,
+      "raw_source_name": "",
+      "raw_type": "preprint"
+    },
+    {
+      "id": "pmh:oai:aleph.bib-bvb.de:BVB01-007819668",
+      "is_oa": false,
+      "landing_page_url": null,
+      "pdf_url": null,
+      "source": null,
+      "license": null,
+      "license_id": null,
+      "version": "submittedVersion",
+      "is_accepted": false,
+      "is_published": false,
+      "raw_source_name": "",
+      "raw_type": "text"
+    }
+  ],
+  "best_oa_location": {
+    "id": "doi:10.1257/aer.90.4.715",
+    "is_oa": true,
+    "landing_page_url": "https://doi.org/10.1257/aer.90.4.715",
+    "pdf_url": "https://www.aeaweb.org/articles/pdf/doi/10.1257/aer.90.4.715",
+    "source": {
+      "id": "https://openalex.org/S23254222",
+      "display_name": "American Economic Review",
+      "issn_l": "0002-8282",
+      "issn": [
+        "0002-8282",
+        "1944-7981"
+      ],
+      "is_oa": false,
+      "is_in_doaj": false,
+      "is_core": true,
+      "host_organization": "https://openalex.org/P4310315912",
+      "host_organization_name": "American Economic Association",
+      "host_organization_lineage": [
+        "https://openalex.org/P4310315912"
+      ],
+      "host_organization_lineage_names": [
+        "American Economic Association"
+      ],
+      "type": "journal"
+    },
+    "license": "public-domain",
+    "license_id": "https://openalex.org/licenses/public-domain",
+    "version": "publishedVersion",
+    "is_accepted": true,
+    "is_published": true,
+    "raw_source_name": "American Economic Review",
+    "raw_type": "journal-article"
+  },
+  "sustainable_development_goals": [
+    {
+      "display_name": "Gender equality",
+      "score": 0.75,
+      "id": "https://metadata.un.org/sdg/5"
+    }
+  ],
+  "awards": [],
+  "funders": [
+    {
+      "id": "https://openalex.org/F4320306146",
+      "display_name": "Andrew W. Mellon Foundation",
+      "ror": "https://ror.org/04jsh2530"
+    },
+    {
+      "id": "https://openalex.org/F4320314633",
+      "display_name": "National Academy of Education",
+      "ror": "https://ror.org/02530bn33"
+    }
+  ],
+  "has_content": {
+    "pdf": true,
+    "grobid_xml": true
+  },
+  "content_urls": {
+    "pdf": "https://content.openalex.org/works/W1991418004.pdf",
+    "grobid_xml": "https://content.openalex.org/works/W1991418004.grobid-xml"
+  },
+  "referenced_works_count": 24,
+  "referenced_works": [
+    "https://openalex.org/W579376429",
+    "https://openalex.org/W586212066",
+    "https://openalex.org/W1513281941",
+    "https://openalex.org/W1536128219",
+    "https://openalex.org/W1550005718",
+    "https://openalex.org/W1555871510",
+    "https://openalex.org/W1577713818",
+    "https://openalex.org/W1582840427",
+    "https://openalex.org/W1648937643",
+    "https://openalex.org/W1970278427",
+    "https://openalex.org/W2041038992",
+    "https://openalex.org/W2070681884",
+    "https://openalex.org/W2077997442",
+    "https://openalex.org/W2097978133",
+    "https://openalex.org/W2318811379",
+    "https://openalex.org/W3121532651",
+    "https://openalex.org/W3121907612",
+    "https://openalex.org/W3122889739",
+    "https://openalex.org/W3123987311",
+    "https://openalex.org/W3124269332",
+    "https://openalex.org/W3124741625",
+    "https://openalex.org/W3163865098",
+    "https://openalex.org/W4238817359",
+    "https://openalex.org/W4285719527"
+  ],
+  "related_works": [
+    "https://openalex.org/W2352632308",
+    "https://openalex.org/W4236572506",
+    "https://openalex.org/W4232310950",
+    "https://openalex.org/W4378530707",
+    "https://openalex.org/W2464905036",
+    "https://openalex.org/W2006859151",
+    "https://openalex.org/W2486917440",
+    "https://openalex.org/W2372368947",
+    "https://openalex.org/W623133647",
+    "https://openalex.org/W2370597233"
+  ],
+  "abstract_inverted_index": {
+    "A": [
+      0
+    ],
+    "change": [
+      1
+    ],
+    "in": [
+      2,
+      33,
+      68,
+      85,
+      92
+    ],
+    "the": [
+      3,
+      17,
+      21,
+      41,
+      44,
+      69,
+      72,
+      75,
+      79,
+      89
+    ],
+    "audition": [
+      4,
+      81
+    ],
+    "procedures": [
+      5
+    ],
+    "of": [
+      6,
+      9,
+      55,
+      74
+    ],
+    "symphony": [
+      7,
+      93
+    ],
+    "orchestras\u2014adoption": [
+      8
+    ],
+    "\u201cblind\u201d": [
+      10
+    ],
+    "auditions": [
+      11
+    ],
+    "with": [
+      12
+    ],
+    "a": [
+      13,
+      23,
+      46
+    ],
+    "\u201cscreen\u201d": [
+      14
+    ],
+    "to": [
+      15
+    ],
+    "conceal": [
+      16
+    ],
+    "candidate's": [
+      18
+    ],
+    "identity": [
+      19
+    ],
+    "from": [
+      20,
+      30
+    ],
+    "jury\u2014provides": [
+      22
+    ],
+    "test": [
+      24
+    ],
+    "for": [
+      25
+    ],
+    "sex-biased": [
+      26
+    ],
+    "hiring.": [
+      27
+    ],
+    "Using": [
+      28
+    ],
+    "data": [
+      29
+    ],
+    "actual": [
+      31
+    ],
+    "auditions,": [
+      32
+    ],
+    "an": [
+      34
+    ],
+    "individual": [
+      35
+    ],
+    "fixed-effects": [
+      36
+    ],
+    "framework,": [
+      37
+    ],
+    "we": [
+      38
+    ],
+    "find": [
+      39
+    ],
+    "that": [
+      40,
+      78
+    ],
+    "screen": [
+      42
+    ],
+    "increases": [
+      43
+    ],
+    "probability": [
+      45
+    ],
+    "woman": [
+      47
+    ],
+    "will": [
+      48
+    ],
+    "be": [
+      49
+    ],
+    "advanced": [
+      50
+    ],
+    "and": [
+      51,
+      62,
+      87
+    ],
+    "hired.": [
+      52
+    ],
+    "Although": [
+      53
+    ],
+    "some": [
+      54
+    ],
+    "our": [
+      56
+    ],
+    "estimates": [
+      57
+    ],
+    "have": [
+      58
+    ],
+    "large": [
+      59
+    ],
+    "standard": [
+      60
+    ],
+    "errors": [
+      61
+    ],
+    "there": [
+      63
+    ],
+    "is": [
+      64
+    ],
+    "one": [
+      65
+    ],
+    "persistent": [
+      66
+    ],
+    "effect": [
+      67
+    ],
+    "opposite": [
+      70
+    ],
+    "direction,": [
+      71
+    ],
+    "weight": [
+      73
+    ],
+    "evidence": [
+      76
+    ],
+    "suggests": [
+      77
+    ],
+    "blind": [
+      80
+    ],
+    "procedure": [
+      82
+    ],
+    "fostered": [
+      83
+    ],
+    "impartiality": [
+      84
+    ],
+    "hiring": [
+      86
+    ],
+    "increased": [
+      88
+    ],
+    "proportion": [
+      90
+    ],
+    "women": [
+      91
+    ],
+    "orchestras.": [
+      94
+    ],
+    "(JEL": [
+      95
+    ],
+    "J7,": [
+      96
+    ],
+    "J16)": [
+      97
+    ]
+  },
+  "counts_by_year": [
+    {
+      "year": 2026,
+      "cited_by_count": 28
+    },
+    {
+      "year": 2025,
+      "cited_by_count": 151
+    },
+    {
+      "year": 2024,
+      "cited_by_count": 118
+    },
+    {
+      "year": 2023,
+      "cited_by_count": 145
+    },
+    {
+      "year": 2022,
+      "cited_by_count": 134
+    },
+    {
+      "year": 2021,
+      "cited_by_count": 128
+    },
+    {
+      "year": 2020,
+      "cited_by_count": 137
+    },
+    {
+      "year": 2019,
+      "cited_by_count": 102
+    },
+    {
+      "year": 2018,
+      "cited_by_count": 90
+    },
+    {
+      "year": 2017,
+      "cited_by_count": 87
+    },
+    {
+      "year": 2016,
+      "cited_by_count": 78
+    },
+    {
+      "year": 2015,
+      "cited_by_count": 70
+    },
+    {
+      "year": 2014,
+      "cited_by_count": 79
+    },
+    {
+      "year": 2013,
+      "cited_by_count": 62
+    },
+    {
+      "year": 2012,
+      "cited_by_count": 72
+    }
+  ],
+  "updated_date": "2026-07-05T07:55:05.734416",
+  "created_date": "2025-10-10T00:00:00"
+}

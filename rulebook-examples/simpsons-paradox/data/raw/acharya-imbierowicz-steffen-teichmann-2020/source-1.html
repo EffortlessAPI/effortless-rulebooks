@@ -1,0 +1,1074 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="utf-8">
+                <title>Federal Reserve Economic Data | FRED | St. Louis Fed</title>
+              <script>
+      dataLayer = []
+    </script>
+
+    <!-- Google Tag Manager -->
+    <script>(function (w, d, s, l, i) {
+      w[l] = w[l] || []
+      w[l].push({
+        'gtm.start':
+          new Date().getTime(), event: 'gtm.js'
+      })
+      var f = d.getElementsByTagName(s)[0],
+        j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''
+      j.async = true
+      j.src =
+        '//www.googletagmanager.com/gtm.js?id=' + i + dl
+      f.parentNode.insertBefore(j, f)
+    })(window, document, 'script', 'dataLayer', 'GTM-5L322W')</script>
+    <!-- End Google Tag Manager -->
+
+        <meta name="description" content="Download, graph, and track 845,000 economic time series from 121 sources.">
+            <meta name="keywords" content="economic data, economic charts, Excel, GDP, CPI, PPI, IP, M1, M2, M3, MZM, Federal Funds Rate, Gross Domestic Product, Consumer Price Index, Producer Price Index, Industrial Production, Interest Rates, Inflation, Exchange Rates, Imports, Exports, Reserves, Money Stock, Employment, Population, Banks Loans, Economic Data, FRED, St. Louis Fed, Federal Reserve">
+    
+
+        
+    <script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "DataCatalog",
+        "license": "",
+        "name": "FRED",
+        "alternateName": "Federal Reserve Economic Data",
+        "url": "https://fred.stlouisfed.org",
+        "publisher": {
+            "@type": "Organization",
+            "name": "Federal Reserve Bank of St. Louis",
+            "url": "https://www.stlouisfed.org/",
+            "address": {
+              "@type": "PostalAddress",
+                "addressLocality": "St. Louis",
+                "addressRegion": "MO",
+                "postalCode": "63102",
+                "streetAddress": "Federal Reserve Bank Plaza, 1 Broadway",
+                "addressCountry": "USA"
+            },
+             "department": "Research Division",
+             "email": "fred@stlouisfed.org",
+             "telephone": "(314) 444-8444"                  
+        }             
+    }
+
+
+    </script>
+        
+    <link rel="preconnect" href="https://research.stlouisfed.org">
+    <link rel="preconnect" href="https://uapi.stlouisfed.org">
+    <link rel="preconnect" href="https://alfred.stlouisfed.org">
+    <link rel="preconnect" href="https://fred.stlouisfed.org">
+    <link rel="preconnect" href="https://fred.stlouisfed.org">
+    <link rel="preconnect" href="https://apis.google.com">
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    <link rel="preconnect" href="https://www.google-analytics.com">
+    <link rel="preconnect" href="https://www.googletagmanager.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+
+    <meta name="apple-itunes-app" content="app-id=451715489">
+    <meta name="google-play-app" content="app-id=org.stlouisfed.research.fred">
+
+    
+    
+        <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+
+    <!--<meta name="viewport" content="width=device-width">-->
+
+        <link rel="canonical" href="https://fred.stlouisfed.org">
+    
+    
+            <link href="/css/fred-homepage-rotating-ad.css" rel="stylesheet" type="text/css">
+            <style type="text/css">
+                .graph {display:none}
+                .popover {max-width: 500px}
+                .fred-glance-series, .popular-series {padding:.5em !important; margin-bottom: .5em!important; border-radius: 5px; }
+                .fred-glance-series:hover, .popular-series:hover {background: #F5F5F5;}
+            </style>
+
+</head>
+<body class="federal-reserve-economic-data">
+
+<!-- Google Tag Manager (noscript) -->
+<noscript>
+    <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5L322W"
+            height="0" width="0" style="display:none;visibility:hidden"></iframe>
+</noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+<!-- pingdom_uptime_check=uXCPjTUzTxL7ULra -->
+<link rel="stylesheet" type="text/css" href=/assets/bootstrap/dist/css/1783358036.bootstrap.min.css>
+<link rel="stylesheet" type="text/css" href=/assets/fontawesome-free/css/all.min.css>
+<script></script>
+<link rel="stylesheet" type="text/css" href=/css/1783358039.home.min.css>
+<script></script>
+<link rel="stylesheet" type="text/css" href=/assets/select2/dist/css/1783358034.select2.min.css>
+
+
+<!-- Google Tag Manager (noscript) -->
+<noscript>
+    <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5L322W" height="0" width="0" style="display:none;visibility:hidden"></iframe>
+</noscript>
+<!-- End Google Tag Manager (noscript) -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Slab&display=swap" rel="stylesheet">
+<!--googleoff: snippet-->
+<a href="#content-container" class="skip-to">Skip to main content</a>
+<!--googleon: snippet-->
+<a name="top" id="top"></a>
+<div id="container">
+    <header class="EL-header-and-subheader container">
+        <div id="header-home" class="EL-header">
+            <div id="hidden-user" class='hide'></div>
+            <div id="action-modal"></div>
+            <nav class='col-12 center-content navbar navbar-expand d-flex align-items-stretch flex-nowrap'>
+                <div class="col-md-4 col-9">
+                    <a class="bank-logo-gtm" target="_" href="https://www.stlouisfed.org">
+                        <img class="header-logo research-logo-gtm d-none d-lg-block" src="https://fred.stlouisfed.org/images/STL_Fed_Logo.svg" id="research-logo-home" alt="Federal Reserve Bank of St. Louis">
+                        <img class="header-logo research-logo-gtm d-lg-none" src="https://fred.stlouisfed.org/images/STL_Fed_Logo_white_text.svg" id="research-logo-home" alt="Federal Reserve Bank of St. Louis">
+                    </a>
+                </div>
+                <div class="col-md-8 col-3 navbar-collapse collapse d-flex justify-content-end">
+                    <nav id="blueheader-navbar-nav" class="d-none d-lg-block">
+                        <ul id="blueheader-navbar" class="nav float-end navbar-nav">
+                            <li class="blueheader-navbar-item nav-item d-none d-lg-block">
+                                <span id="switchprod-popover-container" class="switchprod-popover-container">
+
+  <button type="button" id="switchProd" data-toggle="popover" aria-controls="switch-prod-list" 
+    aria-haspopup="true" class="header-popover" aria-label="Toggle Explore Our Apps Menu">
+    <img class="Switch-Products-gtm" src="//fred.stlouisfed.org/images/Waffle_Menu_off.svg" alt="Toggle Explore Our Apps Menu" />
+  </button>
+</span>
+
+<div id="switchprod-popover" class="hide">
+  <!-- empty alt values handle older screen readers that don't handle WAI-ARIA roles. Both methods allow the screenreader to skip the image and not read the filename to the user. -->
+<h2 class="explore-products-desk">Explore Our Apps</h2>
+<hr>
+<ul id="switch-prod-list" class="list-group switch-products-list" role="menu" aria-labelledby="switchProduct">
+    <li role="presentaion" id="ham-fred-dev" class="list-group-item product-fred">
+      <a class="d-flex burger-fred-gtm" role="menuitem" href="//fred.stlouisfed.org">
+        <div>
+          <img class="switch-icon-padding burger-fred-gtm" src="//fred.stlouisfed.org/images/FRED_Logo_for_Waffle.svg" alt="" role="presentation">
+        </div>
+        <div>
+          <h3 class="burger-fred-gtm">FRED</h3>
+          <p>Tools and resources to find and use economic data worldwide</p>
+        </div>
+      </a>
+    </li>
+    <li role="presentaion" id="ham-fraser" class="list-group-item">
+      <a rel="noopener" target="_blank" class="d-flex burger-fraser-gtm" role="menuitem" href="https://fraser.stlouisfed.org/">
+        <div>
+          <img class="switch-icon-padding burger-fraser-gtm" src="//fred.stlouisfed.org/images/FRASER_Logo_for_Waffle.svg" alt="" role="presentation">
+        </div>
+        <div>
+          <h3 class="burger-fraser-gtm">FRASER</h3>
+          <p>U.S. financial, economic, and banking history</p>
+        </div>
+      </a>
+    </li>
+    <li role="presentaion" id="ham-alfred" class="list-group-item">
+      <a rel="noopener" target="_blank" class="d-flex burger-alfred-gtm" role="menuitem" href="//alfred.stlouisfed.org">
+        <div>
+          <img class="switch-icon-padding burger-alfred-gtm" src="//fred.stlouisfed.org/images/ALFRED_Logo_for_Waffle.svg" alt="" role="presentation">
+        </div>
+        <div>
+          <h3 class="burger-alfred-gtm">ALFRED</h3>
+          <p>Vintages of economic data from specific dates in history</p>
+        </div>
+      </a>
+    </li>
+    <li role="presentaion" id="ham-ecolowdown" class="list-group-item">
+      <a rel="noopener" target="_blank" class="d-flex burger-econlowdown-gtm" role="menuitem" href="https://cassidi.stlouisfed.org/index">
+        <div>
+          <img class="burger-econlowdown-gtm" src="//fred.stlouisfed.org/images/CASSIDI_Logo_for_Waffle.svg" alt="" role="presentation">
+        </div>
+        <div>
+          <h3 class="burger-econlowdown-gtm">CASSIDI</h3>
+          <p>View banking market concentrations and perform HHI analysis</p>
+        </div>
+      </a>
+  </li>
+</ul>
+</div>                            </li>
+                            <li class="blueheader-navbar-item nav-item d-none d-lg-block">
+                                <div id="signin-wrap">
+                                    <div id="user-nav" class="EL-my-account-link"></div>
+                                </div>
+                            </li>
+                        </ul>
+                    </nav>
+                    <div class="blueheader-navbar d-lg-none">
+                        <button type="button" id="hamburger-btn-open" class="hamburger-gtm" aria-controls="hamburger-drawer" 
+    onclick="hamburgerMenuToggle('open')" aria-label="Open Mobile Menu">
+    <i id="hamburger" class="fas fa-bars hamburger-header" title="Open Mobile Menu"></i>
+</button> 
+<button type="button" id="hamburger-btn-close" class="close-btn burger-close-gtm hide" aria-controls="hamburger-drawer" 
+    onclick="hamburgerMenuToggle('close')" aria-label="Close Mobile Menu">
+    <i class="fa-solid fa-x" title="Close Mobile Menu"></i>
+</button>               
+                    </div>
+                </div>
+            </nav>
+            <div id="notifications-container"></div>
+        </div>
+        <div class="blueheader-navbar d-lg-none">
+            <nav id="hamburger-drawer" class="hide">
+    <div class="slide-content">
+        <div id="hamburger-navigation">
+            <div id="hamburger-home">
+                <ul class="list-group flush-list hamburger-list col-12">
+                    <li class="list-group-item">
+                        <a class="burger-calendar-gtm" href="https://fred.stlouisfed.org/releases/calendar">Release Calendar</a>
+                    </li>
+                    <li class="list-group-item hamburger-menu-item">
+                        <button type="button" class="burger-tools-gtm" onclick="toggleMenuNavigation('hamburger-tools', true)" aria-controls="hamburger-tools">Tools
+                            <i class="fas fa-solid fa-angle-down" title="Toggle FRED Tools Submenu"></i>
+                        </button>
+                        <ul id="hamburger-tools" role="menu" class="hide list-group hamburger-submenu-list col-12">
+                            <li role="presentation" class="list-group-item">
+                                <a role="menuitem" class="burger-fred-excel-add-in-gtm" href="https://fred.stlouisfed.org/fred-addin"> FRED Add-in for Excel</a>
+                            </li>
+                            <li role="presentation" class="list-group-item">
+                                <a role="menuitem" class="burger-fred-api-gtm" href="https://fred.stlouisfed.org/docs/api/fred"> FRED API</a>
+                            </li>
+                            <li role="presentation" class="list-group-item">
+                                <a role="menuitem" class="burger-fred-mobile-apps-gtm" href="https://fred.stlouisfed.org/fred-mobile"> FRED Mobile Apps</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="list-group-item">
+                        <a class="burger-news-gtm" href="https://news.research.stlouisfed.org/category/fred-announcements/">News</a>
+                    </li>
+                    <li class="list-group-item">
+                        <a class="burger-blog-gtm" href="https://fredblog.stlouisfed.org">Blog</a>
+                    </li>
+                    <li class="list-group-item hamburger-menu-item">
+                        <button type="button" class="burger-about-gtm" onclick="toggleMenuNavigation('hamburger-about-fred', true)" aria-controls="hamburger-about-fred">About
+                            <i class="fas fa-solid fa-angle-down" title="Toggle About FRED Submenu"></i>
+                        </button>
+                        <ul id="hamburger-about-fred" role="menu" class="hide list-group hamburger-submenu-list col-12">
+                            <li role="presentation" class="list-group-item">
+                                <a role="menuitem" class="burger-fred-about-gtm" href="https://fredhelp.stlouisfed.org/fred/about/about-fred/what-is-fred/"> What is FRED</a>
+                            </li>
+                            <li role="presentation" class="list-group-item">
+                                <a role="menuitem" class="burger-tutorials-gtm" href="https://fredhelp.stlouisfed.org"> Tutorials</a>
+                            </li>
+                            <li role="presentation" class="list-group-item">
+                                <a role="menuitem" class="burger-data-literacy-gtm" href="https://fred.stlouisfed.org/digital-badges/">
+                                Digital Badges
+                                </a>
+                            </li>
+                            <li role="presentation" class="list-group-item">
+                                <a role="menuitem" class="burger-contact-us-gtm" href="https://fred.stlouisfed.org/contactus/"> Contact Us</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="list-group-item">
+                        <a class="burger-myaccount-gtm" href="https://fredaccount.stlouisfed.org">My Account</a>
+                    </li>
+                    <li class="list-group-item hamburger-menu-item">
+                        <button type="button" class="burger-switch-gtm" onclick="toggleMenuNavigation('hamburger-products', true)" aria-controls="hamburger-products">
+                            Explore Our Apps
+                            <i class="fas fa-solid fa-angle-down" title="Toggle Apps Submenu"></i>
+                        </button>
+                        <div id="hamburger-products" class="hide">
+                            <!-- empty alt values handle older screen readers that don't handle WAI-ARIA roles. Both methods allow the screenreader to skip the image and not read the filename to the user. -->
+<h2 class="explore-products-desk">Explore Our Apps</h2>
+<hr>
+<ul id="switch-prod-list" class="list-group switch-products-list" role="menu" aria-labelledby="switchProduct">
+    <li role="presentaion" id="ham-fred-dev" class="list-group-item product-fred">
+      <a class="d-flex burger-fred-gtm" role="menuitem" href="//fred.stlouisfed.org">
+        <div>
+          <img class="switch-icon-padding burger-fred-gtm" src="//fred.stlouisfed.org/images/FRED_Logo_for_Waffle.svg" alt="" role="presentation">
+        </div>
+        <div>
+          <h3 class="burger-fred-gtm">FRED</h3>
+          <p>Tools and resources to find and use economic data worldwide</p>
+        </div>
+      </a>
+    </li>
+    <li role="presentaion" id="ham-fraser" class="list-group-item">
+      <a rel="noopener" target="_blank" class="d-flex burger-fraser-gtm" role="menuitem" href="https://fraser.stlouisfed.org/">
+        <div>
+          <img class="switch-icon-padding burger-fraser-gtm" src="//fred.stlouisfed.org/images/FRASER_Logo_for_Waffle.svg" alt="" role="presentation">
+        </div>
+        <div>
+          <h3 class="burger-fraser-gtm">FRASER</h3>
+          <p>U.S. financial, economic, and banking history</p>
+        </div>
+      </a>
+    </li>
+    <li role="presentaion" id="ham-alfred" class="list-group-item">
+      <a rel="noopener" target="_blank" class="d-flex burger-alfred-gtm" role="menuitem" href="//alfred.stlouisfed.org">
+        <div>
+          <img class="switch-icon-padding burger-alfred-gtm" src="//fred.stlouisfed.org/images/ALFRED_Logo_for_Waffle.svg" alt="" role="presentation">
+        </div>
+        <div>
+          <h3 class="burger-alfred-gtm">ALFRED</h3>
+          <p>Vintages of economic data from specific dates in history</p>
+        </div>
+      </a>
+    </li>
+    <li role="presentaion" id="ham-ecolowdown" class="list-group-item">
+      <a rel="noopener" target="_blank" class="d-flex burger-econlowdown-gtm" role="menuitem" href="https://cassidi.stlouisfed.org/index">
+        <div>
+          <img class="burger-econlowdown-gtm" src="//fred.stlouisfed.org/images/CASSIDI_Logo_for_Waffle.svg" alt="" role="presentation">
+        </div>
+        <div>
+          <h3 class="burger-econlowdown-gtm">CASSIDI</h3>
+          <p>View banking market concentrations and perform HHI analysis</p>
+        </div>
+      </a>
+  </li>
+</ul>
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        <a class="burger-stls-home-gtm" href="https://www.stlouisfed.org/">STL Fed Home Page</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</nav>
+        </div>
+        <div class='col-12 homepage-subheader-spacing d-none d-lg-block'>
+            
+<hr class="col-12 hr-pre-subheader-nav d-none d-lg-block">
+<nav class="col-12 navbar EL-main-nav navbar-expand-sm d-none d-lg-flex" id="subheader-nav">
+    <div class="navbar-collapse collapse d-flex justify-content-end">
+        <ul id="subheader-navbar" class="nav float-end navbar-nav">
+            <li class="nav-li-subheader">
+                <a href="https://fred.stlouisfed.org/releases/calendar" class="nav-releasecal-subheader-gtm">Release Calendar</a>
+            </li>
+            <li class="nav-li-subheader">
+              <span class="sub-header-nav-tools-gtm  header-popover fred-tools-container">
+  <button type="button" id="fred-tools-link" class="align-icon header-popover tools-gtm" 
+    aria-haspopup="true" aria-controls="fred-tools-menu" data-toggle="popover" 
+    onclick="toggleMenuNavigation('fred-tools-popover')">Tools
+    <i class="fas fa-angle-down" title="Toggle Tools Menu"></i>
+  </button>
+</span>
+
+<div id="fred-tools-popover" class="hide">
+  <ul id="fred-tools-menu" role="menu" class="header-list-popover list-group flush-list">
+    <li role="presentation" class="list-group-item">
+      <a role="menuitem" class="homepage-nav-tools-fred-excel-addin-gtm" href="https://fred.stlouisfed.org/fred-addin">FRED Add-in for Excel</a>
+    </li>
+    <li role="presentation" class="list-group-item">
+      <a role="menuitem" class="homepage-nav-tools-fred-api-gtm" href="https://fred.stlouisfed.org/docs/api/fred">FRED API</a>
+    </li>
+    <li role="presentation" class="list-group-item">
+      <a role="menuitem" class="homepage-nav-tools-fred-mobile-gtm" href="https://fred.stlouisfed.org/fred-mobile">FRED Mobile Apps</a>
+    </li>
+  </ul>
+</div>            </li>
+            <li class="nav-li-subheader">
+                <a href="https://news.research.stlouisfed.org/category/fred-announcements/" class="nav-news-subheader-gtm">News</a>
+            </li>
+            <li class="nav-li-subheader">
+                <a href="https://fredblog.stlouisfed.org" class="nav-fredblog-subheader-gtm">Blog</a>
+            </li>
+            <li class="nav-li-subheader">
+              
+<span class="subheader-nav-about-gtm about-fred-container">
+  <button type="button" id="about-fred-link" class="align-icon header-popover about-gtm" 
+    data-toggle="popover" aria-controls="about-fred-menu" aria-haspopup="true"
+    onclick="toggleMenuNavigation('about-fred-popover')">About
+    <i class="fas fa-angle-down" alt="Toggle About Menu"></i>
+  </button>
+</span>
+
+<div id="about-fred-popover" class="hide">
+  <ul id="about-fred-menu" role="menu" aria-labelledby="about-fred-link" class="header-list-popover list-group flush-list">
+    <li role="presentation" class="list-group-item">
+      <a role="menuitem" class="about-fred-what-is-gtm" href="https://fredhelp.stlouisfed.org/fred/about/about-fred/what-is-fred/">
+        What is FRED
+      </a>
+    </li>
+    <li role="presentation" class="list-group-item">
+      <a role="menuitem" class="about-fred-tutorials-gtm" href="https://fredhelp.stlouisfed.org">
+        Tutorials
+      </a>
+    </li>
+    <li role="presentation" class="list-group-item">
+      <a role="menuitem" class="about-research-data-literacy-gtm" href="https://fred.stlouisfed.org/digital-badges/">
+        Digital Badges
+      </a>
+    </li>
+    <li role="presentation" class="list-group-item">
+      <a role="menuitem" class="about-fred-contact-gtm" href="https://fred.stlouisfed.org/contactus/ ">
+        Contact Us
+      </a>
+    </li>
+  </ul>
+</div>
+            </li>
+        </ul>
+    </div>
+</nav>
+        </div>
+    </header>
+
+
+
+<div class="clear row gx-0 container" id="content-container">
+
+
+
+<div class="col-12 container-fluid" id="main-content-column">
+
+
+    
+                        
+                <div class="EL-homepage row">
+  <div class="col-12 justify-content-center logo-centering d-flex align-items-center">
+    <div class="col-lg-6 col-12" id="fred-homepage-logo">
+      <h1 class="sr-only">FRED Economic Data</h1>
+      <img class="homepage-logo" src="/images/FRED_Logo_Home_Page.svg" alt="Fred Economic Data">
+      <p class="fred-desc-mobile" id="fred-homepage-desc-trust">
+          Your trusted source for economic data since 1991.
+      </p>
+    </div>
+  </div>
+
+  <div class='col-12 d-flex justify-content-center' id="home-search-visibility">
+    <form class="col-12 col-lg-9 EL-homepage-search" id="home-search" action="/searchresults">
+      <div class='input-group' id="homepage-search-container">
+        <div class="search-input-homepage-container">
+          <input name="st" type="text" class="search-input-homepage" placeholder="Search FRED Data...">
+        </div>
+        <button class="btn homepage-search-button" type="submit" aria-label="Submit Search">
+          <i class="fa fa-search homepage-search-icon" title="Submit Search"></i>
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <div class="col-12 col-lg-9 d-flex justify-content-center explore-cards">
+    <div class="col-12 col-lg-8 explore-card">
+      <h2 class="explore-card-title">Trending Search Terms:</h2>
+      <div class="explore-card-content">
+                  <a class="trending-search-item trending-search-gtm" href="/searchresults/?st=cpi&isTst=1">cpi</a>
+                  <a class="trending-search-item trending-search-gtm" href="/searchresults/?st=gdp&isTst=1">gdp</a>
+                  <a class="trending-search-item trending-search-gtm" href="/searchresults/?st=inflation&isTst=1">inflation</a>
+                  <a class="trending-search-item trending-search-gtm" href="/searchresults/?st=sofr&isTst=1">sofr</a>
+                  <a class="trending-search-item trending-search-gtm" href="/searchresults/?st=pce&isTst=1">pce</a>
+                  <a class="trending-search-item trending-search-gtm" href="/searchresults/?st=m2&isTst=1">m2</a>
+                  <a class="trending-search-item trending-search-gtm" href="/searchresults/?st=unemployment&isTst=1">unemployment</a>
+                  <a class="trending-search-item trending-search-gtm" href="/searchresults/?st=vix&isTst=1">vix</a>
+                  <a class="trending-search-item trending-search-gtm" href="/searchresults/?st=real%20gdp&isTst=1">real gdp</a>
+                  <a class="trending-search-item trending-search-gtm" href="/searchresults/?st=gold&isTst=1">gold</a>
+              </div>
+    </div>
+    <hr class="divider-explore-cards">
+    <div class="col-12 col-lg-4 explore-card">
+      <h2 class="explore-card-title">Browse Data By:</h2>
+      <ul class="explore-card-content d-flex col-12">
+        <div class="col-6 col-lg-12">
+          <li>
+            <a class="browse-data-item home-browse-categories-gtm" href="/categories">Category</a>
+          </li>
+          <li>
+            <a class="browse-data-item home-browse-releases-gtm" href="/releases">Release</a>
+          </li>
+        </div>
+        <div class="col-6 col-lg-12">
+          <li>
+            <a class="browse-data-item home-browse-sources-gtm" href="/sources">Source</a>
+          </li>
+          <li>
+            <a class="browse-data-item home-browse-popular-series-gtm" href="/tags/series?ob=pv">Popular Series</a>
+          </li>
+        </div>
+      </ul>
+    </div>
+    <hr class="divider-explore-cards d-lg-none">
+  </div>
+  
+  <div class="col-12" id="fred-homepage-at-a-glance">
+    <div>
+      <h2>At a Glance</h2>
+      <hr class="header-divider">
+    </div>
+    <div class="d-flex flex-column flex-lg-row">
+      <div class="col-12 col-lg-4 gx-0 at-a-glance-card d-flex justify-content-lg-start">
+        <a href="https://fred.stlouisfed.org/graph/?g=1wmdD" class="col-12 col-lg-11 glance-cpi-graph-gtm">
+            <img class="lazy-load at-a-glance-resource-img fg-res-data-img-lnk-gtm" src="https://fred.stlouisfed.org/graph/fredgraph.png?g=1wmdD" alt="" role="presentation">
+            <div class="at-a-glance-resource-title">Consumer Price Index for All Urban Consumers: All Items</div>
+        </a>
+      </div>
+      <div class="col-12  col-lg-4 gx-0 at-a-glance-card d-flex justify-content-lg-center">
+        <a href="https://fred.stlouisfed.org/graph/?g=1Ng5J" class="col-12 col-lg-11 glance-fedrates-graph-gtm">
+            <img class="lazy-load at-a-glance-resource-img fg-res-data-img-lnk-gtm" src="https://fred.stlouisfed.org/graph/fredgraph.png?g=1Ng5J" alt="" role="presentation">
+            <div class="at-a-glance-resource-title">The Implementation of Monetary Policy</div>
+        </a>
+      </div>
+      <div class="col-12 col-lg-4 gx-0 at-a-glance-card d-flex justify-content-lg-end">
+        <a href="https://fred.stlouisfed.org/graph/?m=1wm8j" class="col-12 col-lg-11 glance-urmetro-map-gtm">
+            <img class="lazy-load at-a-glance-resource-img at-a-glance-resource-img-map fg-res-data-img-lnk-gtm" src="https://fred.stlouisfed.org/graph/fredgraph.png?m=1wm8j" alt="" role="presentation">
+            <div class="at-a-glance-resource-title">Unemployment Rate by Metro Area</div>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div id="fred-homepage-tabs-and-panels-container" class="col-12">
+    <div class="d-flex flex-column flex-lg-row nav nav-tabs manual" role="tablist" id="fred-homepage-tabs">
+      <div class="mobile-tab-and-panel-container">
+        <button type="button" role="tab" id="tab1" class="home-popular-tab-gtm" 
+          aria-controls="news-and-blog" aria-selected="true"><h2>News and Blog</h2>
+          <i class="fas fa-solid fa-angle-down d-lg-none"></i>
+        </button>
+        <div class="mobile-panel-container">
+          <div role="tabpanel" class="tab-pane d-flex fade show active" id="news-and-blog" aria-labelledby="tab1">
+    <div class="col-12 d-flex flex-column flex-lg-row">
+      <div class="col-12 col-lg-6 tabs-left">
+                <p class="tabs-item"><a class="home-fred-news-feed-gtm" href="https://news.research.stlouisfed.org/2026/06/fred-adds-small-business-credit-survey-sbcs-data/">FRED Adds Small Business Credit Survey (SBCS) Data</a></p>
+                <p class="tabs-item"><a class="home-fred-news-feed-gtm" href="https://news.research.stlouisfed.org/2026/06/fred-adds-survey-of-household-economics-and-decisionmaking-shed-data/">FRED Adds Survey of Household Economics and Decisionmaking (SHED) Data</a></p>
+                <p class="tabs-item"><a class="home-fred-news-feed-gtm" href="https://news.research.stlouisfed.org/2026/06/fred-adds-financial-risk-measurement-data-from-the-kansas-city-fed/">FRED Adds Financial Risk Measurement Data from the Kansas City Fed</a></p>
+                <p class="tabs-item"><a class="home-fred-news-feed-gtm" href="https://news.research.stlouisfed.org/2026/05/fred-adds-data-from-the-treasury-international-capital-system/">FRED Adds Data from the Treasury International Capital System</a></p>
+              </div>
+      <hr class="divider-tabs-columns d-block">
+      <div class="col-12 col-lg-6 tabs-right">
+                <p class="tabs-item"><a class="home-fred-blog-feed-gtm" href="https://fredblog.stlouisfed.org/2026/07/what-us-assets-are-held-overseas/">What US assets are held overseas?</a></p>
+                <p class="tabs-item"><a class="home-fred-blog-feed-gtm" href="https://fredblog.stlouisfed.org/2026/07/durable-goods-inflation-and-effective-tariffs/">Durable goods inflation and effective tariffs</a></p>
+                <p class="tabs-item"><a class="home-fred-blog-feed-gtm" href="https://fredblog.stlouisfed.org/2026/06/ai-investment-and-semiconductor-prices/">AI investment and semiconductor prices</a></p>
+                <p class="tabs-item"><a class="home-fred-blog-feed-gtm" href="https://fredblog.stlouisfed.org/2026/06/are-americans-optimistic-about-their-finances/">Are Americans optimistic about their finances?</a></p>
+              </div>
+    </div>
+  </div>
+        </div>
+      </div>
+      <div class="mobile-tab-and-panel-container">
+        <button type="button" role="tab" id="tab2" class="home-latest-tab-gtm" tabindex="-1"
+          aria-controls="latest-releases" aria-selected="false"><h2>Latest Releases</h2>
+          <i class="fas fa-solid fa-angle-down d-lg-none"></i>
+        </button>
+        <div class="mobile-panel-container">
+          <div role="tabpanel" class="tab-pane d-flex fade hide flex-column" id="latest-releases" aria-labelledby="tab2">
+    <div class="row">
+      <div class="col-12 d-flex flex-column flex-lg-row">
+        <div class="col-12 col-lg-6 tabs-left">
+                    <div id="International-Financial-Statistics-container" class="tabs-item">
+            <a aria-describedby="International-Financial-Statistics-updated" class="home-latest-releases-gtm" href="/release?rid=239">International Financial Statistics</a>
+            <span id="International-Financial-Statistics-updated"><span class="sr-only">updated </span>15 hours ago</span>
+          </div>
+                    <div id="H.15-Selected-Interest-Rates-container" class="tabs-item">
+            <a aria-describedby="H.15-Selected-Interest-Rates-updated" class="home-latest-releases-gtm" href="/release?rid=18">H.15 Selected Interest Rates</a>
+            <span id="H.15-Selected-Interest-Rates-updated"><span class="sr-only">updated </span>7 hours ago</span>
+          </div>
+                    <div id="Nasdaq-Daily-Index-Data-container" class="tabs-item">
+            <a aria-describedby="Nasdaq-Daily-Index-Data-updated" class="home-latest-releases-gtm" href="/release?rid=328">Nasdaq Daily Index Data</a>
+            <span id="Nasdaq-Daily-Index-Data-updated"><span class="sr-only">updated </span>19 second(s) ago</span>
+          </div>
+                    <div id="H.10-Foreign-Exchange-Rates-container" class="tabs-item">
+            <a aria-describedby="H.10-Foreign-Exchange-Rates-updated" class="home-latest-releases-gtm" href="/release?rid=17">H.10 Foreign Exchange Rates</a>
+            <span id="H.10-Foreign-Exchange-Rates-updated"><span class="sr-only">updated </span>7 hours ago</span>
+          </div>
+                    <div id="Interest-Rate-Spreads-container" class="tabs-item">
+            <a aria-describedby="Interest-Rate-Spreads-updated" class="home-latest-releases-gtm" href="/release?rid=304">Interest Rate Spreads</a>
+            <span id="Interest-Rate-Spreads-updated"><span class="sr-only">updated </span>6 hours ago</span>
+          </div>
+                  </div>
+        <hr class="divider-tabs-column d-none d-lg-block">
+        <div class="col-12 col-lg-6 tabs-right">
+                    <div id="Economic-Policy-Uncertainty-container" class="tabs-item">
+            <a aria-describedby="Economic-Policy-Uncertainty-updated" class="home-latest-releases-gtm" href="/release?rid=279">Economic Policy Uncertainty</a>
+            <span id="Economic-Policy-Uncertainty-updated"><span class="sr-only">updated </span>14 hours ago</span>
+          </div>
+                    <div id="Temporary-Open-Market-Operations-container" class="tabs-item">
+            <a aria-describedby="Temporary-Open-Market-Operations-updated" class="home-latest-releases-gtm" href="/release?rid=379">Temporary Open Market Operations</a>
+            <span id="Temporary-Open-Market-Operations-updated"><span class="sr-only">updated </span>9 hours ago</span>
+          </div>
+                    <div id="Commercial-Paper-container" class="tabs-item">
+            <a aria-describedby="Commercial-Paper-updated" class="home-latest-releases-gtm" href="/release?rid=86">Commercial Paper</a>
+            <span id="Commercial-Paper-updated"><span class="sr-only">updated </span>10 hours ago</span>
+          </div>
+                    <div id="Recession-Indicators-Series-container" class="tabs-item">
+            <a aria-describedby="Recession-Indicators-Series-updated" class="home-latest-releases-gtm" href="/release?rid=242">Recession Indicators Series</a>
+            <span id="Recession-Indicators-Series-updated"><span class="sr-only">updated </span>4 hours ago</span>
+          </div>
+                    <div id="Daily-Treasury-Inflation-Indexed-Securities-container" class="tabs-item">
+            <a aria-describedby="Daily-Treasury-Inflation-Indexed-Securities-updated" class="home-latest-releases-gtm" href="/release?rid=72">Daily Treasury Inflation-Indexed Securities</a>
+            <span id="Daily-Treasury-Inflation-Indexed-Securities-updated"><span class="sr-only">updated </span>2 hours ago</span>
+          </div>
+                  </div>
+      </div>
+    </div>
+  </div>
+        </div>
+      </div>
+      <div class="mobile-tab-and-panel-container">
+        <button type="button" role="tab" id="tab3" class="home-featured-tab-gtm" tabindex="-1"
+          aria-controls="featured-content" aria-selected="false"><h2>Featured</h2>
+          <i class="fas fa-solid fa-angle-down d-lg-none"></i>
+        </button>
+        <div class="mobile-panel-container">
+          <div role="tabpanel" class="tab-pane d-flex fade hide" id="featured-content" aria-labelledby="tab3">
+    <div class="col-12 d-flex flex-column flex-lg-row">
+      <div class="col-12 col-lg-6 tabs-left">
+        <div class="tabs-item"><a class="home-featured-ddp-gtm" href="/collection/federal-reserve-board-data">Federal Reserve Board's Data Download Program Landing Page</a></div>
+        
+        <div class="tabs-item"><a class="home-featured-pubdatalists-gtm" href="https://fredaccount.stlouisfed.org/public/datalist">Published Data Lists</a></div>
+      </div>
+      <hr class="divider-tabs-columns d-none d-lg-block">
+      <div class="col-12 col-lg-6 tabs-right">
+        <div class="tabs-item"><a class="home-featured-widget-gtm" href="//fredhelp.stlouisfed.org/fred/graphs/share-my-fred-graph/embedded-fred-a-widget-just-for-you/"> Embeddable FRED Widget</a></div>
+      </div>
+    </div>
+  </div>        </div>
+      </div>
+    </div>
+
+    <div class="tab-content" id="fred-homepage-tabs-content-inner">
+      <div role="tabpanel" class="tab-pane d-flex fade show active" id="news-and-blog" aria-labelledby="tab1">
+    <div class="col-12 d-flex flex-column flex-lg-row">
+      <div class="col-12 col-lg-6 tabs-left">
+                <p class="tabs-item"><a class="home-fred-news-feed-gtm" href="https://news.research.stlouisfed.org/2026/06/fred-adds-small-business-credit-survey-sbcs-data/">FRED Adds Small Business Credit Survey (SBCS) Data</a></p>
+                <p class="tabs-item"><a class="home-fred-news-feed-gtm" href="https://news.research.stlouisfed.org/2026/06/fred-adds-survey-of-household-economics-and-decisionmaking-shed-data/">FRED Adds Survey of Household Economics and Decisionmaking (SHED) Data</a></p>
+                <p class="tabs-item"><a class="home-fred-news-feed-gtm" href="https://news.research.stlouisfed.org/2026/06/fred-adds-financial-risk-measurement-data-from-the-kansas-city-fed/">FRED Adds Financial Risk Measurement Data from the Kansas City Fed</a></p>
+                <p class="tabs-item"><a class="home-fred-news-feed-gtm" href="https://news.research.stlouisfed.org/2026/05/fred-adds-data-from-the-treasury-international-capital-system/">FRED Adds Data from the Treasury International Capital System</a></p>
+              </div>
+      <hr class="divider-tabs-columns d-block">
+      <div class="col-12 col-lg-6 tabs-right">
+                <p class="tabs-item"><a class="home-fred-blog-feed-gtm" href="https://fredblog.stlouisfed.org/2026/07/what-us-assets-are-held-overseas/">What US assets are held overseas?</a></p>
+                <p class="tabs-item"><a class="home-fred-blog-feed-gtm" href="https://fredblog.stlouisfed.org/2026/07/durable-goods-inflation-and-effective-tariffs/">Durable goods inflation and effective tariffs</a></p>
+                <p class="tabs-item"><a class="home-fred-blog-feed-gtm" href="https://fredblog.stlouisfed.org/2026/06/ai-investment-and-semiconductor-prices/">AI investment and semiconductor prices</a></p>
+                <p class="tabs-item"><a class="home-fred-blog-feed-gtm" href="https://fredblog.stlouisfed.org/2026/06/are-americans-optimistic-about-their-finances/">Are Americans optimistic about their finances?</a></p>
+              </div>
+    </div>
+  </div>
+      <div role="tabpanel" class="tab-pane d-flex fade hide flex-column" id="latest-releases" aria-labelledby="tab2">
+    <div class="row">
+      <div class="col-12 d-flex flex-column flex-lg-row">
+        <div class="col-12 col-lg-6 tabs-left">
+                    <div id="International-Financial-Statistics-container" class="tabs-item">
+            <a aria-describedby="International-Financial-Statistics-updated" class="home-latest-releases-gtm" href="/release?rid=239">International Financial Statistics</a>
+            <span id="International-Financial-Statistics-updated"><span class="sr-only">updated </span>15 hours ago</span>
+          </div>
+                    <div id="H.15-Selected-Interest-Rates-container" class="tabs-item">
+            <a aria-describedby="H.15-Selected-Interest-Rates-updated" class="home-latest-releases-gtm" href="/release?rid=18">H.15 Selected Interest Rates</a>
+            <span id="H.15-Selected-Interest-Rates-updated"><span class="sr-only">updated </span>7 hours ago</span>
+          </div>
+                    <div id="Nasdaq-Daily-Index-Data-container" class="tabs-item">
+            <a aria-describedby="Nasdaq-Daily-Index-Data-updated" class="home-latest-releases-gtm" href="/release?rid=328">Nasdaq Daily Index Data</a>
+            <span id="Nasdaq-Daily-Index-Data-updated"><span class="sr-only">updated </span>19 second(s) ago</span>
+          </div>
+                    <div id="H.10-Foreign-Exchange-Rates-container" class="tabs-item">
+            <a aria-describedby="H.10-Foreign-Exchange-Rates-updated" class="home-latest-releases-gtm" href="/release?rid=17">H.10 Foreign Exchange Rates</a>
+            <span id="H.10-Foreign-Exchange-Rates-updated"><span class="sr-only">updated </span>7 hours ago</span>
+          </div>
+                    <div id="Interest-Rate-Spreads-container" class="tabs-item">
+            <a aria-describedby="Interest-Rate-Spreads-updated" class="home-latest-releases-gtm" href="/release?rid=304">Interest Rate Spreads</a>
+            <span id="Interest-Rate-Spreads-updated"><span class="sr-only">updated </span>6 hours ago</span>
+          </div>
+                  </div>
+        <hr class="divider-tabs-column d-none d-lg-block">
+        <div class="col-12 col-lg-6 tabs-right">
+                    <div id="Economic-Policy-Uncertainty-container" class="tabs-item">
+            <a aria-describedby="Economic-Policy-Uncertainty-updated" class="home-latest-releases-gtm" href="/release?rid=279">Economic Policy Uncertainty</a>
+            <span id="Economic-Policy-Uncertainty-updated"><span class="sr-only">updated </span>14 hours ago</span>
+          </div>
+                    <div id="Temporary-Open-Market-Operations-container" class="tabs-item">
+            <a aria-describedby="Temporary-Open-Market-Operations-updated" class="home-latest-releases-gtm" href="/release?rid=379">Temporary Open Market Operations</a>
+            <span id="Temporary-Open-Market-Operations-updated"><span class="sr-only">updated </span>9 hours ago</span>
+          </div>
+                    <div id="Commercial-Paper-container" class="tabs-item">
+            <a aria-describedby="Commercial-Paper-updated" class="home-latest-releases-gtm" href="/release?rid=86">Commercial Paper</a>
+            <span id="Commercial-Paper-updated"><span class="sr-only">updated </span>10 hours ago</span>
+          </div>
+                    <div id="Recession-Indicators-Series-container" class="tabs-item">
+            <a aria-describedby="Recession-Indicators-Series-updated" class="home-latest-releases-gtm" href="/release?rid=242">Recession Indicators Series</a>
+            <span id="Recession-Indicators-Series-updated"><span class="sr-only">updated </span>4 hours ago</span>
+          </div>
+                    <div id="Daily-Treasury-Inflation-Indexed-Securities-container" class="tabs-item">
+            <a aria-describedby="Daily-Treasury-Inflation-Indexed-Securities-updated" class="home-latest-releases-gtm" href="/release?rid=72">Daily Treasury Inflation-Indexed Securities</a>
+            <span id="Daily-Treasury-Inflation-Indexed-Securities-updated"><span class="sr-only">updated </span>2 hours ago</span>
+          </div>
+                  </div>
+      </div>
+    </div>
+  </div>
+      <div role="tabpanel" class="tab-pane d-flex fade hide" id="featured-content" aria-labelledby="tab3">
+    <div class="col-12 d-flex flex-column flex-lg-row">
+      <div class="col-12 col-lg-6 tabs-left">
+        <div class="tabs-item"><a class="home-featured-ddp-gtm" href="/collection/federal-reserve-board-data">Federal Reserve Board's Data Download Program Landing Page</a></div>
+        
+        <div class="tabs-item"><a class="home-featured-pubdatalists-gtm" href="https://fredaccount.stlouisfed.org/public/datalist">Published Data Lists</a></div>
+      </div>
+      <hr class="divider-tabs-columns d-none d-lg-block">
+      <div class="col-12 col-lg-6 tabs-right">
+        <div class="tabs-item"><a class="home-featured-widget-gtm" href="//fredhelp.stlouisfed.org/fred/graphs/share-my-fred-graph/embedded-fred-a-widget-just-for-you/"> Embeddable FRED Widget</a></div>
+      </div>
+    </div>
+  </div>    </div><!-- end fred-homepage-tabs-content-inner -->
+  </div><!-- end fred-homepage-tabs-and-panels-container-->
+
+<script type="text/javascript">
+    class TabsManual {
+      constructor(groupNode) {
+        this.tablistNode = groupNode;
+
+        this.tabs = [];
+
+        this.firstTab = null;
+        this.lastTab = null;
+
+        this.tabs = Array.from(this.tablistNode.querySelectorAll('[role=tab]'));
+        this.tabpanels = [];
+
+        for (var i = 0; i < this.tabs.length; i += 1) {
+          var tab = this.tabs[i];
+          var tabpanel = document.getElementById(tab.getAttribute('aria-controls'));
+
+          tab.tabIndex = -1;
+          tab.setAttribute('aria-selected', 'false');
+          this.tabpanels.push(tabpanel);
+
+          tab.addEventListener('keydown', this.onKeydown.bind(this));
+          tab.addEventListener('click', this.onClick.bind(this));
+
+          if (!this.firstTab) {
+            this.firstTab = tab;
+          }
+          this.lastTab = tab;
+        }
+
+        this.setSelectedTab(this.firstTab);
+      }
+
+      setSelectedTab(currentTab) {
+        for (let i = 0; i < this.tabs.length; i++) {
+          let tab = this.tabs[i];
+          if (currentTab === tab) { // this is the selected tab
+            /** the mobile user clicked intuitively to collapse the content
+              * 
+              * NOTE: we don't change tabindex or aria-selected, because these were set the 
+              * first time the user clicked on the button (or on initial load)
+              * 
+              * changing them now would create a situation where the VoiceOver or TalkBack user could not 
+              * access any of the tabs anymore, because they'd all have tabindex -1
+              */
+            if ($(tab).hasClass('active') && $('.mobile-panel-container').length > 0) {
+              tab.classList.remove('active');
+              tab.lastElementChild.classList.remove('fa-angle-up');
+              tab.lastElementChild.classList.add('fa-angle-down');
+              this.tabpanels[i].classList.add('hide');
+              this.tabpanels[i].classList.remove('show');
+              this.tabpanels[i].classList.remove('active');
+            } else { // the selected tab is not already open
+              tab.setAttribute('aria-selected', 'true');
+              tab.setAttribute('tabindex', "0");
+              tab.classList.add('active');
+              tab.lastElementChild.classList.remove('fa-angle-down');
+              tab.lastElementChild.classList.add('fa-angle-up');
+              this.tabpanels[i].classList.add('show');
+              this.tabpanels[i].classList.add('active');
+              this.tabpanels[i].classList.remove('hide');
+            }
+          } else { // this is not the selected tab, so close it
+            tab.setAttribute('aria-selected', 'false');
+            tab.setAttribute('tabindex', "-1");
+            tab.classList.remove('active');
+            tab.lastElementChild.classList.remove('fa-angle-up');
+            tab.lastElementChild.classList.add('fa-angle-down');
+            this.tabpanels[i].classList.add('hide');
+            this.tabpanels[i].classList.remove('show');
+            this.tabpanels[i].classList.remove('active');
+          }
+        }
+      }
+
+      moveFocusToTab(currentTab) {
+        currentTab.focus();
+      }
+
+      moveFocusToPreviousTab(currentTab) {
+        var index;
+
+        if (currentTab === this.firstTab) {
+          this.moveFocusToTab(this.lastTab);
+        } else {
+          index = this.tabs.indexOf(currentTab);
+          this.moveFocusToTab(this.tabs[index - 1]);
+        }
+      }
+
+      moveFocusToNextTab(currentTab) {
+        var index;
+
+        if (currentTab === this.lastTab) {
+          this.moveFocusToTab(this.firstTab);
+        } else {
+          index = this.tabs.indexOf(currentTab);
+          this.moveFocusToTab(this.tabs[index + 1]);
+        }
+      }
+
+      /* EVENT HANDLERS */
+
+      onKeydown(event) {
+        var tgt = event.currentTarget,
+          flag = false;
+
+        switch (event.key) {
+          case 'ArrowLeft':
+            this.moveFocusToPreviousTab(tgt);
+            flag = true;
+            break;
+
+          case 'ArrowRight':
+            this.moveFocusToNextTab(tgt);
+            flag = true;
+            break;
+
+          case 'Home':
+            this.moveFocusToTab(this.firstTab);
+            flag = true;
+            break;
+
+          case 'End':
+            this.moveFocusToTab(this.lastTab);
+            flag = true;
+            break;
+
+          default:
+            break;
+        }
+
+        if (flag) {
+          event.stopPropagation();
+          event.preventDefault();
+        }
+      }
+
+      // Since we use buttons for the tabs, the click on also is activated
+      // with the space and enter keys
+      onClick(event) {
+        this.setSelectedTab(event.currentTarget);
+      }
+    }
+    
+    window.addEventListener("DOMContentLoaded", function(){
+      $(document).ready(function () {
+        var searchButtonToggle = $('#search-button-toggle');
+        var homeSearch = $('#home-search-visibility');
+        searchButtonToggle.on('click', function () {
+          searchButtonToggle.fadeOut(500, function() {
+            searchButtonToggle.addClass("d-none d-md-block");
+          });
+          homeSearch.fadeIn(500, function() {
+            homeSearch.removeClass('d-none d-md-block');
+            homeSearch.css('display', 'flex');
+          });
+        });
+
+        /** delete duplicate panels 
+         * 
+         * We duplicated the panels to display them in drastically different ways for desktop and mobile. 
+         * If we only "display:none" the copies we don't want, we can't unhide their content on selection, 
+         * as there are two hidden divs with the same id. The only browsers that don't support matchMedia 
+         * are desktop browsers (Edge < 12 and IE < 10), so we can confidently remove the mobile copies.
+         */
+
+        if (window.matchMedia && window.matchMedia('(max-width:991px)').matches) {
+          $('#fred-homepage-tabs-content-inner').remove();
+        } else {
+          $('.mobile-panel-container').remove();
+        }
+
+        // Initialize tablist
+        var tablists = document.querySelectorAll('[role=tablist].manual');
+        for (var i = 0; i < tablists.length; i++) {
+          new TabsManual(tablists[i]);
+        }
+      });
+  });
+</script>
+
+        <!--        -->
+<!--        <button disabled id="filter-button" class="hidden drawer-dropdown-trigger filter-tags-btn btn sticky-bottom btn-block btn-default dropdown-is-active">-->
+<!--            <div class="filter-button-inner">-->
+<!--                <i class="fa fa-filter" style="padding-right:5px;"></i>Filter-->
+<!--                <span class="badge badge-primary subpage-badge-primary">0</span>-->
+<!--            </div>-->
+<!--        </button>-->
+<!--        -->
+            </div>
+    </div>
+
+<link href=/css/1783358039.footer.min.css rel="stylesheet" media="all">
+<script></script>
+<br class="clear">
+</div>
+
+<div class="hidden-print d-lg-none icon-container sticky-bottom btt-ct col-12">
+    <a id="back-to-top" class="back-to-top" href="#top">
+        <i aria-hidden="true" class="fas fa-solid fa-chevron-up" title="Back to Top"></i>
+    <span class="fa-sr-only">Back to Top</span></a>
+</div>
+<button disabled id="filter-button" class="hidden drawer-dropdown-trigger filter-tags-btn btn sticky-bottom btn-block btn-default dropdown-is-active">
+    <div class="filter-button-inner">
+        <i class="fa fa-filter" style="padding-right:5px;"></i>Filter
+        <span class="badge badge-primary subpage-badge-primary">0</span>
+    </div>
+</button>
+
+<div class="footer2 hidden-print row EL-footer2">
+    <div class="container d-md-flex">
+        <div class="col-md-6 col-lg-5 col-12">
+            <div class="col-12">
+                <h3 class="col-12">Subscribe to the FRED newsletter</h3>
+                <form id="subscribe-div" class="form-horizontal form-control newsletter-form">
+                    <div class="col-12">
+                        <div class="input-group">
+                            <input id="subscribe-email-input" type="text" name="email" placeholder="Email"
+                            class="form-control email" aria-label="email">
+                            <button id="subscribe-email-btn" type="button"
+                            class="btn subscribe-newsletter-btn-gtm">
+                            Subscribe</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="col-12">
+                <h3 class="col-12">Follow us</h3>
+                <div id="follow-icons" class="col-12">
+                    <span id="li-container" class="icon-container">
+                        <a href="http://bit.ly/d056zL">
+                            <i aria-hidden="true" class="fab fa-brands fa-linkedin-in" title="Linked In"></i>
+                            <span class="fa-sr-only">Saint Louis Fed linkedin page</span></a></span>
+                    <span id="fb-container" class="icon-container">
+                        <a href="https://www.facebook.com/stlfed">
+                            <i aria-hidden="true" class="fab fa-brands fa-facebook-f" title="Facebook"></i>
+                            <span class="fa-sr-only">Saint Louis Fed facebook page</span></a></span>
+                    <span id="x-container" class="icon-container">
+                        <a href="http://bit.ly/9ngC3L">
+                            <i aria-hidden="true" class="fab fa-brands fa-x-twitter" title="X (formerly Twitter)"></i>
+                            <span class="fa-sr-only">Saint Louis Fed X page</span></a></span>
+                    <span id="yt-container" class="icon-container">
+                        <a href="http://bit.ly/aY9TVF">
+                            <i aria-hidden="true" class="fab fa-brands fa-youtube" title="YouTube"></i>
+                            <span class="fa-sr-only">Saint Louis Fed YouTube page</span></a></span> 
+                </div>
+            </div>
+        </div>
+        <div class="col-md-1 col-lg-2 d-none d-md-block">&nbsp;</div>
+        <div class="col-md-4 col-lg-3 col-7 need-help">
+            <h3 class="col-12">Need Help?</h3>
+            <div class="col-12">
+                <div class="footer-link">
+                    <a class="footer-questions-gtm q-and-a-link-gtm" href="//fred.stlouisfed.org/contactus/">
+                        Questions or Comments</a></div>
+                <div class="footer-link">
+                    <a class="footer-fredhelp-gtm" href="//fredhelp.stlouisfed.org/">FRED Help</a></div>
+            </div>
+            <hr class="col-12">
+            <div class="col-12">
+                <div class="footer-link">
+                    <a href="//fred.stlouisfed.org/legal/">Legal</a></div>
+                <div class="footer-link">
+                    <a href="https://www.stlouisfed.org/about-us/privacy-policy/online-notice">Privacy Notice & Policy</a></div>
+            </div>
+        </div>
+        <div class="col-md-1 col-lg-2 d-none d-md-block">&nbsp;</div>
+    </div>
+</div>
+
+<script>
+    // function to parse cookies, and return the value
+    function getCookie(name) {
+        var cookies = document.cookie.split(';');
+        for (var i in cookies) {
+            var cookie = cookies[i].trim().split('=');
+            if (cookie[0] == name) {
+                return cookie[1];
+            }
+        }
+        return null;
+    }
+    // certain pages in FRED set a custom tag variable
+    // this gets sent to Google Analytics so we can see what tags people are using
+    if (window.tags) {
+        dataLayer.push({ 'tags': tags });
+
+    }
+
+    // if the user is logged in, send the value of the liruid cookie to Google Analytics
+    var researchLiruid = getCookie('research-liruid');
+    dataLayer.push({ 'userId': researchLiruid });
+
+</script>
+<script src="//fred.stlouisfed.org/assets/jquery/dist/1783358035.jquery.min.js" type="text/javascript"></script>
+<script src="//fred.stlouisfed.org/assets/popperjs/dist/umd/1783358036.popper.min.js"></script>
+<script src="//fred.stlouisfed.org/assets/bootstrap/dist/js/1783358036.bootstrap.min.js"></script>
+<script src="//fred.stlouisfed.org/assets/select2/dist/js/1783358034.select2.full.min.js"></script>
+<script>
+    // force expire the .fred.stlouisfed.org _ga cookie
+    document.cookie = document.cookie + '_ga=;domain=.fred.stlouisfed.org;expires=Sat, 01-Jan-2000 00:00:00 GMT';
+</script>
+
+<script defer src="//fred.stlouisfed.org/assets/jquery-menu-aim/1783358039.jquery.menu-aim.min.js"></script>
+
+<script src="//fred.stlouisfed.org/js/1783358039.common.min.js"></script>
+
+<script src="//fred.stlouisfed.org/js/1783358039.508.min.js"></script>
+
+<script>
+    var appConfig = {
+        uapi_host: 'https://fred.stlouisfed.org/uapi',
+        research_host: 'https://www.stlouisfed.org/research',
+        fred_host: 'https://fred.stlouisfed.org',
+        alfred_host: 'https://alfred.stlouisfed.org',
+        gsi_client_id: '115290014367-vpb89b600koe9kn0njeeq38c1unfr3gk.apps.googleusercontent.com',
+        fred_account_host: 'https://fredaccount.stlouisfed.org',
+    };
+
+    var domain_suffix = (window.location.hostname.split(".")[0].split("-")[1] || '');
+    appConfig.logged_in = getCookie('research-lirua' + (domain_suffix ? '-' + domain_suffix : '')) !== null && getCookie('research-lirua' + (domain_suffix ? '-' + domain_suffix : '')) !== undefined;
+    var getAuth = function (callback) {
+        if (typeof callback === 'function') {
+            callback();
+        }
+        return;
+    };
+    window.getAuth = getAuth;
+
+</script>
+
+<script>
+    <!--suppress back to top before scroll-->
+    window.onscroll = function(){
+        backTop = $("#back-to-top");
+        window.pageYOffset >= 205 ? backTop.css('display', 'block') : backTop.css('display', 'none');
+    }
+
+</script>
+
+<script src="//accounts.google.com/gsi/client" async defer></script>
+<script src="//fred.stlouisfed.org/assets/stlrch-fred/fred-account-react/dist/1783358033.main.dist.js"></script>
+<script src="//fred.stlouisfed.org/assets/stlrch-fred/fred-account-react/dist/1783358033.vendor.dist.js"></script>
+
+<script type="text/javascript">
+    // update mobile footer filter bar active filter count to content.tagsDrawers tags-number
+    $('.filter-button-inner .badge').text($('.tags-number').text());
+</script>
+
+<link href=/css/1783358039.contact.min.css rel="stylesheet" media="(min-width: 767px)">
+<script></script>
+
+            <script type="text/javascript" src="/js/homepage.min.js"></script>
+
+         
+
+<script type="text/javascript"  src="/MEOgxzrRo5e_/bNtQvNdls0/Yi/XY3hcpVSDtkzQfEz/OE1GanRlDQE/IB8UNE8/qcHUB"></script></body>
+</html>
+
+

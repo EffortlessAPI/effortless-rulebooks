@@ -1,0 +1,1648 @@
+{
+  "id": "https://openalex.org/W2150462203",
+  "doi": "https://doi.org/10.1080/17290376.2012.743825",
+  "title": "Female sex workers in Africa: Epidemiology overview, data gaps, ways forward",
+  "display_name": "Female sex workers in Africa: Epidemiology overview, data gaps, ways forward",
+  "relevance_score": 113.79032,
+  "publication_year": 2012,
+  "publication_date": "2012-09-01",
+  "ids": {
+    "openalex": "https://openalex.org/W2150462203",
+    "doi": "https://doi.org/10.1080/17290376.2012.743825",
+    "mag": "2150462203",
+    "pmid": "https://pubmed.ncbi.nlm.nih.gov/23237069"
+  },
+  "language": "en",
+  "primary_location": {
+    "id": "doi:10.1080/17290376.2012.743825",
+    "is_oa": true,
+    "landing_page_url": "https://doi.org/10.1080/17290376.2012.743825",
+    "pdf_url": "https://www.tandfonline.com/doi/pdf/10.1080/17290376.2012.743825?needAccess=true&role=button",
+    "source": {
+      "id": "https://openalex.org/S2738365854",
+      "display_name": "SAHARA-J Journal of Social Aspects of HIV/AIDS",
+      "issn_l": "1729-0376",
+      "issn": [
+        "1729-0376",
+        "1813-4424"
+      ],
+      "is_oa": true,
+      "is_in_doaj": true,
+      "is_core": true,
+      "host_organization": "https://openalex.org/P4310320547",
+      "host_organization_name": "Taylor & Francis",
+      "host_organization_lineage": [
+        "https://openalex.org/P4310320547"
+      ],
+      "host_organization_lineage_names": [
+        "Taylor & Francis"
+      ],
+      "type": "journal"
+    },
+    "license": null,
+    "license_id": null,
+    "version": "publishedVersion",
+    "is_accepted": true,
+    "is_published": true,
+    "raw_source_name": "SAHARA-J: Journal of Social Aspects of HIV/AIDS",
+    "raw_type": "journal-article"
+  },
+  "type": "review",
+  "indexed_in": [
+    "crossref",
+    "doaj",
+    "pubmed"
+  ],
+  "open_access": {
+    "is_oa": true,
+    "oa_status": "gold",
+    "oa_url": "https://www.tandfonline.com/doi/pdf/10.1080/17290376.2012.743825?needAccess=true&role=button",
+    "any_repository_has_fulltext": true
+  },
+  "authorships": [
+    {
+      "author_position": "first",
+      "author": {
+        "id": "https://openalex.org/A5069964336",
+        "display_name": "Elizabeth Ngugi",
+        "orcid": "https://orcid.org/0000-0001-5835-2752"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I1294667018",
+          "display_name": "Compugen (Israel)",
+          "ror": "https://ror.org/017vd4789",
+          "country_code": "IL",
+          "type": "company",
+          "lineage": [
+            "https://openalex.org/I1294667018"
+          ]
+        }
+      ],
+      "countries": [
+        "IL"
+      ],
+      "is_corresponding": true,
+      "raw_author_name": "E. N. Ngugi",
+      "raw_affiliation_strings": [
+        "engugi@csrthenya.org"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "engugi@csrthenya.org",
+          "institution_ids": [
+            "https://openalex.org/I1294667018"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5087578697",
+        "display_name": "Eric Abella Roth",
+        "orcid": "https://orcid.org/0000-0002-9128-0997"
+      },
+      "institutions": [],
+      "countries": [],
+      "is_corresponding": false,
+      "raw_author_name": "E. Roth",
+      "raw_affiliation_strings": [
+        "View further author information"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "View further author information",
+          "institution_ids": []
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5035553806",
+        "display_name": "Theresa Mastin",
+        "orcid": null
+      },
+      "institutions": [],
+      "countries": [],
+      "is_corresponding": false,
+      "raw_author_name": "Theresa Mastin",
+      "raw_affiliation_strings": [
+        "View further author information"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "View further author information",
+          "institution_ids": []
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5096812560",
+        "display_name": "M. G. Nderitu",
+        "orcid": null
+      },
+      "institutions": [],
+      "countries": [],
+      "is_corresponding": false,
+      "raw_author_name": "M. G. Nderitu",
+      "raw_affiliation_strings": [
+        "View further author information"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "View further author information",
+          "institution_ids": []
+        }
+      ]
+    },
+    {
+      "author_position": "last",
+      "author": {
+        "id": "https://openalex.org/A5113966553",
+        "display_name": "Seema Yasmin",
+        "orcid": null
+      },
+      "institutions": [],
+      "countries": [],
+      "is_corresponding": false,
+      "raw_author_name": "Seema Yasmin",
+      "raw_affiliation_strings": [
+        "View further author information"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "View further author information",
+          "institution_ids": []
+        }
+      ]
+    }
+  ],
+  "institutions": [],
+  "countries_distinct_count": 1,
+  "institutions_distinct_count": 1,
+  "corresponding_author_ids": [
+    "https://openalex.org/A5069964336"
+  ],
+  "corresponding_institution_ids": [
+    "https://openalex.org/I1294667018"
+  ],
+  "apc_list": {
+    "value": 1270,
+    "currency": "USD",
+    "value_usd": 1270
+  },
+  "apc_paid": {
+    "value": 1270,
+    "currency": "USD",
+    "value_usd": 1270
+  },
+  "fwci": 9.4046,
+  "has_fulltext": false,
+  "cited_by_count": 72,
+  "citation_normalized_percentile": {
+    "value": 0.97536418,
+    "is_in_top_1_percent": false,
+    "is_in_top_10_percent": true
+  },
+  "cited_by_percentile_year": {
+    "min": 89,
+    "max": 99
+  },
+  "biblio": {
+    "volume": "9",
+    "issue": "3",
+    "first_page": "148",
+    "last_page": "153"
+  },
+  "is_retracted": false,
+  "is_paratext": false,
+  "is_xpac": false,
+  "primary_topic": {
+    "id": "https://openalex.org/T11350",
+    "display_name": "Sex work and related issues",
+    "score": 1.0,
+    "subfield": {
+      "id": "https://openalex.org/subfields/3312",
+      "display_name": "Sociology and Political Science"
+    },
+    "field": {
+      "id": "https://openalex.org/fields/33",
+      "display_name": "Social Sciences"
+    },
+    "domain": {
+      "id": "https://openalex.org/domains/2",
+      "display_name": "Social Sciences"
+    }
+  },
+  "topics": [
+    {
+      "id": "https://openalex.org/T11350",
+      "display_name": "Sex work and related issues",
+      "score": 1.0,
+      "subfield": {
+        "id": "https://openalex.org/subfields/3312",
+        "display_name": "Sociology and Political Science"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/33",
+        "display_name": "Social Sciences"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/2",
+        "display_name": "Social Sciences"
+      }
+    },
+    {
+      "id": "https://openalex.org/T11860",
+      "display_name": "HIV, Drug Use, Sexual Risk",
+      "score": 0.9991000294685364,
+      "subfield": {
+        "id": "https://openalex.org/subfields/2713",
+        "display_name": "Epidemiology"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/27",
+        "display_name": "Medicine"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/4",
+        "display_name": "Health Sciences"
+      }
+    },
+    {
+      "id": "https://openalex.org/T10082",
+      "display_name": "HIV/AIDS Research and Interventions",
+      "score": 0.9979000091552734,
+      "subfield": {
+        "id": "https://openalex.org/subfields/2725",
+        "display_name": "Infectious Diseases"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/27",
+        "display_name": "Medicine"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/4",
+        "display_name": "Health Sciences"
+      }
+    }
+  ],
+  "keywords": [
+    {
+      "id": "https://openalex.org/keywords/epidemiology",
+      "display_name": "Epidemiology",
+      "score": 0.6266151666641235
+    },
+    {
+      "id": "https://openalex.org/keywords/sex-workers",
+      "display_name": "Sex workers",
+      "score": 0.473683625459671
+    },
+    {
+      "id": "https://openalex.org/keywords/geography",
+      "display_name": "Geography",
+      "score": 0.3247571587562561
+    },
+    {
+      "id": "https://openalex.org/keywords/medicine",
+      "display_name": "Medicine",
+      "score": 0.2696530222892761
+    },
+    {
+      "id": "https://openalex.org/keywords/environmental-health",
+      "display_name": "Environmental health",
+      "score": 0.2493031620979309
+    },
+    {
+      "id": "https://openalex.org/keywords/research-methodology",
+      "display_name": "Research methodology",
+      "score": 0.10215795040130615
+    },
+    {
+      "id": "https://openalex.org/keywords/pathology",
+      "display_name": "Pathology",
+      "score": 0.06069532036781311
+    },
+    {
+      "id": "https://openalex.org/keywords/population",
+      "display_name": "Population",
+      "score": 0.05778875946998596
+    }
+  ],
+  "concepts": [
+    {
+      "id": "https://openalex.org/C107130276",
+      "wikidata": "https://www.wikidata.org/wiki/Q133805",
+      "display_name": "Epidemiology",
+      "level": 2,
+      "score": 0.6266151666641235
+    },
+    {
+      "id": "https://openalex.org/C2994142485",
+      "wikidata": "https://www.wikidata.org/wiki/Q852857",
+      "display_name": "Sex workers",
+      "level": 4,
+      "score": 0.473683625459671
+    },
+    {
+      "id": "https://openalex.org/C205649164",
+      "wikidata": "https://www.wikidata.org/wiki/Q1071",
+      "display_name": "Geography",
+      "level": 0,
+      "score": 0.3247571587562561
+    },
+    {
+      "id": "https://openalex.org/C71924100",
+      "wikidata": "https://www.wikidata.org/wiki/Q11190",
+      "display_name": "Medicine",
+      "level": 0,
+      "score": 0.2696530222892761
+    },
+    {
+      "id": "https://openalex.org/C99454951",
+      "wikidata": "https://www.wikidata.org/wiki/Q932068",
+      "display_name": "Environmental health",
+      "level": 1,
+      "score": 0.2493031620979309
+    },
+    {
+      "id": "https://openalex.org/C2986817661",
+      "wikidata": "https://www.wikidata.org/wiki/Q185698",
+      "display_name": "Research methodology",
+      "level": 3,
+      "score": 0.10215795040130615
+    },
+    {
+      "id": "https://openalex.org/C142724271",
+      "wikidata": "https://www.wikidata.org/wiki/Q7208",
+      "display_name": "Pathology",
+      "level": 1,
+      "score": 0.06069532036781311
+    },
+    {
+      "id": "https://openalex.org/C2908647359",
+      "wikidata": "https://www.wikidata.org/wiki/Q2625603",
+      "display_name": "Population",
+      "level": 2,
+      "score": 0.05778875946998596
+    }
+  ],
+  "mesh": [
+    {
+      "descriptor_ui": "D000163",
+      "descriptor_name": "Acquired Immunodeficiency Syndrome",
+      "qualifier_ui": "Q000453",
+      "qualifier_name": "epidemiology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000163",
+      "descriptor_name": "Acquired Immunodeficiency Syndrome",
+      "qualifier_ui": "Q000453",
+      "qualifier_name": "epidemiology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000163",
+      "descriptor_name": "Acquired Immunodeficiency Syndrome",
+      "qualifier_ui": "Q000453",
+      "qualifier_name": "epidemiology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000328",
+      "descriptor_name": "Adult",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000328",
+      "descriptor_name": "Adult",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000328",
+      "descriptor_name": "Adult",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000349",
+      "descriptor_name": "Africa",
+      "qualifier_ui": "Q000453",
+      "qualifier_name": "epidemiology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000349",
+      "descriptor_name": "Africa",
+      "qualifier_ui": "Q000453",
+      "qualifier_name": "epidemiology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000349",
+      "descriptor_name": "Africa",
+      "qualifier_ui": "Q000453",
+      "qualifier_name": "epidemiology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D005260",
+      "descriptor_name": "Female",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D005260",
+      "descriptor_name": "Female",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D005260",
+      "descriptor_name": "Female",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D006801",
+      "descriptor_name": "Humans",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D006801",
+      "descriptor_name": "Humans",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D006801",
+      "descriptor_name": "Humans",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D012959",
+      "descriptor_name": "Socioeconomic Factors",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D012959",
+      "descriptor_name": "Socioeconomic Factors",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D012959",
+      "descriptor_name": "Socioeconomic Factors",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D015658",
+      "descriptor_name": "HIV Infections",
+      "qualifier_ui": "Q000453",
+      "qualifier_name": "epidemiology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D015658",
+      "descriptor_name": "HIV Infections",
+      "qualifier_ui": "Q000453",
+      "qualifier_name": "epidemiology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D015658",
+      "descriptor_name": "HIV Infections",
+      "qualifier_ui": "Q000453",
+      "qualifier_name": "epidemiology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D015995",
+      "descriptor_name": "Prevalence",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D015995",
+      "descriptor_name": "Prevalence",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D015995",
+      "descriptor_name": "Prevalence",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D058872",
+      "descriptor_name": "Epidemics",
+      "qualifier_ui": "Q000517",
+      "qualifier_name": "prevention & control",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D058872",
+      "descriptor_name": "Epidemics",
+      "qualifier_ui": "Q000517",
+      "qualifier_name": "prevention & control",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D058872",
+      "descriptor_name": "Epidemics",
+      "qualifier_ui": "Q000517",
+      "qualifier_name": "prevention & control",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D058872",
+      "descriptor_name": "Epidemics",
+      "qualifier_ui": "Q000706",
+      "qualifier_name": "statistics & numerical data",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D058872",
+      "descriptor_name": "Epidemics",
+      "qualifier_ui": "Q000706",
+      "qualifier_name": "statistics & numerical data",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D058872",
+      "descriptor_name": "Epidemics",
+      "qualifier_ui": "Q000706",
+      "qualifier_name": "statistics & numerical data",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D060386",
+      "descriptor_name": "Sex Workers",
+      "qualifier_ui": "Q000706",
+      "qualifier_name": "statistics & numerical data",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D060386",
+      "descriptor_name": "Sex Workers",
+      "qualifier_ui": "Q000706",
+      "qualifier_name": "statistics & numerical data",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D060386",
+      "descriptor_name": "Sex Workers",
+      "qualifier_ui": "Q000706",
+      "qualifier_name": "statistics & numerical data",
+      "is_major_topic": false
+    }
+  ],
+  "locations_count": 5,
+  "locations": [
+    {
+      "id": "doi:10.1080/17290376.2012.743825",
+      "is_oa": true,
+      "landing_page_url": "https://doi.org/10.1080/17290376.2012.743825",
+      "pdf_url": "https://www.tandfonline.com/doi/pdf/10.1080/17290376.2012.743825?needAccess=true&role=button",
+      "source": {
+        "id": "https://openalex.org/S2738365854",
+        "display_name": "SAHARA-J Journal of Social Aspects of HIV/AIDS",
+        "issn_l": "1729-0376",
+        "issn": [
+          "1729-0376",
+          "1813-4424"
+        ],
+        "is_oa": true,
+        "is_in_doaj": true,
+        "is_core": true,
+        "host_organization": "https://openalex.org/P4310320547",
+        "host_organization_name": "Taylor & Francis",
+        "host_organization_lineage": [
+          "https://openalex.org/P4310320547"
+        ],
+        "host_organization_lineage_names": [
+          "Taylor & Francis"
+        ],
+        "type": "journal"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "publishedVersion",
+      "is_accepted": true,
+      "is_published": true,
+      "raw_source_name": "SAHARA-J: Journal of Social Aspects of HIV/AIDS",
+      "raw_type": "journal-article"
+    },
+    {
+      "id": "pmid:23237069",
+      "is_oa": false,
+      "landing_page_url": "https://pubmed.ncbi.nlm.nih.gov/23237069",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4306525036",
+        "display_name": "PubMed",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I1299303238",
+        "host_organization_name": "National Institutes of Health",
+        "host_organization_lineage": [
+          "https://openalex.org/I1299303238"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "publishedVersion",
+      "is_accepted": true,
+      "is_published": true,
+      "raw_source_name": "SAHARA J : journal of Social Aspects of HIV/AIDS Research Alliance",
+      "raw_type": null
+    },
+    {
+      "id": "pmh:oai:http://erepository.uonbi.ac.ke:11295/16168",
+      "is_oa": false,
+      "landing_page_url": "http://doi.org/10.1080/17290376.2012.743825",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4306402107",
+        "display_name": "University of Nairobi Research Archive (University of Nairobi)",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I12859529",
+        "host_organization_name": "University of Nairobi",
+        "host_organization_lineage": [
+          "https://openalex.org/I12859529"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "submittedVersion",
+      "is_accepted": false,
+      "is_published": false,
+      "raw_source_name": "",
+      "raw_type": "Article"
+    },
+    {
+      "id": "pmh:oai:http://erepository.uonbi.ac.ke:11295/80956",
+      "is_oa": false,
+      "landing_page_url": "http://hdl.handle.net/11295/80956",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4306402107",
+        "display_name": "University of Nairobi Research Archive (University of Nairobi)",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I12859529",
+        "host_organization_name": "University of Nairobi",
+        "host_organization_lineage": [
+          "https://openalex.org/I12859529"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "submittedVersion",
+      "is_accepted": false,
+      "is_published": false,
+      "raw_source_name": "",
+      "raw_type": "Article"
+    },
+    {
+      "id": "pmh:oai:pubmedcentral.nih.gov:4560463",
+      "is_oa": true,
+      "landing_page_url": "https://www.ncbi.nlm.nih.gov/pmc/articles/4560463",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S2764455111",
+        "display_name": "PubMed Central",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": true,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I1299303238",
+        "host_organization_name": "National Institutes of Health",
+        "host_organization_lineage": [
+          "https://openalex.org/I1299303238"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "submittedVersion",
+      "is_accepted": false,
+      "is_published": false,
+      "raw_source_name": "SAHARA J",
+      "raw_type": "Text"
+    }
+  ],
+  "best_oa_location": {
+    "id": "doi:10.1080/17290376.2012.743825",
+    "is_oa": true,
+    "landing_page_url": "https://doi.org/10.1080/17290376.2012.743825",
+    "pdf_url": "https://www.tandfonline.com/doi/pdf/10.1080/17290376.2012.743825?needAccess=true&role=button",
+    "source": {
+      "id": "https://openalex.org/S2738365854",
+      "display_name": "SAHARA-J Journal of Social Aspects of HIV/AIDS",
+      "issn_l": "1729-0376",
+      "issn": [
+        "1729-0376",
+        "1813-4424"
+      ],
+      "is_oa": true,
+      "is_in_doaj": true,
+      "is_core": true,
+      "host_organization": "https://openalex.org/P4310320547",
+      "host_organization_name": "Taylor & Francis",
+      "host_organization_lineage": [
+        "https://openalex.org/P4310320547"
+      ],
+      "host_organization_lineage_names": [
+        "Taylor & Francis"
+      ],
+      "type": "journal"
+    },
+    "license": null,
+    "license_id": null,
+    "version": "publishedVersion",
+    "is_accepted": true,
+    "is_published": true,
+    "raw_source_name": "SAHARA-J: Journal of Social Aspects of HIV/AIDS",
+    "raw_type": "journal-article"
+  },
+  "sustainable_development_goals": [
+    {
+      "score": 0.8500000238418579,
+      "id": "https://metadata.un.org/sdg/3",
+      "display_name": "Good health and well-being"
+    }
+  ],
+  "awards": [
+    {
+      "id": "https://openalex.org/G7993705905",
+      "display_name": null,
+      "funder_award_id": "R24 HD056799",
+      "funder_id": "https://openalex.org/F4320337611",
+      "funder_display_name": "Eunice Kennedy Shriver National Institute of Child Health and Human Development"
+    }
+  ],
+  "funders": [
+    {
+      "id": "https://openalex.org/F4320337611",
+      "display_name": "Eunice Kennedy Shriver National Institute of Child Health and Human Development",
+      "ror": "https://ror.org/04byxyr05"
+    }
+  ],
+  "has_content": {
+    "pdf": true,
+    "grobid_xml": false
+  },
+  "content_urls": {
+    "pdf": "https://content.openalex.org/works/W2150462203.pdf"
+  },
+  "referenced_works_count": 74,
+  "referenced_works": [
+    "https://openalex.org/W99295644",
+    "https://openalex.org/W1508795350",
+    "https://openalex.org/W1532125310",
+    "https://openalex.org/W1585181678",
+    "https://openalex.org/W1968048007",
+    "https://openalex.org/W1972210773",
+    "https://openalex.org/W1973457329",
+    "https://openalex.org/W1980386161",
+    "https://openalex.org/W1990158906",
+    "https://openalex.org/W1992831765",
+    "https://openalex.org/W1994229979",
+    "https://openalex.org/W2001226469",
+    "https://openalex.org/W2001907028",
+    "https://openalex.org/W2008537420",
+    "https://openalex.org/W2008858840",
+    "https://openalex.org/W2013759193",
+    "https://openalex.org/W2014330890",
+    "https://openalex.org/W2019836425",
+    "https://openalex.org/W2021397257",
+    "https://openalex.org/W2024005557",
+    "https://openalex.org/W2027765256",
+    "https://openalex.org/W2031882430",
+    "https://openalex.org/W2033195576",
+    "https://openalex.org/W2034008632",
+    "https://openalex.org/W2039971151",
+    "https://openalex.org/W2055630850",
+    "https://openalex.org/W2055852019",
+    "https://openalex.org/W2056140912",
+    "https://openalex.org/W2062567263",
+    "https://openalex.org/W2063467440",
+    "https://openalex.org/W2064873087",
+    "https://openalex.org/W2067055464",
+    "https://openalex.org/W2070953605",
+    "https://openalex.org/W2071372356",
+    "https://openalex.org/W2080988445",
+    "https://openalex.org/W2086799614",
+    "https://openalex.org/W2095516156",
+    "https://openalex.org/W2096721693",
+    "https://openalex.org/W2099639842",
+    "https://openalex.org/W2108153148",
+    "https://openalex.org/W2110101976",
+    "https://openalex.org/W2116750698",
+    "https://openalex.org/W2116907544",
+    "https://openalex.org/W2117451455",
+    "https://openalex.org/W2123904342",
+    "https://openalex.org/W2124533520",
+    "https://openalex.org/W2125561110",
+    "https://openalex.org/W2126854137",
+    "https://openalex.org/W2129510210",
+    "https://openalex.org/W2133083389",
+    "https://openalex.org/W2134951465",
+    "https://openalex.org/W2138749294",
+    "https://openalex.org/W2145413051",
+    "https://openalex.org/W2147130380",
+    "https://openalex.org/W2151848293",
+    "https://openalex.org/W2155080486",
+    "https://openalex.org/W2159027537",
+    "https://openalex.org/W2161697161",
+    "https://openalex.org/W2164644777",
+    "https://openalex.org/W2165291302",
+    "https://openalex.org/W2167843026",
+    "https://openalex.org/W2168581181",
+    "https://openalex.org/W2171306250",
+    "https://openalex.org/W2171628048",
+    "https://openalex.org/W2184700905",
+    "https://openalex.org/W2220906905",
+    "https://openalex.org/W2587150119",
+    "https://openalex.org/W2771839199",
+    "https://openalex.org/W3124942334",
+    "https://openalex.org/W4239708294",
+    "https://openalex.org/W4252344264",
+    "https://openalex.org/W4285719527",
+    "https://openalex.org/W4300823541",
+    "https://openalex.org/W4302445804"
+  ],
+  "related_works": [
+    "https://openalex.org/W2748952813",
+    "https://openalex.org/W599478544",
+    "https://openalex.org/W1576711507",
+    "https://openalex.org/W647896512",
+    "https://openalex.org/W3121757313",
+    "https://openalex.org/W4231462739",
+    "https://openalex.org/W562084794",
+    "https://openalex.org/W167390939",
+    "https://openalex.org/W4385505472",
+    "https://openalex.org/W293039108"
+  ],
+  "abstract_inverted_index": {
+    "More": [
+      0
+    ],
+    "than": [
+      1,
+      133
+    ],
+    "three": [
+      2
+    ],
+    "decades": [
+      3
+    ],
+    "after": [
+      4,
+      155
+    ],
+    "the": [
+      5,
+      31,
+      36,
+      89,
+      97,
+      111,
+      136,
+      139,
+      156,
+      167,
+      205,
+      234,
+      239
+    ],
+    "first": [
+      6,
+      90,
+      157
+    ],
+    "reported": [
+      7,
+      88,
+      161
+    ],
+    "case": [
+      8,
+      91
+    ],
+    "of": [
+      9,
+      18,
+      35,
+      39,
+      85,
+      92,
+      113,
+      138,
+      253
+    ],
+    "AIDS": [
+      10
+    ],
+    "(1983),": [
+      11
+    ],
+    "Africa": [
+      12,
+      23,
+      26
+    ],
+    "continues": [
+      13
+    ],
+    "to": [
+      14,
+      175,
+      201,
+      233,
+      236,
+      258
+    ],
+    "experience": [
+      15
+    ],
+    "unacceptable": [
+      16
+    ],
+    "levels": [
+      17
+    ],
+    "new": [
+      19
+    ],
+    "HIV": [
+      20,
+      93,
+      114,
+      122,
+      158,
+      168,
+      254,
+      260
+    ],
+    "infections.": [
+      21
+    ],
+    "East": [
+      22
+    ],
+    "and": [
+      24,
+      126,
+      243,
+      256
+    ],
+    "Southern": [
+      25,
+      44
+    ],
+    "remain": [
+      27,
+      195
+    ],
+    "most": [
+      28
+    ],
+    "affected": [
+      29
+    ],
+    "by": [
+      30,
+      121
+    ],
+    "epidemic": [
+      32
+    ],
+    "with": [
+      33
+    ],
+    "34%": [
+      34
+    ],
+    "global": [
+      37
+    ],
+    "burden": [
+      38
+    ],
+    "infections": [
+      40
+    ],
+    "concentrated": [
+      41
+    ],
+    "in": [
+      42,
+      80,
+      96,
+      110,
+      116,
+      135,
+      153,
+      162,
+      262
+    ],
+    "10": [
+      43
+    ],
+    "African": [
+      45,
+      248
+    ],
+    "countries": [
+      46,
+      87,
+      118
+    ],
+    "(D\u2019Costa,": [
+      47
+    ],
+    "Plummer,": [
+      48,
+      72
+    ],
+    "Bowmer,": [
+      49
+    ],
+    "Fransen,": [
+      50
+    ],
+    "Piot,": [
+      51
+    ],
+    "Ronald,": [
+      52,
+      71
+    ],
+    "et": [
+      53,
+      74,
+      148,
+      183,
+      213,
+      227,
+      271
+    ],
+    "al.": [
+      54,
+      75,
+      149,
+      214,
+      228,
+      272
+    ],
+    "1985;": [
+      55
+    ],
+    "Joint": [
+      56
+    ],
+    "United": [
+      57
+    ],
+    "Nations": [
+      58
+    ],
+    "Programme,": [
+      59
+    ],
+    "2005;": [
+      60,
+      215
+    ],
+    "Moses,": [
+      61
+    ],
+    "Plummer,&#13;\\nNgugi,": [
+      62
+    ],
+    "Nagelkerke,": [
+      63
+    ],
+    "Anzala": [
+      64
+    ],
+    "&amp;": [
+      65,
+      219
+    ],
+    "Ndinya-Achola": [
+      66
+    ],
+    "1991;": [
+      67
+    ],
+    "Ngugi,": [
+      68
+    ],
+    "Simonsen,": [
+      69
+    ],
+    "Bosire,": [
+      70
+    ],
+    "Camero,": [
+      73
+    ],
+    "1988;": [
+      76
+    ],
+    "WHO": [
+      77
+    ],
+    "Library": [
+      78
+    ],
+    "Cataloguing": [
+      79
+    ],
+    "Publication": [
+      81
+    ],
+    "Data": [
+      82
+    ],
+    "2011).": [
+      83
+    ],
+    "Some": [
+      84
+    ],
+    "these": [
+      86
+    ],
+    "infection": [
+      94,
+      115,
+      159,
+      255
+    ],
+    "early": [
+      95
+    ],
+    "epidemic&#13;\\n(Ethiopia": [
+      98
+    ],
+    "1984;": [
+      99
+    ],
+    "Kenya": [
+      100
+    ],
+    "1985).": [
+      101
+    ],
+    "Female": [
+      102
+    ],
+    "sex": [
+      103
+    ],
+    "workers": [
+      104
+    ],
+    "(FSWs)": [
+      105
+    ],
+    "comprise": [
+      106
+    ],
+    "an": [
+      107,
+      196
+    ],
+    "important": [
+      108,
+      197
+    ],
+    "sub-population": [
+      109
+    ],
+    "epidemiology": [
+      112
+    ],
+    "many": [
+      117
+    ],
+    "as": [
+      119
+    ],
+    "evidenced": [
+      120
+    ],
+    "prevalence": [
+      123,
+      169
+    ],
+    "amongst": [
+      124,
+      170
+    ],
+    "FSWs": [
+      125,
+      171,
+      194,
+      249
+    ],
+    "their": [
+      127
+    ],
+    "clients": [
+      128
+    ],
+    "often": [
+      129
+    ],
+    "being": [
+      130
+    ],
+    "10\u201320-fold": [
+      131
+    ],
+    "higher": [
+      132
+    ],
+    "that": [
+      134,
+      193,
+      246
+    ],
+    "rest": [
+      137
+    ],
+    "general": [
+      140
+    ],
+    "population": [
+      141,
+      264
+    ],
+    "(Laga,": [
+      142
+    ],
+    "Monoka,": [
+      143
+    ],
+    "Kivuvu,": [
+      144
+    ],
+    "Malele,": [
+      145
+    ],
+    "Tuliza,": [
+      146
+    ],
+    "Nzila,": [
+      147
+    ],
+    "1993).": [
+      150
+    ],
+    "For": [
+      151
+    ],
+    "example,": [
+      152
+    ],
+    "Ethiopia,": [
+      154
+    ],
+    "was": [
+      160
+    ],
+    "1984,": [
+      163
+    ],
+    "only": [
+      164
+    ],
+    "4": [
+      165
+    ],
+    "years&#13;\\nlater,": [
+      166
+    ],
+    "had": [
+      172
+    ],
+    "already": [
+      173
+    ],
+    "risen": [
+      174
+    ],
+    "17%": [
+      176
+    ],
+    "(Cote,": [
+      177
+    ],
+    "Sobela,": [
+      178
+    ],
+    "Dzokolo,": [
+      179
+    ],
+    "Nzambi,": [
+      180
+    ],
+    "Asamoall-Adu,": [
+      181
+    ],
+    "Labbe,": [
+      182
+    ],
+    "al.).": [
+      184
+    ],
+    "Today,": [
+      185
+    ],
+    "even": [
+      186
+    ],
+    "within": [
+      187
+    ],
+    "Africa\u2019s": [
+      188
+    ],
+    "generalized": [
+      189
+    ],
+    "epidemic,": [
+      190
+    ],
+    "research": [
+      191
+    ],
+    "shows": [
+      192
+    ],
+    "epidemiological": [
+      198
+    ],
+    "subpopulation&#13;\\nin": [
+      199
+    ],
+    "relation": [
+      200
+    ],
+    "HIV-related": [
+      202
+    ],
+    "risk": [
+      203,
+      252
+    ],
+    "throughout": [
+      204
+    ],
+    "continent": [
+      206
+    ],
+    "(Cowan,": [
+      207
+    ],
+    "Langhaug,": [
+      208
+    ],
+    "Hargrove,": [
+      209
+    ],
+    "Jaffers,": [
+      210
+    ],
+    "Mhurengwe,": [
+      211
+    ],
+    "Searthout,": [
+      212
+    ],
+    "Ghose,": [
+      216
+    ],
+    "Swendeman,": [
+      217
+    ],
+    "George": [
+      218
+    ],
+    "Chowdhury&#13;\\n2008;": [
+      220
+    ],
+    "McClelland,": [
+      221
+    ],
+    "Graham,": [
+      222
+    ],
+    "Richardson,": [
+      223
+    ],
+    "Peshu,": [
+      224
+    ],
+    "Masese,": [
+      225
+    ],
+    "Wanje,": [
+      226
+    ],
+    "2010).": [
+      229
+    ],
+    "These": [
+      230
+    ],
+    "findings": [
+      231
+    ],
+    "point": [
+      232
+    ],
+    "need": [
+      235
+    ],
+    "further": [
+      237
+    ],
+    "understand": [
+      238
+    ],
+    "social,": [
+      240
+    ],
+    "behavioural,": [
+      241
+    ],
+    "biological": [
+      242
+    ],
+    "structural": [
+      244
+    ],
+    "factors": [
+      245
+    ],
+    "place": [
+      247
+    ],
+    "at": [
+      250
+    ],
+    "high": [
+      251
+    ],
+    "establish&#13;\\nstrategies": [
+      257
+    ],
+    "reduce": [
+      259
+    ],
+    "transmission": [
+      261
+    ],
+    "this": [
+      263
+    ],
+    "(Stefan,": [
+      265
+    ],
+    "Beyrer,": [
+      266
+    ],
+    "Muessig,": [
+      267
+    ],
+    "Poteat,": [
+      268
+    ],
+    "Wirtz,": [
+      269
+    ],
+    "Decker,": [
+      270
+    ],
+    "2012).": [
+      273
+    ]
+  },
+  "counts_by_year": [
+    {
+      "year": 2025,
+      "cited_by_count": 1
+    },
+    {
+      "year": 2024,
+      "cited_by_count": 7
+    },
+    {
+      "year": 2023,
+      "cited_by_count": 5
+    },
+    {
+      "year": 2022,
+      "cited_by_count": 10
+    },
+    {
+      "year": 2021,
+      "cited_by_count": 8
+    },
+    {
+      "year": 2020,
+      "cited_by_count": 8
+    },
+    {
+      "year": 2019,
+      "cited_by_count": 13
+    },
+    {
+      "year": 2018,
+      "cited_by_count": 1
+    },
+    {
+      "year": 2017,
+      "cited_by_count": 6
+    },
+    {
+      "year": 2016,
+      "cited_by_count": 2
+    },
+    {
+      "year": 2015,
+      "cited_by_count": 2
+    },
+    {
+      "year": 2014,
+      "cited_by_count": 5
+    },
+    {
+      "year": 2013,
+      "cited_by_count": 2
+    },
+    {
+      "year": 2012,
+      "cited_by_count": 1
+    }
+  ],
+  "updated_date": "2026-07-02T09:51:11.867554",
+  "created_date": "2025-10-10T00:00:00"
+}

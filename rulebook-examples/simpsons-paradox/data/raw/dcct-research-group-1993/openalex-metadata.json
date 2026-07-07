@@ -1,0 +1,1733 @@
+{
+  "id": "https://openalex.org/W1752045965",
+  "doi": "https://doi.org/10.1056/nejmoa052187",
+  "title": "Intensive Diabetes Treatment and Cardiovascular Disease in Patients with Type 1 Diabetes",
+  "display_name": "Intensive Diabetes Treatment and Cardiovascular Disease in Patients with Type 1 Diabetes",
+  "relevance_score": 481.97968,
+  "publication_year": 2005,
+  "publication_date": "2005-12-21",
+  "ids": {
+    "openalex": "https://openalex.org/W1752045965",
+    "doi": "https://doi.org/10.1056/nejmoa052187",
+    "mag": "1752045965",
+    "pmid": "https://pubmed.ncbi.nlm.nih.gov/16371630"
+  },
+  "language": "en",
+  "primary_location": {
+    "id": "doi:10.1056/nejmoa052187",
+    "is_oa": true,
+    "landing_page_url": "https://doi.org/10.1056/nejmoa052187",
+    "pdf_url": "https://www.nejm.org/doi/pdf/10.1056/NEJMoa052187?articleTools=true",
+    "source": {
+      "id": "https://openalex.org/S62468778",
+      "display_name": "New England Journal of Medicine",
+      "issn_l": "0028-4793",
+      "issn": [
+        "0028-4793",
+        "1533-4406"
+      ],
+      "is_oa": false,
+      "is_in_doaj": false,
+      "is_core": true,
+      "host_organization": "https://openalex.org/P4310320239",
+      "host_organization_name": "Massachusetts Medical Society",
+      "host_organization_lineage": [
+        "https://openalex.org/P4310320239"
+      ],
+      "host_organization_lineage_names": [
+        "Massachusetts Medical Society"
+      ],
+      "type": "journal"
+    },
+    "license": null,
+    "license_id": null,
+    "version": "publishedVersion",
+    "is_accepted": true,
+    "is_published": true,
+    "raw_source_name": "New England Journal of Medicine",
+    "raw_type": "journal-article"
+  },
+  "type": "article",
+  "indexed_in": [
+    "crossref",
+    "pubmed"
+  ],
+  "open_access": {
+    "is_oa": true,
+    "oa_status": "bronze",
+    "oa_url": "https://www.nejm.org/doi/pdf/10.1056/NEJMoa052187?articleTools=true",
+    "any_repository_has_fulltext": false
+  },
+  "authorships": [
+    {
+      "author_position": "first",
+      "author": {
+        "id": null,
+        "display_name": "The Diabetes Control and Complications Trial/Epidemiology of Diabetes Interventions and Complications (DCCT/EDIC) Study Research Group",
+        "orcid": null
+      },
+      "institutions": [],
+      "countries": [],
+      "is_corresponding": true,
+      "raw_author_name": "The Diabetes Control and Complications Trial/Epidemiology of Diabetes Interventions and Complications (DCCT/EDIC) Study Research Group",
+      "raw_affiliation_strings": [
+        "dnathan@partners.org"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "dnathan@partners.org",
+          "institution_ids": []
+        }
+      ]
+    }
+  ],
+  "institutions": [],
+  "countries_distinct_count": 0,
+  "institutions_distinct_count": 0,
+  "corresponding_author_ids": [],
+  "corresponding_institution_ids": [],
+  "apc_list": null,
+  "apc_paid": null,
+  "fwci": 111.1873,
+  "has_fulltext": true,
+  "cited_by_count": 5147,
+  "citation_normalized_percentile": {
+    "value": 0.99979055,
+    "is_in_top_1_percent": true,
+    "is_in_top_10_percent": true
+  },
+  "cited_by_percentile_year": {
+    "min": 99,
+    "max": 100
+  },
+  "biblio": {
+    "volume": "353",
+    "issue": "25",
+    "first_page": "2643",
+    "last_page": "2653"
+  },
+  "is_retracted": false,
+  "is_paratext": false,
+  "is_xpac": false,
+  "primary_topic": {
+    "id": "https://openalex.org/T10560",
+    "display_name": "Diabetes Management and Research",
+    "score": 0.8810999989509583,
+    "subfield": {
+      "id": "https://openalex.org/subfields/2712",
+      "display_name": "Endocrinology, Diabetes and Metabolism"
+    },
+    "field": {
+      "id": "https://openalex.org/fields/27",
+      "display_name": "Medicine"
+    },
+    "domain": {
+      "id": "https://openalex.org/domains/4",
+      "display_name": "Health Sciences"
+    }
+  },
+  "topics": [
+    {
+      "id": "https://openalex.org/T10560",
+      "display_name": "Diabetes Management and Research",
+      "score": 0.8810999989509583,
+      "subfield": {
+        "id": "https://openalex.org/subfields/2712",
+        "display_name": "Endocrinology, Diabetes and Metabolism"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/27",
+        "display_name": "Medicine"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/4",
+        "display_name": "Health Sciences"
+      }
+    },
+    {
+      "id": "https://openalex.org/T11171",
+      "display_name": "Diabetes and associated disorders",
+      "score": 0.06319999694824219,
+      "subfield": {
+        "id": "https://openalex.org/subfields/1311",
+        "display_name": "Genetics"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/13",
+        "display_name": "Biochemistry, Genetics and Molecular Biology"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/1",
+        "display_name": "Life Sciences"
+      }
+    },
+    {
+      "id": "https://openalex.org/T10401",
+      "display_name": "Diabetes Treatment and Management",
+      "score": 0.026000000536441803,
+      "subfield": {
+        "id": "https://openalex.org/subfields/2712",
+        "display_name": "Endocrinology, Diabetes and Metabolism"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/27",
+        "display_name": "Medicine"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/4",
+        "display_name": "Health Sciences"
+      }
+    }
+  ],
+  "keywords": [
+    {
+      "id": "https://openalex.org/keywords/medicine",
+      "display_name": "Medicine",
+      "score": 0.9827470779418945
+    },
+    {
+      "id": "https://openalex.org/keywords/diabetes-mellitus",
+      "display_name": "Diabetes mellitus",
+      "score": 0.822584331035614
+    },
+    {
+      "id": "https://openalex.org/keywords/type-2-diabetes",
+      "display_name": "Type 2 diabetes",
+      "score": 0.6982392072677612
+    },
+    {
+      "id": "https://openalex.org/keywords/disease",
+      "display_name": "Disease",
+      "score": 0.6065298318862915
+    },
+    {
+      "id": "https://openalex.org/keywords/incidence",
+      "display_name": "Incidence (geometry)",
+      "score": 0.5745672583580017
+    },
+    {
+      "id": "https://openalex.org/keywords/intensive-care-medicine",
+      "display_name": "Intensive care medicine",
+      "score": 0.45227959752082825
+    },
+    {
+      "id": "https://openalex.org/keywords/type-1-diabetes",
+      "display_name": "Type 1 diabetes",
+      "score": 0.43362051248550415
+    },
+    {
+      "id": "https://openalex.org/keywords/internal-medicine",
+      "display_name": "Internal medicine",
+      "score": 0.35473230481147766
+    },
+    {
+      "id": "https://openalex.org/keywords/surgery",
+      "display_name": "Surgery",
+      "score": 0.3274509012699127
+    },
+    {
+      "id": "https://openalex.org/keywords/endocrinology",
+      "display_name": "Endocrinology",
+      "score": 0.13803315162658691
+    }
+  ],
+  "concepts": [
+    {
+      "id": "https://openalex.org/C71924100",
+      "wikidata": "https://www.wikidata.org/wiki/Q11190",
+      "display_name": "Medicine",
+      "level": 0,
+      "score": 0.9827470779418945
+    },
+    {
+      "id": "https://openalex.org/C555293320",
+      "wikidata": "https://www.wikidata.org/wiki/Q12206",
+      "display_name": "Diabetes mellitus",
+      "level": 2,
+      "score": 0.822584331035614
+    },
+    {
+      "id": "https://openalex.org/C2777180221",
+      "wikidata": "https://www.wikidata.org/wiki/Q3025883",
+      "display_name": "Type 2 diabetes",
+      "level": 3,
+      "score": 0.6982392072677612
+    },
+    {
+      "id": "https://openalex.org/C2779134260",
+      "wikidata": "https://www.wikidata.org/wiki/Q12136",
+      "display_name": "Disease",
+      "level": 2,
+      "score": 0.6065298318862915
+    },
+    {
+      "id": "https://openalex.org/C61511704",
+      "wikidata": "https://www.wikidata.org/wiki/Q1671857",
+      "display_name": "Incidence (geometry)",
+      "level": 2,
+      "score": 0.5745672583580017
+    },
+    {
+      "id": "https://openalex.org/C177713679",
+      "wikidata": "https://www.wikidata.org/wiki/Q679690",
+      "display_name": "Intensive care medicine",
+      "level": 1,
+      "score": 0.45227959752082825
+    },
+    {
+      "id": "https://openalex.org/C2781232474",
+      "wikidata": "https://www.wikidata.org/wiki/Q124407",
+      "display_name": "Type 1 diabetes",
+      "level": 3,
+      "score": 0.43362051248550415
+    },
+    {
+      "id": "https://openalex.org/C126322002",
+      "wikidata": "https://www.wikidata.org/wiki/Q11180",
+      "display_name": "Internal medicine",
+      "level": 1,
+      "score": 0.35473230481147766
+    },
+    {
+      "id": "https://openalex.org/C141071460",
+      "wikidata": "https://www.wikidata.org/wiki/Q40821",
+      "display_name": "Surgery",
+      "level": 1,
+      "score": 0.3274509012699127
+    },
+    {
+      "id": "https://openalex.org/C134018914",
+      "wikidata": "https://www.wikidata.org/wiki/Q162606",
+      "display_name": "Endocrinology",
+      "level": 1,
+      "score": 0.13803315162658691
+    },
+    {
+      "id": "https://openalex.org/C121332964",
+      "wikidata": "https://www.wikidata.org/wiki/Q413",
+      "display_name": "Physics",
+      "level": 0,
+      "score": 0.0
+    },
+    {
+      "id": "https://openalex.org/C120665830",
+      "wikidata": "https://www.wikidata.org/wiki/Q14620",
+      "display_name": "Optics",
+      "level": 1,
+      "score": 0.0
+    }
+  ],
+  "mesh": [
+    {
+      "descriptor_ui": "D000293",
+      "descriptor_name": "Adolescent",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000293",
+      "descriptor_name": "Adolescent",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000293",
+      "descriptor_name": "Adolescent",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000293",
+      "descriptor_name": "Adolescent",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000328",
+      "descriptor_name": "Adult",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000328",
+      "descriptor_name": "Adult",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000328",
+      "descriptor_name": "Adult",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000328",
+      "descriptor_name": "Adult",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D002318",
+      "descriptor_name": "Cardiovascular Diseases",
+      "qualifier_ui": "Q000401",
+      "qualifier_name": "mortality",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D002318",
+      "descriptor_name": "Cardiovascular Diseases",
+      "qualifier_ui": "Q000401",
+      "qualifier_name": "mortality",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D002318",
+      "descriptor_name": "Cardiovascular Diseases",
+      "qualifier_ui": "Q000401",
+      "qualifier_name": "mortality",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D002318",
+      "descriptor_name": "Cardiovascular Diseases",
+      "qualifier_ui": "Q000401",
+      "qualifier_name": "mortality",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D002318",
+      "descriptor_name": "Cardiovascular Diseases",
+      "qualifier_ui": "Q000453",
+      "qualifier_name": "epidemiology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D002318",
+      "descriptor_name": "Cardiovascular Diseases",
+      "qualifier_ui": "Q000453",
+      "qualifier_name": "epidemiology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D002318",
+      "descriptor_name": "Cardiovascular Diseases",
+      "qualifier_ui": "Q000453",
+      "qualifier_name": "epidemiology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D002318",
+      "descriptor_name": "Cardiovascular Diseases",
+      "qualifier_ui": "Q000453",
+      "qualifier_name": "epidemiology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D002318",
+      "descriptor_name": "Cardiovascular Diseases",
+      "qualifier_ui": "Q000517",
+      "qualifier_name": "prevention & control",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D002318",
+      "descriptor_name": "Cardiovascular Diseases",
+      "qualifier_ui": "Q000517",
+      "qualifier_name": "prevention & control",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D002318",
+      "descriptor_name": "Cardiovascular Diseases",
+      "qualifier_ui": "Q000517",
+      "qualifier_name": "prevention & control",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D002318",
+      "descriptor_name": "Cardiovascular Diseases",
+      "qualifier_ui": "Q000517",
+      "qualifier_name": "prevention & control",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D003922",
+      "descriptor_name": "Diabetes Mellitus, Type 1",
+      "qualifier_ui": "Q000097",
+      "qualifier_name": "blood",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D003922",
+      "descriptor_name": "Diabetes Mellitus, Type 1",
+      "qualifier_ui": "Q000097",
+      "qualifier_name": "blood",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D003922",
+      "descriptor_name": "Diabetes Mellitus, Type 1",
+      "qualifier_ui": "Q000097",
+      "qualifier_name": "blood",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D003922",
+      "descriptor_name": "Diabetes Mellitus, Type 1",
+      "qualifier_ui": "Q000097",
+      "qualifier_name": "blood",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D003922",
+      "descriptor_name": "Diabetes Mellitus, Type 1",
+      "qualifier_ui": "Q000150",
+      "qualifier_name": "complications",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D003922",
+      "descriptor_name": "Diabetes Mellitus, Type 1",
+      "qualifier_ui": "Q000150",
+      "qualifier_name": "complications",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D003922",
+      "descriptor_name": "Diabetes Mellitus, Type 1",
+      "qualifier_ui": "Q000150",
+      "qualifier_name": "complications",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D003922",
+      "descriptor_name": "Diabetes Mellitus, Type 1",
+      "qualifier_ui": "Q000150",
+      "qualifier_name": "complications",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D003922",
+      "descriptor_name": "Diabetes Mellitus, Type 1",
+      "qualifier_ui": "Q000188",
+      "qualifier_name": "drug therapy",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D003922",
+      "descriptor_name": "Diabetes Mellitus, Type 1",
+      "qualifier_ui": "Q000188",
+      "qualifier_name": "drug therapy",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D003922",
+      "descriptor_name": "Diabetes Mellitus, Type 1",
+      "qualifier_ui": "Q000188",
+      "qualifier_name": "drug therapy",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D003922",
+      "descriptor_name": "Diabetes Mellitus, Type 1",
+      "qualifier_ui": "Q000188",
+      "qualifier_name": "drug therapy",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D005260",
+      "descriptor_name": "Female",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D005260",
+      "descriptor_name": "Female",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D005260",
+      "descriptor_name": "Female",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D005260",
+      "descriptor_name": "Female",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D005500",
+      "descriptor_name": "Follow-Up Studies",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D005500",
+      "descriptor_name": "Follow-Up Studies",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D005500",
+      "descriptor_name": "Follow-Up Studies",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D005500",
+      "descriptor_name": "Follow-Up Studies",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D006442",
+      "descriptor_name": "Glycated Hemoglobin",
+      "qualifier_ui": "Q000032",
+      "qualifier_name": "analysis",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D006442",
+      "descriptor_name": "Glycated Hemoglobin",
+      "qualifier_ui": "Q000032",
+      "qualifier_name": "analysis",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D006442",
+      "descriptor_name": "Glycated Hemoglobin",
+      "qualifier_ui": "Q000032",
+      "qualifier_name": "analysis",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D006442",
+      "descriptor_name": "Glycated Hemoglobin",
+      "qualifier_ui": "Q000032",
+      "qualifier_name": "analysis",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D006801",
+      "descriptor_name": "Humans",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D006801",
+      "descriptor_name": "Humans",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D006801",
+      "descriptor_name": "Humans",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D006801",
+      "descriptor_name": "Humans",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D007004",
+      "descriptor_name": "Hypoglycemic Agents",
+      "qualifier_ui": "Q000008",
+      "qualifier_name": "administration & dosage",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D007004",
+      "descriptor_name": "Hypoglycemic Agents",
+      "qualifier_ui": "Q000008",
+      "qualifier_name": "administration & dosage",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D007004",
+      "descriptor_name": "Hypoglycemic Agents",
+      "qualifier_ui": "Q000008",
+      "qualifier_name": "administration & dosage",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D007004",
+      "descriptor_name": "Hypoglycemic Agents",
+      "qualifier_ui": "Q000008",
+      "qualifier_name": "administration & dosage",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D007328",
+      "descriptor_name": "Insulin",
+      "qualifier_ui": "Q000008",
+      "qualifier_name": "administration & dosage",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D007328",
+      "descriptor_name": "Insulin",
+      "qualifier_ui": "Q000008",
+      "qualifier_name": "administration & dosage",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D007328",
+      "descriptor_name": "Insulin",
+      "qualifier_ui": "Q000008",
+      "qualifier_name": "administration & dosage",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D007328",
+      "descriptor_name": "Insulin",
+      "qualifier_ui": "Q000008",
+      "qualifier_name": "administration & dosage",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D008297",
+      "descriptor_name": "Male",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D008297",
+      "descriptor_name": "Male",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D008297",
+      "descriptor_name": "Male",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D008297",
+      "descriptor_name": "Male",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D008875",
+      "descriptor_name": "Middle Aged",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D008875",
+      "descriptor_name": "Middle Aged",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D008875",
+      "descriptor_name": "Middle Aged",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D008875",
+      "descriptor_name": "Middle Aged",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D012306",
+      "descriptor_name": "Risk",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D012306",
+      "descriptor_name": "Risk",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D012306",
+      "descriptor_name": "Risk",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D012306",
+      "descriptor_name": "Risk",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D016016",
+      "descriptor_name": "Proportional Hazards Models",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D016016",
+      "descriptor_name": "Proportional Hazards Models",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D016016",
+      "descriptor_name": "Proportional Hazards Models",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D016016",
+      "descriptor_name": "Proportional Hazards Models",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D016896",
+      "descriptor_name": "Treatment Outcome",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D016896",
+      "descriptor_name": "Treatment Outcome",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D016896",
+      "descriptor_name": "Treatment Outcome",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D016896",
+      "descriptor_name": "Treatment Outcome",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    }
+  ],
+  "locations_count": 3,
+  "locations": [
+    {
+      "id": "doi:10.1056/nejmoa052187",
+      "is_oa": true,
+      "landing_page_url": "https://doi.org/10.1056/nejmoa052187",
+      "pdf_url": "https://www.nejm.org/doi/pdf/10.1056/NEJMoa052187?articleTools=true",
+      "source": {
+        "id": "https://openalex.org/S62468778",
+        "display_name": "New England Journal of Medicine",
+        "issn_l": "0028-4793",
+        "issn": [
+          "0028-4793",
+          "1533-4406"
+        ],
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": true,
+        "host_organization": "https://openalex.org/P4310320239",
+        "host_organization_name": "Massachusetts Medical Society",
+        "host_organization_lineage": [
+          "https://openalex.org/P4310320239"
+        ],
+        "host_organization_lineage_names": [
+          "Massachusetts Medical Society"
+        ],
+        "type": "journal"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "publishedVersion",
+      "is_accepted": true,
+      "is_published": true,
+      "raw_source_name": "New England Journal of Medicine",
+      "raw_type": "journal-article"
+    },
+    {
+      "id": "pmid:16371630",
+      "is_oa": false,
+      "landing_page_url": "https://pubmed.ncbi.nlm.nih.gov/16371630",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4306525036",
+        "display_name": "PubMed",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I1299303238",
+        "host_organization_name": "National Institutes of Health",
+        "host_organization_lineage": [
+          "https://openalex.org/I1299303238"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "publishedVersion",
+      "is_accepted": true,
+      "is_published": true,
+      "raw_source_name": "The New England journal of medicine",
+      "raw_type": null
+    },
+    {
+      "id": "pmh:oai:europepmc.org:1941211",
+      "is_oa": false,
+      "landing_page_url": "https://www.ncbi.nlm.nih.gov/pmc/articles/2637991",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4306400806",
+        "display_name": "Europe PMC (PubMed Central)",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I1303153112",
+        "host_organization_name": "European Bioinformatics Institute",
+        "host_organization_lineage": [
+          "https://openalex.org/I1303153112"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "submittedVersion",
+      "is_accepted": false,
+      "is_published": false,
+      "raw_source_name": null,
+      "raw_type": "Text"
+    }
+  ],
+  "best_oa_location": {
+    "id": "doi:10.1056/nejmoa052187",
+    "is_oa": true,
+    "landing_page_url": "https://doi.org/10.1056/nejmoa052187",
+    "pdf_url": "https://www.nejm.org/doi/pdf/10.1056/NEJMoa052187?articleTools=true",
+    "source": {
+      "id": "https://openalex.org/S62468778",
+      "display_name": "New England Journal of Medicine",
+      "issn_l": "0028-4793",
+      "issn": [
+        "0028-4793",
+        "1533-4406"
+      ],
+      "is_oa": false,
+      "is_in_doaj": false,
+      "is_core": true,
+      "host_organization": "https://openalex.org/P4310320239",
+      "host_organization_name": "Massachusetts Medical Society",
+      "host_organization_lineage": [
+        "https://openalex.org/P4310320239"
+      ],
+      "host_organization_lineage_names": [
+        "Massachusetts Medical Society"
+      ],
+      "type": "journal"
+    },
+    "license": null,
+    "license_id": null,
+    "version": "publishedVersion",
+    "is_accepted": true,
+    "is_published": true,
+    "raw_source_name": "New England Journal of Medicine",
+    "raw_type": "journal-article"
+  },
+  "sustainable_development_goals": [
+    {
+      "display_name": "Good health and well-being",
+      "id": "https://metadata.un.org/sdg/3",
+      "score": 0.8799999952316284
+    }
+  ],
+  "awards": [
+    {
+      "id": "https://openalex.org/G2179012511",
+      "display_name": null,
+      "funder_award_id": "N01 DK062204",
+      "funder_id": "https://openalex.org/F4320337357",
+      "funder_display_name": "National Institute of Diabetes and Digestive and Kidney Diseases"
+    }
+  ],
+  "funders": [
+    {
+      "id": "https://openalex.org/F4320337357",
+      "display_name": "National Institute of Diabetes and Digestive and Kidney Diseases",
+      "ror": "https://ror.org/00adh9b73"
+    }
+  ],
+  "has_content": {
+    "grobid_xml": true,
+    "pdf": true
+  },
+  "content_urls": {
+    "pdf": "https://content.openalex.org/works/W1752045965.pdf",
+    "grobid_xml": "https://content.openalex.org/works/W1752045965.grobid-xml"
+  },
+  "referenced_works_count": 37,
+  "referenced_works": [
+    "https://openalex.org/W1585069421",
+    "https://openalex.org/W1667957779",
+    "https://openalex.org/W1999165003",
+    "https://openalex.org/W2004673584",
+    "https://openalex.org/W2022119612",
+    "https://openalex.org/W2034900477",
+    "https://openalex.org/W2047676937",
+    "https://openalex.org/W2075788673",
+    "https://openalex.org/W2078698271",
+    "https://openalex.org/W2084536221",
+    "https://openalex.org/W2106216311",
+    "https://openalex.org/W2137323125",
+    "https://openalex.org/W2141428319",
+    "https://openalex.org/W2141570612",
+    "https://openalex.org/W2151137593",
+    "https://openalex.org/W2160635731",
+    "https://openalex.org/W2166951250",
+    "https://openalex.org/W2275139239",
+    "https://openalex.org/W2302447233",
+    "https://openalex.org/W2337454357",
+    "https://openalex.org/W2340948203",
+    "https://openalex.org/W2464364640",
+    "https://openalex.org/W2734011609",
+    "https://openalex.org/W2760585829",
+    "https://openalex.org/W2769264260",
+    "https://openalex.org/W2796700885",
+    "https://openalex.org/W2977606681",
+    "https://openalex.org/W4231820866",
+    "https://openalex.org/W4232564846",
+    "https://openalex.org/W4234448894",
+    "https://openalex.org/W4234637623",
+    "https://openalex.org/W4234854931",
+    "https://openalex.org/W4234962996",
+    "https://openalex.org/W4236037182",
+    "https://openalex.org/W4239315519",
+    "https://openalex.org/W4247237039",
+    "https://openalex.org/W6749900284"
+  ],
+  "related_works": [
+    "https://openalex.org/W2001756313",
+    "https://openalex.org/W2973263109",
+    "https://openalex.org/W2161035911",
+    "https://openalex.org/W2782732109",
+    "https://openalex.org/W4304957541",
+    "https://openalex.org/W2740237586",
+    "https://openalex.org/W3152935002",
+    "https://openalex.org/W2982110805",
+    "https://openalex.org/W1938141516",
+    "https://openalex.org/W4200017197"
+  ],
+  "abstract_inverted_index": {
+    "BACKGROUND:": [
+      0
+    ],
+    "Intensive": [
+      1,
+      164,
+      269
+    ],
+    "diabetes": [
+      2,
+      59,
+      270
+    ],
+    "therapy": [
+      3,
+      28,
+      33,
+      271
+    ],
+    "aimed": [
+      4
+    ],
+    "at": [
+      5
+    ],
+    "achieving": [
+      6
+    ],
+    "near": [
+      7
+    ],
+    "normoglycemia": [
+      8
+    ],
+    "reduces": [
+      9
+    ],
+    "the": [
+      10,
+      24,
+      35,
+      43,
+      87,
+      111,
+      129,
+      149,
+      167,
+      187,
+      218,
+      226,
+      233,
+      248,
+      277
+    ],
+    "risk": [
+      11,
+      168,
+      188,
+      234,
+      249,
+      278
+    ],
+    "of": [
+      12,
+      17,
+      26,
+      46,
+      70,
+      90,
+      133,
+      169,
+      189,
+      225,
+      229,
+      235,
+      250,
+      279
+    ],
+    "microvascular": [
+      13
+    ],
+    "and": [
+      14,
+      38,
+      75,
+      93,
+      121,
+      186,
+      239
+    ],
+    "neurologic": [
+      15
+    ],
+    "complications": [
+      16
+    ],
+    "type": [
+      18,
+      57,
+      285
+    ],
+    "1": [
+      19,
+      58,
+      286
+    ],
+    "diabetes.": [
+      20,
+      287
+    ],
+    "We": [
+      21
+    ],
+    "studied": [
+      22
+    ],
+    "whether": [
+      23
+    ],
+    "use": [
+      25
+    ],
+    "intensive": [
+      27,
+      61,
+      146,
+      230
+    ],
+    "as": [
+      29,
+      99,
+      151
+    ],
+    "compared": [
+      30,
+      152
+    ],
+    "with": [
+      31,
+      56,
+      118,
+      153,
+      223,
+      243,
+      284
+    ],
+    "conventional": [
+      32,
+      63,
+      162
+    ],
+    "during": [
+      34,
+      86,
+      217
+    ],
+    "Diabetes": [
+      36,
+      91
+    ],
+    "Control": [
+      37
+    ],
+    "Complications": [
+      39,
+      94
+    ],
+    "Trial": [
+      40
+    ],
+    "(DCCT)": [
+      41
+    ],
+    "affected": [
+      42
+    ],
+    "long-term": [
+      44,
+      273
+    ],
+    "incidence": [
+      45
+    ],
+    "cardiovascular": [
+      47,
+      106,
+      136,
+      171,
+      197,
+      236,
+      251,
+      280
+    ],
+    "disease.": [
+      48,
+      237
+    ],
+    "METHODS:": [
+      49
+    ],
+    "The": [
+      50,
+      211
+    ],
+    "DCCT": [
+      51,
+      219
+    ],
+    "randomly": [
+      52
+    ],
+    "assigned": [
+      53
+    ],
+    "1441": [
+      54
+    ],
+    "patients": [
+      55,
+      142,
+      158,
+      283
+    ],
+    "to": [
+      60,
+      182,
+      207
+    ],
+    "or": [
+      62,
+      110,
+      194,
+      261
+    ],
+    "therapy,": [
+      64
+    ],
+    "treating": [
+      65
+    ],
+    "them": [
+      66
+    ],
+    "for": [
+      67,
+      113,
+      265
+    ],
+    "a": [
+      68,
+      244
+    ],
+    "mean": [
+      69,
+      130
+    ],
+    "6.5": [
+      71
+    ],
+    "years": [
+      72,
+      132
+    ],
+    "between": [
+      73,
+      255
+    ],
+    "1983": [
+      74
+    ],
+    "1993.": [
+      76
+    ],
+    "Ninety-three": [
+      77
+    ],
+    "percent": [
+      78,
+      176,
+      178,
+      201,
+      203
+    ],
+    "were": [
+      79,
+      241
+    ],
+    "subsequently": [
+      80
+    ],
+    "followed": [
+      81
+    ],
+    "until": [
+      82
+    ],
+    "February": [
+      83
+    ],
+    "1,": [
+      84
+    ],
+    "2005,": [
+      85
+    ],
+    "observational": [
+      88
+    ],
+    "Epidemiology": [
+      89
+    ],
+    "Interventions": [
+      92
+    ],
+    "study.": [
+      95
+    ],
+    "Cardiovascular": [
+      96
+    ],
+    "disease": [
+      97,
+      137,
+      172,
+      198,
+      281
+    ],
+    "(defined": [
+      98
+    ],
+    "nonfatal": [
+      100,
+      190
+    ],
+    "myocardial": [
+      101,
+      191
+    ],
+    "infarction,": [
+      102,
+      192
+    ],
+    "stroke,": [
+      103,
+      193
+    ],
+    "death": [
+      104,
+      195
+    ],
+    "from": [
+      105,
+      196
+    ],
+    "disease,": [
+      107,
+      252
+    ],
+    "confirmed": [
+      108
+    ],
+    "angina,": [
+      109
+    ],
+    "need": [
+      112
+    ],
+    "coronary-artery": [
+      114
+    ],
+    "revascularization)": [
+      115
+    ],
+    "was": [
+      116,
+      220
+    ],
+    "assessed": [
+      117
+    ],
+    "standardized": [
+      119
+    ],
+    "measures": [
+      120
+    ],
+    "classified": [
+      122
+    ],
+    "by": [
+      123,
+      174,
+      199
+    ],
+    "an": [
+      124
+    ],
+    "independent": [
+      125
+    ],
+    "committee.": [
+      126
+    ],
+    "RESULTS:": [
+      127
+    ],
+    "During": [
+      128
+    ],
+    "17": [
+      131
+    ],
+    "follow-up,": [
+      134
+    ],
+    "46": [
+      135
+    ],
+    "events": [
+      138,
+      155
+    ],
+    "occurred": [
+      139
+    ],
+    "in": [
+      140,
+      148,
+      156,
+      213,
+      247,
+      282
+    ],
+    "31": [
+      141
+    ],
+    "who": [
+      143,
+      159
+    ],
+    "had": [
+      144,
+      160
+    ],
+    "received": [
+      145,
+      161
+    ],
+    "treatment": [
+      147,
+      165,
+      231,
+      256
+    ],
+    "DCCT,": [
+      150
+    ],
+    "98": [
+      154
+    ],
+    "52": [
+      157
+    ],
+    "treatment.": [
+      163
+    ],
+    "reduced": [
+      166
+    ],
+    "any": [
+      170
+    ],
+    "event": [
+      173
+    ],
+    "42": [
+      175
+    ],
+    "(95": [
+      177,
+      202
+    ],
+    "confidence": [
+      179,
+      204
+    ],
+    "interval,": [
+      180,
+      205
+    ],
+    "9": [
+      181
+    ],
+    "63": [
+      183
+    ],
+    "percent;": [
+      184,
+      209
+    ],
+    "P=0.02)": [
+      185
+    ],
+    "57": [
+      200
+    ],
+    "12": [
+      206
+    ],
+    "79": [
+      208
+    ],
+    "P=0.02).": [
+      210
+    ],
+    "decrease": [
+      212
+    ],
+    "glycosylated": [
+      214
+    ],
+    "hemoglobin": [
+      215
+    ],
+    "values": [
+      216
+    ],
+    "significantly": [
+      221
+    ],
+    "associated": [
+      222,
+      242
+    ],
+    "most": [
+      224
+    ],
+    "positive": [
+      227
+    ],
+    "effects": [
+      228,
+      275
+    ],
+    "on": [
+      232,
+      276
+    ],
+    "Microalbuminuria": [
+      238
+    ],
+    "albuminuria": [
+      240
+    ],
+    "significant": [
+      245,
+      259
+    ],
+    "increase": [
+      246
+    ],
+    "but": [
+      253
+    ],
+    "differences": [
+      254
+    ],
+    "groups": [
+      257
+    ],
+    "remained": [
+      258
+    ],
+    "(P<": [
+      260
+    ],
+    "=0.05)": [
+      262
+    ],
+    "after": [
+      263
+    ],
+    "adjusting": [
+      264
+    ],
+    "these": [
+      266
+    ],
+    "factors.": [
+      267
+    ],
+    "CONCLUSIONS:": [
+      268
+    ],
+    "has": [
+      272
+    ],
+    "beneficial": [
+      274
+    ]
+  },
+  "counts_by_year": [
+    {
+      "year": 2026,
+      "cited_by_count": 57
+    },
+    {
+      "year": 2025,
+      "cited_by_count": 119
+    },
+    {
+      "year": 2024,
+      "cited_by_count": 146
+    },
+    {
+      "year": 2023,
+      "cited_by_count": 155
+    },
+    {
+      "year": 2022,
+      "cited_by_count": 146
+    },
+    {
+      "year": 2021,
+      "cited_by_count": 203
+    },
+    {
+      "year": 2020,
+      "cited_by_count": 190
+    },
+    {
+      "year": 2019,
+      "cited_by_count": 211
+    },
+    {
+      "year": 2018,
+      "cited_by_count": 248
+    },
+    {
+      "year": 2017,
+      "cited_by_count": 239
+    },
+    {
+      "year": 2016,
+      "cited_by_count": 277
+    },
+    {
+      "year": 2015,
+      "cited_by_count": 336
+    },
+    {
+      "year": 2014,
+      "cited_by_count": 360
+    },
+    {
+      "year": 2013,
+      "cited_by_count": 322
+    },
+    {
+      "year": 2012,
+      "cited_by_count": 342
+    }
+  ],
+  "updated_date": "2026-07-04T07:58:01.006859",
+  "created_date": "2016-06-24T00:00:00"
+}

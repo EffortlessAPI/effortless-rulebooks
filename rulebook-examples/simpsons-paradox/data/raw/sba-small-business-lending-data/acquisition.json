@@ -1,0 +1,12 @@
+{
+  "candidate_id": "cand-exp-sba-small-business-lending-data",
+  "proposed_study_id": "sba-small-business-lending-data",
+  "acquisition_status": "blocked",
+  "attempted_at": "2026-07-07T03:48:04+00:00",
+  "catalog_source_url": "https://www.sba.gov/about-sba/sba-data-and-research",
+  "resolved_urls": [
+    "https://www.sba.gov/about-sba/sba-data-and-research"
+  ],
+  "files": [],
+  "dois": []
+}

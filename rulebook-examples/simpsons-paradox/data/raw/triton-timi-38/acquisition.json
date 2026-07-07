@@ -1,0 +1,17 @@
+{
+  "candidate_id": "cand-exp-triton-timi-38",
+  "proposed_study_id": "triton-timi-38",
+  "acquisition_status": "landing_saved",
+  "attempted_at": "2026-07-07T03:44:03+00:00",
+  "catalog_source_url": "https://vivli.org/",
+  "resolved_urls": [
+    "https://doi.org/10.1056/nejmoa0809171",
+    "https://www.nejm.org/doi/pdf/10.1056/NEJMoa0809171?articleTools=true",
+    "https://vivli.org/"
+  ],
+  "files": [
+    "openalex-metadata.json",
+    "source-1.html"
+  ],
+  "dois": []
+}

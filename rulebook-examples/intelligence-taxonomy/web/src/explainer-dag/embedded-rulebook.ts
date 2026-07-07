@@ -74,6 +74,14 @@ export const rulebook = {
   },
   "Intelligences": {
     "Description": "Agents being classified by the taxonomy. Each Intelligence's TaxonomyClass is derived from the rollup of its Assessments.",
+    "important": true,
+    "summary_rich": "The **catalog of agents** being placed on the map — biological (human, octopus), digital (GPT-5, a pocket calculator), and in principle collective. None of them are labelled *Generalist*, *Broad*, or *Narrow* directly; that label is **inferred** by the rulebook from the rollup of their per-capability scores. Edit one `RawScore` and an intelligence can change taxa.",
+    "important_fields": [
+      "Name",
+      "Substrate",
+      "TotalWeightedScore",
+      "TaxonomyClass"
+    ],
     "schema": [
       {
         "name": "IntelligencesId",
@@ -118,7 +126,9 @@ export const rulebook = {
         "type": "aggregation",
         "nullable": false,
         "formula": "=SUMIFS(Assessments!{{WeightedScore}}, Assessments!{{Intelligence}}, {{IntelligencesId}})",
-        "Description": "Sum of WeightedScore across all this intelligence's assessments. Second hop in the DAG."
+        "Description": "Sum of WeightedScore across all this intelligence's assessments. Second hop in the DAG.",
+        "important": true,
+        "explanation_rich": "**The rollup that makes classification possible.** Each Assessment contributes a `WeightedScore` (its raw 0–100 multiplied by the capability's `Weight`). This field sums all of an intelligence's assessment scores into a single number that the taxonomy can bucket. Worked example: *calculator* scores 50, 10, 95, 0 on memory, perception, reasoning, creativity — weighted by 1.0, 1.0, 1.3, 1.5 that totals **183.5**, well under the *Broad* threshold of 220. Sharpen creativity from 0 to 30 and the same field instantly recomputes to 228.5 — the calculator just changed taxa."
       },
       {
         "name": "TaxonomyClass",
@@ -126,7 +136,9 @@ export const rulebook = {
         "type": "calculated",
         "nullable": false,
         "formula": "=IF({{TotalWeightedScore}}>=350, \"Generalist\", IF({{TotalWeightedScore}}>=220, \"Broad\", \"Narrow\"))",
-        "Description": "Taxonomic bucket derived from TotalWeightedScore. Third hop in the DAG."
+        "Description": "Taxonomic bucket derived from TotalWeightedScore. Third hop in the DAG.",
+        "important": true,
+        "explanation_rich": "**The classification verdict — inferred, never assigned.** No row in `Intelligences` is born with a taxonomic label; the rulebook *deduces* it from the rollup. Two thresholds (350, 220) cut the space into *Generalist*, *Broad*, and *Narrow*. Worked example: *human* totals roughly 426 and lands in **Generalist**; *gpt-5* totals about 351.5 and just barely clears the same line; *octopus* lands in **Broad**; *calculator* is **Narrow**. Slide a threshold by 10 points and the boundary of the taxonomy moves — in every substrate at once."
       }
     ],
     "data": [
@@ -154,6 +166,14 @@ export const rulebook = {
   },
   "Assessments": {
     "Description": "Per-capability scores for each intelligence. The junction table whose calculated WeightedScore feeds the rollup on Intelligences.",
+    "important": true,
+    "summary_rich": "The **measurement layer** — one row for every (intelligence, capability) pair. `RawScore` is the only number a human touches; everything else (capability weight, the weighted product, the rollup, the taxonomic class three hops away) cascades through the DAG. This is where you reach in to argue with the taxonomy: change a number, watch the map redraw.",
+    "important_fields": [
+      "IntelligenceName",
+      "CapabilityName",
+      "RawScore",
+      "WeightedScore"
+    ],
     "schema": [
       {
         "name": "AssessmentsId",
@@ -231,7 +251,9 @@ export const rulebook = {
         "type": "calculated",
         "nullable": false,
         "formula": "={{RawScore}}*{{CapabilityWeight}}",
-        "Description": "RawScore scaled by the capability's Weight. First hop in the DAG."
+        "Description": "RawScore scaled by the capability's Weight. First hop in the DAG.",
+        "important": true,
+        "explanation_rich": "**The first hop — where the taxonomy decides what counts.** A `RawScore` of 95 on *memory* (weight 1.0) is worth 95; the same 95 on *creativity* (weight 1.5) is worth 142.5. The capability's `Weight` is the rulebook's editorial stance on what intelligence *is*. Worked example: *gpt-5* scores 95 on memory and 65 on creativity — weighted, those become 95 and 97.5, so creativity (just barely) outweighs memory in the rollup. Edit `creativity.Weight` from 1.5 down to 1.0 and watch every emergent-capability assessment cool off across all four intelligences simultaneously."
       }
     ],
     "data": [
@@ -333,12 +355,119 @@ export const rulebook = {
       }
     ]
   },
-  "_meta": {
-    "_CMCC_Summary": "Hand-authored rulebook for a minimal taxonomy-of-intelligence demo.",
-    "_conversion_metadata": {
-      "tool_version": "demo-app-skill",
-      "export_mode": "hand_authored"
-    }
+  "__meta__": {
+    "Description": "Project-level metadata that travels with the rulebook: tagline, motif, narrative descriptions, substrate list, signature rows, etc. One row per metadata key. Use ValueType to interpret StringValue vs JsonValue.",
+    "important": false,
+    "schema": [
+      {
+        "name": "MetaKey",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "The metadata key (e.g. 'tagline', 'motif_palette', 'substrates'). Unique within the table."
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": false,
+        "formula": "={{MetaKey}}",
+        "Description": "Identifier for this metadata entry. Mirrors MetaKey so the row is addressable by Name like every other table."
+      },
+      {
+        "name": "ValueType",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "How to interpret the value columns: 'string' (use StringValue), 'object' (parse JsonValue as JSON object), 'array' (parse JsonValue as JSON array)."
+      },
+      {
+        "name": "StringValue",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Plain string value. Populated when ValueType == 'string'; null otherwise."
+      },
+      {
+        "name": "JsonValue",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "JSON-encoded value. Populated when ValueType == 'object' or 'array'; null when ValueType == 'string'."
+      }
+    ],
+    "data": [
+      {
+        "MetaKey": "tagline",
+        "Name": "tagline",
+        "ValueType": "string",
+        "StringValue": "A catalog of intelligences — biological, digital, collective — classified by what they can do, not what they are made of.",
+        "JsonValue": null
+      },
+      {
+        "MetaKey": "motif",
+        "Name": "motif",
+        "ValueType": "string",
+        "StringValue": "atlas",
+        "JsonValue": null
+      },
+      {
+        "MetaKey": "motif_palette",
+        "Name": "motif_palette",
+        "ValueType": "object",
+        "StringValue": null,
+        "JsonValue": "{\"primary\": \"#2d4a3e\", \"accent\": \"#c19a5b\", \"ink\": \"#0f1a16\"}"
+      },
+      {
+        "MetaKey": "description_rich",
+        "Name": "description_rich",
+        "ValueType": "string",
+        "StringValue": "A working taxonomy of intelligence. Four candidates — a human, an octopus, a large language model, a pocket calculator — assessed on four capabilities (memory, perception, reasoning, creativity), each capability weighted by how much it counts. The taxonomic class (*Generalist*, *Broad*, *Narrow*) is never assigned by hand; it's **inferred** from the rollup of weighted assessments through a three-hop DAG. The interesting move is that the substrate of the agent — biological, digital, collective — is a *property* on the row, not a precondition for classification. The taxonomy treats octopus and GPT-5 as commensurable because the rulebook says capability-by-capability scoring is what intelligence is. Disagree? Edit the weights or the thresholds and the entire catalog re-sorts itself in Postgres, Python, Excel, and OWL — identically.",
+        "JsonValue": null
+      },
+      {
+        "MetaKey": "use_cases",
+        "Name": "use_cases",
+        "ValueType": "array",
+        "StringValue": null,
+        "JsonValue": "[\"**Watch a row change taxa.** Open *calculator* (currently *Narrow*, total ≈ 183.5). Edit `calculator-creativity.RawScore` from 0 to 30 and `TaxonomyClass` flips to *Broad* — three hops, one keystroke, every substrate.\", \"**Argue with the editorial weights.** *creativity* carries weight 1.5; *memory* carries 1.0. Drop creativity to 1.0 and *gpt-5* falls out of *Generalist* range. The weight column **is** the rulebook's claim about what intelligence is — edit it to make a counter-claim.\", \"**Re-draw the boundary.** Slide the *Generalist* threshold from 350 to 380 in `Intelligences.TaxonomyClass` and *gpt-5* (currently ≈ 351.5) drops from *Generalist* to *Broad*. The taxonomy is now stricter; nothing in the data moved.\", \"**Compare substrates of agent.** *octopus* (biological) and *gpt-5* (digital) end up in the same taxonomic tier through entirely different capability profiles. Sort by `Substrate`, then by `TotalWeightedScore`, to see how the catalog refuses to confuse *what something is made of* with *what it can do*.\", \"**Ask the same question of OWL.** Generate the OWL substrate and ask which individuals satisfy *Generalist*. The axioms agree with the Postgres view, which agrees with the Python module — four agents, four rows, one verdict.\"]"
+      },
+      {
+        "MetaKey": "signature_rows",
+        "Name": "signature_rows",
+        "ValueType": "array",
+        "StringValue": null,
+        "JsonValue": "[{\"entity\": \"Intelligences\", \"ids\": [\"human\", \"octopus\", \"gpt-5\", \"calculator\"]}, {\"entity\": \"Capabilities\", \"ids\": [\"memory\", \"perception\", \"reasoning\", \"creativity\"]}, {\"entity\": \"Assessments\", \"ids\": [\"gpt-5-perception\", \"octopus-perception\", \"calculator-creativity\"]}]"
+      },
+      {
+        "MetaKey": "journal_seed",
+        "Name": "journal_seed",
+        "ValueType": "string",
+        "StringValue": "Four agents, four capabilities, sixteen assessments — and a taxonomic verdict on each agent that no human typed in. The catalog classifies itself.",
+        "JsonValue": null
+      },
+      {
+        "MetaKey": "substrates",
+        "Name": "substrates",
+        "ValueType": "array",
+        "StringValue": null,
+        "JsonValue": "[{\"key\": \"postgres\", \"important\": true, \"chip_label\": \"Postgres\"}, {\"key\": \"owl\", \"important\": true, \"chip_label\": \"OWL\"}, {\"key\": \"python\", \"important\": true, \"chip_label\": \"Python\"}, {\"key\": \"excel\", \"important\": false, \"chip_label\": \"Excel\"}, {\"key\": \"golang\", \"important\": false, \"chip_label\": \"Go\"}]"
+      },
+      {
+        "MetaKey": "CMCC_Summary",
+        "Name": "CMCC_Summary",
+        "ValueType": "string",
+        "StringValue": "Hand-authored rulebook for a minimal taxonomy-of-intelligence demo.",
+        "JsonValue": null
+      },
+      {
+        "MetaKey": "conversion_metadata",
+        "Name": "conversion_metadata",
+        "ValueType": "object",
+        "StringValue": null,
+        "JsonValue": "{\"tool_version\": \"demo-app-skill\", \"export_mode\": \"hand_authored\"}"
+      }
+    ]
   }
 } as const;
 export type Rulebook = typeof rulebook;

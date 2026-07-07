@@ -1,0 +1,1274 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>O*NET OnLine</title>
+    <link rel="alternate" type="application/rss+xml" href="https://www.onetcenter.org/rss/whatsnew.xml">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20201126">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png?v=20201126">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png?v=20201126">
+    <link rel="manifest" href="/site.webmanifest?v=20201126">
+    <link rel="shortcut icon" href="/favicon.ico?v=20201126">
+    <meta name="msapplication-TileColor" content="#2d89ef">
+    <meta name="theme-color" content="#004488">
+    <meta name="og:url" content="https://www.onetonline.org/">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="O*NET OnLine">
+    <meta name="og:title" content="O*NET OnLine">
+    <meta name="twitter:creator" content="@onet_center">
+    <meta name="twitter:image" content="https://www.onetonline.org/shared/image/promo/online.jpg">
+    <meta name="og:image" content="https://www.onetonline.org/shared/image/promo/online.jpg">
+    <meta name="twitter:image:alt" content="Woman helping a client">
+    <meta name="og:image:alt" content="Woman helping a client">
+    <meta name="twitter:description" content="Detailed descriptions of the world-of-work for use by job seekers, workforce development and HR professionals, students, developers, researchers, and more. Individuals can find, search, or browse across 900+ occupations based on their goals and needs. Comprehensive reports include occupation requirements, worker characteristics, and available training, education, and job opportunities.">
+    <meta name="og:description" content="Detailed descriptions of the world-of-work for use by job seekers, workforce development and HR professionals, students, developers, researchers, and more. Individuals can find, search, or browse across 900+ occupations based on their goals and needs. Comprehensive reports include occupation requirements, worker characteristics, and available training, education, and job opportunities.">
+    <link href="/shared/libraries/bootstrap-5.3.3-dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/shared/libraries/tablesorter-2.31.3-dist/css/theme.bootstrap_4.min.css" rel="stylesheet">
+    <link href="/shared/fonts/opensans/opensans.css" rel="stylesheet">
+    <link href="/shared/fonts/opensanscond/opensanscond.css" rel="stylesheet">
+    <link href="/shared/resp.css?v=2026032102" rel="stylesheet">
+    <link href="/shared/libraries/autocomplete/autocomplete.css" rel="stylesheet">
+    <link href="/libraries/online/online.css" rel="stylesheet">
+    <style>
+DIV#realcontent {
+  padding-bottom: 0;
+}
+
+    </style>
+    <script src="/shared/libraries/jquery-3.5.1/jquery-3.5.1.min.js"></script>
+    <script src="/shared/libraries/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/shared/libraries/tablesorter-2.31.3-dist/js/jquery.tablesorter.min.js"></script>
+    <script src="/shared/libraries/tablesorter-2.31.3-dist/js/jquery.tablesorter.widgets.min.js"></script>
+    <script src="/shared/libraries/stickyfill-2.1.0-dist/stickyfill.min.js"></script>
+    <script src="/shared/libraries/clipboard.js-2.0.6-dist/clipboard.min.js"></script>
+    <script src="/shared/libraries/form-4.2.2-dist/jquery.form.min.js"></script>
+    <script src="/shared/libraries/anychart-7.12.0/anychart-7.12.0.min.js"></script>
+    <script src="/shared/libraries/fontawesome-f860331e61/solid.min.js?t=2026042901"></script>
+    <script src="/shared/libraries/fontawesome-f860331e61/brands.min.js?t=2026032101"></script>
+    <script src="/shared/libraries/fontawesome-f860331e61/custom-icons.min.js?t=2026032201"></script>
+    <script src="/shared/libraries/fontawesome-f860331e61/custom-icons-duotone.min.js?t=2026042901"></script>
+    <script src="/shared/libraries/fontawesome-f860331e61/fontawesome.min.js?t=2026032101" data-auto-replace-svg="nest"></script>
+    <script src="/shared/libraries/bootstrap-html5-history-tabs/bootstrap-history-tabs.js"></script>
+    <script src="/shared/libraries/jquery-querystring/querystring.js"></script>
+    <script src="/shared/libraries/jquery-filterable/filterable.js"></script>
+    <script src="/shared/libraries/jquery-linktrack/linktrack.js"></script>
+    <script src="/shared/resp.js?v=20240827"></script>
+    <script src="/shared/libraries/autocomplete/autocomplete.js"></script>
+    <script src="/shared/libraries/autocomplete/onet_data.js"></script>
+    <script src="/libraries/online/online.js"></script>
+    <script>
+
+    </script>
+  </head><body>
+    <div class="grid-parent">
+    <div class="container-fluid" id="allcontent">
+      <div id="realcontent">
+        <div id="head">
+<div class="d-md-flex align-items-center justify-content-start mt-3 mb-3">
+<div class="w-100"><a href="/"><img src="/image/online-header.svg" class="header-logo" alt="O*NET OnLine"></a></div>
+<div class="d-none d-md-block ms-auto">
+  <form action="/find/quick" method="GET">
+    <div class="text-center">
+      <label id="headersearchlglabel" class="form-label mb-1 h6" for="headersearchlg">Occupation keyword search</label>
+    </div>
+    <div class="input-group">
+      <span class="input-group-text"><i class="fa fa-search"></i></span>
+      <input id="headersearchlg" type="text" name="s" class="form-control" placeholder="electrician" data-bs-toggle="dropdown" data-ac-toggle="autocomplete" data-ac-menu="headersearchlg-autocomplete" data-ac-dataset="online" autocomplete="off">
+        <ul class="dropdown-menu autocomplete-menu dropdown-menu-end" id="headersearchlg-autocomplete" data-autocomplete-init="headersearchlg" aria-labelledby="headersearchlg">
+    <li class="prompt"><span class="dropdown-header">Type a title or code for matches</span></li>
+    <li class="notfound"><span class="dropdown-header">No quick matches found</span></li>
+    <li class="notfound"><button class="dropdown-item" type="submit">Search for keyword results</button></li>
+    <li class="result1"><a class="dropdown-item" href="#" data-root="/link/summary/"></a></li>
+    <li class="result2"><a class="dropdown-item" href="#" data-root="/link/summary/"></a></li>
+    <li class="result3"><a class="dropdown-item" href="#" data-root="/link/summary/"></a></li>
+    <li class="result4"><a class="dropdown-item" href="#" data-root="/link/summary/"></a></li>
+    <li class="result5"><a class="dropdown-item" href="#" data-root="/link/summary/"></a></li>
+  </ul>
+
+      <button type="submit" class="btn btn-secondary">Go</button>
+    </div>
+  </form>
+</div>
+</div>
+<nav class="navbar mt-3 mb-3 px-2 navbar-expand-md navbar-light bg-light d-print-none">
+  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <form class="form-inline d-md-none" action="/find/quick" method="GET" >
+    <div class="input-group">
+      <input type="text" id="headersearchsm" name="s" class="form-control" placeholder="electrician" aria-label="Occupation keyword search" data-bs-toggle="dropdown" data-ac-toggle="autocomplete" data-ac-menu="headersearchsm-autocomplete" data-ac-dataset="online" autocomplete="off">
+        <ul class="dropdown-menu autocomplete-menu dropdown-menu-end" id="headersearchsm-autocomplete" data-autocomplete-init="headersearchsm" aria-labelledby="headersearchsm">
+    <li class="prompt"><span class="dropdown-header">Type a title or code for matches</span></li>
+    <li class="notfound"><span class="dropdown-header">No quick matches found</span></li>
+    <li class="notfound"><button class="dropdown-item" type="submit">Search for keyword results</button></li>
+    <li class="result1"><a class="dropdown-item" href="#" data-root="/link/summary/"></a></li>
+    <li class="result2"><a class="dropdown-item" href="#" data-root="/link/summary/"></a></li>
+    <li class="result3"><a class="dropdown-item" href="#" data-root="/link/summary/"></a></li>
+    <li class="result4"><a class="dropdown-item" href="#" data-root="/link/summary/"></a></li>
+    <li class="result5"><a class="dropdown-item" href="#" data-root="/link/summary/"></a></li>
+  </ul>
+
+      <button type="submit" class="btn btn-secondary">Go</button>
+    </div>
+  </form>
+  <div class="collapse navbar-collapse" id="navbarNavDropdown">
+    <ul class="navbar-nav me-auto">
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="" id="navDropdownHelp" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Help</a>
+        <div class="dropdown-menu" aria-labelledby="navDropdownHelp">
+          <a class="dropdown-item" href="/help/">OnLine Help</a>
+          <a class="dropdown-item" href="https://www.onetcenter.org/overview.html">About O*NET</a>
+          <a class="dropdown-item" href="/help/online/deskaid">OnLine Desk Aid</a>
+          <a class="dropdown-item" href="/help/job_coding">Job-Coding Guide</a>
+          <a class="dropdown-item" href="/shared/jobhelp_resp">Job Seeker Help</a>
+          <a class="dropdown-item" href="https://www.onetcenter.org/links.html">Related Sites</a>
+          <a class="dropdown-item" href="/">Home</a>
+        </div>
+      </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="" id="navDropdownFindOccupations" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Find Occupations</a>
+        <div class="dropdown-menu" aria-labelledby="navDropdownFindOccupations">
+          <a class="dropdown-item" href="/find/bright">Bright Outlook</a>
+          <a class="dropdown-item" href="/find/career">Career Cluster</a>
+          <a class="dropdown-item" href="/search/hot_tech/">Hot Technologies</a>
+          <a class="dropdown-item" href="/find/industry">Industry</a>
+          <a class="dropdown-item" href="/find/family">Job Family</a>
+          <a class="dropdown-item" href="/find/zone">Job Zone</a>
+          <a class="dropdown-item" href="/find/stem">STEM</a>
+          <a class="dropdown-item" href="/find/all">All Occupations</a>
+        </div>
+      </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="" id="navDropdownAdvancedSearches" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Advanced Searches</a>
+        <div class="dropdown-menu" aria-labelledby="navDropdownAdvancedSearches">
+          <a class="dropdown-item" href="/search/task/">Job Duties</a>
+          <a class="dropdown-item" href="/search/associations/">Professional Associations</a>
+          <a class="dropdown-item" href="/search/dwa/">Related Activities</a>
+          <a class="dropdown-item" href="/skills/soft/">Soft Skills</a>
+          <a class="dropdown-item" href="/search/tech/">Software Skills</a>
+        </div>
+      </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="" id="navDropdownONETData" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">O*NET Data</a>
+        <div class="dropdown-menu" aria-labelledby="navDropdownONETData">
+          <div class="dropdown-header">Occupational Requirements</div>
+          <a class="dropdown-item" href="/find/descriptor/browse/4.A">Work Activities</a>
+          <a class="dropdown-item" href="/find/descriptor/browse/4.C">Work Context</a>
+          <div class="dropdown-divider"></div>
+          <div class="dropdown-header">Worker Requirements</div>
+          <a class="dropdown-item" href="/find/descriptor/browse/2.E">Software Skills</a>
+          <a class="dropdown-item" href="/find/descriptor/browse/2.A">Essential Skills</a>
+          <a class="dropdown-item" href="/find/descriptor/browse/2.B">Transferable Skills</a>
+          <a class="dropdown-item" href="/find/descriptor/browse/2.C">Knowledge</a>
+          <div class="dropdown-divider"></div>
+          <div class="dropdown-header">Worker Characteristics</div>
+          <a class="dropdown-item" href="/find/descriptor/browse/1.A">Abilities</a>
+          <a class="dropdown-item" href="/find/descriptor/browse/1.B.1">Career Interest Types</a>
+          <a class="dropdown-item" href="/find/descriptor/browse/1.B.3">Specific Interest Areas</a>
+          <a class="dropdown-item" href="/find/descriptor/browse/1.D">Work Styles</a>
+        </div>
+      </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="" id="navDropdownCrosswalks" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Crosswalks</a>
+        <div class="dropdown-menu" aria-labelledby="navDropdownCrosswalks">
+          <a class="dropdown-item" href="/crosswalk/MOC/">Military</a>
+          <a class="dropdown-item" href="/crosswalk/CIP/">Education</a>
+          <a class="dropdown-item" href="/crosswalk/OOH/">Occupation Handbook</a>
+          <a class="dropdown-item" href="/crosswalk/SOC/">SOC</a>
+          <a class="dropdown-item" href="/crosswalk/DOT/">DOT</a>
+          <a class="dropdown-item" href="/crosswalk/RAPIDS/">RAPIDS</a>
+          <a class="dropdown-item" href="/crosswalk/ESCO/">ESCO</a>
+        </div>
+      </li>
+    </ul>
+    <ul class="navbar-nav">
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="https://www.onetcenter.org/share?u=https%3A%2F%2Fwww.onetonline.org%2F&amp;t=O%2ANET%20OnLine" id="navDropdownShare" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Share</a>
+        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navDropdownShare">
+          <a class="dropdown-item" href="https://www.onetcenter.org/share/f?u=https%3A%2F%2Fwww.onetonline.org%2F&amp;t=O%2ANET%20OnLine"><i class="fab fa-square-facebook fa-fw me-2"></i> Facebook</a>
+          <a class="dropdown-item" href="https://www.onetcenter.org/share/t?u=https%3A%2F%2Fwww.onetonline.org%2F&amp;t=O%2ANET%20OnLine"><i class="fab fa-square-x-twitter fa-fw me-2"></i> X</a>
+          <a class="dropdown-item" href="https://www.onetcenter.org/share/i?u=https%3A%2F%2Fwww.onetonline.org%2F&amp;t=O%2ANET%20OnLine"><i class="fab fa-square-linkedin fa-fw me-2"></i> LinkedIn</a>
+          <a class="dropdown-item" href="https://www.onetcenter.org/share/r?u=https%3A%2F%2Fwww.onetonline.org%2F&amp;t=O%2ANET%20OnLine"><i class="fab fa-square-reddit fa-fw me-2"></i> Reddit</a>
+          <a class="dropdown-item" href="mailto:?body=https%3A%2F%2Fwww.onetonline.org%2F&amp;subject=O%2ANET%20OnLine"><i class="fas fa-square-envelope fa-fw me-2"></i> Email</a>
+        </div>
+      </li>
+    <ul class="navbar-nav">
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="https://www.onetcenter.org/sites.html" id="navDropdownSites" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Sites</a>
+        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navDropdownSites">
+          <a class="dropdown-item" href="https://onetinterestprofiler.org/">O*NET Interest Profiler</a>
+          <a class="dropdown-item" href="https://www.mynextmove.org/">My Next Move</a>
+          <a class="dropdown-item" href="https://www.miproximopaso.org/">Mi Próximo Paso</a>
+          <a class="dropdown-item" href="https://www.mynextmove.org/vets/">My Next Move for Veterans</a>
+          <a class="dropdown-item" href="https://www.onetcenter.org/">Resource Center</a>
+          <a class="dropdown-item" href="https://services.onetcenter.org/">O*NET Web Services</a>
+          <div class="dropdown-divider"></div>
+          <div class="dropdown-header">Partner sites</div>
+          <a class="dropdown-item" href="https://onet.rti.org/">Data Collection Program</a>
+          <a class="dropdown-item" href="https://www.doleta.gov/programs/onet/eta_default.cfm">U.S. Department of Labor</a>
+          <a class="dropdown-item" href="https://www.onetcenter.org/links.html">Related Sites</a>
+        <div>
+      </li>
+    </ul>
+  </div>
+</nav>
+        </div>
+        <div id="content">
+<!-- begin content -->
+<div class="row">
+  <div class="col-12 col-md-6">
+
+    <div class="rounded-3 mb-4 position-relative ratio ratio-21x9" style="overflow: hidden; max-height: 12em">
+      <div class="w-100 h-100 d-flex align-items-center">
+        <img class="img-fluid" aria-hidden="true" src="/image/homepage/bg_online.jpg">
+        <h1 class="h2 py-3 px-4 m-0 w-100 position-absolute bottom-0" style="background-color: rgba(255, 255, 255, 0.8)">O*NET OnLine features</h1>
+      </div>
+    </div>
+
+    <div class="accordion mb-4">
+      <div class="accordion-item">
+        <h2 class="accordion-header m-0" id="hhead-over">
+          <button class="accordion-button collapsed py-2" type="button" data-bs-toggle="collapse" data-bs-target="#hsec-over" aria-expanded="false" aria-controls="hsec-over">
+            <span class="h4 m-0">
+              <span aria-hidden="true" class="me-2">
+                <i class="fas fa-fw fa-door-open"></i>
+              </span>
+              Introduction
+            </span>
+          </button>
+        </h2>
+        <div id="hsec-over" class="accordion-collapse collapse" aria-labelledby="hhead-over">
+          <div class="accordion-body">
+            <p>
+              Welcome to your tool for career exploration and job analysis!
+            </p>
+            <p>
+              O*NET OnLine has detailed descriptions of the world of work for use by job seekers, workforce development and HR professionals, students, developers, researchers, and more!
+            </p>
+            <p>
+              Find, search, or browse across 900+ occupations based on your goals and needs. Then use comprehensive reports to learn about requirements, characteristics, and available opportunities for your selected occupation.
+            </p>
+            <p>
+              Take advantage of the customized <a href="/help/">OnLine Help</a> feature available throughout the site. Or, use the available <a href="/help/online/deskaid">Desk Aid</a>.
+            </p>
+            <p class="mb-0">
+              Build your future with O*NET OnLine!
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="accordion mb-4">
+    <form class="needs-validation" novalidate action="/find/result" method="GET">
+      <div class="accordion-item">
+        <h2 class="accordion-header m-0" id="hhead-keyword">
+          <button class="accordion-button py-2" type="button" data-bs-toggle="collapse" data-bs-target="#hsec-keyword" aria-expanded="true" aria-controls="hsec-keyword">
+            <span class="h4 m-0">
+              <span aria-hidden="true" class="me-2">
+                <i class="fas fa-fw fa-search"></i>
+              </span>
+              Occupation Keyword Search
+            </span>
+          </button>
+        </h2>
+        <div id="hsec-keyword" class="accordion-collapse collapse show" aria-labelledby="hhead-keyword">
+          <div class="accordion-body">
+            <label class="visually-hidden" for="keywordhome">Search by keyword or O*NET-SOC code</label>
+            <div class="input-group has-validation">
+              <span class="input-group-text"><i aria-hidden="true" class="fa fa-search"></i></span>
+              <input class="form-control" type="text" placeholder="dental assistant" name="s" id="keywordhome" required data-bs-toggle="dropdown" data-ac-toggle="autocomplete" data-ac-menu="keywordhome-autocomplete" data-ac-dataset="online" autocomplete="off">
+                <ul class="dropdown-menu autocomplete-menu " id="keywordhome-autocomplete" data-autocomplete-init="keywordhome" aria-labelledby="keywordhome">
+    <li class="prompt"><span class="dropdown-header">Type a title or code for matches</span></li>
+    <li class="notfound"><span class="dropdown-header">No quick matches found</span></li>
+    <li class="notfound"><button class="dropdown-item" type="submit">Search for keyword results</button></li>
+    <li class="result1"><a class="dropdown-item" href="#" data-root="/link/summary/"></a></li>
+    <li class="result2"><a class="dropdown-item" href="#" data-root="/link/summary/"></a></li>
+    <li class="result3"><a class="dropdown-item" href="#" data-root="/link/summary/"></a></li>
+    <li class="result4"><a class="dropdown-item" href="#" data-root="/link/summary/"></a></li>
+    <li class="result5"><a class="dropdown-item" href="#" data-root="/link/summary/"></a></li>
+  </ul>
+
+              <div class="invalid-feedback">Please enter a keyword or code.</div>
+            </div>
+            <div class="form-text">Examples: 25-1011.00, dental assistant</div>
+          </div>
+          <div class="accordion-body" style="padding: 0; margin: -1px">
+            <button class="btn btn-secondary w-100" style="border-top-left-radius: 0; border-top-right-radius: 0" type="submit">Search O*NET-SOC occupations<i aria-hidden="true" class="ms-2 fas fa-arrow-circle-right"></i></button>
+          </div>
+        </div>
+      </div>
+    </form>
+    </div>
+    
+    <div class="accordion mb-4">
+      <div class="accordion-item">
+        <h2 class="accordion-header m-0" id="hhead-find">
+          <button class="accordion-button py-2" type="button" data-bs-toggle="collapse" data-bs-target="#hsec-find" aria-expanded="true" aria-controls="hsec-find">
+            <span class="h4 m-0">
+              <span aria-hidden="true" class="me-2">
+                <i class="fas fa-fw fa-th-list"></i>
+              </span>
+              Find Occupations
+            </span>
+          </button>
+        </h2>
+        <div id="hsec-find" class="accordion-collapse collapse show" aria-labelledby="hhead-find">
+          <div class="accordion-body p-0">
+            <div class="accordion py-3" id="homebrowses"><div>
+  <div id="browsebrightHeader">
+    <button class="link-primary list-group-item list-group-item-action border-0 w-100 px-4 py-1" type="button" data-bs-toggle="collapse" data-bs-target="#browsebrightCollapse" aria-expanded="false" aria-controls="browsebrightCollapse">
+      Bright Outlook
+    </button>
+  </div>
+  <div class="accordion-collapse collapse" id="browsebrightCollapse" aria-labelledby="browsebrightHeader" data-bs-parent="#homebrowses">
+    <p class="pt-2 px-4">Bright Outlook occupations are expected to grow rapidly in the next several years, will have large numbers of job openings, or are new and emerging occupations.</p>
+    <form class="pb-3 px-4" action="/find/bright" method="GET">
+      <label class="visually-hidden" for="b-browsebright">Browse Bright Outlook occupations</label>
+      <div class="input-group">
+        <select name="b" id="b-browsebright" class="form-select">
+<option value="1" selected>Rapid Growth</option>
+<option value="2">Numerous Job Openings</option>
+<option value="3">New and Emerging</option>
+<option value="0">All Bright Outlook Occupations</option>
+</select>
+
+        <button class="btn btn-secondary" type="submit">Browse</button>
+      </div>
+    </form>
+  </div>
+</div>
+<div>
+  <div id="browsecareerHeader">
+    <button class="link-primary list-group-item list-group-item-action border-0 w-100 px-4 py-1" type="button" data-bs-toggle="collapse" data-bs-target="#browsecareerCollapse" aria-expanded="false" aria-controls="browsecareerCollapse">
+      Career Cluster
+    </button>
+  </div>
+  <div class="accordion-collapse collapse" id="browsecareerCollapse" aria-labelledby="browsecareerHeader" data-bs-parent="#homebrowses">
+    <p class="pt-2 px-4">The <a href="https://careertech.org/career-clusters/" target="_blank">National Career Clusters® Framework</a>
+<a href="/shared/exit?u=https%3A%2F%2Fcareertech.org%2Fcareer-clusters%2F&amp;t=National%20Career%20Clusters%C2%AE%20Framework&amp;c=5f6df" data-bs-toggle="modal" data-bs-toggle-extra="tooltip" data-bs-target="#ajaxModal" data-bs-placement="right" title="external site"><i class="fa fa-external-link-alt ms-1" style="font-size: 0.8em"></i><span class="visually-hidden">external site</span></a> serves as an organizing tool for programs, curriculum design and instruction. Career Clusters contain occupations in the same field of work that require similar skills. They can help focus plans towards obtaining the necessary knowledge, competencies, and training for success in a particular career pathway.</p>
+    <form class="pb-3 px-4" action="/find/career" method="GET">
+      <label class="visually-hidden" for="c-browsecareer">Browse by Career Cluster</label>
+      <div class="input-group">
+        <select name="c" id="c-browsecareer" class="form-select">
+<optgroup label="Building &amp; Moving">
+<option value="010100" selected>Advanced Manufacturing</option>
+<option value="010200">Construction</option>
+<option value="010300">Supply Chain &amp; Transportation</option>
+<optgroup label="Creating &amp; Experiencing">
+<option value="020100">Arts, Entertainment, &amp; Design</option>
+<option value="020200">Hospitality, Events, &amp; Tourism</option>
+<optgroup label="Investing in the Future">
+<option value="030100">Financial Services</option>
+<optgroup label="Caring for Communities">
+<option value="040100">Education</option>
+<option value="040200">Healthcare &amp; Human Services</option>
+<option value="040300">Public Service &amp; Safety</option>
+<optgroup label="Cultivating Resources">
+<option value="050100">Agriculture</option>
+<option value="050200">Energy &amp; Natural Resources</option>
+<optgroup label="Connecting &amp; Supporting Success">
+<option value="060100">Digital Technology</option>
+<option value="060200">Management &amp; Entrepreneurship</option>
+<option value="060300">Marketing &amp; Sales</option>
+</optgroup>
+<hr><option value="0">All Career Clusters</option>
+</select>
+
+        <button class="btn btn-secondary" type="submit">Browse</button>
+      </div>
+    </form>
+  </div>
+</div>
+<div>
+  <div id="browsehotHeader">
+    <button class="link-primary list-group-item list-group-item-action border-0 w-100 px-4 py-1" type="button" data-bs-toggle="collapse" data-bs-target="#browsehotCollapse" aria-expanded="false" aria-controls="browsehotCollapse">
+      Employer-Based Hot Technologies
+    </button>
+  </div>
+  <div class="accordion-collapse collapse" id="browsehotCollapse" aria-labelledby="browsehotHeader" data-bs-parent="#homebrowses">
+    <p class="pt-2 px-4">
+      Hot technologies are software skills frequently included in employer job postings.
+    </p>
+    <p class="px-4">
+      <a class="btn btn-secondary w-100" href="/search/hot_tech/">Discover hot technologies now<i aria-hidden="true" class="ms-2 fa fa-arrow-circle-right"></i></a>
+    </p>
+  </div>
+</div>
+<div>
+  <div id="browseindHeader">
+    <button class="link-primary list-group-item list-group-item-action border-0 w-100 px-4 py-1" type="button" data-bs-toggle="collapse" data-bs-target="#browseindCollapse" aria-expanded="false" aria-controls="browseindCollapse">
+      Industry
+    </button>
+  </div>
+  <div class="accordion-collapse collapse" id="browseindCollapse" aria-labelledby="browseindHeader" data-bs-parent="#homebrowses">
+    <p class="pt-2 px-4">Industries are broad groups of businesses or organizations with similar activities, products, or services.
+    Occupations are included based on the percentage of workers employed in that industry.</p>
+    <form class="pb-3 px-4" action="/find/industry" method="GET">
+      <label class="visually-hidden" for="i-browseind">Browse by Industry</label>
+      <div class="input-group">
+        <select name="i" id="i-browseind" class="form-select">
+<option value="72" selected>Accommodation and Food Services</option>
+<option value="56">Administrative and Support Services</option>
+<option value="11">Agriculture, Forestry, Fishing, and Hunting</option>
+<option value="71">Arts, Entertainment, and Recreation</option>
+<option value="23">Construction</option>
+<option value="61">Educational Services</option>
+<option value="52">Finance and Insurance</option>
+<option value="93">Government</option>
+<option value="62">Health Care and Social Assistance</option>
+<option value="51">Information</option>
+<option value="55">Management of Companies and Enterprises</option>
+<option value="31">Manufacturing</option>
+<option value="21">Mining, Quarrying, and Oil and Gas Extraction</option>
+<option value="81">Other Services (Except Public Administration)</option>
+<option value="54">Professional, Scientific, and Technical Services</option>
+<option value="53">Real Estate and Rental and Leasing</option>
+<option value="44">Retail Trade</option>
+<option value="48">Transportation and Warehousing</option>
+<option value="22">Utilities</option>
+<option value="42">Wholesale Trade</option>
+<option value="0">All Industries</option>
+</select>
+
+        <button class="btn btn-secondary" type="submit">Browse</button>
+      </div>
+    </form>
+  </div>
+</div>
+<div>
+  <div id="browsefamilyHeader">
+    <button class="link-primary list-group-item list-group-item-action border-0 w-100 px-4 py-1" type="button" data-bs-toggle="collapse" data-bs-target="#browsefamilyCollapse" aria-expanded="false" aria-controls="browsefamilyCollapse">
+      Job Family
+    </button>
+  </div>
+  <div class="accordion-collapse collapse" id="browsefamilyCollapse" aria-labelledby="browsefamilyHeader" data-bs-parent="#homebrowses">
+    <p class="pt-2 px-4">Job Families are groups of occupations based on work performed, skills, education, training, and credentials.</p>
+    <form class="pb-3 px-4" action="/find/family" method="GET">
+      <label class="visually-hidden" for="f-browsefamily">Browse by Job Family</label>
+      <div class="input-group">
+        <select name="f" id="f-browsefamily" class="form-select">
+<option value="17" selected>Architecture and Engineering</option>
+<option value="27">Arts, Design, Entertainment, Sports, and Media</option>
+<option value="37">Building and Grounds Cleaning and Maintenance</option>
+<option value="13">Business and Financial Operations</option>
+<option value="21">Community and Social Service</option>
+<option value="15">Computer and Mathematical</option>
+<option value="47">Construction and Extraction</option>
+<option value="25">Educational Instruction and Library</option>
+<option value="45">Farming, Fishing, and Forestry</option>
+<option value="35">Food Preparation and Serving Related</option>
+<option value="29">Healthcare Practitioners and Technical</option>
+<option value="31">Healthcare Support</option>
+<option value="49">Installation, Maintenance, and Repair</option>
+<option value="23">Legal</option>
+<option value="19">Life, Physical, and Social Science</option>
+<option value="11">Management</option>
+<option value="55">Military Specific</option>
+<option value="43">Office and Administrative Support</option>
+<option value="39">Personal Care and Service</option>
+<option value="51">Production</option>
+<option value="33">Protective Service</option>
+<option value="41">Sales and Related</option>
+<option value="53">Transportation and Material Moving</option>
+<option value="0">All Job Families</option>
+</select>
+
+        <button class="btn btn-secondary" type="submit">Browse</button>
+      </div>
+    </form>
+  </div>
+</div>
+<div>
+  <div id="browsezoneHeader">
+    <button class="link-primary list-group-item list-group-item-action border-0 w-100 px-4 py-1" type="button" data-bs-toggle="collapse" data-bs-target="#browsezoneCollapse" aria-expanded="false" aria-controls="browsezoneCollapse">
+      Job Zone
+    </button>
+  </div>
+  <div class="accordion-collapse collapse" id="browsezoneCollapse" aria-labelledby="browsezoneHeader" data-bs-parent="#homebrowses">
+    <p class="pt-2 px-4">Job Zones group occupations into one of five categories based on levels of education, experience, and training necessary to perform the occupation.</p>
+    <form class="pb-3 px-4" action="/find/zone" method="GET">
+      <label class="visually-hidden" for="z-browsezone">Browse by Job Zone</label>
+      <div class="input-group">
+        <select name="z" id="z-browsezone" class="form-select">
+<option value="2" selected>1-2: Very Little to Some Preparation Needed</option>
+<option value="3">Three: Medium Preparation Needed</option>
+<option value="4">Four: Considerable Preparation Needed</option>
+<option value="5">Five: Extensive Preparation Needed</option>
+<option value="0">All Job Zones</option>
+</select>
+
+        <button class="btn btn-secondary" type="submit">Browse</button>
+      </div>
+    </form>
+  </div>
+</div>
+<div>
+  <div id="browsestemHeader">
+    <button class="link-primary list-group-item list-group-item-action border-0 w-100 px-4 py-1" type="button" data-bs-toggle="collapse" data-bs-target="#browsestemCollapse" aria-expanded="false" aria-controls="browsestemCollapse">
+      STEM
+    </button>
+  </div>
+  <div class="accordion-collapse collapse" id="browsestemCollapse" aria-labelledby="browsestemHeader" data-bs-parent="#homebrowses">
+    <p class="pt-2 px-4">Occupations are listed that require education in science, technology, engineering, and mathematics (STEM) disciplines.</p>
+    <form class="pb-3 px-4" action="/find/stem" method="GET">
+      <label class="visually-hidden" for="tc-browsestem">Browse STEM occupations</label>
+      <div class="input-group">
+        <select name="tc" id="tc-browsestem" class="form-select">
+<option value="4" selected>Managerial</option>
+<option value="3">Postsecondary Teaching</option>
+<option value="1">Research, Development, Design, and Practitioners</option>
+<option value="1-1">&nbsp;&nbsp; — Architecture and Engineering</option>
+<option value="1-2">&nbsp;&nbsp; — Computer and Mathematical</option>
+<option value="1-3">&nbsp;&nbsp; — Healthcare Practitioners and Technical</option>
+<option value="1-4">&nbsp;&nbsp; — Life, Physical, and Social Science</option>
+<option value="5">Sales</option>
+<option value="2">Technologists and Technicians</option>
+<option value="2-1">&nbsp;&nbsp; — Architecture and Engineering</option>
+<option value="2-2">&nbsp;&nbsp; — Computer and Mathematical</option>
+<option value="2-3">&nbsp;&nbsp; — Healthcare Practitioners and Technical</option>
+<option value="2-4">&nbsp;&nbsp; — Life, Physical, and Social Science</option>
+<option value="0">All STEM Occupations</option>
+</select>
+
+        <button class="btn btn-secondary" type="submit">Browse</button>
+      </div>
+    </form>
+  </div>
+</div>
+<div>
+  <div id="browseallHeader">
+    <button class="link-primary list-group-item list-group-item-action border-0 w-100 px-4 py-1" type="button" data-bs-toggle="collapse" data-bs-target="#browseallCollapse" aria-expanded="false" aria-controls="browseallCollapse">
+      All Occupations
+    </button>
+  </div>
+  <div class="accordion-collapse collapse" id="browseallCollapse" aria-labelledby="browseallHeader" data-bs-parent="#homebrowses">
+    <p class="pt-2 px-4">
+      There are 1,016 occupation titles and codes within the current O*NET system.
+    </p>
+    <p class="px-4">
+      <a class="btn btn-secondary w-100" href="/find/all">Find an occupation in the list<i aria-hidden="true" class="ms-2 fa fa-arrow-circle-right"></i></a>
+    </p>
+  </div>
+</div>
+</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="accordion mb-4">
+      <div class="accordion-item">
+        <h2 class="accordion-header m-0" id="hhead-advanced">
+          <button class="accordion-button py-2" type="button" data-bs-toggle="collapse" data-bs-target="#hsec-advanced" aria-expanded="true" aria-controls="hsec-advanced">
+            <span class="h4 m-0">
+              <span aria-hidden="true" class="me-2">
+                <i class="fas fa-fw fa-wrench"></i>
+              </span>
+              Advanced Searches
+            </span>
+          </button>
+        </h2>
+        <div id="hsec-advanced" class="accordion-collapse collapse show" aria-labelledby="hhead-advanced">
+          <div class="accordion-body p-0">
+            <div class="accordion py-3" id="homesearches"><div>
+  <div id="searchtaskHeader">
+    <button class="link-primary list-group-item list-group-item-action border-0 w-100 px-4 py-1" type="button" data-bs-toggle="collapse" data-bs-target="#searchtaskCollapse" aria-expanded="false" aria-controls="searchtaskCollapse">
+      Job Duties
+    </button>
+  </div>
+  <div class="accordion-collapse collapse" id="searchtaskCollapse" aria-labelledby="searchtaskHeader" data-bs-parent="#homesearches">
+    <p class="pt-2 px-4">
+  Use your job duties to find occupations that perform similar work. The search uses the O*NET database of over 19,000 occupation-specific task statements.
+</p>
+<form class="pb-3 px-4 needs-validation" novalidate action="/search/task/" method="GET">
+  <label class="form-label" for="s-searchtask">To begin, enter the title of your current occupation:</label>
+  <div class="input-group has-validation">
+    <input class="form-control" type="text" name="s" id="s-searchtask" placeholder="dental assistant" required data-bs-toggle="dropdown" data-ac-toggle="autocomplete" data-ac-menu="s-searchtask-autocomplete" data-ac-dataset="datalevel" autocomplete="off">
+      <ul class="dropdown-menu autocomplete-menu " id="s-searchtask-autocomplete" data-autocomplete-init="s-searchtask" aria-labelledby="s-searchtask">
+    <li class="prompt"><span class="dropdown-header">Type a title or code for matches</span></li>
+    <li class="notfound"><span class="dropdown-header">No quick matches found</span></li>
+    <li class="notfound"><button class="dropdown-item" type="submit">Search for keyword results</button></li>
+    <li class="result1"><a class="dropdown-item" href="#" data-root="/search/task/choose/"></a></li>
+    <li class="result2"><a class="dropdown-item" href="#" data-root="/search/task/choose/"></a></li>
+    <li class="result3"><a class="dropdown-item" href="#" data-root="/search/task/choose/"></a></li>
+    <li class="result4"><a class="dropdown-item" href="#" data-root="/search/task/choose/"></a></li>
+    <li class="result5"><a class="dropdown-item" href="#" data-root="/search/task/choose/"></a></li>
+  </ul>
+
+    <button class="btn btn-secondary" type="submit">Go</button>
+    <div class="invalid-feedback">Please enter a keyword or code.</div>
+  </div>
+</form>
+
+  </div>
+</div>
+<div>
+  <div id="searchassnHeader">
+    <button class="link-primary list-group-item list-group-item-action border-0 w-100 px-4 py-1" type="button" data-bs-toggle="collapse" data-bs-target="#searchassnCollapse" aria-expanded="false" aria-controls="searchassnCollapse">
+      Professional Associations
+    </button>
+  </div>
+  <div class="accordion-collapse collapse" id="searchassnCollapse" aria-labelledby="searchassnHeader" data-bs-parent="#homesearches">
+    <p class="pt-2 px-4">
+  Professional associations are a great source of additional information on jobs, specialties, and industries. They also serve as an excellent starting point for networking in your career of choice. Get seamless access to professional associations by searching the O*NET database of almost 3,000 organizations related to the occupations in the U.S. economy.
+</p>
+<form class="pb-3 px-4 needs-validation" novalidate action="/search/associations/" method="GET">
+  <label class="form-label" for="s-searchassn">To begin your search, enter the title of an occupation:</label>
+  <div class="input-group has-validation">
+    <input class="form-control" type="text" name="s" id="s-searchassn" placeholder="dental assistant" required data-bs-toggle="dropdown" data-ac-toggle="autocomplete" data-ac-menu="s-searchassn-autocomplete" data-ac-dataset="online" autocomplete="off">
+      <ul class="dropdown-menu autocomplete-menu " id="s-searchassn-autocomplete" data-autocomplete-init="s-searchassn" aria-labelledby="s-searchassn">
+    <li class="prompt"><span class="dropdown-header">Type a title or code for matches</span></li>
+    <li class="notfound"><span class="dropdown-header">No quick matches found</span></li>
+    <li class="notfound"><button class="dropdown-item" type="submit">Search for keyword results</button></li>
+    <li class="result1"><a class="dropdown-item" href="#" data-root="/search/associations/list/"></a></li>
+    <li class="result2"><a class="dropdown-item" href="#" data-root="/search/associations/list/"></a></li>
+    <li class="result3"><a class="dropdown-item" href="#" data-root="/search/associations/list/"></a></li>
+    <li class="result4"><a class="dropdown-item" href="#" data-root="/search/associations/list/"></a></li>
+    <li class="result5"><a class="dropdown-item" href="#" data-root="/search/associations/list/"></a></li>
+  </ul>
+
+    <button class="btn btn-secondary" type="submit">Go</button>
+    <div class="invalid-feedback">Please enter a keyword or code.</div>
+  </div>
+</form>
+
+  </div>
+</div>
+<div>
+  <div id="searchdwaHeader">
+    <button class="link-primary list-group-item list-group-item-action border-0 w-100 px-4 py-1" type="button" data-bs-toggle="collapse" data-bs-target="#searchdwaCollapse" aria-expanded="false" aria-controls="searchdwaCollapse">
+      Related Activities
+    </button>
+  </div>
+  <div class="accordion-collapse collapse" id="searchdwaCollapse" aria-labelledby="searchdwaHeader" data-bs-parent="#homesearches">
+    <p class="pt-2 px-4">
+  Use activities performed across different types of jobs to find occupations. The search uses the O*NET database of over 2,000 detailed work activities performed across a small to moderate number of occupations.
+</p>
+<form class="pb-3 px-4 needs-validation" novalidate action="/search/dwa/" method="GET">
+  <label class="form-label" for="s-searchdwa">To begin, enter the title of your current occupation:</label>
+  <div class="input-group has-validation">
+    <input class="form-control" type="text" name="s" id="s-searchdwa" placeholder="dental assistant" required data-bs-toggle="dropdown" data-ac-toggle="autocomplete" data-ac-menu="s-searchdwa-autocomplete" data-ac-dataset="datalevel" autocomplete="off">
+      <ul class="dropdown-menu autocomplete-menu " id="s-searchdwa-autocomplete" data-autocomplete-init="s-searchdwa" aria-labelledby="s-searchdwa">
+    <li class="prompt"><span class="dropdown-header">Type a title or code for matches</span></li>
+    <li class="notfound"><span class="dropdown-header">No quick matches found</span></li>
+    <li class="notfound"><button class="dropdown-item" type="submit">Search for keyword results</button></li>
+    <li class="result1"><a class="dropdown-item" href="#" data-root="/search/dwa/choose/"></a></li>
+    <li class="result2"><a class="dropdown-item" href="#" data-root="/search/dwa/choose/"></a></li>
+    <li class="result3"><a class="dropdown-item" href="#" data-root="/search/dwa/choose/"></a></li>
+    <li class="result4"><a class="dropdown-item" href="#" data-root="/search/dwa/choose/"></a></li>
+    <li class="result5"><a class="dropdown-item" href="#" data-root="/search/dwa/choose/"></a></li>
+  </ul>
+
+    <button class="btn btn-secondary" type="submit">Go</button>
+    <div class="invalid-feedback">Please enter a keyword or code.</div>
+ </div>
+</form>
+
+  </div>
+</div>
+<div>
+  <div id="searchskillssHeader">
+    <button class="link-primary list-group-item list-group-item-action border-0 w-100 px-4 py-1" type="button" data-bs-toggle="collapse" data-bs-target="#searchskillssCollapse" aria-expanded="false" aria-controls="searchskillssCollapse">
+      Soft Skills
+    </button>
+  </div>
+  <div class="accordion-collapse collapse" id="searchskillssCollapse" aria-labelledby="searchskillssHeader" data-bs-parent="#homesearches">
+    <p class="pt-2 px-4">
+  Many employers value workers with soft skills—interpersonal and thinking skills needed to interact successfully with people and to perform efficiently and effectively in the workplace.
+</p>
+<p class="px-4">
+  Find occupations using your current and/or future soft skills.
+</p>
+<p class="px-4">
+  <a class="btn btn-secondary w-100" href="/skills/soft/">Build your skills list now<i aria-hidden="true" class="ms-2 fa fa-arrow-circle-right"></i></a>
+</p>
+
+  </div>
+</div>
+<div>
+  <div id="searchtechHeader">
+    <button class="link-primary list-group-item list-group-item-action border-0 w-100 px-4 py-1" type="button" data-bs-toggle="collapse" data-bs-target="#searchtechCollapse" aria-expanded="false" aria-controls="searchtechCollapse">
+      Software Skills
+    </button>
+  </div>
+  <div class="accordion-collapse collapse" id="searchtechCollapse" aria-labelledby="searchtechHeader" data-bs-parent="#homesearches">
+    <p class="pt-2 px-4">
+  Find occupations using specific programs and applications for work tasks. Learn about the technology and related skills needed to successfully perform in today’s world of work.
+</p>
+<form class="pb-3 px-4" action="/search/tech/" method="GET">
+  <label class="form-label" for="s-searchtech">To begin, search for a software product or category:</label>
+  <div class="input-group">
+    <input class="form-control" type="text" name="s" id="s-searchtech" placeholder="Microsoft Excel">
+    <button class="btn btn-secondary" type="submit">Go</button>
+  </div>
+</form>
+
+  </div>
+</div>
+</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="accordion mb-4">
+      <div class="accordion-item">
+        <h2 class="accordion-header m-0" id="hhead-odata">
+          <button class="accordion-button py-2" type="button" data-bs-toggle="collapse" data-bs-target="#hsec-odata" aria-expanded="true" aria-controls="hsec-odata">
+            <span class="h4 m-0">
+              <span aria-hidden="true" class="me-2">
+                <i class="fas fa-fw fa-book-open"></i>
+              </span>
+              Browse by O*NET Data
+            </span>
+          </button>
+        </h2>
+        <div id="hsec-odata" class="accordion-collapse collapse show" aria-labelledby="hhead-odata">
+          <div class="accordion-body p-0">
+
+            <div class="list-group list-group-flush my-3" style="border-left: solid 5px #C5AACD">
+              <h6 class="list-group-item px-4 pt-1 pb-0 border-0" style="color: #6F2C83">Occupational Requirements</h6>
+              <a href="/find/descriptor/browse/4.A" class="link-primary list-group-item list-group-item-action px-4 py-1 border-0  bg-transparent">Work Activities</a>
+              <a href="/find/descriptor/browse/4.C" class="link-primary list-group-item list-group-item-action px-4 py-1 border-0  bg-transparent">Work Context</a>
+            </div>
+            <div class="list-group list-group-flush my-4" style="border-left: solid 5px #CBBBAA">
+              <h6 class="list-group-item px-4 pt-1 pb-0 border-0" style="color: #7F582D">Worker Requirements</h6>
+              <a href="/find/descriptor/browse/2.E" class="link-primary list-group-item list-group-item-action px-4 py-1 border-0 bg-transparent">Software Skills</a>
+              <a href="/find/descriptor/browse/2.A" class="link-primary list-group-item list-group-item-action px-4 py-1 border-0 bg-transparent">Essential Skills</a>
+              <a href="/find/descriptor/browse/2.B" class="link-primary list-group-item list-group-item-action px-4 py-1 border-0 bg-transparent">Transferable Skills</a>
+              <a href="/find/descriptor/browse/2.C" class="link-primary list-group-item list-group-item-action px-4 py-1 border-0 bg-transparent">Knowledge</a>
+            </div>
+            <div class="list-group list-group-flush my-3" style="border-left: solid 5px #D3ACAB">
+              <h6 class="list-group-item px-4 pt-1 pb-0 border-0" style="color: #93312F">Worker Characteristics</h6>
+              <a href="/find/descriptor/browse/1.A" class="link-primary list-group-item list-group-item-action px-4 py-1 border-0 bg-transparent">Abilities</a>
+              <a href="/find/descriptor/browse/1.B.1" class="link-primary list-group-item list-group-item-action px-4 py-1 border-0 bg-transparent">Career Interest Types</a>
+              <a href="/find/descriptor/browse/1.B.3" class="link-primary list-group-item list-group-item-action px-4 py-1 border-0 bg-transparent">Specific Interest Areas</a>
+              <a href="/find/descriptor/browse/1.D" class="link-primary list-group-item list-group-item-action px-4 py-1 border-0 bg-transparent">Work Styles</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="accordion mb-4">
+      <div class="accordion-item">
+        <h2 class="accordion-header m-0" id="hhead-walk">
+          <button class="accordion-button py-2" type="button" data-bs-toggle="collapse" data-bs-target="#hsec-walk" aria-expanded="true" aria-controls="hsec-walk">
+            <span class="h4 m-0">
+              <span aria-hidden="true" class="me-2">
+                <i class="fas fa-fw fa-walking"></i>
+              </span>
+              Crosswalks
+            </span>
+          </button>
+        </h2>
+        <div id="hsec-walk" class="accordion-collapse collapse show" aria-labelledby="hhead-walk">
+          <div class="accordion-body p-0" id="homewalkAccordion">
+            <div class="accordion py-3" id="homewalks"><div>
+  <div id="walkMOCHeader">
+    <button class="link-primary list-group-item list-group-item-action border-0 w-100 px-4 py-1" type="button" data-bs-toggle="collapse" data-bs-target="#walkMOCCollapse" aria-expanded="false" aria-controls="walkMOCCollapse">
+      Military
+    </button>
+  </div>
+  <div class="accordion-collapse collapse" id="walkMOCCollapse" aria-labelledby="walkMOCHeader" data-bs-parent="#homewalks">
+    <form class="pt-2 pb-3 px-4" action="/crosswalk/MOC/" method="GET">
+      <label class="form-label" for="s-walkMOC">Military Occupational Classification code or title</label>
+      <label class="visually-hidden" for="walkmocb">Filter military branch:</label>
+      <select class="form-select milbranch mb-1" name="b" id="walkmocb">
+        <option value="" selected>Select a branch:</option>
+        <option value="N">Navy (Ratings)</option>
+        <option value="F">Air Force (AFSC)</option>
+        <option value="A">Army (MOS)</option>
+        <option value="C">Coast Guard (Ratings)</option>
+        <option value="M">Marine Corps (MOS)</option>
+        <option value="H">Space Force (SFSC)</option>
+      </select>
+      <div class="input-group">
+        <input class="form-control milsearch" type="text" name="s" id="s-walkMOC" placeholder="0963" data-placeholder="0963" data-placeholder-f="11K3A" data-placeholder-a="15W" data-placeholder-c="56" data-placeholder-m="7314" data-placeholder-n="2445" data-placeholder-h="5S071">
+        <button class="btn btn-secondary" type="submit">Go</button>
+      </div>
+    </form>
+  </div>
+</div>
+<div>
+  <div id="walkCIPHeader">
+    <button class="link-primary list-group-item list-group-item-action border-0 w-100 px-4 py-1" type="button" data-bs-toggle="collapse" data-bs-target="#walkCIPCollapse" aria-expanded="false" aria-controls="walkCIPCollapse">
+      Education
+    </button>
+  </div>
+  <div class="accordion-collapse collapse" id="walkCIPCollapse" aria-labelledby="walkCIPHeader" data-bs-parent="#homewalks">
+    <form class="pt-2 pb-3 px-4" action="/crosswalk/CIP/" method="GET">
+      <label class="form-label" for="s-walkCIP">Classification of Instructional Programs 2020 code or title</label>
+      <div class="input-group">
+        <input class="form-control" type="text" name="s" id="s-walkCIP" placeholder="advertising">
+        <button class="btn btn-secondary" type="submit">Go</button>
+      </div>
+    </form>
+  </div>
+</div>
+<div>
+  <div id="walkOOHHeader">
+    <button class="link-primary list-group-item list-group-item-action border-0 w-100 px-4 py-1" type="button" data-bs-toggle="collapse" data-bs-target="#walkOOHCollapse" aria-expanded="false" aria-controls="walkOOHCollapse">
+      Occupation Handbook
+    </button>
+  </div>
+  <div class="accordion-collapse collapse" id="walkOOHCollapse" aria-labelledby="walkOOHHeader" data-bs-parent="#homewalks">
+    <form class="pt-2 pb-3 px-4" action="/crosswalk/OOH/" method="GET">
+      <label class="form-label" for="s-walkOOH">Occupational Outlook Handbook title</label>
+      <div class="input-group">
+        <input class="form-control" type="text" name="s" id="s-walkOOH" placeholder="education administrator">
+        <button class="btn btn-secondary" type="submit">Go</button>
+      </div>
+    </form>
+  </div>
+</div>
+<div>
+  <div id="walkSOCHeader">
+    <button class="link-primary list-group-item list-group-item-action border-0 w-100 px-4 py-1" type="button" data-bs-toggle="collapse" data-bs-target="#walkSOCCollapse" aria-expanded="false" aria-controls="walkSOCCollapse">
+      SOC
+    </button>
+  </div>
+  <div class="accordion-collapse collapse" id="walkSOCCollapse" aria-labelledby="walkSOCHeader" data-bs-parent="#homewalks">
+    <form class="pt-2 pb-3 px-4" action="/crosswalk/SOC/" method="GET">
+      <label class="form-label" for="s-walkSOC">2018 Standard Occupational Classification code or title</label>
+      <div class="input-group">
+        <input class="form-control" type="text" name="s" id="s-walkSOC" placeholder="39-6011">
+        <button class="btn btn-secondary" type="submit">Go</button>
+      </div>
+    </form>
+  </div>
+</div>
+<div>
+  <div id="walkDOTHeader">
+    <button class="link-primary list-group-item list-group-item-action border-0 w-100 px-4 py-1" type="button" data-bs-toggle="collapse" data-bs-target="#walkDOTCollapse" aria-expanded="false" aria-controls="walkDOTCollapse">
+      DOT
+    </button>
+  </div>
+  <div class="accordion-collapse collapse" id="walkDOTCollapse" aria-labelledby="walkDOTHeader" data-bs-parent="#homewalks">
+    <form class="pt-2 pb-3 px-4" action="/crosswalk/DOT/" method="GET">
+      <label class="form-label" for="s-walkDOT">Dictionary of Occupational Titles code or title</label>
+      <div class="input-group">
+        <input class="form-control" type="text" name="s" id="s-walkDOT" placeholder="865.131-010">
+        <button class="btn btn-secondary" type="submit">Go</button>
+      </div>
+    </form>
+  </div>
+</div>
+<div>
+  <div id="walkRAPIDSHeader">
+    <button class="link-primary list-group-item list-group-item-action border-0 w-100 px-4 py-1" type="button" data-bs-toggle="collapse" data-bs-target="#walkRAPIDSCollapse" aria-expanded="false" aria-controls="walkRAPIDSCollapse">
+      RAPIDS
+    </button>
+  </div>
+  <div class="accordion-collapse collapse" id="walkRAPIDSCollapse" aria-labelledby="walkRAPIDSHeader" data-bs-parent="#homewalks">
+    <form class="pt-2 pb-3 px-4" action="/crosswalk/RAPIDS/" method="GET">
+      <label class="form-label" for="s-walkRAPIDS">Registered Apprenticeship Partners Information Data System code or title</label>
+      <div class="input-group">
+        <input class="form-control" type="text" name="s" id="s-walkRAPIDS" placeholder="glass blower">
+        <button class="btn btn-secondary" type="submit">Go</button>
+      </div>
+    </form>
+  </div>
+</div>
+<div>
+  <div id="walkESCOHeader">
+    <button class="link-primary list-group-item list-group-item-action border-0 w-100 px-4 py-1" type="button" data-bs-toggle="collapse" data-bs-target="#walkESCOCollapse" aria-expanded="false" aria-controls="walkESCOCollapse">
+      ESCO
+    </button>
+  </div>
+  <div class="accordion-collapse collapse" id="walkESCOCollapse" aria-labelledby="walkESCOHeader" data-bs-parent="#homewalks">
+    <form class="pt-2 pb-3 px-4" action="/crosswalk/ESCO/" method="GET">
+      <label class="form-label" for="s-walkESCO">European Skills, Competences, Qualifications and Occupations code or title</label>
+      <div class="input-group">
+        <input class="form-control" type="text" name="s" id="s-walkESCO" placeholder="spot welder">
+        <button class="btn btn-secondary" type="submit">Go</button>
+      </div>
+    </form>
+  </div>
+</div>
+</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+  </div>
+  
+  <div class="col-12 col-md-6">
+    <div class="rounded-3 mb-4 position-relative ratio ratio-21x9" style="overflow: hidden; max-height: 12em">
+      <div class="w-100 h-100 d-flex align-items-center bg-light">
+        <img class="img-fluid" aria-hidden="true" src="/image/homepage/pictures.png">
+        <h1 class="h2 py-3 px-4 m-0 w-100 position-absolute bottom-0" style="background-color: rgba(255, 255, 255, 0.8)">More career sites &amp; resources</h1>
+      </div>
+    </div>
+    
+    <div class="card mb-4" style="border-color: #681784">
+      <div class="card-header h4" style="color: #681784">
+        <div class="d-flex align-items-center">
+          <span aria-hidden="true" class="flex-shrink-0">
+            <i class="fas fa-user" data-fa-transform="shrink-7" data-fa-mask="fas fa-square"></i>
+          </span>
+          <span class="flex-grow-1 text-center">”I want to be a...“</span>
+          <span aria-hidden="true" class="flex-shrink-0" style="width: 1em"></span>
+        </div>
+      </div>
+      <div class="card-body">
+        Start the career you've dreamed about, or find one you never imagined. Discover your interests with the <a href="https://onetinterestprofiler.org/">O*NET Interest Profiler</a> and find more exploration options at <a href="https://www.mynextmove.org/">My Next Move</a>.
+      </div>
+      <div class="card-footer text-center position-relative" style="background: #681784">
+        <a href="https://www.mynextmove.org/" class="stretched-link text-white text-decoration-none">Find your career at My Next Move<i aria-hidden="true" class="ms-2 fas fa-arrow-circle-right"></i></a>
+      </div>
+    </div>
+    
+    <div class="card mb-4" style="border-color: #576C50">
+      <div class="card-header h4" style="color: #576C50">
+        <div class="d-flex align-items-center">
+          <span aria-hidden="true" class="flex-shrink-0">
+            <i class="fas fa-star" data-fa-transform="shrink-7" data-fa-mask="fas fa-square"></i>
+          </span>
+          <span class="flex-grow-1 text-center">ATTN: VETERANS</span>
+          <span aria-hidden="true" class="flex-shrink-0" style="width: 1em"></span>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="mb-3">
+          Put your military skills and experience to work in civilian life.
+        </div>
+        
+        <form action="https://www.mynextmove.org/vets/find/military" method="GET">
+          <label class="visually-hidden" for="milb">Select your military branch:</label>
+          <select class="form-select milbranch mb-2" name="b" id="milb">
+            <option value="">Select a branch:</option>
+            <option value="N">Navy (Ratings)</option>
+            <option value="F">Air Force (AFSC)</option>
+            <option value="A" selected>Army (MOS)</option>
+            <option value="C">Coast Guard (Ratings)</option>
+            <option value="M">Marine Corps (MOS)</option>
+          </select>
+          <label class="visually-hidden" for="mils">Enter your military occupation code:</label>
+          <div class="input-group">
+            <span class="input-group-text"><i aria-hidden="true" class="fa fa-search"></i></span>
+            <input class="form-control milsearch" type="text" name="s" id="mils" placeholder="0963" data-placeholder="0963" data-placeholder-f="11K3A" data-placeholder-a="15W" data-placeholder-c="56" data-placeholder-m="7314" data-placeholder-n="2445" data-placeholder-h="5S071">
+            <button class="btn btn-secondary" style="background: #576C50" type="submit">Go</button>
+          </div>
+        </form>
+      </div>
+      <div class="card-footer text-center position-relative" style="background: #576C50">
+        <a href="https://www.mynextmove.org/vets/" class="stretched-link text-white text-decoration-none">Learn more at My Next Move for Veterans<i aria-hidden="true" class="ms-2 fa fa-arrow-circle-right"></i></a>
+      </div>
+    </div>
+    
+    <div class="card mb-4" style="border-color: #495C7F">
+      <div class="card-header h4" style="color: #495C7F">
+        <div class="d-flex align-items-center">
+          <span aria-hidden="true" class="flex-shrink-0">
+            <i class="fas fa-globe-americas"></i>
+          </span>
+          <span class="flex-grow-1 text-center">¿Habla español?</span>
+          <span aria-hidden="true" class="flex-shrink-0" style="width: 1em"></span>
+        </div>
+      </div>
+      <div class="card-body">
+        <a href="https://www.miproximopaso.org/">Mi Próximo Paso</a> incluye tareas, aptitudes, información sobre salarios y más de 900 carreras diferentes.
+      </div>
+      <div class="card-footer text-center position-relative" style="background: #495C7F">
+        <a href="https://www.miproximopaso.org/" class="stretched-link text-white text-decoration-none">Visite Mi Próximo Paso<i aria-hidden="true" class="ms-2 fas fa-arrow-circle-right"></i></a>
+      </div>
+    </div>
+        
+    <div class="card mb-4" style="border-color: #048">
+      <div class="card-header h4" style="color: #048">
+        <div class="d-flex align-items-center">
+          <img class="flex-shrink-0" style="height: 1.2em" src="/shared/image/logos/onet_p.svg" aria-hidden="true">
+          <span class="flex-grow-1 text-center">O*NET Resource Center</span>
+          <span aria-hidden="true" class="flex-shrink-0" style="width: 1.2em">
+          </span>
+        </div>
+      </div>
+      <div class="card-body">
+        <p>
+          Our O*NET information portal has data and tools for workforce professionals and developers, including:
+        </p>
+        <ul class="list-unstyled ps-3">
+          <li class="mb-1"><a href="https://www.onetcenter.org/database.html#individual-files">Current O*NET data files</a></li>
+          <li class="mb-1"><a href="https://www.onetcenter.org/IP.html">Interest Profiler</a></li>
+          <li class="mb-1"><a href="https://www.onetcenter.org/license_agreements.html">License agreements</a></li>
+          <li class="mb-1"><a href="https://www.onetcenter.org/content.html">O*NET Content Model</a></li>
+          <li class="mb-1"><a href="https://www.onetcenter.org/taxonomy.html">O*NET-SOC occupation taxonomy</a></li>
+          <li class="mb-1"><a href="https://www.onetcenter.org/references.html">References</a></li>
+          <li class="mb-1"><a href="https://www.onetcenter.org/research.html">Reports and documents</a></li>
+          <li class="mb-1"><a href="https://services.onetcenter.org/">Web Services</a></li>
+        </ul>
+        <p>
+          Find more options on the <a href="https://www.onetcenter.org/" title="O*NET Resource Center home page">home page</a>, or search the site:
+        </p>
+        <form class="needs-validation" novalidate action="https://www.onetcenter.org/search" method="GET" target="_blank">
+            <label class="visually-hidden" for="rchome">Search the O*NET Resource Center</label>
+          <div class="input-group has-validation">
+            <span class="input-group-text"><i aria-hidden="true" class="fa fa-search"></i></span>
+            <input class="form-control" type="text" placeholder="Search the Resource Center" name="s" id="rchome" required>
+            <button class="btn btn-secondary" type="submit">Go</button>
+            <div class="invalid-feedback">Please enter a search term.</div>
+          </div>
+        </form>
+        
+      </div>
+      <div class="card-footer text-center position-relative" style="background: #048">
+        <a href="https://www.onetcenter.org/" class="stretched-link text-white text-decoration-none">Visit the O*NET Resource Center<i aria-hidden="true" class="ms-2 fa fa-arrow-circle-right"></i></a>
+      </div>
+    </div>
+
+    <div class="card mb-4" style="border-color: #783317">
+      <div class="card-header h4" style="color: #783317">
+        <div class="d-flex align-items-center">
+          <span aria-hidden="true" class="flex-shrink-0">
+            <i class="fas fa-newspaper"></i>
+          </span>
+          <span class="flex-grow-1 text-center">O*NET Updates</span>
+          <span aria-hidden="true" class="flex-shrink-0" style="width: 1.2em">
+          </span>
+        </div>
+      </div>
+      <div class="card-body">
+        <p>
+          Stay up to date with product releases, new features, database updates, and other important O*NET project developments.
+        </p>
+        <div class="d-flex justify-content-center fs-1">
+          <div class="px-3">
+            <a href="https://www.onetcenter.org/follow/mailing-list" target="_blank"><i aria-hidden="true" class="fas fa-envelope-square" style="color: #9B9B9B" title="Email"></i><span class="visually-hidden">O*NET Updates mailing list</span></a>
+          </div>
+          <div class="px-3">
+            <a href="https://www.onetcenter.org/follow/facebook" target="_blank"><i aria-hidden="true" class="fab fa-facebook-square" style="color: #435A94" title="Facebook"></i><span class="visually-hidden">O*NET Updates on Facebook</span></a>
+          </div>
+          <div class="px-3">
+            <a href="https://www.onetcenter.org/follow/twitter" target="_blank"><i aria-hidden="true" class="fab fa-square-x-twitter" style="color: #000000" title="X"></i><span class="visually-hidden">O*NET Updates on X</span></a>
+          </div>
+        </div>
+    </div>
+
+  </div>
+</div>
+<!-- end content -->
+      </div>
+<nav class="navbar mt-3 mb-3 px-2 navbar-expand-md navbar-light bg-light d-print-none">
+  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropup" aria-controls="navbarNavDropup" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <form class="form-inline d-md-none" action="/find/quick" method="GET" >
+    <div class="input-group">
+      <input type="text" id="headersearchsm" name="s" class="form-control" placeholder="electrician" aria-label="Occupation keyword search" data-bs-toggle="dropdown" data-ac-toggle="autocomplete" data-ac-menu="headersearchsm-autocomplete" data-ac-dataset="online" autocomplete="off">
+        <ul class="dropdown-menu autocomplete-menu dropdown-menu-end" id="headersearchsm-autocomplete" data-autocomplete-init="headersearchsm" aria-labelledby="headersearchsm">
+    <li class="prompt"><span class="dropdown-header">Type a title or code for matches</span></li>
+    <li class="notfound"><span class="dropdown-header">No quick matches found</span></li>
+    <li class="notfound"><button class="dropdown-item" type="submit">Search for keyword results</button></li>
+    <li class="result1"><a class="dropdown-item" href="#" data-root="/link/summary/"></a></li>
+    <li class="result2"><a class="dropdown-item" href="#" data-root="/link/summary/"></a></li>
+    <li class="result3"><a class="dropdown-item" href="#" data-root="/link/summary/"></a></li>
+    <li class="result4"><a class="dropdown-item" href="#" data-root="/link/summary/"></a></li>
+    <li class="result5"><a class="dropdown-item" href="#" data-root="/link/summary/"></a></li>
+  </ul>
+
+      <button type="submit" class="btn btn-secondary">Go</button>
+    </div>
+  </form>
+  <div class="collapse navbar-collapse" id="navbarNavDropup">
+    <ul class="navbar-nav me-auto">
+      <li class="nav-item dropup">
+        <a class="nav-link dropdown-toggle" href="" id="navDropupHelp" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Help</a>
+        <div class="dropdown-menu" aria-labelledby="navDropupHelp">
+          <a class="dropdown-item" href="/help/">OnLine Help</a>
+          <a class="dropdown-item" href="https://www.onetcenter.org/overview.html">About O*NET</a>
+          <a class="dropdown-item" href="/help/online/deskaid">OnLine Desk Aid</a>
+          <a class="dropdown-item" href="/help/job_coding">Job-Coding Guide</a>
+          <a class="dropdown-item" href="/shared/jobhelp_resp">Job Seeker Help</a>
+          <a class="dropdown-item" href="https://www.onetcenter.org/links.html">Related Sites</a>
+          <a class="dropdown-item" href="/">Home</a>
+        </div>
+      </li>
+      <li class="nav-item dropup">
+        <a class="nav-link dropdown-toggle" href="" id="navDropupFindOccupations" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Find Occupations</a>
+        <div class="dropdown-menu" aria-labelledby="navDropupFindOccupations">
+          <a class="dropdown-item" href="/find/bright">Bright Outlook</a>
+          <a class="dropdown-item" href="/find/career">Career Cluster</a>
+          <a class="dropdown-item" href="/search/hot_tech/">Hot Technologies</a>
+          <a class="dropdown-item" href="/find/industry">Industry</a>
+          <a class="dropdown-item" href="/find/family">Job Family</a>
+          <a class="dropdown-item" href="/find/zone">Job Zone</a>
+          <a class="dropdown-item" href="/find/stem">STEM</a>
+          <a class="dropdown-item" href="/find/all">All Occupations</a>
+        </div>
+      </li>
+      <li class="nav-item dropup">
+        <a class="nav-link dropdown-toggle" href="" id="navDropupAdvancedSearches" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Advanced Searches</a>
+        <div class="dropdown-menu" aria-labelledby="navDropupAdvancedSearches">
+          <a class="dropdown-item" href="/search/task/">Job Duties</a>
+          <a class="dropdown-item" href="/search/associations/">Professional Associations</a>
+          <a class="dropdown-item" href="/search/dwa/">Related Activities</a>
+          <a class="dropdown-item" href="/skills/soft/">Soft Skills</a>
+          <a class="dropdown-item" href="/search/tech/">Software Skills</a>
+        </div>
+      </li>
+      <li class="nav-item dropup">
+        <a class="nav-link dropdown-toggle" href="" id="navDropupONETData" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">O*NET Data</a>
+        <div class="dropdown-menu" aria-labelledby="navDropupONETData">
+          <div class="dropdown-header">Occupational Requirements</div>
+          <a class="dropdown-item" href="/find/descriptor/browse/4.A">Work Activities</a>
+          <a class="dropdown-item" href="/find/descriptor/browse/4.C">Work Context</a>
+          <div class="dropdown-divider"></div>
+          <div class="dropdown-header">Worker Requirements</div>
+          <a class="dropdown-item" href="/find/descriptor/browse/2.E">Software Skills</a>
+          <a class="dropdown-item" href="/find/descriptor/browse/2.A">Essential Skills</a>
+          <a class="dropdown-item" href="/find/descriptor/browse/2.B">Transferable Skills</a>
+          <a class="dropdown-item" href="/find/descriptor/browse/2.C">Knowledge</a>
+          <div class="dropdown-divider"></div>
+          <div class="dropdown-header">Worker Characteristics</div>
+          <a class="dropdown-item" href="/find/descriptor/browse/1.A">Abilities</a>
+          <a class="dropdown-item" href="/find/descriptor/browse/1.B.1">Career Interest Types</a>
+          <a class="dropdown-item" href="/find/descriptor/browse/1.B.3">Specific Interest Areas</a>
+          <a class="dropdown-item" href="/find/descriptor/browse/1.D">Work Styles</a>
+        </div>
+      </li>
+      <li class="nav-item dropup">
+        <a class="nav-link dropdown-toggle" href="" id="navDropupCrosswalks" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Crosswalks</a>
+        <div class="dropdown-menu" aria-labelledby="navDropupCrosswalks">
+          <a class="dropdown-item" href="/crosswalk/MOC/">Military</a>
+          <a class="dropdown-item" href="/crosswalk/CIP/">Education</a>
+          <a class="dropdown-item" href="/crosswalk/OOH/">Occupation Handbook</a>
+          <a class="dropdown-item" href="/crosswalk/SOC/">SOC</a>
+          <a class="dropdown-item" href="/crosswalk/DOT/">DOT</a>
+          <a class="dropdown-item" href="/crosswalk/RAPIDS/">RAPIDS</a>
+          <a class="dropdown-item" href="/crosswalk/ESCO/">ESCO</a>
+        </div>
+      </li>
+    </ul>
+    <ul class="navbar-nav">
+    <ul class="navbar-nav">
+      <li class="nav-item dropup">
+        <a class="nav-link dropdown-toggle" href="https://www.onetcenter.org/sites.html" id="navDropupSites" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Sites</a>
+        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navDropupSites">
+          <a class="dropdown-item" href="https://onetinterestprofiler.org/">O*NET Interest Profiler</a>
+          <a class="dropdown-item" href="https://www.mynextmove.org/">My Next Move</a>
+          <a class="dropdown-item" href="https://www.miproximopaso.org/">Mi Próximo Paso</a>
+          <a class="dropdown-item" href="https://www.mynextmove.org/vets/">My Next Move for Veterans</a>
+          <a class="dropdown-item" href="https://www.onetcenter.org/">Resource Center</a>
+          <a class="dropdown-item" href="https://services.onetcenter.org/">O*NET Web Services</a>
+          <div class="dropdown-divider"></div>
+          <div class="dropdown-header">Partner sites</div>
+          <a class="dropdown-item" href="https://onet.rti.org/">Data Collection Program</a>
+          <a class="dropdown-item" href="https://www.doleta.gov/programs/onet/eta_default.cfm">U.S. Department of Labor</a>
+          <a class="dropdown-item" href="https://www.onetcenter.org/links.html">Related Sites</a>
+        <div>
+      </li>
+    </ul>
+  </div>
+</nav>
+      <div id="foot" class="d-print-none">
+        <div class="row" style="font-size: 0.875rem">
+          <div class="col-md-4 text-center mt-2 mb-2">
+            <div class="d-flex justify-content-center align-items-center linkline">
+  <div>Was this page helpful?</div>  <button class="rate-this-page image-button ms-2" style="font-size: 2rem" data-bs-toggle="tooltip" title="Yes, it was helpful" data-completed-title="Thank you for your feedback." data-bs-content="&lt;div class=&quot;mb-3&quot;&gt;
+  &lt;div class=&quot;form-control-plaintext&quot;&gt;Can we make this page even better?&lt;/div&gt;
+  &lt;textarea class=&quot;feedback-message form-control&quot; rows=&quot;3&quot; aria-label=&quot;Can we make this page even better?&quot;&gt;&lt;/textarea&gt;
+&lt;/div&gt;
+&lt;div class=&quot;row&quot;&gt;
+  &lt;div class=&quot;col&quot;&gt;
+    &lt;button class=&quot;btn btn-sm btn-success w-100 feedback-button&quot;&gt;Send&lt;/button&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;col&quot;&gt;
+    &lt;button class=&quot;btn btn-sm btn-secondary w-100 close-button&quot;&gt;Close&lt;/button&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+" data-rate-url="/shared/rate_resp" data-page-url="https://www.onetonline.org/" data-page-title="O*NET OnLine" data-helpful="y"><span class="visually-hidden">Yes, it was helpful</span><i class="fakd fa-square-thumbs-up"></i></button>
+  <button class="rate-this-page image-button ms-2" style="font-size: 2rem" data-bs-toggle="tooltip" title="No, it was not helpful" data-completed-title="Thank you for your feedback." data-bs-content="&lt;div class=&quot;mb-3&quot;&gt;
+  &lt;div class=&quot;form-control-plaintext&quot;&gt;How can we make this page better?&lt;/div&gt;
+  &lt;textarea class=&quot;feedback-message form-control&quot; rows=&quot;3&quot; aria-label=&quot;How can we make this page better?&quot;&gt;&lt;/textarea&gt;
+&lt;/div&gt;
+&lt;div class=&quot;row&quot;&gt;
+  &lt;div class=&quot;col&quot;&gt;
+    &lt;button class=&quot;btn btn-sm btn-success w-100 feedback-button&quot;&gt;Send&lt;/button&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;col&quot;&gt;
+    &lt;button class=&quot;btn btn-sm btn-secondary w-100 close-button&quot;&gt;Close&lt;/button&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+" data-rate-url="/shared/rate_resp" data-page-url="https://www.onetonline.org/" data-page-title="O*NET OnLine" data-helpful="n"><span class="visually-hidden">No, it was not helpful</span><i class="fakd fa-square-thumbs-down"></i></button>
+
+</div>
+<div class="linkline">
+  <a href="/shared/jobhelp_resp?from=footer" data-bs-toggle="modal" data-bs-target="#ajaxModal">Job Seeker Help</a> &bull; <a href="/shared/contact_resp?from=footer&amp;u=https%3A%2F%2Fwww.onetonline.org%2F&amp;t=O%2ANET%20OnLine" data-bs-toggle="modal" data-bs-target="#ajaxModal">Contact Us</a>
+</div>
+
+          </div>
+          <div class="col-md-4 text-center mt-2 mb-2">
+            <div class="d-flex justify-content-center align-items-center linkline">
+  <div>Share:</div>    <a href="https://www.onetcenter.org/share/f?u=https%3A%2F%2Fwww.onetonline.org%2F&amp;t=O%2ANET%20OnLine" target="_blank" class="ms-2" style="font-size: 2rem"><span class="visually-hidden">Facebook</span><i class="fab fa-square-facebook" title="Share on Facebook"></i></a>
+    <a href="https://www.onetcenter.org/share/t?u=https%3A%2F%2Fwww.onetonline.org%2F&amp;t=O%2ANET%20OnLine" target="_blank" class="ms-2" style="font-size: 2rem"><span class="visually-hidden">X</span><i class="fab fa-square-x-twitter" title="Share on X"></i></a>
+    <a href="https://www.onetcenter.org/share/i?u=https%3A%2F%2Fwww.onetonline.org%2F&amp;t=O%2ANET%20OnLine" target="_blank" class="ms-2" style="font-size: 2rem"><span class="visually-hidden">LinkedIn</span><i class="fab fa-square-linkedin" title="Share on LinkedIn"></i></a>
+    <a href="https://www.onetcenter.org/share/r?u=https%3A%2F%2Fwww.onetonline.org%2F&amp;t=O%2ANET%20OnLine" target="_blank" class="ms-2" style="font-size: 2rem"><span class="visually-hidden">Reddit</span><i class="fab fa-square-reddit" title="Share on Reddit"></i></a>
+    <a href="mailto:?body=https%3A%2F%2Fwww.onetonline.org%2F&amp;subject=O%2ANET%20OnLine" target="_blank" class="ms-2" style="font-size: 2rem"><span class="visually-hidden">Email</span><i class="fas fa-square-envelope" title="Share on Email"></i></a>
+
+</div>
+<div class="linkline">
+  <a href="https://www.onetcenter.org/linkToOnet.html#link">Link to Us</a> &bull; <a href="/shared/cite_resp?u=https%3A%2F%2Fwww.onetonline.org%2F&amp;t=O%2ANET%20OnLine" data-bs-toggle="modal" data-bs-target="#ajaxModal">Cite this Page</a>
+</div>
+<div class="linkline">
+  <div class="linkline">
+  <a href="/help/license" class="d-flex justify-content-center align-items-center linkline">
+    <i class="fab fa-creative-commons text-secondary me-2" style="font-size: 1.4rem"></i>
+    <i class="fab fa-creative-commons-by text-secondary me-2" style="font-size: 1.4rem"></i>
+    <span class="visually-hidden">Creative Commons CC-BY </span>
+    <span>License</span>
+  </a>
+  <div class="d-none"><span xmlns:dct="http://purl.org/dc/terms/" property="dct:title">O*NET OnLine</span> by <a xmlns:cc="http://creativecommons.org/ns#" href="https://www.onetonline.org/" property="cc:attributionName" rel="cc:attributionURL">U.S. Department of Labor, Employment and Training Administration</a> is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.</div>
+</div>
+
+</div>
+
+          </div>
+          <div class="col-md-4 text-center mt-2 mb-2">
+            <div class="d-flex justify-content-center align-items-center linkline">
+  <div>Follow us:</div>    <a href="https://www.onetcenter.org/follow/mailing-list" target="_blank" class="ms-2" style="font-size: 2rem"><i class="fas fa-square-envelope" title="O*NET Updates mailing list"></i></a>
+    <a href="https://www.onetcenter.org/follow/facebook" target="_blank" class="ms-2" style="font-size: 2rem"><i class="fab fa-square-facebook" title="O*NET Updates on Facebook"></i></a>
+    <a href="https://www.onetcenter.org/follow/twitter" target="_blank" class="ms-2" style="font-size: 2rem"><i class="fab fa-square-x-twitter" title="O*NET Updates on X"></i></a>
+    <a href="https://www.onetcenter.org/follow/github" target="_blank" class="ms-2" style="font-size: 2rem"><i class="fab fa-square-github" title="O*NET Center on GitHub"></i></a>
+
+</div>
+<div class="linkline">
+  <a href="/help/online/">About this Site</a> &bull; <a href="/help/privacy/" data-bs-toggle="modal" data-bs-target="#ajaxModal">Privacy</a> &bull; <a href="/help/disclaimer/" data-bs-toggle="modal" data-bs-target="#ajaxModal">Disclaimer</a>
+</div>
+<div class="linkline">
+  Site updated May 19, 2026
+</div>
+
+          </div>
+        </div>
+<div class="d-md-flex flex-row justify-content-center align-items-center mt-3">
+  <div class="text-center" style="padding: 5px 40px"><a href="https://www.dol.gov/"><img src="/shared/image/logos/dol.svg" alt="U.S. Department of Labor" style="width: 60px; height: 60px"></a></div>
+  <div class="text-center mx-4" style="font-size: 0.875rem">O*NET OnLine is sponsored by the U.S. Department of Labor,<br> <a href="https://www.doleta.gov/">Employment &amp; Training Administration</a>,<br> and developed by the National Center for O*NET Development.</div>
+  <div style="width: 140px; height: 1px"></div>
+</div>
+      </div>
+    </div>
+    </div>
+  <div class="modal ajax fade" id="ajaxModal" data-dest="" tabindex="-1" role="dialog" aria-labelledby="ajaxModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document" data-default-class="modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 class="modal-title m-0" id="ajaxModalLabel">
+            <span class="loading">Loading...</span>
+            <span class="loaded"></span>
+          </h3>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="loading"><p>Loading...</p></div>
+          <div class="loaded"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  </body>
+</html>

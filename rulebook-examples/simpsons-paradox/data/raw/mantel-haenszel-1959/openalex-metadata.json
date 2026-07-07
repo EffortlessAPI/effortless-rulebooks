@@ -1,0 +1,851 @@
+{
+  "id": "https://openalex.org/W2064263928",
+  "doi": "https://doi.org/10.1002/j.2333-8504.1992.tb01440.x",
+  "title": "DIF DETECTION AND DESCRIPTION: MANTEL\u2010HAENSZEL AND STANDARDIZATION1,2",
+  "display_name": "DIF DETECTION AND DESCRIPTION: MANTEL\u2010HAENSZEL AND STANDARDIZATION1,2",
+  "relevance_score": 629.8604,
+  "publication_year": 1992,
+  "publication_date": "1992-06-01",
+  "ids": {
+    "openalex": "https://openalex.org/W2064263928",
+    "doi": "https://doi.org/10.1002/j.2333-8504.1992.tb01440.x",
+    "mag": "2064263928"
+  },
+  "language": "en",
+  "primary_location": {
+    "id": "doi:10.1002/j.2333-8504.1992.tb01440.x",
+    "is_oa": true,
+    "landing_page_url": "https://doi.org/10.1002/j.2333-8504.1992.tb01440.x",
+    "pdf_url": "https://onlinelibrary.wiley.com/doi/pdfdirect/10.1002/j.2333-8504.1992.tb01440.x",
+    "source": {
+      "id": "https://openalex.org/S2764556220",
+      "display_name": "ETS Research Report Series",
+      "issn_l": "2330-8516",
+      "issn": [
+        "2330-8516"
+      ],
+      "is_oa": false,
+      "is_in_doaj": false,
+      "is_core": true,
+      "host_organization": "https://openalex.org/P4310320595",
+      "host_organization_name": "Wiley",
+      "host_organization_lineage": [
+        "https://openalex.org/P4310320595"
+      ],
+      "host_organization_lineage_names": [
+        "Wiley"
+      ],
+      "type": "journal"
+    },
+    "license": null,
+    "license_id": null,
+    "version": "publishedVersion",
+    "is_accepted": true,
+    "is_published": true,
+    "raw_source_name": "ETS Research Report Series",
+    "raw_type": "journal-article"
+  },
+  "type": "article",
+  "indexed_in": [
+    "crossref"
+  ],
+  "open_access": {
+    "is_oa": true,
+    "oa_status": "bronze",
+    "oa_url": "https://onlinelibrary.wiley.com/doi/pdfdirect/10.1002/j.2333-8504.1992.tb01440.x",
+    "any_repository_has_fulltext": false
+  },
+  "authorships": [
+    {
+      "author_position": "first",
+      "author": {
+        "id": "https://openalex.org/A5015818271",
+        "display_name": "Neil J. Dorans",
+        "orcid": null
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I1341030882",
+          "display_name": "Educational Testing Service",
+          "ror": "https://ror.org/03b5q4637",
+          "country_code": "US",
+          "type": "nonprofit",
+          "lineage": [
+            "https://openalex.org/I1341030882"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Neil J. Dorans",
+      "raw_affiliation_strings": [
+        "Educational Testing Service"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Educational Testing Service",
+          "institution_ids": [
+            "https://openalex.org/I1341030882"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "last",
+      "author": {
+        "id": "https://openalex.org/A5067638048",
+        "display_name": "Paul W. Holland",
+        "orcid": "https://orcid.org/0009-0006-0202-8404"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I1341030882",
+          "display_name": "Educational Testing Service",
+          "ror": "https://ror.org/03b5q4637",
+          "country_code": "US",
+          "type": "nonprofit",
+          "lineage": [
+            "https://openalex.org/I1341030882"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Paul W. Holland",
+      "raw_affiliation_strings": [
+        "Educational Testing Service"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Educational Testing Service",
+          "institution_ids": [
+            "https://openalex.org/I1341030882"
+          ]
+        }
+      ]
+    }
+  ],
+  "institutions": [],
+  "countries_distinct_count": 1,
+  "institutions_distinct_count": 1,
+  "corresponding_author_ids": [],
+  "corresponding_institution_ids": [
+    "https://openalex.org/I1341030882"
+  ],
+  "apc_list": null,
+  "apc_paid": null,
+  "fwci": 8.1688,
+  "has_fulltext": true,
+  "cited_by_count": 364,
+  "citation_normalized_percentile": {
+    "value": 0.97978202,
+    "is_in_top_1_percent": false,
+    "is_in_top_10_percent": true
+  },
+  "cited_by_percentile_year": {
+    "min": 99,
+    "max": 100
+  },
+  "biblio": {
+    "volume": "1992",
+    "issue": "1",
+    "first_page": null,
+    "last_page": null
+  },
+  "is_retracted": false,
+  "is_paratext": false,
+  "is_xpac": false,
+  "primary_topic": {
+    "id": "https://openalex.org/T10467",
+    "display_name": "Psychometric Methodologies and Testing",
+    "score": 0.9983000159263611,
+    "subfield": {
+      "id": "https://openalex.org/subfields/1803",
+      "display_name": "Management Science and Operations Research"
+    },
+    "field": {
+      "id": "https://openalex.org/fields/18",
+      "display_name": "Decision Sciences"
+    },
+    "domain": {
+      "id": "https://openalex.org/domains/2",
+      "display_name": "Social Sciences"
+    }
+  },
+  "topics": [
+    {
+      "id": "https://openalex.org/T10467",
+      "display_name": "Psychometric Methodologies and Testing",
+      "score": 0.9983000159263611,
+      "subfield": {
+        "id": "https://openalex.org/subfields/1803",
+        "display_name": "Management Science and Operations Research"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/18",
+        "display_name": "Decision Sciences"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/2",
+        "display_name": "Social Sciences"
+      }
+    },
+    {
+      "id": "https://openalex.org/T13748",
+      "display_name": "Advanced Statistical Modeling Techniques",
+      "score": 0.9932000041007996,
+      "subfield": {
+        "id": "https://openalex.org/subfields/1705",
+        "display_name": "Computer Networks and Communications"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/17",
+        "display_name": "Computer Science"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/3",
+        "display_name": "Physical Sciences"
+      }
+    }
+  ],
+  "keywords": [
+    {
+      "id": "https://openalex.org/keywords/statistics",
+      "display_name": "Statistics",
+      "score": 0.5368450284004211
+    },
+    {
+      "id": "https://openalex.org/keywords/item-response-theory",
+      "display_name": "Item response theory",
+      "score": 0.4759761393070221
+    },
+    {
+      "id": "https://openalex.org/keywords/econometrics",
+      "display_name": "Econometrics",
+      "score": 0.4334980249404907
+    },
+    {
+      "id": "https://openalex.org/keywords/psychology",
+      "display_name": "Psychology",
+      "score": 0.3326149880886078
+    },
+    {
+      "id": "https://openalex.org/keywords/mathematics",
+      "display_name": "Mathematics",
+      "score": 0.3218262195587158
+    },
+    {
+      "id": "https://openalex.org/keywords/psychometrics",
+      "display_name": "Psychometrics",
+      "score": 0.11701983213424683
+    }
+  ],
+  "concepts": [
+    {
+      "id": "https://openalex.org/C105795698",
+      "wikidata": "https://www.wikidata.org/wiki/Q12483",
+      "display_name": "Statistics",
+      "level": 1,
+      "score": 0.5368450284004211
+    },
+    {
+      "id": "https://openalex.org/C19875794",
+      "wikidata": "https://www.wikidata.org/wiki/Q1207340",
+      "display_name": "Item response theory",
+      "level": 3,
+      "score": 0.4759761393070221
+    },
+    {
+      "id": "https://openalex.org/C149782125",
+      "wikidata": "https://www.wikidata.org/wiki/Q160039",
+      "display_name": "Econometrics",
+      "level": 1,
+      "score": 0.4334980249404907
+    },
+    {
+      "id": "https://openalex.org/C15744967",
+      "wikidata": "https://www.wikidata.org/wiki/Q9418",
+      "display_name": "Psychology",
+      "level": 0,
+      "score": 0.3326149880886078
+    },
+    {
+      "id": "https://openalex.org/C33923547",
+      "wikidata": "https://www.wikidata.org/wiki/Q395",
+      "display_name": "Mathematics",
+      "level": 0,
+      "score": 0.3218262195587158
+    },
+    {
+      "id": "https://openalex.org/C171606756",
+      "wikidata": "https://www.wikidata.org/wiki/Q506132",
+      "display_name": "Psychometrics",
+      "level": 2,
+      "score": 0.11701983213424683
+    }
+  ],
+  "mesh": [],
+  "locations_count": 1,
+  "locations": [
+    {
+      "id": "doi:10.1002/j.2333-8504.1992.tb01440.x",
+      "is_oa": true,
+      "landing_page_url": "https://doi.org/10.1002/j.2333-8504.1992.tb01440.x",
+      "pdf_url": "https://onlinelibrary.wiley.com/doi/pdfdirect/10.1002/j.2333-8504.1992.tb01440.x",
+      "source": {
+        "id": "https://openalex.org/S2764556220",
+        "display_name": "ETS Research Report Series",
+        "issn_l": "2330-8516",
+        "issn": [
+          "2330-8516"
+        ],
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": true,
+        "host_organization": "https://openalex.org/P4310320595",
+        "host_organization_name": "Wiley",
+        "host_organization_lineage": [
+          "https://openalex.org/P4310320595"
+        ],
+        "host_organization_lineage_names": [
+          "Wiley"
+        ],
+        "type": "journal"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "publishedVersion",
+      "is_accepted": true,
+      "is_published": true,
+      "raw_source_name": "ETS Research Report Series",
+      "raw_type": "journal-article"
+    }
+  ],
+  "best_oa_location": {
+    "id": "doi:10.1002/j.2333-8504.1992.tb01440.x",
+    "is_oa": true,
+    "landing_page_url": "https://doi.org/10.1002/j.2333-8504.1992.tb01440.x",
+    "pdf_url": "https://onlinelibrary.wiley.com/doi/pdfdirect/10.1002/j.2333-8504.1992.tb01440.x",
+    "source": {
+      "id": "https://openalex.org/S2764556220",
+      "display_name": "ETS Research Report Series",
+      "issn_l": "2330-8516",
+      "issn": [
+        "2330-8516"
+      ],
+      "is_oa": false,
+      "is_in_doaj": false,
+      "is_core": true,
+      "host_organization": "https://openalex.org/P4310320595",
+      "host_organization_name": "Wiley",
+      "host_organization_lineage": [
+        "https://openalex.org/P4310320595"
+      ],
+      "host_organization_lineage_names": [
+        "Wiley"
+      ],
+      "type": "journal"
+    },
+    "license": null,
+    "license_id": null,
+    "version": "publishedVersion",
+    "is_accepted": true,
+    "is_published": true,
+    "raw_source_name": "ETS Research Report Series",
+    "raw_type": "journal-article"
+  },
+  "sustainable_development_goals": [
+    {
+      "id": "https://metadata.un.org/sdg/4",
+      "display_name": "Quality Education",
+      "score": 0.6899999976158142
+    }
+  ],
+  "awards": [],
+  "funders": [],
+  "has_content": {
+    "grobid_xml": true,
+    "pdf": true
+  },
+  "content_urls": {
+    "pdf": "https://content.openalex.org/works/W2064263928.pdf",
+    "grobid_xml": "https://content.openalex.org/works/W2064263928.grobid-xml"
+  },
+  "referenced_works_count": 34,
+  "referenced_works": [
+    "https://openalex.org/W90837220",
+    "https://openalex.org/W272469564",
+    "https://openalex.org/W604505022",
+    "https://openalex.org/W1535520578",
+    "https://openalex.org/W1784684835",
+    "https://openalex.org/W1963760706",
+    "https://openalex.org/W1971790785",
+    "https://openalex.org/W1974273597",
+    "https://openalex.org/W1974423219",
+    "https://openalex.org/W1976290551",
+    "https://openalex.org/W1988825210",
+    "https://openalex.org/W2014057104",
+    "https://openalex.org/W2016821381",
+    "https://openalex.org/W2024061334",
+    "https://openalex.org/W2029886483",
+    "https://openalex.org/W2036816719",
+    "https://openalex.org/W2040458476",
+    "https://openalex.org/W2050773489",
+    "https://openalex.org/W2063841934",
+    "https://openalex.org/W2066653822",
+    "https://openalex.org/W2068435181",
+    "https://openalex.org/W2090212281",
+    "https://openalex.org/W2126872133",
+    "https://openalex.org/W2131850093",
+    "https://openalex.org/W2133937969",
+    "https://openalex.org/W2150000105",
+    "https://openalex.org/W2153382200",
+    "https://openalex.org/W2330766220",
+    "https://openalex.org/W2330813625",
+    "https://openalex.org/W2905472553",
+    "https://openalex.org/W2993326337",
+    "https://openalex.org/W3029395302",
+    "https://openalex.org/W4243344290",
+    "https://openalex.org/W4245406052"
+  ],
+  "related_works": [
+    "https://openalex.org/W2748952813",
+    "https://openalex.org/W1979597421",
+    "https://openalex.org/W2007980826",
+    "https://openalex.org/W4245490552",
+    "https://openalex.org/W4225152035",
+    "https://openalex.org/W2328467352",
+    "https://openalex.org/W2061531152",
+    "https://openalex.org/W3002753104",
+    "https://openalex.org/W2077600819",
+    "https://openalex.org/W1587224694"
+  ],
+  "abstract_inverted_index": {
+    "ABSTRACT": [
+      0
+    ],
+    "At": [
+      1
+    ],
+    "the": [
+      2,
+      6,
+      18,
+      42,
+      46,
+      85,
+      94,
+      104,
+      125,
+      129,
+      135,
+      143,
+      146,
+      150
+    ],
+    "Educational": [
+      3
+    ],
+    "Testing": [
+      4
+    ],
+    "Service,": [
+      5
+    ],
+    "Mantel\u2010Haenszel": [
+      7,
+      86
+    ],
+    "procedure": [
+      8,
+      20,
+      87
+    ],
+    "is": [
+      9,
+      21,
+      35,
+      99,
+      112
+    ],
+    "used": [
+      10,
+      22
+    ],
+    "for": [
+      11,
+      107
+    ],
+    "differential": [
+      12,
+      109
+    ],
+    "item": [
+      13,
+      127
+    ],
+    "functioning": [
+      14,
+      111
+    ],
+    "(DIF)": [
+      15
+    ],
+    "detection": [
+      16
+    ],
+    "and": [
+      17,
+      39,
+      70,
+      80,
+      88,
+      93,
+      132,
+      149
+    ],
+    "standardization": [
+      19,
+      105
+    ],
+    "to": [
+      23,
+      44
+    ],
+    "describe": [
+      24
+    ],
+    "DIF.": [
+      25
+    ],
+    "This": [
+      26
+    ],
+    "report": [
+      27
+    ],
+    "describes": [
+      28
+    ],
+    "these": [
+      29,
+      49
+    ],
+    "procedures.": [
+      30
+    ],
+    "First,": [
+      31
+    ],
+    "an": [
+      32
+    ],
+    "important": [
+      33
+    ],
+    "distinction": [
+      34
+    ],
+    "made": [
+      36
+    ],
+    "between": [
+      37,
+      84
+    ],
+    "DIF": [
+      38,
+      53,
+      68,
+      118
+    ],
+    "Impact,": [
+      40
+    ],
+    "pointing": [
+      41
+    ],
+    "need": [
+      43
+    ],
+    "compare": [
+      45
+    ],
+    "comparable.": [
+      47
+    ],
+    "Then,": [
+      48
+    ],
+    "two": [
+      50
+    ],
+    "contingency": [
+      51
+    ],
+    "table": [
+      52
+    ],
+    "procedures": [
+      54
+    ],
+    "are": [
+      55,
+      120,
+      153
+    ],
+    "described": [
+      56
+    ],
+    "in": [
+      57,
+      61,
+      91,
+      97,
+      116,
+      128
+    ],
+    "some": [
+      58
+    ],
+    "detail,": [
+      59
+    ],
+    "first": [
+      60
+    ],
+    "terms": [
+      62
+    ],
+    "of": [
+      63,
+      103,
+      124,
+      134
+    ],
+    "their": [
+      64
+    ],
+    "own": [
+      65
+    ],
+    "origins": [
+      66
+    ],
+    "as": [
+      67
+    ],
+    "procedures,": [
+      69
+    ],
+    "then": [
+      71
+    ],
+    "from": [
+      72
+    ],
+    "a": [
+      73
+    ],
+    "common": [
+      74
+    ],
+    "framework": [
+      75
+    ],
+    "that": [
+      76
+    ],
+    "points": [
+      77
+    ],
+    "out": [
+      78
+    ],
+    "similarities": [
+      79
+    ],
+    "differences.": [
+      81
+    ],
+    "The": [
+      82,
+      101
+    ],
+    "relationship": [
+      83
+    ],
+    "IRT": [
+      89
+    ],
+    "models": [
+      90
+    ],
+    "general": [
+      92
+    ],
+    "Rasch": [
+      95
+    ],
+    "model,": [
+      96
+    ],
+    "particular,": [
+      98
+    ],
+    "discussed.": [
+      100,
+      155
+    ],
+    "utility": [
+      102
+    ],
+    "approach": [
+      106
+    ],
+    "assessing": [
+      108
+    ],
+    "distractor": [
+      110
+    ],
+    "described.": [
+      113
+    ],
+    "Several": [
+      114
+    ],
+    "issues": [
+      115
+    ],
+    "applied": [
+      117
+    ],
+    "analyses": [
+      119
+    ],
+    "discussed": [
+      121
+    ],
+    "including": [
+      122
+    ],
+    "inclusion": [
+      123
+    ],
+    "studied": [
+      126,
+      147
+    ],
+    "matching": [
+      130,
+      136,
+      144
+    ],
+    "variable,": [
+      131,
+      145
+    ],
+    "refinement": [
+      133
+    ],
+    "variable.": [
+      137
+    ],
+    "Future": [
+      138
+    ],
+    "research": [
+      139
+    ],
+    "topics": [
+      140
+    ],
+    "dealing": [
+      141
+    ],
+    "with": [
+      142
+    ],
+    "variable": [
+      148,
+      152
+    ],
+    "group": [
+      151
+    ],
+    "also": [
+      154
+    ]
+  },
+  "counts_by_year": [
+    {
+      "year": 2026,
+      "cited_by_count": 5
+    },
+    {
+      "year": 2025,
+      "cited_by_count": 11
+    },
+    {
+      "year": 2024,
+      "cited_by_count": 14
+    },
+    {
+      "year": 2023,
+      "cited_by_count": 15
+    },
+    {
+      "year": 2022,
+      "cited_by_count": 12
+    },
+    {
+      "year": 2021,
+      "cited_by_count": 11
+    },
+    {
+      "year": 2020,
+      "cited_by_count": 18
+    },
+    {
+      "year": 2019,
+      "cited_by_count": 15
+    },
+    {
+      "year": 2018,
+      "cited_by_count": 7
+    },
+    {
+      "year": 2017,
+      "cited_by_count": 20
+    },
+    {
+      "year": 2016,
+      "cited_by_count": 11
+    },
+    {
+      "year": 2015,
+      "cited_by_count": 17
+    },
+    {
+      "year": 2014,
+      "cited_by_count": 13
+    },
+    {
+      "year": 2013,
+      "cited_by_count": 21
+    },
+    {
+      "year": 2012,
+      "cited_by_count": 16
+    }
+  ],
+  "updated_date": "2026-07-02T09:51:11.867554",
+  "created_date": "2025-10-10T00:00:00"
+}

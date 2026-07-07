@@ -1,0 +1,1494 @@
+{
+  "generated_at": "2026-07-07T03:48:25+00:00",
+  "channel": "out-of-band",
+  "merge_after_loops": "68-72",
+  "totals": {
+    "total": 142,
+    "downloaded": 20,
+    "manual_only": 46,
+    "portal_manual": 26,
+    "landing_saved": 36,
+    "metadata_only": 9,
+    "blocked": 5
+  },
+  "encode_ready_now": [
+    "blau-kahn-2017",
+    "juhn-murphy-pierce-1993",
+    "acemoglu-autor-2011",
+    "saez-2019",
+    "chetty-friedman-rockoff-2014",
+    "spohn-2000",
+    "long-2004",
+    "hoekstra-2009",
+    "college-scorecard",
+    "hoxby-avery-2013",
+    "rothstein-2004",
+    "uk-biobank-ukbb-observational",
+    "soccer-pass-completion-by-league-2017",
+    "soccer-expected-goals",
+    "israeli-ministry-of-health",
+    "baden-et-al-2021",
+    "flannery-et-al-2020",
+    "hernandez-diaz-schisterman-hernan-2006",
+    "sarsons-2017",
+    "ginther-kahn-2004"
+  ],
+  "by_status": {
+    "downloaded": [
+      {
+        "proposed_study_id": "blau-kahn-2017",
+        "candidate_id": "cand-exp-blau-kahn-2017",
+        "domain": "economics",
+        "title": "Blau & Kahn (2017)",
+        "files": [
+          "openalex-search.pdf",
+          "openalex-metadata.json"
+        ],
+        "catalog_source_url": "https://ipums.org/cps"
+      },
+      {
+        "proposed_study_id": "juhn-murphy-pierce-1993",
+        "candidate_id": "cand-exp-juhn-murphy-pierce-1993",
+        "domain": "economics",
+        "title": "Juhn, Murphy & Pierce (1993)",
+        "files": [
+          "openalex-search.pdf",
+          "openalex-metadata.json",
+          "source-1.html"
+        ],
+        "catalog_source_url": "https://www.nber.org/data/morg.html"
+      },
+      {
+        "proposed_study_id": "acemoglu-autor-2011",
+        "candidate_id": "cand-exp-acemoglu-autor-2011",
+        "domain": "economics",
+        "title": "Acemoglu & Autor (2011)",
+        "files": [
+          "openalex-search.pdf",
+          "openalex-metadata.json",
+          "source-1.html"
+        ],
+        "catalog_source_url": "https://www.nber.org/data/cps.html"
+      },
+      {
+        "proposed_study_id": "saez-2019",
+        "candidate_id": "cand-exp-saez-2019",
+        "domain": "economics",
+        "title": "Saez (2019)",
+        "files": [
+          "openalex-search.pdf",
+          "openalex-metadata.json"
+        ],
+        "catalog_source_url": "https://www.irs.gov/statistics/soi-tax-stats-individual-income-tax-statistics"
+      },
+      {
+        "proposed_study_id": "chetty-friedman-rockoff-2014",
+        "candidate_id": "cand-exp-chetty-friedman-rockoff-2014",
+        "domain": "economics",
+        "title": "Chetty, Friedman & Rockoff (2014)",
+        "files": [
+          "openalex-search.pdf",
+          "openalex-metadata.json"
+        ],
+        "catalog_source_url": null
+      },
+      {
+        "proposed_study_id": "spohn-2000",
+        "candidate_id": "cand-exp-spohn-2000",
+        "domain": "criminal-justice-sentencing",
+        "title": "Spohn (2000)",
+        "files": [
+          "openalex-search.pdf",
+          "openalex-metadata.json",
+          "source-1.html"
+        ],
+        "catalog_source_url": "https://bjs.ojp.gov/data-collection/federal-justice-statistics-program-fjsp"
+      },
+      {
+        "proposed_study_id": "long-2004",
+        "candidate_id": "cand-exp-long-2004",
+        "domain": "higher-education-admissions",
+        "title": "Long (2004)",
+        "files": [
+          "openalex-search.pdf",
+          "openalex-metadata.json",
+          "source-1.html"
+        ],
+        "catalog_source_url": "https://nlsinfo.org/"
+      },
+      {
+        "proposed_study_id": "hoekstra-2009",
+        "candidate_id": "cand-exp-hoekstra-2009",
+        "domain": "higher-education-admissions",
+        "title": "Hoekstra (2009)",
+        "files": [
+          "openalex-search.pdf",
+          "openalex-metadata.json"
+        ],
+        "catalog_source_url": null
+      },
+      {
+        "proposed_study_id": "college-scorecard",
+        "candidate_id": "cand-exp-college-scorecard",
+        "domain": "higher-education-admissions",
+        "title": "College Scorecard (U.S. Dept. of Education, annual)",
+        "files": [
+          "openalex-search.pdf",
+          "openalex-metadata.json",
+          "source-1.html"
+        ],
+        "catalog_source_url": "https://collegescorecard.ed.gov/data/"
+      },
+      {
+        "proposed_study_id": "hoxby-avery-2013",
+        "candidate_id": "cand-exp-hoxby-avery-2013",
+        "domain": "higher-education-admissions",
+        "title": "Hoxby & Avery (2013)",
+        "files": [
+          "openalex-search.pdf",
+          "openalex-metadata.json"
+        ],
+        "catalog_source_url": null
+      },
+      {
+        "proposed_study_id": "rothstein-2004",
+        "candidate_id": "cand-exp-rothstein-2004",
+        "domain": "higher-education-admissions",
+        "title": "Rothstein (2004)",
+        "files": [
+          "openalex-search.pdf",
+          "openalex-metadata.json"
+        ],
+        "catalog_source_url": null
+      },
+      {
+        "proposed_study_id": "uk-biobank-ukbb-observational",
+        "candidate_id": "cand-exp-uk-biobank-ukbb-observational",
+        "domain": "clinical-drug-trials",
+        "title": "UK Biobank / UKBB Observational (ongoing) statins and cancer.",
+        "files": [
+          "openalex-search.pdf",
+          "openalex-metadata.json"
+        ],
+        "catalog_source_url": "https://www.ukbiobank.ac.uk/"
+      },
+      {
+        "proposed_study_id": "soccer-pass-completion-by-league-2017",
+        "candidate_id": "cand-exp-soccer-pass-completion-by-league-2017",
+        "domain": "sports-analytics",
+        "title": "Soccer Pass Completion by League (2017–2023) StatsBomb open data",
+        "files": [
+          "openalex-search.pdf",
+          "openalex-metadata.json",
+          "source-1.html"
+        ],
+        "catalog_source_url": "https://statsbomb.com/data/"
+      },
+      {
+        "proposed_study_id": "soccer-expected-goals",
+        "candidate_id": "cand-exp-soccer-expected-goals",
+        "domain": "sports-analytics",
+        "title": "Soccer Expected Goals (xG) by Home/Away and Opponent Tier",
+        "files": [
+          "openalex-search.pdf",
+          "openalex-metadata.json"
+        ],
+        "catalog_source_url": "https://fbref.com/en/"
+      },
+      {
+        "proposed_study_id": "israeli-ministry-of-health",
+        "candidate_id": "cand-exp-israeli-ministry-of-health",
+        "domain": "epidemiology-vaccine-efficacy",
+        "title": "Israeli Ministry of Health (Aug–Sep 2021)",
+        "files": [
+          "openalex-search.pdf",
+          "openalex-metadata.json"
+        ],
+        "catalog_source_url": "https://www.gov.il/en/departments/ministry_of_health"
+      },
+      {
+        "proposed_study_id": "baden-et-al-2021",
+        "candidate_id": "cand-exp-baden-et-al-2021",
+        "domain": "epidemiology-vaccine-efficacy",
+        "title": "Baden et al. (2021)",
+        "files": [
+          "openalex-search.pdf",
+          "openalex-metadata.json",
+          "source-1.html"
+        ],
+        "catalog_source_url": "https://vivli.org/"
+      },
+      {
+        "proposed_study_id": "flannery-et-al-2020",
+        "candidate_id": "cand-exp-flannery-et-al-2020",
+        "domain": "epidemiology-vaccine-efficacy",
+        "title": "Flannery et al. (2020)",
+        "files": [
+          "openalex-search.pdf",
+          "openalex-metadata.json",
+          "source-1.html"
+        ],
+        "catalog_source_url": "https://www.cdc.gov/flu/vaccines-work/vaccine-effectiveness.htm"
+      },
+      {
+        "proposed_study_id": "hernandez-diaz-schisterman-hernan-2006",
+        "candidate_id": "cand-exp-hernandez-diaz-schisterman-hernan-2006",
+        "domain": "epidemiology-vaccine-efficacy",
+        "title": "Hernandez-Diaz, Schisterman & Hernan (2006)",
+        "files": [
+          "openalex-search.pdf",
+          "openalex-metadata.json",
+          "source-1.html"
+        ],
+        "catalog_source_url": "https://www.cdc.gov/nchs/data_access/vitalstatsonline.htm"
+      },
+      {
+        "proposed_study_id": "sarsons-2017",
+        "candidate_id": "cand-exp-sarsons-2017",
+        "domain": "hiring-promotion",
+        "title": "Sarsons (2017)",
+        "files": [
+          "openalex-10.1257_aer.p20171031.pdf",
+          "oa-10.1257_aer.p20171031.pdf",
+          "source-1.html"
+        ],
+        "catalog_source_url": "https://www.aeaweb.org/articles?id=10.1257/aer.p20171031"
+      },
+      {
+        "proposed_study_id": "ginther-kahn-2004",
+        "candidate_id": "cand-exp-ginther-kahn-2004",
+        "domain": "hiring-promotion",
+        "title": "Ginther & Kahn (2004)",
+        "files": [
+          "openalex-search.pdf",
+          "openalex-metadata.json"
+        ],
+        "catalog_source_url": "https://ncses.nsf.gov/surveys/doctoral-recipients"
+      }
+    ],
+    "manual_only": [
+      {
+        "proposed_study_id": "oaxaca-1973",
+        "candidate_id": "cand-exp-oaxaca-1973",
+        "domain": "economics",
+        "title": "Oaxaca (1973)",
+        "files": [
+          "openalex-metadata.json"
+        ],
+        "catalog_source_url": null
+      },
+      {
+        "proposed_study_id": "baldus-woodworth-pulaski-1983",
+        "candidate_id": "cand-exp-baldus-woodworth-pulaski-1983",
+        "domain": "criminal-justice-sentencing",
+        "title": "Baldus, Woodworth & Pulaski (1983)",
+        "files": [
+          "openalex-metadata.json"
+        ],
+        "catalog_source_url": null
+      },
+      {
+        "proposed_study_id": "fryer-2016",
+        "candidate_id": "cand-exp-fryer-2016",
+        "domain": "criminal-justice-sentencing",
+        "title": "Fryer (2016)",
+        "files": [
+          "openalex-metadata.json"
+        ],
+        "catalog_source_url": null
+      },
+      {
+        "proposed_study_id": "kutateladze-andiloro-johnson-spohn-2014",
+        "candidate_id": "cand-exp-kutateladze-andiloro-johnson-spohn-2014",
+        "domain": "criminal-justice-sentencing",
+        "title": "Kutateladze, Andiloro, Johnson & Spohn (2014)",
+        "files": [
+          "openalex-metadata.json"
+        ],
+        "catalog_source_url": null
+      },
+      {
+        "proposed_study_id": "johnson-2006",
+        "candidate_id": "cand-exp-johnson-2006",
+        "domain": "criminal-justice-sentencing",
+        "title": "Johnson (2006)",
+        "files": [
+          "openalex-metadata.json"
+        ],
+        "catalog_source_url": null
+      },
+      {
+        "proposed_study_id": "dale-krueger-2002",
+        "candidate_id": "cand-exp-dale-krueger-2002",
+        "domain": "higher-education-admissions",
+        "title": "Dale & Krueger (2002)",
+        "files": [
+          "openalex-search.html",
+          "openalex-metadata.json"
+        ],
+        "catalog_source_url": null
+      },
+      {
+        "proposed_study_id": "espenshade-radford-2009",
+        "candidate_id": "cand-exp-espenshade-radford-2009",
+        "domain": "higher-education-admissions",
+        "title": "Espenshade & Radford (2009)",
+        "files": [
+          "openalex-metadata.json"
+        ],
+        "catalog_source_url": null
+      },
+      {
+        "proposed_study_id": "hoxby-murarka-2009",
+        "candidate_id": "cand-exp-hoxby-murarka-2009",
+        "domain": "higher-education-admissions",
+        "title": "Hoxby & Murarka (2009)",
+        "files": [
+          "openalex-metadata.json"
+        ],
+        "catalog_source_url": null
+      },
+      {
+        "proposed_study_id": "isis-2-collaborative-group-1988",
+        "candidate_id": "cand-exp-isis-2-collaborative-group-1988",
+        "domain": "clinical-drug-trials",
+        "title": "ISIS-2 Collaborative Group (1988)",
+        "files": [
+          "openalex-metadata.json"
+        ],
+        "catalog_source_url": null
+      },
+      {
+        "proposed_study_id": "fibrinolytic-therapy-trialists-1994",
+        "candidate_id": "cand-exp-fibrinolytic-therapy-trialists-1994",
+        "domain": "clinical-drug-trials",
+        "title": "Fibrinolytic Therapy Trialists (1994)",
+        "files": [
+          "openalex-metadata.json"
+        ],
+        "catalog_source_url": null
+      },
+      {
+        "proposed_study_id": "cast-1989",
+        "candidate_id": "cand-exp-cast-1989",
+        "domain": "clinical-drug-trials",
+        "title": "CAST (1989)",
+        "files": [
+          "openalex-metadata.json"
+        ],
+        "catalog_source_url": null
+      },
+      {
+        "proposed_study_id": "astrazeneca-mystic-trial-pacific-trial-crossover-2017",
+        "candidate_id": "cand-exp-astrazeneca-mystic-trial-pacific-trial-crossover-2017",
+        "domain": "clinical-drug-trials",
+        "title": "AstraZeneca MYSTIC Trial / PACIFIC Trial crossover (2017–2019)",
+        "files": [
+          "openalex-metadata.json"
+        ],
+        "catalog_source_url": null
+      },
+      {
+        "proposed_study_id": "efron-morris-1975",
+        "candidate_id": "cand-exp-efron-morris-1975",
+        "domain": "sports-analytics",
+        "title": "Efron & Morris (1975)",
+        "files": [
+          "openalex-metadata.json"
+        ],
+        "catalog_source_url": null
+      },
+      {
+        "proposed_study_id": "ellsbury-vs-lowell-2007",
+        "candidate_id": "cand-exp-ellsbury-vs-lowell-2007",
+        "domain": "sports-analytics",
+        "title": "Ellsbury vs. Lowell (2007–2008) cited in sports Simpson's Paradox literature",
+        "files": [],
+        "catalog_source_url": null
+      },
+      {
+        "proposed_study_id": "lollar-vs-mccatty-pitching-1982",
+        "candidate_id": "cand-exp-lollar-vs-mccatty-pitching-1982",
+        "domain": "sports-analytics",
+        "title": "Lollar vs. McCatty Pitching (1982–1983) from Hiester (1984) SABR",
+        "files": [],
+        "catalog_source_url": null
+      },
+      {
+        "proposed_study_id": "dagan-et-al-2021",
+        "candidate_id": "cand-exp-dagan-et-al-2021",
+        "domain": "epidemiology-vaccine-efficacy",
+        "title": "Dagan et al. (2021)",
+        "files": [
+          "openalex-metadata.json"
+        ],
+        "catalog_source_url": null
+      },
+      {
+        "proposed_study_id": "yule-1903",
+        "candidate_id": "cand-exp-yule-1903",
+        "domain": "epidemiology-vaccine-efficacy",
+        "title": "Yule (1903)",
+        "files": [
+          "openalex-metadata.json"
+        ],
+        "catalog_source_url": null
+      },
+      {
+        "proposed_study_id": "mantel-haenszel-1959",
+        "candidate_id": "cand-exp-mantel-haenszel-1959",
+        "domain": "epidemiology-vaccine-efficacy",
+        "title": "Mantel & Haenszel (1959)",
+        "files": [
+          "openalex-metadata.json"
+        ],
+        "catalog_source_url": null
+      },
+      {
+        "proposed_study_id": "hammond-horn-1958",
+        "candidate_id": "cand-exp-hammond-horn-1958",
+        "domain": "epidemiology-vaccine-efficacy",
+        "title": "Hammond & Horn (1958)",
+        "files": [
+          "openalex-metadata.json"
+        ],
+        "catalog_source_url": null
+      },
+      {
+        "proposed_study_id": "simonsen-et-al-2005",
+        "candidate_id": "cand-exp-simonsen-et-al-2005",
+        "domain": "epidemiology-vaccine-efficacy",
+        "title": "Simonsen et al. (2005)",
+        "files": [
+          "openalex-metadata.json"
+        ],
+        "catalog_source_url": null
+      },
+      {
+        "proposed_study_id": "cornfield-et-al-1959",
+        "candidate_id": "cand-exp-cornfield-et-al-1959",
+        "domain": "epidemiology-vaccine-efficacy",
+        "title": "Cornfield et al. (1959)",
+        "files": [
+          "openalex-metadata.json"
+        ],
+        "catalog_source_url": null
+      },
+      {
+        "proposed_study_id": "baker-kramer-2001",
+        "candidate_id": "cand-exp-baker-kramer-2001",
+        "domain": "epidemiology-vaccine-efficacy",
+        "title": "Baker & Kramer (2001)",
+        "files": [
+          "openalex-metadata.json"
+        ],
+        "catalog_source_url": null
+      },
+      {
+        "proposed_study_id": "shapiro-et-al-1988",
+        "candidate_id": "cand-exp-shapiro-et-al-1988",
+        "domain": "epidemiology-vaccine-efficacy",
+        "title": "Shapiro et al. (1988)",
+        "files": [
+          "openalex-metadata.json"
+        ],
+        "catalog_source_url": null
+      },
+      {
+        "proposed_study_id": "castilla-2008",
+        "candidate_id": "cand-exp-castilla-2008",
+        "domain": "hiring-promotion",
+        "title": "Castilla (2008)",
+        "files": [
+          "openalex-metadata.json"
+        ],
+        "catalog_source_url": null
+      },
+      {
+        "proposed_study_id": "neumark-bank-van-nort-1996",
+        "candidate_id": "cand-exp-neumark-bank-van-nort-1996",
+        "domain": "hiring-promotion",
+        "title": "Neumark, Bank & Van Nort (1996)",
+        "files": [
+          "openalex-metadata.json"
+        ],
+        "catalog_source_url": null
+      },
+      {
+        "proposed_study_id": "kohavi-deng-longbotham-xu-2014",
+        "candidate_id": "cand-exp-kohavi-deng-longbotham-xu-2014",
+        "domain": "online-ab-testing",
+        "title": "Kohavi, Deng, Longbotham & Xu (2014)",
+        "files": [],
+        "catalog_source_url": null
+      },
+      {
+        "proposed_study_id": "xu-chen-fernandez-sinno-bhasin-2015",
+        "candidate_id": "cand-exp-xu-chen-fernandez-sinno-bhasin-2015",
+        "domain": "online-ab-testing",
+        "title": "Xu, Chen, Fernandez, Sinno & Bhasin (2015)",
+        "files": [],
+        "catalog_source_url": null
+      },
+      {
+        "proposed_study_id": "deng-xu-kohavi-walker-2013",
+        "candidate_id": "cand-exp-deng-xu-kohavi-walker-2013",
+        "domain": "online-ab-testing",
+        "title": "Deng, Xu, Kohavi & Walker (2013)",
+        "files": [],
+        "catalog_source_url": null
+      },
+      {
+        "proposed_study_id": "tang-agarwal-o-brien-meyer-2010",
+        "candidate_id": "cand-exp-tang-agarwal-o-brien-meyer-2010",
+        "domain": "online-ab-testing",
+        "title": "Tang, Agarwal, O'Brien & Meyer (2010)",
+        "files": [],
+        "catalog_source_url": null
+      },
+      {
+        "proposed_study_id": "bakshy-eckles-bernstein-2014",
+        "candidate_id": "cand-exp-bakshy-eckles-bernstein-2014",
+        "domain": "online-ab-testing",
+        "title": "Bakshy, Eckles & Bernstein (2014)",
+        "files": [],
+        "catalog_source_url": null
+      },
+      {
+        "proposed_study_id": "dmitriev-frasca-lu-kohavi-olariu-2016",
+        "candidate_id": "cand-exp-dmitriev-frasca-lu-kohavi-olariu-2016",
+        "domain": "online-ab-testing",
+        "title": "Dmitriev, Frasca, Lu, Kohavi & Olariu (2016)",
+        "files": [],
+        "catalog_source_url": null
+      },
+      {
+        "proposed_study_id": "kohavi-longbotham-sommerfield-henne-2009",
+        "candidate_id": "cand-exp-kohavi-longbotham-sommerfield-henne-2009",
+        "domain": "online-ab-testing",
+        "title": "Kohavi, Longbotham, Sommerfield & Henne (2009)",
+        "files": [],
+        "catalog_source_url": null
+      },
+      {
+        "proposed_study_id": "hohnhold-o-brien-tang-2015",
+        "candidate_id": "cand-exp-hohnhold-o-brien-tang-2015",
+        "domain": "online-ab-testing",
+        "title": "Hohnhold, O'Brien & Tang (2015)",
+        "files": [],
+        "catalog_source_url": null
+      },
+      {
+        "proposed_study_id": "mrfit-1982",
+        "candidate_id": "cand-exp-mrfit-1982",
+        "domain": "public-health-smoking",
+        "title": "MRFIT (Multiple Risk Factor Intervention Trial) Research Group (1982)",
+        "files": [],
+        "catalog_source_url": null
+      },
+      {
+        "proposed_study_id": "women-s-health-study",
+        "candidate_id": "cand-exp-women-s-health-study",
+        "domain": "public-health-smoking",
+        "title": "Women's Health Study (Ridker et al. 2005)",
+        "files": [],
+        "catalog_source_url": null
+      },
+      {
+        "proposed_study_id": "fillmore-et-al-2006",
+        "candidate_id": "cand-exp-fillmore-et-al-2006",
+        "domain": "public-health-smoking",
+        "title": "Fillmore et al. (2006)",
+        "files": [],
+        "catalog_source_url": null
+      },
+      {
+        "proposed_study_id": "finn-achilles-1990",
+        "candidate_id": "cand-exp-finn-achilles-1990",
+        "domain": "education-outcomes",
+        "title": "Finn & Achilles (1990)",
+        "files": [],
+        "catalog_source_url": null
+      },
+      {
+        "proposed_study_id": "mosteller-1995",
+        "candidate_id": "cand-exp-mosteller-1995",
+        "domain": "education-outcomes",
+        "title": "Mosteller (1995)",
+        "files": [],
+        "catalog_source_url": null
+      },
+      {
+        "proposed_study_id": "angrist-lavy-1999",
+        "candidate_id": "cand-exp-angrist-lavy-1999",
+        "domain": "education-outcomes",
+        "title": "Angrist & Lavy (1999)",
+        "files": [],
+        "catalog_source_url": null
+      },
+      {
+        "proposed_study_id": "hoxby-2000",
+        "candidate_id": "cand-exp-hoxby-2000",
+        "domain": "education-outcomes",
+        "title": "Hoxby (2000)",
+        "files": [],
+        "catalog_source_url": null
+      },
+      {
+        "proposed_study_id": "abdulkadiroglu-angrist-dynarski-kane-pathak-2011",
+        "candidate_id": "cand-exp-abdulkadiroglu-angrist-dynarski-kane-pathak-2011",
+        "domain": "education-outcomes",
+        "title": "Abdulkadiroğlu, Angrist, Dynarski, Kane & Pathak (2011)",
+        "files": [],
+        "catalog_source_url": null
+      },
+      {
+        "proposed_study_id": "hanushek-1989",
+        "candidate_id": "cand-exp-hanushek-1989",
+        "domain": "education-outcomes",
+        "title": "Hanushek (1989)",
+        "files": [],
+        "catalog_source_url": null
+      },
+      {
+        "proposed_study_id": "rothstein-2010",
+        "candidate_id": "cand-exp-rothstein-2010",
+        "domain": "education-outcomes",
+        "title": "Rothstein (2010)",
+        "files": [],
+        "catalog_source_url": null
+      },
+      {
+        "proposed_study_id": "munnell-tootell-browne-mceneaney-1996",
+        "candidate_id": "cand-exp-munnell-tootell-browne-mceneaney-1996",
+        "domain": "financial-lending-credit-risk",
+        "title": "Munnell, Tootell, Browne & McEneaney (1996)",
+        "files": [],
+        "catalog_source_url": null
+      },
+      {
+        "proposed_study_id": "berger-udell-1995",
+        "candidate_id": "cand-exp-berger-udell-1995",
+        "domain": "financial-lending-credit-risk",
+        "title": "Berger & Udell (1995)",
+        "files": [],
+        "catalog_source_url": null
+      },
+      {
+        "proposed_study_id": "keys-mukherjee-seru-vig-2010",
+        "candidate_id": "cand-exp-keys-mukherjee-seru-vig-2010",
+        "domain": "financial-lending-credit-risk",
+        "title": "Keys, Mukherjee, Seru & Vig (2010)",
+        "files": [],
+        "catalog_source_url": null
+      }
+    ],
+    "portal_manual": [
+      {
+        "proposed_study_id": "card-1992",
+        "candidate_id": "cand-exp-card-1992",
+        "domain": "economics",
+        "title": "Card (1992)",
+        "files": [
+          "openalex-metadata.json",
+          "source-1.html"
+        ],
+        "catalog_source_url": "https://www.bls.gov"
+      },
+      {
+        "proposed_study_id": "chetty-et-al-2014",
+        "candidate_id": "cand-exp-chetty-et-al-2014",
+        "domain": "economics",
+        "title": "Chetty et al. (2014)",
+        "files": [
+          "openalex-search.html",
+          "openalex-metadata.json",
+          "source-1.html"
+        ],
+        "catalog_source_url": "https://opportunityinsights.org/data/"
+      },
+      {
+        "proposed_study_id": "katz-murphy-1992",
+        "candidate_id": "cand-exp-katz-murphy-1992",
+        "domain": "economics",
+        "title": "Katz & Murphy (1992)",
+        "files": [
+          "openalex-metadata.json",
+          "source-1.html"
+        ],
+        "catalog_source_url": "https://www.bls.gov/cps/"
+      },
+      {
+        "proposed_study_id": "heckman-1979",
+        "candidate_id": "cand-exp-heckman-1979",
+        "domain": "economics",
+        "title": "Heckman (1979)",
+        "files": [
+          "openalex-metadata.json",
+          "source-1.html"
+        ],
+        "catalog_source_url": "https://nlsinfo.org/"
+      },
+      {
+        "proposed_study_id": "angrist-pischke-2009",
+        "candidate_id": "cand-exp-angrist-pischke-2009",
+        "domain": "economics",
+        "title": "Angrist & Pischke (2009 reference case): Card (1993)",
+        "files": [
+          "openalex-metadata.json",
+          "source-1.html"
+        ],
+        "catalog_source_url": "https://nlsinfo.org/"
+      },
+      {
+        "proposed_study_id": "autor-dorn-2013",
+        "candidate_id": "cand-exp-autor-dorn-2013",
+        "domain": "economics",
+        "title": "Autor & Dorn (2013)",
+        "files": [
+          "openalex-metadata.json",
+          "source-1.html"
+        ],
+        "catalog_source_url": "https://www.census.gov/programs-surveys/acs.html"
+      },
+      {
+        "proposed_study_id": "moretti-2013",
+        "candidate_id": "cand-exp-moretti-2013",
+        "domain": "economics",
+        "title": "Moretti (2013)",
+        "files": [
+          "openalex-search.html",
+          "openalex-metadata.json",
+          "source-1.html"
+        ],
+        "catalog_source_url": "https://www.bls.gov/regions/"
+      },
+      {
+        "proposed_study_id": "fortin-lemieux-firpo-2011",
+        "candidate_id": "cand-exp-fortin-lemieux-firpo-2011",
+        "domain": "economics",
+        "title": "Fortin, Lemieux & Firpo (2011)",
+        "files": [
+          "openalex-metadata.json"
+        ],
+        "catalog_source_url": "https://ipums.org/cps"
+      },
+      {
+        "proposed_study_id": "western-2006",
+        "candidate_id": "cand-exp-western-2006",
+        "domain": "criminal-justice-sentencing",
+        "title": "Western (2006)",
+        "files": [
+          "openalex-metadata.json",
+          "source-1.html"
+        ],
+        "catalog_source_url": "https://nlsinfo.org/"
+      },
+      {
+        "proposed_study_id": "brame-bushway-paternoster-turner-2014",
+        "candidate_id": "cand-exp-brame-bushway-paternoster-turner-2014",
+        "domain": "criminal-justice-sentencing",
+        "title": "Brame, Bushway, Paternoster & Turner (2014)",
+        "files": [
+          "openalex-metadata.json",
+          "source-1.html"
+        ],
+        "catalog_source_url": "https://nlsinfo.org/"
+      },
+      {
+        "proposed_study_id": "alon-tienda-2007",
+        "candidate_id": "cand-exp-alon-tienda-2007",
+        "domain": "higher-education-admissions",
+        "title": "Alon & Tienda (2007)",
+        "files": [
+          "openalex-metadata.json",
+          "source-1.html"
+        ],
+        "catalog_source_url": "https://nces.ed.gov/surveys/nels88/"
+      },
+      {
+        "proposed_study_id": "nces-ipeds",
+        "candidate_id": "cand-exp-nces-ipeds",
+        "domain": "higher-education-admissions",
+        "title": "NCES IPEDS (annual)",
+        "files": [
+          "openalex-search.html",
+          "openalex-metadata.json",
+          "source-1.html"
+        ],
+        "catalog_source_url": "https://nces.ed.gov/ipeds/"
+      },
+      {
+        "proposed_study_id": "bound-lovenheim-turner-2010",
+        "candidate_id": "cand-exp-bound-lovenheim-turner-2010",
+        "domain": "higher-education-admissions",
+        "title": "Bound, Lovenheim & Turner (2010)",
+        "files": [
+          "openalex-metadata.json",
+          "source-1.html"
+        ],
+        "catalog_source_url": "https://nces.ed.gov/"
+      },
+      {
+        "proposed_study_id": "carnevale-strohl-2010",
+        "candidate_id": "cand-exp-carnevale-strohl-2010",
+        "domain": "higher-education-admissions",
+        "title": "Carnevale & Strohl (2010)",
+        "files": [
+          "openalex-metadata.json",
+          "source-1.html"
+        ],
+        "catalog_source_url": "https://nces.ed.gov/surveys/bps/"
+      },
+      {
+        "proposed_study_id": "accord-study-group-2008",
+        "candidate_id": "cand-exp-accord-study-group-2008",
+        "domain": "clinical-drug-trials",
+        "title": "ACCORD Study Group (2008)",
+        "files": [
+          "openalex-metadata.json",
+          "source-1.html"
+        ],
+        "catalog_source_url": "https://biolincc.nhlbi.nih.gov/studies/accord/"
+      },
+      {
+        "proposed_study_id": "allhat-collaborative-research-group-2002",
+        "candidate_id": "cand-exp-allhat-collaborative-research-group-2002",
+        "domain": "clinical-drug-trials",
+        "title": "ALLHAT Collaborative Research Group (2002)",
+        "files": [
+          "openalex-metadata.json",
+          "source-1.html"
+        ],
+        "catalog_source_url": "https://biolincc.nhlbi.nih.gov/studies/allhat/"
+      },
+      {
+        "proposed_study_id": "women-s-health-initiative-2002",
+        "candidate_id": "cand-exp-women-s-health-initiative-2002",
+        "domain": "clinical-drug-trials",
+        "title": "Women's Health Initiative (2002)",
+        "files": [
+          "openalex-metadata.json"
+        ],
+        "catalog_source_url": "https://biolincc.nhlbi.nih.gov/studies/whi/"
+      },
+      {
+        "proposed_study_id": "yusuf-et-al-hope-trial-2000",
+        "candidate_id": "cand-exp-yusuf-et-al-hope-trial-2000",
+        "domain": "clinical-drug-trials",
+        "title": "Yusuf et al. / HOPE Trial (2000)",
+        "files": [
+          "openalex-metadata.json"
+        ],
+        "catalog_source_url": "https://biolincc.nhlbi.nih.gov/studies/hope/"
+      },
+      {
+        "proposed_study_id": "sprint-research-group-2015",
+        "candidate_id": "cand-exp-sprint-research-group-2015",
+        "domain": "clinical-drug-trials",
+        "title": "SPRINT Research Group (2015)",
+        "files": [
+          "openalex-metadata.json",
+          "source-1.html"
+        ],
+        "catalog_source_url": "https://biolincc.nhlbi.nih.gov/studies/sprint/"
+      },
+      {
+        "proposed_study_id": "von-kugelgen-mohamed-scholkopf-2021",
+        "candidate_id": "cand-exp-von-kugelgen-mohamed-scholkopf-2021",
+        "domain": "epidemiology-vaccine-efficacy",
+        "title": "von Kügelgen, Mohamed & Schölkopf (2021)",
+        "files": [
+          "openalex-search.html",
+          "openalex-metadata.json",
+          "source-1.html"
+        ],
+        "catalog_source_url": "https://www.who.int/data"
+      },
+      {
+        "proposed_study_id": "cdc-covid-19-case-surveillance-2020",
+        "candidate_id": "cand-exp-cdc-covid-19-case-surveillance-2020",
+        "domain": "epidemiology-vaccine-efficacy",
+        "title": "CDC COVID-19 Case Surveillance (2020–2023)",
+        "files": [
+          "openalex-metadata.json",
+          "source-1.html"
+        ],
+        "catalog_source_url": "https://data.cdc.gov/Case-Surveillance/COVID-19-Case-Surveillance-Public-Use-Data/vbim-akqf"
+      },
+      {
+        "proposed_study_id": "blau-devaro-2007",
+        "candidate_id": "cand-exp-blau-devaro-2007",
+        "domain": "hiring-promotion",
+        "title": "Blau & DeVaro (2007)",
+        "files": [
+          "openalex-metadata.json",
+          "source-1.html"
+        ],
+        "catalog_source_url": "https://www.bls.gov/ncs/"
+      },
+      {
+        "proposed_study_id": "hsieh-moretti-2019",
+        "candidate_id": "cand-exp-hsieh-moretti-2019",
+        "domain": "hiring-promotion",
+        "title": "Hsieh & Moretti (2019)",
+        "files": [
+          "source-1.html"
+        ],
+        "catalog_source_url": "https://www.census.gov/programs-surveys/acs.html"
+      },
+      {
+        "proposed_study_id": "nhanes-air-quality-and-respiratory",
+        "candidate_id": "cand-exp-nhanes-air-quality-and-respiratory",
+        "domain": "public-health-smoking",
+        "title": "NHANES Air Quality and Respiratory (annual, 1999–2018)",
+        "files": [
+          "source-1.html"
+        ],
+        "catalog_source_url": "https://www.cdc.gov/nchs/nhanes/"
+      },
+      {
+        "proposed_study_id": "coleman-et-al-1966",
+        "candidate_id": "cand-exp-coleman-et-al-1966",
+        "domain": "education-outcomes",
+        "title": "Coleman et al. (1966)",
+        "files": [
+          "source-1.html"
+        ],
+        "catalog_source_url": "https://nces.ed.gov/"
+      },
+      {
+        "proposed_study_id": "early-childhood-longitudinal-study-kindergarten",
+        "candidate_id": "cand-exp-early-childhood-longitudinal-study-kindergarten",
+        "domain": "education-outcomes",
+        "title": "Early Childhood Longitudinal Study – Kindergarten (ECLS-K, 1998–2010)",
+        "files": [
+          "source-1.html"
+        ],
+        "catalog_source_url": "https://nces.ed.gov/ecls/kindergarten.asp"
+      }
+    ],
+    "landing_saved": [
+      {
+        "proposed_study_id": "chetty-friedman-saez-turner-yagan-2020",
+        "candidate_id": "cand-exp-chetty-friedman-saez-turner-yagan-2020",
+        "domain": "economics",
+        "title": "Chetty, Friedman, Saez, Turner & Yagan (2020)",
+        "files": [
+          "openalex-metadata.json",
+          "source-1.html"
+        ],
+        "catalog_source_url": "https://opportunityinsights.org/paper/undermatching/"
+      },
+      {
+        "proposed_study_id": "chetty-deming-friedman-2023",
+        "candidate_id": "cand-exp-chetty-deming-friedman-2023",
+        "domain": "economics",
+        "title": "Chetty, Deming & Friedman (2023/2026)",
+        "files": [
+          "openalex-metadata.json",
+          "source-1.html"
+        ],
+        "catalog_source_url": "https://opportunityinsights.org/paper/collegeadmissions/"
+      },
+      {
+        "proposed_study_id": "piketty-saez-2003",
+        "candidate_id": "cand-exp-piketty-saez-2003",
+        "domain": "economics",
+        "title": "Piketty & Saez (2003)",
+        "files": [
+          "openalex-metadata.json",
+          "source-1.html",
+          "source-2.html"
+        ],
+        "catalog_source_url": "https://www.irs.gov/statistics"
+      },
+      {
+        "proposed_study_id": "autor-levy-murnane-2003",
+        "candidate_id": "cand-exp-autor-levy-murnane-2003",
+        "domain": "economics",
+        "title": "Autor, Levy & Murnane (2003)",
+        "files": [
+          "openalex-metadata.json",
+          "source-1.html"
+        ],
+        "catalog_source_url": "https://www.onetonline.org/"
+      },
+      {
+        "proposed_study_id": "chetty-hendren-katz-2016",
+        "candidate_id": "cand-exp-chetty-hendren-katz-2016",
+        "domain": "economics",
+        "title": "Chetty, Hendren & Katz (2016)",
+        "files": [
+          "openalex-metadata.json",
+          "source-1.html"
+        ],
+        "catalog_source_url": "https://opportunityinsights.org/"
+      },
+      {
+        "proposed_study_id": "bhutta-hizmo-ringo-2022",
+        "candidate_id": "cand-exp-bhutta-hizmo-ringo-2022",
+        "domain": "economics",
+        "title": "Bhutta, Hizmo & Ringo (2022/2025)",
+        "files": [
+          "openalex-metadata.json",
+          "source-1.html"
+        ],
+        "catalog_source_url": "https://ffiec.cfpb.gov/data-browser/"
+      },
+      {
+        "proposed_study_id": "angwin-larson-mattu-kirchner-2016",
+        "candidate_id": "cand-exp-angwin-larson-mattu-kirchner-2016",
+        "domain": "criminal-justice-sentencing",
+        "title": "Angwin, Larson, Mattu & Kirchner (2016)",
+        "files": [
+          "openalex-metadata.json",
+          "source-1.html"
+        ],
+        "catalog_source_url": "https://github.com/propublica/compas-analysis"
+      },
+      {
+        "proposed_study_id": "starr-rehavi-2014",
+        "candidate_id": "cand-exp-starr-rehavi-2014",
+        "domain": "criminal-justice-sentencing",
+        "title": "Starr & Rehavi (2014)",
+        "files": [
+          "openalex-metadata.json",
+          "source-1.html"
+        ],
+        "catalog_source_url": "https://www.ussc.gov/research/datafiles/commission-datafiles"
+      },
+      {
+        "proposed_study_id": "ussc-2017",
+        "candidate_id": "cand-exp-ussc-2017",
+        "domain": "criminal-justice-sentencing",
+        "title": "USSC (2017)",
+        "files": [
+          "openalex-metadata.json",
+          "source-1.html"
+        ],
+        "catalog_source_url": "https://www.ussc.gov/research/research-reports/demographic-differences-sentencing"
+      },
+      {
+        "proposed_study_id": "gross-risinger-et-al-2017",
+        "candidate_id": "cand-exp-gross-risinger-et-al-2017",
+        "domain": "criminal-justice-sentencing",
+        "title": "Gross & Risinger et al. (2017)",
+        "files": [
+          "openalex-search.html",
+          "openalex-metadata.json",
+          "source-1.html"
+        ],
+        "catalog_source_url": "https://www.law.umich.edu/special/exoneration/Pages/about.aspx"
+      },
+      {
+        "proposed_study_id": "rehavi-starr-2012",
+        "candidate_id": "cand-exp-rehavi-starr-2012",
+        "domain": "criminal-justice-sentencing",
+        "title": "Rehavi & Starr (2012)",
+        "files": [
+          "openalex-metadata.json",
+          "source-1.html"
+        ],
+        "catalog_source_url": "https://www.ussc.gov/research/datafiles/commission-datafiles"
+      },
+      {
+        "proposed_study_id": "harris-steffensmeier-ulmer-painter-davis-2009",
+        "candidate_id": "cand-exp-harris-steffensmeier-ulmer-painter-davis-2009",
+        "domain": "criminal-justice-sentencing",
+        "title": "Harris, Steffensmeier, Ulmer & Painter-Davis (2009)",
+        "files": [
+          "openalex-metadata.json",
+          "source-1.html"
+        ],
+        "catalog_source_url": "https://bjs.ojp.gov/"
+      },
+      {
+        "proposed_study_id": "plato-trial",
+        "candidate_id": "cand-exp-plato-trial",
+        "domain": "clinical-drug-trials",
+        "title": "PLATO Trial (Wallentin et al. 2009)",
+        "files": [
+          "openalex-metadata.json",
+          "source-1.html"
+        ],
+        "catalog_source_url": "https://www.clinicaltrialsdata.com/"
+      },
+      {
+        "proposed_study_id": "dcct-research-group-1993",
+        "candidate_id": "cand-exp-dcct-research-group-1993",
+        "domain": "clinical-drug-trials",
+        "title": "DCCT Research Group (1993)",
+        "files": [
+          "openalex-metadata.json",
+          "source-1.html"
+        ],
+        "catalog_source_url": "https://repository.niddk.nih.gov/studies/dcct/"
+      },
+      {
+        "proposed_study_id": "triton-timi-38",
+        "candidate_id": "cand-exp-triton-timi-38",
+        "domain": "clinical-drug-trials",
+        "title": "TRITON-TIMI 38 (Wiviott et al. 2007)",
+        "files": [
+          "openalex-metadata.json",
+          "source-1.html"
+        ],
+        "catalog_source_url": "https://vivli.org/"
+      },
+      {
+        "proposed_study_id": "hiester-1984",
+        "candidate_id": "cand-exp-hiester-1984",
+        "domain": "sports-analytics",
+        "title": "Hiester (1984)",
+        "files": [
+          "openalex-metadata.json",
+          "source-1.html"
+        ],
+        "catalog_source_url": "https://sabr.org/journal/article/simpsons-paradox-stats-often-can-deceive/"
+      },
+      {
+        "proposed_study_id": "marathon-finishing-times-by-age-and-temperature-boston-marat",
+        "candidate_id": "cand-exp-marathon-finishing-times-by-age-and-temperature-boston-marat",
+        "domain": "sports-analytics",
+        "title": "Marathon Finishing Times by Age and Temperature Boston Marathon (2000–2019)",
+        "files": [
+          "openalex-metadata.json",
+          "source-1.html"
+        ],
+        "catalog_source_url": "https://www.baa.org/races/boston-marathon/results"
+      },
+      {
+        "proposed_study_id": "tennis-first-serve-percentage-by-surface-2010",
+        "candidate_id": "cand-exp-tennis-first-serve-percentage-by-surface-2010",
+        "domain": "sports-analytics",
+        "title": "Tennis First Serve Percentage by Surface (2010–2022)",
+        "files": [
+          "openalex-search.html",
+          "openalex-metadata.json",
+          "source-2.html"
+        ],
+        "catalog_source_url": "https://www.atptour.com/en/stats"
+      },
+      {
+        "proposed_study_id": "nhl-shooting-percentage-by-game-state-2010",
+        "candidate_id": "cand-exp-nhl-shooting-percentage-by-game-state-2010",
+        "domain": "sports-analytics",
+        "title": "NHL Shooting Percentage by Game State (2010–2022)",
+        "files": [
+          "openalex-metadata.json",
+          "source-1.html"
+        ],
+        "catalog_source_url": "https://www.naturalstattrick.com/"
+      },
+      {
+        "proposed_study_id": "wade-boggs-vs-don-mattingly",
+        "candidate_id": "cand-exp-wade-boggs-vs-don-mattingly",
+        "domain": "sports-analytics",
+        "title": "Wade Boggs vs. Don Mattingly (multiple seasons) classic baseball paradox pair",
+        "files": [
+          "openalex-search.html",
+          "openalex-metadata.json"
+        ],
+        "catalog_source_url": null
+      },
+      {
+        "proposed_study_id": "mlb-park-factor-adjustments",
+        "candidate_id": "cand-exp-mlb-park-factor-adjustments",
+        "domain": "sports-analytics",
+        "title": "MLB Park Factor Adjustments (Statcast era, 2015–2023)",
+        "files": [
+          "openalex-metadata.json",
+          "source-1.html"
+        ],
+        "catalog_source_url": "https://baseballsavant.mlb.com/"
+      },
+      {
+        "proposed_study_id": "olympic-sprint-times-by-heat-type-1996",
+        "candidate_id": "cand-exp-olympic-sprint-times-by-heat-type-1996",
+        "domain": "sports-analytics",
+        "title": "Olympic Sprint Times by Heat Type (1996–2020)",
+        "files": [
+          "openalex-metadata.json",
+          "source-1.html"
+        ],
+        "catalog_source_url": "https://worldathletics.org/records/by-discipline/sprints/"
+      },
+      {
+        "proposed_study_id": "our-world-in-data-covid-19-dataset-2020",
+        "candidate_id": "cand-exp-our-world-in-data-covid-19-dataset-2020",
+        "domain": "epidemiology-vaccine-efficacy",
+        "title": "Our World in Data COVID-19 Dataset (2020–2023)",
+        "files": [
+          "openalex-metadata.json",
+          "source-1.html"
+        ],
+        "catalog_source_url": "https://ourworldindata.org/covid-deaths"
+      },
+      {
+        "proposed_study_id": "kohavi-longbotham-2017",
+        "candidate_id": "cand-exp-kohavi-longbotham-2017",
+        "domain": "online-ab-testing",
+        "title": "Kohavi & Longbotham (2017)",
+        "files": [
+          "source-1.html"
+        ],
+        "catalog_source_url": "https://www.exp-platform.com/"
+      },
+      {
+        "proposed_study_id": "dockery-et-al-1993",
+        "candidate_id": "cand-exp-dockery-et-al-1993",
+        "domain": "public-health-smoking",
+        "title": "Dockery et al. (1993)",
+        "files": [
+          "source-1.html"
+        ],
+        "catalog_source_url": "https://www.hsph.harvard.edu/research/six-cities-study/"
+      },
+      {
+        "proposed_study_id": "predimed-trial",
+        "candidate_id": "cand-exp-predimed-trial",
+        "domain": "public-health-smoking",
+        "title": "PREDIMED Trial (Estruch et al. 2013)",
+        "files": [
+          "source-1.html"
+        ],
+        "catalog_source_url": "http://www.predimed.es/"
+      },
+      {
+        "proposed_study_id": "framingham-heart-study",
+        "candidate_id": "cand-exp-framingham-heart-study",
+        "domain": "public-health-smoking",
+        "title": "Framingham Heart Study (Dawber, Meadors & Moore, 1951)",
+        "files": [
+          "source-1.html"
+        ],
+        "catalog_source_url": "https://www.framinghamheartstudy.org/fhs-for-researchers/data-available-overview/"
+      },
+      {
+        "proposed_study_id": "naep",
+        "candidate_id": "cand-exp-naep",
+        "domain": "education-outcomes",
+        "title": "NAEP (Nation's Report Card, annual)",
+        "files": [
+          "source-1.html"
+        ],
+        "catalog_source_url": "https://www.nationsreportcard.gov/"
+      },
+      {
+        "proposed_study_id": "head-start-impact-study",
+        "candidate_id": "cand-exp-head-start-impact-study",
+        "domain": "education-outcomes",
+        "title": "Head Start Impact Study (Puma et al. 2010)",
+        "files": [
+          "source-1.html"
+        ],
+        "catalog_source_url": "https://www.acf.hhs.gov/opre/research/project/head-start-impact-study-and-follow-up"
+      },
+      {
+        "proposed_study_id": "timss-2019-international-math-and-science",
+        "candidate_id": "cand-exp-timss-2019-international-math-and-science",
+        "domain": "education-outcomes",
+        "title": "TIMSS 2019 International Math and Science",
+        "files": [
+          "source-1.html"
+        ],
+        "catalog_source_url": "https://timssandpirls.bc.edu/timss2019/international-database/"
+      },
+      {
+        "proposed_study_id": "hmda",
+        "candidate_id": "cand-exp-hmda",
+        "domain": "financial-lending-credit-risk",
+        "title": "HMDA (Home Mortgage Disclosure Act) Data (annual, 1990–present)",
+        "files": [
+          "source-1.html"
+        ],
+        "catalog_source_url": "https://ffiec.cfpb.gov/data-browser/"
+      },
+      {
+        "proposed_study_id": "bartlett-morse-stanton-wallace-2022",
+        "candidate_id": "cand-exp-bartlett-morse-stanton-wallace-2022",
+        "domain": "financial-lending-credit-risk",
+        "title": "Bartlett, Morse, Stanton & Wallace (2022)",
+        "files": [
+          "source-1.html"
+        ],
+        "catalog_source_url": "https://www.fanniemae.com/research-and-insights"
+      },
+      {
+        "proposed_study_id": "federal-reserve-scf",
+        "candidate_id": "cand-exp-federal-reserve-scf",
+        "domain": "financial-lending-credit-risk",
+        "title": "Federal Reserve SCF (Survey of Consumer Finances, triennial)",
+        "files": [
+          "source-1.html"
+        ],
+        "catalog_source_url": "https://www.federalreserve.gov/econres/scfindex.htm"
+      },
+      {
+        "proposed_study_id": "cfpb-consumer-credit-panel",
+        "candidate_id": "cand-exp-cfpb-consumer-credit-panel",
+        "domain": "financial-lending-credit-risk",
+        "title": "CFPB Consumer Credit Panel (CCP) — New York Fed",
+        "files": [
+          "source-1.html"
+        ],
+        "catalog_source_url": "https://www.newyorkfed.org/microeconomics/hhdc"
+      },
+      {
+        "proposed_study_id": "fdic-small-business-lending-survey-2016",
+        "candidate_id": "cand-exp-fdic-small-business-lending-survey-2016",
+        "domain": "financial-lending-credit-risk",
+        "title": "FDIC Small Business Lending Survey (2016)",
+        "files": [
+          "source-1.html"
+        ],
+        "catalog_source_url": "https://www.fdic.gov/bank/statistical/guide/"
+      },
+      {
+        "proposed_study_id": "acharya-imbierowicz-steffen-teichmann-2020",
+        "candidate_id": "cand-exp-acharya-imbierowicz-steffen-teichmann-2020",
+        "domain": "financial-lending-credit-risk",
+        "title": "Acharya, Imbierowicz, Steffen & Teichmann (2020)",
+        "files": [
+          "source-1.html"
+        ],
+        "catalog_source_url": "https://fred.stlouisfed.org/"
+      }
+    ],
+    "metadata_only": [
+      {
+        "proposed_study_id": "arcidiacono-kinsler-ransom-2019",
+        "candidate_id": "cand-exp-arcidiacono-kinsler-ransom-2019",
+        "domain": "higher-education-admissions",
+        "title": "Arcidiacono, Kinsler & Ransom (2019)",
+        "files": [
+          "openalex-metadata.json"
+        ],
+        "catalog_source_url": null
+      },
+      {
+        "proposed_study_id": "nfl-quarterback-rating-by-game-situation-2010",
+        "candidate_id": "cand-exp-nfl-quarterback-rating-by-game-situation-2010",
+        "domain": "sports-analytics",
+        "title": "NFL Quarterback Rating by Game Situation (2010–2022)",
+        "files": [
+          "openalex-metadata.json"
+        ],
+        "catalog_source_url": "https://www.pro-football-reference.com/"
+      },
+      {
+        "proposed_study_id": "doll-hill-1954",
+        "candidate_id": "cand-exp-doll-hill-1954",
+        "domain": "epidemiology-vaccine-efficacy",
+        "title": "Doll & Hill (1954)",
+        "files": [
+          "openalex-metadata.json"
+        ],
+        "catalog_source_url": "https://www.ctsu.ox.ac.uk/research/uk-doctors-cohort"
+      },
+      {
+        "proposed_study_id": "polack-et-al-2020",
+        "candidate_id": "cand-exp-polack-et-al-2020",
+        "domain": "epidemiology-vaccine-efficacy",
+        "title": "Polack et al. (2020)",
+        "files": [
+          "openalex-metadata.json"
+        ],
+        "catalog_source_url": "https://www.pfizer.com/research/clinical-trials/pfizer-clinical-trial-data-sharing"
+      },
+      {
+        "proposed_study_id": "hernan-hernandez-diaz-robins-2004",
+        "candidate_id": "cand-exp-hernan-hernandez-diaz-robins-2004",
+        "domain": "epidemiology-vaccine-efficacy",
+        "title": "Hernan, Hernandez-Diaz & Robins (2004)",
+        "files": [
+          "openalex-metadata.json"
+        ],
+        "catalog_source_url": "https://www.nurseshealthstudy.org/"
+      },
+      {
+        "proposed_study_id": "moss-racusin-et-al-2012",
+        "candidate_id": "cand-exp-moss-racusin-et-al-2012",
+        "domain": "hiring-promotion",
+        "title": "Moss-Racusin et al. (2012)",
+        "files": [
+          "openalex-metadata.json"
+        ],
+        "catalog_source_url": "https://www.pnas.org/doi/10.1073/pnas.1211286109"
+      },
+      {
+        "proposed_study_id": "eeoc-charge-data",
+        "candidate_id": "cand-exp-eeoc-charge-data",
+        "domain": "hiring-promotion",
+        "title": "EEOC Charge Data (annual)",
+        "files": [
+          "openalex-metadata.json"
+        ],
+        "catalog_source_url": "https://www.eeoc.gov/data/charge-statistics-charges-filed-eeoc"
+      },
+      {
+        "proposed_study_id": "nsf-ncses-survey-of-doctoral-recipients",
+        "candidate_id": "cand-exp-nsf-ncses-survey-of-doctoral-recipients",
+        "domain": "hiring-promotion",
+        "title": "NSF NCSES Survey of Doctoral Recipients (annual)",
+        "files": [
+          "openalex-metadata.json"
+        ],
+        "catalog_source_url": "https://ncses.nsf.gov/surveys/doctoral-recipients"
+      },
+      {
+        "proposed_study_id": "kline-rose-walters-2022",
+        "candidate_id": "cand-exp-kline-rose-walters-2022",
+        "domain": "hiring-promotion",
+        "title": "Kline, Rose & Walters (2022)",
+        "files": [
+          "openalex-metadata.json"
+        ],
+        "catalog_source_url": "https://academic.oup.com/qje/article/137/4/1963/6659597"
+      }
+    ],
+    "blocked": [
+      {
+        "proposed_study_id": "johari-koomen-pekelis-walsh-2017",
+        "candidate_id": "cand-exp-johari-koomen-pekelis-walsh-2017",
+        "domain": "online-ab-testing",
+        "title": "Johari, Koomen, Pekelis & Walsh (2017)",
+        "files": [],
+        "catalog_source_url": "https://github.com/Optimizely/stats-engine"
+      },
+      {
+        "proposed_study_id": "doll-hill-1950",
+        "candidate_id": "cand-exp-doll-hill-1950",
+        "domain": "public-health-smoking",
+        "title": "Doll & Hill (1950)",
+        "files": [],
+        "catalog_source_url": null
+      },
+      {
+        "proposed_study_id": "krueger-1999",
+        "candidate_id": "cand-exp-krueger-1999",
+        "domain": "education-outcomes",
+        "title": "Krueger (1999)",
+        "files": [],
+        "catalog_source_url": "https://www.aeaweb.org/articles?id=10.1257/aer.90.4.1"
+      },
+      {
+        "proposed_study_id": "sba-small-business-lending-data",
+        "candidate_id": "cand-exp-sba-small-business-lending-data",
+        "domain": "financial-lending-credit-risk",
+        "title": "SBA Small Business Lending Data (annual)",
+        "files": [],
+        "catalog_source_url": "https://www.sba.gov/about-sba/sba-data-and-research"
+      },
+      {
+        "proposed_study_id": "petersen-rajan-1994",
+        "candidate_id": "cand-exp-petersen-rajan-1994",
+        "domain": "financial-lending-credit-risk",
+        "title": "Petersen & Rajan (1994)",
+        "files": [],
+        "catalog_source_url": "https://www.federalreserve.gov/releases/nssbf/"
+      }
+    ]
+  }
+}

@@ -1,0 +1,1193 @@
+{
+  "id": "https://openalex.org/W4385568073",
+  "doi": "https://doi.org/10.1145/3580305.3599924",
+  "title": "un-xPass: Measuring Soccer Player's Creativity",
+  "display_name": "un-xPass: Measuring Soccer Player's Creativity",
+  "relevance_score": 141.85596,
+  "publication_year": 2023,
+  "publication_date": "2023-08-04",
+  "ids": {
+    "openalex": "https://openalex.org/W4385568073",
+    "doi": "https://doi.org/10.1145/3580305.3599924"
+  },
+  "language": "en",
+  "primary_location": {
+    "id": "doi:10.1145/3580305.3599924",
+    "is_oa": false,
+    "landing_page_url": "https://doi.org/10.1145/3580305.3599924",
+    "pdf_url": null,
+    "source": null,
+    "license": null,
+    "license_id": null,
+    "version": "publishedVersion",
+    "is_accepted": true,
+    "is_published": true,
+    "raw_source_name": "Proceedings of the 29th ACM SIGKDD Conference on Knowledge Discovery and Data Mining",
+    "raw_type": "proceedings-article"
+  },
+  "type": "article",
+  "indexed_in": [
+    "crossref"
+  ],
+  "open_access": {
+    "is_oa": true,
+    "oa_status": "green",
+    "oa_url": "https://lirias.kuleuven.be/retrieve/c29f20c5-d2a1-46c1-9dc1-416920493452",
+    "any_repository_has_fulltext": true
+  },
+  "authorships": [
+    {
+      "author_position": "first",
+      "author": {
+        "id": "https://openalex.org/A5020825067",
+        "display_name": "Pieter Robberechts",
+        "orcid": "https://orcid.org/0000-0002-3734-0047"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I99464096",
+          "display_name": "KU Leuven",
+          "ror": "https://ror.org/05f950310",
+          "country_code": "BE",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I99464096"
+          ]
+        }
+      ],
+      "countries": [
+        "BE"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Pieter Robberechts",
+      "raw_affiliation_strings": [
+        "KU Leuven, Leuven, Belgium"
+      ],
+      "raw_orcid": "https://orcid.org/0000-0002-3734-0047",
+      "affiliations": [
+        {
+          "raw_affiliation_string": "KU Leuven, Leuven, Belgium",
+          "institution_ids": [
+            "https://openalex.org/I99464096"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5083449390",
+        "display_name": "Maaike Van Roy",
+        "orcid": "https://orcid.org/0000-0001-8959-3575"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I99464096",
+          "display_name": "KU Leuven",
+          "ror": "https://ror.org/05f950310",
+          "country_code": "BE",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I99464096"
+          ]
+        }
+      ],
+      "countries": [
+        "BE"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Maaike Van Roy",
+      "raw_affiliation_strings": [
+        "KU Leuven, Leuven, Belgium"
+      ],
+      "raw_orcid": "https://orcid.org/0000-0001-8959-3575",
+      "affiliations": [
+        {
+          "raw_affiliation_string": "KU Leuven, Leuven, Belgium",
+          "institution_ids": [
+            "https://openalex.org/I99464096"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "last",
+      "author": {
+        "id": "https://openalex.org/A5029479248",
+        "display_name": "Jesse Davis",
+        "orcid": "https://orcid.org/0000-0002-3748-9263"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I99464096",
+          "display_name": "KU Leuven",
+          "ror": "https://ror.org/05f950310",
+          "country_code": "BE",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I99464096"
+          ]
+        }
+      ],
+      "countries": [
+        "BE"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Jesse Davis",
+      "raw_affiliation_strings": [
+        "KU Leuven, Leuven, Belgium"
+      ],
+      "raw_orcid": "https://orcid.org/0000-0002-3748-9263",
+      "affiliations": [
+        {
+          "raw_affiliation_string": "KU Leuven, Leuven, Belgium",
+          "institution_ids": [
+            "https://openalex.org/I99464096"
+          ]
+        }
+      ]
+    }
+  ],
+  "institutions": [],
+  "countries_distinct_count": 1,
+  "institutions_distinct_count": 1,
+  "corresponding_author_ids": [],
+  "corresponding_institution_ids": [
+    "https://openalex.org/I99464096"
+  ],
+  "apc_list": null,
+  "apc_paid": null,
+  "fwci": 9.9252,
+  "has_fulltext": true,
+  "cited_by_count": 25,
+  "citation_normalized_percentile": {
+    "value": 0.97700481,
+    "is_in_top_1_percent": false,
+    "is_in_top_10_percent": true
+  },
+  "cited_by_percentile_year": {
+    "min": 89,
+    "max": 100
+  },
+  "biblio": {
+    "volume": null,
+    "issue": null,
+    "first_page": "4768",
+    "last_page": "4777"
+  },
+  "is_retracted": false,
+  "is_paratext": false,
+  "is_xpac": false,
+  "primary_topic": {
+    "id": "https://openalex.org/T11674",
+    "display_name": "Sports Analytics and Performance",
+    "score": 0.9998000264167786,
+    "subfield": {
+      "id": "https://openalex.org/subfields/2002",
+      "display_name": "Economics and Econometrics"
+    },
+    "field": {
+      "id": "https://openalex.org/fields/20",
+      "display_name": "Economics, Econometrics and Finance"
+    },
+    "domain": {
+      "id": "https://openalex.org/domains/2",
+      "display_name": "Social Sciences"
+    }
+  },
+  "topics": [
+    {
+      "id": "https://openalex.org/T11674",
+      "display_name": "Sports Analytics and Performance",
+      "score": 0.9998000264167786,
+      "subfield": {
+        "id": "https://openalex.org/subfields/2002",
+        "display_name": "Economics and Econometrics"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/20",
+        "display_name": "Economics, Econometrics and Finance"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/2",
+        "display_name": "Social Sciences"
+      }
+    },
+    {
+      "id": "https://openalex.org/T10157",
+      "display_name": "Sports Performance and Training",
+      "score": 0.9983999729156494,
+      "subfield": {
+        "id": "https://openalex.org/subfields/2732",
+        "display_name": "Orthopedics and Sports Medicine"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/27",
+        "display_name": "Medicine"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/4",
+        "display_name": "Health Sciences"
+      }
+    },
+    {
+      "id": "https://openalex.org/T10813",
+      "display_name": "Sport Psychology and Performance",
+      "score": 0.9914000034332275,
+      "subfield": {
+        "id": "https://openalex.org/subfields/3204",
+        "display_name": "Developmental and Educational Psychology"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/32",
+        "display_name": "Psychology"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/2",
+        "display_name": "Social Sciences"
+      }
+    }
+  ],
+  "keywords": [
+    {
+      "id": "https://openalex.org/keywords/creativity",
+      "display_name": "Creativity",
+      "score": 0.8982049226760864
+    },
+    {
+      "id": "https://openalex.org/keywords/originality",
+      "display_name": "Originality",
+      "score": 0.7595028281211853
+    },
+    {
+      "id": "https://openalex.org/keywords/metric",
+      "display_name": "Metric (unit)",
+      "score": 0.6496400237083435
+    },
+    {
+      "id": "https://openalex.org/keywords/computer-science",
+      "display_name": "Computer science",
+      "score": 0.6137912273406982
+    },
+    {
+      "id": "https://openalex.org/keywords/process",
+      "display_name": "Process (computing)",
+      "score": 0.581093430519104
+    },
+    {
+      "id": "https://openalex.org/keywords/league",
+      "display_name": "League",
+      "score": 0.5660580992698669
+    },
+    {
+      "id": "https://openalex.org/keywords/event",
+      "display_name": "Event (particle physics)",
+      "score": 0.515884280204773
+    },
+    {
+      "id": "https://openalex.org/keywords/value",
+      "display_name": "Value (mathematics)",
+      "score": 0.4818059802055359
+    },
+    {
+      "id": "https://openalex.org/keywords/artificial-intelligence",
+      "display_name": "Artificial intelligence",
+      "score": 0.4256490468978882
+    },
+    {
+      "id": "https://openalex.org/keywords/task",
+      "display_name": "Task (project management)",
+      "score": 0.4162943959236145
+    },
+    {
+      "id": "https://openalex.org/keywords/data-science",
+      "display_name": "Data science",
+      "score": 0.352925181388855
+    },
+    {
+      "id": "https://openalex.org/keywords/psychology",
+      "display_name": "Psychology",
+      "score": 0.33858609199523926
+    },
+    {
+      "id": "https://openalex.org/keywords/human\u2013computer-interaction",
+      "display_name": "Human\u2013computer interaction",
+      "score": 0.3276370167732239
+    },
+    {
+      "id": "https://openalex.org/keywords/machine-learning",
+      "display_name": "Machine learning",
+      "score": 0.28255102038383484
+    },
+    {
+      "id": "https://openalex.org/keywords/marketing",
+      "display_name": "Marketing",
+      "score": 0.1776641309261322
+    },
+    {
+      "id": "https://openalex.org/keywords/engineering",
+      "display_name": "Engineering",
+      "score": 0.15970927476882935
+    },
+    {
+      "id": "https://openalex.org/keywords/social-psychology",
+      "display_name": "Social psychology",
+      "score": 0.1473185420036316
+    },
+    {
+      "id": "https://openalex.org/keywords/business",
+      "display_name": "Business",
+      "score": 0.08561450242996216
+    }
+  ],
+  "concepts": [
+    {
+      "id": "https://openalex.org/C11012388",
+      "wikidata": "https://www.wikidata.org/wiki/Q170658",
+      "display_name": "Creativity",
+      "level": 2,
+      "score": 0.8982049226760864
+    },
+    {
+      "id": "https://openalex.org/C2776950860",
+      "wikidata": "https://www.wikidata.org/wiki/Q2914681",
+      "display_name": "Originality",
+      "level": 3,
+      "score": 0.7595028281211853
+    },
+    {
+      "id": "https://openalex.org/C176217482",
+      "wikidata": "https://www.wikidata.org/wiki/Q860554",
+      "display_name": "Metric (unit)",
+      "level": 2,
+      "score": 0.6496400237083435
+    },
+    {
+      "id": "https://openalex.org/C41008148",
+      "wikidata": "https://www.wikidata.org/wiki/Q21198",
+      "display_name": "Computer science",
+      "level": 0,
+      "score": 0.6137912273406982
+    },
+    {
+      "id": "https://openalex.org/C98045186",
+      "wikidata": "https://www.wikidata.org/wiki/Q205663",
+      "display_name": "Process (computing)",
+      "level": 2,
+      "score": 0.581093430519104
+    },
+    {
+      "id": "https://openalex.org/C207456731",
+      "wikidata": "https://www.wikidata.org/wiki/Q660818",
+      "display_name": "League",
+      "level": 2,
+      "score": 0.5660580992698669
+    },
+    {
+      "id": "https://openalex.org/C2779662365",
+      "wikidata": "https://www.wikidata.org/wiki/Q5416694",
+      "display_name": "Event (particle physics)",
+      "level": 2,
+      "score": 0.515884280204773
+    },
+    {
+      "id": "https://openalex.org/C2776291640",
+      "wikidata": "https://www.wikidata.org/wiki/Q2912517",
+      "display_name": "Value (mathematics)",
+      "level": 2,
+      "score": 0.4818059802055359
+    },
+    {
+      "id": "https://openalex.org/C154945302",
+      "wikidata": "https://www.wikidata.org/wiki/Q11660",
+      "display_name": "Artificial intelligence",
+      "level": 1,
+      "score": 0.4256490468978882
+    },
+    {
+      "id": "https://openalex.org/C2780451532",
+      "wikidata": "https://www.wikidata.org/wiki/Q759676",
+      "display_name": "Task (project management)",
+      "level": 2,
+      "score": 0.4162943959236145
+    },
+    {
+      "id": "https://openalex.org/C2522767166",
+      "wikidata": "https://www.wikidata.org/wiki/Q2374463",
+      "display_name": "Data science",
+      "level": 1,
+      "score": 0.352925181388855
+    },
+    {
+      "id": "https://openalex.org/C15744967",
+      "wikidata": "https://www.wikidata.org/wiki/Q9418",
+      "display_name": "Psychology",
+      "level": 0,
+      "score": 0.33858609199523926
+    },
+    {
+      "id": "https://openalex.org/C107457646",
+      "wikidata": "https://www.wikidata.org/wiki/Q207434",
+      "display_name": "Human\u2013computer interaction",
+      "level": 1,
+      "score": 0.3276370167732239
+    },
+    {
+      "id": "https://openalex.org/C119857082",
+      "wikidata": "https://www.wikidata.org/wiki/Q2539",
+      "display_name": "Machine learning",
+      "level": 1,
+      "score": 0.28255102038383484
+    },
+    {
+      "id": "https://openalex.org/C162853370",
+      "wikidata": "https://www.wikidata.org/wiki/Q39809",
+      "display_name": "Marketing",
+      "level": 1,
+      "score": 0.1776641309261322
+    },
+    {
+      "id": "https://openalex.org/C127413603",
+      "wikidata": "https://www.wikidata.org/wiki/Q11023",
+      "display_name": "Engineering",
+      "level": 0,
+      "score": 0.15970927476882935
+    },
+    {
+      "id": "https://openalex.org/C77805123",
+      "wikidata": "https://www.wikidata.org/wiki/Q161272",
+      "display_name": "Social psychology",
+      "level": 1,
+      "score": 0.1473185420036316
+    },
+    {
+      "id": "https://openalex.org/C144133560",
+      "wikidata": "https://www.wikidata.org/wiki/Q4830453",
+      "display_name": "Business",
+      "level": 0,
+      "score": 0.08561450242996216
+    },
+    {
+      "id": "https://openalex.org/C111919701",
+      "wikidata": "https://www.wikidata.org/wiki/Q9135",
+      "display_name": "Operating system",
+      "level": 1,
+      "score": 0.0
+    },
+    {
+      "id": "https://openalex.org/C201995342",
+      "wikidata": "https://www.wikidata.org/wiki/Q682496",
+      "display_name": "Systems engineering",
+      "level": 1,
+      "score": 0.0
+    },
+    {
+      "id": "https://openalex.org/C1276947",
+      "wikidata": "https://www.wikidata.org/wiki/Q333",
+      "display_name": "Astronomy",
+      "level": 1,
+      "score": 0.0
+    },
+    {
+      "id": "https://openalex.org/C121332964",
+      "wikidata": "https://www.wikidata.org/wiki/Q413",
+      "display_name": "Physics",
+      "level": 0,
+      "score": 0.0
+    },
+    {
+      "id": "https://openalex.org/C62520636",
+      "wikidata": "https://www.wikidata.org/wiki/Q944",
+      "display_name": "Quantum mechanics",
+      "level": 1,
+      "score": 0.0
+    }
+  ],
+  "mesh": [],
+  "locations_count": 3,
+  "locations": [
+    {
+      "id": "doi:10.1145/3580305.3599924",
+      "is_oa": false,
+      "landing_page_url": "https://doi.org/10.1145/3580305.3599924",
+      "pdf_url": null,
+      "source": null,
+      "license": null,
+      "license_id": null,
+      "version": "publishedVersion",
+      "is_accepted": true,
+      "is_published": true,
+      "raw_source_name": "Proceedings of the 29th ACM SIGKDD Conference on Knowledge Discovery and Data Mining",
+      "raw_type": "proceedings-article"
+    },
+    {
+      "id": "pmh:oai:lirias2repo.kuleuven.be:20.500.12942/701987",
+      "is_oa": false,
+      "landing_page_url": "https://lirias.kuleuven.be/handle/20.500.12942/701987",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S7407055369",
+        "display_name": "Lirias",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": null,
+        "host_organization_name": null,
+        "host_organization_lineage": [],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "acceptedVersion",
+      "is_accepted": true,
+      "is_published": false,
+      "raw_source_name": "StatsBomb Conference, London, UK, 20 September 2022",
+      "raw_type": "info:eu-repo/semantics/conferenceObject"
+    },
+    {
+      "id": "pmh:oai:lirias2repo.kuleuven.be:20.500.12942/720398",
+      "is_oa": true,
+      "landing_page_url": "https://lirias.kuleuven.be/handle/20.500.12942/720398",
+      "pdf_url": "https://lirias.kuleuven.be/retrieve/c29f20c5-d2a1-46c1-9dc1-416920493452",
+      "source": {
+        "id": "https://openalex.org/S7407055369",
+        "display_name": "Lirias",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": null,
+        "host_organization_name": null,
+        "host_organization_lineage": [],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": "other-oa",
+      "license_id": "https://openalex.org/licenses/other-oa",
+      "version": "submittedVersion",
+      "is_accepted": false,
+      "is_published": false,
+      "raw_source_name": "KDD '23, Long Beach, CA, USA, 6-10 August 2023",
+      "raw_type": "info:eu-repo/semantics/conferenceObject"
+    }
+  ],
+  "best_oa_location": {
+    "id": "pmh:oai:lirias2repo.kuleuven.be:20.500.12942/720398",
+    "is_oa": true,
+    "landing_page_url": "https://lirias.kuleuven.be/handle/20.500.12942/720398",
+    "pdf_url": "https://lirias.kuleuven.be/retrieve/c29f20c5-d2a1-46c1-9dc1-416920493452",
+    "source": {
+      "id": "https://openalex.org/S7407055369",
+      "display_name": "Lirias",
+      "issn_l": null,
+      "issn": null,
+      "is_oa": false,
+      "is_in_doaj": false,
+      "is_core": false,
+      "host_organization": null,
+      "host_organization_name": null,
+      "host_organization_lineage": [],
+      "host_organization_lineage_names": [],
+      "type": "repository"
+    },
+    "license": "other-oa",
+    "license_id": "https://openalex.org/licenses/other-oa",
+    "version": "submittedVersion",
+    "is_accepted": false,
+    "is_published": false,
+    "raw_source_name": "KDD '23, Long Beach, CA, USA, 6-10 August 2023",
+    "raw_type": "info:eu-repo/semantics/conferenceObject"
+  },
+  "sustainable_development_goals": [
+    {
+      "display_name": "Peace, Justice and strong institutions",
+      "id": "https://metadata.un.org/sdg/16",
+      "score": 0.5299999713897705
+    }
+  ],
+  "awards": [],
+  "funders": [
+    {
+      "id": "https://openalex.org/F4320322308",
+      "display_name": "KU Leuven",
+      "ror": "https://ror.org/05f950310"
+    },
+    {
+      "id": "https://openalex.org/F4320327336",
+      "display_name": "Vlaamse regering",
+      "ror": null
+    }
+  ],
+  "has_content": {
+    "grobid_xml": true,
+    "pdf": true
+  },
+  "content_urls": {
+    "pdf": "https://content.openalex.org/works/W4385568073.pdf",
+    "grobid_xml": "https://content.openalex.org/works/W4385568073.grobid-xml"
+  },
+  "referenced_works_count": 25,
+  "referenced_works": [
+    "https://openalex.org/W1541658361",
+    "https://openalex.org/W1903029394",
+    "https://openalex.org/W2008352585",
+    "https://openalex.org/W2059710230",
+    "https://openalex.org/W2065699521",
+    "https://openalex.org/W2123179900",
+    "https://openalex.org/W2126347742",
+    "https://openalex.org/W2295598076",
+    "https://openalex.org/W2335396666",
+    "https://openalex.org/W2744072030",
+    "https://openalex.org/W2796230731",
+    "https://openalex.org/W2913111658",
+    "https://openalex.org/W2996106349",
+    "https://openalex.org/W3021932111",
+    "https://openalex.org/W3043874967",
+    "https://openalex.org/W3113277930",
+    "https://openalex.org/W3163016373",
+    "https://openalex.org/W3164404442",
+    "https://openalex.org/W3173637393",
+    "https://openalex.org/W3199064314",
+    "https://openalex.org/W4206239106",
+    "https://openalex.org/W4237534597",
+    "https://openalex.org/W4281743686",
+    "https://openalex.org/W4288278931",
+    "https://openalex.org/W4300454389"
+  ],
+  "related_works": [
+    "https://openalex.org/W4387497383",
+    "https://openalex.org/W3183948672",
+    "https://openalex.org/W3173606202",
+    "https://openalex.org/W3110381201",
+    "https://openalex.org/W2948807893",
+    "https://openalex.org/W2778153218",
+    "https://openalex.org/W2758277628",
+    "https://openalex.org/W2748952813",
+    "https://openalex.org/W1531601525",
+    "https://openalex.org/W4230399884"
+  ],
+  "abstract_inverted_index": {
+    "Creativity": [
+      0
+    ],
+    "is": [
+      1,
+      33,
+      44,
+      55
+    ],
+    "highly": [
+      2
+    ],
+    "valued": [
+      3
+    ],
+    "in": [
+      4,
+      52,
+      79,
+      86,
+      101,
+      127,
+      205
+    ],
+    "soccer": [
+      5,
+      192
+    ],
+    "players.": [
+      6
+    ],
+    "It": [
+      7,
+      54
+    ],
+    "contributes": [
+      8
+    ],
+    "to": [
+      9,
+      18,
+      49,
+      74,
+      94,
+      114
+    ],
+    "exciting": [
+      10
+    ],
+    "and": [
+      11,
+      22,
+      124,
+      156,
+      187,
+      194,
+      202
+    ],
+    "unpredictable": [
+      12
+    ],
+    "play,": [
+      13
+    ],
+    "which": [
+      14
+    ],
+    "can": [
+      15
+    ],
+    "help": [
+      16
+    ],
+    "teams": [
+      17
+    ],
+    "overcome": [
+      19
+    ],
+    "defensive": [
+      20
+    ],
+    "strategies": [
+      21
+    ],
+    "create": [
+      23
+    ],
+    "scoring": [
+      24,
+      135
+    ],
+    "opportunities.": [
+      25
+    ],
+    "Consequently,": [
+      26
+    ],
+    "evaluating": [
+      27
+    ],
+    "the": [
+      28,
+      38,
+      59,
+      96,
+      119,
+      131,
+      150,
+      189,
+      206
+    ],
+    "creative": [
+      29,
+      66
+    ],
+    "abilities": [
+      30
+    ],
+    "of": [
+      31,
+      37,
+      98,
+      121,
+      129,
+      134,
+      149,
+      161,
+      191
+    ],
+    "players": [
+      32,
+      193
+    ],
+    "an": [
+      34
+    ],
+    "important": [
+      35,
+      117,
+      197
+    ],
+    "aspect": [
+      36
+    ],
+    "player": [
+      39,
+      175,
+      200
+    ],
+    "recruitment": [
+      40,
+      201
+    ],
+    "process.": [
+      41
+    ],
+    "However,": [
+      42
+    ],
+    "there": [
+      43
+    ],
+    "currently": [
+      45
+    ],
+    "no": [
+      46
+    ],
+    "clear": [
+      47
+    ],
+    "way": [
+      48
+    ],
+    "measure": [
+      50
+    ],
+    "creativity": [
+      51,
+      99,
+      190
+    ],
+    "soccer.": [
+      53
+    ],
+    "not": [
+      56
+    ],
+    "captured": [
+      57
+    ],
+    "by": [
+      58
+    ],
+    "typical": [
+      60
+    ],
+    "result-based": [
+      61
+    ],
+    "performance": [
+      62
+    ],
+    "indicators,": [
+      63
+    ],
+    "as": [
+      64
+    ],
+    "being": [
+      65
+    ],
+    "entails": [
+      67
+    ],
+    "going": [
+      68
+    ],
+    "beyond": [
+      69
+    ],
+    "just": [
+      70
+    ],
+    "doing": [
+      71
+    ],
+    "something": [
+      72,
+      76
+    ],
+    "useful,": [
+      73
+    ],
+    "accomplishing": [
+      75
+    ],
+    "useful": [
+      77
+    ],
+    "but": [
+      78
+    ],
+    "a": [
+      80,
+      91,
+      102,
+      122,
+      136,
+      159,
+      170,
+      182
+    ],
+    "unique": [
+      81
+    ],
+    "or": [
+      82
+    ],
+    "atypical": [
+      83
+    ],
+    "way.": [
+      84
+    ],
+    "Therefore": [
+      85
+    ],
+    "this": [
+      87
+    ],
+    "paper,": [
+      88
+    ],
+    "we": [
+      89
+    ],
+    "define": [
+      90
+    ],
+    "novel": [
+      92
+    ],
+    "metric": [
+      93,
+      141,
+      180
+    ],
+    "quantify": [
+      95
+    ],
+    "level": [
+      97
+    ],
+    "involved": [
+      100
+    ],
+    "player's": [
+      103,
+      171
+    ],
+    "passes.": [
+      104
+    ],
+    "Our": [
+      105
+    ],
+    "Creative": [
+      106
+    ],
+    "Decision": [
+      107
+    ],
+    "Rating": [
+      108
+    ],
+    "(CDR)": [
+      109
+    ],
+    "utilizes": [
+      110
+    ],
+    "machine": [
+      111
+    ],
+    "learning": [
+      112
+    ],
+    "techniques": [
+      113
+    ],
+    "assess": [
+      115
+    ],
+    "two": [
+      116
+    ],
+    "factors:": [
+      118
+    ],
+    "originality": [
+      120
+    ],
+    "pass,": [
+      123
+    ],
+    "its": [
+      125
+    ],
+    "value": [
+      126
+    ],
+    "terms": [
+      128
+    ],
+    "increasing": [
+      130
+    ],
+    "team's": [
+      132
+    ],
+    "chances": [
+      133
+    ],
+    "goal.": [
+      137
+    ],
+    "We": [
+      138
+    ],
+    "validated": [
+      139
+    ],
+    "our": [
+      140,
+      179
+    ],
+    "on": [
+      142,
+      169
+    ],
+    "StatsBomb": [
+      143
+    ],
+    "360": [
+      144
+    ],
+    "contextual": [
+      145
+    ],
+    "event": [
+      146
+    ],
+    "stream": [
+      147
+    ],
+    "data": [
+      148
+    ],
+    "2021/22": [
+      151
+    ],
+    "English": [
+      152
+    ],
+    "Premier": [
+      153
+    ],
+    "League": [
+      154
+    ],
+    "season": [
+      155
+    ],
+    "show": [
+      157
+    ],
+    "through": [
+      158
+    ],
+    "number": [
+      160
+    ],
+    "use": [
+      162
+    ],
+    "cases": [
+      163
+    ],
+    "that": [
+      164
+    ],
+    "it": [
+      165
+    ],
+    "provides": [
+      166,
+      181
+    ],
+    "another": [
+      167
+    ],
+    "angle": [
+      168
+    ],
+    "skill,": [
+      172
+    ],
+    "complementing": [
+      173
+    ],
+    "existing": [
+      174
+    ],
+    "evaluation": [
+      176
+    ],
+    "metrics.": [
+      177
+    ],
+    "Overall,": [
+      178
+    ],
+    "concise": [
+      183
+    ],
+    "method": [
+      184
+    ],
+    "for": [
+      185,
+      199
+    ],
+    "capturing": [
+      186
+    ],
+    "quantifying": [
+      188
+    ],
+    "could": [
+      195
+    ],
+    "have": [
+      196
+    ],
+    "implications": [
+      198
+    ],
+    "talent": [
+      203
+    ],
+    "development": [
+      204
+    ],
+    "sport.": [
+      207
+    ]
+  },
+  "counts_by_year": [
+    {
+      "year": 2026,
+      "cited_by_count": 6
+    },
+    {
+      "year": 2025,
+      "cited_by_count": 10
+    },
+    {
+      "year": 2024,
+      "cited_by_count": 8
+    },
+    {
+      "year": 2023,
+      "cited_by_count": 1
+    }
+  ],
+  "updated_date": "2026-07-05T07:55:05.734416",
+  "created_date": "2025-10-10T00:00:00"
+}

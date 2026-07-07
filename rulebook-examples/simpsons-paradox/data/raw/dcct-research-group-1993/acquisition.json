@@ -1,0 +1,17 @@
+{
+  "candidate_id": "cand-exp-dcct-research-group-1993",
+  "proposed_study_id": "dcct-research-group-1993",
+  "acquisition_status": "landing_saved",
+  "attempted_at": "2026-07-07T03:43:59+00:00",
+  "catalog_source_url": "https://repository.niddk.nih.gov/studies/dcct/",
+  "resolved_urls": [
+    "https://doi.org/10.1056/nejmoa052187",
+    "https://www.nejm.org/doi/pdf/10.1056/NEJMoa052187?articleTools=true",
+    "https://repository.niddk.nih.gov/studies/dcct/"
+  ],
+  "files": [
+    "openalex-metadata.json",
+    "source-1.html"
+  ],
+  "dois": []
+}

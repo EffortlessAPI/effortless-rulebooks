@@ -1,0 +1,14 @@
+{
+  "candidate_id": "cand-exp-federal-reserve-scf",
+  "proposed_study_id": "federal-reserve-scf",
+  "acquisition_status": "landing_saved",
+  "attempted_at": "2026-07-07T03:48:00+00:00",
+  "catalog_source_url": "https://www.federalreserve.gov/econres/scfindex.htm",
+  "resolved_urls": [
+    "https://www.federalreserve.gov/econres/scfindex.htm"
+  ],
+  "files": [
+    "source-1.html"
+  ],
+  "dois": []
+}

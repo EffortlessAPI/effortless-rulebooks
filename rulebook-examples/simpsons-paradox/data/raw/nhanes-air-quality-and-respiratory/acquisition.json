@@ -1,0 +1,14 @@
+{
+  "candidate_id": "cand-exp-nhanes-air-quality-and-respiratory",
+  "proposed_study_id": "nhanes-air-quality-and-respiratory",
+  "acquisition_status": "portal_manual",
+  "attempted_at": "2026-07-07T03:47:26+00:00",
+  "catalog_source_url": "https://www.cdc.gov/nchs/nhanes/",
+  "resolved_urls": [
+    "https://www.cdc.gov/nchs/nhanes/"
+  ],
+  "files": [
+    "source-1.html"
+  ],
+  "dois": []
+}

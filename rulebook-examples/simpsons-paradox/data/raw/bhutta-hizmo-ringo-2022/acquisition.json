@@ -1,0 +1,17 @@
+{
+  "candidate_id": "cand-exp-bhutta-hizmo-ringo-2022",
+  "proposed_study_id": "bhutta-hizmo-ringo-2022",
+  "acquisition_status": "landing_saved",
+  "attempted_at": "2026-07-07T03:41:01+00:00",
+  "catalog_source_url": "https://ffiec.cfpb.gov/data-browser/",
+  "resolved_urls": [
+    "https://doi.org/10.1111/jofi.13428",
+    "https://onlinelibrary.wiley.com/doi/pdfdirect/10.1111/jofi.13428",
+    "https://ffiec.cfpb.gov/data-browser/"
+  ],
+  "files": [
+    "openalex-metadata.json",
+    "source-1.html"
+  ],
+  "dois": []
+}

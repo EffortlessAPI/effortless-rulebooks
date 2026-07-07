@@ -1,0 +1,795 @@
+{
+  "id": "https://openalex.org/W2998021675",
+  "doi": "https://doi.org/10.4324/9780203568446-10",
+  "title": "The Need for Integrated Workforce Development Systems to Broaden the Participation of Underrepresented Students in STEM- Related Fields",
+  "display_name": "The Need for Integrated Workforce Development Systems to Broaden the Participation of Underrepresented Students in STEM- Related Fields",
+  "relevance_score": 71.132126,
+  "publication_year": 2013,
+  "publication_date": "2013-07-18",
+  "ids": {
+    "openalex": "https://openalex.org/W2998021675",
+    "doi": "https://doi.org/10.4324/9780203568446-10",
+    "mag": "2998021675"
+  },
+  "language": "en",
+  "primary_location": {
+    "id": "doi:10.4324/9780203568446-10",
+    "is_oa": false,
+    "landing_page_url": "https://doi.org/10.4324/9780203568446-10",
+    "pdf_url": null,
+    "source": null,
+    "license": null,
+    "license_id": null,
+    "version": "publishedVersion",
+    "is_accepted": true,
+    "is_published": true,
+    "raw_source_name": "Community Colleges and STEM",
+    "raw_type": "book-chapter"
+  },
+  "type": "book-chapter",
+  "indexed_in": [
+    "crossref"
+  ],
+  "open_access": {
+    "is_oa": false,
+    "oa_status": "closed",
+    "oa_url": null,
+    "any_repository_has_fulltext": false
+  },
+  "authorships": [
+    {
+      "author_position": "first",
+      "author": {
+        "id": "https://openalex.org/A5098307869",
+        "display_name": "Denise Yull",
+        "orcid": null
+      },
+      "institutions": [],
+      "countries": [],
+      "is_corresponding": true,
+      "raw_author_name": "Denise Yull",
+      "raw_affiliation_strings": [],
+      "affiliations": []
+    }
+  ],
+  "institutions": [],
+  "countries_distinct_count": 0,
+  "institutions_distinct_count": 1,
+  "corresponding_author_ids": [
+    "https://openalex.org/A5098307869"
+  ],
+  "corresponding_institution_ids": [],
+  "apc_list": null,
+  "apc_paid": null,
+  "fwci": 4.5153,
+  "has_fulltext": false,
+  "cited_by_count": 12,
+  "citation_normalized_percentile": {
+    "value": 0.95337995,
+    "is_in_top_1_percent": false,
+    "is_in_top_10_percent": true
+  },
+  "cited_by_percentile_year": {
+    "min": 89,
+    "max": 98
+  },
+  "biblio": {
+    "volume": null,
+    "issue": null,
+    "first_page": "57",
+    "last_page": "76"
+  },
+  "is_retracted": false,
+  "is_paratext": false,
+  "is_xpac": false,
+  "primary_topic": {
+    "id": "https://openalex.org/T12196",
+    "display_name": "Community Health and Development",
+    "score": 0.9463000297546387,
+    "subfield": {
+      "id": "https://openalex.org/subfields/3600",
+      "display_name": "General Health Professions"
+    },
+    "field": {
+      "id": "https://openalex.org/fields/36",
+      "display_name": "Health Professions"
+    },
+    "domain": {
+      "id": "https://openalex.org/domains/4",
+      "display_name": "Health Sciences"
+    }
+  },
+  "topics": [
+    {
+      "id": "https://openalex.org/T12196",
+      "display_name": "Community Health and Development",
+      "score": 0.9463000297546387,
+      "subfield": {
+        "id": "https://openalex.org/subfields/3600",
+        "display_name": "General Health Professions"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/36",
+        "display_name": "Health Professions"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/4",
+        "display_name": "Health Sciences"
+      }
+    },
+    {
+      "id": "https://openalex.org/T11994",
+      "display_name": "Human Resource Development and Performance Evaluation",
+      "score": 0.9387999773025513,
+      "subfield": {
+        "id": "https://openalex.org/subfields/3202",
+        "display_name": "Applied Psychology"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/32",
+        "display_name": "Psychology"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/2",
+        "display_name": "Social Sciences"
+      }
+    },
+    {
+      "id": "https://openalex.org/T11998",
+      "display_name": "Youth Development and Social Support",
+      "score": 0.9269999861717224,
+      "subfield": {
+        "id": "https://openalex.org/subfields/3311",
+        "display_name": "Safety Research"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/33",
+        "display_name": "Social Sciences"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/2",
+        "display_name": "Social Sciences"
+      }
+    }
+  ],
+  "keywords": [
+    {
+      "id": "https://openalex.org/keywords/workforce",
+      "display_name": "Workforce",
+      "score": 0.6748097538948059
+    },
+    {
+      "id": "https://openalex.org/keywords/psychology",
+      "display_name": "Psychology",
+      "score": 0.36179646849632263
+    },
+    {
+      "id": "https://openalex.org/keywords/political-science",
+      "display_name": "Political science",
+      "score": 0.3108747601509094
+    }
+  ],
+  "concepts": [
+    {
+      "id": "https://openalex.org/C2778139618",
+      "wikidata": "https://www.wikidata.org/wiki/Q13440398",
+      "display_name": "Workforce",
+      "level": 2,
+      "score": 0.6748097538948059
+    },
+    {
+      "id": "https://openalex.org/C15744967",
+      "wikidata": "https://www.wikidata.org/wiki/Q9418",
+      "display_name": "Psychology",
+      "level": 0,
+      "score": 0.36179646849632263
+    },
+    {
+      "id": "https://openalex.org/C17744445",
+      "wikidata": "https://www.wikidata.org/wiki/Q36442",
+      "display_name": "Political science",
+      "level": 0,
+      "score": 0.3108747601509094
+    },
+    {
+      "id": "https://openalex.org/C199539241",
+      "wikidata": "https://www.wikidata.org/wiki/Q7748",
+      "display_name": "Law",
+      "level": 1,
+      "score": 0.0
+    }
+  ],
+  "mesh": [],
+  "locations_count": 1,
+  "locations": [
+    {
+      "id": "doi:10.4324/9780203568446-10",
+      "is_oa": false,
+      "landing_page_url": "https://doi.org/10.4324/9780203568446-10",
+      "pdf_url": null,
+      "source": null,
+      "license": null,
+      "license_id": null,
+      "version": "publishedVersion",
+      "is_accepted": true,
+      "is_published": true,
+      "raw_source_name": "Community Colleges and STEM",
+      "raw_type": "book-chapter"
+    }
+  ],
+  "best_oa_location": null,
+  "sustainable_development_goals": [
+    {
+      "display_name": "Decent work and economic growth",
+      "score": 0.4099999964237213,
+      "id": "https://metadata.un.org/sdg/8"
+    }
+  ],
+  "awards": [],
+  "funders": [],
+  "has_content": {
+    "pdf": false,
+    "grobid_xml": false
+  },
+  "content_urls": null,
+  "referenced_works_count": 1,
+  "referenced_works": [
+    "https://openalex.org/W2155637676"
+  ],
+  "related_works": [
+    "https://openalex.org/W2899084033",
+    "https://openalex.org/W2748952813",
+    "https://openalex.org/W1962711591",
+    "https://openalex.org/W4308258967",
+    "https://openalex.org/W2803396544",
+    "https://openalex.org/W24250002",
+    "https://openalex.org/W2602699637",
+    "https://openalex.org/W2495360771",
+    "https://openalex.org/W1591794021",
+    "https://openalex.org/W1575461229"
+  ],
+  "abstract_inverted_index": {
+    "According": [
+      0
+    ],
+    "to": [
+      1,
+      12,
+      58,
+      76,
+      128
+    ],
+    "a": [
+      2,
+      49,
+      62,
+      118,
+      143,
+      147,
+      182,
+      198
+    ],
+    "recent": [
+      3
+    ],
+    "Global": [
+      4
+    ],
+    "Competitiveness": [
+      5
+    ],
+    "Report,": [
+      6
+    ],
+    "the": [
+      7,
+      23,
+      36,
+      55,
+      59,
+      72,
+      84,
+      109,
+      157,
+      163,
+      186,
+      205
+    ],
+    "United": [
+      8,
+      73
+    ],
+    "States": [
+      9,
+      74
+    ],
+    "has": [
+      10,
+      52,
+      95
+    ],
+    "\ncontinued": [
+      11
+    ],
+    "lose": [
+      13
+    ],
+    "its": [
+      14,
+      78
+    ],
+    "economic": [
+      15,
+      79,
+      121,
+      131
+    ],
+    "competitiveness": [
+      16
+    ],
+    "and": [
+      17,
+      29,
+      67,
+      130,
+      150,
+      192
+    ],
+    "now": [
+      18
+    ],
+    "ranks": [
+      19
+    ],
+    "fi": [
+      20,
+      171
+    ],
+    "fth": [
+      21
+    ],
+    "in": [
+      22,
+      47,
+      54,
+      108,
+      169,
+      188,
+      194,
+      204
+    ],
+    "\nworld": [
+      24
+    ],
+    "behind": [
+      25
+    ],
+    "Switzerland,": [
+      26
+    ],
+    "Singapore,": [
+      27
+    ],
+    "Sweden,": [
+      28
+    ],
+    "Finland": [
+      30
+    ],
+    "(World": [
+      31
+    ],
+    "Economic": [
+      32
+    ],
+    "\nForum,": [
+      33
+    ],
+    "2011).": [
+      34,
+      137,
+      218
+    ],
+    "In": [
+      35
+    ],
+    "midst": [
+      37
+    ],
+    "of": [
+      38,
+      89,
+      105,
+      120,
+      152,
+      165,
+      190
+    ],
+    "this": [
+      39
+    ],
+    "increased": [
+      40
+    ],
+    "global": [
+      41
+    ],
+    "competition": [
+      42
+    ],
+    "fueled": [
+      43
+    ],
+    "by": [
+      44,
+      112
+    ],
+    "dramatic": [
+      45
+    ],
+    "changes": [
+      46
+    ],
+    "technology,": [
+      48,
+      65
+    ],
+    "popular": [
+      50
+    ],
+    "storyline": [
+      51
+    ],
+    "emerged": [
+      53
+    ],
+    "literature": [
+      56
+    ],
+    "\npointing": [
+      57
+    ],
+    "need": [
+      60
+    ],
+    "for": [
+      61,
+      83,
+      146,
+      185,
+      200
+    ],
+    "well-prepared": [
+      63
+    ],
+    "science,": [
+      64
+    ],
+    "engineering,": [
+      66
+    ],
+    "\nmathematics": [
+      68
+    ],
+    "(STEM)": [
+      69
+    ],
+    "workforce": [
+      70
+    ],
+    "if": [
+      71
+    ],
+    "is": [
+      75,
+      125,
+      142,
+      180
+    ],
+    "preserve": [
+      77
+    ],
+    "\ncompetitiveness": [
+      80
+    ],
+    "(": [
+      81
+    ],
+    "Jobs": [
+      82
+    ],
+    "Future,": [
+      85
+    ],
+    "2007;": [
+      86
+    ],
+    "National": [
+      87
+    ],
+    "Academy": [
+      88
+    ],
+    "Sciences,": [
+      90
+    ],
+    "\n2005,": [
+      91
+    ],
+    "2007).": [
+      92
+    ],
+    "Although": [
+      93
+    ],
+    "it": [
+      94,
+      124
+    ],
+    "been": [
+      96
+    ],
+    "projected": [
+      97
+    ],
+    "that": [
+      98
+    ],
+    "STEM": [
+      99,
+      114,
+      155,
+      195
+    ],
+    "occupations": [
+      100
+    ],
+    "will": [
+      101
+    ],
+    "represent": [
+      102
+    ],
+    "only": [
+      103
+    ],
+    "5%": [
+      104
+    ],
+    "all": [
+      106
+    ],
+    "jobs": [
+      107
+    ],
+    "U.S.": [
+      110
+    ],
+    "economy": [
+      111
+    ],
+    "2018,": [
+      113
+    ],
+    "employment": [
+      115
+    ],
+    "\nserves": [
+      116
+    ],
+    "as": [
+      117,
+      123
+    ],
+    "gauge": [
+      119
+    ],
+    "competitiveness,": [
+      122
+    ],
+    "directly": [
+      126
+    ],
+    "tied": [
+      127
+    ],
+    "innovation": [
+      129
+    ],
+    "development": [
+      132
+    ],
+    "(Carnevale,": [
+      133,
+      173
+    ],
+    "Smith,": [
+      134,
+      174
+    ],
+    "&": [
+      135,
+      175,
+      214
+    ],
+    "Melton,": [
+      136
+    ],
+    "To": [
+      138
+    ],
+    "be": [
+      139
+    ],
+    "\nsure,": [
+      140
+    ],
+    "there": [
+      141
+    ],
+    "growing": [
+      144,
+      183
+    ],
+    "concern": [
+      145,
+      184
+    ],
+    "balanced": [
+      148
+    ],
+    "demand": [
+      149
+    ],
+    "supply": [
+      151
+    ],
+    "talent": [
+      153
+    ],
+    "\nin": [
+      154
+    ],
+    "given": [
+      156
+    ],
+    "consistent": [
+      158
+    ],
+    "reports": [
+      159
+    ],
+    "from": [
+      160
+    ],
+    "employers": [
+      161
+    ],
+    "noting": [
+      162
+    ],
+    "absence": [
+      164
+    ],
+    "\nqualifi": [
+      166
+    ],
+    "ed": [
+      167
+    ],
+    "workers": [
+      168
+    ],
+    "related": [
+      170,
+      206
+    ],
+    "elds": [
+      172
+    ],
+    "Strohl,": [
+      176
+    ],
+    "2010).": [
+      177
+    ],
+    "Further,": [
+      178
+    ],
+    "\nthere": [
+      179
+    ],
+    "also": [
+      181
+    ],
+    "decline": [
+      187
+    ],
+    "participation": [
+      189
+    ],
+    "minorities": [
+      191
+    ],
+    "\nwomen": [
+      193
+    ],
+    "occupations,": [
+      196
+    ],
+    "prompting": [
+      197
+    ],
+    "movement": [
+      199
+    ],
+    "broadening": [
+      201
+    ],
+    "their": [
+      202
+    ],
+    "\nparticipation": [
+      203
+    ],
+    "education": [
+      207
+    ],
+    "pipeline": [
+      208
+    ],
+    "(George,": [
+      209
+    ],
+    "Neale,": [
+      211
+    ],
+    "Van": [
+      212
+    ],
+    "Horne,": [
+      213
+    ],
+    "\nMalcom,": [
+      215
+    ],
+    "2001;": [
+      216
+    ],
+    "Kim,": [
+      217
+    ]
+  },
+  "counts_by_year": [
+    {
+      "year": 2023,
+      "cited_by_count": 2
+    },
+    {
+      "year": 2022,
+      "cited_by_count": 1
+    },
+    {
+      "year": 2020,
+      "cited_by_count": 1
+    },
+    {
+      "year": 2019,
+      "cited_by_count": 2
+    },
+    {
+      "year": 2017,
+      "cited_by_count": 4
+    },
+    {
+      "year": 2016,
+      "cited_by_count": 1
+    },
+    {
+      "year": 2014,
+      "cited_by_count": 1
+    }
+  ],
+  "updated_date": "2025-11-06T03:46:38.306776",
+  "created_date": "2020-01-10T00:00:00"
+}

@@ -1,0 +1,14 @@
+{
+  "candidate_id": "cand-exp-efron-morris-1975",
+  "proposed_study_id": "efron-morris-1975",
+  "acquisition_status": "manual_only",
+  "attempted_at": "2026-07-07T03:44:27+00:00",
+  "catalog_source_url": null,
+  "resolved_urls": [
+    "https://doi.org/10.1007/bf00140871"
+  ],
+  "files": [
+    "openalex-metadata.json"
+  ],
+  "dois": []
+}

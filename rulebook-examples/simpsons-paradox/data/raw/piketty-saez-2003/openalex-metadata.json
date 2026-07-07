@@ -1,0 +1,1067 @@
+{
+  "id": "https://openalex.org/W3022470331",
+  "doi": "https://doi.org/10.1162/rest_a_00200",
+  "title": "Recent Trends in Top Income Shares in the United States: Reconciling Estimates from March CPS and IRS Tax Return Data",
+  "display_name": "Recent Trends in Top Income Shares in the United States: Reconciling Estimates from March CPS and IRS Tax Return Data",
+  "relevance_score": 286.1754,
+  "publication_year": 2011,
+  "publication_date": "2011-04-05",
+  "ids": {
+    "openalex": "https://openalex.org/W3022470331",
+    "doi": "https://doi.org/10.1162/rest_a_00200",
+    "mag": "3022470331"
+  },
+  "language": "en",
+  "primary_location": {
+    "id": "doi:10.1162/rest_a_00200",
+    "is_oa": true,
+    "landing_page_url": "https://doi.org/10.1162/rest_a_00200",
+    "pdf_url": "https://direct.mit.edu/rest/article-pdf/94/2/371/1916908/rest_a_00200.pdf",
+    "source": {
+      "id": "https://openalex.org/S180061323",
+      "display_name": "The Review of Economics and Statistics",
+      "issn_l": "0034-6535",
+      "issn": [
+        "0034-6535",
+        "1530-9142"
+      ],
+      "is_oa": false,
+      "is_in_doaj": false,
+      "is_core": true,
+      "host_organization": "https://openalex.org/P4310315718",
+      "host_organization_name": "The MIT Press",
+      "host_organization_lineage": [
+        "https://openalex.org/P4310315718"
+      ],
+      "host_organization_lineage_names": [
+        "The MIT Press"
+      ],
+      "type": "journal"
+    },
+    "license": null,
+    "license_id": null,
+    "version": "publishedVersion",
+    "is_accepted": true,
+    "is_published": true,
+    "raw_source_name": "Review of Economics and Statistics",
+    "raw_type": "journal-article"
+  },
+  "type": "article",
+  "indexed_in": [
+    "crossref"
+  ],
+  "open_access": {
+    "is_oa": true,
+    "oa_status": "bronze",
+    "oa_url": "https://direct.mit.edu/rest/article-pdf/94/2/371/1916908/rest_a_00200.pdf",
+    "any_repository_has_fulltext": true
+  },
+  "authorships": [
+    {
+      "author_position": "first",
+      "author": {
+        "id": "https://openalex.org/A5087947383",
+        "display_name": "Richard V. Burkhauser",
+        "orcid": "https://orcid.org/0000-0003-4629-0253"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I165779595",
+          "display_name": "The University of Melbourne",
+          "ror": "https://ror.org/01ej9dk98",
+          "country_code": "AU",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I165779595"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I205783295",
+          "display_name": "Cornell University",
+          "ror": "https://ror.org/05bnh6r87",
+          "country_code": "US",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I205783295"
+          ]
+        }
+      ],
+      "countries": [
+        "AU",
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Richard V. Burkhauser",
+      "raw_affiliation_strings": [
+        "Cornell University and University of Melbourne"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Cornell University and University of Melbourne",
+          "institution_ids": [
+            "https://openalex.org/I205783295",
+            "https://openalex.org/I165779595"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5083572635",
+        "display_name": "Shuaizhang Feng",
+        "orcid": "https://orcid.org/0000-0003-4714-8881"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I181679659",
+          "display_name": "Shanghai University of Finance and Economics",
+          "ror": "https://ror.org/00wtvfq62",
+          "country_code": "CN",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I181679659"
+          ]
+        }
+      ],
+      "countries": [
+        "CN"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Shuaizhang Feng",
+      "raw_affiliation_strings": [
+        "Shanghai University of Finance and Economics"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Shanghai University of Finance and Economics",
+          "institution_ids": [
+            "https://openalex.org/I181679659"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5066848591",
+        "display_name": "Stephen P. Jenkins",
+        "orcid": "https://orcid.org/0000-0002-8305-9774"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I110002522",
+          "display_name": "University of Essex",
+          "ror": "https://ror.org/02nkf1q06",
+          "country_code": "GB",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I110002522"
+          ]
+        }
+      ],
+      "countries": [
+        "GB"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Stephen P. Jenkins",
+      "raw_affiliation_strings": [
+        "University of Essex"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "University of Essex",
+          "institution_ids": [
+            "https://openalex.org/I110002522"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "last",
+      "author": {
+        "id": "https://openalex.org/A5004150571",
+        "display_name": "Jeff Larrimore",
+        "orcid": "https://orcid.org/0000-0001-9715-3983"
+      },
+      "institutions": [],
+      "countries": [],
+      "is_corresponding": false,
+      "raw_author_name": "Jeff Larrimore",
+      "raw_affiliation_strings": [
+        "U.S. Joint Committee on Taxation"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "U.S. Joint Committee on Taxation",
+          "institution_ids": []
+        }
+      ]
+    }
+  ],
+  "institutions": [],
+  "countries_distinct_count": 4,
+  "institutions_distinct_count": 4,
+  "corresponding_author_ids": [],
+  "corresponding_institution_ids": [],
+  "apc_list": null,
+  "apc_paid": null,
+  "fwci": 52.9562,
+  "has_fulltext": true,
+  "cited_by_count": 226,
+  "citation_normalized_percentile": {
+    "value": 0.99851426,
+    "is_in_top_1_percent": true,
+    "is_in_top_10_percent": true
+  },
+  "cited_by_percentile_year": {
+    "min": 97,
+    "max": 100
+  },
+  "biblio": {
+    "volume": "94",
+    "issue": "2",
+    "first_page": "371",
+    "last_page": "388"
+  },
+  "is_retracted": false,
+  "is_paratext": false,
+  "is_xpac": false,
+  "primary_topic": {
+    "id": "https://openalex.org/T10446",
+    "display_name": "Income, Poverty, and Inequality",
+    "score": 0.9995999932289124,
+    "subfield": {
+      "id": "https://openalex.org/subfields/3312",
+      "display_name": "Sociology and Political Science"
+    },
+    "field": {
+      "id": "https://openalex.org/fields/33",
+      "display_name": "Social Sciences"
+    },
+    "domain": {
+      "id": "https://openalex.org/domains/2",
+      "display_name": "Social Sciences"
+    }
+  },
+  "topics": [
+    {
+      "id": "https://openalex.org/T10446",
+      "display_name": "Income, Poverty, and Inequality",
+      "score": 0.9995999932289124,
+      "subfield": {
+        "id": "https://openalex.org/subfields/3312",
+        "display_name": "Sociology and Political Science"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/33",
+        "display_name": "Social Sciences"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/2",
+        "display_name": "Social Sciences"
+      }
+    },
+    {
+      "id": "https://openalex.org/T11742",
+      "display_name": "Economic Theory and Policy",
+      "score": 0.9976999759674072,
+      "subfield": {
+        "id": "https://openalex.org/subfields/2000",
+        "display_name": "General Economics, Econometrics and Finance"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/20",
+        "display_name": "Economics, Econometrics and Finance"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/2",
+        "display_name": "Social Sciences"
+      }
+    },
+    {
+      "id": "https://openalex.org/T11770",
+      "display_name": "Fiscal Policy and Economic Growth",
+      "score": 0.9965000152587891,
+      "subfield": {
+        "id": "https://openalex.org/subfields/2002",
+        "display_name": "Economics and Econometrics"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/20",
+        "display_name": "Economics, Econometrics and Finance"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/2",
+        "display_name": "Social Sciences"
+      }
+    }
+  ],
+  "keywords": [
+    {
+      "id": "https://openalex.org/keywords/economics",
+      "display_name": "Economics",
+      "score": 0.7447348237037659
+    },
+    {
+      "id": "https://openalex.org/keywords/income-shares",
+      "display_name": "Income shares",
+      "score": 0.7230406403541565
+    },
+    {
+      "id": "https://openalex.org/keywords/economic-inequality",
+      "display_name": "Economic inequality",
+      "score": 0.7000115513801575
+    },
+    {
+      "id": "https://openalex.org/keywords/inequality",
+      "display_name": "Inequality",
+      "score": 0.6406896114349365
+    },
+    {
+      "id": "https://openalex.org/keywords/income-distribution",
+      "display_name": "Income distribution",
+      "score": 0.5975322127342224
+    },
+    {
+      "id": "https://openalex.org/keywords/distribution",
+      "display_name": "Distribution (mathematics)",
+      "score": 0.5020620822906494
+    },
+    {
+      "id": "https://openalex.org/keywords/income-inequality-metrics",
+      "display_name": "Income inequality metrics",
+      "score": 0.49351394176483154
+    },
+    {
+      "id": "https://openalex.org/keywords/demographic-economics",
+      "display_name": "Demographic economics",
+      "score": 0.456053227186203
+    },
+    {
+      "id": "https://openalex.org/keywords/econometrics",
+      "display_name": "Econometrics",
+      "score": 0.45560187101364136
+    },
+    {
+      "id": "https://openalex.org/keywords/mathematics",
+      "display_name": "Mathematics",
+      "score": 0.08985689282417297
+    }
+  ],
+  "concepts": [
+    {
+      "id": "https://openalex.org/C162324750",
+      "wikidata": "https://www.wikidata.org/wiki/Q8134",
+      "display_name": "Economics",
+      "level": 0,
+      "score": 0.7447348237037659
+    },
+    {
+      "id": "https://openalex.org/C2775876699",
+      "wikidata": "https://www.wikidata.org/wiki/Q13575077",
+      "display_name": "Income shares",
+      "level": 4,
+      "score": 0.7230406403541565
+    },
+    {
+      "id": "https://openalex.org/C513380476",
+      "wikidata": "https://www.wikidata.org/wiki/Q5055020",
+      "display_name": "Economic inequality",
+      "level": 3,
+      "score": 0.7000115513801575
+    },
+    {
+      "id": "https://openalex.org/C45555294",
+      "wikidata": "https://www.wikidata.org/wiki/Q28113351",
+      "display_name": "Inequality",
+      "level": 2,
+      "score": 0.6406896114349365
+    },
+    {
+      "id": "https://openalex.org/C519300510",
+      "wikidata": "https://www.wikidata.org/wiki/Q3915542",
+      "display_name": "Income distribution",
+      "level": 3,
+      "score": 0.5975322127342224
+    },
+    {
+      "id": "https://openalex.org/C110121322",
+      "wikidata": "https://www.wikidata.org/wiki/Q865811",
+      "display_name": "Distribution (mathematics)",
+      "level": 2,
+      "score": 0.5020620822906494
+    },
+    {
+      "id": "https://openalex.org/C132000672",
+      "wikidata": "https://www.wikidata.org/wiki/Q6158427",
+      "display_name": "Income inequality metrics",
+      "level": 4,
+      "score": 0.49351394176483154
+    },
+    {
+      "id": "https://openalex.org/C4249254",
+      "wikidata": "https://www.wikidata.org/wiki/Q3044431",
+      "display_name": "Demographic economics",
+      "level": 1,
+      "score": 0.456053227186203
+    },
+    {
+      "id": "https://openalex.org/C149782125",
+      "wikidata": "https://www.wikidata.org/wiki/Q160039",
+      "display_name": "Econometrics",
+      "level": 1,
+      "score": 0.45560187101364136
+    },
+    {
+      "id": "https://openalex.org/C33923547",
+      "wikidata": "https://www.wikidata.org/wiki/Q395",
+      "display_name": "Mathematics",
+      "level": 0,
+      "score": 0.08985689282417297
+    },
+    {
+      "id": "https://openalex.org/C134306372",
+      "wikidata": "https://www.wikidata.org/wiki/Q7754",
+      "display_name": "Mathematical analysis",
+      "level": 1,
+      "score": 0.0
+    }
+  ],
+  "mesh": [],
+  "locations_count": 4,
+  "locations": [
+    {
+      "id": "doi:10.1162/rest_a_00200",
+      "is_oa": true,
+      "landing_page_url": "https://doi.org/10.1162/rest_a_00200",
+      "pdf_url": "https://direct.mit.edu/rest/article-pdf/94/2/371/1916908/rest_a_00200.pdf",
+      "source": {
+        "id": "https://openalex.org/S180061323",
+        "display_name": "The Review of Economics and Statistics",
+        "issn_l": "0034-6535",
+        "issn": [
+          "0034-6535",
+          "1530-9142"
+        ],
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": true,
+        "host_organization": "https://openalex.org/P4310315718",
+        "host_organization_name": "The MIT Press",
+        "host_organization_lineage": [
+          "https://openalex.org/P4310315718"
+        ],
+        "host_organization_lineage_names": [
+          "The MIT Press"
+        ],
+        "type": "journal"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "publishedVersion",
+      "is_accepted": true,
+      "is_published": true,
+      "raw_source_name": "Review of Economics and Statistics",
+      "raw_type": "journal-article"
+    },
+    {
+      "id": "pmh:oai:researchonline.lse.ac.uk:41587",
+      "is_oa": true,
+      "landing_page_url": "https://orcid.org/0000-0002-8305-9774>",
+      "pdf_url": "https://researchonline.lse.ac.uk/id/eprint/41587/1/Jenkins_etal_Recent-trends-in-top-income-shares-in-the-USA_2011.pdf",
+      "source": {
+        "id": "https://openalex.org/S4306400050",
+        "display_name": "London School of Economics and Political Science Theses Online (London School of Economics and Political Science)",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I909854389",
+        "host_organization_name": "London School of Economics and Political Science",
+        "host_organization_lineage": [
+          "https://openalex.org/I909854389"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "submittedVersion",
+      "is_accepted": false,
+      "is_published": false,
+      "raw_source_name": null,
+      "raw_type": "Article"
+    },
+    {
+      "id": "pmh:oai:RePEc:tpr:restat:v:94:y:2012:i:2:p:371-388",
+      "is_oa": false,
+      "landing_page_url": null,
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4306401271",
+        "display_name": "RePEc: Research Papers in Economics",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I77793887",
+        "host_organization_name": "Federal Reserve Bank of St. Louis",
+        "host_organization_lineage": [
+          "https://openalex.org/I77793887"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "submittedVersion",
+      "is_accepted": false,
+      "is_published": false,
+      "raw_source_name": null,
+      "raw_type": "article"
+    },
+    {
+      "id": "pmh:oai:repository.essex.ac.uk:7950",
+      "is_oa": false,
+      "landing_page_url": "http://repository.essex.ac.uk/7950/",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4306401236",
+        "display_name": "Open Access at Essex (University of Essex)",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I110002522",
+        "host_organization_name": "University of Essex",
+        "host_organization_lineage": [
+          "https://openalex.org/I110002522"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "submittedVersion",
+      "is_accepted": false,
+      "is_published": false,
+      "raw_source_name": "",
+      "raw_type": "Article"
+    }
+  ],
+  "best_oa_location": {
+    "id": "doi:10.1162/rest_a_00200",
+    "is_oa": true,
+    "landing_page_url": "https://doi.org/10.1162/rest_a_00200",
+    "pdf_url": "https://direct.mit.edu/rest/article-pdf/94/2/371/1916908/rest_a_00200.pdf",
+    "source": {
+      "id": "https://openalex.org/S180061323",
+      "display_name": "The Review of Economics and Statistics",
+      "issn_l": "0034-6535",
+      "issn": [
+        "0034-6535",
+        "1530-9142"
+      ],
+      "is_oa": false,
+      "is_in_doaj": false,
+      "is_core": true,
+      "host_organization": "https://openalex.org/P4310315718",
+      "host_organization_name": "The MIT Press",
+      "host_organization_lineage": [
+        "https://openalex.org/P4310315718"
+      ],
+      "host_organization_lineage_names": [
+        "The MIT Press"
+      ],
+      "type": "journal"
+    },
+    "license": null,
+    "license_id": null,
+    "version": "publishedVersion",
+    "is_accepted": true,
+    "is_published": true,
+    "raw_source_name": "Review of Economics and Statistics",
+    "raw_type": "journal-article"
+  },
+  "sustainable_development_goals": [
+    {
+      "display_name": "No poverty",
+      "score": 0.7400000095367432,
+      "id": "https://metadata.un.org/sdg/1"
+    }
+  ],
+  "awards": [
+    {
+      "id": "https://openalex.org/G1187374507",
+      "display_name": "EITM:  Developing the Tools to Understand Human Performance: An Empirical Infrastructure to Foster Research Collaboration",
+      "funder_award_id": "0339191",
+      "funder_id": "https://openalex.org/F4320306076",
+      "funder_display_name": "National Science Foundation"
+    },
+    {
+      "id": "https://openalex.org/G2130875554",
+      "display_name": "The New York Research Data Center",
+      "funder_award_id": "0322902",
+      "funder_id": "https://openalex.org/F4320306076",
+      "funder_display_name": "National Science Foundation"
+    },
+    {
+      "id": "https://openalex.org/G2350843469",
+      "display_name": "ITR-(ECS+ASE)-(dmc+int): Info Tech Challenges for Secure Access to Confidential Social Science Data",
+      "funder_award_id": "0427889",
+      "funder_id": "https://openalex.org/F4320306076",
+      "funder_display_name": "National Science Foundation"
+    },
+    {
+      "id": "https://openalex.org/G3219300684",
+      "display_name": null,
+      "funder_award_id": "SES-0427889",
+      "funder_id": "https://openalex.org/F4320306076",
+      "funder_display_name": "National Science Foundation"
+    },
+    {
+      "id": "https://openalex.org/G6086543287",
+      "display_name": null,
+      "funder_award_id": "SES-0339191",
+      "funder_id": "https://openalex.org/F4320306076",
+      "funder_display_name": "National Science Foundation"
+    },
+    {
+      "id": "https://openalex.org/G6315530647",
+      "display_name": null,
+      "funder_award_id": "SES-0322902",
+      "funder_id": "https://openalex.org/F4320306076",
+      "funder_display_name": "National Science Foundation"
+    }
+  ],
+  "funders": [
+    {
+      "id": "https://openalex.org/F4320306076",
+      "display_name": "National Science Foundation",
+      "ror": "https://ror.org/021nxhr62"
+    },
+    {
+      "id": "https://openalex.org/F4320311731",
+      "display_name": "University of Essex",
+      "ror": "https://ror.org/02nkf1q06"
+    },
+    {
+      "id": "https://openalex.org/F4320334630",
+      "display_name": "Economic and Social Research Council",
+      "ror": "https://ror.org/03n0ht308"
+    }
+  ],
+  "has_content": {
+    "pdf": true,
+    "grobid_xml": true
+  },
+  "content_urls": {
+    "pdf": "https://content.openalex.org/works/W3022470331.pdf",
+    "grobid_xml": "https://content.openalex.org/works/W3022470331.grobid-xml"
+  },
+  "referenced_works_count": 68,
+  "referenced_works": [
+    "https://openalex.org/W43615402",
+    "https://openalex.org/W188899089",
+    "https://openalex.org/W626264310",
+    "https://openalex.org/W628349590",
+    "https://openalex.org/W1498453729",
+    "https://openalex.org/W1517794032",
+    "https://openalex.org/W1524399752",
+    "https://openalex.org/W1548704993",
+    "https://openalex.org/W1551622374",
+    "https://openalex.org/W1604538724",
+    "https://openalex.org/W1757514021",
+    "https://openalex.org/W1819109510",
+    "https://openalex.org/W1909533111",
+    "https://openalex.org/W1931080046",
+    "https://openalex.org/W1964315293",
+    "https://openalex.org/W1968394310",
+    "https://openalex.org/W1980560770",
+    "https://openalex.org/W1995960571",
+    "https://openalex.org/W2015249608",
+    "https://openalex.org/W2025989004",
+    "https://openalex.org/W2027870337",
+    "https://openalex.org/W2065254988",
+    "https://openalex.org/W2079052954",
+    "https://openalex.org/W2092551047",
+    "https://openalex.org/W2093378321",
+    "https://openalex.org/W2112624869",
+    "https://openalex.org/W2116114863",
+    "https://openalex.org/W2118502261",
+    "https://openalex.org/W2125350139",
+    "https://openalex.org/W2126070690",
+    "https://openalex.org/W2130136629",
+    "https://openalex.org/W2131805691",
+    "https://openalex.org/W2137695232",
+    "https://openalex.org/W2141361285",
+    "https://openalex.org/W2147608221",
+    "https://openalex.org/W2148501506",
+    "https://openalex.org/W2153706962",
+    "https://openalex.org/W2161082841",
+    "https://openalex.org/W2164840727",
+    "https://openalex.org/W2261362105",
+    "https://openalex.org/W2596154065",
+    "https://openalex.org/W2602243809",
+    "https://openalex.org/W2615317903",
+    "https://openalex.org/W2891594853",
+    "https://openalex.org/W2992070226",
+    "https://openalex.org/W3121157737",
+    "https://openalex.org/W3121821432",
+    "https://openalex.org/W3121998704",
+    "https://openalex.org/W3122042383",
+    "https://openalex.org/W3122859591",
+    "https://openalex.org/W3122874419",
+    "https://openalex.org/W3123611490",
+    "https://openalex.org/W3123704454",
+    "https://openalex.org/W3124038282",
+    "https://openalex.org/W3124451823",
+    "https://openalex.org/W3124546270",
+    "https://openalex.org/W3124856493",
+    "https://openalex.org/W3125084938",
+    "https://openalex.org/W3125339480",
+    "https://openalex.org/W3125563274",
+    "https://openalex.org/W3125650317",
+    "https://openalex.org/W3125685829",
+    "https://openalex.org/W3148887097",
+    "https://openalex.org/W3172944803",
+    "https://openalex.org/W4237035595",
+    "https://openalex.org/W4239925370",
+    "https://openalex.org/W4298444400",
+    "https://openalex.org/W4301724175"
+  ],
+  "related_works": [
+    "https://openalex.org/W1550364616",
+    "https://openalex.org/W3121879630",
+    "https://openalex.org/W2562904767",
+    "https://openalex.org/W2064083586",
+    "https://openalex.org/W646050805",
+    "https://openalex.org/W1535095215",
+    "https://openalex.org/W804581647",
+    "https://openalex.org/W3126660400",
+    "https://openalex.org/W2915725328",
+    "https://openalex.org/W2916610920"
+  ],
+  "abstract_inverted_index": {
+    "Although": [
+      0
+    ],
+    "most": [
+      1
+    ],
+    "U.S.": [
+      2
+    ],
+    "income": [
+      3,
+      44,
+      68,
+      86
+    ],
+    "inequality": [
+      4,
+      27,
+      47,
+      87
+    ],
+    "research": [
+      5,
+      18
+    ],
+    "is": [
+      6
+    ],
+    "based": [
+      7
+    ],
+    "on": [
+      8
+    ],
+    "public": [
+      9
+    ],
+    "use": [
+      10
+    ],
+    "March": [
+      11
+    ],
+    "CPS": [
+      12,
+      55
+    ],
+    "data,": [
+      13
+    ],
+    "a": [
+      14
+    ],
+    "new": [
+      15
+    ],
+    "wave": [
+      16
+    ],
+    "of": [
+      17,
+      66,
+      98
+    ],
+    "using": [
+      19
+    ],
+    "IRS": [
+      20,
+      73
+    ],
+    "tax": [
+      21
+    ],
+    "return": [
+      22
+    ],
+    "data": [
+      23,
+      56
+    ],
+    "reports": [
+      24
+    ],
+    "substantially": [
+      25
+    ],
+    "faster": [
+      26
+    ],
+    "growth": [
+      28
+    ],
+    "for": [
+      29,
+      57
+    ],
+    "recent": [
+      30
+    ],
+    "years.": [
+      31
+    ],
+    "We": [
+      32
+    ],
+    "show": [
+      33,
+      62
+    ],
+    "that": [
+      34,
+      63,
+      85
+    ],
+    "these": [
+      35
+    ],
+    "apparently": [
+      36
+    ],
+    "inconsistent": [
+      37
+    ],
+    "estimates": [
+      38,
+      65,
+      75
+    ],
+    "are": [
+      39,
+      48,
+      70,
+      91
+    ],
+    "largely": [
+      40,
+      92
+    ],
+    "reconciled": [
+      41
+    ],
+    "when": [
+      42
+    ],
+    "the": [
+      43,
+      50,
+      99
+    ],
+    "distribution": [
+      45
+    ],
+    "and": [
+      46,
+      79
+    ],
+    "defined": [
+      49
+    ],
+    "same": [
+      51
+    ],
+    "way.": [
+      52
+    ],
+    "Using": [
+      53
+    ],
+    "internal": [
+      54
+    ],
+    "1967": [
+      58
+    ],
+    "to": [
+      59,
+      72
+    ],
+    "2006,": [
+      60
+    ],
+    "we": [
+      61
+    ],
+    "CPS-based": [
+      64
+    ],
+    "top": [
+      67,
+      100
+    ],
+    "shares": [
+      69
+    ],
+    "similar": [
+      71
+    ],
+    "data-based": [
+      74
+    ],
+    "reported": [
+      76
+    ],
+    "by": [
+      77,
+      94
+    ],
+    "Piketty": [
+      78
+    ],
+    "Saez": [
+      80
+    ],
+    "(2003).": [
+      81
+    ],
+    "Our": [
+      82
+    ],
+    "results": [
+      83
+    ],
+    "imply": [
+      84
+    ],
+    "changes": [
+      88,
+      95
+    ],
+    "since": [
+      89
+    ],
+    "1993": [
+      90
+    ],
+    "driven": [
+      93
+    ],
+    "in": [
+      96
+    ],
+    "incomes": [
+      97
+    ],
+    "1%.": [
+      101
+    ]
+  },
+  "counts_by_year": [
+    {
+      "year": 2026,
+      "cited_by_count": 2
+    },
+    {
+      "year": 2025,
+      "cited_by_count": 5
+    },
+    {
+      "year": 2024,
+      "cited_by_count": 11
+    },
+    {
+      "year": 2023,
+      "cited_by_count": 8
+    },
+    {
+      "year": 2022,
+      "cited_by_count": 17
+    },
+    {
+      "year": 2021,
+      "cited_by_count": 22
+    },
+    {
+      "year": 2020,
+      "cited_by_count": 8
+    },
+    {
+      "year": 2019,
+      "cited_by_count": 14
+    },
+    {
+      "year": 2018,
+      "cited_by_count": 23
+    },
+    {
+      "year": 2017,
+      "cited_by_count": 9
+    },
+    {
+      "year": 2016,
+      "cited_by_count": 21
+    },
+    {
+      "year": 2015,
+      "cited_by_count": 27
+    },
+    {
+      "year": 2014,
+      "cited_by_count": 21
+    },
+    {
+      "year": 2013,
+      "cited_by_count": 25
+    },
+    {
+      "year": 2012,
+      "cited_by_count": 5
+    }
+  ],
+  "updated_date": "2026-07-02T09:51:11.867554",
+  "created_date": "2025-10-10T00:00:00"
+}

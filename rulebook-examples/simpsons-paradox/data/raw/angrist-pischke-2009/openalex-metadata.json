@@ -1,0 +1,1623 @@
+{
+  "id": "https://openalex.org/W2256120588",
+  "doi": "https://doi.org/10.1093/qje/qjs020",
+  "title": "The Oregon Health Insurance Experiment: Evidence from the First Year*",
+  "display_name": "The Oregon Health Insurance Experiment: Evidence from the First Year*",
+  "relevance_score": 137.53748,
+  "publication_year": 2012,
+  "publication_date": "2012-05-05",
+  "ids": {
+    "openalex": "https://openalex.org/W2256120588",
+    "doi": "https://doi.org/10.1093/qje/qjs020",
+    "mag": "2256120588",
+    "pmid": "https://pubmed.ncbi.nlm.nih.gov/23293397"
+  },
+  "language": "en",
+  "primary_location": {
+    "id": "doi:10.1093/qje/qjs020",
+    "is_oa": true,
+    "landing_page_url": "https://doi.org/10.1093/qje/qjs020",
+    "pdf_url": "https://academic.oup.com/qje/article-pdf/127/3/1057/30456845/qjs020.pdf",
+    "source": {
+      "id": "https://openalex.org/S203860005",
+      "display_name": "The Quarterly Journal of Economics",
+      "issn_l": "0033-5533",
+      "issn": [
+        "0033-5533",
+        "1531-4650"
+      ],
+      "is_oa": false,
+      "is_in_doaj": false,
+      "is_core": true,
+      "host_organization": "https://openalex.org/P4310311648",
+      "host_organization_name": "Oxford University Press",
+      "host_organization_lineage": [
+        "https://openalex.org/P4310311648",
+        "https://openalex.org/P4310311647"
+      ],
+      "host_organization_lineage_names": [
+        "Oxford University Press",
+        "University of Oxford"
+      ],
+      "type": "journal"
+    },
+    "license": null,
+    "license_id": null,
+    "version": "publishedVersion",
+    "is_accepted": true,
+    "is_published": true,
+    "raw_source_name": "The Quarterly Journal of Economics",
+    "raw_type": "journal-article"
+  },
+  "type": "article",
+  "indexed_in": [
+    "crossref",
+    "pubmed"
+  ],
+  "open_access": {
+    "is_oa": true,
+    "oa_status": "bronze",
+    "oa_url": "https://academic.oup.com/qje/article-pdf/127/3/1057/30456845/qjs020.pdf",
+    "any_repository_has_fulltext": true
+  },
+  "authorships": [
+    {
+      "author_position": "first",
+      "author": {
+        "id": "https://openalex.org/A5012244489",
+        "display_name": "Amy Finkelstein",
+        "orcid": "https://orcid.org/0000-0002-9941-6684"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I1321305853",
+          "display_name": "National Bureau of Economic Research",
+          "ror": "https://ror.org/04grmx538",
+          "country_code": "US",
+          "type": "nonprofit",
+          "lineage": [
+            "https://openalex.org/I1321305853"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I136199984",
+          "display_name": "Harvard University",
+          "ror": "https://ror.org/03vek6s52",
+          "country_code": "US",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I136199984"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Amy Finkelstein",
+      "raw_affiliation_strings": [
+        "Bureau of Economic Research and Harvard University",
+        "Oregon Health Study Group"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Bureau of Economic Research and Harvard University",
+          "institution_ids": [
+            "https://openalex.org/I1321305853",
+            "https://openalex.org/I136199984"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Oregon Health Study Group",
+          "institution_ids": []
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5080388805",
+        "display_name": "Sarah Taubman",
+        "orcid": null
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I1321305853",
+          "display_name": "National Bureau of Economic Research",
+          "ror": "https://ror.org/04grmx538",
+          "country_code": "US",
+          "type": "nonprofit",
+          "lineage": [
+            "https://openalex.org/I1321305853"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I136199984",
+          "display_name": "Harvard University",
+          "ror": "https://ror.org/03vek6s52",
+          "country_code": "US",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I136199984"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Sarah Taubman",
+      "raw_affiliation_strings": [
+        "Oregon Health Study Group",
+        "Bureau of Economic Research and Harvard University"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Oregon Health Study Group",
+          "institution_ids": []
+        },
+        {
+          "raw_affiliation_string": "Bureau of Economic Research and Harvard University",
+          "institution_ids": [
+            "https://openalex.org/I1321305853",
+            "https://openalex.org/I136199984"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5091440798",
+        "display_name": "Bill Wright",
+        "orcid": "https://orcid.org/0000-0001-9232-4288"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I1321305853",
+          "display_name": "National Bureau of Economic Research",
+          "ror": "https://ror.org/04grmx538",
+          "country_code": "US",
+          "type": "nonprofit",
+          "lineage": [
+            "https://openalex.org/I1321305853"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I136199984",
+          "display_name": "Harvard University",
+          "ror": "https://ror.org/03vek6s52",
+          "country_code": "US",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I136199984"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Bill Wright",
+      "raw_affiliation_strings": [
+        "Bureau of Economic Research and Harvard University",
+        "Oregon Health Study Group"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Bureau of Economic Research and Harvard University",
+          "institution_ids": [
+            "https://openalex.org/I1321305853",
+            "https://openalex.org/I136199984"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Oregon Health Study Group",
+          "institution_ids": []
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5038039818",
+        "display_name": "Mira Bernstein",
+        "orcid": null
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I1321305853",
+          "display_name": "National Bureau of Economic Research",
+          "ror": "https://ror.org/04grmx538",
+          "country_code": "US",
+          "type": "nonprofit",
+          "lineage": [
+            "https://openalex.org/I1321305853"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I136199984",
+          "display_name": "Harvard University",
+          "ror": "https://ror.org/03vek6s52",
+          "country_code": "US",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I136199984"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Mira Bernstein",
+      "raw_affiliation_strings": [
+        "Oregon Health Study Group",
+        "Bureau of Economic Research and Harvard University"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Oregon Health Study Group",
+          "institution_ids": []
+        },
+        {
+          "raw_affiliation_string": "Bureau of Economic Research and Harvard University",
+          "institution_ids": [
+            "https://openalex.org/I1321305853",
+            "https://openalex.org/I136199984"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5059247979",
+        "display_name": "Jonathan Gruber",
+        "orcid": "https://orcid.org/0000-0003-0379-710X"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I1321305853",
+          "display_name": "National Bureau of Economic Research",
+          "ror": "https://ror.org/04grmx538",
+          "country_code": "US",
+          "type": "nonprofit",
+          "lineage": [
+            "https://openalex.org/I1321305853"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I136199984",
+          "display_name": "Harvard University",
+          "ror": "https://ror.org/03vek6s52",
+          "country_code": "US",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I136199984"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Jonathan Gruber",
+      "raw_affiliation_strings": [
+        "Oregon Health Study Group",
+        "Bureau of Economic Research and Harvard University"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Oregon Health Study Group",
+          "institution_ids": []
+        },
+        {
+          "raw_affiliation_string": "Bureau of Economic Research and Harvard University",
+          "institution_ids": [
+            "https://openalex.org/I1321305853",
+            "https://openalex.org/I136199984"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5055066308",
+        "display_name": "Joseph P. Newhouse",
+        "orcid": "https://orcid.org/0000-0001-5837-3203"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I1321305853",
+          "display_name": "National Bureau of Economic Research",
+          "ror": "https://ror.org/04grmx538",
+          "country_code": "US",
+          "type": "nonprofit",
+          "lineage": [
+            "https://openalex.org/I1321305853"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I136199984",
+          "display_name": "Harvard University",
+          "ror": "https://ror.org/03vek6s52",
+          "country_code": "US",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I136199984"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Joseph P. Newhouse",
+      "raw_affiliation_strings": [
+        "Bureau of Economic Research and Harvard University",
+        "Oregon Health Study Group"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Bureau of Economic Research and Harvard University",
+          "institution_ids": [
+            "https://openalex.org/I1321305853",
+            "https://openalex.org/I136199984"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Oregon Health Study Group",
+          "institution_ids": []
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5110774076",
+        "display_name": "Heidi Allen",
+        "orcid": null
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I1321305853",
+          "display_name": "National Bureau of Economic Research",
+          "ror": "https://ror.org/04grmx538",
+          "country_code": "US",
+          "type": "nonprofit",
+          "lineage": [
+            "https://openalex.org/I1321305853"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I136199984",
+          "display_name": "Harvard University",
+          "ror": "https://ror.org/03vek6s52",
+          "country_code": "US",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I136199984"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Heidi Allen",
+      "raw_affiliation_strings": [
+        "Bureau of Economic Research and Harvard University",
+        "Oregon Health Study Group"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Bureau of Economic Research and Harvard University",
+          "institution_ids": [
+            "https://openalex.org/I1321305853",
+            "https://openalex.org/I136199984"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Oregon Health Study Group",
+          "institution_ids": []
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5042023473",
+        "display_name": "Katherine Baicker",
+        "orcid": "https://orcid.org/0000-0001-5960-3058"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I1321305853",
+          "display_name": "National Bureau of Economic Research",
+          "ror": "https://ror.org/04grmx538",
+          "country_code": "US",
+          "type": "nonprofit",
+          "lineage": [
+            "https://openalex.org/I1321305853"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I136199984",
+          "display_name": "Harvard University",
+          "ror": "https://ror.org/03vek6s52",
+          "country_code": "US",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I136199984"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Katherine Baicker",
+      "raw_affiliation_strings": [
+        "Oregon Health Study Group",
+        "Bureau of Economic Research and Harvard University"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Oregon Health Study Group",
+          "institution_ids": []
+        },
+        {
+          "raw_affiliation_string": "Bureau of Economic Research and Harvard University",
+          "institution_ids": [
+            "https://openalex.org/I1321305853",
+            "https://openalex.org/I136199984"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "last",
+      "author": {
+        "id": null,
+        "display_name": "Oregon Health Study Group",
+        "orcid": null
+      },
+      "institutions": [],
+      "countries": [],
+      "is_corresponding": false,
+      "raw_author_name": "Oregon Health Study Group",
+      "raw_affiliation_strings": [],
+      "raw_orcid": null,
+      "affiliations": []
+    }
+  ],
+  "institutions": [],
+  "countries_distinct_count": 1,
+  "institutions_distinct_count": 2,
+  "corresponding_author_ids": [],
+  "corresponding_institution_ids": [],
+  "apc_list": {
+    "value": 6977,
+    "currency": "USD",
+    "value_usd": 6977
+  },
+  "apc_paid": null,
+  "fwci": 369.6031,
+  "has_fulltext": true,
+  "cited_by_count": 1659,
+  "citation_normalized_percentile": {
+    "value": 0.99994493,
+    "is_in_top_1_percent": true,
+    "is_in_top_10_percent": true
+  },
+  "cited_by_percentile_year": {
+    "min": 99,
+    "max": 100
+  },
+  "biblio": {
+    "volume": "127",
+    "issue": "3",
+    "first_page": "1057",
+    "last_page": "1106"
+  },
+  "is_retracted": false,
+  "is_paratext": false,
+  "is_xpac": false,
+  "primary_topic": {
+    "id": "https://openalex.org/T10391",
+    "display_name": "Healthcare Policy and Management",
+    "score": 0.9998000264167786,
+    "subfield": {
+      "id": "https://openalex.org/subfields/2002",
+      "display_name": "Economics and Econometrics"
+    },
+    "field": {
+      "id": "https://openalex.org/fields/20",
+      "display_name": "Economics, Econometrics and Finance"
+    },
+    "domain": {
+      "id": "https://openalex.org/domains/2",
+      "display_name": "Social Sciences"
+    }
+  },
+  "topics": [
+    {
+      "id": "https://openalex.org/T10391",
+      "display_name": "Healthcare Policy and Management",
+      "score": 0.9998000264167786,
+      "subfield": {
+        "id": "https://openalex.org/subfields/2002",
+        "display_name": "Economics and Econometrics"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/20",
+        "display_name": "Economics, Econometrics and Finance"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/2",
+        "display_name": "Social Sciences"
+      }
+    },
+    {
+      "id": "https://openalex.org/T12781",
+      "display_name": "Global Health Care Issues",
+      "score": 0.9993000030517578,
+      "subfield": {
+        "id": "https://openalex.org/subfields/3600",
+        "display_name": "General Health Professions"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/36",
+        "display_name": "Health Professions"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/4",
+        "display_name": "Health Sciences"
+      }
+    },
+    {
+      "id": "https://openalex.org/T10235",
+      "display_name": "Health disparities and outcomes",
+      "score": 0.9951000213623047,
+      "subfield": {
+        "id": "https://openalex.org/subfields/3306",
+        "display_name": "Health"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/33",
+        "display_name": "Social Sciences"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/2",
+        "display_name": "Social Sciences"
+      }
+    }
+  ],
+  "keywords": [
+    {
+      "id": "https://openalex.org/keywords/lottery",
+      "display_name": "Lottery",
+      "score": 0.9188030958175659
+    },
+    {
+      "id": "https://openalex.org/keywords/medicaid",
+      "display_name": "Medicaid",
+      "score": 0.7923952341079712
+    },
+    {
+      "id": "https://openalex.org/keywords/public-health-insurance",
+      "display_name": "Public health insurance",
+      "score": 0.5938126444816589
+    },
+    {
+      "id": "https://openalex.org/keywords/treatment-and-control-groups",
+      "display_name": "Treatment and control groups",
+      "score": 0.5207335948944092
+    },
+    {
+      "id": "https://openalex.org/keywords/health-insurance",
+      "display_name": "Health insurance",
+      "score": 0.5152238011360168
+    },
+    {
+      "id": "https://openalex.org/keywords/debt",
+      "display_name": "Debt",
+      "score": 0.5117690563201904
+    },
+    {
+      "id": "https://openalex.org/keywords/health-care",
+      "display_name": "Health care",
+      "score": 0.46352913975715637
+    },
+    {
+      "id": "https://openalex.org/keywords/public-health",
+      "display_name": "Public health",
+      "score": 0.457881361246109
+    },
+    {
+      "id": "https://openalex.org/keywords/medicine",
+      "display_name": "Medicine",
+      "score": 0.45136475563049316
+    },
+    {
+      "id": "https://openalex.org/keywords/randomized-controlled-trial",
+      "display_name": "Randomized controlled trial",
+      "score": 0.4371539354324341
+    },
+    {
+      "id": "https://openalex.org/keywords/actuarial-science",
+      "display_name": "Actuarial science",
+      "score": 0.41095227003097534
+    },
+    {
+      "id": "https://openalex.org/keywords/environmental-health",
+      "display_name": "Environmental health",
+      "score": 0.3908022940158844
+    },
+    {
+      "id": "https://openalex.org/keywords/family-medicine",
+      "display_name": "Family medicine",
+      "score": 0.37727534770965576
+    },
+    {
+      "id": "https://openalex.org/keywords/business",
+      "display_name": "Business",
+      "score": 0.34884247183799744
+    },
+    {
+      "id": "https://openalex.org/keywords/finance",
+      "display_name": "Finance",
+      "score": 0.2534738779067993
+    },
+    {
+      "id": "https://openalex.org/keywords/nursing",
+      "display_name": "Nursing",
+      "score": 0.23370736837387085
+    },
+    {
+      "id": "https://openalex.org/keywords/economics",
+      "display_name": "Economics",
+      "score": 0.19826540350914001
+    },
+    {
+      "id": "https://openalex.org/keywords/economic-growth",
+      "display_name": "Economic growth",
+      "score": 0.08635479211807251
+    }
+  ],
+  "concepts": [
+    {
+      "id": "https://openalex.org/C2777340749",
+      "wikidata": "https://www.wikidata.org/wiki/Q6684955",
+      "display_name": "Lottery",
+      "level": 2,
+      "score": 0.9188030958175659
+    },
+    {
+      "id": "https://openalex.org/C2776534028",
+      "wikidata": "https://www.wikidata.org/wiki/Q1141363",
+      "display_name": "Medicaid",
+      "level": 3,
+      "score": 0.7923952341079712
+    },
+    {
+      "id": "https://openalex.org/C2993080335",
+      "wikidata": "https://www.wikidata.org/wiki/Q294308",
+      "display_name": "Public health insurance",
+      "level": 4,
+      "score": 0.5938126444816589
+    },
+    {
+      "id": "https://openalex.org/C100480397",
+      "wikidata": "https://www.wikidata.org/wiki/Q7836899",
+      "display_name": "Treatment and control groups",
+      "level": 2,
+      "score": 0.5207335948944092
+    },
+    {
+      "id": "https://openalex.org/C2983635472",
+      "wikidata": "https://www.wikidata.org/wiki/Q334911",
+      "display_name": "Health insurance",
+      "level": 3,
+      "score": 0.5152238011360168
+    },
+    {
+      "id": "https://openalex.org/C120527767",
+      "wikidata": "https://www.wikidata.org/wiki/Q3196867",
+      "display_name": "Debt",
+      "level": 2,
+      "score": 0.5117690563201904
+    },
+    {
+      "id": "https://openalex.org/C160735492",
+      "wikidata": "https://www.wikidata.org/wiki/Q31207",
+      "display_name": "Health care",
+      "level": 2,
+      "score": 0.46352913975715637
+    },
+    {
+      "id": "https://openalex.org/C138816342",
+      "wikidata": "https://www.wikidata.org/wiki/Q189603",
+      "display_name": "Public health",
+      "level": 2,
+      "score": 0.457881361246109
+    },
+    {
+      "id": "https://openalex.org/C71924100",
+      "wikidata": "https://www.wikidata.org/wiki/Q11190",
+      "display_name": "Medicine",
+      "level": 0,
+      "score": 0.45136475563049316
+    },
+    {
+      "id": "https://openalex.org/C168563851",
+      "wikidata": "https://www.wikidata.org/wiki/Q1436668",
+      "display_name": "Randomized controlled trial",
+      "level": 2,
+      "score": 0.4371539354324341
+    },
+    {
+      "id": "https://openalex.org/C162118730",
+      "wikidata": "https://www.wikidata.org/wiki/Q1128453",
+      "display_name": "Actuarial science",
+      "level": 1,
+      "score": 0.41095227003097534
+    },
+    {
+      "id": "https://openalex.org/C99454951",
+      "wikidata": "https://www.wikidata.org/wiki/Q932068",
+      "display_name": "Environmental health",
+      "level": 1,
+      "score": 0.3908022940158844
+    },
+    {
+      "id": "https://openalex.org/C512399662",
+      "wikidata": "https://www.wikidata.org/wiki/Q3505712",
+      "display_name": "Family medicine",
+      "level": 1,
+      "score": 0.37727534770965576
+    },
+    {
+      "id": "https://openalex.org/C144133560",
+      "wikidata": "https://www.wikidata.org/wiki/Q4830453",
+      "display_name": "Business",
+      "level": 0,
+      "score": 0.34884247183799744
+    },
+    {
+      "id": "https://openalex.org/C10138342",
+      "wikidata": "https://www.wikidata.org/wiki/Q43015",
+      "display_name": "Finance",
+      "level": 1,
+      "score": 0.2534738779067993
+    },
+    {
+      "id": "https://openalex.org/C159110408",
+      "wikidata": "https://www.wikidata.org/wiki/Q121176",
+      "display_name": "Nursing",
+      "level": 1,
+      "score": 0.23370736837387085
+    },
+    {
+      "id": "https://openalex.org/C162324750",
+      "wikidata": "https://www.wikidata.org/wiki/Q8134",
+      "display_name": "Economics",
+      "level": 0,
+      "score": 0.19826540350914001
+    },
+    {
+      "id": "https://openalex.org/C50522688",
+      "wikidata": "https://www.wikidata.org/wiki/Q189833",
+      "display_name": "Economic growth",
+      "level": 1,
+      "score": 0.08635479211807251
+    },
+    {
+      "id": "https://openalex.org/C175444787",
+      "wikidata": "https://www.wikidata.org/wiki/Q39072",
+      "display_name": "Microeconomics",
+      "level": 1,
+      "score": 0.0
+    },
+    {
+      "id": "https://openalex.org/C142724271",
+      "wikidata": "https://www.wikidata.org/wiki/Q7208",
+      "display_name": "Pathology",
+      "level": 1,
+      "score": 0.0
+    },
+    {
+      "id": "https://openalex.org/C141071460",
+      "wikidata": "https://www.wikidata.org/wiki/Q40821",
+      "display_name": "Surgery",
+      "level": 1,
+      "score": 0.0
+    }
+  ],
+  "mesh": [],
+  "locations_count": 5,
+  "locations": [
+    {
+      "id": "doi:10.1093/qje/qjs020",
+      "is_oa": true,
+      "landing_page_url": "https://doi.org/10.1093/qje/qjs020",
+      "pdf_url": "https://academic.oup.com/qje/article-pdf/127/3/1057/30456845/qjs020.pdf",
+      "source": {
+        "id": "https://openalex.org/S203860005",
+        "display_name": "The Quarterly Journal of Economics",
+        "issn_l": "0033-5533",
+        "issn": [
+          "0033-5533",
+          "1531-4650"
+        ],
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": true,
+        "host_organization": "https://openalex.org/P4310311648",
+        "host_organization_name": "Oxford University Press",
+        "host_organization_lineage": [
+          "https://openalex.org/P4310311648",
+          "https://openalex.org/P4310311647"
+        ],
+        "host_organization_lineage_names": [
+          "Oxford University Press",
+          "University of Oxford"
+        ],
+        "type": "journal"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "publishedVersion",
+      "is_accepted": true,
+      "is_published": true,
+      "raw_source_name": "The Quarterly Journal of Economics",
+      "raw_type": "journal-article"
+    },
+    {
+      "id": "pmid:23293397",
+      "is_oa": false,
+      "landing_page_url": "https://pubmed.ncbi.nlm.nih.gov/23293397",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4306525036",
+        "display_name": "PubMed",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I1299303238",
+        "host_organization_name": "National Institutes of Health",
+        "host_organization_lineage": [
+          "https://openalex.org/I1299303238"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "publishedVersion",
+      "is_accepted": true,
+      "is_published": true,
+      "raw_source_name": "The quarterly journal of economics",
+      "raw_type": null
+    },
+    {
+      "id": "pmh:oai:RePEc:oup:qjecon:v:127:y:2012:i:3:p:1057-1106",
+      "is_oa": false,
+      "landing_page_url": "http://hdl.handle.net/10.1093/qje/qjs020",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4306401271",
+        "display_name": "RePEc: Research Papers in Economics",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I77793887",
+        "host_organization_name": "Federal Reserve Bank of St. Louis",
+        "host_organization_lineage": [
+          "https://openalex.org/I77793887"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "submittedVersion",
+      "is_accepted": false,
+      "is_published": false,
+      "raw_source_name": null,
+      "raw_type": "article"
+    },
+    {
+      "id": "pmh:oai:dspace.mit.edu:1721.1/71005",
+      "is_oa": true,
+      "landing_page_url": "http://hdl.handle.net/1721.1/71005",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4306400425",
+        "display_name": "DSpace@MIT (Massachusetts Institute of Technology)",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I63966007",
+        "host_organization_name": "Massachusetts Institute of Technology",
+        "host_organization_lineage": [
+          "https://openalex.org/I63966007"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": "cc-by-nc-sa",
+      "license_id": "https://openalex.org/licenses/cc-by-nc-sa",
+      "version": "submittedVersion",
+      "is_accepted": false,
+      "is_published": false,
+      "raw_source_name": "MIT web domain",
+      "raw_type": "Article"
+    },
+    {
+      "id": "pmh:oai:pubmedcentral.nih.gov:3535298",
+      "is_oa": true,
+      "landing_page_url": "https://www.ncbi.nlm.nih.gov/pmc/articles/3535298",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S2764455111",
+        "display_name": "PubMed Central",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": true,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I1299303238",
+        "host_organization_name": "National Institutes of Health",
+        "host_organization_lineage": [
+          "https://openalex.org/I1299303238"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "submittedVersion",
+      "is_accepted": false,
+      "is_published": false,
+      "raw_source_name": "Q J Econ",
+      "raw_type": "Text"
+    }
+  ],
+  "best_oa_location": {
+    "id": "doi:10.1093/qje/qjs020",
+    "is_oa": true,
+    "landing_page_url": "https://doi.org/10.1093/qje/qjs020",
+    "pdf_url": "https://academic.oup.com/qje/article-pdf/127/3/1057/30456845/qjs020.pdf",
+    "source": {
+      "id": "https://openalex.org/S203860005",
+      "display_name": "The Quarterly Journal of Economics",
+      "issn_l": "0033-5533",
+      "issn": [
+        "0033-5533",
+        "1531-4650"
+      ],
+      "is_oa": false,
+      "is_in_doaj": false,
+      "is_core": true,
+      "host_organization": "https://openalex.org/P4310311648",
+      "host_organization_name": "Oxford University Press",
+      "host_organization_lineage": [
+        "https://openalex.org/P4310311648",
+        "https://openalex.org/P4310311647"
+      ],
+      "host_organization_lineage_names": [
+        "Oxford University Press",
+        "University of Oxford"
+      ],
+      "type": "journal"
+    },
+    "license": null,
+    "license_id": null,
+    "version": "publishedVersion",
+    "is_accepted": true,
+    "is_published": true,
+    "raw_source_name": "The Quarterly Journal of Economics",
+    "raw_type": "journal-article"
+  },
+  "sustainable_development_goals": [
+    {
+      "id": "https://metadata.un.org/sdg/1",
+      "display_name": "No poverty",
+      "score": 0.5199999809265137
+    }
+  ],
+  "awards": [
+    {
+      "id": "https://openalex.org/G2125353477",
+      "display_name": null,
+      "funder_award_id": "P30AG012810",
+      "funder_id": "https://openalex.org/F4320332161",
+      "funder_display_name": "National Institutes of Health"
+    },
+    {
+      "id": "https://openalex.org/G3270663963",
+      "display_name": null,
+      "funder_award_id": "RC2 AG036631",
+      "funder_id": "https://openalex.org/F4320337337",
+      "funder_display_name": "National Institute on Aging"
+    },
+    {
+      "id": "https://openalex.org/G4122797478",
+      "display_name": null,
+      "funder_award_id": "5 RRC 08098400-03-00",
+      "funder_id": "https://openalex.org/F4320308309",
+      "funder_display_name": "U.S. Social Security Administration"
+    },
+    {
+      "id": "https://openalex.org/G4730959243",
+      "display_name": null,
+      "funder_award_id": "R01 AG034151",
+      "funder_id": "https://openalex.org/F4320337337",
+      "funder_display_name": "National Institute on Aging"
+    },
+    {
+      "id": "https://openalex.org/G746963914",
+      "display_name": null,
+      "funder_award_id": "P30 AG012810",
+      "funder_id": "https://openalex.org/F4320337337",
+      "funder_display_name": "National Institute on Aging"
+    }
+  ],
+  "funders": [
+    {
+      "id": "https://openalex.org/F4320306085",
+      "display_name": "U.S. Department of Health and Human Services",
+      "ror": "https://ror.org/033jnv181"
+    },
+    {
+      "id": "https://openalex.org/F4320306142",
+      "display_name": "John D. and Catherine T. MacArthur Foundation",
+      "ror": "https://ror.org/00dxczh48"
+    },
+    {
+      "id": "https://openalex.org/F4320306151",
+      "display_name": "Alfred P. Sloan Foundation",
+      "ror": "https://ror.org/052csg198"
+    },
+    {
+      "id": "https://openalex.org/F4320306491",
+      "display_name": "Smith Richardson Foundation",
+      "ror": "https://ror.org/01ma57r88"
+    },
+    {
+      "id": "https://openalex.org/F4320306492",
+      "display_name": "Sid W. Richardson Foundation",
+      "ror": "https://ror.org/027d4fk93"
+    },
+    {
+      "id": "https://openalex.org/F4320307758",
+      "display_name": "Eli Lilly and Company",
+      "ror": "https://ror.org/01qat3289"
+    },
+    {
+      "id": "https://openalex.org/F4320308309",
+      "display_name": "U.S. Social Security Administration",
+      "ror": "https://ror.org/04b7xxn32"
+    },
+    {
+      "id": "https://openalex.org/F4320309369",
+      "display_name": "Massachusetts Institute of Technology",
+      "ror": "https://ror.org/042nb2s44"
+    },
+    {
+      "id": "https://openalex.org/F4320309493",
+      "display_name": "Portland State University",
+      "ror": "https://ror.org/00yn2fy02"
+    },
+    {
+      "id": "https://openalex.org/F4320309622",
+      "display_name": "Harvard University",
+      "ror": "https://ror.org/03vek6s52"
+    },
+    {
+      "id": "https://openalex.org/F4320315885",
+      "display_name": "Australian Government",
+      "ror": "https://ror.org/0314h5y94"
+    },
+    {
+      "id": "https://openalex.org/F4320332161",
+      "display_name": "National Institutes of Health",
+      "ror": "https://ror.org/01cwqze88"
+    },
+    {
+      "id": "https://openalex.org/F4320332205",
+      "display_name": "Centers for Medicare and Medicaid Services",
+      "ror": "https://ror.org/02g02rq35"
+    },
+    {
+      "id": "https://openalex.org/F4320337337",
+      "display_name": "National Institute on Aging",
+      "ror": "https://ror.org/049v75w11"
+    }
+  ],
+  "has_content": {
+    "grobid_xml": true,
+    "pdf": true
+  },
+  "content_urls": {
+    "pdf": "https://content.openalex.org/works/W2256120588.pdf",
+    "grobid_xml": "https://content.openalex.org/works/W2256120588.grobid-xml"
+  },
+  "referenced_works_count": 58,
+  "referenced_works": [
+    "https://openalex.org/W147002934",
+    "https://openalex.org/W1584156210",
+    "https://openalex.org/W1605424221",
+    "https://openalex.org/W1960438149",
+    "https://openalex.org/W1975420909",
+    "https://openalex.org/W1975970108",
+    "https://openalex.org/W1988867580",
+    "https://openalex.org/W2007445672",
+    "https://openalex.org/W2013395157",
+    "https://openalex.org/W2044007380",
+    "https://openalex.org/W2056291945",
+    "https://openalex.org/W2058863999",
+    "https://openalex.org/W2070457357",
+    "https://openalex.org/W2077268598",
+    "https://openalex.org/W2084984189",
+    "https://openalex.org/W2088370899",
+    "https://openalex.org/W2095592964",
+    "https://openalex.org/W2099805722",
+    "https://openalex.org/W2100330313",
+    "https://openalex.org/W2104780889",
+    "https://openalex.org/W2109317162",
+    "https://openalex.org/W2119853104",
+    "https://openalex.org/W2127629883",
+    "https://openalex.org/W2128409525",
+    "https://openalex.org/W2138290169",
+    "https://openalex.org/W2139368484",
+    "https://openalex.org/W2145644832",
+    "https://openalex.org/W2146683595",
+    "https://openalex.org/W2147920244",
+    "https://openalex.org/W2152666807",
+    "https://openalex.org/W2164726397",
+    "https://openalex.org/W2180623213",
+    "https://openalex.org/W2344757716",
+    "https://openalex.org/W2395547833",
+    "https://openalex.org/W2577227262",
+    "https://openalex.org/W2796349379",
+    "https://openalex.org/W2796856748",
+    "https://openalex.org/W2890543633",
+    "https://openalex.org/W3121172571",
+    "https://openalex.org/W3121556564",
+    "https://openalex.org/W3121640685",
+    "https://openalex.org/W3122236153",
+    "https://openalex.org/W3122946840",
+    "https://openalex.org/W3123149361",
+    "https://openalex.org/W3123915401",
+    "https://openalex.org/W3124292765",
+    "https://openalex.org/W3124481544",
+    "https://openalex.org/W3124658416",
+    "https://openalex.org/W3124926416",
+    "https://openalex.org/W3125000092",
+    "https://openalex.org/W3125063911",
+    "https://openalex.org/W3125579623",
+    "https://openalex.org/W3144040573",
+    "https://openalex.org/W4234955512",
+    "https://openalex.org/W4299696569",
+    "https://openalex.org/W6640864581",
+    "https://openalex.org/W6669636539",
+    "https://openalex.org/W6674154555"
+  ],
+  "related_works": [
+    "https://openalex.org/W3149258982",
+    "https://openalex.org/W3160701276",
+    "https://openalex.org/W2057871163",
+    "https://openalex.org/W2337676333",
+    "https://openalex.org/W2140922496",
+    "https://openalex.org/W2741109603",
+    "https://openalex.org/W2914955228",
+    "https://openalex.org/W3215115286",
+    "https://openalex.org/W4322775955",
+    "https://openalex.org/W4200317631"
+  ],
+  "abstract_inverted_index": {
+    "In": [
+      0,
+      56
+    ],
+    "2008,": [
+      1
+    ],
+    "a": [
+      2,
+      52
+    ],
+    "group": [
+      3,
+      64,
+      82,
+      96
+    ],
+    "of": [
+      4,
+      32,
+      48
+    ],
+    "uninsured": [
+      5
+    ],
+    "low-income": [
+      6,
+      49
+    ],
+    "adults": [
+      7,
+      50
+    ],
+    "in": [
+      8,
+      90
+    ],
+    "Oregon": [
+      9
+    ],
+    "was": [
+      10,
+      69,
+      84
+    ],
+    "selected": [
+      11,
+      65
+    ],
+    "by": [
+      12,
+      66
+    ],
+    "lottery": [
+      13,
+      24,
+      68
+    ],
+    "to": [
+      14,
+      19,
+      28,
+      35,
+      76,
+      126
+    ],
+    "be": [
+      15
+    ],
+    "given": [
+      16
+    ],
+    "the": [
+      17,
+      30,
+      40,
+      57,
+      62,
+      67,
+      80,
+      94,
+      136
+    ],
+    "chance": [
+      18
+    ],
+    "apply": [
+      20
+    ],
+    "for": [
+      21
+    ],
+    "Medicaid.": [
+      22
+    ],
+    "This": [
+      23
+    ],
+    "provides": [
+      25
+    ],
+    "an": [
+      26
+    ],
+    "opportunity": [
+      27
+    ],
+    "gauge": [
+      29
+    ],
+    "effects": [
+      31
+    ],
+    "expanding": [
+      33
+    ],
+    "access": [
+      34
+    ],
+    "public": [
+      36
+    ],
+    "health": [
+      37,
+      41,
+      47,
+      103,
+      134
+    ],
+    "insurance": [
+      38,
+      78
+    ],
+    "on": [
+      39
+    ],
+    "care": [
+      42,
+      104,
+      110
+    ],
+    "use,": [
+      43
+    ],
+    "financial": [
+      44
+    ],
+    "strain,": [
+      45
+    ],
+    "and": [
+      46,
+      99,
+      108,
+      119,
+      128,
+      132
+    ],
+    "using": [
+      51
+    ],
+    "randomized": [
+      53
+    ],
+    "controlled": [
+      54
+    ],
+    "design.": [
+      55
+    ],
+    "year": [
+      58
+    ],
+    "after": [
+      59
+    ],
+    "random": [
+      60
+    ],
+    "assignment,": [
+      61
+    ],
+    "treatment": [
+      63,
+      95
+    ],
+    "about": [
+      70
+    ],
+    "25": [
+      71
+    ],
+    "percentage": [
+      72
+    ],
+    "points": [
+      73
+    ],
+    "more": [
+      74
+    ],
+    "likely": [
+      75
+    ],
+    "have": [
+      77
+    ],
+    "than": [
+      79,
+      135
+    ],
+    "control": [
+      81,
+      137
+    ],
+    "that": [
+      83,
+      89
+    ],
+    "not": [
+      85
+    ],
+    "selected.": [
+      86
+    ],
+    "We": [
+      87
+    ],
+    "find": [
+      88
+    ],
+    "this": [
+      91
+    ],
+    "first": [
+      92
+    ],
+    "year,": [
+      93
+    ],
+    "had": [
+      97
+    ],
+    "substantively": [
+      98
+    ],
+    "statistically": [
+      100
+    ],
+    "significantly": [
+      101
+    ],
+    "higher": [
+      102
+    ],
+    "utilization": [
+      105
+    ],
+    "(including": [
+      106,
+      122
+    ],
+    "primary": [
+      107
+    ],
+    "preventive": [
+      109
+    ],
+    "as": [
+      111,
+      113
+    ],
+    "well": [
+      112
+    ],
+    "hospitalizations),": [
+      114
+    ],
+    "lower": [
+      115
+    ],
+    "out-of-pocket": [
+      116
+    ],
+    "medical": [
+      117,
+      120
+    ],
+    "expenditures": [
+      118
+    ],
+    "debt": [
+      121
+    ],
+    "fewer": [
+      123
+    ],
+    "bills": [
+      124
+    ],
+    "sent": [
+      125
+    ],
+    "collection),": [
+      127
+    ],
+    "better": [
+      129
+    ],
+    "self-reported": [
+      130
+    ],
+    "physical": [
+      131
+    ],
+    "mental": [
+      133
+    ],
+    "group.": [
+      138
+    ]
+  },
+  "counts_by_year": [
+    {
+      "year": 2026,
+      "cited_by_count": 50
+    },
+    {
+      "year": 2025,
+      "cited_by_count": 113
+    },
+    {
+      "year": 2024,
+      "cited_by_count": 144
+    },
+    {
+      "year": 2023,
+      "cited_by_count": 111
+    },
+    {
+      "year": 2022,
+      "cited_by_count": 126
+    },
+    {
+      "year": 2021,
+      "cited_by_count": 130
+    },
+    {
+      "year": 2020,
+      "cited_by_count": 133
+    },
+    {
+      "year": 2019,
+      "cited_by_count": 134
+    },
+    {
+      "year": 2018,
+      "cited_by_count": 113
+    },
+    {
+      "year": 2017,
+      "cited_by_count": 137
+    },
+    {
+      "year": 2016,
+      "cited_by_count": 107
+    },
+    {
+      "year": 2015,
+      "cited_by_count": 109
+    },
+    {
+      "year": 2014,
+      "cited_by_count": 117
+    },
+    {
+      "year": 2013,
+      "cited_by_count": 72
+    },
+    {
+      "year": 2012,
+      "cited_by_count": 52
+    }
+  ],
+  "updated_date": "2026-07-03T08:13:44.112507",
+  "created_date": "2025-10-10T00:00:00"
+}

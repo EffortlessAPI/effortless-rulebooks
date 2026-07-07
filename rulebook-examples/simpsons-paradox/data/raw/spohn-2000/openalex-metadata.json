@@ -1,0 +1,1146 @@
+{
+  "id": "https://openalex.org/W2052568809",
+  "doi": "https://doi.org/10.1214/10-aop550",
+  "title": "Current fluctuations for TASEP: A proof of the Pr\u00e4hofer\u2013Spohn conjecture",
+  "display_name": "Current fluctuations for TASEP: A proof of the Pr\u00e4hofer\u2013Spohn conjecture",
+  "relevance_score": 125.2974,
+  "publication_year": 2010,
+  "publication_date": "2010-12-03",
+  "ids": {
+    "openalex": "https://openalex.org/W2052568809",
+    "doi": "https://doi.org/10.1214/10-aop550",
+    "mag": "2052568809"
+  },
+  "language": "en",
+  "primary_location": {
+    "id": "doi:10.1214/10-aop550",
+    "is_oa": true,
+    "landing_page_url": "https://doi.org/10.1214/10-aop550",
+    "pdf_url": "https://projecteuclid.org/journals/annals-of-probability/volume-39/issue-1/Current-fluctuations-for-TASEP--A-proof-of-the-Pr%c3%a4hoferSpohn/10.1214/10-AOP550.pdf",
+    "source": {
+      "id": "https://openalex.org/S40212770",
+      "display_name": "The Annals of Probability",
+      "issn_l": "0091-1798",
+      "issn": [
+        "0091-1798",
+        "2168-894X"
+      ],
+      "is_oa": false,
+      "is_in_doaj": false,
+      "is_core": true,
+      "host_organization": "https://openalex.org/P4310319881",
+      "host_organization_name": "Institute of Mathematical Statistics",
+      "host_organization_lineage": [
+        "https://openalex.org/P4310319881"
+      ],
+      "host_organization_lineage_names": [
+        "Institute of Mathematical Statistics"
+      ],
+      "type": "journal"
+    },
+    "license": null,
+    "license_id": null,
+    "version": "publishedVersion",
+    "is_accepted": true,
+    "is_published": true,
+    "raw_source_name": "The Annals of Probability",
+    "raw_type": "journal-article"
+  },
+  "type": "article",
+  "indexed_in": [
+    "arxiv",
+    "crossref"
+  ],
+  "open_access": {
+    "is_oa": true,
+    "oa_status": "bronze",
+    "oa_url": "https://projecteuclid.org/journals/annals-of-probability/volume-39/issue-1/Current-fluctuations-for-TASEP--A-proof-of-the-Pr%c3%a4hoferSpohn/10.1214/10-AOP550.pdf",
+    "any_repository_has_fulltext": true
+  },
+  "authorships": [
+    {
+      "author_position": "first",
+      "author": {
+        "id": null,
+        "display_name": "G\u00e9rard Ben Arous",
+        "orcid": null
+      },
+      "institutions": [],
+      "countries": [],
+      "is_corresponding": false,
+      "raw_author_name": "G\u00e9rard Ben Arous",
+      "raw_affiliation_strings": [],
+      "raw_orcid": null,
+      "affiliations": []
+    },
+    {
+      "author_position": "last",
+      "author": {
+        "id": null,
+        "display_name": "Ivan Corwin",
+        "orcid": null
+      },
+      "institutions": [],
+      "countries": [],
+      "is_corresponding": false,
+      "raw_author_name": "Ivan Corwin",
+      "raw_affiliation_strings": [],
+      "raw_orcid": null,
+      "affiliations": []
+    }
+  ],
+  "institutions": [],
+  "countries_distinct_count": 0,
+  "institutions_distinct_count": 0,
+  "corresponding_author_ids": [],
+  "corresponding_institution_ids": [],
+  "apc_list": null,
+  "apc_paid": null,
+  "fwci": 3.5103,
+  "has_fulltext": true,
+  "cited_by_count": 43,
+  "citation_normalized_percentile": {
+    "value": 0.92984829,
+    "is_in_top_1_percent": false,
+    "is_in_top_10_percent": true
+  },
+  "cited_by_percentile_year": {
+    "min": 89,
+    "max": 98
+  },
+  "biblio": {
+    "volume": "39",
+    "issue": "1",
+    "first_page": null,
+    "last_page": null
+  },
+  "is_retracted": false,
+  "is_paratext": false,
+  "is_xpac": false,
+  "primary_topic": {
+    "id": "https://openalex.org/T11152",
+    "display_name": "Stochastic processes and statistical mechanics",
+    "score": 0.554099977016449,
+    "subfield": {
+      "id": "https://openalex.org/subfields/2610",
+      "display_name": "Mathematical Physics"
+    },
+    "field": {
+      "id": "https://openalex.org/fields/26",
+      "display_name": "Mathematics"
+    },
+    "domain": {
+      "id": "https://openalex.org/domains/3",
+      "display_name": "Physical Sciences"
+    }
+  },
+  "topics": [
+    {
+      "id": "https://openalex.org/T11152",
+      "display_name": "Stochastic processes and statistical mechanics",
+      "score": 0.554099977016449,
+      "subfield": {
+        "id": "https://openalex.org/subfields/2610",
+        "display_name": "Mathematical Physics"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/26",
+        "display_name": "Mathematics"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/3",
+        "display_name": "Physical Sciences"
+      }
+    },
+    {
+      "id": "https://openalex.org/T10591",
+      "display_name": "Theoretical and Computational Physics",
+      "score": 0.13819999992847443,
+      "subfield": {
+        "id": "https://openalex.org/subfields/3104",
+        "display_name": "Condensed Matter Physics"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/31",
+        "display_name": "Physics and Astronomy"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/3",
+        "display_name": "Physical Sciences"
+      }
+    },
+    {
+      "id": "https://openalex.org/T10940",
+      "display_name": "Navier-Stokes equation solutions",
+      "score": 0.055799998342990875,
+      "subfield": {
+        "id": "https://openalex.org/subfields/2604",
+        "display_name": "Applied Mathematics"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/26",
+        "display_name": "Mathematics"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/3",
+        "display_name": "Physical Sciences"
+      }
+    }
+  ],
+  "keywords": [
+    {
+      "id": "https://openalex.org/keywords/scaling",
+      "display_name": "Scaling",
+      "score": 0.6711000204086304
+    },
+    {
+      "id": "https://openalex.org/keywords/conjecture",
+      "display_name": "Conjecture",
+      "score": 0.6534000039100647
+    },
+    {
+      "id": "https://openalex.org/keywords/bernoullis-principle",
+      "display_name": "Bernoulli's principle",
+      "score": 0.650600016117096
+    },
+    {
+      "id": "https://openalex.org/keywords/percolation",
+      "display_name": "Percolation (cognitive psychology)",
+      "score": 0.5224999785423279
+    },
+    {
+      "id": "https://openalex.org/keywords/current",
+      "display_name": "Current (fluid)",
+      "score": 0.4738999903202057
+    },
+    {
+      "id": "https://openalex.org/keywords/boundary",
+      "display_name": "Boundary (topology)",
+      "score": 0.42649999260902405
+    },
+    {
+      "id": "https://openalex.org/keywords/matrix",
+      "display_name": "Matrix (chemical analysis)",
+      "score": 0.42489999532699585
+    },
+    {
+      "id": "https://openalex.org/keywords/scaling-limit",
+      "display_name": "Scaling limit",
+      "score": 0.42309999465942383
+    },
+    {
+      "id": "https://openalex.org/keywords/function",
+      "display_name": "Function (biology)",
+      "score": 0.41909998655319214
+    }
+  ],
+  "concepts": [
+    {
+      "id": "https://openalex.org/C33923547",
+      "wikidata": "https://www.wikidata.org/wiki/Q395",
+      "display_name": "Mathematics",
+      "level": 0,
+      "score": 0.7906000018119812
+    },
+    {
+      "id": "https://openalex.org/C99844830",
+      "wikidata": "https://www.wikidata.org/wiki/Q102441924",
+      "display_name": "Scaling",
+      "level": 2,
+      "score": 0.6711000204086304
+    },
+    {
+      "id": "https://openalex.org/C2780990831",
+      "wikidata": "https://www.wikidata.org/wiki/Q319141",
+      "display_name": "Conjecture",
+      "level": 2,
+      "score": 0.6534000039100647
+    },
+    {
+      "id": "https://openalex.org/C152361515",
+      "wikidata": "https://www.wikidata.org/wiki/Q181328",
+      "display_name": "Bernoulli's principle",
+      "level": 2,
+      "score": 0.650600016117096
+    },
+    {
+      "id": "https://openalex.org/C2780457167",
+      "wikidata": "https://www.wikidata.org/wiki/Q17156484",
+      "display_name": "Percolation (cognitive psychology)",
+      "level": 2,
+      "score": 0.5224999785423279
+    },
+    {
+      "id": "https://openalex.org/C148043351",
+      "wikidata": "https://www.wikidata.org/wiki/Q4456944",
+      "display_name": "Current (fluid)",
+      "level": 2,
+      "score": 0.4738999903202057
+    },
+    {
+      "id": "https://openalex.org/C62354387",
+      "wikidata": "https://www.wikidata.org/wiki/Q875399",
+      "display_name": "Boundary (topology)",
+      "level": 2,
+      "score": 0.42649999260902405
+    },
+    {
+      "id": "https://openalex.org/C106487976",
+      "wikidata": "https://www.wikidata.org/wiki/Q685816",
+      "display_name": "Matrix (chemical analysis)",
+      "level": 2,
+      "score": 0.42489999532699585
+    },
+    {
+      "id": "https://openalex.org/C24084028",
+      "wikidata": "https://www.wikidata.org/wiki/Q7429781",
+      "display_name": "Scaling limit",
+      "level": 3,
+      "score": 0.42309999465942383
+    },
+    {
+      "id": "https://openalex.org/C14036430",
+      "wikidata": "https://www.wikidata.org/wiki/Q3736076",
+      "display_name": "Function (biology)",
+      "level": 2,
+      "score": 0.41909998655319214
+    },
+    {
+      "id": "https://openalex.org/C134306372",
+      "wikidata": "https://www.wikidata.org/wiki/Q7754",
+      "display_name": "Mathematical analysis",
+      "level": 1,
+      "score": 0.40560001134872437
+    },
+    {
+      "id": "https://openalex.org/C182306322",
+      "wikidata": "https://www.wikidata.org/wiki/Q1779371",
+      "display_name": "Order (exchange)",
+      "level": 2,
+      "score": 0.39500001072883606
+    },
+    {
+      "id": "https://openalex.org/C2777212361",
+      "wikidata": "https://www.wikidata.org/wiki/Q5127848",
+      "display_name": "Class (philosophy)",
+      "level": 2,
+      "score": 0.3853999972343445
+    },
+    {
+      "id": "https://openalex.org/C164226766",
+      "wikidata": "https://www.wikidata.org/wiki/Q7293202",
+      "display_name": "Rank (graph theory)",
+      "level": 2,
+      "score": 0.3750999867916107
+    },
+    {
+      "id": "https://openalex.org/C166785042",
+      "wikidata": "https://www.wikidata.org/wiki/Q190391",
+      "display_name": "Central limit theorem",
+      "level": 2,
+      "score": 0.3684000074863434
+    },
+    {
+      "id": "https://openalex.org/C121864883",
+      "wikidata": "https://www.wikidata.org/wiki/Q677916",
+      "display_name": "Statistical physics",
+      "level": 1,
+      "score": 0.36160001158714294
+    },
+    {
+      "id": "https://openalex.org/C204911207",
+      "wikidata": "https://www.wikidata.org/wiki/Q860609",
+      "display_name": "Generating function",
+      "level": 2,
+      "score": 0.34709998965263367
+    },
+    {
+      "id": "https://openalex.org/C182310444",
+      "wikidata": "https://www.wikidata.org/wiki/Q1332643",
+      "display_name": "Boundary value problem",
+      "level": 2,
+      "score": 0.3343000113964081
+    },
+    {
+      "id": "https://openalex.org/C132705693",
+      "wikidata": "https://www.wikidata.org/wiki/Q7294543",
+      "display_name": "Rarefaction (ecology)",
+      "level": 3,
+      "score": 0.3244999945163727
+    },
+    {
+      "id": "https://openalex.org/C114614502",
+      "wikidata": "https://www.wikidata.org/wiki/Q76592",
+      "display_name": "Combinatorics",
+      "level": 1,
+      "score": 0.3197999894618988
+    },
+    {
+      "id": "https://openalex.org/C20538924",
+      "wikidata": "https://www.wikidata.org/wiki/Q822139",
+      "display_name": "Characteristic function (probability theory)",
+      "level": 3,
+      "score": 0.3089999854564667
+    },
+    {
+      "id": "https://openalex.org/C64812099",
+      "wikidata": "https://www.wikidata.org/wiki/Q176604",
+      "display_name": "Random matrix",
+      "level": 3,
+      "score": 0.3050000071525574
+    },
+    {
+      "id": "https://openalex.org/C2778134712",
+      "wikidata": "https://www.wikidata.org/wiki/Q1047307",
+      "display_name": "Bundle",
+      "level": 2,
+      "score": 0.30410000681877136
+    },
+    {
+      "id": "https://openalex.org/C18762648",
+      "wikidata": "https://www.wikidata.org/wiki/Q42213",
+      "display_name": "Work (physics)",
+      "level": 2,
+      "score": 0.289900004863739
+    },
+    {
+      "id": "https://openalex.org/C202444582",
+      "wikidata": "https://www.wikidata.org/wiki/Q837863",
+      "display_name": "Pure mathematics",
+      "level": 1,
+      "score": 0.2896000146865845
+    },
+    {
+      "id": "https://openalex.org/C151201525",
+      "wikidata": "https://www.wikidata.org/wiki/Q177239",
+      "display_name": "Limit (mathematics)",
+      "level": 2,
+      "score": 0.2777000069618225
+    },
+    {
+      "id": "https://openalex.org/C15867958",
+      "wikidata": "https://www.wikidata.org/wiki/Q5280413",
+      "display_name": "Directed percolation",
+      "level": 4,
+      "score": 0.2741999924182892
+    },
+    {
+      "id": "https://openalex.org/C7321624",
+      "wikidata": "https://www.wikidata.org/wiki/Q205",
+      "display_name": "Infinity",
+      "level": 2,
+      "score": 0.273499995470047
+    },
+    {
+      "id": "https://openalex.org/C68532491",
+      "wikidata": "https://www.wikidata.org/wiki/Q1203669",
+      "display_name": "Renormalization group",
+      "level": 2,
+      "score": 0.2676999866962433
+    },
+    {
+      "id": "https://openalex.org/C8272713",
+      "wikidata": "https://www.wikidata.org/wiki/Q176737",
+      "display_name": "Stochastic process",
+      "level": 2,
+      "score": 0.25459998846054077
+    }
+  ],
+  "mesh": [],
+  "locations_count": 3,
+  "locations": [
+    {
+      "id": "doi:10.1214/10-aop550",
+      "is_oa": true,
+      "landing_page_url": "https://doi.org/10.1214/10-aop550",
+      "pdf_url": "https://projecteuclid.org/journals/annals-of-probability/volume-39/issue-1/Current-fluctuations-for-TASEP--A-proof-of-the-Pr%c3%a4hoferSpohn/10.1214/10-AOP550.pdf",
+      "source": {
+        "id": "https://openalex.org/S40212770",
+        "display_name": "The Annals of Probability",
+        "issn_l": "0091-1798",
+        "issn": [
+          "0091-1798",
+          "2168-894X"
+        ],
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": true,
+        "host_organization": "https://openalex.org/P4310319881",
+        "host_organization_name": "Institute of Mathematical Statistics",
+        "host_organization_lineage": [
+          "https://openalex.org/P4310319881"
+        ],
+        "host_organization_lineage_names": [
+          "Institute of Mathematical Statistics"
+        ],
+        "type": "journal"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "publishedVersion",
+      "is_accepted": true,
+      "is_published": true,
+      "raw_source_name": "The Annals of Probability",
+      "raw_type": "journal-article"
+    },
+    {
+      "id": "pmh:oai:arXiv.org:0905.2993",
+      "is_oa": true,
+      "landing_page_url": "http://arxiv.org/abs/0905.2993",
+      "pdf_url": "https://arxiv.org/pdf/0905.2993",
+      "source": {
+        "id": "https://openalex.org/S4306400194",
+        "display_name": "arXiv (Cornell University)",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": true,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I205783295",
+        "host_organization_name": "Cornell University",
+        "host_organization_lineage": [
+          "https://openalex.org/I205783295"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "submittedVersion",
+      "is_accepted": false,
+      "is_published": false,
+      "raw_source_name": null,
+      "raw_type": "text"
+    },
+    {
+      "id": "pmh:oai:CULeuclid:euclid.aop/1291388298",
+      "is_oa": false,
+      "landing_page_url": "https://projecteuclid.org/euclid.aop/1291388298",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4306400787",
+        "display_name": "Project Euclid (Cornell University)",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I205783295",
+        "host_organization_name": "Cornell University",
+        "host_organization_lineage": [
+          "https://openalex.org/I205783295"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "submittedVersion",
+      "is_accepted": false,
+      "is_published": false,
+      "raw_source_name": "",
+      "raw_type": "Text"
+    }
+  ],
+  "best_oa_location": {
+    "id": "doi:10.1214/10-aop550",
+    "is_oa": true,
+    "landing_page_url": "https://doi.org/10.1214/10-aop550",
+    "pdf_url": "https://projecteuclid.org/journals/annals-of-probability/volume-39/issue-1/Current-fluctuations-for-TASEP--A-proof-of-the-Pr%c3%a4hoferSpohn/10.1214/10-AOP550.pdf",
+    "source": {
+      "id": "https://openalex.org/S40212770",
+      "display_name": "The Annals of Probability",
+      "issn_l": "0091-1798",
+      "issn": [
+        "0091-1798",
+        "2168-894X"
+      ],
+      "is_oa": false,
+      "is_in_doaj": false,
+      "is_core": true,
+      "host_organization": "https://openalex.org/P4310319881",
+      "host_organization_name": "Institute of Mathematical Statistics",
+      "host_organization_lineage": [
+        "https://openalex.org/P4310319881"
+      ],
+      "host_organization_lineage_names": [
+        "Institute of Mathematical Statistics"
+      ],
+      "type": "journal"
+    },
+    "license": null,
+    "license_id": null,
+    "version": "publishedVersion",
+    "is_accepted": true,
+    "is_published": true,
+    "raw_source_name": "The Annals of Probability",
+    "raw_type": "journal-article"
+  },
+  "sustainable_development_goals": [],
+  "awards": [],
+  "funders": [
+    {
+      "id": "https://openalex.org/F4320306076",
+      "display_name": "National Science Foundation",
+      "ror": "https://ror.org/021nxhr62"
+    }
+  ],
+  "has_content": {
+    "pdf": true,
+    "grobid_xml": true
+  },
+  "content_urls": {
+    "pdf": "https://content.openalex.org/works/W2052568809.pdf",
+    "grobid_xml": "https://content.openalex.org/works/W2052568809.grobid-xml"
+  },
+  "referenced_works_count": 33,
+  "referenced_works": [
+    "https://openalex.org/W596251256",
+    "https://openalex.org/W1487220564",
+    "https://openalex.org/W1488994217",
+    "https://openalex.org/W1524543434",
+    "https://openalex.org/W1644938895",
+    "https://openalex.org/W1677703250",
+    "https://openalex.org/W1740198953",
+    "https://openalex.org/W1972913296",
+    "https://openalex.org/W1980679984",
+    "https://openalex.org/W1987262020",
+    "https://openalex.org/W1987842192",
+    "https://openalex.org/W1993405207",
+    "https://openalex.org/W1995709790",
+    "https://openalex.org/W2000713477",
+    "https://openalex.org/W2013350981",
+    "https://openalex.org/W2022636273",
+    "https://openalex.org/W2028306720",
+    "https://openalex.org/W2066226018",
+    "https://openalex.org/W2066459155",
+    "https://openalex.org/W2072656560",
+    "https://openalex.org/W2074506219",
+    "https://openalex.org/W2078269845",
+    "https://openalex.org/W2080332343",
+    "https://openalex.org/W2094307972",
+    "https://openalex.org/W2095812837",
+    "https://openalex.org/W2114560071",
+    "https://openalex.org/W2118752646",
+    "https://openalex.org/W2123829630",
+    "https://openalex.org/W2126844172",
+    "https://openalex.org/W2165704438",
+    "https://openalex.org/W2167750603",
+    "https://openalex.org/W4243464934",
+    "https://openalex.org/W4293507953"
+  ],
+  "related_works": [],
+  "abstract_inverted_index": {
+    "We": [
+      0,
+      37,
+      129
+    ],
+    "consider": [
+      1
+    ],
+    "the": [
+      2,
+      13,
+      52,
+      59,
+      62,
+      71,
+      77,
+      82,
+      111,
+      135,
+      139,
+      143,
+      159,
+      167,
+      178,
+      190
+    ],
+    "family": [
+      3
+    ],
+    "of": [
+      4,
+      41,
+      44,
+      54,
+      61,
+      65,
+      70,
+      101,
+      134,
+      137,
+      145,
+      156,
+      173,
+      180,
+      192,
+      202
+    ],
+    "two-sided": [
+      5,
+      66,
+      123
+    ],
+    "Bernoulli": [
+      6
+    ],
+    "initial": [
+      7
+    ],
+    "conditions": [
+      8
+    ],
+    "for": [
+      9,
+      58,
+      90,
+      98,
+      110,
+      142
+    ],
+    "TASEP": [
+      10,
+      67
+    ],
+    "which,": [
+      11
+    ],
+    "as": [
+      12,
+      153
+    ],
+    "left": [
+      14
+    ],
+    "and": [
+      15,
+      27,
+      55,
+      76,
+      127,
+      138,
+      164,
+      166,
+      187
+    ],
+    "right": [
+      16
+    ],
+    "densities": [
+      17,
+      73
+    ],
+    "(\u03c1\u2212,": [
+      18
+    ],
+    "\u03c1+)": [
+      19
+    ],
+    "are": [
+      20,
+      33
+    ],
+    "varied,": [
+      21
+    ],
+    "give": [
+      22
+    ],
+    "rise": [
+      23
+    ],
+    "to": [
+      24,
+      35
+    ],
+    "shock": [
+      25
+    ],
+    "waves": [
+      26
+    ],
+    "rarefaction": [
+      28
+    ],
+    "fans\u2014the": [
+      29
+    ],
+    "two": [
+      30,
+      72,
+      160
+    ],
+    "phenomena": [
+      31
+    ],
+    "which": [
+      32,
+      50,
+      81
+    ],
+    "typical": [
+      34
+    ],
+    "TASEP.": [
+      36
+    ],
+    "provide": [
+      38,
+      130
+    ],
+    "a": [
+      39,
+      95,
+      99,
+      116,
+      131,
+      154
+    ],
+    "proof": [
+      40,
+      172
+    ],
+    "Conjecture": [
+      42
+    ],
+    "7.1": [
+      43
+    ],
+    "[Progr.": [
+      45
+    ],
+    "Probab.": [
+      46,
+      194
+    ],
+    "51": [
+      47
+    ],
+    "(2002)": [
+      48
+    ],
+    "185\u2013204]": [
+      49
+    ],
+    "characterizes": [
+      51
+    ],
+    "order": [
+      53,
+      136
+    ],
+    "scaling": [
+      56,
+      140,
+      168
+    ],
+    "functions": [
+      57,
+      141
+    ],
+    "fluctuations": [
+      60,
+      144
+    ],
+    "height": [
+      63,
+      83
+    ],
+    "function": [
+      64,
+      155
+    ],
+    "in": [
+      68,
+      115,
+      205
+    ],
+    "terms": [
+      69
+    ],
+    "\u03c1\u2212,": [
+      74
+    ],
+    "\u03c1+": [
+      75
+    ],
+    "speed": [
+      78
+    ],
+    "y": [
+      79
+    ],
+    "around": [
+      80
+    ],
+    "is": [
+      84
+    ],
+    "observed.": [
+      85
+    ],
+    "In": [
+      86
+    ],
+    "proving": [
+      87
+    ],
+    "this": [
+      88,
+      146,
+      174
+    ],
+    "theorem": [
+      89,
+      97,
+      175
+    ],
+    "TASEP,": [
+      91
+    ],
+    "we": [
+      92
+    ],
+    "also": [
+      93
+    ],
+    "prove": [
+      94
+    ],
+    "fluctuation": [
+      96
+    ],
+    "class": [
+      100
+    ],
+    "corner": [
+      102
+    ],
+    "growth": [
+      103
+    ],
+    "processes": [
+      104
+    ],
+    "with": [
+      105,
+      122
+    ],
+    "external": [
+      106
+    ],
+    "sources,": [
+      107
+    ],
+    "or": [
+      108
+    ],
+    "equivalently": [
+      109
+    ],
+    "last": [
+      112,
+      118,
+      148
+    ],
+    "passage": [
+      113,
+      119,
+      149
+    ],
+    "time": [
+      114,
+      150
+    ],
+    "directed": [
+      117
+    ],
+    "percolation": [
+      120
+    ],
+    "model": [
+      121
+    ],
+    "boundary": [
+      124
+    ],
+    "conditions:": [
+      125
+    ],
+    "\u03c1\u2212": [
+      126,
+      163
+    ],
+    "1\u2212\u03c1+.": [
+      128
+    ],
+    "complete": [
+      132
+    ],
+    "characterization": [
+      133
+    ],
+    "model\u2019s": [
+      147
+    ],
+    "L(N,": [
+      151
+    ],
+    "M)": [
+      152
+    ],
+    "three": [
+      157
+    ],
+    "parameters:": [
+      158
+    ],
+    "boundary/source": [
+      161
+    ],
+    "rates": [
+      162
+    ],
+    "1\u2212\u03c1+,": [
+      165
+    ],
+    "ratio": [
+      169
+    ],
+    "\u03b32=M\u2215N.": [
+      170
+    ],
+    "The": [
+      171
+    ],
+    "draws": [
+      176
+    ],
+    "on": [
+      177,
+      189,
+      198
+    ],
+    "results": [
+      179
+    ],
+    "[Comm.": [
+      181
+    ],
+    "Math.": [
+      182
+    ],
+    "Phys.": [
+      183
+    ],
+    "265": [
+      184
+    ],
+    "(2006)": [
+      185
+    ],
+    "1\u201344]": [
+      186
+    ],
+    "extensively": [
+      188
+    ],
+    "work": [
+      191
+    ],
+    "[Ann.": [
+      193
+    ],
+    "33": [
+      195
+    ],
+    "(2005)": [
+      196
+    ],
+    "1643\u20131697]": [
+      197
+    ],
+    "finite": [
+      199
+    ],
+    "rank": [
+      200
+    ],
+    "perturbations": [
+      201
+    ],
+    "Wishart": [
+      203
+    ],
+    "ensembles": [
+      204
+    ],
+    "random": [
+      206
+    ],
+    "matrix": [
+      207
+    ],
+    "theory.": [
+      208
+    ]
+  },
+  "counts_by_year": [
+    {
+      "year": 2026,
+      "cited_by_count": 2
+    },
+    {
+      "year": 2025,
+      "cited_by_count": 3
+    },
+    {
+      "year": 2023,
+      "cited_by_count": 2
+    },
+    {
+      "year": 2022,
+      "cited_by_count": 1
+    },
+    {
+      "year": 2020,
+      "cited_by_count": 1
+    },
+    {
+      "year": 2019,
+      "cited_by_count": 4
+    },
+    {
+      "year": 2018,
+      "cited_by_count": 5
+    },
+    {
+      "year": 2017,
+      "cited_by_count": 4
+    },
+    {
+      "year": 2016,
+      "cited_by_count": 5
+    },
+    {
+      "year": 2015,
+      "cited_by_count": 2
+    },
+    {
+      "year": 2014,
+      "cited_by_count": 5
+    },
+    {
+      "year": 2013,
+      "cited_by_count": 1
+    },
+    {
+      "year": 2012,
+      "cited_by_count": 4
+    }
+  ],
+  "updated_date": "2026-07-03T08:13:44.112507",
+  "created_date": "2016-06-24T00:00:00"
+}

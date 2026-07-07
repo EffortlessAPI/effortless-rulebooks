@@ -1,0 +1,17 @@
+{
+  "candidate_id": "cand-exp-cdc-covid-19-case-surveillance-2020",
+  "proposed_study_id": "cdc-covid-19-case-surveillance-2020",
+  "acquisition_status": "portal_manual",
+  "attempted_at": "2026-07-07T03:45:57+00:00",
+  "catalog_source_url": "https://data.cdc.gov/Case-Surveillance/COVID-19-Case-Surveillance-Public-Use-Data/vbim-akqf",
+  "resolved_urls": [
+    "https://doi.org/10.1001/jama.2020.6130",
+    "https://jamanetwork.com/journals/jama/articlepdf/2764658/jama_pan_2020_oi_200040.pdf",
+    "https://data.cdc.gov/Case-Surveillance/COVID-19-Case-Surveillance-Public-Use-Data/vbim-akqf"
+  ],
+  "files": [
+    "openalex-metadata.json",
+    "source-1.html"
+  ],
+  "dois": []
+}

@@ -1,0 +1,581 @@
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+        <title>
+            BioLINCC: Antihypertensive and Lipid-Lowering Treatment to Prevent Heart Attack Trial (ALLHAT)
+        </title>
+
+        
+            <link href="/static/compiled/css/bootstrap.6e7671654bd9.css" rel="stylesheet" type="text/css" media="all" />
+		<link href="/static/fontawesomefree/css/all.min.275b491a8803.css" rel="stylesheet" type="text/css">
+		<link href="/static/compiled/css/base.9ebe16e21b2d.css" rel="stylesheet" type="text/css" media="all" />
+        
+
+        <link rel="icon" href="/static/img/favicon.4ab56f109ee7.ico">
+
+        <!-- Flash of Unstyled Content (FOUC) fix:
+             If JS is enabled, mark <body> with the class "js", then hide it. Once the
+             page has been fully loaded, unhide it. This prevents FOUC (at least for
+             users who haven't disabled JS) -->
+        <style type="text/css">body.js { display:none; }</style>
+        <script type="text/javascript">document.onload = function () {document.body.className='js'};</script>
+
+        
+        
+    </head>
+
+    <body class="current-studies">
+        <div id="skipLink">
+            <a href="#skipTo" class="visually-hidden-focusable">Skip to Main Content</a>
+        </div>
+        <!-- begin header -->
+        <div class="header" role="banner">
+            <section id="review-banner" class="reviewBanner" aria-label="Repository under review">
+                <div class="container-lg">
+                    <div class="row">
+			<div class="review-banner__header-text py-1 py-sm-2  text-start text-sm-center lh-sm">
+			    This repository is under review for potential modification in compliance with Administration directives.
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section id="usa-banner" class="nihBanner" aria-label="Official government website">
+                <div class="container-lg">
+                    <div class="row">
+                        <div class="usa-banner__header-text py-2">
+                            <img class="me-2" src="/static/img/usa-banner-flag-icon.png" alt="" /> An official website of the United States government
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <div class="container-lg">
+		<div class="d-flex align-items-center justify-content-between">
+		    <a class="nciLogo" href="https://www.nhlbi.nih.gov" title="NHLBI Home">
+			<img src="/static/img/nhlbi.8d204961f916.svg" alt="National Heart, Lung, and Blood Institute">
+		    </a>
+		    <div>
+			<div class="cf d-none d-lg-inline-block me-2" role="search">
+			    <form action="/media/search" method="get">
+				<div class="input-group">
+				    <label for="q" class="visually-hidden">Search:</label>
+				    <input name="q" id="q" type="text" class="form-control rounded-start" value=""/>
+				    <button class="cta-green input-group-text">Search</button>
+				</div>
+			    </form>
+			</div>
+
+                        
+                            <a href="/login/?next=/studies/allhat/" class="btn btn-secondary mb-1 text-nowrap">
+				<!-- Optional person-circle icon to make it easier to see the Log In button. HTML copied from https://icons.getbootstrap.com/icons/person-circle/ but the ims-bootstrap package has a bootstrap_icon template tag that this could be called from -->
+				<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
+				    <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0"></path>
+				    <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1">          </path>
+				</svg>
+				Log In</a>
+                        
+                    </div>
+		</div>
+	    </div>
+        </div>
+        <div class="ribbon">
+            <div class="container-lg">
+                <h1 id="biolincc-name">Biologic Specimen and Data Repository Information Coordinating Center</h1>
+            </div>
+        </div>
+        </div>
+        <!-- end header -->
+
+        <!-- begin main navbar -->
+
+        <nav class="navbar navbar-expand-xxl navbar-dark navbar-main">
+            <div class="container-lg">
+                <!-- navbar toggler -->
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#main-nav" aria-controls="main-nav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span><span class="ms-2 fw-bold">Menu</span>
+                </button>
+
+                <!-- navbar links -->
+                <div class="collapse navbar-collapse" id="main-nav">
+                    <ul class="navbar-nav">
+                        <li class="nav-item ">
+                            <a class="nav-link" href="/home/">Home <span class="visually-hidden">(current)</span></a>
+                        </li>
+
+                        <li class="nav-item dropdown">
+                            <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                About BioLINCC
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a class="dropdown-item " href="/about/">About Us</a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item " href="/faq/">FAQ</a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item " href="/contact/">Contact Us</a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item " href="/glossary/">Glossary</a>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <li class="nav-item dropdown">
+                            <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                Biospecimen and Data Resources
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a class="dropdown-item " href="/resource_overview/">Overview</a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item " href="/studies/">Studies</a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item " href="/teaching/">Teaching Datasets - Public Use Datasets</a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item " href="/data-renewal/">Renew Existing Data Use Agreement</a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item " href="/publications/">Publications</a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item " href="/funding_opportunities/">Funding Opportunities</a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item " href="/nonbiolincc_resources/">Non-BioLINCC Resources</a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="/media/guidelines/covid_faq.pdf?link_time=2026-07-06_23:43:41.118063">Covid-19 Resources</a>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <li class="nav-item dropdown">
+                            <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Procedures and Forms</a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a class="dropdown-item d-flex" href="/media/BioLINCC_User_Guide_05Jan2026.pdf?link_time=2026-07-06_23:43:41.118094">
+					<img src="/static/img/icons/pdf-white.2a1b7f30ebc5.svg" alt="PDF" class="me-1">
+					BioLINCC Users Guide
+				    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item " href="/website_forms/">Form Templates</a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item " href="/website_templates/">Agreement Templates</a>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <li class="nav-item dropdown">
+                            <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Build/Submit New Collection</a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a class="dropdown-item" href="https://osp.od.nih.gov/wp-content/uploads/Informed-Consent-Resource-for-Secondary-Research-with-Data-and-Biospecimens.pdf?link_time=2026-07-06_23:43:41.118104">
+                                        Informed Consent Considerations
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item " href="/nhlbi_biorepository_guide/">NHLBI Biorepository Guide</a>
+                                </li>
+                                <li class="dropdown-item ">
+                                    <a href="/submit_datasets/">Submit Datasets</a>
+                                </li>
+                                <li class="dropdown-item ">
+                                    <a href="/submit_biospecimens_and_datasets/">Submit Biospecimens and Datasets</a>
+                                </li>
+                            </ul>
+                        </li>
+
+                        
+                    </ul>
+		    <div class="cf mb-2 d-xxl-none" role="search">
+			<form action="/media/search" method="get">
+			    <div class="input-group">
+				<label for="q" class="visually-hidden">Search:</label>
+				<input name="q" id="q" type="text" class="form-control rounded-start" value=""/>
+				<button class="btn btn-outline-light input-group-text py-1">Search</button>
+			    </div>
+			</form>
+		    </div>
+
+                </div>
+            </div>
+        </nav>
+        <!-- end main navbar -->
+
+        
+            <div class="container-fluid bg-white" role="navigation">
+                <div class="container-lg breadcrumbs">
+                    
+    
+                        <a href="/home/">Home</a>
+                    
+    
+        <a href="/studies/">Studies</a>
+    
+     <a href="/studies/allhat/">Antihypertensive and Lipid-Lowering Treatment to Prevent Heart Attack Trial (ALLHAT)</a>
+
+                </div>
+            </div>
+        
+
+        <main class="main" id="skipTo" role="main">
+            
+
+	    
+		<div class="message-box">
+		    
+
+		</div>
+	    
+
+            
+    <div class="container-lg">
+        <div class="row detail-title-row">
+            <div class="col-md-7 col-lg-8 col-xl-9">
+                <h1 id="study-title" class="detail-title-row">
+                    
+                    Antihypertensive and Lipid-Lowering Treatment to Prevent Heart Attack Trial (ALLHAT)
+                </h1>
+                
+            </div>
+            
+                <div class="col-md-5 col-lg-4 col-xl-3">
+                    <button class="req-btn btn btn-primary" name="request" value="Request" onclick="window.location='/requests/type/allhat/'">Request Data</button>
+                    <p class="help-notes">Note that you will be prompted to log in or register an account</p>
+                </div>
+            
+        </div>
+        
+        <div class="row">
+            <div class="col-md-7 col-lg-8 col-xl-9">
+                <div class="row study-info-row">
+                    <div class="col-md-12 study-box">
+                        
+                            <div class="row">
+                                <div class="col-lg-4">
+                                    <p>
+                                        <b>Accession Number</b><br>
+                                        HLB00781010a
+                                    </p>
+                                </div>
+                            </div>
+                        
+                        <div class="row">
+                            <div class="col-lg-4">
+                                <p>
+                                    <b>Study Type</b><br>
+                                    Clinical Trial
+                                </p>
+                            </div>
+                            <div class="col-lg-4">
+                                <p>
+                                    <b>Collection Type</b><br>
+                                    Open BioLINCC Study
+                                    
+                                        <em class="form-text collection-type-help">See bottom of this webpage for request information</em>
+                                    
+                                </p>
+                            </div>
+                            
+                                <div class="col-lg-4">
+                                    <p>
+                                        <b>Study Period</b><br>
+                                        August 1993 - March 2002
+                                    </p>
+                                </div>
+                            
+                        </div>
+                        <div class="row">
+                            
+                                <div class="col-lg-4">
+                                    <p>
+                                        <b>NHLBI Division</b><br>
+                                        DCVS
+                                    </p>
+                                </div>
+                            
+                            
+                                <div class="col-lg-4">
+                                    <p>
+                                        <b>Dataset(s) Last Updated</b><br>
+                                        September 19, 2023
+                                    </p>
+                                </div>
+                            
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-12">
+                                <p>
+                                    <b>Clinical Trial URLs</b><br>
+                                    
+                                        <span class="text-break">
+
+
+    <a href="https://clinicaltrials.gov/study/NCT00000542">
+        NCT00000542
+    </a>
+    <br>
+
+</span>
+                                    
+                                </p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <p>
+                                    <b>Primary Publication URLs</b><br>
+                                    
+                                        <span class="text-break">
+
+
+    <a href="https://www.ncbi.nlm.nih.gov/pubmed/12479763">
+        Hypertension Study
+    </a>
+    <br>
+
+    <a href="https://www.ncbi.nlm.nih.gov/pubmed/12479764">
+        Lipid Study
+    </a>
+    <br>
+
+</span>
+                                    
+                                </p>
+                            </div>
+                        </div>
+                        
+                        
+                        
+                        
+                    </div>
+                </div>
+                <div class="row study-info-row">
+                    <h2 class="study-info-heading ps-0">Consent</h2>
+                    <div class="col-md-12 study-box">
+                        <div class="row">
+                            
+                                <div class="col-md-12">
+                                    <p>
+                                        <b>Commercial Use Data Restrictions</b>
+                                        <span class="badge bg-secondary">No</span>
+                                    </p>
+                                </div>
+                            
+                            
+                                <div class="col-md-12">
+                                    <p>
+                                        <b>Data Restrictions Based On Area Of Research</b>
+                                        <span class="badge bg-secondary">No</span>
+                                    </p>
+                                </div>
+                            
+                            
+                            
+                            
+                            
+                            
+                        </div>
+                    </div>
+                </div>
+                <div id="study-info" class="row">
+                    <div class="col-sm-12">
+                        
+                        
+                            <h2 class="study-info-heading">Objectives</h2>
+                            <p>Hypertension Study: To determine whether treatment with a calcium channel blocker or an angiotensin-converting enzyme inhibitor lowers the incidence of coronary heart disease (CHD) or other cardiovascular disease (CVD) events vs treatment with a diuretic.</p>
+<p>Lipid Study: To determine whether pravastatin compared with usual care reduces all-cause mortality in older, moderately hypercholesterolemic, hypertensive participants with at least 1 additional CHD risk factor.</p>
+                        
+                        
+                            <h2 class="study-info-heading">Background</h2>
+                            <p>Hypertension Study: Antihypertensive therapy is well established to reduce hypertension-related morbidity and mortality, but the optimal first-step therapy is unknown.</p>
+<p>Lipid Study: Studies have demonstrated that statins administered to individuals with risk factors for coronary heart disease (CHD) reduce CHD events. However, many of these studies were too small to assess all-cause mortality or outcomes in important subgroups.</p>
+                        
+                        
+                            <h2 class="study-info-heading">Participants</h2>
+                            <p>Hypertension Study: A total of 33 357 participants aged 55 years or older with hypertension and at least 1 other CHD risk factor from 623 North American centers.</p>
+<p>Lipid Study: Ambulatory persons (n = 10 355), aged 55 years or older, with low-density lipoprotein cholesterol (LDL-C) of 120 to 189 mg/dL (100 to 129 mg/dL if known CHD) and triglycerides lower than 350 mg/dL, were randomized to pravastatin (n = 5170) or to usual care (n = 5185). Baseline mean total cholesterol was 224 mg/dL; LDL-C, 146 mg/dL; high-density lipoprotein cholesterol, 48 mg/dL; and triglycerides, 152 mg/dL. Mean age was 66 years, 49% were women, 38% black and 23% Hispanic, 14% had a history of CHD, and 35% had type 2 diabetes.</p>
+                        
+                        
+                        
+                            <h2 class="study-info-heading">Design</h2>
+                            <p>Hypertension Study: A randomized, double-blind, active-controlled clinical trial conducted from February 1994 through March 2002.  Participants were randomly assigned to receive chlorthalidone, 12.5 to 25 mg/d (n = 15 255); amlodipine, 2.5 to 10 mg/d (n = 9048); or lisinopril, 10 to 40 mg/d (n = 9054) for planned follow-up of approximately 4 to 8 years.  The primary outcome was combined fatal CHD or nonfatal myocardial infarction, analyzed by intent-to-treat. Secondary outcomes were all-cause mortality, stroke, combined CHD (primary outcome, coronary revascularization, or angina with hospitalization), and combined CVD (combined CHD, stroke, treated angina without hospitalization, heart failure [HF], and peripheral arterial disease).</p>
+<p>Lipid Study: Multicenter (513 primarily community-based North American clinical centers), randomized, nonblinded trial conducted from 1994 through March 2002 in a subset of participants from the Antihypertensive and Lipid-Lowering Treatment to Prevent Heart Attack Trial (ALLHAT).  The interventions in the trial were pravastatin, 40 mg/d, vs usual care.  The primary outcome was all-cause mortality, with follow-up for up to 8 years. Secondary outcomes included nonfatal myocardial infarction or fatal CHD (CHD events) combined, cause-specific mortality, and cancer.</p>
+                        
+                        
+                            <h2 class="study-info-heading">Conclusions</h2>
+                            <p>Hypertension Study: Thiazide-type diuretics are superior in preventing 1 or more major forms of CVD and are less expensive. They should be preferred for first-step antihypertensive therapy.</p>
+<p>Lipid Study: Pravastatin did not reduce either all-cause mortality or CHD significantly when compared with usual care in older participants with well-controlled hypertension and moderately elevated LDL-C. The results may be due to the modest differential in total cholesterol (9.6%) and LDL-C (16.7%) between pravastatin and usual care compared with prior statin trials supporting cardiovascular disease prevention.</p>
+                        
+                        
+                        
+                        
+                        
+                            <button class="btn btn-primary" name="request" value="Request" onclick="window.location='/requests/type/allhat/'">Request Data</button>
+                            <p class="help-notes">
+                                Please note that researchers must be registered on this site to submit
+                                a request, and you will be prompted to log in.  If you are not
+                                registered on this site, you can do so via the Request button.
+                                Registration is quick, easy and free.
+                            </p>
+                        
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-5 col-lg-4 col-xl-3">
+                <div class="row detail-aside-row">
+                    <div class="col-md-12">
+                        <h2 class="detail-aside-heading">Resources Available</h2>
+                        
+                            
+                                
+                                    Study Datasets Only
+                                
+                            
+                        
+                    </div>
+                </div>
+                
+                
+                    <div class="row detail-aside-row">
+                        <div class="col-md-12">
+                            <h2 class="detail-aside-heading"><a href="/publications/?studies.raw=Antihypertensive+and+Lipid-Lowering+Treatment+to+Prevent+Heart+Attack+Trial+%28ALLHAT%29">Study Publications (38)</a></h2>
+                        </div>
+                    </div>
+                
+                
+                
+                    
+                        <div class="row detail-aside-row">
+                            <div class="col-md-12">
+                                <h2 class="detail-aside-heading">Study Documents</h2>
+                                <ul class="list-unstyled detail-aside-list">
+                                    
+                                        <li><img src='/static/img/icons/pdf.svg' alt='PDF' class='file-type-icon' /> <a href="/media/studies/allhat/data_dictionary/ALLHAT_v2016a.pdf?link_time=2026-07-06_23:43:41.118114">Data Dictionary (PDF - 864.3 KB)</a></li>
+                                    
+                                    
+                                        <li><img src='/static/img/icons/pdf.svg' alt='PDF' class='file-type-icon' /> <a href="/media/studies/allhat/Forms_Book.pdf?link_time=2026-07-06_23:43:41.118123">Forms Book (PDF - 152.0 MB)</a></li>
+                                    
+                                        <li><img src='/static/img/icons/pdf.svg' alt='PDF' class='file-type-icon' /> <a href="/media/studies/allhat/Manual_of_Operations.pdf?link_time=2026-07-06_23:43:41.118133">Manual of Operations (PDF - 9.9 MB)</a></li>
+                                    
+                                        <li><img src='/static/img/icons/pdf.svg' alt='PDF' class='file-type-icon' /> <a href="/media/studies/allhat/Protocol.pdf?link_time=2026-07-06_23:43:41.118143">Protocol (PDF - 515.9 KB)</a></li>
+                                    
+                                    
+                                    
+                                </ul>
+                                <div class="section">
+                                    <p class="help-notes">
+                                        Persons using assistive technology may not be able to fully access information in the study documents. For assistance,
+                                        <a href="/contact/">Contact BioLINCC</a> and include the web address and/or publication title in your message. If you need help accessing information
+                                        in different file formats such as PDF, XLS, DOC, see <a href="/fileformats/">Instructions for Downloading Viewers and Players</a>.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    
+                
+            </div>
+        </div>
+    </div>
+
+        </main>
+
+        
+
+<footer role="contentinfo">
+    <div class="footer" >
+        <a class="returntop" href="#skipTo">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" role="img" aria-labelledby="return-label">
+                <path fill-rule="evenodd" d="M8 12a.5.5 0 0 0 .5-.5V5.707l2.146 2.147a.5.5 0 0 0 .708-.708l-3-3a.5.5 0 0 0-.708 0l-3 3a.5.5 0 1 0 .708.708L7.5 5.707V11.5a.5.5 0 0 0 .5.5z"/>
+            </svg>
+            <span id="return-label">Back to Top</span>
+        </a>
+        <div class="container-lg">
+            <div class="row mx-xl-5">
+                <div class="col-md-3 offset-xl-1 col-xl-3">
+                    <h6>About this Website</h6>
+                    <ul>
+                        <li><a href="/about/">About Us</a></li>
+                        <li><a href="/faq/">FAQ</a></li>
+                        <li><a href="/glossary/">Glossary</a></li>
+                        <li><a href="/contact/">Contact</a></li>
+                        
+                    </ul>
+                </div>
+                <div class="col-md-5 col-xl-4">
+                    <h6>Related Government Websites</h6>
+                    <ul>
+                        <li><a href="https://www.nhlbi.nih.gov/">National Heart, Lung, and Blood Institute</a></li>
+                        <li><a href="https://www.nih.gov/">National Institutes of Health</a></li>
+                        <li><a href="https://www.hhs.gov/">U.S. Department of Health &amp; Human Services</a></li>
+                        <li><a href="https://www.usa.gov/">USA.gov</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4 col-xl-4">
+                    <h6>Web Policies &amp; Notices</h6>
+                    <ul>
+                        <li><a href="/privacy/">Privacy Policy</a></li>
+                        <li><a href="/accessibility/">Accessibility</a></li>
+			<li><a href="https://www.nhlbi.nih.gov/about/contact/website-privacy-and-accessibility">FOIA</a></li>
+                        <li><a href="https://www.hhs.gov/vulnerability-disclosure-policy/index.html">HHS Vulnerability Disclosure</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="footer-second" class="footer pb-3">
+        <div class="container-lg">
+            <div class="row mx-lg-5">
+                <div class="col-md-3" id="footer-second-logo">
+                    <a aria-label="home" href="/">
+                        <img src="/static/img/NHLBI_HHS_Lockup_white.b85dd54f600e.svg" alt="National Heart, Lung, and Blood Home" loading="lazy">
+                    </a>
+                </div>
+                <div class="col-md-6 d-flex align-items-center justify-content-md-center pt-3 pt-md-0">
+                    <a href="https://www.nhlbi.nih.gov/contact" class="fw-bold pe-3">Contact NHLBI</a>
+                </div>
+                <div class="col-md-3 d-flex justify-content-md-end align-items-center pt-3 pt-md-0">
+                    <a href="https://twitter.com/nih_nhlbi?lang=en" class="social-icon" target="_blank" rel="nofollow noopener noreferrer"><img src="/static/img/icons/ico-twitter-white.3739e423844b.svg" alt="NHLBI Twitter social media" loading="lazy"></a>
+                    <a href="https://www.youtube.com/user/NHLBI" class="social-icon" target="_blank" rel="nofollow noopener noreferrer"><img src="/static/img/icons/ico-youtube-white.55a9d1d3e78f.svg" class="social-icon" alt="NHLBI Youtube social media" loading="lazy"></a>
+                    <a href="https://www.linkedin.com/company/national-heart-lung-and-blood-institute" class="social-icon" target="_blank" rel="nofollow noopener noreferrer"><img src="/static/img/icons/linkedin-brands.08074c35aeb6.svg" alt="NHLBI LinkedIn social media" loading="lazy"></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+        <script type="text/javascript" src="/static/compiled/js/base.20062462c329.js" charset="utf-8"></script>
+
+        
+    
+        
+    <script type="text/javascript" src="/static/compiled/js/study_detail.58a8218afca5.js" charset="utf-8"></script>
+
+
+        <!-- FOUC fix (see comment in head block) -->
+        <script type="text/javascript">document.body.style.display="flex";</script>
+        
+
+
+
+
+
+
+
+    </body>
+</html>

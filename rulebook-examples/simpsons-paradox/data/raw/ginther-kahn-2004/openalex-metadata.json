@@ -1,0 +1,784 @@
+{
+  "id": "https://openalex.org/W2117263543",
+  "doi": "https://doi.org/10.1257/aer.100.2.348",
+  "title": "Can Mentoring Help Female Assistant Professors? Interim Results from a Randomized Trial",
+  "display_name": "Can Mentoring Help Female Assistant Professors? Interim Results from a Randomized Trial",
+  "relevance_score": 89.13147,
+  "publication_year": 2010,
+  "publication_date": "2010-05-01",
+  "ids": {
+    "openalex": "https://openalex.org/W2117263543",
+    "doi": "https://doi.org/10.1257/aer.100.2.348",
+    "mag": "2117263543"
+  },
+  "language": "en",
+  "primary_location": {
+    "id": "doi:10.1257/aer.100.2.348",
+    "is_oa": false,
+    "landing_page_url": "https://doi.org/10.1257/aer.100.2.348",
+    "pdf_url": null,
+    "source": {
+      "id": "https://openalex.org/S23254222",
+      "display_name": "American Economic Review",
+      "issn_l": "0002-8282",
+      "issn": [
+        "0002-8282",
+        "1944-7981"
+      ],
+      "is_oa": false,
+      "is_in_doaj": false,
+      "is_core": true,
+      "host_organization": "https://openalex.org/P4310315912",
+      "host_organization_name": "American Economic Association",
+      "host_organization_lineage": [
+        "https://openalex.org/P4310315912"
+      ],
+      "host_organization_lineage_names": [
+        "American Economic Association"
+      ],
+      "type": "journal"
+    },
+    "license": null,
+    "license_id": null,
+    "version": "publishedVersion",
+    "is_accepted": true,
+    "is_published": true,
+    "raw_source_name": "American Economic Review",
+    "raw_type": "journal-article"
+  },
+  "type": "article",
+  "indexed_in": [
+    "crossref"
+  ],
+  "open_access": {
+    "is_oa": true,
+    "oa_status": "green",
+    "oa_url": "http://www.nber.org/papers/w15707.pdf",
+    "any_repository_has_fulltext": true
+  },
+  "authorships": [
+    {
+      "author_position": "first",
+      "author": {
+        "id": "https://openalex.org/A5039468467",
+        "display_name": "Francine D. Blau",
+        "orcid": "https://orcid.org/0000-0001-6646-3794"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I205783295",
+          "display_name": "Cornell University",
+          "ror": "https://ror.org/05bnh6r87",
+          "country_code": "US",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I205783295"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Francine D Blau",
+      "raw_affiliation_strings": [
+        "ILR School, Cornell University, 268 Ives Hall, Ithaca, NY 14850"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "ILR School, Cornell University, 268 Ives Hall, Ithaca, NY 14850",
+          "institution_ids": [
+            "https://openalex.org/I205783295"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5045972447",
+        "display_name": "Janet Currie",
+        "orcid": "https://orcid.org/0000-0002-9220-9113"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I78577930",
+          "display_name": "Columbia University",
+          "ror": "https://ror.org/00hj8s172",
+          "country_code": "US",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I78577930"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Janet M Currie",
+      "raw_affiliation_strings": [
+        "Department of Economics, Columbia University, 420 W. 118th St., New York, NY 10025"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Department of Economics, Columbia University, 420 W. 118th St., New York, NY 10025",
+          "institution_ids": [
+            "https://openalex.org/I78577930"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5021856196",
+        "display_name": "Rachel Croson",
+        "orcid": "https://orcid.org/0000-0002-3555-3970"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I162577319",
+          "display_name": "The University of Texas at Dallas",
+          "ror": "https://ror.org/049emcs32",
+          "country_code": "US",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I162577319"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Rachel T. A Croson",
+      "raw_affiliation_strings": [
+        "Department of Economics, University of Texas at Dallas, 800 W. Campbell Drive, GR31, Richardson, TX 75080"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Department of Economics, University of Texas at Dallas, 800 W. Campbell Drive, GR31, Richardson, TX 75080",
+          "institution_ids": [
+            "https://openalex.org/I162577319"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "last",
+      "author": {
+        "id": "https://openalex.org/A5000766373",
+        "display_name": "Donna K. Ginther",
+        "orcid": "https://orcid.org/0000-0002-0881-7969"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I146416000",
+          "display_name": "University of Kansas",
+          "ror": "https://ror.org/001tmjg57",
+          "country_code": "US",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I146416000"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Donna K Ginther",
+      "raw_affiliation_strings": [
+        "Department of Economics, University of Kansas, 1460 Jayhawk Boulevard, Lawrence, KS 66045"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Department of Economics, University of Kansas, 1460 Jayhawk Boulevard, Lawrence, KS 66045",
+          "institution_ids": [
+            "https://openalex.org/I146416000"
+          ]
+        }
+      ]
+    }
+  ],
+  "institutions": [],
+  "countries_distinct_count": 1,
+  "institutions_distinct_count": 4,
+  "corresponding_author_ids": [],
+  "corresponding_institution_ids": [],
+  "apc_list": null,
+  "apc_paid": null,
+  "fwci": 22.4984,
+  "has_fulltext": true,
+  "cited_by_count": 202,
+  "citation_normalized_percentile": {
+    "value": 0.99210688,
+    "is_in_top_1_percent": true,
+    "is_in_top_10_percent": true
+  },
+  "cited_by_percentile_year": {
+    "min": 89,
+    "max": 100
+  },
+  "biblio": {
+    "volume": "100",
+    "issue": "2",
+    "first_page": "348",
+    "last_page": "352"
+  },
+  "is_retracted": false,
+  "is_paratext": false,
+  "is_xpac": false,
+  "primary_topic": {
+    "id": "https://openalex.org/T10267",
+    "display_name": "Higher Education Research Studies",
+    "score": 0.9937000274658203,
+    "subfield": {
+      "id": "https://openalex.org/subfields/3304",
+      "display_name": "Education"
+    },
+    "field": {
+      "id": "https://openalex.org/fields/33",
+      "display_name": "Social Sciences"
+    },
+    "domain": {
+      "id": "https://openalex.org/domains/2",
+      "display_name": "Social Sciences"
+    }
+  },
+  "topics": [
+    {
+      "id": "https://openalex.org/T10267",
+      "display_name": "Higher Education Research Studies",
+      "score": 0.9937000274658203,
+      "subfield": {
+        "id": "https://openalex.org/subfields/3304",
+        "display_name": "Education"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/33",
+        "display_name": "Social Sciences"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/2",
+        "display_name": "Social Sciences"
+      }
+    },
+    {
+      "id": "https://openalex.org/T12354",
+      "display_name": "Innovations in Educational Methods",
+      "score": 0.972000002861023,
+      "subfield": {
+        "id": "https://openalex.org/subfields/3304",
+        "display_name": "Education"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/33",
+        "display_name": "Social Sciences"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/2",
+        "display_name": "Social Sciences"
+      }
+    },
+    {
+      "id": "https://openalex.org/T10674",
+      "display_name": "School Choice and Performance",
+      "score": 0.9663000106811523,
+      "subfield": {
+        "id": "https://openalex.org/subfields/3304",
+        "display_name": "Education"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/33",
+        "display_name": "Social Sciences"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/2",
+        "display_name": "Social Sciences"
+      }
+    }
+  ],
+  "keywords": [
+    {
+      "id": "https://openalex.org/keywords/interim",
+      "display_name": "Interim",
+      "score": 0.9298451542854309
+    },
+    {
+      "id": "https://openalex.org/keywords/randomized-controlled-trial",
+      "display_name": "Randomized controlled trial",
+      "score": 0.5877168774604797
+    },
+    {
+      "id": "https://openalex.org/keywords/management",
+      "display_name": "Management",
+      "score": 0.4285290539264679
+    },
+    {
+      "id": "https://openalex.org/keywords/sociology",
+      "display_name": "Sociology",
+      "score": 0.3326232433319092
+    },
+    {
+      "id": "https://openalex.org/keywords/psychology",
+      "display_name": "Psychology",
+      "score": 0.33084481954574585
+    },
+    {
+      "id": "https://openalex.org/keywords/economics",
+      "display_name": "Economics",
+      "score": 0.31632494926452637
+    },
+    {
+      "id": "https://openalex.org/keywords/political-science",
+      "display_name": "Political science",
+      "score": 0.30542799830436707
+    },
+    {
+      "id": "https://openalex.org/keywords/medicine",
+      "display_name": "Medicine",
+      "score": 0.2806755006313324
+    },
+    {
+      "id": "https://openalex.org/keywords/law",
+      "display_name": "Law",
+      "score": 0.10771423578262329
+    },
+    {
+      "id": "https://openalex.org/keywords/surgery",
+      "display_name": "Surgery",
+      "score": 0.058665961027145386
+    }
+  ],
+  "concepts": [
+    {
+      "id": "https://openalex.org/C2776957806",
+      "wikidata": "https://www.wikidata.org/wiki/Q4895105",
+      "display_name": "Interim",
+      "level": 2,
+      "score": 0.9298451542854309
+    },
+    {
+      "id": "https://openalex.org/C168563851",
+      "wikidata": "https://www.wikidata.org/wiki/Q1436668",
+      "display_name": "Randomized controlled trial",
+      "level": 2,
+      "score": 0.5877168774604797
+    },
+    {
+      "id": "https://openalex.org/C187736073",
+      "wikidata": "https://www.wikidata.org/wiki/Q2920921",
+      "display_name": "Management",
+      "level": 1,
+      "score": 0.4285290539264679
+    },
+    {
+      "id": "https://openalex.org/C144024400",
+      "wikidata": "https://www.wikidata.org/wiki/Q21201",
+      "display_name": "Sociology",
+      "level": 0,
+      "score": 0.3326232433319092
+    },
+    {
+      "id": "https://openalex.org/C15744967",
+      "wikidata": "https://www.wikidata.org/wiki/Q9418",
+      "display_name": "Psychology",
+      "level": 0,
+      "score": 0.33084481954574585
+    },
+    {
+      "id": "https://openalex.org/C162324750",
+      "wikidata": "https://www.wikidata.org/wiki/Q8134",
+      "display_name": "Economics",
+      "level": 0,
+      "score": 0.31632494926452637
+    },
+    {
+      "id": "https://openalex.org/C17744445",
+      "wikidata": "https://www.wikidata.org/wiki/Q36442",
+      "display_name": "Political science",
+      "level": 0,
+      "score": 0.30542799830436707
+    },
+    {
+      "id": "https://openalex.org/C71924100",
+      "wikidata": "https://www.wikidata.org/wiki/Q11190",
+      "display_name": "Medicine",
+      "level": 0,
+      "score": 0.2806755006313324
+    },
+    {
+      "id": "https://openalex.org/C199539241",
+      "wikidata": "https://www.wikidata.org/wiki/Q7748",
+      "display_name": "Law",
+      "level": 1,
+      "score": 0.10771423578262329
+    },
+    {
+      "id": "https://openalex.org/C141071460",
+      "wikidata": "https://www.wikidata.org/wiki/Q40821",
+      "display_name": "Surgery",
+      "level": 1,
+      "score": 0.058665961027145386
+    }
+  ],
+  "mesh": [],
+  "locations_count": 3,
+  "locations": [
+    {
+      "id": "doi:10.1257/aer.100.2.348",
+      "is_oa": false,
+      "landing_page_url": "https://doi.org/10.1257/aer.100.2.348",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S23254222",
+        "display_name": "American Economic Review",
+        "issn_l": "0002-8282",
+        "issn": [
+          "0002-8282",
+          "1944-7981"
+        ],
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": true,
+        "host_organization": "https://openalex.org/P4310315912",
+        "host_organization_name": "American Economic Association",
+        "host_organization_lineage": [
+          "https://openalex.org/P4310315912"
+        ],
+        "host_organization_lineage_names": [
+          "American Economic Association"
+        ],
+        "type": "journal"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "publishedVersion",
+      "is_accepted": true,
+      "is_published": true,
+      "raw_source_name": "American Economic Review",
+      "raw_type": "journal-article"
+    },
+    {
+      "id": "pmh:oai:RePEc:nbr:nberwo:15707",
+      "is_oa": true,
+      "landing_page_url": null,
+      "pdf_url": "http://www.nber.org/papers/w15707.pdf",
+      "source": {
+        "id": "https://openalex.org/S4306401271",
+        "display_name": "RePEc: Research Papers in Economics",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I77793887",
+        "host_organization_name": "Federal Reserve Bank of St. Louis",
+        "host_organization_lineage": [
+          "https://openalex.org/I77793887"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "submittedVersion",
+      "is_accepted": false,
+      "is_published": false,
+      "raw_source_name": null,
+      "raw_type": "preprint"
+    },
+    {
+      "id": "pmh:oai:RePEc:aea:aecrev:v:100:y:2010:i:2:p:348-52",
+      "is_oa": false,
+      "landing_page_url": "http://www.aeaweb.org/articles.php?doi=10.1257/aer.100.2.348",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4306401271",
+        "display_name": "RePEc: Research Papers in Economics",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I77793887",
+        "host_organization_name": "Federal Reserve Bank of St. Louis",
+        "host_organization_lineage": [
+          "https://openalex.org/I77793887"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "submittedVersion",
+      "is_accepted": false,
+      "is_published": false,
+      "raw_source_name": null,
+      "raw_type": "article"
+    }
+  ],
+  "best_oa_location": {
+    "id": "pmh:oai:RePEc:nbr:nberwo:15707",
+    "is_oa": true,
+    "landing_page_url": null,
+    "pdf_url": "http://www.nber.org/papers/w15707.pdf",
+    "source": {
+      "id": "https://openalex.org/S4306401271",
+      "display_name": "RePEc: Research Papers in Economics",
+      "issn_l": null,
+      "issn": null,
+      "is_oa": false,
+      "is_in_doaj": false,
+      "is_core": false,
+      "host_organization": "https://openalex.org/I77793887",
+      "host_organization_name": "Federal Reserve Bank of St. Louis",
+      "host_organization_lineage": [
+        "https://openalex.org/I77793887"
+      ],
+      "host_organization_lineage_names": [],
+      "type": "repository"
+    },
+    "license": null,
+    "license_id": null,
+    "version": "submittedVersion",
+    "is_accepted": false,
+    "is_published": false,
+    "raw_source_name": null,
+    "raw_type": "preprint"
+  },
+  "sustainable_development_goals": [
+    {
+      "id": "https://metadata.un.org/sdg/5",
+      "display_name": "Gender equality",
+      "score": 0.5799999833106995
+    }
+  ],
+  "awards": [],
+  "funders": [],
+  "has_content": {
+    "pdf": true,
+    "grobid_xml": true
+  },
+  "content_urls": {
+    "pdf": "https://content.openalex.org/works/W2117263543.pdf",
+    "grobid_xml": "https://content.openalex.org/works/W2117263543.grobid-xml"
+  },
+  "referenced_works_count": 7,
+  "referenced_works": [
+    "https://openalex.org/W1982829740",
+    "https://openalex.org/W1983967842",
+    "https://openalex.org/W2018552593",
+    "https://openalex.org/W2055129232",
+    "https://openalex.org/W2129156960",
+    "https://openalex.org/W2970075105",
+    "https://openalex.org/W3125308017"
+  ],
+  "related_works": [
+    "https://openalex.org/W2748952813",
+    "https://openalex.org/W1969630132",
+    "https://openalex.org/W4239271673",
+    "https://openalex.org/W2901809887",
+    "https://openalex.org/W4242296308",
+    "https://openalex.org/W2059665379",
+    "https://openalex.org/W3140988586",
+    "https://openalex.org/W64094104",
+    "https://openalex.org/W2738233028",
+    "https://openalex.org/W2276233017"
+  ],
+  "abstract_inverted_index": {
+    "Can": [
+      0
+    ],
+    "Mentoring": [
+      1
+    ],
+    "Help": [
+      2
+    ],
+    "Female": [
+      3
+    ],
+    "Assistant": [
+      4
+    ],
+    "Professors?": [
+      5
+    ],
+    "Interim": [
+      6
+    ],
+    "Results": [
+      7
+    ],
+    "from": [
+      8
+    ],
+    "a": [
+      9
+    ],
+    "Randomized": [
+      10
+    ],
+    "Trial": [
+      11
+    ],
+    "by": [
+      12
+    ],
+    "Francine": [
+      13
+    ],
+    "D.": [
+      14
+    ],
+    "Blau,": [
+      15
+    ],
+    "Janet": [
+      16
+    ],
+    "M.": [
+      17
+    ],
+    "Currie,": [
+      18
+    ],
+    "Rachel": [
+      19
+    ],
+    "T.": [
+      20
+    ],
+    "A.": [
+      21
+    ],
+    "Croson": [
+      22
+    ],
+    "and": [
+      23
+    ],
+    "Donna": [
+      24
+    ],
+    "K.": [
+      25
+    ],
+    "Ginther.": [
+      26
+    ],
+    "Published": [
+      27
+    ],
+    "in": [
+      28
+    ],
+    "volume": [
+      29
+    ],
+    "100,": [
+      30
+    ],
+    "issue": [
+      31
+    ],
+    "2,": [
+      32
+    ],
+    "pages": [
+      33
+    ],
+    "348-52": [
+      34
+    ],
+    "of": [
+      35
+    ],
+    "American": [
+      36
+    ],
+    "Economic": [
+      37
+    ],
+    "Review,": [
+      38
+    ],
+    "May": [
+      39
+    ],
+    "2010": [
+      40
+    ]
+  },
+  "counts_by_year": [
+    {
+      "year": 2026,
+      "cited_by_count": 4
+    },
+    {
+      "year": 2025,
+      "cited_by_count": 10
+    },
+    {
+      "year": 2024,
+      "cited_by_count": 9
+    },
+    {
+      "year": 2023,
+      "cited_by_count": 11
+    },
+    {
+      "year": 2022,
+      "cited_by_count": 16
+    },
+    {
+      "year": 2021,
+      "cited_by_count": 16
+    },
+    {
+      "year": 2020,
+      "cited_by_count": 24
+    },
+    {
+      "year": 2019,
+      "cited_by_count": 23
+    },
+    {
+      "year": 2018,
+      "cited_by_count": 20
+    },
+    {
+      "year": 2017,
+      "cited_by_count": 10
+    },
+    {
+      "year": 2016,
+      "cited_by_count": 11
+    },
+    {
+      "year": 2015,
+      "cited_by_count": 9
+    },
+    {
+      "year": 2014,
+      "cited_by_count": 22
+    },
+    {
+      "year": 2013,
+      "cited_by_count": 5
+    },
+    {
+      "year": 2012,
+      "cited_by_count": 1
+    }
+  ],
+  "updated_date": "2026-07-03T08:13:44.112507",
+  "created_date": "2025-10-10T00:00:00"
+}

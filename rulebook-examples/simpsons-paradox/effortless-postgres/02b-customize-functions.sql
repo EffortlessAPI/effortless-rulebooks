@@ -749,13 +749,166 @@ CREATE OR REPLACE FUNCTION calc_model_summary_collider_selection_latent_only_cou
   WHERE stratum_causal_role IN ('collider', 'selection') AND is_latent_only_flip = true;
 $$ LANGUAGE sql STABLE;
 
+-- loop-65 catalog prediction audit — CandidateStudyCatalog + CorpusCatalogSummary
+CREATE OR REPLACE FUNCTION lookup_candidate_study_catalog_observed_distortion_type(p_candidate_id TEXT) RETURNS TEXT AS $$
+  SELECT m.distortion_type
+  FROM candidate_study_catalog c
+  JOIN _erb_tr_metrics m ON m.study = c.linked_study_id
+  WHERE c.candidate_id = p_candidate_id
+    AND c.ingestion_status = 'imported';
+$$ LANGUAGE sql STABLE;
+
+CREATE OR REPLACE FUNCTION calc_candidate_study_catalog_observed_distortion_type(p_candidate_id TEXT) RETURNS TEXT AS $$
+  SELECT lookup_candidate_study_catalog_observed_distortion_type(p_candidate_id);
+$$ LANGUAGE sql STABLE;
+
+CREATE OR REPLACE FUNCTION calc_candidate_study_catalog_expected_sign_flip(p_candidate_id TEXT) RETURNS BOOLEAN AS $$
+  SELECT expected_distortion_type IN ('A', 'B')
+  FROM candidate_study_catalog
+  WHERE candidate_id = p_candidate_id;
+$$ LANGUAGE sql STABLE;
+
+CREATE OR REPLACE FUNCTION calc_candidate_study_catalog_observed_sign_flip_type(p_candidate_id TEXT) RETURNS BOOLEAN AS $$
+  SELECT CASE
+    WHEN NOT calc_candidate_study_catalog_is_imported(p_candidate_id) THEN NULL
+    ELSE lookup_candidate_study_catalog_observed_distortion_type(p_candidate_id) IN ('A', 'B')
+  END;
+$$ LANGUAGE sql STABLE;
+
+CREATE OR REPLACE FUNCTION calc_candidate_study_catalog_type_prediction_match(p_candidate_id TEXT) RETURNS BOOLEAN AS $$
+  SELECT CASE
+    WHEN NOT calc_candidate_study_catalog_is_imported(p_candidate_id) THEN NULL
+    ELSE lookup_candidate_study_catalog_observed_distortion_type(p_candidate_id)
+         = (SELECT expected_distortion_type FROM candidate_study_catalog WHERE candidate_id = p_candidate_id)
+  END;
+$$ LANGUAGE sql STABLE;
+
+CREATE OR REPLACE FUNCTION calc_candidate_study_catalog_sign_flip_prediction_match(p_candidate_id TEXT) RETURNS BOOLEAN AS $$
+  SELECT CASE
+    WHEN NOT calc_candidate_study_catalog_is_imported(p_candidate_id) THEN NULL
+    WHEN NOT calc_candidate_study_catalog_expected_sign_flip(p_candidate_id) THEN NULL
+    ELSE calc_candidate_study_catalog_observed_sign_flip_type(p_candidate_id)
+  END;
+$$ LANGUAGE sql STABLE;
+
+CREATE OR REPLACE FUNCTION calc_corpus_catalog_summary_type_prediction_match_count(p_catalog_summary_id TEXT) RETURNS INTEGER AS $$
+  SELECT COUNT(*)::integer
+  FROM candidate_study_catalog c
+  WHERE calc_candidate_study_catalog_type_prediction_match(c.candidate_id) = TRUE;
+$$ LANGUAGE sql STABLE;
+
+CREATE OR REPLACE FUNCTION calc_corpus_catalog_summary_type_prediction_mismatch_count(p_catalog_summary_id TEXT) RETURNS INTEGER AS $$
+  SELECT COUNT(*)::integer
+  FROM candidate_study_catalog c
+  WHERE calc_candidate_study_catalog_is_imported(c.candidate_id) = TRUE
+    AND calc_candidate_study_catalog_type_prediction_match(c.candidate_id) = FALSE;
+$$ LANGUAGE sql STABLE;
+
+CREATE OR REPLACE FUNCTION calc_corpus_catalog_summary_sign_flip_prediction_eligible_count(p_catalog_summary_id TEXT) RETURNS INTEGER AS $$
+  SELECT COUNT(*)::integer
+  FROM candidate_study_catalog c
+  WHERE calc_candidate_study_catalog_is_imported(c.candidate_id) = TRUE
+    AND calc_candidate_study_catalog_expected_sign_flip(c.candidate_id) = TRUE;
+$$ LANGUAGE sql STABLE;
+
+CREATE OR REPLACE FUNCTION calc_corpus_catalog_summary_sign_flip_prediction_match_count(p_catalog_summary_id TEXT) RETURNS INTEGER AS $$
+  SELECT COUNT(*)::integer
+  FROM candidate_study_catalog c
+  WHERE calc_candidate_study_catalog_sign_flip_prediction_match(c.candidate_id) = TRUE;
+$$ LANGUAGE sql STABLE;
+
+CREATE OR REPLACE FUNCTION calc_corpus_catalog_summary_type_prediction_match_rate(p_catalog_summary_id TEXT) RETURNS NUMERIC AS $$
+  SELECT calc_corpus_catalog_summary_type_prediction_match_count(p_catalog_summary_id)::numeric
+         / NULLIF(calc_corpus_catalog_summary_imported_count(p_catalog_summary_id), 0);
+$$ LANGUAGE sql STABLE;
+
+CREATE OR REPLACE FUNCTION calc_corpus_catalog_summary_sign_flip_prediction_match_rate(p_catalog_summary_id TEXT) RETURNS NUMERIC AS $$
+  SELECT calc_corpus_catalog_summary_sign_flip_prediction_match_count(p_catalog_summary_id)::numeric
+         / NULLIF(calc_corpus_catalog_summary_sign_flip_prediction_eligible_count(p_catalog_summary_id), 0);
+$$ LANGUAGE sql STABLE;
+
+CREATE OR REPLACE FUNCTION calc_corpus_catalog_summary_catalog_prediction_witness_note(p_catalog_summary_id TEXT) RETURNS TEXT AS $$
+  SELECT CONCAT(
+    'exact=', calc_corpus_catalog_summary_type_prediction_match_count(p_catalog_summary_id),
+    '/', calc_corpus_catalog_summary_imported_count(p_catalog_summary_id),
+    ' (', ROUND(calc_corpus_catalog_summary_type_prediction_match_rate(p_catalog_summary_id) * 100, 1), '%); ',
+    'flipPred=', calc_corpus_catalog_summary_sign_flip_prediction_match_count(p_catalog_summary_id),
+    '/', calc_corpus_catalog_summary_sign_flip_prediction_eligible_count(p_catalog_summary_id),
+    ' (', ROUND(calc_corpus_catalog_summary_sign_flip_prediction_match_rate(p_catalog_summary_id) * 100, 1), '%)'
+  );
+$$ LANGUAGE sql STABLE;
+
+CREATE OR REPLACE FUNCTION calc_model_summary_type_prediction_match_count(p_model_summary_id TEXT) RETURNS INTEGER AS $$
+  SELECT calc_corpus_catalog_summary_type_prediction_match_count('catalog-v1');
+$$ LANGUAGE sql STABLE;
+CREATE OR REPLACE FUNCTION calc_model_summary_type_prediction_mismatch_count(p_model_summary_id TEXT) RETURNS INTEGER AS $$
+  SELECT calc_corpus_catalog_summary_type_prediction_mismatch_count('catalog-v1');
+$$ LANGUAGE sql STABLE;
+CREATE OR REPLACE FUNCTION calc_model_summary_type_prediction_match_rate(p_model_summary_id TEXT) RETURNS NUMERIC AS $$
+  SELECT calc_corpus_catalog_summary_type_prediction_match_rate('catalog-v1');
+$$ LANGUAGE sql STABLE;
+CREATE OR REPLACE FUNCTION calc_model_summary_sign_flip_prediction_match_rate(p_model_summary_id TEXT) RETURNS NUMERIC AS $$
+  SELECT calc_corpus_catalog_summary_sign_flip_prediction_match_rate('catalog-v1');
+$$ LANGUAGE sql STABLE;
+CREATE OR REPLACE FUNCTION calc_model_summary_catalog_prediction_witness_note(p_model_summary_id TEXT) RETURNS TEXT AS $$
+  SELECT calc_corpus_catalog_summary_catalog_prediction_witness_note('catalog-v1');
+$$ LANGUAGE sql STABLE;
+
+-- loop-66 geometry-controlled domain screening
+CREATE OR REPLACE FUNCTION calc_model_summary_high_imbalance_sign_flip_threshold(p_model_summary_id TEXT) RETURNS NUMERIC AS $$
+  SELECT percentile_cont(0.5) WITHIN GROUP (ORDER BY max_stratum_imbalance)
+  FROM _erb_tr_metrics
+  WHERE max_stratum_imbalance IS NOT NULL;
+$$ LANGUAGE sql STABLE;
+
+CREATE OR REPLACE FUNCTION calc_model_summary_economics_high_imbalance_sign_flip_count(p_model_summary_id TEXT) RETURNS NUMERIC AS $$
+  SELECT COUNT(*)::numeric
+  FROM _erb_tr_metrics
+  WHERE study_domain = 'economics'
+    AND is_sign_flip = TRUE
+    AND max_stratum_imbalance >= calc_model_summary_high_imbalance_sign_flip_threshold(p_model_summary_id);
+$$ LANGUAGE sql STABLE;
+
+CREATE OR REPLACE FUNCTION _domain_high_imbalance_sign_flip_rate(p_domain TEXT, p_threshold NUMERIC) RETURNS NUMERIC AS $$
+  SELECT COUNT(*) FILTER (WHERE is_sign_flip = TRUE)::numeric
+         / NULLIF(COUNT(*), 0)
+  FROM _erb_tr_metrics
+  WHERE study_domain = p_domain
+    AND max_stratum_imbalance >= p_threshold;
+$$ LANGUAGE sql STABLE;
+
+CREATE OR REPLACE FUNCTION calc_model_summary_epidemiology_high_imbalance_sign_flip_rate(p_model_summary_id TEXT) RETURNS NUMERIC AS $$
+  SELECT _domain_high_imbalance_sign_flip_rate(
+    'epidemiology',
+    calc_model_summary_high_imbalance_sign_flip_threshold(p_model_summary_id)
+  );
+$$ LANGUAGE sql STABLE;
+
+CREATE OR REPLACE FUNCTION calc_model_summary_legal_high_imbalance_sign_flip_rate(p_model_summary_id TEXT) RETURNS NUMERIC AS $$
+  SELECT _domain_high_imbalance_sign_flip_rate(
+    'legal',
+    calc_model_summary_high_imbalance_sign_flip_threshold(p_model_summary_id)
+  );
+$$ LANGUAGE sql STABLE;
+
+CREATE OR REPLACE FUNCTION calc_model_summary_sports_high_imbalance_sign_flip_rate(p_model_summary_id TEXT) RETURNS NUMERIC AS $$
+  SELECT _domain_high_imbalance_sign_flip_rate(
+    'sports',
+    calc_model_summary_high_imbalance_sign_flip_threshold(p_model_summary_id)
+  );
+$$ LANGUAGE sql STABLE;
+
+CREATE OR REPLACE FUNCTION calc_model_summary_domain_flip_gap_survives_geometry_control(p_model_summary_id TEXT) RETURNS BOOLEAN AS $$
+  SELECT calc_model_summary_economics_high_imbalance_sign_flip_count(p_model_summary_id) = 0
+     AND calc_model_summary_epidemiology_high_imbalance_sign_flip_rate(p_model_summary_id) > 0.15;
+$$ LANGUAGE sql STABLE;
+
 CREATE OR REPLACE FUNCTION calc_model_summary_discovery_witness_note(p_model_summary_id TEXT) RETURNS TEXT AS $$
   SELECT CONCAT(
-    'LatentTypeD=', calc_model_summary_latent_type_d_count(p_model_summary_id),
-    '/', calc_model_summary_type_d_count(p_model_summary_id),
-    '; SignFlipMaxPurity=', calc_model_summary_sign_flip_signal_purity_max(p_model_summary_id),
-    '; stableD=', calc_model_summary_avg_pooled_gap_stable_d(p_model_summary_id),
-    ' latentD=', calc_model_summary_avg_pooled_gap_latent_d(p_model_summary_id)
+    'sweep: latentD=', calc_model_summary_latent_type_d_fraction(p_model_summary_id),
+    ' purityMax=', calc_model_summary_sign_flip_signal_purity_max(p_model_summary_id),
+    ' catalogExact=', calc_model_summary_type_prediction_match_rate(p_model_summary_id),
+    ' domainGapSurvives=', calc_model_summary_domain_flip_gap_survives_geometry_control(p_model_summary_id)
   );
 $$ LANGUAGE sql STABLE;
 
@@ -774,6 +927,16 @@ CREATE OR REPLACE FUNCTION calc_discovery_findings_is_confirmed(p_finding_id TEX
                               AND calc_model_summary_confounder_sign_flip_count('simpsons-paradox-v1') >= 10
     WHEN 'H-causal-latent' THEN calc_model_summary_collider_selection_manifest_count('simpsons-paradox-v1') = 0
                               AND calc_model_summary_collider_selection_latent_only_count('simpsons-paradox-v1') >= 5
+    WHEN 'H-explained-confounder' THEN calc_model_summary_explained_confounder_count('simpsons-paradox-v1')
+                              = calc_model_summary_confounder_sign_flip_count('simpsons-paradox-v1')
+                              AND calc_model_summary_explained_confounder_count('simpsons-paradox-v1') >= 10
+    WHEN 'H-unexplained-nonconfounder' THEN (
+      SELECT COUNT(*)::integer FROM _erb_tr_metrics
+      WHERE is_sign_flip = TRUE AND is_paradox_explained = TRUE AND adjustment_appropriate = FALSE
+    ) = 0
+    WHEN 'H-catalog-exact-match' THEN calc_model_summary_type_prediction_match_rate('simpsons-paradox-v1') < 0.5
+    WHEN 'H-catalog-flip-prediction' THEN calc_model_summary_sign_flip_prediction_match_rate('simpsons-paradox-v1') < 0.5
+    WHEN 'H-domain-flip-geometry-controlled' THEN calc_model_summary_domain_flip_gap_survives_geometry_control('simpsons-paradox-v1')
     ELSE FALSE
   END;
 $$ LANGUAGE sql STABLE;
@@ -791,6 +954,21 @@ CREATE OR REPLACE FUNCTION calc_discovery_findings_observed_metric(p_finding_id 
     WHEN 'H-causal-latent' THEN CONCAT('collManifest=', calc_model_summary_collider_selection_manifest_count('simpsons-paradox-v1'),
                                         ' collLatent=', calc_model_summary_collider_selection_latent_only_count('simpsons-paradox-v1'),
                                         ' collN=', calc_model_summary_collider_selection_count('simpsons-paradox-v1'))
+    WHEN 'H-explained-confounder' THEN CONCAT('ExplainedConfounderCount=', calc_model_summary_explained_confounder_count('simpsons-paradox-v1'),
+                                              ' ConfounderSignFlipCount=', calc_model_summary_confounder_sign_flip_count('simpsons-paradox-v1'))
+    WHEN 'H-unexplained-nonconfounder' THEN CONCAT('ContestedOrMediatorExplainedCount=',
+      (SELECT COUNT(*) FROM _erb_tr_metrics
+       WHERE is_sign_flip = TRUE AND is_paradox_explained = TRUE AND adjustment_appropriate = FALSE))
+    WHEN 'H-catalog-exact-match' THEN CONCAT('exactRate=', calc_model_summary_type_prediction_match_rate('simpsons-paradox-v1'),
+                                              ' (', calc_model_summary_type_prediction_match_count('simpsons-paradox-v1'),
+                                              '/', calc_corpus_catalog_summary_imported_count('catalog-v1'), ')')
+    WHEN 'H-catalog-flip-prediction' THEN CONCAT('flipPredRate=', calc_model_summary_sign_flip_prediction_match_rate('simpsons-paradox-v1'),
+                                                  ' note=', calc_model_summary_catalog_prediction_witness_note('simpsons-paradox-v1'))
+    WHEN 'H-domain-flip-geometry-controlled' THEN CONCAT('econHighImbFlips=', calc_model_summary_economics_high_imbalance_sign_flip_count('simpsons-paradox-v1'),
+                                                          ' epiHighImbRate=', calc_model_summary_epidemiology_high_imbalance_sign_flip_rate('simpsons-paradox-v1'),
+                                                          ' legalHighImbRate=', calc_model_summary_legal_high_imbalance_sign_flip_rate('simpsons-paradox-v1'),
+                                                          ' sportsHighImbRate=', calc_model_summary_sports_high_imbalance_sign_flip_rate('simpsons-paradox-v1'),
+                                                          ' threshold=', calc_model_summary_high_imbalance_sign_flip_threshold('simpsons-paradox-v1'))
     ELSE ''
   END;
 $$ LANGUAGE sql STABLE;
@@ -861,4 +1039,16 @@ CREATE OR REPLACE FUNCTION calc_synthetic_phase_phase_allocation_distortion(p_ph
 $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION calc_synthetic_phase_phase_distortion_type(p_phase_id TEXT) RETURNS TEXT AS $$
   SELECT phase_distortion_type FROM _erb_sp_metrics WHERE phase_id = p_phase_id;
+$$ LANGUAGE sql STABLE;
+
+-- loop-68: COUNTIFS numeric comparators (">0.3") do not transpile — use view predicates
+CREATE OR REPLACE FUNCTION calc_model_summary_sweep_fragile_count(p_model_summary_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT COUNT(*)::integer
+  FROM vw_treatment_rankings
+  WHERE distortion_type = 'D'
+    AND signal_purity = 1
+    AND allocation_distortion = 0
+    AND sweep_pooled_gap_range > 0.3
+    AND allocation_fragility >= 10;
 $$ LANGUAGE sql STABLE;

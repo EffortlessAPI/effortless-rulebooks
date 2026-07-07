@@ -1,0 +1,936 @@
+{
+  "id": "https://openalex.org/W2136468259",
+  "doi": "https://doi.org/10.1257/jep.14.3.75",
+  "title": "The Sports Business as a Labor Market Laboratory",
+  "display_name": "The Sports Business as a Labor Market Laboratory",
+  "relevance_score": 87.792366,
+  "publication_year": 2000,
+  "publication_date": "2000-08-01",
+  "ids": {
+    "openalex": "https://openalex.org/W2136468259",
+    "doi": "https://doi.org/10.1257/jep.14.3.75",
+    "mag": "2136468259"
+  },
+  "language": "en",
+  "primary_location": {
+    "id": "doi:10.1257/jep.14.3.75",
+    "is_oa": true,
+    "landing_page_url": "https://doi.org/10.1257/jep.14.3.75",
+    "pdf_url": "https://www.aeaweb.org/articles/pdf/doi/10.1257/jep.14.3.75",
+    "source": {
+      "id": "https://openalex.org/S72880728",
+      "display_name": "The Journal of Economic Perspectives",
+      "issn_l": "0895-3309",
+      "issn": [
+        "0895-3309",
+        "1944-7965"
+      ],
+      "is_oa": false,
+      "is_in_doaj": false,
+      "is_core": true,
+      "host_organization": "https://openalex.org/P4310315912",
+      "host_organization_name": "American Economic Association",
+      "host_organization_lineage": [
+        "https://openalex.org/P4310315912"
+      ],
+      "host_organization_lineage_names": [
+        "American Economic Association"
+      ],
+      "type": "journal"
+    },
+    "license": null,
+    "license_id": null,
+    "version": "publishedVersion",
+    "is_accepted": true,
+    "is_published": true,
+    "raw_source_name": "Journal of Economic Perspectives",
+    "raw_type": "journal-article"
+  },
+  "type": "article",
+  "indexed_in": [
+    "crossref"
+  ],
+  "open_access": {
+    "is_oa": true,
+    "oa_status": "bronze",
+    "oa_url": "https://www.aeaweb.org/articles/pdf/doi/10.1257/jep.14.3.75",
+    "any_repository_has_fulltext": false
+  },
+  "authorships": [
+    {
+      "author_position": "first",
+      "author": {
+        "id": "https://openalex.org/A5069811162",
+        "display_name": "Lawrence M. Kahn",
+        "orcid": "https://orcid.org/0000-0001-5291-4304"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I205783295",
+          "display_name": "Cornell University",
+          "ror": "https://ror.org/05bnh6r87",
+          "country_code": "US",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I205783295"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I4210098983",
+          "display_name": "New York State School of Industrial and Labor Relations",
+          "ror": "https://ror.org/00zg6dt46",
+          "country_code": "US",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I205783295",
+            "https://openalex.org/I4210098983"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": true,
+      "raw_author_name": "Lawrence M Kahn",
+      "raw_affiliation_strings": [
+        "School of Industrial and Labor Relations, Cornell University, Ithaca, New York",
+        "CORNELL U"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "School of Industrial and Labor Relations, Cornell University, Ithaca, New York",
+          "institution_ids": [
+            "https://openalex.org/I4210098983",
+            "https://openalex.org/I205783295"
+          ]
+        },
+        {
+          "raw_affiliation_string": "CORNELL U",
+          "institution_ids": [
+            "https://openalex.org/I205783295"
+          ]
+        }
+      ]
+    }
+  ],
+  "institutions": [],
+  "countries_distinct_count": 1,
+  "institutions_distinct_count": 2,
+  "corresponding_author_ids": [
+    "https://openalex.org/A5069811162"
+  ],
+  "corresponding_institution_ids": [
+    "https://openalex.org/I205783295",
+    "https://openalex.org/I4210098983"
+  ],
+  "apc_list": null,
+  "apc_paid": null,
+  "fwci": 15.2755,
+  "has_fulltext": true,
+  "cited_by_count": 531,
+  "citation_normalized_percentile": {
+    "value": 0.98613159,
+    "is_in_top_1_percent": false,
+    "is_in_top_10_percent": true
+  },
+  "cited_by_percentile_year": {
+    "min": 99,
+    "max": 100
+  },
+  "biblio": {
+    "volume": "14",
+    "issue": "3",
+    "first_page": "75",
+    "last_page": "94"
+  },
+  "is_retracted": false,
+  "is_paratext": false,
+  "is_xpac": false,
+  "primary_topic": {
+    "id": "https://openalex.org/T11674",
+    "display_name": "Sports Analytics and Performance",
+    "score": 0.9998999834060669,
+    "subfield": {
+      "id": "https://openalex.org/subfields/2002",
+      "display_name": "Economics and Econometrics"
+    },
+    "field": {
+      "id": "https://openalex.org/fields/20",
+      "display_name": "Economics, Econometrics and Finance"
+    },
+    "domain": {
+      "id": "https://openalex.org/domains/2",
+      "display_name": "Social Sciences"
+    }
+  },
+  "topics": [
+    {
+      "id": "https://openalex.org/T11674",
+      "display_name": "Sports Analytics and Performance",
+      "score": 0.9998999834060669,
+      "subfield": {
+        "id": "https://openalex.org/subfields/2002",
+        "display_name": "Economics and Econometrics"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/20",
+        "display_name": "Economics, Econometrics and Finance"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/2",
+        "display_name": "Social Sciences"
+      }
+    },
+    {
+      "id": "https://openalex.org/T10942",
+      "display_name": "Sports, Gender, and Society",
+      "score": 0.9901000261306763,
+      "subfield": {
+        "id": "https://openalex.org/subfields/3318",
+        "display_name": "Gender Studies"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/33",
+        "display_name": "Social Sciences"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/2",
+        "display_name": "Social Sciences"
+      }
+    },
+    {
+      "id": "https://openalex.org/T11474",
+      "display_name": "Sport and Mega-Event Impacts",
+      "score": 0.9883000254631042,
+      "subfield": {
+        "id": "https://openalex.org/subfields/3312",
+        "display_name": "Sociology and Political Science"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/33",
+        "display_name": "Social Sciences"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/2",
+        "display_name": "Social Sciences"
+      }
+    }
+  ],
+  "keywords": [
+    {
+      "id": "https://openalex.org/keywords/coase-theorem",
+      "display_name": "Coase theorem",
+      "score": 0.9585111737251282
+    },
+    {
+      "id": "https://openalex.org/keywords/monopsony",
+      "display_name": "Monopsony",
+      "score": 0.9160069823265076
+    },
+    {
+      "id": "https://openalex.org/keywords/incentive",
+      "display_name": "Incentive",
+      "score": 0.7933499813079834
+    },
+    {
+      "id": "https://openalex.org/keywords/economics",
+      "display_name": "Economics",
+      "score": 0.6599536538124084
+    },
+    {
+      "id": "https://openalex.org/keywords/productivity",
+      "display_name": "Productivity",
+      "score": 0.6014417409896851
+    },
+    {
+      "id": "https://openalex.org/keywords/test",
+      "display_name": "Test (biology)",
+      "score": 0.5644705891609192
+    },
+    {
+      "id": "https://openalex.org/keywords/compensation",
+      "display_name": "Compensation (psychology)",
+      "score": 0.5479769706726074
+    },
+    {
+      "id": "https://openalex.org/keywords/athletes",
+      "display_name": "Athletes",
+      "score": 0.5225752592086792
+    },
+    {
+      "id": "https://openalex.org/keywords/microeconomics",
+      "display_name": "Microeconomics",
+      "score": 0.4698169529438019
+    },
+    {
+      "id": "https://openalex.org/keywords/labour-economics",
+      "display_name": "Labour economics",
+      "score": 0.4405677318572998
+    },
+    {
+      "id": "https://openalex.org/keywords/psychology",
+      "display_name": "Psychology",
+      "score": 0.0639033317565918
+    },
+    {
+      "id": "https://openalex.org/keywords/macroeconomics",
+      "display_name": "Macroeconomics",
+      "score": 0.06290119886398315
+    }
+  ],
+  "concepts": [
+    {
+      "id": "https://openalex.org/C79202496",
+      "wikidata": "https://www.wikidata.org/wiki/Q1050037",
+      "display_name": "Coase theorem",
+      "level": 3,
+      "score": 0.9585111737251282
+    },
+    {
+      "id": "https://openalex.org/C139203340",
+      "wikidata": "https://www.wikidata.org/wiki/Q319808",
+      "display_name": "Monopsony",
+      "level": 2,
+      "score": 0.9160069823265076
+    },
+    {
+      "id": "https://openalex.org/C29122968",
+      "wikidata": "https://www.wikidata.org/wiki/Q1414816",
+      "display_name": "Incentive",
+      "level": 2,
+      "score": 0.7933499813079834
+    },
+    {
+      "id": "https://openalex.org/C162324750",
+      "wikidata": "https://www.wikidata.org/wiki/Q8134",
+      "display_name": "Economics",
+      "level": 0,
+      "score": 0.6599536538124084
+    },
+    {
+      "id": "https://openalex.org/C204983608",
+      "wikidata": "https://www.wikidata.org/wiki/Q2111958",
+      "display_name": "Productivity",
+      "level": 2,
+      "score": 0.6014417409896851
+    },
+    {
+      "id": "https://openalex.org/C2777267654",
+      "wikidata": "https://www.wikidata.org/wiki/Q3519023",
+      "display_name": "Test (biology)",
+      "level": 2,
+      "score": 0.5644705891609192
+    },
+    {
+      "id": "https://openalex.org/C2780023022",
+      "wikidata": "https://www.wikidata.org/wiki/Q1338171",
+      "display_name": "Compensation (psychology)",
+      "level": 2,
+      "score": 0.5479769706726074
+    },
+    {
+      "id": "https://openalex.org/C2781054738",
+      "wikidata": "https://www.wikidata.org/wiki/Q4813730",
+      "display_name": "Athletes",
+      "level": 2,
+      "score": 0.5225752592086792
+    },
+    {
+      "id": "https://openalex.org/C175444787",
+      "wikidata": "https://www.wikidata.org/wiki/Q39072",
+      "display_name": "Microeconomics",
+      "level": 1,
+      "score": 0.4698169529438019
+    },
+    {
+      "id": "https://openalex.org/C145236788",
+      "wikidata": "https://www.wikidata.org/wiki/Q28161",
+      "display_name": "Labour economics",
+      "level": 1,
+      "score": 0.4405677318572998
+    },
+    {
+      "id": "https://openalex.org/C15744967",
+      "wikidata": "https://www.wikidata.org/wiki/Q9418",
+      "display_name": "Psychology",
+      "level": 0,
+      "score": 0.0639033317565918
+    },
+    {
+      "id": "https://openalex.org/C139719470",
+      "wikidata": "https://www.wikidata.org/wiki/Q39680",
+      "display_name": "Macroeconomics",
+      "level": 1,
+      "score": 0.06290119886398315
+    },
+    {
+      "id": "https://openalex.org/C98965940",
+      "wikidata": "https://www.wikidata.org/wiki/Q877496",
+      "display_name": "Transaction cost",
+      "level": 2,
+      "score": 0.0
+    },
+    {
+      "id": "https://openalex.org/C86803240",
+      "wikidata": "https://www.wikidata.org/wiki/Q420",
+      "display_name": "Biology",
+      "level": 0,
+      "score": 0.0
+    },
+    {
+      "id": "https://openalex.org/C71924100",
+      "wikidata": "https://www.wikidata.org/wiki/Q11190",
+      "display_name": "Medicine",
+      "level": 0,
+      "score": 0.0
+    },
+    {
+      "id": "https://openalex.org/C1862650",
+      "wikidata": "https://www.wikidata.org/wiki/Q186005",
+      "display_name": "Physical therapy",
+      "level": 1,
+      "score": 0.0
+    },
+    {
+      "id": "https://openalex.org/C151730666",
+      "wikidata": "https://www.wikidata.org/wiki/Q7205",
+      "display_name": "Paleontology",
+      "level": 1,
+      "score": 0.0
+    },
+    {
+      "id": "https://openalex.org/C11171543",
+      "wikidata": "https://www.wikidata.org/wiki/Q41630",
+      "display_name": "Psychoanalysis",
+      "level": 1,
+      "score": 0.0
+    }
+  ],
+  "mesh": [],
+  "locations_count": 3,
+  "locations": [
+    {
+      "id": "doi:10.1257/jep.14.3.75",
+      "is_oa": true,
+      "landing_page_url": "https://doi.org/10.1257/jep.14.3.75",
+      "pdf_url": "https://www.aeaweb.org/articles/pdf/doi/10.1257/jep.14.3.75",
+      "source": {
+        "id": "https://openalex.org/S72880728",
+        "display_name": "The Journal of Economic Perspectives",
+        "issn_l": "0895-3309",
+        "issn": [
+          "0895-3309",
+          "1944-7965"
+        ],
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": true,
+        "host_organization": "https://openalex.org/P4310315912",
+        "host_organization_name": "American Economic Association",
+        "host_organization_lineage": [
+          "https://openalex.org/P4310315912"
+        ],
+        "host_organization_lineage_names": [
+          "American Economic Association"
+        ],
+        "type": "journal"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "publishedVersion",
+      "is_accepted": true,
+      "is_published": true,
+      "raw_source_name": "Journal of Economic Perspectives",
+      "raw_type": "journal-article"
+    },
+    {
+      "id": "pmh:oai:CiteSeerX.psu:10.1.1.512.3749",
+      "is_oa": false,
+      "landing_page_url": "http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.512.3749",
+      "pdf_url": null,
+      "source": null,
+      "license": null,
+      "license_id": null,
+      "version": "submittedVersion",
+      "is_accepted": false,
+      "is_published": false,
+      "raw_source_name": "http://people.ucsc.edu/~lkletzer/econ104/kahn_sportsbusiness_JEP.pdf",
+      "raw_type": "text"
+    },
+    {
+      "id": "pmh:oai:RePEc:aea:jecper:v:14:y:2000:i:3:p:75-94",
+      "is_oa": false,
+      "landing_page_url": "http://www.aeaweb.org/articles.php?doi=10.1257/jep.14.3.75",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4306401271",
+        "display_name": "RePEc: Research Papers in Economics",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I77793887",
+        "host_organization_name": "Federal Reserve Bank of St. Louis",
+        "host_organization_lineage": [
+          "https://openalex.org/I77793887"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "submittedVersion",
+      "is_accepted": false,
+      "is_published": false,
+      "raw_source_name": null,
+      "raw_type": "article"
+    }
+  ],
+  "best_oa_location": {
+    "id": "doi:10.1257/jep.14.3.75",
+    "is_oa": true,
+    "landing_page_url": "https://doi.org/10.1257/jep.14.3.75",
+    "pdf_url": "https://www.aeaweb.org/articles/pdf/doi/10.1257/jep.14.3.75",
+    "source": {
+      "id": "https://openalex.org/S72880728",
+      "display_name": "The Journal of Economic Perspectives",
+      "issn_l": "0895-3309",
+      "issn": [
+        "0895-3309",
+        "1944-7965"
+      ],
+      "is_oa": false,
+      "is_in_doaj": false,
+      "is_core": true,
+      "host_organization": "https://openalex.org/P4310315912",
+      "host_organization_name": "American Economic Association",
+      "host_organization_lineage": [
+        "https://openalex.org/P4310315912"
+      ],
+      "host_organization_lineage_names": [
+        "American Economic Association"
+      ],
+      "type": "journal"
+    },
+    "license": null,
+    "license_id": null,
+    "version": "publishedVersion",
+    "is_accepted": true,
+    "is_published": true,
+    "raw_source_name": "Journal of Economic Perspectives",
+    "raw_type": "journal-article"
+  },
+  "sustainable_development_goals": [],
+  "awards": [],
+  "funders": [
+    {
+      "id": "https://openalex.org/F4320309292",
+      "display_name": "Princeton University",
+      "ror": "https://ror.org/00hx57361"
+    },
+    {
+      "id": "https://openalex.org/F4320309478",
+      "display_name": "Major League Baseball",
+      "ror": "https://ror.org/05ff6z697"
+    },
+    {
+      "id": "https://openalex.org/F4320320290",
+      "display_name": "University of Oxford",
+      "ror": "https://ror.org/052gg0110"
+    },
+    {
+      "id": "https://openalex.org/F4320332222",
+      "display_name": "University of Illinois at Urbana-Champaign",
+      "ror": "https://ror.org/047426m28"
+    }
+  ],
+  "has_content": {
+    "grobid_xml": true,
+    "pdf": true
+  },
+  "content_urls": {
+    "pdf": "https://content.openalex.org/works/W2136468259.pdf",
+    "grobid_xml": "https://content.openalex.org/works/W2136468259.grobid-xml"
+  },
+  "referenced_works_count": 56,
+  "referenced_works": [
+    "https://openalex.org/W566586761",
+    "https://openalex.org/W1549028405",
+    "https://openalex.org/W1570350104",
+    "https://openalex.org/W1591225377",
+    "https://openalex.org/W1602407295",
+    "https://openalex.org/W1648937643",
+    "https://openalex.org/W1966678139",
+    "https://openalex.org/W1972298843",
+    "https://openalex.org/W1974977982",
+    "https://openalex.org/W1980476970",
+    "https://openalex.org/W1989196399",
+    "https://openalex.org/W1990113016",
+    "https://openalex.org/W1995358146",
+    "https://openalex.org/W1998366101",
+    "https://openalex.org/W2000068790",
+    "https://openalex.org/W2003771797",
+    "https://openalex.org/W2010626855",
+    "https://openalex.org/W2017778671",
+    "https://openalex.org/W2019702908",
+    "https://openalex.org/W2021349295",
+    "https://openalex.org/W2022140591",
+    "https://openalex.org/W2023849080",
+    "https://openalex.org/W2026644772",
+    "https://openalex.org/W2027384339",
+    "https://openalex.org/W2034346088",
+    "https://openalex.org/W2040194891",
+    "https://openalex.org/W2051361470",
+    "https://openalex.org/W2053602133",
+    "https://openalex.org/W2063246720",
+    "https://openalex.org/W2066470010",
+    "https://openalex.org/W2084167033",
+    "https://openalex.org/W2087776374",
+    "https://openalex.org/W2103056933",
+    "https://openalex.org/W2105162863",
+    "https://openalex.org/W2116675628",
+    "https://openalex.org/W2130136629",
+    "https://openalex.org/W2133344657",
+    "https://openalex.org/W2134696411",
+    "https://openalex.org/W2140660613",
+    "https://openalex.org/W2141948222",
+    "https://openalex.org/W2145425795",
+    "https://openalex.org/W2145869098",
+    "https://openalex.org/W2164136051",
+    "https://openalex.org/W2319798906",
+    "https://openalex.org/W2321667827",
+    "https://openalex.org/W2322978823",
+    "https://openalex.org/W2323468883",
+    "https://openalex.org/W2330954230",
+    "https://openalex.org/W2334024349",
+    "https://openalex.org/W2484808064",
+    "https://openalex.org/W2490230472",
+    "https://openalex.org/W3121702597",
+    "https://openalex.org/W3122247979",
+    "https://openalex.org/W3123710781",
+    "https://openalex.org/W3123987311",
+    "https://openalex.org/W4233244734"
+  ],
+  "related_works": [
+    "https://openalex.org/W2031274102",
+    "https://openalex.org/W2271432633",
+    "https://openalex.org/W1972048101",
+    "https://openalex.org/W170652452",
+    "https://openalex.org/W3124669466",
+    "https://openalex.org/W3141998758",
+    "https://openalex.org/W3129141238",
+    "https://openalex.org/W2136468259",
+    "https://openalex.org/W2359050340",
+    "https://openalex.org/W2348893764"
+  ],
+  "abstract_inverted_index": {
+    "With": [
+      0
+    ],
+    "superior": [
+      1
+    ],
+    "data": [
+      2
+    ],
+    "on": [
+      3,
+      81,
+      91
+    ],
+    "compensation": [
+      4
+    ],
+    "and": [
+      5,
+      17,
+      50,
+      54,
+      84,
+      86
+    ],
+    "productivity,": [
+      6
+    ],
+    "as": [
+      7,
+      9,
+      62,
+      64
+    ],
+    "well": [
+      8,
+      63
+    ],
+    "the": [
+      10,
+      47,
+      66,
+      92,
+      95
+    ],
+    "occurrence": [
+      11
+    ],
+    "of": [
+      12,
+      60,
+      68,
+      71,
+      94
+    ],
+    "abrupt,": [
+      13
+    ],
+    "dramatic": [
+      14
+    ],
+    "market": [
+      15
+    ],
+    "structure": [
+      16
+    ],
+    "player": [
+      18,
+      82
+    ],
+    "allocation": [
+      19
+    ],
+    "rules": [
+      20
+    ],
+    "changes,": [
+      21
+    ],
+    "sports": [
+      22,
+      40
+    ],
+    "labor": [
+      23
+    ],
+    "markets": [
+      24
+    ],
+    "offer": [
+      25
+    ],
+    "an": [
+      26
+    ],
+    "excellent": [
+      27
+    ],
+    "setting": [
+      28
+    ],
+    "in": [
+      29,
+      41
+    ],
+    "which": [
+      30
+    ],
+    "to": [
+      31
+    ],
+    "test": [
+      32
+    ],
+    "economic": [
+      33
+    ],
+    "hypotheses.": [
+      34
+    ],
+    "This": [
+      35
+    ],
+    "paper": [
+      36
+    ],
+    "reviews": [
+      37
+    ],
+    "evidence": [
+      38,
+      59,
+      90
+    ],
+    "from": [
+      39
+    ],
+    "four": [
+      42
+    ],
+    "areas:": [
+      43
+    ],
+    "employer": [
+      44
+    ],
+    "monopsony,": [
+      45
+    ],
+    "discrimination,": [
+      46
+    ],
+    "Coase": [
+      48,
+      96
+    ],
+    "Theorem,": [
+      49
+    ],
+    "incentive": [
+      51
+    ],
+    "contracts,": [
+      52
+    ],
+    "supervision": [
+      53
+    ],
+    "performance.": [
+      55
+    ],
+    "There": [
+      56
+    ],
+    "is": [
+      57,
+      88
+    ],
+    "considerable": [
+      58
+    ],
+    "monopsony": [
+      61
+    ],
+    "for": [
+      65
+    ],
+    "existence": [
+      67
+    ],
+    "some": [
+      69
+    ],
+    "forms": [
+      70
+    ],
+    "discrimination": [
+      72
+    ],
+    "against": [
+      73
+    ],
+    "minority": [
+      74
+    ],
+    "athletes.": [
+      75
+    ],
+    "Incentive": [
+      76
+    ],
+    "contracts": [
+      77
+    ],
+    "have": [
+      78
+    ],
+    "strong": [
+      79
+    ],
+    "effects": [
+      80
+    ],
+    "performance": [
+      83
+    ],
+    "behavior,": [
+      85
+    ],
+    "there": [
+      87
+    ],
+    "mixed": [
+      89
+    ],
+    "predictions": [
+      93
+    ],
+    "Theorem.": [
+      97
+    ]
+  },
+  "counts_by_year": [
+    {
+      "year": 2026,
+      "cited_by_count": 17
+    },
+    {
+      "year": 2025,
+      "cited_by_count": 22
+    },
+    {
+      "year": 2024,
+      "cited_by_count": 23
+    },
+    {
+      "year": 2023,
+      "cited_by_count": 30
+    },
+    {
+      "year": 2022,
+      "cited_by_count": 27
+    },
+    {
+      "year": 2021,
+      "cited_by_count": 33
+    },
+    {
+      "year": 2020,
+      "cited_by_count": 24
+    },
+    {
+      "year": 2019,
+      "cited_by_count": 23
+    },
+    {
+      "year": 2018,
+      "cited_by_count": 28
+    },
+    {
+      "year": 2017,
+      "cited_by_count": 23
+    },
+    {
+      "year": 2016,
+      "cited_by_count": 34
+    },
+    {
+      "year": 2015,
+      "cited_by_count": 28
+    },
+    {
+      "year": 2014,
+      "cited_by_count": 26
+    },
+    {
+      "year": 2013,
+      "cited_by_count": 18
+    },
+    {
+      "year": 2012,
+      "cited_by_count": 41
+    }
+  ],
+  "updated_date": "2026-07-02T09:51:11.867554",
+  "created_date": "2025-10-10T00:00:00"
+}

@@ -1,0 +1,18 @@
+{
+  "candidate_id": "cand-exp-nces-ipeds",
+  "proposed_study_id": "nces-ipeds",
+  "acquisition_status": "portal_manual",
+  "attempted_at": "2026-07-07T03:42:19+00:00",
+  "catalog_source_url": "https://nces.ed.gov/ipeds/",
+  "resolved_urls": [
+    "https://doi.org/10.7916/d82805qw",
+    "http://hdl.handle.net/10919/90842",
+    "https://nces.ed.gov/ipeds/"
+  ],
+  "files": [
+    "openalex-search.html",
+    "openalex-metadata.json",
+    "source-1.html"
+  ],
+  "dois": []
+}

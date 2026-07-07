@@ -1,0 +1,1203 @@
+{
+  "id": "https://openalex.org/W4391431000",
+  "doi": "https://doi.org/10.3390/data9020029",
+  "title": "A Comprehensive Data Pipeline for Comparing the Effects of Momentum on Sports Leagues",
+  "display_name": "A Comprehensive Data Pipeline for Comparing the Effects of Momentum on Sports Leagues",
+  "relevance_score": 36.574802,
+  "publication_year": 2024,
+  "publication_date": "2024-02-01",
+  "ids": {
+    "openalex": "https://openalex.org/W4391431000",
+    "doi": "https://doi.org/10.3390/data9020029"
+  },
+  "language": "en",
+  "primary_location": {
+    "id": "doi:10.3390/data9020029",
+    "is_oa": true,
+    "landing_page_url": "https://doi.org/10.3390/data9020029",
+    "pdf_url": "https://www.mdpi.com/2306-5729/9/2/29/pdf?version=1706775405",
+    "source": {
+      "id": "https://openalex.org/S4210226510",
+      "display_name": "Data",
+      "issn_l": "2306-5729",
+      "issn": [
+        "2306-5729"
+      ],
+      "is_oa": true,
+      "is_in_doaj": true,
+      "is_core": true,
+      "host_organization": "https://openalex.org/P4310310987",
+      "host_organization_name": "Multidisciplinary Digital Publishing Institute",
+      "host_organization_lineage": [
+        "https://openalex.org/P4310310987"
+      ],
+      "host_organization_lineage_names": [
+        "Multidisciplinary Digital Publishing Institute"
+      ],
+      "type": "journal"
+    },
+    "license": "cc-by",
+    "license_id": "https://openalex.org/licenses/cc-by",
+    "version": "publishedVersion",
+    "is_accepted": true,
+    "is_published": true,
+    "raw_source_name": "Data",
+    "raw_type": "journal-article"
+  },
+  "type": "article",
+  "indexed_in": [
+    "crossref",
+    "doaj"
+  ],
+  "open_access": {
+    "is_oa": true,
+    "oa_status": "gold",
+    "oa_url": "https://www.mdpi.com/2306-5729/9/2/29/pdf?version=1706775405",
+    "any_repository_has_fulltext": true
+  },
+  "authorships": [
+    {
+      "author_position": "first",
+      "author": {
+        "id": "https://openalex.org/A5081487623",
+        "display_name": "Jordan Truman Paul Noel",
+        "orcid": "https://orcid.org/0009-0007-8802-0354"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I130438778",
+          "display_name": "Memorial University of Newfoundland",
+          "ror": "https://ror.org/04haebc03",
+          "country_code": "CA",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I130438778"
+          ]
+        }
+      ],
+      "countries": [
+        "CA"
+      ],
+      "is_corresponding": true,
+      "raw_author_name": "Jordan Truman Paul Noel",
+      "raw_affiliation_strings": [
+        "Department of Computer Science, Memorial University of Newfoundland, St. John\u2019s, NL A1B 3X5, Canada",
+        "Department of Computer Science, Memorial University of Newfoundland, St. John's, NL A1B 3X5, Canada"
+      ],
+      "raw_orcid": "https://orcid.org/0009-0007-8802-0354",
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Department of Computer Science, Memorial University of Newfoundland, St. John\u2019s, NL A1B 3X5, Canada",
+          "institution_ids": [
+            "https://openalex.org/I130438778"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Department of Computer Science, Memorial University of Newfoundland, St. John's, NL A1B 3X5, Canada",
+          "institution_ids": [
+            "https://openalex.org/I130438778"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5033287150",
+        "display_name": "Vinicius Prado da Fonseca",
+        "orcid": "https://orcid.org/0000-0001-5705-3056"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I130438778",
+          "display_name": "Memorial University of Newfoundland",
+          "ror": "https://ror.org/04haebc03",
+          "country_code": "CA",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I130438778"
+          ]
+        }
+      ],
+      "countries": [
+        "CA"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Vinicius Prado da Fonseca",
+      "raw_affiliation_strings": [
+        "Department of Computer Science, Memorial University of Newfoundland, St. John\u2019s, NL A1B 3X5, Canada",
+        "Department of Computer Science, Memorial University of Newfoundland, St. John's, NL A1B 3X5, Canada"
+      ],
+      "raw_orcid": "https://orcid.org/0000-0001-5705-3056",
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Department of Computer Science, Memorial University of Newfoundland, St. John\u2019s, NL A1B 3X5, Canada",
+          "institution_ids": [
+            "https://openalex.org/I130438778"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Department of Computer Science, Memorial University of Newfoundland, St. John's, NL A1B 3X5, Canada",
+          "institution_ids": [
+            "https://openalex.org/I130438778"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "last",
+      "author": {
+        "id": "https://openalex.org/A5040197161",
+        "display_name": "Am\u00edlcar Soares",
+        "orcid": "https://orcid.org/0000-0001-5957-3805"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I223464139",
+          "display_name": "Linnaeus University",
+          "ror": "https://ror.org/00j9qag85",
+          "country_code": "SE",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I223464139"
+          ]
+        }
+      ],
+      "countries": [
+        "SE"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Amilcar Soares",
+      "raw_affiliation_strings": [
+        "Department of Computer Science and Media Technology, Linnaeus University, 352 52 V\u00e4xj\u00f6, Sweden"
+      ],
+      "raw_orcid": "https://orcid.org/0000-0001-5957-3805",
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Department of Computer Science and Media Technology, Linnaeus University, 352 52 V\u00e4xj\u00f6, Sweden",
+          "institution_ids": [
+            "https://openalex.org/I223464139"
+          ]
+        }
+      ]
+    }
+  ],
+  "institutions": [],
+  "countries_distinct_count": 2,
+  "institutions_distinct_count": 2,
+  "corresponding_author_ids": [
+    "https://openalex.org/A5081487623"
+  ],
+  "corresponding_institution_ids": [
+    "https://openalex.org/I130438778"
+  ],
+  "apc_list": {
+    "value": 1600,
+    "currency": "CHF",
+    "value_usd": 1732
+  },
+  "apc_paid": {
+    "value": 1600,
+    "currency": "CHF",
+    "value_usd": 1732
+  },
+  "fwci": 12.8646,
+  "has_fulltext": true,
+  "cited_by_count": 15,
+  "citation_normalized_percentile": {
+    "value": 0.98082388,
+    "is_in_top_1_percent": false,
+    "is_in_top_10_percent": true
+  },
+  "cited_by_percentile_year": {
+    "min": 97,
+    "max": 99
+  },
+  "biblio": {
+    "volume": "9",
+    "issue": "2",
+    "first_page": "29",
+    "last_page": "29"
+  },
+  "is_retracted": false,
+  "is_paratext": false,
+  "is_xpac": false,
+  "primary_topic": {
+    "id": "https://openalex.org/T11674",
+    "display_name": "Sports Analytics and Performance",
+    "score": 0.9998999834060669,
+    "subfield": {
+      "id": "https://openalex.org/subfields/2002",
+      "display_name": "Economics and Econometrics"
+    },
+    "field": {
+      "id": "https://openalex.org/fields/20",
+      "display_name": "Economics, Econometrics and Finance"
+    },
+    "domain": {
+      "id": "https://openalex.org/domains/2",
+      "display_name": "Social Sciences"
+    }
+  },
+  "topics": [
+    {
+      "id": "https://openalex.org/T11674",
+      "display_name": "Sports Analytics and Performance",
+      "score": 0.9998999834060669,
+      "subfield": {
+        "id": "https://openalex.org/subfields/2002",
+        "display_name": "Economics and Econometrics"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/20",
+        "display_name": "Economics, Econometrics and Finance"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/2",
+        "display_name": "Social Sciences"
+      }
+    },
+    {
+      "id": "https://openalex.org/T10942",
+      "display_name": "Sports, Gender, and Society",
+      "score": 0.984000027179718,
+      "subfield": {
+        "id": "https://openalex.org/subfields/3318",
+        "display_name": "Gender Studies"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/33",
+        "display_name": "Social Sciences"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/2",
+        "display_name": "Social Sciences"
+      }
+    },
+    {
+      "id": "https://openalex.org/T10157",
+      "display_name": "Sports Performance and Training",
+      "score": 0.9732000231742859,
+      "subfield": {
+        "id": "https://openalex.org/subfields/2732",
+        "display_name": "Orthopedics and Sports Medicine"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/27",
+        "display_name": "Medicine"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/4",
+        "display_name": "Health Sciences"
+      }
+    }
+  ],
+  "keywords": [
+    {
+      "id": "https://openalex.org/keywords/league",
+      "display_name": "League",
+      "score": 0.855029284954071
+    },
+    {
+      "id": "https://openalex.org/keywords/pipeline",
+      "display_name": "Pipeline (software)",
+      "score": 0.6875343322753906
+    },
+    {
+      "id": "https://openalex.org/keywords/momentum",
+      "display_name": "Momentum (technical analysis)",
+      "score": 0.43000829219818115
+    },
+    {
+      "id": "https://openalex.org/keywords/data-science",
+      "display_name": "Data science",
+      "score": 0.42913752794265747
+    },
+    {
+      "id": "https://openalex.org/keywords/computer-science",
+      "display_name": "Computer science",
+      "score": 0.3636907935142517
+    },
+    {
+      "id": "https://openalex.org/keywords/engineering",
+      "display_name": "Engineering",
+      "score": 0.2887686491012573
+    },
+    {
+      "id": "https://openalex.org/keywords/economics",
+      "display_name": "Economics",
+      "score": 0.1820717751979828
+    },
+    {
+      "id": "https://openalex.org/keywords/physics",
+      "display_name": "Physics",
+      "score": 0.14455461502075195
+    },
+    {
+      "id": "https://openalex.org/keywords/financial-economics",
+      "display_name": "Financial economics",
+      "score": 0.10110336542129517
+    },
+    {
+      "id": "https://openalex.org/keywords/mechanical-engineering",
+      "display_name": "Mechanical engineering",
+      "score": 0.08200830221176147
+    }
+  ],
+  "concepts": [
+    {
+      "id": "https://openalex.org/C207456731",
+      "wikidata": "https://www.wikidata.org/wiki/Q660818",
+      "display_name": "League",
+      "level": 2,
+      "score": 0.855029284954071
+    },
+    {
+      "id": "https://openalex.org/C43521106",
+      "wikidata": "https://www.wikidata.org/wiki/Q2165493",
+      "display_name": "Pipeline (software)",
+      "level": 2,
+      "score": 0.6875343322753906
+    },
+    {
+      "id": "https://openalex.org/C60718061",
+      "wikidata": "https://www.wikidata.org/wiki/Q1414747",
+      "display_name": "Momentum (technical analysis)",
+      "level": 2,
+      "score": 0.43000829219818115
+    },
+    {
+      "id": "https://openalex.org/C2522767166",
+      "wikidata": "https://www.wikidata.org/wiki/Q2374463",
+      "display_name": "Data science",
+      "level": 1,
+      "score": 0.42913752794265747
+    },
+    {
+      "id": "https://openalex.org/C41008148",
+      "wikidata": "https://www.wikidata.org/wiki/Q21198",
+      "display_name": "Computer science",
+      "level": 0,
+      "score": 0.3636907935142517
+    },
+    {
+      "id": "https://openalex.org/C127413603",
+      "wikidata": "https://www.wikidata.org/wiki/Q11023",
+      "display_name": "Engineering",
+      "level": 0,
+      "score": 0.2887686491012573
+    },
+    {
+      "id": "https://openalex.org/C162324750",
+      "wikidata": "https://www.wikidata.org/wiki/Q8134",
+      "display_name": "Economics",
+      "level": 0,
+      "score": 0.1820717751979828
+    },
+    {
+      "id": "https://openalex.org/C121332964",
+      "wikidata": "https://www.wikidata.org/wiki/Q413",
+      "display_name": "Physics",
+      "level": 0,
+      "score": 0.14455461502075195
+    },
+    {
+      "id": "https://openalex.org/C106159729",
+      "wikidata": "https://www.wikidata.org/wiki/Q2294553",
+      "display_name": "Financial economics",
+      "level": 1,
+      "score": 0.10110336542129517
+    },
+    {
+      "id": "https://openalex.org/C78519656",
+      "wikidata": "https://www.wikidata.org/wiki/Q101333",
+      "display_name": "Mechanical engineering",
+      "level": 1,
+      "score": 0.08200830221176147
+    },
+    {
+      "id": "https://openalex.org/C1276947",
+      "wikidata": "https://www.wikidata.org/wiki/Q333",
+      "display_name": "Astronomy",
+      "level": 1,
+      "score": 0.0
+    }
+  ],
+  "mesh": [],
+  "locations_count": 4,
+  "locations": [
+    {
+      "id": "doi:10.3390/data9020029",
+      "is_oa": true,
+      "landing_page_url": "https://doi.org/10.3390/data9020029",
+      "pdf_url": "https://www.mdpi.com/2306-5729/9/2/29/pdf?version=1706775405",
+      "source": {
+        "id": "https://openalex.org/S4210226510",
+        "display_name": "Data",
+        "issn_l": "2306-5729",
+        "issn": [
+          "2306-5729"
+        ],
+        "is_oa": true,
+        "is_in_doaj": true,
+        "is_core": true,
+        "host_organization": "https://openalex.org/P4310310987",
+        "host_organization_name": "Multidisciplinary Digital Publishing Institute",
+        "host_organization_lineage": [
+          "https://openalex.org/P4310310987"
+        ],
+        "host_organization_lineage_names": [
+          "Multidisciplinary Digital Publishing Institute"
+        ],
+        "type": "journal"
+      },
+      "license": "cc-by",
+      "license_id": "https://openalex.org/licenses/cc-by",
+      "version": "publishedVersion",
+      "is_accepted": true,
+      "is_published": true,
+      "raw_source_name": "Data",
+      "raw_type": "journal-article"
+    },
+    {
+      "id": "pmh:oai:DiVA.org:lnu-128049",
+      "is_oa": true,
+      "landing_page_url": "http://urn.kb.se/resolve?urn=urn:nbn:se:lnu:diva-128049",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4306401559",
+        "display_name": "KTH Publication Database DiVA (KTH Royal Institute of Technology)",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": null,
+        "host_organization_name": null,
+        "host_organization_lineage": [],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": "other-oa",
+      "license_id": "https://openalex.org/licenses/other-oa",
+      "version": "submittedVersion",
+      "is_accepted": false,
+      "is_published": false,
+      "raw_source_name": null,
+      "raw_type": "info:eu-repo/semantics/article"
+    },
+    {
+      "id": "pmh:oai:RePEc:gam:jdataj:v:9:y:2024:i:2:p:29-:d:1331323",
+      "is_oa": false,
+      "landing_page_url": "https://www.mdpi.com/2306-5729/9/2/29/",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4306401271",
+        "display_name": "RePEc: Research Papers in Economics",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I77793887",
+        "host_organization_name": "Federal Reserve Bank of St. Louis",
+        "host_organization_lineage": [
+          "https://openalex.org/I77793887"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "submittedVersion",
+      "is_accepted": false,
+      "is_published": false,
+      "raw_source_name": null,
+      "raw_type": "article"
+    },
+    {
+      "id": "pmh:oai:doaj.org/article:ef936727ac3b4759979fbf0659b105ea",
+      "is_oa": false,
+      "landing_page_url": "https://doaj.org/article/ef936727ac3b4759979fbf0659b105ea",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4306401280",
+        "display_name": "DOAJ (DOAJ: Directory of Open Access Journals)",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": null,
+        "host_organization_name": null,
+        "host_organization_lineage": [],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "submittedVersion",
+      "is_accepted": false,
+      "is_published": false,
+      "raw_source_name": "Data, Vol 9, Iss 2, p 29 (2024)",
+      "raw_type": "article"
+    }
+  ],
+  "best_oa_location": {
+    "id": "doi:10.3390/data9020029",
+    "is_oa": true,
+    "landing_page_url": "https://doi.org/10.3390/data9020029",
+    "pdf_url": "https://www.mdpi.com/2306-5729/9/2/29/pdf?version=1706775405",
+    "source": {
+      "id": "https://openalex.org/S4210226510",
+      "display_name": "Data",
+      "issn_l": "2306-5729",
+      "issn": [
+        "2306-5729"
+      ],
+      "is_oa": true,
+      "is_in_doaj": true,
+      "is_core": true,
+      "host_organization": "https://openalex.org/P4310310987",
+      "host_organization_name": "Multidisciplinary Digital Publishing Institute",
+      "host_organization_lineage": [
+        "https://openalex.org/P4310310987"
+      ],
+      "host_organization_lineage_names": [
+        "Multidisciplinary Digital Publishing Institute"
+      ],
+      "type": "journal"
+    },
+    "license": "cc-by",
+    "license_id": "https://openalex.org/licenses/cc-by",
+    "version": "publishedVersion",
+    "is_accepted": true,
+    "is_published": true,
+    "raw_source_name": "Data",
+    "raw_type": "journal-article"
+  },
+  "sustainable_development_goals": [],
+  "awards": [
+    {
+      "id": "https://openalex.org/G5553729488",
+      "display_name": null,
+      "funder_award_id": "RGPIN-2022-0390",
+      "funder_id": "https://openalex.org/F4320334593",
+      "funder_display_name": "Natural Sciences and Engineering Research Council of Canada"
+    }
+  ],
+  "funders": [
+    {
+      "id": "https://openalex.org/F4320323319",
+      "display_name": "Memorial University of Newfoundland",
+      "ror": "https://ror.org/04haebc03"
+    },
+    {
+      "id": "https://openalex.org/F4320334593",
+      "display_name": "Natural Sciences and Engineering Research Council of Canada",
+      "ror": "https://ror.org/01h531d29"
+    }
+  ],
+  "has_content": {
+    "grobid_xml": false,
+    "pdf": true
+  },
+  "content_urls": {
+    "pdf": "https://content.openalex.org/works/W4391431000.pdf"
+  },
+  "referenced_works_count": 33,
+  "referenced_works": [
+    "https://openalex.org/W1930624869",
+    "https://openalex.org/W1975188192",
+    "https://openalex.org/W2011301426",
+    "https://openalex.org/W2058731786",
+    "https://openalex.org/W2076011229",
+    "https://openalex.org/W2086145045",
+    "https://openalex.org/W2086306027",
+    "https://openalex.org/W2101234009",
+    "https://openalex.org/W2109047492",
+    "https://openalex.org/W2130067998",
+    "https://openalex.org/W2295598076",
+    "https://openalex.org/W2342249984",
+    "https://openalex.org/W2665683789",
+    "https://openalex.org/W2727607080",
+    "https://openalex.org/W2902517215",
+    "https://openalex.org/W2908448204",
+    "https://openalex.org/W2963452116",
+    "https://openalex.org/W2981841290",
+    "https://openalex.org/W3121239248",
+    "https://openalex.org/W3122464059",
+    "https://openalex.org/W3122654505",
+    "https://openalex.org/W3132341127",
+    "https://openalex.org/W3150635270",
+    "https://openalex.org/W3165008760",
+    "https://openalex.org/W3177934795",
+    "https://openalex.org/W4205638053",
+    "https://openalex.org/W4294739199",
+    "https://openalex.org/W4297792613",
+    "https://openalex.org/W4320037358",
+    "https://openalex.org/W6665186014",
+    "https://openalex.org/W6669190045",
+    "https://openalex.org/W6675354045",
+    "https://openalex.org/W6739760014"
+  ],
+  "related_works": [
+    "https://openalex.org/W2748952813",
+    "https://openalex.org/W4389016272",
+    "https://openalex.org/W2285591800",
+    "https://openalex.org/W4321354283",
+    "https://openalex.org/W1605020331",
+    "https://openalex.org/W2381490189",
+    "https://openalex.org/W587904446",
+    "https://openalex.org/W3147676070",
+    "https://openalex.org/W72114162",
+    "https://openalex.org/W2906517758"
+  ],
+  "abstract_inverted_index": {
+    "Momentum": [
+      0
+    ],
+    "has": [
+      1,
+      149
+    ],
+    "been": [
+      2,
+      20
+    ],
+    "a": [
+      3,
+      21,
+      54,
+      62,
+      67,
+      177,
+      209
+    ],
+    "consistently": [
+      4
+    ],
+    "studied": [
+      5,
+      206
+    ],
+    "aspect": [
+      6
+    ],
+    "of": [
+      7,
+      38,
+      58,
+      70,
+      77,
+      84,
+      91,
+      118,
+      161,
+      164,
+      218,
+      221,
+      233
+    ],
+    "sports": [
+      8
+    ],
+    "science": [
+      9
+    ],
+    "for": [
+      10,
+      125
+    ],
+    "decades.": [
+      11
+    ],
+    "Among": [
+      12
+    ],
+    "the": [
+      13,
+      81,
+      88,
+      112,
+      115,
+      126,
+      154,
+      162,
+      167,
+      201,
+      216,
+      219,
+      230
+    ],
+    "established": [
+      14
+    ],
+    "literature,": [
+      15
+    ],
+    "there": [
+      16
+    ],
+    "has,": [
+      17
+    ],
+    "at": [
+      18
+    ],
+    "times,": [
+      19
+    ],
+    "discrepancy": [
+      22
+    ],
+    "between": [
+      23
+    ],
+    "conclusions.": [
+      24
+    ],
+    "However,": [
+      25
+    ],
+    "if": [
+      26
+    ],
+    "momentum": [
+      27,
+      148,
+      165,
+      203,
+      228
+    ],
+    "is": [
+      28
+    ],
+    "indeed": [
+      29
+    ],
+    "an": [
+      30
+    ],
+    "actual": [
+      31
+    ],
+    "phenomenon,": [
+      32
+    ],
+    "it": [
+      33
+    ],
+    "would": [
+      34
+    ],
+    "affect": [
+      35
+    ],
+    "all": [
+      36
+    ],
+    "aspects": [
+      37
+    ],
+    "sports,": [
+      39
+    ],
+    "from": [
+      40,
+      208,
+      215,
+      229
+    ],
+    "player": [
+      41
+    ],
+    "evaluation": [
+      42
+    ],
+    "to": [
+      43,
+      73,
+      110,
+      226
+    ],
+    "pre-game": [
+      44,
+      172,
+      195
+    ],
+    "prediction": [
+      45,
+      196
+    ],
+    "and": [
+      46,
+      79,
+      121,
+      135,
+      198,
+      213,
+      235
+    ],
+    "betting.": [
+      47
+    ],
+    "Therefore,": [
+      48
+    ],
+    "using": [
+      49,
+      99
+    ],
+    "momentum-based": [
+      50,
+      85,
+      119,
+      187
+    ],
+    "features": [
+      51,
+      86,
+      95,
+      120,
+      124,
+      188,
+      192
+    ],
+    "that": [
+      52,
+      65,
+      147,
+      169,
+      186
+    ],
+    "quantify": [
+      53
+    ],
+    "team\u2019s": [
+      55
+    ],
+    "linear": [
+      56
+    ],
+    "trend": [
+      57,
+      179
+    ],
+    "play,": [
+      59
+    ],
+    "we": [
+      60,
+      106,
+      157,
+      175
+    ],
+    "develop": [
+      61
+    ],
+    "data": [
+      63
+    ],
+    "pipeline": [
+      64,
+      109
+    ],
+    "uses": [
+      66
+    ],
+    "small": [
+      68
+    ],
+    "sample": [
+      69
+    ],
+    "recent": [
+      71
+    ],
+    "games": [
+      72
+    ],
+    "assess": [
+      74
+    ],
+    "teams\u2019": [
+      75
+    ],
+    "quality": [
+      76
+    ],
+    "play": [
+      78
+    ],
+    "measure": [
+      80
+    ],
+    "predictive": [
+      82,
+      89,
+      116,
+      151
+    ],
+    "power": [
+      83,
+      90,
+      117,
+      152
+    ],
+    "versus": [
+      87
+    ],
+    "more": [
+      92,
+      207
+    ],
+    "traditional": [
+      93
+    ],
+    "frequency-based": [
+      94,
+      191
+    ],
+    "across": [
+      96
+    ],
+    "several": [
+      97,
+      100
+    ],
+    "leagues": [
+      98
+    ],
+    "machine": [
+      101
+    ],
+    "learning": [
+      102
+    ],
+    "techniques.": [
+      103
+    ],
+    "More": [
+      104
+    ],
+    "precisely,": [
+      105
+    ],
+    "use": [
+      107
+    ],
+    "our": [
+      108
+    ],
+    "determine": [
+      111
+    ],
+    "differences": [
+      113
+    ],
+    "in": [
+      114,
+      153,
+      180,
+      200
+    ],
+    "standard": [
+      122
+    ],
+    "statistical": [
+      123
+    ],
+    "National": [
+      127,
+      131
+    ],
+    "Hockey": [
+      128
+    ],
+    "League": [
+      129
+    ],
+    "(NHL),": [
+      130
+    ],
+    "Basketball": [
+      132
+    ],
+    "Association": [
+      133
+    ],
+    "(NBA),": [
+      134
+    ],
+    "five": [
+      136
+    ],
+    "major": [
+      137
+    ],
+    "first-division": [
+      138
+    ],
+    "European": [
+      139,
+      181
+    ],
+    "football": [
+      140
+    ],
+    "leagues.": [
+      141
+    ],
+    "Our": [
+      142,
+      183
+    ],
+    "findings": [
+      143
+    ],
+    "show": [
+      144
+    ],
+    "little": [
+      145
+    ],
+    "evidence": [
+      146
+    ],
+    "superior": [
+      150
+    ],
+    "NBA.": [
+      155
+    ],
+    "Still,": [
+      156
+    ],
+    "found": [
+      158
+    ],
+    "some": [
+      159
+    ],
+    "instances": [
+      160
+    ],
+    "effects": [
+      163
+    ],
+    "on": [
+      166
+    ],
+    "NHL": [
+      168
+    ],
+    "produced": [
+      170
+    ],
+    "better": [
+      171
+    ],
+    "predictors,": [
+      173
+    ],
+    "whereas": [
+      174
+    ],
+    "view": [
+      176,
+      217,
+      232
+    ],
+    "similar": [
+      178
+    ],
+    "football/soccer.": [
+      182
+    ],
+    "results": [
+      184
+    ],
+    "indicate": [
+      185
+    ],
+    "combined": [
+      189
+    ],
+    "with": [
+      190
+    ],
+    "could": [
+      193
+    ],
+    "improve": [
+      194
+    ],
+    "models": [
+      197
+    ],
+    "that,": [
+      199
+    ],
+    "future,": [
+      202
+    ],
+    "should": [
+      204
+    ],
+    "be": [
+      205
+    ],
+    "feature/performance": [
+      210
+    ],
+    "indicator": [
+      211
+    ],
+    "point-of-view": [
+      212
+    ],
+    "less": [
+      214
+    ],
+    "dependence": [
+      220
+    ],
+    "sequential": [
+      222
+    ],
+    "outcomes,": [
+      223
+    ],
+    "thus": [
+      224
+    ],
+    "attempting": [
+      225
+    ],
+    "distance": [
+      227
+    ],
+    "binary": [
+      231
+    ],
+    "winning": [
+      234
+    ],
+    "losing.": [
+      236
+    ]
+  },
+  "counts_by_year": [
+    {
+      "year": 2025,
+      "cited_by_count": 4
+    },
+    {
+      "year": 2024,
+      "cited_by_count": 11
+    }
+  ],
+  "updated_date": "2026-07-02T09:51:11.867554",
+  "created_date": "2025-10-10T00:00:00"
+}

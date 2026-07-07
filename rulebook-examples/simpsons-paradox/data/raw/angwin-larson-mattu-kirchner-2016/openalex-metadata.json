@@ -1,0 +1,627 @@
+{
+  "id": "https://openalex.org/W2975598813",
+  "doi": "https://doi.org/10.3998/ergo.12405314.0006.015",
+  "title": "What's Wrong with Machine Bias",
+  "display_name": "What's Wrong with Machine Bias",
+  "relevance_score": 484.22537,
+  "publication_year": 2019,
+  "publication_date": "2019-07-11",
+  "ids": {
+    "openalex": "https://openalex.org/W2975598813",
+    "doi": "https://doi.org/10.3998/ergo.12405314.0006.015",
+    "mag": "2975598813"
+  },
+  "language": "en",
+  "primary_location": {
+    "id": "doi:10.3998/ergo.12405314.0006.015",
+    "is_oa": true,
+    "landing_page_url": "https://doi.org/10.3998/ergo.12405314.0006.015",
+    "pdf_url": "https://quod.lib.umich.edu/cgi/p/pod/dod-idx/what-s-wrong-with-machine-bias.pdf?c=ergo;idno=12405314.0006.015;format=pdf",
+    "source": {
+      "id": "https://openalex.org/S2738534934",
+      "display_name": "Ergo an Open Access Journal of Philosophy",
+      "issn_l": "2330-4014",
+      "issn": [
+        "2330-4014"
+      ],
+      "is_oa": true,
+      "is_in_doaj": true,
+      "is_core": true,
+      "host_organization": "https://openalex.org/P4310319910",
+      "host_organization_name": "Michigan Publishing",
+      "host_organization_lineage": [
+        "https://openalex.org/P4310319910"
+      ],
+      "host_organization_lineage_names": [
+        "Michigan Publishing"
+      ],
+      "type": "journal"
+    },
+    "license": "cc-by-nc-nd",
+    "license_id": "https://openalex.org/licenses/cc-by-nc-nd",
+    "version": "publishedVersion",
+    "is_accepted": true,
+    "is_published": true,
+    "raw_source_name": "Ergo, an Open Access Journal of Philosophy",
+    "raw_type": "journal-article"
+  },
+  "type": "article",
+  "indexed_in": [
+    "crossref",
+    "doaj"
+  ],
+  "open_access": {
+    "is_oa": true,
+    "oa_status": "diamond",
+    "oa_url": "https://quod.lib.umich.edu/cgi/p/pod/dod-idx/what-s-wrong-with-machine-bias.pdf?c=ergo;idno=12405314.0006.015;format=pdf",
+    "any_repository_has_fulltext": true
+  },
+  "authorships": [
+    {
+      "author_position": "first",
+      "author": {
+        "id": "https://openalex.org/A5087473505",
+        "display_name": "Clinton Castro",
+        "orcid": "https://orcid.org/0000-0003-4740-0055"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I19700959",
+          "display_name": "Florida International University",
+          "ror": "https://ror.org/02gz6gg07",
+          "country_code": "US",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I19700959"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": true,
+      "raw_author_name": "Clinton Castro",
+      "raw_affiliation_strings": [
+        "Florida International University"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Florida International University",
+          "institution_ids": [
+            "https://openalex.org/I19700959"
+          ]
+        }
+      ]
+    }
+  ],
+  "institutions": [],
+  "countries_distinct_count": 1,
+  "institutions_distinct_count": 1,
+  "corresponding_author_ids": [
+    "https://openalex.org/A5087473505"
+  ],
+  "corresponding_institution_ids": [
+    "https://openalex.org/I19700959"
+  ],
+  "apc_list": null,
+  "apc_paid": null,
+  "fwci": 6.7785,
+  "has_fulltext": true,
+  "cited_by_count": 43,
+  "citation_normalized_percentile": {
+    "value": 0.97019675,
+    "is_in_top_1_percent": false,
+    "is_in_top_10_percent": true
+  },
+  "cited_by_percentile_year": {
+    "min": 89,
+    "max": 100
+  },
+  "biblio": {
+    "volume": "6",
+    "issue": "20201214",
+    "first_page": null,
+    "last_page": null
+  },
+  "is_retracted": false,
+  "is_paratext": false,
+  "is_xpac": false,
+  "primary_topic": {
+    "id": "https://openalex.org/T10883",
+    "display_name": "Ethics and Social Impacts of AI",
+    "score": 0.48159998655319214,
+    "subfield": {
+      "id": "https://openalex.org/subfields/3311",
+      "display_name": "Safety Research"
+    },
+    "field": {
+      "id": "https://openalex.org/fields/33",
+      "display_name": "Social Sciences"
+    },
+    "domain": {
+      "id": "https://openalex.org/domains/2",
+      "display_name": "Social Sciences"
+    }
+  },
+  "topics": [
+    {
+      "id": "https://openalex.org/T10883",
+      "display_name": "Ethics and Social Impacts of AI",
+      "score": 0.48159998655319214,
+      "subfield": {
+        "id": "https://openalex.org/subfields/3311",
+        "display_name": "Safety Research"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/33",
+        "display_name": "Social Sciences"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/2",
+        "display_name": "Social Sciences"
+      }
+    }
+  ],
+  "keywords": [
+    {
+      "id": "https://openalex.org/keywords/computer-science",
+      "display_name": "Computer science",
+      "score": 0.3641173243522644
+    },
+    {
+      "id": "https://openalex.org/keywords/philosophy",
+      "display_name": "Philosophy",
+      "score": 0.35102468729019165
+    },
+    {
+      "id": "https://openalex.org/keywords/psychology",
+      "display_name": "Psychology",
+      "score": 0.3278578519821167
+    },
+    {
+      "id": "https://openalex.org/keywords/artificial-intelligence",
+      "display_name": "Artificial intelligence",
+      "score": 0.321617066860199
+    }
+  ],
+  "concepts": [
+    {
+      "id": "https://openalex.org/C41008148",
+      "wikidata": "https://www.wikidata.org/wiki/Q21198",
+      "display_name": "Computer science",
+      "level": 0,
+      "score": 0.3641173243522644
+    },
+    {
+      "id": "https://openalex.org/C138885662",
+      "wikidata": "https://www.wikidata.org/wiki/Q5891",
+      "display_name": "Philosophy",
+      "level": 0,
+      "score": 0.35102468729019165
+    },
+    {
+      "id": "https://openalex.org/C15744967",
+      "wikidata": "https://www.wikidata.org/wiki/Q9418",
+      "display_name": "Psychology",
+      "level": 0,
+      "score": 0.3278578519821167
+    },
+    {
+      "id": "https://openalex.org/C154945302",
+      "wikidata": "https://www.wikidata.org/wiki/Q11660",
+      "display_name": "Artificial intelligence",
+      "level": 1,
+      "score": 0.321617066860199
+    }
+  ],
+  "mesh": [],
+  "locations_count": 2,
+  "locations": [
+    {
+      "id": "doi:10.3998/ergo.12405314.0006.015",
+      "is_oa": true,
+      "landing_page_url": "https://doi.org/10.3998/ergo.12405314.0006.015",
+      "pdf_url": "https://quod.lib.umich.edu/cgi/p/pod/dod-idx/what-s-wrong-with-machine-bias.pdf?c=ergo;idno=12405314.0006.015;format=pdf",
+      "source": {
+        "id": "https://openalex.org/S2738534934",
+        "display_name": "Ergo an Open Access Journal of Philosophy",
+        "issn_l": "2330-4014",
+        "issn": [
+          "2330-4014"
+        ],
+        "is_oa": true,
+        "is_in_doaj": true,
+        "is_core": true,
+        "host_organization": "https://openalex.org/P4310319910",
+        "host_organization_name": "Michigan Publishing",
+        "host_organization_lineage": [
+          "https://openalex.org/P4310319910"
+        ],
+        "host_organization_lineage_names": [
+          "Michigan Publishing"
+        ],
+        "type": "journal"
+      },
+      "license": "cc-by-nc-nd",
+      "license_id": "https://openalex.org/licenses/cc-by-nc-nd",
+      "version": "publishedVersion",
+      "is_accepted": true,
+      "is_published": true,
+      "raw_source_name": "Ergo, an Open Access Journal of Philosophy",
+      "raw_type": "journal-article"
+    },
+    {
+      "id": "pmh:oai:quod.lib.umich.edu:12405314.0006.015",
+      "is_oa": true,
+      "landing_page_url": "http://hdl.handle.net/2027/spo.12405314.0006.015",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S2764988245",
+        "display_name": "The Journal of the Abraham Lincoln Association",
+        "issn_l": "0898-4212",
+        "issn": [
+          "0898-4212",
+          "1945-7987"
+        ],
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/P4310316636",
+        "host_organization_name": "Abraham Lincoln Association",
+        "host_organization_lineage": [
+          "https://openalex.org/P4310316636"
+        ],
+        "host_organization_lineage_names": [
+          "Abraham Lincoln Association"
+        ],
+        "type": "journal"
+      },
+      "license": "cc-by-nc-nd",
+      "license_id": "https://openalex.org/licenses/cc-by-nc-nd",
+      "version": "submittedVersion",
+      "is_accepted": false,
+      "is_published": false,
+      "raw_source_name": "Ergo, an Open Access Journal of Philosophy: vol. 6",
+      "raw_type": "text"
+    }
+  ],
+  "best_oa_location": {
+    "id": "doi:10.3998/ergo.12405314.0006.015",
+    "is_oa": true,
+    "landing_page_url": "https://doi.org/10.3998/ergo.12405314.0006.015",
+    "pdf_url": "https://quod.lib.umich.edu/cgi/p/pod/dod-idx/what-s-wrong-with-machine-bias.pdf?c=ergo;idno=12405314.0006.015;format=pdf",
+    "source": {
+      "id": "https://openalex.org/S2738534934",
+      "display_name": "Ergo an Open Access Journal of Philosophy",
+      "issn_l": "2330-4014",
+      "issn": [
+        "2330-4014"
+      ],
+      "is_oa": true,
+      "is_in_doaj": true,
+      "is_core": true,
+      "host_organization": "https://openalex.org/P4310319910",
+      "host_organization_name": "Michigan Publishing",
+      "host_organization_lineage": [
+        "https://openalex.org/P4310319910"
+      ],
+      "host_organization_lineage_names": [
+        "Michigan Publishing"
+      ],
+      "type": "journal"
+    },
+    "license": "cc-by-nc-nd",
+    "license_id": "https://openalex.org/licenses/cc-by-nc-nd",
+    "version": "publishedVersion",
+    "is_accepted": true,
+    "is_published": true,
+    "raw_source_name": "Ergo, an Open Access Journal of Philosophy",
+    "raw_type": "journal-article"
+  },
+  "sustainable_development_goals": [],
+  "awards": [],
+  "funders": [],
+  "has_content": {
+    "pdf": true,
+    "grobid_xml": true
+  },
+  "content_urls": {
+    "pdf": "https://content.openalex.org/works/W2975598813.pdf",
+    "grobid_xml": "https://content.openalex.org/works/W2975598813.grobid-xml"
+  },
+  "referenced_works_count": 19,
+  "referenced_works": [
+    "https://openalex.org/W218079267",
+    "https://openalex.org/W1819662813",
+    "https://openalex.org/W2032479868",
+    "https://openalex.org/W2102690869",
+    "https://openalex.org/W2121964311",
+    "https://openalex.org/W2140587370",
+    "https://openalex.org/W2488408678",
+    "https://openalex.org/W2584805976",
+    "https://openalex.org/W2756054281",
+    "https://openalex.org/W2885659818",
+    "https://openalex.org/W2889867088",
+    "https://openalex.org/W2890856299",
+    "https://openalex.org/W2904245713",
+    "https://openalex.org/W3125637483",
+    "https://openalex.org/W6608799220",
+    "https://openalex.org/W6638208828",
+    "https://openalex.org/W6675336446",
+    "https://openalex.org/W6722605282",
+    "https://openalex.org/W6754688505"
+  ],
+  "related_works": [
+    "https://openalex.org/W2748952813",
+    "https://openalex.org/W2390279801",
+    "https://openalex.org/W2358668433",
+    "https://openalex.org/W2376932109",
+    "https://openalex.org/W2001405890",
+    "https://openalex.org/W2382290278",
+    "https://openalex.org/W2478288626",
+    "https://openalex.org/W4391913857",
+    "https://openalex.org/W2350741829",
+    "https://openalex.org/W2530322880"
+  ],
+  "abstract_inverted_index": {
+    "Data-driven,": [
+      0
+    ],
+    "decision-making": [
+      1
+    ],
+    "technologies": [
+      2
+    ],
+    "used": [
+      3
+    ],
+    "in": [
+      4,
+      39
+    ],
+    "the": [
+      5,
+      40,
+      58
+    ],
+    "justice": [
+      6
+    ],
+    "system": [
+      7
+    ],
+    "to": [
+      8
+    ],
+    "inform": [
+      9
+    ],
+    "decisions": [
+      10
+    ],
+    "about": [
+      11,
+      70
+    ],
+    "bail,": [
+      12
+    ],
+    "parole,": [
+      13
+    ],
+    "and": [
+      14,
+      76
+    ],
+    "prison": [
+      15
+    ],
+    "sentencing": [
+      16
+    ],
+    "are": [
+      17,
+      45
+    ],
+    "biased": [
+      18
+    ],
+    "against": [
+      19
+    ],
+    "historically": [
+      20
+    ],
+    "marginalized": [
+      21
+    ],
+    "groups": [
+      22
+    ],
+    "(Angwin,": [
+      23
+    ],
+    "Larson,": [
+      24
+    ],
+    "Mattu,": [
+      25
+    ],
+    "&": [
+      26
+    ],
+    "Kirchner": [
+      27
+    ],
+    "2016).": [
+      28
+    ],
+    "But": [
+      29
+    ],
+    "these": [
+      30,
+      60
+    ],
+    "technologies'": [
+      31
+    ],
+    "judgments-which": [
+      32
+    ],
+    "reproduce": [
+      33
+    ],
+    "patterns": [
+      34
+    ],
+    "of": [
+      35
+    ],
+    "wrongful": [
+      36
+    ],
+    "discrimination": [
+      37
+    ],
+    "embedded": [
+      38
+    ],
+    "historical": [
+      41
+    ],
+    "datasets": [
+      42
+    ],
+    "that": [
+      43
+    ],
+    "they": [
+      44
+    ],
+    "trained": [
+      46
+    ],
+    "on-are": [
+      47
+    ],
+    "well-evidenced.": [
+      48
+    ],
+    "This": [
+      49
+    ],
+    "presents": [
+      50
+    ],
+    "a": [
+      51
+    ],
+    "puzzle:": [
+      52
+    ],
+    "how": [
+      53
+    ],
+    "can": [
+      54
+    ],
+    "we": [
+      55
+    ],
+    "account": [
+      56
+    ],
+    "for": [
+      57
+    ],
+    "wrong": [
+      59
+    ],
+    "judgments": [
+      61
+    ],
+    "engender": [
+      62
+    ],
+    "without": [
+      63
+    ],
+    "also": [
+      64
+    ],
+    "indicting": [
+      65
+    ],
+    "morally": [
+      66
+    ],
+    "permissible": [
+      67
+    ],
+    "statistical": [
+      68
+    ],
+    "inferences": [
+      69
+    ],
+    "persons?": [
+      71
+    ],
+    "I": [
+      72
+    ],
+    "motivate": [
+      73
+    ],
+    "this": [
+      74
+    ],
+    "puzzle": [
+      75
+    ],
+    "attempt": [
+      77
+    ],
+    "an": [
+      78
+    ],
+    "answer.": [
+      79
+    ]
+  },
+  "counts_by_year": [
+    {
+      "year": 2026,
+      "cited_by_count": 2
+    },
+    {
+      "year": 2025,
+      "cited_by_count": 12
+    },
+    {
+      "year": 2024,
+      "cited_by_count": 2
+    },
+    {
+      "year": 2023,
+      "cited_by_count": 5
+    },
+    {
+      "year": 2022,
+      "cited_by_count": 4
+    },
+    {
+      "year": 2021,
+      "cited_by_count": 17
+    },
+    {
+      "year": 2020,
+      "cited_by_count": 1
+    }
+  ],
+  "updated_date": "2026-05-11T08:15:01.531666",
+  "created_date": "2025-10-10T00:00:00"
+}

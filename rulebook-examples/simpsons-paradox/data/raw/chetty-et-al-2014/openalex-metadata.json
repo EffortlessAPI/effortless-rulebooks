@@ -1,0 +1,801 @@
+{
+  "id": "https://openalex.org/W3124339641",
+  "doi": "https://doi.org/10.1111/ecoj.12599",
+  "title": "Correlating Social Mobility and Economic Outcomes",
+  "display_name": "Correlating Social Mobility and Economic Outcomes",
+  "relevance_score": 309.65164,
+  "publication_year": 2018,
+  "publication_date": "2018-07-01",
+  "ids": {
+    "openalex": "https://openalex.org/W3124339641",
+    "doi": "https://doi.org/10.1111/ecoj.12599",
+    "mag": "3124339641"
+  },
+  "language": "en",
+  "primary_location": {
+    "id": "pmh:oai:air.unimi.it:2434/620175",
+    "is_oa": true,
+    "landing_page_url": "http://hdl.handle.net/2434/620175",
+    "pdf_url": null,
+    "source": {
+      "id": "https://openalex.org/S4306400516",
+      "display_name": "Archivio Istituzionale della Ricerca (Universita Degli Studi Di Milano)",
+      "issn_l": null,
+      "issn": null,
+      "is_oa": false,
+      "is_in_doaj": false,
+      "is_core": false,
+      "host_organization": "https://openalex.org/I189158943",
+      "host_organization_name": "University of Milan",
+      "host_organization_lineage": [
+        "https://openalex.org/I189158943"
+      ],
+      "host_organization_lineage_names": [],
+      "type": "repository"
+    },
+    "license": "other-oa",
+    "license_id": "https://openalex.org/licenses/other-oa",
+    "version": "submittedVersion",
+    "is_accepted": false,
+    "is_published": false,
+    "raw_source_name": "",
+    "raw_type": "info:eu-repo/semantics/article"
+  },
+  "type": "article",
+  "indexed_in": [],
+  "open_access": {
+    "is_oa": true,
+    "oa_status": "green",
+    "oa_url": "http://hdl.handle.net/2434/620175",
+    "any_repository_has_fulltext": true
+  },
+  "authorships": [
+    {
+      "author_position": "first",
+      "author": {
+        "id": null,
+        "display_name": "Pica, G.",
+        "orcid": null
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I1279858714",
+          "display_name": "Center for Economic and Policy Research",
+          "ror": "https://ror.org/01vqjmx11",
+          "country_code": "US",
+          "type": "nonprofit",
+          "lineage": [
+            "https://openalex.org/I1279858714"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I4210108375",
+          "display_name": "Fundaci\u00f3n de Estudios de Econom\u00eda Aplicada",
+          "ror": "https://ror.org/01hpbhh43",
+          "country_code": "ES",
+          "type": "other",
+          "lineage": [
+            "https://openalex.org/I4210108375"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I98677209",
+          "display_name": "University of Edinburgh",
+          "ror": "https://ror.org/01nrxwf90",
+          "country_code": "GB",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I98677209"
+          ]
+        }
+      ],
+      "countries": [
+        "ES",
+        "GB",
+        "US"
+      ],
+      "is_corresponding": true,
+      "raw_author_name": "Pica, G.",
+      "raw_affiliation_strings": [
+        "University of Edinburgh, CEPR, FEDEA and IZA"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "University of Edinburgh, CEPR, FEDEA and IZA",
+          "institution_ids": [
+            "https://openalex.org/I1279858714",
+            "https://openalex.org/I4210108375",
+            "https://openalex.org/I98677209"
+          ]
+        }
+      ]
+    }
+  ],
+  "institutions": [],
+  "countries_distinct_count": 3,
+  "institutions_distinct_count": 1,
+  "corresponding_author_ids": [],
+  "corresponding_institution_ids": [
+    "https://openalex.org/I1279858714",
+    "https://openalex.org/I4210108375",
+    "https://openalex.org/I98677209"
+  ],
+  "apc_list": null,
+  "apc_paid": null,
+  "fwci": 20.2592,
+  "has_fulltext": false,
+  "cited_by_count": 100,
+  "citation_normalized_percentile": {
+    "value": 0.9923428,
+    "is_in_top_1_percent": true,
+    "is_in_top_10_percent": true
+  },
+  "cited_by_percentile_year": {
+    "min": 90,
+    "max": 100
+  },
+  "biblio": {
+    "volume": null,
+    "issue": null,
+    "first_page": null,
+    "last_page": null
+  },
+  "is_retracted": false,
+  "is_paratext": false,
+  "is_xpac": false,
+  "primary_topic": {
+    "id": "https://openalex.org/T12088",
+    "display_name": "Intergenerational and Educational Inequality Studies",
+    "score": 0.9997000098228455,
+    "subfield": {
+      "id": "https://openalex.org/subfields/3312",
+      "display_name": "Sociology and Political Science"
+    },
+    "field": {
+      "id": "https://openalex.org/fields/33",
+      "display_name": "Social Sciences"
+    },
+    "domain": {
+      "id": "https://openalex.org/domains/2",
+      "display_name": "Social Sciences"
+    }
+  },
+  "topics": [
+    {
+      "id": "https://openalex.org/T12088",
+      "display_name": "Intergenerational and Educational Inequality Studies",
+      "score": 0.9997000098228455,
+      "subfield": {
+        "id": "https://openalex.org/subfields/3312",
+        "display_name": "Sociology and Political Science"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/33",
+        "display_name": "Social Sciences"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/2",
+        "display_name": "Social Sciences"
+      }
+    },
+    {
+      "id": "https://openalex.org/T12714",
+      "display_name": "Youth Education and Societal Dynamics",
+      "score": 0.9944000244140625,
+      "subfield": {
+        "id": "https://openalex.org/subfields/3312",
+        "display_name": "Sociology and Political Science"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/33",
+        "display_name": "Social Sciences"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/2",
+        "display_name": "Social Sciences"
+      }
+    },
+    {
+      "id": "https://openalex.org/T10443",
+      "display_name": "Social Policy and Reform Studies",
+      "score": 0.9922999739646912,
+      "subfield": {
+        "id": "https://openalex.org/subfields/3320",
+        "display_name": "Political Science and International Relations"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/33",
+        "display_name": "Social Sciences"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/2",
+        "display_name": "Social Sciences"
+      }
+    }
+  ],
+  "keywords": [
+    {
+      "id": "https://openalex.org/keywords/economics",
+      "display_name": "Economics",
+      "score": 0.47738951444625854
+    },
+    {
+      "id": "https://openalex.org/keywords/social-mobility",
+      "display_name": "Social mobility",
+      "score": 0.4498063325881958
+    },
+    {
+      "id": "https://openalex.org/keywords/natural-resource-economics",
+      "display_name": "Natural resource economics",
+      "score": 0.34271374344825745
+    },
+    {
+      "id": "https://openalex.org/keywords/sociology",
+      "display_name": "Sociology",
+      "score": 0.1759081482887268
+    },
+    {
+      "id": "https://openalex.org/keywords/social-science",
+      "display_name": "Social science",
+      "score": 0.08223259449005127
+    }
+  ],
+  "concepts": [
+    {
+      "id": "https://openalex.org/C162324750",
+      "wikidata": "https://www.wikidata.org/wiki/Q8134",
+      "display_name": "Economics",
+      "level": 0,
+      "score": 0.47738951444625854
+    },
+    {
+      "id": "https://openalex.org/C37129596",
+      "wikidata": "https://www.wikidata.org/wiki/Q194417",
+      "display_name": "Social mobility",
+      "level": 2,
+      "score": 0.4498063325881958
+    },
+    {
+      "id": "https://openalex.org/C175605778",
+      "wikidata": "https://www.wikidata.org/wiki/Q3299701",
+      "display_name": "Natural resource economics",
+      "level": 1,
+      "score": 0.34271374344825745
+    },
+    {
+      "id": "https://openalex.org/C144024400",
+      "wikidata": "https://www.wikidata.org/wiki/Q21201",
+      "display_name": "Sociology",
+      "level": 0,
+      "score": 0.1759081482887268
+    },
+    {
+      "id": "https://openalex.org/C36289849",
+      "wikidata": "https://www.wikidata.org/wiki/Q34749",
+      "display_name": "Social science",
+      "level": 1,
+      "score": 0.08223259449005127
+    }
+  ],
+  "mesh": [],
+  "locations_count": 2,
+  "locations": [
+    {
+      "id": "pmh:oai:air.unimi.it:2434/620175",
+      "is_oa": true,
+      "landing_page_url": "http://hdl.handle.net/2434/620175",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4306400516",
+        "display_name": "Archivio Istituzionale della Ricerca (Universita Degli Studi Di Milano)",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I189158943",
+        "host_organization_name": "University of Milan",
+        "host_organization_lineage": [
+          "https://openalex.org/I189158943"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": "other-oa",
+      "license_id": "https://openalex.org/licenses/other-oa",
+      "version": "submittedVersion",
+      "is_accepted": false,
+      "is_published": false,
+      "raw_source_name": "",
+      "raw_type": "info:eu-repo/semantics/article"
+    },
+    {
+      "id": "pmh:oai:zenodo.org:10642102",
+      "is_oa": true,
+      "landing_page_url": "https://doi.org/10.1111/ecoj.12599",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4306400562",
+        "display_name": "Zenodo (CERN European Organization for Nuclear Research)",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": true,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I67311998",
+        "host_organization_name": "European Organization for Nuclear Research",
+        "host_organization_lineage": [
+          "https://openalex.org/I67311998"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": "cc-by",
+      "license_id": "https://openalex.org/licenses/cc-by",
+      "version": "submittedVersion",
+      "is_accepted": false,
+      "is_published": false,
+      "raw_source_name": null,
+      "raw_type": "info:eu-repo/semantics/article"
+    }
+  ],
+  "best_oa_location": {
+    "id": "pmh:oai:air.unimi.it:2434/620175",
+    "is_oa": true,
+    "landing_page_url": "http://hdl.handle.net/2434/620175",
+    "pdf_url": null,
+    "source": {
+      "id": "https://openalex.org/S4306400516",
+      "display_name": "Archivio Istituzionale della Ricerca (Universita Degli Studi Di Milano)",
+      "issn_l": null,
+      "issn": null,
+      "is_oa": false,
+      "is_in_doaj": false,
+      "is_core": false,
+      "host_organization": "https://openalex.org/I189158943",
+      "host_organization_name": "University of Milan",
+      "host_organization_lineage": [
+        "https://openalex.org/I189158943"
+      ],
+      "host_organization_lineage_names": [],
+      "type": "repository"
+    },
+    "license": "other-oa",
+    "license_id": "https://openalex.org/licenses/other-oa",
+    "version": "submittedVersion",
+    "is_accepted": false,
+    "is_published": false,
+    "raw_source_name": "",
+    "raw_type": "info:eu-repo/semantics/article"
+  },
+  "sustainable_development_goals": [
+    {
+      "display_name": "Reduced inequalities",
+      "id": "https://metadata.un.org/sdg/10",
+      "score": 0.6899999976158142
+    }
+  ],
+  "awards": [
+    {
+      "id": "https://openalex.org/G2124330010",
+      "display_name": null,
+      "funder_award_id": "ECO2011\u201025272",
+      "funder_id": "https://openalex.org/F4320321868",
+      "funder_display_name": "Minist\u00e9rio da Educa\u00e7\u00e3o e Ci\u00eancia"
+    },
+    {
+      "id": "https://openalex.org/G3443100183",
+      "display_name": null,
+      "funder_award_id": "ECO2011\u201028965",
+      "funder_id": "https://openalex.org/F4320321868",
+      "funder_display_name": "Minist\u00e9rio da Educa\u00e7\u00e3o e Ci\u00eancia"
+    },
+    {
+      "id": "https://openalex.org/G4442482518",
+      "display_name": null,
+      "funder_award_id": "MINECO\u2010ECO2014\u201059225\u2010P",
+      "funder_id": "https://openalex.org/F4320321837",
+      "funder_display_name": "Ministerio de Econom\u00eda y Competitividad"
+    }
+  ],
+  "funders": [
+    {
+      "id": "https://openalex.org/F4320321837",
+      "display_name": "Ministerio de Econom\u00eda y Competitividad",
+      "ror": "https://ror.org/034900433"
+    },
+    {
+      "id": "https://openalex.org/F4320321868",
+      "display_name": "Minist\u00e9rio da Educa\u00e7\u00e3o e Ci\u00eancia",
+      "ror": "https://ror.org/02xv42m49"
+    }
+  ],
+  "has_content": {
+    "grobid_xml": false,
+    "pdf": false
+  },
+  "content_urls": null,
+  "referenced_works_count": 42,
+  "referenced_works": [
+    "https://openalex.org/W133780848",
+    "https://openalex.org/W386236830",
+    "https://openalex.org/W1499407436",
+    "https://openalex.org/W1499862992",
+    "https://openalex.org/W1513502430",
+    "https://openalex.org/W1525912364",
+    "https://openalex.org/W1546068527",
+    "https://openalex.org/W1601136252",
+    "https://openalex.org/W1606583843",
+    "https://openalex.org/W1766287654",
+    "https://openalex.org/W1799296864",
+    "https://openalex.org/W1862838271",
+    "https://openalex.org/W1982557956",
+    "https://openalex.org/W1989526535",
+    "https://openalex.org/W2009351010",
+    "https://openalex.org/W2050613370",
+    "https://openalex.org/W2053034611",
+    "https://openalex.org/W2083958488",
+    "https://openalex.org/W2105584013",
+    "https://openalex.org/W2107209462",
+    "https://openalex.org/W2122216841",
+    "https://openalex.org/W2137295327",
+    "https://openalex.org/W2138366842",
+    "https://openalex.org/W2164646981",
+    "https://openalex.org/W2209960519",
+    "https://openalex.org/W2272432811",
+    "https://openalex.org/W2340055388",
+    "https://openalex.org/W2353003092",
+    "https://openalex.org/W2564132193",
+    "https://openalex.org/W3093752946",
+    "https://openalex.org/W3121505074",
+    "https://openalex.org/W3121977955",
+    "https://openalex.org/W3122167690",
+    "https://openalex.org/W3122812335",
+    "https://openalex.org/W3123027471",
+    "https://openalex.org/W3123201154",
+    "https://openalex.org/W3123464746",
+    "https://openalex.org/W3124056597",
+    "https://openalex.org/W3124094248",
+    "https://openalex.org/W3125715131",
+    "https://openalex.org/W3163153651",
+    "https://openalex.org/W3199353835"
+  ],
+  "related_works": [
+    "https://openalex.org/W4391375266",
+    "https://openalex.org/W2389675267",
+    "https://openalex.org/W1502198272",
+    "https://openalex.org/W2017540542",
+    "https://openalex.org/W2006758266",
+    "https://openalex.org/W2066504725",
+    "https://openalex.org/W1527813328",
+    "https://openalex.org/W2073254488",
+    "https://openalex.org/W2104764082",
+    "https://openalex.org/W1529109761"
+  ],
+  "abstract_inverted_index": {
+    "We": [
+      0,
+      33
+    ],
+    "construct": [
+      1
+    ],
+    "comparable": [
+      2
+    ],
+    "measures": [
+      3
+    ],
+    "of": [
+      4,
+      15,
+      28,
+      59
+    ],
+    "intergenerational": [
+      5,
+      109
+    ],
+    "mobility": [
+      6
+    ],
+    "(IM)": [
+      7
+    ],
+    "for": [
+      8
+    ],
+    "103": [
+      9
+    ],
+    "Italian": [
+      10
+    ],
+    "provinces": [
+      11
+    ],
+    "using": [
+      12
+    ],
+    "the": [
+      13,
+      76,
+      93
+    ],
+    "methodology": [
+      14
+    ],
+    "G\u00fcell": [
+      16
+    ],
+    "et": [
+      17,
+      72
+    ],
+    "al.": [
+      18,
+      73
+    ],
+    "(2007,": [
+      19
+    ],
+    "2015a)": [
+      20
+    ],
+    "and": [
+      21,
+      30,
+      45,
+      48,
+      88,
+      104
+    ],
+    "explore": [
+      22
+    ],
+    "their": [
+      23
+    ],
+    "correlation": [
+      24,
+      60
+    ],
+    "with": [
+      25,
+      41,
+      51,
+      61,
+      75
+    ],
+    "a": [
+      26,
+      82
+    ],
+    "variety": [
+      27
+    ],
+    "social": [
+      29,
+      46
+    ],
+    "economic": [
+      31,
+      42
+    ],
+    "outcomes.": [
+      32
+    ],
+    "find": [
+      34
+    ],
+    "that": [
+      35,
+      79,
+      100
+    ],
+    "higher": [
+      36
+    ],
+    "IM": [
+      37
+    ],
+    "is": [
+      38,
+      55,
+      81
+    ],
+    "positively": [
+      39
+    ],
+    "associated": [
+      40
+    ],
+    "activity,": [
+      43
+    ],
+    "education": [
+      44
+    ],
+    "capital": [
+      47
+    ],
+    "negatively": [
+      49
+    ],
+    "correlated": [
+      50
+    ],
+    "inequality.": [
+      52
+    ],
+    "Moreover,": [
+      53
+    ],
+    "there": [
+      54
+    ],
+    "no": [
+      56
+    ],
+    "clear": [
+      57
+    ],
+    "pattern": [
+      58
+    ],
+    "other": [
+      62
+    ],
+    "socio\u2010political": [
+      63
+    ],
+    "variables.": [
+      64
+    ],
+    "These": [
+      65
+    ],
+    "results": [
+      66
+    ],
+    "are": [
+      67,
+      90
+    ],
+    "qualitatively": [
+      68
+    ],
+    "similar": [
+      69
+    ],
+    "to": [
+      70
+    ],
+    "Chetty": [
+      71
+    ],
+    "(2014),": [
+      74
+    ],
+    "important": [
+      77
+    ],
+    "difference": [
+      78
+    ],
+    "Italy": [
+      80
+    ],
+    "highly": [
+      83
+    ],
+    "centralised": [
+      84
+    ],
+    "state": [
+      85
+    ],
+    "where": [
+      86
+    ],
+    "institutions": [
+      87
+    ],
+    "policies": [
+      89
+    ],
+    "'de": [
+      91
+    ],
+    "jure'": [
+      92
+    ],
+    "same": [
+      94
+    ],
+    "in": [
+      95
+    ],
+    "all": [
+      96
+    ],
+    "provinces.": [
+      97
+    ],
+    "This": [
+      98
+    ],
+    "suggests": [
+      99
+    ],
+    "something": [
+      101
+    ],
+    "beyond": [
+      102
+    ],
+    "institutional": [
+      103
+    ],
+    "policy": [
+      105
+    ],
+    "differences": [
+      106
+    ],
+    "also": [
+      107
+    ],
+    "shapes": [
+      108
+    ],
+    "mobility.": [
+      110
+    ]
+  },
+  "counts_by_year": [
+    {
+      "year": 2026,
+      "cited_by_count": 1
+    },
+    {
+      "year": 2025,
+      "cited_by_count": 18
+    },
+    {
+      "year": 2024,
+      "cited_by_count": 18
+    },
+    {
+      "year": 2023,
+      "cited_by_count": 12
+    },
+    {
+      "year": 2022,
+      "cited_by_count": 16
+    },
+    {
+      "year": 2021,
+      "cited_by_count": 16
+    },
+    {
+      "year": 2020,
+      "cited_by_count": 8
+    },
+    {
+      "year": 2019,
+      "cited_by_count": 5
+    },
+    {
+      "year": 2018,
+      "cited_by_count": 5
+    },
+    {
+      "year": 2016,
+      "cited_by_count": 1
+    }
+  ],
+  "updated_date": "2026-04-28T14:05:53.105641",
+  "created_date": "2025-10-10T00:00:00"
+}

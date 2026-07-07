@@ -302,7 +302,9 @@ app.get('/api/candidate-study-catalog', async (_req, res) => {
     `SELECT candidate_id, proposed_study_id, title, citation, source_url, domain,
             stratum_variable_name, expected_distortion_type, ingestion_status, priority,
             stratum_count_estimate, data_source_note, linked_study_id, publication_year,
-            is_ready_to_encode, is_imported, observed_distortion_type, type_prediction_match
+            is_ready_to_encode, is_imported, observed_distortion_type, type_prediction_match,
+            data_acquisition_status, reversal_mechanism, paradox_confirmation,
+            expansion_wave, is_data_ready
      FROM vw_candidate_study_catalog
      ORDER BY priority, proposed_study_id`
   );

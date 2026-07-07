@@ -1,0 +1,17 @@
+{
+  "candidate_id": "cand-exp-hiester-1984",
+  "proposed_study_id": "hiester-1984",
+  "acquisition_status": "landing_saved",
+  "attempted_at": "2026-07-07T03:44:23+00:00",
+  "catalog_source_url": "https://sabr.org/journal/article/simpsons-paradox-stats-often-can-deceive/",
+  "resolved_urls": [
+    "https://doi.org/10.1111/j.1467-8624.1998.tb06163.x",
+    "https://onlinelibrary.wiley.com/doi/pdfdirect/10.1111/j.1467-8624.1998.tb06163.x",
+    "https://sabr.org/journal/article/simpsons-paradox-stats-often-can-deceive/"
+  ],
+  "files": [
+    "openalex-metadata.json",
+    "source-1.html"
+  ],
+  "dois": []
+}

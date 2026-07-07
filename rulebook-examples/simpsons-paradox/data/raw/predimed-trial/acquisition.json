@@ -1,0 +1,14 @@
+{
+  "candidate_id": "cand-exp-predimed-trial",
+  "proposed_study_id": "predimed-trial",
+  "acquisition_status": "landing_saved",
+  "attempted_at": "2026-07-07T03:47:20+00:00",
+  "catalog_source_url": "http://www.predimed.es/",
+  "resolved_urls": [
+    "http://www.predimed.es/"
+  ],
+  "files": [
+    "source-1.html"
+  ],
+  "dois": []
+}

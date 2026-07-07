@@ -1,0 +1,4116 @@
+{
+  "loop": "acquisition-expansion-wave-1",
+  "channel": "out-of-band",
+  "note": "Merged into CandidateStudyCatalog.DataAcquisitionStatus after loops 68–72.",
+  "created_at": "2026-07-07T03:36:59+00:00",
+  "updated_at": "2026-07-07T03:48:14+00:00",
+  "studies": [
+    {
+      "candidate_id": "cand-exp-blau-kahn-2017",
+      "proposed_study_id": "blau-kahn-2017",
+      "title": "Blau & Kahn (2017)",
+      "citation": "Blau & Kahn (2017). \"The Gender Wage Gap: Extent, Trends, and Explanations..\"",
+      "domain": "economics",
+      "catalog_data_acquisition_status": "not_started",
+      "catalog_source_url": "https://ipums.org/cps",
+      "plan_urls": [
+        "https://ipums.org/cps"
+      ],
+      "plan_dois": [],
+      "acquisition_status": "downloaded",
+      "acquisition_notes": [
+        "OpenAlex search: Confidence and College Applications: Evidence from a Randomized Intervention",
+        "HTTP 429 for https://ipums.org/cps/"
+      ],
+      "files": [
+        "openalex-search.pdf",
+        "openalex-metadata.json",
+        "acquisition.json",
+        "provenance.md"
+      ],
+      "resolved_urls": [
+        "https://doi.org/10.1145/3580507.3597715",
+        "https://www.econstor.eu/bitstream/10419/282069/1/377.pdf",
+        "https://ipums.org/cps"
+      ],
+      "attempted_at": "2026-07-07T03:39:44+00:00",
+      "raw_dir": "data/raw/blau-kahn-2017"
+    },
+    {
+      "candidate_id": "cand-exp-oaxaca-1973",
+      "proposed_study_id": "oaxaca-1973",
+      "title": "Oaxaca (1973)",
+      "citation": "Oaxaca (1973). \"Male-Female Wage Differentials in Urban Labor Markets..\"",
+      "domain": "economics",
+      "catalog_data_acquisition_status": "manual_only",
+      "catalog_source_url": null,
+      "plan_urls": [],
+      "plan_dois": [],
+      "acquisition_status": "manual_only",
+      "acquisition_notes": [
+        "OpenAlex search: The Blinder–Oaxaca Decomposition for Linear Regression Models",
+        "HTTP 403 for https://journals.sagepub.com/doi/pdf/10.1177/1536867X0800800401/",
+        "Catalog marked manual_only; no public URL — encode from published tables."
+      ],
+      "files": [
+        "openalex-metadata.json",
+        "acquisition.json",
+        "provenance.md"
+      ],
+      "resolved_urls": [
+        "https://doi.org/10.1177/1536867x0800800401",
+        "https://journals.sagepub.com/doi/pdf/10.1177/1536867X0800800401"
+      ],
+      "attempted_at": "2026-07-07T03:39:50+00:00",
+      "raw_dir": "data/raw/oaxaca-1973"
+    },
+    {
+      "candidate_id": "cand-exp-card-1992",
+      "proposed_study_id": "card-1992",
+      "title": "Card (1992)",
+      "citation": "Card (1992). \"Using Regional Variation in Wages to Measure the Effects of the Federal Minimum Wage..\"",
+      "domain": "economics",
+      "catalog_data_acquisition_status": "not_started",
+      "catalog_source_url": "https://www.bls.gov",
+      "plan_urls": [
+        "https://www.bls.gov"
+      ],
+      "plan_dois": [],
+      "acquisition_status": "portal_manual",
+      "acquisition_notes": [
+        "OpenAlex search: NAEP 1992 Mathematics Report Card for the Nation and the States.",
+        "Fetched https://www.bls.gov → source-1.html (78789 bytes)",
+        "Data portal landing page saved — manual extract required."
+      ],
+      "files": [
+        "openalex-metadata.json",
+        "source-1.html",
+        "acquisition.json",
+        "provenance.md"
+      ],
+      "resolved_urls": [
+        "https://www.bls.gov"
+      ],
+      "attempted_at": "2026-07-07T03:39:53+00:00",
+      "raw_dir": "data/raw/card-1992"
+    },
+    {
+      "candidate_id": "cand-exp-chetty-et-al-2014",
+      "proposed_study_id": "chetty-et-al-2014",
+      "title": "Chetty et al. (2014)",
+      "citation": "Chetty et al. (2014). \"Where Is the Land of Opportunity? The Geography of Intergenerational Mobility..\"",
+      "domain": "economics",
+      "catalog_data_acquisition_status": "not_started",
+      "catalog_source_url": "https://opportunityinsights.org/data/",
+      "plan_urls": [
+        "https://opportunityinsights.org/data/"
+      ],
+      "plan_dois": [],
+      "acquisition_status": "portal_manual",
+      "acquisition_notes": [
+        "OpenAlex search: Correlating Social Mobility and Economic Outcomes",
+        "Fetched https://opportunityinsights.org/data/ → source-1.html (161651 bytes)",
+        "Data portal landing page saved — manual extract required."
+      ],
+      "files": [
+        "openalex-search.html",
+        "openalex-metadata.json",
+        "source-1.html",
+        "acquisition.json",
+        "provenance.md"
+      ],
+      "resolved_urls": [
+        "https://doi.org/10.1111/ecoj.12599",
+        "http://hdl.handle.net/2434/620175",
+        "https://opportunityinsights.org/data/"
+      ],
+      "attempted_at": "2026-07-07T03:39:55+00:00",
+      "raw_dir": "data/raw/chetty-et-al-2014"
+    },
+    {
+      "candidate_id": "cand-exp-chetty-friedman-saez-turner-yagan-2020",
+      "proposed_study_id": "chetty-friedman-saez-turner-yagan-2020",
+      "title": "Chetty, Friedman, Saez, Turner & Yagan (2020)",
+      "citation": "Chetty, Friedman, Saez, Turner & Yagan (2020). \"Income Segregation and Intergenerational Mobility Across Colleges..\"",
+      "domain": "economics",
+      "catalog_data_acquisition_status": "not_started",
+      "catalog_source_url": "https://opportunityinsights.org/paper/undermatching/",
+      "plan_urls": [
+        "https://opportunityinsights.org/paper/undermatching/"
+      ],
+      "plan_dois": [
+        "10.1093/qje/qjaa005"
+      ],
+      "acquisition_status": "landing_saved",
+      "acquisition_notes": [
+        "OpenAlex: Income Segregation and Intergenerational Mobility Across Colleges in the United States*",
+        "HTTP 403 for https://www.academic.oup.com/qje/article-pdf/135/3/1567/33533819/qjaa005.pdf",
+        "HTTP 403 for https://www.academic.oup.com/qje/article-pdf/135/3/1567/33533819/qjaa005.pdf",
+        "OpenAlex search: Is America coming apart? Socioeconomic segregation in neighborhoods, schools, workplaces, and social networks, 1970–2020",
+        "HTTP 403 for https://www.onlinelibrary.wiley.com/doi/pdfdirect/10.1111/soc4.12884",
+        "Fetched https://opportunityinsights.org/paper/undermatching/ → source-1.html (72460 bytes)"
+      ],
+      "files": [
+        "openalex-metadata.json",
+        "source-1.html",
+        "acquisition.json",
+        "provenance.md"
+      ],
+      "resolved_urls": [
+        "https://doi.org/10.1093/qje/qjaa005",
+        "https://academic.oup.com/qje/article-pdf/135/3/1567/33533819/qjaa005.pdf",
+        "https://academic.oup.com/qje/article-pdf/135/3/1567/33533819/qjaa005.pdf",
+        "https://doi.org/10.1111/soc4.12884",
+        "https://onlinelibrary.wiley.com/doi/pdfdirect/10.1111/soc4.12884",
+        "https://opportunityinsights.org/paper/undermatching/"
+      ],
+      "attempted_at": "2026-07-07T03:40:01+00:00",
+      "raw_dir": "data/raw/chetty-friedman-saez-turner-yagan-2020"
+    },
+    {
+      "candidate_id": "cand-exp-chetty-deming-friedman-2023",
+      "proposed_study_id": "chetty-deming-friedman-2023",
+      "title": "Chetty, Deming & Friedman (2023/2026)",
+      "citation": "Chetty, Deming & Friedman (2023/2026). \"Diversifying Society's Leaders?.\"",
+      "domain": "economics",
+      "catalog_data_acquisition_status": "not_started",
+      "catalog_source_url": "https://opportunityinsights.org/paper/collegeadmissions/",
+      "plan_urls": [
+        "https://opportunityinsights.org/paper/collegeadmissions/"
+      ],
+      "plan_dois": [
+        "10.1093/qje/qjaf050"
+      ],
+      "acquisition_status": "landing_saved",
+      "acquisition_notes": [
+        "OpenAlex: Diversifying Society’s Leaders? The Determinants and Causal Effects of Admission to Highly Selective Private Colleges",
+        "OpenAlex search: How much do we need college admission tests?",
+        "HTTP 403 for https://www.onlinelibrary.wiley.com/doi/pdfdirect/10.1111/asap.12417",
+        "Fetched https://opportunityinsights.org/paper/collegeadmissions/ → source-1.html (62605 bytes)"
+      ],
+      "files": [
+        "openalex-metadata.json",
+        "source-1.html",
+        "acquisition.json",
+        "provenance.md"
+      ],
+      "resolved_urls": [
+        "https://doi.org/10.1093/qje/qjaf050",
+        "https://doi.org/10.1111/asap.12417",
+        "https://onlinelibrary.wiley.com/doi/pdfdirect/10.1111/asap.12417",
+        "https://opportunityinsights.org/paper/collegeadmissions/"
+      ],
+      "attempted_at": "2026-07-07T03:40:09+00:00",
+      "raw_dir": "data/raw/chetty-deming-friedman-2023"
+    },
+    {
+      "candidate_id": "cand-exp-piketty-saez-2003",
+      "proposed_study_id": "piketty-saez-2003",
+      "title": "Piketty & Saez (2003)",
+      "citation": "Piketty & Saez (2003). \"Income Inequality in the United States, 1913–1998..\"",
+      "domain": "economics",
+      "catalog_data_acquisition_status": "not_started",
+      "catalog_source_url": "https://www.irs.gov/statistics",
+      "plan_urls": [
+        "https://www.irs.gov/statistics",
+        "https://eml.berkeley.edu/~saez/"
+      ],
+      "plan_dois": [],
+      "acquisition_status": "landing_saved",
+      "acquisition_notes": [
+        "OpenAlex search: Recent Trends in Top Income Shares in the United States: Reconciling Estimates from March CPS and IRS Tax Return Data",
+        "HTTP 403 for https://www.direct.mit.edu/rest/article-pdf/94/2/371/1916908/rest_a_00200.pdf",
+        "Fetched https://www.irs.gov/statistics → source-1.html (111524 bytes)",
+        "Fetched https://eml.berkeley.edu/~saez/ → source-2.html (64543 bytes)"
+      ],
+      "files": [
+        "openalex-metadata.json",
+        "source-1.html",
+        "source-2.html",
+        "acquisition.json",
+        "provenance.md"
+      ],
+      "resolved_urls": [
+        "https://doi.org/10.1162/rest_a_00200",
+        "https://direct.mit.edu/rest/article-pdf/94/2/371/1916908/rest_a_00200.pdf",
+        "https://www.irs.gov/statistics",
+        "https://eml.berkeley.edu/~saez/"
+      ],
+      "attempted_at": "2026-07-07T03:40:16+00:00",
+      "raw_dir": "data/raw/piketty-saez-2003"
+    },
+    {
+      "candidate_id": "cand-exp-juhn-murphy-pierce-1993",
+      "proposed_study_id": "juhn-murphy-pierce-1993",
+      "title": "Juhn, Murphy & Pierce (1993)",
+      "citation": "Juhn, Murphy & Pierce (1993). \"Wage Inequality and the Rise in Returns to Skill..\"",
+      "domain": "economics",
+      "catalog_data_acquisition_status": "not_started",
+      "catalog_source_url": "https://www.nber.org/data/morg.html",
+      "plan_urls": [
+        "https://www.nber.org/data/morg.html"
+      ],
+      "plan_dois": [],
+      "acquisition_status": "downloaded",
+      "acquisition_notes": [
+        "OpenAlex search: Rising Wage Inequality: The Role of Composition and Prices",
+        "Fetched https://www.nber.org/data/morg.html → source-1.html (88138 bytes)"
+      ],
+      "files": [
+        "openalex-search.pdf",
+        "openalex-metadata.json",
+        "source-1.html",
+        "acquisition.json",
+        "provenance.md"
+      ],
+      "resolved_urls": [
+        "https://doi.org/10.3386/w11628",
+        "https://doi.org/10.3386/w11628",
+        "https://www.nber.org/data/morg.html"
+      ],
+      "attempted_at": "2026-07-07T03:40:21+00:00",
+      "raw_dir": "data/raw/juhn-murphy-pierce-1993"
+    },
+    {
+      "candidate_id": "cand-exp-autor-levy-murnane-2003",
+      "proposed_study_id": "autor-levy-murnane-2003",
+      "title": "Autor, Levy & Murnane (2003)",
+      "citation": "Autor, Levy & Murnane (2003). \"The Skill Content of Recent Technological Change..\"",
+      "domain": "economics",
+      "catalog_data_acquisition_status": "not_started",
+      "catalog_source_url": "https://www.onetonline.org/",
+      "plan_urls": [
+        "https://www.onetonline.org/"
+      ],
+      "plan_dois": [],
+      "acquisition_status": "landing_saved",
+      "acquisition_notes": [
+        "OpenAlex search: Job Polarization in Europe",
+        "Fetched https://www.onetonline.org/ → source-1.html (81491 bytes)"
+      ],
+      "files": [
+        "openalex-metadata.json",
+        "source-1.html",
+        "acquisition.json",
+        "provenance.md"
+      ],
+      "resolved_urls": [
+        "https://doi.org/10.1257/aer.99.2.58",
+        "https://www.onetonline.org/"
+      ],
+      "attempted_at": "2026-07-07T03:40:26+00:00",
+      "raw_dir": "data/raw/autor-levy-murnane-2003"
+    },
+    {
+      "candidate_id": "cand-exp-katz-murphy-1992",
+      "proposed_study_id": "katz-murphy-1992",
+      "title": "Katz & Murphy (1992)",
+      "citation": "Katz & Murphy (1992). \"Changes in Relative Wages, 1963–1987: Supply and Demand Factors..\"",
+      "domain": "economics",
+      "catalog_data_acquisition_status": "not_started",
+      "catalog_source_url": "https://www.bls.gov/cps/",
+      "plan_urls": [
+        "https://www.bls.gov/cps/"
+      ],
+      "plan_dois": [],
+      "acquisition_status": "portal_manual",
+      "acquisition_notes": [
+        "OpenAlex search: Explaining Rising Wage Inequality: Explorations with a Dynamic General Equilibrium Model of Labor Earnings with Heteroge",
+        "Fetched https://www.bls.gov/cps/ → source-1.html (313914 bytes)",
+        "Data portal landing page saved — manual extract required."
+      ],
+      "files": [
+        "openalex-metadata.json",
+        "source-1.html",
+        "acquisition.json",
+        "provenance.md"
+      ],
+      "resolved_urls": [
+        "https://doi.org/10.1006/redy.1997.0008",
+        "https://www.bls.gov/cps/"
+      ],
+      "attempted_at": "2026-07-07T03:40:29+00:00",
+      "raw_dir": "data/raw/katz-murphy-1992"
+    },
+    {
+      "candidate_id": "cand-exp-heckman-1979",
+      "proposed_study_id": "heckman-1979",
+      "title": "Heckman (1979)",
+      "citation": "Heckman (1979). \"Sample Selection Bias as a Specification Error..\"",
+      "domain": "economics",
+      "catalog_data_acquisition_status": "not_started",
+      "catalog_source_url": "https://nlsinfo.org/",
+      "plan_urls": [
+        "https://nlsinfo.org/",
+        "https://psidonline.isr.umich.edu/"
+      ],
+      "plan_dois": [],
+      "acquisition_status": "portal_manual",
+      "acquisition_notes": [
+        "OpenAlex search: The Heckman Correction for Sample Selection and Its Critique",
+        "Fetched https://nlsinfo.org/ → source-1.html (28678 bytes)",
+        "URLError: <urlopen error [Errno 8] nodename nor servname provided, or not known> for https://www.psidonline.isr.umich.edu/",
+        "Data portal landing page saved — manual extract required."
+      ],
+      "files": [
+        "openalex-metadata.json",
+        "source-1.html",
+        "acquisition.json",
+        "provenance.md"
+      ],
+      "resolved_urls": [
+        "https://doi.org/10.1111/1467-6419.00104",
+        "https://nlsinfo.org/",
+        "https://psidonline.isr.umich.edu/"
+      ],
+      "attempted_at": "2026-07-07T03:40:31+00:00",
+      "raw_dir": "data/raw/heckman-1979"
+    },
+    {
+      "candidate_id": "cand-exp-angrist-pischke-2009",
+      "proposed_study_id": "angrist-pischke-2009",
+      "title": "Angrist & Pischke (2009 reference case): Card (1993)",
+      "citation": "Angrist & Pischke (2009 reference case): Card (1993). \"Using Geographic Variation in College Proximity to Estimate the Return to Schooling..\"",
+      "domain": "economics",
+      "catalog_data_acquisition_status": "not_started",
+      "catalog_source_url": "https://nlsinfo.org/",
+      "plan_urls": [
+        "https://nlsinfo.org/"
+      ],
+      "plan_dois": [],
+      "acquisition_status": "portal_manual",
+      "acquisition_notes": [
+        "OpenAlex search: The Oregon Health Insurance Experiment: Evidence from the First Year*",
+        "HTTP 403 for https://www.academic.oup.com/qje/article-pdf/127/3/1057/30456845/qjs020.pdf",
+        "Fetched https://nlsinfo.org/ → source-1.html (28678 bytes)",
+        "Data portal landing page saved — manual extract required."
+      ],
+      "files": [
+        "openalex-metadata.json",
+        "source-1.html",
+        "acquisition.json",
+        "provenance.md"
+      ],
+      "resolved_urls": [
+        "https://doi.org/10.1093/qje/qjs020",
+        "https://academic.oup.com/qje/article-pdf/127/3/1057/30456845/qjs020.pdf",
+        "https://nlsinfo.org/"
+      ],
+      "attempted_at": "2026-07-07T03:40:35+00:00",
+      "raw_dir": "data/raw/angrist-pischke-2009"
+    },
+    {
+      "candidate_id": "cand-exp-autor-dorn-2013",
+      "proposed_study_id": "autor-dorn-2013",
+      "title": "Autor & Dorn (2013)",
+      "citation": "Autor & Dorn (2013). \"The Growth of Low-Skill Service Jobs and the Polarization of the US Labor Market..\"",
+      "domain": "economics",
+      "catalog_data_acquisition_status": "not_started",
+      "catalog_source_url": "https://www.census.gov/programs-surveys/acs.html",
+      "plan_urls": [
+        "https://www.census.gov/programs-surveys/acs.html"
+      ],
+      "plan_dois": [],
+      "acquisition_status": "portal_manual",
+      "acquisition_notes": [
+        "OpenAlex search: Made in China, Sold in Norway: Local Labor Market Effects of an Import Shock",
+        "HTTP 403 for https://www.doi.org/10.2139/ssrn.2460719",
+        "Fetched https://www.census.gov/programs-surveys/acs.html → source-1.html (357864 bytes)",
+        "Data portal landing page saved — manual extract required."
+      ],
+      "files": [
+        "openalex-metadata.json",
+        "source-1.html",
+        "acquisition.json",
+        "provenance.md"
+      ],
+      "resolved_urls": [
+        "https://doi.org/10.2139/ssrn.2460719",
+        "https://doi.org/10.2139/ssrn.2460719",
+        "https://www.census.gov/programs-surveys/acs.html"
+      ],
+      "attempted_at": "2026-07-07T03:40:39+00:00",
+      "raw_dir": "data/raw/autor-dorn-2013"
+    },
+    {
+      "candidate_id": "cand-exp-moretti-2013",
+      "proposed_study_id": "moretti-2013",
+      "title": "Moretti (2013)",
+      "citation": "Moretti (2013). \"Real Wage Inequality..\"",
+      "domain": "economics",
+      "catalog_data_acquisition_status": "not_started",
+      "catalog_source_url": "https://www.bls.gov/regions/",
+      "plan_urls": [
+        "https://www.bls.gov/regions/"
+      ],
+      "plan_dois": [],
+      "acquisition_status": "portal_manual",
+      "acquisition_notes": [
+        "OpenAlex search: In Praise of Overstating the Case: A review of Franco Moretti, Distant Reading (London: Verso, 2013)",
+        "Fetched https://www.bls.gov/regions/ → source-1.html (76444 bytes)",
+        "Data portal landing page saved — manual extract required."
+      ],
+      "files": [
+        "openalex-search.html",
+        "openalex-metadata.json",
+        "source-1.html",
+        "acquisition.json",
+        "provenance.md"
+      ],
+      "resolved_urls": [
+        "https://doi.org/10.63744/wknp3j4rpa7f",
+        "https://doi.org/10.63744/wknp3j4rpa7f",
+        "https://www.bls.gov/regions/"
+      ],
+      "attempted_at": "2026-07-07T03:40:45+00:00",
+      "raw_dir": "data/raw/moretti-2013"
+    },
+    {
+      "candidate_id": "cand-exp-acemoglu-autor-2011",
+      "proposed_study_id": "acemoglu-autor-2011",
+      "title": "Acemoglu & Autor (2011)",
+      "citation": "Acemoglu & Autor (2011). \"Skills, Tasks and Technologies: Implications for Employment and Earnings..\"",
+      "domain": "economics",
+      "catalog_data_acquisition_status": "not_started",
+      "catalog_source_url": "https://www.nber.org/data/cps.html",
+      "plan_urls": [
+        "https://www.nber.org/data/cps.html"
+      ],
+      "plan_dois": [],
+      "acquisition_status": "downloaded",
+      "acquisition_notes": [
+        "OpenAlex search: Carbon Taxes, Path Dependency, and Directed Technical Change: Evidence from the Auto Industry",
+        "Fetched https://www.nber.org/data/cps.html → source-1.html (87634 bytes)"
+      ],
+      "files": [
+        "openalex-search.pdf",
+        "openalex-metadata.json",
+        "source-1.html",
+        "acquisition.json",
+        "provenance.md"
+      ],
+      "resolved_urls": [
+        "https://doi.org/10.1086/684581",
+        "https://researchonline.lse.ac.uk/id/eprint/62722/7/Audit_query_8203.pdf",
+        "https://www.nber.org/data/cps.html"
+      ],
+      "attempted_at": "2026-07-07T03:40:49+00:00",
+      "raw_dir": "data/raw/acemoglu-autor-2011"
+    },
+    {
+      "candidate_id": "cand-exp-chetty-hendren-katz-2016",
+      "proposed_study_id": "chetty-hendren-katz-2016",
+      "title": "Chetty, Hendren & Katz (2016)",
+      "citation": "Chetty, Hendren & Katz (2016). \"The Effects of Exposure to Better Neighborhoods on Children..\"",
+      "domain": "economics",
+      "catalog_data_acquisition_status": "not_started",
+      "catalog_source_url": "https://opportunityinsights.org/",
+      "plan_urls": [
+        "https://opportunityinsights.org/"
+      ],
+      "plan_dois": [],
+      "acquisition_status": "landing_saved",
+      "acquisition_notes": [
+        "OpenAlex search: The Effects of Exposure to Better Neighborhoods on Children: New Evidence from the Moving to Opportunity Experiment",
+        "HTTP 403 for https://www.aeaweb.org/articles/pdf/doi/10.1257/aer.20150572",
+        "Fetched https://opportunityinsights.org/ → source-1.html (69338 bytes)"
+      ],
+      "files": [
+        "openalex-metadata.json",
+        "source-1.html",
+        "acquisition.json",
+        "provenance.md"
+      ],
+      "resolved_urls": [
+        "https://doi.org/10.1257/aer.20150572",
+        "https://www.aeaweb.org/articles/pdf/doi/10.1257/aer.20150572",
+        "https://opportunityinsights.org/"
+      ],
+      "attempted_at": "2026-07-07T03:40:56+00:00",
+      "raw_dir": "data/raw/chetty-hendren-katz-2016"
+    },
+    {
+      "candidate_id": "cand-exp-bhutta-hizmo-ringo-2022",
+      "proposed_study_id": "bhutta-hizmo-ringo-2022",
+      "title": "Bhutta, Hizmo & Ringo (2022/2025)",
+      "citation": "Bhutta, Hizmo & Ringo (2022/2025). \"How Much Does Racial Bias Affect Mortgage Lending?.\"",
+      "domain": "economics",
+      "catalog_data_acquisition_status": "not_started",
+      "catalog_source_url": "https://ffiec.cfpb.gov/data-browser/",
+      "plan_urls": [
+        "https://ffiec.cfpb.gov/data-browser/"
+      ],
+      "plan_dois": [],
+      "acquisition_status": "landing_saved",
+      "acquisition_notes": [
+        "OpenAlex search: The Impact of Minority Representation at Mortgage Lenders",
+        "HTTP 403 for https://www.onlinelibrary.wiley.com/doi/pdfdirect/10.1111/jofi.13428",
+        "Fetched https://ffiec.cfpb.gov/data-browser/ → source-1.html (3294 bytes)"
+      ],
+      "files": [
+        "openalex-metadata.json",
+        "source-1.html",
+        "acquisition.json",
+        "provenance.md"
+      ],
+      "resolved_urls": [
+        "https://doi.org/10.1111/jofi.13428",
+        "https://onlinelibrary.wiley.com/doi/pdfdirect/10.1111/jofi.13428",
+        "https://ffiec.cfpb.gov/data-browser/"
+      ],
+      "attempted_at": "2026-07-07T03:41:01+00:00",
+      "raw_dir": "data/raw/bhutta-hizmo-ringo-2022"
+    },
+    {
+      "candidate_id": "cand-exp-saez-2019",
+      "proposed_study_id": "saez-2019",
+      "title": "Saez (2019)",
+      "citation": "Saez (2019). \"Striking it Richer: The Evolution of Top Incomes in the United States..\"",
+      "domain": "economics",
+      "catalog_data_acquisition_status": "not_started",
+      "catalog_source_url": "https://www.irs.gov/statistics/soi-tax-stats-individual-income-tax-statistics",
+      "plan_urls": [
+        "https://www.irs.gov/statistics/soi-tax-stats-individual-income-tax-statistics"
+      ],
+      "plan_dois": [],
+      "acquisition_status": "downloaded",
+      "acquisition_notes": [
+        "OpenAlex search: Surviving Sepsis Campaign: guidelines on the management of critically ill adults with Coronavirus Disease 2019 (COVID-19",
+        "HTTP 404 for https://www.irs.gov/statistics/soi-tax-stats-individual-income-tax-statistics/"
+      ],
+      "files": [
+        "openalex-search.pdf",
+        "openalex-metadata.json",
+        "acquisition.json",
+        "provenance.md"
+      ],
+      "resolved_urls": [
+        "https://doi.org/10.1007/s00134-020-06022-5",
+        "https://link.springer.com/content/pdf/10.1007/s00134-020-06022-5.pdf",
+        "https://www.irs.gov/statistics/soi-tax-stats-individual-income-tax-statistics"
+      ],
+      "attempted_at": "2026-07-07T03:41:04+00:00",
+      "raw_dir": "data/raw/saez-2019"
+    },
+    {
+      "candidate_id": "cand-exp-fortin-lemieux-firpo-2011",
+      "proposed_study_id": "fortin-lemieux-firpo-2011",
+      "title": "Fortin, Lemieux & Firpo (2011)",
+      "citation": "Fortin, Lemieux & Firpo (2011). \"Decomposition Methods in Economics..\"",
+      "domain": "economics",
+      "catalog_data_acquisition_status": "not_started",
+      "catalog_source_url": "https://ipums.org/cps",
+      "plan_urls": [
+        "https://ipums.org/cps"
+      ],
+      "plan_dois": [],
+      "acquisition_status": "portal_manual",
+      "acquisition_notes": [
+        "OpenAlex search: Inter‐country wage differences in the European Union",
+        "HTTP 404 for https://ipums.org/cps/",
+        "Data portal URL(s) recorded; fetch failed — manual registration/download required."
+      ],
+      "files": [
+        "openalex-metadata.json",
+        "acquisition.json",
+        "provenance.md"
+      ],
+      "resolved_urls": [
+        "https://doi.org/10.1111/ilr.12014",
+        "https://ipums.org/cps"
+      ],
+      "attempted_at": "2026-07-07T03:41:11+00:00",
+      "raw_dir": "data/raw/fortin-lemieux-firpo-2011"
+    },
+    {
+      "candidate_id": "cand-exp-chetty-friedman-rockoff-2014",
+      "proposed_study_id": "chetty-friedman-rockoff-2014",
+      "title": "Chetty, Friedman & Rockoff (2014)",
+      "citation": "Chetty, Friedman & Rockoff (2014). \"Measuring the Impacts of Teachers I..\"",
+      "domain": "economics",
+      "catalog_data_acquisition_status": "manual_only",
+      "catalog_source_url": null,
+      "plan_urls": [],
+      "plan_dois": [],
+      "acquisition_status": "downloaded",
+      "acquisition_notes": [
+        "OpenAlex search: Validating Teacher Effect Estimates Using Changes in Teacher Assignments in Los Angeles"
+      ],
+      "files": [
+        "openalex-search.pdf",
+        "openalex-metadata.json",
+        "acquisition.json",
+        "provenance.md"
+      ],
+      "resolved_urls": [
+        "https://doi.org/10.3386/w20657",
+        "https://doi.org/10.3386/w20657"
+      ],
+      "attempted_at": "2026-07-07T03:41:14+00:00",
+      "raw_dir": "data/raw/chetty-friedman-rockoff-2014"
+    },
+    {
+      "candidate_id": "cand-exp-angwin-larson-mattu-kirchner-2016",
+      "proposed_study_id": "angwin-larson-mattu-kirchner-2016",
+      "title": "Angwin, Larson, Mattu & Kirchner (2016)",
+      "citation": "Angwin, Larson, Mattu & Kirchner (2016). \"Machine Bias..\"",
+      "domain": "criminal-justice-sentencing",
+      "catalog_data_acquisition_status": "not_started",
+      "catalog_source_url": "https://github.com/propublica/compas-analysis",
+      "plan_urls": [
+        "https://github.com/propublica/compas-analysis"
+      ],
+      "plan_dois": [],
+      "acquisition_status": "landing_saved",
+      "acquisition_notes": [
+        "OpenAlex search: What's Wrong with Machine Bias",
+        "HTTP 403 for https://www.quod.lib.umich.edu/cgi/p/pod/dod-idx/what-s-wrong-with-machine-bias.pdf?c=ergo;idno=12405314.0006.015;format=pdf",
+        "Fetched https://github.com/propublica/compas-analysis → source-1.html (263643 bytes)"
+      ],
+      "files": [
+        "openalex-metadata.json",
+        "source-1.html",
+        "acquisition.json",
+        "provenance.md"
+      ],
+      "resolved_urls": [
+        "https://doi.org/10.3998/ergo.12405314.0006.015",
+        "https://quod.lib.umich.edu/cgi/p/pod/dod-idx/what-s-wrong-with-machine-bias.pdf?c=ergo;idno=12405314.0006.015;format=pdf",
+        "https://github.com/propublica/compas-analysis"
+      ],
+      "attempted_at": "2026-07-07T03:41:18+00:00",
+      "raw_dir": "data/raw/angwin-larson-mattu-kirchner-2016"
+    },
+    {
+      "candidate_id": "cand-exp-spohn-2000",
+      "proposed_study_id": "spohn-2000",
+      "title": "Spohn (2000)",
+      "citation": "Spohn (2000). \"Thirty Years of Sentencing Reform: The Quest for a Racially Neutral Sentencing Process..\"",
+      "domain": "criminal-justice-sentencing",
+      "catalog_data_acquisition_status": "not_started",
+      "catalog_source_url": "https://bjs.ojp.gov/data-collection/federal-justice-statistics-program-fjsp",
+      "plan_urls": [
+        "https://bjs.ojp.gov/data-collection/federal-justice-statistics-program-fjsp"
+      ],
+      "plan_dois": [],
+      "acquisition_status": "downloaded",
+      "acquisition_notes": [
+        "OpenAlex search: Current fluctuations for TASEP: A proof of the Prähofer–Spohn conjecture",
+        "Fetched https://bjs.ojp.gov/data-collection/federal-justice-statistics-program-fjsp → source-1.html (423272 bytes)"
+      ],
+      "files": [
+        "openalex-search.pdf",
+        "openalex-metadata.json",
+        "source-1.html",
+        "acquisition.json",
+        "provenance.md"
+      ],
+      "resolved_urls": [
+        "https://doi.org/10.1214/10-aop550",
+        "https://projecteuclid.org/journals/annals-of-probability/volume-39/issue-1/Current-fluctuations-for-TASEP--A-proof-of-the-Pr%c3%a4hoferSpohn/10.1214/10-AOP550.pdf",
+        "https://bjs.ojp.gov/data-collection/federal-justice-statistics-program-fjsp"
+      ],
+      "attempted_at": "2026-07-07T03:41:22+00:00",
+      "raw_dir": "data/raw/spohn-2000"
+    },
+    {
+      "candidate_id": "cand-exp-starr-rehavi-2014",
+      "proposed_study_id": "starr-rehavi-2014",
+      "title": "Starr & Rehavi (2014)",
+      "citation": "Starr & Rehavi (2014). \"Racial Disparity in Federal Criminal Sentences..\"",
+      "domain": "criminal-justice-sentencing",
+      "catalog_data_acquisition_status": "not_started",
+      "catalog_source_url": "https://www.ussc.gov/research/datafiles/commission-datafiles",
+      "plan_urls": [
+        "https://www.ussc.gov/research/datafiles/commission-datafiles"
+      ],
+      "plan_dois": [],
+      "acquisition_status": "landing_saved",
+      "acquisition_notes": [
+        "OpenAlex search: Cumulative Disadvantage in the American Criminal Justice System",
+        "HTTP 403 for https://www.annualreviews.org/doi/pdf/10.1146/annurev-criminol-011518-024815/",
+        "Fetched https://www.ussc.gov/research/datafiles/commission-datafiles → source-1.html (188216 bytes)"
+      ],
+      "files": [
+        "openalex-metadata.json",
+        "source-1.html",
+        "acquisition.json",
+        "provenance.md"
+      ],
+      "resolved_urls": [
+        "https://doi.org/10.1146/annurev-criminol-011518-024815",
+        "https://www.annualreviews.org/doi/pdf/10.1146/annurev-criminol-011518-024815",
+        "https://www.ussc.gov/research/datafiles/commission-datafiles"
+      ],
+      "attempted_at": "2026-07-07T03:41:26+00:00",
+      "raw_dir": "data/raw/starr-rehavi-2014"
+    },
+    {
+      "candidate_id": "cand-exp-ussc-2017",
+      "proposed_study_id": "ussc-2017",
+      "title": "USSC (2017)",
+      "citation": "USSC (2017). \"Demographic Differences in Sentencing..\"",
+      "domain": "criminal-justice-sentencing",
+      "catalog_data_acquisition_status": "not_started",
+      "catalog_source_url": "https://www.ussc.gov/research/research-reports/demographic-differences-sentencing",
+      "plan_urls": [
+        "https://www.ussc.gov/research/research-reports/demographic-differences-sentencing"
+      ],
+      "plan_dois": [],
+      "acquisition_status": "landing_saved",
+      "acquisition_notes": [
+        "OpenAlex search: USSC-YOLO: Enhanced Multi-Scale Road Crack Object Detection Algorithm for UAV Image",
+        "HTTP 403 for https://www.mdpi.com/1424-8220/24/17/5586/pdf?version=1724921490/",
+        "Fetched https://www.ussc.gov/research/research-reports/demographic-differences-sentencing → source-1.html (147331 bytes)"
+      ],
+      "files": [
+        "openalex-metadata.json",
+        "source-1.html",
+        "acquisition.json",
+        "provenance.md"
+      ],
+      "resolved_urls": [
+        "https://doi.org/10.3390/s24175586",
+        "https://www.mdpi.com/1424-8220/24/17/5586/pdf?version=1724921490",
+        "https://www.ussc.gov/research/research-reports/demographic-differences-sentencing"
+      ],
+      "attempted_at": "2026-07-07T03:41:29+00:00",
+      "raw_dir": "data/raw/ussc-2017"
+    },
+    {
+      "candidate_id": "cand-exp-western-2006",
+      "proposed_study_id": "western-2006",
+      "title": "Western (2006)",
+      "citation": "Western (2006)",
+      "domain": "criminal-justice-sentencing",
+      "catalog_data_acquisition_status": "not_started",
+      "catalog_source_url": "https://nlsinfo.org/",
+      "plan_urls": [
+        "https://nlsinfo.org/"
+      ],
+      "plan_dois": [],
+      "acquisition_status": "portal_manual",
+      "acquisition_notes": [
+        "OpenAlex search: Changing Values among Western Publics from 1970 to 2006",
+        "Fetched https://nlsinfo.org/ → source-1.html (28678 bytes)",
+        "Data portal landing page saved — manual extract required."
+      ],
+      "files": [
+        "openalex-metadata.json",
+        "source-1.html",
+        "acquisition.json",
+        "provenance.md"
+      ],
+      "resolved_urls": [
+        "https://doi.org/10.1080/01402380701834747",
+        "https://nlsinfo.org/"
+      ],
+      "attempted_at": "2026-07-07T03:41:33+00:00",
+      "raw_dir": "data/raw/western-2006"
+    },
+    {
+      "candidate_id": "cand-exp-brame-bushway-paternoster-turner-2014",
+      "proposed_study_id": "brame-bushway-paternoster-turner-2014",
+      "title": "Brame, Bushway, Paternoster & Turner (2014)",
+      "citation": "Brame, Bushway, Paternoster & Turner (2014). \"Demographic Patterns of Cumulative Arrest Prevalence by Ages 18 and 23..\"",
+      "domain": "criminal-justice-sentencing",
+      "catalog_data_acquisition_status": "not_started",
+      "catalog_source_url": "https://nlsinfo.org/",
+      "plan_urls": [
+        "https://nlsinfo.org/"
+      ],
+      "plan_dois": [],
+      "acquisition_status": "portal_manual",
+      "acquisition_notes": [
+        "OpenAlex search: Risk of being killed by police use of force in the United States by age, race–ethnicity, and sex",
+        "HTTP 403 for https://www.pnas.org/content/pnas/116/34/16793.full.pdf",
+        "Fetched https://nlsinfo.org/ → source-1.html (28678 bytes)",
+        "Data portal landing page saved — manual extract required."
+      ],
+      "files": [
+        "openalex-metadata.json",
+        "source-1.html",
+        "acquisition.json",
+        "provenance.md"
+      ],
+      "resolved_urls": [
+        "https://doi.org/10.1073/pnas.1821204116",
+        "https://www.pnas.org/content/pnas/116/34/16793.full.pdf",
+        "https://nlsinfo.org/"
+      ],
+      "attempted_at": "2026-07-07T03:41:35+00:00",
+      "raw_dir": "data/raw/brame-bushway-paternoster-turner-2014"
+    },
+    {
+      "candidate_id": "cand-exp-gross-risinger-et-al-2017",
+      "proposed_study_id": "gross-risinger-et-al-2017",
+      "title": "Gross & Risinger et al. (2017)",
+      "citation": "Gross & Risinger et al. (2017). \"Race and Wrongful Convictions in the United States..\"",
+      "domain": "criminal-justice-sentencing",
+      "catalog_data_acquisition_status": "not_started",
+      "catalog_source_url": "https://www.law.umich.edu/special/exoneration/Pages/about.aspx",
+      "plan_urls": [
+        "https://www.law.umich.edu/special/exoneration/Pages/about.aspx"
+      ],
+      "plan_dois": [],
+      "acquisition_status": "landing_saved",
+      "acquisition_notes": [
+        "OpenAlex search: Plant responses to rising vapor pressure deficit",
+        "Fetched https://www.law.umich.edu/special/exoneration/Pages/about.aspx → source-1.html (51826 bytes)"
+      ],
+      "files": [
+        "openalex-search.html",
+        "openalex-metadata.json",
+        "source-1.html",
+        "acquisition.json",
+        "provenance.md"
+      ],
+      "resolved_urls": [
+        "https://doi.org/10.1111/nph.16485",
+        "https://www.dora.lib4ri.ch/wsl/islandora/object/wsl%3A22824",
+        "https://www.law.umich.edu/special/exoneration/Pages/about.aspx"
+      ],
+      "attempted_at": "2026-07-07T03:41:38+00:00",
+      "raw_dir": "data/raw/gross-risinger-et-al-2017"
+    },
+    {
+      "candidate_id": "cand-exp-baldus-woodworth-pulaski-1983",
+      "proposed_study_id": "baldus-woodworth-pulaski-1983",
+      "title": "Baldus, Woodworth & Pulaski (1983)",
+      "citation": "Baldus, Woodworth & Pulaski (1983). \"Comparative Review of Death Sentences: An Empirical Study of the Georgia Experience..\"",
+      "domain": "criminal-justice-sentencing",
+      "catalog_data_acquisition_status": "manual_only",
+      "catalog_source_url": null,
+      "plan_urls": [],
+      "plan_dois": [],
+      "acquisition_status": "manual_only",
+      "acquisition_notes": [
+        "OpenAlex search: Comparative Review of Death Sentences: An Empirical Study of the Georgia Experience",
+        "Catalog marked manual_only; no public URL — encode from published tables."
+      ],
+      "files": [
+        "openalex-metadata.json",
+        "acquisition.json",
+        "provenance.md"
+      ],
+      "resolved_urls": [
+        "https://doi.org/10.2307/1143133"
+      ],
+      "attempted_at": "2026-07-07T03:41:45+00:00",
+      "raw_dir": "data/raw/baldus-woodworth-pulaski-1983"
+    },
+    {
+      "candidate_id": "cand-exp-fryer-2016",
+      "proposed_study_id": "fryer-2016",
+      "title": "Fryer (2016)",
+      "citation": "Fryer (2016). \"An Empirical Analysis of Racial Differences in Police Use of Force..\"",
+      "domain": "criminal-justice-sentencing",
+      "catalog_data_acquisition_status": "manual_only",
+      "catalog_source_url": null,
+      "plan_urls": [],
+      "plan_dois": [],
+      "acquisition_status": "manual_only",
+      "acquisition_notes": [
+        "OpenAlex search: Teaching Communication Skills to Medical Oncology Fellows",
+        "Catalog marked manual_only; no public URL — encode from published tables."
+      ],
+      "files": [
+        "openalex-metadata.json",
+        "acquisition.json",
+        "provenance.md"
+      ],
+      "resolved_urls": [
+        "https://doi.org/10.1200/jco.2003.09.073"
+      ],
+      "attempted_at": "2026-07-07T03:41:46+00:00",
+      "raw_dir": "data/raw/fryer-2016"
+    },
+    {
+      "candidate_id": "cand-exp-rehavi-starr-2012",
+      "proposed_study_id": "rehavi-starr-2012",
+      "title": "Rehavi & Starr (2012)",
+      "citation": "Rehavi & Starr (2012). \"Racial Disparity in Federal Criminal Charging and Its Sentencing Consequences..\"",
+      "domain": "criminal-justice-sentencing",
+      "catalog_data_acquisition_status": "not_started",
+      "catalog_source_url": "https://www.ussc.gov/research/datafiles/commission-datafiles",
+      "plan_urls": [
+        "https://www.ussc.gov/research/datafiles/commission-datafiles"
+      ],
+      "plan_dois": [],
+      "acquisition_status": "landing_saved",
+      "acquisition_notes": [
+        "OpenAlex search: Race Discrimination: An Economic Perspective",
+        "HTTP 403 for https://www.aeaweb.org/articles/pdf/doi/10.1257/jep.34.2.68",
+        "Fetched https://www.ussc.gov/research/datafiles/commission-datafiles → source-1.html (188216 bytes)"
+      ],
+      "files": [
+        "openalex-metadata.json",
+        "source-1.html",
+        "acquisition.json",
+        "provenance.md"
+      ],
+      "resolved_urls": [
+        "https://doi.org/10.1257/jep.34.2.68",
+        "https://www.aeaweb.org/articles/pdf/doi/10.1257/jep.34.2.68",
+        "https://www.ussc.gov/research/datafiles/commission-datafiles"
+      ],
+      "attempted_at": "2026-07-07T03:41:48+00:00",
+      "raw_dir": "data/raw/rehavi-starr-2012"
+    },
+    {
+      "candidate_id": "cand-exp-kutateladze-andiloro-johnson-spohn-2014",
+      "proposed_study_id": "kutateladze-andiloro-johnson-spohn-2014",
+      "title": "Kutateladze, Andiloro, Johnson & Spohn (2014)",
+      "citation": "Kutateladze, Andiloro, Johnson & Spohn (2014). \"Cumulative Disadvantage: Examining Racial and Ethnic Disparity in Prosecution and Sentencing..\"",
+      "domain": "criminal-justice-sentencing",
+      "catalog_data_acquisition_status": "manual_only",
+      "catalog_source_url": null,
+      "plan_urls": [],
+      "plan_dois": [],
+      "acquisition_status": "manual_only",
+      "acquisition_notes": [
+        "OpenAlex search: How Structural Racism Works — Racist Policies as a Root Cause of U.S. Racial Health Inequities",
+        "HTTP 403 for https://www.nejm.org/doi/pdf/10.1056/NEJMms2025396?articleTools=true/",
+        "Catalog marked manual_only; no public URL — encode from published tables."
+      ],
+      "files": [
+        "openalex-metadata.json",
+        "acquisition.json",
+        "provenance.md"
+      ],
+      "resolved_urls": [
+        "https://doi.org/10.1056/nejmms2025396",
+        "https://www.nejm.org/doi/pdf/10.1056/NEJMms2025396?articleTools=true"
+      ],
+      "attempted_at": "2026-07-07T03:41:51+00:00",
+      "raw_dir": "data/raw/kutateladze-andiloro-johnson-spohn-2014"
+    },
+    {
+      "candidate_id": "cand-exp-johnson-2006",
+      "proposed_study_id": "johnson-2006",
+      "title": "Johnson (2006)",
+      "citation": "Johnson (2006). \"The Multicollinearity Problem in Criminal Sentencing Research..\"",
+      "domain": "criminal-justice-sentencing",
+      "catalog_data_acquisition_status": "manual_only",
+      "catalog_source_url": null,
+      "plan_urls": [],
+      "plan_dois": [],
+      "acquisition_status": "manual_only",
+      "acquisition_notes": [
+        "OpenAlex search: Accurate Band Gaps of Semiconductors and Insulators with a Semilocal Exchange-Correlation Potential",
+        "Catalog marked manual_only; no public URL — encode from published tables."
+      ],
+      "files": [
+        "openalex-metadata.json",
+        "acquisition.json",
+        "provenance.md"
+      ],
+      "resolved_urls": [
+        "https://doi.org/10.1103/physrevlett.102.226401"
+      ],
+      "attempted_at": "2026-07-07T03:41:53+00:00",
+      "raw_dir": "data/raw/johnson-2006"
+    },
+    {
+      "candidate_id": "cand-exp-harris-steffensmeier-ulmer-painter-davis-2009",
+      "proposed_study_id": "harris-steffensmeier-ulmer-painter-davis-2009",
+      "title": "Harris, Steffensmeier, Ulmer & Painter-Davis (2009)",
+      "citation": "Harris, Steffensmeier, Ulmer & Painter-Davis (2009). \"Are Blacks and Hispanics Disproportionately Incarcerated Relative to Their Arrests?.\"",
+      "domain": "criminal-justice-sentencing",
+      "catalog_data_acquisition_status": "not_started",
+      "catalog_source_url": "https://bjs.ojp.gov/",
+      "plan_urls": [
+        "https://bjs.ojp.gov/",
+        "https://ucr.fbi.gov/"
+      ],
+      "plan_dois": [],
+      "acquisition_status": "landing_saved",
+      "acquisition_notes": [
+        "OpenAlex search: Cumulative Disadvantage in the American Criminal Justice System",
+        "HTTP 403 for https://www.annualreviews.org/doi/pdf/10.1146/annurev-criminol-011518-024815/",
+        "Fetched https://bjs.ojp.gov/ → source-1.html (71060 bytes)",
+        "URLError: <urlopen error [Errno 8] nodename nor servname provided, or not known> for https://www.ucr.fbi.gov/"
+      ],
+      "files": [
+        "openalex-metadata.json",
+        "source-1.html",
+        "acquisition.json",
+        "provenance.md"
+      ],
+      "resolved_urls": [
+        "https://doi.org/10.1146/annurev-criminol-011518-024815",
+        "https://www.annualreviews.org/doi/pdf/10.1146/annurev-criminol-011518-024815",
+        "https://bjs.ojp.gov/",
+        "https://ucr.fbi.gov/"
+      ],
+      "attempted_at": "2026-07-07T03:41:55+00:00",
+      "raw_dir": "data/raw/harris-steffensmeier-ulmer-painter-davis-2009"
+    },
+    {
+      "candidate_id": "cand-exp-arcidiacono-kinsler-ransom-2019",
+      "proposed_study_id": "arcidiacono-kinsler-ransom-2019",
+      "title": "Arcidiacono, Kinsler & Ransom (2019)",
+      "citation": "Arcidiacono, Kinsler & Ransom (2019). \"Legacy and Athlete Preferences at Harvard..\"",
+      "domain": "higher-education-admissions",
+      "catalog_data_acquisition_status": "not_started",
+      "catalog_source_url": null,
+      "plan_urls": [],
+      "plan_dois": [],
+      "acquisition_status": "metadata_only",
+      "acquisition_notes": [
+        "OpenAlex search: Affirmative Action, Mismatch, and Economic Mobility after California’s Proposition 209",
+        "HTTP 403 for https://escholarship.org/uc/item/2w21n06w/",
+        "OpenAlex metadata saved; no open PDF/data file retrieved."
+      ],
+      "files": [
+        "openalex-metadata.json",
+        "acquisition.json",
+        "provenance.md"
+      ],
+      "resolved_urls": [
+        "https://doi.org/10.1093/qje/qjab027",
+        "https://escholarship.org/uc/item/2w21n06w"
+      ],
+      "attempted_at": "2026-07-07T03:41:59+00:00",
+      "raw_dir": "data/raw/arcidiacono-kinsler-ransom-2019"
+    },
+    {
+      "candidate_id": "cand-exp-long-2004",
+      "proposed_study_id": "long-2004",
+      "title": "Long (2004)",
+      "citation": "Long (2004). \"Race and College Costs: Examining and Decomposing the College Premium..\"",
+      "domain": "higher-education-admissions",
+      "catalog_data_acquisition_status": "not_started",
+      "catalog_source_url": "https://nlsinfo.org/",
+      "plan_urls": [
+        "https://nlsinfo.org/"
+      ],
+      "plan_dois": [],
+      "acquisition_status": "downloaded",
+      "acquisition_notes": [
+        "OpenAlex search: Confirmed efficacy of etoposide and dexamethasone in HLH treatment: long-term results of the cooperative HLH-2004 study",
+        "Fetched https://nlsinfo.org/ → source-1.html (28678 bytes)"
+      ],
+      "files": [
+        "openalex-search.pdf",
+        "openalex-metadata.json",
+        "source-1.html",
+        "acquisition.json",
+        "provenance.md"
+      ],
+      "resolved_urls": [
+        "https://doi.org/10.1182/blood-2017-06-788349",
+        "https://ashpublications.org/blood/article-pdf/130/25/2728/1404373/blood788349.pdf",
+        "https://nlsinfo.org/"
+      ],
+      "attempted_at": "2026-07-07T03:42:01+00:00",
+      "raw_dir": "data/raw/long-2004"
+    },
+    {
+      "candidate_id": "cand-exp-alon-tienda-2007",
+      "proposed_study_id": "alon-tienda-2007",
+      "title": "Alon & Tienda (2007)",
+      "citation": "Alon & Tienda (2007). \"Diversity, Opportunity, and the Shifting Meritocracy in Higher Education..\"",
+      "domain": "higher-education-admissions",
+      "catalog_data_acquisition_status": "not_started",
+      "catalog_source_url": "https://nces.ed.gov/surveys/nels88/",
+      "plan_urls": [
+        "https://nces.ed.gov/surveys/nels88/"
+      ],
+      "plan_dois": [],
+      "acquisition_status": "portal_manual",
+      "acquisition_notes": [
+        "OpenAlex search: Discrimination in the Credential Society: An Audit Study of Race and College Selectivity in the Labor Market",
+        "HTTP 403 for https://www.academic.oup.com/sf/article-pdf/93/4/1451/17164384/sou111.pdf",
+        "Fetched https://nces.ed.gov/surveys/nels88/ → source-1.html (28271 bytes)",
+        "Data portal landing page saved — manual extract required."
+      ],
+      "files": [
+        "openalex-metadata.json",
+        "source-1.html",
+        "acquisition.json",
+        "provenance.md"
+      ],
+      "resolved_urls": [
+        "https://doi.org/10.1093/sf/sou111",
+        "https://academic.oup.com/sf/article-pdf/93/4/1451/17164384/sou111.pdf",
+        "https://nces.ed.gov/surveys/nels88/"
+      ],
+      "attempted_at": "2026-07-07T03:42:08+00:00",
+      "raw_dir": "data/raw/alon-tienda-2007"
+    },
+    {
+      "candidate_id": "cand-exp-hoekstra-2009",
+      "proposed_study_id": "hoekstra-2009",
+      "title": "Hoekstra (2009)",
+      "citation": "Hoekstra (2009). \"The Effect of Attending the Flagship State University on Earnings..\"",
+      "domain": "higher-education-admissions",
+      "catalog_data_acquisition_status": "manual_only",
+      "catalog_source_url": null,
+      "plan_urls": [],
+      "plan_dois": [],
+      "acquisition_status": "downloaded",
+      "acquisition_notes": [
+        "OpenAlex search: Surveillance for Foodborne Disease Outbreaks — United States, 2009–2015"
+      ],
+      "files": [
+        "openalex-search.pdf",
+        "openalex-metadata.json",
+        "acquisition.json",
+        "provenance.md"
+      ],
+      "resolved_urls": [
+        "https://doi.org/10.15585/mmwr.ss6710a1",
+        "https://www.cdc.gov/mmwr/volumes/67/ss/pdfs/ss6710a1-H.pdf"
+      ],
+      "attempted_at": "2026-07-07T03:42:12+00:00",
+      "raw_dir": "data/raw/hoekstra-2009"
+    },
+    {
+      "candidate_id": "cand-exp-dale-krueger-2002",
+      "proposed_study_id": "dale-krueger-2002",
+      "title": "Dale & Krueger (2002)",
+      "citation": "Dale & Krueger (2002). \"Estimating the Payoff to Attending a More Selective College..\"",
+      "domain": "higher-education-admissions",
+      "catalog_data_acquisition_status": "manual_only",
+      "catalog_source_url": null,
+      "plan_urls": [],
+      "plan_dois": [],
+      "acquisition_status": "manual_only",
+      "acquisition_notes": [
+        "OpenAlex search: The Global Burden of Cancer 2013",
+        "Catalog marked manual_only; no public URL — encode from published tables."
+      ],
+      "files": [
+        "openalex-search.html",
+        "openalex-metadata.json",
+        "acquisition.json",
+        "provenance.md"
+      ],
+      "resolved_urls": [
+        "https://doi.org/10.1001/jamaoncol.2015.0735",
+        "http://hdl.handle.net/11343/59029"
+      ],
+      "attempted_at": "2026-07-07T03:42:14+00:00",
+      "raw_dir": "data/raw/dale-krueger-2002"
+    },
+    {
+      "candidate_id": "cand-exp-nces-ipeds",
+      "proposed_study_id": "nces-ipeds",
+      "title": "NCES IPEDS (annual)",
+      "citation": "NCES IPEDS (annual)",
+      "domain": "higher-education-admissions",
+      "catalog_data_acquisition_status": "not_started",
+      "catalog_source_url": "https://nces.ed.gov/ipeds/",
+      "plan_urls": [
+        "https://nces.ed.gov/ipeds/"
+      ],
+      "plan_dois": [],
+      "acquisition_status": "portal_manual",
+      "acquisition_notes": [
+        "OpenAlex search: What We Know About Community College Low-Income and Minority Student Outcomes: Descriptive Statistics from National Surv",
+        "Fetched https://nces.ed.gov/ipeds/ → source-1.html (60618 bytes)",
+        "Data portal landing page saved — manual extract required."
+      ],
+      "files": [
+        "openalex-search.html",
+        "openalex-metadata.json",
+        "source-1.html",
+        "acquisition.json",
+        "provenance.md"
+      ],
+      "resolved_urls": [
+        "https://doi.org/10.7916/d82805qw",
+        "http://hdl.handle.net/10919/90842",
+        "https://nces.ed.gov/ipeds/"
+      ],
+      "attempted_at": "2026-07-07T03:42:19+00:00",
+      "raw_dir": "data/raw/nces-ipeds"
+    },
+    {
+      "candidate_id": "cand-exp-college-scorecard",
+      "proposed_study_id": "college-scorecard",
+      "title": "College Scorecard (U.S. Dept. of Education, annual)",
+      "citation": "College Scorecard (U.S. Dept. of Education, annual)",
+      "domain": "higher-education-admissions",
+      "catalog_data_acquisition_status": "not_started",
+      "catalog_source_url": "https://collegescorecard.ed.gov/data/",
+      "plan_urls": [
+        "https://collegescorecard.ed.gov/data/"
+      ],
+      "plan_dois": [],
+      "acquisition_status": "downloaded",
+      "acquisition_notes": [
+        "OpenAlex search: American Higher Education",
+        "Fetched https://collegescorecard.ed.gov/data/ → source-1.html (33403 bytes)"
+      ],
+      "files": [
+        "openalex-search.pdf",
+        "openalex-metadata.json",
+        "source-1.html",
+        "acquisition.json",
+        "provenance.md"
+      ],
+      "resolved_urls": [
+        "https://doi.org/10.1007/978-94-017-8905-9_300042",
+        "https://scholarworks.iu.edu/journals/index.php/iusbgrj/article/download/29693/34258",
+        "https://collegescorecard.ed.gov/data/"
+      ],
+      "attempted_at": "2026-07-07T03:42:24+00:00",
+      "raw_dir": "data/raw/college-scorecard"
+    },
+    {
+      "candidate_id": "cand-exp-hoxby-avery-2013",
+      "proposed_study_id": "hoxby-avery-2013",
+      "title": "Hoxby & Avery (2013)",
+      "citation": "Hoxby & Avery (2013). \"The Missing 'One-Offs': The Hidden Supply of High-Achieving, Low-Income Students..\"",
+      "domain": "higher-education-admissions",
+      "catalog_data_acquisition_status": "manual_only",
+      "catalog_source_url": null,
+      "plan_urls": [],
+      "plan_dois": [],
+      "acquisition_status": "downloaded",
+      "acquisition_notes": [
+        "OpenAlex search: Mobility Report Cards: The Role of Colleges in Intergenerational Mobility"
+      ],
+      "files": [
+        "openalex-search.pdf",
+        "openalex-metadata.json",
+        "acquisition.json",
+        "provenance.md"
+      ],
+      "resolved_urls": [
+        "https://doi.org/10.3386/w23618",
+        "https://doi.org/10.3386/w23618"
+      ],
+      "attempted_at": "2026-07-07T03:43:18+00:00",
+      "raw_dir": "data/raw/hoxby-avery-2013"
+    },
+    {
+      "candidate_id": "cand-exp-espenshade-radford-2009",
+      "proposed_study_id": "espenshade-radford-2009",
+      "title": "Espenshade & Radford (2009)",
+      "citation": "Espenshade & Radford (2009)",
+      "domain": "higher-education-admissions",
+      "catalog_data_acquisition_status": "manual_only",
+      "catalog_source_url": null,
+      "plan_urls": [],
+      "plan_dois": [],
+      "acquisition_status": "manual_only",
+      "acquisition_notes": [
+        "OpenAlex search: No Longer Separate, Not Yet Equal: Race and Class in Elite College Admissions and Campus Life By Thomas J. Espenshade an",
+        "Catalog marked manual_only; no public URL — encode from published tables."
+      ],
+      "files": [
+        "openalex-metadata.json",
+        "acquisition.json",
+        "provenance.md"
+      ],
+      "resolved_urls": [
+        "https://doi.org/10.1353/sof.2010.0090"
+      ],
+      "attempted_at": "2026-07-07T03:43:22+00:00",
+      "raw_dir": "data/raw/espenshade-radford-2009"
+    },
+    {
+      "candidate_id": "cand-exp-bound-lovenheim-turner-2010",
+      "proposed_study_id": "bound-lovenheim-turner-2010",
+      "title": "Bound, Lovenheim & Turner (2010)",
+      "citation": "Bound, Lovenheim & Turner (2010). \"Why Have College Completion Rates Declined?.\"",
+      "domain": "higher-education-admissions",
+      "catalog_data_acquisition_status": "not_started",
+      "catalog_source_url": "https://nces.ed.gov/",
+      "plan_urls": [
+        "https://nces.ed.gov/"
+      ],
+      "plan_dois": [],
+      "acquisition_status": "portal_manual",
+      "acquisition_notes": [
+        "OpenAlex search: Longitudinal Pathways to College Persistence and Completion: Student, Institutional, and Public Policy Perspectives",
+        "Fetched https://nces.ed.gov/ → source-1.html (84605 bytes)",
+        "Data portal landing page saved — manual extract required."
+      ],
+      "files": [
+        "openalex-metadata.json",
+        "source-1.html",
+        "acquisition.json",
+        "provenance.md"
+      ],
+      "resolved_urls": [
+        "https://doi.org/10.4324/9780203074091-14",
+        "https://nces.ed.gov/"
+      ],
+      "attempted_at": "2026-07-07T03:43:23+00:00",
+      "raw_dir": "data/raw/bound-lovenheim-turner-2010"
+    },
+    {
+      "candidate_id": "cand-exp-carnevale-strohl-2010",
+      "proposed_study_id": "carnevale-strohl-2010",
+      "title": "Carnevale & Strohl (2010)",
+      "citation": "Carnevale & Strohl (2010). \"How Increasing College Access Is Increasing Inequality..\"",
+      "domain": "higher-education-admissions",
+      "catalog_data_acquisition_status": "not_started",
+      "catalog_source_url": "https://nces.ed.gov/surveys/bps/",
+      "plan_urls": [
+        "https://nces.ed.gov/surveys/bps/"
+      ],
+      "plan_dois": [],
+      "acquisition_status": "portal_manual",
+      "acquisition_notes": [
+        "OpenAlex search: The Need for Integrated Workforce Development Systems to Broaden the Participation of Underrepresented Students in STEM-",
+        "Fetched https://nces.ed.gov/surveys/bps/ → source-1.html (51736 bytes)",
+        "Data portal landing page saved — manual extract required."
+      ],
+      "files": [
+        "openalex-metadata.json",
+        "source-1.html",
+        "acquisition.json",
+        "provenance.md"
+      ],
+      "resolved_urls": [
+        "https://doi.org/10.4324/9780203568446-10",
+        "https://nces.ed.gov/surveys/bps/"
+      ],
+      "attempted_at": "2026-07-07T03:43:25+00:00",
+      "raw_dir": "data/raw/carnevale-strohl-2010"
+    },
+    {
+      "candidate_id": "cand-exp-hoxby-murarka-2009",
+      "proposed_study_id": "hoxby-murarka-2009",
+      "title": "Hoxby & Murarka (2009)",
+      "citation": "Hoxby & Murarka (2009). \"Charter Schools in New York City: Who Enrolls and How They Affect Their Students' Achievement..\"",
+      "domain": "higher-education-admissions",
+      "catalog_data_acquisition_status": "manual_only",
+      "catalog_source_url": null,
+      "plan_urls": [],
+      "plan_dois": [],
+      "acquisition_status": "manual_only",
+      "acquisition_notes": [
+        "OpenAlex search: Accountability and Flexibility in Public Schools: Evidence from Boston's Charters And Pilots",
+        "HTTP 403 for https://www.academic.oup.com/qje/article-pdf/126/2/699/17090256/qjr017.pdf",
+        "Catalog marked manual_only; no public URL — encode from published tables."
+      ],
+      "files": [
+        "openalex-metadata.json",
+        "acquisition.json",
+        "provenance.md"
+      ],
+      "resolved_urls": [
+        "https://doi.org/10.1093/qje/qjr017",
+        "https://academic.oup.com/qje/article-pdf/126/2/699/17090256/qjr017.pdf"
+      ],
+      "attempted_at": "2026-07-07T03:43:28+00:00",
+      "raw_dir": "data/raw/hoxby-murarka-2009"
+    },
+    {
+      "candidate_id": "cand-exp-rothstein-2004",
+      "proposed_study_id": "rothstein-2004",
+      "title": "Rothstein (2004)",
+      "citation": "Rothstein (2004). \"College Performance Predictions and the SAT..\"",
+      "domain": "higher-education-admissions",
+      "catalog_data_acquisition_status": "manual_only",
+      "catalog_source_url": null,
+      "plan_urls": [],
+      "plan_dois": [],
+      "acquisition_status": "downloaded",
+      "acquisition_notes": [
+        "OpenAlex search: Competition Among Public Schools: A Reply to Rothstein (2004)"
+      ],
+      "files": [
+        "openalex-search.pdf",
+        "openalex-metadata.json",
+        "acquisition.json",
+        "provenance.md"
+      ],
+      "resolved_urls": [
+        "https://doi.org/10.3386/w11216",
+        "https://doi.org/10.3386/w11216"
+      ],
+      "attempted_at": "2026-07-07T03:43:31+00:00",
+      "raw_dir": "data/raw/rothstein-2004"
+    },
+    {
+      "candidate_id": "cand-exp-accord-study-group-2008",
+      "proposed_study_id": "accord-study-group-2008",
+      "title": "ACCORD Study Group (2008)",
+      "citation": "ACCORD Study Group (2008). \"Effects of Intensive Glucose Lowering in Type 2 Diabetes..\"",
+      "domain": "clinical-drug-trials",
+      "catalog_data_acquisition_status": "not_started",
+      "catalog_source_url": "https://biolincc.nhlbi.nih.gov/studies/accord/",
+      "plan_urls": [
+        "https://biolincc.nhlbi.nih.gov/studies/accord/"
+      ],
+      "plan_dois": [],
+      "acquisition_status": "portal_manual",
+      "acquisition_notes": [
+        "OpenAlex search: Deciphering the Liquidity and Credit Crunch 2007–2008",
+        "HTTP 403 for https://www.aeaweb.org/articles/pdf/doi/10.1257/jep.23.1.77",
+        "Fetched https://biolincc.nhlbi.nih.gov/studies/accord/ → source-1.html (198902 bytes)",
+        "Data portal landing page saved — manual extract required."
+      ],
+      "files": [
+        "openalex-metadata.json",
+        "source-1.html",
+        "acquisition.json",
+        "provenance.md"
+      ],
+      "resolved_urls": [
+        "https://doi.org/10.1257/jep.23.1.77",
+        "https://www.aeaweb.org/articles/pdf/doi/10.1257/jep.23.1.77",
+        "https://biolincc.nhlbi.nih.gov/studies/accord/"
+      ],
+      "attempted_at": "2026-07-07T03:43:34+00:00",
+      "raw_dir": "data/raw/accord-study-group-2008"
+    },
+    {
+      "candidate_id": "cand-exp-allhat-collaborative-research-group-2002",
+      "proposed_study_id": "allhat-collaborative-research-group-2002",
+      "title": "ALLHAT Collaborative Research Group (2002)",
+      "citation": "ALLHAT Collaborative Research Group (2002). \"Major Outcomes in High-Risk Hypertensive Patients..\"",
+      "domain": "clinical-drug-trials",
+      "catalog_data_acquisition_status": "not_started",
+      "catalog_source_url": "https://biolincc.nhlbi.nih.gov/studies/allhat/",
+      "plan_urls": [
+        "https://biolincc.nhlbi.nih.gov/studies/allhat/"
+      ],
+      "plan_dois": [],
+      "acquisition_status": "portal_manual",
+      "acquisition_notes": [
+        "OpenAlex search: Original Papers. Success and Predictors of Blood Pressure Control in Diverse North American Settings: The Antihypertensi",
+        "HTTP 403 for https://www.onlinelibrary.wiley.com/doi/pdfdirect/10.1111/j.1524-6175.2002.02045.x",
+        "Fetched https://biolincc.nhlbi.nih.gov/studies/allhat/ → source-1.html (30912 bytes)",
+        "Data portal landing page saved — manual extract required."
+      ],
+      "files": [
+        "openalex-metadata.json",
+        "source-1.html",
+        "acquisition.json",
+        "provenance.md"
+      ],
+      "resolved_urls": [
+        "https://doi.org/10.1111/j.1524-6175.2002.02045.x",
+        "https://onlinelibrary.wiley.com/doi/pdfdirect/10.1111/j.1524-6175.2002.02045.x",
+        "https://biolincc.nhlbi.nih.gov/studies/allhat/"
+      ],
+      "attempted_at": "2026-07-07T03:43:38+00:00",
+      "raw_dir": "data/raw/allhat-collaborative-research-group-2002"
+    },
+    {
+      "candidate_id": "cand-exp-isis-2-collaborative-group-1988",
+      "proposed_study_id": "isis-2-collaborative-group-1988",
+      "title": "ISIS-2 Collaborative Group (1988)",
+      "citation": "ISIS-2 Collaborative Group (1988). \"Randomised Trial of Intravenous Streptokinase, Oral Aspirin, Both, or Neither among 17,187 Cases of Suspected Acute Myocardial Infarction..\"",
+      "domain": "clinical-drug-trials",
+      "catalog_data_acquisition_status": "manual_only",
+      "catalog_source_url": null,
+      "plan_urls": [],
+      "plan_dois": [],
+      "acquisition_status": "manual_only",
+      "acquisition_notes": [
+        "OpenAlex search: Collaborative meta-analysis of randomised trials of antiplatelet therapy for prevention of death, myocardial infarction,",
+        "HTTP 403 for https://www.bmj.com/content/bmj/324/7329/71.full.pdf",
+        "Catalog marked manual_only; no public URL — encode from published tables."
+      ],
+      "files": [
+        "openalex-metadata.json",
+        "acquisition.json",
+        "provenance.md"
+      ],
+      "resolved_urls": [
+        "https://doi.org/10.1136/bmj.324.7329.71",
+        "https://www.bmj.com/content/bmj/324/7329/71.full.pdf"
+      ],
+      "attempted_at": "2026-07-07T03:43:41+00:00",
+      "raw_dir": "data/raw/isis-2-collaborative-group-1988"
+    },
+    {
+      "candidate_id": "cand-exp-plato-trial",
+      "proposed_study_id": "plato-trial",
+      "title": "PLATO Trial (Wallentin et al. 2009)",
+      "citation": "PLATO Trial (Wallentin et al. 2009). \"Ticagrelor versus Clopidogrel in Patients with Acute Coronary Syndromes..\"",
+      "domain": "clinical-drug-trials",
+      "catalog_data_acquisition_status": "not_started",
+      "catalog_source_url": "https://www.clinicaltrialsdata.com/",
+      "plan_urls": [
+        "https://www.clinicaltrialsdata.com/"
+      ],
+      "plan_dois": [],
+      "acquisition_status": "landing_saved",
+      "acquisition_notes": [
+        "OpenAlex search: Guided de-escalation of antiplatelet treatment in patients with acute coronary syndrome undergoing percutaneous coronary",
+        "HTTP 403 for http://www.thelancet.com/article/S0140673617321554/pdf/",
+        "Fetched https://www.clinicaltrialsdata.com/ → source-1.html (978983 bytes)"
+      ],
+      "files": [
+        "openalex-metadata.json",
+        "source-1.html",
+        "acquisition.json",
+        "provenance.md"
+      ],
+      "resolved_urls": [
+        "https://doi.org/10.1016/s0140-6736(17)32155-4",
+        "http://www.thelancet.com/article/S0140673617321554/pdf",
+        "https://www.clinicaltrialsdata.com/"
+      ],
+      "attempted_at": "2026-07-07T03:43:44+00:00",
+      "raw_dir": "data/raw/plato-trial"
+    },
+    {
+      "candidate_id": "cand-exp-fibrinolytic-therapy-trialists-1994",
+      "proposed_study_id": "fibrinolytic-therapy-trialists-1994",
+      "title": "Fibrinolytic Therapy Trialists (1994)",
+      "citation": "Fibrinolytic Therapy Trialists (1994). \"Indications for Fibrinolytic Therapy in Suspected Acute Myocardial Infarction..\"",
+      "domain": "clinical-drug-trials",
+      "catalog_data_acquisition_status": "manual_only",
+      "catalog_source_url": null,
+      "plan_urls": [],
+      "plan_dois": [],
+      "acquisition_status": "manual_only",
+      "acquisition_notes": [
+        "OpenAlex search: Incidence and predictors of bleeding events after fibrinolytic therapy with fibrin-specific agents. A comparison of TNK-",
+        "HTTP 403 for https://www.academic.oup.com/eurheartj/article-pdf/22/24/2253/17884513/2253.pdf",
+        "Catalog marked manual_only; no public URL — encode from published tables."
+      ],
+      "files": [
+        "openalex-metadata.json",
+        "acquisition.json",
+        "provenance.md"
+      ],
+      "resolved_urls": [
+        "https://doi.org/10.1053/euhj.2001.2686",
+        "https://academic.oup.com/eurheartj/article-pdf/22/24/2253/17884513/2253.pdf"
+      ],
+      "attempted_at": "2026-07-07T03:43:51+00:00",
+      "raw_dir": "data/raw/fibrinolytic-therapy-trialists-1994"
+    },
+    {
+      "candidate_id": "cand-exp-cast-1989",
+      "proposed_study_id": "cast-1989",
+      "title": "CAST (1989)",
+      "citation": "CAST (1989). \"Preliminary Report: Effect of Encainide and Flecainide on Mortality..\"",
+      "domain": "clinical-drug-trials",
+      "catalog_data_acquisition_status": "manual_only",
+      "catalog_source_url": null,
+      "plan_urls": [],
+      "plan_dois": [],
+      "acquisition_status": "manual_only",
+      "acquisition_notes": [
+        "OpenAlex search: Preliminary Report: Effect of Encainide and Flecainide on Mortality in a Randomized Trial of Arrhythmia Suppression afte",
+        "Catalog marked manual_only; no public URL — encode from published tables."
+      ],
+      "files": [
+        "openalex-metadata.json",
+        "acquisition.json",
+        "provenance.md"
+      ],
+      "resolved_urls": [
+        "https://doi.org/10.1056/nejm198908103210629"
+      ],
+      "attempted_at": "2026-07-07T03:43:54+00:00",
+      "raw_dir": "data/raw/cast-1989"
+    },
+    {
+      "candidate_id": "cand-exp-women-s-health-initiative-2002",
+      "proposed_study_id": "women-s-health-initiative-2002",
+      "title": "Women's Health Initiative (2002)",
+      "citation": "Women's Health Initiative (2002). \"Risks and Benefits of Estrogen Plus Progestin in Healthy Postmenopausal Women..\"",
+      "domain": "clinical-drug-trials",
+      "catalog_data_acquisition_status": "not_started",
+      "catalog_source_url": "https://biolincc.nhlbi.nih.gov/studies/whi/",
+      "plan_urls": [
+        "https://biolincc.nhlbi.nih.gov/studies/whi/"
+      ],
+      "plan_dois": [],
+      "acquisition_status": "portal_manual",
+      "acquisition_notes": [
+        "OpenAlex search: Risks and Benefits of Estrogen Plus Progestin in Healthy Postmenopausal Women: Principal Results From the Women's Health",
+        "HTTP 403 for https://www.jamanetwork.com/journals/jama/articlepdf/195120/joc21036.pdf",
+        "HTTP 404 for https://www.biolincc.nhlbi.nih.gov/studies/whi/",
+        "Data portal URL(s) recorded; fetch failed — manual registration/download required."
+      ],
+      "files": [
+        "openalex-metadata.json",
+        "acquisition.json",
+        "provenance.md"
+      ],
+      "resolved_urls": [
+        "https://doi.org/10.1001/jama.288.3.321",
+        "https://jamanetwork.com/journals/jama/articlepdf/195120/joc21036.pdf",
+        "https://biolincc.nhlbi.nih.gov/studies/whi/"
+      ],
+      "attempted_at": "2026-07-07T03:43:55+00:00",
+      "raw_dir": "data/raw/women-s-health-initiative-2002"
+    },
+    {
+      "candidate_id": "cand-exp-dcct-research-group-1993",
+      "proposed_study_id": "dcct-research-group-1993",
+      "title": "DCCT Research Group (1993)",
+      "citation": "DCCT Research Group (1993). \"The Effect of Intensive Treatment of Diabetes on the Development and Progression of Long-Term Complications..\"",
+      "domain": "clinical-drug-trials",
+      "catalog_data_acquisition_status": "not_started",
+      "catalog_source_url": "https://repository.niddk.nih.gov/studies/dcct/",
+      "plan_urls": [
+        "https://repository.niddk.nih.gov/studies/dcct/"
+      ],
+      "plan_dois": [],
+      "acquisition_status": "landing_saved",
+      "acquisition_notes": [
+        "OpenAlex search: Intensive Diabetes Treatment and Cardiovascular Disease in Patients with Type 1 Diabetes",
+        "HTTP 403 for https://www.nejm.org/doi/pdf/10.1056/NEJMoa052187?articleTools=true/",
+        "Fetched https://repository.niddk.nih.gov/studies/dcct/ → source-1.html (243349 bytes)"
+      ],
+      "files": [
+        "openalex-metadata.json",
+        "source-1.html",
+        "acquisition.json",
+        "provenance.md"
+      ],
+      "resolved_urls": [
+        "https://doi.org/10.1056/nejmoa052187",
+        "https://www.nejm.org/doi/pdf/10.1056/NEJMoa052187?articleTools=true",
+        "https://repository.niddk.nih.gov/studies/dcct/"
+      ],
+      "attempted_at": "2026-07-07T03:43:59+00:00",
+      "raw_dir": "data/raw/dcct-research-group-1993"
+    },
+    {
+      "candidate_id": "cand-exp-triton-timi-38",
+      "proposed_study_id": "triton-timi-38",
+      "title": "TRITON-TIMI 38 (Wiviott et al. 2007)",
+      "citation": "TRITON-TIMI 38 (Wiviott et al. 2007). \"Prasugrel versus Clopidogrel in Patients with Acute Coronary Syndromes..\"",
+      "domain": "clinical-drug-trials",
+      "catalog_data_acquisition_status": "not_started",
+      "catalog_source_url": "https://vivli.org/",
+      "plan_urls": [
+        "https://vivli.org/"
+      ],
+      "plan_dois": [],
+      "acquisition_status": "landing_saved",
+      "acquisition_notes": [
+        "OpenAlex search: Cytochrome P-450 Polymorphisms and Response to Clopidogrel",
+        "HTTP 403 for https://www.nejm.org/doi/pdf/10.1056/NEJMoa0809171?articleTools=true/",
+        "Fetched https://vivli.org/ → source-1.html (117408 bytes)"
+      ],
+      "files": [
+        "openalex-metadata.json",
+        "source-1.html",
+        "acquisition.json",
+        "provenance.md"
+      ],
+      "resolved_urls": [
+        "https://doi.org/10.1056/nejmoa0809171",
+        "https://www.nejm.org/doi/pdf/10.1056/NEJMoa0809171?articleTools=true",
+        "https://vivli.org/"
+      ],
+      "attempted_at": "2026-07-07T03:44:03+00:00",
+      "raw_dir": "data/raw/triton-timi-38"
+    },
+    {
+      "candidate_id": "cand-exp-yusuf-et-al-hope-trial-2000",
+      "proposed_study_id": "yusuf-et-al-hope-trial-2000",
+      "title": "Yusuf et al. / HOPE Trial (2000)",
+      "citation": "Yusuf et al. / HOPE Trial (2000). \"Effects of an Angiotensin-Converting-Enzyme Inhibitor, Ramipril, on Cardiovascular Events in High-Risk Patients..\"",
+      "domain": "clinical-drug-trials",
+      "catalog_data_acquisition_status": "not_started",
+      "catalog_source_url": "https://biolincc.nhlbi.nih.gov/studies/hope/",
+      "plan_urls": [
+        "https://biolincc.nhlbi.nih.gov/studies/hope/"
+      ],
+      "plan_dois": [],
+      "acquisition_status": "portal_manual",
+      "acquisition_notes": [
+        "OpenAlex search: CONSORT 2010 Explanation and Elaboration: updated guidelines for reporting parallel group randomised trials",
+        "HTTP 403 for https://www.bmj.com/content/bmj/340/bmj.c869.full.pdf",
+        "HTTP 404 for https://www.biolincc.nhlbi.nih.gov/studies/hope/",
+        "Data portal URL(s) recorded; fetch failed — manual registration/download required."
+      ],
+      "files": [
+        "openalex-metadata.json",
+        "acquisition.json",
+        "provenance.md"
+      ],
+      "resolved_urls": [
+        "https://doi.org/10.1136/bmj.c869",
+        "https://www.bmj.com/content/bmj/340/bmj.c869.full.pdf",
+        "https://biolincc.nhlbi.nih.gov/studies/hope/"
+      ],
+      "attempted_at": "2026-07-07T03:44:07+00:00",
+      "raw_dir": "data/raw/yusuf-et-al-hope-trial-2000"
+    },
+    {
+      "candidate_id": "cand-exp-sprint-research-group-2015",
+      "proposed_study_id": "sprint-research-group-2015",
+      "title": "SPRINT Research Group (2015)",
+      "citation": "SPRINT Research Group (2015). \"A Randomized Trial of Intensive versus Standard Blood-Pressure Control..\"",
+      "domain": "clinical-drug-trials",
+      "catalog_data_acquisition_status": "not_started",
+      "catalog_source_url": "https://biolincc.nhlbi.nih.gov/studies/sprint/",
+      "plan_urls": [
+        "https://biolincc.nhlbi.nih.gov/studies/sprint/"
+      ],
+      "plan_dois": [],
+      "acquisition_status": "portal_manual",
+      "acquisition_notes": [
+        "OpenAlex search: Global, regional, and national comparative risk assessment of 79 behavioural, environmental and occupational, and metabo",
+        "HTTP 403 for http://www.thelancet.com/article/S0140673616316798/pdf/",
+        "Fetched https://biolincc.nhlbi.nih.gov/studies/sprint/ → source-1.html (98083 bytes)",
+        "Data portal landing page saved — manual extract required."
+      ],
+      "files": [
+        "openalex-metadata.json",
+        "source-1.html",
+        "acquisition.json",
+        "provenance.md"
+      ],
+      "resolved_urls": [
+        "https://doi.org/10.1016/s0140-6736(16)31679-8",
+        "http://www.thelancet.com/article/S0140673616316798/pdf",
+        "https://biolincc.nhlbi.nih.gov/studies/sprint/"
+      ],
+      "attempted_at": "2026-07-07T03:44:11+00:00",
+      "raw_dir": "data/raw/sprint-research-group-2015"
+    },
+    {
+      "candidate_id": "cand-exp-astrazeneca-mystic-trial-pacific-trial-crossover-2017",
+      "proposed_study_id": "astrazeneca-mystic-trial-pacific-trial-crossover-2017",
+      "title": "AstraZeneca MYSTIC Trial / PACIFIC Trial crossover (2017–2019)",
+      "citation": "AstraZeneca MYSTIC Trial / PACIFIC Trial crossover (2017–2019)",
+      "domain": "clinical-drug-trials",
+      "catalog_data_acquisition_status": "manual_only",
+      "catalog_source_url": null,
+      "plan_urls": [],
+      "plan_dois": [],
+      "acquisition_status": "manual_only",
+      "acquisition_notes": [
+        "OpenAlex search: Durvalumab With or Without Tremelimumab vs Standard Chemotherapy in First-line Treatment of Metastatic Non–Small Cell Lu",
+        "HTTP 403 for https://www.doi.org/10.1001/jamaoncol.2020.0237",
+        "Catalog marked manual_only; no public URL — encode from published tables."
+      ],
+      "files": [
+        "openalex-metadata.json",
+        "acquisition.json",
+        "provenance.md"
+      ],
+      "resolved_urls": [
+        "https://doi.org/10.1001/jamaoncol.2020.0237",
+        "https://doi.org/10.1001/jamaoncol.2020.0237"
+      ],
+      "attempted_at": "2026-07-07T03:44:14+00:00",
+      "raw_dir": "data/raw/astrazeneca-mystic-trial-pacific-trial-crossover-2017"
+    },
+    {
+      "candidate_id": "cand-exp-uk-biobank-ukbb-observational",
+      "proposed_study_id": "uk-biobank-ukbb-observational",
+      "title": "UK Biobank / UKBB Observational (ongoing) statins and cancer.",
+      "citation": "UK Biobank / UKBB Observational (ongoing) statins and cancer.",
+      "domain": "clinical-drug-trials",
+      "catalog_data_acquisition_status": "not_started",
+      "catalog_source_url": "https://www.ukbiobank.ac.uk/",
+      "plan_urls": [
+        "https://www.ukbiobank.ac.uk/"
+      ],
+      "plan_dois": [],
+      "acquisition_status": "downloaded",
+      "acquisition_notes": [
+        "OpenAlex search: FinnGen provides genetic insights from a well-phenotyped isolated population",
+        "HTTP 403 for https://www.ukbiobank.ac.uk/"
+      ],
+      "files": [
+        "openalex-search.pdf",
+        "openalex-metadata.json",
+        "acquisition.json",
+        "provenance.md"
+      ],
+      "resolved_urls": [
+        "https://doi.org/10.1038/s41586-022-05473-8",
+        "https://www.nature.com/articles/s41586-022-05473-8.pdf",
+        "https://www.ukbiobank.ac.uk/"
+      ],
+      "attempted_at": "2026-07-07T03:44:17+00:00",
+      "raw_dir": "data/raw/uk-biobank-ukbb-observational"
+    },
+    {
+      "candidate_id": "cand-exp-hiester-1984",
+      "proposed_study_id": "hiester-1984",
+      "title": "Hiester (1984)",
+      "citation": "Hiester (1984). \"Simpson's Paradox: Stats Often Can Deceive..\"",
+      "domain": "sports-analytics",
+      "catalog_data_acquisition_status": "not_started",
+      "catalog_source_url": "https://sabr.org/journal/article/simpsons-paradox-stats-often-can-deceive/",
+      "plan_urls": [
+        "https://sabr.org/journal/article/simpsons-paradox-stats-often-can-deceive/"
+      ],
+      "plan_dois": [],
+      "acquisition_status": "landing_saved",
+      "acquisition_notes": [
+        "OpenAlex search: A Prospective Longitudinal Study of Attachment Disorganization/Disorientation",
+        "HTTP 403 for https://www.onlinelibrary.wiley.com/doi/pdfdirect/10.1111/j.1467-8624.1998.tb06163.x",
+        "Fetched https://sabr.org/journal/article/simpsons-paradox-stats-often-can-deceive/ → source-1.html (113706 bytes)"
+      ],
+      "files": [
+        "openalex-metadata.json",
+        "source-1.html",
+        "acquisition.json",
+        "provenance.md"
+      ],
+      "resolved_urls": [
+        "https://doi.org/10.1111/j.1467-8624.1998.tb06163.x",
+        "https://onlinelibrary.wiley.com/doi/pdfdirect/10.1111/j.1467-8624.1998.tb06163.x",
+        "https://sabr.org/journal/article/simpsons-paradox-stats-often-can-deceive/"
+      ],
+      "attempted_at": "2026-07-07T03:44:23+00:00",
+      "raw_dir": "data/raw/hiester-1984"
+    },
+    {
+      "candidate_id": "cand-exp-efron-morris-1975",
+      "proposed_study_id": "efron-morris-1975",
+      "title": "Efron & Morris (1975)",
+      "citation": "Efron & Morris (1975). \"Data Analysis Using Stein's Estimator and Its Generalizations..\"",
+      "domain": "sports-analytics",
+      "catalog_data_acquisition_status": "manual_only",
+      "catalog_source_url": null,
+      "plan_urls": [],
+      "plan_dois": [],
+      "acquisition_status": "manual_only",
+      "acquisition_notes": [
+        "OpenAlex search: Analysis of the Gibbs sampler for a model related to James-Stein estimators",
+        "Catalog marked manual_only; no public URL — encode from published tables."
+      ],
+      "files": [
+        "openalex-metadata.json",
+        "acquisition.json",
+        "provenance.md"
+      ],
+      "resolved_urls": [
+        "https://doi.org/10.1007/bf00140871"
+      ],
+      "attempted_at": "2026-07-07T03:44:27+00:00",
+      "raw_dir": "data/raw/efron-morris-1975"
+    },
+    {
+      "candidate_id": "cand-exp-soccer-pass-completion-by-league-2017",
+      "proposed_study_id": "soccer-pass-completion-by-league-2017",
+      "title": "Soccer Pass Completion by League (2017–2023) StatsBomb open data",
+      "citation": "Soccer Pass Completion by League (2017–2023) StatsBomb open data",
+      "domain": "sports-analytics",
+      "catalog_data_acquisition_status": "not_started",
+      "catalog_source_url": "https://statsbomb.com/data/",
+      "plan_urls": [
+        "https://statsbomb.com/data/"
+      ],
+      "plan_dois": [],
+      "acquisition_status": "downloaded",
+      "acquisition_notes": [
+        "OpenAlex search: un-xPass: Measuring Soccer Player's Creativity",
+        "Fetched https://statsbomb.com/data/ → source-1.html (118322 bytes)"
+      ],
+      "files": [
+        "openalex-search.pdf",
+        "openalex-metadata.json",
+        "source-1.html",
+        "acquisition.json",
+        "provenance.md"
+      ],
+      "resolved_urls": [
+        "https://doi.org/10.1145/3580305.3599924",
+        "https://lirias.kuleuven.be/retrieve/c29f20c5-d2a1-46c1-9dc1-416920493452",
+        "https://statsbomb.com/data/"
+      ],
+      "attempted_at": "2026-07-07T03:44:28+00:00",
+      "raw_dir": "data/raw/soccer-pass-completion-by-league-2017"
+    },
+    {
+      "candidate_id": "cand-exp-marathon-finishing-times-by-age-and-temperature-boston-marat",
+      "proposed_study_id": "marathon-finishing-times-by-age-and-temperature-boston-marat",
+      "title": "Marathon Finishing Times by Age and Temperature Boston Marathon (2000–2019)",
+      "citation": "Marathon Finishing Times by Age and Temperature Boston Marathon (2000–2019)",
+      "domain": "sports-analytics",
+      "catalog_data_acquisition_status": "not_started",
+      "catalog_source_url": "https://www.baa.org/races/boston-marathon/results",
+      "plan_urls": [],
+      "plan_dois": [],
+      "acquisition_status": "landing_saved",
+      "acquisition_notes": [
+        "OpenAlex search: Performance and Pacing of Age Groups in Half-Marathon and Marathon",
+        "HTTP 403 for https://www.mdpi.com/1660-4601/16/10/1777/pdf/",
+        "Fetched https://www.baa.org/races/boston-marathon/results → source-1.html (59497 bytes)"
+      ],
+      "files": [
+        "openalex-metadata.json",
+        "source-1.html",
+        "acquisition.json",
+        "provenance.md"
+      ],
+      "resolved_urls": [
+        "https://doi.org/10.3390/ijerph16101777",
+        "https://www.mdpi.com/1660-4601/16/10/1777/pdf",
+        "https://www.baa.org/races/boston-marathon/results"
+      ],
+      "attempted_at": "2026-07-07T03:44:34+00:00",
+      "raw_dir": "data/raw/marathon-finishing-times-by-age-and-temperature-boston-marat"
+    },
+    {
+      "candidate_id": "cand-exp-tennis-first-serve-percentage-by-surface-2010",
+      "proposed_study_id": "tennis-first-serve-percentage-by-surface-2010",
+      "title": "Tennis First Serve Percentage by Surface (2010–2022)",
+      "citation": "Tennis First Serve Percentage by Surface (2010–2022)",
+      "domain": "sports-analytics",
+      "catalog_data_acquisition_status": "not_started",
+      "catalog_source_url": "https://www.atptour.com/en/stats",
+      "plan_urls": [
+        "https://www.atptour.com/en/stats",
+        "https://www.wtatennis.com/stats"
+      ],
+      "plan_dois": [],
+      "acquisition_status": "landing_saved",
+      "acquisition_notes": [
+        "OpenAlex search: Physical Demands of Tennis Across the Different Court Surfaces, Performance Levels and Sexes: A Systematic Review with M",
+        "HTTP 403 for https://www.atptour.com/en/stats/",
+        "Fetched https://www.wtatennis.com/stats → source-2.html (160907 bytes)"
+      ],
+      "files": [
+        "openalex-search.html",
+        "openalex-metadata.json",
+        "source-2.html",
+        "acquisition.json",
+        "provenance.md"
+      ],
+      "resolved_urls": [
+        "https://doi.org/10.1007/s40279-022-01807-8",
+        "https://research.rug.nl/en/publications/cf228e47-6823-4cb7-a8a7-2df252af962d",
+        "https://www.atptour.com/en/stats",
+        "https://www.wtatennis.com/stats"
+      ],
+      "attempted_at": "2026-07-07T03:44:38+00:00",
+      "raw_dir": "data/raw/tennis-first-serve-percentage-by-surface-2010"
+    },
+    {
+      "candidate_id": "cand-exp-nfl-quarterback-rating-by-game-situation-2010",
+      "proposed_study_id": "nfl-quarterback-rating-by-game-situation-2010",
+      "title": "NFL Quarterback Rating by Game Situation (2010–2022)",
+      "citation": "NFL Quarterback Rating by Game Situation (2010–2022)",
+      "domain": "sports-analytics",
+      "catalog_data_acquisition_status": "not_started",
+      "catalog_source_url": "https://www.pro-football-reference.com/",
+      "plan_urls": [
+        "https://www.pro-football-reference.com/"
+      ],
+      "plan_dois": [],
+      "acquisition_status": "metadata_only",
+      "acquisition_notes": [
+        "OpenAlex search: The Sports Business as a Labor Market Laboratory",
+        "HTTP 403 for https://www.aeaweb.org/articles/pdf/doi/10.1257/jep.14.3.75",
+        "HTTP 403 for https://www.pro-football-reference.com/",
+        "OpenAlex metadata saved; no open PDF/data file retrieved."
+      ],
+      "files": [
+        "openalex-metadata.json",
+        "acquisition.json",
+        "provenance.md"
+      ],
+      "resolved_urls": [
+        "https://doi.org/10.1257/jep.14.3.75",
+        "https://www.aeaweb.org/articles/pdf/doi/10.1257/jep.14.3.75",
+        "https://www.pro-football-reference.com/"
+      ],
+      "attempted_at": "2026-07-07T03:44:45+00:00",
+      "raw_dir": "data/raw/nfl-quarterback-rating-by-game-situation-2010"
+    },
+    {
+      "candidate_id": "cand-exp-ellsbury-vs-lowell-2007",
+      "proposed_study_id": "ellsbury-vs-lowell-2007",
+      "title": "Ellsbury vs. Lowell (2007–2008) cited in sports Simpson's Paradox literature",
+      "citation": "Ellsbury vs. Lowell (2007–2008) cited in sports Simpson's Paradox literature",
+      "domain": "sports-analytics",
+      "catalog_data_acquisition_status": "not_started",
+      "catalog_source_url": null,
+      "plan_urls": [],
+      "plan_dois": [],
+      "acquisition_status": "manual_only",
+      "acquisition_notes": [
+        "No URL or DOI — manual lookup from citation required."
+      ],
+      "files": [
+        "acquisition.json",
+        "provenance.md"
+      ],
+      "resolved_urls": [],
+      "attempted_at": "2026-07-07T03:44:48+00:00",
+      "raw_dir": "data/raw/ellsbury-vs-lowell-2007"
+    },
+    {
+      "candidate_id": "cand-exp-nhl-shooting-percentage-by-game-state-2010",
+      "proposed_study_id": "nhl-shooting-percentage-by-game-state-2010",
+      "title": "NHL Shooting Percentage by Game State (2010–2022)",
+      "citation": "NHL Shooting Percentage by Game State (2010–2022)",
+      "domain": "sports-analytics",
+      "catalog_data_acquisition_status": "not_started",
+      "catalog_source_url": "https://www.naturalstattrick.com/",
+      "plan_urls": [
+        "https://www.naturalstattrick.com/"
+      ],
+      "plan_dois": [],
+      "acquisition_status": "landing_saved",
+      "acquisition_notes": [
+        "OpenAlex search: A Comprehensive Data Pipeline for Comparing the Effects of Momentum on Sports Leagues",
+        "HTTP 403 for https://www.mdpi.com/2306-5729/9/2/29/pdf?version=1706775405/",
+        "Fetched https://www.naturalstattrick.com/ → source-1.html (43897 bytes)"
+      ],
+      "files": [
+        "openalex-metadata.json",
+        "source-1.html",
+        "acquisition.json",
+        "provenance.md"
+      ],
+      "resolved_urls": [
+        "https://doi.org/10.3390/data9020029",
+        "https://www.mdpi.com/2306-5729/9/2/29/pdf?version=1706775405",
+        "https://www.naturalstattrick.com/"
+      ],
+      "attempted_at": "2026-07-07T03:44:50+00:00",
+      "raw_dir": "data/raw/nhl-shooting-percentage-by-game-state-2010"
+    },
+    {
+      "candidate_id": "cand-exp-soccer-expected-goals",
+      "proposed_study_id": "soccer-expected-goals",
+      "title": "Soccer Expected Goals (xG) by Home/Away and Opponent Tier",
+      "citation": "Soccer Expected Goals (xG) by Home/Away and Opponent Tier",
+      "domain": "sports-analytics",
+      "catalog_data_acquisition_status": "not_started",
+      "catalog_source_url": "https://fbref.com/en/",
+      "plan_urls": [
+        "https://fbref.com/en/"
+      ],
+      "plan_dois": [],
+      "acquisition_status": "downloaded",
+      "acquisition_notes": [
+        "OpenAlex search: Measuring soccer players’ contributions to chance creation by valuing their passes",
+        "HTTP 403 for https://www.fbref.com/en/"
+      ],
+      "files": [
+        "openalex-search.pdf",
+        "openalex-metadata.json",
+        "acquisition.json",
+        "provenance.md"
+      ],
+      "resolved_urls": [
+        "https://doi.org/10.1515/jqas-2018-0020",
+        "https://www.degruyter.com/downloadpdf/journals/jqas/15/2/article-p97.pdf",
+        "https://fbref.com/en/"
+      ],
+      "attempted_at": "2026-07-07T03:44:54+00:00",
+      "raw_dir": "data/raw/soccer-expected-goals"
+    },
+    {
+      "candidate_id": "cand-exp-wade-boggs-vs-don-mattingly",
+      "proposed_study_id": "wade-boggs-vs-don-mattingly",
+      "title": "Wade Boggs vs. Don Mattingly (multiple seasons) classic baseball paradox pair",
+      "citation": "Wade Boggs vs. Don Mattingly (multiple seasons) classic baseball paradox pair",
+      "domain": "sports-analytics",
+      "catalog_data_acquisition_status": "not_started",
+      "catalog_source_url": null,
+      "plan_urls": [],
+      "plan_dois": [],
+      "acquisition_status": "landing_saved",
+      "acquisition_notes": [
+        "OpenAlex search: Media and literary representations of Latinos in baseball and baseball fiction"
+      ],
+      "files": [
+        "openalex-search.html",
+        "openalex-metadata.json",
+        "acquisition.json",
+        "provenance.md"
+      ],
+      "resolved_urls": [
+        "http://hdl.handle.net/10106/25151"
+      ],
+      "attempted_at": "2026-07-07T03:44:59+00:00",
+      "raw_dir": "data/raw/wade-boggs-vs-don-mattingly"
+    },
+    {
+      "candidate_id": "cand-exp-lollar-vs-mccatty-pitching-1982",
+      "proposed_study_id": "lollar-vs-mccatty-pitching-1982",
+      "title": "Lollar vs. McCatty Pitching (1982–1983) from Hiester (1984) SABR",
+      "citation": "Lollar vs. McCatty Pitching (1982–1983) from Hiester (1984) SABR",
+      "domain": "sports-analytics",
+      "catalog_data_acquisition_status": "not_started",
+      "catalog_source_url": null,
+      "plan_urls": [],
+      "plan_dois": [],
+      "acquisition_status": "manual_only",
+      "acquisition_notes": [
+        "No URL or DOI — manual lookup from citation required."
+      ],
+      "files": [
+        "acquisition.json",
+        "provenance.md"
+      ],
+      "resolved_urls": [],
+      "attempted_at": "2026-07-07T03:45:02+00:00",
+      "raw_dir": "data/raw/lollar-vs-mccatty-pitching-1982"
+    },
+    {
+      "candidate_id": "cand-exp-mlb-park-factor-adjustments",
+      "proposed_study_id": "mlb-park-factor-adjustments",
+      "title": "MLB Park Factor Adjustments (Statcast era, 2015–2023)",
+      "citation": "MLB Park Factor Adjustments (Statcast era, 2015–2023)",
+      "domain": "sports-analytics",
+      "catalog_data_acquisition_status": "not_started",
+      "catalog_source_url": "https://baseballsavant.mlb.com/",
+      "plan_urls": [
+        "https://baseballsavant.mlb.com/"
+      ],
+      "plan_dois": [],
+      "acquisition_status": "landing_saved",
+      "acquisition_notes": [
+        "OpenAlex search: Fastball Quality After Ulnar Collateral Ligament Reconstruction in Major League Baseball Pitchers",
+        "HTTP 403 for https://journals.sagepub.com/doi/pdf/10.1177/03635465241262339?download=true/",
+        "Fetched https://baseballsavant.mlb.com/ → source-1.html (280150 bytes)"
+      ],
+      "files": [
+        "openalex-metadata.json",
+        "source-1.html",
+        "acquisition.json",
+        "provenance.md"
+      ],
+      "resolved_urls": [
+        "https://doi.org/10.1177/03635465241262339",
+        "https://journals.sagepub.com/doi/pdf/10.1177/03635465241262339?download=true",
+        "https://baseballsavant.mlb.com/"
+      ],
+      "attempted_at": "2026-07-07T03:45:03+00:00",
+      "raw_dir": "data/raw/mlb-park-factor-adjustments"
+    },
+    {
+      "candidate_id": "cand-exp-olympic-sprint-times-by-heat-type-1996",
+      "proposed_study_id": "olympic-sprint-times-by-heat-type-1996",
+      "title": "Olympic Sprint Times by Heat Type (1996–2020)",
+      "citation": "Olympic Sprint Times by Heat Type (1996–2020)",
+      "domain": "sports-analytics",
+      "catalog_data_acquisition_status": "not_started",
+      "catalog_source_url": "https://worldathletics.org/records/by-discipline/sprints/",
+      "plan_urls": [
+        "https://worldathletics.org/records/by-discipline/sprints/"
+      ],
+      "plan_dois": [],
+      "acquisition_status": "landing_saved",
+      "acquisition_notes": [
+        "OpenAlex search: Skeletal muscle energy metabolism during exercise",
+        "Fetched https://worldathletics.org/records/by-discipline/sprints/ → source-1.html (86418 bytes)"
+      ],
+      "files": [
+        "openalex-metadata.json",
+        "source-1.html",
+        "acquisition.json",
+        "provenance.md"
+      ],
+      "resolved_urls": [
+        "https://doi.org/10.1038/s42255-020-0251-4",
+        "https://worldathletics.org/records/by-discipline/sprints/"
+      ],
+      "attempted_at": "2026-07-07T03:45:07+00:00",
+      "raw_dir": "data/raw/olympic-sprint-times-by-heat-type-1996"
+    },
+    {
+      "candidate_id": "cand-exp-von-kugelgen-mohamed-scholkopf-2021",
+      "proposed_study_id": "von-kugelgen-mohamed-scholkopf-2021",
+      "title": "von Kügelgen, Mohamed & Schölkopf (2021)",
+      "citation": "von Kügelgen, Mohamed & Schölkopf (2021). \"Simpson's Paradox in COVID-19 Case Fatality Rates..\"",
+      "domain": "epidemiology-vaccine-efficacy",
+      "catalog_data_acquisition_status": "not_started",
+      "catalog_source_url": "https://www.who.int/data",
+      "plan_urls": [
+        "https://www.who.int/data"
+      ],
+      "plan_dois": [],
+      "acquisition_status": "portal_manual",
+      "acquisition_notes": [
+        "OpenAlex search: Quantum algorithms for causal estimands",
+        "Fetched https://www.who.int/data → source-1.html (413514 bytes)",
+        "Data portal landing page saved — manual extract required."
+      ],
+      "files": [
+        "openalex-search.html",
+        "openalex-metadata.json",
+        "source-1.html",
+        "acquisition.json",
+        "provenance.md"
+      ],
+      "resolved_urls": [
+        "https://doi.org/10.1088/2058-9565/ae20b8",
+        "https://doi.org/10.1088/2058-9565/ae20b8",
+        "https://www.who.int/data"
+      ],
+      "attempted_at": "2026-07-07T03:45:10+00:00",
+      "raw_dir": "data/raw/von-kugelgen-mohamed-scholkopf-2021"
+    },
+    {
+      "candidate_id": "cand-exp-dagan-et-al-2021",
+      "proposed_study_id": "dagan-et-al-2021",
+      "title": "Dagan et al. (2021)",
+      "citation": "Dagan et al. (2021). \"BNT162b2 mRNA Covid-19 Vaccine in a Nationwide Mass Vaccination Setting..\"",
+      "domain": "epidemiology-vaccine-efficacy",
+      "catalog_data_acquisition_status": "manual_only",
+      "catalog_source_url": null,
+      "plan_urls": [],
+      "plan_dois": [],
+      "acquisition_status": "manual_only",
+      "acquisition_notes": [
+        "OpenAlex search: Global, regional, and national incidence and mortality burden of non-COVID-19 lower respiratory infections and aetiologi",
+        "HTTP 403 for http://www.thelancet.com/article/S1473309924001762/pdf/",
+        "Catalog marked manual_only; no public URL — encode from published tables."
+      ],
+      "files": [
+        "openalex-metadata.json",
+        "acquisition.json",
+        "provenance.md"
+      ],
+      "resolved_urls": [
+        "https://doi.org/10.1016/s1473-3099(24)00176-2",
+        "http://www.thelancet.com/article/S1473309924001762/pdf"
+      ],
+      "attempted_at": "2026-07-07T03:45:14+00:00",
+      "raw_dir": "data/raw/dagan-et-al-2021"
+    },
+    {
+      "candidate_id": "cand-exp-israeli-ministry-of-health",
+      "proposed_study_id": "israeli-ministry-of-health",
+      "title": "Israeli Ministry of Health (Aug–Sep 2021)",
+      "citation": "Israeli Ministry of Health (Aug–Sep 2021). \"Vaccine Effectiveness.\"",
+      "domain": "epidemiology-vaccine-efficacy",
+      "catalog_data_acquisition_status": "not_started",
+      "catalog_source_url": "https://www.gov.il/en/departments/ministry_of_health",
+      "plan_urls": [
+        "https://www.gov.il/en/departments/ministry_of_health"
+      ],
+      "plan_dois": [],
+      "acquisition_status": "downloaded",
+      "acquisition_notes": [
+        "OpenAlex search: Cooling cities through urban green infrastructure: a health impact assessment of European cities",
+        "HTTP 403 for https://www.gov.il/en/departments/ministry_of_health/"
+      ],
+      "files": [
+        "openalex-search.pdf",
+        "openalex-metadata.json",
+        "acquisition.json",
+        "provenance.md"
+      ],
+      "resolved_urls": [
+        "https://doi.org/10.1016/s0140-6736(22)02585-5",
+        "https://researchonline.lshtm.ac.uk/id/eprint/4668939/1/Iungman_etal_2023_Cooling-cities-through-urban-green.pdf",
+        "https://www.gov.il/en/departments/ministry_of_health"
+      ],
+      "attempted_at": "2026-07-07T03:45:17+00:00",
+      "raw_dir": "data/raw/israeli-ministry-of-health"
+    },
+    {
+      "candidate_id": "cand-exp-yule-1903",
+      "proposed_study_id": "yule-1903",
+      "title": "Yule (1903)",
+      "citation": "Yule (1903). \"Notes on the Theory of Association of Attributes in Statistics..\"",
+      "domain": "epidemiology-vaccine-efficacy",
+      "catalog_data_acquisition_status": "manual_only",
+      "catalog_source_url": null,
+      "plan_urls": [],
+      "plan_dois": [],
+      "acquisition_status": "manual_only",
+      "acquisition_notes": [
+        "OpenAlex search: NOTES ON THE THEORY OF ASSOCIATION OF ATTRIBUTES IN STATISTICS",
+        "Catalog marked manual_only; no public URL — encode from published tables."
+      ],
+      "files": [
+        "openalex-metadata.json",
+        "acquisition.json",
+        "provenance.md"
+      ],
+      "resolved_urls": [
+        "https://doi.org/10.1093/biomet/2.2.121"
+      ],
+      "attempted_at": "2026-07-07T03:45:23+00:00",
+      "raw_dir": "data/raw/yule-1903"
+    },
+    {
+      "candidate_id": "cand-exp-mantel-haenszel-1959",
+      "proposed_study_id": "mantel-haenszel-1959",
+      "title": "Mantel & Haenszel (1959)",
+      "citation": "Mantel & Haenszel (1959). \"Statistical Aspects of the Analysis of Data from Retrospective Studies of Disease..\"",
+      "domain": "epidemiology-vaccine-efficacy",
+      "catalog_data_acquisition_status": "manual_only",
+      "catalog_source_url": null,
+      "plan_urls": [],
+      "plan_dois": [],
+      "acquisition_status": "manual_only",
+      "acquisition_notes": [
+        "OpenAlex search: DIF DETECTION AND DESCRIPTION: MANTEL‐HAENSZEL AND STANDARDIZATION1,2",
+        "HTTP 403 for https://www.onlinelibrary.wiley.com/doi/pdfdirect/10.1002/j.2333-8504.1992.tb01440.x",
+        "Catalog marked manual_only; no public URL — encode from published tables."
+      ],
+      "files": [
+        "openalex-metadata.json",
+        "acquisition.json",
+        "provenance.md"
+      ],
+      "resolved_urls": [
+        "https://doi.org/10.1002/j.2333-8504.1992.tb01440.x",
+        "https://onlinelibrary.wiley.com/doi/pdfdirect/10.1002/j.2333-8504.1992.tb01440.x"
+      ],
+      "attempted_at": "2026-07-07T03:45:24+00:00",
+      "raw_dir": "data/raw/mantel-haenszel-1959"
+    },
+    {
+      "candidate_id": "cand-exp-doll-hill-1954",
+      "proposed_study_id": "doll-hill-1954",
+      "title": "Doll & Hill (1954)",
+      "citation": "Doll & Hill (1954). \"The Mortality of Doctors in Relation to Their Smoking Habits..\"",
+      "domain": "epidemiology-vaccine-efficacy",
+      "catalog_data_acquisition_status": "not_started",
+      "catalog_source_url": "https://www.ctsu.ox.ac.uk/research/uk-doctors-cohort",
+      "plan_urls": [
+        "https://www.ctsu.ox.ac.uk/research/uk-doctors-cohort"
+      ],
+      "plan_dois": [],
+      "acquisition_status": "metadata_only",
+      "acquisition_notes": [
+        "OpenAlex search: Mortality in Relation to Smoking: Ten Years' Observations of British Doctors",
+        "HTTP 403 for https://www.bmj.com/content/bmj/1/5395/1399.full.pdf",
+        "HTTP 404 for https://www.ctsu.ox.ac.uk/research/uk-doctors-cohort/",
+        "OpenAlex metadata saved; no open PDF/data file retrieved."
+      ],
+      "files": [
+        "openalex-metadata.json",
+        "acquisition.json",
+        "provenance.md"
+      ],
+      "resolved_urls": [
+        "https://doi.org/10.1136/bmj.1.5395.1399",
+        "https://www.bmj.com/content/bmj/1/5395/1399.full.pdf",
+        "https://www.ctsu.ox.ac.uk/research/uk-doctors-cohort"
+      ],
+      "attempted_at": "2026-07-07T03:45:26+00:00",
+      "raw_dir": "data/raw/doll-hill-1954"
+    },
+    {
+      "candidate_id": "cand-exp-hammond-horn-1958",
+      "proposed_study_id": "hammond-horn-1958",
+      "title": "Hammond & Horn (1958)",
+      "citation": "Hammond & Horn (1958). \"Smoking and Death Rates..\"",
+      "domain": "epidemiology-vaccine-efficacy",
+      "catalog_data_acquisition_status": "manual_only",
+      "catalog_source_url": null,
+      "plan_urls": [],
+      "plan_dois": [],
+      "acquisition_status": "manual_only",
+      "acquisition_notes": [
+        "OpenAlex search: Landmark article March 15, 1958: Smoking and death rates--report on forty-four months of follow-up of 187,783 men. By E.",
+        "Catalog marked manual_only; no public URL — encode from published tables."
+      ],
+      "files": [
+        "openalex-metadata.json",
+        "acquisition.json",
+        "provenance.md"
+      ],
+      "resolved_urls": [
+        "https://doi.org/10.1001/jama.251.21.2840"
+      ],
+      "attempted_at": "2026-07-07T03:45:31+00:00",
+      "raw_dir": "data/raw/hammond-horn-1958"
+    },
+    {
+      "candidate_id": "cand-exp-polack-et-al-2020",
+      "proposed_study_id": "polack-et-al-2020",
+      "title": "Polack et al. (2020)",
+      "citation": "Polack et al. (2020). \"Safety and Efficacy of the BNT162b2 mRNA Covid-19 Vaccine..\"",
+      "domain": "epidemiology-vaccine-efficacy",
+      "catalog_data_acquisition_status": "not_started",
+      "catalog_source_url": "https://www.pfizer.com/research/clinical-trials/pfizer-clinical-trial-data-sharing",
+      "plan_urls": [
+        "https://www.pfizer.com/research/clinical-trials/pfizer-clinical-trial-data-sharing"
+      ],
+      "plan_dois": [],
+      "acquisition_status": "metadata_only",
+      "acquisition_notes": [
+        "OpenAlex search: The Lancet Global Health Commission on Global Eye Health: vision beyond 2020",
+        "HTTP 403 for http://www.thelancet.com/article/S2214109X20304885/pdf/",
+        "HTTP 404 for https://www.pfizer.com/research/clinical-trials/pfizer-clinical-trial-data-sharing/",
+        "OpenAlex metadata saved; no open PDF/data file retrieved."
+      ],
+      "files": [
+        "openalex-metadata.json",
+        "acquisition.json",
+        "provenance.md"
+      ],
+      "resolved_urls": [
+        "https://doi.org/10.1016/s2214-109x(20)30488-5",
+        "http://www.thelancet.com/article/S2214109X20304885/pdf",
+        "https://www.pfizer.com/research/clinical-trials/pfizer-clinical-trial-data-sharing"
+      ],
+      "attempted_at": "2026-07-07T03:45:32+00:00",
+      "raw_dir": "data/raw/polack-et-al-2020"
+    },
+    {
+      "candidate_id": "cand-exp-baden-et-al-2021",
+      "proposed_study_id": "baden-et-al-2021",
+      "title": "Baden et al. (2021)",
+      "citation": "Baden et al. (2021). \"Efficacy and Safety of the mRNA-1273 SARS-CoV-2 Vaccine..\"",
+      "domain": "epidemiology-vaccine-efficacy",
+      "catalog_data_acquisition_status": "not_started",
+      "catalog_source_url": "https://vivli.org/",
+      "plan_urls": [
+        "https://vivli.org/"
+      ],
+      "plan_dois": [],
+      "acquisition_status": "downloaded",
+      "acquisition_notes": [
+        "OpenAlex search: COVID-19 in early 2021: current status and looking forward",
+        "Fetched https://vivli.org/ → source-1.html (117408 bytes)"
+      ],
+      "files": [
+        "openalex-search.pdf",
+        "openalex-metadata.json",
+        "source-1.html",
+        "acquisition.json",
+        "provenance.md"
+      ],
+      "resolved_urls": [
+        "https://doi.org/10.1038/s41392-021-00527-1",
+        "https://www.nature.com/articles/s41392-021-00527-1.pdf",
+        "https://vivli.org/"
+      ],
+      "attempted_at": "2026-07-07T03:45:38+00:00",
+      "raw_dir": "data/raw/baden-et-al-2021"
+    },
+    {
+      "candidate_id": "cand-exp-flannery-et-al-2020",
+      "proposed_study_id": "flannery-et-al-2020",
+      "title": "Flannery et al. (2020)",
+      "citation": "Flannery et al. (2020). \"Influenza Vaccine Effectiveness against Pediatric Deaths..\"",
+      "domain": "epidemiology-vaccine-efficacy",
+      "catalog_data_acquisition_status": "not_started",
+      "catalog_source_url": "https://www.cdc.gov/flu/vaccines-work/vaccine-effectiveness.htm",
+      "plan_urls": [
+        "https://www.cdc.gov/flu/vaccines-work/vaccine-effectiveness.htm"
+      ],
+      "plan_dois": [],
+      "acquisition_status": "downloaded",
+      "acquisition_notes": [
+        "OpenAlex search: Prevention and Control of Seasonal Influenza with Vaccines: Recommendations of the Advisory Committee on Immunization Pr",
+        "Fetched https://www.cdc.gov/flu/vaccines-work/vaccine-effectiveness.htm → source-1.html (47931 bytes)"
+      ],
+      "files": [
+        "openalex-search.pdf",
+        "openalex-metadata.json",
+        "source-1.html",
+        "acquisition.json",
+        "provenance.md"
+      ],
+      "resolved_urls": [
+        "https://doi.org/10.15585/mmwr.rr6908a1",
+        "https://www.cdc.gov/mmwr/volumes/69/rr/pdfs/rr6908a1-H.pdf",
+        "https://www.cdc.gov/flu/vaccines-work/vaccine-effectiveness.htm"
+      ],
+      "attempted_at": "2026-07-07T03:45:43+00:00",
+      "raw_dir": "data/raw/flannery-et-al-2020"
+    },
+    {
+      "candidate_id": "cand-exp-simonsen-et-al-2005",
+      "proposed_study_id": "simonsen-et-al-2005",
+      "title": "Simonsen et al. (2005)",
+      "citation": "Simonsen et al. (2005). \"Influenza Vaccination and Mortality Benefit: New Insights, New Opportunities..\"",
+      "domain": "epidemiology-vaccine-efficacy",
+      "catalog_data_acquisition_status": "manual_only",
+      "catalog_source_url": null,
+      "plan_urls": [],
+      "plan_dois": [],
+      "acquisition_status": "manual_only",
+      "acquisition_notes": [
+        "OpenAlex search: Female sex workers in Africa: Epidemiology overview, data gaps, ways forward",
+        "HTTP 403 for https://www.tandfonline.com/doi/pdf/10.1080/17290376.2012.743825?needAccess=true&role=button",
+        "Catalog marked manual_only; no public URL — encode from published tables."
+      ],
+      "files": [
+        "openalex-metadata.json",
+        "acquisition.json",
+        "provenance.md"
+      ],
+      "resolved_urls": [
+        "https://doi.org/10.1080/17290376.2012.743825",
+        "https://www.tandfonline.com/doi/pdf/10.1080/17290376.2012.743825?needAccess=true&role=button"
+      ],
+      "attempted_at": "2026-07-07T03:45:47+00:00",
+      "raw_dir": "data/raw/simonsen-et-al-2005"
+    },
+    {
+      "candidate_id": "cand-exp-hernan-hernandez-diaz-robins-2004",
+      "proposed_study_id": "hernan-hernandez-diaz-robins-2004",
+      "title": "Hernan, Hernandez-Diaz & Robins (2004)",
+      "citation": "Hernan, Hernandez-Diaz & Robins (2004). \"A Structural Approach to Selection Bias..\"",
+      "domain": "epidemiology-vaccine-efficacy",
+      "catalog_data_acquisition_status": "not_started",
+      "catalog_source_url": "https://www.nurseshealthstudy.org/",
+      "plan_urls": [
+        "https://www.nurseshealthstudy.org/"
+      ],
+      "plan_dois": [],
+      "acquisition_status": "metadata_only",
+      "acquisition_notes": [
+        "OpenAlex search: Constructing Inverse Probability Weights for Marginal Structural Models",
+        "HTTP 403 for https://www.academic.oup.com/aje/article-pdf/168/6/656/200801/kwn164.pdf",
+        "URLError: <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'www.nurseshealthstudy.org'. (_ssl.c:1028)> for https://www.nurseshealthstudy.org/",
+        "OpenAlex metadata saved; no open PDF/data file retrieved."
+      ],
+      "files": [
+        "openalex-metadata.json",
+        "acquisition.json",
+        "provenance.md"
+      ],
+      "resolved_urls": [
+        "https://doi.org/10.1093/aje/kwn164",
+        "https://academic.oup.com/aje/article-pdf/168/6/656/200801/kwn164.pdf",
+        "https://www.nurseshealthstudy.org/"
+      ],
+      "attempted_at": "2026-07-07T03:45:49+00:00",
+      "raw_dir": "data/raw/hernan-hernandez-diaz-robins-2004"
+    },
+    {
+      "candidate_id": "cand-exp-cornfield-et-al-1959",
+      "proposed_study_id": "cornfield-et-al-1959",
+      "title": "Cornfield et al. (1959)",
+      "citation": "Cornfield et al. (1959). \"Smoking and Lung Cancer: Recent Evidence and a Discussion of Some Questions..\"",
+      "domain": "epidemiology-vaccine-efficacy",
+      "catalog_data_acquisition_status": "manual_only",
+      "catalog_source_url": null,
+      "plan_urls": [],
+      "plan_dois": [],
+      "acquisition_status": "manual_only",
+      "acquisition_notes": [
+        "OpenAlex search: Indirect corrections for confounding under multiplicative and additive risk models",
+        "Catalog marked manual_only; no public URL — encode from published tables."
+      ],
+      "files": [
+        "openalex-metadata.json",
+        "acquisition.json",
+        "provenance.md"
+      ],
+      "resolved_urls": [
+        "https://doi.org/10.1002/ajim.4700130108"
+      ],
+      "attempted_at": "2026-07-07T03:45:52+00:00",
+      "raw_dir": "data/raw/cornfield-et-al-1959"
+    },
+    {
+      "candidate_id": "cand-exp-baker-kramer-2001",
+      "proposed_study_id": "baker-kramer-2001",
+      "title": "Baker & Kramer (2001)",
+      "citation": "Baker & Kramer (2001). \"Good for Women, Good for Men, Bad for People: Simpson's Paradox and the Importance of Sex-Specific Analysis in Observational Studies..\"",
+      "domain": "epidemiology-vaccine-efficacy",
+      "catalog_data_acquisition_status": "manual_only",
+      "catalog_source_url": null,
+      "plan_urls": [],
+      "plan_dois": [],
+      "acquisition_status": "manual_only",
+      "acquisition_notes": [
+        "OpenAlex search: Global Strategy for the Diagnosis, Management, and Prevention of Chronic Obstructive Pulmonary Disease",
+        "URLError: <urlopen error [Errno 8] nodename nor servname provided, or not known> for http://www.ajrccm.atsjournals.org/content/187/4/347.full.pdf+html",
+        "Catalog marked manual_only; no public URL — encode from published tables."
+      ],
+      "files": [
+        "openalex-metadata.json",
+        "acquisition.json",
+        "provenance.md"
+      ],
+      "resolved_urls": [
+        "https://doi.org/10.1164/rccm.201204-0596pp",
+        "http://ajrccm.atsjournals.org/content/187/4/347.full.pdf+html"
+      ],
+      "attempted_at": "2026-07-07T03:45:54+00:00",
+      "raw_dir": "data/raw/baker-kramer-2001"
+    },
+    {
+      "candidate_id": "cand-exp-cdc-covid-19-case-surveillance-2020",
+      "proposed_study_id": "cdc-covid-19-case-surveillance-2020",
+      "title": "CDC COVID-19 Case Surveillance (2020–2023)",
+      "citation": "CDC COVID-19 Case Surveillance (2020–2023)",
+      "domain": "epidemiology-vaccine-efficacy",
+      "catalog_data_acquisition_status": "not_started",
+      "catalog_source_url": "https://data.cdc.gov/Case-Surveillance/COVID-19-Case-Surveillance-Public-Use-Data/vbim-akqf",
+      "plan_urls": [
+        "https://data.cdc.gov/Case-Surveillance/COVID-19-Case-Surveillance-Public-Use-Data/vbim-akqf"
+      ],
+      "plan_dois": [],
+      "acquisition_status": "portal_manual",
+      "acquisition_notes": [
+        "OpenAlex search: Association of Public Health Interventions With the Epidemiology of the COVID-19 Outbreak in Wuhan, China",
+        "HTTP 403 for https://www.jamanetwork.com/journals/jama/articlepdf/2764658/jama_pan_2020_oi_200040.pdf",
+        "Fetched https://data.cdc.gov/Case-Surveillance/COVID-19-Case-Surveillance-Public-Use-Data/vbim-akqf → source-1.html (655770 bytes)",
+        "Data portal landing page saved — manual extract required."
+      ],
+      "files": [
+        "openalex-metadata.json",
+        "source-1.html",
+        "acquisition.json",
+        "provenance.md"
+      ],
+      "resolved_urls": [
+        "https://doi.org/10.1001/jama.2020.6130",
+        "https://jamanetwork.com/journals/jama/articlepdf/2764658/jama_pan_2020_oi_200040.pdf",
+        "https://data.cdc.gov/Case-Surveillance/COVID-19-Case-Surveillance-Public-Use-Data/vbim-akqf"
+      ],
+      "attempted_at": "2026-07-07T03:45:57+00:00",
+      "raw_dir": "data/raw/cdc-covid-19-case-surveillance-2020"
+    },
+    {
+      "candidate_id": "cand-exp-our-world-in-data-covid-19-dataset-2020",
+      "proposed_study_id": "our-world-in-data-covid-19-dataset-2020",
+      "title": "Our World in Data COVID-19 Dataset (2020–2023)",
+      "citation": "Our World in Data COVID-19 Dataset (2020–2023)",
+      "domain": "epidemiology-vaccine-efficacy",
+      "catalog_data_acquisition_status": "not_started",
+      "catalog_source_url": "https://ourworldindata.org/covid-deaths",
+      "plan_urls": [
+        "https://ourworldindata.org/covid-deaths"
+      ],
+      "plan_dois": [],
+      "acquisition_status": "landing_saved",
+      "acquisition_notes": [
+        "OpenAlex search: Prediction models for diagnosis and prognosis of covid-19: systematic review and critical appraisal",
+        "HTTP 403 for https://www.bmj.com/content/bmj/369/bmj.m1328.full.pdf",
+        "Fetched https://ourworldindata.org/covid-deaths → source-1.html (130649 bytes)"
+      ],
+      "files": [
+        "openalex-metadata.json",
+        "source-1.html",
+        "acquisition.json",
+        "provenance.md"
+      ],
+      "resolved_urls": [
+        "https://doi.org/10.1136/bmj.m1328",
+        "https://www.bmj.com/content/bmj/369/bmj.m1328.full.pdf",
+        "https://ourworldindata.org/covid-deaths"
+      ],
+      "attempted_at": "2026-07-07T03:46:01+00:00",
+      "raw_dir": "data/raw/our-world-in-data-covid-19-dataset-2020"
+    },
+    {
+      "candidate_id": "cand-exp-shapiro-et-al-1988",
+      "proposed_study_id": "shapiro-et-al-1988",
+      "title": "Shapiro et al. (1988)",
+      "citation": "Shapiro et al. (1988). \"Breast Cancer Screening and Its Effect on Mortality: Health Insurance Plan Study..\"",
+      "domain": "epidemiology-vaccine-efficacy",
+      "catalog_data_acquisition_status": "manual_only",
+      "catalog_source_url": null,
+      "plan_urls": [],
+      "plan_dois": [],
+      "acquisition_status": "manual_only",
+      "acquisition_notes": [
+        "OpenAlex search: Overconfidence and Excess Entry: An Experimental Approach",
+        "Catalog marked manual_only; no public URL — encode from published tables."
+      ],
+      "files": [
+        "openalex-metadata.json",
+        "acquisition.json",
+        "provenance.md"
+      ],
+      "resolved_urls": [
+        "https://doi.org/10.1257/aer.89.1.306"
+      ],
+      "attempted_at": "2026-07-07T03:46:04+00:00",
+      "raw_dir": "data/raw/shapiro-et-al-1988"
+    },
+    {
+      "candidate_id": "cand-exp-hernandez-diaz-schisterman-hernan-2006",
+      "proposed_study_id": "hernandez-diaz-schisterman-hernan-2006",
+      "title": "Hernandez-Diaz, Schisterman & Hernan (2006)",
+      "citation": "Hernandez-Diaz, Schisterman & Hernan (2006). \"The Birth Weight 'Paradox' Uncovered?.\"",
+      "domain": "epidemiology-vaccine-efficacy",
+      "catalog_data_acquisition_status": "not_started",
+      "catalog_source_url": "https://www.cdc.gov/nchs/data_access/vitalstatsonline.htm",
+      "plan_urls": [
+        "https://www.cdc.gov/nchs/data_access/vitalstatsonline.htm"
+      ],
+      "plan_dois": [],
+      "acquisition_status": "downloaded",
+      "acquisition_notes": [
+        "OpenAlex search: Reducing bias through directed acyclic graphs",
+        "Fetched https://www.cdc.gov/nchs/data_access/vitalstatsonline.htm → source-1.html (262232 bytes)"
+      ],
+      "files": [
+        "openalex-search.pdf",
+        "openalex-metadata.json",
+        "source-1.html",
+        "acquisition.json",
+        "provenance.md"
+      ],
+      "resolved_urls": [
+        "https://doi.org/10.1186/1471-2288-8-70",
+        "https://bmcmedresmethodol.biomedcentral.com/counter/pdf/10.1186/1471-2288-8-70",
+        "https://www.cdc.gov/nchs/data_access/vitalstatsonline.htm"
+      ],
+      "attempted_at": "2026-07-07T03:46:06+00:00",
+      "raw_dir": "data/raw/hernandez-diaz-schisterman-hernan-2006"
+    },
+    {
+      "candidate_id": "cand-exp-moss-racusin-et-al-2012",
+      "proposed_study_id": "moss-racusin-et-al-2012",
+      "title": "Moss-Racusin et al. (2012)",
+      "citation": "Moss-Racusin et al. (2012). \"Science Faculty's Subtle Gender Biases Favor Male Students..\"",
+      "domain": "hiring-promotion",
+      "catalog_data_acquisition_status": "not_started",
+      "catalog_source_url": "https://www.pnas.org/doi/10.1073/pnas.1211286109",
+      "plan_urls": [
+        "https://www.pnas.org/doi/10.1073/pnas.1211286109"
+      ],
+      "plan_dois": [
+        "10.1073/pnas.1211286109](https://www.pnas.org/doi/10.1073/pnas.1211286109"
+      ],
+      "acquisition_status": "metadata_only",
+      "acquisition_notes": [
+        "OpenAlex search: Reactions to Vanguards",
+        "HTTP 403 for https://www.pnas.org/doi/10.1073/pnas.1211286109",
+        "OpenAlex metadata saved; no open PDF/data file retrieved."
+      ],
+      "files": [
+        "openalex-metadata.json",
+        "acquisition.json",
+        "provenance.md"
+      ],
+      "resolved_urls": [
+        "https://doi.org/10.1016/b978-0-12-394286-9.00004-4",
+        "https://www.pnas.org/doi/10.1073/pnas.1211286109"
+      ],
+      "attempted_at": "2026-07-07T03:46:13+00:00",
+      "raw_dir": "data/raw/moss-racusin-et-al-2012"
+    },
+    {
+      "candidate_id": "cand-exp-castilla-2008",
+      "proposed_study_id": "castilla-2008",
+      "title": "Castilla (2008)",
+      "citation": "Castilla (2008). \"Gender, Race, and Meritocracy in Organizational Careers..\"",
+      "domain": "hiring-promotion",
+      "catalog_data_acquisition_status": "manual_only",
+      "catalog_source_url": null,
+      "plan_urls": [],
+      "plan_dois": [],
+      "acquisition_status": "manual_only",
+      "acquisition_notes": [
+        "OpenAlex search: Activated Carbon Surface Modifications by Nitric Acid, Hydrogen Peroxide, and Ammonium Peroxydisulfate Treatments",
+        "Catalog marked manual_only; no public URL — encode from published tables."
+      ],
+      "files": [
+        "openalex-metadata.json",
+        "acquisition.json",
+        "provenance.md"
+      ],
+      "resolved_urls": [
+        "https://doi.org/10.1021/la00011a035"
+      ],
+      "attempted_at": "2026-07-07T03:46:18+00:00",
+      "raw_dir": "data/raw/castilla-2008"
+    },
+    {
+      "candidate_id": "cand-exp-blau-devaro-2007",
+      "proposed_study_id": "blau-devaro-2007",
+      "title": "Blau & DeVaro (2007)",
+      "citation": "Blau & DeVaro (2007). \"New Evidence on Gender Differences in Promotion Rates: An Empirical Analysis of a Sample of New Hires..\"",
+      "domain": "hiring-promotion",
+      "catalog_data_acquisition_status": "not_started",
+      "catalog_source_url": "https://www.bls.gov/ncs/",
+      "plan_urls": [
+        "https://www.bls.gov/ncs/"
+      ],
+      "plan_dois": [],
+      "acquisition_status": "portal_manual",
+      "acquisition_notes": [
+        "OpenAlex search: The Gender Wage Gap: Extent, Trends, and Explanations",
+        "HTTP 403 for https://www.aeaweb.org/articles/pdf/doi/10.1257/jel.20160995",
+        "Fetched https://www.bls.gov/ncs/ → source-1.html (114639 bytes)",
+        "Data portal landing page saved — manual extract required."
+      ],
+      "files": [
+        "openalex-metadata.json",
+        "source-1.html",
+        "acquisition.json",
+        "provenance.md"
+      ],
+      "resolved_urls": [
+        "https://doi.org/10.1257/jel.20160995",
+        "https://www.aeaweb.org/articles/pdf/doi/10.1257/jel.20160995",
+        "https://www.bls.gov/ncs/"
+      ],
+      "attempted_at": "2026-07-07T03:46:19+00:00",
+      "raw_dir": "data/raw/blau-devaro-2007"
+    },
+    {
+      "candidate_id": "cand-exp-sarsons-2017",
+      "proposed_study_id": "sarsons-2017",
+      "title": "Sarsons (2017)",
+      "citation": "Sarsons (2017). \"Recognition for Group Work: Gender Differences in Academia..\"",
+      "domain": "hiring-promotion",
+      "catalog_data_acquisition_status": "not_started",
+      "catalog_source_url": "https://www.aeaweb.org/articles?id=10.1257/aer.p20171031",
+      "plan_urls": [
+        "https://www.aeaweb.org/articles?id=10.1257/aer.p20171031"
+      ],
+      "plan_dois": [
+        "10.1257/aer.p20171031"
+      ],
+      "acquisition_status": "downloaded",
+      "acquisition_notes": [
+        "OpenAlex: What Is Meant by “Replication” and Why Does It Encounter Resistance in Economics?",
+        "Downloaded OpenAlex OA file for DOI 10.1257/aer.p20171031",
+        "Downloaded open-access PDF via Unpaywall for DOI 10.1257/aer.p20171031",
+        "Fetched https://www.aeaweb.org/articles?id=10.1257/aer.p20171031 → source-1.html (28957 bytes)"
+      ],
+      "files": [
+        "openalex-10.1257_aer.p20171031.pdf",
+        "oa-10.1257_aer.p20171031.pdf",
+        "source-1.html",
+        "acquisition.json",
+        "provenance.md"
+      ],
+      "resolved_urls": [
+        "https://doi.org/10.1257/aer.p20171031",
+        "https://ueaeprints.uea.ac.uk/id/eprint/63549/1/Published_manuscript.pdf",
+        "https://ueaeprints.uea.ac.uk/id/eprint/63549/1/Published_manuscript.pdf",
+        "https://www.aeaweb.org/articles?id=10.1257/aer.p20171031"
+      ],
+      "attempted_at": "2026-07-07T03:46:23+00:00",
+      "raw_dir": "data/raw/sarsons-2017"
+    },
+    {
+      "candidate_id": "cand-exp-ginther-kahn-2004",
+      "proposed_study_id": "ginther-kahn-2004",
+      "title": "Ginther & Kahn (2004)",
+      "citation": "Ginther & Kahn (2004). \"Women in Economics: Moving Up or Falling Off the Academic Career Ladder?.\"",
+      "domain": "hiring-promotion",
+      "catalog_data_acquisition_status": "not_started",
+      "catalog_source_url": "https://ncses.nsf.gov/surveys/doctoral-recipients",
+      "plan_urls": [
+        "https://ncses.nsf.gov/surveys/doctoral-recipients"
+      ],
+      "plan_dois": [],
+      "acquisition_status": "downloaded",
+      "acquisition_notes": [
+        "OpenAlex search: Can Mentoring Help Female Assistant Professors? Interim Results from a Randomized Trial",
+        "HTTP 404 for https://ncses.nsf.gov/surveys/doctoral-recipients/"
+      ],
+      "files": [
+        "openalex-search.pdf",
+        "openalex-metadata.json",
+        "acquisition.json",
+        "provenance.md"
+      ],
+      "resolved_urls": [
+        "https://doi.org/10.1257/aer.100.2.348",
+        "http://www.nber.org/papers/w15707.pdf",
+        "https://ncses.nsf.gov/surveys/doctoral-recipients"
+      ],
+      "attempted_at": "2026-07-07T03:46:31+00:00",
+      "raw_dir": "data/raw/ginther-kahn-2004"
+    },
+    {
+      "candidate_id": "cand-exp-eeoc-charge-data",
+      "proposed_study_id": "eeoc-charge-data",
+      "title": "EEOC Charge Data (annual)",
+      "citation": "EEOC Charge Data (annual)",
+      "domain": "hiring-promotion",
+      "catalog_data_acquisition_status": "not_started",
+      "catalog_source_url": "https://www.eeoc.gov/data/charge-statistics-charges-filed-eeoc",
+      "plan_urls": [
+        "https://www.eeoc.gov/data/charge-statistics-charges-filed-eeoc"
+      ],
+      "plan_dois": [],
+      "acquisition_status": "metadata_only",
+      "acquisition_notes": [
+        "OpenAlex search: Settling for Less? Organizational Determinants of Discrimination-Charge Outcomes",
+        "HTTP 403 for https://www.onlinelibrary.wiley.com/doi/pdfdirect/10.1111/j.1540-5893.2008.00341.x",
+        "HTTP 404 for https://www.eeoc.gov/data/charge-statistics-charges-filed-eeoc/",
+        "OpenAlex metadata saved; no open PDF/data file retrieved."
+      ],
+      "files": [
+        "openalex-metadata.json",
+        "acquisition.json",
+        "provenance.md"
+      ],
+      "resolved_urls": [
+        "https://doi.org/10.1111/j.1540-5893.2008.00341.x",
+        "https://onlinelibrary.wiley.com/doi/pdfdirect/10.1111/j.1540-5893.2008.00341.x",
+        "https://www.eeoc.gov/data/charge-statistics-charges-filed-eeoc"
+      ],
+      "attempted_at": "2026-07-07T03:46:38+00:00",
+      "raw_dir": "data/raw/eeoc-charge-data"
+    },
+    {
+      "candidate_id": "cand-exp-nsf-ncses-survey-of-doctoral-recipients",
+      "proposed_study_id": "nsf-ncses-survey-of-doctoral-recipients",
+      "title": "NSF NCSES Survey of Doctoral Recipients (annual)",
+      "citation": "NSF NCSES Survey of Doctoral Recipients (annual)",
+      "domain": "hiring-promotion",
+      "catalog_data_acquisition_status": "not_started",
+      "catalog_source_url": "https://ncses.nsf.gov/surveys/doctoral-recipients",
+      "plan_urls": [
+        "https://ncses.nsf.gov/surveys/doctoral-recipients"
+      ],
+      "plan_dois": [],
+      "acquisition_status": "metadata_only",
+      "acquisition_notes": [
+        "OpenAlex search: Gender Differences in Grant Submissions across Science and Engineering Fields at the NSF",
+        "HTTP 403 for https://www.academic.oup.com/bioscience/article-pdf/70/9/814/33750232/biaa072.pdf",
+        "HTTP 404 for https://ncses.nsf.gov/surveys/doctoral-recipients/",
+        "OpenAlex metadata saved; no open PDF/data file retrieved."
+      ],
+      "files": [
+        "openalex-metadata.json",
+        "acquisition.json",
+        "provenance.md"
+      ],
+      "resolved_urls": [
+        "https://doi.org/10.1093/biosci/biaa072",
+        "https://academic.oup.com/bioscience/article-pdf/70/9/814/33750232/biaa072.pdf",
+        "https://ncses.nsf.gov/surveys/doctoral-recipients"
+      ],
+      "attempted_at": "2026-07-07T03:46:44+00:00",
+      "raw_dir": "data/raw/nsf-ncses-survey-of-doctoral-recipients"
+    },
+    {
+      "candidate_id": "cand-exp-neumark-bank-van-nort-1996",
+      "proposed_study_id": "neumark-bank-van-nort-1996",
+      "title": "Neumark, Bank & Van Nort (1996)",
+      "citation": "Neumark, Bank & Van Nort (1996). \"Sex Discrimination in Restaurant Hiring: An Audit Study..\"",
+      "domain": "hiring-promotion",
+      "catalog_data_acquisition_status": "manual_only",
+      "catalog_source_url": null,
+      "plan_urls": [],
+      "plan_dois": [],
+      "acquisition_status": "manual_only",
+      "acquisition_notes": [
+        "OpenAlex search: Orchestrating Impartiality: The Impact of “Blind” Auditions on Female Musicians",
+        "HTTP 403 for https://www.aeaweb.org/articles/pdf/doi/10.1257/aer.90.4.715",
+        "Catalog marked manual_only; no public URL — encode from published tables."
+      ],
+      "files": [
+        "openalex-metadata.json",
+        "acquisition.json",
+        "provenance.md"
+      ],
+      "resolved_urls": [
+        "https://doi.org/10.1257/aer.90.4.715",
+        "https://www.aeaweb.org/articles/pdf/doi/10.1257/aer.90.4.715"
+      ],
+      "attempted_at": "2026-07-07T03:46:48+00:00",
+      "raw_dir": "data/raw/neumark-bank-van-nort-1996"
+    },
+    {
+      "candidate_id": "cand-exp-kline-rose-walters-2022",
+      "proposed_study_id": "kline-rose-walters-2022",
+      "title": "Kline, Rose & Walters (2022)",
+      "citation": "Kline, Rose & Walters (2022). \"Systemic Discrimination Among Large U.S. Employers..\"",
+      "domain": "hiring-promotion",
+      "catalog_data_acquisition_status": "not_started",
+      "catalog_source_url": "https://academic.oup.com/qje/article/137/4/1963/6659597",
+      "plan_urls": [
+        "https://academic.oup.com/qje/article/137/4/1963/6659597"
+      ],
+      "plan_dois": [],
+      "acquisition_status": "metadata_only",
+      "acquisition_notes": [
+        "OpenAlex search: Atypical and Unique Transmission of Monkeypox Virus during the 2022 Outbreak: An Overview of the Current State of Knowle",
+        "HTTP 403 for https://www.mdpi.com/1999-4915/14/9/2012/pdf?version=1662884960/",
+        "HTTP 403 for https://academic.oup.com/qje/article/137/4/1963/6659597/",
+        "OpenAlex metadata saved; no open PDF/data file retrieved."
+      ],
+      "files": [
+        "openalex-metadata.json",
+        "acquisition.json",
+        "provenance.md"
+      ],
+      "resolved_urls": [
+        "https://doi.org/10.3390/v14092012",
+        "https://www.mdpi.com/1999-4915/14/9/2012/pdf?version=1662884960",
+        "https://academic.oup.com/qje/article/137/4/1963/6659597"
+      ],
+      "attempted_at": "2026-07-07T03:46:51+00:00",
+      "raw_dir": "data/raw/kline-rose-walters-2022"
+    },
+    {
+      "candidate_id": "cand-exp-hsieh-moretti-2019",
+      "proposed_study_id": "hsieh-moretti-2019",
+      "title": "Hsieh & Moretti (2019)",
+      "citation": "Hsieh & Moretti (2019). \"Housing Constraints and Spatial Misallocation..\"",
+      "domain": "hiring-promotion",
+      "catalog_data_acquisition_status": "not_started",
+      "catalog_source_url": "https://www.census.gov/programs-surveys/acs.html",
+      "plan_urls": [
+        "https://www.census.gov/programs-surveys/acs.html"
+      ],
+      "plan_dois": [],
+      "acquisition_status": "portal_manual",
+      "acquisition_notes": [
+        "Fetched https://www.census.gov/programs-surveys/acs.html → source-1.html (357864 bytes)",
+        "Data portal landing page saved — manual extract required."
+      ],
+      "files": [
+        "source-1.html",
+        "acquisition.json",
+        "provenance.md"
+      ],
+      "resolved_urls": [
+        "https://www.census.gov/programs-surveys/acs.html"
+      ],
+      "attempted_at": "2026-07-07T03:46:56+00:00",
+      "raw_dir": "data/raw/hsieh-moretti-2019"
+    },
+    {
+      "candidate_id": "cand-exp-kohavi-deng-longbotham-xu-2014",
+      "proposed_study_id": "kohavi-deng-longbotham-xu-2014",
+      "title": "Kohavi, Deng, Longbotham & Xu (2014)",
+      "citation": "Kohavi, Deng, Longbotham & Xu (2014). \"Seven Rules of Thumb for Web Site Experimenters..\"",
+      "domain": "online-ab-testing",
+      "catalog_data_acquisition_status": "not_started",
+      "catalog_source_url": null,
+      "plan_urls": [],
+      "plan_dois": [],
+      "acquisition_status": "manual_only",
+      "acquisition_notes": [
+        "No URL or DOI — manual lookup from citation required."
+      ],
+      "files": [
+        "acquisition.json",
+        "provenance.md"
+      ],
+      "resolved_urls": [],
+      "attempted_at": "2026-07-07T03:47:01+00:00",
+      "raw_dir": "data/raw/kohavi-deng-longbotham-xu-2014"
+    },
+    {
+      "candidate_id": "cand-exp-kohavi-longbotham-2017",
+      "proposed_study_id": "kohavi-longbotham-2017",
+      "title": "Kohavi & Longbotham (2017)",
+      "citation": "Kohavi & Longbotham (2017). \"Online Controlled Experiments and A/B Testing..\"",
+      "domain": "online-ab-testing",
+      "catalog_data_acquisition_status": "not_started",
+      "catalog_source_url": "https://www.exp-platform.com/",
+      "plan_urls": [
+        "https://www.exp-platform.com/"
+      ],
+      "plan_dois": [],
+      "acquisition_status": "landing_saved",
+      "acquisition_notes": [
+        "Fetched https://www.exp-platform.com/ → source-1.html (99999 bytes)"
+      ],
+      "files": [
+        "source-1.html",
+        "acquisition.json",
+        "provenance.md"
+      ],
+      "resolved_urls": [
+        "https://www.exp-platform.com/"
+      ],
+      "attempted_at": "2026-07-07T03:47:02+00:00",
+      "raw_dir": "data/raw/kohavi-longbotham-2017"
+    },
+    {
+      "candidate_id": "cand-exp-xu-chen-fernandez-sinno-bhasin-2015",
+      "proposed_study_id": "xu-chen-fernandez-sinno-bhasin-2015",
+      "title": "Xu, Chen, Fernandez, Sinno & Bhasin (2015)",
+      "citation": "Xu, Chen, Fernandez, Sinno & Bhasin (2015). \"From Infrastructure to Culture: A/B Testing Challenges and Best Practices at LinkedIn..\"",
+      "domain": "online-ab-testing",
+      "catalog_data_acquisition_status": "not_started",
+      "catalog_source_url": null,
+      "plan_urls": [],
+      "plan_dois": [],
+      "acquisition_status": "manual_only",
+      "acquisition_notes": [
+        "No URL or DOI — manual lookup from citation required."
+      ],
+      "files": [
+        "acquisition.json",
+        "provenance.md"
+      ],
+      "resolved_urls": [],
+      "attempted_at": "2026-07-07T03:47:06+00:00",
+      "raw_dir": "data/raw/xu-chen-fernandez-sinno-bhasin-2015"
+    },
+    {
+      "candidate_id": "cand-exp-deng-xu-kohavi-walker-2013",
+      "proposed_study_id": "deng-xu-kohavi-walker-2013",
+      "title": "Deng, Xu, Kohavi & Walker (2013)",
+      "citation": "Deng, Xu, Kohavi & Walker (2013). \"Improving the Sensitivity of Online Controlled Experiments by Utilizing Pre-Experiment Data..\"",
+      "domain": "online-ab-testing",
+      "catalog_data_acquisition_status": "manual_only",
+      "catalog_source_url": null,
+      "plan_urls": [],
+      "plan_dois": [],
+      "acquisition_status": "manual_only",
+      "acquisition_notes": [
+        "Catalog marked manual_only; no public URL — encode from published tables."
+      ],
+      "files": [
+        "acquisition.json",
+        "provenance.md"
+      ],
+      "resolved_urls": [],
+      "attempted_at": "2026-07-07T03:47:07+00:00",
+      "raw_dir": "data/raw/deng-xu-kohavi-walker-2013"
+    },
+    {
+      "candidate_id": "cand-exp-tang-agarwal-o-brien-meyer-2010",
+      "proposed_study_id": "tang-agarwal-o-brien-meyer-2010",
+      "title": "Tang, Agarwal, O'Brien & Meyer (2010)",
+      "citation": "Tang, Agarwal, O'Brien & Meyer (2010). \"Overlapping Experiment Infrastructure: More, Better, Faster Experimentation..\"",
+      "domain": "online-ab-testing",
+      "catalog_data_acquisition_status": "not_started",
+      "catalog_source_url": null,
+      "plan_urls": [],
+      "plan_dois": [],
+      "acquisition_status": "manual_only",
+      "acquisition_notes": [
+        "No URL or DOI — manual lookup from citation required."
+      ],
+      "files": [
+        "acquisition.json",
+        "provenance.md"
+      ],
+      "resolved_urls": [],
+      "attempted_at": "2026-07-07T03:47:08+00:00",
+      "raw_dir": "data/raw/tang-agarwal-o-brien-meyer-2010"
+    },
+    {
+      "candidate_id": "cand-exp-bakshy-eckles-bernstein-2014",
+      "proposed_study_id": "bakshy-eckles-bernstein-2014",
+      "title": "Bakshy, Eckles & Bernstein (2014)",
+      "citation": "Bakshy, Eckles & Bernstein (2014). \"Designing and Deploying Online Field Experiments..\"",
+      "domain": "online-ab-testing",
+      "catalog_data_acquisition_status": "not_started",
+      "catalog_source_url": null,
+      "plan_urls": [],
+      "plan_dois": [],
+      "acquisition_status": "manual_only",
+      "acquisition_notes": [
+        "No URL or DOI — manual lookup from citation required."
+      ],
+      "files": [
+        "acquisition.json",
+        "provenance.md"
+      ],
+      "resolved_urls": [],
+      "attempted_at": "2026-07-07T03:47:09+00:00",
+      "raw_dir": "data/raw/bakshy-eckles-bernstein-2014"
+    },
+    {
+      "candidate_id": "cand-exp-dmitriev-frasca-lu-kohavi-olariu-2016",
+      "proposed_study_id": "dmitriev-frasca-lu-kohavi-olariu-2016",
+      "title": "Dmitriev, Frasca, Lu, Kohavi & Olariu (2016)",
+      "citation": "Dmitriev, Frasca, Lu, Kohavi & Olariu (2016). \"Pitfalls of Data-Driven Experimentation..\"",
+      "domain": "online-ab-testing",
+      "catalog_data_acquisition_status": "manual_only",
+      "catalog_source_url": null,
+      "plan_urls": [],
+      "plan_dois": [],
+      "acquisition_status": "manual_only",
+      "acquisition_notes": [
+        "Catalog marked manual_only; no public URL — encode from published tables."
+      ],
+      "files": [
+        "acquisition.json",
+        "provenance.md"
+      ],
+      "resolved_urls": [],
+      "attempted_at": "2026-07-07T03:47:09+00:00",
+      "raw_dir": "data/raw/dmitriev-frasca-lu-kohavi-olariu-2016"
+    },
+    {
+      "candidate_id": "cand-exp-kohavi-longbotham-sommerfield-henne-2009",
+      "proposed_study_id": "kohavi-longbotham-sommerfield-henne-2009",
+      "title": "Kohavi, Longbotham, Sommerfield & Henne (2009)",
+      "citation": "Kohavi, Longbotham, Sommerfield & Henne (2009). \"Controlled Experiments on the Web: Survey and Practical Guide..\"",
+      "domain": "online-ab-testing",
+      "catalog_data_acquisition_status": "not_started",
+      "catalog_source_url": null,
+      "plan_urls": [],
+      "plan_dois": [],
+      "acquisition_status": "manual_only",
+      "acquisition_notes": [
+        "No URL or DOI — manual lookup from citation required."
+      ],
+      "files": [
+        "acquisition.json",
+        "provenance.md"
+      ],
+      "resolved_urls": [],
+      "attempted_at": "2026-07-07T03:47:10+00:00",
+      "raw_dir": "data/raw/kohavi-longbotham-sommerfield-henne-2009"
+    },
+    {
+      "candidate_id": "cand-exp-hohnhold-o-brien-tang-2015",
+      "proposed_study_id": "hohnhold-o-brien-tang-2015",
+      "title": "Hohnhold, O'Brien & Tang (2015)",
+      "citation": "Hohnhold, O'Brien & Tang (2015). \"Focusing on the Long-Term: It's Good for Users and Business..\"",
+      "domain": "online-ab-testing",
+      "catalog_data_acquisition_status": "not_started",
+      "catalog_source_url": null,
+      "plan_urls": [],
+      "plan_dois": [],
+      "acquisition_status": "manual_only",
+      "acquisition_notes": [
+        "No URL or DOI — manual lookup from citation required."
+      ],
+      "files": [
+        "acquisition.json",
+        "provenance.md"
+      ],
+      "resolved_urls": [],
+      "attempted_at": "2026-07-07T03:47:12+00:00",
+      "raw_dir": "data/raw/hohnhold-o-brien-tang-2015"
+    },
+    {
+      "candidate_id": "cand-exp-johari-koomen-pekelis-walsh-2017",
+      "proposed_study_id": "johari-koomen-pekelis-walsh-2017",
+      "title": "Johari, Koomen, Pekelis & Walsh (2017)",
+      "citation": "Johari, Koomen, Pekelis & Walsh (2017). \"Peeking at A/B Tests: Why It Matters and What to Do About It..\"",
+      "domain": "online-ab-testing",
+      "catalog_data_acquisition_status": "not_started",
+      "catalog_source_url": "https://github.com/Optimizely/stats-engine",
+      "plan_urls": [
+        "https://github.com/Optimizely/stats-engine"
+      ],
+      "plan_dois": [],
+      "acquisition_status": "blocked",
+      "acquisition_notes": [
+        "HTTP 404 for https://github.com/Optimizely/stats-engine/",
+        "URLs present but no downloadable artifact retrieved (likely paywall/login)."
+      ],
+      "files": [
+        "acquisition.json",
+        "provenance.md"
+      ],
+      "resolved_urls": [
+        "https://github.com/Optimizely/stats-engine"
+      ],
+      "attempted_at": "2026-07-07T03:47:12+00:00",
+      "raw_dir": "data/raw/johari-koomen-pekelis-walsh-2017"
+    },
+    {
+      "candidate_id": "cand-exp-doll-hill-1950",
+      "proposed_study_id": "doll-hill-1950",
+      "title": "Doll & Hill (1950)",
+      "citation": "Doll & Hill (1950). \"Smoking and Carcinoma of the Lung: Preliminary Report..\"",
+      "domain": "public-health-smoking",
+      "catalog_data_acquisition_status": "manual_only",
+      "catalog_source_url": null,
+      "plan_urls": [
+        "https://www.ctsu.ox.ac.uk/research/uk-doctors-cohort"
+      ],
+      "plan_dois": [],
+      "acquisition_status": "blocked",
+      "acquisition_notes": [
+        "HTTP 404 for https://www.ctsu.ox.ac.uk/research/uk-doctors-cohort/",
+        "URLs present but no downloadable artifact retrieved (likely paywall/login)."
+      ],
+      "files": [
+        "acquisition.json",
+        "provenance.md"
+      ],
+      "resolved_urls": [
+        "https://www.ctsu.ox.ac.uk/research/uk-doctors-cohort"
+      ],
+      "attempted_at": "2026-07-07T03:47:15+00:00",
+      "raw_dir": "data/raw/doll-hill-1950"
+    },
+    {
+      "candidate_id": "cand-exp-dockery-et-al-1993",
+      "proposed_study_id": "dockery-et-al-1993",
+      "title": "Dockery et al. (1993)",
+      "citation": "Dockery et al. (1993). \"An Association between Air Pollution and Mortality in Six U.S. Cities..\"",
+      "domain": "public-health-smoking",
+      "catalog_data_acquisition_status": "not_started",
+      "catalog_source_url": "https://www.hsph.harvard.edu/research/six-cities-study/",
+      "plan_urls": [
+        "https://www.hsph.harvard.edu/research/six-cities-study/"
+      ],
+      "plan_dois": [],
+      "acquisition_status": "landing_saved",
+      "acquisition_notes": [
+        "Fetched https://www.hsph.harvard.edu/research/six-cities-study/ → source-1.html (282638 bytes)"
+      ],
+      "files": [
+        "source-1.html",
+        "acquisition.json",
+        "provenance.md"
+      ],
+      "resolved_urls": [
+        "https://www.hsph.harvard.edu/research/six-cities-study/"
+      ],
+      "attempted_at": "2026-07-07T03:47:18+00:00",
+      "raw_dir": "data/raw/dockery-et-al-1993"
+    },
+    {
+      "candidate_id": "cand-exp-predimed-trial",
+      "proposed_study_id": "predimed-trial",
+      "title": "PREDIMED Trial (Estruch et al. 2013)",
+      "citation": "PREDIMED Trial (Estruch et al. 2013). \"Primary Prevention of Cardiovascular Disease with a Mediterranean Diet..\"",
+      "domain": "public-health-smoking",
+      "catalog_data_acquisition_status": "not_started",
+      "catalog_source_url": "http://www.predimed.es/",
+      "plan_urls": [
+        "http://www.predimed.es/"
+      ],
+      "plan_dois": [],
+      "acquisition_status": "landing_saved",
+      "acquisition_notes": [
+        "Fetched http://www.predimed.es/ → source-1.html (33107 bytes)"
+      ],
+      "files": [
+        "source-1.html",
+        "acquisition.json",
+        "provenance.md"
+      ],
+      "resolved_urls": [
+        "http://www.predimed.es/"
+      ],
+      "attempted_at": "2026-07-07T03:47:20+00:00",
+      "raw_dir": "data/raw/predimed-trial"
+    },
+    {
+      "candidate_id": "cand-exp-mrfit-1982",
+      "proposed_study_id": "mrfit-1982",
+      "title": "MRFIT (Multiple Risk Factor Intervention Trial) Research Group (1982)",
+      "citation": "MRFIT (Multiple Risk Factor Intervention Trial) Research Group (1982)",
+      "domain": "public-health-smoking",
+      "catalog_data_acquisition_status": "manual_only",
+      "catalog_source_url": null,
+      "plan_urls": [],
+      "plan_dois": [],
+      "acquisition_status": "manual_only",
+      "acquisition_notes": [
+        "Catalog marked manual_only; no public URL — encode from published tables."
+      ],
+      "files": [
+        "acquisition.json",
+        "provenance.md"
+      ],
+      "resolved_urls": [],
+      "attempted_at": "2026-07-07T03:47:22+00:00",
+      "raw_dir": "data/raw/mrfit-1982"
+    },
+    {
+      "candidate_id": "cand-exp-framingham-heart-study",
+      "proposed_study_id": "framingham-heart-study",
+      "title": "Framingham Heart Study (Dawber, Meadors & Moore, 1951)",
+      "citation": "Framingham Heart Study (Dawber, Meadors & Moore, 1951)",
+      "domain": "public-health-smoking",
+      "catalog_data_acquisition_status": "not_started",
+      "catalog_source_url": "https://www.framinghamheartstudy.org/fhs-for-researchers/data-available-overview/",
+      "plan_urls": [
+        "https://www.framinghamheartstudy.org/fhs-for-researchers/data-available-overview/"
+      ],
+      "plan_dois": [],
+      "acquisition_status": "landing_saved",
+      "acquisition_notes": [
+        "Fetched https://www.framinghamheartstudy.org/fhs-for-researchers/data-available-overview/ → source-1.html (114767 bytes)"
+      ],
+      "files": [
+        "source-1.html",
+        "acquisition.json",
+        "provenance.md"
+      ],
+      "resolved_urls": [
+        "https://www.framinghamheartstudy.org/fhs-for-researchers/data-available-overview/"
+      ],
+      "attempted_at": "2026-07-07T03:47:23+00:00",
+      "raw_dir": "data/raw/framingham-heart-study"
+    },
+    {
+      "candidate_id": "cand-exp-women-s-health-study",
+      "proposed_study_id": "women-s-health-study",
+      "title": "Women's Health Study (Ridker et al. 2005)",
+      "citation": "Women's Health Study (Ridker et al. 2005). \"A Randomized Trial of Low-Dose Aspirin in the Primary Prevention of Cardiovascular Disease in Women..\"",
+      "domain": "public-health-smoking",
+      "catalog_data_acquisition_status": "manual_only",
+      "catalog_source_url": null,
+      "plan_urls": [],
+      "plan_dois": [],
+      "acquisition_status": "manual_only",
+      "acquisition_notes": [
+        "Catalog marked manual_only; no public URL — encode from published tables."
+      ],
+      "files": [
+        "acquisition.json",
+        "provenance.md"
+      ],
+      "resolved_urls": [],
+      "attempted_at": "2026-07-07T03:47:25+00:00",
+      "raw_dir": "data/raw/women-s-health-study"
+    },
+    {
+      "candidate_id": "cand-exp-nhanes-air-quality-and-respiratory",
+      "proposed_study_id": "nhanes-air-quality-and-respiratory",
+      "title": "NHANES Air Quality and Respiratory (annual, 1999–2018)",
+      "citation": "NHANES Air Quality and Respiratory (annual, 1999–2018)",
+      "domain": "public-health-smoking",
+      "catalog_data_acquisition_status": "not_started",
+      "catalog_source_url": "https://www.cdc.gov/nchs/nhanes/",
+      "plan_urls": [
+        "https://www.cdc.gov/nchs/nhanes/"
+      ],
+      "plan_dois": [],
+      "acquisition_status": "portal_manual",
+      "acquisition_notes": [
+        "Fetched https://www.cdc.gov/nchs/nhanes/ → source-1.html (50050 bytes)",
+        "Data portal landing page saved — manual extract required."
+      ],
+      "files": [
+        "source-1.html",
+        "acquisition.json",
+        "provenance.md"
+      ],
+      "resolved_urls": [
+        "https://www.cdc.gov/nchs/nhanes/"
+      ],
+      "attempted_at": "2026-07-07T03:47:26+00:00",
+      "raw_dir": "data/raw/nhanes-air-quality-and-respiratory"
+    },
+    {
+      "candidate_id": "cand-exp-fillmore-et-al-2006",
+      "proposed_study_id": "fillmore-et-al-2006",
+      "title": "Fillmore et al. (2006)",
+      "citation": "Fillmore et al. (2006). \"Moderate Alcohol Use and Reduced Mortality Risk: Systematic Error in Prospective Studies..\"",
+      "domain": "public-health-smoking",
+      "catalog_data_acquisition_status": "manual_only",
+      "catalog_source_url": null,
+      "plan_urls": [],
+      "plan_dois": [],
+      "acquisition_status": "manual_only",
+      "acquisition_notes": [
+        "Catalog marked manual_only; no public URL — encode from published tables."
+      ],
+      "files": [
+        "acquisition.json",
+        "provenance.md"
+      ],
+      "resolved_urls": [],
+      "attempted_at": "2026-07-07T03:47:28+00:00",
+      "raw_dir": "data/raw/fillmore-et-al-2006"
+    },
+    {
+      "candidate_id": "cand-exp-coleman-et-al-1966",
+      "proposed_study_id": "coleman-et-al-1966",
+      "title": "Coleman et al. (1966)",
+      "citation": "Coleman et al. (1966)",
+      "domain": "education-outcomes",
+      "catalog_data_acquisition_status": "not_started",
+      "catalog_source_url": "https://nces.ed.gov/",
+      "plan_urls": [
+        "https://nces.ed.gov/"
+      ],
+      "plan_dois": [],
+      "acquisition_status": "portal_manual",
+      "acquisition_notes": [
+        "Fetched https://nces.ed.gov/ → source-1.html (84605 bytes)",
+        "Data portal landing page saved — manual extract required."
+      ],
+      "files": [
+        "source-1.html",
+        "acquisition.json",
+        "provenance.md"
+      ],
+      "resolved_urls": [
+        "https://nces.ed.gov/"
+      ],
+      "attempted_at": "2026-07-07T03:47:29+00:00",
+      "raw_dir": "data/raw/coleman-et-al-1966"
+    },
+    {
+      "candidate_id": "cand-exp-naep",
+      "proposed_study_id": "naep",
+      "title": "NAEP (Nation's Report Card, annual)",
+      "citation": "NAEP (Nation's Report Card, annual)",
+      "domain": "education-outcomes",
+      "catalog_data_acquisition_status": "not_started",
+      "catalog_source_url": "https://www.nationsreportcard.gov/",
+      "plan_urls": [
+        "https://www.nationsreportcard.gov/"
+      ],
+      "plan_dois": [],
+      "acquisition_status": "landing_saved",
+      "acquisition_notes": [
+        "Fetched https://www.nationsreportcard.gov/ → source-1.html (46106 bytes)"
+      ],
+      "files": [
+        "source-1.html",
+        "acquisition.json",
+        "provenance.md"
+      ],
+      "resolved_urls": [
+        "https://www.nationsreportcard.gov/"
+      ],
+      "attempted_at": "2026-07-07T03:47:31+00:00",
+      "raw_dir": "data/raw/naep"
+    },
+    {
+      "candidate_id": "cand-exp-krueger-1999",
+      "proposed_study_id": "krueger-1999",
+      "title": "Krueger (1999)",
+      "citation": "Krueger (1999). \"Experimental Estimates of Education Production Functions..\"",
+      "domain": "education-outcomes",
+      "catalog_data_acquisition_status": "not_started",
+      "catalog_source_url": "https://www.aeaweb.org/articles?id=10.1257/aer.90.4.1",
+      "plan_urls": [
+        "https://www.aeaweb.org/articles?id=10.1257/aer.90.4.1",
+        "https://doi.org/10.3886/ICPSR07805.v1"
+      ],
+      "plan_dois": [
+        "10.1257/aer.90.4.1](https://www.aeaweb.org/articles?id=10.1257/aer.90.4.1",
+        "10.3886/ICPSR07805.v1](https://doi.org/10.3886/ICPSR07805.v1"
+      ],
+      "acquisition_status": "blocked",
+      "acquisition_notes": [
+        "HTTP 404 for https://www.aeaweb.org/articles?id=10.1257/aer.90.4.1/",
+        "HTTP 403 for https://www.doi.org/10.3886/ICPSR07805.v1",
+        "URLs present but no downloadable artifact retrieved (likely paywall/login)."
+      ],
+      "files": [
+        "acquisition.json",
+        "provenance.md"
+      ],
+      "resolved_urls": [
+        "https://www.aeaweb.org/articles?id=10.1257/aer.90.4.1",
+        "https://doi.org/10.3886/ICPSR07805.v1"
+      ],
+      "attempted_at": "2026-07-07T03:47:33+00:00",
+      "raw_dir": "data/raw/krueger-1999"
+    },
+    {
+      "candidate_id": "cand-exp-finn-achilles-1990",
+      "proposed_study_id": "finn-achilles-1990",
+      "title": "Finn & Achilles (1990)",
+      "citation": "Finn & Achilles (1990). \"Answers and Questions about Class Size: A Statewide Experiment..\"",
+      "domain": "education-outcomes",
+      "catalog_data_acquisition_status": "manual_only",
+      "catalog_source_url": null,
+      "plan_urls": [],
+      "plan_dois": [
+        "10.3102/00028312027003557"
+      ],
+      "acquisition_status": "manual_only",
+      "acquisition_notes": [
+        "OpenAlex: Answers and Questions About Class Size: A Statewide Experiment",
+        "Catalog marked manual_only; no public URL — encode from published tables."
+      ],
+      "files": [
+        "acquisition.json",
+        "provenance.md"
+      ],
+      "resolved_urls": [
+        "https://doi.org/10.3102/00028312027003557"
+      ],
+      "attempted_at": "2026-07-07T03:47:41+00:00",
+      "raw_dir": "data/raw/finn-achilles-1990"
+    },
+    {
+      "candidate_id": "cand-exp-mosteller-1995",
+      "proposed_study_id": "mosteller-1995",
+      "title": "Mosteller (1995)",
+      "citation": "Mosteller (1995). \"The Tennessee Study of Class Size in the Early School Grades..\"",
+      "domain": "education-outcomes",
+      "catalog_data_acquisition_status": "manual_only",
+      "catalog_source_url": null,
+      "plan_urls": [],
+      "plan_dois": [],
+      "acquisition_status": "manual_only",
+      "acquisition_notes": [
+        "Catalog marked manual_only; no public URL — encode from published tables."
+      ],
+      "files": [
+        "acquisition.json",
+        "provenance.md"
+      ],
+      "resolved_urls": [],
+      "attempted_at": "2026-07-07T03:47:44+00:00",
+      "raw_dir": "data/raw/mosteller-1995"
+    },
+    {
+      "candidate_id": "cand-exp-angrist-lavy-1999",
+      "proposed_study_id": "angrist-lavy-1999",
+      "title": "Angrist & Lavy (1999)",
+      "citation": "Angrist & Lavy (1999). \"Using Maimonides' Rule to Estimate the Effect of Class Size on Scholastic Achievement..\"",
+      "domain": "education-outcomes",
+      "catalog_data_acquisition_status": "manual_only",
+      "catalog_source_url": null,
+      "plan_urls": [],
+      "plan_dois": [],
+      "acquisition_status": "manual_only",
+      "acquisition_notes": [
+        "Catalog marked manual_only; no public URL — encode from published tables."
+      ],
+      "files": [
+        "acquisition.json",
+        "provenance.md"
+      ],
+      "resolved_urls": [],
+      "attempted_at": "2026-07-07T03:47:45+00:00",
+      "raw_dir": "data/raw/angrist-lavy-1999"
+    },
+    {
+      "candidate_id": "cand-exp-hoxby-2000",
+      "proposed_study_id": "hoxby-2000",
+      "title": "Hoxby (2000)",
+      "citation": "Hoxby (2000). \"The Effects of Class Size on Student Achievement: New Evidence from Population Variation..\"",
+      "domain": "education-outcomes",
+      "catalog_data_acquisition_status": "manual_only",
+      "catalog_source_url": null,
+      "plan_urls": [],
+      "plan_dois": [],
+      "acquisition_status": "manual_only",
+      "acquisition_notes": [
+        "Catalog marked manual_only; no public URL — encode from published tables."
+      ],
+      "files": [
+        "acquisition.json",
+        "provenance.md"
+      ],
+      "resolved_urls": [],
+      "attempted_at": "2026-07-07T03:47:46+00:00",
+      "raw_dir": "data/raw/hoxby-2000"
+    },
+    {
+      "candidate_id": "cand-exp-abdulkadiroglu-angrist-dynarski-kane-pathak-2011",
+      "proposed_study_id": "abdulkadiroglu-angrist-dynarski-kane-pathak-2011",
+      "title": "Abdulkadiroğlu, Angrist, Dynarski, Kane & Pathak (2011)",
+      "citation": "Abdulkadiroğlu, Angrist, Dynarski, Kane & Pathak (2011). \"Accountability and Flexibility in Public Schools: Evidence from Boston's Charters and Pilots..\"",
+      "domain": "education-outcomes",
+      "catalog_data_acquisition_status": "not_started",
+      "catalog_source_url": null,
+      "plan_urls": [],
+      "plan_dois": [],
+      "acquisition_status": "manual_only",
+      "acquisition_notes": [
+        "No URL or DOI — manual lookup from citation required."
+      ],
+      "files": [
+        "acquisition.json",
+        "provenance.md"
+      ],
+      "resolved_urls": [],
+      "attempted_at": "2026-07-07T03:47:46+00:00",
+      "raw_dir": "data/raw/abdulkadiroglu-angrist-dynarski-kane-pathak-2011"
+    },
+    {
+      "candidate_id": "cand-exp-head-start-impact-study",
+      "proposed_study_id": "head-start-impact-study",
+      "title": "Head Start Impact Study (Puma et al. 2010)",
+      "citation": "Head Start Impact Study (Puma et al. 2010). \"Head Start Impact Study: Final Report..\"",
+      "domain": "education-outcomes",
+      "catalog_data_acquisition_status": "not_started",
+      "catalog_source_url": "https://www.acf.hhs.gov/opre/research/project/head-start-impact-study-and-follow-up",
+      "plan_urls": [
+        "https://www.acf.hhs.gov/opre/research/project/head-start-impact-study-and-follow-up"
+      ],
+      "plan_dois": [],
+      "acquisition_status": "landing_saved",
+      "acquisition_notes": [
+        "Fetched https://www.acf.hhs.gov/opre/research/project/head-start-impact-study-and-follow-up → source-1.html (0 bytes)"
+      ],
+      "files": [
+        "source-1.html",
+        "acquisition.json",
+        "provenance.md"
+      ],
+      "resolved_urls": [
+        "https://www.acf.hhs.gov/opre/research/project/head-start-impact-study-and-follow-up"
+      ],
+      "attempted_at": "2026-07-07T03:47:47+00:00",
+      "raw_dir": "data/raw/head-start-impact-study"
+    },
+    {
+      "candidate_id": "cand-exp-timss-2019-international-math-and-science",
+      "proposed_study_id": "timss-2019-international-math-and-science",
+      "title": "TIMSS 2019 International Math and Science",
+      "citation": "TIMSS 2019 International Math and Science",
+      "domain": "education-outcomes",
+      "catalog_data_acquisition_status": "not_started",
+      "catalog_source_url": "https://timssandpirls.bc.edu/timss2019/international-database/",
+      "plan_urls": [
+        "https://timssandpirls.bc.edu/timss2019/international-database/"
+      ],
+      "plan_dois": [],
+      "acquisition_status": "landing_saved",
+      "acquisition_notes": [
+        "Fetched https://timssandpirls.bc.edu/timss2019/international-database/ → source-1.html (353 bytes)"
+      ],
+      "files": [
+        "source-1.html",
+        "acquisition.json",
+        "provenance.md"
+      ],
+      "resolved_urls": [
+        "https://timssandpirls.bc.edu/timss2019/international-database/"
+      ],
+      "attempted_at": "2026-07-07T03:47:49+00:00",
+      "raw_dir": "data/raw/timss-2019-international-math-and-science"
+    },
+    {
+      "candidate_id": "cand-exp-hanushek-1989",
+      "proposed_study_id": "hanushek-1989",
+      "title": "Hanushek (1989)",
+      "citation": "Hanushek (1989). \"The Impact of Differential Expenditures on School Performance..\"",
+      "domain": "education-outcomes",
+      "catalog_data_acquisition_status": "manual_only",
+      "catalog_source_url": null,
+      "plan_urls": [],
+      "plan_dois": [],
+      "acquisition_status": "manual_only",
+      "acquisition_notes": [
+        "Catalog marked manual_only; no public URL — encode from published tables."
+      ],
+      "files": [
+        "acquisition.json",
+        "provenance.md"
+      ],
+      "resolved_urls": [],
+      "attempted_at": "2026-07-07T03:47:51+00:00",
+      "raw_dir": "data/raw/hanushek-1989"
+    },
+    {
+      "candidate_id": "cand-exp-early-childhood-longitudinal-study-kindergarten",
+      "proposed_study_id": "early-childhood-longitudinal-study-kindergarten",
+      "title": "Early Childhood Longitudinal Study – Kindergarten (ECLS-K, 1998–2010)",
+      "citation": "Early Childhood Longitudinal Study – Kindergarten (ECLS-K, 1998–2010)",
+      "domain": "education-outcomes",
+      "catalog_data_acquisition_status": "not_started",
+      "catalog_source_url": "https://nces.ed.gov/ecls/kindergarten.asp",
+      "plan_urls": [
+        "https://nces.ed.gov/ecls/kindergarten.asp"
+      ],
+      "plan_dois": [],
+      "acquisition_status": "portal_manual",
+      "acquisition_notes": [
+        "Fetched https://nces.ed.gov/ecls/kindergarten.asp → source-1.html (18481 bytes)",
+        "Data portal landing page saved — manual extract required."
+      ],
+      "files": [
+        "source-1.html",
+        "acquisition.json",
+        "provenance.md"
+      ],
+      "resolved_urls": [
+        "https://nces.ed.gov/ecls/kindergarten.asp"
+      ],
+      "attempted_at": "2026-07-07T03:47:52+00:00",
+      "raw_dir": "data/raw/early-childhood-longitudinal-study-kindergarten"
+    },
+    {
+      "candidate_id": "cand-exp-rothstein-2010",
+      "proposed_study_id": "rothstein-2010",
+      "title": "Rothstein (2010)",
+      "citation": "Rothstein (2010). \"Teacher Quality in Educational Production: Tracking, Decay, and Student Achievement..\"",
+      "domain": "education-outcomes",
+      "catalog_data_acquisition_status": "manual_only",
+      "catalog_source_url": null,
+      "plan_urls": [],
+      "plan_dois": [],
+      "acquisition_status": "manual_only",
+      "acquisition_notes": [
+        "Catalog marked manual_only; no public URL — encode from published tables."
+      ],
+      "files": [
+        "acquisition.json",
+        "provenance.md"
+      ],
+      "resolved_urls": [],
+      "attempted_at": "2026-07-07T03:47:54+00:00",
+      "raw_dir": "data/raw/rothstein-2010"
+    },
+    {
+      "candidate_id": "cand-exp-hmda",
+      "proposed_study_id": "hmda",
+      "title": "HMDA (Home Mortgage Disclosure Act) Data (annual, 1990–present)",
+      "citation": "HMDA (Home Mortgage Disclosure Act) Data (annual, 1990–present)",
+      "domain": "financial-lending-credit-risk",
+      "catalog_data_acquisition_status": "not_started",
+      "catalog_source_url": "https://ffiec.cfpb.gov/data-browser/",
+      "plan_urls": [
+        "https://ffiec.cfpb.gov/data-browser/"
+      ],
+      "plan_dois": [],
+      "acquisition_status": "landing_saved",
+      "acquisition_notes": [
+        "Fetched https://ffiec.cfpb.gov/data-browser/ → source-1.html (3294 bytes)"
+      ],
+      "files": [
+        "source-1.html",
+        "acquisition.json",
+        "provenance.md"
+      ],
+      "resolved_urls": [
+        "https://ffiec.cfpb.gov/data-browser/"
+      ],
+      "attempted_at": "2026-07-07T03:47:55+00:00",
+      "raw_dir": "data/raw/hmda"
+    },
+    {
+      "candidate_id": "cand-exp-munnell-tootell-browne-mceneaney-1996",
+      "proposed_study_id": "munnell-tootell-browne-mceneaney-1996",
+      "title": "Munnell, Tootell, Browne & McEneaney (1996)",
+      "citation": "Munnell, Tootell, Browne & McEneaney (1996). \"Mortgage Lending in Boston: Interpreting HMDA Data..\"",
+      "domain": "financial-lending-credit-risk",
+      "catalog_data_acquisition_status": "manual_only",
+      "catalog_source_url": null,
+      "plan_urls": [],
+      "plan_dois": [],
+      "acquisition_status": "manual_only",
+      "acquisition_notes": [
+        "Catalog marked manual_only; no public URL — encode from published tables."
+      ],
+      "files": [
+        "acquisition.json",
+        "provenance.md"
+      ],
+      "resolved_urls": [],
+      "attempted_at": "2026-07-07T03:47:57+00:00",
+      "raw_dir": "data/raw/munnell-tootell-browne-mceneaney-1996"
+    },
+    {
+      "candidate_id": "cand-exp-bartlett-morse-stanton-wallace-2022",
+      "proposed_study_id": "bartlett-morse-stanton-wallace-2022",
+      "title": "Bartlett, Morse, Stanton & Wallace (2022)",
+      "citation": "Bartlett, Morse, Stanton & Wallace (2022). \"Consumer-Lending Discrimination in the FinTech Era..\"",
+      "domain": "financial-lending-credit-risk",
+      "catalog_data_acquisition_status": "not_started",
+      "catalog_source_url": "https://www.fanniemae.com/research-and-insights",
+      "plan_urls": [
+        "https://www.fanniemae.com/research-and-insights"
+      ],
+      "plan_dois": [],
+      "acquisition_status": "landing_saved",
+      "acquisition_notes": [
+        "Fetched https://www.fanniemae.com/research-and-insights → source-1.html (110724 bytes)"
+      ],
+      "files": [
+        "source-1.html",
+        "acquisition.json",
+        "provenance.md"
+      ],
+      "resolved_urls": [
+        "https://www.fanniemae.com/research-and-insights"
+      ],
+      "attempted_at": "2026-07-07T03:47:58+00:00",
+      "raw_dir": "data/raw/bartlett-morse-stanton-wallace-2022"
+    },
+    {
+      "candidate_id": "cand-exp-federal-reserve-scf",
+      "proposed_study_id": "federal-reserve-scf",
+      "title": "Federal Reserve SCF (Survey of Consumer Finances, triennial)",
+      "citation": "Federal Reserve SCF (Survey of Consumer Finances, triennial)",
+      "domain": "financial-lending-credit-risk",
+      "catalog_data_acquisition_status": "not_started",
+      "catalog_source_url": "https://www.federalreserve.gov/econres/scfindex.htm",
+      "plan_urls": [
+        "https://www.federalreserve.gov/econres/scfindex.htm"
+      ],
+      "plan_dois": [],
+      "acquisition_status": "landing_saved",
+      "acquisition_notes": [
+        "Fetched https://www.federalreserve.gov/econres/scfindex.htm → source-1.html (102575 bytes)"
+      ],
+      "files": [
+        "source-1.html",
+        "acquisition.json",
+        "provenance.md"
+      ],
+      "resolved_urls": [
+        "https://www.federalreserve.gov/econres/scfindex.htm"
+      ],
+      "attempted_at": "2026-07-07T03:48:00+00:00",
+      "raw_dir": "data/raw/federal-reserve-scf"
+    },
+    {
+      "candidate_id": "cand-exp-cfpb-consumer-credit-panel",
+      "proposed_study_id": "cfpb-consumer-credit-panel",
+      "title": "CFPB Consumer Credit Panel (CCP) — New York Fed",
+      "citation": "CFPB Consumer Credit Panel (CCP) — New York Fed",
+      "domain": "financial-lending-credit-risk",
+      "catalog_data_acquisition_status": "not_started",
+      "catalog_source_url": "https://www.newyorkfed.org/microeconomics/hhdc",
+      "plan_urls": [
+        "https://www.newyorkfed.org/microeconomics/hhdc"
+      ],
+      "plan_dois": [],
+      "acquisition_status": "landing_saved",
+      "acquisition_notes": [
+        "Fetched https://www.newyorkfed.org/microeconomics/hhdc → source-1.html (104707 bytes)"
+      ],
+      "files": [
+        "source-1.html",
+        "acquisition.json",
+        "provenance.md"
+      ],
+      "resolved_urls": [
+        "https://www.newyorkfed.org/microeconomics/hhdc"
+      ],
+      "attempted_at": "2026-07-07T03:48:02+00:00",
+      "raw_dir": "data/raw/cfpb-consumer-credit-panel"
+    },
+    {
+      "candidate_id": "cand-exp-sba-small-business-lending-data",
+      "proposed_study_id": "sba-small-business-lending-data",
+      "title": "SBA Small Business Lending Data (annual)",
+      "citation": "SBA Small Business Lending Data (annual)",
+      "domain": "financial-lending-credit-risk",
+      "catalog_data_acquisition_status": "not_started",
+      "catalog_source_url": "https://www.sba.gov/about-sba/sba-data-and-research",
+      "plan_urls": [
+        "https://www.sba.gov/about-sba/sba-data-and-research"
+      ],
+      "plan_dois": [],
+      "acquisition_status": "blocked",
+      "acquisition_notes": [
+        "HTTP 404 for https://www.sba.gov/about-sba/sba-data-and-research/",
+        "URLs present but no downloadable artifact retrieved (likely paywall/login)."
+      ],
+      "files": [
+        "acquisition.json",
+        "provenance.md"
+      ],
+      "resolved_urls": [
+        "https://www.sba.gov/about-sba/sba-data-and-research"
+      ],
+      "attempted_at": "2026-07-07T03:48:04+00:00",
+      "raw_dir": "data/raw/sba-small-business-lending-data"
+    },
+    {
+      "candidate_id": "cand-exp-petersen-rajan-1994",
+      "proposed_study_id": "petersen-rajan-1994",
+      "title": "Petersen & Rajan (1994)",
+      "citation": "Petersen & Rajan (1994). \"The Benefits of Lending Relationships: Evidence from Small Business Data..\"",
+      "domain": "financial-lending-credit-risk",
+      "catalog_data_acquisition_status": "not_started",
+      "catalog_source_url": "https://www.federalreserve.gov/releases/nssbf/",
+      "plan_urls": [
+        "https://www.federalreserve.gov/releases/nssbf/"
+      ],
+      "plan_dois": [],
+      "acquisition_status": "blocked",
+      "acquisition_notes": [
+        "HTTP 404 for https://www.federalreserve.gov/releases/nssbf/",
+        "URLs present but no downloadable artifact retrieved (likely paywall/login)."
+      ],
+      "files": [
+        "acquisition.json",
+        "provenance.md"
+      ],
+      "resolved_urls": [
+        "https://www.federalreserve.gov/releases/nssbf/"
+      ],
+      "attempted_at": "2026-07-07T03:48:06+00:00",
+      "raw_dir": "data/raw/petersen-rajan-1994"
+    },
+    {
+      "candidate_id": "cand-exp-berger-udell-1995",
+      "proposed_study_id": "berger-udell-1995",
+      "title": "Berger & Udell (1995)",
+      "citation": "Berger & Udell (1995). \"Relationship Lending and Lines of Credit in Small Firm Finance..\"",
+      "domain": "financial-lending-credit-risk",
+      "catalog_data_acquisition_status": "manual_only",
+      "catalog_source_url": null,
+      "plan_urls": [],
+      "plan_dois": [],
+      "acquisition_status": "manual_only",
+      "acquisition_notes": [
+        "Catalog marked manual_only; no public URL — encode from published tables."
+      ],
+      "files": [
+        "acquisition.json",
+        "provenance.md"
+      ],
+      "resolved_urls": [],
+      "attempted_at": "2026-07-07T03:48:08+00:00",
+      "raw_dir": "data/raw/berger-udell-1995"
+    },
+    {
+      "candidate_id": "cand-exp-fdic-small-business-lending-survey-2016",
+      "proposed_study_id": "fdic-small-business-lending-survey-2016",
+      "title": "FDIC Small Business Lending Survey (2016)",
+      "citation": "FDIC Small Business Lending Survey (2016)",
+      "domain": "financial-lending-credit-risk",
+      "catalog_data_acquisition_status": "not_started",
+      "catalog_source_url": "https://www.fdic.gov/bank/statistical/guide/",
+      "plan_urls": [
+        "https://www.fdic.gov/bank/statistical/guide/"
+      ],
+      "plan_dois": [],
+      "acquisition_status": "landing_saved",
+      "acquisition_notes": [
+        "Fetched https://www.fdic.gov/bank/statistical/guide/ → source-1.html (74658 bytes)"
+      ],
+      "files": [
+        "source-1.html",
+        "acquisition.json",
+        "provenance.md"
+      ],
+      "resolved_urls": [
+        "https://www.fdic.gov/bank/statistical/guide/"
+      ],
+      "attempted_at": "2026-07-07T03:48:09+00:00",
+      "raw_dir": "data/raw/fdic-small-business-lending-survey-2016"
+    },
+    {
+      "candidate_id": "cand-exp-keys-mukherjee-seru-vig-2010",
+      "proposed_study_id": "keys-mukherjee-seru-vig-2010",
+      "title": "Keys, Mukherjee, Seru & Vig (2010)",
+      "citation": "Keys, Mukherjee, Seru & Vig (2010). \"Did Securitization Lead to Lax Screening? Evidence from Subprime Loans..\"",
+      "domain": "financial-lending-credit-risk",
+      "catalog_data_acquisition_status": "manual_only",
+      "catalog_source_url": null,
+      "plan_urls": [],
+      "plan_dois": [],
+      "acquisition_status": "manual_only",
+      "acquisition_notes": [
+        "Catalog marked manual_only; no public URL — encode from published tables."
+      ],
+      "files": [
+        "acquisition.json",
+        "provenance.md"
+      ],
+      "resolved_urls": [],
+      "attempted_at": "2026-07-07T03:48:11+00:00",
+      "raw_dir": "data/raw/keys-mukherjee-seru-vig-2010"
+    },
+    {
+      "candidate_id": "cand-exp-acharya-imbierowicz-steffen-teichmann-2020",
+      "proposed_study_id": "acharya-imbierowicz-steffen-teichmann-2020",
+      "title": "Acharya, Imbierowicz, Steffen & Teichmann (2020)",
+      "citation": "Acharya, Imbierowicz, Steffen & Teichmann (2020). \"Does the Lack of Financial Stability Impair the Transmission of Monetary Policy?.\"",
+      "domain": "financial-lending-credit-risk",
+      "catalog_data_acquisition_status": "not_started",
+      "catalog_source_url": "https://fred.stlouisfed.org/",
+      "plan_urls": [
+        "https://fred.stlouisfed.org/"
+      ],
+      "plan_dois": [],
+      "acquisition_status": "landing_saved",
+      "acquisition_notes": [
+        "Fetched https://fred.stlouisfed.org/ → source-1.html (58286 bytes)"
+      ],
+      "files": [
+        "source-1.html",
+        "acquisition.json",
+        "provenance.md"
+      ],
+      "resolved_urls": [
+        "https://fred.stlouisfed.org/"
+      ],
+      "attempted_at": "2026-07-07T03:48:12+00:00",
+      "raw_dir": "data/raw/acharya-imbierowicz-steffen-teichmann-2020"
+    }
+  ],
+  "summary": {
+    "total": 142,
+    "downloaded": 20,
+    "manual_only": 46,
+    "portal_manual": 26,
+    "landing_saved": 36,
+    "metadata_only": 9,
+    "blocked": 5
+  },
+  "merged_at": "2026-07-07T03:58:51+00:00"
+}

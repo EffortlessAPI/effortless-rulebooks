@@ -1,0 +1,17 @@
+{
+  "candidate_id": "cand-exp-israeli-ministry-of-health",
+  "proposed_study_id": "israeli-ministry-of-health",
+  "acquisition_status": "downloaded",
+  "attempted_at": "2026-07-07T03:45:17+00:00",
+  "catalog_source_url": "https://www.gov.il/en/departments/ministry_of_health",
+  "resolved_urls": [
+    "https://doi.org/10.1016/s0140-6736(22)02585-5",
+    "https://researchonline.lshtm.ac.uk/id/eprint/4668939/1/Iungman_etal_2023_Cooling-cities-through-urban-green.pdf",
+    "https://www.gov.il/en/departments/ministry_of_health"
+  ],
+  "files": [
+    "openalex-search.pdf",
+    "openalex-metadata.json"
+  ],
+  "dois": []
+}

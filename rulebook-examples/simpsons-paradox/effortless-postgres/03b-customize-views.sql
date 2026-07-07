@@ -166,7 +166,25 @@ SELECT
   calc_model_summary_collider_selection_count(t.model_summary_id)            AS collider_selection_count,
   calc_model_summary_collider_selection_manifest_count(t.model_summary_id)   AS collider_selection_manifest_count,
   calc_model_summary_collider_selection_latent_only_count(t.model_summary_id) AS collider_selection_latent_only_count,
-  calc_model_summary_discovery_witness_note(t.model_summary_id)                AS discovery_witness_note
+  calc_model_summary_discovery_witness_note(t.model_summary_id)                AS discovery_witness_note,
+  calc_model_summary_type_prediction_match_count(t.model_summary_id)            AS type_prediction_match_count,
+  calc_model_summary_type_prediction_mismatch_count(t.model_summary_id)          AS type_prediction_mismatch_count,
+  calc_model_summary_type_prediction_match_rate(t.model_summary_id)              AS type_prediction_match_rate,
+  calc_model_summary_sign_flip_prediction_match_rate(t.model_summary_id)         AS sign_flip_prediction_match_rate,
+  calc_model_summary_catalog_prediction_witness_note(t.model_summary_id)         AS catalog_prediction_witness_note,
+  calc_model_summary_high_imbalance_sign_flip_threshold(t.model_summary_id)      AS high_imbalance_sign_flip_threshold,
+  calc_model_summary_economics_high_imbalance_sign_flip_count(t.model_summary_id) AS economics_high_imbalance_sign_flip_count,
+  calc_model_summary_epidemiology_high_imbalance_sign_flip_rate(t.model_summary_id) AS epidemiology_high_imbalance_sign_flip_rate,
+  calc_model_summary_legal_high_imbalance_sign_flip_rate(t.model_summary_id)      AS legal_high_imbalance_sign_flip_rate,
+  calc_model_summary_sports_high_imbalance_sign_flip_rate(t.model_summary_id)    AS sports_high_imbalance_sign_flip_rate,
+  calc_model_summary_domain_flip_gap_survives_geometry_control(t.model_summary_id) AS domain_flip_gap_survives_geometry_control,
+  calc_model_summary_c_plus_avg_distortion(t.model_summary_id) AS c_plus_avg_distortion,
+  calc_model_summary_c_minus_avg_distortion(t.model_summary_id) AS c_minus_avg_distortion,
+  calc_model_summary_type_d_avg_distortion(t.model_summary_id) AS type_d_avg_distortion,
+  calc_model_summary_sweep_fragile_count(t.model_summary_id) AS sweep_fragile_count,
+  calc_model_summary_expansion_wave1_economics_expected_a_count(t.model_summary_id) AS expansion_wave1_economics_expected_a_count,
+  calc_model_summary_expansion_wave1_economics_expected_ad_count(t.model_summary_id) AS expansion_wave1_economics_expected_ad_count,
+  calc_model_summary_economics_expected_a_mismatch_rate(t.model_summary_id) AS economics_expected_a_mismatch_rate
 FROM model_summary t;
 
 -- ============================================================================
@@ -266,3 +284,58 @@ SELECT
   l.git_tag AS witnessed_in_loop_git_tag
 FROM conclusions t
 LEFT JOIN loops l ON l.loop_id = t.witnessed_in_loop;
+
+-- ============================================================================
+-- vw_candidate_study_catalog — loop-65 catalog prediction audit fields
+-- ============================================================================
+DROP VIEW IF EXISTS vw_candidate_study_catalog CASCADE;
+CREATE VIEW vw_candidate_study_catalog WITH (security_invoker = ON) AS
+SELECT
+  t.candidate_id,
+  calc_candidate_study_catalog_name(t.candidate_id) AS name,
+  t.proposed_study_id,
+  t.title,
+  t.citation,
+  t.source_url,
+  t.domain,
+  t.stratum_variable_name,
+  t.expected_distortion_type,
+  t.ingestion_status,
+  t.priority,
+  t.stratum_count_estimate,
+  t.data_source_note,
+  t.linked_study_id,
+  t.publication_year,
+  calc_candidate_study_catalog_is_ready_to_encode(t.candidate_id) AS is_ready_to_encode,
+  calc_candidate_study_catalog_is_imported(t.candidate_id) AS is_imported,
+  lookup_candidate_study_catalog_observed_distortion_type(t.candidate_id) AS observed_distortion_type,
+  calc_candidate_study_catalog_type_prediction_match(t.candidate_id) AS type_prediction_match,
+  calc_candidate_study_catalog_expected_sign_flip(t.candidate_id) AS expected_sign_flip,
+  calc_candidate_study_catalog_observed_sign_flip_type(t.candidate_id) AS observed_sign_flip_type,
+  calc_candidate_study_catalog_sign_flip_prediction_match(t.candidate_id) AS sign_flip_prediction_match
+FROM candidate_study_catalog t;
+
+-- ============================================================================
+-- vw_corpus_catalog_summary — loop-65 prediction aggregates
+-- ============================================================================
+DROP VIEW IF EXISTS vw_corpus_catalog_summary CASCADE;
+CREATE VIEW vw_corpus_catalog_summary WITH (security_invoker = ON) AS
+SELECT
+  t.catalog_summary_id,
+  calc_corpus_catalog_summary_name(t.catalog_summary_id) AS name,
+  calc_corpus_catalog_summary_total_catalog_entries(t.catalog_summary_id) AS total_catalog_entries,
+  calc_corpus_catalog_summary_imported_count(t.catalog_summary_id) AS imported_count,
+  calc_corpus_catalog_summary_candidate_count(t.catalog_summary_id) AS candidate_count,
+  calc_corpus_catalog_summary_blocked_count(t.catalog_summary_id) AS blocked_count,
+  calc_corpus_catalog_summary_ready_to_encode_count(t.catalog_summary_id) AS ready_to_encode_count,
+  calc_corpus_catalog_summary_high_priority_count(t.catalog_summary_id) AS high_priority_count,
+  calc_corpus_catalog_summary_import_session_ready(t.catalog_summary_id) AS import_session_ready,
+  calc_corpus_catalog_summary_catalog_witness_note(t.catalog_summary_id) AS catalog_witness_note,
+  calc_corpus_catalog_summary_type_prediction_match_count(t.catalog_summary_id) AS type_prediction_match_count,
+  calc_corpus_catalog_summary_type_prediction_mismatch_count(t.catalog_summary_id) AS type_prediction_mismatch_count,
+  calc_corpus_catalog_summary_sign_flip_prediction_eligible_count(t.catalog_summary_id) AS sign_flip_prediction_eligible_count,
+  calc_corpus_catalog_summary_sign_flip_prediction_match_count(t.catalog_summary_id) AS sign_flip_prediction_match_count,
+  calc_corpus_catalog_summary_type_prediction_match_rate(t.catalog_summary_id) AS type_prediction_match_rate,
+  calc_corpus_catalog_summary_sign_flip_prediction_match_rate(t.catalog_summary_id) AS sign_flip_prediction_match_rate,
+  calc_corpus_catalog_summary_catalog_prediction_witness_note(t.catalog_summary_id) AS catalog_prediction_witness_note
+FROM corpus_catalog_summary t;

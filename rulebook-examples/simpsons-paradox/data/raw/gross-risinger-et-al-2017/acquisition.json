@@ -1,0 +1,18 @@
+{
+  "candidate_id": "cand-exp-gross-risinger-et-al-2017",
+  "proposed_study_id": "gross-risinger-et-al-2017",
+  "acquisition_status": "landing_saved",
+  "attempted_at": "2026-07-07T03:41:38+00:00",
+  "catalog_source_url": "https://www.law.umich.edu/special/exoneration/Pages/about.aspx",
+  "resolved_urls": [
+    "https://doi.org/10.1111/nph.16485",
+    "https://www.dora.lib4ri.ch/wsl/islandora/object/wsl%3A22824",
+    "https://www.law.umich.edu/special/exoneration/Pages/about.aspx"
+  ],
+  "files": [
+    "openalex-search.html",
+    "openalex-metadata.json",
+    "source-1.html"
+  ],
+  "dois": []
+}

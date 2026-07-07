@@ -1,0 +1,2265 @@
+{
+  "id": "https://openalex.org/W1985059672",
+  "doi": "https://doi.org/10.1056/nejmoa0809171",
+  "title": "Cytochrome P-450 Polymorphisms and Response to Clopidogrel",
+  "display_name": "Cytochrome P-450 Polymorphisms and Response to Clopidogrel",
+  "relevance_score": 435.32953,
+  "publication_year": 2008,
+  "publication_date": "2008-12-22",
+  "ids": {
+    "openalex": "https://openalex.org/W1985059672",
+    "doi": "https://doi.org/10.1056/nejmoa0809171",
+    "mag": "1985059672",
+    "pmid": "https://pubmed.ncbi.nlm.nih.gov/19106084"
+  },
+  "language": "en",
+  "primary_location": {
+    "id": "doi:10.1056/nejmoa0809171",
+    "is_oa": true,
+    "landing_page_url": "https://doi.org/10.1056/nejmoa0809171",
+    "pdf_url": "https://www.nejm.org/doi/pdf/10.1056/NEJMoa0809171?articleTools=true",
+    "source": {
+      "id": "https://openalex.org/S62468778",
+      "display_name": "New England Journal of Medicine",
+      "issn_l": "0028-4793",
+      "issn": [
+        "0028-4793",
+        "1533-4406"
+      ],
+      "is_oa": false,
+      "is_in_doaj": false,
+      "is_core": true,
+      "host_organization": "https://openalex.org/P4310320239",
+      "host_organization_name": "Massachusetts Medical Society",
+      "host_organization_lineage": [
+        "https://openalex.org/P4310320239"
+      ],
+      "host_organization_lineage_names": [
+        "Massachusetts Medical Society"
+      ],
+      "type": "journal"
+    },
+    "license": null,
+    "license_id": null,
+    "version": "publishedVersion",
+    "is_accepted": true,
+    "is_published": true,
+    "raw_source_name": "New England Journal of Medicine",
+    "raw_type": "journal-article"
+  },
+  "type": "article",
+  "indexed_in": [
+    "crossref",
+    "pubmed"
+  ],
+  "open_access": {
+    "is_oa": true,
+    "oa_status": "bronze",
+    "oa_url": "https://www.nejm.org/doi/pdf/10.1056/NEJMoa0809171?articleTools=true",
+    "any_repository_has_fulltext": false
+  },
+  "authorships": [
+    {
+      "author_position": "first",
+      "author": {
+        "id": "https://openalex.org/A5062053709",
+        "display_name": "Jessica L. Mega",
+        "orcid": "https://orcid.org/0000-0003-2640-9624"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I1283280774",
+          "display_name": "Brigham and Women's Hospital",
+          "ror": "https://ror.org/04b6nzv94",
+          "country_code": "US",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I1283280774",
+            "https://openalex.org/I48633490"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I4210159766",
+          "display_name": "Thrombolysis in Myocardial Infarction Study Group",
+          "ror": "https://ror.org/05vp7ha71",
+          "country_code": "US",
+          "type": "facility",
+          "lineage": [
+            "https://openalex.org/I4210159766"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Jessica L. Mega",
+      "raw_affiliation_strings": [
+        "Thrombolysis in Myocardial Infarction Study Group, Cardiovascular Division, Department of Medicine, Brigham and Women's Hospital and Harvard Medical School, Boston, MA 02115, USA. jmega@partners.org",
+        "Thrombolysis in Myocardial Infarction Study Group, Cardiovascular Division, Department of Medicine, Brigham and Women's Hospital and Harvard Medical School, Boston"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Thrombolysis in Myocardial Infarction Study Group, Cardiovascular Division, Department of Medicine, Brigham and Women's Hospital and Harvard Medical School, Boston, MA 02115, USA. jmega@partners.org",
+          "institution_ids": [
+            "https://openalex.org/I1283280774"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Thrombolysis in Myocardial Infarction Study Group, Cardiovascular Division, Department of Medicine, Brigham and Women's Hospital and Harvard Medical School, Boston",
+          "institution_ids": [
+            "https://openalex.org/I4210159766",
+            "https://openalex.org/I1283280774"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5038207584",
+        "display_name": "Sandra Close",
+        "orcid": null
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I168537998",
+          "display_name": "Eli Lilly (United States)",
+          "ror": "https://ror.org/01qat3289",
+          "country_code": "US",
+          "type": "company",
+          "lineage": [
+            "https://openalex.org/I168537998"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Sandra L. Close",
+      "raw_affiliation_strings": [
+        "Eli Lilly Research Laboratories, Indianapolis"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Eli Lilly Research Laboratories, Indianapolis",
+          "institution_ids": [
+            "https://openalex.org/I168537998"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5107928205",
+        "display_name": "Stephen D. Wiviott",
+        "orcid": null
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I1283280774",
+          "display_name": "Brigham and Women's Hospital",
+          "ror": "https://ror.org/04b6nzv94",
+          "country_code": "US",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I1283280774",
+            "https://openalex.org/I48633490"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I4210159766",
+          "display_name": "Thrombolysis in Myocardial Infarction Study Group",
+          "ror": "https://ror.org/05vp7ha71",
+          "country_code": "US",
+          "type": "facility",
+          "lineage": [
+            "https://openalex.org/I4210159766"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Stephen D. Wiviott",
+      "raw_affiliation_strings": [
+        "Thrombolysis in Myocardial Infarction Study Group, Cardiovascular Division, Department of Medicine, Brigham and Women's Hospital and Harvard Medical School, Boston"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Thrombolysis in Myocardial Infarction Study Group, Cardiovascular Division, Department of Medicine, Brigham and Women's Hospital and Harvard Medical School, Boston",
+          "institution_ids": [
+            "https://openalex.org/I4210159766",
+            "https://openalex.org/I1283280774"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5041822106",
+        "display_name": "Lei Shen",
+        "orcid": "https://orcid.org/0000-0003-2811-7094"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I168537998",
+          "display_name": "Eli Lilly (United States)",
+          "ror": "https://ror.org/01qat3289",
+          "country_code": "US",
+          "type": "company",
+          "lineage": [
+            "https://openalex.org/I168537998"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Lei Shen",
+      "raw_affiliation_strings": [
+        "Eli Lilly Research Laboratories, Indianapolis"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Eli Lilly Research Laboratories, Indianapolis",
+          "institution_ids": [
+            "https://openalex.org/I168537998"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5060350471",
+        "display_name": "Richard D. Hockett",
+        "orcid": null
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I168537998",
+          "display_name": "Eli Lilly (United States)",
+          "ror": "https://ror.org/01qat3289",
+          "country_code": "US",
+          "type": "company",
+          "lineage": [
+            "https://openalex.org/I168537998"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Richard D. Hockett",
+      "raw_affiliation_strings": [
+        "Eli Lilly Research Laboratories, Indianapolis"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Eli Lilly Research Laboratories, Indianapolis",
+          "institution_ids": [
+            "https://openalex.org/I168537998"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5109951394",
+        "display_name": "John T. Brandt",
+        "orcid": null
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I168537998",
+          "display_name": "Eli Lilly (United States)",
+          "ror": "https://ror.org/01qat3289",
+          "country_code": "US",
+          "type": "company",
+          "lineage": [
+            "https://openalex.org/I168537998"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "John T. Brandt",
+      "raw_affiliation_strings": [
+        "Eli Lilly Research Laboratories, Indianapolis"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Eli Lilly Research Laboratories, Indianapolis",
+          "institution_ids": [
+            "https://openalex.org/I168537998"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5112384581",
+        "display_name": "Joseph R. Walker",
+        "orcid": null
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I4210162815",
+          "display_name": "Daiichi Sankyo (United States)",
+          "ror": "https://ror.org/055werx92",
+          "country_code": "US",
+          "type": "company",
+          "lineage": [
+            "https://openalex.org/I4210104626",
+            "https://openalex.org/I4210162815"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Joseph R. Walker",
+      "raw_affiliation_strings": [
+        "Daiichi Sankyo Pharma Development, Edison, NJ"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Daiichi Sankyo Pharma Development, Edison, NJ",
+          "institution_ids": [
+            "https://openalex.org/I4210162815"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5019612250",
+        "display_name": "Elliott M. Antman",
+        "orcid": "https://orcid.org/0000-0002-0808-9199"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I1283280774",
+          "display_name": "Brigham and Women's Hospital",
+          "ror": "https://ror.org/04b6nzv94",
+          "country_code": "US",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I1283280774",
+            "https://openalex.org/I48633490"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I4210159766",
+          "display_name": "Thrombolysis in Myocardial Infarction Study Group",
+          "ror": "https://ror.org/05vp7ha71",
+          "country_code": "US",
+          "type": "facility",
+          "lineage": [
+            "https://openalex.org/I4210159766"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Elliott M. Antman",
+      "raw_affiliation_strings": [
+        "Thrombolysis in Myocardial Infarction Study Group, Cardiovascular Division, Department of Medicine, Brigham and Women's Hospital and Harvard Medical School, Boston"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Thrombolysis in Myocardial Infarction Study Group, Cardiovascular Division, Department of Medicine, Brigham and Women's Hospital and Harvard Medical School, Boston",
+          "institution_ids": [
+            "https://openalex.org/I4210159766",
+            "https://openalex.org/I1283280774"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5032492386",
+        "display_name": "William L. Macias",
+        "orcid": null
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I168537998",
+          "display_name": "Eli Lilly (United States)",
+          "ror": "https://ror.org/01qat3289",
+          "country_code": "US",
+          "type": "company",
+          "lineage": [
+            "https://openalex.org/I168537998"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "William Macias",
+      "raw_affiliation_strings": [
+        "Eli Lilly Research Laboratories, Indianapolis"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Eli Lilly Research Laboratories, Indianapolis",
+          "institution_ids": [
+            "https://openalex.org/I168537998"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5042926181",
+        "display_name": "Eugene Braunwald",
+        "orcid": null
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I1283280774",
+          "display_name": "Brigham and Women's Hospital",
+          "ror": "https://ror.org/04b6nzv94",
+          "country_code": "US",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I1283280774",
+            "https://openalex.org/I48633490"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I4210159766",
+          "display_name": "Thrombolysis in Myocardial Infarction Study Group",
+          "ror": "https://ror.org/05vp7ha71",
+          "country_code": "US",
+          "type": "facility",
+          "lineage": [
+            "https://openalex.org/I4210159766"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Eugene Braunwald",
+      "raw_affiliation_strings": [
+        "Thrombolysis in Myocardial Infarction Study Group, Cardiovascular Division, Department of Medicine, Brigham and Women's Hospital and Harvard Medical School, Boston"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Thrombolysis in Myocardial Infarction Study Group, Cardiovascular Division, Department of Medicine, Brigham and Women's Hospital and Harvard Medical School, Boston",
+          "institution_ids": [
+            "https://openalex.org/I4210159766",
+            "https://openalex.org/I1283280774"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "last",
+      "author": {
+        "id": "https://openalex.org/A5030057930",
+        "display_name": "Marc S. Sabatine",
+        "orcid": "https://orcid.org/0000-0002-0691-3359"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I1283280774",
+          "display_name": "Brigham and Women's Hospital",
+          "ror": "https://ror.org/04b6nzv94",
+          "country_code": "US",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I1283280774",
+            "https://openalex.org/I48633490"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I4210159766",
+          "display_name": "Thrombolysis in Myocardial Infarction Study Group",
+          "ror": "https://ror.org/05vp7ha71",
+          "country_code": "US",
+          "type": "facility",
+          "lineage": [
+            "https://openalex.org/I4210159766"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Marc S. Sabatine",
+      "raw_affiliation_strings": [
+        "Thrombolysis in Myocardial Infarction Study Group, Cardiovascular Division, Department of Medicine, Brigham and Women's Hospital and Harvard Medical School, Boston"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Thrombolysis in Myocardial Infarction Study Group, Cardiovascular Division, Department of Medicine, Brigham and Women's Hospital and Harvard Medical School, Boston",
+          "institution_ids": [
+            "https://openalex.org/I4210159766",
+            "https://openalex.org/I1283280774"
+          ]
+        }
+      ]
+    }
+  ],
+  "institutions": [],
+  "countries_distinct_count": 1,
+  "institutions_distinct_count": 4,
+  "corresponding_author_ids": [],
+  "corresponding_institution_ids": [],
+  "apc_list": null,
+  "apc_paid": null,
+  "fwci": 166.8261,
+  "has_fulltext": true,
+  "cited_by_count": 2471,
+  "citation_normalized_percentile": {
+    "value": 0.99987395,
+    "is_in_top_1_percent": true,
+    "is_in_top_10_percent": true
+  },
+  "cited_by_percentile_year": {
+    "min": 99,
+    "max": 100
+  },
+  "biblio": {
+    "volume": "360",
+    "issue": "4",
+    "first_page": "354",
+    "last_page": "362"
+  },
+  "is_retracted": false,
+  "is_paratext": false,
+  "is_xpac": false,
+  "primary_topic": {
+    "id": "https://openalex.org/T11064",
+    "display_name": "Antiplatelet Therapy and Cardiovascular Diseases",
+    "score": 0.987500011920929,
+    "subfield": {
+      "id": "https://openalex.org/subfields/2705",
+      "display_name": "Cardiology and Cardiovascular Medicine"
+    },
+    "field": {
+      "id": "https://openalex.org/fields/27",
+      "display_name": "Medicine"
+    },
+    "domain": {
+      "id": "https://openalex.org/domains/4",
+      "display_name": "Health Sciences"
+    }
+  },
+  "topics": [
+    {
+      "id": "https://openalex.org/T11064",
+      "display_name": "Antiplatelet Therapy and Cardiovascular Diseases",
+      "score": 0.987500011920929,
+      "subfield": {
+        "id": "https://openalex.org/subfields/2705",
+        "display_name": "Cardiology and Cardiovascular Medicine"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/27",
+        "display_name": "Medicine"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/4",
+        "display_name": "Health Sciences"
+      }
+    },
+    {
+      "id": "https://openalex.org/T12910",
+      "display_name": "Eicosanoids and Hypertension Pharmacology",
+      "score": 0.002300000051036477,
+      "subfield": {
+        "id": "https://openalex.org/subfields/1303",
+        "display_name": "Biochemistry"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/13",
+        "display_name": "Biochemistry, Genetics and Molecular Biology"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/1",
+        "display_name": "Life Sciences"
+      }
+    },
+    {
+      "id": "https://openalex.org/T10375",
+      "display_name": "Pharmacogenetics and Drug Metabolism",
+      "score": 0.002099999925121665,
+      "subfield": {
+        "id": "https://openalex.org/subfields/3004",
+        "display_name": "Pharmacology"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/30",
+        "display_name": "Pharmacology, Toxicology and Pharmaceutics"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/1",
+        "display_name": "Life Sciences"
+      }
+    }
+  ],
+  "keywords": [
+    {
+      "id": "https://openalex.org/keywords/medicine",
+      "display_name": "Medicine",
+      "score": 0.880011796951294
+    },
+    {
+      "id": "https://openalex.org/keywords/clopidogrel",
+      "display_name": "Clopidogrel",
+      "score": 0.8130078315734863
+    },
+    {
+      "id": "https://openalex.org/keywords/cytochrome",
+      "display_name": "Cytochrome",
+      "score": 0.4454939663410187
+    },
+    {
+      "id": "https://openalex.org/keywords/genetics",
+      "display_name": "Genetics",
+      "score": 0.3526447117328644
+    },
+    {
+      "id": "https://openalex.org/keywords/internal-medicine",
+      "display_name": "Internal medicine",
+      "score": 0.34915968775749207
+    },
+    {
+      "id": "https://openalex.org/keywords/aspirin",
+      "display_name": "Aspirin",
+      "score": 0.22644934058189392
+    },
+    {
+      "id": "https://openalex.org/keywords/biology",
+      "display_name": "Biology",
+      "score": 0.08111700415611267
+    }
+  ],
+  "concepts": [
+    {
+      "id": "https://openalex.org/C71924100",
+      "wikidata": "https://www.wikidata.org/wiki/Q11190",
+      "display_name": "Medicine",
+      "level": 0,
+      "score": 0.880011796951294
+    },
+    {
+      "id": "https://openalex.org/C2777849778",
+      "wikidata": "https://www.wikidata.org/wiki/Q410237",
+      "display_name": "Clopidogrel",
+      "level": 3,
+      "score": 0.8130078315734863
+    },
+    {
+      "id": "https://openalex.org/C2780768313",
+      "wikidata": "https://www.wikidata.org/wiki/Q408068",
+      "display_name": "Cytochrome",
+      "level": 3,
+      "score": 0.4454939663410187
+    },
+    {
+      "id": "https://openalex.org/C54355233",
+      "wikidata": "https://www.wikidata.org/wiki/Q7162",
+      "display_name": "Genetics",
+      "level": 1,
+      "score": 0.3526447117328644
+    },
+    {
+      "id": "https://openalex.org/C126322002",
+      "wikidata": "https://www.wikidata.org/wiki/Q11180",
+      "display_name": "Internal medicine",
+      "level": 1,
+      "score": 0.34915968775749207
+    },
+    {
+      "id": "https://openalex.org/C2777628954",
+      "wikidata": "https://www.wikidata.org/wiki/Q18216",
+      "display_name": "Aspirin",
+      "level": 2,
+      "score": 0.22644934058189392
+    },
+    {
+      "id": "https://openalex.org/C86803240",
+      "wikidata": "https://www.wikidata.org/wiki/Q420",
+      "display_name": "Biology",
+      "level": 0,
+      "score": 0.08111700415611267
+    },
+    {
+      "id": "https://openalex.org/C55493867",
+      "wikidata": "https://www.wikidata.org/wiki/Q7094",
+      "display_name": "Biochemistry",
+      "level": 1,
+      "score": 0.0
+    },
+    {
+      "id": "https://openalex.org/C181199279",
+      "wikidata": "https://www.wikidata.org/wiki/Q8047",
+      "display_name": "Enzyme",
+      "level": 2,
+      "score": 0.0
+    }
+  ],
+  "mesh": [
+    {
+      "descriptor_ui": "D000077144",
+      "descriptor_name": "Clopidogrel",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000077144",
+      "descriptor_name": "Clopidogrel",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000077144",
+      "descriptor_name": "Clopidogrel",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000328",
+      "descriptor_name": "Adult",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000328",
+      "descriptor_name": "Adult",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000328",
+      "descriptor_name": "Adult",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D001189",
+      "descriptor_name": "Aryl Hydrocarbon Hydroxylases",
+      "qualifier_ui": "Q000235",
+      "qualifier_name": "genetics",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D001189",
+      "descriptor_name": "Aryl Hydrocarbon Hydroxylases",
+      "qualifier_ui": "Q000235",
+      "qualifier_name": "genetics",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D001189",
+      "descriptor_name": "Aryl Hydrocarbon Hydroxylases",
+      "qualifier_ui": "Q000235",
+      "qualifier_name": "genetics",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D002318",
+      "descriptor_name": "Cardiovascular Diseases",
+      "qualifier_ui": "Q000235",
+      "qualifier_name": "genetics",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D002318",
+      "descriptor_name": "Cardiovascular Diseases",
+      "qualifier_ui": "Q000235",
+      "qualifier_name": "genetics",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D002318",
+      "descriptor_name": "Cardiovascular Diseases",
+      "qualifier_ui": "Q000235",
+      "qualifier_name": "genetics",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D002318",
+      "descriptor_name": "Cardiovascular Diseases",
+      "qualifier_ui": "Q000453",
+      "qualifier_name": "epidemiology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D002318",
+      "descriptor_name": "Cardiovascular Diseases",
+      "qualifier_ui": "Q000453",
+      "qualifier_name": "epidemiology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D002318",
+      "descriptor_name": "Cardiovascular Diseases",
+      "qualifier_ui": "Q000453",
+      "qualifier_name": "epidemiology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D003131",
+      "descriptor_name": "Combined Modality Therapy",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D003131",
+      "descriptor_name": "Combined Modality Therapy",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D003131",
+      "descriptor_name": "Combined Modality Therapy",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D005260",
+      "descriptor_name": "Female",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D005260",
+      "descriptor_name": "Female",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D005260",
+      "descriptor_name": "Female",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D005838",
+      "descriptor_name": "Genotype",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D005838",
+      "descriptor_name": "Genotype",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D005838",
+      "descriptor_name": "Genotype",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D006579",
+      "descriptor_name": "Heterozygote",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D006579",
+      "descriptor_name": "Heterozygote",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D006579",
+      "descriptor_name": "Heterozygote",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D006801",
+      "descriptor_name": "Humans",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D006801",
+      "descriptor_name": "Humans",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D006801",
+      "descriptor_name": "Humans",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D008297",
+      "descriptor_name": "Male",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D008297",
+      "descriptor_name": "Male",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D008297",
+      "descriptor_name": "Male",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D009154",
+      "descriptor_name": "Mutation",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D009154",
+      "descriptor_name": "Mutation",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D009154",
+      "descriptor_name": "Mutation",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D010974",
+      "descriptor_name": "Platelet Aggregation",
+      "qualifier_ui": "Q000187",
+      "qualifier_name": "drug effects",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D010974",
+      "descriptor_name": "Platelet Aggregation",
+      "qualifier_ui": "Q000187",
+      "qualifier_name": "drug effects",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D010974",
+      "descriptor_name": "Platelet Aggregation",
+      "qualifier_ui": "Q000187",
+      "qualifier_name": "drug effects",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D010975",
+      "descriptor_name": "Platelet Aggregation Inhibitors",
+      "qualifier_ui": "Q000009",
+      "qualifier_name": "adverse effects",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D010975",
+      "descriptor_name": "Platelet Aggregation Inhibitors",
+      "qualifier_ui": "Q000009",
+      "qualifier_name": "adverse effects",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D010975",
+      "descriptor_name": "Platelet Aggregation Inhibitors",
+      "qualifier_ui": "Q000009",
+      "qualifier_name": "adverse effects",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D010975",
+      "descriptor_name": "Platelet Aggregation Inhibitors",
+      "qualifier_ui": "Q000378",
+      "qualifier_name": "metabolism",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D010975",
+      "descriptor_name": "Platelet Aggregation Inhibitors",
+      "qualifier_ui": "Q000378",
+      "qualifier_name": "metabolism",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D010975",
+      "descriptor_name": "Platelet Aggregation Inhibitors",
+      "qualifier_ui": "Q000378",
+      "qualifier_name": "metabolism",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D010975",
+      "descriptor_name": "Platelet Aggregation Inhibitors",
+      "qualifier_ui": "Q000494",
+      "qualifier_name": "pharmacology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D010975",
+      "descriptor_name": "Platelet Aggregation Inhibitors",
+      "qualifier_ui": "Q000494",
+      "qualifier_name": "pharmacology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D010975",
+      "descriptor_name": "Platelet Aggregation Inhibitors",
+      "qualifier_ui": "Q000494",
+      "qualifier_name": "pharmacology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D010975",
+      "descriptor_name": "Platelet Aggregation Inhibitors",
+      "qualifier_ui": "Q000627",
+      "qualifier_name": "therapeutic use",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D010975",
+      "descriptor_name": "Platelet Aggregation Inhibitors",
+      "qualifier_ui": "Q000627",
+      "qualifier_name": "therapeutic use",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D010975",
+      "descriptor_name": "Platelet Aggregation Inhibitors",
+      "qualifier_ui": "Q000627",
+      "qualifier_name": "therapeutic use",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D011110",
+      "descriptor_name": "Polymorphism, Genetic",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D011110",
+      "descriptor_name": "Polymorphism, Genetic",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D011110",
+      "descriptor_name": "Polymorphism, Genetic",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D013927",
+      "descriptor_name": "Thrombosis",
+      "qualifier_ui": "Q000235",
+      "qualifier_name": "genetics",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D013927",
+      "descriptor_name": "Thrombosis",
+      "qualifier_ui": "Q000235",
+      "qualifier_name": "genetics",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D013927",
+      "descriptor_name": "Thrombosis",
+      "qualifier_ui": "Q000235",
+      "qualifier_name": "genetics",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D013927",
+      "descriptor_name": "Thrombosis",
+      "qualifier_ui": "Q000453",
+      "qualifier_name": "epidemiology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D013927",
+      "descriptor_name": "Thrombosis",
+      "qualifier_ui": "Q000453",
+      "qualifier_name": "epidemiology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D013927",
+      "descriptor_name": "Thrombosis",
+      "qualifier_ui": "Q000453",
+      "qualifier_name": "epidemiology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D013988",
+      "descriptor_name": "Ticlopidine",
+      "qualifier_ui": "Q000009",
+      "qualifier_name": "adverse effects",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D013988",
+      "descriptor_name": "Ticlopidine",
+      "qualifier_ui": "Q000009",
+      "qualifier_name": "adverse effects",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D013988",
+      "descriptor_name": "Ticlopidine",
+      "qualifier_ui": "Q000009",
+      "qualifier_name": "adverse effects",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D013988",
+      "descriptor_name": "Ticlopidine",
+      "qualifier_ui": "Q000031",
+      "qualifier_name": "analogs & derivatives",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D013988",
+      "descriptor_name": "Ticlopidine",
+      "qualifier_ui": "Q000031",
+      "qualifier_name": "analogs & derivatives",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D013988",
+      "descriptor_name": "Ticlopidine",
+      "qualifier_ui": "Q000031",
+      "qualifier_name": "analogs & derivatives",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D013988",
+      "descriptor_name": "Ticlopidine",
+      "qualifier_ui": "Q000378",
+      "qualifier_name": "metabolism",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D013988",
+      "descriptor_name": "Ticlopidine",
+      "qualifier_ui": "Q000378",
+      "qualifier_name": "metabolism",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D013988",
+      "descriptor_name": "Ticlopidine",
+      "qualifier_ui": "Q000378",
+      "qualifier_name": "metabolism",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D013988",
+      "descriptor_name": "Ticlopidine",
+      "qualifier_ui": "Q000494",
+      "qualifier_name": "pharmacology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D013988",
+      "descriptor_name": "Ticlopidine",
+      "qualifier_ui": "Q000494",
+      "qualifier_name": "pharmacology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D013988",
+      "descriptor_name": "Ticlopidine",
+      "qualifier_ui": "Q000494",
+      "qualifier_name": "pharmacology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D013988",
+      "descriptor_name": "Ticlopidine",
+      "qualifier_ui": "Q000627",
+      "qualifier_name": "therapeutic use",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D013988",
+      "descriptor_name": "Ticlopidine",
+      "qualifier_ui": "Q000627",
+      "qualifier_name": "therapeutic use",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D013988",
+      "descriptor_name": "Ticlopidine",
+      "qualifier_ui": "Q000627",
+      "qualifier_name": "therapeutic use",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D015607",
+      "descriptor_name": "Stents",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D015607",
+      "descriptor_name": "Stents",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D015607",
+      "descriptor_name": "Stents",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D015906",
+      "descriptor_name": "Angioplasty, Balloon, Coronary",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D015906",
+      "descriptor_name": "Angioplasty, Balloon, Coronary",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D015906",
+      "descriptor_name": "Angioplasty, Balloon, Coronary",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D016032",
+      "descriptor_name": "Randomized Controlled Trials as Topic",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D016032",
+      "descriptor_name": "Randomized Controlled Trials as Topic",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D016032",
+      "descriptor_name": "Randomized Controlled Trials as Topic",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D019540",
+      "descriptor_name": "Area Under Curve",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D019540",
+      "descriptor_name": "Area Under Curve",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D019540",
+      "descriptor_name": "Area Under Curve",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D054058",
+      "descriptor_name": "Acute Coronary Syndrome",
+      "qualifier_ui": "Q000628",
+      "qualifier_name": "therapy",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D054058",
+      "descriptor_name": "Acute Coronary Syndrome",
+      "qualifier_ui": "Q000628",
+      "qualifier_name": "therapy",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D054058",
+      "descriptor_name": "Acute Coronary Syndrome",
+      "qualifier_ui": "Q000628",
+      "qualifier_name": "therapy",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D065731",
+      "descriptor_name": "Cytochrome P-450 CYP2C19",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D065731",
+      "descriptor_name": "Cytochrome P-450 CYP2C19",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D065731",
+      "descriptor_name": "Cytochrome P-450 CYP2C19",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    }
+  ],
+  "locations_count": 2,
+  "locations": [
+    {
+      "id": "doi:10.1056/nejmoa0809171",
+      "is_oa": true,
+      "landing_page_url": "https://doi.org/10.1056/nejmoa0809171",
+      "pdf_url": "https://www.nejm.org/doi/pdf/10.1056/NEJMoa0809171?articleTools=true",
+      "source": {
+        "id": "https://openalex.org/S62468778",
+        "display_name": "New England Journal of Medicine",
+        "issn_l": "0028-4793",
+        "issn": [
+          "0028-4793",
+          "1533-4406"
+        ],
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": true,
+        "host_organization": "https://openalex.org/P4310320239",
+        "host_organization_name": "Massachusetts Medical Society",
+        "host_organization_lineage": [
+          "https://openalex.org/P4310320239"
+        ],
+        "host_organization_lineage_names": [
+          "Massachusetts Medical Society"
+        ],
+        "type": "journal"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "publishedVersion",
+      "is_accepted": true,
+      "is_published": true,
+      "raw_source_name": "New England Journal of Medicine",
+      "raw_type": "journal-article"
+    },
+    {
+      "id": "pmid:19106084",
+      "is_oa": false,
+      "landing_page_url": "https://pubmed.ncbi.nlm.nih.gov/19106084",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4306525036",
+        "display_name": "PubMed",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I1299303238",
+        "host_organization_name": "National Institutes of Health",
+        "host_organization_lineage": [
+          "https://openalex.org/I1299303238"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "publishedVersion",
+      "is_accepted": true,
+      "is_published": true,
+      "raw_source_name": "The New England journal of medicine",
+      "raw_type": null
+    }
+  ],
+  "best_oa_location": {
+    "id": "doi:10.1056/nejmoa0809171",
+    "is_oa": true,
+    "landing_page_url": "https://doi.org/10.1056/nejmoa0809171",
+    "pdf_url": "https://www.nejm.org/doi/pdf/10.1056/NEJMoa0809171?articleTools=true",
+    "source": {
+      "id": "https://openalex.org/S62468778",
+      "display_name": "New England Journal of Medicine",
+      "issn_l": "0028-4793",
+      "issn": [
+        "0028-4793",
+        "1533-4406"
+      ],
+      "is_oa": false,
+      "is_in_doaj": false,
+      "is_core": true,
+      "host_organization": "https://openalex.org/P4310320239",
+      "host_organization_name": "Massachusetts Medical Society",
+      "host_organization_lineage": [
+        "https://openalex.org/P4310320239"
+      ],
+      "host_organization_lineage_names": [
+        "Massachusetts Medical Society"
+      ],
+      "type": "journal"
+    },
+    "license": null,
+    "license_id": null,
+    "version": "publishedVersion",
+    "is_accepted": true,
+    "is_published": true,
+    "raw_source_name": "New England Journal of Medicine",
+    "raw_type": "journal-article"
+  },
+  "sustainable_development_goals": [],
+  "awards": [],
+  "funders": [],
+  "has_content": {
+    "pdf": true,
+    "grobid_xml": true
+  },
+  "content_urls": {
+    "pdf": "https://content.openalex.org/works/W1985059672.pdf",
+    "grobid_xml": "https://content.openalex.org/works/W1985059672.grobid-xml"
+  },
+  "referenced_works_count": 31,
+  "referenced_works": [
+    "https://openalex.org/W141287021",
+    "https://openalex.org/W168371622",
+    "https://openalex.org/W1550666015",
+    "https://openalex.org/W1553345686",
+    "https://openalex.org/W1993051841",
+    "https://openalex.org/W2001688139",
+    "https://openalex.org/W2005714426",
+    "https://openalex.org/W2005726649",
+    "https://openalex.org/W2007108997",
+    "https://openalex.org/W2012407966",
+    "https://openalex.org/W2021241943",
+    "https://openalex.org/W2045715230",
+    "https://openalex.org/W2056384040",
+    "https://openalex.org/W2057681387",
+    "https://openalex.org/W2070419967",
+    "https://openalex.org/W2104595603",
+    "https://openalex.org/W2113926891",
+    "https://openalex.org/W2120643945",
+    "https://openalex.org/W2121074897",
+    "https://openalex.org/W2128928935",
+    "https://openalex.org/W2130350603",
+    "https://openalex.org/W2135575592",
+    "https://openalex.org/W2140220482",
+    "https://openalex.org/W2144183240",
+    "https://openalex.org/W2144205436",
+    "https://openalex.org/W2146006199",
+    "https://openalex.org/W2146453185",
+    "https://openalex.org/W2148633205",
+    "https://openalex.org/W2153496058",
+    "https://openalex.org/W2159670968",
+    "https://openalex.org/W2169387542"
+  ],
+  "related_works": [
+    "https://openalex.org/W1983829728",
+    "https://openalex.org/W3141478988",
+    "https://openalex.org/W3134665543",
+    "https://openalex.org/W2236042039",
+    "https://openalex.org/W2316719883",
+    "https://openalex.org/W3135788989",
+    "https://openalex.org/W2030906043",
+    "https://openalex.org/W2527719101",
+    "https://openalex.org/W44316525",
+    "https://openalex.org/W2763747986"
+  ],
+  "abstract_inverted_index": {
+    "BACKGROUND:": [
+      0
+    ],
+    "Clopidogrel": [
+      1
+    ],
+    "requires": [
+      2
+    ],
+    "transformation": [
+      3
+    ],
+    "into": [
+      4
+    ],
+    "an": [
+      5,
+      153,
+      228
+    ],
+    "active": [
+      6,
+      45,
+      141,
+      271
+    ],
+    "metabolite": [
+      7,
+      142,
+      272
+    ],
+    "by": [
+      8,
+      96,
+      230
+    ],
+    "cytochrome": [
+      9
+    ],
+    "P-450": [
+      10
+    ],
+    "(CYP)": [
+      11
+    ],
+    "enzymes": [
+      12,
+      21
+    ],
+    "for": [
+      13,
+      216
+    ],
+    "its": [
+      14
+    ],
+    "antiplatelet": [
+      15
+    ],
+    "effect.": [
+      16
+    ],
+    "The": [
+      17
+    ],
+    "genes": [
+      18
+    ],
+    "encoding": [
+      19
+    ],
+    "CYP": [
+      20,
+      40
+    ],
+    "are": [
+      22
+    ],
+    "polymorphic,": [
+      23
+    ],
+    "with": [
+      24,
+      78,
+      85,
+      100,
+      114,
+      147,
+      209,
+      257
+    ],
+    "common": [
+      25
+    ],
+    "alleles": [
+      26
+    ],
+    "conferring": [
+      27
+    ],
+    "reduced": [
+      28
+    ],
+    "function.": [
+      29
+    ],
+    "METHODS:": [
+      30
+    ],
+    "We": [
+      31,
+      59
+    ],
+    "tested": [
+      32
+    ],
+    "the": [
+      33,
+      62,
+      88,
+      127,
+      140,
+      190,
+      196,
+      236,
+      270
+    ],
+    "association": [
+      34,
+      63
+    ],
+    "between": [
+      35,
+      64
+    ],
+    "functional": [
+      36
+    ],
+    "genetic": [
+      37,
+      66
+    ],
+    "variants": [
+      38,
+      67
+    ],
+    "in": [
+      39,
+      51,
+      55,
+      71,
+      87,
+      93,
+      102,
+      136,
+      156,
+      160,
+      173,
+      179,
+      189,
+      235
+    ],
+    "genes,": [
+      41
+    ],
+    "plasma": [
+      42,
+      137
+    ],
+    "concentrations": [
+      43
+    ],
+    "of": [
+      44,
+      75,
+      117,
+      126,
+      134,
+      143,
+      187,
+      195,
+      198,
+      233,
+      238,
+      260,
+      269,
+      273,
+      282
+    ],
+    "drug": [
+      46
+    ],
+    "metabolite,": [
+      47
+    ],
+    "and": [
+      48,
+      68,
+      227,
+      278
+    ],
+    "platelet": [
+      49,
+      158,
+      276
+    ],
+    "inhibition": [
+      50
+    ],
+    "response": [
+      52,
+      161
+    ],
+    "to": [
+      53,
+      90,
+      139,
+      162,
+      224,
+      250
+    ],
+    "clopidogrel": [
+      54,
+      86,
+      163
+    ],
+    "162": [
+      56
+    ],
+    "healthy": [
+      57,
+      109
+    ],
+    "subjects.": [
+      58
+    ],
+    "then": [
+      60
+    ],
+    "examined": [
+      61
+    ],
+    "these": [
+      65
+    ],
+    "cardiovascular": [
+      69,
+      201,
+      285
+    ],
+    "outcomes": [
+      70
+    ],
+    "a": [
+      72,
+      131,
+      184,
+      231,
+      261,
+      279
+    ],
+    "separate": [
+      73
+    ],
+    "cohort": [
+      74
+    ],
+    "1477": [
+      76
+    ],
+    "subjects": [
+      77,
+      110,
+      178
+    ],
+    "acute": [
+      79
+    ],
+    "coronary": [
+      80
+    ],
+    "syndromes": [
+      81
+    ],
+    "who": [
+      82,
+      111
+    ],
+    "were": [
+      83,
+      112
+    ],
+    "treated": [
+      84,
+      113,
+      256
+    ],
+    "Trial": [
+      89
+    ],
+    "Assess": [
+      91
+    ],
+    "Improvement": [
+      92
+    ],
+    "Therapeutic": [
+      94
+    ],
+    "Outcomes": [
+      95
+    ],
+    "Optimizing": [
+      97
+    ],
+    "Platelet": [
+      98
+    ],
+    "Inhibition": [
+      99
+    ],
+    "Prasugrel-Thrombolysis": [
+      101
+    ],
+    "Myocardial": [
+      103
+    ],
+    "Infarction": [
+      104
+    ],
+    "(TRITON-TIMI)": [
+      105
+    ],
+    "38.": [
+      106
+    ],
+    "RESULTS:": [
+      107
+    ],
+    "In": [
+      108
+    ],
+    "clopidogrel,": [
+      115,
+      144,
+      258,
+      274
+    ],
+    "carriers": [
+      116,
+      182,
+      259
+    ],
+    "at": [
+      118
+    ],
+    "least": [
+      119
+    ],
+    "one": [
+      120
+    ],
+    "CYP2C19": [
+      121,
+      263
+    ],
+    "reduced-function": [
+      122,
+      262
+    ],
+    "allele": [
+      123,
+      264
+    ],
+    "(approximately": [
+      124
+    ],
+    "30%": [
+      125
+    ],
+    "study": [
+      128
+    ],
+    "population)": [
+      129
+    ],
+    "had": [
+      130,
+      152,
+      183,
+      265
+    ],
+    "relative": [
+      132,
+      185
+    ],
+    "reduction": [
+      133,
+      155
+    ],
+    "32.4%": [
+      135
+    ],
+    "exposure": [
+      138
+    ],
+    "as": [
+      145,
+      207
+    ],
+    "compared": [
+      146,
+      208
+    ],
+    "noncarriers": [
+      148,
+      174,
+      210
+    ],
+    "(P<0.001).": [
+      149,
+      175
+    ],
+    "Carriers": [
+      150
+    ],
+    "also": [
+      151
+    ],
+    "absolute": [
+      154
+    ],
+    "maximal": [
+      157
+    ],
+    "aggregation": [
+      159
+    ],
+    "that": [
+      164,
+      171
+    ],
+    "was": [
+      165
+    ],
+    "9": [
+      166
+    ],
+    "percentage": [
+      167
+    ],
+    "points": [
+      168
+    ],
+    "less": [
+      169
+    ],
+    "than": [
+      170,
+      290
+    ],
+    "seen": [
+      172
+    ],
+    "Among": [
+      176,
+      254
+    ],
+    "clopidogrel-treated": [
+      177
+    ],
+    "TRITON-TIMI": [
+      180
+    ],
+    "38,": [
+      181
+    ],
+    "increase": [
+      186,
+      229
+    ],
+    "53%": [
+      188
+    ],
+    "composite": [
+      191
+    ],
+    "primary": [
+      192
+    ],
+    "efficacy": [
+      193
+    ],
+    "outcome": [
+      194
+    ],
+    "risk": [
+      197,
+      237
+    ],
+    "death": [
+      199
+    ],
+    "from": [
+      200
+    ],
+    "causes,": [
+      202
+    ],
+    "myocardial": [
+      203
+    ],
+    "infarction,": [
+      204
+    ],
+    "or": [
+      205
+    ],
+    "stroke,": [
+      206
+    ],
+    "(12.1%": [
+      211
+    ],
+    "vs.": [
+      212,
+      242
+    ],
+    "8.0%;": [
+      213
+    ],
+    "hazard": [
+      214,
+      244
+    ],
+    "ratio": [
+      215
+    ],
+    "carriers,": [
+      217
+    ],
+    "1.53;": [
+      218
+    ],
+    "95%": [
+      219,
+      247
+    ],
+    "confidence": [
+      220
+    ],
+    "interval": [
+      221
+    ],
+    "[CI],": [
+      222
+    ],
+    "1.07": [
+      223
+    ],
+    "2.19;": [
+      225
+    ],
+    "P=0.01)": [
+      226
+    ],
+    "factor": [
+      232
+    ],
+    "3": [
+      234
+    ],
+    "stent": [
+      239,
+      288
+    ],
+    "thrombosis": [
+      240
+    ],
+    "(2.6%": [
+      241
+    ],
+    "0.8%;": [
+      243
+    ],
+    "ratio,": [
+      245
+    ],
+    "3.09;": [
+      246
+    ],
+    "CI,": [
+      248
+    ],
+    "1.19": [
+      249
+    ],
+    "8.00;": [
+      251
+    ],
+    "P=0.02).": [
+      252
+    ],
+    "CONCLUSIONS:": [
+      253
+    ],
+    "persons": [
+      255
+    ],
+    "significantly": [
+      266
+    ],
+    "lower": [
+      267
+    ],
+    "levels": [
+      268
+    ],
+    "diminished": [
+      275
+    ],
+    "inhibition,": [
+      277
+    ],
+    "higher": [
+      280
+    ],
+    "rate": [
+      281
+    ],
+    "major": [
+      283
+    ],
+    "adverse": [
+      284
+    ],
+    "events,": [
+      286
+    ],
+    "including": [
+      287
+    ],
+    "thrombosis,": [
+      289
+    ],
+    "did": [
+      291
+    ],
+    "noncarriers.": [
+      292
+    ]
+  },
+  "counts_by_year": [
+    {
+      "year": 2026,
+      "cited_by_count": 39
+    },
+    {
+      "year": 2025,
+      "cited_by_count": 52
+    },
+    {
+      "year": 2024,
+      "cited_by_count": 54
+    },
+    {
+      "year": 2023,
+      "cited_by_count": 65
+    },
+    {
+      "year": 2022,
+      "cited_by_count": 90
+    },
+    {
+      "year": 2021,
+      "cited_by_count": 87
+    },
+    {
+      "year": 2020,
+      "cited_by_count": 65
+    },
+    {
+      "year": 2019,
+      "cited_by_count": 72
+    },
+    {
+      "year": 2018,
+      "cited_by_count": 106
+    },
+    {
+      "year": 2017,
+      "cited_by_count": 99
+    },
+    {
+      "year": 2016,
+      "cited_by_count": 130
+    },
+    {
+      "year": 2015,
+      "cited_by_count": 147
+    },
+    {
+      "year": 2014,
+      "cited_by_count": 153
+    },
+    {
+      "year": 2013,
+      "cited_by_count": 218
+    },
+    {
+      "year": 2012,
+      "cited_by_count": 272
+    }
+  ],
+  "updated_date": "2026-07-04T07:58:01.006859",
+  "created_date": "2025-10-10T00:00:00"
+}

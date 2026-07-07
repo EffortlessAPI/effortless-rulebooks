@@ -1,0 +1,18 @@
+{
+  "candidate_id": "cand-exp-acemoglu-autor-2011",
+  "proposed_study_id": "acemoglu-autor-2011",
+  "acquisition_status": "downloaded",
+  "attempted_at": "2026-07-07T03:40:49+00:00",
+  "catalog_source_url": "https://www.nber.org/data/cps.html",
+  "resolved_urls": [
+    "https://doi.org/10.1086/684581",
+    "https://researchonline.lse.ac.uk/id/eprint/62722/7/Audit_query_8203.pdf",
+    "https://www.nber.org/data/cps.html"
+  ],
+  "files": [
+    "openalex-search.pdf",
+    "openalex-metadata.json",
+    "source-1.html"
+  ],
+  "dois": []
+}

@@ -1,0 +1,1420 @@
+{
+  "id": "https://openalex.org/W2965198355",
+  "doi": "https://doi.org/10.1073/pnas.1821204116",
+  "title": "Risk of being killed by police use of force in the United States by age, race\u2013ethnicity, and sex",
+  "display_name": "Risk of being killed by police use of force in the United States by age, race\u2013ethnicity, and sex",
+  "relevance_score": 103.18258,
+  "publication_year": 2019,
+  "publication_date": "2019-08-05",
+  "ids": {
+    "openalex": "https://openalex.org/W2965198355",
+    "doi": "https://doi.org/10.1073/pnas.1821204116",
+    "mag": "2965198355",
+    "pmid": "https://pubmed.ncbi.nlm.nih.gov/31383756"
+  },
+  "language": "en",
+  "primary_location": {
+    "id": "doi:10.1073/pnas.1821204116",
+    "is_oa": true,
+    "landing_page_url": "https://doi.org/10.1073/pnas.1821204116",
+    "pdf_url": "https://www.pnas.org/content/pnas/116/34/16793.full.pdf",
+    "source": {
+      "id": "https://openalex.org/S125754415",
+      "display_name": "Proceedings of the National Academy of Sciences",
+      "issn_l": "0027-8424",
+      "issn": [
+        "0027-8424",
+        "1091-6490"
+      ],
+      "is_oa": false,
+      "is_in_doaj": false,
+      "is_core": true,
+      "host_organization": "https://openalex.org/P4310320052",
+      "host_organization_name": "National Academy of Sciences",
+      "host_organization_lineage": [
+        "https://openalex.org/P4310320052"
+      ],
+      "host_organization_lineage_names": [
+        "National Academy of Sciences"
+      ],
+      "type": "journal"
+    },
+    "license": null,
+    "license_id": null,
+    "version": "publishedVersion",
+    "is_accepted": true,
+    "is_published": true,
+    "raw_source_name": "Proceedings of the National Academy of Sciences",
+    "raw_type": "journal-article"
+  },
+  "type": "article",
+  "indexed_in": [
+    "crossref",
+    "pubmed"
+  ],
+  "open_access": {
+    "is_oa": true,
+    "oa_status": "bronze",
+    "oa_url": "https://www.pnas.org/content/pnas/116/34/16793.full.pdf",
+    "any_repository_has_fulltext": false
+  },
+  "authorships": [
+    {
+      "author_position": "first",
+      "author": {
+        "id": "https://openalex.org/A5015728928",
+        "display_name": "Frank Edwards",
+        "orcid": "https://orcid.org/0000-0003-3151-3194"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I102322142",
+          "display_name": "Rutgers, The State University of New Jersey",
+          "ror": "https://ror.org/05vt9qd57",
+          "country_code": "US",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I102322142"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": true,
+      "raw_author_name": "Frank Edwards",
+      "raw_affiliation_strings": [
+        "School of Criminal Justice, Rutgers University, Newark, NJ 07102;"
+      ],
+      "raw_orcid": "https://orcid.org/0000-0003-3151-3194",
+      "affiliations": [
+        {
+          "raw_affiliation_string": "School of Criminal Justice, Rutgers University, Newark, NJ 07102;",
+          "institution_ids": [
+            "https://openalex.org/I102322142"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5073996787",
+        "display_name": "Hedwig Lee",
+        "orcid": "https://orcid.org/0000-0001-7376-5694"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I204465549",
+          "display_name": "Washington University in St. Louis",
+          "ror": "https://ror.org/01yc7t268",
+          "country_code": "US",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I204465549"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Hedwig Lee",
+      "raw_affiliation_strings": [
+        "Department of Sociology, Washington University in St. Louis, St. Louis, MO 63130;",
+        "Department of Sociology, Washington University in St. Louis, St. Louis, MO 63130; and"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Department of Sociology, Washington University in St. Louis, St. Louis, MO 63130;",
+          "institution_ids": [
+            "https://openalex.org/I204465549"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Department of Sociology, Washington University in St. Louis, St. Louis, MO 63130; and",
+          "institution_ids": [
+            "https://openalex.org/I204465549"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "last",
+      "author": {
+        "id": "https://openalex.org/A5030732076",
+        "display_name": "Michael Esposito",
+        "orcid": "https://orcid.org/0000-0002-3967-4788"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I27837315",
+          "display_name": "University of Michigan",
+          "ror": "https://ror.org/00jmfr291",
+          "country_code": "US",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I27837315"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Michael Esposito",
+      "raw_affiliation_strings": [
+        "Institute for Social Research, University of Michigan, Ann Arbor, MI 48106"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Institute for Social Research, University of Michigan, Ann Arbor, MI 48106",
+          "institution_ids": [
+            "https://openalex.org/I27837315"
+          ]
+        }
+      ]
+    }
+  ],
+  "institutions": [],
+  "countries_distinct_count": 1,
+  "institutions_distinct_count": 3,
+  "corresponding_author_ids": [
+    "https://openalex.org/A5015728928"
+  ],
+  "corresponding_institution_ids": [
+    "https://openalex.org/I102322142"
+  ],
+  "apc_list": null,
+  "apc_paid": null,
+  "fwci": 447.0644,
+  "has_fulltext": true,
+  "cited_by_count": 881,
+  "citation_normalized_percentile": {
+    "value": 0.99998459,
+    "is_in_top_1_percent": true,
+    "is_in_top_10_percent": true
+  },
+  "cited_by_percentile_year": {
+    "min": 99,
+    "max": 100
+  },
+  "biblio": {
+    "volume": "116",
+    "issue": "34",
+    "first_page": "16793",
+    "last_page": "16798"
+  },
+  "is_retracted": false,
+  "is_paratext": false,
+  "is_xpac": false,
+  "primary_topic": {
+    "id": "https://openalex.org/T11076",
+    "display_name": "Policing Practices and Perceptions",
+    "score": 0.9993000030517578,
+    "subfield": {
+      "id": "https://openalex.org/subfields/3320",
+      "display_name": "Political Science and International Relations"
+    },
+    "field": {
+      "id": "https://openalex.org/fields/33",
+      "display_name": "Social Sciences"
+    },
+    "domain": {
+      "id": "https://openalex.org/domains/2",
+      "display_name": "Social Sciences"
+    }
+  },
+  "topics": [
+    {
+      "id": "https://openalex.org/T11076",
+      "display_name": "Policing Practices and Perceptions",
+      "score": 0.9993000030517578,
+      "subfield": {
+        "id": "https://openalex.org/subfields/3320",
+        "display_name": "Political Science and International Relations"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/33",
+        "display_name": "Social Sciences"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/2",
+        "display_name": "Social Sciences"
+      }
+    },
+    {
+      "id": "https://openalex.org/T10574",
+      "display_name": "Crime Patterns and Interventions",
+      "score": 0.994700014591217,
+      "subfield": {
+        "id": "https://openalex.org/subfields/3312",
+        "display_name": "Sociology and Political Science"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/33",
+        "display_name": "Social Sciences"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/2",
+        "display_name": "Social Sciences"
+      }
+    },
+    {
+      "id": "https://openalex.org/T12265",
+      "display_name": "Gun Ownership and Violence Research",
+      "score": 0.9926000237464905,
+      "subfield": {
+        "id": "https://openalex.org/subfields/3306",
+        "display_name": "Health"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/33",
+        "display_name": "Social Sciences"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/2",
+        "display_name": "Social Sciences"
+      }
+    }
+  ],
+  "keywords": [
+    {
+      "id": "https://openalex.org/keywords/demography",
+      "display_name": "Demography",
+      "score": 0.7200661897659302
+    },
+    {
+      "id": "https://openalex.org/keywords/ethnic-group",
+      "display_name": "Ethnic group",
+      "score": 0.7122012972831726
+    },
+    {
+      "id": "https://openalex.org/keywords/race",
+      "display_name": "Race (biology)",
+      "score": 0.5191011428833008
+    },
+    {
+      "id": "https://openalex.org/keywords/pacific-islanders",
+      "display_name": "Pacific islanders",
+      "score": 0.47166311740875244
+    },
+    {
+      "id": "https://openalex.org/keywords/odds",
+      "display_name": "Odds",
+      "score": 0.46350187063217163
+    },
+    {
+      "id": "https://openalex.org/keywords/white",
+      "display_name": "White (mutation)",
+      "score": 0.41634491086006165
+    },
+    {
+      "id": "https://openalex.org/keywords/gerontology",
+      "display_name": "Gerontology",
+      "score": 0.4145960807800293
+    },
+    {
+      "id": "https://openalex.org/keywords/medicine",
+      "display_name": "Medicine",
+      "score": 0.37095504999160767
+    },
+    {
+      "id": "https://openalex.org/keywords/psychology",
+      "display_name": "Psychology",
+      "score": 0.3237554430961609
+    },
+    {
+      "id": "https://openalex.org/keywords/political-science",
+      "display_name": "Political science",
+      "score": 0.15279385447502136
+    },
+    {
+      "id": "https://openalex.org/keywords/sociology",
+      "display_name": "Sociology",
+      "score": 0.15246084332466125
+    },
+    {
+      "id": "https://openalex.org/keywords/population",
+      "display_name": "Population",
+      "score": 0.14455565810203552
+    },
+    {
+      "id": "https://openalex.org/keywords/gender-studies",
+      "display_name": "Gender studies",
+      "score": 0.12495729327201843
+    },
+    {
+      "id": "https://openalex.org/keywords/logistic-regression",
+      "display_name": "Logistic regression",
+      "score": 0.12246277928352356
+    },
+    {
+      "id": "https://openalex.org/keywords/law",
+      "display_name": "Law",
+      "score": 0.09917968511581421
+    }
+  ],
+  "concepts": [
+    {
+      "id": "https://openalex.org/C149923435",
+      "wikidata": "https://www.wikidata.org/wiki/Q37732",
+      "display_name": "Demography",
+      "level": 1,
+      "score": 0.7200661897659302
+    },
+    {
+      "id": "https://openalex.org/C137403100",
+      "wikidata": "https://www.wikidata.org/wiki/Q41710",
+      "display_name": "Ethnic group",
+      "level": 2,
+      "score": 0.7122012972831726
+    },
+    {
+      "id": "https://openalex.org/C76509639",
+      "wikidata": "https://www.wikidata.org/wiki/Q918036",
+      "display_name": "Race (biology)",
+      "level": 2,
+      "score": 0.5191011428833008
+    },
+    {
+      "id": "https://openalex.org/C3020641676",
+      "wikidata": "https://www.wikidata.org/wiki/Q2065556",
+      "display_name": "Pacific islanders",
+      "level": 3,
+      "score": 0.47166311740875244
+    },
+    {
+      "id": "https://openalex.org/C143095724",
+      "wikidata": "https://www.wikidata.org/wiki/Q515895",
+      "display_name": "Odds",
+      "level": 3,
+      "score": 0.46350187063217163
+    },
+    {
+      "id": "https://openalex.org/C56273599",
+      "wikidata": "https://www.wikidata.org/wiki/Q3122841",
+      "display_name": "White (mutation)",
+      "level": 3,
+      "score": 0.41634491086006165
+    },
+    {
+      "id": "https://openalex.org/C74909509",
+      "wikidata": "https://www.wikidata.org/wiki/Q10387",
+      "display_name": "Gerontology",
+      "level": 1,
+      "score": 0.4145960807800293
+    },
+    {
+      "id": "https://openalex.org/C71924100",
+      "wikidata": "https://www.wikidata.org/wiki/Q11190",
+      "display_name": "Medicine",
+      "level": 0,
+      "score": 0.37095504999160767
+    },
+    {
+      "id": "https://openalex.org/C15744967",
+      "wikidata": "https://www.wikidata.org/wiki/Q9418",
+      "display_name": "Psychology",
+      "level": 0,
+      "score": 0.3237554430961609
+    },
+    {
+      "id": "https://openalex.org/C17744445",
+      "wikidata": "https://www.wikidata.org/wiki/Q36442",
+      "display_name": "Political science",
+      "level": 0,
+      "score": 0.15279385447502136
+    },
+    {
+      "id": "https://openalex.org/C144024400",
+      "wikidata": "https://www.wikidata.org/wiki/Q21201",
+      "display_name": "Sociology",
+      "level": 0,
+      "score": 0.15246084332466125
+    },
+    {
+      "id": "https://openalex.org/C2908647359",
+      "wikidata": "https://www.wikidata.org/wiki/Q2625603",
+      "display_name": "Population",
+      "level": 2,
+      "score": 0.14455565810203552
+    },
+    {
+      "id": "https://openalex.org/C107993555",
+      "wikidata": "https://www.wikidata.org/wiki/Q1662673",
+      "display_name": "Gender studies",
+      "level": 1,
+      "score": 0.12495729327201843
+    },
+    {
+      "id": "https://openalex.org/C151956035",
+      "wikidata": "https://www.wikidata.org/wiki/Q1132755",
+      "display_name": "Logistic regression",
+      "level": 2,
+      "score": 0.12246277928352356
+    },
+    {
+      "id": "https://openalex.org/C199539241",
+      "wikidata": "https://www.wikidata.org/wiki/Q7748",
+      "display_name": "Law",
+      "level": 1,
+      "score": 0.09917968511581421
+    },
+    {
+      "id": "https://openalex.org/C185592680",
+      "wikidata": "https://www.wikidata.org/wiki/Q2329",
+      "display_name": "Chemistry",
+      "level": 0,
+      "score": 0.0
+    },
+    {
+      "id": "https://openalex.org/C126322002",
+      "wikidata": "https://www.wikidata.org/wiki/Q11180",
+      "display_name": "Internal medicine",
+      "level": 1,
+      "score": 0.0
+    },
+    {
+      "id": "https://openalex.org/C104317684",
+      "wikidata": "https://www.wikidata.org/wiki/Q7187",
+      "display_name": "Gene",
+      "level": 2,
+      "score": 0.0
+    },
+    {
+      "id": "https://openalex.org/C55493867",
+      "wikidata": "https://www.wikidata.org/wiki/Q7094",
+      "display_name": "Biochemistry",
+      "level": 1,
+      "score": 0.0
+    }
+  ],
+  "mesh": [
+    {
+      "descriptor_ui": "D000328",
+      "descriptor_name": "Adult",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000328",
+      "descriptor_name": "Adult",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000328",
+      "descriptor_name": "Adult",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D003643",
+      "descriptor_name": "Death",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D003643",
+      "descriptor_name": "Death",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D003643",
+      "descriptor_name": "Death",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D005006",
+      "descriptor_name": "Ethnicity",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D005006",
+      "descriptor_name": "Ethnicity",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D005006",
+      "descriptor_name": "Ethnicity",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D005260",
+      "descriptor_name": "Female",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D005260",
+      "descriptor_name": "Female",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D005260",
+      "descriptor_name": "Female",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D006801",
+      "descriptor_name": "Humans",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D006801",
+      "descriptor_name": "Humans",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D006801",
+      "descriptor_name": "Humans",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D008297",
+      "descriptor_name": "Male",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D008297",
+      "descriptor_name": "Male",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D008297",
+      "descriptor_name": "Male",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D012306",
+      "descriptor_name": "Risk",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D012306",
+      "descriptor_name": "Risk",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D012306",
+      "descriptor_name": "Risk",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D012959",
+      "descriptor_name": "Socioeconomic Factors",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D012959",
+      "descriptor_name": "Socioeconomic Factors",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D012959",
+      "descriptor_name": "Socioeconomic Factors",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D014481",
+      "descriptor_name": "United States",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D014481",
+      "descriptor_name": "United States",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D014481",
+      "descriptor_name": "United States",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D016495",
+      "descriptor_name": "Police",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D016495",
+      "descriptor_name": "Police",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D016495",
+      "descriptor_name": "Police",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D044469",
+      "descriptor_name": "Racial Groups",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D044469",
+      "descriptor_name": "Racial Groups",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D044469",
+      "descriptor_name": "Racial Groups",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D055815",
+      "descriptor_name": "Young Adult",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D055815",
+      "descriptor_name": "Young Adult",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D055815",
+      "descriptor_name": "Young Adult",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    }
+  ],
+  "locations_count": 4,
+  "locations": [
+    {
+      "id": "doi:10.1073/pnas.1821204116",
+      "is_oa": true,
+      "landing_page_url": "https://doi.org/10.1073/pnas.1821204116",
+      "pdf_url": "https://www.pnas.org/content/pnas/116/34/16793.full.pdf",
+      "source": {
+        "id": "https://openalex.org/S125754415",
+        "display_name": "Proceedings of the National Academy of Sciences",
+        "issn_l": "0027-8424",
+        "issn": [
+          "0027-8424",
+          "1091-6490"
+        ],
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": true,
+        "host_organization": "https://openalex.org/P4310320052",
+        "host_organization_name": "National Academy of Sciences",
+        "host_organization_lineage": [
+          "https://openalex.org/P4310320052"
+        ],
+        "host_organization_lineage_names": [
+          "National Academy of Sciences"
+        ],
+        "type": "journal"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "publishedVersion",
+      "is_accepted": true,
+      "is_published": true,
+      "raw_source_name": "Proceedings of the National Academy of Sciences",
+      "raw_type": "journal-article"
+    },
+    {
+      "id": "pmid:31383756",
+      "is_oa": false,
+      "landing_page_url": "https://pubmed.ncbi.nlm.nih.gov/31383756",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4306525036",
+        "display_name": "PubMed",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I1299303238",
+        "host_organization_name": "National Institutes of Health",
+        "host_organization_lineage": [
+          "https://openalex.org/I1299303238"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "publishedVersion",
+      "is_accepted": true,
+      "is_published": true,
+      "raw_source_name": "Proceedings of the National Academy of Sciences of the United States of America",
+      "raw_type": null
+    },
+    {
+      "id": "pmh:oai:RePEc:nas:journl:v:116:y:2019:p:16793-16798",
+      "is_oa": false,
+      "landing_page_url": "http://www.pnas.org/content/116/34/16793.full",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4306401271",
+        "display_name": "RePEc: Research Papers in Economics",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I77793887",
+        "host_organization_name": "Federal Reserve Bank of St. Louis",
+        "host_organization_lineage": [
+          "https://openalex.org/I77793887"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "submittedVersion",
+      "is_accepted": false,
+      "is_published": false,
+      "raw_source_name": null,
+      "raw_type": "article"
+    },
+    {
+      "id": "pmh:oai:europepmc.org:5942258",
+      "is_oa": false,
+      "landing_page_url": "https://www.ncbi.nlm.nih.gov/pmc/articles/6708348",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4306400806",
+        "display_name": "Europe PMC (PubMed Central)",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I1303153112",
+        "host_organization_name": "European Bioinformatics Institute",
+        "host_organization_lineage": [
+          "https://openalex.org/I1303153112"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "submittedVersion",
+      "is_accepted": false,
+      "is_published": false,
+      "raw_source_name": null,
+      "raw_type": "Text"
+    }
+  ],
+  "best_oa_location": {
+    "id": "doi:10.1073/pnas.1821204116",
+    "is_oa": true,
+    "landing_page_url": "https://doi.org/10.1073/pnas.1821204116",
+    "pdf_url": "https://www.pnas.org/content/pnas/116/34/16793.full.pdf",
+    "source": {
+      "id": "https://openalex.org/S125754415",
+      "display_name": "Proceedings of the National Academy of Sciences",
+      "issn_l": "0027-8424",
+      "issn": [
+        "0027-8424",
+        "1091-6490"
+      ],
+      "is_oa": false,
+      "is_in_doaj": false,
+      "is_core": true,
+      "host_organization": "https://openalex.org/P4310320052",
+      "host_organization_name": "National Academy of Sciences",
+      "host_organization_lineage": [
+        "https://openalex.org/P4310320052"
+      ],
+      "host_organization_lineage_names": [
+        "National Academy of Sciences"
+      ],
+      "type": "journal"
+    },
+    "license": null,
+    "license_id": null,
+    "version": "publishedVersion",
+    "is_accepted": true,
+    "is_published": true,
+    "raw_source_name": "Proceedings of the National Academy of Sciences",
+    "raw_type": "journal-article"
+  },
+  "sustainable_development_goals": [
+    {
+      "display_name": "Gender equality",
+      "id": "https://metadata.un.org/sdg/5",
+      "score": 0.5400000214576721
+    }
+  ],
+  "awards": [],
+  "funders": [],
+  "has_content": {
+    "grobid_xml": true,
+    "pdf": true
+  },
+  "content_urls": {
+    "pdf": "https://content.openalex.org/works/W2965198355.pdf",
+    "grobid_xml": "https://content.openalex.org/works/W2965198355.grobid-xml"
+  },
+  "referenced_works_count": 53,
+  "referenced_works": [
+    "https://openalex.org/W565858031",
+    "https://openalex.org/W649194661",
+    "https://openalex.org/W1512665683",
+    "https://openalex.org/W1557817800",
+    "https://openalex.org/W1593724981",
+    "https://openalex.org/W1594586892",
+    "https://openalex.org/W1996272633",
+    "https://openalex.org/W2013595098",
+    "https://openalex.org/W2015679968",
+    "https://openalex.org/W2104199131",
+    "https://openalex.org/W2106705393",
+    "https://openalex.org/W2115098571",
+    "https://openalex.org/W2123882742",
+    "https://openalex.org/W2124160730",
+    "https://openalex.org/W2156309997",
+    "https://openalex.org/W2176256073",
+    "https://openalex.org/W2195712454",
+    "https://openalex.org/W2256829900",
+    "https://openalex.org/W2327878920",
+    "https://openalex.org/W2340108346",
+    "https://openalex.org/W2467237876",
+    "https://openalex.org/W2518625695",
+    "https://openalex.org/W2525526196",
+    "https://openalex.org/W2593264614",
+    "https://openalex.org/W2596389280",
+    "https://openalex.org/W2602516952",
+    "https://openalex.org/W2748880045",
+    "https://openalex.org/W2750685640",
+    "https://openalex.org/W2755233168",
+    "https://openalex.org/W2761042086",
+    "https://openalex.org/W2761649267",
+    "https://openalex.org/W2774450138",
+    "https://openalex.org/W2788077457",
+    "https://openalex.org/W2800075923",
+    "https://openalex.org/W2809472886",
+    "https://openalex.org/W2883007372",
+    "https://openalex.org/W2884112154",
+    "https://openalex.org/W2889616883",
+    "https://openalex.org/W2890413647",
+    "https://openalex.org/W2899908648",
+    "https://openalex.org/W2904152174",
+    "https://openalex.org/W2911298465",
+    "https://openalex.org/W2919993537",
+    "https://openalex.org/W2921340127",
+    "https://openalex.org/W2945887014",
+    "https://openalex.org/W2969460254",
+    "https://openalex.org/W3122621486",
+    "https://openalex.org/W4205604674",
+    "https://openalex.org/W4241854646",
+    "https://openalex.org/W4245166754",
+    "https://openalex.org/W4285719527",
+    "https://openalex.org/W4298826872",
+    "https://openalex.org/W4393272366"
+  ],
+  "related_works": [
+    "https://openalex.org/W1604849300",
+    "https://openalex.org/W2766061861",
+    "https://openalex.org/W2167258650",
+    "https://openalex.org/W1604293003",
+    "https://openalex.org/W1979850356",
+    "https://openalex.org/W3005040438",
+    "https://openalex.org/W2900438020",
+    "https://openalex.org/W2381483116",
+    "https://openalex.org/W2964179362",
+    "https://openalex.org/W1520846789"
+  ],
+  "abstract_inverted_index": {
+    "We": [
+      0,
+      27,
+      43,
+      60,
+      91
+    ],
+    "use": [
+      1,
+      16,
+      57,
+      186
+    ],
+    "data": [
+      2
+    ],
+    "on": [
+      3
+    ],
+    "police-involved": [
+      4
+    ],
+    "deaths": [
+      5,
+      52
+    ],
+    "to": [
+      6
+    ],
+    "estimate": [
+      7,
+      28
+    ],
+    "how": [
+      8
+    ],
+    "the": [
+      9,
+      20,
+      29,
+      48,
+      140,
+      169,
+      191
+    ],
+    "risk": [
+      10,
+      80,
+      104
+    ],
+    "of": [
+      11,
+      17,
+      34,
+      47,
+      50,
+      58,
+      81,
+      105,
+      125,
+      134,
+      147,
+      171,
+      183,
+      187,
+      194
+    ],
+    "being": [
+      12,
+      35,
+      82,
+      106,
+      135,
+      148
+    ],
+    "killed": [
+      13,
+      36,
+      83,
+      107,
+      136,
+      149
+    ],
+    "by": [
+      14,
+      37,
+      39,
+      55,
+      84,
+      108,
+      137,
+      150
+    ],
+    "police": [
+      15,
+      38,
+      56,
+      85,
+      109,
+      138,
+      151,
+      185
+    ],
+    "force": [
+      18,
+      188
+    ],
+    "in": [
+      19,
+      131,
+      155,
+      162
+    ],
+    "United": [
+      21
+    ],
+    "States": [
+      22
+    ],
+    "varies": [
+      23
+    ],
+    "across": [
+      24
+    ],
+    "social": [
+      25
+    ],
+    "groups.": [
+      26,
+      179
+    ],
+    "lifetime": [
+      30,
+      79,
+      145
+    ],
+    "and": [
+      31,
+      41,
+      66,
+      72,
+      74,
+      96,
+      100,
+      159,
+      174
+    ],
+    "age-specific": [
+      32
+    ],
+    "risks": [
+      33
+    ],
+    "race": [
+      40
+    ],
+    "sex.": [
+      42
+    ],
+    "also": [
+      44
+    ],
+    "provide": [
+      45
+    ],
+    "estimates": [
+      46
+    ],
+    "proportion": [
+      49
+    ],
+    "all": [
+      51,
+      178
+    ],
+    "accounted": [
+      53
+    ],
+    "for": [
+      54,
+      118,
+      157,
+      164,
+      177
+    ],
+    "force.": [
+      59
+    ],
+    "find": [
+      61,
+      92
+    ],
+    "that": [
+      62,
+      93
+    ],
+    "African": [
+      63
+    ],
+    "American": [
+      64,
+      68
+    ],
+    "men": [
+      65,
+      71,
+      76,
+      99,
+      158,
+      182
+    ],
+    "women,": [
+      67,
+      73
+    ],
+    "Indian/Alaska": [
+      69
+    ],
+    "Native": [
+      70
+    ],
+    "Latino": [
+      75
+    ],
+    "face": [
+      77,
+      102,
+      127
+    ],
+    "higher": [
+      78
+    ],
+    "than": [
+      86,
+      110
+    ],
+    "do": [
+      87,
+      111
+    ],
+    "their": [
+      88,
+      112
+    ],
+    "white": [
+      89,
+      113
+    ],
+    "peers.": [
+      90,
+      114
+    ],
+    "Latina": [
+      94
+    ],
+    "women": [
+      95,
+      101
+    ],
+    "Asian/Pacific": [
+      97
+    ],
+    "Islander": [
+      98
+    ],
+    "lower": [
+      103
+    ],
+    "Risk": [
+      115,
+      166
+    ],
+    "is": [
+      116,
+      189
+    ],
+    "highest": [
+      117
+    ],
+    "black": [
+      119
+    ],
+    "men,": [
+      120
+    ],
+    "who": [
+      121
+    ],
+    "(at": [
+      122
+    ],
+    "current": [
+      123
+    ],
+    "levels": [
+      124
+    ],
+    "risk)": [
+      126
+    ],
+    "about": [
+      128,
+      153,
+      160
+    ],
+    "a": [
+      129
+    ],
+    "1": [
+      130,
+      154,
+      161
+    ],
+    "1,000": [
+      132
+    ],
+    "chance": [
+      133
+    ],
+    "over": [
+      139
+    ],
+    "life": [
+      141
+    ],
+    "course.": [
+      142
+    ],
+    "The": [
+      143
+    ],
+    "average": [
+      144
+    ],
+    "odds": [
+      146
+    ],
+    "are": [
+      152
+    ],
+    "2,000": [
+      156
+    ],
+    "33,000": [
+      163
+    ],
+    "women.": [
+      165
+    ],
+    "peaks": [
+      167
+    ],
+    "between": [
+      168
+    ],
+    "ages": [
+      170
+    ],
+    "20": [
+      172
+    ],
+    "y": [
+      173,
+      176
+    ],
+    "35": [
+      175
+    ],
+    "For": [
+      180
+    ],
+    "young": [
+      181
+    ],
+    "color,": [
+      184
+    ],
+    "among": [
+      190
+    ],
+    "leading": [
+      192
+    ],
+    "causes": [
+      193
+    ],
+    "death.": [
+      195
+    ]
+  },
+  "counts_by_year": [
+    {
+      "year": 2026,
+      "cited_by_count": 84
+    },
+    {
+      "year": 2025,
+      "cited_by_count": 99
+    },
+    {
+      "year": 2024,
+      "cited_by_count": 109
+    },
+    {
+      "year": 2023,
+      "cited_by_count": 150
+    },
+    {
+      "year": 2022,
+      "cited_by_count": 190
+    },
+    {
+      "year": 2021,
+      "cited_by_count": 157
+    },
+    {
+      "year": 2020,
+      "cited_by_count": 83
+    },
+    {
+      "year": 2019,
+      "cited_by_count": 8
+    }
+  ],
+  "updated_date": "2026-07-05T07:55:05.734416",
+  "created_date": "2025-10-10T00:00:00"
+}

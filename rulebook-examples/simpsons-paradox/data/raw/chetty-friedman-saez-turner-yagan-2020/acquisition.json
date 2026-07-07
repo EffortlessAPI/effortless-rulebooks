@@ -1,0 +1,22 @@
+{
+  "candidate_id": "cand-exp-chetty-friedman-saez-turner-yagan-2020",
+  "proposed_study_id": "chetty-friedman-saez-turner-yagan-2020",
+  "acquisition_status": "landing_saved",
+  "attempted_at": "2026-07-07T03:40:01+00:00",
+  "catalog_source_url": "https://opportunityinsights.org/paper/undermatching/",
+  "resolved_urls": [
+    "https://doi.org/10.1093/qje/qjaa005",
+    "https://academic.oup.com/qje/article-pdf/135/3/1567/33533819/qjaa005.pdf",
+    "https://academic.oup.com/qje/article-pdf/135/3/1567/33533819/qjaa005.pdf",
+    "https://doi.org/10.1111/soc4.12884",
+    "https://onlinelibrary.wiley.com/doi/pdfdirect/10.1111/soc4.12884",
+    "https://opportunityinsights.org/paper/undermatching/"
+  ],
+  "files": [
+    "openalex-metadata.json",
+    "source-1.html"
+  ],
+  "dois": [
+    "10.1093/qje/qjaa005"
+  ]
+}

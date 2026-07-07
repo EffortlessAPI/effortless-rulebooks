@@ -1,0 +1,14 @@
+{
+  "candidate_id": "cand-exp-naep",
+  "proposed_study_id": "naep",
+  "acquisition_status": "landing_saved",
+  "attempted_at": "2026-07-07T03:47:31+00:00",
+  "catalog_source_url": "https://www.nationsreportcard.gov/",
+  "resolved_urls": [
+    "https://www.nationsreportcard.gov/"
+  ],
+  "files": [
+    "source-1.html"
+  ],
+  "dois": []
+}

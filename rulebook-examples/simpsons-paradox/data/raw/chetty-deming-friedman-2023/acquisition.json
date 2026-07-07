@@ -1,0 +1,20 @@
+{
+  "candidate_id": "cand-exp-chetty-deming-friedman-2023",
+  "proposed_study_id": "chetty-deming-friedman-2023",
+  "acquisition_status": "landing_saved",
+  "attempted_at": "2026-07-07T03:40:09+00:00",
+  "catalog_source_url": "https://opportunityinsights.org/paper/collegeadmissions/",
+  "resolved_urls": [
+    "https://doi.org/10.1093/qje/qjaf050",
+    "https://doi.org/10.1111/asap.12417",
+    "https://onlinelibrary.wiley.com/doi/pdfdirect/10.1111/asap.12417",
+    "https://opportunityinsights.org/paper/collegeadmissions/"
+  ],
+  "files": [
+    "openalex-metadata.json",
+    "source-1.html"
+  ],
+  "dois": [
+    "10.1093/qje/qjaf050"
+  ]
+}

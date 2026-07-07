@@ -1,0 +1,1898 @@
+{
+  "id": "https://openalex.org/W2757190301",
+  "doi": "https://doi.org/10.1182/blood-2017-06-788349",
+  "title": "Confirmed efficacy of etoposide and dexamethasone in HLH treatment: long-term results of the cooperative HLH-2004 study",
+  "display_name": "Confirmed efficacy of etoposide and dexamethasone in HLH treatment: long-term results of the cooperative HLH-2004 study",
+  "relevance_score": 649.331,
+  "publication_year": 2017,
+  "publication_date": "2017-09-22",
+  "ids": {
+    "openalex": "https://openalex.org/W2757190301",
+    "doi": "https://doi.org/10.1182/blood-2017-06-788349",
+    "mag": "2757190301",
+    "pmid": "https://pubmed.ncbi.nlm.nih.gov/28935695"
+  },
+  "language": "en",
+  "primary_location": {
+    "id": "doi:10.1182/blood-2017-06-788349",
+    "is_oa": true,
+    "landing_page_url": "https://doi.org/10.1182/blood-2017-06-788349",
+    "pdf_url": "https://ashpublications.org/blood/article-pdf/130/25/2728/1404373/blood788349.pdf",
+    "source": {
+      "id": "https://openalex.org/S200071133",
+      "display_name": "Blood",
+      "issn_l": "0006-4971",
+      "issn": [
+        "0006-4971",
+        "1528-0020"
+      ],
+      "is_oa": false,
+      "is_in_doaj": false,
+      "is_core": true,
+      "host_organization": "https://openalex.org/P4310320990",
+      "host_organization_name": "Elsevier BV",
+      "host_organization_lineage": [
+        "https://openalex.org/P4310320990"
+      ],
+      "host_organization_lineage_names": [
+        "Elsevier BV"
+      ],
+      "type": "journal"
+    },
+    "license": null,
+    "license_id": null,
+    "version": "publishedVersion",
+    "is_accepted": true,
+    "is_published": true,
+    "raw_source_name": "Blood",
+    "raw_type": "journal-article"
+  },
+  "type": "article",
+  "indexed_in": [
+    "crossref",
+    "pubmed"
+  ],
+  "open_access": {
+    "is_oa": true,
+    "oa_status": "bronze",
+    "oa_url": "https://ashpublications.org/blood/article-pdf/130/25/2728/1404373/blood788349.pdf",
+    "any_repository_has_fulltext": true
+  },
+  "authorships": [
+    {
+      "author_position": "first",
+      "author": {
+        "id": "https://openalex.org/A5040319792",
+        "display_name": "Elisabet Bergsten",
+        "orcid": null
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I1335113835",
+          "display_name": "Karolinska University Hospital",
+          "ror": "https://ror.org/00m8d6786",
+          "country_code": "SE",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I1335113835"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I28166907",
+          "display_name": "Karolinska Institutet",
+          "ror": "https://ror.org/056d84691",
+          "country_code": "SE",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I28166907"
+          ]
+        }
+      ],
+      "countries": [
+        "SE"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Elisabet Bergsten",
+      "raw_affiliation_strings": [
+        "Childhood Cancer Research Unit, Department of Women\u2019s and Children\u2019s Health, Karolinska Institute, Stockholm, Sweden;",
+        "Theme of Children\u2019s and Women\u2019s Health, Karolinska University Hospital, Stockholm, Sweden;"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Childhood Cancer Research Unit, Department of Women\u2019s and Children\u2019s Health, Karolinska Institute, Stockholm, Sweden;",
+          "institution_ids": [
+            "https://openalex.org/I28166907"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Theme of Children\u2019s and Women\u2019s Health, Karolinska University Hospital, Stockholm, Sweden;",
+          "institution_ids": [
+            "https://openalex.org/I1335113835"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5036371598",
+        "display_name": "AnnaCarin Horne",
+        "orcid": "https://orcid.org/0000-0002-2878-4463"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I1335113835",
+          "display_name": "Karolinska University Hospital",
+          "ror": "https://ror.org/00m8d6786",
+          "country_code": "SE",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I1335113835"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I28166907",
+          "display_name": "Karolinska Institutet",
+          "ror": "https://ror.org/056d84691",
+          "country_code": "SE",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I28166907"
+          ]
+        }
+      ],
+      "countries": [
+        "SE"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "AnnaCarin Horne",
+      "raw_affiliation_strings": [
+        "Childhood Cancer Research Unit, Department of Women\u2019s and Children\u2019s Health, Karolinska Institute, Stockholm, Sweden;",
+        "Theme of Children\u2019s and Women\u2019s Health, Karolinska University Hospital, Stockholm, Sweden;"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Childhood Cancer Research Unit, Department of Women\u2019s and Children\u2019s Health, Karolinska Institute, Stockholm, Sweden;",
+          "institution_ids": [
+            "https://openalex.org/I28166907"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Theme of Children\u2019s and Women\u2019s Health, Karolinska University Hospital, Stockholm, Sweden;",
+          "institution_ids": [
+            "https://openalex.org/I1335113835"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5070232314",
+        "display_name": "Maurizio Aric\u00f2",
+        "orcid": "https://orcid.org/0000-0002-1908-6671"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I4210114171",
+          "display_name": "Agenzia Regionale Sanitaria della Puglia",
+          "ror": "https://ror.org/027h6z252",
+          "country_code": "IT",
+          "type": "government",
+          "lineage": [
+            "https://openalex.org/I4210099368",
+            "https://openalex.org/I4210114171",
+            "https://openalex.org/I4210117053"
+          ]
+        }
+      ],
+      "countries": [
+        "IT"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Maurizio Aric\u00f3",
+      "raw_affiliation_strings": [
+        "Direzione Generale, Azienda Sanitaria Provinciale, Ragusa, Italy;"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Direzione Generale, Azienda Sanitaria Provinciale, Ragusa, Italy;",
+          "institution_ids": [
+            "https://openalex.org/I4210114171"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5039450093",
+        "display_name": "Itziar Astigarraga",
+        "orcid": "https://orcid.org/0000-0002-5012-0137"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I169108374",
+          "display_name": "University of the Basque Country",
+          "ror": "https://ror.org/000xsnr85",
+          "country_code": "ES",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I169108374"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I4210089430",
+          "display_name": "BioCruces Health research Institute",
+          "ror": "https://ror.org/0061s4v88",
+          "country_code": "ES",
+          "type": "nonprofit",
+          "lineage": [
+            "https://openalex.org/I4210089430"
+          ]
+        }
+      ],
+      "countries": [
+        "ES"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Itziar Astigarraga",
+      "raw_affiliation_strings": [
+        "Servicio de Pediatria, BioCruces Health Research Institute, Hospital Universitario Cruces, University of the Basque Country, Universidad del Pais Vasco\u2013Euskal Herriko Unibertsitatea (UPV/EHU), Barakaldo, Spain;"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Servicio de Pediatria, BioCruces Health Research Institute, Hospital Universitario Cruces, University of the Basque Country, Universidad del Pais Vasco\u2013Euskal Herriko Unibertsitatea (UPV/EHU), Barakaldo, Spain;",
+          "institution_ids": [
+            "https://openalex.org/I4210089430",
+            "https://openalex.org/I169108374"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5011264648",
+        "display_name": "R. Maarten Egeler",
+        "orcid": "https://orcid.org/0000-0001-9852-0749"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I2801317318",
+          "display_name": "Hospital for Sick Children",
+          "ror": "https://ror.org/057q4rt57",
+          "country_code": "CA",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I2801317318"
+          ]
+        }
+      ],
+      "countries": [
+        "CA"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "R. Maarten Egeler",
+      "raw_affiliation_strings": [
+        "Division of Hematology/Oncology, The Hospital for Sick Children, Toronto, ON, Canada;"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Division of Hematology/Oncology, The Hospital for Sick Children, Toronto, ON, Canada;",
+          "institution_ids": [
+            "https://openalex.org/I2801317318"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5110881926",
+        "display_name": "Alexandra H. Filipovich",
+        "orcid": null
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I1285204247",
+          "display_name": "Cincinnati Children's Hospital Medical Center",
+          "ror": "https://ror.org/01hcyya48",
+          "country_code": "US",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I1285204247"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Alexandra H. Filipovich",
+      "raw_affiliation_strings": [
+        "Division of Bone Marrow Transplant and Immune Deficiency, Cincinnati Children's Hospital Medical Center, Cincinnati, OH;"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Division of Bone Marrow Transplant and Immune Deficiency, Cincinnati Children's Hospital Medical Center, Cincinnati, OH;",
+          "institution_ids": [
+            "https://openalex.org/I1285204247"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5066965561",
+        "display_name": "Eiichi Ishii",
+        "orcid": null
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I43545212",
+          "display_name": "Ehime University",
+          "ror": "https://ror.org/017hkng22",
+          "country_code": "JP",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I43545212"
+          ]
+        }
+      ],
+      "countries": [
+        "JP"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Eiichi Ishii",
+      "raw_affiliation_strings": [
+        "Department of Pediatrics, Graduate School of Medicine, Ehime University, Ehime, Japan;"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Department of Pediatrics, Graduate School of Medicine, Ehime University, Ehime, Japan;",
+          "institution_ids": [
+            "https://openalex.org/I43545212"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5061408567",
+        "display_name": "Gritta Janka",
+        "orcid": "https://orcid.org/0000-0002-5397-3047"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I159176309",
+          "display_name": "Universit\u00e4t Hamburg",
+          "ror": "https://ror.org/00g30e956",
+          "country_code": "DE",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I159176309"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I4210108711",
+          "display_name": "University Medical Center Hamburg-Eppendorf",
+          "ror": "https://ror.org/01zgy1s35",
+          "country_code": "DE",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I159176309",
+            "https://openalex.org/I4210108711"
+          ]
+        }
+      ],
+      "countries": [
+        "DE"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Gritta Janka",
+      "raw_affiliation_strings": [
+        "Pediatric Hematology and Oncology, University Medical Center Hamburg, Hamburg, Germany;"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Pediatric Hematology and Oncology, University Medical Center Hamburg, Hamburg, Germany;",
+          "institution_ids": [
+            "https://openalex.org/I159176309",
+            "https://openalex.org/I4210108711"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5102734129",
+        "display_name": "Stephan Ladisch",
+        "orcid": "https://orcid.org/0000-0003-2484-1456"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I1336742384",
+          "display_name": "Children's National",
+          "ror": "https://ror.org/03wa2q724",
+          "country_code": "US",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I1336742384"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Stephan Ladisch",
+      "raw_affiliation_strings": [
+        "Center for Cancer and Immunology Research, Children's Research Institute, Children's National Medical Center, Washington, DC;"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Center for Cancer and Immunology Research, Children's Research Institute, Children's National Medical Center, Washington, DC;",
+          "institution_ids": [
+            "https://openalex.org/I1336742384"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5050515003",
+        "display_name": "Kai Lehmberg",
+        "orcid": "https://orcid.org/0000-0003-2365-4341"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I159176309",
+          "display_name": "Universit\u00e4t Hamburg",
+          "ror": "https://ror.org/00g30e956",
+          "country_code": "DE",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I159176309"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I4210108711",
+          "display_name": "University Medical Center Hamburg-Eppendorf",
+          "ror": "https://ror.org/01zgy1s35",
+          "country_code": "DE",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I159176309",
+            "https://openalex.org/I4210108711"
+          ]
+        }
+      ],
+      "countries": [
+        "DE"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Kai Lehmberg",
+      "raw_affiliation_strings": [
+        "Pediatric Hematology and Oncology, University Medical Center Hamburg, Hamburg, Germany;"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Pediatric Hematology and Oncology, University Medical Center Hamburg, Hamburg, Germany;",
+          "institution_ids": [
+            "https://openalex.org/I159176309",
+            "https://openalex.org/I4210108711"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5006923130",
+        "display_name": "Kenneth L. McClain",
+        "orcid": "https://orcid.org/0000-0003-0725-6263"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I181547552",
+          "display_name": "Baylor College of Medicine",
+          "ror": "https://ror.org/02pttbw34",
+          "country_code": "US",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I181547552",
+            "https://openalex.org/I2801539370"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I4210150362",
+          "display_name": "Children's Cancer Center",
+          "ror": "https://ror.org/04rxd8128",
+          "country_code": "US",
+          "type": "nonprofit",
+          "lineage": [
+            "https://openalex.org/I4210150362"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Kenneth L. McClain",
+      "raw_affiliation_strings": [
+        "Texas Children's Cancer Center, Baylor College of Medicine, Houston, TX;"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Texas Children's Cancer Center, Baylor College of Medicine, Houston, TX;",
+          "institution_ids": [
+            "https://openalex.org/I4210150362",
+            "https://openalex.org/I181547552"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5074796454",
+        "display_name": "Milen Minkov",
+        "orcid": "https://orcid.org/0000-0001-6471-8423"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I4210123554",
+          "display_name": "St Anna Children's Hospital",
+          "ror": "https://ror.org/02qb3f692",
+          "country_code": "AT",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I4210123554"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I76134821",
+          "display_name": "Medical University of Vienna",
+          "ror": "https://ror.org/05n3x4p02",
+          "country_code": "AT",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I76134821"
+          ]
+        }
+      ],
+      "countries": [
+        "AT"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Milen Minkov",
+      "raw_affiliation_strings": [
+        "University Clinic of Pediatrics, St. Anna Children's Hospital, Medical University of Vienna, Vienna, Austria;"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "University Clinic of Pediatrics, St. Anna Children's Hospital, Medical University of Vienna, Vienna, Austria;",
+          "institution_ids": [
+            "https://openalex.org/I4210123554",
+            "https://openalex.org/I76134821"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5000300261",
+        "display_name": "Scott Montgomery",
+        "orcid": "https://orcid.org/0000-0001-6328-5494"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I26437253",
+          "display_name": "\u00d6rebro University",
+          "ror": "https://ror.org/05kytsw45",
+          "country_code": "SE",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I26437253"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I28166907",
+          "display_name": "Karolinska Institutet",
+          "ror": "https://ror.org/056d84691",
+          "country_code": "SE",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I28166907"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I45129253",
+          "display_name": "University College London",
+          "ror": "https://ror.org/02jx3x895",
+          "country_code": "GB",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I124357947",
+            "https://openalex.org/I45129253"
+          ]
+        }
+      ],
+      "countries": [
+        "GB",
+        "SE"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Scott Montgomery",
+      "raw_affiliation_strings": [
+        "Clinical Epidemiology Unit, Department of Medicine, Solna, Karolinska Institutet, Stockholm, Sweden;",
+        "Clinical Epidemiology and Biostatistics, School of Medical Sciences, \u00d6rebro University, \u00d6rebro, Sweden;",
+        "Department of Epidemiology and Public Health, University College London, London, United Kingdom;"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Clinical Epidemiology Unit, Department of Medicine, Solna, Karolinska Institutet, Stockholm, Sweden;",
+          "institution_ids": [
+            "https://openalex.org/I28166907"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Clinical Epidemiology and Biostatistics, School of Medical Sciences, \u00d6rebro University, \u00d6rebro, Sweden;",
+          "institution_ids": [
+            "https://openalex.org/I26437253"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Department of Epidemiology and Public Health, University College London, London, United Kingdom;",
+          "institution_ids": [
+            "https://openalex.org/I45129253"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5083217353",
+        "display_name": "Vasanta Nanduri",
+        "orcid": "https://orcid.org/0000-0001-8335-2658"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I2801227293",
+          "display_name": "Watford General Hospital",
+          "ror": "https://ror.org/01v13p275",
+          "country_code": "GB",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I2800621266",
+            "https://openalex.org/I2801227293"
+          ]
+        }
+      ],
+      "countries": [
+        "GB"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Vasanta Nanduri",
+      "raw_affiliation_strings": [
+        "Department of Pediatrics, Watford General Hospital, Watford, United Kingdom;"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Department of Pediatrics, Watford General Hospital, Watford, United Kingdom;",
+          "institution_ids": [
+            "https://openalex.org/I2801227293"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5023545978",
+        "display_name": "Diego Rosso",
+        "orcid": null
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I151201029",
+          "display_name": "Consejo Nacional de Investigaciones Cient\u00edficas y T\u00e9cnicas",
+          "ror": "https://ror.org/03cqe8w59",
+          "country_code": "AR",
+          "type": "government",
+          "lineage": [
+            "https://openalex.org/I151201029",
+            "https://openalex.org/I4210123736",
+            "https://openalex.org/I4387155568"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I24354313",
+          "display_name": "Universidad de Buenos Aires",
+          "ror": "https://ror.org/0081fs513",
+          "country_code": "AR",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I24354313"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I2802639098",
+          "display_name": "Hospital Pedro de Elizalde",
+          "ror": "https://ror.org/03vxcm824",
+          "country_code": "AR",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I2802639098"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I4210119967",
+          "display_name": "Hospital de Cl\u00ednicas \"Jos\u00e9 de San Mart\u00edn\"",
+          "ror": "https://ror.org/02hbrab76",
+          "country_code": "AR",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I4210119967"
+          ]
+        }
+      ],
+      "countries": [
+        "AR"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Diego Rosso",
+      "raw_affiliation_strings": [
+        "Consejo Nacional de Investigaciones Cient\u00edficas y T\u00e9cnicas (CONICET), Buenos Aires, Argentina",
+        "Department of Pediatric Hematology and Oncology, Hospital de Ni\u00f1os Dr Pedro De Elizalde, Buenos Aires, Argentina;",
+        "Department of Pediatrics, Hospital de Clinicas Jose de San Martin, Buenos Aires, Argentina;",
+        "Instituto de Farmacolog\u00eda, Universidad de Buenos Aires, Buenos Aires, Argentina; and"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Consejo Nacional de Investigaciones Cient\u00edficas y T\u00e9cnicas (CONICET), Buenos Aires, Argentina",
+          "institution_ids": [
+            "https://openalex.org/I151201029"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Department of Pediatric Hematology and Oncology, Hospital de Ni\u00f1os Dr Pedro De Elizalde, Buenos Aires, Argentina;",
+          "institution_ids": [
+            "https://openalex.org/I2802639098"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Department of Pediatrics, Hospital de Clinicas Jose de San Martin, Buenos Aires, Argentina;",
+          "institution_ids": [
+            "https://openalex.org/I4210119967"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Instituto de Farmacolog\u00eda, Universidad de Buenos Aires, Buenos Aires, Argentina; and",
+          "institution_ids": [
+            "https://openalex.org/I24354313"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "last",
+      "author": {
+        "id": "https://openalex.org/A5078627198",
+        "display_name": "Jan\u2010Inge Henter",
+        "orcid": "https://orcid.org/0000-0002-0629-2126"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I1335113835",
+          "display_name": "Karolinska University Hospital",
+          "ror": "https://ror.org/00m8d6786",
+          "country_code": "SE",
+          "type": "healthcare",
+          "lineage": [
+            "https://openalex.org/I1335113835"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I28166907",
+          "display_name": "Karolinska Institutet",
+          "ror": "https://ror.org/056d84691",
+          "country_code": "SE",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I28166907"
+          ]
+        }
+      ],
+      "countries": [
+        "SE"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Jan-Inge Henter",
+      "raw_affiliation_strings": [
+        "Childhood Cancer Research Unit, Department of Women\u2019s and Children\u2019s Health, Karolinska Institute, Stockholm, Sweden;",
+        "Theme of Children\u2019s and Women\u2019s Health, Karolinska University Hospital, Stockholm, Sweden;"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Childhood Cancer Research Unit, Department of Women\u2019s and Children\u2019s Health, Karolinska Institute, Stockholm, Sweden;",
+          "institution_ids": [
+            "https://openalex.org/I28166907"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Theme of Children\u2019s and Women\u2019s Health, Karolinska University Hospital, Stockholm, Sweden;",
+          "institution_ids": [
+            "https://openalex.org/I1335113835"
+          ]
+        }
+      ]
+    }
+  ],
+  "institutions": [],
+  "countries_distinct_count": 10,
+  "institutions_distinct_count": 22,
+  "corresponding_author_ids": [],
+  "corresponding_institution_ids": [],
+  "apc_list": {
+    "value": 5000,
+    "currency": "USD",
+    "value_usd": 5000
+  },
+  "apc_paid": null,
+  "fwci": 35.7271,
+  "has_fulltext": true,
+  "cited_by_count": 662,
+  "citation_normalized_percentile": {
+    "value": 0.9984281,
+    "is_in_top_1_percent": true,
+    "is_in_top_10_percent": true
+  },
+  "cited_by_percentile_year": {
+    "min": 90,
+    "max": 100
+  },
+  "biblio": {
+    "volume": "130",
+    "issue": "25",
+    "first_page": "2728",
+    "last_page": "2738"
+  },
+  "is_retracted": false,
+  "is_paratext": false,
+  "is_xpac": false,
+  "primary_topic": {
+    "id": "https://openalex.org/T11616",
+    "display_name": "Autoimmune and Inflammatory Disorders Research",
+    "score": 0.9987999796867371,
+    "subfield": {
+      "id": "https://openalex.org/subfields/2720",
+      "display_name": "Hematology"
+    },
+    "field": {
+      "id": "https://openalex.org/fields/27",
+      "display_name": "Medicine"
+    },
+    "domain": {
+      "id": "https://openalex.org/domains/4",
+      "display_name": "Health Sciences"
+    }
+  },
+  "topics": [
+    {
+      "id": "https://openalex.org/T11616",
+      "display_name": "Autoimmune and Inflammatory Disorders Research",
+      "score": 0.9987999796867371,
+      "subfield": {
+        "id": "https://openalex.org/subfields/2720",
+        "display_name": "Hematology"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/27",
+        "display_name": "Medicine"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/4",
+        "display_name": "Health Sciences"
+      }
+    },
+    {
+      "id": "https://openalex.org/T10950",
+      "display_name": "Acute Lymphoblastic Leukemia research",
+      "score": 0.975600004196167,
+      "subfield": {
+        "id": "https://openalex.org/subfields/2739",
+        "display_name": "Public Health, Environmental and Occupational Health"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/27",
+        "display_name": "Medicine"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/4",
+        "display_name": "Health Sciences"
+      }
+    },
+    {
+      "id": "https://openalex.org/T11628",
+      "display_name": "Myeloproliferative Neoplasms: Diagnosis and Treatment",
+      "score": 0.9693999886512756,
+      "subfield": {
+        "id": "https://openalex.org/subfields/2716",
+        "display_name": "Genetics"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/27",
+        "display_name": "Medicine"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/4",
+        "display_name": "Health Sciences"
+      }
+    }
+  ],
+  "keywords": [
+    {
+      "id": "https://openalex.org/keywords/etoposide",
+      "display_name": "Etoposide",
+      "score": 0.8284397125244141
+    },
+    {
+      "id": "https://openalex.org/keywords/dexamethasone",
+      "display_name": "Dexamethasone",
+      "score": 0.7948156595230103
+    },
+    {
+      "id": "https://openalex.org/keywords/hemophagocytic-lymphohistiocytosis",
+      "display_name": "Hemophagocytic lymphohistiocytosis",
+      "score": 0.7605422735214233
+    },
+    {
+      "id": "https://openalex.org/keywords/medicine",
+      "display_name": "Medicine",
+      "score": 0.5579969882965088
+    },
+    {
+      "id": "https://openalex.org/keywords/internal-medicine",
+      "display_name": "Internal medicine",
+      "score": 0.3989922106266022
+    },
+    {
+      "id": "https://openalex.org/keywords/immunology",
+      "display_name": "Immunology",
+      "score": 0.3821079134941101
+    },
+    {
+      "id": "https://openalex.org/keywords/oncology",
+      "display_name": "Oncology",
+      "score": 0.357479453086853
+    },
+    {
+      "id": "https://openalex.org/keywords/chemotherapy",
+      "display_name": "Chemotherapy",
+      "score": 0.2556847333908081
+    },
+    {
+      "id": "https://openalex.org/keywords/disease",
+      "display_name": "Disease",
+      "score": 0.1787729561328888
+    }
+  ],
+  "concepts": [
+    {
+      "id": "https://openalex.org/C2778119113",
+      "wikidata": "https://www.wikidata.org/wiki/Q418817",
+      "display_name": "Etoposide",
+      "level": 3,
+      "score": 0.8284397125244141
+    },
+    {
+      "id": "https://openalex.org/C2780401358",
+      "wikidata": "https://www.wikidata.org/wiki/Q422252",
+      "display_name": "Dexamethasone",
+      "level": 2,
+      "score": 0.7948156595230103
+    },
+    {
+      "id": "https://openalex.org/C2779079688",
+      "wikidata": "https://www.wikidata.org/wiki/Q1642170",
+      "display_name": "Hemophagocytic lymphohistiocytosis",
+      "level": 3,
+      "score": 0.7605422735214233
+    },
+    {
+      "id": "https://openalex.org/C71924100",
+      "wikidata": "https://www.wikidata.org/wiki/Q11190",
+      "display_name": "Medicine",
+      "level": 0,
+      "score": 0.5579969882965088
+    },
+    {
+      "id": "https://openalex.org/C126322002",
+      "wikidata": "https://www.wikidata.org/wiki/Q11180",
+      "display_name": "Internal medicine",
+      "level": 1,
+      "score": 0.3989922106266022
+    },
+    {
+      "id": "https://openalex.org/C203014093",
+      "wikidata": "https://www.wikidata.org/wiki/Q101929",
+      "display_name": "Immunology",
+      "level": 1,
+      "score": 0.3821079134941101
+    },
+    {
+      "id": "https://openalex.org/C143998085",
+      "wikidata": "https://www.wikidata.org/wiki/Q162555",
+      "display_name": "Oncology",
+      "level": 1,
+      "score": 0.357479453086853
+    },
+    {
+      "id": "https://openalex.org/C2776694085",
+      "wikidata": "https://www.wikidata.org/wiki/Q974135",
+      "display_name": "Chemotherapy",
+      "level": 2,
+      "score": 0.2556847333908081
+    },
+    {
+      "id": "https://openalex.org/C2779134260",
+      "wikidata": "https://www.wikidata.org/wiki/Q12136",
+      "display_name": "Disease",
+      "level": 2,
+      "score": 0.1787729561328888
+    }
+  ],
+  "mesh": [
+    {
+      "descriptor_ui": "D000971",
+      "descriptor_name": "Antineoplastic Combined Chemotherapy Protocols",
+      "qualifier_ui": "Q000627",
+      "qualifier_name": "therapeutic use",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000971",
+      "descriptor_name": "Antineoplastic Combined Chemotherapy Protocols",
+      "qualifier_ui": "Q000627",
+      "qualifier_name": "therapeutic use",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000971",
+      "descriptor_name": "Antineoplastic Combined Chemotherapy Protocols",
+      "qualifier_ui": "Q000627",
+      "qualifier_name": "therapeutic use",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D003907",
+      "descriptor_name": "Dexamethasone",
+      "qualifier_ui": "Q000627",
+      "qualifier_name": "therapeutic use",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D003907",
+      "descriptor_name": "Dexamethasone",
+      "qualifier_ui": "Q000627",
+      "qualifier_name": "therapeutic use",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D003907",
+      "descriptor_name": "Dexamethasone",
+      "qualifier_ui": "Q000627",
+      "qualifier_name": "therapeutic use",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D005047",
+      "descriptor_name": "Etoposide",
+      "qualifier_ui": "Q000627",
+      "qualifier_name": "therapeutic use",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D005047",
+      "descriptor_name": "Etoposide",
+      "qualifier_ui": "Q000627",
+      "qualifier_name": "therapeutic use",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D005047",
+      "descriptor_name": "Etoposide",
+      "qualifier_ui": "Q000627",
+      "qualifier_name": "therapeutic use",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D005260",
+      "descriptor_name": "Female",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D005260",
+      "descriptor_name": "Female",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D005260",
+      "descriptor_name": "Female",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D006801",
+      "descriptor_name": "Humans",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D006801",
+      "descriptor_name": "Humans",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D006801",
+      "descriptor_name": "Humans",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D007223",
+      "descriptor_name": "Infant",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D007223",
+      "descriptor_name": "Infant",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D007223",
+      "descriptor_name": "Infant",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D008137",
+      "descriptor_name": "Longitudinal Studies",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D008137",
+      "descriptor_name": "Longitudinal Studies",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D008137",
+      "descriptor_name": "Longitudinal Studies",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D008297",
+      "descriptor_name": "Male",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D008297",
+      "descriptor_name": "Male",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D008297",
+      "descriptor_name": "Male",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D016572",
+      "descriptor_name": "Cyclosporine",
+      "qualifier_ui": "Q000627",
+      "qualifier_name": "therapeutic use",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D016572",
+      "descriptor_name": "Cyclosporine",
+      "qualifier_ui": "Q000627",
+      "qualifier_name": "therapeutic use",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D016572",
+      "descriptor_name": "Cyclosporine",
+      "qualifier_ui": "Q000627",
+      "qualifier_name": "therapeutic use",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D016896",
+      "descriptor_name": "Treatment Outcome",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D016896",
+      "descriptor_name": "Treatment Outcome",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D016896",
+      "descriptor_name": "Treatment Outcome",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D018380",
+      "descriptor_name": "Hematopoietic Stem Cell Transplantation",
+      "qualifier_ui": "Q000379",
+      "qualifier_name": "methods",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D018380",
+      "descriptor_name": "Hematopoietic Stem Cell Transplantation",
+      "qualifier_ui": "Q000379",
+      "qualifier_name": "methods",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D018380",
+      "descriptor_name": "Hematopoietic Stem Cell Transplantation",
+      "qualifier_ui": "Q000379",
+      "qualifier_name": "methods",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D018380",
+      "descriptor_name": "Hematopoietic Stem Cell Transplantation",
+      "qualifier_ui": "Q000401",
+      "qualifier_name": "mortality",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D018380",
+      "descriptor_name": "Hematopoietic Stem Cell Transplantation",
+      "qualifier_ui": "Q000401",
+      "qualifier_name": "mortality",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D018380",
+      "descriptor_name": "Hematopoietic Stem Cell Transplantation",
+      "qualifier_ui": "Q000401",
+      "qualifier_name": "mortality",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D051359",
+      "descriptor_name": "Lymphohistiocytosis, Hemophagocytic",
+      "qualifier_ui": "Q000188",
+      "qualifier_name": "drug therapy",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D051359",
+      "descriptor_name": "Lymphohistiocytosis, Hemophagocytic",
+      "qualifier_ui": "Q000188",
+      "qualifier_name": "drug therapy",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D051359",
+      "descriptor_name": "Lymphohistiocytosis, Hemophagocytic",
+      "qualifier_ui": "Q000188",
+      "qualifier_name": "drug therapy",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D051359",
+      "descriptor_name": "Lymphohistiocytosis, Hemophagocytic",
+      "qualifier_ui": "Q000401",
+      "qualifier_name": "mortality",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D051359",
+      "descriptor_name": "Lymphohistiocytosis, Hemophagocytic",
+      "qualifier_ui": "Q000401",
+      "qualifier_name": "mortality",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D051359",
+      "descriptor_name": "Lymphohistiocytosis, Hemophagocytic",
+      "qualifier_ui": "Q000401",
+      "qualifier_name": "mortality",
+      "is_major_topic": false
+    }
+  ],
+  "locations_count": 4,
+  "locations": [
+    {
+      "id": "doi:10.1182/blood-2017-06-788349",
+      "is_oa": true,
+      "landing_page_url": "https://doi.org/10.1182/blood-2017-06-788349",
+      "pdf_url": "https://ashpublications.org/blood/article-pdf/130/25/2728/1404373/blood788349.pdf",
+      "source": {
+        "id": "https://openalex.org/S200071133",
+        "display_name": "Blood",
+        "issn_l": "0006-4971",
+        "issn": [
+          "0006-4971",
+          "1528-0020"
+        ],
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": true,
+        "host_organization": "https://openalex.org/P4310320990",
+        "host_organization_name": "Elsevier BV",
+        "host_organization_lineage": [
+          "https://openalex.org/P4310320990"
+        ],
+        "host_organization_lineage_names": [
+          "Elsevier BV"
+        ],
+        "type": "journal"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "publishedVersion",
+      "is_accepted": true,
+      "is_published": true,
+      "raw_source_name": "Blood",
+      "raw_type": "journal-article"
+    },
+    {
+      "id": "pmid:28935695",
+      "is_oa": false,
+      "landing_page_url": "https://pubmed.ncbi.nlm.nih.gov/28935695",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4306525036",
+        "display_name": "PubMed",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I1299303238",
+        "host_organization_name": "National Institutes of Health",
+        "host_organization_lineage": [
+          "https://openalex.org/I1299303238"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "publishedVersion",
+      "is_accepted": true,
+      "is_published": true,
+      "raw_source_name": "Blood",
+      "raw_type": null
+    },
+    {
+      "id": "pmh:oai:europepmc.org:4721923",
+      "is_oa": false,
+      "landing_page_url": "https://www.ncbi.nlm.nih.gov/pmc/articles/5785801",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4306400806",
+        "display_name": "Europe PMC (PubMed Central)",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I1303153112",
+        "host_organization_name": "European Bioinformatics Institute",
+        "host_organization_lineage": [
+          "https://openalex.org/I1303153112"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "submittedVersion",
+      "is_accepted": false,
+      "is_published": false,
+      "raw_source_name": null,
+      "raw_type": "Text"
+    },
+    {
+      "id": "pmh:oai:ri.conicet.gov.ar:11336/41228",
+      "is_oa": true,
+      "landing_page_url": "http://hdl.handle.net/11336/41228",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4306402455",
+        "display_name": "CONICET Digital (CONICET)",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I4210148385",
+        "host_organization_name": "Biomedicine Research Institute of Buenos Aires - CONICET - Partner Institute of the Max Planck Society",
+        "host_organization_lineage": [
+          "https://openalex.org/I4210148385"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": "cc-by-nc-sa",
+      "license_id": "https://openalex.org/licenses/cc-by-nc-sa",
+      "version": "submittedVersion",
+      "is_accepted": false,
+      "is_published": false,
+      "raw_source_name": "",
+      "raw_type": "info:eu-repo/semantics/article"
+    }
+  ],
+  "best_oa_location": {
+    "id": "doi:10.1182/blood-2017-06-788349",
+    "is_oa": true,
+    "landing_page_url": "https://doi.org/10.1182/blood-2017-06-788349",
+    "pdf_url": "https://ashpublications.org/blood/article-pdf/130/25/2728/1404373/blood788349.pdf",
+    "source": {
+      "id": "https://openalex.org/S200071133",
+      "display_name": "Blood",
+      "issn_l": "0006-4971",
+      "issn": [
+        "0006-4971",
+        "1528-0020"
+      ],
+      "is_oa": false,
+      "is_in_doaj": false,
+      "is_core": true,
+      "host_organization": "https://openalex.org/P4310320990",
+      "host_organization_name": "Elsevier BV",
+      "host_organization_lineage": [
+        "https://openalex.org/P4310320990"
+      ],
+      "host_organization_lineage_names": [
+        "Elsevier BV"
+      ],
+      "type": "journal"
+    },
+    "license": null,
+    "license_id": null,
+    "version": "publishedVersion",
+    "is_accepted": true,
+    "is_published": true,
+    "raw_source_name": "Blood",
+    "raw_type": "journal-article"
+  },
+  "sustainable_development_goals": [],
+  "awards": [],
+  "funders": [
+    {
+      "id": "https://openalex.org/F4320316497",
+      "display_name": "Insamlingsstiftelsen Cancer- och Allergifonden",
+      "ror": "https://ror.org/00z8rf270"
+    },
+    {
+      "id": "https://openalex.org/F4320322315",
+      "display_name": "Karolinska Institutet",
+      "ror": "https://ror.org/056d84691"
+    },
+    {
+      "id": "https://openalex.org/F4320322581",
+      "display_name": "Vetenskapsr\u00e5det",
+      "ror": "https://ror.org/03zttf063"
+    },
+    {
+      "id": "https://openalex.org/F4320323766",
+      "display_name": "Barncancerfonden",
+      "ror": "https://ror.org/05072yv34"
+    }
+  ],
+  "has_content": {
+    "pdf": true,
+    "grobid_xml": true
+  },
+  "content_urls": {
+    "pdf": "https://content.openalex.org/works/W2757190301.pdf",
+    "grobid_xml": "https://content.openalex.org/works/W2757190301.grobid-xml"
+  },
+  "referenced_works_count": 59,
+  "referenced_works": [
+    "https://openalex.org/W161302449",
+    "https://openalex.org/W170573079",
+    "https://openalex.org/W1493824998",
+    "https://openalex.org/W1502651188",
+    "https://openalex.org/W1513728646",
+    "https://openalex.org/W1909467642",
+    "https://openalex.org/W1939017986",
+    "https://openalex.org/W1968458910",
+    "https://openalex.org/W1983067071",
+    "https://openalex.org/W1991263524",
+    "https://openalex.org/W1995794195",
+    "https://openalex.org/W2000454164",
+    "https://openalex.org/W2008299431",
+    "https://openalex.org/W2015828718",
+    "https://openalex.org/W2017213437",
+    "https://openalex.org/W2022439256",
+    "https://openalex.org/W2022874065",
+    "https://openalex.org/W2023173459",
+    "https://openalex.org/W2038359810",
+    "https://openalex.org/W2038981426",
+    "https://openalex.org/W2040121223",
+    "https://openalex.org/W2040628293",
+    "https://openalex.org/W2045994384",
+    "https://openalex.org/W2047164801",
+    "https://openalex.org/W2064037171",
+    "https://openalex.org/W2069707699",
+    "https://openalex.org/W2075138126",
+    "https://openalex.org/W2076560655",
+    "https://openalex.org/W2088006251",
+    "https://openalex.org/W2088301075",
+    "https://openalex.org/W2088419428",
+    "https://openalex.org/W2105957247",
+    "https://openalex.org/W2109479983",
+    "https://openalex.org/W2119893731",
+    "https://openalex.org/W2120089799",
+    "https://openalex.org/W2122970793",
+    "https://openalex.org/W2131531675",
+    "https://openalex.org/W2133819747",
+    "https://openalex.org/W2133944586",
+    "https://openalex.org/W2134439608",
+    "https://openalex.org/W2135496362",
+    "https://openalex.org/W2138535576",
+    "https://openalex.org/W2144510654",
+    "https://openalex.org/W2145711714",
+    "https://openalex.org/W2146680365",
+    "https://openalex.org/W2150909088",
+    "https://openalex.org/W2153728910",
+    "https://openalex.org/W2162251899",
+    "https://openalex.org/W2162777258",
+    "https://openalex.org/W2163067702",
+    "https://openalex.org/W2166881534",
+    "https://openalex.org/W2171190856",
+    "https://openalex.org/W2295097092",
+    "https://openalex.org/W2325441109",
+    "https://openalex.org/W2333611917",
+    "https://openalex.org/W2400154597",
+    "https://openalex.org/W2407280921",
+    "https://openalex.org/W2413247543",
+    "https://openalex.org/W6683879167"
+  ],
+  "related_works": [
+    "https://openalex.org/W4229026038",
+    "https://openalex.org/W2789991172",
+    "https://openalex.org/W4226095060",
+    "https://openalex.org/W4295927595",
+    "https://openalex.org/W4394619701",
+    "https://openalex.org/W2048982951",
+    "https://openalex.org/W4361305481",
+    "https://openalex.org/W2620052751",
+    "https://openalex.org/W4353010022",
+    "https://openalex.org/W4313826109"
+  ],
+  "abstract_inverted_index": {
+    "020": [
+      0
+    ],
+    "adjusted": [
+      1
+    ],
+    "for": [
+      2
+    ],
+    "age": [
+      3
+    ],
+    "and": [
+      4,
+      6,
+      16,
+      68
+    ],
+    "sex)": [
+      5
+    ],
+    "reported": [
+      7
+    ],
+    "neurological": [
+      8
+    ],
+    "alterations": [
+      9
+    ],
+    "at": [
+      10
+    ],
+    "HSCT": [
+      11,
+      72
+    ],
+    "were": [
+      12
+    ],
+    "22%": [
+      13
+    ],
+    "in": [
+      14,
+      18
+    ],
+    "HLH-94": [
+      15,
+      21
+    ],
+    "17%": [
+      17
+    ],
+    "HLH-2004": [
+      19,
+      44
+    ],
+    "(using": [
+      20
+    ],
+    "inclusion": [
+      22
+    ],
+    "criteria).": [
+      23
+    ],
+    "Five-year": [
+      24
+    ],
+    "pSu": [
+      25
+    ],
+    "post-HSCT": [
+      26
+    ],
+    "overall": [
+      27
+    ],
+    "was": [
+      28
+    ],
+    "66%": [
+      29
+    ],
+    "(verified": [
+      30
+    ],
+    "FHL,": [
+      31
+    ],
+    "70%": [
+      32
+    ],
+    "[63%-78%]).": [
+      33
+    ],
+    "Additional": [
+      34
+    ],
+    "analyses": [
+      35
+    ],
+    "provided": [
+      36
+    ],
+    "specific": [
+      37
+    ],
+    "suggestions": [
+      38
+    ],
+    "on": [
+      39
+    ],
+    "potential": [
+      40
+    ],
+    "pre-HSCT": [
+      41
+    ],
+    "treatment": [
+      42
+    ],
+    "improvements.": [
+      43
+    ],
+    "confirms": [
+      45
+    ],
+    "that": [
+      46
+    ],
+    "a": [
+      47
+    ],
+    "majority": [
+      48
+    ],
+    "of": [
+      49
+    ],
+    "patients": [
+      50
+    ],
+    "may": [
+      51
+    ],
+    "be": [
+      52
+    ],
+    "rescued": [
+      53
+    ],
+    "by": [
+      54
+    ],
+    "the": [
+      55
+    ],
+    "etoposide/dexamethasone": [
+      56
+    ],
+    "combination": [
+      57
+    ],
+    "but": [
+      58
+    ],
+    "intensification": [
+      59
+    ],
+    "with": [
+      60
+    ],
+    "CSA": [
+      61
+    ],
+    "upfront,": [
+      62
+    ],
+    "adding": [
+      63
+    ],
+    "corticosteroids": [
+      64
+    ],
+    "to": [
+      65,
+      71
+    ],
+    "intrathecal": [
+      66
+    ],
+    "therapy,": [
+      67
+    ],
+    "reduced": [
+      69
+    ],
+    "time": [
+      70
+    ],
+    "did": [
+      73
+    ],
+    "not": [
+      74
+    ],
+    "improve": [
+      75
+    ],
+    "outcome": [
+      76
+    ],
+    "significantly.": [
+      77
+    ]
+  },
+  "counts_by_year": [
+    {
+      "year": 2026,
+      "cited_by_count": 44
+    },
+    {
+      "year": 2025,
+      "cited_by_count": 68
+    },
+    {
+      "year": 2024,
+      "cited_by_count": 97
+    },
+    {
+      "year": 2023,
+      "cited_by_count": 75
+    },
+    {
+      "year": 2022,
+      "cited_by_count": 86
+    },
+    {
+      "year": 2021,
+      "cited_by_count": 85
+    },
+    {
+      "year": 2020,
+      "cited_by_count": 113
+    },
+    {
+      "year": 2019,
+      "cited_by_count": 55
+    },
+    {
+      "year": 2018,
+      "cited_by_count": 33
+    },
+    {
+      "year": 2017,
+      "cited_by_count": 1
+    },
+    {
+      "year": 2013,
+      "cited_by_count": 1
+    }
+  ],
+  "updated_date": "2026-07-01T08:55:40.977307",
+  "created_date": "2025-10-10T00:00:00"
+}

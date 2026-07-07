@@ -1,0 +1,21 @@
+{
+  "candidate_id": "cand-exp-sarsons-2017",
+  "proposed_study_id": "sarsons-2017",
+  "acquisition_status": "downloaded",
+  "attempted_at": "2026-07-07T03:46:23+00:00",
+  "catalog_source_url": "https://www.aeaweb.org/articles?id=10.1257/aer.p20171031",
+  "resolved_urls": [
+    "https://doi.org/10.1257/aer.p20171031",
+    "https://ueaeprints.uea.ac.uk/id/eprint/63549/1/Published_manuscript.pdf",
+    "https://ueaeprints.uea.ac.uk/id/eprint/63549/1/Published_manuscript.pdf",
+    "https://www.aeaweb.org/articles?id=10.1257/aer.p20171031"
+  ],
+  "files": [
+    "openalex-10.1257_aer.p20171031.pdf",
+    "oa-10.1257_aer.p20171031.pdf",
+    "source-1.html"
+  ],
+  "dois": [
+    "10.1257/aer.p20171031"
+  ]
+}

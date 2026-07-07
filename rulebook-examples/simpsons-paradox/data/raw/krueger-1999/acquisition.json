@@ -1,0 +1,16 @@
+{
+  "candidate_id": "cand-exp-krueger-1999",
+  "proposed_study_id": "krueger-1999",
+  "acquisition_status": "blocked",
+  "attempted_at": "2026-07-07T03:47:33+00:00",
+  "catalog_source_url": "https://www.aeaweb.org/articles?id=10.1257/aer.90.4.1",
+  "resolved_urls": [
+    "https://www.aeaweb.org/articles?id=10.1257/aer.90.4.1",
+    "https://doi.org/10.3886/ICPSR07805.v1"
+  ],
+  "files": [],
+  "dois": [
+    "10.1257/aer.90.4.1](https://www.aeaweb.org/articles?id=10.1257/aer.90.4.1",
+    "10.3886/ICPSR07805.v1](https://doi.org/10.3886/ICPSR07805.v1"
+  ]
+}

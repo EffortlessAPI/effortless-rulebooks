@@ -860,6 +860,26 @@ RETURNS NUMERIC AS $$
   SELECT ((COALESCE(CASE WHEN ((SELECT COUNT(*) FROM treatment_rankings WHERE calc_treatment_rankings_stratum_causal_role(treatment_ranking_id) = 'collider'))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT COUNT(*) FROM treatment_rankings WHERE calc_treatment_rankings_stratum_causal_role(treatment_ranking_id) = 'collider'))::numeric ELSE NULL END, 0) + COALESCE(CASE WHEN ((SELECT COUNT(*) FROM treatment_rankings WHERE calc_treatment_rankings_stratum_causal_role(treatment_ranking_id) = 'selection'))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT COUNT(*) FROM treatment_rankings WHERE calc_treatment_rankings_stratum_causal_role(treatment_ranking_id) = 'selection'))::numeric ELSE NULL END, 0)))::numeric;
 $$ LANGUAGE sql STABLE;
 
+-- calc_model_summary_explained_confounder_count
+-- Field: ModelSummary.ExplainedConfounderCount
+-- Type: aggregation | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_model_summary_explained_confounder_count(p_model_summary_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((SELECT COUNT(*) FROM treatment_rankings WHERE calc_treatment_rankings_is_paradox_explained(treatment_ranking_id) = TRUE))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_model_summary_contested_or_mediator_explained_count
+-- Field: ModelSummary.ContestedOrMediatorExplainedCount
+-- Type: aggregation | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_model_summary_contested_or_mediator_explained_count(p_model_summary_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((SELECT COUNT(*) FROM treatment_rankings WHERE calc_treatment_rankings_is_sign_flip(treatment_ranking_id) = TRUE AND calc_treatment_rankings_is_paradox_explained(treatment_ranking_id) = TRUE AND calc_treatment_rankings_adjustment_appropriate(treatment_ranking_id) = FALSE))::integer;
+$$ LANGUAGE sql STABLE;
+
 -- calc_model_summary_discovery_witness_note
 -- Field: ModelSummary.DiscoveryWitnessNote
 -- Type: calculated | DataType: string | Returns: TEXT
@@ -867,7 +887,77 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_model_summary_discovery_witness_note(p_model_summary_id TEXT)
 RETURNS TEXT AS $$
-  SELECT (CONCAT('LatentTypeD=', calc_model_summary_latent_type_d_count(p_model_summary_id), '/', calc_model_summary_type_d_count(p_model_summary_id), '; SignFlipMaxPurity=', calc_model_summary_sign_flip_signal_purity_max(p_model_summary_id), '; stableD=', calc_model_summary_avg_pooled_gap_stable_d(p_model_summary_id), ' latentD=', calc_model_summary_avg_pooled_gap_latent_d(p_model_summary_id)))::text;
+  SELECT (CONCAT('sweep: latentD=', calc_model_summary_latent_type_d_fraction(p_model_summary_id), ' purityMax=', calc_model_summary_sign_flip_signal_purity_max(p_model_summary_id), ' catalogExact=', (SELECT type_prediction_match_rate FROM model_summary WHERE model_summary_id = p_model_summary_id), ' domainGapSurvives=', (SELECT domain_flip_gap_survives_geometry_control FROM model_summary WHERE model_summary_id = p_model_summary_id)))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_model_summary_c_plus_avg_distortion
+-- Field: ModelSummary.CPlusAvgDistortion
+-- Type: calculated | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_model_summary_c_plus_avg_distortion(p_model_summary_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT ((SELECT COALESCE(AVG((calc_treatment_rankings_allocation_distortion(treatment_ranking_id))::numeric), 0) FROM treatment_rankings WHERE calc_treatment_rankings_distortion_type(treatment_ranking_id) = 'C+'))::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_model_summary_c_minus_avg_distortion
+-- Field: ModelSummary.CMinusAvgDistortion
+-- Type: calculated | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_model_summary_c_minus_avg_distortion(p_model_summary_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT ((SELECT COALESCE(AVG((calc_treatment_rankings_allocation_distortion(treatment_ranking_id))::numeric), 0) FROM treatment_rankings WHERE calc_treatment_rankings_distortion_type(treatment_ranking_id) = 'C-'))::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_model_summary_type_d_avg_distortion
+-- Field: ModelSummary.TypeDAvgDistortion
+-- Type: calculated | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_model_summary_type_d_avg_distortion(p_model_summary_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT ((SELECT COALESCE(AVG((calc_treatment_rankings_allocation_distortion(treatment_ranking_id))::numeric), 0) FROM treatment_rankings WHERE calc_treatment_rankings_distortion_type(treatment_ranking_id) = 'D'))::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_model_summary_sweep_fragile_count
+-- Field: ModelSummary.SweepFragileCount
+-- Type: calculated | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_model_summary_sweep_fragile_count(p_model_summary_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((SELECT COUNT(*) FROM treatment_rankings WHERE calc_treatment_rankings_distortion_type(treatment_ranking_id) = 'D' AND calc_treatment_rankings_signal_purity(treatment_ranking_id) = 1 AND calc_treatment_rankings_allocation_distortion(treatment_ranking_id) = 0 AND calc_treatment_rankings_sweep_pooled_gap_range(treatment_ranking_id) = '>0.3' AND calc_treatment_rankings_allocation_fragility(treatment_ranking_id) = '>=10'))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_model_summary_expansion_wave1_economics_expected_a_count
+-- Field: ModelSummary.ExpansionWave1EconomicsExpectedACount
+-- Type: calculated | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_model_summary_expansion_wave1_economics_expected_a_count(p_model_summary_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((SELECT COUNT(*) FROM candidate_study_catalog WHERE expansion_wave = 'expansion-wave-1' AND domain = 'economics' AND calc_candidate_study_catalog_is_imported(candidate_id) = TRUE AND expected_distortion_type = 'A'))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_model_summary_expansion_wave1_economics_expected_ad_count
+-- Field: ModelSummary.ExpansionWave1EconomicsExpectedADCount
+-- Type: calculated | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_model_summary_expansion_wave1_economics_expected_ad_count(p_model_summary_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((SELECT COUNT(*) FROM candidate_study_catalog WHERE expansion_wave = 'expansion-wave-1' AND domain = 'economics' AND calc_candidate_study_catalog_is_imported(candidate_id) = TRUE AND expected_distortion_type = 'A' AND calc_candidate_study_catalog_observed_distortion_type(candidate_id) = 'D'))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_model_summary_economics_expected_a_mismatch_rate
+-- Field: ModelSummary.EconomicsExpectedAMismatchRate
+-- Type: calculated | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_model_summary_economics_expected_a_mismatch_rate(p_model_summary_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT (CASE WHEN (calc_model_summary_expansion_wave1_economics_expected_a_count(p_model_summary_id))::NUMERIC = 0 THEN ('')::text ELSE ((COALESCE(CASE WHEN (calc_model_summary_expansion_wave1_economics_expected_ad_count(p_model_summary_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_model_summary_expansion_wave1_economics_expected_ad_count(p_model_summary_id))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(CASE WHEN (calc_model_summary_expansion_wave1_economics_expected_a_count(p_model_summary_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_model_summary_expansion_wave1_economics_expected_a_count(p_model_summary_id))::numeric ELSE NULL END, 0), 0)))::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_stratum_variables_name
@@ -2246,6 +2336,46 @@ RETURNS BOOLEAN AS $$
   SELECT (CASE WHEN calc_candidate_study_catalog_is_imported(p_candidate_id) THEN ((SELECT NULLIF(observed_distortion_type, '') FROM candidate_study_catalog WHERE candidate_id = p_candidate_id) = (SELECT NULLIF(expected_distortion_type, '') FROM candidate_study_catalog WHERE candidate_id = p_candidate_id))::text ELSE ('')::text END)::boolean;
 $$ LANGUAGE sql STABLE;
 
+-- calc_candidate_study_catalog_expected_sign_flip
+-- Field: CandidateStudyCatalog.ExpectedSignFlip
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_candidate_study_catalog_expected_sign_flip(p_candidate_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (((SELECT NULLIF(expected_distortion_type, '') FROM candidate_study_catalog WHERE candidate_id = p_candidate_id) = 'A' OR (SELECT NULLIF(expected_distortion_type, '') FROM candidate_study_catalog WHERE candidate_id = p_candidate_id) = 'B'))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_candidate_study_catalog_observed_sign_flip_type
+-- Field: CandidateStudyCatalog.ObservedSignFlipType
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_candidate_study_catalog_observed_sign_flip_type(p_candidate_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (CASE WHEN calc_candidate_study_catalog_is_imported(p_candidate_id) THEN (((SELECT NULLIF(observed_distortion_type, '') FROM candidate_study_catalog WHERE candidate_id = p_candidate_id) = 'A' OR (SELECT NULLIF(observed_distortion_type, '') FROM candidate_study_catalog WHERE candidate_id = p_candidate_id) = 'B'))::text ELSE ('')::text END)::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_candidate_study_catalog_sign_flip_prediction_match
+-- Field: CandidateStudyCatalog.SignFlipPredictionMatch
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_candidate_study_catalog_sign_flip_prediction_match(p_candidate_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (CASE WHEN (calc_candidate_study_catalog_is_imported(p_candidate_id) AND calc_candidate_study_catalog_expected_sign_flip(p_candidate_id)) THEN (calc_candidate_study_catalog_observed_sign_flip_type(p_candidate_id))::text ELSE ('')::text END)::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_candidate_study_catalog_is_data_ready
+-- Field: CandidateStudyCatalog.IsDataReady
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_candidate_study_catalog_is_data_ready(p_candidate_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (((SELECT NULLIF(data_acquisition_status, '') FROM candidate_study_catalog WHERE candidate_id = p_candidate_id) = 'downloaded' OR (SELECT NULLIF(data_acquisition_status, '') FROM candidate_study_catalog WHERE candidate_id = p_candidate_id) = 'manual_only'))::boolean;
+$$ LANGUAGE sql STABLE;
+
 -- calc_corpus_catalog_summary_name
 -- Field: CorpusCatalogSummary.Name
 -- Type: calculated | DataType: string | Returns: TEXT
@@ -2313,7 +2443,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_corpus_catalog_summary_high_priority_count(p_catalog_summary_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM candidate_study_catalog WHERE ingestion_status = 'candidate' AND priority = '<=2'))::integer;
+  SELECT ((COALESCE(CASE WHEN ((SELECT COUNT(*) FROM candidate_study_catalog WHERE ingestion_status = 'candidate' AND priority = 1))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT COUNT(*) FROM candidate_study_catalog WHERE ingestion_status = 'candidate' AND priority = 1))::numeric ELSE NULL END, 0) + COALESCE(CASE WHEN ((SELECT COUNT(*) FROM candidate_study_catalog WHERE ingestion_status = 'candidate' AND priority = 2))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT COUNT(*) FROM candidate_study_catalog WHERE ingestion_status = 'candidate' AND priority = 2))::numeric ELSE NULL END, 0)))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_corpus_catalog_summary_import_session_ready
@@ -2326,6 +2456,66 @@ RETURNS BOOLEAN AS $$
   SELECT (((calc_corpus_catalog_summary_candidate_count(p_catalog_summary_id))::NUMERIC >= 20 AND (calc_corpus_catalog_summary_ready_to_encode_count(p_catalog_summary_id))::NUMERIC >= 15));
 $$ LANGUAGE sql STABLE;
 
+-- calc_corpus_catalog_summary_type_prediction_match_count
+-- Field: CorpusCatalogSummary.TypePredictionMatchCount
+-- Type: aggregation | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_corpus_catalog_summary_type_prediction_match_count(p_catalog_summary_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((SELECT COUNT(*) FROM candidate_study_catalog WHERE calc_candidate_study_catalog_type_prediction_match(candidate_id) = TRUE))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_corpus_catalog_summary_type_prediction_mismatch_count
+-- Field: CorpusCatalogSummary.TypePredictionMismatchCount
+-- Type: aggregation | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_corpus_catalog_summary_type_prediction_mismatch_count(p_catalog_summary_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((SELECT COUNT(*) FROM candidate_study_catalog WHERE calc_candidate_study_catalog_is_imported(candidate_id) = TRUE AND calc_candidate_study_catalog_type_prediction_match(candidate_id) = FALSE))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_corpus_catalog_summary_sign_flip_prediction_eligible_count
+-- Field: CorpusCatalogSummary.SignFlipPredictionEligibleCount
+-- Type: aggregation | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_corpus_catalog_summary_sign_flip_prediction_eligible_count(p_catalog_summary_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((SELECT COUNT(*) FROM candidate_study_catalog WHERE calc_candidate_study_catalog_is_imported(candidate_id) = TRUE AND calc_candidate_study_catalog_expected_sign_flip(candidate_id) = TRUE))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_corpus_catalog_summary_sign_flip_prediction_match_count
+-- Field: CorpusCatalogSummary.SignFlipPredictionMatchCount
+-- Type: aggregation | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_corpus_catalog_summary_sign_flip_prediction_match_count(p_catalog_summary_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((SELECT COUNT(*) FROM candidate_study_catalog WHERE calc_candidate_study_catalog_sign_flip_prediction_match(candidate_id) = TRUE))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_corpus_catalog_summary_type_prediction_match_rate
+-- Field: CorpusCatalogSummary.TypePredictionMatchRate
+-- Type: calculated | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_corpus_catalog_summary_type_prediction_match_rate(p_catalog_summary_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT (CASE WHEN (calc_corpus_catalog_summary_imported_count(p_catalog_summary_id))::NUMERIC = 0 THEN ('')::text ELSE ((COALESCE(CASE WHEN (calc_corpus_catalog_summary_type_prediction_match_count(p_catalog_summary_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_corpus_catalog_summary_type_prediction_match_count(p_catalog_summary_id))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(CASE WHEN (calc_corpus_catalog_summary_imported_count(p_catalog_summary_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_corpus_catalog_summary_imported_count(p_catalog_summary_id))::numeric ELSE NULL END, 0), 0)))::text END)::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_corpus_catalog_summary_sign_flip_prediction_match_rate
+-- Field: CorpusCatalogSummary.SignFlipPredictionMatchRate
+-- Type: calculated | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_corpus_catalog_summary_sign_flip_prediction_match_rate(p_catalog_summary_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT (CASE WHEN (calc_corpus_catalog_summary_sign_flip_prediction_eligible_count(p_catalog_summary_id))::NUMERIC = 0 THEN ('')::text ELSE ((COALESCE(CASE WHEN (calc_corpus_catalog_summary_sign_flip_prediction_match_count(p_catalog_summary_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_corpus_catalog_summary_sign_flip_prediction_match_count(p_catalog_summary_id))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(CASE WHEN (calc_corpus_catalog_summary_sign_flip_prediction_eligible_count(p_catalog_summary_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_corpus_catalog_summary_sign_flip_prediction_eligible_count(p_catalog_summary_id))::numeric ELSE NULL END, 0), 0)))::text END)::numeric;
+$$ LANGUAGE sql STABLE;
+
 -- calc_corpus_catalog_summary_catalog_witness_note
 -- Field: CorpusCatalogSummary.CatalogWitnessNote
 -- Type: calculated | DataType: string | Returns: TEXT
@@ -2333,7 +2523,47 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_corpus_catalog_summary_catalog_witness_note(p_catalog_summary_id TEXT)
 RETURNS TEXT AS $$
-  SELECT (CASE WHEN calc_corpus_catalog_summary_import_session_ready(p_catalog_summary_id) THEN (CONCAT('READY: ', calc_corpus_catalog_summary_ready_to_encode_count(p_catalog_summary_id), ' studies queued (', calc_corpus_catalog_summary_candidate_count(p_catalog_summary_id), ' candidates)'))::text ELSE (CONCAT('NOT READY: only ', calc_corpus_catalog_summary_ready_to_encode_count(p_catalog_summary_id), ' encode-ready of ', calc_corpus_catalog_summary_candidate_count(p_catalog_summary_id), ' candidates'))::text END)::text;
+  SELECT (CASE WHEN calc_corpus_catalog_summary_import_session_ready(p_catalog_summary_id) THEN (CONCAT('READY: ', calc_corpus_catalog_summary_ready_to_encode_count(p_catalog_summary_id), ' encode-ready (', calc_corpus_catalog_summary_data_ready_count(p_catalog_summary_id), ' data-ready) of ', calc_corpus_catalog_summary_candidate_count(p_catalog_summary_id), ' candidates'))::text ELSE (CONCAT('BUILDING: ', calc_corpus_catalog_summary_candidate_count(p_catalog_summary_id), ' candidates — ', calc_corpus_catalog_summary_data_ready_count(p_catalog_summary_id), ' data-ready, ', calc_corpus_catalog_summary_ready_to_encode_count(p_catalog_summary_id), ' encode-ready'))::text END)::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_corpus_catalog_summary_catalog_prediction_witness_note
+-- Field: CorpusCatalogSummary.CatalogPredictionWitnessNote
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_corpus_catalog_summary_catalog_prediction_witness_note(p_catalog_summary_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CONCAT("exact=", calc_corpus_catalog_summary_type_prediction_match_count(p_catalog_summary_id), "/", calc_corpus_catalog_summary_imported_count(p_catalog_summary_id), " (", ROUND(calc_corpus_catalog_summary_type_prediction_match_rate(p_catalog_summary_id) * 100, 1), "%); flipPred=", calc_corpus_catalog_summary_sign_flip_prediction_match_count(p_catalog_summary_id), "/", calc_corpus_catalog_summary_sign_flip_prediction_eligible_count(p_catalog_summary_id), " (", ROUND(calc_corpus_catalog_summary_sign_flip_prediction_match_rate(p_catalog_summary_id) * 100, 1), "%)")))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_corpus_catalog_summary_data_ready_count
+-- Field: CorpusCatalogSummary.DataReadyCount
+-- Type: aggregation | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_corpus_catalog_summary_data_ready_count(p_catalog_summary_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((SELECT COUNT(*) FROM candidate_study_catalog WHERE calc_candidate_study_catalog_is_data_ready(candidate_id) = TRUE AND ingestion_status = 'candidate'))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_corpus_catalog_summary_encode_pipeline_ready_count
+-- Field: CorpusCatalogSummary.EncodePipelineReadyCount
+-- Type: aggregation | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_corpus_catalog_summary_encode_pipeline_ready_count(p_catalog_summary_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((SELECT COUNT(*) FROM candidate_study_catalog WHERE calc_candidate_study_catalog_is_ready_to_encode(candidate_id) = TRUE AND calc_candidate_study_catalog_is_data_ready(candidate_id) = TRUE))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_corpus_catalog_summary_expansion_candidate_count
+-- Field: CorpusCatalogSummary.ExpansionCandidateCount
+-- Type: aggregation | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_corpus_catalog_summary_expansion_candidate_count(p_catalog_summary_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((SELECT COUNT(*) FROM candidate_study_catalog WHERE expansion_wave = 'expansion-wave-1'))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_domain_expansion_targets_name
@@ -2353,7 +2583,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_domain_expansion_targets_current_imported_count(p_domain_target_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM studies WHERE domain = (SELECT NULLIF(domain, '') FROM domain_expansion_targets WHERE domain_target_id = p_domain_target_id) AND is_synthetic = FALSE))::integer;
+  SELECT ((SELECT COUNT(*) FROM studies WHERE domain = CASE WHEN (SELECT NULLIF(legacy_domain_alias, '') FROM domain_expansion_targets WHERE domain_target_id = p_domain_target_id) IS NOT NULL THEN ((SELECT NULLIF(legacy_domain_alias, '') FROM domain_expansion_targets WHERE domain_target_id = p_domain_target_id))::text ELSE ((SELECT NULLIF(domain, '') FROM domain_expansion_targets WHERE domain_target_id = p_domain_target_id))::text END AND is_synthetic = FALSE))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_domain_expansion_targets_candidate_queued_count
@@ -2453,7 +2683,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_discovery_findings_observed_metric(p_finding_id TEXT)
 RETURNS TEXT AS $$
-  SELECT (IF((SELECT NULLIF(hypothesis_id, '') FROM discovery_findings WHERE finding_id = p_finding_id) = "H-latent-d", CONCAT("fraction=", LOOKUP("simpsons-paradox-v1", ModelSummary(SELECT NULLIF(model_summary_id, '') FROM discovery_findings WHERE finding_id = p_finding_id), ModelSummary(SELECT NULLIF(latent_type_d_fraction, '') FROM discovery_findings WHERE finding_id = p_finding_id))), IF((SELECT NULLIF(hypothesis_id, '') FROM discovery_findings WHERE finding_id = p_finding_id) = "H-purity", CONCAT("maxPurity=", LOOKUP("simpsons-paradox-v1", ModelSummary(SELECT NULLIF(model_summary_id, '') FROM discovery_findings WHERE finding_id = p_finding_id), ModelSummary(SELECT NULLIF(sign_flip_signal_purity_max, '') FROM discovery_findings WHERE finding_id = p_finding_id))), IF((SELECT NULLIF(hypothesis_id, '') FROM discovery_findings WHERE finding_id = p_finding_id) = "H-small-effect", CONCAT("stable=", LOOKUP("simpsons-paradox-v1", ModelSummary(SELECT NULLIF(model_summary_id, '') FROM discovery_findings WHERE finding_id = p_finding_id), ModelSummary(SELECT NULLIF(avg_pooled_gap_stable_d, '') FROM discovery_findings WHERE finding_id = p_finding_id)), " latent=", LOOKUP("simpsons-paradox-v1", ModelSummary(SELECT NULLIF(model_summary_id, '') FROM discovery_findings WHERE finding_id = p_finding_id), ModelSummary(SELECT NULLIF(avg_pooled_gap_latent_d, '') FROM discovery_findings WHERE finding_id = p_finding_id))), IF((SELECT NULLIF(hypothesis_id, '') FROM discovery_findings WHERE finding_id = p_finding_id) = "H-econ-zero", CONCAT("flips=", LOOKUP("simpsons-paradox-v1", ModelSummary(SELECT NULLIF(model_summary_id, '') FROM discovery_findings WHERE finding_id = p_finding_id), ModelSummary(SELECT NULLIF(economics_sign_flip_count, '') FROM discovery_findings WHERE finding_id = p_finding_id))), IF((SELECT NULLIF(hypothesis_id, '') FROM discovery_findings WHERE finding_id = p_finding_id) = "H-domain-dist", CONCAT("epi=", LOOKUP("simpsons-paradox-v1", ModelSummary(SELECT NULLIF(model_summary_id, '') FROM discovery_findings WHERE finding_id = p_finding_id), ModelSummary(SELECT NULLIF(epidemiology_avg_distortion, '') FROM discovery_findings WHERE finding_id = p_finding_id)), " edu=", LOOKUP("simpsons-paradox-v1", ModelSummary(SELECT NULLIF(model_summary_id, '') FROM discovery_findings WHERE finding_id = p_finding_id), ModelSummary(SELECT NULLIF(education_avg_distortion, '') FROM discovery_findings WHERE finding_id = p_finding_id))), IF((SELECT NULLIF(hypothesis_id, '') FROM discovery_findings WHERE finding_id = p_finding_id) = "H-causal-manifest", CONCAT("confLatent=", LOOKUP("simpsons-paradox-v1", ModelSummary(SELECT NULLIF(model_summary_id, '') FROM discovery_findings WHERE finding_id = p_finding_id), ModelSummary(SELECT NULLIF(confounder_latent_only_count, '') FROM discovery_findings WHERE finding_id = p_finding_id)), " confFlip=", LOOKUP("simpsons-paradox-v1", ModelSummary(SELECT NULLIF(model_summary_id, '') FROM discovery_findings WHERE finding_id = p_finding_id), ModelSummary(SELECT NULLIF(confounder_sign_flip_count, '') FROM discovery_findings WHERE finding_id = p_finding_id))), IF((SELECT NULLIF(hypothesis_id, '') FROM discovery_findings WHERE finding_id = p_finding_id) = "H-causal-latent", CONCAT("collManifest=", LOOKUP("simpsons-paradox-v1", ModelSummary(SELECT NULLIF(model_summary_id, '') FROM discovery_findings WHERE finding_id = p_finding_id), ModelSummary(SELECT NULLIF(collider_selection_manifest_count, '') FROM discovery_findings WHERE finding_id = p_finding_id)), " collLatent=", LOOKUP("simpsons-paradox-v1", ModelSummary(SELECT NULLIF(model_summary_id, '') FROM discovery_findings WHERE finding_id = p_finding_id), ModelSummary(SELECT NULLIF(collider_selection_latent_only_count, '') FROM discovery_findings WHERE finding_id = p_finding_id)), " collN=", LOOKUP("simpsons-paradox-v1", ModelSummary(SELECT NULLIF(model_summary_id, '') FROM discovery_findings WHERE finding_id = p_finding_id), ModelSummary(SELECT NULLIF(collider_selection_count, '') FROM discovery_findings WHERE finding_id = p_finding_id))), ""))))))::text;
+  SELECT (IF((SELECT NULLIF(hypothesis_id, '') FROM discovery_findings WHERE finding_id = p_finding_id) = "H-latent-d", CONCAT("fraction=", LOOKUP("simpsons-paradox-v1", ModelSummary(SELECT NULLIF(model_summary_id, '') FROM discovery_findings WHERE finding_id = p_finding_id), ModelSummary(SELECT NULLIF(latent_type_d_fraction, '') FROM discovery_findings WHERE finding_id = p_finding_id))), IF((SELECT NULLIF(hypothesis_id, '') FROM discovery_findings WHERE finding_id = p_finding_id) = "H-purity", CONCAT("maxPurity=", LOOKUP("simpsons-paradox-v1", ModelSummary(SELECT NULLIF(model_summary_id, '') FROM discovery_findings WHERE finding_id = p_finding_id), ModelSummary(SELECT NULLIF(sign_flip_signal_purity_max, '') FROM discovery_findings WHERE finding_id = p_finding_id))), IF((SELECT NULLIF(hypothesis_id, '') FROM discovery_findings WHERE finding_id = p_finding_id) = "H-small-effect", CONCAT("stable=", LOOKUP("simpsons-paradox-v1", ModelSummary(SELECT NULLIF(model_summary_id, '') FROM discovery_findings WHERE finding_id = p_finding_id), ModelSummary(SELECT NULLIF(avg_pooled_gap_stable_d, '') FROM discovery_findings WHERE finding_id = p_finding_id)), " latent=", LOOKUP("simpsons-paradox-v1", ModelSummary(SELECT NULLIF(model_summary_id, '') FROM discovery_findings WHERE finding_id = p_finding_id), ModelSummary(SELECT NULLIF(avg_pooled_gap_latent_d, '') FROM discovery_findings WHERE finding_id = p_finding_id))), IF((SELECT NULLIF(hypothesis_id, '') FROM discovery_findings WHERE finding_id = p_finding_id) = "H-econ-zero", CONCAT("flips=", LOOKUP("simpsons-paradox-v1", ModelSummary(SELECT NULLIF(model_summary_id, '') FROM discovery_findings WHERE finding_id = p_finding_id), ModelSummary(SELECT NULLIF(economics_sign_flip_count, '') FROM discovery_findings WHERE finding_id = p_finding_id))), IF((SELECT NULLIF(hypothesis_id, '') FROM discovery_findings WHERE finding_id = p_finding_id) = "H-domain-dist", CONCAT("epi=", LOOKUP("simpsons-paradox-v1", ModelSummary(SELECT NULLIF(model_summary_id, '') FROM discovery_findings WHERE finding_id = p_finding_id), ModelSummary(SELECT NULLIF(epidemiology_avg_distortion, '') FROM discovery_findings WHERE finding_id = p_finding_id)), " edu=", LOOKUP("simpsons-paradox-v1", ModelSummary(SELECT NULLIF(model_summary_id, '') FROM discovery_findings WHERE finding_id = p_finding_id), ModelSummary(SELECT NULLIF(education_avg_distortion, '') FROM discovery_findings WHERE finding_id = p_finding_id))), IF((SELECT NULLIF(hypothesis_id, '') FROM discovery_findings WHERE finding_id = p_finding_id) = "H-causal-manifest", CONCAT("confLatent=", LOOKUP("simpsons-paradox-v1", ModelSummary(SELECT NULLIF(model_summary_id, '') FROM discovery_findings WHERE finding_id = p_finding_id), ModelSummary(SELECT NULLIF(confounder_latent_only_count, '') FROM discovery_findings WHERE finding_id = p_finding_id)), " confFlip=", LOOKUP("simpsons-paradox-v1", ModelSummary(SELECT NULLIF(model_summary_id, '') FROM discovery_findings WHERE finding_id = p_finding_id), ModelSummary(SELECT NULLIF(confounder_sign_flip_count, '') FROM discovery_findings WHERE finding_id = p_finding_id))), IF((SELECT NULLIF(hypothesis_id, '') FROM discovery_findings WHERE finding_id = p_finding_id) = "H-causal-latent", CONCAT("collManifest=", LOOKUP("simpsons-paradox-v1", ModelSummary(SELECT NULLIF(model_summary_id, '') FROM discovery_findings WHERE finding_id = p_finding_id), ModelSummary(SELECT NULLIF(collider_selection_manifest_count, '') FROM discovery_findings WHERE finding_id = p_finding_id)), " collLatent=", LOOKUP("simpsons-paradox-v1", ModelSummary(SELECT NULLIF(model_summary_id, '') FROM discovery_findings WHERE finding_id = p_finding_id), ModelSummary(SELECT NULLIF(collider_selection_latent_only_count, '') FROM discovery_findings WHERE finding_id = p_finding_id)), " collN=", LOOKUP("simpsons-paradox-v1", ModelSummary(SELECT NULLIF(model_summary_id, '') FROM discovery_findings WHERE finding_id = p_finding_id), ModelSummary(SELECT NULLIF(collider_selection_count, '') FROM discovery_findings WHERE finding_id = p_finding_id))), IF((SELECT NULLIF(hypothesis_id, '') FROM discovery_findings WHERE finding_id = p_finding_id) = "H-explained-confounder", CONCAT("ExplainedConfounderCount=", LOOKUP("simpsons-paradox-v1", ModelSummary(SELECT NULLIF(model_summary_id, '') FROM discovery_findings WHERE finding_id = p_finding_id), ModelSummary(SELECT NULLIF(explained_confounder_count, '') FROM discovery_findings WHERE finding_id = p_finding_id)), ", ConfounderSignFlipCount=", LOOKUP("simpsons-paradox-v1", ModelSummary(SELECT NULLIF(model_summary_id, '') FROM discovery_findings WHERE finding_id = p_finding_id), ModelSummary(SELECT NULLIF(confounder_sign_flip_count, '') FROM discovery_findings WHERE finding_id = p_finding_id))), IF((SELECT NULLIF(hypothesis_id, '') FROM discovery_findings WHERE finding_id = p_finding_id) = "H-unexplained-nonconfounder", CONCAT("ContestedOrMediatorExplainedCount=", LOOKUP("simpsons-paradox-v1", ModelSummary(SELECT NULLIF(model_summary_id, '') FROM discovery_findings WHERE finding_id = p_finding_id), ModelSummary(SELECT NULLIF(contested_or_mediator_explained_count, '') FROM discovery_findings WHERE finding_id = p_finding_id))), "")))))))::text;
 $$ LANGUAGE sql STABLE;
 
 -- calc_discovery_findings_is_confirmed
@@ -2463,7 +2693,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_discovery_findings_is_confirmed(p_finding_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (IF((SELECT NULLIF(hypothesis_id, '') FROM discovery_findings WHERE finding_id = p_finding_id) = "H-latent-d", LOOKUP("simpsons-paradox-v1", ModelSummary(SELECT NULLIF(model_summary_id, '') FROM discovery_findings WHERE finding_id = p_finding_id), ModelSummary(SELECT NULLIF(latent_type_d_fraction, '') FROM discovery_findings WHERE finding_id = p_finding_id)) > 0.5, IF((SELECT NULLIF(hypothesis_id, '') FROM discovery_findings WHERE finding_id = p_finding_id) = "H-purity", LOOKUP("simpsons-paradox-v1", ModelSummary(SELECT NULLIF(model_summary_id, '') FROM discovery_findings WHERE finding_id = p_finding_id), ModelSummary(SELECT NULLIF(sign_flip_signal_purity_max, '') FROM discovery_findings WHERE finding_id = p_finding_id)) < 0.5, IF((SELECT NULLIF(hypothesis_id, '') FROM discovery_findings WHERE finding_id = p_finding_id) = "H-small-effect", LOOKUP("simpsons-paradox-v1", ModelSummary(SELECT NULLIF(model_summary_id, '') FROM discovery_findings WHERE finding_id = p_finding_id), ModelSummary(SELECT NULLIF(avg_pooled_gap_stable_d, '') FROM discovery_findings WHERE finding_id = p_finding_id)) > LOOKUP("simpsons-paradox-v1", ModelSummary(SELECT NULLIF(model_summary_id, '') FROM discovery_findings WHERE finding_id = p_finding_id), ModelSummary(SELECT NULLIF(avg_pooled_gap_latent_d, '') FROM discovery_findings WHERE finding_id = p_finding_id)), IF((SELECT NULLIF(hypothesis_id, '') FROM discovery_findings WHERE finding_id = p_finding_id) = "H-econ-zero", LOOKUP("simpsons-paradox-v1", ModelSummary(SELECT NULLIF(model_summary_id, '') FROM discovery_findings WHERE finding_id = p_finding_id), ModelSummary(SELECT NULLIF(economics_sign_flip_count, '') FROM discovery_findings WHERE finding_id = p_finding_id)) = 0, IF((SELECT NULLIF(hypothesis_id, '') FROM discovery_findings WHERE finding_id = p_finding_id) = "H-domain-dist", LOOKUP("simpsons-paradox-v1", ModelSummary(SELECT NULLIF(model_summary_id, '') FROM discovery_findings WHERE finding_id = p_finding_id), ModelSummary(SELECT NULLIF(epidemiology_avg_distortion, '') FROM discovery_findings WHERE finding_id = p_finding_id)) > LOOKUP("simpsons-paradox-v1", ModelSummary(SELECT NULLIF(model_summary_id, '') FROM discovery_findings WHERE finding_id = p_finding_id), ModelSummary(SELECT NULLIF(education_avg_distortion, '') FROM discovery_findings WHERE finding_id = p_finding_id)), IF((SELECT NULLIF(hypothesis_id, '') FROM discovery_findings WHERE finding_id = p_finding_id) = "H-causal-manifest", AND(LOOKUP("simpsons-paradox-v1", ModelSummary(SELECT NULLIF(model_summary_id, '') FROM discovery_findings WHERE finding_id = p_finding_id), ModelSummary(SELECT NULLIF(confounder_sign_flip_count, '') FROM discovery_findings WHERE finding_id = p_finding_id)) > LOOKUP("simpsons-paradox-v1", ModelSummary(SELECT NULLIF(model_summary_id, '') FROM discovery_findings WHERE finding_id = p_finding_id), ModelSummary(SELECT NULLIF(collider_selection_manifest_count, '') FROM discovery_findings WHERE finding_id = p_finding_id)), LOOKUP("simpsons-paradox-v1", ModelSummary(SELECT NULLIF(model_summary_id, '') FROM discovery_findings WHERE finding_id = p_finding_id), ModelSummary(SELECT NULLIF(confounder_sign_flip_count, '') FROM discovery_findings WHERE finding_id = p_finding_id)) >= 10), IF((SELECT NULLIF(hypothesis_id, '') FROM discovery_findings WHERE finding_id = p_finding_id) = "H-causal-latent", AND(LOOKUP("simpsons-paradox-v1", ModelSummary(SELECT NULLIF(model_summary_id, '') FROM discovery_findings WHERE finding_id = p_finding_id), ModelSummary(SELECT NULLIF(collider_selection_manifest_count, '') FROM discovery_findings WHERE finding_id = p_finding_id)) = 0, LOOKUP("simpsons-paradox-v1", ModelSummary(SELECT NULLIF(model_summary_id, '') FROM discovery_findings WHERE finding_id = p_finding_id), ModelSummary(SELECT NULLIF(collider_selection_latent_only_count, '') FROM discovery_findings WHERE finding_id = p_finding_id)) >= 5), FALSE()))))))::boolean;
+  SELECT (IF((SELECT NULLIF(hypothesis_id, '') FROM discovery_findings WHERE finding_id = p_finding_id) = "H-latent-d", LOOKUP("simpsons-paradox-v1", ModelSummary(SELECT NULLIF(model_summary_id, '') FROM discovery_findings WHERE finding_id = p_finding_id), ModelSummary(SELECT NULLIF(latent_type_d_fraction, '') FROM discovery_findings WHERE finding_id = p_finding_id)) > 0.5, IF((SELECT NULLIF(hypothesis_id, '') FROM discovery_findings WHERE finding_id = p_finding_id) = "H-purity", LOOKUP("simpsons-paradox-v1", ModelSummary(SELECT NULLIF(model_summary_id, '') FROM discovery_findings WHERE finding_id = p_finding_id), ModelSummary(SELECT NULLIF(sign_flip_signal_purity_max, '') FROM discovery_findings WHERE finding_id = p_finding_id)) < 0.5, IF((SELECT NULLIF(hypothesis_id, '') FROM discovery_findings WHERE finding_id = p_finding_id) = "H-small-effect", LOOKUP("simpsons-paradox-v1", ModelSummary(SELECT NULLIF(model_summary_id, '') FROM discovery_findings WHERE finding_id = p_finding_id), ModelSummary(SELECT NULLIF(avg_pooled_gap_stable_d, '') FROM discovery_findings WHERE finding_id = p_finding_id)) > LOOKUP("simpsons-paradox-v1", ModelSummary(SELECT NULLIF(model_summary_id, '') FROM discovery_findings WHERE finding_id = p_finding_id), ModelSummary(SELECT NULLIF(avg_pooled_gap_latent_d, '') FROM discovery_findings WHERE finding_id = p_finding_id)), IF((SELECT NULLIF(hypothesis_id, '') FROM discovery_findings WHERE finding_id = p_finding_id) = "H-econ-zero", LOOKUP("simpsons-paradox-v1", ModelSummary(SELECT NULLIF(model_summary_id, '') FROM discovery_findings WHERE finding_id = p_finding_id), ModelSummary(SELECT NULLIF(economics_sign_flip_count, '') FROM discovery_findings WHERE finding_id = p_finding_id)) = 0, IF((SELECT NULLIF(hypothesis_id, '') FROM discovery_findings WHERE finding_id = p_finding_id) = "H-domain-dist", LOOKUP("simpsons-paradox-v1", ModelSummary(SELECT NULLIF(model_summary_id, '') FROM discovery_findings WHERE finding_id = p_finding_id), ModelSummary(SELECT NULLIF(epidemiology_avg_distortion, '') FROM discovery_findings WHERE finding_id = p_finding_id)) > LOOKUP("simpsons-paradox-v1", ModelSummary(SELECT NULLIF(model_summary_id, '') FROM discovery_findings WHERE finding_id = p_finding_id), ModelSummary(SELECT NULLIF(education_avg_distortion, '') FROM discovery_findings WHERE finding_id = p_finding_id)), IF((SELECT NULLIF(hypothesis_id, '') FROM discovery_findings WHERE finding_id = p_finding_id) = "H-causal-manifest", AND(LOOKUP("simpsons-paradox-v1", ModelSummary(SELECT NULLIF(model_summary_id, '') FROM discovery_findings WHERE finding_id = p_finding_id), ModelSummary(SELECT NULLIF(confounder_sign_flip_count, '') FROM discovery_findings WHERE finding_id = p_finding_id)) > LOOKUP("simpsons-paradox-v1", ModelSummary(SELECT NULLIF(model_summary_id, '') FROM discovery_findings WHERE finding_id = p_finding_id), ModelSummary(SELECT NULLIF(collider_selection_manifest_count, '') FROM discovery_findings WHERE finding_id = p_finding_id)), LOOKUP("simpsons-paradox-v1", ModelSummary(SELECT NULLIF(model_summary_id, '') FROM discovery_findings WHERE finding_id = p_finding_id), ModelSummary(SELECT NULLIF(confounder_sign_flip_count, '') FROM discovery_findings WHERE finding_id = p_finding_id)) >= 10), IF((SELECT NULLIF(hypothesis_id, '') FROM discovery_findings WHERE finding_id = p_finding_id) = "H-causal-latent", AND(LOOKUP("simpsons-paradox-v1", ModelSummary(SELECT NULLIF(model_summary_id, '') FROM discovery_findings WHERE finding_id = p_finding_id), ModelSummary(SELECT NULLIF(collider_selection_manifest_count, '') FROM discovery_findings WHERE finding_id = p_finding_id)) = 0, LOOKUP("simpsons-paradox-v1", ModelSummary(SELECT NULLIF(model_summary_id, '') FROM discovery_findings WHERE finding_id = p_finding_id), ModelSummary(SELECT NULLIF(collider_selection_latent_only_count, '') FROM discovery_findings WHERE finding_id = p_finding_id)) >= 5), IF((SELECT NULLIF(hypothesis_id, '') FROM discovery_findings WHERE finding_id = p_finding_id) = "H-explained-confounder", AND(LOOKUP("simpsons-paradox-v1", ModelSummary(SELECT NULLIF(model_summary_id, '') FROM discovery_findings WHERE finding_id = p_finding_id), ModelSummary(SELECT NULLIF(explained_confounder_count, '') FROM discovery_findings WHERE finding_id = p_finding_id)) = LOOKUP("simpsons-paradox-v1", ModelSummary(SELECT NULLIF(model_summary_id, '') FROM discovery_findings WHERE finding_id = p_finding_id), ModelSummary(SELECT NULLIF(confounder_sign_flip_count, '') FROM discovery_findings WHERE finding_id = p_finding_id)), LOOKUP("simpsons-paradox-v1", ModelSummary(SELECT NULLIF(model_summary_id, '') FROM discovery_findings WHERE finding_id = p_finding_id), ModelSummary(SELECT NULLIF(explained_confounder_count, '') FROM discovery_findings WHERE finding_id = p_finding_id)) >= 10), IF((SELECT NULLIF(hypothesis_id, '') FROM discovery_findings WHERE finding_id = p_finding_id) = "H-unexplained-nonconfounder", LOOKUP("simpsons-paradox-v1", ModelSummary(SELECT NULLIF(model_summary_id, '') FROM discovery_findings WHERE finding_id = p_finding_id), ModelSummary(SELECT NULLIF(contested_or_mediator_explained_count, '') FROM discovery_findings WHERE finding_id = p_finding_id)) = 0, FALSE()))))))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_discovery_findings_evidence
@@ -2474,6 +2704,16 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION calc_discovery_findings_evidence(p_finding_id TEXT)
 RETURNS TEXT AS $$
   SELECT (CASE WHEN calc_discovery_findings_is_confirmed(p_finding_id) = TRUE THEN (CONCAT('PASS: ', calc_discovery_findings_observed_metric(p_finding_id)))::text ELSE (CASE WHEN calc_discovery_findings_is_confirmed(p_finding_id) = FALSE THEN (CONCAT('FAIL: ', calc_discovery_findings_observed_metric(p_finding_id)))::text ELSE ('')::text END)::text END)::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_corpus_domains_name
+-- Field: CorpusDomains.Name
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_corpus_domains_name(p_domain_id TEXT)
+RETURNS TEXT AS $$
+  SELECT ((SELECT NULLIF(domain_id, '') FROM corpus_domains WHERE domain_id = p_domain_id))::text;
 $$ LANGUAGE sql STABLE;
 
 -- ============================================================================

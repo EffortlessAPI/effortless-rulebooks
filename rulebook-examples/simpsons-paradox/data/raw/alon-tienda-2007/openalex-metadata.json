@@ -1,0 +1,1436 @@
+{
+  "id": "https://openalex.org/W2138119583",
+  "doi": "https://doi.org/10.1093/sf/sou111",
+  "title": "Discrimination in the Credential Society: An Audit Study of Race and College Selectivity in the Labor Market",
+  "display_name": "Discrimination in the Credential Society: An Audit Study of Race and College Selectivity in the Labor Market",
+  "relevance_score": 44.624752,
+  "publication_year": 2014,
+  "publication_date": "2014-11-20",
+  "ids": {
+    "openalex": "https://openalex.org/W2138119583",
+    "doi": "https://doi.org/10.1093/sf/sou111",
+    "mag": "2138119583"
+  },
+  "language": "en",
+  "primary_location": {
+    "id": "doi:10.1093/sf/sou111",
+    "is_oa": true,
+    "landing_page_url": "https://doi.org/10.1093/sf/sou111",
+    "pdf_url": "https://academic.oup.com/sf/article-pdf/93/4/1451/17164384/sou111.pdf",
+    "source": {
+      "id": "https://openalex.org/S130611943",
+      "display_name": "Social Forces",
+      "issn_l": "0037-7732",
+      "issn": [
+        "0037-7732",
+        "1534-7605"
+      ],
+      "is_oa": false,
+      "is_in_doaj": false,
+      "is_core": true,
+      "host_organization": "https://openalex.org/P4310311648",
+      "host_organization_name": "Oxford University Press",
+      "host_organization_lineage": [
+        "https://openalex.org/P4310311648",
+        "https://openalex.org/P4310311647"
+      ],
+      "host_organization_lineage_names": [
+        "Oxford University Press",
+        "University of Oxford"
+      ],
+      "type": "journal"
+    },
+    "license": null,
+    "license_id": null,
+    "version": "publishedVersion",
+    "is_accepted": true,
+    "is_published": true,
+    "raw_source_name": "Social Forces",
+    "raw_type": "journal-article"
+  },
+  "type": "article",
+  "indexed_in": [
+    "crossref"
+  ],
+  "open_access": {
+    "is_oa": true,
+    "oa_status": "bronze",
+    "oa_url": "https://academic.oup.com/sf/article-pdf/93/4/1451/17164384/sou111.pdf",
+    "any_repository_has_fulltext": true
+  },
+  "authorships": [
+    {
+      "author_position": "first",
+      "author": {
+        "id": "https://openalex.org/A5079089942",
+        "display_name": "S. Michael Gaddis",
+        "orcid": "https://orcid.org/0000-0002-3467-878X"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I27837315",
+          "display_name": "University of Michigan\u2013Ann Arbor",
+          "ror": "https://ror.org/00jmfr291",
+          "country_code": "US",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I27837315"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I130769515",
+          "display_name": "Pennsylvania State University",
+          "ror": "https://ror.org/04p491231",
+          "country_code": "US",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I130769515"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": true,
+      "raw_author_name": "S. Michael Gaddis",
+      "raw_affiliation_strings": [
+        "University of Michigan and Pennsylvania State University"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "University of Michigan and Pennsylvania State University",
+          "institution_ids": [
+            "https://openalex.org/I130769515",
+            "https://openalex.org/I27837315"
+          ]
+        }
+      ]
+    }
+  ],
+  "institutions": [],
+  "countries_distinct_count": 1,
+  "institutions_distinct_count": 2,
+  "corresponding_author_ids": [
+    "https://openalex.org/A5079089942"
+  ],
+  "corresponding_institution_ids": [
+    "https://openalex.org/I130769515",
+    "https://openalex.org/I27837315"
+  ],
+  "apc_list": {
+    "value": 3802,
+    "currency": "USD",
+    "value_usd": 3802
+  },
+  "apc_paid": null,
+  "fwci": 65.0758,
+  "has_fulltext": true,
+  "cited_by_count": 408,
+  "citation_normalized_percentile": {
+    "value": 0.99887471,
+    "is_in_top_1_percent": true,
+    "is_in_top_10_percent": true
+  },
+  "cited_by_percentile_year": {
+    "min": 96,
+    "max": 100
+  },
+  "biblio": {
+    "volume": "93",
+    "issue": "4",
+    "first_page": "1451",
+    "last_page": "1479"
+  },
+  "is_retracted": false,
+  "is_paratext": false,
+  "is_xpac": false,
+  "primary_topic": {
+    "id": "https://openalex.org/T12970",
+    "display_name": "Names, Identity, and Discrimination Research",
+    "score": 0.9997000098228455,
+    "subfield": {
+      "id": "https://openalex.org/subfields/3312",
+      "display_name": "Sociology and Political Science"
+    },
+    "field": {
+      "id": "https://openalex.org/fields/33",
+      "display_name": "Social Sciences"
+    },
+    "domain": {
+      "id": "https://openalex.org/domains/2",
+      "display_name": "Social Sciences"
+    }
+  },
+  "topics": [
+    {
+      "id": "https://openalex.org/T12970",
+      "display_name": "Names, Identity, and Discrimination Research",
+      "score": 0.9997000098228455,
+      "subfield": {
+        "id": "https://openalex.org/subfields/3312",
+        "display_name": "Sociology and Political Science"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/33",
+        "display_name": "Social Sciences"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/2",
+        "display_name": "Social Sciences"
+      }
+    },
+    {
+      "id": "https://openalex.org/T10208",
+      "display_name": "Labor market dynamics and wage inequality",
+      "score": 0.9871000051498413,
+      "subfield": {
+        "id": "https://openalex.org/subfields/2002",
+        "display_name": "Economics and Econometrics"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/20",
+        "display_name": "Economics, Econometrics and Finance"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/2",
+        "display_name": "Social Sciences"
+      }
+    },
+    {
+      "id": "https://openalex.org/T11047",
+      "display_name": "Gender Diversity and Inequality",
+      "score": 0.9417999982833862,
+      "subfield": {
+        "id": "https://openalex.org/subfields/3318",
+        "display_name": "Gender Studies"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/33",
+        "display_name": "Social Sciences"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/2",
+        "display_name": "Social Sciences"
+      }
+    }
+  ],
+  "keywords": [
+    {
+      "id": "https://openalex.org/keywords/credential",
+      "display_name": "Credential",
+      "score": 0.784771203994751
+    },
+    {
+      "id": "https://openalex.org/keywords/elite",
+      "display_name": "Elite",
+      "score": 0.6989161968231201
+    },
+    {
+      "id": "https://openalex.org/keywords/human-capital",
+      "display_name": "Human capital",
+      "score": 0.6518982648849487
+    },
+    {
+      "id": "https://openalex.org/keywords/race",
+      "display_name": "Race (biology)",
+      "score": 0.5624436140060425
+    },
+    {
+      "id": "https://openalex.org/keywords/prestige",
+      "display_name": "Prestige",
+      "score": 0.5594092011451721
+    },
+    {
+      "id": "https://openalex.org/keywords/inequality",
+      "display_name": "Inequality",
+      "score": 0.5113582015037537
+    },
+    {
+      "id": "https://openalex.org/keywords/racism",
+      "display_name": "Racism",
+      "score": 0.511265754699707
+    },
+    {
+      "id": "https://openalex.org/keywords/demographic-economics",
+      "display_name": "Demographic economics",
+      "score": 0.4282100796699524
+    },
+    {
+      "id": "https://openalex.org/keywords/labour-economics",
+      "display_name": "Labour economics",
+      "score": 0.3990425169467926
+    },
+    {
+      "id": "https://openalex.org/keywords/political-science",
+      "display_name": "Political science",
+      "score": 0.3730314373970032
+    },
+    {
+      "id": "https://openalex.org/keywords/economics",
+      "display_name": "Economics",
+      "score": 0.3284955620765686
+    },
+    {
+      "id": "https://openalex.org/keywords/sociology",
+      "display_name": "Sociology",
+      "score": 0.3246549367904663
+    },
+    {
+      "id": "https://openalex.org/keywords/economic-growth",
+      "display_name": "Economic growth",
+      "score": 0.17946988344192505
+    },
+    {
+      "id": "https://openalex.org/keywords/gender-studies",
+      "display_name": "Gender studies",
+      "score": 0.17402994632720947
+    },
+    {
+      "id": "https://openalex.org/keywords/law",
+      "display_name": "Law",
+      "score": 0.14471283555030823
+    }
+  ],
+  "concepts": [
+    {
+      "id": "https://openalex.org/C2777810591",
+      "wikidata": "https://www.wikidata.org/wiki/Q16861606",
+      "display_name": "Credential",
+      "level": 2,
+      "score": 0.784771203994751
+    },
+    {
+      "id": "https://openalex.org/C2775987171",
+      "wikidata": "https://www.wikidata.org/wiki/Q192797",
+      "display_name": "Elite",
+      "level": 3,
+      "score": 0.6989161968231201
+    },
+    {
+      "id": "https://openalex.org/C2776943663",
+      "wikidata": "https://www.wikidata.org/wiki/Q165687",
+      "display_name": "Human capital",
+      "level": 2,
+      "score": 0.6518982648849487
+    },
+    {
+      "id": "https://openalex.org/C76509639",
+      "wikidata": "https://www.wikidata.org/wiki/Q918036",
+      "display_name": "Race (biology)",
+      "level": 2,
+      "score": 0.5624436140060425
+    },
+    {
+      "id": "https://openalex.org/C2778329345",
+      "wikidata": "https://www.wikidata.org/wiki/Q919978",
+      "display_name": "Prestige",
+      "level": 2,
+      "score": 0.5594092011451721
+    },
+    {
+      "id": "https://openalex.org/C45555294",
+      "wikidata": "https://www.wikidata.org/wiki/Q28113351",
+      "display_name": "Inequality",
+      "level": 2,
+      "score": 0.5113582015037537
+    },
+    {
+      "id": "https://openalex.org/C139838865",
+      "wikidata": "https://www.wikidata.org/wiki/Q8461",
+      "display_name": "Racism",
+      "level": 2,
+      "score": 0.511265754699707
+    },
+    {
+      "id": "https://openalex.org/C4249254",
+      "wikidata": "https://www.wikidata.org/wiki/Q3044431",
+      "display_name": "Demographic economics",
+      "level": 1,
+      "score": 0.4282100796699524
+    },
+    {
+      "id": "https://openalex.org/C145236788",
+      "wikidata": "https://www.wikidata.org/wiki/Q28161",
+      "display_name": "Labour economics",
+      "level": 1,
+      "score": 0.3990425169467926
+    },
+    {
+      "id": "https://openalex.org/C17744445",
+      "wikidata": "https://www.wikidata.org/wiki/Q36442",
+      "display_name": "Political science",
+      "level": 0,
+      "score": 0.3730314373970032
+    },
+    {
+      "id": "https://openalex.org/C162324750",
+      "wikidata": "https://www.wikidata.org/wiki/Q8134",
+      "display_name": "Economics",
+      "level": 0,
+      "score": 0.3284955620765686
+    },
+    {
+      "id": "https://openalex.org/C144024400",
+      "wikidata": "https://www.wikidata.org/wiki/Q21201",
+      "display_name": "Sociology",
+      "level": 0,
+      "score": 0.3246549367904663
+    },
+    {
+      "id": "https://openalex.org/C50522688",
+      "wikidata": "https://www.wikidata.org/wiki/Q189833",
+      "display_name": "Economic growth",
+      "level": 1,
+      "score": 0.17946988344192505
+    },
+    {
+      "id": "https://openalex.org/C107993555",
+      "wikidata": "https://www.wikidata.org/wiki/Q1662673",
+      "display_name": "Gender studies",
+      "level": 1,
+      "score": 0.17402994632720947
+    },
+    {
+      "id": "https://openalex.org/C199539241",
+      "wikidata": "https://www.wikidata.org/wiki/Q7748",
+      "display_name": "Law",
+      "level": 1,
+      "score": 0.14471283555030823
+    },
+    {
+      "id": "https://openalex.org/C94625758",
+      "wikidata": "https://www.wikidata.org/wiki/Q7163",
+      "display_name": "Politics",
+      "level": 2,
+      "score": 0.0
+    },
+    {
+      "id": "https://openalex.org/C138885662",
+      "wikidata": "https://www.wikidata.org/wiki/Q5891",
+      "display_name": "Philosophy",
+      "level": 0,
+      "score": 0.0
+    },
+    {
+      "id": "https://openalex.org/C134306372",
+      "wikidata": "https://www.wikidata.org/wiki/Q7754",
+      "display_name": "Mathematical analysis",
+      "level": 1,
+      "score": 0.0
+    },
+    {
+      "id": "https://openalex.org/C41895202",
+      "wikidata": "https://www.wikidata.org/wiki/Q8162",
+      "display_name": "Linguistics",
+      "level": 1,
+      "score": 0.0
+    },
+    {
+      "id": "https://openalex.org/C33923547",
+      "wikidata": "https://www.wikidata.org/wiki/Q395",
+      "display_name": "Mathematics",
+      "level": 0,
+      "score": 0.0
+    }
+  ],
+  "mesh": [],
+  "locations_count": 6,
+  "locations": [
+    {
+      "id": "doi:10.1093/sf/sou111",
+      "is_oa": true,
+      "landing_page_url": "https://doi.org/10.1093/sf/sou111",
+      "pdf_url": "https://academic.oup.com/sf/article-pdf/93/4/1451/17164384/sou111.pdf",
+      "source": {
+        "id": "https://openalex.org/S130611943",
+        "display_name": "Social Forces",
+        "issn_l": "0037-7732",
+        "issn": [
+          "0037-7732",
+          "1534-7605"
+        ],
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": true,
+        "host_organization": "https://openalex.org/P4310311648",
+        "host_organization_name": "Oxford University Press",
+        "host_organization_lineage": [
+          "https://openalex.org/P4310311648",
+          "https://openalex.org/P4310311647"
+        ],
+        "host_organization_lineage_names": [
+          "Oxford University Press",
+          "University of Oxford"
+        ],
+        "type": "journal"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "publishedVersion",
+      "is_accepted": true,
+      "is_published": true,
+      "raw_source_name": "Social Forces",
+      "raw_type": "journal-article"
+    },
+    {
+      "id": "pmh:oai:muse.jhu.edu:/article/581908",
+      "is_oa": false,
+      "landing_page_url": "https://muse.jhu.edu/article/581908",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4377196299",
+        "display_name": "Project Muse (Johns Hopkins University)",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I145311948",
+        "host_organization_name": "Johns Hopkins University",
+        "host_organization_lineage": [
+          "https://openalex.org/I145311948"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "submittedVersion",
+      "is_accepted": false,
+      "is_published": false,
+      "raw_source_name": "",
+      "raw_type": "text"
+    },
+    {
+      "id": "pmh:oai:RePEc:osf:socarx:6qjue",
+      "is_oa": false,
+      "landing_page_url": "https://osf.io/download/5add01e0b855b8000cfd7c69/",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4306401271",
+        "display_name": "RePEc: Research Papers in Economics",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I77793887",
+        "host_organization_name": "Federal Reserve Bank of St. Louis",
+        "host_organization_lineage": [
+          "https://openalex.org/I77793887"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "submittedVersion",
+      "is_accepted": false,
+      "is_published": false,
+      "raw_source_name": null,
+      "raw_type": "preprint"
+    },
+    {
+      "id": "pmh:oai:share.osf.io:296c167b-1547-46ef-823e-f2fbb9aea3a9",
+      "is_oa": true,
+      "landing_page_url": "https://osf.io/neu3g",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4306401127",
+        "display_name": "OSF Preprints (OSF Preprints)",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I2799848540",
+        "host_organization_name": "Center for Open Science",
+        "host_organization_lineage": [
+          "https://openalex.org/I2799848540"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": "cc-by",
+      "license_id": "https://openalex.org/licenses/cc-by",
+      "version": "submittedVersion",
+      "is_accepted": false,
+      "is_published": false,
+      "raw_source_name": null,
+      "raw_type": "Project"
+    },
+    {
+      "id": "pmh:oai:share.osf.io:4607D-E50-22F",
+      "is_oa": false,
+      "landing_page_url": "http://api.osf.io/v2/nodes/neu3g/",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4306401127",
+        "display_name": "OSF Preprints (OSF Preprints)",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I2799848540",
+        "host_organization_name": "Center for Open Science",
+        "host_organization_lineage": [
+          "https://openalex.org/I2799848540"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "submittedVersion",
+      "is_accepted": false,
+      "is_published": false,
+      "raw_source_name": "",
+      "raw_type": "project"
+    },
+    {
+      "id": "pmh:oai:share.osf.io:46114-06D-55A",
+      "is_oa": false,
+      "landing_page_url": "http://doi.org/10.1093/SF/SOU111",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4306401238",
+        "display_name": "SocArXiv (OSF Preprints)",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I2799848540",
+        "host_organization_name": "Center for Open Science",
+        "host_organization_lineage": [
+          "https://openalex.org/I2799848540"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "submittedVersion",
+      "is_accepted": false,
+      "is_published": false,
+      "raw_source_name": "",
+      "raw_type": "article"
+    }
+  ],
+  "best_oa_location": {
+    "id": "doi:10.1093/sf/sou111",
+    "is_oa": true,
+    "landing_page_url": "https://doi.org/10.1093/sf/sou111",
+    "pdf_url": "https://academic.oup.com/sf/article-pdf/93/4/1451/17164384/sou111.pdf",
+    "source": {
+      "id": "https://openalex.org/S130611943",
+      "display_name": "Social Forces",
+      "issn_l": "0037-7732",
+      "issn": [
+        "0037-7732",
+        "1534-7605"
+      ],
+      "is_oa": false,
+      "is_in_doaj": false,
+      "is_core": true,
+      "host_organization": "https://openalex.org/P4310311648",
+      "host_organization_name": "Oxford University Press",
+      "host_organization_lineage": [
+        "https://openalex.org/P4310311648",
+        "https://openalex.org/P4310311647"
+      ],
+      "host_organization_lineage_names": [
+        "Oxford University Press",
+        "University of Oxford"
+      ],
+      "type": "journal"
+    },
+    "license": null,
+    "license_id": null,
+    "version": "publishedVersion",
+    "is_accepted": true,
+    "is_published": true,
+    "raw_source_name": "Social Forces",
+    "raw_type": "journal-article"
+  },
+  "sustainable_development_goals": [],
+  "awards": [],
+  "funders": [
+    {
+      "id": "https://openalex.org/F4320309652",
+      "display_name": "University of Michigan",
+      "ror": "https://ror.org/00jmfr291"
+    },
+    {
+      "id": "https://openalex.org/F4320314633",
+      "display_name": "National Academy of Education",
+      "ror": "https://ror.org/02530bn33"
+    },
+    {
+      "id": "https://openalex.org/F4320332600",
+      "display_name": "University of North Carolina at Chapel Hill",
+      "ror": "https://ror.org/0130frc33"
+    }
+  ],
+  "has_content": {
+    "grobid_xml": true,
+    "pdf": true
+  },
+  "content_urls": {
+    "pdf": "https://content.openalex.org/works/W2138119583.pdf",
+    "grobid_xml": "https://content.openalex.org/works/W2138119583.grobid-xml"
+  },
+  "referenced_works_count": 144,
+  "referenced_works": [
+    "https://openalex.org/W39255938",
+    "https://openalex.org/W42974357",
+    "https://openalex.org/W74082501",
+    "https://openalex.org/W198559013",
+    "https://openalex.org/W375498494",
+    "https://openalex.org/W414933132",
+    "https://openalex.org/W569063434",
+    "https://openalex.org/W585982905",
+    "https://openalex.org/W586962088",
+    "https://openalex.org/W609168104",
+    "https://openalex.org/W637400936",
+    "https://openalex.org/W644188121",
+    "https://openalex.org/W1278317338",
+    "https://openalex.org/W1492067322",
+    "https://openalex.org/W1517094287",
+    "https://openalex.org/W1520081999",
+    "https://openalex.org/W1521746401",
+    "https://openalex.org/W1534306777",
+    "https://openalex.org/W1545957794",
+    "https://openalex.org/W1553823220",
+    "https://openalex.org/W1556513643",
+    "https://openalex.org/W1569508051",
+    "https://openalex.org/W1570954603",
+    "https://openalex.org/W1577632216",
+    "https://openalex.org/W1582840427",
+    "https://openalex.org/W1598452864",
+    "https://openalex.org/W1600300577",
+    "https://openalex.org/W1604231444",
+    "https://openalex.org/W1719733842",
+    "https://openalex.org/W1960328797",
+    "https://openalex.org/W1965968147",
+    "https://openalex.org/W1966429757",
+    "https://openalex.org/W1968152680",
+    "https://openalex.org/W1973424936",
+    "https://openalex.org/W1973645912",
+    "https://openalex.org/W1976833585",
+    "https://openalex.org/W1976888500",
+    "https://openalex.org/W1979153131",
+    "https://openalex.org/W1987724300",
+    "https://openalex.org/W1987831958",
+    "https://openalex.org/W1990150066",
+    "https://openalex.org/W1992746671",
+    "https://openalex.org/W1994724028",
+    "https://openalex.org/W1995082521",
+    "https://openalex.org/W1998067945",
+    "https://openalex.org/W1998250792",
+    "https://openalex.org/W1998865302",
+    "https://openalex.org/W2011594816",
+    "https://openalex.org/W2017013274",
+    "https://openalex.org/W2018465418",
+    "https://openalex.org/W2018704161",
+    "https://openalex.org/W2024692342",
+    "https://openalex.org/W2025641724",
+    "https://openalex.org/W2030518949",
+    "https://openalex.org/W2031804705",
+    "https://openalex.org/W2038324857",
+    "https://openalex.org/W2038421557",
+    "https://openalex.org/W2040028915",
+    "https://openalex.org/W2040409819",
+    "https://openalex.org/W2041038992",
+    "https://openalex.org/W2042671272",
+    "https://openalex.org/W2046457125",
+    "https://openalex.org/W2048899167",
+    "https://openalex.org/W2051912156",
+    "https://openalex.org/W2054352058",
+    "https://openalex.org/W2054548986",
+    "https://openalex.org/W2055947654",
+    "https://openalex.org/W2057190246",
+    "https://openalex.org/W2058260357",
+    "https://openalex.org/W2067135016",
+    "https://openalex.org/W2067451327",
+    "https://openalex.org/W2071122767",
+    "https://openalex.org/W2071459693",
+    "https://openalex.org/W2073582242",
+    "https://openalex.org/W2076503669",
+    "https://openalex.org/W2076575187",
+    "https://openalex.org/W2083296214",
+    "https://openalex.org/W2087491280",
+    "https://openalex.org/W2090949540",
+    "https://openalex.org/W2094390583",
+    "https://openalex.org/W2094975045",
+    "https://openalex.org/W2097284315",
+    "https://openalex.org/W2103172460",
+    "https://openalex.org/W2104467519",
+    "https://openalex.org/W2108964962",
+    "https://openalex.org/W2113095718",
+    "https://openalex.org/W2115442698",
+    "https://openalex.org/W2116255638",
+    "https://openalex.org/W2116426557",
+    "https://openalex.org/W2118277131",
+    "https://openalex.org/W2126179497",
+    "https://openalex.org/W2132940500",
+    "https://openalex.org/W2133910798",
+    "https://openalex.org/W2135051940",
+    "https://openalex.org/W2137695232",
+    "https://openalex.org/W2138690450",
+    "https://openalex.org/W2143568087",
+    "https://openalex.org/W2144595308",
+    "https://openalex.org/W2145461556",
+    "https://openalex.org/W2150474429",
+    "https://openalex.org/W2152972898",
+    "https://openalex.org/W2157958275",
+    "https://openalex.org/W2158460690",
+    "https://openalex.org/W2162075074",
+    "https://openalex.org/W2166257424",
+    "https://openalex.org/W2169094287",
+    "https://openalex.org/W2169177526",
+    "https://openalex.org/W2260600530",
+    "https://openalex.org/W2317047917",
+    "https://openalex.org/W2318713113",
+    "https://openalex.org/W2328146927",
+    "https://openalex.org/W2514244442",
+    "https://openalex.org/W2620626604",
+    "https://openalex.org/W2766060102",
+    "https://openalex.org/W2883536225",
+    "https://openalex.org/W2888937404",
+    "https://openalex.org/W2911355632",
+    "https://openalex.org/W2949691652",
+    "https://openalex.org/W2970684068",
+    "https://openalex.org/W3021639553",
+    "https://openalex.org/W3023477630",
+    "https://openalex.org/W3121305606",
+    "https://openalex.org/W3122111427",
+    "https://openalex.org/W3123135512",
+    "https://openalex.org/W3123143221",
+    "https://openalex.org/W3123223998",
+    "https://openalex.org/W3123971517",
+    "https://openalex.org/W3124820783",
+    "https://openalex.org/W3125039175",
+    "https://openalex.org/W3125359726",
+    "https://openalex.org/W3128631334",
+    "https://openalex.org/W3160714932",
+    "https://openalex.org/W3163865098",
+    "https://openalex.org/W4206911298",
+    "https://openalex.org/W4230709502",
+    "https://openalex.org/W4240261866",
+    "https://openalex.org/W4245918069",
+    "https://openalex.org/W4251381017",
+    "https://openalex.org/W4285719527",
+    "https://openalex.org/W4298784436",
+    "https://openalex.org/W6608006846",
+    "https://openalex.org/W6631107408",
+    "https://openalex.org/W6641004284",
+    "https://openalex.org/W7028028672"
+  ],
+  "related_works": [
+    "https://openalex.org/W2389256677",
+    "https://openalex.org/W2353766896",
+    "https://openalex.org/W2013502867",
+    "https://openalex.org/W1859642347",
+    "https://openalex.org/W1806141658",
+    "https://openalex.org/W2123415650",
+    "https://openalex.org/W4387081478",
+    "https://openalex.org/W1986630940",
+    "https://openalex.org/W2071043234",
+    "https://openalex.org/W1992969537"
+  ],
+  "abstract_inverted_index": {
+    "Racial": [
+      0
+    ],
+    "inequality": [
+      1,
+      18
+    ],
+    "in": [
+      2,
+      23,
+      49,
+      62,
+      115,
+      140,
+      166,
+      213,
+      222
+    ],
+    "economic": [
+      3,
+      228
+    ],
+    "outcomes,": [
+      4
+    ],
+    "particularly": [
+      5
+    ],
+    "among": [
+      6
+    ],
+    "the": [
+      7,
+      46,
+      57,
+      209,
+      214
+    ],
+    "college": [
+      8,
+      27,
+      30
+    ],
+    "educated,": [
+      9
+    ],
+    "persists": [
+      10
+    ],
+    "throughout": [
+      11
+    ],
+    "US": [
+      12
+    ],
+    "society.": [
+      13
+    ],
+    "Scholars": [
+      14
+    ],
+    "debate": [
+      15
+    ],
+    "whether": [
+      16
+    ],
+    "this": [
+      17,
+      69
+    ],
+    "stems": [
+      19
+    ],
+    "from": [
+      20,
+      135,
+      149,
+      159,
+      202
+    ],
+    "racial": [
+      21,
+      60,
+      193,
+      227
+    ],
+    "differences": [
+      22,
+      61,
+      121,
+      194,
+      221
+    ],
+    "human": [
+      24,
+      43,
+      223
+    ],
+    "capital": [
+      25,
+      44,
+      224
+    ],
+    "(e.g.,": [
+      26
+    ],
+    "selectivity,": [
+      28
+    ],
+    "GPA,": [
+      29
+    ],
+    "major)": [
+      31
+    ],
+    "or": [
+      32
+    ],
+    "employer": [
+      33,
+      142
+    ],
+    "discrimination": [
+      34,
+      51,
+      219
+    ],
+    "against": [
+      35
+    ],
+    "black": [
+      36,
+      78,
+      147,
+      174
+    ],
+    "job": [
+      37
+    ],
+    "candidates.": [
+      38
+    ],
+    "However,": [
+      39
+    ],
+    "limited": [
+      40
+    ],
+    "measures": [
+      41
+    ],
+    "of": [
+      42,
+      59,
+      80,
+      189,
+      211
+    ],
+    "and": [
+      45,
+      77,
+      99,
+      184,
+      220
+    ],
+    "inherent": [
+      47
+    ],
+    "difficulties": [
+      48
+    ],
+    "measuring": [
+      50
+    ],
+    "using": [
+      52
+    ],
+    "observational": [
+      53
+    ],
+    "data": [
+      54,
+      114
+    ],
+    "make": [
+      55
+    ],
+    "determining": [
+      56
+    ],
+    "cause": [
+      58
+    ],
+    "labor-market": [
+      63
+    ],
+    "outcomes": [
+      64
+    ],
+    "a": [
+      65,
+      105,
+      133,
+      167,
+      197
+    ],
+    "difficult": [
+      66
+    ],
+    "endeavor.": [
+      67
+    ],
+    "In": [
+      68
+    ],
+    "research,": [
+      70
+    ],
+    "I": [
+      71,
+      94,
+      109
+    ],
+    "examine": [
+      72
+    ],
+    "employment": [
+      73
+    ],
+    "opportunities": [
+      74
+    ],
+    "for": [
+      75,
+      101,
+      120,
+      144,
+      178
+    ],
+    "white": [
+      76,
+      157,
+      190
+    ],
+    "graduates": [
+      79
+    ],
+    "elite": [
+      81,
+      137,
+      150,
+      204
+    ],
+    "top-ranked": [
+      82
+    ],
+    "universities": [
+      83,
+      151
+    ],
+    "versus": [
+      84
+    ],
+    "high-ranked": [
+      85
+    ],
+    "but": [
+      86
+    ],
+    "less": [
+      87,
+      160
+    ],
+    "selective": [
+      88,
+      161
+    ],
+    "institutions.": [
+      89
+    ],
+    "Using": [
+      90
+    ],
+    "an": [
+      91,
+      136,
+      203
+    ],
+    "audit": [
+      92
+    ],
+    "design,": [
+      93
+    ],
+    "create": [
+      95
+    ],
+    "matched": [
+      96
+    ],
+    "candidate": [
+      97
+    ],
+    "pairs": [
+      98
+    ],
+    "apply": [
+      100
+    ],
+    "1,008": [
+      102
+    ],
+    "jobs": [
+      103,
+      179
+    ],
+    "on": [
+      104
+    ],
+    "national": [
+      106
+    ],
+    "job-search": [
+      107
+    ],
+    "website.": [
+      108
+    ],
+    "also": [
+      110
+    ],
+    "exploit": [
+      111
+    ],
+    "existing": [
+      112
+    ],
+    "birth-record": [
+      113
+    ],
+    "selecting": [
+      116
+    ],
+    "names": [
+      117
+    ],
+    "to": [
+      118,
+      173,
+      226
+    ],
+    "control": [
+      119
+    ],
+    "across": [
+      122
+    ],
+    "social": [
+      123
+    ],
+    "class": [
+      124
+    ],
+    "within": [
+      125
+    ],
+    "racialized": [
+      126
+    ],
+    "names.": [
+      127
+    ],
+    "The": [
+      128
+    ],
+    "results": [
+      129,
+      139,
+      165
+    ],
+    "show": [
+      130
+    ],
+    "that": [
+      131,
+      196
+    ],
+    "although": [
+      132
+    ],
+    "credential": [
+      134
+    ],
+    "university": [
+      138
+    ],
+    "more": [
+      141
+    ],
+    "responses": [
+      143
+    ],
+    "all": [
+      145
+    ],
+    "candidates,": [
+      146,
+      175
+    ],
+    "candidates": [
+      148,
+      158
+    ],
+    "only": [
+      152
+    ],
+    "do": [
+      153
+    ],
+    "as": [
+      154,
+      156
+    ],
+    "well": [
+      155
+    ],
+    "universities.": [
+      162
+    ],
+    "Moreover,": [
+      163
+    ],
+    "race": [
+      164,
+      212
+    ],
+    "double": [
+      168
+    ],
+    "penalty:": [
+      169
+    ],
+    "When": [
+      170
+    ],
+    "employers": [
+      171
+    ],
+    "respond": [
+      172
+    ],
+    "it": [
+      176
+    ],
+    "is": [
+      177
+    ],
+    "with": [
+      180
+    ],
+    "lower": [
+      181,
+      185
+    ],
+    "starting": [
+      182
+    ],
+    "salaries": [
+      183
+    ],
+    "prestige": [
+      186
+    ],
+    "than": [
+      187
+    ],
+    "those": [
+      188
+    ],
+    "peers.": [
+      191
+    ],
+    "These": [
+      192
+    ],
+    "suggest": [
+      195
+    ],
+    "bachelor's": [
+      198
+    ],
+    "degree,": [
+      199
+    ],
+    "even": [
+      200
+    ],
+    "one": [
+      201
+    ],
+    "institution,": [
+      205
+    ],
+    "cannot": [
+      206
+    ],
+    "fully": [
+      207
+    ],
+    "counteract": [
+      208
+    ],
+    "importance": [
+      210
+    ],
+    "labor": [
+      215
+    ],
+    "market.": [
+      216
+    ],
+    "Thus,": [
+      217
+    ],
+    "both": [
+      218
+    ],
+    "contribute": [
+      225
+    ],
+    "inequality.": [
+      229
+    ]
+  },
+  "counts_by_year": [
+    {
+      "year": 2026,
+      "cited_by_count": 12
+    },
+    {
+      "year": 2025,
+      "cited_by_count": 26
+    },
+    {
+      "year": 2024,
+      "cited_by_count": 37
+    },
+    {
+      "year": 2023,
+      "cited_by_count": 50
+    },
+    {
+      "year": 2022,
+      "cited_by_count": 56
+    },
+    {
+      "year": 2021,
+      "cited_by_count": 50
+    },
+    {
+      "year": 2020,
+      "cited_by_count": 33
+    },
+    {
+      "year": 2019,
+      "cited_by_count": 40
+    },
+    {
+      "year": 2018,
+      "cited_by_count": 46
+    },
+    {
+      "year": 2017,
+      "cited_by_count": 32
+    },
+    {
+      "year": 2016,
+      "cited_by_count": 18
+    },
+    {
+      "year": 2015,
+      "cited_by_count": 5
+    },
+    {
+      "year": 2014,
+      "cited_by_count": 3
+    }
+  ],
+  "updated_date": "2026-06-30T13:55:48.251075",
+  "created_date": "2025-10-10T00:00:00"
+}

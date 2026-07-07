@@ -115,9 +115,6 @@ export function WeightsView() {
     buildWeightChart(canvasBRef.current, chartBRef, rowsB, ranking.treatment_b, 'allocation_fraction_b', '#d2a8ff');
   }, [summaries, ranking]);
 
-  const pooledFromWeightsA = (ranking as TreatmentRanking & { pooled_rate_from_weights_a?: number })
-    .pooled_rate_from_weights_a;
-
   return (
     <div>
       <div className="page-title">Allocation Weights</div>
@@ -208,7 +205,7 @@ export function WeightsView() {
             <div className="stat-row">
               <span className="stat-label">Pooled rate A (from weights)</span>
               <span className="stat-value">
-                <TrCell col="pooled_rate_from_weights_a">{pct(pooledFromWeightsA ?? null)}</TrCell>
+                <TrCell col="pooled_rate_from_weights_a">{pct(ranking.pooled_rate_from_weights_a)}</TrCell>
               </span>
             </div>
             <div className="stat-row">

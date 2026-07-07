@@ -1,0 +1,2944 @@
+{
+  "id": "https://openalex.org/W3015792206",
+  "doi": "https://doi.org/10.1001/jama.2020.6130",
+  "title": "Association of Public Health Interventions With the Epidemiology of the COVID-19 Outbreak in Wuhan, China",
+  "display_name": "Association of Public Health Interventions With the Epidemiology of the COVID-19 Outbreak in Wuhan, China",
+  "relevance_score": 653.4542,
+  "publication_year": 2020,
+  "publication_date": "2020-04-10",
+  "ids": {
+    "openalex": "https://openalex.org/W3015792206",
+    "doi": "https://doi.org/10.1001/jama.2020.6130",
+    "mag": "3015792206",
+    "pmid": "https://pubmed.ncbi.nlm.nih.gov/32275295"
+  },
+  "language": "en",
+  "primary_location": {
+    "id": "doi:10.1001/jama.2020.6130",
+    "is_oa": true,
+    "landing_page_url": "https://doi.org/10.1001/jama.2020.6130",
+    "pdf_url": "https://jamanetwork.com/journals/jama/articlepdf/2764658/jama_pan_2020_oi_200040.pdf",
+    "source": {
+      "id": "https://openalex.org/S172573765",
+      "display_name": "JAMA",
+      "issn_l": "0098-7484",
+      "issn": [
+        "0098-7484",
+        "1538-3598"
+      ],
+      "is_oa": false,
+      "is_in_doaj": false,
+      "is_core": true,
+      "host_organization": "https://openalex.org/P4310320259",
+      "host_organization_name": "American Medical Association",
+      "host_organization_lineage": [
+        "https://openalex.org/P4310320259"
+      ],
+      "host_organization_lineage_names": [
+        "American Medical Association"
+      ],
+      "type": "journal"
+    },
+    "license": null,
+    "license_id": null,
+    "version": "publishedVersion",
+    "is_accepted": true,
+    "is_published": true,
+    "raw_source_name": "JAMA",
+    "raw_type": "journal-article"
+  },
+  "type": "article",
+  "indexed_in": [
+    "crossref",
+    "pubmed"
+  ],
+  "open_access": {
+    "is_oa": true,
+    "oa_status": "bronze",
+    "oa_url": "https://jamanetwork.com/journals/jama/articlepdf/2764658/jama_pan_2020_oi_200040.pdf",
+    "any_repository_has_fulltext": true
+  },
+  "authorships": [
+    {
+      "author_position": "first",
+      "author": {
+        "id": "https://openalex.org/A5114376311",
+        "display_name": "An Pan",
+        "orcid": "https://orcid.org/0000-0002-1089-7945"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I47720641",
+          "display_name": "Huazhong University of Science and Technology",
+          "ror": "https://ror.org/00p991c53",
+          "country_code": "CN",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I47720641"
+          ]
+        }
+      ],
+      "countries": [
+        "CN"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "An Pan",
+      "raw_affiliation_strings": [
+        "Department of Epidemiology and Biostatistics, School of Public Health, Tongji Medical College, Huazhong University of Science and Technology, Wuhan, China"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Department of Epidemiology and Biostatistics, School of Public Health, Tongji Medical College, Huazhong University of Science and Technology, Wuhan, China",
+          "institution_ids": [
+            "https://openalex.org/I47720641"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5100418746",
+        "display_name": "Li Liu",
+        "orcid": "https://orcid.org/0000-0001-8512-8676"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I47720641",
+          "display_name": "Huazhong University of Science and Technology",
+          "ror": "https://ror.org/00p991c53",
+          "country_code": "CN",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I47720641"
+          ]
+        }
+      ],
+      "countries": [
+        "CN"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Li Liu",
+      "raw_affiliation_strings": [
+        "Department of Epidemiology and Biostatistics, School of Public Health, Tongji Medical College, Huazhong University of Science and Technology, Wuhan, China"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Department of Epidemiology and Biostatistics, School of Public Health, Tongji Medical College, Huazhong University of Science and Technology, Wuhan, China",
+          "institution_ids": [
+            "https://openalex.org/I47720641"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5028963399",
+        "display_name": "Chaolong Wang",
+        "orcid": "https://orcid.org/0000-0003-3945-1012"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I47720641",
+          "display_name": "Huazhong University of Science and Technology",
+          "ror": "https://ror.org/00p991c53",
+          "country_code": "CN",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I47720641"
+          ]
+        }
+      ],
+      "countries": [
+        "CN"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Chaolong Wang",
+      "raw_affiliation_strings": [
+        "Department of Epidemiology and Biostatistics, School of Public Health, Tongji Medical College, Huazhong University of Science and Technology, Wuhan, China"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Department of Epidemiology and Biostatistics, School of Public Health, Tongji Medical College, Huazhong University of Science and Technology, Wuhan, China",
+          "institution_ids": [
+            "https://openalex.org/I47720641"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5022245538",
+        "display_name": "Huan Guo",
+        "orcid": "https://orcid.org/0000-0002-7838-2585"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I47720641",
+          "display_name": "Huazhong University of Science and Technology",
+          "ror": "https://ror.org/00p991c53",
+          "country_code": "CN",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I47720641"
+          ]
+        }
+      ],
+      "countries": [
+        "CN"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Huan Guo",
+      "raw_affiliation_strings": [
+        "Department of Occupational and Environmental Health, Ministry of Education Key Laboratory of Environment and Health, and State Key Laboratory of Environmental Health (Incubating), School of Public Health, Tongji Medical College, Huazhong University of Science and Technology, Wuhan, China"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Department of Occupational and Environmental Health, Ministry of Education Key Laboratory of Environment and Health, and State Key Laboratory of Environmental Health (Incubating), School of Public Health, Tongji Medical College, Huazhong University of Science and Technology, Wuhan, China",
+          "institution_ids": [
+            "https://openalex.org/I47720641"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5008474331",
+        "display_name": "Xingjie Hao",
+        "orcid": "https://orcid.org/0000-0003-1535-9860"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I47720641",
+          "display_name": "Huazhong University of Science and Technology",
+          "ror": "https://ror.org/00p991c53",
+          "country_code": "CN",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I47720641"
+          ]
+        }
+      ],
+      "countries": [
+        "CN"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Xingjie Hao",
+      "raw_affiliation_strings": [
+        "Department of Epidemiology and Biostatistics, School of Public Health, Tongji Medical College, Huazhong University of Science and Technology, Wuhan, China"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Department of Epidemiology and Biostatistics, School of Public Health, Tongji Medical College, Huazhong University of Science and Technology, Wuhan, China",
+          "institution_ids": [
+            "https://openalex.org/I47720641"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5086654710",
+        "display_name": "Qi Wang",
+        "orcid": "https://orcid.org/0000-0002-7091-5666"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I47720641",
+          "display_name": "Huazhong University of Science and Technology",
+          "ror": "https://ror.org/00p991c53",
+          "country_code": "CN",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I47720641"
+          ]
+        }
+      ],
+      "countries": [
+        "CN"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Qi Wang",
+      "raw_affiliation_strings": [
+        "Department of Epidemiology and Biostatistics, School of Public Health, Tongji Medical College, Huazhong University of Science and Technology, Wuhan, China"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Department of Epidemiology and Biostatistics, School of Public Health, Tongji Medical College, Huazhong University of Science and Technology, Wuhan, China",
+          "institution_ids": [
+            "https://openalex.org/I47720641"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5101527535",
+        "display_name": "Jiao Huang",
+        "orcid": "https://orcid.org/0000-0001-9344-2833"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I47720641",
+          "display_name": "Huazhong University of Science and Technology",
+          "ror": "https://ror.org/00p991c53",
+          "country_code": "CN",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I47720641"
+          ]
+        }
+      ],
+      "countries": [
+        "CN"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Jiao Huang",
+      "raw_affiliation_strings": [
+        "Department of Epidemiology and Biostatistics, School of Public Health, Tongji Medical College, Huazhong University of Science and Technology, Wuhan, China"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Department of Epidemiology and Biostatistics, School of Public Health, Tongji Medical College, Huazhong University of Science and Technology, Wuhan, China",
+          "institution_ids": [
+            "https://openalex.org/I47720641"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5064065903",
+        "display_name": "Na He",
+        "orcid": "https://orcid.org/0000-0001-5560-5312"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I24943067",
+          "display_name": "Fudan University",
+          "ror": "https://ror.org/013q1eq08",
+          "country_code": "CN",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I24943067"
+          ]
+        }
+      ],
+      "countries": [
+        "CN"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Na He",
+      "raw_affiliation_strings": [
+        "School of Public Health, Ministry of Education Key Laboratory of Public Health Safety, Fudan University, Shanghai, China"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "School of Public Health, Ministry of Education Key Laboratory of Public Health Safety, Fudan University, Shanghai, China",
+          "institution_ids": [
+            "https://openalex.org/I24943067"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5059077734",
+        "display_name": "Hongjie Yu",
+        "orcid": "https://orcid.org/0000-0002-6335-5648"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I24943067",
+          "display_name": "Fudan University",
+          "ror": "https://ror.org/013q1eq08",
+          "country_code": "CN",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I24943067"
+          ]
+        }
+      ],
+      "countries": [
+        "CN"
+      ],
+      "is_corresponding": false,
+      "raw_author_name": "Hongjie Yu",
+      "raw_affiliation_strings": [
+        "School of Public Health, Ministry of Education Key Laboratory of Public Health Safety, Fudan University, Shanghai, China"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "School of Public Health, Ministry of Education Key Laboratory of Public Health Safety, Fudan University, Shanghai, China",
+          "institution_ids": [
+            "https://openalex.org/I24943067"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5030660111",
+        "display_name": "Xihong Lin",
+        "orcid": "https://orcid.org/0000-0001-7067-7752"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I136199984",
+          "display_name": "Harvard University",
+          "ror": "https://ror.org/03vek6s52",
+          "country_code": "US",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I136199984"
+          ]
+        }
+      ],
+      "countries": [
+        "US"
+      ],
+      "is_corresponding": true,
+      "raw_author_name": "Xihong Lin",
+      "raw_affiliation_strings": [
+        "Department of Biostatistics, Harvard T.H. Chan School of Public Health, Boston, Massachusetts",
+        "Department of Statistics, Harvard University, Boston, Massachusetts"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Department of Biostatistics, Harvard T.H. Chan School of Public Health, Boston, Massachusetts",
+          "institution_ids": [
+            "https://openalex.org/I136199984"
+          ]
+        },
+        {
+          "raw_affiliation_string": "Department of Statistics, Harvard University, Boston, Massachusetts",
+          "institution_ids": [
+            "https://openalex.org/I136199984"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "middle",
+      "author": {
+        "id": "https://openalex.org/A5008046656",
+        "display_name": "Sheng Wei",
+        "orcid": "https://orcid.org/0000-0001-6888-6301"
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I47720641",
+          "display_name": "Huazhong University of Science and Technology",
+          "ror": "https://ror.org/00p991c53",
+          "country_code": "CN",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I47720641"
+          ]
+        }
+      ],
+      "countries": [
+        "CN"
+      ],
+      "is_corresponding": true,
+      "raw_author_name": "Sheng Wei",
+      "raw_affiliation_strings": [
+        "Department of Epidemiology and Biostatistics, School of Public Health, Tongji Medical College, Huazhong University of Science and Technology, Wuhan, China"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Department of Epidemiology and Biostatistics, School of Public Health, Tongji Medical College, Huazhong University of Science and Technology, Wuhan, China",
+          "institution_ids": [
+            "https://openalex.org/I47720641"
+          ]
+        }
+      ]
+    },
+    {
+      "author_position": "last",
+      "author": {
+        "id": "https://openalex.org/A5039558767",
+        "display_name": "Tangchun Wu",
+        "orcid": null
+      },
+      "institutions": [
+        {
+          "id": "https://openalex.org/I47720641",
+          "display_name": "Huazhong University of Science and Technology",
+          "ror": "https://ror.org/00p991c53",
+          "country_code": "CN",
+          "type": "education",
+          "lineage": [
+            "https://openalex.org/I47720641"
+          ]
+        }
+      ],
+      "countries": [
+        "CN"
+      ],
+      "is_corresponding": true,
+      "raw_author_name": "Tangchun Wu",
+      "raw_affiliation_strings": [
+        "Department of Occupational and Environmental Health, Ministry of Education Key Laboratory of Environment and Health, and State Key Laboratory of Environmental Health (Incubating), School of Public Health, Tongji Medical College, Huazhong University of Science and Technology, Wuhan, China"
+      ],
+      "raw_orcid": null,
+      "affiliations": [
+        {
+          "raw_affiliation_string": "Department of Occupational and Environmental Health, Ministry of Education Key Laboratory of Environment and Health, and State Key Laboratory of Environmental Health (Incubating), School of Public Health, Tongji Medical College, Huazhong University of Science and Technology, Wuhan, China",
+          "institution_ids": [
+            "https://openalex.org/I47720641"
+          ]
+        }
+      ]
+    }
+  ],
+  "institutions": [],
+  "countries_distinct_count": 2,
+  "institutions_distinct_count": 3,
+  "corresponding_author_ids": [
+    "https://openalex.org/A5008046656",
+    "https://openalex.org/A5030660111",
+    "https://openalex.org/A5039558767"
+  ],
+  "corresponding_institution_ids": [
+    "https://openalex.org/I136199984",
+    "https://openalex.org/I47720641"
+  ],
+  "apc_list": null,
+  "apc_paid": null,
+  "fwci": 59.5385,
+  "has_fulltext": true,
+  "cited_by_count": 1919,
+  "citation_normalized_percentile": {
+    "value": 0.99871362,
+    "is_in_top_1_percent": true,
+    "is_in_top_10_percent": true
+  },
+  "cited_by_percentile_year": {
+    "min": 94,
+    "max": 100
+  },
+  "biblio": {
+    "volume": "323",
+    "issue": "19",
+    "first_page": "1915",
+    "last_page": "1915"
+  },
+  "is_retracted": false,
+  "is_paratext": false,
+  "is_xpac": false,
+  "primary_topic": {
+    "id": "https://openalex.org/T10410",
+    "display_name": "COVID-19 epidemiological studies",
+    "score": 0.755299985408783,
+    "subfield": {
+      "id": "https://openalex.org/subfields/2611",
+      "display_name": "Modeling and Simulation"
+    },
+    "field": {
+      "id": "https://openalex.org/fields/26",
+      "display_name": "Mathematics"
+    },
+    "domain": {
+      "id": "https://openalex.org/domains/3",
+      "display_name": "Physical Sciences"
+    }
+  },
+  "topics": [
+    {
+      "id": "https://openalex.org/T10410",
+      "display_name": "COVID-19 epidemiological studies",
+      "score": 0.755299985408783,
+      "subfield": {
+        "id": "https://openalex.org/subfields/2611",
+        "display_name": "Modeling and Simulation"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/26",
+        "display_name": "Mathematics"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/3",
+        "display_name": "Physical Sciences"
+      }
+    },
+    {
+      "id": "https://openalex.org/T10168",
+      "display_name": "COVID-19 and Mental Health",
+      "score": 0.06549999862909317,
+      "subfield": {
+        "id": "https://openalex.org/subfields/3203",
+        "display_name": "Clinical Psychology"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/32",
+        "display_name": "Psychology"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/2",
+        "display_name": "Social Sciences"
+      }
+    },
+    {
+      "id": "https://openalex.org/T11754",
+      "display_name": "SARS-CoV-2 detection and testing",
+      "score": 0.016699999570846558,
+      "subfield": {
+        "id": "https://openalex.org/subfields/2725",
+        "display_name": "Infectious Diseases"
+      },
+      "field": {
+        "id": "https://openalex.org/fields/27",
+        "display_name": "Medicine"
+      },
+      "domain": {
+        "id": "https://openalex.org/domains/4",
+        "display_name": "Health Sciences"
+      }
+    }
+  ],
+  "keywords": [
+    {
+      "id": "https://openalex.org/keywords/medicine",
+      "display_name": "Medicine",
+      "score": 0.8579357862472534
+    },
+    {
+      "id": "https://openalex.org/keywords/outbreak",
+      "display_name": "Outbreak",
+      "score": 0.6594151854515076
+    },
+    {
+      "id": "https://openalex.org/keywords/psychological-intervention",
+      "display_name": "Psychological intervention",
+      "score": 0.6513500809669495
+    },
+    {
+      "id": "https://openalex.org/keywords/public-health",
+      "display_name": "Public health",
+      "score": 0.6468973159790039
+    },
+    {
+      "id": "https://openalex.org/keywords/interquartile-range",
+      "display_name": "Interquartile range",
+      "score": 0.6109411716461182
+    },
+    {
+      "id": "https://openalex.org/keywords/epidemiology",
+      "display_name": "Epidemiology",
+      "score": 0.5984845161437988
+    },
+    {
+      "id": "https://openalex.org/keywords/quarantine",
+      "display_name": "Quarantine",
+      "score": 0.5603165626525879
+    },
+    {
+      "id": "https://openalex.org/keywords/environmental-health",
+      "display_name": "Environmental health",
+      "score": 0.5407410264015198
+    },
+    {
+      "id": "https://openalex.org/keywords/pandemic",
+      "display_name": "Pandemic",
+      "score": 0.49277427792549133
+    },
+    {
+      "id": "https://openalex.org/keywords/demography",
+      "display_name": "Demography",
+      "score": 0.44606462121009827
+    },
+    {
+      "id": "https://openalex.org/keywords/coronavirus-disease-2019",
+      "display_name": "Coronavirus disease 2019 (COVID-19)",
+      "score": 0.34341031312942505
+    },
+    {
+      "id": "https://openalex.org/keywords/disease",
+      "display_name": "Disease",
+      "score": 0.26412415504455566
+    },
+    {
+      "id": "https://openalex.org/keywords/infectious-disease",
+      "display_name": "Infectious disease (medical specialty)",
+      "score": 0.12646484375
+    },
+    {
+      "id": "https://openalex.org/keywords/virology",
+      "display_name": "Virology",
+      "score": 0.08870628476142883
+    },
+    {
+      "id": "https://openalex.org/keywords/surgery",
+      "display_name": "Surgery",
+      "score": 0.08377596735954285
+    },
+    {
+      "id": "https://openalex.org/keywords/internal-medicine",
+      "display_name": "Internal medicine",
+      "score": 0.06914752721786499
+    }
+  ],
+  "concepts": [
+    {
+      "id": "https://openalex.org/C71924100",
+      "wikidata": "https://www.wikidata.org/wiki/Q11190",
+      "display_name": "Medicine",
+      "level": 0,
+      "score": 0.8579357862472534
+    },
+    {
+      "id": "https://openalex.org/C116675565",
+      "wikidata": "https://www.wikidata.org/wiki/Q3241045",
+      "display_name": "Outbreak",
+      "level": 2,
+      "score": 0.6594151854515076
+    },
+    {
+      "id": "https://openalex.org/C27415008",
+      "wikidata": "https://www.wikidata.org/wiki/Q7256382",
+      "display_name": "Psychological intervention",
+      "level": 2,
+      "score": 0.6513500809669495
+    },
+    {
+      "id": "https://openalex.org/C138816342",
+      "wikidata": "https://www.wikidata.org/wiki/Q189603",
+      "display_name": "Public health",
+      "level": 2,
+      "score": 0.6468973159790039
+    },
+    {
+      "id": "https://openalex.org/C119060515",
+      "wikidata": "https://www.wikidata.org/wiki/Q1916617",
+      "display_name": "Interquartile range",
+      "level": 2,
+      "score": 0.6109411716461182
+    },
+    {
+      "id": "https://openalex.org/C107130276",
+      "wikidata": "https://www.wikidata.org/wiki/Q133805",
+      "display_name": "Epidemiology",
+      "level": 2,
+      "score": 0.5984845161437988
+    },
+    {
+      "id": "https://openalex.org/C2781402358",
+      "wikidata": "https://www.wikidata.org/wiki/Q182899",
+      "display_name": "Quarantine",
+      "level": 2,
+      "score": 0.5603165626525879
+    },
+    {
+      "id": "https://openalex.org/C99454951",
+      "wikidata": "https://www.wikidata.org/wiki/Q932068",
+      "display_name": "Environmental health",
+      "level": 1,
+      "score": 0.5407410264015198
+    },
+    {
+      "id": "https://openalex.org/C89623803",
+      "wikidata": "https://www.wikidata.org/wiki/Q12184",
+      "display_name": "Pandemic",
+      "level": 5,
+      "score": 0.49277427792549133
+    },
+    {
+      "id": "https://openalex.org/C149923435",
+      "wikidata": "https://www.wikidata.org/wiki/Q37732",
+      "display_name": "Demography",
+      "level": 1,
+      "score": 0.44606462121009827
+    },
+    {
+      "id": "https://openalex.org/C3008058167",
+      "wikidata": "https://www.wikidata.org/wiki/Q84263196",
+      "display_name": "Coronavirus disease 2019 (COVID-19)",
+      "level": 4,
+      "score": 0.34341031312942505
+    },
+    {
+      "id": "https://openalex.org/C2779134260",
+      "wikidata": "https://www.wikidata.org/wiki/Q12136",
+      "display_name": "Disease",
+      "level": 2,
+      "score": 0.26412415504455566
+    },
+    {
+      "id": "https://openalex.org/C524204448",
+      "wikidata": "https://www.wikidata.org/wiki/Q788926",
+      "display_name": "Infectious disease (medical specialty)",
+      "level": 3,
+      "score": 0.12646484375
+    },
+    {
+      "id": "https://openalex.org/C159047783",
+      "wikidata": "https://www.wikidata.org/wiki/Q7215",
+      "display_name": "Virology",
+      "level": 1,
+      "score": 0.08870628476142883
+    },
+    {
+      "id": "https://openalex.org/C141071460",
+      "wikidata": "https://www.wikidata.org/wiki/Q40821",
+      "display_name": "Surgery",
+      "level": 1,
+      "score": 0.08377596735954285
+    },
+    {
+      "id": "https://openalex.org/C126322002",
+      "wikidata": "https://www.wikidata.org/wiki/Q11180",
+      "display_name": "Internal medicine",
+      "level": 1,
+      "score": 0.06914752721786499
+    },
+    {
+      "id": "https://openalex.org/C118552586",
+      "wikidata": "https://www.wikidata.org/wiki/Q7867",
+      "display_name": "Psychiatry",
+      "level": 1,
+      "score": 0.0
+    },
+    {
+      "id": "https://openalex.org/C144024400",
+      "wikidata": "https://www.wikidata.org/wiki/Q21201",
+      "display_name": "Sociology",
+      "level": 0,
+      "score": 0.0
+    },
+    {
+      "id": "https://openalex.org/C159110408",
+      "wikidata": "https://www.wikidata.org/wiki/Q121176",
+      "display_name": "Nursing",
+      "level": 1,
+      "score": 0.0
+    },
+    {
+      "id": "https://openalex.org/C142724271",
+      "wikidata": "https://www.wikidata.org/wiki/Q7208",
+      "display_name": "Pathology",
+      "level": 1,
+      "score": 0.0
+    }
+  ],
+  "mesh": [
+    {
+      "descriptor_ui": "D000073640",
+      "descriptor_name": "Betacoronavirus",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D000073640",
+      "descriptor_name": "Betacoronavirus",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D000073640",
+      "descriptor_name": "Betacoronavirus",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D000073640",
+      "descriptor_name": "Betacoronavirus",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D000073640",
+      "descriptor_name": "Betacoronavirus",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": true
+    },
+    {
+      "descriptor_ui": "D000086382",
+      "descriptor_name": "COVID-19",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000086382",
+      "descriptor_name": "COVID-19",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000086382",
+      "descriptor_name": "COVID-19",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000086382",
+      "descriptor_name": "COVID-19",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000086382",
+      "descriptor_name": "COVID-19",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000086402",
+      "descriptor_name": "SARS-CoV-2",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000086402",
+      "descriptor_name": "SARS-CoV-2",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000086402",
+      "descriptor_name": "SARS-CoV-2",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000086402",
+      "descriptor_name": "SARS-CoV-2",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000086402",
+      "descriptor_name": "SARS-CoV-2",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000293",
+      "descriptor_name": "Adolescent",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000293",
+      "descriptor_name": "Adolescent",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000293",
+      "descriptor_name": "Adolescent",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000293",
+      "descriptor_name": "Adolescent",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000293",
+      "descriptor_name": "Adolescent",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000328",
+      "descriptor_name": "Adult",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000328",
+      "descriptor_name": "Adult",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000328",
+      "descriptor_name": "Adult",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000328",
+      "descriptor_name": "Adult",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000328",
+      "descriptor_name": "Adult",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000368",
+      "descriptor_name": "Aged",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000368",
+      "descriptor_name": "Aged",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000368",
+      "descriptor_name": "Aged",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000368",
+      "descriptor_name": "Aged",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D000368",
+      "descriptor_name": "Aged",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D002648",
+      "descriptor_name": "Child",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D002648",
+      "descriptor_name": "Child",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D002648",
+      "descriptor_name": "Child",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D002648",
+      "descriptor_name": "Child",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D002648",
+      "descriptor_name": "Child",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D002681",
+      "descriptor_name": "China",
+      "qualifier_ui": "Q000453",
+      "qualifier_name": "epidemiology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D002681",
+      "descriptor_name": "China",
+      "qualifier_ui": "Q000453",
+      "qualifier_name": "epidemiology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D002681",
+      "descriptor_name": "China",
+      "qualifier_ui": "Q000453",
+      "qualifier_name": "epidemiology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D002681",
+      "descriptor_name": "China",
+      "qualifier_ui": "Q000453",
+      "qualifier_name": "epidemiology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D002681",
+      "descriptor_name": "China",
+      "qualifier_ui": "Q000453",
+      "qualifier_name": "epidemiology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D003140",
+      "descriptor_name": "Communicable Disease Control",
+      "qualifier_ui": "Q000379",
+      "qualifier_name": "methods",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D003140",
+      "descriptor_name": "Communicable Disease Control",
+      "qualifier_ui": "Q000379",
+      "qualifier_name": "methods",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D003140",
+      "descriptor_name": "Communicable Disease Control",
+      "qualifier_ui": "Q000379",
+      "qualifier_name": "methods",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D003140",
+      "descriptor_name": "Communicable Disease Control",
+      "qualifier_ui": "Q000379",
+      "qualifier_name": "methods",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D003140",
+      "descriptor_name": "Communicable Disease Control",
+      "qualifier_ui": "Q000379",
+      "qualifier_name": "methods",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D003140",
+      "descriptor_name": "Communicable Disease Control",
+      "qualifier_ui": "Q000706",
+      "qualifier_name": "statistics & numerical data",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D003140",
+      "descriptor_name": "Communicable Disease Control",
+      "qualifier_ui": "Q000706",
+      "qualifier_name": "statistics & numerical data",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D003140",
+      "descriptor_name": "Communicable Disease Control",
+      "qualifier_ui": "Q000706",
+      "qualifier_name": "statistics & numerical data",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D003140",
+      "descriptor_name": "Communicable Disease Control",
+      "qualifier_ui": "Q000706",
+      "qualifier_name": "statistics & numerical data",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D003140",
+      "descriptor_name": "Communicable Disease Control",
+      "qualifier_ui": "Q000706",
+      "qualifier_name": "statistics & numerical data",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D004196",
+      "descriptor_name": "Disease Outbreaks",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D004196",
+      "descriptor_name": "Disease Outbreaks",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D004196",
+      "descriptor_name": "Disease Outbreaks",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D004196",
+      "descriptor_name": "Disease Outbreaks",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D004196",
+      "descriptor_name": "Disease Outbreaks",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D005260",
+      "descriptor_name": "Female",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D005260",
+      "descriptor_name": "Female",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D005260",
+      "descriptor_name": "Female",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D005260",
+      "descriptor_name": "Female",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D005260",
+      "descriptor_name": "Female",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D006291",
+      "descriptor_name": "Health Policy",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D006291",
+      "descriptor_name": "Health Policy",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D006291",
+      "descriptor_name": "Health Policy",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D006291",
+      "descriptor_name": "Health Policy",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D006291",
+      "descriptor_name": "Health Policy",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D006801",
+      "descriptor_name": "Humans",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D006801",
+      "descriptor_name": "Humans",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D006801",
+      "descriptor_name": "Humans",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D006801",
+      "descriptor_name": "Humans",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D006801",
+      "descriptor_name": "Humans",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D008297",
+      "descriptor_name": "Male",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D008297",
+      "descriptor_name": "Male",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D008297",
+      "descriptor_name": "Male",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D008297",
+      "descriptor_name": "Male",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D008297",
+      "descriptor_name": "Male",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D008875",
+      "descriptor_name": "Middle Aged",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D008875",
+      "descriptor_name": "Middle Aged",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D008875",
+      "descriptor_name": "Middle Aged",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D008875",
+      "descriptor_name": "Middle Aged",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D008875",
+      "descriptor_name": "Middle Aged",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D011024",
+      "descriptor_name": "Pneumonia, Viral",
+      "qualifier_ui": "Q000453",
+      "qualifier_name": "epidemiology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D011024",
+      "descriptor_name": "Pneumonia, Viral",
+      "qualifier_ui": "Q000453",
+      "qualifier_name": "epidemiology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D011024",
+      "descriptor_name": "Pneumonia, Viral",
+      "qualifier_ui": "Q000453",
+      "qualifier_name": "epidemiology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D011024",
+      "descriptor_name": "Pneumonia, Viral",
+      "qualifier_ui": "Q000453",
+      "qualifier_name": "epidemiology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D011024",
+      "descriptor_name": "Pneumonia, Viral",
+      "qualifier_ui": "Q000453",
+      "qualifier_name": "epidemiology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D011024",
+      "descriptor_name": "Pneumonia, Viral",
+      "qualifier_ui": "Q000517",
+      "qualifier_name": "prevention & control",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D011024",
+      "descriptor_name": "Pneumonia, Viral",
+      "qualifier_ui": "Q000517",
+      "qualifier_name": "prevention & control",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D011024",
+      "descriptor_name": "Pneumonia, Viral",
+      "qualifier_ui": "Q000517",
+      "qualifier_name": "prevention & control",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D011024",
+      "descriptor_name": "Pneumonia, Viral",
+      "qualifier_ui": "Q000517",
+      "qualifier_name": "prevention & control",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D011024",
+      "descriptor_name": "Pneumonia, Viral",
+      "qualifier_ui": "Q000517",
+      "qualifier_name": "prevention & control",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D015994",
+      "descriptor_name": "Incidence",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D015994",
+      "descriptor_name": "Incidence",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D015994",
+      "descriptor_name": "Incidence",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D015994",
+      "descriptor_name": "Incidence",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D015994",
+      "descriptor_name": "Incidence",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D018352",
+      "descriptor_name": "Coronavirus Infections",
+      "qualifier_ui": "Q000453",
+      "qualifier_name": "epidemiology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D018352",
+      "descriptor_name": "Coronavirus Infections",
+      "qualifier_ui": "Q000453",
+      "qualifier_name": "epidemiology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D018352",
+      "descriptor_name": "Coronavirus Infections",
+      "qualifier_ui": "Q000453",
+      "qualifier_name": "epidemiology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D018352",
+      "descriptor_name": "Coronavirus Infections",
+      "qualifier_ui": "Q000453",
+      "qualifier_name": "epidemiology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D018352",
+      "descriptor_name": "Coronavirus Infections",
+      "qualifier_ui": "Q000453",
+      "qualifier_name": "epidemiology",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D018352",
+      "descriptor_name": "Coronavirus Infections",
+      "qualifier_ui": "Q000517",
+      "qualifier_name": "prevention & control",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D018352",
+      "descriptor_name": "Coronavirus Infections",
+      "qualifier_ui": "Q000517",
+      "qualifier_name": "prevention & control",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D018352",
+      "descriptor_name": "Coronavirus Infections",
+      "qualifier_ui": "Q000517",
+      "qualifier_name": "prevention & control",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D018352",
+      "descriptor_name": "Coronavirus Infections",
+      "qualifier_ui": "Q000517",
+      "qualifier_name": "prevention & control",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D018352",
+      "descriptor_name": "Coronavirus Infections",
+      "qualifier_ui": "Q000517",
+      "qualifier_name": "prevention & control",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D018562",
+      "descriptor_name": "Disease Transmission, Infectious",
+      "qualifier_ui": "Q000517",
+      "qualifier_name": "prevention & control",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D018562",
+      "descriptor_name": "Disease Transmission, Infectious",
+      "qualifier_ui": "Q000517",
+      "qualifier_name": "prevention & control",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D018562",
+      "descriptor_name": "Disease Transmission, Infectious",
+      "qualifier_ui": "Q000517",
+      "qualifier_name": "prevention & control",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D018562",
+      "descriptor_name": "Disease Transmission, Infectious",
+      "qualifier_ui": "Q000517",
+      "qualifier_name": "prevention & control",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D018562",
+      "descriptor_name": "Disease Transmission, Infectious",
+      "qualifier_ui": "Q000517",
+      "qualifier_name": "prevention & control",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D055815",
+      "descriptor_name": "Young Adult",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D055815",
+      "descriptor_name": "Young Adult",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D055815",
+      "descriptor_name": "Young Adult",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D055815",
+      "descriptor_name": "Young Adult",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D055815",
+      "descriptor_name": "Young Adult",
+      "qualifier_ui": null,
+      "qualifier_name": null,
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D058873",
+      "descriptor_name": "Pandemics",
+      "qualifier_ui": "Q000517",
+      "qualifier_name": "prevention & control",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D058873",
+      "descriptor_name": "Pandemics",
+      "qualifier_ui": "Q000517",
+      "qualifier_name": "prevention & control",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D058873",
+      "descriptor_name": "Pandemics",
+      "qualifier_ui": "Q000517",
+      "qualifier_name": "prevention & control",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D058873",
+      "descriptor_name": "Pandemics",
+      "qualifier_ui": "Q000517",
+      "qualifier_name": "prevention & control",
+      "is_major_topic": false
+    },
+    {
+      "descriptor_ui": "D058873",
+      "descriptor_name": "Pandemics",
+      "qualifier_ui": "Q000517",
+      "qualifier_name": "prevention & control",
+      "is_major_topic": false
+    }
+  ],
+  "locations_count": 4,
+  "locations": [
+    {
+      "id": "doi:10.1001/jama.2020.6130",
+      "is_oa": true,
+      "landing_page_url": "https://doi.org/10.1001/jama.2020.6130",
+      "pdf_url": "https://jamanetwork.com/journals/jama/articlepdf/2764658/jama_pan_2020_oi_200040.pdf",
+      "source": {
+        "id": "https://openalex.org/S172573765",
+        "display_name": "JAMA",
+        "issn_l": "0098-7484",
+        "issn": [
+          "0098-7484",
+          "1538-3598"
+        ],
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": true,
+        "host_organization": "https://openalex.org/P4310320259",
+        "host_organization_name": "American Medical Association",
+        "host_organization_lineage": [
+          "https://openalex.org/P4310320259"
+        ],
+        "host_organization_lineage_names": [
+          "American Medical Association"
+        ],
+        "type": "journal"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "publishedVersion",
+      "is_accepted": true,
+      "is_published": true,
+      "raw_source_name": "JAMA",
+      "raw_type": "journal-article"
+    },
+    {
+      "id": "pmid:32275295",
+      "is_oa": false,
+      "landing_page_url": "https://pubmed.ncbi.nlm.nih.gov/32275295",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4306525036",
+        "display_name": "PubMed",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I1299303238",
+        "host_organization_name": "National Institutes of Health",
+        "host_organization_lineage": [
+          "https://openalex.org/I1299303238"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "publishedVersion",
+      "is_accepted": true,
+      "is_published": true,
+      "raw_source_name": "JAMA",
+      "raw_type": null
+    },
+    {
+      "id": "pmh:oai:dash.harvard.edu:1/42660128",
+      "is_oa": false,
+      "landing_page_url": "http://nrs.harvard.edu/urn-3:HUL.InstRepos:42660128",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S4306401540",
+        "display_name": "Digital Access to Scholarship at Harvard (DASH) (Harvard University)",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": false,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I136199984",
+        "host_organization_name": "Harvard University",
+        "host_organization_lineage": [
+          "https://openalex.org/I136199984"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "submittedVersion",
+      "is_accepted": false,
+      "is_published": false,
+      "raw_source_name": null,
+      "raw_type": "Journal Article"
+    },
+    {
+      "id": "pmh:oai:pubmedcentral.nih.gov:7149375",
+      "is_oa": true,
+      "landing_page_url": "https://www.ncbi.nlm.nih.gov/pmc/articles/7149375",
+      "pdf_url": null,
+      "source": {
+        "id": "https://openalex.org/S2764455111",
+        "display_name": "PubMed Central",
+        "issn_l": null,
+        "issn": null,
+        "is_oa": true,
+        "is_in_doaj": false,
+        "is_core": false,
+        "host_organization": "https://openalex.org/I1299303238",
+        "host_organization_name": "National Institutes of Health",
+        "host_organization_lineage": [
+          "https://openalex.org/I1299303238"
+        ],
+        "host_organization_lineage_names": [],
+        "type": "repository"
+      },
+      "license": null,
+      "license_id": null,
+      "version": "submittedVersion",
+      "is_accepted": false,
+      "is_published": false,
+      "raw_source_name": "JAMA",
+      "raw_type": "Text"
+    }
+  ],
+  "best_oa_location": {
+    "id": "doi:10.1001/jama.2020.6130",
+    "is_oa": true,
+    "landing_page_url": "https://doi.org/10.1001/jama.2020.6130",
+    "pdf_url": "https://jamanetwork.com/journals/jama/articlepdf/2764658/jama_pan_2020_oi_200040.pdf",
+    "source": {
+      "id": "https://openalex.org/S172573765",
+      "display_name": "JAMA",
+      "issn_l": "0098-7484",
+      "issn": [
+        "0098-7484",
+        "1538-3598"
+      ],
+      "is_oa": false,
+      "is_in_doaj": false,
+      "is_core": true,
+      "host_organization": "https://openalex.org/P4310320259",
+      "host_organization_name": "American Medical Association",
+      "host_organization_lineage": [
+        "https://openalex.org/P4310320259"
+      ],
+      "host_organization_lineage_names": [
+        "American Medical Association"
+      ],
+      "type": "journal"
+    },
+    "license": null,
+    "license_id": null,
+    "version": "publishedVersion",
+    "is_accepted": true,
+    "is_published": true,
+    "raw_source_name": "JAMA",
+    "raw_type": "journal-article"
+  },
+  "sustainable_development_goals": [
+    {
+      "id": "https://metadata.un.org/sdg/3",
+      "score": 0.8299999833106995,
+      "display_name": "Good health and well-being"
+    }
+  ],
+  "awards": [],
+  "funders": [],
+  "has_content": {
+    "grobid_xml": true,
+    "pdf": true
+  },
+  "content_urls": {
+    "pdf": "https://content.openalex.org/works/W3015792206.pdf",
+    "grobid_xml": "https://content.openalex.org/works/W3015792206.grobid-xml"
+  },
+  "referenced_works_count": 40,
+  "referenced_works": [
+    "https://openalex.org/W2097446414",
+    "https://openalex.org/W2137635384",
+    "https://openalex.org/W3001118548",
+    "https://openalex.org/W3002108456",
+    "https://openalex.org/W3003573988",
+    "https://openalex.org/W3003668884",
+    "https://openalex.org/W3003749070",
+    "https://openalex.org/W3004542065",
+    "https://openalex.org/W3005079553",
+    "https://openalex.org/W3005347918",
+    "https://openalex.org/W3006642361",
+    "https://openalex.org/W3007189521",
+    "https://openalex.org/W3007298159",
+    "https://openalex.org/W3008025823",
+    "https://openalex.org/W3008028633",
+    "https://openalex.org/W3008090866",
+    "https://openalex.org/W3008237982",
+    "https://openalex.org/W3008554056",
+    "https://openalex.org/W3008696669",
+    "https://openalex.org/W3008827533",
+    "https://openalex.org/W3009041394",
+    "https://openalex.org/W3009468976",
+    "https://openalex.org/W3009802373",
+    "https://openalex.org/W3010131837",
+    "https://openalex.org/W3010574983",
+    "https://openalex.org/W3011045397",
+    "https://openalex.org/W3012284084",
+    "https://openalex.org/W3013188135",
+    "https://openalex.org/W3033285830",
+    "https://openalex.org/W3035011439",
+    "https://openalex.org/W3165656738",
+    "https://openalex.org/W3185956067",
+    "https://openalex.org/W6774243035",
+    "https://openalex.org/W6774295983",
+    "https://openalex.org/W6774473606",
+    "https://openalex.org/W6774696885",
+    "https://openalex.org/W6775070220",
+    "https://openalex.org/W6775439785",
+    "https://openalex.org/W6775458732",
+    "https://openalex.org/W6979026940"
+  ],
+  "related_works": [
+    "https://openalex.org/W1681476849",
+    "https://openalex.org/W2487490720",
+    "https://openalex.org/W2793077515",
+    "https://openalex.org/W4292573045",
+    "https://openalex.org/W2126365059",
+    "https://openalex.org/W4386009577",
+    "https://openalex.org/W2981615369",
+    "https://openalex.org/W4207026480",
+    "https://openalex.org/W3130621552",
+    "https://openalex.org/W2373635223"
+  ],
+  "abstract_inverted_index": {
+    "IMPORTANCE:": [
+      0
+    ],
+    "Coronavirus": [
+      1
+    ],
+    "disease": [
+      2,
+      361
+    ],
+    "2019": [
+      3
+    ],
+    "(COVID-19)": [
+      4
+    ],
+    "has": [
+      5
+    ],
+    "become": [
+      6
+    ],
+    "a": [
+      7,
+      14,
+      353,
+      376
+    ],
+    "pandemic,": [
+      8
+    ],
+    "and": [
+      9,
+      52,
+      75,
+      95,
+      114,
+      141,
+      179,
+      188,
+      190,
+      235,
+      251,
+      257,
+      259,
+      265,
+      315,
+      344,
+      404,
+      447
+    ],
+    "it": [
+      10
+    ],
+    "is": [
+      11
+    ],
+    "unknown": [
+      12
+    ],
+    "whether": [
+      13
+    ],
+    "combination": [
+      15
+    ],
+    "of": [
+      16,
+      23,
+      31,
+      39,
+      123,
+      131,
+      203,
+      207,
+      269,
+      313,
+      342,
+      356,
+      419,
+      430
+    ],
+    "public": [
+      17,
+      32,
+      100,
+      421,
+      441
+    ],
+    "health": [
+      18,
+      33,
+      101,
+      286,
+      422,
+      442
+    ],
+    "interventions": [
+      19,
+      34,
+      102,
+      423
+    ],
+    "can": [
+      20
+    ],
+    "improve": [
+      21
+    ],
+    "control": [
+      22,
+      429
+    ],
+    "the": [
+      24,
+      29,
+      36,
+      40,
+      82,
+      129,
+      165,
+      214,
+      223,
+      248,
+      281,
+      301,
+      324,
+      431
+    ],
+    "outbreak.": [
+      25
+    ],
+    "OBJECTIVE:": [
+      26
+    ],
+    "To": [
+      27
+    ],
+    "evaluate": [
+      28
+    ],
+    "association": [
+      30
+    ],
+    "with": [
+      35,
+      331,
+      334,
+      427
+    ],
+    "epidemiological": [
+      37
+    ],
+    "features": [
+      38
+    ],
+    "COVID-19": [
+      41,
+      68,
+      125,
+      221,
+      432
+    ],
+    "outbreak": [
+      42,
+      433
+    ],
+    "in": [
+      43,
+      247,
+      284,
+      300,
+      434,
+      444
+    ],
+    "Wuhan": [
+      44
+    ],
+    "by": [
+      45
+    ],
+    "5": [
+      46,
+      147,
+      325
+    ],
+    "periods": [
+      47
+    ],
+    "according": [
+      48
+    ],
+    "to": [
+      49,
+      151,
+      158,
+      164,
+      172,
+      184,
+      193,
+      273,
+      321,
+      338,
+      398,
+      407
+    ],
+    "key": [
+      50
+    ],
+    "events": [
+      51
+    ],
+    "interventions.": [
+      53
+    ],
+    "DESIGN,": [
+      54
+    ],
+    "SETTING,": [
+      55
+    ],
+    "AND": [
+      56,
+      120,
+      415
+    ],
+    "PARTICIPANTS:": [
+      57
+    ],
+    "In": [
+      58
+    ],
+    "this": [
+      59
+    ],
+    "cohort": [
+      60
+    ],
+    "study,": [
+      61
+    ],
+    "individual-level": [
+      62
+    ],
+    "data": [
+      63
+    ],
+    "on": [
+      64
+    ],
+    "32": [
+      65,
+      218
+    ],
+    "583": [
+      66,
+      219
+    ],
+    "laboratory-confirmed": [
+      67,
+      124,
+      220
+    ],
+    "cases": [
+      69,
+      132,
+      271,
+      317
+    ],
+    "reported": [
+      70
+    ],
+    "between": [
+      71
+    ],
+    "December": [
+      72,
+      149
+    ],
+    "8,": [
+      73,
+      77
+    ],
+    "2019,": [
+      74
+    ],
+    "March": [
+      76,
+      194,
+      412
+    ],
+    "2020,": [
+      78
+    ],
+    "were": [
+      79,
+      144,
+      239
+    ],
+    "extracted": [
+      80
+    ],
+    "from": [
+      81,
+      319
+    ],
+    "municipal": [
+      83
+    ],
+    "Notifiable": [
+      84
+    ],
+    "Disease": [
+      85
+    ],
+    "Report": [
+      86
+    ],
+    "System,": [
+      87
+    ],
+    "including": [
+      88,
+      103
+    ],
+    "patients'": [
+      89
+    ],
+    "age,": [
+      90,
+      139
+    ],
+    "sex,": [
+      91,
+      140
+    ],
+    "residential": [
+      92
+    ],
+    "location,": [
+      93
+    ],
+    "occupation,": [
+      94
+    ],
+    "severity": [
+      96,
+      328
+    ],
+    "classification.": [
+      97
+    ],
+    "EXPOSURES:": [
+      98
+    ],
+    "Nonpharmaceutical": [
+      99
+    ],
+    "cordons": [
+      104
+    ],
+    "sanitaire,": [
+      105,
+      176
+    ],
+    "traffic": [
+      106,
+      177
+    ],
+    "restriction,": [
+      107
+    ],
+    "social": [
+      108
+    ],
+    "distancing,": [
+      109
+    ],
+    "home": [
+      110,
+      180
+    ],
+    "confinement,": [
+      111
+    ],
+    "centralized": [
+      112
+    ],
+    "quarantine,": [
+      113
+    ],
+    "universal": [
+      115
+    ],
+    "symptom": [
+      116,
+      197
+    ],
+    "survey.": [
+      117
+    ],
+    "MAIN": [
+      118
+    ],
+    "OUTCOMES": [
+      119
+    ],
+    "MEASURES:": [
+      121
+    ],
+    "Rates": [
+      122
+    ],
+    "infections": [
+      126
+    ],
+    "(defined": [
+      127
+    ],
+    "as": [
+      128
+    ],
+    "number": [
+      130,
+      202,
+      390
+    ],
+    "per": [
+      133,
+      135,
+      290,
+      305
+    ],
+    "day": [
+      134
+    ],
+    "million": [
+      136,
+      291,
+      306
+    ],
+    "people),": [
+      137
+    ],
+    "across": [
+      138,
+      146,
+      254
+    ],
+    "geographic": [
+      142,
+      255
+    ],
+    "locations": [
+      143
+    ],
+    "calculated": [
+      145,
+      212
+    ],
+    "periods:": [
+      148
+    ],
+    "8": [
+      150,
+      195
+    ],
+    "January": [
+      152,
+      156,
+      170,
+      395
+    ],
+    "9": [
+      153
+    ],
+    "(no": [
+      154
+    ],
+    "intervention),": [
+      155
+    ],
+    "10": [
+      157
+    ],
+    "22": [
+      159
+    ],
+    "(massive": [
+      160
+    ],
+    "human": [
+      161
+    ],
+    "movement": [
+      162
+    ],
+    "due": [
+      163
+    ],
+    "Chinese": [
+      166
+    ],
+    "New": [
+      167
+    ],
+    "Year": [
+      168
+    ],
+    "holiday),": [
+      169
+    ],
+    "23": [
+      171
+    ],
+    "February": [
+      173,
+      182,
+      191,
+      402
+    ],
+    "1": [
+      174
+    ],
+    "(cordons": [
+      175
+    ],
+    "restriction": [
+      178
+    ],
+    "quarantine),": [
+      181
+    ],
+    "2": [
+      183
+    ],
+    "16": [
+      185,
+      236
+    ],
+    "(centralized": [
+      186
+    ],
+    "quarantine": [
+      187
+    ],
+    "treatment),": [
+      189
+    ],
+    "17": [
+      192
+    ],
+    "(universal": [
+      196
+    ],
+    "survey).": [
+      198
+    ],
+    "The": [
+      199,
+      241,
+      275,
+      311,
+      327,
+      387
+    ],
+    "effective": [
+      200,
+      388
+    ],
+    "reproduction": [
+      201,
+      389
+    ],
+    "SARS-CoV-2": [
+      204
+    ],
+    "(an": [
+      205
+    ],
+    "indicator": [
+      206
+    ],
+    "secondary": [
+      208
+    ],
+    "transmission)": [
+      209
+    ],
+    "was": [
+      210,
+      227,
+      296,
+      424
+    ],
+    "also": [
+      211
+    ],
+    "over": [
+      213,
+      280,
+      323
+    ],
+    "periods.": [
+      215,
+      326
+    ],
+    "RESULTS:": [
+      216
+    ],
+    "Among": [
+      217
+    ],
+    "cases,": [
+      222,
+      346
+    ],
+    "median": [
+      224
+    ],
+    "patient": [
+      225
+    ],
+    "age": [
+      226,
+      260
+    ],
+    "56.7": [
+      228
+    ],
+    "years": [
+      229,
+      340
+    ],
+    "(range,": [
+      230
+    ],
+    "0-103;": [
+      231
+    ],
+    "interquartile": [
+      232
+    ],
+    "range,": [
+      233
+    ],
+    "43.4-66.8)": [
+      234
+    ],
+    "817": [
+      237
+    ],
+    "(51.6%)": [
+      238
+    ],
+    "women.": [
+      240
+    ],
+    "daily": [
+      242,
+      276
+    ],
+    "confirmed": [
+      243,
+      270,
+      277
+    ],
+    "case": [
+      244,
+      278
+    ],
+    "rate": [
+      245,
+      268,
+      279
+    ],
+    "peaked": [
+      246
+    ],
+    "third": [
+      249
+    ],
+    "period": [
+      250,
+      283
+    ],
+    "declined": [
+      252
+    ],
+    "afterward": [
+      253
+    ],
+    "regions": [
+      256
+    ],
+    "sex": [
+      258
+    ],
+    "groups,": [
+      261
+    ],
+    "except": [
+      262
+    ],
+    "for": [
+      263
+    ],
+    "children": [
+      264
+    ],
+    "adolescents,": [
+      266
+    ],
+    "whose": [
+      267
+    ],
+    "continued": [
+      272
+    ],
+    "increase.": [
+      274
+    ],
+    "whole": [
+      282
+    ],
+    "local": [
+      285
+    ],
+    "care": [
+      287
+    ],
+    "workers": [
+      288
+    ],
+    "(130.5": [
+      289
+    ],
+    "people": [
+      292,
+      307,
+      349,
+      372
+    ],
+    "[95%": [
+      293,
+      308,
+      367,
+      384
+    ],
+    "CI,": [
+      294,
+      309,
+      368,
+      385
+    ],
+    "123.9-137.2])": [
+      295
+    ],
+    "higher": [
+      297,
+      354
+    ],
+    "than": [
+      298,
+      409
+    ],
+    "that": [
+      299
+    ],
+    "general": [
+      302
+    ],
+    "population": [
+      303
+    ],
+    "(41.5": [
+      304
+    ],
+    "41.0-41.9]).": [
+      310
+    ],
+    "proportion": [
+      312
+    ],
+    "severe": [
+      314,
+      343,
+      358
+    ],
+    "critical": [
+      316,
+      345,
+      360
+    ],
+    "decreased": [
+      318,
+      397,
+      405
+    ],
+    "53.1%": [
+      320
+    ],
+    "10.3%": [
+      322
+    ],
+    "risk": [
+      329,
+      355,
+      364,
+      378,
+      381
+    ],
+    "increased": [
+      330
+    ],
+    "age:": [
+      332
+    ],
+    "compared": [
+      333
+    ],
+    "those": [
+      335
+    ],
+    "aged": [
+      336
+    ],
+    "20": [
+      337
+    ],
+    "39": [
+      339
+    ],
+    "(proportion": [
+      341
+    ],
+    "12.1%),": [
+      347
+    ],
+    "elderly": [
+      348
+    ],
+    "(\u226580": [
+      350
+    ],
+    "years)": [
+      351,
+      374
+    ],
+    "had": [
+      352,
+      375
+    ],
+    "having": [
+      357
+    ],
+    "or": [
+      359
+    ],
+    "(proportion,": [
+      362,
+      379
+    ],
+    "41.3%;": [
+      363
+    ],
+    "ratio,": [
+      365,
+      382
+    ],
+    "3.61": [
+      366
+    ],
+    "3.31-3.95])": [
+      369
+    ],
+    "while": [
+      370
+    ],
+    "younger": [
+      371
+    ],
+    "(<20": [
+      373
+    ],
+    "lower": [
+      377
+    ],
+    "4.1%;": [
+      380
+    ],
+    "0.47": [
+      383
+    ],
+    "0.31-0.70]).": [
+      386
+    ],
+    "fluctuated": [
+      391
+    ],
+    "above": [
+      392
+    ],
+    "3.0": [
+      393
+    ],
+    "before": [
+      394
+    ],
+    "26,": [
+      396
+    ],
+    "below": [
+      399
+    ],
+    "1.0": [
+      400
+    ],
+    "after": [
+      401,
+      411
+    ],
+    "6,": [
+      403
+    ],
+    "further": [
+      406
+    ],
+    "less": [
+      408
+    ],
+    "0.3": [
+      410
+    ],
+    "1.": [
+      413
+    ],
+    "CONCLUSIONS": [
+      414
+    ],
+    "RELEVANCE:": [
+      416
+    ],
+    "A": [
+      417
+    ],
+    "series": [
+      418
+    ],
+    "multifaceted": [
+      420
+    ],
+    "temporally": [
+      425
+    ],
+    "associated": [
+      426
+    ],
+    "improved": [
+      428
+    ],
+    "Wuhan,": [
+      435
+    ],
+    "China.": [
+      436
+    ],
+    "These": [
+      437
+    ],
+    "findings": [
+      438
+    ],
+    "may": [
+      439
+    ],
+    "inform": [
+      440
+    ],
+    "policy": [
+      443
+    ],
+    "other": [
+      445
+    ],
+    "countries": [
+      446
+    ],
+    "regions.": [
+      448
+    ]
+  },
+  "counts_by_year": [
+    {
+      "year": 2026,
+      "cited_by_count": 14
+    },
+    {
+      "year": 2025,
+      "cited_by_count": 49
+    },
+    {
+      "year": 2024,
+      "cited_by_count": 95
+    },
+    {
+      "year": 2023,
+      "cited_by_count": 144
+    },
+    {
+      "year": 2022,
+      "cited_by_count": 268
+    },
+    {
+      "year": 2021,
+      "cited_by_count": 597
+    },
+    {
+      "year": 2020,
+      "cited_by_count": 748
+    },
+    {
+      "year": 2018,
+      "cited_by_count": 2
+    }
+  ],
+  "updated_date": "2026-07-02T09:51:11.867554",
+  "created_date": "2025-10-10T00:00:00"
+}

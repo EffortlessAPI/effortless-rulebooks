@@ -1,0 +1,14 @@
+{
+  "candidate_id": "cand-exp-fdic-small-business-lending-survey-2016",
+  "proposed_study_id": "fdic-small-business-lending-survey-2016",
+  "acquisition_status": "landing_saved",
+  "attempted_at": "2026-07-07T03:48:09+00:00",
+  "catalog_source_url": "https://www.fdic.gov/bank/statistical/guide/",
+  "resolved_urls": [
+    "https://www.fdic.gov/bank/statistical/guide/"
+  ],
+  "files": [
+    "source-1.html"
+  ],
+  "dois": []
+}
