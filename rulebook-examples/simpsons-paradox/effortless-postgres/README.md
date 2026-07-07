@@ -2,7 +2,7 @@
 
 **Schema:** `public`
 **Database:** `demo`
-**Timestamp:** 2026-07-07 04:49:03 UTC
+**Timestamp:** 2026-07-07 04:52:26 UTC
 
 ## Parsing Rulebook
 
@@ -15,7 +15,7 @@ Found **32** tables in rulebook
   - **Strata** (6 fields, 253 records)
   - **CaseCells** (11 fields, 506 records)
   - **StratumSummaries** (28 fields, 506 records)
-  - **ModelSummary** (85 fields, 1 records)
+  - **ModelSummary** (91 fields, 1 records)
   - **StratumVariables** (10 fields, 116 records)
   - **TreatmentRankings** (54 fields, 116 records)
   - **InvariantChecks** (21 fields, 28 records)
@@ -43,7 +43,7 @@ Found **32** tables in rulebook
   - **CorpusDomains** (6 fields, 11 records)
 
 Generated **32** table definitions with **227** raw fields (mode=check-add)
-Generated **275** calculation functions
+Generated **281** calculation functions
 Generated **32** views
 Enabled RLS on **32** tables
 Generated insert statements for **4027** records

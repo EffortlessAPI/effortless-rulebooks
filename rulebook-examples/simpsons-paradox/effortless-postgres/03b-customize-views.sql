@@ -187,7 +187,11 @@ SELECT
   calc_model_summary_unanimous_sign_flip_count(t.model_summary_id) AS unanimous_sign_flip_count,
   calc_model_summary_expansion_wave1_economics_expected_a_count(t.model_summary_id) AS expansion_wave1_economics_expected_a_count,
   calc_model_summary_expansion_wave1_economics_expected_ad_count(t.model_summary_id) AS expansion_wave1_economics_expected_ad_count,
-  calc_model_summary_economics_expected_a_mismatch_rate(t.model_summary_id) AS economics_expected_a_mismatch_rate
+  calc_model_summary_economics_expected_a_mismatch_rate(t.model_summary_id) AS economics_expected_a_mismatch_rate,
+  calc_model_summary_education_latent_fraction(t.model_summary_id) AS education_latent_fraction,
+  calc_model_summary_sports_latent_fraction(t.model_summary_id) AS sports_latent_fraction,
+  calc_model_summary_economics_sign_flip_rate(t.model_summary_id) AS economics_sign_flip_rate,
+  calc_model_summary_expansion_wave2_study_count(t.model_summary_id) AS expansion_wave2_study_count
 FROM model_summary t;
 
 -- ============================================================================

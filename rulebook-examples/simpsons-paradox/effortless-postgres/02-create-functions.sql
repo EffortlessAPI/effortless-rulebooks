@@ -1050,6 +1050,66 @@ RETURNS NUMERIC AS $$
   SELECT (CASE WHEN ((SELECT COUNT(*)))::NUMERIC = 0 THEN ('')::text ELSE ((COALESCE(CASE WHEN ((SELECT COUNT(*)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT COUNT(*)))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(CASE WHEN ((SELECT COUNT(*)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT COUNT(*)))::numeric ELSE NULL END, 0), 0)))::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
+-- calc_model_summary_education_type_d_count
+-- Field: ModelSummary.EducationTypeDCount
+-- Type: calculated | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_model_summary_education_type_d_count(p_model_summary_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((SELECT COUNT(*) FROM treatment_rankings WHERE calc_treatment_rankings_study_domain(treatment_ranking_id) = 'education' AND calc_treatment_rankings_distortion_type(treatment_ranking_id) = 'D'))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_model_summary_education_latent_d_count
+-- Field: ModelSummary.EducationLatentDCount
+-- Type: calculated | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_model_summary_education_latent_d_count(p_model_summary_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((SELECT COUNT(*) FROM treatment_rankings WHERE calc_treatment_rankings_study_domain(treatment_ranking_id) = 'education' AND calc_treatment_rankings_distortion_type(treatment_ranking_id) = 'D' AND calc_treatment_rankings_latent_flip_potential(treatment_ranking_id) = TRUE))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_model_summary_sports_type_d_count
+-- Field: ModelSummary.SportsTypeDCount
+-- Type: calculated | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_model_summary_sports_type_d_count(p_model_summary_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((SELECT COUNT(*) FROM treatment_rankings WHERE calc_treatment_rankings_study_domain(treatment_ranking_id) = 'sports' AND calc_treatment_rankings_distortion_type(treatment_ranking_id) = 'D'))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_model_summary_sports_latent_d_count
+-- Field: ModelSummary.SportsLatentDCount
+-- Type: calculated | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_model_summary_sports_latent_d_count(p_model_summary_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((SELECT COUNT(*) FROM treatment_rankings WHERE calc_treatment_rankings_study_domain(treatment_ranking_id) = 'sports' AND calc_treatment_rankings_distortion_type(treatment_ranking_id) = 'D' AND calc_treatment_rankings_latent_flip_potential(treatment_ranking_id) = TRUE))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_model_summary_economics_study_count
+-- Field: ModelSummary.EconomicsStudyCount
+-- Type: calculated | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_model_summary_economics_study_count(p_model_summary_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((SELECT COUNT(*) FROM studies WHERE domain = 'economics' AND is_synthetic = FALSE))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_model_summary_expansion_wave2_study_count
+-- Field: ModelSummary.ExpansionWave2StudyCount
+-- Type: calculated | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_model_summary_expansion_wave2_study_count(p_model_summary_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((SELECT COUNT(*) FROM candidate_study_catalog WHERE expansion_wave = 'expansion-wave-2' AND calc_candidate_study_catalog_is_imported(candidate_id) = TRUE))::integer;
+$$ LANGUAGE sql STABLE;
+
 -- calc_stratum_variables_name
 -- Field: StratumVariables.Name
 -- Type: calculated | DataType: string | Returns: TEXT

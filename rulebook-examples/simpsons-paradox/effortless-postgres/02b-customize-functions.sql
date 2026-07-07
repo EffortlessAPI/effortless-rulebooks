@@ -962,6 +962,9 @@ CREATE OR REPLACE FUNCTION calc_discovery_findings_is_confirmed(p_finding_id TEX
                                   > calc_model_summary_type_d_avg_distortion('simpsons-paradox-v1')
     WHEN 'H-ultra-fragile' THEN calc_model_summary_sweep_fragile_count('simpsons-paradox-v1') >= 4
     WHEN 'H-econ-encoding-selection' THEN calc_model_summary_economics_expected_a_mismatch_rate('simpsons-paradox-v1') > 0.5
+    WHEN 'H-domain-profiles-stable' THEN calc_model_summary_education_latent_fraction('simpsons-paradox-v1') > 0.5
+                              AND calc_model_summary_sports_latent_fraction('simpsons-paradox-v1') > 0.5
+                              AND calc_model_summary_economics_sign_flip_rate('simpsons-paradox-v1') < 0.05
     ELSE FALSE
   END;
 $$ LANGUAGE sql STABLE;
@@ -1000,6 +1003,10 @@ CREATE OR REPLACE FUNCTION calc_discovery_findings_observed_metric(p_finding_id 
                                          ' D=', calc_model_summary_type_d_avg_distortion('simpsons-paradox-v1'))
     WHEN 'H-ultra-fragile' THEN CONCAT('SweepFragileCount=', calc_model_summary_sweep_fragile_count('simpsons-paradox-v1'))
     WHEN 'H-econ-encoding-selection' THEN CONCAT('EconExpectedAMismatchRate=', calc_model_summary_economics_expected_a_mismatch_rate('simpsons-paradox-v1'))
+    WHEN 'H-domain-profiles-stable' THEN CONCAT('eduLatent=', calc_model_summary_education_latent_fraction('simpsons-paradox-v1'),
+                                                '; sportsLatent=', calc_model_summary_sports_latent_fraction('simpsons-paradox-v1'),
+                                                '; econFlipRate=', calc_model_summary_economics_sign_flip_rate('simpsons-paradox-v1'),
+                                                '; realN=', calc_model_summary_real_study_count('simpsons-paradox-v1'))
     ELSE ''
   END;
 $$ LANGUAGE sql STABLE;
@@ -1082,4 +1089,48 @@ CREATE OR REPLACE FUNCTION calc_model_summary_unanimous_sign_flip_count(p_model_
 RETURNS INTEGER AS $$
   SELECT COUNT(*)::integer FROM _erb_tr_metrics
   WHERE is_sign_flip = true AND is_stratum_unanimous = true;
+$$ LANGUAGE sql STABLE;
+
+-- loop-72: domain profile rollup metrics
+CREATE OR REPLACE FUNCTION calc_model_summary_education_type_d_count(p_model_summary_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT COUNT(*)::integer FROM _erb_tr_metrics WHERE study_domain = 'education' AND distortion_type = 'D';
+$$ LANGUAGE sql STABLE;
+CREATE OR REPLACE FUNCTION calc_model_summary_education_latent_d_count(p_model_summary_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT COUNT(*)::integer FROM _erb_tr_metrics
+  WHERE study_domain = 'education' AND distortion_type = 'D' AND latent_flip_potential = true;
+$$ LANGUAGE sql STABLE;
+CREATE OR REPLACE FUNCTION calc_model_summary_education_latent_fraction(p_model_summary_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT COUNT(*) FILTER (WHERE latent_flip_potential = true)::numeric / NULLIF(COUNT(*), 0)
+  FROM _erb_tr_metrics WHERE study_domain = 'education' AND distortion_type = 'D';
+$$ LANGUAGE sql STABLE;
+CREATE OR REPLACE FUNCTION calc_model_summary_sports_type_d_count(p_model_summary_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT COUNT(*)::integer FROM _erb_tr_metrics WHERE study_domain = 'sports' AND distortion_type = 'D';
+$$ LANGUAGE sql STABLE;
+CREATE OR REPLACE FUNCTION calc_model_summary_sports_latent_d_count(p_model_summary_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT COUNT(*)::integer FROM _erb_tr_metrics
+  WHERE study_domain = 'sports' AND distortion_type = 'D' AND latent_flip_potential = true;
+$$ LANGUAGE sql STABLE;
+CREATE OR REPLACE FUNCTION calc_model_summary_sports_latent_fraction(p_model_summary_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT COUNT(*) FILTER (WHERE latent_flip_potential = true)::numeric / NULLIF(COUNT(*), 0)
+  FROM _erb_tr_metrics WHERE study_domain = 'sports' AND distortion_type = 'D';
+$$ LANGUAGE sql STABLE;
+CREATE OR REPLACE FUNCTION calc_model_summary_economics_study_count(p_model_summary_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT COUNT(*)::integer FROM studies WHERE domain = 'economics' AND is_synthetic = false;
+$$ LANGUAGE sql STABLE;
+CREATE OR REPLACE FUNCTION calc_model_summary_economics_sign_flip_rate(p_model_summary_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT calc_model_summary_economics_sign_flip_count(p_model_summary_id)::numeric
+         / NULLIF(calc_model_summary_economics_study_count(p_model_summary_id), 0);
+$$ LANGUAGE sql STABLE;
+CREATE OR REPLACE FUNCTION calc_model_summary_expansion_wave2_study_count(p_model_summary_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT COUNT(*)::integer FROM candidate_study_catalog
+  WHERE expansion_wave = 'expansion-wave-2' AND ingestion_status = 'imported';
 $$ LANGUAGE sql STABLE;
