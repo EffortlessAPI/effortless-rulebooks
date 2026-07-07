@@ -46,8 +46,15 @@ Re-merge after a fresh acquisition run:
 
 ```bash
 python3 scripts/acquisition-loop-expansion-wave-1.py --retry-failed
-python3 scripts/merge-acquisition-manifest.py
+python3 scripts/integrate-expansion-wave-1.py
 effortless build
+```
+
+Or run the individual merge scripts (acquisition first, PDF second):
+
+```bash
+python3 scripts/merge-acquisition-manifest.py
+python3 scripts/merge-pdf-extraction-manifest.py
 ```
 
 ## PDF table extraction side loop (parallel, out-of-channel)

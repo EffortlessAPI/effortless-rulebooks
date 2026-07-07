@@ -1,7 +1,7 @@
 {
   "loop": "acquisition-expansion-wave-1",
   "channel": "out-of-band",
-  "note": "Merged into CandidateStudyCatalog.DataAcquisitionStatus after loops 68–72.",
+  "note": "Integrated into CandidateStudyCatalog via integrate-expansion-wave-1.py",
   "created_at": "2026-07-07T03:36:59+00:00",
   "updated_at": "2026-07-07T03:48:14+00:00",
   "studies": [
@@ -4112,5 +4112,5 @@
     "metadata_only": 9,
     "blocked": 5
   },
-  "merged_at": "2026-07-07T03:58:51+00:00"
+  "merged_at": "2026-07-07T05:04:23+00:00"
 }

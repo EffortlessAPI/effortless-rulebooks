@@ -965,6 +965,15 @@ CREATE OR REPLACE FUNCTION calc_discovery_findings_is_confirmed(p_finding_id TEX
     WHEN 'H-domain-profiles-stable' THEN calc_model_summary_education_latent_fraction('simpsons-paradox-v1') > 0.5
                               AND calc_model_summary_sports_latent_fraction('simpsons-paradox-v1') > 0.5
                               AND calc_model_summary_economics_sign_flip_rate('simpsons-paradox-v1') < 0.05
+    WHEN 'H-corrected-gap-invariant' THEN calc_model_summary_max_study_sweep_corrected_gap_range('simpsons-paradox-v1') < 0.0001
+                              AND calc_model_summary_corrected_gap_invariant_fail_count('simpsons-paradox-v1') = 0
+    WHEN 'H-explained-bidirectional' THEN calc_model_summary_explained_confounder_count('simpsons-paradox-v1')
+                              = calc_model_summary_confounder_sign_flip_count('simpsons-paradox-v1')
+                              AND calc_model_summary_false_positive_explained_count('simpsons-paradox-v1') = 0
+                              AND calc_model_summary_unexplained_confounder_sign_flip_count('simpsons-paradox-v1') = 0
+    WHEN 'H-collider-no-manifest-theorem' THEN calc_model_summary_collider_selection_manifest_count('simpsons-paradox-v1') = 0
+                              AND calc_model_summary_collider_selection_count('simpsons-paradox-v1') >= 10
+    WHEN 'H-theorem-portfolio' THEN calc_model_summary_theorem_count('simpsons-paradox-v1') >= 4
     ELSE FALSE
   END;
 $$ LANGUAGE sql STABLE;
@@ -1007,6 +1016,15 @@ CREATE OR REPLACE FUNCTION calc_discovery_findings_observed_metric(p_finding_id 
                                                 '; sportsLatent=', calc_model_summary_sports_latent_fraction('simpsons-paradox-v1'),
                                                 '; econFlipRate=', calc_model_summary_economics_sign_flip_rate('simpsons-paradox-v1'),
                                                 '; realN=', calc_model_summary_real_study_count('simpsons-paradox-v1'))
+    WHEN 'H-corrected-gap-invariant' THEN CONCAT('maxRange=', calc_model_summary_max_study_sweep_corrected_gap_range('simpsons-paradox-v1'),
+                                                 ' fails=', calc_model_summary_corrected_gap_invariant_fail_count('simpsons-paradox-v1'))
+    WHEN 'H-explained-bidirectional' THEN CONCAT('explained=', calc_model_summary_explained_confounder_count('simpsons-paradox-v1'),
+                                                 ' confFlip=', calc_model_summary_confounder_sign_flip_count('simpsons-paradox-v1'),
+                                                 ' falsePos=', calc_model_summary_false_positive_explained_count('simpsons-paradox-v1'),
+                                                 ' unexplained=', calc_model_summary_unexplained_confounder_sign_flip_count('simpsons-paradox-v1'))
+    WHEN 'H-collider-no-manifest-theorem' THEN CONCAT('collN=', calc_model_summary_collider_selection_count('simpsons-paradox-v1'),
+                                                      ' collManifest=', calc_model_summary_collider_selection_manifest_count('simpsons-paradox-v1'))
+    WHEN 'H-theorem-portfolio' THEN CONCAT('theoremCount=', calc_model_summary_theorem_count('simpsons-paradox-v1'))
     ELSE ''
   END;
 $$ LANGUAGE sql STABLE;
@@ -1133,4 +1151,56 @@ CREATE OR REPLACE FUNCTION calc_model_summary_expansion_wave2_study_count(p_mode
 RETURNS INTEGER AS $$
   SELECT COUNT(*)::integer FROM candidate_study_catalog
   WHERE expansion_wave = 'expansion-wave-2' AND ingestion_status = 'imported';
+$$ LANGUAGE sql STABLE;
+
+-- ============================================================================
+-- Loop-78 ModelSummary rollup (expansion wave 3 supersession audit)
+-- ============================================================================
+CREATE OR REPLACE FUNCTION calc_model_summary_corpus_pattern_superseded_fail_count(p_model_summary_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT COUNT(*)::integer
+  FROM vw_discovery_findings
+  WHERE hypothesis_id IN (
+    'H-econ-zero', 'H-domain-dist', 'H-catalog-flip-prediction',
+    'H-domain-flip-geometry-controlled', 'H-econ-encoding-selection', 'H-domain-profiles-stable'
+  )
+  AND is_confirmed = FALSE;
+$$ LANGUAGE sql STABLE;
+
+CREATE OR REPLACE FUNCTION calc_model_summary_expansion_wave3_discovery_note(p_model_summary_id TEXT)
+RETURNS TEXT AS $$
+  SELECT CONCAT(
+    'superseded=', calc_model_summary_corpus_pattern_superseded_fail_count(p_model_summary_id),
+    '; econFlips=', calc_model_summary_economics_sign_flip_count(p_model_summary_id),
+    '; flipPred=', calc_model_summary_sign_flip_prediction_match_rate(p_model_summary_id),
+    '; catalogExact=', calc_model_summary_type_prediction_match_rate(p_model_summary_id),
+    '; theorems=', calc_model_summary_theorem_count(p_model_summary_id)
+  );
+$$ LANGUAGE sql STABLE;
+
+-- ============================================================================
+-- Theorem wave ModelSummary fixes (loops 73-76)
+-- Transpiler emits broken MAX/COUNTIFS for sweep rollup and explained false-positive sum.
+-- ============================================================================
+CREATE OR REPLACE FUNCTION calc_model_summary_max_study_sweep_corrected_gap_range(p_model_summary_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT COALESCE(MAX(calc_sweep_study_summary_sweep_corrected_gap_range(sweep_study_id)), 0)::numeric
+  FROM sweep_study_summary;
+$$ LANGUAGE sql STABLE;
+
+CREATE OR REPLACE FUNCTION calc_model_summary_corrected_gap_invariant_fail_count(p_model_summary_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT COUNT(*)::integer
+  FROM sweep_study_summary
+  WHERE calc_sweep_study_summary_sweep_corrected_gap_range(sweep_study_id) >= 0.0001;
+$$ LANGUAGE sql STABLE;
+
+CREATE OR REPLACE FUNCTION calc_model_summary_false_positive_explained_count(p_model_summary_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT (
+    (SELECT COUNT(*) FROM _erb_tr_metrics WHERE is_paradox_explained = TRUE AND is_sign_flip = FALSE)
+    +
+    (SELECT COUNT(*) FROM _erb_tr_metrics
+     WHERE is_paradox_explained = TRUE AND is_sign_flip = TRUE AND stratum_causal_role <> 'confounder')
+  )::integer;
 $$ LANGUAGE sql STABLE;

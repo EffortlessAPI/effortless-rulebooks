@@ -191,7 +191,18 @@ SELECT
   calc_model_summary_education_latent_fraction(t.model_summary_id) AS education_latent_fraction,
   calc_model_summary_sports_latent_fraction(t.model_summary_id) AS sports_latent_fraction,
   calc_model_summary_economics_sign_flip_rate(t.model_summary_id) AS economics_sign_flip_rate,
-  calc_model_summary_expansion_wave2_study_count(t.model_summary_id) AS expansion_wave2_study_count
+  calc_model_summary_expansion_wave2_study_count(t.model_summary_id) AS expansion_wave2_study_count,
+  -- Loop-78 expansion wave 3 discovery rollup
+  calc_model_summary_corpus_pattern_superseded_fail_count(t.model_summary_id) AS corpus_pattern_superseded_fail_count,
+  calc_model_summary_expansion_wave3_discovery_note(t.model_summary_id) AS expansion_wave3_discovery_note,
+  -- Theorem wave fields (loops 73-76)
+  calc_model_summary_max_study_sweep_corrected_gap_range(t.model_summary_id) AS max_study_sweep_corrected_gap_range,
+  calc_model_summary_corrected_gap_invariant_fail_count(t.model_summary_id) AS corrected_gap_invariant_fail_count,
+  calc_model_summary_false_positive_explained_count(t.model_summary_id) AS false_positive_explained_count,
+  calc_model_summary_unexplained_confounder_sign_flip_count(t.model_summary_id) AS unexplained_confounder_sign_flip_count,
+  calc_model_summary_explained_confounder_count(t.model_summary_id) AS explained_confounder_count,
+  calc_model_summary_contested_or_mediator_explained_count(t.model_summary_id) AS contested_or_mediator_explained_count,
+  calc_model_summary_theorem_count(t.model_summary_id) AS theorem_count
 FROM model_summary t;
 
 -- ============================================================================

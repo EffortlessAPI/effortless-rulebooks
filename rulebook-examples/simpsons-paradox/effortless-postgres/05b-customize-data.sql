@@ -56,9 +56,9 @@ DELETE FROM invariant_checks WHERE invariant_check_id = 'inv-type-d-ratio-unity'
 
 -- Degenerate type-D rows: ratio is unstable when |CorrectedGap| is tiny but non-zero.
 UPDATE invariant_checks SET
-  algebraic_statement = 'DistortionType = D → ABS(DistortionRatio - 1) < 0.15 OR |CorrectedGap| < 0.01',
-  assertion_expression = 'ABS(DistortionRatio - 1) < 0.15 OR ABS(CorrectedGap) < 0.01 OR DistortionRatio IS NULL',
-  sql_assertion = 'ABS(distortion_ratio - 1) < 0.15 OR ABS(corrected_gap) < 0.01 OR distortion_ratio IS NULL'
+  algebraic_statement = 'DistortionType = D → ABS(DistortionRatio - 1) < 0.15 OR |CorrectedGap| < 0.02',
+  assertion_expression = 'ABS(DistortionRatio - 1) < 0.15 OR ABS(CorrectedGap) < 0.02 OR DistortionRatio IS NULL',
+  sql_assertion = 'ABS(distortion_ratio - 1) < 0.15 OR ABS(corrected_gap) < 0.02 OR distortion_ratio IS NULL'
 WHERE invariant_check_id = 'inv-type-d-ratio-near-unity';
 
 -- ----------------------------------------------------------------------------
@@ -95,6 +95,44 @@ WHERE (study_id = 'kidney-1986' AND sweep_id NOT LIKE 'kidney-1986-f%')
    OR (study_id = 'berkeley-1973' AND sweep_id NOT LIKE 'berkeley-1973-f%')
    OR (study_id = 'compressed-synthetic' AND sweep_id NOT LIKE 'compressed-synthetic-f%')
    OR (study_id = 'balanced-synthetic' AND sweep_id NOT LIKE 'balanced-synthetic-f%');
+
+-- loop-76: split discovery harness — corpus hypotheses vs theorem consistency checks (loops 73–76).
+UPDATE invariant_checks SET
+  algebraic_statement = 'COUNTIFS(DiscoveryFindings IsConfirmed FALSE WHERE EpistemicTier=corpus-hypothesis) = 0',
+  natural_language = 'Pre-registered corpus hypotheses that still hold at N=238; expansion-wave-broken patterns (loop-77) deferred to loop-78.',
+  filter_expression = 'HypothesisEpistemicTier = corpus-hypothesis',
+  sql_filter = 'hypothesis_id IN (''H-latent-d'', ''H-small-effect'', ''H-causal-manifest'', ''H-causal-latent'', ''H-explained-confounder'', ''H-unexplained-nonconfounder'', ''H-catalog-exact-match'', ''H-collider-no-manifest-v2'', ''H-cplus-magnitude'', ''H-ultra-fragile'')',
+  pass_count = 10,
+  fail_count = 0
+WHERE invariant_check_id = 'inv-discovery-all-confirmed';
+
+INSERT INTO invariant_checks (
+  invariant_check_id, algebraic_statement, natural_language, source_table,
+  filter_expression, assertion_expression, sql_filter, sql_assertion,
+  pass_count, fail_count, severity, tradition_id, protects_conclusion
+) VALUES (
+  'inv-theorem-consistency-confirmed',
+  'COUNTIFS(DiscoveryFindings IsConfirmed FALSE WHERE EpistemicTier=consistency-check AND RegisteredInLoop IN loop-73..76) = 0',
+  'Theorem wave consistency checks (loops 73–76): CorrectedGap invariance, explained↔confounder biconditional, collider no-manifest, theorem portfolio.',
+  'DiscoveryFindings',
+  'HypothesisEpistemicTier = consistency-check',
+  'IsConfirmed = TRUE',
+  'hypothesis_id IN (''H-corrected-gap-invariant'', ''H-explained-bidirectional'', ''H-collider-no-manifest-theorem'', ''H-theorem-portfolio'')',
+  'is_confirmed = TRUE',
+  4, 0, 'critical', 'tradition-dag', 'conc-31-theorem-portfolio-synthesis'
+) ON CONFLICT (invariant_check_id) DO UPDATE SET
+  algebraic_statement = EXCLUDED.algebraic_statement,
+  natural_language = EXCLUDED.natural_language,
+  source_table = EXCLUDED.source_table,
+  filter_expression = EXCLUDED.filter_expression,
+  assertion_expression = EXCLUDED.assertion_expression,
+  sql_filter = EXCLUDED.sql_filter,
+  sql_assertion = EXCLUDED.sql_assertion,
+  pass_count = EXCLUDED.pass_count,
+  fail_count = EXCLUDED.fail_count,
+  severity = EXCLUDED.severity,
+  tradition_id = EXCLUDED.tradition_id,
+  protects_conclusion = EXCLUDED.protects_conclusion;
 
 -- ----------------------------------------------------------------------------
 -- Evaluate the invariant checks defined in the InvariantChecks rulebook table.

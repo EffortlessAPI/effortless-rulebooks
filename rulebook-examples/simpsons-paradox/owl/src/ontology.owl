@@ -788,7 +788,7 @@ effortless-ntwf:epistemicTier a owl:DatatypeProperty ;
     rdfs:domain effortless-ntwf:DiscoveryHypotheses ;
     rdfs:range xsd:string ;
     rdfs:label "EpistemicTier" ;
-    rdfs:comment "consistency-check (definition-linked regression) | corpus-hypothesis (contingent corpus pattern)." .
+    rdfs:comment "consistency-check (definition-linked regression) | corpus-hypothesis (contingent corpus pattern) | corpus-pattern-superseded (witnessed FAIL at scale — retire in loop-80 prune)" .
 
 # === Class: DomainExpansionTargets ===
 effortless-ntwf:DomainExpansionTargets a owl:Class ;
@@ -1869,7 +1869,7 @@ effortless-ntwf:sweepFragileCount a owl:DatatypeProperty ;
     rdfs:domain effortless-ntwf:ModelSummary ;
     rdfs:range xsd:integer ;
     rdfs:label "SweepFragileCount" ;
-    rdfs:comment "Type-D studies with signal_purity=1, allocation_distortion=0, sweep_pooled_gap_range>0.3, allocation_fragility>=10." .
+    rdfs:comment "Count of TreatmentRankings with IsSweepFragile=TRUE." .
     # calculated: calculated
 
 effortless-ntwf:expansionWave1EconomicsExpectedACount a owl:DatatypeProperty ;
@@ -1891,6 +1891,125 @@ effortless-ntwf:economicsExpectedAMismatchRate a owl:DatatypeProperty ;
     rdfs:range xsd:string ;
     rdfs:label "EconomicsExpectedAMismatchRate" ;
     rdfs:comment "Fraction of expansion-wave-1 economics Expected-A imports observed as Type D." .
+    # calculated: calculated
+
+effortless-ntwf:unanimousSignFlipCount a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:ModelSummary ;
+    rdfs:range xsd:integer ;
+    rdfs:label "UnanimousSignFlipCount" ;
+    rdfs:comment "Sign-flip studies with unanimous stratum direction (IsSignFlip AND IsStratumUnanimous)." .
+    # calculated: calculated
+
+effortless-ntwf:maxStudySweepCorrectedGapRange a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:ModelSummary ;
+    rdfs:range xsd:string ;
+    rdfs:label "MaxStudySweepCorrectedGapRange" ;
+    rdfs:comment "MAX(SweepStudySummary.SweepCorrectedGapRange) — must stay below 0.0001 for CorrectedGap invariance theorem." .
+    # calculated: aggregation
+
+effortless-ntwf:correctedGapInvariantFailCount a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:ModelSummary ;
+    rdfs:range xsd:integer ;
+    rdfs:label "CorrectedGapInvariantFailCount" ;
+    rdfs:comment "Count of SweepStudySummary rows where SweepCorrectedGapRange >= 0.0001." .
+    # calculated: aggregation
+
+effortless-ntwf:falsePositiveExplainedCount a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:ModelSummary ;
+    rdfs:range xsd:integer ;
+    rdfs:label "FalsePositiveExplainedCount" ;
+    rdfs:comment "IsParadoxExplained=TRUE rows that are not confounder manifest sign-flips — must be 0 for explained↔confounder theorem." .
+    # calculated: aggregation
+
+effortless-ntwf:unexplainedConfounderSignFlipCount a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:ModelSummary ;
+    rdfs:range xsd:integer ;
+    rdfs:label "UnexplainedConfounderSignFlipCount" ;
+    rdfs:comment "Confounder sign-flips with IsParadoxExplained=FALSE — must be 0 for explained↔confounder theorem." .
+    # calculated: aggregation
+
+effortless-ntwf:theoremCount a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:ModelSummary ;
+    rdfs:range xsd:integer ;
+    rdfs:label "TheoremCount" ;
+    rdfs:comment "Count of witnessed Conclusions with Category=theorem (portfolio rollup for loop-76)." .
+    # calculated: calculated
+
+effortless-ntwf:educationLatentFraction a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:ModelSummary ;
+    rdfs:range xsd:string ;
+    rdfs:label "EducationLatentFraction" ;
+    rdfs:comment "Fraction of education Type-D studies with LatentFlipPotential=TRUE." .
+    # calculated: calculated
+
+effortless-ntwf:sportsLatentFraction a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:ModelSummary ;
+    rdfs:range xsd:string ;
+    rdfs:label "SportsLatentFraction" ;
+    rdfs:comment "Fraction of sports Type-D studies with LatentFlipPotential=TRUE." .
+    # calculated: calculated
+
+effortless-ntwf:economicsSignFlipRate a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:ModelSummary ;
+    rdfs:range xsd:string ;
+    rdfs:label "EconomicsSignFlipRate" ;
+    rdfs:comment "Manifest sign-flip rate among economics studies." .
+    # calculated: calculated
+
+effortless-ntwf:educationTypeDCount a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:ModelSummary ;
+    rdfs:range xsd:integer ;
+    rdfs:label "EducationTypeDCount" ;
+    rdfs:comment "Type-D studies in education domain." .
+    # calculated: calculated
+
+effortless-ntwf:educationLatentDCount a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:ModelSummary ;
+    rdfs:range xsd:integer ;
+    rdfs:label "EducationLatentDCount" ;
+    rdfs:comment "Education Type-D studies with LatentFlipPotential." .
+    # calculated: calculated
+
+effortless-ntwf:sportsTypeDCount a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:ModelSummary ;
+    rdfs:range xsd:integer ;
+    rdfs:label "SportsTypeDCount" ;
+    rdfs:comment "Type-D studies in sports domain." .
+    # calculated: calculated
+
+effortless-ntwf:sportsLatentDCount a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:ModelSummary ;
+    rdfs:range xsd:integer ;
+    rdfs:label "SportsLatentDCount" ;
+    rdfs:comment "Sports Type-D studies with LatentFlipPotential." .
+    # calculated: calculated
+
+effortless-ntwf:economicsStudyCount a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:ModelSummary ;
+    rdfs:range xsd:integer ;
+    rdfs:label "EconomicsStudyCount" ;
+    rdfs:comment "Real economics studies in corpus." .
+    # calculated: calculated
+
+effortless-ntwf:expansionWave2StudyCount a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:ModelSummary ;
+    rdfs:range xsd:integer ;
+    rdfs:label "ExpansionWave2StudyCount" ;
+    rdfs:comment "Studies imported in expansion wave 2." .
+    # calculated: calculated
+
+effortless-ntwf:corpusPatternSupersededFailCount a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:ModelSummary ;
+    rdfs:range xsd:integer ;
+    rdfs:label "CorpusPatternSupersededFailCount" ;
+    rdfs:comment "Count of corpus-pattern-superseded discovery hypotheses witnessed FAIL at current corpus scale (loop-78 rollup)." .
+    # calculated: calculated
+
+effortless-ntwf:expansionWave3DiscoveryNote a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:ModelSummary ;
+    rdfs:range xsd:string ;
+    rdfs:label "ExpansionWave3DiscoveryNote" ;
+    rdfs:comment "Loop-78 supersession audit rollup at N=238." .
     # calculated: calculated
 
 # === Class: PhaseDiagramSummary ===
@@ -3197,6 +3316,13 @@ effortless-ntwf:perStratumWinner a owl:DatatypeProperty ;
     rdfs:comment "The treatment that wins in every stratum — 'A' if StrataWonByA = StratumCount, 'B' if StrataWonByB = StratumCount, else 'none' (no unanimous per-stratum winner)." .
     # calculated: calculated
 
+effortless-ntwf:isStratumUnanimous a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:TreatmentRankings ;
+    rdfs:range xsd:boolean ;
+    rdfs:label "IsStratumUnanimous" ;
+    rdfs:comment "TRUE when one treatment wins every stratum (StrataWonByA = StratumCount OR StrataWonByB = StratumCount). Maps A/B policy split: unanimous → stratify-immediately geometry; heterogeneous → investigate-confounder." .
+    # calculated: calculated
+
 effortless-ntwf:isReversal a owl:DatatypeProperty ;
     rdfs:domain effortless-ntwf:TreatmentRankings ;
     rdfs:range xsd:boolean ;
@@ -3296,7 +3422,7 @@ effortless-ntwf:allocationDistortion a owl:DatatypeProperty ;
 effortless-ntwf:distortionType a owl:DatatypeProperty ;
     rdfs:range xsd:string ;
     rdfs:label "DistortionType" ;
-    rdfs:comment "Geometric classification (five types A/B/C+/C-/D). Sign-flip types A vs B are split by DistortionRatio when available: ratio < -1 → B (amplified reversal); ratio in (-1,0) → A (attenuated reversal). Falls back to ReversalIntensity when ratio is degenerate." .
+    rdfs:comment "Geometric classification (five types A/B/C+/C-/D). Sign-flip types: A = unanimous stratum direction (IsStratumUnanimous); B = heterogeneous stratum directions. Non-flip: C+/C-/D by distortion ratio." .
     # calculated: calculated
 
 effortless-ntwf:policyImplication a owl:DatatypeProperty ;
@@ -3369,6 +3495,13 @@ effortless-ntwf:allocationFragility a owl:DatatypeProperty ;
     rdfs:range xsd:string ;
     rdfs:label "AllocationFragility" ;
     rdfs:comment "SweepPooledGapRange divided by |PooledGap|. High values mean small observed effect but wide counterfactual wander." .
+    # calculated: calculated
+
+effortless-ntwf:isSweepFragile a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:TreatmentRankings ;
+    rdfs:range xsd:boolean ;
+    rdfs:label "IsSweepFragile" ;
+    rdfs:comment "Type-D study that is pooled-safe but ultra-fragile under allocation reweighting: signal_purity=1, allocation_distortion=0, sweep_pooled_gap_range>0.3, allocation_fragility>=10." .
     # calculated: calculated
 
 effortless-ntwf:studyDomain a owl:DatatypeProperty ;

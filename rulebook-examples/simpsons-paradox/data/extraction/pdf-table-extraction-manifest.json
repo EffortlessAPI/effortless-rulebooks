@@ -92,6 +92,6 @@
     }
   ],
   "errors": [],
-  "merged_at": "2026-07-07T04:26:27+00:00",
-  "merge_note": "Merged into CandidateStudyCatalog (DataAcquisitionStatus, DataSourceNote, SourceUrl). CaseCells encode deferred — no overlap with loop-71 criminal-justice batch."
+  "merged_at": "2026-07-07T05:04:23+00:00",
+  "merge_note": "Integrated into CandidateStudyCatalog via integrate-expansion-wave-1.py"
 }

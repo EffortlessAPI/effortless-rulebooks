@@ -31,6 +31,9 @@ import os
 import subprocess
 import sys
 
+# pyshacl's SPARQL parser can recurse deeply on large shape graphs.
+sys.setrecursionlimit(10000)
+
 import rdflib
 from rdflib import Graph, Namespace, URIRef, Literal, XSD
 from pyshacl import validate
@@ -285,6 +288,52 @@ def assert_aggregates(g, tr_aggs, pg_ss, pg_sv):
                     g.add((subj, pred, Literal(raw)))
 
 
+from rdflib.namespace import RDF, RDFS, SH
+
+CONFORMANCE_TARGET_CLASSES = {
+    NTWF.TreatmentRankings,
+    NTWF.StratumSummaries,
+    NTWF.StratumVariables,
+}
+
+# Cross-row aggregation rules are asserted from Postgres before SHACL; running
+# their SUM/COUNT subquery CONSTRUCT rules over the full ABox is redundant and
+# very slow on this corpus-sized individuals graph.
+ASSERTED_AGGREGATION_RULE_FIELDS = {
+    "TreatmentRankings": {
+        "TotalCasesA", "TotalSuccessesA", "TotalCasesB", "TotalSuccessesB",
+        "StratumCount", "StrataWonByA", "StrataWonByB", "ConfoundersInStudy",
+        "PooledRateFromWeightsA", "PooledRateFromWeightsB", "WeightedStratumGapSum",
+        "AllocationDistortion", "MediatorRiskCount", "ContestedStratumCount",
+        "UnknownCausalRoleCount", "ConfirmedCausalRoleCount",
+    },
+    "StratumSummaries": {
+        "StratumCasesA", "StratumSuccessesA", "StratumCasesB", "StratumSuccessesB",
+        "StratumCases", "StratumSuccesses", "StudyTotalCases", "StratumTotalCases",
+        "TreatmentACasesHere", "TreatmentBCasesHere", "TreatmentATotalCases",
+        "TreatmentBTotalCases",
+    },
+}
+
+
+def _owl_local_to_rule_field(owl_local: str) -> str:
+    return owl_local[0].upper() + owl_local[1:] if owl_local else owl_local
+
+
+def _excluded_conformance_rule_labels(manifest):
+    excluded = set()
+    for row in manifest:
+        if not row.get("AssertFromPostgres"):
+            continue
+        excluded.add(
+            f"rule_{row['SourceTable']}_{_owl_local_to_rule_field(row['OwlLocalName'])}"
+        )
+    for table, fields in ASSERTED_AGGREGATION_RULE_FIELDS.items():
+        for field in fields:
+            excluded.add(f"rule_{table}_{field}")
+    return excluded
+
+
 def load_base():
     g = Graph()
     g.parse(os.path.join(SRC, "ontology.owl"), format="turtle")
@@ -293,30 +342,138 @@ def load_base():
 
 
 def rules_graph():
+    """Load SHACL rules for conformance tables, skipping pre-asserted aggregations."""
+    manifest = load_conformance_manifest()
+    excluded_labels = _excluded_conformance_rule_labels(manifest)
     sg = Graph()
     sg.parse(os.path.join(SRC, "rules.shacl.ttl"), format="turtle")
-    return sg
+    fg = Graph()
+    fg.bind("effortless-ntwf", NTWF)
+    fg.bind("sh", SH)
+    fg.bind("rdfs", RDFS)
+    fg.bind("xsd", XSD)
+    kept = 0
+    for shape in sg.subjects(RDF.type, SH.NodeShape):
+        target = sg.value(shape, SH.targetClass)
+        if target not in CONFORMANCE_TARGET_CLASSES:
+            continue
+        if not any(sg.triples((shape, SH.rule, None))):
+            continue
+        fg.add((shape, RDF.type, SH.NodeShape))
+        fg.add((shape, SH.targetClass, target))
+        for _, _, rule_bnode in sg.triples((shape, SH.rule, None)):
+            label = sg.value(rule_bnode, RDFS.label)
+            if label and str(label) in excluded_labels:
+                continue
+            fg.add((shape, SH.rule, rule_bnode))
+            for s2, p2, o2 in sg.triples((rule_bnode, None, None)):
+                fg.add((s2, p2, o2))
+            kept += 1
+    return fg
 
 
-def rederive_to_fixpoint(g, max_passes=12):
-    """Run pyshacl advanced (sh:rule SPARQL CONSTRUCT) until triple count stabilises."""
+def _rdf_to_py(value):
+    if value is None:
+        return None
+    if isinstance(value, Literal):
+        py = value.toPython()
+        if isinstance(py, bool):
+            return py
+        if isinstance(py, (int, float)):
+            return py
+        return str(py)
+    return str(value)
+
+
+def _as_number(v):
+    if isinstance(v, bool):
+        return None
+    if isinstance(v, (int, float)):
+        return float(v)
+    if isinstance(v, str):
+        try:
+            return float(v.strip())
+        except ValueError:
+            return None
+    return None
+
+
+def _collapse_multivalue_derived(g, shapes, max_rounds=10):
+    """Collapse (subject, predicate) pairs with >1 derived value.
+
+    SHACL CONSTRUCT only ADDS triples, so multi-pass derivation can leave stale
+    premature values alongside converged ones (e.g. isReversal="" before isSignFlip
+    exists, then isReversal=true). Clear conflicted string/boolean props and
+    re-derive once inputs have stabilized. Numeric conflicts collapse to MAX.
+    """
+    for _ in range(max_rounds):
+        conflicts = {}
+        for s, p, o in g:
+            if not str(p).startswith(str(NTWF)):
+                continue
+            conflicts.setdefault((s, p), []).append(o)
+
+        numeric_targets = []
+        string_targets = []
+        for (s, p), objs in conflicts.items():
+            if len({str(o) for o in objs}) < 2:
+                continue
+            nums = [_as_number(_rdf_to_py(o)) for o in objs]
+            if all(n is not None for n in nums):
+                numeric_targets.append((s, p, objs, nums))
+            else:
+                string_targets.append((s, p))
+
+        if not numeric_targets and not string_targets:
+            break
+
+        for (s, p, objs, nums) in numeric_targets:
+            keep = objs[max(range(len(objs)), key=lambda i: nums[i])]
+            for o in objs:
+                if o is not keep:
+                    g.remove((s, p, o))
+
+        for (s, p) in string_targets:
+            for o in list(g.objects(s, p)):
+                g.remove((s, p, o))
+
+        if string_targets:
+            validate(
+                g,
+                shacl_graph=shapes,
+                inference="none",
+                advanced=True,
+                inplace=True,
+                do_owl_imports=False,
+            )
+        elif not string_targets:
+            break
+
+
+def rederive_to_fixpoint(g, max_passes=50):
+    """Run pyshacl advanced (sh:rule SPARQL CONSTRUCT) until graph stabilises."""
     shapes = rules_graph()
-    prev = -1
+
+    def fp(graph):
+        return hash(frozenset((str(s), str(p), str(o)) for s, p, o in graph))
+
+    prev = None
     passes = 0
     for i in range(max_passes):
         passes = i + 1
         validate(
             g,
             shacl_graph=shapes,
+            inference="none",
             advanced=True,
             inplace=True,
-            iterate_rules=True,
             do_owl_imports=False,
         )
-        n = len(g)
-        if n == prev:
+        cur = fp(g)
+        if cur == prev:
             break
-        prev = n
+        prev = cur
+    _collapse_multivalue_derived(g, shapes)
     return passes, len(g)
 
 

@@ -1,4 +1,4 @@
-import type { Study, Stratum, StratumSummary, TreatmentRanking, Treatment, ModelSummary, AllocationSweepRow, SweepStudySummary, SyntheticPhaseRow, PhaseDiagramSummary, CorpusCatalogSummary, CandidateStudyRow, DomainExpansionTarget, StudyImportTemplateStep, CaseCell, SandboxEvaluateResult, Conclusion, DiscoveryHypothesis, DiscoveryFinding, InvariantCheck } from './types';
+import type { Study, Stratum, StratumSummary, TreatmentRanking, Treatment, ModelSummary, AllocationSweepRow, SweepStudySummary, SyntheticPhaseRow, PhaseDiagramSummary, CorpusCatalogSummary, CandidateStudyRow, DomainExpansionTarget, StudyImportTemplateStep, CaseCell, SandboxEvaluateResult, Conclusion, DiscoveryHypothesis, DiscoveryFinding, InvariantCheck, Loop, ConformanceRunState } from './types';
 
 async function get<T>(path: string): Promise<T> {
   const res = await fetch(path);
@@ -66,6 +66,9 @@ export const api = {
   discoveryHypotheses: () => get<DiscoveryHypothesis[]>('/api/discovery-hypotheses'),
   discoveryFindings: () => get<DiscoveryFinding[]>('/api/discovery-findings'),
   invariantChecks: () => get<InvariantCheck[]>('/api/invariant-checks'),
+  loops: () => get<Loop[]>('/api/loops'),
+  conformanceStatus: () => get<ConformanceRunState>('/api/conformance/status'),
+  runConformance: () => post<ConformanceRunState>('/api/conformance/run', {}),
   downloadSummaryPdf: () => {
     const stamp = new Date().toISOString().slice(0, 10);
     return downloadBlob(

@@ -32,7 +32,7 @@ python3 scripts/pdf-table-extraction-side-loop.py --limit 3   # smoke test
 
 ## Merge into rulebook (after loops 68–72)
 
-**Merged 2026-07-07** via `python3 scripts/merge-pdf-extraction-manifest.py`.
+**Integrated 2026-07-07** via `python3 scripts/integrate-expansion-wave-1.py` (or the individual merge scripts below).
 
 Updates `CandidateStudyCatalog` only:
 - `DataAcquisitionStatus` → `downloaded` (verified manuscript PDF on disk)

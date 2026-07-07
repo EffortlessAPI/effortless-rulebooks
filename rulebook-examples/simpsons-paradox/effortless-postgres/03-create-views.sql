@@ -257,7 +257,15 @@ SELECT
   calc_model_summary_theorem_count(t.model_summary_id) AS theorem_count,        -- Count of witnessed Conclusions with Category=theorem (portfolio rollup for loop-76).
   calc_model_summary_education_latent_fraction(t.model_summary_id) AS education_latent_fraction,-- Fraction of education Type-D studies with LatentFlipPotential=TRUE.
   calc_model_summary_sports_latent_fraction(t.model_summary_id) AS sports_latent_fraction,-- Fraction of sports Type-D studies with LatentFlipPotential=TRUE.
-  calc_model_summary_economics_sign_flip_rate(t.model_summary_id) AS economics_sign_flip_rate-- Manifest sign-flip rate among economics studies.
+  calc_model_summary_economics_sign_flip_rate(t.model_summary_id) AS economics_sign_flip_rate,-- Manifest sign-flip rate among economics studies.
+  calc_model_summary_education_type_d_count(t.model_summary_id) AS education_type_d_count,-- Type-D studies in education domain.
+  calc_model_summary_education_latent_d_count(t.model_summary_id) AS education_latent_d_count,-- Education Type-D studies with LatentFlipPotential.
+  calc_model_summary_sports_type_d_count(t.model_summary_id) AS sports_type_d_count,-- Type-D studies in sports domain.
+  calc_model_summary_sports_latent_d_count(t.model_summary_id) AS sports_latent_d_count,-- Sports Type-D studies with LatentFlipPotential.
+  calc_model_summary_economics_study_count(t.model_summary_id) AS economics_study_count,-- Real economics studies in corpus.
+  calc_model_summary_expansion_wave2_study_count(t.model_summary_id) AS expansion_wave2_study_count,-- Studies imported in expansion wave 2.
+  calc_model_summary_corpus_pattern_superseded_fail_count(t.model_summary_id) AS corpus_pattern_superseded_fail_count,-- Count of corpus-pattern-superseded discovery hypotheses witnessed FAIL at current corpus scale (loop-78 rollup).
+  calc_model_summary_expansion_wave3_discovery_note(t.model_summary_id) AS expansion_wave3_discovery_note-- Loop-78 supersession audit rollup at N=238.
 FROM model_summary t;
 
 -- ----------------------------------------------------------------------------

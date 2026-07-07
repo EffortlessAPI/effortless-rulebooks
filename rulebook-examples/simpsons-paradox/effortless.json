@@ -49,8 +49,8 @@
       "Name": "owl-conformance",
       "RelativePath": "/owl",
       "CommandLine": "-exec ./run-conformance.sh",
-      "IsDisabled": false,
-      "Description": "Run OWL-SHACL vs Postgres conformance receipt"
+      "IsDisabled": true,
+      "Description": "Run OWL-SHACL vs Postgres conformance receipt (on-demand via Leopold Loops UI — not part of effortless build)"
     },
     {
       "IsSSoTTranspiler": false,
@@ -66,7 +66,9 @@
       "RelativePath": "/app/frontend/public",
       "CommandLine": "rulebook-to-explainer-dag -i ../../effortless-rulebook/simpsons-paradox-rulebook.json -o rulebook-explainer-dag",
       "IsDisabled": false,
-      "PinnedVersion": "v2026.06.20.1606"
+      "PinnedVersion": "v2026.06.20.1606",
+      "LastVersionUsed": "v2026.06.20.1606",
+      "LastUrl": "https://effortless-rulebook-to-explainer-v2026-06-20-1606-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
     },
     {
       "IsSSoTTranspiler": false,

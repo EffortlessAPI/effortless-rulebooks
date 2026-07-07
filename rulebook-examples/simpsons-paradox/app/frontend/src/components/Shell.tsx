@@ -45,6 +45,9 @@ export function Shell() {
         <NavLink to="/instrument" className={({ isActive }) => isActive ? 'nav-item active' : 'nav-item'}>
           Instrument Dashboard
         </NavLink>
+        <NavLink to="/loops" className={({ isActive }) => isActive ? 'nav-item active' : 'nav-item'}>
+          Leopold Loops
+        </NavLink>
       </nav>
       <div className="main-column">
         <header className="app-topbar">

@@ -339,3 +339,30 @@ export interface InvariantCheck {
   severity: string;
   protects_conclusion: string | null;
 }
+
+export interface Loop {
+  loop_id: string;
+  name: string;
+  title: string;
+  status: string;
+  new_concept: string;
+  domain_question: string;
+  mock_data_note: string;
+  next_suggestion: string | null;
+  tradition_id: string | null;
+  commit_hash: string | null;
+  commit_short: string | null;
+  commit_date: string | null;
+  commit_message: string | null;
+  git_tag: string | null;
+}
+
+export type ConformanceStatus = 'idle' | 'running' | 'passed' | 'failed';
+
+export interface ConformanceRunState {
+  status: ConformanceStatus;
+  started_at: string | null;
+  finished_at: string | null;
+  exit_code: number | null;
+  output: string;
+}

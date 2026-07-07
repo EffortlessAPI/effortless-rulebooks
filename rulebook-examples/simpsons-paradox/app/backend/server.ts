@@ -7,6 +7,7 @@ import { fileURLToPath } from 'url';
 import { query, withRollbackTransaction } from './db.js';
 import { buildSummaryPdf } from './export-summary-pdf.js';
 import { exportXlsx } from './export-xlsx.js';
+import { getConformanceState, startConformanceRun } from './conformance.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -334,6 +335,35 @@ app.get('/api/study-import-template', async (_req, res) => {
     'SELECT template_step_id, sort_order, target_table, row_description, required_fields, mechanical_check FROM vw_study_import_template ORDER BY sort_order'
   );
   res.json(rows);
+});
+
+// --- Leopold loops (build history + forward plan) ---
+
+app.get('/api/loops', async (_req, res) => {
+  const rows = await query(
+    `SELECT loop_id, name, title, status, new_concept, domain_question,
+            mock_data_note, next_suggestion, tradition_id,
+            commit_hash, commit_short, commit_date, commit_message, git_tag
+     FROM vw_loops
+     ORDER BY loop_id`
+  );
+  res.json(rows);
+});
+
+// --- OWL-SHACL conformance (on-demand; not part of effortless build) ---
+
+app.get('/api/conformance/status', (_req, res) => {
+  res.json(getConformanceState());
+});
+
+app.post('/api/conformance/run', (_req, res) => {
+  try {
+    const started = startConformanceRun();
+    res.status(202).json(started);
+  } catch (err) {
+    const message = err instanceof Error ? err.message : String(err);
+    res.status(409).json({ error: message });
+  }
 });
 
 // --- PDF summary export (conclusions + findings, not full rulebook) ---

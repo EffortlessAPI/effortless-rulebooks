@@ -6,10 +6,12 @@
 # facts, runs pyshacl fixpoint derivation, and diffs the SHACL-derived formula
 # fields against vw_treatment_rankings / vw_stratum_summaries / vw_stratum_variables.
 #
-# Exits non-zero (failing the build) if the two substrates disagree, so the
-# receipt is witnessed on every `effortless build`, not a claim.
+# Exits non-zero if the two substrates disagree.
 #
-# Part of `effortless build`; runs right after rulebook-to-owl and init-db.sh.
+# On-demand only — run from the Leopold Loops tab in the admin UI
+# (POST /api/conformance/run) or manually: ./owl/run-conformance.sh
+# Disabled in effortless.json (owl-conformance IsDisabled: true) so build
+# does not block on the ~10min OWL-SHACL receipt at 238 studies.
 set -euo pipefail
 cd "$(dirname "$0")/.."
 

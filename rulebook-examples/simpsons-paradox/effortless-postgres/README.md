@@ -2,30 +2,30 @@
 
 **Schema:** `public`
 **Database:** `demo`
-**Timestamp:** 2026-07-07 04:52:26 UTC
+**Timestamp:** 2026-07-07 14:40:56 UTC
 
 ## Parsing Rulebook
 
 Found **32** tables in rulebook
 
 
-  - **Loops** (16 fields, 71 records)
-  - **Studies** (26 fields, 116 records)
-  - **Treatments** (8 fields, 220 records)
-  - **Strata** (6 fields, 253 records)
-  - **CaseCells** (11 fields, 506 records)
-  - **StratumSummaries** (28 fields, 506 records)
-  - **ModelSummary** (91 fields, 1 records)
-  - **StratumVariables** (10 fields, 116 records)
-  - **TreatmentRankings** (54 fields, 116 records)
-  - **InvariantChecks** (21 fields, 28 records)
+  - **Loops** (16 fields, 74 records)
+  - **Studies** (26 fields, 238 records)
+  - **Treatments** (8 fields, 464 records)
+  - **Strata** (6 fields, 497 records)
+  - **CaseCells** (11 fields, 994 records)
+  - **StratumSummaries** (28 fields, 994 records)
+  - **ModelSummary** (93 fields, 1 records)
+  - **StratumVariables** (10 fields, 238 records)
+  - **TreatmentRankings** (54 fields, 238 records)
+  - **InvariantChecks** (21 fields, 29 records)
   - **Methodology** (14 fields, 10 records)
-  - **Conclusions** (22 fields, 32 records)
+  - **Conclusions** (22 fields, 33 records)
   - **UIScreens** (14 fields, 10 records)
   - **UIComponents** (8 fields, 11 records)
-  - **InstrumentSpec** (9 fields, 20 records)
-  - **AllocationSweep** (19 fields, 1160 records)
-  - **SweepStudySummary** (13 fields, 116 records)
+  - **InstrumentSpec** (9 fields, 24 records)
+  - **AllocationSweep** (19 fields, 2380 records)
+  - **SweepStudySummary** (13 fields, 238 records)
   - **ResearchTraditions** (18 fields, 6 records)
   - **Researchers** (19 fields, 18 records)
   - **SyntheticPhase** (24 fields, 240 records)
@@ -36,17 +36,17 @@ Found **32** tables in rulebook
   - **CorpusCatalogSummary** (20 fields, 1 records)
   - **DomainExpansionTargets** (10 fields, 11 records)
   - **StudyImportTemplate** (7 fields, 8 records)
-  - **SweepStudyConfig** (13 fields, 116 records)
+  - **SweepStudyConfig** (13 fields, 238 records)
   - **SubstrateConformanceFields** (9 fields, 26 records)
   - **DiscoveryHypotheses** (7 fields, 21 records)
   - **DiscoveryFindings** (8 fields, 21 records)
   - **CorpusDomains** (6 fields, 11 records)
 
 Generated **32** table definitions with **227** raw fields (mode=check-add)
-Generated **281** calculation functions
+Generated **283** calculation functions
 Generated **32** views
 Enabled RLS on **32** tables
-Generated insert statements for **4027** records
+Generated insert statements for **7330** records
 ## Script Generation Complete
 
 Generated files:
