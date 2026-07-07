@@ -2,7 +2,7 @@
 
 **Schema:** `public`
 **Database:** `demo`
-**Timestamp:** 2026-07-07 04:34:34 UTC
+**Timestamp:** 2026-07-07 04:49:03 UTC
 
 ## Parsing Rulebook
 
@@ -10,22 +10,22 @@ Found **32** tables in rulebook
 
 
   - **Loops** (16 fields, 71 records)
-  - **Studies** (26 fields, 104 records)
-  - **Treatments** (8 fields, 196 records)
-  - **Strata** (6 fields, 229 records)
-  - **CaseCells** (11 fields, 458 records)
-  - **StratumSummaries** (28 fields, 458 records)
+  - **Studies** (26 fields, 116 records)
+  - **Treatments** (8 fields, 220 records)
+  - **Strata** (6 fields, 253 records)
+  - **CaseCells** (11 fields, 506 records)
+  - **StratumSummaries** (28 fields, 506 records)
   - **ModelSummary** (85 fields, 1 records)
-  - **StratumVariables** (10 fields, 104 records)
-  - **TreatmentRankings** (54 fields, 104 records)
+  - **StratumVariables** (10 fields, 116 records)
+  - **TreatmentRankings** (54 fields, 116 records)
   - **InvariantChecks** (21 fields, 28 records)
   - **Methodology** (14 fields, 10 records)
   - **Conclusions** (22 fields, 32 records)
   - **UIScreens** (14 fields, 10 records)
   - **UIComponents** (8 fields, 11 records)
   - **InstrumentSpec** (9 fields, 20 records)
-  - **AllocationSweep** (19 fields, 1040 records)
-  - **SweepStudySummary** (13 fields, 104 records)
+  - **AllocationSweep** (19 fields, 1160 records)
+  - **SweepStudySummary** (13 fields, 116 records)
   - **ResearchTraditions** (18 fields, 6 records)
   - **Researchers** (19 fields, 18 records)
   - **SyntheticPhase** (24 fields, 240 records)
@@ -36,7 +36,7 @@ Found **32** tables in rulebook
   - **CorpusCatalogSummary** (20 fields, 1 records)
   - **DomainExpansionTargets** (10 fields, 11 records)
   - **StudyImportTemplate** (7 fields, 8 records)
-  - **SweepStudyConfig** (13 fields, 104 records)
+  - **SweepStudyConfig** (13 fields, 116 records)
   - **SubstrateConformanceFields** (9 fields, 26 records)
   - **DiscoveryHypotheses** (7 fields, 21 records)
   - **DiscoveryFindings** (8 fields, 21 records)
@@ -46,7 +46,7 @@ Generated **32** table definitions with **227** raw fields (mode=check-add)
 Generated **275** calculation functions
 Generated **32** views
 Enabled RLS on **32** tables
-Generated insert statements for **3703** records
+Generated insert statements for **4027** records
 ## Script Generation Complete
 
 Generated files:
