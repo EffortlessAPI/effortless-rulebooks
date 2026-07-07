@@ -2,7 +2,7 @@
 
 **Schema:** `public`
 **Database:** `demo`
-**Timestamp:** 2026-07-07 03:47:54 UTC
+**Timestamp:** 2026-07-07 04:12:00 UTC
 
 ## Parsing Rulebook
 
@@ -20,7 +20,7 @@ Found **32** tables in rulebook
   - **TreatmentRankings** (52 fields, 104 records)
   - **InvariantChecks** (21 fields, 25 records)
   - **Methodology** (14 fields, 10 records)
-  - **Conclusions** (22 fields, 23 records)
+  - **Conclusions** (22 fields, 27 records)
   - **UIScreens** (14 fields, 10 records)
   - **UIComponents** (8 fields, 11 records)
   - **InstrumentSpec** (9 fields, 20 records)
@@ -46,7 +46,7 @@ Generated **32** table definitions with **227** raw fields (mode=check-add)
 Generated **264** calculation functions
 Generated **32** views
 Enabled RLS on **32** tables
-Generated insert statements for **3679** records
+Generated insert statements for **3683** records
 ## Script Generation Complete
 
 Generated files:

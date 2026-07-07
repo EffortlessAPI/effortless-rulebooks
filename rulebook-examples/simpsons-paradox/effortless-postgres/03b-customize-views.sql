@@ -312,7 +312,12 @@ SELECT
   calc_candidate_study_catalog_type_prediction_match(t.candidate_id) AS type_prediction_match,
   calc_candidate_study_catalog_expected_sign_flip(t.candidate_id) AS expected_sign_flip,
   calc_candidate_study_catalog_observed_sign_flip_type(t.candidate_id) AS observed_sign_flip_type,
-  calc_candidate_study_catalog_sign_flip_prediction_match(t.candidate_id) AS sign_flip_prediction_match
+  calc_candidate_study_catalog_sign_flip_prediction_match(t.candidate_id) AS sign_flip_prediction_match,
+  t.data_acquisition_status,
+  t.reversal_mechanism,
+  t.paradox_confirmation,
+  t.expansion_wave,
+  calc_candidate_study_catalog_is_data_ready(t.candidate_id) AS is_data_ready
 FROM candidate_study_catalog t;
 
 -- ============================================================================
@@ -339,3 +344,9 @@ SELECT
   calc_corpus_catalog_summary_sign_flip_prediction_match_rate(t.catalog_summary_id) AS sign_flip_prediction_match_rate,
   calc_corpus_catalog_summary_catalog_prediction_witness_note(t.catalog_summary_id) AS catalog_prediction_witness_note
 FROM corpus_catalog_summary t;
+
+-- Repopulate metrics caches: customize views JOIN _erb_tr_metrics / _erb_sp_metrics.
+-- Without this, vw_treatment_rankings and vw_model_summary return empty aggregates
+-- if only 03b is re-applied (e.g. hot-fixing a view definition).
+SELECT refresh_erb_tr_metrics();
+SELECT refresh_erb_sp_metrics();

@@ -937,6 +937,13 @@ CREATE OR REPLACE FUNCTION calc_discovery_findings_is_confirmed(p_finding_id TEX
     WHEN 'H-catalog-exact-match' THEN calc_model_summary_type_prediction_match_rate('simpsons-paradox-v1') < 0.5
     WHEN 'H-catalog-flip-prediction' THEN calc_model_summary_sign_flip_prediction_match_rate('simpsons-paradox-v1') < 0.5
     WHEN 'H-domain-flip-geometry-controlled' THEN calc_model_summary_domain_flip_gap_survives_geometry_control('simpsons-paradox-v1')
+    WHEN 'H-collider-no-manifest-v2' THEN calc_model_summary_collider_selection_manifest_count('simpsons-paradox-v1') = 0
+    WHEN 'H-cplus-magnitude' THEN calc_model_summary_c_plus_avg_distortion('simpsons-paradox-v1')
+                              > calc_model_summary_c_minus_avg_distortion('simpsons-paradox-v1')
+                              AND calc_model_summary_c_plus_avg_distortion('simpsons-paradox-v1')
+                                  > calc_model_summary_type_d_avg_distortion('simpsons-paradox-v1')
+    WHEN 'H-ultra-fragile' THEN calc_model_summary_sweep_fragile_count('simpsons-paradox-v1') >= 4
+    WHEN 'H-econ-encoding-selection' THEN calc_model_summary_economics_expected_a_mismatch_rate('simpsons-paradox-v1') > 0.5
     ELSE FALSE
   END;
 $$ LANGUAGE sql STABLE;
@@ -969,6 +976,12 @@ CREATE OR REPLACE FUNCTION calc_discovery_findings_observed_metric(p_finding_id 
                                                           ' legalHighImbRate=', calc_model_summary_legal_high_imbalance_sign_flip_rate('simpsons-paradox-v1'),
                                                           ' sportsHighImbRate=', calc_model_summary_sports_high_imbalance_sign_flip_rate('simpsons-paradox-v1'),
                                                           ' threshold=', calc_model_summary_high_imbalance_sign_flip_threshold('simpsons-paradox-v1'))
+    WHEN 'H-collider-no-manifest-v2' THEN CONCAT('collManifest=', calc_model_summary_collider_selection_manifest_count('simpsons-paradox-v1'))
+    WHEN 'H-cplus-magnitude' THEN CONCAT('C+=', calc_model_summary_c_plus_avg_distortion('simpsons-paradox-v1'),
+                                         ' C-=', calc_model_summary_c_minus_avg_distortion('simpsons-paradox-v1'),
+                                         ' D=', calc_model_summary_type_d_avg_distortion('simpsons-paradox-v1'))
+    WHEN 'H-ultra-fragile' THEN CONCAT('SweepFragileCount=', calc_model_summary_sweep_fragile_count('simpsons-paradox-v1'))
+    WHEN 'H-econ-encoding-selection' THEN CONCAT('EconExpectedAMismatchRate=', calc_model_summary_economics_expected_a_mismatch_rate('simpsons-paradox-v1'))
     ELSE ''
   END;
 $$ LANGUAGE sql STABLE;
