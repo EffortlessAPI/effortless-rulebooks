@@ -49,3 +49,22 @@ python3 scripts/acquisition-loop-expansion-wave-1.py --retry-failed
 python3 scripts/merge-acquisition-manifest.py
 effortless build
 ```
+
+## PDF table extraction side loop (parallel, out-of-channel)
+
+When acquisition saved HTML landing pages instead of publisher PDFs, run the PDF
+table extraction side loop (does **not** touch the rulebook):
+
+```bash
+python3 scripts/pdf-table-extraction-side-loop.py
+```
+
+See `data/extraction/README.md` and `data/extraction/pdf-table-extraction-manifest.json`.
+
+After extraction completes, merge catalog metadata (safe parallel to loops 70–72):
+
+```bash
+python3 scripts/merge-pdf-extraction-manifest.py
+```
+
+This updates `CandidateStudyCatalog` only (`DataAcquisitionStatus`, `DataSourceNote`, `SourceUrl`) — not Studies/CaseCells.

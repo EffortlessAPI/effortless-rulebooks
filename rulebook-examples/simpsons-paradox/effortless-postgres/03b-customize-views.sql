@@ -94,7 +94,9 @@ SELECT
   m.allocation_fragility,
   m.study_domain,
   m.stratum_causal_role,
-  m.is_latent_only_flip
+  m.is_latent_only_flip,
+  m.is_stratum_unanimous,
+  m.is_sweep_fragile
 FROM treatment_rankings t
 JOIN _erb_tr_metrics m ON m.treatment_ranking_id = t.treatment_ranking_id;
 
@@ -182,6 +184,7 @@ SELECT
   calc_model_summary_c_minus_avg_distortion(t.model_summary_id) AS c_minus_avg_distortion,
   calc_model_summary_type_d_avg_distortion(t.model_summary_id) AS type_d_avg_distortion,
   calc_model_summary_sweep_fragile_count(t.model_summary_id) AS sweep_fragile_count,
+  calc_model_summary_unanimous_sign_flip_count(t.model_summary_id) AS unanimous_sign_flip_count,
   calc_model_summary_expansion_wave1_economics_expected_a_count(t.model_summary_id) AS expansion_wave1_economics_expected_a_count,
   calc_model_summary_expansion_wave1_economics_expected_ad_count(t.model_summary_id) AS expansion_wave1_economics_expected_ad_count,
   calc_model_summary_economics_expected_a_mismatch_rate(t.model_summary_id) AS economics_expected_a_mismatch_rate

@@ -26,3 +26,29 @@ openalex-metadata.json, acquisition.json
 - OpenAlex search: Reactions to Vanguards
 - HTTP 403 for https://www.pnas.org/doi/10.1073/pnas.1211286109
 - OpenAlex metadata saved; no open PDF/data file retrieved.
+---
+
+## PDF table extraction (side loop — out-of-channel)
+
+**Extracted:** 2026-07-07T04:23:03+00:00
+**Script:** `scripts/pdf-table-extraction-side-loop.py`
+**Manuscript PDF:** `manuscript.pdf`
+**Source URL:** https://europepmc.org/articles/PMC3478626?pdf=render
+**Channel:** PDF (avoids HTML GET bias from acquisition landing pages)
+
+**Extracted tables:**
+- `table-1` — Table 1 — Competence & hireability means by faculty gender × student gender
+
+Machine-readable copy: `table-extract.json`
+
+Encoding into CaseCells remains deferred until a Leopold encode wave.
+
+**Raw counts (from Table 1 — means; n per student gender condition):**
+
+| Stratum (faculty) | Student A (male) competence | Student B (female) competence | n (approx) |
+|-------------------|----------------------------|------------------------------|------------|
+| male faculty      | 4.01                       | 3.33                         | 63 / 64    |
+| female faculty    | 4.10                       | 3.32                         | 63 / 64    |
+
+Hireability means show same direction: male student 3.74 (M fac) vs female 2.96 (M fac).
+Encode wave must threshold continuous ratings into Successes/Cases or use supplementary PNAS data.

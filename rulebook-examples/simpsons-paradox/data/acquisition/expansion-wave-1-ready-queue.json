@@ -1490,5 +1490,7 @@
         "catalog_source_url": "https://www.federalreserve.gov/releases/nssbf/"
       }
     ]
-  }
+  },
+  "merged_at": "2026-07-07T03:58:51+00:00",
+  "note": "Acquisition merged into rulebook. 20 PDF-backed studies ready for next encode wave."
 }

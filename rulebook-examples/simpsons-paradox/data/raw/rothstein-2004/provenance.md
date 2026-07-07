@@ -24,3 +24,22 @@ openalex-search.pdf, openalex-metadata.json, acquisition.json
 ## Notes
 
 - OpenAlex search: Competition Among Public Schools: A Reply to Rothstein (2004)
+---
+
+## PDF table extraction (side loop — out-of-channel)
+
+**Extracted:** 2026-07-07T04:23:03+00:00
+**Script:** `scripts/pdf-table-extraction-side-loop.py`
+**Manuscript PDF:** `manuscript.pdf`
+**Source URL:** http://cle.berkeley.edu/wp/wp45.pdf
+**Channel:** PDF (avoids HTML GET bias from acquisition landing pages)
+
+**Extracted tables:**
+- `table-1` — Table 1 — UC analysis sample vs California SAT-taker population
+
+Machine-readable copy: `table-extract.json`
+
+Encoding into CaseCells remains deferred until a Leopold encode wave.
+
+**Verification (Table 1):** UC sample mean SAT 1100 (n=13,363) vs CA SAT-takers 898 (n=435,890);
+selection into UC sample masks population SAT–FGPA relationship (Type D candidate).

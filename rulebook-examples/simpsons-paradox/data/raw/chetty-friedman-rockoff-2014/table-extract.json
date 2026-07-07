@@ -1,0 +1,33 @@
+{
+  "loop": "pdf-table-extraction-side-loop",
+  "channel": "out-of-channel",
+  "study_id": "chetty-friedman-rockoff-2014",
+  "candidate_id": "cand-exp-chetty-friedman-rockoff-2014",
+  "domain": "economics",
+  "citation": "Chetty R, Friedman JN, Rockoff JE. Measuring the Impacts of Teachers I. NBER w19423, 2013.",
+  "extracted_at": "2026-07-07T04:24:01+00:00",
+  "manuscript_pdf": "data/raw/chetty-friedman-rockoff-2014/manuscript.pdf",
+  "manuscript_source_url": "https://www.nber.org/system/files/working_papers/w19423/w19423.pdf",
+  "html_get_bias_avoided": true,
+  "manuscript_note": null,
+  "tables": [
+    {
+      "table_id": "table-1",
+      "label": "Table 1 — Summary statistics (student-school-year-subject sample)",
+      "source_page": 12,
+      "fields": {
+        "observations_millions": 7.6,
+        "students": 1370000,
+        "observations_per_student": 5.6,
+        "mean_test_score_sd_note": "normalized; sd < 1",
+        "pct_free_lunch": 80,
+        "mean_parent_income_usd": 40800,
+        "median_parent_income_usd": 31700,
+        "sd_parent_income_usd": 34300,
+        "pct_parent_income_above_100k": 10
+      },
+      "encode_hint": "Stratum = school poverty (free lunch) vs parent income tier for VA paradox encode."
+    }
+  ],
+  "extraction_status": "complete"
+}

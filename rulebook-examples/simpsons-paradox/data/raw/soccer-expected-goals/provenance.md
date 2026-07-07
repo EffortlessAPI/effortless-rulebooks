@@ -26,3 +26,19 @@ openalex-search.pdf, openalex-metadata.json, acquisition.json
 
 - OpenAlex search: Measuring soccer players’ contributions to chance creation by valuing their passes
 - HTTP 403 for https://www.fbref.com/en/
+---
+
+## PDF table extraction (side loop — out-of-channel)
+
+**Extracted:** 2026-07-07T04:23:03+00:00
+**Script:** `scripts/pdf-table-extraction-side-loop.py`
+**Manuscript PDF:** `manuscript.pdf`
+**Source URL:** https://pure.eur.nl/ws/files/48173682/Repub_115732.pdf
+**Channel:** PDF (avoids HTML GET bias from acquisition landing pages)
+
+**Extracted tables:**
+- `table-2` — Table 2 — Dataset splits (passes, goals, matches)
+
+Machine-readable copy: `table-extract.json`
+
+Encoding into CaseCells remains deferred until a Leopold encode wave.

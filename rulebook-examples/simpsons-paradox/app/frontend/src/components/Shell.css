@@ -140,6 +140,18 @@ body {
 .badge-type-c { background: #1c2b20; color: #7ee787; }
 .badge-type-d { background: #1c2228; color: #6e7681; }
 
+.tier-pill {
+  display: inline-block;
+  border-radius: 4px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  padding: 2px 7px;
+}
+.tier-pill.danger { background: #4d1b1b; color: #ff7b72; }
+.tier-pill.caution { background: #3d3010; color: #e3b341; }
+.tier-pill.safe { background: #1c2b20; color: #7ee787; }
+
 /* Study selector */
 .study-selector {
   display: flex;

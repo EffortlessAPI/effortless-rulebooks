@@ -27,3 +27,19 @@ openalex-search.html, openalex-metadata.json, source-1.html, acquisition.json
 - OpenAlex search: In Praise of Overstating the Case: A review of Franco Moretti, Distant Reading (London: Verso, 2013)
 - Fetched https://www.bls.gov/regions/ → source-1.html (76444 bytes)
 - Data portal landing page saved — manual extract required.
+---
+
+## PDF table extraction (side loop — out-of-channel)
+
+**Extracted:** 2026-07-07T04:23:03+00:00
+**Script:** `scripts/pdf-table-extraction-side-loop.py`
+**Manuscript PDF:** `manuscript.pdf`
+**Source URL:** https://www.nber.org/system/files/working_papers/w14370/w14370.pdf
+**Channel:** PDF (avoids HTML GET bias from acquisition landing pages)
+
+**Extracted tables:**
+- `headline` — Real wage inequality by city cost-of-living tier (paper Tables 2–4)
+
+Machine-readable copy: `table-extract.json`
+
+Encoding into CaseCells remains deferred until a Leopold encode wave.

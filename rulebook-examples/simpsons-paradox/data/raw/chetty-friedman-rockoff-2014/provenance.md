@@ -24,3 +24,19 @@ openalex-search.pdf, openalex-metadata.json, acquisition.json
 ## Notes
 
 - OpenAlex search: Validating Teacher Effect Estimates Using Changes in Teacher Assignments in Los Angeles
+---
+
+## PDF table extraction (side loop — out-of-channel)
+
+**Extracted:** 2026-07-07T04:23:03+00:00
+**Script:** `scripts/pdf-table-extraction-side-loop.py`
+**Manuscript PDF:** `manuscript.pdf`
+**Source URL:** https://www.nber.org/system/files/working_papers/w19423/w19423.pdf
+**Channel:** PDF (avoids HTML GET bias from acquisition landing pages)
+
+**Extracted tables:**
+- `table-1` — Table 1 — Summary statistics (student-school-year-subject sample)
+
+Machine-readable copy: `table-extract.json`
+
+Encoding into CaseCells remains deferred until a Leopold encode wave.

@@ -1,0 +1,28 @@
+{
+  "loop": "pdf-table-extraction-side-loop",
+  "channel": "out-of-channel",
+  "study_id": "flannery-et-al-2020",
+  "candidate_id": "cand-exp-flannery-et-al-2020",
+  "domain": "epidemiology-vaccine-efficacy",
+  "citation": "Flannery et al. Influenza Vaccine Effectiveness against Pediatric Deaths. Clin Infect Dis 2020.",
+  "extracted_at": "2026-07-07T04:24:01+00:00",
+  "manuscript_pdf": "data/raw/flannery-et-al-2020/manuscript.pdf",
+  "manuscript_source_url": "https://www.cdc.gov/mmwr/volumes/69/rr/pdfs/rr6908a1-H.pdf",
+  "html_get_bias_avoided": true,
+  "manuscript_note": "Catalog cites Flannery CID 2020 pediatric-deaths paper (paywalled). Open PDF is CDC MMWR 2020–21 influenza recommendations — same domain, stratified VE tables embedded. Pediatric-deaths PDF still blocked (HTML GET bias avoided via MMWR).",
+  "tables": [
+    {
+      "table_id": "mmwr-ve-context",
+      "label": "MMWR RR 69(8) — stratified influenza VE evidence cited in document body",
+      "source_page": 15,
+      "fields": {
+        "overall_ve_pediatric_deaths_pct": 51,
+        "ve_decline_months_post_vax": "5-6",
+        "ve_h3n2_111_days_pct": 0
+      },
+      "note": "Pediatric-death VE point estimate referenced in MMWR narrative (Flannery CID source). Full 2×K grid from CID paper pending paywall PDF.",
+      "encode_hint": "Stratum = flu season match quality; treatment = vaccinated vs unvaccinated."
+    }
+  ],
+  "extraction_status": "complete"
+}

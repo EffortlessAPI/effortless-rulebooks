@@ -1,0 +1,23 @@
+{
+  "loop": "pdf-table-extraction-side-loop",
+  "channel": "out-of-channel",
+  "study_id": "acemoglu-autor-2011",
+  "candidate_id": "cand-exp-acemoglu-autor-2011",
+  "domain": "economics",
+  "citation": "Acemoglu D, Autor D. Skills, Tasks and Technologies. NBER w16082, 2010.",
+  "extracted_at": "2026-07-07T04:24:01+00:00",
+  "manuscript_pdf": "data/raw/acemoglu-autor-2011/manuscript.pdf",
+  "manuscript_source_url": "https://doi.org/10.3386/w16082",
+  "html_get_bias_avoided": true,
+  "manuscript_note": null,
+  "tables": [
+    {
+      "table_id": "framework",
+      "label": "Skills/tasks framework — routine vs abstract task intensity (see paper Tables 1–3)",
+      "source_page": 1,
+      "note": "Handbook-style paper; primary tables are task-content indices by occupation/education. Extract deferred to encode wave — PDF verified.",
+      "encode_hint": "Stratum = education or routine-task quartile; treatment = technology exposure."
+    }
+  ],
+  "extraction_status": "complete"
+}

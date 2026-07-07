@@ -1,0 +1,97 @@
+{
+  "loop": "pdf-table-extraction-side-loop",
+  "channel": "out-of-band",
+  "note": "PDF table extracts for expansion-wave-1. Does NOT modify rulebook.",
+  "updated_at": "2026-07-07T04:24:01+00:00",
+  "summary": {
+    "total": 10,
+    "processed": 10,
+    "failed": 0,
+    "complete": 10
+  },
+  "studies": [
+    {
+      "study_id": "blau-kahn-2017",
+      "candidate_id": "cand-exp-blau-kahn-2017",
+      "extraction_status": "complete",
+      "table_count": 1,
+      "manuscript_source_url": "https://www.nber.org/system/files/working_papers/w21913/w21913.pdf",
+      "html_get_bias_avoided": true
+    },
+    {
+      "study_id": "chetty-friedman-rockoff-2014",
+      "candidate_id": "cand-exp-chetty-friedman-rockoff-2014",
+      "extraction_status": "complete",
+      "table_count": 1,
+      "manuscript_source_url": "https://www.nber.org/system/files/working_papers/w19423/w19423.pdf",
+      "html_get_bias_avoided": true
+    },
+    {
+      "study_id": "acemoglu-autor-2011",
+      "candidate_id": "cand-exp-acemoglu-autor-2011",
+      "extraction_status": "complete",
+      "table_count": 1,
+      "manuscript_source_url": "https://doi.org/10.3386/w16082",
+      "html_get_bias_avoided": true
+    },
+    {
+      "study_id": "moretti-2013",
+      "candidate_id": "cand-exp-moretti-2013",
+      "extraction_status": "complete",
+      "table_count": 1,
+      "manuscript_source_url": "https://www.nber.org/system/files/working_papers/w14370/w14370.pdf",
+      "html_get_bias_avoided": true
+    },
+    {
+      "study_id": "rothstein-2004",
+      "candidate_id": "cand-exp-rothstein-2004",
+      "extraction_status": "complete",
+      "table_count": 1,
+      "manuscript_source_url": "http://cle.berkeley.edu/wp/wp45.pdf",
+      "html_get_bias_avoided": true
+    },
+    {
+      "study_id": "moss-racusin-et-al-2012",
+      "candidate_id": "cand-exp-moss-racusin-et-al-2012",
+      "extraction_status": "complete",
+      "table_count": 1,
+      "manuscript_source_url": "https://europepmc.org/articles/PMC3478626?pdf=render",
+      "html_get_bias_avoided": true
+    },
+    {
+      "study_id": "soccer-expected-goals",
+      "candidate_id": "cand-exp-soccer-expected-goals",
+      "extraction_status": "complete",
+      "table_count": 1,
+      "manuscript_source_url": "https://pure.eur.nl/ws/files/48173682/Repub_115732.pdf",
+      "html_get_bias_avoided": true
+    },
+    {
+      "study_id": "flannery-et-al-2020",
+      "candidate_id": "cand-exp-flannery-et-al-2020",
+      "extraction_status": "complete",
+      "table_count": 1,
+      "manuscript_source_url": "https://www.cdc.gov/mmwr/volumes/69/rr/pdfs/rr6908a1-H.pdf",
+      "html_get_bias_avoided": true
+    },
+    {
+      "study_id": "saez-2019",
+      "candidate_id": "cand-exp-saez-2019",
+      "extraction_status": "complete",
+      "table_count": 1,
+      "manuscript_source_url": "https://eml.berkeley.edu/~saez/saez-UStopincomes-2018.pdf",
+      "html_get_bias_avoided": true
+    },
+    {
+      "study_id": "angrist-lavy-1999",
+      "candidate_id": "cand-exp-angrist-lavy-1999",
+      "extraction_status": "complete",
+      "table_count": 1,
+      "manuscript_source_url": "https://www.nber.org/system/files/working_papers/w7079/w7079.pdf",
+      "html_get_bias_avoided": true
+    }
+  ],
+  "errors": [],
+  "merged_at": "2026-07-07T04:26:27+00:00",
+  "merge_note": "Merged into CandidateStudyCatalog (DataAcquisitionStatus, DataSourceNote, SourceUrl). CaseCells encode deferred — no overlap with loop-71 criminal-justice batch."
+}

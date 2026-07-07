@@ -48,7 +48,8 @@ export function isConsistencyCheck(hypothesisId: string): boolean {
   return CONSISTENCY_CHECK_HYPOTHESES.has(hypothesisId);
 }
 
-export function conclusionPdfLabel(category: string): string {
+export function conclusionPdfLabel(category: string | null | undefined): string {
+  if (!category) return '(no category)';
   return CATEGORY_PDF_LABEL[category] ?? category.replace(/-/g, ' ');
 }
 
@@ -73,7 +74,7 @@ export interface ConclusionTierCounts {
 }
 
 export function tierConclusionCounts(
-  rows: Array<{ category: string; status: string }>,
+  rows: Array<{ category: string | null; status: string | null }>,
 ): ConclusionTierCounts {
   const witnessed = rows.filter(r => r.status === 'witnessed');
   const proved = witnessed.filter(r => r.category === 'theorem').length;

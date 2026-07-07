@@ -33,12 +33,17 @@ export function PhaseDiagramView() {
   const [rows, setRows] = useState<SyntheticPhaseRow[]>([]);
   const [typeFilter, setTypeFilter] = useState<string>('all');
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    setError(null);
     Promise.all([api.phaseDiagramSummary(), api.syntheticPhase()])
       .then(([s, r]) => {
         setSummary(s);
         setRows(r);
+      })
+      .catch(err => {
+        setError(err instanceof Error ? err.message : String(err));
       })
       .finally(() => setLoading(false));
   }, []);
@@ -52,6 +57,7 @@ export function PhaseDiagramView() {
   );
 
   if (loading) return <div className="loading">Loading…</div>;
+  if (error) return <div className="error">{error}</div>;
   if (!summary) return <div className="error">No phase diagram summary found.</div>;
 
   const types = ['A', 'B', 'C+', 'C-', 'D'] as const;

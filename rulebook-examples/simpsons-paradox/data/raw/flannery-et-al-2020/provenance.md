@@ -26,3 +26,21 @@ openalex-search.pdf, openalex-metadata.json, source-1.html, acquisition.json
 
 - OpenAlex search: Prevention and Control of Seasonal Influenza with Vaccines: Recommendations of the Advisory Committee on Immunization Pr
 - Fetched https://www.cdc.gov/flu/vaccines-work/vaccine-effectiveness.htm → source-1.html (47931 bytes)
+---
+
+## PDF table extraction (side loop — out-of-channel)
+
+**Extracted:** 2026-07-07T04:23:03+00:00
+**Script:** `scripts/pdf-table-extraction-side-loop.py`
+**Manuscript PDF:** `manuscript.pdf`
+**Source URL:** https://www.cdc.gov/mmwr/volumes/69/rr/pdfs/rr6908a1-H.pdf
+**Channel:** PDF (avoids HTML GET bias from acquisition landing pages)
+
+**Manuscript note:** Catalog cites Flannery CID 2020 pediatric-deaths paper (paywalled). Open PDF is CDC MMWR 2020–21 influenza recommendations — same domain, stratified VE tables embedded. Pediatric-deaths PDF still blocked (HTML GET bias avoided via MMWR).
+
+**Extracted tables:**
+- `mmwr-ve-context` — MMWR RR 69(8) — stratified influenza VE evidence cited in document body
+
+Machine-readable copy: `table-extract.json`
+
+Encoding into CaseCells remains deferred until a Leopold encode wave.

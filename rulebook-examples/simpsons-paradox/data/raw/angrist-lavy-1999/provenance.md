@@ -23,3 +23,21 @@ acquisition.json
 ## Notes
 
 - Catalog marked manual_only; no public URL — encode from published tables.
+---
+
+## PDF table extraction (side loop — out-of-channel)
+
+**Extracted:** 2026-07-07T04:23:03+00:00
+**Script:** `scripts/pdf-table-extraction-side-loop.py`
+**Manuscript PDF:** `manuscript.pdf`
+**Source URL:** https://www.nber.org/system/files/working_papers/w7079/w7079.pdf
+**Channel:** PDF (avoids HTML GET bias from acquisition landing pages)
+
+**Manuscript note:** Image-only NBER scan; pdftotext returns no text. Tables require manual transcription from PDF pages.
+
+**Extracted tables:**
+- `pending-ocr` — NBER w7079 — Maimonides Rule IV tables (image PDF)
+
+Machine-readable copy: `table-extract.json`
+
+Encoding into CaseCells remains deferred until a Leopold encode wave.

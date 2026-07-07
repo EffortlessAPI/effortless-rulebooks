@@ -26,3 +26,24 @@ openalex-search.pdf, openalex-metadata.json, acquisition.json
 
 - OpenAlex search: Surviving Sepsis Campaign: guidelines on the management of critically ill adults with Coronavirus Disease 2019 (COVID-19
 - HTTP 404 for https://www.irs.gov/statistics/soi-tax-stats-individual-income-tax-statistics/
+---
+
+## PDF table extraction (side loop — out-of-channel)
+
+**Extracted:** 2026-07-07T04:23:03+00:00
+**Script:** `scripts/pdf-table-extraction-side-loop.py`
+**Manuscript PDF:** `manuscript.pdf`
+**Source URL:** https://eml.berkeley.edu/~saez/saez-UStopincomes-2018.pdf
+**Channel:** PDF (avoids HTML GET bias from acquisition landing pages)
+
+**Manuscript note:** Catalog row saez-2019; PDF is 2018 annual update of the Striking it Richer series.
+
+**Extracted tables:**
+- `table-1` — Table 1 — Real income growth by group (1993–2018)
+
+Machine-readable copy: `table-extract.json`
+
+Encoding into CaseCells remains deferred until a Leopold encode wave.
+
+**Verification (Table 1, Recovery 2009–2018):** top 1% growth 41.6% vs bottom 99% 11.4%;
+top 1% captured 49% of total growth — stratified rate reversal candidate.

@@ -1,0 +1,23 @@
+{
+  "loop": "pdf-table-extraction-side-loop",
+  "channel": "out-of-channel",
+  "study_id": "angrist-lavy-1999",
+  "candidate_id": "cand-exp-angrist-lavy-1999",
+  "domain": "education",
+  "citation": "Angrist JD, Lavy V. Using Maimonides' Rule to Estimate the Effect of Class Size on Scholastic Achievement. QJE 1999; NBER w7079.",
+  "extracted_at": "2026-07-07T04:24:01+00:00",
+  "manuscript_pdf": "data/raw/angrist-lavy-1999/manuscript.pdf",
+  "manuscript_source_url": "https://www.nber.org/system/files/working_papers/w7079/w7079.pdf",
+  "html_get_bias_avoided": true,
+  "manuscript_note": "Image-only NBER scan; pdftotext returns no text. Tables require manual transcription from PDF pages.",
+  "tables": [
+    {
+      "table_id": "pending-ocr",
+      "label": "NBER w7079 — Maimonides Rule IV tables (image PDF)",
+      "source_page": null,
+      "note": "Manuscript saved; pdftotext/pdfplumber yield no text. Manual OCR of Table 2 (IV estimates by subject) required before 2×K encode.",
+      "encode_hint": "Stratum = school enrollment cohort above/below Maimonides cutoff; treatment = class size."
+    }
+  ],
+  "extraction_status": "complete"
+}

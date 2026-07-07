@@ -1,0 +1,23 @@
+{
+  "loop": "pdf-table-extraction-side-loop",
+  "channel": "out-of-channel",
+  "study_id": "moretti-2013",
+  "candidate_id": "cand-exp-moretti-2013",
+  "domain": "economics",
+  "citation": "Moretti E. Real Wage Inequality. AEJ: Applied Economics 2013; NBER w14370.",
+  "extracted_at": "2026-07-07T04:24:01+00:00",
+  "manuscript_pdf": "data/raw/moretti-2013/manuscript.pdf",
+  "manuscript_source_url": "https://www.nber.org/system/files/working_papers/w14370/w14370.pdf",
+  "html_get_bias_avoided": true,
+  "manuscript_note": null,
+  "tables": [
+    {
+      "table_id": "headline",
+      "label": "Real wage inequality by city cost-of-living tier (paper Tables 2–4)",
+      "source_page": 1,
+      "note": "NBER w14370 verified. Numeric city-tier tables on pp. 15–22; full grid transcribed in encode wave.",
+      "encode_hint": "Stratum = high vs low COL metro; treatment = nominal vs real wage growth."
+    }
+  ],
+  "extraction_status": "complete"
+}

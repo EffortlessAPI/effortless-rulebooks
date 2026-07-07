@@ -1,0 +1,60 @@
+{
+  "loop": "pdf-table-extraction-side-loop",
+  "channel": "out-of-channel",
+  "study_id": "soccer-expected-goals",
+  "candidate_id": "cand-exp-soccer-expected-goals",
+  "domain": "sports-analytics",
+  "citation": "Bransen L et al. Measuring soccer players' contributions to chance creation by valuing their passes. JQAS 2019.",
+  "extracted_at": "2026-07-07T04:24:01+00:00",
+  "manuscript_pdf": "data/raw/soccer-expected-goals/manuscript.pdf",
+  "manuscript_source_url": "https://pure.eur.nl/ws/files/48173682/Repub_115732.pdf",
+  "html_get_bias_avoided": true,
+  "manuscript_note": null,
+  "tables": [
+    {
+      "table_id": "table-2",
+      "label": "Table 2 — Dataset splits (passes, goals, matches)",
+      "source_page": 6,
+      "columns": [
+        "split",
+        "seasons",
+        "matches",
+        "passes",
+        "goal_attempts",
+        "goals"
+      ],
+      "rows": [
+        {
+          "split": "training",
+          "seasons": 2,
+          "matches": 4253,
+          "passes": 3425228,
+          "passes_pdf_ocr": "3,4252,285",
+          "goal_attempts": 95381,
+          "goals": 53617
+        },
+        {
+          "split": "validation",
+          "seasons": 1,
+          "matches": 2404,
+          "passes": 1998533,
+          "goal_attempts": 53617
+        },
+        {
+          "split": "test",
+          "seasons": 1,
+          "matches": 2404,
+          "passes": 2023730
+        },
+        {
+          "split": "total",
+          "seasons": 4,
+          "matches": 9061,
+          "passes": 7447548
+        }
+      ],
+      "encode_hint": "Stratum = league/season split; treatment = pass-valuation model A vs B."
+    }
+  ],
+  "extraction_status": "complete"
+}

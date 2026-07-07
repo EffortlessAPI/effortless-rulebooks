@@ -1,0 +1,89 @@
+{
+  "loop": "pdf-table-extraction-side-loop",
+  "channel": "out-of-channel",
+  "study_id": "rothstein-2004",
+  "candidate_id": "cand-exp-rothstein-2004",
+  "domain": "education",
+  "citation": "Rothstein JM. College Performance Predictions and the SAT. J Econometrics 2004.",
+  "extracted_at": "2026-07-07T04:24:01+00:00",
+  "manuscript_pdf": "data/raw/rothstein-2004/manuscript.pdf",
+  "manuscript_source_url": "http://cle.berkeley.edu/wp/wp45.pdf",
+  "html_get_bias_avoided": true,
+  "manuscript_note": null,
+  "tables": [
+    {
+      "table_id": "table-1",
+      "label": "Table 1 — UC analysis sample vs California SAT-taker population",
+      "source_page": 34,
+      "columns": [
+        "variable",
+        "uc_mean",
+        "uc_sd",
+        "uc_n",
+        "ca_mean",
+        "ca_sd",
+        "ca_n"
+      ],
+      "rows": [
+        {
+          "variable": "HSGPA",
+          "uc_mean": 3.82,
+          "uc_sd": 0.39,
+          "ca_mean": 3.25,
+          "ca_sd": 0.63
+        },
+        {
+          "variable": "SAT",
+          "uc_mean": 1100,
+          "uc_sd": 173,
+          "ca_mean": 898,
+          "ca_sd": 228
+        },
+        {
+          "variable": "Frac. Free Lunch",
+          "uc_mean": 0.25,
+          "uc_sd": 0.22,
+          "ca_mean": 0.29,
+          "ca_sd": 0.23
+        },
+        {
+          "variable": "Frac. Black",
+          "uc_mean": 0.07,
+          "uc_sd": 0.1,
+          "ca_mean": 0.08,
+          "ca_sd": 0.11
+        },
+        {
+          "variable": "Frac. Asian",
+          "uc_mean": 0.21,
+          "uc_sd": 0.18,
+          "ca_mean": 0.17,
+          "ca_sd": 0.17
+        },
+        {
+          "variable": "Frac. Hispanic",
+          "uc_mean": 0.27,
+          "uc_sd": 0.22,
+          "ca_mean": 0.31,
+          "ca_sd": 0.25
+        },
+        {
+          "variable": "FGPA",
+          "uc_mean": 2.89,
+          "uc_sd": 0.62
+        },
+        {
+          "variable": "GRADIN5",
+          "uc_mean": 0.7,
+          "uc_sd": 0.46
+        }
+      ],
+      "totals": {
+        "uc_n": 13363,
+        "ca_n": 435890
+      },
+      "encode_hint": "Stratum = UC enrolled vs SAT-taker population; outcome = FGPA / graduation."
+    }
+  ],
+  "extraction_status": "complete"
+}

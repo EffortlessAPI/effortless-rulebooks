@@ -26,3 +26,19 @@ openalex-search.pdf, openalex-metadata.json, source-1.html, acquisition.json
 
 - OpenAlex search: Carbon Taxes, Path Dependency, and Directed Technical Change: Evidence from the Auto Industry
 - Fetched https://www.nber.org/data/cps.html → source-1.html (87634 bytes)
+---
+
+## PDF table extraction (side loop — out-of-channel)
+
+**Extracted:** 2026-07-07T04:23:03+00:00
+**Script:** `scripts/pdf-table-extraction-side-loop.py`
+**Manuscript PDF:** `manuscript.pdf`
+**Source URL:** https://doi.org/10.3386/w16082
+**Channel:** PDF (avoids HTML GET bias from acquisition landing pages)
+
+**Extracted tables:**
+- `framework` — Skills/tasks framework — routine vs abstract task intensity (see paper Tables 1–3)
+
+Machine-readable copy: `table-extract.json`
+
+Encoding into CaseCells remains deferred until a Leopold encode wave.

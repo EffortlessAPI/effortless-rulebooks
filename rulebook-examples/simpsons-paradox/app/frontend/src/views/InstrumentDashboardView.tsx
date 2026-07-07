@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react';
 import { api } from '../api';
 import { ViewDagScan } from '../components/DagValue';
-import { Cell, TrCell, TrTierPill, TrTypeBadge } from '../components/dag-display';
+import { TrCell, TrTierPill, TrTypeBadge } from '../components/dag-display';
 import type { TreatmentRanking } from '../types';
 
-const TIER_COLORS: Record<string, { bg: string; text: string; border: string }> = {
-  DANGER:  { bg: '#fff0f0', text: '#c00', border: '#fcc' },
-  CAUTION: { bg: '#fffbe6', text: '#854d0e', border: '#fde68a' },
-  SAFE:    { bg: '#f0fff4', text: '#166534', border: '#bbf7d0' },
+const TIER_STYLES: Record<string, { color: string; bg: string; border: string }> = {
+  DANGER:  { color: '#ff7b72', bg: '#2d1515', border: '#6e3030' },
+  CAUTION: { color: '#e3b341', bg: '#2a2210', border: '#5c4a1a' },
+  SAFE:    { color: '#7ee787', bg: '#152a1a', border: '#1a3d2a' },
 };
 
 function ratio(n: number | null | undefined): string {
@@ -47,111 +47,136 @@ export function InstrumentDashboardView() {
   rows.forEach(r => { if (r.screening_tier) tierCounts[r.screening_tier]++; });
 
   const thStyle = (col: typeof sortCol): React.CSSProperties => ({
-    padding: '6px 10px', textAlign: 'left', cursor: 'pointer', userSelect: 'none',
-    background: sortCol === col ? '#e8eaf0' : '#f4f4f6', fontWeight: 600, fontSize: 12,
-    borderBottom: '2px solid #ddd', whiteSpace: 'nowrap',
+    padding: '6px 10px',
+    textAlign: 'left',
+    cursor: 'pointer',
+    userSelect: 'none',
+    color: sortCol === col ? '#e6edf3' : '#8b949e',
+    fontWeight: 600,
+    fontSize: 12,
+    borderBottom: '2px solid #30363d',
+    whiteSpace: 'nowrap',
   });
 
-  if (loading) return <div style={{ padding: '2rem', color: '#888' }}>Loading…</div>;
+  if (loading) return <div className="loading">Loading…</div>;
 
   return (
-    <div style={{ padding: '1.5rem', maxWidth: 1000 }}>
-      <h2 style={{ margin: '0 0 .25rem' }}>Instrument Dashboard</h2>
-      <p style={{ color: '#666', fontSize: 14, margin: '0 0 1.25rem' }}>
+    <div>
+      <div className="page-title">Instrument Dashboard</div>
+      <div className="page-desc">
         Screening tier for each study from DistortionType.
-        <strong style={{ color: '#c00' }}> DANGER</strong> = pooled sign is wrong (Types A & B).
-        <strong style={{ color: '#854d0e' }}> CAUTION</strong> = direction correct, magnitude distorted (Type C).
-        <strong style={{ color: '#166534' }}> SAFE</strong> = pooled trustworthy (Type D).
-      </p>
+        <strong style={{ color: '#ff7b72' }}> DANGER</strong> = pooled sign is wrong (Types A &amp; B).
+        <strong style={{ color: '#e3b341' }}> CAUTION</strong> = direction correct, magnitude distorted (Type C).
+        <strong style={{ color: '#7ee787' }}> SAFE</strong> = pooled trustworthy (Type D).
+      </div>
 
-      <div style={{ display: 'flex', gap: 12, marginBottom: '1.25rem', flexWrap: 'wrap' }}>
+      <div style={{ display: 'flex', gap: 12, marginBottom: 16, flexWrap: 'wrap' }}>
         {(['DANGER', 'CAUTION', 'SAFE'] as const).map(tier => {
-          const c = TIER_COLORS[tier];
+          const s = TIER_STYLES[tier];
           return (
-            <div key={tier} style={{
-              padding: '10px 18px', borderRadius: 8,
-              background: c.bg, color: c.text, border: `1px solid ${c.border}`,
-              fontWeight: 700, fontSize: 14,
-            }}>
+            <div
+              key={tier}
+              style={{
+                padding: '10px 18px',
+                borderRadius: 8,
+                background: s.bg,
+                color: s.color,
+                border: `1px solid ${s.border}`,
+                fontWeight: 700,
+                fontSize: 14,
+              }}
+            >
               {tier}: {tierCounts[tier]} / {rows.length}
             </div>
           );
         })}
       </div>
 
-      <div style={{ overflowX: 'auto', borderRadius: 8, border: '1px solid #ddd' }}>
-        <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 13 }}>
-          <thead>
-            <tr>
-              <th style={thStyle('study')} onClick={() => toggleSort('study')}>
-                Study {sortCol === 'study' ? (sortDir === 'asc' ? '▲' : '▼') : ''}
-              </th>
-              <th style={{ ...thStyle('study'), cursor: 'default' }}>Type</th>
-              <th style={{ ...thStyle('study'), cursor: 'default' }}>Tier</th>
-              <th style={thStyle('distortion_ratio')} onClick={() => toggleSort('distortion_ratio')}>
-                DistortionRatio {sortCol === 'distortion_ratio' ? (sortDir === 'asc' ? '▲' : '▼') : ''}
-              </th>
-              <th style={thStyle('allocation_distortion')} onClick={() => toggleSort('allocation_distortion')}>
-                AllocDistortion {sortCol === 'allocation_distortion' ? (sortDir === 'asc' ? '▲' : '▼') : ''}
-              </th>
-              <th style={{ ...thStyle('study'), cursor: 'default' }}>CorrectedGap</th>
-              <th style={{ ...thStyle('study'), cursor: 'default' }}>PooledGap</th>
-              <th style={{ ...thStyle('study'), cursor: 'default' }}>Policy</th>
-            </tr>
-          </thead>
-          <tbody>
-            {sorted.map((r, i) => {
-              const tier = r.screening_tier;
-              const c = tier ? TIER_COLORS[tier] : { bg: 'transparent', text: '#333', border: '#ddd' };
-              const dr = Number(r.distortion_ratio);
-              return (
-                <tr key={r.study} style={{ background: i % 2 === 0 ? '#fafafa' : '#fff' }}>
-                  <td style={{ padding: '7px 10px', fontWeight: 500 }}>{r.study}</td>
-                  <td style={{ padding: '7px 10px', textAlign: 'center' }}>
-                    <TrTypeBadge type={r.distortion_type} />
-                  </td>
-                  <td style={{ padding: '7px 10px', textAlign: 'center' }}>
-                    <TrTierPill tier={tier} />
-                  </td>
-                  <td style={{
-                    padding: '7px 10px', textAlign: 'right', fontFamily: 'monospace',
-                    color: dr < -1 ? '#800' : dr < 0 ? '#c44' : dr === 1 ? '#166534' : '#555',
-                    fontWeight: 600,
-                  }}>
-                    <TrCell col="distortion_ratio">{ratio(r.distortion_ratio)}</TrCell>
-                  </td>
-                  <td style={{ padding: '7px 10px', textAlign: 'right', fontFamily: 'monospace' }}>
-                    <TrCell col="allocation_distortion">{Number(r.allocation_distortion).toFixed(4)}</TrCell>
-                  </td>
-                  <td style={{ padding: '7px 10px', textAlign: 'right', color: '#166534', fontFamily: 'monospace' }}>
-                    <TrCell col="weighted_stratum_gap_sum">{pct(r.weighted_stratum_gap_sum)}</TrCell>
-                  </td>
-                  <td style={{ padding: '7px 10px', textAlign: 'right', fontFamily: 'monospace' }}>
-                    <TrCell col="signed_pooled_gap">{pct(r.signed_pooled_gap)}</TrCell>
-                  </td>
-                  <td style={{ padding: '7px 10px', fontSize: 11, color: c.text, maxWidth: 240 }}>
-                    <TrCell col="policy_implication">{r.policy_implication}</TrCell>
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
+      <div className="card">
+        <h3>Study screening table</h3>
+        <div style={{ overflowX: 'auto' }}>
+          <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 13 }}>
+            <thead>
+              <tr>
+                <th style={thStyle('study')} onClick={() => toggleSort('study')}>
+                  Study {sortCol === 'study' ? (sortDir === 'asc' ? '▲' : '▼') : ''}
+                </th>
+                <th style={{ ...thStyle('study'), cursor: 'default' }}>Type</th>
+                <th style={{ ...thStyle('study'), cursor: 'default' }}>Tier</th>
+                <th style={thStyle('distortion_ratio')} onClick={() => toggleSort('distortion_ratio')}>
+                  DistortionRatio {sortCol === 'distortion_ratio' ? (sortDir === 'asc' ? '▲' : '▼') : ''}
+                </th>
+                <th style={thStyle('allocation_distortion')} onClick={() => toggleSort('allocation_distortion')}>
+                  AllocDistortion {sortCol === 'allocation_distortion' ? (sortDir === 'asc' ? '▲' : '▼') : ''}
+                </th>
+                <th style={{ ...thStyle('study'), cursor: 'default' }}>CorrectedGap</th>
+                <th style={{ ...thStyle('study'), cursor: 'default' }}>PooledGap</th>
+                <th style={{ ...thStyle('study'), cursor: 'default' }}>Policy</th>
+              </tr>
+            </thead>
+            <tbody>
+              {sorted.map(r => {
+                const tier = r.screening_tier;
+                const tierStyle = tier ? TIER_STYLES[tier] : null;
+                const dr = Number(r.distortion_ratio);
+                return (
+                  <tr key={r.study} style={{ borderBottom: '1px solid #21262d' }}>
+                    <td style={{ padding: '7px 10px', fontWeight: 500 }}>{r.study}</td>
+                    <td style={{ padding: '7px 10px', textAlign: 'center' }}>
+                      <TrTypeBadge type={r.distortion_type} />
+                    </td>
+                    <td style={{ padding: '7px 10px', textAlign: 'center' }}>
+                      <TrTierPill tier={tier} />
+                    </td>
+                    <td style={{
+                      padding: '7px 10px',
+                      textAlign: 'right',
+                      fontFamily: 'monospace',
+                      color: dr < -1 ? '#ff7b72' : dr < 0 ? '#d2a8ff' : dr === 1 ? '#7ee787' : '#8b949e',
+                      fontWeight: 600,
+                    }}>
+                      <TrCell col="distortion_ratio">{ratio(r.distortion_ratio)}</TrCell>
+                    </td>
+                    <td style={{ padding: '7px 10px', textAlign: 'right', fontFamily: 'monospace', fontVariantNumeric: 'tabular-nums' }}>
+                      <TrCell col="allocation_distortion">{Number(r.allocation_distortion).toFixed(4)}</TrCell>
+                    </td>
+                    <td style={{ padding: '7px 10px', textAlign: 'right', color: '#7ee787', fontFamily: 'monospace', fontVariantNumeric: 'tabular-nums' }}>
+                      <TrCell col="weighted_stratum_gap_sum">{pct(r.weighted_stratum_gap_sum)}</TrCell>
+                    </td>
+                    <td style={{ padding: '7px 10px', textAlign: 'right', fontFamily: 'monospace', fontVariantNumeric: 'tabular-nums' }}>
+                      <TrCell col="signed_pooled_gap">{pct(r.signed_pooled_gap)}</TrCell>
+                    </td>
+                    <td style={{
+                      padding: '7px 10px',
+                      fontSize: 11,
+                      color: tierStyle?.color ?? '#8b949e',
+                      maxWidth: 240,
+                    }}>
+                      <TrCell col="policy_implication">{r.policy_implication}</TrCell>
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
       </div>
 
-      <div style={{
-        marginTop: '1.25rem', padding: '14px 18px', background: '#f8f8fc',
-        borderRadius: 8, border: '1px solid #ddd', fontSize: 13,
-      }}>
+      <div className="card" style={{ fontSize: 13, lineHeight: 1.5 }}>
         <strong>Distortion ratio:</strong>{' '}
-        <code style={{ background: '#ece', padding: '2px 6px', borderRadius: 3 }}>
+        <code style={{
+          background: '#21262d',
+          color: '#79c0ff',
+          padding: '2px 6px',
+          borderRadius: 3,
+          border: '1px solid #30363d',
+        }}>
           DistortionRatio = SignedPooledGap / CorrectedGap
         </code>
-        <br />
-        <span style={{ color: '#666', marginTop: 6, display: 'block' }}>
+        <div className="page-desc" style={{ marginTop: 8, marginBottom: 0 }}>
           Ratio &lt; −1 → Type B · Ratio ∈ (−1, 0) → Type A ·
           Ratio &gt; 0 → Type C/D · Ratio = 1 → Type D (safe)
-        </span>
+        </div>
       </div>
       <ViewDagScan ready={!loading} deps={[rows, sortCol, sortDir]} />
     </div>

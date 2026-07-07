@@ -16,6 +16,24 @@ const PORT = process.env.PORT ? parseInt(process.env.PORT) : 3001;
 app.use(cors());
 app.use(express.json());
 
+type AsyncRoute = express.RequestHandler;
+function patchAsyncRouting(application: express.Application) {
+  (['get', 'post', 'put', 'delete', 'patch'] as const).forEach(method => {
+    const register = application[method].bind(application);
+    application[method] = ((path: string, ...handlers: AsyncRoute[]) => {
+      register(
+        path,
+        ...handlers.map(
+          handler =>
+            ((req, res, next) =>
+              Promise.resolve(handler(req, res, next)).catch(next)) as AsyncRoute,
+        ),
+      );
+    }) as typeof application[typeof method];
+  });
+}
+patchAsyncRouting(app);
+
 // --- Studies ---
 
 app.get('/api/studies', async (_req, res) => {
@@ -299,14 +317,7 @@ app.get('/api/corpus-catalog-summary', async (_req, res) => {
 
 app.get('/api/candidate-study-catalog', async (_req, res) => {
   const rows = await query(
-    `SELECT candidate_id, proposed_study_id, title, citation, source_url, domain,
-            stratum_variable_name, expected_distortion_type, ingestion_status, priority,
-            stratum_count_estimate, data_source_note, linked_study_id, publication_year,
-            is_ready_to_encode, is_imported, observed_distortion_type, type_prediction_match,
-            data_acquisition_status, reversal_mechanism, paradox_confirmation,
-            expansion_wave, is_data_ready
-     FROM vw_candidate_study_catalog
-     ORDER BY priority, proposed_study_id`
+    'SELECT * FROM vw_candidate_study_catalog ORDER BY priority, proposed_study_id'
   );
   res.json(rows);
 });
@@ -399,6 +410,14 @@ app.get('/rulespeak/rulespeak.pdf', (_req, res) => {
 });
 
 app.use('/rulespeak', express.static(rulespeakDir));
+
+app.use((err: unknown, _req: express.Request, res: express.Response, _next: express.NextFunction) => {
+  const message = err instanceof Error ? err.message : String(err);
+  console.error('[api]', message);
+  if (!res.headersSent) {
+    res.status(500).json({ error: message });
+  }
+});
 
 app.listen(PORT, () => {
   console.log(`[simpsons-paradox api] http://localhost:${PORT}`);

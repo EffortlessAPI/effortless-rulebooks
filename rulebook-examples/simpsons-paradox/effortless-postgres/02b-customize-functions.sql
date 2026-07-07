@@ -388,7 +388,8 @@ BEGIN
     allocation_direction, signal_purity, max_stratum_imbalance, max_stratum_gap,
     pooled_gap_crosses_zero, sweep_pooled_gap_range, latent_flip_potential,
     allocation_fragility, study_domain,
-    stratum_causal_role, is_latent_only_flip
+    stratum_causal_role, is_latent_only_flip,
+    is_stratum_unanimous, is_sweep_fragile
   )
   SELECT
     tr.treatment_ranking_id,
@@ -454,8 +455,19 @@ BEGIN
     (SELECT s.domain FROM studies s WHERE s.study_id = tr.study),
     (SELECT sv.causal_role FROM stratum_variables sv WHERE sv.study = tr.study LIMIT 1),
     (calc_sweep_study_summary_pooled_gap_crosses_zero(tr.study) = TRUE
-      AND _erb_snap_tr_is_sign_flip(tr.treatment_ranking_id) = FALSE)
+      AND _erb_snap_tr_is_sign_flip(tr.treatment_ranking_id) = FALSE),
+    _erb_snap_tr_is_stratum_unanimous(tr.treatment_ranking_id),
+    NULL::boolean
   FROM treatment_rankings tr;
+
+  UPDATE _erb_tr_metrics
+  SET is_sweep_fragile = (
+    distortion_type = 'D'
+    AND signal_purity = 1
+    AND allocation_distortion = 0
+    AND sweep_pooled_gap_range > 0.3
+    AND allocation_fragility >= 10
+  );
 END;
 $$;
 
@@ -621,6 +633,12 @@ CREATE OR REPLACE FUNCTION calc_treatment_rankings_stratum_causal_role(p_treatme
 $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION calc_treatment_rankings_is_latent_only_flip(p_treatment_ranking_id TEXT) RETURNS BOOLEAN AS $$
   SELECT is_latent_only_flip FROM _erb_tr_metrics WHERE treatment_ranking_id = p_treatment_ranking_id;
+$$ LANGUAGE sql STABLE;
+CREATE OR REPLACE FUNCTION calc_treatment_rankings_is_stratum_unanimous(p_treatment_ranking_id TEXT) RETURNS BOOLEAN AS $$
+  SELECT is_stratum_unanimous FROM _erb_tr_metrics WHERE treatment_ranking_id = p_treatment_ranking_id;
+$$ LANGUAGE sql STABLE;
+CREATE OR REPLACE FUNCTION calc_treatment_rankings_is_sweep_fragile(p_treatment_ranking_id TEXT) RETURNS BOOLEAN AS $$
+  SELECT is_sweep_fragile FROM _erb_tr_metrics WHERE treatment_ranking_id = p_treatment_ranking_id;
 $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION calc_treatment_rankings_confirmed_causal_role_count(p_treatment_ranking_id TEXT) RETURNS INTEGER AS $$
   SELECT confirmed_causal_role_count FROM _erb_tr_metrics WHERE treatment_ranking_id = p_treatment_ranking_id;
@@ -1054,14 +1072,14 @@ CREATE OR REPLACE FUNCTION calc_synthetic_phase_phase_distortion_type(p_phase_id
   SELECT phase_distortion_type FROM _erb_sp_metrics WHERE phase_id = p_phase_id;
 $$ LANGUAGE sql STABLE;
 
--- loop-68: COUNTIFS numeric comparators (">0.3") do not transpile — use view predicates
+-- loop-68/70: COUNTIFS numeric comparators (">0.3") do not transpile — use metrics cache predicates
 CREATE OR REPLACE FUNCTION calc_model_summary_sweep_fragile_count(p_model_summary_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT COUNT(*)::integer
-  FROM vw_treatment_rankings
-  WHERE distortion_type = 'D'
-    AND signal_purity = 1
-    AND allocation_distortion = 0
-    AND sweep_pooled_gap_range > 0.3
-    AND allocation_fragility >= 10;
+  SELECT COUNT(*)::integer FROM _erb_tr_metrics WHERE is_sweep_fragile = true;
+$$ LANGUAGE sql STABLE;
+
+CREATE OR REPLACE FUNCTION calc_model_summary_unanimous_sign_flip_count(p_model_summary_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT COUNT(*)::integer FROM _erb_tr_metrics
+  WHERE is_sign_flip = true AND is_stratum_unanimous = true;
 $$ LANGUAGE sql STABLE;

@@ -1,0 +1,49 @@
+{
+  "loop": "pdf-table-extraction-side-loop",
+  "channel": "out-of-channel",
+  "study_id": "blau-kahn-2017",
+  "candidate_id": "cand-exp-blau-kahn-2017",
+  "domain": "economics",
+  "citation": "Blau FD, Kahn LM. The Gender Wage Gap: Extent, Trends, and Explanations. J Econ Lit 2017.",
+  "extracted_at": "2026-07-07T04:24:01+00:00",
+  "manuscript_pdf": "data/raw/blau-kahn-2017/manuscript.pdf",
+  "manuscript_source_url": "https://www.nber.org/system/files/working_papers/w21913/w21913.pdf",
+  "html_get_bias_avoided": true,
+  "manuscript_note": "NBER w21913 matches catalog Blau & Kahn (2017). Replaces mismatched openalex-search.pdf.",
+  "tables": [
+    {
+      "table_id": "table-1",
+      "label": "Table 1 — Female/male wage ratio by percentile (PSID & CPS)",
+      "source_page": 6,
+      "note": "Ratios transcribed from Table 1 narrative (PDF table grid is multi-page); see manuscript pp. 6–8.",
+      "columns": [
+        "year",
+        "percentile",
+        "psid_ratio_pct",
+        "cps_ratio_pct"
+      ],
+      "rows": [
+        {
+          "year": 1980,
+          "percentile": "mean",
+          "psid_ratio_pct": 62,
+          "cps_ratio_pct": 64
+        },
+        {
+          "year": 1989,
+          "percentile": "mean",
+          "psid_ratio_pct": 72,
+          "cps_ratio_pct": 74
+        },
+        {
+          "year": 2010,
+          "percentile": "mean",
+          "psid_ratio_pct": 79,
+          "cps_ratio_pct": 82
+        }
+      ],
+      "encode_hint": "Stratum = wage percentile (p10/p50/p90); treatments = female vs male wage ratio trajectory."
+    }
+  ],
+  "extraction_status": "complete"
+}
