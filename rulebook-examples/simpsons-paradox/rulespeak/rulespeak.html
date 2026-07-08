@@ -8125,18 +8125,6 @@ html.show-consumers .elem-consumers{display:block}
     </details>
     <p class="field-note elem elem-desc">Stratum variables lacking identity map (should be 0).</p>
     </article>
-  <article class="field tone-raw" id="f-modelsummary-identityclusterwitnessnote" data-entity="Model Summary" data-field="Identity Cluster Witness Note">
-    <div class="field-head">
-      <span class="field-glyph" title="Ground truth">●</span>
-      <span class="field-name">Identity Cluster Witness Note</span>
-      <span class="pill pill-type">Ground truth</span>
-      <span class="pill pill-muted">string</span>
-    </div>
-    <div class="gt">
-      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
-    </div>
-    <p class="field-note elem elem-desc">Loop-80 identity layer witness rollup (customize SQL).</p>
-    </article>
   <article class="field tone-calc" id="f-modelsummary-ageidentitymanifestfliprate" data-entity="Model Summary" data-field="Age Identity Manifest Flip Rate">
     <div class="field-head">
       <span class="field-glyph" title="Calculated">ƒ</span>
@@ -8277,6 +8265,18 @@ html.show-consumers .elem-consumers{display:block}
       </div>
     </details>
     <p class="field-note elem elem-desc">Fraction of real-study StratumVariables with a ConfounderIdentity map (loop-81 customize SQL).</p>
+    </article>
+  <article class="field tone-raw" id="f-modelsummary-identityclusterwitnessnote" data-entity="Model Summary" data-field="Identity Cluster Witness Note">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Identity Cluster Witness Note</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Loop-80 identity layer witness rollup (customize SQL).</p>
     </article>
 </section>
 <section class="entity" id="t-stratumvariables" data-entity="Stratum Variable">
@@ -20758,23 +20758,23 @@ html.show-consumers .elem-consumers{display:block}
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
         <span class="view-label">In RuleSpeak</span>
-        <p class="view-body">A <a class="ref" href="#f-stratumvariableidentitymaps-confounderidentity">confounder identity</a>'s study count is the number of stratum variable identity maps related to the confounder identity.</p>
+        <p class="view-body">A confounder identity's study count is the number of the confounder identity's studies.</p>
       </div>
       <div class="view elem elem-english">
         <span class="view-label">In English</span>
-        <p class="view-body">Count of StratumVariableIdentityMaps whose <a class="ref" href="#f-stratumvariableidentitymaps-confounderidentity">confounder identity</a> is <a class="ref" href="#f-confounderidentities-confounderidentityid">confounder identity id</a>.</p>
+        <p class="view-body">Count(<a class="ref" href="#f-stratumvariableidentitymaps-mapid">map id</a>, confounder identity, <a class="ref" href="#f-confounderidentities-confounderidentityid">confounder identity id</a>).</p>
       </div>
       <div class="view elem elem-formula">
         <span class="view-label">As a formula</span>
-        <div class="view-body fx"><span class="fx-eq">= </span>COUNTIFS(<a class="fx-chip" href="#f-stratumvariableidentitymaps-confounderidentity">Confounder Identity</a>, <a class="fx-chip" href="#f-confounderidentities-confounderidentityid">Confounder Identity ID</a>)</div>
+        <div class="view-body fx"><span class="fx-eq">= </span>COUNT(<a class="fx-chip" href="#f-stratumvariableidentitymaps-mapid">Map ID</a>, ConfounderIdentity, <a class="fx-chip" href="#f-confounderidentities-confounderidentityid">Confounder Identity ID</a>)</div>
       </div>
     </div>
     <details class="prov prov-inputs elem elem-inputs" open>
       <summary>Inputs <span class="count">2</span> <span class="prov-hint">fields this rule reads</span></summary>
       <div class="prov-grid">
-        <a class="input tone-rel" href="#f-stratumvariableidentitymaps-confounderidentity">
-          <span class="input-head"><span class="input-glyph">⇢</span><span class="input-name">Confounder Identity</span><span class="input-table">StratumVariableIdentityMaps</span></span>
-          <span class="input-en muted">FK → ConfounderIdentities.</span>
+        <a class="input tone-raw" href="#f-stratumvariableidentitymaps-mapid">
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Map ID</span><span class="input-table">StratumVariableIdentityMaps</span></span>
+          <span class="input-en muted">Unique slug.</span>
         </a>
         <a class="input tone-raw" href="#f-confounderidentities-confounderidentityid">
           <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Confounder Identity ID</span><span class="input-table">ConfounderIdentities</span></span>
@@ -20785,7 +20785,7 @@ html.show-consumers .elem-consumers{display:block}
     <details class="prov prov-leaves elem elem-inputs">
       <summary>Ground truth at the leaves <span class="count">2</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
       <div class="prov-pills">
-        <a class="ref-pill tone-rel" href="#f-stratumvariableidentitymaps-confounderidentity">⇢ Confounder Identity <span class="ref-pill-tbl">StratumVariableIdentityMaps</span></a>
+        <a class="ref-pill tone-raw" href="#f-stratumvariableidentitymaps-mapid">● Map ID <span class="ref-pill-tbl">StratumVariableIdentityMaps</span></a>
         <a class="ref-pill tone-raw" href="#f-confounderidentities-confounderidentityid">● Confounder Identity ID <span class="ref-pill-tbl">ConfounderIdentities</span></a>
       </div>
     </details>

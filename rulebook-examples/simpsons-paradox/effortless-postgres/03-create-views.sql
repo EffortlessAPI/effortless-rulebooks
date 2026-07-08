@@ -269,12 +269,12 @@ SELECT
   calc_model_summary_confounder_identity_count(t.model_summary_id) AS confounder_identity_count,-- Canonical ConfounderIdentity archetypes in ontology (loop-80).
   calc_model_summary_mapped_stratum_variable_count(t.model_summary_id) AS mapped_stratum_variable_count,-- Stratum variables with an identity map row.
   calc_model_summary_unmapped_stratum_variable_count(t.model_summary_id) AS unmapped_stratum_variable_count,-- Stratum variables lacking identity map (should be 0).
-  t.identity_cluster_witness_note,                                              -- Loop-80 identity layer witness rollup (customize SQL).
   calc_model_summary_age_identity_manifest_flip_rate(t.model_summary_id) AS age_identity_manifest_flip_rate,-- Manifest flip rate for id-age-composition cluster (loop-81).
   calc_model_summary_age_identity_study_count(t.model_summary_id) AS age_identity_study_count,-- Real-study count in id-age-composition cluster (loop-81).
   calc_model_summary_age_identity_latent_fraction_among_type_d(t.model_summary_id) AS age_identity_latent_fraction_among_type_d,-- Type-D latent fraction for id-age-composition cluster (loop-81).
   calc_model_summary_severity_identity_latent_fraction_among_type(t.model_summary_id) AS severity_identity_latent_fraction_among_type_d,-- Type-D latent fraction for id-disease-severity cluster (loop-81).
-  calc_model_summary_identity_map_coverage_rate(t.model_summary_id) AS identity_map_coverage_rate-- Fraction of real-study StratumVariables with a ConfounderIdentity map (loop-81 customize SQL).
+  calc_model_summary_identity_map_coverage_rate(t.model_summary_id) AS identity_map_coverage_rate,-- Fraction of real-study StratumVariables with a ConfounderIdentity map (loop-81 customize SQL).
+  t.identity_cluster_witness_note                                               -- Loop-80 identity layer witness rollup (customize SQL).
 FROM model_summary t;
 
 -- ----------------------------------------------------------------------------

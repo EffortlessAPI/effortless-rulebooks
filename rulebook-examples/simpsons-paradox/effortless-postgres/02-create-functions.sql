@@ -3007,7 +3007,11 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_confounder_identities_study_count(p_confounder_identity_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM stratum_variable_identity_maps WHERE confounder_identity = (SELECT NULLIF(confounder_identity_id, '') FROM confounder_identities WHERE confounder_identity_id = p_confounder_identity_id)))::integer;
+  SELECT /* WARNING: Formula translation failed: COUNT() requires 1 argument, got 3
+   Original Airtable formula:
+   =COUNT(StratumVariableIdentityMaps!{{MapId}}, ConfounderIdentity, {{ConfounderIdentityId}})
+*/
+NULL::integer;
 $$ LANGUAGE sql STABLE;
 
 -- get_stratum_variables_variable_name

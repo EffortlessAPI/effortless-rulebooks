@@ -296,31 +296,17 @@ CONFORMANCE_TARGET_CLASSES = {
     NTWF.StratumVariables,
 }
 
-# BRIDGE: fields pre-asserted from Postgres whose SHACL rules must be excluded
-# while the old published transpiler is active. Remove once rules.shacl.ttl is
-# regenerated with the new COUNTIFS/SUMIFS sub-SELECT rules (transpiler >= 2026.07.07).
-ASSERTED_AGGREGATION_RULE_FIELDS = {
-    "TreatmentRankings": {
-        "TotalCasesA", "TotalSuccessesA", "TotalCasesB", "TotalSuccessesB",
-        "StratumCount", "StrataWonByA", "StrataWonByB", "ConfoundersInStudy",
-        "PooledRateFromWeightsA", "PooledRateFromWeightsB", "WeightedStratumGapSum",
-        "AllocationDistortion", "MediatorRiskCount", "ContestedStratumCount",
-        "UnknownCausalRoleCount", "ConfirmedCausalRoleCount",
-    },
-    "StratumSummaries": {
-        "StratumCasesA", "StratumSuccessesA", "StratumCasesB", "StratumSuccessesB",
-        "StratumCases", "StratumSuccesses", "StudyTotalCases", "StratumTotalCases",
-        "TreatmentACasesHere", "TreatmentBCasesHere", "TreatmentATotalCases",
-        "TreatmentBTotalCases",
-    },
-}
-
-
 def _owl_local_to_rule_field(owl_local: str) -> str:
     return owl_local[0].upper() + owl_local[1:] if owl_local else owl_local
 
 
 def _excluded_conformance_rule_labels(manifest):
+    """Labels of SHACL rules to skip during conformance loading.
+
+    Only excludes manifest rows explicitly marked AssertFromPostgres. All
+    aggregation fields (COUNTIFS/SUMIFS) run natively as SHACL-SPARQL sub-SELECT
+    rules (transpiler >= 2026.07.08).
+    """
     excluded = set()
     for row in manifest:
         if not row.get("AssertFromPostgres"):
@@ -328,9 +314,6 @@ def _excluded_conformance_rule_labels(manifest):
         excluded.add(
             f"rule_{row['SourceTable']}_{_owl_local_to_rule_field(row['OwlLocalName'])}"
         )
-    for table, fields in ASSERTED_AGGREGATION_RULE_FIELDS.items():
-        for field in fields:
-            excluded.add(f"rule_{table}_{field}")
     return excluded
 
 
@@ -554,12 +537,10 @@ def main():
     ss_compare = compare_specs["StratumSummaries"]
     sv_compare = compare_specs["StratumVariables"]
 
-    # Fetch Postgres data (for comparison, manifest AssertFromPostgres fields,
-    # and the bridge pre-assertion below)
+    # Fetch Postgres data (for comparison and manifest AssertFromPostgres fields)
     print("\n[1] Fetching Postgres computed values...")
     try:
         pg_tr = pg_treatment_rankings(tr_compare)
-        pg_tr_aggs = pg_treatment_rankings_aggregates()
         pg_ss = pg_stratum_summaries(ss_compare)
         pg_sv = pg_stratum_variables(sv_compare)
     except subprocess.CalledProcessError as e:
@@ -576,12 +557,7 @@ def main():
     base_triples = len(g)
     print(f"  {base_triples} triples loaded")
 
-    # BRIDGE: assert aggregation inputs from Postgres until the published
-    # rulebook-to-owl transpiler (>= 2026.07.07) ships the new SHACL-SPARQL
-    # sub-SELECT rules for COUNTIFS/SUMIFS. Once `effortless build` regenerates
-    # rules.shacl.ttl with those rules, delete assert_aggregates() and this block.
-    print("\n[3] Asserting Postgres aggregation values + manifest facts as leaf inputs...")
-    assert_aggregates(g, pg_tr_aggs, pg_ss, pg_sv)
+    print("\n[3] Asserting manifest AssertFromPostgres fields as leaf facts...")
     assert_from_postgres_rows(
         manifest,
         g,

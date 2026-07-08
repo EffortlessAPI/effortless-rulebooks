@@ -24781,8 +24781,8 @@ effortless-ntwf:conc-33-confounder-identity-layer a effortless-ntwf:Conclusions 
     effortless-ntwf:category "instrument" ;
     effortless-ntwf:status "witnessed" ;
     effortless-ntwf:title "ConfounderIdentity ontology: cross-study accountable stratum archetypes (loop-80)" ;
-    effortless-ntwf:evidence "Pending post-build witness — canonical identities map 233 stratum variables; IdentityClusterSummaries expose manifest vs latent geometry by mechanism, not domain." ;
-    effortless-ntwf:witnessedInLoop "loop-80" ;
+    effortless-ntwf:evidence "Loop-81 witness at N=238: 15 identities, 233/233 real stratum variables mapped (100% coverage). H-age-identity-flip-rate PASS (48.6% manifest, n=35). H-severity-vs-age-latent FAIL globally (0.917 > 0.813) — domain modulation deferred to loop-82 IdentityDomainCells." ;
+    effortless-ntwf:witnessedInLoop "loop-81" ;
     effortless-ntwf:traditionId "tradition-dag" .
 
 # === Individuals: ConfounderIdentities ===
@@ -27141,8 +27141,58 @@ effortless-ntwf:loop-81 a effortless-ntwf:Loops ;
     effortless-ntwf:status "complete" ;
     effortless-ntwf:newConcept "refresh_identity_cluster_summaries() in 05b-customize-data.sql; ModelSummary identity rollup fields (AgeIdentityManifestFlipRate, AgeIdentityStudyCount, AgeIdentityLatentFractionAmongTypeD, SeverityIdentityLatentFractionAmongTypeD, IdentityMapCoverageRate); calc_discovery_findings branches for loop-80 hypotheses; extend inv-theorem-consistency-confirmed with H-identity-map-coverage; witness conc-33." ;
     effortless-ntwf:domainQuestion "When cluster summaries are populated from live joins, do loop-80 hypotheses witness correctly — and does H-severity-vs-age-latent fail as ad-hoc SQL predicted?" ;
-    effortless-ntwf:mockDataNote "Pending post-build witness." ;
+    effortless-ntwf:mockDataNote "Witnessed post-build at N=238: H-age-identity-flip-rate PASS (0.486, n=35); H-identity-map-coverage PASS (1.0); H-severity-vs-age-latent FAIL (0.917 > 0.813). IdentityClusterSummaries populated via refresh_identity_cluster_summaries()." ;
     effortless-ntwf:nextSuggestion "loop-82: supersede refuted H-severity-vs-age-latent with identity×domain cells" ;
+    effortless-ntwf:traditionId "tradition-dag" .
+
+effortless-ntwf:loop-82 a effortless-ntwf:Loops ;
+    effortless-ntwf:loopId "loop-82" ;
+    effortless-ntwf:title "Identity×domain cells — supersede refuted H-severity-vs-age-latent" ;
+    effortless-ntwf:status "planned" ;
+    effortless-ntwf:newConcept "IdentityDomainCells table (one row per ConfounderIdentity × Studies.Domain with n≥2); archive H-severity-vs-age-latent to corpus-pattern-superseded; register H-severity-medicine-manifest (severity identity manifest flip ≥45% within medicine) and H-severity-epi-latent-only (severity in epidemiology: 0 manifest flips); refresh_identity_domain_cells() customize SQL; ModelSummary domain-cell rollups." ;
+    effortless-ntwf:domainQuestion "Loop-81 refuted the global severity-vs-age latent comparison (0.917 > 0.813). Does severity manifest in medicine (53% flip) but stay latent in epidemiology/legal — requiring identity×domain cells rather than identity-only clusters?" ;
+    effortless-ntwf:mockDataNote "Pending — ad-hoc SQL at N=238: severity×medicine 53.3% flip; severity×epidemiology 0% flip / 100% latent." ;
+    effortless-ntwf:nextSuggestion "loop-83: ontology refinement — drain id-mechanism-other catch-all" ;
+    effortless-ntwf:traditionId "tradition-dag" .
+
+effortless-ntwf:loop-83 a effortless-ntwf:Loops ;
+    effortless-ntwf:loopId "loop-83" ;
+    effortless-ntwf:title "Ontology refinement — drain id-mechanism-other into accountable sub-identities" ;
+    effortless-ntwf:status "planned" ;
+    effortless-ntwf:newConcept "Split id-mechanism-other (18 studies) into new ConfounderIdentities: id-smoking-behavior, id-trial-timing-design, id-method-specification, id-exposure-mix; remap StratumVariableIdentityMaps; fix mis-maps (cancer_stage→severity, passenger_sex→demographic-group); DiscoveryHypothesis H-mechanism-other-drain (catch-all ≤5 studies post-split)." ;
+    effortless-ntwf:domainQuestion "Does the 18-study catch-all hide splittable sub-mechanisms with divergent geometry (flip-prone trial-timing vs latent-only exposure-mix) — and can the ontology absorb them without bloating past ~20 identities?" ;
+    effortless-ntwf:mockDataNote "Pending — mechanism-other currently 18 studies, 27.8% manifest flip, 75pp cross-domain flip spread." ;
+    effortless-ntwf:nextSuggestion "loop-84: pure-latent identity theorem wave (selection + collider + geographic)" ;
+    effortless-ntwf:traditionId "tradition-dag" .
+
+effortless-ntwf:loop-84 a effortless-ntwf:Loops ;
+    effortless-ntwf:loopId "loop-84" ;
+    effortless-ntwf:title "Pure-latent identity theorem wave — selection, collider, geographic composition" ;
+    effortless-ntwf:status "planned" ;
+    effortless-ntwf:newConcept "Register H-selection-frailty-zero-manifest, H-collider-identity-low-manifest (≤15%), H-geographic-stable-type-d (stable Type-D fraction ≥25%); MechanismClassSummary rollups or extend IdentityClusterSummaries; candidate conclusion conc-34 latent-predominant mechanism family." ;
+    effortless-ntwf:domainQuestion "Do selection-frailty (0% manifest, 100% latent Type-D), collider-proxy (9.1% manifest), and geographic-composition (29.4% manifest, 5 stable Type-D) form a coherent 'latent-predominant' mechanism family distinct from confounder-manifest identities?" ;
+    effortless-ntwf:mockDataNote "Pending — ad-hoc: selection-frailty 0/5 manifest; collider 1/11 manifest; geographic 5 stable Type-D." ;
+    effortless-ntwf:nextSuggestion "loop-85: identity-conditioned unexplained-flip sink law" ;
+    effortless-ntwf:traditionId "tradition-dag" .
+
+effortless-ntwf:loop-85 a effortless-ntwf:Loops ;
+    effortless-ntwf:loopId "loop-85" ;
+    effortless-ntwf:title "Identity-conditioned explained theorem — contested-org and collider as sole unexplained sinks" ;
+    effortless-ntwf:status "planned" ;
+    effortless-ntwf:newConcept "DiscoveryHypothesis H-unexplained-flips-only-nonconfounders (all unexplained sign-flips have ConfounderIdentity ∈ {id-contested-org-choice, id-collider-proxy} OR CausalRole=contested); InvariantCheck inv-unexplained-identity-sink; promote conc-35 (Category=theorem): explained↔confounder holds for all confounder identities; violations confined to contested-org + collider." ;
+    effortless-ntwf:domainQuestion "Loop-74 biconditional holds for every confounder identity with zero unexplained flips. Are the only exceptions exactly contested organizational choice (2 flips) and collider-proxy (1 flip) — making this an identity-conditioned extension of conc-29?" ;
+    effortless-ntwf:mockDataNote "Pending — ad-hoc at N=238: 0 unexplained flips outside contested-org (2) and collider (1)." ;
+    effortless-ntwf:nextSuggestion "loop-86: identity×domain interaction matrix + methods-export prep" ;
+    effortless-ntwf:traditionId "tradition-dag" .
+
+effortless-ntwf:loop-86 a effortless-ntwf:Loops ;
+    effortless-ntwf:loopId "loop-86" ;
+    effortless-ntwf:title "Identity×domain interaction matrix — education vs economics institutional split + export prep" ;
+    effortless-ntwf:status "planned" ;
+    effortless-ntwf:newConcept "Populate IdentityDomainCells for all (identity, domain) pairs; register H-education-institutional-flip (education × id-institutional-unit manifest ≥45%) and H-economics-institutional-latent (economics × id-institutional-unit latent-only ≥50%); explorer UI slice 'geometry by confounding archetype'; InstrumentSpec + Rulespeak identity chapter; unblock loop-87 methods-paper export." ;
+    effortless-ntwf:domainQuestion "Same identity, different domain geometry: institutional-unit is 52.6% manifest in education but 22.2% manifest / 66.7% latent in economics. Can IdentityDomainCells make this modulation first-class — and is the instrument ready for loop-87 export?" ;
+    effortless-ntwf:mockDataNote "Pending — ad-hoc: institutional×education 52.6% flip; institutional×economics 22.2% flip / 66.7% latent." ;
+    effortless-ntwf:nextSuggestion "loop-87: methods-paper export on pruned instrument with full identity layer" ;
     effortless-ntwf:traditionId "tradition-dag" .
 
 effortless-ntwf:loop-87 a effortless-ntwf:Loops ;
@@ -27151,8 +27201,8 @@ effortless-ntwf:loop-87 a effortless-ntwf:Loops ;
     effortless-ntwf:status "planned" ;
     effortless-ntwf:newConcept "Rulespeak theorem section export; InstrumentSpec catalog PDF; witnessed Conclusions conc-28..31 + conc-32 synthesis; optional clinical-trials CandidateStudyCatalog gap encode if export blocked on domain diversity." ;
     effortless-ntwf:domainQuestion "With five theorems witnessed and expansion-wave supersessions documented, is the instrument ready for external methods-paper submission — and which domain gaps remain?" ;
-    effortless-ntwf:mockDataNote "Pending — loop-79 prune complete; loop-80 identity layer live. Export packaging after identity hypotheses witnessed." ;
-    effortless-ntwf:nextSuggestion "Clinical-trials domain encode or peer-review draft" ;
+    effortless-ntwf:mockDataNote "Pending — identity wave loops 80–86 (ontology, witness, domain cells, ontology drain, latent-family theorems, unexplained-sink law, interaction matrix) precede export." ;
+    effortless-ntwf:nextSuggestion "Clinical-trials domain encode or peer-review draft after loop-86" ;
     effortless-ntwf:traditionId "tradition-historical" .
 
 effortless-ntwf:loop-88 a effortless-ntwf:Loops ;
@@ -27164,6 +27214,86 @@ effortless-ntwf:loop-88 a effortless-ntwf:Loops ;
     effortless-ntwf:mockDataNote "Pending — acquisition side-loop saved BioLINCC portal (portal_manual → manual_only) at data/raw/allhat-collaborative-research-group-2002/ (source-1.html, openalex-metadata.json); OpenAlex hit is J Clin Hypertens BP-control paper (DOI 10.1111/j.1524-6175.2002.02045.x), not JAMA major outcomes; current cells are template 81/87·234/270·192/263·48/80 from loop-77; Wiley PDF fetch returned HTTP 403." ;
     effortless-ntwf:nextSuggestion "loop-79: methods-paper export on pruned instrument; loop-82: clinical-trials REAL? verification batch (ACCORD, ISIS-2, PLATO)" ;
     effortless-ntwf:traditionId "tradition-epidemiology" .
+
+effortless-ntwf:loop-89 a effortless-ntwf:Loops ;
+    effortless-ntwf:loopId "loop-89" ;
+    effortless-ntwf:title "Clinical-trials REAL? verification batch — ACCORD, ISIS-2, PLATO encode" ;
+    effortless-ntwf:status "planned" ;
+    effortless-ntwf:newConcept "Encode 3–5 high-priority clinical-trials studies from CandidateStudyCatalog with Prov: REAL? status: ACCORD (glucose control, CV outcomes), ISIS-2 (aspirin/streptokinase, subgroup), PLATO (ticagrelor, renal function stratum); promote each to Prov: DOC after table extraction; register H-clinical-trials-type-a-predominance (≥60% Type-A in clinical-trials domain)." ;
+    effortless-ntwf:domainQuestion "Does the clinical-trials domain — where stratum variables are protocol-defined subgroups rather than observational confounders — show systematically different geometry from epidemiology, or does the same allocation-distortion taxonomy apply?" ;
+    effortless-ntwf:mockDataNote "Pending — CandidateStudyCatalog has 3 clinical-trials candidates with ExpectedDistortionType estimates; none encoded post-loop-77." ;
+    effortless-ntwf:nextSuggestion "loop-90: policy-domain expansion — labor-economics and criminal-justice gap fill" ;
+    effortless-ntwf:traditionId "tradition-epidemiology" .
+
+effortless-ntwf:loop-90 a effortless-ntwf:Loops ;
+    effortless-ntwf:loopId "loop-90" ;
+    effortless-ntwf:title "Policy-domain gap fill — labor-economics and criminal-justice encode" ;
+    effortless-ntwf:status "planned" ;
+    effortless-ntwf:newConcept "Encode 6–8 studies from labor-economics (minimum-wage, hiring-discrimination) and criminal-justice (sentencing, recidivism) sub-domains; add SubDomain field to Studies table (calculated from Domain + PrimaryStratumVariable pattern); register H-criminal-justice-selection-frailty-dominant (≥40% of criminal-justice studies carry selection-frailty identity)." ;
+    effortless-ntwf:domainQuestion "Labor-economics and criminal-justice are the two corpus domains with the fewest studies per identity cluster. Does encoding a targeted batch of 6–8 studies stabilize the IdentityDomainCells flip rates or reveal new identity×domain interactions not yet modeled?" ;
+    effortless-ntwf:mockDataNote "Pending — economics domain currently 39 studies; criminal-justice folded into social-science (33 studies). SubDomain field not yet in schema." ;
+    effortless-ntwf:nextSuggestion "loop-91: synthetic stress-test wave — boundary-condition studies for theorem edge cases" ;
+    effortless-ntwf:traditionId "tradition-dag" .
+
+effortless-ntwf:loop-91 a effortless-ntwf:Loops ;
+    effortless-ntwf:loopId "loop-91" ;
+    effortless-ntwf:title "Synthetic stress-test wave — boundary-condition studies for theorem edge cases" ;
+    effortless-ntwf:status "planned" ;
+    effortless-ntwf:newConcept "Add 5–8 new synthetic studies (IsSynthetic=true) targeting theorem edge cases: near-zero AllocationDistortion at reversal boundary, equal-weight stratum with sign-flip (tests SignalPurity theorem lower bound), Type-D with zero CorrectedGap, collider with manifest flip (tests collider no-manifest theorem). Register H-synthetic-edge-coverage (all 4 theorem boundary regions covered by ≥1 synthetic study)." ;
+    effortless-ntwf:domainQuestion "The four corpus theorems were witnessed on real-data studies with natural variation. Do synthetic edge-case studies at the exact geometric boundaries confirm the theorems hold — or reveal undiscovered corner-case violations?" ;
+    effortless-ntwf:mockDataNote "Pending — current 5 synthetic studies (loops 7, 14, 19, 50) were designed for illustration, not theorem boundary stress-testing." ;
+    effortless-ntwf:nextSuggestion "loop-92: allocation-corrected winner stability — cross-study meta-theorem" ;
+    effortless-ntwf:traditionId "tradition-dag" .
+
+effortless-ntwf:loop-92 a effortless-ntwf:Loops ;
+    effortless-ntwf:loopId "loop-92" ;
+    effortless-ntwf:title "Allocation-corrected winner stability — cross-study meta-theorem" ;
+    effortless-ntwf:status "planned" ;
+    effortless-ntwf:newConcept "CorrectedWinnerStability table (one row per Studies.Domain aggregating CorrectedPolicyImplication agreement rate across studies in domain); register H-corrected-winner-stable-across-types (CorrectedGap winner agrees with per-stratum winner in ≥90% of studies for all DistortionTypes including C+/C−); promote conc-36: allocation correction recovers ground truth even when pooled signal inverts." ;
+    effortless-ntwf:domainQuestion "Across 238 studies and all five distortion types, does the allocation-corrected treatment winner (from CorrectedPolicyImplication) consistently match the per-stratum unanimous winner — establishing CorrectedGap as a reliable recovery instrument, not merely a theoretical construct?" ;
+    effortless-ntwf:mockDataNote "Pending — CorrectedPolicyImplication computed for all studies post-loop-28; corpus-wide agreement rate not yet aggregated into a first-class entity." ;
+    effortless-ntwf:nextSuggestion "loop-93: temporal meta-analysis — does paradox geometry shift over publication decades?" ;
+    effortless-ntwf:traditionId "tradition-dag" .
+
+effortless-ntwf:loop-93 a effortless-ntwf:Loops ;
+    effortless-ntwf:loopId "loop-93" ;
+    effortless-ntwf:title "Temporal meta-analysis — paradox geometry shift across publication decades" ;
+    effortless-ntwf:status "planned" ;
+    effortless-ntwf:newConcept "DecadeSummary table (one row per publication decade 1950s–2020s from Studies.PublicationYear); fields: StudyCount, ManifestFlipRate, LatentFlipRate, TypeDFraction, AvgAllocationDistortion, DominantIdentity; register H-temporal-allocation-distortion-growth (AvgAllocationDistortion in 2000s–2020s > 1970s–1990s, reflecting larger multi-arm clinical trials); H-temporal-latent-growth (LatentFlipRate higher in recent decades as causal inference awareness increases)." ;
+    effortless-ntwf:domainQuestion "Does the 238-study corpus, spanning ~70 years of published research, show systematic change in Simpson's Paradox geometry over time — specifically, are more recent studies exhibiting higher allocation distortion (larger multi-arm RCTs) and higher latent-flip rates (post-causal-inference-awareness reporting)?" ;
+    effortless-ntwf:mockDataNote "Pending — Studies.PublicationYear populated from loop-47; DecadeSummary not yet a first-class entity. PublicationYear range in corpus: 1946–2023." ;
+    effortless-ntwf:nextSuggestion "loop-94: confounder identity × temporal interaction — which archetypes are rising vs declining?" ;
+    effortless-ntwf:traditionId "tradition-dag" .
+
+effortless-ntwf:loop-94 a effortless-ntwf:Loops ;
+    effortless-ntwf:loopId "loop-94" ;
+    effortless-ntwf:title "Identity × temporal interaction — rising vs declining confounder archetypes by decade" ;
+    effortless-ntwf:status "planned" ;
+    effortless-ntwf:newConcept "IdentityDecadeCells table (ConfounderIdentity × decade with n≥2); fields: StudyCount, ManifestFlipRate, TypeDFraction; register H-age-composition-declining (age-composition studies concentrated pre-2000, fewer post-2010 as age-adjustment becomes standard); H-selection-frailty-rising (selection-frailty concentrated in post-2000 clinical trials as frailty indices adopted); promote conc-37: some confounder archetypes are era-specific artifacts of methodological norms." ;
+    effortless-ntwf:domainQuestion "Are certain confounder archetypes (age-composition, disease-severity) artifacts of pre-causal-inference methodological norms — concentrated in older studies — while others (selection-frailty, treatment-indication) are products of modern complex-trial design concentrated in recent decades?" ;
+    effortless-ntwf:mockDataNote "Pending — depends on DecadeSummary (loop-93) and IdentityDomainCells (loop-82/86). IdentityDecadeCells is a new entity." ;
+    effortless-ntwf:nextSuggestion "loop-95: meta-synthesis — corpus portrait + theorem portfolio as first-class CorpusNarrative entity" ;
+    effortless-ntwf:traditionId "tradition-dag" .
+
+effortless-ntwf:loop-95 a effortless-ntwf:Loops ;
+    effortless-ntwf:loopId "loop-95" ;
+    effortless-ntwf:title "Meta-synthesis — CorpusNarrative entity + theorem portfolio as first-class witnesses" ;
+    effortless-ntwf:status "planned" ;
+    effortless-ntwf:newConcept "CorpusNarrative table (singleton row) with calculated fields: TotalStudyCount, ManifestFlipRate, LatentFlipRate, TypeDFraction, TheoremCount, IdentityCount, DomainCount, DominantConfounderIdentity, EraSpanYears, CorrectedWinnerAgreementRate, NarrativeSummary (CONCAT of key metrics into publishable abstract sentence); Conclusions conc-38 corpus self-portrait; __meta__ tagline update to reflect loop-95 maturity." ;
+    effortless-ntwf:domainQuestion "Can the instrument describe itself — producing a publishable one-paragraph corpus portrait from DAG-computed metrics alone, with no hand-authored summary — demonstrating that the rulebook's derived geometry is complete enough to narrate its own findings?" ;
+    effortless-ntwf:mockDataNote "Pending — NarrativeSummary is the first CONCAT-formula field in the corpus that produces natural-language prose from numeric witnesses. Singleton CorpusNarrative table mirrors __meta__ but is domain-data not project-metadata." ;
+    effortless-ntwf:nextSuggestion "loop-96: peer-review readiness audit — invariant tightening + open-questions registry" ;
+    effortless-ntwf:traditionId "tradition-dag" .
+
+effortless-ntwf:loop-96 a effortless-ntwf:Loops ;
+    effortless-ntwf:loopId "loop-96" ;
+    effortless-ntwf:title "Peer-review readiness audit — invariant tightening + open-questions registry" ;
+    effortless-ntwf:status "planned" ;
+    effortless-ntwf:newConcept "OpenQuestions table (pre-registered limitations and scope boundaries: causal graph not encoded, publication bias not modeled, RCT vs observational not formally distinguished, ALLHAT and 3 clinical-trial REAL? studies pending); tighten InvariantChecks to promote any current warning-severity checks with FailCount=0 to critical; register H-invariant-completeness (all 29 critical invariants pass at N=238); final Rulespeak export covering all 96 loops; tag corpus as methods-paper-ready in __meta__." ;
+    effortless-ntwf:domainQuestion "After 96 loops, 238 studies, 5 theorems, 15 confounder archetypes, and a temporal meta-layer, what are the instrument's documented limitations — and are they registered as first-class data rather than prose caveats — making the instrument honest about its own scope boundaries?" ;
+    effortless-ntwf:mockDataNote "Pending — OpenQuestions is a new table modeling known unknowns as corpus data. Final invariant tightening depends on loops 82–95 all passing with FailCount=0 on their newly registered invariants." ;
+    effortless-ntwf:nextSuggestion "Submit methods paper. Begin domain-specific deep-dive series (e.g., loop-97: medicine-only sub-corpus analysis at N=34)." ;
+    effortless-ntwf:traditionId "tradition-dag" .
 
 # === Individuals: Methodology ===
 

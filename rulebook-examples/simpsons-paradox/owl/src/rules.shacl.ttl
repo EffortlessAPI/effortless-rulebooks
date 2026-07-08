@@ -838,29 +838,8 @@ effortless-ntwf:ConfounderIdentitiesShape a sh:NodeShape ;
                 BIND(?confounder_identity_id AS ?_result)
             }
         """ ;
-    ] ;
-    sh:rule [
-        a sh:SPARQLRule ;
-        rdfs:label "rule_ConfounderIdentities_StudyCount" ;
-        sh:prefixes effortless-ntwf: ;
-        sh:construct """
-            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
-            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
-            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
-            CONSTRUCT {
-                $this effortless-ntwf:studyCount ?_result .
-            }
-            WHERE {
-    $this a effortless-ntwf:ConfounderIdentities .
-                {
-                    SELECT (COUNT(?child) AS ?_result) WHERE {
-                    ?child a effortless-ntwf:StratumVariableIdentityMaps .
-                    ?child effortless-ntwf:confounderIdentity $this .
-                    }
-                }
-            }
-        """ ;
     ] .
+# Rule for StudyCount - parse error: Expected TokenType.LPAREN, got TokenType.COMMA at position 63
 
 # === Shape with rules for CorpusCatalogSummary ===
 effortless-ntwf:CorpusCatalogSummaryShape a sh:NodeShape ;
@@ -8059,4 +8038,4 @@ effortless-ntwf:TreatmentsCardinalityShape a sh:NodeShape ;
     sh:targetClass effortless-ntwf:Treatments ;
     sh:property [ sh:path effortless-ntwf:study ; sh:maxCount 1 ] .
 
-# Generated 357 SHACL rules
+# Generated 356 SHACL rules

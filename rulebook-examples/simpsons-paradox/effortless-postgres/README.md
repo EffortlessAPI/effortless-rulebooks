@@ -2,14 +2,14 @@
 
 **Schema:** `public`
 **Database:** `demo`
-**Timestamp:** 2026-07-08 07:21:18 UTC
+**Timestamp:** 2026-07-08 13:51:26 UTC
 
 ## Parsing Rulebook
 
 Found **35** tables in rulebook
 
 
-  - **Loops** (16 fields, 78 records)
+  - **Loops** (16 fields, 91 records)
   - **Studies** (26 fields, 238 records)
   - **Treatments** (8 fields, 464 records)
   - **Strata** (6 fields, 497 records)
@@ -49,7 +49,7 @@ Generated **35** table definitions with **242** raw fields (mode=check-add)
 Generated **304** calculation functions
 Generated **35** views
 Enabled RLS on **35** tables
-Generated insert statements for **7597** records
+Generated insert statements for **7610** records
 ## Script Generation Complete
 
 Generated files:

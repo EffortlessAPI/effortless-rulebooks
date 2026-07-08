@@ -2131,12 +2131,6 @@ effortless-ntwf:unmappedStratumVariableCount a owl:DatatypeProperty ;
     rdfs:comment "Stratum variables lacking identity map (should be 0)." .
     # calculated: calculated
 
-effortless-ntwf:identityClusterWitnessNote a owl:DatatypeProperty ;
-    rdfs:domain effortless-ntwf:ModelSummary ;
-    rdfs:range xsd:string ;
-    rdfs:label "IdentityClusterWitnessNote" ;
-    rdfs:comment "Loop-80 identity layer witness rollup (customize SQL)." .
-
 effortless-ntwf:ageIdentityManifestFlipRate a owl:DatatypeProperty ;
     rdfs:domain effortless-ntwf:ModelSummary ;
     rdfs:range xsd:string ;
@@ -2171,6 +2165,12 @@ effortless-ntwf:identityMapCoverageRate a owl:DatatypeProperty ;
     rdfs:label "IdentityMapCoverageRate" ;
     rdfs:comment "Fraction of real-study StratumVariables with a ConfounderIdentity map (loop-81 customize SQL)." .
     # calculated: calculated
+
+effortless-ntwf:identityClusterWitnessNote a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:ModelSummary ;
+    rdfs:range xsd:string ;
+    rdfs:label "IdentityClusterWitnessNote" ;
+    rdfs:comment "Loop-80 identity layer witness rollup (customize SQL)." .
 
 # === Class: PhaseDiagramSummary ===
 effortless-ntwf:PhaseDiagramSummary a owl:Class ;
