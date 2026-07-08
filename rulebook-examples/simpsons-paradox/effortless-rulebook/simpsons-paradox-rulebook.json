@@ -1066,16 +1066,6 @@
       },
       {
         "LoopId": "loop-79",
-        "Title": "Methods-paper export: theorem portfolio + instrument spec packaging",
-        "Status": "planned",
-        "NewConcept": "Rulespeak theorem section export; InstrumentSpec catalog PDF; witnessed Conclusions conc-28..31 + conc-32 synthesis; optional clinical-trials CandidateStudyCatalog gap encode if export blocked on domain diversity.",
-        "DomainQuestion": "With five theorems witnessed and expansion-wave supersessions documented, is the instrument ready for external methods-paper submission — and which domain gaps remain?",
-        "MockDataNote": "Pending — blocked on loop-80 vocabulary prune; export packaging after superseded predicates retired from active DAG.",
-        "NextSuggestion": "Clinical-trials domain encode or peer-review draft",
-        "TraditionId": "tradition-historical"
-      },
-      {
-        "LoopId": "loop-80",
         "Title": "Vocabulary prune: retire superseded discovery predicates (post loop-78)",
         "Status": "planned",
         "NewConcept": "Archive loop-78 supersessions to conc-32 evidence only; remove from active DAG: 6 DiscoveryHypotheses + DiscoveryFindings (EpistemicTier=corpus-pattern-superseded); prune ModelSummary predicates wired only to those hypotheses (DomainFlipGapSurvivesGeometryControl, CorpusPatternSupersededFailCount, ExpansionWave3DiscoveryNote; simplify DiscoveryWitnessNote); drop customize calc_discovery_findings branches for H-econ-zero, H-domain-dist, H-catalog-flip-prediction, H-domain-flip-geometry-controlled, H-econ-encoding-selection, H-domain-profiles-stable; mark conc-17/conc-22/conc-27 as historical-only in Conclusions (evidence retained, no live predicates). Mirror loop-60 prune discipline.",
@@ -1085,7 +1075,17 @@
         "TraditionId": "tradition-dag"
       },
       {
-        "LoopId": "loop-81",
+        "LoopId": "loop-87",
+        "Title": "Methods-paper export: theorem portfolio + instrument spec packaging",
+        "Status": "planned",
+        "NewConcept": "Rulespeak theorem section export; InstrumentSpec catalog PDF; witnessed Conclusions conc-28..31 + conc-32 synthesis; optional clinical-trials CandidateStudyCatalog gap encode if export blocked on domain diversity.",
+        "DomainQuestion": "With five theorems witnessed and expansion-wave supersessions documented, is the instrument ready for external methods-paper submission — and which domain gaps remain?",
+        "MockDataNote": "Pending — blocked on loop-80 vocabulary prune; export packaging after superseded predicates retired from active DAG.",
+        "NextSuggestion": "Clinical-trials domain encode or peer-review draft",
+        "TraditionId": "tradition-historical"
+      },
+      {
+        "LoopId": "loop-88",
         "Title": "ALLHAT source verification: REAL? template cells → published-table encode",
         "Status": "planned",
         "NewConcept": "Verify allhat-collaborative-research-group-2002 CaseCells from JAMA 2002 primary-outcomes race-stratified tables (PMID 12479763), not loop-77 kidney-scaled Type-A template; optional data/raw/allhat-collaborative-research-group-2002/table-extract.json from PDF side loop; promote Studies.Source and CandidateStudyCatalog from Prov: REAL? to Prov: DOC with table citation; map treatment arms (chlorthalidone vs lisinopril) and stratum (race) explicitly; regenerate allocation sweep; spot-check ExpectedDistortionType=A vs observed DistortionType on verified counts.",
