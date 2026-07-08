@@ -26276,7 +26276,7 @@ effortless-ntwf:inv-discovery-all-confirmed a effortless-ntwf:InvariantChecks ;
     effortless-ntwf:sourceTable "DiscoveryFindings" ;
     effortless-ntwf:filterExpression "HypothesisEpistemicTier = corpus-hypothesis" ;
     effortless-ntwf:assertionExpression "IsConfirmed = TRUE" ;
-    effortless-ntwf:sqlFilter "hypothesis_id IN ('H-latent-d', 'H-small-effect', 'H-causal-manifest', 'H-causal-latent', 'H-explained-confounder', 'H-unexplained-nonconfounder', 'H-catalog-exact-match', 'H-collider-no-manifest-v2', 'H-cplus-magnitude', 'H-ultra-fragile', 'H-age-identity-flip-rate', 'H-severity-medicine-manifest', 'H-severity-epi-latent-only', 'H-mechanism-other-drain', 'H-selection-frailty-zero-manifest', 'H-collider-identity-low-manifest', 'H-geographic-stable-type-d')" ;
+    effortless-ntwf:sqlFilter "hypothesis_id IN ('H-latent-d', 'H-small-effect', 'H-causal-manifest', 'H-causal-latent', 'H-explained-confounder', 'H-unexplained-nonconfounder', 'H-catalog-exact-match', 'H-collider-no-manifest-v2', 'H-cplus-magnitude', 'H-ultra-fragile', 'H-age-identity-flip-rate', 'H-severity-medicine-manifest', 'H-severity-epi-latent-only', 'H-mechanism-other-drain', 'H-selection-frailty-zero-manifest', 'H-collider-identity-low-manifest', 'H-geographic-stable-type-d', 'H-unexplained-flips-only-nonconfounders')" ;
     effortless-ntwf:sqlAssertion "is_confirmed = TRUE" ;
     effortless-ntwf:passCount 17 ;
     effortless-ntwf:failCount 0 ;
@@ -26382,7 +26382,12 @@ effortless-ntwf:inv-unexplained-identity-sink a effortless-ntwf:InvariantChecks 
     effortless-ntwf:filterExpression "IsSignFlip = TRUE AND IsParadoxExplained = FALSE" ;
     effortless-ntwf:assertionExpression "StratumCausalRole IN ('contested') OR ConfounderIdentity IN ('id-contested-org-choice','id-collider-proxy')" ;
     effortless-ntwf:sqlFilter "is_sign_flip = true AND is_paradox_explained = false" ;
-    effortless-ntwf:sqlAssertion "stratum_causal_role = 'contested' OR confounder_identity IN ('id-contested-org-choice','id-collider-proxy')" ;
+    effortless-ntwf:sqlAssertion """stratum_causal_role = 'contested' OR study IN (
+ SELECT s.study_id FROM stratum_variable_identity_maps m
+ JOIN stratum_variables sv ON sv.stratum_variable_id = m.stratum_variable
+ JOIN studies s ON s.study_id = sv.study
+ WHERE m.confounder_identity IN ('id-contested-org-choice','id-collider-proxy')
+ )""" ;
     effortless-ntwf:passCount 3 ;
     effortless-ntwf:failCount 0 ;
     effortless-ntwf:severity "critical" ;

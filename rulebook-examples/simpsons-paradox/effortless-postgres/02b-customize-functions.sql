@@ -979,6 +979,21 @@ CREATE OR REPLACE FUNCTION calc_discovery_findings_is_confirmed(p_finding_id TEX
     WHEN 'H-severity-vs-age-latent' THEN calc_model_summary_severity_identity_latent_fraction_among_type('simpsons-paradox-v1')
                               < calc_model_summary_age_identity_latent_fraction_among_type_d('simpsons-paradox-v1')
     WHEN 'H-identity-map-coverage' THEN calc_model_summary_identity_map_coverage_rate('simpsons-paradox-v1') >= 0.95
+    WHEN 'H-severity-medicine-manifest' THEN calc_model_summary_severity_medicine_manifest_flip_rate('simpsons-paradox-v1') >= 0.45
+    WHEN 'H-severity-epi-latent-only' THEN calc_model_summary_severity_epi_manifest_flip_count('simpsons-paradox-v1') = 0
+    WHEN 'H-mechanism-other-drain' THEN
+      (SELECT study_count FROM identity_cluster_summaries WHERE identity_cluster_id = 'cluster-id-mechanism-other') <= 5
+    WHEN 'H-selection-frailty-zero-manifest' THEN
+      calc_model_summary_selection_frailty_manifest_flip_count('simpsons-paradox-v1') = 0
+      AND calc_model_summary_selection_frailty_study_count('simpsons-paradox-v1') >= 3
+    WHEN 'H-collider-identity-low-manifest' THEN
+      calc_model_summary_collider_identity_manifest_flip_rate('simpsons-paradox-v1') <= 0.15
+      AND (SELECT study_count FROM identity_cluster_summaries WHERE identity_cluster_id = 'cluster-id-collider-proxy') >= 5
+    WHEN 'H-geographic-stable-type-d' THEN
+      calc_model_summary_geographic_type_d_fraction('simpsons-paradox-v1') >= 0.25
+      AND (SELECT study_count FROM identity_cluster_summaries WHERE identity_cluster_id = 'cluster-id-geographic-composition') >= 3
+    WHEN 'H-unexplained-flips-only-nonconfounders' THEN
+      calc_model_summary_unexplained_confounder_sign_flip_count('simpsons-paradox-v1') = 0
     ELSE FALSE
   END;
 $$ LANGUAGE sql STABLE;
@@ -1037,6 +1052,21 @@ CREATE OR REPLACE FUNCTION calc_discovery_findings_observed_metric(p_finding_id 
       'SeverityIdentityLatentFractionAmongTypeD=', calc_model_summary_severity_identity_latent_fraction_among_type('simpsons-paradox-v1'),
       ' AgeIdentityLatentFractionAmongTypeD=', calc_model_summary_age_identity_latent_fraction_among_type_d('simpsons-paradox-v1'))
     WHEN 'H-identity-map-coverage' THEN CONCAT('IdentityMapCoverageRate=', calc_model_summary_identity_map_coverage_rate('simpsons-paradox-v1'))
+    WHEN 'H-severity-medicine-manifest' THEN CONCAT('SeverityMedicineManifestFlipRate=', calc_model_summary_severity_medicine_manifest_flip_rate('simpsons-paradox-v1'))
+    WHEN 'H-severity-epi-latent-only' THEN CONCAT('SeverityEpiManifestFlipCount=', calc_model_summary_severity_epi_manifest_flip_count('simpsons-paradox-v1'))
+    WHEN 'H-mechanism-other-drain' THEN CONCAT('MechanismOtherStudyCount=',
+      (SELECT study_count FROM identity_cluster_summaries WHERE identity_cluster_id = 'cluster-id-mechanism-other'))
+    WHEN 'H-selection-frailty-zero-manifest' THEN CONCAT(
+      'SelectionFrailtyManifestFlipCount=', calc_model_summary_selection_frailty_manifest_flip_count('simpsons-paradox-v1'),
+      ' SelectionFrailtyStudyCount=', calc_model_summary_selection_frailty_study_count('simpsons-paradox-v1'))
+    WHEN 'H-collider-identity-low-manifest' THEN CONCAT(
+      'ColliderIdentityManifestFlipRate=', calc_model_summary_collider_identity_manifest_flip_rate('simpsons-paradox-v1'),
+      ' ColliderIdentityStudyCount=', (SELECT study_count FROM identity_cluster_summaries WHERE identity_cluster_id = 'cluster-id-collider-proxy'))
+    WHEN 'H-geographic-stable-type-d' THEN CONCAT(
+      'GeographicTypeDFraction=', calc_model_summary_geographic_type_d_fraction('simpsons-paradox-v1'),
+      ' GeographicStudyCount=', (SELECT study_count FROM identity_cluster_summaries WHERE identity_cluster_id = 'cluster-id-geographic-composition'))
+    WHEN 'H-unexplained-flips-only-nonconfounders' THEN CONCAT(
+      'UnexplainedConfounderSignFlipCount=', calc_model_summary_unexplained_confounder_sign_flip_count('simpsons-paradox-v1'))
     ELSE ''
   END;
 $$ LANGUAGE sql STABLE;
@@ -1397,3 +1427,73 @@ BEGIN
   WHERE idc.study_count IS NULL;
 END;
 $$;
+
+-- Fix: ManifestFlipRate for IdentityDomainCells and IdentityClusterSummaries.
+-- The transpiler emits ''::numeric for the "" empty-string branch, which fails.
+-- Override to return NULL when study_count = 0.
+CREATE OR REPLACE FUNCTION calc_identity_domain_cells_manifest_flip_rate(p_cell_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT CASE
+    WHEN COALESCE((SELECT study_count FROM identity_domain_cells WHERE cell_id = p_cell_id), 0) = 0
+    THEN NULL
+    ELSE (SELECT manifest_flip_count FROM identity_domain_cells WHERE cell_id = p_cell_id)::NUMERIC
+       / (SELECT study_count FROM identity_domain_cells WHERE cell_id = p_cell_id)::NUMERIC
+  END;
+$$ LANGUAGE sql STABLE;
+
+CREATE OR REPLACE FUNCTION calc_identity_cluster_summaries_manifest_flip_rate(p_identity_cluster_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT CASE
+    WHEN COALESCE((SELECT study_count FROM identity_cluster_summaries WHERE identity_cluster_id = p_identity_cluster_id), 0) = 0
+    THEN NULL
+    ELSE (SELECT manifest_flip_count FROM identity_cluster_summaries WHERE identity_cluster_id = p_identity_cluster_id)::NUMERIC
+       / (SELECT study_count FROM identity_cluster_summaries WHERE identity_cluster_id = p_identity_cluster_id)::NUMERIC
+  END;
+$$ LANGUAGE sql STABLE;
+
+-- Loop-82/84: ModelSummary LOOKUP overrides for IdentityDomainCells and IdentityClusterSummaries.
+-- The transpiler emits NULL stubs for LOOKUP against tables added in the same loop.
+
+CREATE OR REPLACE FUNCTION calc_model_summary_severity_medicine_manifest_flip_rate(p_model_summary_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT manifest_flip_rate FROM vw_identity_domain_cells
+  WHERE cell_id = 'cell-id-disease-severity-x-medicine';
+$$ LANGUAGE sql STABLE;
+
+CREATE OR REPLACE FUNCTION calc_model_summary_severity_epi_manifest_flip_count(p_model_summary_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT manifest_flip_count FROM identity_domain_cells
+  WHERE cell_id = 'cell-id-disease-severity-x-epidemiology';
+$$ LANGUAGE sql STABLE;
+
+CREATE OR REPLACE FUNCTION calc_model_summary_identity_domain_cell_count(p_model_summary_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT COUNT(*)::INTEGER FROM identity_domain_cells;
+$$ LANGUAGE sql STABLE;
+
+CREATE OR REPLACE FUNCTION calc_model_summary_selection_frailty_manifest_flip_count(p_model_summary_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT manifest_flip_count FROM identity_cluster_summaries
+  WHERE identity_cluster_id = 'cluster-id-selection-frailty';
+$$ LANGUAGE sql STABLE;
+
+CREATE OR REPLACE FUNCTION calc_model_summary_selection_frailty_study_count(p_model_summary_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT study_count FROM identity_cluster_summaries
+  WHERE identity_cluster_id = 'cluster-id-selection-frailty';
+$$ LANGUAGE sql STABLE;
+
+CREATE OR REPLACE FUNCTION calc_model_summary_collider_identity_manifest_flip_rate(p_model_summary_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT manifest_flip_rate FROM vw_identity_cluster_summaries
+  WHERE identity_cluster_id = 'cluster-id-collider-proxy';
+$$ LANGUAGE sql STABLE;
+
+CREATE OR REPLACE FUNCTION calc_model_summary_geographic_type_d_fraction(p_model_summary_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT CASE WHEN COALESCE(study_count, 0) = 0 THEN NULL
+    ELSE type_d_count::NUMERIC / study_count::NUMERIC
+  END
+  FROM identity_cluster_summaries
+  WHERE identity_cluster_id = 'cluster-id-geographic-composition';
+$$ LANGUAGE sql STABLE;
