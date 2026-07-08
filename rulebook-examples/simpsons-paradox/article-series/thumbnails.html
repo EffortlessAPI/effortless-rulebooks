@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Trust the Artifact — Article Thumbnails</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: #1a1a1a;
+    font-family: 'Georgia', serif;
+    padding: 40px 20px;
+    color: #fff;
+  }
+
+  h1 {
+    text-align: center;
+    color: #ccc;
+    font-size: 14px;
+    font-family: monospace;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 40px;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(480px, 1fr));
+    gap: 32px;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  /* ── Base card ── */
+  .card {
+    width: 480px;
+    height: 270px;
+    border-radius: 6px;
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.6);
+    flex-shrink: 0;
+  }
+
+  /* ── Series badge ── */
+  .badge {
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    font-family: monospace;
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border-radius: 3px;
+    background: rgba(255,255,255,0.15);
+    backdrop-filter: blur(4px);
+    color: rgba(255,255,255,0.85);
+  }
+
+  /* ── Part number ── */
+  .part-num {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    font-family: monospace;
+    font-size: 11px;
+    color: rgba(255,255,255,0.5);
+    letter-spacing: 1px;
+  }
+
+  /* ── Text block ── */
+  .text {
+    padding: 18px 20px 20px;
+    background: linear-gradient(to top, rgba(0,0,0,0.88) 0%, rgba(0,0,0,0.55) 70%, transparent 100%);
+    position: relative;
+    z-index: 2;
+  }
+
+  .audience {
+    font-family: monospace;
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.55);
+    margin-bottom: 6px;
+  }
+
+  .title {
+    font-size: 19px;
+    font-weight: bold;
+    line-height: 1.25;
+    color: #fff;
+    margin-bottom: 7px;
+  }
+
+  .caption {
+    font-size: 12px;
+    color: rgba(255,255,255,0.68);
+    font-style: italic;
+    line-height: 1.4;
+  }
+
+  /* ── Geometric SVG backgrounds ── */
+  .bg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  /* ─── Card 1: Courtroom — deep navy, scales of justice geometry ─── */
+  .c1 { background: #0d1b2a; }
+
+  /* ─── Card 2: Boardroom — dark slate, factory grid ─── */
+  .c2 { background: #1a1a2e; }
+
+  /* ─── Card 3: Developer — dark terminal green ─── */
+  .c3 { background: #0a1f0a; }
+
+  /* ─── Card 4: Data Scientist — deep indigo ─── */
+  .c4 { background: #12082a; }
+
+  /* ─── Card 5: Knowledge Governance — charcoal with amber ─── */
+  .c5 { background: #1c1608; }
+
+  /* ─── Card 6: Legal — deep burgundy ─── */
+  .c6 { background: #1a0a0a; }
+
+  /* ─── Card 7: Product/Ops — dark teal ─── */
+  .c7 { background: #071a1a; }
+
+  /* ─── Card 8: High School — dark cobalt ─── */
+  .c8 { background: #0a0f1f; }
+
+  /* ─── Card 9: Young Child — deep forest ─── */
+  .c9 { background: #0a1a10; }
+
+  /* ─── Card 10: Ontologist — near-black with violet ─── */
+  .c10 { background: #0e0a1f; }
+
+  /* ── accent lines ── */
+  .accent-line {
+    position: absolute;
+    left: 20px;
+    bottom: 0;
+    width: 3px;
+    height: 100%;
+    opacity: 0.25;
+  }
+</style>
+</head>
+<body>
+
+<h1>Trust the Artifact, Not the Autocomplete — 10-Part Series Thumbnails</h1>
+
+<div class="grid">
+
+  <!-- ══════════════ CARD 1: General Public ══════════════ -->
+  <div class="card c1">
+    <svg class="bg" viewBox="0 0 480 270" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+      <!-- Courtroom pillars -->
+      <rect x="60"  y="40" width="18" height="200" fill="#1e3a5f" opacity="0.7"/>
+      <rect x="110" y="40" width="18" height="200" fill="#1e3a5f" opacity="0.7"/>
+      <rect x="160" y="40" width="18" height="200" fill="#1e3a5f" opacity="0.55"/>
+      <rect x="210" y="40" width="18" height="200" fill="#1e3a5f" opacity="0.4"/>
+      <!-- Scales of justice — left pan -->
+      <circle cx="330" cy="95" r="28" fill="none" stroke="#4a8ec2" stroke-width="1.5" opacity="0.55"/>
+      <!-- Scales beam -->
+      <line x1="280" y1="75" x2="400" y2="75" stroke="#4a8ec2" stroke-width="1.5" opacity="0.6"/>
+      <line x1="340" y1="45" x2="340" y2="75" stroke="#4a8ec2" stroke-width="1.5" opacity="0.6"/>
+      <!-- right pan lower (imbalanced) -->
+      <circle cx="400" cy="115" r="28" fill="none" stroke="#4a8ec2" stroke-width="1.5" opacity="0.55"/>
+      <line x1="280" y1="75" x2="280" y2="95" stroke="#4a8ec2" stroke-width="1" opacity="0.5"/>
+      <line x1="400" y1="75" x2="400" y2="115" stroke="#4a8ec2" stroke-width="1" opacity="0.5"/>
+      <!-- gavel horizontal line -->
+      <line x1="50" y1="230" x2="430" y2="230" stroke="#4a8ec2" stroke-width="0.5" opacity="0.3"/>
+      <!-- Subtle grid -->
+      <line x1="0" y1="135" x2="480" y2="135" stroke="#4a8ec2" stroke-width="0.3" opacity="0.2"/>
+    </svg>
+    <div class="badge">Series · Part 1 of 10</div>
+    <div class="part-num">PUBLIC</div>
+    <div class="text">
+      <div class="audience">For everyone</div>
+      <div class="title">AI Should Not Be Trusted.<br>It Should Be Audited.</div>
+      <div class="caption">The courtroom guide to evidence, invariants, and why autocomplete is a witness — not a judge.</div>
+    </div>
+  </div>
+
+  <!-- ══════════════ CARD 2: Executive ══════════════ -->
+  <div class="card c2">
+    <svg class="bg" viewBox="0 0 480 270" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+      <!-- Factory floor grid -->
+      <line x1="0"   y1="90"  x2="480" y2="90"  stroke="#6060c0" stroke-width="0.5" opacity="0.25"/>
+      <line x1="0"   y1="150" x2="480" y2="150" stroke="#6060c0" stroke-width="0.5" opacity="0.25"/>
+      <line x1="0"   y1="210" x2="480" y2="210" stroke="#6060c0" stroke-width="0.5" opacity="0.25"/>
+      <line x1="120" y1="0"   x2="120" y2="270" stroke="#6060c0" stroke-width="0.5" opacity="0.2"/>
+      <line x1="240" y1="0"   x2="240" y2="270" stroke="#6060c0" stroke-width="0.5" opacity="0.2"/>
+      <line x1="360" y1="0"   x2="360" y2="270" stroke="#6060c0" stroke-width="0.5" opacity="0.2"/>
+      <!-- Conveyor belt -->
+      <rect x="60" y="110" width="360" height="30" rx="4" fill="#2a2a6a" opacity="0.6"/>
+      <!-- Raw material boxes -->
+      <rect x="80"  y="98" width="36" height="22" rx="2" fill="#4040a0" opacity="0.55"/>
+      <rect x="130" y="98" width="36" height="22" rx="2" fill="#4040a0" opacity="0.45"/>
+      <rect x="180" y="98" width="36" height="22" rx="2" fill="#4040a0" opacity="0.35"/>
+      <!-- Quality gate -->
+      <rect x="290" y="85" width="8" height="55" rx="2" fill="#8080ff" opacity="0.7"/>
+      <!-- Output approved box -->
+      <rect x="340" y="98" width="36" height="22" rx="2" fill="#60a060" opacity="0.55"/>
+      <!-- Checkmark -->
+      <polyline points="346,110 352,116 362,104" fill="none" stroke="#90e090" stroke-width="2" opacity="0.8"/>
+      <!-- Audit trail rows -->
+      <rect x="60" y="165" width="180" height="5" rx="2" fill="#5050a0" opacity="0.4"/>
+      <rect x="60" y="178" width="140" height="5" rx="2" fill="#5050a0" opacity="0.35"/>
+      <rect x="60" y="191" width="200" height="5" rx="2" fill="#5050a0" opacity="0.3"/>
+    </svg>
+    <div class="badge">Series · Part 2 of 10</div>
+    <div class="part-num">EXECUTIVE</div>
+    <div class="text">
+      <div class="audience">For leaders &amp; boards</div>
+      <div class="title">From AI Experiments to<br>Governed Knowledge Assets</div>
+      <div class="caption">78 build iterations. Every conclusion traceable. The audit trail that AI pilots never leave behind.</div>
+    </div>
+  </div>
+
+  <!-- ══════════════ CARD 3: Developer ══════════════ -->
+  <div class="card c3">
+    <svg class="bg" viewBox="0 0 480 270" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+      <!-- Terminal scanlines -->
+      <rect x="0" y="0" width="480" height="270" fill="#0a1f0a"/>
+      <!-- Pipeline boxes -->
+      <rect x="30"  y="55" width="80" height="32" rx="3" fill="#1a3a1a" stroke="#40a040" stroke-width="1" opacity="0.9"/>
+      <text x="70"  y="76" font-family="monospace" font-size="10" fill="#40c040" text-anchor="middle" opacity="0.9">LLM</text>
+      <line x1="110" y1="71" x2="140" y2="71" stroke="#40a040" stroke-width="1.5" opacity="0.7"/>
+      <polygon points="140,67 148,71 140,75" fill="#40a040" opacity="0.7"/>
+
+      <rect x="148" y="55" width="90" height="32" rx="3" fill="#1a3a1a" stroke="#40a040" stroke-width="1" opacity="0.9"/>
+      <text x="193" y="76" font-family="monospace" font-size="9" fill="#40c040" text-anchor="middle" opacity="0.9">rulebook.json</text>
+      <line x1="238" y1="71" x2="268" y2="71" stroke="#40a040" stroke-width="1.5" opacity="0.7"/>
+      <polygon points="268,67 276,71 268,75" fill="#40a040" opacity="0.7"/>
+
+      <rect x="276" y="55" width="80" height="32" rx="3" fill="#1a3a1a" stroke="#40a040" stroke-width="1" opacity="0.9"/>
+      <text x="316" y="70" font-family="monospace" font-size="9" fill="#40c040" text-anchor="middle" opacity="0.9">effortless</text>
+      <text x="316" y="82" font-family="monospace" font-size="9" fill="#40c040" text-anchor="middle" opacity="0.9">build</text>
+      <line x1="356" y1="71" x2="386" y2="71" stroke="#40a040" stroke-width="1.5" opacity="0.7"/>
+      <polygon points="386,67 394,71 386,75" fill="#40a040" opacity="0.7"/>
+
+      <rect x="394" y="55" width="60" height="32" rx="3" fill="#0a2a0a" stroke="#40a040" stroke-width="1" opacity="0.8"/>
+      <text x="424" y="70" font-family="monospace" font-size="8" fill="#40c040" text-anchor="middle" opacity="0.8">vw_*</text>
+      <text x="424" y="82" font-family="monospace" font-size="8" fill="#40c040" text-anchor="middle" opacity="0.8">SQL</text>
+
+      <!-- Invariant checks -->
+      <rect x="148" y="115" width="260" height="20" rx="3" fill="#0a2a0a" stroke="#20a020" stroke-width="0.8" opacity="0.8"/>
+      <text x="278" y="130" font-family="monospace" font-size="9" fill="#20e020" text-anchor="middle" opacity="0.85">inv-corrected-gap-invariant  PassCount:238  FailCount:0</text>
+      <rect x="148" y="142" width="260" height="20" rx="3" fill="#0a2a0a" stroke="#20a020" stroke-width="0.8" opacity="0.7"/>
+      <text x="278" y="157" font-family="monospace" font-size="9" fill="#20e020" text-anchor="middle" opacity="0.75">inv-taxonomy-complete  PassCount:40  FailCount:0</text>
+      <rect x="148" y="169" width="260" height="20" rx="3" fill="#0a2a0a" stroke="#20a020" stroke-width="0.8" opacity="0.6"/>
+      <text x="278" y="184" font-family="monospace" font-size="9" fill="#20e020" text-anchor="middle" opacity="0.65">inv-type-ab-sign-flip  PassCount:12  FailCount:0</text>
+
+      <!-- cursor blink -->
+      <rect x="32" y="210" width="8" height="14" fill="#40e040" opacity="0.7"/>
+    </svg>
+    <div class="badge">Series · Part 3 of 10</div>
+    <div class="part-num">DEVELOPER</div>
+    <div class="text">
+      <div class="audience">For software engineers</div>
+      <div class="title">LLMs Should Write Candidates;<br>Build Systems Should Decide</div>
+      <div class="caption">Rulebooks, transpilers, invariant checks, and two-substrate conformance — the hallucination boundary in code.</div>
+    </div>
+  </div>
+
+  <!-- ══════════════ CARD 4: Data Scientist ══════════════ -->
+  <div class="card c4">
+    <svg class="bg" viewBox="0 0 480 270" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+      <!-- DAG nodes -->
+      <!-- Leaves -->
+      <circle cx="80"  cy="60"  r="18" fill="#2a1060" stroke="#8060e0" stroke-width="1.5" opacity="0.85"/>
+      <text x="80"  y="64" font-family="monospace" font-size="7" fill="#c0a0ff" text-anchor="middle">CaseCell</text>
+      <circle cx="180" cy="60"  r="18" fill="#2a1060" stroke="#8060e0" stroke-width="1.5" opacity="0.8"/>
+      <text x="180" y="64" font-family="monospace" font-size="7" fill="#c0a0ff" text-anchor="middle">Stratum</text>
+
+      <!-- Mid layer -->
+      <circle cx="130" cy="130" r="22" fill="#3a1a70" stroke="#a080ff" stroke-width="1.5" opacity="0.9"/>
+      <text x="130" y="127" font-family="monospace" font-size="7" fill="#d0b0ff" text-anchor="middle">Corrected</text>
+      <text x="130" y="138" font-family="monospace" font-size="7" fill="#d0b0ff" text-anchor="middle">Gap</text>
+      <circle cx="290" cy="130" r="22" fill="#3a1a70" stroke="#a080ff" stroke-width="1.5" opacity="0.85"/>
+      <text x="290" y="127" font-family="monospace" font-size="7" fill="#d0b0ff" text-anchor="middle">Alloc</text>
+      <text x="290" y="138" font-family="monospace" font-size="7" fill="#d0b0ff" text-anchor="middle">Distortion</text>
+
+      <!-- Top -->
+      <circle cx="210" cy="200" r="26" fill="#4a2a80" stroke="#c0a0ff" stroke-width="2" opacity="0.95"/>
+      <text x="210" y="197" font-family="monospace" font-size="7" fill="#e8d8ff" text-anchor="middle">Signal</text>
+      <text x="210" y="208" font-family="monospace" font-size="7" fill="#e8d8ff" text-anchor="middle">Purity</text>
+
+      <!-- Edges -->
+      <line x1="80"  y1="78"  x2="118" y2="110" stroke="#8060e0" stroke-width="1" opacity="0.5"/>
+      <line x1="180" y1="78"  x2="148" y2="110" stroke="#8060e0" stroke-width="1" opacity="0.5"/>
+      <line x1="180" y1="78"  x2="278" y2="110" stroke="#8060e0" stroke-width="1" opacity="0.4"/>
+      <line x1="148" y1="148" x2="192" y2="176" stroke="#a080ff" stroke-width="1" opacity="0.55"/>
+      <line x1="272" y1="148" x2="228" y2="176" stroke="#a080ff" stroke-width="1" opacity="0.55"/>
+
+      <!-- Histogram bars at right -->
+      <rect x="350" y="160" width="16" height="70"  rx="2" fill="#6040c0" opacity="0.5"/>
+      <rect x="372" y="120" width="16" height="110" rx="2" fill="#6040c0" opacity="0.6"/>
+      <rect x="394" y="140" width="16" height="90"  rx="2" fill="#6040c0" opacity="0.5"/>
+      <rect x="416" y="100" width="16" height="130" rx="2" fill="#8060e0" opacity="0.65"/>
+      <rect x="438" y="150" width="16" height="80"  rx="2" fill="#6040c0" opacity="0.45"/>
+      <line x1="344" y1="230" x2="460" y2="230" stroke="#8060e0" stroke-width="1" opacity="0.4"/>
+    </svg>
+    <div class="badge">Series · Part 4 of 10</div>
+    <div class="part-num">DATA SCIENCE</div>
+    <div class="text">
+      <div class="audience">For data scientists</div>
+      <div class="title">Predicate Invention as<br>Hypothesis Generation Under Test</div>
+      <div class="caption">Feature engineering with an audit trail — three gates, pre-registration, and theorems versus findings.</div>
+    </div>
+  </div>
+
+  <!-- ══════════════ CARD 5: Knowledge Governance ══════════════ -->
+  <div class="card c5">
+    <svg class="bg" viewBox="0 0 480 270" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+      <!-- Lifecycle ring -->
+      <circle cx="240" cy="115" r="75" fill="none" stroke="#c08020" stroke-width="1.5" opacity="0.35" stroke-dasharray="6 4"/>
+      <!-- Four phase nodes -->
+      <circle cx="240" cy="42"  r="20" fill="#2a1a00" stroke="#e09030" stroke-width="1.8" opacity="0.9"/>
+      <text x="240" y="46" font-family="Georgia,serif" font-size="9" fill="#f0b060" text-anchor="middle">Birth</text>
+      <circle cx="313" cy="115" r="20" fill="#2a1a00" stroke="#e09030" stroke-width="1.8" opacity="0.85"/>
+      <text x="313" y="119" font-family="Georgia,serif" font-size="9" fill="#f0b060" text-anchor="middle">Test</text>
+      <circle cx="240" cy="188" r="20" fill="#2a1a00" stroke="#e09030" stroke-width="1.8" opacity="0.85"/>
+      <text x="240" y="192" font-family="Georgia,serif" font-size="8" fill="#f0b060" text-anchor="middle">Revise</text>
+      <circle cx="167" cy="115" r="20" fill="#2a1a00" stroke="#e09030" stroke-width="1.8" opacity="0.85"/>
+      <text x="167" y="119" font-family="Georgia,serif" font-size="9" fill="#f0b060" text-anchor="middle">Reuse</text>
+      <!-- Arrows on ring -->
+      <polygon points="266,47 276,44 272,54" fill="#e09030" opacity="0.7"/>
+      <polygon points="308,140 316,148 320,138" fill="#e09030" opacity="0.7"/>
+      <polygon points="214,183 204,186 208,176" fill="#e09030" opacity="0.7"/>
+      <polygon points="172,90 164,82 160,92" fill="#e09030" opacity="0.7"/>
+      <!-- Loop history lines -->
+      <rect x="360" y="50" width="90" height="6" rx="2" fill="#c08020" opacity="0.35"/>
+      <rect x="360" y="65" width="70" height="6" rx="2" fill="#c08020" opacity="0.3"/>
+      <rect x="360" y="80" width="85" height="6" rx="2" fill="#c08020" opacity="0.28"/>
+      <rect x="360" y="95" width="60" height="6" rx="2" fill="#c08020" opacity="0.25"/>
+      <text x="405" y="42" font-family="monospace" font-size="8" fill="#c08020" text-anchor="middle" opacity="0.6">loop-06</text>
+      <text x="405" y="57" font-family="monospace" font-size="8" fill="#c08020" text-anchor="middle" opacity="0.55">loop-17</text>
+      <text x="405" y="72" font-family="monospace" font-size="8" fill="#c08020" text-anchor="middle" opacity="0.5">loop-44</text>
+      <text x="405" y="87" font-family="monospace" font-size="8" fill="#c08020" text-anchor="middle" opacity="0.45">loop-78</text>
+    </svg>
+    <div class="badge">Series · Part 5 of 10</div>
+    <div class="part-num">GOVERNANCE</div>
+    <div class="text">
+      <div class="audience">For knowledge managers &amp; CDOs</div>
+      <div class="title">The Organization That Can<br>Remember Why It Believes Things</div>
+      <div class="caption">Vocabulary lifecycle, the three-tier epistemic system, and institutional memory with version control.</div>
+    </div>
+  </div>
+
+  <!-- ══════════════ CARD 6: Legal / Compliance ══════════════ -->
+  <div class="card c6">
+    <svg class="bg" viewBox="0 0 480 270" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+      <!-- Provenance chain -->
+      <!-- Chain links -->
+      <rect x="30"  y="90" width="70" height="40" rx="5" fill="#2a0a0a" stroke="#c04040" stroke-width="1.5" opacity="0.85"/>
+      <text x="65"  y="107" font-family="Georgia,serif" font-size="8" fill="#e08080" text-anchor="middle">Conclusion</text>
+      <text x="65"  y="119" font-family="monospace" font-size="7"  fill="#c06060" text-anchor="middle">theorem</text>
+      <line x1="100" y1="110" x2="130" y2="110" stroke="#c04040" stroke-width="1.5" opacity="0.6"/>
+      <polygon points="130,106 138,110 130,114" fill="#c04040" opacity="0.6"/>
+
+      <rect x="138" y="90" width="70" height="40" rx="5" fill="#2a0a0a" stroke="#c04040" stroke-width="1.5" opacity="0.8"/>
+      <text x="173" y="107" font-family="Georgia,serif" font-size="8" fill="#e08080" text-anchor="middle">Loop</text>
+      <text x="173" y="119" font-family="monospace" font-size="7"  fill="#c06060" text-anchor="middle">loop-34</text>
+      <line x1="208" y1="110" x2="238" y2="110" stroke="#c04040" stroke-width="1.5" opacity="0.6"/>
+      <polygon points="238,106 246,110 238,114" fill="#c04040" opacity="0.6"/>
+
+      <rect x="246" y="90" width="72" height="40" rx="5" fill="#2a0a0a" stroke="#c04040" stroke-width="1.5" opacity="0.75"/>
+      <text x="282" y="107" font-family="Georgia,serif" font-size="8" fill="#e08080" text-anchor="middle">Commit</text>
+      <text x="282" y="119" font-family="monospace" font-size="7"  fill="#c06060" text-anchor="middle">a3f9d22</text>
+      <line x1="318" y1="110" x2="348" y2="110" stroke="#c04040" stroke-width="1.5" opacity="0.6"/>
+      <polygon points="348,106 356,110 348,114" fill="#c04040" opacity="0.6"/>
+
+      <rect x="356" y="90" width="80" height="40" rx="5" fill="#2a0a0a" stroke="#c04040" stroke-width="1.5" opacity="0.7"/>
+      <text x="396" y="107" font-family="Georgia,serif" font-size="8" fill="#e08080" text-anchor="middle">Invariant</text>
+      <text x="396" y="119" font-family="monospace" font-size="7"  fill="#c06060" text-anchor="middle">Pass:238 Fail:0</text>
+
+      <!-- Three tier labels -->
+      <rect x="40"  y="160" width="110" height="28" rx="4" fill="#3a0505" stroke="#a03030" stroke-width="1" opacity="0.8"/>
+      <text x="95"  y="172" font-family="Georgia,serif" font-size="9" fill="#e08080" text-anchor="middle">① Theorem</text>
+      <text x="95"  y="183" font-family="monospace"  font-size="7" fill="#c06060" text-anchor="middle">by construction</text>
+
+      <rect x="185" y="160" width="110" height="28" rx="4" fill="#3a0505" stroke="#a03030" stroke-width="1" opacity="0.75"/>
+      <text x="240" y="172" font-family="Georgia,serif" font-size="9" fill="#e08080" text-anchor="middle">② Discovery</text>
+      <text x="240" y="183" font-family="monospace"  font-size="7" fill="#c06060" text-anchor="middle">pre-registered</text>
+
+      <rect x="330" y="160" width="110" height="28" rx="4" fill="#3a0505" stroke="#a03030" stroke-width="1" opacity="0.7"/>
+      <text x="385" y="172" font-family="Georgia,serif" font-size="9" fill="#e08080" text-anchor="middle">③ Superseded</text>
+      <text x="385" y="183" font-family="monospace"  font-size="7" fill="#c06060" text-anchor="middle">archived, not deleted</text>
+    </svg>
+    <div class="badge">Series · Part 6 of 10</div>
+    <div class="part-num">LEGAL</div>
+    <div class="text">
+      <div class="audience">For lawyers &amp; compliance officers</div>
+      <div class="title">Due Process for<br>Machine-Generated Knowledge</div>
+      <div class="caption">Provenance chains, epistemic tiers as standards of proof, and the three gaps in AI governance frameworks.</div>
+    </div>
+  </div>
+
+  <!-- ══════════════ CARD 7: Product / Ops ══════════════ -->
+  <div class="card c7">
+    <svg class="bg" viewBox="0 0 480 270" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+      <!-- Recipe card outline -->
+      <rect x="30" y="30" width="200" height="160" rx="5" fill="#051a1a" stroke="#208080" stroke-width="1.2" opacity="0.7"/>
+      <line x1="46" y1="55" x2="214" y2="55" stroke="#208080" stroke-width="0.7" opacity="0.5"/>
+      <text x="122" y="48" font-family="Georgia,serif" font-size="10" fill="#40c0c0" text-anchor="middle" opacity="0.85">Operating Recipe</text>
+      <!-- Ingredients -->
+      <circle cx="50" cy="72" r="4" fill="#40c0c0" opacity="0.6"/>
+      <rect x="60" y="68" width="140" height="6" rx="2" fill="#208080" opacity="0.4"/>
+      <circle cx="50" cy="88" r="4" fill="#40c0c0" opacity="0.55"/>
+      <rect x="60" y="84" width="110" height="6" rx="2" fill="#208080" opacity="0.38"/>
+      <circle cx="50" cy="104" r="4" fill="#40c0c0" opacity="0.5"/>
+      <rect x="60" y="100" width="130" height="6" rx="2" fill="#208080" opacity="0.35"/>
+      <!-- Quality gate marker -->
+      <line x1="46" y1="125" x2="214" y2="125" stroke="#208080" stroke-width="0.7" opacity="0.45"/>
+      <text x="122" y="118" font-family="monospace" font-size="8" fill="#40c0c0" text-anchor="middle" opacity="0.7">Quality Gates</text>
+      <polyline points="55,145 65,155 90,132" fill="none" stroke="#20e0a0" stroke-width="2.5" opacity="0.85"/>
+      <polyline points="105,145 115,155 140,132" fill="none" stroke="#20e0a0" stroke-width="2.5" opacity="0.75"/>
+      <polyline points="155,145 165,155 190,132" fill="none" stroke="#20e0a0" stroke-width="2.5" opacity="0.65"/>
+
+      <!-- Policy implication four boxes -->
+      <rect x="265" y="40"  width="190" height="30" rx="4" fill="#051a1a" stroke="#208080" stroke-width="1" opacity="0.8"/>
+      <text x="360" y="60" font-family="monospace" font-size="9" fill="#20e0a0" text-anchor="middle">stratify-immediately</text>
+      <rect x="265" y="80"  width="190" height="30" rx="4" fill="#051a1a" stroke="#208080" stroke-width="1" opacity="0.75"/>
+      <text x="360" y="100" font-family="monospace" font-size="9" fill="#20e0a0" text-anchor="middle">investigate-confounder</text>
+      <rect x="265" y="120" width="190" height="30" rx="4" fill="#051a1a" stroke="#208080" stroke-width="1" opacity="0.7"/>
+      <text x="360" y="140" font-family="monospace" font-size="9" fill="#20e0a0" text-anchor="middle">check-allocation-bias</text>
+      <rect x="265" y="160" width="190" height="30" rx="4" fill="#082a15" stroke="#20a060" stroke-width="1" opacity="0.75"/>
+      <text x="360" y="180" font-family="monospace" font-size="9" fill="#40e090" text-anchor="middle">pooled-analysis-trustworthy</text>
+    </svg>
+    <div class="badge">Series · Part 7 of 10</div>
+    <div class="part-num">OPERATIONS</div>
+    <div class="text">
+      <div class="audience">For product &amp; ops teams</div>
+      <div class="title">Turning AI Brainstorms into<br>Reliable Operating Procedures</div>
+      <div class="caption">A recipe that gets tested every time. Quality gates, intake checklists, and four decision labels that ship.</div>
+    </div>
+  </div>
+
+  <!-- ══════════════ CARD 8: High School ══════════════ -->
+  <div class="card c8">
+    <svg class="bg" viewBox="0 0 480 270" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+      <!-- Notebook lines -->
+      <line x1="0"   y1="60"  x2="480" y2="60"  stroke="#4060c0" stroke-width="0.5" opacity="0.25"/>
+      <line x1="0"   y1="90"  x2="480" y2="90"  stroke="#4060c0" stroke-width="0.5" opacity="0.25"/>
+      <line x1="0"   y1="120" x2="480" y2="120" stroke="#4060c0" stroke-width="0.5" opacity="0.25"/>
+      <line x1="0"   y1="150" x2="480" y2="150" stroke="#4060c0" stroke-width="0.5" opacity="0.25"/>
+      <line x1="0"   y1="180" x2="480" y2="180" stroke="#4060c0" stroke-width="0.5" opacity="0.25"/>
+      <!-- Margin line -->
+      <line x1="55"  y1="0"   x2="55"  y2="270" stroke="#c04060" stroke-width="1.2" opacity="0.4"/>
+
+      <!-- Rumor bubble (left, crossed out) -->
+      <ellipse cx="140" cy="75" rx="80" ry="25" fill="#1a1030" stroke="#6050a0" stroke-width="1.2" opacity="0.8"/>
+      <text x="140" y="72" font-family="Georgia,serif" font-size="10" fill="#8070d0" text-anchor="middle">sounds right</text>
+      <text x="140" y="85" font-family="monospace" font-size="8"  fill="#6050a0" text-anchor="middle">not checked</text>
+      <!-- X over rumor -->
+      <line x1="75"  y1="55" x2="205" y2="95" stroke="#c04040" stroke-width="1.8" opacity="0.6"/>
+      <line x1="205" y1="55" x2="75"  y2="95" stroke="#c04040" stroke-width="1.8" opacity="0.6"/>
+
+      <!-- Receipt block -->
+      <rect x="270" y="45" width="170" height="95" rx="4" fill="#0a1030" stroke="#4080e0" stroke-width="1.5" opacity="0.9"/>
+      <text x="355" y="65" font-family="monospace" font-size="9"  fill="#6090e0" text-anchor="middle">RECEIPT</text>
+      <line x1="280" y1="72" x2="430" y2="72" stroke="#4080e0" stroke-width="0.6" opacity="0.5"/>
+      <text x="355" y="86" font-family="monospace" font-size="8"  fill="#80a0f0" text-anchor="middle">SignalPurity</text>
+      <text x="355" y="100" font-family="monospace" font-size="8" fill="#8090d0" text-anchor="middle">PassCount: 238</text>
+      <text x="355" y="114" font-family="monospace" font-size="8" fill="#8090d0" text-anchor="middle">FailCount: 0</text>
+      <polyline points="290,128 304,136 330,112" fill="none" stroke="#40c0e0" stroke-width="2.5" opacity="0.9"/>
+
+      <!-- Three grade badges -->
+      <rect x="70" y="155" width="90" height="22" rx="3" fill="#0a1530" stroke="#4080e0" stroke-width="1" opacity="0.8"/>
+      <text x="115" y="170" font-family="monospace" font-size="8" fill="#60a0e0" text-anchor="middle">A: Theorem</text>
+      <rect x="195" y="155" width="90" height="22" rx="3" fill="#0a1530" stroke="#4080e0" stroke-width="1" opacity="0.7"/>
+      <text x="240" y="170" font-family="monospace" font-size="8" fill="#60a0e0" text-anchor="middle">B: Finding</text>
+      <rect x="320" y="155" width="110" height="22" rx="3" fill="#0a1530" stroke="#4080e0" stroke-width="1" opacity="0.6"/>
+      <text x="375" y="170" font-family="monospace" font-size="8" fill="#60a0e0" text-anchor="middle">C: Superseded</text>
+    </svg>
+    <div class="badge">Series · Part 8 of 10</div>
+    <div class="part-num">STUDENTS</div>
+    <div class="text">
+      <div class="audience">For high school &amp; college readers</div>
+      <div class="title">Rumors, Receipts, and<br>the Machine That Checks the Work</div>
+      <div class="caption">Why "sounds right" is not the same as proved — and how 238 studies got their receipts.</div>
+    </div>
+  </div>
+
+  <!-- ══════════════ CARD 9: Young Child ══════════════ -->
+  <div class="card c9">
+    <svg class="bg" viewBox="0 0 480 270" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+      <!-- Sky/ground -->
+      <rect x="0" y="0" width="480" height="270" fill="#0a1a10"/>
+      <ellipse cx="240" cy="310" rx="320" ry="120" fill="#0d2210" opacity="0.8"/>
+
+      <!-- Gus the Dragon (simple friendly shape) -->
+      <!-- Body -->
+      <ellipse cx="140" cy="130" rx="55" ry="45" fill="#1a4020" stroke="#40a060" stroke-width="2" opacity="0.9"/>
+      <!-- Head -->
+      <ellipse cx="185" cy="95" rx="32" ry="28" fill="#204830" stroke="#40a060" stroke-width="1.8" opacity="0.95"/>
+      <!-- Eye -->
+      <circle cx="194" cy="90" r="7" fill="#0a1a10"/>
+      <circle cx="196" cy="88" r="3" fill="#80e0a0"/>
+      <!-- Snout -->
+      <ellipse cx="210" cy="100" rx="14" ry="9" fill="#1a4020" stroke="#40a060" stroke-width="1.2" opacity="0.85"/>
+      <!-- Smile -->
+      <path d="M200,104 Q210,110 220,104" fill="none" stroke="#60c080" stroke-width="1.5" opacity="0.9"/>
+      <!-- Wing -->
+      <path d="M100,120 Q70,80 90,60 Q120,110 140,105" fill="#163020" stroke="#40a060" stroke-width="1.2" opacity="0.8"/>
+      <!-- Tail -->
+      <path d="M90,155 Q50,175 40,210 Q60,195 80,210" fill="none" stroke="#40a060" stroke-width="2" opacity="0.65"/>
+      <!-- Speech bubble -->
+      <ellipse cx="270" cy="75" rx="85" ry="35" fill="#0d2210" stroke="#40c060" stroke-width="1.5" opacity="0.95"/>
+      <polygon points="210,90 195,110 225,95" fill="#0d2210" stroke="#40c060" stroke-width="1" opacity="0.9"/>
+      <text x="270" y="70" font-family="Georgia,serif" font-size="10" fill="#80e0a0" text-anchor="middle">"I think we should</text>
+      <text x="270" y="84" font-family="Georgia,serif" font-size="10" fill="#80e0a0" text-anchor="middle">call it the Tangle Number!"</text>
+
+      <!-- Rule Machine (right side) -->
+      <rect x="360" y="60" width="90" height="120" rx="8" fill="#0a2010" stroke="#40a060" stroke-width="2" opacity="0.9"/>
+      <!-- Screen -->
+      <rect x="372" y="75" width="66" height="45" rx="4" fill="#051508" stroke="#30c060" stroke-width="1" opacity="0.85"/>
+      <text x="405" y="95" font-family="monospace" font-size="8" fill="#40e080" text-anchor="middle">CHECKING</text>
+      <text x="405" y="107" font-family="monospace" font-size="8" fill="#40e080" text-anchor="middle">ALL 238...</text>
+      <!-- Blink light -->
+      <circle cx="405" cy="145" r="8" fill="#20e060" opacity="0.85"/>
+      <!-- Buttons -->
+      <rect x="372" y="158" width="18" height="10" rx="2" fill="#208040" opacity="0.7"/>
+      <rect x="396" y="158" width="18" height="10" rx="2" fill="#208040" opacity="0.65"/>
+      <rect x="420" y="158" width="18" height="10" rx="2" fill="#208040" opacity="0.6"/>
+      <!-- Pass label -->
+      <text x="405" y="195" font-family="monospace" font-size="9" fill="#40e080" text-anchor="middle">PASS ✓</text>
+    </svg>
+    <div class="badge">Series · Part 9 of 10</div>
+    <div class="part-num">CHILDREN</div>
+    <div class="text">
+      <div class="audience">For ages 7–10 (and their grown-ups)</div>
+      <div class="title">The Guessing Dragon<br>and the Rule Machine</div>
+      <div class="caption">Gus has great ideas. The machine checks every one. Good ideas come from guesses — truth comes from checking.</div>
+    </div>
+  </div>
+
+  <!-- ══════════════ CARD 10: PhD Ontologist ══════════════ -->
+  <div class="card c10">
+    <svg class="bg" viewBox="0 0 480 270" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+      <!-- OWL/RDF triple arcs (semantic web aesthetic) -->
+      <!-- Nodes -->
+      <circle cx="80"  cy="80"  r="22" fill="#1a0a30" stroke="#8060d0" stroke-width="1.5" opacity="0.9"/>
+      <text x="80"  y="76" font-family="monospace" font-size="6" fill="#c0a0ff" text-anchor="middle">:CaseCell</text>
+      <text x="80"  y="87" font-family="monospace" font-size="6" fill="#a080e0" text-anchor="middle">individual</text>
+
+      <circle cx="240" cy="50"  r="22" fill="#1a0a30" stroke="#8060d0" stroke-width="1.5" opacity="0.85"/>
+      <text x="240" y="46" font-family="monospace" font-size="6" fill="#c0a0ff" text-anchor="middle">:IsSignFlip</text>
+      <text x="240" y="57" font-family="monospace" font-size="6" fill="#a080e0" text-anchor="middle">calculated</text>
+
+      <circle cx="400" cy="80"  r="22" fill="#1a0a30" stroke="#8060d0" stroke-width="1.5" opacity="0.85"/>
+      <text x="400" y="76" font-family="monospace" font-size="6" fill="#c0a0ff" text-anchor="middle">:SignalPurity</text>
+      <text x="400" y="87" font-family="monospace" font-size="6" fill="#a080e0" text-anchor="middle">theorem</text>
+
+      <circle cx="160" cy="170" r="22" fill="#1a0a30" stroke="#8060d0" stroke-width="1.5" opacity="0.85"/>
+      <text x="160" y="166" font-family="monospace" font-size="6" fill="#c0a0ff" text-anchor="middle">:Distortion</text>
+      <text x="160" y="177" font-family="monospace" font-size="6" fill="#a080e0" text-anchor="middle">Type</text>
+
+      <circle cx="320" cy="170" r="22" fill="#1a0a30" stroke="#8060d0" stroke-width="1.5" opacity="0.85"/>
+      <text x="320" y="166" font-family="monospace" font-size="6" fill="#c0a0ff" text-anchor="middle">:Policy</text>
+      <text x="320" y="177" font-family="monospace" font-size="6" fill="#a080e0" text-anchor="middle">Implication</text>
+
+      <!-- Arcs with property labels -->
+      <line x1="100" y1="90"  x2="222" y2="60"  stroke="#6040c0" stroke-width="1" opacity="0.55"/>
+      <text x="155" y="68" font-family="monospace" font-size="6" fill="#8060d0" opacity="0.65">:hasGap</text>
+      <line x1="258" y1="60"  x2="382" y2="74"  stroke="#6040c0" stroke-width="1" opacity="0.55"/>
+      <text x="325" y="60" font-family="monospace" font-size="6" fill="#8060d0" opacity="0.65">:derivedBy</text>
+      <line x1="240" y1="72"  x2="180" y2="150" stroke="#6040c0" stroke-width="1" opacity="0.5"/>
+      <text x="195" y="118" font-family="monospace" font-size="6" fill="#8060d0" opacity="0.6">:classifies</text>
+      <line x1="180" y1="170" x2="300" y2="170" stroke="#6040c0" stroke-width="1" opacity="0.5"/>
+      <text x="240" y="165" font-family="monospace" font-size="6" fill="#8060d0" opacity="0.55">:implies</text>
+      <line x1="380" y1="98"  x2="340" y2="150" stroke="#6040c0" stroke-width="1" opacity="0.5"/>
+
+      <!-- Epistemic tier table (right) -->
+      <rect x="0" y="200" width="480" height="1" fill="#6040c0" opacity="0.3"/>
+      <text x="30"  y="218" font-family="monospace" font-size="7.5" fill="#9070d0" opacity="0.75">theorem</text>
+      <text x="120" y="218" font-family="monospace" font-size="7.5" fill="#9070d0" opacity="0.65">discovery-finding</text>
+      <text x="250" y="218" font-family="monospace" font-size="7.5" fill="#9070d0" opacity="0.55">corpus-pattern</text>
+      <text x="360" y="218" font-family="monospace" font-size="7.5" fill="#9070d0" opacity="0.45">superseded</text>
+      <line x1="108" y1="207" x2="108" y2="225" stroke="#6040c0" stroke-width="0.7" opacity="0.4"/>
+      <line x1="238" y1="207" x2="238" y2="225" stroke="#6040c0" stroke-width="0.7" opacity="0.35"/>
+      <line x1="348" y1="207" x2="348" y2="225" stroke="#6040c0" stroke-width="0.7" opacity="0.3"/>
+      <!-- Partial ordering arrow -->
+      <line x1="88" y1="213" x2="108" y2="213" stroke="#8060d0" stroke-width="0.8" opacity="0.4"/>
+      <text x="243" y="236" font-family="monospace" font-size="7" fill="#6040a0" text-anchor="middle" opacity="0.5">theorem &gt; discovery-finding &gt; corpus-pattern</text>
+    </svg>
+    <div class="badge">Series · Part 10 of 10</div>
+    <div class="part-num">ONTOLOGY</div>
+    <div class="text">
+      <div class="audience">For PhD ontologists &amp; KR researchers</div>
+      <div class="title">Predicate Invention Beyond<br>Constraint Satisfaction</div>
+      <div class="caption">Executable intensional theories, abductive adjudication, and the Loops table as a formalism's theory of its own evolution.</div>
+    </div>
+  </div>
+
+</div>
+
+<p style="text-align:center; color:#444; font-family:monospace; font-size:11px; margin-top:48px; letter-spacing:1px;">
+  TRUST THE ARTIFACT, NOT THE AUTOCOMPLETE — 10-PART SERIES<br>
+  rulebook-examples/simpsons-paradox/article-series/
+</p>
+
+</body>
+</html>

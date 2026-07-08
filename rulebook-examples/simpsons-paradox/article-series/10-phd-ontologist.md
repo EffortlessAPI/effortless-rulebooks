@@ -8,138 +8,130 @@
 
 ---
 
-## Original Outline
+*This is part 10 of a 10-part series exploring what it looks like to build trustworthy AI systems with verifiable outputs.*
 
-**Title:** *Predicate Invention Beyond Constraint Satisfaction: Executable Ontology Evolution in an LLM-Assisted Loop*
+# Predicate Invention Beyond Constraint Satisfaction: Executable Ontology Evolution in an LLM-Assisted Loop
 
-**Central metaphor:** Ontology as a laboratory instrument, not a static schema.
+The interesting object in this project is not the ontology. It is the controlled evolution of the ontology under executable tests.
 
-**Focus:** Difference from classical constraint ontologies, derived predicates, epistemic typing, executable semantics, abductive proposal plus deterministic adjudication.
+That framing distinguishes what follows from classical OWL engineering in a specific and important way. Classical OWL practice treats the vocabulary as the stable artifact and the reasoner as the operational tool: you declare classes and properties, assert instances, and the reasoner derives consequences. The vocabulary is assumed to be given — authored by domain experts, revised through editorial processes external to the reasoning machinery, and not itself subject to systematic empirical testing. The lifecycle of the vocabulary is, in this sense, outside the formalism.
 
-**Translate terms this way:**
-
-| Technical term      | Ontologist version                                   |
-| ------------------- | ---------------------------------------------------- |
-| Rulebook            | Executable intensional theory                        |
-| Predicate invention | Vocabulary extension under operational semantics     |
-| Loop                | Epistemic revision event                             |
-| Invariant           | Model-theoretic or algebraic preservation constraint |
-| Corpus finding      | Empirical interpretation over encoded instances      |
-
-**Article angle:**
-This version should explicitly distinguish the architecture from traditional constraint-based ontologies. A constraint ontology validates instance conformance against a vocabulary. This system also records the evolution of the vocabulary itself: why a predicate was introduced, what it computes, what invariants protect it, what conclusions it supports, and whether later corpus evidence demotes or strengthens it.
-
-**Key lesson:**
-"The interesting object is not merely the ontology. It is the controlled evolution of the ontology under executable tests."
+This project inverts that assumption. The vocabulary IS the thing under evolution. The formulas ARE the operational semantics. The test harness IS part of the model. The Loops table IS the formalism's theory of its own development.
 
 ---
 
-## Source Material to Weave In
+## Two gaps in classical constraint-based ontology
 
-### Position relative to classical KR
+Two structural limitations follow from treating the vocabulary as given.
 
-Classical OWL ontologies (OWL-DL, OWL-RL) operate as constraint-satisfaction systems: a vocabulary of classes and properties is declared; instances are asserted; a reasoner derives consequences under the closed or open world assumption. The vocabulary itself is treated as given — stable between revision cycles, typically authored by domain experts, and not subject to systematic empirical testing.
+**Gap 1: Undocumented vocabulary evolution.** OWL files are typically maintained in version control, but the version history records *what changed*, not *why the predicate was introduced*, *what corpus evidence motivated it*, *what invariants protect it*, or *what epistemic tier it occupies*. Ontology learning and ontology alignment methods address the acquisition problem but remain decoupled from the reasoning machinery — the learned vocabulary is injected, but the adjudication process that decided to inject it is not represented in the formalism.
 
-Two limitations follow: (1) the vocabulary evolution is either undocumented (ad hoc editing of the OWL file) or externalized to a separate process (e.g., ontology learning, ontology alignment) that is decoupled from the reasoning machinery; and (2) derived predicates are either not representable (OWL-DL expressivity constraints) or representable only as SWRL rules or SPARQL-CONSTRUCT patterns with no integrated test harness.
+**Gap 2: No integrated test harness for derived predicates.** OWL-DL expressivity constraints exclude full SWRL rule coverage for many practically important derived predicates. OWL-RL and SPARQL-CONSTRUCT patterns extend coverage but are not natively integrated with instance-level invariant checking. There is no standard mechanism for stating "this derived predicate must satisfy invariant φ across all current instances" as a first-class element of the ontology, running that assertion on every build, and treating failure as a publication-blocking error.
 
-This project takes a different stance: the vocabulary IS the thing under evolution, the formulas ARE the operational semantics, and the test harness IS part of the model.
-
-### The architecture: intensional theory as executable SSoT
-
-The rulebook is an intensional theory over domain individuals. Every field definition is either:
-- **Raw**: an extensional assertion (StratumCasesA, StratumCasesB are counted from CaseCells)
-- **Calculated**: an intensional definition via an Excel-style formula (IsSignFlip, DistortionType)
-- **Lookup**: an intensional JOIN (TraditionName = LOOKUP(TraditionId, ResearchTraditions))
-- **Aggregation**: an intensional GROUP-BY (StrataWonByA = COUNTIFS across CaseCells)
-
-The build transpiles these definitions to multiple substrates: Postgres SQL (views), OWL-SHACL (SPARQL-CONSTRUCT rules), Python (class methods), Excel. Two of these are used for conformance testing: the Postgres view and the OWL-SHACL derivation. The conformance test asserts the leaf aggregates into the OWL graph, runs the SHACL fixpoint, and diffs the derived fields against the Postgres view.
-
-This is cross-substrate model-theoretic consistency: the formula's intended semantics are realized independently in two computational substrates, and the realizability is tested on every build.
-
-### Predicate invention as abductive proposal under adjudication
-
-Classical predicate invention in ILP (Inductive Logic Programming) operates by generating candidate predicates that improve a target hypothesis's coverage. The adjudication criterion is predictive accuracy or compression.
-
-This project's predicate invention operates differently:
-
-1. **Abduction** (LLM-mediated): the model is prompted with the domain structure and proposes candidate predicates — names, informal definitions, hypothesized algebraic relationships. Example: "Call the difference between pooled gap and corrected gap `AllocationDistortion`. Hypothesis: when this exceeds 0.01 with a sign change, you have a Type A or B study."
-
-2. **Formalization**: the candidate is given an operational definition — an Excel-style formula over the existing DAG nodes. The formula is written into the rulebook.
-
-3. **Adjudication** (deterministic): invariant checks verify algebraic consequences. If the proposed predicate entails `AllocationDirection='reversal' → SignalPurity < 0.5`, that entailment is stated as an invariant and checked across all 238 instances.
-
-4. **Classification**: the predicate is assigned to a `Conclusions` row with an epistemic tier:
-   - **theorem**: the entailment follows from the formula definitions alone
-   - **discovery-finding**: the entailment was pre-registered and confirmed empirically
-   - **corpus-pattern**: observed without pre-registration
-   - **corpus-pattern-superseded**: observed at N=64, broken at N=238
-
-The adjudication criterion is not predictive accuracy (there is no prediction task) — it is algebraic closure under the operational semantics, plus empirical support across the corpus.
-
-### The DAG as a dependency-typed derivation graph
-
-The rulebook's calculated and aggregation fields form a directed acyclic graph where edges represent formula dependencies. The key theorems concern invariants of this graph:
-
-**Theorem (CorrectedGap allocation-invariance)**: WeightedStratumGapSum = Σ(StratumFraction_k × StratumGap_k). The allocation variable (TreatmentExposureFraction) does not appear in this formula. Therefore CorrectedGap is algebraically independent of allocation. Witnessed numerically: SweepCorrectedGapRange = 0.0000 across 10 parametric sweep points per study, 238 studies, invariant `inv-corrected-gap-invariant` PassCount: 238, FailCount: 0.
-
-**Theorem (SignalPurity < 0.5 for reversals)**: SignalPurity = ABS(CorrectedGap) / (ABS(CorrectedGap) + AllocationDistortion). When AllocationDirection='reversal', by definition AllocationDistortion > ABS(CorrectedGap) (the allocation distortion is large enough to flip the sign). Therefore ABS(CorrectedGap) < AllocationDistortion, which implies SignalPurity < 0.5. This is an algebraic consequence of the DistortionType taxonomy definition, not a corpus finding. Invariant `inv-signal-purity-sign-flip` PassCount: 12, FailCount: 0.
-
-**Theorem (IsParadoxExplained biconditional)**: IsParadoxExplained=TRUE ↔ IsSignFlip=TRUE ∧ StratumCausalRole='confounder'. This is definitional — IsParadoxExplained is defined by this biconditional. The invariant confirms the definition is encoded correctly across all instances.
-
-**Corpus finding (confounder-manifest conditional)**: IsSignFlip=TRUE ∧ StratumCausalRole='confounder' → AllocationDirection='reversal' (manifest, not latent). Pre-registered as H-causal-manifest. Confirmed at N=238. This is NOT a theorem — it is an empirical generalization over the corpus. Additional instances from different domains could falsify it.
-
-### The epistemic type system
-
-The Conclusions table implements a typed epistemic record:
-
-```
-theorem            — algebraic consequence of formula definitions
-discovery-finding  — pre-registered hypothesis, empirically confirmed
-corpus-pattern     — post-hoc observation over the current corpus
-corpus-pattern-superseded — finding archived due to corpus expansion
-```
-
-This is a partial ordering of epistemic warrant: theorem > discovery-finding > corpus-pattern. The superseded category records the evolution of the corpus-pattern level, not the theorem level (theorems are revision-protected by construction — they follow from the definitions regardless of new instances).
-
-Most ontologies lack this type system. Every class and property assertion in an OWL file has the same epistemic status. The result: it is impossible to distinguish what the ontology knows by construction, what it has confirmed empirically, and what it used to believe before the most recent revision.
-
-### Cross-substrate conformance as model-theoretic consistency testing
-
-The OWL-SHACL conformance test (`owl/reason.py`) provides a form of model-theoretic consistency check that is unusual in ontology engineering practice:
-
-- The leaf aggregates are asserted into the OWL graph as data property assertions
-- SHACL SPARQL-CONSTRUCT rules derived from the same rulebook formula strings are applied iteratively (fixpoint)
-- The derived values are compared against the Postgres view, which is independently derived from the same formulas
-
-Fields in the conformance set: IsReversal, DistortionType, CorrectedWinner, AdjustmentAppropriate, PolicyImplication, SignalPurity.
-
-The conformance test is NOT a substitute for formal model-theoretic proof. It is an empirical witness: two independent computational realizations of the same intensional theory agree on the test corpus. The failure mode it catches is transpiler divergence — the formula was correctly specified in the rulebook but incorrectly compiled to one of the two substrates.
-
-This is analogous to checking that two theorem provers agree on the validity of a sentence: neither constitutes a proof, but disagreement is a bug signal that warrants investigation.
-
-### What distinguishes this from DOLCE, BFO, and foundational ontologies
-
-Foundational ontologies (DOLCE, BFO, GFO, etc.) provide upper-level vocabulary with formal axioms and principled parthood/dependence relations. They do not typically address:
-- The lifecycle of new predicates added post-publication
-- The empirical validation of derived predicates against instances
-- The epistemic status of axioms relative to the corpus that motivated them
-- The cross-substrate realizability of formula semantics
-
-This project is not a foundational ontology. It is a domain-specific executable theory that incorporates the meta-epistemic machinery that foundational ontologies assume is handled outside the formalism. The Loops table is the formalism's theory of its own evolution.
+Both gaps matter because they allow the vocabulary to drift away from the domain it is supposed to model without producing an observable signal. Predicates are introduced, their algebraic consequences are never verified, their epistemic basis is never recorded, and their revision history is never distinguished from simple editorial cleanup.
 
 ---
 
-## Structural Outline for the Article
+## The architecture: intensional theory as executable SSoT
 
-1. **Position statement (2 paragraphs):** Classical OWL as constraint-satisfaction. The two gaps: undocumented vocabulary evolution and no integrated test harness.
-2. **The architecture (3 paragraphs):** Intensional theory as executable SSoT. Field type taxonomy (raw, calculated, lookup, aggregation). Multi-substrate transpilation.
-3. **Predicate invention as abductive adjudication (3 paragraphs):** Compare to ILP predicate invention. The four steps: abduction, formalization, adjudication, classification. The distinction between algebraic and empirical adjudication criteria.
-4. **The DAG and its theorems (4 paragraphs):** CorrectedGap allocation-invariance. SignalPurity < 0.5 for reversals. IsParadoxExplained biconditional. Confounder-manifest as corpus finding (NOT theorem). Quote the invariant PassCounts.
-5. **The epistemic type system (3 paragraphs):** The four-tier type system. Partial ordering of warrant. Contrast with flat OWL assertion epistemics.
-6. **Cross-substrate conformance (3 paragraphs):** The OWL-SHACL test as empirical model-theoretic consistency check. Fixpoint SHACL derivation. Conformance set fields. Failure mode (transpiler divergence).
-7. **Position relative to foundational ontologies (2 paragraphs):** What DOLCE/BFO/GFO don't address. The Loops table as a formalism's theory of its own evolution.
-8. **Close (1 paragraph):** "The interesting object is not merely the ontology. It is the controlled evolution of the ontology under executable tests."
+The rulebook is an intensional theory over domain individuals. The type system for field definitions distinguishes four modes of predicate introduction:
 
-**Target length:** 2000–2500 words
-**Suggested Medium tags:** Knowledge Representation, Ontology Engineering, Semantic Web, OWL, Description Logics, AI
-**Note:** This article can cite Muggleton (ILP), Guarino (formal ontology), the OWL 2 specification, and SHACL documentation. It is the only article in the series that should engage with primary literature.
+- **Raw**: an extensional assertion grounded in observation (StratumCasesA, StratumCasesB are counts derived from CaseCells)
+- **Calculated**: an intensional definition via Excel-style formula (IsSignFlip, DistortionType, SignalPurity)
+- **Lookup**: an intensional JOIN (treatment metadata retrieved by FK from the Treatments table)
+- **Aggregation**: an intensional GROUP-BY (StrataWonByA = COUNTIFS across CaseCells for a given treatment pair)
+
+The build transpiles these definitions to multiple substrates: Postgres SQL (materialized as views), OWL-SHACL (SPARQL-CONSTRUCT derivation rules), Python (class methods), Excel. Two substrates participate in conformance testing. The conformance test asserts the Postgres-computed aggregation values — which require SQL GROUP BY and cannot be expressed as SHACL pure-formula rules — into the OWL graph alongside the raw individuals. SHACL fixpoint derivation then computes the purely formula-based derived fields. The results are diffed against the Postgres view.
+
+This is cross-substrate model-theoretic consistency: the formula's intended semantics are realized in two independent computational substrates, and realizability is tested on every build. The failure mode being detected is transpiler divergence — the formula was correctly specified in the rulebook but incorrectly compiled to one substrate. This is the ontology engineering equivalent of checking that two independent theorem provers agree on a sentence's validity: neither constitutes a proof, but disagreement is a deterministic bug signal warranting investigation.
+
+---
+
+## Predicate invention as abductive proposal under deterministic adjudication
+
+Classical predicate invention in ILP (Muggleton, 1991) operates by generating candidate predicates that improve the coverage or compression of a target hypothesis. The adjudication criterion is predictive accuracy over a training corpus. The process is tightly coupled to a specific learning task.
+
+The predicate invention process in this project differs along three axes.
+
+**Abduction is LLM-mediated rather than syntactically generated.** The LLM is prompted with the domain structure — the existing DAG, the raw field types, the current corpus distribution — and proposes candidate predicates by natural language description. The proposals include informal definitions, hypothesized algebraic relationships, and suggested naming conventions. Example: "Call the difference between pooled gap and corrected gap `AllocationDistortion`. Hypothesis: when this exceeds 0.01 with a sign change, you have a Type A or B study." The LLM is functioning as an abductive generator: it proposes candidate hypotheses consistent with the observed domain structure without committing to their validity.
+
+**Formalization precedes adjudication.** The candidate is given an operational definition — an Excel-style formula over the existing DAG nodes — before any adjudication occurs. This formalization step is non-trivial: informal descriptions are often vague enough to be operationalized in multiple inconsistent ways. The formula makes the commitment explicit and makes the adjudication deterministic. The formula is written into the rulebook.
+
+**Adjudication is deterministic, not statistical.** Invariant checks verify algebraic consequences. If the proposed predicate entails `AllocationDirection='reversal' → SignalPurity < 0.5`, that entailment is stated as an InvariantCheck row and checked across all 238 instances. PassCount and FailCount are populated by the build. FailCount > 0 on a critical invariant is build-breaking. The adjudication criterion is not predictive accuracy over a held-out set — there is no prediction task. It is algebraic closure under the operational semantics, plus empirical support across the full corpus. A predicate that produces algebraically incoherent results (DistortionType distributes non-exhaustively) fails regardless of how well it would perform in a classification task.
+
+**Epistemic classification follows adjudication.** The predicate is assigned a Conclusions row with one of four epistemic tiers (described below), distinguishing what the formalism knows by construction from what it has confirmed empirically.
+
+---
+
+## The DAG and its theorems
+
+The rulebook's calculated and aggregation fields form a directed acyclic graph where edges represent formula dependencies. The key structural results concern invariants of this graph under specific substitutions.
+
+**Theorem — CorrectedGap allocation-invariance.** `WeightedStratumGapSum = Σ_k(StratumFraction_k × StratumGap_k)`. The allocation variable (TreatmentExposureFraction) does not appear in this formula. The formula's value is therefore independent of allocation by construction — reweighting the stratum fractions changes PooledGap but leaves WeightedStratumGapSum invariant. This is established algebraically, not empirically. Invariant `inv-corrected-gap-invariant` (PassCount: 238, FailCount: 0) provides numerical witness across a parametric sweep of 10 allocation scenarios per study, confirming that the formula was correctly transpiled to both substrates, but the theorem does not depend on the witness count.
+
+**Theorem — SignalPurity < 0.5 for reversals.** `SignalPurity = ABS(CorrectedGap) / (ABS(CorrectedGap) + AllocationDistortion)`. When AllocationDirection='reversal', the definition of reversal entails `AllocationDistortion > ABS(CorrectedGap)` — the distortion is large enough to flip the sign of the pooled result, which requires it to dominate the corrected gap. Therefore `ABS(CorrectedGap) < AllocationDistortion`, which directly implies `SignalPurity < 0.5`. This is an algebraic consequence of the DistortionType taxonomy definition and the SignalPurity formula together. It is not a corpus finding; it is a derived theorem. Invariant `inv-signal-purity-sign-flip` (PassCount: 12, FailCount: 0) provides numerical witness.
+
+**Theorem — IsParadoxExplained biconditional.** `IsParadoxExplained = TRUE ↔ IsSignFlip = TRUE ∧ StratumCausalRole = 'confounder'`. This is definitional — IsParadoxExplained is defined by this biconditional. The invariant `inv-explained-sign-flip-confounder` confirms the biconditional is encoded correctly in both substrates across all conforming instances.
+
+**Corpus finding (not theorem) — confounder-manifest conditional.** `IsSignFlip = TRUE ∧ StratumCausalRole = 'confounder' → AllocationDirection = 'reversal'` (manifest, not latent). Pre-registered as H-causal-manifest before encoding 15 confounder studies. Confirmed at N=238. This is an empirical generalization over the current corpus, not an algebraic consequence of the definitions. Additional instances from domains not yet represented could falsify it. Its epistemic tier is discovery-finding, not theorem — a distinction the type system makes explicit and which cannot be represented in a flat OWL assertion file.
+
+---
+
+## The epistemic type system
+
+The Conclusions table implements a typed epistemic record with four types:
+
+```
+theorem                      — algebraic consequence of formula definitions
+discovery-finding            — pre-registered hypothesis, empirically confirmed
+corpus-pattern               — post-hoc observation over the current corpus
+corpus-pattern-superseded    — prior finding archived due to corpus expansion
+```
+
+This constitutes a partial ordering of epistemic warrant: `theorem > discovery-finding > corpus-pattern`. The superseded category records revision events at the corpus-pattern level, not the theorem level. Theorems are revision-protected by construction — they follow from the formula definitions regardless of what new instances are added. Corpus patterns are revision-exposed — they are contingent on the current corpus distribution and may be superseded as the corpus grows (as occurred with conc-17 and conc-22 between N=64 and N=238).
+
+The critical property of this type system is that it makes epistemic heterogeneity a first-class element of the formalism. In a standard OWL file, every class axiom and property assertion has identical epistemic status. There is no structural representation of "this axiom is a model-theoretic consequence of the other axioms" versus "this axiom was pre-registered before the corpus was encoded" versus "this axiom held at an earlier corpus size and has since been superseded." This collapse of epistemic categories is not merely inconvenient — it prevents a reader of the ontology from knowing what the ontology knows by construction and what it happens to have observed.
+
+The Conclusions table's type system addresses this directly, and the distinction is machine-enforced: theorems must reference a SupportingInvariantId that documents their algebraic basis; discovery-findings must reference the DiscoveryHypotheses row where they were pre-registered; superseded patterns must carry the loop number of their revision.
+
+---
+
+## Cross-substrate conformance as empirical model-theoretic consistency
+
+The OWL-SHACL conformance test (`owl/reason.py`) provides a form of model-theoretic consistency check that is unusual in current ontology engineering practice.
+
+The operational sequence: (1) assert the Postgres-computed aggregation values — StrataWonByA, WeightedStratumGapSum, SignedPooledGap — into the OWL working graph as data property assertions alongside the raw CaseCell individuals; (2) apply SPARQL-CONSTRUCT rules derived from the same rulebook formula strings iteratively until fixpoint; (3) compare the derived values against the Postgres view for the conformance set fields: IsReversal, DistortionType, CorrectedWinner, AdjustmentAppropriate, PolicyImplication, SignalPurity.
+
+The conformance set is bounded by the expressivity boundary between the two substrates. COUNTIFS and SUMIFS aggregations require SQL GROUP BY or SPARQL aggregates — they cannot be expressed as pure SHACL rules over individual triples. The conformance test therefore asserts the Postgres-computed aggregates as inputs and tests only the fields that are purely formula-based once those inputs are provided. This is the documented strategy from `owl/reason.py`:
+
+> *"Assert the Postgres-computed aggregation values into the working graph alongside the raw individuals, then run SHACL fixpoint derivation to let the OWL reasoner compute the pure formula fields. Compare those against Postgres. This is the same pattern as the causal-autoimmune-architecture: assert the leaves, derive the DAG, diff the two substrates."*
+
+The failure mode being detected is transpiler divergence: the formula was correctly specified in the rulebook but incorrectly compiled to one of the two target representations. This is empirical, not formal — it witnesses that the two substrate compilers agree on the test corpus, not that they agree in general. The OWL-SHACL derivation and the Postgres SQL are both outputs of transpilers reading the same source; when they disagree, at least one transpiler is wrong, and the disagreement is a diagnostic signal rather than a proof.
+
+---
+
+## Position relative to foundational ontologies
+
+Foundational ontologies — DOLCE (Gangemi et al., 2002), BFO (Arp, Smith, and Spear, 2015), GFO (Herre et al., 2006) — provide upper-level vocabulary with formal axioms, principled parthood and dependence relations, and ontologically motivated distinctions between universals and particulars. Their contribution is the principled scaffolding on which domain ontologies are erected.
+
+What they do not address, and do not attempt to address, is the lifecycle of predicates added post-publication. A foundational ontology assumes that the vocabulary of a well-formed domain ontology was derived from principled upper-level commitments by qualified ontologists. It does not represent:
+
+- The process by which a new predicate was introduced
+- The empirical corpus that motivated the introduction
+- The algebraic invariants that protect the predicate's semantics
+- The epistemic tier that distinguishes its status relative to other predicates
+- The revision history that records when its corpus-level support was superseded
+
+These are not failures of foundational ontologies. They are not the problem foundational ontologies were designed to solve. They are the problem this architecture is designed to solve.
+
+The Loops table is the formalism's representation of its own epistemic development — not as external documentation, but as governed data within the same system that stores the predicates themselves. Each loop row is a typed epistemic event: a predicate introduced, a formula committed, a witness note produced, a CommitHash anchoring the event to a reproducible build state. The Loops table is the theory of the ontology's evolution, expressed in the ontology's own representational vocabulary.
+
+This is the property that distinguishes executable ontology evolution from both classical OWL engineering and ILP-style predicate invention: the formalism includes a representation of how it came to be, what it witnessed at each step, and what it is still uncertain about. The controlled evolution is not external to the model — it IS the model.
+
+---
+
+**Also in this series:**
+- *Part 3: A Developer Guide to Rulebooks, Builds, and Invariants* — the build infrastructure for non-specialist readers
+- *Part 4: A Data Scientist's Guide to Predicate Invention* — the feature engineering perspective on the same predicate lifecycle
+
+*Full series overview: Trust the Artifact, Not the Autocomplete (10 articles)*

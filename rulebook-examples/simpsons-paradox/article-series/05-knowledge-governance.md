@@ -8,105 +8,95 @@
 
 ---
 
-## Original Outline
+*This is part 5 of a 10-part series exploring what it looks like to build trustworthy AI systems with verifiable outputs.*
 
-**Title:** *The Organization That Can Remember Why It Believes Things*
+# The Organization That Can Remember Why It Believes Things
 
-**Central metaphor:** Institutional memory with version control.
+Knowledge governance is not just storing definitions. It is governing how definitions are born, tested, revised, and reused.
 
-**Focus:** Shared vocabulary, provenance, SSoT, lifecycle of concepts, semantic governance.
-
-**Translate terms this way:**
-
-| Technical term      | Governance version      |
-| ------------------- | ----------------------- |
-| Predicate invention | Vocabulary evolution    |
-| Rulebook            | Governed semantic layer |
-| Loop history        | Institutional memory    |
-| Invariant           | Semantic control        |
-| Corpus summary      | Knowledge dashboard     |
-
-**Article angle:**
-Organizations constantly invent new concepts: churn risk, qualified lead, strategic account, safety incident, customer health, policy exception. Usually those definitions drift. This architecture treats new concepts as governed objects with definitions, dependencies, tests, and history.
-
-**Key lesson:**
-"Knowledge governance is not just storing definitions. It is governing how definitions are born, tested, revised, and reused."
+That distinction sounds abstract until you watch a concept fail in the field. The failure mode is almost always the same: a term that everyone uses and nobody defined the same way. The governance gap is not in the repository — it is in the lifecycle. Organizations know how to store things. They rarely know how to govern the conditions under which a stored thing can be trusted.
 
 ---
 
-## Source Material to Weave In
+## The concept drift problem every organization has
 
-### The concept drift problem every organization has
+An organization defines "at-risk customer" in 2019. By 2023, three teams use the term differently. The customer success team means any customer who opened a support ticket in the last 30 days. The sales team means any customer with renewal probability below 60%. The analytics team means any customer whose usage dropped more than 20% quarter-over-quarter. Each team can defend its definition. No team is using the same definition. Every cross-functional report that includes "at-risk customer" is quietly wrong.
 
-An organization defines "at-risk customer" in 2019. By 2023, three teams are using the term differently: the CS team means "any customer who opened a support ticket in the last 30 days," the sales team means "any customer with renewal probability below 60%," and the analytics team means "any customer whose usage dropped more than 20% quarter-over-quarter." The definition exists in every system — but as three incompatible things.
+This is not an AI problem. But AI makes it dramatically worse. When a language model proposes a concept name, the prose sounds authoritative. It gets copy-pasted into documentation, presentations, and dashboards before anyone has asked what it actually computes. The definition exists — in a dozen places, in slightly different forms, none of them governed.
 
-This is not an AI problem. But AI makes it dramatically worse: when an LLM proposes a concept name, the prose sounds authoritative and gets copy-pasted into docs, decks, and dashboards before anyone has asked what it actually computes.
+The symptom that surfaces years later is familiar to every data steward: a critical metric that no two systems compute the same way, an audit that cannot find a canonical formula, a new team member who spends three weeks figuring out which definition to use.
 
-### The vocabulary lifecycle: birth, test, revision, archive
+---
 
-This project treats every concept as having a governed lifecycle:
+## The vocabulary lifecycle: birth, test, revision, archive
 
-**Birth**: The concept is proposed with a name, a formula, and the domain question it answers. It goes into the rulebook as a typed field definition.
+A governed concept has a lifecycle with four phases, each with explicit conditions that must be satisfied before the concept advances.
 
-**Test**: Invariant checks verify algebraic consequences hold across the full corpus. The concept is not considered valid until all tests pass.
+**Birth**: the concept is proposed with a name, a formula, and the domain question it answers. It goes into the governed artifact — the rulebook — as a typed field definition with a precise formula. Not a description. A formula. If it cannot be written as a computable expression, it is not a governed concept — it is a label. Labels drift.
 
-**Revision**: If a corpus expansion breaks a prior finding, the `Conclusions` table records the revision. The old finding is tagged `corpus-pattern-superseded` with a link to the loop where it changed.
+**Test**: invariant checks verify that algebraic consequences of the definition hold across the full dataset. A concept that cannot be validated algebraically has not earned its place in the model. The concept is not considered valid until all critical invariants pass.
 
-**Reuse**: Once a concept is in the rulebook, it's referenced by downstream fields. `SignalPurity` depends on `CorrectedGap` and `AllocationDistortion`. `PolicyImplication` depends on `DistortionType`. The dependency graph is explicit and machine-verifiable.
+**Revision**: when a corpus expansion breaks a prior finding, the Conclusions table records the revision. The old finding is tagged `corpus-pattern-superseded` with a link to the build iteration where it changed. Nothing is deleted. The organization can see what it used to believe.
 
-### The governed vocabulary of Simpson's Paradox
+**Reuse**: once a concept is in the rulebook, it becomes available for downstream formulas to reference. `SignalPurity` depends on `CorrectedGap` and `AllocationDistortion`. `PolicyImplication` depends on `DistortionType`. The dependency graph is explicit and machine-verifiable. A change to a foundational concept propagates automatically to every formula that references it — and the invariant suite confirms the propagation is consistent.
 
-In this domain, the following concepts were invented and governed through this lifecycle:
+---
 
-**Core domain objects**: Study, Treatment, Stratum, CaseCell (raw inputs)
+## The governed vocabulary of Simpson's Paradox
 
-**First-order derived concepts**: StratumSuccessRateA, StratumSuccessRateB, StratumGap — computed from case counts
+In this domain, every concept in the vocabulary passed through this lifecycle. The result is a layered concept hierarchy:
 
-**Allocation concepts**: TreatmentExposureFraction, StratumFraction, WeightedStratumGapSum — the mechanism vocabulary
+**Core domain objects** — Study, Treatment, Stratum, CaseCell. These are the raw inputs: the published study metadata, the treatment arms being compared, the subgroups within each study, and the raw counts of successes and cases.
 
-**Classification concepts**: IsSignFlip, IsStratumUnanimous, DistortionType (A/B/C+/C-/D) — taxonomy
+**First-order derived concepts** — StratumSuccessRateA, StratumSuccessRateB, StratumGap. These are computed from the case counts and form the foundation of every higher-level concept.
 
-**Policy concepts**: PolicyImplication, CorrectedWinner, AdjustmentAppropriate — actionable outputs
+**Allocation concepts** — TreatmentExposureFraction, StratumFraction, WeightedStratumGapSum. This is the mechanism vocabulary: the concepts needed to describe *how* allocation distorts pooled results.
 
-**Epistemic concepts**: SignalPurity, AllocationDistortion, DistortionRatio — measurement vocabulary
+**Classification concepts** — IsSignFlip, IsStratumUnanimous, DistortionType (A/B/C+/C−/D). The taxonomy that categorizes what kind of distortion each study exhibits.
 
-Every one of these is defined once, in one place (the rulebook JSON), with a formula, a description, and a dependency path. No parallel definitions. No team-specific variants. One concept, one formula, one test.
+**Epistemic concepts** — SignalPurity, AllocationDistortion, DistortionRatio. The measurement vocabulary that quantifies how much noise is present and how confident the pooled result should be trusted.
 
-### The loop history as institutional memory
+**Policy concepts** — PolicyImplication, CorrectedWinner, AdjustmentAppropriate. The actionable outputs that tell a practitioner what to do with a given study.
 
-The loop table (78 rows and growing) is the complete institutional memory of how this vocabulary was built. Each row records:
+Every concept in this hierarchy is defined once, in one place, with a formula, a description, and a dependency path. There are no team-specific variants. No parallel definitions that diverged when the analytics team moved to a new tool. One concept, one formula, one test. That is what "governed" means at the semantic layer.
 
-- What question the organization didn't know how to ask before this loop
-- What concept was introduced to let them ask it
-- What was actually witnessed when the build ran (the WitnessNote)
-- The git commit hash anchoring the record to a reproducible state
+---
 
-Loop 6 (excerpt): "A: 263/350=75% in large-stone stratum. B: 80/350=23% in large-stone stratum. The 52-point gap IS the mechanism — now a first-class derived number (TreatmentExposureFraction)."
+## The loop history as institutional memory
 
-Loop 17 (excerpt): "kidney-1986: WSGSUM=+0.0537, SignedPooledGap=−0.0457 → IsSignFlip=TRUE. berkeley-1973: IsSignFlip=TRUE. Per-stratum breakdown shows type-B partial reversal."
+The loop table — 78 rows at last count, and growing — is the complete intellectual genealogy of how this vocabulary was built. Each row records four things: the question the organization could not ask before this loop, the concept introduced to let them ask it, what was actually witnessed when the build ran, and the git commit that anchors the record to a reproducible state.
 
-Loop 44 (excerpt): "All type-A/B studies (AllocationDirection=reversal) have SignalPurity < 0.5 — the confound is doing more than half the work. AvgSignalPurityReversal ≈ 0.35, AvgSignalPurityNonReversal ≈ 0.70."
+Three excerpts:
 
-A new team member reading the loop history has the full intellectual genealogy: every concept, when it was introduced, what evidence justified it, and what question it was designed to answer.
+**Loop 6**: "A: 263/350=75% in large-stone stratum. B: 80/350=23% in large-stone stratum. The 52-point gap IS the mechanism — now a first-class derived number (TreatmentExposureFraction)." This is the loop where allocation became a first-class concept rather than background context. A new team member reading this row understands not just that `TreatmentExposureFraction` exists, but *why it had to exist* — because the 52-point allocation gap in the kidney stone study is the entire story.
 
-### The three-tier epistemic system
+**Loop 17**: "kidney-1986: WSGSUM=+0.0537, SignedPooledGap=−0.0457 → IsSignFlip=TRUE. berkeley-1973: IsSignFlip=TRUE. Per-stratum breakdown shows type-B partial reversal." This is when the core phenomenon was formalized. The loop record is both a design note and a test fixture: here are the two studies that were used to verify the definition, with exact numbers.
 
-Not all knowledge has the same status. The Conclusions table uses three tiers:
+**Loop 44**: "All type-A/B studies (AllocationDirection=reversal) have SignalPurity < 0.5 — the confound is doing more than half the work. AvgSignalPurityReversal ≈ 0.35, AvgSignalPurityNonReversal ≈ 0.70." This is when SignalPurity became more than a proposed metric — it became an invariant. The average reversal study has only 35% real signal.
 
-**Theorem**: algebraic consequence of the definitions. True by construction. Cannot be falsified by more data.
-- Example: "CorrectedGap is allocation-invariant" — this follows from the formula, not from the corpus.
+A new team member reading the loop history from row 1 to row 78 acquires the full context: every concept, when it was introduced, what evidence justified it, and what question it was designed to answer. This is institutional memory in a form that survives personnel turnover. The knowledge is in the table, not in the heads of the people who were in the room.
 
-**Discovery-finding**: a pattern found in the corpus after testing a pre-registered hypothesis.
-- Example: "Economics studies have 0% sign-flip rate; epidemiology has ~27%." More data could revise this.
+---
 
-**Corpus-pattern-superseded**: a finding that was true at a smaller N and broke when the corpus expanded.
-- Examples: conc-17, conc-22 — findings from N=64 that needed revision at N=238.
+## The three-tier epistemic system
 
-This three-tier system is how the organization knows what it knows — and how confident to be in each piece of knowledge. Most knowledge governance systems have no analog. Every claim lives in the same undifferentiated soup of "things we believe." This project has explicit epistemic metadata on every conclusion.
+Not all knowledge has the same status, and a governed semantic layer should know the difference. The Conclusions table uses three epistemic tiers:
 
-### What the knowledge dashboard looks like
+**Theorem**: an algebraic consequence of the definitions. True by construction. Cannot be falsified by more data — only by changing a definition. Example: "CorrectedGap is allocation-invariant." This follows from the formula: CorrectedGap is defined as the weighted average of per-stratum gaps, with weights that sum to one regardless of how cases are distributed. The invariance is built into the definition. No additional data can make it false.
 
-The ModelSummary table provides a single-row self-portrait of the corpus:
+**Discovery-finding**: a pattern found in the corpus after testing a pre-registered hypothesis. Example: "Economics studies have a 0% sign-flip rate; epidemiology shows approximately 27%." This is a real observation — pre-registered, tested, recorded. But it is contingent on this particular collection of 238 studies. More studies could change the rates. A different corpus might show different patterns.
+
+**Corpus-pattern-superseded**: a finding that was valid at a smaller sample size and required revision when the corpus expanded. Examples include a Type-D dominance pattern that held at N=64 and broke at N=238, and a domain flip-rate characterization that was revised when the economics subset was added. These findings are not deleted — they are tagged with the loop number where the revision occurred and preserved as part of the epistemic record.
+
+Most governance systems have no analog to these tiers. Every claim lives in the same undifferentiated repository: things we believe. When someone asks "how confident are we in this?", there is no structural answer. The three-tier system provides a structural answer: theorems are as confident as the definitions themselves; discovery findings are confident contingent on this corpus; superseded findings represent beliefs that have been revised and should not be acted on without awareness of the revision.
+
+Decision-making quality depends on knowing which tier a given piece of knowledge belongs to.
+
+---
+
+## The knowledge dashboard
+
+The `ModelSummary` table provides a single-row self-portrait of the corpus. At N=238:
 
 - StudyCount: 238
 - ReversalCount: 86 (36%)
@@ -115,32 +105,38 @@ The ModelSummary table provides a single-row self-portrait of the corpus:
 - AvgSignalPurityReversal: 0.35 vs. AvgSignalPurityNonReversal: 0.70
 - TheoremCount: 5
 
-This is a knowledge dashboard. It summarizes what the governed semantic layer knows, across the full corpus, at the current build. It updates deterministically every time the corpus is extended.
+This is a knowledge dashboard. It summarizes the state of what the governed semantic layer knows, at the current build, across the full corpus. It is not a report that someone wrote. It is computed deterministically from the same rulebook and corpus that drive everything else. Every time a new study is added to the corpus, the dashboard updates automatically. Every time a new theorem is promoted, the count increments. The dashboard cannot be out of date — it is generated by the same build that generates the database, the documentation, and the invariant check results.
 
-### The IngestionProtocol as semantic governance
-
-The 17-item adapter contract for encoding new studies is knowledge governance at the acquisition layer:
-
-Required inputs: StudyId, StratumId per cell, TreatmentLabel, Cases, Successes.
-Structural constraints: binary treatment, ≥2 strata, paired A/B cells, ≥10 cases per cell.
-Inclusion criteria: outcome direction pre-registered, stratum variable named before classification, no post-hoc splitting.
-Exclusion criteria: missing stratification variable, observational studies without causal claim.
-
-A study that fails any of these conditions is excluded. The exclusion is documented. The system knows why a study is missing — it's not just absent.
+This is what "governed" looks like at the knowledge layer: a dashboard that the organization did not write and cannot manipulate, because it is a derived fact from the source of truth.
 
 ---
 
-## Structural Outline for the Article
+## The IngestionProtocol as semantic governance at the acquisition layer
 
-1. **Hook (2 paragraphs):** The "at-risk customer" example. Three definitions, three teams, zero governance.
-2. **What concept drift costs (2 paragraphs):** Decision inconsistency, onboarding failure, audit exposure.
-3. **The vocabulary lifecycle (3 paragraphs):** Birth, test, revision, archive. Each phase with a concrete example from the project.
-4. **The governed vocabulary (2 paragraphs):** Walk through the concept hierarchy from domain objects to policy outputs. Show that every concept has one definition.
-5. **The loop history as institutional memory (3 paragraphs):** Quote three loop witness notes. Show what a new team member gets from reading them.
-6. **The three-tier epistemic system (3 paragraphs):** Theorem vs. discovery-finding vs. superseded. Why the distinction matters for decision-making.
-7. **The knowledge dashboard (2 paragraphs):** ModelSummary as a machine-maintained state-of-knowledge report.
-8. **The IngestionProtocol as semantic governance (2 paragraphs):** Acquisition governance. Exclusion with documentation.
-9. **Close (1 paragraph):** "Knowledge governance is not just storing definitions. It is governing how definitions are born, tested, revised, and reused."
+A governed semantic layer is only as good as what it admits. The project's 17-item ingestion protocol defines the conditions a study must meet before its data enters the corpus.
 
-**Target length:** 1400–1700 words
-**Suggested Medium tags:** Knowledge Management, Data Governance, Semantic Layer, Enterprise Architecture, AI Governance
+Required inputs: StudyId, a StratumId per CaseCell, TreatmentLabel, Cases, Successes. Structural constraints: binary treatment, at least two strata, paired A/B cells, at least 10 cases per cell. Inclusion criteria: outcome direction pre-registered, stratum variable named before classification, no post-hoc splitting. Exclusion criteria: missing stratification variable, observational studies without a causal claim.
+
+A study that fails any of these conditions is excluded. The exclusion is documented. The system knows why a study is absent — it is not just absent.
+
+This is the acquisition layer of semantic governance: the conditions under which raw data is admitted to the governed layer. Most organizations have no such layer. Data arrives, gets processed, and the downstream model reflects whatever came in. When a finding looks strange, there is no systematic way to ask whether the underlying data met the conditions the analysis assumes.
+
+The IngestionProtocol is not a filter applied to existing data. It is a contract that defines what the concept of "a study in this corpus" means. Violating the contract would change the meaning of every concept that depends on the corpus — and the invariant suite would catch it.
+
+---
+
+## What the organization gains
+
+An organization that governs its vocabulary through this lifecycle gains something rare: the ability to know why it believes things.
+
+Not just what it believes — every organization has claims it acts on. But why: the formula that defines the concept, the test that verified the algebraic consequence, the loop number where the concept was introduced and the witness note that justified it, the tier that distinguishes a theorem from a contingent finding, the archive that records what was believed before and when it changed.
+
+Knowledge governance is not just storing definitions. It is governing how definitions are born, tested, revised, and reused. Organizations that do this well do not just have more reliable analytics. They have a foundation for durable institutional learning — the kind that survives the departure of the person who built the original model.
+
+---
+
+**Also in this series:**
+- *Part 2: A Boardroom Guide to Governed AI Knowledge* — the ROI of governed knowledge assets and the three governance risks
+- *Part 6: A Legal and Compliance Guide to Auditable AI* — the provenance, traceability, and documentation requirements for regulated AI outputs
+
+*Full series overview: Trust the Artifact, Not the Autocomplete (10 articles)*

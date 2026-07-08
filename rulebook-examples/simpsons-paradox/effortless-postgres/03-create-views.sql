@@ -807,7 +807,7 @@ SELECT
   t.expected_outcome,                                                           -- Pass criterion in plain language.
   t.registered_in_loop,                                                         -- LoopId where this hypothesis was registered.
   t.tradition_id,                                                               -- FK → ResearchTraditions.TraditionId.
-  t.epistemic_tier                                                              -- consistency-check (definition-linked regression) | corpus-hypothesis (contingent corpus pattern).
+  t.epistemic_tier                                                              -- consistency-check (definition-linked regression) | corpus-hypothesis (contingent corpus pattern) | corpus-pattern-superseded (witnessed FAIL at scale — retire in loop-80 prune)
 FROM discovery_hypotheses t;
 
 -- ----------------------------------------------------------------------------

@@ -663,14 +663,14 @@ ALTER TABLE discovery_hypotheses ADD COLUMN IF NOT EXISTS statement TEXT;       
 ALTER TABLE discovery_hypotheses ADD COLUMN IF NOT EXISTS expected_outcome TEXT;                    -- Pass criterion in plain language.
 ALTER TABLE discovery_hypotheses ADD COLUMN IF NOT EXISTS registered_in_loop TEXT;                  -- LoopId where this hypothesis was registered.
 ALTER TABLE discovery_hypotheses ADD COLUMN IF NOT EXISTS tradition_id TEXT;                        -- FK → ResearchTraditions.TraditionId.
-ALTER TABLE discovery_hypotheses ADD COLUMN IF NOT EXISTS epistemic_tier TEXT;                      -- consistency-check (definition-linked regression) | corpus-hypothesis (contingent corpus pattern).
+ALTER TABLE discovery_hypotheses ADD COLUMN IF NOT EXISTS epistemic_tier TEXT;                      -- consistency-check (definition-linked regression) | corpus-hypothesis (contingent corpus pattern) | corpus-pattern-superseded (witnessed FAIL at scale — retire in loop-80 prune)
 COMMENT ON TABLE discovery_hypotheses IS 'Table: DiscoveryHypotheses — pre-registered empirical claims tested against the corpus at loop-61. Each row states an expected pattern before querying the DAG.';
 COMMENT ON COLUMN discovery_hypotheses.hypothesis_id IS 'Unique slug (e.g. H-latent-d).';
 COMMENT ON COLUMN discovery_hypotheses.statement IS 'Natural-language claim under test.';
 COMMENT ON COLUMN discovery_hypotheses.expected_outcome IS 'Pass criterion in plain language.';
 COMMENT ON COLUMN discovery_hypotheses.registered_in_loop IS 'LoopId where this hypothesis was registered.';
 COMMENT ON COLUMN discovery_hypotheses.tradition_id IS 'FK → ResearchTraditions.TraditionId.';
-COMMENT ON COLUMN discovery_hypotheses.epistemic_tier IS 'consistency-check (definition-linked regression) | corpus-hypothesis (contingent corpus pattern).';
+COMMENT ON COLUMN discovery_hypotheses.epistemic_tier IS 'consistency-check (definition-linked regression) | corpus-hypothesis (contingent corpus pattern) | corpus-pattern-superseded (witnessed FAIL at scale — retire in loop-80 prune)';
 
 -- ----------------------------------------------------------------------------
 -- DiscoveryFindings: Table: DiscoveryFindings — witnessed outcomes for each pre-registered DiscoveryHypothesis. IsConfirmed is computed live from ModelSummary aggregates.
