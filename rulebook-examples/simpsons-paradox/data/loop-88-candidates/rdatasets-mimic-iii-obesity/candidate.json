@@ -1,0 +1,16 @@
+{
+  "candidate_id": "130",
+  "slug": "rdatasets-mimic-iii-obesity",
+  "dataset_name": "mimic_iii_obesity",
+  "description": "MIMIC-III ICU Obesity Paradox by Gender & Diagnosis",
+  "domain": "Medicine/Clinical",
+  "source": "MIMIC-III / PhysioNet (verified)",
+  "n_rows": "46520",
+  "stratifying_columns_hint": "gender, primary_diagnosis, bmi_category",
+  "download_url": "https://physionet.org/content/mimiciii/",
+  "documentation_url": "https://mimic.mit.edu/",
+  "status": "portal-required",
+  "skip_reason": null,
+  "notes": [],
+  "portal_reason": "PhysioNet MIMIC-III requires credentialed access"
+}

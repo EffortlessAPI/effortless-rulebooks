@@ -1,0 +1,22 @@
+{
+  "candidate_id": "11",
+  "slug": "rdatasets-bacteria-df",
+  "dataset_name": "bacteria_df",
+  "description": "Presence of Bacteria after Drug Treatments",
+  "domain": "Medicine/Clinical",
+  "source": "Rdatasets (R package: MedDataSets)",
+  "n_rows": "220",
+  "stratifying_columns_hint": "5 factor / 3 binary cols",
+  "download_url": "https://vincentarelbundock.github.io/Rdatasets/csv/MedDataSets/bacteria_df.csv",
+  "documentation_url": "https://vincentarelbundock.github.io/Rdatasets/doc/MedDataSets/bacteria_df.html",
+  "status": "needs-data",
+  "skip_reason": null,
+  "download_notes": "HTTP 200 OK",
+  "notes": [],
+  "proposed_study_id": "rdatasets-bacteria-1990s",
+  "proposed_title": "Bacteria Presence Under Drug Treatment by Baseline Severity (hi/lo)",
+  "binary_outcome": "y",
+  "treatment_variable": "trt",
+  "stratum_variable": "hilo",
+  "encoding_note": "y='y' counts as Success (bacteria present); trt has 3 levels (placebo, drug, drug+); hilo is the stratum (hi/lo baseline). Aggregate repeated-measures rows per subject-week to (Treatment x Stratum) cells counting Successes (y='y') and Cases (total rows). Additional stratum candidate: ap (a/p)."
+}

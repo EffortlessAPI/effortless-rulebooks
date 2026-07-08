@@ -1,0 +1,18 @@
+{
+  "candidate_id": "69",
+  "slug": "rdatasets-absenteeism-tbl-df",
+  "dataset_name": "absenteeism_tbl_df",
+  "description": "Absenteeism from School in New South Wales",
+  "domain": "Education",
+  "source": "Rdatasets (R package: educationR)",
+  "n_rows": "146",
+  "stratifying_columns_hint": "4 factor / 3 binary cols",
+  "download_url": "https://vincentarelbundock.github.io/Rdatasets/csv/educationR/absenteeism_tbl_df.csv",
+  "documentation_url": "https://vincentarelbundock.github.io/Rdatasets/doc/educationR/absenteeism_tbl_df.html",
+  "status": "skip",
+  "skip_reason": "The outcome variable `days` is a continuous count of school absence days (not binary). No binary success/failure column exists. Cannot form Successes/Cases cells for Simpson's Paradox analysis.",
+  "notes": [],
+  "files": [
+    "data.csv"
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "candidate_id": "100",
+  "slug": "rdatasets-aastveit-barley-height",
+  "dataset_name": "aastveit.barley.height",
+  "description": "Barley heights and environmental covariates in Norway",
+  "domain": "General Statistics Teaching",
+  "source": "Rdatasets (R package: agridat)",
+  "n_rows": "135",
+  "stratifying_columns_hint": "1 factor / 0 binary cols",
+  "download_url": "https://vincentarelbundock.github.io/Rdatasets/csv/agridat/aastveit.barley.height.csv",
+  "documentation_url": "https://vincentarelbundock.github.io/Rdatasets/doc/agridat/aastveit.barley.height.html",
+  "status": "skip",
+  "skip_reason": "Purely continuous outcome (barley plant height in cm). No binary outcome, no success/failure variable. Cannot be aggregated into Successes/Cases cells for Simpson's Paradox analysis.",
+  "download_notes": "HTTP 200 OK",
+  "notes": []
+}

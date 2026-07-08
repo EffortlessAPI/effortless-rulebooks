@@ -1,0 +1,68 @@
+{
+  "StudyId": "survey-smoking-sex-handedness-1993",
+  "Title": "UK University Student Smoking by Sex and Handedness (1993 Survey)",
+  "Source": "MASS R package: survey dataset (University of Adelaide undergraduates)",
+  "SourceUrl": "https://vincentarelbundock.github.io/Rdatasets/doc/MASS/survey.html",
+  "PublicationYear": 1993,
+  "Domain": "social-science",
+  "IsSynthetic": false,
+  "IsControlStudy": true,
+  "ControlDomain": "psychology-experimental",
+  "TraditionId": "tradition-dag",
+  "PrimaryResearcherId": "researcher-pearl",
+  "confounding_variable": "handedness",
+  "causal_role": "confounder",
+  "note": "Handedness is unrelated to smoking rates; sex-smoking association is similar for left and right-handed students \u2014 no reversal expected when stratifying by handedness.",
+  "treatments": [
+    {
+      "TreatmentLabel": "Female",
+      "Description": "Female university students",
+      "TotalCases": 117,
+      "TotalSuccesses": 10
+    },
+    {
+      "TreatmentLabel": "Male",
+      "Description": "Male university students",
+      "TotalCases": 117,
+      "TotalSuccesses": 18
+    }
+  ],
+  "strata": [
+    {
+      "StratumLabel": "Left/Ambidextrous",
+      "Description": "Left/Ambidextrous-handed",
+      "TotalCases": 17
+    },
+    {
+      "StratumLabel": "Right",
+      "Description": "Right-handed",
+      "TotalCases": 217
+    }
+  ],
+  "cells": [
+    {
+      "StratumLabel": "Left/Ambidextrous",
+      "TreatmentLabel": "Female",
+      "Cases": 7,
+      "Successes": 0
+    },
+    {
+      "StratumLabel": "Left/Ambidextrous",
+      "TreatmentLabel": "Male",
+      "Cases": 10,
+      "Successes": 2
+    },
+    {
+      "StratumLabel": "Right",
+      "TreatmentLabel": "Female",
+      "Cases": 110,
+      "Successes": 10
+    },
+    {
+      "StratumLabel": "Right",
+      "TreatmentLabel": "Male",
+      "Cases": 107,
+      "Successes": 16
+    }
+  ]
+}

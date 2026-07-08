@@ -1,0 +1,18 @@
+{
+  "candidate_id": "80",
+  "slug": "rdatasets-baumann",
+  "dataset_name": "Baumann",
+  "description": "Methods of Teaching Reading Comprehension",
+  "domain": "General Statistics Teaching",
+  "source": "Rdatasets (R package: carData)",
+  "n_rows": "66",
+  "stratifying_columns_hint": "1 factor / 0 binary cols",
+  "download_url": "https://vincentarelbundock.github.io/Rdatasets/csv/carData/Baumann.csv",
+  "documentation_url": "https://vincentarelbundock.github.io/Rdatasets/doc/carData/Baumann.html",
+  "status": "skip",
+  "skip_reason": "All outcome columns (pretest.1, pretest.2, post.test.1, post.test.2, post.test.3) are continuous numeric scores from a reading instruction experiment. There is no binary outcome (pass/fail, success/failure) to aggregate into Successes/Cases cells.",
+  "notes": [],
+  "files": [
+    "data.csv"
+  ]
+}

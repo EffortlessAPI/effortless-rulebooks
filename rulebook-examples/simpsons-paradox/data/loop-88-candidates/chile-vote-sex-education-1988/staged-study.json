@@ -1,0 +1,85 @@
+{
+  "StudyId": "chile-vote-sex-education-1988",
+  "Title": "Chile 1988 Plebiscite Vote Yes Rate by Sex and Education Level",
+  "Source": "carData R package: Chile dataset (1988 Chilean plebiscite survey)",
+  "SourceUrl": "https://vincentarelbundock.github.io/Rdatasets/doc/carData/Chile.html",
+  "PublicationYear": 1988,
+  "Domain": "social-science",
+  "IsSynthetic": false,
+  "IsControlStudy": true,
+  "ControlDomain": "political-science",
+  "TraditionId": "tradition-dag",
+  "PrimaryResearcherId": "researcher-pearl",
+  "confounding_variable": "education_level",
+  "causal_role": "confounder",
+  "note": "Females vote Yes at higher rates than males across all education strata; no reversal expected \u2014 education affects both sex composition and vote rate but consistently, not in opposite directions across strata.",
+  "treatments": [
+    {
+      "TreatmentLabel": "F",
+      "Description": "Female respondents",
+      "TotalCases": 837,
+      "TotalSuccesses": 476
+    },
+    {
+      "TreatmentLabel": "M",
+      "Description": "Male respondents",
+      "TotalCases": 913,
+      "TotalSuccesses": 387
+    }
+  ],
+  "strata": [
+    {
+      "StratumLabel": "Primary",
+      "Description": "Primary education level",
+      "TotalCases": 688
+    },
+    {
+      "StratumLabel": "Primary+Secondary",
+      "Description": "Primary+Secondary education level",
+      "TotalCases": 354
+    },
+    {
+      "StratumLabel": "Secondary",
+      "Description": "Secondary education level",
+      "TotalCases": 708
+    }
+  ],
+  "cells": [
+    {
+      "StratumLabel": "Primary",
+      "TreatmentLabel": "F",
+      "Cases": 362,
+      "Successes": 250
+    },
+    {
+      "StratumLabel": "Primary",
+      "TreatmentLabel": "M",
+      "Cases": 326,
+      "Successes": 172
+    },
+    {
+      "StratumLabel": "Primary+Secondary",
+      "TreatmentLabel": "F",
+      "Cases": 146,
+      "Successes": 60
+    },
+    {
+      "StratumLabel": "Primary+Secondary",
+      "TreatmentLabel": "M",
+      "Cases": 208,
+      "Successes": 70
+    },
+    {
+      "StratumLabel": "Secondary",
+      "TreatmentLabel": "F",
+      "Cases": 329,
+      "Successes": 166
+    },
+    {
+      "StratumLabel": "Secondary",
+      "TreatmentLabel": "M",
+      "Cases": 379,
+      "Successes": 145
+    }
+  ]
+}

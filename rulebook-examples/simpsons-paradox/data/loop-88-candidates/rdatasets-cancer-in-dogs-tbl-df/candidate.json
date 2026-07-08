@@ -1,0 +1,16 @@
+{
+  "candidate_id": "18",
+  "slug": "rdatasets-cancer-in-dogs-tbl-df",
+  "dataset_name": "cancer_in_dogs_tbl_df",
+  "description": "Cancer in Dogs and Exposure to 2,4-D Herbicide",
+  "domain": "Medicine/Clinical",
+  "source": "Rdatasets (R package: OncoDataSets)",
+  "n_rows": "1436",
+  "stratifying_columns_hint": "2 factor / 2 binary cols",
+  "download_url": "https://vincentarelbundock.github.io/Rdatasets/csv/OncoDataSets/cancer_in_dogs_tbl_df.csv",
+  "documentation_url": "https://vincentarelbundock.github.io/Rdatasets/doc/OncoDataSets/cancer_in_dogs_tbl_df.html",
+  "status": "skip",
+  "download_notes": "HTTP 200 OK",
+  "skip_reason": "Dataset has only two meaningful columns (order = 2,4-D exposure; response = cancer/no cancer). There is no stratum variable (no age, sex, breed, region, or any other confounding dimension), making it impossible to form the required (Treatment \u00d7 Stratum) cells for Simpson's Paradox analysis.",
+  "notes": []
+}

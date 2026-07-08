@@ -1,0 +1,22 @@
+{
+  "candidate_id": "22",
+  "slug": "rdatasets-ad-biomarkers-tbl-df",
+  "dataset_name": "AD_biomarkers_tbl_df",
+  "description": "Alzheimer's Biomarkers",
+  "domain": "Medicine/Clinical",
+  "source": "Rdatasets (R package: NeuroDataSets)",
+  "n_rows": "333",
+  "stratifying_columns_hint": "2 factor / 2 binary cols",
+  "download_url": "https://vincentarelbundock.github.io/Rdatasets/csv/NeuroDataSets/AD_biomarkers_tbl_df.csv",
+  "documentation_url": "https://vincentarelbundock.github.io/Rdatasets/doc/NeuroDataSets/AD_biomarkers_tbl_df.html",
+  "status": "needs-data",
+  "skip_reason": null,
+  "download_notes": "HTTP 200 OK",
+  "notes": [],
+  "proposed_study_id": "rdatasets-ad-biomarkers-alzheimer-2011",
+  "proposed_title": "Alzheimer's Disease Biomarker Study \u2014 APOE Genotype vs. Cognitive Impairment (Sex-Stratified)",
+  "binary_outcome": "Class",
+  "treatment_variable": "Genotype",
+  "stratum_variable": "male",
+  "encoding_note": "Class == 'Impaired' counts as Success (1), 'Control' as 0. Treatment = Genotype (6 APOE allele combinations: E2E2, E2E3, E2E4, E3E3, E3E4, E4E4). Stratum = male (0/1). Aggregate to count of Impaired and total Cases per (Genotype \u00d7 male) cell. Note: some genotype-sex cells may be sparse; consider collapsing to E4-carrier vs. non-carrier if needed."
+}

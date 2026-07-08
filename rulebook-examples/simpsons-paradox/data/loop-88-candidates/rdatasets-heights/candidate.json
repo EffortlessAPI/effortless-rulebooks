@@ -1,0 +1,18 @@
+{
+  "candidate_id": "66",
+  "slug": "rdatasets-heights",
+  "dataset_name": "heights",
+  "description": "Self-reported Heights in Inches",
+  "domain": "General Statistics Teaching",
+  "source": "Rdatasets (R package: dslabs)",
+  "n_rows": "1050",
+  "stratifying_columns_hint": "1 factor / 1 binary cols",
+  "download_url": "https://vincentarelbundock.github.io/Rdatasets/csv/dslabs/heights.csv",
+  "documentation_url": "https://vincentarelbundock.github.io/Rdatasets/doc/dslabs/heights.html",
+  "status": "skip",
+  "skip_reason": "Dataset contains only sex (binary) and height (continuous numeric). There is no binary outcome, no treatment/exposure variable, and no stratum beyond sex itself. Height is a purely continuous measurement with no natural success/failure encoding.",
+  "notes": [],
+  "files": [
+    "data.csv"
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "candidate_id": "1",
+  "slug": "rdatasets-interaction-triptych",
+  "dataset_name": "interaction_triptych",
+  "description": "Interaction Triptych Data",
+  "domain": "Causal Inference (methodological)",
+  "source": "Rdatasets (R package: quartets)",
+  "n_rows": "2700",
+  "stratifying_columns_hint": "1 factor / 0 binary cols",
+  "download_url": "https://vincentarelbundock.github.io/Rdatasets/csv/quartets/interaction_triptych.csv",
+  "documentation_url": "https://vincentarelbundock.github.io/Rdatasets/doc/quartets/interaction_triptych.html",
+  "status": "skip",
+  "skip_reason": "All outcome columns (x, y) are continuous numeric values \u2014 no binary outcome exists. This is a synthetic regression/interaction demonstration dataset with no success/failure encoding possible.",
+  "download_notes": "HTTP 200 OK",
+  "notes": []
+}

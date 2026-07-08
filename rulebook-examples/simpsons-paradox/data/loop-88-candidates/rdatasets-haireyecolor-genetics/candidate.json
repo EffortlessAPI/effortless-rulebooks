@@ -1,0 +1,7 @@
+{
+  "slug": "rdatasets-haireyecolor-genetics",
+  "status": "staged",
+  "domain": "genetics",
+  "source": "R datasets::HairEyeColor — Snee 1974, 592 students at the University of Delaware",
+  "notes": "Controls study: hair and eye pigmentation are both driven by melanin. Dark-haired individuals have higher brown-eye rates in both sexes. Sex does not confound the hair→eye relationship. A clean monotone association — no paradox expected."
+}

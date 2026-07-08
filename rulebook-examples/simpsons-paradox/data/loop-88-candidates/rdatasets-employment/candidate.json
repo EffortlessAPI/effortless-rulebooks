@@ -1,0 +1,22 @@
+{
+  "candidate_id": "41",
+  "slug": "rdatasets-employment",
+  "dataset_name": "Employment",
+  "description": "Employment Status",
+  "domain": "Categorical Data / Mixed",
+  "source": "Rdatasets (R package: vcd)",
+  "n_rows": "24",
+  "stratifying_columns_hint": "3 factor / 2 binary cols",
+  "download_url": "https://vincentarelbundock.github.io/Rdatasets/csv/vcd/Employment.csv",
+  "documentation_url": "https://vincentarelbundock.github.io/Rdatasets/doc/vcd/Employment.html",
+  "status": "needs-data",
+  "download_notes": "HTTP 200",
+  "skip_reason": null,
+  "notes": [],
+  "proposed_study_id": "rdatasets-employment-layoff-1990s",
+  "proposed_title": "Employment Outcomes by Layoff Cause and Employment Length",
+  "binary_outcome": "EmploymentStatus",
+  "treatment_variable": "LayoffCause",
+  "stratum_variable": "EmploymentLength",
+  "encoding_note": "Already aggregated: Freq = Cases per cell. Success = rows where EmploymentStatus == \"NewJob\". Pivot: Treatment=LayoffCause (Closure/Replaced), Stratum=EmploymentLength (6 levels), Outcome=NewJob vs Unemployed. Successes = Freq where EmploymentStatus==\"NewJob\", Cases = sum of Freq for that (LayoffCause, EmploymentLength) cell."
+}

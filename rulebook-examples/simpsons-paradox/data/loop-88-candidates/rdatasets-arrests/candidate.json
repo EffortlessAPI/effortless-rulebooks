@@ -1,0 +1,24 @@
+{
+  "candidate_id": "79",
+  "slug": "rdatasets-arrests",
+  "dataset_name": "Arrests",
+  "description": "Arrests for Marijuana Possession",
+  "domain": "General Statistics Teaching",
+  "source": "Rdatasets (R package: carData)",
+  "n_rows": "5226",
+  "stratifying_columns_hint": "5 factor / 5 binary cols",
+  "download_url": "https://vincentarelbundock.github.io/Rdatasets/csv/carData/Arrests.csv",
+  "documentation_url": "https://vincentarelbundock.github.io/Rdatasets/doc/carData/Arrests.html",
+  "status": "needs-data",
+  "skip_reason": null,
+  "notes": [],
+  "files": [
+    "data.csv"
+  ],
+  "proposed_study_id": "rdatasets-arrests-2006",
+  "proposed_title": "Toronto Police Arrests: Race, Sex, and Release Rates (1997\u20132002)",
+  "binary_outcome": "released",
+  "treatment_variable": "colour",
+  "stratum_variable": "sex",
+  "encoding_note": "released=Yes \u2192 Success; colour (White/Black) is treatment; sex (Male/Female) is primary stratum; age can be binned for a second stratum. Count rows per (colour \u00d7 sex) cell, sum released=Yes as Successes."
+}

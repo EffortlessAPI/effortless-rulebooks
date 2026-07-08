@@ -1,0 +1,18 @@
+{
+  "candidate_id": "81",
+  "slug": "rdatasets-beps",
+  "dataset_name": "BEPS",
+  "description": "British Election Panel Study",
+  "domain": "General Statistics Teaching",
+  "source": "Rdatasets (R package: carData)",
+  "n_rows": "1525",
+  "stratifying_columns_hint": "2 factor / 1 binary cols",
+  "download_url": "https://vincentarelbundock.github.io/Rdatasets/csv/carData/BEPS.csv",
+  "documentation_url": "https://vincentarelbundock.github.io/Rdatasets/doc/carData/BEPS.html",
+  "status": "skip",
+  "skip_reason": "The outcome variable (vote) is a 3-class categorical (Labour / Conservative / Liberal Democrat), not a binary success/failure outcome. All other columns are continuous or ordinal ratings. No natural binary outcome exists for aggregating Successes/Cases per cell.",
+  "notes": [],
+  "files": [
+    "data.csv"
+  ]
+}

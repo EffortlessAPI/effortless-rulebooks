@@ -1,0 +1,16 @@
+{
+  "candidate_id": "133",
+  "slug": "rdatasets-nhanes-lead-iq",
+  "dataset_name": "nhanes_lead_iq",
+  "description": "NHANES II Lead Exposure & IQ by Age & Socioeconomic Status",
+  "domain": "Public Health",
+  "source": "CDC NHANES II (verified)",
+  "n_rows": "14000",
+  "stratifying_columns_hint": "age_group, socioeconomic_status, blood_lead_level",
+  "download_url": "https://wwwn.cdc.gov/Nchs/Nhanes/nhanes2/Default.aspx",
+  "documentation_url": "https://www.cdc.gov/nchs/nhanes/",
+  "status": "portal-required",
+  "skip_reason": null,
+  "notes": [],
+  "portal_reason": "NHANES II requires SAS transport file extraction"
+}

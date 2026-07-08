@@ -1,0 +1,16 @@
+{
+  "candidate_id": "99",
+  "slug": "rdatasets-btheb",
+  "dataset_name": "BtheB",
+  "description": "Beat the Blues Data",
+  "domain": "Medicine/Clinical",
+  "source": "Rdatasets (R package: HSAUR)",
+  "n_rows": "100",
+  "stratifying_columns_hint": "3 factor / 3 binary cols",
+  "download_url": "https://vincentarelbundock.github.io/Rdatasets/csv/HSAUR/BtheB.csv",
+  "documentation_url": "https://vincentarelbundock.github.io/Rdatasets/doc/HSAUR/BtheB.html",
+  "status": "skip",
+  "skip_reason": "All outcome columns (bdi.pre, bdi.2m, bdi.4m, bdi.6m, bdi.8m) are continuous Beck Depression Inventory scores, not binary outcomes. No binary success/failure variable exists to aggregate into Successes/Cases counts.",
+  "download_notes": "HTTP 200 OK",
+  "notes": []
+}

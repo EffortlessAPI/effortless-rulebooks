@@ -1,0 +1,18 @@
+{
+  "candidate_id": "60",
+  "slug": "rdatasets-guerry",
+  "dataset_name": "Guerry",
+  "description": "Data from A.-M. Guerry, \"Essay on the Moral Statistics of France\"",
+  "domain": "Historical / Social Science",
+  "source": "Rdatasets (R package: HistData)",
+  "n_rows": "86",
+  "stratifying_columns_hint": "3 factor / 0 binary cols",
+  "download_url": "https://vincentarelbundock.github.io/Rdatasets/csv/HistData/Guerry.csv",
+  "documentation_url": "https://vincentarelbundock.github.io/Rdatasets/doc/HistData/Guerry.html",
+  "status": "skip",
+  "skip_reason": "Guerry dataset contains 85 French departments (1830s) with purely continuous aggregate statistics (crime rates, literacy rates, suicide counts, etc.) at the department level. There is no binary outcome variable, no treatment/exposure grouping, and no individual-level data to aggregate into Successes/Cases cells. All columns are ecological rates or continuous counts.",
+  "notes": [],
+  "files": [
+    "data.csv"
+  ]
+}

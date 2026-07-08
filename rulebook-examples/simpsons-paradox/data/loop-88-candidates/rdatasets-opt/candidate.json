@@ -1,0 +1,22 @@
+{
+  "candidate_id": "5",
+  "slug": "rdatasets-opt",
+  "dataset_name": "opt",
+  "description": "Obstetrics and Periodontal Therapy Dataset",
+  "domain": "Medicine/Clinical",
+  "source": "Rdatasets (R package: medicaldata)",
+  "n_rows": "823",
+  "stratifying_columns_hint": "73 factor / 29 binary cols",
+  "download_url": "https://vincentarelbundock.github.io/Rdatasets/csv/medicaldata/opt.csv",
+  "documentation_url": "https://vincentarelbundock.github.io/Rdatasets/doc/medicaldata/opt.html",
+  "status": "needs-data",
+  "download_notes": "HTTP 200 OK",
+  "skip_reason": null,
+  "notes": [],
+  "proposed_study_id": "rdatasets-opt-periodontal-2006",
+  "proposed_title": "OPT Trial: Periodontal Treatment and Preterm Birth by Clinic Site",
+  "binary_outcome": "Preg.ended...37.wk",
+  "treatment_variable": "Group",
+  "stratum_variable": "Clinic",
+  "encoding_note": "Group T vs C; outcome Yes=\"preterm birth\" (Preg.ended...37.wk == \"Yes\"); Clinic (NY/MN/KY/MS) as stratum. Successes = preterm births; Cases = all with non-missing outcome. 823 rows, 4 clinic sites."
+}

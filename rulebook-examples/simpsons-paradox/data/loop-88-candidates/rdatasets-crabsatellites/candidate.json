@@ -1,0 +1,16 @@
+{
+  "candidate_id": "49",
+  "slug": "rdatasets-crabsatellites",
+  "dataset_name": "CrabSatellites",
+  "description": "Horseshoe Crab Mating",
+  "domain": "Categorical Data / Mixed",
+  "source": "Rdatasets (R package: vcdExtra)",
+  "n_rows": "173",
+  "stratifying_columns_hint": "2 factor / 0 binary cols",
+  "download_url": "https://vincentarelbundock.github.io/Rdatasets/csv/vcdExtra/CrabSatellites.csv",
+  "documentation_url": "https://vincentarelbundock.github.io/Rdatasets/doc/vcdExtra/CrabSatellites.html",
+  "status": "skip",
+  "download_notes": "HTTP 200 OK",
+  "skip_reason": "Horseshoe crab satellite dataset: the outcome (satellite count) is a continuous/count variable, not binary. While a binary outcome could be derived (satellites > 0), there is no natural treatment or exposure variable \u2014 color and spine are intrinsic biological attributes, not interventions or group assignments. This is a regression/ecology dataset, not a comparative study with treatment groups suitable for Simpson's Paradox analysis.",
+  "notes": []
+}

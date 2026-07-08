@@ -1,0 +1,16 @@
+{
+  "candidate_id": "83",
+  "slug": "rdatasets-burt",
+  "dataset_name": "Burt",
+  "description": "Fraudulent Data on IQs of Twins Raised Apart",
+  "domain": "General Statistics Teaching",
+  "source": "Rdatasets (R package: carData)",
+  "n_rows": "27",
+  "stratifying_columns_hint": "1 factor / 0 binary cols",
+  "download_url": "https://vincentarelbundock.github.io/Rdatasets/csv/carData/Burt.csv",
+  "documentation_url": "https://vincentarelbundock.github.io/Rdatasets/doc/carData/Burt.html",
+  "status": "skip",
+  "skip_reason": "Already-aggregated contingency table of physical traits (Hair, Eyes, Head shape, Stature) with frequency counts. No binary outcome variable \u2014 Freq is just a cell count of co-occurring physical characteristics. No treatment/exposure grouping. No success/failure concept.",
+  "download_notes": "HTTP 200 OK",
+  "notes": []
+}

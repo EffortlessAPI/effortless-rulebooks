@@ -1,0 +1,119 @@
+{
+  "StudyId": "suicide-method-sex-age-1987",
+  "Title": "Suicide Method (Poisoning) Rate by Sex and Age Group (West Germany 1987)",
+  "Source": "vcd R package: Suicide dataset (West Germany, 1987)",
+  "SourceUrl": "https://vincentarelbundock.github.io/Rdatasets/doc/vcd/Suicide.html",
+  "PublicationYear": 1987,
+  "Domain": "public-health",
+  "IsSynthetic": false,
+  "IsControlStudy": true,
+  "ControlDomain": "public-health-epidemiology",
+  "TraditionId": "tradition-dag",
+  "PrimaryResearcherId": "researcher-pearl",
+  "confounding_variable": "age_group",
+  "causal_role": "confounder",
+  "note": "Females use poisoning as suicide method at higher rates than males within all age strata; no reversal expected \u2014 the female preference for poisoning is consistent across the age distribution.",
+  "treatments": [
+    {
+      "TreatmentLabel": "Female",
+      "Description": "Female suicide victims",
+      "TotalCases": 19363,
+      "TotalSuccesses": 8648
+    },
+    {
+      "TreatmentLabel": "Male",
+      "Description": "Male suicide victims",
+      "TotalCases": 33819,
+      "TotalSuccesses": 8917
+    }
+  ],
+  "strata": [
+    {
+      "StratumLabel": "10-20",
+      "Description": "Age group 10-20",
+      "TotalCases": 5768
+    },
+    {
+      "StratumLabel": "25-35",
+      "Description": "Age group 25-35",
+      "TotalCases": 11945
+    },
+    {
+      "StratumLabel": "40-50",
+      "Description": "Age group 40-50",
+      "TotalCases": 14023
+    },
+    {
+      "StratumLabel": "55-65",
+      "Description": "Age group 55-65",
+      "TotalCases": 12555
+    },
+    {
+      "StratumLabel": "70-90",
+      "Description": "Age group 70-90",
+      "TotalCases": 8891
+    }
+  ],
+  "cells": [
+    {
+      "StratumLabel": "10-20",
+      "TreatmentLabel": "Female",
+      "Cases": 1470,
+      "Successes": 921
+    },
+    {
+      "StratumLabel": "10-20",
+      "TreatmentLabel": "Male",
+      "Cases": 4298,
+      "Successes": 1160
+    },
+    {
+      "StratumLabel": "25-35",
+      "TreatmentLabel": "Female",
+      "Cases": 3143,
+      "Successes": 1672
+    },
+    {
+      "StratumLabel": "25-35",
+      "TreatmentLabel": "Male",
+      "Cases": 8802,
+      "Successes": 2823
+    },
+    {
+      "StratumLabel": "40-50",
+      "TreatmentLabel": "Female",
+      "Cases": 4914,
+      "Successes": 2224
+    },
+    {
+      "StratumLabel": "40-50",
+      "TreatmentLabel": "Male",
+      "Cases": 9109,
+      "Successes": 2465
+    },
+    {
+      "StratumLabel": "55-65",
+      "TreatmentLabel": "Female",
+      "Cases": 5837,
+      "Successes": 2283
+    },
+    {
+      "StratumLabel": "55-65",
+      "TreatmentLabel": "Male",
+      "Cases": 6718,
+      "Successes": 1531
+    },
+    {
+      "StratumLabel": "70-90",
+      "TreatmentLabel": "Female",
+      "Cases": 3999,
+      "Successes": 1548
+    },
+    {
+      "StratumLabel": "70-90",
+      "TreatmentLabel": "Male",
+      "Cases": 4892,
+      "Successes": 938
+    }
+  ]
+}

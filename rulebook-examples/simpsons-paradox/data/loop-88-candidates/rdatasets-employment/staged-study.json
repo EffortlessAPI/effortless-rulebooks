@@ -1,0 +1,42 @@
+{
+  "StudyId": "rdatasets-employment-layoff-1990s",
+  "Title": "Employment Outcomes by Layoff Cause and Employment Length",
+  "Source": "R package: vcd/Employment",
+  "SourceUrl": "https://vincentarelbundock.github.io/Rdatasets/doc/vcd/Employment.html",
+  "PublicationYear": 1993,
+  "Domain": "economics",
+  "IsSynthetic": false,
+  "IsControlStudy": true,
+  "ControlDomain": "economics-labor",
+  "TraditionId": "tradition-dag",
+  "PrimaryResearcherId": "researcher-pearl",
+  "confounding_variable": "EmploymentLength",
+  "causal_role": "allocation",
+  "note": "Workers replaced (vs. plant closure) skew toward shorter tenure strata where re-employment rates are higher, but within each tenure stratum Replaced workers consistently find new jobs at higher rates than Closure workers, so no reversal is expected.",
+  "treatments": [
+    {"TreatmentLabel": "Closure", "Description": "Laid off due to plant or business closure", "TotalCases": 589, "TotalSuccesses": 269},
+    {"TreatmentLabel": "Replaced", "Description": "Laid off due to being replaced or position eliminated", "TotalCases": 725, "TotalSuccesses": 565}
+  ],
+  "strata": [
+    {"StratumLabel": "<1Mo", "Description": "Employment length less than 1 month", "TotalCases": 82},
+    {"StratumLabel": "1-3Mo", "Description": "Employment length 1 to 3 months", "TotalCases": 204},
+    {"StratumLabel": "3-12Mo", "Description": "Employment length 3 to 12 months", "TotalCases": 378},
+    {"StratumLabel": "1-2Yr", "Description": "Employment length 1 to 2 years", "TotalCases": 243},
+    {"StratumLabel": "2-5Yr", "Description": "Employment length 2 to 5 years", "TotalCases": 268},
+    {"StratumLabel": ">5Yr", "Description": "Employment length more than 5 years", "TotalCases": 139}
+  ],
+  "cells": [
+    {"StratumLabel": "<1Mo", "TreatmentLabel": "Closure", "Cases": 18, "Successes": 8},
+    {"StratumLabel": "<1Mo", "TreatmentLabel": "Replaced", "Cases": 64, "Successes": 40},
+    {"StratumLabel": "1-3Mo", "TreatmentLabel": "Closure", "Cases": 77, "Successes": 35},
+    {"StratumLabel": "1-3Mo", "TreatmentLabel": "Replaced", "Cases": 127, "Successes": 85},
+    {"StratumLabel": "3-12Mo", "TreatmentLabel": "Closure", "Cases": 156, "Successes": 70},
+    {"StratumLabel": "3-12Mo", "TreatmentLabel": "Replaced", "Cases": 222, "Successes": 181},
+    {"StratumLabel": "1-2Yr", "TreatmentLabel": "Closure", "Cases": 142, "Successes": 62},
+    {"StratumLabel": "1-2Yr", "TreatmentLabel": "Replaced", "Cases": 101, "Successes": 85},
+    {"StratumLabel": "2-5Yr", "TreatmentLabel": "Closure", "Cases": 123, "Successes": 56},
+    {"StratumLabel": "2-5Yr", "TreatmentLabel": "Replaced", "Cases": 145, "Successes": 118},
+    {"StratumLabel": ">5Yr", "TreatmentLabel": "Closure", "Cases": 73, "Successes": 38},
+    {"StratumLabel": ">5Yr", "TreatmentLabel": "Replaced", "Cases": 66, "Successes": 56}
+  ]
+}

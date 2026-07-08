@@ -1,0 +1,16 @@
+{
+  "candidate_id": "12",
+  "slug": "rdatasets-biontech-teens-tbl-df",
+  "dataset_name": "biontech_teens_tbl_df",
+  "description": "Pfizer-BioNTech COVID-19 Vaccine Efficacy in Adolescents",
+  "domain": "Medicine/Clinical",
+  "source": "Rdatasets (R package: MedDataSets)",
+  "n_rows": "2260",
+  "stratifying_columns_hint": "2 factor / 2 binary cols",
+  "download_url": "https://vincentarelbundock.github.io/Rdatasets/csv/MedDataSets/biontech_teens_tbl_df.csv",
+  "documentation_url": "https://vincentarelbundock.github.io/Rdatasets/doc/MedDataSets/biontech_teens_tbl_df.html",
+  "status": "skip",
+  "skip_reason": "Only two columns of interest: group (vaccine/placebo) and outcome (COVID-19/no COVID-19). No stratifying variable present \u2014 cannot form (Treatment \u00d7 Stratum) cells.",
+  "download_notes": "HTTP 200 OK",
+  "notes": []
+}

@@ -1,0 +1,22 @@
+{
+  "candidate_id": "24",
+  "slug": "rdatasets-alzheimer-smoking-df",
+  "dataset_name": "alzheimer_smoking_df",
+  "description": "Smoking and Alzheimer's Disease",
+  "domain": "Medicine/Clinical",
+  "source": "Rdatasets (R package: NeuroDataSets)",
+  "n_rows": "538",
+  "stratifying_columns_hint": "3 factor / 1 binary cols",
+  "download_url": "https://vincentarelbundock.github.io/Rdatasets/csv/NeuroDataSets/alzheimer_smoking_df.csv",
+  "documentation_url": "https://vincentarelbundock.github.io/Rdatasets/doc/NeuroDataSets/alzheimer_smoking_df.html",
+  "status": "needs-data",
+  "skip_reason": null,
+  "download_notes": "HTTP 200 OK",
+  "notes": [],
+  "proposed_study_id": "rdatasets-alzheimer-smoking-1990s",
+  "proposed_title": "Smoking and Alzheimer's Disease Diagnosis by Gender",
+  "binary_outcome": "disease",
+  "treatment_variable": "smoking",
+  "stratum_variable": "gender",
+  "encoding_note": "Successes = rows where disease == 'Alzheimer'; Cases = all rows; group by (smoking \u00d7 gender). Smoking has 4 levels: None, <10, 10-20, >20 cigarettes/day."
+}

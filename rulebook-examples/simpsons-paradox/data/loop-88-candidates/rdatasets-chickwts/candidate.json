@@ -1,0 +1,16 @@
+{
+  "candidate_id": "112",
+  "slug": "rdatasets-chickwts",
+  "dataset_name": "chickwts",
+  "description": "Chicken Weights by Feed Type",
+  "domain": "General Statistics Teaching",
+  "source": "Rdatasets (R package: datasets)",
+  "n_rows": "71",
+  "stratifying_columns_hint": "1 factor / 0 binary cols",
+  "download_url": "https://vincentarelbundock.github.io/Rdatasets/csv/datasets/chickwts.csv",
+  "documentation_url": "https://vincentarelbundock.github.io/Rdatasets/doc/datasets/chickwts.html",
+  "status": "skip",
+  "skip_reason": "Purely continuous outcome (chick weight in grams) with only a feed type grouping variable and no stratum variable. No binary outcome can be derived without arbitrary thresholding, and there is no confounding stratum to produce Simpson's Paradox.",
+  "download_notes": "HTTP 200 OK",
+  "notes": []
+}

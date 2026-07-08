@@ -1,0 +1,16 @@
+{
+  "candidate_id": "141",
+  "slug": "rdatasets-acs-college-major-earnings",
+  "dataset_name": "acs_college_major_earnings",
+  "description": "ACS College Major & Earnings by Gender & STEM Field",
+  "domain": "Economics/Labor",
+  "source": "American Community Survey (verified)",
+  "n_rows": "5000000+",
+  "stratifying_columns_hint": "gender, major_stem_category, region",
+  "download_url": "https://data.census.gov/table/ACSST1Y2023.S1501",
+  "documentation_url": "https://www.census.gov/topics/education/acs.html",
+  "status": "portal-required",
+  "skip_reason": null,
+  "notes": [],
+  "portal_reason": "Census data.census.gov requires browser interaction"
+}

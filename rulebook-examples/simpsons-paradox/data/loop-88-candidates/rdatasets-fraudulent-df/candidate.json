@@ -1,0 +1,16 @@
+{
+  "candidate_id": "31",
+  "slug": "rdatasets-fraudulent-df",
+  "dataset_name": "fraudulent_df",
+  "description": "Fraudulent Automobile Insurance Claims",
+  "domain": "Criminal Justice",
+  "source": "Rdatasets (R package: crimedatasets)",
+  "n_rows": "42",
+  "stratifying_columns_hint": "10 factor / 11 binary cols",
+  "download_url": "https://vincentarelbundock.github.io/Rdatasets/csv/crimedatasets/fraudulent_df.csv",
+  "documentation_url": "https://vincentarelbundock.github.io/Rdatasets/doc/crimedatasets/fraudulent_df.html",
+  "status": "skip",
+  "download_notes": "HTTP 200 OK",
+  "skip_reason": "Dataset contains a binary outcome (r1, likely fraud indicator) and multiple binary feature flags (AC1, AC9, CL7, IJ2, etc.) but no natural treatment/exposure variable with 2-5 discrete groups, and no demographic stratum variable. All non-outcome columns are binary indicator flags for fraud patterns, not grouping variables suitable for a Simpson's Paradox (treatment \u00d7 stratum) cell structure.",
+  "notes": []
+}

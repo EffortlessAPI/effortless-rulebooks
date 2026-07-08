@@ -1,0 +1,18 @@
+{
+  "candidate_id": "87",
+  "slug": "rdatasets-amyloid",
+  "dataset_name": "Amyloid",
+  "description": "Amyloid-beta and Cognitive Impairment",
+  "domain": "General Statistics Teaching",
+  "source": "Rdatasets (R package: Stat2Data)",
+  "n_rows": "57",
+  "stratifying_columns_hint": "1 factor / 0 binary cols",
+  "download_url": "https://vincentarelbundock.github.io/Rdatasets/csv/Stat2Data/Amyloid.csv",
+  "documentation_url": "https://vincentarelbundock.github.io/Rdatasets/doc/Stat2Data/Amyloid.html",
+  "status": "skip",
+  "skip_reason": "Only two columns: Group (treatment groups NCI/MCI/mAD) and Abeta (continuous amyloid concentration). No binary outcome and no stratum variable \u2014 cannot form Success/Cases cells.",
+  "notes": [],
+  "files": [
+    "data.csv"
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "StudyId": "rdatasets-arthritis-age",
+  "Title": "Rheumatoid Arthritis RCT: Treatment vs Placebo by Age Group — Koch & Edwards 1988",
+  "Source": "Koch, G. G. and Edwards, S. (1988). Clinical efficacy trials with categorical data. In K. E. Peace (ed.), Biopharmaceutical Statistics for Drug Development. R vcd::Arthritis.",
+  "SourceUrl": "https://vincentarelbundock.github.io/Rdatasets/csv/vcd/Arthritis.csv",
+  "PublicationYear": 1988,
+  "Domain": "medicine",
+  "IsSynthetic": false,
+  "IsControlStudy": true,
+  "ControlDomain": "medicine-rct",
+  "TraditionId": "tradition-dag",
+  "PrimaryResearcherId": "researcher-pearl",
+  "confounding_variable": "AgeGroup",
+  "causal_role": "allocation",
+  "note": "Treatment is superior to Placebo in both Young (<55 years) and Old (>=55 years) patient groups. Young patients: 50.0% vs 13.0%; Old patients: 75.9% vs 55.0%. Age is associated with higher placebo response rates in older patients but does not reverse the treatment advantage. The pooled treatment advantage (68.3% vs 32.6%) is confirmed in both strata.",
+  "treatments": [
+    {"TreatmentLabel": "Treated", "Description": "Auranofin drug treatment group", "TotalCases": 41, "TotalSuccesses": 28},
+    {"TreatmentLabel": "Placebo", "Description": "Placebo control group", "TotalCases": 43, "TotalSuccesses": 14}
+  ],
+  "strata": [
+    {"StratumLabel": "Young", "Description": "Patients under 55 years of age", "TotalCases": 35},
+    {"StratumLabel": "Old", "Description": "Patients 55 years of age or older", "TotalCases": 49}
+  ],
+  "cells": [
+    {"StratumLabel": "Young", "TreatmentLabel": "Treated", "Cases": 12, "Successes": 6},
+    {"StratumLabel": "Young", "TreatmentLabel": "Placebo", "Cases": 23, "Successes": 3},
+    {"StratumLabel": "Old", "TreatmentLabel": "Treated", "Cases": 29, "Successes": 22},
+    {"StratumLabel": "Old", "TreatmentLabel": "Placebo", "Cases": 20, "Successes": 11}
+  ]
+}

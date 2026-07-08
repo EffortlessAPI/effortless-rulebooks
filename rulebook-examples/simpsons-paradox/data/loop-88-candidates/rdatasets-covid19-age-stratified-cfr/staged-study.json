@@ -1,0 +1,787 @@
+{
+  "StudyId": "covid19-age-cfr-2020",
+  "Title": "COVID-19 Age-Stratified Case Fatality Rates by Country (2020)",
+  "Source": "von Kügelgen J et al. (2020). Covid19-age-related-causal-effects. arXiv:2005.07180.",
+  "SourceUrl": "https://github.com/Juliusvk/Covid19-age-related-causal-effects",
+  "PublicationYear": 2020,
+  "Domain": "epidemiology",
+  "IsSynthetic": false,
+  "IsControlStudy": true,
+  "ControlDomain": "epidemiology-cohort",
+  "TraditionId": "tradition-dag",
+  "PrimaryResearcherId": "researcher-pearl",
+  "confounding_variable": "Age group",
+  "causal_role": "allocation",
+  "note": "No Simpson's paradox is expected because age-stratified CFRs monotonically increase across all countries, so stratum-level rankings and pooled rankings align — age distribution differences amplify but do not reverse the country-level ordering.",
+  "treatments": [
+    {
+      "TreatmentLabel": "Argentina",
+      "Description": "COVID-19 cases in Argentina",
+      "TotalCases": 14675,
+      "TotalSuccesses": 14168
+    },
+    {
+      "TreatmentLabel": "China",
+      "Description": "COVID-19 cases in China",
+      "TotalCases": 44672,
+      "TotalSuccesses": 43649
+    },
+    {
+      "TreatmentLabel": "Colombia",
+      "Description": "COVID-19 cases in Colombia",
+      "TotalCases": 25366,
+      "TotalSuccesses": 24544
+    },
+    {
+      "TreatmentLabel": "Diamond Princess",
+      "Description": "COVID-19 cases in Diam. Princ.",
+      "TotalCases": 619,
+      "TotalSuccesses": 612
+    },
+    {
+      "TreatmentLabel": "Italy",
+      "Description": "COVID-19 cases in Italy",
+      "TotalCases": 230760,
+      "TotalSuccesses": 199084
+    },
+    {
+      "TreatmentLabel": "Netherlands",
+      "Description": "COVID-19 cases in Netherlands",
+      "TotalCases": 45947,
+      "TotalSuccesses": 40044
+    },
+    {
+      "TreatmentLabel": "Portugal",
+      "Description": "COVID-19 cases in Portugal",
+      "TotalCases": 31596,
+      "TotalSuccesses": 30227
+    },
+    {
+      "TreatmentLabel": "South Africa",
+      "Description": "COVID-19 cases in South Africa",
+      "TotalCases": 27280,
+      "TotalSuccesses": 26703
+    },
+    {
+      "TreatmentLabel": "South Korea",
+      "Description": "COVID-19 cases in South Korea",
+      "TotalCases": 11190,
+      "TotalSuccesses": 10924
+    },
+    {
+      "TreatmentLabel": "Spain",
+      "Description": "COVID-19 cases in Spain",
+      "TotalCases": 258760,
+      "TotalSuccesses": 238175
+    },
+    {
+      "TreatmentLabel": "Sweden",
+      "Description": "COVID-19 cases in Sweden",
+      "TotalCases": 34432,
+      "TotalSuccesses": 30307
+    },
+    {
+      "TreatmentLabel": "Switzerland",
+      "Description": "COVID-19 cases in Switzerland",
+      "TotalCases": 30707,
+      "TotalSuccesses": 29059
+    }
+  ],
+  "strata": [
+    {
+      "StratumLabel": "0-9",
+      "Description": "Age group 0-9",
+      "TotalCases": 7554
+    },
+    {
+      "StratumLabel": "10-19",
+      "Description": "Age group 10-19",
+      "TotalCases": 13794
+    },
+    {
+      "StratumLabel": "20-29",
+      "Description": "Age group 20-29",
+      "TotalCases": 64113
+    },
+    {
+      "StratumLabel": "30-39",
+      "Description": "Age group 30-39",
+      "TotalCases": 85198
+    },
+    {
+      "StratumLabel": "40-49",
+      "Description": "Age group 40-49",
+      "TotalCases": 110641
+    },
+    {
+      "StratumLabel": "50-59",
+      "Description": "Age group 50-59",
+      "TotalCases": 134202
+    },
+    {
+      "StratumLabel": "60-69",
+      "Description": "Age group 60-69",
+      "TotalCases": 99289
+    },
+    {
+      "StratumLabel": "70-79",
+      "Description": "Age group 70-79",
+      "TotalCases": 90378
+    },
+    {
+      "StratumLabel": "80+",
+      "Description": "Age group 80+",
+      "TotalCases": 150835
+    }
+  ],
+  "cells": [
+    {
+      "StratumLabel": "0-9",
+      "TreatmentLabel": "Argentina",
+      "Cases": 1002,
+      "Successes": 1002
+    },
+    {
+      "StratumLabel": "10-19",
+      "TreatmentLabel": "Argentina",
+      "Cases": 1080,
+      "Successes": 1079
+    },
+    {
+      "StratumLabel": "20-29",
+      "TreatmentLabel": "Argentina",
+      "Cases": 2813,
+      "Successes": 2812
+    },
+    {
+      "StratumLabel": "30-39",
+      "TreatmentLabel": "Argentina",
+      "Cases": 3142,
+      "Successes": 3133
+    },
+    {
+      "StratumLabel": "40-49",
+      "TreatmentLabel": "Argentina",
+      "Cases": 2508,
+      "Successes": 2484
+    },
+    {
+      "StratumLabel": "50-59",
+      "TreatmentLabel": "Argentina",
+      "Cases": 1812,
+      "Successes": 1758
+    },
+    {
+      "StratumLabel": "60-69",
+      "TreatmentLabel": "Argentina",
+      "Cases": 1005,
+      "Successes": 904
+    },
+    {
+      "StratumLabel": "70-79",
+      "TreatmentLabel": "Argentina",
+      "Cases": 651,
+      "Successes": 528
+    },
+    {
+      "StratumLabel": "80+",
+      "TreatmentLabel": "Argentina",
+      "Cases": 662,
+      "Successes": 468
+    },
+    {
+      "StratumLabel": "0-9",
+      "TreatmentLabel": "China",
+      "Cases": 416,
+      "Successes": 416
+    },
+    {
+      "StratumLabel": "10-19",
+      "TreatmentLabel": "China",
+      "Cases": 549,
+      "Successes": 548
+    },
+    {
+      "StratumLabel": "20-29",
+      "TreatmentLabel": "China",
+      "Cases": 3619,
+      "Successes": 3612
+    },
+    {
+      "StratumLabel": "30-39",
+      "TreatmentLabel": "China",
+      "Cases": 7600,
+      "Successes": 7582
+    },
+    {
+      "StratumLabel": "40-49",
+      "TreatmentLabel": "China",
+      "Cases": 8571,
+      "Successes": 8533
+    },
+    {
+      "StratumLabel": "50-59",
+      "TreatmentLabel": "China",
+      "Cases": 10008,
+      "Successes": 9878
+    },
+    {
+      "StratumLabel": "60-69",
+      "TreatmentLabel": "China",
+      "Cases": 8583,
+      "Successes": 8274
+    },
+    {
+      "StratumLabel": "70-79",
+      "TreatmentLabel": "China",
+      "Cases": 3918,
+      "Successes": 3606
+    },
+    {
+      "StratumLabel": "80+",
+      "TreatmentLabel": "China",
+      "Cases": 1408,
+      "Successes": 1200
+    },
+    {
+      "StratumLabel": "0-9",
+      "TreatmentLabel": "Colombia",
+      "Cases": 1105,
+      "Successes": 1100
+    },
+    {
+      "StratumLabel": "10-19",
+      "TreatmentLabel": "Colombia",
+      "Cases": 1950,
+      "Successes": 1949
+    },
+    {
+      "StratumLabel": "20-29",
+      "TreatmentLabel": "Colombia",
+      "Cases": 5614,
+      "Successes": 5601
+    },
+    {
+      "StratumLabel": "30-39",
+      "TreatmentLabel": "Colombia",
+      "Cases": 5615,
+      "Successes": 5591
+    },
+    {
+      "StratumLabel": "40-49",
+      "TreatmentLabel": "Colombia",
+      "Cases": 4033,
+      "Successes": 3972
+    },
+    {
+      "StratumLabel": "50-59",
+      "TreatmentLabel": "Colombia",
+      "Cases": 3286,
+      "Successes": 3165
+    },
+    {
+      "StratumLabel": "60-69",
+      "TreatmentLabel": "Colombia",
+      "Cases": 1961,
+      "Successes": 1769
+    },
+    {
+      "StratumLabel": "70-79",
+      "TreatmentLabel": "Colombia",
+      "Cases": 1117,
+      "Successes": 903
+    },
+    {
+      "StratumLabel": "80+",
+      "TreatmentLabel": "Colombia",
+      "Cases": 685,
+      "Successes": 494
+    },
+    {
+      "StratumLabel": "0-9",
+      "TreatmentLabel": "Diamond Princess",
+      "Cases": 1,
+      "Successes": 1
+    },
+    {
+      "StratumLabel": "10-19",
+      "TreatmentLabel": "Diamond Princess",
+      "Cases": 5,
+      "Successes": 5
+    },
+    {
+      "StratumLabel": "20-29",
+      "TreatmentLabel": "Diamond Princess",
+      "Cases": 28,
+      "Successes": 28
+    },
+    {
+      "StratumLabel": "30-39",
+      "TreatmentLabel": "Diamond Princess",
+      "Cases": 34,
+      "Successes": 34
+    },
+    {
+      "StratumLabel": "40-49",
+      "TreatmentLabel": "Diamond Princess",
+      "Cases": 27,
+      "Successes": 27
+    },
+    {
+      "StratumLabel": "50-59",
+      "TreatmentLabel": "Diamond Princess",
+      "Cases": 59,
+      "Successes": 59
+    },
+    {
+      "StratumLabel": "60-69",
+      "TreatmentLabel": "Diamond Princess",
+      "Cases": 177,
+      "Successes": 177
+    },
+    {
+      "StratumLabel": "70-79",
+      "TreatmentLabel": "Diamond Princess",
+      "Cases": 234,
+      "Successes": 231
+    },
+    {
+      "StratumLabel": "80+",
+      "TreatmentLabel": "Diamond Princess",
+      "Cases": 54,
+      "Successes": 50
+    },
+    {
+      "StratumLabel": "0-9",
+      "TreatmentLabel": "Italy",
+      "Cases": 1919,
+      "Successes": 1915
+    },
+    {
+      "StratumLabel": "10-19",
+      "TreatmentLabel": "Italy",
+      "Cases": 3442,
+      "Successes": 3442
+    },
+    {
+      "StratumLabel": "20-29",
+      "TreatmentLabel": "Italy",
+      "Cases": 12933,
+      "Successes": 12921
+    },
+    {
+      "StratumLabel": "30-39",
+      "TreatmentLabel": "Italy",
+      "Cases": 17934,
+      "Successes": 17872
+    },
+    {
+      "StratumLabel": "40-49",
+      "TreatmentLabel": "Italy",
+      "Cases": 29942,
+      "Successes": 29669
+    },
+    {
+      "StratumLabel": "50-59",
+      "TreatmentLabel": "Italy",
+      "Cases": 41435,
+      "Successes": 40326
+    },
+    {
+      "StratumLabel": "60-69",
+      "TreatmentLabel": "Italy",
+      "Cases": 30880,
+      "Successes": 27621
+    },
+    {
+      "StratumLabel": "70-79",
+      "TreatmentLabel": "Italy",
+      "Cases": 33141,
+      "Successes": 24579
+    },
+    {
+      "StratumLabel": "80+",
+      "TreatmentLabel": "Italy",
+      "Cases": 59134,
+      "Successes": 40739
+    },
+    {
+      "StratumLabel": "0-9",
+      "TreatmentLabel": "Netherlands",
+      "Cases": 128,
+      "Successes": 128
+    },
+    {
+      "StratumLabel": "10-19",
+      "TreatmentLabel": "Netherlands",
+      "Cases": 587,
+      "Successes": 586
+    },
+    {
+      "StratumLabel": "20-29",
+      "TreatmentLabel": "Netherlands",
+      "Cases": 4336,
+      "Successes": 4333
+    },
+    {
+      "StratumLabel": "30-39",
+      "TreatmentLabel": "Netherlands",
+      "Cases": 4093,
+      "Successes": 4083
+    },
+    {
+      "StratumLabel": "40-49",
+      "TreatmentLabel": "Netherlands",
+      "Cases": 5269,
+      "Successes": 5241
+    },
+    {
+      "StratumLabel": "50-59",
+      "TreatmentLabel": "Netherlands",
+      "Cases": 8437,
+      "Successes": 8295
+    },
+    {
+      "StratumLabel": "60-69",
+      "TreatmentLabel": "Netherlands",
+      "Cases": 5949,
+      "Successes": 5465
+    },
+    {
+      "StratumLabel": "70-79",
+      "TreatmentLabel": "Netherlands",
+      "Cases": 6229,
+      "Successes": 4633
+    },
+    {
+      "StratumLabel": "80+",
+      "TreatmentLabel": "Netherlands",
+      "Cases": 10919,
+      "Successes": 7280
+    },
+    {
+      "StratumLabel": "0-9",
+      "TreatmentLabel": "Portugal",
+      "Cases": 626,
+      "Successes": 626
+    },
+    {
+      "StratumLabel": "10-19",
+      "TreatmentLabel": "Portugal",
+      "Cases": 1052,
+      "Successes": 1052
+    },
+    {
+      "StratumLabel": "20-29",
+      "TreatmentLabel": "Portugal",
+      "Cases": 4114,
+      "Successes": 4113
+    },
+    {
+      "StratumLabel": "30-39",
+      "TreatmentLabel": "Portugal",
+      "Cases": 4736,
+      "Successes": 4735
+    },
+    {
+      "StratumLabel": "40-49",
+      "TreatmentLabel": "Portugal",
+      "Cases": 5315,
+      "Successes": 5300
+    },
+    {
+      "StratumLabel": "50-59",
+      "TreatmentLabel": "Portugal",
+      "Cases": 5253,
+      "Successes": 5211
+    },
+    {
+      "StratumLabel": "60-69",
+      "TreatmentLabel": "Portugal",
+      "Cases": 3484,
+      "Successes": 3362
+    },
+    {
+      "StratumLabel": "70-79",
+      "TreatmentLabel": "Portugal",
+      "Cases": 2537,
+      "Successes": 2268
+    },
+    {
+      "StratumLabel": "80+",
+      "TreatmentLabel": "Portugal",
+      "Cases": 4479,
+      "Successes": 3560
+    },
+    {
+      "StratumLabel": "0-9",
+      "TreatmentLabel": "South Africa",
+      "Cases": 755,
+      "Successes": 753
+    },
+    {
+      "StratumLabel": "10-19",
+      "TreatmentLabel": "South Africa",
+      "Cases": 1147,
+      "Successes": 1146
+    },
+    {
+      "StratumLabel": "20-29",
+      "TreatmentLabel": "South Africa",
+      "Cases": 5319,
+      "Successes": 5315
+    },
+    {
+      "StratumLabel": "30-39",
+      "TreatmentLabel": "South Africa",
+      "Cases": 7720,
+      "Successes": 7687
+    },
+    {
+      "StratumLabel": "40-49",
+      "TreatmentLabel": "South Africa",
+      "Cases": 5754,
+      "Successes": 5693
+    },
+    {
+      "StratumLabel": "50-59",
+      "TreatmentLabel": "South Africa",
+      "Cases": 3753,
+      "Successes": 3609
+    },
+    {
+      "StratumLabel": "60-69",
+      "TreatmentLabel": "South Africa",
+      "Cases": 1663,
+      "Successes": 1510
+    },
+    {
+      "StratumLabel": "70-79",
+      "TreatmentLabel": "South Africa",
+      "Cases": 754,
+      "Successes": 641
+    },
+    {
+      "StratumLabel": "80+",
+      "TreatmentLabel": "South Africa",
+      "Cases": 415,
+      "Successes": 349
+    },
+    {
+      "StratumLabel": "0-9",
+      "TreatmentLabel": "South Korea",
+      "Cases": 149,
+      "Successes": 149
+    },
+    {
+      "StratumLabel": "10-19",
+      "TreatmentLabel": "South Korea",
+      "Cases": 636,
+      "Successes": 636
+    },
+    {
+      "StratumLabel": "20-29",
+      "TreatmentLabel": "South Korea",
+      "Cases": 3117,
+      "Successes": 3117
+    },
+    {
+      "StratumLabel": "30-39",
+      "TreatmentLabel": "South Korea",
+      "Cases": 1235,
+      "Successes": 1233
+    },
+    {
+      "StratumLabel": "40-49",
+      "TreatmentLabel": "South Korea",
+      "Cases": 1481,
+      "Successes": 1478
+    },
+    {
+      "StratumLabel": "50-59",
+      "TreatmentLabel": "South Korea",
+      "Cases": 1987,
+      "Successes": 1972
+    },
+    {
+      "StratumLabel": "60-69",
+      "TreatmentLabel": "South Korea",
+      "Cases": 1375,
+      "Successes": 1336
+    },
+    {
+      "StratumLabel": "70-79",
+      "TreatmentLabel": "South Korea",
+      "Cases": 719,
+      "Successes": 641
+    },
+    {
+      "StratumLabel": "80+",
+      "TreatmentLabel": "South Korea",
+      "Cases": 491,
+      "Successes": 362
+    },
+    {
+      "StratumLabel": "0-9",
+      "TreatmentLabel": "Spain",
+      "Cases": 1123,
+      "Successes": 1120
+    },
+    {
+      "StratumLabel": "10-19",
+      "TreatmentLabel": "Spain",
+      "Cases": 2068,
+      "Successes": 2063
+    },
+    {
+      "StratumLabel": "20-29",
+      "TreatmentLabel": "Spain",
+      "Cases": 15272,
+      "Successes": 15248
+    },
+    {
+      "StratumLabel": "30-39",
+      "TreatmentLabel": "Spain",
+      "Cases": 24902,
+      "Successes": 24837
+    },
+    {
+      "StratumLabel": "40-49",
+      "TreatmentLabel": "Spain",
+      "Cases": 37970,
+      "Successes": 37752
+    },
+    {
+      "StratumLabel": "50-59",
+      "TreatmentLabel": "Spain",
+      "Cases": 45750,
+      "Successes": 45087
+    },
+    {
+      "StratumLabel": "60-69",
+      "TreatmentLabel": "Spain",
+      "Cases": 36355,
+      "Successes": 34530
+    },
+    {
+      "StratumLabel": "70-79",
+      "TreatmentLabel": "Spain",
+      "Cases": 34294,
+      "Successes": 29398
+    },
+    {
+      "StratumLabel": "80+",
+      "TreatmentLabel": "Spain",
+      "Cases": 61026,
+      "Successes": 48140
+    },
+    {
+      "StratumLabel": "0-9",
+      "TreatmentLabel": "Sweden",
+      "Cases": 168,
+      "Successes": 167
+    },
+    {
+      "StratumLabel": "10-19",
+      "TreatmentLabel": "Sweden",
+      "Cases": 401,
+      "Successes": 401
+    },
+    {
+      "StratumLabel": "20-29",
+      "TreatmentLabel": "Sweden",
+      "Cases": 3104,
+      "Successes": 3096
+    },
+    {
+      "StratumLabel": "30-39",
+      "TreatmentLabel": "Sweden",
+      "Cases": 4051,
+      "Successes": 4039
+    },
+    {
+      "StratumLabel": "40-49",
+      "TreatmentLabel": "Sweden",
+      "Cases": 4962,
+      "Successes": 4923
+    },
+    {
+      "StratumLabel": "50-59",
+      "TreatmentLabel": "Sweden",
+      "Cases": 6190,
+      "Successes": 6061
+    },
+    {
+      "StratumLabel": "60-69",
+      "TreatmentLabel": "Sweden",
+      "Cases": 4186,
+      "Successes": 3892
+    },
+    {
+      "StratumLabel": "70-79",
+      "TreatmentLabel": "Sweden",
+      "Cases": 3888,
+      "Successes": 2979
+    },
+    {
+      "StratumLabel": "80+",
+      "TreatmentLabel": "Sweden",
+      "Cases": 7482,
+      "Successes": 4749
+    },
+    {
+      "StratumLabel": "0-9",
+      "TreatmentLabel": "Switzerland",
+      "Cases": 162,
+      "Successes": 162
+    },
+    {
+      "StratumLabel": "10-19",
+      "TreatmentLabel": "Switzerland",
+      "Cases": 877,
+      "Successes": 877
+    },
+    {
+      "StratumLabel": "20-29",
+      "TreatmentLabel": "Switzerland",
+      "Cases": 3844,
+      "Successes": 3844
+    },
+    {
+      "StratumLabel": "30-39",
+      "TreatmentLabel": "Switzerland",
+      "Cases": 4136,
+      "Successes": 4131
+    },
+    {
+      "StratumLabel": "40-49",
+      "TreatmentLabel": "Switzerland",
+      "Cases": 4809,
+      "Successes": 4805
+    },
+    {
+      "StratumLabel": "50-59",
+      "TreatmentLabel": "Switzerland",
+      "Cases": 6232,
+      "Successes": 6195
+    },
+    {
+      "StratumLabel": "60-69",
+      "TreatmentLabel": "Switzerland",
+      "Cases": 3671,
+      "Successes": 3550
+    },
+    {
+      "StratumLabel": "70-79",
+      "TreatmentLabel": "Switzerland",
+      "Cases": 2896,
+      "Successes": 2561
+    },
+    {
+      "StratumLabel": "80+",
+      "TreatmentLabel": "Switzerland",
+      "Cases": 4080,
+      "Successes": 2934
+    }
+  ]
+}

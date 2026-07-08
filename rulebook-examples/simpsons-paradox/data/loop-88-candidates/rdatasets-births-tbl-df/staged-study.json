@@ -1,0 +1,30 @@
+{
+  "StudyId": "rdatasets-births-nc-preterm-2004",
+  "Title": "North Carolina Births 2004: Smoking and Preterm Birth by Infant Sex",
+  "Source": "NC State Center for Health Statistics, 2004. R package: usdatasets/births_tbl_df",
+  "SourceUrl": "https://vincentarelbundock.github.io/Rdatasets/doc/usdatasets/births_tbl_df.html",
+  "PublicationYear": 2004,
+  "Domain": "public-health",
+  "IsSynthetic": false,
+  "IsControlStudy": true,
+  "ControlDomain": "public-health-epidemiology",
+  "TraditionId": "tradition-dag",
+  "PrimaryResearcherId": "researcher-pearl",
+  "confounding_variable": "sex_baby",
+  "causal_role": "allocation",
+  "note": "Infant sex is not a confounder of smoking on preterm birth; it affects neither maternal smoking behavior nor birth outcomes in a direction that would reverse the marginal association, so no Simpson's paradox reversal is expected.",
+  "treatments": [
+    {"TreatmentLabel": "nonsmoker", "Description": "Mother did not smoke during pregnancy", "TotalCases": 100, "TotalSuccesses": 13},
+    {"TreatmentLabel": "smoker", "Description": "Mother smoked during pregnancy", "TotalCases": 50, "TotalSuccesses": 8}
+  ],
+  "strata": [
+    {"StratumLabel": "female", "Description": "Female infant", "TotalCases": 68},
+    {"StratumLabel": "male", "Description": "Male infant", "TotalCases": 82}
+  ],
+  "cells": [
+    {"StratumLabel": "female", "TreatmentLabel": "nonsmoker", "Cases": 49, "Successes": 6},
+    {"StratumLabel": "male", "TreatmentLabel": "nonsmoker", "Cases": 51, "Successes": 7},
+    {"StratumLabel": "female", "TreatmentLabel": "smoker", "Cases": 19, "Successes": 2},
+    {"StratumLabel": "male", "TreatmentLabel": "smoker", "Cases": 31, "Successes": 6}
+  ]
+}

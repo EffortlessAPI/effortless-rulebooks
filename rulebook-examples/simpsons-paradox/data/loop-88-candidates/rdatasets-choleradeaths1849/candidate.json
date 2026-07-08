@@ -1,0 +1,16 @@
+{
+  "candidate_id": "54",
+  "slug": "rdatasets-choleradeaths1849",
+  "dataset_name": "CholeraDeaths1849",
+  "description": "Daily Deaths from Cholera and Diarrhaea in England, 1849",
+  "domain": "Historical / Social Science",
+  "source": "Rdatasets (R package: HistData)",
+  "n_rows": "730",
+  "stratifying_columns_hint": "2 factor / 1 binary cols",
+  "download_url": "https://vincentarelbundock.github.io/Rdatasets/csv/HistData/CholeraDeaths1849.csv",
+  "documentation_url": "https://vincentarelbundock.github.io/Rdatasets/doc/HistData/CholeraDeaths1849.html",
+  "status": "skip",
+  "skip_reason": "Time-series of daily aggregated death counts (Cholera vs Diarrhaea) with no individual-level binary outcome, no treatment/exposure variable, and no stratum variable. Each row is a day+cause combination with a count \u2014 purely ecological time-series data that cannot be aggregated into Successes/Cases per (Treatment \u00d7 Stratum) cell.",
+  "download_notes": "HTTP 200 OK",
+  "notes": []
+}

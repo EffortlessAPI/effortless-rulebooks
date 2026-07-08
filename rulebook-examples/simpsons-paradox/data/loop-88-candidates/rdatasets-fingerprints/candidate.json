@@ -1,0 +1,18 @@
+{
+  "candidate_id": "58",
+  "slug": "rdatasets-fingerprints",
+  "dataset_name": "Fingerprints",
+  "description": "Waite's data on Patterns in Fingerprints",
+  "domain": "Historical / Social Science",
+  "source": "Rdatasets (R package: HistData)",
+  "n_rows": "36",
+  "stratifying_columns_hint": "2 factor / 0 binary cols",
+  "download_url": "https://vincentarelbundock.github.io/Rdatasets/csv/HistData/Fingerprints.csv",
+  "documentation_url": "https://vincentarelbundock.github.io/Rdatasets/doc/HistData/Fingerprints.html",
+  "status": "skip",
+  "skip_reason": "Pre-aggregated contingency table of fingerprint pattern counts (Whorls \u00d7 Loops cells). No individual-level binary outcome, no treatment/exposure variable, and no stratum variable \u2014 just a 6\u00d76 frequency table of two correlated count variables.",
+  "notes": [],
+  "files": [
+    "data.csv"
+  ]
+}

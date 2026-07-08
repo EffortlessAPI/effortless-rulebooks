@@ -1,0 +1,187 @@
+{
+  "StudyId": "barley-variety-height-1974-1982",
+  "Title": "Norwegian Barley Variety Trial: Above-Median Height Rate by Variety Group and Growing Year (1974\u20131982)",
+  "Source": "agridat R package: aastveit.barley.height dataset",
+  "SourceUrl": "https://vincentarelbundock.github.io/Rdatasets/doc/agridat/aastveit.barley.height.html",
+  "PublicationYear": 1982,
+  "Domain": "education",
+  "IsSynthetic": false,
+  "IsControlStudy": true,
+  "ControlDomain": "agriculture",
+  "TraditionId": "tradition-dag",
+  "PrimaryResearcherId": "researcher-pearl",
+  "confounding_variable": "growing_year",
+  "causal_role": "confounder",
+  "note": "Year effects are shared across variety groups; early vs late variety distinction not expected to reverse across years.",
+  "treatments": [
+    {
+      "TreatmentLabel": "Early",
+      "Description": "Early-registered barley varieties",
+      "TotalCases": 90,
+      "TotalSuccesses": 40
+    },
+    {
+      "TreatmentLabel": "Late",
+      "Description": "Late-registered barley varieties",
+      "TotalCases": 45,
+      "TotalSuccesses": 27
+    }
+  ],
+  "strata": [
+    {
+      "StratumLabel": "1974",
+      "Description": "Growing season 1974",
+      "TotalCases": 15
+    },
+    {
+      "StratumLabel": "1975",
+      "Description": "Growing season 1975",
+      "TotalCases": 15
+    },
+    {
+      "StratumLabel": "1976",
+      "Description": "Growing season 1976",
+      "TotalCases": 15
+    },
+    {
+      "StratumLabel": "1977",
+      "Description": "Growing season 1977",
+      "TotalCases": 15
+    },
+    {
+      "StratumLabel": "1978",
+      "Description": "Growing season 1978",
+      "TotalCases": 15
+    },
+    {
+      "StratumLabel": "1979",
+      "Description": "Growing season 1979",
+      "TotalCases": 15
+    },
+    {
+      "StratumLabel": "1980",
+      "Description": "Growing season 1980",
+      "TotalCases": 15
+    },
+    {
+      "StratumLabel": "1981",
+      "Description": "Growing season 1981",
+      "TotalCases": 15
+    },
+    {
+      "StratumLabel": "1982",
+      "Description": "Growing season 1982",
+      "TotalCases": 15
+    }
+  ],
+  "cells": [
+    {
+      "StratumLabel": "1974",
+      "TreatmentLabel": "Early",
+      "Cases": 10,
+      "Successes": 7
+    },
+    {
+      "StratumLabel": "1974",
+      "TreatmentLabel": "Late",
+      "Cases": 5,
+      "Successes": 4
+    },
+    {
+      "StratumLabel": "1975",
+      "TreatmentLabel": "Early",
+      "Cases": 10,
+      "Successes": 0
+    },
+    {
+      "StratumLabel": "1975",
+      "TreatmentLabel": "Late",
+      "Cases": 5,
+      "Successes": 2
+    },
+    {
+      "StratumLabel": "1976",
+      "TreatmentLabel": "Early",
+      "Cases": 10,
+      "Successes": 1
+    },
+    {
+      "StratumLabel": "1976",
+      "TreatmentLabel": "Late",
+      "Cases": 5,
+      "Successes": 3
+    },
+    {
+      "StratumLabel": "1977",
+      "TreatmentLabel": "Early",
+      "Cases": 10,
+      "Successes": 0
+    },
+    {
+      "StratumLabel": "1977",
+      "TreatmentLabel": "Late",
+      "Cases": 5,
+      "Successes": 0
+    },
+    {
+      "StratumLabel": "1978",
+      "TreatmentLabel": "Early",
+      "Cases": 10,
+      "Successes": 0
+    },
+    {
+      "StratumLabel": "1978",
+      "TreatmentLabel": "Late",
+      "Cases": 5,
+      "Successes": 0
+    },
+    {
+      "StratumLabel": "1979",
+      "TreatmentLabel": "Early",
+      "Cases": 10,
+      "Successes": 7
+    },
+    {
+      "StratumLabel": "1979",
+      "TreatmentLabel": "Late",
+      "Cases": 5,
+      "Successes": 5
+    },
+    {
+      "StratumLabel": "1980",
+      "TreatmentLabel": "Early",
+      "Cases": 10,
+      "Successes": 9
+    },
+    {
+      "StratumLabel": "1980",
+      "TreatmentLabel": "Late",
+      "Cases": 5,
+      "Successes": 5
+    },
+    {
+      "StratumLabel": "1981",
+      "TreatmentLabel": "Early",
+      "Cases": 10,
+      "Successes": 10
+    },
+    {
+      "StratumLabel": "1981",
+      "TreatmentLabel": "Late",
+      "Cases": 5,
+      "Successes": 5
+    },
+    {
+      "StratumLabel": "1982",
+      "TreatmentLabel": "Early",
+      "Cases": 10,
+      "Successes": 6
+    },
+    {
+      "StratumLabel": "1982",
+      "TreatmentLabel": "Late",
+      "Cases": 5,
+      "Successes": 3
+    }
+  ]
+}

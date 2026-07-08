@@ -1,0 +1,30 @@
+{
+  "StudyId": "rdatasets-birthwt-smoking-race",
+  "Title": "Maternal Smoking and Low Birthweight by Maternal Race — Hosmer & Lemeshow 1989",
+  "Source": "Hosmer, D.W. and Lemeshow, S. (1989). Applied Logistic Regression. Wiley. R MASS::birthwt dataset (Baystate Medical Center, Springfield MA, 1986).",
+  "SourceUrl": "https://vincentarelbundock.github.io/Rdatasets/csv/MASS/birthwt.csv",
+  "PublicationYear": 1989,
+  "Domain": "epidemiology",
+  "IsSynthetic": false,
+  "IsControlStudy": true,
+  "ControlDomain": "epidemiology-perinatal",
+  "TraditionId": "tradition-dag",
+  "PrimaryResearcherId": "researcher-pearl",
+  "confounding_variable": "MaternalRace",
+  "causal_role": "allocation",
+  "note": "Maternal smoking is associated with higher low-birthweight rates in both White and NonWhite strata (0.365 vs 0.091 for White; 0.500 vs 0.352 for NonWhite). The pooled direction is the same (smokers: 40.5% vs non-smokers: 25.2%). Race stratification amplifies the smoking effect in White mothers but does not reverse the pooled finding.",
+  "treatments": [
+    {"TreatmentLabel": "Smoker", "Description": "Mother smoked during pregnancy", "TotalCases": 74, "TotalSuccesses": 30},
+    {"TreatmentLabel": "NonSmoker", "Description": "Mother did not smoke during pregnancy", "TotalCases": 115, "TotalSuccesses": 29}
+  ],
+  "strata": [
+    {"StratumLabel": "White", "Description": "White maternal race (race=1)", "TotalCases": 96},
+    {"StratumLabel": "NonWhite", "Description": "Black or Other maternal race (race=2 or 3)", "TotalCases": 93}
+  ],
+  "cells": [
+    {"StratumLabel": "White", "TreatmentLabel": "Smoker", "Cases": 52, "Successes": 19},
+    {"StratumLabel": "White", "TreatmentLabel": "NonSmoker", "Cases": 44, "Successes": 4},
+    {"StratumLabel": "NonWhite", "TreatmentLabel": "Smoker", "Cases": 22, "Successes": 11},
+    {"StratumLabel": "NonWhite", "TreatmentLabel": "NonSmoker", "Cases": 71, "Successes": 25}
+  ]
+}

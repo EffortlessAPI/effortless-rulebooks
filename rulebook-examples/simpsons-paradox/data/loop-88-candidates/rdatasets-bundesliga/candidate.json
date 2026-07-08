@@ -1,0 +1,16 @@
+{
+  "candidate_id": "36",
+  "slug": "rdatasets-bundesliga",
+  "dataset_name": "Bundesliga",
+  "description": "Ergebnisse der Fussball-Bundesliga",
+  "domain": "Categorical Data / Mixed",
+  "source": "Rdatasets (R package: vcd)",
+  "n_rows": "14018",
+  "stratifying_columns_hint": "2 factor / 0 binary cols",
+  "download_url": "https://vincentarelbundock.github.io/Rdatasets/csv/vcd/Bundesliga.csv",
+  "documentation_url": "https://vincentarelbundock.github.io/Rdatasets/doc/vcd/Bundesliga.html",
+  "status": "skip",
+  "skip_reason": "Bundesliga soccer match data with continuous goal counts (HomeGoals, AwayGoals) as outcomes. No binary outcome column, no treatment/exposure grouping. The data records match results (teams, scores, rounds, years) \u2014 not individual-level binary events suitable for Simpson's Paradox cell aggregation.",
+  "download_notes": "HTTP 200 OK",
+  "notes": []
+}

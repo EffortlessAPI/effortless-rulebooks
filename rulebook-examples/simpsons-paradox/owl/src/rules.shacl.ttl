@@ -508,7 +508,7 @@ effortless-ntwf:CaseCellsShape a sh:NodeShape ;
     $this a effortless-ntwf:CaseCells .
     OPTIONAL { $this effortless-ntwf:cases ?cases . }
     OPTIONAL { $this effortless-ntwf:successes ?successes . }
-                BIND(IF((?cases = 0), "", (?successes / ?cases)) AS ?_result)
+                BIND(IF((?cases = 0), 0, (?successes / ?cases)) AS ?_result)
             }
         """ ;
     ] ;
@@ -841,6 +841,112 @@ effortless-ntwf:ConfounderIdentitiesShape a sh:NodeShape ;
     ] .
 # Rule for StudyCount - parse error: Expected TokenType.LPAREN, got TokenType.COMMA at position 63
 
+# === Shape with rules for CorpusBalance ===
+effortless-ntwf:CorpusBalanceShape a sh:NodeShape ;
+    sh:targetClass effortless-ntwf:CorpusBalance ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_CorpusBalance_Name" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:name ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:CorpusBalance .
+    OPTIONAL { $this effortless-ntwf:balanceId ?balance_id . }
+                BIND(?balance_id AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_CorpusBalance_TotalStudyCount" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:totalStudyCount ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:CorpusBalance .
+    OPTIONAL { $this effortless-ntwf:controlStudyCount ?control_study_count . }
+    OPTIONAL { $this effortless-ntwf:simpsonStudyCount ?simpson_study_count . }
+                BIND((?simpson_study_count + ?control_study_count) AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_CorpusBalance_SimpsonStudyCount" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:simpsonStudyCount ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:CorpusBalance .
+                {
+                    SELECT (COUNT(?child) AS ?_result) WHERE {
+                    ?child a effortless-ntwf:Studies .
+                    OPTIONAL { ?child effortless-ntwf:isControlStudy ?c0 . }
+                    FILTER(BOUND(?c0) && ?c0 = false)
+                    }
+                }
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_CorpusBalance_ControlStudyCount" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:controlStudyCount ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:CorpusBalance .
+                {
+                    SELECT (COUNT(?child) AS ?_result) WHERE {
+                    ?child a effortless-ntwf:Studies .
+                    OPTIONAL { ?child effortless-ntwf:isControlStudy ?c0 . }
+                    FILTER(BOUND(?c0) && ?c0 = true)
+                    }
+                }
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_CorpusBalance_ControlFraction" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:controlFraction ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:CorpusBalance .
+    OPTIONAL { $this effortless-ntwf:controlStudyCount ?control_study_count . }
+    OPTIONAL { $this effortless-ntwf:totalStudyCount ?total_study_count . }
+                BIND(IF((?total_study_count = 0), 0, (?control_study_count / ?total_study_count)) AS ?_result)
+            }
+        """ ;
+    ] .
+
 # === Shape with rules for CorpusCatalogSummary ===
 effortless-ntwf:CorpusCatalogSummaryShape a sh:NodeShape ;
     sh:targetClass effortless-ntwf:CorpusCatalogSummary ;
@@ -877,9 +983,7 @@ effortless-ntwf:CorpusCatalogSummaryShape a sh:NodeShape ;
     $this a effortless-ntwf:CorpusCatalogSummary .
                 {
                     SELECT (COUNT(?child) AS ?_result) WHERE {
-                    ?child a effortless-ntwf:CandidateStudyCatalog .
-                    OPTIONAL { ?child effortless-ntwf:candidateId ?c0 . }
-                    FILTER((STR(?c0) != ""))
+                        ?child a effortless-ntwf:CandidateStudyCatalog .
                     }
                 }
             }
@@ -1188,6 +1292,29 @@ effortless-ntwf:CorpusCatalogSummaryShape a sh:NodeShape ;
     ] ;
     sh:rule [
         a sh:SPARQLRule ;
+        rdfs:label "rule_CorpusCatalogSummary_CatalogPredictionWitnessNote" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:catalogPredictionWitnessNote ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:CorpusCatalogSummary .
+    OPTIONAL { $this effortless-ntwf:importedCount ?imported_count . }
+    OPTIONAL { $this effortless-ntwf:signFlipPredictionEligibleCount ?sign_flip_prediction_eligible_count . }
+    OPTIONAL { $this effortless-ntwf:signFlipPredictionMatchCount ?sign_flip_prediction_match_count . }
+    OPTIONAL { $this effortless-ntwf:signFlipPredictionMatchRate ?sign_flip_prediction_match_rate . }
+    OPTIONAL { $this effortless-ntwf:typePredictionMatchCount ?type_prediction_match_count . }
+    OPTIONAL { $this effortless-ntwf:typePredictionMatchRate ?type_prediction_match_rate . }
+                BIND(CONCAT("exact=", IF(isIRI(?type_prediction_match_count), REPLACE(STR(?type_prediction_match_count), "^.*[#/]", ""), STR(?type_prediction_match_count)), "/", IF(isIRI(?imported_count), REPLACE(STR(?imported_count), "^.*[#/]", ""), STR(?imported_count)), " (", IF(isIRI((ROUND((?type_prediction_match_rate * 100) * STRDT(CONCAT("1e", STR(1)), xsd:double)) / STRDT(CONCAT("1e", STR(1)), xsd:double))), REPLACE(STR((ROUND((?type_prediction_match_rate * 100) * STRDT(CONCAT("1e", STR(1)), xsd:double)) / STRDT(CONCAT("1e", STR(1)), xsd:double))), "^.*[#/]", ""), STR((ROUND((?type_prediction_match_rate * 100) * STRDT(CONCAT("1e", STR(1)), xsd:double)) / STRDT(CONCAT("1e", STR(1)), xsd:double)))), "%); flipPred=", IF(isIRI(?sign_flip_prediction_match_count), REPLACE(STR(?sign_flip_prediction_match_count), "^.*[#/]", ""), STR(?sign_flip_prediction_match_count)), "/", IF(isIRI(?sign_flip_prediction_eligible_count), REPLACE(STR(?sign_flip_prediction_eligible_count), "^.*[#/]", ""), STR(?sign_flip_prediction_eligible_count)), " (", IF(isIRI((ROUND((?sign_flip_prediction_match_rate * 100) * STRDT(CONCAT("1e", STR(1)), xsd:double)) / STRDT(CONCAT("1e", STR(1)), xsd:double))), REPLACE(STR((ROUND((?sign_flip_prediction_match_rate * 100) * STRDT(CONCAT("1e", STR(1)), xsd:double)) / STRDT(CONCAT("1e", STR(1)), xsd:double))), "^.*[#/]", ""), STR((ROUND((?sign_flip_prediction_match_rate * 100) * STRDT(CONCAT("1e", STR(1)), xsd:double)) / STRDT(CONCAT("1e", STR(1)), xsd:double)))), "%)") AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
         rdfs:label "rule_CorpusCatalogSummary_DataReadyCount" ;
         sh:prefixes effortless-ntwf: ;
         sh:construct """
@@ -1259,7 +1386,6 @@ effortless-ntwf:CorpusCatalogSummaryShape a sh:NodeShape ;
             }
         """ ;
     ] .
-# Rule for CatalogPredictionWitnessNote - parse error: Unexpected token Token(type=<TokenType.RPAREN: 6>, value=')', pos=275) after expression
 
 # === Shape with rules for CorpusDomains ===
 effortless-ntwf:CorpusDomainsShape a sh:NodeShape ;
@@ -1746,9 +1872,7 @@ effortless-ntwf:IngestionSummaryShape a sh:NodeShape ;
     $this a effortless-ntwf:IngestionSummary .
                 {
                     SELECT (COUNT(?child) AS ?_result) WHERE {
-                    ?child a effortless-ntwf:IngestionProtocol .
-                    OPTIONAL { ?child effortless-ntwf:protocolId ?c0 . }
-                    FILTER((STR(?c0) != ""))
+                        ?child a effortless-ntwf:IngestionProtocol .
                     }
                 }
             }
@@ -1769,9 +1893,7 @@ effortless-ntwf:IngestionSummaryShape a sh:NodeShape ;
     $this a effortless-ntwf:IngestionSummary .
                 {
                     SELECT (COUNT(?child) AS ?_result) WHERE {
-                    ?child a effortless-ntwf:CaseCells .
-                    OPTIONAL { ?child effortless-ntwf:caseCellId ?c0 . }
-                    FILTER((STR(?c0) != ""))
+                        ?child a effortless-ntwf:CaseCells .
                     }
                 }
             }
@@ -1834,9 +1956,7 @@ effortless-ntwf:IngestionSummaryShape a sh:NodeShape ;
     $this a effortless-ntwf:IngestionSummary .
                 {
                     SELECT (COUNT(?child) AS ?_result) WHERE {
-                    ?child a effortless-ntwf:Studies .
-                    OPTIONAL { ?child effortless-ntwf:studyId ?c0 . }
-                    FILTER((STR(?c0) != ""))
+                        ?child a effortless-ntwf:Studies .
                     }
                 }
             }
@@ -2712,21 +2832,15 @@ effortless-ntwf:ModelSummaryShape a sh:NodeShape ;
             WHERE {
     $this a effortless-ntwf:ModelSummary .
                 {
-                    SELECT (SUM(?cval) AS ?_lhs) WHERE {
-                        SELECT ?child (MAX(?sumval) AS ?cval) WHERE {
-                    ?child a effortless-ntwf:TreatmentRankings .
-                    OPTIONAL { ?child effortless-ntwf:study ?c0 . }
-                    OPTIONAL { ?child effortless-ntwf:signalPurity ?sumraw . }
-                    BIND(IF(BOUND(?sumraw), xsd:double(STR(?sumraw)), 0.0) AS ?sumval)
-                    FILTER((STR(?c0) != ""))
-                        } GROUP BY ?child
+                    SELECT (SUM(?v) AS ?_lhs) WHERE {
+                        ?child a effortless-ntwf:TreatmentRankings .
+                        OPTIONAL { ?child effortless-ntwf:signalPurity ?raw . }
+                        BIND(IF(BOUND(?raw), xsd:double(STR(?raw)), 0.0) AS ?v)
                     }
                 }
                 {
                     SELECT (COUNT(?child) AS ?_rhs) WHERE {
-                    ?child a effortless-ntwf:TreatmentRankings .
-                    OPTIONAL { ?child effortless-ntwf:study ?c0 . }
-                    FILTER((STR(?c0) != ""))
+                        ?child a effortless-ntwf:TreatmentRankings .
                     }
                 }
     BIND(IF(BOUND(?_rhs) && ?_rhs != 0, ?_lhs / ?_rhs, 0.0) AS ?_result)
@@ -2882,24 +2996,16 @@ effortless-ntwf:ModelSummaryShape a sh:NodeShape ;
             WHERE {
     $this a effortless-ntwf:ModelSummary .
                 {
-                    SELECT (SUM(?cval) AS ?_lhs) WHERE {
+                    SELECT (AVG(?cval) AS ?_result) WHERE {
                         SELECT ?child (MAX(?sumval) AS ?cval) WHERE {
                     ?child a effortless-ntwf:TreatmentRankings .
                     OPTIONAL { ?child effortless-ntwf:allocationDirection ?c0 . }
                     OPTIONAL { ?child effortless-ntwf:signalPurity ?sumraw . }
-                    BIND(IF(BOUND(?sumraw), xsd:double(STR(?sumraw)), 0.0) AS ?sumval)
+                    BIND(xsd:double(STR(?sumraw)) AS ?sumval)
                     FILTER((STR(?c0) = "reversal"))
                         } GROUP BY ?child
                     }
                 }
-                {
-                    SELECT (COUNT(?child) AS ?_rhs) WHERE {
-                    ?child a effortless-ntwf:TreatmentRankings .
-                    OPTIONAL { ?child effortless-ntwf:allocationDirection ?c0 . }
-                    FILTER((STR(?c0) = "reversal"))
-                    }
-                }
-    BIND(IF(BOUND(?_rhs) && ?_rhs != 0, ?_lhs / ?_rhs, 0.0) AS ?_result)
             }
         """ ;
     ] ;
@@ -2917,24 +3023,16 @@ effortless-ntwf:ModelSummaryShape a sh:NodeShape ;
             WHERE {
     $this a effortless-ntwf:ModelSummary .
                 {
-                    SELECT (SUM(?cval) AS ?_lhs) WHERE {
+                    SELECT (AVG(?cval) AS ?_result) WHERE {
                         SELECT ?child (MAX(?sumval) AS ?cval) WHERE {
                     ?child a effortless-ntwf:TreatmentRankings .
                     OPTIONAL { ?child effortless-ntwf:allocationDirection ?c0 . }
                     OPTIONAL { ?child effortless-ntwf:signalPurity ?sumraw . }
-                    BIND(IF(BOUND(?sumraw), xsd:double(STR(?sumraw)), 0.0) AS ?sumval)
+                    BIND(xsd:double(STR(?sumraw)) AS ?sumval)
                     FILTER((STR(?c0) != "reversal"))
                         } GROUP BY ?child
                     }
                 }
-                {
-                    SELECT (COUNT(?child) AS ?_rhs) WHERE {
-                    ?child a effortless-ntwf:TreatmentRankings .
-                    OPTIONAL { ?child effortless-ntwf:allocationDirection ?c0 . }
-                    FILTER((STR(?c0) != "reversal"))
-                    }
-                }
-    BIND(IF(BOUND(?_rhs) && ?_rhs != 0, ?_lhs / ?_rhs, 0.0) AS ?_result)
             }
         """ ;
     ] ;
@@ -3029,6 +3127,28 @@ effortless-ntwf:ModelSummaryShape a sh:NodeShape ;
     ] ;
     sh:rule [
         a sh:SPARQLRule ;
+        rdfs:label "rule_ModelSummary_DomainDiversityNote" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:domainDiversityNote ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:ModelSummary .
+    OPTIONAL { $this effortless-ntwf:economicsSignFlipRate ?economics_sign_flip_rate . }
+    OPTIONAL { $this effortless-ntwf:educationLatentFraction ?education_latent_fraction . }
+    OPTIONAL { $this effortless-ntwf:expansionWave2StudyCount ?expansion_wave2_study_count . }
+    OPTIONAL { $this effortless-ntwf:realStudyCount ?real_study_count . }
+    OPTIONAL { $this effortless-ntwf:sportsLatentFraction ?sports_latent_fraction . }
+                BIND(CONCAT("real=", IF(isIRI(?real_study_count), REPLACE(STR(?real_study_count), "^.*[#/]", ""), STR(?real_study_count)), " studies; wave2=", IF(isIRI(?expansion_wave2_study_count), REPLACE(STR(?expansion_wave2_study_count), "^.*[#/]", ""), STR(?expansion_wave2_study_count)), "; eduLatent=", IF(isIRI((ROUND((?education_latent_fraction * 100) * STRDT(CONCAT("1e", STR(0)), xsd:double)) / STRDT(CONCAT("1e", STR(0)), xsd:double))), REPLACE(STR((ROUND((?education_latent_fraction * 100) * STRDT(CONCAT("1e", STR(0)), xsd:double)) / STRDT(CONCAT("1e", STR(0)), xsd:double))), "^.*[#/]", ""), STR((ROUND((?education_latent_fraction * 100) * STRDT(CONCAT("1e", STR(0)), xsd:double)) / STRDT(CONCAT("1e", STR(0)), xsd:double)))), "%; sportsLatent=", IF(isIRI((ROUND((?sports_latent_fraction * 100) * STRDT(CONCAT("1e", STR(0)), xsd:double)) / STRDT(CONCAT("1e", STR(0)), xsd:double))), REPLACE(STR((ROUND((?sports_latent_fraction * 100) * STRDT(CONCAT("1e", STR(0)), xsd:double)) / STRDT(CONCAT("1e", STR(0)), xsd:double))), "^.*[#/]", ""), STR((ROUND((?sports_latent_fraction * 100) * STRDT(CONCAT("1e", STR(0)), xsd:double)) / STRDT(CONCAT("1e", STR(0)), xsd:double)))), "%; econFlipRate=", IF(isIRI((ROUND((?economics_sign_flip_rate * 100) * STRDT(CONCAT("1e", STR(0)), xsd:double)) / STRDT(CONCAT("1e", STR(0)), xsd:double))), REPLACE(STR((ROUND((?economics_sign_flip_rate * 100) * STRDT(CONCAT("1e", STR(0)), xsd:double)) / STRDT(CONCAT("1e", STR(0)), xsd:double))), "^.*[#/]", ""), STR((ROUND((?economics_sign_flip_rate * 100) * STRDT(CONCAT("1e", STR(0)), xsd:double)) / STRDT(CONCAT("1e", STR(0)), xsd:double)))), "%") AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
         rdfs:label "rule_ModelSummary_IngestionProtocolItemCount" ;
         sh:prefixes effortless-ntwf: ;
         sh:construct """
@@ -3042,9 +3162,7 @@ effortless-ntwf:ModelSummaryShape a sh:NodeShape ;
     $this a effortless-ntwf:ModelSummary .
                 {
                     SELECT (COUNT(?child) AS ?_result) WHERE {
-                    ?child a effortless-ntwf:IngestionProtocol .
-                    OPTIONAL { ?child effortless-ntwf:protocolId ?c0 . }
-                    FILTER((STR(?c0) != ""))
+                        ?child a effortless-ntwf:IngestionProtocol .
                     }
                 }
             }
@@ -3320,6 +3438,33 @@ effortless-ntwf:ModelSummaryShape a sh:NodeShape ;
     ] ;
     sh:rule [
         a sh:SPARQLRule ;
+        rdfs:label "rule_ModelSummary_SumPooledGapLatentD" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:sumPooledGapLatentD ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:ModelSummary .
+                {
+                    SELECT (SUM(?cval) AS ?_result) WHERE {
+                        SELECT ?child (MAX(?sumval) AS ?cval) WHERE {
+                    ?child a effortless-ntwf:TreatmentRankings .
+                    OPTIONAL { ?child effortless-ntwf:latentFlipPotential ?c0 . }
+                    OPTIONAL { ?child effortless-ntwf:pooledGap ?sumraw . }
+                    BIND(IF(BOUND(?sumraw), xsd:double(STR(?sumraw)), 0.0) AS ?sumval)
+                    FILTER(BOUND(?c0) && ?c0 = true)
+                        } GROUP BY ?child
+                    }
+                }
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
         rdfs:label "rule_ModelSummary_AvgPooledGapLatentD" ;
         sh:prefixes effortless-ntwf: ;
         sh:construct """
@@ -3332,18 +3477,37 @@ effortless-ntwf:ModelSummaryShape a sh:NodeShape ;
             WHERE {
     $this a effortless-ntwf:ModelSummary .
     OPTIONAL { $this effortless-ntwf:latentTypeDCount ?latent_type_d_count . }
+    OPTIONAL { $this effortless-ntwf:sumPooledGapLatentD ?sum_pooled_gap_latent_d . }
+                BIND(IF((?latent_type_d_count = 0), 0, (?sum_pooled_gap_latent_d / ?latent_type_d_count)) AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_ModelSummary_SumPooledGapStableD" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:sumPooledGapStableD ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:ModelSummary .
                 {
-                    SELECT (AVG(?cval) AS ?_result) WHERE {
+                    SELECT (SUM(?cval) AS ?_result) WHERE {
                         SELECT ?child (MAX(?sumval) AS ?cval) WHERE {
                     ?child a effortless-ntwf:TreatmentRankings .
-                    OPTIONAL { ?child effortless-ntwf:latentFlipPotential ?c0 . }
+                    OPTIONAL { ?child effortless-ntwf:distortionType ?c0 . }
+                    OPTIONAL { ?child effortless-ntwf:latentFlipPotential ?c2 . }
                     OPTIONAL { ?child effortless-ntwf:pooledGap ?sumraw . }
-                    BIND(xsd:double(STR(?sumraw)) AS ?sumval)
-                    FILTER(BOUND(?c0) && ?c0 = true)
+                    BIND(IF(BOUND(?sumraw), xsd:double(STR(?sumraw)), 0.0) AS ?sumval)
+                    FILTER((STR(?c0) = "D"))
+                    FILTER(BOUND(?c2) && ?c2 = false)
                         } GROUP BY ?child
                     }
                 }
-    BIND(IF((?latent_type_d_count = 0), "", ?_result) AS ?_result)
             }
         """ ;
     ] ;
@@ -3361,20 +3525,8 @@ effortless-ntwf:ModelSummaryShape a sh:NodeShape ;
             WHERE {
     $this a effortless-ntwf:ModelSummary .
     OPTIONAL { $this effortless-ntwf:stableTypeDCount ?stable_type_d_count . }
-                {
-                    SELECT (AVG(?cval) AS ?_result) WHERE {
-                        SELECT ?child (MAX(?sumval) AS ?cval) WHERE {
-                    ?child a effortless-ntwf:TreatmentRankings .
-                    OPTIONAL { ?child effortless-ntwf:distortionType ?c0 . }
-                    OPTIONAL { ?child effortless-ntwf:latentFlipPotential ?c2 . }
-                    OPTIONAL { ?child effortless-ntwf:pooledGap ?sumraw . }
-                    BIND(xsd:double(STR(?sumraw)) AS ?sumval)
-                    FILTER((STR(?c0) = "D"))
-                    FILTER(BOUND(?c2) && ?c2 = false)
-                        } GROUP BY ?child
-                    }
-                }
-    BIND(IF((?stable_type_d_count = 0), "", ?_result) AS ?_result)
+    OPTIONAL { $this effortless-ntwf:sumPooledGapStableD ?sum_pooled_gap_stable_d . }
+                BIND(IF((?stable_type_d_count = 0), 0, (?sum_pooled_gap_stable_d / ?stable_type_d_count)) AS ?_result)
             }
         """ ;
     ] ;
@@ -4662,8 +4814,123 @@ effortless-ntwf:ModelSummaryShape a sh:NodeShape ;
                 BIND(IF((?j2 = 0), "", (?j5 / ?j8)) AS ?_result)
             }
         """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_ModelSummary_DomainFlipGapSurvivesGeometryControl" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:domainFlipGapSurvivesGeometryControl ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:ModelSummary .
+    OPTIONAL { $this effortless-ntwf:economicsHighImbalanceSignFlipCount ?economics_high_imbalance_sign_flip_count . }
+    OPTIONAL { $this effortless-ntwf:epidemiologyHighImbalanceSignFlipRate ?epidemiology_high_imbalance_sign_flip_rate . }
+                BIND(((?economics_high_imbalance_sign_flip_count = 0) && (?epidemiology_high_imbalance_sign_flip_rate > 0.15)) AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_ModelSummary_CorpusPatternSupersededFailCount" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:corpusPatternSupersededFailCount ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:ModelSummary .
+                {
+                    SELECT (COUNT(?child) AS ?_lhs) WHERE {
+                    ?child a effortless-ntwf:DiscoveryFindings .
+                    OPTIONAL { ?child effortless-ntwf:hypothesisId ?c0 . }
+                    OPTIONAL { ?child effortless-ntwf:isConfirmed ?c2 . }
+                    FILTER((STR(?c0) = "H-econ-zero"))
+                    FILTER(BOUND(?c2) && ?c2 = false)
+                    }
+                }
+                {
+                    SELECT (COUNT(?child) AS ?_rhs) WHERE {
+                    ?child a effortless-ntwf:DiscoveryFindings .
+                    OPTIONAL { ?child effortless-ntwf:hypothesisId ?c0 . }
+                    OPTIONAL { ?child effortless-ntwf:isConfirmed ?c2 . }
+                    FILTER((STR(?c0) = "H-domain-dist"))
+                    FILTER(BOUND(?c2) && ?c2 = false)
+                    }
+                }
+    BIND(?_lhs + ?_rhs AS ?_lhs)
+                {
+                    SELECT (COUNT(?child) AS ?_rhs) WHERE {
+                    ?child a effortless-ntwf:DiscoveryFindings .
+                    OPTIONAL { ?child effortless-ntwf:hypothesisId ?c0 . }
+                    OPTIONAL { ?child effortless-ntwf:isConfirmed ?c2 . }
+                    FILTER((STR(?c0) = "H-catalog-flip-prediction"))
+                    FILTER(BOUND(?c2) && ?c2 = false)
+                    }
+                }
+    BIND(?_lhs + ?_rhs AS ?_lhs)
+                {
+                    SELECT (COUNT(?child) AS ?_rhs) WHERE {
+                    ?child a effortless-ntwf:DiscoveryFindings .
+                    OPTIONAL { ?child effortless-ntwf:hypothesisId ?c0 . }
+                    OPTIONAL { ?child effortless-ntwf:isConfirmed ?c2 . }
+                    FILTER((STR(?c0) = "H-domain-flip-geometry-controlled"))
+                    FILTER(BOUND(?c2) && ?c2 = false)
+                    }
+                }
+    BIND(?_lhs + ?_rhs AS ?_lhs)
+                {
+                    SELECT (COUNT(?child) AS ?_rhs) WHERE {
+                    ?child a effortless-ntwf:DiscoveryFindings .
+                    OPTIONAL { ?child effortless-ntwf:hypothesisId ?c0 . }
+                    OPTIONAL { ?child effortless-ntwf:isConfirmed ?c2 . }
+                    FILTER((STR(?c0) = "H-econ-encoding-selection"))
+                    FILTER(BOUND(?c2) && ?c2 = false)
+                    }
+                }
+    BIND(?_lhs + ?_rhs AS ?_lhs)
+                {
+                    SELECT (COUNT(?child) AS ?_rhs) WHERE {
+                    ?child a effortless-ntwf:DiscoveryFindings .
+                    OPTIONAL { ?child effortless-ntwf:hypothesisId ?c0 . }
+                    OPTIONAL { ?child effortless-ntwf:isConfirmed ?c2 . }
+                    FILTER((STR(?c0) = "H-domain-profiles-stable"))
+                    FILTER(BOUND(?c2) && ?c2 = false)
+                    }
+                }
+    BIND(?_lhs + ?_rhs AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_ModelSummary_ExpansionWave3DiscoveryNote" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:expansionWave3DiscoveryNote ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:ModelSummary .
+    OPTIONAL { $this effortless-ntwf:corpusPatternSupersededFailCount ?corpus_pattern_superseded_fail_count . }
+    OPTIONAL { $this effortless-ntwf:economicsSignFlipCount ?economics_sign_flip_count . }
+    OPTIONAL { $this effortless-ntwf:signFlipPredictionMatchRate ?sign_flip_prediction_match_rate . }
+    OPTIONAL { $this effortless-ntwf:theoremCount ?theorem_count . }
+    OPTIONAL { $this effortless-ntwf:typePredictionMatchRate ?type_prediction_match_rate . }
+                BIND(CONCAT("superseded=", IF(isIRI(?corpus_pattern_superseded_fail_count), REPLACE(STR(?corpus_pattern_superseded_fail_count), "^.*[#/]", ""), STR(?corpus_pattern_superseded_fail_count)), "; econFlips=", IF(isIRI(?economics_sign_flip_count), REPLACE(STR(?economics_sign_flip_count), "^.*[#/]", ""), STR(?economics_sign_flip_count)), "; flipPred=", IF(isIRI(?sign_flip_prediction_match_rate), REPLACE(STR(?sign_flip_prediction_match_rate), "^.*[#/]", ""), STR(?sign_flip_prediction_match_rate)), "; catalogExact=", IF(isIRI(?type_prediction_match_rate), REPLACE(STR(?type_prediction_match_rate), "^.*[#/]", ""), STR(?type_prediction_match_rate)), "; theorems=", IF(isIRI(?theorem_count), REPLACE(STR(?theorem_count), "^.*[#/]", ""), STR(?theorem_count))) AS ?_result)
+            }
+        """ ;
     ] .
-# Rule for DomainDiversityNote - parse error: Unknown function: TEXT
 
 # === Shape with rules for PhaseDiagramSummary ===
 effortless-ntwf:PhaseDiagramSummaryShape a sh:NodeShape ;
@@ -5744,6 +6011,42 @@ effortless-ntwf:StratumSummariesShape a sh:NodeShape ;
     OPTIONAL { $this effortless-ntwf:stratumFraction ?stratum_fraction . }
     OPTIONAL { $this effortless-ntwf:stratumGap ?stratum_gap . }
                 BIND(IF((REPLACE(COALESCE(STR(?stratum_gap), ""), "^.*#", "") = ""), "", (?stratum_gap * ?stratum_fraction)) AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_StratumSummaries_AbsAllocationBias" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:absAllocationBias ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:StratumSummaries .
+    OPTIONAL { $this effortless-ntwf:allocationBias ?allocation_bias . }
+                BIND(IF((REPLACE(COALESCE(STR(?allocation_bias), ""), "^.*#", "") = ""), "", ABS(?allocation_bias)) AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_StratumSummaries_AbsStratumGap" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:absStratumGap ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:StratumSummaries .
+    OPTIONAL { $this effortless-ntwf:stratumGap ?stratum_gap . }
+                BIND(IF((REPLACE(COALESCE(STR(?stratum_gap), ""), "^.*#", "") = ""), "", ABS(?stratum_gap)) AS ?_result)
             }
         """ ;
     ] .
@@ -7747,7 +8050,67 @@ effortless-ntwf:TreatmentRankingsShape a sh:NodeShape ;
     $this a effortless-ntwf:TreatmentRankings .
     OPTIONAL { $this effortless-ntwf:pooledGap ?pooled_gap . }
     OPTIONAL { $this effortless-ntwf:sweepPooledGapRange ?sweep_pooled_gap_range . }
-                BIND(IF(((REPLACE(COALESCE(STR(?sweep_pooled_gap_range), ""), "^.*#", "") = "") || (REPLACE(COALESCE(STR(?pooled_gap), ""), "^.*#", "") = "") || (?pooled_gap = 0)), "", (?sweep_pooled_gap_range / ABS(?pooled_gap))) AS ?_result)
+                BIND(IF(((REPLACE(COALESCE(STR(?sweep_pooled_gap_range), ""), "^.*#", "") = "") || (REPLACE(COALESCE(STR(?pooled_gap), ""), "^.*#", "") = "") || (?pooled_gap = 0)), 0, (?sweep_pooled_gap_range / ABS(?pooled_gap))) AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_TreatmentRankings_MaxStratumImbalance" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:maxStratumImbalance ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:TreatmentRankings .
+                {
+                    SELECT (MAX(?cval) AS ?_result) WHERE {
+                        SELECT ?child (MAX(?sumval) AS ?cval) WHERE {
+                    ?child a effortless-ntwf:StratumSummaries .
+                    ?child effortless-ntwf:study ?backfk .
+                    $this effortless-ntwf:study ?backpv .
+                    OPTIONAL { ?child effortless-ntwf:treatmentLabel ?c2 . }
+                    OPTIONAL { ?child effortless-ntwf:absAllocationBias ?sumraw . }
+                    BIND(xsd:double(STR(?sumraw)) AS ?sumval)
+                    FILTER(REPLACE(STR(?backfk), "^.*[#/]", "") = REPLACE(STR(?backpv), "^.*[#/]", ""))
+                    FILTER((STR(?c2) = "A"))
+                        } GROUP BY ?child
+                    }
+                }
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_TreatmentRankings_MaxStratumGap" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:maxStratumGap ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:TreatmentRankings .
+                {
+                    SELECT (MAX(?cval) AS ?_result) WHERE {
+                        SELECT ?child (MAX(?sumval) AS ?cval) WHERE {
+                    ?child a effortless-ntwf:StratumSummaries .
+                    ?child effortless-ntwf:study ?backfk .
+                    $this effortless-ntwf:study ?backpv .
+                    OPTIONAL { ?child effortless-ntwf:treatmentLabel ?c2 . }
+                    OPTIONAL { ?child effortless-ntwf:absStratumGap ?sumraw . }
+                    BIND(xsd:double(STR(?sumraw)) AS ?sumval)
+                    FILTER(REPLACE(STR(?backfk), "^.*[#/]", "") = REPLACE(STR(?backpv), "^.*[#/]", ""))
+                    FILTER((STR(?c2) = "A"))
+                        } GROUP BY ?child
+                    }
+                }
             }
         """ ;
     ] ;
@@ -7981,6 +8344,80 @@ effortless-ntwf:TreatmentRankingsShape a sh:NodeShape ;
     OPTIONAL { $this effortless-ntwf:causalClaimStatus ?causal_claim_status . }
     OPTIONAL { $this effortless-ntwf:mediatorRiskCount ?mediator_risk_count . }
                 BIND(((?mediator_risk_count = 0) && (REPLACE(COALESCE(STR(?causal_claim_status), ""), "^.*#", "") = "established")) AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_TreatmentRankings_DistortionRatio" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:distortionRatio ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:TreatmentRankings .
+    OPTIONAL { $this effortless-ntwf:signedPooledGap ?signed_pooled_gap . }
+    OPTIONAL { $this effortless-ntwf:weightedStratumGapSum ?weighted_stratum_gap_sum . }
+                BIND(IF((?weighted_stratum_gap_sum = 0), 0, (?signed_pooled_gap / ?weighted_stratum_gap_sum)) AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_TreatmentRankings_ScreeningTier" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:screeningTier ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:TreatmentRankings .
+    OPTIONAL { $this effortless-ntwf:distortionType ?distortion_type . }
+                BIND(IF(((REPLACE(COALESCE(STR(?distortion_type), ""), "^.*#", "") = "A") || (REPLACE(COALESCE(STR(?distortion_type), ""), "^.*#", "") = "B")), "DANGER", IF(((REPLACE(COALESCE(STR(?distortion_type), ""), "^.*#", "") = "C+") || (REPLACE(COALESCE(STR(?distortion_type), ""), "^.*#", "") = "C-")), "CAUTION", IF((REPLACE(COALESCE(STR(?distortion_type), ""), "^.*#", "") = "D"), "SAFE", ""))) AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_TreatmentRankings_ArmSizeRatio" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:armSizeRatio ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:TreatmentRankings .
+    OPTIONAL { $this effortless-ntwf:totalCasesA ?total_cases_a . }
+    OPTIONAL { $this effortless-ntwf:totalCasesB ?total_cases_b . }
+                BIND(IF(((?total_cases_a + ?total_cases_b) = 0), 0, (?total_cases_a / (?total_cases_a + ?total_cases_b))) AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_TreatmentRankings_SymmetryDeparture" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:symmetryDeparture ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:TreatmentRankings .
+    OPTIONAL { $this effortless-ntwf:armSizeRatio ?arm_size_ratio . }
+                BIND(ABS((?arm_size_ratio - 0.5)) AS ?_result)
             }
         """ ;
     ] .
@@ -8246,4 +8683,4 @@ effortless-ntwf:TreatmentsCardinalityShape a sh:NodeShape ;
     sh:targetClass effortless-ntwf:Treatments ;
     sh:property [ sh:path effortless-ntwf:study ; sh:maxCount 1 ] .
 
-# Generated 366 SHACL rules
+# Generated 386 SHACL rules

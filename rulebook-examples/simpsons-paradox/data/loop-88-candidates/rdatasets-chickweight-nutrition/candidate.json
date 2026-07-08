@@ -1,0 +1,7 @@
+{
+  "slug": "rdatasets-chickweight-nutrition",
+  "status": "staged",
+  "domain": "nutrition",
+  "source": "R datasets::ChickWeight — Crowder & Hand 1990 repeated-measures chick growth experiment; 578 observations, 50 chicks, 4 diets, 12 time points",
+  "notes": "Control study: Diet 3 consistently outperforms Diet 2 in both early and late growth phases when measuring weight > 150g. Balanced design (60 observations per cell). No reversal: time phase is a confound in direction only (weights naturally increase with age) but does not flip the diet comparison."
+}

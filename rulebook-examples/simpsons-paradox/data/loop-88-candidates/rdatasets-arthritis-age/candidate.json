@@ -1,0 +1,7 @@
+{
+  "slug": "rdatasets-arthritis-age",
+  "status": "staged",
+  "domain": "medicine",
+  "source": "R vcd::Arthritis — Koch & Edwards 1988 rheumatoid arthritis RCT; 84 patients stratified by age group (<55 vs >=55)",
+  "notes": "Control study: treatment advantage holds across both young and old patient strata. Age confounds the magnitude (older patients have better placebo response) but not the direction. Companion to rdatasets-arthritis-treatment-sex — same RCT, different stratification variable, same conclusion: no paradox."
+}

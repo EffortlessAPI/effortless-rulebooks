@@ -1,0 +1,18 @@
+{
+  "candidate_id": "67",
+  "slug": "rdatasets-mice-weights-mice-weigths",
+  "dataset_name": "mice_weights (mice_weigths)",
+  "description": "Mice weights",
+  "domain": "General Statistics Teaching",
+  "source": "Rdatasets (R package: dslabs)",
+  "n_rows": "780",
+  "stratifying_columns_hint": "4 factor / 3 binary cols",
+  "download_url": "https://vincentarelbundock.github.io/Rdatasets/csv/dslabs/mice_weights.csv",
+  "documentation_url": "https://vincentarelbundock.github.io/Rdatasets/doc/dslabs/mice_weights.html",
+  "status": "skip",
+  "skip_reason": "All outcome columns (body_weight, bone_density, percent_fat) are continuous measurements. There is no binary outcome variable; this dataset cannot be aggregated into Successes/Cases cells for Simpson's Paradox analysis.",
+  "notes": [],
+  "files": [
+    "data.csv"
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "StudyId": "rdatasets-brokenmarriage-1991",
+  "Title": "Broken Marriage Rates by Gender and Social Rank",
+  "Source": "R package: vcd/BrokenMarriage",
+  "SourceUrl": "https://vincentarelbundock.github.io/Rdatasets/doc/vcd/BrokenMarriage.html",
+  "PublicationYear": 1991,
+  "Domain": "sociology",
+  "IsSynthetic": false,
+  "IsControlStudy": true,
+  "ControlDomain": "sociology-survey",
+  "TraditionId": "tradition-dag",
+  "PrimaryResearcherId": "researcher-pearl",
+  "confounding_variable": "rank",
+  "causal_role": "allocation",
+  "note": "Social rank is associated with both gender distribution and broken-marriage rates, but because female broken-marriage rates are lower than male across nearly all strata, no reversal is expected when marginal rates are compared to stratum-specific rates.",
+  "treatments": [
+    {"TreatmentLabel": "female", "Description": "Female respondents", "TotalCases": 1365, "TotalSuccesses": 232},
+    {"TreatmentLabel": "male", "Description": "Male respondents", "TotalCases": 1339, "TotalSuccesses": 240}
+  ],
+  "strata": [
+    {"StratumLabel": "I", "Description": "Social rank I (highest)", "TotalCases": 153},
+    {"StratumLabel": "II", "Description": "Social rank II", "TotalCases": 292},
+    {"StratumLabel": "III", "Description": "Social rank III", "TotalCases": 522},
+    {"StratumLabel": "IV", "Description": "Social rank IV", "TotalCases": 1031},
+    {"StratumLabel": "V", "Description": "Social rank V (lowest)", "TotalCases": 706}
+  ],
+  "cells": [
+    {"StratumLabel": "I", "TreatmentLabel": "female", "Cases": 37, "Successes": 12},
+    {"StratumLabel": "II", "TreatmentLabel": "female", "Cases": 102, "Successes": 23},
+    {"StratumLabel": "III", "TreatmentLabel": "female", "Cases": 188, "Successes": 37},
+    {"StratumLabel": "IV", "TreatmentLabel": "female", "Cases": 659, "Successes": 102},
+    {"StratumLabel": "V", "TreatmentLabel": "female", "Cases": 379, "Successes": 58},
+    {"StratumLabel": "I", "TreatmentLabel": "male", "Cases": 116, "Successes": 14},
+    {"StratumLabel": "II", "TreatmentLabel": "male", "Cases": 190, "Successes": 39},
+    {"StratumLabel": "III", "TreatmentLabel": "male", "Cases": 334, "Successes": 42},
+    {"StratumLabel": "IV", "TreatmentLabel": "male", "Cases": 372, "Successes": 79},
+    {"StratumLabel": "V", "TreatmentLabel": "male", "Cases": 327, "Successes": 66}
+  ]
+}

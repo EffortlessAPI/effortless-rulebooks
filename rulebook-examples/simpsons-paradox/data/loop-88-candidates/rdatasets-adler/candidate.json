@@ -1,0 +1,16 @@
+{
+  "candidate_id": "76",
+  "slug": "rdatasets-adler",
+  "dataset_name": "Adler",
+  "description": "Experimenter Expectations",
+  "domain": "General Statistics Teaching",
+  "source": "Rdatasets (R package: carData)",
+  "n_rows": "108",
+  "stratifying_columns_hint": "2 factor / 1 binary cols",
+  "download_url": "https://vincentarelbundock.github.io/Rdatasets/csv/carData/Adler.csv",
+  "documentation_url": "https://vincentarelbundock.github.io/Rdatasets/doc/carData/Adler.html",
+  "status": "skip",
+  "skip_reason": "The outcome column 'rating' is a continuous numeric variable (positive and negative integers), not a binary outcome. There is no pass/fail, success/failure, or 0/1 column to aggregate into Successes/Cases counts.",
+  "download_notes": "HTTP 200 OK",
+  "notes": []
+}

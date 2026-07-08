@@ -1,0 +1,18 @@
+{
+  "candidate_id": "88",
+  "slug": "rdatasets-applestock",
+  "dataset_name": "AppleStock",
+  "description": "Daily Price and Volume of Apple Stock",
+  "domain": "General Statistics Teaching",
+  "source": "Rdatasets (R package: Stat2Data)",
+  "n_rows": "66",
+  "stratifying_columns_hint": "1 factor / 0 binary cols",
+  "download_url": "https://vincentarelbundock.github.io/Rdatasets/csv/Stat2Data/AppleStock.csv",
+  "documentation_url": "https://vincentarelbundock.github.io/Rdatasets/doc/Stat2Data/AppleStock.html",
+  "status": "skip",
+  "skip_reason": "Pure time series of Apple stock prices, price changes, and trading volume. No binary outcome, no treatment/exposure groups, no stratum variable. Purely continuous financial data with no individual-level observations to aggregate into success/failure counts.",
+  "notes": [],
+  "files": [
+    "data.csv"
+  ]
+}

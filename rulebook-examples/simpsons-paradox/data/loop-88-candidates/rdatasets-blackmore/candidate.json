@@ -1,0 +1,18 @@
+{
+  "candidate_id": "82",
+  "slug": "rdatasets-blackmore",
+  "dataset_name": "Blackmore",
+  "description": "Exercise Histories of Eating-Disordered and Control Subjects",
+  "domain": "General Statistics Teaching",
+  "source": "Rdatasets (R package: carData)",
+  "n_rows": "945",
+  "stratifying_columns_hint": "2 factor / 1 binary cols",
+  "download_url": "https://vincentarelbundock.github.io/Rdatasets/csv/carData/Blackmore.csv",
+  "documentation_url": "https://vincentarelbundock.github.io/Rdatasets/doc/carData/Blackmore.html",
+  "status": "skip",
+  "skip_reason": "No binary outcome. The dataset tracks exercise hours per week (continuous) for anorexia patients vs controls across ages. There is no success/failure column to aggregate into Successes/Cases counts.",
+  "notes": [],
+  "files": [
+    "data.csv"
+  ]
+}

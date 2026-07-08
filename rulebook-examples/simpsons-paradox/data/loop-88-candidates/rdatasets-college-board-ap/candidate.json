@@ -1,0 +1,16 @@
+{
+  "candidate_id": "140",
+  "slug": "rdatasets-college-board-ap",
+  "dataset_name": "college_board_ap",
+  "description": "AP Exam Pass Rates by Race & School Type (College Board)",
+  "domain": "Education",
+  "source": "College Board Research (verified)",
+  "n_rows": "500000+",
+  "stratifying_columns_hint": "race, school_type, ap_subject",
+  "download_url": "https://research.collegeboard.org/programs/ap/data",
+  "documentation_url": "https://research.collegeboard.org/",
+  "status": "portal-required",
+  "skip_reason": null,
+  "notes": [],
+  "portal_reason": "College Board requires account/request"
+}

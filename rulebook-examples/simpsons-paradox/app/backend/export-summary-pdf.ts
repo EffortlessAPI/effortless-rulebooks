@@ -16,6 +16,13 @@ import {
   SCOPE_BOUNDARY_TITLE,
   SWEEP_CONTRACT,
   LIMITS_TEXT,
+  INVARIANT_DEFINITIONS_TITLE,
+  INVARIANT_DEFINITIONS_TEXT,
+  INVARIANT_DEFINITION_TAUTOLOGICAL,
+  INVARIANT_DEFINITION_JUDGMENT,
+  INVARIANT_DEFINITION_VACUOUS,
+  classifyInvariant,
+  invariantKindCounts,
   conclusionPdfLabel,
   domainCaveat,
   formatObservedMetric,
@@ -222,7 +229,7 @@ function renderDiscoveryHypothesis(
 function renderConclusionBlock(doc: PdfDoc, y: number, c: ConclusionRow): number {
   y = ensureSpace(doc, y, 48);
   doc.font('Helvetica-Bold').fontSize(BODY_SIZE).fillColor('#111111');
-  doc.text(`${c.conclusion_id} · ${conclusionPdfLabel(c.category)}`, PAGE_MARGIN, y);
+  doc.text(`${c.conclusion_id} · ${conclusionPdfLabel(c.category, c.conclusion_id)}`, PAGE_MARGIN, y);
   y = doc.y + 2;
   y = bodyText(doc, y, c.title);
   const caveat = domainCaveat(c.conclusion_id);
@@ -359,8 +366,25 @@ export async function buildSummaryPdf(): Promise<Buffer> {
   y = bodyText(doc, y, LIMITS_TEXT, { size: SMALL_SIZE, color: '#444444' });
   y = bodyText(doc, y, SWEEP_CONTRACT, { size: SMALL_SIZE, color: '#444444' });
 
+  y = sectionHeading(doc, y, INVARIANT_DEFINITIONS_TITLE);
+  y = bodyText(doc, y, INVARIANT_DEFINITIONS_TEXT, { size: SMALL_SIZE, color: '#333333' });
+  y = bodyText(doc, y, `1. ${INVARIANT_DEFINITION_TAUTOLOGICAL}`, { size: SMALL_SIZE, color: '#444444' });
+  y = bodyText(doc, y, `2. ${INVARIANT_DEFINITION_JUDGMENT}`, { size: SMALL_SIZE, color: '#444444' });
+  y = bodyText(doc, y, `3. ${INVARIANT_DEFINITION_VACUOUS}`, { size: SMALL_SIZE, color: '#444444' });
+
   y = sectionHeading(doc, y, 'Epistemic summary (tiered)');
-  y = bulletLine(doc, y, 'Proved by construction (theorem)', String(tiers.proved));
+  y = bulletLine(
+    doc,
+    y,
+    'Proved by construction (pure algebra — no CausalRole dependency)',
+    String(tiers.proved),
+  );
+  y = bulletLine(
+    doc,
+    y,
+    'Proved, conditional on CausalRole annotation (see caveats below — not pure algebra)',
+    String(tiers.provedConditional),
+  );
   y = bulletLine(
     doc,
     y,
@@ -466,6 +490,25 @@ export async function buildSummaryPdf(): Promise<Buffer> {
     String(criticalFails),
     criticalFails === 0 ? PROJECT_LINKS.invariantChecks() : undefined,
   );
+  const kindCounts = invariantKindCounts(criticalInvariants);
+  y = bulletLine(
+    doc,
+    y,
+    'Definitional (cannot fail by construction — see definitions above)',
+    String(kindCounts.definitional),
+  );
+  y = bulletLine(
+    doc,
+    y,
+    'Judgment-crossing (touch hand/LLM-encoded CausalRole)',
+    String(kindCounts.judgment),
+  );
+  y = bulletLine(
+    doc,
+    y,
+    'Vacuous (0 pass / 0 fail — empty universe, proves nothing yet)',
+    String(kindCounts.vacuous),
+  );
   const failed = invariantRows.filter(i => Number(i.fail_count) > 0);
   if (failed.length > 0) {
     for (const inv of failed.slice(0, 12)) {
@@ -480,9 +523,31 @@ export async function buildSummaryPdf(): Promise<Buffer> {
     y = bodyText(
       doc,
       y,
-      `All ${criticalInvariants.length} critical invariants pass — transpiler regression checks against stated algebra.`,
+      `All ${criticalInvariants.length} critical invariants pass — ${kindCounts.definitional} are transpiler ` +
+        `regression checks against stated algebra (cannot fail by construction), ${kindCounts.judgment} cross ` +
+        `into the hand/LLM-encoded CausalRole field, and ${kindCounts.vacuous} are currently vacuous ` +
+        `(empty universe). See "${INVARIANT_DEFINITIONS_TITLE}" above.`,
       { size: SMALL_SIZE },
     );
+  }
+  const judgmentRows = criticalInvariants.filter(
+    i => classifyInvariant(i) === 'judgment',
+  );
+  if (judgmentRows.length > 0) {
+    y = bodyText(
+      doc,
+      y,
+      'Judgment-crossing invariants (the closest thing here to a substantive check):',
+      { size: SMALL_SIZE, color: '#666666' },
+    );
+    for (const inv of judgmentRows) {
+      y = bodyText(
+        doc,
+        y,
+        `${inv.invariant_check_id}: ${inv.natural_language} (pass=${inv.pass_count}, fail=${inv.fail_count})`,
+        { size: SMALL_SIZE },
+      );
+    }
   }
 
   y = sectionHeading(doc, y, 'Most misleading studies (by paradox strength)');

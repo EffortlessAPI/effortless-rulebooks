@@ -1,0 +1,22 @@
+{
+  "candidate_id": "52",
+  "slug": "rdatasets-donner",
+  "dataset_name": "Donner",
+  "description": "Survival in the Donner Party",
+  "domain": "Categorical Data / Mixed",
+  "source": "Rdatasets (R package: vcdExtra)",
+  "n_rows": "90",
+  "stratifying_columns_hint": "2 factor / 2 binary cols",
+  "download_url": "https://vincentarelbundock.github.io/Rdatasets/csv/vcdExtra/Donner.csv",
+  "documentation_url": "https://vincentarelbundock.github.io/Rdatasets/doc/vcdExtra/Donner.html",
+  "status": "needs-data",
+  "skip_reason": null,
+  "download_notes": "HTTP 200 OK \u2014 90 data rows, 6 columns (rownames, family, age, sex, survived, death)",
+  "notes": [],
+  "proposed_study_id": "rdatasets-donner-1846",
+  "proposed_title": "Donner Party Survival (1846\u20131847)",
+  "binary_outcome": "survived",
+  "treatment_variable": "sex",
+  "stratum_variable": "family",
+  "encoding_note": "survived=1 is success, survived=0 is failure. Aggregate Successes=SUM(survived), Cases=COUNT(*) per (sex \u00d7 family) cell. Age can be used as an alternative stratum via binning (child/adult)."
+}

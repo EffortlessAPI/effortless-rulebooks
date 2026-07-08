@@ -1,0 +1,30 @@
+{
+  "StudyId": "rdatasets-cervicalcancer-screening",
+  "Title": "Cervical Cancer Screening: Colposcopy Treatment by HPV16 Status",
+  "Source": "R package: OncoDataSets/CervicalCancer_df",
+  "SourceUrl": "https://vincentarelbundock.github.io/Rdatasets/doc/OncoDataSets/CervicalCancer_df.html",
+  "PublicationYear": 2011,
+  "Domain": "medicine",
+  "IsSynthetic": false,
+  "IsControlStudy": true,
+  "ControlDomain": "medicine-clinical",
+  "TraditionId": "tradition-dag",
+  "PrimaryResearcherId": "researcher-pearl",
+  "confounding_variable": "hpv16",
+  "causal_role": "allocation",
+  "note": "HPV16 status acts as a confounder (positive patients have higher CIN2+ rates), but treatment rates are similar across strata, so no Simpson's reversal is expected.",
+  "treatments": [
+    {"TreatmentLabel": "treatment-yes", "Description": "Received colposcopy treatment (yes)", "TotalCases": 127, "TotalSuccesses": 21},
+    {"TreatmentLabel": "treatment-no", "Description": "Did not receive colposcopy treatment (no)", "TotalCases": 54, "TotalSuccesses": 5}
+  ],
+  "strata": [
+    {"StratumLabel": "hpv16-negative", "Description": "HPV16 negative", "TotalCases": 163},
+    {"StratumLabel": "hpv16-positive", "Description": "HPV16 positive", "TotalCases": 17}
+  ],
+  "cells": [
+    {"StratumLabel": "hpv16-negative", "TreatmentLabel": "treatment-yes", "Cases": 114, "Successes": 14},
+    {"StratumLabel": "hpv16-negative", "TreatmentLabel": "treatment-no", "Cases": 49, "Successes": 3},
+    {"StratumLabel": "hpv16-positive", "TreatmentLabel": "treatment-yes", "Cases": 13, "Successes": 7},
+    {"StratumLabel": "hpv16-positive", "TreatmentLabel": "treatment-no", "Cases": 4, "Successes": 2}
+  ]
+}

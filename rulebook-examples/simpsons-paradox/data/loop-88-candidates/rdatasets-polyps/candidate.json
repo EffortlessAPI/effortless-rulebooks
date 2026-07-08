@@ -1,0 +1,16 @@
+{
+  "candidate_id": "6",
+  "slug": "rdatasets-polyps",
+  "dataset_name": "polyps",
+  "description": "RCT of Sulindac for Polyp Prevention in Familial Adenomatous Polyposis",
+  "domain": "Medicine/Clinical",
+  "source": "Rdatasets (R package: medicaldata)",
+  "n_rows": "22",
+  "stratifying_columns_hint": "2 factor / 2 binary cols",
+  "download_url": "https://vincentarelbundock.github.io/Rdatasets/csv/medicaldata/polyps.csv",
+  "documentation_url": "https://vincentarelbundock.github.io/Rdatasets/doc/medicaldata/polyps.html",
+  "status": "skip",
+  "download_notes": "HTTP 200 OK",
+  "skip_reason": "The outcome variables (number3m, number12m) are continuous polyp counts, not binary success/failure. There is no natural binary outcome column \u2014 only raw count reductions, which would require an arbitrary threshold to binarize. The dataset is not suitable for Simpson's Paradox cell computation without inventing a binary cutoff.",
+  "notes": []
+}

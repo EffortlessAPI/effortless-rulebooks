@@ -1,0 +1,18 @@
+{
+  "candidate_id": "56",
+  "slug": "rdatasets-drinkswages",
+  "dataset_name": "DrinksWages",
+  "description": "Elderton and Pearson's (1910) data on drinking and wages",
+  "domain": "Historical / Social Science",
+  "source": "Rdatasets (R package: HistData)",
+  "n_rows": "70",
+  "stratifying_columns_hint": "2 factor / 0 binary cols",
+  "download_url": "https://vincentarelbundock.github.io/Rdatasets/csv/HistData/DrinksWages.csv",
+  "documentation_url": "https://vincentarelbundock.github.io/Rdatasets/doc/HistData/DrinksWages.html",
+  "status": "skip",
+  "skip_reason": "Already aggregated counts (sober/drinks per trade group) with a continuous wage outcome \u2014 no individual-level binary outcome column exists. Cannot compute Successes/Cases per Treatment \u00d7 Stratum cell.",
+  "notes": [],
+  "files": [
+    "data.csv"
+  ]
+}

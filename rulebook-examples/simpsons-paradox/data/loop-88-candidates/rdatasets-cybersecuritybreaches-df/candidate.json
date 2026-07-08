@@ -1,0 +1,16 @@
+{
+  "candidate_id": "29",
+  "slug": "rdatasets-cybersecuritybreaches-df",
+  "dataset_name": "CyberSecurityBreaches_df",
+  "description": "Cybersecurity Breaches Reported to US Health Department",
+  "domain": "Criminal Justice",
+  "source": "Rdatasets (R package: crimedatasets)",
+  "n_rows": "1151",
+  "stratifying_columns_hint": "4 factor / 1 binary cols",
+  "download_url": "https://vincentarelbundock.github.io/Rdatasets/csv/crimedatasets/CyberSecurityBreaches_df.csv",
+  "documentation_url": "https://vincentarelbundock.github.io/Rdatasets/doc/crimedatasets/CyberSecurityBreaches_df.html",
+  "status": "skip",
+  "skip_reason": "Each row is a breach incident (not an individual), with no binary outcome per person. The only numeric outcome is Individuals.Affected (a continuous count), and there is no treatment/exposure variable. The dataset cannot be aggregated into Successes/Cases cells for Simpson's Paradox analysis.",
+  "download_notes": "HTTP 200 OK",
+  "notes": []
+}

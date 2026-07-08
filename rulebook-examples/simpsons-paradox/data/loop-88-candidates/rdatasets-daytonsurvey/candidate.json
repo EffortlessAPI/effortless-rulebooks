@@ -1,0 +1,18 @@
+{
+  "candidate_id": "50",
+  "slug": "rdatasets-daytonsurvey",
+  "dataset_name": "DaytonSurvey",
+  "description": "Dayton Student Survey on Substance Use",
+  "domain": "Categorical Data / Mixed",
+  "source": "Rdatasets (R package: vcdExtra)",
+  "n_rows": "32",
+  "stratifying_columns_hint": "5 factor / 5 binary cols",
+  "download_url": "https://vincentarelbundock.github.io/Rdatasets/csv/vcdExtra/DaytonSurvey.csv",
+  "documentation_url": "https://vincentarelbundock.github.io/Rdatasets/doc/vcdExtra/DaytonSurvey.html",
+  "status": "skip",
+  "skip_reason": "Already a pre-aggregated contingency table (32 rows = all combinations of cigarette \u00d7 alcohol \u00d7 marijuana \u00d7 sex \u00d7 race with Freq counts). No individual rows to aggregate differently. There is also no single natural binary outcome \u2014 all three substance columns (cigarette, alcohol, marijuana) are co-equal Yes/No variables with no clear treatment vs. outcome hierarchy.",
+  "notes": [],
+  "files": [
+    "data.csv"
+  ]
+}

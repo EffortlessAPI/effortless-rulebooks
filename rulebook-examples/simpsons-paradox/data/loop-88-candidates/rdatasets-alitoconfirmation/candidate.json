@@ -1,0 +1,18 @@
+{
+  "candidate_id": "86",
+  "slug": "rdatasets-alitoconfirmation",
+  "dataset_name": "AlitoConfirmation",
+  "description": "US Senate Votes on Samuel Alito for the Supreme Court",
+  "domain": "General Statistics Teaching",
+  "source": "Rdatasets (R package: Stat2Data)",
+  "n_rows": "100",
+  "stratifying_columns_hint": "4 factor / 3 binary cols",
+  "download_url": "https://vincentarelbundock.github.io/Rdatasets/csv/Stat2Data/AlitoConfirmation.csv",
+  "documentation_url": "https://vincentarelbundock.github.io/Rdatasets/doc/Stat2Data/AlitoConfirmation.html",
+  "status": "skip",
+  "skip_reason": "The dataset has a binary outcome (Vote 0/1) and a treatment (Party R/D), but the only potential stratifying variable is StateOpinion which is a continuous numeric percentage \u2014 there is no categorical stratum column. The dataset would require arbitrary binning of a continuous variable to create strata, making it unsuitable for a clean Simpson's Paradox cell aggregation.",
+  "notes": [],
+  "files": [
+    "data.csv"
+  ]
+}

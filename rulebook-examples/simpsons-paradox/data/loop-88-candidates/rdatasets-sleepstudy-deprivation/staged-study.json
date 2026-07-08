@@ -1,0 +1,30 @@
+{
+  "StudyId": "rdatasets-sleepstudy-deprivation",
+  "Title": "Sleep Deprivation and Reaction Time by Baseline Speed — Belenky et al. 2003",
+  "Source": "Belenky, G. et al. (2003). Patterns of performance degradation and restoration during sleep restriction. Journal of Sleep Research, 12(1), 1–12. R lme4::sleepstudy.",
+  "SourceUrl": "https://vincentarelbundock.github.io/Rdatasets/csv/lme4/sleepstudy.csv",
+  "PublicationYear": 2003,
+  "Domain": "psychology",
+  "IsSynthetic": false,
+  "IsControlStudy": true,
+  "ControlDomain": "psychology-cognitive",
+  "TraditionId": "tradition-dag",
+  "PrimaryResearcherId": "researcher-pearl",
+  "confounding_variable": "BaselineSpeed",
+  "causal_role": "allocation",
+  "note": "Late-period observations (days 6–9, high deprivation) produce more slow responses (>350ms) than early-period observations (days 0–3) in both fast-baseline and slow-baseline subject groups. Baseline speed confounds the grouping but does not reverse the deprivation effect. Slow-baseline subjects show higher impairment rates (46.9%) than fast-baseline subjects (32.5%) during late days, confirming rather than reversing the pooled result.",
+  "treatments": [
+    {"TreatmentLabel": "EarlyDays", "Description": "Sleep deprivation days 0–3 (baseline to mild deprivation)", "TotalCases": 72, "TotalSuccesses": 0},
+    {"TreatmentLabel": "LateDays", "Description": "Sleep deprivation days 6–9 (moderate to severe deprivation)", "TotalCases": 72, "TotalSuccesses": 28}
+  ],
+  "strata": [
+    {"StratumLabel": "FastBaseline", "Description": "Subjects with mean baseline reaction time < 270ms", "TotalCases": 80},
+    {"StratumLabel": "SlowBaseline", "Description": "Subjects with mean baseline reaction time >= 270ms", "TotalCases": 64}
+  ],
+  "cells": [
+    {"StratumLabel": "FastBaseline", "TreatmentLabel": "EarlyDays", "Cases": 40, "Successes": 0},
+    {"StratumLabel": "FastBaseline", "TreatmentLabel": "LateDays", "Cases": 40, "Successes": 13},
+    {"StratumLabel": "SlowBaseline", "TreatmentLabel": "EarlyDays", "Cases": 32, "Successes": 0},
+    {"StratumLabel": "SlowBaseline", "TreatmentLabel": "LateDays", "Cases": 32, "Successes": 15}
+  ]
+}

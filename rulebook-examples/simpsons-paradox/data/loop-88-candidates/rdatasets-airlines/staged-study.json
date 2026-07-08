@@ -1,0 +1,30 @@
+{
+  "StudyId": "rdatasets-airlines-ontime",
+  "Title": "Airline On-Time Performance: American vs Delta by Airport",
+  "Source": "Stat2Data R package — airline on-time data (from Moore DS et al., Practice of Statistics for Business and Economics)",
+  "SourceUrl": "https://vincentarelbundock.github.io/Rdatasets/doc/Stat2Data/Airlines.html",
+  "PublicationYear": 2019,
+  "Domain": "transportation",
+  "IsSynthetic": false,
+  "IsControlStudy": false,
+  "ControlDomain": "transportation",
+  "TraditionId": "tradition-dag",
+  "PrimaryResearcherId": "researcher-pearl",
+  "confounding_variable": "airport",
+  "causal_role": "allocation",
+  "note": "Simpson's paradox is present: Delta beats American within both LGA (76% vs 73%) and ORD (85% vs 84%), yet American appears better overall (80% vs 78%) because American has far more flights at ORD (the easier airport), distorting the pooled rate.",
+  "treatments": [
+    {"TreatmentLabel": "American", "Description": "American Airlines", "TotalCases": 7330, "TotalSuccesses": 5880},
+    {"TreatmentLabel": "Delta", "Description": "Delta Air Lines", "TotalCases": 3003, "TotalSuccesses": 2344}
+  ],
+  "strata": [
+    {"StratumLabel": "LGA", "Description": "LaGuardia Airport (New York)", "TotalCases": 4660},
+    {"StratumLabel": "ORD", "Description": "O'Hare International Airport (Chicago)", "TotalCases": 5673}
+  ],
+  "cells": [
+    {"StratumLabel": "LGA", "TreatmentLabel": "American", "Cases": 2276, "Successes": 1651},
+    {"StratumLabel": "ORD", "TreatmentLabel": "American", "Cases": 5054, "Successes": 4229},
+    {"StratumLabel": "LGA", "TreatmentLabel": "Delta", "Cases": 2384, "Successes": 1817},
+    {"StratumLabel": "ORD", "TreatmentLabel": "Delta", "Cases": 619, "Successes": 527}
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "StudyId": "rdatasets-ad-biomarkers-2011",
+  "Title": "Alzheimer's Disease Biomarker Study — APOE Genotype vs Cognitive Impairment",
+  "Source": "R package: NeuroDataSets/AD_biomarkers_tbl_df",
+  "SourceUrl": "https://vincentarelbundock.github.io/Rdatasets/doc/NeuroDataSets/AD_biomarkers_tbl_df.html",
+  "PublicationYear": 2011,
+  "Domain": "medicine",
+  "IsSynthetic": false,
+  "IsControlStudy": true,
+  "ControlDomain": "medicine-clinical",
+  "TraditionId": "tradition-dag",
+  "PrimaryResearcherId": "researcher-pearl",
+  "confounding_variable": "sex (male=0/1)",
+  "causal_role": "allocation",
+  "note": "E4-carrier status is a genetic risk factor for AD and sex may influence both carrier frequency and impairment rate, but the causal direction runs from genotype to impairment rather than through a collider, so no Simpson's paradox reversal is expected.",
+  "treatments": [
+    {"TreatmentLabel": "E4-carrier", "Description": "APOE genotype carrying at least one E4 allele (E2E4, E3E4, E4E4)", "TotalCases": 127, "TotalSuccesses": 50},
+    {"TreatmentLabel": "non-E4", "Description": "APOE genotype with no E4 allele (E2E2, E2E3, E3E3)", "TotalCases": 206, "TotalSuccesses": 41}
+  ],
+  "strata": [
+    {"StratumLabel": "Female", "Description": "Participants with male=0", "TotalCases": 204},
+    {"StratumLabel": "Male", "Description": "Participants with male=1", "TotalCases": 129}
+  ],
+  "cells": [
+    {"StratumLabel": "Female", "TreatmentLabel": "E4-carrier", "Cases": 82, "Successes": 30},
+    {"StratumLabel": "Female", "TreatmentLabel": "non-E4", "Cases": 122, "Successes": 17},
+    {"StratumLabel": "Male", "TreatmentLabel": "E4-carrier", "Cases": 45, "Successes": 20},
+    {"StratumLabel": "Male", "TreatmentLabel": "non-E4", "Cases": 84, "Successes": 24}
+  ]
+}

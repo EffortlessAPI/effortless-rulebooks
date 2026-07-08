@@ -1,0 +1,24 @@
+{
+  "candidate_id": "115",
+  "slug": "rdatasets-covid19-age-stratified-cfr",
+  "dataset_name": "covid19_age_stratified_cfr",
+  "description": "Age-stratified COVID-19 case/fatality data, 11 countries + Diamond Princess, >750k cases",
+  "domain": "Epidemiology",
+  "source": "von K\u00fcgelgen et al. 2020 (verified GitHub repo)",
+  "n_rows": "756004",
+  "stratifying_columns_hint": "age group, country, date",
+  "download_url": "https://github.com/Juliusvk/Covid19-age-related-causal-effects",
+  "documentation_url": "https://arxiv.org/abs/2005.07180",
+  "status": "needs-data",
+  "skip_reason": null,
+  "notes": [],
+  "files": [
+    "data.csv"
+  ],
+  "proposed_study_id": "covid19-age-stratified-cfr-2020",
+  "proposed_title": "COVID-19 Age-Stratified Case Fatality Rates by Country (2020)",
+  "binary_outcome": "fatality (derived: died vs survived)",
+  "treatment_variable": "Country",
+  "stratum_variable": "Age group",
+  "encoding_note": "Already aggregated: Cases = \"Confirmed cases\", Successes = \"Confirmed cases\" - \"Confirmed fatalities\" (survivors). Treatment = Country (multiple levels), Stratum = Age group (0-9, 10-19, ..., 80+). Simpson's paradox arises when comparing CFR across countries with different age distributions."
+}

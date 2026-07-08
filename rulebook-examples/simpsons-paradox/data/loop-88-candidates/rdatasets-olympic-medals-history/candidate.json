@@ -1,0 +1,24 @@
+{
+  "candidate_id": "150",
+  "slug": "rdatasets-olympic-medals-history",
+  "dataset_name": "olympic_medals_history",
+  "description": "Olympic Medal History by Country Development & Sport Category",
+  "domain": "Historical / Social Science",
+  "source": "Kaggle / IOC (verified)",
+  "n_rows": "270000+",
+  "stratifying_columns_hint": "country_development_level, sport_category, era",
+  "download_url": "https://www.kaggle.com/datasets/heesoo37/olympic-history-data",
+  "documentation_url": "https://www.kaggle.com/datasets/heesoo37/olympic-history-data",
+  "status": "needs-data",
+  "skip_reason": null,
+  "notes": [],
+  "files": [
+    "data.csv"
+  ],
+  "proposed_study_id": "rdatasets-olympic-medals-sex-season",
+  "proposed_title": "Olympic Medals by Sex and Season (1896\u20132016)",
+  "binary_outcome": "Medal",
+  "treatment_variable": "Sex",
+  "stratum_variable": "Season",
+  "encoding_note": "Success = Medal is not NA (any medal won); Cases = all athlete-event rows. Treatment = Sex (M/F); Stratum = Season (Summer/Winter). Aggregate to count Successes and Cases per (Sex \u00d7 Season) cell. Era or Sport can serve as an alternative stratum."
+}

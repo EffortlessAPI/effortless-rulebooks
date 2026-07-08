@@ -1,0 +1,25 @@
+{
+  "candidate_id": "121",
+  "slug": "rdatasets-uci-student-performance",
+  "dataset_name": "uci_student_performance",
+  "description": "Secondary school student performance in two Portuguese schools",
+  "domain": "Education",
+  "source": "UCI ML Repository (verified)",
+  "n_rows": "649",
+  "stratifying_columns_hint": "school, sex, study time",
+  "download_url": "https://archive.ics.uci.edu/dataset/320/student+performance",
+  "documentation_url": "https://archive.ics.uci.edu/dataset/320/student+performance",
+  "status": "needs-data",
+  "skip_reason": null,
+  "notes": [],
+  "files": [
+    "student-por.csv",
+    "student-mat.csv"
+  ],
+  "proposed_study_id": "uci-student-performance-math-2008",
+  "proposed_title": "UCI Student Performance in Math (Portugal, 2008)",
+  "binary_outcome": "G3",
+  "treatment_variable": "studytime",
+  "stratum_variable": "school",
+  "encoding_note": "Binarize G3 (final grade 0-20): pass = G3 >= 10, fail = G3 < 10. Treatment = studytime (1=less than 2hrs, 2=2-5hrs, 3=5-10hrs, 4=>10hrs; can group into low=1-2 vs high=3-4). Stratum = school (GP or MS). Aggregate Successes/Cases per (studytime \u00d7 school) cell."
+}

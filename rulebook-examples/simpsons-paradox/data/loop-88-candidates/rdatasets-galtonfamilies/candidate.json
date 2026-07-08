@@ -1,0 +1,18 @@
+{
+  "candidate_id": "59",
+  "slug": "rdatasets-galtonfamilies",
+  "dataset_name": "GaltonFamilies",
+  "description": "Galton's data on the heights of parents and their children, by child",
+  "domain": "Historical / Social Science",
+  "source": "Rdatasets (R package: HistData)",
+  "n_rows": "934",
+  "stratifying_columns_hint": "2 factor / 1 binary cols",
+  "download_url": "https://vincentarelbundock.github.io/Rdatasets/csv/HistData/GaltonFamilies.csv",
+  "documentation_url": "https://vincentarelbundock.github.io/Rdatasets/doc/HistData/GaltonFamilies.html",
+  "status": "skip",
+  "skip_reason": "All outcome variables are continuous (childHeight, midparentHeight, father, mother heights). No binary outcome exists. This is a classic regression dataset with no natural success/failure encoding suitable for Simpson's Paradox cell aggregation.",
+  "notes": [],
+  "files": [
+    "data.csv"
+  ]
+}

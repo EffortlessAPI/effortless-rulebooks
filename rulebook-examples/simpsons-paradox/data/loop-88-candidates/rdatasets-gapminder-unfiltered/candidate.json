@@ -1,0 +1,18 @@
+{
+  "candidate_id": "109",
+  "slug": "rdatasets-gapminder-unfiltered",
+  "dataset_name": "gapminder_unfiltered",
+  "description": "Gapminder data, unfiltered.",
+  "domain": "Economics/Labor",
+  "source": "Rdatasets (R package: gapminder)",
+  "n_rows": "3313",
+  "stratifying_columns_hint": "2 factor / 0 binary cols",
+  "download_url": "https://vincentarelbundock.github.io/Rdatasets/csv/gapminder/gapminder_unfiltered.csv",
+  "documentation_url": "https://vincentarelbundock.github.io/Rdatasets/doc/gapminder/gapminder_unfiltered.html",
+  "status": "skip",
+  "skip_reason": "Gapminder panel data: all outcomes (lifeExp, pop, gdpPercap) are continuous. No binary outcome, no treatment/exposure grouping, and no individual-level records to aggregate. Country-year time series only.",
+  "notes": [],
+  "files": [
+    "data.csv"
+  ]
+}

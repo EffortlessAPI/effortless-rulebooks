@@ -1,0 +1,18 @@
+{
+  "candidate_id": "95",
+  "slug": "rdatasets-ames",
+  "dataset_name": "ames",
+  "description": "Housing prices in Ames, Iowa",
+  "domain": "General Statistics Teaching",
+  "source": "Rdatasets (R package: openintro)",
+  "n_rows": "2930",
+  "stratifying_columns_hint": "43 factor / 3 binary cols",
+  "download_url": "https://vincentarelbundock.github.io/Rdatasets/csv/openintro/ames.csv",
+  "documentation_url": "https://vincentarelbundock.github.io/Rdatasets/doc/openintro/ames.html",
+  "status": "skip",
+  "skip_reason": "Ames Housing dataset \u2014 the outcome variable is sale price (continuous numeric), a classic regression target. There is no binary outcome column (pass/fail, yes/no, survived/died). No viable binary encoding exists without arbitrary thresholding.",
+  "notes": [],
+  "files": [
+    "data.csv"
+  ]
+}

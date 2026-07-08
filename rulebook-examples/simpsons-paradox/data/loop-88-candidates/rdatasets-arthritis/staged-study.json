@@ -1,0 +1,30 @@
+{
+  "StudyId": "rdatasets-arthritis-1984",
+  "Title": "Arthritis Treatment Trial (Koch & Edwards 1988)",
+  "Source": "Koch GG, Edwards S (1988). J Biopharm Stat. R package: vcd/Arthritis",
+  "SourceUrl": "https://vincentarelbundock.github.io/Rdatasets/doc/vcd/Arthritis.html",
+  "PublicationYear": 1984,
+  "Domain": "medicine",
+  "IsSynthetic": false,
+  "IsControlStudy": true,
+  "ControlDomain": "medicine-rct",
+  "TraditionId": "tradition-dag",
+  "PrimaryResearcherId": "researcher-pearl",
+  "confounding_variable": "Sex",
+  "causal_role": "allocation",
+  "note": "No Simpson's paradox is expected: the treatment effect (Treated > Placebo) holds in both Male and Female strata, so the pooled and stratum-specific conclusions agree.",
+  "treatments": [
+    {"TreatmentLabel": "Treated", "Description": "Active treatment arm", "TotalCases": 41, "TotalSuccesses": 28},
+    {"TreatmentLabel": "Placebo", "Description": "Placebo control arm", "TotalCases": 43, "TotalSuccesses": 14}
+  ],
+  "strata": [
+    {"StratumLabel": "Female", "Description": "Female patients", "TotalCases": 59},
+    {"StratumLabel": "Male", "Description": "Male patients", "TotalCases": 25}
+  ],
+  "cells": [
+    {"StratumLabel": "Female", "TreatmentLabel": "Treated", "Cases": 27, "Successes": 21},
+    {"StratumLabel": "Female", "TreatmentLabel": "Placebo", "Cases": 32, "Successes": 13},
+    {"StratumLabel": "Male", "TreatmentLabel": "Treated", "Cases": 14, "Successes": 7},
+    {"StratumLabel": "Male", "TreatmentLabel": "Placebo", "Cases": 11, "Successes": 1}
+  ]
+}

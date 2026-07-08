@@ -1,0 +1,18 @@
+{
+  "candidate_id": "101",
+  "slug": "rdatasets-acorsi-grayleafspot",
+  "dataset_name": "acorsi.grayleafspot",
+  "description": "Multi-environment trial evaluating 36 maize genotypes in 9 locations",
+  "domain": "General Statistics Teaching",
+  "source": "Rdatasets (R package: agridat)",
+  "n_rows": "648",
+  "stratifying_columns_hint": "3 factor / 1 binary cols",
+  "download_url": "https://vincentarelbundock.github.io/Rdatasets/csv/agridat/acorsi.grayleafspot.csv",
+  "documentation_url": "https://vincentarelbundock.github.io/Rdatasets/doc/agridat/acorsi.grayleafspot.html",
+  "status": "skip",
+  "skip_reason": "The outcome column `y` is a continuous disease severity proportion (0 to 1 scale, e.g. 1e-4, 0.1, 0.2, 0.3) from an agricultural gray leaf spot trial. There is no binary outcome \u2014 it cannot be cast into Successes/Cases counts without arbitrary thresholding. SKIP.",
+  "notes": [],
+  "files": [
+    "data.csv"
+  ]
+}

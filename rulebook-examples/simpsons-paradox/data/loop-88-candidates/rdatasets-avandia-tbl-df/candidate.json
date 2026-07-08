@@ -1,0 +1,16 @@
+{
+  "candidate_id": "10",
+  "slug": "rdatasets-avandia-tbl-df",
+  "dataset_name": "avandia_tbl_df",
+  "description": "Cardiovascular Problems for Two Types of Diabetes Medicines",
+  "domain": "Medicine/Clinical",
+  "source": "Rdatasets (R package: MedDataSets)",
+  "n_rows": "227571",
+  "stratifying_columns_hint": "2 factor / 2 binary cols",
+  "download_url": "https://vincentarelbundock.github.io/Rdatasets/csv/MedDataSets/avandia_tbl_df.csv",
+  "documentation_url": "https://vincentarelbundock.github.io/Rdatasets/doc/MedDataSets/avandia_tbl_df.html",
+  "status": "skip",
+  "skip_reason": "Dataset has only two columns (treatment and cardiovascular_problems binary outcome) \u2014 no stratifying variable present. Cannot compute Simpson's Paradox cells without a confounder/stratum column.",
+  "download_notes": "HTTP 200 OK",
+  "notes": []
+}

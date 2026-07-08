@@ -1,0 +1,30 @@
+{
+  "StudyId": "olympic-medals-sex-sport-2016",
+  "Title": "Olympic Medal Rates by Sex and Sport Category (1896–2016)",
+  "Source": "Kaggle 120 Years of Olympic History dataset. IOC records.",
+  "SourceUrl": "https://www.kaggle.com/datasets/heesoo37/olympic-history-data",
+  "PublicationYear": 2016,
+  "Domain": "sports",
+  "IsSynthetic": false,
+  "IsControlStudy": true,
+  "ControlDomain": "sports-individual",
+  "TraditionId": "tradition-dag",
+  "PrimaryResearcherId": "researcher-pearl",
+  "confounding_variable": "Season",
+  "causal_role": "allocation",
+  "note": "No Simpson's paradox is expected here because male athletes dominate both Summer and Winter seasons, and medal rates for men remain higher than women within each season stratum, so aggregation preserves the within-stratum direction.",
+  "treatments": [
+    {"TreatmentLabel": "F", "Description": "Female athletes", "TotalCases": 74522, "TotalSuccesses": 11253},
+    {"TreatmentLabel": "M", "Description": "Male athletes", "TotalCases": 196594, "TotalSuccesses": 28530}
+  ],
+  "strata": [
+    {"StratumLabel": "Summer", "Description": "Summer Olympic Games", "TotalCases": 222552},
+    {"StratumLabel": "Winter", "Description": "Winter Olympic Games", "TotalCases": 48564}
+  ],
+  "cells": [
+    {"StratumLabel": "Summer", "TreatmentLabel": "F", "Cases": 59443, "Successes": 9442},
+    {"StratumLabel": "Winter", "TreatmentLabel": "F", "Cases": 15079, "Successes": 1811},
+    {"StratumLabel": "Summer", "TreatmentLabel": "M", "Cases": 163109, "Successes": 24646},
+    {"StratumLabel": "Winter", "TreatmentLabel": "M", "Cases": 33485, "Successes": 3884}
+  ]
+}

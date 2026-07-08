@@ -352,7 +352,7 @@ effortless-ntwf:cellSuccessRate a owl:DatatypeProperty ;
     rdfs:domain effortless-ntwf:CaseCells ;
     rdfs:range xsd:string ;
     rdfs:label "CellSuccessRate" ;
-    rdfs:comment "Success rate within this cell: Successes / Cases. The first derived fact in the DAG." .
+    rdfs:comment "Success rate within this cell: Successes / Cases. The first derived fact in the DAG. Fixed loop-90: this rulebook's IF(x=0,\"\",...) idiom transpiles to a bare ''::numeric cast that errors at runtime for the one CaseCells row with Cases=0 (surfaced only once _erb_tr_metrics stopped masking it). Returns 0 for the degenerate zero-cases cell instead." .
     # calculated: calculated
 
 effortless-ntwf:totalCasesForTreatment a owl:DatatypeProperty ;
@@ -561,6 +561,50 @@ effortless-ntwf:studyCount a owl:DatatypeProperty ;
     rdfs:comment "Studies with a StratumVariable mapped to this identity." .
     # calculated: aggregation
 
+# === Class: CorpusBalance ===
+effortless-ntwf:CorpusBalance a owl:Class ;
+    rdfs:label "CorpusBalance" .
+
+effortless-ntwf:balanceId a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:CorpusBalance ;
+    rdfs:range xsd:string ;
+    rdfs:label "BalanceId" ;
+    rdfs:comment "Primary key (singleton: 'corpus-balance')" .
+
+effortless-ntwf:name a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "Name" ;
+    rdfs:comment "=BalanceId" .
+    # calculated: calculated
+
+effortless-ntwf:totalStudyCount a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:CorpusBalance ;
+    rdfs:range xsd:integer ;
+    rdfs:label "TotalStudyCount" ;
+    rdfs:comment "Total studies in corpus (Simpson + control). Fixed loop-90: was authored with COUNTA/bareword refs and an uppercase Formula key, which the transpiler cannot parse. COUNTIFS(...,\"<>\") also mistranslates (known transpiler bug: literal '<>' string instead of IS NOT NULL), so this is expressed as SimpsonStudyCount + ControlStudyCount instead." .
+    # calculated: calculated
+
+effortless-ntwf:simpsonStudyCount a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:CorpusBalance ;
+    rdfs:range xsd:integer ;
+    rdfs:label "SimpsonStudyCount" ;
+    rdfs:comment "Studies where IsControlStudy=FALSE. Fixed loop-90 (see TotalStudyCount)." .
+    # calculated: aggregation
+
+effortless-ntwf:controlStudyCount a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:CorpusBalance ;
+    rdfs:range xsd:integer ;
+    rdfs:label "ControlStudyCount" ;
+    rdfs:comment "Studies where IsControlStudy=TRUE. Fixed loop-90 (see TotalStudyCount)." .
+    # calculated: aggregation
+
+effortless-ntwf:controlFraction a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:CorpusBalance ;
+    rdfs:range xsd:string ;
+    rdfs:label "ControlFraction" ;
+    rdfs:comment "ControlStudyCount / TotalStudyCount. Fixed loop-90 (see TotalStudyCount); returns 0 for the degenerate empty-corpus edge instead of \"\" (see TreatmentRankings.DistortionRatio for why IF(x=0,\"\",...) is unsafe on a numeric-typed field)." .
+    # calculated: calculated
+
 # === Class: CorpusCatalogSummary ===
 effortless-ntwf:CorpusCatalogSummary a owl:Class ;
     rdfs:label "CorpusCatalogSummary" ;
@@ -582,7 +626,7 @@ effortless-ntwf:totalCatalogEntries a owl:DatatypeProperty ;
     rdfs:domain effortless-ntwf:CorpusCatalogSummary ;
     rdfs:range xsd:integer ;
     rdfs:label "TotalCatalogEntries" ;
-    rdfs:comment "All catalog rows." .
+    rdfs:comment "All catalog rows. Fixed loop-90 (see IngestionSummary.ProtocolItemCount for why COUNTIFS(...,\"<>\") is unsafe)." .
     # calculated: aggregation
 
 effortless-ntwf:importedCount a owl:DatatypeProperty ;
@@ -1108,14 +1152,14 @@ effortless-ntwf:protocolItemCount a owl:DatatypeProperty ;
     rdfs:domain effortless-ntwf:IngestionSummary ;
     rdfs:range xsd:integer ;
     rdfs:label "ProtocolItemCount" ;
-    rdfs:comment "Total contract items." .
+    rdfs:comment "Total contract items. Fixed loop-90: COUNTIFS(...,\"<>\") mistranslates to a literal '<>' string-equality filter (a known transpiler bug) instead of IS NOT NULL, always returning 0; replaced with bare COUNT(), which transpiles correctly." .
     # calculated: aggregation
 
 effortless-ntwf:corpusCellCount a owl:DatatypeProperty ;
     rdfs:domain effortless-ntwf:IngestionSummary ;
     rdfs:range xsd:integer ;
     rdfs:label "CorpusCellCount" ;
-    rdfs:comment "Total CaseCell rows." .
+    rdfs:comment "Total CaseCell rows. Fixed loop-90 (see ProtocolItemCount)." .
     # calculated: aggregation
 
 effortless-ntwf:validCellCount a owl:DatatypeProperty ;
@@ -1135,7 +1179,7 @@ effortless-ntwf:allCellsValid a owl:DatatypeProperty ;
 effortless-ntwf:studyCount a owl:DatatypeProperty ;
     rdfs:range xsd:integer ;
     rdfs:label "StudyCount" ;
-    rdfs:comment "Total studies." .
+    rdfs:comment "Total studies. Fixed loop-90 (see IngestionSummary.ProtocolItemCount for why COUNTIFS(...,\"<>\") is unsafe)." .
     # calculated: aggregation
 
 effortless-ntwf:structuralCompliantCount a owl:DatatypeProperty ;
@@ -1678,7 +1722,7 @@ effortless-ntwf:avgSignalPurity a owl:DatatypeProperty ;
     rdfs:domain effortless-ntwf:ModelSummary ;
     rdfs:range xsd:string ;
     rdfs:label "AvgSignalPurity" ;
-    rdfs:comment "Average SignalPurity across all TreatmentRankings. Below 0.5 means allocation noise exceeds true signal on average — the corpus is predominantly misleading at the pooled level. Above 0.5 means the corpus is predominantly trustworthy." .
+    rdfs:comment "Average SignalPurity across all TreatmentRankings. Below 0.5 means allocation noise exceeds true signal on average — the corpus is predominantly misleading at the pooled level. Above 0.5 means the corpus is predominantly trustworthy. Fixed loop-90: COUNTIFS(...,\"<>\")/SUMIFS(...,\"<>\") mistranslate to a literal '<>' string-equality filter (a known transpiler bug), always returning 0/NULL; replaced with SUM/COUNT, both of which transpile correctly." .
     # calculated: aggregation
 
 effortless-ntwf:sweepCorrectedGapMax a owl:DatatypeProperty ;
@@ -1706,59 +1750,59 @@ effortless-ntwf:sweepPooledGapRange a owl:DatatypeProperty ;
     # calculated: aggregation
 
 effortless-ntwf:realStudyCount a owl:DatatypeProperty ;
-    rdfs:range xsd:string ;
+    rdfs:range xsd:integer ;
     rdfs:label "RealStudyCount" ;
-    rdfs:comment "Number of real (non-synthetic) published studies in the corpus." .
-    # calculated: raw
+    rdfs:comment "Number of real (non-synthetic) published studies in the corpus. Retyped loop-90: was mis-declared raw with a formula, which is why the transpiler emitted no native function and 02b had to hand-write calc_model_summary_real_study_count." .
+    # calculated: aggregation
 
 effortless-ntwf:avgSignalPurityReversal a owl:DatatypeProperty ;
     rdfs:domain effortless-ntwf:ModelSummary ;
     rdfs:range xsd:string ;
     rdfs:label "AvgSignalPurityReversal" ;
-    rdfs:comment "Average SignalPurity across reversal studies (type A and B). Theorem predicts this must be < 0.5." .
-    # calculated: raw
+    rdfs:comment "Average SignalPurity across reversal studies (type A and B). Theorem predicts this must be < 0.5. Retyped loop-90 (see RealStudyCount); rewritten from SUMIFS/COUNTIFS division to AVERAGEIFS because the SUMIFS/COUNTIFS division form transpiled with a mangled cross-table alias." .
+    # calculated: calculated
 
 effortless-ntwf:avgSignalPurityNonReversal a owl:DatatypeProperty ;
     rdfs:domain effortless-ntwf:ModelSummary ;
     rdfs:range xsd:string ;
     rdfs:label "AvgSignalPurityNonReversal" ;
-    rdfs:comment "Average SignalPurity across non-reversal studies (type C+, C-, D). Theorem predicts this must be >= 0.5 except edge cases." .
-    # calculated: raw
+    rdfs:comment "Average SignalPurity across non-reversal studies (type C+, C-, D). Theorem predicts this must be >= 0.5 except edge cases. Retyped loop-90 (see RealStudyCount); rewritten from SUMIFS/COUNTIFS division to AVERAGEIFS (see AvgSignalPurityReversal)." .
+    # calculated: calculated
 
 effortless-ntwf:signalPurityGap a owl:DatatypeProperty ;
     rdfs:domain effortless-ntwf:ModelSummary ;
     rdfs:range xsd:string ;
     rdfs:label "SignalPurityGap" ;
-    rdfs:comment "Separation between reversal and non-reversal average SignalPurity. The larger this gap, the more discriminating the threshold at 0.5." .
-    # calculated: raw
+    rdfs:comment "Separation between reversal and non-reversal average SignalPurity. The larger this gap, the more discriminating the threshold at 0.5. Retyped loop-90 (see RealStudyCount)." .
+    # calculated: calculated
 
 effortless-ntwf:medicineStudyCount a owl:DatatypeProperty ;
     rdfs:domain effortless-ntwf:ModelSummary ;
-    rdfs:range xsd:string ;
+    rdfs:range xsd:integer ;
     rdfs:label "MedicineStudyCount" ;
-    rdfs:comment "Real published studies in the medicine domain." .
-    # calculated: raw
+    rdfs:comment "Real published studies in the medicine domain. Retyped loop-90 (see RealStudyCount)." .
+    # calculated: aggregation
 
 effortless-ntwf:epidemiologyStudyCount a owl:DatatypeProperty ;
     rdfs:domain effortless-ntwf:ModelSummary ;
-    rdfs:range xsd:string ;
+    rdfs:range xsd:integer ;
     rdfs:label "EpidemiologyStudyCount" ;
-    rdfs:comment "Real published studies in the epidemiology domain." .
-    # calculated: raw
+    rdfs:comment "Real published studies in the epidemiology domain. Retyped loop-90 (see RealStudyCount)." .
+    # calculated: aggregation
 
 effortless-ntwf:otherDomainStudyCount a owl:DatatypeProperty ;
     rdfs:domain effortless-ntwf:ModelSummary ;
-    rdfs:range xsd:string ;
+    rdfs:range xsd:integer ;
     rdfs:label "OtherDomainStudyCount" ;
-    rdfs:comment "Real published studies outside medicine and epidemiology (sports, legal, education, social-science)." .
-    # calculated: raw
+    rdfs:comment "Real published studies outside medicine and epidemiology (sports, legal, education, social-science). Retyped loop-90 (see RealStudyCount)." .
+    # calculated: calculated
 
 effortless-ntwf:domainDiversityNote a owl:DatatypeProperty ;
     rdfs:domain effortless-ntwf:ModelSummary ;
     rdfs:range xsd:string ;
     rdfs:label "DomainDiversityNote" ;
-    rdfs:comment "Human-readable domain breakdown. Witnesses corpus diversity — a prerequisite for cross-domain SignalPurity claims." .
-    # calculated: raw
+    rdfs:comment "Human-readable domain breakdown. Witnesses corpus diversity — a prerequisite for cross-domain SignalPurity claims. Retyped loop-90 (see RealStudyCount); TEXT(...,\"0%\") is not a supported transpiler function, replaced with ROUND(x*100,0) + literal '%'." .
+    # calculated: calculated
 
 effortless-ntwf:syntheticPhaseCount a owl:DatatypeProperty ;
     rdfs:domain effortless-ntwf:ModelSummary ;
@@ -1782,7 +1826,7 @@ effortless-ntwf:ingestionProtocolItemCount a owl:DatatypeProperty ;
     rdfs:domain effortless-ntwf:ModelSummary ;
     rdfs:range xsd:integer ;
     rdfs:label "IngestionProtocolItemCount" ;
-    rdfs:comment "Number of rows in IngestionProtocol — the documented contract items." .
+    rdfs:comment "Number of rows in IngestionProtocol — the documented contract items. Fixed loop-90 (see IngestionSummary.ProtocolItemCount for why COUNTIFS(...,\"<>\") is unsafe)." .
     # calculated: aggregation
 
 effortless-ntwf:corpusPassesIngestionContract a owl:DatatypeProperty ;
@@ -1872,18 +1916,32 @@ effortless-ntwf:economicsSignFlipCount a owl:DatatypeProperty ;
     rdfs:comment "Sign-flip count in economics domain." .
     # calculated: calculated
 
+effortless-ntwf:sumPooledGapLatentD a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:ModelSummary ;
+    rdfs:range xsd:string ;
+    rdfs:label "SumPooledGapLatentD" ;
+    rdfs:comment "SUM(PooledGap) among Type-D studies with latent flip potential — a bare, unwrapped SUMIFS split out as its own field because nesting a cross-table SUMIFS/AVERAGEIFS as an operand inside another IF/division expression transpiles with a mangled WHERE-clause column alias (e.g. rankings_latent_flip_potential) that errors at runtime; a bare top-level SUMIFS transpiles correctly (loop-90)." .
+    # calculated: aggregation
+
 effortless-ntwf:avgPooledGapLatentD a owl:DatatypeProperty ;
     rdfs:domain effortless-ntwf:ModelSummary ;
     rdfs:range xsd:string ;
     rdfs:label "AvgPooledGapLatentD" ;
-    rdfs:comment "Average PooledGap among Type-D studies with latent flip potential." .
+    rdfs:comment "Average PooledGap among Type-D studies with latent flip potential. Fixed loop-90 (see SumPooledGapLatentD for why the sum is split into its own field)." .
     # calculated: calculated
+
+effortless-ntwf:sumPooledGapStableD a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:ModelSummary ;
+    rdfs:range xsd:string ;
+    rdfs:label "SumPooledGapStableD" ;
+    rdfs:comment "SUM(PooledGap) among allocation-stable Type-D studies — split out as a bare field for the same reason as SumPooledGapLatentD." .
+    # calculated: aggregation
 
 effortless-ntwf:avgPooledGapStableD a owl:DatatypeProperty ;
     rdfs:domain effortless-ntwf:ModelSummary ;
     rdfs:range xsd:string ;
     rdfs:label "AvgPooledGapStableD" ;
-    rdfs:comment "Average PooledGap among allocation-stable Type-D studies." .
+    rdfs:comment "Average PooledGap among allocation-stable Type-D studies. Fixed loop-90 (see SumPooledGapLatentD)." .
     # calculated: calculated
 
 effortless-ntwf:epidemiologyAvgDistortion a owl:DatatypeProperty ;
@@ -2279,6 +2337,27 @@ effortless-ntwf:geographicTypeDFraction a owl:DatatypeProperty ;
     rdfs:range xsd:string ;
     rdfs:label "GeographicTypeDFraction" ;
     rdfs:comment "Type-D fraction for geographic-composition identity." .
+    # calculated: calculated
+
+effortless-ntwf:domainFlipGapSurvivesGeometryControl a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:ModelSummary ;
+    rdfs:range xsd:boolean ;
+    rdfs:label "DomainFlipGapSurvivesGeometryControl" ;
+    rdfs:comment "TRUE when the economics-vs-epidemiology sign-flip-rate gap for H-domain-flip-geometry-controlled survives after restricting to high-imbalance studies (loop-90 native promotion of the former 02b hand function)." .
+    # calculated: calculated
+
+effortless-ntwf:corpusPatternSupersededFailCount a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:ModelSummary ;
+    rdfs:range xsd:integer ;
+    rdfs:label "CorpusPatternSupersededFailCount" ;
+    rdfs:comment "Count of DiscoveryFindings rows for the 6 superseded-pattern hypotheses (H-econ-zero, H-domain-dist, H-catalog-flip-prediction, H-domain-flip-geometry-controlled, H-econ-encoding-selection, H-domain-profiles-stable) where IsConfirmed=FALSE. Six separate COUNTIFS summed with '+' because this rulebook's formula vocabulary has no IN-list/pipe-delimited OR criterion for COUNTIFS (loop-90 native promotion of the former 02b hand function)." .
+    # calculated: calculated
+
+effortless-ntwf:expansionWave3DiscoveryNote a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:ModelSummary ;
+    rdfs:range xsd:string ;
+    rdfs:label "ExpansionWave3DiscoveryNote" ;
+    rdfs:comment "Expansion-wave-3 supersession-audit synthesis rollup (loop-78, promoted to native loop-90)." .
     # calculated: calculated
 
 # === Class: PhaseDiagramSummary ===
@@ -2823,6 +2902,20 @@ effortless-ntwf:weightedStratumGap a owl:DatatypeProperty ;
     rdfs:comment "StratumGap × StratumFraction: the contribution of this stratum's treatment-rate difference to the equal-weight pooled gap. Summing WeightedStratumGap across all TreatmentA rows for a study gives WeightedStratumGapSum — the pooled gap the study would show under balanced allocation. This is the per-stratum building block of the sign-flip test." .
     # calculated: calculated
 
+effortless-ntwf:absAllocationBias a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:StratumSummaries ;
+    rdfs:range xsd:string ;
+    rdfs:label "AbsAllocationBias" ;
+    rdfs:comment "ABS(AllocationBias). MAXIFS-friendly unsigned magnitude so TreatmentRankings.MaxStratumImbalance can compute live via MAXIFS instead of a hand-written cache." .
+    # calculated: calculated
+
+effortless-ntwf:absStratumGap a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:StratumSummaries ;
+    rdfs:range xsd:string ;
+    rdfs:label "AbsStratumGap" ;
+    rdfs:comment "ABS(StratumGap). MAXIFS-friendly unsigned magnitude so TreatmentRankings.MaxStratumGap can compute live via MAXIFS instead of a hand-written cache." .
+    # calculated: calculated
+
 # === Class: StratumVariableIdentityMaps ===
 effortless-ntwf:StratumVariableIdentityMaps a owl:Class ;
     rdfs:label "StratumVariableIdentityMaps" ;
@@ -3087,6 +3180,18 @@ effortless-ntwf:ingestionCompliance a owl:DatatypeProperty ;
     rdfs:label "IngestionCompliance" ;
     rdfs:comment "all | partial | exempt-synthetic." .
     # calculated: calculated
+
+effortless-ntwf:isControlStudy a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:Studies ;
+    rdfs:range xsd:boolean ;
+    rdfs:label "IsControlStudy" ;
+    rdfs:comment "TRUE if this study is a control (no Simpson's paradox expected/found); FALSE for the main Simpson's Paradox corpus." .
+
+effortless-ntwf:controlDomain a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:Studies ;
+    rdfs:range xsd:string ;
+    rdfs:label "ControlDomain" ;
+    rdfs:comment "Domain slug for control studies (e.g. medicine-rct, education-higher). NULL for non-control studies." .
 
 # === Class: StudyImportTemplate ===
 effortless-ntwf:StudyImportTemplate a owl:Class ;
@@ -3803,8 +3908,22 @@ effortless-ntwf:allocationFragility a owl:DatatypeProperty ;
     rdfs:domain effortless-ntwf:TreatmentRankings ;
     rdfs:range xsd:string ;
     rdfs:label "AllocationFragility" ;
-    rdfs:comment "SweepPooledGapRange divided by |PooledGap|. High values mean small observed effect but wide counterfactual wander." .
+    rdfs:comment "SweepPooledGapRange divided by |PooledGap|. High values mean small observed effect but wide counterfactual wander. Fixed loop-90: this rulebook's IF(x=\"\",\"\",...) blank-on-degenerate idiom transpiles to a bare ''::numeric cast that errors at runtime the moment a live row genuinely has PooledGap=0 (surfaced only once _erb_tr_metrics, which masked this row, was eliminated). Returns 0 for the degenerate case instead — see TreatmentRankings.DistortionRatio for the same fix pattern." .
     # calculated: calculated
+
+effortless-ntwf:maxStratumImbalance a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:TreatmentRankings ;
+    rdfs:range xsd:string ;
+    rdfs:label "MaxStratumImbalance" ;
+    rdfs:comment "MAXIFS(StratumSummaries.AbsAllocationBias) over rows where Study matches and TreatmentLabel='A' — the largest allocation-share skew any single stratum shows for this study. Live aggregation; replaces the former hand-written _erb_tr_metrics cache column of the same name." .
+    # calculated: aggregation
+
+effortless-ntwf:maxStratumGap a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:TreatmentRankings ;
+    rdfs:range xsd:string ;
+    rdfs:label "MaxStratumGap" ;
+    rdfs:comment "MAXIFS(StratumSummaries.AbsStratumGap) over rows where Study matches and TreatmentLabel='A' — the largest within-stratum rate gap for this study. Live aggregation; replaces the former hand-written _erb_tr_metrics cache column of the same name." .
+    # calculated: aggregation
 
 effortless-ntwf:isSweepFragile a owl:DatatypeProperty ;
     rdfs:domain effortless-ntwf:TreatmentRankings ;
@@ -3881,6 +4000,40 @@ effortless-ntwf:adjustmentRationale a owl:DatatypeProperty ;
     rdfs:range xsd:string ;
     rdfs:label "AdjustmentRationale" ;
     rdfs:comment "Human-authored note explaining why AdjustmentAppropriate is TRUE or FALSE for this study. Covers mediator/collider hazards, contested causal roles, and cases where geometric correction is valid but causal interpretation is uncertain." .
+
+effortless-ntwf:purityTrapFlag a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:TreatmentRankings ;
+    rdfs:range xsd:boolean ;
+    rdfs:label "PurityTrapFlag" ;
+    rdfs:comment "TRUE when SignalPurity >= 0.90 AND the study's confounder identity has PolicyDefault IN ('do-not-condition','do-not-naively-adjust'). Marks the purity trap: data appears cleanest where naive stratification is most harmful." .
+
+effortless-ntwf:distortionRatio a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:TreatmentRankings ;
+    rdfs:range xsd:string ;
+    rdfs:label "DistortionRatio" ;
+    rdfs:comment "SignedPooledGap / WeightedStratumGapSum. Promoted loop-90 from a 03b-customize-views.sql presentation-layer bolt-on to a first-class rulebook field. The IF(x=0,\"\",...) blank-on-zero-denominator idiom used elsewhere in this rulebook is unsafe here: NULLIF is not a supported transpiler function, and the transpiler's translation of the \"\" branch for a numeric-typed field is a bare ''::numeric cast that errors at runtime the moment a live row actually hits it (4 of 242 TreatmentRankings rows have WeightedStratumGapSum=0). Returns 0 in that case instead — WeightedStratumGapSum=0 means there is no equal-weight baseline signal to compare against, so a 0 ratio (no distortion multiplier) is the defensible convention, not a guess." .
+    # calculated: calculated
+
+effortless-ntwf:screeningTier a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:TreatmentRankings ;
+    rdfs:range xsd:string ;
+    rdfs:label "ScreeningTier" ;
+    rdfs:comment "DANGER when DistortionType is A or B, CAUTION when C+/C-, SAFE when D. Promoted loop-90 (see DistortionRatio)." .
+    # calculated: calculated
+
+effortless-ntwf:armSizeRatio a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:TreatmentRankings ;
+    rdfs:range xsd:string ;
+    rdfs:label "ArmSizeRatio" ;
+    rdfs:comment "TotalCasesA / (TotalCasesA + TotalCasesB) — the share of total cases allocated to TreatmentA. Promoted loop-90 (see DistortionRatio for why the empty-string zero-denominator idiom is unsafe on a numeric field). Returns 0 for the degenerate zero-case-count edge (never occurs in this corpus, kept for defensive symmetry with DistortionRatio)." .
+    # calculated: calculated
+
+effortless-ntwf:symmetryDeparture a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:TreatmentRankings ;
+    rdfs:range xsd:string ;
+    rdfs:label "SymmetryDeparture" ;
+    rdfs:comment "ABS(ArmSizeRatio - 0.5) — how far the case allocation departs from a balanced 50/50 split. Promoted loop-90 (see DistortionRatio)." .
+    # calculated: calculated
 
 # === Class: Treatments ===
 effortless-ntwf:Treatments a owl:Class ;

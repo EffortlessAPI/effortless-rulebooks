@@ -1,0 +1,16 @@
+{
+  "candidate_id": "13",
+  "slug": "rdatasets-cushings-df",
+  "dataset_name": "Cushings_df",
+  "description": "Diagnostic Tests on Patients with Cushing's Syndrome",
+  "domain": "Medicine/Clinical",
+  "source": "Rdatasets (R package: MedDataSets)",
+  "n_rows": "27",
+  "stratifying_columns_hint": "1 factor / 0 binary cols",
+  "download_url": "https://vincentarelbundock.github.io/Rdatasets/csv/MedDataSets/Cushings_df.csv",
+  "documentation_url": "https://vincentarelbundock.github.io/Rdatasets/doc/MedDataSets/Cushings_df.html",
+  "status": "skip",
+  "skip_reason": "Purely continuous outcomes (Tetrahydrocortisone and Pregnanetriol are urinary steroid metabolite measurements). No binary outcome column. Type (a/b/c/u) is a diagnostic classification, not a treatment with success/failure outcomes. Cannot form Successes/Cases cells.",
+  "download_notes": "HTTP 200 OK",
+  "notes": []
+}

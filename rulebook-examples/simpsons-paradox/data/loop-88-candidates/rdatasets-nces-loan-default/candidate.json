@@ -1,0 +1,16 @@
+{
+  "candidate_id": "145",
+  "slug": "rdatasets-nces-loan-default",
+  "dataset_name": "nces_loan_default",
+  "description": "Student Loan Default Rates by Institution Type & Field of Study",
+  "domain": "Economics/Labor",
+  "source": "NCES IPEDS (verified)",
+  "n_rows": "6000+",
+  "stratifying_columns_hint": "institution_type, program_field, cohort_year",
+  "download_url": "https://nces.ed.gov/ipeds/use-the-data",
+  "documentation_url": "https://nces.ed.gov/",
+  "status": "portal-required",
+  "skip_reason": null,
+  "notes": [],
+  "portal_reason": "NCES IPEDS requires multi-step query"
+}

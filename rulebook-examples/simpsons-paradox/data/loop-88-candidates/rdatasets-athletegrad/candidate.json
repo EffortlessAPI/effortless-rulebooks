@@ -1,0 +1,24 @@
+{
+  "candidate_id": "89",
+  "slug": "rdatasets-athletegrad",
+  "dataset_name": "AthleteGrad",
+  "description": "Athletic Participation, Race, and Graduation",
+  "domain": "General Statistics Teaching",
+  "source": "Rdatasets (R package: Stat2Data)",
+  "n_rows": "214555",
+  "stratifying_columns_hint": "2 factor / 3 binary cols",
+  "download_url": "https://vincentarelbundock.github.io/Rdatasets/csv/Stat2Data/AthleteGrad.csv",
+  "documentation_url": "https://vincentarelbundock.github.io/Rdatasets/doc/Stat2Data/AthleteGrad.html",
+  "status": "needs-data",
+  "skip_reason": null,
+  "notes": [],
+  "files": [
+    "data.csv"
+  ],
+  "proposed_study_id": "rdatasets-athletegrad-graduation",
+  "proposed_title": "Athlete vs Non-Athlete Graduation Rates by Race",
+  "binary_outcome": "Grad",
+  "treatment_variable": "Student",
+  "stratum_variable": "Race",
+  "encoding_note": "Grad is binary 0/1 (1=graduated). Treatment=Student (Athlete vs non-athlete). Stratum=Race (White/non-White). Count rows per (Student x Race) cell; Successes = rows where Grad=1."
+}

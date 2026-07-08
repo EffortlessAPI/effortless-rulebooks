@@ -1,0 +1,68 @@
+{
+  "StudyId": "ncbirths-smoking-maternal-age-2004",
+  "Title": "NC Births 2004: Preterm Rate by Maternal Smoking and Maternal Age Group",
+  "Source": "openintro R package: ncbirths dataset (NC State Center for Health Statistics 2004)",
+  "SourceUrl": "https://vincentarelbundock.github.io/Rdatasets/doc/openintro/ncbirths.html",
+  "PublicationYear": 2004,
+  "Domain": "public-health",
+  "IsSynthetic": false,
+  "IsControlStudy": true,
+  "ControlDomain": "public-health-epidemiology",
+  "TraditionId": "tradition-dag",
+  "PrimaryResearcherId": "researcher-pearl",
+  "confounding_variable": "maternal_age",
+  "causal_role": "confounder",
+  "note": "Smokers have higher preterm rates within both age strata; maternal age affects both smoking rates and preterm risk but in consistent direction \u2014 no reversal expected.",
+  "treatments": [
+    {
+      "TreatmentLabel": "Smoker",
+      "Description": "Mother is smoker",
+      "TotalCases": 126,
+      "TotalSuccesses": 19
+    },
+    {
+      "TreatmentLabel": "Nonsmoker",
+      "Description": "Mother is nonsmoker",
+      "TotalCases": 872,
+      "TotalSuccesses": 133
+    }
+  ],
+  "strata": [
+    {
+      "StratumLabel": "Mature Mom",
+      "Description": "Mature Mom",
+      "TotalCases": 132
+    },
+    {
+      "StratumLabel": "Younger Mom",
+      "Description": "Younger Mom",
+      "TotalCases": 866
+    }
+  ],
+  "cells": [
+    {
+      "StratumLabel": "Mature Mom",
+      "TreatmentLabel": "Smoker",
+      "Cases": 11,
+      "Successes": 2
+    },
+    {
+      "StratumLabel": "Mature Mom",
+      "TreatmentLabel": "Nonsmoker",
+      "Cases": 121,
+      "Successes": 21
+    },
+    {
+      "StratumLabel": "Younger Mom",
+      "TreatmentLabel": "Smoker",
+      "Cases": 115,
+      "Successes": 17
+    },
+    {
+      "StratumLabel": "Younger Mom",
+      "TreatmentLabel": "Nonsmoker",
+      "Cases": 751,
+      "Successes": 112
+    }
+  ]
+}

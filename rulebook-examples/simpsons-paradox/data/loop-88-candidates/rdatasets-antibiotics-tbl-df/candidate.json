@@ -1,0 +1,16 @@
+{
+  "candidate_id": "9",
+  "slug": "rdatasets-antibiotics-tbl-df",
+  "dataset_name": "antibiotics_tbl_df",
+  "description": "Pre-existing Conditions in Children",
+  "domain": "Medicine/Clinical",
+  "source": "Rdatasets (R package: MedDataSets)",
+  "n_rows": "92",
+  "stratifying_columns_hint": "1 factor / 0 binary cols",
+  "download_url": "https://vincentarelbundock.github.io/Rdatasets/csv/MedDataSets/antibiotics_tbl_df.csv",
+  "documentation_url": "https://vincentarelbundock.github.io/Rdatasets/doc/MedDataSets/antibiotics_tbl_df.html",
+  "status": "skip",
+  "download_notes": "HTTP 200 OK",
+  "skip_reason": "Dataset has only two columns: a row index and a single categorical condition variable (e.g., Prematurity, Neuromuscular, Cardiovascular). There is no binary outcome, no treatment/exposure grouping, and no stratum variable \u2014 nothing to aggregate into Successes/Cases cells.",
+  "notes": []
+}

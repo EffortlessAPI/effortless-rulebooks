@@ -1,0 +1,16 @@
+{
+  "candidate_id": "21",
+  "slug": "rdatasets-cpr-survival-tbl-df",
+  "dataset_name": "cpr_survival_tbl_df",
+  "description": "Blood thinners in CPR survival",
+  "domain": "Medicine/Clinical",
+  "source": "Rdatasets (R package: CardioDataSets)",
+  "n_rows": "90",
+  "stratifying_columns_hint": "2 factor / 2 binary cols",
+  "download_url": "https://vincentarelbundock.github.io/Rdatasets/csv/CardioDataSets/cpr_survival_tbl_df.csv",
+  "documentation_url": "https://vincentarelbundock.github.io/Rdatasets/doc/CardioDataSets/cpr_survival_tbl_df.html",
+  "status": "skip",
+  "skip_reason": "Only two meaningful columns: group (treatment: control/CPR) and outcome (survived/died). No stratum variable present \u2014 cannot form a Treatment \u00d7 Stratum aggregation needed for Simpson's Paradox analysis.",
+  "download_notes": "HTTP 200 OK",
+  "notes": []
+}

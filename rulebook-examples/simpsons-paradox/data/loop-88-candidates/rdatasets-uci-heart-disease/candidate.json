@@ -1,0 +1,24 @@
+{
+  "candidate_id": "119",
+  "slug": "rdatasets-uci-heart-disease",
+  "dataset_name": "uci_heart_disease",
+  "description": "Cleveland/Hungarian/Switzerland/VA heart disease datasets",
+  "domain": "Medicine/Clinical",
+  "source": "UCI ML Repository (verified)",
+  "n_rows": "920",
+  "stratifying_columns_hint": "site, sex, age",
+  "download_url": "https://archive.ics.uci.edu/dataset/45/heart+disease",
+  "documentation_url": "https://archive.ics.uci.edu/dataset/45/heart+disease",
+  "status": "needs-data",
+  "skip_reason": null,
+  "notes": [],
+  "files": [
+    "cleveland.csv"
+  ],
+  "proposed_study_id": "uci-heart-disease-1988",
+  "proposed_title": "UCI Heart Disease Multi-Site Study (Cleveland/Hungarian/VA/Switzerland)",
+  "binary_outcome": "num",
+  "treatment_variable": "site",
+  "stratum_variable": "sex",
+  "encoding_note": "The CSV is in the original UCI multi-row-per-patient fixed format (not standard CSV) with encoding issues. The outcome column `num` is 0 (no disease) vs 1-4 (disease present) \u2014 binarize as num>0 = disease. Site variable distinguishes 4 collection sites (Cleveland, Hungarian, VA, Switzerland). Sex (0=female, 1=male) is the primary stratum. Age would need binning. Data requires preprocessing to extract tabular rows with standard column assignment per UCI documentation (14 standard attributes)."
+}

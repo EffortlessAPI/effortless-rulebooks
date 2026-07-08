@@ -1,0 +1,18 @@
+{
+  "candidate_id": "57",
+  "slug": "rdatasets-edgeworthdeaths",
+  "dataset_name": "EdgeworthDeaths",
+  "description": "Edgeworth's Data on Death Rates in British Counties",
+  "domain": "Historical / Social Science",
+  "source": "Rdatasets (R package: HistData)",
+  "n_rows": "42",
+  "stratifying_columns_hint": "2 factor / 0 binary cols",
+  "download_url": "https://vincentarelbundock.github.io/Rdatasets/csv/HistData/EdgeworthDeaths.csv",
+  "documentation_url": "https://vincentarelbundock.github.io/Rdatasets/doc/HistData/EdgeworthDeaths.html",
+  "status": "skip",
+  "skip_reason": "Aggregated count table of death frequencies by county and year \u2014 no binary outcome per individual, no treatment/exposure variable, no stratum. This is a time-series ecological dataset with no structure suitable for Simpson's Paradox analysis.",
+  "notes": [],
+  "files": [
+    "data.csv"
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "candidate_id": "78",
+  "slug": "rdatasets-angell",
+  "dataset_name": "Angell",
+  "description": "Moral Integration of American Cities",
+  "domain": "General Statistics Teaching",
+  "source": "Rdatasets (R package: carData)",
+  "n_rows": "43",
+  "stratifying_columns_hint": "1 factor / 0 binary cols",
+  "download_url": "https://vincentarelbundock.github.io/Rdatasets/csv/carData/Angell.csv",
+  "documentation_url": "https://vincentarelbundock.github.io/Rdatasets/doc/carData/Angell.html",
+  "status": "skip",
+  "skip_reason": "All outcome columns (moral, hetero, mobility) are continuous scores. There is no binary outcome variable and no treatment/exposure grouping \u2014 only city-level ecological measurements and a region factor. Cannot be aggregated into Successes/Cases cells.",
+  "notes": [],
+  "files": [
+    "data.csv"
+  ]
+}

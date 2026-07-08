@@ -1,0 +1,22 @@
+{
+  "candidate_id": "7",
+  "slug": "rdatasets-aids2-df",
+  "dataset_name": "Aids2_df",
+  "description": "Australian AIDS Survival Data",
+  "domain": "Medicine/Clinical",
+  "source": "Rdatasets (R package: MedDataSets)",
+  "n_rows": "2843",
+  "stratifying_columns_hint": "4 factor / 2 binary cols",
+  "download_url": "https://vincentarelbundock.github.io/Rdatasets/csv/MedDataSets/Aids2_df.csv",
+  "documentation_url": "https://vincentarelbundock.github.io/Rdatasets/doc/MedDataSets/Aids2_df.html",
+  "status": "needs-data",
+  "download_notes": "HTTP 200 OK",
+  "skip_reason": null,
+  "notes": [],
+  "proposed_study_id": "rdatasets-aids2-australia-1991",
+  "proposed_title": "Australian AIDS Patient Registry \u2014 Survival by Transmission Category and Sex",
+  "binary_outcome": "status",
+  "treatment_variable": "T.categ",
+  "stratum_variable": "sex",
+  "encoding_note": "status == \"A\" (alive) counts as Success; status == \"D\" (died) counts as Failure. Aggregate Successes/Cases per (T.categ \u00d7 sex) cell. T.categ has ~7 levels (hs, haem, het, id, hsid, blood, other, mother); sex is M/F. State (NSW etc.) is an alternative stratum."
+}

@@ -1,0 +1,25 @@
+{
+  "candidate_id": "148",
+  "slug": "rdatasets-atp-tennis-surface",
+  "dataset_name": "atp_tennis_surface",
+  "description": "ATP Tennis Match Results by Surface & Player Ranking 1968-2023",
+  "domain": "Sports Analytics",
+  "source": "Jeff Sackmann Tennis GitHub (verified)",
+  "n_rows": "250000+",
+  "stratifying_columns_hint": "surface_type, player_ranking_category, tournament_level",
+  "download_url": "https://github.com/JeffSackmann/tennis_atp",
+  "documentation_url": "https://www.atptour.com/",
+  "status": "skip",
+  "skip_reason": "GitHub repo JeffSackmann/tennis_atp returned 404 for all match files during download; data unavailable without manual browser download",
+  "notes": [],
+  "files": [
+    "matches_2022.csv",
+    "matches_2023.csv"
+  ],
+  "proposed_study_id": "atp-tennis-surface-ranking-2020",
+  "proposed_title": "ATP Tennis Win Rate by Surface Type and Player Ranking Category (2020)",
+  "binary_outcome": "winner (each match row has winner_id and loser_id; encode as 1 for winner, 0 for loser, or use a player-match exploded view where outcome=1 if the player won)",
+  "treatment_variable": "surface (Clay / Grass / Hard / Carpet \u2014 3-4 levels)",
+  "stratum_variable": "player_ranking_category (derived from winner_rank / loser_rank: Top-10, 11-50, 51-100, 100+)",
+  "encoding_note": "Data files failed to download (404/429 errors from GitHub). Concept is viable: explode each match into two player-rows (winner=1, loser=0), group by surface x ranking_category to get Successes/Cases. Requires re-download from https://github.com/JeffSackmann/tennis_atp"
+}

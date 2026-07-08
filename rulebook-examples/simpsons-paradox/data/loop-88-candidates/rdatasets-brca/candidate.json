@@ -1,0 +1,16 @@
+{
+  "candidate_id": "62",
+  "slug": "rdatasets-brca",
+  "dataset_name": "brca",
+  "description": "Breast Cancer Wisconsin Diagnostic Dataset from UCI Machine Learning Repository",
+  "domain": "General Statistics Teaching",
+  "source": "Rdatasets (R package: dslabs)",
+  "n_rows": "569",
+  "stratifying_columns_hint": "1 factor / 1 binary cols",
+  "download_url": "https://vincentarelbundock.github.io/Rdatasets/csv/dslabs/brca.csv",
+  "documentation_url": "https://vincentarelbundock.github.io/Rdatasets/doc/dslabs/brca.html",
+  "status": "skip",
+  "skip_reason": "Wisconsin Breast Cancer dataset: the only categorical column is y (B/M diagnosis), but all other columns are continuous tumor measurements (radius, texture, perimeter, area, etc.). There is no treatment/exposure variable and no natural stratum variable \u2014 this is a binary classification dataset with continuous predictors, not an observational study with treatment groups and confounders suitable for Simpson's Paradox analysis.",
+  "download_notes": "HTTP 200 OK",
+  "notes": []
+}

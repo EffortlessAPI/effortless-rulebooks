@@ -1,0 +1,30 @@
+{
+  "StudyId": "rdatasets-airquality-ozone",
+  "Title": "New York Air Quality: Wind Speed and High Ozone by Season — 1973",
+  "Source": "New York State Department of Conservation (1973). Daily air quality measurements, New York, May–September 1973. R datasets::airquality.",
+  "SourceUrl": "https://vincentarelbundock.github.io/Rdatasets/csv/datasets/airquality.csv",
+  "PublicationYear": 1973,
+  "Domain": "environmental",
+  "IsSynthetic": false,
+  "IsControlStudy": true,
+  "ControlDomain": "environmental-climate",
+  "TraditionId": "tradition-dag",
+  "PrimaryResearcherId": "researcher-pearl",
+  "confounding_variable": "Season",
+  "causal_role": "allocation",
+  "note": "Low wind days have higher probability of ozone >50 ppb than high wind days in both Summer (69.4% vs 18.8%) and Shoulder Season (19.2% vs 2.6%). The pooled result is consistent (48.4% vs 7.4%). Season allocation shifts the base rate — Summer has more low-wind days and higher ozone — but does not reverse the wind-ozone relationship.",
+  "treatments": [
+    {"TreatmentLabel": "LowWind", "Description": "Wind speed <= 10 mph (low dispersion)", "TotalCases": 62, "TotalSuccesses": 30},
+    {"TreatmentLabel": "HighWind", "Description": "Wind speed > 10 mph (high dispersion)", "TotalCases": 54, "TotalSuccesses": 4}
+  ],
+  "strata": [
+    {"StratumLabel": "Summer", "Description": "July and August (peak photochemical season)", "TotalCases": 52},
+    {"StratumLabel": "ShoulderSeason", "Description": "May, June, September (lower base ozone)", "TotalCases": 64}
+  ],
+  "cells": [
+    {"StratumLabel": "Summer", "TreatmentLabel": "LowWind", "Cases": 36, "Successes": 25},
+    {"StratumLabel": "Summer", "TreatmentLabel": "HighWind", "Cases": 16, "Successes": 3},
+    {"StratumLabel": "ShoulderSeason", "TreatmentLabel": "LowWind", "Cases": 26, "Successes": 5},
+    {"StratumLabel": "ShoulderSeason", "TreatmentLabel": "HighWind", "Cases": 38, "Successes": 1}
+  ]
+}

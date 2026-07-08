@@ -48,16 +48,18 @@ All concrete details sourced from:
 `rulebook-examples/simpsons-paradox/effortless-rulebook/simpsons-paradox-rulebook.json`
 
 Key artifacts:
-- **Loops table**: 80 loop iterations (through loop-80 complete; 87–88 planned) with witnessed findings
-- **InvariantChecks table**: 29 algebraic assertions (24 critical, all FailCount=0)
-- **TreatmentRankings**: derived fields with actual formula strings
-- **Conclusions table**: 34 rows; epistemic-tier separation (theorem / discovery-finding / corpus-pattern-superseded)
-- **ConfounderIdentities / StratumVariableIdentityMaps**: cross-study confounding archetypes (loop-80)
-- **ModelSummary**: N=238 corpus self-portrait
+- **Loops table**: 85 loop iterations complete (loops 86–90 next; 97–107 queued)
+- **InvariantChecks table**: 25 critical algebraic assertions (all FailCount=0) + 5 warning-only
+- **TreatmentRankings**: derived fields with actual formula strings; 86 manifest sign-flips across 238 studies
+- **Conclusions table**: 35 rows; 5 witnessed theorems + 1 candidate; epistemic-tier separation (theorem / discovery-finding / corpus-pattern-superseded)
+- **ConfounderIdentities / StratumVariableIdentityMaps / IdentityDomainCells**: 19 confounding archetypes; cross-study identity maps; domain × identity flip-rate matrix (loops 80–85)
+- **ModelSummary**: N=238 corpus self-portrait; 19 confounder archetypes; 24 active discovery hypotheses
 - **owl/reason.py**: cross-substrate conformance testing
 - **IngestionProtocol / StudyImportTemplate**: 17-item adapter contract, 6-step encoding checklist
 
-## LinkedIn Scheduling Note
-
-Each article should link to the next in the series. LinkedIn posts should go out
-one per week, tagging the Medium link. Suggested cadence: Mondays, 8am EST.
+Key findings to draw from (as of loop-85):
+- **Perfect balance theorem (pending loop-86)**: 118 studies with `ArmSizeRatio=0.5` AND `MaxStratumImbalance=0.0` — zero sign-flips. Minimum imbalance at any flip: 0.033 (flu-vaccine-elderly).
+- **Purity inversion (pending loop-87)**: collider/selection identities have the *highest* mean signal purity (0.916–1.000) yet require `do-not-condition` policy — the data looks cleanest where naive stratification is most harmful.
+- **Naming fragility**: `id-institutional-unit` spans 28 distinct normalized variable names across the corpus (department, school, hospital_incidence_level, precinct_base_rate, grade, task_type…) — quantified explanation for why paradox replication fails across fields.
+- **Domain modulation**: `id-disease-severity` flips 53% of the time in medicine, 0% in epidemiology and legal — same mechanism, radically different behavior by domain.
+- **PolicyDefault is empirically exact**: every `stratify-*` identity has `sign_flips == stratify_changes_answer` across all studies — the policy never advises stratification when the answer doesn't change.

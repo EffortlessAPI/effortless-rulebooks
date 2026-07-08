@@ -1,0 +1,30 @@
+{
+  "StudyId": "rdatasets-ahcavote-2017",
+  "Title": "AHCA Vote by Party and Trump-District Status (2017 US House)",
+  "Source": "Stat2Data R package — US House AHCA roll call 2017",
+  "SourceUrl": "https://vincentarelbundock.github.io/Rdatasets/doc/Stat2Data/AHCAvote2017.html",
+  "PublicationYear": 2017,
+  "Domain": "political-science",
+  "IsSynthetic": false,
+  "IsControlStudy": true,
+  "ControlDomain": "political-science",
+  "TraditionId": "tradition-dag",
+  "PrimaryResearcherId": "researcher-pearl",
+  "confounding_variable": "Trump district status",
+  "causal_role": "allocation",
+  "note": "No Simpson's paradox is expected because Republicans voted yes overwhelmingly in both Trump and non-Trump districts while Democrats voted no unanimously in both strata, so the stratum-level and pooled rankings agree: R > D on yes-vote rate in every subgroup and overall.",
+  "treatments": [
+    {"TreatmentLabel": "D", "Description": "Democratic House members", "TotalCases": 193, "TotalSuccesses": 0},
+    {"TreatmentLabel": "R", "Description": "Republican House members", "TotalCases": 237, "TotalSuccesses": 217}
+  ],
+  "strata": [
+    {"StratumLabel": "Trump=0", "Description": "District not won by Trump in 2016", "TotalCases": 204},
+    {"StratumLabel": "Trump=1", "Description": "District won by Trump in 2016", "TotalCases": 226}
+  ],
+  "cells": [
+    {"StratumLabel": "Trump=0", "TreatmentLabel": "D", "Cases": 181, "Successes": 0},
+    {"StratumLabel": "Trump=1", "TreatmentLabel": "D", "Cases": 12, "Successes": 0},
+    {"StratumLabel": "Trump=0", "TreatmentLabel": "R", "Cases": 23, "Successes": 14},
+    {"StratumLabel": "Trump=1", "TreatmentLabel": "R", "Cases": 214, "Successes": 203}
+  ]
+}

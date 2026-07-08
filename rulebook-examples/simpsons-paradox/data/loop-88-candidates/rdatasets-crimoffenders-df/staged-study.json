@@ -1,0 +1,36 @@
+{
+  "StudyId": "rdatasets-compas-broward-race-2016",
+  "Title": "COMPAS Recidivism Risk — Broward County Race x Sex (ProPublica 2016)",
+  "Source": "R package: crimedatasets/crimOffenders_df (COMPAS ProPublica data)",
+  "SourceUrl": "https://vincentarelbundock.github.io/Rdatasets/doc/crimedatasets/crimOffenders_df.html",
+  "PublicationYear": 2016,
+  "Domain": "criminal-justice",
+  "IsSynthetic": false,
+  "IsControlStudy": true,
+  "ControlDomain": "criminal-justice",
+  "TraditionId": "tradition-dag",
+  "PrimaryResearcherId": "researcher-pearl",
+  "confounding_variable": "sex",
+  "causal_role": "allocation",
+  "note": "No Simpson's paradox is expected here because sex acts as a demographic confounder but the direction of racial disparity in recidivism rates (African-American > Caucasian > Hispanic > Other) is consistent within both Male and Female strata, so no reversal occurs when strata are pooled.",
+  "treatments": [
+    {"TreatmentLabel": "African-American", "Description": "Defendant identified as African-American", "TotalCases": 2941, "TotalSuccesses": 1567},
+    {"TreatmentLabel": "Caucasian", "Description": "Defendant identified as Caucasian", "TotalCases": 2055, "TotalSuccesses": 816},
+    {"TreatmentLabel": "Hispanic", "Description": "Defendant identified as Hispanic", "TotalCases": 501, "TotalSuccesses": 185},
+    {"TreatmentLabel": "Other", "Description": "Defendant identified as Other race", "TotalCases": 316, "TotalSuccesses": 116}
+  ],
+  "strata": [
+    {"StratumLabel": "Female", "Description": "Female defendants", "TotalCases": 1141},
+    {"StratumLabel": "Male", "Description": "Male defendants", "TotalCases": 4672}
+  ],
+  "cells": [
+    {"StratumLabel": "Female", "TreatmentLabel": "African-American", "Cases": 527, "Successes": 205},
+    {"StratumLabel": "Male", "TreatmentLabel": "African-American", "Cases": 2414, "Successes": 1362},
+    {"StratumLabel": "Female", "TreatmentLabel": "Caucasian", "Cases": 478, "Successes": 167},
+    {"StratumLabel": "Male", "TreatmentLabel": "Caucasian", "Cases": 1577, "Successes": 649},
+    {"StratumLabel": "Female", "TreatmentLabel": "Hispanic", "Cases": 81, "Successes": 29},
+    {"StratumLabel": "Male", "TreatmentLabel": "Hispanic", "Cases": 420, "Successes": 156},
+    {"StratumLabel": "Female", "TreatmentLabel": "Other", "Cases": 55, "Successes": 11},
+    {"StratumLabel": "Male", "TreatmentLabel": "Other", "Cases": 261, "Successes": 105}
+  ]
+}

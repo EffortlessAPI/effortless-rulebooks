@@ -1,0 +1,24 @@
+{
+  "candidate_id": "120",
+  "slug": "rdatasets-uci-german-credit",
+  "dataset_name": "uci_german_credit",
+  "description": "German credit risk data, StatLog collection",
+  "domain": "Finance/Lending",
+  "source": "UCI ML Repository (verified)",
+  "n_rows": "1000",
+  "stratifying_columns_hint": "age, employment status, purpose",
+  "download_url": "https://archive.ics.uci.edu/dataset/144/statlog+german+credit+data",
+  "documentation_url": "https://archive.ics.uci.edu/dataset/144/statlog+german+credit+data",
+  "status": "needs-data",
+  "skip_reason": null,
+  "notes": [],
+  "files": [
+    "german.csv"
+  ],
+  "proposed_study_id": "uci-german-credit-1994",
+  "proposed_title": "UCI German Credit Risk by Loan Purpose and Age Group (StatLog, 1994)",
+  "binary_outcome": "credit_risk (col 21: 1=good, 2=bad)",
+  "treatment_variable": "purpose (col 4: A40=car new, A41=car used, A42=furniture, A43=radio/TV, etc.)",
+  "stratum_variable": "age_group (col 13: age in years, binned into young/middle/senior)",
+  "encoding_note": "No header row; 21 columns using UCI coded values. Col 21: 1=good credit (success), 2=bad credit (failure). Col 4 = purpose (loan type as treatment). Col 13 = age (continuous, bin into young/middle/senior as stratum). Compute Successes=count(col21==1) and Cases=total per (purpose \u00d7 age_group) cell."
+}

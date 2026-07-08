@@ -1,0 +1,16 @@
+{
+  "candidate_id": "134",
+  "slug": "rdatasets-framingham-cholesterol",
+  "dataset_name": "framingham_cholesterol",
+  "description": "Framingham Heart Study Cholesterol & Mortality by Age & Sex",
+  "domain": "Public Health",
+  "source": "Framingham Heart Study / BioLINCC (verified)",
+  "n_rows": "5000+",
+  "stratifying_columns_hint": "age_group, sex, cholesterol_level",
+  "download_url": "https://biolincc.nhlbi.nih.gov/studies/framcohort/",
+  "documentation_url": "https://www.framinghamheartstudy.org/",
+  "status": "portal-required",
+  "skip_reason": null,
+  "notes": [],
+  "portal_reason": "BioLINCC requires data use agreement"
+}

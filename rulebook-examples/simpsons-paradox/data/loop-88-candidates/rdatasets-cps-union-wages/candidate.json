@@ -1,0 +1,16 @@
+{
+  "candidate_id": "144",
+  "slug": "rdatasets-cps-union-wages",
+  "dataset_name": "cps_union_wages",
+  "description": "CPS Union Membership & Wages by Industry & Skill Level",
+  "domain": "Economics/Labor",
+  "source": "Census Bureau CPS (verified)",
+  "n_rows": "60000+",
+  "stratifying_columns_hint": "union_status, industry, skill_level",
+  "download_url": "https://www.bls.gov/cps/cpswgtss.htm",
+  "documentation_url": "https://www.census.gov/cps/",
+  "status": "portal-required",
+  "skip_reason": null,
+  "notes": [],
+  "portal_reason": "CPS microdata requires SAS/Stata extraction tool"
+}

@@ -1,0 +1,18 @@
+{
+  "candidate_id": "68",
+  "slug": "rdatasets-movielens",
+  "dataset_name": "movielens",
+  "description": "Movie ratings",
+  "domain": "General Statistics Teaching",
+  "source": "Rdatasets (R package: dslabs)",
+  "n_rows": "100004",
+  "stratifying_columns_hint": "1 factor / 0 binary cols",
+  "download_url": "https://vincentarelbundock.github.io/Rdatasets/csv/dslabs/movielens.csv",
+  "documentation_url": "https://vincentarelbundock.github.io/Rdatasets/doc/dslabs/movielens.html",
+  "status": "skip",
+  "skip_reason": "Movie ratings dataset with a continuous outcome (rating 1-5 scale). No binary outcome, no treatment/exposure variable, no natural stratum for confounding. Individual user-movie ratings cannot be meaningfully aggregated into Successes/Cases cells for Simpson's Paradox analysis.",
+  "notes": [],
+  "files": [
+    "data.csv"
+  ]
+}

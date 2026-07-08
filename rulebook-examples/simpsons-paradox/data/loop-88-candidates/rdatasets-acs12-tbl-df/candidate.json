@@ -1,0 +1,24 @@
+{
+  "candidate_id": "103",
+  "slug": "rdatasets-acs12-tbl-df",
+  "dataset_name": "acs12_tbl_df",
+  "description": "American Community Survey 2012",
+  "domain": "Economics/Labor",
+  "source": "Rdatasets (R package: usdatasets)",
+  "n_rows": "2000",
+  "stratifying_columns_hint": "9 factor / 5 binary cols",
+  "download_url": "https://vincentarelbundock.github.io/Rdatasets/csv/usdatasets/acs12_tbl_df.csv",
+  "documentation_url": "https://vincentarelbundock.github.io/Rdatasets/doc/usdatasets/acs12_tbl_df.html",
+  "status": "needs-data",
+  "skip_reason": null,
+  "notes": [],
+  "files": [
+    "data.csv"
+  ],
+  "proposed_study_id": "rdatasets-acs12-disability-employment-2012",
+  "proposed_title": "ACS 2012 \u2014 Disability Rates by Employment Status and Education Level",
+  "binary_outcome": "disability",
+  "treatment_variable": "employment",
+  "stratum_variable": "edu",
+  "encoding_note": "Success = disability==\"yes\" (1), Cases = all rows; group by employment (employed/unemployed/not in labor force) \u00d7 edu (hs or lower/college/grad); disability is yes/no binary. Filter to adults (age>=18) and rows with non-missing employment status for cleaner cells."
+}

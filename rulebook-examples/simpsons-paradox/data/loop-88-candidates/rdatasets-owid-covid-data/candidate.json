@@ -1,0 +1,18 @@
+{
+  "candidate_id": "122",
+  "slug": "rdatasets-owid-covid-data",
+  "dataset_name": "owid_covid_data",
+  "description": "Our World in Data full COVID-19 dataset (cases, deaths, vaccinations by country/date)",
+  "domain": "Epidemiology",
+  "source": "Our World in Data (verified static CSV)",
+  "n_rows": "400000",
+  "stratifying_columns_hint": "country, date, age (in supplementary files)",
+  "download_url": "https://covid.ourworldindata.org/data/owid-covid-data.csv",
+  "documentation_url": "https://github.com/owid/covid-19-data/tree/master/public/data",
+  "status": "skip",
+  "skip_reason": "Country-level daily COVID time series with aggregated counts (total_cases, new_deaths, etc.) per country per day. No individual-level binary outcome, no treatment/exposure grouping, no stratum variable \u2014 purely ecological/geographic time series data that cannot be disaggregated into Successes/Cases cells.",
+  "notes": [],
+  "files": [
+    "data.csv"
+  ]
+}

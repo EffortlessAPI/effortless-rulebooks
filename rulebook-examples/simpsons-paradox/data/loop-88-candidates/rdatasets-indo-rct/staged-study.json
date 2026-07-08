@@ -1,0 +1,30 @@
+{
+  "StudyId": "rdatasets-indo-rct-2012",
+  "Title": "Indomethacin RCT for Post-ERCP Pancreatitis Prevention (2012)",
+  "Source": "Elmunzer BJ et al. (2012). NEJM 366:1414-1422. R package: medicaldata/indo_rct",
+  "SourceUrl": "https://vincentarelbundock.github.io/Rdatasets/doc/medicaldata/indo_rct.html",
+  "PublicationYear": 2012,
+  "Domain": "medicine",
+  "IsSynthetic": false,
+  "IsControlStudy": true,
+  "ControlDomain": "medicine-rct",
+  "TraditionId": "tradition-dag",
+  "PrimaryResearcherId": "researcher-pearl",
+  "confounding_variable": "gender",
+  "causal_role": "allocation",
+  "note": "This randomized controlled trial balanced allocation across gender strata by design, so no Simpson's Paradox is expected — the treatment effect (indomethacin reduces pancreatitis) holds consistently within both male and female strata and in the aggregate.",
+  "treatments": [
+    {"TreatmentLabel": "0_placebo", "Description": "Placebo (control arm)", "TotalCases": 307, "TotalSuccesses": 52},
+    {"TreatmentLabel": "1_indomethacin", "Description": "Indomethacin (treatment arm)", "TotalCases": 295, "TotalSuccesses": 27}
+  ],
+  "strata": [
+    {"StratumLabel": "1_female", "Description": "Female patients", "TotalCases": 476},
+    {"StratumLabel": "2_male", "Description": "Male patients", "TotalCases": 126}
+  ],
+  "cells": [
+    {"StratumLabel": "1_female", "TreatmentLabel": "0_placebo", "Cases": 247, "Successes": 43},
+    {"StratumLabel": "2_male", "TreatmentLabel": "0_placebo", "Cases": 60, "Successes": 9},
+    {"StratumLabel": "1_female", "TreatmentLabel": "1_indomethacin", "Cases": 229, "Successes": 20},
+    {"StratumLabel": "2_male", "TreatmentLabel": "1_indomethacin", "Cases": 66, "Successes": 7}
+  ]
+}

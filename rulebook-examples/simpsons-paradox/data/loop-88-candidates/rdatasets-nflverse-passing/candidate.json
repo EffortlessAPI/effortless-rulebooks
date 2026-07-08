@@ -1,0 +1,24 @@
+{
+  "candidate_id": "149",
+  "slug": "rdatasets-nflverse-passing",
+  "dataset_name": "nflverse_passing",
+  "description": "NFL Play-by-Play Passing Stats by Down & Formation",
+  "domain": "Sports Analytics",
+  "source": "nflverse GitHub (verified)",
+  "n_rows": "700000+",
+  "stratifying_columns_hint": "down_number, offensive_formation, game_situation",
+  "download_url": "https://github.com/nflverse/nflreadr",
+  "documentation_url": "https://github.com/nflverse/",
+  "status": "needs-data",
+  "skip_reason": null,
+  "notes": [],
+  "files": [
+    "pbp_2023.csv"
+  ],
+  "proposed_study_id": "nflverse-passing-completion-2023",
+  "proposed_title": "NFL 2023 Pass Completion by Pass Length and Down",
+  "binary_outcome": "complete_pass",
+  "treatment_variable": "pass_length",
+  "stratum_variable": "down",
+  "encoding_note": "Filter rows where pass_attempt=1; binary outcome = complete_pass (1=success); treatment = pass_length (short vs deep, 2 levels); stratum = down (1-4); aggregate Successes=SUM(complete_pass), Cases=COUNT(*) per (pass_length x down) cell."
+}

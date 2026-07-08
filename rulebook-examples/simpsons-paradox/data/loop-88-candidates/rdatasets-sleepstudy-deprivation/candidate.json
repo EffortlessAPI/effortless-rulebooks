@@ -1,0 +1,7 @@
+{
+  "slug": "rdatasets-sleepstudy-deprivation",
+  "status": "staged",
+  "domain": "psychology",
+  "source": "R lme4::sleepstudy — Belenky et al. 2003 sleep restriction study; 18 subjects, reaction time (Psychomotor Vigilance Task) measured over 10 days of sleep deprivation",
+  "notes": "Control study: increasing sleep deprivation consistently degrades reaction time (>350ms threshold) in both fast and slow baseline subjects. Baseline speed is a confound for the magnitude of impairment but does not reverse the direction of the deprivation effect. Clean monotone association."
+}

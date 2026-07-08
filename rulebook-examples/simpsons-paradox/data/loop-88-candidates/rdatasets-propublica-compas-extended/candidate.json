@@ -1,0 +1,24 @@
+{
+  "candidate_id": "126",
+  "slug": "rdatasets-propublica-compas-extended",
+  "dataset_name": "propublica_compas_extended",
+  "description": "ProPublica COMPAS Full Broward Dataset (7k records)",
+  "domain": "Criminal Justice",
+  "source": "ProPublica GitHub (verified)",
+  "n_rows": "7214",
+  "stratifying_columns_hint": "race, sex, age_category, charge_degree",
+  "download_url": "https://github.com/propublica/compas-analysis/raw/master/compas-scores-two-years.csv",
+  "documentation_url": "https://github.com/propublica/compas-analysis",
+  "status": "needs-data",
+  "skip_reason": null,
+  "notes": [],
+  "files": [
+    "data.csv"
+  ],
+  "proposed_study_id": "propublica-compas-recidivism-2016",
+  "proposed_title": "ProPublica COMPAS Recidivism \u2014 Race vs. Age-Category Stratification (2016)",
+  "binary_outcome": "two_year_recid",
+  "treatment_variable": "race",
+  "stratum_variable": "age_cat",
+  "encoding_note": "two_year_recid=1 \u2192 Success (recidivated); group by race (treatment) \u00d7 age_cat (stratum); count rows as Cases, sum two_year_recid as Successes per cell. Sex available as secondary stratum."
+}

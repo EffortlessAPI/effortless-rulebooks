@@ -1,0 +1,36 @@
+{
+  "StudyId": "rdatasets-opt-periodontal-2006",
+  "Title": "OPT Trial: Periodontal Treatment and Preterm Birth by Clinic Site",
+  "Source": "Michalowicz BS et al. (2006). NEJM 355:1885-1894. R package: medicaldata/opt",
+  "SourceUrl": "https://vincentarelbundock.github.io/Rdatasets/doc/medicaldata/opt.html",
+  "PublicationYear": 2006,
+  "Domain": "medicine",
+  "IsSynthetic": false,
+  "IsControlStudy": true,
+  "ControlDomain": "medicine-rct",
+  "TraditionId": "tradition-dag",
+  "PrimaryResearcherId": "researcher-pearl",
+  "confounding_variable": "Clinic",
+  "causal_role": "allocation",
+  "note": "RCT with balanced randomization across all four clinic sites (KY/MN/MS/NY), so clinic-site allocation is roughly equal between arms and no Simpson's reversal is expected.",
+  "treatments": [
+    {"TreatmentLabel": "C", "Description": "Control (no periodontal treatment during pregnancy)", "TotalCases": 406, "TotalSuccesses": 53},
+    {"TreatmentLabel": "T", "Description": "Treatment (periodontal treatment during pregnancy)", "TotalCases": 408, "TotalSuccesses": 50}
+  ],
+  "strata": [
+    {"StratumLabel": "KY", "Description": "Kentucky clinic site", "TotalCases": 208},
+    {"StratumLabel": "MN", "Description": "Minnesota clinic site", "TotalCases": 247},
+    {"StratumLabel": "MS", "Description": "Mississippi clinic site", "TotalCases": 192},
+    {"StratumLabel": "NY", "Description": "New York clinic site", "TotalCases": 167}
+  ],
+  "cells": [
+    {"StratumLabel": "KY", "TreatmentLabel": "C", "Cases": 103, "Successes": 11},
+    {"StratumLabel": "KY", "TreatmentLabel": "T", "Cases": 105, "Successes": 10},
+    {"StratumLabel": "MN", "TreatmentLabel": "C", "Cases": 123, "Successes": 15},
+    {"StratumLabel": "MN", "TreatmentLabel": "T", "Cases": 124, "Successes": 10},
+    {"StratumLabel": "MS", "TreatmentLabel": "C", "Cases": 96, "Successes": 18},
+    {"StratumLabel": "MS", "TreatmentLabel": "T", "Cases": 96, "Successes": 15},
+    {"StratumLabel": "NY", "TreatmentLabel": "C", "Cases": 84, "Successes": 9},
+    {"StratumLabel": "NY", "TreatmentLabel": "T", "Cases": 83, "Successes": 15}
+  ]
+}

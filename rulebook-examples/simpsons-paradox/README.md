@@ -1,8 +1,8 @@
 # Simpson's Paradox — Witnessed DAG Demo
 
-A **witnessed dependency graph** that turns Simpson's paradox from a textbook curiosity into a computational object. **238 studies** (233 real, 5 synthetic) — spanning medicine, epidemiology, law, sports, education, economics, public health, and social science — share one entity model. The instrument was built across **80 loop iterations** (through **loop-80** complete; **loop-87** and **loop-88** planned). Every derived value falls out of formulas declared in the rulebook; modeling choices are centralized there, not scattered in app code.
+A **witnessed dependency graph** that turns Simpson's paradox from a textbook curiosity into a computational object. **299 studies** (290 real, 9 synthetic) share one entity model — the original 238-study Simpson's-paradox corpus plus a **250-candidate control-corpus wave** of non-paradox studies across 25 additional domains, added specifically to test whether the instrument's geometry is a selection artifact or a real regularity. Every derived value falls out of formulas declared in the rulebook; modeling choices are centralized there, not scattered in app code. The paradox itself is never modeled — it **emerges** as a derived fact from raw counts.
 
-**Start at `/discovery` or `/conclusions`.** Formal epistemic claims live in the rulebook `Conclusions` table — tiered by claim type (theorem · instrument · corpus snapshot). Loop-61+ `DiscoveryHypotheses` split into **consistency checks** (definition-linked, e.g. H-purity) vs **corpus hypotheses** (contingent, provisional). SSoT is the rulebook JSON; the explorer reads `vw_*` views only. Run `./start.sh` → [Discovery Research](http://localhost:5173/discovery) · [Conclusions & Findings](http://localhost:5173/conclusions).
+**Start at `/discovery` or `/conclusions`.** Formal epistemic claims live in the rulebook `Conclusions` table — tiered by claim type (theorem · instrument · corpus snapshot). `DiscoveryHypotheses` split into **consistency checks** (definition-linked, e.g. H-purity) vs **corpus hypotheses** (contingent, provisional). SSoT is the rulebook JSON; the explorer reads `vw_*` views only. Run `./start.sh` → [Discovery Research](http://localhost:5173/discovery) · [Conclusions & Findings](http://localhost:5173/conclusions).
 
 [`simpsons-paradox-summary.pdf`](simpsons-paradox-summary.pdf) is a static export of the same tiered state (regenerated on `./init-db.sh`). For framing caveats — geometric vs causal, deductive vs empirical, convenience-sample limits — see [What this is not](#what-this-is-not) below.
 
@@ -12,28 +12,25 @@ A **witnessed dependency graph** that turns Simpson's paradox from a textbook cu
 
 An **Effortless Rulebook (ERB)** domain. The SSoT is `effortless-rulebook/simpsons-paradox-rulebook.json`. All other artifacts — Postgres SQL, views, OWL ontology, RuleSpeak, Explainer DAG, the explorer UI — are mechanically derived from it.
 
-The paradox **emerges** from the model. It is not modeled directly. `IsReversal` equals `IsSignFlip` (loop-60 prune); both are derived booleans comparing pooled rates to per-stratum rates. There is no `ReversalDetection` entity.
+The paradox **emerges** from the model. It is not modeled directly. `IsReversal` equals `IsSignFlip`; both are derived booleans comparing pooled rates to per-stratum rates. There is no `ReversalDetection` entity.
 
-The `Loops` table is the build history — each row documents what domain concept was introduced, which natural-language question it answers, and what was witnessed.
+The `Loops` table is the build history — each row documents what domain concept was introduced, which natural-language question it answers, and what was witnessed. It is the plan as well as the record: `Status=planned` rows describe queued work, so it is the single place to see both where the instrument came from and where it's going next. This README doesn't restate that log — it tells the shape of the argument the instrument makes.
 
 ---
 
-## Recent loops (60–80)
+## How the argument is built
 
-| Phase | Loops | What landed |
-|---|---|---|
-| **Legacy prune** | **loop-60** | `IsReversal` redefined as `IsSignFlip`; dropped v2 meta fields (`DefinitionDelta`, `InstrumentScore`, etc.). Unanimous-vs-partial distinction lives in `DistortionType` A vs B only. |
-| **Discovery research sweep** | **loop-61–66** | `DiscoveryHypotheses` + `DiscoveryFindings`; `/discovery` UI; causal-role manifest vs latent flips; `IsParadoxExplained` ↔ confounder biconditional; signal-purity law promoted to invariant; catalog type-prediction audit; domain heterogeneity synthesis. |
-| **Corpus expansion plan** | **loop-67** | `CorpusDomains` (11 expansion targets); ~142 new `CandidateStudyCatalog` rows from `corpus-expansion-plan.md`; `DataAcquisitionStatus` pipeline fields; `/catalog` acquisition columns. |
-| **Expansion wave 1** | **loop-68–69** | 8-study stress batch (adversarial collider, sports unanimous-stratum, economics Expected-A falsification); discovery findings wired; conclusions conc-24..27. |
-| **Mechanistic vocabulary** | **loop-70** | `IsStratumUnanimous`, `IsSweepFragile`; Type A/B now keyed on stratum unanimity (not `DistortionRatio` bands). |
-| **Expansion wave 2** | **loop-71–72** | 12 studies (criminal-justice, public-health-smoking, sports); corpus → 111 real; domain-profile stability re-tested at scale. |
-| **Theorem wave** | **loop-73–76** | Four **Category=theorem** conclusions promoted: CorrectedGap invariance, Explained↔Confounder biconditional, collider-no-manifest (conditional), theorem portfolio synthesis. |
-| **Expansion wave 3** | **loop-77–78** | 122 studies bulk-encoded; corpus → **238**; 6 corpus patterns superseded at N=238 (`conc-32`); type-prediction re-audit (~39.1% exact match on imported catalog rows). |
-| **Vocabulary prune** | **loop-79** | Retired 6 superseded discovery predicates from loop-78 (archived in `conc-32` evidence); pruned ModelSummary rollup fields; `conc-17` / `conc-22` / `conc-27` marked historical-only. |
-| **Confounder identity** | **loop-80** | `ConfounderIdentities` + `StratumVariableIdentityMaps` + `IdentityClusterSummaries`; 15 canonical confounding archetypes; 238 stratum-variable identity maps; `conc-33`. |
+The instrument was built as a sequence of small, falsifiable additions — never a batch redesign. Four moves matter more than the others:
 
-**Next up:** **loop-87** — methods-paper export on the pruned instrument (theorem portfolio + `InstrumentSpec` packaging). **loop-88** — ALLHAT source verification (REAL? template cells → published-table encode).
+1. **The paradox is derived, never declared.** `Studies → Strata → CaseCells` hold nothing but raw success/failure counts. `IsSignFlip`, `DistortionType`, `SignalPurity`, and every other diagnostic are formulas over those counts. There is no field anywhere that says "this study is a Simpson's paradox" as an input — only as an output.
+2. **Geometry first, causality second, deliberately kept apart.** The instrument classifies *allocation distortion* from arithmetic alone. Whether it is safe to act on the allocation-corrected winner is a separate question, gated by `AdjustmentAppropriate` / `CausalClaimStatus` on `StratumVariables`. Berkeley 1973 is the proof case: high `AllocationDistortion`, but `CausalRole=contested` — the instrument classifies the geometry; the researcher supplies the causal account.
+3. **Claims are tiered by how they were earned.** `Conclusions` rows tagged **theorem** (9 of them, e.g. the SignalPurity ceiling, CorrectedGap invariance, the Perfect Balance and Purity Inversion theorems) are true by definition — checked as invariants, not discovered empirically. Rows tagged **domain**, and the active `DiscoveryHypotheses`, are corpus statistics on a convenience sample: pre-registered before each expansion wave, reported as PASS/FAIL, never silently promoted to theorem status.
+4. **Scale is used to stress-test the theorems, not just pad the count.** The 238-study Simpson's corpus proved the geometry on studies selected *for* paradox candidacy. The control-corpus wave adds studies selected for the *absence* of one, across 25 additional domains, specifically to check whether "Type-D is the dominant, safe basin" holds when the sample isn't paradox-biased. A synthetic wave adds hand-constructed boundary cases (exact allocation ties, adversarially-searched near-boundary colliders) to confirm the theorems are algebraically tight, not just unviolated within the observed data.
+
+Two of the theorems are worth naming directly, since they show the method finding non-obvious results rather than just confirming intuition:
+
+- **Perfect Balance Theorem** (`conc-36`) — when allocation is exactly balanced across strata (`ArmSizeRatio=0.5`, `MaxStratumImbalance=0.0`), no manifest sign-flip paradox has ever occurred, anywhere in the corpus. The closest real approach to a flip under near-balance is `MaxStratumImbalance=0.033`, which brackets a candidate safety corridor.
+- **Purity Inversion Theorem** (`conc-37`) — collider and selection/frailty mechanisms produce the *highest* signal purity in the corpus (up to 1.000) while being exactly the mechanisms where stratifying on the confounder is wrong. High `SignalPurity` is not a safety signal; for these mechanism classes it's an anti-predictor. `PurityTrapFlag` on `TreatmentRankings` names this directly.
 
 ---
 
@@ -50,15 +47,16 @@ Studies ──< Strata ──< CaseCells            ← raw leaves: (successes, 
                                              DistortionType, SignalPurity, LatentFlipPotential,
                                              CorrectedWinner, PolicyImplication
    └──< StratumVariables                     IsConfounder, CausalRole, AdjustmentAppropriate
-   └──  ModelSummary                         epistemic rollup across all 238 studies
+   └──  ModelSummary                         epistemic rollup (Simpson's-corpus baseline)
    └──  InstrumentSpec                       input fields, derived coordinates, theorem catalog
-   └──  InvariantChecks                      29 algebraic self-consistency assertions (24 critical PASS; 5 warning-only)
+   └──  InvariantChecks                      26 critical + warning algebraic assertions (all critical PASS)
    └──  Conclusions / Methodology / Loops    witnessed claims and build narrative
-   └──  DiscoveryHypotheses / DiscoveryFindings   18 active pre-registered corpus experiments
-   └──  ConfounderIdentities / StratumVariableIdentityMaps / IdentityClusterSummaries
-   └──  CandidateStudyCatalog               import catalog (235 imported, 2 blocked, 0 queued)
+   └──  DiscoveryHypotheses / DiscoveryFindings   pre-registered corpus experiments
+   └──  ConfounderIdentities / StratumVariableIdentityMaps / IdentityDomainCells
+   └──  CandidateStudyCatalog               import catalog
    └──  CorpusCatalogSummary / CorpusDomains / DomainExpansionTargets
-   └──  AllocationSweep / SweepStudyConfig   parameter-space exploration (2,380 sweep rows)
+   └──  CorpusBalance                       Simpson's-corpus vs control-corpus split
+   └──  AllocationSweep / SweepStudyConfig   parameter-space exploration
    └──  SubstrateConformanceFields          OWL-SHACL cross-substrate receipt field list
 ```
 
@@ -69,90 +67,69 @@ Studies ──< Strata ──< CaseCells            ← raw leaves: (successes, 
 
 ## The five distortion types
 
-Beyond the binary `IsSignFlip`, every study is classified on a continuous distortion plane (allocation bias × paradox strength). Type C was split in loop-43 into **C+** (amplification) and **C−** (compression). Loop-70 re-keyed A/B on **stratum unanimity** rather than legacy ratio bands.
+Beyond the binary `IsSignFlip`, every study is classified on a continuous distortion plane (allocation bias × paradox strength). Type C splits into **C+** (amplification) and **C−** (compression). A/B are keyed on **stratum unanimity** rather than ratio bands.
 
-| Type | Criterion | Count | Notes |
-|---|---|---|---|
-| **A — Unanimous reversal** | `IsSignFlip=true` AND `IsStratumUnanimous=true` | 78 | Canonical Simpson's paradox — every stratum agrees, pooled winner flips |
-| **B — Heterogeneous reversal** | `IsSignFlip=true` AND `IsStratumUnanimous=false` | 8 | Sign flip with mixed stratum directions (e.g. rosiglitazone-mi-pool-2007) |
-| **C+ — Amplification** | `IsSignFlip=false`, allocation distorts gap upward | 8 | Pooled winner correct but effect overstated |
-| **C− — Compression** | `IsSignFlip=false`, allocation distorts gap downward | 7 | Pooled winner correct but effect understated |
-| **D — Neutral** | `IsSignFlip=false`, low distortion | 137 | Pooled analysis trustworthy at observed allocation |
+| Type | Criterion | Notes |
+|---|---|---|
+| **A — Unanimous reversal** | `IsSignFlip=true` AND `IsStratumUnanimous=true` | Canonical Simpson's paradox — every stratum agrees, pooled winner flips |
+| **B — Heterogeneous reversal** | `IsSignFlip=true` AND `IsStratumUnanimous=false` | Sign flip with mixed stratum directions (e.g. rosiglitazone-mi-pool-2007) |
+| **C+ — Amplification** | `IsSignFlip=false`, allocation distorts gap upward | Pooled winner correct but effect overstated |
+| **C− — Compression** | `IsSignFlip=false`, allocation distorts gap downward | Pooled winner correct but effect understated |
+| **D — Neutral** | `IsSignFlip=false`, low distortion | Pooled analysis trustworthy at observed allocation |
+
+On the original 238-study Simpson's corpus this split as A:78 / B:8 / C+:8 / C−:7 / D:137 — Type D (neutral) dominant even in a corpus curated for paradox candidates. The control-corpus wave (below) exists to check that dominance isn't a selection artifact.
 
 Full roster: `SELECT study, distortion_type FROM vw_treatment_rankings ORDER BY distortion_type, study` or browse the rulebook `TreatmentRankings` table.
 
 `AllocationDistortion = |WeightedStratumGapSum − SignedPooledGap|` — the scalar distance between equal-weight strata and allocation-weighted pooled numbers.
 
-`SignalPurity = |CorrectedGap| / (|CorrectedGap| + AllocationDistortion)` — when below 0.5, allocation noise exceeds true signal. All sign-flip studies satisfy this (witnessed as **theorem** in loops 64/76).
+`SignalPurity = |CorrectedGap| / (|CorrectedGap| + AllocationDistortion)` — when below 0.5, allocation noise exceeds true signal. All sign-flip studies satisfy this (witnessed as **theorem**).
 
-`IsSweepFragile` (loop-70) names Type-D studies whose pooled gap crosses zero under allocation sweep despite no manifest sign-flip at observed weights.
+`IsSweepFragile` names Type-D studies whose pooled gap crosses zero under allocation sweep despite no manifest sign-flip at observed weights.
 
 ---
 
-## The 238-study corpus
+## The corpus: 299 studies, two purposes
 
-**233 real + 5 synthetic** structural controls (collider-only, non-collapsibility, balanced, compressed, plus domain-tagged synthetics).
+**290 real + 9 synthetic.** The corpus has two layers with different jobs:
 
-| Domain (Studies tag) | Real studies |
-|---|---|
-| epidemiology | 44 |
-| economics | 39 |
-| education | 35 |
-| medicine | 34 |
-| social-science | 33 |
-| sports | 24 |
-| legal | 20 |
-| public-health-smoking | 4 |
+- **The Simpson's corpus (238 studies)** — assembled *for* paradox candidacy, spanning medicine, epidemiology, law, sports, education, economics, public health, and social science. This is where every theorem was first witnessed.
+- **The control corpus (250-study candidate wave, currently 33+ encoded)** — studies drawn from 25 additional domains (criminal-justice, sports, transportation, sociology, historical, public-health, etc.) where no paradox was expected or sought. Its job is to falsify the claim that "Type-D dominance" is a selection artifact of only studying paradox candidates, and to check that control studies respect the same safety-corridor boundary the Simpson's corpus revealed.
 
-Loop-67 also registered **11 expansion target domains** in `CorpusDomains` (criminal-justice, clinical-trials, financial-lending, hiring-promotion, online-ab-testing, etc.) — used for catalog prioritization and gap tracking via `DomainExpansionTargets`.
-
-Expansion waves added underrepresented **mechanisms**: collider/selection bias, cross-design confounding (HRT observational vs RCT), composition-over-time, Robinson/ecological aggregation, vaccination base-rate structures, and non-collapsibility — not just classic 2×2 sign-flip tables.
+`CorpusBalance` is the singleton table that tracks the Simpson's-vs-control split as first-class data, not a derived guess.
 
 **Import provenance:** catalog rows carry `DataSourceNote` provenance (`Prov: DOC`, `Prov: SYNTH`, `Prov: REAL?`). REAL? imports use approximate cell counts from cited primary/secondary literature; they are labeled as such in `Source` and `DataSourceNote`. Nothing is silently invented.
 
-**Catalog status:** 237 catalog rows — **235 imported**, **2 blocked** (duplicates), **0 candidates** queued. All imported rows link to live studies (`inv-catalog-imported-linked`).
+**Data acquisition (out-of-channel):** bulk download artifacts for expansion candidates live under `data/raw/<study-id>/` with manifests in `data/acquisition/`. See `data/acquisition/README.md` for the acquisition loop and merge scripts (`merge-acquisition-manifest.py`, `merge-pdf-extraction-manifest.py`).
 
-**Data acquisition (out-of-channel):** bulk download artifacts for expansion-wave-1 candidates live under `data/raw/<study-id>/` with manifests in `data/acquisition/`. See `data/acquisition/README.md` for the acquisition loop and merge scripts (`merge-acquisition-manifest.py`, `merge-pdf-extraction-manifest.py`).
-
-Synthetic and counterfactual studies are structural controls — they prove impossibility claims (balanced allocation → reversal structurally impossible) and isolate single causal factors.
+Synthetic and counterfactual studies are structural controls — they prove impossibility claims (balanced allocation → reversal structurally impossible), isolate single causal factors, and pin down theorem boundaries exactly (e.g. an adversarially-searched near-boundary collider study bracketing the SignalPurity ceiling at 0.49994, never crossing it).
 
 ---
 
 ## What the model witnesses
 
-All **29 algebraic invariants** pass across the full corpus (**0 critical failures** — any critical `FailCount > 0` breaks the build):
+**26 critical algebraic invariants** pass across the full corpus (**0 critical failures** — any critical `FailCount > 0` breaks the build):
 
 - Every row has a `DistortionType` in {A, B, C+, C−, D}
 - Types A and B always have `IsSignFlip=TRUE`; C+, C−, and D always have `IsSignFlip=FALSE`
-- Type A rows satisfy `IsStratumUnanimous=TRUE` (loop-70)
+- Type A rows satisfy `IsStratumUnanimous=TRUE`
 - When `IsSignFlip=TRUE`, corrected and pooled winners always disagree
-- When `DistortionType=D`, corrected and pooled winners always agree
 - `SIGN(CorrectedGap) = SIGN(WeightedStratumGapSum)` for all rows
 - Sign-flip rows have `SignalPurity < 0.5` (`inv-sign-flip-signal-purity-max`)
 - `CorrectedGap` invariant under allocation sweep (`inv-corrected-gap-invariant`)
-- Confounder sign-flips ⟺ `IsParadoxExplained=TRUE` (biconditional, loop-74)
-- Collider/selection studies: zero manifest sign-flips at observed allocation (conditional theorem, loop-75)
-- …plus ingestion-contract, phase-diagram, catalog-linkage, and discovery-rollup checks
+- Confounder sign-flips ⟺ `IsParadoxExplained=TRUE` (biconditional)
+- Collider/selection studies: zero manifest sign-flips at observed allocation
+- All unexplained sign-flips confined to `id-contested-org-choice` or `id-collider-proxy`
+- Perfect allocation balance ⟹ zero manifest sign-flips (`inv-perfect-balance-no-flip`)
+- …plus ingestion-contract, phase-diagram, catalog-linkage, and identity-coverage checks
 
-Five **warning-only** invariants retain legacy ratio-geometry witnesses from pre-loop-70 taxonomy.
+Warning-only invariants retain legacy ratio-geometry witnesses from earlier taxonomy versions.
 
-The `ModelSummary` row witnesses epistemic coverage in one query:
+**Reversal recovery is free.** `CorrectedGap = WeightedStratumGapSum` is already derived from the allocation arithmetic. The allocation-corrected winner (`CorrectedWinner`) and its policy implication (`CorrectedPolicyImplication`) cost zero new data — promoted to **theorem**.
 
-| Metric | Value |
-|---|---|
-| StudyCount | 238 |
-| RealStudyCount | 233 |
-| SignFlipCount (= ReversalCount) | 86 |
-| Type A / B / C+ / C− / D | 78 / 8 / 8 / 7 / 137 |
-| ExplainedCount | 83 |
-| AllocationSweep rows | 2,380 (238 studies × 10 steps) |
-| DiscoveryHypotheses | 18 active (6 superseded predicates retired in loop-79) |
-| ConfounderIdentities | 15 canonical archetypes; 238 stratum-variable maps |
-| TheoremCount | 5 Category=theorem conclusions |
+**38 conclusions** are stored as first-class rows in `Conclusions` — from "Simpson's paradox is a derived fact" through the latest identity-conditioned and control-corpus theorems. **9 carry Category=theorem**: signal purity ceiling, CorrectedGap invariance, Explained↔Confounder biconditional, collider-no-manifest, unexplained-identity-sink, latent-predominant mechanism family, Perfect Balance, and Purity Inversion. The PDF and `/conclusions` UI group them by epistemic tier, not a single headline tally.
 
-**Reversal recovery is free.** `CorrectedGap = WeightedStratumGapSum` is already derived from the allocation arithmetic. The allocation-corrected winner (`CorrectedWinner`) and its policy implication (`CorrectedPolicyImplication`) cost zero new data — now promoted to **theorem** (conc-28).
-
-**34 conclusions** are stored as first-class rows in `Conclusions` — from "Simpson's paradox is a derived fact" (loop-04) through loop-80 confounder-identity layer (`conc-33`). Five carry **Category=theorem** (signal purity ceiling, CorrectedGap invariance, Explained↔Confounder, collider-no-manifest). The PDF and `/conclusions` UI group them by epistemic tier, not a single headline tally.
+**The identity layer** is a join surface across the corpus. `ConfounderIdentities` maps **19 mechanism archetypes** — age-composition, disease-severity, institutional-unit, collider-proxy, selection-frailty, and 14 others — to every stratum variable across the corpus via `StratumVariableIdentityMaps`. This makes cross-study questions answerable for the first time: which archetypes are domain-specific vs universal; which produce manifest vs latent-only paradoxes; and which carry the highest naming fragility (the `id-institutional-unit` archetype alone spans dozens of distinct normalized variable names across the corpus).
 
 ---
 
@@ -252,13 +229,3 @@ No migrations. Edit rulebook → `effortless build` → `./init-db.sh` → DB re
 | `merge-acquisition-manifest.py`, `merge-pdf-extraction-manifest.py` | Merge acquisition metadata into catalog |
 
 Run allocation-sweep regeneration after any import that adds studies.
-
----
-
-## Local transpiler bus (`localhost:4242`)
-
-> **All 13 local transpilers live on `localhost:4242`.** Once you run
-> `./start.sh` from the repo root, the ssotme-proxy exposes every repo-local
-> transpiler — `rulebook-to-postgres`, `rulebook-to-python`, `rulebook-to-golang`,
-> `rulebook-to-cobol`, `rulebook-to-owl`, and more — as first-class `ssotme://`
-> routes any `effortless build` can call.

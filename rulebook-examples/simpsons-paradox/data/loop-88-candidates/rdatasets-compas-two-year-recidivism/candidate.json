@@ -1,0 +1,24 @@
+{
+  "candidate_id": "116",
+  "slug": "rdatasets-compas-two-year-recidivism",
+  "dataset_name": "compas_two_year_recidivism",
+  "description": "ProPublica COMPAS recidivism risk scores, Broward County",
+  "domain": "Criminal Justice",
+  "source": "ProPublica (verified GitHub raw CSV)",
+  "n_rows": "7214",
+  "stratifying_columns_hint": "race, sex, age_cat, charge_degree, priors_count",
+  "download_url": "https://raw.githubusercontent.com/propublica/compas-analysis/master/compas-scores-two-years.csv",
+  "documentation_url": "https://github.com/propublica/compas-analysis",
+  "status": "needs-data",
+  "skip_reason": null,
+  "notes": [],
+  "files": [
+    "data.csv"
+  ],
+  "proposed_study_id": "compas-recidivism-2016",
+  "proposed_title": "COMPAS Two-Year Recidivism by Race and Age (ProPublica 2016)",
+  "binary_outcome": "two_year_recid",
+  "treatment_variable": "race",
+  "stratum_variable": "age_cat",
+  "encoding_note": "two_year_recid=1 counts as Success (recidivated); group by race (treatment) \u00d7 age_cat (stratum: Less than 25 / 25-45 / Greater than 45); count rows per cell for Cases, sum two_year_recid for Successes."
+}

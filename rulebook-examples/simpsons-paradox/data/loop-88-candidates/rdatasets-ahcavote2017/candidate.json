@@ -1,0 +1,24 @@
+{
+  "candidate_id": "84",
+  "slug": "rdatasets-ahcavote2017",
+  "dataset_name": "AHCAvote2017",
+  "description": "Congressional Votes on American Health Care Act (in 2017)",
+  "domain": "General Statistics Teaching",
+  "source": "Rdatasets (R package: Stat2Data)",
+  "n_rows": "430",
+  "stratifying_columns_hint": "4 factor / 5 binary cols",
+  "download_url": "https://vincentarelbundock.github.io/Rdatasets/csv/Stat2Data/AHCAvote2017.csv",
+  "documentation_url": "https://vincentarelbundock.github.io/Rdatasets/doc/Stat2Data/AHCAvote2017.html",
+  "status": "needs-data",
+  "skip_reason": null,
+  "notes": [],
+  "files": [
+    "data.csv"
+  ],
+  "proposed_study_id": "rdatasets-ahcavote-2017",
+  "proposed_title": "AHCA Vote by Party and Trump-District Status (2017 US House)",
+  "binary_outcome": "AHCAvote",
+  "treatment_variable": "Party",
+  "stratum_variable": "Trump",
+  "encoding_note": "AHCAvote=1 is a \"yes\" vote (Success); Party (D vs R) is treatment; Trump=1 (district won by Trump in 2016) is the primary stratum. Aggregate to count yes votes (Successes) and total members (Cases) per Party \u00d7 Trump cell."
+}

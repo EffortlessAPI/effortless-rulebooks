@@ -1,0 +1,18 @@
+{
+  "candidate_id": "53",
+  "slug": "rdatasets-cholera",
+  "dataset_name": "Cholera",
+  "description": "William Farr's Data on Cholera in London, 1849",
+  "domain": "Historical / Social Science",
+  "source": "Rdatasets (R package: HistData)",
+  "n_rows": "38",
+  "stratifying_columns_hint": "2 factor / 0 binary cols",
+  "download_url": "https://vincentarelbundock.github.io/Rdatasets/csv/HistData/Cholera.csv",
+  "documentation_url": "https://vincentarelbundock.github.io/Rdatasets/doc/HistData/Cholera.html",
+  "status": "skip",
+  "skip_reason": "Aggregate district-level ecological data (one row per London district). Outcomes are continuous rates and counts (cholera_drate, cholera_deaths, popn). No individual-level binary outcome exists \u2014 cannot compute Successes/Cases per cell. No treatment variable; this is a cross-sectional ecological dataset for studying cholera geography.",
+  "notes": [],
+  "files": [
+    "data.csv"
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "candidate_id": "32",
+  "slug": "rdatasets-gallup-tbl-df",
+  "dataset_name": "Gallup_tbl_df",
+  "description": "Gallup Marijuana Possession Poll (1980)",
+  "domain": "Criminal Justice",
+  "source": "Rdatasets (R package: crimedatasets)",
+  "n_rows": "1200",
+  "stratifying_columns_hint": "2 factor / 0 binary cols",
+  "download_url": "https://vincentarelbundock.github.io/Rdatasets/csv/crimedatasets/Gallup_tbl_df.csv",
+  "documentation_url": "https://vincentarelbundock.github.io/Rdatasets/doc/crimedatasets/Gallup_tbl_df.html",
+  "status": "skip",
+  "skip_reason": "Dataset is a Gallup poll opinion table with only two columns: demographics (12 demographic groups, each with exactly 100 rows) and opinion (3-level: Criminal/Not Criminal/No Opinion). There is no treatment/exposure variable and no natural treatment vs. control grouping. The data is effectively pre-aggregated stubs with no individual-level binary outcome suitable for Simpson's Paradox cell computation.",
+  "download_notes": "HTTP 200 OK",
+  "notes": []
+}

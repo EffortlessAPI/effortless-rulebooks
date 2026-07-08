@@ -1,0 +1,16 @@
+{
+  "candidate_id": "132",
+  "slug": "rdatasets-nhanes-obesity-paradox",
+  "dataset_name": "nhanes_obesity_paradox",
+  "description": "NHANES Obesity & Health Outcomes by Age & Comorbidity",
+  "domain": "Public Health",
+  "source": "CDC NHANES (verified)",
+  "n_rows": "20000+",
+  "stratifying_columns_hint": "age_group, comorbidity, bmi_category",
+  "download_url": "https://wwwn.cdc.gov/nchs/nhanes/",
+  "documentation_url": "https://www.cdc.gov/nchs/nhanes/",
+  "status": "portal-required",
+  "skip_reason": null,
+  "notes": [],
+  "portal_reason": "NHANES requires SAS/R for public use files"
+}

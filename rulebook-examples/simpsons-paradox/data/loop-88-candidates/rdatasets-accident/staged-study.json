@@ -1,0 +1,51 @@
+{
+  "StudyId": "rdatasets-france-accident-1958",
+  "Title": "French Traffic Accidents: Fatality by Transport Mode and Age Group (1958)",
+  "Source": "R package: vcdExtra/Accident",
+  "SourceUrl": "https://vincentarelbundock.github.io/Rdatasets/doc/vcdExtra/Accident.html",
+  "PublicationYear": 1958,
+  "Domain": "public-health",
+  "IsSynthetic": false,
+  "IsControlStudy": true,
+  "ControlDomain": "public-health-epidemiology",
+  "TraditionId": "tradition-dag",
+  "PrimaryResearcherId": "researcher-pearl",
+  "confounding_variable": "age",
+  "causal_role": "allocation",
+  "note": "No Simpson's paradox is expected because age-group allocation across transport modes does not create a systematic reversal — motorcycles carry more young adults (high-exposure, lower fatality rate) while pedestrians skew older (higher fatality rate), but the within-stratum ordering of fatality rates is consistent with the marginal ordering.",
+  "treatments": [
+    {"TreatmentLabel": "4-Wheeled", "Description": "4-wheeled vehicle occupant", "TotalCases": 60800, "TotalSuccesses": 58309},
+    {"TreatmentLabel": "Bicycle", "Description": "Bicycle rider", "TotalCases": 23163, "TotalSuccesses": 22338},
+    {"TreatmentLabel": "Motorcycle", "Description": "Motorcycle rider", "TotalCases": 74312, "TotalSuccesses": 71335},
+    {"TreatmentLabel": "Pedestrian", "Description": "Pedestrian", "TotalCases": 28455, "TotalSuccesses": 26662}
+  ],
+  "strata": [
+    {"StratumLabel": "0-9", "Description": "Age group 0–9 years", "TotalCases": 9496},
+    {"StratumLabel": "10-19", "Description": "Age group 10–19 years", "TotalCases": 36813},
+    {"StratumLabel": "20-29", "Description": "Age group 20–29 years", "TotalCases": 41941},
+    {"StratumLabel": "30-49", "Description": "Age group 30–49 years", "TotalCases": 56853},
+    {"StratumLabel": "50+", "Description": "Age group 50 and older", "TotalCases": 41627}
+  ],
+  "cells": [
+    {"StratumLabel": "0-9", "TreatmentLabel": "4-Wheeled", "Cases": 3090, "Successes": 2955},
+    {"StratumLabel": "10-19", "TreatmentLabel": "4-Wheeled", "Cases": 6347, "Successes": 6136},
+    {"StratumLabel": "20-29", "TreatmentLabel": "4-Wheeled", "Cases": 13905, "Successes": 13445},
+    {"StratumLabel": "30-49", "TreatmentLabel": "4-Wheeled", "Cases": 23717, "Successes": 22798},
+    {"StratumLabel": "50+", "TreatmentLabel": "4-Wheeled", "Cases": 13741, "Successes": 12975},
+    {"StratumLabel": "0-9", "TreatmentLabel": "Bicycle", "Cases": 535, "Successes": 504},
+    {"StratumLabel": "10-19", "TreatmentLabel": "Bicycle", "Cases": 10732, "Successes": 10625},
+    {"StratumLabel": "20-29", "TreatmentLabel": "Bicycle", "Cases": 2239, "Successes": 2174},
+    {"StratumLabel": "30-49", "TreatmentLabel": "Bicycle", "Cases": 4312, "Successes": 4142},
+    {"StratumLabel": "50+", "TreatmentLabel": "Bicycle", "Cases": 5345, "Successes": 4893},
+    {"StratumLabel": "0-9", "TreatmentLabel": "Motorcycle", "Cases": 324, "Successes": 312},
+    {"StratumLabel": "10-19", "TreatmentLabel": "Motorcycle", "Cases": 16314, "Successes": 15898},
+    {"StratumLabel": "20-29", "TreatmentLabel": "Motorcycle", "Cases": 23310, "Successes": 22568},
+    {"StratumLabel": "30-49", "TreatmentLabel": "Motorcycle", "Cases": 23560, "Successes": 22573},
+    {"StratumLabel": "50+", "TreatmentLabel": "Motorcycle", "Cases": 10804, "Successes": 9984},
+    {"StratumLabel": "0-9", "TreatmentLabel": "Pedestrian", "Cases": 5547, "Successes": 5308},
+    {"StratumLabel": "10-19", "TreatmentLabel": "Pedestrian", "Cases": 3420, "Successes": 3322},
+    {"StratumLabel": "20-29", "TreatmentLabel": "Pedestrian", "Cases": 2487, "Successes": 2385},
+    {"StratumLabel": "30-49", "TreatmentLabel": "Pedestrian", "Cases": 5264, "Successes": 4992},
+    {"StratumLabel": "50+", "TreatmentLabel": "Pedestrian", "Cases": 11737, "Successes": 10655}
+  ]
+}

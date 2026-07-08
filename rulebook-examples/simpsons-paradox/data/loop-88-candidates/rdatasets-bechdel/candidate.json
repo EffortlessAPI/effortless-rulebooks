@@ -1,0 +1,18 @@
+{
+  "candidate_id": "92",
+  "slug": "rdatasets-bechdel",
+  "dataset_name": "bechdel",
+  "description": "The Dollar-And-Cents Case Against Hollywood's Exclusion of Women",
+  "domain": "Journalism/Social Data",
+  "source": "Rdatasets (R package: fivethirtyeight)",
+  "n_rows": "1794",
+  "stratifying_columns_hint": "1 factor / 1 binary cols",
+  "download_url": "https://vincentarelbundock.github.io/Rdatasets/csv/fivethirtyeight/bechdel.csv",
+  "documentation_url": "https://vincentarelbundock.github.io/Rdatasets/doc/fivethirtyeight/bechdel.html",
+  "status": "skip",
+  "skip_reason": "The treatment variable (clean_test categories: nowomen, notalk, men, dubious, ok) is the direct determinant of the binary outcome (PASS/FAIL) \u2014 they are the same measurement at different granularities. There is no independent treatment/exposure group that could be stratified to reveal Simpson's Paradox. The remaining candidate variables (decade_code, period_code) overlap and offer no meaningful third axis for a treatment\u00d7stratum\u00d7outcome structure.",
+  "notes": [],
+  "files": [
+    "data.csv"
+  ]
+}

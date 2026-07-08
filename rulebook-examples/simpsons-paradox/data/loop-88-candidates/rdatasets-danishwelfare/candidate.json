@@ -1,0 +1,16 @@
+{
+  "candidate_id": "40",
+  "slug": "rdatasets-danishwelfare",
+  "dataset_name": "DanishWelfare",
+  "description": "Danish Welfare Study Data",
+  "domain": "Categorical Data / Mixed",
+  "source": "Rdatasets (R package: vcd)",
+  "n_rows": "180",
+  "stratifying_columns_hint": "4 factor / 0 binary cols",
+  "download_url": "https://vincentarelbundock.github.io/Rdatasets/csv/vcd/DanishWelfare.csv",
+  "documentation_url": "https://vincentarelbundock.github.io/Rdatasets/doc/vcd/DanishWelfare.html",
+  "status": "skip",
+  "download_notes": "HTTP 200 OK",
+  "skip_reason": "Already aggregated count table (Freq column = pre-aggregated cell counts) with no binary success/failure outcome. Variables are alcohol consumption, income, marital status, and urban area \u2014 all categorical with no natural treatment/outcome structure for Simpson's Paradox analysis.",
+  "notes": []
+}

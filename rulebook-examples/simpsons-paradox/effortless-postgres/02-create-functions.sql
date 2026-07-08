@@ -150,6 +150,24 @@ RETURNS BOOLEAN AS $$
   SELECT (SELECT is_synthetic FROM studies WHERE study_id = p_study_id);
 $$ LANGUAGE sql STABLE;
 
+-- get_studies_is_control_study
+-- Helper function: Get IsControlStudy from Studies by StudyId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_studies_is_control_study(p_study_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (SELECT is_control_study FROM studies WHERE study_id = p_study_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_studies_control_domain
+-- Helper function: Get ControlDomain from Studies by StudyId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_studies_control_domain(p_study_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT control_domain FROM studies WHERE study_id = p_study_id);
+$$ LANGUAGE sql STABLE;
+
 -- calc_treatments_name
 -- Field: Treatments.Name
 -- Type: calculated | DataType: string | Returns: TEXT
@@ -227,7 +245,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_case_cells_cell_success_rate(p_case_cell_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT (CASE WHEN ((SELECT cases FROM case_cells WHERE case_cell_id = p_case_cell_id))::NUMERIC = 0 THEN ('')::text ELSE ((COALESCE(CASE WHEN ((SELECT successes FROM case_cells WHERE case_cell_id = p_case_cell_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT successes FROM case_cells WHERE case_cell_id = p_case_cell_id))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(CASE WHEN ((SELECT cases FROM case_cells WHERE case_cell_id = p_case_cell_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT cases FROM case_cells WHERE case_cell_id = p_case_cell_id))::numeric ELSE NULL END, 0), 0)))::text END)::numeric;
+  SELECT (CASE WHEN ((SELECT cases FROM case_cells WHERE case_cell_id = p_case_cell_id))::NUMERIC = 0 THEN (0)::text ELSE ((COALESCE(CASE WHEN ((SELECT successes FROM case_cells WHERE case_cell_id = p_case_cell_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT successes FROM case_cells WHERE case_cell_id = p_case_cell_id))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(CASE WHEN ((SELECT cases FROM case_cells WHERE case_cell_id = p_case_cell_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT cases FROM case_cells WHERE case_cell_id = p_case_cell_id))::numeric ELSE NULL END, 0), 0)))::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_case_cells_total_cases_for_treatment
@@ -500,6 +518,26 @@ RETURNS NUMERIC AS $$
   SELECT (CASE WHEN calc_stratum_summaries_stratum_gap(p_stratum_summary_id) IS NULL THEN ('')::text ELSE ((COALESCE(CASE WHEN (calc_stratum_summaries_stratum_gap(p_stratum_summary_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_stratum_summaries_stratum_gap(p_stratum_summary_id))::numeric ELSE NULL END, 0) * COALESCE(CASE WHEN (calc_stratum_summaries_stratum_fraction(p_stratum_summary_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_stratum_summaries_stratum_fraction(p_stratum_summary_id))::numeric ELSE NULL END, 0)))::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
+-- calc_stratum_summaries_abs_allocation_bias
+-- Field: StratumSummaries.AbsAllocationBias
+-- Type: calculated | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_stratum_summaries_abs_allocation_bias(p_stratum_summary_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT (CASE WHEN calc_stratum_summaries_allocation_bias(p_stratum_summary_id) IS NULL THEN ('')::text ELSE (ABS(calc_stratum_summaries_allocation_bias(p_stratum_summary_id)))::text END)::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_stratum_summaries_abs_stratum_gap
+-- Field: StratumSummaries.AbsStratumGap
+-- Type: calculated | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_stratum_summaries_abs_stratum_gap(p_stratum_summary_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT (CASE WHEN calc_stratum_summaries_stratum_gap(p_stratum_summary_id) IS NULL THEN ('')::text ELSE (ABS(calc_stratum_summaries_stratum_gap(p_stratum_summary_id)))::text END)::numeric;
+$$ LANGUAGE sql STABLE;
+
 -- calc_model_summary_name
 -- Field: ModelSummary.Name
 -- Type: calculated | DataType: string | Returns: TEXT
@@ -657,7 +695,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_model_summary_avg_signal_purity(p_model_summary_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((COALESCE(CASE WHEN ((SELECT COALESCE(SUM((calc_treatment_rankings_signal_purity(treatment_ranking_id))::numeric), 0) FROM treatment_rankings WHERE study <> ''))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT COALESCE(SUM((calc_treatment_rankings_signal_purity(treatment_ranking_id))::numeric), 0) FROM treatment_rankings WHERE study <> ''))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(CASE WHEN ((SELECT COUNT(*) FROM treatment_rankings WHERE study = '<>'))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT COUNT(*) FROM treatment_rankings WHERE study = '<>'))::numeric ELSE NULL END, 0), 0)))::numeric;
+  SELECT ((COALESCE(COALESCE(SUM((calc_treatment_rankings_signal_purity(p_treatment_ranking_id))::numeric), 0), 0) / NULLIF(COALESCE(CASE WHEN ((SELECT COUNT(*) FROM treatment_rankings))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT COUNT(*) FROM treatment_rankings))::numeric ELSE NULL END, 0), 0)))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_model_summary_sweep_corrected_gap_max
@@ -700,6 +738,86 @@ RETURNS NUMERIC AS $$
   SELECT ((COALESCE(CASE WHEN ((SELECT COALESCE(MAX((calc_allocation_sweep_sweep_pooled_gap(sweep_id))::numeric), 0) FROM allocation_sweep WHERE study_id = 'kidney-1986'))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT COALESCE(MAX((calc_allocation_sweep_sweep_pooled_gap(sweep_id))::numeric), 0) FROM allocation_sweep WHERE study_id = 'kidney-1986'))::numeric ELSE NULL END, 0) - COALESCE(CASE WHEN ((SELECT COALESCE(MIN((calc_allocation_sweep_sweep_pooled_gap(sweep_id))::numeric), 0) FROM allocation_sweep WHERE study_id = 'kidney-1986'))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT COALESCE(MIN((calc_allocation_sweep_sweep_pooled_gap(sweep_id))::numeric), 0) FROM allocation_sweep WHERE study_id = 'kidney-1986'))::numeric ELSE NULL END, 0)))::numeric;
 $$ LANGUAGE sql STABLE;
 
+-- calc_model_summary_real_study_count
+-- Field: ModelSummary.RealStudyCount
+-- Type: aggregation | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_model_summary_real_study_count(p_model_summary_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((SELECT COUNT(*) FROM studies WHERE is_synthetic = FALSE))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_model_summary_avg_signal_purity_reversal
+-- Field: ModelSummary.AvgSignalPurityReversal
+-- Type: calculated | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_model_summary_avg_signal_purity_reversal(p_model_summary_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT ((SELECT COALESCE(AVG((calc_treatment_rankings_signal_purity(treatment_ranking_id))::numeric), 0) FROM treatment_rankings WHERE calc_treatment_rankings_allocation_direction(treatment_ranking_id) = 'reversal'))::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_model_summary_avg_signal_purity_non_reversal
+-- Field: ModelSummary.AvgSignalPurityNonReversal
+-- Type: calculated | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_model_summary_avg_signal_purity_non_reversal(p_model_summary_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT ((SELECT COALESCE(AVG((calc_treatment_rankings_signal_purity(treatment_ranking_id))::numeric), 0) FROM treatment_rankings WHERE calc_treatment_rankings_allocation_direction(treatment_ranking_id) <> 'reversal'))::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_model_summary_signal_purity_gap
+-- Field: ModelSummary.SignalPurityGap
+-- Type: calculated | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_model_summary_signal_purity_gap(p_model_summary_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT ((COALESCE(CASE WHEN (calc_model_summary_avg_signal_purity_non_reversal(p_model_summary_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_model_summary_avg_signal_purity_non_reversal(p_model_summary_id))::numeric ELSE NULL END, 0) - COALESCE(CASE WHEN (calc_model_summary_avg_signal_purity_reversal(p_model_summary_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_model_summary_avg_signal_purity_reversal(p_model_summary_id))::numeric ELSE NULL END, 0)))::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_model_summary_medicine_study_count
+-- Field: ModelSummary.MedicineStudyCount
+-- Type: aggregation | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_model_summary_medicine_study_count(p_model_summary_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((SELECT COUNT(*) FROM studies WHERE domain = 'medicine' AND is_synthetic = FALSE))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_model_summary_epidemiology_study_count
+-- Field: ModelSummary.EpidemiologyStudyCount
+-- Type: aggregation | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_model_summary_epidemiology_study_count(p_model_summary_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((SELECT COUNT(*) FROM studies WHERE domain = 'epidemiology' AND is_synthetic = FALSE))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_model_summary_other_domain_study_count
+-- Field: ModelSummary.OtherDomainStudyCount
+-- Type: calculated | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_model_summary_other_domain_study_count(p_model_summary_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((COALESCE(CASE WHEN (calc_model_summary_real_study_count(p_model_summary_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_model_summary_real_study_count(p_model_summary_id))::numeric ELSE NULL END, 0) - COALESCE(CASE WHEN ((COALESCE(CASE WHEN (calc_model_summary_medicine_study_count(p_model_summary_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_model_summary_medicine_study_count(p_model_summary_id))::numeric ELSE NULL END, 0) - COALESCE(CASE WHEN (calc_model_summary_epidemiology_study_count(p_model_summary_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_model_summary_epidemiology_study_count(p_model_summary_id))::numeric ELSE NULL END, 0)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((COALESCE(CASE WHEN (calc_model_summary_medicine_study_count(p_model_summary_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_model_summary_medicine_study_count(p_model_summary_id))::numeric ELSE NULL END, 0) - COALESCE(CASE WHEN (calc_model_summary_epidemiology_study_count(p_model_summary_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_model_summary_epidemiology_study_count(p_model_summary_id))::numeric ELSE NULL END, 0)))::numeric ELSE NULL END, 0)))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_model_summary_domain_diversity_note
+-- Field: ModelSummary.DomainDiversityNote
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_model_summary_domain_diversity_note(p_model_summary_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CONCAT('real=', calc_model_summary_real_study_count(p_model_summary_id), ' studies; wave2=', calc_model_summary_expansion_wave2_study_count(p_model_summary_id), '; eduLatent=', ROUND(((COALESCE(CASE WHEN (calc_model_summary_education_latent_fraction(p_model_summary_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_model_summary_education_latent_fraction(p_model_summary_id))::numeric ELSE NULL END, 0) * COALESCE(100, 0)))::NUMERIC, (0)::INTEGER), '%; sportsLatent=', ROUND(((COALESCE(CASE WHEN (calc_model_summary_sports_latent_fraction(p_model_summary_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_model_summary_sports_latent_fraction(p_model_summary_id))::numeric ELSE NULL END, 0) * COALESCE(100, 0)))::NUMERIC, (0)::INTEGER), '%; econFlipRate=', ROUND(((COALESCE(CASE WHEN (calc_model_summary_economics_sign_flip_rate(p_model_summary_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_model_summary_economics_sign_flip_rate(p_model_summary_id))::numeric ELSE NULL END, 0) * COALESCE(100, 0)))::NUMERIC, (0)::INTEGER), '%'))::text;
+$$ LANGUAGE sql STABLE;
+
 -- calc_model_summary_ingestion_protocol_item_count
 -- Field: ModelSummary.IngestionProtocolItemCount
 -- Type: aggregation | DataType: integer | Returns: INTEGER
@@ -707,7 +825,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_model_summary_ingestion_protocol_item_count(p_model_summary_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM ingestion_protocol WHERE protocol_id = '<>'))::integer;
+  SELECT ((SELECT COUNT(*) FROM ingestion_protocol))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_model_summary_latent_type_d_count
@@ -770,6 +888,16 @@ RETURNS NUMERIC AS $$
   SELECT ((SELECT COUNT(*) FROM treatment_rankings WHERE calc_treatment_rankings_study_domain(treatment_ranking_id) = 'economics' AND calc_treatment_rankings_is_sign_flip(treatment_ranking_id) = TRUE))::numeric;
 $$ LANGUAGE sql STABLE;
 
+-- calc_model_summary_sum_pooled_gap_latent_d
+-- Field: ModelSummary.SumPooledGapLatentD
+-- Type: aggregation | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_model_summary_sum_pooled_gap_latent_d(p_model_summary_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT ((SELECT COALESCE(SUM((calc_treatment_rankings_pooled_gap(treatment_ranking_id))::numeric), 0) FROM treatment_rankings WHERE calc_treatment_rankings_latent_flip_potential(treatment_ranking_id) = TRUE))::numeric;
+$$ LANGUAGE sql STABLE;
+
 -- calc_model_summary_avg_pooled_gap_latent_d
 -- Field: ModelSummary.AvgPooledGapLatentD
 -- Type: calculated | DataType: number | Returns: NUMERIC
@@ -777,7 +905,17 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_model_summary_avg_pooled_gap_latent_d(p_model_summary_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT (CASE WHEN (calc_model_summary_latent_type_d_count(p_model_summary_id))::NUMERIC = 0 THEN ('')::text ELSE ((SELECT COALESCE(AVG((calc_treatment_rankings_pooled_gap(treatment_ranking_id))::numeric), 0) FROM treatment_rankings WHERE rankings_latent_flip_potential = TRUE))::text END)::numeric;
+  SELECT (CASE WHEN (calc_model_summary_latent_type_d_count(p_model_summary_id))::NUMERIC = 0 THEN (0)::text ELSE ((COALESCE(CASE WHEN (calc_model_summary_sum_pooled_gap_latent_d(p_model_summary_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_model_summary_sum_pooled_gap_latent_d(p_model_summary_id))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(CASE WHEN (calc_model_summary_latent_type_d_count(p_model_summary_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_model_summary_latent_type_d_count(p_model_summary_id))::numeric ELSE NULL END, 0), 0)))::text END)::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_model_summary_sum_pooled_gap_stable_d
+-- Field: ModelSummary.SumPooledGapStableD
+-- Type: aggregation | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_model_summary_sum_pooled_gap_stable_d(p_model_summary_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT ((SELECT COALESCE(SUM((calc_treatment_rankings_pooled_gap(treatment_ranking_id))::numeric), 0) FROM treatment_rankings WHERE calc_treatment_rankings_distortion_type(treatment_ranking_id) = 'D' AND calc_treatment_rankings_latent_flip_potential(treatment_ranking_id) = FALSE))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_model_summary_avg_pooled_gap_stable_d
@@ -787,7 +925,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_model_summary_avg_pooled_gap_stable_d(p_model_summary_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT (CASE WHEN (calc_model_summary_stable_type_d_count(p_model_summary_id))::NUMERIC = 0 THEN ('')::text ELSE ((SELECT COALESCE(AVG((calc_treatment_rankings_pooled_gap(treatment_ranking_id))::numeric), 0) FROM treatment_rankings WHERE rankings_distortion_type = 'D' AND rankings_latent_flip_potential = FALSE))::text END)::numeric;
+  SELECT (CASE WHEN (calc_model_summary_stable_type_d_count(p_model_summary_id))::NUMERIC = 0 THEN (0)::text ELSE ((COALESCE(CASE WHEN (calc_model_summary_sum_pooled_gap_stable_d(p_model_summary_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_model_summary_sum_pooled_gap_stable_d(p_model_summary_id))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(CASE WHEN (calc_model_summary_stable_type_d_count(p_model_summary_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_model_summary_stable_type_d_count(p_model_summary_id))::numeric ELSE NULL END, 0), 0)))::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_model_summary_epidemiology_avg_distortion
@@ -1203,7 +1341,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_model_summary_identity_map_coverage_rate(p_model_summary_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT (CASE WHEN ((SELECT NULLIF(real_study_count, '') FROM model_summary WHERE model_summary_id = p_model_summary_id))::NUMERIC = 0 THEN ('')::text ELSE ((COALESCE(CASE WHEN (calc_model_summary_mapped_stratum_variable_count(p_model_summary_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_model_summary_mapped_stratum_variable_count(p_model_summary_id))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(CASE WHEN ((SELECT NULLIF(real_study_count, '') FROM model_summary WHERE model_summary_id = p_model_summary_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT NULLIF(real_study_count, '') FROM model_summary WHERE model_summary_id = p_model_summary_id))::numeric ELSE NULL END, 0), 0)))::text END)::numeric;
+  SELECT (CASE WHEN (calc_model_summary_real_study_count(p_model_summary_id))::NUMERIC = 0 THEN ('')::text ELSE ((COALESCE(CASE WHEN (calc_model_summary_mapped_stratum_variable_count(p_model_summary_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_model_summary_mapped_stratum_variable_count(p_model_summary_id))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(CASE WHEN (calc_model_summary_real_study_count(p_model_summary_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_model_summary_real_study_count(p_model_summary_id))::numeric ELSE NULL END, 0), 0)))::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_model_summary_severity_medicine_manifest_flip_rate
@@ -1298,6 +1436,36 @@ RETURNS NUMERIC AS $$
    =IF(LOOKUP("cluster-id-geographic-composition", IdentityClusterSummaries[IdentityClusterId], IdentityClusterSummaries[StudyCount])=0, "", LOOKUP("cluster-id-geographic-composition", IdentityClusterSummaries[IdentityClusterId], IdentityClusterSummaries[TypeDCount]) / LOOKUP("cluster-id-geographic-composition", IdentityClusterSummaries[IdentityClusterId], IdentityClusterSummaries[StudyCount]))
 */
 NULL::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_model_summary_domain_flip_gap_survives_geometry_control
+-- Field: ModelSummary.DomainFlipGapSurvivesGeometryControl
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_model_summary_domain_flip_gap_survives_geometry_control(p_model_summary_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((((SELECT economics_high_imbalance_sign_flip_count FROM model_summary WHERE model_summary_id = p_model_summary_id))::NUMERIC = 0 AND ((SELECT epidemiology_high_imbalance_sign_flip_rate FROM model_summary WHERE model_summary_id = p_model_summary_id))::NUMERIC > 0.15));
+$$ LANGUAGE sql STABLE;
+
+-- calc_model_summary_corpus_pattern_superseded_fail_count
+-- Field: ModelSummary.CorpusPatternSupersededFailCount
+-- Type: calculated | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_model_summary_corpus_pattern_superseded_fail_count(p_model_summary_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((COALESCE(CASE WHEN ((SELECT COUNT(*) FROM discovery_findings WHERE hypothesis_id = 'H-econ-zero'))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT COUNT(*) FROM discovery_findings WHERE hypothesis_id = 'H-econ-zero'))::numeric ELSE NULL END, 0) + COALESCE(CASE WHEN ((COALESCE(CASE WHEN ((SELECT COUNT(*) FROM discovery_findings WHERE hypothesis_id = 'H-domain-dist'))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT COUNT(*) FROM discovery_findings WHERE hypothesis_id = 'H-domain-dist'))::numeric ELSE NULL END, 0) + COALESCE(CASE WHEN ((COALESCE(CASE WHEN ((SELECT COUNT(*) FROM discovery_findings WHERE hypothesis_id = 'H-catalog-flip-prediction'))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT COUNT(*) FROM discovery_findings WHERE hypothesis_id = 'H-catalog-flip-prediction'))::numeric ELSE NULL END, 0) + COALESCE(CASE WHEN ((COALESCE(CASE WHEN ((SELECT COUNT(*) FROM discovery_findings WHERE hypothesis_id = 'H-domain-flip-geometry-controlled'))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT COUNT(*) FROM discovery_findings WHERE hypothesis_id = 'H-domain-flip-geometry-controlled'))::numeric ELSE NULL END, 0) + COALESCE(CASE WHEN ((COALESCE(CASE WHEN ((SELECT COUNT(*) FROM discovery_findings WHERE hypothesis_id = 'H-econ-encoding-selection'))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT COUNT(*) FROM discovery_findings WHERE hypothesis_id = 'H-econ-encoding-selection'))::numeric ELSE NULL END, 0) + COALESCE(CASE WHEN ((SELECT COUNT(*) FROM discovery_findings WHERE hypothesis_id = 'H-domain-profiles-stable'))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT COUNT(*) FROM discovery_findings WHERE hypothesis_id = 'H-domain-profiles-stable'))::numeric ELSE NULL END, 0)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((COALESCE(CASE WHEN ((SELECT COUNT(*) FROM discovery_findings WHERE hypothesis_id = 'H-econ-encoding-selection'))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT COUNT(*) FROM discovery_findings WHERE hypothesis_id = 'H-econ-encoding-selection'))::numeric ELSE NULL END, 0) + COALESCE(CASE WHEN ((SELECT COUNT(*) FROM discovery_findings WHERE hypothesis_id = 'H-domain-profiles-stable'))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT COUNT(*) FROM discovery_findings WHERE hypothesis_id = 'H-domain-profiles-stable'))::numeric ELSE NULL END, 0)))::numeric ELSE NULL END, 0)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((COALESCE(CASE WHEN ((SELECT COUNT(*) FROM discovery_findings WHERE hypothesis_id = 'H-domain-flip-geometry-controlled'))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT COUNT(*) FROM discovery_findings WHERE hypothesis_id = 'H-domain-flip-geometry-controlled'))::numeric ELSE NULL END, 0) + COALESCE(CASE WHEN ((COALESCE(CASE WHEN ((SELECT COUNT(*) FROM discovery_findings WHERE hypothesis_id = 'H-econ-encoding-selection'))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT COUNT(*) FROM discovery_findings WHERE hypothesis_id = 'H-econ-encoding-selection'))::numeric ELSE NULL END, 0) + COALESCE(CASE WHEN ((SELECT COUNT(*) FROM discovery_findings WHERE hypothesis_id = 'H-domain-profiles-stable'))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT COUNT(*) FROM discovery_findings WHERE hypothesis_id = 'H-domain-profiles-stable'))::numeric ELSE NULL END, 0)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((COALESCE(CASE WHEN ((SELECT COUNT(*) FROM discovery_findings WHERE hypothesis_id = 'H-econ-encoding-selection'))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT COUNT(*) FROM discovery_findings WHERE hypothesis_id = 'H-econ-encoding-selection'))::numeric ELSE NULL END, 0) + COALESCE(CASE WHEN ((SELECT COUNT(*) FROM discovery_findings WHERE hypothesis_id = 'H-domain-profiles-stable'))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT COUNT(*) FROM discovery_findings WHERE hypothesis_id = 'H-domain-profiles-stable'))::numeric ELSE NULL END, 0)))::numeric ELSE NULL END, 0)))::numeric ELSE NULL END, 0)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((COALESCE(CASE WHEN ((SELECT COUNT(*) FROM discovery_findings WHERE hypothesis_id = 'H-catalog-flip-prediction'))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT COUNT(*) FROM discovery_findings WHERE hypothesis_id = 'H-catalog-flip-prediction'))::numeric ELSE NULL END, 0) + COALESCE(CASE WHEN ((COALESCE(CASE WHEN ((SELECT COUNT(*) FROM discovery_findings WHERE hypothesis_id = 'H-domain-flip-geometry-controlled'))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT COUNT(*) FROM discovery_findings WHERE hypothesis_id = 'H-domain-flip-geometry-controlled'))::numeric ELSE NULL END, 0) + COALESCE(CASE WHEN ((COALESCE(CASE WHEN ((SELECT COUNT(*) FROM discovery_findings WHERE hypothesis_id = 'H-econ-encoding-selection'))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT COUNT(*) FROM discovery_findings WHERE hypothesis_id = 'H-econ-encoding-selection'))::numeric ELSE NULL END, 0) + COALESCE(CASE WHEN ((SELECT COUNT(*) FROM discovery_findings WHERE hypothesis_id = 'H-domain-profiles-stable'))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT COUNT(*) FROM discovery_findings WHERE hypothesis_id = 'H-domain-profiles-stable'))::numeric ELSE NULL END, 0)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((COALESCE(CASE WHEN ((SELECT COUNT(*) FROM discovery_findings WHERE hypothesis_id = 'H-econ-encoding-selection'))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT COUNT(*) FROM discovery_findings WHERE hypothesis_id = 'H-econ-encoding-selection'))::numeric ELSE NULL END, 0) + COALESCE(CASE WHEN ((SELECT COUNT(*) FROM discovery_findings WHERE hypothesis_id = 'H-domain-profiles-stable'))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT COUNT(*) FROM discovery_findings WHERE hypothesis_id = 'H-domain-profiles-stable'))::numeric ELSE NULL END, 0)))::numeric ELSE NULL END, 0)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((COALESCE(CASE WHEN ((SELECT COUNT(*) FROM discovery_findings WHERE hypothesis_id = 'H-domain-flip-geometry-controlled'))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT COUNT(*) FROM discovery_findings WHERE hypothesis_id = 'H-domain-flip-geometry-controlled'))::numeric ELSE NULL END, 0) + COALESCE(CASE WHEN ((COALESCE(CASE WHEN ((SELECT COUNT(*) FROM discovery_findings WHERE hypothesis_id = 'H-econ-encoding-selection'))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT COUNT(*) FROM discovery_findings WHERE hypothesis_id = 'H-econ-encoding-selection'))::numeric ELSE NULL END, 0) + COALESCE(CASE WHEN ((SELECT COUNT(*) FROM discovery_findings WHERE hypothesis_id = 'H-domain-profiles-stable'))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT COUNT(*) FROM discovery_findings WHERE hypothesis_id = 'H-domain-profiles-stable'))::numeric ELSE NULL END, 0)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((COALESCE(CASE WHEN ((SELECT COUNT(*) FROM discovery_findings WHERE hypothesis_id = 'H-econ-encoding-selection'))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT COUNT(*) FROM discovery_findings WHERE hypothesis_id = 'H-econ-encoding-selection'))::numeric ELSE NULL END, 0) + COALESCE(CASE WHEN ((SELECT COUNT(*) FROM discovery_findings WHERE hypothesis_id = 'H-domain-profiles-stable'))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT COUNT(*) FROM discovery_findings WHERE hypothesis_id = 'H-domain-profiles-stable'))::numeric ELSE NULL END, 0)))::numeric ELSE NULL END, 0)))::numeric ELSE NULL END, 0)))::numeric ELSE NULL END, 0)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((COALESCE(CASE WHEN ((SELECT COUNT(*) FROM discovery_findings WHERE hypothesis_id = 'H-domain-dist'))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT COUNT(*) FROM discovery_findings WHERE hypothesis_id = 'H-domain-dist'))::numeric ELSE NULL END, 0) + COALESCE(CASE WHEN ((COALESCE(CASE WHEN ((SELECT COUNT(*) FROM discovery_findings WHERE hypothesis_id = 'H-catalog-flip-prediction'))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT COUNT(*) FROM discovery_findings WHERE hypothesis_id = 'H-catalog-flip-prediction'))::numeric ELSE NULL END, 0) + COALESCE(CASE WHEN ((COALESCE(CASE WHEN ((SELECT COUNT(*) FROM discovery_findings WHERE hypothesis_id = 'H-domain-flip-geometry-controlled'))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT COUNT(*) FROM discovery_findings WHERE hypothesis_id = 'H-domain-flip-geometry-controlled'))::numeric ELSE NULL END, 0) + COALESCE(CASE WHEN ((COALESCE(CASE WHEN ((SELECT COUNT(*) FROM discovery_findings WHERE hypothesis_id = 'H-econ-encoding-selection'))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT COUNT(*) FROM discovery_findings WHERE hypothesis_id = 'H-econ-encoding-selection'))::numeric ELSE NULL END, 0) + COALESCE(CASE WHEN ((SELECT COUNT(*) FROM discovery_findings WHERE hypothesis_id = 'H-domain-profiles-stable'))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT COUNT(*) FROM discovery_findings WHERE hypothesis_id = 'H-domain-profiles-stable'))::numeric ELSE NULL END, 0)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((COALESCE(CASE WHEN ((SELECT COUNT(*) FROM discovery_findings WHERE hypothesis_id = 'H-econ-encoding-selection'))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT COUNT(*) FROM discovery_findings WHERE hypothesis_id = 'H-econ-encoding-selection'))::numeric ELSE NULL END, 0) + COALESCE(CASE WHEN ((SELECT COUNT(*) FROM discovery_findings WHERE hypothesis_id = 'H-domain-profiles-stable'))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT COUNT(*) FROM discovery_findings WHERE hypothesis_id = 'H-domain-profiles-stable'))::numeric ELSE NULL END, 0)))::numeric ELSE NULL END, 0)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((COALESCE(CASE WHEN ((SELECT COUNT(*) FROM discovery_findings WHERE hypothesis_id = 'H-domain-flip-geometry-controlled'))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT COUNT(*) FROM discovery_findings WHERE hypothesis_id = 'H-domain-flip-geometry-controlled'))::numeric ELSE NULL END, 0) + COALESCE(CASE WHEN ((COALESCE(CASE WHEN ((SELECT COUNT(*) FROM discovery_findings WHERE hypothesis_id = 'H-econ-encoding-selection'))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT COUNT(*) FROM discovery_findings WHERE hypothesis_id = 'H-econ-encoding-selection'))::numeric ELSE NULL END, 0) + COALESCE(CASE WHEN ((SELECT COUNT(*) FROM discovery_findings WHERE hypothesis_id = 'H-domain-profiles-stable'))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT COUNT(*) FROM discovery_findings WHERE hypothesis_id = 'H-domain-profiles-stable'))::numeric ELSE NULL END, 0)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((COALESCE(CASE WHEN ((SELECT COUNT(*) FROM discovery_findings WHERE hypothesis_id = 'H-econ-encoding-selection'))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT COUNT(*) FROM discovery_findings WHERE hypothesis_id = 'H-econ-encoding-selection'))::numeric ELSE NULL END, 0) + COALESCE(CASE WHEN ((SELECT COUNT(*) FROM discovery_findings WHERE hypothesis_id = 'H-domain-profiles-stable'))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT COUNT(*) FROM discovery_findings WHERE hypothesis_id = 'H-domain-profiles-stable'))::numeric ELSE NULL END, 0)))::numeric ELSE NULL END, 0)))::numeric ELSE NULL END, 0)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((COALESCE(CASE WHEN ((SELECT COUNT(*) FROM discovery_findings WHERE hypothesis_id = 'H-catalog-flip-prediction'))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT COUNT(*) FROM discovery_findings WHERE hypothesis_id = 'H-catalog-flip-prediction'))::numeric ELSE NULL END, 0) + COALESCE(CASE WHEN ((COALESCE(CASE WHEN ((SELECT COUNT(*) FROM discovery_findings WHERE hypothesis_id = 'H-domain-flip-geometry-controlled'))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT COUNT(*) FROM discovery_findings WHERE hypothesis_id = 'H-domain-flip-geometry-controlled'))::numeric ELSE NULL END, 0) + COALESCE(CASE WHEN ((COALESCE(CASE WHEN ((SELECT COUNT(*) FROM discovery_findings WHERE hypothesis_id = 'H-econ-encoding-selection'))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT COUNT(*) FROM discovery_findings WHERE hypothesis_id = 'H-econ-encoding-selection'))::numeric ELSE NULL END, 0) + COALESCE(CASE WHEN ((SELECT COUNT(*) FROM discovery_findings WHERE hypothesis_id = 'H-domain-profiles-stable'))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT COUNT(*) FROM discovery_findings WHERE hypothesis_id = 'H-domain-profiles-stable'))::numeric ELSE NULL END, 0)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((COALESCE(CASE WHEN ((SELECT COUNT(*) FROM discovery_findings WHERE hypothesis_id = 'H-econ-encoding-selection'))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT COUNT(*) FROM discovery_findings WHERE hypothesis_id = 'H-econ-encoding-selection'))::numeric ELSE NULL END, 0) + COALESCE(CASE WHEN ((SELECT COUNT(*) FROM discovery_findings WHERE hypothesis_id = 'H-domain-profiles-stable'))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT COUNT(*) FROM discovery_findings WHERE hypothesis_id = 'H-domain-profiles-stable'))::numeric ELSE NULL END, 0)))::numeric ELSE NULL END, 0)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((COALESCE(CASE WHEN ((SELECT COUNT(*) FROM discovery_findings WHERE hypothesis_id = 'H-domain-flip-geometry-controlled'))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT COUNT(*) FROM discovery_findings WHERE hypothesis_id = 'H-domain-flip-geometry-controlled'))::numeric ELSE NULL END, 0) + COALESCE(CASE WHEN ((COALESCE(CASE WHEN ((SELECT COUNT(*) FROM discovery_findings WHERE hypothesis_id = 'H-econ-encoding-selection'))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT COUNT(*) FROM discovery_findings WHERE hypothesis_id = 'H-econ-encoding-selection'))::numeric ELSE NULL END, 0) + COALESCE(CASE WHEN ((SELECT COUNT(*) FROM discovery_findings WHERE hypothesis_id = 'H-domain-profiles-stable'))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT COUNT(*) FROM discovery_findings WHERE hypothesis_id = 'H-domain-profiles-stable'))::numeric ELSE NULL END, 0)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((COALESCE(CASE WHEN ((SELECT COUNT(*) FROM discovery_findings WHERE hypothesis_id = 'H-econ-encoding-selection'))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT COUNT(*) FROM discovery_findings WHERE hypothesis_id = 'H-econ-encoding-selection'))::numeric ELSE NULL END, 0) + COALESCE(CASE WHEN ((SELECT COUNT(*) FROM discovery_findings WHERE hypothesis_id = 'H-domain-profiles-stable'))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT COUNT(*) FROM discovery_findings WHERE hypothesis_id = 'H-domain-profiles-stable'))::numeric ELSE NULL END, 0)))::numeric ELSE NULL END, 0)))::numeric ELSE NULL END, 0)))::numeric ELSE NULL END, 0)))::numeric ELSE NULL END, 0)))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_model_summary_expansion_wave3_discovery_note
+-- Field: ModelSummary.ExpansionWave3DiscoveryNote
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_model_summary_expansion_wave3_discovery_note(p_model_summary_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CONCAT('superseded=', calc_model_summary_corpus_pattern_superseded_fail_count(p_model_summary_id), '; econFlips=', calc_model_summary_economics_sign_flip_count(p_model_summary_id), '; flipPred=', (SELECT sign_flip_prediction_match_rate FROM model_summary WHERE model_summary_id = p_model_summary_id), '; catalogExact=', (SELECT type_prediction_match_rate FROM model_summary WHERE model_summary_id = p_model_summary_id), '; theorems=', calc_model_summary_theorem_count(p_model_summary_id)))::text;
 $$ LANGUAGE sql STABLE;
 
 -- calc_stratum_variables_name
@@ -1715,7 +1883,27 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_treatment_rankings_allocation_fragility(p_treatment_ranking_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT (CASE WHEN (calc_treatment_rankings_sweep_pooled_gap_range(p_treatment_ranking_id) IS NULL OR calc_treatment_rankings_pooled_gap(p_treatment_ranking_id) IS NULL OR (calc_treatment_rankings_pooled_gap(p_treatment_ranking_id))::NUMERIC = 0) THEN ('')::text ELSE ((COALESCE(CASE WHEN (calc_treatment_rankings_sweep_pooled_gap_range(p_treatment_ranking_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_treatment_rankings_sweep_pooled_gap_range(p_treatment_ranking_id))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(CASE WHEN (ABS(calc_treatment_rankings_pooled_gap(p_treatment_ranking_id)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (ABS(calc_treatment_rankings_pooled_gap(p_treatment_ranking_id)))::numeric ELSE NULL END, 0), 0)))::text END)::numeric;
+  SELECT (CASE WHEN (calc_treatment_rankings_sweep_pooled_gap_range(p_treatment_ranking_id) IS NULL OR calc_treatment_rankings_pooled_gap(p_treatment_ranking_id) IS NULL OR (calc_treatment_rankings_pooled_gap(p_treatment_ranking_id))::NUMERIC = 0) THEN (0)::text ELSE ((COALESCE(CASE WHEN (calc_treatment_rankings_sweep_pooled_gap_range(p_treatment_ranking_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_treatment_rankings_sweep_pooled_gap_range(p_treatment_ranking_id))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(CASE WHEN (ABS(calc_treatment_rankings_pooled_gap(p_treatment_ranking_id)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (ABS(calc_treatment_rankings_pooled_gap(p_treatment_ranking_id)))::numeric ELSE NULL END, 0), 0)))::text END)::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_treatment_rankings_max_stratum_imbalance
+-- Field: TreatmentRankings.MaxStratumImbalance
+-- Type: aggregation | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_treatment_rankings_max_stratum_imbalance(p_treatment_ranking_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT ((SELECT COALESCE(MAX((calc_stratum_summaries_abs_allocation_bias(stratum_summary_id))::numeric), 0) FROM stratum_summaries WHERE study = (SELECT NULLIF(study, '') FROM treatment_rankings WHERE treatment_ranking_id = p_treatment_ranking_id) AND treatment_label = 'A'))::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_treatment_rankings_max_stratum_gap
+-- Field: TreatmentRankings.MaxStratumGap
+-- Type: aggregation | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_treatment_rankings_max_stratum_gap(p_treatment_ranking_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT ((SELECT COALESCE(MAX((calc_stratum_summaries_abs_stratum_gap(stratum_summary_id))::numeric), 0) FROM stratum_summaries WHERE study = (SELECT NULLIF(study, '') FROM treatment_rankings WHERE treatment_ranking_id = p_treatment_ranking_id) AND treatment_label = 'A'))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_treatment_rankings_is_sweep_fragile
@@ -1810,6 +1998,55 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION calc_treatment_rankings_adjustment_appropriate(p_treatment_ranking_id TEXT)
 RETURNS BOOLEAN AS $$
   SELECT (((calc_treatment_rankings_mediator_risk_count(p_treatment_ranking_id))::NUMERIC = 0 AND calc_treatment_rankings_causal_claim_status(p_treatment_ranking_id) = 'established'));
+$$ LANGUAGE sql STABLE;
+
+-- calc_treatment_rankings_purity_trap_flag
+-- Field: TreatmentRankings.PurityTrapFlag
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+CREATE OR REPLACE FUNCTION calc_treatment_rankings_purity_trap_flag(p_treatment_ranking_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT NULL::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_treatment_rankings_distortion_ratio
+-- Field: TreatmentRankings.DistortionRatio
+-- Type: calculated | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_treatment_rankings_distortion_ratio(p_treatment_ranking_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT (CASE WHEN (calc_treatment_rankings_weighted_stratum_gap_sum(p_treatment_ranking_id))::NUMERIC = 0 THEN (0)::text ELSE ((COALESCE(CASE WHEN (calc_treatment_rankings_signed_pooled_gap(p_treatment_ranking_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_treatment_rankings_signed_pooled_gap(p_treatment_ranking_id))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(CASE WHEN (calc_treatment_rankings_weighted_stratum_gap_sum(p_treatment_ranking_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_treatment_rankings_weighted_stratum_gap_sum(p_treatment_ranking_id))::numeric ELSE NULL END, 0), 0)))::text END)::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_treatment_rankings_screening_tier
+-- Field: TreatmentRankings.ScreeningTier
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_treatment_rankings_screening_tier(p_treatment_ranking_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CASE WHEN (calc_treatment_rankings_distortion_type(p_treatment_ranking_id) = 'A' OR calc_treatment_rankings_distortion_type(p_treatment_ranking_id) = 'B') THEN ('DANGER')::text ELSE (CASE WHEN (calc_treatment_rankings_distortion_type(p_treatment_ranking_id) = 'C+' OR calc_treatment_rankings_distortion_type(p_treatment_ranking_id) = 'C-') THEN ('CAUTION')::text ELSE (CASE WHEN calc_treatment_rankings_distortion_type(p_treatment_ranking_id) = 'D' THEN ('SAFE')::text ELSE ('')::text END)::text END)::text END)::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_treatment_rankings_arm_size_ratio
+-- Field: TreatmentRankings.ArmSizeRatio
+-- Type: calculated | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_treatment_rankings_arm_size_ratio(p_treatment_ranking_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT (CASE WHEN ((COALESCE(CASE WHEN (calc_treatment_rankings_total_cases_a(p_treatment_ranking_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_treatment_rankings_total_cases_a(p_treatment_ranking_id))::numeric ELSE NULL END, 0) + COALESCE(CASE WHEN (calc_treatment_rankings_total_cases_b(p_treatment_ranking_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_treatment_rankings_total_cases_b(p_treatment_ranking_id))::numeric ELSE NULL END, 0)))::NUMERIC = 0 THEN (0)::text ELSE ((COALESCE(CASE WHEN (calc_treatment_rankings_total_cases_a(p_treatment_ranking_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_treatment_rankings_total_cases_a(p_treatment_ranking_id))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(CASE WHEN ((COALESCE(CASE WHEN (calc_treatment_rankings_total_cases_a(p_treatment_ranking_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_treatment_rankings_total_cases_a(p_treatment_ranking_id))::numeric ELSE NULL END, 0) + COALESCE(CASE WHEN (calc_treatment_rankings_total_cases_b(p_treatment_ranking_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_treatment_rankings_total_cases_b(p_treatment_ranking_id))::numeric ELSE NULL END, 0)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((COALESCE(CASE WHEN (calc_treatment_rankings_total_cases_a(p_treatment_ranking_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_treatment_rankings_total_cases_a(p_treatment_ranking_id))::numeric ELSE NULL END, 0) + COALESCE(CASE WHEN (calc_treatment_rankings_total_cases_b(p_treatment_ranking_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_treatment_rankings_total_cases_b(p_treatment_ranking_id))::numeric ELSE NULL END, 0)))::numeric ELSE NULL END, 0), 0)))::text END)::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_treatment_rankings_symmetry_departure
+-- Field: TreatmentRankings.SymmetryDeparture
+-- Type: calculated | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_treatment_rankings_symmetry_departure(p_treatment_ranking_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT (ABS((COALESCE(CASE WHEN (calc_treatment_rankings_arm_size_ratio(p_treatment_ranking_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_treatment_rankings_arm_size_ratio(p_treatment_ranking_id))::numeric ELSE NULL END, 0) - COALESCE(0.5, 0))))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_invariant_checks_name
@@ -2543,7 +2780,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_ingestion_summary_protocol_item_count(p_ingestion_summary_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM ingestion_protocol WHERE protocol_id = '<>'))::integer;
+  SELECT ((SELECT COUNT(*) FROM ingestion_protocol))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_ingestion_summary_corpus_cell_count
@@ -2553,7 +2790,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_ingestion_summary_corpus_cell_count(p_ingestion_summary_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM case_cells WHERE case_cell_id = '<>'))::integer;
+  SELECT ((SELECT COUNT(*) FROM case_cells))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_ingestion_summary_valid_cell_count
@@ -2583,7 +2820,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_ingestion_summary_study_count(p_ingestion_summary_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM studies WHERE study_id = '<>'))::integer;
+  SELECT ((SELECT COUNT(*) FROM studies))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_ingestion_summary_structural_compliant_count
@@ -2753,7 +2990,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_corpus_catalog_summary_total_catalog_entries(p_catalog_summary_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM candidate_study_catalog WHERE candidate_id = '<>'))::integer;
+  SELECT ((SELECT COUNT(*) FROM candidate_study_catalog))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_corpus_catalog_summary_imported_count
@@ -2893,7 +3130,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_corpus_catalog_summary_catalog_prediction_witness_note(p_catalog_summary_id TEXT)
 RETURNS TEXT AS $$
-  SELECT (CONCAT("exact=", calc_corpus_catalog_summary_type_prediction_match_count(p_catalog_summary_id), "/", calc_corpus_catalog_summary_imported_count(p_catalog_summary_id), " (", ROUND(calc_corpus_catalog_summary_type_prediction_match_rate(p_catalog_summary_id) * 100, 1), "%); flipPred=", calc_corpus_catalog_summary_sign_flip_prediction_match_count(p_catalog_summary_id), "/", calc_corpus_catalog_summary_sign_flip_prediction_eligible_count(p_catalog_summary_id), " (", ROUND(calc_corpus_catalog_summary_sign_flip_prediction_match_rate(p_catalog_summary_id) * 100, 1), "%)")))::text;
+  SELECT (CONCAT('exact=', calc_corpus_catalog_summary_type_prediction_match_count(p_catalog_summary_id), '/', calc_corpus_catalog_summary_imported_count(p_catalog_summary_id), ' (', ROUND(((COALESCE(CASE WHEN (calc_corpus_catalog_summary_type_prediction_match_rate(p_catalog_summary_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_corpus_catalog_summary_type_prediction_match_rate(p_catalog_summary_id))::numeric ELSE NULL END, 0) * COALESCE(100, 0)))::NUMERIC, (1)::INTEGER), '%); flipPred=', calc_corpus_catalog_summary_sign_flip_prediction_match_count(p_catalog_summary_id), '/', calc_corpus_catalog_summary_sign_flip_prediction_eligible_count(p_catalog_summary_id), ' (', ROUND(((COALESCE(CASE WHEN (calc_corpus_catalog_summary_sign_flip_prediction_match_rate(p_catalog_summary_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_corpus_catalog_summary_sign_flip_prediction_match_rate(p_catalog_summary_id))::numeric ELSE NULL END, 0) * COALESCE(100, 0)))::NUMERIC, (1)::INTEGER), '%)'))::text;
 $$ LANGUAGE sql STABLE;
 
 -- calc_corpus_catalog_summary_data_ready_count
@@ -3246,6 +3483,56 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION calc_identity_domain_cells_manifest_flip_rate(p_cell_id TEXT)
 RETURNS NUMERIC AS $$
   SELECT (CASE WHEN ((SELECT study_count FROM identity_domain_cells WHERE cell_id = p_cell_id))::NUMERIC = 0 THEN ('')::text ELSE ((COALESCE(CASE WHEN ((SELECT manifest_flip_count FROM identity_domain_cells WHERE cell_id = p_cell_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT manifest_flip_count FROM identity_domain_cells WHERE cell_id = p_cell_id))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(CASE WHEN ((SELECT study_count FROM identity_domain_cells WHERE cell_id = p_cell_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT study_count FROM identity_domain_cells WHERE cell_id = p_cell_id))::numeric ELSE NULL END, 0), 0)))::text END)::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_corpus_balance_name
+-- Field: CorpusBalance.Name
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_corpus_balance_name(p_balance_id TEXT)
+RETURNS TEXT AS $$
+  SELECT ((SELECT NULLIF(balance_id, '') FROM corpus_balance WHERE balance_id = p_balance_id))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_corpus_balance_total_study_count
+-- Field: CorpusBalance.TotalStudyCount
+-- Type: calculated | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_corpus_balance_total_study_count(p_balance_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((COALESCE(CASE WHEN (calc_corpus_balance_simpson_study_count(p_balance_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_corpus_balance_simpson_study_count(p_balance_id))::numeric ELSE NULL END, 0) + COALESCE(CASE WHEN (calc_corpus_balance_control_study_count(p_balance_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_corpus_balance_control_study_count(p_balance_id))::numeric ELSE NULL END, 0)))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_corpus_balance_simpson_study_count
+-- Field: CorpusBalance.SimpsonStudyCount
+-- Type: aggregation | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_corpus_balance_simpson_study_count(p_balance_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((SELECT COUNT(*) FROM studies WHERE is_control_study = FALSE))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_corpus_balance_control_study_count
+-- Field: CorpusBalance.ControlStudyCount
+-- Type: aggregation | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_corpus_balance_control_study_count(p_balance_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((SELECT COUNT(*) FROM studies WHERE is_control_study = TRUE))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_corpus_balance_control_fraction
+-- Field: CorpusBalance.ControlFraction
+-- Type: calculated | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_corpus_balance_control_fraction(p_balance_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT (CASE WHEN (calc_corpus_balance_total_study_count(p_balance_id))::NUMERIC = 0 THEN (0)::text ELSE ((COALESCE(CASE WHEN (calc_corpus_balance_control_study_count(p_balance_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_corpus_balance_control_study_count(p_balance_id))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(CASE WHEN (calc_corpus_balance_total_study_count(p_balance_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_corpus_balance_total_study_count(p_balance_id))::numeric ELSE NULL END, 0), 0)))::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- ============================================================================

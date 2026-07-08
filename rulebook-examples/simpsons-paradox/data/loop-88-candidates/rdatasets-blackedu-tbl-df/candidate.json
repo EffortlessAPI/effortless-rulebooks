@@ -1,0 +1,18 @@
+{
+  "candidate_id": "72",
+  "slug": "rdatasets-blackedu-tbl-df",
+  "dataset_name": "Blackedu_tbl_df",
+  "description": "Education Level of Blacks by Gender",
+  "domain": "Education",
+  "source": "Rdatasets (R package: educationR)",
+  "n_rows": "3800",
+  "stratifying_columns_hint": "2 factor / 1 binary cols",
+  "download_url": "https://vincentarelbundock.github.io/Rdatasets/csv/educationR/Blackedu_tbl_df.csv",
+  "documentation_url": "https://vincentarelbundock.github.io/Rdatasets/doc/educationR/Blackedu_tbl_df.html",
+  "status": "skip",
+  "skip_reason": "Dataset contains only two categorical columns (gender, education level) with no binary outcome variable. There is no success/failure, pass/fail, or any other binary result to aggregate into Successes/Cases counts.",
+  "notes": [],
+  "files": [
+    "data.csv"
+  ]
+}

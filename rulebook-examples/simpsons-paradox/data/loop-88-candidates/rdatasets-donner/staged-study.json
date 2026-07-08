@@ -1,0 +1,30 @@
+{
+  "StudyId": "rdatasets-donner-1847",
+  "Title": "Donner Party Survival by Sex and Age Group (1846–1847)",
+  "Source": "Johnson KB (1996). Chance 9:35-39. R package: vcdExtra/Donner",
+  "SourceUrl": "https://vincentarelbundock.github.io/Rdatasets/doc/vcdExtra/Donner.html",
+  "PublicationYear": 1847,
+  "Domain": "historical",
+  "IsSynthetic": false,
+  "IsControlStudy": true,
+  "ControlDomain": "historical-social-science",
+  "TraditionId": "tradition-dag",
+  "PrimaryResearcherId": "researcher-pearl",
+  "confounding_variable": "age_group",
+  "causal_role": "allocation",
+  "note": "Females survived at higher rates than males in both age strata (adults: 62.5% vs 33.3%; children: 78.9% vs 54.5%), so no reversal is expected when pooling — the female survival advantage holds in every stratum.",
+  "treatments": [
+    {"TreatmentLabel": "Female", "Description": "Female members of the Donner Party", "TotalCases": 35, "TotalSuccesses": 25},
+    {"TreatmentLabel": "Male", "Description": "Male members of the Donner Party", "TotalCases": 55, "TotalSuccesses": 23}
+  ],
+  "strata": [
+    {"StratumLabel": "adult", "Description": "Age > 15", "TotalCases": 49},
+    {"StratumLabel": "child", "Description": "Age <= 15", "TotalCases": 41}
+  ],
+  "cells": [
+    {"StratumLabel": "adult", "TreatmentLabel": "Female", "Cases": 16, "Successes": 10},
+    {"StratumLabel": "adult", "TreatmentLabel": "Male", "Cases": 33, "Successes": 11},
+    {"StratumLabel": "child", "TreatmentLabel": "Female", "Cases": 19, "Successes": 15},
+    {"StratumLabel": "child", "TreatmentLabel": "Male", "Cases": 22, "Successes": 12}
+  ]
+}

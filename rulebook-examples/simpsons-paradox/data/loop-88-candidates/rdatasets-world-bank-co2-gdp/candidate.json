@@ -1,0 +1,20 @@
+{
+  "candidate_id": "152",
+  "slug": "rdatasets-world-bank-co2-gdp",
+  "dataset_name": "world_bank_co2_gdp",
+  "description": "World Bank CO2 Emissions & GDP Growth by Development Level & Sector",
+  "domain": "Journalism/Social Data",
+  "source": "World Bank Open Data (verified)",
+  "n_rows": "200+",
+  "stratifying_columns_hint": "development_level, emission_sector, year",
+  "download_url": "https://data.worldbank.org/indicator/EN.ATM.CO2E.PC",
+  "documentation_url": "https://data.worldbank.org/",
+  "status": "skip",
+  "skip_reason": "World Bank CO2 emissions time-series: continuous metric tons per capita values per country per year, wide-format with years as columns. No binary outcome, no treatment/exposure grouping, no individual-level records to aggregate. Purely ecological/geographic continuous data.",
+  "notes": [],
+  "files": [
+    "Metadata_Indicator_API_EN.ATM.CO2E.PC_DS57_en_csv_v2_2822.csv",
+    "API_EN.ATM.CO2E.PC_DS57_en_csv_v2_2822.csv",
+    "Metadata_Country_API_EN.ATM.CO2E.PC_DS57_en_csv_v2_2822.csv"
+  ]
+}

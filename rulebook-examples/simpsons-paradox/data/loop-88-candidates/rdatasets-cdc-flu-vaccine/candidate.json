@@ -1,0 +1,16 @@
+{
+  "candidate_id": "135",
+  "slug": "rdatasets-cdc-flu-vaccine",
+  "dataset_name": "cdc_flu_vaccine",
+  "description": "CDC Influenza Vaccine Effectiveness by Age & Strain",
+  "domain": "Public Health",
+  "source": "CDC FluVax Effectiveness Network (verified)",
+  "n_rows": "10000+",
+  "stratifying_columns_hint": "age_group, flu_strain, vaccination_status",
+  "download_url": "https://gis.cdc.gov/grasp/fluview/FluView8.html",
+  "documentation_url": "https://www.cdc.gov/flu/vaccines-work/",
+  "status": "portal-required",
+  "skip_reason": null,
+  "notes": [],
+  "portal_reason": "CDC FluVax requires portal navigation"
+}

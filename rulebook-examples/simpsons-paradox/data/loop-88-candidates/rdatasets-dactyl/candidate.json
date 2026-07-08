@@ -1,0 +1,16 @@
+{
+  "candidate_id": "55",
+  "slug": "rdatasets-dactyl",
+  "dataset_name": "Dactyl",
+  "description": "Edgeworth's counts of dactyls in Virgil's Aeneid",
+  "domain": "Historical / Social Science",
+  "source": "Rdatasets (R package: HistData)",
+  "n_rows": "60",
+  "stratifying_columns_hint": "2 factor / 0 binary cols",
+  "download_url": "https://vincentarelbundock.github.io/Rdatasets/csv/HistData/Dactyl.csv",
+  "documentation_url": "https://vincentarelbundock.github.io/Rdatasets/doc/HistData/Dactyl.html",
+  "status": "skip",
+  "download_notes": "HTTP 200 OK",
+  "skip_reason": "This dataset contains counts of dactylic feet in poetry lines (Foot \u00d7 Lines \u00d7 count). It is a pre-aggregated count table with no binary outcome \u2014 `count` is a frequency of metrical feet, not a success/failure indicator. No individual-level binary outcome exists to aggregate into Successes/Cases cells.",
+  "notes": []
+}

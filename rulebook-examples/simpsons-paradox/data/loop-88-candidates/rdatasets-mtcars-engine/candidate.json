@@ -1,0 +1,7 @@
+{
+  "slug": "rdatasets-mtcars-engine",
+  "status": "staged",
+  "domain": "engineering",
+  "source": "R datasets::mtcars — Motor Trend 1974 road tests; 32 cars, fuel economy (mpg) by engine configuration and cylinder count",
+  "notes": "Control study: almost all straight-engine cars are 4-cylinder; almost all V-shape cars in this dataset are 8-cylinder. Cylinder count fully mediates the engine-shape → mpg association. Within each cylinder class, the engine shape effect is indeterminate (single V-shape 4-cyl, no straight 8-cyl). Classic confounding by a third variable — but not Simpson's paradox because the direction is not reversed within strata."
+}

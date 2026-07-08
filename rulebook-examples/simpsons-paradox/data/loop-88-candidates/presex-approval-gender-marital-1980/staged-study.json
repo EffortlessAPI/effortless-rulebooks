@@ -1,0 +1,68 @@
+{
+  "StudyId": "presex-approval-gender-marital-1980",
+  "Title": "Premarital Sex Approval by Gender and Marital Status (1980 US Survey)",
+  "Source": "vcd R package: PreSex dataset (1980 US General Social Survey subset)",
+  "SourceUrl": "https://vincentarelbundock.github.io/Rdatasets/doc/vcd/PreSex.html",
+  "PublicationYear": 1980,
+  "Domain": "social-science",
+  "IsSynthetic": false,
+  "IsControlStudy": true,
+  "ControlDomain": "sociology-survey",
+  "TraditionId": "tradition-dag",
+  "PrimaryResearcherId": "researcher-pearl",
+  "confounding_variable": "marital_status",
+  "causal_role": "confounder",
+  "note": "Men approve premarital sex at higher rates than women within each marital-status stratum; no reversal expected \u2014 marital status affects both gender composition and approval rate but in consistent direction.",
+  "treatments": [
+    {
+      "TreatmentLabel": "Men",
+      "Description": "Men",
+      "TotalCases": 360,
+      "TotalSuccesses": 141
+    },
+    {
+      "TreatmentLabel": "Women",
+      "Description": "Women",
+      "TotalCases": 676,
+      "TotalSuccesses": 100
+    }
+  ],
+  "strata": [
+    {
+      "StratumLabel": "Divorced",
+      "Description": "Divorced respondents",
+      "TotalCases": 494
+    },
+    {
+      "StratumLabel": "Married",
+      "Description": "Married respondents",
+      "TotalCases": 542
+    }
+  ],
+  "cells": [
+    {
+      "StratumLabel": "Divorced",
+      "TreatmentLabel": "Men",
+      "Cases": 173,
+      "Successes": 88
+    },
+    {
+      "StratumLabel": "Divorced",
+      "TreatmentLabel": "Women",
+      "Cases": 321,
+      "Successes": 71
+    },
+    {
+      "StratumLabel": "Married",
+      "TreatmentLabel": "Men",
+      "Cases": 187,
+      "Successes": 53
+    },
+    {
+      "StratumLabel": "Married",
+      "TreatmentLabel": "Women",
+      "Cases": 355,
+      "Successes": 29
+    }
+  ]
+}

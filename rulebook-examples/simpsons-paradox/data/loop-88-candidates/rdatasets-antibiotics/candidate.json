@@ -1,0 +1,18 @@
+{
+  "candidate_id": "96",
+  "slug": "rdatasets-antibiotics",
+  "dataset_name": "antibiotics",
+  "description": "Pre-existing conditions in 92 children",
+  "domain": "General Statistics Teaching",
+  "source": "Rdatasets (R package: openintro)",
+  "n_rows": "92",
+  "stratifying_columns_hint": "1 factor / 0 binary cols",
+  "download_url": "https://vincentarelbundock.github.io/Rdatasets/csv/openintro/antibiotics.csv",
+  "documentation_url": "https://vincentarelbundock.github.io/Rdatasets/doc/openintro/antibiotics.html",
+  "status": "skip",
+  "skip_reason": "Dataset has only two columns: a row index and a 'condition' (diagnosis category). No binary outcome variable, no treatment/exposure variable, and no stratum variable. Cannot form (Treatment \u00d7 Stratum) cells for Simpson's Paradox analysis.",
+  "notes": [],
+  "files": [
+    "data.csv"
+  ]
+}

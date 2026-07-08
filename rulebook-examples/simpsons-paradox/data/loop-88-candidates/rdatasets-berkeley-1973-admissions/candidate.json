@@ -1,0 +1,24 @@
+{
+  "candidate_id": "113",
+  "slug": "rdatasets-berkeley-1973-admissions",
+  "dataset_name": "berkeley_1973_admissions",
+  "description": "UC Berkeley 1973 graduate admissions (classic Simpson's paradox case)",
+  "domain": "Admissions",
+  "source": "UIUC Data Science Discovery (verified)",
+  "n_rows": "12763",
+  "stratifying_columns_hint": "gender, major/department",
+  "download_url": "https://waf.cs.illinois.edu/discovery/berkeley.csv",
+  "documentation_url": "https://discovery.cs.illinois.edu/dataset/berkeley/",
+  "status": "needs-data",
+  "skip_reason": null,
+  "notes": [],
+  "files": [
+    "data.csv"
+  ],
+  "proposed_study_id": "rdatasets-berkeley-1973-admissions",
+  "proposed_title": "UC Berkeley Graduate Admissions 1973 (Gender \u00d7 Department)",
+  "binary_outcome": "Admission",
+  "treatment_variable": "Sex",
+  "stratum_variable": "Major",
+  "encoding_note": "Admission=\"Accepted\" \u2192 Success=1, \"Rejected\" \u2192 0. Aggregate by (Sex \u00d7 Major) to get Successes and Cases per cell. This is the classic Simpson's Paradox dataset: overall female acceptance rate appears lower than male, but reverses within most departments."
+}

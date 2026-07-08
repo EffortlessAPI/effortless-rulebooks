@@ -1,0 +1,19 @@
+{
+  "candidate_id": "138",
+  "slug": "rdatasets-tennessee-star",
+  "dataset_name": "tennessee_star",
+  "description": "Tennessee STAR Class Size & Outcomes by SES & Grade",
+  "domain": "Education",
+  "source": "Harvard Dataverse (verified)",
+  "n_rows": "11600",
+  "stratifying_columns_hint": "class_size_category, ses_quartile, grade",
+  "download_url": "https://dataverse.harvard.edu/dataset.xhtml?persistentId=hdl:1902.1/10766",
+  "documentation_url": "https://www.vanderbilt.edu/peabody/",
+  "status": "skip",
+  "skip_reason": "The raw Comparison_Students.tab file contains only continuous test score outcomes (Stanford Achievement Test scaled scores such as g1treadss, g1tmathss, g2treadss, etc.) and numeric class sizes \u2014 no binary outcome column, no categorical treatment variable, and no stratum columns matching the hints (class_size_category, ses_quartile, grade). The dataset would need substantial pre-processing (binarizing scores into pass/fail, bucketing class sizes into small/regular/large categories) before it could fit the corpus model. As a raw file it does not meet the VIABLE criteria of having a clear binary outcome column ready to aggregate.",
+  "notes": [],
+  "files": [
+    "Comparison_Students.tab",
+    "star_students.tab"
+  ]
+}

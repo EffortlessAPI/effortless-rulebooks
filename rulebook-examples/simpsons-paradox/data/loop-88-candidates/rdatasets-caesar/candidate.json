@@ -1,0 +1,16 @@
+{
+  "candidate_id": "47",
+  "slug": "rdatasets-caesar",
+  "dataset_name": "Caesar",
+  "description": "Risk Factors for Infection in Caesarian Births",
+  "domain": "Categorical Data / Mixed",
+  "source": "Rdatasets (R package: vcdExtra)",
+  "n_rows": "24",
+  "stratifying_columns_hint": "4 factor / 3 binary cols",
+  "download_url": "https://vincentarelbundock.github.io/Rdatasets/csv/vcdExtra/Caesar.csv",
+  "documentation_url": "https://vincentarelbundock.github.io/Rdatasets/doc/vcdExtra/Caesar.html",
+  "status": "skip",
+  "skip_reason": "Already aggregated count table (Freq column, 24 rows total). Outcome column \"Infection\" has 3 levels (Type 1, Type 2, None) \u2014 not a binary outcome. No individual-level rows to reaggregate differently.",
+  "download_notes": "HTTP 200 OK",
+  "notes": []
+}

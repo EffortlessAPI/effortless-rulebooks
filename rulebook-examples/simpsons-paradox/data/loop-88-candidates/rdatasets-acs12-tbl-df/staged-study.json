@@ -1,0 +1,109 @@
+{
+  "StudyId": "rdatasets-acs12-disability-employment-2012",
+  "Title": "ACS 2012 \u2014 Disability Rates by Employment Status and Education Level",
+  "Source": "American Community Survey 2012. R package: usdatasets/acs12_tbl_df",
+  "SourceUrl": "https://vincentarelbundock.github.io/Rdatasets/doc/usdatasets/acs12_tbl_df.html",
+  "PublicationYear": 2012,
+  "Domain": "economics",
+  "IsSynthetic": false,
+  "IsControlStudy": true,
+  "ControlDomain": "economics-labor",
+  "TraditionId": "tradition-dag",
+  "PrimaryResearcherId": "researcher-pearl",
+  "confounding_variable": "edu",
+  "causal_role": "allocation",
+  "note": "Education level shapes both employment status and disability prevalence, but the within-stratum ordering (employed < unemployed < not-in-labor-force for disability) is consistent across all education groups, so no reversal of treatment ranking is expected.",
+  "treatments": [
+    {
+      "TreatmentLabel": "Employed",
+      "Description": "Employment status: employed",
+      "TotalCases": 837,
+      "TotalSuccesses": 70
+    },
+    {
+      "TreatmentLabel": "Not in Labor Force",
+      "Description": "Employment status: not in labor force",
+      "TotalCases": 619,
+      "TotalSuccesses": 220
+    },
+    {
+      "TreatmentLabel": "Unemployed",
+      "Description": "Employment status: unemployed",
+      "TotalCases": 105,
+      "TotalSuccesses": 21
+    }
+  ],
+  "strata": [
+    {
+      "StratumLabel": "College",
+      "Description": "Education level: college",
+      "TotalCases": 359
+    },
+    {
+      "StratumLabel": "Graduate",
+      "Description": "Education level: grad",
+      "TotalCases": 144
+    },
+    {
+      "StratumLabel": "HS or Lower",
+      "Description": "Education level: hs or lower",
+      "TotalCases": 1058
+    }
+  ],
+  "cells": [
+    {
+      "StratumLabel": "College",
+      "TreatmentLabel": "Employed",
+      "Cases": 241,
+      "Successes": 13
+    },
+    {
+      "StratumLabel": "Graduate",
+      "TreatmentLabel": "Employed",
+      "Cases": 99,
+      "Successes": 5
+    },
+    {
+      "StratumLabel": "HS or Lower",
+      "TreatmentLabel": "Employed",
+      "Cases": 497,
+      "Successes": 52
+    },
+    {
+      "StratumLabel": "College",
+      "TreatmentLabel": "Not in Labor Force",
+      "Cases": 92,
+      "Successes": 20
+    },
+    {
+      "StratumLabel": "Graduate",
+      "TreatmentLabel": "Not in Labor Force",
+      "Cases": 43,
+      "Successes": 7
+    },
+    {
+      "StratumLabel": "HS or Lower",
+      "TreatmentLabel": "Not in Labor Force",
+      "Cases": 484,
+      "Successes": 193
+    },
+    {
+      "StratumLabel": "College",
+      "TreatmentLabel": "Unemployed",
+      "Cases": 26,
+      "Successes": 5
+    },
+    {
+      "StratumLabel": "Graduate",
+      "TreatmentLabel": "Unemployed",
+      "Cases": 2,
+      "Successes": 0
+    },
+    {
+      "StratumLabel": "HS or Lower",
+      "TreatmentLabel": "Unemployed",
+      "Cases": 77,
+      "Successes": 16
+    }
+  ]
+}

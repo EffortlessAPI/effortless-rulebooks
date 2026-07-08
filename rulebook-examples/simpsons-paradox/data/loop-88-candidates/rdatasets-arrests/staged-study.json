@@ -1,0 +1,30 @@
+{
+  "StudyId": "rdatasets-toronto-arrests-2006",
+  "Title": "Toronto Police Arrests: Race and Release Rates by Sex (1997–2002)",
+  "Source": "Friendly M, Meyer D (2016). Discrete Data Analysis with R. CRC Press. R package: carData/Arrests",
+  "SourceUrl": "https://vincentarelbundock.github.io/Rdatasets/doc/carData/Arrests.csv",
+  "PublicationYear": 2006,
+  "Domain": "criminal-justice",
+  "IsSynthetic": false,
+  "IsControlStudy": true,
+  "ControlDomain": "criminal-justice",
+  "TraditionId": "tradition-dag",
+  "PrimaryResearcherId": "researcher-pearl",
+  "confounding_variable": "sex",
+  "causal_role": "allocation",
+  "note": "No Simpson's paradox is expected here because sex allocates very differently (Female ~8%, Male ~92%) but White arrestees are also disproportionately Male, so the stratum-weighted and pooled release rates move in the same direction — White arrestees have higher release rates both within each sex stratum and overall.",
+  "treatments": [
+    {"TreatmentLabel": "Black", "Description": "Arrestee identified as Black", "TotalCases": 1288, "TotalSuccesses": 955},
+    {"TreatmentLabel": "White", "Description": "Arrestee identified as White", "TotalCases": 3938, "TotalSuccesses": 3379}
+  ],
+  "strata": [
+    {"StratumLabel": "Female", "Description": "Female arrestees", "TotalCases": 443},
+    {"StratumLabel": "Male", "Description": "Male arrestees", "TotalCases": 4783}
+  ],
+  "cells": [
+    {"StratumLabel": "Female", "TreatmentLabel": "Black", "Cases": 72, "Successes": 59},
+    {"StratumLabel": "Female", "TreatmentLabel": "White", "Cases": 371, "Successes": 321},
+    {"StratumLabel": "Male", "TreatmentLabel": "Black", "Cases": 1216, "Successes": 896},
+    {"StratumLabel": "Male", "TreatmentLabel": "White", "Cases": 3567, "Successes": 3058}
+  ]
+}

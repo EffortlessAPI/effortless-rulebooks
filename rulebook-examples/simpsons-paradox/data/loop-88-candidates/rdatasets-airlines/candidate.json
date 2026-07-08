@@ -1,0 +1,24 @@
+{
+  "candidate_id": "85",
+  "slug": "rdatasets-airlines",
+  "dataset_name": "Airlines",
+  "description": "Ontime Records for Two Airlines at Two Airports",
+  "domain": "General Statistics Teaching",
+  "source": "Rdatasets (R package: Stat2Data)",
+  "n_rows": "10333",
+  "stratifying_columns_hint": "3 factor / 5 binary cols",
+  "download_url": "https://vincentarelbundock.github.io/Rdatasets/csv/Stat2Data/Airlines.csv",
+  "documentation_url": "https://vincentarelbundock.github.io/Rdatasets/doc/Stat2Data/Airlines.html",
+  "status": "needs-data",
+  "skip_reason": null,
+  "notes": [],
+  "files": [
+    "data.csv"
+  ],
+  "proposed_study_id": "rdatasets-airlines-ontime",
+  "proposed_title": "Airline On-Time Performance by Airport (rdatasets)",
+  "binary_outcome": "OnTime",
+  "treatment_variable": "airline",
+  "stratum_variable": "airport",
+  "encoding_note": "OnTime=yes \u2192 Success=1, no \u2192 Success=0. Aggregate Successes/Cases per (airline \u00d7 airport) cell."
+}

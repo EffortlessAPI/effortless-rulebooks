@@ -1,0 +1,30 @@
+{
+  "StudyId": "rdatasets-chickweight-nutrition",
+  "Title": "Chick Weight by Diet and Growth Phase — Crowder & Hand 1990",
+  "Source": "Crowder, M. and Hand, D. (1990). Analysis of Repeated Measures. Chapman and Hall. R datasets::ChickWeight.",
+  "SourceUrl": "https://vincentarelbundock.github.io/Rdatasets/csv/datasets/ChickWeight.csv",
+  "PublicationYear": 1990,
+  "Domain": "nutrition",
+  "IsSynthetic": false,
+  "IsControlStudy": true,
+  "ControlDomain": "nutrition-animal",
+  "TraditionId": "tradition-dag",
+  "PrimaryResearcherId": "researcher-pearl",
+  "confounding_variable": "GrowthPhase",
+  "causal_role": "allocation",
+  "note": "Diet 3 outperforms Diet 2 in both the Early phase (days 0–10) and the Late phase (days 12–21) on the probability of exceeding 150g. The pooled direction also favors Diet 3. Time phase allocates observations but does not reverse the diet effect: no paradox expected.",
+  "treatments": [
+    {"TreatmentLabel": "Diet2", "Description": "Diet formulation 2 (moderate protein)", "TotalCases": 120, "TotalSuccesses": 37},
+    {"TreatmentLabel": "Diet3", "Description": "Diet formulation 3 (high protein)", "TotalCases": 120, "TotalSuccesses": 48}
+  ],
+  "strata": [
+    {"StratumLabel": "Early", "Description": "Observation days 0–10 (pre-rapid growth)", "TotalCases": 120},
+    {"StratumLabel": "Late", "Description": "Observation days 12–21 (rapid growth phase)", "TotalCases": 120}
+  ],
+  "cells": [
+    {"StratumLabel": "Early", "TreatmentLabel": "Diet2", "Cases": 60, "Successes": 1},
+    {"StratumLabel": "Early", "TreatmentLabel": "Diet3", "Cases": 60, "Successes": 1},
+    {"StratumLabel": "Late", "TreatmentLabel": "Diet2", "Cases": 60, "Successes": 36},
+    {"StratumLabel": "Late", "TreatmentLabel": "Diet3", "Cases": 60, "Successes": 47}
+  ]
+}

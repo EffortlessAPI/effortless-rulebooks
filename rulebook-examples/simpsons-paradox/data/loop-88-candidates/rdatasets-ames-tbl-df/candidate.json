@@ -1,0 +1,18 @@
+{
+  "candidate_id": "104",
+  "slug": "rdatasets-ames-tbl-df",
+  "dataset_name": "ames_tbl_df",
+  "description": "Housing prices in Ames, Iowa",
+  "domain": "Economics/Labor",
+  "source": "Rdatasets (R package: usdatasets)",
+  "n_rows": "2930",
+  "stratifying_columns_hint": "43 factor / 3 binary cols",
+  "download_url": "https://vincentarelbundock.github.io/Rdatasets/csv/usdatasets/ames_tbl_df.csv",
+  "documentation_url": "https://vincentarelbundock.github.io/Rdatasets/doc/usdatasets/ames_tbl_df.html",
+  "status": "skip",
+  "skip_reason": "Ames housing dataset with continuous outcome (sale price in dollars). No binary success/failure variable. All key outcome columns are continuous (price, area) or ordinal ratings. No natural treatment/exposure grouping with a binary outcome to aggregate into Successes/Cases cells.",
+  "notes": [],
+  "files": [
+    "data.csv"
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "candidate_id": "33",
+  "slug": "rdatasets-arthritis",
+  "dataset_name": "Arthritis",
+  "description": "Arthritis Treatment Data",
+  "domain": "Categorical Data / Mixed",
+  "source": "Rdatasets (R package: vcd)",
+  "n_rows": "84",
+  "stratifying_columns_hint": "3 factor / 2 binary cols",
+  "download_url": "https://vincentarelbundock.github.io/Rdatasets/csv/vcd/Arthritis.csv",
+  "documentation_url": "https://vincentarelbundock.github.io/Rdatasets/doc/vcd/Arthritis.html",
+  "status": "needs-data",
+  "skip_reason": null,
+  "download_notes": "HTTP 200 OK - 84 data rows, 6 columns (rownames, ID, Treatment, Sex, Age, Improved)",
+  "notes": [],
+  "proposed_study_id": "rdatasets-arthritis-1984",
+  "proposed_title": "Arthritis Treatment Trial (Koch & Edwards 1988)",
+  "binary_outcome": "Improved",
+  "treatment_variable": "Treatment",
+  "stratum_variable": "Sex",
+  "encoding_note": "Binarize Improved: \"Marked\" (or \"Marked\"+\"Some\") = success, \"None\" = failure. Treatment groups: Treated vs Placebo. Stratum: Sex (Male/Female). Aggregate to Successes/Cases per (Treatment \u00d7 Sex) cell."
+}

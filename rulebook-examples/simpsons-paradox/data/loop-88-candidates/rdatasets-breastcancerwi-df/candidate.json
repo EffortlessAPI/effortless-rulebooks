@@ -1,0 +1,16 @@
+{
+  "candidate_id": "17",
+  "slug": "rdatasets-breastcancerwi-df",
+  "dataset_name": "BreastCancerWI_df",
+  "description": "Breast Cancer Wisconsin (Diagnostic)",
+  "domain": "Medicine/Clinical",
+  "source": "Rdatasets (R package: OncoDataSets)",
+  "n_rows": "569",
+  "stratifying_columns_hint": "1 factor / 1 binary cols",
+  "download_url": "https://vincentarelbundock.github.io/Rdatasets/csv/OncoDataSets/BreastCancerWI_df.csv",
+  "documentation_url": "https://vincentarelbundock.github.io/Rdatasets/doc/OncoDataSets/BreastCancerWI_df.html",
+  "status": "skip",
+  "download_notes": "HTTP 200 OK",
+  "skip_reason": "Wisconsin Breast Cancer dataset: only binary column is diagnosis (benign/malignant), but all other columns are continuous measurements (radius, texture, perimeter, area, smoothness, etc.). There is no natural treatment/exposure group variable (2-5 discrete levels) and no stratum variable. Cannot form (Treatment x Stratum) cells for Simpson's Paradox analysis.",
+  "notes": []
+}

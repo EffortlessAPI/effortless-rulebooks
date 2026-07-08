@@ -1,0 +1,16 @@
+{
+  "candidate_id": "23",
+  "slug": "rdatasets-adolescent-mental-health-df",
+  "dataset_name": "adolescent_mental_health_df",
+  "description": "Adolescent Mental Health Study",
+  "domain": "Medicine/Clinical",
+  "source": "Rdatasets (R package: NeuroDataSets)",
+  "n_rows": "4344",
+  "stratifying_columns_hint": "1 factor / 0 binary cols",
+  "download_url": "https://vincentarelbundock.github.io/Rdatasets/csv/NeuroDataSets/adolescent_mental_health_df.csv",
+  "documentation_url": "https://vincentarelbundock.github.io/Rdatasets/doc/NeuroDataSets/adolescent_mental_health_df.html",
+  "status": "skip",
+  "skip_reason": "No binary outcome and no treatment variable. Depression and anxiety are ordinal 0-3 scales, not binary success/failure. Grade is a stratum but there is no exposure/treatment grouping. Dataset cannot be aggregated into Successes/Cases cells for a Simpson's Paradox study.",
+  "download_notes": "HTTP 200 OK",
+  "notes": []
+}

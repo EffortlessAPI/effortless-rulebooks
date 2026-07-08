@@ -1,0 +1,18 @@
+{
+  "candidate_id": "97",
+  "slug": "rdatasets-agefat",
+  "dataset_name": "agefat",
+  "description": "Total Body Composision Data",
+  "domain": "Medicine/Clinical",
+  "source": "Rdatasets (R package: HSAUR)",
+  "n_rows": "25",
+  "stratifying_columns_hint": "1 factor / 1 binary cols",
+  "download_url": "https://vincentarelbundock.github.io/Rdatasets/csv/HSAUR/agefat.csv",
+  "documentation_url": "https://vincentarelbundock.github.io/Rdatasets/doc/HSAUR/agefat.html",
+  "status": "skip",
+  "skip_reason": "All outcome columns (age, fat) are continuous numeric values. There is no binary outcome, and no natural treatment/exposure grouping \u2014 the dataset is just age vs body fat percentage by sex. Cannot be aggregated to Successes/Cases cells.",
+  "notes": [],
+  "files": [
+    "data.csv"
+  ]
+}

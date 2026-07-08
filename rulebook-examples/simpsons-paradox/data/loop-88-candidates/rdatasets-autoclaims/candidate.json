@@ -1,0 +1,18 @@
+{
+  "candidate_id": "106",
+  "slug": "rdatasets-autoclaims",
+  "dataset_name": "AutoClaims",
+  "description": "Automobile Insurance Claims",
+  "domain": "Economics/Labor",
+  "source": "Rdatasets (R package: insuranceData)",
+  "n_rows": "6773",
+  "stratifying_columns_hint": "3 factor / 1 binary cols",
+  "download_url": "https://vincentarelbundock.github.io/Rdatasets/csv/insuranceData/AutoClaims.csv",
+  "documentation_url": "https://vincentarelbundock.github.io/Rdatasets/doc/insuranceData/AutoClaims.html",
+  "status": "skip",
+  "skip_reason": "The only outcome variable (PAID) is a continuous dollar amount for auto insurance claims \u2014 there is no binary success/failure column. This dataset cannot be aggregated into Successes/Cases counts for a Simpson's Paradox analysis.",
+  "notes": [],
+  "files": [
+    "data.csv"
+  ]
+}

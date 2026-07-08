@@ -1,0 +1,33 @@
+{
+  "StudyId": "rdatasets-detergent-preference-1974",
+  "Title": "Detergent Brand Preference by M-User Status and Water Softness",
+  "Source": "R package: vcdExtra/Detergent",
+  "SourceUrl": "https://vincentarelbundock.github.io/Rdatasets/doc/vcdExtra/Detergent.html",
+  "PublicationYear": 1974,
+  "Domain": "consumer-research",
+  "IsSynthetic": false,
+  "IsControlStudy": true,
+  "ControlDomain": "general-statistics",
+  "TraditionId": "tradition-dag",
+  "PrimaryResearcherId": "researcher-pearl",
+  "confounding_variable": "Water_softness",
+  "causal_role": "allocation",
+  "note": "No Simpson's paradox is expected because water softness strata are roughly balanced in size across M-User groups, so aggregating across strata should not reverse the direction of the Brand X preference difference.",
+  "treatments": [
+    {"TreatmentLabel": "No", "Description": "Non-M-User (M_User=No)", "TotalCases": 526, "TotalSuccesses": 301},
+    {"TreatmentLabel": "Yes", "Description": "M-User (M_User=Yes)", "TotalCases": 482, "TotalSuccesses": 207}
+  ],
+  "strata": [
+    {"StratumLabel": "Hard", "Description": "Hard water softness", "TotalCases": 338},
+    {"StratumLabel": "Medium", "Description": "Medium water softness", "TotalCases": 344},
+    {"StratumLabel": "Soft", "Description": "Soft water softness", "TotalCases": 326}
+  ],
+  "cells": [
+    {"StratumLabel": "Hard", "TreatmentLabel": "No", "Cases": 182, "Successes": 110},
+    {"StratumLabel": "Hard", "TreatmentLabel": "Yes", "Cases": 156, "Successes": 61},
+    {"StratumLabel": "Medium", "TreatmentLabel": "No", "Cases": 172, "Successes": 99},
+    {"StratumLabel": "Medium", "TreatmentLabel": "Yes", "Cases": 172, "Successes": 70},
+    {"StratumLabel": "Soft", "TreatmentLabel": "No", "Cases": 172, "Successes": 92},
+    {"StratumLabel": "Soft", "TreatmentLabel": "Yes", "Cases": 154, "Successes": 76}
+  ]
+}

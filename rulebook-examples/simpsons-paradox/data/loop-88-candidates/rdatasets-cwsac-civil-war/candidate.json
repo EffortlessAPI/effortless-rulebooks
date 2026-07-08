@@ -1,0 +1,18 @@
+{
+  "candidate_id": "151",
+  "slug": "rdatasets-cwsac-civil-war",
+  "dataset_name": "cwsac_civil_war",
+  "description": "US Civil War Casualty Rates by Army & Battle Magnitude (CWSAC)",
+  "domain": "Historical / Social Science",
+  "source": "NPS Civil War Sites Advisory Commission (verified)",
+  "n_rows": "384",
+  "stratifying_columns_hint": "army, battle_size_category, theater",
+  "download_url": "https://www.nps.gov/abpp/battles/bystate.htm",
+  "documentation_url": "https://www.nps.gov/cwsac/",
+  "status": "skip",
+  "skip_reason": "Battle-level aggregate stats (casualties, result); no individual binary outcome to encode as Successes/Cases per treatment cell",
+  "notes": [],
+  "files": [
+    "cwsii.csv"
+  ]
+}

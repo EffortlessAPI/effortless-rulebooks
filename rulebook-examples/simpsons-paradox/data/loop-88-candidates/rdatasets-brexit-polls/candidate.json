@@ -1,0 +1,16 @@
+{
+  "candidate_id": "63",
+  "slug": "rdatasets-brexit-polls",
+  "dataset_name": "brexit_polls",
+  "description": "Brexit Poll Data",
+  "domain": "General Statistics Teaching",
+  "source": "Rdatasets (R package: dslabs)",
+  "n_rows": "127",
+  "stratifying_columns_hint": "2 factor / 1 binary cols",
+  "download_url": "https://vincentarelbundock.github.io/Rdatasets/csv/dslabs/brexit_polls.csv",
+  "documentation_url": "https://vincentarelbundock.github.io/Rdatasets/doc/dslabs/brexit_polls.html",
+  "status": "skip",
+  "skip_reason": "Already-aggregated poll-level data: each row is a single poll with continuous proportion columns (remain, leave, undecided). No individual-level binary outcome exists, so Successes/Cases cells cannot be computed. Purely aggregate time series of polling estimates.",
+  "download_notes": "HTTP 200 OK",
+  "notes": []
+}

@@ -1,0 +1,16 @@
+{
+  "candidate_id": "15",
+  "slug": "rdatasets-braincancercases-df",
+  "dataset_name": "BrainCancerCases_df",
+  "description": "New Mexico Brain Cancer Cases Data",
+  "domain": "Medicine/Clinical",
+  "source": "Rdatasets (R package: OncoDataSets)",
+  "n_rows": "1175",
+  "stratifying_columns_hint": "1 factor / 1 binary cols",
+  "download_url": "https://vincentarelbundock.github.io/Rdatasets/csv/OncoDataSets/BrainCancerCases_df.csv",
+  "documentation_url": "https://vincentarelbundock.github.io/Rdatasets/doc/OncoDataSets/BrainCancerCases_df.html",
+  "status": "skip",
+  "skip_reason": "This is a case-only dataset \u2014 every row is a confirmed brain cancer case (cases=1 for all rows). There is no control group and no binary outcome column (no survived/died, no success/failure). Without a comparison population, there is nothing to aggregate into Successes/Cases cells suitable for Simpson's Paradox analysis.",
+  "download_notes": "HTTP 200 OK",
+  "notes": []
+}

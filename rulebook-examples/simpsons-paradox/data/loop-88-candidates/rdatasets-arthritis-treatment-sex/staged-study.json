@@ -1,0 +1,30 @@
+{
+  "StudyId": "rdatasets-arthritis-treatment-sex",
+  "Title": "Rheumatoid Arthritis RCT: Treatment vs Placebo by Sex — Koch & Edwards 1988",
+  "Source": "Koch, G. G. and Edwards, S. (1988). Clinical efficacy trials with categorical data. In K. E. Peace (ed.), Biopharmaceutical Statistics for Drug Development. R vcd::Arthritis.",
+  "SourceUrl": "https://vincentarelbundock.github.io/Rdatasets/csv/vcd/Arthritis.csv",
+  "PublicationYear": 1988,
+  "Domain": "medicine",
+  "IsSynthetic": false,
+  "IsControlStudy": true,
+  "ControlDomain": "medicine-rct",
+  "TraditionId": "tradition-dag",
+  "PrimaryResearcherId": "researcher-pearl",
+  "confounding_variable": "Sex",
+  "causal_role": "allocation",
+  "note": "Treatment (Auranofin) is superior to Placebo in both Male and Pooled strata. Female stratum also shows strong treatment effect (0.778 vs 0.394). No reversal: sex allocation is unequal (more females) but does not flip the treatment advantage. This is a true RCT — the treatment effect is genuine and consistent.",
+  "treatments": [
+    {"TreatmentLabel": "Treated", "Description": "Auranofin drug treatment group", "TotalCases": 41, "TotalSuccesses": 28},
+    {"TreatmentLabel": "Placebo", "Description": "Placebo control group", "TotalCases": 44, "TotalSuccesses": 14}
+  ],
+  "strata": [
+    {"StratumLabel": "Male", "Description": "Male patients", "TotalCases": 25},
+    {"StratumLabel": "Female", "Description": "Female patients", "TotalCases": 60}
+  ],
+  "cells": [
+    {"StratumLabel": "Male", "TreatmentLabel": "Treated", "Cases": 14, "Successes": 7},
+    {"StratumLabel": "Male", "TreatmentLabel": "Placebo", "Cases": 11, "Successes": 1},
+    {"StratumLabel": "Female", "TreatmentLabel": "Treated", "Cases": 27, "Successes": 21},
+    {"StratumLabel": "Female", "TreatmentLabel": "Placebo", "Cases": 33, "Successes": 13}
+  ]
+}

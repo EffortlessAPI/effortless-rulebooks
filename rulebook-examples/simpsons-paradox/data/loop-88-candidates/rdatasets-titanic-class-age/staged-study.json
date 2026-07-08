@@ -1,0 +1,30 @@
+{
+  "StudyId": "rdatasets-titanic-class-age",
+  "Title": "Titanic Survival: 1st vs 2nd Class by Age Group — Historical 1912",
+  "Source": "British Board of Trade (1990). Report on the Loss of the 'Titanic' (S.S.). R datasets::Titanic.",
+  "SourceUrl": "https://vincentarelbundock.github.io/Rdatasets/csv/datasets/Titanic.csv",
+  "PublicationYear": 1912,
+  "Domain": "history",
+  "IsSynthetic": false,
+  "IsControlStudy": true,
+  "ControlDomain": "history-maritime",
+  "TraditionId": "tradition-dag",
+  "PrimaryResearcherId": "researcher-pearl",
+  "confounding_variable": "AgeGroup",
+  "causal_role": "allocation",
+  "note": "First class passengers had higher survival rates than second class passengers in both the Adult stratum (61.8% vs 36.0%) and the Child stratum (100% vs 100%). Pooled rates also favor 1st class (62.5% vs 41.4%). Age allocation (children are very rare in both classes) does not reverse the class effect.",
+  "treatments": [
+    {"TreatmentLabel": "FirstClass", "Description": "First class ticket holders", "TotalCases": 325, "TotalSuccesses": 203},
+    {"TreatmentLabel": "SecondClass", "Description": "Second class ticket holders", "TotalCases": 285, "TotalSuccesses": 118}
+  ],
+  "strata": [
+    {"StratumLabel": "Adult", "Description": "Adult passengers", "TotalCases": 580},
+    {"StratumLabel": "Child", "Description": "Child passengers", "TotalCases": 30}
+  ],
+  "cells": [
+    {"StratumLabel": "Adult", "TreatmentLabel": "FirstClass", "Cases": 319, "Successes": 197},
+    {"StratumLabel": "Adult", "TreatmentLabel": "SecondClass", "Cases": 261, "Successes": 94},
+    {"StratumLabel": "Child", "TreatmentLabel": "FirstClass", "Cases": 6, "Successes": 6},
+    {"StratumLabel": "Child", "TreatmentLabel": "SecondClass", "Cases": 24, "Successes": 24}
+  ]
+}

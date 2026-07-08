@@ -1,0 +1,18 @@
+{
+  "candidate_id": "102",
+  "slug": "rdatasets-adugna-sorghum",
+  "dataset_name": "adugna.sorghum",
+  "description": "Multi-environment trial of sorghum at 3 locations across 5 years",
+  "domain": "General Statistics Teaching",
+  "source": "Rdatasets (R package: agridat)",
+  "n_rows": "289",
+  "stratifying_columns_hint": "4 factor / 1 binary cols",
+  "download_url": "https://vincentarelbundock.github.io/Rdatasets/csv/agridat/adugna.sorghum.csv",
+  "documentation_url": "https://vincentarelbundock.github.io/Rdatasets/doc/agridat/adugna.sorghum.html",
+  "status": "skip",
+  "skip_reason": "Purely continuous outcome (yield in kg/ha per sorghum genotype \u00d7 environment). No binary success/failure column exists or can be naturally derived. This is an agricultural multi-environment trial dataset with no individual-level binary outcome.",
+  "notes": [],
+  "files": [
+    "data.csv"
+  ]
+}

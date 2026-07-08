@@ -1,0 +1,19 @@
+{
+  "candidate_id": "146",
+  "slug": "rdatasets-lahman-batting-handedness",
+  "dataset_name": "lahman_batting_handedness",
+  "description": "Lahman Baseball Batting Avg by Batter & Pitcher Handedness",
+  "domain": "Sports Analytics",
+  "source": "Baseball Databank / Chadwick (verified)",
+  "n_rows": "100000+",
+  "stratifying_columns_hint": "batter_handedness, pitcher_handedness, season",
+  "download_url": "https://github.com/chadwickbureau/baseballdatabank/raw/master/core/Batting.csv",
+  "documentation_url": "https://github.com/chadwickbureau/baseballdatabank",
+  "status": "skip",
+  "skip_reason": "Already-aggregated season-level batting statistics (H, AB, HR, etc.) \u2014 no individual-level binary outcome. All outcome columns are continuous counts. While H/AB could proxy a hit rate, the data is pre-aggregated per player-season, so there are no individual plate appearance rows to aggregate differently. No natural treatment/exposure grouping either.",
+  "notes": [],
+  "files": [
+    "People.csv",
+    "Batting.csv"
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "candidate_id": "30",
+  "slug": "rdatasets-fatality-df",
+  "dataset_name": "Fatality_df",
+  "description": "Drunk Driving Laws and Traffic Deaths",
+  "domain": "Criminal Justice",
+  "source": "Rdatasets (R package: crimedatasets)",
+  "n_rows": "336",
+  "stratifying_columns_hint": "2 factor / 2 binary cols",
+  "download_url": "https://vincentarelbundock.github.io/Rdatasets/csv/crimedatasets/Fatality_df.csv",
+  "documentation_url": "https://vincentarelbundock.github.io/Rdatasets/doc/crimedatasets/Fatality_df.html",
+  "status": "skip",
+  "skip_reason": "Panel dataset of US state traffic fatality rates (mrall = continuous deaths per 10,000) across states and years. No binary outcome \u2014 the fatality rate is a continuous measure. Cannot aggregate to Successes/Cases cells.",
+  "download_notes": "HTTP 200 OK",
+  "notes": []
+}

@@ -1,0 +1,16 @@
+{
+  "candidate_id": "110",
+  "slug": "rdatasets-attenu",
+  "dataset_name": "attenu",
+  "description": "The Joyner-Boore Attenuation Data",
+  "domain": "General Statistics Teaching",
+  "source": "Rdatasets (R package: datasets)",
+  "n_rows": "182",
+  "stratifying_columns_hint": "1 factor / 0 binary cols",
+  "download_url": "https://vincentarelbundock.github.io/Rdatasets/csv/datasets/attenu.csv",
+  "documentation_url": "https://vincentarelbundock.github.io/Rdatasets/doc/datasets/attenu.html",
+  "status": "skip",
+  "skip_reason": "All outcome columns (accel = peak ground acceleration, dist = distance) are purely continuous. There is no binary outcome variable, no treatment/exposure grouping, and no natural way to aggregate to successes/cases counts. This is seismological attenuation data.",
+  "download_notes": "HTTP 200 OK - 182 data rows + 1 header row saved",
+  "notes": []
+}

@@ -1,0 +1,7 @@
+{
+  "slug": "rdatasets-titanic-class-age",
+  "status": "staged",
+  "domain": "history",
+  "source": "R datasets::Titanic — 1912 Titanic sinking; 2201 passengers and crew, survival tabulated by class, sex, age",
+  "notes": "Control study: 1st class advantage over 2nd class holds in both adult and child strata. Children in both classes had 100% survival (small n). Age allocation is extremely skewed toward adults but does not reverse the class effect. Useful contrast to the paradox case involving sex and class."
+}

@@ -1,0 +1,16 @@
+{
+  "candidate_id": "129",
+  "slug": "rdatasets-birth-weight-paradox",
+  "dataset_name": "birth_weight_paradox",
+  "description": "CDC Birth Weight Paradox (Smoking x Low Birth Weight x Infant Mortality)",
+  "domain": "Epidemiology",
+  "source": "CDC/NCHS Natality Data (verified)",
+  "n_rows": "4000000+",
+  "stratifying_columns_hint": "maternal_smoking, birth_weight_category",
+  "download_url": "https://www.cdc.gov/nchs/data_access/vitalstats.htm",
+  "documentation_url": "https://www.cdc.gov/nchs/data_access/vitalstats.htm",
+  "status": "portal-required",
+  "skip_reason": null,
+  "notes": [],
+  "portal_reason": "CDC NCHS vital stats requires restricted data agreement"
+}

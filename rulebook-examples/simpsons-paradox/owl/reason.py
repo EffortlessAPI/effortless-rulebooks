@@ -417,47 +417,366 @@ def _collapse_multivalue_derived(g, shapes, max_rounds=10):
                     g.remove((s, p, o))
 
         for (s, p) in string_targets:
-            for o in list(g.objects(s, p)):
-                g.remove((s, p, o))
+            objs = list(g.objects(s, p))
+            # Keep the last (most-derived) value; remove the rest
+            keep = objs[-1]
+            for o in objs:
+                if o is not keep:
+                    g.remove((s, p, o))
 
-        if string_targets:
-            validate(
-                g,
-                shacl_graph=shapes,
-                inference="none",
-                advanced=True,
-                inplace=True,
-                do_owl_imports=False,
-            )
-        elif not string_targets:
-            break
+        break  # one collapse pass is enough; no re-derive needed after fixpoint
 
 
-def rederive_to_fixpoint(g, max_passes=50):
-    """Run pyshacl advanced (sh:rule SPARQL CONSTRUCT) until graph stabilises."""
+def _extract_construct_queries(shapes):
+    """Extract (label, CONSTRUCT query string) pairs from sh:SPARQLRule nodes."""
+    SH = rdflib.Namespace("http://www.w3.org/ns/shacl#")
+    RDF = rdflib.Namespace("http://www.w3.org/1999/02/22-rdf-syntax-ns#")
+
+    queries = []
+    for shape in shapes.subjects(RDF.type, SH.NodeShape):
+        target_class = shapes.value(shape, SH.targetClass)
+        for rule in shapes.objects(shape, SH.rule):
+            sparql_str = shapes.value(rule, SH.construct)
+            if sparql_str:
+                queries.append((str(target_class or shape), str(sparql_str)))
+    return queries
+
+
+def _inject_this_into_subselects(where_body):
+    """Fix correlated sub-SELECTs by projecting ?_this through them.
+
+    In SPARQL UPDATE, variables from the outer query scope are NOT visible inside
+    sub-SELECTs unless explicitly projected. When a sh:rule CONSTRUCT uses $this
+    inside a sub-SELECT (for correlated aggregations like SUMIFS), the $this→?_this
+    rewrite breaks the correlation because ?_this inside the sub-SELECT is unbound.
+
+    Fix: for each sub-SELECT that references ?_this in its WHERE body, add ?_this
+    to its SELECT projection and GROUP BY clause so the correlation is maintained.
+    """
+    import re
+
+    def _extract_brace_block(text, start):
+        """Return (body, end_pos) where body is inside { } starting at start."""
+        depth = 1
+        i = start
+        while i < len(text) and depth > 0:
+            if text[i] == '{':
+                depth += 1
+            elif text[i] == '}':
+                depth -= 1
+            i += 1
+        return text[start:i-1], i
+
+    def process(text):
+        """Recursively rewrite sub-SELECTs in text to project ?_this."""
+        result = []
+        pos = 0
+        while pos < len(text):
+            sel_match = re.search(r'\bSELECT\b', text[pos:], re.IGNORECASE)
+            if not sel_match:
+                result.append(text[pos:])
+                break
+
+            # Append everything before this SELECT
+            result.append(text[pos:pos + sel_match.start()])
+            after_select = pos + sel_match.end()
+
+            # Find WHERE { of this sub-SELECT
+            where_m = re.search(r'\bWHERE\s*\{', text[after_select:], re.IGNORECASE)
+            if not where_m:
+                result.append(text[pos + sel_match.start():])
+                break
+
+            projection = text[after_select:after_select + where_m.start()]
+            w_open = after_select + where_m.end()
+
+            # Extract WHERE body (brace-balanced)
+            sub_body, w_end = _extract_brace_block(text, w_open)
+
+            # Process nested sub-SELECTs inside this WHERE body
+            sub_body_rewritten = process(sub_body)
+
+            # Check if ?_this appears anywhere in the sub-SELECT's WHERE body
+            needs_this = '?_this' in sub_body_rewritten
+
+            if needs_this and '?_this' not in projection:
+                # Add ?_this to projection
+                projection = projection.rstrip() + ' ?_this '
+
+                # Check if there's already a GROUP BY after the closing }
+                rest_after = text[w_end:]
+                gb_m = re.match(r'\s*GROUP\s+BY\b([^\n}]*)', rest_after, re.IGNORECASE)
+                has_agg = bool(re.search(r'\b(SUM|COUNT|MAX|MIN|AVG)\s*\(', projection, re.IGNORECASE))
+
+                if gb_m:
+                    # Existing GROUP BY — add ?_this if not there
+                    if '?_this' not in gb_m.group(1):
+                        rest_after = rest_after[:gb_m.start(1)] + gb_m.group(1) + ' ?_this' + rest_after[gb_m.end(1):]
+                    result.append('SELECT' + projection + 'WHERE {' + sub_body_rewritten + '}')
+                    result.append(rest_after)
+                    break
+                elif has_agg:
+                    # Aggregation SELECT with no GROUP BY — append GROUP BY ?_this
+                    result.append('SELECT' + projection + 'WHERE {' + sub_body_rewritten + '} GROUP BY ?_this')
+                    result.append(rest_after)
+                    break
+                else:
+                    result.append('SELECT' + projection + 'WHERE {' + sub_body_rewritten + '}')
+                    pos = w_end
+                    continue
+            else:
+                result.append('SELECT' + projection + 'WHERE {' + sub_body_rewritten + '}')
+
+            pos = w_end
+
+        return ''.join(result)
+
+    return process(where_body)
+
+
+def _construct_to_insert(construct_query):
+    """Convert a SPARQL CONSTRUCT query to an INSERT WHERE update.
+
+    CONSTRUCT { ?s ?p ?o } WHERE { ... }
+    becomes
+    INSERT { ?s ?p ?o } WHERE { ... }
+
+    Also rewrites $this as ?_this throughout, and fixes correlated sub-SELECTs
+    by projecting ?_this through them (SPARQL UPDATE scoping requirement).
+    """
+    import re
+    q = construct_query.strip()
+
+    # Find CONSTRUCT { ... } — brace-balanced
+    construct_match = re.search(r'CONSTRUCT\s*\{', q, re.IGNORECASE)
+    if not construct_match:
+        return None
+    start = construct_match.end()
+    depth = 1
+    i = start
+    while i < len(q) and depth > 0:
+        if q[i] == '{':
+            depth += 1
+        elif q[i] == '}':
+            depth -= 1
+        i += 1
+    construct_body = q[start:i-1]
+    rest = q[i:].strip()
+
+    # Find WHERE { ... } — brace-balanced
+    where_match = re.search(r'WHERE\s*\{', rest, re.IGNORECASE)
+    if not where_match:
+        return None
+    w_start = where_match.end()
+    depth = 1
+    j = w_start
+    while j < len(rest) and depth > 0:
+        if rest[j] == '{':
+            depth += 1
+        elif rest[j] == '}':
+            depth -= 1
+        j += 1
+    where_body = rest[w_start:j-1]
+
+    prefixes = q[:construct_match.start()].strip()
+
+    # Replace $this with ?_this throughout
+    construct_body = construct_body.replace('$this', '?_this')
+    where_body = where_body.replace('$this', '?_this')
+
+    # Fix correlated sub-SELECTs: inject ?_this projection so aggregations
+    # are scoped per focus-node rather than global
+    where_body = _inject_this_into_subselects(where_body)
+
+    # FILTER BOUND + FILTER != "" prevents inserting unbound or empty-string results.
+    # The generated SPARQL uses IF(guard, "", real_expr) where "" means "upstream
+    # dep not ready yet". Without this filter, "" gets asserted as a concrete triple
+    # and later passes can't remove it — causing multivalue collisions where both ""
+    # and the real value exist for the same predicate.
+    where_body = where_body.rstrip()
+    where_body += (
+        f"\n    FILTER(BOUND(?_result))"
+        f"\n    FILTER(STR(?_result) != \"\")"
+    )
+
+    return f"{prefixes}\nINSERT {{\n{construct_body}}}\nWHERE {{\n{where_body}}}"
+
+
+def rederive_to_fixpoint(g, max_passes=10, locked_preds=None):
+    """Apply SHACL CONSTRUCT rules via pyoxigraph (Rust SPARQL engine).
+
+    Pyoxigraph is orders of magnitude faster than rdflib for SPARQL aggregation
+    queries over large graphs. We load the individuals graph into a pyoxigraph
+    Store, run SPARQL UPDATE (INSERT WHERE) versions of the CONSTRUCT rules until
+    fixpoint, then read derived triples back into the rdflib graph for comparison.
+    """
+    import pyoxigraph
+    import io
+
     shapes = rules_graph()
+    queries = _extract_construct_queries(shapes)
+    print(f"  [{len(queries)} CONSTRUCT rules loaded, converting to INSERT WHERE]", flush=True)
 
-    def fp(graph):
-        return hash(frozenset((str(s), str(p), str(o)) for s, p, o in graph))
+    # Serialise the rdflib graph to N-Triples and load into pyoxigraph default graph.
+    # ConjunctiveGraph serializes to named graphs; we need a flat triple stream so
+    # pyoxigraph's SPARQL UPDATE sees individuals in the default graph.
+    flat = rdflib.Graph()
+    for s, p, o in g:
+        flat.add((s, p, o))
+    ntriples_bytes = flat.serialize(format="nt").encode("utf-8")
+    store = pyoxigraph.Store()
+    store.load(input=io.BytesIO(ntriples_bytes), format=pyoxigraph.RdfFormat.N_TRIPLES)
+    print(f"  pyoxigraph store: {len(store)} triples loaded", flush=True)
 
-    prev = None
-    passes = 0
-    for i in range(max_passes):
-        passes = i + 1
-        validate(
-            g,
-            shacl_graph=shapes,
-            inference="none",
-            advanced=True,
-            inplace=True,
-            do_owl_imports=False,
+    # Convert CONSTRUCT queries to INSERT WHERE updates.
+    # For fields pre-asserted from Postgres (locked_preds), add FILTER NOT EXISTS
+    # so the SHACL rule cannot overwrite the ground-truth leaf fact with a
+    # SHACL-derived value, which would create a multivalue collision.
+    locked_preds = locked_preds or set()
+    updates = []
+    for label, q in queries:
+        upd = _construct_to_insert(q)
+        if not upd:
+            continue
+        # Detect if this rule's head predicate is locked
+        import re
+        head_match = re.search(
+            r'INSERT\s*\{\s*\?_this\s+(<[^>]+>)\s+\?_result', upd, re.IGNORECASE
         )
-        cur = fp(g)
-        if cur == prev:
+        if head_match:
+            pred_uri = head_match.group(1)[1:-1]  # strip < >
+            if pred_uri in locked_preds:
+                # Block re-derivation: only fire if triple not already present
+                upd = upd.rstrip('}')
+                upd += f"\n    FILTER NOT EXISTS {{ ?_this <{pred_uri}> ?_existing }}\n}}"
+        updates.append((label, upd))
+    print(f"  {len(updates)} INSERT WHERE updates ready", flush=True)
+
+    for i in range(max_passes):
+        before = len(store)
+        for label, upd in updates:
+            try:
+                store.update(upd)
+            except Exception:
+                pass  # skip rules with syntax errors; already logged at build time
+        after = len(store)
+        added = after - before
+        print(f"  pass {i+1}: +{added} triples (store={after})", flush=True)
+        if added == 0:
             break
-        prev = cur
+
+    # Post-fixpoint COUNT=0 injection for nodes still missing count fields.
+    # SPARQL GROUP BY COUNT produces no row for zero-count groups, so COUNT-derived
+    # fields remain unasserted for nodes with no matching children. We inject 0 now
+    # (post-fixpoint, not pre-), to avoid poisoning downstream BIND expressions that
+    # would fire prematurely in early passes and assert wrong false values.
+    # After injection, delete stale downstream values and re-run the fixpoint so
+    # formulas that depend on the now-known 0 can compute correctly.
+    COUNT_FIELDS_POST = {
+        f"{NS}TreatmentRankings": [
+            "strataWonByA", "strataWonByB",
+            "contestedStratumCount", "unknownCausalRoleCount",
+            "confirmedCausalRoleCount", "confoundersInStudy",
+            "mediatorRiskCount", "stratumCount",
+        ],
+    }
+    # Downstream predicates that must be deleted and re-derived after COUNT=0 injection.
+    # These depend directly or transitively on COUNT fields via > 0 comparisons.
+    DOWNSTREAM_PREDS = [
+        f"{NS}strataWonByLoser",
+        f"{NS}isParadoxExplained",
+        f"{NS}causalClaimStatus",
+        f"{NS}adjustmentAppropriate",
+        f"{NS}perStratumWinner",
+        f"{NS}isStratumUnanimous",
+        f"{NS}isSweepFragile",
+    ]
+    zero_lit = f'"0"^^<http://www.w3.org/2001/XMLSchema#integer>'
+    post_injected_zeros = 0
+    nodes_needing_rerun = set()
+    for entity_type, count_fields in COUNT_FIELDS_POST.items():
+        for field in count_fields:
+            pred_uri = f"{NS}{field}"
+            q_missing = (
+                f"SELECT ?s WHERE {{ "
+                f"?s a <{entity_type}> . "
+                f"FILTER NOT EXISTS {{ ?s <{pred_uri}> ?v }} "
+                f"}}"
+            )
+            try:
+                missing_nodes = [row[0].value for row in store.query(q_missing)]
+            except Exception:
+                missing_nodes = []
+            for node_uri in missing_nodes:
+                upd = (
+                    f"INSERT DATA {{ "
+                    f"<{node_uri}> <{pred_uri}> {zero_lit} . "
+                    f"}}"
+                )
+                try:
+                    store.update(upd)
+                    post_injected_zeros += 1
+                    nodes_needing_rerun.add(node_uri)
+                except Exception:
+                    pass
+    if post_injected_zeros:
+        print(f"  COUNT=0 post-injection: +{post_injected_zeros} zero triples for {len(nodes_needing_rerun)} nodes", flush=True)
+        # Delete stale downstream values for affected nodes so they re-derive correctly
+        deleted_downstream = 0
+        for node_uri in nodes_needing_rerun:
+            for pred_uri in DOWNSTREAM_PREDS:
+                upd = f"DELETE WHERE {{ <{node_uri}> <{pred_uri}> ?v }}"
+                try:
+                    store.update(upd)
+                    deleted_downstream += 1
+                except Exception:
+                    pass
+        print(f"  Cleared {deleted_downstream} stale downstream triples", flush=True)
+        # Re-run fixpoint passes to compute downstream fields with the new 0 values
+        for j in range(max_passes):
+            before = len(store)
+            for label, upd in updates:
+                try:
+                    store.update(upd)
+                except Exception:
+                    pass
+            after = len(store)
+            added_post = after - before
+            print(f"  post-pass {j+1}: +{added_post} triples (store={after})", flush=True)
+            if added_post == 0:
+                break
+
+    # Read derived NTWF triples back into rdflib graph via SPARQL (no serialization)
+    NTWF_prefix = NS
+    sparql_read = f"SELECT ?s ?p ?o WHERE {{ ?s ?p ?o . FILTER(STRSTARTS(STR(?p), \"{NTWF_prefix}\")) }}"
+    added_back = 0
+    for row in store.query(sparql_read):
+        s = URIRef(row[0].value)   # .value gives bare IRI string without angle brackets
+        p = URIRef(row[1].value)
+        o_raw = row[2]
+        if isinstance(o_raw, pyoxigraph.Literal):
+            # o_raw.datatype is a pyoxigraph.NamedNode; str() wraps it in <> but
+            # .value gives the bare IRI string. URIRef needs the bare IRI.
+            dt = o_raw.datatype.value if o_raw.datatype else None
+            lang = o_raw.language if hasattr(o_raw, 'language') else None
+            val = o_raw.value  # bare string value, not the full N-Triples encoding
+            if lang:
+                o = Literal(val, lang=lang)
+            elif dt:
+                o = Literal(val, datatype=URIRef(dt))
+            else:
+                o = Literal(val)
+        elif isinstance(o_raw, pyoxigraph.NamedNode):
+            o = URIRef(o_raw.value)
+        else:
+            o = URIRef(str(o_raw).strip('<>'))
+        if (s, p, o) not in g:
+            g.add((s, p, o))
+            added_back += 1
+    print(f"  {added_back} derived triples merged back into rdflib graph", flush=True)
+
     _collapse_multivalue_derived(g, shapes)
-    return passes, len(g)
+    return i + 1, len(g)
 
 
 def get_owl_field(g, subj, local):
@@ -572,7 +891,12 @@ def main():
 
     # Run SHACL fixpoint
     print("\n[4] Running SHACL fixpoint derivation (pyshacl)...")
-    passes, final_triples = rederive_to_fixpoint(g)
+    locked_preds = {
+        NS + row["OwlLocalName"]
+        for row in manifest
+        if row.get("AssertFromPostgres")
+    }
+    passes, final_triples = rederive_to_fixpoint(g, locked_preds=locked_preds)
     print(f"  Converged in {passes} pass(es), {final_triples} triples")
 
     # Compare

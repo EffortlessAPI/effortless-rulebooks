@@ -1,0 +1,18 @@
+{
+  "candidate_id": "71",
+  "slug": "rdatasets-bigten-tbl-df",
+  "dataset_name": "Bigten_tbl_df",
+  "description": "Grad Rates: Athletes vs. Non-Athletes Big Ten Conf.",
+  "domain": "Education",
+  "source": "Rdatasets (R package: educationR)",
+  "n_rows": "44",
+  "stratifying_columns_hint": "1 factor / 2 binary cols",
+  "download_url": "https://vincentarelbundock.github.io/Rdatasets/csv/educationR/Bigten_tbl_df.csv",
+  "documentation_url": "https://vincentarelbundock.github.io/Rdatasets/doc/educationR/Bigten_tbl_df.html",
+  "status": "skip",
+  "skip_reason": "The outcome variable `rate` is a continuous graduation rate percentage (0-100), not a binary outcome. There are no individual-level records to aggregate into Successes/Cases counts. This is an already-aggregated table of continuous rates per school/year/status group.",
+  "notes": [],
+  "files": [
+    "data.csv"
+  ]
+}

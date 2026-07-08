@@ -1,0 +1,33 @@
+{
+  "StudyId": "rdatasets-acs12-employment-2012",
+  "Title": "ACS 2012: Education Level and Employment Status by Gender",
+  "Source": "American Community Survey 2012. R package: openintro/acs12",
+  "SourceUrl": "https://vincentarelbundock.github.io/Rdatasets/doc/openintro/acs12.html",
+  "PublicationYear": 2012,
+  "Domain": "economics",
+  "IsSynthetic": false,
+  "IsControlStudy": true,
+  "ControlDomain": "economics-labor",
+  "TraditionId": "tradition-dag",
+  "PrimaryResearcherId": "researcher-pearl",
+  "confounding_variable": "gender",
+  "causal_role": "allocation",
+  "note": "Higher education levels are uniformly associated with higher employment rates within both male and female strata, so no reversal is expected when gender is controlled — this is a control case with no Simpson's Paradox.",
+  "treatments": [
+    {"TreatmentLabel": "hs-or-lower", "Description": "High school diploma or lower", "TotalCases": 581, "TotalSuccesses": 503},
+    {"TreatmentLabel": "college", "Description": "Some college or bachelor's degree", "TotalCases": 267, "TotalSuccesses": 241},
+    {"TreatmentLabel": "grad", "Description": "Graduate or professional degree", "TotalCases": 101, "TotalSuccesses": 99}
+  ],
+  "strata": [
+    {"StratumLabel": "female", "Description": "Female respondents", "TotalCases": 420},
+    {"StratumLabel": "male", "Description": "Male respondents", "TotalCases": 529}
+  ],
+  "cells": [
+    {"StratumLabel": "female", "TreatmentLabel": "hs-or-lower", "Cases": 250, "Successes": 217},
+    {"StratumLabel": "female", "TreatmentLabel": "college", "Cases": 127, "Successes": 114},
+    {"StratumLabel": "female", "TreatmentLabel": "grad", "Cases": 43, "Successes": 42},
+    {"StratumLabel": "male", "TreatmentLabel": "hs-or-lower", "Cases": 331, "Successes": 286},
+    {"StratumLabel": "male", "TreatmentLabel": "college", "Cases": 140, "Successes": 127},
+    {"StratumLabel": "male", "TreatmentLabel": "grad", "Cases": 58, "Successes": 57}
+  ]
+}

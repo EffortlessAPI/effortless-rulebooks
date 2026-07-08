@@ -1,0 +1,68 @@
+{
+  "StudyId": "resume-callback-race-quality-2001",
+  "Title": "Job Callback Rate by Race and Resume Quality (Bertrand & Mullainathan 2004)",
+  "Source": "openintro R package: resume dataset (Bertrand & Mullainathan 2004 AER)",
+  "SourceUrl": "https://vincentarelbundock.github.io/Rdatasets/doc/openintro/resume.html",
+  "PublicationYear": 2001,
+  "Domain": "social-science",
+  "IsSynthetic": false,
+  "IsControlStudy": true,
+  "ControlDomain": "gender-studies",
+  "TraditionId": "tradition-dag",
+  "PrimaryResearcherId": "researcher-pearl",
+  "confounding_variable": "resume_quality",
+  "causal_role": "confounder",
+  "note": "White names receive more callbacks than Black names within each resume quality tier; quality tier does not reverse the racial gap \u2014 it is a consistent confounder, not a reversal driver.",
+  "treatments": [
+    {
+      "TreatmentLabel": "Black",
+      "Description": "Resumes with black names",
+      "TotalCases": 2435,
+      "TotalSuccesses": 157
+    },
+    {
+      "TreatmentLabel": "White",
+      "Description": "Resumes with white names",
+      "TotalCases": 2435,
+      "TotalSuccesses": 235
+    }
+  ],
+  "strata": [
+    {
+      "StratumLabel": "High",
+      "Description": "High quality resume",
+      "TotalCases": 2446
+    },
+    {
+      "StratumLabel": "Low",
+      "Description": "Low quality resume",
+      "TotalCases": 2424
+    }
+  ],
+  "cells": [
+    {
+      "StratumLabel": "High",
+      "TreatmentLabel": "Black",
+      "Cases": 1223,
+      "Successes": 82
+    },
+    {
+      "StratumLabel": "High",
+      "TreatmentLabel": "White",
+      "Cases": 1223,
+      "Successes": 132
+    },
+    {
+      "StratumLabel": "Low",
+      "TreatmentLabel": "Black",
+      "Cases": 1212,
+      "Successes": 75
+    },
+    {
+      "StratumLabel": "Low",
+      "TreatmentLabel": "White",
+      "Cases": 1212,
+      "Successes": 103
+    }
+  ]
+}

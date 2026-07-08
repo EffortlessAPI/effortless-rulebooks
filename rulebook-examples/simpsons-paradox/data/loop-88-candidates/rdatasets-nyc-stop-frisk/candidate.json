@@ -1,0 +1,16 @@
+{
+  "candidate_id": "125",
+  "slug": "rdatasets-nyc-stop-frisk",
+  "dataset_name": "nyc_stop_frisk",
+  "description": "NYC Stop-and-Frisk by Precinct & Race (2003-2023)",
+  "domain": "Criminal Justice",
+  "source": "NYC CCRB Open Data (verified)",
+  "n_rows": "90000+",
+  "stratifying_columns_hint": "race, precinct, frisk_outcome",
+  "download_url": "https://www.nycccrb.org/public/data-download",
+  "documentation_url": "https://www.nycccrb.org/public/data-download",
+  "status": "portal-required",
+  "skip_reason": null,
+  "notes": [],
+  "portal_reason": "NYCCRB requires portal form submission"
+}

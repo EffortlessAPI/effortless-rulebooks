@@ -1,0 +1,7 @@
+{
+  "slug": "rdatasets-airquality-ozone",
+  "status": "staged",
+  "domain": "environmental",
+  "source": "R datasets::airquality — NYSDEC 1973 daily air quality; 153 daily observations, ozone (ppb), solar radiation, wind, temperature, May–September",
+  "notes": "Control study: low wind consistently predicts high ozone (>50 ppb) in both summer and shoulder-season strata. Season confounds base rates — summer is both hotter and has more calm days — but does not reverse the wind-ozone direction. Good environmental/meteorological domain addition."
+}

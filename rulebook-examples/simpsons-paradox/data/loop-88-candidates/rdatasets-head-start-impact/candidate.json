@@ -1,0 +1,16 @@
+{
+  "candidate_id": "139",
+  "slug": "rdatasets-head-start-impact",
+  "dataset_name": "head_start_impact",
+  "description": "National Head Start Impact Study by Baseline Risk & Program Duration",
+  "domain": "Education",
+  "source": "ACF/OPRE (verified)",
+  "n_rows": "4800",
+  "stratifying_columns_hint": "baseline_risk_score, months_in_program, race",
+  "download_url": "https://www.acf.hhs.gov/opre/report/head-start-impact-study-final-report",
+  "documentation_url": "https://www.acf.hhs.gov/ohs/",
+  "status": "portal-required",
+  "skip_reason": null,
+  "notes": [],
+  "portal_reason": "ACF/OPRE report PDF only, no public CSV"
+}

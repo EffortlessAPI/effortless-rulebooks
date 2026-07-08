@@ -60,11 +60,11 @@ The paradox itself is never modeled directly. There is no "reversal detection" m
 
 Definitions are not enough. You also need things that must *always* be true — algebraic invariants checked across the entire dataset.
 
-This project defines 28 of them. Here are three that a non-specialist can grasp:
+This project defines 25 critical ones. Here are three that a non-specialist can grasp:
 
-- **Type consistency:** If a study is classified as Type A or Type B — the two categories where the pooled winner genuinely reverses — then `IsSignFlip` must be true. Twelve studies pass. Zero fail.
+- **Type consistency:** If a study is classified as Type A or Type B — the two categories where the pooled winner genuinely reverses — then `IsSignFlip` must be true. Eighty-six studies pass. Zero fail.
 
-- **Signal purity:** When allocation direction indicates a reversal, the ratio of true signal to allocation noise (`SignalPurity`) must fall below 0.5. Again: twelve passes, zero failures.
+- **Signal purity:** When allocation direction indicates a reversal, the ratio of true signal to allocation noise (`SignalPurity`) must fall below 0.5. Again: eighty-six passes, zero failures.
 
 - **Corrected gap invariance:** A value called `CorrectedGap` must remain constant across all possible reweightings of how cases are distributed across strata. Two hundred thirty-eight checks. Zero failures.
 
@@ -94,7 +94,7 @@ The jury follows rules of evidence. The judge enforces procedure. The verdict mu
 
 In this architecture, the language model is the witness. It can propose that `AllocationDistortion` is a useful concept. It cannot swear that the concept holds across 238 studies. The rulebook is the rules of evidence. The invariant checks are the jury. The build either passes or it does not.
 
-The output — a corpus of 238 studies, a five-type taxonomy, four promoted theorems, domain-level rate breakdowns — is the verdict. It can be reproduced. It can be audited. It does not require you to trust the autocomplete.
+The output — a corpus of 238 studies, a five-type taxonomy, five promoted theorems, domain-level rate breakdowns, and a cross-study confounding archetype map — is the verdict. It can be reproduced. It can be audited. It does not require you to trust the autocomplete.
 
 ---
 

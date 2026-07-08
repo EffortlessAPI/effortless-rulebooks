@@ -1,0 +1,16 @@
+{
+  "candidate_id": "137",
+  "slug": "rdatasets-naep-private-vs-public",
+  "dataset_name": "naep_private_vs_public",
+  "description": "NAEP Private vs. Public School Outcomes by Income & Region",
+  "domain": "Education",
+  "source": "National Assessment of Educational Progress (verified)",
+  "n_rows": "300000+",
+  "stratifying_columns_hint": "family_income_quartile, census_region, school_type",
+  "download_url": "https://www.nationsreportcard.gov/ndecore/xplore/NDE",
+  "documentation_url": "https://www.nces.ed.gov/nationsreportcard/",
+  "status": "portal-required",
+  "skip_reason": null,
+  "notes": [],
+  "portal_reason": "NAEP NDE requires portal query builder"
+}

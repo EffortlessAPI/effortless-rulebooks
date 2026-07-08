@@ -1,0 +1,30 @@
+{
+  "StudyId": "rdatasets-haireyecolor-genetics",
+  "Title": "Hair Color and Brown Eyes by Sex — Snee 1974",
+  "Source": "Snee, R. D. (1974). Graphical display of two-way contingency tables. The American Statistician, 28(1), 9–12. R datasets::HairEyeColor.",
+  "SourceUrl": "https://vincentarelbundock.github.io/Rdatasets/csv/datasets/HairEyeColor.csv",
+  "PublicationYear": 1974,
+  "Domain": "genetics",
+  "IsSynthetic": false,
+  "IsControlStudy": true,
+  "ControlDomain": "genetics-pigmentation",
+  "TraditionId": "tradition-dag",
+  "PrimaryResearcherId": "researcher-pearl",
+  "confounding_variable": "Sex",
+  "causal_role": "allocation",
+  "note": "Brown-eye prevalence is consistently higher in dark-haired (Black/Brown) than light-haired (Red/Blond) individuals in both Male and Female strata. No reversal expected: the biological link between hair pigmentation and eye pigmentation (melanin) is monotone and sex does not confound it.",
+  "treatments": [
+    {"TreatmentLabel": "DarkHair", "Description": "Black or Brown hair color", "TotalCases": 394, "TotalSuccesses": 187},
+    {"TreatmentLabel": "LightHair", "Description": "Red or Blond hair color", "TotalCases": 198, "TotalSuccesses": 33}
+  ],
+  "strata": [
+    {"StratumLabel": "Male", "Description": "Male students", "TotalCases": 279},
+    {"StratumLabel": "Female", "Description": "Female students", "TotalCases": 313}
+  ],
+  "cells": [
+    {"StratumLabel": "Male", "TreatmentLabel": "DarkHair", "Cases": 199, "Successes": 85},
+    {"StratumLabel": "Male", "TreatmentLabel": "LightHair", "Cases": 80, "Successes": 13},
+    {"StratumLabel": "Female", "TreatmentLabel": "DarkHair", "Cases": 195, "Successes": 102},
+    {"StratumLabel": "Female", "TreatmentLabel": "LightHair", "Cases": 118, "Successes": 20}
+  ]
+}

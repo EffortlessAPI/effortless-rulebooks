@@ -1,0 +1,16 @@
+{
+  "candidate_id": "25",
+  "slug": "rdatasets-blood-brain-barrier-df",
+  "dataset_name": "blood_brain_barrier_df",
+  "description": "Blood-Brain Barrier",
+  "domain": "Medicine/Clinical",
+  "source": "Rdatasets (R package: NeuroDataSets)",
+  "n_rows": "34",
+  "stratifying_columns_hint": "2 factor / 2 binary cols",
+  "download_url": "https://vincentarelbundock.github.io/Rdatasets/csv/NeuroDataSets/blood_brain_barrier_df.csv",
+  "documentation_url": "https://vincentarelbundock.github.io/Rdatasets/doc/NeuroDataSets/blood_brain_barrier_df.html",
+  "status": "skip",
+  "skip_reason": "All outcome columns (Brain, Liver, Tumor, Weight, Loss) are continuous measurements. There is no binary outcome (success/failure) to aggregate into Successes/Cases counts. The dataset records drug concentration levels in brain/liver tissue \u2014 not suitable for Simpson's Paradox corpus without arbitrary binarization.",
+  "download_notes": "HTTP 200 OK",
+  "notes": []
+}

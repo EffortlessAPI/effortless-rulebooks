@@ -1,0 +1,42 @@
+{
+  "StudyId": "berkeley-1973-control",
+  "Title": "UC Berkeley Graduate Admissions 1973 (Control — Gender × Department)",
+  "Source": "Bickel PJ et al. (1975). Science 187:398-404. UIUC Data Science Discovery",
+  "SourceUrl": "https://waf.cs.illinois.edu/discovery/berkeley.csv",
+  "PublicationYear": 1973,
+  "Domain": "education",
+  "IsSynthetic": false,
+  "IsControlStudy": true,
+  "ControlDomain": "education-higher",
+  "TraditionId": "tradition-dag",
+  "PrimaryResearcherId": "researcher-pearl",
+  "confounding_variable": "Major",
+  "causal_role": "allocation",
+  "note": "This IS the classic Simpson's Paradox case: men appear to be admitted at higher rates overall, but within each department (A–F) women are admitted at equal or higher rates — the reversal is caused by women disproportionately applying to more competitive departments.",
+  "treatments": [
+    {"TreatmentLabel": "Female", "Description": "Female applicants", "TotalCases": 1835, "TotalSuccesses": 557},
+    {"TreatmentLabel": "Male", "Description": "Male applicants", "TotalCases": 3004, "TotalSuccesses": 1511}
+  ],
+  "strata": [
+    {"StratumLabel": "Dept A", "Description": "Department A", "TotalCases": 1246},
+    {"StratumLabel": "Dept B", "Description": "Department B", "TotalCases": 585},
+    {"StratumLabel": "Dept C", "Description": "Department C", "TotalCases": 918},
+    {"StratumLabel": "Dept D", "Description": "Department D", "TotalCases": 792},
+    {"StratumLabel": "Dept E", "Description": "Department E", "TotalCases": 584},
+    {"StratumLabel": "Dept F", "Description": "Department F", "TotalCases": 714}
+  ],
+  "cells": [
+    {"StratumLabel": "Dept A", "TreatmentLabel": "Female", "Cases": 108, "Successes": 89},
+    {"StratumLabel": "Dept A", "TreatmentLabel": "Male", "Cases": 1138, "Successes": 825},
+    {"StratumLabel": "Dept B", "TreatmentLabel": "Female", "Cases": 25, "Successes": 17},
+    {"StratumLabel": "Dept B", "TreatmentLabel": "Male", "Cases": 560, "Successes": 353},
+    {"StratumLabel": "Dept C", "TreatmentLabel": "Female", "Cases": 593, "Successes": 201},
+    {"StratumLabel": "Dept C", "TreatmentLabel": "Male", "Cases": 325, "Successes": 120},
+    {"StratumLabel": "Dept D", "TreatmentLabel": "Female", "Cases": 375, "Successes": 131},
+    {"StratumLabel": "Dept D", "TreatmentLabel": "Male", "Cases": 417, "Successes": 138},
+    {"StratumLabel": "Dept E", "TreatmentLabel": "Female", "Cases": 393, "Successes": 94},
+    {"StratumLabel": "Dept E", "TreatmentLabel": "Male", "Cases": 191, "Successes": 53},
+    {"StratumLabel": "Dept F", "TreatmentLabel": "Female", "Cases": 341, "Successes": 25},
+    {"StratumLabel": "Dept F", "TreatmentLabel": "Male", "Cases": 373, "Successes": 22}
+  ]
+}

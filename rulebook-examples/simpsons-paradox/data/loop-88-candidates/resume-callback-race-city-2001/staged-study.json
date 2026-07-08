@@ -1,0 +1,68 @@
+{
+  "StudyId": "resume-callback-race-city-2001",
+  "Title": "Job Callback Rate by Race and City (Bertrand & Mullainathan 2004)",
+  "Source": "openintro R package: resume dataset",
+  "SourceUrl": "https://vincentarelbundock.github.io/Rdatasets/doc/openintro/resume.html",
+  "PublicationYear": 2001,
+  "Domain": "social-science",
+  "IsSynthetic": false,
+  "IsControlStudy": true,
+  "ControlDomain": "law-enforcement",
+  "TraditionId": "tradition-dag",
+  "PrimaryResearcherId": "researcher-pearl",
+  "confounding_variable": "job_city",
+  "causal_role": "confounder",
+  "note": "White names receive higher callback rates than Black names in both Chicago and Boston; city-level differences in baseline callback rates do not reverse the racial disparity.",
+  "treatments": [
+    {
+      "TreatmentLabel": "Black",
+      "Description": "Resumes with black names",
+      "TotalCases": 2435,
+      "TotalSuccesses": 157
+    },
+    {
+      "TreatmentLabel": "White",
+      "Description": "Resumes with white names",
+      "TotalCases": 2435,
+      "TotalSuccesses": 235
+    }
+  ],
+  "strata": [
+    {
+      "StratumLabel": "Chicago",
+      "Description": "Jobs in Chicago",
+      "TotalCases": 2704
+    },
+    {
+      "StratumLabel": "Boston",
+      "Description": "Jobs in Boston",
+      "TotalCases": 2166
+    }
+  ],
+  "cells": [
+    {
+      "StratumLabel": "Chicago",
+      "TreatmentLabel": "Black",
+      "Cases": 1352,
+      "Successes": 73
+    },
+    {
+      "StratumLabel": "Chicago",
+      "TreatmentLabel": "White",
+      "Cases": 1352,
+      "Successes": 109
+    },
+    {
+      "StratumLabel": "Boston",
+      "TreatmentLabel": "Black",
+      "Cases": 1083,
+      "Successes": 84
+    },
+    {
+      "StratumLabel": "Boston",
+      "TreatmentLabel": "White",
+      "Cases": 1083,
+      "Successes": 126
+    }
+  ]
+}

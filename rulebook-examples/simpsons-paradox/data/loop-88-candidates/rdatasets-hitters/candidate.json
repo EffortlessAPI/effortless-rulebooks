@@ -1,0 +1,16 @@
+{
+  "candidate_id": "42",
+  "slug": "rdatasets-hitters",
+  "dataset_name": "Hitters",
+  "description": "Hitters Data",
+  "domain": "Categorical Data / Mixed",
+  "source": "Rdatasets (R package: vcd)",
+  "n_rows": "154",
+  "stratifying_columns_hint": "1 factor / 0 binary cols",
+  "download_url": "https://vincentarelbundock.github.io/Rdatasets/csv/vcd/Hitters.csv",
+  "documentation_url": "https://vincentarelbundock.github.io/Rdatasets/doc/vcd/Hitters.html",
+  "status": "skip",
+  "skip_reason": "All outcome columns (Putouts, Assists, Errors) are continuous normalized statistics. There is no binary outcome and no natural treatment/exposure grouping \u2014 only baseball fielding positions with continuous performance metrics.",
+  "download_notes": "HTTP 200 OK",
+  "notes": []
+}

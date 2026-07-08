@@ -1,0 +1,16 @@
+{
+  "candidate_id": "108",
+  "slug": "rdatasets-gapminder",
+  "dataset_name": "gapminder",
+  "description": "Gapminder data",
+  "domain": "Economics/Labor",
+  "source": "Rdatasets (R package: gapminder)",
+  "n_rows": "1704",
+  "stratifying_columns_hint": "2 factor / 0 binary cols",
+  "download_url": "https://vincentarelbundock.github.io/Rdatasets/csv/gapminder/gapminder.csv",
+  "documentation_url": "https://vincentarelbundock.github.io/Rdatasets/doc/gapminder/gapminder.html",
+  "status": "skip",
+  "skip_reason": "The gapminder datasets contain only continuous outcomes (life expectancy, GDP per capita, infant mortality, fertility, population). There is no binary outcome column and no natural treatment/exposure grouping \u2014 only country-level longitudinal panel data. Not suitable for Simpson's Paradox cell aggregation.",
+  "download_notes": "HTTP 200 OK",
+  "notes": []
+}

@@ -1,0 +1,18 @@
+{
+  "candidate_id": "70",
+  "slug": "rdatasets-achieve-tbl-df",
+  "dataset_name": "Achieve_tbl_df",
+  "description": "Math Achievement Test Scores by Gender",
+  "domain": "Education",
+  "source": "Rdatasets (R package: educationR)",
+  "n_rows": "25",
+  "stratifying_columns_hint": "1 factor / 1 binary cols",
+  "download_url": "https://vincentarelbundock.github.io/Rdatasets/csv/educationR/Achieve_tbl_df.csv",
+  "documentation_url": "https://vincentarelbundock.github.io/Rdatasets/doc/educationR/Achieve_tbl_df.html",
+  "status": "skip",
+  "skip_reason": "Continuous outcome (test score) with only one grouping column (gender) \u2014 no binary outcome and no stratum variable.",
+  "notes": [],
+  "files": [
+    "data.csv"
+  ]
+}

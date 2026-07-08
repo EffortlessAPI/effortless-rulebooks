@@ -1,0 +1,36 @@
+{
+  "StudyId": "nfl-passing-completion-2023",
+  "Title": "NFL 2023 Pass Completion Rate by Pass Length and Down",
+  "Source": "nflverse play-by-play data 2023. nflverse GitHub",
+  "SourceUrl": "https://github.com/nflverse/nflreadr",
+  "PublicationYear": 2023,
+  "Domain": "sports",
+  "IsSynthetic": false,
+  "IsControlStudy": true,
+  "ControlDomain": "sports-team",
+  "TraditionId": "tradition-dag",
+  "PrimaryResearcherId": "researcher-pearl",
+  "confounding_variable": "down",
+  "causal_role": "allocation",
+  "note": "Short passes dominate in all downs and consistently outperform deep passes within every down, so no reversal is expected when aggregating across downs.",
+  "treatments": [
+    {"TreatmentLabel": "short", "Description": "Short pass attempt", "TotalCases": 15698, "TotalSuccesses": 10964},
+    {"TreatmentLabel": "deep", "Description": "Deep pass attempt", "TotalCases": 3486, "TotalSuccesses": 1463}
+  ],
+  "strata": [
+    {"StratumLabel": "down-1", "Description": "1st down", "TotalCases": 7135},
+    {"StratumLabel": "down-2", "Description": "2nd down", "TotalCases": 6479},
+    {"StratumLabel": "down-3", "Description": "3rd down", "TotalCases": 5089},
+    {"StratumLabel": "down-4", "Description": "4th down", "TotalCases": 481}
+  ],
+  "cells": [
+    {"StratumLabel": "down-1", "TreatmentLabel": "short", "Cases": 5787, "Successes": 4196},
+    {"StratumLabel": "down-1", "TreatmentLabel": "deep", "Cases": 1348, "Successes": 617},
+    {"StratumLabel": "down-2", "TreatmentLabel": "short", "Cases": 5473, "Successes": 3886},
+    {"StratumLabel": "down-2", "TreatmentLabel": "deep", "Cases": 1006, "Successes": 401},
+    {"StratumLabel": "down-3", "TreatmentLabel": "short", "Cases": 4086, "Successes": 2660},
+    {"StratumLabel": "down-3", "TreatmentLabel": "deep", "Cases": 1003, "Successes": 415},
+    {"StratumLabel": "down-4", "TreatmentLabel": "short", "Cases": 352, "Successes": 222},
+    {"StratumLabel": "down-4", "TreatmentLabel": "deep", "Cases": 129, "Successes": 30}
+  ]
+}

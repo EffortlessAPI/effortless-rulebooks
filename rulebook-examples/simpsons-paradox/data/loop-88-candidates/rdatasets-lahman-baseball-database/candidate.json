@@ -1,0 +1,19 @@
+{
+  "candidate_id": "123",
+  "slug": "rdatasets-lahman-baseball-database",
+  "dataset_name": "lahman_baseball_database",
+  "description": "Complete MLB batting/pitching statistics 1871-2025",
+  "domain": "Sports Analytics",
+  "source": "SABR / Chadwick Bureau (verified)",
+  "n_rows": "0",
+  "stratifying_columns_hint": "player, season, team, league",
+  "download_url": "https://github.com/chadwickbureau/baseballdatabank",
+  "documentation_url": "https://sabr.org/lahman-database/",
+  "status": "skip",
+  "skip_reason": "Season batting statistics (HR, AB, H etc.); all continuous aggregates, no binary outcome per observation",
+  "notes": [],
+  "files": [
+    "People.csv",
+    "Batting.csv"
+  ]
+}

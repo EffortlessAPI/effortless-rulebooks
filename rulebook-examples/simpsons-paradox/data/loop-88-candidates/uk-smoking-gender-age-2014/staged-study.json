@@ -1,0 +1,102 @@
+{
+  "StudyId": "uk-smoking-gender-age-2014",
+  "Title": "UK Smoking Prevalence by Gender and Age Group (2014 Survey)",
+  "Source": "openintro R package: smoking dataset (UK 2014 survey)",
+  "SourceUrl": "https://vincentarelbundock.github.io/Rdatasets/doc/openintro/smoking.html",
+  "PublicationYear": 2014,
+  "Domain": "public-health-smoking",
+  "IsSynthetic": false,
+  "IsControlStudy": true,
+  "ControlDomain": "public-health-epidemiology",
+  "TraditionId": "tradition-dag",
+  "PrimaryResearcherId": "researcher-pearl",
+  "confounding_variable": "age_group",
+  "causal_role": "confounder",
+  "note": "Younger adults smoke at similar rates to older adults in this sample; no systematic reversal expected when conditioning on age \u2014 gender gap is consistent within strata.",
+  "treatments": [
+    {
+      "TreatmentLabel": "Male",
+      "Description": "Male respondents",
+      "TotalCases": 726,
+      "TotalSuccesses": 187
+    },
+    {
+      "TreatmentLabel": "Female",
+      "Description": "Female respondents",
+      "TotalCases": 965,
+      "TotalSuccesses": 234
+    }
+  ],
+  "strata": [
+    {
+      "StratumLabel": "<30",
+      "Description": "Age group <30",
+      "TotalCases": 260
+    },
+    {
+      "StratumLabel": "30-44",
+      "Description": "Age group 30-44",
+      "TotalCases": 492
+    },
+    {
+      "StratumLabel": "45-59",
+      "Description": "Age group 45-59",
+      "TotalCases": 383
+    },
+    {
+      "StratumLabel": "60+",
+      "Description": "Age group 60+",
+      "TotalCases": 556
+    }
+  ],
+  "cells": [
+    {
+      "StratumLabel": "<30",
+      "TreatmentLabel": "Male",
+      "Cases": 118,
+      "Successes": 46
+    },
+    {
+      "StratumLabel": "<30",
+      "TreatmentLabel": "Female",
+      "Cases": 142,
+      "Successes": 57
+    },
+    {
+      "StratumLabel": "30-44",
+      "TreatmentLabel": "Male",
+      "Cases": 213,
+      "Successes": 56
+    },
+    {
+      "StratumLabel": "30-44",
+      "TreatmentLabel": "Female",
+      "Cases": 279,
+      "Successes": 89
+    },
+    {
+      "StratumLabel": "45-59",
+      "TreatmentLabel": "Male",
+      "Cases": 166,
+      "Successes": 47
+    },
+    {
+      "StratumLabel": "45-59",
+      "TreatmentLabel": "Female",
+      "Cases": 217,
+      "Successes": 54
+    },
+    {
+      "StratumLabel": "60+",
+      "TreatmentLabel": "Male",
+      "Cases": 229,
+      "Successes": 38
+    },
+    {
+      "StratumLabel": "60+",
+      "TreatmentLabel": "Female",
+      "Cases": 327,
+      "Successes": 34
+    }
+  ]
+}

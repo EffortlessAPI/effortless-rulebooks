@@ -1,0 +1,33 @@
+{
+  "StudyId": "uci-adult-census-income-sex-education-1994",
+  "Title": "UCI Adult Census Income: High Income by Sex and Education (1994 CPS)",
+  "Source": "Kohavi R (1996). KDD-96. UCI ML Repository #2",
+  "SourceUrl": "https://archive.ics.uci.edu/dataset/2/adult",
+  "PublicationYear": 1994,
+  "Domain": "economics",
+  "IsSynthetic": false,
+  "IsControlStudy": true,
+  "ControlDomain": "economics-labor",
+  "TraditionId": "tradition-dag",
+  "PrimaryResearcherId": "researcher-pearl",
+  "confounding_variable": "education",
+  "causal_role": "allocation",
+  "note": "Males are heavily over-represented in higher-education strata (which have higher income rates), so education allocates unequally by sex; the male income advantage persists within every education stratum and no reversal is expected, confirming this as a confounding-without-reversal control case.",
+  "treatments": [
+    {"TreatmentLabel": "Male", "Description": "Male respondents in 1994 CPS extract", "TotalCases": 21790, "TotalSuccesses": 6662},
+    {"TreatmentLabel": "Female", "Description": "Female respondents in 1994 CPS extract", "TotalCases": 10771, "TotalSuccesses": 1179}
+  ],
+  "strata": [
+    {"StratumLabel": "HS-or-Less", "Description": "HS grad or below (incl. 1st-12th, HS-grad)", "TotalCases": 14754},
+    {"StratumLabel": "SomeCol-or-BA", "Description": "Some college, Assoc, or Bachelors degree", "TotalCases": 15095},
+    {"StratumLabel": "Masters-or-Higher", "Description": "Masters, professional school, or Doctorate", "TotalCases": 2712}
+  ],
+  "cells": [
+    {"StratumLabel": "HS-or-Less", "TreatmentLabel": "Male", "Cases": 10043, "Successes": 1670},
+    {"StratumLabel": "HS-or-Less", "TreatmentLabel": "Female", "Cases": 4711, "Successes": 249},
+    {"StratumLabel": "SomeCol-or-BA", "TreatmentLabel": "Male", "Cases": 9749, "Successes": 3575},
+    {"StratumLabel": "SomeCol-or-BA", "TreatmentLabel": "Female", "Cases": 5346, "Successes": 659},
+    {"StratumLabel": "Masters-or-Higher", "TreatmentLabel": "Male", "Cases": 1998, "Successes": 1417},
+    {"StratumLabel": "Masters-or-Higher", "TreatmentLabel": "Female", "Cases": 714, "Successes": 271}
+  ]
+}

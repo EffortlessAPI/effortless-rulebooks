@@ -1,0 +1,18 @@
+{
+  "candidate_id": "91",
+  "slug": "rdatasets-august-senate-polls",
+  "dataset_name": "august_senate_polls",
+  "description": "How Much Trouble Is Ted Cruz Really In?",
+  "domain": "Journalism/Social Data",
+  "source": "Rdatasets (R package: fivethirtyeight)",
+  "n_rows": "594",
+  "stratifying_columns_hint": "2 factor / 0 binary cols",
+  "download_url": "https://vincentarelbundock.github.io/Rdatasets/csv/fivethirtyeight/august_senate_polls.csv",
+  "documentation_url": "https://vincentarelbundock.github.io/Rdatasets/doc/fivethirtyeight/august_senate_polls.html",
+  "status": "skip",
+  "skip_reason": "All outcome columns are continuous (dem_poll, rep_poll, dem_result, rep_result, error, absolute_error are percentages/floats). No binary outcome exists. This is polling accuracy data \u2014 not suitable for Simpson's Paradox success/failure cell aggregation.",
+  "notes": [],
+  "files": [
+    "data.csv"
+  ]
+}

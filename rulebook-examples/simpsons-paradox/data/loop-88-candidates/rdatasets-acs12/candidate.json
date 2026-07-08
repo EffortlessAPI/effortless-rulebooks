@@ -1,0 +1,24 @@
+{
+  "candidate_id": "94",
+  "slug": "rdatasets-acs12",
+  "dataset_name": "acs12",
+  "description": "American Community Survey, 2012",
+  "domain": "General Statistics Teaching",
+  "source": "Rdatasets (R package: openintro)",
+  "n_rows": "2000",
+  "stratifying_columns_hint": "9 factor / 5 binary cols",
+  "download_url": "https://vincentarelbundock.github.io/Rdatasets/csv/openintro/acs12.csv",
+  "documentation_url": "https://vincentarelbundock.github.io/Rdatasets/doc/openintro/acs12.html",
+  "status": "needs-data",
+  "skip_reason": null,
+  "notes": [],
+  "files": [
+    "data.csv"
+  ],
+  "proposed_study_id": "rdatasets-acs12-employment",
+  "proposed_title": "ACS 2012: Education Level and Employment Status by Gender",
+  "binary_outcome": "employment",
+  "treatment_variable": "edu",
+  "stratum_variable": "gender",
+  "encoding_note": "Restrict to labor-force participants (employment in {employed, unemployed}); encode employed=1 as success. Treatment = edu (hs or lower / college / grad); stratum = gender (male/female). Aggregate to Successes/Cases per (edu \u00d7 gender) cell. Race is an alternative stratum."
+}

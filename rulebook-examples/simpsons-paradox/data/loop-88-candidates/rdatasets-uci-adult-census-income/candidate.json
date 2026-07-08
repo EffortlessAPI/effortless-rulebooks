@@ -1,0 +1,24 @@
+{
+  "candidate_id": "118",
+  "slug": "rdatasets-uci-adult-census-income",
+  "dataset_name": "uci_adult_census_income",
+  "description": "Census income (>50K/<=50K) by demographic and occupation attributes",
+  "domain": "Economics/Labor",
+  "source": "UCI ML Repository (verified)",
+  "n_rows": "48842",
+  "stratifying_columns_hint": "occupation, education, sex, race, hours-per-week",
+  "download_url": "https://archive.ics.uci.edu/dataset/2/adult",
+  "documentation_url": "https://archive.ics.uci.edu/dataset/2/adult",
+  "status": "needs-data",
+  "skip_reason": null,
+  "notes": [],
+  "files": [
+    "adult.csv"
+  ],
+  "proposed_study_id": "uci-adult-census-income-1994",
+  "proposed_title": "UCI Adult Census Income: Sex vs. Income by Education Level (1994)",
+  "binary_outcome": "income (col 15: <=50K / >50K)",
+  "treatment_variable": "sex (col 10: Male/Female)",
+  "stratum_variable": "education (col 4: Bachelors, HS-grad, etc.)",
+  "encoding_note": "No header row; columns are: age, workclass, fnlwgt, education, education-num, marital-status, occupation, relationship, race, sex, capital-gain, capital-loss, hours-per-week, native-country, income. Binary outcome: income=\">50K\" as success. Aggregate Successes=count(income>50K) and Cases=count(*) per (sex \u00d7 education) cell."
+}

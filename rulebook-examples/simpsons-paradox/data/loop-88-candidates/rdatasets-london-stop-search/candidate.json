@@ -1,0 +1,16 @@
+{
+  "candidate_id": "128",
+  "slug": "rdatasets-london-stop-search",
+  "dataset_name": "london_stop_search",
+  "description": "London Police Stop-Search by Ethnicity & Ward 2015-2023",
+  "domain": "Criminal Justice",
+  "source": "UK Home Office Police Data (verified)",
+  "n_rows": "500000+",
+  "stratifying_columns_hint": "ethnicity, london_ward, search_outcome",
+  "download_url": "https://data.police.uk/data/",
+  "documentation_url": "https://data.police.uk/docs/method/stops/",
+  "status": "portal-required",
+  "skip_reason": null,
+  "notes": [],
+  "portal_reason": "UK Police data portal requires multi-step download"
+}

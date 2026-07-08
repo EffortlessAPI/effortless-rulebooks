@@ -1,0 +1,7 @@
+{
+  "slug": "rdatasets-birthwt-smoking-race",
+  "status": "staged",
+  "domain": "epidemiology",
+  "source": "R MASS::birthwt — Hosmer & Lemeshow 1989; 189 births at Baystate Medical Center Springfield MA 1986; outcome = low birthweight (<2500g)",
+  "notes": "Control study: smoking consistently increases low-birthweight risk within each racial stratum. NonWhite mothers have higher baseline low-birthweight rates regardless of smoking, creating differential allocation, but the smoking effect direction is preserved. No reversal across strata."
+}

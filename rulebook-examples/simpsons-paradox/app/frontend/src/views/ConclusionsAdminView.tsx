@@ -29,8 +29,8 @@ const STATUS_COLORS: Record<string, string> = {
   open: 'badge-reversal',
 };
 
-function categoryLabel(cat: string): string {
-  return conclusionPdfLabel(cat);
+function categoryLabel(cat: string, conclusionId?: string): string {
+  return conclusionPdfLabel(cat, conclusionId);
 }
 
 function DiscoveryCard({
@@ -154,7 +154,12 @@ export function ConclusionsAdminView() {
         <div className="card stat-card">
           <h3>Proved (theorem)</h3>
           <div className="stat-big">{tiers.proved}</div>
-          <div className="stat-caption">by construction</div>
+          <div className="stat-caption">by construction — pure algebra</div>
+        </div>
+        <div className="card stat-card">
+          <h3>Proved, conditional</h3>
+          <div className="stat-big">{tiers.provedConditional}</div>
+          <div className="stat-caption">true given correct CausalRole annotation — not pure algebra</div>
         </div>
         <div className="card stat-card">
           <h3>Instrument &amp; scope</h3>
@@ -263,7 +268,7 @@ export function ConclusionsAdminView() {
                   <span className={`badge ${STATUS_COLORS[c.status] ?? 'badge-neutral'}`}>
                     <Cell table="Conclusions" col="status">{c.status}</Cell>
                   </span>
-                  <span className="conclusion-cat">{categoryLabel(c.category)}</span>
+                  <span className="conclusion-cat">{categoryLabel(c.category, c.conclusion_id)}</span>
                   <span className="conclusion-title">{c.title}</span>
                   {c.invariant_protecting_count != null && c.invariant_protecting_count > 0 && (
                     <span className="conclusion-inv-count">
@@ -287,7 +292,7 @@ export function ConclusionsAdminView() {
               </div>
               <h2 className="detail-title">{selected.title}</h2>
               <div className="detail-meta">
-                <span>Tier: {categoryLabel(selected.category)}</span>
+                <span>Tier: {categoryLabel(selected.category, selected.conclusion_id)}</span>
                 {selected.witnessed_in_loop && (
                   <span>Witnessed in: {selected.witnessed_in_loop}</span>
                 )}

@@ -1,0 +1,16 @@
+{
+  "candidate_id": "127",
+  "slug": "rdatasets-ussc-sentencing",
+  "dataset_name": "ussc_sentencing",
+  "description": "US Sentencing Commission Guidelines by Race & Offense Level",
+  "domain": "Criminal Justice",
+  "source": "USSC Data & Statistics (verified)",
+  "n_rows": "80000+",
+  "stratifying_columns_hint": "offense_level, defendant_race, departure_type",
+  "download_url": "https://www.ussc.gov/research/data-files",
+  "documentation_url": "https://www.ussc.gov/research/data-files",
+  "status": "portal-required",
+  "skip_reason": null,
+  "notes": [],
+  "portal_reason": "USSC requires account registration for data files"
+}

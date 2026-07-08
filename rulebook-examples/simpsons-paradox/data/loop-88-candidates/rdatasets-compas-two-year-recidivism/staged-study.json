@@ -1,0 +1,49 @@
+{
+  "StudyId": "compas-recidivism-race-age-2016",
+  "Title": "COMPAS Two-Year Recidivism by Race and Age Category",
+  "Source": "ProPublica (2016). Machine Bias. propublica/compas-analysis on GitHub",
+  "SourceUrl": "https://github.com/propublica/compas-analysis",
+  "PublicationYear": 2016,
+  "Domain": "criminal-justice",
+  "IsSynthetic": false,
+  "IsControlStudy": true,
+  "ControlDomain": "criminal-justice",
+  "TraditionId": "tradition-dag",
+  "PrimaryResearcherId": "researcher-pearl",
+  "confounding_variable": "age_cat",
+  "causal_role": "allocation",
+  "note": "Age category is a known predictor of recidivism and is unevenly distributed across racial groups, so stratum-level rates may diverge from pooled rates, but the direction of racial disparity in recidivism rates is expected to be consistent within each age stratum (no sign flip), making this a boundary/control case rather than a classic paradox.",
+  "treatments": [
+    {"TreatmentLabel": "African-American", "Description": "Race: African-American", "TotalCases": 3696, "TotalSuccesses": 1901},
+    {"TreatmentLabel": "Asian", "Description": "Race: Asian", "TotalCases": 32, "TotalSuccesses": 9},
+    {"TreatmentLabel": "Caucasian", "Description": "Race: Caucasian", "TotalCases": 2454, "TotalSuccesses": 966},
+    {"TreatmentLabel": "Hispanic", "Description": "Race: Hispanic", "TotalCases": 637, "TotalSuccesses": 232},
+    {"TreatmentLabel": "Native American", "Description": "Race: Native American", "TotalCases": 18, "TotalSuccesses": 10},
+    {"TreatmentLabel": "Other", "Description": "Race: Other", "TotalCases": 377, "TotalSuccesses": 133}
+  ],
+  "strata": [
+    {"StratumLabel": "25 - 45", "Description": "Age category: 25 to 45", "TotalCases": 4109},
+    {"StratumLabel": "Greater than 45", "Description": "Age category: Greater than 45", "TotalCases": 1576},
+    {"StratumLabel": "Less than 25", "Description": "Age category: Less than 25", "TotalCases": 1529}
+  ],
+  "cells": [
+    {"StratumLabel": "25 - 45", "TreatmentLabel": "African-American", "Cases": 2194, "Successes": 1110},
+    {"StratumLabel": "Greater than 45", "TreatmentLabel": "African-American", "Cases": 582, "Successes": 230},
+    {"StratumLabel": "Less than 25", "TreatmentLabel": "African-American", "Cases": 920, "Successes": 561},
+    {"StratumLabel": "25 - 45", "TreatmentLabel": "Asian", "Cases": 14, "Successes": 2},
+    {"StratumLabel": "Greater than 45", "TreatmentLabel": "Asian", "Cases": 11, "Successes": 4},
+    {"StratumLabel": "Less than 25", "TreatmentLabel": "Asian", "Cases": 7, "Successes": 3},
+    {"StratumLabel": "25 - 45", "TreatmentLabel": "Caucasian", "Cases": 1312, "Successes": 566},
+    {"StratumLabel": "Greater than 45", "TreatmentLabel": "Caucasian", "Cases": 752, "Successes": 209},
+    {"StratumLabel": "Less than 25", "TreatmentLabel": "Caucasian", "Cases": 390, "Successes": 191},
+    {"StratumLabel": "25 - 45", "TreatmentLabel": "Hispanic", "Cases": 367, "Successes": 135},
+    {"StratumLabel": "Greater than 45", "TreatmentLabel": "Hispanic", "Cases": 143, "Successes": 31},
+    {"StratumLabel": "Less than 25", "TreatmentLabel": "Hispanic", "Cases": 127, "Successes": 66},
+    {"StratumLabel": "25 - 45", "TreatmentLabel": "Native American", "Cases": 12, "Successes": 5},
+    {"StratumLabel": "Greater than 45", "TreatmentLabel": "Native American", "Cases": 3, "Successes": 2},
+    {"StratumLabel": "Less than 25", "TreatmentLabel": "Native American", "Cases": 3, "Successes": 3},
+    {"StratumLabel": "25 - 45", "TreatmentLabel": "Other", "Cases": 210, "Successes": 71},
+    {"StratumLabel": "Greater than 45", "TreatmentLabel": "Other", "Cases": 85, "Successes": 22},
+    {"StratumLabel": "Less than 25", "TreatmentLabel": "Other", "Cases": 82, "Successes": 40}
+  ]
+}

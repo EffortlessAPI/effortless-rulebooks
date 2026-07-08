@@ -1,0 +1,16 @@
+{
+  "candidate_id": "39",
+  "slug": "rdatasets-coalminers",
+  "dataset_name": "CoalMiners",
+  "description": "Breathlessness and Wheeze in Coal Miners",
+  "domain": "Categorical Data / Mixed",
+  "source": "Rdatasets (R package: vcd)",
+  "n_rows": "36",
+  "stratifying_columns_hint": "3 factor / 2 binary cols",
+  "download_url": "https://vincentarelbundock.github.io/Rdatasets/csv/vcd/CoalMiners.csv",
+  "documentation_url": "https://vincentarelbundock.github.io/Rdatasets/doc/vcd/CoalMiners.html",
+  "status": "skip",
+  "download_notes": "HTTP 200 OK",
+  "skip_reason": "Already an aggregated count table (Freq column, 36 rows covering all Breathlessness \u00d7 Wheeze \u00d7 Age cells). No treatment/exposure variable \u2014 both Breathlessness and Wheeze are binary symptom co-occurrence variables with no natural treatment group. This is a cross-tabulation of two symptoms by age group in coal miners, not a treatment vs. control study design suitable for Simpson's Paradox modeling.",
+  "notes": []
+}

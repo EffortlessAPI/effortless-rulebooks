@@ -1,0 +1,16 @@
+{
+  "candidate_id": "142",
+  "slug": "rdatasets-bls-gender-wage-gap",
+  "dataset_name": "bls_gender_wage_gap",
+  "description": "BLS Occupational Employment & Wages by Gender & Occupation 2023",
+  "domain": "Economics/Labor",
+  "source": "Bureau of Labor Statistics OES (verified)",
+  "n_rows": "800+",
+  "stratifying_columns_hint": "occupation, sex, experience_level",
+  "download_url": "https://www.bls.gov/oes/current/oes_nat.htm",
+  "documentation_url": "https://www.bls.gov/oes/",
+  "status": "portal-required",
+  "skip_reason": null,
+  "notes": [],
+  "portal_reason": "BLS OES requires multi-step query form"
+}

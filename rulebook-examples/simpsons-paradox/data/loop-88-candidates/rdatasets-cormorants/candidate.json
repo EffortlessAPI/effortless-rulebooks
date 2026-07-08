@@ -1,0 +1,16 @@
+{
+  "candidate_id": "48",
+  "slug": "rdatasets-cormorants",
+  "dataset_name": "Cormorants",
+  "description": "Advertising Behavior by Males Cormorants",
+  "domain": "Categorical Data / Mixed",
+  "source": "Rdatasets (R package: vcdExtra)",
+  "n_rows": "343",
+  "stratifying_columns_hint": "6 factor / 2 binary cols",
+  "download_url": "https://vincentarelbundock.github.io/Rdatasets/csv/vcdExtra/Cormorants.csv",
+  "documentation_url": "https://vincentarelbundock.github.io/Rdatasets/doc/vcdExtra/Cormorants.html",
+  "status": "skip",
+  "skip_reason": "Ecological count data about cormorant nesting. The outcome column `count` is a pre-aggregated count of birds/nests per combination of categorical variables \u2014 not individual binary outcomes. There is no success/failure binary to compute from individual rows. The dataset is already an aggregated count table.",
+  "download_notes": "HTTP 200 OK \u2014 343 data rows, 9 columns (rownames, category, week, station, nest, height, density, tree_health, count)",
+  "notes": []
+}

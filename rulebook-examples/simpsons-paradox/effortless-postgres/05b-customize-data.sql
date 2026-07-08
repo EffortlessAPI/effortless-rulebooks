@@ -1,27 +1,11 @@
 -- All study data (synthetic and real) now lives in the rulebook JSON SSoT.
 -- It is generated into 05-insert-data.sql by the transpiler on every build.
 
--- ============================================================================
--- Studies enrichment (loop-47): PublicationYear, Domain, IsSynthetic
--- These raw fields are not emitted by the transpiler (quota exceeded).
--- Columns are added in 01b-customize-schema.sql; values populated here.
--- ============================================================================
-UPDATE studies SET publication_year = 1986, domain = 'medicine',       is_synthetic = false WHERE study_id = 'kidney-1986';
-UPDATE studies SET publication_year = NULL, domain = 'synthetic',      is_synthetic = true  WHERE study_id = 'balanced-synthetic';
-UPDATE studies SET publication_year = NULL, domain = 'synthetic',      is_synthetic = true  WHERE study_id = 'kidney-balanced';
-UPDATE studies SET publication_year = NULL, domain = 'synthetic',      is_synthetic = true  WHERE study_id = 'compressed-synthetic';
-UPDATE studies SET publication_year = 1975, domain = 'social-science', is_synthetic = false WHERE study_id = 'berkeley-1973';
-UPDATE studies SET publication_year = 2000, domain = 'epidemiology',   is_synthetic = false WHERE study_id = 'reintjes-2000';
-UPDATE studies SET publication_year = 1981, domain = 'legal',          is_synthetic = false WHERE study_id = 'radelet-1981';
-UPDATE studies SET publication_year = 1997, domain = 'sports',         is_synthetic = false WHERE study_id = 'jeter-justice-1997';
-UPDATE studies SET publication_year = 1996, domain = 'epidemiology',   is_synthetic = false WHERE study_id = 'appleton-1996';
-UPDATE studies SET publication_year = 2021, domain = 'epidemiology',   is_synthetic = false WHERE study_id = 'phe-covid-2021';
-UPDATE studies SET publication_year = 1994, domain = 'medicine',       is_synthetic = false WHERE study_id = 'hannan-1994';
-UPDATE studies SET publication_year = 1912, domain = 'social-science', is_synthetic = false WHERE study_id = 'titanic-1912';
-UPDATE studies SET publication_year = 1992, domain = 'epidemiology',   is_synthetic = false WHERE study_id = 'birth-weight-paradox';
-UPDATE studies SET publication_year = 1991, domain = 'medicine',       is_synthetic = false WHERE study_id = 'melanoma-altman-1991';
-UPDATE studies SET publication_year = 2020, domain = 'epidemiology',   is_synthetic = false WHERE study_id = 'coffee-tverdal-2020';
-UPDATE studies SET publication_year = 1986, domain = 'education',      is_synthetic = false WHERE study_id = 'sat-wainer-1986';
+-- loop-90: the 15 hand Studies UPDATE statements that used to live here
+-- (PublicationYear/Domain/IsSynthetic) are DELETED — confirmed dead.
+-- 05-insert-data.sql (native transpiler output) already inserts these
+-- columns directly from the rulebook's Studies schema; these UPDATEs were
+-- redundant no-ops re-setting values already correct after the INSERT.
 
 -- Loop rows beyond what the transpiler quota emits (loop-36+)
 INSERT INTO loops (loop_id, title, status, new_concept, domain_question, next_suggestion)
@@ -62,11 +46,11 @@ UPDATE invariant_checks SET
 WHERE invariant_check_id = 'inv-type-d-ratio-near-unity';
 
 -- ----------------------------------------------------------------------------
--- loop-50: refresh PhaseDiagramSummary counts from the synthetic phase grid.
--- Uses _erb_sp_metrics cache (populated just above) — not vw_synthetic_phase.
+-- loop-50/90: refresh PhaseDiagramSummary counts from the synthetic phase
+-- grid. Reads live vw_synthetic_phase (not the deleted _erb_sp_metrics
+-- cache) — SyntheticPhase's per-row distortion_type is itself a real
+-- calculated field computed live by 02-create-functions.sql.
 -- ----------------------------------------------------------------------------
-SELECT refresh_erb_tr_metrics();
-SELECT refresh_erb_sp_metrics();
 SELECT refresh_identity_cluster_summaries();
 SELECT refresh_identity_domain_cells();
 
@@ -76,7 +60,7 @@ WHERE m.model_summary_id = 'simpsons-paradox-v1';
 
 WITH phase_counts AS (
   SELECT phase_distortion_type, COUNT(*)::int AS n
-  FROM _erb_sp_metrics
+  FROM vw_synthetic_phase
   GROUP BY phase_distortion_type
 )
 UPDATE phase_diagram_summary p SET

@@ -1,0 +1,22 @@
+{
+  "candidate_id": "2",
+  "slug": "rdatasets-esoph-ca",
+  "dataset_name": "esoph_ca",
+  "description": "esoph_ca: Esophageal Cancer dataset",
+  "domain": "Medicine/Clinical",
+  "source": "Rdatasets (R package: medicaldata)",
+  "n_rows": "88",
+  "stratifying_columns_hint": "3 factor / 0 binary cols",
+  "download_url": "https://vincentarelbundock.github.io/Rdatasets/csv/medicaldata/esoph_ca.csv",
+  "documentation_url": "https://vincentarelbundock.github.io/Rdatasets/doc/medicaldata/esoph_ca.html",
+  "status": "needs-data",
+  "download_notes": "HTTP 200 OK",
+  "skip_reason": null,
+  "notes": [],
+  "proposed_study_id": "rdatasets-esoph-1980",
+  "proposed_title": "Esophageal Cancer and Alcohol/Tobacco Use (Ille-et-Vilaine, France)",
+  "binary_outcome": "ncases / (ncases + ncontrols)",
+  "treatment_variable": "alcgp",
+  "stratum_variable": "agegp",
+  "encoding_note": "Already aggregated: Successes = ncases, Cases = ncases + ncontrols per (alcgp x agegp) cell. tobgp can serve as secondary stratum. Treatment is alcohol consumption group (alcgp), outcome is esophageal cancer case vs. control."
+}

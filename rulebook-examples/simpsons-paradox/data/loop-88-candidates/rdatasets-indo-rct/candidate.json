@@ -1,0 +1,22 @@
+{
+  "candidate_id": "3",
+  "slug": "rdatasets-indo-rct",
+  "dataset_name": "indo_rct",
+  "description": "RCT of Indomethacin for Prevention of Post-ERCP Pancreatitis",
+  "domain": "Medicine/Clinical",
+  "source": "Rdatasets (R package: medicaldata)",
+  "n_rows": "602",
+  "stratifying_columns_hint": "29 factor / 25 binary cols",
+  "download_url": "https://vincentarelbundock.github.io/Rdatasets/csv/medicaldata/indo_rct.csv",
+  "documentation_url": "https://vincentarelbundock.github.io/Rdatasets/doc/medicaldata/indo_rct.html",
+  "status": "needs-data",
+  "skip_reason": null,
+  "download_notes": "HTTP 200 OK",
+  "notes": [],
+  "proposed_study_id": "rdatasets-indo-rct-2012",
+  "proposed_title": "Indomethacin RCT for Post-ERCP Pancreatitis Prevention (2012)",
+  "binary_outcome": "outcome",
+  "treatment_variable": "rx",
+  "stratum_variable": "gender",
+  "encoding_note": "outcome=1_yes \u2192 success (pancreatitis occurred); rx: 1_indomethacin vs 0_placebo; stratum by gender (1_female/2_male) or SOD type column. Count rows where outcome=1_yes as Successes, total rows as Cases per (rx \u00d7 gender) cell."
+}

@@ -1,0 +1,119 @@
+{
+  "StudyId": "yamaguchi-mobility-us-japan-1987",
+  "Title": "Upward Social Mobility (US vs Japan) by Father's Occupational Class (1987)",
+  "Source": "vcdExtra R package: Yamaguchi87 dataset",
+  "SourceUrl": "https://vincentarelbundock.github.io/Rdatasets/doc/vcdExtra/Yamaguchi87.html",
+  "PublicationYear": 1987,
+  "Domain": "social-science",
+  "IsSynthetic": false,
+  "IsControlStudy": true,
+  "ControlDomain": "sociology-survey",
+  "TraditionId": "tradition-dag",
+  "PrimaryResearcherId": "researcher-pearl",
+  "confounding_variable": "father_occupational_class",
+  "causal_role": "confounder",
+  "note": "US and Japan differ in class composition of fathers; controlling for father class, inter-country mobility differences are modest and consistent \u2014 no reversal expected.",
+  "treatments": [
+    {
+      "TreatmentLabel": "Japan",
+      "Description": "Japan male respondents",
+      "TotalCases": 2338,
+      "TotalSuccesses": 400
+    },
+    {
+      "TreatmentLabel": "US",
+      "Description": "US male respondents",
+      "TotalCases": 18237,
+      "TotalSuccesses": 5198
+    }
+  ],
+  "strata": [
+    {
+      "StratumLabel": "UpNM",
+      "Description": "Father's class: UpNM",
+      "TotalCases": 2496
+    },
+    {
+      "StratumLabel": "LoNM",
+      "Description": "Father's class: LoNM",
+      "TotalCases": 2951
+    },
+    {
+      "StratumLabel": "UpM",
+      "Description": "Father's class: UpM",
+      "TotalCases": 3984
+    },
+    {
+      "StratumLabel": "LoM",
+      "Description": "Father's class: LoM",
+      "TotalCases": 5596
+    },
+    {
+      "StratumLabel": "Farm",
+      "Description": "Father's class: Farm",
+      "TotalCases": 5548
+    }
+  ],
+  "cells": [
+    {
+      "StratumLabel": "UpNM",
+      "TreatmentLabel": "Japan",
+      "Cases": 294,
+      "Successes": 127
+    },
+    {
+      "StratumLabel": "UpNM",
+      "TreatmentLabel": "US",
+      "Cases": 2202,
+      "Successes": 1275
+    },
+    {
+      "StratumLabel": "LoNM",
+      "TreatmentLabel": "Japan",
+      "Cases": 431,
+      "Successes": 86
+    },
+    {
+      "StratumLabel": "LoNM",
+      "TreatmentLabel": "US",
+      "Cases": 2520,
+      "Successes": 1055
+    },
+    {
+      "StratumLabel": "UpM",
+      "TreatmentLabel": "Japan",
+      "Cases": 311,
+      "Successes": 43
+    },
+    {
+      "StratumLabel": "UpM",
+      "TreatmentLabel": "US",
+      "Cases": 3673,
+      "Successes": 1043
+    },
+    {
+      "StratumLabel": "LoM",
+      "TreatmentLabel": "Japan",
+      "Cases": 225,
+      "Successes": 35
+    },
+    {
+      "StratumLabel": "LoM",
+      "TreatmentLabel": "US",
+      "Cases": 5371,
+      "Successes": 1159
+    },
+    {
+      "StratumLabel": "Farm",
+      "TreatmentLabel": "Japan",
+      "Cases": 1077,
+      "Successes": 109
+    },
+    {
+      "StratumLabel": "Farm",
+      "TreatmentLabel": "US",
+      "Cases": 4471,
+      "Successes": 666
+    }
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "StudyId": "uci-heart-disease-site-sex-1988",
+  "Title": "UCI Heart Disease Multi-Site Study: Disease Prevalence by Site and Sex (1988)",
+  "Source": "Detrano R et al. (1989). Am J Cardiology. UCI ML Repository #45",
+  "SourceUrl": "https://archive.ics.uci.edu/dataset/45/heart+disease",
+  "PublicationYear": 1988,
+  "Domain": "medicine",
+  "IsSynthetic": false,
+  "IsControlStudy": true,
+  "ControlDomain": "medicine-clinical",
+  "TraditionId": "tradition-dag",
+  "PrimaryResearcherId": "researcher-pearl",
+  "confounding_variable": "age_group",
+  "causal_role": "allocation",
+  "note": "No Simpson's paradox: males have higher heart disease rates than females in both age strata (Age<55: 40.8% vs 5.0%; Age>=55: 69.9% vs 35.3%) and the pooled result (55.0% vs 22.0%) agrees with the within-stratum direction — age is a confounder but does not reverse the sex-disease association.",
+  "treatments": [
+    {"TreatmentLabel": "Male", "Description": "Male patients (sex=1)", "TotalCases": 191, "TotalSuccesses": 105},
+    {"TreatmentLabel": "Female", "Description": "Female patients (sex=0)", "TotalCases": 91, "TotalSuccesses": 20}
+  ],
+  "strata": [
+    {"StratumLabel": "Age<55", "Description": "Patients under 55 years old", "TotalCases": 138},
+    {"StratumLabel": "Age>=55", "Description": "Patients aged 55 or older", "TotalCases": 144}
+  ],
+  "cells": [
+    {"StratumLabel": "Age<55", "TreatmentLabel": "Male", "Cases": 98, "Successes": 40},
+    {"StratumLabel": "Age<55", "TreatmentLabel": "Female", "Cases": 40, "Successes": 2},
+    {"StratumLabel": "Age>=55", "TreatmentLabel": "Male", "Cases": 93, "Successes": 65},
+    {"StratumLabel": "Age>=55", "TreatmentLabel": "Female", "Cases": 51, "Successes": 18}
+  ]
+}

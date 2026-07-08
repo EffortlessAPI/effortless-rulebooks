@@ -1,0 +1,22 @@
+{
+  "candidate_id": "105",
+  "slug": "rdatasets-births-tbl-df",
+  "dataset_name": "births_tbl_df",
+  "description": "North Carolina births, 100 cases",
+  "domain": "Economics/Labor",
+  "source": "Rdatasets (R package: usdatasets)",
+  "n_rows": "150",
+  "stratifying_columns_hint": "3 factor / 3 binary cols",
+  "download_url": "https://vincentarelbundock.github.io/Rdatasets/csv/usdatasets/births_tbl_df.csv",
+  "documentation_url": "https://vincentarelbundock.github.io/Rdatasets/doc/usdatasets/births_tbl_df.html",
+  "status": "needs-data",
+  "download_notes": "HTTP 200 OK",
+  "skip_reason": null,
+  "notes": [],
+  "proposed_study_id": "rdatasets-births-nc-2004",
+  "proposed_title": "North Carolina Births 2004: Smoking and Preterm Birth by Infant Sex",
+  "binary_outcome": "premature",
+  "treatment_variable": "smoke",
+  "stratum_variable": "sex_baby",
+  "encoding_note": "Outcome = premature==\"premie\" (1) vs \"full term\" (0); treatment = smoke (smoker vs nonsmoker); stratum = sex_baby (male/female). Count Successes as premie births per (smoke \u00d7 sex_baby) cell."
+}

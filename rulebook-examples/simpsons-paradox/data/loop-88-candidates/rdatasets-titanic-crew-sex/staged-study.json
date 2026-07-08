@@ -1,0 +1,30 @@
+{
+  "StudyId": "rdatasets-titanic-crew-sex",
+  "Title": "Titanic Survival: Crew vs 3rd Class by Sex — Historical 1912",
+  "Source": "British Board of Trade (1990). Report on the Loss of the 'Titanic' (S.S.). R datasets::Titanic.",
+  "SourceUrl": "https://vincentarelbundock.github.io/Rdatasets/csv/datasets/Titanic.csv",
+  "PublicationYear": 1912,
+  "Domain": "history",
+  "IsSynthetic": false,
+  "IsControlStudy": true,
+  "ControlDomain": "history-maritime",
+  "TraditionId": "tradition-dag",
+  "PrimaryResearcherId": "researcher-pearl",
+  "confounding_variable": "Sex",
+  "causal_role": "allocation",
+  "note": "When comparing Crew to 3rd class passengers, 3rd class actually has a marginally higher pooled survival rate (25.2% vs 24.0%) due to the massive male skew of crew. Within each sex, crew fare better than or equal to 3rd class (male: 22.3% vs 17.3%; female: 87.0% vs 45.9%). This is an informative reversal case — a mild pooled reversal driven by sex composition, but not a strong Simpson's paradox.",
+  "treatments": [
+    {"TreatmentLabel": "Crew", "Description": "Ship's crew members", "TotalCases": 885, "TotalSuccesses": 212},
+    {"TreatmentLabel": "ThirdClass", "Description": "Third class passengers", "TotalCases": 706, "TotalSuccesses": 178}
+  ],
+  "strata": [
+    {"StratumLabel": "Male", "Description": "Male passengers and crew", "TotalCases": 1372},
+    {"StratumLabel": "Female", "Description": "Female passengers and crew", "TotalCases": 219}
+  ],
+  "cells": [
+    {"StratumLabel": "Male", "TreatmentLabel": "Crew", "Cases": 862, "Successes": 192},
+    {"StratumLabel": "Male", "TreatmentLabel": "ThirdClass", "Cases": 510, "Successes": 88},
+    {"StratumLabel": "Female", "TreatmentLabel": "Crew", "Cases": 23, "Successes": 20},
+    {"StratumLabel": "Female", "TreatmentLabel": "ThirdClass", "Cases": 196, "Successes": 90}
+  ]
+}

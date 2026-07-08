@@ -1,0 +1,36 @@
+{
+  "StudyId": "rdatasets-alzheimer-smoking",
+  "Title": "Smoking and Alzheimer's Disease Diagnosis by Gender",
+  "Source": "R package: NeuroDataSets/alzheimer_smoking_df",
+  "SourceUrl": "https://vincentarelbundock.github.io/Rdatasets/doc/NeuroDataSets/alzheimer_smoking_df.html",
+  "PublicationYear": 1994,
+  "Domain": "medicine",
+  "IsSynthetic": false,
+  "IsControlStudy": true,
+  "ControlDomain": "medicine-epidemiology",
+  "TraditionId": "tradition-dag",
+  "PrimaryResearcherId": "researcher-pearl",
+  "confounding_variable": "gender",
+  "causal_role": "allocation",
+  "note": "Gender confounds the smoking-Alzheimer relationship because females dominate the non-smoker stratum; however, within each gender stratum the rates do not consistently reverse, so no classic Simpson's paradox is expected.",
+  "treatments": [
+    {"TreatmentLabel": "None", "Description": "Non-smoker", "TotalCases": 309, "TotalSuccesses": 126},
+    {"TreatmentLabel": "<10", "Description": "Fewer than 10 cigarettes/day", "TotalCases": 28, "TotalSuccesses": 15},
+    {"TreatmentLabel": "10-20", "Description": "10-20 cigarettes/day", "TotalCases": 110, "TotalSuccesses": 30},
+    {"TreatmentLabel": ">20", "Description": "More than 20 cigarettes/day", "TotalCases": 91, "TotalSuccesses": 27}
+  ],
+  "strata": [
+    {"StratumLabel": "Female", "Description": "Female patients", "TotalCases": 338},
+    {"StratumLabel": "Male", "Description": "Male patients", "TotalCases": 200}
+  ],
+  "cells": [
+    {"StratumLabel": "Female", "TreatmentLabel": "None", "Cases": 226, "Successes": 91},
+    {"StratumLabel": "Female", "TreatmentLabel": "<10", "Cases": 17, "Successes": 7},
+    {"StratumLabel": "Female", "TreatmentLabel": "10-20", "Cases": 56, "Successes": 15},
+    {"StratumLabel": "Female", "TreatmentLabel": ">20", "Cases": 39, "Successes": 21},
+    {"StratumLabel": "Male", "TreatmentLabel": "None", "Cases": 83, "Successes": 35},
+    {"StratumLabel": "Male", "TreatmentLabel": "<10", "Cases": 11, "Successes": 8},
+    {"StratumLabel": "Male", "TreatmentLabel": "10-20", "Cases": 54, "Successes": 15},
+    {"StratumLabel": "Male", "TreatmentLabel": ">20", "Cases": 52, "Successes": 6}
+  ]
+}

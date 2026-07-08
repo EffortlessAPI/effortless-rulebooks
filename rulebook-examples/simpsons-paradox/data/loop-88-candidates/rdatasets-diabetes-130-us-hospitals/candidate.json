@@ -1,0 +1,16 @@
+{
+  "candidate_id": "117",
+  "slug": "rdatasets-diabetes-130-us-hospitals",
+  "dataset_name": "diabetes_130_us_hospitals",
+  "description": "10 years of diabetic patient hospital encounters, 130 US hospitals",
+  "domain": "Medicine/Readmission",
+  "source": "UCI ML Repository (verified)",
+  "n_rows": "101766",
+  "stratifying_columns_hint": "race, gender, age band, admission_type, medical_specialty",
+  "download_url": "https://archive.ics.uci.edu/dataset/296/diabetes+130-us+hospitals+for+years+1999-2008",
+  "documentation_url": "https://archive.ics.uci.edu/dataset/296/diabetes+130-us+hospitals+for+years+1999-2008",
+  "status": "portal-required",
+  "skip_reason": null,
+  "notes": [],
+  "portal_reason": "UCI requires JavaScript/redirect (blocked)"
+}

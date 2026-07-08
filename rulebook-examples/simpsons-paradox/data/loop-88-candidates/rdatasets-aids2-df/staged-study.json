@@ -1,0 +1,46 @@
+{
+  "StudyId": "rdatasets-aids2-australia-1991",
+  "Title": "Australian AIDS Patient Registry — Survival by Transmission Category and Sex",
+  "Source": "Ripley BD (1996). Pattern Recognition and Neural Networks. Cambridge. AIDS registry data. R package: MASS/Aids2",
+  "SourceUrl": "https://vincentarelbundock.github.io/Rdatasets/doc/MedDataSets/Aids2_df.html",
+  "PublicationYear": 1991,
+  "Domain": "medicine",
+  "IsSynthetic": false,
+  "IsControlStudy": true,
+  "ControlDomain": "medicine-epidemiology",
+  "TraditionId": "tradition-dag",
+  "PrimaryResearcherId": "researcher-pearl",
+  "confounding_variable": "sex",
+  "causal_role": "allocation",
+  "note": "Sex is extremely imbalanced (2754 M vs 89 F) and most transmission categories are male-dominated, so sex stratification is unlikely to reverse any survival ranking across T.categ — no Simpson's Paradox is expected.",
+  "treatments": [
+    {"TreatmentLabel": "blood", "Description": "Blood transfusion", "TotalCases": 94, "TotalSuccesses": 18},
+    {"TreatmentLabel": "haem", "Description": "Haemophilia", "TotalCases": 46, "TotalSuccesses": 17},
+    {"TreatmentLabel": "het", "Description": "Heterosexual contact", "TotalCases": 41, "TotalSuccesses": 24},
+    {"TreatmentLabel": "hs", "Description": "Homosexual contact", "TotalCases": 2465, "TotalSuccesses": 933},
+    {"TreatmentLabel": "hsid", "Description": "Homosexual IV drug use", "TotalCases": 72, "TotalSuccesses": 27},
+    {"TreatmentLabel": "id", "Description": "IV drug use", "TotalCases": 48, "TotalSuccesses": 29},
+    {"TreatmentLabel": "mother", "Description": "Mother-to-child", "TotalCases": 7, "TotalSuccesses": 4},
+    {"TreatmentLabel": "other", "Description": "Other/unknown", "TotalCases": 70, "TotalSuccesses": 30}
+  ],
+  "strata": [
+    {"StratumLabel": "F", "Description": "Female", "TotalCases": 89},
+    {"StratumLabel": "M", "Description": "Male", "TotalCases": 2754}
+  ],
+  "cells": [
+    {"StratumLabel": "F", "TreatmentLabel": "blood", "Cases": 37, "Successes": 4},
+    {"StratumLabel": "M", "TreatmentLabel": "blood", "Cases": 57, "Successes": 14},
+    {"StratumLabel": "M", "TreatmentLabel": "haem", "Cases": 46, "Successes": 17},
+    {"StratumLabel": "F", "TreatmentLabel": "het", "Cases": 20, "Successes": 10},
+    {"StratumLabel": "M", "TreatmentLabel": "het", "Cases": 21, "Successes": 14},
+    {"StratumLabel": "F", "TreatmentLabel": "hs", "Cases": 1, "Successes": 1},
+    {"StratumLabel": "M", "TreatmentLabel": "hs", "Cases": 2464, "Successes": 932},
+    {"StratumLabel": "M", "TreatmentLabel": "hsid", "Cases": 72, "Successes": 27},
+    {"StratumLabel": "F", "TreatmentLabel": "id", "Cases": 20, "Successes": 14},
+    {"StratumLabel": "M", "TreatmentLabel": "id", "Cases": 28, "Successes": 15},
+    {"StratumLabel": "F", "TreatmentLabel": "mother", "Cases": 4, "Successes": 1},
+    {"StratumLabel": "M", "TreatmentLabel": "mother", "Cases": 3, "Successes": 3},
+    {"StratumLabel": "F", "TreatmentLabel": "other", "Cases": 7, "Successes": 6},
+    {"StratumLabel": "M", "TreatmentLabel": "other", "Cases": 63, "Successes": 24}
+  ]
+}

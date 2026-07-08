@@ -1,0 +1,18 @@
+{
+  "candidate_id": "90",
+  "slug": "rdatasets-audiovisual",
+  "dataset_name": "AudioVisual",
+  "description": "Reaction Times to Audio and Visual Stimuli",
+  "domain": "General Statistics Teaching",
+  "source": "Rdatasets (R package: Stat2Data)",
+  "n_rows": "72",
+  "stratifying_columns_hint": "3 factor / 2 binary cols",
+  "download_url": "https://vincentarelbundock.github.io/Rdatasets/csv/Stat2Data/AudioVisual.csv",
+  "documentation_url": "https://vincentarelbundock.github.io/Rdatasets/doc/Stat2Data/AudioVisual.html",
+  "status": "skip",
+  "skip_reason": "Purely continuous outcome (ResponseTime in milliseconds). No binary success/failure column. Cannot aggregate to Successes/Cases cells.",
+  "notes": [],
+  "files": [
+    "data.csv"
+  ]
+}

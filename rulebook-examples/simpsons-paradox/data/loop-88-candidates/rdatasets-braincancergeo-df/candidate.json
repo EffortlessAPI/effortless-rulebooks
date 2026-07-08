@@ -1,0 +1,16 @@
+{
+  "candidate_id": "16",
+  "slug": "rdatasets-braincancergeo-df",
+  "dataset_name": "BrainCancerGeo_df",
+  "description": "New Mexico Brain Cancer Geography Data",
+  "domain": "Medicine/Clinical",
+  "source": "Rdatasets (R package: OncoDataSets)",
+  "n_rows": "32",
+  "stratifying_columns_hint": "1 factor / 0 binary cols",
+  "download_url": "https://vincentarelbundock.github.io/Rdatasets/csv/OncoDataSets/BrainCancerGeo_df.csv",
+  "documentation_url": "https://vincentarelbundock.github.io/Rdatasets/doc/OncoDataSets/BrainCancerGeo_df.html",
+  "status": "skip",
+  "skip_reason": "Purely geographic/ecological dataset with county names and lat/long coordinates. No binary outcome column, no treatment variable, no individual-level data to aggregate. Only 32 rows (one per NM county) with no information suitable for Simpson's Paradox analysis.",
+  "download_notes": "HTTP 200 OK",
+  "notes": []
+}

@@ -1,0 +1,7 @@
+{
+  "slug": "rdatasets-titanic-crew-sex",
+  "status": "staged",
+  "domain": "history",
+  "source": "R datasets::Titanic — 1912 Titanic sinking; comparison of Crew vs 3rd class survival stratified by sex",
+  "notes": "Borderline control/paradox case: within each sex, Crew survival rate >= 3rd class. But pooled, 3rd class (25.2%) marginally exceeds Crew (24.0%) due to massive male overrepresentation in crew. A mild Simpson-style allocation distortion. Good contrast case for the corpus — the reversal direction is opposite to most classic paradoxes."
+}

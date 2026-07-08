@@ -1,0 +1,16 @@
+{
+  "candidate_id": "136",
+  "slug": "rdatasets-who-malaria-drug",
+  "dataset_name": "who_malaria_drug",
+  "description": "WHO Antimalarial Drug Efficacy by Parasite Species & Region",
+  "domain": "Public Health",
+  "source": "WHO World Malaria Report (verified)",
+  "n_rows": "1000+",
+  "stratifying_columns_hint": "parasite_species, geographic_region, drug_type",
+  "download_url": "https://www.who.int/teams/global-malaria-programme/reports/",
+  "documentation_url": "https://www.who.int/teams/global-malaria-programme/",
+  "status": "portal-required",
+  "skip_reason": null,
+  "notes": [],
+  "portal_reason": "WHO malaria report is PDF only; CSV not available"
+}

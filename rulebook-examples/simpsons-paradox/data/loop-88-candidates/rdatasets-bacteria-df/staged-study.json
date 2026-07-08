@@ -1,0 +1,31 @@
+{
+  "StudyId": "rdatasets-bacteria-drug-1990s",
+  "Title": "Bacterial Presence Under Drug Treatment by Baseline Severity",
+  "Source": "Venables WN, Ripley BD (2002). MASS R package. R package: MASS/bacteria",
+  "SourceUrl": "https://vincentarelbundock.github.io/Rdatasets/doc/MedDataSets/bacteria_df.html",
+  "PublicationYear": 1993,
+  "Domain": "medicine",
+  "IsSynthetic": false,
+  "IsControlStudy": true,
+  "ControlDomain": "medicine-rct",
+  "TraditionId": "tradition-dag",
+  "PrimaryResearcherId": "researcher-pearl",
+  "confounding_variable": "hilo",
+  "causal_role": "allocation",
+  "note": "No Simpson's Paradox is expected because drug and drug+ are perfectly confounded with stratum (drug→lo only, drug+→hi only), making cross-stratum pooling undefined for those arms; placebo spans both strata but the allocation imbalance prevents a reversal pattern.",
+  "treatments": [
+    {"TreatmentLabel": "drug", "Description": "Antibiotic drug treatment", "TotalCases": 62, "TotalSuccesses": 44},
+    {"TreatmentLabel": "drug+", "Description": "Antibiotic drug+ treatment", "TotalCases": 62, "TotalSuccesses": 49},
+    {"TreatmentLabel": "placebo", "Description": "Placebo control", "TotalCases": 96, "TotalSuccesses": 84}
+  ],
+  "strata": [
+    {"StratumLabel": "hi", "Description": "High baseline severity", "TotalCases": 122},
+    {"StratumLabel": "lo", "Description": "Low baseline severity", "TotalCases": 98}
+  ],
+  "cells": [
+    {"StratumLabel": "lo", "TreatmentLabel": "drug", "Cases": 62, "Successes": 44},
+    {"StratumLabel": "hi", "TreatmentLabel": "drug+", "Cases": 62, "Successes": 49},
+    {"StratumLabel": "hi", "TreatmentLabel": "placebo", "Cases": 60, "Successes": 54},
+    {"StratumLabel": "lo", "TreatmentLabel": "placebo", "Cases": 36, "Successes": 30}
+  ]
+}

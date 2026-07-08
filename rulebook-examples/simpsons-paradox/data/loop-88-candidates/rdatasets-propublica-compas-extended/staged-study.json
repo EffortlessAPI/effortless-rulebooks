@@ -1,0 +1,42 @@
+{
+  "StudyId": "propublica-compas-sex-age-2016",
+  "Title": "ProPublica COMPAS: Race × Sex Recidivism (2016)",
+  "Source": "ProPublica (2016). Machine Bias. propublica/compas-analysis on GitHub",
+  "SourceUrl": "https://github.com/propublica/compas-analysis",
+  "PublicationYear": 2016,
+  "Domain": "criminal-justice",
+  "IsSynthetic": false,
+  "IsControlStudy": true,
+  "ControlDomain": "criminal-justice",
+  "TraditionId": "tradition-dag",
+  "PrimaryResearcherId": "researcher-pearl",
+  "confounding_variable": "sex",
+  "causal_role": "allocation",
+  "note": "Sex stratification is unlikely to reverse the race-recidivism direction because both Male and Female strata show African-American recidivism rates substantially higher than Caucasian, so no Simpson's reversal is expected.",
+  "treatments": [
+    {"TreatmentLabel": "African-American", "Description": "Defendant identified as African-American", "TotalCases": 3696, "TotalSuccesses": 1901},
+    {"TreatmentLabel": "Asian", "Description": "Defendant identified as Asian", "TotalCases": 32, "TotalSuccesses": 9},
+    {"TreatmentLabel": "Caucasian", "Description": "Defendant identified as Caucasian", "TotalCases": 2454, "TotalSuccesses": 966},
+    {"TreatmentLabel": "Hispanic", "Description": "Defendant identified as Hispanic", "TotalCases": 637, "TotalSuccesses": 232},
+    {"TreatmentLabel": "Native American", "Description": "Defendant identified as Native American", "TotalCases": 18, "TotalSuccesses": 10},
+    {"TreatmentLabel": "Other", "Description": "Defendant identified as Other race", "TotalCases": 377, "TotalSuccesses": 133}
+  ],
+  "strata": [
+    {"StratumLabel": "Female", "Description": "Female defendants", "TotalCases": 1395},
+    {"StratumLabel": "Male", "Description": "Male defendants", "TotalCases": 5819}
+  ],
+  "cells": [
+    {"StratumLabel": "Female", "TreatmentLabel": "African-American", "Cases": 652, "Successes": 247},
+    {"StratumLabel": "Male", "TreatmentLabel": "African-American", "Cases": 3044, "Successes": 1654},
+    {"StratumLabel": "Female", "TreatmentLabel": "Asian", "Cases": 2, "Successes": 1},
+    {"StratumLabel": "Male", "TreatmentLabel": "Asian", "Cases": 30, "Successes": 8},
+    {"StratumLabel": "Female", "TreatmentLabel": "Caucasian", "Cases": 567, "Successes": 199},
+    {"StratumLabel": "Male", "TreatmentLabel": "Caucasian", "Cases": 1887, "Successes": 767},
+    {"StratumLabel": "Female", "TreatmentLabel": "Hispanic", "Cases": 103, "Successes": 33},
+    {"StratumLabel": "Male", "TreatmentLabel": "Hispanic", "Cases": 534, "Successes": 199},
+    {"StratumLabel": "Female", "TreatmentLabel": "Native American", "Cases": 4, "Successes": 3},
+    {"StratumLabel": "Male", "TreatmentLabel": "Native American", "Cases": 14, "Successes": 7},
+    {"StratumLabel": "Female", "TreatmentLabel": "Other", "Cases": 67, "Successes": 15},
+    {"StratumLabel": "Male", "TreatmentLabel": "Other", "Cases": 310, "Successes": 118}
+  ]
+}

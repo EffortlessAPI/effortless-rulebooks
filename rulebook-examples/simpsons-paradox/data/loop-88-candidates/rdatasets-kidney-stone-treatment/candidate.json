@@ -1,0 +1,16 @@
+{
+  "candidate_id": "114",
+  "slug": "rdatasets-kidney-stone-treatment",
+  "dataset_name": "kidney_stone_treatment",
+  "description": "Charig et al. 1986 kidney stone treatment success by stone size (classic reversal)",
+  "domain": "Medicine/Clinical",
+  "source": "Open Data Marketplace mirror (verified)",
+  "n_rows": "700",
+  "stratifying_columns_hint": "treatment, stone_size",
+  "download_url": "https://www.opendatabay.com/data/healthcare/d08d5089-9fe2-4dd2-9eb6-598940602608",
+  "documentation_url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9960320/",
+  "status": "portal-required",
+  "skip_reason": null,
+  "notes": [],
+  "portal_reason": "DUPLICATE of existing kidney-1986 study in corpus"
+}

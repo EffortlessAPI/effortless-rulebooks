@@ -1,0 +1,30 @@
+{
+  "StudyId": "rdatasets-mtcars-engine",
+  "Title": "Motor Trend Car Road Tests: Engine Shape and Fuel Economy by Cylinder Count — 1974",
+  "Source": "Motor Trend US Magazine (1974). R datasets::mtcars.",
+  "SourceUrl": "https://vincentarelbundock.github.io/Rdatasets/csv/datasets/mtcars.csv",
+  "PublicationYear": 1974,
+  "Domain": "engineering",
+  "IsSynthetic": false,
+  "IsControlStudy": true,
+  "ControlDomain": "engineering-automotive",
+  "TraditionId": "tradition-dag",
+  "PrimaryResearcherId": "researcher-pearl",
+  "confounding_variable": "CylinderCount",
+  "causal_role": "allocation",
+  "note": "Among 4-cylinder cars, straight-engine cars achieve >20mpg at 100% (10/10) vs V-shape 100% (1/1). Among 8-cylinder cars, only V-shape engines exist (14/14 fail threshold). Pooled: Straight engines have 100% above-threshold rate vs 6.7% for V-shape. Cylinder count is the dominant driver — 4-cyl cars far exceed 20mpg regardless of engine shape. The association between engine shape and efficiency is entirely mediated by cylinder count.",
+  "treatments": [
+    {"TreatmentLabel": "StraightEngine", "Description": "Straight (inline) engine configuration (vs=1)", "TotalCases": 10, "TotalSuccesses": 10},
+    {"TreatmentLabel": "VShapeEngine", "Description": "V-shaped engine configuration (vs=0)", "TotalCases": 15, "TotalSuccesses": 1}
+  ],
+  "strata": [
+    {"StratumLabel": "Cyl4", "Description": "4-cylinder engines", "TotalCases": 11},
+    {"StratumLabel": "Cyl8", "Description": "8-cylinder engines", "TotalCases": 14}
+  ],
+  "cells": [
+    {"StratumLabel": "Cyl4", "TreatmentLabel": "StraightEngine", "Cases": 10, "Successes": 10},
+    {"StratumLabel": "Cyl4", "TreatmentLabel": "VShapeEngine", "Cases": 1, "Successes": 1},
+    {"StratumLabel": "Cyl8", "TreatmentLabel": "StraightEngine", "Cases": 0, "Successes": 0},
+    {"StratumLabel": "Cyl8", "TreatmentLabel": "VShapeEngine", "Cases": 14, "Successes": 0}
+  ]
+}

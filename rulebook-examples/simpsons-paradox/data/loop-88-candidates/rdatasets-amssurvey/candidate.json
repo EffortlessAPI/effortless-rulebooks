@@ -1,0 +1,18 @@
+{
+  "candidate_id": "77",
+  "slug": "rdatasets-amssurvey",
+  "dataset_name": "AMSsurvey",
+  "description": "American Math Society Survey Data",
+  "domain": "General Statistics Teaching",
+  "source": "Rdatasets (R package: carData)",
+  "n_rows": "24",
+  "stratifying_columns_hint": "3 factor / 2 binary cols",
+  "download_url": "https://vincentarelbundock.github.io/Rdatasets/csv/carData/AMSsurvey.csv",
+  "documentation_url": "https://vincentarelbundock.github.io/Rdatasets/doc/carData/AMSsurvey.html",
+  "status": "skip",
+  "skip_reason": "Already a pre-aggregated count table (24 rows = cross-tabulation of AMS survey respondents by employment type \u00d7 sex \u00d7 citizenship). No individual-level binary outcome column exists \u2014 only aggregate counts. Cannot be re-aggregated differently to produce (Treatment \u00d7 Stratum) cells because it is already the aggregation.",
+  "notes": [],
+  "files": [
+    "data.csv"
+  ]
+}

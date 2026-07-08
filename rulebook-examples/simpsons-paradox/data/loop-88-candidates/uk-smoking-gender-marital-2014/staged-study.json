@@ -1,0 +1,102 @@
+{
+  "StudyId": "uk-smoking-gender-marital-2014",
+  "Title": "UK Smoking Rate by Gender and Marital Status (2014 Survey)",
+  "Source": "openintro R package: smoking dataset",
+  "SourceUrl": "https://vincentarelbundock.github.io/Rdatasets/doc/openintro/smoking.html",
+  "PublicationYear": 2014,
+  "Domain": "public-health-smoking",
+  "IsSynthetic": false,
+  "IsControlStudy": true,
+  "ControlDomain": "public-health-epidemiology",
+  "TraditionId": "tradition-dag",
+  "PrimaryResearcherId": "researcher-pearl",
+  "confounding_variable": "marital_status",
+  "causal_role": "confounder",
+  "note": "Males smoke at higher rates than females within each marital-status stratum; marital status affects smoking rates but does not create an allocation pattern that reverses the gender effect.",
+  "treatments": [
+    {
+      "TreatmentLabel": "Male",
+      "Description": "Male",
+      "TotalCases": 704,
+      "TotalSuccesses": 179
+    },
+    {
+      "TreatmentLabel": "Female",
+      "Description": "Female",
+      "TotalCases": 919,
+      "TotalSuccesses": 220
+    }
+  ],
+  "strata": [
+    {
+      "StratumLabel": "Single",
+      "Description": "Single respondents",
+      "TotalCases": 427
+    },
+    {
+      "StratumLabel": "Married",
+      "Description": "Married respondents",
+      "TotalCases": 812
+    },
+    {
+      "StratumLabel": "Divorced",
+      "Description": "Divorced respondents",
+      "TotalCases": 161
+    },
+    {
+      "StratumLabel": "Widowed",
+      "Description": "Widowed respondents",
+      "TotalCases": 223
+    }
+  ],
+  "cells": [
+    {
+      "StratumLabel": "Single",
+      "TreatmentLabel": "Male",
+      "Cases": 205,
+      "Successes": 77
+    },
+    {
+      "StratumLabel": "Single",
+      "TreatmentLabel": "Female",
+      "Cases": 222,
+      "Successes": 81
+    },
+    {
+      "StratumLabel": "Married",
+      "TreatmentLabel": "Male",
+      "Cases": 389,
+      "Successes": 71
+    },
+    {
+      "StratumLabel": "Married",
+      "TreatmentLabel": "Female",
+      "Cases": 423,
+      "Successes": 72
+    },
+    {
+      "StratumLabel": "Divorced",
+      "TreatmentLabel": "Male",
+      "Cases": 50,
+      "Successes": 16
+    },
+    {
+      "StratumLabel": "Divorced",
+      "TreatmentLabel": "Female",
+      "Cases": 111,
+      "Successes": 42
+    },
+    {
+      "StratumLabel": "Widowed",
+      "TreatmentLabel": "Male",
+      "Cases": 60,
+      "Successes": 15
+    },
+    {
+      "StratumLabel": "Widowed",
+      "TreatmentLabel": "Female",
+      "Cases": 163,
+      "Successes": 25
+    }
+  ]
+}

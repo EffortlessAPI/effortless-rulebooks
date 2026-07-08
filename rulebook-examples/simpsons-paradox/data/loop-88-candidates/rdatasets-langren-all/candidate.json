@@ -1,0 +1,18 @@
+{
+  "candidate_id": "61",
+  "slug": "rdatasets-langren-all",
+  "dataset_name": "Langren.all",
+  "description": "van Langren's Data on Longitude Distance between Toledo and Rome",
+  "domain": "Historical / Social Science",
+  "source": "Rdatasets (R package: HistData)",
+  "n_rows": "61",
+  "stratifying_columns_hint": "2 factor / 1 binary cols",
+  "download_url": "https://vincentarelbundock.github.io/Rdatasets/csv/HistData/Langren.all.csv",
+  "documentation_url": "https://vincentarelbundock.github.io/Rdatasets/doc/HistData/Langren.all.html",
+  "status": "skip",
+  "skip_reason": "Purely continuous outcome (Longitude measurements). No binary outcome, no treatment/exposure variable. This is a historical dataset of longitude estimates by different authors across years \u2014 not suitable for Simpson's Paradox analysis.",
+  "notes": [],
+  "files": [
+    "data.csv"
+  ]
+}

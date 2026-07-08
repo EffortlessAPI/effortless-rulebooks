@@ -1,0 +1,24 @@
+{
+  "candidate_id": "124",
+  "slug": "rdatasets-titanic-passenger-list",
+  "dataset_name": "titanic_passenger_list",
+  "description": "Titanic passenger survival by class, sex, age",
+  "domain": "Historical / Social Science",
+  "source": "Unofficial open mirror (verified, no auth needed)",
+  "n_rows": "891",
+  "stratifying_columns_hint": "passenger class, sex, age",
+  "download_url": "https://raw.githubusercontent.com/datasciencedojo/datasets/master/titanic.csv",
+  "documentation_url": "https://www.kaggle.com/competitions/titanic/data",
+  "status": "needs-data",
+  "skip_reason": null,
+  "notes": [],
+  "files": [
+    "data.csv"
+  ],
+  "proposed_study_id": "titanic-1912",
+  "proposed_title": "Titanic Passenger Survival (1912)",
+  "binary_outcome": "Survived",
+  "treatment_variable": "Sex",
+  "stratum_variable": "Pclass",
+  "encoding_note": "Survived=1 is success, Survived=0 is failure. Aggregate by (Sex \u00d7 Pclass) to get Successes and Cases per cell. Age can be binarized (child/adult) as an alternative stratum."
+}

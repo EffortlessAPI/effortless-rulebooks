@@ -1,0 +1,7 @@
+{
+  "slug": "rdatasets-arthritis-treatment-sex",
+  "status": "staged",
+  "domain": "medicine",
+  "source": "R vcd::Arthritis — Koch & Edwards 1988 rheumatoid arthritis RCT; 84 patients, double-blind, Auranofin vs placebo, outcome = any improvement",
+  "notes": "Control study: randomized controlled trial with consistent treatment advantage in both sexes. The female-heavy allocation does not reverse the pooled finding. A textbook example of a genuine treatment effect that survives stratification."
+}

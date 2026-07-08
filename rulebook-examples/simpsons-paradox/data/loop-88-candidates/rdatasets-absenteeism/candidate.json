@@ -1,0 +1,18 @@
+{
+  "candidate_id": "93",
+  "slug": "rdatasets-absenteeism",
+  "dataset_name": "absenteeism",
+  "description": "Absenteeism from school in New South Wales",
+  "domain": "General Statistics Teaching",
+  "source": "Rdatasets (R package: openintro)",
+  "n_rows": "146",
+  "stratifying_columns_hint": "4 factor / 3 binary cols",
+  "download_url": "https://vincentarelbundock.github.io/Rdatasets/csv/openintro/absenteeism.csv",
+  "documentation_url": "https://vincentarelbundock.github.io/Rdatasets/doc/openintro/absenteeism.html",
+  "status": "skip",
+  "skip_reason": "The outcome variable (days) is a continuous count of school absenteeism days. There is no binary success/failure outcome to aggregate into Successes/Cases cells. The dataset is purely continuous and cannot support Simpson's Paradox cell computation.",
+  "notes": [],
+  "files": [
+    "data.csv"
+  ]
+}

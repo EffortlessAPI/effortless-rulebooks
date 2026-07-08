@@ -91,9 +91,11 @@ This is not a corpus finding. It is an algebraic consequence.
 
 The reason: in a reversal study, by definition, the allocation noise is large enough to flip the sign of the pooled result. That means the noise must be larger than the signal. Which means the noise-to-total ratio exceeds 0.5. Which means SignalPurity is below 0.5. The formula, the definition of a reversal, and the result are all algebraically locked together. You do not need the corpus to confirm this — you need the corpus to discover that the formula was the right formula to propose.
 
-Invariant `inv-signal-purity-sign-flip`: "AllocationDirection='reversal' → SignalPurity < 0.5." PassCount: 12, FailCount: 0.
+Invariant `inv-signal-purity-sign-flip`: "AllocationDirection='reversal' → SignalPurity < 0.5." PassCount: 86, FailCount: 0.
 
 The corpus averages add something the algebra alone cannot: `AvgSignalPurityReversal ≈ 0.35, AvgSignalPurityNonReversal ≈ 0.70`. The gap is 0.35. Reversal studies, on average, have only 35% real signal. That is a discovery finding — true of this corpus, potentially different in another domain, subject to revision if more studies are encoded. The difference between the theorem and the finding matters epistemically. The invariant is a theorem. The corpus averages are evidence.
+
+One unexpected inversion emerged at N=238: collider and selection-frailty studies — those where stratification is actively harmful — have mean signal purity of 0.916 and 1.000 respectively, the *highest* in the corpus. A researcher who used purity as a quality signal would trust these studies most, and act on them most confidently. That confidence would be misplaced. High purity here means the confounder is invisible to the allocation geometry, not that the analysis is clean. The purity theorem tells you when the pooled result is wrong. It does not tell you when stratification is the wrong remedy.
 
 ---
 
@@ -138,6 +140,22 @@ The pooled gap varied by 0.214 — it crossed zero and changed sign — purely a
 Invariant `inv-corrected-gap-invariant` (PassCount: 238, FailCount: 0) confirms this algebraic property holds across the entire corpus. CorrectedGap is not a better estimate of the treatment effect — it is the allocation-invariant estimate, by construction. The invariant does not discover this; it verifies it.
 
 This is the kind of feature a data scientist might spend weeks trying to engineer through trial and error. The LLM proposed the name; the formula definition made it precise; the sweep witnessed the invariance; the invariant check locked it in. The whole cycle took one build iteration.
+
+---
+
+## When a new entity changes the question space
+
+Through loop-79, the instrument could answer questions about individual studies: what type is this? what is its purity? is the paradox explained? These are per-row questions on a single table.
+
+Loop-80 added `ConfounderIdentities` — 19 canonical confounding archetypes mapped across the corpus via `StratumVariableIdentityMaps`. This is a new join surface, and it changes what questions are even expressible.
+
+Before: you could ask whether a study's paradox was explained. After: you can ask whether the mechanism class predicts explainability. The answer turns out to be exact: every `stratify-*` mechanism class has 100% explained paradoxes among its sign-flips. Only `collider-selection` (0%) and `contested-mediator` (0%) produce unexplained flips. The identity layer converts a domain intuition into a crisp partition with no exceptions at N=238.
+
+Before: you could observe that different studies used different variable names for apparently similar confounders. After: you can measure it. The `id-institutional-unit` archetype spans **28 distinct normalized variable names** across the corpus: department, school, hospital_incidence_level, precinct_base_rate, grade, task_type, and 22 others. These are all the same causal structure — a unit-selection variable correlated with both treatment and outcome — wearing radically different domain costumes. This is a quantified explanation for why paradox findings fail to replicate across fields: researchers cannot recognize the same confounder because it has 28 names.
+
+Before: you could note that some mechanism classes seemed more dangerous than others. After: you can show that `id-disease-severity` flips conclusions 53% of the time in medicine but 0% in epidemiology and 0% in legal. Same causal archetype, three completely different risk profiles by domain. The identity entity makes that interaction computable.
+
+The pattern is structural: each entity added to the model creates new join surfaces, and new join surfaces generate new questions that are provably unanswerable without them. The instrument has not merely accumulated more data — it has increased in expressive power.
 
 ---
 

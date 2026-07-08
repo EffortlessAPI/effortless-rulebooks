@@ -1,0 +1,18 @@
+{
+  "candidate_id": "107",
+  "slug": "rdatasets-autocollision",
+  "dataset_name": "AutoCollision",
+  "description": "Automobile UK Collision Claims",
+  "domain": "Economics/Labor",
+  "source": "Rdatasets (R package: insuranceData)",
+  "n_rows": "32",
+  "stratifying_columns_hint": "2 factor / 0 binary cols",
+  "download_url": "https://vincentarelbundock.github.io/Rdatasets/csv/insuranceData/AutoCollision.csv",
+  "documentation_url": "https://vincentarelbundock.github.io/Rdatasets/doc/insuranceData/AutoCollision.html",
+  "status": "skip",
+  "skip_reason": "No binary outcome. The dataset has a continuous Severity (average claim cost in dollars) and Claim_Count \u2014 both are continuous/count measures, not binary success/failure. It is also already aggregated (32 rows = Age \u00d7 Vehicle_Use cells), so there are no individual rows to aggregate differently.",
+  "notes": [],
+  "files": [
+    "data.csv"
+  ]
+}

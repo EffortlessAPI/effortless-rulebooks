@@ -1,0 +1,22 @@
+{
+  "candidate_id": "43",
+  "slug": "rdatasets-accident",
+  "dataset_name": "Accident",
+  "description": "Traffic Accident Victims in France in 1958",
+  "domain": "Categorical Data / Mixed",
+  "source": "Rdatasets (R package: vcdExtra)",
+  "n_rows": "80",
+  "stratifying_columns_hint": "4 factor / 2 binary cols",
+  "download_url": "https://vincentarelbundock.github.io/Rdatasets/csv/vcdExtra/Accident.csv",
+  "documentation_url": "https://vincentarelbundock.github.io/Rdatasets/doc/vcdExtra/Accident.html",
+  "status": "needs-data",
+  "download_notes": "HTTP 200 OK",
+  "skip_reason": null,
+  "notes": [],
+  "proposed_study_id": "rdatasets-accident-transport",
+  "proposed_title": "Road Accident Fatality by Transport Mode and Age Group",
+  "binary_outcome": "result",
+  "treatment_variable": "mode",
+  "stratum_variable": "age",
+  "encoding_note": "Pre-aggregated table with Freq counts. result=\"Died\" = failure (death); sum Freq where result=\"Died\" = Deaths (Cases - Successes), sum all Freq = Cases, per (mode \u00d7 age) cell. Alternatively use gender as stratum. Treatment = transport mode (4 levels: Pedestrian, Bicycle, Motorcycle, 4-Wheeled)."
+}

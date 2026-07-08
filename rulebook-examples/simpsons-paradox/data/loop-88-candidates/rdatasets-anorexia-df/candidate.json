@@ -1,0 +1,16 @@
+{
+  "candidate_id": "8",
+  "slug": "rdatasets-anorexia-df",
+  "dataset_name": "anorexia_df",
+  "description": "Anorexia Data on Weight Change",
+  "domain": "Medicine/Clinical",
+  "source": "Rdatasets (R package: MedDataSets)",
+  "n_rows": "72",
+  "stratifying_columns_hint": "1 factor / 0 binary cols",
+  "download_url": "https://vincentarelbundock.github.io/Rdatasets/csv/MedDataSets/anorexia_df.csv",
+  "documentation_url": "https://vincentarelbundock.github.io/Rdatasets/doc/MedDataSets/anorexia_df.html",
+  "status": "skip",
+  "skip_reason": "Purely continuous outcomes (pre-weight and post-weight in kg). No binary success/failure column. No stratum variable \u2014 only the treatment group (Cont/CBT/FT). Cannot form Successes/Cases cells for Simpson's Paradox analysis.",
+  "download_notes": "HTTP 200 OK",
+  "notes": []
+}

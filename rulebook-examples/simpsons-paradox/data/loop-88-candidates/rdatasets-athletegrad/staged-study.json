@@ -1,0 +1,30 @@
+{
+  "StudyId": "rdatasets-athletegrad-graduation",
+  "Title": "Athlete vs Non-Athlete Graduation Rates by Race (NCAA)",
+  "Source": "Stat2Data R package — NCAA athletic graduation data",
+  "SourceUrl": "https://vincentarelbundock.github.io/Rdatasets/doc/Stat2Data/AthleteGrad.html",
+  "PublicationYear": 2004,
+  "Domain": "education",
+  "IsSynthetic": false,
+  "IsControlStudy": true,
+  "ControlDomain": "education-higher",
+  "TraditionId": "tradition-dag",
+  "PrimaryResearcherId": "researcher-pearl",
+  "confounding_variable": "Race",
+  "causal_role": "allocation",
+  "note": "Athletes are disproportionately White (high graduation rate group), so pooled rates favor athletes; within each race strata athletes still graduate at higher rates than non-athletes, so no reversal is expected — this is a straightforward confounding case without Simpson's paradox.",
+  "treatments": [
+    {"TreatmentLabel": "Athlete", "Description": "NCAA student-athlete", "TotalCases": 3823, "TotalSuccesses": 2058},
+    {"TreatmentLabel": "NonAthlete", "Description": "Non-athlete student", "TotalCases": 210732, "TotalSuccesses": 120801}
+  ],
+  "strata": [
+    {"StratumLabel": "Black", "Description": "Black/African-American students", "TotalCases": 24632},
+    {"StratumLabel": "White", "Description": "White students", "TotalCases": 189923}
+  ],
+  "cells": [
+    {"StratumLabel": "Black", "TreatmentLabel": "Athlete", "Cases": 2076, "Successes": 970},
+    {"StratumLabel": "White", "TreatmentLabel": "Athlete", "Cases": 1747, "Successes": 1088},
+    {"StratumLabel": "Black", "TreatmentLabel": "NonAthlete", "Cases": 22556, "Successes": 7895},
+    {"StratumLabel": "White", "TreatmentLabel": "NonAthlete", "Cases": 188176, "Successes": 112906}
+  ]
+}

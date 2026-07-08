@@ -1,0 +1,22 @@
+{
+  "candidate_id": "19",
+  "slug": "rdatasets-cervicalcancer-df",
+  "dataset_name": "CervicalCancer_df",
+  "description": "Cervical Cancer Screening with Smartphones",
+  "domain": "Medicine/Clinical",
+  "source": "Rdatasets (R package: OncoDataSets)",
+  "n_rows": "181",
+  "stratifying_columns_hint": "10 factor / 8 binary cols",
+  "download_url": "https://vincentarelbundock.github.io/Rdatasets/csv/OncoDataSets/CervicalCancer_df.csv",
+  "documentation_url": "https://vincentarelbundock.github.io/Rdatasets/doc/OncoDataSets/CervicalCancer_df.html",
+  "status": "needs-data",
+  "skip_reason": null,
+  "download_notes": "HTTP 200 OK",
+  "notes": [],
+  "proposed_study_id": "rdatasets-cervicalcancer-screening",
+  "proposed_title": "Cervical Cancer Screening: Colposcopy Treatment by HPV16 Status",
+  "binary_outcome": "CIN2plus",
+  "treatment_variable": "treatment",
+  "stratum_variable": "hpv16",
+  "encoding_note": "Outcome = CIN2plus == \"CIN2+\" (1) vs \"<CIN2\" (0); treatment = yes/no colposcopy referral; stratum = hpv16 positive/negative. Count rows per (treatment x hpv16) cell for Successes (CIN2+) and Cases (total)."
+}

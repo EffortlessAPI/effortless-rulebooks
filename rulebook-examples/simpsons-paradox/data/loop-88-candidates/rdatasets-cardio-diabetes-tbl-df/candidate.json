@@ -1,0 +1,16 @@
+{
+  "candidate_id": "20",
+  "slug": "rdatasets-cardio-diabetes-tbl-df",
+  "dataset_name": "cardio_diabetes_tbl_df",
+  "description": "Cardiovascular risks of diabetes drugs",
+  "domain": "Medicine/Clinical",
+  "source": "Rdatasets (R package: CardioDataSets)",
+  "n_rows": "227571",
+  "stratifying_columns_hint": "2 factor / 2 binary cols",
+  "download_url": "https://vincentarelbundock.github.io/Rdatasets/csv/CardioDataSets/cardio_diabetes_tbl_df.csv",
+  "documentation_url": "https://vincentarelbundock.github.io/Rdatasets/doc/CardioDataSets/cardio_diabetes_tbl_df.html",
+  "status": "skip",
+  "skip_reason": "Only two columns (treatment and binary outcome) \u2014 no stratum variable present. Cannot form Treatment \u00d7 Stratum cells.",
+  "download_notes": "HTTP 200 OK",
+  "notes": []
+}

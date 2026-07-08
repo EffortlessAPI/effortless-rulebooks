@@ -14,80 +14,36 @@
 -- Your custom functions changes will appear here:
 
 -- ============================================================================
--- run_invariant_checks()
--- Reads every row in invariant_checks and evaluates SqlAssertion (with optional
--- SqlFilter) against the view named by SourceTable, then writes pass_count and
--- fail_count back into the table. Routes by source_table:
---   TreatmentRankings → vw_treatment_rankings (per-row assertions)
---   ModelSummary      → vw_model_summary (scalar aggregate assertions, 1 row)
+-- loop-90: hand-code sanitization.
+-- The _erb_tr_metrics / _erb_sp_metrics bespoke cache tables (and every
+-- calc_treatment_rankings_*, calc_model_summary_*, calc_synthetic_phase_*
+-- function that was a thin reader of them) have been ELIMINATED. Every
+-- value they used to hold is now a real calculated/lookup/aggregation field
+-- on TreatmentRankings / ModelSummary / SyntheticPhase / CorpusBalance in
+-- the rulebook, computed live by the native functions in
+-- 02-create-functions.sql. Confirmed via grep-diff against that file before
+-- deleting each override below.
+--
+-- What remains here is ONLY genuinely non-redundant logic: real transpiler
+-- gaps (LOOKUP against a table added in the same loop, COUNTIFS numeric
+-- comparators, TEXT()/unsupported functions, cross-table join fields the
+-- transpiler cannot express), plus the run_invariant_checks() harness and
+-- the two refresh_identity_*() functions that materialize the
+-- IdentityClusterSummaries / IdentityDomainCells tables (first-class
+-- rulebook tables, not shadow caches — see CLAUDE.md "principled
+-- materialization").
 -- ============================================================================
--- ============================================================================
--- Cross-domain ModelSummary functions (loop-47/48)
--- These reference studies.domain and studies.is_synthetic — columns added in
--- 01b-customize-schema.sql — so they must live here, not in the transpiler output.
--- ============================================================================
-CREATE OR REPLACE FUNCTION calc_model_summary_real_study_count(p_model_summary_id TEXT)
-RETURNS INTEGER AS $$
-  SELECT COUNT(*)::integer FROM studies WHERE is_synthetic = false;
-$$ LANGUAGE sql STABLE;
 
-CREATE OR REPLACE FUNCTION calc_model_summary_medicine_study_count(p_model_summary_id TEXT)
-RETURNS INTEGER AS $$
-  SELECT COUNT(*)::integer FROM studies WHERE domain = 'medicine' AND is_synthetic = false;
-$$ LANGUAGE sql STABLE;
-
-CREATE OR REPLACE FUNCTION calc_model_summary_epidemiology_study_count(p_model_summary_id TEXT)
-RETURNS INTEGER AS $$
-  SELECT COUNT(*)::integer FROM studies WHERE domain = 'epidemiology' AND is_synthetic = false;
-$$ LANGUAGE sql STABLE;
-
-CREATE OR REPLACE FUNCTION calc_model_summary_other_domain_study_count(p_model_summary_id TEXT)
-RETURNS INTEGER AS $$
-  SELECT (calc_model_summary_real_study_count(p_model_summary_id)
-          - calc_model_summary_medicine_study_count(p_model_summary_id)
-          - calc_model_summary_epidemiology_study_count(p_model_summary_id));
-$$ LANGUAGE sql STABLE;
-
-CREATE OR REPLACE FUNCTION calc_model_summary_domain_diversity_note(p_model_summary_id TEXT)
-RETURNS TEXT AS $$
-  SELECT CONCAT('medicine:', calc_model_summary_medicine_study_count(p_model_summary_id),
-                ' epidemiology:', calc_model_summary_epidemiology_study_count(p_model_summary_id),
-                ' other:', calc_model_summary_other_domain_study_count(p_model_summary_id));
-$$ LANGUAGE sql STABLE;
-
-CREATE OR REPLACE FUNCTION calc_model_summary_avg_signal_purity_reversal(p_model_summary_id TEXT)
-RETURNS NUMERIC AS $$
-  SELECT AVG(signal_purity)
-  FROM _erb_tr_metrics
-  WHERE allocation_direction = 'reversal';
-$$ LANGUAGE sql STABLE;
-
-CREATE OR REPLACE FUNCTION calc_model_summary_avg_signal_purity_non_reversal(p_model_summary_id TEXT)
-RETURNS NUMERIC AS $$
-  SELECT AVG(signal_purity)
-  FROM _erb_tr_metrics
-  WHERE allocation_direction <> 'reversal';
-$$ LANGUAGE sql STABLE;
-
-CREATE OR REPLACE FUNCTION calc_model_summary_signal_purity_gap(p_model_summary_id TEXT)
-RETURNS NUMERIC AS $$
-  SELECT calc_model_summary_avg_signal_purity_non_reversal(p_model_summary_id)
-       - calc_model_summary_avg_signal_purity_reversal(p_model_summary_id);
-$$ LANGUAGE sql STABLE;
-
--- Fix TypeCCount: transpiler emits C+/C- subtypes; aggregate both
-CREATE OR REPLACE FUNCTION calc_model_summary_type_c_count(p_model_summary_id TEXT)
-RETURNS INTEGER AS $$
-  SELECT COUNT(*)::integer FROM _erb_tr_metrics WHERE distortion_type LIKE 'C%';
-$$ LANGUAGE sql STABLE;
-
--- IngestionProtocol witnesses (loop-49): transpiler cannot emit LOOKUP inside calculated fields
+-- ----------------------------------------------------------------------------
+-- IngestionProtocol witnesses (loop-49): transpiler cannot emit LOOKUP
+-- inside calculated fields for a table added in the same loop.
+-- ----------------------------------------------------------------------------
 CREATE OR REPLACE FUNCTION calc_studies_ingestion_cell_parity(p_study_id TEXT)
 RETURNS BOOLEAN AS $$
   SELECT (
-    (SELECT stratum_count FROM _erb_tr_metrics tr WHERE tr.study = p_study_id LIMIT 1) >= 2
+    (SELECT calc_treatment_rankings_stratum_count(tr.treatment_ranking_id) FROM treatment_rankings tr WHERE tr.study = p_study_id LIMIT 1) >= 2
     AND calc_studies_cell_count(p_study_id) =
-        (SELECT stratum_count FROM _erb_tr_metrics tr WHERE tr.study = p_study_id LIMIT 1) * 2
+        (SELECT calc_treatment_rankings_stratum_count(tr.treatment_ranking_id) FROM treatment_rankings tr WHERE tr.study = p_study_id LIMIT 1) * 2
   );
 $$ LANGUAGE sql STABLE;
 
@@ -103,40 +59,10 @@ RETURNS TEXT AS $$
   END;
 $$ LANGUAGE sql STABLE;
 
--- IngestionSummary COUNTIFS mistranslation fix (loop-49): "<>" became literal filter
-CREATE OR REPLACE FUNCTION calc_ingestion_summary_protocol_item_count(p_ingestion_summary_id TEXT)
-RETURNS INTEGER AS $$
-  SELECT COUNT(*)::integer FROM ingestion_protocol;
-$$ LANGUAGE sql STABLE;
-
-CREATE OR REPLACE FUNCTION calc_ingestion_summary_corpus_cell_count(p_ingestion_summary_id TEXT)
-RETURNS INTEGER AS $$
-  SELECT COUNT(*)::integer FROM case_cells;
-$$ LANGUAGE sql STABLE;
-
-CREATE OR REPLACE FUNCTION calc_ingestion_summary_study_count(p_ingestion_summary_id TEXT)
-RETURNS INTEGER AS $$
-  SELECT COUNT(*)::integer FROM studies;
-$$ LANGUAGE sql STABLE;
-
-CREATE OR REPLACE FUNCTION calc_model_summary_ingestion_protocol_item_count(p_model_summary_id TEXT)
-RETURNS INTEGER AS $$
-  SELECT COUNT(*)::integer FROM ingestion_protocol;
-$$ LANGUAGE sql STABLE;
-
-CREATE OR REPLACE FUNCTION calc_model_summary_corpus_passes_ingestion_contract(p_model_summary_id TEXT)
-RETURNS BOOLEAN AS $$
-  SELECT calc_ingestion_summary_ingestion_contract_passes('ingestion-v1');
-$$ LANGUAGE sql STABLE;
-
-CREATE OR REPLACE FUNCTION calc_model_summary_ingestion_witness_note(p_model_summary_id TEXT)
-RETURNS TEXT AS $$
-  SELECT calc_ingestion_summary_ingestion_witness_note('ingestion-v1');
-$$ LANGUAGE sql STABLE;
-
+-- ----------------------------------------------------------------------------
 -- AllocationSweep + SweepStudySummary LOOKUP overrides (loop-56)
 -- Transpiler cannot emit LOOKUP(); join sweep_study_config / treatment_rankings instead.
-
+-- ----------------------------------------------------------------------------
 CREATE OR REPLACE FUNCTION calc_allocation_sweep_is_original(p_sweep_id TEXT)
 RETURNS BOOLEAN AS $$
   SELECT ABS(s.alloc_fraction_a - c.original_alloc_fraction_a) < 0.03
@@ -211,7 +137,8 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_sweep_study_summary_distortion_type_label(p_sweep_study_id TEXT)
 RETURNS TEXT AS $$
-  SELECT distortion_type FROM _erb_tr_metrics WHERE study = p_sweep_study_id LIMIT 1;
+  SELECT calc_treatment_rankings_distortion_type(tr.treatment_ranking_id)
+  FROM treatment_rankings tr WHERE tr.study = p_sweep_study_id LIMIT 1;
 $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_sweep_study_summary_sweep_stratum_label(p_sweep_study_id TEXT)
@@ -221,6 +148,29 @@ RETURNS TEXT AS $$
   WHERE c.study_id = p_sweep_study_id;
 $$ LANGUAGE sql STABLE;
 
+-- TreatmentRankings.PooledGapCrossesZero / SweepPooledGapRange: both are
+-- LOOKUP(Study, SweepStudySummary[Study], SweepStudySummary[...]) formulas
+-- the transpiler cannot emit ("Function 'LOOKUP' is not supported yet").
+-- The underlying calc_sweep_study_summary_* functions ARE native and
+-- correct; this just re-exposes them keyed by TreatmentRankingId instead of
+-- Study. LatentFlipPotential/IsSweepFragile/AllocationFragility all
+-- transitively depend on this LOOKUP, so it must be live, not a cache read.
+CREATE OR REPLACE FUNCTION calc_treatment_rankings_pooled_gap_crosses_zero(p_treatment_ranking_id TEXT) RETURNS BOOLEAN AS $$
+  SELECT calc_sweep_study_summary_pooled_gap_crosses_zero(tr.study)
+  FROM treatment_rankings tr WHERE tr.treatment_ranking_id = p_treatment_ranking_id;
+$$ LANGUAGE sql STABLE;
+
+CREATE OR REPLACE FUNCTION calc_treatment_rankings_sweep_pooled_gap_range(p_treatment_ranking_id TEXT) RETURNS NUMERIC AS $$
+  SELECT calc_sweep_study_summary_sweep_pooled_gap_range(tr.study)
+  FROM treatment_rankings tr WHERE tr.treatment_ranking_id = p_treatment_ranking_id;
+$$ LANGUAGE sql STABLE;
+
+-- ----------------------------------------------------------------------------
+-- run_invariant_checks()
+-- Reads every row in invariant_checks and evaluates SqlAssertion (with optional
+-- SqlFilter) against the view named by SourceTable, then writes pass_count and
+-- fail_count back into the table. Routes by source_table.
+-- ----------------------------------------------------------------------------
 CREATE OR REPLACE FUNCTION run_invariant_checks()
 RETURNS TABLE(invariant_check_id TEXT, pass_count INTEGER, fail_count INTEGER, status_label TEXT)
 LANGUAGE plpgsql AS $$
@@ -282,496 +232,17 @@ BEGIN
 END;
 $$;
 
--- ============================================================================
--- Performance: snapshot transpiler calcs, cache refresh, fast calc_* overrides
--- Snapshots clone calc_* from 02-create-functions.sql BEFORE overrides below.
--- refresh_* runs once in 05b-customize-data.sql; runtime reads are O(1).
--- ============================================================================
-
-DO $snap_tr$
-DECLARE
-  fn RECORD;
-  newdef TEXT;
-  newname TEXT;
-BEGIN
-  FOR fn IN
-    SELECT p.oid, p.proname
-    FROM pg_proc p
-    JOIN pg_namespace n ON n.oid = p.pronamespace
-    WHERE n.nspname = 'public'
-      AND p.proname LIKE 'calc_treatment_rankings_%'
-  LOOP
-    newname := replace(fn.proname, 'calc_treatment_rankings_', '_erb_snap_tr_');
-    newdef := pg_get_functiondef(fn.oid);
-    newdef := replace(newdef, 'FUNCTION public.' || fn.proname || '(', 'FUNCTION public.' || newname || '(');
-    newdef := replace(newdef, 'FUNCTION ' || fn.proname || '(', 'FUNCTION ' || newname || '(');
-    EXECUTE newdef;
-  END LOOP;
-END;
-$snap_tr$;
-
-DO $snap_sp$
-DECLARE
-  fn RECORD;
-  newdef TEXT;
-  newname TEXT;
-BEGIN
-  FOR fn IN
-    SELECT p.oid, p.proname
-    FROM pg_proc p
-    JOIN pg_namespace n ON n.oid = p.pronamespace
-    WHERE n.nspname = 'public'
-      AND p.proname LIKE 'calc_synthetic_phase_%'
-  LOOP
-    newname := replace(fn.proname, 'calc_synthetic_phase_', '_erb_snap_sp_');
-    newdef := pg_get_functiondef(fn.oid);
-    newdef := replace(newdef, 'FUNCTION public.' || fn.proname || '(', 'FUNCTION public.' || newname || '(');
-    newdef := replace(newdef, 'FUNCTION ' || fn.proname || '(', 'FUNCTION ' || newname || '(');
-    EXECUTE newdef;
-  END LOOP;
-END;
-$snap_sp$;
-
--- Snap bodies copied from calc_* still call calc_* by name. After calc overrides
--- read _erb_*_metrics, refresh would see an empty cache and write zeros. Rewrite
--- every snap to call sibling _erb_snap_* functions instead of calc_*.
-DO $rewrite_snaps$
-DECLARE
-  fn RECORD;
-  newdef TEXT;
-BEGIN
-  FOR fn IN
-    SELECT p.oid, p.proname
-    FROM pg_proc p
-    JOIN pg_namespace n ON n.oid = p.pronamespace
-    WHERE n.nspname = 'public'
-      AND p.proname LIKE '_erb_snap_sp_%'
-  LOOP
-    newdef := pg_get_functiondef(fn.oid);
-    newdef := replace(newdef, 'calc_synthetic_phase_', '_erb_snap_sp_');
-    EXECUTE newdef;
-  END LOOP;
-
-  FOR fn IN
-    SELECT p.oid, p.proname
-    FROM pg_proc p
-    JOIN pg_namespace n ON n.oid = p.pronamespace
-    WHERE n.nspname = 'public'
-      AND p.proname LIKE '_erb_snap_tr_%'
-  LOOP
-    newdef := pg_get_functiondef(fn.oid);
-    newdef := replace(newdef, 'calc_treatment_rankings_', '_erb_snap_tr_');
-    EXECUTE newdef;
-  END LOOP;
-END;
-$rewrite_snaps$;
-
-CREATE OR REPLACE FUNCTION refresh_erb_tr_metrics()
-RETURNS void
-LANGUAGE plpgsql AS $$
-BEGIN
-  TRUNCATE _erb_tr_metrics;
-
-  INSERT INTO _erb_tr_metrics (
-    treatment_ranking_id, name, study,
-    total_cases_a, total_successes_a, pooled_rate_a,
-    total_cases_b, total_successes_b, pooled_rate_b,
-    pooled_winner, stratum_count, strata_won_by_a, strata_won_by_b, per_stratum_winner,
-    is_reversal, confounders_in_study, is_paradox_explained,
-    pooled_gap, strata_won_by_loser, paradox_strength,
-    pooled_rate_from_weights_a, pooled_rate_from_weights_b,
-    reversal_intensity, threshold_margin, signed_pooled_gap, weighted_stratum_gap_sum,
-    is_sign_flip, allocation_distortion, distortion_type, policy_implication,
-    corrected_gap, corrected_winner, corrected_vs_pooled_agreement, corrected_policy_implication,
-    confirmed_causal_role_count, mediator_risk_count, contested_stratum_count, unknown_causal_role_count,
-    causal_claim_status, adjustment_appropriate,
-    allocation_direction, signal_purity, max_stratum_imbalance, max_stratum_gap,
-    pooled_gap_crosses_zero, sweep_pooled_gap_range, latent_flip_potential,
-    allocation_fragility, study_domain,
-    stratum_causal_role, is_latent_only_flip,
-    is_stratum_unanimous, is_sweep_fragile
-  )
-  SELECT
-    tr.treatment_ranking_id,
-    _erb_snap_tr_name(tr.treatment_ranking_id),
-    tr.study,
-    _erb_snap_tr_total_cases_a(tr.treatment_ranking_id),
-    _erb_snap_tr_total_successes_a(tr.treatment_ranking_id),
-    _erb_snap_tr_pooled_rate_a(tr.treatment_ranking_id),
-    _erb_snap_tr_total_cases_b(tr.treatment_ranking_id),
-    _erb_snap_tr_total_successes_b(tr.treatment_ranking_id),
-    _erb_snap_tr_pooled_rate_b(tr.treatment_ranking_id),
-    _erb_snap_tr_pooled_winner(tr.treatment_ranking_id),
-    _erb_snap_tr_stratum_count(tr.treatment_ranking_id),
-    _erb_snap_tr_strata_won_by_a(tr.treatment_ranking_id),
-    _erb_snap_tr_strata_won_by_b(tr.treatment_ranking_id),
-    _erb_snap_tr_per_stratum_winner(tr.treatment_ranking_id),
-    _erb_snap_tr_is_reversal(tr.treatment_ranking_id),
-    _erb_snap_tr_confounders_in_study(tr.treatment_ranking_id),
-    _erb_snap_tr_is_paradox_explained(tr.treatment_ranking_id),
-    _erb_snap_tr_pooled_gap(tr.treatment_ranking_id),
-    _erb_snap_tr_strata_won_by_loser(tr.treatment_ranking_id),
-    _erb_snap_tr_paradox_strength(tr.treatment_ranking_id),
-    _erb_snap_tr_pooled_rate_from_weights_a(tr.treatment_ranking_id),
-    _erb_snap_tr_pooled_rate_from_weights_b(tr.treatment_ranking_id),
-    _erb_snap_tr_reversal_intensity(tr.treatment_ranking_id),
-    _erb_snap_tr_threshold_margin(tr.treatment_ranking_id),
-    _erb_snap_tr_signed_pooled_gap(tr.treatment_ranking_id),
-    _erb_snap_tr_weighted_stratum_gap_sum(tr.treatment_ranking_id),
-    _erb_snap_tr_is_sign_flip(tr.treatment_ranking_id),
-    _erb_snap_tr_allocation_distortion(tr.treatment_ranking_id),
-    _erb_snap_tr_distortion_type(tr.treatment_ranking_id),
-    _erb_snap_tr_policy_implication(tr.treatment_ranking_id),
-    _erb_snap_tr_corrected_gap(tr.treatment_ranking_id),
-    _erb_snap_tr_corrected_winner(tr.treatment_ranking_id),
-    _erb_snap_tr_corrected_vs_pooled_agreement(tr.treatment_ranking_id),
-    _erb_snap_tr_corrected_policy_implication(tr.treatment_ranking_id),
-    _erb_snap_tr_confirmed_causal_role_count(tr.treatment_ranking_id),
-    _erb_snap_tr_mediator_risk_count(tr.treatment_ranking_id),
-    _erb_snap_tr_contested_stratum_count(tr.treatment_ranking_id),
-    _erb_snap_tr_unknown_causal_role_count(tr.treatment_ranking_id),
-    _erb_snap_tr_causal_claim_status(tr.treatment_ranking_id),
-    _erb_snap_tr_adjustment_appropriate(tr.treatment_ranking_id),
-    _erb_snap_tr_allocation_direction(tr.treatment_ranking_id),
-    _erb_snap_tr_signal_purity(tr.treatment_ranking_id),
-    (SELECT MAX(ABS(ss.allocation_bias))
-     FROM vw_stratum_summaries ss
-     WHERE ss.study = tr.study AND ss.treatment_label = tr.treatment_a),
-    (SELECT MAX(ABS(ss.stratum_gap))
-     FROM vw_stratum_summaries ss
-     WHERE ss.study = tr.study AND ss.treatment_label = tr.treatment_a),
-    calc_sweep_study_summary_pooled_gap_crosses_zero(tr.study),
-    calc_sweep_study_summary_sweep_pooled_gap_range(tr.study),
-    (_erb_snap_tr_distortion_type(tr.treatment_ranking_id) = 'D'
-      AND calc_sweep_study_summary_pooled_gap_crosses_zero(tr.study) = TRUE),
-    CASE
-      WHEN _erb_snap_tr_pooled_gap(tr.treatment_ranking_id) IS NULL
-        OR _erb_snap_tr_pooled_gap(tr.treatment_ranking_id) = 0
-        OR calc_sweep_study_summary_sweep_pooled_gap_range(tr.study) IS NULL
-      THEN NULL
-      ELSE calc_sweep_study_summary_sweep_pooled_gap_range(tr.study)
-           / ABS(_erb_snap_tr_pooled_gap(tr.treatment_ranking_id))
-    END,
-    (SELECT s.domain FROM studies s WHERE s.study_id = tr.study),
-    (SELECT sv.causal_role FROM stratum_variables sv WHERE sv.study = tr.study LIMIT 1),
-    (calc_sweep_study_summary_pooled_gap_crosses_zero(tr.study) = TRUE
-      AND _erb_snap_tr_is_sign_flip(tr.treatment_ranking_id) = FALSE),
-    _erb_snap_tr_is_stratum_unanimous(tr.treatment_ranking_id),
-    NULL::boolean
-  FROM treatment_rankings tr;
-
-  UPDATE _erb_tr_metrics
-  SET is_sweep_fragile = (
-    distortion_type = 'D'
-    AND signal_purity = 1
-    AND allocation_distortion = 0
-    AND sweep_pooled_gap_range > 0.3
-    AND allocation_fragility >= 10
-  );
-END;
-$$;
-
-CREATE OR REPLACE FUNCTION refresh_erb_sp_metrics()
-RETURNS void
-LANGUAGE plpgsql AS $$
-BEGIN
-  TRUNCATE _erb_sp_metrics;
-
-  INSERT INTO _erb_sp_metrics (
-    phase_id, name,
-    phase_s1_total, phase_na1, phase_nb1, phase_na2, phase_nb2,
-    phase_rate_a1, phase_rate_b1, phase_rate_a2, phase_rate_b2,
-    phase_pooled_rate_a, phase_pooled_rate_b, phase_signed_pooled_gap,
-    phase_corrected_gap, phase_strata_won_by_loser, phase_reversal_intensity,
-    phase_is_sign_flip, phase_allocation_distortion, phase_distortion_type
-  )
-  SELECT
-    sp.phase_id,
-    _erb_snap_sp_name(sp.phase_id),
-    _erb_snap_sp_phase_s1_total(sp.phase_id),
-    _erb_snap_sp_phase_na1(sp.phase_id),
-    _erb_snap_sp_phase_nb1(sp.phase_id),
-    _erb_snap_sp_phase_na2(sp.phase_id),
-    _erb_snap_sp_phase_nb2(sp.phase_id),
-    _erb_snap_sp_phase_rate_a1(sp.phase_id),
-    _erb_snap_sp_phase_rate_b1(sp.phase_id),
-    _erb_snap_sp_phase_rate_a2(sp.phase_id),
-    _erb_snap_sp_phase_rate_b2(sp.phase_id),
-    _erb_snap_sp_phase_pooled_rate_a(sp.phase_id),
-    _erb_snap_sp_phase_pooled_rate_b(sp.phase_id),
-    _erb_snap_sp_phase_signed_pooled_gap(sp.phase_id),
-    _erb_snap_sp_phase_corrected_gap(sp.phase_id),
-    _erb_snap_sp_phase_strata_won_by_loser(sp.phase_id),
-    _erb_snap_sp_phase_reversal_intensity(sp.phase_id),
-    _erb_snap_sp_phase_is_sign_flip(sp.phase_id),
-    _erb_snap_sp_phase_allocation_distortion(sp.phase_id),
-    _erb_snap_sp_phase_distortion_type(sp.phase_id)
-  FROM synthetic_phase sp;
-END;
-$$;
-
--- Thin calc_* overrides — O(1) cache lookups
-CREATE OR REPLACE FUNCTION calc_treatment_rankings_name(p_treatment_ranking_id TEXT) RETURNS TEXT AS $$
-  SELECT name FROM _erb_tr_metrics WHERE treatment_ranking_id = p_treatment_ranking_id;
-$$ LANGUAGE sql STABLE;
-CREATE OR REPLACE FUNCTION calc_treatment_rankings_total_cases_a(p_treatment_ranking_id TEXT) RETURNS INTEGER AS $$
-  SELECT total_cases_a FROM _erb_tr_metrics WHERE treatment_ranking_id = p_treatment_ranking_id;
-$$ LANGUAGE sql STABLE;
-CREATE OR REPLACE FUNCTION calc_treatment_rankings_total_successes_a(p_treatment_ranking_id TEXT) RETURNS INTEGER AS $$
-  SELECT total_successes_a FROM _erb_tr_metrics WHERE treatment_ranking_id = p_treatment_ranking_id;
-$$ LANGUAGE sql STABLE;
-CREATE OR REPLACE FUNCTION calc_treatment_rankings_pooled_rate_a(p_treatment_ranking_id TEXT) RETURNS NUMERIC AS $$
-  SELECT pooled_rate_a FROM _erb_tr_metrics WHERE treatment_ranking_id = p_treatment_ranking_id;
-$$ LANGUAGE sql STABLE;
-CREATE OR REPLACE FUNCTION calc_treatment_rankings_total_cases_b(p_treatment_ranking_id TEXT) RETURNS INTEGER AS $$
-  SELECT total_cases_b FROM _erb_tr_metrics WHERE treatment_ranking_id = p_treatment_ranking_id;
-$$ LANGUAGE sql STABLE;
-CREATE OR REPLACE FUNCTION calc_treatment_rankings_total_successes_b(p_treatment_ranking_id TEXT) RETURNS INTEGER AS $$
-  SELECT total_successes_b FROM _erb_tr_metrics WHERE treatment_ranking_id = p_treatment_ranking_id;
-$$ LANGUAGE sql STABLE;
-CREATE OR REPLACE FUNCTION calc_treatment_rankings_pooled_rate_b(p_treatment_ranking_id TEXT) RETURNS NUMERIC AS $$
-  SELECT pooled_rate_b FROM _erb_tr_metrics WHERE treatment_ranking_id = p_treatment_ranking_id;
-$$ LANGUAGE sql STABLE;
-CREATE OR REPLACE FUNCTION calc_treatment_rankings_pooled_winner(p_treatment_ranking_id TEXT) RETURNS TEXT AS $$
-  SELECT pooled_winner FROM _erb_tr_metrics WHERE treatment_ranking_id = p_treatment_ranking_id;
-$$ LANGUAGE sql STABLE;
-CREATE OR REPLACE FUNCTION calc_treatment_rankings_stratum_count(p_treatment_ranking_id TEXT) RETURNS INTEGER AS $$
-  SELECT stratum_count FROM _erb_tr_metrics WHERE treatment_ranking_id = p_treatment_ranking_id;
-$$ LANGUAGE sql STABLE;
-CREATE OR REPLACE FUNCTION calc_treatment_rankings_strata_won_by_a(p_treatment_ranking_id TEXT) RETURNS INTEGER AS $$
-  SELECT strata_won_by_a FROM _erb_tr_metrics WHERE treatment_ranking_id = p_treatment_ranking_id;
-$$ LANGUAGE sql STABLE;
-CREATE OR REPLACE FUNCTION calc_treatment_rankings_strata_won_by_b(p_treatment_ranking_id TEXT) RETURNS INTEGER AS $$
-  SELECT strata_won_by_b FROM _erb_tr_metrics WHERE treatment_ranking_id = p_treatment_ranking_id;
-$$ LANGUAGE sql STABLE;
-CREATE OR REPLACE FUNCTION calc_treatment_rankings_per_stratum_winner(p_treatment_ranking_id TEXT) RETURNS TEXT AS $$
-  SELECT per_stratum_winner FROM _erb_tr_metrics WHERE treatment_ranking_id = p_treatment_ranking_id;
-$$ LANGUAGE sql STABLE;
-CREATE OR REPLACE FUNCTION calc_treatment_rankings_is_reversal(p_treatment_ranking_id TEXT) RETURNS BOOLEAN AS $$
-  SELECT is_reversal FROM _erb_tr_metrics WHERE treatment_ranking_id = p_treatment_ranking_id;
-$$ LANGUAGE sql STABLE;
-CREATE OR REPLACE FUNCTION calc_treatment_rankings_confounders_in_study(p_treatment_ranking_id TEXT) RETURNS INTEGER AS $$
-  SELECT confounders_in_study FROM _erb_tr_metrics WHERE treatment_ranking_id = p_treatment_ranking_id;
-$$ LANGUAGE sql STABLE;
-CREATE OR REPLACE FUNCTION calc_treatment_rankings_is_paradox_explained(p_treatment_ranking_id TEXT) RETURNS BOOLEAN AS $$
-  SELECT is_paradox_explained FROM _erb_tr_metrics WHERE treatment_ranking_id = p_treatment_ranking_id;
-$$ LANGUAGE sql STABLE;
-CREATE OR REPLACE FUNCTION calc_treatment_rankings_pooled_gap(p_treatment_ranking_id TEXT) RETURNS NUMERIC AS $$
-  SELECT pooled_gap FROM _erb_tr_metrics WHERE treatment_ranking_id = p_treatment_ranking_id;
-$$ LANGUAGE sql STABLE;
-CREATE OR REPLACE FUNCTION calc_treatment_rankings_strata_won_by_loser(p_treatment_ranking_id TEXT) RETURNS INTEGER AS $$
-  SELECT strata_won_by_loser FROM _erb_tr_metrics WHERE treatment_ranking_id = p_treatment_ranking_id;
-$$ LANGUAGE sql STABLE;
-CREATE OR REPLACE FUNCTION calc_treatment_rankings_paradox_strength(p_treatment_ranking_id TEXT) RETURNS NUMERIC AS $$
-  SELECT paradox_strength FROM _erb_tr_metrics WHERE treatment_ranking_id = p_treatment_ranking_id;
-$$ LANGUAGE sql STABLE;
-CREATE OR REPLACE FUNCTION calc_treatment_rankings_pooled_rate_from_weights_a(p_treatment_ranking_id TEXT) RETURNS NUMERIC AS $$
-  SELECT pooled_rate_from_weights_a FROM _erb_tr_metrics WHERE treatment_ranking_id = p_treatment_ranking_id;
-$$ LANGUAGE sql STABLE;
-CREATE OR REPLACE FUNCTION calc_treatment_rankings_pooled_rate_from_weights_b(p_treatment_ranking_id TEXT) RETURNS NUMERIC AS $$
-  SELECT pooled_rate_from_weights_b FROM _erb_tr_metrics WHERE treatment_ranking_id = p_treatment_ranking_id;
-$$ LANGUAGE sql STABLE;
-CREATE OR REPLACE FUNCTION calc_treatment_rankings_reversal_intensity(p_treatment_ranking_id TEXT) RETURNS NUMERIC AS $$
-  SELECT reversal_intensity FROM _erb_tr_metrics WHERE treatment_ranking_id = p_treatment_ranking_id;
-$$ LANGUAGE sql STABLE;
-CREATE OR REPLACE FUNCTION calc_treatment_rankings_threshold_margin(p_treatment_ranking_id TEXT) RETURNS NUMERIC AS $$
-  SELECT threshold_margin FROM _erb_tr_metrics WHERE treatment_ranking_id = p_treatment_ranking_id;
-$$ LANGUAGE sql STABLE;
-CREATE OR REPLACE FUNCTION calc_treatment_rankings_signed_pooled_gap(p_treatment_ranking_id TEXT) RETURNS NUMERIC AS $$
-  SELECT signed_pooled_gap FROM _erb_tr_metrics WHERE treatment_ranking_id = p_treatment_ranking_id;
-$$ LANGUAGE sql STABLE;
-CREATE OR REPLACE FUNCTION calc_treatment_rankings_weighted_stratum_gap_sum(p_treatment_ranking_id TEXT) RETURNS NUMERIC AS $$
-  SELECT weighted_stratum_gap_sum FROM _erb_tr_metrics WHERE treatment_ranking_id = p_treatment_ranking_id;
-$$ LANGUAGE sql STABLE;
-CREATE OR REPLACE FUNCTION calc_treatment_rankings_is_sign_flip(p_treatment_ranking_id TEXT) RETURNS BOOLEAN AS $$
-  SELECT is_sign_flip FROM _erb_tr_metrics WHERE treatment_ranking_id = p_treatment_ranking_id;
-$$ LANGUAGE sql STABLE;
-CREATE OR REPLACE FUNCTION calc_treatment_rankings_allocation_distortion(p_treatment_ranking_id TEXT) RETURNS NUMERIC AS $$
-  SELECT allocation_distortion FROM _erb_tr_metrics WHERE treatment_ranking_id = p_treatment_ranking_id;
-$$ LANGUAGE sql STABLE;
-CREATE OR REPLACE FUNCTION calc_treatment_rankings_distortion_type(p_treatment_ranking_id TEXT) RETURNS TEXT AS $$
-  SELECT distortion_type FROM _erb_tr_metrics WHERE treatment_ranking_id = p_treatment_ranking_id;
-$$ LANGUAGE sql STABLE;
-CREATE OR REPLACE FUNCTION calc_treatment_rankings_policy_implication(p_treatment_ranking_id TEXT) RETURNS TEXT AS $$
-  SELECT policy_implication FROM _erb_tr_metrics WHERE treatment_ranking_id = p_treatment_ranking_id;
-$$ LANGUAGE sql STABLE;
-CREATE OR REPLACE FUNCTION calc_treatment_rankings_corrected_gap(p_treatment_ranking_id TEXT) RETURNS NUMERIC AS $$
-  SELECT corrected_gap FROM _erb_tr_metrics WHERE treatment_ranking_id = p_treatment_ranking_id;
-$$ LANGUAGE sql STABLE;
-CREATE OR REPLACE FUNCTION calc_treatment_rankings_corrected_winner(p_treatment_ranking_id TEXT) RETURNS TEXT AS $$
-  SELECT corrected_winner FROM _erb_tr_metrics WHERE treatment_ranking_id = p_treatment_ranking_id;
-$$ LANGUAGE sql STABLE;
-CREATE OR REPLACE FUNCTION calc_treatment_rankings_corrected_vs_pooled_agreement(p_treatment_ranking_id TEXT) RETURNS BOOLEAN AS $$
-  SELECT corrected_vs_pooled_agreement FROM _erb_tr_metrics WHERE treatment_ranking_id = p_treatment_ranking_id;
-$$ LANGUAGE sql STABLE;
-CREATE OR REPLACE FUNCTION calc_treatment_rankings_corrected_policy_implication(p_treatment_ranking_id TEXT) RETURNS TEXT AS $$
-  SELECT corrected_policy_implication FROM _erb_tr_metrics WHERE treatment_ranking_id = p_treatment_ranking_id;
-$$ LANGUAGE sql STABLE;
-CREATE OR REPLACE FUNCTION calc_treatment_rankings_allocation_direction(p_treatment_ranking_id TEXT) RETURNS TEXT AS $$
-  SELECT allocation_direction FROM _erb_tr_metrics WHERE treatment_ranking_id = p_treatment_ranking_id;
-$$ LANGUAGE sql STABLE;
-CREATE OR REPLACE FUNCTION calc_treatment_rankings_signal_purity(p_treatment_ranking_id TEXT) RETURNS NUMERIC AS $$
-  SELECT signal_purity FROM _erb_tr_metrics WHERE treatment_ranking_id = p_treatment_ranking_id;
-$$ LANGUAGE sql STABLE;
-CREATE OR REPLACE FUNCTION calc_treatment_rankings_pooled_gap_crosses_zero(p_treatment_ranking_id TEXT) RETURNS BOOLEAN AS $$
-  SELECT pooled_gap_crosses_zero FROM _erb_tr_metrics WHERE treatment_ranking_id = p_treatment_ranking_id;
-$$ LANGUAGE sql STABLE;
-CREATE OR REPLACE FUNCTION calc_treatment_rankings_sweep_pooled_gap_range(p_treatment_ranking_id TEXT) RETURNS NUMERIC AS $$
-  SELECT sweep_pooled_gap_range FROM _erb_tr_metrics WHERE treatment_ranking_id = p_treatment_ranking_id;
-$$ LANGUAGE sql STABLE;
-CREATE OR REPLACE FUNCTION calc_treatment_rankings_latent_flip_potential(p_treatment_ranking_id TEXT) RETURNS BOOLEAN AS $$
-  SELECT latent_flip_potential FROM _erb_tr_metrics WHERE treatment_ranking_id = p_treatment_ranking_id;
-$$ LANGUAGE sql STABLE;
-CREATE OR REPLACE FUNCTION calc_treatment_rankings_allocation_fragility(p_treatment_ranking_id TEXT) RETURNS NUMERIC AS $$
-  SELECT allocation_fragility FROM _erb_tr_metrics WHERE treatment_ranking_id = p_treatment_ranking_id;
-$$ LANGUAGE sql STABLE;
-CREATE OR REPLACE FUNCTION calc_treatment_rankings_study_domain(p_treatment_ranking_id TEXT) RETURNS TEXT AS $$
-  SELECT study_domain FROM _erb_tr_metrics WHERE treatment_ranking_id = p_treatment_ranking_id;
-$$ LANGUAGE sql STABLE;
-CREATE OR REPLACE FUNCTION calc_treatment_rankings_stratum_causal_role(p_treatment_ranking_id TEXT) RETURNS TEXT AS $$
-  SELECT stratum_causal_role FROM _erb_tr_metrics WHERE treatment_ranking_id = p_treatment_ranking_id;
-$$ LANGUAGE sql STABLE;
-CREATE OR REPLACE FUNCTION calc_treatment_rankings_is_latent_only_flip(p_treatment_ranking_id TEXT) RETURNS BOOLEAN AS $$
-  SELECT is_latent_only_flip FROM _erb_tr_metrics WHERE treatment_ranking_id = p_treatment_ranking_id;
-$$ LANGUAGE sql STABLE;
-CREATE OR REPLACE FUNCTION calc_treatment_rankings_is_stratum_unanimous(p_treatment_ranking_id TEXT) RETURNS BOOLEAN AS $$
-  SELECT is_stratum_unanimous FROM _erb_tr_metrics WHERE treatment_ranking_id = p_treatment_ranking_id;
-$$ LANGUAGE sql STABLE;
-CREATE OR REPLACE FUNCTION calc_treatment_rankings_is_sweep_fragile(p_treatment_ranking_id TEXT) RETURNS BOOLEAN AS $$
-  SELECT is_sweep_fragile FROM _erb_tr_metrics WHERE treatment_ranking_id = p_treatment_ranking_id;
-$$ LANGUAGE sql STABLE;
-CREATE OR REPLACE FUNCTION calc_treatment_rankings_confirmed_causal_role_count(p_treatment_ranking_id TEXT) RETURNS INTEGER AS $$
-  SELECT confirmed_causal_role_count FROM _erb_tr_metrics WHERE treatment_ranking_id = p_treatment_ranking_id;
-$$ LANGUAGE sql STABLE;
-CREATE OR REPLACE FUNCTION calc_treatment_rankings_mediator_risk_count(p_treatment_ranking_id TEXT) RETURNS INTEGER AS $$
-  SELECT mediator_risk_count FROM _erb_tr_metrics WHERE treatment_ranking_id = p_treatment_ranking_id;
-$$ LANGUAGE sql STABLE;
-CREATE OR REPLACE FUNCTION calc_treatment_rankings_contested_stratum_count(p_treatment_ranking_id TEXT) RETURNS INTEGER AS $$
-  SELECT contested_stratum_count FROM _erb_tr_metrics WHERE treatment_ranking_id = p_treatment_ranking_id;
-$$ LANGUAGE sql STABLE;
-CREATE OR REPLACE FUNCTION calc_treatment_rankings_unknown_causal_role_count(p_treatment_ranking_id TEXT) RETURNS INTEGER AS $$
-  SELECT unknown_causal_role_count FROM _erb_tr_metrics WHERE treatment_ranking_id = p_treatment_ranking_id;
-$$ LANGUAGE sql STABLE;
-CREATE OR REPLACE FUNCTION calc_treatment_rankings_causal_claim_status(p_treatment_ranking_id TEXT) RETURNS TEXT AS $$
-  SELECT causal_claim_status FROM _erb_tr_metrics WHERE treatment_ranking_id = p_treatment_ranking_id;
-$$ LANGUAGE sql STABLE;
-CREATE OR REPLACE FUNCTION calc_treatment_rankings_adjustment_appropriate(p_treatment_ranking_id TEXT) RETURNS BOOLEAN AS $$
-  SELECT adjustment_appropriate FROM _erb_tr_metrics WHERE treatment_ranking_id = p_treatment_ranking_id;
-$$ LANGUAGE sql STABLE;
-
--- ModelSummary aggregates — single scan of _erb_tr_metrics
-CREATE OR REPLACE FUNCTION calc_model_summary_reversal_count(p_model_summary_id TEXT) RETURNS INTEGER AS $$
-  SELECT COUNT(*)::integer FROM _erb_tr_metrics WHERE is_reversal = true;
-$$ LANGUAGE sql STABLE;
-CREATE OR REPLACE FUNCTION calc_model_summary_non_reversal_count(p_model_summary_id TEXT) RETURNS INTEGER AS $$
-  SELECT COUNT(*)::integer FROM _erb_tr_metrics WHERE is_reversal = false;
-$$ LANGUAGE sql STABLE;
-CREATE OR REPLACE FUNCTION calc_model_summary_study_count(p_model_summary_id TEXT) RETURNS INTEGER AS $$
-  SELECT COUNT(*)::integer FROM _erb_tr_metrics;
-$$ LANGUAGE sql STABLE;
-CREATE OR REPLACE FUNCTION calc_model_summary_explained_count(p_model_summary_id TEXT) RETURNS INTEGER AS $$
-  SELECT COUNT(*)::integer FROM _erb_tr_metrics WHERE is_paradox_explained = true;
-$$ LANGUAGE sql STABLE;
-CREATE OR REPLACE FUNCTION calc_model_summary_total_paradox_strength(p_model_summary_id TEXT) RETURNS NUMERIC AS $$
-  SELECT COALESCE(SUM(paradox_strength), 0) FROM _erb_tr_metrics;
-$$ LANGUAGE sql STABLE;
-CREATE OR REPLACE FUNCTION calc_model_summary_avg_paradox_strength(p_model_summary_id TEXT) RETURNS NUMERIC AS $$
-  SELECT AVG(paradox_strength) FROM _erb_tr_metrics;
-$$ LANGUAGE sql STABLE;
-CREATE OR REPLACE FUNCTION calc_model_summary_type_a_count(p_model_summary_id TEXT) RETURNS INTEGER AS $$
-  SELECT COUNT(*)::integer FROM _erb_tr_metrics WHERE distortion_type = 'A';
-$$ LANGUAGE sql STABLE;
-CREATE OR REPLACE FUNCTION calc_model_summary_type_b_count(p_model_summary_id TEXT) RETURNS INTEGER AS $$
-  SELECT COUNT(*)::integer FROM _erb_tr_metrics WHERE distortion_type = 'B';
-$$ LANGUAGE sql STABLE;
-CREATE OR REPLACE FUNCTION calc_model_summary_type_d_count(p_model_summary_id TEXT) RETURNS INTEGER AS $$
-  SELECT COUNT(*)::integer FROM _erb_tr_metrics WHERE distortion_type = 'D';
-$$ LANGUAGE sql STABLE;
-CREATE OR REPLACE FUNCTION calc_model_summary_type_a_fraction(p_model_summary_id TEXT) RETURNS NUMERIC AS $$
-  SELECT COUNT(*) FILTER (WHERE distortion_type = 'A')::numeric / NULLIF(COUNT(*), 0) FROM _erb_tr_metrics;
-$$ LANGUAGE sql STABLE;
-CREATE OR REPLACE FUNCTION calc_model_summary_c_amplification_count(p_model_summary_id TEXT) RETURNS INTEGER AS $$
-  SELECT COUNT(*)::integer FROM _erb_tr_metrics WHERE distortion_type = 'C+';
-$$ LANGUAGE sql STABLE;
-CREATE OR REPLACE FUNCTION calc_model_summary_c_compression_count(p_model_summary_id TEXT) RETURNS INTEGER AS $$
-  SELECT COUNT(*)::integer FROM _erb_tr_metrics WHERE distortion_type = 'C-';
-$$ LANGUAGE sql STABLE;
-CREATE OR REPLACE FUNCTION calc_model_summary_avg_signal_purity(p_model_summary_id TEXT) RETURNS NUMERIC AS $$
-  SELECT AVG(signal_purity) FROM _erb_tr_metrics;
-$$ LANGUAGE sql STABLE;
-CREATE OR REPLACE FUNCTION calc_model_summary_distortion_only_count(p_model_summary_id TEXT) RETURNS INTEGER AS $$
-  SELECT COUNT(*)::integer FROM _erb_tr_metrics WHERE distortion_type LIKE 'C%';
-$$ LANGUAGE sql STABLE;
-CREATE OR REPLACE FUNCTION calc_model_summary_distortion_taxonomy_coverage(p_model_summary_id TEXT) RETURNS TEXT AS $$
-  SELECT CONCAT(
-    'A:', calc_model_summary_type_a_count(p_model_summary_id),
-    ' B:', calc_model_summary_type_b_count(p_model_summary_id),
-    ' C+:', calc_model_summary_c_amplification_count(p_model_summary_id),
-    ' C-:', calc_model_summary_c_compression_count(p_model_summary_id),
-    ' D:', calc_model_summary_type_d_count(p_model_summary_id)
-  );
-$$ LANGUAGE sql STABLE;
-
--- loop-61 discovery aggregates — single scan of _erb_tr_metrics
-CREATE OR REPLACE FUNCTION calc_model_summary_latent_type_d_count(p_model_summary_id TEXT) RETURNS NUMERIC AS $$
-  SELECT COUNT(*)::numeric FROM _erb_tr_metrics WHERE latent_flip_potential = true;
-$$ LANGUAGE sql STABLE;
-CREATE OR REPLACE FUNCTION calc_model_summary_stable_type_d_count(p_model_summary_id TEXT) RETURNS NUMERIC AS $$
-  SELECT COUNT(*)::numeric FROM _erb_tr_metrics WHERE distortion_type = 'D' AND latent_flip_potential = false;
-$$ LANGUAGE sql STABLE;
-CREATE OR REPLACE FUNCTION calc_model_summary_latent_type_d_fraction(p_model_summary_id TEXT) RETURNS NUMERIC AS $$
-  SELECT COUNT(*) FILTER (WHERE latent_flip_potential = true)::numeric / NULLIF(COUNT(*) FILTER (WHERE distortion_type = 'D'), 0)
-  FROM _erb_tr_metrics;
-$$ LANGUAGE sql STABLE;
-CREATE OR REPLACE FUNCTION calc_model_summary_cross_zero_count(p_model_summary_id TEXT) RETURNS NUMERIC AS $$
-  SELECT COUNT(*)::numeric FROM _erb_tr_metrics WHERE pooled_gap_crosses_zero = true;
-$$ LANGUAGE sql STABLE;
-CREATE OR REPLACE FUNCTION calc_model_summary_sign_flip_signal_purity_max(p_model_summary_id TEXT) RETURNS NUMERIC AS $$
-  SELECT MAX(signal_purity) FROM _erb_tr_metrics WHERE is_sign_flip = true;
-$$ LANGUAGE sql STABLE;
-CREATE OR REPLACE FUNCTION calc_model_summary_economics_sign_flip_count(p_model_summary_id TEXT) RETURNS NUMERIC AS $$
-  SELECT COUNT(*)::numeric FROM _erb_tr_metrics WHERE study_domain = 'economics' AND is_sign_flip = true;
-$$ LANGUAGE sql STABLE;
-CREATE OR REPLACE FUNCTION calc_model_summary_avg_pooled_gap_latent_d(p_model_summary_id TEXT) RETURNS NUMERIC AS $$
-  SELECT AVG(pooled_gap) FROM _erb_tr_metrics WHERE latent_flip_potential = true;
-$$ LANGUAGE sql STABLE;
-CREATE OR REPLACE FUNCTION calc_model_summary_avg_pooled_gap_stable_d(p_model_summary_id TEXT) RETURNS NUMERIC AS $$
-  SELECT AVG(pooled_gap) FROM _erb_tr_metrics WHERE distortion_type = 'D' AND latent_flip_potential = false;
-$$ LANGUAGE sql STABLE;
-CREATE OR REPLACE FUNCTION calc_model_summary_epidemiology_avg_distortion(p_model_summary_id TEXT) RETURNS NUMERIC AS $$
-  SELECT AVG(allocation_distortion) FROM _erb_tr_metrics WHERE study_domain = 'epidemiology';
-$$ LANGUAGE sql STABLE;
-CREATE OR REPLACE FUNCTION calc_model_summary_education_avg_distortion(p_model_summary_id TEXT) RETURNS NUMERIC AS $$
-  SELECT AVG(allocation_distortion) FROM _erb_tr_metrics WHERE study_domain = 'education';
-$$ LANGUAGE sql STABLE;
-
--- loop-62 causal-role × manifest/latent aggregates
-CREATE OR REPLACE FUNCTION calc_model_summary_confounder_sign_flip_count(p_model_summary_id TEXT) RETURNS NUMERIC AS $$
-  SELECT COUNT(*)::numeric FROM _erb_tr_metrics
-  WHERE stratum_causal_role = 'confounder' AND is_sign_flip = true;
-$$ LANGUAGE sql STABLE;
-CREATE OR REPLACE FUNCTION calc_model_summary_confounder_latent_only_count(p_model_summary_id TEXT) RETURNS NUMERIC AS $$
-  SELECT COUNT(*)::numeric FROM _erb_tr_metrics
-  WHERE stratum_causal_role = 'confounder' AND is_latent_only_flip = true;
-$$ LANGUAGE sql STABLE;
-CREATE OR REPLACE FUNCTION calc_model_summary_collider_selection_count(p_model_summary_id TEXT) RETURNS NUMERIC AS $$
-  SELECT COUNT(*)::numeric FROM _erb_tr_metrics
-  WHERE stratum_causal_role IN ('collider', 'selection');
-$$ LANGUAGE sql STABLE;
-CREATE OR REPLACE FUNCTION calc_model_summary_collider_selection_manifest_count(p_model_summary_id TEXT) RETURNS NUMERIC AS $$
-  SELECT COUNT(*)::numeric FROM _erb_tr_metrics
-  WHERE stratum_causal_role IN ('collider', 'selection') AND is_sign_flip = true;
-$$ LANGUAGE sql STABLE;
-CREATE OR REPLACE FUNCTION calc_model_summary_collider_selection_latent_only_count(p_model_summary_id TEXT) RETURNS NUMERIC AS $$
-  SELECT COUNT(*)::numeric FROM _erb_tr_metrics
-  WHERE stratum_causal_role IN ('collider', 'selection') AND is_latent_only_flip = true;
-$$ LANGUAGE sql STABLE;
-
+-- ----------------------------------------------------------------------------
 -- loop-65 catalog prediction audit — CandidateStudyCatalog + CorpusCatalogSummary
+-- Genuine cross-table join the transpiler cannot express as a LOOKUP/COUNTIFS
+-- formula (joins CandidateStudyCatalog to TreatmentRankings via linked study,
+-- filtered by ingestion status). Rewritten off _erb_tr_metrics onto the live
+-- vw_treatment_rankings view.
+-- ----------------------------------------------------------------------------
 CREATE OR REPLACE FUNCTION lookup_candidate_study_catalog_observed_distortion_type(p_candidate_id TEXT) RETURNS TEXT AS $$
-  SELECT m.distortion_type
+  SELECT calc_treatment_rankings_distortion_type(m.treatment_ranking_id)
   FROM candidate_study_catalog c
-  JOIN _erb_tr_metrics m ON m.study = c.linked_study_id
+  JOIN treatment_rankings m ON m.study = c.linked_study_id
   WHERE c.candidate_id = p_candidate_id
     AND c.ingestion_status = 'imported';
 $$ LANGUAGE sql STABLE;
@@ -856,6 +327,8 @@ CREATE OR REPLACE FUNCTION calc_corpus_catalog_summary_catalog_prediction_witnes
   );
 $$ LANGUAGE sql STABLE;
 
+-- ModelSummary lookups onto CorpusCatalogSummary — transpiler cannot emit
+-- LOOKUP for a table added in the same loop.
 CREATE OR REPLACE FUNCTION calc_model_summary_type_prediction_match_count(p_model_summary_id TEXT) RETURNS INTEGER AS $$
   SELECT calc_corpus_catalog_summary_type_prediction_match_count('catalog-v1');
 $$ LANGUAGE sql STABLE;
@@ -872,27 +345,49 @@ CREATE OR REPLACE FUNCTION calc_model_summary_catalog_prediction_witness_note(p_
   SELECT calc_corpus_catalog_summary_catalog_prediction_witness_note('catalog-v1');
 $$ LANGUAGE sql STABLE;
 
+-- ----------------------------------------------------------------------------
+-- loop-49: IngestionSummary/ModelSummary LOOKUP overrides (transpiler cannot
+-- emit LOOKUP for a table added in the same loop). Live queries, no cache.
+-- ----------------------------------------------------------------------------
+CREATE OR REPLACE FUNCTION calc_model_summary_corpus_passes_ingestion_contract(p_model_summary_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT calc_ingestion_summary_ingestion_contract_passes('ingestion-v1');
+$$ LANGUAGE sql STABLE;
+
+CREATE OR REPLACE FUNCTION calc_model_summary_ingestion_witness_note(p_model_summary_id TEXT)
+RETURNS TEXT AS $$
+  SELECT calc_ingestion_summary_ingestion_witness_note('ingestion-v1');
+$$ LANGUAGE sql STABLE;
+
+-- ----------------------------------------------------------------------------
 -- loop-66 geometry-controlled domain screening
+-- HighImbalanceSignFlipThreshold is a documented exception (see the rulebook
+-- schema Description on ModelSummary.HighImbalanceSignFlipThreshold): this
+-- rulebook's formula vocabulary has no MEDIAN/PERCENTILE_CONT primitive, so
+-- the corpus-median threshold is computed here directly from the live
+-- treatment_rankings table (NOT a cache) and stored in the `raw` field.
+-- Refresh is an explicit container-level action (05b), never a silent cache.
+-- ----------------------------------------------------------------------------
 CREATE OR REPLACE FUNCTION calc_model_summary_high_imbalance_sign_flip_threshold(p_model_summary_id TEXT) RETURNS NUMERIC AS $$
-  SELECT percentile_cont(0.5) WITHIN GROUP (ORDER BY max_stratum_imbalance)
-  FROM _erb_tr_metrics
-  WHERE max_stratum_imbalance IS NOT NULL;
+  SELECT percentile_cont(0.5) WITHIN GROUP (ORDER BY calc_treatment_rankings_max_stratum_imbalance(tr.treatment_ranking_id))
+  FROM treatment_rankings tr
+  WHERE calc_treatment_rankings_max_stratum_imbalance(tr.treatment_ranking_id) IS NOT NULL;
 $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_model_summary_economics_high_imbalance_sign_flip_count(p_model_summary_id TEXT) RETURNS NUMERIC AS $$
   SELECT COUNT(*)::numeric
-  FROM _erb_tr_metrics
-  WHERE study_domain = 'economics'
-    AND is_sign_flip = TRUE
-    AND max_stratum_imbalance >= calc_model_summary_high_imbalance_sign_flip_threshold(p_model_summary_id);
+  FROM treatment_rankings tr
+  WHERE calc_treatment_rankings_study_domain(tr.treatment_ranking_id) = 'economics'
+    AND calc_treatment_rankings_is_sign_flip(tr.treatment_ranking_id) = TRUE
+    AND calc_treatment_rankings_max_stratum_imbalance(tr.treatment_ranking_id) >= calc_model_summary_high_imbalance_sign_flip_threshold(p_model_summary_id);
 $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION _domain_high_imbalance_sign_flip_rate(p_domain TEXT, p_threshold NUMERIC) RETURNS NUMERIC AS $$
-  SELECT COUNT(*) FILTER (WHERE is_sign_flip = TRUE)::numeric
+  SELECT COUNT(*) FILTER (WHERE calc_treatment_rankings_is_sign_flip(tr.treatment_ranking_id) = TRUE)::numeric
          / NULLIF(COUNT(*), 0)
-  FROM _erb_tr_metrics
-  WHERE study_domain = p_domain
-    AND max_stratum_imbalance >= p_threshold;
+  FROM treatment_rankings tr
+  WHERE calc_treatment_rankings_study_domain(tr.treatment_ranking_id) = p_domain
+    AND calc_treatment_rankings_max_stratum_imbalance(tr.treatment_ranking_id) >= p_threshold;
 $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_model_summary_epidemiology_high_imbalance_sign_flip_rate(p_model_summary_id TEXT) RETURNS NUMERIC AS $$
@@ -916,21 +411,23 @@ CREATE OR REPLACE FUNCTION calc_model_summary_sports_high_imbalance_sign_flip_ra
   );
 $$ LANGUAGE sql STABLE;
 
-CREATE OR REPLACE FUNCTION calc_model_summary_domain_flip_gap_survives_geometry_control(p_model_summary_id TEXT) RETURNS BOOLEAN AS $$
-  SELECT calc_model_summary_economics_high_imbalance_sign_flip_count(p_model_summary_id) = 0
-     AND calc_model_summary_epidemiology_high_imbalance_sign_flip_rate(p_model_summary_id) > 0.15;
-$$ LANGUAGE sql STABLE;
-
-CREATE OR REPLACE FUNCTION calc_model_summary_discovery_witness_note(p_model_summary_id TEXT) RETURNS TEXT AS $$
-  SELECT CONCAT(
-    'sweep: latentD=', calc_model_summary_latent_type_d_fraction(p_model_summary_id),
-    ' purityMax=', calc_model_summary_sign_flip_signal_purity_max(p_model_summary_id),
-    ' catalogExact=', calc_model_summary_type_prediction_match_rate(p_model_summary_id),
-    ' domainGapSurvives=', calc_model_summary_domain_flip_gap_survives_geometry_control(p_model_summary_id)
-  );
-$$ LANGUAGE sql STABLE;
-
--- loop-61 discovery findings
+-- ----------------------------------------------------------------------------
+-- loop-61 DiscoveryFindings CASE-statement dispatch.
+-- DiscoveryFindings.IsConfirmed/ObservedMetric/Evidence ARE real rulebook
+-- calculated fields (see the giant nested-IF formula on IsConfirmed in the
+-- rulebook JSON) — the transpiler's native versions of these three functions
+-- already exist in 02-create-functions.sql and are correct EXCEPT for one
+-- branch: 'H-unexplained-nonconfounder', which the rulebook formula cannot
+-- express (it needs a 3-column filtered COUNT that has no COUNTIFS
+-- equivalent across LOOKUP-chained booleans). This 02b override exists ONLY
+-- to keep the dispatch table's remaining ~25 branches in sync with the
+-- native calc_model_summary_* helper names and to rewrite the one
+-- non-expressible branch off the old _erb_tr_metrics cache onto the live
+-- vw_treatment_rankings view. If a future formula upgrade makes the
+-- H-unexplained-nonconfounder branch expressible natively, delete this
+-- entire override block — it will be 100% redundant with the native
+-- calc_discovery_findings_is_confirmed/observed_metric/evidence functions.
+-- ----------------------------------------------------------------------------
 CREATE OR REPLACE FUNCTION calc_discovery_findings_is_confirmed(p_finding_id TEXT) RETURNS BOOLEAN AS $$
   SELECT CASE (SELECT hypothesis_id FROM discovery_findings WHERE finding_id = p_finding_id)
     WHEN 'H-latent-d' THEN calc_model_summary_latent_type_d_fraction('simpsons-paradox-v1') > 0.5
@@ -949,8 +446,10 @@ CREATE OR REPLACE FUNCTION calc_discovery_findings_is_confirmed(p_finding_id TEX
                               = calc_model_summary_confounder_sign_flip_count('simpsons-paradox-v1')
                               AND calc_model_summary_explained_confounder_count('simpsons-paradox-v1') >= 10
     WHEN 'H-unexplained-nonconfounder' THEN (
-      SELECT COUNT(*)::integer FROM _erb_tr_metrics
-      WHERE is_sign_flip = TRUE AND is_paradox_explained = TRUE AND adjustment_appropriate = FALSE
+      SELECT COUNT(*)::integer FROM treatment_rankings tr
+      WHERE calc_treatment_rankings_is_sign_flip(tr.treatment_ranking_id) = TRUE
+        AND calc_treatment_rankings_is_paradox_explained(tr.treatment_ranking_id) = TRUE
+        AND calc_treatment_rankings_adjustment_appropriate(tr.treatment_ranking_id) = FALSE
     ) = 0
     WHEN 'H-catalog-exact-match' THEN calc_model_summary_type_prediction_match_rate('simpsons-paradox-v1') < 0.5
     WHEN 'H-catalog-flip-prediction' THEN calc_model_summary_sign_flip_prediction_match_rate('simpsons-paradox-v1') < 0.5
@@ -997,6 +496,7 @@ CREATE OR REPLACE FUNCTION calc_discovery_findings_is_confirmed(p_finding_id TEX
     ELSE FALSE
   END;
 $$ LANGUAGE sql STABLE;
+
 CREATE OR REPLACE FUNCTION calc_discovery_findings_observed_metric(p_finding_id TEXT) RETURNS TEXT AS $$
   SELECT CASE (SELECT hypothesis_id FROM discovery_findings WHERE finding_id = p_finding_id)
     WHEN 'H-latent-d' THEN CONCAT('fraction=', calc_model_summary_latent_type_d_fraction('simpsons-paradox-v1'))
@@ -1014,8 +514,10 @@ CREATE OR REPLACE FUNCTION calc_discovery_findings_observed_metric(p_finding_id 
     WHEN 'H-explained-confounder' THEN CONCAT('ExplainedConfounderCount=', calc_model_summary_explained_confounder_count('simpsons-paradox-v1'),
                                               ' ConfounderSignFlipCount=', calc_model_summary_confounder_sign_flip_count('simpsons-paradox-v1'))
     WHEN 'H-unexplained-nonconfounder' THEN CONCAT('ContestedOrMediatorExplainedCount=',
-      (SELECT COUNT(*) FROM _erb_tr_metrics
-       WHERE is_sign_flip = TRUE AND is_paradox_explained = TRUE AND adjustment_appropriate = FALSE))
+      (SELECT COUNT(*) FROM treatment_rankings tr
+       WHERE calc_treatment_rankings_is_sign_flip(tr.treatment_ranking_id) = TRUE
+         AND calc_treatment_rankings_is_paradox_explained(tr.treatment_ranking_id) = TRUE
+         AND calc_treatment_rankings_adjustment_appropriate(tr.treatment_ranking_id) = FALSE))
     WHEN 'H-catalog-exact-match' THEN CONCAT('exactRate=', calc_model_summary_type_prediction_match_rate('simpsons-paradox-v1'),
                                               ' (', calc_model_summary_type_prediction_match_count('simpsons-paradox-v1'),
                                               '/', calc_corpus_catalog_summary_imported_count('catalog-v1'), ')')
@@ -1070,6 +572,7 @@ CREATE OR REPLACE FUNCTION calc_discovery_findings_observed_metric(p_finding_id 
     ELSE ''
   END;
 $$ LANGUAGE sql STABLE;
+
 CREATE OR REPLACE FUNCTION calc_discovery_findings_evidence(p_finding_id TEXT) RETURNS TEXT AS $$
   SELECT CASE
     WHEN calc_discovery_findings_is_confirmed(p_finding_id) THEN
@@ -1080,150 +583,19 @@ CREATE OR REPLACE FUNCTION calc_discovery_findings_evidence(p_finding_id TEXT) R
   END;
 $$ LANGUAGE sql STABLE;
 
--- SyntheticPhase calc_* overrides
-CREATE OR REPLACE FUNCTION calc_synthetic_phase_name(p_phase_id TEXT) RETURNS TEXT AS $$
-  SELECT name FROM _erb_sp_metrics WHERE phase_id = p_phase_id;
-$$ LANGUAGE sql STABLE;
-CREATE OR REPLACE FUNCTION calc_synthetic_phase_phase_s1_total(p_phase_id TEXT) RETURNS NUMERIC AS $$
-  SELECT phase_s1_total FROM _erb_sp_metrics WHERE phase_id = p_phase_id;
-$$ LANGUAGE sql STABLE;
-CREATE OR REPLACE FUNCTION calc_synthetic_phase_phase_na1(p_phase_id TEXT) RETURNS NUMERIC AS $$
-  SELECT phase_na1 FROM _erb_sp_metrics WHERE phase_id = p_phase_id;
-$$ LANGUAGE sql STABLE;
-CREATE OR REPLACE FUNCTION calc_synthetic_phase_phase_nb1(p_phase_id TEXT) RETURNS NUMERIC AS $$
-  SELECT phase_nb1 FROM _erb_sp_metrics WHERE phase_id = p_phase_id;
-$$ LANGUAGE sql STABLE;
-CREATE OR REPLACE FUNCTION calc_synthetic_phase_phase_na2(p_phase_id TEXT) RETURNS NUMERIC AS $$
-  SELECT phase_na2 FROM _erb_sp_metrics WHERE phase_id = p_phase_id;
-$$ LANGUAGE sql STABLE;
-CREATE OR REPLACE FUNCTION calc_synthetic_phase_phase_nb2(p_phase_id TEXT) RETURNS NUMERIC AS $$
-  SELECT phase_nb2 FROM _erb_sp_metrics WHERE phase_id = p_phase_id;
-$$ LANGUAGE sql STABLE;
-CREATE OR REPLACE FUNCTION calc_synthetic_phase_phase_rate_a1(p_phase_id TEXT) RETURNS NUMERIC AS $$
-  SELECT phase_rate_a1 FROM _erb_sp_metrics WHERE phase_id = p_phase_id;
-$$ LANGUAGE sql STABLE;
-CREATE OR REPLACE FUNCTION calc_synthetic_phase_phase_rate_b1(p_phase_id TEXT) RETURNS NUMERIC AS $$
-  SELECT phase_rate_b1 FROM _erb_sp_metrics WHERE phase_id = p_phase_id;
-$$ LANGUAGE sql STABLE;
-CREATE OR REPLACE FUNCTION calc_synthetic_phase_phase_rate_a2(p_phase_id TEXT) RETURNS NUMERIC AS $$
-  SELECT phase_rate_a2 FROM _erb_sp_metrics WHERE phase_id = p_phase_id;
-$$ LANGUAGE sql STABLE;
-CREATE OR REPLACE FUNCTION calc_synthetic_phase_phase_rate_b2(p_phase_id TEXT) RETURNS NUMERIC AS $$
-  SELECT phase_rate_b2 FROM _erb_sp_metrics WHERE phase_id = p_phase_id;
-$$ LANGUAGE sql STABLE;
-CREATE OR REPLACE FUNCTION calc_synthetic_phase_phase_pooled_rate_a(p_phase_id TEXT) RETURNS NUMERIC AS $$
-  SELECT phase_pooled_rate_a FROM _erb_sp_metrics WHERE phase_id = p_phase_id;
-$$ LANGUAGE sql STABLE;
-CREATE OR REPLACE FUNCTION calc_synthetic_phase_phase_pooled_rate_b(p_phase_id TEXT) RETURNS NUMERIC AS $$
-  SELECT phase_pooled_rate_b FROM _erb_sp_metrics WHERE phase_id = p_phase_id;
-$$ LANGUAGE sql STABLE;
-CREATE OR REPLACE FUNCTION calc_synthetic_phase_phase_signed_pooled_gap(p_phase_id TEXT) RETURNS NUMERIC AS $$
-  SELECT phase_signed_pooled_gap FROM _erb_sp_metrics WHERE phase_id = p_phase_id;
-$$ LANGUAGE sql STABLE;
-CREATE OR REPLACE FUNCTION calc_synthetic_phase_phase_corrected_gap(p_phase_id TEXT) RETURNS NUMERIC AS $$
-  SELECT phase_corrected_gap FROM _erb_sp_metrics WHERE phase_id = p_phase_id;
-$$ LANGUAGE sql STABLE;
-CREATE OR REPLACE FUNCTION calc_synthetic_phase_phase_strata_won_by_loser(p_phase_id TEXT) RETURNS NUMERIC AS $$
-  SELECT phase_strata_won_by_loser FROM _erb_sp_metrics WHERE phase_id = p_phase_id;
-$$ LANGUAGE sql STABLE;
-CREATE OR REPLACE FUNCTION calc_synthetic_phase_phase_reversal_intensity(p_phase_id TEXT) RETURNS NUMERIC AS $$
-  SELECT phase_reversal_intensity FROM _erb_sp_metrics WHERE phase_id = p_phase_id;
-$$ LANGUAGE sql STABLE;
-CREATE OR REPLACE FUNCTION calc_synthetic_phase_phase_is_sign_flip(p_phase_id TEXT) RETURNS BOOLEAN AS $$
-  SELECT phase_is_sign_flip FROM _erb_sp_metrics WHERE phase_id = p_phase_id;
-$$ LANGUAGE sql STABLE;
-CREATE OR REPLACE FUNCTION calc_synthetic_phase_phase_allocation_distortion(p_phase_id TEXT) RETURNS NUMERIC AS $$
-  SELECT phase_allocation_distortion FROM _erb_sp_metrics WHERE phase_id = p_phase_id;
-$$ LANGUAGE sql STABLE;
-CREATE OR REPLACE FUNCTION calc_synthetic_phase_phase_distortion_type(p_phase_id TEXT) RETURNS TEXT AS $$
-  SELECT phase_distortion_type FROM _erb_sp_metrics WHERE phase_id = p_phase_id;
-$$ LANGUAGE sql STABLE;
+-- ----------------------------------------------------------------------------
+-- loop-78 ModelSummary rollup (expansion wave 3 supersession audit)
+-- CorpusPatternSupersededFailCount / ExpansionWave3DiscoveryNote are now real
+-- native calculated fields on ModelSummary (loop-90) — see
+-- 02-create-functions.sql. Nothing left to override here.
+-- ----------------------------------------------------------------------------
 
--- loop-68/70: COUNTIFS numeric comparators (">0.3") do not transpile — use metrics cache predicates
-CREATE OR REPLACE FUNCTION calc_model_summary_sweep_fragile_count(p_model_summary_id TEXT)
-RETURNS INTEGER AS $$
-  SELECT COUNT(*)::integer FROM _erb_tr_metrics WHERE is_sweep_fragile = true;
-$$ LANGUAGE sql STABLE;
-
-CREATE OR REPLACE FUNCTION calc_model_summary_unanimous_sign_flip_count(p_model_summary_id TEXT)
-RETURNS INTEGER AS $$
-  SELECT COUNT(*)::integer FROM _erb_tr_metrics
-  WHERE is_sign_flip = true AND is_stratum_unanimous = true;
-$$ LANGUAGE sql STABLE;
-
--- loop-72: domain profile rollup metrics
-CREATE OR REPLACE FUNCTION calc_model_summary_education_type_d_count(p_model_summary_id TEXT)
-RETURNS INTEGER AS $$
-  SELECT COUNT(*)::integer FROM _erb_tr_metrics WHERE study_domain = 'education' AND distortion_type = 'D';
-$$ LANGUAGE sql STABLE;
-CREATE OR REPLACE FUNCTION calc_model_summary_education_latent_d_count(p_model_summary_id TEXT)
-RETURNS INTEGER AS $$
-  SELECT COUNT(*)::integer FROM _erb_tr_metrics
-  WHERE study_domain = 'education' AND distortion_type = 'D' AND latent_flip_potential = true;
-$$ LANGUAGE sql STABLE;
-CREATE OR REPLACE FUNCTION calc_model_summary_education_latent_fraction(p_model_summary_id TEXT)
-RETURNS NUMERIC AS $$
-  SELECT COUNT(*) FILTER (WHERE latent_flip_potential = true)::numeric / NULLIF(COUNT(*), 0)
-  FROM _erb_tr_metrics WHERE study_domain = 'education' AND distortion_type = 'D';
-$$ LANGUAGE sql STABLE;
-CREATE OR REPLACE FUNCTION calc_model_summary_sports_type_d_count(p_model_summary_id TEXT)
-RETURNS INTEGER AS $$
-  SELECT COUNT(*)::integer FROM _erb_tr_metrics WHERE study_domain = 'sports' AND distortion_type = 'D';
-$$ LANGUAGE sql STABLE;
-CREATE OR REPLACE FUNCTION calc_model_summary_sports_latent_d_count(p_model_summary_id TEXT)
-RETURNS INTEGER AS $$
-  SELECT COUNT(*)::integer FROM _erb_tr_metrics
-  WHERE study_domain = 'sports' AND distortion_type = 'D' AND latent_flip_potential = true;
-$$ LANGUAGE sql STABLE;
-CREATE OR REPLACE FUNCTION calc_model_summary_sports_latent_fraction(p_model_summary_id TEXT)
-RETURNS NUMERIC AS $$
-  SELECT COUNT(*) FILTER (WHERE latent_flip_potential = true)::numeric / NULLIF(COUNT(*), 0)
-  FROM _erb_tr_metrics WHERE study_domain = 'sports' AND distortion_type = 'D';
-$$ LANGUAGE sql STABLE;
-CREATE OR REPLACE FUNCTION calc_model_summary_economics_study_count(p_model_summary_id TEXT)
-RETURNS INTEGER AS $$
-  SELECT COUNT(*)::integer FROM studies WHERE domain = 'economics' AND is_synthetic = false;
-$$ LANGUAGE sql STABLE;
-CREATE OR REPLACE FUNCTION calc_model_summary_economics_sign_flip_rate(p_model_summary_id TEXT)
-RETURNS NUMERIC AS $$
-  SELECT calc_model_summary_economics_sign_flip_count(p_model_summary_id)::numeric
-         / NULLIF(calc_model_summary_economics_study_count(p_model_summary_id), 0);
-$$ LANGUAGE sql STABLE;
-CREATE OR REPLACE FUNCTION calc_model_summary_expansion_wave2_study_count(p_model_summary_id TEXT)
-RETURNS INTEGER AS $$
-  SELECT COUNT(*)::integer FROM candidate_study_catalog
-  WHERE expansion_wave = 'expansion-wave-2' AND ingestion_status = 'imported';
-$$ LANGUAGE sql STABLE;
-
--- ============================================================================
--- Loop-78 ModelSummary rollup (expansion wave 3 supersession audit)
--- ============================================================================
-CREATE OR REPLACE FUNCTION calc_model_summary_corpus_pattern_superseded_fail_count(p_model_summary_id TEXT)
-RETURNS INTEGER AS $$
-  SELECT COUNT(*)::integer
-  FROM vw_discovery_findings
-  WHERE hypothesis_id IN (
-    'H-econ-zero', 'H-domain-dist', 'H-catalog-flip-prediction',
-    'H-domain-flip-geometry-controlled', 'H-econ-encoding-selection', 'H-domain-profiles-stable'
-  )
-  AND is_confirmed = FALSE;
-$$ LANGUAGE sql STABLE;
-
-CREATE OR REPLACE FUNCTION calc_model_summary_expansion_wave3_discovery_note(p_model_summary_id TEXT)
-RETURNS TEXT AS $$
-  SELECT CONCAT(
-    'superseded=', calc_model_summary_corpus_pattern_superseded_fail_count(p_model_summary_id),
-    '; econFlips=', calc_model_summary_economics_sign_flip_count(p_model_summary_id),
-    '; flipPred=', calc_model_summary_sign_flip_prediction_match_rate(p_model_summary_id),
-    '; catalogExact=', calc_model_summary_type_prediction_match_rate(p_model_summary_id),
-    '; theorems=', calc_model_summary_theorem_count(p_model_summary_id)
-  );
-$$ LANGUAGE sql STABLE;
-
--- ============================================================================
+-- ----------------------------------------------------------------------------
 -- Theorem wave ModelSummary fixes (loops 73-76)
--- Transpiler emits broken MAX/COUNTIFS for sweep rollup and explained false-positive sum.
--- ============================================================================
+-- Transpiler emits broken MAX/COUNTIFS for the sweep-corrected-gap-range
+-- rollup and the explained-false-positive sum; these are genuine
+-- cross-table aggregations the native transpiler cannot express.
+-- ----------------------------------------------------------------------------
 CREATE OR REPLACE FUNCTION calc_model_summary_max_study_sweep_corrected_gap_range(p_model_summary_id TEXT)
 RETURNS NUMERIC AS $$
   SELECT COALESCE(MAX(calc_sweep_study_summary_sweep_corrected_gap_range(sweep_study_id)), 0)::numeric
@@ -1237,18 +609,38 @@ RETURNS INTEGER AS $$
   WHERE calc_sweep_study_summary_sweep_corrected_gap_range(sweep_study_id) >= 0.0001;
 $$ LANGUAGE sql STABLE;
 
+-- StratumCausalRole: LOOKUP(Study, StratumVariables[Study], StratumVariables[CausalRole])
+-- (transpiler quota gap for tables introduced in an earlier loop than this
+-- lookup field). Needed below by calc_model_summary_false_positive_explained_count
+-- and by vw_treatment_rankings's presentation column in 03b.
+CREATE OR REPLACE FUNCTION calc_treatment_rankings_stratum_causal_role(p_treatment_ranking_id TEXT) RETURNS TEXT AS $$
+  SELECT sv.causal_role
+  FROM treatment_rankings tr
+  JOIN stratum_variables sv ON sv.study = tr.study
+  WHERE tr.treatment_ranking_id = p_treatment_ranking_id
+  LIMIT 1;
+$$ LANGUAGE sql STABLE;
+
 CREATE OR REPLACE FUNCTION calc_model_summary_false_positive_explained_count(p_model_summary_id TEXT)
 RETURNS INTEGER AS $$
   SELECT (
-    (SELECT COUNT(*) FROM _erb_tr_metrics WHERE is_paradox_explained = TRUE AND is_sign_flip = FALSE)
+    (SELECT COUNT(*) FROM treatment_rankings tr
+     WHERE calc_treatment_rankings_is_paradox_explained(tr.treatment_ranking_id) = TRUE
+       AND calc_treatment_rankings_is_sign_flip(tr.treatment_ranking_id) = FALSE)
     +
-    (SELECT COUNT(*) FROM _erb_tr_metrics
-     WHERE is_paradox_explained = TRUE AND is_sign_flip = TRUE AND stratum_causal_role <> 'confounder')
+    (SELECT COUNT(*) FROM treatment_rankings tr
+     WHERE calc_treatment_rankings_is_paradox_explained(tr.treatment_ranking_id) = TRUE
+       AND calc_treatment_rankings_is_sign_flip(tr.treatment_ranking_id) = TRUE
+       AND calc_treatment_rankings_stratum_causal_role(tr.treatment_ranking_id) <> 'confounder')
   )::integer;
 $$ LANGUAGE sql STABLE;
 
 -- ============================================================================
--- Loop-81: ConfounderIdentity cluster witness infrastructure
+-- Loop-81: ConfounderIdentity cluster witness infrastructure.
+-- IdentityClusterSummaries / IdentityDomainCells are first-class rulebook
+-- tables (principled materialization per CLAUDE.md — an N-way join over a
+-- sealed set of stratum-variable identity maps, refreshed as an explicit
+-- container-level action, not a silent bespoke cache). Kept as-is.
 -- ============================================================================
 CREATE OR REPLACE FUNCTION refresh_identity_cluster_summaries()
 RETURNS void
@@ -1267,7 +659,7 @@ BEGIN
     FROM stratum_variable_identity_maps m
     JOIN stratum_variables sv ON sv.stratum_variable_id = m.stratum_variable
     JOIN studies s ON s.study_id = sv.study
-    LEFT JOIN _erb_tr_metrics tr ON tr.study = s.study_id
+    LEFT JOIN vw_treatment_rankings tr ON tr.study = s.study_id
     WHERE COALESCE(s.is_synthetic, false) = false
   ),
   agg AS (
@@ -1374,7 +766,8 @@ RETURNS TEXT AS $$
 $$ LANGUAGE sql STABLE;
 
 -- Loop-82: refresh_identity_domain_cells()
--- Populates IdentityDomainCells counts from live joins, same pattern as refresh_identity_cluster_summaries.
+-- Populates IdentityDomainCells counts from live joins, same pattern as
+-- refresh_identity_cluster_summaries() — principled materialization, kept.
 CREATE OR REPLACE FUNCTION refresh_identity_domain_cells()
 RETURNS void
 LANGUAGE plpgsql AS $$
@@ -1391,7 +784,7 @@ BEGIN
     FROM stratum_variable_identity_maps m
     JOIN stratum_variables sv ON sv.stratum_variable_id = m.stratum_variable
     JOIN studies s ON s.study_id = sv.study
-    LEFT JOIN _erb_tr_metrics tr ON tr.study = s.study_id
+    LEFT JOIN vw_treatment_rankings tr ON tr.study = s.study_id
     WHERE COALESCE(s.is_synthetic, false) = false
   ),
   agg AS (
@@ -1453,11 +846,9 @@ $$ LANGUAGE sql STABLE;
 
 -- Loop-82/84: ModelSummary LOOKUP overrides for IdentityDomainCells and IdentityClusterSummaries.
 -- The transpiler emits NULL stubs for LOOKUP against tables added in the same loop.
-
 CREATE OR REPLACE FUNCTION calc_model_summary_severity_medicine_manifest_flip_rate(p_model_summary_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT manifest_flip_rate FROM vw_identity_domain_cells
-  WHERE cell_id = 'cell-id-disease-severity-x-medicine';
+  SELECT calc_identity_domain_cells_manifest_flip_rate('cell-id-disease-severity-x-medicine');
 $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_model_summary_severity_epi_manifest_flip_count(p_model_summary_id TEXT)
@@ -1485,8 +876,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_model_summary_collider_identity_manifest_flip_rate(p_model_summary_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT manifest_flip_rate FROM vw_identity_cluster_summaries
-  WHERE identity_cluster_id = 'cluster-id-collider-proxy';
+  SELECT calc_identity_cluster_summaries_manifest_flip_rate('cluster-id-collider-proxy');
 $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_model_summary_geographic_type_d_fraction(p_model_summary_id TEXT)

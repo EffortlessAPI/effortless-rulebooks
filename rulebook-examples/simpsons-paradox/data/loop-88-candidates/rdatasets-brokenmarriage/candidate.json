@@ -1,0 +1,22 @@
+{
+  "candidate_id": "35",
+  "slug": "rdatasets-brokenmarriage",
+  "dataset_name": "BrokenMarriage",
+  "description": "Broken Marriage Data",
+  "domain": "Categorical Data / Mixed",
+  "source": "Rdatasets (R package: vcd)",
+  "n_rows": "20",
+  "stratifying_columns_hint": "3 factor / 2 binary cols",
+  "download_url": "https://vincentarelbundock.github.io/Rdatasets/csv/vcd/BrokenMarriage.csv",
+  "documentation_url": "https://vincentarelbundock.github.io/Rdatasets/doc/vcd/BrokenMarriage.html",
+  "status": "needs-data",
+  "download_notes": "HTTP 200 OK",
+  "skip_reason": null,
+  "notes": [],
+  "proposed_study_id": "rdatasets-brokenmarriage-1989",
+  "proposed_title": "Broken Marriage by Gender and Social Rank",
+  "binary_outcome": "broken",
+  "treatment_variable": "gender",
+  "stratum_variable": "rank",
+  "encoding_note": "Already aggregated: Freq=Cases when broken=yes gives Successes, Freq when broken=no gives failures. Sum Freq where broken='yes' / total Freq per (gender \u00d7 rank) cell. 20 rows = 2 genders \u00d7 5 rank levels \u00d7 2 outcomes."
+}

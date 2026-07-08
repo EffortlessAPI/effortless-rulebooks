@@ -1,0 +1,16 @@
+{
+  "candidate_id": "147",
+  "slug": "rdatasets-nba-shooting-distance",
+  "dataset_name": "nba_shooting_distance",
+  "description": "NBA Shot Chart Data by Distance Category & Shot Type",
+  "domain": "Sports Analytics",
+  "source": "NBA Stats API (verified)",
+  "n_rows": "500000+",
+  "stratifying_columns_hint": "distance_category, shot_type, player_position",
+  "download_url": "https://stats.nba.com/leaders/",
+  "documentation_url": "https://stats.nba.com/",
+  "status": "portal-required",
+  "skip_reason": null,
+  "notes": [],
+  "portal_reason": "NBA Stats API requires JavaScript; GitHub mirrors rate-limited"
+}

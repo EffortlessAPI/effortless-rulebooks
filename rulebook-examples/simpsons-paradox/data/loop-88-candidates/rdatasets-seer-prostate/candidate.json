@@ -1,0 +1,16 @@
+{
+  "candidate_id": "131",
+  "slug": "rdatasets-seer-prostate",
+  "dataset_name": "seer_prostate",
+  "description": "SEER Prostate Cancer Treatment (Surgery vs Radiation) by Stage & Age",
+  "domain": "Medicine/Clinical",
+  "source": "NCI SEER Program (verified)",
+  "n_rows": "500000+",
+  "stratifying_columns_hint": "cancer_stage, age_group, treatment_type",
+  "download_url": "https://seer.cancer.gov/data/",
+  "documentation_url": "https://seer.cancer.gov/",
+  "status": "portal-required",
+  "skip_reason": null,
+  "notes": [],
+  "portal_reason": "NCI SEER requires SEER*Stat software registration"
+}

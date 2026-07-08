@@ -1,0 +1,85 @@
+{
+  "StudyId": "blood-pressure-smoking-weight-1990",
+  "Title": "Systolic Hypertension by Smoking Status and Weight Category (Stat2 Dataset, ~1990)",
+  "Source": "Stat2Data R package: Blood1 dataset",
+  "SourceUrl": "https://vincentarelbundock.github.io/Rdatasets/doc/Stat2Data/Blood1.html",
+  "PublicationYear": 1990,
+  "Domain": "medicine",
+  "IsSynthetic": false,
+  "IsControlStudy": true,
+  "ControlDomain": "nutrition",
+  "TraditionId": "tradition-dag",
+  "PrimaryResearcherId": "researcher-pearl",
+  "confounding_variable": "weight_category",
+  "causal_role": "confounder",
+  "note": "Smoking and obesity both elevate hypertension risk; within each weight stratum the smoker hypertension rate exceeds nonsmoker \u2014 no reversal expected as weight doesn't selectively concentrate smokers in the healthiest stratum.",
+  "treatments": [
+    {
+      "TreatmentLabel": "Nonsmoker",
+      "Description": "Nonsmoker",
+      "TotalCases": 234,
+      "TotalSuccesses": 108
+    },
+    {
+      "TreatmentLabel": "Smoker",
+      "Description": "Smoker",
+      "TotalCases": 266,
+      "TotalSuccesses": 142
+    }
+  ],
+  "strata": [
+    {
+      "StratumLabel": "Normal",
+      "Description": "Normal weight category",
+      "TotalCases": 187
+    },
+    {
+      "StratumLabel": "Overweight",
+      "Description": "Overweight weight category",
+      "TotalCases": 109
+    },
+    {
+      "StratumLabel": "Obese",
+      "Description": "Obese weight category",
+      "TotalCases": 204
+    }
+  ],
+  "cells": [
+    {
+      "StratumLabel": "Normal",
+      "TreatmentLabel": "Nonsmoker",
+      "Cases": 97,
+      "Successes": 39
+    },
+    {
+      "StratumLabel": "Normal",
+      "TreatmentLabel": "Smoker",
+      "Cases": 90,
+      "Successes": 42
+    },
+    {
+      "StratumLabel": "Overweight",
+      "TreatmentLabel": "Nonsmoker",
+      "Cases": 59,
+      "Successes": 22
+    },
+    {
+      "StratumLabel": "Overweight",
+      "TreatmentLabel": "Smoker",
+      "Cases": 50,
+      "Successes": 24
+    },
+    {
+      "StratumLabel": "Obese",
+      "TreatmentLabel": "Nonsmoker",
+      "Cases": 78,
+      "Successes": 47
+    },
+    {
+      "StratumLabel": "Obese",
+      "TreatmentLabel": "Smoker",
+      "Cases": 126,
+      "Successes": 76
+    }
+  ]
+}

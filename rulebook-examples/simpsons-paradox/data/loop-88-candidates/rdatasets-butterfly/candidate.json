@@ -1,0 +1,16 @@
+{
+  "candidate_id": "38",
+  "slug": "rdatasets-butterfly",
+  "dataset_name": "Butterfly",
+  "description": "Butterfly Species in Malaya",
+  "domain": "Categorical Data / Mixed",
+  "source": "Rdatasets (R package: vcd)",
+  "n_rows": "24",
+  "stratifying_columns_hint": "1 factor / 0 binary cols",
+  "download_url": "https://vincentarelbundock.github.io/Rdatasets/csv/vcd/Butterfly.csv",
+  "documentation_url": "https://vincentarelbundock.github.io/Rdatasets/doc/vcd/Butterfly.html",
+  "status": "skip",
+  "skip_reason": "This is a token frequency distribution dataset (nTokens vs Freq) \u2014 a linguistic count table with no binary outcome, no treatment/exposure variable, and no stratum variable. It cannot be aggregated into Success/Cases cells.",
+  "download_notes": "HTTP 200 OK",
+  "notes": []
+}

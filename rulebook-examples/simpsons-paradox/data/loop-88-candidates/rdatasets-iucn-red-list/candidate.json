@@ -1,0 +1,16 @@
+{
+  "candidate_id": "153",
+  "slug": "rdatasets-iucn-red-list",
+  "dataset_name": "iucn_red_list",
+  "description": "IUCN Red List Species Extinction Risk by Habitat & Conservation Level",
+  "domain": "Journalism/Social Data",
+  "source": "IUCN Red List (verified)",
+  "n_rows": "150000+",
+  "stratifying_columns_hint": "habitat_type, conservation_level, taxonomic_group",
+  "download_url": "https://www.iucnredlist.org/resources/grid",
+  "documentation_url": "https://www.iucnredlist.org/",
+  "status": "portal-required",
+  "skip_reason": null,
+  "notes": [],
+  "portal_reason": "IUCN API requires token and Cloudflare challenge"
+}

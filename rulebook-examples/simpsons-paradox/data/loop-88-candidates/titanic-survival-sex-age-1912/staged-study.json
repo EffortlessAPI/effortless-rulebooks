@@ -1,0 +1,68 @@
+{
+  "StudyId": "titanic-survival-sex-age-1912",
+  "Title": "Titanic Survival by Sex and Age Group (Adult vs Child, 1912)",
+  "Source": "Stat2Data R package: Titanic dataset",
+  "SourceUrl": "https://vincentarelbundock.github.io/Rdatasets/doc/Stat2Data/Titanic.html",
+  "PublicationYear": 1912,
+  "Domain": "historical-social-science",
+  "IsSynthetic": false,
+  "IsControlStudy": true,
+  "ControlDomain": "historical-social-science",
+  "TraditionId": "tradition-dag",
+  "PrimaryResearcherId": "researcher-pearl",
+  "confounding_variable": "age_group",
+  "causal_role": "confounder",
+  "note": "Females survive at higher rates than males within both adult and child strata; age group affects composition but does not reverse the sex-survival advantage.",
+  "treatments": [
+    {
+      "TreatmentLabel": "Female",
+      "Description": "Female passengers",
+      "TotalCases": 288,
+      "TotalSuccesses": 217
+    },
+    {
+      "TreatmentLabel": "Male",
+      "Description": "Male passengers",
+      "TotalCases": 468,
+      "TotalSuccesses": 96
+    }
+  ],
+  "strata": [
+    {
+      "StratumLabel": "Adult",
+      "Description": "Adult passengers (< 16 = child)",
+      "TotalCases": 683
+    },
+    {
+      "StratumLabel": "Child",
+      "Description": "Child passengers (< 16 = child)",
+      "TotalCases": 73
+    }
+  ],
+  "cells": [
+    {
+      "StratumLabel": "Adult",
+      "TreatmentLabel": "Female",
+      "Cases": 251,
+      "Successes": 193
+    },
+    {
+      "StratumLabel": "Adult",
+      "TreatmentLabel": "Male",
+      "Cases": 432,
+      "Successes": 73
+    },
+    {
+      "StratumLabel": "Child",
+      "TreatmentLabel": "Female",
+      "Cases": 37,
+      "Successes": 24
+    },
+    {
+      "StratumLabel": "Child",
+      "TreatmentLabel": "Male",
+      "Cases": 36,
+      "Successes": 23
+    }
+  ]
+}

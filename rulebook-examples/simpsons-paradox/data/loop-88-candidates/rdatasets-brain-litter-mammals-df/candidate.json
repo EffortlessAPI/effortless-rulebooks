@@ -1,0 +1,16 @@
+{
+  "candidate_id": "26",
+  "slug": "rdatasets-brain-litter-mammals-df",
+  "dataset_name": "brain_litter_mammals_df",
+  "description": "Mammal Brain Size and Litter Size Relationship",
+  "domain": "Medicine/Clinical",
+  "source": "Rdatasets (R package: NeuroDataSets)",
+  "n_rows": "96",
+  "stratifying_columns_hint": "1 factor / 1 binary cols",
+  "download_url": "https://vincentarelbundock.github.io/Rdatasets/csv/NeuroDataSets/brain_litter_mammals_df.csv",
+  "documentation_url": "https://vincentarelbundock.github.io/Rdatasets/doc/NeuroDataSets/brain_litter_mammals_df.html",
+  "status": "skip",
+  "skip_reason": "Dataset has only two columns: BrainSize (continuous) and LitterSize (Small/Large categorical). There is no binary outcome variable \u2014 BrainSize is a continuous measurement. No treatment/exposure grouping either. Cannot be aggregated into Successes/Cases counts.",
+  "download_notes": "HTTP 200 OK",
+  "notes": []
+}

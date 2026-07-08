@@ -1,0 +1,30 @@
+{
+  "StudyId": "uci-student-math-studytime-school-2008",
+  "Title": "UCI Student Math Performance: Study Time and Pass Rate by School (Portugal, 2008)",
+  "Source": "Cortez P, Silva A (2008). Using Data Mining to Predict Secondary School Student Performance. EUROSIS. UCI ML Repository #320",
+  "SourceUrl": "https://archive.uci.edu/dataset/320/student+performance",
+  "PublicationYear": 2008,
+  "Domain": "education",
+  "IsSynthetic": false,
+  "IsControlStudy": true,
+  "ControlDomain": "education-k12",
+  "TraditionId": "tradition-dag",
+  "PrimaryResearcherId": "researcher-pearl",
+  "confounding_variable": "school",
+  "causal_role": "allocation",
+  "note": "High study time shows higher pass rates in both GP (73.8%) and MS (87.5%) schools, so no Simpson's paradox reversal is expected; the aggregate advantage of high study time is consistent across strata.",
+  "treatments": [
+    {"TreatmentLabel": "High (3-4h)", "Description": "High study time: 3=5-10h or 4=>10h per week", "TotalCases": 92, "TotalSuccesses": 69},
+    {"TreatmentLabel": "Low (1-2h)", "Description": "Low study time: 1=<2h or 2=2-5h per week", "TotalCases": 303, "TotalSuccesses": 196}
+  ],
+  "strata": [
+    {"StratumLabel": "GP", "Description": "Gabriel Pereira school", "TotalCases": 349},
+    {"StratumLabel": "MS", "Description": "Mousinho da Silveira school", "TotalCases": 46}
+  ],
+  "cells": [
+    {"StratumLabel": "GP", "TreatmentLabel": "High (3-4h)", "Cases": 84, "Successes": 62},
+    {"StratumLabel": "GP", "TreatmentLabel": "Low (1-2h)", "Cases": 265, "Successes": 174},
+    {"StratumLabel": "MS", "TreatmentLabel": "High (3-4h)", "Cases": 8, "Successes": 7},
+    {"StratumLabel": "MS", "TreatmentLabel": "Low (1-2h)", "Cases": 38, "Successes": 22}
+  ]
+}

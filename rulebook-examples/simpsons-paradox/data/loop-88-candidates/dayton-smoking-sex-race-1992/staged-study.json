@@ -1,0 +1,68 @@
+{
+  "StudyId": "dayton-smoking-sex-race-1992",
+  "Title": "Dayton Survey: Cigarette Smoking by Sex and Race (Ohio Youth Survey 1992)",
+  "Source": "vcdExtra R package: DaytonSurvey dataset",
+  "SourceUrl": "https://vincentarelbundock.github.io/Rdatasets/doc/vcdExtra/DaytonSurvey.html",
+  "PublicationYear": 1992,
+  "Domain": "social-science",
+  "IsSynthetic": false,
+  "IsControlStudy": true,
+  "ControlDomain": "public-health-epidemiology",
+  "TraditionId": "tradition-dag",
+  "PrimaryResearcherId": "researcher-pearl",
+  "confounding_variable": "race",
+  "causal_role": "confounder",
+  "note": "Male smoking rates exceed female within each race stratum; racial composition differences don't reverse the sex-smoking relationship.",
+  "treatments": [
+    {
+      "TreatmentLabel": "Female",
+      "Description": "Female youth respondents",
+      "TotalCases": 1120,
+      "TotalSuccesses": 738
+    },
+    {
+      "TreatmentLabel": "Male",
+      "Description": "Male youth respondents",
+      "TotalCases": 1156,
+      "TotalSuccesses": 757
+    }
+  ],
+  "strata": [
+    {
+      "StratumLabel": "Other",
+      "Description": "Other respondents",
+      "TotalCases": 174
+    },
+    {
+      "StratumLabel": "White",
+      "Description": "White respondents",
+      "TotalCases": 2102
+    }
+  ],
+  "cells": [
+    {
+      "StratumLabel": "Other",
+      "TreatmentLabel": "Female",
+      "Cases": 80,
+      "Successes": 47
+    },
+    {
+      "StratumLabel": "Other",
+      "TreatmentLabel": "Male",
+      "Cases": 94,
+      "Successes": 58
+    },
+    {
+      "StratumLabel": "White",
+      "TreatmentLabel": "Female",
+      "Cases": 1040,
+      "Successes": 691
+    },
+    {
+      "StratumLabel": "White",
+      "TreatmentLabel": "Male",
+      "Cases": 1062,
+      "Successes": 699
+    }
+  ]
+}

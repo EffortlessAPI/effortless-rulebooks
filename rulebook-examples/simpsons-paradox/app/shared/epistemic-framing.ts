@@ -10,14 +10,73 @@ export const SWEEP_CONTRACT =
 export const SCOPE_BOUNDARY_TITLE = 'Scope boundary (conc-09)';
 
 export const SCOPE_BOUNDARY_TEXT =
-  'The instrument classifies allocation geometry only. Causal interpretation is external, ' +
-  'gated by AdjustmentAppropriate. Berkeley: highest AllocationDistortion (0.193) but ' +
-  'CausalRole=contested — geometry and confounding are not the same thing.';
+  'This rulebook is a high-fidelity measurement instrument, not an oracle of truth. It classifies ' +
+  'allocation geometry precisely and repeatably — sign flips, distortion ratios, signal purity — the ' +
+  'same way a thermometer measures temperature. It does not adjudicate causal truth. Causal ' +
+  'interpretation is external, gated by AdjustmentAppropriate, and rests on CausalRole, the one ' +
+  'hand/LLM-encoded field in the DAG. Berkeley: highest AllocationDistortion (0.193) but ' +
+  'CausalRole=contested — geometry and confounding are not the same thing, and the instrument only ' +
+  'measures the former.';
 
 export const LIMITS_TEXT =
   'Theorem conclusions follow from definitions (regression checks for the transpiler). ' +
   'Domain conclusions and corpus discovery findings are statistics on a curated convenience sample — ' +
   'directional, not inferential. See conc-14 before treating cross-domain patterns as laws.';
+
+export const INVARIANT_DEFINITIONS_TITLE = 'How to read "InvariantChecks" (read before the pass count)';
+
+export const INVARIANT_DEFINITIONS_TEXT =
+  'This instrument is a measurement device, not an oracle: it classifies allocation geometry ' +
+  'precisely and repeatably, the way a thermometer classifies temperature — it does not adjudicate ' +
+  'whether a study’s causal story is correct. "Invariant" in this rulebook means "the transpiler ' +
+  'output is self-consistent with its own definitions," not "an independent empirical hypothesis ' +
+  'survived a test." Three different things get called an invariant here, and conflating them is the ' +
+  'single easiest way to overstate this corpus:';
+
+export const INVARIANT_DEFINITION_TAUTOLOGICAL =
+  'Definitional (cannot fail by construction). DistortionType, IsSignFlip, AllocationDirection, and ' +
+  'SignalPurity are all calculated from the same three numbers (WeightedStratumGapSum, SignedPooledGap, ' +
+  'CorrectedGap, AllocationDistortion). An invariant like "DistortionType ∈ {A,B} → IsSignFlip=TRUE" ' +
+  'restates one algebraic fact in a second vocabulary — it is a regression check that the transpiler ' +
+  'did not corrupt a formula, not a finding about the world. Most of the 32 rows in InvariantChecks are ' +
+  'this kind.';
+
+export const INVARIANT_DEFINITION_JUDGMENT =
+  'Judgment-crossing (the closest thing to a substantive check). CausalRole on StratumVariables ' +
+  '(confounder / mediator / collider / selection / contested / unknown) is the one hand/LLM-encoded ' +
+  'field in the DAG — schema type "raw," not derived from geometry. Invariants that reference ' +
+  'StratumCausalRole, ConfounderIdentity, or IsParadoxExplained (e.g. inv-explained-sign-flip-confounder, ' +
+  'inv-collider-no-manifest) are checking that the geometric result is consistent with that human ' +
+  'judgment call — the only place a real counterexample could show up. The rulebook does not currently ' +
+  'record who made each CausalRole call or by what protocol; treat these classifications as reviewed ' +
+  'labels, not as independently verified ground truth.';
+
+export const INVARIANT_DEFINITION_VACUOUS =
+  'Vacuous (PassCount=0). A handful of invariants (e.g. inv-type-a-unanimous, ' +
+  'inv-confounder-signflip-explained, inv-collider-no-manifest) currently have zero rows in their ' +
+  'filtered universe. "0 pass / 0 fail" means no study in this corpus falls into that category yet — ' +
+  'it is true the way "all unicorns are blue" is true, and proves nothing until a qualifying study exists.';
+
+/** Theorem-category conclusions whose claim is conditional on CausalRole / ConfounderIdentity /
+ *  StratumCausalRole being correctly annotated — the one hand/LLM-encoded, unaudited-protocol field
+ *  in the DAG. These are true given a correct annotation, not true by algebra alone, so they must
+ *  not sit in the same "proved by construction" bucket as pure-geometry theorems (e.g. conc-12,
+ *  conc-20, conc-28, conc-36, which reference only IsSignFlip/SignalPurity/CorrectedGap/ArmSizeRatio/
+ *  MaxStratumImbalance — no causal-role dependency). conc-30's own title says "given correct
+ *  causal-role annotation" — that precondition is the reason it belongs here, not in "proved."
+ *  Kept as an explicit allowlist so new theorem conclusions default to "proved" and must be
+ *  deliberately added here, not the reverse. */
+export const CAUSAL_ROLE_CONDITIONAL_THEOREMS = new Set([
+  'conc-29-explained-confounder-theorem',
+  'conc-30-collider-no-manifest-theorem',
+  'conc-34-latent-predominant-family',
+  'conc-35-unexplained-identity-sink-theorem',
+  'conc-37-purity-inversion-theorem',
+]);
+
+export function isCausalRoleConditionalTheorem(conclusionId: string): boolean {
+  return CAUSAL_ROLE_CONDITIONAL_THEOREMS.has(conclusionId);
+}
 
 export const CATEGORY_ORDER = [
   'theorem',
@@ -37,6 +96,9 @@ export const CATEGORY_PDF_LABEL: Record<string, string> = {
   domain: 'Observed in this corpus',
 };
 
+export const CONDITIONAL_THEOREM_PDF_LABEL =
+  'Proved, conditional on CausalRole annotation (not pure algebra)';
+
 export const DOMAIN_CORPUS_CAVEATS: Record<string, string> = {
   'conc-15-latent-flip-potential':
     'Sensitivity over sweep range f ∈ [0.05, 0.95]; not a claim about realistic reallocation alone.',
@@ -48,12 +110,61 @@ export function isConsistencyCheck(hypothesisId: string): boolean {
   return CONSISTENCY_CHECK_HYPOTHESES.has(hypothesisId);
 }
 
-export function conclusionPdfLabel(category: string | null | undefined): string {
+/** Invariant IDs that cross into the one hand/LLM-encoded field (CausalRole) rather than
+ *  restating pure geometry. Kept as an explicit allowlist so new invariants default to
+ *  "definitional" and must be deliberately added here, not the reverse. */
+export const JUDGMENT_CROSSING_INVARIANTS = new Set([
+  'inv-explained-sign-flip-confounder',
+  'inv-confounder-signflip-explained',
+  'inv-collider-no-manifest',
+  'inv-unexplained-identity-sink',
+  'inv-collider-purity-dominance',
+]);
+
+export type InvariantKind = 'judgment' | 'vacuous' | 'definitional';
+
+export function classifyInvariant(row: {
+  invariant_check_id: string;
+  pass_count: number;
+  fail_count: number;
+}): InvariantKind {
+  if (JUDGMENT_CROSSING_INVARIANTS.has(row.invariant_check_id)) return 'judgment';
+  if (Number(row.pass_count) === 0 && Number(row.fail_count) === 0) return 'vacuous';
+  return 'definitional';
+}
+
+export interface InvariantKindCounts {
+  definitional: number;
+  judgment: number;
+  vacuous: number;
+  total: number;
+}
+
+export function invariantKindCounts(
+  rows: Array<{ invariant_check_id: string; pass_count: number; fail_count: number }>,
+): InvariantKindCounts {
+  const counts = { definitional: 0, judgment: 0, vacuous: 0, total: rows.length };
+  for (const r of rows) counts[classifyInvariant(r)]++;
+  return counts;
+}
+
+export function conclusionPdfLabel(
+  category: string | null | undefined,
+  conclusionId?: string,
+): string {
+  if (conclusionId && isCausalRoleConditionalTheorem(conclusionId)) {
+    return CONDITIONAL_THEOREM_PDF_LABEL;
+  }
   if (!category) return '(no category)';
   return CATEGORY_PDF_LABEL[category] ?? category.replace(/-/g, ' ');
 }
 
 export function domainCaveat(conclusionId: string): string | undefined {
+  if (isCausalRoleConditionalTheorem(conclusionId)) {
+    return 'Conditional on CausalRole being correctly annotated — the one hand/LLM-encoded field ' +
+      'in the DAG, with no recorded protocol for who assigned each label or how. True given a ' +
+      'correct annotation; not true by algebra alone. See "How to read InvariantChecks."';
+  }
   if (conclusionId.startsWith('conc-17') || conclusionId === 'conc-17-economics-flip-free') {
     return DOMAIN_CORPUS_CAVEATS['conc-17-economics-flip-free'];
   }
@@ -68,16 +179,21 @@ export function domainCaveat(conclusionId: string): string | undefined {
 
 export interface ConclusionTierCounts {
   proved: number;
+  provedConditional: number;
   instrument: number;
   corpus: number;
   total: number;
 }
 
 export function tierConclusionCounts(
-  rows: Array<{ category: string | null; status: string | null }>,
+  rows: Array<{ conclusion_id: string; category: string | null; status: string | null }>,
 ): ConclusionTierCounts {
   const witnessed = rows.filter(r => r.status === 'witnessed');
-  const proved = witnessed.filter(r => r.category === 'theorem').length;
+  const theorems = witnessed.filter(r => r.category === 'theorem');
+  const provedConditional = theorems.filter(r =>
+    isCausalRoleConditionalTheorem(r.conclusion_id),
+  ).length;
+  const proved = theorems.length - provedConditional;
   const instrument = witnessed.filter(
     r =>
       r.category === 'instrument' ||
@@ -86,7 +202,7 @@ export function tierConclusionCounts(
       r.category === 'open-question',
   ).length;
   const corpus = witnessed.filter(r => r.category === 'domain').length;
-  return { proved, instrument, corpus, total: witnessed.length };
+  return { proved, provedConditional, instrument, corpus, total: witnessed.length };
 }
 
 /** Round numeric literals in observed_metric strings (e.g. epi=0.049454… → epi=0.049). */

@@ -1,0 +1,16 @@
+{
+  "candidate_id": "4",
+  "slug": "rdatasets-indometh",
+  "dataset_name": "indometh",
+  "description": "Cohort Study of the Pharmacokinetics of Intravenous Indomethacin",
+  "domain": "Medicine/Clinical",
+  "source": "Rdatasets (R package: medicaldata)",
+  "n_rows": "66",
+  "stratifying_columns_hint": "1 factor / 0 binary cols",
+  "download_url": "https://vincentarelbundock.github.io/Rdatasets/csv/medicaldata/indometh.csv",
+  "documentation_url": "https://vincentarelbundock.github.io/Rdatasets/doc/medicaldata/indometh.html",
+  "status": "skip",
+  "download_notes": "HTTP 200 OK",
+  "skip_reason": "Pharmacokinetic time series dataset tracking indomethacin plasma concentration (continuous) over time for 6 subjects. No binary outcome, no treatment/exposure grouping, no stratum variable. Purely continuous repeated-measures data with no aggregatable success/failure counts.",
+  "notes": []
+}

@@ -1,0 +1,16 @@
+{
+  "candidate_id": "143",
+  "slug": "rdatasets-federal-reserve-scf",
+  "dataset_name": "federal_reserve_scf",
+  "description": "Federal Reserve SCF Racial Wealth Gap by Education & Age",
+  "domain": "Economics/Labor",
+  "source": "Federal Reserve Board SCF (verified)",
+  "n_rows": "5000+",
+  "stratifying_columns_hint": "race, education_level, age_group",
+  "download_url": "https://www.federalreserve.gov/econres/scfindex.htm",
+  "documentation_url": "https://www.federalreserve.gov/econres/scfindex.htm",
+  "status": "portal-required",
+  "skip_reason": null,
+  "notes": [],
+  "portal_reason": "Fed Reserve SCF requires SAS download"
+}

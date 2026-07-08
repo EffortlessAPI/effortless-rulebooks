@@ -1,0 +1,33 @@
+{
+  "StudyId": "titanic-1912-control",
+  "Title": "Titanic Survival by Sex and Passenger Class (1912)",
+  "Source": "Kaggle Titanic competition data. British Board of Trade inquiry (1912)",
+  "SourceUrl": "https://raw.githubusercontent.com/datasciencedojo/datasets/master/titanic.csv",
+  "PublicationYear": 1912,
+  "Domain": "historical",
+  "IsSynthetic": false,
+  "IsControlStudy": true,
+  "ControlDomain": "historical-social-science",
+  "TraditionId": "tradition-dag",
+  "PrimaryResearcherId": "researcher-pearl",
+  "confounding_variable": "Pclass",
+  "causal_role": "allocation",
+  "note": "Females have higher survival rates than males within every passenger class, and also overall, so no Simpson's paradox reversal occurs — the aggregate direction matches the within-stratum direction throughout.",
+  "treatments": [
+    {"TreatmentLabel": "male", "Description": "Male passengers", "TotalCases": 577, "TotalSuccesses": 109},
+    {"TreatmentLabel": "female", "Description": "Female passengers", "TotalCases": 314, "TotalSuccesses": 233}
+  ],
+  "strata": [
+    {"StratumLabel": "Class 1", "Description": "Passenger class 1", "TotalCases": 216},
+    {"StratumLabel": "Class 2", "Description": "Passenger class 2", "TotalCases": 184},
+    {"StratumLabel": "Class 3", "Description": "Passenger class 3", "TotalCases": 491}
+  ],
+  "cells": [
+    {"StratumLabel": "Class 1", "TreatmentLabel": "male", "Cases": 122, "Successes": 45},
+    {"StratumLabel": "Class 1", "TreatmentLabel": "female", "Cases": 94, "Successes": 91},
+    {"StratumLabel": "Class 2", "TreatmentLabel": "male", "Cases": 108, "Successes": 17},
+    {"StratumLabel": "Class 2", "TreatmentLabel": "female", "Cases": 76, "Successes": 70},
+    {"StratumLabel": "Class 3", "TreatmentLabel": "male", "Cases": 347, "Successes": 47},
+    {"StratumLabel": "Class 3", "TreatmentLabel": "female", "Cases": 144, "Successes": 72}
+  ]
+}

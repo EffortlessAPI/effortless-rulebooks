@@ -1,0 +1,18 @@
+{
+  "candidate_id": "111",
+  "slug": "rdatasets-chickweight",
+  "dataset_name": "ChickWeight",
+  "description": "Weight versus age of chicks on different diets",
+  "domain": "General Statistics Teaching",
+  "source": "Rdatasets (R package: datasets)",
+  "n_rows": "578",
+  "stratifying_columns_hint": "2 factor / 0 binary cols",
+  "download_url": "https://vincentarelbundock.github.io/Rdatasets/csv/datasets/ChickWeight.csv",
+  "documentation_url": "https://vincentarelbundock.github.io/Rdatasets/doc/datasets/ChickWeight.html",
+  "status": "skip",
+  "skip_reason": "All outcomes are continuous (chick weight over time). There is no binary outcome column and no natural way to aggregate to Successes/Cases. This is a longitudinal growth dataset, not a binary outcome study.",
+  "notes": [],
+  "files": [
+    "data.csv"
+  ]
+}

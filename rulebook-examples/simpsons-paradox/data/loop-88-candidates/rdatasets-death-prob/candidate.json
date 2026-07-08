@@ -1,0 +1,16 @@
+{
+  "candidate_id": "64",
+  "slug": "rdatasets-death-prob",
+  "dataset_name": "death_prob",
+  "description": "2015 US Period Life Table",
+  "domain": "General Statistics Teaching",
+  "source": "Rdatasets (R package: dslabs)",
+  "n_rows": "240",
+  "stratifying_columns_hint": "1 factor / 1 binary cols",
+  "download_url": "https://vincentarelbundock.github.io/Rdatasets/csv/dslabs/death_prob.csv",
+  "documentation_url": "https://vincentarelbundock.github.io/Rdatasets/doc/dslabs/death_prob.html",
+  "status": "skip",
+  "skip_reason": "Dataset contains only pre-computed continuous death probabilities per (age, sex) cell \u2014 no individual-level binary outcomes to aggregate. The `prob` column is a decimal probability (not 0/1 success/failure), so there are no Successes/Cases counts computable from this data.",
+  "download_notes": "HTTP 200 OK",
+  "notes": []
+}

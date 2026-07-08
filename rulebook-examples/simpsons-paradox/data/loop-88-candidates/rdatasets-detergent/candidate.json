@@ -1,0 +1,24 @@
+{
+  "candidate_id": "51",
+  "slug": "rdatasets-detergent",
+  "dataset_name": "Detergent",
+  "description": "Detergent Preference Data",
+  "domain": "Categorical Data / Mixed",
+  "source": "Rdatasets (R package: vcdExtra)",
+  "n_rows": "24",
+  "stratifying_columns_hint": "4 factor / 3 binary cols",
+  "download_url": "https://vincentarelbundock.github.io/Rdatasets/csv/vcdExtra/Detergent.csv",
+  "documentation_url": "https://vincentarelbundock.github.io/Rdatasets/doc/vcdExtra/Detergent.html",
+  "status": "needs-data",
+  "skip_reason": null,
+  "notes": [],
+  "files": [
+    "data.csv"
+  ],
+  "proposed_study_id": "rdatasets-detergent-survey",
+  "proposed_title": "Detergent Brand Preference Survey (M-User vs Non-User by Water Softness)",
+  "binary_outcome": "Preference",
+  "treatment_variable": "M_User",
+  "stratum_variable": "Water_softness",
+  "encoding_note": "Data is pre-aggregated (Freq = count per cell). Preference=Brand X is success; sum Freq where Preference=Brand X for successes, total Freq for cases, grouped by (M_User \u00d7 Water_softness). Temperature is a secondary stratum. 24 rows cover all combinations of Temperature \u00d7 M_User \u00d7 Preference \u00d7 Water_softness."
+}

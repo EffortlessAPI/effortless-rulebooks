@@ -1,0 +1,16 @@
+{
+  "candidate_id": "28",
+  "slug": "rdatasets-crimtab-table",
+  "dataset_name": "crimtab_table",
+  "description": "Student's 3000 Criminals Data",
+  "domain": "Criminal Justice",
+  "source": "Rdatasets (R package: crimedatasets)",
+  "n_rows": "924",
+  "stratifying_columns_hint": "2 factor / 0 binary cols",
+  "download_url": "https://vincentarelbundock.github.io/Rdatasets/csv/crimedatasets/crimtab_table.csv",
+  "documentation_url": "https://vincentarelbundock.github.io/Rdatasets/doc/crimedatasets/crimtab_table.html",
+  "status": "skip",
+  "skip_reason": "The crimtab dataset is a 2D frequency table of two continuous measurements (finger length Var1 and body height Var2) cross-tabulated with counts. There is no binary outcome, no treatment/exposure variable, and no categorical stratum \u2014 both axes are continuous anthropometric measurements. Not suitable for Simpson's Paradox analysis.",
+  "download_notes": "HTTP 200 OK",
+  "notes": []
+}
