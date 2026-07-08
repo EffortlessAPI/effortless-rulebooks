@@ -24620,8 +24620,8 @@ effortless-ntwf:conc-16-small-effect-fragile a effortless-ntwf:Conclusions ;
 
 effortless-ntwf:conc-17-economics-flip-free a effortless-ntwf:Conclusions ;
     effortless-ntwf:conclusionId "conc-17-economics-flip-free" ;
-    effortless-ntwf:category "domain" ;
-    effortless-ntwf:status "witnessed" ;
+    effortless-ntwf:category "corpus-pattern-superseded" ;
+    effortless-ntwf:status "historical" ;
     effortless-ntwf:title "Economics-domain 2×K encodings in this corpus produce zero sign-flips — composition studies read as Type D or C−" ;
     effortless-ntwf:evidence "EconomicsSignFlipCount=0 across 8 economics studies (6 Type D, 2 Type C−). Contrast epidemiology (6 sign-flips / 22 studies, 27.3%). Composition and wage-decomposition paradoxes compress or stabilize rather than flip in this instrument's 2×K encoding. **Superseded at loop-78 (N=238):** EconomicsSignFlipCount=10 (25.6% flip rate) after expansion wave 3 bulk encode — pattern was corpus-contingent on pre-expansion selection, not a domain law." ;
     effortless-ntwf:witnessedInLoop "loop-61" ;
@@ -24665,8 +24665,8 @@ effortless-ntwf:conc-21-catalog-tags-not-predictors a effortless-ntwf:Conclusion
 
 effortless-ntwf:conc-22-domain-flip-geometry a effortless-ntwf:Conclusions ;
     effortless-ntwf:conclusionId "conc-22-domain-flip-geometry" ;
-    effortless-ntwf:category "domain" ;
-    effortless-ntwf:status "witnessed" ;
+    effortless-ntwf:category "corpus-pattern-superseded" ;
+    effortless-ntwf:status "historical" ;
     effortless-ntwf:title "Domain flip-rate heterogeneity survives max_stratum_imbalance conditioning — economics 0%, epi/legal/sports ~27%" ;
     effortless-ntwf:evidence "Loop-66: H-domain-flip-geometry-controlled PASS. economics_high_imbalance_sign_flip_count=0; epidemiology_high_imbalance_sign_flip_rate=0.273; legal=0.286; sports=0.273. Pattern survives geometry control — not purely catalog selection artifact. **Superseded at loop-78 (N=238):** econHighImbFlips=10; all domains elevated (epi=65%, legal=57%, sports=60%) — geometry-controlled domain gap collapsed after wave-3 encode." ;
     effortless-ntwf:witnessedInLoop "loop-66" ;
@@ -24710,8 +24710,8 @@ effortless-ntwf:conc-26-sweep-fragile-class a effortless-ntwf:Conclusions ;
 
 effortless-ntwf:conc-27-economics-encoding-selection a effortless-ntwf:Conclusions ;
     effortless-ntwf:conclusionId "conc-27-economics-encoding-selection" ;
-    effortless-ntwf:category "domain" ;
-    effortless-ntwf:status "witnessed" ;
+    effortless-ntwf:category "corpus-pattern-superseded" ;
+    effortless-ntwf:status "historical" ;
     effortless-ntwf:title "Economics Expected-A catalog tags mismatch observed Type D at 2×K encoding — selection not immunity" ;
     effortless-ntwf:evidence "Loop-69: H-econ-encoding-selection PASS. EconomicsExpectedAMismatchRate=1.0 on expansion-wave-1 Expected-A batch (5/5 Type D). Economics zero-flip reflects encoding limits and catalog priors, not domain paradox immunity. **Superseded at loop-78 (N=238):** EconomicsExpectedAMismatchRate=0.50 after wave-3 dilution — half of Expected-A economics rows now match; pattern sharpened not falsified but no longer unanimous." ;
     effortless-ntwf:witnessedInLoop "loop-69" ;
@@ -24875,16 +24875,6 @@ effortless-ntwf:find-H-small-effect a effortless-ntwf:DiscoveryFindings ;
     effortless-ntwf:hypothesisId "H-small-effect" ;
     effortless-ntwf:witnessedInLoop "loop-61" .
 
-effortless-ntwf:find-H-econ-zero a effortless-ntwf:DiscoveryFindings ;
-    effortless-ntwf:findingId "find-H-econ-zero" ;
-    effortless-ntwf:hypothesisId "H-econ-zero" ;
-    effortless-ntwf:witnessedInLoop "loop-61" .
-
-effortless-ntwf:find-H-domain-dist a effortless-ntwf:DiscoveryFindings ;
-    effortless-ntwf:findingId "find-H-domain-dist" ;
-    effortless-ntwf:hypothesisId "H-domain-dist" ;
-    effortless-ntwf:witnessedInLoop "loop-61" .
-
 effortless-ntwf:find-H-causal-manifest a effortless-ntwf:DiscoveryFindings ;
     effortless-ntwf:findingId "find-H-causal-manifest" ;
     effortless-ntwf:hypothesisId "H-causal-manifest" ;
@@ -24910,16 +24900,6 @@ effortless-ntwf:find-H-catalog-exact-match a effortless-ntwf:DiscoveryFindings ;
     effortless-ntwf:hypothesisId "H-catalog-exact-match" ;
     effortless-ntwf:witnessedInLoop "loop-65" .
 
-effortless-ntwf:find-H-catalog-flip-prediction a effortless-ntwf:DiscoveryFindings ;
-    effortless-ntwf:findingId "find-H-catalog-flip-prediction" ;
-    effortless-ntwf:hypothesisId "H-catalog-flip-prediction" ;
-    effortless-ntwf:witnessedInLoop "loop-65" .
-
-effortless-ntwf:find-H-domain-flip-geometry-controlled a effortless-ntwf:DiscoveryFindings ;
-    effortless-ntwf:findingId "find-H-domain-flip-geometry-controlled" ;
-    effortless-ntwf:hypothesisId "H-domain-flip-geometry-controlled" ;
-    effortless-ntwf:witnessedInLoop "loop-66" .
-
 effortless-ntwf:find-H-collider-no-manifest-v2 a effortless-ntwf:DiscoveryFindings ;
     effortless-ntwf:findingId "find-H-collider-no-manifest-v2" ;
     effortless-ntwf:hypothesisId "H-collider-no-manifest-v2" ;
@@ -24934,16 +24914,6 @@ effortless-ntwf:find-H-ultra-fragile a effortless-ntwf:DiscoveryFindings ;
     effortless-ntwf:findingId "find-H-ultra-fragile" ;
     effortless-ntwf:hypothesisId "H-ultra-fragile" ;
     effortless-ntwf:witnessedInLoop "loop-69" .
-
-effortless-ntwf:find-H-econ-encoding-selection a effortless-ntwf:DiscoveryFindings ;
-    effortless-ntwf:findingId "find-H-econ-encoding-selection" ;
-    effortless-ntwf:hypothesisId "H-econ-encoding-selection" ;
-    effortless-ntwf:witnessedInLoop "loop-69" .
-
-effortless-ntwf:find-H-domain-profiles-stable a effortless-ntwf:DiscoveryFindings ;
-    effortless-ntwf:findingId "find-H-domain-profiles-stable" ;
-    effortless-ntwf:hypothesisId "H-domain-profiles-stable" ;
-    effortless-ntwf:witnessedInLoop "loop-72" .
 
 effortless-ntwf:find-H-corrected-gap-invariant a effortless-ntwf:DiscoveryFindings ;
     effortless-ntwf:findingId "find-H-corrected-gap-invariant" ;
@@ -24991,22 +24961,6 @@ effortless-ntwf:H-small-effect a effortless-ntwf:DiscoveryHypotheses ;
     effortless-ntwf:traditionId "tradition-epidemiology" ;
     effortless-ntwf:epistemicTier "corpus-hypothesis" .
 
-effortless-ntwf:H-econ-zero a effortless-ntwf:DiscoveryHypotheses ;
-    effortless-ntwf:hypothesisId "H-econ-zero" ;
-    effortless-ntwf:statement "Economics-domain studies produce zero sign-flips in 2×K encoding." ;
-    effortless-ntwf:expectedOutcome "EconomicsSignFlipCount = 0" ;
-    effortless-ntwf:registeredInLoop "loop-61" ;
-    effortless-ntwf:traditionId "tradition-historical" ;
-    effortless-ntwf:epistemicTier "corpus-pattern-superseded" .
-
-effortless-ntwf:H-domain-dist a effortless-ntwf:DiscoveryHypotheses ;
-    effortless-ntwf:hypothesisId "H-domain-dist" ;
-    effortless-ntwf:statement "Epidemiology studies carry higher mean AllocationDistortion than education studies." ;
-    effortless-ntwf:expectedOutcome "EpidemiologyAvgDistortion > EducationAvgDistortion" ;
-    effortless-ntwf:registeredInLoop "loop-61" ;
-    effortless-ntwf:traditionId "tradition-epidemiology" ;
-    effortless-ntwf:epistemicTier "corpus-pattern-superseded" .
-
 effortless-ntwf:H-causal-manifest a effortless-ntwf:DiscoveryHypotheses ;
     effortless-ntwf:hypothesisId "H-causal-manifest" ;
     effortless-ntwf:statement "Confounder-labeled studies produce manifest sign-flips at observed allocation (IsSignFlip=TRUE) far more often than collider/selection studies — reversal mode differs by mechanism class." ;
@@ -25047,22 +25001,6 @@ effortless-ntwf:H-catalog-exact-match a effortless-ntwf:DiscoveryHypotheses ;
     effortless-ntwf:traditionId "tradition-epidemiology" ;
     effortless-ntwf:epistemicTier "corpus-hypothesis" .
 
-effortless-ntwf:H-catalog-flip-prediction a effortless-ntwf:DiscoveryHypotheses ;
-    effortless-ntwf:hypothesisId "H-catalog-flip-prediction" ;
-    effortless-ntwf:statement "Among catalog rows tagged Expected A∪B, observed type is A∪B less than 50% of the time — even sign-flip expectation fails often." ;
-    effortless-ntwf:expectedOutcome "SignFlipPredictionMatchRate < 0.5" ;
-    effortless-ntwf:registeredInLoop "loop-65" ;
-    effortless-ntwf:traditionId "tradition-epidemiology" ;
-    effortless-ntwf:epistemicTier "corpus-pattern-superseded" .
-
-effortless-ntwf:H-domain-flip-geometry-controlled a effortless-ntwf:DiscoveryHypotheses ;
-    effortless-ntwf:hypothesisId "H-domain-flip-geometry-controlled" ;
-    effortless-ntwf:statement "Economics zero-flip pattern persists among high max_stratum_imbalance studies while epidemiology/legal/sports remain elevated — domain heterogeneity survives geometry control." ;
-    effortless-ntwf:expectedOutcome "EconomicsHighImbalanceSignFlipCount = 0 AND EpidemiologyHighImbalanceSignFlipRate > 0.15" ;
-    effortless-ntwf:registeredInLoop "loop-66" ;
-    effortless-ntwf:traditionId "tradition-historical" ;
-    effortless-ntwf:epistemicTier "corpus-pattern-superseded" .
-
 effortless-ntwf:H-collider-no-manifest-v2 a effortless-ntwf:DiscoveryHypotheses ;
     effortless-ntwf:hypothesisId "H-collider-no-manifest-v2" ;
     effortless-ntwf:statement "Collider and selection studies produce zero manifest sign-flips (DistortionType A or B) at observed allocation — including hernandez-diaz birth-weight collider tagged Expected A in catalog." ;
@@ -25086,22 +25024,6 @@ effortless-ntwf:H-ultra-fragile a effortless-ntwf:DiscoveryHypotheses ;
     effortless-ntwf:registeredInLoop "loop-68" ;
     effortless-ntwf:traditionId "tradition-historical" ;
     effortless-ntwf:epistemicTier "corpus-hypothesis" .
-
-effortless-ntwf:H-econ-encoding-selection a effortless-ntwf:DiscoveryHypotheses ;
-    effortless-ntwf:hypothesisId "H-econ-encoding-selection" ;
-    effortless-ntwf:statement "Among newly encoded economics catalog rows tagged Expected A, observed DistortionType is D more than half the time — economics robustness reflects 2×K encoding limits or catalog mechanism priors, not domain immunity to paradox." ;
-    effortless-ntwf:expectedOutcome "EconomicsExpectedAMismatchRate > 0.5" ;
-    effortless-ntwf:registeredInLoop "loop-68" ;
-    effortless-ntwf:traditionId "tradition-historical" ;
-    effortless-ntwf:epistemicTier "corpus-pattern-superseded" .
-
-effortless-ntwf:H-domain-profiles-stable a effortless-ntwf:DiscoveryHypotheses ;
-    effortless-ntwf:hypothesisId "H-domain-profiles-stable" ;
-    effortless-ntwf:statement "After expansion wave 2 (N>110 real studies), education and sports remain majority latent-fragile (>50% Type-D with LatentFlipPotential) while economics manifest sign-flip rate stays below 5%." ;
-    effortless-ntwf:expectedOutcome "EducationLatentFraction > 0.5 AND SportsLatentFraction > 0.5 AND EconomicsSignFlipRate < 0.05" ;
-    effortless-ntwf:registeredInLoop "loop-72" ;
-    effortless-ntwf:traditionId "tradition-historical" ;
-    effortless-ntwf:epistemicTier "corpus-pattern-superseded" .
 
 effortless-ntwf:H-corrected-gap-invariant a effortless-ntwf:DiscoveryHypotheses ;
     effortless-ntwf:hypothesisId "H-corrected-gap-invariant" ;
@@ -25936,7 +25858,7 @@ effortless-ntwf:inv-latent-d-majority a effortless-ntwf:InvariantChecks ;
 effortless-ntwf:inv-discovery-all-confirmed a effortless-ntwf:InvariantChecks ;
     effortless-ntwf:invariantCheckId "inv-discovery-all-confirmed" ;
     effortless-ntwf:algebraicStatement "COUNTIFS(DiscoveryFindings IsConfirmed FALSE WHERE EpistemicTier=corpus-hypothesis) = 0" ;
-    effortless-ntwf:naturalLanguage "Pre-registered corpus hypotheses that still hold at N=238; expansion-wave-broken patterns (loop-77) deferred to loop-78." ;
+    effortless-ntwf:naturalLanguage "All active corpus-hypothesis discovery findings confirmed at N=238 post loop-79 prune." ;
     effortless-ntwf:sourceTable "DiscoveryFindings" ;
     effortless-ntwf:filterExpression "HypothesisEpistemicTier = corpus-hypothesis" ;
     effortless-ntwf:assertionExpression "IsConfirmed = TRUE" ;
@@ -26973,31 +26895,31 @@ effortless-ntwf:loop-78 a effortless-ntwf:Loops ;
     effortless-ntwf:newConcept "Re-register DiscoveryHypotheses broken by loop-77 bulk import (H-econ-zero, H-domain-dist, H-catalog-flip-prediction, H-domain-flip-geometry-controlled, H-econ-encoding-selection, H-domain-profiles-stable); type-prediction audit refresh; LoopReview at 238 studies." ;
     effortless-ntwf:domainQuestion "Which loop-61–72 corpus patterns broke at N=238 — and do catalog ExpectedDistortionType tags improve or worsen after expansion wave 3?" ;
     effortless-ntwf:mockDataNote "Witnessed post-build at N=238: 6/6 corpus-pattern-superseded hypotheses FAIL as expected. H-econ-zero flips=10; H-domain-dist epi<edu; H-catalog-flip-prediction flipPred=54.1%; H-domain-flip-geometry-controlled econHighImbFlips=10; H-econ-encoding-selection mismatch=50%; H-domain-profiles-stable econFlipRate=25.6%. H-catalog-exact-match still PASS (39.1%). conc-32 promoted. Theorems (loops 73–76) unchanged." ;
-    effortless-ntwf:nextSuggestion "loop-80: vocabulary prune — retire superseded discovery predicates before methods export" ;
+    effortless-ntwf:nextSuggestion "loop-79: vocabulary prune — retire superseded discovery predicates" ;
     effortless-ntwf:traditionId "tradition-epidemiology" .
 
 effortless-ntwf:loop-79 a effortless-ntwf:Loops ;
     effortless-ntwf:loopId "loop-79" ;
+    effortless-ntwf:title "Vocabulary prune: retire superseded discovery predicates (post loop-78)" ;
+    effortless-ntwf:status "complete" ;
+    effortless-ntwf:newConcept "Archive loop-78 supersessions to conc-32 evidence only; remove from active DAG: 6 DiscoveryHypotheses + DiscoveryFindings (EpistemicTier=corpus-pattern-superseded); prune ModelSummary predicates wired only to those hypotheses (DomainFlipGapSurvivesGeometryControl, CorpusPatternSupersededFailCount, ExpansionWave3DiscoveryNote; simplify DiscoveryWitnessNote); drop customize calc_discovery_findings branches for H-econ-zero, H-domain-dist, H-catalog-flip-prediction, H-domain-flip-geometry-controlled, H-econ-encoding-selection, H-domain-profiles-stable; mark conc-17/conc-22/conc-27 as historical-only in Conclusions (evidence retained, no live predicates). Mirror loop-60 prune discipline." ;
+    effortless-ntwf:domainQuestion "After loop-78 witnessed six corpus-pattern supersessions at N=238, which predicates are no longer clean load-bearing vocabulary — and can the instrument shed them without losing theorem/invariant witnesses or the conc-32 audit trail?" ;
+    effortless-ntwf:mockDataNote "Witnessed post-build: removed 6 corpus-pattern-superseded DiscoveryHypotheses + Findings; pruned ModelSummary DomainFlipGapSurvivesGeometryControl, CorpusPatternSupersededFailCount, ExpansionWave3DiscoveryNote; simplified DiscoveryWitnessNote; conc-17/22/27 → historical. conc-32 audit trail retained. inv-discovery-all-confirmed: 10/10 PASS." ;
+    effortless-ntwf:nextSuggestion "loop-80: ConfounderIdentity ontology — cross-study accountable confounders" ;
+    effortless-ntwf:traditionId "tradition-dag" .
+
+effortless-ntwf:loop-87 a effortless-ntwf:Loops ;
+    effortless-ntwf:loopId "loop-87" ;
     effortless-ntwf:title "Methods-paper export: theorem portfolio + instrument spec packaging" ;
     effortless-ntwf:status "planned" ;
     effortless-ntwf:newConcept "Rulespeak theorem section export; InstrumentSpec catalog PDF; witnessed Conclusions conc-28..31 + conc-32 synthesis; optional clinical-trials CandidateStudyCatalog gap encode if export blocked on domain diversity." ;
     effortless-ntwf:domainQuestion "With five theorems witnessed and expansion-wave supersessions documented, is the instrument ready for external methods-paper submission — and which domain gaps remain?" ;
-    effortless-ntwf:mockDataNote "Pending — blocked on loop-80 vocabulary prune; export packaging after superseded predicates retired from active DAG." ;
+    effortless-ntwf:mockDataNote "Pending — loop-79 prune complete; loop-80 identity layer live. Export packaging after identity hypotheses witnessed." ;
     effortless-ntwf:nextSuggestion "Clinical-trials domain encode or peer-review draft" ;
     effortless-ntwf:traditionId "tradition-historical" .
 
-effortless-ntwf:loop-80 a effortless-ntwf:Loops ;
-    effortless-ntwf:loopId "loop-80" ;
-    effortless-ntwf:title "Vocabulary prune: retire superseded discovery predicates (post loop-78)" ;
-    effortless-ntwf:status "planned" ;
-    effortless-ntwf:newConcept "Archive loop-78 supersessions to conc-32 evidence only; remove from active DAG: 6 DiscoveryHypotheses + DiscoveryFindings (EpistemicTier=corpus-pattern-superseded); prune ModelSummary predicates wired only to those hypotheses (DomainFlipGapSurvivesGeometryControl, CorpusPatternSupersededFailCount, ExpansionWave3DiscoveryNote; simplify DiscoveryWitnessNote); drop customize calc_discovery_findings branches for H-econ-zero, H-domain-dist, H-catalog-flip-prediction, H-domain-flip-geometry-controlled, H-econ-encoding-selection, H-domain-profiles-stable; mark conc-17/conc-22/conc-27 as historical-only in Conclusions (evidence retained, no live predicates). Mirror loop-60 prune discipline." ;
-    effortless-ntwf:domainQuestion "After loop-78 witnessed six corpus-pattern supersessions at N=238, which predicates are no longer clean load-bearing vocabulary — and can the instrument shed them without losing theorem/invariant witnesses or the conc-32 audit trail?" ;
-    effortless-ntwf:mockDataNote "Pending — prune scope: 6 superseded hypotheses + findings; 3 ModelSummary rollup fields + DiscoveryWitnessNote domainGapSurvives clause; 6 customize-function CASE branches. Keep: conc-17/22/27/32 as witnessed historical conclusions; all theorems; inv-discovery-all-confirmed (10 corpus-hypothesis rows); inv-theorem-consistency-confirmed." ;
-    effortless-ntwf:nextSuggestion "loop-81: ALLHAT source verification — REAL? template cells to published-table encode" ;
-    effortless-ntwf:traditionId "tradition-dag" .
-
-effortless-ntwf:loop-81 a effortless-ntwf:Loops ;
-    effortless-ntwf:loopId "loop-81" ;
+effortless-ntwf:loop-88 a effortless-ntwf:Loops ;
+    effortless-ntwf:loopId "loop-88" ;
     effortless-ntwf:title "ALLHAT source verification: REAL? template cells → published-table encode" ;
     effortless-ntwf:status "planned" ;
     effortless-ntwf:newConcept "Verify allhat-collaborative-research-group-2002 CaseCells from JAMA 2002 primary-outcomes race-stratified tables (PMID 12479763), not loop-77 kidney-scaled Type-A template; optional data/raw/allhat-collaborative-research-group-2002/table-extract.json from PDF side loop; promote Studies.Source and CandidateStudyCatalog from Prov: REAL? to Prov: DOC with table citation; map treatment arms (chlorthalidone vs lisinopril) and stratum (race) explicitly; regenerate allocation sweep; spot-check ExpectedDistortionType=A vs observed DistortionType on verified counts." ;

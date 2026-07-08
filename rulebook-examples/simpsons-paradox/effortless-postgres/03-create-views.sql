@@ -241,7 +241,6 @@ SELECT
   t.epidemiology_high_imbalance_sign_flip_rate,                                 -- Sign-flip rate among high-imbalance epidemiology studies.
   t.legal_high_imbalance_sign_flip_rate,                                        -- Sign-flip rate among high-imbalance legal studies.
   t.sports_high_imbalance_sign_flip_rate,                                       -- Sign-flip rate among high-imbalance sports studies.
-  t.domain_flip_gap_survives_geometry_control,                                  -- TRUE when economics stays flip-free and epidemiology/legal/sports remain elevated under high-imbalance conditioning.
   calc_model_summary_c_plus_avg_distortion(t.model_summary_id) AS c_plus_avg_distortion,-- Mean AllocationDistortion among Type-C+ studies.
   calc_model_summary_c_minus_avg_distortion(t.model_summary_id) AS c_minus_avg_distortion,-- Mean AllocationDistortion among Type-C- studies.
   calc_model_summary_type_d_avg_distortion(t.model_summary_id) AS type_d_avg_distortion,-- Mean AllocationDistortion among Type-D studies.
@@ -264,8 +263,7 @@ SELECT
   calc_model_summary_sports_latent_d_count(t.model_summary_id) AS sports_latent_d_count,-- Sports Type-D studies with LatentFlipPotential.
   calc_model_summary_economics_study_count(t.model_summary_id) AS economics_study_count,-- Real economics studies in corpus.
   calc_model_summary_expansion_wave2_study_count(t.model_summary_id) AS expansion_wave2_study_count,-- Studies imported in expansion wave 2.
-  calc_model_summary_corpus_pattern_superseded_fail_count(t.model_summary_id) AS corpus_pattern_superseded_fail_count,-- Count of corpus-pattern-superseded discovery hypotheses witnessed FAIL at current corpus scale (loop-78 rollup).
-  calc_model_summary_expansion_wave3_discovery_note(t.model_summary_id) AS expansion_wave3_discovery_note-- Loop-78 supersession audit rollup at N=238.
+  calc_model_summary_confounder_identity_count(t.model_summary_id) AS confounder_identity_count-- Canonical ConfounderIdentity archetypes in ontology (loop-80).
 FROM model_summary t;
 
 -- ----------------------------------------------------------------------------
@@ -807,7 +805,7 @@ SELECT
   t.expected_outcome,                                                           -- Pass criterion in plain language.
   t.registered_in_loop,                                                         -- LoopId where this hypothesis was registered.
   t.tradition_id,                                                               -- FK → ResearchTraditions.TraditionId.
-  t.epistemic_tier                                                              -- consistency-check (definition-linked regression) | corpus-hypothesis (contingent corpus pattern) | corpus-pattern-superseded (witnessed FAIL at scale — retire in loop-80 prune)
+  t.epistemic_tier                                                              -- consistency-check (definition-linked regression) | corpus-hypothesis (contingent corpus pattern)
 FROM discovery_hypotheses t;
 
 -- ----------------------------------------------------------------------------

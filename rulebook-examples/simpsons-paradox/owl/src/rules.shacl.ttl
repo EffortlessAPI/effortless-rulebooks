@@ -1798,24 +1798,6 @@ effortless-ntwf:ModelSummaryShape a sh:NodeShape ;
                 }
             }
         """ ;
-    ] ;
-    sh:rule [
-        a sh:SPARQLRule ;
-        rdfs:label "rule_ModelSummary_CorpusPatternSupersededFailCount" ;
-        sh:prefixes effortless-ntwf: ;
-        sh:construct """
-            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
-            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
-            CONSTRUCT {
-                $this effortless-ntwf:corpusPatternSupersededFailCount ?_result .
-            }
-            WHERE {
-    $this a effortless-ntwf:ModelSummary .
-    OPTIONAL { $this effortless-ntwf:domainFlipGapSurvivesGeometryControl ?domain_flip_gap_survives_geometry_control . }
-    OPTIONAL { $this effortless-ntwf:economicsSignFlipCount ?economics_sign_flip_count . }
-                BIND(IF(((?economics_sign_flip_count > 0) && (?domain_flip_gap_survives_geometry_control = false)), 6, 0) AS ?_result)
-            }
-        """ ;
     ] .
 # Rule for DistortionTaxonomyCoverage - parse error: Unknown function: CONCAT
 # Rule for AvgSignalPurity - parse error: aggregation formula must be COUNTIFS(...) or SUMIFS(...)
@@ -1874,7 +1856,7 @@ effortless-ntwf:ModelSummaryShape a sh:NodeShape ;
 # Rule for SportsLatentDCount - parse error: Unknown function: COUNTIFS
 # Rule for EconomicsStudyCount - parse error: Unknown function: COUNTIFS
 # Rule for ExpansionWave2StudyCount - parse error: Unknown function: COUNTIFS
-# Rule for ExpansionWave3DiscoveryNote - parse error: Unknown function: CONCAT
+# Rule for ConfounderIdentityCount - parse error: aggregation formula must be COUNTIFS(...) or SUMIFS(...)
 
 # === Shape with rules for PhaseDiagramSummary ===
 effortless-ntwf:PhaseDiagramSummaryShape a sh:NodeShape ;
@@ -3326,4 +3308,4 @@ effortless-ntwf:TreatmentsCardinalityShape a sh:NodeShape ;
     sh:targetClass effortless-ntwf:Treatments ;
     sh:property [ sh:path effortless-ntwf:study ; sh:maxCount 1 ] .
 
-# Generated 158 SHACL rules
+# Generated 157 SHACL rules

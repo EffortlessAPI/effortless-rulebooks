@@ -887,7 +887,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_model_summary_discovery_witness_note(p_model_summary_id TEXT)
 RETURNS TEXT AS $$
-  SELECT (CONCAT('sweep: latentD=', calc_model_summary_latent_type_d_fraction(p_model_summary_id), ' purityMax=', calc_model_summary_sign_flip_signal_purity_max(p_model_summary_id), ' catalogExact=', (SELECT type_prediction_match_rate FROM model_summary WHERE model_summary_id = p_model_summary_id), ' domainGapSurvives=', (SELECT domain_flip_gap_survives_geometry_control FROM model_summary WHERE model_summary_id = p_model_summary_id)))::text;
+  SELECT (CONCAT('sweep: latentD=', calc_model_summary_latent_type_d_fraction(p_model_summary_id), ' purityMax=', calc_model_summary_sign_flip_signal_purity_max(p_model_summary_id), ' catalogExact=', (SELECT type_prediction_match_rate FROM model_summary WHERE model_summary_id = p_model_summary_id), ' identities=', calc_model_summary_confounder_identity_count(p_model_summary_id)))::text;
 $$ LANGUAGE sql STABLE;
 
 -- calc_model_summary_c_plus_avg_distortion
@@ -1110,28 +1110,14 @@ RETURNS INTEGER AS $$
   SELECT ((SELECT COUNT(*) FROM candidate_study_catalog WHERE expansion_wave = 'expansion-wave-2' AND calc_candidate_study_catalog_is_imported(candidate_id) = TRUE))::integer;
 $$ LANGUAGE sql STABLE;
 
--- calc_model_summary_corpus_pattern_superseded_fail_count
--- Field: ModelSummary.CorpusPatternSupersededFailCount
--- Type: calculated | DataType: integer | Returns: INTEGER
+-- calc_model_summary_confounder_identity_count
+-- Field: ModelSummary.ConfounderIdentityCount
+-- Type: aggregation | DataType: integer | Returns: INTEGER
 
 
-CREATE OR REPLACE FUNCTION calc_model_summary_corpus_pattern_superseded_fail_count(p_model_summary_id TEXT)
+CREATE OR REPLACE FUNCTION calc_model_summary_confounder_identity_count(p_model_summary_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT (CASE WHEN ((calc_model_summary_economics_sign_flip_count(p_model_summary_id))::NUMERIC > 0 AND (SELECT domain_flip_gap_survives_geometry_control FROM model_summary WHERE model_summary_id = p_model_summary_id) = FALSE) THEN (6)::text ELSE (0)::text END)::integer;
-$$ LANGUAGE sql STABLE;
-
--- calc_model_summary_expansion_wave3_discovery_note
--- Field: ModelSummary.ExpansionWave3DiscoveryNote
--- Type: calculated | DataType: string | Returns: TEXT
-
-
-CREATE OR REPLACE FUNCTION calc_model_summary_expansion_wave3_discovery_note(p_model_summary_id TEXT)
-RETURNS TEXT AS $$
-  SELECT /* WARNING: Formula translation failed: Function 'TEXT' is not supported yet
-   Original Airtable formula:
-   =CONCAT("superseded=", {{CorpusPatternSupersededFailCount}}, "; econFlips=", {{EconomicsSignFlipCount}}, "; flipPred=", TEXT({{SignFlipPredictionMatchRate}}, "0%"), "; catalogExact=", TEXT({{TypePredictionMatchRate}}, "0%"), "; theorems=", {{TheoremCount}})
-*/
-NULL::text;
+  SELECT ((SELECT COUNT(*) FROM model_summary))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_stratum_variables_name

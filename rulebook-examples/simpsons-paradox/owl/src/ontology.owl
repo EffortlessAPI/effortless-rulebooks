@@ -788,7 +788,7 @@ effortless-ntwf:epistemicTier a owl:DatatypeProperty ;
     rdfs:domain effortless-ntwf:DiscoveryHypotheses ;
     rdfs:range xsd:string ;
     rdfs:label "EpistemicTier" ;
-    rdfs:comment "consistency-check (definition-linked regression) | corpus-hypothesis (contingent corpus pattern) | corpus-pattern-superseded (witnessed FAIL at scale — retire in loop-80 prune)" .
+    rdfs:comment "consistency-check (definition-linked regression) | corpus-hypothesis (contingent corpus pattern)" .
 
 # === Class: DomainExpansionTargets ===
 effortless-ntwf:DomainExpansionTargets a owl:Class ;
@@ -1838,12 +1838,6 @@ effortless-ntwf:sportsHighImbalanceSignFlipRate a owl:DatatypeProperty ;
     rdfs:label "SportsHighImbalanceSignFlipRate" ;
     rdfs:comment "Sign-flip rate among high-imbalance sports studies." .
 
-effortless-ntwf:domainFlipGapSurvivesGeometryControl a owl:DatatypeProperty ;
-    rdfs:domain effortless-ntwf:ModelSummary ;
-    rdfs:range xsd:boolean ;
-    rdfs:label "DomainFlipGapSurvivesGeometryControl" ;
-    rdfs:comment "TRUE when economics stays flip-free and epidemiology/legal/sports remain elevated under high-imbalance conditioning." .
-
 effortless-ntwf:cPlusAvgDistortion a owl:DatatypeProperty ;
     rdfs:domain effortless-ntwf:ModelSummary ;
     rdfs:range xsd:string ;
@@ -1998,19 +1992,12 @@ effortless-ntwf:expansionWave2StudyCount a owl:DatatypeProperty ;
     rdfs:comment "Studies imported in expansion wave 2." .
     # calculated: calculated
 
-effortless-ntwf:corpusPatternSupersededFailCount a owl:DatatypeProperty ;
+effortless-ntwf:confounderIdentityCount a owl:DatatypeProperty ;
     rdfs:domain effortless-ntwf:ModelSummary ;
     rdfs:range xsd:integer ;
-    rdfs:label "CorpusPatternSupersededFailCount" ;
-    rdfs:comment "Count of corpus-pattern-superseded discovery hypotheses witnessed FAIL at current corpus scale (loop-78 rollup)." .
-    # calculated: calculated
-
-effortless-ntwf:expansionWave3DiscoveryNote a owl:DatatypeProperty ;
-    rdfs:domain effortless-ntwf:ModelSummary ;
-    rdfs:range xsd:string ;
-    rdfs:label "ExpansionWave3DiscoveryNote" ;
-    rdfs:comment "Loop-78 supersession audit rollup at N=238." .
-    # calculated: calculated
+    rdfs:label "ConfounderIdentityCount" ;
+    rdfs:comment "Canonical ConfounderIdentity archetypes in ontology (loop-80)." .
+    # calculated: aggregation
 
 # === Class: PhaseDiagramSummary ===
 effortless-ntwf:PhaseDiagramSummary a owl:Class ;
