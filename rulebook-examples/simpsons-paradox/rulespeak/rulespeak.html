@@ -254,8 +254,8 @@ html.show-consumers .elem-consumers{display:block}
     <li><a href="#t-strata">Strata</a> <span class="toc-meta">1 rules · 1 links</span></li>
     <li><a href="#t-casecells">Case Cell</a> <span class="toc-meta">4 rules · 1 links</span></li>
     <li><a href="#t-stratumsummaries">Stratum Summary</a> <span class="toc-meta">23 rules · 1 links</span></li>
-    <li><a href="#t-modelsummary">Model Summary</a> <span class="toc-meta">73 rules · 0 links</span></li>
-    <li><a href="#t-stratumvariables">Stratum Variable</a> <span class="toc-meta">1 rules · 1 links</span></li>
+    <li><a href="#t-modelsummary">Model Summary</a> <span class="toc-meta">75 rules · 0 links</span></li>
+    <li><a href="#t-stratumvariables">Stratum Variable</a> <span class="toc-meta">2 rules · 1 links</span></li>
     <li><a href="#t-treatmentrankings">Treatment Ranking</a> <span class="toc-meta">48 rules · 1 links</span></li>
     <li><a href="#t-invariantchecks">Invariant Check</a> <span class="toc-meta">7 rules · 0 links</span></li>
     <li><a href="#t-methodology">Methodology</a> <span class="toc-meta">5 rules · 0 links</span></li>
@@ -280,6 +280,9 @@ html.show-consumers .elem-consumers{display:block}
     <li><a href="#t-discoveryhypotheses">Discovery Hypothes</a> <span class="toc-meta">0 rules · 0 links</span></li>
     <li><a href="#t-discoveryfindings">Discovery Finding</a> <span class="toc-meta">4 rules · 0 links</span></li>
     <li><a href="#t-corpusdomains">Corpus Domain</a> <span class="toc-meta">0 rules · 0 links</span></li>
+    <li><a href="#t-confounderidentities">Confounder Identity</a> <span class="toc-meta">1 rules · 0 links</span></li>
+    <li><a href="#t-stratumvariableidentitymaps">Stratum Variable Identity Map</a> <span class="toc-meta">0 rules · 2 links</span></li>
+    <li><a href="#t-identityclustersummaries">Identity Cluster Summary</a> <span class="toc-meta">2 rules · 1 links</span></li>
   </ul>
 </nav>
 <section class="entity" id="t-loops" data-entity="Loop">
@@ -6580,7 +6583,7 @@ html.show-consumers .elem-consumers{display:block}
       </div>
     </details>
     <details class="prov prov-leaves elem elem-inputs">
-      <summary>Ground truth at the leaves <span class="count">11</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <summary>Ground truth at the leaves <span class="count">12</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
       <div class="prov-pills">
         <a class="ref-pill tone-raw" href="#f-casecells-cases">● Cases <span class="ref-pill-tbl">CaseCells</span></a>
         <a class="ref-pill tone-rel" href="#f-casecells-study">⇢ Study <span class="ref-pill-tbl">CaseCells</span></a>
@@ -6593,6 +6596,7 @@ html.show-consumers .elem-consumers{display:block}
         <a class="ref-pill tone-raw" href="#f-stratumsummaries-treatmentlabel">● Treatment Label <span class="ref-pill-tbl">StratumSummaries</span></a>
         <a class="ref-pill tone-raw" href="#f-treatmentrankings-treatmenta">● Treatment a <span class="ref-pill-tbl">TreatmentRankings</span></a>
         <a class="ref-pill tone-raw" href="#f-treatmentrankings-treatmentb">● Treatment B <span class="ref-pill-tbl">TreatmentRankings</span></a>
+        <a class="ref-pill tone-raw" href="#f-confounderidentities-confounderidentityid">● Confounder Identity ID <span class="ref-pill-tbl">ConfounderIdentities</span></a>
       </div>
     </details>
     <p class="field-note elem elem-desc">Research sweep synthesis rollup (loops 61–66).</p>
@@ -7999,20 +8003,138 @@ html.show-consumers .elem-consumers{display:block}
       </div>
       <div class="view elem elem-english">
         <span class="view-label">In English</span>
-        <p class="view-body">Count(confounder identity id).</p>
+        <p class="view-body">Count(<a class="ref" href="#f-confounderidentities-confounderidentityid">confounder identity id</a>).</p>
       </div>
       <div class="view elem elem-formula">
         <span class="view-label">As a formula</span>
         <div class="view-body fx"><span class="fx-eq">= </span>COUNT(<a class="fx-chip" href="#f-confounderidentities-confounderidentityid">Confounder Identity ID</a>)</div>
       </div>
     </div>
+    <details class="prov prov-inputs elem elem-inputs" open>
+      <summary>Inputs <span class="count">1</span> <span class="prov-hint">fields this rule reads</span></summary>
+      <div class="prov-grid">
+        <a class="input tone-raw" href="#f-confounderidentities-confounderidentityid">
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Confounder Identity ID</span><span class="input-table">ConfounderIdentities</span></span>
+          <span class="input-en muted">Unique slug (e.g. id-age-composition).</span>
+        </a>
+      </div>
+    </details>
     <details class="prov prov-consumers elem elem-consumers">
       <summary>Consumers <span class="count">1 direct</span> <span class="prov-hint">rules that read this one</span></summary>
       <div class="prov-pills">
         <a class="ref-pill tone-calc" href="#f-modelsummary-discoverywitnessnote">ƒ Discovery Witness Note <span class="ref-pill-tbl">ModelSummary</span></a>
       </div>
     </details>
+    <details class="prov prov-leaves elem elem-inputs">
+      <summary>Ground truth at the leaves <span class="count">1</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-raw" href="#f-confounderidentities-confounderidentityid">● Confounder Identity ID <span class="ref-pill-tbl">ConfounderIdentities</span></a>
+      </div>
+    </details>
     <p class="field-note elem elem-desc">Canonical ConfounderIdentity archetypes in ontology (loop-80).</p>
+    </article>
+  <article class="field tone-agg" id="f-modelsummary-mappedstratumvariablecount" data-entity="Model Summary" data-field="Mapped Stratum Variable Count">
+    <div class="field-head">
+      <span class="field-glyph" title="Aggregation">Σ</span>
+      <span class="field-name">Mapped Stratum Variable Count</span>
+      <span class="pill pill-type">Aggregation</span>
+      <span class="pill pill-depth">1 hop from ground truth</span>
+      <span class="pill pill-muted">integer</span>
+      <span class="pill pill-dr">DR-124</span>
+    </div>
+    <div class="narr-views">
+      <div class="view elem elem-rulespeak">
+        <span class="view-label">In RuleSpeak</span>
+        <p class="view-body">A model summary's mapped stratum variable count is the number of stratum variable identity maps related to the model summary.</p>
+      </div>
+      <div class="view elem elem-english">
+        <span class="view-label">In English</span>
+        <p class="view-body">Count(<a class="ref" href="#f-stratumvariableidentitymaps-mapid">map id</a>).</p>
+      </div>
+      <div class="view elem elem-formula">
+        <span class="view-label">As a formula</span>
+        <div class="view-body fx"><span class="fx-eq">= </span>COUNT(<a class="fx-chip" href="#f-stratumvariableidentitymaps-mapid">Map ID</a>)</div>
+      </div>
+    </div>
+    <details class="prov prov-inputs elem elem-inputs" open>
+      <summary>Inputs <span class="count">1</span> <span class="prov-hint">fields this rule reads</span></summary>
+      <div class="prov-grid">
+        <a class="input tone-raw" href="#f-stratumvariableidentitymaps-mapid">
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Map ID</span><span class="input-table">StratumVariableIdentityMaps</span></span>
+          <span class="input-en muted">Unique slug.</span>
+        </a>
+      </div>
+    </details>
+    <details class="prov prov-consumers elem elem-consumers">
+      <summary>Consumers <span class="count">1 direct</span> <span class="prov-hint">rules that read this one</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-calc" href="#f-modelsummary-unmappedstratumvariablecount">ƒ Unmapped Stratum Variable Count <span class="ref-pill-tbl">ModelSummary</span></a>
+      </div>
+    </details>
+    <details class="prov prov-leaves elem elem-inputs">
+      <summary>Ground truth at the leaves <span class="count">1</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-raw" href="#f-stratumvariableidentitymaps-mapid">● Map ID <span class="ref-pill-tbl">StratumVariableIdentityMaps</span></a>
+      </div>
+    </details>
+    <p class="field-note elem elem-desc">Stratum variables with an identity map row.</p>
+    </article>
+  <article class="field tone-calc" id="f-modelsummary-unmappedstratumvariablecount" data-entity="Model Summary" data-field="Unmapped Stratum Variable Count">
+    <div class="field-head">
+      <span class="field-glyph" title="Calculated">ƒ</span>
+      <span class="field-name">Unmapped Stratum Variable Count</span>
+      <span class="pill pill-type">Calculated</span>
+      <span class="pill pill-depth">2 hops from ground truth</span>
+      <span class="pill pill-muted">integer</span>
+      <span class="pill pill-dr">DR-125</span>
+    </div>
+    <div class="narr-views">
+      <div class="view elem elem-rulespeak">
+        <span class="view-label">In RuleSpeak</span>
+        <p class="view-body">A model summary's unmapped stratum variable count is computed as the number of stratum variables related to the model summary minus the <a class="ref" href="#f-modelsummary-mappedstratumvariablecount">mapped stratum variable count</a>.</p>
+      </div>
+      <div class="view elem elem-english">
+        <span class="view-label">In English</span>
+        <p class="view-body">Count(<a class="ref" href="#f-stratumvariables-stratumvariableid">stratum variable id</a>) minus <a class="ref" href="#f-modelsummary-mappedstratumvariablecount">mapped stratum variable count</a>.</p>
+      </div>
+      <div class="view elem elem-formula">
+        <span class="view-label">As a formula</span>
+        <div class="view-body fx"><span class="fx-eq">= </span>COUNT(<a class="fx-chip" href="#f-stratumvariables-stratumvariableid">Stratum Variable ID</a>) - <a class="fx-chip" href="#f-modelsummary-mappedstratumvariablecount">Mapped Stratum Variable Count</a></div>
+      </div>
+    </div>
+    <details class="prov prov-inputs elem elem-inputs" open>
+      <summary>Inputs <span class="count">2</span> <span class="prov-hint">fields this rule reads</span></summary>
+      <div class="prov-grid">
+        <a class="input tone-raw" href="#f-stratumvariables-stratumvariableid">
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Stratum Variable ID</span><span class="input-table">StratumVariables</span></span>
+          <span class="input-en muted">Unique slug (e.g. kidney-1986-stone-size).</span>
+        </a>
+        <a class="input tone-agg" href="#f-modelsummary-mappedstratumvariablecount">
+          <span class="input-head"><span class="input-glyph">Σ</span><span class="input-name">Mapped Stratum Variable Count</span><span class="input-table">ModelSummary</span></span>
+          <span class="input-en">Count(map id).</span>
+        </a>
+      </div>
+    </details>
+    <details class="prov prov-leaves elem elem-inputs">
+      <summary>Ground truth at the leaves <span class="count">2</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-raw" href="#f-stratumvariables-stratumvariableid">● Stratum Variable ID <span class="ref-pill-tbl">StratumVariables</span></a>
+        <a class="ref-pill tone-raw" href="#f-stratumvariableidentitymaps-mapid">● Map ID <span class="ref-pill-tbl">StratumVariableIdentityMaps</span></a>
+      </div>
+    </details>
+    <p class="field-note elem elem-desc">Stratum variables lacking identity map (should be 0).</p>
+    </article>
+  <article class="field tone-raw" id="f-modelsummary-identityclusterwitnessnote" data-entity="Model Summary" data-field="Identity Cluster Witness Note">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Identity Cluster Witness Note</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Loop-80 identity layer witness rollup (customize SQL).</p>
     </article>
 </section>
 <section class="entity" id="t-stratumvariables" data-entity="Stratum Variable">
@@ -8087,7 +8209,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">boolean</span>
-      <span class="pill pill-dr">DR-124</span>
+      <span class="pill pill-dr">DR-126</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -8166,6 +8288,46 @@ html.show-consumers .elem-consumers{display:block}
     </div>
     <p class="field-note elem elem-desc">The causal hazard posed by conditioning on this variable. Values: confounder (safe to condition — removes bias), mediator (conditioning blocks the causal path of interest — harmful), collider (conditioning opens a spurious backdoor — harmful), proxy (conditioning on a noisy proxy of the true confounder — risky), none (no conditioning risk identified). NULL means unclassified.</p>
     </article>
+  <article class="field tone-lookup" id="f-stratumvariables-confounderidentity" data-entity="Stratum Variable" data-field="Confounder Identity">
+    <div class="field-head">
+      <span class="field-glyph" title="Lookup">↗</span>
+      <span class="field-name">Confounder Identity</span>
+      <span class="pill pill-type">Lookup</span>
+      <span class="pill pill-depth">1 hop from ground truth</span>
+      <span class="pill pill-muted">string</span>
+      <span class="pill pill-dr">DR-127</span>
+    </div>
+    <div class="narr-views">
+      <div class="view elem elem-rulespeak">
+        <span class="view-label">In RuleSpeak</span>
+        <p class="view-body">A stratum variable's confounder identity is the value of LOOKUP(StratumVariableId, StratumVariableIdentityMaps[StratumVariable], StratumVariableIdentityMaps[ConfounderIdentity]).</p>
+      </div>
+      <div class="view elem elem-english">
+        <span class="view-label">In English</span>
+        <p class="view-body">LOOKUP({{StratumVariableId}}, StratumVariableIdentityMaps[StratumVariable], StratumVariableIdentityMaps[ConfounderIdentity]).</p>
+      </div>
+      <div class="view elem elem-formula">
+        <span class="view-label">As a formula</span>
+        <div class="view-body fx"><span class="fx-eq">= </span>LOOKUP(<a class="fx-chip" href="#f-stratumvariables-stratumvariableid">Stratum Variable ID</a>, StratumVariableIdentityMaps[StratumVariable], StratumVariableIdentityMaps[ConfounderIdentity])</div>
+      </div>
+    </div>
+    <details class="prov prov-inputs elem elem-inputs" open>
+      <summary>Inputs <span class="count">1</span> <span class="prov-hint">fields this rule reads</span></summary>
+      <div class="prov-grid">
+        <a class="input tone-raw" href="#f-stratumvariables-stratumvariableid">
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Stratum Variable ID</span><span class="input-table">StratumVariables</span></span>
+          <span class="input-en muted">Unique slug (e.g. kidney-1986-stone-size).</span>
+        </a>
+      </div>
+    </details>
+    <details class="prov prov-leaves elem elem-inputs">
+      <summary>Ground truth at the leaves <span class="count">1</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-raw" href="#f-stratumvariables-stratumvariableid">● Stratum Variable ID <span class="ref-pill-tbl">StratumVariables</span></a>
+      </div>
+    </details>
+    <p class="field-note elem elem-desc">Canonical cross-study identity via StratumVariableIdentityMaps (loop-80).</p>
+    </article>
 </section>
 <section class="entity" id="t-treatmentrankings" data-entity="Treatment Ranking">
   <header class="entity-head">
@@ -8215,7 +8377,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Aggregation</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">integer</span>
-      <span class="pill pill-dr">DR-125</span>
+      <span class="pill pill-dr">DR-128</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -8351,7 +8513,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Aggregation</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">integer</span>
-      <span class="pill pill-dr">DR-126</span>
+      <span class="pill pill-dr">DR-129</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -8487,7 +8649,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">2 hops from ground truth</span>
       <span class="pill pill-muted">number</span>
-      <span class="pill pill-dr">DR-127</span>
+      <span class="pill pill-dr">DR-130</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -8611,7 +8773,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Aggregation</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">integer</span>
-      <span class="pill pill-dr">DR-128</span>
+      <span class="pill pill-dr">DR-131</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -8747,7 +8909,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Aggregation</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">integer</span>
-      <span class="pill pill-dr">DR-129</span>
+      <span class="pill pill-dr">DR-132</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -8883,7 +9045,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">2 hops from ground truth</span>
       <span class="pill pill-muted">number</span>
-      <span class="pill pill-dr">DR-130</span>
+      <span class="pill pill-dr">DR-133</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -9007,7 +9169,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">3 hops from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-131</span>
+      <span class="pill pill-dr">DR-134</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -9077,7 +9239,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Aggregation</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">integer</span>
-      <span class="pill pill-dr">DR-132</span>
+      <span class="pill pill-dr">DR-135</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -9175,7 +9337,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Aggregation</span>
       <span class="pill pill-depth">4 hops from ground truth</span>
       <span class="pill pill-muted">integer</span>
-      <span class="pill pill-dr">DR-133</span>
+      <span class="pill pill-dr">DR-136</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -9284,7 +9446,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Aggregation</span>
       <span class="pill pill-depth">4 hops from ground truth</span>
       <span class="pill pill-muted">integer</span>
-      <span class="pill pill-dr">DR-134</span>
+      <span class="pill pill-dr">DR-137</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -9398,7 +9560,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">5 hops from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-135</span>
+      <span class="pill pill-dr">DR-138</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -9464,7 +9626,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">5 hops from ground truth</span>
       <span class="pill pill-muted">boolean</span>
-      <span class="pill pill-dr">DR-136</span>
+      <span class="pill pill-dr">DR-139</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -9558,7 +9720,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">7 hops from ground truth</span>
       <span class="pill pill-muted">boolean</span>
-      <span class="pill pill-dr">DR-137</span>
+      <span class="pill pill-dr">DR-140</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -9624,7 +9786,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Aggregation</span>
       <span class="pill pill-depth">2 hops from ground truth</span>
       <span class="pill pill-muted">integer</span>
-      <span class="pill pill-dr">DR-138</span>
+      <span class="pill pill-dr">DR-141</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -9687,7 +9849,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">8 hops from ground truth</span>
       <span class="pill pill-muted">boolean</span>
-      <span class="pill pill-dr">DR-139</span>
+      <span class="pill pill-dr">DR-142</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -9755,7 +9917,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">3 hops from ground truth</span>
       <span class="pill pill-muted">number</span>
-      <span class="pill pill-dr">DR-140</span>
+      <span class="pill pill-dr">DR-143</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -9818,7 +9980,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">5 hops from ground truth</span>
       <span class="pill pill-muted">integer</span>
-      <span class="pill pill-dr">DR-141</span>
+      <span class="pill pill-dr">DR-144</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -9890,7 +10052,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">6 hops from ground truth</span>
       <span class="pill pill-muted">number</span>
-      <span class="pill pill-dr">DR-142</span>
+      <span class="pill pill-dr">DR-145</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -9955,7 +10117,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Aggregation</span>
       <span class="pill pill-depth">4 hops from ground truth</span>
       <span class="pill pill-muted">number</span>
-      <span class="pill pill-dr">DR-143</span>
+      <span class="pill pill-dr">DR-146</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -10020,7 +10182,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Aggregation</span>
       <span class="pill pill-depth">4 hops from ground truth</span>
       <span class="pill pill-muted">number</span>
-      <span class="pill pill-dr">DR-144</span>
+      <span class="pill pill-dr">DR-147</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -10085,7 +10247,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">6 hops from ground truth</span>
       <span class="pill pill-muted">number</span>
-      <span class="pill pill-dr">DR-145</span>
+      <span class="pill pill-dr">DR-148</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -10145,7 +10307,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">7 hops from ground truth</span>
       <span class="pill pill-muted">number</span>
-      <span class="pill pill-dr">DR-146</span>
+      <span class="pill pill-dr">DR-149</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -10199,7 +10361,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">3 hops from ground truth</span>
       <span class="pill pill-muted">number</span>
-      <span class="pill pill-dr">DR-147</span>
+      <span class="pill pill-dr">DR-150</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -10314,7 +10476,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Aggregation</span>
       <span class="pill pill-depth">5 hops from ground truth</span>
       <span class="pill pill-muted">number</span>
-      <span class="pill pill-dr">DR-148</span>
+      <span class="pill pill-dr">DR-151</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -10447,7 +10609,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">6 hops from ground truth</span>
       <span class="pill pill-muted">boolean</span>
-      <span class="pill pill-dr">DR-149</span>
+      <span class="pill pill-dr">DR-152</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -10560,7 +10722,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">6 hops from ground truth</span>
       <span class="pill pill-muted">number</span>
-      <span class="pill pill-dr">DR-150</span>
+      <span class="pill pill-dr">DR-153</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -10657,7 +10819,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">7 hops from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-151</span>
+      <span class="pill pill-dr">DR-154</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -10757,7 +10919,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">8 hops from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-152</span>
+      <span class="pill pill-dr">DR-155</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -10807,7 +10969,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">6 hops from ground truth</span>
       <span class="pill pill-muted">number</span>
-      <span class="pill pill-dr">DR-153</span>
+      <span class="pill pill-dr">DR-156</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -10900,7 +11062,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">7 hops from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-154</span>
+      <span class="pill pill-dr">DR-157</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -10964,7 +11126,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">8 hops from ground truth</span>
       <span class="pill pill-muted">boolean</span>
-      <span class="pill pill-dr">DR-155</span>
+      <span class="pill pill-dr">DR-158</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -11018,7 +11180,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">8 hops from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-156</span>
+      <span class="pill pill-dr">DR-159</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -11068,7 +11230,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">7 hops from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-157</span>
+      <span class="pill pill-dr">DR-160</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -11134,7 +11296,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">7 hops from ground truth</span>
       <span class="pill pill-muted">number</span>
-      <span class="pill pill-dr">DR-158</span>
+      <span class="pill pill-dr">DR-161</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -11201,7 +11363,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">boolean</span>
-      <span class="pill pill-dr">DR-159</span>
+      <span class="pill pill-dr">DR-162</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -11262,7 +11424,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">number</span>
-      <span class="pill pill-dr">DR-160</span>
+      <span class="pill pill-dr">DR-163</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -11310,7 +11472,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">8 hops from ground truth</span>
       <span class="pill pill-muted">boolean</span>
-      <span class="pill pill-dr">DR-161</span>
+      <span class="pill pill-dr">DR-164</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -11377,7 +11539,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">4 hops from ground truth</span>
       <span class="pill pill-muted">number</span>
-      <span class="pill pill-dr">DR-162</span>
+      <span class="pill pill-dr">DR-165</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -11434,7 +11596,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">8 hops from ground truth</span>
       <span class="pill pill-muted">boolean</span>
-      <span class="pill pill-dr">DR-163</span>
+      <span class="pill pill-dr">DR-166</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -11506,7 +11668,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-164</span>
+      <span class="pill pill-dr">DR-167</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -11562,7 +11724,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Lookup</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-165</span>
+      <span class="pill pill-dr">DR-168</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -11614,7 +11776,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">7 hops from ground truth</span>
       <span class="pill pill-muted">boolean</span>
-      <span class="pill pill-dr">DR-166</span>
+      <span class="pill pill-dr">DR-169</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -11678,7 +11840,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Aggregation</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">integer</span>
-      <span class="pill pill-dr">DR-167</span>
+      <span class="pill pill-dr">DR-170</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -11736,7 +11898,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Aggregation</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">integer</span>
-      <span class="pill pill-dr">DR-168</span>
+      <span class="pill pill-dr">DR-171</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -11793,7 +11955,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Aggregation</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">integer</span>
-      <span class="pill pill-dr">DR-169</span>
+      <span class="pill pill-dr">DR-172</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -11851,7 +12013,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Aggregation</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">integer</span>
-      <span class="pill pill-dr">DR-170</span>
+      <span class="pill pill-dr">DR-173</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -11909,7 +12071,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">2 hops from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-171</span>
+      <span class="pill pill-dr">DR-174</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -11966,7 +12128,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">3 hops from ground truth</span>
       <span class="pill pill-muted">boolean</span>
-      <span class="pill pill-dr">DR-172</span>
+      <span class="pill pill-dr">DR-175</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -12145,7 +12307,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">integer</span>
-      <span class="pill pill-dr">DR-173</span>
+      <span class="pill pill-dr">DR-176</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -12190,7 +12352,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">boolean</span>
-      <span class="pill pill-dr">DR-174</span>
+      <span class="pill pill-dr">DR-177</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -12236,7 +12398,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">2 hops from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-175</span>
+      <span class="pill pill-dr">DR-178</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -12304,7 +12466,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Lookup</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-176</span>
+      <span class="pill pill-dr">DR-179</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -12344,7 +12506,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Lookup</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-177</span>
+      <span class="pill pill-dr">DR-180</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -12384,7 +12546,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Lookup</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-178</span>
+      <span class="pill pill-dr">DR-181</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -12424,7 +12586,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Lookup</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-179</span>
+      <span class="pill pill-dr">DR-182</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -12542,7 +12704,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Lookup</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-180</span>
+      <span class="pill pill-dr">DR-183</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -12582,7 +12744,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Lookup</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-181</span>
+      <span class="pill pill-dr">DR-184</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -12622,7 +12784,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Lookup</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-182</span>
+      <span class="pill pill-dr">DR-185</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -12662,7 +12824,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Lookup</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-183</span>
+      <span class="pill pill-dr">DR-186</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -12702,7 +12864,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Aggregation</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">integer</span>
-      <span class="pill pill-dr">DR-184</span>
+      <span class="pill pill-dr">DR-187</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -12837,7 +12999,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Lookup</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-185</span>
+      <span class="pill pill-dr">DR-188</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -12877,7 +13039,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Lookup</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-186</span>
+      <span class="pill pill-dr">DR-189</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -12917,7 +13079,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Lookup</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-187</span>
+      <span class="pill pill-dr">DR-190</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -12957,7 +13119,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Lookup</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-188</span>
+      <span class="pill pill-dr">DR-191</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -12997,7 +13159,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Lookup</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-189</span>
+      <span class="pill pill-dr">DR-192</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -13037,7 +13199,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Lookup</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-190</span>
+      <span class="pill pill-dr">DR-193</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -13077,7 +13239,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Lookup</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-191</span>
+      <span class="pill pill-dr">DR-194</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -13117,7 +13279,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Lookup</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-192</span>
+      <span class="pill pill-dr">DR-195</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -13157,7 +13319,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Lookup</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-193</span>
+      <span class="pill pill-dr">DR-196</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -13197,7 +13359,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Lookup</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-194</span>
+      <span class="pill pill-dr">DR-197</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -13237,7 +13399,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Aggregation</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">integer</span>
-      <span class="pill pill-dr">DR-195</span>
+      <span class="pill pill-dr">DR-198</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -13372,7 +13534,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Lookup</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-196</span>
+      <span class="pill pill-dr">DR-199</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -13412,7 +13574,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Lookup</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-197</span>
+      <span class="pill pill-dr">DR-200</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -13452,7 +13614,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Lookup</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-198</span>
+      <span class="pill pill-dr">DR-201</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -13492,7 +13654,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Lookup</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-199</span>
+      <span class="pill pill-dr">DR-202</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -13718,7 +13880,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">boolean</span>
-      <span class="pill pill-dr">DR-200</span>
+      <span class="pill pill-dr">DR-203</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -13763,7 +13925,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">number</span>
-      <span class="pill pill-dr">DR-201</span>
+      <span class="pill pill-dr">DR-204</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -13819,7 +13981,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">2 hops from ground truth</span>
       <span class="pill pill-muted">number</span>
-      <span class="pill pill-dr">DR-202</span>
+      <span class="pill pill-dr">DR-205</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -13879,7 +14041,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">3 hops from ground truth</span>
       <span class="pill pill-muted">number</span>
-      <span class="pill pill-dr">DR-203</span>
+      <span class="pill pill-dr">DR-206</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -13937,7 +14099,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">number</span>
-      <span class="pill pill-dr">DR-204</span>
+      <span class="pill pill-dr">DR-207</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -13990,7 +14152,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">number</span>
-      <span class="pill pill-dr">DR-205</span>
+      <span class="pill pill-dr">DR-208</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -14043,7 +14205,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">number</span>
-      <span class="pill pill-dr">DR-206</span>
+      <span class="pill pill-dr">DR-209</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -14096,7 +14258,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">number</span>
-      <span class="pill pill-dr">DR-207</span>
+      <span class="pill pill-dr">DR-210</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -14149,7 +14311,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">number</span>
-      <span class="pill pill-dr">DR-208</span>
+      <span class="pill pill-dr">DR-211</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -14202,7 +14364,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">number</span>
-      <span class="pill pill-dr">DR-209</span>
+      <span class="pill pill-dr">DR-212</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -14255,7 +14417,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">3 hops from ground truth</span>
       <span class="pill pill-muted">number</span>
-      <span class="pill pill-dr">DR-210</span>
+      <span class="pill pill-dr">DR-213</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -14320,7 +14482,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">4 hops from ground truth</span>
       <span class="pill pill-muted">number</span>
-      <span class="pill pill-dr">DR-211</span>
+      <span class="pill pill-dr">DR-214</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -14385,7 +14547,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">5 hops from ground truth</span>
       <span class="pill pill-muted">number</span>
-      <span class="pill pill-dr">DR-212</span>
+      <span class="pill pill-dr">DR-215</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -14441,7 +14603,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">number</span>
-      <span class="pill pill-dr">DR-213</span>
+      <span class="pill pill-dr">DR-216</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -14497,7 +14659,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">6 hops from ground truth</span>
       <span class="pill pill-muted">number</span>
-      <span class="pill pill-dr">DR-214</span>
+      <span class="pill pill-dr">DR-217</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -14548,7 +14710,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-215</span>
+      <span class="pill pill-dr">DR-218</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -14588,7 +14750,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">2 hops from ground truth</span>
       <span class="pill pill-muted">number</span>
-      <span class="pill pill-dr">DR-216</span>
+      <span class="pill pill-dr">DR-219</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -14637,7 +14799,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">2 hops from ground truth</span>
       <span class="pill pill-muted">number</span>
-      <span class="pill pill-dr">DR-217</span>
+      <span class="pill pill-dr">DR-220</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -14695,7 +14857,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">2 hops from ground truth</span>
       <span class="pill pill-muted">number</span>
-      <span class="pill pill-dr">DR-218</span>
+      <span class="pill pill-dr">DR-221</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -14753,7 +14915,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">3 hops from ground truth</span>
       <span class="pill pill-muted">number</span>
-      <span class="pill pill-dr">DR-219</span>
+      <span class="pill pill-dr">DR-222</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -14806,7 +14968,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">6 hops from ground truth</span>
       <span class="pill pill-muted">number</span>
-      <span class="pill pill-dr">DR-220</span>
+      <span class="pill pill-dr">DR-223</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -14863,7 +15025,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">6 hops from ground truth</span>
       <span class="pill pill-muted">number</span>
-      <span class="pill pill-dr">DR-221</span>
+      <span class="pill pill-dr">DR-224</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -14920,7 +15082,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">7 hops from ground truth</span>
       <span class="pill pill-muted">number</span>
-      <span class="pill pill-dr">DR-222</span>
+      <span class="pill pill-dr">DR-225</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -14966,7 +15128,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">7 hops from ground truth</span>
       <span class="pill pill-muted">boolean</span>
-      <span class="pill pill-dr">DR-223</span>
+      <span class="pill pill-dr">DR-226</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -15012,7 +15174,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">4 hops from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-224</span>
+      <span class="pill pill-dr">DR-227</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -15053,7 +15215,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-225</span>
+      <span class="pill pill-dr">DR-228</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -15195,7 +15357,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Lookup</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-226</span>
+      <span class="pill pill-dr">DR-229</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -15235,7 +15397,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Lookup</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-227</span>
+      <span class="pill pill-dr">DR-230</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -15275,7 +15437,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Lookup</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-228</span>
+      <span class="pill pill-dr">DR-231</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -15315,7 +15477,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Lookup</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-229</span>
+      <span class="pill pill-dr">DR-232</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -15355,7 +15517,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Lookup</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-230</span>
+      <span class="pill pill-dr">DR-233</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -15395,7 +15557,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Aggregation</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">integer</span>
-      <span class="pill pill-dr">DR-231</span>
+      <span class="pill pill-dr">DR-234</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -15440,7 +15602,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Aggregation</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">integer</span>
-      <span class="pill pill-dr">DR-232</span>
+      <span class="pill pill-dr">DR-235</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -15485,7 +15647,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Aggregation</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">integer</span>
-      <span class="pill pill-dr">DR-233</span>
+      <span class="pill pill-dr">DR-236</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -15632,7 +15794,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Lookup</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-234</span>
+      <span class="pill pill-dr">DR-237</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -15672,7 +15834,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Lookup</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-235</span>
+      <span class="pill pill-dr">DR-238</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -15712,7 +15874,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Lookup</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-236</span>
+      <span class="pill pill-dr">DR-239</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -15752,7 +15914,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Lookup</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-237</span>
+      <span class="pill pill-dr">DR-240</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -15792,7 +15954,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Lookup</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-238</span>
+      <span class="pill pill-dr">DR-241</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -15832,7 +15994,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Lookup</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-239</span>
+      <span class="pill pill-dr">DR-242</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -15872,7 +16034,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Lookup</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-240</span>
+      <span class="pill pill-dr">DR-243</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -15966,7 +16128,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">number</span>
-      <span class="pill pill-dr">DR-241</span>
+      <span class="pill pill-dr">DR-244</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -16023,7 +16185,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">2 hops from ground truth</span>
       <span class="pill pill-muted">number</span>
-      <span class="pill pill-dr">DR-242</span>
+      <span class="pill pill-dr">DR-245</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -16084,7 +16246,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">3 hops from ground truth</span>
       <span class="pill pill-muted">number</span>
-      <span class="pill pill-dr">DR-243</span>
+      <span class="pill pill-dr">DR-246</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -16142,7 +16304,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">3 hops from ground truth</span>
       <span class="pill pill-muted">number</span>
-      <span class="pill pill-dr">DR-244</span>
+      <span class="pill pill-dr">DR-247</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -16195,7 +16357,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">4 hops from ground truth</span>
       <span class="pill pill-muted">number</span>
-      <span class="pill pill-dr">DR-245</span>
+      <span class="pill pill-dr">DR-248</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -16248,7 +16410,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">number</span>
-      <span class="pill pill-dr">DR-246</span>
+      <span class="pill pill-dr">DR-249</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -16300,7 +16462,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">number</span>
-      <span class="pill pill-dr">DR-247</span>
+      <span class="pill pill-dr">DR-250</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -16352,7 +16514,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">number</span>
-      <span class="pill pill-dr">DR-248</span>
+      <span class="pill pill-dr">DR-251</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -16404,7 +16566,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">number</span>
-      <span class="pill pill-dr">DR-249</span>
+      <span class="pill pill-dr">DR-252</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -16456,7 +16618,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">4 hops from ground truth</span>
       <span class="pill pill-muted">number</span>
-      <span class="pill pill-dr">DR-250</span>
+      <span class="pill pill-dr">DR-253</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -16522,7 +16684,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">5 hops from ground truth</span>
       <span class="pill pill-muted">number</span>
-      <span class="pill pill-dr">DR-251</span>
+      <span class="pill pill-dr">DR-254</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -16588,7 +16750,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">6 hops from ground truth</span>
       <span class="pill pill-muted">number</span>
-      <span class="pill pill-dr">DR-252</span>
+      <span class="pill pill-dr">DR-255</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -16645,7 +16807,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">number</span>
-      <span class="pill pill-dr">DR-253</span>
+      <span class="pill pill-dr">DR-256</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -16703,7 +16865,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">7 hops from ground truth</span>
       <span class="pill pill-muted">number</span>
-      <span class="pill pill-dr">DR-254</span>
+      <span class="pill pill-dr">DR-257</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -16761,7 +16923,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">8 hops from ground truth</span>
       <span class="pill pill-muted">number</span>
-      <span class="pill pill-dr">DR-255</span>
+      <span class="pill pill-dr">DR-258</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -16810,7 +16972,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">7 hops from ground truth</span>
       <span class="pill pill-muted">boolean</span>
-      <span class="pill pill-dr">DR-256</span>
+      <span class="pill pill-dr">DR-259</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -16863,7 +17025,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">7 hops from ground truth</span>
       <span class="pill pill-muted">number</span>
-      <span class="pill pill-dr">DR-257</span>
+      <span class="pill pill-dr">DR-260</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -16916,7 +17078,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">9 hops from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-258</span>
+      <span class="pill pill-dr">DR-261</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -16981,7 +17143,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">integer</span>
-      <span class="pill pill-dr">DR-259</span>
+      <span class="pill pill-dr">DR-262</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -17101,7 +17263,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">boolean</span>
-      <span class="pill pill-dr">DR-260</span>
+      <span class="pill pill-dr">DR-263</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -17167,7 +17329,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-261</span>
+      <span class="pill pill-dr">DR-264</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -17227,7 +17389,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">2 hops from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-262</span>
+      <span class="pill pill-dr">DR-265</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -17355,7 +17517,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Aggregation</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">integer</span>
-      <span class="pill pill-dr">DR-263</span>
+      <span class="pill pill-dr">DR-266</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -17401,7 +17563,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Aggregation</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">integer</span>
-      <span class="pill pill-dr">DR-264</span>
+      <span class="pill pill-dr">DR-267</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -17449,7 +17611,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Aggregation</span>
       <span class="pill pill-depth">2 hops from ground truth</span>
       <span class="pill pill-muted">integer</span>
-      <span class="pill pill-dr">DR-265</span>
+      <span class="pill pill-dr">DR-268</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -17498,7 +17660,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">3 hops from ground truth</span>
       <span class="pill pill-muted">boolean</span>
-      <span class="pill pill-dr">DR-266</span>
+      <span class="pill pill-dr">DR-269</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -17551,7 +17713,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Aggregation</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">integer</span>
-      <span class="pill pill-dr">DR-267</span>
+      <span class="pill pill-dr">DR-270</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -17599,7 +17761,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Aggregation</span>
       <span class="pill pill-depth">3 hops from ground truth</span>
       <span class="pill pill-muted">integer</span>
-      <span class="pill pill-dr">DR-268</span>
+      <span class="pill pill-dr">DR-271</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -17648,7 +17810,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">4 hops from ground truth</span>
       <span class="pill pill-muted">boolean</span>
-      <span class="pill pill-dr">DR-269</span>
+      <span class="pill pill-dr">DR-272</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -17700,7 +17862,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Aggregation</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">integer</span>
-      <span class="pill pill-dr">DR-270</span>
+      <span class="pill pill-dr">DR-273</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -17748,7 +17910,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Aggregation</span>
       <span class="pill pill-depth">4 hops from ground truth</span>
       <span class="pill pill-muted">integer</span>
-      <span class="pill pill-dr">DR-271</span>
+      <span class="pill pill-dr">DR-274</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -17798,7 +17960,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">5 hops from ground truth</span>
       <span class="pill pill-muted">boolean</span>
-      <span class="pill pill-dr">DR-272</span>
+      <span class="pill pill-dr">DR-275</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -17851,7 +18013,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">6 hops from ground truth</span>
       <span class="pill pill-muted">boolean</span>
-      <span class="pill pill-dr">DR-273</span>
+      <span class="pill pill-dr">DR-276</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -17910,7 +18072,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">7 hops from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-274</span>
+      <span class="pill pill-dr">DR-277</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -18110,7 +18272,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">boolean</span>
-      <span class="pill pill-dr">DR-275</span>
+      <span class="pill pill-dr">DR-278</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -18174,7 +18336,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">boolean</span>
-      <span class="pill pill-dr">DR-276</span>
+      <span class="pill pill-dr">DR-279</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -18234,7 +18396,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Lookup</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-277</span>
+      <span class="pill pill-dr">DR-280</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -18290,7 +18452,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">2 hops from ground truth</span>
       <span class="pill pill-muted">boolean</span>
-      <span class="pill pill-dr">DR-278</span>
+      <span class="pill pill-dr">DR-281</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -18349,7 +18511,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">boolean</span>
-      <span class="pill pill-dr">DR-279</span>
+      <span class="pill pill-dr">DR-282</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -18399,7 +18561,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">2 hops from ground truth</span>
       <span class="pill pill-muted">boolean</span>
-      <span class="pill pill-dr">DR-280</span>
+      <span class="pill pill-dr">DR-283</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -18453,7 +18615,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">3 hops from ground truth</span>
       <span class="pill pill-muted">boolean</span>
-      <span class="pill pill-dr">DR-281</span>
+      <span class="pill pill-dr">DR-284</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -18559,7 +18721,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">boolean</span>
-      <span class="pill pill-dr">DR-282</span>
+      <span class="pill pill-dr">DR-285</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -18613,7 +18775,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Aggregation</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">integer</span>
-      <span class="pill pill-dr">DR-283</span>
+      <span class="pill pill-dr">DR-286</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -18653,7 +18815,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Aggregation</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">integer</span>
-      <span class="pill pill-dr">DR-284</span>
+      <span class="pill pill-dr">DR-287</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -18700,7 +18862,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Aggregation</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">integer</span>
-      <span class="pill pill-dr">DR-285</span>
+      <span class="pill pill-dr">DR-288</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -18747,7 +18909,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Aggregation</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">integer</span>
-      <span class="pill pill-dr">DR-286</span>
+      <span class="pill pill-dr">DR-289</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -18787,7 +18949,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Aggregation</span>
       <span class="pill pill-depth">2 hops from ground truth</span>
       <span class="pill pill-muted">integer</span>
-      <span class="pill pill-dr">DR-287</span>
+      <span class="pill pill-dr">DR-290</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -18837,7 +18999,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Aggregation</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">integer</span>
-      <span class="pill pill-dr">DR-288</span>
+      <span class="pill pill-dr">DR-291</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -18882,7 +19044,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">3 hops from ground truth</span>
       <span class="pill pill-muted">boolean</span>
-      <span class="pill pill-dr">DR-289</span>
+      <span class="pill pill-dr">DR-292</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -18935,7 +19097,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Aggregation</span>
       <span class="pill pill-depth">3 hops from ground truth</span>
       <span class="pill pill-muted">integer</span>
-      <span class="pill pill-dr">DR-290</span>
+      <span class="pill pill-dr">DR-293</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -18984,7 +19146,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Aggregation</span>
       <span class="pill pill-depth">3 hops from ground truth</span>
       <span class="pill pill-muted">integer</span>
-      <span class="pill pill-dr">DR-291</span>
+      <span class="pill pill-dr">DR-294</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -19030,7 +19192,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Aggregation</span>
       <span class="pill pill-depth">2 hops from ground truth</span>
       <span class="pill pill-muted">integer</span>
-      <span class="pill pill-dr">DR-292</span>
+      <span class="pill pill-dr">DR-295</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -19082,7 +19244,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Aggregation</span>
       <span class="pill pill-depth">4 hops from ground truth</span>
       <span class="pill pill-muted">integer</span>
-      <span class="pill pill-dr">DR-293</span>
+      <span class="pill pill-dr">DR-296</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -19131,7 +19293,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">4 hops from ground truth</span>
       <span class="pill pill-muted">number</span>
-      <span class="pill pill-dr">DR-294</span>
+      <span class="pill pill-dr">DR-297</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -19183,7 +19345,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">5 hops from ground truth</span>
       <span class="pill pill-muted">number</span>
-      <span class="pill pill-dr">DR-295</span>
+      <span class="pill pill-dr">DR-298</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -19235,7 +19397,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">4 hops from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-296</span>
+      <span class="pill pill-dr">DR-299</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -19291,7 +19453,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">6 hops from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-297</span>
+      <span class="pill pill-dr">DR-300</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -19353,7 +19515,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Aggregation</span>
       <span class="pill pill-depth">2 hops from ground truth</span>
       <span class="pill pill-muted">integer</span>
-      <span class="pill pill-dr">DR-298</span>
+      <span class="pill pill-dr">DR-301</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -19404,7 +19566,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Aggregation</span>
       <span class="pill pill-depth">2 hops from ground truth</span>
       <span class="pill pill-muted">integer</span>
-      <span class="pill pill-dr">DR-299</span>
+      <span class="pill pill-dr">DR-302</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -19452,7 +19614,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Aggregation</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">integer</span>
-      <span class="pill pill-dr">DR-300</span>
+      <span class="pill pill-dr">DR-303</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -19534,7 +19696,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Aggregation</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">integer</span>
-      <span class="pill pill-dr">DR-301</span>
+      <span class="pill pill-dr">DR-304</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -19597,7 +19759,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Aggregation</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">integer</span>
-      <span class="pill pill-dr">DR-302</span>
+      <span class="pill pill-dr">DR-305</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -19655,7 +19817,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">2 hops from ground truth</span>
       <span class="pill pill-muted">integer</span>
-      <span class="pill pill-dr">DR-303</span>
+      <span class="pill pill-dr">DR-306</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -19711,7 +19873,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">3 hops from ground truth</span>
       <span class="pill pill-muted">integer</span>
-      <span class="pill pill-dr">DR-304</span>
+      <span class="pill pill-dr">DR-307</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -19761,7 +19923,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">3 hops from ground truth</span>
       <span class="pill pill-muted">boolean</span>
-      <span class="pill pill-dr">DR-305</span>
+      <span class="pill pill-dr">DR-308</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -20153,7 +20315,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Lookup</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-306</span>
+      <span class="pill pill-dr">DR-309</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -20193,7 +20355,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-307</span>
+      <span class="pill pill-dr">DR-310</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -20239,7 +20401,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">boolean</span>
-      <span class="pill pill-dr">DR-308</span>
+      <span class="pill pill-dr">DR-311</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -20285,7 +20447,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">2 hops from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-309</span>
+      <span class="pill pill-dr">DR-312</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -20387,6 +20549,334 @@ html.show-consumers .elem-consumers{display:block}
       <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
     </div>
     <p class="field-note elem elem-desc">Section heading in corpus-expansion-plan.md.</p>
+    </article>
+</section>
+<section class="entity" id="t-confounderidentities" data-entity="Confounder Identity">
+  <header class="entity-head">
+    <h2 class="entity-title">Confounder Identity</h2>
+    <p class="entity-synopsis">A confounder identity is identified by its name.</p>
+  </header>
+  <article class="field tone-raw" id="f-confounderidentities-displayname" data-entity="Confounder Identity" data-field="Display Name">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Display Name</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Human-readable archetype name.</p>
+    </article>
+  <article class="field tone-raw" id="f-confounderidentities-mechanismclass" data-entity="Confounder Identity" data-field="Mechanism Class">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Mechanism Class</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Mechanism taxonomy token.</p>
+    </article>
+  <article class="field tone-raw" id="f-confounderidentities-description" data-entity="Confounder Identity" data-field="Description">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Description</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Narrative description of confounding mechanism.</p>
+    </article>
+  <article class="field tone-raw" id="f-confounderidentities-policydefault" data-entity="Confounder Identity" data-field="Policy Default">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Policy Default</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Default analytic policy for this confounding archetype.</p>
+    </article>
+  <article class="field tone-agg" id="f-confounderidentities-studycount" data-entity="Confounder Identity" data-field="Study Count">
+    <div class="field-head">
+      <span class="field-glyph" title="Aggregation">Σ</span>
+      <span class="field-name">Study Count</span>
+      <span class="pill pill-type">Aggregation</span>
+      <span class="pill pill-depth">1 hop from ground truth</span>
+      <span class="pill pill-muted">integer</span>
+      <span class="pill pill-dr">DR-313</span>
+    </div>
+    <div class="narr-views">
+      <div class="view elem elem-rulespeak">
+        <span class="view-label">In RuleSpeak</span>
+        <p class="view-body">A confounder identity's study count is the number of the confounder identity's studies.</p>
+      </div>
+      <div class="view elem elem-english">
+        <span class="view-label">In English</span>
+        <p class="view-body">Count(<a class="ref" href="#f-stratumvariableidentitymaps-mapid">map id</a>, confounder identity, <a class="ref" href="#f-confounderidentities-confounderidentityid">confounder identity id</a>).</p>
+      </div>
+      <div class="view elem elem-formula">
+        <span class="view-label">As a formula</span>
+        <div class="view-body fx"><span class="fx-eq">= </span>COUNT(<a class="fx-chip" href="#f-stratumvariableidentitymaps-mapid">Map ID</a>, ConfounderIdentity, <a class="fx-chip" href="#f-confounderidentities-confounderidentityid">Confounder Identity ID</a>)</div>
+      </div>
+    </div>
+    <details class="prov prov-inputs elem elem-inputs" open>
+      <summary>Inputs <span class="count">2</span> <span class="prov-hint">fields this rule reads</span></summary>
+      <div class="prov-grid">
+        <a class="input tone-raw" href="#f-stratumvariableidentitymaps-mapid">
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Map ID</span><span class="input-table">StratumVariableIdentityMaps</span></span>
+          <span class="input-en muted">Unique slug.</span>
+        </a>
+        <a class="input tone-raw" href="#f-confounderidentities-confounderidentityid">
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Confounder Identity ID</span><span class="input-table">ConfounderIdentities</span></span>
+          <span class="input-en muted">Unique slug (e.g. id-age-composition).</span>
+        </a>
+      </div>
+    </details>
+    <details class="prov prov-leaves elem elem-inputs">
+      <summary>Ground truth at the leaves <span class="count">2</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-raw" href="#f-stratumvariableidentitymaps-mapid">● Map ID <span class="ref-pill-tbl">StratumVariableIdentityMaps</span></a>
+        <a class="ref-pill tone-raw" href="#f-confounderidentities-confounderidentityid">● Confounder Identity ID <span class="ref-pill-tbl">ConfounderIdentities</span></a>
+      </div>
+    </details>
+    <p class="field-note elem elem-desc">Studies with a StratumVariable mapped to this identity.</p>
+    </article>
+</section>
+<section class="entity" id="t-stratumvariableidentitymaps" data-entity="Stratum Variable Identity Map">
+  <header class="entity-head">
+    <h2 class="entity-title">Stratum Variable Identity Map</h2>
+    <p class="entity-synopsis">A stratum variable identity map is identified by its name and is related to a stratum variable and a confounder identity.</p>
+  </header>
+  <article class="field tone-rel" id="f-stratumvariableidentitymaps-stratumvariable" data-entity="Stratum Variable Identity Map" data-field="Stratum Variable">
+    <div class="field-head">
+      <span class="field-glyph" title="Relationship">⇢</span>
+      <span class="field-name">Stratum Variable</span>
+      <span class="pill pill-type">Relationship</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">A pointer to <a href="#t-stratumvariables">Stratum Variable</a>. It is not derived from anything else — it is the link the rest of the DAG hangs off.</p>
+    </div>
+    <p class="field-note elem elem-desc">FK → StratumVariables.</p>
+    </article>
+  <article class="field tone-rel" id="f-stratumvariableidentitymaps-confounderidentity" data-entity="Stratum Variable Identity Map" data-field="Confounder Identity">
+    <div class="field-head">
+      <span class="field-glyph" title="Relationship">⇢</span>
+      <span class="field-name">Confounder Identity</span>
+      <span class="pill pill-type">Relationship</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">A pointer to <a href="#t-confounderidentities">Confounder Identity</a>. It is not derived from anything else — it is the link the rest of the DAG hangs off.</p>
+    </div>
+    <p class="field-note elem elem-desc">FK → ConfounderIdentities.</p>
+    </article>
+  <article class="field tone-raw" id="f-stratumvariableidentitymaps-variablenamenormalized" data-entity="Stratum Variable Identity Map" data-field="Variable Name Normalized">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Variable Name Normalized</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Lowercase normalized variable token for dedup audit.</p>
+    </article>
+</section>
+<section class="entity" id="t-identityclustersummaries" data-entity="Identity Cluster Summary">
+  <header class="entity-head">
+    <h2 class="entity-title">Identity Cluster Summary</h2>
+    <p class="entity-synopsis">An identity cluster summary is identified by its name and is related to a confounder identity.</p>
+  </header>
+  <article class="field tone-rel" id="f-identityclustersummaries-confounderidentity" data-entity="Identity Cluster Summary" data-field="Confounder Identity">
+    <div class="field-head">
+      <span class="field-glyph" title="Relationship">⇢</span>
+      <span class="field-name">Confounder Identity</span>
+      <span class="pill pill-type">Relationship</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">A pointer to <a href="#t-confounderidentities">Confounder Identity</a>. It is not derived from anything else — it is the link the rest of the DAG hangs off.</p>
+    </div>
+    <p class="field-note elem elem-desc">FK → ConfounderIdentities.</p>
+    </article>
+  <article class="field tone-lookup" id="f-identityclustersummaries-displayname" data-entity="Identity Cluster Summary" data-field="Display Name">
+    <div class="field-head">
+      <span class="field-glyph" title="Lookup">↗</span>
+      <span class="field-name">Display Name</span>
+      <span class="pill pill-type">Lookup</span>
+      <span class="pill pill-depth">1 hop from ground truth</span>
+      <span class="pill pill-muted">string</span>
+      <span class="pill pill-dr">DR-314</span>
+    </div>
+    <div class="narr-views">
+      <div class="view elem elem-rulespeak">
+        <span class="view-label">In RuleSpeak</span>
+        <p class="view-body">An identity cluster summary's display name is the value of LOOKUP(ConfounderIdentity, ConfounderIdentities[ConfounderIdentityId], ConfounderIdentities[DisplayName]).</p>
+      </div>
+      <div class="view elem elem-english">
+        <span class="view-label">In English</span>
+        <p class="view-body">LOOKUP({{ConfounderIdentity}}, ConfounderIdentities[ConfounderIdentityId], ConfounderIdentities[DisplayName]).</p>
+      </div>
+      <div class="view elem elem-formula">
+        <span class="view-label">As a formula</span>
+        <div class="view-body fx"><span class="fx-eq">= </span>LOOKUP(<a class="fx-chip" href="#f-identityclustersummaries-confounderidentity">Confounder Identity</a>, ConfounderIdentities[ConfounderIdentityId], ConfounderIdentities[DisplayName])</div>
+      </div>
+    </div>
+    <details class="prov prov-inputs elem elem-inputs" open>
+      <summary>Inputs <span class="count">1</span> <span class="prov-hint">fields this rule reads</span></summary>
+      <div class="prov-grid">
+        <a class="input tone-rel" href="#f-identityclustersummaries-confounderidentity">
+          <span class="input-head"><span class="input-glyph">⇢</span><span class="input-name">Confounder Identity</span><span class="input-table">IdentityClusterSummaries</span></span>
+          <span class="input-en muted">FK → ConfounderIdentities.</span>
+        </a>
+      </div>
+    </details>
+    <details class="prov prov-leaves elem elem-inputs">
+      <summary>Ground truth at the leaves <span class="count">1</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-rel" href="#f-identityclustersummaries-confounderidentity">⇢ Confounder Identity <span class="ref-pill-tbl">IdentityClusterSummaries</span></a>
+      </div>
+    </details>
+    <p class="field-note elem elem-desc">Lookup archetype display name.</p>
+    </article>
+  <article class="field tone-raw" id="f-identityclustersummaries-studycount" data-entity="Identity Cluster Summary" data-field="Study Count">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Study Count</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">integer</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>integer</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Real studies in cluster (customize SQL).</p>
+    </article>
+  <article class="field tone-raw" id="f-identityclustersummaries-manifestflipcount" data-entity="Identity Cluster Summary" data-field="Manifest Flip Count">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Manifest Flip Count</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">integer</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>integer</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">IsSignFlip=TRUE count in cluster.</p>
+    </article>
+  <article class="field tone-raw" id="f-identityclustersummaries-latentflipcount" data-entity="Identity Cluster Summary" data-field="Latent Flip Count">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Latent Flip Count</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">integer</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>integer</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">LatentFlipPotential=TRUE without manifest flip.</p>
+    </article>
+  <article class="field tone-raw" id="f-identityclustersummaries-typedcount" data-entity="Identity Cluster Summary" data-field="Type D Count">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Type D Count</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">integer</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>integer</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Type-D studies in cluster.</p>
+    </article>
+  <article class="field tone-raw" id="f-identityclustersummaries-avgallocationdistortion" data-entity="Identity Cluster Summary" data-field="Avg Allocation Distortion">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Avg Allocation Distortion</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">number</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>number</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Mean allocation distortion in cluster.</p>
+    </article>
+  <article class="field tone-raw" id="f-identityclustersummaries-latentfractionamongtyped" data-entity="Identity Cluster Summary" data-field="Latent Fraction Among Type D">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Latent Fraction Among Type D</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">number</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>number</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Fraction of Type-D rows with LatentFlipPotential.</p>
+    </article>
+  <article class="field tone-raw" id="f-identityclustersummaries-domaincount" data-entity="Identity Cluster Summary" data-field="Domain Count">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Domain Count</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">integer</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>integer</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Distinct Studies.Domain values in cluster.</p>
+    </article>
+  <article class="field tone-calc" id="f-identityclustersummaries-manifestfliprate" data-entity="Identity Cluster Summary" data-field="Manifest Flip Rate">
+    <div class="field-head">
+      <span class="field-glyph" title="Calculated">ƒ</span>
+      <span class="field-name">Manifest Flip Rate</span>
+      <span class="pill pill-type">Calculated</span>
+      <span class="pill pill-depth">1 hop from ground truth</span>
+      <span class="pill pill-muted">number</span>
+      <span class="pill pill-dr">DR-315</span>
+    </div>
+    <div class="narr-views">
+      <div class="view elem elem-rulespeak">
+        <span class="view-label">In RuleSpeak</span>
+        <div class="view-body"><p class="rt-headline">The identity cluster summary's manifest flip rate is determined by the following priority:</p><ol class="rt-priority"><li><span class="rt-value">an empty string</span> <span class="rt-when">if the study count is 0</span></li><li><span class="rt-value">the manifest flip count divided by the study count</span> <span class="rt-otherwise">otherwise</span></li></ol></div>
+      </div>
+      <div class="view elem elem-english">
+        <span class="view-label">In English</span>
+        <p class="view-body">If <a class="ref" href="#f-identityclustersummaries-studycount">study count</a> equals 0 then &quot;&quot;, otherwise (<a class="ref" href="#f-identityclustersummaries-manifestflipcount">manifest flip count</a> divided by study count).</p>
+      </div>
+      <div class="view elem elem-formula">
+        <span class="view-label">As a formula</span>
+        <div class="view-body fx"><span class="fx-eq">= </span>IF(<a class="fx-chip" href="#f-identityclustersummaries-studycount">Study Count</a>=0, &quot;&quot;, <a class="fx-chip" href="#f-identityclustersummaries-manifestflipcount">Manifest Flip Count</a> / <a class="fx-chip" href="#f-identityclustersummaries-studycount">Study Count</a>)</div>
+      </div>
+    </div>
+    <details class="prov prov-inputs elem elem-inputs" open>
+      <summary>Inputs <span class="count">2</span> <span class="prov-hint">fields this rule reads</span></summary>
+      <div class="prov-grid">
+        <a class="input tone-raw" href="#f-identityclustersummaries-studycount">
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Study Count</span><span class="input-table">IdentityClusterSummaries</span></span>
+          <span class="input-en muted">Real studies in cluster (customize SQL).</span>
+        </a>
+        <a class="input tone-raw" href="#f-identityclustersummaries-manifestflipcount">
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Manifest Flip Count</span><span class="input-table">IdentityClusterSummaries</span></span>
+          <span class="input-en muted">IsSignFlip=TRUE count in cluster.</span>
+        </a>
+      </div>
+    </details>
+    <details class="prov prov-leaves elem elem-inputs">
+      <summary>Ground truth at the leaves <span class="count">2</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-raw" href="#f-identityclustersummaries-studycount">● Study Count <span class="ref-pill-tbl">IdentityClusterSummaries</span></a>
+        <a class="ref-pill tone-raw" href="#f-identityclustersummaries-manifestflipcount">● Manifest Flip Count <span class="ref-pill-tbl">IdentityClusterSummaries</span></a>
+      </div>
+    </details>
+    <p class="field-note elem elem-desc">ManifestFlipCount / StudyCount.</p>
     </article>
 </section>
 <footer class="doc-footer">

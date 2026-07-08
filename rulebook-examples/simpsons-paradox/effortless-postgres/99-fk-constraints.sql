@@ -96,4 +96,17 @@ ALTER TABLE discovery_findings DROP CONSTRAINT IF EXISTS fk_discovery_findings_w
 ALTER TABLE discovery_findings ADD CONSTRAINT fk_discovery_findings_witnessed_in_loop
   FOREIGN KEY (witnessed_in_loop) REFERENCES loops (loop_id);
 
--- 18 FK constraint(s) declared (off unless EFFORTLESS_ENFORCE_FKS=true).
+-- StratumVariableIdentityMaps
+ALTER TABLE stratum_variable_identity_maps DROP CONSTRAINT IF EXISTS fk_stratum_variable_identity_maps_stratum_variable;
+ALTER TABLE stratum_variable_identity_maps ADD CONSTRAINT fk_stratum_variable_identity_maps_stratum_variable
+  FOREIGN KEY (stratum_variable) REFERENCES stratum_variables (stratum_variable_id);
+ALTER TABLE stratum_variable_identity_maps DROP CONSTRAINT IF EXISTS fk_stratum_variable_identity_maps_confounder_identity;
+ALTER TABLE stratum_variable_identity_maps ADD CONSTRAINT fk_stratum_variable_identity_maps_confounder_identity
+  FOREIGN KEY (confounder_identity) REFERENCES confounder_identities (confounder_identity_id);
+
+-- IdentityClusterSummaries
+ALTER TABLE identity_cluster_summaries DROP CONSTRAINT IF EXISTS fk_identity_cluster_summaries_confounder_identity;
+ALTER TABLE identity_cluster_summaries ADD CONSTRAINT fk_identity_cluster_summaries_confounder_identity
+  FOREIGN KEY (confounder_identity) REFERENCES confounder_identities (confounder_identity_id);
+
+-- 21 FK constraint(s) declared (off unless EFFORTLESS_ENFORCE_FKS=true).

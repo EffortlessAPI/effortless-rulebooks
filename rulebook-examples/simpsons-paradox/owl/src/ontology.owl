@@ -516,6 +516,51 @@ effortless-ntwf:invariantProtectingCount a owl:DatatypeProperty ;
     rdfs:comment "Count of InvariantChecks whose ProtectsConclusion FK points to this conclusion — how many algebraic invariants stand behind this finding." .
     # calculated: aggregation
 
+# === Class: ConfounderIdentities ===
+effortless-ntwf:ConfounderIdentities a owl:Class ;
+    rdfs:label "ConfounderIdentities" ;
+    rdfs:comment "Table: ConfounderIdentities — canonical cross-study archetypes for stratum variables. Each identity names a reusable confounding mechanism accountable across the corpus (loop-80)." .
+
+effortless-ntwf:confounderIdentityId a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:ConfounderIdentities ;
+    rdfs:range xsd:string ;
+    rdfs:label "ConfounderIdentityId" ;
+    rdfs:comment "Unique slug (e.g. id-age-composition)." .
+
+effortless-ntwf:name a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "Name" ;
+    rdfs:comment "Display label." .
+    # calculated: calculated
+
+effortless-ntwf:displayName a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "DisplayName" ;
+    rdfs:comment "Human-readable archetype name." .
+
+effortless-ntwf:mechanismClass a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:ConfounderIdentities ;
+    rdfs:range xsd:string ;
+    rdfs:label "MechanismClass" ;
+    rdfs:comment "Mechanism taxonomy token." .
+
+effortless-ntwf:description a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "Description" ;
+    rdfs:comment "Narrative description of confounding mechanism." .
+
+effortless-ntwf:policyDefault a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:ConfounderIdentities ;
+    rdfs:range xsd:string ;
+    rdfs:label "PolicyDefault" ;
+    rdfs:comment "Default analytic policy for this confounding archetype." .
+
+effortless-ntwf:studyCount a owl:DatatypeProperty ;
+    rdfs:range xsd:integer ;
+    rdfs:label "StudyCount" ;
+    rdfs:comment "Studies with a StratumVariable mapped to this identity." .
+    # calculated: aggregation
+
 # === Class: CorpusCatalogSummary ===
 effortless-ntwf:CorpusCatalogSummary a owl:Class ;
     rdfs:label "CorpusCatalogSummary" ;
@@ -669,7 +714,6 @@ effortless-ntwf:name a owl:DatatypeProperty ;
     # calculated: calculated
 
 effortless-ntwf:displayName a owl:DatatypeProperty ;
-    rdfs:domain effortless-ntwf:CorpusDomains ;
     rdfs:range xsd:string ;
     rdfs:label "DisplayName" ;
     rdfs:comment "Human-readable domain name." .
@@ -857,6 +901,81 @@ effortless-ntwf:isUnderRepresented a owl:DatatypeProperty ;
     rdfs:range xsd:boolean ;
     rdfs:label "IsUnderRepresented" ;
     rdfs:comment "TRUE when projected count still below target." .
+    # calculated: calculated
+
+# === Class: IdentityClusterSummaries ===
+effortless-ntwf:IdentityClusterSummaries a owl:Class ;
+    rdfs:label "IdentityClusterSummaries" ;
+    rdfs:comment "Table: IdentityClusterSummaries — witnessed geometry rollup per ConfounderIdentity (manifest flip, latent-D, avg distortion) — loop-80 open-question substrate." .
+
+effortless-ntwf:identityClusterId a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:IdentityClusterSummaries ;
+    rdfs:range xsd:string ;
+    rdfs:label "IdentityClusterId" ;
+    rdfs:comment "Unique slug; one row per ConfounderIdentity cluster." .
+
+effortless-ntwf:name a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "Name" ;
+    rdfs:comment "Display label." .
+    # calculated: calculated
+
+effortless-ntwf:confounderIdentity a owl:ObjectProperty ;
+    rdfs:range effortless-ntwf:ConfounderIdentities ;
+    rdfs:label "ConfounderIdentity" ;
+    rdfs:comment "FK → ConfounderIdentities." .
+
+effortless-ntwf:displayName a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "DisplayName" ;
+    rdfs:comment "Lookup archetype display name." .
+    # calculated: lookup
+
+effortless-ntwf:studyCount a owl:DatatypeProperty ;
+    rdfs:range xsd:integer ;
+    rdfs:label "StudyCount" ;
+    rdfs:comment "Real studies in cluster (customize SQL)." .
+
+effortless-ntwf:manifestFlipCount a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:IdentityClusterSummaries ;
+    rdfs:range xsd:integer ;
+    rdfs:label "ManifestFlipCount" ;
+    rdfs:comment "IsSignFlip=TRUE count in cluster." .
+
+effortless-ntwf:latentFlipCount a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:IdentityClusterSummaries ;
+    rdfs:range xsd:integer ;
+    rdfs:label "LatentFlipCount" ;
+    rdfs:comment "LatentFlipPotential=TRUE without manifest flip." .
+
+effortless-ntwf:typeDCount a owl:DatatypeProperty ;
+    rdfs:range xsd:integer ;
+    rdfs:label "TypeDCount" ;
+    rdfs:comment "Type-D studies in cluster." .
+
+effortless-ntwf:avgAllocationDistortion a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:IdentityClusterSummaries ;
+    rdfs:range xsd:string ;
+    rdfs:label "AvgAllocationDistortion" ;
+    rdfs:comment "Mean allocation distortion in cluster." .
+
+effortless-ntwf:latentFractionAmongTypeD a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:IdentityClusterSummaries ;
+    rdfs:range xsd:string ;
+    rdfs:label "LatentFractionAmongTypeD" ;
+    rdfs:comment "Fraction of Type-D rows with LatentFlipPotential." .
+
+effortless-ntwf:domainCount a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:IdentityClusterSummaries ;
+    rdfs:range xsd:integer ;
+    rdfs:label "DomainCount" ;
+    rdfs:comment "Distinct Studies.Domain values in cluster." .
+
+effortless-ntwf:manifestFlipRate a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:IdentityClusterSummaries ;
+    rdfs:range xsd:string ;
+    rdfs:label "ManifestFlipRate" ;
+    rdfs:comment "ManifestFlipCount / StudyCount." .
     # calculated: calculated
 
 # === Class: IngestionProtocol ===
@@ -1455,7 +1574,6 @@ effortless-ntwf:typeBCount a owl:DatatypeProperty ;
     # calculated: aggregation
 
 effortless-ntwf:typeDCount a owl:DatatypeProperty ;
-    rdfs:domain effortless-ntwf:ModelSummary ;
     rdfs:range xsd:integer ;
     rdfs:label "TypeDCount" ;
     rdfs:comment "Studies classified as Type-D: no sign flip, negligible distortion. Pooled analysis is trustworthy — allocation is sufficiently balanced." .
@@ -1999,6 +2117,26 @@ effortless-ntwf:confounderIdentityCount a owl:DatatypeProperty ;
     rdfs:comment "Canonical ConfounderIdentity archetypes in ontology (loop-80)." .
     # calculated: aggregation
 
+effortless-ntwf:mappedStratumVariableCount a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:ModelSummary ;
+    rdfs:range xsd:integer ;
+    rdfs:label "MappedStratumVariableCount" ;
+    rdfs:comment "Stratum variables with an identity map row." .
+    # calculated: aggregation
+
+effortless-ntwf:unmappedStratumVariableCount a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:ModelSummary ;
+    rdfs:range xsd:integer ;
+    rdfs:label "UnmappedStratumVariableCount" ;
+    rdfs:comment "Stratum variables lacking identity map (should be 0)." .
+    # calculated: calculated
+
+effortless-ntwf:identityClusterWitnessNote a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:ModelSummary ;
+    rdfs:range xsd:string ;
+    rdfs:label "IdentityClusterWitnessNote" ;
+    rdfs:comment "Loop-80 identity layer witness rollup (customize SQL)." .
+
 # === Class: PhaseDiagramSummary ===
 effortless-ntwf:PhaseDiagramSummary a owl:Class ;
     rdfs:label "PhaseDiagramSummary" ;
@@ -2541,6 +2679,40 @@ effortless-ntwf:weightedStratumGap a owl:DatatypeProperty ;
     rdfs:comment "StratumGap × StratumFraction: the contribution of this stratum's treatment-rate difference to the equal-weight pooled gap. Summing WeightedStratumGap across all TreatmentA rows for a study gives WeightedStratumGapSum — the pooled gap the study would show under balanced allocation. This is the per-stratum building block of the sign-flip test." .
     # calculated: calculated
 
+# === Class: StratumVariableIdentityMaps ===
+effortless-ntwf:StratumVariableIdentityMaps a owl:Class ;
+    rdfs:label "StratumVariableIdentityMaps" ;
+    rdfs:comment "Table: StratumVariableIdentityMaps — many-to-one map from per-study StratumVariables to canonical ConfounderIdentities (loop-80)." .
+
+effortless-ntwf:mapId a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:StratumVariableIdentityMaps ;
+    rdfs:range xsd:string ;
+    rdfs:label "MapId" ;
+    rdfs:comment "Unique slug." .
+
+effortless-ntwf:name a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "Name" ;
+    rdfs:comment "Display label." .
+    # calculated: calculated
+
+effortless-ntwf:stratumVariable a owl:ObjectProperty ;
+    rdfs:domain effortless-ntwf:StratumVariableIdentityMaps ;
+    rdfs:range effortless-ntwf:StratumVariables ;
+    rdfs:label "StratumVariable" ;
+    rdfs:comment "FK → StratumVariables." .
+
+effortless-ntwf:confounderIdentity a owl:ObjectProperty ;
+    rdfs:range effortless-ntwf:ConfounderIdentities ;
+    rdfs:label "ConfounderIdentity" ;
+    rdfs:comment "FK → ConfounderIdentities." .
+
+effortless-ntwf:variableNameNormalized a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:StratumVariableIdentityMaps ;
+    rdfs:range xsd:string ;
+    rdfs:label "VariableNameNormalized" ;
+    rdfs:comment "Lowercase normalized variable token for dedup audit." .
+
 # === Class: StratumVariables ===
 effortless-ntwf:StratumVariables a owl:Class ;
     rdfs:label "StratumVariables" ;
@@ -2604,6 +2776,12 @@ effortless-ntwf:conditioningRisk a owl:DatatypeProperty ;
     rdfs:range xsd:string ;
     rdfs:label "ConditioningRisk" ;
     rdfs:comment "The causal hazard posed by conditioning on this variable. Values: confounder (safe to condition — removes bias), mediator (conditioning blocks the causal path of interest — harmful), collider (conditioning opens a spurious backdoor — harmful), proxy (conditioning on a noisy proxy of the true confounder — risky), none (no conditioning risk identified). NULL means unclassified." .
+
+effortless-ntwf:confounderIdentity a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "ConfounderIdentity" ;
+    rdfs:comment "Canonical cross-study identity via StratumVariableIdentityMaps (loop-80)." .
+    # calculated: lookup
 
 # === Class: Studies ===
 effortless-ntwf:Studies a owl:Class ;

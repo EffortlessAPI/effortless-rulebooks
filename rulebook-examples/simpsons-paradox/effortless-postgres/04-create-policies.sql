@@ -39,6 +39,9 @@ ALTER TABLE substrate_conformance_fields ENABLE ROW LEVEL SECURITY;
 ALTER TABLE discovery_hypotheses ENABLE ROW LEVEL SECURITY;
 ALTER TABLE discovery_findings ENABLE ROW LEVEL SECURITY;
 ALTER TABLE corpus_domains ENABLE ROW LEVEL SECURITY;
+ALTER TABLE confounder_identities ENABLE ROW LEVEL SECURITY;
+ALTER TABLE stratum_variable_identity_maps ENABLE ROW LEVEL SECURITY;
+ALTER TABLE identity_cluster_summaries ENABLE ROW LEVEL SECURITY;
 
 -- TODO: Add specific RLS policies based on your security requirements
 -- Example:

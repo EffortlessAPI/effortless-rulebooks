@@ -2,25 +2,25 @@
 
 **Schema:** `public`
 **Database:** `demo`
-**Timestamp:** 2026-07-08 06:25:20 UTC
+**Timestamp:** 2026-07-08 06:33:09 UTC
 
 ## Parsing Rulebook
 
-Found **32** tables in rulebook
+Found **35** tables in rulebook
 
 
-  - **Loops** (16 fields, 76 records)
+  - **Loops** (16 fields, 77 records)
   - **Studies** (26 fields, 238 records)
   - **Treatments** (8 fields, 464 records)
   - **Strata** (6 fields, 497 records)
   - **CaseCells** (11 fields, 994 records)
   - **StratumSummaries** (28 fields, 994 records)
-  - **ModelSummary** (91 fields, 1 records)
-  - **StratumVariables** (10 fields, 238 records)
+  - **ModelSummary** (94 fields, 1 records)
+  - **StratumVariables** (11 fields, 238 records)
   - **TreatmentRankings** (54 fields, 238 records)
   - **InvariantChecks** (21 fields, 29 records)
   - **Methodology** (14 fields, 10 records)
-  - **Conclusions** (22 fields, 33 records)
+  - **Conclusions** (22 fields, 34 records)
   - **UIScreens** (14 fields, 10 records)
   - **UIComponents** (8 fields, 11 records)
   - **InstrumentSpec** (9 fields, 24 records)
@@ -38,15 +38,18 @@ Found **32** tables in rulebook
   - **StudyImportTemplate** (7 fields, 8 records)
   - **SweepStudyConfig** (13 fields, 238 records)
   - **SubstrateConformanceFields** (9 fields, 26 records)
-  - **DiscoveryHypotheses** (7 fields, 15 records)
-  - **DiscoveryFindings** (8 fields, 15 records)
+  - **DiscoveryHypotheses** (7 fields, 18 records)
+  - **DiscoveryFindings** (8 fields, 18 records)
   - **CorpusDomains** (6 fields, 11 records)
+  - **ConfounderIdentities** (7 fields, 15 records)
+  - **StratumVariableIdentityMaps** (5 fields, 238 records)
+  - **IdentityClusterSummaries** (12 fields, 15 records)
 
-Generated **32** table definitions with **226** raw fields (mode=check-add)
-Generated **282** calculation functions
-Generated **32** views
-Enabled RLS on **32** tables
-Generated insert statements for **7320** records
+Generated **35** table definitions with **242** raw fields (mode=check-add)
+Generated **299** calculation functions
+Generated **35** views
+Enabled RLS on **35** tables
+Generated insert statements for **7596** records
 ## Script Generation Complete
 
 Generated files:

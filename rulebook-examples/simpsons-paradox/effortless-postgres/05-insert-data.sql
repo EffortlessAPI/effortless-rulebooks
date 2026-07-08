@@ -232,6 +232,9 @@ INSERT INTO loops (loop_id, title, status, new_concept, domain_question, mock_da
 VALUES ('loop-79', 'Vocabulary prune: retire superseded discovery predicates (post loop-78)', 'complete', 'Archive loop-78 supersessions to conc-32 evidence only; remove from active DAG: 6 DiscoveryHypotheses + DiscoveryFindings (EpistemicTier=corpus-pattern-superseded); prune ModelSummary predicates wired only to those hypotheses (DomainFlipGapSurvivesGeometryControl, CorpusPatternSupersededFailCount, ExpansionWave3DiscoveryNote; simplify DiscoveryWitnessNote); drop customize calc_discovery_findings branches for H-econ-zero, H-domain-dist, H-catalog-flip-prediction, H-domain-flip-geometry-controlled, H-econ-encoding-selection, H-domain-profiles-stable; mark conc-17/conc-22/conc-27 as historical-only in Conclusions (evidence retained, no live predicates). Mirror loop-60 prune discipline.', 'After loop-78 witnessed six corpus-pattern supersessions at N=238, which predicates are no longer clean load-bearing vocabulary — and can the instrument shed them without losing theorem/invariant witnesses or the conc-32 audit trail?', 'Witnessed post-build: removed 6 corpus-pattern-superseded DiscoveryHypotheses + Findings; pruned ModelSummary DomainFlipGapSurvivesGeometryControl, CorpusPatternSupersededFailCount, ExpansionWave3DiscoveryNote; simplified DiscoveryWitnessNote; conc-17/22/27 → historical. conc-32 audit trail retained. inv-discovery-all-confirmed: 10/10 PASS.', 'loop-80: ConfounderIdentity ontology — cross-study accountable confounders', 'tradition-dag', NULL, NULL, NULL, NULL) ON CONFLICT (loop_id) DO UPDATE SET title = EXCLUDED.title, status = EXCLUDED.status, new_concept = EXCLUDED.new_concept, domain_question = EXCLUDED.domain_question, mock_data_note = EXCLUDED.mock_data_note, next_suggestion = EXCLUDED.next_suggestion, tradition_id = EXCLUDED.tradition_id, commit_hash = EXCLUDED.commit_hash, commit_date = EXCLUDED.commit_date, commit_message = EXCLUDED.commit_message, git_tag = EXCLUDED.git_tag;
 
 INSERT INTO loops (loop_id, title, status, new_concept, domain_question, mock_data_note, next_suggestion, tradition_id, commit_hash, commit_date, commit_message, git_tag)
+VALUES ('loop-80', 'ConfounderIdentity ontology — cross-study accountable confounding archetypes', 'complete', 'ConfounderIdentities + StratumVariableIdentityMaps + IdentityClusterSummaries; StratumVariables.ConfounderIdentity lookup; DiscoveryHypotheses H-age-identity-flip-rate, H-severity-vs-age-latent, H-identity-map-coverage; ModelSummary identity rollups; conc-33.', 'When 181 raw stratum variable strings collapse to named ConfounderIdentities, do manifest-flip vs latent-D geometry cluster by mechanism (age, severity, org-unit) rather than domain — and can the instrument hold each identity accountable across 238+ studies?', 'Pending post-build witness.', 'loop-87: methods-paper export on pruned instrument with identity layer', 'tradition-dag', NULL, NULL, NULL, NULL) ON CONFLICT (loop_id) DO UPDATE SET title = EXCLUDED.title, status = EXCLUDED.status, new_concept = EXCLUDED.new_concept, domain_question = EXCLUDED.domain_question, mock_data_note = EXCLUDED.mock_data_note, next_suggestion = EXCLUDED.next_suggestion, tradition_id = EXCLUDED.tradition_id, commit_hash = EXCLUDED.commit_hash, commit_date = EXCLUDED.commit_date, commit_message = EXCLUDED.commit_message, git_tag = EXCLUDED.git_tag;
+
+INSERT INTO loops (loop_id, title, status, new_concept, domain_question, mock_data_note, next_suggestion, tradition_id, commit_hash, commit_date, commit_message, git_tag)
 VALUES ('loop-87', 'Methods-paper export: theorem portfolio + instrument spec packaging', 'planned', 'Rulespeak theorem section export; InstrumentSpec catalog PDF; witnessed Conclusions conc-28..31 + conc-32 synthesis; optional clinical-trials CandidateStudyCatalog gap encode if export blocked on domain diversity.', 'With five theorems witnessed and expansion-wave supersessions documented, is the instrument ready for external methods-paper submission — and which domain gaps remain?', 'Pending — loop-79 prune complete; loop-80 identity layer live. Export packaging after identity hypotheses witnessed.', 'Clinical-trials domain encode or peer-review draft', 'tradition-historical', NULL, NULL, NULL, NULL) ON CONFLICT (loop_id) DO UPDATE SET title = EXCLUDED.title, status = EXCLUDED.status, new_concept = EXCLUDED.new_concept, domain_question = EXCLUDED.domain_question, mock_data_note = EXCLUDED.mock_data_note, next_suggestion = EXCLUDED.next_suggestion, tradition_id = EXCLUDED.tradition_id, commit_hash = EXCLUDED.commit_hash, commit_date = EXCLUDED.commit_date, commit_message = EXCLUDED.commit_message, git_tag = EXCLUDED.git_tag;
 
 INSERT INTO loops (loop_id, title, status, new_concept, domain_question, mock_data_note, next_suggestion, tradition_id, commit_hash, commit_date, commit_message, git_tag)
@@ -9816,8 +9819,8 @@ VALUES ('acharya-imbierowicz-steffen-teichmann-2020-stratum-high-B', 'acharya-im
 -- ----------------------------------------------------------------------------
 -- ModelSummary: Table: ModelSummary — one row describing the epistemic coverage of this entire model instance. Aggregates across all TreatmentRankings to witness how many studies were examined, how many showed a full reversal, how many were explained, and the average paradox strength. The model holds a mirror to itself.
 -- ----------------------------------------------------------------------------
-INSERT INTO model_summary (model_summary_id, real_study_count, avg_signal_purity_reversal, avg_signal_purity_non_reversal, signal_purity_gap, medicine_study_count, epidemiology_study_count, other_domain_study_count, domain_diversity_note, synthetic_phase_count, phase_diagram_complete, phase_taxonomy_coverage, high_imbalance_sign_flip_threshold, economics_high_imbalance_sign_flip_count, epidemiology_high_imbalance_sign_flip_rate, legal_high_imbalance_sign_flip_rate, sports_high_imbalance_sign_flip_rate)
-VALUES ('simpsons-paradox-v1', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL) ON CONFLICT (model_summary_id) DO UPDATE SET real_study_count = EXCLUDED.real_study_count, avg_signal_purity_reversal = EXCLUDED.avg_signal_purity_reversal, avg_signal_purity_non_reversal = EXCLUDED.avg_signal_purity_non_reversal, signal_purity_gap = EXCLUDED.signal_purity_gap, medicine_study_count = EXCLUDED.medicine_study_count, epidemiology_study_count = EXCLUDED.epidemiology_study_count, other_domain_study_count = EXCLUDED.other_domain_study_count, domain_diversity_note = EXCLUDED.domain_diversity_note, synthetic_phase_count = EXCLUDED.synthetic_phase_count, phase_diagram_complete = EXCLUDED.phase_diagram_complete, phase_taxonomy_coverage = EXCLUDED.phase_taxonomy_coverage, high_imbalance_sign_flip_threshold = EXCLUDED.high_imbalance_sign_flip_threshold, economics_high_imbalance_sign_flip_count = EXCLUDED.economics_high_imbalance_sign_flip_count, epidemiology_high_imbalance_sign_flip_rate = EXCLUDED.epidemiology_high_imbalance_sign_flip_rate, legal_high_imbalance_sign_flip_rate = EXCLUDED.legal_high_imbalance_sign_flip_rate, sports_high_imbalance_sign_flip_rate = EXCLUDED.sports_high_imbalance_sign_flip_rate;
+INSERT INTO model_summary (model_summary_id, real_study_count, avg_signal_purity_reversal, avg_signal_purity_non_reversal, signal_purity_gap, medicine_study_count, epidemiology_study_count, other_domain_study_count, domain_diversity_note, synthetic_phase_count, phase_diagram_complete, phase_taxonomy_coverage, high_imbalance_sign_flip_threshold, economics_high_imbalance_sign_flip_count, epidemiology_high_imbalance_sign_flip_rate, legal_high_imbalance_sign_flip_rate, sports_high_imbalance_sign_flip_rate, identity_cluster_witness_note)
+VALUES ('simpsons-paradox-v1', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL) ON CONFLICT (model_summary_id) DO UPDATE SET real_study_count = EXCLUDED.real_study_count, avg_signal_purity_reversal = EXCLUDED.avg_signal_purity_reversal, avg_signal_purity_non_reversal = EXCLUDED.avg_signal_purity_non_reversal, signal_purity_gap = EXCLUDED.signal_purity_gap, medicine_study_count = EXCLUDED.medicine_study_count, epidemiology_study_count = EXCLUDED.epidemiology_study_count, other_domain_study_count = EXCLUDED.other_domain_study_count, domain_diversity_note = EXCLUDED.domain_diversity_note, synthetic_phase_count = EXCLUDED.synthetic_phase_count, phase_diagram_complete = EXCLUDED.phase_diagram_complete, phase_taxonomy_coverage = EXCLUDED.phase_taxonomy_coverage, high_imbalance_sign_flip_threshold = EXCLUDED.high_imbalance_sign_flip_threshold, economics_high_imbalance_sign_flip_count = EXCLUDED.economics_high_imbalance_sign_flip_count, epidemiology_high_imbalance_sign_flip_rate = EXCLUDED.epidemiology_high_imbalance_sign_flip_rate, legal_high_imbalance_sign_flip_rate = EXCLUDED.legal_high_imbalance_sign_flip_rate, sports_high_imbalance_sign_flip_rate = EXCLUDED.sports_high_imbalance_sign_flip_rate, identity_cluster_witness_note = EXCLUDED.identity_cluster_witness_note;
 
 -- ----------------------------------------------------------------------------
 -- StratumVariables: Table: StratumVariables — one row per study, naming the variable that defines the strata and describing its causal role. A confounder affects both treatment assignment AND outcome; a mediator is downstream of treatment; a contested variable is one where the causal role is disputed. IsConfounder is derived from these two boolean flags.
@@ -11323,7 +11326,7 @@ INSERT INTO invariant_checks (invariant_check_id, algebraic_statement, natural_l
 VALUES ('inv-latent-d-majority', 'LatentTypeDFraction > 0.5', 'More than half of Type-D studies have latent flip potential under allocation sweep.', 'ModelSummary', '', 'LatentTypeDFraction > 0.5', '', 'latent_type_d_fraction > 0.5', 1, 0, 'critical', 'tradition-historical', 'conc-15-latent-flip-potential') ON CONFLICT (invariant_check_id) DO UPDATE SET algebraic_statement = EXCLUDED.algebraic_statement, natural_language = EXCLUDED.natural_language, source_table = EXCLUDED.source_table, filter_expression = EXCLUDED.filter_expression, assertion_expression = EXCLUDED.assertion_expression, sql_filter = EXCLUDED.sql_filter, sql_assertion = EXCLUDED.sql_assertion, pass_count = EXCLUDED.pass_count, fail_count = EXCLUDED.fail_count, severity = EXCLUDED.severity, tradition_id = EXCLUDED.tradition_id, protects_conclusion = EXCLUDED.protects_conclusion;
 
 INSERT INTO invariant_checks (invariant_check_id, algebraic_statement, natural_language, source_table, filter_expression, assertion_expression, sql_filter, sql_assertion, pass_count, fail_count, severity, tradition_id, protects_conclusion)
-VALUES ('inv-discovery-all-confirmed', 'COUNTIFS(DiscoveryFindings IsConfirmed FALSE WHERE EpistemicTier=corpus-hypothesis) = 0', 'All active corpus-hypothesis discovery findings confirmed at N=238 post loop-79 prune.', 'DiscoveryFindings', 'HypothesisEpistemicTier = corpus-hypothesis', 'IsConfirmed = TRUE', 'hypothesis_id IN (''H-latent-d'', ''H-small-effect'', ''H-causal-manifest'', ''H-causal-latent'', ''H-explained-confounder'', ''H-unexplained-nonconfounder'', ''H-catalog-exact-match'', ''H-collider-no-manifest-v2'', ''H-cplus-magnitude'', ''H-ultra-fragile'')', 'is_confirmed = TRUE', 10, 0, 'critical', 'tradition-epidemiology', 'conc-23-research-sweep-synthesis') ON CONFLICT (invariant_check_id) DO UPDATE SET algebraic_statement = EXCLUDED.algebraic_statement, natural_language = EXCLUDED.natural_language, source_table = EXCLUDED.source_table, filter_expression = EXCLUDED.filter_expression, assertion_expression = EXCLUDED.assertion_expression, sql_filter = EXCLUDED.sql_filter, sql_assertion = EXCLUDED.sql_assertion, pass_count = EXCLUDED.pass_count, fail_count = EXCLUDED.fail_count, severity = EXCLUDED.severity, tradition_id = EXCLUDED.tradition_id, protects_conclusion = EXCLUDED.protects_conclusion;
+VALUES ('inv-discovery-all-confirmed', 'COUNTIFS(DiscoveryFindings IsConfirmed FALSE WHERE EpistemicTier=corpus-hypothesis) = 0', 'All active corpus-hypothesis discovery findings confirmed at N=238 post loop-79 prune.', 'DiscoveryFindings', 'HypothesisEpistemicTier = corpus-hypothesis', 'IsConfirmed = TRUE', 'hypothesis_id IN (''H-latent-d'', ''H-small-effect'', ''H-causal-manifest'', ''H-causal-latent'', ''H-explained-confounder'', ''H-unexplained-nonconfounder'', ''H-catalog-exact-match'', ''H-collider-no-manifest-v2'', ''H-cplus-magnitude'', ''H-ultra-fragile'', ''H-age-identity-flip-rate'', ''H-severity-vs-age-latent'')', 'is_confirmed = TRUE', 12, 0, 'critical', 'tradition-epidemiology', 'conc-23-research-sweep-synthesis') ON CONFLICT (invariant_check_id) DO UPDATE SET algebraic_statement = EXCLUDED.algebraic_statement, natural_language = EXCLUDED.natural_language, source_table = EXCLUDED.source_table, filter_expression = EXCLUDED.filter_expression, assertion_expression = EXCLUDED.assertion_expression, sql_filter = EXCLUDED.sql_filter, sql_assertion = EXCLUDED.sql_assertion, pass_count = EXCLUDED.pass_count, fail_count = EXCLUDED.fail_count, severity = EXCLUDED.severity, tradition_id = EXCLUDED.tradition_id, protects_conclusion = EXCLUDED.protects_conclusion;
 
 INSERT INTO invariant_checks (invariant_check_id, algebraic_statement, natural_language, source_table, filter_expression, assertion_expression, sql_filter, sql_assertion, pass_count, fail_count, severity, tradition_id, protects_conclusion)
 VALUES ('inv-theorem-consistency-confirmed', 'COUNTIFS(DiscoveryFindings IsConfirmed FALSE WHERE EpistemicTier=consistency-check AND RegisteredInLoop IN loop-73..76) = 0', 'Theorem wave consistency checks (loops 73–76): CorrectedGap invariance, explained↔confounder biconditional, collider no-manifest, theorem portfolio.', 'DiscoveryFindings', 'HypothesisEpistemicTier = consistency-check', 'IsConfirmed = TRUE', 'hypothesis_id IN (''H-corrected-gap-invariant'', ''H-explained-bidirectional'', ''H-collider-no-manifest-theorem'', ''H-theorem-portfolio'')', 'is_confirmed = TRUE', 4, 0, 'critical', 'tradition-dag', 'conc-31-theorem-portfolio-synthesis') ON CONFLICT (invariant_check_id) DO UPDATE SET algebraic_statement = EXCLUDED.algebraic_statement, natural_language = EXCLUDED.natural_language, source_table = EXCLUDED.source_table, filter_expression = EXCLUDED.filter_expression, assertion_expression = EXCLUDED.assertion_expression, sql_filter = EXCLUDED.sql_filter, sql_assertion = EXCLUDED.sql_assertion, pass_count = EXCLUDED.pass_count, fail_count = EXCLUDED.fail_count, severity = EXCLUDED.severity, tradition_id = EXCLUDED.tradition_id, protects_conclusion = EXCLUDED.protects_conclusion;
@@ -11477,6 +11480,9 @@ VALUES ('conc-expansion-wave-synthesis', 'methodology', 'witnessed', 'Expansion 
 
 INSERT INTO conclusions (conclusion_id, category, status, title, evidence, witnessed_in_loop, target_loop, tradition_id, researcher_id, challenges_researcher)
 VALUES ('conc-32-expansion-wave-3-supersession', 'methodology', 'witnessed', 'Expansion wave 3 (loop-77→78): six corpus patterns superseded at N=238 — theorems and invariants hold', 'Loop-78 LoopReview at 238 studies (233 real). Six EpistemicTier=corpus-pattern-superseded hypotheses witnessed FAIL: H-econ-zero (flips=10), H-domain-dist (epi<edu), H-catalog-flip-prediction (flipPred=54.1%), H-domain-flip-geometry-controlled (econHighImbFlips=10), H-econ-encoding-selection (mismatch=50%), H-domain-profiles-stable (econFlipRate=25.6%). H-catalog-exact-match still PASS (39.1%). Five theorems + all critical invariants unchanged. Corpus patterns are scale- and selection-contingent; laws are not.', 'loop-78', NULL, 'tradition-epidemiology', NULL, NULL) ON CONFLICT (conclusion_id) DO UPDATE SET category = EXCLUDED.category, status = EXCLUDED.status, title = EXCLUDED.title, evidence = EXCLUDED.evidence, witnessed_in_loop = EXCLUDED.witnessed_in_loop, target_loop = EXCLUDED.target_loop, tradition_id = EXCLUDED.tradition_id, researcher_id = EXCLUDED.researcher_id, challenges_researcher = EXCLUDED.challenges_researcher;
+
+INSERT INTO conclusions (conclusion_id, category, status, title, evidence, witnessed_in_loop, target_loop, tradition_id, researcher_id, challenges_researcher)
+VALUES ('conc-33-confounder-identity-layer', 'instrument', 'witnessed', 'ConfounderIdentity ontology: cross-study accountable stratum archetypes (loop-80)', 'Pending post-build witness — canonical identities map 233 stratum variables; IdentityClusterSummaries expose manifest vs latent geometry by mechanism, not domain.', 'loop-80', NULL, 'tradition-dag', NULL, NULL) ON CONFLICT (conclusion_id) DO UPDATE SET category = EXCLUDED.category, status = EXCLUDED.status, title = EXCLUDED.title, evidence = EXCLUDED.evidence, witnessed_in_loop = EXCLUDED.witnessed_in_loop, target_loop = EXCLUDED.target_loop, tradition_id = EXCLUDED.tradition_id, researcher_id = EXCLUDED.researcher_id, challenges_researcher = EXCLUDED.challenges_researcher;
 
 -- ----------------------------------------------------------------------------
 -- UIScreens: Table: UIScreens — the canonical screens that comprise the Simpson's Paradox Explorer UI. Each row defines one screen: its purpose, its primary data source (which rulebook view it reads), and the user action it supports. A developer can reconstruct the full UI from this table without any prior knowledge of the application.
@@ -21978,6 +21984,15 @@ VALUES ('H-collider-no-manifest-theorem', 'At scale (≥10 collider/selection st
 INSERT INTO discovery_hypotheses (hypothesis_id, statement, expected_outcome, registered_in_loop, tradition_id, epistemic_tier)
 VALUES ('H-theorem-portfolio', 'Four Category=theorem conclusions are witnessed: SignalPurity (conc-12/20) plus three new theorems from loops 73–75.', 'TheoremCount >= 4', 'loop-76', 'tradition-historical', 'consistency-check') ON CONFLICT (hypothesis_id) DO UPDATE SET statement = EXCLUDED.statement, expected_outcome = EXCLUDED.expected_outcome, registered_in_loop = EXCLUDED.registered_in_loop, tradition_id = EXCLUDED.tradition_id, epistemic_tier = EXCLUDED.epistemic_tier;
 
+INSERT INTO discovery_hypotheses (hypothesis_id, statement, expected_outcome, registered_in_loop, tradition_id, epistemic_tier)
+VALUES ('H-age-identity-flip-rate', 'Age-composition identity (id-age-composition) produces manifest flip rate ≥ 40% among real studies — cross-domain demographic confounding is flip-prone, not latent-only.', 'AgeIdentityManifestFlipRate >= 0.40 AND AgeIdentityStudyCount >= 10', 'loop-80', 'tradition-epidemiology', 'corpus-hypothesis') ON CONFLICT (hypothesis_id) DO UPDATE SET statement = EXCLUDED.statement, expected_outcome = EXCLUDED.expected_outcome, registered_in_loop = EXCLUDED.registered_in_loop, tradition_id = EXCLUDED.tradition_id, epistemic_tier = EXCLUDED.epistemic_tier;
+
+INSERT INTO discovery_hypotheses (hypothesis_id, statement, expected_outcome, registered_in_loop, tradition_id, epistemic_tier)
+VALUES ('H-severity-vs-age-latent', 'Disease-severity identity shows lower Type-D latent fraction than age-composition identity — severity drives manifest reversals more than hidden sweep sensitivity.', 'SeverityIdentityLatentFractionAmongTypeD < AgeIdentityLatentFractionAmongTypeD', 'loop-80', 'tradition-dag', 'corpus-hypothesis') ON CONFLICT (hypothesis_id) DO UPDATE SET statement = EXCLUDED.statement, expected_outcome = EXCLUDED.expected_outcome, registered_in_loop = EXCLUDED.registered_in_loop, tradition_id = EXCLUDED.tradition_id, epistemic_tier = EXCLUDED.epistemic_tier;
+
+INSERT INTO discovery_hypotheses (hypothesis_id, statement, expected_outcome, registered_in_loop, tradition_id, epistemic_tier)
+VALUES ('H-identity-map-coverage', 'At least 95% of real-study StratumVariables carry a ConfounderIdentity map — ontology covers the corpus.', 'IdentityMapCoverageRate >= 0.95', 'loop-80', 'tradition-historical', 'consistency-check') ON CONFLICT (hypothesis_id) DO UPDATE SET statement = EXCLUDED.statement, expected_outcome = EXCLUDED.expected_outcome, registered_in_loop = EXCLUDED.registered_in_loop, tradition_id = EXCLUDED.tradition_id, epistemic_tier = EXCLUDED.epistemic_tier;
+
 -- ----------------------------------------------------------------------------
 -- DiscoveryFindings: Table: DiscoveryFindings — witnessed outcomes for each pre-registered DiscoveryHypothesis. IsConfirmed is computed live from ModelSummary aggregates.
 -- ----------------------------------------------------------------------------
@@ -22026,6 +22041,15 @@ VALUES ('find-H-collider-no-manifest-theorem', 'H-collider-no-manifest-theorem',
 INSERT INTO discovery_findings (finding_id, hypothesis_id, witnessed_in_loop)
 VALUES ('find-H-theorem-portfolio', 'H-theorem-portfolio', 'loop-76') ON CONFLICT (finding_id) DO UPDATE SET hypothesis_id = EXCLUDED.hypothesis_id, witnessed_in_loop = EXCLUDED.witnessed_in_loop;
 
+INSERT INTO discovery_findings (finding_id, hypothesis_id, witnessed_in_loop)
+VALUES ('find-H-age-identity-flip-rate', 'H-age-identity-flip-rate', 'loop-80') ON CONFLICT (finding_id) DO UPDATE SET hypothesis_id = EXCLUDED.hypothesis_id, witnessed_in_loop = EXCLUDED.witnessed_in_loop;
+
+INSERT INTO discovery_findings (finding_id, hypothesis_id, witnessed_in_loop)
+VALUES ('find-H-severity-vs-age-latent', 'H-severity-vs-age-latent', 'loop-80') ON CONFLICT (finding_id) DO UPDATE SET hypothesis_id = EXCLUDED.hypothesis_id, witnessed_in_loop = EXCLUDED.witnessed_in_loop;
+
+INSERT INTO discovery_findings (finding_id, hypothesis_id, witnessed_in_loop)
+VALUES ('find-H-identity-map-coverage', 'H-identity-map-coverage', 'loop-80') ON CONFLICT (finding_id) DO UPDATE SET hypothesis_id = EXCLUDED.hypothesis_id, witnessed_in_loop = EXCLUDED.witnessed_in_loop;
+
 -- ----------------------------------------------------------------------------
 -- CorpusDomains: Table: CorpusDomains — canonical expansion-domain slugs from corpus-expansion-plan.md (loop-67).
 -- ----------------------------------------------------------------------------
@@ -22061,4 +22085,817 @@ VALUES ('education-outcomes', 'Education Outcomes', 15, 'education', 'Domain 10:
 
 INSERT INTO corpus_domains (domain_id, display_name, expansion_target, legacy_studies_domain, plan_source_section)
 VALUES ('financial-lending', 'Financial Lending', 12, NULL, 'Domain 11: Financial Lending') ON CONFLICT (domain_id) DO UPDATE SET display_name = EXCLUDED.display_name, expansion_target = EXCLUDED.expansion_target, legacy_studies_domain = EXCLUDED.legacy_studies_domain, plan_source_section = EXCLUDED.plan_source_section;
+
+-- ----------------------------------------------------------------------------
+-- ConfounderIdentities: Table: ConfounderIdentities — canonical cross-study archetypes for stratum variables. Each identity names a reusable confounding mechanism accountable across the corpus (loop-80).
+-- ----------------------------------------------------------------------------
+INSERT INTO confounder_identities (confounder_identity_id, display_name, mechanism_class, description, policy_default)
+VALUES ('id-age-composition', 'Age Composition', 'demographic-composition', 'Age or cohort stratification shifts treatment exposure and baseline outcome rates independently — classic demographic confounding (CFR by age, trial subgroups, school entry age).', 'stratify-by-age') ON CONFLICT (confounder_identity_id) DO UPDATE SET display_name = EXCLUDED.display_name, mechanism_class = EXCLUDED.mechanism_class, description = EXCLUDED.description, policy_default = EXCLUDED.policy_default;
+
+INSERT INTO confounder_identities (confounder_identity_id, display_name, mechanism_class, description, policy_default)
+VALUES ('id-disease-severity', 'Disease Severity / Case Mix', 'severity-case-mix', 'Illness severity, stage, or case-mix drives both treatment selection and prognosis — dominant in medicine and epidemiology reversals.', 'stratify-by-severity') ON CONFLICT (confounder_identity_id) DO UPDATE SET display_name = EXCLUDED.display_name, mechanism_class = EXCLUDED.mechanism_class, description = EXCLUDED.description, policy_default = EXCLUDED.policy_default;
+
+INSERT INTO confounder_identities (confounder_identity_id, display_name, mechanism_class, description, policy_default)
+VALUES ('id-institutional-unit', 'Institutional Unit', 'organizational-unit', 'School, department, hospital, or center choice correlates with both treatment exposure and outcomes — admissions and quality comparisons.', 'investigate-unit-choice') ON CONFLICT (confounder_identity_id) DO UPDATE SET display_name = EXCLUDED.display_name, mechanism_class = EXCLUDED.mechanism_class, description = EXCLUDED.description, policy_default = EXCLUDED.policy_default;
+
+INSERT INTO confounder_identities (confounder_identity_id, display_name, mechanism_class, description, policy_default)
+VALUES ('id-socioeconomic-status', 'Socioeconomic Status', 'ses-income', 'Income, SES, or neighborhood tier confounds pooled comparisons in economics, education, and lending encodes.', 'stratify-by-ses') ON CONFLICT (confounder_identity_id) DO UPDATE SET display_name = EXCLUDED.display_name, mechanism_class = EXCLUDED.mechanism_class, description = EXCLUDED.description, policy_default = EXCLUDED.policy_default;
+
+INSERT INTO confounder_identities (confounder_identity_id, display_name, mechanism_class, description, policy_default)
+VALUES ('id-geographic-composition', 'Geographic Composition', 'geography', 'Country, region, state, or city composition drives aggregate rate differences without per-unit reversal.', 'stratify-by-geography') ON CONFLICT (confounder_identity_id) DO UPDATE SET display_name = EXCLUDED.display_name, mechanism_class = EXCLUDED.mechanism_class, description = EXCLUDED.description, policy_default = EXCLUDED.policy_default;
+
+INSERT INTO confounder_identities (confounder_identity_id, display_name, mechanism_class, description, policy_default)
+VALUES ('id-legal-case-context', 'Legal Case Context', 'legal-offense-victim', 'Offense type, charge severity, victim characteristics, or stage in criminal process — legal/sentencing paradox encodes.', 'stratify-by-offense-context') ON CONFLICT (confounder_identity_id) DO UPDATE SET display_name = EXCLUDED.display_name, mechanism_class = EXCLUDED.mechanism_class, description = EXCLUDED.description, policy_default = EXCLUDED.policy_default;
+
+INSERT INTO confounder_identities (confounder_identity_id, display_name, mechanism_class, description, policy_default)
+VALUES ('id-credit-risk-tier', 'Credit / Risk Tier', 'lending-risk', 'Credit score, FICO band, or loan-risk tier — financial lending allocation confounds.', 'stratify-by-risk-tier') ON CONFLICT (confounder_identity_id) DO UPDATE SET display_name = EXCLUDED.display_name, mechanism_class = EXCLUDED.mechanism_class, description = EXCLUDED.description, policy_default = EXCLUDED.policy_default;
+
+INSERT INTO confounder_identities (confounder_identity_id, display_name, mechanism_class, description, policy_default)
+VALUES ('id-situational-context', 'Situational Context', 'sports-situation', 'Game situation, score state, home/away, surface, or down-and-distance — sports analytics allocation confounds.', 'stratify-by-situation') ON CONFLICT (confounder_identity_id) DO UPDATE SET display_name = EXCLUDED.display_name, mechanism_class = EXCLUDED.mechanism_class, description = EXCLUDED.description, policy_default = EXCLUDED.policy_default;
+
+INSERT INTO confounder_identities (confounder_identity_id, display_name, mechanism_class, description, policy_default)
+VALUES ('id-user-platform-segment', 'User / Platform Segment', 'ab-test-segment', 'User tenure, device, platform, or experiment segment — online A/B and recsys allocation confounds.', 'stratify-by-segment') ON CONFLICT (confounder_identity_id) DO UPDATE SET display_name = EXCLUDED.display_name, mechanism_class = EXCLUDED.mechanism_class, description = EXCLUDED.description, policy_default = EXCLUDED.policy_default;
+
+INSERT INTO confounder_identities (confounder_identity_id, display_name, mechanism_class, description, policy_default)
+VALUES ('id-demographic-group', 'Demographic Group', 'race-sex-group', 'Race, sex, or demographic group base rates — distinct from age composition when not age-stratified.', 'stratify-by-demographic') ON CONFLICT (confounder_identity_id) DO UPDATE SET display_name = EXCLUDED.display_name, mechanism_class = EXCLUDED.mechanism_class, description = EXCLUDED.description, policy_default = EXCLUDED.policy_default;
+
+INSERT INTO confounder_identities (confounder_identity_id, display_name, mechanism_class, description, policy_default)
+VALUES ('id-contested-org-choice', 'Contested Organizational Choice', 'contested-mediator', 'Department or institution where causal role is disputed (Berkeley) — geometry without adjust-resolvable explanation.', 'do-not-naively-adjust') ON CONFLICT (confounder_identity_id) DO UPDATE SET display_name = EXCLUDED.display_name, mechanism_class = EXCLUDED.mechanism_class, description = EXCLUDED.description, policy_default = EXCLUDED.policy_default;
+
+INSERT INTO confounder_identities (confounder_identity_id, display_name, mechanism_class, description, policy_default)
+VALUES ('id-collider-proxy', 'Collider / Conditioning Proxy', 'collider-selection', 'BMI, birth-weight category, or other collider/selection variables — latent sweep sensitivity without manifest flip.', 'do-not-condition') ON CONFLICT (confounder_identity_id) DO UPDATE SET display_name = EXCLUDED.display_name, mechanism_class = EXCLUDED.mechanism_class, description = EXCLUDED.description, policy_default = EXCLUDED.policy_default;
+
+INSERT INTO confounder_identities (confounder_identity_id, display_name, mechanism_class, description, policy_default)
+VALUES ('id-selection-frailty', 'Selection / Frailty', 'healthy-vaccinee', 'Frailty, employment, abstainer composition, or healthy-vaccinee selection — epidemiology selection bias.', 'model-selection-explicitly') ON CONFLICT (confounder_identity_id) DO UPDATE SET display_name = EXCLUDED.display_name, mechanism_class = EXCLUDED.mechanism_class, description = EXCLUDED.description, policy_default = EXCLUDED.policy_default;
+
+INSERT INTO confounder_identities (confounder_identity_id, display_name, mechanism_class, description, policy_default)
+VALUES ('id-treatment-indication', 'Treatment Indication', 'clinical-indication', 'Baseline risk tier, HbA1c, PD-L1, or indication-for-treatment stratification in trials.', 'stratify-by-indication') ON CONFLICT (confounder_identity_id) DO UPDATE SET display_name = EXCLUDED.display_name, mechanism_class = EXCLUDED.mechanism_class, description = EXCLUDED.description, policy_default = EXCLUDED.policy_default;
+
+INSERT INTO confounder_identities (confounder_identity_id, display_name, mechanism_class, description, policy_default)
+VALUES ('id-mechanism-other', 'Other Mechanism', 'other', 'Catch-all for stratum variables not yet assigned a canonical archetype — pending ontology refinement.', 'investigate-confounder') ON CONFLICT (confounder_identity_id) DO UPDATE SET display_name = EXCLUDED.display_name, mechanism_class = EXCLUDED.mechanism_class, description = EXCLUDED.description, policy_default = EXCLUDED.policy_default;
+
+-- ----------------------------------------------------------------------------
+-- StratumVariableIdentityMaps: Table: StratumVariableIdentityMaps — many-to-one map from per-study StratumVariables to canonical ConfounderIdentities (loop-80).
+-- ----------------------------------------------------------------------------
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-kidney-1986-stone-size', 'kidney-1986-stone-size', 'id-disease-severity', 'stone_size') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-berkeley-1973-department', 'berkeley-1973-department', 'id-contested-org-choice', 'department') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-kidney-balanced-stone-size', 'kidney-balanced-stone-size', 'id-disease-severity', 'stone_size') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-balanced-synthetic-stratum', 'balanced-synthetic-stratum', 'id-mechanism-other', 'stratum') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-compressed-synthetic-stratum', 'compressed-synthetic-stratum', 'id-mechanism-other', 'difficulty') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-reintjes-2000-hospital-incidence', 'reintjes-2000-hospital-incidence', 'id-institutional-unit', 'hospital_incidence_level') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-radelet-1981-victim-race', 'radelet-1981-victim-race', 'id-legal-case-context', 'victim_race') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-jeter-justice-1997-season', 'jeter-justice-1997-season', 'id-situational-context', 'season_year') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-appleton-1996-age', 'appleton-1996-age', 'id-age-composition', 'age_group_at_baseline') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-phe-covid-2021-age', 'phe-covid-2021-age', 'id-age-composition', 'age_group') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-hannan-1994-patient-risk', 'hannan-1994-patient-risk', 'id-disease-severity', 'patient_risk_class') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-titanic-1912-sex', 'titanic-1912-sex', 'id-situational-context', 'passenger_sex') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-bwp-weight-class', 'bwp-weight-class', 'id-collider-proxy', 'birth_weight_category') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-melanoma-sex', 'melanoma-sex', 'id-demographic-group', 'patient_sex') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-coffee-smoking', 'coffee-smoking', 'id-mechanism-other', 'smoking_status') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-sat-school-spending', 'sat-school-spending', 'id-institutional-unit', 'state_school_spending') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-rogers-nicewander-1988-position_group', 'rogers-nicewander-1988-position_group', 'id-situational-context', 'position_group') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-lucente-baseball-1995-month_half', 'lucente-baseball-1995-month_half', 'id-situational-context', 'month_half') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-wilson-batting-2000-inning_half', 'wilson-batting-2000-inning_half', 'id-situational-context', 'inning_half') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-clemens-bly-1998-home_away', 'clemens-bly-1998-home_away', 'id-situational-context', 'home_away') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-open-university-1975-age_band', 'open-university-1975-age_band', 'id-age-composition', 'age_band') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-pisa-immigration-2015-country', 'pisa-immigration-2015-country', 'id-geographic-composition', 'country') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-wainer-sat-states-1992-region', 'wainer-sat-states-1992-region', 'id-geographic-composition', 'region') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-folic-acid-neural-tube-1991-maternal_age', 'folic-acid-neural-tube-1991-maternal_age', 'id-age-composition', 'maternal_age') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-steroid-asthma-severity-disease_severity', 'steroid-asthma-severity-disease_severity', 'id-disease-severity', 'disease_severity') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-kidney-dialysis-facility-1990-case_mix', 'kidney-dialysis-facility-1990-case_mix', 'id-disease-severity', 'case_mix') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-warfarin-bleeding-age-age_group', 'warfarin-bleeding-age-age_group', 'id-age-composition', 'age_group') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-diabetes-metformin-bmi-bmi_category', 'diabetes-metformin-bmi-bmi_category', 'id-collider-proxy', 'bmi_category') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-oncology-trial-stage-cancer_stage', 'oncology-trial-stage-cancer_stage', 'id-age-composition', 'cancer_stage') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-exercise-cholesterol-age-age_group', 'exercise-cholesterol-age-age_group', 'id-age-composition', 'age_group') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-red-meat-colorectal-bmi-bmi_category', 'red-meat-colorectal-bmi-bmi_category', 'id-collider-proxy', 'bmi_category') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-folic-fortification-2000-region', 'folic-fortification-2000-region', 'id-geographic-composition', 'region') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-north-carolina-death-penalty-1990-victim_race', 'north-carolina-death-penalty-1990-victim_race', 'id-legal-case-context', 'victim_race') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-housing-discrimination-audit-neighborhood_income', 'housing-discrimination-audit-neighborhood_income', 'id-socioeconomic-status', 'neighborhood_income') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-gender-pay-gap-industry-industry_sector', 'gender-pay-gap-industry-industry_sector', 'id-socioeconomic-status', 'industry_sector') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-income-education-state-state', 'income-education-state-state', 'id-geographic-composition', 'state') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-florida-reef-fish-1994-gear_type', 'florida-reef-fish-1994-gear_type', 'id-situational-context', 'gear_type') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-uc-irvine-admissions-1985-department', 'uc-irvine-admissions-1985-department', 'id-contested-org-choice', 'department') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-cesarean-birth-weight-2006-birth_weight', 'cesarean-birth-weight-2006-birth_weight', 'id-collider-proxy', 'birth_weight') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-schizophrenia-antipsychotic-illness_severity', 'schizophrenia-antipsychotic-illness_severity', 'id-disease-severity', 'illness_severity') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-berkeley-six-dept-1973-department', 'berkeley-six-dept-1973-department', 'id-contested-org-choice', 'department') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-rosiglitazone-mi-pool-2007-trial_allocation_profile', 'rosiglitazone-mi-pool-2007-trial_allocation_profile', 'id-mechanism-other', 'trial_allocation_profile') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-ironman-gender-age-2010-age_cohort', 'ironman-gender-age-2010-age_cohort', 'id-age-composition', 'age_cohort') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-hanley-power-lines-2000-source_study', 'hanley-power-lines-2000-source_study', 'id-mechanism-other', 'source_study') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-coffee-smoking-lung-1968-smoking_status', 'coffee-smoking-lung-1968-smoking_status', 'id-mechanism-other', 'smoking_status') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-panama-sweden-mortality-1975-age_group', 'panama-sweden-mortality-1975-age_group', 'id-age-composition', 'age_group') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-hrt-whi-2002-study_design', 'hrt-whi-2002-study_design', 'id-mechanism-other', 'study_design') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-obesity-paradox-hf-heart_failure_status', 'obesity-paradox-hf-heart_failure_status', 'id-collider-proxy', 'heart_failure_status') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-dialysis-bmi-survival-esrd_status', 'dialysis-bmi-survival-esrd_status', 'id-collider-proxy', 'esrd_status') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-sick-quitter-alcohol-abstainer_composition', 'sick-quitter-alcohol-abstainer_composition', 'id-selection-frailty', 'abstainer_composition') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-flu-vaccine-elderly-mortality-age_group', 'flu-vaccine-elderly-mortality-age_group', 'id-age-composition', 'age_group') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-covid-italy-china-cfr-2020-age_group', 'covid-italy-china-cfr-2020-age_group', 'id-age-composition', 'age_group') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-israel-covid-severe-2021-age_group', 'israel-covid-severe-2021-age_group', 'id-age-composition', 'age_group') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-cochran-smoking-1968-age_group', 'cochran-smoking-1968-age_group', 'id-age-composition', 'age_group') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-healthy-worker-mortality-employment_status', 'healthy-worker-mortality-employment_status', 'id-selection-frailty', 'employment_status') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-compas-recidivism-base-group_base_rate', 'compas-recidivism-base-group_base_rate', 'id-mechanism-other', 'group_base_rate') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-us-wage-composition-stagnation-workforce_composition', 'us-wage-composition-stagnation-workforce_composition', 'id-situational-context', 'workforce_composition') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-borjas-immigrant-cohort-arrival_cohort', 'borjas-immigrant-cohort-arrival_cohort', 'id-age-composition', 'arrival_cohort') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-robinson-1950-literacy-state_aggregation', 'robinson-1950-literacy-state_aggregation', 'id-geographic-composition', 'state_aggregation') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-ab-test-traffic-mix-time_varying_segment', 'ab-test-traffic-mix-time_varying_segment', 'id-user-platform-segment', 'time_varying_segment') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-recsys-offline-eval-exposure_popularity', 'recsys-offline-eval-exposure_popularity', 'id-mechanism-other', 'exposure_popularity') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-collider-only-synthetic-constructed_collider', 'collider-only-synthetic-constructed_collider', 'id-collider-proxy', 'constructed_collider') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-noncollapsibility-or-synthetic-noncollapsible_measure', 'noncollapsibility-or-synthetic-noncollapsible_measure', 'id-mechanism-other', 'noncollapsible_measure') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-trauma-center-mortality-injury_severity', 'trauma-center-mortality-injury_severity', 'id-disease-severity', 'injury_severity') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-surgeon-volume-mortality-baseline_risk', 'surgeon-volume-mortality-baseline_risk', 'id-disease-severity', 'baseline_risk') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-mammography-length-bias-detection_mode', 'mammography-length-bias-detection_mode', 'id-selection-frailty', 'detection_mode') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-cabg-vs-pci-severity-coronary_severity', 'cabg-vs-pci-severity-coronary_severity', 'id-disease-severity', 'coronary_severity') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-tolbutamide-ugdp-1970-center_baseline_risk', 'tolbutamide-ugdp-1970-center_baseline_risk', 'id-disease-severity', 'center_baseline_risk') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-snow-cholera-water-1855-water_company', 'snow-cholera-water-1855-water_company', 'id-treatment-indication', 'water_company') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-seatbelt-crash-severity-crash_occurrence', 'seatbelt-crash-severity-crash_occurrence', 'id-collider-proxy', 'crash_occurrence') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-measles-outbreak-vaccinated-vaccination_base_rate', 'measles-outbreak-vaccinated-vaccination_base_rate', 'id-mechanism-other', 'vaccination_base_rate') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-air-pollution-mortality-city-city', 'air-pollution-mortality-city-city', 'id-geographic-composition', 'city') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-tb-treatment-resistance-drug_resistance', 'tb-treatment-resistance-drug_resistance', 'id-disease-severity', 'drug_resistance') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-hospital-mortality-readmission-case_mix', 'hospital-mortality-readmission-case_mix', 'id-disease-severity', 'case_mix') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-nypd-stop-frisk-hitrate-precinct_base_rate', 'nypd-stop-frisk-hitrate-precinct_base_rate', 'id-institutional-unit', 'precinct_base_rate') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-sentencing-offense-type-offense_category', 'sentencing-offense-type-offense_category', 'id-legal-case-context', 'offense_category') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-bail-risk-score-pretrial_risk_tier', 'bail-risk-score-pretrial_risk_tier', 'id-disease-severity', 'pretrial_risk_tier') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-police-force-encounter-encounter_conditioning', 'police-force-encounter-encounter_conditioning', 'id-collider-proxy', 'encounter_conditioning') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-uc-systemwide-admissions-major_campus', 'uc-systemwide-admissions-major_campus', 'id-mechanism-other', 'major_campus') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-teacher-vam-prior-achievement-incoming_achievement', 'teacher-vam-prior-achievement-incoming_achievement', 'id-institutional-unit', 'incoming_achievement') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-naep-state-demographics-state_composition', 'naep-state-demographics-state_composition', 'id-geographic-composition', 'state_composition') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-college-grad-rate-selectivity-incoming_preparation', 'college-grad-rate-selectivity-incoming_preparation', 'id-institutional-unit', 'incoming_preparation') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-star-class-size-school', 'star-class-size-school', 'id-institutional-unit', 'school') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-nba-shooting-shot-mix-shot_type', 'nba-shooting-shot-mix-shot_type', 'id-situational-context', 'shot_type') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-pitcher-era-ballpark-ballpark', 'pitcher-era-ballpark-ballpark', 'id-situational-context', 'ballpark') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-nfl-completion-depth-pass_depth', 'nfl-completion-depth-pass_depth', 'id-situational-context', 'pass_depth') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-field-goal-distance-kick_distance', 'field-goal-distance-kick_distance', 'id-situational-context', 'kick_distance') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-golf-scoring-course-course_difficulty', 'golf-scoring-course-course_difficulty', 'id-situational-context', 'course_difficulty') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-minimum-wage-region-region', 'minimum-wage-region-region', 'id-geographic-composition', 'region') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-returns-to-education-field-field_of_study', 'returns-to-education-field-field_of_study', 'id-institutional-unit', 'field_of_study') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-unemployment-education-cycle-education_composition', 'unemployment-education-cycle-education_composition', 'id-situational-context', 'education_composition') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-costa-rica-us-life-expectancy-age_group', 'costa-rica-us-life-expectancy-age_group', 'id-age-composition', 'age_group') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-fertility-income-country-country', 'fertility-income-country-country', 'id-geographic-composition', 'country') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-religiosity-happiness-country-national_wealth', 'religiosity-happiness-country-national_wealth', 'id-socioeconomic-status', 'national_wealth') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-voter-turnout-education-state-state', 'voter-turnout-education-state-state', 'id-geographic-composition', 'state') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-ad-ctr-platform-mix-platform', 'ad-ctr-platform-mix-platform', 'id-user-platform-segment', 'platform') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-hernandez-diaz-schisterman-hernan-2006-birth-weight-category', 'hernandez-diaz-schisterman-hernan-2006-birth-weight-category', 'id-collider-proxy', 'birth_weight_category') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-wade-boggs-vs-don-mattingly-season-year', 'wade-boggs-vs-don-mattingly-season-year', 'id-situational-context', 'season_year') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-johnson-2006-model-specification', 'johnson-2006-model-specification', 'id-mechanism-other', 'model_specification') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-chetty-friedman-rockoff-2014-school', 'chetty-friedman-rockoff-2014-school', 'id-institutional-unit', 'school') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-angrist-pischke-2009-proximity-to-college', 'angrist-pischke-2009-proximity-to-college', 'id-institutional-unit', 'proximity_to_college') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-blau-kahn-2017-occupation', 'blau-kahn-2017-occupation', 'id-socioeconomic-status', 'occupation') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-moretti-2013-city', 'moretti-2013-city', 'id-geographic-composition', 'city') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-oaxaca-1973-education-experience-occupation', 'oaxaca-1973-education-experience-occupation', 'id-socioeconomic-status', 'education_experience_occupation') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-spohn-2000-offense-severity', 'spohn-2000-offense-severity', 'id-disease-severity', 'offense_severity') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-angwin-larson-mattu-kirchner-2016-crime-type', 'angwin-larson-mattu-kirchner-2016-crime-type', 'id-legal-case-context', 'crime_type') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-gross-risinger-et-al-2017-crime-category', 'gross-risinger-et-al-2017-crime-category', 'id-legal-case-context', 'crime_category') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-baldus-woodworth-pulaski-1983-aggravating-circumstances-tier', 'baldus-woodworth-pulaski-1983-aggravating-circumstances-tier', 'id-legal-case-context', 'aggravating_circumstances_tier') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-harris-steffensmeier-ulmer-painter-davis-2009-offense-type', 'harris-steffensmeier-ulmer-painter-davis-2009-offense-type', 'id-legal-case-context', 'offense_type') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-dockery-et-al-1993-ses', 'dockery-et-al-1993-ses', 'id-socioeconomic-status', 'ses') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-framingham-heart-study-sex', 'framingham-heart-study-sex', 'id-demographic-group', 'sex') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-fillmore-et-al-2006-former-vs-never-drinker-status', 'fillmore-et-al-2006-former-vs-never-drinker-status', 'id-mechanism-other', 'former_vs_never_drinker_status') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-women-s-health-study-age-group', 'women-s-health-study-age-group', 'id-age-composition', 'age_group') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-ellsbury-vs-lowell-2007-season', 'ellsbury-vs-lowell-2007-season', 'id-situational-context', 'season') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-efron-morris-1975-first-vs-second-half-of-season', 'efron-morris-1975-first-vs-second-half-of-season', 'id-situational-context', 'first_vs_second_half_of_season') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-hiester-1984-handedness-of-pitcher', 'hiester-1984-handedness-of-pitcher', 'id-situational-context', 'handedness_of_pitcher') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-card-1992-industry-fast-food-vs-retail-vs-manufact', 'card-1992-industry-fast-food-vs-retail-vs-manufact', 'id-socioeconomic-status', 'industry_fast_food_vs_retail_vs_manufact') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-chetty-et-al-2014-commuting-zone', 'chetty-et-al-2014-commuting-zone', 'id-geographic-composition', 'commuting_zone') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-chetty-friedman-saez-turner-yagan-2020-college-selectivity-tier', 'chetty-friedman-saez-turner-yagan-2020-college-selectivity-tier', 'id-institutional-unit', 'college_selectivity_tier') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-chetty-deming-friedman-2023-legacy', 'chetty-deming-friedman-2023-legacy', 'id-institutional-unit', 'legacy') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-piketty-saez-2003-income-fractile', 'piketty-saez-2003-income-fractile', 'id-socioeconomic-status', 'income_fractile') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-juhn-murphy-pierce-1993-education', 'juhn-murphy-pierce-1993-education', 'id-institutional-unit', 'education') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-autor-levy-murnane-2003-routine-vs-non-routine', 'autor-levy-murnane-2003-routine-vs-non-routine', 'id-institutional-unit', 'routine_vs_non_routine') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-katz-murphy-1992-demographic-group-age-gender-race', 'katz-murphy-1992-demographic-group-age-gender-race', 'id-age-composition', 'demographic_group_age_gender_race') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-heckman-1979-labor-force-participation-decision', 'heckman-1979-labor-force-participation-decision', 'id-collider-proxy', 'labor_force_participation_decision') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-autor-dorn-2013-local-labor-market', 'autor-dorn-2013-local-labor-market', 'id-mechanism-other', 'local_labor_market') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-acemoglu-autor-2011-task-type', 'acemoglu-autor-2011-task-type', 'id-institutional-unit', 'task_type') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-chetty-hendren-katz-2016-age-at-time-of-move', 'chetty-hendren-katz-2016-age-at-time-of-move', 'id-age-composition', 'age_at_time_of_move') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-bhutta-hizmo-ringo-2022-credit-score', 'bhutta-hizmo-ringo-2022-credit-score', 'id-credit-risk-tier', 'credit_score') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-saez-2019-income-fractile', 'saez-2019-income-fractile', 'id-socioeconomic-status', 'income_fractile') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-fortin-lemieux-firpo-2011-quantile', 'fortin-lemieux-firpo-2011-quantile', 'id-institutional-unit', 'quantile') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-starr-rehavi-2014-charge-severity', 'starr-rehavi-2014-charge-severity', 'id-disease-severity', 'charge_severity') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-ussc-2017-offense-type', 'ussc-2017-offense-type', 'id-legal-case-context', 'offense_type') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-western-2006-education-level', 'western-2006-education-level', 'id-institutional-unit', 'education_level') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-brame-bushway-paternoster-turner-2014-offense-type', 'brame-bushway-paternoster-turner-2014-offense-type', 'id-legal-case-context', 'offense_type') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-fryer-2016-interaction-type', 'fryer-2016-interaction-type', 'id-mechanism-other', 'interaction_type') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-rehavi-starr-2012-arrest-offense', 'rehavi-starr-2012-arrest-offense', 'id-legal-case-context', 'arrest_offense') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-kutateladze-andiloro-johnson-spohn-2014-stage-in-process', 'kutateladze-andiloro-johnson-spohn-2014-stage-in-process', 'id-age-composition', 'stage_in_process') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-arcidiacono-kinsler-ransom-2019-legacy', 'arcidiacono-kinsler-ransom-2019-legacy', 'id-institutional-unit', 'legacy') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-long-2004-income-quartile', 'long-2004-income-quartile', 'id-socioeconomic-status', 'income_quartile') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-alon-tienda-2007-institutional-selectivity-tier', 'alon-tienda-2007-institutional-selectivity-tier', 'id-institutional-unit', 'institutional_selectivity_tier') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-hoekstra-2009-sat-score-band-near-threshold', 'hoekstra-2009-sat-score-band-near-threshold', 'id-situational-context', 'sat_score_band_near_threshold') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-dale-krueger-2002-application-portfolio-which-schools-one', 'dale-krueger-2002-application-portfolio-which-schools-one', 'id-institutional-unit', 'application_portfolio_which_schools_one') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-nces-ipeds-institution-type', 'nces-ipeds-institution-type', 'id-institutional-unit', 'institution_type') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-college-scorecard-field-of-study', 'college-scorecard-field-of-study', 'id-institutional-unit', 'field_of_study') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-hoxby-avery-2013-geographic-isolation', 'hoxby-avery-2013-geographic-isolation', 'id-geographic-composition', 'geographic_isolation') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-espenshade-radford-2009-applicant-type', 'espenshade-radford-2009-applicant-type', 'id-institutional-unit', 'applicant_type') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-bound-lovenheim-turner-2010-institution-selectivity', 'bound-lovenheim-turner-2010-institution-selectivity', 'id-institutional-unit', 'institution_selectivity') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-carnevale-strohl-2010-institutional-tier', 'carnevale-strohl-2010-institutional-tier', 'id-institutional-unit', 'institutional_tier') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-hoxby-murarka-2009-lottery-winner-vs-loser', 'hoxby-murarka-2009-lottery-winner-vs-loser', 'id-collider-proxy', 'lottery_winner_vs_loser') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-rothstein-2004-institution', 'rothstein-2004-institution', 'id-institutional-unit', 'institution') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-accord-study-group-2008-baseline-hba1c', 'accord-study-group-2008-baseline-hba1c', 'id-disease-severity', 'baseline_hba1c') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-allhat-collaborative-research-group-2002-race', 'allhat-collaborative-research-group-2002-race', 'id-demographic-group', 'race') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-isis-2-collaborative-group-1988-age-group', 'isis-2-collaborative-group-1988-age-group', 'id-age-composition', 'age_group') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-plato-trial-geographic-region-north-america-vs-europ', 'plato-trial-geographic-region-north-america-vs-europ', 'id-geographic-composition', 'geographic_region_north_america_vs_europ') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-fibrinolytic-therapy-trialists-1994-time-from-symptom-onset', 'fibrinolytic-therapy-trialists-1994-time-from-symptom-onset', 'id-mechanism-other', 'time_from_symptom_onset') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-cast-1989-arrhythmia-burden', 'cast-1989-arrhythmia-burden', 'id-disease-severity', 'arrhythmia_burden') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-women-s-health-initiative-2002-age-at-menopause-onset', 'women-s-health-initiative-2002-age-at-menopause-onset', 'id-age-composition', 'age_at_menopause_onset') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-dcct-research-group-1993-baseline-hba1c', 'dcct-research-group-1993-baseline-hba1c', 'id-disease-severity', 'baseline_hba1c') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-triton-timi-38-prior-stroke', 'triton-timi-38-prior-stroke', 'id-mechanism-other', 'prior_stroke') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-yusuf-et-al-hope-trial-2000-diabetes-status', 'yusuf-et-al-hope-trial-2000-diabetes-status', 'id-disease-severity', 'diabetes_status') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-sprint-research-group-2015-age', 'sprint-research-group-2015-age', 'id-age-composition', 'age') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-astrazeneca-mystic-trial-pacific-trial-crossover-2017-pd-l1-expression-quartile', 'astrazeneca-mystic-trial-pacific-trial-crossover-2017-pd-l1-expression-quartile', 'id-disease-severity', 'pd_l1_expression_quartile') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-uk-biobank-ukbb-observational-indication-for-statin-cardiovascular-ris', 'uk-biobank-ukbb-observational-indication-for-statin-cardiovascular-ris', 'id-disease-severity', 'indication_for_statin_cardiovascular_ris') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-soccer-pass-completion-by-league-2017-match-situation-pressing-vs-not-pressing', 'soccer-pass-completion-by-league-2017-match-situation-pressing-vs-not-pressing', 'id-situational-context', 'match_situation_pressing_vs_not_pressing') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-marathon-finishing-times-by-age-and-temperature-boston-marat-race-day-temperature', 'marathon-finishing-times-by-age-and-temperature-boston-marat-race-day-temperature', 'id-situational-context', 'race_day_temperature') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-tennis-first-serve-percentage-by-surface-2010-surface-type-hard', 'tennis-first-serve-percentage-by-surface-2010-surface-type-hard', 'id-situational-context', 'surface_type_hard') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-nfl-quarterback-rating-by-game-situation-2010-down-and-distance', 'nfl-quarterback-rating-by-game-situation-2010-down-and-distance', 'id-situational-context', 'down_and_distance') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-nhl-shooting-percentage-by-game-state-2010-score-situation-trailing-vs-leading-vs-t', 'nhl-shooting-percentage-by-game-state-2010-score-situation-trailing-vs-leading-vs-t', 'id-situational-context', 'score_situation_trailing_vs_leading_vs_t') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-soccer-expected-goals-home', 'soccer-expected-goals-home', 'id-situational-context', 'home') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-lollar-vs-mccatty-pitching-1982-season', 'lollar-vs-mccatty-pitching-1982-season', 'id-situational-context', 'season') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-mlb-park-factor-adjustments-home-vs-away-park', 'mlb-park-factor-adjustments-home-vs-away-park', 'id-situational-context', 'home_vs_away_park') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-olympic-sprint-times-by-heat-type-1996-preliminary-heat-vs-semifinal-vs-final', 'olympic-sprint-times-by-heat-type-1996-preliminary-heat-vs-semifinal-vs-final', 'id-situational-context', 'preliminary_heat_vs_semifinal_vs_final') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-von-kugelgen-mohamed-scholkopf-2021-stratum', 'von-kugelgen-mohamed-scholkopf-2021-stratum', 'id-mechanism-other', 'stratum') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-dagan-et-al-2021-age-group', 'dagan-et-al-2021-age-group', 'id-age-composition', 'age_group') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-israeli-ministry-of-health-age-group-50-vs-50', 'israeli-ministry-of-health-age-group-50-vs-50', 'id-age-composition', 'age_group_50_vs_50') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-yule-1903-age-group', 'yule-1903-age-group', 'id-age-composition', 'age_group') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-mantel-haenszel-1959-age', 'mantel-haenszel-1959-age', 'id-age-composition', 'age') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-doll-hill-1954-age-group', 'doll-hill-1954-age-group', 'id-age-composition', 'age_group') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-hammond-horn-1958-age', 'hammond-horn-1958-age', 'id-selection-frailty', 'age') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-polack-et-al-2020-age-group', 'polack-et-al-2020-age-group', 'id-age-composition', 'age_group') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-baden-et-al-2021-age', 'baden-et-al-2021-age', 'id-age-composition', 'age') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-flannery-et-al-2020-flu-season', 'flannery-et-al-2020-flu-season', 'id-treatment-indication', 'flu_season') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-simonsen-et-al-2005-frailty', 'simonsen-et-al-2005-frailty', 'id-selection-frailty', 'frailty') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-hernan-hernandez-diaz-robins-2004-time-since-initiation', 'hernan-hernandez-diaz-robins-2004-time-since-initiation', 'id-treatment-indication', 'time_since_initiation') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-cornfield-et-al-1959-exposure-dose', 'cornfield-et-al-1959-exposure-dose', 'id-treatment-indication', 'exposure_dose') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-baker-kramer-2001-sex', 'baker-kramer-2001-sex', 'id-demographic-group', 'sex') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-cdc-covid-19-case-surveillance-2020-age-group', 'cdc-covid-19-case-surveillance-2020-age-group', 'id-age-composition', 'age_group') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-our-world-in-data-covid-19-dataset-2020-country', 'our-world-in-data-covid-19-dataset-2020-country', 'id-geographic-composition', 'country') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-shapiro-et-al-1988-age-group', 'shapiro-et-al-1988-age-group', 'id-age-composition', 'age_group') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-moss-racusin-et-al-2012-faculty-mentor-s-gender', 'moss-racusin-et-al-2012-faculty-mentor-s-gender', 'id-demographic-group', 'faculty_mentor_s_gender') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-castilla-2008-department', 'castilla-2008-department', 'id-institutional-unit', 'department') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-blau-devaro-2007-occupation', 'blau-devaro-2007-occupation', 'id-socioeconomic-status', 'occupation') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-sarsons-2017-gender-of-co-authors', 'sarsons-2017-gender-of-co-authors', 'id-demographic-group', 'gender_of_co_authors') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-ginther-kahn-2004-field-subarea', 'ginther-kahn-2004-field-subarea', 'id-mechanism-other', 'field_subarea') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-eeoc-charge-data-industry', 'eeoc-charge-data-industry', 'id-socioeconomic-status', 'industry') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-nsf-ncses-survey-of-doctoral-recipients-field-of-science', 'nsf-ncses-survey-of-doctoral-recipients-field-of-science', 'id-institutional-unit', 'field_of_science') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-neumark-bank-van-nort-1996-restaurant-tier-high-price-vs-low-price', 'neumark-bank-van-nort-1996-restaurant-tier-high-price-vs-low-price', 'id-user-platform-segment', 'restaurant_tier_high_price_vs_low_price') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-kline-rose-walters-2022-industry', 'kline-rose-walters-2022-industry', 'id-socioeconomic-status', 'industry') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-hsieh-moretti-2019-city-housing-market', 'hsieh-moretti-2019-city-housing-market', 'id-geographic-composition', 'city_housing_market') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-kohavi-deng-longbotham-xu-2014-user-segment', 'kohavi-deng-longbotham-xu-2014-user-segment', 'id-user-platform-segment', 'user_segment') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-kohavi-longbotham-2017-device-type', 'kohavi-longbotham-2017-device-type', 'id-user-platform-segment', 'device_type') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-xu-chen-fernandez-sinno-bhasin-2015-user-tenure', 'xu-chen-fernandez-sinno-bhasin-2015-user-tenure', 'id-user-platform-segment', 'user_tenure') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-deng-xu-kohavi-walker-2013-pre-experiment-user-behavior-stratum', 'deng-xu-kohavi-walker-2013-pre-experiment-user-behavior-stratum', 'id-user-platform-segment', 'pre_experiment_user_behavior_stratum') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-tang-agarwal-o-brien-meyer-2010-concurrent-experiment-assignment', 'tang-agarwal-o-brien-meyer-2010-concurrent-experiment-assignment', 'id-user-platform-segment', 'concurrent_experiment_assignment') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-bakshy-eckles-bernstein-2014-user-activity-level', 'bakshy-eckles-bernstein-2014-user-activity-level', 'id-user-platform-segment', 'user_activity_level') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-dmitriev-frasca-lu-kohavi-olariu-2016-traffic-allocation-method', 'dmitriev-frasca-lu-kohavi-olariu-2016-traffic-allocation-method', 'id-user-platform-segment', 'traffic_allocation_method') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-kohavi-longbotham-sommerfield-henne-2009-user-segment', 'kohavi-longbotham-sommerfield-henne-2009-user-segment', 'id-user-platform-segment', 'user_segment') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-hohnhold-o-brien-tang-2015-user-tenure-cohort', 'hohnhold-o-brien-tang-2015-user-tenure-cohort', 'id-age-composition', 'user_tenure_cohort') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-johari-koomen-pekelis-walsh-2017-sequential-test-timing', 'johari-koomen-pekelis-walsh-2017-sequential-test-timing', 'id-user-platform-segment', 'sequential_test_timing') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-doll-hill-1950-age', 'doll-hill-1950-age', 'id-age-composition', 'age') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-predimed-trial-cardiovascular-risk-tier', 'predimed-trial-cardiovascular-risk-tier', 'id-disease-severity', 'cardiovascular_risk_tier') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-mrfit-1982-baseline-ecg-abnormality', 'mrfit-1982-baseline-ecg-abnormality', 'id-disease-severity', 'baseline_ecg_abnormality') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-nhanes-air-quality-and-respiratory-income', 'nhanes-air-quality-and-respiratory-income', 'id-socioeconomic-status', 'income') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-coleman-et-al-1966-family-ses', 'coleman-et-al-1966-family-ses', 'id-socioeconomic-status', 'family_ses') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-naep-race', 'naep-race', 'id-demographic-group', 'race') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-krueger-1999-school', 'krueger-1999-school', 'id-institutional-unit', 'school') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-finn-achilles-1990-school', 'finn-achilles-1990-school', 'id-institutional-unit', 'school') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-mosteller-1995-grade-level', 'mosteller-1995-grade-level', 'id-institutional-unit', 'grade_level') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-angrist-lavy-1999-grade', 'angrist-lavy-1999-grade', 'id-institutional-unit', 'grade') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-hoxby-2000-grade', 'hoxby-2000-grade', 'id-institutional-unit', 'grade') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-abdulkadiroglu-angrist-dynarski-kane-pathak-2011-lottery-result', 'abdulkadiroglu-angrist-dynarski-kane-pathak-2011-lottery-result', 'id-institutional-unit', 'lottery_result') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-head-start-impact-study-age-3-vs-4-year-olds', 'head-start-impact-study-age-3-vs-4-year-olds', 'id-age-composition', 'age_3_vs_4_year_olds') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-timss-2019-international-math-and-science-ses', 'timss-2019-international-math-and-science-ses', 'id-socioeconomic-status', 'ses') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-hanushek-1989-state', 'hanushek-1989-state', 'id-geographic-composition', 'state') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-early-childhood-longitudinal-study-kindergarten-ses', 'early-childhood-longitudinal-study-kindergarten-ses', 'id-socioeconomic-status', 'ses') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-rothstein-2010-prior-year-assignment', 'rothstein-2010-prior-year-assignment', 'id-mechanism-other', 'prior_year_assignment') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-hmda-loan-to-income-ratio', 'hmda-loan-to-income-ratio', 'id-credit-risk-tier', 'loan_to_income_ratio') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-munnell-tootell-browne-mceneaney-1996-credit-score', 'munnell-tootell-browne-mceneaney-1996-credit-score', 'id-credit-risk-tier', 'credit_score') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-bartlett-morse-stanton-wallace-2022-loan-channel', 'bartlett-morse-stanton-wallace-2022-loan-channel', 'id-credit-risk-tier', 'loan_channel') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-federal-reserve-scf-income-quartile', 'federal-reserve-scf-income-quartile', 'id-socioeconomic-status', 'income_quartile') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-cfpb-consumer-credit-panel-zip-code-income-tier', 'cfpb-consumer-credit-panel-zip-code-income-tier', 'id-socioeconomic-status', 'zip_code_income_tier') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-sba-small-business-lending-data-loan-size', 'sba-small-business-lending-data-loan-size', 'id-credit-risk-tier', 'loan_size') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-petersen-rajan-1994-firm-age', 'petersen-rajan-1994-firm-age', 'id-age-composition', 'firm_age') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-berger-udell-1995-firm-size', 'berger-udell-1995-firm-size', 'id-socioeconomic-status', 'firm_size') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-fdic-small-business-lending-survey-2016-bank-size', 'fdic-small-business-lending-survey-2016-bank-size', 'id-socioeconomic-status', 'bank_size') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-keys-mukherjee-seru-vig-2010-fico-score-band', 'keys-mukherjee-seru-vig-2010-fico-score-band', 'id-credit-risk-tier', 'fico_score_band') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+INSERT INTO stratum_variable_identity_maps (map_id, stratum_variable, confounder_identity, variable_name_normalized)
+VALUES ('map-acharya-imbierowicz-steffen-teichmann-2020-bank-capitalization-tier', 'acharya-imbierowicz-steffen-teichmann-2020-bank-capitalization-tier', 'id-socioeconomic-status', 'bank_capitalization_tier') ON CONFLICT (map_id) DO UPDATE SET stratum_variable = EXCLUDED.stratum_variable, confounder_identity = EXCLUDED.confounder_identity, variable_name_normalized = EXCLUDED.variable_name_normalized;
+
+-- ----------------------------------------------------------------------------
+-- IdentityClusterSummaries: Table: IdentityClusterSummaries — witnessed geometry rollup per ConfounderIdentity (manifest flip, latent-D, avg distortion) — loop-80 open-question substrate.
+-- ----------------------------------------------------------------------------
+INSERT INTO identity_cluster_summaries (identity_cluster_id, confounder_identity, study_count, manifest_flip_count, latent_flip_count, type_d_count, avg_allocation_distortion, latent_fraction_among_type_d, domain_count)
+VALUES ('cluster-id-age-composition', 'id-age-composition', NULL, NULL, NULL, NULL, NULL, NULL, NULL) ON CONFLICT (identity_cluster_id) DO UPDATE SET confounder_identity = EXCLUDED.confounder_identity, study_count = EXCLUDED.study_count, manifest_flip_count = EXCLUDED.manifest_flip_count, latent_flip_count = EXCLUDED.latent_flip_count, type_d_count = EXCLUDED.type_d_count, avg_allocation_distortion = EXCLUDED.avg_allocation_distortion, latent_fraction_among_type_d = EXCLUDED.latent_fraction_among_type_d, domain_count = EXCLUDED.domain_count;
+
+INSERT INTO identity_cluster_summaries (identity_cluster_id, confounder_identity, study_count, manifest_flip_count, latent_flip_count, type_d_count, avg_allocation_distortion, latent_fraction_among_type_d, domain_count)
+VALUES ('cluster-id-disease-severity', 'id-disease-severity', NULL, NULL, NULL, NULL, NULL, NULL, NULL) ON CONFLICT (identity_cluster_id) DO UPDATE SET confounder_identity = EXCLUDED.confounder_identity, study_count = EXCLUDED.study_count, manifest_flip_count = EXCLUDED.manifest_flip_count, latent_flip_count = EXCLUDED.latent_flip_count, type_d_count = EXCLUDED.type_d_count, avg_allocation_distortion = EXCLUDED.avg_allocation_distortion, latent_fraction_among_type_d = EXCLUDED.latent_fraction_among_type_d, domain_count = EXCLUDED.domain_count;
+
+INSERT INTO identity_cluster_summaries (identity_cluster_id, confounder_identity, study_count, manifest_flip_count, latent_flip_count, type_d_count, avg_allocation_distortion, latent_fraction_among_type_d, domain_count)
+VALUES ('cluster-id-institutional-unit', 'id-institutional-unit', NULL, NULL, NULL, NULL, NULL, NULL, NULL) ON CONFLICT (identity_cluster_id) DO UPDATE SET confounder_identity = EXCLUDED.confounder_identity, study_count = EXCLUDED.study_count, manifest_flip_count = EXCLUDED.manifest_flip_count, latent_flip_count = EXCLUDED.latent_flip_count, type_d_count = EXCLUDED.type_d_count, avg_allocation_distortion = EXCLUDED.avg_allocation_distortion, latent_fraction_among_type_d = EXCLUDED.latent_fraction_among_type_d, domain_count = EXCLUDED.domain_count;
+
+INSERT INTO identity_cluster_summaries (identity_cluster_id, confounder_identity, study_count, manifest_flip_count, latent_flip_count, type_d_count, avg_allocation_distortion, latent_fraction_among_type_d, domain_count)
+VALUES ('cluster-id-socioeconomic-status', 'id-socioeconomic-status', NULL, NULL, NULL, NULL, NULL, NULL, NULL) ON CONFLICT (identity_cluster_id) DO UPDATE SET confounder_identity = EXCLUDED.confounder_identity, study_count = EXCLUDED.study_count, manifest_flip_count = EXCLUDED.manifest_flip_count, latent_flip_count = EXCLUDED.latent_flip_count, type_d_count = EXCLUDED.type_d_count, avg_allocation_distortion = EXCLUDED.avg_allocation_distortion, latent_fraction_among_type_d = EXCLUDED.latent_fraction_among_type_d, domain_count = EXCLUDED.domain_count;
+
+INSERT INTO identity_cluster_summaries (identity_cluster_id, confounder_identity, study_count, manifest_flip_count, latent_flip_count, type_d_count, avg_allocation_distortion, latent_fraction_among_type_d, domain_count)
+VALUES ('cluster-id-geographic-composition', 'id-geographic-composition', NULL, NULL, NULL, NULL, NULL, NULL, NULL) ON CONFLICT (identity_cluster_id) DO UPDATE SET confounder_identity = EXCLUDED.confounder_identity, study_count = EXCLUDED.study_count, manifest_flip_count = EXCLUDED.manifest_flip_count, latent_flip_count = EXCLUDED.latent_flip_count, type_d_count = EXCLUDED.type_d_count, avg_allocation_distortion = EXCLUDED.avg_allocation_distortion, latent_fraction_among_type_d = EXCLUDED.latent_fraction_among_type_d, domain_count = EXCLUDED.domain_count;
+
+INSERT INTO identity_cluster_summaries (identity_cluster_id, confounder_identity, study_count, manifest_flip_count, latent_flip_count, type_d_count, avg_allocation_distortion, latent_fraction_among_type_d, domain_count)
+VALUES ('cluster-id-legal-case-context', 'id-legal-case-context', NULL, NULL, NULL, NULL, NULL, NULL, NULL) ON CONFLICT (identity_cluster_id) DO UPDATE SET confounder_identity = EXCLUDED.confounder_identity, study_count = EXCLUDED.study_count, manifest_flip_count = EXCLUDED.manifest_flip_count, latent_flip_count = EXCLUDED.latent_flip_count, type_d_count = EXCLUDED.type_d_count, avg_allocation_distortion = EXCLUDED.avg_allocation_distortion, latent_fraction_among_type_d = EXCLUDED.latent_fraction_among_type_d, domain_count = EXCLUDED.domain_count;
+
+INSERT INTO identity_cluster_summaries (identity_cluster_id, confounder_identity, study_count, manifest_flip_count, latent_flip_count, type_d_count, avg_allocation_distortion, latent_fraction_among_type_d, domain_count)
+VALUES ('cluster-id-credit-risk-tier', 'id-credit-risk-tier', NULL, NULL, NULL, NULL, NULL, NULL, NULL) ON CONFLICT (identity_cluster_id) DO UPDATE SET confounder_identity = EXCLUDED.confounder_identity, study_count = EXCLUDED.study_count, manifest_flip_count = EXCLUDED.manifest_flip_count, latent_flip_count = EXCLUDED.latent_flip_count, type_d_count = EXCLUDED.type_d_count, avg_allocation_distortion = EXCLUDED.avg_allocation_distortion, latent_fraction_among_type_d = EXCLUDED.latent_fraction_among_type_d, domain_count = EXCLUDED.domain_count;
+
+INSERT INTO identity_cluster_summaries (identity_cluster_id, confounder_identity, study_count, manifest_flip_count, latent_flip_count, type_d_count, avg_allocation_distortion, latent_fraction_among_type_d, domain_count)
+VALUES ('cluster-id-situational-context', 'id-situational-context', NULL, NULL, NULL, NULL, NULL, NULL, NULL) ON CONFLICT (identity_cluster_id) DO UPDATE SET confounder_identity = EXCLUDED.confounder_identity, study_count = EXCLUDED.study_count, manifest_flip_count = EXCLUDED.manifest_flip_count, latent_flip_count = EXCLUDED.latent_flip_count, type_d_count = EXCLUDED.type_d_count, avg_allocation_distortion = EXCLUDED.avg_allocation_distortion, latent_fraction_among_type_d = EXCLUDED.latent_fraction_among_type_d, domain_count = EXCLUDED.domain_count;
+
+INSERT INTO identity_cluster_summaries (identity_cluster_id, confounder_identity, study_count, manifest_flip_count, latent_flip_count, type_d_count, avg_allocation_distortion, latent_fraction_among_type_d, domain_count)
+VALUES ('cluster-id-user-platform-segment', 'id-user-platform-segment', NULL, NULL, NULL, NULL, NULL, NULL, NULL) ON CONFLICT (identity_cluster_id) DO UPDATE SET confounder_identity = EXCLUDED.confounder_identity, study_count = EXCLUDED.study_count, manifest_flip_count = EXCLUDED.manifest_flip_count, latent_flip_count = EXCLUDED.latent_flip_count, type_d_count = EXCLUDED.type_d_count, avg_allocation_distortion = EXCLUDED.avg_allocation_distortion, latent_fraction_among_type_d = EXCLUDED.latent_fraction_among_type_d, domain_count = EXCLUDED.domain_count;
+
+INSERT INTO identity_cluster_summaries (identity_cluster_id, confounder_identity, study_count, manifest_flip_count, latent_flip_count, type_d_count, avg_allocation_distortion, latent_fraction_among_type_d, domain_count)
+VALUES ('cluster-id-demographic-group', 'id-demographic-group', NULL, NULL, NULL, NULL, NULL, NULL, NULL) ON CONFLICT (identity_cluster_id) DO UPDATE SET confounder_identity = EXCLUDED.confounder_identity, study_count = EXCLUDED.study_count, manifest_flip_count = EXCLUDED.manifest_flip_count, latent_flip_count = EXCLUDED.latent_flip_count, type_d_count = EXCLUDED.type_d_count, avg_allocation_distortion = EXCLUDED.avg_allocation_distortion, latent_fraction_among_type_d = EXCLUDED.latent_fraction_among_type_d, domain_count = EXCLUDED.domain_count;
+
+INSERT INTO identity_cluster_summaries (identity_cluster_id, confounder_identity, study_count, manifest_flip_count, latent_flip_count, type_d_count, avg_allocation_distortion, latent_fraction_among_type_d, domain_count)
+VALUES ('cluster-id-contested-org-choice', 'id-contested-org-choice', NULL, NULL, NULL, NULL, NULL, NULL, NULL) ON CONFLICT (identity_cluster_id) DO UPDATE SET confounder_identity = EXCLUDED.confounder_identity, study_count = EXCLUDED.study_count, manifest_flip_count = EXCLUDED.manifest_flip_count, latent_flip_count = EXCLUDED.latent_flip_count, type_d_count = EXCLUDED.type_d_count, avg_allocation_distortion = EXCLUDED.avg_allocation_distortion, latent_fraction_among_type_d = EXCLUDED.latent_fraction_among_type_d, domain_count = EXCLUDED.domain_count;
+
+INSERT INTO identity_cluster_summaries (identity_cluster_id, confounder_identity, study_count, manifest_flip_count, latent_flip_count, type_d_count, avg_allocation_distortion, latent_fraction_among_type_d, domain_count)
+VALUES ('cluster-id-collider-proxy', 'id-collider-proxy', NULL, NULL, NULL, NULL, NULL, NULL, NULL) ON CONFLICT (identity_cluster_id) DO UPDATE SET confounder_identity = EXCLUDED.confounder_identity, study_count = EXCLUDED.study_count, manifest_flip_count = EXCLUDED.manifest_flip_count, latent_flip_count = EXCLUDED.latent_flip_count, type_d_count = EXCLUDED.type_d_count, avg_allocation_distortion = EXCLUDED.avg_allocation_distortion, latent_fraction_among_type_d = EXCLUDED.latent_fraction_among_type_d, domain_count = EXCLUDED.domain_count;
+
+INSERT INTO identity_cluster_summaries (identity_cluster_id, confounder_identity, study_count, manifest_flip_count, latent_flip_count, type_d_count, avg_allocation_distortion, latent_fraction_among_type_d, domain_count)
+VALUES ('cluster-id-selection-frailty', 'id-selection-frailty', NULL, NULL, NULL, NULL, NULL, NULL, NULL) ON CONFLICT (identity_cluster_id) DO UPDATE SET confounder_identity = EXCLUDED.confounder_identity, study_count = EXCLUDED.study_count, manifest_flip_count = EXCLUDED.manifest_flip_count, latent_flip_count = EXCLUDED.latent_flip_count, type_d_count = EXCLUDED.type_d_count, avg_allocation_distortion = EXCLUDED.avg_allocation_distortion, latent_fraction_among_type_d = EXCLUDED.latent_fraction_among_type_d, domain_count = EXCLUDED.domain_count;
+
+INSERT INTO identity_cluster_summaries (identity_cluster_id, confounder_identity, study_count, manifest_flip_count, latent_flip_count, type_d_count, avg_allocation_distortion, latent_fraction_among_type_d, domain_count)
+VALUES ('cluster-id-treatment-indication', 'id-treatment-indication', NULL, NULL, NULL, NULL, NULL, NULL, NULL) ON CONFLICT (identity_cluster_id) DO UPDATE SET confounder_identity = EXCLUDED.confounder_identity, study_count = EXCLUDED.study_count, manifest_flip_count = EXCLUDED.manifest_flip_count, latent_flip_count = EXCLUDED.latent_flip_count, type_d_count = EXCLUDED.type_d_count, avg_allocation_distortion = EXCLUDED.avg_allocation_distortion, latent_fraction_among_type_d = EXCLUDED.latent_fraction_among_type_d, domain_count = EXCLUDED.domain_count;
+
+INSERT INTO identity_cluster_summaries (identity_cluster_id, confounder_identity, study_count, manifest_flip_count, latent_flip_count, type_d_count, avg_allocation_distortion, latent_fraction_among_type_d, domain_count)
+VALUES ('cluster-id-mechanism-other', 'id-mechanism-other', NULL, NULL, NULL, NULL, NULL, NULL, NULL) ON CONFLICT (identity_cluster_id) DO UPDATE SET confounder_identity = EXCLUDED.confounder_identity, study_count = EXCLUDED.study_count, manifest_flip_count = EXCLUDED.manifest_flip_count, latent_flip_count = EXCLUDED.latent_flip_count, type_d_count = EXCLUDED.type_d_count, avg_allocation_distortion = EXCLUDED.avg_allocation_distortion, latent_fraction_among_type_d = EXCLUDED.latent_fraction_among_type_d, domain_count = EXCLUDED.domain_count;
 

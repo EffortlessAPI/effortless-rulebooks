@@ -403,6 +403,28 @@ effortless-ntwf:ConclusionsShape a sh:NodeShape ;
 # Rule for WitnessedInLoopGitTag - parse error: Unexpected character '[' at position 33
 # Rule for InvariantProtectingCount - parse error: unsupported COUNTIFS criteria: FieldRef
 
+# === Shape with rules for ConfounderIdentities ===
+effortless-ntwf:ConfounderIdentitiesShape a sh:NodeShape ;
+    sh:targetClass effortless-ntwf:ConfounderIdentities ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_ConfounderIdentities_Name" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:name ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:ConfounderIdentities .
+    OPTIONAL { $this effortless-ntwf:confounderIdentityId ?confounder_identity_id . }
+                BIND(?confounder_identity_id AS ?_result)
+            }
+        """ ;
+    ] .
+# Rule for StudyCount - parse error: Expected TokenType.LPAREN, got TokenType.COMMA at position 63
+
 # === Shape with rules for CorpusCatalogSummary ===
 effortless-ntwf:CorpusCatalogSummaryShape a sh:NodeShape ;
     sh:targetClass effortless-ntwf:CorpusCatalogSummary ;
@@ -879,6 +901,46 @@ effortless-ntwf:DomainExpansionTargetsShape a sh:NodeShape ;
 # Rule for CurrentImportedCount - parse error: unsupported COUNTIFS criteria: FuncCall
 # Rule for CandidateQueuedCount - parse error: unsupported COUNTIFS criteria: FieldRef
 # Rule for GapCount - parse error: Unknown function: MAX
+
+# === Shape with rules for IdentityClusterSummaries ===
+effortless-ntwf:IdentityClusterSummariesShape a sh:NodeShape ;
+    sh:targetClass effortless-ntwf:IdentityClusterSummaries ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_IdentityClusterSummaries_Name" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:name ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:IdentityClusterSummaries .
+    OPTIONAL { $this effortless-ntwf:identityClusterId ?identity_cluster_id . }
+                BIND(?identity_cluster_id AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_IdentityClusterSummaries_ManifestFlipRate" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:manifestFlipRate ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:IdentityClusterSummaries .
+    OPTIONAL { $this effortless-ntwf:manifestFlipCount ?manifest_flip_count . }
+    OPTIONAL { $this effortless-ntwf:studyCount ?study_count . }
+                BIND(IF((?study_count = 0), "", (?manifest_flip_count / ?study_count)) AS ?_result)
+            }
+        """ ;
+    ] .
+# Rule for DisplayName - parse error: Unexpected character '[' at position 51
 
 # === Shape with rules for IngestionProtocol ===
 effortless-ntwf:IngestionProtocolShape a sh:NodeShape ;
@@ -1857,6 +1919,8 @@ effortless-ntwf:ModelSummaryShape a sh:NodeShape ;
 # Rule for EconomicsStudyCount - parse error: Unknown function: COUNTIFS
 # Rule for ExpansionWave2StudyCount - parse error: Unknown function: COUNTIFS
 # Rule for ConfounderIdentityCount - parse error: aggregation formula must be COUNTIFS(...) or SUMIFS(...)
+# Rule for MappedStratumVariableCount - parse error: aggregation formula must be COUNTIFS(...) or SUMIFS(...)
+# Rule for UnmappedStratumVariableCount - parse error: Unknown function: COUNT
 
 # === Shape with rules for PhaseDiagramSummary ===
 effortless-ntwf:PhaseDiagramSummaryShape a sh:NodeShape ;
@@ -2215,6 +2279,27 @@ effortless-ntwf:StratumSummariesShape a sh:NodeShape ;
 # Rule for TreatmentATotalCases - parse error: unsupported COUNTIFS criteria: FieldRef
 # Rule for TreatmentBTotalCases - parse error: unsupported COUNTIFS criteria: FieldRef
 
+# === Shape with rules for StratumVariableIdentityMaps ===
+effortless-ntwf:StratumVariableIdentityMapsShape a sh:NodeShape ;
+    sh:targetClass effortless-ntwf:StratumVariableIdentityMaps ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_StratumVariableIdentityMaps_Name" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:name ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:StratumVariableIdentityMaps .
+    OPTIONAL { $this effortless-ntwf:mapId ?map_id . }
+                BIND(?map_id AS ?_result)
+            }
+        """ ;
+    ] .
+
 # === Shape with rules for StratumVariables ===
 effortless-ntwf:StratumVariablesShape a sh:NodeShape ;
     sh:targetClass effortless-ntwf:StratumVariables ;
@@ -2254,6 +2339,7 @@ effortless-ntwf:StratumVariablesShape a sh:NodeShape ;
             }
         """ ;
     ] .
+# Rule for ConfounderIdentity - parse error: Unexpected character '[' at position 57
 
 # === Shape with rules for Studies ===
 effortless-ntwf:StudiesShape a sh:NodeShape ;
@@ -3288,6 +3374,10 @@ effortless-ntwf:CaseCellsCardinalityShape a sh:NodeShape ;
     sh:targetClass effortless-ntwf:CaseCells ;
     sh:property [ sh:path effortless-ntwf:study ; sh:maxCount 1 ] .
 
+effortless-ntwf:IdentityClusterSummariesCardinalityShape a sh:NodeShape ;
+    sh:targetClass effortless-ntwf:IdentityClusterSummaries ;
+    sh:property [ sh:path effortless-ntwf:confounderIdentity ; sh:maxCount 1 ] .
+
 effortless-ntwf:StrataCardinalityShape a sh:NodeShape ;
     sh:targetClass effortless-ntwf:Strata ;
     sh:property [ sh:path effortless-ntwf:study ; sh:maxCount 1 ] .
@@ -3295,6 +3385,11 @@ effortless-ntwf:StrataCardinalityShape a sh:NodeShape ;
 effortless-ntwf:StratumSummariesCardinalityShape a sh:NodeShape ;
     sh:targetClass effortless-ntwf:StratumSummaries ;
     sh:property [ sh:path effortless-ntwf:study ; sh:maxCount 1 ] .
+
+effortless-ntwf:StratumVariableIdentityMapsCardinalityShape a sh:NodeShape ;
+    sh:targetClass effortless-ntwf:StratumVariableIdentityMaps ;
+    sh:property [ sh:path effortless-ntwf:confounderIdentity ; sh:maxCount 1 ] ;
+    sh:property [ sh:path effortless-ntwf:stratumVariable ; sh:maxCount 1 ] .
 
 effortless-ntwf:StratumVariablesCardinalityShape a sh:NodeShape ;
     sh:targetClass effortless-ntwf:StratumVariables ;
@@ -3308,4 +3403,4 @@ effortless-ntwf:TreatmentsCardinalityShape a sh:NodeShape ;
     sh:targetClass effortless-ntwf:Treatments ;
     sh:property [ sh:path effortless-ntwf:study ; sh:maxCount 1 ] .
 
-# Generated 157 SHACL rules
+# Generated 161 SHACL rules

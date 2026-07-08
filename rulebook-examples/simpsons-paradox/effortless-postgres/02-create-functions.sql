@@ -1117,7 +1117,27 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_model_summary_confounder_identity_count(p_model_summary_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM model_summary))::integer;
+  SELECT ((SELECT COUNT(*) FROM confounder_identities))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_model_summary_mapped_stratum_variable_count
+-- Field: ModelSummary.MappedStratumVariableCount
+-- Type: aggregation | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_model_summary_mapped_stratum_variable_count(p_model_summary_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((SELECT COUNT(*) FROM stratum_variable_identity_maps))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_model_summary_unmapped_stratum_variable_count
+-- Field: ModelSummary.UnmappedStratumVariableCount
+-- Type: calculated | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_model_summary_unmapped_stratum_variable_count(p_model_summary_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((COALESCE(CASE WHEN ((SELECT COUNT(*) FROM stratum_variables))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT COUNT(*) FROM stratum_variables))::numeric ELSE NULL END, 0) - COALESCE(CASE WHEN (calc_model_summary_mapped_stratum_variable_count(p_model_summary_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_model_summary_mapped_stratum_variable_count(p_model_summary_id))::numeric ELSE NULL END, 0)))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_stratum_variables_name
@@ -2902,6 +2922,150 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION calc_corpus_domains_name(p_domain_id TEXT)
 RETURNS TEXT AS $$
   SELECT ((SELECT NULLIF(domain_id, '') FROM corpus_domains WHERE domain_id = p_domain_id))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_confounder_identities_name
+-- Field: ConfounderIdentities.Name
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_confounder_identities_name(p_confounder_identity_id TEXT)
+RETURNS TEXT AS $$
+  SELECT ((SELECT NULLIF(confounder_identity_id, '') FROM confounder_identities WHERE confounder_identity_id = p_confounder_identity_id))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_confounder_identities_study_count
+-- Field: ConfounderIdentities.StudyCount
+-- Type: aggregation | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_confounder_identities_study_count(p_confounder_identity_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT /* WARNING: Formula translation failed: COUNT() requires 1 argument, got 3
+   Original Airtable formula:
+   =COUNT(StratumVariableIdentityMaps!{{MapId}}, ConfounderIdentity, {{ConfounderIdentityId}})
+*/
+NULL::integer;
+$$ LANGUAGE sql STABLE;
+
+-- get_stratum_variables_variable_name
+-- Helper function: Get VariableName from StratumVariables by StratumVariableId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_stratum_variables_variable_name(p_stratum_variable_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT variable_name FROM stratum_variables WHERE stratum_variable_id = p_stratum_variable_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_stratum_variables_causal_role
+-- Helper function: Get CausalRole from StratumVariables by StratumVariableId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_stratum_variables_causal_role(p_stratum_variable_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT causal_role FROM stratum_variables WHERE stratum_variable_id = p_stratum_variable_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_stratum_variables_affects_treatment_assignment
+-- Helper function: Get AffectsTreatmentAssignment from StratumVariables by StratumVariableId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_stratum_variables_affects_treatment_assignment(p_stratum_variable_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (SELECT affects_treatment_assignment FROM stratum_variables WHERE stratum_variable_id = p_stratum_variable_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_stratum_variables_affects_outcome
+-- Helper function: Get AffectsOutcome from StratumVariables by StratumVariableId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_stratum_variables_affects_outcome(p_stratum_variable_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (SELECT affects_outcome FROM stratum_variables WHERE stratum_variable_id = p_stratum_variable_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_stratum_variables_mechanism_note
+-- Helper function: Get MechanismNote from StratumVariables by StratumVariableId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_stratum_variables_mechanism_note(p_stratum_variable_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT mechanism_note FROM stratum_variables WHERE stratum_variable_id = p_stratum_variable_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_stratum_variables_conditioning_risk
+-- Helper function: Get ConditioningRisk from StratumVariables by StratumVariableId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_stratum_variables_conditioning_risk(p_stratum_variable_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT conditioning_risk FROM stratum_variables WHERE stratum_variable_id = p_stratum_variable_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_confounder_identities_display_name
+-- Helper function: Get DisplayName from ConfounderIdentities by ConfounderIdentityId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_confounder_identities_display_name(p_confounder_identity_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT display_name FROM confounder_identities WHERE confounder_identity_id = p_confounder_identity_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_confounder_identities_mechanism_class
+-- Helper function: Get MechanismClass from ConfounderIdentities by ConfounderIdentityId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_confounder_identities_mechanism_class(p_confounder_identity_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT mechanism_class FROM confounder_identities WHERE confounder_identity_id = p_confounder_identity_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_confounder_identities_description
+-- Helper function: Get Description from ConfounderIdentities by ConfounderIdentityId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_confounder_identities_description(p_confounder_identity_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT description FROM confounder_identities WHERE confounder_identity_id = p_confounder_identity_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_confounder_identities_policy_default
+-- Helper function: Get PolicyDefault from ConfounderIdentities by ConfounderIdentityId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_confounder_identities_policy_default(p_confounder_identity_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT policy_default FROM confounder_identities WHERE confounder_identity_id = p_confounder_identity_id);
+$$ LANGUAGE sql STABLE;
+
+-- calc_stratum_variable_identity_maps_name
+-- Field: StratumVariableIdentityMaps.Name
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_stratum_variable_identity_maps_name(p_map_id TEXT)
+RETURNS TEXT AS $$
+  SELECT ((SELECT NULLIF(map_id, '') FROM stratum_variable_identity_maps WHERE map_id = p_map_id))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_identity_cluster_summaries_name
+-- Field: IdentityClusterSummaries.Name
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_identity_cluster_summaries_name(p_identity_cluster_id TEXT)
+RETURNS TEXT AS $$
+  SELECT ((SELECT NULLIF(identity_cluster_id, '') FROM identity_cluster_summaries WHERE identity_cluster_id = p_identity_cluster_id))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_identity_cluster_summaries_manifest_flip_rate
+-- Field: IdentityClusterSummaries.ManifestFlipRate
+-- Type: calculated | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_identity_cluster_summaries_manifest_flip_rate(p_identity_cluster_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT (CASE WHEN ((SELECT study_count FROM identity_cluster_summaries WHERE identity_cluster_id = p_identity_cluster_id))::NUMERIC = 0 THEN ('')::text ELSE ((COALESCE(CASE WHEN ((SELECT manifest_flip_count FROM identity_cluster_summaries WHERE identity_cluster_id = p_identity_cluster_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT manifest_flip_count FROM identity_cluster_summaries WHERE identity_cluster_id = p_identity_cluster_id))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(CASE WHEN ((SELECT study_count FROM identity_cluster_summaries WHERE identity_cluster_id = p_identity_cluster_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT study_count FROM identity_cluster_summaries WHERE identity_cluster_id = p_identity_cluster_id))::numeric ELSE NULL END, 0), 0)))::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- ============================================================================

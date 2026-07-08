@@ -24776,6 +24776,122 @@ effortless-ntwf:conc-32-expansion-wave-3-supersession a effortless-ntwf:Conclusi
     effortless-ntwf:witnessedInLoop "loop-78" ;
     effortless-ntwf:traditionId "tradition-epidemiology" .
 
+effortless-ntwf:conc-33-confounder-identity-layer a effortless-ntwf:Conclusions ;
+    effortless-ntwf:conclusionId "conc-33-confounder-identity-layer" ;
+    effortless-ntwf:category "instrument" ;
+    effortless-ntwf:status "witnessed" ;
+    effortless-ntwf:title "ConfounderIdentity ontology: cross-study accountable stratum archetypes (loop-80)" ;
+    effortless-ntwf:evidence "Pending post-build witness — canonical identities map 233 stratum variables; IdentityClusterSummaries expose manifest vs latent geometry by mechanism, not domain." ;
+    effortless-ntwf:witnessedInLoop "loop-80" ;
+    effortless-ntwf:traditionId "tradition-dag" .
+
+# === Individuals: ConfounderIdentities ===
+
+effortless-ntwf:id-age-composition a effortless-ntwf:ConfounderIdentities ;
+    effortless-ntwf:confounderIdentityId "id-age-composition" ;
+    effortless-ntwf:displayName "Age Composition" ;
+    effortless-ntwf:mechanismClass "demographic-composition" ;
+    effortless-ntwf:description "Age or cohort stratification shifts treatment exposure and baseline outcome rates independently — classic demographic confounding (CFR by age, trial subgroups, school entry age)." ;
+    effortless-ntwf:policyDefault "stratify-by-age" .
+
+effortless-ntwf:id-disease-severity a effortless-ntwf:ConfounderIdentities ;
+    effortless-ntwf:confounderIdentityId "id-disease-severity" ;
+    effortless-ntwf:displayName "Disease Severity / Case Mix" ;
+    effortless-ntwf:mechanismClass "severity-case-mix" ;
+    effortless-ntwf:description "Illness severity, stage, or case-mix drives both treatment selection and prognosis — dominant in medicine and epidemiology reversals." ;
+    effortless-ntwf:policyDefault "stratify-by-severity" .
+
+effortless-ntwf:id-institutional-unit a effortless-ntwf:ConfounderIdentities ;
+    effortless-ntwf:confounderIdentityId "id-institutional-unit" ;
+    effortless-ntwf:displayName "Institutional Unit" ;
+    effortless-ntwf:mechanismClass "organizational-unit" ;
+    effortless-ntwf:description "School, department, hospital, or center choice correlates with both treatment exposure and outcomes — admissions and quality comparisons." ;
+    effortless-ntwf:policyDefault "investigate-unit-choice" .
+
+effortless-ntwf:id-socioeconomic-status a effortless-ntwf:ConfounderIdentities ;
+    effortless-ntwf:confounderIdentityId "id-socioeconomic-status" ;
+    effortless-ntwf:displayName "Socioeconomic Status" ;
+    effortless-ntwf:mechanismClass "ses-income" ;
+    effortless-ntwf:description "Income, SES, or neighborhood tier confounds pooled comparisons in economics, education, and lending encodes." ;
+    effortless-ntwf:policyDefault "stratify-by-ses" .
+
+effortless-ntwf:id-geographic-composition a effortless-ntwf:ConfounderIdentities ;
+    effortless-ntwf:confounderIdentityId "id-geographic-composition" ;
+    effortless-ntwf:displayName "Geographic Composition" ;
+    effortless-ntwf:mechanismClass "geography" ;
+    effortless-ntwf:description "Country, region, state, or city composition drives aggregate rate differences without per-unit reversal." ;
+    effortless-ntwf:policyDefault "stratify-by-geography" .
+
+effortless-ntwf:id-legal-case-context a effortless-ntwf:ConfounderIdentities ;
+    effortless-ntwf:confounderIdentityId "id-legal-case-context" ;
+    effortless-ntwf:displayName "Legal Case Context" ;
+    effortless-ntwf:mechanismClass "legal-offense-victim" ;
+    effortless-ntwf:description "Offense type, charge severity, victim characteristics, or stage in criminal process — legal/sentencing paradox encodes." ;
+    effortless-ntwf:policyDefault "stratify-by-offense-context" .
+
+effortless-ntwf:id-credit-risk-tier a effortless-ntwf:ConfounderIdentities ;
+    effortless-ntwf:confounderIdentityId "id-credit-risk-tier" ;
+    effortless-ntwf:displayName "Credit / Risk Tier" ;
+    effortless-ntwf:mechanismClass "lending-risk" ;
+    effortless-ntwf:description "Credit score, FICO band, or loan-risk tier — financial lending allocation confounds." ;
+    effortless-ntwf:policyDefault "stratify-by-risk-tier" .
+
+effortless-ntwf:id-situational-context a effortless-ntwf:ConfounderIdentities ;
+    effortless-ntwf:confounderIdentityId "id-situational-context" ;
+    effortless-ntwf:displayName "Situational Context" ;
+    effortless-ntwf:mechanismClass "sports-situation" ;
+    effortless-ntwf:description "Game situation, score state, home/away, surface, or down-and-distance — sports analytics allocation confounds." ;
+    effortless-ntwf:policyDefault "stratify-by-situation" .
+
+effortless-ntwf:id-user-platform-segment a effortless-ntwf:ConfounderIdentities ;
+    effortless-ntwf:confounderIdentityId "id-user-platform-segment" ;
+    effortless-ntwf:displayName "User / Platform Segment" ;
+    effortless-ntwf:mechanismClass "ab-test-segment" ;
+    effortless-ntwf:description "User tenure, device, platform, or experiment segment — online A/B and recsys allocation confounds." ;
+    effortless-ntwf:policyDefault "stratify-by-segment" .
+
+effortless-ntwf:id-demographic-group a effortless-ntwf:ConfounderIdentities ;
+    effortless-ntwf:confounderIdentityId "id-demographic-group" ;
+    effortless-ntwf:displayName "Demographic Group" ;
+    effortless-ntwf:mechanismClass "race-sex-group" ;
+    effortless-ntwf:description "Race, sex, or demographic group base rates — distinct from age composition when not age-stratified." ;
+    effortless-ntwf:policyDefault "stratify-by-demographic" .
+
+effortless-ntwf:id-contested-org-choice a effortless-ntwf:ConfounderIdentities ;
+    effortless-ntwf:confounderIdentityId "id-contested-org-choice" ;
+    effortless-ntwf:displayName "Contested Organizational Choice" ;
+    effortless-ntwf:mechanismClass "contested-mediator" ;
+    effortless-ntwf:description "Department or institution where causal role is disputed (Berkeley) — geometry without adjust-resolvable explanation." ;
+    effortless-ntwf:policyDefault "do-not-naively-adjust" .
+
+effortless-ntwf:id-collider-proxy a effortless-ntwf:ConfounderIdentities ;
+    effortless-ntwf:confounderIdentityId "id-collider-proxy" ;
+    effortless-ntwf:displayName "Collider / Conditioning Proxy" ;
+    effortless-ntwf:mechanismClass "collider-selection" ;
+    effortless-ntwf:description "BMI, birth-weight category, or other collider/selection variables — latent sweep sensitivity without manifest flip." ;
+    effortless-ntwf:policyDefault "do-not-condition" .
+
+effortless-ntwf:id-selection-frailty a effortless-ntwf:ConfounderIdentities ;
+    effortless-ntwf:confounderIdentityId "id-selection-frailty" ;
+    effortless-ntwf:displayName "Selection / Frailty" ;
+    effortless-ntwf:mechanismClass "healthy-vaccinee" ;
+    effortless-ntwf:description "Frailty, employment, abstainer composition, or healthy-vaccinee selection — epidemiology selection bias." ;
+    effortless-ntwf:policyDefault "model-selection-explicitly" .
+
+effortless-ntwf:id-treatment-indication a effortless-ntwf:ConfounderIdentities ;
+    effortless-ntwf:confounderIdentityId "id-treatment-indication" ;
+    effortless-ntwf:displayName "Treatment Indication" ;
+    effortless-ntwf:mechanismClass "clinical-indication" ;
+    effortless-ntwf:description "Baseline risk tier, HbA1c, PD-L1, or indication-for-treatment stratification in trials." ;
+    effortless-ntwf:policyDefault "stratify-by-indication" .
+
+effortless-ntwf:id-mechanism-other a effortless-ntwf:ConfounderIdentities ;
+    effortless-ntwf:confounderIdentityId "id-mechanism-other" ;
+    effortless-ntwf:displayName "Other Mechanism" ;
+    effortless-ntwf:mechanismClass "other" ;
+    effortless-ntwf:description "Catch-all for stratum variables not yet assigned a canonical archetype — pending ontology refinement." ;
+    effortless-ntwf:policyDefault "investigate-confounder" .
+
 # === Individuals: CorpusCatalogSummary ===
 
 effortless-ntwf:catalog-v1 a effortless-ntwf:CorpusCatalogSummary ;
@@ -24935,6 +25051,21 @@ effortless-ntwf:find-H-theorem-portfolio a effortless-ntwf:DiscoveryFindings ;
     effortless-ntwf:hypothesisId "H-theorem-portfolio" ;
     effortless-ntwf:witnessedInLoop "loop-76" .
 
+effortless-ntwf:find-H-age-identity-flip-rate a effortless-ntwf:DiscoveryFindings ;
+    effortless-ntwf:findingId "find-H-age-identity-flip-rate" ;
+    effortless-ntwf:hypothesisId "H-age-identity-flip-rate" ;
+    effortless-ntwf:witnessedInLoop "loop-80" .
+
+effortless-ntwf:find-H-severity-vs-age-latent a effortless-ntwf:DiscoveryFindings ;
+    effortless-ntwf:findingId "find-H-severity-vs-age-latent" ;
+    effortless-ntwf:hypothesisId "H-severity-vs-age-latent" ;
+    effortless-ntwf:witnessedInLoop "loop-80" .
+
+effortless-ntwf:find-H-identity-map-coverage a effortless-ntwf:DiscoveryFindings ;
+    effortless-ntwf:findingId "find-H-identity-map-coverage" ;
+    effortless-ntwf:hypothesisId "H-identity-map-coverage" ;
+    effortless-ntwf:witnessedInLoop "loop-80" .
+
 # === Individuals: DiscoveryHypotheses ===
 
 effortless-ntwf:H-latent-d a effortless-ntwf:DiscoveryHypotheses ;
@@ -25057,6 +25188,30 @@ effortless-ntwf:H-theorem-portfolio a effortless-ntwf:DiscoveryHypotheses ;
     effortless-ntwf:traditionId "tradition-historical" ;
     effortless-ntwf:epistemicTier "consistency-check" .
 
+effortless-ntwf:H-age-identity-flip-rate a effortless-ntwf:DiscoveryHypotheses ;
+    effortless-ntwf:hypothesisId "H-age-identity-flip-rate" ;
+    effortless-ntwf:statement "Age-composition identity (id-age-composition) produces manifest flip rate ≥ 40% among real studies — cross-domain demographic confounding is flip-prone, not latent-only." ;
+    effortless-ntwf:expectedOutcome "AgeIdentityManifestFlipRate >= 0.40 AND AgeIdentityStudyCount >= 10" ;
+    effortless-ntwf:registeredInLoop "loop-80" ;
+    effortless-ntwf:traditionId "tradition-epidemiology" ;
+    effortless-ntwf:epistemicTier "corpus-hypothesis" .
+
+effortless-ntwf:H-severity-vs-age-latent a effortless-ntwf:DiscoveryHypotheses ;
+    effortless-ntwf:hypothesisId "H-severity-vs-age-latent" ;
+    effortless-ntwf:statement "Disease-severity identity shows lower Type-D latent fraction than age-composition identity — severity drives manifest reversals more than hidden sweep sensitivity." ;
+    effortless-ntwf:expectedOutcome "SeverityIdentityLatentFractionAmongTypeD < AgeIdentityLatentFractionAmongTypeD" ;
+    effortless-ntwf:registeredInLoop "loop-80" ;
+    effortless-ntwf:traditionId "tradition-dag" ;
+    effortless-ntwf:epistemicTier "corpus-hypothesis" .
+
+effortless-ntwf:H-identity-map-coverage a effortless-ntwf:DiscoveryHypotheses ;
+    effortless-ntwf:hypothesisId "H-identity-map-coverage" ;
+    effortless-ntwf:statement "At least 95% of real-study StratumVariables carry a ConfounderIdentity map — ontology covers the corpus." ;
+    effortless-ntwf:expectedOutcome "IdentityMapCoverageRate >= 0.95" ;
+    effortless-ntwf:registeredInLoop "loop-80" ;
+    effortless-ntwf:traditionId "tradition-historical" ;
+    effortless-ntwf:epistemicTier "consistency-check" .
+
 # === Individuals: DomainExpansionTargets ===
 
 effortless-ntwf:domain-target-economics a effortless-ntwf:DomainExpansionTargets ;
@@ -25124,6 +25279,68 @@ effortless-ntwf:domain-target-financial-lending a effortless-ntwf:DomainExpansio
     effortless-ntwf:domain "financial-lending" ;
     effortless-ntwf:legacyDomainAlias "financial-lending" ;
     effortless-ntwf:targetMinCount 12 .
+
+# === Individuals: IdentityClusterSummaries ===
+
+effortless-ntwf:cluster-id-age-composition a effortless-ntwf:IdentityClusterSummaries ;
+    effortless-ntwf:identityClusterId "cluster-id-age-composition" ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-age-composition .
+
+effortless-ntwf:cluster-id-disease-severity a effortless-ntwf:IdentityClusterSummaries ;
+    effortless-ntwf:identityClusterId "cluster-id-disease-severity" ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-disease-severity .
+
+effortless-ntwf:cluster-id-institutional-unit a effortless-ntwf:IdentityClusterSummaries ;
+    effortless-ntwf:identityClusterId "cluster-id-institutional-unit" ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-institutional-unit .
+
+effortless-ntwf:cluster-id-socioeconomic-status a effortless-ntwf:IdentityClusterSummaries ;
+    effortless-ntwf:identityClusterId "cluster-id-socioeconomic-status" ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-socioeconomic-status .
+
+effortless-ntwf:cluster-id-geographic-composition a effortless-ntwf:IdentityClusterSummaries ;
+    effortless-ntwf:identityClusterId "cluster-id-geographic-composition" ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-geographic-composition .
+
+effortless-ntwf:cluster-id-legal-case-context a effortless-ntwf:IdentityClusterSummaries ;
+    effortless-ntwf:identityClusterId "cluster-id-legal-case-context" ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-legal-case-context .
+
+effortless-ntwf:cluster-id-credit-risk-tier a effortless-ntwf:IdentityClusterSummaries ;
+    effortless-ntwf:identityClusterId "cluster-id-credit-risk-tier" ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-credit-risk-tier .
+
+effortless-ntwf:cluster-id-situational-context a effortless-ntwf:IdentityClusterSummaries ;
+    effortless-ntwf:identityClusterId "cluster-id-situational-context" ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-situational-context .
+
+effortless-ntwf:cluster-id-user-platform-segment a effortless-ntwf:IdentityClusterSummaries ;
+    effortless-ntwf:identityClusterId "cluster-id-user-platform-segment" ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-user-platform-segment .
+
+effortless-ntwf:cluster-id-demographic-group a effortless-ntwf:IdentityClusterSummaries ;
+    effortless-ntwf:identityClusterId "cluster-id-demographic-group" ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-demographic-group .
+
+effortless-ntwf:cluster-id-contested-org-choice a effortless-ntwf:IdentityClusterSummaries ;
+    effortless-ntwf:identityClusterId "cluster-id-contested-org-choice" ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-contested-org-choice .
+
+effortless-ntwf:cluster-id-collider-proxy a effortless-ntwf:IdentityClusterSummaries ;
+    effortless-ntwf:identityClusterId "cluster-id-collider-proxy" ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-collider-proxy .
+
+effortless-ntwf:cluster-id-selection-frailty a effortless-ntwf:IdentityClusterSummaries ;
+    effortless-ntwf:identityClusterId "cluster-id-selection-frailty" ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-selection-frailty .
+
+effortless-ntwf:cluster-id-treatment-indication a effortless-ntwf:IdentityClusterSummaries ;
+    effortless-ntwf:identityClusterId "cluster-id-treatment-indication" ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-treatment-indication .
+
+effortless-ntwf:cluster-id-mechanism-other a effortless-ntwf:IdentityClusterSummaries ;
+    effortless-ntwf:identityClusterId "cluster-id-mechanism-other" ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-mechanism-other .
 
 # === Individuals: IngestionProtocol ===
 
@@ -25862,9 +26079,9 @@ effortless-ntwf:inv-discovery-all-confirmed a effortless-ntwf:InvariantChecks ;
     effortless-ntwf:sourceTable "DiscoveryFindings" ;
     effortless-ntwf:filterExpression "HypothesisEpistemicTier = corpus-hypothesis" ;
     effortless-ntwf:assertionExpression "IsConfirmed = TRUE" ;
-    effortless-ntwf:sqlFilter "hypothesis_id IN ('H-latent-d', 'H-small-effect', 'H-causal-manifest', 'H-causal-latent', 'H-explained-confounder', 'H-unexplained-nonconfounder', 'H-catalog-exact-match', 'H-collider-no-manifest-v2', 'H-cplus-magnitude', 'H-ultra-fragile')" ;
+    effortless-ntwf:sqlFilter "hypothesis_id IN ('H-latent-d', 'H-small-effect', 'H-causal-manifest', 'H-causal-latent', 'H-explained-confounder', 'H-unexplained-nonconfounder', 'H-catalog-exact-match', 'H-collider-no-manifest-v2', 'H-cplus-magnitude', 'H-ultra-fragile', 'H-age-identity-flip-rate', 'H-severity-vs-age-latent')" ;
     effortless-ntwf:sqlAssertion "is_confirmed = TRUE" ;
-    effortless-ntwf:passCount 10 ;
+    effortless-ntwf:passCount 12 ;
     effortless-ntwf:failCount 0 ;
     effortless-ntwf:severity "critical" ;
     effortless-ntwf:traditionId "tradition-epidemiology" ;
@@ -26906,6 +27123,16 @@ effortless-ntwf:loop-79 a effortless-ntwf:Loops ;
     effortless-ntwf:domainQuestion "After loop-78 witnessed six corpus-pattern supersessions at N=238, which predicates are no longer clean load-bearing vocabulary — and can the instrument shed them without losing theorem/invariant witnesses or the conc-32 audit trail?" ;
     effortless-ntwf:mockDataNote "Witnessed post-build: removed 6 corpus-pattern-superseded DiscoveryHypotheses + Findings; pruned ModelSummary DomainFlipGapSurvivesGeometryControl, CorpusPatternSupersededFailCount, ExpansionWave3DiscoveryNote; simplified DiscoveryWitnessNote; conc-17/22/27 → historical. conc-32 audit trail retained. inv-discovery-all-confirmed: 10/10 PASS." ;
     effortless-ntwf:nextSuggestion "loop-80: ConfounderIdentity ontology — cross-study accountable confounders" ;
+    effortless-ntwf:traditionId "tradition-dag" .
+
+effortless-ntwf:loop-80 a effortless-ntwf:Loops ;
+    effortless-ntwf:loopId "loop-80" ;
+    effortless-ntwf:title "ConfounderIdentity ontology — cross-study accountable confounding archetypes" ;
+    effortless-ntwf:status "complete" ;
+    effortless-ntwf:newConcept "ConfounderIdentities + StratumVariableIdentityMaps + IdentityClusterSummaries; StratumVariables.ConfounderIdentity lookup; DiscoveryHypotheses H-age-identity-flip-rate, H-severity-vs-age-latent, H-identity-map-coverage; ModelSummary identity rollups; conc-33." ;
+    effortless-ntwf:domainQuestion "When 181 raw stratum variable strings collapse to named ConfounderIdentities, do manifest-flip vs latent-D geometry cluster by mechanism (age, severity, org-unit) rather than domain — and can the instrument hold each identity accountable across 238+ studies?" ;
+    effortless-ntwf:mockDataNote "Pending post-build witness." ;
+    effortless-ntwf:nextSuggestion "loop-87: methods-paper export on pruned instrument with identity layer" ;
     effortless-ntwf:traditionId "tradition-dag" .
 
 effortless-ntwf:loop-87 a effortless-ntwf:Loops ;
@@ -36317,6 +36544,1436 @@ effortless-ntwf:acharya-imbierowicz-steffen-teichmann-2020-stratum-high-B a effo
     effortless-ntwf:study effortless-ntwf:acharya-imbierowicz-steffen-teichmann-2020 ;
     effortless-ntwf:stratumLabel "stratum-high" ;
     effortless-ntwf:treatmentLabel "B" .
+
+# === Individuals: StratumVariableIdentityMaps ===
+
+effortless-ntwf:map-kidney-1986-stone-size a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-kidney-1986-stone-size" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:kidney-1986-stone-size ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-disease-severity ;
+    effortless-ntwf:variableNameNormalized "stone_size" .
+
+effortless-ntwf:map-berkeley-1973-department a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-berkeley-1973-department" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:berkeley-1973-department ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-contested-org-choice ;
+    effortless-ntwf:variableNameNormalized "department" .
+
+effortless-ntwf:map-kidney-balanced-stone-size a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-kidney-balanced-stone-size" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:kidney-balanced-stone-size ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-disease-severity ;
+    effortless-ntwf:variableNameNormalized "stone_size" .
+
+effortless-ntwf:map-balanced-synthetic-stratum a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-balanced-synthetic-stratum" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:balanced-synthetic-stratum ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-mechanism-other ;
+    effortless-ntwf:variableNameNormalized "stratum" .
+
+effortless-ntwf:map-compressed-synthetic-stratum a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-compressed-synthetic-stratum" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:compressed-synthetic-stratum ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-mechanism-other ;
+    effortless-ntwf:variableNameNormalized "difficulty" .
+
+effortless-ntwf:map-reintjes-2000-hospital-incidence a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-reintjes-2000-hospital-incidence" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:reintjes-2000-hospital-incidence ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-institutional-unit ;
+    effortless-ntwf:variableNameNormalized "hospital_incidence_level" .
+
+effortless-ntwf:map-radelet-1981-victim-race a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-radelet-1981-victim-race" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:radelet-1981-victim-race ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-legal-case-context ;
+    effortless-ntwf:variableNameNormalized "victim_race" .
+
+effortless-ntwf:map-jeter-justice-1997-season a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-jeter-justice-1997-season" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:jeter-justice-1997-season ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-situational-context ;
+    effortless-ntwf:variableNameNormalized "season_year" .
+
+effortless-ntwf:map-appleton-1996-age a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-appleton-1996-age" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:appleton-1996-age ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-age-composition ;
+    effortless-ntwf:variableNameNormalized "age_group_at_baseline" .
+
+effortless-ntwf:map-phe-covid-2021-age a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-phe-covid-2021-age" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:phe-covid-2021-age ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-age-composition ;
+    effortless-ntwf:variableNameNormalized "age_group" .
+
+effortless-ntwf:map-hannan-1994-patient-risk a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-hannan-1994-patient-risk" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:hannan-1994-patient-risk ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-disease-severity ;
+    effortless-ntwf:variableNameNormalized "patient_risk_class" .
+
+effortless-ntwf:map-titanic-1912-sex a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-titanic-1912-sex" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:titanic-1912-sex ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-situational-context ;
+    effortless-ntwf:variableNameNormalized "passenger_sex" .
+
+effortless-ntwf:map-bwp-weight-class a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-bwp-weight-class" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:bwp-weight-class ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-collider-proxy ;
+    effortless-ntwf:variableNameNormalized "birth_weight_category" .
+
+effortless-ntwf:map-melanoma-sex a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-melanoma-sex" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:melanoma-sex ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-demographic-group ;
+    effortless-ntwf:variableNameNormalized "patient_sex" .
+
+effortless-ntwf:map-coffee-smoking a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-coffee-smoking" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:coffee-smoking ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-mechanism-other ;
+    effortless-ntwf:variableNameNormalized "smoking_status" .
+
+effortless-ntwf:map-sat-school-spending a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-sat-school-spending" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:sat-school-spending ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-institutional-unit ;
+    effortless-ntwf:variableNameNormalized "state_school_spending" .
+
+effortless-ntwf:map-rogers-nicewander-1988-position_group a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-rogers-nicewander-1988-position_group" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:rogers-nicewander-1988-position_group ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-situational-context ;
+    effortless-ntwf:variableNameNormalized "position_group" .
+
+effortless-ntwf:map-lucente-baseball-1995-month_half a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-lucente-baseball-1995-month_half" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:lucente-baseball-1995-month_half ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-situational-context ;
+    effortless-ntwf:variableNameNormalized "month_half" .
+
+effortless-ntwf:map-wilson-batting-2000-inning_half a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-wilson-batting-2000-inning_half" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:wilson-batting-2000-inning_half ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-situational-context ;
+    effortless-ntwf:variableNameNormalized "inning_half" .
+
+effortless-ntwf:map-clemens-bly-1998-home_away a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-clemens-bly-1998-home_away" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:clemens-bly-1998-home_away ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-situational-context ;
+    effortless-ntwf:variableNameNormalized "home_away" .
+
+effortless-ntwf:map-open-university-1975-age_band a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-open-university-1975-age_band" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:open-university-1975-age_band ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-age-composition ;
+    effortless-ntwf:variableNameNormalized "age_band" .
+
+effortless-ntwf:map-pisa-immigration-2015-country a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-pisa-immigration-2015-country" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:pisa-immigration-2015-country ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-geographic-composition ;
+    effortless-ntwf:variableNameNormalized "country" .
+
+effortless-ntwf:map-wainer-sat-states-1992-region a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-wainer-sat-states-1992-region" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:wainer-sat-states-1992-region ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-geographic-composition ;
+    effortless-ntwf:variableNameNormalized "region" .
+
+effortless-ntwf:map-folic-acid-neural-tube-1991-maternal_age a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-folic-acid-neural-tube-1991-maternal_age" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:folic-acid-neural-tube-1991-maternal_age ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-age-composition ;
+    effortless-ntwf:variableNameNormalized "maternal_age" .
+
+effortless-ntwf:map-steroid-asthma-severity-disease_severity a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-steroid-asthma-severity-disease_severity" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:steroid-asthma-severity-disease_severity ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-disease-severity ;
+    effortless-ntwf:variableNameNormalized "disease_severity" .
+
+effortless-ntwf:map-kidney-dialysis-facility-1990-case_mix a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-kidney-dialysis-facility-1990-case_mix" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:kidney-dialysis-facility-1990-case_mix ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-disease-severity ;
+    effortless-ntwf:variableNameNormalized "case_mix" .
+
+effortless-ntwf:map-warfarin-bleeding-age-age_group a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-warfarin-bleeding-age-age_group" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:warfarin-bleeding-age-age_group ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-age-composition ;
+    effortless-ntwf:variableNameNormalized "age_group" .
+
+effortless-ntwf:map-diabetes-metformin-bmi-bmi_category a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-diabetes-metformin-bmi-bmi_category" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:diabetes-metformin-bmi-bmi_category ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-collider-proxy ;
+    effortless-ntwf:variableNameNormalized "bmi_category" .
+
+effortless-ntwf:map-oncology-trial-stage-cancer_stage a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-oncology-trial-stage-cancer_stage" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:oncology-trial-stage-cancer_stage ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-age-composition ;
+    effortless-ntwf:variableNameNormalized "cancer_stage" .
+
+effortless-ntwf:map-exercise-cholesterol-age-age_group a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-exercise-cholesterol-age-age_group" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:exercise-cholesterol-age-age_group ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-age-composition ;
+    effortless-ntwf:variableNameNormalized "age_group" .
+
+effortless-ntwf:map-red-meat-colorectal-bmi-bmi_category a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-red-meat-colorectal-bmi-bmi_category" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:red-meat-colorectal-bmi-bmi_category ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-collider-proxy ;
+    effortless-ntwf:variableNameNormalized "bmi_category" .
+
+effortless-ntwf:map-folic-fortification-2000-region a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-folic-fortification-2000-region" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:folic-fortification-2000-region ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-geographic-composition ;
+    effortless-ntwf:variableNameNormalized "region" .
+
+effortless-ntwf:map-north-carolina-death-penalty-1990-victim_race a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-north-carolina-death-penalty-1990-victim_race" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:north-carolina-death-penalty-1990-victim_race ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-legal-case-context ;
+    effortless-ntwf:variableNameNormalized "victim_race" .
+
+effortless-ntwf:map-housing-discrimination-audit-neighborhood_income a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-housing-discrimination-audit-neighborhood_income" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:housing-discrimination-audit-neighborhood_income ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-socioeconomic-status ;
+    effortless-ntwf:variableNameNormalized "neighborhood_income" .
+
+effortless-ntwf:map-gender-pay-gap-industry-industry_sector a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-gender-pay-gap-industry-industry_sector" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:gender-pay-gap-industry-industry_sector ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-socioeconomic-status ;
+    effortless-ntwf:variableNameNormalized "industry_sector" .
+
+effortless-ntwf:map-income-education-state-state a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-income-education-state-state" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:income-education-state-state ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-geographic-composition ;
+    effortless-ntwf:variableNameNormalized "state" .
+
+effortless-ntwf:map-florida-reef-fish-1994-gear_type a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-florida-reef-fish-1994-gear_type" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:florida-reef-fish-1994-gear_type ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-situational-context ;
+    effortless-ntwf:variableNameNormalized "gear_type" .
+
+effortless-ntwf:map-uc-irvine-admissions-1985-department a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-uc-irvine-admissions-1985-department" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:uc-irvine-admissions-1985-department ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-contested-org-choice ;
+    effortless-ntwf:variableNameNormalized "department" .
+
+effortless-ntwf:map-cesarean-birth-weight-2006-birth_weight a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-cesarean-birth-weight-2006-birth_weight" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:cesarean-birth-weight-2006-birth_weight ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-collider-proxy ;
+    effortless-ntwf:variableNameNormalized "birth_weight" .
+
+effortless-ntwf:map-schizophrenia-antipsychotic-illness_severity a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-schizophrenia-antipsychotic-illness_severity" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:schizophrenia-antipsychotic-illness_severity ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-disease-severity ;
+    effortless-ntwf:variableNameNormalized "illness_severity" .
+
+effortless-ntwf:map-berkeley-six-dept-1973-department a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-berkeley-six-dept-1973-department" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:berkeley-six-dept-1973-department ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-contested-org-choice ;
+    effortless-ntwf:variableNameNormalized "department" .
+
+effortless-ntwf:map-rosiglitazone-mi-pool-2007-trial_allocation_profile a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-rosiglitazone-mi-pool-2007-trial_allocation_profile" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:rosiglitazone-mi-pool-2007-trial_allocation_profile ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-mechanism-other ;
+    effortless-ntwf:variableNameNormalized "trial_allocation_profile" .
+
+effortless-ntwf:map-ironman-gender-age-2010-age_cohort a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-ironman-gender-age-2010-age_cohort" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:ironman-gender-age-2010-age_cohort ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-age-composition ;
+    effortless-ntwf:variableNameNormalized "age_cohort" .
+
+effortless-ntwf:map-hanley-power-lines-2000-source_study a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-hanley-power-lines-2000-source_study" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:hanley-power-lines-2000-source_study ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-mechanism-other ;
+    effortless-ntwf:variableNameNormalized "source_study" .
+
+effortless-ntwf:map-coffee-smoking-lung-1968-smoking_status a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-coffee-smoking-lung-1968-smoking_status" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:coffee-smoking-lung-1968-smoking_status ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-mechanism-other ;
+    effortless-ntwf:variableNameNormalized "smoking_status" .
+
+effortless-ntwf:map-panama-sweden-mortality-1975-age_group a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-panama-sweden-mortality-1975-age_group" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:panama-sweden-mortality-1975-age_group ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-age-composition ;
+    effortless-ntwf:variableNameNormalized "age_group" .
+
+effortless-ntwf:map-hrt-whi-2002-study_design a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-hrt-whi-2002-study_design" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:hrt-whi-2002-study_design ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-mechanism-other ;
+    effortless-ntwf:variableNameNormalized "study_design" .
+
+effortless-ntwf:map-obesity-paradox-hf-heart_failure_status a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-obesity-paradox-hf-heart_failure_status" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:obesity-paradox-hf-heart_failure_status ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-collider-proxy ;
+    effortless-ntwf:variableNameNormalized "heart_failure_status" .
+
+effortless-ntwf:map-dialysis-bmi-survival-esrd_status a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-dialysis-bmi-survival-esrd_status" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:dialysis-bmi-survival-esrd_status ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-collider-proxy ;
+    effortless-ntwf:variableNameNormalized "esrd_status" .
+
+effortless-ntwf:map-sick-quitter-alcohol-abstainer_composition a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-sick-quitter-alcohol-abstainer_composition" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:sick-quitter-alcohol-abstainer_composition ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-selection-frailty ;
+    effortless-ntwf:variableNameNormalized "abstainer_composition" .
+
+effortless-ntwf:map-flu-vaccine-elderly-mortality-age_group a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-flu-vaccine-elderly-mortality-age_group" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:flu-vaccine-elderly-mortality-age_group ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-age-composition ;
+    effortless-ntwf:variableNameNormalized "age_group" .
+
+effortless-ntwf:map-covid-italy-china-cfr-2020-age_group a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-covid-italy-china-cfr-2020-age_group" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:covid-italy-china-cfr-2020-age_group ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-age-composition ;
+    effortless-ntwf:variableNameNormalized "age_group" .
+
+effortless-ntwf:map-israel-covid-severe-2021-age_group a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-israel-covid-severe-2021-age_group" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:israel-covid-severe-2021-age_group ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-age-composition ;
+    effortless-ntwf:variableNameNormalized "age_group" .
+
+effortless-ntwf:map-cochran-smoking-1968-age_group a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-cochran-smoking-1968-age_group" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:cochran-smoking-1968-age_group ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-age-composition ;
+    effortless-ntwf:variableNameNormalized "age_group" .
+
+effortless-ntwf:map-healthy-worker-mortality-employment_status a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-healthy-worker-mortality-employment_status" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:healthy-worker-mortality-employment_status ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-selection-frailty ;
+    effortless-ntwf:variableNameNormalized "employment_status" .
+
+effortless-ntwf:map-compas-recidivism-base-group_base_rate a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-compas-recidivism-base-group_base_rate" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:compas-recidivism-base-group_base_rate ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-mechanism-other ;
+    effortless-ntwf:variableNameNormalized "group_base_rate" .
+
+effortless-ntwf:map-us-wage-composition-stagnation-workforce_composition a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-us-wage-composition-stagnation-workforce_composition" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:us-wage-composition-stagnation-workforce_composition ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-situational-context ;
+    effortless-ntwf:variableNameNormalized "workforce_composition" .
+
+effortless-ntwf:map-borjas-immigrant-cohort-arrival_cohort a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-borjas-immigrant-cohort-arrival_cohort" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:borjas-immigrant-cohort-arrival_cohort ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-age-composition ;
+    effortless-ntwf:variableNameNormalized "arrival_cohort" .
+
+effortless-ntwf:map-robinson-1950-literacy-state_aggregation a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-robinson-1950-literacy-state_aggregation" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:robinson-1950-literacy-state_aggregation ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-geographic-composition ;
+    effortless-ntwf:variableNameNormalized "state_aggregation" .
+
+effortless-ntwf:map-ab-test-traffic-mix-time_varying_segment a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-ab-test-traffic-mix-time_varying_segment" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:ab-test-traffic-mix-time_varying_segment ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-user-platform-segment ;
+    effortless-ntwf:variableNameNormalized "time_varying_segment" .
+
+effortless-ntwf:map-recsys-offline-eval-exposure_popularity a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-recsys-offline-eval-exposure_popularity" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:recsys-offline-eval-exposure_popularity ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-mechanism-other ;
+    effortless-ntwf:variableNameNormalized "exposure_popularity" .
+
+effortless-ntwf:map-collider-only-synthetic-constructed_collider a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-collider-only-synthetic-constructed_collider" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:collider-only-synthetic-constructed_collider ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-collider-proxy ;
+    effortless-ntwf:variableNameNormalized "constructed_collider" .
+
+effortless-ntwf:map-noncollapsibility-or-synthetic-noncollapsible_measure a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-noncollapsibility-or-synthetic-noncollapsible_measure" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:noncollapsibility-or-synthetic-noncollapsible_measure ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-mechanism-other ;
+    effortless-ntwf:variableNameNormalized "noncollapsible_measure" .
+
+effortless-ntwf:map-trauma-center-mortality-injury_severity a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-trauma-center-mortality-injury_severity" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:trauma-center-mortality-injury_severity ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-disease-severity ;
+    effortless-ntwf:variableNameNormalized "injury_severity" .
+
+effortless-ntwf:map-surgeon-volume-mortality-baseline_risk a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-surgeon-volume-mortality-baseline_risk" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:surgeon-volume-mortality-baseline_risk ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-disease-severity ;
+    effortless-ntwf:variableNameNormalized "baseline_risk" .
+
+effortless-ntwf:map-mammography-length-bias-detection_mode a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-mammography-length-bias-detection_mode" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:mammography-length-bias-detection_mode ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-selection-frailty ;
+    effortless-ntwf:variableNameNormalized "detection_mode" .
+
+effortless-ntwf:map-cabg-vs-pci-severity-coronary_severity a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-cabg-vs-pci-severity-coronary_severity" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:cabg-vs-pci-severity-coronary_severity ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-disease-severity ;
+    effortless-ntwf:variableNameNormalized "coronary_severity" .
+
+effortless-ntwf:map-tolbutamide-ugdp-1970-center_baseline_risk a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-tolbutamide-ugdp-1970-center_baseline_risk" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:tolbutamide-ugdp-1970-center_baseline_risk ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-disease-severity ;
+    effortless-ntwf:variableNameNormalized "center_baseline_risk" .
+
+effortless-ntwf:map-snow-cholera-water-1855-water_company a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-snow-cholera-water-1855-water_company" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:snow-cholera-water-1855-water_company ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-treatment-indication ;
+    effortless-ntwf:variableNameNormalized "water_company" .
+
+effortless-ntwf:map-seatbelt-crash-severity-crash_occurrence a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-seatbelt-crash-severity-crash_occurrence" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:seatbelt-crash-severity-crash_occurrence ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-collider-proxy ;
+    effortless-ntwf:variableNameNormalized "crash_occurrence" .
+
+effortless-ntwf:map-measles-outbreak-vaccinated-vaccination_base_rate a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-measles-outbreak-vaccinated-vaccination_base_rate" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:measles-outbreak-vaccinated-vaccination_base_rate ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-mechanism-other ;
+    effortless-ntwf:variableNameNormalized "vaccination_base_rate" .
+
+effortless-ntwf:map-air-pollution-mortality-city-city a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-air-pollution-mortality-city-city" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:air-pollution-mortality-city-city ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-geographic-composition ;
+    effortless-ntwf:variableNameNormalized "city" .
+
+effortless-ntwf:map-tb-treatment-resistance-drug_resistance a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-tb-treatment-resistance-drug_resistance" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:tb-treatment-resistance-drug_resistance ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-disease-severity ;
+    effortless-ntwf:variableNameNormalized "drug_resistance" .
+
+effortless-ntwf:map-hospital-mortality-readmission-case_mix a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-hospital-mortality-readmission-case_mix" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:hospital-mortality-readmission-case_mix ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-disease-severity ;
+    effortless-ntwf:variableNameNormalized "case_mix" .
+
+effortless-ntwf:map-nypd-stop-frisk-hitrate-precinct_base_rate a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-nypd-stop-frisk-hitrate-precinct_base_rate" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:nypd-stop-frisk-hitrate-precinct_base_rate ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-institutional-unit ;
+    effortless-ntwf:variableNameNormalized "precinct_base_rate" .
+
+effortless-ntwf:map-sentencing-offense-type-offense_category a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-sentencing-offense-type-offense_category" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:sentencing-offense-type-offense_category ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-legal-case-context ;
+    effortless-ntwf:variableNameNormalized "offense_category" .
+
+effortless-ntwf:map-bail-risk-score-pretrial_risk_tier a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-bail-risk-score-pretrial_risk_tier" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:bail-risk-score-pretrial_risk_tier ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-disease-severity ;
+    effortless-ntwf:variableNameNormalized "pretrial_risk_tier" .
+
+effortless-ntwf:map-police-force-encounter-encounter_conditioning a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-police-force-encounter-encounter_conditioning" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:police-force-encounter-encounter_conditioning ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-collider-proxy ;
+    effortless-ntwf:variableNameNormalized "encounter_conditioning" .
+
+effortless-ntwf:map-uc-systemwide-admissions-major_campus a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-uc-systemwide-admissions-major_campus" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:uc-systemwide-admissions-major_campus ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-mechanism-other ;
+    effortless-ntwf:variableNameNormalized "major_campus" .
+
+effortless-ntwf:map-teacher-vam-prior-achievement-incoming_achievement a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-teacher-vam-prior-achievement-incoming_achievement" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:teacher-vam-prior-achievement-incoming_achievement ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-institutional-unit ;
+    effortless-ntwf:variableNameNormalized "incoming_achievement" .
+
+effortless-ntwf:map-naep-state-demographics-state_composition a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-naep-state-demographics-state_composition" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:naep-state-demographics-state_composition ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-geographic-composition ;
+    effortless-ntwf:variableNameNormalized "state_composition" .
+
+effortless-ntwf:map-college-grad-rate-selectivity-incoming_preparation a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-college-grad-rate-selectivity-incoming_preparation" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:college-grad-rate-selectivity-incoming_preparation ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-institutional-unit ;
+    effortless-ntwf:variableNameNormalized "incoming_preparation" .
+
+effortless-ntwf:map-star-class-size-school a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-star-class-size-school" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:star-class-size-school ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-institutional-unit ;
+    effortless-ntwf:variableNameNormalized "school" .
+
+effortless-ntwf:map-nba-shooting-shot-mix-shot_type a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-nba-shooting-shot-mix-shot_type" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:nba-shooting-shot-mix-shot_type ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-situational-context ;
+    effortless-ntwf:variableNameNormalized "shot_type" .
+
+effortless-ntwf:map-pitcher-era-ballpark-ballpark a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-pitcher-era-ballpark-ballpark" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:pitcher-era-ballpark-ballpark ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-situational-context ;
+    effortless-ntwf:variableNameNormalized "ballpark" .
+
+effortless-ntwf:map-nfl-completion-depth-pass_depth a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-nfl-completion-depth-pass_depth" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:nfl-completion-depth-pass_depth ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-situational-context ;
+    effortless-ntwf:variableNameNormalized "pass_depth" .
+
+effortless-ntwf:map-field-goal-distance-kick_distance a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-field-goal-distance-kick_distance" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:field-goal-distance-kick_distance ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-situational-context ;
+    effortless-ntwf:variableNameNormalized "kick_distance" .
+
+effortless-ntwf:map-golf-scoring-course-course_difficulty a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-golf-scoring-course-course_difficulty" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:golf-scoring-course-course_difficulty ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-situational-context ;
+    effortless-ntwf:variableNameNormalized "course_difficulty" .
+
+effortless-ntwf:map-minimum-wage-region-region a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-minimum-wage-region-region" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:minimum-wage-region-region ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-geographic-composition ;
+    effortless-ntwf:variableNameNormalized "region" .
+
+effortless-ntwf:map-returns-to-education-field-field_of_study a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-returns-to-education-field-field_of_study" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:returns-to-education-field-field_of_study ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-institutional-unit ;
+    effortless-ntwf:variableNameNormalized "field_of_study" .
+
+effortless-ntwf:map-unemployment-education-cycle-education_composition a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-unemployment-education-cycle-education_composition" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:unemployment-education-cycle-education_composition ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-situational-context ;
+    effortless-ntwf:variableNameNormalized "education_composition" .
+
+effortless-ntwf:map-costa-rica-us-life-expectancy-age_group a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-costa-rica-us-life-expectancy-age_group" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:costa-rica-us-life-expectancy-age_group ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-age-composition ;
+    effortless-ntwf:variableNameNormalized "age_group" .
+
+effortless-ntwf:map-fertility-income-country-country a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-fertility-income-country-country" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:fertility-income-country-country ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-geographic-composition ;
+    effortless-ntwf:variableNameNormalized "country" .
+
+effortless-ntwf:map-religiosity-happiness-country-national_wealth a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-religiosity-happiness-country-national_wealth" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:religiosity-happiness-country-national_wealth ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-socioeconomic-status ;
+    effortless-ntwf:variableNameNormalized "national_wealth" .
+
+effortless-ntwf:map-voter-turnout-education-state-state a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-voter-turnout-education-state-state" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:voter-turnout-education-state-state ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-geographic-composition ;
+    effortless-ntwf:variableNameNormalized "state" .
+
+effortless-ntwf:map-ad-ctr-platform-mix-platform a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-ad-ctr-platform-mix-platform" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:ad-ctr-platform-mix-platform ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-user-platform-segment ;
+    effortless-ntwf:variableNameNormalized "platform" .
+
+effortless-ntwf:map-hernandez-diaz-schisterman-hernan-2006-birth-weight-category a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-hernandez-diaz-schisterman-hernan-2006-birth-weight-category" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:hernandez-diaz-schisterman-hernan-2006-birth-weight-category ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-collider-proxy ;
+    effortless-ntwf:variableNameNormalized "birth_weight_category" .
+
+effortless-ntwf:map-wade-boggs-vs-don-mattingly-season-year a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-wade-boggs-vs-don-mattingly-season-year" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:wade-boggs-vs-don-mattingly-season-year ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-situational-context ;
+    effortless-ntwf:variableNameNormalized "season_year" .
+
+effortless-ntwf:map-johnson-2006-model-specification a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-johnson-2006-model-specification" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:johnson-2006-model-specification ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-mechanism-other ;
+    effortless-ntwf:variableNameNormalized "model_specification" .
+
+effortless-ntwf:map-chetty-friedman-rockoff-2014-school a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-chetty-friedman-rockoff-2014-school" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:chetty-friedman-rockoff-2014-school ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-institutional-unit ;
+    effortless-ntwf:variableNameNormalized "school" .
+
+effortless-ntwf:map-angrist-pischke-2009-proximity-to-college a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-angrist-pischke-2009-proximity-to-college" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:angrist-pischke-2009-proximity-to-college ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-institutional-unit ;
+    effortless-ntwf:variableNameNormalized "proximity_to_college" .
+
+effortless-ntwf:map-blau-kahn-2017-occupation a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-blau-kahn-2017-occupation" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:blau-kahn-2017-occupation ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-socioeconomic-status ;
+    effortless-ntwf:variableNameNormalized "occupation" .
+
+effortless-ntwf:map-moretti-2013-city a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-moretti-2013-city" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:moretti-2013-city ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-geographic-composition ;
+    effortless-ntwf:variableNameNormalized "city" .
+
+effortless-ntwf:map-oaxaca-1973-education-experience-occupation a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-oaxaca-1973-education-experience-occupation" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:oaxaca-1973-education-experience-occupation ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-socioeconomic-status ;
+    effortless-ntwf:variableNameNormalized "education_experience_occupation" .
+
+effortless-ntwf:map-spohn-2000-offense-severity a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-spohn-2000-offense-severity" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:spohn-2000-offense-severity ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-disease-severity ;
+    effortless-ntwf:variableNameNormalized "offense_severity" .
+
+effortless-ntwf:map-angwin-larson-mattu-kirchner-2016-crime-type a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-angwin-larson-mattu-kirchner-2016-crime-type" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:angwin-larson-mattu-kirchner-2016-crime-type ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-legal-case-context ;
+    effortless-ntwf:variableNameNormalized "crime_type" .
+
+effortless-ntwf:map-gross-risinger-et-al-2017-crime-category a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-gross-risinger-et-al-2017-crime-category" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:gross-risinger-et-al-2017-crime-category ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-legal-case-context ;
+    effortless-ntwf:variableNameNormalized "crime_category" .
+
+effortless-ntwf:map-baldus-woodworth-pulaski-1983-aggravating-circumstances-tier a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-baldus-woodworth-pulaski-1983-aggravating-circumstances-tier" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:baldus-woodworth-pulaski-1983-aggravating-circumstances-tier ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-legal-case-context ;
+    effortless-ntwf:variableNameNormalized "aggravating_circumstances_tier" .
+
+effortless-ntwf:map-harris-steffensmeier-ulmer-painter-davis-2009-offense-type a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-harris-steffensmeier-ulmer-painter-davis-2009-offense-type" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:harris-steffensmeier-ulmer-painter-davis-2009-offense-type ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-legal-case-context ;
+    effortless-ntwf:variableNameNormalized "offense_type" .
+
+effortless-ntwf:map-dockery-et-al-1993-ses a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-dockery-et-al-1993-ses" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:dockery-et-al-1993-ses ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-socioeconomic-status ;
+    effortless-ntwf:variableNameNormalized "ses" .
+
+effortless-ntwf:map-framingham-heart-study-sex a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-framingham-heart-study-sex" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:framingham-heart-study-sex ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-demographic-group ;
+    effortless-ntwf:variableNameNormalized "sex" .
+
+effortless-ntwf:map-fillmore-et-al-2006-former-vs-never-drinker-status a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-fillmore-et-al-2006-former-vs-never-drinker-status" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:fillmore-et-al-2006-former-vs-never-drinker-status ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-mechanism-other ;
+    effortless-ntwf:variableNameNormalized "former_vs_never_drinker_status" .
+
+effortless-ntwf:map-women-s-health-study-age-group a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-women-s-health-study-age-group" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:women-s-health-study-age-group ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-age-composition ;
+    effortless-ntwf:variableNameNormalized "age_group" .
+
+effortless-ntwf:map-ellsbury-vs-lowell-2007-season a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-ellsbury-vs-lowell-2007-season" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:ellsbury-vs-lowell-2007-season ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-situational-context ;
+    effortless-ntwf:variableNameNormalized "season" .
+
+effortless-ntwf:map-efron-morris-1975-first-vs-second-half-of-season a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-efron-morris-1975-first-vs-second-half-of-season" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:efron-morris-1975-first-vs-second-half-of-season ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-situational-context ;
+    effortless-ntwf:variableNameNormalized "first_vs_second_half_of_season" .
+
+effortless-ntwf:map-hiester-1984-handedness-of-pitcher a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-hiester-1984-handedness-of-pitcher" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:hiester-1984-handedness-of-pitcher ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-situational-context ;
+    effortless-ntwf:variableNameNormalized "handedness_of_pitcher" .
+
+effortless-ntwf:map-card-1992-industry-fast-food-vs-retail-vs-manufact a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-card-1992-industry-fast-food-vs-retail-vs-manufact" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:card-1992-industry-fast-food-vs-retail-vs-manufact ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-socioeconomic-status ;
+    effortless-ntwf:variableNameNormalized "industry_fast_food_vs_retail_vs_manufact" .
+
+effortless-ntwf:map-chetty-et-al-2014-commuting-zone a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-chetty-et-al-2014-commuting-zone" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:chetty-et-al-2014-commuting-zone ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-geographic-composition ;
+    effortless-ntwf:variableNameNormalized "commuting_zone" .
+
+effortless-ntwf:map-chetty-friedman-saez-turner-yagan-2020-college-selectivity-tier a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-chetty-friedman-saez-turner-yagan-2020-college-selectivity-tier" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:chetty-friedman-saez-turner-yagan-2020-college-selectivity-tier ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-institutional-unit ;
+    effortless-ntwf:variableNameNormalized "college_selectivity_tier" .
+
+effortless-ntwf:map-chetty-deming-friedman-2023-legacy a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-chetty-deming-friedman-2023-legacy" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:chetty-deming-friedman-2023-legacy ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-institutional-unit ;
+    effortless-ntwf:variableNameNormalized "legacy" .
+
+effortless-ntwf:map-piketty-saez-2003-income-fractile a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-piketty-saez-2003-income-fractile" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:piketty-saez-2003-income-fractile ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-socioeconomic-status ;
+    effortless-ntwf:variableNameNormalized "income_fractile" .
+
+effortless-ntwf:map-juhn-murphy-pierce-1993-education a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-juhn-murphy-pierce-1993-education" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:juhn-murphy-pierce-1993-education ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-institutional-unit ;
+    effortless-ntwf:variableNameNormalized "education" .
+
+effortless-ntwf:map-autor-levy-murnane-2003-routine-vs-non-routine a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-autor-levy-murnane-2003-routine-vs-non-routine" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:autor-levy-murnane-2003-routine-vs-non-routine ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-institutional-unit ;
+    effortless-ntwf:variableNameNormalized "routine_vs_non_routine" .
+
+effortless-ntwf:map-katz-murphy-1992-demographic-group-age-gender-race a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-katz-murphy-1992-demographic-group-age-gender-race" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:katz-murphy-1992-demographic-group-age-gender-race ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-age-composition ;
+    effortless-ntwf:variableNameNormalized "demographic_group_age_gender_race" .
+
+effortless-ntwf:map-heckman-1979-labor-force-participation-decision a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-heckman-1979-labor-force-participation-decision" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:heckman-1979-labor-force-participation-decision ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-collider-proxy ;
+    effortless-ntwf:variableNameNormalized "labor_force_participation_decision" .
+
+effortless-ntwf:map-autor-dorn-2013-local-labor-market a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-autor-dorn-2013-local-labor-market" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:autor-dorn-2013-local-labor-market ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-mechanism-other ;
+    effortless-ntwf:variableNameNormalized "local_labor_market" .
+
+effortless-ntwf:map-acemoglu-autor-2011-task-type a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-acemoglu-autor-2011-task-type" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:acemoglu-autor-2011-task-type ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-institutional-unit ;
+    effortless-ntwf:variableNameNormalized "task_type" .
+
+effortless-ntwf:map-chetty-hendren-katz-2016-age-at-time-of-move a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-chetty-hendren-katz-2016-age-at-time-of-move" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:chetty-hendren-katz-2016-age-at-time-of-move ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-age-composition ;
+    effortless-ntwf:variableNameNormalized "age_at_time_of_move" .
+
+effortless-ntwf:map-bhutta-hizmo-ringo-2022-credit-score a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-bhutta-hizmo-ringo-2022-credit-score" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:bhutta-hizmo-ringo-2022-credit-score ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-credit-risk-tier ;
+    effortless-ntwf:variableNameNormalized "credit_score" .
+
+effortless-ntwf:map-saez-2019-income-fractile a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-saez-2019-income-fractile" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:saez-2019-income-fractile ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-socioeconomic-status ;
+    effortless-ntwf:variableNameNormalized "income_fractile" .
+
+effortless-ntwf:map-fortin-lemieux-firpo-2011-quantile a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-fortin-lemieux-firpo-2011-quantile" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:fortin-lemieux-firpo-2011-quantile ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-institutional-unit ;
+    effortless-ntwf:variableNameNormalized "quantile" .
+
+effortless-ntwf:map-starr-rehavi-2014-charge-severity a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-starr-rehavi-2014-charge-severity" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:starr-rehavi-2014-charge-severity ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-disease-severity ;
+    effortless-ntwf:variableNameNormalized "charge_severity" .
+
+effortless-ntwf:map-ussc-2017-offense-type a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-ussc-2017-offense-type" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:ussc-2017-offense-type ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-legal-case-context ;
+    effortless-ntwf:variableNameNormalized "offense_type" .
+
+effortless-ntwf:map-western-2006-education-level a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-western-2006-education-level" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:western-2006-education-level ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-institutional-unit ;
+    effortless-ntwf:variableNameNormalized "education_level" .
+
+effortless-ntwf:map-brame-bushway-paternoster-turner-2014-offense-type a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-brame-bushway-paternoster-turner-2014-offense-type" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:brame-bushway-paternoster-turner-2014-offense-type ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-legal-case-context ;
+    effortless-ntwf:variableNameNormalized "offense_type" .
+
+effortless-ntwf:map-fryer-2016-interaction-type a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-fryer-2016-interaction-type" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:fryer-2016-interaction-type ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-mechanism-other ;
+    effortless-ntwf:variableNameNormalized "interaction_type" .
+
+effortless-ntwf:map-rehavi-starr-2012-arrest-offense a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-rehavi-starr-2012-arrest-offense" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:rehavi-starr-2012-arrest-offense ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-legal-case-context ;
+    effortless-ntwf:variableNameNormalized "arrest_offense" .
+
+effortless-ntwf:map-kutateladze-andiloro-johnson-spohn-2014-stage-in-process a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-kutateladze-andiloro-johnson-spohn-2014-stage-in-process" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:kutateladze-andiloro-johnson-spohn-2014-stage-in-process ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-age-composition ;
+    effortless-ntwf:variableNameNormalized "stage_in_process" .
+
+effortless-ntwf:map-arcidiacono-kinsler-ransom-2019-legacy a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-arcidiacono-kinsler-ransom-2019-legacy" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:arcidiacono-kinsler-ransom-2019-legacy ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-institutional-unit ;
+    effortless-ntwf:variableNameNormalized "legacy" .
+
+effortless-ntwf:map-long-2004-income-quartile a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-long-2004-income-quartile" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:long-2004-income-quartile ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-socioeconomic-status ;
+    effortless-ntwf:variableNameNormalized "income_quartile" .
+
+effortless-ntwf:map-alon-tienda-2007-institutional-selectivity-tier a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-alon-tienda-2007-institutional-selectivity-tier" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:alon-tienda-2007-institutional-selectivity-tier ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-institutional-unit ;
+    effortless-ntwf:variableNameNormalized "institutional_selectivity_tier" .
+
+effortless-ntwf:map-hoekstra-2009-sat-score-band-near-threshold a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-hoekstra-2009-sat-score-band-near-threshold" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:hoekstra-2009-sat-score-band-near-threshold ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-situational-context ;
+    effortless-ntwf:variableNameNormalized "sat_score_band_near_threshold" .
+
+effortless-ntwf:map-dale-krueger-2002-application-portfolio-which-schools-one a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-dale-krueger-2002-application-portfolio-which-schools-one" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:dale-krueger-2002-application-portfolio-which-schools-one ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-institutional-unit ;
+    effortless-ntwf:variableNameNormalized "application_portfolio_which_schools_one" .
+
+effortless-ntwf:map-nces-ipeds-institution-type a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-nces-ipeds-institution-type" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:nces-ipeds-institution-type ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-institutional-unit ;
+    effortless-ntwf:variableNameNormalized "institution_type" .
+
+effortless-ntwf:map-college-scorecard-field-of-study a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-college-scorecard-field-of-study" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:college-scorecard-field-of-study ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-institutional-unit ;
+    effortless-ntwf:variableNameNormalized "field_of_study" .
+
+effortless-ntwf:map-hoxby-avery-2013-geographic-isolation a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-hoxby-avery-2013-geographic-isolation" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:hoxby-avery-2013-geographic-isolation ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-geographic-composition ;
+    effortless-ntwf:variableNameNormalized "geographic_isolation" .
+
+effortless-ntwf:map-espenshade-radford-2009-applicant-type a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-espenshade-radford-2009-applicant-type" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:espenshade-radford-2009-applicant-type ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-institutional-unit ;
+    effortless-ntwf:variableNameNormalized "applicant_type" .
+
+effortless-ntwf:map-bound-lovenheim-turner-2010-institution-selectivity a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-bound-lovenheim-turner-2010-institution-selectivity" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:bound-lovenheim-turner-2010-institution-selectivity ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-institutional-unit ;
+    effortless-ntwf:variableNameNormalized "institution_selectivity" .
+
+effortless-ntwf:map-carnevale-strohl-2010-institutional-tier a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-carnevale-strohl-2010-institutional-tier" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:carnevale-strohl-2010-institutional-tier ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-institutional-unit ;
+    effortless-ntwf:variableNameNormalized "institutional_tier" .
+
+effortless-ntwf:map-hoxby-murarka-2009-lottery-winner-vs-loser a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-hoxby-murarka-2009-lottery-winner-vs-loser" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:hoxby-murarka-2009-lottery-winner-vs-loser ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-collider-proxy ;
+    effortless-ntwf:variableNameNormalized "lottery_winner_vs_loser" .
+
+effortless-ntwf:map-rothstein-2004-institution a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-rothstein-2004-institution" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:rothstein-2004-institution ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-institutional-unit ;
+    effortless-ntwf:variableNameNormalized "institution" .
+
+effortless-ntwf:map-accord-study-group-2008-baseline-hba1c a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-accord-study-group-2008-baseline-hba1c" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:accord-study-group-2008-baseline-hba1c ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-disease-severity ;
+    effortless-ntwf:variableNameNormalized "baseline_hba1c" .
+
+effortless-ntwf:map-allhat-collaborative-research-group-2002-race a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-allhat-collaborative-research-group-2002-race" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:allhat-collaborative-research-group-2002-race ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-demographic-group ;
+    effortless-ntwf:variableNameNormalized "race" .
+
+effortless-ntwf:map-isis-2-collaborative-group-1988-age-group a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-isis-2-collaborative-group-1988-age-group" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:isis-2-collaborative-group-1988-age-group ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-age-composition ;
+    effortless-ntwf:variableNameNormalized "age_group" .
+
+effortless-ntwf:map-plato-trial-geographic-region-north-america-vs-europ a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-plato-trial-geographic-region-north-america-vs-europ" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:plato-trial-geographic-region-north-america-vs-europ ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-geographic-composition ;
+    effortless-ntwf:variableNameNormalized "geographic_region_north_america_vs_europ" .
+
+effortless-ntwf:map-fibrinolytic-therapy-trialists-1994-time-from-symptom-onset a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-fibrinolytic-therapy-trialists-1994-time-from-symptom-onset" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:fibrinolytic-therapy-trialists-1994-time-from-symptom-onset ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-mechanism-other ;
+    effortless-ntwf:variableNameNormalized "time_from_symptom_onset" .
+
+effortless-ntwf:map-cast-1989-arrhythmia-burden a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-cast-1989-arrhythmia-burden" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:cast-1989-arrhythmia-burden ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-disease-severity ;
+    effortless-ntwf:variableNameNormalized "arrhythmia_burden" .
+
+effortless-ntwf:map-women-s-health-initiative-2002-age-at-menopause-onset a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-women-s-health-initiative-2002-age-at-menopause-onset" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:women-s-health-initiative-2002-age-at-menopause-onset ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-age-composition ;
+    effortless-ntwf:variableNameNormalized "age_at_menopause_onset" .
+
+effortless-ntwf:map-dcct-research-group-1993-baseline-hba1c a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-dcct-research-group-1993-baseline-hba1c" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:dcct-research-group-1993-baseline-hba1c ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-disease-severity ;
+    effortless-ntwf:variableNameNormalized "baseline_hba1c" .
+
+effortless-ntwf:map-triton-timi-38-prior-stroke a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-triton-timi-38-prior-stroke" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:triton-timi-38-prior-stroke ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-mechanism-other ;
+    effortless-ntwf:variableNameNormalized "prior_stroke" .
+
+effortless-ntwf:map-yusuf-et-al-hope-trial-2000-diabetes-status a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-yusuf-et-al-hope-trial-2000-diabetes-status" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:yusuf-et-al-hope-trial-2000-diabetes-status ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-disease-severity ;
+    effortless-ntwf:variableNameNormalized "diabetes_status" .
+
+effortless-ntwf:map-sprint-research-group-2015-age a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-sprint-research-group-2015-age" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:sprint-research-group-2015-age ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-age-composition ;
+    effortless-ntwf:variableNameNormalized "age" .
+
+effortless-ntwf:map-astrazeneca-mystic-trial-pacific-trial-crossover-2017-pd-l1-expression-quartile a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-astrazeneca-mystic-trial-pacific-trial-crossover-2017-pd-l1-expression-quartile" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:astrazeneca-mystic-trial-pacific-trial-crossover-2017-pd-l1-expression-quartile ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-disease-severity ;
+    effortless-ntwf:variableNameNormalized "pd_l1_expression_quartile" .
+
+effortless-ntwf:map-uk-biobank-ukbb-observational-indication-for-statin-cardiovascular-ris a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-uk-biobank-ukbb-observational-indication-for-statin-cardiovascular-ris" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:uk-biobank-ukbb-observational-indication-for-statin-cardiovascular-ris ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-disease-severity ;
+    effortless-ntwf:variableNameNormalized "indication_for_statin_cardiovascular_ris" .
+
+effortless-ntwf:map-soccer-pass-completion-by-league-2017-match-situation-pressing-vs-not-pressing a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-soccer-pass-completion-by-league-2017-match-situation-pressing-vs-not-pressing" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:soccer-pass-completion-by-league-2017-match-situation-pressing-vs-not-pressing ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-situational-context ;
+    effortless-ntwf:variableNameNormalized "match_situation_pressing_vs_not_pressing" .
+
+effortless-ntwf:map-marathon-finishing-times-by-age-and-temperature-boston-marat-race-day-temperature a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-marathon-finishing-times-by-age-and-temperature-boston-marat-race-day-temperature" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:marathon-finishing-times-by-age-and-temperature-boston-marat-race-day-temperature ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-situational-context ;
+    effortless-ntwf:variableNameNormalized "race_day_temperature" .
+
+effortless-ntwf:map-tennis-first-serve-percentage-by-surface-2010-surface-type-hard a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-tennis-first-serve-percentage-by-surface-2010-surface-type-hard" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:tennis-first-serve-percentage-by-surface-2010-surface-type-hard ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-situational-context ;
+    effortless-ntwf:variableNameNormalized "surface_type_hard" .
+
+effortless-ntwf:map-nfl-quarterback-rating-by-game-situation-2010-down-and-distance a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-nfl-quarterback-rating-by-game-situation-2010-down-and-distance" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:nfl-quarterback-rating-by-game-situation-2010-down-and-distance ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-situational-context ;
+    effortless-ntwf:variableNameNormalized "down_and_distance" .
+
+effortless-ntwf:map-nhl-shooting-percentage-by-game-state-2010-score-situation-trailing-vs-leading-vs-t a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-nhl-shooting-percentage-by-game-state-2010-score-situation-trailing-vs-leading-vs-t" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:nhl-shooting-percentage-by-game-state-2010-score-situation-trailing-vs-leading-vs-t ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-situational-context ;
+    effortless-ntwf:variableNameNormalized "score_situation_trailing_vs_leading_vs_t" .
+
+effortless-ntwf:map-soccer-expected-goals-home a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-soccer-expected-goals-home" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:soccer-expected-goals-home ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-situational-context ;
+    effortless-ntwf:variableNameNormalized "home" .
+
+effortless-ntwf:map-lollar-vs-mccatty-pitching-1982-season a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-lollar-vs-mccatty-pitching-1982-season" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:lollar-vs-mccatty-pitching-1982-season ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-situational-context ;
+    effortless-ntwf:variableNameNormalized "season" .
+
+effortless-ntwf:map-mlb-park-factor-adjustments-home-vs-away-park a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-mlb-park-factor-adjustments-home-vs-away-park" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:mlb-park-factor-adjustments-home-vs-away-park ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-situational-context ;
+    effortless-ntwf:variableNameNormalized "home_vs_away_park" .
+
+effortless-ntwf:map-olympic-sprint-times-by-heat-type-1996-preliminary-heat-vs-semifinal-vs-final a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-olympic-sprint-times-by-heat-type-1996-preliminary-heat-vs-semifinal-vs-final" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:olympic-sprint-times-by-heat-type-1996-preliminary-heat-vs-semifinal-vs-final ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-situational-context ;
+    effortless-ntwf:variableNameNormalized "preliminary_heat_vs_semifinal_vs_final" .
+
+effortless-ntwf:map-von-kugelgen-mohamed-scholkopf-2021-stratum a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-von-kugelgen-mohamed-scholkopf-2021-stratum" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:von-kugelgen-mohamed-scholkopf-2021-stratum ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-mechanism-other ;
+    effortless-ntwf:variableNameNormalized "stratum" .
+
+effortless-ntwf:map-dagan-et-al-2021-age-group a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-dagan-et-al-2021-age-group" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:dagan-et-al-2021-age-group ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-age-composition ;
+    effortless-ntwf:variableNameNormalized "age_group" .
+
+effortless-ntwf:map-israeli-ministry-of-health-age-group-50-vs-50 a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-israeli-ministry-of-health-age-group-50-vs-50" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:israeli-ministry-of-health-age-group-50-vs-50 ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-age-composition ;
+    effortless-ntwf:variableNameNormalized "age_group_50_vs_50" .
+
+effortless-ntwf:map-yule-1903-age-group a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-yule-1903-age-group" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:yule-1903-age-group ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-age-composition ;
+    effortless-ntwf:variableNameNormalized "age_group" .
+
+effortless-ntwf:map-mantel-haenszel-1959-age a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-mantel-haenszel-1959-age" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:mantel-haenszel-1959-age ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-age-composition ;
+    effortless-ntwf:variableNameNormalized "age" .
+
+effortless-ntwf:map-doll-hill-1954-age-group a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-doll-hill-1954-age-group" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:doll-hill-1954-age-group ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-age-composition ;
+    effortless-ntwf:variableNameNormalized "age_group" .
+
+effortless-ntwf:map-hammond-horn-1958-age a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-hammond-horn-1958-age" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:hammond-horn-1958-age ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-selection-frailty ;
+    effortless-ntwf:variableNameNormalized "age" .
+
+effortless-ntwf:map-polack-et-al-2020-age-group a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-polack-et-al-2020-age-group" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:polack-et-al-2020-age-group ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-age-composition ;
+    effortless-ntwf:variableNameNormalized "age_group" .
+
+effortless-ntwf:map-baden-et-al-2021-age a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-baden-et-al-2021-age" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:baden-et-al-2021-age ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-age-composition ;
+    effortless-ntwf:variableNameNormalized "age" .
+
+effortless-ntwf:map-flannery-et-al-2020-flu-season a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-flannery-et-al-2020-flu-season" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:flannery-et-al-2020-flu-season ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-treatment-indication ;
+    effortless-ntwf:variableNameNormalized "flu_season" .
+
+effortless-ntwf:map-simonsen-et-al-2005-frailty a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-simonsen-et-al-2005-frailty" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:simonsen-et-al-2005-frailty ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-selection-frailty ;
+    effortless-ntwf:variableNameNormalized "frailty" .
+
+effortless-ntwf:map-hernan-hernandez-diaz-robins-2004-time-since-initiation a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-hernan-hernandez-diaz-robins-2004-time-since-initiation" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:hernan-hernandez-diaz-robins-2004-time-since-initiation ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-treatment-indication ;
+    effortless-ntwf:variableNameNormalized "time_since_initiation" .
+
+effortless-ntwf:map-cornfield-et-al-1959-exposure-dose a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-cornfield-et-al-1959-exposure-dose" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:cornfield-et-al-1959-exposure-dose ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-treatment-indication ;
+    effortless-ntwf:variableNameNormalized "exposure_dose" .
+
+effortless-ntwf:map-baker-kramer-2001-sex a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-baker-kramer-2001-sex" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:baker-kramer-2001-sex ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-demographic-group ;
+    effortless-ntwf:variableNameNormalized "sex" .
+
+effortless-ntwf:map-cdc-covid-19-case-surveillance-2020-age-group a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-cdc-covid-19-case-surveillance-2020-age-group" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:cdc-covid-19-case-surveillance-2020-age-group ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-age-composition ;
+    effortless-ntwf:variableNameNormalized "age_group" .
+
+effortless-ntwf:map-our-world-in-data-covid-19-dataset-2020-country a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-our-world-in-data-covid-19-dataset-2020-country" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:our-world-in-data-covid-19-dataset-2020-country ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-geographic-composition ;
+    effortless-ntwf:variableNameNormalized "country" .
+
+effortless-ntwf:map-shapiro-et-al-1988-age-group a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-shapiro-et-al-1988-age-group" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:shapiro-et-al-1988-age-group ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-age-composition ;
+    effortless-ntwf:variableNameNormalized "age_group" .
+
+effortless-ntwf:map-moss-racusin-et-al-2012-faculty-mentor-s-gender a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-moss-racusin-et-al-2012-faculty-mentor-s-gender" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:moss-racusin-et-al-2012-faculty-mentor-s-gender ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-demographic-group ;
+    effortless-ntwf:variableNameNormalized "faculty_mentor_s_gender" .
+
+effortless-ntwf:map-castilla-2008-department a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-castilla-2008-department" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:castilla-2008-department ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-institutional-unit ;
+    effortless-ntwf:variableNameNormalized "department" .
+
+effortless-ntwf:map-blau-devaro-2007-occupation a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-blau-devaro-2007-occupation" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:blau-devaro-2007-occupation ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-socioeconomic-status ;
+    effortless-ntwf:variableNameNormalized "occupation" .
+
+effortless-ntwf:map-sarsons-2017-gender-of-co-authors a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-sarsons-2017-gender-of-co-authors" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:sarsons-2017-gender-of-co-authors ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-demographic-group ;
+    effortless-ntwf:variableNameNormalized "gender_of_co_authors" .
+
+effortless-ntwf:map-ginther-kahn-2004-field-subarea a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-ginther-kahn-2004-field-subarea" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:ginther-kahn-2004-field-subarea ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-mechanism-other ;
+    effortless-ntwf:variableNameNormalized "field_subarea" .
+
+effortless-ntwf:map-eeoc-charge-data-industry a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-eeoc-charge-data-industry" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:eeoc-charge-data-industry ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-socioeconomic-status ;
+    effortless-ntwf:variableNameNormalized "industry" .
+
+effortless-ntwf:map-nsf-ncses-survey-of-doctoral-recipients-field-of-science a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-nsf-ncses-survey-of-doctoral-recipients-field-of-science" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:nsf-ncses-survey-of-doctoral-recipients-field-of-science ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-institutional-unit ;
+    effortless-ntwf:variableNameNormalized "field_of_science" .
+
+effortless-ntwf:map-neumark-bank-van-nort-1996-restaurant-tier-high-price-vs-low-price a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-neumark-bank-van-nort-1996-restaurant-tier-high-price-vs-low-price" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:neumark-bank-van-nort-1996-restaurant-tier-high-price-vs-low-price ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-user-platform-segment ;
+    effortless-ntwf:variableNameNormalized "restaurant_tier_high_price_vs_low_price" .
+
+effortless-ntwf:map-kline-rose-walters-2022-industry a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-kline-rose-walters-2022-industry" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:kline-rose-walters-2022-industry ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-socioeconomic-status ;
+    effortless-ntwf:variableNameNormalized "industry" .
+
+effortless-ntwf:map-hsieh-moretti-2019-city-housing-market a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-hsieh-moretti-2019-city-housing-market" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:hsieh-moretti-2019-city-housing-market ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-geographic-composition ;
+    effortless-ntwf:variableNameNormalized "city_housing_market" .
+
+effortless-ntwf:map-kohavi-deng-longbotham-xu-2014-user-segment a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-kohavi-deng-longbotham-xu-2014-user-segment" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:kohavi-deng-longbotham-xu-2014-user-segment ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-user-platform-segment ;
+    effortless-ntwf:variableNameNormalized "user_segment" .
+
+effortless-ntwf:map-kohavi-longbotham-2017-device-type a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-kohavi-longbotham-2017-device-type" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:kohavi-longbotham-2017-device-type ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-user-platform-segment ;
+    effortless-ntwf:variableNameNormalized "device_type" .
+
+effortless-ntwf:map-xu-chen-fernandez-sinno-bhasin-2015-user-tenure a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-xu-chen-fernandez-sinno-bhasin-2015-user-tenure" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:xu-chen-fernandez-sinno-bhasin-2015-user-tenure ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-user-platform-segment ;
+    effortless-ntwf:variableNameNormalized "user_tenure" .
+
+effortless-ntwf:map-deng-xu-kohavi-walker-2013-pre-experiment-user-behavior-stratum a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-deng-xu-kohavi-walker-2013-pre-experiment-user-behavior-stratum" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:deng-xu-kohavi-walker-2013-pre-experiment-user-behavior-stratum ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-user-platform-segment ;
+    effortless-ntwf:variableNameNormalized "pre_experiment_user_behavior_stratum" .
+
+effortless-ntwf:map-tang-agarwal-o-brien-meyer-2010-concurrent-experiment-assignment a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-tang-agarwal-o-brien-meyer-2010-concurrent-experiment-assignment" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:tang-agarwal-o-brien-meyer-2010-concurrent-experiment-assignment ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-user-platform-segment ;
+    effortless-ntwf:variableNameNormalized "concurrent_experiment_assignment" .
+
+effortless-ntwf:map-bakshy-eckles-bernstein-2014-user-activity-level a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-bakshy-eckles-bernstein-2014-user-activity-level" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:bakshy-eckles-bernstein-2014-user-activity-level ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-user-platform-segment ;
+    effortless-ntwf:variableNameNormalized "user_activity_level" .
+
+effortless-ntwf:map-dmitriev-frasca-lu-kohavi-olariu-2016-traffic-allocation-method a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-dmitriev-frasca-lu-kohavi-olariu-2016-traffic-allocation-method" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:dmitriev-frasca-lu-kohavi-olariu-2016-traffic-allocation-method ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-user-platform-segment ;
+    effortless-ntwf:variableNameNormalized "traffic_allocation_method" .
+
+effortless-ntwf:map-kohavi-longbotham-sommerfield-henne-2009-user-segment a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-kohavi-longbotham-sommerfield-henne-2009-user-segment" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:kohavi-longbotham-sommerfield-henne-2009-user-segment ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-user-platform-segment ;
+    effortless-ntwf:variableNameNormalized "user_segment" .
+
+effortless-ntwf:map-hohnhold-o-brien-tang-2015-user-tenure-cohort a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-hohnhold-o-brien-tang-2015-user-tenure-cohort" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:hohnhold-o-brien-tang-2015-user-tenure-cohort ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-age-composition ;
+    effortless-ntwf:variableNameNormalized "user_tenure_cohort" .
+
+effortless-ntwf:map-johari-koomen-pekelis-walsh-2017-sequential-test-timing a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-johari-koomen-pekelis-walsh-2017-sequential-test-timing" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:johari-koomen-pekelis-walsh-2017-sequential-test-timing ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-user-platform-segment ;
+    effortless-ntwf:variableNameNormalized "sequential_test_timing" .
+
+effortless-ntwf:map-doll-hill-1950-age a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-doll-hill-1950-age" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:doll-hill-1950-age ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-age-composition ;
+    effortless-ntwf:variableNameNormalized "age" .
+
+effortless-ntwf:map-predimed-trial-cardiovascular-risk-tier a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-predimed-trial-cardiovascular-risk-tier" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:predimed-trial-cardiovascular-risk-tier ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-disease-severity ;
+    effortless-ntwf:variableNameNormalized "cardiovascular_risk_tier" .
+
+effortless-ntwf:map-mrfit-1982-baseline-ecg-abnormality a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-mrfit-1982-baseline-ecg-abnormality" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:mrfit-1982-baseline-ecg-abnormality ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-disease-severity ;
+    effortless-ntwf:variableNameNormalized "baseline_ecg_abnormality" .
+
+effortless-ntwf:map-nhanes-air-quality-and-respiratory-income a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-nhanes-air-quality-and-respiratory-income" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:nhanes-air-quality-and-respiratory-income ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-socioeconomic-status ;
+    effortless-ntwf:variableNameNormalized "income" .
+
+effortless-ntwf:map-coleman-et-al-1966-family-ses a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-coleman-et-al-1966-family-ses" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:coleman-et-al-1966-family-ses ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-socioeconomic-status ;
+    effortless-ntwf:variableNameNormalized "family_ses" .
+
+effortless-ntwf:map-naep-race a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-naep-race" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:naep-race ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-demographic-group ;
+    effortless-ntwf:variableNameNormalized "race" .
+
+effortless-ntwf:map-krueger-1999-school a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-krueger-1999-school" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:krueger-1999-school ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-institutional-unit ;
+    effortless-ntwf:variableNameNormalized "school" .
+
+effortless-ntwf:map-finn-achilles-1990-school a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-finn-achilles-1990-school" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:finn-achilles-1990-school ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-institutional-unit ;
+    effortless-ntwf:variableNameNormalized "school" .
+
+effortless-ntwf:map-mosteller-1995-grade-level a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-mosteller-1995-grade-level" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:mosteller-1995-grade-level ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-institutional-unit ;
+    effortless-ntwf:variableNameNormalized "grade_level" .
+
+effortless-ntwf:map-angrist-lavy-1999-grade a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-angrist-lavy-1999-grade" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:angrist-lavy-1999-grade ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-institutional-unit ;
+    effortless-ntwf:variableNameNormalized "grade" .
+
+effortless-ntwf:map-hoxby-2000-grade a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-hoxby-2000-grade" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:hoxby-2000-grade ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-institutional-unit ;
+    effortless-ntwf:variableNameNormalized "grade" .
+
+effortless-ntwf:map-abdulkadiroglu-angrist-dynarski-kane-pathak-2011-lottery-result a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-abdulkadiroglu-angrist-dynarski-kane-pathak-2011-lottery-result" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:abdulkadiroglu-angrist-dynarski-kane-pathak-2011-lottery-result ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-institutional-unit ;
+    effortless-ntwf:variableNameNormalized "lottery_result" .
+
+effortless-ntwf:map-head-start-impact-study-age-3-vs-4-year-olds a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-head-start-impact-study-age-3-vs-4-year-olds" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:head-start-impact-study-age-3-vs-4-year-olds ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-age-composition ;
+    effortless-ntwf:variableNameNormalized "age_3_vs_4_year_olds" .
+
+effortless-ntwf:map-timss-2019-international-math-and-science-ses a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-timss-2019-international-math-and-science-ses" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:timss-2019-international-math-and-science-ses ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-socioeconomic-status ;
+    effortless-ntwf:variableNameNormalized "ses" .
+
+effortless-ntwf:map-hanushek-1989-state a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-hanushek-1989-state" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:hanushek-1989-state ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-geographic-composition ;
+    effortless-ntwf:variableNameNormalized "state" .
+
+effortless-ntwf:map-early-childhood-longitudinal-study-kindergarten-ses a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-early-childhood-longitudinal-study-kindergarten-ses" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:early-childhood-longitudinal-study-kindergarten-ses ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-socioeconomic-status ;
+    effortless-ntwf:variableNameNormalized "ses" .
+
+effortless-ntwf:map-rothstein-2010-prior-year-assignment a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-rothstein-2010-prior-year-assignment" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:rothstein-2010-prior-year-assignment ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-mechanism-other ;
+    effortless-ntwf:variableNameNormalized "prior_year_assignment" .
+
+effortless-ntwf:map-hmda-loan-to-income-ratio a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-hmda-loan-to-income-ratio" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:hmda-loan-to-income-ratio ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-credit-risk-tier ;
+    effortless-ntwf:variableNameNormalized "loan_to_income_ratio" .
+
+effortless-ntwf:map-munnell-tootell-browne-mceneaney-1996-credit-score a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-munnell-tootell-browne-mceneaney-1996-credit-score" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:munnell-tootell-browne-mceneaney-1996-credit-score ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-credit-risk-tier ;
+    effortless-ntwf:variableNameNormalized "credit_score" .
+
+effortless-ntwf:map-bartlett-morse-stanton-wallace-2022-loan-channel a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-bartlett-morse-stanton-wallace-2022-loan-channel" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:bartlett-morse-stanton-wallace-2022-loan-channel ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-credit-risk-tier ;
+    effortless-ntwf:variableNameNormalized "loan_channel" .
+
+effortless-ntwf:map-federal-reserve-scf-income-quartile a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-federal-reserve-scf-income-quartile" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:federal-reserve-scf-income-quartile ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-socioeconomic-status ;
+    effortless-ntwf:variableNameNormalized "income_quartile" .
+
+effortless-ntwf:map-cfpb-consumer-credit-panel-zip-code-income-tier a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-cfpb-consumer-credit-panel-zip-code-income-tier" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:cfpb-consumer-credit-panel-zip-code-income-tier ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-socioeconomic-status ;
+    effortless-ntwf:variableNameNormalized "zip_code_income_tier" .
+
+effortless-ntwf:map-sba-small-business-lending-data-loan-size a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-sba-small-business-lending-data-loan-size" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:sba-small-business-lending-data-loan-size ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-credit-risk-tier ;
+    effortless-ntwf:variableNameNormalized "loan_size" .
+
+effortless-ntwf:map-petersen-rajan-1994-firm-age a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-petersen-rajan-1994-firm-age" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:petersen-rajan-1994-firm-age ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-age-composition ;
+    effortless-ntwf:variableNameNormalized "firm_age" .
+
+effortless-ntwf:map-berger-udell-1995-firm-size a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-berger-udell-1995-firm-size" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:berger-udell-1995-firm-size ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-socioeconomic-status ;
+    effortless-ntwf:variableNameNormalized "firm_size" .
+
+effortless-ntwf:map-fdic-small-business-lending-survey-2016-bank-size a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-fdic-small-business-lending-survey-2016-bank-size" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:fdic-small-business-lending-survey-2016-bank-size ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-socioeconomic-status ;
+    effortless-ntwf:variableNameNormalized "bank_size" .
+
+effortless-ntwf:map-keys-mukherjee-seru-vig-2010-fico-score-band a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-keys-mukherjee-seru-vig-2010-fico-score-band" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:keys-mukherjee-seru-vig-2010-fico-score-band ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-credit-risk-tier ;
+    effortless-ntwf:variableNameNormalized "fico_score_band" .
+
+effortless-ntwf:map-acharya-imbierowicz-steffen-teichmann-2020-bank-capitalization-tier a effortless-ntwf:StratumVariableIdentityMaps ;
+    effortless-ntwf:mapId "map-acharya-imbierowicz-steffen-teichmann-2020-bank-capitalization-tier" ;
+    effortless-ntwf:stratumVariable effortless-ntwf:acharya-imbierowicz-steffen-teichmann-2020-bank-capitalization-tier ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-socioeconomic-status ;
+    effortless-ntwf:variableNameNormalized "bank_capitalization_tier" .
 
 # === Individuals: StratumVariables ===
 
