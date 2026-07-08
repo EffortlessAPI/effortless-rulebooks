@@ -1375,7 +1375,20 @@ effortless-ntwf:DiscoveryFindingsShape a sh:NodeShape ;
                 OPTIONAL { ?j105 a effortless-ntwf:ModelSummary ; effortless-ntwf:modelSummaryId ?j106 ; effortless-ntwf:colliderSelectionManifestCount ?j107 . FILTER((REPLACE(STR(?j106), "^.*[#/]", "") = REPLACE(STR("simpsons-paradox-v1"), "^.*[#/]", "")) || (?j105 = "simpsons-paradox-v1")) }
                 OPTIONAL { ?j108 a effortless-ntwf:ModelSummary ; effortless-ntwf:modelSummaryId ?j109 ; effortless-ntwf:colliderSelectionCount ?j110 . FILTER((REPLACE(STR(?j109), "^.*[#/]", "") = REPLACE(STR("simpsons-paradox-v1"), "^.*[#/]", "")) || (?j108 = "simpsons-paradox-v1")) }
                 OPTIONAL { ?j111 a effortless-ntwf:ModelSummary ; effortless-ntwf:modelSummaryId ?j112 ; effortless-ntwf:theoremCount ?j113 . FILTER((REPLACE(STR(?j112), "^.*[#/]", "") = REPLACE(STR("simpsons-paradox-v1"), "^.*[#/]", "")) || (?j111 = "simpsons-paradox-v1")) }
-                BIND(IF((REPLACE(COALESCE(STR(?hypothesis_id), ""), "^.*#", "") = "H-latent-d"), (?j2 > 0.5), IF((REPLACE(COALESCE(STR(?hypothesis_id), ""), "^.*#", "") = "H-purity"), (?j5 < 0.5), IF((REPLACE(COALESCE(STR(?hypothesis_id), ""), "^.*#", "") = "H-small-effect"), (?j8 > ?j11), IF((REPLACE(COALESCE(STR(?hypothesis_id), ""), "^.*#", "") = "H-econ-zero"), (?j14 = 0), IF((REPLACE(COALESCE(STR(?hypothesis_id), ""), "^.*#", "") = "H-domain-dist"), (?j17 > ?j20), IF((REPLACE(COALESCE(STR(?hypothesis_id), ""), "^.*#", "") = "H-causal-manifest"), ((?j23 > ?j26) && (?j29 >= 10)), IF((REPLACE(COALESCE(STR(?hypothesis_id), ""), "^.*#", "") = "H-causal-latent"), ((?j32 = 0) && (?j35 >= 5)), IF((REPLACE(COALESCE(STR(?hypothesis_id), ""), "^.*#", "") = "H-explained-confounder"), ((?j38 = ?j41) && (?j44 >= 10)), IF((REPLACE(COALESCE(STR(?hypothesis_id), ""), "^.*#", "") = "H-unexplained-nonconfounder"), (?j47 = 0), IF((REPLACE(COALESCE(STR(?hypothesis_id), ""), "^.*#", "") = "H-catalog-exact-match"), (?j50 < 0.5), IF((REPLACE(COALESCE(STR(?hypothesis_id), ""), "^.*#", "") = "H-catalog-flip-prediction"), (?j53 < 0.5), IF((REPLACE(COALESCE(STR(?hypothesis_id), ""), "^.*#", "") = "H-domain-flip-geometry-controlled"), ((?j56 = 0) && (?j59 > 0.15)), IF((REPLACE(COALESCE(STR(?hypothesis_id), ""), "^.*#", "") = "H-collider-no-manifest-v2"), (?j62 = 0), IF((REPLACE(COALESCE(STR(?hypothesis_id), ""), "^.*#", "") = "H-cplus-magnitude"), ((?j65 > ?j68) && (?j71 > ?j74)), IF((REPLACE(COALESCE(STR(?hypothesis_id), ""), "^.*#", "") = "H-econ-encoding-selection"), (?j77 > 0.5), IF((REPLACE(COALESCE(STR(?hypothesis_id), ""), "^.*#", "") = "H-domain-profiles-stable"), ((?j80 > 0.5) && (?j83 > 0.5) && (?j86 < 0.05)), IF((REPLACE(COALESCE(STR(?hypothesis_id), ""), "^.*#", "") = "H-corrected-gap-invariant"), ((?j89 < 0.0001) && (?j92 = 0)), IF((REPLACE(COALESCE(STR(?hypothesis_id), ""), "^.*#", "") = "H-explained-bidirectional"), ((?j95 = ?j98) && (?j101 = 0) && (?j104 = 0)), IF((REPLACE(COALESCE(STR(?hypothesis_id), ""), "^.*#", "") = "H-collider-no-manifest-theorem"), ((?j107 = 0) && (?j110 >= 10)), IF((REPLACE(COALESCE(STR(?hypothesis_id), ""), "^.*#", "") = "H-theorem-portfolio"), (?j113 >= 4), false)))))))))))))))))))) AS ?_result)
+                OPTIONAL { ?j114 a effortless-ntwf:ModelSummary ; effortless-ntwf:modelSummaryId ?j115 ; effortless-ntwf:ageIdentityManifestFlipRate ?j116 . FILTER((REPLACE(STR(?j115), "^.*[#/]", "") = REPLACE(STR("simpsons-paradox-v1"), "^.*[#/]", "")) || (?j114 = "simpsons-paradox-v1")) }
+                OPTIONAL { ?j117 a effortless-ntwf:ModelSummary ; effortless-ntwf:modelSummaryId ?j118 ; effortless-ntwf:ageIdentityStudyCount ?j119 . FILTER((REPLACE(STR(?j118), "^.*[#/]", "") = REPLACE(STR("simpsons-paradox-v1"), "^.*[#/]", "")) || (?j117 = "simpsons-paradox-v1")) }
+                OPTIONAL { ?j120 a effortless-ntwf:ModelSummary ; effortless-ntwf:modelSummaryId ?j121 ; effortless-ntwf:identityMapCoverageRate ?j122 . FILTER((REPLACE(STR(?j121), "^.*[#/]", "") = REPLACE(STR("simpsons-paradox-v1"), "^.*[#/]", "")) || (?j120 = "simpsons-paradox-v1")) }
+                OPTIONAL { ?j123 a effortless-ntwf:ModelSummary ; effortless-ntwf:modelSummaryId ?j124 ; effortless-ntwf:severityMedicineManifestFlipRate ?j125 . FILTER((REPLACE(STR(?j124), "^.*[#/]", "") = REPLACE(STR("simpsons-paradox-v1"), "^.*[#/]", "")) || (?j123 = "simpsons-paradox-v1")) }
+                OPTIONAL { ?j126 a effortless-ntwf:ModelSummary ; effortless-ntwf:modelSummaryId ?j127 ; effortless-ntwf:severityEpiManifestFlipCount ?j128 . FILTER((REPLACE(STR(?j127), "^.*[#/]", "") = REPLACE(STR("simpsons-paradox-v1"), "^.*[#/]", "")) || (?j126 = "simpsons-paradox-v1")) }
+                OPTIONAL { ?j129 a effortless-ntwf:IdentityClusterSummaries ; effortless-ntwf:identityClusterId ?j130 ; effortless-ntwf:studyCount ?j131 . FILTER((REPLACE(STR(?j130), "^.*[#/]", "") = REPLACE(STR("cluster-id-mechanism-other"), "^.*[#/]", "")) || (?j129 = "cluster-id-mechanism-other")) }
+                OPTIONAL { ?j132 a effortless-ntwf:IdentityClusterSummaries ; effortless-ntwf:identityClusterId ?j133 ; effortless-ntwf:manifestFlipCount ?j134 . FILTER((REPLACE(STR(?j133), "^.*[#/]", "") = REPLACE(STR("cluster-id-selection-frailty"), "^.*[#/]", "")) || (?j132 = "cluster-id-selection-frailty")) }
+                OPTIONAL { ?j135 a effortless-ntwf:IdentityClusterSummaries ; effortless-ntwf:identityClusterId ?j136 ; effortless-ntwf:studyCount ?j137 . FILTER((REPLACE(STR(?j136), "^.*[#/]", "") = REPLACE(STR("cluster-id-selection-frailty"), "^.*[#/]", "")) || (?j135 = "cluster-id-selection-frailty")) }
+                OPTIONAL { ?j138 a effortless-ntwf:ModelSummary ; effortless-ntwf:modelSummaryId ?j139 ; effortless-ntwf:colliderIdentityManifestFlipRate ?j140 . FILTER((REPLACE(STR(?j139), "^.*[#/]", "") = REPLACE(STR("simpsons-paradox-v1"), "^.*[#/]", "")) || (?j138 = "simpsons-paradox-v1")) }
+                OPTIONAL { ?j141 a effortless-ntwf:IdentityClusterSummaries ; effortless-ntwf:identityClusterId ?j142 ; effortless-ntwf:studyCount ?j143 . FILTER((REPLACE(STR(?j142), "^.*[#/]", "") = REPLACE(STR("cluster-id-collider-proxy"), "^.*[#/]", "")) || (?j141 = "cluster-id-collider-proxy")) }
+                OPTIONAL { ?j144 a effortless-ntwf:ModelSummary ; effortless-ntwf:modelSummaryId ?j145 ; effortless-ntwf:geographicTypeDFraction ?j146 . FILTER((REPLACE(STR(?j145), "^.*[#/]", "") = REPLACE(STR("simpsons-paradox-v1"), "^.*[#/]", "")) || (?j144 = "simpsons-paradox-v1")) }
+                OPTIONAL { ?j147 a effortless-ntwf:IdentityClusterSummaries ; effortless-ntwf:identityClusterId ?j148 ; effortless-ntwf:studyCount ?j149 . FILTER((REPLACE(STR(?j148), "^.*[#/]", "") = REPLACE(STR("cluster-id-geographic-composition"), "^.*[#/]", "")) || (?j147 = "cluster-id-geographic-composition")) }
+                OPTIONAL { ?j150 a effortless-ntwf:ModelSummary ; effortless-ntwf:modelSummaryId ?j151 ; effortless-ntwf:unexplainedConfounderSignFlipCount ?j152 . FILTER((REPLACE(STR(?j151), "^.*[#/]", "") = REPLACE(STR("simpsons-paradox-v1"), "^.*[#/]", "")) || (?j150 = "simpsons-paradox-v1")) }
+                BIND(IF((REPLACE(COALESCE(STR(?hypothesis_id), ""), "^.*#", "") = "H-latent-d"), (?j2 > 0.5), IF((REPLACE(COALESCE(STR(?hypothesis_id), ""), "^.*#", "") = "H-purity"), (?j5 < 0.5), IF((REPLACE(COALESCE(STR(?hypothesis_id), ""), "^.*#", "") = "H-small-effect"), (?j8 > ?j11), IF((REPLACE(COALESCE(STR(?hypothesis_id), ""), "^.*#", "") = "H-econ-zero"), (?j14 = 0), IF((REPLACE(COALESCE(STR(?hypothesis_id), ""), "^.*#", "") = "H-domain-dist"), (?j17 > ?j20), IF((REPLACE(COALESCE(STR(?hypothesis_id), ""), "^.*#", "") = "H-causal-manifest"), ((?j23 > ?j26) && (?j29 >= 10)), IF((REPLACE(COALESCE(STR(?hypothesis_id), ""), "^.*#", "") = "H-causal-latent"), ((?j32 = 0) && (?j35 >= 5)), IF((REPLACE(COALESCE(STR(?hypothesis_id), ""), "^.*#", "") = "H-explained-confounder"), ((?j38 = ?j41) && (?j44 >= 10)), IF((REPLACE(COALESCE(STR(?hypothesis_id), ""), "^.*#", "") = "H-unexplained-nonconfounder"), (?j47 = 0), IF((REPLACE(COALESCE(STR(?hypothesis_id), ""), "^.*#", "") = "H-catalog-exact-match"), (?j50 < 0.5), IF((REPLACE(COALESCE(STR(?hypothesis_id), ""), "^.*#", "") = "H-catalog-flip-prediction"), (?j53 < 0.5), IF((REPLACE(COALESCE(STR(?hypothesis_id), ""), "^.*#", "") = "H-domain-flip-geometry-controlled"), ((?j56 = 0) && (?j59 > 0.15)), IF((REPLACE(COALESCE(STR(?hypothesis_id), ""), "^.*#", "") = "H-collider-no-manifest-v2"), (?j62 = 0), IF((REPLACE(COALESCE(STR(?hypothesis_id), ""), "^.*#", "") = "H-cplus-magnitude"), ((?j65 > ?j68) && (?j71 > ?j74)), IF((REPLACE(COALESCE(STR(?hypothesis_id), ""), "^.*#", "") = "H-econ-encoding-selection"), (?j77 > 0.5), IF((REPLACE(COALESCE(STR(?hypothesis_id), ""), "^.*#", "") = "H-domain-profiles-stable"), ((?j80 > 0.5) && (?j83 > 0.5) && (?j86 < 0.05)), IF((REPLACE(COALESCE(STR(?hypothesis_id), ""), "^.*#", "") = "H-corrected-gap-invariant"), ((?j89 < 0.0001) && (?j92 = 0)), IF((REPLACE(COALESCE(STR(?hypothesis_id), ""), "^.*#", "") = "H-explained-bidirectional"), ((?j95 = ?j98) && (?j101 = 0) && (?j104 = 0)), IF((REPLACE(COALESCE(STR(?hypothesis_id), ""), "^.*#", "") = "H-collider-no-manifest-theorem"), ((?j107 = 0) && (?j110 >= 10)), IF((REPLACE(COALESCE(STR(?hypothesis_id), ""), "^.*#", "") = "H-theorem-portfolio"), (?j113 >= 4), IF((REPLACE(COALESCE(STR(?hypothesis_id), ""), "^.*#", "") = "H-age-identity-flip-rate"), ((?j116 >= 0.4) && (?j119 >= 10)), IF((REPLACE(COALESCE(STR(?hypothesis_id), ""), "^.*#", "") = "H-identity-map-coverage"), (?j122 >= 0.95), IF((REPLACE(COALESCE(STR(?hypothesis_id), ""), "^.*#", "") = "H-severity-medicine-manifest"), (?j125 >= 0.45), IF((REPLACE(COALESCE(STR(?hypothesis_id), ""), "^.*#", "") = "H-severity-epi-latent-only"), (?j128 = 0), IF((REPLACE(COALESCE(STR(?hypothesis_id), ""), "^.*#", "") = "H-mechanism-other-drain"), (?j131 <= 5), IF((REPLACE(COALESCE(STR(?hypothesis_id), ""), "^.*#", "") = "H-selection-frailty-zero-manifest"), ((?j134 = 0) && (?j137 >= 3)), IF((REPLACE(COALESCE(STR(?hypothesis_id), ""), "^.*#", "") = "H-collider-identity-low-manifest"), ((?j140 <= 0.15) && (?j143 >= 5)), IF((REPLACE(COALESCE(STR(?hypothesis_id), ""), "^.*#", "") = "H-geographic-stable-type-d"), ((?j146 >= 0.25) && (?j149 >= 3)), IF((REPLACE(COALESCE(STR(?hypothesis_id), ""), "^.*#", "") = "H-unexplained-flips-only-nonconfounders"), (?j152 = 0), false))))))))))))))))))))))))))))) AS ?_result)
             }
         """ ;
     ] ;
@@ -1611,6 +1624,66 @@ effortless-ntwf:IdentityClusterSummariesShape a sh:NodeShape ;
     OPTIONAL { $this effortless-ntwf:manifestFlipCount ?manifest_flip_count . }
     OPTIONAL { $this effortless-ntwf:studyCount ?study_count . }
                 BIND(IF((?study_count = 0), "", (?manifest_flip_count / ?study_count)) AS ?_result)
+            }
+        """ ;
+    ] .
+
+# === Shape with rules for IdentityDomainCells ===
+effortless-ntwf:IdentityDomainCellsShape a sh:NodeShape ;
+    sh:targetClass effortless-ntwf:IdentityDomainCells ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_IdentityDomainCells_Name" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:name ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:IdentityDomainCells .
+    OPTIONAL { $this effortless-ntwf:cellId ?cell_id . }
+                BIND(?cell_id AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_IdentityDomainCells_ManifestFlipRate" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:manifestFlipRate ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:IdentityDomainCells .
+    OPTIONAL { $this effortless-ntwf:manifestFlipCount ?manifest_flip_count . }
+    OPTIONAL { $this effortless-ntwf:studyCount ?study_count . }
+                BIND(IF((?study_count = 0), "", (?manifest_flip_count / ?study_count)) AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_IdentityDomainCells_IdentityDisplayName" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:identityDisplayName ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:IdentityDomainCells .
+                OPTIONAL { $this effortless-ntwf:confounderIdentity ?confounder_identity . }
+                OPTIONAL { ?j0 a effortless-ntwf:ConfounderIdentities ; effortless-ntwf:confounderIdentityId ?j1 ; effortless-ntwf:displayName ?j2 . FILTER((REPLACE(STR(?j1), "^.*[#/]", "") = REPLACE(STR(?confounder_identity), "^.*[#/]", "")) || (?j0 = ?confounder_identity)) }
+                BIND(?j2 AS ?_result)
             }
         """ ;
     ] .
@@ -4456,6 +4529,137 @@ effortless-ntwf:ModelSummaryShape a sh:NodeShape ;
     OPTIONAL { $this effortless-ntwf:mappedStratumVariableCount ?mapped_stratum_variable_count . }
     OPTIONAL { $this effortless-ntwf:realStudyCount ?real_study_count . }
                 BIND(IF((?real_study_count = 0), "", (?mapped_stratum_variable_count / ?real_study_count)) AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_ModelSummary_SeverityMedicineManifestFlipRate" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:severityMedicineManifestFlipRate ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:ModelSummary .
+                OPTIONAL { ?j0 a effortless-ntwf:IdentityDomainCells ; effortless-ntwf:cellId ?j1 ; effortless-ntwf:manifestFlipRate ?j2 . FILTER((REPLACE(STR(?j1), "^.*[#/]", "") = REPLACE(STR("cell-id-disease-severity-x-medicine"), "^.*[#/]", "")) || (?j0 = "cell-id-disease-severity-x-medicine")) }
+                BIND(?j2 AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_ModelSummary_SeverityEpiManifestFlipCount" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:severityEpiManifestFlipCount ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:ModelSummary .
+                OPTIONAL { ?j0 a effortless-ntwf:IdentityDomainCells ; effortless-ntwf:cellId ?j1 ; effortless-ntwf:manifestFlipCount ?j2 . FILTER((REPLACE(STR(?j1), "^.*[#/]", "") = REPLACE(STR("cell-id-disease-severity-x-epidemiology"), "^.*[#/]", "")) || (?j0 = "cell-id-disease-severity-x-epidemiology")) }
+                BIND(?j2 AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_ModelSummary_IdentityDomainCellCount" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:identityDomainCellCount ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:ModelSummary .
+                {
+                    SELECT (COUNT(?child) AS ?_result) WHERE {
+                        ?child a effortless-ntwf:IdentityDomainCells .
+                    }
+                }
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_ModelSummary_SelectionFrailtyManifestFlipCount" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:selectionFrailtyManifestFlipCount ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:ModelSummary .
+                OPTIONAL { ?j0 a effortless-ntwf:IdentityClusterSummaries ; effortless-ntwf:identityClusterId ?j1 ; effortless-ntwf:manifestFlipCount ?j2 . FILTER((REPLACE(STR(?j1), "^.*[#/]", "") = REPLACE(STR("cluster-id-selection-frailty"), "^.*[#/]", "")) || (?j0 = "cluster-id-selection-frailty")) }
+                BIND(?j2 AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_ModelSummary_SelectionFrailtyStudyCount" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:selectionFrailtyStudyCount ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:ModelSummary .
+                OPTIONAL { ?j0 a effortless-ntwf:IdentityClusterSummaries ; effortless-ntwf:identityClusterId ?j1 ; effortless-ntwf:studyCount ?j2 . FILTER((REPLACE(STR(?j1), "^.*[#/]", "") = REPLACE(STR("cluster-id-selection-frailty"), "^.*[#/]", "")) || (?j0 = "cluster-id-selection-frailty")) }
+                BIND(?j2 AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_ModelSummary_ColliderIdentityManifestFlipRate" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:colliderIdentityManifestFlipRate ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:ModelSummary .
+                OPTIONAL { ?j0 a effortless-ntwf:IdentityClusterSummaries ; effortless-ntwf:identityClusterId ?j1 ; effortless-ntwf:manifestFlipRate ?j2 . FILTER((REPLACE(STR(?j1), "^.*[#/]", "") = REPLACE(STR("cluster-id-collider-proxy"), "^.*[#/]", "")) || (?j0 = "cluster-id-collider-proxy")) }
+                BIND(?j2 AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_ModelSummary_GeographicTypeDFraction" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:geographicTypeDFraction ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:ModelSummary .
+                OPTIONAL { ?j0 a effortless-ntwf:IdentityClusterSummaries ; effortless-ntwf:identityClusterId ?j1 ; effortless-ntwf:studyCount ?j2 . FILTER((REPLACE(STR(?j1), "^.*[#/]", "") = REPLACE(STR("cluster-id-geographic-composition"), "^.*[#/]", "")) || (?j0 = "cluster-id-geographic-composition")) }
+                OPTIONAL { ?j3 a effortless-ntwf:IdentityClusterSummaries ; effortless-ntwf:identityClusterId ?j4 ; effortless-ntwf:typeDCount ?j5 . FILTER((REPLACE(STR(?j4), "^.*[#/]", "") = REPLACE(STR("cluster-id-geographic-composition"), "^.*[#/]", "")) || (?j3 = "cluster-id-geographic-composition")) }
+                OPTIONAL { ?j6 a effortless-ntwf:IdentityClusterSummaries ; effortless-ntwf:identityClusterId ?j7 ; effortless-ntwf:studyCount ?j8 . FILTER((REPLACE(STR(?j7), "^.*[#/]", "") = REPLACE(STR("cluster-id-geographic-composition"), "^.*[#/]", "")) || (?j6 = "cluster-id-geographic-composition")) }
+                BIND(IF((?j2 = 0), "", (?j5 / ?j8)) AS ?_result)
             }
         """ ;
     ] .
@@ -8013,6 +8217,10 @@ effortless-ntwf:IdentityClusterSummariesCardinalityShape a sh:NodeShape ;
     sh:targetClass effortless-ntwf:IdentityClusterSummaries ;
     sh:property [ sh:path effortless-ntwf:confounderIdentity ; sh:maxCount 1 ] .
 
+effortless-ntwf:IdentityDomainCellsCardinalityShape a sh:NodeShape ;
+    sh:targetClass effortless-ntwf:IdentityDomainCells ;
+    sh:property [ sh:path effortless-ntwf:confounderIdentity ; sh:maxCount 1 ] .
+
 effortless-ntwf:StrataCardinalityShape a sh:NodeShape ;
     sh:targetClass effortless-ntwf:Strata ;
     sh:property [ sh:path effortless-ntwf:study ; sh:maxCount 1 ] .
@@ -8038,4 +8246,4 @@ effortless-ntwf:TreatmentsCardinalityShape a sh:NodeShape ;
     sh:targetClass effortless-ntwf:Treatments ;
     sh:property [ sh:path effortless-ntwf:study ; sh:maxCount 1 ] .
 
-# Generated 356 SHACL rules
+# Generated 366 SHACL rules

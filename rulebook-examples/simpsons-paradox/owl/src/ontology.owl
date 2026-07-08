@@ -937,13 +937,11 @@ effortless-ntwf:studyCount a owl:DatatypeProperty ;
     rdfs:comment "Real studies in cluster (customize SQL)." .
 
 effortless-ntwf:manifestFlipCount a owl:DatatypeProperty ;
-    rdfs:domain effortless-ntwf:IdentityClusterSummaries ;
     rdfs:range xsd:integer ;
     rdfs:label "ManifestFlipCount" ;
     rdfs:comment "IsSignFlip=TRUE count in cluster." .
 
 effortless-ntwf:latentFlipCount a owl:DatatypeProperty ;
-    rdfs:domain effortless-ntwf:IdentityClusterSummaries ;
     rdfs:range xsd:integer ;
     rdfs:label "LatentFlipCount" ;
     rdfs:comment "LatentFlipPotential=TRUE without manifest flip." .
@@ -960,7 +958,6 @@ effortless-ntwf:avgAllocationDistortion a owl:DatatypeProperty ;
     rdfs:comment "Mean allocation distortion in cluster." .
 
 effortless-ntwf:latentFractionAmongTypeD a owl:DatatypeProperty ;
-    rdfs:domain effortless-ntwf:IdentityClusterSummaries ;
     rdfs:range xsd:string ;
     rdfs:label "LatentFractionAmongTypeD" ;
     rdfs:comment "Fraction of Type-D rows with LatentFlipPotential." .
@@ -972,11 +969,74 @@ effortless-ntwf:domainCount a owl:DatatypeProperty ;
     rdfs:comment "Distinct Studies.Domain values in cluster." .
 
 effortless-ntwf:manifestFlipRate a owl:DatatypeProperty ;
-    rdfs:domain effortless-ntwf:IdentityClusterSummaries ;
     rdfs:range xsd:string ;
     rdfs:label "ManifestFlipRate" ;
     rdfs:comment "ManifestFlipCount / StudyCount." .
     # calculated: calculated
+
+# === Class: IdentityDomainCells ===
+effortless-ntwf:IdentityDomainCells a owl:Class ;
+    rdfs:label "IdentityDomainCells" .
+
+effortless-ntwf:cellId a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:IdentityDomainCells ;
+    rdfs:range xsd:string ;
+    rdfs:label "CellId" ;
+    rdfs:comment "Unique slug: identity-id + '-x-' + domain slug." .
+
+effortless-ntwf:name a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "Name" ;
+    rdfs:comment "Display label." .
+    # calculated: calculated
+
+effortless-ntwf:confounderIdentity a owl:ObjectProperty ;
+    rdfs:range effortless-ntwf:ConfounderIdentities ;
+    rdfs:label "ConfounderIdentity" ;
+    rdfs:comment "FK → ConfounderIdentities." .
+
+effortless-ntwf:domain a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "Domain" ;
+    rdfs:comment "Studies.Domain value (e.g. medicine, epidemiology)." .
+
+effortless-ntwf:studyCount a owl:DatatypeProperty ;
+    rdfs:range xsd:integer ;
+    rdfs:label "StudyCount" ;
+    rdfs:comment "Studies with this identity in this domain (customize SQL)." .
+
+effortless-ntwf:manifestFlipCount a owl:DatatypeProperty ;
+    rdfs:range xsd:integer ;
+    rdfs:label "ManifestFlipCount" ;
+    rdfs:comment "IsSignFlip=TRUE count in cell." .
+
+effortless-ntwf:latentFlipCount a owl:DatatypeProperty ;
+    rdfs:range xsd:integer ;
+    rdfs:label "LatentFlipCount" ;
+    rdfs:comment "LatentFlipPotential=TRUE without manifest flip." .
+
+effortless-ntwf:typeDCount a owl:DatatypeProperty ;
+    rdfs:range xsd:integer ;
+    rdfs:label "TypeDCount" ;
+    rdfs:comment "Type-D studies in cell." .
+
+effortless-ntwf:latentFractionAmongTypeD a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "LatentFractionAmongTypeD" ;
+    rdfs:comment "Fraction of Type-D rows with LatentFlipPotential in cell." .
+
+effortless-ntwf:manifestFlipRate a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "ManifestFlipRate" ;
+    rdfs:comment "ManifestFlipCount / StudyCount." .
+    # calculated: calculated
+
+effortless-ntwf:identityDisplayName a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:IdentityDomainCells ;
+    rdfs:range xsd:string ;
+    rdfs:label "IdentityDisplayName" ;
+    rdfs:comment "Lookup archetype display name." .
+    # calculated: lookup
 
 # === Class: IngestionProtocol ===
 effortless-ntwf:IngestionProtocol a owl:Class ;
@@ -2171,6 +2231,55 @@ effortless-ntwf:identityClusterWitnessNote a owl:DatatypeProperty ;
     rdfs:range xsd:string ;
     rdfs:label "IdentityClusterWitnessNote" ;
     rdfs:comment "Loop-80 identity layer witness rollup (customize SQL)." .
+
+effortless-ntwf:severityMedicineManifestFlipRate a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:ModelSummary ;
+    rdfs:range xsd:string ;
+    rdfs:label "SeverityMedicineManifestFlipRate" ;
+    rdfs:comment "Severity identity manifest flip rate in medicine domain." .
+    # calculated: calculated
+
+effortless-ntwf:severityEpiManifestFlipCount a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:ModelSummary ;
+    rdfs:range xsd:integer ;
+    rdfs:label "SeverityEpiManifestFlipCount" ;
+    rdfs:comment "Severity identity manifest flip count in epidemiology domain." .
+    # calculated: calculated
+
+effortless-ntwf:identityDomainCellCount a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:ModelSummary ;
+    rdfs:range xsd:integer ;
+    rdfs:label "IdentityDomainCellCount" ;
+    rdfs:comment "Number of identity×domain cells." .
+    # calculated: aggregation
+
+effortless-ntwf:selectionFrailtyManifestFlipCount a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:ModelSummary ;
+    rdfs:range xsd:integer ;
+    rdfs:label "SelectionFrailtyManifestFlipCount" ;
+    rdfs:comment "Manifest flip count for selection-frailty identity." .
+    # calculated: calculated
+
+effortless-ntwf:selectionFrailtyStudyCount a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:ModelSummary ;
+    rdfs:range xsd:integer ;
+    rdfs:label "SelectionFrailtyStudyCount" ;
+    rdfs:comment "Study count for selection-frailty identity cluster." .
+    # calculated: calculated
+
+effortless-ntwf:colliderIdentityManifestFlipRate a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:ModelSummary ;
+    rdfs:range xsd:string ;
+    rdfs:label "ColliderIdentityManifestFlipRate" ;
+    rdfs:comment "Manifest flip rate for collider-proxy identity." .
+    # calculated: calculated
+
+effortless-ntwf:geographicTypeDFraction a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:ModelSummary ;
+    rdfs:range xsd:string ;
+    rdfs:label "GeographicTypeDFraction" ;
+    rdfs:comment "Type-D fraction for geographic-composition identity." .
+    # calculated: calculated
 
 # === Class: PhaseDiagramSummary ===
 effortless-ntwf:PhaseDiagramSummary a owl:Class ;

@@ -24785,6 +24785,26 @@ effortless-ntwf:conc-33-confounder-identity-layer a effortless-ntwf:Conclusions 
     effortless-ntwf:witnessedInLoop "loop-81" ;
     effortless-ntwf:traditionId "tradition-dag" .
 
+effortless-ntwf:conc-34-latent-predominant-family a effortless-ntwf:Conclusions ;
+    effortless-ntwf:conclusionId "conc-34-latent-predominant-family" ;
+    effortless-ntwf:category "theorem" ;
+    effortless-ntwf:status "candidate" ;
+    effortless-ntwf:title "Latent-predominant mechanism family: selection-frailty, collider-proxy, and geographic-composition produce near-zero manifest flips" ;
+    effortless-ntwf:evidence "Loop-84: H-selection-frailty-zero-manifest, H-collider-identity-low-manifest, H-geographic-stable-type-d all PASS. These three identities form a coherent latent-predominant cluster distinct from manifest-flip-prone identities (age-composition 48.6%, severity-in-medicine ≥45%). Candidate for theorem promotion pending loop-96 invariant tightening." ;
+    effortless-ntwf:witnessedInLoop "loop-84" ;
+    effortless-ntwf:targetLoop "loop-84" ;
+    effortless-ntwf:traditionId "tradition-dag" .
+
+effortless-ntwf:conc-35-unexplained-identity-sink-theorem a effortless-ntwf:Conclusions ;
+    effortless-ntwf:conclusionId "conc-35-unexplained-identity-sink-theorem" ;
+    effortless-ntwf:category "theorem" ;
+    effortless-ntwf:status "witnessed" ;
+    effortless-ntwf:title "Identity-conditioned explained theorem: all unexplained sign-flips confined to contested-org-choice and collider-proxy identities" ;
+    effortless-ntwf:evidence "Loop-85 at N=238: H-unexplained-flips-only-nonconfounders PASS. UnexplainedConfounderSignFlipCount=0. The three unexplained flips (conc-29 exception list) map exclusively to id-contested-org-choice (2) and id-collider-proxy (1). This extends the loop-74 biconditional (conc-29): explained↔confounder holds for every unambiguous confounder identity; violations are confined to ontologically ambiguous categories. inv-unexplained-identity-sink: PASS (critical, 30 total invariants)." ;
+    effortless-ntwf:witnessedInLoop "loop-85" ;
+    effortless-ntwf:targetLoop "loop-85" ;
+    effortless-ntwf:traditionId "tradition-dag" .
+
 # === Individuals: ConfounderIdentities ===
 
 effortless-ntwf:id-age-composition a effortless-ntwf:ConfounderIdentities ;
@@ -24891,6 +24911,34 @@ effortless-ntwf:id-mechanism-other a effortless-ntwf:ConfounderIdentities ;
     effortless-ntwf:mechanismClass "other" ;
     effortless-ntwf:description "Catch-all for stratum variables not yet assigned a canonical archetype — pending ontology refinement." ;
     effortless-ntwf:policyDefault "investigate-confounder" .
+
+effortless-ntwf:id-smoking-behavior a effortless-ntwf:ConfounderIdentities ;
+    effortless-ntwf:confounderIdentityId "id-smoking-behavior" ;
+    effortless-ntwf:displayName "Smoking / Substance Behavior" ;
+    effortless-ntwf:mechanismClass "behavioral-exposure" ;
+    effortless-ntwf:description "Smoking status, drinking pattern, or substance-use history drives outcome differences independent of treatment — behavioral confounder that inverts pooled comparisons." ;
+    effortless-ntwf:policyDefault "stratify-by-behavior" .
+
+effortless-ntwf:id-trial-timing-design a effortless-ntwf:ConfounderIdentities ;
+    effortless-ntwf:confounderIdentityId "id-trial-timing-design" ;
+    effortless-ntwf:displayName "Trial Timing / Design Profile" ;
+    effortless-ntwf:mechanismClass "design-artifact" ;
+    effortless-ntwf:description "Trial allocation profile, treatment timing from symptom onset, study design type, or protocol subgroup definition — design-level strata, not substantive confounders." ;
+    effortless-ntwf:policyDefault "stratify-by-protocol-design" .
+
+effortless-ntwf:id-method-specification a effortless-ntwf:ConfounderIdentities ;
+    effortless-ntwf:confounderIdentityId "id-method-specification" ;
+    effortless-ntwf:displayName "Methodological Specification" ;
+    effortless-ntwf:mechanismClass "analytic-method" ;
+    effortless-ntwf:description "Model specification choice, source study, group base rate, field subarea, or noncollapsible measure — reversals arise from analytic decisions rather than substantive confounding." ;
+    effortless-ntwf:policyDefault "investigate-specification" .
+
+effortless-ntwf:id-exposure-mix a effortless-ntwf:ConfounderIdentities ;
+    effortless-ntwf:confounderIdentityId "id-exposure-mix" ;
+    effortless-ntwf:displayName "Exposure Mix / Context Heterogeneity" ;
+    effortless-ntwf:mechanismClass "exposure-heterogeneity" ;
+    effortless-ntwf:description "Vaccination base rate, exposure popularity, local labor market, or interaction type — aggregate exposure pool is heterogeneous across strata, driving allocation distortion." ;
+    effortless-ntwf:policyDefault "stratify-by-exposure-context" .
 
 # === Individuals: CorpusCatalogSummary ===
 
@@ -25066,6 +25114,41 @@ effortless-ntwf:find-H-identity-map-coverage a effortless-ntwf:DiscoveryFindings
     effortless-ntwf:hypothesisId "H-identity-map-coverage" ;
     effortless-ntwf:witnessedInLoop "loop-80" .
 
+effortless-ntwf:find-H-severity-medicine-manifest a effortless-ntwf:DiscoveryFindings ;
+    effortless-ntwf:findingId "find-H-severity-medicine-manifest" ;
+    effortless-ntwf:hypothesisId "H-severity-medicine-manifest" ;
+    effortless-ntwf:witnessedInLoop "loop-82" .
+
+effortless-ntwf:find-H-severity-epi-latent-only a effortless-ntwf:DiscoveryFindings ;
+    effortless-ntwf:findingId "find-H-severity-epi-latent-only" ;
+    effortless-ntwf:hypothesisId "H-severity-epi-latent-only" ;
+    effortless-ntwf:witnessedInLoop "loop-82" .
+
+effortless-ntwf:find-H-mechanism-other-drain a effortless-ntwf:DiscoveryFindings ;
+    effortless-ntwf:findingId "find-H-mechanism-other-drain" ;
+    effortless-ntwf:hypothesisId "H-mechanism-other-drain" ;
+    effortless-ntwf:witnessedInLoop "loop-83" .
+
+effortless-ntwf:find-H-selection-frailty-zero-manifest a effortless-ntwf:DiscoveryFindings ;
+    effortless-ntwf:findingId "find-H-selection-frailty-zero-manifest" ;
+    effortless-ntwf:hypothesisId "H-selection-frailty-zero-manifest" ;
+    effortless-ntwf:witnessedInLoop "loop-84" .
+
+effortless-ntwf:find-H-collider-identity-low-manifest a effortless-ntwf:DiscoveryFindings ;
+    effortless-ntwf:findingId "find-H-collider-identity-low-manifest" ;
+    effortless-ntwf:hypothesisId "H-collider-identity-low-manifest" ;
+    effortless-ntwf:witnessedInLoop "loop-84" .
+
+effortless-ntwf:find-H-geographic-stable-type-d a effortless-ntwf:DiscoveryFindings ;
+    effortless-ntwf:findingId "find-H-geographic-stable-type-d" ;
+    effortless-ntwf:hypothesisId "H-geographic-stable-type-d" ;
+    effortless-ntwf:witnessedInLoop "loop-84" .
+
+effortless-ntwf:find-H-unexplained-flips-only-nonconfounders a effortless-ntwf:DiscoveryFindings ;
+    effortless-ntwf:findingId "find-H-unexplained-flips-only-nonconfounders" ;
+    effortless-ntwf:hypothesisId "H-unexplained-flips-only-nonconfounders" ;
+    effortless-ntwf:witnessedInLoop "loop-85" .
+
 # === Individuals: DiscoveryHypotheses ===
 
 effortless-ntwf:H-latent-d a effortless-ntwf:DiscoveryHypotheses ;
@@ -25202,7 +25285,7 @@ effortless-ntwf:H-severity-vs-age-latent a effortless-ntwf:DiscoveryHypotheses ;
     effortless-ntwf:expectedOutcome "SeverityIdentityLatentFractionAmongTypeD < AgeIdentityLatentFractionAmongTypeD" ;
     effortless-ntwf:registeredInLoop "loop-80" ;
     effortless-ntwf:traditionId "tradition-dag" ;
-    effortless-ntwf:epistemicTier "corpus-hypothesis" .
+    effortless-ntwf:epistemicTier "corpus-pattern-superseded" .
 
 effortless-ntwf:H-identity-map-coverage a effortless-ntwf:DiscoveryHypotheses ;
     effortless-ntwf:hypothesisId "H-identity-map-coverage" ;
@@ -25210,6 +25293,62 @@ effortless-ntwf:H-identity-map-coverage a effortless-ntwf:DiscoveryHypotheses ;
     effortless-ntwf:expectedOutcome "IdentityMapCoverageRate >= 0.95" ;
     effortless-ntwf:registeredInLoop "loop-80" ;
     effortless-ntwf:traditionId "tradition-historical" ;
+    effortless-ntwf:epistemicTier "consistency-check" .
+
+effortless-ntwf:H-severity-medicine-manifest a effortless-ntwf:DiscoveryHypotheses ;
+    effortless-ntwf:hypothesisId "H-severity-medicine-manifest" ;
+    effortless-ntwf:statement "Disease-severity identity within medicine domain has manifest flip rate ≥45% — severity drives reversals in clinical settings." ;
+    effortless-ntwf:expectedOutcome "ManifestFlipRate(cell-id-disease-severity-x-medicine) >= 0.45" ;
+    effortless-ntwf:registeredInLoop "loop-82" ;
+    effortless-ntwf:traditionId "tradition-epidemiology" ;
+    effortless-ntwf:epistemicTier "corpus-hypothesis" .
+
+effortless-ntwf:H-severity-epi-latent-only a effortless-ntwf:DiscoveryHypotheses ;
+    effortless-ntwf:hypothesisId "H-severity-epi-latent-only" ;
+    effortless-ntwf:statement "Disease-severity identity within epidemiology domain shows zero manifest flips — latent-only geometry in that domain." ;
+    effortless-ntwf:expectedOutcome "ManifestFlipCount(cell-id-disease-severity-x-epidemiology) = 0" ;
+    effortless-ntwf:registeredInLoop "loop-82" ;
+    effortless-ntwf:traditionId "tradition-epidemiology" ;
+    effortless-ntwf:epistemicTier "corpus-hypothesis" .
+
+effortless-ntwf:H-mechanism-other-drain a effortless-ntwf:DiscoveryHypotheses ;
+    effortless-ntwf:hypothesisId "H-mechanism-other-drain" ;
+    effortless-ntwf:statement "After ontology drain, id-mechanism-other contains ≤5 studies — the catch-all is no longer the dominant bucket." ;
+    effortless-ntwf:expectedOutcome "StudyCount(cluster-id-mechanism-other) <= 5" ;
+    effortless-ntwf:registeredInLoop "loop-83" ;
+    effortless-ntwf:traditionId "tradition-dag" ;
+    effortless-ntwf:epistemicTier "corpus-hypothesis" .
+
+effortless-ntwf:H-selection-frailty-zero-manifest a effortless-ntwf:DiscoveryHypotheses ;
+    effortless-ntwf:hypothesisId "H-selection-frailty-zero-manifest" ;
+    effortless-ntwf:statement "Selection-frailty identity (id-selection-frailty) produces zero manifest sign-flips — pure latent-D geometry, no allocation-reversal at observed weights." ;
+    effortless-ntwf:expectedOutcome "ManifestFlipCount(cluster-id-selection-frailty) = 0 AND StudyCount(cluster-id-selection-frailty) >= 3" ;
+    effortless-ntwf:registeredInLoop "loop-84" ;
+    effortless-ntwf:traditionId "tradition-dag" ;
+    effortless-ntwf:epistemicTier "corpus-hypothesis" .
+
+effortless-ntwf:H-collider-identity-low-manifest a effortless-ntwf:DiscoveryHypotheses ;
+    effortless-ntwf:hypothesisId "H-collider-identity-low-manifest" ;
+    effortless-ntwf:statement "Collider-proxy identity (id-collider-proxy) produces ≤15% manifest flip rate — near-zero manifest, predominantly latent Type-D geometry." ;
+    effortless-ntwf:expectedOutcome "ManifestFlipRate(cluster-id-collider-proxy) <= 0.15 AND StudyCount(cluster-id-collider-proxy) >= 5" ;
+    effortless-ntwf:registeredInLoop "loop-84" ;
+    effortless-ntwf:traditionId "tradition-dag" ;
+    effortless-ntwf:epistemicTier "corpus-hypothesis" .
+
+effortless-ntwf:H-geographic-stable-type-d a effortless-ntwf:DiscoveryHypotheses ;
+    effortless-ntwf:hypothesisId "H-geographic-stable-type-d" ;
+    effortless-ntwf:statement "Geographic-composition identity (id-geographic-composition) has ≥25% Type-D fraction — stable latent-D presence distinct from manifest-flip-prone identities." ;
+    effortless-ntwf:expectedOutcome "TypeDFraction(cluster-id-geographic-composition) >= 0.25 AND StudyCount(cluster-id-geographic-composition) >= 3" ;
+    effortless-ntwf:registeredInLoop "loop-84" ;
+    effortless-ntwf:traditionId "tradition-dag" ;
+    effortless-ntwf:epistemicTier "corpus-hypothesis" .
+
+effortless-ntwf:H-unexplained-flips-only-nonconfounders a effortless-ntwf:DiscoveryHypotheses ;
+    effortless-ntwf:hypothesisId "H-unexplained-flips-only-nonconfounders" ;
+    effortless-ntwf:statement "All unexplained sign-flips (IsSignFlip=TRUE AND IsParadoxExplained=FALSE) have ConfounderIdentity ∈ {id-contested-org-choice, id-collider-proxy} OR CausalRole=contested — no unexplained flip belongs to an unambiguous confounder identity." ;
+    effortless-ntwf:expectedOutcome "UnexplainedConfounderSignFlipCount = 0" ;
+    effortless-ntwf:registeredInLoop "loop-85" ;
+    effortless-ntwf:traditionId "tradition-dag" ;
     effortless-ntwf:epistemicTier "consistency-check" .
 
 # === Individuals: DomainExpansionTargets ===
@@ -25341,6 +25480,64 @@ effortless-ntwf:cluster-id-treatment-indication a effortless-ntwf:IdentityCluste
 effortless-ntwf:cluster-id-mechanism-other a effortless-ntwf:IdentityClusterSummaries ;
     effortless-ntwf:identityClusterId "cluster-id-mechanism-other" ;
     effortless-ntwf:confounderIdentity effortless-ntwf:id-mechanism-other .
+
+effortless-ntwf:cluster-id-smoking-behavior a effortless-ntwf:IdentityClusterSummaries ;
+    effortless-ntwf:identityClusterId "cluster-id-smoking-behavior" ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-smoking-behavior .
+
+effortless-ntwf:cluster-id-trial-timing-design a effortless-ntwf:IdentityClusterSummaries ;
+    effortless-ntwf:identityClusterId "cluster-id-trial-timing-design" ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-trial-timing-design .
+
+effortless-ntwf:cluster-id-method-specification a effortless-ntwf:IdentityClusterSummaries ;
+    effortless-ntwf:identityClusterId "cluster-id-method-specification" ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-method-specification .
+
+effortless-ntwf:cluster-id-exposure-mix a effortless-ntwf:IdentityClusterSummaries ;
+    effortless-ntwf:identityClusterId "cluster-id-exposure-mix" ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-exposure-mix .
+
+# === Individuals: IdentityDomainCells ===
+
+effortless-ntwf:cell-id-disease-severity-x-medicine a effortless-ntwf:IdentityDomainCells ;
+    effortless-ntwf:cellId "cell-id-disease-severity-x-medicine" ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-disease-severity ;
+    effortless-ntwf:domain "medicine" .
+
+effortless-ntwf:cell-id-disease-severity-x-epidemiology a effortless-ntwf:IdentityDomainCells ;
+    effortless-ntwf:cellId "cell-id-disease-severity-x-epidemiology" ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-disease-severity ;
+    effortless-ntwf:domain "epidemiology" .
+
+effortless-ntwf:cell-id-disease-severity-x-education a effortless-ntwf:IdentityDomainCells ;
+    effortless-ntwf:cellId "cell-id-disease-severity-x-education" ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-disease-severity ;
+    effortless-ntwf:domain "education" .
+
+effortless-ntwf:cell-id-age-composition-x-medicine a effortless-ntwf:IdentityDomainCells ;
+    effortless-ntwf:cellId "cell-id-age-composition-x-medicine" ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-age-composition ;
+    effortless-ntwf:domain "medicine" .
+
+effortless-ntwf:cell-id-age-composition-x-epidemiology a effortless-ntwf:IdentityDomainCells ;
+    effortless-ntwf:cellId "cell-id-age-composition-x-epidemiology" ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-age-composition ;
+    effortless-ntwf:domain "epidemiology" .
+
+effortless-ntwf:cell-id-age-composition-x-education a effortless-ntwf:IdentityDomainCells ;
+    effortless-ntwf:cellId "cell-id-age-composition-x-education" ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-age-composition ;
+    effortless-ntwf:domain "education" .
+
+effortless-ntwf:cell-id-institutional-unit-x-education a effortless-ntwf:IdentityDomainCells ;
+    effortless-ntwf:cellId "cell-id-institutional-unit-x-education" ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-institutional-unit ;
+    effortless-ntwf:domain "education" .
+
+effortless-ntwf:cell-id-institutional-unit-x-economics a effortless-ntwf:IdentityDomainCells ;
+    effortless-ntwf:cellId "cell-id-institutional-unit-x-economics" ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-institutional-unit ;
+    effortless-ntwf:domain "economics" .
 
 # === Individuals: IngestionProtocol ===
 
@@ -26075,13 +26272,13 @@ effortless-ntwf:inv-latent-d-majority a effortless-ntwf:InvariantChecks ;
 effortless-ntwf:inv-discovery-all-confirmed a effortless-ntwf:InvariantChecks ;
     effortless-ntwf:invariantCheckId "inv-discovery-all-confirmed" ;
     effortless-ntwf:algebraicStatement "COUNTIFS(DiscoveryFindings IsConfirmed FALSE WHERE EpistemicTier=corpus-hypothesis) = 0" ;
-    effortless-ntwf:naturalLanguage "All active corpus-hypothesis discovery findings confirmed at N=238 post loop-79 prune." ;
+    effortless-ntwf:naturalLanguage "All active corpus-hypothesis discovery findings confirmed at N=238 post loop-84." ;
     effortless-ntwf:sourceTable "DiscoveryFindings" ;
     effortless-ntwf:filterExpression "HypothesisEpistemicTier = corpus-hypothesis" ;
     effortless-ntwf:assertionExpression "IsConfirmed = TRUE" ;
-    effortless-ntwf:sqlFilter "hypothesis_id IN ('H-latent-d', 'H-small-effect', 'H-causal-manifest', 'H-causal-latent', 'H-explained-confounder', 'H-unexplained-nonconfounder', 'H-catalog-exact-match', 'H-collider-no-manifest-v2', 'H-cplus-magnitude', 'H-ultra-fragile', 'H-age-identity-flip-rate', 'H-severity-vs-age-latent')" ;
+    effortless-ntwf:sqlFilter "hypothesis_id IN ('H-latent-d', 'H-small-effect', 'H-causal-manifest', 'H-causal-latent', 'H-explained-confounder', 'H-unexplained-nonconfounder', 'H-catalog-exact-match', 'H-collider-no-manifest-v2', 'H-cplus-magnitude', 'H-ultra-fragile', 'H-age-identity-flip-rate', 'H-severity-medicine-manifest', 'H-severity-epi-latent-only', 'H-mechanism-other-drain', 'H-selection-frailty-zero-manifest', 'H-collider-identity-low-manifest', 'H-geographic-stable-type-d')" ;
     effortless-ntwf:sqlAssertion "is_confirmed = TRUE" ;
-    effortless-ntwf:passCount 12 ;
+    effortless-ntwf:passCount 17 ;
     effortless-ntwf:failCount 0 ;
     effortless-ntwf:severity "critical" ;
     effortless-ntwf:traditionId "tradition-epidemiology" ;
@@ -26090,13 +26287,13 @@ effortless-ntwf:inv-discovery-all-confirmed a effortless-ntwf:InvariantChecks ;
 effortless-ntwf:inv-theorem-consistency-confirmed a effortless-ntwf:InvariantChecks ;
     effortless-ntwf:invariantCheckId "inv-theorem-consistency-confirmed" ;
     effortless-ntwf:algebraicStatement "COUNTIFS(DiscoveryFindings IsConfirmed FALSE WHERE EpistemicTier=consistency-check AND RegisteredInLoop IN loop-73..76) = 0" ;
-    effortless-ntwf:naturalLanguage "Theorem wave + identity consistency checks: CorrectedGap invariance, explained↔confounder biconditional, collider no-manifest, theorem portfolio, identity map coverage." ;
+    effortless-ntwf:naturalLanguage "Theorem wave + identity consistency checks: CorrectedGap invariance, explained↔confounder biconditional, collider no-manifest, theorem portfolio, identity map coverage, unexplained-sink identity law." ;
     effortless-ntwf:sourceTable "DiscoveryFindings" ;
     effortless-ntwf:filterExpression "HypothesisEpistemicTier = consistency-check" ;
     effortless-ntwf:assertionExpression "IsConfirmed = TRUE" ;
-    effortless-ntwf:sqlFilter "hypothesis_id IN ('H-corrected-gap-invariant', 'H-explained-bidirectional', 'H-collider-no-manifest-theorem', 'H-theorem-portfolio', 'H-identity-map-coverage')" ;
+    effortless-ntwf:sqlFilter "hypothesis_id IN ('H-corrected-gap-invariant', 'H-explained-bidirectional', 'H-collider-no-manifest-theorem', 'H-theorem-portfolio', 'H-identity-map-coverage', 'H-unexplained-flips-only-nonconfounders')" ;
     effortless-ntwf:sqlAssertion "is_confirmed = TRUE" ;
-    effortless-ntwf:passCount 5 ;
+    effortless-ntwf:passCount 6 ;
     effortless-ntwf:failCount 0 ;
     effortless-ntwf:severity "critical" ;
     effortless-ntwf:traditionId "tradition-dag" ;
@@ -26176,6 +26373,21 @@ effortless-ntwf:inv-collider-no-manifest a effortless-ntwf:InvariantChecks ;
     effortless-ntwf:severity "critical" ;
     effortless-ntwf:traditionId "tradition-dag" ;
     effortless-ntwf:protectsConclusion "conc-30-collider-no-manifest-theorem" .
+
+effortless-ntwf:inv-unexplained-identity-sink a effortless-ntwf:InvariantChecks ;
+    effortless-ntwf:invariantCheckId "inv-unexplained-identity-sink" ;
+    effortless-ntwf:algebraicStatement "IsSignFlip=TRUE AND IsParadoxExplained=FALSE → ConfounderIdentity ∈ {id-contested-org-choice, id-collider-proxy}" ;
+    effortless-ntwf:naturalLanguage "Every unexplained sign-flip must be linked to contested-org-choice or collider-proxy identity — no unexplained flip belongs to an unambiguous confounder archetype. Identity-conditioned extension of conc-29 (loop-74 biconditional)." ;
+    effortless-ntwf:sourceTable "TreatmentRankings" ;
+    effortless-ntwf:filterExpression "IsSignFlip = TRUE AND IsParadoxExplained = FALSE" ;
+    effortless-ntwf:assertionExpression "StratumCausalRole IN ('contested') OR ConfounderIdentity IN ('id-contested-org-choice','id-collider-proxy')" ;
+    effortless-ntwf:sqlFilter "is_sign_flip = true AND is_paradox_explained = false" ;
+    effortless-ntwf:sqlAssertion "stratum_causal_role = 'contested' OR confounder_identity IN ('id-contested-org-choice','id-collider-proxy')" ;
+    effortless-ntwf:passCount 3 ;
+    effortless-ntwf:failCount 0 ;
+    effortless-ntwf:severity "critical" ;
+    effortless-ntwf:traditionId "tradition-dag" ;
+    effortless-ntwf:protectsConclusion "conc-35-unexplained-identity-sink-theorem" .
 
 # === Individuals: Loops ===
 
@@ -27142,47 +27354,47 @@ effortless-ntwf:loop-81 a effortless-ntwf:Loops ;
     effortless-ntwf:newConcept "refresh_identity_cluster_summaries() in 05b-customize-data.sql; ModelSummary identity rollup fields (AgeIdentityManifestFlipRate, AgeIdentityStudyCount, AgeIdentityLatentFractionAmongTypeD, SeverityIdentityLatentFractionAmongTypeD, IdentityMapCoverageRate); calc_discovery_findings branches for loop-80 hypotheses; extend inv-theorem-consistency-confirmed with H-identity-map-coverage; witness conc-33." ;
     effortless-ntwf:domainQuestion "When cluster summaries are populated from live joins, do loop-80 hypotheses witness correctly — and does H-severity-vs-age-latent fail as ad-hoc SQL predicted?" ;
     effortless-ntwf:mockDataNote "Witnessed post-build at N=238: H-age-identity-flip-rate PASS (0.486, n=35); H-identity-map-coverage PASS (1.0); H-severity-vs-age-latent FAIL (0.917 > 0.813). IdentityClusterSummaries populated via refresh_identity_cluster_summaries()." ;
-    effortless-ntwf:nextSuggestion "loop-82: supersede refuted H-severity-vs-age-latent with identity×domain cells" ;
+    effortless-ntwf:nextSuggestion "loop-82: identity×domain cells — supersede refuted H-severity-vs-age-latent" ;
     effortless-ntwf:traditionId "tradition-dag" .
 
 effortless-ntwf:loop-82 a effortless-ntwf:Loops ;
     effortless-ntwf:loopId "loop-82" ;
     effortless-ntwf:title "Identity×domain cells — supersede refuted H-severity-vs-age-latent" ;
-    effortless-ntwf:status "planned" ;
+    effortless-ntwf:status "complete" ;
     effortless-ntwf:newConcept "IdentityDomainCells table (one row per ConfounderIdentity × Studies.Domain with n≥2); archive H-severity-vs-age-latent to corpus-pattern-superseded; register H-severity-medicine-manifest (severity identity manifest flip ≥45% within medicine) and H-severity-epi-latent-only (severity in epidemiology: 0 manifest flips); refresh_identity_domain_cells() customize SQL; ModelSummary domain-cell rollups." ;
     effortless-ntwf:domainQuestion "Loop-81 refuted the global severity-vs-age latent comparison (0.917 > 0.813). Does severity manifest in medicine (53% flip) but stay latent in epidemiology/legal — requiring identity×domain cells rather than identity-only clusters?" ;
-    effortless-ntwf:mockDataNote "Pending — ad-hoc SQL at N=238: severity×medicine 53.3% flip; severity×epidemiology 0% flip / 100% latent." ;
-    effortless-ntwf:nextSuggestion "loop-83: ontology refinement — drain id-mechanism-other catch-all" ;
+    effortless-ntwf:mockDataNote "Witnessed post-build at N=238: IdentityDomainCells table live with 8 seed cells. H-severity-medicine-manifest PASS (ManifestFlipRate≥0.45 in medicine). H-severity-epi-latent-only PASS (ManifestFlipCount=0 in epidemiology). H-severity-vs-age-latent archived to corpus-pattern-superseded. ModelSummary: SeverityMedicineManifestFlipRate, SeverityEpiManifestFlipCount, IdentityDomainCellCount fields added." ;
+    effortless-ntwf:nextSuggestion "loop-83: ontology refinement — drain id-mechanism-other catch-all into sub-identities" ;
     effortless-ntwf:traditionId "tradition-dag" .
 
 effortless-ntwf:loop-83 a effortless-ntwf:Loops ;
     effortless-ntwf:loopId "loop-83" ;
     effortless-ntwf:title "Ontology refinement — drain id-mechanism-other into accountable sub-identities" ;
-    effortless-ntwf:status "planned" ;
+    effortless-ntwf:status "complete" ;
     effortless-ntwf:newConcept "Split id-mechanism-other (18 studies) into new ConfounderIdentities: id-smoking-behavior, id-trial-timing-design, id-method-specification, id-exposure-mix; remap StratumVariableIdentityMaps; fix mis-maps (cancer_stage→severity, passenger_sex→demographic-group); DiscoveryHypothesis H-mechanism-other-drain (catch-all ≤5 studies post-split)." ;
     effortless-ntwf:domainQuestion "Does the 18-study catch-all hide splittable sub-mechanisms with divergent geometry (flip-prone trial-timing vs latent-only exposure-mix) — and can the ontology absorb them without bloating past ~20 identities?" ;
-    effortless-ntwf:mockDataNote "Pending — mechanism-other currently 18 studies, 27.8% manifest flip, 75pp cross-domain flip spread." ;
-    effortless-ntwf:nextSuggestion "loop-84: pure-latent identity theorem wave (selection + collider + geographic)" ;
+    effortless-ntwf:mockDataNote "Witnessed post-build at N=238: id-mechanism-other drained to 2 studies (synthetic stubs only). New identities: id-smoking-behavior (3 studies), id-trial-timing-design (4 studies), id-method-specification (6 studies), id-exposure-mix (4 studies). map-uc-systemwide-admissions-major_campus remapped to id-institutional-unit. H-mechanism-other-drain PASS (StudyCount≤5). ConfounderIdentityCount=19." ;
+    effortless-ntwf:nextSuggestion "loop-84: pure-latent identity theorem wave — selection, collider, geographic" ;
     effortless-ntwf:traditionId "tradition-dag" .
 
 effortless-ntwf:loop-84 a effortless-ntwf:Loops ;
     effortless-ntwf:loopId "loop-84" ;
     effortless-ntwf:title "Pure-latent identity theorem wave — selection, collider, geographic composition" ;
-    effortless-ntwf:status "planned" ;
+    effortless-ntwf:status "complete" ;
     effortless-ntwf:newConcept "Register H-selection-frailty-zero-manifest, H-collider-identity-low-manifest (≤15%), H-geographic-stable-type-d (stable Type-D fraction ≥25%); MechanismClassSummary rollups or extend IdentityClusterSummaries; candidate conclusion conc-34 latent-predominant mechanism family." ;
     effortless-ntwf:domainQuestion "Do selection-frailty (0% manifest, 100% latent Type-D), collider-proxy (9.1% manifest), and geographic-composition (29.4% manifest, 5 stable Type-D) form a coherent 'latent-predominant' mechanism family distinct from confounder-manifest identities?" ;
-    effortless-ntwf:mockDataNote "Pending — ad-hoc: selection-frailty 0/5 manifest; collider 1/11 manifest; geographic 5 stable Type-D." ;
+    effortless-ntwf:mockDataNote "Witnessed post-build at N=238: H-selection-frailty-zero-manifest PASS (ManifestFlipCount=0, n=5). H-collider-identity-low-manifest PASS (ManifestFlipRate≤0.15, n=11). H-geographic-stable-type-d PASS (TypeDFraction≥0.25, n=17). conc-34 candidate registered: latent-predominant mechanism family confirmed." ;
     effortless-ntwf:nextSuggestion "loop-85: identity-conditioned unexplained-flip sink law" ;
     effortless-ntwf:traditionId "tradition-dag" .
 
 effortless-ntwf:loop-85 a effortless-ntwf:Loops ;
     effortless-ntwf:loopId "loop-85" ;
     effortless-ntwf:title "Identity-conditioned explained theorem — contested-org and collider as sole unexplained sinks" ;
-    effortless-ntwf:status "planned" ;
+    effortless-ntwf:status "complete" ;
     effortless-ntwf:newConcept "DiscoveryHypothesis H-unexplained-flips-only-nonconfounders (all unexplained sign-flips have ConfounderIdentity ∈ {id-contested-org-choice, id-collider-proxy} OR CausalRole=contested); InvariantCheck inv-unexplained-identity-sink; promote conc-35 (Category=theorem): explained↔confounder holds for all confounder identities; violations confined to contested-org + collider." ;
     effortless-ntwf:domainQuestion "Loop-74 biconditional holds for every confounder identity with zero unexplained flips. Are the only exceptions exactly contested organizational choice (2 flips) and collider-proxy (1 flip) — making this an identity-conditioned extension of conc-29?" ;
-    effortless-ntwf:mockDataNote "Pending — ad-hoc at N=238: 0 unexplained flips outside contested-org (2) and collider (1)." ;
-    effortless-ntwf:nextSuggestion "loop-86: identity×domain interaction matrix + methods-export prep" ;
+    effortless-ntwf:mockDataNote "Witnessed post-build at N=238: H-unexplained-flips-only-nonconfounders PASS (UnexplainedConfounderSignFlipCount=0). 3 unexplained flips: 2 × id-contested-org-choice, 1 × id-collider-proxy. inv-unexplained-identity-sink PASS (critical). conc-35 theorem promoted. 30 total critical invariants all green. inv-theorem-consistency-confirmed now covers 6 checks." ;
+    effortless-ntwf:nextSuggestion "loop-86: identity×domain interaction matrix — education vs economics institutional split + export prep" ;
     effortless-ntwf:traditionId "tradition-dag" .
 
 effortless-ntwf:loop-86 a effortless-ntwf:Loops ;
@@ -36774,7 +36986,7 @@ effortless-ntwf:map-melanoma-sex a effortless-ntwf:StratumVariableIdentityMaps ;
 effortless-ntwf:map-coffee-smoking a effortless-ntwf:StratumVariableIdentityMaps ;
     effortless-ntwf:mapId "map-coffee-smoking" ;
     effortless-ntwf:stratumVariable effortless-ntwf:coffee-smoking ;
-    effortless-ntwf:confounderIdentity effortless-ntwf:id-mechanism-other ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-smoking-behavior ;
     effortless-ntwf:variableNameNormalized "smoking_status" .
 
 effortless-ntwf:map-sat-school-spending a effortless-ntwf:StratumVariableIdentityMaps ;
@@ -36936,7 +37148,7 @@ effortless-ntwf:map-berkeley-six-dept-1973-department a effortless-ntwf:StratumV
 effortless-ntwf:map-rosiglitazone-mi-pool-2007-trial_allocation_profile a effortless-ntwf:StratumVariableIdentityMaps ;
     effortless-ntwf:mapId "map-rosiglitazone-mi-pool-2007-trial_allocation_profile" ;
     effortless-ntwf:stratumVariable effortless-ntwf:rosiglitazone-mi-pool-2007-trial_allocation_profile ;
-    effortless-ntwf:confounderIdentity effortless-ntwf:id-mechanism-other ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-trial-timing-design ;
     effortless-ntwf:variableNameNormalized "trial_allocation_profile" .
 
 effortless-ntwf:map-ironman-gender-age-2010-age_cohort a effortless-ntwf:StratumVariableIdentityMaps ;
@@ -36948,13 +37160,13 @@ effortless-ntwf:map-ironman-gender-age-2010-age_cohort a effortless-ntwf:Stratum
 effortless-ntwf:map-hanley-power-lines-2000-source_study a effortless-ntwf:StratumVariableIdentityMaps ;
     effortless-ntwf:mapId "map-hanley-power-lines-2000-source_study" ;
     effortless-ntwf:stratumVariable effortless-ntwf:hanley-power-lines-2000-source_study ;
-    effortless-ntwf:confounderIdentity effortless-ntwf:id-mechanism-other ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-method-specification ;
     effortless-ntwf:variableNameNormalized "source_study" .
 
 effortless-ntwf:map-coffee-smoking-lung-1968-smoking_status a effortless-ntwf:StratumVariableIdentityMaps ;
     effortless-ntwf:mapId "map-coffee-smoking-lung-1968-smoking_status" ;
     effortless-ntwf:stratumVariable effortless-ntwf:coffee-smoking-lung-1968-smoking_status ;
-    effortless-ntwf:confounderIdentity effortless-ntwf:id-mechanism-other ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-smoking-behavior ;
     effortless-ntwf:variableNameNormalized "smoking_status" .
 
 effortless-ntwf:map-panama-sweden-mortality-1975-age_group a effortless-ntwf:StratumVariableIdentityMaps ;
@@ -36966,7 +37178,7 @@ effortless-ntwf:map-panama-sweden-mortality-1975-age_group a effortless-ntwf:Str
 effortless-ntwf:map-hrt-whi-2002-study_design a effortless-ntwf:StratumVariableIdentityMaps ;
     effortless-ntwf:mapId "map-hrt-whi-2002-study_design" ;
     effortless-ntwf:stratumVariable effortless-ntwf:hrt-whi-2002-study_design ;
-    effortless-ntwf:confounderIdentity effortless-ntwf:id-mechanism-other ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-trial-timing-design ;
     effortless-ntwf:variableNameNormalized "study_design" .
 
 effortless-ntwf:map-obesity-paradox-hf-heart_failure_status a effortless-ntwf:StratumVariableIdentityMaps ;
@@ -37020,7 +37232,7 @@ effortless-ntwf:map-healthy-worker-mortality-employment_status a effortless-ntwf
 effortless-ntwf:map-compas-recidivism-base-group_base_rate a effortless-ntwf:StratumVariableIdentityMaps ;
     effortless-ntwf:mapId "map-compas-recidivism-base-group_base_rate" ;
     effortless-ntwf:stratumVariable effortless-ntwf:compas-recidivism-base-group_base_rate ;
-    effortless-ntwf:confounderIdentity effortless-ntwf:id-mechanism-other ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-method-specification ;
     effortless-ntwf:variableNameNormalized "group_base_rate" .
 
 effortless-ntwf:map-us-wage-composition-stagnation-workforce_composition a effortless-ntwf:StratumVariableIdentityMaps ;
@@ -37050,7 +37262,7 @@ effortless-ntwf:map-ab-test-traffic-mix-time_varying_segment a effortless-ntwf:S
 effortless-ntwf:map-recsys-offline-eval-exposure_popularity a effortless-ntwf:StratumVariableIdentityMaps ;
     effortless-ntwf:mapId "map-recsys-offline-eval-exposure_popularity" ;
     effortless-ntwf:stratumVariable effortless-ntwf:recsys-offline-eval-exposure_popularity ;
-    effortless-ntwf:confounderIdentity effortless-ntwf:id-mechanism-other ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-exposure-mix ;
     effortless-ntwf:variableNameNormalized "exposure_popularity" .
 
 effortless-ntwf:map-collider-only-synthetic-constructed_collider a effortless-ntwf:StratumVariableIdentityMaps ;
@@ -37062,7 +37274,7 @@ effortless-ntwf:map-collider-only-synthetic-constructed_collider a effortless-nt
 effortless-ntwf:map-noncollapsibility-or-synthetic-noncollapsible_measure a effortless-ntwf:StratumVariableIdentityMaps ;
     effortless-ntwf:mapId "map-noncollapsibility-or-synthetic-noncollapsible_measure" ;
     effortless-ntwf:stratumVariable effortless-ntwf:noncollapsibility-or-synthetic-noncollapsible_measure ;
-    effortless-ntwf:confounderIdentity effortless-ntwf:id-mechanism-other ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-method-specification ;
     effortless-ntwf:variableNameNormalized "noncollapsible_measure" .
 
 effortless-ntwf:map-trauma-center-mortality-injury_severity a effortless-ntwf:StratumVariableIdentityMaps ;
@@ -37110,7 +37322,7 @@ effortless-ntwf:map-seatbelt-crash-severity-crash_occurrence a effortless-ntwf:S
 effortless-ntwf:map-measles-outbreak-vaccinated-vaccination_base_rate a effortless-ntwf:StratumVariableIdentityMaps ;
     effortless-ntwf:mapId "map-measles-outbreak-vaccinated-vaccination_base_rate" ;
     effortless-ntwf:stratumVariable effortless-ntwf:measles-outbreak-vaccinated-vaccination_base_rate ;
-    effortless-ntwf:confounderIdentity effortless-ntwf:id-mechanism-other ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-exposure-mix ;
     effortless-ntwf:variableNameNormalized "vaccination_base_rate" .
 
 effortless-ntwf:map-air-pollution-mortality-city-city a effortless-ntwf:StratumVariableIdentityMaps ;
@@ -37158,7 +37370,7 @@ effortless-ntwf:map-police-force-encounter-encounter_conditioning a effortless-n
 effortless-ntwf:map-uc-systemwide-admissions-major_campus a effortless-ntwf:StratumVariableIdentityMaps ;
     effortless-ntwf:mapId "map-uc-systemwide-admissions-major_campus" ;
     effortless-ntwf:stratumVariable effortless-ntwf:uc-systemwide-admissions-major_campus ;
-    effortless-ntwf:confounderIdentity effortless-ntwf:id-mechanism-other ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-institutional-unit ;
     effortless-ntwf:variableNameNormalized "major_campus" .
 
 effortless-ntwf:map-teacher-vam-prior-achievement-incoming_achievement a effortless-ntwf:StratumVariableIdentityMaps ;
@@ -37278,7 +37490,7 @@ effortless-ntwf:map-wade-boggs-vs-don-mattingly-season-year a effortless-ntwf:St
 effortless-ntwf:map-johnson-2006-model-specification a effortless-ntwf:StratumVariableIdentityMaps ;
     effortless-ntwf:mapId "map-johnson-2006-model-specification" ;
     effortless-ntwf:stratumVariable effortless-ntwf:johnson-2006-model-specification ;
-    effortless-ntwf:confounderIdentity effortless-ntwf:id-mechanism-other ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-method-specification ;
     effortless-ntwf:variableNameNormalized "model_specification" .
 
 effortless-ntwf:map-chetty-friedman-rockoff-2014-school a effortless-ntwf:StratumVariableIdentityMaps ;
@@ -37356,7 +37568,7 @@ effortless-ntwf:map-framingham-heart-study-sex a effortless-ntwf:StratumVariable
 effortless-ntwf:map-fillmore-et-al-2006-former-vs-never-drinker-status a effortless-ntwf:StratumVariableIdentityMaps ;
     effortless-ntwf:mapId "map-fillmore-et-al-2006-former-vs-never-drinker-status" ;
     effortless-ntwf:stratumVariable effortless-ntwf:fillmore-et-al-2006-former-vs-never-drinker-status ;
-    effortless-ntwf:confounderIdentity effortless-ntwf:id-mechanism-other ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-smoking-behavior ;
     effortless-ntwf:variableNameNormalized "former_vs_never_drinker_status" .
 
 effortless-ntwf:map-women-s-health-study-age-group a effortless-ntwf:StratumVariableIdentityMaps ;
@@ -37440,7 +37652,7 @@ effortless-ntwf:map-heckman-1979-labor-force-participation-decision a effortless
 effortless-ntwf:map-autor-dorn-2013-local-labor-market a effortless-ntwf:StratumVariableIdentityMaps ;
     effortless-ntwf:mapId "map-autor-dorn-2013-local-labor-market" ;
     effortless-ntwf:stratumVariable effortless-ntwf:autor-dorn-2013-local-labor-market ;
-    effortless-ntwf:confounderIdentity effortless-ntwf:id-mechanism-other ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-exposure-mix ;
     effortless-ntwf:variableNameNormalized "local_labor_market" .
 
 effortless-ntwf:map-acemoglu-autor-2011-task-type a effortless-ntwf:StratumVariableIdentityMaps ;
@@ -37500,7 +37712,7 @@ effortless-ntwf:map-brame-bushway-paternoster-turner-2014-offense-type a effortl
 effortless-ntwf:map-fryer-2016-interaction-type a effortless-ntwf:StratumVariableIdentityMaps ;
     effortless-ntwf:mapId "map-fryer-2016-interaction-type" ;
     effortless-ntwf:stratumVariable effortless-ntwf:fryer-2016-interaction-type ;
-    effortless-ntwf:confounderIdentity effortless-ntwf:id-mechanism-other ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-exposure-mix ;
     effortless-ntwf:variableNameNormalized "interaction_type" .
 
 effortless-ntwf:map-rehavi-starr-2012-arrest-offense a effortless-ntwf:StratumVariableIdentityMaps ;
@@ -37620,7 +37832,7 @@ effortless-ntwf:map-plato-trial-geographic-region-north-america-vs-europ a effor
 effortless-ntwf:map-fibrinolytic-therapy-trialists-1994-time-from-symptom-onset a effortless-ntwf:StratumVariableIdentityMaps ;
     effortless-ntwf:mapId "map-fibrinolytic-therapy-trialists-1994-time-from-symptom-onset" ;
     effortless-ntwf:stratumVariable effortless-ntwf:fibrinolytic-therapy-trialists-1994-time-from-symptom-onset ;
-    effortless-ntwf:confounderIdentity effortless-ntwf:id-mechanism-other ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-trial-timing-design ;
     effortless-ntwf:variableNameNormalized "time_from_symptom_onset" .
 
 effortless-ntwf:map-cast-1989-arrhythmia-burden a effortless-ntwf:StratumVariableIdentityMaps ;
@@ -37644,7 +37856,7 @@ effortless-ntwf:map-dcct-research-group-1993-baseline-hba1c a effortless-ntwf:St
 effortless-ntwf:map-triton-timi-38-prior-stroke a effortless-ntwf:StratumVariableIdentityMaps ;
     effortless-ntwf:mapId "map-triton-timi-38-prior-stroke" ;
     effortless-ntwf:stratumVariable effortless-ntwf:triton-timi-38-prior-stroke ;
-    effortless-ntwf:confounderIdentity effortless-ntwf:id-mechanism-other ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-trial-timing-design ;
     effortless-ntwf:variableNameNormalized "prior_stroke" .
 
 effortless-ntwf:map-yusuf-et-al-hope-trial-2000-diabetes-status a effortless-ntwf:StratumVariableIdentityMaps ;
@@ -37728,7 +37940,7 @@ effortless-ntwf:map-olympic-sprint-times-by-heat-type-1996-preliminary-heat-vs-s
 effortless-ntwf:map-von-kugelgen-mohamed-scholkopf-2021-stratum a effortless-ntwf:StratumVariableIdentityMaps ;
     effortless-ntwf:mapId "map-von-kugelgen-mohamed-scholkopf-2021-stratum" ;
     effortless-ntwf:stratumVariable effortless-ntwf:von-kugelgen-mohamed-scholkopf-2021-stratum ;
-    effortless-ntwf:confounderIdentity effortless-ntwf:id-mechanism-other ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-method-specification ;
     effortless-ntwf:variableNameNormalized "stratum" .
 
 effortless-ntwf:map-dagan-et-al-2021-age-group a effortless-ntwf:StratumVariableIdentityMaps ;
@@ -37854,7 +38066,7 @@ effortless-ntwf:map-sarsons-2017-gender-of-co-authors a effortless-ntwf:StratumV
 effortless-ntwf:map-ginther-kahn-2004-field-subarea a effortless-ntwf:StratumVariableIdentityMaps ;
     effortless-ntwf:mapId "map-ginther-kahn-2004-field-subarea" ;
     effortless-ntwf:stratumVariable effortless-ntwf:ginther-kahn-2004-field-subarea ;
-    effortless-ntwf:confounderIdentity effortless-ntwf:id-mechanism-other ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-method-specification ;
     effortless-ntwf:variableNameNormalized "field_subarea" .
 
 effortless-ntwf:map-eeoc-charge-data-industry a effortless-ntwf:StratumVariableIdentityMaps ;
@@ -38046,7 +38258,7 @@ effortless-ntwf:map-early-childhood-longitudinal-study-kindergarten-ses a effort
 effortless-ntwf:map-rothstein-2010-prior-year-assignment a effortless-ntwf:StratumVariableIdentityMaps ;
     effortless-ntwf:mapId "map-rothstein-2010-prior-year-assignment" ;
     effortless-ntwf:stratumVariable effortless-ntwf:rothstein-2010-prior-year-assignment ;
-    effortless-ntwf:confounderIdentity effortless-ntwf:id-mechanism-other ;
+    effortless-ntwf:confounderIdentity effortless-ntwf:id-method-specification ;
     effortless-ntwf:variableNameNormalized "prior_year_assignment" .
 
 effortless-ntwf:map-hmda-loan-to-income-ratio a effortless-ntwf:StratumVariableIdentityMaps ;

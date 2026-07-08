@@ -1342,3 +1342,58 @@ RETURNS TEXT AS $$
   WHERE m.stratum_variable = p_stratum_variable_id
   LIMIT 1;
 $$ LANGUAGE sql STABLE;
+
+-- Loop-82: refresh_identity_domain_cells()
+-- Populates IdentityDomainCells counts from live joins, same pattern as refresh_identity_cluster_summaries.
+CREATE OR REPLACE FUNCTION refresh_identity_domain_cells()
+RETURNS void
+LANGUAGE plpgsql AS $$
+BEGIN
+  WITH study_identity AS (
+    SELECT
+      m.confounder_identity,
+      s.study_id,
+      s.domain,
+      s.is_synthetic,
+      tr.is_sign_flip,
+      tr.latent_flip_potential,
+      tr.distortion_type
+    FROM stratum_variable_identity_maps m
+    JOIN stratum_variables sv ON sv.stratum_variable_id = m.stratum_variable
+    JOIN studies s ON s.study_id = sv.study
+    LEFT JOIN _erb_tr_metrics tr ON tr.study = s.study_id
+    WHERE COALESCE(s.is_synthetic, false) = false
+  ),
+  agg AS (
+    SELECT
+      confounder_identity,
+      domain,
+      COUNT(*)::integer AS study_count,
+      COUNT(*) FILTER (WHERE is_sign_flip)::integer AS manifest_flip_count,
+      COUNT(*) FILTER (WHERE latent_flip_potential AND NOT is_sign_flip)::integer AS latent_flip_count,
+      COUNT(*) FILTER (WHERE distortion_type = 'D')::integer AS type_d_count,
+      COUNT(*) FILTER (WHERE distortion_type = 'D' AND latent_flip_potential)::numeric
+        / NULLIF(COUNT(*) FILTER (WHERE distortion_type = 'D'), 0) AS latent_fraction_among_type_d
+    FROM study_identity
+    GROUP BY confounder_identity, domain
+  )
+  UPDATE identity_domain_cells idc SET
+    study_count             = COALESCE(a.study_count, 0),
+    manifest_flip_count     = COALESCE(a.manifest_flip_count, 0),
+    latent_flip_count       = COALESCE(a.latent_flip_count, 0),
+    type_d_count            = COALESCE(a.type_d_count, 0),
+    latent_fraction_among_type_d = a.latent_fraction_among_type_d
+  FROM agg a
+  WHERE idc.confounder_identity = a.confounder_identity
+    AND idc.domain = a.domain;
+
+  -- Zero out any seed cells with no matching studies
+  UPDATE identity_domain_cells idc SET
+    study_count = 0,
+    manifest_flip_count = 0,
+    latent_flip_count = 0,
+    type_d_count = 0,
+    latent_fraction_among_type_d = NULL
+  WHERE idc.study_count IS NULL;
+END;
+$$;

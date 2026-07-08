@@ -109,4 +109,9 @@ ALTER TABLE identity_cluster_summaries DROP CONSTRAINT IF EXISTS fk_identity_clu
 ALTER TABLE identity_cluster_summaries ADD CONSTRAINT fk_identity_cluster_summaries_confounder_identity
   FOREIGN KEY (confounder_identity) REFERENCES confounder_identities (confounder_identity_id);
 
--- 21 FK constraint(s) declared (off unless EFFORTLESS_ENFORCE_FKS=true).
+-- IdentityDomainCells
+ALTER TABLE identity_domain_cells DROP CONSTRAINT IF EXISTS fk_identity_domain_cells_confounder_identity;
+ALTER TABLE identity_domain_cells ADD CONSTRAINT fk_identity_domain_cells_confounder_identity
+  FOREIGN KEY (confounder_identity) REFERENCES confounder_identities (confounder_identity_id);
+
+-- 22 FK constraint(s) declared (off unless EFFORTLESS_ENFORCE_FKS=true).

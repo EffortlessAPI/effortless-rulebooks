@@ -68,6 +68,7 @@ WHERE invariant_check_id = 'inv-type-d-ratio-near-unity';
 SELECT refresh_erb_tr_metrics();
 SELECT refresh_erb_sp_metrics();
 SELECT refresh_identity_cluster_summaries();
+SELECT refresh_identity_domain_cells();
 
 UPDATE model_summary m SET
   identity_cluster_witness_note = calc_model_summary_identity_cluster_witness_note('simpsons-paradox-v1')
