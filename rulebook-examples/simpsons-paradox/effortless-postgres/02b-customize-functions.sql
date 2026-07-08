@@ -974,6 +974,11 @@ CREATE OR REPLACE FUNCTION calc_discovery_findings_is_confirmed(p_finding_id TEX
     WHEN 'H-collider-no-manifest-theorem' THEN calc_model_summary_collider_selection_manifest_count('simpsons-paradox-v1') = 0
                               AND calc_model_summary_collider_selection_count('simpsons-paradox-v1') >= 10
     WHEN 'H-theorem-portfolio' THEN calc_model_summary_theorem_count('simpsons-paradox-v1') >= 4
+    WHEN 'H-age-identity-flip-rate' THEN calc_model_summary_age_identity_manifest_flip_rate('simpsons-paradox-v1') >= 0.40
+                              AND calc_model_summary_age_identity_study_count('simpsons-paradox-v1') >= 10
+    WHEN 'H-severity-vs-age-latent' THEN calc_model_summary_severity_identity_latent_fraction_among_type('simpsons-paradox-v1')
+                              < calc_model_summary_age_identity_latent_fraction_among_type_d('simpsons-paradox-v1')
+    WHEN 'H-identity-map-coverage' THEN calc_model_summary_identity_map_coverage_rate('simpsons-paradox-v1') >= 0.95
     ELSE FALSE
   END;
 $$ LANGUAGE sql STABLE;
@@ -1025,6 +1030,13 @@ CREATE OR REPLACE FUNCTION calc_discovery_findings_observed_metric(p_finding_id 
     WHEN 'H-collider-no-manifest-theorem' THEN CONCAT('collN=', calc_model_summary_collider_selection_count('simpsons-paradox-v1'),
                                                       ' collManifest=', calc_model_summary_collider_selection_manifest_count('simpsons-paradox-v1'))
     WHEN 'H-theorem-portfolio' THEN CONCAT('theoremCount=', calc_model_summary_theorem_count('simpsons-paradox-v1'))
+    WHEN 'H-age-identity-flip-rate' THEN CONCAT(
+      'AgeIdentityManifestFlipRate=', calc_model_summary_age_identity_manifest_flip_rate('simpsons-paradox-v1'),
+      ' AgeIdentityStudyCount=', calc_model_summary_age_identity_study_count('simpsons-paradox-v1'))
+    WHEN 'H-severity-vs-age-latent' THEN CONCAT(
+      'SeverityIdentityLatentFractionAmongTypeD=', calc_model_summary_severity_identity_latent_fraction_among_type('simpsons-paradox-v1'),
+      ' AgeIdentityLatentFractionAmongTypeD=', calc_model_summary_age_identity_latent_fraction_among_type_d('simpsons-paradox-v1'))
+    WHEN 'H-identity-map-coverage' THEN CONCAT('IdentityMapCoverageRate=', calc_model_summary_identity_map_coverage_rate('simpsons-paradox-v1'))
     ELSE ''
   END;
 $$ LANGUAGE sql STABLE;
@@ -1203,4 +1215,130 @@ RETURNS INTEGER AS $$
     (SELECT COUNT(*) FROM _erb_tr_metrics
      WHERE is_paradox_explained = TRUE AND is_sign_flip = TRUE AND stratum_causal_role <> 'confounder')
   )::integer;
+$$ LANGUAGE sql STABLE;
+
+-- ============================================================================
+-- Loop-81: ConfounderIdentity cluster witness infrastructure
+-- ============================================================================
+CREATE OR REPLACE FUNCTION refresh_identity_cluster_summaries()
+RETURNS void
+LANGUAGE plpgsql AS $$
+BEGIN
+  WITH study_identity AS (
+    SELECT
+      m.confounder_identity,
+      s.study_id,
+      s.domain,
+      s.is_synthetic,
+      tr.is_sign_flip,
+      tr.latent_flip_potential,
+      tr.distortion_type,
+      tr.allocation_distortion
+    FROM stratum_variable_identity_maps m
+    JOIN stratum_variables sv ON sv.stratum_variable_id = m.stratum_variable
+    JOIN studies s ON s.study_id = sv.study
+    LEFT JOIN _erb_tr_metrics tr ON tr.study = s.study_id
+    WHERE COALESCE(s.is_synthetic, false) = false
+  ),
+  agg AS (
+    SELECT
+      confounder_identity,
+      COUNT(*)::integer AS study_count,
+      COUNT(*) FILTER (WHERE is_sign_flip)::integer AS manifest_flip_count,
+      COUNT(*) FILTER (WHERE latent_flip_potential AND NOT is_sign_flip)::integer AS latent_flip_count,
+      COUNT(*) FILTER (WHERE distortion_type = 'D')::integer AS type_d_count,
+      AVG(allocation_distortion) AS avg_allocation_distortion,
+      COUNT(*) FILTER (WHERE distortion_type = 'D' AND latent_flip_potential)::numeric
+        / NULLIF(COUNT(*) FILTER (WHERE distortion_type = 'D'), 0) AS latent_fraction_among_type_d,
+      COUNT(DISTINCT domain)::integer AS domain_count
+    FROM study_identity
+    GROUP BY confounder_identity
+  )
+  UPDATE identity_cluster_summaries ics SET
+    study_count = COALESCE(a.study_count, 0),
+    manifest_flip_count = COALESCE(a.manifest_flip_count, 0),
+    latent_flip_count = COALESCE(a.latent_flip_count, 0),
+    type_d_count = COALESCE(a.type_d_count, 0),
+    avg_allocation_distortion = a.avg_allocation_distortion,
+    latent_fraction_among_type_d = a.latent_fraction_among_type_d,
+    domain_count = COALESCE(a.domain_count, 0)
+  FROM agg a
+  WHERE ics.confounder_identity = a.confounder_identity;
+
+  UPDATE identity_cluster_summaries ics SET
+    study_count = 0,
+    manifest_flip_count = 0,
+    latent_flip_count = 0,
+    type_d_count = 0,
+    avg_allocation_distortion = NULL,
+    latent_fraction_among_type_d = NULL,
+    domain_count = 0
+  WHERE ics.study_count IS NULL
+     OR NOT EXISTS (
+       SELECT 1
+       FROM stratum_variable_identity_maps m
+       JOIN stratum_variables sv ON sv.stratum_variable_id = m.stratum_variable
+       JOIN studies s ON s.study_id = sv.study
+       WHERE m.confounder_identity = ics.confounder_identity
+         AND COALESCE(s.is_synthetic, false) = false
+     );
+END;
+$$;
+
+CREATE OR REPLACE FUNCTION calc_model_summary_identity_map_coverage_rate(p_model_summary_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT (
+    SELECT COUNT(*)::numeric
+    FROM stratum_variable_identity_maps m
+    JOIN stratum_variables sv ON sv.stratum_variable_id = m.stratum_variable
+    JOIN studies s ON s.study_id = sv.study
+    WHERE COALESCE(s.is_synthetic, false) = false
+  ) / NULLIF((
+    SELECT COUNT(*)::numeric
+    FROM stratum_variables sv
+    JOIN studies s ON s.study_id = sv.study
+    WHERE COALESCE(s.is_synthetic, false) = false
+  ), 0);
+$$ LANGUAGE sql STABLE;
+
+CREATE OR REPLACE FUNCTION calc_model_summary_age_identity_manifest_flip_rate(p_model_summary_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT calc_identity_cluster_summaries_manifest_flip_rate('cluster-id-age-composition');
+$$ LANGUAGE sql STABLE;
+
+CREATE OR REPLACE FUNCTION calc_model_summary_age_identity_study_count(p_model_summary_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT study_count FROM identity_cluster_summaries
+  WHERE identity_cluster_id = 'cluster-id-age-composition';
+$$ LANGUAGE sql STABLE;
+
+CREATE OR REPLACE FUNCTION calc_model_summary_age_identity_latent_fraction_among_type_d(p_model_summary_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT latent_fraction_among_type_d FROM identity_cluster_summaries
+  WHERE identity_cluster_id = 'cluster-id-age-composition';
+$$ LANGUAGE sql STABLE;
+
+CREATE OR REPLACE FUNCTION calc_model_summary_severity_identity_latent_fraction_among_type(p_model_summary_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT latent_fraction_among_type_d FROM identity_cluster_summaries
+  WHERE identity_cluster_id = 'cluster-id-disease-severity';
+$$ LANGUAGE sql STABLE;
+
+CREATE OR REPLACE FUNCTION calc_model_summary_identity_cluster_witness_note(p_model_summary_id TEXT)
+RETURNS TEXT AS $$
+  SELECT CONCAT(
+    'ageFlip=', calc_model_summary_age_identity_manifest_flip_rate(p_model_summary_id),
+    ' ageN=', calc_model_summary_age_identity_study_count(p_model_summary_id),
+    ' coverage=', calc_model_summary_identity_map_coverage_rate(p_model_summary_id),
+    ' severityLatentD=', calc_model_summary_severity_identity_latent_fraction_among_type(p_model_summary_id),
+    ' ageLatentD=', calc_model_summary_age_identity_latent_fraction_among_type_d(p_model_summary_id)
+  );
+$$ LANGUAGE sql STABLE;
+
+CREATE OR REPLACE FUNCTION calc_stratum_variables_confounder_identity(p_stratum_variable_id TEXT)
+RETURNS TEXT AS $$
+  SELECT m.confounder_identity
+  FROM stratum_variable_identity_maps m
+  WHERE m.stratum_variable = p_stratum_variable_id
+  LIMIT 1;
 $$ LANGUAGE sql STABLE;

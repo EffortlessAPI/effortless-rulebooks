@@ -1140,6 +1140,72 @@ RETURNS INTEGER AS $$
   SELECT ((COALESCE(CASE WHEN ((SELECT COUNT(*) FROM stratum_variables))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT COUNT(*) FROM stratum_variables))::numeric ELSE NULL END, 0) - COALESCE(CASE WHEN (calc_model_summary_mapped_stratum_variable_count(p_model_summary_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_model_summary_mapped_stratum_variable_count(p_model_summary_id))::numeric ELSE NULL END, 0)))::integer;
 $$ LANGUAGE sql STABLE;
 
+-- calc_model_summary_age_identity_manifest_flip_rate
+-- Field: ModelSummary.AgeIdentityManifestFlipRate
+-- Type: calculated | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_model_summary_age_identity_manifest_flip_rate(p_model_summary_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT /* WARNING: Formula translation failed: Function 'LOOKUP' is not supported yet
+   Original Airtable formula:
+   =LOOKUP("id-age-composition", IdentityClusterSummaries[ConfounderIdentity], IdentityClusterSummaries[ManifestFlipRate])
+*/
+NULL::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_model_summary_age_identity_study_count
+-- Field: ModelSummary.AgeIdentityStudyCount
+-- Type: calculated | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_model_summary_age_identity_study_count(p_model_summary_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT /* WARNING: Formula translation failed: Function 'LOOKUP' is not supported yet
+   Original Airtable formula:
+   =LOOKUP("id-age-composition", IdentityClusterSummaries[ConfounderIdentity], IdentityClusterSummaries[StudyCount])
+*/
+NULL::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_model_summary_age_identity_latent_fraction_among_type_d
+-- Field: ModelSummary.AgeIdentityLatentFractionAmongTypeD
+-- Type: calculated | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_model_summary_age_identity_latent_fraction_among_type_d(p_model_summary_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT /* WARNING: Formula translation failed: Function 'LOOKUP' is not supported yet
+   Original Airtable formula:
+   =LOOKUP("id-age-composition", IdentityClusterSummaries[ConfounderIdentity], IdentityClusterSummaries[LatentFractionAmongTypeD])
+*/
+NULL::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_model_summary_severity_identity_latent_fraction_among_type
+-- Field: ModelSummary.SeverityIdentityLatentFractionAmongTypeD
+-- Type: calculated | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_model_summary_severity_identity_latent_fraction_among_type(p_model_summary_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT /* WARNING: Formula translation failed: Function 'LOOKUP' is not supported yet
+   Original Airtable formula:
+   =LOOKUP("id-disease-severity", IdentityClusterSummaries[ConfounderIdentity], IdentityClusterSummaries[LatentFractionAmongTypeD])
+*/
+NULL::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_model_summary_identity_map_coverage_rate
+-- Field: ModelSummary.IdentityMapCoverageRate
+-- Type: calculated | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_model_summary_identity_map_coverage_rate(p_model_summary_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT (CASE WHEN ((SELECT NULLIF(real_study_count, '') FROM model_summary WHERE model_summary_id = p_model_summary_id))::NUMERIC = 0 THEN ('')::text ELSE ((COALESCE(CASE WHEN (calc_model_summary_mapped_stratum_variable_count(p_model_summary_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_model_summary_mapped_stratum_variable_count(p_model_summary_id))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(CASE WHEN ((SELECT NULLIF(real_study_count, '') FROM model_summary WHERE model_summary_id = p_model_summary_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT NULLIF(real_study_count, '') FROM model_summary WHERE model_summary_id = p_model_summary_id))::numeric ELSE NULL END, 0), 0)))::text END)::numeric;
+$$ LANGUAGE sql STABLE;
+
 -- calc_stratum_variables_name
 -- Field: StratumVariables.Name
 -- Type: calculated | DataType: string | Returns: TEXT
@@ -2941,11 +3007,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_confounder_identities_study_count(p_confounder_identity_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT /* WARNING: Formula translation failed: COUNT() requires 1 argument, got 3
-   Original Airtable formula:
-   =COUNT(StratumVariableIdentityMaps!{{MapId}}, ConfounderIdentity, {{ConfounderIdentityId}})
-*/
-NULL::integer;
+  SELECT ((SELECT COUNT(*) FROM stratum_variable_identity_maps WHERE confounder_identity = (SELECT NULLIF(confounder_identity_id, '') FROM confounder_identities WHERE confounder_identity_id = p_confounder_identity_id)))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- get_stratum_variables_variable_name

@@ -28,7 +28,7 @@ effortless-ntwf:name a owl:DatatypeProperty ;
 effortless-ntwf:studyId a owl:DatatypeProperty ;
     rdfs:range xsd:string ;
     rdfs:label "StudyId" ;
-    rdfs:comment "The study being swept — all 90+ studies in the corpus." .
+    rdfs:comment "The study being swept — all 238 studies in the corpus." .
 
 effortless-ntwf:allocFractionA a owl:DatatypeProperty ;
     rdfs:domain effortless-ntwf:AllocationSweep ;
@@ -1128,7 +1128,7 @@ effortless-ntwf:ingestionWitnessNote a owl:DatatypeProperty ;
 # === Class: InstrumentSpec ===
 effortless-ntwf:InstrumentSpec a owl:Class ;
     rdfs:label "InstrumentSpec" ;
-    rdfs:comment "Table: InstrumentSpec — the complete specification of the Simpson's Paradox classification instrument. One row per component: required input fields, derived coordinates, classification outputs, and adapter requirements. Every row is machine-verifiable against the 90+ study corpus. This table is the distillation of loops 1–25 into a reusable tool." .
+    rdfs:comment "Table: InstrumentSpec — the complete specification of the Simpson's Paradox classification instrument. One row per component: required input fields, derived coordinates, classification outputs, and adapter requirements. Every row is machine-verifiable against the 238-study corpus. This table is the distillation of loops 1–25 into a reusable tool." .
 
 effortless-ntwf:specId a owl:DatatypeProperty ;
     rdfs:domain effortless-ntwf:InstrumentSpec ;
@@ -2136,6 +2136,41 @@ effortless-ntwf:identityClusterWitnessNote a owl:DatatypeProperty ;
     rdfs:range xsd:string ;
     rdfs:label "IdentityClusterWitnessNote" ;
     rdfs:comment "Loop-80 identity layer witness rollup (customize SQL)." .
+
+effortless-ntwf:ageIdentityManifestFlipRate a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:ModelSummary ;
+    rdfs:range xsd:string ;
+    rdfs:label "AgeIdentityManifestFlipRate" ;
+    rdfs:comment "Manifest flip rate for id-age-composition cluster (loop-81)." .
+    # calculated: calculated
+
+effortless-ntwf:ageIdentityStudyCount a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:ModelSummary ;
+    rdfs:range xsd:integer ;
+    rdfs:label "AgeIdentityStudyCount" ;
+    rdfs:comment "Real-study count in id-age-composition cluster (loop-81)." .
+    # calculated: calculated
+
+effortless-ntwf:ageIdentityLatentFractionAmongTypeD a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:ModelSummary ;
+    rdfs:range xsd:string ;
+    rdfs:label "AgeIdentityLatentFractionAmongTypeD" ;
+    rdfs:comment "Type-D latent fraction for id-age-composition cluster (loop-81)." .
+    # calculated: calculated
+
+effortless-ntwf:severityIdentityLatentFractionAmongTypeD a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:ModelSummary ;
+    rdfs:range xsd:string ;
+    rdfs:label "SeverityIdentityLatentFractionAmongTypeD" ;
+    rdfs:comment "Type-D latent fraction for id-disease-severity cluster (loop-81)." .
+    # calculated: calculated
+
+effortless-ntwf:identityMapCoverageRate a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:ModelSummary ;
+    rdfs:range xsd:string ;
+    rdfs:label "IdentityMapCoverageRate" ;
+    rdfs:comment "Fraction of real-study StratumVariables with a ConfounderIdentity map (loop-81 customize SQL)." .
+    # calculated: calculated
 
 # === Class: PhaseDiagramSummary ===
 effortless-ntwf:PhaseDiagramSummary a owl:Class ;

@@ -39,7 +39,6 @@
       "RelativePath": "/owl",
       "CommandLine": "rulebook-to-owl -i ../effortless-rulebook/simpsons-paradox-rulebook.json",
       "IsDisabled": false,
-      "PinnedVersion": "v2026.06.21.1215",
       "LastVersionUsed": "v2026.06.21.1215",
       "LastUrl": "https://effortless-rulebook-to-owl-v2026-06-21-1215-cmvbd4phczmeg.7pktzg2z971j0.cpln.app",
       "Description": "Generate OWL ontology + SHACL rules from the rulebook"

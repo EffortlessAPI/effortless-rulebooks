@@ -202,7 +202,17 @@ SELECT
   calc_model_summary_unexplained_confounder_sign_flip_count(t.model_summary_id) AS unexplained_confounder_sign_flip_count,
   calc_model_summary_explained_confounder_count(t.model_summary_id) AS explained_confounder_count,
   calc_model_summary_contested_or_mediator_explained_count(t.model_summary_id) AS contested_or_mediator_explained_count,
-  calc_model_summary_theorem_count(t.model_summary_id) AS theorem_count
+  calc_model_summary_theorem_count(t.model_summary_id) AS theorem_count,
+  -- Loop-80/81 identity layer
+  calc_model_summary_confounder_identity_count(t.model_summary_id) AS confounder_identity_count,
+  calc_model_summary_mapped_stratum_variable_count(t.model_summary_id) AS mapped_stratum_variable_count,
+  calc_model_summary_unmapped_stratum_variable_count(t.model_summary_id) AS unmapped_stratum_variable_count,
+  t.identity_cluster_witness_note AS identity_cluster_witness_note,
+  calc_model_summary_age_identity_manifest_flip_rate(t.model_summary_id) AS age_identity_manifest_flip_rate,
+  calc_model_summary_age_identity_study_count(t.model_summary_id) AS age_identity_study_count,
+  calc_model_summary_age_identity_latent_fraction_among_type_d(t.model_summary_id) AS age_identity_latent_fraction_among_type_d,
+  calc_model_summary_severity_identity_latent_fraction_among_type(t.model_summary_id) AS severity_identity_latent_fraction_among_type_d,
+  calc_model_summary_identity_map_coverage_rate(t.model_summary_id) AS identity_map_coverage_rate
 FROM model_summary t;
 
 -- ============================================================================
@@ -362,6 +372,22 @@ SELECT
   calc_corpus_catalog_summary_sign_flip_prediction_match_rate(t.catalog_summary_id) AS sign_flip_prediction_match_rate,
   calc_corpus_catalog_summary_catalog_prediction_witness_note(t.catalog_summary_id) AS catalog_prediction_witness_note
 FROM corpus_catalog_summary t;
+
+-- loop-81: StratumVariables.ConfounderIdentity lookup (transpiler quota gap)
+CREATE OR REPLACE VIEW vw_stratum_variables WITH (security_invoker = ON) AS
+SELECT
+  t.stratum_variable_id,
+  calc_stratum_variables_name(t.stratum_variable_id) AS name,
+  t.study,
+  t.variable_name,
+  t.causal_role,
+  t.affects_treatment_assignment,
+  t.affects_outcome,
+  calc_stratum_variables_is_confounder(t.stratum_variable_id) AS is_confounder,
+  t.mechanism_note,
+  t.conditioning_risk,
+  calc_stratum_variables_confounder_identity(t.stratum_variable_id) AS confounder_identity
+FROM stratum_variables t;
 
 -- Repopulate metrics caches: customize views JOIN _erb_tr_metrics / _erb_sp_metrics.
 -- Without this, vw_treatment_rankings and vw_model_summary return empty aggregates

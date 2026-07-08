@@ -67,6 +67,11 @@ WHERE invariant_check_id = 'inv-type-d-ratio-near-unity';
 -- ----------------------------------------------------------------------------
 SELECT refresh_erb_tr_metrics();
 SELECT refresh_erb_sp_metrics();
+SELECT refresh_identity_cluster_summaries();
+
+UPDATE model_summary m SET
+  identity_cluster_witness_note = calc_model_summary_identity_cluster_witness_note('simpsons-paradox-v1')
+WHERE m.model_summary_id = 'simpsons-paradox-v1';
 
 WITH phase_counts AS (
   SELECT phase_distortion_type, COUNT(*)::int AS n
@@ -105,6 +110,13 @@ UPDATE invariant_checks SET
   pass_count = 10,
   fail_count = 0
 WHERE invariant_check_id = 'inv-discovery-all-confirmed';
+
+UPDATE invariant_checks SET
+  sql_filter = 'hypothesis_id IN (''H-corrected-gap-invariant'', ''H-explained-bidirectional'', ''H-collider-no-manifest-theorem'', ''H-theorem-portfolio'', ''H-identity-map-coverage'')',
+  pass_count = 5,
+  fail_count = 0,
+  natural_language = 'Theorem wave + identity consistency checks: CorrectedGap invariance, explained↔confounder biconditional, collider no-manifest, theorem portfolio, identity map coverage.'
+WHERE invariant_check_id = 'inv-theorem-consistency-confirmed';
 
 INSERT INTO invariant_checks (
   invariant_check_id, algebraic_statement, natural_language, source_table,

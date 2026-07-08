@@ -346,7 +346,7 @@ COMMENT ON COLUMN ui_components.required_fields IS 'Comma-separated rulebook fie
 COMMENT ON COLUMN ui_components.visual_spec IS 'Plain-English description of the visual output: shape, color coding, interactivity.';
 
 -- ----------------------------------------------------------------------------
--- InstrumentSpec: Table: InstrumentSpec — the complete specification of the Simpson's Paradox classification instrument. One row per component: required input fields, derived coordinates, classification outputs, and adapter requirements. Every row is machine-verifiable against the 90+ study corpus. This table is the distillation of loops 1–25 into a reusable tool.
+-- InstrumentSpec: Table: InstrumentSpec — the complete specification of the Simpson's Paradox classification instrument. One row per component: required input fields, derived coordinates, classification outputs, and adapter requirements. Every row is machine-verifiable against the 238-study corpus. This table is the distillation of loops 1–25 into a reusable tool.
 -- ----------------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS instrument_spec (
   spec_id                             TEXT                 PRIMARY KEY          -- Unique identifier for this instrument component.
@@ -358,7 +358,7 @@ ALTER TABLE instrument_spec ADD COLUMN IF NOT EXISTS source_table TEXT;         
 ALTER TABLE instrument_spec ADD COLUMN IF NOT EXISTS formula TEXT;                                  -- The ERB formula or derivation rule for this component.
 ALTER TABLE instrument_spec ADD COLUMN IF NOT EXISTS natural_language TEXT;                         -- Plain-English statement of what this component represents or requires.
 ALTER TABLE instrument_spec ADD COLUMN IF NOT EXISTS adapter_note TEXT;                             -- What a researcher must supply or verify to satisfy this component when hydrating a new study.
-COMMENT ON TABLE instrument_spec IS 'Table: InstrumentSpec — the complete specification of the Simpson''s Paradox classification instrument. One row per component: required input fields, derived coordinates, classification outputs, and adapter requirements. Every row is machine-verifiable against the 90+ study corpus. This table is the distillation of loops 1–25 into a reusable tool.';
+COMMENT ON TABLE instrument_spec IS 'Table: InstrumentSpec — the complete specification of the Simpson''s Paradox classification instrument. One row per component: required input fields, derived coordinates, classification outputs, and adapter requirements. Every row is machine-verifiable against the 238-study corpus. This table is the distillation of loops 1–25 into a reusable tool.';
 COMMENT ON COLUMN instrument_spec.spec_id IS 'Unique identifier for this instrument component.';
 COMMENT ON COLUMN instrument_spec.component_type IS 'input | derived | classification | adapter-requirement';
 COMMENT ON COLUMN instrument_spec.field_name IS 'The field or variable name in the DAG.';
@@ -374,11 +374,11 @@ COMMENT ON COLUMN instrument_spec.adapter_note IS 'What a researcher must supply
 CREATE TABLE IF NOT EXISTS allocation_sweep (
   sweep_id                            TEXT                 PRIMARY KEY          -- Unique row identifier: <study>-f<pct> where pct is AllocFractionA*100.
 );
-ALTER TABLE allocation_sweep ADD COLUMN IF NOT EXISTS study_id TEXT;                                -- The study being swept — all 90+ studies in the corpus.
+ALTER TABLE allocation_sweep ADD COLUMN IF NOT EXISTS study_id TEXT;                                -- The study being swept — all 238 studies in the corpus.
 ALTER TABLE allocation_sweep ADD COLUMN IF NOT EXISTS alloc_fraction_a NUMERIC;                     -- Fraction of the sweep-stratum cases assigned to treatment A. Ranges from 0.05 to 0.95. The sweep stratum is the one whose allocation was most confounded in the original study.
 COMMENT ON TABLE allocation_sweep IS 'Table: AllocationSweep — parametric sweep of treatment-A allocation fraction within each study''s most confounded stratum (see SweepStudyConfig). Ten fractions from 0.05 to 0.95 per study. SweepCorrectedGap is invariant; SweepPooledGap wanders.';
 COMMENT ON COLUMN allocation_sweep.sweep_id IS 'Unique row identifier: <study>-f<pct> where pct is AllocFractionA*100.';
-COMMENT ON COLUMN allocation_sweep.study_id IS 'The study being swept — all 90+ studies in the corpus.';
+COMMENT ON COLUMN allocation_sweep.study_id IS 'The study being swept — all 238 studies in the corpus.';
 COMMENT ON COLUMN allocation_sweep.alloc_fraction_a IS 'Fraction of the sweep-stratum cases assigned to treatment A. Ranges from 0.05 to 0.95. The sweep stratum is the one whose allocation was most confounded in the original study.';
 
 -- ----------------------------------------------------------------------------

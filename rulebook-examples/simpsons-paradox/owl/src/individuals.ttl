@@ -26090,13 +26090,13 @@ effortless-ntwf:inv-discovery-all-confirmed a effortless-ntwf:InvariantChecks ;
 effortless-ntwf:inv-theorem-consistency-confirmed a effortless-ntwf:InvariantChecks ;
     effortless-ntwf:invariantCheckId "inv-theorem-consistency-confirmed" ;
     effortless-ntwf:algebraicStatement "COUNTIFS(DiscoveryFindings IsConfirmed FALSE WHERE EpistemicTier=consistency-check AND RegisteredInLoop IN loop-73..76) = 0" ;
-    effortless-ntwf:naturalLanguage "Theorem wave consistency checks (loops 73–76): CorrectedGap invariance, explained↔confounder biconditional, collider no-manifest, theorem portfolio." ;
+    effortless-ntwf:naturalLanguage "Theorem wave + identity consistency checks: CorrectedGap invariance, explained↔confounder biconditional, collider no-manifest, theorem portfolio, identity map coverage." ;
     effortless-ntwf:sourceTable "DiscoveryFindings" ;
     effortless-ntwf:filterExpression "HypothesisEpistemicTier = consistency-check" ;
     effortless-ntwf:assertionExpression "IsConfirmed = TRUE" ;
-    effortless-ntwf:sqlFilter "hypothesis_id IN ('H-corrected-gap-invariant', 'H-explained-bidirectional', 'H-collider-no-manifest-theorem', 'H-theorem-portfolio')" ;
+    effortless-ntwf:sqlFilter "hypothesis_id IN ('H-corrected-gap-invariant', 'H-explained-bidirectional', 'H-collider-no-manifest-theorem', 'H-theorem-portfolio', 'H-identity-map-coverage')" ;
     effortless-ntwf:sqlAssertion "is_confirmed = TRUE" ;
-    effortless-ntwf:passCount 4 ;
+    effortless-ntwf:passCount 5 ;
     effortless-ntwf:failCount 0 ;
     effortless-ntwf:severity "critical" ;
     effortless-ntwf:traditionId "tradition-dag" ;
@@ -27131,8 +27131,18 @@ effortless-ntwf:loop-80 a effortless-ntwf:Loops ;
     effortless-ntwf:status "complete" ;
     effortless-ntwf:newConcept "ConfounderIdentities + StratumVariableIdentityMaps + IdentityClusterSummaries; StratumVariables.ConfounderIdentity lookup; DiscoveryHypotheses H-age-identity-flip-rate, H-severity-vs-age-latent, H-identity-map-coverage; ModelSummary identity rollups; conc-33." ;
     effortless-ntwf:domainQuestion "When 181 raw stratum variable strings collapse to named ConfounderIdentities, do manifest-flip vs latent-D geometry cluster by mechanism (age, severity, org-unit) rather than domain — and can the instrument hold each identity accountable across 238+ studies?" ;
+    effortless-ntwf:mockDataNote "Ontology live at N=238: 15 identities, 238 identity maps, 233 real stratum variables. Cluster witness SQL deferred to loop-81." ;
+    effortless-ntwf:nextSuggestion "loop-81: identity witness infrastructure" ;
+    effortless-ntwf:traditionId "tradition-dag" .
+
+effortless-ntwf:loop-81 a effortless-ntwf:Loops ;
+    effortless-ntwf:loopId "loop-81" ;
+    effortless-ntwf:title "Identity witness infrastructure — refresh IdentityClusterSummaries + close loop-80 hypotheses" ;
+    effortless-ntwf:status "complete" ;
+    effortless-ntwf:newConcept "refresh_identity_cluster_summaries() in 05b-customize-data.sql; ModelSummary identity rollup fields (AgeIdentityManifestFlipRate, AgeIdentityStudyCount, AgeIdentityLatentFractionAmongTypeD, SeverityIdentityLatentFractionAmongTypeD, IdentityMapCoverageRate); calc_discovery_findings branches for loop-80 hypotheses; extend inv-theorem-consistency-confirmed with H-identity-map-coverage; witness conc-33." ;
+    effortless-ntwf:domainQuestion "When cluster summaries are populated from live joins, do loop-80 hypotheses witness correctly — and does H-severity-vs-age-latent fail as ad-hoc SQL predicted?" ;
     effortless-ntwf:mockDataNote "Pending post-build witness." ;
-    effortless-ntwf:nextSuggestion "loop-87: methods-paper export on pruned instrument with identity layer" ;
+    effortless-ntwf:nextSuggestion "loop-82: supersede refuted H-severity-vs-age-latent with identity×domain cells" ;
     effortless-ntwf:traditionId "tradition-dag" .
 
 effortless-ntwf:loop-87 a effortless-ntwf:Loops ;
