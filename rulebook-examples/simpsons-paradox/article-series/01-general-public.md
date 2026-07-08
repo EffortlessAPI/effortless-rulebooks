@@ -78,7 +78,7 @@ Not all conclusions deserve the same level of trust, and a serious system should
 
 **Theorems** are algebraic consequences of the definitions — true by construction. Example: `CorrectedGap` is allocation-invariant. The system witnessed this across ten allocation reweightings with a range of exactly 0.0000. You do not need to trust a model's prose for this. The math closes.
 
-**Discovery findings** are patterns found in the corpus after testing hypotheses. Example: economics studies show a 0% sign-flip rate in this dataset; epidemiology shows roughly 27%. That is a real observation — pre-registered, tested, recorded — but it is contingent on this particular collection of studies, not a law of nature.
+**Discovery findings** are patterns found in the corpus after testing hypotheses. Example: epidemiology shows a higher manifest sign-flip rate than education in this dataset — a real observation, pre-registered and tested, but contingent on this particular collection of 238 studies. Some earlier domain claims (e.g. economics having zero sign-flips at smaller N) were **superseded** when the corpus expanded; those findings are archived, not deleted.
 
 **Superseded patterns** are findings that held at smaller scale but broke when the corpus grew. Six patterns that seemed stable at 64 studies did not survive expansion to 238. They were archived, not deleted. The system remembers what it used to believe and when it changed its mind.
 

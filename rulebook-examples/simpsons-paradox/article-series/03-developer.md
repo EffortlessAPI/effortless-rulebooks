@@ -91,7 +91,7 @@ These four formulas form a DAG. `PolicyImplication` depends on `DistortionType`,
 
 Each build iteration is a row in the `Loops` table inside the rulebook. Think of it as a migration history with semantic annotations:
 
-- `LoopId`: `loop-01` through `loop-78`
+- `LoopId`: `loop-01` through `loop-80` (loops 87–88 planned)
 - `Title`: what new concept was introduced
 - `NewConcept`: the entity, field, or table added
 - `DomainQuestion`: the natural-language question it answers

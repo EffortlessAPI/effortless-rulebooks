@@ -6541,7 +6541,7 @@
     ]
   },
   "InstrumentSpec": {
-    "Description": "Table: InstrumentSpec — the complete specification of the Simpson's Paradox classification instrument. One row per component: required input fields, derived coordinates, classification outputs, and adapter requirements. Every row is machine-verifiable against the 90+ study corpus. This table is the distillation of loops 1–25 into a reusable tool.",
+    "Description": "Table: InstrumentSpec — the complete specification of the Simpson's Paradox classification instrument. One row per component: required input fields, derived coordinates, classification outputs, and adapter requirements. Every row is machine-verifiable against the 238-study corpus. This table is the distillation of loops 1–25 into a reusable tool.",
     "schema": [
       {
         "name": "SpecId",
@@ -6658,7 +6658,7 @@
         "datatype": "string",
         "type": "raw",
         "nullable": false,
-        "Description": "The study being swept — all 90+ studies in the corpus."
+        "Description": "The study being swept — all 238 studies in the corpus."
       },
       {
         "name": "AllocFractionA",

@@ -258,7 +258,7 @@ export function OverviewView() {
       {/* Three key findings — additional 2D views, not replacements */}
       <div className="findings-section-header">
         <h2 className="section-title">Three findings from the corpus</h2>
-        <p className="section-sub">Same 90+ studies, three other lenses — the plane above is unchanged.</p>
+        <p className="section-sub">Same 238 studies, three other lenses — the plane above is unchanged.</p>
       </div>
 
       <div className="findings-grid">

@@ -48,10 +48,11 @@ All concrete details sourced from:
 `rulebook-examples/simpsons-paradox/effortless-rulebook/simpsons-paradox-rulebook.json`
 
 Key artifacts:
-- **Loops table**: 78+ build iterations with witnessed findings
-- **InvariantChecks table**: algebraic assertions, every PassCount green, FailCount=0
+- **Loops table**: 80 loop iterations (through loop-80 complete; 87–88 planned) with witnessed findings
+- **InvariantChecks table**: 29 algebraic assertions (24 critical, all FailCount=0)
 - **TreatmentRankings**: derived fields with actual formula strings
-- **Conclusions table**: epistemic-tier separation (theorem / discovery-finding / corpus-pattern)
+- **Conclusions table**: 34 rows; epistemic-tier separation (theorem / discovery-finding / corpus-pattern-superseded)
+- **ConfounderIdentities / StratumVariableIdentityMaps**: cross-study confounding archetypes (loop-80)
 - **ModelSummary**: N=238 corpus self-portrait
 - **owl/reason.py**: cross-substrate conformance testing
 - **IngestionProtocol / StudyImportTemplate**: 17-item adapter contract, 6-step encoding checklist

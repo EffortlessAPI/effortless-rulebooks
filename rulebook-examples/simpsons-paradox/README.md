@@ -1,6 +1,6 @@
 # Simpson's Paradox — Witnessed DAG Demo
 
-A **witnessed dependency graph** that turns Simpson's paradox from a textbook curiosity into a computational object. **238 studies** (233 real, 5 synthetic) — spanning medicine, epidemiology, law, sports, education, economics, public health, and social science — share one entity model. The instrument was built across **72 Leopold loops** (through loop-77). Every derived value falls out of formulas declared in the rulebook; modeling choices are centralized there, not scattered in app code.
+A **witnessed dependency graph** that turns Simpson's paradox from a textbook curiosity into a computational object. **238 studies** (233 real, 5 synthetic) — spanning medicine, epidemiology, law, sports, education, economics, public health, and social science — share one entity model. The instrument was built across **80 loop iterations** (through **loop-80** complete; **loop-87** and **loop-88** planned). Every derived value falls out of formulas declared in the rulebook; modeling choices are centralized there, not scattered in app code.
 
 **Start at `/discovery` or `/conclusions`.** Formal epistemic claims live in the rulebook `Conclusions` table — tiered by claim type (theorem · instrument · corpus snapshot). Loop-61+ `DiscoveryHypotheses` split into **consistency checks** (definition-linked, e.g. H-purity) vs **corpus hypotheses** (contingent, provisional). SSoT is the rulebook JSON; the explorer reads `vw_*` views only. Run `./start.sh` → [Discovery Research](http://localhost:5173/discovery) · [Conclusions & Findings](http://localhost:5173/conclusions).
 
@@ -18,7 +18,7 @@ The `Loops` table is the build history — each row documents what domain concep
 
 ---
 
-## Recent loops (60–77)
+## Recent loops (60–80)
 
 | Phase | Loops | What landed |
 |---|---|---|
@@ -29,10 +29,11 @@ The `Loops` table is the build history — each row documents what domain concep
 | **Mechanistic vocabulary** | **loop-70** | `IsStratumUnanimous`, `IsSweepFragile`; Type A/B now keyed on stratum unanimity (not `DistortionRatio` bands). |
 | **Expansion wave 2** | **loop-71–72** | 12 studies (criminal-justice, public-health-smoking, sports); corpus → 111 real; domain-profile stability re-tested at scale. |
 | **Theorem wave** | **loop-73–76** | Four **Category=theorem** conclusions promoted: CorrectedGap invariance, Explained↔Confounder biconditional, collider-no-manifest (conditional), theorem portfolio synthesis. |
-| **Expansion wave 3** | **loop-77–78** | 122 studies bulk-encoded; corpus → **238**; 6 corpus patterns superseded (`conc-32`). |
-| **Vocabulary prune** | **loop-80** (planned) | Retire superseded discovery predicates before methods export — mirror loop-60. |
+| **Expansion wave 3** | **loop-77–78** | 122 studies bulk-encoded; corpus → **238**; 6 corpus patterns superseded at N=238 (`conc-32`); type-prediction re-audit (~39.1% exact match on imported catalog rows). |
+| **Vocabulary prune** | **loop-79** | Retired 6 superseded discovery predicates from loop-78 (archived in `conc-32` evidence); pruned ModelSummary rollup fields; `conc-17` / `conc-22` / `conc-27` marked historical-only. |
+| **Confounder identity** | **loop-80** | `ConfounderIdentities` + `StratumVariableIdentityMaps` + `IdentityClusterSummaries`; 15 canonical confounding archetypes; 238 stratum-variable identity maps; `conc-33`. |
 
-**Next up:** **loop-80** — vocabulary prune (retire 6 superseded discovery predicates from loop-78; mirror loop-60 discipline). **loop-79** methods-paper export follows on the trimmed instrument.
+**Next up:** **loop-87** — methods-paper export on the pruned instrument (theorem portfolio + `InstrumentSpec` packaging). **loop-88** — ALLHAT source verification (REAL? template cells → published-table encode).
 
 ---
 
@@ -51,9 +52,10 @@ Studies ──< Strata ──< CaseCells            ← raw leaves: (successes, 
    └──< StratumVariables                     IsConfounder, CausalRole, AdjustmentAppropriate
    └──  ModelSummary                         epistemic rollup across all 238 studies
    └──  InstrumentSpec                       input fields, derived coordinates, theorem catalog
-   └──  InvariantChecks                      28 algebraic self-consistency assertions (all critical PASS)
+   └──  InvariantChecks                      29 algebraic self-consistency assertions (24 critical PASS; 5 warning-only)
    └──  Conclusions / Methodology / Loops    witnessed claims and build narrative
-   └──  DiscoveryHypotheses / DiscoveryFindings   pre-registered corpus experiments
+   └──  DiscoveryHypotheses / DiscoveryFindings   18 active pre-registered corpus experiments
+   └──  ConfounderIdentities / StratumVariableIdentityMaps / IdentityClusterSummaries
    └──  CandidateStudyCatalog               import catalog (235 imported, 2 blocked, 0 queued)
    └──  CorpusCatalogSummary / CorpusDomains / DomainExpansionTargets
    └──  AllocationSweep / SweepStudyConfig   parameter-space exploration (2,380 sweep rows)
@@ -118,7 +120,7 @@ Synthetic and counterfactual studies are structural controls — they prove impo
 
 ## What the model witnesses
 
-All **28 algebraic invariants** pass across the full corpus (**0 critical failures** — any critical `FailCount > 0` breaks the build):
+All **29 algebraic invariants** pass across the full corpus (**0 critical failures** — any critical `FailCount > 0` breaks the build):
 
 - Every row has a `DistortionType` in {A, B, C+, C−, D}
 - Types A and B always have `IsSignFlip=TRUE`; C+, C−, and D always have `IsSignFlip=FALSE`
@@ -144,12 +146,13 @@ The `ModelSummary` row witnesses epistemic coverage in one query:
 | Type A / B / C+ / C− / D | 78 / 8 / 8 / 7 / 137 |
 | ExplainedCount | 83 |
 | AllocationSweep rows | 2,380 (238 studies × 10 steps) |
-| DiscoveryHypotheses | 21 (all PASS at loop-76 rollup) |
+| DiscoveryHypotheses | 18 active (6 superseded predicates retired in loop-79) |
+| ConfounderIdentities | 15 canonical archetypes; 238 stratum-variable maps |
 | TheoremCount | 5 Category=theorem conclusions |
 
 **Reversal recovery is free.** `CorrectedGap = WeightedStratumGapSum` is already derived from the allocation arithmetic. The allocation-corrected winner (`CorrectedWinner`) and its policy implication (`CorrectedPolicyImplication`) cost zero new data — now promoted to **theorem** (conc-28).
 
-**32 conclusions** are stored as first-class rows in `Conclusions` — from "Simpson's paradox is a derived fact" (loop-04) through loop-76 theorem portfolio synthesis. Five carry **Category=theorem** (signal purity ceiling, CorrectedGap invariance, Explained↔Confounder, collider-no-manifest). The PDF and `/conclusions` UI group them by epistemic tier, not a single headline tally.
+**34 conclusions** are stored as first-class rows in `Conclusions` — from "Simpson's paradox is a derived fact" (loop-04) through loop-80 confounder-identity layer (`conc-33`). Five carry **Category=theorem** (signal purity ceiling, CorrectedGap invariance, Explained↔Confounder, collider-no-manifest). The PDF and `/conclusions` UI group them by epistemic tier, not a single headline tally.
 
 ---
 
@@ -200,9 +203,9 @@ The `owl-conformance` transpiler is disabled in `effortless.json`; conformance i
 
 **Geometric, not causal.** The instrument classifies allocation distortion and flags the allocation-corrected winner from arithmetic alone. Whether it is safe to act on that correction as a causal claim is answered by `AdjustmentAppropriate`, which gates on `ConditioningRisk` and `CausalClaimStatus`. Berkeley is the proof: high `AllocationDistortion` but `CausalRole=contested` — the instrument classifies the geometry; the researcher supplies the causal account.
 
-**Deductive vs. empirical.** `Conclusions` rows tagged **theorem** (e.g. SignalPurity bound, CorrectedGap invariance) are true by the definitions — invariant checks on them are regression tests for the transpiler, not independent discoveries about nature. Rows tagged **domain** and loop-61+ **DiscoveryHypotheses** (e.g. H-econ-zero, H-latent-d) are corpus statistics on a convenience sample — pre-registered before expansion, still provisional. Do not treat H-purity PASS the same way you treat a theorem; the UI separates them for a reason.
+**Deductive vs. empirical.** `Conclusions` rows tagged **theorem** (e.g. SignalPurity bound, CorrectedGap invariance) are true by the definitions — invariant checks on them are regression tests for the transpiler, not independent discoveries about nature. Rows tagged **domain** and active **DiscoveryHypotheses** (e.g. H-latent-d, H-catalog-exact-match) are corpus statistics on a convenience sample — pre-registered before expansion, still provisional. Six domain-pattern hypotheses superseded at N=238 were retired from the active DAG in loop-79 (evidence preserved in `conc-32`). Do not treat a discovery PASS the same way you treat a theorem; the UI separates them for a reason.
 
-Catalog `ExpectedDistortionType` is a **pre-encoding guess**. Observed `DistortionType` is what the DAG computes from cell counts. Mismatches are data for pattern analysis, not bugs — unless they violate an algebraic invariant (~19% exact match at N=93 pre-expansion; re-audit planned at loop-78).
+Catalog `ExpectedDistortionType` is a **pre-encoding guess**. Observed `DistortionType` is what the DAG computes from cell counts. Mismatches are data for pattern analysis, not bugs — unless they violate an algebraic invariant (~39.1% exact match on 235 imported catalog rows at N=238; sign-flip prediction ~54.1% per loop-78 audit).
 
 ---
 
@@ -243,6 +246,7 @@ No migrations. Edit rulebook → `effortless build` → `./init-db.sh` → DB re
 | `loop-69-expansion-discovery.py`, `loop-72-expansion-discovery.py` | Wire discovery findings after encode waves |
 | `loop-70-mechanistic-vocabulary.py` | IsStratumUnanimous / IsSweepFragile |
 | `loop-73-76-theorem-formalization-plan.py` | Theorem promotion scaffolding |
+| `apply-loops-79-80.py` | Vocabulary prune (loop-79) + confounder identity layer (loop-80) |
 | `generate-allocation-sweep-all.py` | Regenerate sweep rows after corpus changes |
 | `acquisition-loop-expansion-wave-1.py` | Out-of-channel data download queue |
 | `merge-acquisition-manifest.py`, `merge-pdf-extraction-manifest.py` | Merge acquisition metadata into catalog |

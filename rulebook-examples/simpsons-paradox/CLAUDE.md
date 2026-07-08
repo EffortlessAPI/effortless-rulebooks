@@ -6,16 +6,21 @@ Build with `effortless build` (hosted transpilers in `effortless.json`); run the
 
 ## What this models
 
-A **digital mirror** of the Simpson's Paradox domain — a 90+ study validation corpus
-spanning medicine, epidemiology, law, sports, education, economics, and social science.
+A **digital mirror** of the Simpson's Paradox domain — a **238-study** validation corpus
+(233 real, 5 synthetic) spanning medicine, epidemiology, law, sports, education,
+economics, public health, and social science. Built through **loop-80** (loops 87–88 planned).
 The entities are domain objects: Studies, Treatments, Strata, CaseCells. The paradox
 emerges as a derived fact from the DAG — it is NOT modeled directly. No
 `ReversalDetection` entity. No `PooledRate` entity. The paradox falls out when you ask
 the right questions of the domain.
 
-Derived geometry on `TreatmentRankings` includes `IsSignFlip`, `AllocationDistortion`,
-`DistortionType` (A / B / C+ / C− / D), `SignalPurity`, and allocation-corrected winners.
-`InvariantChecks` rows are build-breaking: any `FailCount > 0` is a bug.
+Derived geometry on `TreatmentRankings` includes `IsSignFlip`, `IsStratumUnanimous`,
+`IsSweepFragile`, `AllocationDistortion`, `DistortionType` (A / B / C+ / C− / D),
+`SignalPurity`, and allocation-corrected winners. Loop-80 adds `ConfounderIdentities` and
+cross-study stratum-variable identity maps. `DiscoveryHypotheses` / `DiscoveryFindings`
+hold pre-registered corpus experiments; six superseded predicates were retired in loop-79.
+`InvariantChecks` rows are build-breaking: any critical `FailCount > 0` is a bug (29 total;
+24 critical).
 
 The model is built iteratively via Leopold loops. The `Loops` table IS the plan — each
 row documents what domain concept is introduced and what natural-language question it

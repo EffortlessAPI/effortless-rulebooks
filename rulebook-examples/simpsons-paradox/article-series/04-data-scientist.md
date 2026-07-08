@@ -105,9 +105,9 @@ Three examples from Loop 62:
 
 **H-causal-manifest**: "All sign-flip studies with StratumCausalRole='confounder' will be manifest (not latent)." Registered before encoding 15 confounder studies. Result: PASS.
 
-**H-econ-zero**: "Economics studies will have 0% sign-flip rate." Registered before expanding the economics subset. Result at N=238: 0 of 8 economics studies show a sign flip. PASS.
+**H-econ-zero**: "Economics studies will have 0% sign-flip rate." Registered before expanding the economics subset. Result at N=238: **FAIL** — 10 of 39 economics studies show a sign flip (~25.6%). Hypothesis retired in loop-79; evidence preserved in `conc-32` as a corpus-pattern supersession.
 
-**H-domain-dist**: "Epidemiology will have higher AllocationDistortion than education." Registered before encoding either domain fully. Result: epidemiology average 0.050, education average 0.004. PASS.
+**H-domain-dist**: "Epidemiology will have higher AllocationDistortion than education." Registered before encoding either domain fully. Result at N=238: **FAIL** after expansion wave 3 (pattern superseded). Archived in loop-79; the instrument now treats domain-rate claims as provisional until re-registered at scale.
 
 Pre-registration prevents the most common form of confirmation bias in exploratory data science: noticing a pattern and then claiming you predicted it. In an LLM-assisted workflow, this risk is amplified — the model can generate a post-hoc explanation for any pattern you show it, in convincing prose, faster than you can write down whether you actually predicted that pattern before you looked. The hypothesis table is a technical countermeasure to a methodological failure mode.
 
