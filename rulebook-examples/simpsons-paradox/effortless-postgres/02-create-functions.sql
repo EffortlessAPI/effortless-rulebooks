@@ -275,7 +275,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_case_cells_is_valid_ingestion_cell(p_case_cell_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((((SELECT cases FROM case_cells WHERE case_cell_id = p_case_cell_id))::NUMERIC > 0 AND ((SELECT successes FROM case_cells WHERE case_cell_id = p_case_cell_id))::NUMERIC >= 0 AND (SELECT successes FROM case_cells WHERE case_cell_id = p_case_cell_id) <= (SELECT cases FROM case_cells WHERE case_cell_id = p_case_cell_id)));
+  SELECT ((((SELECT cases FROM case_cells WHERE case_cell_id = p_case_cell_id))::NUMERIC >= 0 AND ((SELECT successes FROM case_cells WHERE case_cell_id = p_case_cell_id))::NUMERIC >= 0 AND (SELECT successes FROM case_cells WHERE case_cell_id = p_case_cell_id) <= (SELECT cases FROM case_cells WHERE case_cell_id = p_case_cell_id)));
 $$ LANGUAGE sql STABLE;
 
 -- calc_stratum_summaries_name
@@ -1115,7 +1115,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_model_summary_max_study_sweep_corrected_gap_range(p_model_summary_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT (MAX(calc_sweep_study_summary_sweep_corrected_gap_range(p_sweep_study_id)))::numeric;
+  SELECT ((SELECT MAX(sweep_corrected_gap_range) FROM sweep_study_summary))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_model_summary_corrected_gap_invariant_fail_count
@@ -1125,7 +1125,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_model_summary_corrected_gap_invariant_fail_count(p_model_summary_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM sweep_study_summary WHERE calc_sweep_study_summary_sweep_corrected_gap_range(sweep_study_id) = '>=0.0001'))::integer;
+  SELECT ((SELECT COUNT(*) FROM sweep_study_summary WHERE sweep_corrected_gap_range = '>=0.0001'))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_model_summary_false_positive_explained_count
@@ -1155,7 +1155,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_model_summary_theorem_count(p_model_summary_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM conclusions WHERE category = 'theorem' AND status = 'witnessed'))::integer;
+  SELECT ((SELECT COUNT(*) FROM conclusions WHERE category = 'corpus-theorem' AND status = 'witnessed'))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_model_summary_education_latent_fraction
@@ -2089,6 +2089,16 @@ RETURNS TEXT AS $$
   SELECT (CASE WHEN calc_invariant_checks_is_green(p_invariant_check_id) THEN ('PASS')::text ELSE (CONCAT('FAIL(', (SELECT fail_count FROM invariant_checks WHERE invariant_check_id = p_invariant_check_id), ')'))::text END)::text;
 $$ LANGUAGE sql STABLE;
 
+-- calc_materialized_entities_name
+-- Field: MaterializedEntities.Name
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_materialized_entities_name(p_materialized_entity_id TEXT)
+RETURNS TEXT AS $$
+  SELECT ((SELECT NULLIF(materialized_entity_id, '') FROM materialized_entities WHERE materialized_entity_id = p_materialized_entity_id))::text;
+$$ LANGUAGE sql STABLE;
+
 -- calc_methodology_name
 -- Field: Methodology.Name
 -- Type: calculated | DataType: string | Returns: TEXT
@@ -2379,86 +2389,6 @@ RETURNS TEXT AS $$
 NULL::text;
 $$ LANGUAGE sql STABLE;
 
--- calc_sweep_study_summary_corrected_gap_constant
--- Field: SweepStudySummary.CorrectedGapConstant
--- Type: calculated | DataType: number | Returns: NUMERIC
-
-
-CREATE OR REPLACE FUNCTION calc_sweep_study_summary_corrected_gap_constant(p_sweep_study_id TEXT)
-RETURNS NUMERIC AS $$
-  SELECT ((SELECT COALESCE(MIN((calc_allocation_sweep_sweep_corrected_gap(sweep_id))::numeric), 0) FROM allocation_sweep WHERE study_id = p_sweep_study_id))::numeric;
-$$ LANGUAGE sql STABLE;
-
--- calc_sweep_study_summary_sweep_corrected_gap_max
--- Field: SweepStudySummary.SweepCorrectedGapMax
--- Type: calculated | DataType: number | Returns: NUMERIC
-
-
-CREATE OR REPLACE FUNCTION calc_sweep_study_summary_sweep_corrected_gap_max(p_sweep_study_id TEXT)
-RETURNS NUMERIC AS $$
-  SELECT ((SELECT COALESCE(MAX((calc_allocation_sweep_sweep_corrected_gap(sweep_id))::numeric), 0) FROM allocation_sweep WHERE study_id = p_sweep_study_id))::numeric;
-$$ LANGUAGE sql STABLE;
-
--- calc_sweep_study_summary_sweep_corrected_gap_min
--- Field: SweepStudySummary.SweepCorrectedGapMin
--- Type: calculated | DataType: number | Returns: NUMERIC
-
-
-CREATE OR REPLACE FUNCTION calc_sweep_study_summary_sweep_corrected_gap_min(p_sweep_study_id TEXT)
-RETURNS NUMERIC AS $$
-  SELECT ((SELECT COALESCE(MIN((calc_allocation_sweep_sweep_corrected_gap(sweep_id))::numeric), 0) FROM allocation_sweep WHERE study_id = p_sweep_study_id))::numeric;
-$$ LANGUAGE sql STABLE;
-
--- calc_sweep_study_summary_sweep_corrected_gap_range
--- Field: SweepStudySummary.SweepCorrectedGapRange
--- Type: calculated | DataType: number | Returns: NUMERIC
-
-
-CREATE OR REPLACE FUNCTION calc_sweep_study_summary_sweep_corrected_gap_range(p_sweep_study_id TEXT)
-RETURNS NUMERIC AS $$
-  SELECT ((COALESCE(CASE WHEN (calc_sweep_study_summary_sweep_corrected_gap_max(p_sweep_study_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_sweep_study_summary_sweep_corrected_gap_max(p_sweep_study_id))::numeric ELSE NULL END, 0) - COALESCE(CASE WHEN (calc_sweep_study_summary_sweep_corrected_gap_min(p_sweep_study_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_sweep_study_summary_sweep_corrected_gap_min(p_sweep_study_id))::numeric ELSE NULL END, 0)))::numeric;
-$$ LANGUAGE sql STABLE;
-
--- calc_sweep_study_summary_sweep_pooled_gap_max
--- Field: SweepStudySummary.SweepPooledGapMax
--- Type: calculated | DataType: number | Returns: NUMERIC
-
-
-CREATE OR REPLACE FUNCTION calc_sweep_study_summary_sweep_pooled_gap_max(p_sweep_study_id TEXT)
-RETURNS NUMERIC AS $$
-  SELECT ((SELECT COALESCE(MAX((calc_allocation_sweep_sweep_pooled_gap(sweep_id))::numeric), 0) FROM allocation_sweep WHERE study_id = p_sweep_study_id))::numeric;
-$$ LANGUAGE sql STABLE;
-
--- calc_sweep_study_summary_sweep_pooled_gap_min
--- Field: SweepStudySummary.SweepPooledGapMin
--- Type: calculated | DataType: number | Returns: NUMERIC
-
-
-CREATE OR REPLACE FUNCTION calc_sweep_study_summary_sweep_pooled_gap_min(p_sweep_study_id TEXT)
-RETURNS NUMERIC AS $$
-  SELECT ((SELECT COALESCE(MIN((calc_allocation_sweep_sweep_pooled_gap(sweep_id))::numeric), 0) FROM allocation_sweep WHERE study_id = p_sweep_study_id))::numeric;
-$$ LANGUAGE sql STABLE;
-
--- calc_sweep_study_summary_sweep_pooled_gap_range
--- Field: SweepStudySummary.SweepPooledGapRange
--- Type: calculated | DataType: number | Returns: NUMERIC
-
-
-CREATE OR REPLACE FUNCTION calc_sweep_study_summary_sweep_pooled_gap_range(p_sweep_study_id TEXT)
-RETURNS NUMERIC AS $$
-  SELECT ((COALESCE(CASE WHEN (calc_sweep_study_summary_sweep_pooled_gap_max(p_sweep_study_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_sweep_study_summary_sweep_pooled_gap_max(p_sweep_study_id))::numeric ELSE NULL END, 0) - COALESCE(CASE WHEN (calc_sweep_study_summary_sweep_pooled_gap_min(p_sweep_study_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_sweep_study_summary_sweep_pooled_gap_min(p_sweep_study_id))::numeric ELSE NULL END, 0)))::numeric;
-$$ LANGUAGE sql STABLE;
-
--- calc_sweep_study_summary_pooled_gap_crosses_zero
--- Field: SweepStudySummary.PooledGapCrossesZero
--- Type: calculated | DataType: boolean | Returns: BOOLEAN
-
-
-CREATE OR REPLACE FUNCTION calc_sweep_study_summary_pooled_gap_crosses_zero(p_sweep_study_id TEXT)
-RETURNS BOOLEAN AS $$
-  SELECT (((calc_sweep_study_summary_sweep_pooled_gap_min(p_sweep_study_id))::NUMERIC < 0 AND (calc_sweep_study_summary_sweep_pooled_gap_max(p_sweep_study_id))::NUMERIC > 0));
-$$ LANGUAGE sql STABLE;
-
 -- calc_sweep_study_summary_invariant_witness
 -- Field: SweepStudySummary.InvariantWitness
 -- Type: calculated | DataType: string | Returns: TEXT
@@ -2466,7 +2396,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_sweep_study_summary_invariant_witness(p_sweep_study_id TEXT)
 RETURNS TEXT AS $$
-  SELECT (CASE WHEN (calc_sweep_study_summary_sweep_corrected_gap_range(p_sweep_study_id))::NUMERIC < 0.0001 THEN ('PASS: CorrectedGap invariant across allocation sweep')::text ELSE ('FAIL: CorrectedGap varies — formula error')::text END)::text;
+  SELECT (CASE WHEN ((SELECT sweep_corrected_gap_range FROM sweep_study_summary WHERE sweep_study_id = p_sweep_study_id))::NUMERIC < 0.0001 THEN ('PASS: CorrectedGap invariant across allocation sweep')::text ELSE ('FAIL: CorrectedGap varies — formula error')::text END)::text;
 $$ LANGUAGE sql STABLE;
 
 -- calc_sweep_study_summary_sweep_stratum_label
@@ -2820,7 +2750,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_ingestion_summary_study_count(p_ingestion_summary_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM studies))::integer;
+  SELECT ((SELECT COUNT(*) FROM studies WHERE is_control_study = FALSE))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_ingestion_summary_structural_compliant_count
@@ -2850,7 +2780,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_ingestion_summary_real_study_count(p_ingestion_summary_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM studies WHERE is_synthetic = FALSE))::integer;
+  SELECT ((SELECT COUNT(*) FROM studies WHERE is_synthetic = FALSE AND is_control_study = FALSE))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_ingestion_summary_real_fully_compliant_count

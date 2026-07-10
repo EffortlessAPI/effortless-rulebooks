@@ -493,6 +493,58 @@ CREATE OR REPLACE FUNCTION calc_discovery_findings_is_confirmed(p_finding_id TEX
       AND (SELECT study_count FROM identity_cluster_summaries WHERE identity_cluster_id = 'cluster-id-geographic-composition') >= 3
     WHEN 'H-unexplained-flips-only-nonconfounders' THEN
       calc_model_summary_unexplained_confounder_sign_flip_count('simpsons-paradox-v1') = 0
+    -- loop-91: the 7 hypotheses registered without a DiscoveryFindings row (loops 86-88).
+    -- Live queries, no cache — same pattern as every other branch above.
+    WHEN 'H-safety-corridor-lower-bound' THEN
+      (SELECT MIN(max_stratum_imbalance) FROM vw_treatment_rankings WHERE is_sign_flip = TRUE) >= 0.033
+      AND (SELECT COUNT(*) FROM vw_treatment_rankings WHERE is_sign_flip = TRUE AND max_stratum_imbalance < 0.033) = 0
+    WHEN 'H-perfect-balance-sufficient-safety' THEN
+      (SELECT COUNT(*) FROM vw_treatment_rankings WHERE arm_size_ratio = 0.5 AND max_stratum_imbalance = 0.0 AND is_sign_flip = TRUE) = 0
+      AND (SELECT COUNT(*) FROM vw_treatment_rankings WHERE arm_size_ratio = 0.5 AND max_stratum_imbalance = 0.0) >= 100
+    WHEN 'H-purity-inversion' THEN
+      (SELECT AVG(tr.signal_purity) FROM stratum_variable_identity_maps m
+        JOIN stratum_variables sv ON sv.stratum_variable_id = m.stratum_variable
+        JOIN studies s ON s.study_id = sv.study
+        JOIN vw_treatment_rankings tr ON tr.study = s.study_id
+        JOIN confounder_identities ci ON ci.confounder_identity_id = m.confounder_identity
+        WHERE ci.policy_default = 'do-not-condition' AND COALESCE(s.is_synthetic, false) = false)
+      >
+      (SELECT AVG(tr.signal_purity) FROM stratum_variable_identity_maps m
+        JOIN stratum_variables sv ON sv.stratum_variable_id = m.stratum_variable
+        JOIN studies s ON s.study_id = sv.study
+        JOIN vw_treatment_rankings tr ON tr.study = s.study_id
+        JOIN confounder_identities ci ON ci.confounder_identity_id = m.confounder_identity
+        WHERE ci.policy_default LIKE 'stratify-%' AND COALESCE(s.is_synthetic, false) = false)
+    WHEN 'H-purity-trap-flag-coverage' THEN
+      (SELECT COUNT(*) FILTER (WHERE tr.purity_trap_flag = TRUE)::numeric / NULLIF(COUNT(*), 0)
+        FROM stratum_variable_identity_maps m
+        JOIN stratum_variables sv ON sv.stratum_variable_id = m.stratum_variable
+        JOIN studies s ON s.study_id = sv.study
+        JOIN vw_treatment_rankings tr ON tr.study = s.study_id
+        JOIN confounder_identities ci ON ci.confounder_identity_id = m.confounder_identity
+        WHERE ci.policy_default = 'do-not-condition' AND COALESCE(s.is_synthetic, false) = false) >= 0.80
+      AND
+      (SELECT COUNT(*) FILTER (WHERE tr.purity_trap_flag = TRUE)::numeric / NULLIF(COUNT(*), 0)
+        FROM stratum_variable_identity_maps m
+        JOIN stratum_variables sv ON sv.stratum_variable_id = m.stratum_variable
+        JOIN studies s ON s.study_id = sv.study
+        JOIN vw_treatment_rankings tr ON tr.study = s.study_id
+        JOIN confounder_identities ci ON ci.confounder_identity_id = m.confounder_identity
+        WHERE m.confounder_identity = 'id-demographic-group' AND COALESCE(s.is_synthetic, false) = false) <= 0.05
+    -- Control studies (loop-88) were never encoded with paired treatment arms, so they
+    -- produce zero TreatmentRankings rows by construction — these three are vacuously
+    -- true, not substantively witnessed. ObservedMetric/Evidence say so explicitly below.
+    WHEN 'H-control-type-d-predominance' THEN
+      (SELECT COUNT(*) FROM treatment_rankings tr JOIN studies s ON s.study_id = tr.study
+        WHERE s.is_control_study = TRUE AND calc_treatment_rankings_is_sign_flip(tr.treatment_ranking_id) = TRUE)::numeric
+      / NULLIF((SELECT COUNT(*) FROM studies WHERE is_control_study = TRUE), 0) < 0.3
+    WHEN 'H-control-no-manifest-flip' THEN
+      (SELECT COUNT(*) FROM treatment_rankings tr JOIN studies s ON s.study_id = tr.study
+        WHERE s.is_control_study = TRUE AND calc_treatment_rankings_is_sign_flip(tr.treatment_ranking_id) = TRUE) = 0
+    WHEN 'H-control-safety-corridor' THEN
+      (SELECT COUNT(*) FROM treatment_rankings tr JOIN studies s ON s.study_id = tr.study
+        WHERE s.is_control_study = TRUE AND calc_treatment_rankings_is_sign_flip(tr.treatment_ranking_id) = TRUE
+          AND calc_treatment_rankings_max_stratum_imbalance(tr.treatment_ranking_id) < 0.033) = 0
     ELSE FALSE
   END;
 $$ LANGUAGE sql STABLE;
@@ -569,6 +621,54 @@ CREATE OR REPLACE FUNCTION calc_discovery_findings_observed_metric(p_finding_id 
       ' GeographicStudyCount=', (SELECT study_count FROM identity_cluster_summaries WHERE identity_cluster_id = 'cluster-id-geographic-composition'))
     WHEN 'H-unexplained-flips-only-nonconfounders' THEN CONCAT(
       'UnexplainedConfounderSignFlipCount=', calc_model_summary_unexplained_confounder_sign_flip_count('simpsons-paradox-v1'))
+    WHEN 'H-safety-corridor-lower-bound' THEN CONCAT(
+      'MinSignFlipStratumImbalance=', (SELECT MIN(max_stratum_imbalance) FROM vw_treatment_rankings WHERE is_sign_flip = TRUE),
+      ' SafeCorridorFlipCount=', (SELECT COUNT(*) FROM vw_treatment_rankings WHERE is_sign_flip = TRUE AND max_stratum_imbalance < 0.033))
+    WHEN 'H-perfect-balance-sufficient-safety' THEN CONCAT(
+      'PerfectBalanceFlipCount=', (SELECT COUNT(*) FROM vw_treatment_rankings WHERE arm_size_ratio = 0.5 AND max_stratum_imbalance = 0.0 AND is_sign_flip = TRUE),
+      ' PerfectBalanceStudyCount=', (SELECT COUNT(*) FROM vw_treatment_rankings WHERE arm_size_ratio = 0.5 AND max_stratum_imbalance = 0.0))
+    WHEN 'H-purity-inversion' THEN CONCAT(
+      'MeanPurityDoNotCondition=', (SELECT ROUND(AVG(tr.signal_purity), 4) FROM stratum_variable_identity_maps m
+        JOIN stratum_variables sv ON sv.stratum_variable_id = m.stratum_variable
+        JOIN studies s ON s.study_id = sv.study
+        JOIN vw_treatment_rankings tr ON tr.study = s.study_id
+        JOIN confounder_identities ci ON ci.confounder_identity_id = m.confounder_identity
+        WHERE ci.policy_default = 'do-not-condition' AND COALESCE(s.is_synthetic, false) = false),
+      ' MeanPurityStratifyClasses=', (SELECT ROUND(AVG(tr.signal_purity), 4) FROM stratum_variable_identity_maps m
+        JOIN stratum_variables sv ON sv.stratum_variable_id = m.stratum_variable
+        JOIN studies s ON s.study_id = sv.study
+        JOIN vw_treatment_rankings tr ON tr.study = s.study_id
+        JOIN confounder_identities ci ON ci.confounder_identity_id = m.confounder_identity
+        WHERE ci.policy_default LIKE 'stratify-%' AND COALESCE(s.is_synthetic, false) = false))
+    WHEN 'H-purity-trap-flag-coverage' THEN CONCAT(
+      'ColliderSelectionCoverage=', (SELECT ROUND(COUNT(*) FILTER (WHERE tr.purity_trap_flag = TRUE)::numeric / NULLIF(COUNT(*), 0), 4)
+        FROM stratum_variable_identity_maps m
+        JOIN stratum_variables sv ON sv.stratum_variable_id = m.stratum_variable
+        JOIN studies s ON s.study_id = sv.study
+        JOIN vw_treatment_rankings tr ON tr.study = s.study_id
+        JOIN confounder_identities ci ON ci.confounder_identity_id = m.confounder_identity
+        WHERE ci.policy_default = 'do-not-condition' AND COALESCE(s.is_synthetic, false) = false),
+      ' DemographicFalsePositiveRate=', (SELECT ROUND(COUNT(*) FILTER (WHERE tr.purity_trap_flag = TRUE)::numeric / NULLIF(COUNT(*), 0), 4)
+        FROM stratum_variable_identity_maps m
+        JOIN stratum_variables sv ON sv.stratum_variable_id = m.stratum_variable
+        JOIN studies s ON s.study_id = sv.study
+        JOIN vw_treatment_rankings tr ON tr.study = s.study_id
+        JOIN confounder_identities ci ON ci.confounder_identity_id = m.confounder_identity
+        WHERE m.confounder_identity = 'id-demographic-group' AND COALESCE(s.is_synthetic, false) = false))
+    WHEN 'H-control-type-d-predominance' THEN CONCAT(
+      'ControlFlipRate=', (SELECT ROUND((SELECT COUNT(*) FROM treatment_rankings tr JOIN studies s ON s.study_id = tr.study
+          WHERE s.is_control_study = TRUE AND calc_treatment_rankings_is_sign_flip(tr.treatment_ranking_id) = TRUE)::numeric
+        / NULLIF((SELECT COUNT(*) FROM studies WHERE is_control_study = TRUE), 0), 4)),
+      ' — vacuous: control studies have zero TreatmentRankings rows (never encoded with paired arms), so this is true by construction, not a substantive corpus finding.')
+    WHEN 'H-control-no-manifest-flip' THEN CONCAT(
+      'ControlManifestFlipCount=', (SELECT COUNT(*) FROM treatment_rankings tr JOIN studies s ON s.study_id = tr.study
+        WHERE s.is_control_study = TRUE AND calc_treatment_rankings_is_sign_flip(tr.treatment_ranking_id) = TRUE),
+      ' — vacuous: control studies have zero TreatmentRankings rows (never encoded with paired arms), so this is true by construction, not a substantive corpus finding.')
+    WHEN 'H-control-safety-corridor' THEN CONCAT(
+      'ControlSafeCorridorFlipCount=', (SELECT COUNT(*) FROM treatment_rankings tr JOIN studies s ON s.study_id = tr.study
+        WHERE s.is_control_study = TRUE AND calc_treatment_rankings_is_sign_flip(tr.treatment_ranking_id) = TRUE
+          AND calc_treatment_rankings_max_stratum_imbalance(tr.treatment_ranking_id) < 0.033),
+      ' — vacuous: control studies have zero TreatmentRankings rows (never encoded with paired arms), so this is true by construction, not a substantive corpus finding.')
     ELSE ''
   END;
 $$ LANGUAGE sql STABLE;
@@ -619,6 +719,63 @@ CREATE OR REPLACE FUNCTION calc_treatment_rankings_stratum_causal_role(p_treatme
   JOIN stratum_variables sv ON sv.study = tr.study
   WHERE tr.treatment_ranking_id = p_treatment_ranking_id
   LIMIT 1;
+$$ LANGUAGE sql STABLE;
+
+-- loop-91: PurityTrapFlag (introduced loop-87) had no formula in the rulebook and the
+-- transpiler emitted a stub NULL::boolean. TRUE when SignalPurity >= 0.90 AND the
+-- study's confounder identity has PolicyDefault IN ('do-not-condition',
+-- 'do-not-naively-adjust') — a 3-hop join (TreatmentRankings -> StratumVariables ->
+-- StratumVariableIdentityMaps -> ConfounderIdentities) the formula language cannot
+-- express as a single LOOKUP chain. Live query, no cache.
+CREATE OR REPLACE FUNCTION calc_treatment_rankings_purity_trap_flag(p_treatment_ranking_id TEXT) RETURNS BOOLEAN AS $$
+  SELECT
+    calc_treatment_rankings_signal_purity(p_treatment_ranking_id) >= 0.90
+    AND EXISTS (
+      SELECT 1
+      FROM treatment_rankings tr
+      JOIN stratum_variables sv ON sv.study = tr.study
+      JOIN stratum_variable_identity_maps m ON m.stratum_variable = sv.stratum_variable_id
+      JOIN confounder_identities ci ON ci.confounder_identity_id = m.confounder_identity
+      WHERE tr.treatment_ranking_id = p_treatment_ranking_id
+        AND ci.policy_default IN ('do-not-condition', 'do-not-naively-adjust')
+    );
+$$ LANGUAGE sql STABLE;
+
+-- loop-92: ColliderSelectionCount / ColliderSelectionManifestCount / ColliderSelectionLatentOnlyCount.
+-- The native transpiler output for these three (02-create-functions.sql) has two bugs:
+-- (1) known COUNTIFS-drops-2nd-criterion bug (documented project-wide) -- ManifestCount's
+-- native body is identical to Count's, ignoring IsSignFlip entirely; (2) none of the three
+-- exclude IsSynthetic studies, so loop-89's deliberately-constructed collider-purity-boundary-flip
+-- (an adversarial stress test, not a real-data claim) counts as a "manifest" collider flip and
+-- falsely breaks inv-collider-no-manifest's real-data theorem (see loop-92 InvariantChecks note).
+-- Live queries, no cache.
+CREATE OR REPLACE FUNCTION calc_model_summary_collider_selection_count(p_model_summary_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT COUNT(*)::numeric
+  FROM treatment_rankings tr
+  JOIN studies s ON s.study_id = tr.study
+  WHERE calc_treatment_rankings_stratum_causal_role(tr.treatment_ranking_id) IN ('collider', 'selection')
+    AND COALESCE(s.is_synthetic, false) = false;
+$$ LANGUAGE sql STABLE;
+
+CREATE OR REPLACE FUNCTION calc_model_summary_collider_selection_manifest_count(p_model_summary_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT COUNT(*)::numeric
+  FROM treatment_rankings tr
+  JOIN studies s ON s.study_id = tr.study
+  WHERE calc_treatment_rankings_stratum_causal_role(tr.treatment_ranking_id) IN ('collider', 'selection')
+    AND calc_treatment_rankings_is_sign_flip(tr.treatment_ranking_id) = TRUE
+    AND COALESCE(s.is_synthetic, false) = false;
+$$ LANGUAGE sql STABLE;
+
+CREATE OR REPLACE FUNCTION calc_model_summary_collider_selection_latent_only_count(p_model_summary_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT COUNT(*)::numeric
+  FROM treatment_rankings tr
+  JOIN studies s ON s.study_id = tr.study
+  WHERE calc_treatment_rankings_stratum_causal_role(tr.treatment_ranking_id) IN ('collider', 'selection')
+    AND calc_treatment_rankings_is_latent_only_flip(tr.treatment_ranking_id) = TRUE
+    AND COALESCE(s.is_synthetic, false) = false;
 $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_model_summary_false_positive_explained_count(p_model_summary_id TEXT)
@@ -886,4 +1043,96 @@ RETURNS NUMERIC AS $$
   END
   FROM identity_cluster_summaries
   WHERE identity_cluster_id = 'cluster-id-geographic-composition';
+$$ LANGUAGE sql STABLE;
+
+-- ============================================================================
+-- Loop-93: SweepStudySummary principled materialization (see MaterializedEntities
+-- table, mat-sweep-study-summary). AllocationSweep/SweepStudyConfig are sealed
+-- per build; every calc_allocation_sweep_* function is cheap in isolation
+-- (~4.5ms) but was being fanned out with zero memoization: every ModelSummary
+-- aggregate or DiscoveryFindings row touching PooledGapCrossesZero/
+-- SweepPooledGapRange re-triggered a 242-study x 10-row-per-study nested
+-- function-call scan from scratch (measured 22.5s for calc_model_summary_latent_type_d_count
+-- alone). This refresh function computes each AllocationSweep row's derived
+-- values ONCE via a set-based query, aggregates MAX/MIN/AND per study, and
+-- writes the result into sweep_study_summary's now-raw columns — collapsing
+-- every downstream reader to a single indexed row lookup.
+-- ============================================================================
+CREATE OR REPLACE FUNCTION refresh_sweep_study_summary()
+RETURNS void
+LANGUAGE plpgsql AS $$
+BEGIN
+  WITH sweep_values AS (
+    SELECT
+      s.study_id,
+      calc_allocation_sweep_sweep_corrected_gap(s.sweep_id) AS corrected_gap,
+      calc_allocation_sweep_sweep_pooled_gap(s.sweep_id) AS pooled_gap
+    FROM allocation_sweep s
+  ),
+  agg AS (
+    SELECT
+      study_id,
+      MIN(corrected_gap) AS corrected_gap_constant,
+      MAX(corrected_gap) AS sweep_corrected_gap_max,
+      MIN(corrected_gap) AS sweep_corrected_gap_min,
+      MAX(pooled_gap) AS sweep_pooled_gap_max,
+      MIN(pooled_gap) AS sweep_pooled_gap_min
+    FROM sweep_values
+    GROUP BY study_id
+  )
+  UPDATE sweep_study_summary sss SET
+    corrected_gap_constant = a.corrected_gap_constant,
+    sweep_corrected_gap_max = a.sweep_corrected_gap_max,
+    sweep_corrected_gap_min = a.sweep_corrected_gap_min,
+    sweep_corrected_gap_range = a.sweep_corrected_gap_max - a.sweep_corrected_gap_min,
+    sweep_pooled_gap_max = a.sweep_pooled_gap_max,
+    sweep_pooled_gap_min = a.sweep_pooled_gap_min,
+    sweep_pooled_gap_range = a.sweep_pooled_gap_max - a.sweep_pooled_gap_min,
+    pooled_gap_crosses_zero = (a.sweep_pooled_gap_min < 0 AND a.sweep_pooled_gap_max > 0)
+  FROM agg a
+  WHERE sss.sweep_study_id = a.study_id;
+END;
+$$;
+
+-- Repoint the expensive live-calculated fields at the materialized columns.
+-- Same signatures as the (now-orphaned) 02-create-functions.sql definitions,
+-- so every existing caller keeps working unchanged.
+CREATE OR REPLACE FUNCTION calc_sweep_study_summary_corrected_gap_constant(p_sweep_study_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT corrected_gap_constant FROM sweep_study_summary WHERE sweep_study_id = p_sweep_study_id;
+$$ LANGUAGE sql STABLE;
+
+CREATE OR REPLACE FUNCTION calc_sweep_study_summary_sweep_corrected_gap_max(p_sweep_study_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT sweep_corrected_gap_max FROM sweep_study_summary WHERE sweep_study_id = p_sweep_study_id;
+$$ LANGUAGE sql STABLE;
+
+CREATE OR REPLACE FUNCTION calc_sweep_study_summary_sweep_corrected_gap_min(p_sweep_study_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT sweep_corrected_gap_min FROM sweep_study_summary WHERE sweep_study_id = p_sweep_study_id;
+$$ LANGUAGE sql STABLE;
+
+CREATE OR REPLACE FUNCTION calc_sweep_study_summary_sweep_corrected_gap_range(p_sweep_study_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT sweep_corrected_gap_range FROM sweep_study_summary WHERE sweep_study_id = p_sweep_study_id;
+$$ LANGUAGE sql STABLE;
+
+CREATE OR REPLACE FUNCTION calc_sweep_study_summary_sweep_pooled_gap_max(p_sweep_study_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT sweep_pooled_gap_max FROM sweep_study_summary WHERE sweep_study_id = p_sweep_study_id;
+$$ LANGUAGE sql STABLE;
+
+CREATE OR REPLACE FUNCTION calc_sweep_study_summary_sweep_pooled_gap_min(p_sweep_study_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT sweep_pooled_gap_min FROM sweep_study_summary WHERE sweep_study_id = p_sweep_study_id;
+$$ LANGUAGE sql STABLE;
+
+CREATE OR REPLACE FUNCTION calc_sweep_study_summary_sweep_pooled_gap_range(p_sweep_study_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT sweep_pooled_gap_range FROM sweep_study_summary WHERE sweep_study_id = p_sweep_study_id;
+$$ LANGUAGE sql STABLE;
+
+CREATE OR REPLACE FUNCTION calc_sweep_study_summary_pooled_gap_crosses_zero(p_sweep_study_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT pooled_gap_crosses_zero FROM sweep_study_summary WHERE sweep_study_id = p_sweep_study_id;
 $$ LANGUAGE sql STABLE;

@@ -53,6 +53,9 @@ ALTER TABLE methodology ADD CONSTRAINT fk_methodology_pioneering_researcher
   FOREIGN KEY (pioneering_researcher) REFERENCES researchers (researcher_id);
 
 -- Conclusions
+ALTER TABLE conclusions DROP CONSTRAINT IF EXISTS fk_conclusions_validating_hypothesis;
+ALTER TABLE conclusions ADD CONSTRAINT fk_conclusions_validating_hypothesis
+  FOREIGN KEY (validating_hypothesis) REFERENCES discovery_hypotheses (hypothesis_id);
 ALTER TABLE conclusions DROP CONSTRAINT IF EXISTS fk_conclusions_witnessed_in_loop;
 ALTER TABLE conclusions ADD CONSTRAINT fk_conclusions_witnessed_in_loop
   FOREIGN KEY (witnessed_in_loop) REFERENCES loops (loop_id);
@@ -114,4 +117,4 @@ ALTER TABLE identity_domain_cells DROP CONSTRAINT IF EXISTS fk_identity_domain_c
 ALTER TABLE identity_domain_cells ADD CONSTRAINT fk_identity_domain_cells_confounder_identity
   FOREIGN KEY (confounder_identity) REFERENCES confounder_identities (confounder_identity_id);
 
--- 22 FK constraint(s) declared (off unless EFFORTLESS_ENFORCE_FKS=true).
+-- 23 FK constraint(s) declared (off unless EFFORTLESS_ENFORCE_FKS=true).

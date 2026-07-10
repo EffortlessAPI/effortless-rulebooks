@@ -537,8 +537,8 @@
         "datatype": "boolean",
         "type": "calculated",
         "nullable": false,
-        "Description": "TRUE when Cases\u003E0, Successes\u003E=0, and Successes\u003C=Cases.",
-        "formula": "=AND({{Cases}} \u003E 0, {{Successes}} \u003E= 0, {{Successes}} \u003C= {{Cases}})"
+        "Description": "TRUE when Cases\u003E=0, Successes\u003E=0, and Successes\u003C=Cases (loop-92: a stratum-treatment combination can legitimately have zero observed cases in real source data -- e.g. rdatasets-mtcars-engine has zero 8-cylinder straight-engine cars -- so Cases=0 is a valid ingestion cell, not a defect).",
+        "formula": "=AND({{Cases}} \u003E= 0, {{Successes}} \u003E= 0, {{Successes}} \u003C= {{Cases}})"
       }
     ]
   },
@@ -1439,8 +1439,8 @@
         "datatype": "integer",
         "type": "calculated",
         "nullable": true,
-        "Description": "Count of witnessed Conclusions with Category=theorem (portfolio rollup for loop-76).",
-        "formula": "=COUNTIFS(Conclusions!{{Category}}, \u0022theorem\u0022, Conclusions!{{Status}}, \u0022witnessed\u0022)"
+        "Description": "Count of witnessed Conclusions with Category=corpus-theorem (portfolio rollup for loop-76; category renamed from theorem in loop-91).",
+        "formula": "=COUNTIFS(Conclusions!{{Category}}, \u0022corpus-theorem\u0022, Conclusions!{{Status}}, \u0022witnessed\u0022)"
       },
       {
         "name": "EducationLatentFraction",
@@ -2401,6 +2401,61 @@
       }
     ]
   },
+  "MaterializedEntities": {
+    "Description": "Table: MaterializedEntities \u2014 governance record of every entity in this rulebook whose fields are principled materializations rather than live-calculated (per project CLAUDE.md: allowed only when the computation is genuinely expensive AND its upstream is sealed/stable, expressed as data in the rulebook itself, never as an ad-hoc application cache). Each row names the entity, the refresh contract, the refresh function that implements it, and the measured cost that justified materializing it. If this table\u0027s row for an entity were deleted, the entity\u0027s fields should still be regeneratable identically from the SSoT \u002B the refresh function \u2014 that is the test for whether a materialization here is principled.",
+    "schema": [
+      {
+        "name": "MaterializedEntityId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Unique slug (e.g. mat-sweep-study-summary)."
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": false,
+        "Description": "Display label, mirrors MaterializedEntityId.",
+        "formula": "={{MaterializedEntityId}}"
+      },
+      {
+        "name": "EntityTable",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "The rulebook table whose fields are materialized (e.g. SweepStudySummary)."
+      },
+      {
+        "name": "RefreshContract",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "eager-on-write | on-demand | scheduled \u2014 when the refresh function is invoked relative to writes on the upstream data."
+      },
+      {
+        "name": "RefreshFunction",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "The SQL function (in the customize-* override files) that recomputes this entity\u0027s materialized fields from its upstream SSoT tables."
+      },
+      {
+        "name": "UpstreamTables",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Comma-separated list of the tables this materialization is derived from \u2014 its sealed/stable upstream."
+      },
+      {
+        "name": "Justification",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "The measured cost or evidence that justified materializing this entity instead of leaving it as a live calculated/aggregation field."
+      }
+    ]
+  },
   "Methodology": {
     "Description": "Table: Methodology \u2014 the first-principles process used to build this domain model. Each row documents one methodological axiom or step. Together these rows let a reader (or an LLM) reconstruct why the model is shaped the way it is, and re-apply the same process to a new domain.",
     "schema": [
@@ -2533,7 +2588,7 @@
         "datatype": "string",
         "type": "raw",
         "nullable": false,
-        "Description": "domain | instrument | methodology | open-question"
+        "Description": "domain | instrument | methodology | open-question | corpus-theorem"
       },
       {
         "name": "Status",
@@ -2541,6 +2596,36 @@
         "type": "raw",
         "nullable": false,
         "Description": "witnessed | planned | open"
+      },
+      {
+        "name": "ReportTier",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "critical | supporting | transient \u2014 controls how much space this conclusion gets in the generated PDF/summary report. critical = full section with evidence \u002B chart; supporting = 1-2 line bullet; transient = folded into a single compact list."
+      },
+      {
+        "name": "ValidatingHypothesis",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "FK \u2192 DiscoveryHypotheses.HypothesisId. The pre-registered hypothesis whose live DiscoveryFindings.IsConfirmed value is the current-truth check for this conclusion \u2014 set on theorem/corpus-theorem conclusions so a report can distinguish a conclusion\u0027s archived prose (may say \u0027Proved\u0027) from its live status (may since be contradicted by corpus growth). Null when no single hypothesis tests this exact claim."
+      },
+      {
+        "name": "LiveStatusConfirmed",
+        "datatype": "boolean",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Lookup: DiscoveryFindings.IsConfirmed via ValidatingHypothesis \u2014 the current pass/fail state of the hypothesis backing this conclusion, recomputed on every build from live corpus data. NULL when ValidatingHypothesis is not set (no live check exists for this conclusion).",
+        "formula": "=LOOKUP({{ValidatingHypothesis}}, DiscoveryFindings[HypothesisId], DiscoveryFindings[IsConfirmed])"
+      },
+      {
+        "name": "LiveStatusObservedMetric",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Lookup: DiscoveryFindings.ObservedMetric via ValidatingHypothesis \u2014 the current observed values for the hypothesis backing this conclusion, so a reader can see exactly why it currently passes or fails.",
+        "formula": "=LOOKUP({{ValidatingHypothesis}}, DiscoveryFindings[HypothesisId], DiscoveryFindings[ObservedMetric])"
       },
       {
         "name": "Title",
@@ -3101,66 +3186,58 @@
       {
         "name": "CorrectedGapConstant",
         "datatype": "number",
-        "type": "calculated",
-        "nullable": false,
-        "Description": "The allocation-free corrected gap for this study, computed analytically.",
-        "formula": "=MINIFS(AllocationSweep!{{SweepCorrectedGap}}, AllocationSweep!{{StudyId}}, {{SweepStudyId}})"
+        "type": "raw",
+        "nullable": true,
+        "Description": "Principled materialization (refresh_sweep_study_summary(), 03b/05b customize SQL). The allocation-free corrected gap for this study = MINIFS(AllocationSweep[SweepCorrectedGap], AllocationSweep[StudyId], SweepStudyId). Upstream (AllocationSweep, SweepStudyConfig) is sealed/stable per build; recomputing this per-row via nested calc_* calls was measured to fan out to 22.5s for a 242-study corpus scan with zero memoization \u2014 materialized here instead of left as a live calculated field. See MaterializedEntities."
       },
       {
         "name": "SweepCorrectedGapMax",
         "datatype": "number",
-        "type": "calculated",
-        "nullable": false,
-        "Description": "Maximum SweepCorrectedGap across all allocation fractions for this study.",
-        "formula": "=MAXIFS(AllocationSweep!{{SweepCorrectedGap}}, AllocationSweep!{{StudyId}}, {{SweepStudyId}})"
+        "type": "raw",
+        "nullable": true,
+        "Description": "Principled materialization (refresh_sweep_study_summary()). Maximum SweepCorrectedGap across all allocation fractions for this study = MAXIFS(AllocationSweep[SweepCorrectedGap], AllocationSweep[StudyId], SweepStudyId). See CorrectedGapConstant for why this is materialized rather than calculated."
       },
       {
         "name": "SweepCorrectedGapMin",
         "datatype": "number",
-        "type": "calculated",
-        "nullable": false,
-        "Description": "Minimum SweepCorrectedGap across all allocation fractions for this study.",
-        "formula": "=MINIFS(AllocationSweep!{{SweepCorrectedGap}}, AllocationSweep!{{StudyId}}, {{SweepStudyId}})"
+        "type": "raw",
+        "nullable": true,
+        "Description": "Principled materialization (refresh_sweep_study_summary()). Minimum SweepCorrectedGap across all allocation fractions for this study = MINIFS(AllocationSweep[SweepCorrectedGap], AllocationSweep[StudyId], SweepStudyId). See CorrectedGapConstant for why this is materialized rather than calculated."
       },
       {
         "name": "SweepCorrectedGapRange",
         "datatype": "number",
-        "type": "calculated",
-        "nullable": false,
-        "Description": "Range of SweepCorrectedGap across the sweep = Max - Min. Should be effectively zero (\u003C 0.0001) for all studies if CorrectedGap is truly allocation-free.",
-        "formula": "={{SweepCorrectedGapMax}} - {{SweepCorrectedGapMin}}"
+        "type": "raw",
+        "nullable": true,
+        "Description": "Principled materialization (refresh_sweep_study_summary()). Range of SweepCorrectedGap across the sweep = SweepCorrectedGapMax - SweepCorrectedGapMin. Should be effectively zero (\u003C 0.0001) for all studies if CorrectedGap is truly allocation-free. See CorrectedGapConstant for why this is materialized rather than calculated."
       },
       {
         "name": "SweepPooledGapMax",
         "datatype": "number",
-        "type": "calculated",
-        "nullable": false,
-        "Description": "Maximum SweepPooledGap across all allocation fractions for this study.",
-        "formula": "=MAXIFS(AllocationSweep!{{SweepPooledGap}}, AllocationSweep!{{StudyId}}, {{SweepStudyId}})"
+        "type": "raw",
+        "nullable": true,
+        "Description": "Principled materialization (refresh_sweep_study_summary()). Maximum SweepPooledGap across all allocation fractions for this study = MAXIFS(AllocationSweep[SweepPooledGap], AllocationSweep[StudyId], SweepStudyId). See CorrectedGapConstant for why this is materialized rather than calculated."
       },
       {
         "name": "SweepPooledGapMin",
         "datatype": "number",
-        "type": "calculated",
-        "nullable": false,
-        "Description": "Minimum SweepPooledGap across all allocation fractions for this study.",
-        "formula": "=MINIFS(AllocationSweep!{{SweepPooledGap}}, AllocationSweep!{{StudyId}}, {{SweepStudyId}})"
+        "type": "raw",
+        "nullable": true,
+        "Description": "Principled materialization (refresh_sweep_study_summary()). Minimum SweepPooledGap across all allocation fractions for this study = MINIFS(AllocationSweep[SweepPooledGap], AllocationSweep[StudyId], SweepStudyId). See CorrectedGapConstant for why this is materialized rather than calculated."
       },
       {
         "name": "SweepPooledGapRange",
         "datatype": "number",
-        "type": "calculated",
-        "nullable": false,
-        "Description": "Range of SweepPooledGap across the sweep = Max - Min. Should be large for Type A/B studies (pooled gap wanders) and smaller for Type D (balanced allocation = less wandering).",
-        "formula": "={{SweepPooledGapMax}} - {{SweepPooledGapMin}}"
+        "type": "raw",
+        "nullable": true,
+        "Description": "Principled materialization (refresh_sweep_study_summary()). Range of SweepPooledGap across the sweep = SweepPooledGapMax - SweepPooledGapMin. Should be large for Type A/B studies (pooled gap wanders) and smaller for Type D (balanced allocation = less wandering). See CorrectedGapConstant for why this is materialized rather than calculated."
       },
       {
         "name": "PooledGapCrossesZero",
         "datatype": "boolean",
-        "type": "calculated",
-        "nullable": false,
-        "Description": "TRUE when SweepPooledGapMin \u003C 0 and SweepPooledGapMax \u003E 0 \u2014 the pooled gap changes sign somewhere in the sweep, meaning the paradox can be created or destroyed by pure allocation.",
-        "formula": "=AND({{SweepPooledGapMin}} \u003C 0, {{SweepPooledGapMax}} \u003E 0)"
+        "type": "raw",
+        "nullable": true,
+        "Description": "Principled materialization (refresh_sweep_study_summary()). TRUE when SweepPooledGapMin \u003C 0 and SweepPooledGapMax \u003E 0 \u2014 the pooled gap changes sign somewhere in the sweep, meaning the paradox can be created or destroyed by pure allocation. See CorrectedGapConstant for why this is materialized rather than calculated."
       },
       {
         "name": "InvariantWitness",
@@ -3860,8 +3937,8 @@
         "datatype": "integer",
         "type": "aggregation",
         "nullable": false,
-        "Description": "Total studies. Fixed loop-90 (see IngestionSummary.ProtocolItemCount for why COUNTIFS(...,\u0022\u003C\u003E\u0022) is unsafe).",
-        "formula": "=COUNT(Studies!{{StudyId}})"
+        "Description": "Count of studies subject to the ingestion contract (excludes control studies, loop-92 -- control studies were never encoded with paired treatment arms, so IngestionCellParity is structurally undefined for them, not a real ingestion defect).",
+        "formula": "=COUNTIFS(Studies!{{IsControlStudy}}, FALSE())"
       },
       {
         "name": "StructuralCompliantCount",
@@ -3884,8 +3961,8 @@
         "datatype": "integer",
         "type": "aggregation",
         "nullable": false,
-        "Description": "Non-synthetic studies.",
-        "formula": "=COUNTIFS(Studies!{{IsSynthetic}}, FALSE())"
+        "Description": "Non-synthetic, non-control studies (loop-92 -- control studies were never encoded with paired treatment arms, so they are outside the ingestion contract\u0027s scope, same as StructuralCompliantCount\u0027s StudyCount).",
+        "formula": "=COUNTIFS(Studies!{{IsSynthetic}}, FALSE(), Studies!{{IsControlStudy}}, FALSE())"
       },
       {
         "name": "RealFullyCompliantCount",

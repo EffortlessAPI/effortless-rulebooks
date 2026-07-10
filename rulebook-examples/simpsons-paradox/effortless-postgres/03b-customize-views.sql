@@ -177,13 +177,13 @@ SELECT
 FROM stratum_variables t;
 
 -- ----------------------------------------------------------------------------
--- vw_model_summary — append the LOOKUP columns the transpiler cannot emit
--- for tables (IngestionSummary, CorpusCatalogSummary) added in the same
--- loop as the lookup field. Every other ModelSummary column, including the
--- new DomainFlipGapSurvivesGeometryControl / CorpusPatternSupersededFailCount
--- / ExpansionWave3DiscoveryNote / RealStudyCount / AvgSignalPurity* /
--- DomainDiversityNote fields, is now emitted natively by
--- 03-create-views.sql and is NOT repeated here.
+-- vw_model_summary — DROP+CREATE replaces the whole view to append the
+-- LOOKUP columns the transpiler cannot emit for tables (IngestionSummary,
+-- CorpusCatalogSummary) added in the same loop as the lookup field. Because
+-- this is a full replacement (not an ALTER), the inner subquery below is a
+-- verbatim copy of 03-create-views.sql's native SELECT list (minus its
+-- inline comments) — keep it in sync whenever a new ModelSummary field is
+-- added to the rulebook, or that field silently disappears from this view.
 -- ----------------------------------------------------------------------------
 DROP VIEW IF EXISTS vw_model_summary CASCADE;
 CREATE VIEW vw_model_summary WITH (security_invoker = ON) AS
@@ -212,16 +212,24 @@ FROM (
     calc_model_summary_type_a_fraction(t.model_summary_id) AS type_a_fraction,
     calc_model_summary_distortion_taxonomy_coverage(t.model_summary_id) AS distortion_taxonomy_coverage,
     calc_model_summary_distortion_only_count(t.model_summary_id) AS distortion_only_count,
+    calc_model_summary_c_amplification_count(t.model_summary_id) AS c_amplification_count,
+    calc_model_summary_c_compression_count(t.model_summary_id) AS c_compression_count,
+    calc_model_summary_avg_signal_purity(t.model_summary_id) AS avg_signal_purity,
+    calc_model_summary_sweep_corrected_gap_max(t.model_summary_id) AS sweep_corrected_gap_max,
+    calc_model_summary_sweep_corrected_gap_min(t.model_summary_id) AS sweep_corrected_gap_min,
+    calc_model_summary_sweep_corrected_gap_range(t.model_summary_id) AS sweep_corrected_gap_range,
+    calc_model_summary_sweep_pooled_gap_range(t.model_summary_id) AS sweep_pooled_gap_range,
     calc_model_summary_real_study_count(t.model_summary_id) AS real_study_count,
+    calc_model_summary_avg_signal_purity_reversal(t.model_summary_id) AS avg_signal_purity_reversal,
+    calc_model_summary_avg_signal_purity_non_reversal(t.model_summary_id) AS avg_signal_purity_non_reversal,
+    calc_model_summary_signal_purity_gap(t.model_summary_id) AS signal_purity_gap,
     calc_model_summary_medicine_study_count(t.model_summary_id) AS medicine_study_count,
     calc_model_summary_epidemiology_study_count(t.model_summary_id) AS epidemiology_study_count,
     calc_model_summary_other_domain_study_count(t.model_summary_id) AS other_domain_study_count,
     calc_model_summary_domain_diversity_note(t.model_summary_id) AS domain_diversity_note,
-    calc_model_summary_avg_signal_purity_reversal(t.model_summary_id) AS avg_signal_purity_reversal,
-    calc_model_summary_avg_signal_purity_non_reversal(t.model_summary_id) AS avg_signal_purity_non_reversal,
-    calc_model_summary_signal_purity_gap(t.model_summary_id) AS signal_purity_gap,
-    t.phase_diagram_complete AS phase_diagram_complete,
-    t.phase_taxonomy_coverage AS phase_taxonomy_coverage,
+    t.synthetic_phase_count,
+    t.phase_diagram_complete,
+    t.phase_taxonomy_coverage,
     calc_model_summary_ingestion_protocol_item_count(t.model_summary_id) AS ingestion_protocol_item_count,
     calc_model_summary_latent_type_d_count(t.model_summary_id) AS latent_type_d_count,
     calc_model_summary_stable_type_d_count(t.model_summary_id) AS stable_type_d_count,
@@ -229,7 +237,9 @@ FROM (
     calc_model_summary_cross_zero_count(t.model_summary_id) AS cross_zero_count,
     calc_model_summary_sign_flip_signal_purity_max(t.model_summary_id) AS sign_flip_signal_purity_max,
     calc_model_summary_economics_sign_flip_count(t.model_summary_id) AS economics_sign_flip_count,
+    calc_model_summary_sum_pooled_gap_latent_d(t.model_summary_id) AS sum_pooled_gap_latent_d,
     calc_model_summary_avg_pooled_gap_latent_d(t.model_summary_id) AS avg_pooled_gap_latent_d,
+    calc_model_summary_sum_pooled_gap_stable_d(t.model_summary_id) AS sum_pooled_gap_stable_d,
     calc_model_summary_avg_pooled_gap_stable_d(t.model_summary_id) AS avg_pooled_gap_stable_d,
     calc_model_summary_epidemiology_avg_distortion(t.model_summary_id) AS epidemiology_avg_distortion,
     calc_model_summary_education_avg_distortion(t.model_summary_id) AS education_avg_distortion,
@@ -238,43 +248,55 @@ FROM (
     calc_model_summary_collider_selection_count(t.model_summary_id) AS collider_selection_count,
     calc_model_summary_collider_selection_manifest_count(t.model_summary_id) AS collider_selection_manifest_count,
     calc_model_summary_collider_selection_latent_only_count(t.model_summary_id) AS collider_selection_latent_only_count,
+    calc_model_summary_explained_confounder_count(t.model_summary_id) AS explained_confounder_count,
+    calc_model_summary_contested_or_mediator_explained_count(t.model_summary_id) AS contested_or_mediator_explained_count,
     calc_model_summary_discovery_witness_note(t.model_summary_id) AS discovery_witness_note,
-    t.high_imbalance_sign_flip_threshold AS high_imbalance_sign_flip_threshold,
-    calc_model_summary_economics_high_imbalance_sign_flip_count(t.model_summary_id) AS economics_high_imbalance_sign_flip_count,
-    calc_model_summary_epidemiology_high_imbalance_sign_flip_rate(t.model_summary_id) AS epidemiology_high_imbalance_sign_flip_rate,
-    calc_model_summary_legal_high_imbalance_sign_flip_rate(t.model_summary_id) AS legal_high_imbalance_sign_flip_rate,
-    calc_model_summary_sports_high_imbalance_sign_flip_rate(t.model_summary_id) AS sports_high_imbalance_sign_flip_rate,
-    calc_model_summary_domain_flip_gap_survives_geometry_control(t.model_summary_id) AS domain_flip_gap_survives_geometry_control,
+    t.high_imbalance_sign_flip_threshold,
+    t.economics_high_imbalance_sign_flip_count,
+    t.epidemiology_high_imbalance_sign_flip_rate,
+    t.legal_high_imbalance_sign_flip_rate,
+    t.sports_high_imbalance_sign_flip_rate,
     calc_model_summary_c_plus_avg_distortion(t.model_summary_id) AS c_plus_avg_distortion,
     calc_model_summary_c_minus_avg_distortion(t.model_summary_id) AS c_minus_avg_distortion,
     calc_model_summary_type_d_avg_distortion(t.model_summary_id) AS type_d_avg_distortion,
     calc_model_summary_sweep_fragile_count(t.model_summary_id) AS sweep_fragile_count,
-    calc_model_summary_unanimous_sign_flip_count(t.model_summary_id) AS unanimous_sign_flip_count,
     calc_model_summary_expansion_wave1_economics_expected_a_count(t.model_summary_id) AS expansion_wave1_economics_expected_a_count,
     calc_model_summary_expansion_wave1_economics_expected_ad_count(t.model_summary_id) AS expansion_wave1_economics_expected_ad_count,
     calc_model_summary_economics_expected_a_mismatch_rate(t.model_summary_id) AS economics_expected_a_mismatch_rate,
-    calc_model_summary_education_latent_fraction(t.model_summary_id) AS education_latent_fraction,
-    calc_model_summary_sports_latent_fraction(t.model_summary_id) AS sports_latent_fraction,
-    calc_model_summary_economics_sign_flip_rate(t.model_summary_id) AS economics_sign_flip_rate,
-    calc_model_summary_expansion_wave2_study_count(t.model_summary_id) AS expansion_wave2_study_count,
-    calc_model_summary_corpus_pattern_superseded_fail_count(t.model_summary_id) AS corpus_pattern_superseded_fail_count,
-    calc_model_summary_expansion_wave3_discovery_note(t.model_summary_id) AS expansion_wave3_discovery_note,
+    calc_model_summary_unanimous_sign_flip_count(t.model_summary_id) AS unanimous_sign_flip_count,
     calc_model_summary_max_study_sweep_corrected_gap_range(t.model_summary_id) AS max_study_sweep_corrected_gap_range,
     calc_model_summary_corrected_gap_invariant_fail_count(t.model_summary_id) AS corrected_gap_invariant_fail_count,
     calc_model_summary_false_positive_explained_count(t.model_summary_id) AS false_positive_explained_count,
     calc_model_summary_unexplained_confounder_sign_flip_count(t.model_summary_id) AS unexplained_confounder_sign_flip_count,
-    calc_model_summary_explained_confounder_count(t.model_summary_id) AS explained_confounder_count,
-    calc_model_summary_contested_or_mediator_explained_count(t.model_summary_id) AS contested_or_mediator_explained_count,
     calc_model_summary_theorem_count(t.model_summary_id) AS theorem_count,
+    calc_model_summary_education_latent_fraction(t.model_summary_id) AS education_latent_fraction,
+    calc_model_summary_sports_latent_fraction(t.model_summary_id) AS sports_latent_fraction,
+    calc_model_summary_economics_sign_flip_rate(t.model_summary_id) AS economics_sign_flip_rate,
+    calc_model_summary_education_type_d_count(t.model_summary_id) AS education_type_d_count,
+    calc_model_summary_education_latent_d_count(t.model_summary_id) AS education_latent_d_count,
+    calc_model_summary_sports_type_d_count(t.model_summary_id) AS sports_type_d_count,
+    calc_model_summary_sports_latent_d_count(t.model_summary_id) AS sports_latent_d_count,
+    calc_model_summary_economics_study_count(t.model_summary_id) AS economics_study_count,
+    calc_model_summary_expansion_wave2_study_count(t.model_summary_id) AS expansion_wave2_study_count,
     calc_model_summary_confounder_identity_count(t.model_summary_id) AS confounder_identity_count,
     calc_model_summary_mapped_stratum_variable_count(t.model_summary_id) AS mapped_stratum_variable_count,
     calc_model_summary_unmapped_stratum_variable_count(t.model_summary_id) AS unmapped_stratum_variable_count,
-    t.identity_cluster_witness_note AS identity_cluster_witness_note,
     calc_model_summary_age_identity_manifest_flip_rate(t.model_summary_id) AS age_identity_manifest_flip_rate,
     calc_model_summary_age_identity_study_count(t.model_summary_id) AS age_identity_study_count,
     calc_model_summary_age_identity_latent_fraction_among_type_d(t.model_summary_id) AS age_identity_latent_fraction_among_type_d,
     calc_model_summary_severity_identity_latent_fraction_among_type(t.model_summary_id) AS severity_identity_latent_fraction_among_type_d,
-    calc_model_summary_identity_map_coverage_rate(t.model_summary_id) AS identity_map_coverage_rate
+    calc_model_summary_identity_map_coverage_rate(t.model_summary_id) AS identity_map_coverage_rate,
+    t.identity_cluster_witness_note,
+    calc_model_summary_severity_medicine_manifest_flip_rate(t.model_summary_id) AS severity_medicine_manifest_flip_rate,
+    calc_model_summary_severity_epi_manifest_flip_count(t.model_summary_id) AS severity_epi_manifest_flip_count,
+    calc_model_summary_identity_domain_cell_count(t.model_summary_id) AS identity_domain_cell_count,
+    calc_model_summary_selection_frailty_manifest_flip_count(t.model_summary_id) AS selection_frailty_manifest_flip_count,
+    calc_model_summary_selection_frailty_study_count(t.model_summary_id) AS selection_frailty_study_count,
+    calc_model_summary_collider_identity_manifest_flip_rate(t.model_summary_id) AS collider_identity_manifest_flip_rate,
+    calc_model_summary_geographic_type_d_fraction(t.model_summary_id) AS geographic_type_d_fraction,
+    calc_model_summary_domain_flip_gap_survives_geometry_control(t.model_summary_id) AS domain_flip_gap_survives_geometry_control,
+    calc_model_summary_corpus_pattern_superseded_fail_count(t.model_summary_id) AS corpus_pattern_superseded_fail_count,
+    calc_model_summary_expansion_wave3_discovery_note(t.model_summary_id) AS expansion_wave3_discovery_note
   FROM model_summary t
 ) native;
 
@@ -285,3 +307,38 @@ FROM (
 -- 05b from vw_phase_diagram_summary) and were not referenced by any
 -- consumer under a distinct name; SyntheticPhaseCount itself is not a
 -- ModelSummary field in the rulebook schema.
+
+-- ----------------------------------------------------------------------------
+-- vw_conclusions — append LiveStatusConfirmed / LiveStatusObservedMetric, two
+-- plain-LOOKUP fields the transpiler does not currently emit functions for
+-- (same known gap as the constant-key LOOKUP fields on ModelSummary above).
+-- These lookups let a report distinguish a conclusion's archived prose (which
+-- may say "Proved") from ValidatingHypothesis's live DiscoveryFindings state
+-- (which may since be contradicted by corpus growth). DROP+CREATE replaces
+-- the whole view, so every native Conclusions column is re-listed below —
+-- keep in sync with 03-create-views.sql's native SELECT list.
+-- ----------------------------------------------------------------------------
+DROP VIEW IF EXISTS vw_conclusions CASCADE;
+CREATE VIEW vw_conclusions WITH (security_invoker = ON) AS
+SELECT
+  native.*,
+  (SELECT is_confirmed FROM vw_discovery_findings WHERE hypothesis_id = native.validating_hypothesis) AS live_status_confirmed,
+  (SELECT observed_metric FROM vw_discovery_findings WHERE hypothesis_id = native.validating_hypothesis) AS live_status_observed_metric
+FROM (
+  SELECT
+    t.conclusion_id,
+    calc_conclusions_name(t.conclusion_id) AS name,
+    t.category,
+    t.status,
+    t.report_tier,
+    t.validating_hypothesis,
+    t.title,
+    t.evidence,
+    t.witnessed_in_loop,
+    t.target_loop,
+    t.tradition_id,
+    t.researcher_id,
+    t.challenges_researcher,
+    calc_conclusions_invariant_protecting_count(t.conclusion_id) AS invariant_protecting_count
+  FROM conclusions t
+) native;

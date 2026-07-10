@@ -79,7 +79,7 @@ export function isCausalRoleConditionalTheorem(conclusionId: string): boolean {
 }
 
 export const CATEGORY_ORDER = [
-  'theorem',
+  'corpus-theorem',
   'instrument',
   'taxonomy',
   'methodology',
@@ -88,7 +88,7 @@ export const CATEGORY_ORDER = [
 ] as const;
 
 export const CATEGORY_PDF_LABEL: Record<string, string> = {
-  theorem: 'Proved (by construction)',
+  'corpus-theorem': 'Proved (by construction)',
   instrument: 'Established in instrument',
   taxonomy: 'Taxonomy',
   methodology: 'Methodology',
@@ -159,11 +159,26 @@ export function conclusionPdfLabel(
   return CATEGORY_PDF_LABEL[category] ?? category.replace(/-/g, ' ');
 }
 
+/** Theorems whose claim follows directly from how SignalPurity/CorrectedGap/AllocationDistortion
+ *  are DEFINED (see INVARIANT_DEFINITION_TAUTOLOGICAL) — not from CausalRole, and not an
+ *  independent empirical regularity. Corpus-scale testing of these is a transpiler regression
+ *  check confirming the algebra wasn't broken, not new evidence for the claim itself. */
+export const PURE_ALGEBRA_DEFINITIONAL_THEOREMS = new Set([
+  'conc-12-signal-purity-theorem',
+  'conc-20-signal-purity-ceiling',
+  'conc-28-corrected-gap-invariance-theorem',
+]);
+
 export function domainCaveat(conclusionId: string): string | undefined {
   if (isCausalRoleConditionalTheorem(conclusionId)) {
     return 'Conditional on CausalRole being correctly annotated — the one hand/LLM-encoded field ' +
       'in the DAG, with no recorded protocol for who assigned each label or how. True given a ' +
       'correct annotation; not true by algebra alone. See "How to read InvariantChecks."';
+  }
+  if (PURE_ALGEBRA_DEFINITIONAL_THEOREMS.has(conclusionId)) {
+    return 'Follows directly from how SignalPurity/CorrectedGap/AllocationDistortion are defined ' +
+      '— corpus-scale testing here is a regression check that the transpiler did not corrupt the ' +
+      'formula, not independent empirical confirmation of a separate discovery.';
   }
   if (conclusionId.startsWith('conc-17') || conclusionId === 'conc-17-economics-flip-free') {
     return DOMAIN_CORPUS_CAVEATS['conc-17-economics-flip-free'];
@@ -189,7 +204,7 @@ export function tierConclusionCounts(
   rows: Array<{ conclusion_id: string; category: string | null; status: string | null }>,
 ): ConclusionTierCounts {
   const witnessed = rows.filter(r => r.status === 'witnessed');
-  const theorems = witnessed.filter(r => r.category === 'theorem');
+  const theorems = witnessed.filter(r => r.category === 'corpus-theorem');
   const provedConditional = theorems.filter(r =>
     isCausalRoleConditionalTheorem(r.conclusion_id),
   ).length;

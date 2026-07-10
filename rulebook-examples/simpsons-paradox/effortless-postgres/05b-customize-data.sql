@@ -54,6 +54,12 @@ WHERE invariant_check_id = 'inv-type-d-ratio-near-unity';
 SELECT refresh_identity_cluster_summaries();
 SELECT refresh_identity_domain_cells();
 
+-- Loop-93: SweepStudySummary principled materialization (MaterializedEntities:
+-- mat-sweep-study-summary). Must run after allocation_sweep/sweep_study_config
+-- are loaded (05-insert-data.sql, above) and before anything below reads
+-- ModelSummary/DiscoveryFindings fields that depend on it.
+SELECT refresh_sweep_study_summary();
+
 UPDATE model_summary m SET
   identity_cluster_witness_note = calc_model_summary_identity_cluster_witness_note('simpsons-paradox-v1')
 WHERE m.model_summary_id = 'simpsons-paradox-v1';

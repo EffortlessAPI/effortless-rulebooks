@@ -373,7 +373,7 @@ effortless-ntwf:isValidIngestionCell a owl:DatatypeProperty ;
     rdfs:domain effortless-ntwf:CaseCells ;
     rdfs:range xsd:boolean ;
     rdfs:label "IsValidIngestionCell" ;
-    rdfs:comment "TRUE when Cases>0, Successes>=0, and Successes<=Cases." .
+    rdfs:comment "TRUE when Cases>=0, Successes>=0, and Successes<=Cases (loop-92: a stratum-treatment combination can legitimately have zero observed cases in real source data -- e.g. rdatasets-mtcars-engine has zero 8-cylinder straight-engine cars -- so Cases=0 is a valid ingestion cell, not a defect)." .
     # calculated: calculated
 
 # === Class: Conclusions ===
@@ -397,12 +397,38 @@ effortless-ntwf:category a owl:DatatypeProperty ;
     rdfs:domain effortless-ntwf:Conclusions ;
     rdfs:range xsd:string ;
     rdfs:label "Category" ;
-    rdfs:comment "domain | instrument | methodology | open-question" .
+    rdfs:comment "domain | instrument | methodology | open-question | corpus-theorem" .
 
 effortless-ntwf:status a owl:DatatypeProperty ;
     rdfs:range xsd:string ;
     rdfs:label "Status" ;
     rdfs:comment "witnessed | planned | open" .
+
+effortless-ntwf:reportTier a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:Conclusions ;
+    rdfs:range xsd:string ;
+    rdfs:label "ReportTier" ;
+    rdfs:comment "critical | supporting | transient — controls how much space this conclusion gets in the generated PDF/summary report. critical = full section with evidence + chart; supporting = 1-2 line bullet; transient = folded into a single compact list." .
+
+effortless-ntwf:validatingHypothesis a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:Conclusions ;
+    rdfs:range xsd:string ;
+    rdfs:label "ValidatingHypothesis" ;
+    rdfs:comment "FK → DiscoveryHypotheses.HypothesisId. The pre-registered hypothesis whose live DiscoveryFindings.IsConfirmed value is the current-truth check for this conclusion — set on theorem/corpus-theorem conclusions so a report can distinguish a conclusion's archived prose (may say 'Proved') from its live status (may since be contradicted by corpus growth). Null when no single hypothesis tests this exact claim." .
+
+effortless-ntwf:liveStatusConfirmed a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:Conclusions ;
+    rdfs:range xsd:boolean ;
+    rdfs:label "LiveStatusConfirmed" ;
+    rdfs:comment "Lookup: DiscoveryFindings.IsConfirmed via ValidatingHypothesis — the current pass/fail state of the hypothesis backing this conclusion, recomputed on every build from live corpus data. NULL when ValidatingHypothesis is not set (no live check exists for this conclusion)." .
+    # calculated: lookup
+
+effortless-ntwf:liveStatusObservedMetric a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:Conclusions ;
+    rdfs:range xsd:string ;
+    rdfs:label "LiveStatusObservedMetric" ;
+    rdfs:comment "Lookup: DiscoveryFindings.ObservedMetric via ValidatingHypothesis — the current observed values for the hypothesis backing this conclusion, so a reader can see exactly why it currently passes or fails." .
+    # calculated: lookup
 
 effortless-ntwf:title a owl:DatatypeProperty ;
     rdfs:range xsd:string ;
@@ -1179,7 +1205,7 @@ effortless-ntwf:allCellsValid a owl:DatatypeProperty ;
 effortless-ntwf:studyCount a owl:DatatypeProperty ;
     rdfs:range xsd:integer ;
     rdfs:label "StudyCount" ;
-    rdfs:comment "Total studies. Fixed loop-90 (see IngestionSummary.ProtocolItemCount for why COUNTIFS(...,\"<>\") is unsafe)." .
+    rdfs:comment "Count of studies subject to the ingestion contract (excludes control studies, loop-92 -- control studies were never encoded with paired treatment arms, so IngestionCellParity is structurally undefined for them, not a real ingestion defect)." .
     # calculated: aggregation
 
 effortless-ntwf:structuralCompliantCount a owl:DatatypeProperty ;
@@ -1199,7 +1225,7 @@ effortless-ntwf:allStudiesStructural a owl:DatatypeProperty ;
 effortless-ntwf:realStudyCount a owl:DatatypeProperty ;
     rdfs:range xsd:integer ;
     rdfs:label "RealStudyCount" ;
-    rdfs:comment "Non-synthetic studies." .
+    rdfs:comment "Non-synthetic, non-control studies (loop-92 -- control studies were never encoded with paired treatment arms, so they are outside the ingestion contract's scope, same as StructuralCompliantCount's StudyCount)." .
     # calculated: aggregation
 
 effortless-ntwf:realFullyCompliantCount a owl:DatatypeProperty ;
@@ -1515,6 +1541,53 @@ effortless-ntwf:gitTag a owl:DatatypeProperty ;
     rdfs:range xsd:string ;
     rdfs:label "GitTag" ;
     rdfs:comment "Optional milestone tag pointing at this loop's landing commit (sp-loop-milestone-*). Used for discovery replay without memorizing SHAs." .
+
+# === Class: MaterializedEntities ===
+effortless-ntwf:MaterializedEntities a owl:Class ;
+    rdfs:label "MaterializedEntities" ;
+    rdfs:comment "Table: MaterializedEntities — governance record of every entity in this rulebook whose fields are principled materializations rather than live-calculated (per project CLAUDE.md: allowed only when the computation is genuinely expensive AND its upstream is sealed/stable, expressed as data in the rulebook itself, never as an ad-hoc application cache). Each row names the entity, the refresh contract, the refresh function that implements it, and the measured cost that justified materializing it. If this table's row for an entity were deleted, the entity's fields should still be regeneratable identically from the SSoT + the refresh function — that is the test for whether a materialization here is principled." .
+
+effortless-ntwf:materializedEntityId a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:MaterializedEntities ;
+    rdfs:range xsd:string ;
+    rdfs:label "MaterializedEntityId" ;
+    rdfs:comment "Unique slug (e.g. mat-sweep-study-summary)." .
+
+effortless-ntwf:name a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "Name" ;
+    rdfs:comment "Display label, mirrors MaterializedEntityId." .
+    # calculated: calculated
+
+effortless-ntwf:entityTable a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:MaterializedEntities ;
+    rdfs:range xsd:string ;
+    rdfs:label "EntityTable" ;
+    rdfs:comment "The rulebook table whose fields are materialized (e.g. SweepStudySummary)." .
+
+effortless-ntwf:refreshContract a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:MaterializedEntities ;
+    rdfs:range xsd:string ;
+    rdfs:label "RefreshContract" ;
+    rdfs:comment "eager-on-write | on-demand | scheduled — when the refresh function is invoked relative to writes on the upstream data." .
+
+effortless-ntwf:refreshFunction a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:MaterializedEntities ;
+    rdfs:range xsd:string ;
+    rdfs:label "RefreshFunction" ;
+    rdfs:comment "The SQL function (in the customize-* override files) that recomputes this entity's materialized fields from its upstream SSoT tables." .
+
+effortless-ntwf:upstreamTables a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:MaterializedEntities ;
+    rdfs:range xsd:string ;
+    rdfs:label "UpstreamTables" ;
+    rdfs:comment "Comma-separated list of the tables this materialization is derived from — its sealed/stable upstream." .
+
+effortless-ntwf:justification a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:MaterializedEntities ;
+    rdfs:range xsd:string ;
+    rdfs:label "Justification" ;
+    rdfs:comment "The measured cost or evidence that justified materializing this entity instead of leaving it as a live calculated/aggregation field." .
 
 # === Class: Methodology ===
 effortless-ntwf:Methodology a owl:Class ;
@@ -2162,7 +2235,7 @@ effortless-ntwf:theoremCount a owl:DatatypeProperty ;
     rdfs:domain effortless-ntwf:ModelSummary ;
     rdfs:range xsd:integer ;
     rdfs:label "TheoremCount" ;
-    rdfs:comment "Count of witnessed Conclusions with Category=theorem (portfolio rollup for loop-76)." .
+    rdfs:comment "Count of witnessed Conclusions with Category=corpus-theorem (portfolio rollup for loop-76; category renamed from theorem in loop-91)." .
     # calculated: calculated
 
 effortless-ntwf:educationLatentFraction a owl:DatatypeProperty ;
@@ -3392,52 +3465,44 @@ effortless-ntwf:correctedGapConstant a owl:DatatypeProperty ;
     rdfs:domain effortless-ntwf:SweepStudySummary ;
     rdfs:range xsd:string ;
     rdfs:label "CorrectedGapConstant" ;
-    rdfs:comment "The allocation-free corrected gap for this study, computed analytically." .
-    # calculated: calculated
+    rdfs:comment "Principled materialization (refresh_sweep_study_summary(), 03b/05b customize SQL). The allocation-free corrected gap for this study = MINIFS(AllocationSweep[SweepCorrectedGap], AllocationSweep[StudyId], SweepStudyId). Upstream (AllocationSweep, SweepStudyConfig) is sealed/stable per build; recomputing this per-row via nested calc_* calls was measured to fan out to 22.5s for a 242-study corpus scan with zero memoization — materialized here instead of left as a live calculated field. See MaterializedEntities." .
 
 effortless-ntwf:sweepCorrectedGapMax a owl:DatatypeProperty ;
     rdfs:range xsd:string ;
     rdfs:label "SweepCorrectedGapMax" ;
-    rdfs:comment "Maximum SweepCorrectedGap across all allocation fractions for this study." .
-    # calculated: calculated
+    rdfs:comment "Principled materialization (refresh_sweep_study_summary()). Maximum SweepCorrectedGap across all allocation fractions for this study = MAXIFS(AllocationSweep[SweepCorrectedGap], AllocationSweep[StudyId], SweepStudyId). See CorrectedGapConstant for why this is materialized rather than calculated." .
 
 effortless-ntwf:sweepCorrectedGapMin a owl:DatatypeProperty ;
     rdfs:range xsd:string ;
     rdfs:label "SweepCorrectedGapMin" ;
-    rdfs:comment "Minimum SweepCorrectedGap across all allocation fractions for this study." .
-    # calculated: calculated
+    rdfs:comment "Principled materialization (refresh_sweep_study_summary()). Minimum SweepCorrectedGap across all allocation fractions for this study = MINIFS(AllocationSweep[SweepCorrectedGap], AllocationSweep[StudyId], SweepStudyId). See CorrectedGapConstant for why this is materialized rather than calculated." .
 
 effortless-ntwf:sweepCorrectedGapRange a owl:DatatypeProperty ;
     rdfs:range xsd:string ;
     rdfs:label "SweepCorrectedGapRange" ;
-    rdfs:comment "Range of SweepCorrectedGap across the sweep = Max - Min. Should be effectively zero (< 0.0001) for all studies if CorrectedGap is truly allocation-free." .
-    # calculated: calculated
+    rdfs:comment "Principled materialization (refresh_sweep_study_summary()). Range of SweepCorrectedGap across the sweep = SweepCorrectedGapMax - SweepCorrectedGapMin. Should be effectively zero (< 0.0001) for all studies if CorrectedGap is truly allocation-free. See CorrectedGapConstant for why this is materialized rather than calculated." .
 
 effortless-ntwf:sweepPooledGapMax a owl:DatatypeProperty ;
     rdfs:domain effortless-ntwf:SweepStudySummary ;
     rdfs:range xsd:string ;
     rdfs:label "SweepPooledGapMax" ;
-    rdfs:comment "Maximum SweepPooledGap across all allocation fractions for this study." .
-    # calculated: calculated
+    rdfs:comment "Principled materialization (refresh_sweep_study_summary()). Maximum SweepPooledGap across all allocation fractions for this study = MAXIFS(AllocationSweep[SweepPooledGap], AllocationSweep[StudyId], SweepStudyId). See CorrectedGapConstant for why this is materialized rather than calculated." .
 
 effortless-ntwf:sweepPooledGapMin a owl:DatatypeProperty ;
     rdfs:domain effortless-ntwf:SweepStudySummary ;
     rdfs:range xsd:string ;
     rdfs:label "SweepPooledGapMin" ;
-    rdfs:comment "Minimum SweepPooledGap across all allocation fractions for this study." .
-    # calculated: calculated
+    rdfs:comment "Principled materialization (refresh_sweep_study_summary()). Minimum SweepPooledGap across all allocation fractions for this study = MINIFS(AllocationSweep[SweepPooledGap], AllocationSweep[StudyId], SweepStudyId). See CorrectedGapConstant for why this is materialized rather than calculated." .
 
 effortless-ntwf:sweepPooledGapRange a owl:DatatypeProperty ;
     rdfs:range xsd:string ;
     rdfs:label "SweepPooledGapRange" ;
-    rdfs:comment "Range of SweepPooledGap across the sweep = Max - Min. Should be large for Type A/B studies (pooled gap wanders) and smaller for Type D (balanced allocation = less wandering)." .
-    # calculated: calculated
+    rdfs:comment "Principled materialization (refresh_sweep_study_summary()). Range of SweepPooledGap across the sweep = SweepPooledGapMax - SweepPooledGapMin. Should be large for Type A/B studies (pooled gap wanders) and smaller for Type D (balanced allocation = less wandering). See CorrectedGapConstant for why this is materialized rather than calculated." .
 
 effortless-ntwf:pooledGapCrossesZero a owl:DatatypeProperty ;
     rdfs:range xsd:boolean ;
     rdfs:label "PooledGapCrossesZero" ;
-    rdfs:comment "TRUE when SweepPooledGapMin < 0 and SweepPooledGapMax > 0 — the pooled gap changes sign somewhere in the sweep, meaning the paradox can be created or destroyed by pure allocation." .
-    # calculated: calculated
+    rdfs:comment "Principled materialization (refresh_sweep_study_summary()). TRUE when SweepPooledGapMin < 0 and SweepPooledGapMax > 0 — the pooled gap changes sign somewhere in the sweep, meaning the paradox can be created or destroyed by pure allocation. See CorrectedGapConstant for why this is materialized rather than calculated." .
 
 effortless-ntwf:invariantWitness a owl:DatatypeProperty ;
     rdfs:domain effortless-ntwf:SweepStudySummary ;

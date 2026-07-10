@@ -279,13 +279,14 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
     <li><a href="#en-t-stratumvariables">Stratum Variable</a> <span class="toc-meta">2 rules · 1 links</span></li>
     <li><a href="#en-t-treatmentrankings">Treatment Ranking</a> <span class="toc-meta">55 rules · 1 links</span></li>
     <li><a href="#en-t-invariantchecks">Invariant Check</a> <span class="toc-meta">7 rules · 0 links</span></li>
+    <li><a href="#en-t-materializedentities">Materialized Entity</a> <span class="toc-meta">0 rules · 0 links</span></li>
     <li><a href="#en-t-methodology">Methodology</a> <span class="toc-meta">5 rules · 0 links</span></li>
-    <li><a href="#en-t-conclusions">Conclusion</a> <span class="toc-meta">11 rules · 0 links</span></li>
+    <li><a href="#en-t-conclusions">Conclusion</a> <span class="toc-meta">13 rules · 0 links</span></li>
     <li><a href="#en-t-uiscreens">UI Screen</a> <span class="toc-meta">4 rules · 0 links</span></li>
     <li><a href="#en-t-uicomponents">UI Component</a> <span class="toc-meta">0 rules · 0 links</span></li>
     <li><a href="#en-t-instrumentspec">Instrument Spec</a> <span class="toc-meta">0 rules · 0 links</span></li>
     <li><a href="#en-t-allocationsweep">Allocation Sweep</a> <span class="toc-meta">15 rules · 0 links</span></li>
-    <li><a href="#en-t-sweepstudysummary">Sweep Study Summary</a> <span class="toc-meta">11 rules · 0 links</span></li>
+    <li><a href="#en-t-sweepstudysummary">Sweep Study Summary</a> <span class="toc-meta">3 rules · 0 links</span></li>
     <li><a href="#en-t-researchtraditions">Research Tradition</a> <span class="toc-meta">8 rules · 0 links</span></li>
     <li><a href="#en-t-researchers">Researcher</a> <span class="toc-meta">7 rules · 0 links</span></li>
     <li><a href="#en-t-syntheticphase">Synthetic Phase</a> <span class="toc-meta">18 rules · 0 links</span></li>
@@ -1387,12 +1388,18 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <p class="gt-body">Ground truth. Written directly to the database (datatype <code>boolean</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
     </div>
     <details class="prov prov-consumers elem elem-consumers" open>
-      <summary>Consumers <span class="count">2 direct</span> <span class="count count-muted">+2 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
+      <summary>Consumers <span class="count">4 direct</span> <span class="count count-muted">+6 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
       <div class="prov-pills">
+        <a class="ref-pill tone-agg" href="#en-f-ingestionsummary-studycount">Σ Study Count <span class="ref-pill-tbl">Ingestion Summary</span></a>
+        <a class="ref-pill tone-agg" href="#en-f-ingestionsummary-realstudycount">Σ Real Study Count <span class="ref-pill-tbl">Ingestion Summary</span></a>
         <a class="ref-pill tone-agg" href="#en-f-corpusbalance-simpsonstudycount">Σ Simpson Study Count <span class="ref-pill-tbl">Corpus Balance</span></a>
         <a class="ref-pill tone-agg" href="#en-f-corpusbalance-controlstudycount">Σ Control Study Count <span class="ref-pill-tbl">Corpus Balance</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-ingestionsummary-allstudiesstructural">All Studies Structural <span class="ref-pill-tbl">Ingestion Summary</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-ingestionsummary-allrealstudiescompliant">All Real Studies Compliant <span class="ref-pill-tbl">Ingestion Summary</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-ingestionsummary-ingestionwitnessnote">Ingestion Witness Note <span class="ref-pill-tbl">Ingestion Summary</span></a>
         <a class="ref-pill tone-rel faded" href="#en-f-corpusbalance-totalstudycount">Total Study Count <span class="ref-pill-tbl">Corpus Balance</span></a>
         <a class="ref-pill tone-rel faded" href="#en-f-corpusbalance-controlfraction">Control Fraction <span class="ref-pill-tbl">Corpus Balance</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-ingestionsummary-ingestioncontractpasses">Ingestion Contract Passes <span class="ref-pill-tbl">Ingestion Summary</span></a>
       </div>
     </details>
     <p class="field-note elem elem-desc">TRUE if this study is a control (no Simpson's paradox expected/found); FALSE for the main Simpson's Paradox corpus.</p>
@@ -2607,15 +2614,15 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
         <span class="view-label">In RuleSpeak</span>
-        <div class="view-body"><p class="rt-headline">A case cell is considered a valid ingestion cell if all of the following:</p><ol class="rt-priority"><ul class="rt-group"><li>the <a class="ref" href="#en-f-casecells-cases">cases</a> is greater than 0</li><li>the <a class="ref" href="#en-f-casecells-successes">successes</a> is at least 0</li><li>the <a class="ref" href="#en-f-casecells-successes">successes</a> is at most the <a class="ref" href="#en-f-casecells-cases">cases</a></li></ul></ol></div>
+        <div class="view-body"><p class="rt-headline">A case cell is considered a valid ingestion cell if all of the following:</p><ol class="rt-priority"><ul class="rt-group"><li>the <a class="ref" href="#en-f-casecells-cases">cases</a> is at least 0</li><li>the <a class="ref" href="#en-f-casecells-successes">successes</a> is at least 0</li><li>the <a class="ref" href="#en-f-casecells-successes">successes</a> is at most the <a class="ref" href="#en-f-casecells-cases">cases</a></li></ul></ol></div>
       </div>
       <div class="view elem elem-english">
         <span class="view-label">In plain words</span>
-        <p class="view-body"><a class="ref" href="#en-f-casecells-cases">Cases</a> is greater than 0, <a class="ref" href="#en-f-casecells-successes">successes</a> is at least 0, and <a class="ref" href="#en-f-casecells-successes">successes</a> is at most <a class="ref" href="#en-f-casecells-cases">cases</a>.</p>
+        <p class="view-body"><a class="ref" href="#en-f-casecells-cases">Cases</a> is at least 0, <a class="ref" href="#en-f-casecells-successes">successes</a> is at least 0, and <a class="ref" href="#en-f-casecells-successes">successes</a> is at most <a class="ref" href="#en-f-casecells-cases">cases</a>.</p>
       </div>
       <div class="view elem elem-formula">
         <span class="view-label">As a formula</span>
-        <div class="view-body fx"><span class="fx-eq">= </span>AND(<a class="fx-chip" href="#en-f-casecells-cases">Cases</a> &gt; 0, <a class="fx-chip" href="#en-f-casecells-successes">Successes</a> &gt;= 0, <a class="fx-chip" href="#en-f-casecells-successes">Successes</a> &lt;= <a class="fx-chip" href="#en-f-casecells-cases">Cases</a>)</div>
+        <div class="view-body fx"><span class="fx-eq">= </span>AND(<a class="fx-chip" href="#en-f-casecells-cases">Cases</a> &gt;= 0, <a class="fx-chip" href="#en-f-casecells-successes">Successes</a> &gt;= 0, <a class="fx-chip" href="#en-f-casecells-successes">Successes</a> &lt;= <a class="fx-chip" href="#en-f-casecells-cases">Cases</a>)</div>
       </div>
     </div>
     <details class="prov prov-inputs elem elem-inputs" open>
@@ -2647,7 +2654,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
         <a class="ref-pill tone-raw" href="#en-f-casecells-successes">● Successes <span class="ref-pill-tbl">Case Cell</span></a>
       </div>
     </details>
-    <p class="field-note elem elem-desc">TRUE when Cases&gt;0, Successes&gt;=0, and Successes&lt;=Cases.</p>
+    <p class="field-note elem elem-desc">TRUE when Cases&gt;=0, Successes&gt;=0, and Successes&lt;=Cases (loop-92: a stratum-treatment combination can legitimately have zero observed cases in real source data -- e.g. rdatasets-mtcars-engine has zero 8-cylinder straight-engine cars -- so Cases=0 is a valid ingestion cell, not a defect).</p>
     </article>
 </section>
 <section class="entity" id="en-t-stratumsummaries" data-entity="Stratum Summary">
@@ -8970,7 +8977,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="field-glyph" title="Aggregation">Σ</span>
       <span class="field-name">Max Study Sweep Corrected Gap Range</span>
       <span class="pill pill-type">Aggregation</span>
-      <span class="pill pill-depth">4 hops from ground truth</span>
+      <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">number</span>
       <span class="pill pill-dr">DR-121</span>
     </div>
@@ -8991,17 +8998,16 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
     <details class="prov prov-inputs elem elem-inputs" open>
       <summary>Inputs <span class="count">1</span> <span class="prov-hint">fields this rule reads</span></summary>
       <div class="prov-grid">
-        <a class="input tone-calc" href="#en-f-sweepstudysummary-sweepcorrectedgaprange">
-          <span class="input-head"><span class="input-glyph">ƒ</span><span class="input-name">Sweep Corrected Gap Range</span><span class="input-table">Sweep Study Summary</span></span>
-          <span class="input-en">Sweep corrected gap max minus sweep corrected gap min.</span>
+        <a class="input tone-raw" href="#en-f-sweepstudysummary-sweepcorrectedgaprange">
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Sweep Corrected Gap Range</span><span class="input-table">Sweep Study Summary</span></span>
+          <span class="input-en muted">Principled materialization (refresh_sweep_study_summary()). Range of SweepCorrectedGap across the sweep = SweepCorrectedGapMax - SweepCorrectedGapMin. Should be effectively zero (&lt; 0.0001) for all studies if CorrectedGap is truly allocation-free. See CorrectedGapConstant for why this is materialized rather than calculated.</span>
         </a>
       </div>
     </details>
     <details class="prov prov-leaves elem elem-inputs">
-      <summary>Ground truth at the leaves <span class="count">2</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <summary>Ground truth at the leaves <span class="count">1</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
       <div class="prov-pills">
-        <span class="ref-pill tone-raw">● Study ID <span class="ref-pill-tbl">Allocation Sweep</span></span>
-        <span class="ref-pill tone-raw">● Sweep Study ID <span class="ref-pill-tbl">Sweep Study Summary</span></span>
+        <a class="ref-pill tone-raw" href="#en-f-sweepstudysummary-sweepcorrectedgaprange">● Sweep Corrected Gap Range <span class="ref-pill-tbl">Sweep Study Summary</span></a>
       </div>
     </details>
     <p class="field-note elem elem-desc">MAX(SweepStudySummary.SweepCorrectedGapRange) — must stay below 0.0001 for CorrectedGap invariance theorem.</p>
@@ -9011,7 +9017,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="field-glyph" title="Aggregation">Σ</span>
       <span class="field-name">Corrected Gap Invariant Fail Count</span>
       <span class="pill pill-type">Aggregation</span>
-      <span class="pill pill-depth">4 hops from ground truth</span>
+      <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">integer</span>
       <span class="pill pill-dr">DR-122</span>
     </div>
@@ -9032,17 +9038,16 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
     <details class="prov prov-inputs elem elem-inputs" open>
       <summary>Inputs <span class="count">1</span> <span class="prov-hint">fields this rule reads</span></summary>
       <div class="prov-grid">
-        <a class="input tone-calc" href="#en-f-sweepstudysummary-sweepcorrectedgaprange">
-          <span class="input-head"><span class="input-glyph">ƒ</span><span class="input-name">Sweep Corrected Gap Range</span><span class="input-table">Sweep Study Summary</span></span>
-          <span class="input-en">Sweep corrected gap max minus sweep corrected gap min.</span>
+        <a class="input tone-raw" href="#en-f-sweepstudysummary-sweepcorrectedgaprange">
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Sweep Corrected Gap Range</span><span class="input-table">Sweep Study Summary</span></span>
+          <span class="input-en muted">Principled materialization (refresh_sweep_study_summary()). Range of SweepCorrectedGap across the sweep = SweepCorrectedGapMax - SweepCorrectedGapMin. Should be effectively zero (&lt; 0.0001) for all studies if CorrectedGap is truly allocation-free. See CorrectedGapConstant for why this is materialized rather than calculated.</span>
         </a>
       </div>
     </details>
     <details class="prov prov-leaves elem elem-inputs">
-      <summary>Ground truth at the leaves <span class="count">2</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <summary>Ground truth at the leaves <span class="count">1</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
       <div class="prov-pills">
-        <span class="ref-pill tone-raw">● Study ID <span class="ref-pill-tbl">Allocation Sweep</span></span>
-        <span class="ref-pill tone-raw">● Sweep Study ID <span class="ref-pill-tbl">Sweep Study Summary</span></span>
+        <a class="ref-pill tone-raw" href="#en-f-sweepstudysummary-sweepcorrectedgaprange">● Sweep Corrected Gap Range <span class="ref-pill-tbl">Sweep Study Summary</span></a>
       </div>
     </details>
     <p class="field-note elem elem-desc">Count of SweepStudySummary rows where SweepCorrectedGapRange &gt;= 0.0001.</p>
@@ -9187,11 +9192,11 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       </div>
       <div class="view elem elem-english">
         <span class="view-label">In plain words</span>
-        <p class="view-body">Count of <a class="ref" href="#en-t-conclusions">conclusions</a> whose <a class="ref" href="#en-f-conclusions-category">category</a> is &quot;theorem&quot; and <a class="ref" href="#en-f-conclusions-status">status</a> is &quot;witnessed&quot;.</p>
+        <p class="view-body">Count of <a class="ref" href="#en-t-conclusions">conclusions</a> whose <a class="ref" href="#en-f-conclusions-category">category</a> is &quot;corpus-theorem&quot; and <a class="ref" href="#en-f-conclusions-status">status</a> is &quot;witnessed&quot;.</p>
       </div>
       <div class="view elem elem-formula">
         <span class="view-label">As a formula</span>
-        <div class="view-body fx"><span class="fx-eq">= </span>COUNTIFS(<a class="fx-chip" href="#en-f-conclusions-category">Category</a>, &quot;theorem&quot;, <a class="fx-chip" href="#en-f-conclusions-status">Status</a>, &quot;witnessed&quot;)</div>
+        <div class="view-body fx"><span class="fx-eq">= </span>COUNTIFS(<a class="fx-chip" href="#en-f-conclusions-category">Category</a>, &quot;corpus-theorem&quot;, <a class="fx-chip" href="#en-f-conclusions-status">Status</a>, &quot;witnessed&quot;)</div>
       </div>
     </div>
     <details class="prov prov-inputs elem elem-inputs" open>
@@ -9199,7 +9204,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <div class="prov-grid">
         <a class="input tone-raw" href="#en-f-conclusions-category">
           <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Category</span><span class="input-table">Conclusion</span></span>
-          <span class="input-en muted">domain | instrument | methodology | open-question</span>
+          <span class="input-en muted">domain | instrument | methodology | open-question | corpus-theorem</span>
         </a>
         <a class="input tone-raw" href="#en-f-conclusions-status">
           <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Status</span><span class="input-table">Conclusion</span></span>
@@ -9220,7 +9225,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
         <a class="ref-pill tone-raw" href="#en-f-conclusions-status">● Status <span class="ref-pill-tbl">Conclusion</span></a>
       </div>
     </details>
-    <p class="field-note elem elem-desc">Count of witnessed Conclusions with Category=theorem (portfolio rollup for loop-76).</p>
+    <p class="field-note elem elem-desc">Count of witnessed Conclusions with Category=corpus-theorem (portfolio rollup for loop-76; category renamed from theorem in loop-91).</p>
     </article>
   <article class="field tone-calc" id="en-f-modelsummary-educationlatentfraction" data-entity="Model Summary" data-field="Education Latent Fraction">
     <div class="field-head">
@@ -10344,7 +10349,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
         </a>
         <a class="input tone-calc" href="#en-f-modelsummary-theoremcount">
           <span class="input-head"><span class="input-glyph">ƒ</span><span class="input-name">Theorem Count</span><span class="input-table">Model Summary</span></span>
-          <span class="input-en">Count of conclusions whose category is &quot;theorem&quot; and status is &quot;witnessed&quot;.</span>
+          <span class="input-en">Count of conclusions whose category is &quot;corpus-theorem&quot; and status is &quot;witnessed&quot;.</span>
         </a>
       </div>
     </details>
@@ -15665,6 +15670,72 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
     <p class="field-note elem elem-desc">Lookup: Conclusions.Category via ProtectsConclusion.</p>
     </article>
 </section>
+<section class="entity" id="en-t-materializedentities" data-entity="Materialized Entity">
+  <header class="entity-head">
+    <h2 class="entity-title">Materialized Entity</h2>
+    <p class="entity-synopsis">A materialized entity is identified by its name.</p>
+  </header>
+  <article class="field tone-raw" id="en-f-materializedentities-entitytable" data-entity="Materialized Entity" data-field="Entity Table">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Entity Table</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">The rulebook table whose fields are materialized (e.g. SweepStudySummary).</p>
+    </article>
+  <article class="field tone-raw" id="en-f-materializedentities-refreshcontract" data-entity="Materialized Entity" data-field="Refresh Contract">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Refresh Contract</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">eager-on-write | on-demand | scheduled — when the refresh function is invoked relative to writes on the upstream data.</p>
+    </article>
+  <article class="field tone-raw" id="en-f-materializedentities-refreshfunction" data-entity="Materialized Entity" data-field="Refresh Function">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Refresh Function</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">The SQL function (in the customize-* override files) that recomputes this entity's materialized fields from its upstream SSoT tables.</p>
+    </article>
+  <article class="field tone-raw" id="en-f-materializedentities-upstreamtables" data-entity="Materialized Entity" data-field="Upstream Tables">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Upstream Tables</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Comma-separated list of the tables this materialization is derived from — its sealed/stable upstream.</p>
+    </article>
+  <article class="field tone-raw" id="en-f-materializedentities-justification" data-entity="Materialized Entity" data-field="Justification">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Justification</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">The measured cost or evidence that justified materializing this entity instead of leaving it as a live calculated/aggregation field.</p>
+    </article>
+</section>
 <section class="entity" id="en-t-methodology" data-entity="Methodology">
   <header class="entity-head">
     <h2 class="entity-title">Methodology</h2>
@@ -15977,7 +16048,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
         <a class="ref-pill tone-rel faded" href="#en-f-modelsummary-expansionwave3discoverynote">Expansion Wave3 Discovery Note <span class="ref-pill-tbl">Model Summary</span></a>
       </div>
     </details>
-    <p class="field-note elem elem-desc">domain | instrument | methodology | open-question</p>
+    <p class="field-note elem elem-desc">domain | instrument | methodology | open-question | corpus-theorem</p>
     </article>
   <article class="field tone-raw" id="en-f-conclusions-status" data-entity="Conclusion" data-field="Status">
     <div class="field-head">
@@ -15997,6 +16068,117 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       </div>
     </details>
     <p class="field-note elem elem-desc">witnessed | planned | open</p>
+    </article>
+  <article class="field tone-raw" id="en-f-conclusions-reporttier" data-entity="Conclusion" data-field="Report Tier">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Report Tier</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">critical | supporting | transient — controls how much space this conclusion gets in the generated PDF/summary report. critical = full section with evidence + chart; supporting = 1-2 line bullet; transient = folded into a single compact list.</p>
+    </article>
+  <article class="field tone-raw" id="en-f-conclusions-validatinghypothesis" data-entity="Conclusion" data-field="Validating Hypothesis">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Validating Hypothesis</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <details class="prov prov-consumers elem elem-consumers" open>
+      <summary>Consumers <span class="count">2 direct</span> <span class="prov-hint">rules that read this one</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-lookup" href="#en-f-conclusions-livestatusconfirmed">↗ Live Status Confirmed <span class="ref-pill-tbl">Conclusion</span></a>
+        <a class="ref-pill tone-lookup" href="#en-f-conclusions-livestatusobservedmetric">↗ Live Status Observed Metric <span class="ref-pill-tbl">Conclusion</span></a>
+      </div>
+    </details>
+    <p class="field-note elem elem-desc">FK → DiscoveryHypotheses.HypothesisId. The pre-registered hypothesis whose live DiscoveryFindings.IsConfirmed value is the current-truth check for this conclusion — set on theorem/corpus-theorem conclusions so a report can distinguish a conclusion's archived prose (may say 'Proved') from its live status (may since be contradicted by corpus growth). Null when no single hypothesis tests this exact claim.</p>
+    </article>
+  <article class="field tone-lookup" id="en-f-conclusions-livestatusconfirmed" data-entity="Conclusion" data-field="Live Status Confirmed">
+    <div class="field-head">
+      <span class="field-glyph" title="Lookup">↗</span>
+      <span class="field-name">Live Status Confirmed</span>
+      <span class="pill pill-type">Lookup</span>
+      <span class="pill pill-depth">1 hop from ground truth</span>
+      <span class="pill pill-muted">boolean</span>
+      <span class="pill pill-dr">DR-222</span>
+    </div>
+    <div class="narr-views">
+      <div class="view elem elem-rulespeak">
+        <span class="view-label">In RuleSpeak</span>
+        <p class="view-body">A conclusion's <a class="ref" href="#en-f-conclusions-livestatusconfirmed">live status confirmed</a> is the value of LOOKUP(ValidatingHypothesis, DiscoveryFindings[HypothesisId], DiscoveryFindings[IsConfirmed]).</p>
+      </div>
+      <div class="view elem elem-english">
+        <span class="view-label">In plain words</span>
+        <p class="view-body">LOOKUP({{ValidatingHypothesis}}, DiscoveryFindings[HypothesisId], DiscoveryFindings[IsConfirmed]).</p>
+      </div>
+      <div class="view elem elem-formula">
+        <span class="view-label">As a formula</span>
+        <div class="view-body fx"><span class="fx-eq">= </span>LOOKUP(<a class="fx-chip" href="#en-f-conclusions-validatinghypothesis">Validating Hypothesis</a>, DiscoveryFindings[HypothesisId], DiscoveryFindings[IsConfirmed])</div>
+      </div>
+    </div>
+    <details class="prov prov-inputs elem elem-inputs" open>
+      <summary>Inputs <span class="count">1</span> <span class="prov-hint">fields this rule reads</span></summary>
+      <div class="prov-grid">
+        <a class="input tone-raw" href="#en-f-conclusions-validatinghypothesis">
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Validating Hypothesis</span><span class="input-table">Conclusion</span></span>
+          <span class="input-en muted">FK → DiscoveryHypotheses.HypothesisId. The pre-registered hypothesis whose live DiscoveryFindings.IsConfirmed value is the current-truth check for this conclusion — set on theorem/corpus-theorem conclusions so a report can distinguish a conclusion's archived prose (may say 'Proved') from its live status (may since be contradicted by corpus growth). Null when no single hypothesis tests this exact claim.</span>
+        </a>
+      </div>
+    </details>
+    <details class="prov prov-leaves elem elem-inputs">
+      <summary>Ground truth at the leaves <span class="count">1</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-raw" href="#en-f-conclusions-validatinghypothesis">● Validating Hypothesis <span class="ref-pill-tbl">Conclusion</span></a>
+      </div>
+    </details>
+    <p class="field-note elem elem-desc">Lookup: DiscoveryFindings.IsConfirmed via ValidatingHypothesis — the current pass/fail state of the hypothesis backing this conclusion, recomputed on every build from live corpus data. NULL when ValidatingHypothesis is not set (no live check exists for this conclusion).</p>
+    </article>
+  <article class="field tone-lookup" id="en-f-conclusions-livestatusobservedmetric" data-entity="Conclusion" data-field="Live Status Observed Metric">
+    <div class="field-head">
+      <span class="field-glyph" title="Lookup">↗</span>
+      <span class="field-name">Live Status Observed Metric</span>
+      <span class="pill pill-type">Lookup</span>
+      <span class="pill pill-depth">1 hop from ground truth</span>
+      <span class="pill pill-muted">string</span>
+      <span class="pill pill-dr">DR-223</span>
+    </div>
+    <div class="narr-views">
+      <div class="view elem elem-rulespeak">
+        <span class="view-label">In RuleSpeak</span>
+        <p class="view-body">A conclusion's <a class="ref" href="#en-f-conclusions-livestatusobservedmetric">live status observed metric</a> is the value of LOOKUP(ValidatingHypothesis, DiscoveryFindings[HypothesisId], DiscoveryFindings[ObservedMetric]).</p>
+      </div>
+      <div class="view elem elem-english">
+        <span class="view-label">In plain words</span>
+        <p class="view-body">LOOKUP({{ValidatingHypothesis}}, DiscoveryFindings[HypothesisId], DiscoveryFindings[ObservedMetric]).</p>
+      </div>
+      <div class="view elem elem-formula">
+        <span class="view-label">As a formula</span>
+        <div class="view-body fx"><span class="fx-eq">= </span>LOOKUP(<a class="fx-chip" href="#en-f-conclusions-validatinghypothesis">Validating Hypothesis</a>, DiscoveryFindings[HypothesisId], DiscoveryFindings[ObservedMetric])</div>
+      </div>
+    </div>
+    <details class="prov prov-inputs elem elem-inputs" open>
+      <summary>Inputs <span class="count">1</span> <span class="prov-hint">fields this rule reads</span></summary>
+      <div class="prov-grid">
+        <a class="input tone-raw" href="#en-f-conclusions-validatinghypothesis">
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Validating Hypothesis</span><span class="input-table">Conclusion</span></span>
+          <span class="input-en muted">FK → DiscoveryHypotheses.HypothesisId. The pre-registered hypothesis whose live DiscoveryFindings.IsConfirmed value is the current-truth check for this conclusion — set on theorem/corpus-theorem conclusions so a report can distinguish a conclusion's archived prose (may say 'Proved') from its live status (may since be contradicted by corpus growth). Null when no single hypothesis tests this exact claim.</span>
+        </a>
+      </div>
+    </details>
+    <details class="prov prov-leaves elem elem-inputs">
+      <summary>Ground truth at the leaves <span class="count">1</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-raw" href="#en-f-conclusions-validatinghypothesis">● Validating Hypothesis <span class="ref-pill-tbl">Conclusion</span></a>
+      </div>
+    </details>
+    <p class="field-note elem elem-desc">Lookup: DiscoveryFindings.ObservedMetric via ValidatingHypothesis — the current observed values for the hypothesis backing this conclusion, so a reader can see exactly why it currently passes or fails.</p>
     </article>
   <article class="field tone-raw" id="en-f-conclusions-title" data-entity="Conclusion" data-field="Title">
     <div class="field-head">
@@ -16081,7 +16263,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Lookup</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-222</span>
+      <span class="pill pill-dr">DR-224</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -16121,7 +16303,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Lookup</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-223</span>
+      <span class="pill pill-dr">DR-225</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -16161,7 +16343,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Lookup</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-224</span>
+      <span class="pill pill-dr">DR-226</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -16201,7 +16383,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Lookup</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-225</span>
+      <span class="pill pill-dr">DR-227</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -16241,7 +16423,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Lookup</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-226</span>
+      <span class="pill pill-dr">DR-228</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -16281,7 +16463,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Lookup</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-227</span>
+      <span class="pill pill-dr">DR-229</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -16321,7 +16503,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Lookup</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-228</span>
+      <span class="pill pill-dr">DR-230</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -16361,7 +16543,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Lookup</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-229</span>
+      <span class="pill pill-dr">DR-231</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -16401,7 +16583,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Lookup</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-230</span>
+      <span class="pill pill-dr">DR-232</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -16441,7 +16623,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Lookup</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-231</span>
+      <span class="pill pill-dr">DR-233</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -16481,7 +16663,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Aggregation</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">integer</span>
-      <span class="pill pill-dr">DR-232</span>
+      <span class="pill pill-dr">DR-234</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -16623,7 +16805,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Lookup</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-233</span>
+      <span class="pill pill-dr">DR-235</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -16663,7 +16845,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Lookup</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-234</span>
+      <span class="pill pill-dr">DR-236</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -16703,7 +16885,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Lookup</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-235</span>
+      <span class="pill pill-dr">DR-237</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -16743,7 +16925,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Lookup</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-236</span>
+      <span class="pill pill-dr">DR-238</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -16961,7 +17143,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <p class="gt-body">Ground truth. Written directly to the database (datatype <code>number</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
     </div>
     <details class="prov prov-consumers elem elem-consumers" open>
-      <summary>Consumers <span class="count">2 direct</span> <span class="count count-muted">+10 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
+      <summary>Consumers <span class="count">2 direct</span> <span class="count count-muted">+6 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
       <div class="prov-pills">
         <a class="ref-pill tone-calc" href="#en-f-allocationsweep-isoriginal">ƒ Is Original <span class="ref-pill-tbl">Allocation Sweep</span></a>
         <a class="ref-pill tone-calc" href="#en-f-allocationsweep-nsweepa">ƒ N Sweep a <span class="ref-pill-tbl">Allocation Sweep</span></a>
@@ -16971,10 +17153,6 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
         <a class="ref-pill tone-rel faded" href="#en-f-allocationsweep-sweeppooledgap">Sweep Pooled Gap <span class="ref-pill-tbl">Allocation Sweep</span></a>
         <a class="ref-pill tone-rel faded" href="#en-f-modelsummary-sweeppooledgaprange">Sweep Pooled Gap Range <span class="ref-pill-tbl">Model Summary</span></a>
         <a class="ref-pill tone-rel faded" href="#en-f-allocationsweep-allocationdistortionwitness">Allocation Distortion Witness <span class="ref-pill-tbl">Allocation Sweep</span></a>
-        <a class="ref-pill tone-rel faded" href="#en-f-sweepstudysummary-sweeppooledgapmax">Sweep Pooled Gap Max <span class="ref-pill-tbl">Sweep Study Summary</span></a>
-        <a class="ref-pill tone-rel faded" href="#en-f-sweepstudysummary-sweeppooledgapmin">Sweep Pooled Gap Min <span class="ref-pill-tbl">Sweep Study Summary</span></a>
-        <a class="ref-pill tone-rel faded" href="#en-f-sweepstudysummary-sweeppooledgaprange">Sweep Pooled Gap Range <span class="ref-pill-tbl">Sweep Study Summary</span></a>
-        <a class="ref-pill tone-rel faded" href="#en-f-sweepstudysummary-pooledgapcrosseszero">Pooled Gap Crosses Zero <span class="ref-pill-tbl">Sweep Study Summary</span></a>
       </div>
     </details>
     <p class="field-note elem elem-desc">Fraction of the sweep-stratum cases assigned to treatment A. Ranges from 0.05 to 0.95. The sweep stratum is the one whose allocation was most confounded in the original study.</p>
@@ -16986,7 +17164,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">boolean</span>
-      <span class="pill pill-dr">DR-237</span>
+      <span class="pill pill-dr">DR-239</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -17031,7 +17209,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">number</span>
-      <span class="pill pill-dr">DR-238</span>
+      <span class="pill pill-dr">DR-240</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -17057,7 +17235,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       </div>
     </details>
     <details class="prov prov-consumers elem elem-consumers">
-      <summary>Consumers <span class="count">2 direct</span> <span class="count count-muted">+9 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
+      <summary>Consumers <span class="count">2 direct</span> <span class="count count-muted">+5 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
       <div class="prov-pills">
         <a class="ref-pill tone-calc" href="#en-f-allocationsweep-nsweepa">ƒ N Sweep a <span class="ref-pill-tbl">Allocation Sweep</span></a>
         <a class="ref-pill tone-calc" href="#en-f-allocationsweep-nsweepb">ƒ N Sweep B <span class="ref-pill-tbl">Allocation Sweep</span></a>
@@ -17066,10 +17244,6 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
         <a class="ref-pill tone-rel faded" href="#en-f-allocationsweep-sweeppooledgap">Sweep Pooled Gap <span class="ref-pill-tbl">Allocation Sweep</span></a>
         <a class="ref-pill tone-rel faded" href="#en-f-modelsummary-sweeppooledgaprange">Sweep Pooled Gap Range <span class="ref-pill-tbl">Model Summary</span></a>
         <a class="ref-pill tone-rel faded" href="#en-f-allocationsweep-allocationdistortionwitness">Allocation Distortion Witness <span class="ref-pill-tbl">Allocation Sweep</span></a>
-        <a class="ref-pill tone-rel faded" href="#en-f-sweepstudysummary-sweeppooledgapmax">Sweep Pooled Gap Max <span class="ref-pill-tbl">Sweep Study Summary</span></a>
-        <a class="ref-pill tone-rel faded" href="#en-f-sweepstudysummary-sweeppooledgapmin">Sweep Pooled Gap Min <span class="ref-pill-tbl">Sweep Study Summary</span></a>
-        <a class="ref-pill tone-rel faded" href="#en-f-sweepstudysummary-sweeppooledgaprange">Sweep Pooled Gap Range <span class="ref-pill-tbl">Sweep Study Summary</span></a>
-        <a class="ref-pill tone-rel faded" href="#en-f-sweepstudysummary-pooledgapcrosseszero">Pooled Gap Crosses Zero <span class="ref-pill-tbl">Sweep Study Summary</span></a>
       </div>
     </details>
     <details class="prov prov-leaves elem elem-inputs">
@@ -17087,7 +17261,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">2 hops from ground truth</span>
       <span class="pill pill-muted">number</span>
-      <span class="pill pill-dr">DR-239</span>
+      <span class="pill pill-dr">DR-241</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -17117,7 +17291,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       </div>
     </details>
     <details class="prov prov-consumers elem elem-consumers">
-      <summary>Consumers <span class="count">2 direct</span> <span class="count count-muted">+8 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
+      <summary>Consumers <span class="count">2 direct</span> <span class="count count-muted">+4 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
       <div class="prov-pills">
         <a class="ref-pill tone-calc" href="#en-f-allocationsweep-nsweepb">ƒ N Sweep B <span class="ref-pill-tbl">Allocation Sweep</span></a>
         <a class="ref-pill tone-calc" href="#en-f-allocationsweep-sweeppooledratea">ƒ Sweep Pooled Rate a <span class="ref-pill-tbl">Allocation Sweep</span></a>
@@ -17125,10 +17299,6 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
         <a class="ref-pill tone-rel faded" href="#en-f-allocationsweep-sweeppooledgap">Sweep Pooled Gap <span class="ref-pill-tbl">Allocation Sweep</span></a>
         <a class="ref-pill tone-rel faded" href="#en-f-modelsummary-sweeppooledgaprange">Sweep Pooled Gap Range <span class="ref-pill-tbl">Model Summary</span></a>
         <a class="ref-pill tone-rel faded" href="#en-f-allocationsweep-allocationdistortionwitness">Allocation Distortion Witness <span class="ref-pill-tbl">Allocation Sweep</span></a>
-        <a class="ref-pill tone-rel faded" href="#en-f-sweepstudysummary-sweeppooledgapmax">Sweep Pooled Gap Max <span class="ref-pill-tbl">Sweep Study Summary</span></a>
-        <a class="ref-pill tone-rel faded" href="#en-f-sweepstudysummary-sweeppooledgapmin">Sweep Pooled Gap Min <span class="ref-pill-tbl">Sweep Study Summary</span></a>
-        <a class="ref-pill tone-rel faded" href="#en-f-sweepstudysummary-sweeppooledgaprange">Sweep Pooled Gap Range <span class="ref-pill-tbl">Sweep Study Summary</span></a>
-        <a class="ref-pill tone-rel faded" href="#en-f-sweepstudysummary-pooledgapcrosseszero">Pooled Gap Crosses Zero <span class="ref-pill-tbl">Sweep Study Summary</span></a>
       </div>
     </details>
     <details class="prov prov-leaves elem elem-inputs">
@@ -17147,7 +17317,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">3 hops from ground truth</span>
       <span class="pill pill-muted">number</span>
-      <span class="pill pill-dr">DR-240</span>
+      <span class="pill pill-dr">DR-242</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -17177,16 +17347,12 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       </div>
     </details>
     <details class="prov prov-consumers elem elem-consumers">
-      <summary>Consumers <span class="count">1 direct</span> <span class="count count-muted">+7 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
+      <summary>Consumers <span class="count">1 direct</span> <span class="count count-muted">+3 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
       <div class="prov-pills">
         <a class="ref-pill tone-calc" href="#en-f-allocationsweep-sweeppooledrateb">ƒ Sweep Pooled Rate B <span class="ref-pill-tbl">Allocation Sweep</span></a>
         <a class="ref-pill tone-rel faded" href="#en-f-allocationsweep-sweeppooledgap">Sweep Pooled Gap <span class="ref-pill-tbl">Allocation Sweep</span></a>
         <a class="ref-pill tone-rel faded" href="#en-f-modelsummary-sweeppooledgaprange">Sweep Pooled Gap Range <span class="ref-pill-tbl">Model Summary</span></a>
         <a class="ref-pill tone-rel faded" href="#en-f-allocationsweep-allocationdistortionwitness">Allocation Distortion Witness <span class="ref-pill-tbl">Allocation Sweep</span></a>
-        <a class="ref-pill tone-rel faded" href="#en-f-sweepstudysummary-sweeppooledgapmax">Sweep Pooled Gap Max <span class="ref-pill-tbl">Sweep Study Summary</span></a>
-        <a class="ref-pill tone-rel faded" href="#en-f-sweepstudysummary-sweeppooledgapmin">Sweep Pooled Gap Min <span class="ref-pill-tbl">Sweep Study Summary</span></a>
-        <a class="ref-pill tone-rel faded" href="#en-f-sweepstudysummary-sweeppooledgaprange">Sweep Pooled Gap Range <span class="ref-pill-tbl">Sweep Study Summary</span></a>
-        <a class="ref-pill tone-rel faded" href="#en-f-sweepstudysummary-pooledgapcrosseszero">Pooled Gap Crosses Zero <span class="ref-pill-tbl">Sweep Study Summary</span></a>
       </div>
     </details>
     <details class="prov prov-leaves elem elem-inputs">
@@ -17205,7 +17371,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">number</span>
-      <span class="pill pill-dr">DR-241</span>
+      <span class="pill pill-dr">DR-243</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -17231,16 +17397,12 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       </div>
     </details>
     <details class="prov prov-consumers elem elem-consumers">
-      <summary>Consumers <span class="count">1 direct</span> <span class="count count-muted">+7 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
+      <summary>Consumers <span class="count">1 direct</span> <span class="count count-muted">+3 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
       <div class="prov-pills">
         <a class="ref-pill tone-calc" href="#en-f-allocationsweep-sweeppooledratea">ƒ Sweep Pooled Rate a <span class="ref-pill-tbl">Allocation Sweep</span></a>
         <a class="ref-pill tone-rel faded" href="#en-f-allocationsweep-sweeppooledgap">Sweep Pooled Gap <span class="ref-pill-tbl">Allocation Sweep</span></a>
         <a class="ref-pill tone-rel faded" href="#en-f-modelsummary-sweeppooledgaprange">Sweep Pooled Gap Range <span class="ref-pill-tbl">Model Summary</span></a>
         <a class="ref-pill tone-rel faded" href="#en-f-allocationsweep-allocationdistortionwitness">Allocation Distortion Witness <span class="ref-pill-tbl">Allocation Sweep</span></a>
-        <a class="ref-pill tone-rel faded" href="#en-f-sweepstudysummary-sweeppooledgapmax">Sweep Pooled Gap Max <span class="ref-pill-tbl">Sweep Study Summary</span></a>
-        <a class="ref-pill tone-rel faded" href="#en-f-sweepstudysummary-sweeppooledgapmin">Sweep Pooled Gap Min <span class="ref-pill-tbl">Sweep Study Summary</span></a>
-        <a class="ref-pill tone-rel faded" href="#en-f-sweepstudysummary-sweeppooledgaprange">Sweep Pooled Gap Range <span class="ref-pill-tbl">Sweep Study Summary</span></a>
-        <a class="ref-pill tone-rel faded" href="#en-f-sweepstudysummary-pooledgapcrosseszero">Pooled Gap Crosses Zero <span class="ref-pill-tbl">Sweep Study Summary</span></a>
       </div>
     </details>
     <details class="prov prov-leaves elem elem-inputs">
@@ -17258,7 +17420,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">number</span>
-      <span class="pill pill-dr">DR-242</span>
+      <span class="pill pill-dr">DR-244</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -17284,16 +17446,12 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       </div>
     </details>
     <details class="prov prov-consumers elem elem-consumers">
-      <summary>Consumers <span class="count">1 direct</span> <span class="count count-muted">+7 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
+      <summary>Consumers <span class="count">1 direct</span> <span class="count count-muted">+3 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
       <div class="prov-pills">
         <a class="ref-pill tone-calc" href="#en-f-allocationsweep-sweeppooledrateb">ƒ Sweep Pooled Rate B <span class="ref-pill-tbl">Allocation Sweep</span></a>
         <a class="ref-pill tone-rel faded" href="#en-f-allocationsweep-sweeppooledgap">Sweep Pooled Gap <span class="ref-pill-tbl">Allocation Sweep</span></a>
         <a class="ref-pill tone-rel faded" href="#en-f-modelsummary-sweeppooledgaprange">Sweep Pooled Gap Range <span class="ref-pill-tbl">Model Summary</span></a>
         <a class="ref-pill tone-rel faded" href="#en-f-allocationsweep-allocationdistortionwitness">Allocation Distortion Witness <span class="ref-pill-tbl">Allocation Sweep</span></a>
-        <a class="ref-pill tone-rel faded" href="#en-f-sweepstudysummary-sweeppooledgapmax">Sweep Pooled Gap Max <span class="ref-pill-tbl">Sweep Study Summary</span></a>
-        <a class="ref-pill tone-rel faded" href="#en-f-sweepstudysummary-sweeppooledgapmin">Sweep Pooled Gap Min <span class="ref-pill-tbl">Sweep Study Summary</span></a>
-        <a class="ref-pill tone-rel faded" href="#en-f-sweepstudysummary-sweeppooledgaprange">Sweep Pooled Gap Range <span class="ref-pill-tbl">Sweep Study Summary</span></a>
-        <a class="ref-pill tone-rel faded" href="#en-f-sweepstudysummary-pooledgapcrosseszero">Pooled Gap Crosses Zero <span class="ref-pill-tbl">Sweep Study Summary</span></a>
       </div>
     </details>
     <details class="prov prov-leaves elem elem-inputs">
@@ -17311,7 +17469,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">number</span>
-      <span class="pill pill-dr">DR-243</span>
+      <span class="pill pill-dr">DR-245</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -17337,16 +17495,12 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       </div>
     </details>
     <details class="prov prov-consumers elem elem-consumers">
-      <summary>Consumers <span class="count">1 direct</span> <span class="count count-muted">+7 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
+      <summary>Consumers <span class="count">1 direct</span> <span class="count count-muted">+3 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
       <div class="prov-pills">
         <a class="ref-pill tone-calc" href="#en-f-allocationsweep-sweeppooledratea">ƒ Sweep Pooled Rate a <span class="ref-pill-tbl">Allocation Sweep</span></a>
         <a class="ref-pill tone-rel faded" href="#en-f-allocationsweep-sweeppooledgap">Sweep Pooled Gap <span class="ref-pill-tbl">Allocation Sweep</span></a>
         <a class="ref-pill tone-rel faded" href="#en-f-modelsummary-sweeppooledgaprange">Sweep Pooled Gap Range <span class="ref-pill-tbl">Model Summary</span></a>
         <a class="ref-pill tone-rel faded" href="#en-f-allocationsweep-allocationdistortionwitness">Allocation Distortion Witness <span class="ref-pill-tbl">Allocation Sweep</span></a>
-        <a class="ref-pill tone-rel faded" href="#en-f-sweepstudysummary-sweeppooledgapmax">Sweep Pooled Gap Max <span class="ref-pill-tbl">Sweep Study Summary</span></a>
-        <a class="ref-pill tone-rel faded" href="#en-f-sweepstudysummary-sweeppooledgapmin">Sweep Pooled Gap Min <span class="ref-pill-tbl">Sweep Study Summary</span></a>
-        <a class="ref-pill tone-rel faded" href="#en-f-sweepstudysummary-sweeppooledgaprange">Sweep Pooled Gap Range <span class="ref-pill-tbl">Sweep Study Summary</span></a>
-        <a class="ref-pill tone-rel faded" href="#en-f-sweepstudysummary-pooledgapcrosseszero">Pooled Gap Crosses Zero <span class="ref-pill-tbl">Sweep Study Summary</span></a>
       </div>
     </details>
     <details class="prov prov-leaves elem elem-inputs">
@@ -17364,7 +17518,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">number</span>
-      <span class="pill pill-dr">DR-244</span>
+      <span class="pill pill-dr">DR-246</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -17390,16 +17544,12 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       </div>
     </details>
     <details class="prov prov-consumers elem elem-consumers">
-      <summary>Consumers <span class="count">1 direct</span> <span class="count count-muted">+7 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
+      <summary>Consumers <span class="count">1 direct</span> <span class="count count-muted">+3 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
       <div class="prov-pills">
         <a class="ref-pill tone-calc" href="#en-f-allocationsweep-sweeppooledrateb">ƒ Sweep Pooled Rate B <span class="ref-pill-tbl">Allocation Sweep</span></a>
         <a class="ref-pill tone-rel faded" href="#en-f-allocationsweep-sweeppooledgap">Sweep Pooled Gap <span class="ref-pill-tbl">Allocation Sweep</span></a>
         <a class="ref-pill tone-rel faded" href="#en-f-modelsummary-sweeppooledgaprange">Sweep Pooled Gap Range <span class="ref-pill-tbl">Model Summary</span></a>
         <a class="ref-pill tone-rel faded" href="#en-f-allocationsweep-allocationdistortionwitness">Allocation Distortion Witness <span class="ref-pill-tbl">Allocation Sweep</span></a>
-        <a class="ref-pill tone-rel faded" href="#en-f-sweepstudysummary-sweeppooledgapmax">Sweep Pooled Gap Max <span class="ref-pill-tbl">Sweep Study Summary</span></a>
-        <a class="ref-pill tone-rel faded" href="#en-f-sweepstudysummary-sweeppooledgapmin">Sweep Pooled Gap Min <span class="ref-pill-tbl">Sweep Study Summary</span></a>
-        <a class="ref-pill tone-rel faded" href="#en-f-sweepstudysummary-sweeppooledgaprange">Sweep Pooled Gap Range <span class="ref-pill-tbl">Sweep Study Summary</span></a>
-        <a class="ref-pill tone-rel faded" href="#en-f-sweepstudysummary-pooledgapcrosseszero">Pooled Gap Crosses Zero <span class="ref-pill-tbl">Sweep Study Summary</span></a>
       </div>
     </details>
     <details class="prov prov-leaves elem elem-inputs">
@@ -17417,7 +17567,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">number</span>
-      <span class="pill pill-dr">DR-245</span>
+      <span class="pill pill-dr">DR-247</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -17443,16 +17593,12 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       </div>
     </details>
     <details class="prov prov-consumers elem elem-consumers">
-      <summary>Consumers <span class="count">1 direct</span> <span class="count count-muted">+7 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
+      <summary>Consumers <span class="count">1 direct</span> <span class="count count-muted">+3 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
       <div class="prov-pills">
         <a class="ref-pill tone-calc" href="#en-f-allocationsweep-sweeppooledratea">ƒ Sweep Pooled Rate a <span class="ref-pill-tbl">Allocation Sweep</span></a>
         <a class="ref-pill tone-rel faded" href="#en-f-allocationsweep-sweeppooledgap">Sweep Pooled Gap <span class="ref-pill-tbl">Allocation Sweep</span></a>
         <a class="ref-pill tone-rel faded" href="#en-f-modelsummary-sweeppooledgaprange">Sweep Pooled Gap Range <span class="ref-pill-tbl">Model Summary</span></a>
         <a class="ref-pill tone-rel faded" href="#en-f-allocationsweep-allocationdistortionwitness">Allocation Distortion Witness <span class="ref-pill-tbl">Allocation Sweep</span></a>
-        <a class="ref-pill tone-rel faded" href="#en-f-sweepstudysummary-sweeppooledgapmax">Sweep Pooled Gap Max <span class="ref-pill-tbl">Sweep Study Summary</span></a>
-        <a class="ref-pill tone-rel faded" href="#en-f-sweepstudysummary-sweeppooledgapmin">Sweep Pooled Gap Min <span class="ref-pill-tbl">Sweep Study Summary</span></a>
-        <a class="ref-pill tone-rel faded" href="#en-f-sweepstudysummary-sweeppooledgaprange">Sweep Pooled Gap Range <span class="ref-pill-tbl">Sweep Study Summary</span></a>
-        <a class="ref-pill tone-rel faded" href="#en-f-sweepstudysummary-pooledgapcrosseszero">Pooled Gap Crosses Zero <span class="ref-pill-tbl">Sweep Study Summary</span></a>
       </div>
     </details>
     <details class="prov prov-leaves elem elem-inputs">
@@ -17470,7 +17616,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">number</span>
-      <span class="pill pill-dr">DR-246</span>
+      <span class="pill pill-dr">DR-248</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -17496,16 +17642,12 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       </div>
     </details>
     <details class="prov prov-consumers elem elem-consumers">
-      <summary>Consumers <span class="count">1 direct</span> <span class="count count-muted">+7 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
+      <summary>Consumers <span class="count">1 direct</span> <span class="count count-muted">+3 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
       <div class="prov-pills">
         <a class="ref-pill tone-calc" href="#en-f-allocationsweep-sweeppooledrateb">ƒ Sweep Pooled Rate B <span class="ref-pill-tbl">Allocation Sweep</span></a>
         <a class="ref-pill tone-rel faded" href="#en-f-allocationsweep-sweeppooledgap">Sweep Pooled Gap <span class="ref-pill-tbl">Allocation Sweep</span></a>
         <a class="ref-pill tone-rel faded" href="#en-f-modelsummary-sweeppooledgaprange">Sweep Pooled Gap Range <span class="ref-pill-tbl">Model Summary</span></a>
         <a class="ref-pill tone-rel faded" href="#en-f-allocationsweep-allocationdistortionwitness">Allocation Distortion Witness <span class="ref-pill-tbl">Allocation Sweep</span></a>
-        <a class="ref-pill tone-rel faded" href="#en-f-sweepstudysummary-sweeppooledgapmax">Sweep Pooled Gap Max <span class="ref-pill-tbl">Sweep Study Summary</span></a>
-        <a class="ref-pill tone-rel faded" href="#en-f-sweepstudysummary-sweeppooledgapmin">Sweep Pooled Gap Min <span class="ref-pill-tbl">Sweep Study Summary</span></a>
-        <a class="ref-pill tone-rel faded" href="#en-f-sweepstudysummary-sweeppooledgaprange">Sweep Pooled Gap Range <span class="ref-pill-tbl">Sweep Study Summary</span></a>
-        <a class="ref-pill tone-rel faded" href="#en-f-sweepstudysummary-pooledgapcrosseszero">Pooled Gap Crosses Zero <span class="ref-pill-tbl">Sweep Study Summary</span></a>
       </div>
     </details>
     <details class="prov prov-leaves elem elem-inputs">
@@ -17523,7 +17665,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">3 hops from ground truth</span>
       <span class="pill pill-muted">number</span>
-      <span class="pill pill-dr">DR-247</span>
+      <span class="pill pill-dr">DR-249</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -17561,15 +17703,11 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       </div>
     </details>
     <details class="prov prov-consumers elem elem-consumers">
-      <summary>Consumers <span class="count">1 direct</span> <span class="count count-muted">+6 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
+      <summary>Consumers <span class="count">1 direct</span> <span class="count count-muted">+2 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
       <div class="prov-pills">
         <a class="ref-pill tone-calc" href="#en-f-allocationsweep-sweeppooledgap">ƒ Sweep Pooled Gap <span class="ref-pill-tbl">Allocation Sweep</span></a>
         <a class="ref-pill tone-rel faded" href="#en-f-modelsummary-sweeppooledgaprange">Sweep Pooled Gap Range <span class="ref-pill-tbl">Model Summary</span></a>
         <a class="ref-pill tone-rel faded" href="#en-f-allocationsweep-allocationdistortionwitness">Allocation Distortion Witness <span class="ref-pill-tbl">Allocation Sweep</span></a>
-        <a class="ref-pill tone-rel faded" href="#en-f-sweepstudysummary-sweeppooledgapmax">Sweep Pooled Gap Max <span class="ref-pill-tbl">Sweep Study Summary</span></a>
-        <a class="ref-pill tone-rel faded" href="#en-f-sweepstudysummary-sweeppooledgapmin">Sweep Pooled Gap Min <span class="ref-pill-tbl">Sweep Study Summary</span></a>
-        <a class="ref-pill tone-rel faded" href="#en-f-sweepstudysummary-sweeppooledgaprange">Sweep Pooled Gap Range <span class="ref-pill-tbl">Sweep Study Summary</span></a>
-        <a class="ref-pill tone-rel faded" href="#en-f-sweepstudysummary-pooledgapcrosseszero">Pooled Gap Crosses Zero <span class="ref-pill-tbl">Sweep Study Summary</span></a>
       </div>
     </details>
     <details class="prov prov-leaves elem elem-inputs">
@@ -17588,7 +17726,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">4 hops from ground truth</span>
       <span class="pill pill-muted">number</span>
-      <span class="pill pill-dr">DR-248</span>
+      <span class="pill pill-dr">DR-250</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -17626,15 +17764,11 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       </div>
     </details>
     <details class="prov prov-consumers elem elem-consumers">
-      <summary>Consumers <span class="count">1 direct</span> <span class="count count-muted">+6 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
+      <summary>Consumers <span class="count">1 direct</span> <span class="count count-muted">+2 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
       <div class="prov-pills">
         <a class="ref-pill tone-calc" href="#en-f-allocationsweep-sweeppooledgap">ƒ Sweep Pooled Gap <span class="ref-pill-tbl">Allocation Sweep</span></a>
         <a class="ref-pill tone-rel faded" href="#en-f-modelsummary-sweeppooledgaprange">Sweep Pooled Gap Range <span class="ref-pill-tbl">Model Summary</span></a>
         <a class="ref-pill tone-rel faded" href="#en-f-allocationsweep-allocationdistortionwitness">Allocation Distortion Witness <span class="ref-pill-tbl">Allocation Sweep</span></a>
-        <a class="ref-pill tone-rel faded" href="#en-f-sweepstudysummary-sweeppooledgapmax">Sweep Pooled Gap Max <span class="ref-pill-tbl">Sweep Study Summary</span></a>
-        <a class="ref-pill tone-rel faded" href="#en-f-sweepstudysummary-sweeppooledgapmin">Sweep Pooled Gap Min <span class="ref-pill-tbl">Sweep Study Summary</span></a>
-        <a class="ref-pill tone-rel faded" href="#en-f-sweepstudysummary-sweeppooledgaprange">Sweep Pooled Gap Range <span class="ref-pill-tbl">Sweep Study Summary</span></a>
-        <a class="ref-pill tone-rel faded" href="#en-f-sweepstudysummary-pooledgapcrosseszero">Pooled Gap Crosses Zero <span class="ref-pill-tbl">Sweep Study Summary</span></a>
       </div>
     </details>
     <details class="prov prov-leaves elem elem-inputs">
@@ -17653,7 +17787,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">5 hops from ground truth</span>
       <span class="pill pill-muted">number</span>
-      <span class="pill pill-dr">DR-249</span>
+      <span class="pill pill-dr">DR-251</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -17683,14 +17817,10 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       </div>
     </details>
     <details class="prov prov-consumers elem elem-consumers">
-      <summary>Consumers <span class="count">4 direct</span> <span class="count count-muted">+2 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
+      <summary>Consumers <span class="count">2 direct</span> <span class="prov-hint">rules that read this one</span></summary>
       <div class="prov-pills">
         <a class="ref-pill tone-agg" href="#en-f-modelsummary-sweeppooledgaprange">Σ Sweep Pooled Gap Range <span class="ref-pill-tbl">Model Summary</span></a>
         <a class="ref-pill tone-calc" href="#en-f-allocationsweep-allocationdistortionwitness">ƒ Allocation Distortion Witness <span class="ref-pill-tbl">Allocation Sweep</span></a>
-        <a class="ref-pill tone-calc" href="#en-f-sweepstudysummary-sweeppooledgapmax">ƒ Sweep Pooled Gap Max <span class="ref-pill-tbl">Sweep Study Summary</span></a>
-        <a class="ref-pill tone-calc" href="#en-f-sweepstudysummary-sweeppooledgapmin">ƒ Sweep Pooled Gap Min <span class="ref-pill-tbl">Sweep Study Summary</span></a>
-        <a class="ref-pill tone-rel faded" href="#en-f-sweepstudysummary-sweeppooledgaprange">Sweep Pooled Gap Range <span class="ref-pill-tbl">Sweep Study Summary</span></a>
-        <a class="ref-pill tone-rel faded" href="#en-f-sweepstudysummary-pooledgapcrosseszero">Pooled Gap Crosses Zero <span class="ref-pill-tbl">Sweep Study Summary</span></a>
       </div>
     </details>
     <details class="prov prov-leaves elem elem-inputs">
@@ -17709,7 +17839,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">number</span>
-      <span class="pill pill-dr">DR-250</span>
+      <span class="pill pill-dr">DR-252</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -17735,19 +17865,12 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       </div>
     </details>
     <details class="prov prov-consumers elem elem-consumers">
-      <summary>Consumers <span class="count">6 direct</span> <span class="count count-muted">+5 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
+      <summary>Consumers <span class="count">3 direct</span> <span class="count count-muted">+1 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
       <div class="prov-pills">
         <a class="ref-pill tone-agg" href="#en-f-modelsummary-sweepcorrectedgapmax">Σ Sweep Corrected Gap Max <span class="ref-pill-tbl">Model Summary</span></a>
         <a class="ref-pill tone-agg" href="#en-f-modelsummary-sweepcorrectedgapmin">Σ Sweep Corrected Gap Min <span class="ref-pill-tbl">Model Summary</span></a>
         <a class="ref-pill tone-calc" href="#en-f-allocationsweep-allocationdistortionwitness">ƒ Allocation Distortion Witness <span class="ref-pill-tbl">Allocation Sweep</span></a>
-        <a class="ref-pill tone-calc" href="#en-f-sweepstudysummary-correctedgapconstant">ƒ Corrected Gap Constant <span class="ref-pill-tbl">Sweep Study Summary</span></a>
-        <a class="ref-pill tone-calc" href="#en-f-sweepstudysummary-sweepcorrectedgapmax">ƒ Sweep Corrected Gap Max <span class="ref-pill-tbl">Sweep Study Summary</span></a>
-        <a class="ref-pill tone-calc" href="#en-f-sweepstudysummary-sweepcorrectedgapmin">ƒ Sweep Corrected Gap Min <span class="ref-pill-tbl">Sweep Study Summary</span></a>
         <a class="ref-pill tone-rel faded" href="#en-f-modelsummary-sweepcorrectedgaprange">Sweep Corrected Gap Range <span class="ref-pill-tbl">Model Summary</span></a>
-        <a class="ref-pill tone-rel faded" href="#en-f-sweepstudysummary-sweepcorrectedgaprange">Sweep Corrected Gap Range <span class="ref-pill-tbl">Sweep Study Summary</span></a>
-        <a class="ref-pill tone-rel faded" href="#en-f-modelsummary-maxstudysweepcorrectedgaprange">Max Study Sweep Corrected Gap Range <span class="ref-pill-tbl">Model Summary</span></a>
-        <a class="ref-pill tone-rel faded" href="#en-f-modelsummary-correctedgapinvariantfailcount">Corrected Gap Invariant Fail Count <span class="ref-pill-tbl">Model Summary</span></a>
-        <a class="ref-pill tone-rel faded" href="#en-f-sweepstudysummary-invariantwitness">Invariant Witness <span class="ref-pill-tbl">Sweep Study Summary</span></a>
       </div>
     </details>
     <details class="prov prov-leaves elem elem-inputs">
@@ -17765,7 +17888,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">6 hops from ground truth</span>
       <span class="pill pill-muted">number</span>
-      <span class="pill pill-dr">DR-251</span>
+      <span class="pill pill-dr">DR-253</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -17816,7 +17939,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-252</span>
+      <span class="pill pill-dr">DR-254</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -17849,208 +17972,53 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
     </details>
     <p class="field-note elem elem-desc">DistortionType for this study (A, B, C, or D) — provides context for what the sweep should show.</p>
     </article>
-  <article class="field tone-calc" id="en-f-sweepstudysummary-correctedgapconstant" data-entity="Sweep Study Summary" data-field="Corrected Gap Constant">
+  <article class="field tone-raw" id="en-f-sweepstudysummary-correctedgapconstant" data-entity="Sweep Study Summary" data-field="Corrected Gap Constant">
     <div class="field-head">
-      <span class="field-glyph" title="Calculated">ƒ</span>
+      <span class="field-glyph" title="Ground truth">●</span>
       <span class="field-name">Corrected Gap Constant</span>
-      <span class="pill pill-type">Calculated</span>
-      <span class="pill pill-depth">2 hops from ground truth</span>
+      <span class="pill pill-type">Ground truth</span>
       <span class="pill pill-muted">number</span>
-      <span class="pill pill-dr">DR-253</span>
     </div>
-    <div class="narr-views">
-      <div class="view elem elem-rulespeak">
-        <span class="view-label">In RuleSpeak</span>
-        <p class="view-body">A sweep study summary's <a class="ref" href="#en-f-sweepstudysummary-correctedgapconstant">corrected gap constant</a> is the smallest <a class="ref" href="#en-f-allocationsweep-sweepcorrectedgap">sweep corrected gap</a> across the <a class="ref" href="#en-t-allocationsweep">allocation sweep</a> related to the sweep study summary.</p>
-      </div>
-      <div class="view elem elem-english">
-        <span class="view-label">In plain words</span>
-        <p class="view-body">Smallest <a class="ref" href="#en-f-allocationsweep-sweepcorrectedgap">sweep corrected gap</a> across all <a class="ref" href="#en-t-allocationsweep">allocation sweep</a> whose study ID is sweep study ID.</p>
-      </div>
-      <div class="view elem elem-formula">
-        <span class="view-label">As a formula</span>
-        <div class="view-body fx"><span class="fx-eq">= </span>MINIFS(<a class="fx-chip" href="#en-f-allocationsweep-sweepcorrectedgap">Sweep Corrected Gap</a>, <span class="fx-chip">Study ID</span>, <span class="fx-chip">Sweep Study ID</span>)</div>
-      </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>number</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
     </div>
-    <details class="prov prov-inputs elem elem-inputs" open>
-      <summary>Inputs <span class="count">3</span> <span class="prov-hint">fields this rule reads</span></summary>
-      <div class="prov-grid">
-        <a class="input tone-calc" href="#en-f-allocationsweep-sweepcorrectedgap">
-          <span class="input-head"><span class="input-glyph">ƒ</span><span class="input-name">Sweep Corrected Gap</span><span class="input-table">Allocation Sweep</span></span>
-          <span class="input-en">LOOKUP({{StudyId}}, SweepStudyConfig[StudyId], SweepStudyConfig[SweepCorrectedGap]).</span>
-        </a>
-        <span class="input input-static tone-raw">
-          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Study ID</span><span class="input-table">Allocation Sweep</span></span>
-          <span class="input-en muted">The study being swept — all 238 studies in the corpus.</span>
-        </span>
-        <span class="input input-static tone-raw">
-          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Sweep Study ID</span><span class="input-table">Sweep Study Summary</span></span>
-          <span class="input-en muted">FK to Studies.StudyId. One row per study in the AllocationSweep.</span>
-        </span>
-      </div>
-    </details>
-    <details class="prov prov-leaves elem elem-inputs">
-      <summary>Ground truth at the leaves <span class="count">2</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
-      <div class="prov-pills">
-        <span class="ref-pill tone-raw">● Study ID <span class="ref-pill-tbl">Allocation Sweep</span></span>
-        <span class="ref-pill tone-raw">● Sweep Study ID <span class="ref-pill-tbl">Sweep Study Summary</span></span>
-      </div>
-    </details>
-    <p class="field-note elem elem-desc">The allocation-free corrected gap for this study, computed analytically.</p>
+    <p class="field-note elem elem-desc">Principled materialization (refresh_sweep_study_summary(), 03b/05b customize SQL). The allocation-free corrected gap for this study = MINIFS(AllocationSweep[SweepCorrectedGap], AllocationSweep[StudyId], SweepStudyId). Upstream (AllocationSweep, SweepStudyConfig) is sealed/stable per build; recomputing this per-row via nested calc_* calls was measured to fan out to 22.5s for a 242-study corpus scan with zero memoization — materialized here instead of left as a live calculated field. See MaterializedEntities.</p>
     </article>
-  <article class="field tone-calc" id="en-f-sweepstudysummary-sweepcorrectedgapmax" data-entity="Sweep Study Summary" data-field="Sweep Corrected Gap Max">
+  <article class="field tone-raw" id="en-f-sweepstudysummary-sweepcorrectedgapmax" data-entity="Sweep Study Summary" data-field="Sweep Corrected Gap Max">
     <div class="field-head">
-      <span class="field-glyph" title="Calculated">ƒ</span>
+      <span class="field-glyph" title="Ground truth">●</span>
       <span class="field-name">Sweep Corrected Gap Max</span>
-      <span class="pill pill-type">Calculated</span>
-      <span class="pill pill-depth">2 hops from ground truth</span>
+      <span class="pill pill-type">Ground truth</span>
       <span class="pill pill-muted">number</span>
-      <span class="pill pill-dr">DR-254</span>
     </div>
-    <div class="narr-views">
-      <div class="view elem elem-rulespeak">
-        <span class="view-label">In RuleSpeak</span>
-        <p class="view-body">A sweep study summary's <a class="ref" href="#en-f-sweepstudysummary-sweepcorrectedgapmax">sweep corrected gap max</a> is the largest <a class="ref" href="#en-f-allocationsweep-sweepcorrectedgap">sweep corrected gap</a> across the <a class="ref" href="#en-t-allocationsweep">allocation sweep</a> related to the sweep study summary.</p>
-      </div>
-      <div class="view elem elem-english">
-        <span class="view-label">In plain words</span>
-        <p class="view-body">Largest <a class="ref" href="#en-f-allocationsweep-sweepcorrectedgap">sweep corrected gap</a> across all <a class="ref" href="#en-t-allocationsweep">allocation sweep</a> whose study ID is sweep study ID.</p>
-      </div>
-      <div class="view elem elem-formula">
-        <span class="view-label">As a formula</span>
-        <div class="view-body fx"><span class="fx-eq">= </span>MAXIFS(<a class="fx-chip" href="#en-f-allocationsweep-sweepcorrectedgap">Sweep Corrected Gap</a>, <span class="fx-chip">Study ID</span>, <span class="fx-chip">Sweep Study ID</span>)</div>
-      </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>number</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
     </div>
-    <details class="prov prov-inputs elem elem-inputs" open>
-      <summary>Inputs <span class="count">3</span> <span class="prov-hint">fields this rule reads</span></summary>
-      <div class="prov-grid">
-        <a class="input tone-calc" href="#en-f-allocationsweep-sweepcorrectedgap">
-          <span class="input-head"><span class="input-glyph">ƒ</span><span class="input-name">Sweep Corrected Gap</span><span class="input-table">Allocation Sweep</span></span>
-          <span class="input-en">LOOKUP({{StudyId}}, SweepStudyConfig[StudyId], SweepStudyConfig[SweepCorrectedGap]).</span>
-        </a>
-        <span class="input input-static tone-raw">
-          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Study ID</span><span class="input-table">Allocation Sweep</span></span>
-          <span class="input-en muted">The study being swept — all 238 studies in the corpus.</span>
-        </span>
-        <span class="input input-static tone-raw">
-          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Sweep Study ID</span><span class="input-table">Sweep Study Summary</span></span>
-          <span class="input-en muted">FK to Studies.StudyId. One row per study in the AllocationSweep.</span>
-        </span>
-      </div>
-    </details>
-    <details class="prov prov-consumers elem elem-consumers">
-      <summary>Consumers <span class="count">1 direct</span> <span class="count count-muted">+3 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
-      <div class="prov-pills">
-        <a class="ref-pill tone-calc" href="#en-f-sweepstudysummary-sweepcorrectedgaprange">ƒ Sweep Corrected Gap Range <span class="ref-pill-tbl">Sweep Study Summary</span></a>
-        <a class="ref-pill tone-rel faded" href="#en-f-modelsummary-maxstudysweepcorrectedgaprange">Max Study Sweep Corrected Gap Range <span class="ref-pill-tbl">Model Summary</span></a>
-        <a class="ref-pill tone-rel faded" href="#en-f-modelsummary-correctedgapinvariantfailcount">Corrected Gap Invariant Fail Count <span class="ref-pill-tbl">Model Summary</span></a>
-        <a class="ref-pill tone-rel faded" href="#en-f-sweepstudysummary-invariantwitness">Invariant Witness <span class="ref-pill-tbl">Sweep Study Summary</span></a>
-      </div>
-    </details>
-    <details class="prov prov-leaves elem elem-inputs">
-      <summary>Ground truth at the leaves <span class="count">2</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
-      <div class="prov-pills">
-        <span class="ref-pill tone-raw">● Study ID <span class="ref-pill-tbl">Allocation Sweep</span></span>
-        <span class="ref-pill tone-raw">● Sweep Study ID <span class="ref-pill-tbl">Sweep Study Summary</span></span>
-      </div>
-    </details>
-    <p class="field-note elem elem-desc">Maximum SweepCorrectedGap across all allocation fractions for this study.</p>
+    <p class="field-note elem elem-desc">Principled materialization (refresh_sweep_study_summary()). Maximum SweepCorrectedGap across all allocation fractions for this study = MAXIFS(AllocationSweep[SweepCorrectedGap], AllocationSweep[StudyId], SweepStudyId). See CorrectedGapConstant for why this is materialized rather than calculated.</p>
     </article>
-  <article class="field tone-calc" id="en-f-sweepstudysummary-sweepcorrectedgapmin" data-entity="Sweep Study Summary" data-field="Sweep Corrected Gap Min">
+  <article class="field tone-raw" id="en-f-sweepstudysummary-sweepcorrectedgapmin" data-entity="Sweep Study Summary" data-field="Sweep Corrected Gap Min">
     <div class="field-head">
-      <span class="field-glyph" title="Calculated">ƒ</span>
+      <span class="field-glyph" title="Ground truth">●</span>
       <span class="field-name">Sweep Corrected Gap Min</span>
-      <span class="pill pill-type">Calculated</span>
-      <span class="pill pill-depth">2 hops from ground truth</span>
+      <span class="pill pill-type">Ground truth</span>
       <span class="pill pill-muted">number</span>
-      <span class="pill pill-dr">DR-255</span>
     </div>
-    <div class="narr-views">
-      <div class="view elem elem-rulespeak">
-        <span class="view-label">In RuleSpeak</span>
-        <p class="view-body">A sweep study summary's <a class="ref" href="#en-f-sweepstudysummary-sweepcorrectedgapmin">sweep corrected gap min</a> is the smallest <a class="ref" href="#en-f-allocationsweep-sweepcorrectedgap">sweep corrected gap</a> across the <a class="ref" href="#en-t-allocationsweep">allocation sweep</a> related to the sweep study summary.</p>
-      </div>
-      <div class="view elem elem-english">
-        <span class="view-label">In plain words</span>
-        <p class="view-body">Smallest <a class="ref" href="#en-f-allocationsweep-sweepcorrectedgap">sweep corrected gap</a> across all <a class="ref" href="#en-t-allocationsweep">allocation sweep</a> whose study ID is sweep study ID.</p>
-      </div>
-      <div class="view elem elem-formula">
-        <span class="view-label">As a formula</span>
-        <div class="view-body fx"><span class="fx-eq">= </span>MINIFS(<a class="fx-chip" href="#en-f-allocationsweep-sweepcorrectedgap">Sweep Corrected Gap</a>, <span class="fx-chip">Study ID</span>, <span class="fx-chip">Sweep Study ID</span>)</div>
-      </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>number</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
     </div>
-    <details class="prov prov-inputs elem elem-inputs" open>
-      <summary>Inputs <span class="count">3</span> <span class="prov-hint">fields this rule reads</span></summary>
-      <div class="prov-grid">
-        <a class="input tone-calc" href="#en-f-allocationsweep-sweepcorrectedgap">
-          <span class="input-head"><span class="input-glyph">ƒ</span><span class="input-name">Sweep Corrected Gap</span><span class="input-table">Allocation Sweep</span></span>
-          <span class="input-en">LOOKUP({{StudyId}}, SweepStudyConfig[StudyId], SweepStudyConfig[SweepCorrectedGap]).</span>
-        </a>
-        <span class="input input-static tone-raw">
-          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Study ID</span><span class="input-table">Allocation Sweep</span></span>
-          <span class="input-en muted">The study being swept — all 238 studies in the corpus.</span>
-        </span>
-        <span class="input input-static tone-raw">
-          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Sweep Study ID</span><span class="input-table">Sweep Study Summary</span></span>
-          <span class="input-en muted">FK to Studies.StudyId. One row per study in the AllocationSweep.</span>
-        </span>
-      </div>
-    </details>
-    <details class="prov prov-consumers elem elem-consumers">
-      <summary>Consumers <span class="count">1 direct</span> <span class="count count-muted">+3 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
-      <div class="prov-pills">
-        <a class="ref-pill tone-calc" href="#en-f-sweepstudysummary-sweepcorrectedgaprange">ƒ Sweep Corrected Gap Range <span class="ref-pill-tbl">Sweep Study Summary</span></a>
-        <a class="ref-pill tone-rel faded" href="#en-f-modelsummary-maxstudysweepcorrectedgaprange">Max Study Sweep Corrected Gap Range <span class="ref-pill-tbl">Model Summary</span></a>
-        <a class="ref-pill tone-rel faded" href="#en-f-modelsummary-correctedgapinvariantfailcount">Corrected Gap Invariant Fail Count <span class="ref-pill-tbl">Model Summary</span></a>
-        <a class="ref-pill tone-rel faded" href="#en-f-sweepstudysummary-invariantwitness">Invariant Witness <span class="ref-pill-tbl">Sweep Study Summary</span></a>
-      </div>
-    </details>
-    <details class="prov prov-leaves elem elem-inputs">
-      <summary>Ground truth at the leaves <span class="count">2</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
-      <div class="prov-pills">
-        <span class="ref-pill tone-raw">● Study ID <span class="ref-pill-tbl">Allocation Sweep</span></span>
-        <span class="ref-pill tone-raw">● Sweep Study ID <span class="ref-pill-tbl">Sweep Study Summary</span></span>
-      </div>
-    </details>
-    <p class="field-note elem elem-desc">Minimum SweepCorrectedGap across all allocation fractions for this study.</p>
+    <p class="field-note elem elem-desc">Principled materialization (refresh_sweep_study_summary()). Minimum SweepCorrectedGap across all allocation fractions for this study = MINIFS(AllocationSweep[SweepCorrectedGap], AllocationSweep[StudyId], SweepStudyId). See CorrectedGapConstant for why this is materialized rather than calculated.</p>
     </article>
-  <article class="field tone-calc" id="en-f-sweepstudysummary-sweepcorrectedgaprange" data-entity="Sweep Study Summary" data-field="Sweep Corrected Gap Range">
+  <article class="field tone-raw" id="en-f-sweepstudysummary-sweepcorrectedgaprange" data-entity="Sweep Study Summary" data-field="Sweep Corrected Gap Range">
     <div class="field-head">
-      <span class="field-glyph" title="Calculated">ƒ</span>
+      <span class="field-glyph" title="Ground truth">●</span>
       <span class="field-name">Sweep Corrected Gap Range</span>
-      <span class="pill pill-type">Calculated</span>
-      <span class="pill pill-depth">3 hops from ground truth</span>
+      <span class="pill pill-type">Ground truth</span>
       <span class="pill pill-muted">number</span>
-      <span class="pill pill-dr">DR-256</span>
     </div>
-    <div class="narr-views">
-      <div class="view elem elem-rulespeak">
-        <span class="view-label">In RuleSpeak</span>
-        <p class="view-body">A sweep study summary's <a class="ref" href="#en-f-sweepstudysummary-sweepcorrectedgaprange">sweep corrected gap range</a> is computed as the <a class="ref" href="#en-f-sweepstudysummary-sweepcorrectedgapmax">sweep corrected gap max</a> minus the <a class="ref" href="#en-f-sweepstudysummary-sweepcorrectedgapmin">sweep corrected gap min</a>.</p>
-      </div>
-      <div class="view elem elem-english">
-        <span class="view-label">In plain words</span>
-        <p class="view-body"><a class="ref" href="#en-f-sweepstudysummary-sweepcorrectedgapmax">Sweep corrected gap max</a> minus <a class="ref" href="#en-f-sweepstudysummary-sweepcorrectedgapmin">sweep corrected gap min</a>.</p>
-      </div>
-      <div class="view elem elem-formula">
-        <span class="view-label">As a formula</span>
-        <div class="view-body fx"><span class="fx-eq">= </span><a class="fx-chip" href="#en-f-sweepstudysummary-sweepcorrectedgapmax">Sweep Corrected Gap Max</a> - <a class="fx-chip" href="#en-f-sweepstudysummary-sweepcorrectedgapmin">Sweep Corrected Gap Min</a></div>
-      </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>number</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
     </div>
-    <details class="prov prov-inputs elem elem-inputs" open>
-      <summary>Inputs <span class="count">2</span> <span class="prov-hint">fields this rule reads</span></summary>
-      <div class="prov-grid">
-        <a class="input tone-calc" href="#en-f-sweepstudysummary-sweepcorrectedgapmax">
-          <span class="input-head"><span class="input-glyph">ƒ</span><span class="input-name">Sweep Corrected Gap Max</span><span class="input-table">Sweep Study Summary</span></span>
-          <span class="input-en">Largest sweep corrected gap across all allocation sweep whose study ID is sweep study ID.</span>
-        </a>
-        <a class="input tone-calc" href="#en-f-sweepstudysummary-sweepcorrectedgapmin">
-          <span class="input-head"><span class="input-glyph">ƒ</span><span class="input-name">Sweep Corrected Gap Min</span><span class="input-table">Sweep Study Summary</span></span>
-          <span class="input-en">Smallest sweep corrected gap across all allocation sweep whose study ID is sweep study ID.</span>
-        </a>
-      </div>
-    </details>
-    <details class="prov prov-consumers elem elem-consumers">
+    <details class="prov prov-consumers elem elem-consumers" open>
       <summary>Consumers <span class="count">3 direct</span> <span class="prov-hint">rules that read this one</span></summary>
       <div class="prov-pills">
         <a class="ref-pill tone-agg" href="#en-f-modelsummary-maxstudysweepcorrectedgaprange">Σ Max Study Sweep Corrected Gap Range <span class="ref-pill-tbl">Model Summary</span></a>
@@ -18058,229 +18026,64 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
         <a class="ref-pill tone-calc" href="#en-f-sweepstudysummary-invariantwitness">ƒ Invariant Witness <span class="ref-pill-tbl">Sweep Study Summary</span></a>
       </div>
     </details>
-    <details class="prov prov-leaves elem elem-inputs">
-      <summary>Ground truth at the leaves <span class="count">2</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
-      <div class="prov-pills">
-        <span class="ref-pill tone-raw">● Study ID <span class="ref-pill-tbl">Allocation Sweep</span></span>
-        <span class="ref-pill tone-raw">● Sweep Study ID <span class="ref-pill-tbl">Sweep Study Summary</span></span>
-      </div>
-    </details>
-    <p class="field-note elem elem-desc">Range of SweepCorrectedGap across the sweep = Max - Min. Should be effectively zero (&lt; 0.0001) for all studies if CorrectedGap is truly allocation-free.</p>
+    <p class="field-note elem elem-desc">Principled materialization (refresh_sweep_study_summary()). Range of SweepCorrectedGap across the sweep = SweepCorrectedGapMax - SweepCorrectedGapMin. Should be effectively zero (&lt; 0.0001) for all studies if CorrectedGap is truly allocation-free. See CorrectedGapConstant for why this is materialized rather than calculated.</p>
     </article>
-  <article class="field tone-calc" id="en-f-sweepstudysummary-sweeppooledgapmax" data-entity="Sweep Study Summary" data-field="Sweep Pooled Gap Max">
+  <article class="field tone-raw" id="en-f-sweepstudysummary-sweeppooledgapmax" data-entity="Sweep Study Summary" data-field="Sweep Pooled Gap Max">
     <div class="field-head">
-      <span class="field-glyph" title="Calculated">ƒ</span>
+      <span class="field-glyph" title="Ground truth">●</span>
       <span class="field-name">Sweep Pooled Gap Max</span>
-      <span class="pill pill-type">Calculated</span>
-      <span class="pill pill-depth">6 hops from ground truth</span>
+      <span class="pill pill-type">Ground truth</span>
       <span class="pill pill-muted">number</span>
-      <span class="pill pill-dr">DR-257</span>
     </div>
-    <div class="narr-views">
-      <div class="view elem elem-rulespeak">
-        <span class="view-label">In RuleSpeak</span>
-        <p class="view-body">A sweep study summary's <a class="ref" href="#en-f-sweepstudysummary-sweeppooledgapmax">sweep pooled gap max</a> is the largest <a class="ref" href="#en-f-allocationsweep-sweeppooledgap">sweep pooled gap</a> across the <a class="ref" href="#en-t-allocationsweep">allocation sweep</a> related to the sweep study summary.</p>
-      </div>
-      <div class="view elem elem-english">
-        <span class="view-label">In plain words</span>
-        <p class="view-body">Largest <a class="ref" href="#en-f-allocationsweep-sweeppooledgap">sweep pooled gap</a> across all <a class="ref" href="#en-t-allocationsweep">allocation sweep</a> whose study ID is sweep study ID.</p>
-      </div>
-      <div class="view elem elem-formula">
-        <span class="view-label">As a formula</span>
-        <div class="view-body fx"><span class="fx-eq">= </span>MAXIFS(<a class="fx-chip" href="#en-f-allocationsweep-sweeppooledgap">Sweep Pooled Gap</a>, <span class="fx-chip">Study ID</span>, <span class="fx-chip">Sweep Study ID</span>)</div>
-      </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>number</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
     </div>
-    <details class="prov prov-inputs elem elem-inputs" open>
-      <summary>Inputs <span class="count">3</span> <span class="prov-hint">fields this rule reads</span></summary>
-      <div class="prov-grid">
-        <a class="input tone-calc" href="#en-f-allocationsweep-sweeppooledgap">
-          <span class="input-head"><span class="input-glyph">ƒ</span><span class="input-name">Sweep Pooled Gap</span><span class="input-table">Allocation Sweep</span></span>
-          <span class="input-en">If sweep pooled rate a is &quot;&quot; then &quot;&quot;, otherwise (sweep pooled rate a minus sweep pooled rate b).</span>
-        </a>
-        <span class="input input-static tone-raw">
-          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Study ID</span><span class="input-table">Allocation Sweep</span></span>
-          <span class="input-en muted">The study being swept — all 238 studies in the corpus.</span>
-        </span>
-        <span class="input input-static tone-raw">
-          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Sweep Study ID</span><span class="input-table">Sweep Study Summary</span></span>
-          <span class="input-en muted">FK to Studies.StudyId. One row per study in the AllocationSweep.</span>
-        </span>
-      </div>
-    </details>
-    <details class="prov prov-consumers elem elem-consumers">
-      <summary>Consumers <span class="count">2 direct</span> <span class="prov-hint">rules that read this one</span></summary>
-      <div class="prov-pills">
-        <a class="ref-pill tone-calc" href="#en-f-sweepstudysummary-sweeppooledgaprange">ƒ Sweep Pooled Gap Range <span class="ref-pill-tbl">Sweep Study Summary</span></a>
-        <a class="ref-pill tone-calc" href="#en-f-sweepstudysummary-pooledgapcrosseszero">ƒ Pooled Gap Crosses Zero <span class="ref-pill-tbl">Sweep Study Summary</span></a>
-      </div>
-    </details>
-    <details class="prov prov-leaves elem elem-inputs">
-      <summary>Ground truth at the leaves <span class="count">3</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
-      <div class="prov-pills">
-        <span class="ref-pill tone-raw">● Study ID <span class="ref-pill-tbl">Allocation Sweep</span></span>
-        <a class="ref-pill tone-raw" href="#en-f-allocationsweep-allocfractiona">● Alloc Fraction a <span class="ref-pill-tbl">Allocation Sweep</span></a>
-        <span class="ref-pill tone-raw">● Sweep Study ID <span class="ref-pill-tbl">Sweep Study Summary</span></span>
-      </div>
-    </details>
-    <p class="field-note elem elem-desc">Maximum SweepPooledGap across all allocation fractions for this study.</p>
+    <p class="field-note elem elem-desc">Principled materialization (refresh_sweep_study_summary()). Maximum SweepPooledGap across all allocation fractions for this study = MAXIFS(AllocationSweep[SweepPooledGap], AllocationSweep[StudyId], SweepStudyId). See CorrectedGapConstant for why this is materialized rather than calculated.</p>
     </article>
-  <article class="field tone-calc" id="en-f-sweepstudysummary-sweeppooledgapmin" data-entity="Sweep Study Summary" data-field="Sweep Pooled Gap Min">
+  <article class="field tone-raw" id="en-f-sweepstudysummary-sweeppooledgapmin" data-entity="Sweep Study Summary" data-field="Sweep Pooled Gap Min">
     <div class="field-head">
-      <span class="field-glyph" title="Calculated">ƒ</span>
+      <span class="field-glyph" title="Ground truth">●</span>
       <span class="field-name">Sweep Pooled Gap Min</span>
-      <span class="pill pill-type">Calculated</span>
-      <span class="pill pill-depth">6 hops from ground truth</span>
+      <span class="pill pill-type">Ground truth</span>
       <span class="pill pill-muted">number</span>
-      <span class="pill pill-dr">DR-258</span>
     </div>
-    <div class="narr-views">
-      <div class="view elem elem-rulespeak">
-        <span class="view-label">In RuleSpeak</span>
-        <p class="view-body">A sweep study summary's <a class="ref" href="#en-f-sweepstudysummary-sweeppooledgapmin">sweep pooled gap min</a> is the smallest <a class="ref" href="#en-f-allocationsweep-sweeppooledgap">sweep pooled gap</a> across the <a class="ref" href="#en-t-allocationsweep">allocation sweep</a> related to the sweep study summary.</p>
-      </div>
-      <div class="view elem elem-english">
-        <span class="view-label">In plain words</span>
-        <p class="view-body">Smallest <a class="ref" href="#en-f-allocationsweep-sweeppooledgap">sweep pooled gap</a> across all <a class="ref" href="#en-t-allocationsweep">allocation sweep</a> whose study ID is sweep study ID.</p>
-      </div>
-      <div class="view elem elem-formula">
-        <span class="view-label">As a formula</span>
-        <div class="view-body fx"><span class="fx-eq">= </span>MINIFS(<a class="fx-chip" href="#en-f-allocationsweep-sweeppooledgap">Sweep Pooled Gap</a>, <span class="fx-chip">Study ID</span>, <span class="fx-chip">Sweep Study ID</span>)</div>
-      </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>number</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
     </div>
-    <details class="prov prov-inputs elem elem-inputs" open>
-      <summary>Inputs <span class="count">3</span> <span class="prov-hint">fields this rule reads</span></summary>
-      <div class="prov-grid">
-        <a class="input tone-calc" href="#en-f-allocationsweep-sweeppooledgap">
-          <span class="input-head"><span class="input-glyph">ƒ</span><span class="input-name">Sweep Pooled Gap</span><span class="input-table">Allocation Sweep</span></span>
-          <span class="input-en">If sweep pooled rate a is &quot;&quot; then &quot;&quot;, otherwise (sweep pooled rate a minus sweep pooled rate b).</span>
-        </a>
-        <span class="input input-static tone-raw">
-          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Study ID</span><span class="input-table">Allocation Sweep</span></span>
-          <span class="input-en muted">The study being swept — all 238 studies in the corpus.</span>
-        </span>
-        <span class="input input-static tone-raw">
-          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Sweep Study ID</span><span class="input-table">Sweep Study Summary</span></span>
-          <span class="input-en muted">FK to Studies.StudyId. One row per study in the AllocationSweep.</span>
-        </span>
-      </div>
-    </details>
-    <details class="prov prov-consumers elem elem-consumers">
-      <summary>Consumers <span class="count">2 direct</span> <span class="prov-hint">rules that read this one</span></summary>
-      <div class="prov-pills">
-        <a class="ref-pill tone-calc" href="#en-f-sweepstudysummary-sweeppooledgaprange">ƒ Sweep Pooled Gap Range <span class="ref-pill-tbl">Sweep Study Summary</span></a>
-        <a class="ref-pill tone-calc" href="#en-f-sweepstudysummary-pooledgapcrosseszero">ƒ Pooled Gap Crosses Zero <span class="ref-pill-tbl">Sweep Study Summary</span></a>
-      </div>
-    </details>
-    <details class="prov prov-leaves elem elem-inputs">
-      <summary>Ground truth at the leaves <span class="count">3</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
-      <div class="prov-pills">
-        <span class="ref-pill tone-raw">● Study ID <span class="ref-pill-tbl">Allocation Sweep</span></span>
-        <a class="ref-pill tone-raw" href="#en-f-allocationsweep-allocfractiona">● Alloc Fraction a <span class="ref-pill-tbl">Allocation Sweep</span></a>
-        <span class="ref-pill tone-raw">● Sweep Study ID <span class="ref-pill-tbl">Sweep Study Summary</span></span>
-      </div>
-    </details>
-    <p class="field-note elem elem-desc">Minimum SweepPooledGap across all allocation fractions for this study.</p>
+    <p class="field-note elem elem-desc">Principled materialization (refresh_sweep_study_summary()). Minimum SweepPooledGap across all allocation fractions for this study = MINIFS(AllocationSweep[SweepPooledGap], AllocationSweep[StudyId], SweepStudyId). See CorrectedGapConstant for why this is materialized rather than calculated.</p>
     </article>
-  <article class="field tone-calc" id="en-f-sweepstudysummary-sweeppooledgaprange" data-entity="Sweep Study Summary" data-field="Sweep Pooled Gap Range">
+  <article class="field tone-raw" id="en-f-sweepstudysummary-sweeppooledgaprange" data-entity="Sweep Study Summary" data-field="Sweep Pooled Gap Range">
     <div class="field-head">
-      <span class="field-glyph" title="Calculated">ƒ</span>
+      <span class="field-glyph" title="Ground truth">●</span>
       <span class="field-name">Sweep Pooled Gap Range</span>
-      <span class="pill pill-type">Calculated</span>
-      <span class="pill pill-depth">7 hops from ground truth</span>
+      <span class="pill pill-type">Ground truth</span>
       <span class="pill pill-muted">number</span>
-      <span class="pill pill-dr">DR-259</span>
     </div>
-    <div class="narr-views">
-      <div class="view elem elem-rulespeak">
-        <span class="view-label">In RuleSpeak</span>
-        <p class="view-body">A sweep study summary's <a class="ref" href="#en-f-sweepstudysummary-sweeppooledgaprange">sweep pooled gap range</a> is computed as the <a class="ref" href="#en-f-sweepstudysummary-sweeppooledgapmax">sweep pooled gap max</a> minus the <a class="ref" href="#en-f-sweepstudysummary-sweeppooledgapmin">sweep pooled gap min</a>.</p>
-      </div>
-      <div class="view elem elem-english">
-        <span class="view-label">In plain words</span>
-        <p class="view-body"><a class="ref" href="#en-f-sweepstudysummary-sweeppooledgapmax">Sweep pooled gap max</a> minus <a class="ref" href="#en-f-sweepstudysummary-sweeppooledgapmin">sweep pooled gap min</a>.</p>
-      </div>
-      <div class="view elem elem-formula">
-        <span class="view-label">As a formula</span>
-        <div class="view-body fx"><span class="fx-eq">= </span><a class="fx-chip" href="#en-f-sweepstudysummary-sweeppooledgapmax">Sweep Pooled Gap Max</a> - <a class="fx-chip" href="#en-f-sweepstudysummary-sweeppooledgapmin">Sweep Pooled Gap Min</a></div>
-      </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>number</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
     </div>
-    <details class="prov prov-inputs elem elem-inputs" open>
-      <summary>Inputs <span class="count">2</span> <span class="prov-hint">fields this rule reads</span></summary>
-      <div class="prov-grid">
-        <a class="input tone-calc" href="#en-f-sweepstudysummary-sweeppooledgapmax">
-          <span class="input-head"><span class="input-glyph">ƒ</span><span class="input-name">Sweep Pooled Gap Max</span><span class="input-table">Sweep Study Summary</span></span>
-          <span class="input-en">Largest sweep pooled gap across all allocation sweep whose study ID is sweep study ID.</span>
-        </a>
-        <a class="input tone-calc" href="#en-f-sweepstudysummary-sweeppooledgapmin">
-          <span class="input-head"><span class="input-glyph">ƒ</span><span class="input-name">Sweep Pooled Gap Min</span><span class="input-table">Sweep Study Summary</span></span>
-          <span class="input-en">Smallest sweep pooled gap across all allocation sweep whose study ID is sweep study ID.</span>
-        </a>
-      </div>
-    </details>
-    <details class="prov prov-leaves elem elem-inputs">
-      <summary>Ground truth at the leaves <span class="count">3</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
-      <div class="prov-pills">
-        <span class="ref-pill tone-raw">● Study ID <span class="ref-pill-tbl">Allocation Sweep</span></span>
-        <a class="ref-pill tone-raw" href="#en-f-allocationsweep-allocfractiona">● Alloc Fraction a <span class="ref-pill-tbl">Allocation Sweep</span></a>
-        <span class="ref-pill tone-raw">● Sweep Study ID <span class="ref-pill-tbl">Sweep Study Summary</span></span>
-      </div>
-    </details>
-    <p class="field-note elem elem-desc">Range of SweepPooledGap across the sweep = Max - Min. Should be large for Type A/B studies (pooled gap wanders) and smaller for Type D (balanced allocation = less wandering).</p>
+    <p class="field-note elem elem-desc">Principled materialization (refresh_sweep_study_summary()). Range of SweepPooledGap across the sweep = SweepPooledGapMax - SweepPooledGapMin. Should be large for Type A/B studies (pooled gap wanders) and smaller for Type D (balanced allocation = less wandering). See CorrectedGapConstant for why this is materialized rather than calculated.</p>
     </article>
-  <article class="field tone-calc" id="en-f-sweepstudysummary-pooledgapcrosseszero" data-entity="Sweep Study Summary" data-field="Pooled Gap Crosses Zero">
+  <article class="field tone-raw" id="en-f-sweepstudysummary-pooledgapcrosseszero" data-entity="Sweep Study Summary" data-field="Pooled Gap Crosses Zero">
     <div class="field-head">
-      <span class="field-glyph" title="Calculated">ƒ</span>
+      <span class="field-glyph" title="Ground truth">●</span>
       <span class="field-name">Pooled Gap Crosses Zero</span>
-      <span class="pill pill-type">Calculated</span>
-      <span class="pill pill-depth">7 hops from ground truth</span>
+      <span class="pill pill-type">Ground truth</span>
       <span class="pill pill-muted">boolean</span>
-      <span class="pill pill-dr">DR-260</span>
     </div>
-    <div class="narr-views">
-      <div class="view elem elem-rulespeak">
-        <span class="view-label">In RuleSpeak</span>
-        <div class="view-body"><p class="rt-headline">A sweep study summary is flagged pooled gap crosses zero if all of the following:</p><ol class="rt-priority"><ul class="rt-group"><li>the <a class="ref" href="#en-f-sweepstudysummary-sweeppooledgapmin">sweep pooled gap min</a> is less than 0</li><li>the <a class="ref" href="#en-f-sweepstudysummary-sweeppooledgapmax">sweep pooled gap max</a> is greater than 0</li></ul></ol></div>
-      </div>
-      <div class="view elem elem-english">
-        <span class="view-label">In plain words</span>
-        <p class="view-body"><a class="ref" href="#en-f-sweepstudysummary-sweeppooledgapmin">Sweep pooled gap min</a> is less than 0 and <a class="ref" href="#en-f-sweepstudysummary-sweeppooledgapmax">sweep pooled gap max</a> is greater than 0.</p>
-      </div>
-      <div class="view elem elem-formula">
-        <span class="view-label">As a formula</span>
-        <div class="view-body fx"><span class="fx-eq">= </span>AND(<a class="fx-chip" href="#en-f-sweepstudysummary-sweeppooledgapmin">Sweep Pooled Gap Min</a> &lt; 0, <a class="fx-chip" href="#en-f-sweepstudysummary-sweeppooledgapmax">Sweep Pooled Gap Max</a> &gt; 0)</div>
-      </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>boolean</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
     </div>
-    <details class="prov prov-inputs elem elem-inputs" open>
-      <summary>Inputs <span class="count">2</span> <span class="prov-hint">fields this rule reads</span></summary>
-      <div class="prov-grid">
-        <a class="input tone-calc" href="#en-f-sweepstudysummary-sweeppooledgapmin">
-          <span class="input-head"><span class="input-glyph">ƒ</span><span class="input-name">Sweep Pooled Gap Min</span><span class="input-table">Sweep Study Summary</span></span>
-          <span class="input-en">Smallest sweep pooled gap across all allocation sweep whose study ID is sweep study ID.</span>
-        </a>
-        <a class="input tone-calc" href="#en-f-sweepstudysummary-sweeppooledgapmax">
-          <span class="input-head"><span class="input-glyph">ƒ</span><span class="input-name">Sweep Pooled Gap Max</span><span class="input-table">Sweep Study Summary</span></span>
-          <span class="input-en">Largest sweep pooled gap across all allocation sweep whose study ID is sweep study ID.</span>
-        </a>
-      </div>
-    </details>
-    <details class="prov prov-leaves elem elem-inputs">
-      <summary>Ground truth at the leaves <span class="count">3</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
-      <div class="prov-pills">
-        <span class="ref-pill tone-raw">● Study ID <span class="ref-pill-tbl">Allocation Sweep</span></span>
-        <a class="ref-pill tone-raw" href="#en-f-allocationsweep-allocfractiona">● Alloc Fraction a <span class="ref-pill-tbl">Allocation Sweep</span></a>
-        <span class="ref-pill tone-raw">● Sweep Study ID <span class="ref-pill-tbl">Sweep Study Summary</span></span>
-      </div>
-    </details>
-    <p class="field-note elem elem-desc">TRUE when SweepPooledGapMin &lt; 0 and SweepPooledGapMax &gt; 0 — the pooled gap changes sign somewhere in the sweep, meaning the paradox can be created or destroyed by pure allocation.</p>
+    <p class="field-note elem elem-desc">Principled materialization (refresh_sweep_study_summary()). TRUE when SweepPooledGapMin &lt; 0 and SweepPooledGapMax &gt; 0 — the pooled gap changes sign somewhere in the sweep, meaning the paradox can be created or destroyed by pure allocation. See CorrectedGapConstant for why this is materialized rather than calculated.</p>
     </article>
   <article class="field tone-calc" id="en-f-sweepstudysummary-invariantwitness" data-entity="Sweep Study Summary" data-field="Invariant Witness">
     <div class="field-head">
       <span class="field-glyph" title="Calculated">ƒ</span>
       <span class="field-name">Invariant Witness</span>
       <span class="pill pill-type">Calculated</span>
-      <span class="pill pill-depth">4 hops from ground truth</span>
+      <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-261</span>
+      <span class="pill pill-dr">DR-255</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -18299,17 +18102,16 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
     <details class="prov prov-inputs elem elem-inputs" open>
       <summary>Inputs <span class="count">1</span> <span class="prov-hint">fields this rule reads</span></summary>
       <div class="prov-grid">
-        <a class="input tone-calc" href="#en-f-sweepstudysummary-sweepcorrectedgaprange">
-          <span class="input-head"><span class="input-glyph">ƒ</span><span class="input-name">Sweep Corrected Gap Range</span><span class="input-table">Sweep Study Summary</span></span>
-          <span class="input-en">Sweep corrected gap max minus sweep corrected gap min.</span>
+        <a class="input tone-raw" href="#en-f-sweepstudysummary-sweepcorrectedgaprange">
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Sweep Corrected Gap Range</span><span class="input-table">Sweep Study Summary</span></span>
+          <span class="input-en muted">Principled materialization (refresh_sweep_study_summary()). Range of SweepCorrectedGap across the sweep = SweepCorrectedGapMax - SweepCorrectedGapMin. Should be effectively zero (&lt; 0.0001) for all studies if CorrectedGap is truly allocation-free. See CorrectedGapConstant for why this is materialized rather than calculated.</span>
         </a>
       </div>
     </details>
     <details class="prov prov-leaves elem elem-inputs">
-      <summary>Ground truth at the leaves <span class="count">2</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <summary>Ground truth at the leaves <span class="count">1</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
       <div class="prov-pills">
-        <span class="ref-pill tone-raw">● Study ID <span class="ref-pill-tbl">Allocation Sweep</span></span>
-        <span class="ref-pill tone-raw">● Sweep Study ID <span class="ref-pill-tbl">Sweep Study Summary</span></span>
+        <a class="ref-pill tone-raw" href="#en-f-sweepstudysummary-sweepcorrectedgaprange">● Sweep Corrected Gap Range <span class="ref-pill-tbl">Sweep Study Summary</span></a>
       </div>
     </details>
     <p class="field-note elem elem-desc">Summary witness statement: PASS if CorrectedGap is invariant (range &lt; 0.0001), FAIL otherwise.</p>
@@ -18321,7 +18123,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-262</span>
+      <span class="pill pill-dr">DR-256</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -18478,7 +18280,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Lookup</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-263</span>
+      <span class="pill pill-dr">DR-257</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -18518,7 +18320,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Lookup</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-264</span>
+      <span class="pill pill-dr">DR-258</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -18558,7 +18360,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Lookup</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-265</span>
+      <span class="pill pill-dr">DR-259</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -18598,7 +18400,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Lookup</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-266</span>
+      <span class="pill pill-dr">DR-260</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -18638,7 +18440,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Lookup</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-267</span>
+      <span class="pill pill-dr">DR-261</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -18678,7 +18480,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Aggregation</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">integer</span>
-      <span class="pill pill-dr">DR-268</span>
+      <span class="pill pill-dr">DR-262</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -18723,7 +18525,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Aggregation</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">integer</span>
-      <span class="pill pill-dr">DR-269</span>
+      <span class="pill pill-dr">DR-263</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -18768,7 +18570,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Aggregation</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">integer</span>
-      <span class="pill pill-dr">DR-270</span>
+      <span class="pill pill-dr">DR-264</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -18921,7 +18723,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Lookup</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-271</span>
+      <span class="pill pill-dr">DR-265</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -18961,7 +18763,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Lookup</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-272</span>
+      <span class="pill pill-dr">DR-266</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -19001,7 +18803,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Lookup</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-273</span>
+      <span class="pill pill-dr">DR-267</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -19041,7 +18843,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Lookup</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-274</span>
+      <span class="pill pill-dr">DR-268</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -19081,7 +18883,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Lookup</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-275</span>
+      <span class="pill pill-dr">DR-269</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -19121,7 +18923,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Lookup</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-276</span>
+      <span class="pill pill-dr">DR-270</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -19161,7 +18963,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Lookup</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-277</span>
+      <span class="pill pill-dr">DR-271</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -19323,7 +19125,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">number</span>
-      <span class="pill pill-dr">DR-278</span>
+      <span class="pill pill-dr">DR-272</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -19380,7 +19182,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">2 hops from ground truth</span>
       <span class="pill pill-muted">number</span>
-      <span class="pill pill-dr">DR-279</span>
+      <span class="pill pill-dr">DR-273</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -19441,7 +19243,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">3 hops from ground truth</span>
       <span class="pill pill-muted">number</span>
-      <span class="pill pill-dr">DR-280</span>
+      <span class="pill pill-dr">DR-274</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -19499,7 +19301,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">3 hops from ground truth</span>
       <span class="pill pill-muted">number</span>
-      <span class="pill pill-dr">DR-281</span>
+      <span class="pill pill-dr">DR-275</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -19552,7 +19354,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">4 hops from ground truth</span>
       <span class="pill pill-muted">number</span>
-      <span class="pill pill-dr">DR-282</span>
+      <span class="pill pill-dr">DR-276</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -19605,7 +19407,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">number</span>
-      <span class="pill pill-dr">DR-283</span>
+      <span class="pill pill-dr">DR-277</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -19657,7 +19459,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">number</span>
-      <span class="pill pill-dr">DR-284</span>
+      <span class="pill pill-dr">DR-278</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -19709,7 +19511,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">number</span>
-      <span class="pill pill-dr">DR-285</span>
+      <span class="pill pill-dr">DR-279</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -19761,7 +19563,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">number</span>
-      <span class="pill pill-dr">DR-286</span>
+      <span class="pill pill-dr">DR-280</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -19813,7 +19615,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">4 hops from ground truth</span>
       <span class="pill pill-muted">number</span>
-      <span class="pill pill-dr">DR-287</span>
+      <span class="pill pill-dr">DR-281</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -19879,7 +19681,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">5 hops from ground truth</span>
       <span class="pill pill-muted">number</span>
-      <span class="pill pill-dr">DR-288</span>
+      <span class="pill pill-dr">DR-282</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -19945,7 +19747,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">6 hops from ground truth</span>
       <span class="pill pill-muted">number</span>
-      <span class="pill pill-dr">DR-289</span>
+      <span class="pill pill-dr">DR-283</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -20002,7 +19804,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">number</span>
-      <span class="pill pill-dr">DR-290</span>
+      <span class="pill pill-dr">DR-284</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -20060,7 +19862,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">7 hops from ground truth</span>
       <span class="pill pill-muted">number</span>
-      <span class="pill pill-dr">DR-291</span>
+      <span class="pill pill-dr">DR-285</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -20118,7 +19920,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">8 hops from ground truth</span>
       <span class="pill pill-muted">number</span>
-      <span class="pill pill-dr">DR-292</span>
+      <span class="pill pill-dr">DR-286</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -20167,7 +19969,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">7 hops from ground truth</span>
       <span class="pill pill-muted">boolean</span>
-      <span class="pill pill-dr">DR-293</span>
+      <span class="pill pill-dr">DR-287</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -20220,7 +20022,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">7 hops from ground truth</span>
       <span class="pill pill-muted">number</span>
-      <span class="pill pill-dr">DR-294</span>
+      <span class="pill pill-dr">DR-288</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -20273,7 +20075,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">9 hops from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-295</span>
+      <span class="pill pill-dr">DR-289</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -20338,7 +20140,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">integer</span>
-      <span class="pill pill-dr">DR-296</span>
+      <span class="pill pill-dr">DR-290</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -20503,7 +20305,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">boolean</span>
-      <span class="pill pill-dr">DR-297</span>
+      <span class="pill pill-dr">DR-291</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -20569,7 +20371,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-298</span>
+      <span class="pill pill-dr">DR-292</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -20629,7 +20431,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">2 hops from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-299</span>
+      <span class="pill pill-dr">DR-293</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -20757,7 +20559,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Aggregation</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">integer</span>
-      <span class="pill pill-dr">DR-300</span>
+      <span class="pill pill-dr">DR-294</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -20803,7 +20605,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Aggregation</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">integer</span>
-      <span class="pill pill-dr">DR-301</span>
+      <span class="pill pill-dr">DR-295</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -20851,7 +20653,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Aggregation</span>
       <span class="pill pill-depth">2 hops from ground truth</span>
       <span class="pill pill-muted">integer</span>
-      <span class="pill pill-dr">DR-302</span>
+      <span class="pill pill-dr">DR-296</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -20872,7 +20674,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <div class="prov-grid">
         <a class="input tone-calc" href="#en-f-casecells-isvalidingestioncell">
           <span class="input-head"><span class="input-glyph">ƒ</span><span class="input-name">Is Valid Ingestion Cell</span><span class="input-table">Case Cell</span></span>
-          <span class="input-en">Cases is greater than 0, successes is at least 0, and successes is at most cases.</span>
+          <span class="input-en">Cases is at least 0, successes is at least 0, and successes is at most cases.</span>
         </a>
       </div>
     </details>
@@ -20900,7 +20702,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">3 hops from ground truth</span>
       <span class="pill pill-muted">boolean</span>
-      <span class="pill pill-dr">DR-303</span>
+      <span class="pill pill-dr">DR-297</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -20953,7 +20755,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Aggregation</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">integer</span>
-      <span class="pill pill-dr">DR-304</span>
+      <span class="pill pill-dr">DR-298</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -20962,20 +20764,20 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       </div>
       <div class="view elem elem-english">
         <span class="view-label">In plain words</span>
-        <p class="view-body">Count(study ID).</p>
+        <p class="view-body">Count of <a class="ref" href="#en-t-studies">studies</a> whose <a class="ref" href="#en-f-studies-iscontrolstudy">is control study</a> is false().</p>
       </div>
       <div class="view elem elem-formula">
         <span class="view-label">As a formula</span>
-        <div class="view-body fx"><span class="fx-eq">= </span>COUNT(<span class="fx-chip">Study ID</span>)</div>
+        <div class="view-body fx"><span class="fx-eq">= </span>COUNTIFS(<a class="fx-chip" href="#en-f-studies-iscontrolstudy">Is Control Study</a>, FALSE())</div>
       </div>
     </div>
     <details class="prov prov-inputs elem elem-inputs" open>
       <summary>Inputs <span class="count">1</span> <span class="prov-hint">fields this rule reads</span></summary>
       <div class="prov-grid">
-        <span class="input input-static tone-raw">
-          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Study ID</span><span class="input-table">Study</span></span>
-          <span class="input-en muted">Unique slug for this study (e.g. kidney-1986, berkeley-1973).</span>
-        </span>
+        <a class="input tone-raw" href="#en-f-studies-iscontrolstudy">
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Is Control Study</span><span class="input-table">Study</span></span>
+          <span class="input-en muted">TRUE if this study is a control (no Simpson's paradox expected/found); FALSE for the main Simpson's Paradox corpus.</span>
+        </a>
       </div>
     </details>
     <details class="prov prov-consumers elem elem-consumers">
@@ -20989,10 +20791,10 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
     <details class="prov prov-leaves elem elem-inputs">
       <summary>Ground truth at the leaves <span class="count">1</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
       <div class="prov-pills">
-        <span class="ref-pill tone-raw">● Study ID <span class="ref-pill-tbl">Study</span></span>
+        <a class="ref-pill tone-raw" href="#en-f-studies-iscontrolstudy">● Is Control Study <span class="ref-pill-tbl">Study</span></a>
       </div>
     </details>
-    <p class="field-note elem elem-desc">Total studies. Fixed loop-90 (see IngestionSummary.ProtocolItemCount for why COUNTIFS(...,&quot;&lt;&gt;&quot;) is unsafe).</p>
+    <p class="field-note elem elem-desc">Count of studies subject to the ingestion contract (excludes control studies, loop-92 -- control studies were never encoded with paired treatment arms, so IngestionCellParity is structurally undefined for them, not a real ingestion defect).</p>
     </article>
   <article class="field tone-agg" id="en-f-ingestionsummary-structuralcompliantcount" data-entity="Ingestion Summary" data-field="Structural Compliant Count">
     <div class="field-head">
@@ -21001,7 +20803,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Aggregation</span>
       <span class="pill pill-depth">3 hops from ground truth</span>
       <span class="pill pill-muted">integer</span>
-      <span class="pill pill-dr">DR-305</span>
+      <span class="pill pill-dr">DR-299</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -21050,7 +20852,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">4 hops from ground truth</span>
       <span class="pill pill-muted">boolean</span>
-      <span class="pill pill-dr">DR-306</span>
+      <span class="pill pill-dr">DR-300</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -21075,7 +20877,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
         </a>
         <a class="input tone-agg" href="#en-f-ingestionsummary-studycount">
           <span class="input-head"><span class="input-glyph">Σ</span><span class="input-name">Study Count</span><span class="input-table">Ingestion Summary</span></span>
-          <span class="input-en">Count(study ID).</span>
+          <span class="input-en">Count of studies whose is control study is false().</span>
         </a>
       </div>
     </details>
@@ -21087,10 +20889,11 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       </div>
     </details>
     <details class="prov prov-leaves elem elem-inputs">
-      <summary>Ground truth at the leaves <span class="count">2</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <summary>Ground truth at the leaves <span class="count">3</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
       <div class="prov-pills">
         <span class="ref-pill tone-raw">● Study ID <span class="ref-pill-tbl">Study</span></span>
         <a class="ref-pill tone-rel" href="#en-f-casecells-study">⇢ Study <span class="ref-pill-tbl">Case Cell</span></a>
+        <a class="ref-pill tone-raw" href="#en-f-studies-iscontrolstudy">● Is Control Study <span class="ref-pill-tbl">Study</span></a>
       </div>
     </details>
     <p class="field-note elem elem-desc">All studies structurally valid.</p>
@@ -21102,28 +20905,32 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Aggregation</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">integer</span>
-      <span class="pill pill-dr">DR-307</span>
+      <span class="pill pill-dr">DR-301</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
         <span class="view-label">In RuleSpeak</span>
-        <p class="view-body">An ingestion summary's <a class="ref" href="#en-f-ingestionsummary-realstudycount">real study count</a> is the number of <a class="ref" href="#en-t-studies">studies</a> related to the ingestion summary.</p>
+        <p class="view-body">An ingestion summary's <a class="ref" href="#en-f-ingestionsummary-realstudycount">real study count</a> is the number of the ingestion summary's <a class="ref" href="#en-t-studies">studies</a> that <a class="ref" href="#en-f-studies-iscontrolstudy">are not control studies</a>.</p>
       </div>
       <div class="view elem elem-english">
         <span class="view-label">In plain words</span>
-        <p class="view-body">Count of <a class="ref" href="#en-t-studies">studies</a> whose <a class="ref" href="#en-f-studies-issynthetic">is synthetic</a> is false().</p>
+        <p class="view-body">Count of <a class="ref" href="#en-t-studies">studies</a> whose <a class="ref" href="#en-f-studies-issynthetic">is synthetic</a> is false() and <a class="ref" href="#en-f-studies-iscontrolstudy">is control study</a> is false().</p>
       </div>
       <div class="view elem elem-formula">
         <span class="view-label">As a formula</span>
-        <div class="view-body fx"><span class="fx-eq">= </span>COUNTIFS(<a class="fx-chip" href="#en-f-studies-issynthetic">Is Synthetic</a>, FALSE())</div>
+        <div class="view-body fx"><span class="fx-eq">= </span>COUNTIFS(<a class="fx-chip" href="#en-f-studies-issynthetic">Is Synthetic</a>, FALSE(), <a class="fx-chip" href="#en-f-studies-iscontrolstudy">Is Control Study</a>, FALSE())</div>
       </div>
     </div>
     <details class="prov prov-inputs elem elem-inputs" open>
-      <summary>Inputs <span class="count">1</span> <span class="prov-hint">fields this rule reads</span></summary>
+      <summary>Inputs <span class="count">2</span> <span class="prov-hint">fields this rule reads</span></summary>
       <div class="prov-grid">
         <a class="input tone-raw" href="#en-f-studies-issynthetic">
           <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Is Synthetic</span><span class="input-table">Study</span></span>
           <span class="input-en muted">TRUE for constructed/counterfactual studies; FALSE for real published studies. Filters the corpus for empirical claims.</span>
+        </a>
+        <a class="input tone-raw" href="#en-f-studies-iscontrolstudy">
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Is Control Study</span><span class="input-table">Study</span></span>
+          <span class="input-en muted">TRUE if this study is a control (no Simpson's paradox expected/found); FALSE for the main Simpson's Paradox corpus.</span>
         </a>
       </div>
     </details>
@@ -21136,12 +20943,13 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       </div>
     </details>
     <details class="prov prov-leaves elem elem-inputs">
-      <summary>Ground truth at the leaves <span class="count">1</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <summary>Ground truth at the leaves <span class="count">2</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
       <div class="prov-pills">
         <a class="ref-pill tone-raw" href="#en-f-studies-issynthetic">● Is Synthetic <span class="ref-pill-tbl">Study</span></a>
+        <a class="ref-pill tone-raw" href="#en-f-studies-iscontrolstudy">● Is Control Study <span class="ref-pill-tbl">Study</span></a>
       </div>
     </details>
-    <p class="field-note elem elem-desc">Non-synthetic studies.</p>
+    <p class="field-note elem elem-desc">Non-synthetic, non-control studies (loop-92 -- control studies were never encoded with paired treatment arms, so they are outside the ingestion contract's scope, same as StructuralCompliantCount's StudyCount).</p>
     </article>
   <article class="field tone-agg" id="en-f-ingestionsummary-realfullycompliantcount" data-entity="Ingestion Summary" data-field="Real Fully Compliant Count">
     <div class="field-head">
@@ -21150,7 +20958,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Aggregation</span>
       <span class="pill pill-depth">4 hops from ground truth</span>
       <span class="pill pill-muted">integer</span>
-      <span class="pill pill-dr">DR-308</span>
+      <span class="pill pill-dr">DR-302</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -21200,7 +21008,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">5 hops from ground truth</span>
       <span class="pill pill-muted">boolean</span>
-      <span class="pill pill-dr">DR-309</span>
+      <span class="pill pill-dr">DR-303</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -21225,7 +21033,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
         </a>
         <a class="input tone-agg" href="#en-f-ingestionsummary-realstudycount">
           <span class="input-head"><span class="input-glyph">Σ</span><span class="input-name">Real Study Count</span><span class="input-table">Ingestion Summary</span></span>
-          <span class="input-en">Count of studies whose is synthetic is false().</span>
+          <span class="input-en">Count of studies whose is synthetic is false() and is control study is false().</span>
         </a>
       </div>
     </details>
@@ -21237,11 +21045,12 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       </div>
     </details>
     <details class="prov prov-leaves elem elem-inputs">
-      <summary>Ground truth at the leaves <span class="count">3</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <summary>Ground truth at the leaves <span class="count">4</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
       <div class="prov-pills">
         <a class="ref-pill tone-raw" href="#en-f-studies-issynthetic">● Is Synthetic <span class="ref-pill-tbl">Study</span></a>
         <span class="ref-pill tone-raw">● Study ID <span class="ref-pill-tbl">Study</span></span>
         <a class="ref-pill tone-rel" href="#en-f-casecells-study">⇢ Study <span class="ref-pill-tbl">Case Cell</span></a>
+        <a class="ref-pill tone-raw" href="#en-f-studies-iscontrolstudy">● Is Control Study <span class="ref-pill-tbl">Study</span></a>
       </div>
     </details>
     <p class="field-note elem elem-desc">All real studies fully compliant.</p>
@@ -21253,7 +21062,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">6 hops from ground truth</span>
       <span class="pill pill-muted">boolean</span>
-      <span class="pill pill-dr">DR-310</span>
+      <span class="pill pill-dr">DR-304</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -21293,13 +21102,14 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       </div>
     </details>
     <details class="prov prov-leaves elem elem-inputs">
-      <summary>Ground truth at the leaves <span class="count">6</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <summary>Ground truth at the leaves <span class="count">7</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
       <div class="prov-pills">
         <a class="ref-pill tone-raw" href="#en-f-casecells-cases">● Cases <span class="ref-pill-tbl">Case Cell</span></a>
         <a class="ref-pill tone-raw" href="#en-f-casecells-successes">● Successes <span class="ref-pill-tbl">Case Cell</span></a>
         <span class="ref-pill tone-raw">● Case Cell ID <span class="ref-pill-tbl">Case Cell</span></span>
         <span class="ref-pill tone-raw">● Study ID <span class="ref-pill-tbl">Study</span></span>
         <a class="ref-pill tone-rel" href="#en-f-casecells-study">⇢ Study <span class="ref-pill-tbl">Case Cell</span></a>
+        <a class="ref-pill tone-raw" href="#en-f-studies-iscontrolstudy">● Is Control Study <span class="ref-pill-tbl">Study</span></a>
         <a class="ref-pill tone-raw" href="#en-f-studies-issynthetic">● Is Synthetic <span class="ref-pill-tbl">Study</span></a>
       </div>
     </details>
@@ -21312,7 +21122,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">7 hops from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-311</span>
+      <span class="pill pill-dr">DR-305</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -21349,18 +21159,19 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
         </a>
         <a class="input tone-agg" href="#en-f-ingestionsummary-realstudycount">
           <span class="input-head"><span class="input-glyph">Σ</span><span class="input-name">Real Study Count</span><span class="input-table">Ingestion Summary</span></span>
-          <span class="input-en">Count of studies whose is synthetic is false().</span>
+          <span class="input-en">Count of studies whose is synthetic is false() and is control study is false().</span>
         </a>
       </div>
     </details>
     <details class="prov prov-leaves elem elem-inputs">
-      <summary>Ground truth at the leaves <span class="count">7</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <summary>Ground truth at the leaves <span class="count">8</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
       <div class="prov-pills">
         <a class="ref-pill tone-raw" href="#en-f-casecells-cases">● Cases <span class="ref-pill-tbl">Case Cell</span></a>
         <a class="ref-pill tone-raw" href="#en-f-casecells-successes">● Successes <span class="ref-pill-tbl">Case Cell</span></a>
         <span class="ref-pill tone-raw">● Case Cell ID <span class="ref-pill-tbl">Case Cell</span></span>
         <span class="ref-pill tone-raw">● Study ID <span class="ref-pill-tbl">Study</span></span>
         <a class="ref-pill tone-rel" href="#en-f-casecells-study">⇢ Study <span class="ref-pill-tbl">Case Cell</span></a>
+        <a class="ref-pill tone-raw" href="#en-f-studies-iscontrolstudy">● Is Control Study <span class="ref-pill-tbl">Study</span></a>
         <a class="ref-pill tone-raw" href="#en-f-studies-issynthetic">● Is Synthetic <span class="ref-pill-tbl">Study</span></a>
         <span class="ref-pill tone-raw">● Protocol ID <span class="ref-pill-tbl">Ingestion Protocol</span></span>
       </div>
@@ -21603,7 +21414,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">boolean</span>
-      <span class="pill pill-dr">DR-312</span>
+      <span class="pill pill-dr">DR-306</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -21667,7 +21478,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">boolean</span>
-      <span class="pill pill-dr">DR-313</span>
+      <span class="pill pill-dr">DR-307</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -21727,7 +21538,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Lookup</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-314</span>
+      <span class="pill pill-dr">DR-308</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -21783,7 +21594,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">2 hops from ground truth</span>
       <span class="pill pill-muted">boolean</span>
-      <span class="pill pill-dr">DR-315</span>
+      <span class="pill pill-dr">DR-309</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -21842,7 +21653,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">boolean</span>
-      <span class="pill pill-dr">DR-316</span>
+      <span class="pill pill-dr">DR-310</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -21892,7 +21703,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">2 hops from ground truth</span>
       <span class="pill pill-muted">boolean</span>
-      <span class="pill pill-dr">DR-317</span>
+      <span class="pill pill-dr">DR-311</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -21946,7 +21757,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">3 hops from ground truth</span>
       <span class="pill pill-muted">boolean</span>
-      <span class="pill pill-dr">DR-318</span>
+      <span class="pill pill-dr">DR-312</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -22072,7 +21883,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">boolean</span>
-      <span class="pill pill-dr">DR-319</span>
+      <span class="pill pill-dr">DR-313</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -22126,7 +21937,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Aggregation</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">integer</span>
-      <span class="pill pill-dr">DR-320</span>
+      <span class="pill pill-dr">DR-314</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -22166,7 +21977,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Aggregation</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">integer</span>
-      <span class="pill pill-dr">DR-321</span>
+      <span class="pill pill-dr">DR-315</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -22213,7 +22024,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Aggregation</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">integer</span>
-      <span class="pill pill-dr">DR-322</span>
+      <span class="pill pill-dr">DR-316</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -22260,7 +22071,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Aggregation</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">integer</span>
-      <span class="pill pill-dr">DR-323</span>
+      <span class="pill pill-dr">DR-317</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -22300,7 +22111,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Aggregation</span>
       <span class="pill pill-depth">2 hops from ground truth</span>
       <span class="pill pill-muted">integer</span>
-      <span class="pill pill-dr">DR-324</span>
+      <span class="pill pill-dr">DR-318</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -22350,7 +22161,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Aggregation</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">integer</span>
-      <span class="pill pill-dr">DR-325</span>
+      <span class="pill pill-dr">DR-319</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -22395,7 +22206,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">3 hops from ground truth</span>
       <span class="pill pill-muted">boolean</span>
-      <span class="pill pill-dr">DR-326</span>
+      <span class="pill pill-dr">DR-320</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -22448,7 +22259,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Aggregation</span>
       <span class="pill pill-depth">3 hops from ground truth</span>
       <span class="pill pill-muted">integer</span>
-      <span class="pill pill-dr">DR-327</span>
+      <span class="pill pill-dr">DR-321</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -22497,7 +22308,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Aggregation</span>
       <span class="pill pill-depth">3 hops from ground truth</span>
       <span class="pill pill-muted">integer</span>
-      <span class="pill pill-dr">DR-328</span>
+      <span class="pill pill-dr">DR-322</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -22543,7 +22354,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Aggregation</span>
       <span class="pill pill-depth">2 hops from ground truth</span>
       <span class="pill pill-muted">integer</span>
-      <span class="pill pill-dr">DR-329</span>
+      <span class="pill pill-dr">DR-323</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -22595,7 +22406,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Aggregation</span>
       <span class="pill pill-depth">4 hops from ground truth</span>
       <span class="pill pill-muted">integer</span>
-      <span class="pill pill-dr">DR-330</span>
+      <span class="pill pill-dr">DR-324</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -22644,7 +22455,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">4 hops from ground truth</span>
       <span class="pill pill-muted">number</span>
-      <span class="pill pill-dr">DR-331</span>
+      <span class="pill pill-dr">DR-325</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -22696,7 +22507,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">5 hops from ground truth</span>
       <span class="pill pill-muted">number</span>
-      <span class="pill pill-dr">DR-332</span>
+      <span class="pill pill-dr">DR-326</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -22748,7 +22559,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">4 hops from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-333</span>
+      <span class="pill pill-dr">DR-327</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -22804,7 +22615,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">6 hops from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-334</span>
+      <span class="pill pill-dr">DR-328</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -22866,7 +22677,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Aggregation</span>
       <span class="pill pill-depth">2 hops from ground truth</span>
       <span class="pill pill-muted">integer</span>
-      <span class="pill pill-dr">DR-335</span>
+      <span class="pill pill-dr">DR-329</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -22917,7 +22728,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Aggregation</span>
       <span class="pill pill-depth">2 hops from ground truth</span>
       <span class="pill pill-muted">integer</span>
-      <span class="pill pill-dr">DR-336</span>
+      <span class="pill pill-dr">DR-330</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -22965,7 +22776,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Aggregation</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">integer</span>
-      <span class="pill pill-dr">DR-337</span>
+      <span class="pill pill-dr">DR-331</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -23073,7 +22884,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Aggregation</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">integer</span>
-      <span class="pill pill-dr">DR-338</span>
+      <span class="pill pill-dr">DR-332</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -23136,7 +22947,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Aggregation</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">integer</span>
-      <span class="pill pill-dr">DR-339</span>
+      <span class="pill pill-dr">DR-333</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -23194,7 +23005,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">2 hops from ground truth</span>
       <span class="pill pill-muted">integer</span>
-      <span class="pill pill-dr">DR-340</span>
+      <span class="pill pill-dr">DR-334</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -23250,7 +23061,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">3 hops from ground truth</span>
       <span class="pill pill-muted">integer</span>
-      <span class="pill pill-dr">DR-341</span>
+      <span class="pill pill-dr">DR-335</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -23300,7 +23111,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">3 hops from ground truth</span>
       <span class="pill pill-muted">boolean</span>
-      <span class="pill pill-dr">DR-342</span>
+      <span class="pill pill-dr">DR-336</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -23692,7 +23503,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Lookup</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-343</span>
+      <span class="pill pill-dr">DR-337</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -23732,7 +23543,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-344</span>
+      <span class="pill pill-dr">DR-338</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -23778,7 +23589,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">boolean</span>
-      <span class="pill pill-dr">DR-345</span>
+      <span class="pill pill-dr">DR-339</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -23826,7 +23637,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">2 hops from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-346</span>
+      <span class="pill pill-dr">DR-340</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -23990,7 +23801,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Aggregation</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">integer</span>
-      <span class="pill pill-dr">DR-347</span>
+      <span class="pill pill-dr">DR-341</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -24101,7 +23912,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Lookup</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-348</span>
+      <span class="pill pill-dr">DR-342</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -24237,7 +24048,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">number</span>
-      <span class="pill pill-dr">DR-349</span>
+      <span class="pill pill-dr">DR-343</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -24390,7 +24201,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">number</span>
-      <span class="pill pill-dr">DR-350</span>
+      <span class="pill pill-dr">DR-344</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -24435,7 +24246,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Lookup</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-351</span>
+      <span class="pill pill-dr">DR-345</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -24481,7 +24292,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">2 hops from ground truth</span>
       <span class="pill pill-muted">integer</span>
-      <span class="pill pill-dr">DR-352</span>
+      <span class="pill pill-dr">DR-346</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -24531,7 +24342,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Aggregation</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">integer</span>
-      <span class="pill pill-dr">DR-353</span>
+      <span class="pill pill-dr">DR-347</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -24578,7 +24389,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Aggregation</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">integer</span>
-      <span class="pill pill-dr">DR-354</span>
+      <span class="pill pill-dr">DR-348</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -24625,7 +24436,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">3 hops from ground truth</span>
       <span class="pill pill-muted">number</span>
-      <span class="pill pill-dr">DR-355</span>
+      <span class="pill pill-dr">DR-349</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">

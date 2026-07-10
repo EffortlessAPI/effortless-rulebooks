@@ -28900,6 +28900,7 @@ effortless-ntwf:conc-01-paradox-is-derived a effortless-ntwf:Conclusions ;
     effortless-ntwf:conclusionId "conc-01-paradox-is-derived" ;
     effortless-ntwf:category "domain" ;
     effortless-ntwf:status "witnessed" ;
+    effortless-ntwf:reportTier "supporting" ;
     effortless-ntwf:title "Simpson's Paradox is a derived fact from the DAG, not a modeled entity" ;
     effortless-ntwf:evidence "IsReversal (and later IsSignFlip) falls out as a calculated field on TreatmentRankings, derived from aggregated CaseCell counts. No 'ReversalDetection' entity was ever needed." ;
     effortless-ntwf:witnessedInLoop "loop-04" ;
@@ -28910,6 +28911,7 @@ effortless-ntwf:conc-02-reversal-from-allocation a effortless-ntwf:Conclusions ;
     effortless-ntwf:conclusionId "conc-02-reversal-from-allocation" ;
     effortless-ntwf:category "domain" ;
     effortless-ntwf:status "witnessed" ;
+    effortless-ntwf:reportTier "supporting" ;
     effortless-ntwf:title "The reversal in kidney-1986 is entirely an allocation artifact — same rates with balanced allocation produce no reversal" ;
     effortless-ntwf:evidence "kidney-balanced uses identical stratum success rates to kidney-1986 but with equal allocation (175 cases per cell). IsReversal=FALSE, AllocationDistortion=0. The paradox is algebraically isolated as a property of allocation, not of treatment efficacy." ;
     effortless-ntwf:witnessedInLoop "loop-14" ;
@@ -28920,6 +28922,7 @@ effortless-ntwf:conc-03-binary-excludes-partial a effortless-ntwf:Conclusions ;
     effortless-ntwf:conclusionId "conc-03-binary-excludes-partial" ;
     effortless-ntwf:category "instrument" ;
     effortless-ntwf:status "witnessed" ;
+    effortless-ntwf:reportTier "supporting" ;
     effortless-ntwf:title "The unanimity criterion (IsReversal) incorrectly excludes Berkeley 1973 despite its being a Simpson-type paradox" ;
     effortless-ntwf:evidence "Berkeley: WSGSUM=−0.0642, SignedPooledGap=+0.1292, IsSignFlip=TRUE, AllocationDistortion=0.1934 — greater distortion than kidney-1986. But IsReversal=FALSE because dept-C marginally favors male. The unanimity criterion is a strict subtype, not the primary definition." ;
     effortless-ntwf:witnessedInLoop "loop-17" ;
@@ -28931,6 +28934,7 @@ effortless-ntwf:conc-04-type-c-exists a effortless-ntwf:Conclusions ;
     effortless-ntwf:conclusionId "conc-04-type-c-exists" ;
     effortless-ntwf:category "instrument" ;
     effortless-ntwf:status "witnessed" ;
+    effortless-ntwf:reportTier "supporting" ;
     effortless-ntwf:title "Allocation can compress the pooled signal without flipping it (type-C): a class invisible to IsReversal and IsSignFlip but visible to AllocationDistortion" ;
     effortless-ntwf:evidence "compressed-synthetic: A wins every stratum and wins pooled, but the pooled margin is 6pp rather than the equal-weight 10pp. AllocationDistortion=0.0400, IsSignFlip=FALSE. The pooled winner is correct; the effect size is wrong by 4pp." ;
     effortless-ntwf:witnessedInLoop "loop-19" ;
@@ -28941,6 +28945,7 @@ effortless-ntwf:conc-05-real-data-generalizes a effortless-ntwf:Conclusions ;
     effortless-ntwf:conclusionId "conc-05-real-data-generalizes" ;
     effortless-ntwf:category "instrument" ;
     effortless-ntwf:status "witnessed" ;
+    effortless-ntwf:reportTier "supporting" ;
     effortless-ntwf:title "Two real published studies (reintjes-2000, radelet-1981) hydrate as type-A full reversals without schema changes" ;
     effortless-ntwf:evidence "Both studies entered via 05b-customize-data.sql. Witnessed: reintjes AllocationDistortion=0.0516, DistortionType=A; radelet AllocationDistortion=0.0684, DistortionType=A. No DAG or schema change was needed — the hydration contract generalizes." ;
     effortless-ntwf:witnessedInLoop "loop-20b" ;
@@ -28951,6 +28956,7 @@ effortless-ntwf:conc-06-policy-derivable a effortless-ntwf:Conclusions ;
     effortless-ntwf:conclusionId "conc-06-policy-derivable" ;
     effortless-ntwf:category "instrument" ;
     effortless-ntwf:status "witnessed" ;
+    effortless-ntwf:reportTier "supporting" ;
     effortless-ntwf:title "PolicyImplication is domain-neutral: the same formula produces researcher actions across medicine, law, and education" ;
     effortless-ntwf:evidence "All five current studies (kidney-1986, berkeley-1973, compressed-synthetic, kidney-balanced, balanced-synthetic) plus two real studies produce unambiguous PolicyImplication values from DistortionType alone. No domain-specific knowledge is encoded in the formula." ;
     effortless-ntwf:witnessedInLoop "loop-21" ;
@@ -28961,6 +28967,7 @@ effortless-ntwf:conc-07-model-self-portrait a effortless-ntwf:Conclusions ;
     effortless-ntwf:conclusionId "conc-07-model-self-portrait" ;
     effortless-ntwf:category "instrument" ;
     effortless-ntwf:status "witnessed" ;
+    effortless-ntwf:reportTier "supporting" ;
     effortless-ntwf:title "ModelSummary witnesses the instrument's own epistemic coverage as a first-class derived fact" ;
     effortless-ntwf:evidence "ModelSummary aggregates ReversalCount, ExplainedCount, TypeA/B/C/D counts, and AvgAllocationDistortion across all studies. The model describes its own completeness in a single row." ;
     effortless-ntwf:witnessedInLoop "loop-10" ;
@@ -28971,6 +28978,7 @@ effortless-ntwf:conc-08-type-c-real a effortless-ntwf:Conclusions ;
     effortless-ntwf:conclusionId "conc-08-type-c-real" ;
     effortless-ntwf:category "open-question" ;
     effortless-ntwf:status "witnessed" ;
+    effortless-ntwf:reportTier "supporting" ;
     effortless-ntwf:title "Does the published literature contain real type-C studies (compression without sign flip)?" ;
     effortless-ntwf:evidence "Witnessed in loop-24: hannan-1994 (CABG surgery), titanic-1912, melanoma-altman-1991, and coffee-tverdal-2020 all hydrate as DistortionType=C. AllocationDistortion>0.01, IsSignFlip=FALSE — the correct pooled direction but compressed magnitude. The type-C cell is not a synthetic pathology." ;
     effortless-ntwf:witnessedInLoop "loop-24" ;
@@ -28982,6 +28990,7 @@ effortless-ntwf:conc-09-causal-vs-geometric a effortless-ntwf:Conclusions ;
     effortless-ntwf:conclusionId "conc-09-causal-vs-geometric" ;
     effortless-ntwf:category "open-question" ;
     effortless-ntwf:status "witnessed" ;
+    effortless-ntwf:reportTier "critical" ;
     effortless-ntwf:title "AllocationDistortion is a geometric measure; causal interpretation requires external domain knowledge, gated by AdjustmentAppropriate" ;
     effortless-ntwf:evidence "Berkeley has the highest AllocationDistortion (0.1934) but CausalRole=contested (mediator vs confounder), proving that geometric severity and causal confounding are not the same thing. The instrument is deliberately geometric: it classifies distortion type and flags the corrected winner from allocation arithmetic alone. Whether it is safe to act on that correction as a causal claim is answered by AdjustmentAppropriate — which gates on ConditioningRisk and CausalClaimStatus. The two layers are complementary, not competing. The instrument computes the geometry; the researcher supplies the causal account. This is a scope boundary, not a limitation." ;
     effortless-ntwf:witnessedInLoop "loop-30" ;
@@ -28994,6 +29003,7 @@ effortless-ntwf:conc-10-instrument-specifiable a effortless-ntwf:Conclusions ;
     effortless-ntwf:conclusionId "conc-10-instrument-specifiable" ;
     effortless-ntwf:category "methodology" ;
     effortless-ntwf:status "witnessed" ;
+    effortless-ntwf:reportTier "transient" ;
     effortless-ntwf:title "The full instrument can be specified precisely enough for any researcher to apply it to a new study" ;
     effortless-ntwf:evidence "Witnessed in loop-26: InstrumentSpec table enumerates 5 input fields, 10 derived coordinates, 2 classification rules, and 3 adapter-requirement rows. Machine-verifiable against the full 90+ study corpus." ;
     effortless-ntwf:witnessedInLoop "loop-26" ;
@@ -29005,6 +29015,7 @@ effortless-ntwf:conc-11-reversal-recovery a effortless-ntwf:Conclusions ;
     effortless-ntwf:conclusionId "conc-11-reversal-recovery" ;
     effortless-ntwf:category "instrument" ;
     effortless-ntwf:status "witnessed" ;
+    effortless-ntwf:reportTier "supporting" ;
     effortless-ntwf:title "The model can produce the allocation-corrected winner directly from existing DAG fields — no new data required" ;
     effortless-ntwf:evidence "CorrectedGap = WeightedStratumGapSum (already derived in loop-12/17). CorrectedWinner is a sign-read on CorrectedGap. CorrectedVsPooledAgreement is TRUE for Type-D studies and FALSE for Type-A/B studies. For kidney-1986: CorrectedGap=+0.0537, CorrectedWinner=A, CorrectedVsPooledAgreement=FALSE (pooled said B; corrected says A). The reversal recovery is free — it costs zero new data." ;
     effortless-ntwf:witnessedInLoop "loop-27" ;
@@ -29013,8 +29024,10 @@ effortless-ntwf:conc-11-reversal-recovery a effortless-ntwf:Conclusions ;
 
 effortless-ntwf:conc-12-signal-purity-theorem a effortless-ntwf:Conclusions ;
     effortless-ntwf:conclusionId "conc-12-signal-purity-theorem" ;
-    effortless-ntwf:category "theorem" ;
+    effortless-ntwf:category "corpus-theorem" ;
     effortless-ntwf:status "witnessed" ;
+    effortless-ntwf:reportTier "critical" ;
+    effortless-ntwf:validatingHypothesis "H-purity" ;
     effortless-ntwf:title "SignalPurity < 0.5 is a necessary condition for allocation-driven reversal" ;
     effortless-ntwf:evidence "Witnessed across all reversal studies (type A + B) in the 90+ study corpus: every study with AllocationDirection='reversal' has SignalPurity < 0.5. The algebraic proof: reversal requires SignedPooledGap and CorrectedGap to have opposite signs, which requires AllocationDistortion > |CorrectedGap|, which is exactly SignalPurity < 0.5. inv-signal-purity-sign-flip enforces this as a DAG invariant. AvgSignalPurityReversal ≈ 0.35 vs AvgSignalPurityNonReversal ≈ 0.65 — gap of ~0.30." ;
     effortless-ntwf:witnessedInLoop "loop-44" ;
@@ -29025,6 +29038,7 @@ effortless-ntwf:conc-13-cplus-cminus-opposite-errors a effortless-ntwf:Conclusio
     effortless-ntwf:conclusionId "conc-13-cplus-cminus-opposite-errors" ;
     effortless-ntwf:category "taxonomy" ;
     effortless-ntwf:status "witnessed" ;
+    effortless-ntwf:reportTier "critical" ;
     effortless-ntwf:title "C+ (amplification) and C- (compression) are epistemically opposite errors with opposite clinical implications" ;
     effortless-ntwf:evidence "titanic-1912 (C+, DistortionRatio=1.359): allocation inflates first-class survival advantage from 27.5pp corrected to 37.4pp pooled — overconfidence. melanoma-altman-1991 (C+, DistortionRatio=2.087): allocation doubles apparent female survival advantage — severe overconfidence. hannan-1994 (C-, DistortionRatio=0.314): allocation compresses CABG advantage from 8.9pp corrected to 2.8pp pooled — underconfidence, risk of premature treatment abandonment. The prior type-C category hid this distinction. Now separated by DistortionRatio > 1 (C+) vs DistortionRatio ∈ (0,1) (C-)." ;
     effortless-ntwf:witnessedInLoop "loop-43" ;
@@ -29035,6 +29049,7 @@ effortless-ntwf:conc-14-scale-is-discovery-path a effortless-ntwf:Conclusions ;
     effortless-ntwf:conclusionId "conc-14-scale-is-discovery-path" ;
     effortless-ntwf:category "methodology" ;
     effortless-ntwf:status "witnessed" ;
+    effortless-ntwf:reportTier "transient" ;
     effortless-ntwf:title "Cross-domain SignalPurity correlations require a pre-registered unbiased corpus of 50+ studies to distinguish pattern from selection artifact" ;
     effortless-ntwf:evidence "Partial domain patterns witnessed across 90+ studies (loop-61): epidemiology avg distortion 0.050 vs education 0.004; legal/sports/epidemiology flip rates ~27% vs economics 0%. Full causal domain→DistortionType mapping still requires pre-registered expansion beyond convenience sample, but the instrument now supports DiscoveryHypotheses/Findings for ongoing corpus-scale tests." ;
     effortless-ntwf:witnessedInLoop "loop-61" ;
@@ -29044,6 +29059,7 @@ effortless-ntwf:conc-15-latent-flip-potential a effortless-ntwf:Conclusions ;
     effortless-ntwf:conclusionId "conc-15-latent-flip-potential" ;
     effortless-ntwf:category "instrument" ;
     effortless-ntwf:status "witnessed" ;
+    effortless-ntwf:reportTier "supporting" ;
     effortless-ntwf:title "Type-D at observed allocation does not imply allocation-stable — 70% of SAFE studies flip under counterfactual reweighting" ;
     effortless-ntwf:evidence "LatentTypeDCount=45, TypeDCount=64, LatentTypeDFraction=0.703. LatentFlipPotential=TRUE when DistortionType=D AND PooledGapCrossesZero=TRUE. Examples: uc-systemwide-admissions (Type D, sweep range 0.56), recsys-offline-eval (Type D, sweep range 0.56). The ScreeningTier SAFE label describes observed allocation only; sweep reveals latent flip potential." ;
     effortless-ntwf:witnessedInLoop "loop-61" ;
@@ -29053,6 +29069,7 @@ effortless-ntwf:conc-16-small-effect-fragile a effortless-ntwf:Conclusions ;
     effortless-ntwf:conclusionId "conc-16-small-effect-fragile" ;
     effortless-ntwf:category "instrument" ;
     effortless-ntwf:status "witnessed" ;
+    effortless-ntwf:reportTier "supporting" ;
     effortless-ntwf:title "In this corpus, allocation-stable Type-D rows carry larger observed pooled gaps than latent Type-D rows" ;
     effortless-ntwf:evidence "AvgPooledGapStableD=0.102 across 19 stable Type-D studies; AvgPooledGapLatentD=0.022 across 45 latent Type-D studies. Stable studies also have lower sweep range (avg 0.072 vs 0.211). Corpus-descriptive pattern on loop-61 convenience sample — not a deductive law. Small observed effects tend to be allocation-fragile even when currently classified SAFE." ;
     effortless-ntwf:witnessedInLoop "loop-61" ;
@@ -29062,6 +29079,7 @@ effortless-ntwf:conc-17-economics-flip-free a effortless-ntwf:Conclusions ;
     effortless-ntwf:conclusionId "conc-17-economics-flip-free" ;
     effortless-ntwf:category "corpus-pattern-superseded" ;
     effortless-ntwf:status "historical" ;
+    effortless-ntwf:reportTier "transient" ;
     effortless-ntwf:title "Economics-domain 2×K encodings in this corpus produce zero sign-flips — composition studies read as Type D or C−" ;
     effortless-ntwf:evidence "EconomicsSignFlipCount=0 across 8 economics studies (6 Type D, 2 Type C−). Contrast epidemiology (6 sign-flips / 22 studies, 27.3%). Composition and wage-decomposition paradoxes compress or stabilize rather than flip in this instrument's 2×K encoding. **Superseded at loop-78 (N=238):** EconomicsSignFlipCount=10 (25.6% flip rate) after expansion wave 3 bulk encode — pattern was corpus-contingent on pre-expansion selection, not a domain law." ;
     effortless-ntwf:witnessedInLoop "loop-61" ;
@@ -29071,6 +29089,7 @@ effortless-ntwf:conc-18-causal-role-flip-mode a effortless-ntwf:Conclusions ;
     effortless-ntwf:conclusionId "conc-18-causal-role-flip-mode" ;
     effortless-ntwf:category "instrument" ;
     effortless-ntwf:status "witnessed" ;
+    effortless-ntwf:reportTier "supporting" ;
     effortless-ntwf:title "Causal role predicts manifest vs latent reversal mode — confounders flip at observed allocation; collider/selection flips stay sweep-latent" ;
     effortless-ntwf:evidence "Loop-62 research sweep: H-causal-manifest PASS (confFlip=15 vs collManifest=0). H-causal-latent PASS (collManifest=0, collLatent=5, collN=7). Confounder Type-D rows often show latent-only sweep sensitivity (45 latent-only) without manifest sign-flip — the mechanism split is about reversal mode when sign-flips occur, not absence of sweep fragility. Existing LatentFlipPotential + StratumCausalRole suffice; defer ManifestReversal first-class fields to loop-67+." ;
     effortless-ntwf:witnessedInLoop "loop-62" ;
@@ -29080,6 +29099,7 @@ effortless-ntwf:conc-19-explained-tracks-confounding a effortless-ntwf:Conclusio
     effortless-ntwf:conclusionId "conc-19-explained-tracks-confounding" ;
     effortless-ntwf:category "instrument" ;
     effortless-ntwf:status "witnessed" ;
+    effortless-ntwf:reportTier "supporting" ;
     effortless-ntwf:title "IsParadoxExplained tracks adjust-resolvable confounding, not geometric distortion" ;
     effortless-ntwf:evidence "In this corpus, IsParadoxExplained=TRUE iff the study has a manifest sign-flip driven by a confounder — i.e. stratification resolves the reversal. It is FALSE for all C+/C−/D types, and FALSE for the three contested/mediator sign-flips (berkeley-1973, berkeley-six-dept-1973, birth-weight-paradox). The boundary separates 'stratify immediately' from 'do not naively adjust for a collider or mediator'." ;
     effortless-ntwf:witnessedInLoop "loop-63" ;
@@ -29087,8 +29107,10 @@ effortless-ntwf:conc-19-explained-tracks-confounding a effortless-ntwf:Conclusio
 
 effortless-ntwf:conc-20-signal-purity-ceiling a effortless-ntwf:Conclusions ;
     effortless-ntwf:conclusionId "conc-20-signal-purity-ceiling" ;
-    effortless-ntwf:category "theorem" ;
+    effortless-ntwf:category "corpus-theorem" ;
     effortless-ntwf:status "witnessed" ;
+    effortless-ntwf:reportTier "critical" ;
+    effortless-ntwf:validatingHypothesis "H-purity" ;
     effortless-ntwf:title "SignalPurity < 0.5 is a build-breaking invariant for sign-flip studies — witnessed at corpus scale" ;
     effortless-ntwf:evidence "At 96-study corpus scale, every manifest sign-flip has SignalPurity strictly below 0.5 (corpus max: 0.483, jeter-justice-1997). The melanoma-altman-1991 boundary case (purity=0.479, C+, pooled gap crosses zero, no flip) confirms the law is tight but not violated. This graduates from corpus hypothesis (loop-61) to build-breaking invariant: any future study encoding that produces a sign-flip with purity >= 0.5 is an encoding error, not a counterexample." ;
     effortless-ntwf:witnessedInLoop "loop-64" ;
@@ -29098,6 +29120,7 @@ effortless-ntwf:conc-21-catalog-tags-not-predictors a effortless-ntwf:Conclusion
     effortless-ntwf:conclusionId "conc-21-catalog-tags-not-predictors" ;
     effortless-ntwf:category "methodology" ;
     effortless-ntwf:status "witnessed" ;
+    effortless-ntwf:reportTier "transient" ;
     effortless-ntwf:title "Catalog ExpectedDistortionType tags are mechanism priors, not taxonomy predictors — exact match rate 19.4%" ;
     effortless-ntwf:evidence "Loop-65 audit: 18/93 exact matches (19.4%), 75 mismatches. Sign-flip prediction 18/71 (25.4%). Biggest bucket Expected A→observed D (23 studies). Both H-catalog hypotheses PASS (<50%). Defer ExpectedSignFlip vs ExpectedDistortionType split to loop-67+." ;
     effortless-ntwf:witnessedInLoop "loop-65" ;
@@ -29107,6 +29130,7 @@ effortless-ntwf:conc-22-domain-flip-geometry a effortless-ntwf:Conclusions ;
     effortless-ntwf:conclusionId "conc-22-domain-flip-geometry" ;
     effortless-ntwf:category "corpus-pattern-superseded" ;
     effortless-ntwf:status "historical" ;
+    effortless-ntwf:reportTier "transient" ;
     effortless-ntwf:title "Domain flip-rate heterogeneity survives max_stratum_imbalance conditioning — economics 0%, epi/legal/sports ~27%" ;
     effortless-ntwf:evidence "Loop-66: H-domain-flip-geometry-controlled PASS. economics_high_imbalance_sign_flip_count=0; epidemiology_high_imbalance_sign_flip_rate=0.273; legal=0.286; sports=0.273. Pattern survives geometry control — not purely catalog selection artifact. **Superseded at loop-78 (N=238):** econHighImbFlips=10; all domains elevated (epi=65%, legal=57%, sports=60%) — geometry-controlled domain gap collapsed after wave-3 encode." ;
     effortless-ntwf:witnessedInLoop "loop-66" ;
@@ -29116,6 +29140,7 @@ effortless-ntwf:conc-23-research-sweep-synthesis a effortless-ntwf:Conclusions ;
     effortless-ntwf:conclusionId "conc-23-research-sweep-synthesis" ;
     effortless-ntwf:category "methodology" ;
     effortless-ntwf:status "witnessed" ;
+    effortless-ntwf:reportTier "transient" ;
     effortless-ntwf:title "Research sweep loops 62–66: confirmed laws vs corpus patterns vs deferred vocabulary" ;
     effortless-ntwf:evidence "Laws (build-breaking): SignalPurity<0.5 for sign-flips (loop-64), IsParadoxExplained↔confounder (loop-63). Corpus patterns: causal-role reversal mode (loop-62), latent Type-D 70% (loop-61), catalog tag falsification 19% exact (loop-65), domain gap survives geometry control (loop-66). Deferred loop-67+: ManifestReversal/LatentReversal fields, ExpectedSignFlip catalog split, Discovery UI polish. inv-discovery-all-confirmed: 11/11 PASS." ;
     effortless-ntwf:witnessedInLoop "loop-66" ;
@@ -29125,6 +29150,7 @@ effortless-ntwf:conc-24-collider-no-manifest-v2 a effortless-ntwf:Conclusions ;
     effortless-ntwf:conclusionId "conc-24-collider-no-manifest-v2" ;
     effortless-ntwf:category "instrument" ;
     effortless-ntwf:status "witnessed" ;
+    effortless-ntwf:reportTier "supporting" ;
     effortless-ntwf:title "Collider/selection studies produce zero manifest sign-flips at observed allocation — theorem candidacy" ;
     effortless-ntwf:evidence "Loop-69: H-collider-no-manifest-v2 PASS. ColliderSelectionManifestCount=0 including hernandez-diaz birth-weight collider (Expected-A catalog tag, observed Type D). Catalog Expected-A does not predict collider geometry." ;
     effortless-ntwf:witnessedInLoop "loop-69" ;
@@ -29134,6 +29160,7 @@ effortless-ntwf:conc-25-cplus-magnitude-blindspot a effortless-ntwf:Conclusions 
     effortless-ntwf:conclusionId "conc-25-cplus-magnitude-blindspot" ;
     effortless-ntwf:category "instrument" ;
     effortless-ntwf:status "witnessed" ;
+    effortless-ntwf:reportTier "supporting" ;
     effortless-ntwf:title "Type-C+ carries the largest mean AllocationDistortion — invisible to is_sign_flip screens" ;
     effortless-ntwf:evidence "Loop-69: H-cplus-magnitude PASS. CPlusAvgDistortion > CMinusAvgDistortion and > TypeDAvgDistortion. Magnitude inflation is the largest quantitative error class among non-flip distortions." ;
     effortless-ntwf:witnessedInLoop "loop-69" ;
@@ -29143,6 +29170,7 @@ effortless-ntwf:conc-26-sweep-fragile-class a effortless-ntwf:Conclusions ;
     effortless-ntwf:conclusionId "conc-26-sweep-fragile-class" ;
     effortless-ntwf:category "instrument" ;
     effortless-ntwf:status "witnessed" ;
+    effortless-ntwf:reportTier "supporting" ;
     effortless-ntwf:title "Sweep-fragile Type-D class: pooled-safe studies with wide counterfactual wander (≥4 in corpus)" ;
     effortless-ntwf:evidence "Loop-69: H-ultra-fragile PASS. SweepFragileCount>=4 — Type-D rows with signal_purity=1, allocation_distortion=0, sweep_pooled_gap_range>0.3, allocation_fragility>=10. Invisible to pooled-only screens." ;
     effortless-ntwf:witnessedInLoop "loop-69" ;
@@ -29152,6 +29180,7 @@ effortless-ntwf:conc-27-economics-encoding-selection a effortless-ntwf:Conclusio
     effortless-ntwf:conclusionId "conc-27-economics-encoding-selection" ;
     effortless-ntwf:category "corpus-pattern-superseded" ;
     effortless-ntwf:status "historical" ;
+    effortless-ntwf:reportTier "transient" ;
     effortless-ntwf:title "Economics Expected-A catalog tags mismatch observed Type D at 2×K encoding — selection not immunity" ;
     effortless-ntwf:evidence "Loop-69: H-econ-encoding-selection PASS. EconomicsExpectedAMismatchRate=1.0 on expansion-wave-1 Expected-A batch (5/5 Type D). Economics zero-flip reflects encoding limits and catalog priors, not domain paradox immunity. **Superseded at loop-78 (N=238):** EconomicsExpectedAMismatchRate=0.50 after wave-3 dilution — half of Expected-A economics rows now match; pattern sharpened not falsified but no longer unanimous." ;
     effortless-ntwf:witnessedInLoop "loop-69" ;
@@ -29159,8 +29188,10 @@ effortless-ntwf:conc-27-economics-encoding-selection a effortless-ntwf:Conclusio
 
 effortless-ntwf:conc-28-corrected-gap-invariance-theorem a effortless-ntwf:Conclusions ;
     effortless-ntwf:conclusionId "conc-28-corrected-gap-invariance-theorem" ;
-    effortless-ntwf:category "theorem" ;
+    effortless-ntwf:category "corpus-theorem" ;
     effortless-ntwf:status "witnessed" ;
+    effortless-ntwf:reportTier "critical" ;
+    effortless-ntwf:validatingHypothesis "H-corrected-gap-invariant" ;
     effortless-ntwf:title "CorrectedGap (= WeightedStratumGapSum) is invariant under allocation reweighting — the conserved quantity" ;
     effortless-ntwf:evidence "Loop-73: inv-corrected-gap-invariant PASS 238/238; MaxStudySweepCorrectedGapRange=0; CorrectedGapInvariantFailCount=0. CorrectedGap (=WeightedStratumGapSum) invariant under allocation reweighting across full corpus including expansion wave 3." ;
     effortless-ntwf:witnessedInLoop "loop-73" ;
@@ -29169,8 +29200,10 @@ effortless-ntwf:conc-28-corrected-gap-invariance-theorem a effortless-ntwf:Concl
 
 effortless-ntwf:conc-29-explained-confounder-theorem a effortless-ntwf:Conclusions ;
     effortless-ntwf:conclusionId "conc-29-explained-confounder-theorem" ;
-    effortless-ntwf:category "theorem" ;
+    effortless-ntwf:category "corpus-theorem" ;
     effortless-ntwf:status "witnessed" ;
+    effortless-ntwf:reportTier "critical" ;
+    effortless-ntwf:validatingHypothesis "H-explained-bidirectional" ;
     effortless-ntwf:title "IsParadoxExplained ⟺ confounder manifest sign-flip — adjust-resolvable confounding is the unique explanation condition" ;
     effortless-ntwf:evidence "Loop-74: H-explained-bidirectional PASS. ExplainedConfounderCount=ConfounderSignFlipCount; FalsePositiveExplainedCount=0; UnexplainedConfounderSignFlipCount=0. inv-explained-sign-flip-confounder + inv-confounder-signflip-explained both PASS." ;
     effortless-ntwf:witnessedInLoop "loop-74" ;
@@ -29179,8 +29212,10 @@ effortless-ntwf:conc-29-explained-confounder-theorem a effortless-ntwf:Conclusio
 
 effortless-ntwf:conc-30-collider-no-manifest-theorem a effortless-ntwf:Conclusions ;
     effortless-ntwf:conclusionId "conc-30-collider-no-manifest-theorem" ;
-    effortless-ntwf:category "theorem" ;
+    effortless-ntwf:category "corpus-theorem" ;
     effortless-ntwf:status "witnessed" ;
+    effortless-ntwf:reportTier "critical" ;
+    effortless-ntwf:validatingHypothesis "H-collider-no-manifest-theorem" ;
     effortless-ntwf:title "Given correct causal-role annotation, collider/selection studies produce no manifest sign-flips at observed allocation" ;
     effortless-ntwf:evidence "Loop-75: ColliderSelectionCount>=10 with ColliderSelectionManifestCount=0 after encoding heckman-1979 + hoxby-murarka-2009 and re-tagging simonsen/hammond to selection; fryer-2016 reclassified contested. inv-collider-no-manifest PASS." ;
     effortless-ntwf:witnessedInLoop "loop-75" ;
@@ -29191,6 +29226,7 @@ effortless-ntwf:conc-31-theorem-portfolio-synthesis a effortless-ntwf:Conclusion
     effortless-ntwf:conclusionId "conc-31-theorem-portfolio-synthesis" ;
     effortless-ntwf:category "methodology" ;
     effortless-ntwf:status "witnessed" ;
+    effortless-ntwf:reportTier "transient" ;
     effortless-ntwf:title "Four witnessed theorems: SignalPurity, CorrectedGap invariance, Explained↔Confounder, Collider-no-manifest — plus corpus patterns that remain non-theorems" ;
     effortless-ntwf:evidence "Loop-76: TheoremCount>=4 (conc-12/20 SignalPurity + conc-28/29/30). All loops 61-75 discovery hypotheses PASS. Methods-export ready. **Loop-78 update:** six corpus patterns superseded at N=238; theorems and build-breaking invariants unchanged — see conc-32." ;
     effortless-ntwf:witnessedInLoop "loop-76" ;
@@ -29201,6 +29237,7 @@ effortless-ntwf:conc-expansion-wave-synthesis a effortless-ntwf:Conclusions ;
     effortless-ntwf:conclusionId "conc-expansion-wave-synthesis" ;
     effortless-ntwf:category "methodology" ;
     effortless-ntwf:status "witnessed" ;
+    effortless-ntwf:reportTier "transient" ;
     effortless-ntwf:title "Expansion waves 1–2 (loops 68–72): adversarial stress tests survived; theorem candidacy patterns held or sharpened" ;
     effortless-ntwf:evidence "Pending loop-72 LoopReview. Witnesses collider-no-manifest, economics encoding selection, sweep-fragile class, domain profile stability at N>110." ;
     effortless-ntwf:witnessedInLoop "loop-76" ;
@@ -29211,6 +29248,7 @@ effortless-ntwf:conc-32-expansion-wave-3-supersession a effortless-ntwf:Conclusi
     effortless-ntwf:conclusionId "conc-32-expansion-wave-3-supersession" ;
     effortless-ntwf:category "methodology" ;
     effortless-ntwf:status "witnessed" ;
+    effortless-ntwf:reportTier "transient" ;
     effortless-ntwf:title "Expansion wave 3 (loop-77→78): six corpus patterns superseded at N=238 — theorems and invariants hold" ;
     effortless-ntwf:evidence "Loop-78 LoopReview at 238 studies (233 real). Six EpistemicTier=corpus-pattern-superseded hypotheses witnessed FAIL: H-econ-zero (flips=10), H-domain-dist (epi<edu), H-catalog-flip-prediction (flipPred=54.1%), H-domain-flip-geometry-controlled (econHighImbFlips=10), H-econ-encoding-selection (mismatch=50%), H-domain-profiles-stable (econFlipRate=25.6%). H-catalog-exact-match still PASS (39.1%). Five theorems + all critical invariants unchanged. Corpus patterns are scale- and selection-contingent; laws are not." ;
     effortless-ntwf:witnessedInLoop "loop-78" ;
@@ -29220,6 +29258,7 @@ effortless-ntwf:conc-33-confounder-identity-layer a effortless-ntwf:Conclusions 
     effortless-ntwf:conclusionId "conc-33-confounder-identity-layer" ;
     effortless-ntwf:category "instrument" ;
     effortless-ntwf:status "witnessed" ;
+    effortless-ntwf:reportTier "supporting" ;
     effortless-ntwf:title "ConfounderIdentity ontology: cross-study accountable stratum archetypes (loop-80)" ;
     effortless-ntwf:evidence "Loop-81 witness at N=238: 15 identities, 233/233 real stratum variables mapped (100% coverage). H-age-identity-flip-rate PASS (48.6% manifest, n=35). H-severity-vs-age-latent FAIL globally (0.917 > 0.813) — domain modulation deferred to loop-82 IdentityDomainCells." ;
     effortless-ntwf:witnessedInLoop "loop-81" ;
@@ -29227,8 +29266,9 @@ effortless-ntwf:conc-33-confounder-identity-layer a effortless-ntwf:Conclusions 
 
 effortless-ntwf:conc-34-latent-predominant-family a effortless-ntwf:Conclusions ;
     effortless-ntwf:conclusionId "conc-34-latent-predominant-family" ;
-    effortless-ntwf:category "theorem" ;
+    effortless-ntwf:category "corpus-theorem" ;
     effortless-ntwf:status "candidate" ;
+    effortless-ntwf:reportTier "transient" ;
     effortless-ntwf:title "Latent-predominant mechanism family: selection-frailty, collider-proxy, and geographic-composition produce near-zero manifest flips" ;
     effortless-ntwf:evidence "Loop-84: H-selection-frailty-zero-manifest, H-collider-identity-low-manifest, H-geographic-stable-type-d all PASS. These three identities form a coherent latent-predominant cluster distinct from manifest-flip-prone identities (age-composition 48.6%, severity-in-medicine ≥45%). Candidate for theorem promotion pending loop-96 invariant tightening." ;
     effortless-ntwf:witnessedInLoop "loop-84" ;
@@ -29237,8 +29277,10 @@ effortless-ntwf:conc-34-latent-predominant-family a effortless-ntwf:Conclusions 
 
 effortless-ntwf:conc-35-unexplained-identity-sink-theorem a effortless-ntwf:Conclusions ;
     effortless-ntwf:conclusionId "conc-35-unexplained-identity-sink-theorem" ;
-    effortless-ntwf:category "theorem" ;
+    effortless-ntwf:category "corpus-theorem" ;
     effortless-ntwf:status "witnessed" ;
+    effortless-ntwf:reportTier "critical" ;
+    effortless-ntwf:validatingHypothesis "H-unexplained-flips-only-nonconfounders" ;
     effortless-ntwf:title "Identity-conditioned explained theorem: all unexplained sign-flips confined to contested-org-choice and collider-proxy identities" ;
     effortless-ntwf:evidence "Loop-85 at N=238: H-unexplained-flips-only-nonconfounders PASS. UnexplainedConfounderSignFlipCount=0. The three unexplained flips (conc-29 exception list) map exclusively to id-contested-org-choice (2) and id-collider-proxy (1). This extends the loop-74 biconditional (conc-29): explained↔confounder holds for every unambiguous confounder identity; violations are confined to ontologically ambiguous categories. inv-unexplained-identity-sink: PASS (critical, 30 total invariants)." ;
     effortless-ntwf:witnessedInLoop "loop-85" ;
@@ -29247,8 +29289,10 @@ effortless-ntwf:conc-35-unexplained-identity-sink-theorem a effortless-ntwf:Conc
 
 effortless-ntwf:conc-36-perfect-balance-theorem a effortless-ntwf:Conclusions ;
     effortless-ntwf:conclusionId "conc-36-perfect-balance-theorem" ;
-    effortless-ntwf:category "theorem" ;
+    effortless-ntwf:category "corpus-theorem" ;
     effortless-ntwf:status "witnessed" ;
+    effortless-ntwf:reportTier "critical" ;
+    effortless-ntwf:validatingHypothesis "H-perfect-balance-sufficient-safety" ;
     effortless-ntwf:title "Perfect allocation balance is a sufficient condition for no manifest Simpson's Paradox" ;
     effortless-ntwf:evidence "Loop-86: inv-perfect-balance-no-flip PASS 118/118. All 118 TreatmentRankings with ArmSizeRatio=0.5 AND MaxStratumImbalance=0.0 have IsSignFlip=FALSE across all 8 domains and 19 confounder archetypes. Minimum imbalance at any sign-flip study: 0.033 (flu-vaccine-elderly-mortality, demographic-composition). Safety corridor [0.0, 0.033) contains zero sign-flips. This is a sufficient-condition theorem: perfect balance guarantees no manifest paradox, domain-agnostically." ;
     effortless-ntwf:witnessedInLoop "loop-86" ;
@@ -29257,8 +29301,10 @@ effortless-ntwf:conc-36-perfect-balance-theorem a effortless-ntwf:Conclusions ;
 
 effortless-ntwf:conc-37-purity-inversion-theorem a effortless-ntwf:Conclusions ;
     effortless-ntwf:conclusionId "conc-37-purity-inversion-theorem" ;
-    effortless-ntwf:category "theorem" ;
+    effortless-ntwf:category "corpus-theorem" ;
     effortless-ntwf:status "witnessed" ;
+    effortless-ntwf:reportTier "critical" ;
+    effortless-ntwf:validatingHypothesis "H-purity-inversion" ;
     effortless-ntwf:title "Purity inversion: high SignalPurity anti-predicts safe stratification — collider geometry maximizes it" ;
     effortless-ntwf:evidence "Loop-87: collider/selection mean SignalPurity=0.916 (n=12); selection/frailty mean SignalPurity=1.000 (n=5) — the two mechanism classes that must NOT be stratified have the highest purity in the corpus. Demographic-composition (stratify-appropriate) mean SignalPurity=0.624 (n=35). inv-collider-purity-dominance PASS. H-purity-inversion confirmed. PurityTrapFlag encodes the trap for direct query. Researchers using data cleanliness as a quality heuristic will systematically misidentify collider/selection studies as safe-to-stratify — the instrument makes this error visible." ;
     effortless-ntwf:witnessedInLoop "loop-87" ;
@@ -29619,6 +29665,41 @@ effortless-ntwf:find-H-synthetic-edge-coverage a effortless-ntwf:DiscoveryFindin
     effortless-ntwf:hypothesisId "H-synthetic-edge-coverage" ;
     effortless-ntwf:witnessedInLoop "loop-91" .
 
+effortless-ntwf:find-H-purity-trap-flag-coverage a effortless-ntwf:DiscoveryFindings ;
+    effortless-ntwf:findingId "find-H-purity-trap-flag-coverage" ;
+    effortless-ntwf:hypothesisId "H-purity-trap-flag-coverage" ;
+    effortless-ntwf:witnessedInLoop "loop-91" .
+
+effortless-ntwf:find-H-safety-corridor-lower-bound a effortless-ntwf:DiscoveryFindings ;
+    effortless-ntwf:findingId "find-H-safety-corridor-lower-bound" ;
+    effortless-ntwf:hypothesisId "H-safety-corridor-lower-bound" ;
+    effortless-ntwf:witnessedInLoop "loop-91" .
+
+effortless-ntwf:find-H-control-safety-corridor a effortless-ntwf:DiscoveryFindings ;
+    effortless-ntwf:findingId "find-H-control-safety-corridor" ;
+    effortless-ntwf:hypothesisId "H-control-safety-corridor" ;
+    effortless-ntwf:witnessedInLoop "loop-91" .
+
+effortless-ntwf:find-H-perfect-balance-sufficient-safety a effortless-ntwf:DiscoveryFindings ;
+    effortless-ntwf:findingId "find-H-perfect-balance-sufficient-safety" ;
+    effortless-ntwf:hypothesisId "H-perfect-balance-sufficient-safety" ;
+    effortless-ntwf:witnessedInLoop "loop-91" .
+
+effortless-ntwf:find-H-control-no-manifest-flip a effortless-ntwf:DiscoveryFindings ;
+    effortless-ntwf:findingId "find-H-control-no-manifest-flip" ;
+    effortless-ntwf:hypothesisId "H-control-no-manifest-flip" ;
+    effortless-ntwf:witnessedInLoop "loop-91" .
+
+effortless-ntwf:find-H-purity-inversion a effortless-ntwf:DiscoveryFindings ;
+    effortless-ntwf:findingId "find-H-purity-inversion" ;
+    effortless-ntwf:hypothesisId "H-purity-inversion" ;
+    effortless-ntwf:witnessedInLoop "loop-91" .
+
+effortless-ntwf:find-H-control-type-d-predominance a effortless-ntwf:DiscoveryFindings ;
+    effortless-ntwf:findingId "find-H-control-type-d-predominance" ;
+    effortless-ntwf:hypothesisId "H-control-type-d-predominance" ;
+    effortless-ntwf:witnessedInLoop "loop-91" .
+
 # === Individuals: DiscoveryHypotheses ===
 
 effortless-ntwf:H-latent-d a effortless-ntwf:DiscoveryHypotheses ;
@@ -29854,16 +29935,36 @@ effortless-ntwf:H-purity-trap-flag-coverage a effortless-ntwf:DiscoveryHypothese
     effortless-ntwf:epistemicTier "corpus-hypothesis" .
 
 effortless-ntwf:H-control-type-d-predominance a effortless-ntwf:DiscoveryHypotheses ;
-    effortless-ntwf:hypothesisId "H-control-type-d-predominance" .
+    effortless-ntwf:hypothesisId "H-control-type-d-predominance" ;
+    effortless-ntwf:statement "At least 70% of control studies encode as Type-D (neutral allocation, no sign flip) — Type-D is the expected basin for studies selected for absence of paradox." ;
+    effortless-ntwf:expectedOutcome "COUNTIF(TreatmentRankings[IsSignFlip],TRUE,Studies[IsControlStudy],TRUE) / COUNTIF(Studies[IsControlStudy],TRUE) < 0.3" ;
+    effortless-ntwf:registeredInLoop "loop-88" ;
+    effortless-ntwf:traditionId "tradition-dag" ;
+    effortless-ntwf:epistemicTier "corpus-hypothesis" .
 
 effortless-ntwf:H-control-no-manifest-flip a effortless-ntwf:DiscoveryHypotheses ;
-    effortless-ntwf:hypothesisId "H-control-no-manifest-flip" .
+    effortless-ntwf:hypothesisId "H-control-no-manifest-flip" ;
+    effortless-ntwf:statement "Zero manifest sign flips among control studies. These studies were selected for absence of paradox, so no pooled-vs-stratified reversal should be present." ;
+    effortless-ntwf:expectedOutcome "COUNTIF(TreatmentRankings[IsSignFlip],TRUE,Studies[IsControlStudy],TRUE) = 0" ;
+    effortless-ntwf:registeredInLoop "loop-88" ;
+    effortless-ntwf:traditionId "tradition-dag" ;
+    effortless-ntwf:epistemicTier "corpus-hypothesis" .
 
 effortless-ntwf:H-control-safety-corridor a effortless-ntwf:DiscoveryHypotheses ;
-    effortless-ntwf:hypothesisId "H-control-safety-corridor" .
+    effortless-ntwf:hypothesisId "H-control-safety-corridor" ;
+    effortless-ntwf:statement "No control study with MaxStratumImbalance < 0.033 (the safe-corridor threshold) has IsSignFlip=TRUE. The safety corridor hypothesis predicts zero flips below this boundary." ;
+    effortless-ntwf:expectedOutcome "COUNTIF(TreatmentRankings[IsSignFlip],TRUE,TreatmentRankings[MaxStratumImbalance],\"<0.033\",Studies[IsControlStudy],TRUE) = 0" ;
+    effortless-ntwf:registeredInLoop "loop-88" ;
+    effortless-ntwf:traditionId "tradition-dag" ;
+    effortless-ntwf:epistemicTier "corpus-hypothesis" .
 
 effortless-ntwf:H-synthetic-edge-coverage a effortless-ntwf:DiscoveryHypotheses ;
-    effortless-ntwf:hypothesisId "H-synthetic-edge-coverage" .
+    effortless-ntwf:hypothesisId "H-synthetic-edge-coverage" ;
+    effortless-ntwf:statement "All four corpus theorem boundary regions (near-zero-distortion, equal-weight sign-flip, zero-corrected-gap, collider-purity) are covered by at least one synthetic study." ;
+    effortless-ntwf:expectedOutcome "COUNTIF(Studies[IsSynthetic],TRUE) >= 4 AND all four boundary regions represented" ;
+    effortless-ntwf:registeredInLoop "loop-89" ;
+    effortless-ntwf:traditionId "tradition-dag" ;
+    effortless-ntwf:epistemicTier "corpus-hypothesis" .
 
 # === Individuals: DomainExpansionTargets ===
 
@@ -30875,12 +30976,12 @@ effortless-ntwf:inv-confounder-signflip-explained a effortless-ntwf:InvariantChe
 
 effortless-ntwf:inv-collider-no-manifest a effortless-ntwf:InvariantChecks ;
     effortless-ntwf:invariantCheckId "inv-collider-no-manifest" ;
-    effortless-ntwf:algebraicStatement "StratumCausalRole ∈ {collider, selection} → IsSignFlip = FALSE" ;
-    effortless-ntwf:naturalLanguage "Collider and selection studies never produce manifest sign-flips at observed allocation — conditional theorem requiring correct causal-role annotation (loop-75)." ;
+    effortless-ntwf:algebraicStatement "StratumCausalRole ∈ {collider, selection} AND NOT IsSynthetic → IsSignFlip = FALSE" ;
+    effortless-ntwf:naturalLanguage "Real-data collider and selection studies never produce manifest sign-flips at observed allocation — conditional theorem requiring correct causal-role annotation (loop-75). Scoped to real-data studies: loop-89's collider-purity-boundary-flip is a deliberately-constructed synthetic adversarial stress test (1.2M-trial search for the highest-purity manifest flip a collider geometry can produce, purity=0.49994) built specifically to probe this theorem's boundary from the outside — it is evidence the boundary is real and tight, not a counterexample to the real-data claim (loop-92)." ;
     effortless-ntwf:sourceTable "TreatmentRankings" ;
-    effortless-ntwf:filterExpression "StratumCausalRole IN ('collider','selection')" ;
+    effortless-ntwf:filterExpression "StratumCausalRole IN ('collider','selection') AND NOT IsSynthetic" ;
     effortless-ntwf:assertionExpression "IsSignFlip = FALSE" ;
-    effortless-ntwf:sqlFilter "stratum_causal_role IN ('collider', 'selection')" ;
+    effortless-ntwf:sqlFilter "stratum_causal_role IN ('collider', 'selection') AND study NOT IN (SELECT study_id FROM studies WHERE is_synthetic = TRUE)" ;
     effortless-ntwf:sqlAssertion "(is_sign_flip = false OR is_sign_flip IS NULL)" ;
     effortless-ntwf:passCount 0 ;
     effortless-ntwf:failCount 0 ;
@@ -30890,12 +30991,12 @@ effortless-ntwf:inv-collider-no-manifest a effortless-ntwf:InvariantChecks ;
 
 effortless-ntwf:inv-unexplained-identity-sink a effortless-ntwf:InvariantChecks ;
     effortless-ntwf:invariantCheckId "inv-unexplained-identity-sink" ;
-    effortless-ntwf:algebraicStatement "IsSignFlip=TRUE AND IsParadoxExplained=FALSE → ConfounderIdentity ∈ {id-contested-org-choice, id-collider-proxy}" ;
-    effortless-ntwf:naturalLanguage "Every unexplained sign-flip must be linked to contested-org-choice or collider-proxy identity — no unexplained flip belongs to an unambiguous confounder archetype. Identity-conditioned extension of conc-29 (loop-74 biconditional)." ;
+    effortless-ntwf:algebraicStatement "IsSignFlip=TRUE AND IsParadoxExplained=FALSE AND NOT IsSynthetic → ConfounderIdentity ∈ {id-contested-org-choice, id-collider-proxy}" ;
+    effortless-ntwf:naturalLanguage "Every real-data unexplained sign-flip must be linked to contested-org-choice or collider-proxy identity — no unexplained flip belongs to an unambiguous confounder archetype. Identity-conditioned extension of conc-29 (loop-74 biconditional). Scoped to real-data studies (loop-92): loop-89's collider-purity-boundary-flip is a deliberately-constructed synthetic study with no StratumVariableIdentityMaps row at all (synthetic studies are never identity-mapped), so it is not a counterexample to this real-corpus claim." ;
     effortless-ntwf:sourceTable "TreatmentRankings" ;
-    effortless-ntwf:filterExpression "IsSignFlip = TRUE AND IsParadoxExplained = FALSE" ;
+    effortless-ntwf:filterExpression "IsSignFlip = TRUE AND IsParadoxExplained = FALSE AND NOT IsSynthetic" ;
     effortless-ntwf:assertionExpression "StratumCausalRole IN ('contested') OR ConfounderIdentity IN ('id-contested-org-choice','id-collider-proxy')" ;
-    effortless-ntwf:sqlFilter "is_sign_flip = true AND is_paradox_explained = false" ;
+    effortless-ntwf:sqlFilter "is_sign_flip = true AND is_paradox_explained = false AND study NOT IN (SELECT study_id FROM studies WHERE is_synthetic = TRUE)" ;
     effortless-ntwf:sqlAssertion """stratum_causal_role = 'contested' OR study IN (
  SELECT s.study_id FROM stratum_variable_identity_maps m
  JOIN stratum_variables sv ON sv.stratum_variable_id = m.stratum_variable
@@ -31999,12 +32100,38 @@ effortless-ntwf:loop-90 a effortless-ntwf:Loops ;
 effortless-ntwf:loop-91 a effortless-ntwf:Loops ;
     effortless-ntwf:loopId "loop-91" ;
     effortless-ntwf:title "Fix bugs surfaced by loop-90 — missing DiscoveryFindings, 238-vs-242 StudyCount discrepancy, theorem category rename" ;
-    effortless-ntwf:status "planned" ;
+    effortless-ntwf:status "complete" ;
     effortless-ntwf:newConcept "Fix the 7 DiscoveryHypotheses with no DiscoveryFindings row: either run them for real or explicitly model 'not yet evaluated' as a Status value, not an absence. Once _erb_tr_metrics is gone (loop-90), the 238-vs-242 discrepancy structurally cannot recur — verify the 4 loop-89 synthetic boundary studies now appear in StudyCount and rerun the corpus theorem invariants including them. Rename the theorem category (e.g. corpus-theorem) now that it's backed by real numbers instead of numbers with a silent hole in them." ;
     effortless-ntwf:domainQuestion "With the bespoke-cache layer removed in loop-90, do the corpus theorems still hold when the 4 previously-dropped boundary studies are included in every count, and are all pre-registered DiscoveryHypotheses now resolved to an explicit status rather than a silent absence of findings?" ;
-    effortless-ntwf:mockDataNote "Pending — depends on loop-90 landing first." ;
+    effortless-ntwf:mockDataNote "Witnessed. Fixed 4 malformed DiscoveryHypotheses rows (H-control-type-d-predominance, H-control-no-manifest-flip, H-control-safety-corridor, H-synthetic-edge-coverage) that used a non-conformant schema shape (Title/Predicate/Description/IsRegistered/IsCritical/LoopId instead of Statement/ExpectedOutcome/RegisteredInLoop/TraditionId/EpistemicTier) -- normalized to the declared schema. Added DiscoveryFindings rows + CASE-dispatch branches for all 7 previously-unevaluated hypotheses: H-safety-corridor-lower-bound and H-perfect-balance-sufficient-safety both PASS against live TreatmentRankings data; H-purity-inversion and H-purity-trap-flag-coverage both PASS (do-not-condition mean purity 0.909 > stratify-* mean; PurityTrapFlag correctly discriminates collider-selection from demographic-composition). H-control-type-d-predominance / H-control-no-manifest-flip / H-control-safety-corridor all PASS but are VACUOUS: control studies (loop-88) were never encoded with paired treatment arms, so they produce zero TreatmentRankings rows by construction -- Evidence text says so explicitly rather than presenting a vacuous truth as a substantive finding. Verified the 238-vs-242 StudyCount discrepancy is already structurally resolved by loop-90: CorpusBalance.SimpsonStudyCount is a live COUNTIFS over Studies.IsControlStudy=FALSE, correctly yielding 242 (233 real + 9 synthetic, including all 4 loop-89 boundary studies) with zero silent cache staleness possible. Renamed Conclusions.Category 'theorem' -> 'corpus-theorem' (9 rows) -- 'theorem' was never in the declared schema enum (domain|instrument|methodology|open-question) in the first place, so this was also a latent schema-conformance bug, not just a naming preference." ;
     effortless-ntwf:nextSuggestion "Submit methods paper." ;
     effortless-ntwf:traditionId "tradition-dag" .
+
+# === Individuals: MaterializedEntities ===
+
+effortless-ntwf:mat-sweep-study-summary a effortless-ntwf:MaterializedEntities ;
+    effortless-ntwf:materializedEntityId "mat-sweep-study-summary" ;
+    effortless-ntwf:entityTable "SweepStudySummary" ;
+    effortless-ntwf:refreshContract "eager-on-write" ;
+    effortless-ntwf:refreshFunction "refresh_sweep_study_summary()" ;
+    effortless-ntwf:upstreamTables "AllocationSweep, SweepStudyConfig" ;
+    effortless-ntwf:justification "Loop-93: computing calc_model_summary_latent_type_d_count (or any ModelSummary/DiscoveryFindings field touching PooledGapCrossesZero/SweepPooledGapRange) fanned a 242-study TreatmentRankings scan out into 242 independent 10-row AllocationSweep sub-scans with zero memoization, measured at 22.5s for a single field (single-study sub-scan alone: 67.7ms). AllocationSweep/SweepStudyConfig are both sealed per build (raw sweep-simulation input, unchanged unless the sweep is re-run), so materializing SweepStudySummary once collapses every downstream consumer (TreatmentRankings.PooledGapCrossesZero/SweepPooledGapRange, 37+ ModelSummary aggregates, DiscoveryFindings rows keyed to H-latent-d and related hypotheses) from a nested function fan-out to a single indexed row read." .
+
+effortless-ntwf:mat-identity-cluster-summaries a effortless-ntwf:MaterializedEntities ;
+    effortless-ntwf:materializedEntityId "mat-identity-cluster-summaries" ;
+    effortless-ntwf:entityTable "IdentityClusterSummaries" ;
+    effortless-ntwf:refreshContract "eager-on-write" ;
+    effortless-ntwf:refreshFunction "refresh_identity_cluster_summaries()" ;
+    effortless-ntwf:upstreamTables "StratumVariableIdentityMaps, StratumVariables, Studies, TreatmentRankings" ;
+    effortless-ntwf:justification "Loop-81 (retroactively recorded here in loop-93): an N-way join over a sealed set of stratum-variable identity maps, refreshed as an explicit container-level action rather than recomputed per read. Pre-existing principled materialization; this row documents it under the same governance convention introduced for SweepStudySummary." .
+
+effortless-ntwf:mat-identity-domain-cells a effortless-ntwf:MaterializedEntities ;
+    effortless-ntwf:materializedEntityId "mat-identity-domain-cells" ;
+    effortless-ntwf:entityTable "IdentityDomainCells" ;
+    effortless-ntwf:refreshContract "eager-on-write" ;
+    effortless-ntwf:refreshFunction "refresh_identity_domain_cells()" ;
+    effortless-ntwf:upstreamTables "StratumVariableIdentityMaps, StratumVariables, Studies, TreatmentRankings" ;
+    effortless-ntwf:justification "Loop-82 (retroactively recorded here in loop-93): domain × identity cross-tabulation over the same sealed identity-map set as IdentityClusterSummaries, same refresh-on-write contract. Pre-existing principled materialization; this row documents it under the same governance convention introduced for SweepStudySummary." .
 
 # === Individuals: Methodology ===
 

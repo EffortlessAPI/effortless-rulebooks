@@ -577,7 +577,7 @@ effortless-ntwf:CaseCellsShape a sh:NodeShape ;
     $this a effortless-ntwf:CaseCells .
     OPTIONAL { $this effortless-ntwf:cases ?cases . }
     OPTIONAL { $this effortless-ntwf:successes ?successes . }
-                BIND(((?cases > 0) && (?successes >= 0) && (?successes <= ?cases)) AS ?_result)
+                BIND(((?cases >= 0) && (?successes >= 0) && (?successes <= ?cases)) AS ?_result)
             }
         """ ;
     ] .
@@ -600,6 +600,44 @@ effortless-ntwf:ConclusionsShape a sh:NodeShape ;
     $this a effortless-ntwf:Conclusions .
     OPTIONAL { $this effortless-ntwf:conclusionId ?conclusion_id . }
                 BIND(?conclusion_id AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Conclusions_LiveStatusConfirmed" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:liveStatusConfirmed ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:Conclusions .
+                OPTIONAL { $this effortless-ntwf:validatingHypothesis ?validating_hypothesis . }
+                OPTIONAL { ?j0 a effortless-ntwf:DiscoveryFindings ; effortless-ntwf:hypothesisId ?j1 ; effortless-ntwf:isConfirmed ?j2 . FILTER((REPLACE(STR(?j1), "^.*[#/]", "") = REPLACE(STR(?validating_hypothesis), "^.*[#/]", "")) || (?j0 = ?validating_hypothesis)) }
+                BIND(?j2 AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Conclusions_LiveStatusObservedMetric" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:liveStatusObservedMetric ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:Conclusions .
+                OPTIONAL { $this effortless-ntwf:validatingHypothesis ?validating_hypothesis . }
+                OPTIONAL { ?j0 a effortless-ntwf:DiscoveryFindings ; effortless-ntwf:hypothesisId ?j1 ; effortless-ntwf:observedMetric ?j2 . FILTER((REPLACE(STR(?j1), "^.*[#/]", "") = REPLACE(STR(?validating_hypothesis), "^.*[#/]", "")) || (?j0 = ?validating_hypothesis)) }
+                BIND(?j2 AS ?_result)
             }
         """ ;
     ] ;
@@ -1956,7 +1994,9 @@ effortless-ntwf:IngestionSummaryShape a sh:NodeShape ;
     $this a effortless-ntwf:IngestionSummary .
                 {
                     SELECT (COUNT(?child) AS ?_result) WHERE {
-                        ?child a effortless-ntwf:Studies .
+                    ?child a effortless-ntwf:Studies .
+                    OPTIONAL { ?child effortless-ntwf:isControlStudy ?c0 . }
+                    FILTER(BOUND(?c0) && ?c0 = false)
                     }
                 }
             }
@@ -2021,7 +2061,9 @@ effortless-ntwf:IngestionSummaryShape a sh:NodeShape ;
                     SELECT (COUNT(?child) AS ?_result) WHERE {
                     ?child a effortless-ntwf:Studies .
                     OPTIONAL { ?child effortless-ntwf:isSynthetic ?c0 . }
+                    OPTIONAL { ?child effortless-ntwf:isControlStudy ?c2 . }
                     FILTER(BOUND(?c0) && ?c0 = false)
+                    FILTER(BOUND(?c2) && ?c2 = false)
                     }
                 }
             }
@@ -2362,6 +2404,28 @@ effortless-ntwf:LoopsShape a sh:NodeShape ;
     $this a effortless-ntwf:Loops .
     OPTIONAL { $this effortless-ntwf:commitHash ?commit_hash . }
                 BIND(SUBSTR(STR(?commit_hash), 1, 7) AS ?_result)
+            }
+        """ ;
+    ] .
+
+# === Shape with rules for MaterializedEntities ===
+effortless-ntwf:MaterializedEntitiesShape a sh:NodeShape ;
+    sh:targetClass effortless-ntwf:MaterializedEntities ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_MaterializedEntities_Name" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:name ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:MaterializedEntities .
+    OPTIONAL { $this effortless-ntwf:materializedEntityId ?materialized_entity_id . }
+                BIND(?materialized_entity_id AS ?_result)
             }
         """ ;
     ] .
@@ -4232,7 +4296,7 @@ effortless-ntwf:ModelSummaryShape a sh:NodeShape ;
                     ?child a effortless-ntwf:Conclusions .
                     OPTIONAL { ?child effortless-ntwf:category ?c0 . }
                     OPTIONAL { ?child effortless-ntwf:status ?c2 . }
-                    FILTER((STR(?c0) = "theorem"))
+                    FILTER((STR(?c0) = "corpus-theorem"))
                     FILTER((STR(?c2) = "witnessed"))
                     }
                 }
@@ -6582,203 +6646,6 @@ effortless-ntwf:SweepStudySummaryShape a sh:NodeShape ;
     ] ;
     sh:rule [
         a sh:SPARQLRule ;
-        rdfs:label "rule_SweepStudySummary_CorrectedGapConstant" ;
-        sh:prefixes effortless-ntwf: ;
-        sh:construct """
-            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
-            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
-            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
-            CONSTRUCT {
-                $this effortless-ntwf:correctedGapConstant ?_result .
-            }
-            WHERE {
-    $this a effortless-ntwf:SweepStudySummary .
-                {
-                    SELECT (MIN(?cval) AS ?_result) WHERE {
-                        SELECT ?child (MIN(?sumval) AS ?cval) WHERE {
-                    ?child a effortless-ntwf:AllocationSweep .
-                    ?child effortless-ntwf:studyId ?backfk .
-                    $this effortless-ntwf:sweepStudyId ?backpv .
-                    OPTIONAL { ?child effortless-ntwf:sweepCorrectedGap ?sumraw . }
-                    BIND(xsd:double(STR(?sumraw)) AS ?sumval)
-                    FILTER(REPLACE(STR(?backfk), "^.*[#/]", "") = REPLACE(STR(?backpv), "^.*[#/]", ""))
-                        } GROUP BY ?child
-                    }
-                }
-            }
-        """ ;
-    ] ;
-    sh:rule [
-        a sh:SPARQLRule ;
-        rdfs:label "rule_SweepStudySummary_SweepCorrectedGapMax" ;
-        sh:prefixes effortless-ntwf: ;
-        sh:construct """
-            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
-            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
-            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
-            CONSTRUCT {
-                $this effortless-ntwf:sweepCorrectedGapMax ?_result .
-            }
-            WHERE {
-    $this a effortless-ntwf:SweepStudySummary .
-                {
-                    SELECT (MAX(?cval) AS ?_result) WHERE {
-                        SELECT ?child (MAX(?sumval) AS ?cval) WHERE {
-                    ?child a effortless-ntwf:AllocationSweep .
-                    ?child effortless-ntwf:studyId ?backfk .
-                    $this effortless-ntwf:sweepStudyId ?backpv .
-                    OPTIONAL { ?child effortless-ntwf:sweepCorrectedGap ?sumraw . }
-                    BIND(xsd:double(STR(?sumraw)) AS ?sumval)
-                    FILTER(REPLACE(STR(?backfk), "^.*[#/]", "") = REPLACE(STR(?backpv), "^.*[#/]", ""))
-                        } GROUP BY ?child
-                    }
-                }
-            }
-        """ ;
-    ] ;
-    sh:rule [
-        a sh:SPARQLRule ;
-        rdfs:label "rule_SweepStudySummary_SweepCorrectedGapMin" ;
-        sh:prefixes effortless-ntwf: ;
-        sh:construct """
-            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
-            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
-            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
-            CONSTRUCT {
-                $this effortless-ntwf:sweepCorrectedGapMin ?_result .
-            }
-            WHERE {
-    $this a effortless-ntwf:SweepStudySummary .
-                {
-                    SELECT (MIN(?cval) AS ?_result) WHERE {
-                        SELECT ?child (MIN(?sumval) AS ?cval) WHERE {
-                    ?child a effortless-ntwf:AllocationSweep .
-                    ?child effortless-ntwf:studyId ?backfk .
-                    $this effortless-ntwf:sweepStudyId ?backpv .
-                    OPTIONAL { ?child effortless-ntwf:sweepCorrectedGap ?sumraw . }
-                    BIND(xsd:double(STR(?sumraw)) AS ?sumval)
-                    FILTER(REPLACE(STR(?backfk), "^.*[#/]", "") = REPLACE(STR(?backpv), "^.*[#/]", ""))
-                        } GROUP BY ?child
-                    }
-                }
-            }
-        """ ;
-    ] ;
-    sh:rule [
-        a sh:SPARQLRule ;
-        rdfs:label "rule_SweepStudySummary_SweepCorrectedGapRange" ;
-        sh:prefixes effortless-ntwf: ;
-        sh:construct """
-            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
-            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
-            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
-            CONSTRUCT {
-                $this effortless-ntwf:sweepCorrectedGapRange ?_result .
-            }
-            WHERE {
-    $this a effortless-ntwf:SweepStudySummary .
-    OPTIONAL { $this effortless-ntwf:sweepCorrectedGapMax ?sweep_corrected_gap_max . }
-    OPTIONAL { $this effortless-ntwf:sweepCorrectedGapMin ?sweep_corrected_gap_min . }
-                BIND((?sweep_corrected_gap_max - ?sweep_corrected_gap_min) AS ?_result)
-            }
-        """ ;
-    ] ;
-    sh:rule [
-        a sh:SPARQLRule ;
-        rdfs:label "rule_SweepStudySummary_SweepPooledGapMax" ;
-        sh:prefixes effortless-ntwf: ;
-        sh:construct """
-            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
-            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
-            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
-            CONSTRUCT {
-                $this effortless-ntwf:sweepPooledGapMax ?_result .
-            }
-            WHERE {
-    $this a effortless-ntwf:SweepStudySummary .
-                {
-                    SELECT (MAX(?cval) AS ?_result) WHERE {
-                        SELECT ?child (MAX(?sumval) AS ?cval) WHERE {
-                    ?child a effortless-ntwf:AllocationSweep .
-                    ?child effortless-ntwf:studyId ?backfk .
-                    $this effortless-ntwf:sweepStudyId ?backpv .
-                    OPTIONAL { ?child effortless-ntwf:sweepPooledGap ?sumraw . }
-                    BIND(xsd:double(STR(?sumraw)) AS ?sumval)
-                    FILTER(REPLACE(STR(?backfk), "^.*[#/]", "") = REPLACE(STR(?backpv), "^.*[#/]", ""))
-                        } GROUP BY ?child
-                    }
-                }
-            }
-        """ ;
-    ] ;
-    sh:rule [
-        a sh:SPARQLRule ;
-        rdfs:label "rule_SweepStudySummary_SweepPooledGapMin" ;
-        sh:prefixes effortless-ntwf: ;
-        sh:construct """
-            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
-            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
-            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
-            CONSTRUCT {
-                $this effortless-ntwf:sweepPooledGapMin ?_result .
-            }
-            WHERE {
-    $this a effortless-ntwf:SweepStudySummary .
-                {
-                    SELECT (MIN(?cval) AS ?_result) WHERE {
-                        SELECT ?child (MIN(?sumval) AS ?cval) WHERE {
-                    ?child a effortless-ntwf:AllocationSweep .
-                    ?child effortless-ntwf:studyId ?backfk .
-                    $this effortless-ntwf:sweepStudyId ?backpv .
-                    OPTIONAL { ?child effortless-ntwf:sweepPooledGap ?sumraw . }
-                    BIND(xsd:double(STR(?sumraw)) AS ?sumval)
-                    FILTER(REPLACE(STR(?backfk), "^.*[#/]", "") = REPLACE(STR(?backpv), "^.*[#/]", ""))
-                        } GROUP BY ?child
-                    }
-                }
-            }
-        """ ;
-    ] ;
-    sh:rule [
-        a sh:SPARQLRule ;
-        rdfs:label "rule_SweepStudySummary_SweepPooledGapRange" ;
-        sh:prefixes effortless-ntwf: ;
-        sh:construct """
-            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
-            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
-            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
-            CONSTRUCT {
-                $this effortless-ntwf:sweepPooledGapRange ?_result .
-            }
-            WHERE {
-    $this a effortless-ntwf:SweepStudySummary .
-    OPTIONAL { $this effortless-ntwf:sweepPooledGapMax ?sweep_pooled_gap_max . }
-    OPTIONAL { $this effortless-ntwf:sweepPooledGapMin ?sweep_pooled_gap_min . }
-                BIND((?sweep_pooled_gap_max - ?sweep_pooled_gap_min) AS ?_result)
-            }
-        """ ;
-    ] ;
-    sh:rule [
-        a sh:SPARQLRule ;
-        rdfs:label "rule_SweepStudySummary_PooledGapCrossesZero" ;
-        sh:prefixes effortless-ntwf: ;
-        sh:construct """
-            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
-            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
-            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
-            CONSTRUCT {
-                $this effortless-ntwf:pooledGapCrossesZero ?_result .
-            }
-            WHERE {
-    $this a effortless-ntwf:SweepStudySummary .
-    OPTIONAL { $this effortless-ntwf:sweepPooledGapMax ?sweep_pooled_gap_max . }
-    OPTIONAL { $this effortless-ntwf:sweepPooledGapMin ?sweep_pooled_gap_min . }
-                BIND(((?sweep_pooled_gap_min < 0) && (?sweep_pooled_gap_max > 0)) AS ?_result)
-            }
-        """ ;
-    ] ;
-    sh:rule [
-        a sh:SPARQLRule ;
         rdfs:label "rule_SweepStudySummary_InvariantWitness" ;
         sh:prefixes effortless-ntwf: ;
         sh:construct """
@@ -8683,4 +8550,4 @@ effortless-ntwf:TreatmentsCardinalityShape a sh:NodeShape ;
     sh:targetClass effortless-ntwf:Treatments ;
     sh:property [ sh:path effortless-ntwf:study ; sh:maxCount 1 ] .
 
-# Generated 386 SHACL rules
+# Generated 381 SHACL rules
