@@ -856,6 +856,221 @@ effortless-ntwf:ConclusionsShape a sh:NodeShape ;
         """ ;
     ] .
 
+# === Shape with rules for ConfounderDistortionTimeline ===
+effortless-ntwf:ConfounderDistortionTimelineShape a sh:NodeShape ;
+    sh:targetClass effortless-ntwf:ConfounderDistortionTimeline ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_ConfounderDistortionTimeline_Name" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:name ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:ConfounderDistortionTimeline .
+    OPTIONAL { $this effortless-ntwf:cellId ?cell_id . }
+                BIND(?cell_id AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_ConfounderDistortionTimeline_TypeDFraction" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:typeDFraction ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:ConfounderDistortionTimeline .
+    OPTIONAL { $this effortless-ntwf:studyCount ?study_count . }
+    OPTIONAL { $this effortless-ntwf:typeDCount ?type_d_count . }
+                BIND(IF(((REPLACE(COALESCE(STR(?study_count), ""), "^.*#", "") = "") || (?study_count = 0)), "", (?type_d_count / ?study_count)) AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_ConfounderDistortionTimeline_SignFlipFraction" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:signFlipFraction ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:ConfounderDistortionTimeline .
+    OPTIONAL { $this effortless-ntwf:signFlipCount ?sign_flip_count . }
+    OPTIONAL { $this effortless-ntwf:studyCount ?study_count . }
+                BIND(IF(((REPLACE(COALESCE(STR(?study_count), ""), "^.*#", "") = "") || (?study_count = 0)), "", (?sign_flip_count / ?study_count)) AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_ConfounderDistortionTimeline_MeanSignalPurity" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:meanSignalPurity ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:ConfounderDistortionTimeline .
+    OPTIONAL { $this effortless-ntwf:studyCount ?study_count . }
+    OPTIONAL { $this effortless-ntwf:sumSignalPurity ?sum_signal_purity . }
+                BIND(IF(((REPLACE(COALESCE(STR(?study_count), ""), "^.*#", "") = "") || (?study_count = 0)), "", (?sum_signal_purity / ?study_count)) AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_ConfounderDistortionTimeline_MeanAllocationDistortion" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:meanAllocationDistortion ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:ConfounderDistortionTimeline .
+    OPTIONAL { $this effortless-ntwf:studyCount ?study_count . }
+    OPTIONAL { $this effortless-ntwf:sumAllocationDistortion ?sum_allocation_distortion . }
+                BIND(IF(((REPLACE(COALESCE(STR(?study_count), ""), "^.*#", "") = "") || (?study_count = 0)), "", (?sum_allocation_distortion / ?study_count)) AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_ConfounderDistortionTimeline_IdentityDisplayName" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:identityDisplayName ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:ConfounderDistortionTimeline .
+                OPTIONAL { $this effortless-ntwf:confounderIdentity ?confounder_identity . }
+                OPTIONAL { ?j0 a effortless-ntwf:ConfounderIdentities ; effortless-ntwf:confounderIdentityId ?j1 ; effortless-ntwf:displayName ?j2 . FILTER((REPLACE(STR(?j1), "^.*[#/]", "") = REPLACE(STR(?confounder_identity), "^.*[#/]", "")) || (?j0 = ?confounder_identity)) }
+                BIND(?j2 AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_ConfounderDistortionTimeline_MechanismClass" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:mechanismClass ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:ConfounderDistortionTimeline .
+                OPTIONAL { $this effortless-ntwf:confounderIdentity ?confounder_identity . }
+                OPTIONAL { ?j0 a effortless-ntwf:ConfounderIdentities ; effortless-ntwf:confounderIdentityId ?j1 ; effortless-ntwf:mechanismClass ?j2 . FILTER((REPLACE(STR(?j1), "^.*[#/]", "") = REPLACE(STR(?confounder_identity), "^.*[#/]", "")) || (?j0 = ?confounder_identity)) }
+                BIND(?j2 AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_ConfounderDistortionTimeline_IdentityEarliestDecade" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:identityEarliestDecade ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:ConfounderDistortionTimeline .
+                {
+                    SELECT (MIN(?cval) AS ?_result) WHERE {
+                        SELECT ?child (MIN(?sumval) AS ?cval) WHERE {
+                    ?child a effortless-ntwf:ConfounderDistortionTimeline .
+                    ?child effortless-ntwf:confounderIdentity ?backfk .
+                    $this effortless-ntwf:confounderIdentity ?backpv .
+                    OPTIONAL { ?child effortless-ntwf:validTimeDecade ?sumraw . }
+                    BIND(xsd:double(STR(?sumraw)) AS ?sumval)
+                    FILTER(REPLACE(STR(?backfk), "^.*[#/]", "") = REPLACE(STR(?backpv), "^.*[#/]", ""))
+                        } GROUP BY ?child
+                    }
+                }
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_ConfounderDistortionTimeline_IdentityLatestDecade" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:identityLatestDecade ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:ConfounderDistortionTimeline .
+                {
+                    SELECT (MAX(?cval) AS ?_result) WHERE {
+                        SELECT ?child (MAX(?sumval) AS ?cval) WHERE {
+                    ?child a effortless-ntwf:ConfounderDistortionTimeline .
+                    ?child effortless-ntwf:confounderIdentity ?backfk .
+                    $this effortless-ntwf:confounderIdentity ?backpv .
+                    OPTIONAL { ?child effortless-ntwf:validTimeDecade ?sumraw . }
+                    BIND(xsd:double(STR(?sumraw)) AS ?sumval)
+                    FILTER(REPLACE(STR(?backfk), "^.*[#/]", "") = REPLACE(STR(?backpv), "^.*[#/]", ""))
+                        } GROUP BY ?child
+                    }
+                }
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_ConfounderDistortionTimeline_DriftDirection" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:driftDirection ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:ConfounderDistortionTimeline .
+    OPTIONAL { $this effortless-ntwf:identityEarliestDecade ?identity_earliest_decade . }
+    OPTIONAL { $this effortless-ntwf:identityEarliestTypeDFraction ?identity_earliest_type_d_fraction . }
+    OPTIONAL { $this effortless-ntwf:identityLatestDecade ?identity_latest_decade . }
+    OPTIONAL { $this effortless-ntwf:identityLatestTypeDFraction ?identity_latest_type_d_fraction . }
+                BIND(IF((?identity_earliest_decade = ?identity_latest_decade), "single-decade", IF(((REPLACE(COALESCE(STR(?identity_earliest_type_d_fraction), ""), "^.*#", "") = "") || (REPLACE(COALESCE(STR(?identity_latest_type_d_fraction), ""), "^.*#", "") = "")), "", IF((?identity_latest_type_d_fraction > (?identity_earliest_type_d_fraction + 0.05)), "rising", IF((?identity_latest_type_d_fraction < (?identity_earliest_type_d_fraction - 0.05)), "falling", "flat")))) AS ?_result)
+            }
+        """ ;
+    ] .
+# Rule for IdentityEarliestTypeDFraction - parse error: unsupported lookup sub-expression: FuncCall
+# Rule for IdentityLatestTypeDFraction - parse error: unsupported lookup sub-expression: FuncCall
+
 # === Shape with rules for ConfounderIdentities ===
 effortless-ntwf:ConfounderIdentitiesShape a sh:NodeShape ;
     sh:targetClass effortless-ntwf:ConfounderIdentities ;
@@ -1552,7 +1767,16 @@ effortless-ntwf:DiscoveryFindingsShape a sh:NodeShape ;
                 OPTIONAL { ?j144 a effortless-ntwf:ModelSummary ; effortless-ntwf:modelSummaryId ?j145 ; effortless-ntwf:geographicTypeDFraction ?j146 . FILTER((REPLACE(STR(?j145), "^.*[#/]", "") = REPLACE(STR("simpsons-paradox-v1"), "^.*[#/]", "")) || (?j144 = "simpsons-paradox-v1")) }
                 OPTIONAL { ?j147 a effortless-ntwf:IdentityClusterSummaries ; effortless-ntwf:identityClusterId ?j148 ; effortless-ntwf:studyCount ?j149 . FILTER((REPLACE(STR(?j148), "^.*[#/]", "") = REPLACE(STR("cluster-id-geographic-composition"), "^.*[#/]", "")) || (?j147 = "cluster-id-geographic-composition")) }
                 OPTIONAL { ?j150 a effortless-ntwf:ModelSummary ; effortless-ntwf:modelSummaryId ?j151 ; effortless-ntwf:unexplainedConfounderSignFlipCount ?j152 . FILTER((REPLACE(STR(?j151), "^.*[#/]", "") = REPLACE(STR("simpsons-paradox-v1"), "^.*[#/]", "")) || (?j150 = "simpsons-paradox-v1")) }
-                BIND(IF((REPLACE(COALESCE(STR(?hypothesis_id), ""), "^.*#", "") = "H-latent-d"), (?j2 > 0.5), IF((REPLACE(COALESCE(STR(?hypothesis_id), ""), "^.*#", "") = "H-purity"), (?j5 < 0.5), IF((REPLACE(COALESCE(STR(?hypothesis_id), ""), "^.*#", "") = "H-small-effect"), (?j8 > ?j11), IF((REPLACE(COALESCE(STR(?hypothesis_id), ""), "^.*#", "") = "H-econ-zero"), (?j14 = 0), IF((REPLACE(COALESCE(STR(?hypothesis_id), ""), "^.*#", "") = "H-domain-dist"), (?j17 > ?j20), IF((REPLACE(COALESCE(STR(?hypothesis_id), ""), "^.*#", "") = "H-causal-manifest"), ((?j23 > ?j26) && (?j29 >= 10)), IF((REPLACE(COALESCE(STR(?hypothesis_id), ""), "^.*#", "") = "H-causal-latent"), ((?j32 = 0) && (?j35 >= 5)), IF((REPLACE(COALESCE(STR(?hypothesis_id), ""), "^.*#", "") = "H-explained-confounder"), ((?j38 = ?j41) && (?j44 >= 10)), IF((REPLACE(COALESCE(STR(?hypothesis_id), ""), "^.*#", "") = "H-unexplained-nonconfounder"), (?j47 = 0), IF((REPLACE(COALESCE(STR(?hypothesis_id), ""), "^.*#", "") = "H-catalog-exact-match"), (?j50 < 0.5), IF((REPLACE(COALESCE(STR(?hypothesis_id), ""), "^.*#", "") = "H-catalog-flip-prediction"), (?j53 < 0.5), IF((REPLACE(COALESCE(STR(?hypothesis_id), ""), "^.*#", "") = "H-domain-flip-geometry-controlled"), ((?j56 = 0) && (?j59 > 0.15)), IF((REPLACE(COALESCE(STR(?hypothesis_id), ""), "^.*#", "") = "H-collider-no-manifest-v2"), (?j62 = 0), IF((REPLACE(COALESCE(STR(?hypothesis_id), ""), "^.*#", "") = "H-cplus-magnitude"), ((?j65 > ?j68) && (?j71 > ?j74)), IF((REPLACE(COALESCE(STR(?hypothesis_id), ""), "^.*#", "") = "H-econ-encoding-selection"), (?j77 > 0.5), IF((REPLACE(COALESCE(STR(?hypothesis_id), ""), "^.*#", "") = "H-domain-profiles-stable"), ((?j80 > 0.5) && (?j83 > 0.5) && (?j86 < 0.05)), IF((REPLACE(COALESCE(STR(?hypothesis_id), ""), "^.*#", "") = "H-corrected-gap-invariant"), ((?j89 < 0.0001) && (?j92 = 0)), IF((REPLACE(COALESCE(STR(?hypothesis_id), ""), "^.*#", "") = "H-explained-bidirectional"), ((?j95 = ?j98) && (?j101 = 0) && (?j104 = 0)), IF((REPLACE(COALESCE(STR(?hypothesis_id), ""), "^.*#", "") = "H-collider-no-manifest-theorem"), ((?j107 = 0) && (?j110 >= 10)), IF((REPLACE(COALESCE(STR(?hypothesis_id), ""), "^.*#", "") = "H-theorem-portfolio"), (?j113 >= 4), IF((REPLACE(COALESCE(STR(?hypothesis_id), ""), "^.*#", "") = "H-age-identity-flip-rate"), ((?j116 >= 0.4) && (?j119 >= 10)), IF((REPLACE(COALESCE(STR(?hypothesis_id), ""), "^.*#", "") = "H-identity-map-coverage"), (?j122 >= 0.95), IF((REPLACE(COALESCE(STR(?hypothesis_id), ""), "^.*#", "") = "H-severity-medicine-manifest"), (?j125 >= 0.45), IF((REPLACE(COALESCE(STR(?hypothesis_id), ""), "^.*#", "") = "H-severity-epi-latent-only"), (?j128 = 0), IF((REPLACE(COALESCE(STR(?hypothesis_id), ""), "^.*#", "") = "H-mechanism-other-drain"), (?j131 <= 5), IF((REPLACE(COALESCE(STR(?hypothesis_id), ""), "^.*#", "") = "H-selection-frailty-zero-manifest"), ((?j134 = 0) && (?j137 >= 3)), IF((REPLACE(COALESCE(STR(?hypothesis_id), ""), "^.*#", "") = "H-collider-identity-low-manifest"), ((?j140 <= 0.15) && (?j143 >= 5)), IF((REPLACE(COALESCE(STR(?hypothesis_id), ""), "^.*#", "") = "H-geographic-stable-type-d"), ((?j146 >= 0.25) && (?j149 >= 3)), IF((REPLACE(COALESCE(STR(?hypothesis_id), ""), "^.*#", "") = "H-unexplained-flips-only-nonconfounders"), (?j152 = 0), false))))))))))))))))))))))))))))) AS ?_result)
+                OPTIONAL { ?j153 a effortless-ntwf:ModelSummary ; effortless-ntwf:modelSummaryId ?j154 ; effortless-ntwf:severityDriftDirection ?j155 . FILTER((REPLACE(STR(?j154), "^.*[#/]", "") = REPLACE(STR("simpsons-paradox-v1"), "^.*[#/]", "")) || (?j153 = "simpsons-paradox-v1")) }
+                OPTIONAL { ?j156 a effortless-ntwf:ModelSummary ; effortless-ntwf:modelSummaryId ?j157 ; effortless-ntwf:severityDriftDirection ?j158 . FILTER((REPLACE(STR(?j157), "^.*[#/]", "") = REPLACE(STR("simpsons-paradox-v1"), "^.*[#/]", "")) || (?j156 = "simpsons-paradox-v1")) }
+                OPTIONAL { ?j159 a effortless-ntwf:ModelSummary ; effortless-ntwf:modelSummaryId ?j160 ; effortless-ntwf:geographicDriftDirection ?j161 . FILTER((REPLACE(STR(?j160), "^.*[#/]", "") = REPLACE(STR("simpsons-paradox-v1"), "^.*[#/]", "")) || (?j159 = "simpsons-paradox-v1")) }
+                OPTIONAL { ?j162 a effortless-ntwf:ModelSummary ; effortless-ntwf:modelSummaryId ?j163 ; effortless-ntwf:geographicDriftDirection ?j164 . FILTER((REPLACE(STR(?j163), "^.*[#/]", "") = REPLACE(STR("simpsons-paradox-v1"), "^.*[#/]", "")) || (?j162 = "simpsons-paradox-v1")) }
+                OPTIONAL { ?j165 a effortless-ntwf:ModelSummary ; effortless-ntwf:modelSummaryId ?j166 ; effortless-ntwf:situationalDriftDirection ?j167 . FILTER((REPLACE(STR(?j166), "^.*[#/]", "") = REPLACE(STR("simpsons-paradox-v1"), "^.*[#/]", "")) || (?j165 = "simpsons-paradox-v1")) }
+                OPTIONAL { ?j168 a effortless-ntwf:ModelSummary ; effortless-ntwf:modelSummaryId ?j169 ; effortless-ntwf:situationalDriftDirection ?j170 . FILTER((REPLACE(STR(?j169), "^.*[#/]", "") = REPLACE(STR("simpsons-paradox-v1"), "^.*[#/]", "")) || (?j168 = "simpsons-paradox-v1")) }
+                OPTIONAL { ?j171 a effortless-ntwf:ModelSummary ; effortless-ntwf:modelSummaryId ?j172 ; effortless-ntwf:ageDriftDirection ?j173 . FILTER((REPLACE(STR(?j172), "^.*[#/]", "") = REPLACE(STR("simpsons-paradox-v1"), "^.*[#/]", "")) || (?j171 = "simpsons-paradox-v1")) }
+                OPTIONAL { ?j174 a effortless-ntwf:ModelSummary ; effortless-ntwf:modelSummaryId ?j175 ; effortless-ntwf:institutionalDriftDirection ?j176 . FILTER((REPLACE(STR(?j175), "^.*[#/]", "") = REPLACE(STR("simpsons-paradox-v1"), "^.*[#/]", "")) || (?j174 = "simpsons-paradox-v1")) }
+                OPTIONAL { ?j177 a effortless-ntwf:ModelSummary ; effortless-ntwf:modelSummaryId ?j178 ; effortless-ntwf:socioeconomicDriftDirection ?j179 . FILTER((REPLACE(STR(?j178), "^.*[#/]", "") = REPLACE(STR("simpsons-paradox-v1"), "^.*[#/]", "")) || (?j177 = "simpsons-paradox-v1")) }
+                BIND(IF((REPLACE(COALESCE(STR(?hypothesis_id), ""), "^.*#", "") = "H-latent-d"), (?j2 > 0.5), IF((REPLACE(COALESCE(STR(?hypothesis_id), ""), "^.*#", "") = "H-purity"), (?j5 < 0.5), IF((REPLACE(COALESCE(STR(?hypothesis_id), ""), "^.*#", "") = "H-small-effect"), (?j8 > ?j11), IF((REPLACE(COALESCE(STR(?hypothesis_id), ""), "^.*#", "") = "H-econ-zero"), (?j14 = 0), IF((REPLACE(COALESCE(STR(?hypothesis_id), ""), "^.*#", "") = "H-domain-dist"), (?j17 > ?j20), IF((REPLACE(COALESCE(STR(?hypothesis_id), ""), "^.*#", "") = "H-causal-manifest"), ((?j23 > ?j26) && (?j29 >= 10)), IF((REPLACE(COALESCE(STR(?hypothesis_id), ""), "^.*#", "") = "H-causal-latent"), ((?j32 = 0) && (?j35 >= 5)), IF((REPLACE(COALESCE(STR(?hypothesis_id), ""), "^.*#", "") = "H-explained-confounder"), ((?j38 = ?j41) && (?j44 >= 10)), IF((REPLACE(COALESCE(STR(?hypothesis_id), ""), "^.*#", "") = "H-unexplained-nonconfounder"), (?j47 = 0), IF((REPLACE(COALESCE(STR(?hypothesis_id), ""), "^.*#", "") = "H-catalog-exact-match"), (?j50 < 0.5), IF((REPLACE(COALESCE(STR(?hypothesis_id), ""), "^.*#", "") = "H-catalog-flip-prediction"), (?j53 < 0.5), IF((REPLACE(COALESCE(STR(?hypothesis_id), ""), "^.*#", "") = "H-domain-flip-geometry-controlled"), ((?j56 = 0) && (?j59 > 0.15)), IF((REPLACE(COALESCE(STR(?hypothesis_id), ""), "^.*#", "") = "H-collider-no-manifest-v2"), (?j62 = 0), IF((REPLACE(COALESCE(STR(?hypothesis_id), ""), "^.*#", "") = "H-cplus-magnitude"), ((?j65 > ?j68) && (?j71 > ?j74)), IF((REPLACE(COALESCE(STR(?hypothesis_id), ""), "^.*#", "") = "H-econ-encoding-selection"), (?j77 > 0.5), IF((REPLACE(COALESCE(STR(?hypothesis_id), ""), "^.*#", "") = "H-domain-profiles-stable"), ((?j80 > 0.5) && (?j83 > 0.5) && (?j86 < 0.05)), IF((REPLACE(COALESCE(STR(?hypothesis_id), ""), "^.*#", "") = "H-corrected-gap-invariant"), ((?j89 < 0.0001) && (?j92 = 0)), IF((REPLACE(COALESCE(STR(?hypothesis_id), ""), "^.*#", "") = "H-explained-bidirectional"), ((?j95 = ?j98) && (?j101 = 0) && (?j104 = 0)), IF((REPLACE(COALESCE(STR(?hypothesis_id), ""), "^.*#", "") = "H-collider-no-manifest-theorem"), ((?j107 = 0) && (?j110 >= 10)), IF((REPLACE(COALESCE(STR(?hypothesis_id), ""), "^.*#", "") = "H-theorem-portfolio"), (?j113 >= 4), IF((REPLACE(COALESCE(STR(?hypothesis_id), ""), "^.*#", "") = "H-age-identity-flip-rate"), ((?j116 >= 0.4) && (?j119 >= 10)), IF((REPLACE(COALESCE(STR(?hypothesis_id), ""), "^.*#", "") = "H-identity-map-coverage"), (?j122 >= 0.95), IF((REPLACE(COALESCE(STR(?hypothesis_id), ""), "^.*#", "") = "H-severity-medicine-manifest"), (?j125 >= 0.45), IF((REPLACE(COALESCE(STR(?hypothesis_id), ""), "^.*#", "") = "H-severity-epi-latent-only"), (?j128 = 0), IF((REPLACE(COALESCE(STR(?hypothesis_id), ""), "^.*#", "") = "H-mechanism-other-drain"), (?j131 <= 5), IF((REPLACE(COALESCE(STR(?hypothesis_id), ""), "^.*#", "") = "H-selection-frailty-zero-manifest"), ((?j134 = 0) && (?j137 >= 3)), IF((REPLACE(COALESCE(STR(?hypothesis_id), ""), "^.*#", "") = "H-collider-identity-low-manifest"), ((?j140 <= 0.15) && (?j143 >= 5)), IF((REPLACE(COALESCE(STR(?hypothesis_id), ""), "^.*#", "") = "H-geographic-stable-type-d"), ((?j146 >= 0.25) && (?j149 >= 3)), IF((REPLACE(COALESCE(STR(?hypothesis_id), ""), "^.*#", "") = "H-unexplained-flips-only-nonconfounders"), (?j152 = 0), IF((REPLACE(COALESCE(STR(?hypothesis_id), ""), "^.*#", "") = "H-confounder-drift-type-d"), (((?j155 = "rising") || (?j158 = "single-decade")) && ((?j161 = "rising") || (?j164 = "single-decade")) && ((?j167 = "rising") || (?j170 = "single-decade")) && (?j173 != "rising") && (?j176 != "rising") && (?j179 != "rising")), false)))))))))))))))))))))))))))))) AS ?_result)
             }
         """ ;
     ] ;
@@ -1575,7 +1799,7 @@ effortless-ntwf:DiscoveryFindingsShape a sh:NodeShape ;
             }
         """ ;
     ] .
-# Rule for ObservedMetric - parse error: unsupported lookup sub-expression: FuncCall
+# Rule for ObservedMetric - parse error: Expected TokenType.RPAREN, got TokenType.EOF at position 8286
 
 # === Shape with rules for DiscoveryHypotheses ===
 effortless-ntwf:DiscoveryHypothesesShape a sh:NodeShape ;
@@ -4881,6 +5105,114 @@ effortless-ntwf:ModelSummaryShape a sh:NodeShape ;
     ] ;
     sh:rule [
         a sh:SPARQLRule ;
+        rdfs:label "rule_ModelSummary_SeverityDriftDirection" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:severityDriftDirection ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:ModelSummary .
+                OPTIONAL { ?j0 a effortless-ntwf:ConfounderDistortionTimeline ; effortless-ntwf:confounderIdentity ?j1 ; effortless-ntwf:driftDirection ?j2 . FILTER((REPLACE(STR(?j1), "^.*[#/]", "") = REPLACE(STR("id-disease-severity"), "^.*[#/]", "")) || (?j0 = "id-disease-severity")) }
+                BIND(?j2 AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_ModelSummary_GeographicDriftDirection" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:geographicDriftDirection ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:ModelSummary .
+                OPTIONAL { ?j0 a effortless-ntwf:ConfounderDistortionTimeline ; effortless-ntwf:confounderIdentity ?j1 ; effortless-ntwf:driftDirection ?j2 . FILTER((REPLACE(STR(?j1), "^.*[#/]", "") = REPLACE(STR("id-geographic-composition"), "^.*[#/]", "")) || (?j0 = "id-geographic-composition")) }
+                BIND(?j2 AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_ModelSummary_SituationalDriftDirection" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:situationalDriftDirection ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:ModelSummary .
+                OPTIONAL { ?j0 a effortless-ntwf:ConfounderDistortionTimeline ; effortless-ntwf:confounderIdentity ?j1 ; effortless-ntwf:driftDirection ?j2 . FILTER((REPLACE(STR(?j1), "^.*[#/]", "") = REPLACE(STR("id-situational-context"), "^.*[#/]", "")) || (?j0 = "id-situational-context")) }
+                BIND(?j2 AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_ModelSummary_AgeDriftDirection" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:ageDriftDirection ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:ModelSummary .
+                OPTIONAL { ?j0 a effortless-ntwf:ConfounderDistortionTimeline ; effortless-ntwf:confounderIdentity ?j1 ; effortless-ntwf:driftDirection ?j2 . FILTER((REPLACE(STR(?j1), "^.*[#/]", "") = REPLACE(STR("id-age-composition"), "^.*[#/]", "")) || (?j0 = "id-age-composition")) }
+                BIND(?j2 AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_ModelSummary_InstitutionalDriftDirection" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:institutionalDriftDirection ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:ModelSummary .
+                OPTIONAL { ?j0 a effortless-ntwf:ConfounderDistortionTimeline ; effortless-ntwf:confounderIdentity ?j1 ; effortless-ntwf:driftDirection ?j2 . FILTER((REPLACE(STR(?j1), "^.*[#/]", "") = REPLACE(STR("id-institutional-unit"), "^.*[#/]", "")) || (?j0 = "id-institutional-unit")) }
+                BIND(?j2 AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_ModelSummary_SocioeconomicDriftDirection" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:socioeconomicDriftDirection ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:ModelSummary .
+                OPTIONAL { ?j0 a effortless-ntwf:ConfounderDistortionTimeline ; effortless-ntwf:confounderIdentity ?j1 ; effortless-ntwf:driftDirection ?j2 . FILTER((REPLACE(STR(?j1), "^.*[#/]", "") = REPLACE(STR("id-socioeconomic-status"), "^.*[#/]", "")) || (?j0 = "id-socioeconomic-status")) }
+                BIND(?j2 AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
         rdfs:label "rule_ModelSummary_DomainFlipGapSurvivesGeometryControl" ;
         sh:prefixes effortless-ntwf: ;
         sh:construct """
@@ -6536,7 +6868,28 @@ effortless-ntwf:StudiesShape a sh:NodeShape ;
                 BIND(IF(?is_synthetic, "exempt-synthetic", IF((?ingestion_cell_parity && (?j2 != "")), "all", "partial")) AS ?_result)
             }
         """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Studies_ValidTimeMidpoint" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:validTimeMidpoint ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:Studies .
+    OPTIONAL { $this effortless-ntwf:publicationYear ?publication_year . }
+    OPTIONAL { $this effortless-ntwf:validTimeEnd ?valid_time_end . }
+    OPTIONAL { $this effortless-ntwf:validTimeStart ?valid_time_start . }
+                BIND(IF(((REPLACE(COALESCE(STR(?valid_time_start), ""), "^.*#", "") != "") && (REPLACE(COALESCE(STR(?valid_time_end), ""), "^.*#", "") != "")), ((?valid_time_start + ?valid_time_end) / 2), ?publication_year) AS ?_result)
+            }
+        """ ;
     ] .
+# Rule for ValidTimeDecade - parse error: Unknown function: FLOOR
 
 # === Shape with rules for StudyImportTemplate ===
 effortless-ntwf:StudyImportTemplateShape a sh:NodeShape ;
@@ -8517,6 +8870,10 @@ effortless-ntwf:CaseCellsCardinalityShape a sh:NodeShape ;
     sh:targetClass effortless-ntwf:CaseCells ;
     sh:property [ sh:path effortless-ntwf:study ; sh:maxCount 1 ] .
 
+effortless-ntwf:ConfounderDistortionTimelineCardinalityShape a sh:NodeShape ;
+    sh:targetClass effortless-ntwf:ConfounderDistortionTimeline ;
+    sh:property [ sh:path effortless-ntwf:confounderIdentity ; sh:maxCount 1 ] .
+
 effortless-ntwf:IdentityClusterSummariesCardinalityShape a sh:NodeShape ;
     sh:targetClass effortless-ntwf:IdentityClusterSummaries ;
     sh:property [ sh:path effortless-ntwf:confounderIdentity ; sh:maxCount 1 ] .
@@ -8550,4 +8907,4 @@ effortless-ntwf:TreatmentsCardinalityShape a sh:NodeShape ;
     sh:targetClass effortless-ntwf:Treatments ;
     sh:property [ sh:path effortless-ntwf:study ; sh:maxCount 1 ] .
 
-# Generated 381 SHACL rules
+# Generated 398 SHACL rules

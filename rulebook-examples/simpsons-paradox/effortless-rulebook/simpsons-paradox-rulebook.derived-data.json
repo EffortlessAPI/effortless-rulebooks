@@ -1078,6 +1078,29 @@
       "TraditionId": "tradition-dag",
       "WhatWasIntroduced": "7 new DiscoveryFindings rows \u002B CASE-dispatch branches (H-safety-corridor-lower-bound, H-perfect-balance-sufficient-safety, H-purity-inversion, H-purity-trap-flag-coverage all substantively witnessed; H-control-type-d-predominance/H-control-no-manifest-flip/H-control-safety-corridor vacuously true by construction, documented as such). 4 malformed DiscoveryHypotheses rows normalized to the declared schema shape. Conclusions.Category \u0027theorem\u0027 renamed to \u0027corpus-theorem\u0027 (9 rows) and added to the schema\u0027s documented enum.",
       "EpochTag": "identity-era-geometry"
+    },
+    {
+      "LoopId": "loop-92",
+      "Title": "Signal purity over time \u2014 does clean, non-reversing confounding (Type-D) rise across the corpus, and is the drift confounder-specific?",
+      "Status": "complete",
+      "NewConcept": "Introduce ConfounderDistortionTimeline \u2014 a first-class derived-geometry table at the (ConfounderIdentity x valid-time-bucket) grain (domain may enter the key if the domain-confound is live), each row an aggregation over the studies whose cohort window falls in that bucket: StudyCount, TypeDFraction, SignFlipFraction, MeanSignalPurity, MeanAllocationDistortion, and a DriftDirection calc. Register a DiscoveryHypothesis: \u0027The corpus exhibits monotone drift toward Type-D (clean, zero-allocation-distortion, high-signal-purity, non-reversing) studies over valid-time, concentrated in case-mix / geographic / situational confounder archetypes and absent in age / institutional / SES archetypes; robust to domain-stratification and independent of study granularity (cell_count).\u0027",
+      "DomainQuestion": "When studies are ordered by the real-world period their data covers (valid-time, not publication year), do case-mix / geographic / situational confounders drift toward clean, non-reversing Type-D outcomes while age / institutional / SES confounders stay put \u2014 and does the valid-time picture differ from what publication-year alone shows? A divergence is the empirical receipt that bitemporal valid-time earns its keep; identical results still confirm the maturation signal.",
+      "MockDataNote": "Witnessed at N=299 (292 real-year studies \u002B 7 undated synthetics excluded). Added Studies.ValidTimeStart/ValidTimeEnd/ValidTimeMidpoint/ValidTimeDecade (seeded from PublicationYear for all 299 studies per explicit user decision -- no independent cohort-window research this loop). Added ConfounderDistortionTimeline (20-field schema, 77 seed rows at the (ConfounderIdentity x ValidTimeDecade) grain, principled materialization via refresh_confounder_distortion_timeline() mirroring IdentityClusterSummaries/IdentityDomainCells). H-confounder-drift-type-d REFUTED (IsConfirmed=FALSE): the predicted split does not hold on real valid-time data. Actual DriftDirection: id-disease-severity=falling (predicted rising), id-geographic-composition=flat (predicted rising), id-situational-context=rising (predicted rising, the only hit), id-age-composition=falling (predicted flat), id-institutional-unit=rising (predicted flat), id-socioeconomic-status=rising (predicted flat) -- only 1 of 6 archetypes matched the pre-registered publication-year-based reconnaissance. This IS the empirical receipt the DomainQuestion asked for: valid-time and publication-year give materially different pictures, confirming bitemporal scaffolding earns its keep by catching a drift signal that was a reconnaissance artifact, not a real corpus property. Surfaced and fixed two real transpiler bugs along the way: (1) an unrequested materialize_calculated_fields=true flag had been silently appended to effortless.json\u0027s rulebooktopostgres CommandLine by the background auto-build watcher, blindly materializing all 39 tables and colliding with a Postgres SQL-function-inlining/search_path bug during REFRESH MATERIALIZED VIEW -- reverted, not opted into by this project\u0027s principled-materialization doctrine. (2) LOOKUP(constant, Table[NonPKColumn], Table[TargetColumn]) mistranslates to a lookup keyed on the table\u0027s PK instead of the specified match column -- worked around by looking up via an explicit known CellId instead of ConfounderIdentity. DiscoveryFindings.ObservedMetric\u0027s 29-branch CASE-dispatch formula independently mis-compiles (LOOKUP args corrupted to subquery calls) for reasons unrelated to this loop\u0027s edits, confirmed pre-existing and out of scope to fix here -- IsConfirmed (separate formula, same branch count) compiles and witnesses correctly, so the epistemic verdict is unaffected.",
+      "NextSuggestion": "File/track the DiscoveryFindings.ObservedMetric CASE-dispatch mis-compilation as a standalone transpiler bug (independent of loop-92). Consider whether the refuted publication-year drift signal from loop-92\u0027s own reconnaissance should be corrected or retracted anywhere else it was cited.",
+      "TraditionId": "tradition-dag",
+      "WhatWasIntroduced": "Studies bitemporal valid-time fields (ValidTimeStart/End/Midpoint/Decade). ConfounderDistortionTimeline table (77 rows, populated) \u002B refresh_confounder_distortion_timeline() (02b-customize-functions.sql, wired into 05b-customize-data.sql). 6 ModelSummary drift-direction lookups (fixed to LOOKUP by explicit CellId after a transpiler mistranslation). H-confounder-drift-type-d hypothesis, registered and witnessed REFUTED. effortless.json materialize_calculated_fields=true flag reverted (unrequested, out of doctrine).",
+      "EpochTag": "identity-era-geometry"
+    },
+    {
+      "LoopId": "loop-93",
+      "Title": "Close out loop-92\u0027s ObservedMetric mis-compilation \u2014 populate the two DiscoveryFindings evidence gaps it left behind, and name the hand-sync debt pattern that caused both",
+      "Status": "complete",
+      "NewConcept": "No new domain concept. Pure debt-closure loop, filed per loop-92\u0027s own NextSuggestion.",
+      "DomainQuestion": "Now that DiscoveryFindings.ObservedMetric\u0027s CASE-dispatch mis-compilation is understood (rulebook-to-postgres cannot translate 3-arg LOOKUP, so every branch of that formula silently compiles to a NULL-returning stub with a warning comment), can find-H-confounder-drift-type-d and find-H-synthetic-edge-coverage both get real ObservedMetric/Evidence text instead of an empty string, and is there a durable place to record why this keeps happening so the next loop doesn\u0027t rediscover it from scratch?",
+      "MockDataNote": "Witnessed. Root cause confirmed: DiscoveryFindings.IsConfirmed/ObservedMetric/Evidence are declared as rulebook \u0027calculated\u0027 fields but the transpiler cannot emit real SQL for their 3-arg LOOKUP calls -- 02-create-functions.sql emits NULL-returning stubs with a warning comment for EVERY branch, not just new ones. The real, working implementation lives entirely in the hand-written 03c-customize-functions-post-views.sql CASE-dispatch functions -- the rulebook formula is decorative/documentation only. Added the missing WHEN \u0027H-confounder-drift-type-d\u0027 and WHEN \u0027H-synthetic-edge-coverage\u0027 branches to both calc_discovery_findings_is_confirmed and calc_discovery_findings_observed_metric in 03c. find-H-confounder-drift-type-d now reads Evidence=\u0027FAIL: severity=falling geography=flat situational=rising age=falling institutional=rising socioeconomic=rising -- institutional and socioeconomic both drifted rising, contradicting the hypothesis\u0027 (matches loop-92\u0027s own MockDataNote narrative). find-H-synthetic-edge-coverage flips from a false \u0027f\u0027 (missing branch, not a real gap) to true: SyntheticStudyCount=9, all four named boundary studies (near-zero-distortion-boundary, equal-weight-signflip-boundary, zero-corrected-gap-boundary, collider-purity-boundary-flip) present. Also found and fixed two related view-sync bugs surfaced while chasing this: (1) 03b-customize-views.sql\u0027s hand-maintained vw_studies and vw_model_summary overrides -- both explicitly commented \u0027verbatim copy, keep in sync\u0027 -- were missing loop-92\u0027s new columns (ValidTimeMidpoint/Decade on Studies; all six *DriftDirection fields plus CatalogEntryCount/PendingImportCount/ReadyToEncodeCount/ImportSessionReady/CatalogWitnessNote on ModelSummary), so those fields were unreadable from the views even though the base tables and functions had them. (2) 02b-customize-functions.sql\u0027s five non-severity drift-direction lookup functions (geographic/situational/age/institutional/socioeconomic) selected a raw \u0027drift_direction\u0027 column from confounder_distortion_timeline that has never existed -- DriftDirection is itself a calculated field, only reachable via calc_confounder_distortion_timeline_drift_direction(cell_id). All 32 InvariantChecks still pass at critical severity after every fix (same 5 pre-existing warning-only fails, unrelated).",
+      "NextSuggestion": "Structural debt, not a one-off bug: every table whose calculated fields route through 03c (or an equivalent hand-written override) requires the SAME new-hypothesis-or-new-field edit made in at least three places by hand (rulebook formula for documentation, 03b for view columns, 03c for real logic), with no automated check that they stay in sync -- this loop found two independent instances of exactly that drift in one pass. Two remediation shapes worth evaluating next: (a) a build-time conformance check that diffs 03-create-views.sql\u0027s native column/branch list against 03b/03c\u0027s hand-maintained lists and fails loudly on drift, in the same spirit as InvariantChecks; (b) escalating the underlying rulebook-to-postgres LOOKUP(constant, Table[NonPKColumn], Table[TargetColumn]) mistranslation (this loop\u0027s second confirmed instance, after loop-92\u0027s first) as a transpiler bug report, which would eventually let 03c\u0027s hand-written logic collapse back into a real generated formula.",
+      "TraditionId": "tradition-dag",
+      "EpochTag": "identity-era-geometry"
     }
   ],
   "Studies": [
@@ -1095,7 +1118,9 @@
       "Domain": "medicine",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 1986,
+      "ValidTimeEnd": 1986
     },
     {
       "StudyId": "balanced-synthetic",
@@ -1110,7 +1135,9 @@
       "Domain": "synthetic",
       "IsSynthetic": true,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": null,
+      "ValidTimeEnd": null
     },
     {
       "StudyId": "kidney-balanced",
@@ -1125,7 +1152,9 @@
       "Domain": "synthetic",
       "IsSynthetic": true,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": null,
+      "ValidTimeEnd": null
     },
     {
       "StudyId": "berkeley-1973",
@@ -1141,7 +1170,9 @@
       "Domain": "social-science",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 1975,
+      "ValidTimeEnd": 1975
     },
     {
       "StudyId": "compressed-synthetic",
@@ -1156,7 +1187,9 @@
       "Domain": "synthetic",
       "IsSynthetic": true,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": null,
+      "ValidTimeEnd": null
     },
     {
       "StudyId": "reintjes-2000",
@@ -1172,7 +1205,9 @@
       "Domain": "epidemiology",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2000,
+      "ValidTimeEnd": 2000
     },
     {
       "StudyId": "radelet-1981",
@@ -1188,7 +1223,9 @@
       "Domain": "legal",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 1981,
+      "ValidTimeEnd": 1981
     },
     {
       "StudyId": "jeter-justice-1997",
@@ -1204,7 +1241,9 @@
       "Domain": "sports",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 1997,
+      "ValidTimeEnd": 1997
     },
     {
       "StudyId": "appleton-1996",
@@ -1220,7 +1259,9 @@
       "Domain": "epidemiology",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 1996,
+      "ValidTimeEnd": 1996
     },
     {
       "StudyId": "phe-covid-2021",
@@ -1236,7 +1277,9 @@
       "Domain": "epidemiology",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2021,
+      "ValidTimeEnd": 2021
     },
     {
       "StudyId": "hannan-1994",
@@ -1252,7 +1295,9 @@
       "Domain": "medicine",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 1994,
+      "ValidTimeEnd": 1994
     },
     {
       "StudyId": "titanic-1912",
@@ -1268,7 +1313,9 @@
       "Domain": "social-science",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 1912,
+      "ValidTimeEnd": 1912
     },
     {
       "StudyId": "birth-weight-paradox",
@@ -1284,7 +1331,9 @@
       "Domain": "epidemiology",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 1992,
+      "ValidTimeEnd": 1992
     },
     {
       "StudyId": "melanoma-altman-1991",
@@ -1300,7 +1349,9 @@
       "Domain": "medicine",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 1991,
+      "ValidTimeEnd": 1991
     },
     {
       "StudyId": "coffee-tverdal-2020",
@@ -1316,7 +1367,9 @@
       "Domain": "epidemiology",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2020,
+      "ValidTimeEnd": 2020
     },
     {
       "StudyId": "sat-wainer-1986",
@@ -1332,7 +1385,9 @@
       "Domain": "education",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 1986,
+      "ValidTimeEnd": 1986
     },
     {
       "StudyId": "rogers-nicewander-1988",
@@ -1348,7 +1403,9 @@
       "Domain": "sports",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 1988,
+      "ValidTimeEnd": 1988
     },
     {
       "StudyId": "lucente-baseball-1995",
@@ -1364,7 +1421,9 @@
       "Domain": "sports",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 1995,
+      "ValidTimeEnd": 1995
     },
     {
       "StudyId": "wilson-batting-2000",
@@ -1380,7 +1439,9 @@
       "Domain": "sports",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2000,
+      "ValidTimeEnd": 2000
     },
     {
       "StudyId": "clemens-bly-1998",
@@ -1396,7 +1457,9 @@
       "Domain": "sports",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 1998,
+      "ValidTimeEnd": 1998
     },
     {
       "StudyId": "open-university-1975",
@@ -1412,7 +1475,9 @@
       "Domain": "education",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 1975,
+      "ValidTimeEnd": 1975
     },
     {
       "StudyId": "pisa-immigration-2015",
@@ -1428,7 +1493,9 @@
       "Domain": "education",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2015,
+      "ValidTimeEnd": 2015
     },
     {
       "StudyId": "wainer-sat-states-1992",
@@ -1444,7 +1511,9 @@
       "Domain": "education",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 1992,
+      "ValidTimeEnd": 1992
     },
     {
       "StudyId": "folic-acid-neural-tube-1991",
@@ -1460,7 +1529,9 @@
       "Domain": "medicine",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 1992,
+      "ValidTimeEnd": 1992
     },
     {
       "StudyId": "steroid-asthma-severity",
@@ -1476,7 +1547,9 @@
       "Domain": "medicine",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 1998,
+      "ValidTimeEnd": 1998
     },
     {
       "StudyId": "kidney-dialysis-facility-1990",
@@ -1492,7 +1565,9 @@
       "Domain": "medicine",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 1990,
+      "ValidTimeEnd": 1990
     },
     {
       "StudyId": "warfarin-bleeding-age",
@@ -1508,7 +1583,9 @@
       "Domain": "medicine",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2005,
+      "ValidTimeEnd": 2005
     },
     {
       "StudyId": "diabetes-metformin-bmi",
@@ -1524,7 +1601,9 @@
       "Domain": "medicine",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2010,
+      "ValidTimeEnd": 2010
     },
     {
       "StudyId": "oncology-trial-stage",
@@ -1540,7 +1619,9 @@
       "Domain": "medicine",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2008,
+      "ValidTimeEnd": 2008
     },
     {
       "StudyId": "exercise-cholesterol-age",
@@ -1556,7 +1637,9 @@
       "Domain": "epidemiology",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 1995,
+      "ValidTimeEnd": 1995
     },
     {
       "StudyId": "red-meat-colorectal-bmi",
@@ -1572,7 +1655,9 @@
       "Domain": "epidemiology",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2003,
+      "ValidTimeEnd": 2003
     },
     {
       "StudyId": "folic-fortification-2000",
@@ -1588,7 +1673,9 @@
       "Domain": "epidemiology",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2000,
+      "ValidTimeEnd": 2000
     },
     {
       "StudyId": "north-carolina-death-penalty-1990",
@@ -1604,7 +1691,9 @@
       "Domain": "legal",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 1990,
+      "ValidTimeEnd": 1990
     },
     {
       "StudyId": "housing-discrimination-audit",
@@ -1620,7 +1709,9 @@
       "Domain": "economics",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2012,
+      "ValidTimeEnd": 2012
     },
     {
       "StudyId": "gender-pay-gap-industry",
@@ -1636,7 +1727,9 @@
       "Domain": "economics",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2018,
+      "ValidTimeEnd": 2018
     },
     {
       "StudyId": "income-education-state",
@@ -1652,7 +1745,9 @@
       "Domain": "economics",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2019,
+      "ValidTimeEnd": 2019
     },
     {
       "StudyId": "florida-reef-fish-1994",
@@ -1668,7 +1763,9 @@
       "Domain": "social-science",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 1994,
+      "ValidTimeEnd": 1994
     },
     {
       "StudyId": "uc-irvine-admissions-1985",
@@ -1684,7 +1781,9 @@
       "Domain": "social-science",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 1985,
+      "ValidTimeEnd": 1985
     },
     {
       "StudyId": "cesarean-birth-weight-2006",
@@ -1700,7 +1799,9 @@
       "Domain": "epidemiology",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2006,
+      "ValidTimeEnd": 2006
     },
     {
       "StudyId": "schizophrenia-antipsychotic",
@@ -1716,7 +1817,9 @@
       "Domain": "medicine",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2004,
+      "ValidTimeEnd": 2004
     },
     {
       "StudyId": "berkeley-six-dept-1973",
@@ -1732,7 +1835,9 @@
       "Domain": "social-science",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 1975,
+      "ValidTimeEnd": 1975
     },
     {
       "StudyId": "rosiglitazone-mi-pool-2007",
@@ -1748,7 +1853,9 @@
       "Domain": "medicine",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2007,
+      "ValidTimeEnd": 2007
     },
     {
       "StudyId": "ironman-gender-age-2010",
@@ -1764,7 +1871,9 @@
       "Domain": "sports",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2010,
+      "ValidTimeEnd": 2010
     },
     {
       "StudyId": "hanley-power-lines-2000",
@@ -1780,7 +1889,9 @@
       "Domain": "epidemiology",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2000,
+      "ValidTimeEnd": 2000
     },
     {
       "StudyId": "coffee-smoking-lung-1968",
@@ -1796,7 +1907,9 @@
       "Domain": "epidemiology",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 1968,
+      "ValidTimeEnd": 1968
     },
     {
       "StudyId": "panama-sweden-mortality-1975",
@@ -1812,7 +1925,9 @@
       "Domain": "epidemiology",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 1975,
+      "ValidTimeEnd": 1975
     },
     {
       "StudyId": "hrt-whi-2002",
@@ -1828,7 +1943,9 @@
       "Domain": "medicine",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2002,
+      "ValidTimeEnd": 2002
     },
     {
       "StudyId": "obesity-paradox-hf",
@@ -1844,7 +1961,9 @@
       "Domain": "medicine",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2003,
+      "ValidTimeEnd": 2003
     },
     {
       "StudyId": "dialysis-bmi-survival",
@@ -1860,7 +1979,9 @@
       "Domain": "medicine",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2001,
+      "ValidTimeEnd": 2001
     },
     {
       "StudyId": "sick-quitter-alcohol",
@@ -1876,7 +1997,9 @@
       "Domain": "medicine",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 1988,
+      "ValidTimeEnd": 1988
     },
     {
       "StudyId": "flu-vaccine-elderly-mortality",
@@ -1892,7 +2015,9 @@
       "Domain": "medicine",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2005,
+      "ValidTimeEnd": 2005
     },
     {
       "StudyId": "covid-italy-china-cfr-2020",
@@ -1908,7 +2033,9 @@
       "Domain": "epidemiology",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2020,
+      "ValidTimeEnd": 2020
     },
     {
       "StudyId": "israel-covid-severe-2021",
@@ -1924,7 +2051,9 @@
       "Domain": "epidemiology",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2021,
+      "ValidTimeEnd": 2021
     },
     {
       "StudyId": "cochran-smoking-1968",
@@ -1940,7 +2069,9 @@
       "Domain": "epidemiology",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 1968,
+      "ValidTimeEnd": 1968
     },
     {
       "StudyId": "healthy-worker-mortality",
@@ -1956,7 +2087,9 @@
       "Domain": "epidemiology",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 1987,
+      "ValidTimeEnd": 1987
     },
     {
       "StudyId": "compas-recidivism-base",
@@ -1972,7 +2105,9 @@
       "Domain": "legal",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2016,
+      "ValidTimeEnd": 2016
     },
     {
       "StudyId": "us-wage-composition-stagnation",
@@ -1988,7 +2123,9 @@
       "Domain": "economics",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2018,
+      "ValidTimeEnd": 2018
     },
     {
       "StudyId": "borjas-immigrant-cohort",
@@ -2004,7 +2141,9 @@
       "Domain": "economics",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 1987,
+      "ValidTimeEnd": 1987
     },
     {
       "StudyId": "robinson-1950-literacy",
@@ -2020,7 +2159,9 @@
       "Domain": "social-science",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 1950,
+      "ValidTimeEnd": 1950
     },
     {
       "StudyId": "ab-test-traffic-mix",
@@ -2036,7 +2177,9 @@
       "Domain": "social-science",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2020,
+      "ValidTimeEnd": 2020
     },
     {
       "StudyId": "recsys-offline-eval",
@@ -2052,7 +2195,9 @@
       "Domain": "social-science",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2021,
+      "ValidTimeEnd": 2021
     },
     {
       "StudyId": "collider-only-synthetic",
@@ -2068,7 +2213,9 @@
       "Domain": "synthetic",
       "IsSynthetic": true,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2026,
+      "ValidTimeEnd": 2026
     },
     {
       "StudyId": "noncollapsibility-or-synthetic",
@@ -2084,7 +2231,9 @@
       "Domain": "synthetic",
       "IsSynthetic": true,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2026,
+      "ValidTimeEnd": 2026
     },
     {
       "StudyId": "trauma-center-mortality",
@@ -2100,7 +2249,9 @@
       "Domain": "medicine",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2006,
+      "ValidTimeEnd": 2006
     },
     {
       "StudyId": "surgeon-volume-mortality",
@@ -2116,7 +2267,9 @@
       "Domain": "medicine",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2003,
+      "ValidTimeEnd": 2003
     },
     {
       "StudyId": "mammography-length-bias",
@@ -2132,7 +2285,9 @@
       "Domain": "medicine",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2000,
+      "ValidTimeEnd": 2000
     },
     {
       "StudyId": "cabg-vs-pci-severity",
@@ -2148,7 +2303,9 @@
       "Domain": "medicine",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2009,
+      "ValidTimeEnd": 2009
     },
     {
       "StudyId": "tolbutamide-ugdp-1970",
@@ -2164,7 +2321,9 @@
       "Domain": "medicine",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 1970,
+      "ValidTimeEnd": 1970
     },
     {
       "StudyId": "snow-cholera-water-1855",
@@ -2180,7 +2339,9 @@
       "Domain": "epidemiology",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 1855,
+      "ValidTimeEnd": 1855
     },
     {
       "StudyId": "seatbelt-crash-severity",
@@ -2196,7 +2357,9 @@
       "Domain": "epidemiology",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 1995,
+      "ValidTimeEnd": 1995
     },
     {
       "StudyId": "measles-outbreak-vaccinated",
@@ -2212,7 +2375,9 @@
       "Domain": "epidemiology",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2015,
+      "ValidTimeEnd": 2015
     },
     {
       "StudyId": "air-pollution-mortality-city",
@@ -2228,7 +2393,9 @@
       "Domain": "epidemiology",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2002,
+      "ValidTimeEnd": 2002
     },
     {
       "StudyId": "tb-treatment-resistance",
@@ -2244,7 +2411,9 @@
       "Domain": "epidemiology",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2010,
+      "ValidTimeEnd": 2010
     },
     {
       "StudyId": "hospital-mortality-readmission",
@@ -2260,7 +2429,9 @@
       "Domain": "epidemiology",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2014,
+      "ValidTimeEnd": 2014
     },
     {
       "StudyId": "nypd-stop-frisk-hitrate",
@@ -2276,7 +2447,9 @@
       "Domain": "legal",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2007,
+      "ValidTimeEnd": 2007
     },
     {
       "StudyId": "sentencing-offense-type",
@@ -2292,7 +2465,9 @@
       "Domain": "legal",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2000,
+      "ValidTimeEnd": 2000
     },
     {
       "StudyId": "bail-risk-score",
@@ -2308,7 +2483,9 @@
       "Domain": "legal",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2018,
+      "ValidTimeEnd": 2018
     },
     {
       "StudyId": "police-force-encounter",
@@ -2324,7 +2501,9 @@
       "Domain": "legal",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2016,
+      "ValidTimeEnd": 2016
     },
     {
       "StudyId": "uc-systemwide-admissions",
@@ -2340,7 +2519,9 @@
       "Domain": "education",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2004,
+      "ValidTimeEnd": 2004
     },
     {
       "StudyId": "teacher-vam-prior-achievement",
@@ -2356,7 +2537,9 @@
       "Domain": "education",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2011,
+      "ValidTimeEnd": 2011
     },
     {
       "StudyId": "naep-state-demographics",
@@ -2372,7 +2555,9 @@
       "Domain": "education",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2019,
+      "ValidTimeEnd": 2019
     },
     {
       "StudyId": "college-grad-rate-selectivity",
@@ -2388,7 +2573,9 @@
       "Domain": "education",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2015,
+      "ValidTimeEnd": 2015
     },
     {
       "StudyId": "star-class-size",
@@ -2404,7 +2591,9 @@
       "Domain": "education",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 1999,
+      "ValidTimeEnd": 1999
     },
     {
       "StudyId": "nba-shooting-shot-mix",
@@ -2420,7 +2609,9 @@
       "Domain": "sports",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2015,
+      "ValidTimeEnd": 2015
     },
     {
       "StudyId": "pitcher-era-ballpark",
@@ -2436,7 +2627,9 @@
       "Domain": "sports",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2010,
+      "ValidTimeEnd": 2010
     },
     {
       "StudyId": "nfl-completion-depth",
@@ -2452,7 +2645,9 @@
       "Domain": "sports",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2018,
+      "ValidTimeEnd": 2018
     },
     {
       "StudyId": "field-goal-distance",
@@ -2468,7 +2663,9 @@
       "Domain": "sports",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2012,
+      "ValidTimeEnd": 2012
     },
     {
       "StudyId": "golf-scoring-course",
@@ -2484,7 +2681,9 @@
       "Domain": "sports",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2015,
+      "ValidTimeEnd": 2015
     },
     {
       "StudyId": "minimum-wage-region",
@@ -2500,7 +2699,9 @@
       "Domain": "economics",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2014,
+      "ValidTimeEnd": 2014
     },
     {
       "StudyId": "returns-to-education-field",
@@ -2516,7 +2717,9 @@
       "Domain": "economics",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2008,
+      "ValidTimeEnd": 2008
     },
     {
       "StudyId": "unemployment-education-cycle",
@@ -2532,7 +2735,9 @@
       "Domain": "economics",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2010,
+      "ValidTimeEnd": 2010
     },
     {
       "StudyId": "costa-rica-us-life-expectancy",
@@ -2548,7 +2753,9 @@
       "Domain": "social-science",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2010,
+      "ValidTimeEnd": 2010
     },
     {
       "StudyId": "fertility-income-country",
@@ -2564,7 +2771,9 @@
       "Domain": "social-science",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2015,
+      "ValidTimeEnd": 2015
     },
     {
       "StudyId": "religiosity-happiness-country",
@@ -2580,7 +2789,9 @@
       "Domain": "social-science",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2018,
+      "ValidTimeEnd": 2018
     },
     {
       "StudyId": "voter-turnout-education-state",
@@ -2596,7 +2807,9 @@
       "Domain": "social-science",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2012,
+      "ValidTimeEnd": 2012
     },
     {
       "StudyId": "ad-ctr-platform-mix",
@@ -2612,7 +2825,9 @@
       "Domain": "social-science",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2019,
+      "ValidTimeEnd": 2019
     },
     {
       "StudyId": "hernandez-diaz-schisterman-hernan-2006",
@@ -2628,7 +2843,9 @@
       "Domain": "epidemiology",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2006,
+      "ValidTimeEnd": 2006
     },
     {
       "StudyId": "wade-boggs-vs-don-mattingly",
@@ -2644,7 +2861,9 @@
       "Domain": "sports",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 1986,
+      "ValidTimeEnd": 1986
     },
     {
       "StudyId": "johnson-2006",
@@ -2660,7 +2879,9 @@
       "Domain": "legal",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2006,
+      "ValidTimeEnd": 2006
     },
     {
       "StudyId": "chetty-friedman-rockoff-2014",
@@ -2676,7 +2897,9 @@
       "Domain": "economics",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2014,
+      "ValidTimeEnd": 2014
     },
     {
       "StudyId": "angrist-pischke-2009",
@@ -2692,7 +2915,9 @@
       "Domain": "economics",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2009,
+      "ValidTimeEnd": 2009
     },
     {
       "StudyId": "blau-kahn-2017",
@@ -2708,7 +2933,9 @@
       "Domain": "economics",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2017,
+      "ValidTimeEnd": 2017
     },
     {
       "StudyId": "moretti-2013",
@@ -2724,7 +2951,9 @@
       "Domain": "economics",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2013,
+      "ValidTimeEnd": 2013
     },
     {
       "StudyId": "oaxaca-1973",
@@ -2740,7 +2969,9 @@
       "Domain": "economics",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 1973,
+      "ValidTimeEnd": 1973
     },
     {
       "StudyId": "spohn-2000",
@@ -2756,7 +2987,9 @@
       "Domain": "legal",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2000,
+      "ValidTimeEnd": 2000
     },
     {
       "StudyId": "angwin-larson-mattu-kirchner-2016",
@@ -2772,7 +3005,9 @@
       "Domain": "legal",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2016,
+      "ValidTimeEnd": 2016
     },
     {
       "StudyId": "gross-risinger-et-al-2017",
@@ -2788,7 +3023,9 @@
       "Domain": "legal",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2017,
+      "ValidTimeEnd": 2017
     },
     {
       "StudyId": "baldus-woodworth-pulaski-1983",
@@ -2804,7 +3041,9 @@
       "Domain": "legal",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 1983,
+      "ValidTimeEnd": 1983
     },
     {
       "StudyId": "harris-steffensmeier-ulmer-painter-davis-2009",
@@ -2820,7 +3059,9 @@
       "Domain": "legal",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2009,
+      "ValidTimeEnd": 2009
     },
     {
       "StudyId": "dockery-et-al-1993",
@@ -2836,7 +3077,9 @@
       "Domain": "public-health-smoking",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 1993,
+      "ValidTimeEnd": 1993
     },
     {
       "StudyId": "framingham-heart-study",
@@ -2852,7 +3095,9 @@
       "Domain": "public-health-smoking",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 1951,
+      "ValidTimeEnd": 1951
     },
     {
       "StudyId": "fillmore-et-al-2006",
@@ -2868,7 +3113,9 @@
       "Domain": "public-health-smoking",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2006,
+      "ValidTimeEnd": 2006
     },
     {
       "StudyId": "women-s-health-study",
@@ -2884,7 +3131,9 @@
       "Domain": "public-health-smoking",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2005,
+      "ValidTimeEnd": 2005
     },
     {
       "StudyId": "ellsbury-vs-lowell-2007",
@@ -2900,7 +3149,9 @@
       "Domain": "sports",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2007,
+      "ValidTimeEnd": 2007
     },
     {
       "StudyId": "efron-morris-1975",
@@ -2916,7 +3167,9 @@
       "Domain": "sports",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 1975,
+      "ValidTimeEnd": 1975
     },
     {
       "StudyId": "hiester-1984",
@@ -2932,7 +3185,9 @@
       "Domain": "sports",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 1984,
+      "ValidTimeEnd": 1984
     },
     {
       "StudyId": "card-1992",
@@ -2948,7 +3203,9 @@
       "Domain": "economics",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 1992,
+      "ValidTimeEnd": 1992
     },
     {
       "StudyId": "chetty-et-al-2014",
@@ -2964,7 +3221,9 @@
       "Domain": "economics",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2014,
+      "ValidTimeEnd": 2014
     },
     {
       "StudyId": "chetty-friedman-saez-turner-yagan-2020",
@@ -2980,7 +3239,9 @@
       "Domain": "economics",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2020,
+      "ValidTimeEnd": 2020
     },
     {
       "StudyId": "chetty-deming-friedman-2023",
@@ -2996,7 +3257,9 @@
       "Domain": "economics",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2023,
+      "ValidTimeEnd": 2023
     },
     {
       "StudyId": "piketty-saez-2003",
@@ -3012,7 +3275,9 @@
       "Domain": "economics",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2003,
+      "ValidTimeEnd": 2003
     },
     {
       "StudyId": "juhn-murphy-pierce-1993",
@@ -3028,7 +3293,9 @@
       "Domain": "economics",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 1993,
+      "ValidTimeEnd": 1993
     },
     {
       "StudyId": "autor-levy-murnane-2003",
@@ -3044,7 +3311,9 @@
       "Domain": "economics",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2003,
+      "ValidTimeEnd": 2003
     },
     {
       "StudyId": "katz-murphy-1992",
@@ -3060,7 +3329,9 @@
       "Domain": "economics",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 1992,
+      "ValidTimeEnd": 1992
     },
     {
       "StudyId": "heckman-1979",
@@ -3076,7 +3347,9 @@
       "Domain": "economics",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 1979,
+      "ValidTimeEnd": 1979
     },
     {
       "StudyId": "autor-dorn-2013",
@@ -3092,7 +3365,9 @@
       "Domain": "economics",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2013,
+      "ValidTimeEnd": 2013
     },
     {
       "StudyId": "acemoglu-autor-2011",
@@ -3108,7 +3383,9 @@
       "Domain": "economics",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2011,
+      "ValidTimeEnd": 2011
     },
     {
       "StudyId": "chetty-hendren-katz-2016",
@@ -3124,7 +3401,9 @@
       "Domain": "economics",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2016,
+      "ValidTimeEnd": 2016
     },
     {
       "StudyId": "bhutta-hizmo-ringo-2022",
@@ -3140,7 +3419,9 @@
       "Domain": "economics",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2022,
+      "ValidTimeEnd": 2022
     },
     {
       "StudyId": "saez-2019",
@@ -3156,7 +3437,9 @@
       "Domain": "economics",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2019,
+      "ValidTimeEnd": 2019
     },
     {
       "StudyId": "fortin-lemieux-firpo-2011",
@@ -3172,7 +3455,9 @@
       "Domain": "economics",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2011,
+      "ValidTimeEnd": 2011
     },
     {
       "StudyId": "starr-rehavi-2014",
@@ -3188,7 +3473,9 @@
       "Domain": "legal",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2014,
+      "ValidTimeEnd": 2014
     },
     {
       "StudyId": "ussc-2017",
@@ -3204,7 +3491,9 @@
       "Domain": "legal",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2017,
+      "ValidTimeEnd": 2017
     },
     {
       "StudyId": "western-2006",
@@ -3220,7 +3509,9 @@
       "Domain": "legal",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2006,
+      "ValidTimeEnd": 2006
     },
     {
       "StudyId": "brame-bushway-paternoster-turner-2014",
@@ -3236,7 +3527,9 @@
       "Domain": "legal",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2014,
+      "ValidTimeEnd": 2014
     },
     {
       "StudyId": "fryer-2016",
@@ -3252,7 +3545,9 @@
       "Domain": "legal",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2016,
+      "ValidTimeEnd": 2016
     },
     {
       "StudyId": "rehavi-starr-2012",
@@ -3268,7 +3563,9 @@
       "Domain": "legal",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2012,
+      "ValidTimeEnd": 2012
     },
     {
       "StudyId": "kutateladze-andiloro-johnson-spohn-2014",
@@ -3284,7 +3581,9 @@
       "Domain": "legal",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2014,
+      "ValidTimeEnd": 2014
     },
     {
       "StudyId": "arcidiacono-kinsler-ransom-2019",
@@ -3300,7 +3599,9 @@
       "Domain": "education",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2019,
+      "ValidTimeEnd": 2019
     },
     {
       "StudyId": "long-2004",
@@ -3316,7 +3617,9 @@
       "Domain": "education",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2004,
+      "ValidTimeEnd": 2004
     },
     {
       "StudyId": "alon-tienda-2007",
@@ -3332,7 +3635,9 @@
       "Domain": "education",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2007,
+      "ValidTimeEnd": 2007
     },
     {
       "StudyId": "hoekstra-2009",
@@ -3348,7 +3653,9 @@
       "Domain": "education",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2009,
+      "ValidTimeEnd": 2009
     },
     {
       "StudyId": "dale-krueger-2002",
@@ -3364,7 +3671,9 @@
       "Domain": "education",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2002,
+      "ValidTimeEnd": 2002
     },
     {
       "StudyId": "nces-ipeds",
@@ -3380,7 +3689,9 @@
       "Domain": "education",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2000,
+      "ValidTimeEnd": 2000
     },
     {
       "StudyId": "college-scorecard",
@@ -3396,7 +3707,9 @@
       "Domain": "education",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2000,
+      "ValidTimeEnd": 2000
     },
     {
       "StudyId": "hoxby-avery-2013",
@@ -3412,7 +3725,9 @@
       "Domain": "education",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2013,
+      "ValidTimeEnd": 2013
     },
     {
       "StudyId": "espenshade-radford-2009",
@@ -3428,7 +3743,9 @@
       "Domain": "education",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2009,
+      "ValidTimeEnd": 2009
     },
     {
       "StudyId": "bound-lovenheim-turner-2010",
@@ -3444,7 +3761,9 @@
       "Domain": "education",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2010,
+      "ValidTimeEnd": 2010
     },
     {
       "StudyId": "carnevale-strohl-2010",
@@ -3460,7 +3779,9 @@
       "Domain": "education",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2010,
+      "ValidTimeEnd": 2010
     },
     {
       "StudyId": "hoxby-murarka-2009",
@@ -3476,7 +3797,9 @@
       "Domain": "education",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2009,
+      "ValidTimeEnd": 2009
     },
     {
       "StudyId": "rothstein-2004",
@@ -3492,7 +3815,9 @@
       "Domain": "education",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2004,
+      "ValidTimeEnd": 2004
     },
     {
       "StudyId": "accord-study-group-2008",
@@ -3508,7 +3833,9 @@
       "Domain": "medicine",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2008,
+      "ValidTimeEnd": 2008
     },
     {
       "StudyId": "allhat-collaborative-research-group-2002",
@@ -3524,7 +3851,9 @@
       "Domain": "medicine",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2002,
+      "ValidTimeEnd": 2002
     },
     {
       "StudyId": "isis-2-collaborative-group-1988",
@@ -3540,7 +3869,9 @@
       "Domain": "medicine",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 1988,
+      "ValidTimeEnd": 1988
     },
     {
       "StudyId": "plato-trial",
@@ -3556,7 +3887,9 @@
       "Domain": "medicine",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2000,
+      "ValidTimeEnd": 2000
     },
     {
       "StudyId": "fibrinolytic-therapy-trialists-1994",
@@ -3572,7 +3905,9 @@
       "Domain": "medicine",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 1994,
+      "ValidTimeEnd": 1994
     },
     {
       "StudyId": "cast-1989",
@@ -3588,7 +3923,9 @@
       "Domain": "medicine",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 1989,
+      "ValidTimeEnd": 1989
     },
     {
       "StudyId": "women-s-health-initiative-2002",
@@ -3604,7 +3941,9 @@
       "Domain": "medicine",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2002,
+      "ValidTimeEnd": 2002
     },
     {
       "StudyId": "dcct-research-group-1993",
@@ -3620,7 +3959,9 @@
       "Domain": "medicine",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 1993,
+      "ValidTimeEnd": 1993
     },
     {
       "StudyId": "triton-timi-38",
@@ -3636,7 +3977,9 @@
       "Domain": "medicine",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2000,
+      "ValidTimeEnd": 2000
     },
     {
       "StudyId": "yusuf-et-al-hope-trial-2000",
@@ -3652,7 +3995,9 @@
       "Domain": "medicine",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2000,
+      "ValidTimeEnd": 2000
     },
     {
       "StudyId": "sprint-research-group-2015",
@@ -3668,7 +4013,9 @@
       "Domain": "medicine",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2015,
+      "ValidTimeEnd": 2015
     },
     {
       "StudyId": "astrazeneca-mystic-trial-pacific-trial-crossover-2017",
@@ -3684,7 +4031,9 @@
       "Domain": "medicine",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2017,
+      "ValidTimeEnd": 2017
     },
     {
       "StudyId": "uk-biobank-ukbb-observational",
@@ -3700,7 +4049,9 @@
       "Domain": "medicine",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2000,
+      "ValidTimeEnd": 2000
     },
     {
       "StudyId": "soccer-pass-completion-by-league-2017",
@@ -3716,7 +4067,9 @@
       "Domain": "sports",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2017,
+      "ValidTimeEnd": 2017
     },
     {
       "StudyId": "marathon-finishing-times-by-age-and-temperature-boston-marat",
@@ -3732,7 +4085,9 @@
       "Domain": "sports",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2000,
+      "ValidTimeEnd": 2000
     },
     {
       "StudyId": "tennis-first-serve-percentage-by-surface-2010",
@@ -3748,7 +4103,9 @@
       "Domain": "sports",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2010,
+      "ValidTimeEnd": 2010
     },
     {
       "StudyId": "nfl-quarterback-rating-by-game-situation-2010",
@@ -3764,7 +4121,9 @@
       "Domain": "sports",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2010,
+      "ValidTimeEnd": 2010
     },
     {
       "StudyId": "nhl-shooting-percentage-by-game-state-2010",
@@ -3780,7 +4139,9 @@
       "Domain": "sports",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2010,
+      "ValidTimeEnd": 2010
     },
     {
       "StudyId": "soccer-expected-goals",
@@ -3796,7 +4157,9 @@
       "Domain": "sports",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2000,
+      "ValidTimeEnd": 2000
     },
     {
       "StudyId": "lollar-vs-mccatty-pitching-1982",
@@ -3812,7 +4175,9 @@
       "Domain": "sports",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 1982,
+      "ValidTimeEnd": 1982
     },
     {
       "StudyId": "mlb-park-factor-adjustments",
@@ -3828,7 +4193,9 @@
       "Domain": "sports",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2000,
+      "ValidTimeEnd": 2000
     },
     {
       "StudyId": "olympic-sprint-times-by-heat-type-1996",
@@ -3844,7 +4211,9 @@
       "Domain": "sports",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 1996,
+      "ValidTimeEnd": 1996
     },
     {
       "StudyId": "von-kugelgen-mohamed-scholkopf-2021",
@@ -3860,7 +4229,9 @@
       "Domain": "epidemiology",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2021,
+      "ValidTimeEnd": 2021
     },
     {
       "StudyId": "dagan-et-al-2021",
@@ -3876,7 +4247,9 @@
       "Domain": "epidemiology",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2021,
+      "ValidTimeEnd": 2021
     },
     {
       "StudyId": "israeli-ministry-of-health",
@@ -3892,7 +4265,9 @@
       "Domain": "epidemiology",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2000,
+      "ValidTimeEnd": 2000
     },
     {
       "StudyId": "yule-1903",
@@ -3908,7 +4283,9 @@
       "Domain": "epidemiology",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 1903,
+      "ValidTimeEnd": 1903
     },
     {
       "StudyId": "mantel-haenszel-1959",
@@ -3924,7 +4301,9 @@
       "Domain": "epidemiology",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 1959,
+      "ValidTimeEnd": 1959
     },
     {
       "StudyId": "doll-hill-1954",
@@ -3940,7 +4319,9 @@
       "Domain": "epidemiology",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 1954,
+      "ValidTimeEnd": 1954
     },
     {
       "StudyId": "hammond-horn-1958",
@@ -3956,7 +4337,9 @@
       "Domain": "epidemiology",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 1958,
+      "ValidTimeEnd": 1958
     },
     {
       "StudyId": "polack-et-al-2020",
@@ -3972,7 +4355,9 @@
       "Domain": "epidemiology",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2020,
+      "ValidTimeEnd": 2020
     },
     {
       "StudyId": "baden-et-al-2021",
@@ -3988,7 +4373,9 @@
       "Domain": "epidemiology",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2021,
+      "ValidTimeEnd": 2021
     },
     {
       "StudyId": "flannery-et-al-2020",
@@ -4004,7 +4391,9 @@
       "Domain": "epidemiology",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2020,
+      "ValidTimeEnd": 2020
     },
     {
       "StudyId": "simonsen-et-al-2005",
@@ -4020,7 +4409,9 @@
       "Domain": "epidemiology",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2005,
+      "ValidTimeEnd": 2005
     },
     {
       "StudyId": "hernan-hernandez-diaz-robins-2004",
@@ -4036,7 +4427,9 @@
       "Domain": "epidemiology",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2004,
+      "ValidTimeEnd": 2004
     },
     {
       "StudyId": "cornfield-et-al-1959",
@@ -4052,7 +4445,9 @@
       "Domain": "epidemiology",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 1959,
+      "ValidTimeEnd": 1959
     },
     {
       "StudyId": "baker-kramer-2001",
@@ -4068,7 +4463,9 @@
       "Domain": "epidemiology",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2001,
+      "ValidTimeEnd": 2001
     },
     {
       "StudyId": "cdc-covid-19-case-surveillance-2020",
@@ -4084,7 +4481,9 @@
       "Domain": "epidemiology",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2020,
+      "ValidTimeEnd": 2020
     },
     {
       "StudyId": "our-world-in-data-covid-19-dataset-2020",
@@ -4100,7 +4499,9 @@
       "Domain": "epidemiology",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2020,
+      "ValidTimeEnd": 2020
     },
     {
       "StudyId": "shapiro-et-al-1988",
@@ -4116,7 +4517,9 @@
       "Domain": "epidemiology",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 1988,
+      "ValidTimeEnd": 1988
     },
     {
       "StudyId": "moss-racusin-et-al-2012",
@@ -4132,7 +4535,9 @@
       "Domain": "social-science",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2012,
+      "ValidTimeEnd": 2012
     },
     {
       "StudyId": "castilla-2008",
@@ -4148,7 +4553,9 @@
       "Domain": "social-science",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2008,
+      "ValidTimeEnd": 2008
     },
     {
       "StudyId": "blau-devaro-2007",
@@ -4164,7 +4571,9 @@
       "Domain": "social-science",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2007,
+      "ValidTimeEnd": 2007
     },
     {
       "StudyId": "sarsons-2017",
@@ -4180,7 +4589,9 @@
       "Domain": "social-science",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2017,
+      "ValidTimeEnd": 2017
     },
     {
       "StudyId": "ginther-kahn-2004",
@@ -4196,7 +4607,9 @@
       "Domain": "social-science",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2004,
+      "ValidTimeEnd": 2004
     },
     {
       "StudyId": "eeoc-charge-data",
@@ -4212,7 +4625,9 @@
       "Domain": "social-science",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2000,
+      "ValidTimeEnd": 2000
     },
     {
       "StudyId": "nsf-ncses-survey-of-doctoral-recipients",
@@ -4228,7 +4643,9 @@
       "Domain": "social-science",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2000,
+      "ValidTimeEnd": 2000
     },
     {
       "StudyId": "neumark-bank-van-nort-1996",
@@ -4244,7 +4661,9 @@
       "Domain": "social-science",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 1996,
+      "ValidTimeEnd": 1996
     },
     {
       "StudyId": "kline-rose-walters-2022",
@@ -4260,7 +4679,9 @@
       "Domain": "social-science",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2022,
+      "ValidTimeEnd": 2022
     },
     {
       "StudyId": "hsieh-moretti-2019",
@@ -4276,7 +4697,9 @@
       "Domain": "social-science",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2019,
+      "ValidTimeEnd": 2019
     },
     {
       "StudyId": "kohavi-deng-longbotham-xu-2014",
@@ -4292,7 +4715,9 @@
       "Domain": "social-science",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2014,
+      "ValidTimeEnd": 2014
     },
     {
       "StudyId": "kohavi-longbotham-2017",
@@ -4308,7 +4733,9 @@
       "Domain": "social-science",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2017,
+      "ValidTimeEnd": 2017
     },
     {
       "StudyId": "xu-chen-fernandez-sinno-bhasin-2015",
@@ -4324,7 +4751,9 @@
       "Domain": "social-science",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2015,
+      "ValidTimeEnd": 2015
     },
     {
       "StudyId": "deng-xu-kohavi-walker-2013",
@@ -4340,7 +4769,9 @@
       "Domain": "social-science",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2013,
+      "ValidTimeEnd": 2013
     },
     {
       "StudyId": "tang-agarwal-o-brien-meyer-2010",
@@ -4356,7 +4787,9 @@
       "Domain": "social-science",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2010,
+      "ValidTimeEnd": 2010
     },
     {
       "StudyId": "bakshy-eckles-bernstein-2014",
@@ -4372,7 +4805,9 @@
       "Domain": "social-science",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2014,
+      "ValidTimeEnd": 2014
     },
     {
       "StudyId": "dmitriev-frasca-lu-kohavi-olariu-2016",
@@ -4388,7 +4823,9 @@
       "Domain": "social-science",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2016,
+      "ValidTimeEnd": 2016
     },
     {
       "StudyId": "kohavi-longbotham-sommerfield-henne-2009",
@@ -4404,7 +4841,9 @@
       "Domain": "social-science",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2009,
+      "ValidTimeEnd": 2009
     },
     {
       "StudyId": "hohnhold-o-brien-tang-2015",
@@ -4420,7 +4859,9 @@
       "Domain": "social-science",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2015,
+      "ValidTimeEnd": 2015
     },
     {
       "StudyId": "johari-koomen-pekelis-walsh-2017",
@@ -4436,7 +4877,9 @@
       "Domain": "social-science",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2017,
+      "ValidTimeEnd": 2017
     },
     {
       "StudyId": "doll-hill-1950",
@@ -4452,7 +4895,9 @@
       "Domain": "epidemiology",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 1950,
+      "ValidTimeEnd": 1950
     },
     {
       "StudyId": "predimed-trial",
@@ -4468,7 +4913,9 @@
       "Domain": "epidemiology",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2000,
+      "ValidTimeEnd": 2000
     },
     {
       "StudyId": "mrfit-1982",
@@ -4484,7 +4931,9 @@
       "Domain": "epidemiology",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 1982,
+      "ValidTimeEnd": 1982
     },
     {
       "StudyId": "nhanes-air-quality-and-respiratory",
@@ -4500,7 +4949,9 @@
       "Domain": "epidemiology",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2000,
+      "ValidTimeEnd": 2000
     },
     {
       "StudyId": "coleman-et-al-1966",
@@ -4516,7 +4967,9 @@
       "Domain": "education",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 1966,
+      "ValidTimeEnd": 1966
     },
     {
       "StudyId": "naep",
@@ -4532,7 +4985,9 @@
       "Domain": "education",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2000,
+      "ValidTimeEnd": 2000
     },
     {
       "StudyId": "krueger-1999",
@@ -4548,7 +5003,9 @@
       "Domain": "education",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 1999,
+      "ValidTimeEnd": 1999
     },
     {
       "StudyId": "finn-achilles-1990",
@@ -4564,7 +5021,9 @@
       "Domain": "education",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 1990,
+      "ValidTimeEnd": 1990
     },
     {
       "StudyId": "mosteller-1995",
@@ -4580,7 +5039,9 @@
       "Domain": "education",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 1995,
+      "ValidTimeEnd": 1995
     },
     {
       "StudyId": "angrist-lavy-1999",
@@ -4596,7 +5057,9 @@
       "Domain": "education",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 1999,
+      "ValidTimeEnd": 1999
     },
     {
       "StudyId": "hoxby-2000",
@@ -4612,7 +5075,9 @@
       "Domain": "education",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2000,
+      "ValidTimeEnd": 2000
     },
     {
       "StudyId": "abdulkadiroglu-angrist-dynarski-kane-pathak-2011",
@@ -4628,7 +5093,9 @@
       "Domain": "education",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2011,
+      "ValidTimeEnd": 2011
     },
     {
       "StudyId": "head-start-impact-study",
@@ -4644,7 +5111,9 @@
       "Domain": "education",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2000,
+      "ValidTimeEnd": 2000
     },
     {
       "StudyId": "timss-2019-international-math-and-science",
@@ -4660,7 +5129,9 @@
       "Domain": "education",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2000,
+      "ValidTimeEnd": 2000
     },
     {
       "StudyId": "hanushek-1989",
@@ -4676,7 +5147,9 @@
       "Domain": "education",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 1989,
+      "ValidTimeEnd": 1989
     },
     {
       "StudyId": "early-childhood-longitudinal-study-kindergarten",
@@ -4692,7 +5165,9 @@
       "Domain": "education",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2000,
+      "ValidTimeEnd": 2000
     },
     {
       "StudyId": "rothstein-2010",
@@ -4708,7 +5183,9 @@
       "Domain": "education",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2010,
+      "ValidTimeEnd": 2010
     },
     {
       "StudyId": "hmda",
@@ -4724,7 +5201,9 @@
       "Domain": "economics",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2000,
+      "ValidTimeEnd": 2000
     },
     {
       "StudyId": "munnell-tootell-browne-mceneaney-1996",
@@ -4740,7 +5219,9 @@
       "Domain": "economics",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 1996,
+      "ValidTimeEnd": 1996
     },
     {
       "StudyId": "bartlett-morse-stanton-wallace-2022",
@@ -4756,7 +5237,9 @@
       "Domain": "economics",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2022,
+      "ValidTimeEnd": 2022
     },
     {
       "StudyId": "federal-reserve-scf",
@@ -4772,7 +5255,9 @@
       "Domain": "economics",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2000,
+      "ValidTimeEnd": 2000
     },
     {
       "StudyId": "cfpb-consumer-credit-panel",
@@ -4788,7 +5273,9 @@
       "Domain": "economics",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2000,
+      "ValidTimeEnd": 2000
     },
     {
       "StudyId": "sba-small-business-lending-data",
@@ -4804,7 +5291,9 @@
       "Domain": "economics",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2000,
+      "ValidTimeEnd": 2000
     },
     {
       "StudyId": "petersen-rajan-1994",
@@ -4820,7 +5309,9 @@
       "Domain": "economics",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 1994,
+      "ValidTimeEnd": 1994
     },
     {
       "StudyId": "berger-udell-1995",
@@ -4836,7 +5327,9 @@
       "Domain": "economics",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 1995,
+      "ValidTimeEnd": 1995
     },
     {
       "StudyId": "fdic-small-business-lending-survey-2016",
@@ -4852,7 +5345,9 @@
       "Domain": "economics",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2016,
+      "ValidTimeEnd": 2016
     },
     {
       "StudyId": "keys-mukherjee-seru-vig-2010",
@@ -4868,7 +5363,9 @@
       "Domain": "economics",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2010,
+      "ValidTimeEnd": 2010
     },
     {
       "StudyId": "acharya-imbierowicz-steffen-teichmann-2020",
@@ -4884,7 +5381,9 @@
       "Domain": "economics",
       "IsSynthetic": false,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": 2020,
+      "ValidTimeEnd": 2020
     },
     {
       "StudyId": "rdatasets-france-accident-1958",
@@ -4900,7 +5399,9 @@
       "PrimaryResearcherId": "researcher-pearl",
       "Name": "rdatasets-france-accident-1958",
       "TotalCases": 186730,
-      "CellCount": 20
+      "CellCount": 20,
+      "ValidTimeStart": 1958,
+      "ValidTimeEnd": 1958
     },
     {
       "StudyId": "rdatasets-acs12-disability-employment-2012",
@@ -4916,7 +5417,9 @@
       "PrimaryResearcherId": "researcher-pearl",
       "Name": "rdatasets-acs12-disability-employment-2012",
       "TotalCases": 1561,
-      "CellCount": 9
+      "CellCount": 9,
+      "ValidTimeStart": 2012,
+      "ValidTimeEnd": 2012
     },
     {
       "StudyId": "rdatasets-acs12-employment-2012",
@@ -4932,7 +5435,9 @@
       "PrimaryResearcherId": "researcher-pearl",
       "Name": "rdatasets-acs12-employment-2012",
       "TotalCases": 949,
-      "CellCount": 6
+      "CellCount": 6,
+      "ValidTimeStart": 2012,
+      "ValidTimeEnd": 2012
     },
     {
       "StudyId": "rdatasets-ad-biomarkers-2011",
@@ -4948,7 +5453,9 @@
       "PrimaryResearcherId": "researcher-pearl",
       "Name": "rdatasets-ad-biomarkers-2011",
       "TotalCases": 333,
-      "CellCount": 4
+      "CellCount": 4,
+      "ValidTimeStart": 2011,
+      "ValidTimeEnd": 2011
     },
     {
       "StudyId": "rdatasets-ahcavote-2017",
@@ -4964,7 +5471,9 @@
       "PrimaryResearcherId": "researcher-pearl",
       "Name": "rdatasets-ahcavote-2017",
       "TotalCases": 430,
-      "CellCount": 4
+      "CellCount": 4,
+      "ValidTimeStart": 2017,
+      "ValidTimeEnd": 2017
     },
     {
       "StudyId": "rdatasets-aids2-australia-1991",
@@ -4980,7 +5489,9 @@
       "PrimaryResearcherId": "researcher-pearl",
       "Name": "rdatasets-aids2-australia-1991",
       "TotalCases": 2843,
-      "CellCount": 14
+      "CellCount": 14,
+      "ValidTimeStart": 1991,
+      "ValidTimeEnd": 1991
     },
     {
       "StudyId": "rdatasets-airlines-ontime",
@@ -4996,7 +5507,9 @@
       "PrimaryResearcherId": "researcher-pearl",
       "Name": "rdatasets-airlines-ontime",
       "TotalCases": 10333,
-      "CellCount": 4
+      "CellCount": 4,
+      "ValidTimeStart": 2019,
+      "ValidTimeEnd": 2019
     },
     {
       "StudyId": "rdatasets-alzheimer-smoking",
@@ -5012,7 +5525,9 @@
       "PrimaryResearcherId": "researcher-pearl",
       "Name": "rdatasets-alzheimer-smoking",
       "TotalCases": 538,
-      "CellCount": 8
+      "CellCount": 8,
+      "ValidTimeStart": 1994,
+      "ValidTimeEnd": 1994
     },
     {
       "StudyId": "rdatasets-toronto-arrests-2006",
@@ -5028,7 +5543,9 @@
       "PrimaryResearcherId": "researcher-pearl",
       "Name": "rdatasets-toronto-arrests-2006",
       "TotalCases": 5226,
-      "CellCount": 4
+      "CellCount": 4,
+      "ValidTimeStart": 2006,
+      "ValidTimeEnd": 2006
     },
     {
       "StudyId": "rdatasets-arthritis-1984",
@@ -5044,7 +5561,9 @@
       "PrimaryResearcherId": "researcher-pearl",
       "Name": "rdatasets-arthritis-1984",
       "TotalCases": 84,
-      "CellCount": 4
+      "CellCount": 4,
+      "ValidTimeStart": 1984,
+      "ValidTimeEnd": 1984
     },
     {
       "StudyId": "rdatasets-athletegrad-graduation",
@@ -5060,7 +5579,9 @@
       "PrimaryResearcherId": "researcher-pearl",
       "Name": "rdatasets-athletegrad-graduation",
       "TotalCases": 214555,
-      "CellCount": 4
+      "CellCount": 4,
+      "ValidTimeStart": 2004,
+      "ValidTimeEnd": 2004
     },
     {
       "StudyId": "rdatasets-bacteria-drug-1990s",
@@ -5076,7 +5597,9 @@
       "PrimaryResearcherId": "researcher-pearl",
       "Name": "rdatasets-bacteria-drug-1990s",
       "TotalCases": 220,
-      "CellCount": 4
+      "CellCount": 4,
+      "ValidTimeStart": 1993,
+      "ValidTimeEnd": 1993
     },
     {
       "StudyId": "berkeley-1973-control",
@@ -5092,7 +5615,9 @@
       "PrimaryResearcherId": "researcher-pearl",
       "Name": "berkeley-1973-control",
       "TotalCases": 4839,
-      "CellCount": 12
+      "CellCount": 12,
+      "ValidTimeStart": 1973,
+      "ValidTimeEnd": 1973
     },
     {
       "StudyId": "rdatasets-births-nc-preterm-2004",
@@ -5108,7 +5633,9 @@
       "PrimaryResearcherId": "researcher-pearl",
       "Name": "rdatasets-births-nc-preterm-2004",
       "TotalCases": 150,
-      "CellCount": 4
+      "CellCount": 4,
+      "ValidTimeStart": 2004,
+      "ValidTimeEnd": 2004
     },
     {
       "StudyId": "rdatasets-brokenmarriage-1991",
@@ -5124,7 +5651,9 @@
       "PrimaryResearcherId": "researcher-pearl",
       "Name": "rdatasets-brokenmarriage-1991",
       "TotalCases": 2704,
-      "CellCount": 10
+      "CellCount": 10,
+      "ValidTimeStart": 1991,
+      "ValidTimeEnd": 1991
     },
     {
       "StudyId": "rdatasets-cervicalcancer-screening",
@@ -5140,7 +5669,9 @@
       "PrimaryResearcherId": "researcher-pearl",
       "Name": "rdatasets-cervicalcancer-screening",
       "TotalCases": 180,
-      "CellCount": 4
+      "CellCount": 4,
+      "ValidTimeStart": 2011,
+      "ValidTimeEnd": 2011
     },
     {
       "StudyId": "compas-recidivism-race-age-2016",
@@ -5156,7 +5687,9 @@
       "PrimaryResearcherId": "researcher-pearl",
       "Name": "compas-recidivism-race-age-2016",
       "TotalCases": 7214,
-      "CellCount": 18
+      "CellCount": 18,
+      "ValidTimeStart": 2016,
+      "ValidTimeEnd": 2016
     },
     {
       "StudyId": "covid19-age-cfr-2020",
@@ -5172,7 +5705,9 @@
       "PrimaryResearcherId": "researcher-pearl",
       "Name": "covid19-age-cfr-2020",
       "TotalCases": 756004,
-      "CellCount": 108
+      "CellCount": 108,
+      "ValidTimeStart": 2020,
+      "ValidTimeEnd": 2020
     },
     {
       "StudyId": "rdatasets-compas-broward-race-2016",
@@ -5188,7 +5723,9 @@
       "PrimaryResearcherId": "researcher-pearl",
       "Name": "rdatasets-compas-broward-race-2016",
       "TotalCases": 5813,
-      "CellCount": 8
+      "CellCount": 8,
+      "ValidTimeStart": 2016,
+      "ValidTimeEnd": 2016
     },
     {
       "StudyId": "rdatasets-detergent-preference-1974",
@@ -5204,7 +5741,9 @@
       "PrimaryResearcherId": "researcher-pearl",
       "Name": "rdatasets-detergent-preference-1974",
       "TotalCases": 1008,
-      "CellCount": 6
+      "CellCount": 6,
+      "ValidTimeStart": 1974,
+      "ValidTimeEnd": 1974
     },
     {
       "StudyId": "rdatasets-donner-1847",
@@ -5220,7 +5759,9 @@
       "PrimaryResearcherId": "researcher-pearl",
       "Name": "rdatasets-donner-1847",
       "TotalCases": 90,
-      "CellCount": 4
+      "CellCount": 4,
+      "ValidTimeStart": 1847,
+      "ValidTimeEnd": 1847
     },
     {
       "StudyId": "rdatasets-employment-layoff-1990s",
@@ -5236,7 +5777,9 @@
       "PrimaryResearcherId": "researcher-pearl",
       "Name": "rdatasets-employment-layoff-1990s",
       "TotalCases": 1314,
-      "CellCount": 12
+      "CellCount": 12,
+      "ValidTimeStart": 1993,
+      "ValidTimeEnd": 1993
     },
     {
       "StudyId": "rdatasets-esoph-1980",
@@ -5252,7 +5795,9 @@
       "PrimaryResearcherId": "researcher-pearl",
       "Name": "rdatasets-esoph-1980",
       "TotalCases": 1175,
-      "CellCount": 24
+      "CellCount": 24,
+      "ValidTimeStart": 1980,
+      "ValidTimeEnd": 1980
     },
     {
       "StudyId": "rdatasets-indo-rct-2012",
@@ -5268,7 +5813,9 @@
       "PrimaryResearcherId": "researcher-pearl",
       "Name": "rdatasets-indo-rct-2012",
       "TotalCases": 602,
-      "CellCount": 4
+      "CellCount": 4,
+      "ValidTimeStart": 2012,
+      "ValidTimeEnd": 2012
     },
     {
       "StudyId": "nfl-passing-completion-2023",
@@ -5284,7 +5831,9 @@
       "PrimaryResearcherId": "researcher-pearl",
       "Name": "nfl-passing-completion-2023",
       "TotalCases": 19184,
-      "CellCount": 8
+      "CellCount": 8,
+      "ValidTimeStart": 2023,
+      "ValidTimeEnd": 2023
     },
     {
       "StudyId": "olympic-medals-sex-sport-2016",
@@ -5300,7 +5849,9 @@
       "PrimaryResearcherId": "researcher-pearl",
       "Name": "olympic-medals-sex-sport-2016",
       "TotalCases": 271116,
-      "CellCount": 4
+      "CellCount": 4,
+      "ValidTimeStart": 2016,
+      "ValidTimeEnd": 2016
     },
     {
       "StudyId": "rdatasets-opt-periodontal-2006",
@@ -5316,7 +5867,9 @@
       "PrimaryResearcherId": "researcher-pearl",
       "Name": "rdatasets-opt-periodontal-2006",
       "TotalCases": 814,
-      "CellCount": 8
+      "CellCount": 8,
+      "ValidTimeStart": 2006,
+      "ValidTimeEnd": 2006
     },
     {
       "StudyId": "propublica-compas-sex-age-2016",
@@ -5332,7 +5885,9 @@
       "PrimaryResearcherId": "researcher-pearl",
       "Name": "propublica-compas-sex-age-2016",
       "TotalCases": 7214,
-      "CellCount": 12
+      "CellCount": 12,
+      "ValidTimeStart": 2016,
+      "ValidTimeEnd": 2016
     },
     {
       "StudyId": "titanic-1912-control",
@@ -5348,7 +5903,9 @@
       "PrimaryResearcherId": "researcher-pearl",
       "Name": "titanic-1912-control",
       "TotalCases": 891,
-      "CellCount": 6
+      "CellCount": 6,
+      "ValidTimeStart": 1912,
+      "ValidTimeEnd": 1912
     },
     {
       "StudyId": "uci-adult-census-income-sex-education-1994",
@@ -5364,7 +5921,9 @@
       "PrimaryResearcherId": "researcher-pearl",
       "Name": "uci-adult-census-income-sex-education-1994",
       "TotalCases": 32561,
-      "CellCount": 6
+      "CellCount": 6,
+      "ValidTimeStart": 1994,
+      "ValidTimeEnd": 1994
     },
     {
       "StudyId": "uci-german-credit-purpose-age-1994",
@@ -5380,7 +5939,9 @@
       "PrimaryResearcherId": "researcher-pearl",
       "Name": "uci-german-credit-purpose-age-1994",
       "TotalCases": 1000,
-      "CellCount": 29
+      "CellCount": 29,
+      "ValidTimeStart": 1994,
+      "ValidTimeEnd": 1994
     },
     {
       "StudyId": "uci-heart-disease-site-sex-1988",
@@ -5396,7 +5957,9 @@
       "PrimaryResearcherId": "researcher-pearl",
       "Name": "uci-heart-disease-site-sex-1988",
       "TotalCases": 282,
-      "CellCount": 4
+      "CellCount": 4,
+      "ValidTimeStart": 1988,
+      "ValidTimeEnd": 1988
     },
     {
       "StudyId": "uci-student-math-studytime-school-2008",
@@ -5412,7 +5975,9 @@
       "PrimaryResearcherId": "researcher-pearl",
       "Name": "uci-student-math-studytime-school-2008",
       "TotalCases": 395,
-      "CellCount": 4
+      "CellCount": 4,
+      "ValidTimeStart": 2008,
+      "ValidTimeEnd": 2008
     },
     {
       "StudyId": "near-zero-distortion-boundary",
@@ -5428,7 +5993,9 @@
       "Domain": "synthetic",
       "IsSynthetic": true,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": null,
+      "ValidTimeEnd": null
     },
     {
       "StudyId": "equal-weight-signflip-boundary",
@@ -5444,7 +6011,9 @@
       "Domain": "synthetic",
       "IsSynthetic": true,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": null,
+      "ValidTimeEnd": null
     },
     {
       "StudyId": "zero-corrected-gap-boundary",
@@ -5460,7 +6029,9 @@
       "Domain": "synthetic",
       "IsSynthetic": true,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": null,
+      "ValidTimeEnd": null
     },
     {
       "StudyId": "collider-purity-boundary-flip",
@@ -5476,7 +6047,9 @@
       "Domain": "synthetic",
       "IsSynthetic": true,
       "IsControlStudy": false,
-      "ControlDomain": null
+      "ControlDomain": null,
+      "ValidTimeStart": null,
+      "ValidTimeEnd": null
     },
     {
       "StudyId": "barley-variety-height-1974-1982",
@@ -5492,7 +6065,9 @@
       "PrimaryResearcherId": "researcher-pearl",
       "Name": "barley-variety-height-1974-1982",
       "TotalCases": 135,
-      "CellCount": 18
+      "CellCount": 18,
+      "ValidTimeStart": 1982,
+      "ValidTimeEnd": 1982
     },
     {
       "StudyId": "blood-pressure-smoking-weight-1990",
@@ -5508,7 +6083,9 @@
       "PrimaryResearcherId": "researcher-pearl",
       "Name": "blood-pressure-smoking-weight-1990",
       "TotalCases": 500,
-      "CellCount": 6
+      "CellCount": 6,
+      "ValidTimeStart": 1990,
+      "ValidTimeEnd": 1990
     },
     {
       "StudyId": "chile-vote-sex-education-1988",
@@ -5524,7 +6101,9 @@
       "PrimaryResearcherId": "researcher-pearl",
       "Name": "chile-vote-sex-education-1988",
       "TotalCases": 1750,
-      "CellCount": 6
+      "CellCount": 6,
+      "ValidTimeStart": 1988,
+      "ValidTimeEnd": 1988
     },
     {
       "StudyId": "dayton-smoking-sex-race-1992",
@@ -5540,7 +6119,9 @@
       "PrimaryResearcherId": "researcher-pearl",
       "Name": "dayton-smoking-sex-race-1992",
       "TotalCases": 2276,
-      "CellCount": 4
+      "CellCount": 4,
+      "ValidTimeStart": 1992,
+      "ValidTimeEnd": 1992
     },
     {
       "StudyId": "ncbirths-smoking-maternal-age-2004",
@@ -5556,7 +6137,9 @@
       "PrimaryResearcherId": "researcher-pearl",
       "Name": "ncbirths-smoking-maternal-age-2004",
       "TotalCases": 998,
-      "CellCount": 4
+      "CellCount": 4,
+      "ValidTimeStart": 2004,
+      "ValidTimeEnd": 2004
     },
     {
       "StudyId": "presex-approval-gender-marital-1980",
@@ -5572,7 +6155,9 @@
       "PrimaryResearcherId": "researcher-pearl",
       "Name": "presex-approval-gender-marital-1980",
       "TotalCases": 1036,
-      "CellCount": 4
+      "CellCount": 4,
+      "ValidTimeStart": 1980,
+      "ValidTimeEnd": 1980
     },
     {
       "StudyId": "rdatasets-airquality-ozone",
@@ -5588,7 +6173,9 @@
       "PrimaryResearcherId": "researcher-pearl",
       "Name": "rdatasets-airquality-ozone",
       "TotalCases": 116,
-      "CellCount": 4
+      "CellCount": 4,
+      "ValidTimeStart": 1973,
+      "ValidTimeEnd": 1973
     },
     {
       "StudyId": "rdatasets-arthritis-age",
@@ -5604,7 +6191,9 @@
       "PrimaryResearcherId": "researcher-pearl",
       "Name": "rdatasets-arthritis-age",
       "TotalCases": 84,
-      "CellCount": 4
+      "CellCount": 4,
+      "ValidTimeStart": 1988,
+      "ValidTimeEnd": 1988
     },
     {
       "StudyId": "rdatasets-arthritis-treatment-sex",
@@ -5620,7 +6209,9 @@
       "PrimaryResearcherId": "researcher-pearl",
       "Name": "rdatasets-arthritis-treatment-sex",
       "TotalCases": 85,
-      "CellCount": 4
+      "CellCount": 4,
+      "ValidTimeStart": 1988,
+      "ValidTimeEnd": 1988
     },
     {
       "StudyId": "rdatasets-birthwt-smoking-race",
@@ -5636,7 +6227,9 @@
       "PrimaryResearcherId": "researcher-pearl",
       "Name": "rdatasets-birthwt-smoking-race",
       "TotalCases": 189,
-      "CellCount": 4
+      "CellCount": 4,
+      "ValidTimeStart": 1989,
+      "ValidTimeEnd": 1989
     },
     {
       "StudyId": "rdatasets-chickweight-nutrition",
@@ -5652,7 +6245,9 @@
       "PrimaryResearcherId": "researcher-pearl",
       "Name": "rdatasets-chickweight-nutrition",
       "TotalCases": 240,
-      "CellCount": 4
+      "CellCount": 4,
+      "ValidTimeStart": 1990,
+      "ValidTimeEnd": 1990
     },
     {
       "StudyId": "rdatasets-haireyecolor-genetics",
@@ -5668,7 +6263,9 @@
       "PrimaryResearcherId": "researcher-pearl",
       "Name": "rdatasets-haireyecolor-genetics",
       "TotalCases": 592,
-      "CellCount": 4
+      "CellCount": 4,
+      "ValidTimeStart": 1974,
+      "ValidTimeEnd": 1974
     },
     {
       "StudyId": "rdatasets-mtcars-engine",
@@ -5684,7 +6281,9 @@
       "PrimaryResearcherId": "researcher-pearl",
       "Name": "rdatasets-mtcars-engine",
       "TotalCases": 25,
-      "CellCount": 4
+      "CellCount": 4,
+      "ValidTimeStart": 1974,
+      "ValidTimeEnd": 1974
     },
     {
       "StudyId": "rdatasets-sleepstudy-deprivation",
@@ -5700,7 +6299,9 @@
       "PrimaryResearcherId": "researcher-pearl",
       "Name": "rdatasets-sleepstudy-deprivation",
       "TotalCases": 144,
-      "CellCount": 4
+      "CellCount": 4,
+      "ValidTimeStart": 2003,
+      "ValidTimeEnd": 2003
     },
     {
       "StudyId": "rdatasets-titanic-class-age",
@@ -5716,7 +6317,9 @@
       "PrimaryResearcherId": "researcher-pearl",
       "Name": "rdatasets-titanic-class-age",
       "TotalCases": 610,
-      "CellCount": 4
+      "CellCount": 4,
+      "ValidTimeStart": 1912,
+      "ValidTimeEnd": 1912
     },
     {
       "StudyId": "rdatasets-titanic-crew-sex",
@@ -5732,7 +6335,9 @@
       "PrimaryResearcherId": "researcher-pearl",
       "Name": "rdatasets-titanic-crew-sex",
       "TotalCases": 1591,
-      "CellCount": 4
+      "CellCount": 4,
+      "ValidTimeStart": 1912,
+      "ValidTimeEnd": 1912
     },
     {
       "StudyId": "resume-callback-race-city-2001",
@@ -5748,7 +6353,9 @@
       "PrimaryResearcherId": "researcher-pearl",
       "Name": "resume-callback-race-city-2001",
       "TotalCases": 4870,
-      "CellCount": 4
+      "CellCount": 4,
+      "ValidTimeStart": 2001,
+      "ValidTimeEnd": 2001
     },
     {
       "StudyId": "resume-callback-race-quality-2001",
@@ -5764,7 +6371,9 @@
       "PrimaryResearcherId": "researcher-pearl",
       "Name": "resume-callback-race-quality-2001",
       "TotalCases": 4870,
-      "CellCount": 4
+      "CellCount": 4,
+      "ValidTimeStart": 2001,
+      "ValidTimeEnd": 2001
     },
     {
       "StudyId": "suicide-method-sex-age-1987",
@@ -5780,7 +6389,9 @@
       "PrimaryResearcherId": "researcher-pearl",
       "Name": "suicide-method-sex-age-1987",
       "TotalCases": 53182,
-      "CellCount": 10
+      "CellCount": 10,
+      "ValidTimeStart": 1987,
+      "ValidTimeEnd": 1987
     },
     {
       "StudyId": "survey-smoking-sex-handedness-1993",
@@ -5796,7 +6407,9 @@
       "PrimaryResearcherId": "researcher-pearl",
       "Name": "survey-smoking-sex-handedness-1993",
       "TotalCases": 234,
-      "CellCount": 4
+      "CellCount": 4,
+      "ValidTimeStart": 1993,
+      "ValidTimeEnd": 1993
     },
     {
       "StudyId": "titanic-survival-sex-age-1912",
@@ -5812,7 +6425,9 @@
       "PrimaryResearcherId": "researcher-pearl",
       "Name": "titanic-survival-sex-age-1912",
       "TotalCases": 756,
-      "CellCount": 4
+      "CellCount": 4,
+      "ValidTimeStart": 1912,
+      "ValidTimeEnd": 1912
     },
     {
       "StudyId": "uk-smoking-gender-age-2014",
@@ -5828,7 +6443,9 @@
       "PrimaryResearcherId": "researcher-pearl",
       "Name": "uk-smoking-gender-age-2014",
       "TotalCases": 1691,
-      "CellCount": 8
+      "CellCount": 8,
+      "ValidTimeStart": 2014,
+      "ValidTimeEnd": 2014
     },
     {
       "StudyId": "uk-smoking-gender-marital-2014",
@@ -5844,7 +6461,9 @@
       "PrimaryResearcherId": "researcher-pearl",
       "Name": "uk-smoking-gender-marital-2014",
       "TotalCases": 1623,
-      "CellCount": 8
+      "CellCount": 8,
+      "ValidTimeStart": 2014,
+      "ValidTimeEnd": 2014
     },
     {
       "StudyId": "yamaguchi-mobility-us-japan-1987",
@@ -5860,7 +6479,9 @@
       "PrimaryResearcherId": "researcher-pearl",
       "Name": "yamaguchi-mobility-us-japan-1987",
       "TotalCases": 20575,
-      "CellCount": 10
+      "CellCount": 10,
+      "ValidTimeStart": 1987,
+      "ValidTimeEnd": 1987
     }
   ],
   "Treatments": [
@@ -102891,6 +103512,15 @@
       "RegisteredInLoop": "loop-89",
       "TraditionId": "tradition-dag",
       "EpistemicTier": "corpus-hypothesis"
+    },
+    {
+      "HypothesisId": "H-confounder-drift-type-d",
+      "Name": "H-confounder-drift-type-d",
+      "Statement": "When studies are bucketed by real-world valid-time (cohort midpoint, not publication year), case-mix / geographic / situational confounder archetypes (MechanismClass in severity-case-mix, geography, sports-situation) show DriftDirection=rising toward clean Type-D outcomes in ConfounderDistortionTimeline, while age / institutional / SES archetypes (demographic-composition, organizational-unit, ses-income) show DriftDirection in (flat, single-decade) -- i.e. the drift is confounder-specific, not corpus-wide.",
+      "ExpectedOutcome": "COUNTIFS(ConfounderDistortionTimeline[MechanismClass],\u0022severity-case-mix|geography|sports-situation\u0022,ConfounderDistortionTimeline[DriftDirection],\u0022rising\u0022) = COUNTIFS(ConfounderDistortionTimeline[MechanismClass],\u0022severity-case-mix|geography|sports-situation\u0022) AND COUNTIFS(ConfounderDistortionTimeline[MechanismClass],\u0022demographic-composition|organizational-unit|ses-income\u0022,ConfounderDistortionTimeline[DriftDirection],\u0022rising\u0022) = 0",
+      "RegisteredInLoop": "loop-92",
+      "TraditionId": "tradition-dag",
+      "EpistemicTier": "corpus-hypothesis"
     }
   ],
   "DiscoveryFindings": [
@@ -103070,6 +103700,11 @@
       "FindingId": "find-H-control-type-d-predominance",
       "HypothesisId": "H-control-type-d-predominance",
       "WitnessedInLoop": "loop-91"
+    },
+    {
+      "FindingId": "find-H-confounder-drift-type-d",
+      "HypothesisId": "H-confounder-drift-type-d",
+      "WitnessedInLoop": "loop-92"
     }
   ],
   "CorpusDomains": [
@@ -104834,6 +105469,393 @@
       "CellId": "cell-id-institutional-unit-x-economics",
       "ConfounderIdentity": "id-institutional-unit",
       "Domain": "economics"
+    }
+  ],
+  "ConfounderDistortionTimeline": [
+    {
+      "CellId": "id-age-composition-x-1900",
+      "ConfounderIdentity": "id-age-composition",
+      "ValidTimeDecade": 1900
+    },
+    {
+      "CellId": "id-age-composition-x-1950",
+      "ConfounderIdentity": "id-age-composition",
+      "ValidTimeDecade": 1950
+    },
+    {
+      "CellId": "id-age-composition-x-1960",
+      "ConfounderIdentity": "id-age-composition",
+      "ValidTimeDecade": 1960
+    },
+    {
+      "CellId": "id-age-composition-x-1970",
+      "ConfounderIdentity": "id-age-composition",
+      "ValidTimeDecade": 1970
+    },
+    {
+      "CellId": "id-age-composition-x-1980",
+      "ConfounderIdentity": "id-age-composition",
+      "ValidTimeDecade": 1980
+    },
+    {
+      "CellId": "id-age-composition-x-1990",
+      "ConfounderIdentity": "id-age-composition",
+      "ValidTimeDecade": 1990
+    },
+    {
+      "CellId": "id-age-composition-x-2000",
+      "ConfounderIdentity": "id-age-composition",
+      "ValidTimeDecade": 2000
+    },
+    {
+      "CellId": "id-age-composition-x-2010",
+      "ConfounderIdentity": "id-age-composition",
+      "ValidTimeDecade": 2010
+    },
+    {
+      "CellId": "id-age-composition-x-2020",
+      "ConfounderIdentity": "id-age-composition",
+      "ValidTimeDecade": 2020
+    },
+    {
+      "CellId": "id-collider-proxy-x-1970",
+      "ConfounderIdentity": "id-collider-proxy",
+      "ValidTimeDecade": 1970
+    },
+    {
+      "CellId": "id-collider-proxy-x-1990",
+      "ConfounderIdentity": "id-collider-proxy",
+      "ValidTimeDecade": 1990
+    },
+    {
+      "CellId": "id-collider-proxy-x-2000",
+      "ConfounderIdentity": "id-collider-proxy",
+      "ValidTimeDecade": 2000
+    },
+    {
+      "CellId": "id-collider-proxy-x-2010",
+      "ConfounderIdentity": "id-collider-proxy",
+      "ValidTimeDecade": 2010
+    },
+    {
+      "CellId": "id-collider-proxy-x-2020",
+      "ConfounderIdentity": "id-collider-proxy",
+      "ValidTimeDecade": 2020
+    },
+    {
+      "CellId": "id-contested-org-choice-x-1970",
+      "ConfounderIdentity": "id-contested-org-choice",
+      "ValidTimeDecade": 1970
+    },
+    {
+      "CellId": "id-contested-org-choice-x-1980",
+      "ConfounderIdentity": "id-contested-org-choice",
+      "ValidTimeDecade": 1980
+    },
+    {
+      "CellId": "id-credit-risk-tier-x-1990",
+      "ConfounderIdentity": "id-credit-risk-tier",
+      "ValidTimeDecade": 1990
+    },
+    {
+      "CellId": "id-credit-risk-tier-x-2000",
+      "ConfounderIdentity": "id-credit-risk-tier",
+      "ValidTimeDecade": 2000
+    },
+    {
+      "CellId": "id-credit-risk-tier-x-2010",
+      "ConfounderIdentity": "id-credit-risk-tier",
+      "ValidTimeDecade": 2010
+    },
+    {
+      "CellId": "id-credit-risk-tier-x-2020",
+      "ConfounderIdentity": "id-credit-risk-tier",
+      "ValidTimeDecade": 2020
+    },
+    {
+      "CellId": "id-demographic-group-x-1950",
+      "ConfounderIdentity": "id-demographic-group",
+      "ValidTimeDecade": 1950
+    },
+    {
+      "CellId": "id-demographic-group-x-1990",
+      "ConfounderIdentity": "id-demographic-group",
+      "ValidTimeDecade": 1990
+    },
+    {
+      "CellId": "id-demographic-group-x-2000",
+      "ConfounderIdentity": "id-demographic-group",
+      "ValidTimeDecade": 2000
+    },
+    {
+      "CellId": "id-demographic-group-x-2010",
+      "ConfounderIdentity": "id-demographic-group",
+      "ValidTimeDecade": 2010
+    },
+    {
+      "CellId": "id-disease-severity-x-1970",
+      "ConfounderIdentity": "id-disease-severity",
+      "ValidTimeDecade": 1970
+    },
+    {
+      "CellId": "id-disease-severity-x-1980",
+      "ConfounderIdentity": "id-disease-severity",
+      "ValidTimeDecade": 1980
+    },
+    {
+      "CellId": "id-disease-severity-x-1990",
+      "ConfounderIdentity": "id-disease-severity",
+      "ValidTimeDecade": 1990
+    },
+    {
+      "CellId": "id-disease-severity-x-2000",
+      "ConfounderIdentity": "id-disease-severity",
+      "ValidTimeDecade": 2000
+    },
+    {
+      "CellId": "id-disease-severity-x-2010",
+      "ConfounderIdentity": "id-disease-severity",
+      "ValidTimeDecade": 2010
+    },
+    {
+      "CellId": "id-exposure-mix-x-2010",
+      "ConfounderIdentity": "id-exposure-mix",
+      "ValidTimeDecade": 2010
+    },
+    {
+      "CellId": "id-exposure-mix-x-2020",
+      "ConfounderIdentity": "id-exposure-mix",
+      "ValidTimeDecade": 2020
+    },
+    {
+      "CellId": "id-geographic-composition-x-1950",
+      "ConfounderIdentity": "id-geographic-composition",
+      "ValidTimeDecade": 1950
+    },
+    {
+      "CellId": "id-geographic-composition-x-1980",
+      "ConfounderIdentity": "id-geographic-composition",
+      "ValidTimeDecade": 1980
+    },
+    {
+      "CellId": "id-geographic-composition-x-1990",
+      "ConfounderIdentity": "id-geographic-composition",
+      "ValidTimeDecade": 1990
+    },
+    {
+      "CellId": "id-geographic-composition-x-2000",
+      "ConfounderIdentity": "id-geographic-composition",
+      "ValidTimeDecade": 2000
+    },
+    {
+      "CellId": "id-geographic-composition-x-2010",
+      "ConfounderIdentity": "id-geographic-composition",
+      "ValidTimeDecade": 2010
+    },
+    {
+      "CellId": "id-geographic-composition-x-2020",
+      "ConfounderIdentity": "id-geographic-composition",
+      "ValidTimeDecade": 2020
+    },
+    {
+      "CellId": "id-institutional-unit-x-1980",
+      "ConfounderIdentity": "id-institutional-unit",
+      "ValidTimeDecade": 1980
+    },
+    {
+      "CellId": "id-institutional-unit-x-1990",
+      "ConfounderIdentity": "id-institutional-unit",
+      "ValidTimeDecade": 1990
+    },
+    {
+      "CellId": "id-institutional-unit-x-2000",
+      "ConfounderIdentity": "id-institutional-unit",
+      "ValidTimeDecade": 2000
+    },
+    {
+      "CellId": "id-institutional-unit-x-2010",
+      "ConfounderIdentity": "id-institutional-unit",
+      "ValidTimeDecade": 2010
+    },
+    {
+      "CellId": "id-institutional-unit-x-2020",
+      "ConfounderIdentity": "id-institutional-unit",
+      "ValidTimeDecade": 2020
+    },
+    {
+      "CellId": "id-legal-case-context-x-1980",
+      "ConfounderIdentity": "id-legal-case-context",
+      "ValidTimeDecade": 1980
+    },
+    {
+      "CellId": "id-legal-case-context-x-1990",
+      "ConfounderIdentity": "id-legal-case-context",
+      "ValidTimeDecade": 1990
+    },
+    {
+      "CellId": "id-legal-case-context-x-2000",
+      "ConfounderIdentity": "id-legal-case-context",
+      "ValidTimeDecade": 2000
+    },
+    {
+      "CellId": "id-legal-case-context-x-2010",
+      "ConfounderIdentity": "id-legal-case-context",
+      "ValidTimeDecade": 2010
+    },
+    {
+      "CellId": "id-method-specification-x-2000",
+      "ConfounderIdentity": "id-method-specification",
+      "ValidTimeDecade": 2000
+    },
+    {
+      "CellId": "id-method-specification-x-2010",
+      "ConfounderIdentity": "id-method-specification",
+      "ValidTimeDecade": 2010
+    },
+    {
+      "CellId": "id-method-specification-x-2020",
+      "ConfounderIdentity": "id-method-specification",
+      "ValidTimeDecade": 2020
+    },
+    {
+      "CellId": "id-selection-frailty-x-1950",
+      "ConfounderIdentity": "id-selection-frailty",
+      "ValidTimeDecade": 1950
+    },
+    {
+      "CellId": "id-selection-frailty-x-1980",
+      "ConfounderIdentity": "id-selection-frailty",
+      "ValidTimeDecade": 1980
+    },
+    {
+      "CellId": "id-selection-frailty-x-2000",
+      "ConfounderIdentity": "id-selection-frailty",
+      "ValidTimeDecade": 2000
+    },
+    {
+      "CellId": "id-situational-context-x-1910",
+      "ConfounderIdentity": "id-situational-context",
+      "ValidTimeDecade": 1910
+    },
+    {
+      "CellId": "id-situational-context-x-1970",
+      "ConfounderIdentity": "id-situational-context",
+      "ValidTimeDecade": 1970
+    },
+    {
+      "CellId": "id-situational-context-x-1980",
+      "ConfounderIdentity": "id-situational-context",
+      "ValidTimeDecade": 1980
+    },
+    {
+      "CellId": "id-situational-context-x-1990",
+      "ConfounderIdentity": "id-situational-context",
+      "ValidTimeDecade": 1990
+    },
+    {
+      "CellId": "id-situational-context-x-2000",
+      "ConfounderIdentity": "id-situational-context",
+      "ValidTimeDecade": 2000
+    },
+    {
+      "CellId": "id-situational-context-x-2010",
+      "ConfounderIdentity": "id-situational-context",
+      "ValidTimeDecade": 2010
+    },
+    {
+      "CellId": "id-smoking-behavior-x-1960",
+      "ConfounderIdentity": "id-smoking-behavior",
+      "ValidTimeDecade": 1960
+    },
+    {
+      "CellId": "id-smoking-behavior-x-2000",
+      "ConfounderIdentity": "id-smoking-behavior",
+      "ValidTimeDecade": 2000
+    },
+    {
+      "CellId": "id-smoking-behavior-x-2020",
+      "ConfounderIdentity": "id-smoking-behavior",
+      "ValidTimeDecade": 2020
+    },
+    {
+      "CellId": "id-socioeconomic-status-x-1960",
+      "ConfounderIdentity": "id-socioeconomic-status",
+      "ValidTimeDecade": 1960
+    },
+    {
+      "CellId": "id-socioeconomic-status-x-1970",
+      "ConfounderIdentity": "id-socioeconomic-status",
+      "ValidTimeDecade": 1970
+    },
+    {
+      "CellId": "id-socioeconomic-status-x-1990",
+      "ConfounderIdentity": "id-socioeconomic-status",
+      "ValidTimeDecade": 1990
+    },
+    {
+      "CellId": "id-socioeconomic-status-x-2000",
+      "ConfounderIdentity": "id-socioeconomic-status",
+      "ValidTimeDecade": 2000
+    },
+    {
+      "CellId": "id-socioeconomic-status-x-2010",
+      "ConfounderIdentity": "id-socioeconomic-status",
+      "ValidTimeDecade": 2010
+    },
+    {
+      "CellId": "id-socioeconomic-status-x-2020",
+      "ConfounderIdentity": "id-socioeconomic-status",
+      "ValidTimeDecade": 2020
+    },
+    {
+      "CellId": "id-treatment-indication-x-1850",
+      "ConfounderIdentity": "id-treatment-indication",
+      "ValidTimeDecade": 1850
+    },
+    {
+      "CellId": "id-treatment-indication-x-1950",
+      "ConfounderIdentity": "id-treatment-indication",
+      "ValidTimeDecade": 1950
+    },
+    {
+      "CellId": "id-treatment-indication-x-2000",
+      "ConfounderIdentity": "id-treatment-indication",
+      "ValidTimeDecade": 2000
+    },
+    {
+      "CellId": "id-treatment-indication-x-2020",
+      "ConfounderIdentity": "id-treatment-indication",
+      "ValidTimeDecade": 2020
+    },
+    {
+      "CellId": "id-trial-timing-design-x-1990",
+      "ConfounderIdentity": "id-trial-timing-design",
+      "ValidTimeDecade": 1990
+    },
+    {
+      "CellId": "id-trial-timing-design-x-2000",
+      "ConfounderIdentity": "id-trial-timing-design",
+      "ValidTimeDecade": 2000
+    },
+    {
+      "CellId": "id-user-platform-segment-x-1990",
+      "ConfounderIdentity": "id-user-platform-segment",
+      "ValidTimeDecade": 1990
+    },
+    {
+      "CellId": "id-user-platform-segment-x-2000",
+      "ConfounderIdentity": "id-user-platform-segment",
+      "ValidTimeDecade": 2000
+    },
+    {
+      "CellId": "id-user-platform-segment-x-2010",
+      "ConfounderIdentity": "id-user-platform-segment",
+      "ValidTimeDecade": 2010
+    },
+    {
+      "CellId": "id-user-platform-segment-x-2020",
+      "ConfounderIdentity": "id-user-platform-segment",
+      "ValidTimeDecade": 2020
     }
   ],
   "CorpusBalance": [

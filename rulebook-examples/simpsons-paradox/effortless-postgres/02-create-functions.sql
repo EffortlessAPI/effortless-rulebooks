@@ -18,6 +18,109 @@ SET check_function_bodies = off;
 -- These functions perform lookups via foreign key relationships
 -- ============================================================================
 
+-- calc_loops_tradition_name
+-- Field: Loops.TraditionName
+-- Type: lookup | DataType: string | Returns: TEXT
+-- Lookup: Name from related ResearchTraditions
+
+
+CREATE OR REPLACE FUNCTION calc_loops_tradition_name(p_loop_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT name::text FROM research_traditions WHERE tradition_id = (SELECT tradition_id FROM loops WHERE loop_id = p_loop_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_loops_tradition_core_conern
+-- Field: Loops.TraditionCoreConern
+-- Type: lookup | DataType: string | Returns: TEXT
+-- Lookup: CoreConcern from related ResearchTraditions
+
+
+CREATE OR REPLACE FUNCTION calc_loops_tradition_core_conern(p_loop_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT core_concern::text FROM research_traditions WHERE tradition_id = (SELECT tradition_id FROM loops WHERE loop_id = p_loop_id));
+$$ LANGUAGE sql STABLE;
+
+-- get_research_traditions_name
+-- Helper function: Get Name from ResearchTraditions by TraditionId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_research_traditions_name(p_tradition_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT name FROM research_traditions WHERE tradition_id = p_tradition_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_research_traditions_era
+-- Helper function: Get Era from ResearchTraditions by TraditionId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_research_traditions_era(p_tradition_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT era FROM research_traditions WHERE tradition_id = p_tradition_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_research_traditions_core_concern
+-- Helper function: Get CoreConcern from ResearchTraditions by TraditionId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_research_traditions_core_concern(p_tradition_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT core_concern FROM research_traditions WHERE tradition_id = p_tradition_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_research_traditions_primary_venue
+-- Helper function: Get PrimaryVenue from ResearchTraditions by TraditionId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_research_traditions_primary_venue(p_tradition_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT primary_venue FROM research_traditions WHERE tradition_id = p_tradition_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_research_traditions_key_claim
+-- Helper function: Get KeyClaim from ResearchTraditions by TraditionId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_research_traditions_key_claim(p_tradition_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT key_claim FROM research_traditions WHERE tradition_id = p_tradition_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_research_traditions_open_question
+-- Helper function: Get OpenQuestion from ResearchTraditions by TraditionId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_research_traditions_open_question(p_tradition_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT open_question FROM research_traditions WHERE tradition_id = p_tradition_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_research_traditions_verified_by_deep_research
+-- Helper function: Get VerifiedByDeepResearch from ResearchTraditions by TraditionId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_research_traditions_verified_by_deep_research(p_tradition_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (SELECT verified_by_deep_research FROM research_traditions WHERE tradition_id = p_tradition_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_research_traditions_illustrated_by_study
+-- Helper function: Get IllustratedByStudy from ResearchTraditions by TraditionId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_research_traditions_illustrated_by_study(p_tradition_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT illustrated_by_study FROM research_traditions WHERE tradition_id = p_tradition_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_research_traditions_supporting_conclusion
+-- Helper function: Get SupportingConclusion from ResearchTraditions by TraditionId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_research_traditions_supporting_conclusion(p_tradition_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT supporting_conclusion FROM research_traditions WHERE tradition_id = p_tradition_id);
+$$ LANGUAGE sql STABLE;
+
 -- calc_loops_name
 -- Field: Loops.Name
 -- Type: calculated | DataType: string | Returns: TEXT
@@ -36,6 +139,300 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION calc_loops_commit_short(p_loop_id TEXT)
 RETURNS TEXT AS $$
   SELECT (LEFT(((SELECT NULLIF(commit_hash, '') FROM loops WHERE loop_id = p_loop_id))::text, (7)::integer))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_studies_tradition_name
+-- Field: Studies.TraditionName
+-- Type: lookup | DataType: string | Returns: TEXT
+-- Lookup: Name from related ResearchTraditions
+
+
+CREATE OR REPLACE FUNCTION calc_studies_tradition_name(p_study_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT name::text FROM research_traditions WHERE tradition_id = (SELECT tradition_id FROM studies WHERE study_id = p_study_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_studies_tradition_core_conern
+-- Field: Studies.TraditionCoreConern
+-- Type: lookup | DataType: string | Returns: TEXT
+-- Lookup: CoreConcern from related ResearchTraditions
+
+
+CREATE OR REPLACE FUNCTION calc_studies_tradition_core_conern(p_study_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT core_concern::text FROM research_traditions WHERE tradition_id = (SELECT tradition_id FROM studies WHERE study_id = p_study_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_studies_primary_researcher_name
+-- Field: Studies.PrimaryResearcherName
+-- Type: lookup | DataType: string | Returns: TEXT
+-- Lookup: Name from related Researchers
+
+
+CREATE OR REPLACE FUNCTION calc_studies_primary_researcher_name(p_study_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT name::text FROM researchers WHERE researcher_id = (SELECT primary_researcher_id FROM studies WHERE study_id = p_study_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_studies_primary_researcher_affiliation
+-- Field: Studies.PrimaryResearcherAffiliation
+-- Type: lookup | DataType: string | Returns: TEXT
+-- Lookup: Affiliation from related Researchers
+
+
+CREATE OR REPLACE FUNCTION calc_studies_primary_researcher_affiliation(p_study_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT affiliation::text FROM researchers WHERE researcher_id = (SELECT primary_researcher_id FROM studies WHERE study_id = p_study_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_studies_distortion_type
+-- Field: Studies.DistortionType
+-- Type: lookup | DataType: string | Returns: TEXT
+-- Lookup: DistortionType from related TreatmentRankings
+
+
+CREATE OR REPLACE FUNCTION calc_studies_distortion_type(p_study_id TEXT)
+RETURNS TEXT AS $$
+  SELECT calc_treatment_rankings_distortion_type((SELECT study_id FROM studies WHERE study_id = p_study_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_studies_policy_implication
+-- Field: Studies.PolicyImplication
+-- Type: lookup | DataType: string | Returns: TEXT
+-- Lookup: CorrectedPolicyImplication from related TreatmentRankings
+
+
+CREATE OR REPLACE FUNCTION calc_studies_policy_implication(p_study_id TEXT)
+RETURNS TEXT AS $$
+  SELECT calc_treatment_rankings_corrected_policy_implication((SELECT study_id FROM studies WHERE study_id = p_study_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_studies_allocation_distortion
+-- Field: Studies.AllocationDistortion
+-- Type: lookup | DataType: float | Returns: NUMERIC
+-- Lookup: AllocationDistortion from related TreatmentRankings
+
+
+CREATE OR REPLACE FUNCTION calc_studies_allocation_distortion(p_study_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT calc_treatment_rankings_allocation_distortion((SELECT study_id FROM studies WHERE study_id = p_study_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_studies_signal_purity
+-- Field: Studies.SignalPurity
+-- Type: lookup | DataType: float | Returns: NUMERIC
+-- Lookup: SignalPurity from related TreatmentRankings
+
+
+CREATE OR REPLACE FUNCTION calc_studies_signal_purity(p_study_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT calc_treatment_rankings_signal_purity((SELECT study_id FROM studies WHERE study_id = p_study_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_studies_is_sign_flip
+-- Field: Studies.IsSignFlip
+-- Type: lookup | DataType: boolean | Returns: BOOLEAN
+-- Lookup: IsSignFlip from related TreatmentRankings
+
+
+CREATE OR REPLACE FUNCTION calc_studies_is_sign_flip(p_study_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT calc_treatment_rankings_is_sign_flip((SELECT study_id FROM studies WHERE study_id = p_study_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_studies_corrected_winner
+-- Field: Studies.CorrectedWinner
+-- Type: lookup | DataType: string | Returns: TEXT
+-- Lookup: CorrectedWinner from related TreatmentRankings
+
+
+CREATE OR REPLACE FUNCTION calc_studies_corrected_winner(p_study_id TEXT)
+RETURNS TEXT AS $$
+  SELECT calc_treatment_rankings_corrected_winner((SELECT study_id FROM studies WHERE study_id = p_study_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_studies_confounding_variable
+-- Field: Studies.ConfoundingVariable
+-- Type: lookup | DataType: string | Returns: TEXT
+-- Lookup: VariableName from related StratumVariables
+
+
+CREATE OR REPLACE FUNCTION calc_studies_confounding_variable(p_study_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT variable_name::text FROM stratum_variables WHERE stratum_variable_id = (SELECT study_id FROM studies WHERE study_id = p_study_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_studies_causal_role
+-- Field: Studies.CausalRole
+-- Type: lookup | DataType: string | Returns: TEXT
+-- Lookup: CausalRole from related StratumVariables
+
+
+CREATE OR REPLACE FUNCTION calc_studies_causal_role(p_study_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT causal_role::text FROM stratum_variables WHERE stratum_variable_id = (SELECT study_id FROM studies WHERE study_id = p_study_id));
+$$ LANGUAGE sql STABLE;
+
+-- get_researchers_name
+-- Helper function: Get Name from Researchers by ResearcherId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_researchers_name(p_researcher_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT name FROM researchers WHERE researcher_id = p_researcher_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_researchers_active_period
+-- Helper function: Get ActivePeriod from Researchers by ResearcherId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_researchers_active_period(p_researcher_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT active_period FROM researchers WHERE researcher_id = p_researcher_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_researchers_affiliation
+-- Helper function: Get Affiliation from Researchers by ResearcherId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_researchers_affiliation(p_researcher_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT affiliation FROM researchers WHERE researcher_id = p_researcher_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_researchers_key_contribution
+-- Helper function: Get KeyContribution from Researchers by ResearcherId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_researchers_key_contribution(p_researcher_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT key_contribution FROM researchers WHERE researcher_id = p_researcher_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_researchers_signature_work
+-- Helper function: Get SignatureWork from Researchers by ResearcherId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_researchers_signature_work(p_researcher_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT signature_work FROM researchers WHERE researcher_id = p_researcher_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_researchers_relation_to_hannan_pearl
+-- Helper function: Get RelationToHannanPearl from Researchers by ResearcherId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_researchers_relation_to_hannan_pearl(p_researcher_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT relation_to_hannan_pearl FROM researchers WHERE researcher_id = p_researcher_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_researchers_verified_by_deep_research
+-- Helper function: Get VerifiedByDeepResearch from Researchers by ResearcherId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_researchers_verified_by_deep_research(p_researcher_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (SELECT verified_by_deep_research FROM researchers WHERE researcher_id = p_researcher_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_researchers_confidence_level
+-- Helper function: Get ConfidenceLevel from Researchers by ResearcherId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_researchers_confidence_level(p_researcher_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT confidence_level FROM researchers WHERE researcher_id = p_researcher_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_researchers_illustrates_conclusion
+-- Helper function: Get IllustratesConclusion from Researchers by ResearcherId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_researchers_illustrates_conclusion(p_researcher_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT illustrates_conclusion FROM researchers WHERE researcher_id = p_researcher_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_treatment_rankings_treatment_a
+-- Helper function: Get TreatmentA from TreatmentRankings by TreatmentRankingId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_treatment_rankings_treatment_a(p_treatment_ranking_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT treatment_a FROM treatment_rankings WHERE treatment_ranking_id = p_treatment_ranking_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_treatment_rankings_treatment_b
+-- Helper function: Get TreatmentB from TreatmentRankings by TreatmentRankingId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_treatment_rankings_treatment_b(p_treatment_ranking_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT treatment_b FROM treatment_rankings WHERE treatment_ranking_id = p_treatment_ranking_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_treatment_rankings_adjustment_rationale
+-- Helper function: Get AdjustmentRationale from TreatmentRankings by TreatmentRankingId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_treatment_rankings_adjustment_rationale(p_treatment_ranking_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT adjustment_rationale FROM treatment_rankings WHERE treatment_ranking_id = p_treatment_ranking_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_stratum_variables_variable_name
+-- Helper function: Get VariableName from StratumVariables by StratumVariableId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_stratum_variables_variable_name(p_stratum_variable_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT variable_name FROM stratum_variables WHERE stratum_variable_id = p_stratum_variable_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_stratum_variables_causal_role
+-- Helper function: Get CausalRole from StratumVariables by StratumVariableId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_stratum_variables_causal_role(p_stratum_variable_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT causal_role FROM stratum_variables WHERE stratum_variable_id = p_stratum_variable_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_stratum_variables_affects_treatment_assignment
+-- Helper function: Get AffectsTreatmentAssignment from StratumVariables by StratumVariableId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_stratum_variables_affects_treatment_assignment(p_stratum_variable_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (SELECT affects_treatment_assignment FROM stratum_variables WHERE stratum_variable_id = p_stratum_variable_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_stratum_variables_affects_outcome
+-- Helper function: Get AffectsOutcome from StratumVariables by StratumVariableId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_stratum_variables_affects_outcome(p_stratum_variable_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (SELECT affects_outcome FROM stratum_variables WHERE stratum_variable_id = p_stratum_variable_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_stratum_variables_mechanism_note
+-- Helper function: Get MechanismNote from StratumVariables by StratumVariableId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_stratum_variables_mechanism_note(p_stratum_variable_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT mechanism_note FROM stratum_variables WHERE stratum_variable_id = p_stratum_variable_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_stratum_variables_conditioning_risk
+-- Helper function: Get ConditioningRisk from StratumVariables by StratumVariableId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_stratum_variables_conditioning_risk(p_stratum_variable_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT conditioning_risk FROM stratum_variables WHERE stratum_variable_id = p_stratum_variable_id);
 $$ LANGUAGE sql STABLE;
 
 -- calc_studies_name
@@ -94,6 +491,26 @@ RETURNS TEXT AS $$
    =IF({{IsSynthetic}}, "exempt-synthetic", IF(AND({{IngestionCellParity}}, LOOKUP({{StudyId}}, StratumVariables[Study], StratumVariables[VariableName]) <> ""), "all", "partial"))
 */
 NULL::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_studies_valid_time_midpoint
+-- Field: Studies.ValidTimeMidpoint
+-- Type: calculated | DataType: float | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_studies_valid_time_midpoint(p_study_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CASE WHEN ((SELECT valid_time_start FROM studies WHERE study_id = p_study_id) IS NOT NULL AND (SELECT valid_time_end FROM studies WHERE study_id = p_study_id) IS NOT NULL) THEN ((COALESCE(CASE WHEN ((COALESCE(CASE WHEN ((SELECT valid_time_start FROM studies WHERE study_id = p_study_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT valid_time_start FROM studies WHERE study_id = p_study_id))::numeric ELSE NULL END, 0) + COALESCE(CASE WHEN ((SELECT valid_time_end FROM studies WHERE study_id = p_study_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT valid_time_end FROM studies WHERE study_id = p_study_id))::numeric ELSE NULL END, 0)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((COALESCE(CASE WHEN ((SELECT valid_time_start FROM studies WHERE study_id = p_study_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT valid_time_start FROM studies WHERE study_id = p_study_id))::numeric ELSE NULL END, 0) + COALESCE(CASE WHEN ((SELECT valid_time_end FROM studies WHERE study_id = p_study_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT valid_time_end FROM studies WHERE study_id = p_study_id))::numeric ELSE NULL END, 0)))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(2, 0), 0)))::text ELSE ((SELECT publication_year FROM studies WHERE study_id = p_study_id))::text END)::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_studies_valid_time_decade
+-- Field: Studies.ValidTimeDecade
+-- Type: calculated | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_studies_valid_time_decade(p_study_id TEXT)
+RETURNS INTEGER AS $$
+  WITH __erb_dedup_v1 AS (SELECT calc_studies_valid_time_midpoint(p_study_id) AS val) SELECT (CASE WHEN (SELECT val FROM __erb_dedup_v1) IS NULL THEN NULL ELSE ((COALESCE(CASE WHEN (FLOOR(((COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v1))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v1))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(10, 0), 0)))::NUMERIC))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (FLOOR(((COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v1))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v1))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(10, 0), 0)))::NUMERIC))::numeric ELSE NULL END, 0) * COALESCE(10, 0)))::text END)::integer;
 $$ LANGUAGE sql STABLE;
 
 -- get_studies_title
@@ -168,6 +585,24 @@ RETURNS TEXT AS $$
   SELECT (SELECT control_domain FROM studies WHERE study_id = p_study_id);
 $$ LANGUAGE sql STABLE;
 
+-- get_studies_valid_time_start
+-- Helper function: Get ValidTimeStart from Studies by StudyId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_studies_valid_time_start(p_study_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT (SELECT valid_time_start FROM studies WHERE study_id = p_study_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_studies_valid_time_end
+-- Helper function: Get ValidTimeEnd from Studies by StudyId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_studies_valid_time_end(p_study_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT (SELECT valid_time_end FROM studies WHERE study_id = p_study_id);
+$$ LANGUAGE sql STABLE;
+
 -- calc_treatments_name
 -- Field: Treatments.Name
 -- Type: calculated | DataType: string | Returns: TEXT
@@ -205,7 +640,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_treatments_pooled_success_rate(p_treatment_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT (CASE WHEN (calc_treatments_total_cases(p_treatment_id))::NUMERIC = 0 THEN ('')::text ELSE ((COALESCE(CASE WHEN (calc_treatments_total_successes(p_treatment_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_treatments_total_successes(p_treatment_id))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(CASE WHEN (calc_treatments_total_cases(p_treatment_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_treatments_total_cases(p_treatment_id))::numeric ELSE NULL END, 0), 0)))::text END)::numeric;
+  WITH __erb_dedup_v1 AS (SELECT calc_treatments_total_cases(p_treatment_id) AS val), __erb_dedup_v2 AS (SELECT calc_treatments_total_successes(p_treatment_id) AS val) SELECT (CASE WHEN ((SELECT val FROM __erb_dedup_v1))::NUMERIC = 0 THEN NULL ELSE ((COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v2))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v2))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v1))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v1))::numeric ELSE NULL END, 0), 0)))::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_strata_name
@@ -265,7 +700,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_case_cells_treatment_exposure_fraction(p_case_cell_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT (CASE WHEN (calc_case_cells_total_cases_for_treatment(p_case_cell_id))::NUMERIC = 0 THEN ('')::text ELSE ((COALESCE(CASE WHEN ((SELECT cases FROM case_cells WHERE case_cell_id = p_case_cell_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT cases FROM case_cells WHERE case_cell_id = p_case_cell_id))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(CASE WHEN (calc_case_cells_total_cases_for_treatment(p_case_cell_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_case_cells_total_cases_for_treatment(p_case_cell_id))::numeric ELSE NULL END, 0), 0)))::text END)::numeric;
+  WITH __erb_dedup_v1 AS (SELECT calc_case_cells_total_cases_for_treatment(p_case_cell_id) AS val) SELECT (CASE WHEN ((SELECT val FROM __erb_dedup_v1))::NUMERIC = 0 THEN NULL ELSE ((COALESCE(CASE WHEN ((SELECT cases FROM case_cells WHERE case_cell_id = p_case_cell_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT cases FROM case_cells WHERE case_cell_id = p_case_cell_id))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v1))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v1))::numeric ELSE NULL END, 0), 0)))::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_case_cells_is_valid_ingestion_cell
@@ -315,7 +750,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_stratum_summaries_stratum_success_rate(p_stratum_summary_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT (CASE WHEN (calc_stratum_summaries_stratum_cases(p_stratum_summary_id))::NUMERIC = 0 THEN ('')::text ELSE ((COALESCE(CASE WHEN (calc_stratum_summaries_stratum_successes(p_stratum_summary_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_stratum_summaries_stratum_successes(p_stratum_summary_id))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(CASE WHEN (calc_stratum_summaries_stratum_cases(p_stratum_summary_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_stratum_summaries_stratum_cases(p_stratum_summary_id))::numeric ELSE NULL END, 0), 0)))::text END)::numeric;
+  WITH __erb_dedup_v1 AS (SELECT calc_stratum_summaries_stratum_cases(p_stratum_summary_id) AS val), __erb_dedup_v2 AS (SELECT calc_stratum_summaries_stratum_successes(p_stratum_summary_id) AS val) SELECT (CASE WHEN ((SELECT val FROM __erb_dedup_v1))::NUMERIC = 0 THEN NULL ELSE ((COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v2))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v2))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v1))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v1))::numeric ELSE NULL END, 0), 0)))::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_stratum_summaries_stratum_successes_a
@@ -345,7 +780,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_stratum_summaries_stratum_rate_a(p_stratum_summary_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT (CASE WHEN (calc_stratum_summaries_stratum_cases_a(p_stratum_summary_id))::NUMERIC = 0 THEN ('')::text ELSE ((COALESCE(CASE WHEN (calc_stratum_summaries_stratum_successes_a(p_stratum_summary_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_stratum_summaries_stratum_successes_a(p_stratum_summary_id))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(CASE WHEN (calc_stratum_summaries_stratum_cases_a(p_stratum_summary_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_stratum_summaries_stratum_cases_a(p_stratum_summary_id))::numeric ELSE NULL END, 0), 0)))::text END)::numeric;
+  WITH __erb_dedup_v1 AS (SELECT calc_stratum_summaries_stratum_cases_a(p_stratum_summary_id) AS val), __erb_dedup_v2 AS (SELECT calc_stratum_summaries_stratum_successes_a(p_stratum_summary_id) AS val) SELECT (CASE WHEN ((SELECT val FROM __erb_dedup_v1))::NUMERIC = 0 THEN NULL ELSE ((COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v2))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v2))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v1))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v1))::numeric ELSE NULL END, 0), 0)))::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_stratum_summaries_stratum_successes_b
@@ -375,7 +810,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_stratum_summaries_stratum_rate_b(p_stratum_summary_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT (CASE WHEN (calc_stratum_summaries_stratum_cases_b(p_stratum_summary_id))::NUMERIC = 0 THEN ('')::text ELSE ((COALESCE(CASE WHEN (calc_stratum_summaries_stratum_successes_b(p_stratum_summary_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_stratum_summaries_stratum_successes_b(p_stratum_summary_id))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(CASE WHEN (calc_stratum_summaries_stratum_cases_b(p_stratum_summary_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_stratum_summaries_stratum_cases_b(p_stratum_summary_id))::numeric ELSE NULL END, 0), 0)))::text END)::numeric;
+  WITH __erb_dedup_v1 AS (SELECT calc_stratum_summaries_stratum_cases_b(p_stratum_summary_id) AS val), __erb_dedup_v2 AS (SELECT calc_stratum_summaries_stratum_successes_b(p_stratum_summary_id) AS val) SELECT (CASE WHEN ((SELECT val FROM __erb_dedup_v1))::NUMERIC = 0 THEN NULL ELSE ((COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v2))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v2))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v1))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v1))::numeric ELSE NULL END, 0), 0)))::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_stratum_summaries_stratum_winner
@@ -415,7 +850,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_stratum_summaries_stratum_fraction(p_stratum_summary_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT (CASE WHEN (calc_stratum_summaries_study_total_cases(p_stratum_summary_id))::NUMERIC = 0 THEN ('')::text ELSE ((COALESCE(CASE WHEN (calc_stratum_summaries_stratum_total_cases(p_stratum_summary_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_stratum_summaries_stratum_total_cases(p_stratum_summary_id))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(CASE WHEN (calc_stratum_summaries_study_total_cases(p_stratum_summary_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_stratum_summaries_study_total_cases(p_stratum_summary_id))::numeric ELSE NULL END, 0), 0)))::text END)::numeric;
+  WITH __erb_dedup_v1 AS (SELECT calc_stratum_summaries_study_total_cases(p_stratum_summary_id) AS val), __erb_dedup_v2 AS (SELECT calc_stratum_summaries_stratum_total_cases(p_stratum_summary_id) AS val) SELECT (CASE WHEN ((SELECT val FROM __erb_dedup_v1))::NUMERIC = 0 THEN NULL ELSE ((COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v2))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v2))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v1))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v1))::numeric ELSE NULL END, 0), 0)))::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_stratum_summaries_weighted_stratum_rate
@@ -425,7 +860,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_stratum_summaries_weighted_stratum_rate(p_stratum_summary_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT (CASE WHEN calc_stratum_summaries_stratum_fraction(p_stratum_summary_id) IS NULL THEN ('')::text ELSE ((COALESCE(CASE WHEN (calc_stratum_summaries_stratum_fraction(p_stratum_summary_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_stratum_summaries_stratum_fraction(p_stratum_summary_id))::numeric ELSE NULL END, 0) * COALESCE(CASE WHEN (calc_stratum_summaries_stratum_success_rate(p_stratum_summary_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_stratum_summaries_stratum_success_rate(p_stratum_summary_id))::numeric ELSE NULL END, 0)))::text END)::numeric;
+  WITH __erb_dedup_v1 AS (SELECT calc_stratum_summaries_stratum_fraction(p_stratum_summary_id) AS val), __erb_dedup_v2 AS (SELECT calc_stratum_summaries_stratum_success_rate(p_stratum_summary_id) AS val) SELECT (CASE WHEN (SELECT val FROM __erb_dedup_v1) IS NULL THEN NULL ELSE ((COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v1))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v1))::numeric ELSE NULL END, 0) * COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v2))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v2))::numeric ELSE NULL END, 0)))::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_stratum_summaries_treatment_a_cases_here
@@ -475,7 +910,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_stratum_summaries_allocation_fraction_a(p_stratum_summary_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT (CASE WHEN (calc_stratum_summaries_treatment_a_total_cases(p_stratum_summary_id))::NUMERIC = 0 THEN ('')::text ELSE ((COALESCE(CASE WHEN (calc_stratum_summaries_treatment_a_cases_here(p_stratum_summary_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_stratum_summaries_treatment_a_cases_here(p_stratum_summary_id))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(CASE WHEN (calc_stratum_summaries_treatment_a_total_cases(p_stratum_summary_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_stratum_summaries_treatment_a_total_cases(p_stratum_summary_id))::numeric ELSE NULL END, 0), 0)))::text END)::numeric;
+  WITH __erb_dedup_v1 AS (SELECT calc_stratum_summaries_treatment_a_total_cases(p_stratum_summary_id) AS val), __erb_dedup_v2 AS (SELECT calc_stratum_summaries_treatment_a_cases_here(p_stratum_summary_id) AS val) SELECT (CASE WHEN ((SELECT val FROM __erb_dedup_v1))::NUMERIC = 0 THEN NULL ELSE ((COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v2))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v2))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v1))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v1))::numeric ELSE NULL END, 0), 0)))::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_stratum_summaries_allocation_fraction_b
@@ -485,7 +920,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_stratum_summaries_allocation_fraction_b(p_stratum_summary_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT (CASE WHEN (calc_stratum_summaries_treatment_b_total_cases(p_stratum_summary_id))::NUMERIC = 0 THEN ('')::text ELSE ((COALESCE(CASE WHEN (calc_stratum_summaries_treatment_b_cases_here(p_stratum_summary_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_stratum_summaries_treatment_b_cases_here(p_stratum_summary_id))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(CASE WHEN (calc_stratum_summaries_treatment_b_total_cases(p_stratum_summary_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_stratum_summaries_treatment_b_total_cases(p_stratum_summary_id))::numeric ELSE NULL END, 0), 0)))::text END)::numeric;
+  WITH __erb_dedup_v1 AS (SELECT calc_stratum_summaries_treatment_b_total_cases(p_stratum_summary_id) AS val), __erb_dedup_v2 AS (SELECT calc_stratum_summaries_treatment_b_cases_here(p_stratum_summary_id) AS val) SELECT (CASE WHEN ((SELECT val FROM __erb_dedup_v1))::NUMERIC = 0 THEN NULL ELSE ((COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v2))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v2))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v1))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v1))::numeric ELSE NULL END, 0), 0)))::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_stratum_summaries_allocation_bias
@@ -495,7 +930,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_stratum_summaries_allocation_bias(p_stratum_summary_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT (CASE WHEN calc_stratum_summaries_allocation_fraction_a(p_stratum_summary_id) IS NULL THEN ('')::text ELSE ((COALESCE(CASE WHEN (calc_stratum_summaries_allocation_fraction_a(p_stratum_summary_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_stratum_summaries_allocation_fraction_a(p_stratum_summary_id))::numeric ELSE NULL END, 0) - COALESCE(CASE WHEN (calc_stratum_summaries_allocation_fraction_b(p_stratum_summary_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_stratum_summaries_allocation_fraction_b(p_stratum_summary_id))::numeric ELSE NULL END, 0)))::text END)::numeric;
+  WITH __erb_dedup_v1 AS (SELECT calc_stratum_summaries_allocation_fraction_a(p_stratum_summary_id) AS val), __erb_dedup_v2 AS (SELECT calc_stratum_summaries_allocation_fraction_b(p_stratum_summary_id) AS val) SELECT (CASE WHEN (SELECT val FROM __erb_dedup_v1) IS NULL THEN NULL ELSE ((COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v1))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v1))::numeric ELSE NULL END, 0) - COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v2))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v2))::numeric ELSE NULL END, 0)))::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_stratum_summaries_stratum_gap
@@ -505,7 +940,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_stratum_summaries_stratum_gap(p_stratum_summary_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT (CASE WHEN calc_stratum_summaries_stratum_rate_a(p_stratum_summary_id) IS NULL THEN ('')::text ELSE ((COALESCE(CASE WHEN (calc_stratum_summaries_stratum_rate_a(p_stratum_summary_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_stratum_summaries_stratum_rate_a(p_stratum_summary_id))::numeric ELSE NULL END, 0) - COALESCE(CASE WHEN (calc_stratum_summaries_stratum_rate_b(p_stratum_summary_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_stratum_summaries_stratum_rate_b(p_stratum_summary_id))::numeric ELSE NULL END, 0)))::text END)::numeric;
+  WITH __erb_dedup_v1 AS (SELECT calc_stratum_summaries_stratum_rate_a(p_stratum_summary_id) AS val), __erb_dedup_v2 AS (SELECT calc_stratum_summaries_stratum_rate_b(p_stratum_summary_id) AS val) SELECT (CASE WHEN (SELECT val FROM __erb_dedup_v1) IS NULL THEN NULL ELSE ((COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v1))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v1))::numeric ELSE NULL END, 0) - COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v2))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v2))::numeric ELSE NULL END, 0)))::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_stratum_summaries_weighted_stratum_gap
@@ -515,7 +950,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_stratum_summaries_weighted_stratum_gap(p_stratum_summary_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT (CASE WHEN calc_stratum_summaries_stratum_gap(p_stratum_summary_id) IS NULL THEN ('')::text ELSE ((COALESCE(CASE WHEN (calc_stratum_summaries_stratum_gap(p_stratum_summary_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_stratum_summaries_stratum_gap(p_stratum_summary_id))::numeric ELSE NULL END, 0) * COALESCE(CASE WHEN (calc_stratum_summaries_stratum_fraction(p_stratum_summary_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_stratum_summaries_stratum_fraction(p_stratum_summary_id))::numeric ELSE NULL END, 0)))::text END)::numeric;
+  WITH __erb_dedup_v1 AS (SELECT calc_stratum_summaries_stratum_gap(p_stratum_summary_id) AS val), __erb_dedup_v2 AS (SELECT calc_stratum_summaries_stratum_fraction(p_stratum_summary_id) AS val) SELECT (CASE WHEN (SELECT val FROM __erb_dedup_v1) IS NULL THEN NULL ELSE ((COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v1))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v1))::numeric ELSE NULL END, 0) * COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v2))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v2))::numeric ELSE NULL END, 0)))::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_stratum_summaries_abs_allocation_bias
@@ -525,7 +960,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_stratum_summaries_abs_allocation_bias(p_stratum_summary_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT (CASE WHEN calc_stratum_summaries_allocation_bias(p_stratum_summary_id) IS NULL THEN ('')::text ELSE (ABS(calc_stratum_summaries_allocation_bias(p_stratum_summary_id)))::text END)::numeric;
+  WITH __erb_dedup_v1 AS (SELECT calc_stratum_summaries_allocation_bias(p_stratum_summary_id) AS val) SELECT (CASE WHEN (SELECT val FROM __erb_dedup_v1) IS NULL THEN NULL ELSE (ABS((SELECT val FROM __erb_dedup_v1)))::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_stratum_summaries_abs_stratum_gap
@@ -535,7 +970,304 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_stratum_summaries_abs_stratum_gap(p_stratum_summary_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT (CASE WHEN calc_stratum_summaries_stratum_gap(p_stratum_summary_id) IS NULL THEN ('')::text ELSE (ABS(calc_stratum_summaries_stratum_gap(p_stratum_summary_id)))::text END)::numeric;
+  WITH __erb_dedup_v1 AS (SELECT calc_stratum_summaries_stratum_gap(p_stratum_summary_id) AS val) SELECT (CASE WHEN (SELECT val FROM __erb_dedup_v1) IS NULL THEN NULL ELSE (ABS((SELECT val FROM __erb_dedup_v1)))::text END)::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_model_summary_corpus_passes_ingestion_contract
+-- Field: ModelSummary.CorpusPassesIngestionContract
+-- Type: lookup | DataType: boolean | Returns: BOOLEAN
+-- Constant-key lookup: IngestionContractPasses from IngestionSummary where IngestionSummaryId = 'ingestion-v1'
+
+
+CREATE OR REPLACE FUNCTION calc_model_summary_corpus_passes_ingestion_contract(p_model_summary_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT calc_ingestion_summary_ingestion_contract_passes('ingestion-v1');
+$$ LANGUAGE sql STABLE;
+
+-- calc_model_summary_ingestion_witness_note
+-- Field: ModelSummary.IngestionWitnessNote
+-- Type: lookup | DataType: string | Returns: TEXT
+-- Constant-key lookup: IngestionWitnessNote from IngestionSummary where IngestionSummaryId = 'ingestion-v1'
+
+
+CREATE OR REPLACE FUNCTION calc_model_summary_ingestion_witness_note(p_model_summary_id TEXT)
+RETURNS TEXT AS $$
+  SELECT calc_ingestion_summary_ingestion_witness_note('ingestion-v1');
+$$ LANGUAGE sql STABLE;
+
+-- calc_model_summary_catalog_entry_count
+-- Field: ModelSummary.CatalogEntryCount
+-- Type: lookup | DataType: integer | Returns: INTEGER
+-- Constant-key lookup: TotalCatalogEntries from CorpusCatalogSummary where CatalogSummaryId = 'catalog-v1'
+
+
+CREATE OR REPLACE FUNCTION calc_model_summary_catalog_entry_count(p_model_summary_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT calc_corpus_catalog_summary_total_catalog_entries('catalog-v1');
+$$ LANGUAGE sql STABLE;
+
+-- calc_model_summary_pending_import_count
+-- Field: ModelSummary.PendingImportCount
+-- Type: lookup | DataType: integer | Returns: INTEGER
+-- Constant-key lookup: CandidateCount from CorpusCatalogSummary where CatalogSummaryId = 'catalog-v1'
+
+
+CREATE OR REPLACE FUNCTION calc_model_summary_pending_import_count(p_model_summary_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT calc_corpus_catalog_summary_candidate_count('catalog-v1');
+$$ LANGUAGE sql STABLE;
+
+-- calc_model_summary_ready_to_encode_count
+-- Field: ModelSummary.ReadyToEncodeCount
+-- Type: lookup | DataType: integer | Returns: INTEGER
+-- Constant-key lookup: ReadyToEncodeCount from CorpusCatalogSummary where CatalogSummaryId = 'catalog-v1'
+
+
+CREATE OR REPLACE FUNCTION calc_model_summary_ready_to_encode_count(p_model_summary_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT calc_corpus_catalog_summary_ready_to_encode_count('catalog-v1');
+$$ LANGUAGE sql STABLE;
+
+-- calc_model_summary_import_session_ready
+-- Field: ModelSummary.ImportSessionReady
+-- Type: lookup | DataType: boolean | Returns: BOOLEAN
+-- Constant-key lookup: ImportSessionReady from CorpusCatalogSummary where CatalogSummaryId = 'catalog-v1'
+
+
+CREATE OR REPLACE FUNCTION calc_model_summary_import_session_ready(p_model_summary_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT calc_corpus_catalog_summary_import_session_ready('catalog-v1');
+$$ LANGUAGE sql STABLE;
+
+-- calc_model_summary_catalog_witness_note
+-- Field: ModelSummary.CatalogWitnessNote
+-- Type: lookup | DataType: string | Returns: TEXT
+-- Constant-key lookup: CatalogWitnessNote from CorpusCatalogSummary where CatalogSummaryId = 'catalog-v1'
+
+
+CREATE OR REPLACE FUNCTION calc_model_summary_catalog_witness_note(p_model_summary_id TEXT)
+RETURNS TEXT AS $$
+  SELECT calc_corpus_catalog_summary_catalog_witness_note('catalog-v1');
+$$ LANGUAGE sql STABLE;
+
+-- calc_model_summary_type_prediction_match_count
+-- Field: ModelSummary.TypePredictionMatchCount
+-- Type: lookup | DataType: integer | Returns: INTEGER
+-- Constant-key lookup: TypePredictionMatchCount from CorpusCatalogSummary where CatalogSummaryId = 'catalog-v1'
+
+
+CREATE OR REPLACE FUNCTION calc_model_summary_type_prediction_match_count(p_model_summary_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT calc_corpus_catalog_summary_type_prediction_match_count('catalog-v1');
+$$ LANGUAGE sql STABLE;
+
+-- calc_model_summary_type_prediction_mismatch_count
+-- Field: ModelSummary.TypePredictionMismatchCount
+-- Type: lookup | DataType: integer | Returns: INTEGER
+-- Constant-key lookup: TypePredictionMismatchCount from CorpusCatalogSummary where CatalogSummaryId = 'catalog-v1'
+
+
+CREATE OR REPLACE FUNCTION calc_model_summary_type_prediction_mismatch_count(p_model_summary_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT calc_corpus_catalog_summary_type_prediction_mismatch_count('catalog-v1');
+$$ LANGUAGE sql STABLE;
+
+-- calc_model_summary_type_prediction_match_rate
+-- Field: ModelSummary.TypePredictionMatchRate
+-- Type: lookup | DataType: number | Returns: NUMERIC
+-- Constant-key lookup: TypePredictionMatchRate from CorpusCatalogSummary where CatalogSummaryId = 'catalog-v1'
+
+
+CREATE OR REPLACE FUNCTION calc_model_summary_type_prediction_match_rate(p_model_summary_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT calc_corpus_catalog_summary_type_prediction_match_rate('catalog-v1');
+$$ LANGUAGE sql STABLE;
+
+-- calc_model_summary_sign_flip_prediction_match_rate
+-- Field: ModelSummary.SignFlipPredictionMatchRate
+-- Type: lookup | DataType: number | Returns: NUMERIC
+-- Constant-key lookup: SignFlipPredictionMatchRate from CorpusCatalogSummary where CatalogSummaryId = 'catalog-v1'
+
+
+CREATE OR REPLACE FUNCTION calc_model_summary_sign_flip_prediction_match_rate(p_model_summary_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT calc_corpus_catalog_summary_sign_flip_prediction_match_rate('catalog-v1');
+$$ LANGUAGE sql STABLE;
+
+-- calc_model_summary_catalog_prediction_witness_note
+-- Field: ModelSummary.CatalogPredictionWitnessNote
+-- Type: lookup | DataType: string | Returns: TEXT
+-- Constant-key lookup: CatalogPredictionWitnessNote from CorpusCatalogSummary where CatalogSummaryId = 'catalog-v1'
+
+
+CREATE OR REPLACE FUNCTION calc_model_summary_catalog_prediction_witness_note(p_model_summary_id TEXT)
+RETURNS TEXT AS $$
+  SELECT calc_corpus_catalog_summary_catalog_prediction_witness_note('catalog-v1');
+$$ LANGUAGE sql STABLE;
+
+-- calc_model_summary_age_identity_manifest_flip_rate
+-- Field: ModelSummary.AgeIdentityManifestFlipRate
+-- Type: calculated | DataType: number | Returns: NUMERIC
+-- Constant-key lookup: ManifestFlipRate from IdentityClusterSummaries where IdentityClusterId = 'id-age-composition'
+
+
+CREATE OR REPLACE FUNCTION calc_model_summary_age_identity_manifest_flip_rate(p_model_summary_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT calc_identity_cluster_summaries_manifest_flip_rate('id-age-composition');
+$$ LANGUAGE sql STABLE;
+
+-- calc_model_summary_age_identity_study_count
+-- Field: ModelSummary.AgeIdentityStudyCount
+-- Type: calculated | DataType: integer | Returns: INTEGER
+-- Constant-key lookup: StudyCount from IdentityClusterSummaries where IdentityClusterId = 'id-age-composition'
+
+
+CREATE OR REPLACE FUNCTION calc_model_summary_age_identity_study_count(p_model_summary_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT (SELECT study_count::integer FROM identity_cluster_summaries WHERE identity_cluster_id = 'id-age-composition');
+$$ LANGUAGE sql STABLE;
+
+-- calc_model_summary_age_identity_latent_fraction_among_type_d
+-- Field: ModelSummary.AgeIdentityLatentFractionAmongTypeD
+-- Type: calculated | DataType: number | Returns: NUMERIC
+-- Constant-key lookup: LatentFractionAmongTypeD from IdentityClusterSummaries where IdentityClusterId = 'id-age-composition'
+
+
+CREATE OR REPLACE FUNCTION calc_model_summary_age_identity_latent_fraction_among_type_d(p_model_summary_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT (SELECT latent_fraction_among_type_d::numeric FROM identity_cluster_summaries WHERE identity_cluster_id = 'id-age-composition');
+$$ LANGUAGE sql STABLE;
+
+-- calc_model_summary_severity_identity_latent_fraction_among_type
+-- Field: ModelSummary.SeverityIdentityLatentFractionAmongTypeD
+-- Type: calculated | DataType: number | Returns: NUMERIC
+-- Constant-key lookup: LatentFractionAmongTypeD from IdentityClusterSummaries where IdentityClusterId = 'id-disease-severity'
+
+
+CREATE OR REPLACE FUNCTION calc_model_summary_severity_identity_latent_fraction_among_type(p_model_summary_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT (SELECT latent_fraction_among_type_d::numeric FROM identity_cluster_summaries WHERE identity_cluster_id = 'id-disease-severity');
+$$ LANGUAGE sql STABLE;
+
+-- calc_model_summary_severity_medicine_manifest_flip_rate
+-- Field: ModelSummary.SeverityMedicineManifestFlipRate
+-- Type: calculated | DataType: number | Returns: NUMERIC
+-- Constant-key lookup: ManifestFlipRate from IdentityDomainCells where CellId = 'cell-id-disease-severity-x-medicine'
+
+
+CREATE OR REPLACE FUNCTION calc_model_summary_severity_medicine_manifest_flip_rate(p_model_summary_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT calc_identity_domain_cells_manifest_flip_rate('cell-id-disease-severity-x-medicine');
+$$ LANGUAGE sql STABLE;
+
+-- calc_model_summary_severity_epi_manifest_flip_count
+-- Field: ModelSummary.SeverityEpiManifestFlipCount
+-- Type: calculated | DataType: integer | Returns: INTEGER
+-- Constant-key lookup: ManifestFlipCount from IdentityDomainCells where CellId = 'cell-id-disease-severity-x-epidemiology'
+
+
+CREATE OR REPLACE FUNCTION calc_model_summary_severity_epi_manifest_flip_count(p_model_summary_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT (SELECT manifest_flip_count::integer FROM identity_domain_cells WHERE cell_id = 'cell-id-disease-severity-x-epidemiology');
+$$ LANGUAGE sql STABLE;
+
+-- calc_model_summary_selection_frailty_manifest_flip_count
+-- Field: ModelSummary.SelectionFrailtyManifestFlipCount
+-- Type: calculated | DataType: integer | Returns: INTEGER
+-- Constant-key lookup: ManifestFlipCount from IdentityClusterSummaries where IdentityClusterId = 'cluster-id-selection-frailty'
+
+
+CREATE OR REPLACE FUNCTION calc_model_summary_selection_frailty_manifest_flip_count(p_model_summary_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT (SELECT manifest_flip_count::integer FROM identity_cluster_summaries WHERE identity_cluster_id = 'cluster-id-selection-frailty');
+$$ LANGUAGE sql STABLE;
+
+-- calc_model_summary_selection_frailty_study_count
+-- Field: ModelSummary.SelectionFrailtyStudyCount
+-- Type: calculated | DataType: integer | Returns: INTEGER
+-- Constant-key lookup: StudyCount from IdentityClusterSummaries where IdentityClusterId = 'cluster-id-selection-frailty'
+
+
+CREATE OR REPLACE FUNCTION calc_model_summary_selection_frailty_study_count(p_model_summary_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT (SELECT study_count::integer FROM identity_cluster_summaries WHERE identity_cluster_id = 'cluster-id-selection-frailty');
+$$ LANGUAGE sql STABLE;
+
+-- calc_model_summary_collider_identity_manifest_flip_rate
+-- Field: ModelSummary.ColliderIdentityManifestFlipRate
+-- Type: calculated | DataType: number | Returns: NUMERIC
+-- Constant-key lookup: ManifestFlipRate from IdentityClusterSummaries where IdentityClusterId = 'cluster-id-collider-proxy'
+
+
+CREATE OR REPLACE FUNCTION calc_model_summary_collider_identity_manifest_flip_rate(p_model_summary_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT calc_identity_cluster_summaries_manifest_flip_rate('cluster-id-collider-proxy');
+$$ LANGUAGE sql STABLE;
+
+-- calc_model_summary_severity_drift_direction
+-- Field: ModelSummary.SeverityDriftDirection
+-- Type: calculated | DataType: string | Returns: TEXT
+-- Constant-key lookup: DriftDirection from ConfounderDistortionTimeline where CellId = 'id-disease-severity'
+
+
+CREATE OR REPLACE FUNCTION calc_model_summary_severity_drift_direction(p_model_summary_id TEXT)
+RETURNS TEXT AS $$
+  SELECT calc_confounder_distortion_timeline_drift_direction('id-disease-severity');
+$$ LANGUAGE sql STABLE;
+
+-- calc_model_summary_geographic_drift_direction
+-- Field: ModelSummary.GeographicDriftDirection
+-- Type: calculated | DataType: string | Returns: TEXT
+-- Constant-key lookup: DriftDirection from ConfounderDistortionTimeline where CellId = 'id-geographic-composition'
+
+
+CREATE OR REPLACE FUNCTION calc_model_summary_geographic_drift_direction(p_model_summary_id TEXT)
+RETURNS TEXT AS $$
+  SELECT calc_confounder_distortion_timeline_drift_direction('id-geographic-composition');
+$$ LANGUAGE sql STABLE;
+
+-- calc_model_summary_situational_drift_direction
+-- Field: ModelSummary.SituationalDriftDirection
+-- Type: calculated | DataType: string | Returns: TEXT
+-- Constant-key lookup: DriftDirection from ConfounderDistortionTimeline where CellId = 'id-situational-context'
+
+
+CREATE OR REPLACE FUNCTION calc_model_summary_situational_drift_direction(p_model_summary_id TEXT)
+RETURNS TEXT AS $$
+  SELECT calc_confounder_distortion_timeline_drift_direction('id-situational-context');
+$$ LANGUAGE sql STABLE;
+
+-- calc_model_summary_age_drift_direction
+-- Field: ModelSummary.AgeDriftDirection
+-- Type: calculated | DataType: string | Returns: TEXT
+-- Constant-key lookup: DriftDirection from ConfounderDistortionTimeline where CellId = 'id-age-composition'
+
+
+CREATE OR REPLACE FUNCTION calc_model_summary_age_drift_direction(p_model_summary_id TEXT)
+RETURNS TEXT AS $$
+  SELECT calc_confounder_distortion_timeline_drift_direction('id-age-composition');
+$$ LANGUAGE sql STABLE;
+
+-- calc_model_summary_institutional_drift_direction
+-- Field: ModelSummary.InstitutionalDriftDirection
+-- Type: calculated | DataType: string | Returns: TEXT
+-- Constant-key lookup: DriftDirection from ConfounderDistortionTimeline where CellId = 'id-institutional-unit'
+
+
+CREATE OR REPLACE FUNCTION calc_model_summary_institutional_drift_direction(p_model_summary_id TEXT)
+RETURNS TEXT AS $$
+  SELECT calc_confounder_distortion_timeline_drift_direction('id-institutional-unit');
+$$ LANGUAGE sql STABLE;
+
+-- calc_model_summary_socioeconomic_drift_direction
+-- Field: ModelSummary.SocioeconomicDriftDirection
+-- Type: calculated | DataType: string | Returns: TEXT
+-- Constant-key lookup: DriftDirection from ConfounderDistortionTimeline where CellId = 'id-socioeconomic-status'
+
+
+CREATE OR REPLACE FUNCTION calc_model_summary_socioeconomic_drift_direction(p_model_summary_id TEXT)
+RETURNS TEXT AS $$
+  SELECT calc_confounder_distortion_timeline_drift_direction('id-socioeconomic-status');
 $$ LANGUAGE sql STABLE;
 
 -- calc_model_summary_name
@@ -575,7 +1307,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_model_summary_study_count(p_model_summary_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((COALESCE(CASE WHEN (calc_model_summary_reversal_count(p_model_summary_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_model_summary_reversal_count(p_model_summary_id))::numeric ELSE NULL END, 0) + COALESCE(CASE WHEN (calc_model_summary_non_reversal_count(p_model_summary_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_model_summary_non_reversal_count(p_model_summary_id))::numeric ELSE NULL END, 0)))::integer;
+  WITH __erb_dedup_v1 AS (SELECT calc_model_summary_reversal_count(p_model_summary_id) AS val), __erb_dedup_v2 AS (SELECT calc_model_summary_non_reversal_count(p_model_summary_id) AS val) SELECT ((COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v1))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v1))::numeric ELSE NULL END, 0) + COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v2))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v2))::numeric ELSE NULL END, 0)))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_model_summary_explained_count
@@ -605,7 +1337,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_model_summary_avg_paradox_strength(p_model_summary_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT (CASE WHEN (calc_model_summary_study_count(p_model_summary_id))::NUMERIC = 0 THEN ('')::text ELSE ((COALESCE(CASE WHEN (calc_model_summary_total_paradox_strength(p_model_summary_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_model_summary_total_paradox_strength(p_model_summary_id))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(CASE WHEN (calc_model_summary_study_count(p_model_summary_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_model_summary_study_count(p_model_summary_id))::numeric ELSE NULL END, 0), 0)))::text END)::numeric;
+  WITH __erb_dedup_v1 AS (SELECT calc_model_summary_study_count(p_model_summary_id) AS val), __erb_dedup_v2 AS (SELECT calc_model_summary_total_paradox_strength(p_model_summary_id) AS val) SELECT (CASE WHEN ((SELECT val FROM __erb_dedup_v1))::NUMERIC = 0 THEN NULL ELSE ((COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v2))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v2))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v1))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v1))::numeric ELSE NULL END, 0), 0)))::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_model_summary_type_a_count
@@ -645,7 +1377,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_model_summary_type_a_fraction(p_model_summary_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT (CASE WHEN (calc_model_summary_study_count(p_model_summary_id))::NUMERIC = 0 THEN ('')::text ELSE ((COALESCE(CASE WHEN (calc_model_summary_type_a_count(p_model_summary_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_model_summary_type_a_count(p_model_summary_id))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(CASE WHEN (calc_model_summary_study_count(p_model_summary_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_model_summary_study_count(p_model_summary_id))::numeric ELSE NULL END, 0), 0)))::text END)::numeric;
+  WITH __erb_dedup_v1 AS (SELECT calc_model_summary_study_count(p_model_summary_id) AS val), __erb_dedup_v2 AS (SELECT calc_model_summary_type_a_count(p_model_summary_id) AS val) SELECT (CASE WHEN ((SELECT val FROM __erb_dedup_v1))::NUMERIC = 0 THEN NULL ELSE ((COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v2))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v2))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v1))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v1))::numeric ELSE NULL END, 0), 0)))::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_model_summary_distortion_taxonomy_coverage
@@ -665,7 +1397,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_model_summary_distortion_only_count(p_model_summary_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((COALESCE(CASE WHEN (calc_model_summary_c_amplification_count(p_model_summary_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_model_summary_c_amplification_count(p_model_summary_id))::numeric ELSE NULL END, 0) + COALESCE(CASE WHEN (calc_model_summary_c_compression_count(p_model_summary_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_model_summary_c_compression_count(p_model_summary_id))::numeric ELSE NULL END, 0)))::integer;
+  WITH __erb_dedup_v1 AS (SELECT calc_model_summary_c_amplification_count(p_model_summary_id) AS val), __erb_dedup_v2 AS (SELECT calc_model_summary_c_compression_count(p_model_summary_id) AS val) SELECT ((COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v1))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v1))::numeric ELSE NULL END, 0) + COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v2))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v2))::numeric ELSE NULL END, 0)))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_model_summary_c_amplification_count
@@ -725,7 +1457,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_model_summary_sweep_corrected_gap_range(p_model_summary_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT (CASE WHEN calc_model_summary_sweep_corrected_gap_max(p_model_summary_id) IS NULL THEN ('')::text ELSE ((COALESCE(CASE WHEN (calc_model_summary_sweep_corrected_gap_max(p_model_summary_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_model_summary_sweep_corrected_gap_max(p_model_summary_id))::numeric ELSE NULL END, 0) - COALESCE(CASE WHEN (calc_model_summary_sweep_corrected_gap_min(p_model_summary_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_model_summary_sweep_corrected_gap_min(p_model_summary_id))::numeric ELSE NULL END, 0)))::text END)::numeric;
+  WITH __erb_dedup_v1 AS (SELECT calc_model_summary_sweep_corrected_gap_max(p_model_summary_id) AS val), __erb_dedup_v2 AS (SELECT calc_model_summary_sweep_corrected_gap_min(p_model_summary_id) AS val) SELECT (CASE WHEN (SELECT val FROM __erb_dedup_v1) IS NULL THEN NULL ELSE ((COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v1))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v1))::numeric ELSE NULL END, 0) - COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v2))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v2))::numeric ELSE NULL END, 0)))::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_model_summary_sweep_pooled_gap_range
@@ -735,7 +1467,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_model_summary_sweep_pooled_gap_range(p_model_summary_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((COALESCE(CASE WHEN ((SELECT COALESCE(MAX((calc_allocation_sweep_sweep_pooled_gap(sweep_id))::numeric), 0) FROM allocation_sweep WHERE study_id = 'kidney-1986'))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT COALESCE(MAX((calc_allocation_sweep_sweep_pooled_gap(sweep_id))::numeric), 0) FROM allocation_sweep WHERE study_id = 'kidney-1986'))::numeric ELSE NULL END, 0) - COALESCE(CASE WHEN ((SELECT COALESCE(MIN((calc_allocation_sweep_sweep_pooled_gap(sweep_id))::numeric), 0) FROM allocation_sweep WHERE study_id = 'kidney-1986'))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT COALESCE(MIN((calc_allocation_sweep_sweep_pooled_gap(sweep_id))::numeric), 0) FROM allocation_sweep WHERE study_id = 'kidney-1986'))::numeric ELSE NULL END, 0)))::numeric;
+  WITH __erb_dedup_v1 AS (SELECT calc_allocation_sweep_sweep_pooled_gap(sweep_id) AS val) SELECT ((COALESCE(CASE WHEN ((SELECT COALESCE(MAX(((SELECT val FROM __erb_dedup_v1))::numeric), 0) FROM allocation_sweep WHERE study_id = 'kidney-1986'))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT COALESCE(MAX(((SELECT val FROM __erb_dedup_v1))::numeric), 0) FROM allocation_sweep WHERE study_id = 'kidney-1986'))::numeric ELSE NULL END, 0) - COALESCE(CASE WHEN ((SELECT COALESCE(MIN(((SELECT val FROM __erb_dedup_v1))::numeric), 0) FROM allocation_sweep WHERE study_id = 'kidney-1986'))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT COALESCE(MIN(((SELECT val FROM __erb_dedup_v1))::numeric), 0) FROM allocation_sweep WHERE study_id = 'kidney-1986'))::numeric ELSE NULL END, 0)))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_model_summary_real_study_count
@@ -775,7 +1507,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_model_summary_signal_purity_gap(p_model_summary_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((COALESCE(CASE WHEN (calc_model_summary_avg_signal_purity_non_reversal(p_model_summary_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_model_summary_avg_signal_purity_non_reversal(p_model_summary_id))::numeric ELSE NULL END, 0) - COALESCE(CASE WHEN (calc_model_summary_avg_signal_purity_reversal(p_model_summary_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_model_summary_avg_signal_purity_reversal(p_model_summary_id))::numeric ELSE NULL END, 0)))::numeric;
+  WITH __erb_dedup_v1 AS (SELECT calc_model_summary_avg_signal_purity_non_reversal(p_model_summary_id) AS val), __erb_dedup_v2 AS (SELECT calc_model_summary_avg_signal_purity_reversal(p_model_summary_id) AS val) SELECT ((COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v1))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v1))::numeric ELSE NULL END, 0) - COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v2))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v2))::numeric ELSE NULL END, 0)))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_model_summary_medicine_study_count
@@ -805,7 +1537,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_model_summary_other_domain_study_count(p_model_summary_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((COALESCE(CASE WHEN (calc_model_summary_real_study_count(p_model_summary_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_model_summary_real_study_count(p_model_summary_id))::numeric ELSE NULL END, 0) - COALESCE(CASE WHEN ((COALESCE(CASE WHEN (calc_model_summary_medicine_study_count(p_model_summary_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_model_summary_medicine_study_count(p_model_summary_id))::numeric ELSE NULL END, 0) - COALESCE(CASE WHEN (calc_model_summary_epidemiology_study_count(p_model_summary_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_model_summary_epidemiology_study_count(p_model_summary_id))::numeric ELSE NULL END, 0)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((COALESCE(CASE WHEN (calc_model_summary_medicine_study_count(p_model_summary_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_model_summary_medicine_study_count(p_model_summary_id))::numeric ELSE NULL END, 0) - COALESCE(CASE WHEN (calc_model_summary_epidemiology_study_count(p_model_summary_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_model_summary_epidemiology_study_count(p_model_summary_id))::numeric ELSE NULL END, 0)))::numeric ELSE NULL END, 0)))::integer;
+  WITH __erb_dedup_v1 AS (SELECT calc_model_summary_real_study_count(p_model_summary_id) AS val), __erb_dedup_v2 AS (SELECT calc_model_summary_medicine_study_count(p_model_summary_id) AS val), __erb_dedup_v3 AS (SELECT calc_model_summary_epidemiology_study_count(p_model_summary_id) AS val) SELECT ((COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v1))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v1))::numeric ELSE NULL END, 0) - COALESCE(CASE WHEN ((COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v2))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v2))::numeric ELSE NULL END, 0) - COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v3))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v3))::numeric ELSE NULL END, 0)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v2))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v2))::numeric ELSE NULL END, 0) - COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v3))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v3))::numeric ELSE NULL END, 0)))::numeric ELSE NULL END, 0)))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_model_summary_domain_diversity_note
@@ -815,7 +1547,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_model_summary_domain_diversity_note(p_model_summary_id TEXT)
 RETURNS TEXT AS $$
-  SELECT (CONCAT('real=', calc_model_summary_real_study_count(p_model_summary_id), ' studies; wave2=', calc_model_summary_expansion_wave2_study_count(p_model_summary_id), '; eduLatent=', ROUND(((COALESCE(CASE WHEN (calc_model_summary_education_latent_fraction(p_model_summary_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_model_summary_education_latent_fraction(p_model_summary_id))::numeric ELSE NULL END, 0) * COALESCE(100, 0)))::NUMERIC, (0)::INTEGER), '%; sportsLatent=', ROUND(((COALESCE(CASE WHEN (calc_model_summary_sports_latent_fraction(p_model_summary_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_model_summary_sports_latent_fraction(p_model_summary_id))::numeric ELSE NULL END, 0) * COALESCE(100, 0)))::NUMERIC, (0)::INTEGER), '%; econFlipRate=', ROUND(((COALESCE(CASE WHEN (calc_model_summary_economics_sign_flip_rate(p_model_summary_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_model_summary_economics_sign_flip_rate(p_model_summary_id))::numeric ELSE NULL END, 0) * COALESCE(100, 0)))::NUMERIC, (0)::INTEGER), '%'))::text;
+  WITH __erb_dedup_v1 AS (SELECT calc_model_summary_education_latent_fraction(p_model_summary_id) AS val), __erb_dedup_v2 AS (SELECT calc_model_summary_sports_latent_fraction(p_model_summary_id) AS val), __erb_dedup_v3 AS (SELECT calc_model_summary_economics_sign_flip_rate(p_model_summary_id) AS val) SELECT (CONCAT('real=', calc_model_summary_real_study_count(p_model_summary_id), ' studies; wave2=', calc_model_summary_expansion_wave2_study_count(p_model_summary_id), '; eduLatent=', ROUND(((COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v1))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v1))::numeric ELSE NULL END, 0) * COALESCE(100, 0)))::NUMERIC, (0)::INTEGER), '%; sportsLatent=', ROUND(((COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v2))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v2))::numeric ELSE NULL END, 0) * COALESCE(100, 0)))::NUMERIC, (0)::INTEGER), '%; econFlipRate=', ROUND(((COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v3))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v3))::numeric ELSE NULL END, 0) * COALESCE(100, 0)))::NUMERIC, (0)::INTEGER), '%'))::text;
 $$ LANGUAGE sql STABLE;
 
 -- calc_model_summary_ingestion_protocol_item_count
@@ -855,7 +1587,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_model_summary_latent_type_d_fraction(p_model_summary_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT (CASE WHEN (calc_model_summary_type_d_count(p_model_summary_id))::NUMERIC = 0 THEN ('')::text ELSE ((COALESCE(CASE WHEN (calc_model_summary_latent_type_d_count(p_model_summary_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_model_summary_latent_type_d_count(p_model_summary_id))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(CASE WHEN (calc_model_summary_type_d_count(p_model_summary_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_model_summary_type_d_count(p_model_summary_id))::numeric ELSE NULL END, 0), 0)))::text END)::numeric;
+  WITH __erb_dedup_v1 AS (SELECT calc_model_summary_type_d_count(p_model_summary_id) AS val), __erb_dedup_v2 AS (SELECT calc_model_summary_latent_type_d_count(p_model_summary_id) AS val) SELECT (CASE WHEN ((SELECT val FROM __erb_dedup_v1))::NUMERIC = 0 THEN NULL ELSE ((COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v2))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v2))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v1))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v1))::numeric ELSE NULL END, 0), 0)))::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_model_summary_cross_zero_count
@@ -905,7 +1637,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_model_summary_avg_pooled_gap_latent_d(p_model_summary_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT (CASE WHEN (calc_model_summary_latent_type_d_count(p_model_summary_id))::NUMERIC = 0 THEN (0)::text ELSE ((COALESCE(CASE WHEN (calc_model_summary_sum_pooled_gap_latent_d(p_model_summary_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_model_summary_sum_pooled_gap_latent_d(p_model_summary_id))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(CASE WHEN (calc_model_summary_latent_type_d_count(p_model_summary_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_model_summary_latent_type_d_count(p_model_summary_id))::numeric ELSE NULL END, 0), 0)))::text END)::numeric;
+  WITH __erb_dedup_v1 AS (SELECT calc_model_summary_latent_type_d_count(p_model_summary_id) AS val), __erb_dedup_v2 AS (SELECT calc_model_summary_sum_pooled_gap_latent_d(p_model_summary_id) AS val) SELECT (CASE WHEN ((SELECT val FROM __erb_dedup_v1))::NUMERIC = 0 THEN (0)::text ELSE ((COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v2))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v2))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v1))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v1))::numeric ELSE NULL END, 0), 0)))::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_model_summary_sum_pooled_gap_stable_d
@@ -925,7 +1657,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_model_summary_avg_pooled_gap_stable_d(p_model_summary_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT (CASE WHEN (calc_model_summary_stable_type_d_count(p_model_summary_id))::NUMERIC = 0 THEN (0)::text ELSE ((COALESCE(CASE WHEN (calc_model_summary_sum_pooled_gap_stable_d(p_model_summary_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_model_summary_sum_pooled_gap_stable_d(p_model_summary_id))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(CASE WHEN (calc_model_summary_stable_type_d_count(p_model_summary_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_model_summary_stable_type_d_count(p_model_summary_id))::numeric ELSE NULL END, 0), 0)))::text END)::numeric;
+  WITH __erb_dedup_v1 AS (SELECT calc_model_summary_stable_type_d_count(p_model_summary_id) AS val), __erb_dedup_v2 AS (SELECT calc_model_summary_sum_pooled_gap_stable_d(p_model_summary_id) AS val) SELECT (CASE WHEN ((SELECT val FROM __erb_dedup_v1))::NUMERIC = 0 THEN (0)::text ELSE ((COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v2))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v2))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v1))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v1))::numeric ELSE NULL END, 0), 0)))::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_model_summary_epidemiology_avg_distortion
@@ -975,7 +1707,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_model_summary_collider_selection_count(p_model_summary_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((COALESCE(CASE WHEN ((SELECT COUNT(*) FROM treatment_rankings WHERE calc_treatment_rankings_stratum_causal_role(treatment_ranking_id) = 'collider'))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT COUNT(*) FROM treatment_rankings WHERE calc_treatment_rankings_stratum_causal_role(treatment_ranking_id) = 'collider'))::numeric ELSE NULL END, 0) + COALESCE(CASE WHEN ((SELECT COUNT(*) FROM treatment_rankings WHERE calc_treatment_rankings_stratum_causal_role(treatment_ranking_id) = 'selection'))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT COUNT(*) FROM treatment_rankings WHERE calc_treatment_rankings_stratum_causal_role(treatment_ranking_id) = 'selection'))::numeric ELSE NULL END, 0)))::numeric;
+  SELECT ((COALESCE(CASE WHEN ((SELECT COUNT(*)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT COUNT(*)))::numeric ELSE NULL END, 0) + COALESCE(CASE WHEN ((SELECT COUNT(*)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT COUNT(*)))::numeric ELSE NULL END, 0)))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_model_summary_collider_selection_manifest_count
@@ -985,7 +1717,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_model_summary_collider_selection_manifest_count(p_model_summary_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((COALESCE(CASE WHEN ((SELECT COUNT(*) FROM treatment_rankings WHERE calc_treatment_rankings_stratum_causal_role(treatment_ranking_id) = 'collider'))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT COUNT(*) FROM treatment_rankings WHERE calc_treatment_rankings_stratum_causal_role(treatment_ranking_id) = 'collider'))::numeric ELSE NULL END, 0) + COALESCE(CASE WHEN ((SELECT COUNT(*) FROM treatment_rankings WHERE calc_treatment_rankings_stratum_causal_role(treatment_ranking_id) = 'selection'))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT COUNT(*) FROM treatment_rankings WHERE calc_treatment_rankings_stratum_causal_role(treatment_ranking_id) = 'selection'))::numeric ELSE NULL END, 0)))::numeric;
+  SELECT ((COALESCE(CASE WHEN ((SELECT COUNT(*)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT COUNT(*)))::numeric ELSE NULL END, 0) + COALESCE(CASE WHEN ((SELECT COUNT(*)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT COUNT(*)))::numeric ELSE NULL END, 0)))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_model_summary_collider_selection_latent_only_count
@@ -995,7 +1727,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_model_summary_collider_selection_latent_only_count(p_model_summary_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((COALESCE(CASE WHEN ((SELECT COUNT(*) FROM treatment_rankings WHERE calc_treatment_rankings_stratum_causal_role(treatment_ranking_id) = 'collider'))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT COUNT(*) FROM treatment_rankings WHERE calc_treatment_rankings_stratum_causal_role(treatment_ranking_id) = 'collider'))::numeric ELSE NULL END, 0) + COALESCE(CASE WHEN ((SELECT COUNT(*) FROM treatment_rankings WHERE calc_treatment_rankings_stratum_causal_role(treatment_ranking_id) = 'selection'))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT COUNT(*) FROM treatment_rankings WHERE calc_treatment_rankings_stratum_causal_role(treatment_ranking_id) = 'selection'))::numeric ELSE NULL END, 0)))::numeric;
+  SELECT ((COALESCE(CASE WHEN ((SELECT COUNT(*)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT COUNT(*)))::numeric ELSE NULL END, 0) + COALESCE(CASE WHEN ((SELECT COUNT(*)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT COUNT(*)))::numeric ELSE NULL END, 0)))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_model_summary_explained_confounder_count
@@ -1025,7 +1757,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_model_summary_discovery_witness_note(p_model_summary_id TEXT)
 RETURNS TEXT AS $$
-  SELECT (CONCAT('sweep: latentD=', calc_model_summary_latent_type_d_fraction(p_model_summary_id), ' purityMax=', calc_model_summary_sign_flip_signal_purity_max(p_model_summary_id), ' catalogExact=', (SELECT type_prediction_match_rate FROM model_summary WHERE model_summary_id = p_model_summary_id), ' identities=', calc_model_summary_confounder_identity_count(p_model_summary_id)))::text;
+  SELECT (CONCAT('sweep: latentD=', calc_model_summary_latent_type_d_fraction(p_model_summary_id), ' purityMax=', calc_model_summary_sign_flip_signal_purity_max(p_model_summary_id), ' catalogExact=', calc_model_summary_type_prediction_match_rate(p_model_summary_id), ' identities=', calc_model_summary_confounder_identity_count(p_model_summary_id)))::text;
 $$ LANGUAGE sql STABLE;
 
 -- calc_model_summary_c_plus_avg_distortion
@@ -1095,7 +1827,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_model_summary_economics_expected_a_mismatch_rate(p_model_summary_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT (CASE WHEN (calc_model_summary_expansion_wave1_economics_expected_a_count(p_model_summary_id))::NUMERIC = 0 THEN ('')::text ELSE ((COALESCE(CASE WHEN (calc_model_summary_expansion_wave1_economics_expected_ad_count(p_model_summary_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_model_summary_expansion_wave1_economics_expected_ad_count(p_model_summary_id))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(CASE WHEN (calc_model_summary_expansion_wave1_economics_expected_a_count(p_model_summary_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_model_summary_expansion_wave1_economics_expected_a_count(p_model_summary_id))::numeric ELSE NULL END, 0), 0)))::text END)::numeric;
+  WITH __erb_dedup_v1 AS (SELECT calc_model_summary_expansion_wave1_economics_expected_a_count(p_model_summary_id) AS val), __erb_dedup_v2 AS (SELECT calc_model_summary_expansion_wave1_economics_expected_ad_count(p_model_summary_id) AS val) SELECT (CASE WHEN ((SELECT val FROM __erb_dedup_v1))::NUMERIC = 0 THEN NULL ELSE ((COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v2))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v2))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v1))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v1))::numeric ELSE NULL END, 0), 0)))::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_model_summary_unanimous_sign_flip_count
@@ -1165,7 +1897,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_model_summary_education_latent_fraction(p_model_summary_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT (CASE WHEN ((SELECT COUNT(*)))::NUMERIC = 0 THEN ('')::text ELSE ((COALESCE(CASE WHEN ((SELECT COUNT(*)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT COUNT(*)))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(CASE WHEN ((SELECT COUNT(*)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT COUNT(*)))::numeric ELSE NULL END, 0), 0)))::text END)::numeric;
+  SELECT (CASE WHEN ((SELECT COUNT(*)))::NUMERIC = 0 THEN NULL ELSE ((COALESCE(CASE WHEN ((SELECT COUNT(*)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT COUNT(*)))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(CASE WHEN ((SELECT COUNT(*)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT COUNT(*)))::numeric ELSE NULL END, 0), 0)))::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_model_summary_sports_latent_fraction
@@ -1175,7 +1907,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_model_summary_sports_latent_fraction(p_model_summary_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT (CASE WHEN ((SELECT COUNT(*)))::NUMERIC = 0 THEN ('')::text ELSE ((COALESCE(CASE WHEN ((SELECT COUNT(*)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT COUNT(*)))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(CASE WHEN ((SELECT COUNT(*)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT COUNT(*)))::numeric ELSE NULL END, 0), 0)))::text END)::numeric;
+  SELECT (CASE WHEN ((SELECT COUNT(*)))::NUMERIC = 0 THEN NULL ELSE ((COALESCE(CASE WHEN ((SELECT COUNT(*)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT COUNT(*)))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(CASE WHEN ((SELECT COUNT(*)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT COUNT(*)))::numeric ELSE NULL END, 0), 0)))::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_model_summary_economics_sign_flip_rate
@@ -1185,7 +1917,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_model_summary_economics_sign_flip_rate(p_model_summary_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT (CASE WHEN ((SELECT COUNT(*)))::NUMERIC = 0 THEN ('')::text ELSE ((COALESCE(CASE WHEN ((SELECT COUNT(*)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT COUNT(*)))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(CASE WHEN ((SELECT COUNT(*)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT COUNT(*)))::numeric ELSE NULL END, 0), 0)))::text END)::numeric;
+  SELECT (CASE WHEN ((SELECT COUNT(*)))::NUMERIC = 0 THEN NULL ELSE ((COALESCE(CASE WHEN ((SELECT COUNT(*)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT COUNT(*)))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(CASE WHEN ((SELECT COUNT(*)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT COUNT(*)))::numeric ELSE NULL END, 0), 0)))::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_model_summary_education_type_d_count
@@ -1275,63 +2007,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_model_summary_unmapped_stratum_variable_count(p_model_summary_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((COALESCE(CASE WHEN ((SELECT COUNT(*) FROM stratum_variables))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT COUNT(*) FROM stratum_variables))::numeric ELSE NULL END, 0) - COALESCE(CASE WHEN (calc_model_summary_mapped_stratum_variable_count(p_model_summary_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_model_summary_mapped_stratum_variable_count(p_model_summary_id))::numeric ELSE NULL END, 0)))::integer;
-$$ LANGUAGE sql STABLE;
-
--- calc_model_summary_age_identity_manifest_flip_rate
--- Field: ModelSummary.AgeIdentityManifestFlipRate
--- Type: calculated | DataType: number | Returns: NUMERIC
-
-
-CREATE OR REPLACE FUNCTION calc_model_summary_age_identity_manifest_flip_rate(p_model_summary_id TEXT)
-RETURNS NUMERIC AS $$
-  SELECT /* WARNING: Formula translation failed: Function 'LOOKUP' is not supported yet
-   Original Airtable formula:
-   =LOOKUP("id-age-composition", IdentityClusterSummaries[ConfounderIdentity], IdentityClusterSummaries[ManifestFlipRate])
-*/
-NULL::numeric;
-$$ LANGUAGE sql STABLE;
-
--- calc_model_summary_age_identity_study_count
--- Field: ModelSummary.AgeIdentityStudyCount
--- Type: calculated | DataType: integer | Returns: INTEGER
-
-
-CREATE OR REPLACE FUNCTION calc_model_summary_age_identity_study_count(p_model_summary_id TEXT)
-RETURNS INTEGER AS $$
-  SELECT /* WARNING: Formula translation failed: Function 'LOOKUP' is not supported yet
-   Original Airtable formula:
-   =LOOKUP("id-age-composition", IdentityClusterSummaries[ConfounderIdentity], IdentityClusterSummaries[StudyCount])
-*/
-NULL::integer;
-$$ LANGUAGE sql STABLE;
-
--- calc_model_summary_age_identity_latent_fraction_among_type_d
--- Field: ModelSummary.AgeIdentityLatentFractionAmongTypeD
--- Type: calculated | DataType: number | Returns: NUMERIC
-
-
-CREATE OR REPLACE FUNCTION calc_model_summary_age_identity_latent_fraction_among_type_d(p_model_summary_id TEXT)
-RETURNS NUMERIC AS $$
-  SELECT /* WARNING: Formula translation failed: Function 'LOOKUP' is not supported yet
-   Original Airtable formula:
-   =LOOKUP("id-age-composition", IdentityClusterSummaries[ConfounderIdentity], IdentityClusterSummaries[LatentFractionAmongTypeD])
-*/
-NULL::numeric;
-$$ LANGUAGE sql STABLE;
-
--- calc_model_summary_severity_identity_latent_fraction_among_type
--- Field: ModelSummary.SeverityIdentityLatentFractionAmongTypeD
--- Type: calculated | DataType: number | Returns: NUMERIC
-
-
-CREATE OR REPLACE FUNCTION calc_model_summary_severity_identity_latent_fraction_among_type(p_model_summary_id TEXT)
-RETURNS NUMERIC AS $$
-  SELECT /* WARNING: Formula translation failed: Function 'LOOKUP' is not supported yet
-   Original Airtable formula:
-   =LOOKUP("id-disease-severity", IdentityClusterSummaries[ConfounderIdentity], IdentityClusterSummaries[LatentFractionAmongTypeD])
-*/
-NULL::numeric;
+  WITH __erb_dedup_v1 AS (SELECT calc_model_summary_mapped_stratum_variable_count(p_model_summary_id) AS val) SELECT ((COALESCE(CASE WHEN ((SELECT COUNT(*) FROM stratum_variables))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT COUNT(*) FROM stratum_variables))::numeric ELSE NULL END, 0) - COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v1))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v1))::numeric ELSE NULL END, 0)))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_model_summary_identity_map_coverage_rate
@@ -1341,35 +2017,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_model_summary_identity_map_coverage_rate(p_model_summary_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT (CASE WHEN (calc_model_summary_real_study_count(p_model_summary_id))::NUMERIC = 0 THEN ('')::text ELSE ((COALESCE(CASE WHEN (calc_model_summary_mapped_stratum_variable_count(p_model_summary_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_model_summary_mapped_stratum_variable_count(p_model_summary_id))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(CASE WHEN (calc_model_summary_real_study_count(p_model_summary_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_model_summary_real_study_count(p_model_summary_id))::numeric ELSE NULL END, 0), 0)))::text END)::numeric;
-$$ LANGUAGE sql STABLE;
-
--- calc_model_summary_severity_medicine_manifest_flip_rate
--- Field: ModelSummary.SeverityMedicineManifestFlipRate
--- Type: calculated | DataType: number | Returns: NUMERIC
-
-
-CREATE OR REPLACE FUNCTION calc_model_summary_severity_medicine_manifest_flip_rate(p_model_summary_id TEXT)
-RETURNS NUMERIC AS $$
-  SELECT /* WARNING: Formula translation failed: Function 'LOOKUP' is not supported yet
-   Original Airtable formula:
-   =LOOKUP("cell-id-disease-severity-x-medicine", IdentityDomainCells[CellId], IdentityDomainCells[ManifestFlipRate])
-*/
-NULL::numeric;
-$$ LANGUAGE sql STABLE;
-
--- calc_model_summary_severity_epi_manifest_flip_count
--- Field: ModelSummary.SeverityEpiManifestFlipCount
--- Type: calculated | DataType: integer | Returns: INTEGER
-
-
-CREATE OR REPLACE FUNCTION calc_model_summary_severity_epi_manifest_flip_count(p_model_summary_id TEXT)
-RETURNS INTEGER AS $$
-  SELECT /* WARNING: Formula translation failed: Function 'LOOKUP' is not supported yet
-   Original Airtable formula:
-   =LOOKUP("cell-id-disease-severity-x-epidemiology", IdentityDomainCells[CellId], IdentityDomainCells[ManifestFlipCount])
-*/
-NULL::integer;
+  WITH __erb_dedup_v1 AS (SELECT calc_model_summary_real_study_count(p_model_summary_id) AS val), __erb_dedup_v2 AS (SELECT calc_model_summary_mapped_stratum_variable_count(p_model_summary_id) AS val) SELECT (CASE WHEN ((SELECT val FROM __erb_dedup_v1))::NUMERIC = 0 THEN NULL ELSE ((COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v2))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v2))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v1))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v1))::numeric ELSE NULL END, 0), 0)))::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_model_summary_identity_domain_cell_count
@@ -1380,48 +2028,6 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION calc_model_summary_identity_domain_cell_count(p_model_summary_id TEXT)
 RETURNS INTEGER AS $$
   SELECT ((SELECT COUNT(*) FROM identity_domain_cells))::integer;
-$$ LANGUAGE sql STABLE;
-
--- calc_model_summary_selection_frailty_manifest_flip_count
--- Field: ModelSummary.SelectionFrailtyManifestFlipCount
--- Type: calculated | DataType: integer | Returns: INTEGER
-
-
-CREATE OR REPLACE FUNCTION calc_model_summary_selection_frailty_manifest_flip_count(p_model_summary_id TEXT)
-RETURNS INTEGER AS $$
-  SELECT /* WARNING: Formula translation failed: Function 'LOOKUP' is not supported yet
-   Original Airtable formula:
-   =LOOKUP("cluster-id-selection-frailty", IdentityClusterSummaries[IdentityClusterId], IdentityClusterSummaries[ManifestFlipCount])
-*/
-NULL::integer;
-$$ LANGUAGE sql STABLE;
-
--- calc_model_summary_selection_frailty_study_count
--- Field: ModelSummary.SelectionFrailtyStudyCount
--- Type: calculated | DataType: integer | Returns: INTEGER
-
-
-CREATE OR REPLACE FUNCTION calc_model_summary_selection_frailty_study_count(p_model_summary_id TEXT)
-RETURNS INTEGER AS $$
-  SELECT /* WARNING: Formula translation failed: Function 'LOOKUP' is not supported yet
-   Original Airtable formula:
-   =LOOKUP("cluster-id-selection-frailty", IdentityClusterSummaries[IdentityClusterId], IdentityClusterSummaries[StudyCount])
-*/
-NULL::integer;
-$$ LANGUAGE sql STABLE;
-
--- calc_model_summary_collider_identity_manifest_flip_rate
--- Field: ModelSummary.ColliderIdentityManifestFlipRate
--- Type: calculated | DataType: number | Returns: NUMERIC
-
-
-CREATE OR REPLACE FUNCTION calc_model_summary_collider_identity_manifest_flip_rate(p_model_summary_id TEXT)
-RETURNS NUMERIC AS $$
-  SELECT /* WARNING: Formula translation failed: Function 'LOOKUP' is not supported yet
-   Original Airtable formula:
-   =LOOKUP("cluster-id-collider-proxy", IdentityClusterSummaries[IdentityClusterId], IdentityClusterSummaries[ManifestFlipRate])
-*/
-NULL::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_model_summary_geographic_type_d_fraction
@@ -1465,7 +2071,27 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_model_summary_expansion_wave3_discovery_note(p_model_summary_id TEXT)
 RETURNS TEXT AS $$
-  SELECT (CONCAT('superseded=', calc_model_summary_corpus_pattern_superseded_fail_count(p_model_summary_id), '; econFlips=', calc_model_summary_economics_sign_flip_count(p_model_summary_id), '; flipPred=', (SELECT sign_flip_prediction_match_rate FROM model_summary WHERE model_summary_id = p_model_summary_id), '; catalogExact=', (SELECT type_prediction_match_rate FROM model_summary WHERE model_summary_id = p_model_summary_id), '; theorems=', calc_model_summary_theorem_count(p_model_summary_id)))::text;
+  SELECT (CONCAT('superseded=', calc_model_summary_corpus_pattern_superseded_fail_count(p_model_summary_id), '; econFlips=', calc_model_summary_economics_sign_flip_count(p_model_summary_id), '; flipPred=', calc_model_summary_sign_flip_prediction_match_rate(p_model_summary_id), '; catalogExact=', calc_model_summary_type_prediction_match_rate(p_model_summary_id), '; theorems=', calc_model_summary_theorem_count(p_model_summary_id)))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_stratum_variables_confounder_identity
+-- Field: StratumVariables.ConfounderIdentity
+-- Type: lookup | DataType: string | Returns: TEXT
+-- Lookup: ConfounderIdentity from related StratumVariableIdentityMaps
+
+
+CREATE OR REPLACE FUNCTION calc_stratum_variables_confounder_identity(p_stratum_variable_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT confounder_identity::text FROM stratum_variable_identity_maps WHERE map_id = (SELECT stratum_variable_id FROM stratum_variables WHERE stratum_variable_id = p_stratum_variable_id));
+$$ LANGUAGE sql STABLE;
+
+-- get_stratum_variable_identity_maps_variable_name_normalized
+-- Helper function: Get VariableNameNormalized from StratumVariableIdentityMaps by MapId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_stratum_variable_identity_maps_variable_name_normalized(p_map_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT variable_name_normalized FROM stratum_variable_identity_maps WHERE map_id = p_map_id);
 $$ LANGUAGE sql STABLE;
 
 -- calc_stratum_variables_name
@@ -1486,6 +2112,50 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION calc_stratum_variables_is_confounder(p_stratum_variable_id TEXT)
 RETURNS BOOLEAN AS $$
   SELECT ((COALESCE((SELECT affects_treatment_assignment FROM stratum_variables WHERE stratum_variable_id = p_stratum_variable_id), FALSE) AND COALESCE((SELECT affects_outcome FROM stratum_variables WHERE stratum_variable_id = p_stratum_variable_id), FALSE) AND (SELECT NULLIF(causal_role, '') FROM stratum_variables WHERE stratum_variable_id = p_stratum_variable_id) = 'confounder'))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_treatment_rankings_pooled_gap_crosses_zero
+-- Field: TreatmentRankings.PooledGapCrossesZero
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+-- Lookup: PooledGapCrossesZero from related SweepStudySummary
+
+
+CREATE OR REPLACE FUNCTION calc_treatment_rankings_pooled_gap_crosses_zero(p_treatment_ranking_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (SELECT pooled_gap_crosses_zero::boolean FROM sweep_study_summary WHERE sweep_study_id = (SELECT study FROM treatment_rankings WHERE treatment_ranking_id = p_treatment_ranking_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_treatment_rankings_sweep_pooled_gap_range
+-- Field: TreatmentRankings.SweepPooledGapRange
+-- Type: calculated | DataType: number | Returns: NUMERIC
+-- Lookup: SweepPooledGapRange from related SweepStudySummary
+
+
+CREATE OR REPLACE FUNCTION calc_treatment_rankings_sweep_pooled_gap_range(p_treatment_ranking_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT (SELECT sweep_pooled_gap_range::numeric FROM sweep_study_summary WHERE sweep_study_id = (SELECT study FROM treatment_rankings WHERE treatment_ranking_id = p_treatment_ranking_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_treatment_rankings_study_domain
+-- Field: TreatmentRankings.StudyDomain
+-- Type: calculated | DataType: string | Returns: TEXT
+-- Lookup: Domain from related Studies
+
+
+CREATE OR REPLACE FUNCTION calc_treatment_rankings_study_domain(p_treatment_ranking_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT domain::text FROM studies WHERE study_id = (SELECT study FROM treatment_rankings WHERE treatment_ranking_id = p_treatment_ranking_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_treatment_rankings_stratum_causal_role
+-- Field: TreatmentRankings.StratumCausalRole
+-- Type: lookup | DataType: string | Returns: TEXT
+-- Lookup: CausalRole from related StratumVariables
+
+
+CREATE OR REPLACE FUNCTION calc_treatment_rankings_stratum_causal_role(p_treatment_ranking_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT causal_role::text FROM stratum_variables WHERE stratum_variable_id = (SELECT study FROM treatment_rankings WHERE treatment_ranking_id = p_treatment_ranking_id));
 $$ LANGUAGE sql STABLE;
 
 -- calc_treatment_rankings_name
@@ -1525,7 +2195,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_treatment_rankings_pooled_rate_a(p_treatment_ranking_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT (CASE WHEN (calc_treatment_rankings_total_cases_a(p_treatment_ranking_id))::NUMERIC = 0 THEN ('')::text ELSE ((COALESCE(CASE WHEN (calc_treatment_rankings_total_successes_a(p_treatment_ranking_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_treatment_rankings_total_successes_a(p_treatment_ranking_id))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(CASE WHEN (calc_treatment_rankings_total_cases_a(p_treatment_ranking_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_treatment_rankings_total_cases_a(p_treatment_ranking_id))::numeric ELSE NULL END, 0), 0)))::text END)::numeric;
+  WITH __erb_dedup_v1 AS (SELECT calc_treatment_rankings_total_cases_a(p_treatment_ranking_id) AS val), __erb_dedup_v2 AS (SELECT calc_treatment_rankings_total_successes_a(p_treatment_ranking_id) AS val) SELECT (CASE WHEN ((SELECT val FROM __erb_dedup_v1))::NUMERIC = 0 THEN NULL ELSE ((COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v2))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v2))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v1))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v1))::numeric ELSE NULL END, 0), 0)))::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_treatment_rankings_total_cases_b
@@ -1555,7 +2225,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_treatment_rankings_pooled_rate_b(p_treatment_ranking_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT (CASE WHEN (calc_treatment_rankings_total_cases_b(p_treatment_ranking_id))::NUMERIC = 0 THEN ('')::text ELSE ((COALESCE(CASE WHEN (calc_treatment_rankings_total_successes_b(p_treatment_ranking_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_treatment_rankings_total_successes_b(p_treatment_ranking_id))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(CASE WHEN (calc_treatment_rankings_total_cases_b(p_treatment_ranking_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_treatment_rankings_total_cases_b(p_treatment_ranking_id))::numeric ELSE NULL END, 0), 0)))::text END)::numeric;
+  WITH __erb_dedup_v1 AS (SELECT calc_treatment_rankings_total_cases_b(p_treatment_ranking_id) AS val), __erb_dedup_v2 AS (SELECT calc_treatment_rankings_total_successes_b(p_treatment_ranking_id) AS val) SELECT (CASE WHEN ((SELECT val FROM __erb_dedup_v1))::NUMERIC = 0 THEN NULL ELSE ((COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v2))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v2))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v1))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v1))::numeric ELSE NULL END, 0), 0)))::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_treatment_rankings_pooled_winner
@@ -1565,7 +2235,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_treatment_rankings_pooled_winner(p_treatment_ranking_id TEXT)
 RETURNS TEXT AS $$
-  SELECT (CASE WHEN (calc_treatment_rankings_pooled_rate_a(p_treatment_ranking_id) IS NULL OR calc_treatment_rankings_pooled_rate_b(p_treatment_ranking_id) IS NULL) THEN ('')::text ELSE (CASE WHEN (ABS((COALESCE(CASE WHEN (calc_treatment_rankings_pooled_rate_a(p_treatment_ranking_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_treatment_rankings_pooled_rate_a(p_treatment_ranking_id))::numeric ELSE NULL END, 0) - COALESCE(CASE WHEN (calc_treatment_rankings_pooled_rate_b(p_treatment_ranking_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_treatment_rankings_pooled_rate_b(p_treatment_ranking_id))::numeric ELSE NULL END, 0))))::NUMERIC < 0.0000001 THEN ('tie')::text ELSE (CASE WHEN calc_treatment_rankings_pooled_rate_a(p_treatment_ranking_id) > calc_treatment_rankings_pooled_rate_b(p_treatment_ranking_id) THEN ((SELECT NULLIF(treatment_a, '') FROM treatment_rankings WHERE treatment_ranking_id = p_treatment_ranking_id))::text ELSE ((SELECT NULLIF(treatment_b, '') FROM treatment_rankings WHERE treatment_ranking_id = p_treatment_ranking_id))::text END)::text END)::text END)::text;
+  WITH __erb_dedup_v1 AS (SELECT calc_treatment_rankings_pooled_rate_a(p_treatment_ranking_id) AS val), __erb_dedup_v2 AS (SELECT calc_treatment_rankings_pooled_rate_b(p_treatment_ranking_id) AS val) SELECT (CASE WHEN ((SELECT val FROM __erb_dedup_v1) IS NULL OR (SELECT val FROM __erb_dedup_v2) IS NULL) THEN ('')::text ELSE (CASE WHEN (ABS((COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v1))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v1))::numeric ELSE NULL END, 0) - COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v2))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v2))::numeric ELSE NULL END, 0))))::NUMERIC < 0.0000001 THEN ('tie')::text ELSE (CASE WHEN (SELECT val FROM __erb_dedup_v1) > (SELECT val FROM __erb_dedup_v2) THEN ((SELECT NULLIF(treatment_a, '') FROM treatment_rankings WHERE treatment_ranking_id = p_treatment_ranking_id))::text ELSE ((SELECT NULLIF(treatment_b, '') FROM treatment_rankings WHERE treatment_ranking_id = p_treatment_ranking_id))::text END)::text END)::text END)::text;
 $$ LANGUAGE sql STABLE;
 
 -- calc_treatment_rankings_stratum_count
@@ -1605,7 +2275,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_treatment_rankings_per_stratum_winner(p_treatment_ranking_id TEXT)
 RETURNS TEXT AS $$
-  SELECT (CASE WHEN calc_treatment_rankings_strata_won_by_a(p_treatment_ranking_id) = calc_treatment_rankings_stratum_count(p_treatment_ranking_id) THEN ((SELECT NULLIF(treatment_a, '') FROM treatment_rankings WHERE treatment_ranking_id = p_treatment_ranking_id))::text ELSE (CASE WHEN calc_treatment_rankings_strata_won_by_b(p_treatment_ranking_id) = calc_treatment_rankings_stratum_count(p_treatment_ranking_id) THEN ((SELECT NULLIF(treatment_b, '') FROM treatment_rankings WHERE treatment_ranking_id = p_treatment_ranking_id))::text ELSE ('none')::text END)::text END)::text;
+  WITH __erb_dedup_v1 AS (SELECT calc_treatment_rankings_stratum_count(p_treatment_ranking_id) AS val) SELECT (CASE WHEN calc_treatment_rankings_strata_won_by_a(p_treatment_ranking_id) = (SELECT val FROM __erb_dedup_v1) THEN ((SELECT NULLIF(treatment_a, '') FROM treatment_rankings WHERE treatment_ranking_id = p_treatment_ranking_id))::text ELSE (CASE WHEN calc_treatment_rankings_strata_won_by_b(p_treatment_ranking_id) = (SELECT val FROM __erb_dedup_v1) THEN ((SELECT NULLIF(treatment_b, '') FROM treatment_rankings WHERE treatment_ranking_id = p_treatment_ranking_id))::text ELSE ('none')::text END)::text END)::text;
 $$ LANGUAGE sql STABLE;
 
 -- calc_treatment_rankings_is_stratum_unanimous
@@ -1615,7 +2285,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_treatment_rankings_is_stratum_unanimous(p_treatment_ranking_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((calc_treatment_rankings_strata_won_by_a(p_treatment_ranking_id) = calc_treatment_rankings_stratum_count(p_treatment_ranking_id) OR calc_treatment_rankings_strata_won_by_b(p_treatment_ranking_id) = calc_treatment_rankings_stratum_count(p_treatment_ranking_id)))::boolean;
+  WITH __erb_dedup_v1 AS (SELECT calc_treatment_rankings_stratum_count(p_treatment_ranking_id) AS val) SELECT ((calc_treatment_rankings_strata_won_by_a(p_treatment_ranking_id) = (SELECT val FROM __erb_dedup_v1) OR calc_treatment_rankings_strata_won_by_b(p_treatment_ranking_id) = (SELECT val FROM __erb_dedup_v1)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_treatment_rankings_is_reversal
@@ -1625,7 +2295,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_treatment_rankings_is_reversal(p_treatment_ranking_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (CASE WHEN calc_treatment_rankings_is_sign_flip(p_treatment_ranking_id) IS NULL THEN ('')::text ELSE (calc_treatment_rankings_is_sign_flip(p_treatment_ranking_id))::text END)::boolean;
+  WITH __erb_dedup_v1 AS (SELECT calc_treatment_rankings_is_sign_flip(p_treatment_ranking_id) AS val) SELECT (CASE WHEN (SELECT val FROM __erb_dedup_v1) IS NULL THEN NULL ELSE ((SELECT val FROM __erb_dedup_v1))::text END)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_treatment_rankings_confounders_in_study
@@ -1655,7 +2325,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_treatment_rankings_pooled_gap(p_treatment_ranking_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT (CASE WHEN calc_treatment_rankings_pooled_rate_a(p_treatment_ranking_id) IS NULL THEN ('')::text ELSE (ABS((COALESCE(CASE WHEN (calc_treatment_rankings_pooled_rate_a(p_treatment_ranking_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_treatment_rankings_pooled_rate_a(p_treatment_ranking_id))::numeric ELSE NULL END, 0) - COALESCE(CASE WHEN (calc_treatment_rankings_pooled_rate_b(p_treatment_ranking_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_treatment_rankings_pooled_rate_b(p_treatment_ranking_id))::numeric ELSE NULL END, 0))))::text END)::numeric;
+  WITH __erb_dedup_v1 AS (SELECT calc_treatment_rankings_pooled_rate_a(p_treatment_ranking_id) AS val), __erb_dedup_v2 AS (SELECT calc_treatment_rankings_pooled_rate_b(p_treatment_ranking_id) AS val) SELECT (CASE WHEN (SELECT val FROM __erb_dedup_v1) IS NULL THEN NULL ELSE (ABS((COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v1))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v1))::numeric ELSE NULL END, 0) - COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v2))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v2))::numeric ELSE NULL END, 0))))::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_treatment_rankings_strata_won_by_loser
@@ -1675,7 +2345,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_treatment_rankings_paradox_strength(p_treatment_ranking_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT (CASE WHEN (calc_treatment_rankings_stratum_count(p_treatment_ranking_id))::NUMERIC = 0 THEN ('')::text ELSE ((COALESCE(CASE WHEN (calc_treatment_rankings_pooled_gap(p_treatment_ranking_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_treatment_rankings_pooled_gap(p_treatment_ranking_id))::numeric ELSE NULL END, 0) * COALESCE(CASE WHEN ((COALESCE(CASE WHEN (calc_treatment_rankings_strata_won_by_loser(p_treatment_ranking_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_treatment_rankings_strata_won_by_loser(p_treatment_ranking_id))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(CASE WHEN (calc_treatment_rankings_stratum_count(p_treatment_ranking_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_treatment_rankings_stratum_count(p_treatment_ranking_id))::numeric ELSE NULL END, 0), 0)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((COALESCE(CASE WHEN (calc_treatment_rankings_strata_won_by_loser(p_treatment_ranking_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_treatment_rankings_strata_won_by_loser(p_treatment_ranking_id))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(CASE WHEN (calc_treatment_rankings_stratum_count(p_treatment_ranking_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_treatment_rankings_stratum_count(p_treatment_ranking_id))::numeric ELSE NULL END, 0), 0)))::numeric ELSE NULL END, 0)))::text END)::numeric;
+  WITH __erb_dedup_v1 AS (SELECT calc_treatment_rankings_stratum_count(p_treatment_ranking_id) AS val), __erb_dedup_v2 AS (SELECT calc_treatment_rankings_pooled_gap(p_treatment_ranking_id) AS val), __erb_dedup_v3 AS (SELECT calc_treatment_rankings_strata_won_by_loser(p_treatment_ranking_id) AS val) SELECT (CASE WHEN ((SELECT val FROM __erb_dedup_v1))::NUMERIC = 0 THEN NULL ELSE ((COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v2))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v2))::numeric ELSE NULL END, 0) * COALESCE(CASE WHEN ((COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v3))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v3))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v1))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v1))::numeric ELSE NULL END, 0), 0)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v3))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v3))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v1))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v1))::numeric ELSE NULL END, 0), 0)))::numeric ELSE NULL END, 0)))::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_treatment_rankings_pooled_rate_from_weights_a
@@ -1705,7 +2375,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_treatment_rankings_reversal_intensity(p_treatment_ranking_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT (CASE WHEN (calc_treatment_rankings_stratum_count(p_treatment_ranking_id))::NUMERIC = 0 THEN ('')::text ELSE ((COALESCE(CASE WHEN (calc_treatment_rankings_strata_won_by_loser(p_treatment_ranking_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_treatment_rankings_strata_won_by_loser(p_treatment_ranking_id))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(CASE WHEN (calc_treatment_rankings_stratum_count(p_treatment_ranking_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_treatment_rankings_stratum_count(p_treatment_ranking_id))::numeric ELSE NULL END, 0), 0)))::text END)::numeric;
+  WITH __erb_dedup_v1 AS (SELECT calc_treatment_rankings_stratum_count(p_treatment_ranking_id) AS val), __erb_dedup_v2 AS (SELECT calc_treatment_rankings_strata_won_by_loser(p_treatment_ranking_id) AS val) SELECT (CASE WHEN ((SELECT val FROM __erb_dedup_v1))::NUMERIC = 0 THEN NULL ELSE ((COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v2))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v2))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v1))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v1))::numeric ELSE NULL END, 0), 0)))::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_treatment_rankings_threshold_margin
@@ -1715,7 +2385,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_treatment_rankings_threshold_margin(p_treatment_ranking_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT (CASE WHEN (calc_treatment_rankings_stratum_count(p_treatment_ranking_id))::NUMERIC = 0 THEN ('')::text ELSE ((COALESCE(CASE WHEN (calc_treatment_rankings_reversal_intensity(p_treatment_ranking_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_treatment_rankings_reversal_intensity(p_treatment_ranking_id))::numeric ELSE NULL END, 0) - COALESCE(0.5, 0)))::text END)::numeric;
+  WITH __erb_dedup_v1 AS (SELECT calc_treatment_rankings_reversal_intensity(p_treatment_ranking_id) AS val) SELECT (CASE WHEN (calc_treatment_rankings_stratum_count(p_treatment_ranking_id))::NUMERIC = 0 THEN NULL ELSE ((COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v1))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v1))::numeric ELSE NULL END, 0) - COALESCE(0.5, 0)))::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_treatment_rankings_signed_pooled_gap
@@ -1725,7 +2395,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_treatment_rankings_signed_pooled_gap(p_treatment_ranking_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT (CASE WHEN calc_treatment_rankings_pooled_rate_a(p_treatment_ranking_id) IS NULL THEN ('')::text ELSE ((COALESCE(CASE WHEN (calc_treatment_rankings_pooled_rate_a(p_treatment_ranking_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_treatment_rankings_pooled_rate_a(p_treatment_ranking_id))::numeric ELSE NULL END, 0) - COALESCE(CASE WHEN (calc_treatment_rankings_pooled_rate_b(p_treatment_ranking_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_treatment_rankings_pooled_rate_b(p_treatment_ranking_id))::numeric ELSE NULL END, 0)))::text END)::numeric;
+  WITH __erb_dedup_v1 AS (SELECT calc_treatment_rankings_pooled_rate_a(p_treatment_ranking_id) AS val), __erb_dedup_v2 AS (SELECT calc_treatment_rankings_pooled_rate_b(p_treatment_ranking_id) AS val) SELECT (CASE WHEN (SELECT val FROM __erb_dedup_v1) IS NULL THEN NULL ELSE ((COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v1))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v1))::numeric ELSE NULL END, 0) - COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v2))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v2))::numeric ELSE NULL END, 0)))::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_treatment_rankings_weighted_stratum_gap_sum
@@ -1745,7 +2415,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_treatment_rankings_is_sign_flip(p_treatment_ranking_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (CASE WHEN calc_treatment_rankings_weighted_stratum_gap_sum(p_treatment_ranking_id) IS NULL THEN ('')::text ELSE (CASE WHEN (calc_treatment_rankings_weighted_stratum_gap_sum(p_treatment_ranking_id))::NUMERIC > 0 THEN ((calc_treatment_rankings_signed_pooled_gap(p_treatment_ranking_id))::NUMERIC < 0)::text ELSE ((calc_treatment_rankings_signed_pooled_gap(p_treatment_ranking_id))::NUMERIC > 0)::text END)::text END)::boolean;
+  WITH __erb_dedup_v1 AS (SELECT calc_treatment_rankings_weighted_stratum_gap_sum(p_treatment_ranking_id) AS val), __erb_dedup_v2 AS (SELECT calc_treatment_rankings_signed_pooled_gap(p_treatment_ranking_id) AS val) SELECT (CASE WHEN (SELECT val FROM __erb_dedup_v1) IS NULL THEN NULL ELSE (CASE WHEN ((SELECT val FROM __erb_dedup_v1))::NUMERIC > 0 THEN (((SELECT val FROM __erb_dedup_v2))::NUMERIC < 0)::text ELSE (((SELECT val FROM __erb_dedup_v2))::NUMERIC > 0)::text END)::text END)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_treatment_rankings_allocation_distortion
@@ -1755,7 +2425,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_treatment_rankings_allocation_distortion(p_treatment_ranking_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT (CASE WHEN calc_treatment_rankings_weighted_stratum_gap_sum(p_treatment_ranking_id) IS NULL THEN ('')::text ELSE (ABS((COALESCE(CASE WHEN (calc_treatment_rankings_weighted_stratum_gap_sum(p_treatment_ranking_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_treatment_rankings_weighted_stratum_gap_sum(p_treatment_ranking_id))::numeric ELSE NULL END, 0) - COALESCE(CASE WHEN (calc_treatment_rankings_signed_pooled_gap(p_treatment_ranking_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_treatment_rankings_signed_pooled_gap(p_treatment_ranking_id))::numeric ELSE NULL END, 0))))::text END)::numeric;
+  WITH __erb_dedup_v1 AS (SELECT calc_treatment_rankings_weighted_stratum_gap_sum(p_treatment_ranking_id) AS val), __erb_dedup_v2 AS (SELECT calc_treatment_rankings_signed_pooled_gap(p_treatment_ranking_id) AS val) SELECT (CASE WHEN (SELECT val FROM __erb_dedup_v1) IS NULL THEN NULL ELSE (ABS((COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v1))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v1))::numeric ELSE NULL END, 0) - COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v2))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v2))::numeric ELSE NULL END, 0))))::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_treatment_rankings_distortion_type
@@ -1765,7 +2435,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_treatment_rankings_distortion_type(p_treatment_ranking_id TEXT)
 RETURNS TEXT AS $$
-  SELECT (CASE WHEN calc_treatment_rankings_allocation_distortion(p_treatment_ranking_id) IS NULL THEN ('')::text ELSE (CASE WHEN calc_treatment_rankings_is_sign_flip(p_treatment_ranking_id) THEN (CASE WHEN calc_treatment_rankings_is_stratum_unanimous(p_treatment_ranking_id) THEN ('A')::text ELSE ('B')::text END)::text ELSE (CASE WHEN (NOT (calc_treatment_rankings_is_sign_flip(p_treatment_ranking_id)) AND (calc_treatment_rankings_allocation_distortion(p_treatment_ranking_id))::NUMERIC > 0.01 AND ABS(calc_treatment_rankings_signed_pooled_gap(p_treatment_ranking_id)) > (COALESCE(CASE WHEN (ABS(calc_treatment_rankings_corrected_gap(p_treatment_ranking_id)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (ABS(calc_treatment_rankings_corrected_gap(p_treatment_ranking_id)))::numeric ELSE NULL END, 0) + COALESCE(0.001, 0))) THEN ('C+')::text ELSE (CASE WHEN (NOT (calc_treatment_rankings_is_sign_flip(p_treatment_ranking_id)) AND (calc_treatment_rankings_allocation_distortion(p_treatment_ranking_id))::NUMERIC > 0.01 AND ABS(calc_treatment_rankings_signed_pooled_gap(p_treatment_ranking_id)) < (COALESCE(CASE WHEN (ABS(calc_treatment_rankings_corrected_gap(p_treatment_ranking_id)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (ABS(calc_treatment_rankings_corrected_gap(p_treatment_ranking_id)))::numeric ELSE NULL END, 0) - COALESCE(0.001, 0))) THEN ('C-')::text ELSE ('D')::text END)::text END)::text END)::text END)::text;
+  WITH __erb_dedup_v1 AS (SELECT calc_treatment_rankings_allocation_distortion(p_treatment_ranking_id) AS val), __erb_dedup_v2 AS (SELECT calc_treatment_rankings_is_sign_flip(p_treatment_ranking_id) AS val), __erb_dedup_v3 AS (SELECT calc_treatment_rankings_signed_pooled_gap(p_treatment_ranking_id) AS val), __erb_dedup_v4 AS (SELECT calc_treatment_rankings_corrected_gap(p_treatment_ranking_id) AS val) SELECT (CASE WHEN (SELECT val FROM __erb_dedup_v1) IS NULL THEN ('')::text ELSE (CASE WHEN (SELECT val FROM __erb_dedup_v2) THEN (CASE WHEN calc_treatment_rankings_is_stratum_unanimous(p_treatment_ranking_id) THEN ('A')::text ELSE ('B')::text END)::text ELSE (CASE WHEN (NOT ((SELECT val FROM __erb_dedup_v2)) AND ((SELECT val FROM __erb_dedup_v1))::NUMERIC > 0.01 AND ABS((SELECT val FROM __erb_dedup_v3)) > (COALESCE(CASE WHEN (ABS((SELECT val FROM __erb_dedup_v4)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (ABS((SELECT val FROM __erb_dedup_v4)))::numeric ELSE NULL END, 0) + COALESCE(0.001, 0))) THEN ('C+')::text ELSE (CASE WHEN (NOT ((SELECT val FROM __erb_dedup_v2)) AND ((SELECT val FROM __erb_dedup_v1))::NUMERIC > 0.01 AND ABS((SELECT val FROM __erb_dedup_v3)) < (COALESCE(CASE WHEN (ABS((SELECT val FROM __erb_dedup_v4)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (ABS((SELECT val FROM __erb_dedup_v4)))::numeric ELSE NULL END, 0) - COALESCE(0.001, 0))) THEN ('C-')::text ELSE ('D')::text END)::text END)::text END)::text END)::text;
 $$ LANGUAGE sql STABLE;
 
 -- calc_treatment_rankings_policy_implication
@@ -1775,7 +2445,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_treatment_rankings_policy_implication(p_treatment_ranking_id TEXT)
 RETURNS TEXT AS $$
-  SELECT (CASE WHEN calc_treatment_rankings_distortion_type(p_treatment_ranking_id) IS NULL THEN ('')::text ELSE (CASE WHEN calc_treatment_rankings_distortion_type(p_treatment_ranking_id) = 'A' THEN ('stratify-immediately')::text ELSE (CASE WHEN calc_treatment_rankings_distortion_type(p_treatment_ranking_id) = 'B' THEN ('investigate-confounder')::text ELSE (CASE WHEN (calc_treatment_rankings_distortion_type(p_treatment_ranking_id) = 'C+' OR calc_treatment_rankings_distortion_type(p_treatment_ranking_id) = 'C-') THEN ('check-allocation-bias')::text ELSE ('pooled-analysis-trustworthy')::text END)::text END)::text END)::text END)::text;
+  WITH __erb_dedup_v1 AS (SELECT calc_treatment_rankings_distortion_type(p_treatment_ranking_id) AS val) SELECT (CASE WHEN (SELECT val FROM __erb_dedup_v1) IS NULL THEN ('')::text ELSE (CASE WHEN (SELECT val FROM __erb_dedup_v1) = 'A' THEN ('stratify-immediately')::text ELSE (CASE WHEN (SELECT val FROM __erb_dedup_v1) = 'B' THEN ('investigate-confounder')::text ELSE (CASE WHEN ((SELECT val FROM __erb_dedup_v1) = 'C+' OR (SELECT val FROM __erb_dedup_v1) = 'C-') THEN ('check-allocation-bias')::text ELSE ('pooled-analysis-trustworthy')::text END)::text END)::text END)::text END)::text;
 $$ LANGUAGE sql STABLE;
 
 -- calc_treatment_rankings_corrected_gap
@@ -1795,7 +2465,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_treatment_rankings_corrected_winner(p_treatment_ranking_id TEXT)
 RETURNS TEXT AS $$
-  SELECT (CASE WHEN calc_treatment_rankings_corrected_gap(p_treatment_ranking_id) IS NULL THEN ('')::text ELSE (CASE WHEN (ABS(calc_treatment_rankings_corrected_gap(p_treatment_ranking_id)))::NUMERIC < 0.0001 THEN ('tie')::text ELSE (CASE WHEN (calc_treatment_rankings_corrected_gap(p_treatment_ranking_id))::NUMERIC > 0 THEN ((SELECT NULLIF(treatment_a, '') FROM treatment_rankings WHERE treatment_ranking_id = p_treatment_ranking_id))::text ELSE (CASE WHEN (calc_treatment_rankings_corrected_gap(p_treatment_ranking_id))::NUMERIC < 0 THEN ((SELECT NULLIF(treatment_b, '') FROM treatment_rankings WHERE treatment_ranking_id = p_treatment_ranking_id))::text ELSE ('tie')::text END)::text END)::text END)::text END)::text;
+  WITH __erb_dedup_v1 AS (SELECT calc_treatment_rankings_corrected_gap(p_treatment_ranking_id) AS val) SELECT (CASE WHEN (SELECT val FROM __erb_dedup_v1) IS NULL THEN ('')::text ELSE (CASE WHEN (ABS((SELECT val FROM __erb_dedup_v1)))::NUMERIC < 0.0001 THEN ('tie')::text ELSE (CASE WHEN ((SELECT val FROM __erb_dedup_v1))::NUMERIC > 0 THEN ((SELECT NULLIF(treatment_a, '') FROM treatment_rankings WHERE treatment_ranking_id = p_treatment_ranking_id))::text ELSE (CASE WHEN ((SELECT val FROM __erb_dedup_v1))::NUMERIC < 0 THEN ((SELECT NULLIF(treatment_b, '') FROM treatment_rankings WHERE treatment_ranking_id = p_treatment_ranking_id))::text ELSE ('tie')::text END)::text END)::text END)::text END)::text;
 $$ LANGUAGE sql STABLE;
 
 -- calc_treatment_rankings_corrected_vs_pooled_agreement
@@ -1805,7 +2475,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_treatment_rankings_corrected_vs_pooled_agreement(p_treatment_ranking_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (CASE WHEN calc_treatment_rankings_corrected_winner(p_treatment_ranking_id) IS NULL THEN ('')::text ELSE (calc_treatment_rankings_corrected_winner(p_treatment_ranking_id) = calc_treatment_rankings_pooled_winner(p_treatment_ranking_id))::text END)::boolean;
+  WITH __erb_dedup_v1 AS (SELECT calc_treatment_rankings_corrected_winner(p_treatment_ranking_id) AS val) SELECT (CASE WHEN (SELECT val FROM __erb_dedup_v1) IS NULL THEN NULL ELSE ((SELECT val FROM __erb_dedup_v1) = calc_treatment_rankings_pooled_winner(p_treatment_ranking_id))::text END)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_treatment_rankings_corrected_policy_implication
@@ -1815,7 +2485,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_treatment_rankings_corrected_policy_implication(p_treatment_ranking_id TEXT)
 RETURNS TEXT AS $$
-  SELECT (CASE WHEN calc_treatment_rankings_distortion_type(p_treatment_ranking_id) IS NULL THEN ('')::text ELSE (CASE WHEN calc_treatment_rankings_distortion_type(p_treatment_ranking_id) = 'A' THEN ('use-corrected-winner')::text ELSE (CASE WHEN calc_treatment_rankings_distortion_type(p_treatment_ranking_id) = 'B' THEN ('use-corrected-winner-with-caution')::text ELSE (CASE WHEN (calc_treatment_rankings_distortion_type(p_treatment_ranking_id) = 'C+' OR calc_treatment_rankings_distortion_type(p_treatment_ranking_id) = 'C-') THEN ('check-allocation-bias')::text ELSE ('pooled-analysis-trustworthy')::text END)::text END)::text END)::text END)::text;
+  WITH __erb_dedup_v1 AS (SELECT calc_treatment_rankings_distortion_type(p_treatment_ranking_id) AS val) SELECT (CASE WHEN (SELECT val FROM __erb_dedup_v1) IS NULL THEN ('')::text ELSE (CASE WHEN (SELECT val FROM __erb_dedup_v1) = 'A' THEN ('use-corrected-winner')::text ELSE (CASE WHEN (SELECT val FROM __erb_dedup_v1) = 'B' THEN ('use-corrected-winner-with-caution')::text ELSE (CASE WHEN ((SELECT val FROM __erb_dedup_v1) = 'C+' OR (SELECT val FROM __erb_dedup_v1) = 'C-') THEN ('check-allocation-bias')::text ELSE ('pooled-analysis-trustworthy')::text END)::text END)::text END)::text END)::text;
 $$ LANGUAGE sql STABLE;
 
 -- calc_treatment_rankings_allocation_direction
@@ -1825,7 +2495,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_treatment_rankings_allocation_direction(p_treatment_ranking_id TEXT)
 RETURNS TEXT AS $$
-  SELECT (CASE WHEN calc_treatment_rankings_corrected_gap(p_treatment_ranking_id) IS NULL THEN ('')::text ELSE (CASE WHEN calc_treatment_rankings_is_sign_flip(p_treatment_ranking_id) THEN ('reversal')::text ELSE (CASE WHEN ABS(calc_treatment_rankings_signed_pooled_gap(p_treatment_ranking_id)) > (COALESCE(CASE WHEN (ABS(calc_treatment_rankings_corrected_gap(p_treatment_ranking_id)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (ABS(calc_treatment_rankings_corrected_gap(p_treatment_ranking_id)))::numeric ELSE NULL END, 0) + COALESCE(0.001, 0)) THEN ('amplification')::text ELSE (CASE WHEN ABS(calc_treatment_rankings_signed_pooled_gap(p_treatment_ranking_id)) < (COALESCE(CASE WHEN (ABS(calc_treatment_rankings_corrected_gap(p_treatment_ranking_id)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (ABS(calc_treatment_rankings_corrected_gap(p_treatment_ranking_id)))::numeric ELSE NULL END, 0) - COALESCE(0.001, 0)) THEN ('compression')::text ELSE ('neutral')::text END)::text END)::text END)::text END)::text;
+  WITH __erb_dedup_v1 AS (SELECT calc_treatment_rankings_corrected_gap(p_treatment_ranking_id) AS val), __erb_dedup_v2 AS (SELECT calc_treatment_rankings_signed_pooled_gap(p_treatment_ranking_id) AS val) SELECT (CASE WHEN (SELECT val FROM __erb_dedup_v1) IS NULL THEN ('')::text ELSE (CASE WHEN calc_treatment_rankings_is_sign_flip(p_treatment_ranking_id) THEN ('reversal')::text ELSE (CASE WHEN ABS((SELECT val FROM __erb_dedup_v2)) > (COALESCE(CASE WHEN (ABS((SELECT val FROM __erb_dedup_v1)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (ABS((SELECT val FROM __erb_dedup_v1)))::numeric ELSE NULL END, 0) + COALESCE(0.001, 0)) THEN ('amplification')::text ELSE (CASE WHEN ABS((SELECT val FROM __erb_dedup_v2)) < (COALESCE(CASE WHEN (ABS((SELECT val FROM __erb_dedup_v1)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (ABS((SELECT val FROM __erb_dedup_v1)))::numeric ELSE NULL END, 0) - COALESCE(0.001, 0)) THEN ('compression')::text ELSE ('neutral')::text END)::text END)::text END)::text END)::text;
 $$ LANGUAGE sql STABLE;
 
 -- calc_treatment_rankings_signal_purity
@@ -1835,35 +2505,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_treatment_rankings_signal_purity(p_treatment_ranking_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT (CASE WHEN calc_treatment_rankings_corrected_gap(p_treatment_ranking_id) IS NULL THEN ('')::text ELSE (CASE WHEN ((COALESCE(CASE WHEN (ABS(calc_treatment_rankings_corrected_gap(p_treatment_ranking_id)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (ABS(calc_treatment_rankings_corrected_gap(p_treatment_ranking_id)))::numeric ELSE NULL END, 0) + COALESCE(CASE WHEN (calc_treatment_rankings_allocation_distortion(p_treatment_ranking_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_treatment_rankings_allocation_distortion(p_treatment_ranking_id))::numeric ELSE NULL END, 0)))::NUMERIC = 0 THEN (1)::text ELSE ((COALESCE(CASE WHEN (ABS(calc_treatment_rankings_corrected_gap(p_treatment_ranking_id)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (ABS(calc_treatment_rankings_corrected_gap(p_treatment_ranking_id)))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(CASE WHEN ((COALESCE(CASE WHEN (ABS(calc_treatment_rankings_corrected_gap(p_treatment_ranking_id)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (ABS(calc_treatment_rankings_corrected_gap(p_treatment_ranking_id)))::numeric ELSE NULL END, 0) + COALESCE(CASE WHEN (calc_treatment_rankings_allocation_distortion(p_treatment_ranking_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_treatment_rankings_allocation_distortion(p_treatment_ranking_id))::numeric ELSE NULL END, 0)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((COALESCE(CASE WHEN (ABS(calc_treatment_rankings_corrected_gap(p_treatment_ranking_id)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (ABS(calc_treatment_rankings_corrected_gap(p_treatment_ranking_id)))::numeric ELSE NULL END, 0) + COALESCE(CASE WHEN (calc_treatment_rankings_allocation_distortion(p_treatment_ranking_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_treatment_rankings_allocation_distortion(p_treatment_ranking_id))::numeric ELSE NULL END, 0)))::numeric ELSE NULL END, 0), 0)))::text END)::text END)::numeric;
-$$ LANGUAGE sql STABLE;
-
--- calc_treatment_rankings_pooled_gap_crosses_zero
--- Field: TreatmentRankings.PooledGapCrossesZero
--- Type: calculated | DataType: boolean | Returns: BOOLEAN
-
-
-CREATE OR REPLACE FUNCTION calc_treatment_rankings_pooled_gap_crosses_zero(p_treatment_ranking_id TEXT)
-RETURNS BOOLEAN AS $$
-  SELECT /* WARNING: Formula translation failed: Function 'LOOKUP' is not supported yet
-   Original Airtable formula:
-   =LOOKUP({{Study}}, SweepStudySummary[SweepStudyId], SweepStudySummary[PooledGapCrossesZero])
-*/
-NULL::boolean;
-$$ LANGUAGE sql STABLE;
-
--- calc_treatment_rankings_sweep_pooled_gap_range
--- Field: TreatmentRankings.SweepPooledGapRange
--- Type: calculated | DataType: number | Returns: NUMERIC
-
-
-CREATE OR REPLACE FUNCTION calc_treatment_rankings_sweep_pooled_gap_range(p_treatment_ranking_id TEXT)
-RETURNS NUMERIC AS $$
-  SELECT /* WARNING: Formula translation failed: Function 'LOOKUP' is not supported yet
-   Original Airtable formula:
-   =LOOKUP({{Study}}, SweepStudySummary[SweepStudyId], SweepStudySummary[SweepPooledGapRange])
-*/
-NULL::numeric;
+  WITH __erb_dedup_v1 AS (SELECT calc_treatment_rankings_corrected_gap(p_treatment_ranking_id) AS val), __erb_dedup_v2 AS (SELECT calc_treatment_rankings_allocation_distortion(p_treatment_ranking_id) AS val) SELECT (CASE WHEN (SELECT val FROM __erb_dedup_v1) IS NULL THEN NULL ELSE (CASE WHEN ((COALESCE(CASE WHEN (ABS((SELECT val FROM __erb_dedup_v1)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (ABS((SELECT val FROM __erb_dedup_v1)))::numeric ELSE NULL END, 0) + COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v2))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v2))::numeric ELSE NULL END, 0)))::NUMERIC = 0 THEN (1)::text ELSE ((COALESCE(CASE WHEN (ABS((SELECT val FROM __erb_dedup_v1)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (ABS((SELECT val FROM __erb_dedup_v1)))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(CASE WHEN ((COALESCE(CASE WHEN (ABS((SELECT val FROM __erb_dedup_v1)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (ABS((SELECT val FROM __erb_dedup_v1)))::numeric ELSE NULL END, 0) + COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v2))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v2))::numeric ELSE NULL END, 0)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((COALESCE(CASE WHEN (ABS((SELECT val FROM __erb_dedup_v1)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (ABS((SELECT val FROM __erb_dedup_v1)))::numeric ELSE NULL END, 0) + COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v2))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v2))::numeric ELSE NULL END, 0)))::numeric ELSE NULL END, 0), 0)))::text END)::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_treatment_rankings_latent_flip_potential
@@ -1873,7 +2515,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_treatment_rankings_latent_flip_potential(p_treatment_ranking_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (CASE WHEN calc_treatment_rankings_distortion_type(p_treatment_ranking_id) IS NULL THEN ('')::text ELSE ((calc_treatment_rankings_distortion_type(p_treatment_ranking_id) = 'D' AND calc_treatment_rankings_pooled_gap_crosses_zero(p_treatment_ranking_id) = TRUE))::text END)::boolean;
+  WITH __erb_dedup_v1 AS (SELECT calc_treatment_rankings_distortion_type(p_treatment_ranking_id) AS val) SELECT (CASE WHEN (SELECT val FROM __erb_dedup_v1) IS NULL THEN NULL ELSE (((SELECT val FROM __erb_dedup_v1) = 'D' AND calc_treatment_rankings_pooled_gap_crosses_zero(p_treatment_ranking_id) = TRUE))::text END)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_treatment_rankings_allocation_fragility
@@ -1883,7 +2525,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_treatment_rankings_allocation_fragility(p_treatment_ranking_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT (CASE WHEN (calc_treatment_rankings_sweep_pooled_gap_range(p_treatment_ranking_id) IS NULL OR calc_treatment_rankings_pooled_gap(p_treatment_ranking_id) IS NULL OR (calc_treatment_rankings_pooled_gap(p_treatment_ranking_id))::NUMERIC = 0) THEN (0)::text ELSE ((COALESCE(CASE WHEN (calc_treatment_rankings_sweep_pooled_gap_range(p_treatment_ranking_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_treatment_rankings_sweep_pooled_gap_range(p_treatment_ranking_id))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(CASE WHEN (ABS(calc_treatment_rankings_pooled_gap(p_treatment_ranking_id)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (ABS(calc_treatment_rankings_pooled_gap(p_treatment_ranking_id)))::numeric ELSE NULL END, 0), 0)))::text END)::numeric;
+  WITH __erb_dedup_v1 AS (SELECT calc_treatment_rankings_sweep_pooled_gap_range(p_treatment_ranking_id) AS val), __erb_dedup_v2 AS (SELECT calc_treatment_rankings_pooled_gap(p_treatment_ranking_id) AS val) SELECT (CASE WHEN ((SELECT val FROM __erb_dedup_v1) IS NULL OR (SELECT val FROM __erb_dedup_v2) IS NULL OR ((SELECT val FROM __erb_dedup_v2))::NUMERIC = 0) THEN (0)::text ELSE ((COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v1))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v1))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(CASE WHEN (ABS((SELECT val FROM __erb_dedup_v2)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (ABS((SELECT val FROM __erb_dedup_v2)))::numeric ELSE NULL END, 0), 0)))::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_treatment_rankings_max_stratum_imbalance
@@ -1916,20 +2558,6 @@ RETURNS BOOLEAN AS $$
   SELECT ((calc_treatment_rankings_distortion_type(p_treatment_ranking_id) = 'D' AND (calc_treatment_rankings_signal_purity(p_treatment_ranking_id))::NUMERIC = 1 AND (calc_treatment_rankings_allocation_distortion(p_treatment_ranking_id))::NUMERIC = 0 AND (calc_treatment_rankings_sweep_pooled_gap_range(p_treatment_ranking_id))::NUMERIC > 0.3 AND (calc_treatment_rankings_allocation_fragility(p_treatment_ranking_id))::NUMERIC >= 10));
 $$ LANGUAGE sql STABLE;
 
--- calc_treatment_rankings_study_domain
--- Field: TreatmentRankings.StudyDomain
--- Type: calculated | DataType: string | Returns: TEXT
-
-
-CREATE OR REPLACE FUNCTION calc_treatment_rankings_study_domain(p_treatment_ranking_id TEXT)
-RETURNS TEXT AS $$
-  SELECT /* WARNING: Formula translation failed: Function 'LOOKUP' is not supported yet
-   Original Airtable formula:
-   =LOOKUP({{Study}}, Studies[StudyId], Studies[Domain])
-*/
-NULL::text;
-$$ LANGUAGE sql STABLE;
-
 -- calc_treatment_rankings_is_latent_only_flip
 -- Field: TreatmentRankings.IsLatentOnlyFlip
 -- Type: calculated | DataType: boolean | Returns: BOOLEAN
@@ -1937,7 +2565,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_treatment_rankings_is_latent_only_flip(p_treatment_ranking_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (CASE WHEN calc_treatment_rankings_pooled_gap_crosses_zero(p_treatment_ranking_id) IS NULL THEN ('')::text ELSE ((calc_treatment_rankings_pooled_gap_crosses_zero(p_treatment_ranking_id) = TRUE AND calc_treatment_rankings_is_sign_flip(p_treatment_ranking_id) = FALSE))::text END)::boolean;
+  WITH __erb_dedup_v1 AS (SELECT calc_treatment_rankings_pooled_gap_crosses_zero(p_treatment_ranking_id) AS val) SELECT (CASE WHEN (SELECT val FROM __erb_dedup_v1) IS NULL THEN NULL ELSE (((SELECT val FROM __erb_dedup_v1) = TRUE AND calc_treatment_rankings_is_sign_flip(p_treatment_ranking_id) = FALSE))::text END)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_treatment_rankings_confirmed_causal_role_count
@@ -2016,7 +2644,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_treatment_rankings_distortion_ratio(p_treatment_ranking_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT (CASE WHEN (calc_treatment_rankings_weighted_stratum_gap_sum(p_treatment_ranking_id))::NUMERIC = 0 THEN (0)::text ELSE ((COALESCE(CASE WHEN (calc_treatment_rankings_signed_pooled_gap(p_treatment_ranking_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_treatment_rankings_signed_pooled_gap(p_treatment_ranking_id))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(CASE WHEN (calc_treatment_rankings_weighted_stratum_gap_sum(p_treatment_ranking_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_treatment_rankings_weighted_stratum_gap_sum(p_treatment_ranking_id))::numeric ELSE NULL END, 0), 0)))::text END)::numeric;
+  WITH __erb_dedup_v1 AS (SELECT calc_treatment_rankings_weighted_stratum_gap_sum(p_treatment_ranking_id) AS val), __erb_dedup_v2 AS (SELECT calc_treatment_rankings_signed_pooled_gap(p_treatment_ranking_id) AS val) SELECT (CASE WHEN ((SELECT val FROM __erb_dedup_v1))::NUMERIC = 0 THEN (0)::text ELSE ((COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v2))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v2))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v1))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v1))::numeric ELSE NULL END, 0), 0)))::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_treatment_rankings_screening_tier
@@ -2026,7 +2654,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_treatment_rankings_screening_tier(p_treatment_ranking_id TEXT)
 RETURNS TEXT AS $$
-  SELECT (CASE WHEN (calc_treatment_rankings_distortion_type(p_treatment_ranking_id) = 'A' OR calc_treatment_rankings_distortion_type(p_treatment_ranking_id) = 'B') THEN ('DANGER')::text ELSE (CASE WHEN (calc_treatment_rankings_distortion_type(p_treatment_ranking_id) = 'C+' OR calc_treatment_rankings_distortion_type(p_treatment_ranking_id) = 'C-') THEN ('CAUTION')::text ELSE (CASE WHEN calc_treatment_rankings_distortion_type(p_treatment_ranking_id) = 'D' THEN ('SAFE')::text ELSE ('')::text END)::text END)::text END)::text;
+  WITH __erb_dedup_v1 AS (SELECT calc_treatment_rankings_distortion_type(p_treatment_ranking_id) AS val) SELECT (CASE WHEN ((SELECT val FROM __erb_dedup_v1) = 'A' OR (SELECT val FROM __erb_dedup_v1) = 'B') THEN ('DANGER')::text ELSE (CASE WHEN ((SELECT val FROM __erb_dedup_v1) = 'C+' OR (SELECT val FROM __erb_dedup_v1) = 'C-') THEN ('CAUTION')::text ELSE (CASE WHEN (SELECT val FROM __erb_dedup_v1) = 'D' THEN ('SAFE')::text ELSE ('')::text END)::text END)::text END)::text;
 $$ LANGUAGE sql STABLE;
 
 -- calc_treatment_rankings_arm_size_ratio
@@ -2036,7 +2664,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_treatment_rankings_arm_size_ratio(p_treatment_ranking_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT (CASE WHEN ((COALESCE(CASE WHEN (calc_treatment_rankings_total_cases_a(p_treatment_ranking_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_treatment_rankings_total_cases_a(p_treatment_ranking_id))::numeric ELSE NULL END, 0) + COALESCE(CASE WHEN (calc_treatment_rankings_total_cases_b(p_treatment_ranking_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_treatment_rankings_total_cases_b(p_treatment_ranking_id))::numeric ELSE NULL END, 0)))::NUMERIC = 0 THEN (0)::text ELSE ((COALESCE(CASE WHEN (calc_treatment_rankings_total_cases_a(p_treatment_ranking_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_treatment_rankings_total_cases_a(p_treatment_ranking_id))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(CASE WHEN ((COALESCE(CASE WHEN (calc_treatment_rankings_total_cases_a(p_treatment_ranking_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_treatment_rankings_total_cases_a(p_treatment_ranking_id))::numeric ELSE NULL END, 0) + COALESCE(CASE WHEN (calc_treatment_rankings_total_cases_b(p_treatment_ranking_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_treatment_rankings_total_cases_b(p_treatment_ranking_id))::numeric ELSE NULL END, 0)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((COALESCE(CASE WHEN (calc_treatment_rankings_total_cases_a(p_treatment_ranking_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_treatment_rankings_total_cases_a(p_treatment_ranking_id))::numeric ELSE NULL END, 0) + COALESCE(CASE WHEN (calc_treatment_rankings_total_cases_b(p_treatment_ranking_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_treatment_rankings_total_cases_b(p_treatment_ranking_id))::numeric ELSE NULL END, 0)))::numeric ELSE NULL END, 0), 0)))::text END)::numeric;
+  WITH __erb_dedup_v1 AS (SELECT calc_treatment_rankings_total_cases_a(p_treatment_ranking_id) AS val), __erb_dedup_v2 AS (SELECT calc_treatment_rankings_total_cases_b(p_treatment_ranking_id) AS val) SELECT (CASE WHEN ((COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v1))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v1))::numeric ELSE NULL END, 0) + COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v2))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v2))::numeric ELSE NULL END, 0)))::NUMERIC = 0 THEN (0)::text ELSE ((COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v1))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v1))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(CASE WHEN ((COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v1))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v1))::numeric ELSE NULL END, 0) + COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v2))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v2))::numeric ELSE NULL END, 0)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v1))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v1))::numeric ELSE NULL END, 0) + COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v2))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v2))::numeric ELSE NULL END, 0)))::numeric ELSE NULL END, 0), 0)))::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_treatment_rankings_symmetry_departure
@@ -2046,7 +2674,132 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_treatment_rankings_symmetry_departure(p_treatment_ranking_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT (ABS((COALESCE(CASE WHEN (calc_treatment_rankings_arm_size_ratio(p_treatment_ranking_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_treatment_rankings_arm_size_ratio(p_treatment_ranking_id))::numeric ELSE NULL END, 0) - COALESCE(0.5, 0))))::numeric;
+  WITH __erb_dedup_v1 AS (SELECT calc_treatment_rankings_arm_size_ratio(p_treatment_ranking_id) AS val) SELECT (ABS((COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v1))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v1))::numeric ELSE NULL END, 0) - COALESCE(0.5, 0))))::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_invariant_checks_tradition_name
+-- Field: InvariantChecks.TraditionName
+-- Type: lookup | DataType: string | Returns: TEXT
+-- Lookup: Name from related ResearchTraditions
+
+
+CREATE OR REPLACE FUNCTION calc_invariant_checks_tradition_name(p_invariant_check_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT name::text FROM research_traditions WHERE tradition_id = (SELECT tradition_id FROM invariant_checks WHERE invariant_check_id = p_invariant_check_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_invariant_checks_tradition_key_claim_summary
+-- Field: InvariantChecks.TraditionKeyClaimSummary
+-- Type: lookup | DataType: string | Returns: TEXT
+-- Lookup: KeyClaim from related ResearchTraditions
+
+
+CREATE OR REPLACE FUNCTION calc_invariant_checks_tradition_key_claim_summary(p_invariant_check_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT key_claim::text FROM research_traditions WHERE tradition_id = (SELECT tradition_id FROM invariant_checks WHERE invariant_check_id = p_invariant_check_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_invariant_checks_protects_conclusion_title
+-- Field: InvariantChecks.ProtectsConclusionTitle
+-- Type: lookup | DataType: string | Returns: TEXT
+-- Lookup: Title from related Conclusions
+
+
+CREATE OR REPLACE FUNCTION calc_invariant_checks_protects_conclusion_title(p_invariant_check_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT title::text FROM conclusions WHERE conclusion_id = (SELECT protects_conclusion FROM invariant_checks WHERE invariant_check_id = p_invariant_check_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_invariant_checks_protects_conclusion_category
+-- Field: InvariantChecks.ProtectsConclusionCategory
+-- Type: lookup | DataType: string | Returns: TEXT
+-- Lookup: Category from related Conclusions
+
+
+CREATE OR REPLACE FUNCTION calc_invariant_checks_protects_conclusion_category(p_invariant_check_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT category::text FROM conclusions WHERE conclusion_id = (SELECT protects_conclusion FROM invariant_checks WHERE invariant_check_id = p_invariant_check_id));
+$$ LANGUAGE sql STABLE;
+
+-- get_conclusions_category
+-- Helper function: Get Category from Conclusions by ConclusionId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_conclusions_category(p_conclusion_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT category FROM conclusions WHERE conclusion_id = p_conclusion_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_conclusions_status
+-- Helper function: Get Status from Conclusions by ConclusionId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_conclusions_status(p_conclusion_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT status FROM conclusions WHERE conclusion_id = p_conclusion_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_conclusions_report_tier
+-- Helper function: Get ReportTier from Conclusions by ConclusionId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_conclusions_report_tier(p_conclusion_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT report_tier FROM conclusions WHERE conclusion_id = p_conclusion_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_conclusions_validating_hypothesis
+-- Helper function: Get ValidatingHypothesis from Conclusions by ConclusionId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_conclusions_validating_hypothesis(p_conclusion_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT validating_hypothesis FROM conclusions WHERE conclusion_id = p_conclusion_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_conclusions_title
+-- Helper function: Get Title from Conclusions by ConclusionId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_conclusions_title(p_conclusion_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT title FROM conclusions WHERE conclusion_id = p_conclusion_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_conclusions_evidence
+-- Helper function: Get Evidence from Conclusions by ConclusionId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_conclusions_evidence(p_conclusion_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT evidence FROM conclusions WHERE conclusion_id = p_conclusion_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_conclusions_witnessed_in_loop
+-- Helper function: Get WitnessedInLoop from Conclusions by ConclusionId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_conclusions_witnessed_in_loop(p_conclusion_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT witnessed_in_loop FROM conclusions WHERE conclusion_id = p_conclusion_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_conclusions_target_loop
+-- Helper function: Get TargetLoop from Conclusions by ConclusionId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_conclusions_target_loop(p_conclusion_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT target_loop FROM conclusions WHERE conclusion_id = p_conclusion_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_conclusions_challenges_researcher
+-- Helper function: Get ChallengesResearcher from Conclusions by ConclusionId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_conclusions_challenges_researcher(p_conclusion_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT challenges_researcher FROM conclusions WHERE conclusion_id = p_conclusion_id);
 $$ LANGUAGE sql STABLE;
 
 -- calc_invariant_checks_name
@@ -2099,6 +2852,50 @@ RETURNS TEXT AS $$
   SELECT ((SELECT NULLIF(materialized_entity_id, '') FROM materialized_entities WHERE materialized_entity_id = p_materialized_entity_id))::text;
 $$ LANGUAGE sql STABLE;
 
+-- calc_methodology_tradition_name
+-- Field: Methodology.TraditionName
+-- Type: lookup | DataType: string | Returns: TEXT
+-- Lookup: Name from related ResearchTraditions
+
+
+CREATE OR REPLACE FUNCTION calc_methodology_tradition_name(p_methodology_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT name::text FROM research_traditions WHERE tradition_id = (SELECT tradition_id FROM methodology WHERE methodology_id = p_methodology_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_methodology_tradition_primary_venue
+-- Field: Methodology.TraditionPrimaryVenue
+-- Type: lookup | DataType: string | Returns: TEXT
+-- Lookup: PrimaryVenue from related ResearchTraditions
+
+
+CREATE OR REPLACE FUNCTION calc_methodology_tradition_primary_venue(p_methodology_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT primary_venue::text FROM research_traditions WHERE tradition_id = (SELECT tradition_id FROM methodology WHERE methodology_id = p_methodology_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_methodology_pioneering_researcher_name
+-- Field: Methodology.PioneeringResearcherName
+-- Type: lookup | DataType: string | Returns: TEXT
+-- Lookup: Name from related Researchers
+
+
+CREATE OR REPLACE FUNCTION calc_methodology_pioneering_researcher_name(p_methodology_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT name::text FROM researchers WHERE researcher_id = (SELECT pioneering_researcher FROM methodology WHERE methodology_id = p_methodology_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_methodology_pioneering_researcher_affiliation
+-- Field: Methodology.PioneeringResearcherAffiliation
+-- Type: lookup | DataType: string | Returns: TEXT
+-- Lookup: Affiliation from related Researchers
+
+
+CREATE OR REPLACE FUNCTION calc_methodology_pioneering_researcher_affiliation(p_methodology_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT affiliation::text FROM researchers WHERE researcher_id = (SELECT pioneering_researcher FROM methodology WHERE methodology_id = p_methodology_id));
+$$ LANGUAGE sql STABLE;
+
 -- calc_methodology_name
 -- Field: Methodology.Name
 -- Type: calculated | DataType: string | Returns: TEXT
@@ -2119,6 +2916,237 @@ RETURNS INTEGER AS $$
   SELECT ((SELECT COUNT(*) FROM loops WHERE tradition_id = (SELECT NULLIF(tradition_id, '') FROM methodology WHERE methodology_id = p_methodology_id)))::integer;
 $$ LANGUAGE sql STABLE;
 
+-- calc_conclusions_live_status_confirmed
+-- Field: Conclusions.LiveStatusConfirmed
+-- Type: lookup | DataType: boolean | Returns: BOOLEAN
+-- Lookup: IsConfirmed from related DiscoveryFindings
+
+
+CREATE OR REPLACE FUNCTION calc_conclusions_live_status_confirmed(p_conclusion_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT calc_discovery_findings_is_confirmed((SELECT validating_hypothesis FROM conclusions WHERE conclusion_id = p_conclusion_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_conclusions_live_status_observed_metric
+-- Field: Conclusions.LiveStatusObservedMetric
+-- Type: lookup | DataType: string | Returns: TEXT
+-- Lookup: ObservedMetric from related DiscoveryFindings
+
+
+CREATE OR REPLACE FUNCTION calc_conclusions_live_status_observed_metric(p_conclusion_id TEXT)
+RETURNS TEXT AS $$
+  SELECT calc_discovery_findings_observed_metric((SELECT validating_hypothesis FROM conclusions WHERE conclusion_id = p_conclusion_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_conclusions_tradition_name
+-- Field: Conclusions.TraditionName
+-- Type: lookup | DataType: string | Returns: TEXT
+-- Lookup: Name from related ResearchTraditions
+
+
+CREATE OR REPLACE FUNCTION calc_conclusions_tradition_name(p_conclusion_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT name::text FROM research_traditions WHERE tradition_id = (SELECT tradition_id FROM conclusions WHERE conclusion_id = p_conclusion_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_conclusions_tradition_key_claim_summary
+-- Field: Conclusions.TraditionKeyClaimSummary
+-- Type: lookup | DataType: string | Returns: TEXT
+-- Lookup: KeyClaim from related ResearchTraditions
+
+
+CREATE OR REPLACE FUNCTION calc_conclusions_tradition_key_claim_summary(p_conclusion_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT key_claim::text FROM research_traditions WHERE tradition_id = (SELECT tradition_id FROM conclusions WHERE conclusion_id = p_conclusion_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_conclusions_researcher_name
+-- Field: Conclusions.ResearcherName
+-- Type: lookup | DataType: string | Returns: TEXT
+-- Lookup: Name from related Researchers
+
+
+CREATE OR REPLACE FUNCTION calc_conclusions_researcher_name(p_conclusion_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT name::text FROM researchers WHERE researcher_id = (SELECT researcher_id FROM conclusions WHERE conclusion_id = p_conclusion_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_conclusions_researcher_affiliation
+-- Field: Conclusions.ResearcherAffiliation
+-- Type: lookup | DataType: string | Returns: TEXT
+-- Lookup: Affiliation from related Researchers
+
+
+CREATE OR REPLACE FUNCTION calc_conclusions_researcher_affiliation(p_conclusion_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT affiliation::text FROM researchers WHERE researcher_id = (SELECT researcher_id FROM conclusions WHERE conclusion_id = p_conclusion_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_conclusions_challenges_researcher_name
+-- Field: Conclusions.ChallengesResearcherName
+-- Type: lookup | DataType: string | Returns: TEXT
+-- Lookup: Name from related Researchers
+
+
+CREATE OR REPLACE FUNCTION calc_conclusions_challenges_researcher_name(p_conclusion_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT name::text FROM researchers WHERE researcher_id = (SELECT challenges_researcher FROM conclusions WHERE conclusion_id = p_conclusion_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_conclusions_witnessed_in_loop_title
+-- Field: Conclusions.WitnessedInLoopTitle
+-- Type: lookup | DataType: string | Returns: TEXT
+-- Lookup: Title from related Loops
+
+
+CREATE OR REPLACE FUNCTION calc_conclusions_witnessed_in_loop_title(p_conclusion_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT title::text FROM loops WHERE loop_id = (SELECT witnessed_in_loop FROM conclusions WHERE conclusion_id = p_conclusion_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_conclusions_witnessed_in_loop_commit_hash
+-- Field: Conclusions.WitnessedInLoopCommitHash
+-- Type: lookup | DataType: string | Returns: TEXT
+-- Lookup: CommitHash from related Loops
+
+
+CREATE OR REPLACE FUNCTION calc_conclusions_witnessed_in_loop_commit_hash(p_conclusion_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT commit_hash::text FROM loops WHERE loop_id = (SELECT witnessed_in_loop FROM conclusions WHERE conclusion_id = p_conclusion_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_conclusions_witnessed_in_loop_commit_short
+-- Field: Conclusions.WitnessedInLoopCommitShort
+-- Type: lookup | DataType: string | Returns: TEXT
+-- Lookup: CommitShort from related Loops
+
+
+CREATE OR REPLACE FUNCTION calc_conclusions_witnessed_in_loop_commit_short(p_conclusion_id TEXT)
+RETURNS TEXT AS $$
+  SELECT calc_loops_commit_short((SELECT witnessed_in_loop FROM conclusions WHERE conclusion_id = p_conclusion_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_conclusions_witnessed_in_loop_commit_date
+-- Field: Conclusions.WitnessedInLoopCommitDate
+-- Type: lookup | DataType: string | Returns: DATE
+-- Lookup: CommitDate from related Loops
+
+
+CREATE OR REPLACE FUNCTION calc_conclusions_witnessed_in_loop_commit_date(p_conclusion_id TEXT)
+RETURNS DATE AS $$
+  SELECT (SELECT commit_date::date FROM loops WHERE loop_id = (SELECT witnessed_in_loop FROM conclusions WHERE conclusion_id = p_conclusion_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_conclusions_witnessed_in_loop_git_tag
+-- Field: Conclusions.WitnessedInLoopGitTag
+-- Type: lookup | DataType: string | Returns: TEXT
+-- Lookup: GitTag from related Loops
+
+
+CREATE OR REPLACE FUNCTION calc_conclusions_witnessed_in_loop_git_tag(p_conclusion_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT git_tag::text FROM loops WHERE loop_id = (SELECT witnessed_in_loop FROM conclusions WHERE conclusion_id = p_conclusion_id));
+$$ LANGUAGE sql STABLE;
+
+-- get_discovery_findings_witnessed_in_loop
+-- Helper function: Get WitnessedInLoop from DiscoveryFindings by FindingId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_discovery_findings_witnessed_in_loop(p_finding_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT witnessed_in_loop FROM discovery_findings WHERE finding_id = p_finding_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_loops_title
+-- Helper function: Get Title from Loops by LoopId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_loops_title(p_loop_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT title FROM loops WHERE loop_id = p_loop_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_loops_status
+-- Helper function: Get Status from Loops by LoopId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_loops_status(p_loop_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT status FROM loops WHERE loop_id = p_loop_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_loops_new_concept
+-- Helper function: Get NewConcept from Loops by LoopId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_loops_new_concept(p_loop_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT new_concept FROM loops WHERE loop_id = p_loop_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_loops_domain_question
+-- Helper function: Get DomainQuestion from Loops by LoopId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_loops_domain_question(p_loop_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT domain_question FROM loops WHERE loop_id = p_loop_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_loops_mock_data_note
+-- Helper function: Get MockDataNote from Loops by LoopId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_loops_mock_data_note(p_loop_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT mock_data_note FROM loops WHERE loop_id = p_loop_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_loops_next_suggestion
+-- Helper function: Get NextSuggestion from Loops by LoopId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_loops_next_suggestion(p_loop_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT next_suggestion FROM loops WHERE loop_id = p_loop_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_loops_commit_hash
+-- Helper function: Get CommitHash from Loops by LoopId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_loops_commit_hash(p_loop_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT commit_hash FROM loops WHERE loop_id = p_loop_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_loops_commit_date
+-- Helper function: Get CommitDate from Loops by LoopId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_loops_commit_date(p_loop_id TEXT)
+RETURNS DATE AS $$
+  SELECT (SELECT commit_date FROM loops WHERE loop_id = p_loop_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_loops_commit_message
+-- Helper function: Get CommitMessage from Loops by LoopId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_loops_commit_message(p_loop_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT commit_message FROM loops WHERE loop_id = p_loop_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_loops_git_tag
+-- Helper function: Get GitTag from Loops by LoopId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_loops_git_tag(p_loop_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT git_tag FROM loops WHERE loop_id = p_loop_id);
+$$ LANGUAGE sql STABLE;
+
 -- calc_conclusions_name
 -- Field: Conclusions.Name
 -- Type: calculated | DataType: string | Returns: TEXT
@@ -2137,6 +3165,50 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION calc_conclusions_invariant_protecting_count(p_conclusion_id TEXT)
 RETURNS INTEGER AS $$
   SELECT ((SELECT COUNT(*) FROM invariant_checks WHERE protects_conclusion = (SELECT NULLIF(conclusion_id, '') FROM conclusions WHERE conclusion_id = p_conclusion_id)))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_ui_screens_tradition_name
+-- Field: UIScreens.TraditionName
+-- Type: lookup | DataType: string | Returns: TEXT
+-- Lookup: Name from related ResearchTraditions
+
+
+CREATE OR REPLACE FUNCTION calc_ui_screens_tradition_name(p_screen_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT name::text FROM research_traditions WHERE tradition_id = (SELECT tradition_id FROM ui_screens WHERE screen_id = p_screen_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_ui_screens_tradition_core_conern
+-- Field: UIScreens.TraditionCoreConern
+-- Type: lookup | DataType: string | Returns: TEXT
+-- Lookup: CoreConcern from related ResearchTraditions
+
+
+CREATE OR REPLACE FUNCTION calc_ui_screens_tradition_core_conern(p_screen_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT core_concern::text FROM research_traditions WHERE tradition_id = (SELECT tradition_id FROM ui_screens WHERE screen_id = p_screen_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_ui_screens_primary_conclusion_title
+-- Field: UIScreens.PrimaryConclusionTitle
+-- Type: lookup | DataType: string | Returns: TEXT
+-- Lookup: Title from related Conclusions
+
+
+CREATE OR REPLACE FUNCTION calc_ui_screens_primary_conclusion_title(p_screen_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT title::text FROM conclusions WHERE conclusion_id = (SELECT primary_conclusion FROM ui_screens WHERE screen_id = p_screen_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_ui_screens_primary_conclusion_evidence
+-- Field: UIScreens.PrimaryConclusionEvidence
+-- Type: lookup | DataType: string | Returns: TEXT
+-- Lookup: Evidence from related Conclusions
+
+
+CREATE OR REPLACE FUNCTION calc_ui_screens_primary_conclusion_evidence(p_screen_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT evidence::text FROM conclusions WHERE conclusion_id = (SELECT primary_conclusion FROM ui_screens WHERE screen_id = p_screen_id));
 $$ LANGUAGE sql STABLE;
 
 -- calc_ui_screens_name
@@ -2169,6 +3241,94 @@ RETURNS TEXT AS $$
   SELECT ((SELECT NULLIF(spec_id, '') FROM instrument_spec WHERE spec_id = p_spec_id))::text;
 $$ LANGUAGE sql STABLE;
 
+-- calc_allocation_sweep_n_sweep_stratum_total
+-- Field: AllocationSweep.NSweepStratumTotal
+-- Type: calculated | DataType: number | Returns: NUMERIC
+-- Lookup: NSweepStratumTotal from related SweepStudyConfig
+
+
+CREATE OR REPLACE FUNCTION calc_allocation_sweep_n_sweep_stratum_total(p_sweep_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT (SELECT n_sweep_stratum_total::numeric FROM sweep_study_config WHERE config_id = (SELECT study_id FROM allocation_sweep WHERE sweep_id = p_sweep_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_allocation_sweep_n_fixed_a
+-- Field: AllocationSweep.NFixedA
+-- Type: calculated | DataType: number | Returns: NUMERIC
+-- Lookup: NFixedA from related SweepStudyConfig
+
+
+CREATE OR REPLACE FUNCTION calc_allocation_sweep_n_fixed_a(p_sweep_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT (SELECT n_fixed_a::numeric FROM sweep_study_config WHERE config_id = (SELECT study_id FROM allocation_sweep WHERE sweep_id = p_sweep_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_allocation_sweep_n_fixed_b
+-- Field: AllocationSweep.NFixedB
+-- Type: calculated | DataType: number | Returns: NUMERIC
+-- Lookup: NFixedB from related SweepStudyConfig
+
+
+CREATE OR REPLACE FUNCTION calc_allocation_sweep_n_fixed_b(p_sweep_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT (SELECT n_fixed_b::numeric FROM sweep_study_config WHERE config_id = (SELECT study_id FROM allocation_sweep WHERE sweep_id = p_sweep_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_allocation_sweep_sweep_rate_a
+-- Field: AllocationSweep.SweepRateA
+-- Type: calculated | DataType: number | Returns: NUMERIC
+-- Lookup: SweepRateA from related SweepStudyConfig
+
+
+CREATE OR REPLACE FUNCTION calc_allocation_sweep_sweep_rate_a(p_sweep_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT (SELECT sweep_rate_a::numeric FROM sweep_study_config WHERE config_id = (SELECT study_id FROM allocation_sweep WHERE sweep_id = p_sweep_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_allocation_sweep_sweep_rate_b
+-- Field: AllocationSweep.SweepRateB
+-- Type: calculated | DataType: number | Returns: NUMERIC
+-- Lookup: SweepRateB from related SweepStudyConfig
+
+
+CREATE OR REPLACE FUNCTION calc_allocation_sweep_sweep_rate_b(p_sweep_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT (SELECT sweep_rate_b::numeric FROM sweep_study_config WHERE config_id = (SELECT study_id FROM allocation_sweep WHERE sweep_id = p_sweep_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_allocation_sweep_fixed_rate_a
+-- Field: AllocationSweep.FixedRateA
+-- Type: calculated | DataType: number | Returns: NUMERIC
+-- Lookup: FixedRateA from related SweepStudyConfig
+
+
+CREATE OR REPLACE FUNCTION calc_allocation_sweep_fixed_rate_a(p_sweep_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT (SELECT fixed_rate_a::numeric FROM sweep_study_config WHERE config_id = (SELECT study_id FROM allocation_sweep WHERE sweep_id = p_sweep_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_allocation_sweep_fixed_rate_b
+-- Field: AllocationSweep.FixedRateB
+-- Type: calculated | DataType: number | Returns: NUMERIC
+-- Lookup: FixedRateB from related SweepStudyConfig
+
+
+CREATE OR REPLACE FUNCTION calc_allocation_sweep_fixed_rate_b(p_sweep_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT (SELECT fixed_rate_b::numeric FROM sweep_study_config WHERE config_id = (SELECT study_id FROM allocation_sweep WHERE sweep_id = p_sweep_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_allocation_sweep_sweep_corrected_gap
+-- Field: AllocationSweep.SweepCorrectedGap
+-- Type: calculated | DataType: number | Returns: NUMERIC
+-- Lookup: SweepCorrectedGap from related SweepStudyConfig
+
+
+CREATE OR REPLACE FUNCTION calc_allocation_sweep_sweep_corrected_gap(p_sweep_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT (SELECT sweep_corrected_gap::numeric FROM sweep_study_config WHERE config_id = (SELECT study_id FROM allocation_sweep WHERE sweep_id = p_sweep_id));
+$$ LANGUAGE sql STABLE;
+
 -- calc_allocation_sweep_name
 -- Field: AllocationSweep.Name
 -- Type: calculated | DataType: string | Returns: TEXT
@@ -2193,20 +3353,6 @@ RETURNS BOOLEAN AS $$
 NULL::boolean;
 $$ LANGUAGE sql STABLE;
 
--- calc_allocation_sweep_n_sweep_stratum_total
--- Field: AllocationSweep.NSweepStratumTotal
--- Type: calculated | DataType: number | Returns: NUMERIC
-
-
-CREATE OR REPLACE FUNCTION calc_allocation_sweep_n_sweep_stratum_total(p_sweep_id TEXT)
-RETURNS NUMERIC AS $$
-  SELECT /* WARNING: Formula translation failed: Function 'LOOKUP' is not supported yet
-   Original Airtable formula:
-   =LOOKUP({{StudyId}}, SweepStudyConfig[StudyId], SweepStudyConfig[NSweepStratumTotal])
-*/
-NULL::numeric;
-$$ LANGUAGE sql STABLE;
-
 -- calc_allocation_sweep_n_sweep_a
 -- Field: AllocationSweep.NSweepA
 -- Type: calculated | DataType: number | Returns: NUMERIC
@@ -2214,7 +3360,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_allocation_sweep_n_sweep_a(p_sweep_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT (ROUND(((COALESCE(CASE WHEN (calc_allocation_sweep_n_sweep_stratum_total(p_sweep_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_allocation_sweep_n_sweep_stratum_total(p_sweep_id))::numeric ELSE NULL END, 0) * COALESCE(CASE WHEN ((SELECT alloc_fraction_a FROM allocation_sweep WHERE sweep_id = p_sweep_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT alloc_fraction_a FROM allocation_sweep WHERE sweep_id = p_sweep_id))::numeric ELSE NULL END, 0)))::NUMERIC))::numeric;
+  WITH __erb_dedup_v1 AS (SELECT calc_allocation_sweep_n_sweep_stratum_total(p_sweep_id) AS val) SELECT (ROUND(((COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v1))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v1))::numeric ELSE NULL END, 0) * COALESCE(CASE WHEN ((SELECT alloc_fraction_a FROM allocation_sweep WHERE sweep_id = p_sweep_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT alloc_fraction_a FROM allocation_sweep WHERE sweep_id = p_sweep_id))::numeric ELSE NULL END, 0)))::NUMERIC))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_allocation_sweep_n_sweep_b
@@ -2224,91 +3370,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_allocation_sweep_n_sweep_b(p_sweep_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((COALESCE(CASE WHEN (calc_allocation_sweep_n_sweep_stratum_total(p_sweep_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_allocation_sweep_n_sweep_stratum_total(p_sweep_id))::numeric ELSE NULL END, 0) - COALESCE(CASE WHEN (calc_allocation_sweep_n_sweep_a(p_sweep_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_allocation_sweep_n_sweep_a(p_sweep_id))::numeric ELSE NULL END, 0)))::numeric;
-$$ LANGUAGE sql STABLE;
-
--- calc_allocation_sweep_n_fixed_a
--- Field: AllocationSweep.NFixedA
--- Type: calculated | DataType: number | Returns: NUMERIC
-
-
-CREATE OR REPLACE FUNCTION calc_allocation_sweep_n_fixed_a(p_sweep_id TEXT)
-RETURNS NUMERIC AS $$
-  SELECT /* WARNING: Formula translation failed: Function 'LOOKUP' is not supported yet
-   Original Airtable formula:
-   =LOOKUP({{StudyId}}, SweepStudyConfig[StudyId], SweepStudyConfig[NFixedA])
-*/
-NULL::numeric;
-$$ LANGUAGE sql STABLE;
-
--- calc_allocation_sweep_n_fixed_b
--- Field: AllocationSweep.NFixedB
--- Type: calculated | DataType: number | Returns: NUMERIC
-
-
-CREATE OR REPLACE FUNCTION calc_allocation_sweep_n_fixed_b(p_sweep_id TEXT)
-RETURNS NUMERIC AS $$
-  SELECT /* WARNING: Formula translation failed: Function 'LOOKUP' is not supported yet
-   Original Airtable formula:
-   =LOOKUP({{StudyId}}, SweepStudyConfig[StudyId], SweepStudyConfig[NFixedB])
-*/
-NULL::numeric;
-$$ LANGUAGE sql STABLE;
-
--- calc_allocation_sweep_sweep_rate_a
--- Field: AllocationSweep.SweepRateA
--- Type: calculated | DataType: number | Returns: NUMERIC
-
-
-CREATE OR REPLACE FUNCTION calc_allocation_sweep_sweep_rate_a(p_sweep_id TEXT)
-RETURNS NUMERIC AS $$
-  SELECT /* WARNING: Formula translation failed: Function 'LOOKUP' is not supported yet
-   Original Airtable formula:
-   =LOOKUP({{StudyId}}, SweepStudyConfig[StudyId], SweepStudyConfig[SweepRateA])
-*/
-NULL::numeric;
-$$ LANGUAGE sql STABLE;
-
--- calc_allocation_sweep_sweep_rate_b
--- Field: AllocationSweep.SweepRateB
--- Type: calculated | DataType: number | Returns: NUMERIC
-
-
-CREATE OR REPLACE FUNCTION calc_allocation_sweep_sweep_rate_b(p_sweep_id TEXT)
-RETURNS NUMERIC AS $$
-  SELECT /* WARNING: Formula translation failed: Function 'LOOKUP' is not supported yet
-   Original Airtable formula:
-   =LOOKUP({{StudyId}}, SweepStudyConfig[StudyId], SweepStudyConfig[SweepRateB])
-*/
-NULL::numeric;
-$$ LANGUAGE sql STABLE;
-
--- calc_allocation_sweep_fixed_rate_a
--- Field: AllocationSweep.FixedRateA
--- Type: calculated | DataType: number | Returns: NUMERIC
-
-
-CREATE OR REPLACE FUNCTION calc_allocation_sweep_fixed_rate_a(p_sweep_id TEXT)
-RETURNS NUMERIC AS $$
-  SELECT /* WARNING: Formula translation failed: Function 'LOOKUP' is not supported yet
-   Original Airtable formula:
-   =LOOKUP({{StudyId}}, SweepStudyConfig[StudyId], SweepStudyConfig[FixedRateA])
-*/
-NULL::numeric;
-$$ LANGUAGE sql STABLE;
-
--- calc_allocation_sweep_fixed_rate_b
--- Field: AllocationSweep.FixedRateB
--- Type: calculated | DataType: number | Returns: NUMERIC
-
-
-CREATE OR REPLACE FUNCTION calc_allocation_sweep_fixed_rate_b(p_sweep_id TEXT)
-RETURNS NUMERIC AS $$
-  SELECT /* WARNING: Formula translation failed: Function 'LOOKUP' is not supported yet
-   Original Airtable formula:
-   =LOOKUP({{StudyId}}, SweepStudyConfig[StudyId], SweepStudyConfig[FixedRateB])
-*/
-NULL::numeric;
+  WITH __erb_dedup_v1 AS (SELECT calc_allocation_sweep_n_sweep_stratum_total(p_sweep_id) AS val), __erb_dedup_v2 AS (SELECT calc_allocation_sweep_n_sweep_a(p_sweep_id) AS val) SELECT ((COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v1))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v1))::numeric ELSE NULL END, 0) - COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v2))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v2))::numeric ELSE NULL END, 0)))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_allocation_sweep_sweep_pooled_rate_a
@@ -2318,7 +3380,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_allocation_sweep_sweep_pooled_rate_a(p_sweep_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT (CASE WHEN ((COALESCE(CASE WHEN (calc_allocation_sweep_n_sweep_a(p_sweep_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_allocation_sweep_n_sweep_a(p_sweep_id))::numeric ELSE NULL END, 0) + COALESCE(CASE WHEN (calc_allocation_sweep_n_fixed_a(p_sweep_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_allocation_sweep_n_fixed_a(p_sweep_id))::numeric ELSE NULL END, 0)))::NUMERIC = 0 THEN ('')::text ELSE ((COALESCE(CASE WHEN ((COALESCE(CASE WHEN ((COALESCE(CASE WHEN (calc_allocation_sweep_n_sweep_a(p_sweep_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_allocation_sweep_n_sweep_a(p_sweep_id))::numeric ELSE NULL END, 0) * COALESCE(CASE WHEN (calc_allocation_sweep_sweep_rate_a(p_sweep_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_allocation_sweep_sweep_rate_a(p_sweep_id))::numeric ELSE NULL END, 0)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((COALESCE(CASE WHEN (calc_allocation_sweep_n_sweep_a(p_sweep_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_allocation_sweep_n_sweep_a(p_sweep_id))::numeric ELSE NULL END, 0) * COALESCE(CASE WHEN (calc_allocation_sweep_sweep_rate_a(p_sweep_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_allocation_sweep_sweep_rate_a(p_sweep_id))::numeric ELSE NULL END, 0)))::numeric ELSE NULL END, 0) + COALESCE(CASE WHEN ((COALESCE(CASE WHEN (calc_allocation_sweep_n_fixed_a(p_sweep_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_allocation_sweep_n_fixed_a(p_sweep_id))::numeric ELSE NULL END, 0) * COALESCE(CASE WHEN (calc_allocation_sweep_fixed_rate_a(p_sweep_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_allocation_sweep_fixed_rate_a(p_sweep_id))::numeric ELSE NULL END, 0)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((COALESCE(CASE WHEN (calc_allocation_sweep_n_fixed_a(p_sweep_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_allocation_sweep_n_fixed_a(p_sweep_id))::numeric ELSE NULL END, 0) * COALESCE(CASE WHEN (calc_allocation_sweep_fixed_rate_a(p_sweep_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_allocation_sweep_fixed_rate_a(p_sweep_id))::numeric ELSE NULL END, 0)))::numeric ELSE NULL END, 0)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((COALESCE(CASE WHEN ((COALESCE(CASE WHEN (calc_allocation_sweep_n_sweep_a(p_sweep_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_allocation_sweep_n_sweep_a(p_sweep_id))::numeric ELSE NULL END, 0) * COALESCE(CASE WHEN (calc_allocation_sweep_sweep_rate_a(p_sweep_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_allocation_sweep_sweep_rate_a(p_sweep_id))::numeric ELSE NULL END, 0)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((COALESCE(CASE WHEN (calc_allocation_sweep_n_sweep_a(p_sweep_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_allocation_sweep_n_sweep_a(p_sweep_id))::numeric ELSE NULL END, 0) * COALESCE(CASE WHEN (calc_allocation_sweep_sweep_rate_a(p_sweep_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_allocation_sweep_sweep_rate_a(p_sweep_id))::numeric ELSE NULL END, 0)))::numeric ELSE NULL END, 0) + COALESCE(CASE WHEN ((COALESCE(CASE WHEN (calc_allocation_sweep_n_fixed_a(p_sweep_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_allocation_sweep_n_fixed_a(p_sweep_id))::numeric ELSE NULL END, 0) * COALESCE(CASE WHEN (calc_allocation_sweep_fixed_rate_a(p_sweep_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_allocation_sweep_fixed_rate_a(p_sweep_id))::numeric ELSE NULL END, 0)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((COALESCE(CASE WHEN (calc_allocation_sweep_n_fixed_a(p_sweep_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_allocation_sweep_n_fixed_a(p_sweep_id))::numeric ELSE NULL END, 0) * COALESCE(CASE WHEN (calc_allocation_sweep_fixed_rate_a(p_sweep_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_allocation_sweep_fixed_rate_a(p_sweep_id))::numeric ELSE NULL END, 0)))::numeric ELSE NULL END, 0)))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(CASE WHEN ((COALESCE(CASE WHEN (calc_allocation_sweep_n_sweep_a(p_sweep_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_allocation_sweep_n_sweep_a(p_sweep_id))::numeric ELSE NULL END, 0) + COALESCE(CASE WHEN (calc_allocation_sweep_n_fixed_a(p_sweep_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_allocation_sweep_n_fixed_a(p_sweep_id))::numeric ELSE NULL END, 0)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((COALESCE(CASE WHEN (calc_allocation_sweep_n_sweep_a(p_sweep_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_allocation_sweep_n_sweep_a(p_sweep_id))::numeric ELSE NULL END, 0) + COALESCE(CASE WHEN (calc_allocation_sweep_n_fixed_a(p_sweep_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_allocation_sweep_n_fixed_a(p_sweep_id))::numeric ELSE NULL END, 0)))::numeric ELSE NULL END, 0), 0)))::text END)::numeric;
+  WITH __erb_dedup_v1 AS (SELECT calc_allocation_sweep_n_sweep_a(p_sweep_id) AS val), __erb_dedup_v2 AS (SELECT calc_allocation_sweep_n_fixed_a(p_sweep_id) AS val), __erb_dedup_v3 AS (SELECT calc_allocation_sweep_sweep_rate_a(p_sweep_id) AS val), __erb_dedup_v4 AS (SELECT calc_allocation_sweep_fixed_rate_a(p_sweep_id) AS val) SELECT (CASE WHEN ((COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v1))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v1))::numeric ELSE NULL END, 0) + COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v2))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v2))::numeric ELSE NULL END, 0)))::NUMERIC = 0 THEN NULL ELSE ((COALESCE(CASE WHEN ((COALESCE(CASE WHEN ((COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v1))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v1))::numeric ELSE NULL END, 0) * COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v3))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v3))::numeric ELSE NULL END, 0)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v1))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v1))::numeric ELSE NULL END, 0) * COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v3))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v3))::numeric ELSE NULL END, 0)))::numeric ELSE NULL END, 0) + COALESCE(CASE WHEN ((COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v2))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v2))::numeric ELSE NULL END, 0) * COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v4))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v4))::numeric ELSE NULL END, 0)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v2))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v2))::numeric ELSE NULL END, 0) * COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v4))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v4))::numeric ELSE NULL END, 0)))::numeric ELSE NULL END, 0)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((COALESCE(CASE WHEN ((COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v1))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v1))::numeric ELSE NULL END, 0) * COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v3))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v3))::numeric ELSE NULL END, 0)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v1))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v1))::numeric ELSE NULL END, 0) * COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v3))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v3))::numeric ELSE NULL END, 0)))::numeric ELSE NULL END, 0) + COALESCE(CASE WHEN ((COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v2))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v2))::numeric ELSE NULL END, 0) * COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v4))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v4))::numeric ELSE NULL END, 0)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v2))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v2))::numeric ELSE NULL END, 0) * COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v4))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v4))::numeric ELSE NULL END, 0)))::numeric ELSE NULL END, 0)))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(CASE WHEN ((COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v1))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v1))::numeric ELSE NULL END, 0) + COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v2))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v2))::numeric ELSE NULL END, 0)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v1))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v1))::numeric ELSE NULL END, 0) + COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v2))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v2))::numeric ELSE NULL END, 0)))::numeric ELSE NULL END, 0), 0)))::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_allocation_sweep_sweep_pooled_rate_b
@@ -2328,7 +3390,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_allocation_sweep_sweep_pooled_rate_b(p_sweep_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT (CASE WHEN ((COALESCE(CASE WHEN (calc_allocation_sweep_n_sweep_b(p_sweep_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_allocation_sweep_n_sweep_b(p_sweep_id))::numeric ELSE NULL END, 0) + COALESCE(CASE WHEN (calc_allocation_sweep_n_fixed_b(p_sweep_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_allocation_sweep_n_fixed_b(p_sweep_id))::numeric ELSE NULL END, 0)))::NUMERIC = 0 THEN ('')::text ELSE ((COALESCE(CASE WHEN ((COALESCE(CASE WHEN ((COALESCE(CASE WHEN (calc_allocation_sweep_n_sweep_b(p_sweep_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_allocation_sweep_n_sweep_b(p_sweep_id))::numeric ELSE NULL END, 0) * COALESCE(CASE WHEN (calc_allocation_sweep_sweep_rate_b(p_sweep_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_allocation_sweep_sweep_rate_b(p_sweep_id))::numeric ELSE NULL END, 0)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((COALESCE(CASE WHEN (calc_allocation_sweep_n_sweep_b(p_sweep_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_allocation_sweep_n_sweep_b(p_sweep_id))::numeric ELSE NULL END, 0) * COALESCE(CASE WHEN (calc_allocation_sweep_sweep_rate_b(p_sweep_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_allocation_sweep_sweep_rate_b(p_sweep_id))::numeric ELSE NULL END, 0)))::numeric ELSE NULL END, 0) + COALESCE(CASE WHEN ((COALESCE(CASE WHEN (calc_allocation_sweep_n_fixed_b(p_sweep_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_allocation_sweep_n_fixed_b(p_sweep_id))::numeric ELSE NULL END, 0) * COALESCE(CASE WHEN (calc_allocation_sweep_fixed_rate_b(p_sweep_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_allocation_sweep_fixed_rate_b(p_sweep_id))::numeric ELSE NULL END, 0)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((COALESCE(CASE WHEN (calc_allocation_sweep_n_fixed_b(p_sweep_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_allocation_sweep_n_fixed_b(p_sweep_id))::numeric ELSE NULL END, 0) * COALESCE(CASE WHEN (calc_allocation_sweep_fixed_rate_b(p_sweep_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_allocation_sweep_fixed_rate_b(p_sweep_id))::numeric ELSE NULL END, 0)))::numeric ELSE NULL END, 0)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((COALESCE(CASE WHEN ((COALESCE(CASE WHEN (calc_allocation_sweep_n_sweep_b(p_sweep_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_allocation_sweep_n_sweep_b(p_sweep_id))::numeric ELSE NULL END, 0) * COALESCE(CASE WHEN (calc_allocation_sweep_sweep_rate_b(p_sweep_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_allocation_sweep_sweep_rate_b(p_sweep_id))::numeric ELSE NULL END, 0)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((COALESCE(CASE WHEN (calc_allocation_sweep_n_sweep_b(p_sweep_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_allocation_sweep_n_sweep_b(p_sweep_id))::numeric ELSE NULL END, 0) * COALESCE(CASE WHEN (calc_allocation_sweep_sweep_rate_b(p_sweep_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_allocation_sweep_sweep_rate_b(p_sweep_id))::numeric ELSE NULL END, 0)))::numeric ELSE NULL END, 0) + COALESCE(CASE WHEN ((COALESCE(CASE WHEN (calc_allocation_sweep_n_fixed_b(p_sweep_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_allocation_sweep_n_fixed_b(p_sweep_id))::numeric ELSE NULL END, 0) * COALESCE(CASE WHEN (calc_allocation_sweep_fixed_rate_b(p_sweep_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_allocation_sweep_fixed_rate_b(p_sweep_id))::numeric ELSE NULL END, 0)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((COALESCE(CASE WHEN (calc_allocation_sweep_n_fixed_b(p_sweep_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_allocation_sweep_n_fixed_b(p_sweep_id))::numeric ELSE NULL END, 0) * COALESCE(CASE WHEN (calc_allocation_sweep_fixed_rate_b(p_sweep_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_allocation_sweep_fixed_rate_b(p_sweep_id))::numeric ELSE NULL END, 0)))::numeric ELSE NULL END, 0)))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(CASE WHEN ((COALESCE(CASE WHEN (calc_allocation_sweep_n_sweep_b(p_sweep_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_allocation_sweep_n_sweep_b(p_sweep_id))::numeric ELSE NULL END, 0) + COALESCE(CASE WHEN (calc_allocation_sweep_n_fixed_b(p_sweep_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_allocation_sweep_n_fixed_b(p_sweep_id))::numeric ELSE NULL END, 0)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((COALESCE(CASE WHEN (calc_allocation_sweep_n_sweep_b(p_sweep_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_allocation_sweep_n_sweep_b(p_sweep_id))::numeric ELSE NULL END, 0) + COALESCE(CASE WHEN (calc_allocation_sweep_n_fixed_b(p_sweep_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_allocation_sweep_n_fixed_b(p_sweep_id))::numeric ELSE NULL END, 0)))::numeric ELSE NULL END, 0), 0)))::text END)::numeric;
+  WITH __erb_dedup_v1 AS (SELECT calc_allocation_sweep_n_sweep_b(p_sweep_id) AS val), __erb_dedup_v2 AS (SELECT calc_allocation_sweep_n_fixed_b(p_sweep_id) AS val), __erb_dedup_v3 AS (SELECT calc_allocation_sweep_sweep_rate_b(p_sweep_id) AS val), __erb_dedup_v4 AS (SELECT calc_allocation_sweep_fixed_rate_b(p_sweep_id) AS val) SELECT (CASE WHEN ((COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v1))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v1))::numeric ELSE NULL END, 0) + COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v2))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v2))::numeric ELSE NULL END, 0)))::NUMERIC = 0 THEN NULL ELSE ((COALESCE(CASE WHEN ((COALESCE(CASE WHEN ((COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v1))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v1))::numeric ELSE NULL END, 0) * COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v3))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v3))::numeric ELSE NULL END, 0)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v1))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v1))::numeric ELSE NULL END, 0) * COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v3))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v3))::numeric ELSE NULL END, 0)))::numeric ELSE NULL END, 0) + COALESCE(CASE WHEN ((COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v2))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v2))::numeric ELSE NULL END, 0) * COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v4))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v4))::numeric ELSE NULL END, 0)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v2))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v2))::numeric ELSE NULL END, 0) * COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v4))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v4))::numeric ELSE NULL END, 0)))::numeric ELSE NULL END, 0)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((COALESCE(CASE WHEN ((COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v1))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v1))::numeric ELSE NULL END, 0) * COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v3))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v3))::numeric ELSE NULL END, 0)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v1))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v1))::numeric ELSE NULL END, 0) * COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v3))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v3))::numeric ELSE NULL END, 0)))::numeric ELSE NULL END, 0) + COALESCE(CASE WHEN ((COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v2))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v2))::numeric ELSE NULL END, 0) * COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v4))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v4))::numeric ELSE NULL END, 0)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v2))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v2))::numeric ELSE NULL END, 0) * COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v4))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v4))::numeric ELSE NULL END, 0)))::numeric ELSE NULL END, 0)))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(CASE WHEN ((COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v1))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v1))::numeric ELSE NULL END, 0) + COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v2))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v2))::numeric ELSE NULL END, 0)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v1))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v1))::numeric ELSE NULL END, 0) + COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v2))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v2))::numeric ELSE NULL END, 0)))::numeric ELSE NULL END, 0), 0)))::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_allocation_sweep_sweep_pooled_gap
@@ -2338,21 +3400,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_allocation_sweep_sweep_pooled_gap(p_sweep_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT (CASE WHEN calc_allocation_sweep_sweep_pooled_rate_a(p_sweep_id) IS NULL THEN ('')::text ELSE ((COALESCE(CASE WHEN (calc_allocation_sweep_sweep_pooled_rate_a(p_sweep_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_allocation_sweep_sweep_pooled_rate_a(p_sweep_id))::numeric ELSE NULL END, 0) - COALESCE(CASE WHEN (calc_allocation_sweep_sweep_pooled_rate_b(p_sweep_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_allocation_sweep_sweep_pooled_rate_b(p_sweep_id))::numeric ELSE NULL END, 0)))::text END)::numeric;
-$$ LANGUAGE sql STABLE;
-
--- calc_allocation_sweep_sweep_corrected_gap
--- Field: AllocationSweep.SweepCorrectedGap
--- Type: calculated | DataType: number | Returns: NUMERIC
-
-
-CREATE OR REPLACE FUNCTION calc_allocation_sweep_sweep_corrected_gap(p_sweep_id TEXT)
-RETURNS NUMERIC AS $$
-  SELECT /* WARNING: Formula translation failed: Function 'LOOKUP' is not supported yet
-   Original Airtable formula:
-   =LOOKUP({{StudyId}}, SweepStudyConfig[StudyId], SweepStudyConfig[SweepCorrectedGap])
-*/
-NULL::numeric;
+  WITH __erb_dedup_v1 AS (SELECT calc_allocation_sweep_sweep_pooled_rate_a(p_sweep_id) AS val), __erb_dedup_v2 AS (SELECT calc_allocation_sweep_sweep_pooled_rate_b(p_sweep_id) AS val) SELECT (CASE WHEN (SELECT val FROM __erb_dedup_v1) IS NULL THEN NULL ELSE ((COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v1))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v1))::numeric ELSE NULL END, 0) - COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v2))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v2))::numeric ELSE NULL END, 0)))::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_allocation_sweep_allocation_distortion_witness
@@ -2362,7 +3410,29 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_allocation_sweep_allocation_distortion_witness(p_sweep_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT (CASE WHEN calc_allocation_sweep_sweep_pooled_gap(p_sweep_id) IS NULL THEN ('')::text ELSE ((COALESCE(CASE WHEN (calc_allocation_sweep_sweep_pooled_gap(p_sweep_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_allocation_sweep_sweep_pooled_gap(p_sweep_id))::numeric ELSE NULL END, 0) - COALESCE(CASE WHEN (calc_allocation_sweep_sweep_corrected_gap(p_sweep_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_allocation_sweep_sweep_corrected_gap(p_sweep_id))::numeric ELSE NULL END, 0)))::text END)::numeric;
+  WITH __erb_dedup_v1 AS (SELECT calc_allocation_sweep_sweep_pooled_gap(p_sweep_id) AS val), __erb_dedup_v2 AS (SELECT calc_allocation_sweep_sweep_corrected_gap(p_sweep_id) AS val) SELECT (CASE WHEN (SELECT val FROM __erb_dedup_v1) IS NULL THEN NULL ELSE ((COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v1))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v1))::numeric ELSE NULL END, 0) - COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v2))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v2))::numeric ELSE NULL END, 0)))::text END)::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_sweep_study_summary_distortion_type_label
+-- Field: SweepStudySummary.DistortionTypeLabel
+-- Type: calculated | DataType: string | Returns: TEXT
+-- Lookup: DistortionType from related TreatmentRankings
+
+
+CREATE OR REPLACE FUNCTION calc_sweep_study_summary_distortion_type_label(p_sweep_study_id TEXT)
+RETURNS TEXT AS $$
+  SELECT calc_treatment_rankings_distortion_type((SELECT sweep_study_id FROM sweep_study_summary WHERE sweep_study_id = p_sweep_study_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_sweep_study_summary_sweep_stratum_label
+-- Field: SweepStudySummary.SweepStratumLabel
+-- Type: calculated | DataType: string | Returns: TEXT
+-- Lookup: SweepStratumLabel from related SweepStudyConfig
+
+
+CREATE OR REPLACE FUNCTION calc_sweep_study_summary_sweep_stratum_label(p_sweep_study_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT sweep_stratum_label::text FROM sweep_study_config WHERE config_id = (SELECT sweep_study_id FROM sweep_study_summary WHERE sweep_study_id = p_sweep_study_id));
 $$ LANGUAGE sql STABLE;
 
 -- calc_sweep_study_summary_name
@@ -2375,20 +3445,6 @@ RETURNS TEXT AS $$
   SELECT ((SELECT NULLIF(sweep_study_id, '') FROM sweep_study_summary WHERE sweep_study_id = p_sweep_study_id))::text;
 $$ LANGUAGE sql STABLE;
 
--- calc_sweep_study_summary_distortion_type_label
--- Field: SweepStudySummary.DistortionTypeLabel
--- Type: calculated | DataType: string | Returns: TEXT
-
-
-CREATE OR REPLACE FUNCTION calc_sweep_study_summary_distortion_type_label(p_sweep_study_id TEXT)
-RETURNS TEXT AS $$
-  SELECT /* WARNING: Formula translation failed: Function 'LOOKUP' is not supported yet
-   Original Airtable formula:
-   =LOOKUP({{SweepStudyId}}, TreatmentRankings[Study], TreatmentRankings[DistortionType])
-*/
-NULL::text;
-$$ LANGUAGE sql STABLE;
-
 -- calc_sweep_study_summary_invariant_witness
 -- Field: SweepStudySummary.InvariantWitness
 -- Type: calculated | DataType: string | Returns: TEXT
@@ -2399,18 +3455,59 @@ RETURNS TEXT AS $$
   SELECT (CASE WHEN ((SELECT sweep_corrected_gap_range FROM sweep_study_summary WHERE sweep_study_id = p_sweep_study_id))::NUMERIC < 0.0001 THEN ('PASS: CorrectedGap invariant across allocation sweep')::text ELSE ('FAIL: CorrectedGap varies — formula error')::text END)::text;
 $$ LANGUAGE sql STABLE;
 
--- calc_sweep_study_summary_sweep_stratum_label
--- Field: SweepStudySummary.SweepStratumLabel
--- Type: calculated | DataType: string | Returns: TEXT
+-- calc_research_traditions_illustrated_by_study_title
+-- Field: ResearchTraditions.IllustratedByStudyTitle
+-- Type: lookup | DataType: string | Returns: TEXT
+-- Lookup: Title from related Studies
 
 
-CREATE OR REPLACE FUNCTION calc_sweep_study_summary_sweep_stratum_label(p_sweep_study_id TEXT)
+CREATE OR REPLACE FUNCTION calc_research_traditions_illustrated_by_study_title(p_tradition_id TEXT)
 RETURNS TEXT AS $$
-  SELECT /* WARNING: Formula translation failed: Function 'LOOKUP' is not supported yet
-   Original Airtable formula:
-   =LOOKUP({{SweepStudyId}}, SweepStudyConfig[StudyId], SweepStudyConfig[SweepStratumLabel])
-*/
-NULL::text;
+  SELECT (SELECT title::text FROM studies WHERE study_id = (SELECT illustrated_by_study FROM research_traditions WHERE tradition_id = p_tradition_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_research_traditions_illustrated_by_study_source
+-- Field: ResearchTraditions.IllustratedByStudySource
+-- Type: lookup | DataType: string | Returns: TEXT
+-- Lookup: Source from related Studies
+
+
+CREATE OR REPLACE FUNCTION calc_research_traditions_illustrated_by_study_source(p_tradition_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT source::text FROM studies WHERE study_id = (SELECT illustrated_by_study FROM research_traditions WHERE tradition_id = p_tradition_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_research_traditions_illustrated_by_study_distortion_type
+-- Field: ResearchTraditions.IllustratedByStudyDistortionType
+-- Type: lookup | DataType: string | Returns: TEXT
+-- Lookup: DistortionType from related TreatmentRankings
+
+
+CREATE OR REPLACE FUNCTION calc_research_traditions_illustrated_by_study_distortion_type(p_tradition_id TEXT)
+RETURNS TEXT AS $$
+  SELECT calc_treatment_rankings_distortion_type((SELECT illustrated_by_study FROM research_traditions WHERE tradition_id = p_tradition_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_research_traditions_supporting_conclusion_title
+-- Field: ResearchTraditions.SupportingConclusionTitle
+-- Type: lookup | DataType: string | Returns: TEXT
+-- Lookup: Title from related Conclusions
+
+
+CREATE OR REPLACE FUNCTION calc_research_traditions_supporting_conclusion_title(p_tradition_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT title::text FROM conclusions WHERE conclusion_id = (SELECT supporting_conclusion FROM research_traditions WHERE tradition_id = p_tradition_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_research_traditions_supporting_conclusion_category
+-- Field: ResearchTraditions.SupportingConclusionCategory
+-- Type: lookup | DataType: string | Returns: TEXT
+-- Lookup: Category from related Conclusions
+
+
+CREATE OR REPLACE FUNCTION calc_research_traditions_supporting_conclusion_category(p_tradition_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT category::text FROM conclusions WHERE conclusion_id = (SELECT supporting_conclusion FROM research_traditions WHERE tradition_id = p_tradition_id));
 $$ LANGUAGE sql STABLE;
 
 -- calc_research_traditions_researcher_count
@@ -2443,6 +3540,83 @@ RETURNS INTEGER AS $$
   SELECT ((SELECT COUNT(*) FROM loops WHERE tradition_id = (SELECT NULLIF(tradition_id, '') FROM research_traditions WHERE tradition_id = p_tradition_id)))::integer;
 $$ LANGUAGE sql STABLE;
 
+-- calc_researchers_tradition_name
+-- Field: Researchers.TraditionName
+-- Type: lookup | DataType: string | Returns: TEXT
+-- Lookup: Name from related ResearchTraditions
+
+
+CREATE OR REPLACE FUNCTION calc_researchers_tradition_name(p_researcher_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT name::text FROM research_traditions WHERE tradition_id = (SELECT tradition_id FROM researchers WHERE researcher_id = p_researcher_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_researchers_tradition_era
+-- Field: Researchers.TraditionEra
+-- Type: lookup | DataType: string | Returns: TEXT
+-- Lookup: Era from related ResearchTraditions
+
+
+CREATE OR REPLACE FUNCTION calc_researchers_tradition_era(p_researcher_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT era::text FROM research_traditions WHERE tradition_id = (SELECT tradition_id FROM researchers WHERE researcher_id = p_researcher_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_researchers_canonical_study_title
+-- Field: Researchers.CanonicalStudyTitle
+-- Type: lookup | DataType: string | Returns: TEXT
+-- Lookup: Title from related Studies
+
+
+CREATE OR REPLACE FUNCTION calc_researchers_canonical_study_title(p_researcher_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT title::text FROM studies WHERE study_id = (SELECT canonical_study_id FROM researchers WHERE researcher_id = p_researcher_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_researchers_canonical_study_distortion_type
+-- Field: Researchers.CanonicalStudyDistortionType
+-- Type: lookup | DataType: string | Returns: TEXT
+-- Lookup: DistortionType from related TreatmentRankings
+
+
+CREATE OR REPLACE FUNCTION calc_researchers_canonical_study_distortion_type(p_researcher_id TEXT)
+RETURNS TEXT AS $$
+  SELECT calc_treatment_rankings_distortion_type((SELECT canonical_study_id FROM researchers WHERE researcher_id = p_researcher_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_researchers_canonical_study_policy_implication
+-- Field: Researchers.CanonicalStudyPolicyImplication
+-- Type: lookup | DataType: string | Returns: TEXT
+-- Lookup: CorrectedPolicyImplication from related TreatmentRankings
+
+
+CREATE OR REPLACE FUNCTION calc_researchers_canonical_study_policy_implication(p_researcher_id TEXT)
+RETURNS TEXT AS $$
+  SELECT calc_treatment_rankings_corrected_policy_implication((SELECT canonical_study_id FROM researchers WHERE researcher_id = p_researcher_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_researchers_illustrates_conclusion_title
+-- Field: Researchers.IllustratesConclusionTitle
+-- Type: lookup | DataType: string | Returns: TEXT
+-- Lookup: Title from related Conclusions
+
+
+CREATE OR REPLACE FUNCTION calc_researchers_illustrates_conclusion_title(p_researcher_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT title::text FROM conclusions WHERE conclusion_id = (SELECT illustrates_conclusion FROM researchers WHERE researcher_id = p_researcher_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_researchers_tradition_key_claim_summary
+-- Field: Researchers.TraditionKeyClaimSummary
+-- Type: lookup | DataType: string | Returns: TEXT
+-- Lookup: KeyClaim from related ResearchTraditions
+
+
+CREATE OR REPLACE FUNCTION calc_researchers_tradition_key_claim_summary(p_researcher_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT key_claim::text FROM research_traditions WHERE tradition_id = (SELECT tradition_id FROM researchers WHERE researcher_id = p_researcher_id));
+$$ LANGUAGE sql STABLE;
+
 -- calc_synthetic_phase_name
 -- Field: SyntheticPhase.Name
 -- Type: calculated | DataType: string | Returns: TEXT
@@ -2470,7 +3644,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_synthetic_phase_phase_na1(p_phase_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT (ROUND(((COALESCE(CASE WHEN (calc_synthetic_phase_phase_s1_total(p_phase_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_synthetic_phase_phase_s1_total(p_phase_id))::numeric ELSE NULL END, 0) * COALESCE(CASE WHEN ((COALESCE(0.5, 0) + COALESCE(CASE WHEN ((COALESCE(CASE WHEN ((SELECT param_allocation_bias FROM synthetic_phase WHERE phase_id = p_phase_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT param_allocation_bias FROM synthetic_phase WHERE phase_id = p_phase_id))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(2, 0), 0)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((COALESCE(CASE WHEN ((SELECT param_allocation_bias FROM synthetic_phase WHERE phase_id = p_phase_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT param_allocation_bias FROM synthetic_phase WHERE phase_id = p_phase_id))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(2, 0), 0)))::numeric ELSE NULL END, 0)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((COALESCE(0.5, 0) + COALESCE(CASE WHEN ((COALESCE(CASE WHEN ((SELECT param_allocation_bias FROM synthetic_phase WHERE phase_id = p_phase_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT param_allocation_bias FROM synthetic_phase WHERE phase_id = p_phase_id))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(2, 0), 0)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((COALESCE(CASE WHEN ((SELECT param_allocation_bias FROM synthetic_phase WHERE phase_id = p_phase_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT param_allocation_bias FROM synthetic_phase WHERE phase_id = p_phase_id))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(2, 0), 0)))::numeric ELSE NULL END, 0)))::numeric ELSE NULL END, 0)))::NUMERIC))::numeric;
+  WITH __erb_dedup_v1 AS (SELECT calc_synthetic_phase_phase_s1_total(p_phase_id) AS val) SELECT (ROUND(((COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v1))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v1))::numeric ELSE NULL END, 0) * COALESCE(CASE WHEN ((COALESCE(0.5, 0) + COALESCE(CASE WHEN ((COALESCE(CASE WHEN ((SELECT param_allocation_bias FROM synthetic_phase WHERE phase_id = p_phase_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT param_allocation_bias FROM synthetic_phase WHERE phase_id = p_phase_id))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(2, 0), 0)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((COALESCE(CASE WHEN ((SELECT param_allocation_bias FROM synthetic_phase WHERE phase_id = p_phase_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT param_allocation_bias FROM synthetic_phase WHERE phase_id = p_phase_id))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(2, 0), 0)))::numeric ELSE NULL END, 0)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((COALESCE(0.5, 0) + COALESCE(CASE WHEN ((COALESCE(CASE WHEN ((SELECT param_allocation_bias FROM synthetic_phase WHERE phase_id = p_phase_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT param_allocation_bias FROM synthetic_phase WHERE phase_id = p_phase_id))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(2, 0), 0)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((COALESCE(CASE WHEN ((SELECT param_allocation_bias FROM synthetic_phase WHERE phase_id = p_phase_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT param_allocation_bias FROM synthetic_phase WHERE phase_id = p_phase_id))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(2, 0), 0)))::numeric ELSE NULL END, 0)))::numeric ELSE NULL END, 0)))::NUMERIC))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_synthetic_phase_phase_nb1
@@ -2480,7 +3654,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_synthetic_phase_phase_nb1(p_phase_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((COALESCE(CASE WHEN (calc_synthetic_phase_phase_s1_total(p_phase_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_synthetic_phase_phase_s1_total(p_phase_id))::numeric ELSE NULL END, 0) - COALESCE(CASE WHEN (calc_synthetic_phase_phase_na1(p_phase_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_synthetic_phase_phase_na1(p_phase_id))::numeric ELSE NULL END, 0)))::numeric;
+  WITH __erb_dedup_v1 AS (SELECT calc_synthetic_phase_phase_s1_total(p_phase_id) AS val), __erb_dedup_v2 AS (SELECT calc_synthetic_phase_phase_na1(p_phase_id) AS val) SELECT ((COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v1))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v1))::numeric ELSE NULL END, 0) - COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v2))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v2))::numeric ELSE NULL END, 0)))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_synthetic_phase_phase_na2
@@ -2490,7 +3664,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_synthetic_phase_phase_na2(p_phase_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((COALESCE(100, 0) - COALESCE(CASE WHEN (calc_synthetic_phase_phase_na1(p_phase_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_synthetic_phase_phase_na1(p_phase_id))::numeric ELSE NULL END, 0)))::numeric;
+  WITH __erb_dedup_v1 AS (SELECT calc_synthetic_phase_phase_na1(p_phase_id) AS val) SELECT ((COALESCE(100, 0) - COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v1))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v1))::numeric ELSE NULL END, 0)))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_synthetic_phase_phase_nb2
@@ -2500,7 +3674,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_synthetic_phase_phase_nb2(p_phase_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((COALESCE(100, 0) - COALESCE(CASE WHEN (calc_synthetic_phase_phase_nb1(p_phase_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_synthetic_phase_phase_nb1(p_phase_id))::numeric ELSE NULL END, 0)))::numeric;
+  WITH __erb_dedup_v1 AS (SELECT calc_synthetic_phase_phase_nb1(p_phase_id) AS val) SELECT ((COALESCE(100, 0) - COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v1))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v1))::numeric ELSE NULL END, 0)))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_synthetic_phase_phase_rate_a1
@@ -2550,7 +3724,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_synthetic_phase_phase_pooled_rate_a(p_phase_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((COALESCE(CASE WHEN ((COALESCE(CASE WHEN ((COALESCE(CASE WHEN (calc_synthetic_phase_phase_na1(p_phase_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_synthetic_phase_phase_na1(p_phase_id))::numeric ELSE NULL END, 0) * COALESCE(CASE WHEN (calc_synthetic_phase_phase_rate_a1(p_phase_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_synthetic_phase_phase_rate_a1(p_phase_id))::numeric ELSE NULL END, 0)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((COALESCE(CASE WHEN (calc_synthetic_phase_phase_na1(p_phase_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_synthetic_phase_phase_na1(p_phase_id))::numeric ELSE NULL END, 0) * COALESCE(CASE WHEN (calc_synthetic_phase_phase_rate_a1(p_phase_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_synthetic_phase_phase_rate_a1(p_phase_id))::numeric ELSE NULL END, 0)))::numeric ELSE NULL END, 0) + COALESCE(CASE WHEN ((COALESCE(CASE WHEN (calc_synthetic_phase_phase_na2(p_phase_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_synthetic_phase_phase_na2(p_phase_id))::numeric ELSE NULL END, 0) * COALESCE(CASE WHEN (calc_synthetic_phase_phase_rate_a2(p_phase_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_synthetic_phase_phase_rate_a2(p_phase_id))::numeric ELSE NULL END, 0)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((COALESCE(CASE WHEN (calc_synthetic_phase_phase_na2(p_phase_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_synthetic_phase_phase_na2(p_phase_id))::numeric ELSE NULL END, 0) * COALESCE(CASE WHEN (calc_synthetic_phase_phase_rate_a2(p_phase_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_synthetic_phase_phase_rate_a2(p_phase_id))::numeric ELSE NULL END, 0)))::numeric ELSE NULL END, 0)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((COALESCE(CASE WHEN ((COALESCE(CASE WHEN (calc_synthetic_phase_phase_na1(p_phase_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_synthetic_phase_phase_na1(p_phase_id))::numeric ELSE NULL END, 0) * COALESCE(CASE WHEN (calc_synthetic_phase_phase_rate_a1(p_phase_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_synthetic_phase_phase_rate_a1(p_phase_id))::numeric ELSE NULL END, 0)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((COALESCE(CASE WHEN (calc_synthetic_phase_phase_na1(p_phase_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_synthetic_phase_phase_na1(p_phase_id))::numeric ELSE NULL END, 0) * COALESCE(CASE WHEN (calc_synthetic_phase_phase_rate_a1(p_phase_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_synthetic_phase_phase_rate_a1(p_phase_id))::numeric ELSE NULL END, 0)))::numeric ELSE NULL END, 0) + COALESCE(CASE WHEN ((COALESCE(CASE WHEN (calc_synthetic_phase_phase_na2(p_phase_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_synthetic_phase_phase_na2(p_phase_id))::numeric ELSE NULL END, 0) * COALESCE(CASE WHEN (calc_synthetic_phase_phase_rate_a2(p_phase_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_synthetic_phase_phase_rate_a2(p_phase_id))::numeric ELSE NULL END, 0)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((COALESCE(CASE WHEN (calc_synthetic_phase_phase_na2(p_phase_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_synthetic_phase_phase_na2(p_phase_id))::numeric ELSE NULL END, 0) * COALESCE(CASE WHEN (calc_synthetic_phase_phase_rate_a2(p_phase_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_synthetic_phase_phase_rate_a2(p_phase_id))::numeric ELSE NULL END, 0)))::numeric ELSE NULL END, 0)))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(100, 0), 0)))::numeric;
+  WITH __erb_dedup_v1 AS (SELECT calc_synthetic_phase_phase_na1(p_phase_id) AS val), __erb_dedup_v2 AS (SELECT calc_synthetic_phase_phase_rate_a1(p_phase_id) AS val), __erb_dedup_v3 AS (SELECT calc_synthetic_phase_phase_na2(p_phase_id) AS val), __erb_dedup_v4 AS (SELECT calc_synthetic_phase_phase_rate_a2(p_phase_id) AS val) SELECT ((COALESCE(CASE WHEN ((COALESCE(CASE WHEN ((COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v1))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v1))::numeric ELSE NULL END, 0) * COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v2))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v2))::numeric ELSE NULL END, 0)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v1))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v1))::numeric ELSE NULL END, 0) * COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v2))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v2))::numeric ELSE NULL END, 0)))::numeric ELSE NULL END, 0) + COALESCE(CASE WHEN ((COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v3))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v3))::numeric ELSE NULL END, 0) * COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v4))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v4))::numeric ELSE NULL END, 0)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v3))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v3))::numeric ELSE NULL END, 0) * COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v4))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v4))::numeric ELSE NULL END, 0)))::numeric ELSE NULL END, 0)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((COALESCE(CASE WHEN ((COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v1))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v1))::numeric ELSE NULL END, 0) * COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v2))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v2))::numeric ELSE NULL END, 0)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v1))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v1))::numeric ELSE NULL END, 0) * COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v2))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v2))::numeric ELSE NULL END, 0)))::numeric ELSE NULL END, 0) + COALESCE(CASE WHEN ((COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v3))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v3))::numeric ELSE NULL END, 0) * COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v4))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v4))::numeric ELSE NULL END, 0)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v3))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v3))::numeric ELSE NULL END, 0) * COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v4))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v4))::numeric ELSE NULL END, 0)))::numeric ELSE NULL END, 0)))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(100, 0), 0)))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_synthetic_phase_phase_pooled_rate_b
@@ -2560,7 +3734,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_synthetic_phase_phase_pooled_rate_b(p_phase_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((COALESCE(CASE WHEN ((COALESCE(CASE WHEN ((COALESCE(CASE WHEN (calc_synthetic_phase_phase_nb1(p_phase_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_synthetic_phase_phase_nb1(p_phase_id))::numeric ELSE NULL END, 0) * COALESCE(CASE WHEN (calc_synthetic_phase_phase_rate_b1(p_phase_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_synthetic_phase_phase_rate_b1(p_phase_id))::numeric ELSE NULL END, 0)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((COALESCE(CASE WHEN (calc_synthetic_phase_phase_nb1(p_phase_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_synthetic_phase_phase_nb1(p_phase_id))::numeric ELSE NULL END, 0) * COALESCE(CASE WHEN (calc_synthetic_phase_phase_rate_b1(p_phase_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_synthetic_phase_phase_rate_b1(p_phase_id))::numeric ELSE NULL END, 0)))::numeric ELSE NULL END, 0) + COALESCE(CASE WHEN ((COALESCE(CASE WHEN (calc_synthetic_phase_phase_nb2(p_phase_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_synthetic_phase_phase_nb2(p_phase_id))::numeric ELSE NULL END, 0) * COALESCE(CASE WHEN (calc_synthetic_phase_phase_rate_b2(p_phase_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_synthetic_phase_phase_rate_b2(p_phase_id))::numeric ELSE NULL END, 0)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((COALESCE(CASE WHEN (calc_synthetic_phase_phase_nb2(p_phase_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_synthetic_phase_phase_nb2(p_phase_id))::numeric ELSE NULL END, 0) * COALESCE(CASE WHEN (calc_synthetic_phase_phase_rate_b2(p_phase_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_synthetic_phase_phase_rate_b2(p_phase_id))::numeric ELSE NULL END, 0)))::numeric ELSE NULL END, 0)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((COALESCE(CASE WHEN ((COALESCE(CASE WHEN (calc_synthetic_phase_phase_nb1(p_phase_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_synthetic_phase_phase_nb1(p_phase_id))::numeric ELSE NULL END, 0) * COALESCE(CASE WHEN (calc_synthetic_phase_phase_rate_b1(p_phase_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_synthetic_phase_phase_rate_b1(p_phase_id))::numeric ELSE NULL END, 0)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((COALESCE(CASE WHEN (calc_synthetic_phase_phase_nb1(p_phase_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_synthetic_phase_phase_nb1(p_phase_id))::numeric ELSE NULL END, 0) * COALESCE(CASE WHEN (calc_synthetic_phase_phase_rate_b1(p_phase_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_synthetic_phase_phase_rate_b1(p_phase_id))::numeric ELSE NULL END, 0)))::numeric ELSE NULL END, 0) + COALESCE(CASE WHEN ((COALESCE(CASE WHEN (calc_synthetic_phase_phase_nb2(p_phase_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_synthetic_phase_phase_nb2(p_phase_id))::numeric ELSE NULL END, 0) * COALESCE(CASE WHEN (calc_synthetic_phase_phase_rate_b2(p_phase_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_synthetic_phase_phase_rate_b2(p_phase_id))::numeric ELSE NULL END, 0)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((COALESCE(CASE WHEN (calc_synthetic_phase_phase_nb2(p_phase_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_synthetic_phase_phase_nb2(p_phase_id))::numeric ELSE NULL END, 0) * COALESCE(CASE WHEN (calc_synthetic_phase_phase_rate_b2(p_phase_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_synthetic_phase_phase_rate_b2(p_phase_id))::numeric ELSE NULL END, 0)))::numeric ELSE NULL END, 0)))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(100, 0), 0)))::numeric;
+  WITH __erb_dedup_v1 AS (SELECT calc_synthetic_phase_phase_nb1(p_phase_id) AS val), __erb_dedup_v2 AS (SELECT calc_synthetic_phase_phase_rate_b1(p_phase_id) AS val), __erb_dedup_v3 AS (SELECT calc_synthetic_phase_phase_nb2(p_phase_id) AS val), __erb_dedup_v4 AS (SELECT calc_synthetic_phase_phase_rate_b2(p_phase_id) AS val) SELECT ((COALESCE(CASE WHEN ((COALESCE(CASE WHEN ((COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v1))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v1))::numeric ELSE NULL END, 0) * COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v2))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v2))::numeric ELSE NULL END, 0)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v1))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v1))::numeric ELSE NULL END, 0) * COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v2))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v2))::numeric ELSE NULL END, 0)))::numeric ELSE NULL END, 0) + COALESCE(CASE WHEN ((COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v3))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v3))::numeric ELSE NULL END, 0) * COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v4))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v4))::numeric ELSE NULL END, 0)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v3))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v3))::numeric ELSE NULL END, 0) * COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v4))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v4))::numeric ELSE NULL END, 0)))::numeric ELSE NULL END, 0)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((COALESCE(CASE WHEN ((COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v1))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v1))::numeric ELSE NULL END, 0) * COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v2))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v2))::numeric ELSE NULL END, 0)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v1))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v1))::numeric ELSE NULL END, 0) * COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v2))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v2))::numeric ELSE NULL END, 0)))::numeric ELSE NULL END, 0) + COALESCE(CASE WHEN ((COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v3))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v3))::numeric ELSE NULL END, 0) * COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v4))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v4))::numeric ELSE NULL END, 0)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v3))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v3))::numeric ELSE NULL END, 0) * COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v4))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v4))::numeric ELSE NULL END, 0)))::numeric ELSE NULL END, 0)))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(100, 0), 0)))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_synthetic_phase_phase_signed_pooled_gap
@@ -2570,7 +3744,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_synthetic_phase_phase_signed_pooled_gap(p_phase_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((COALESCE(CASE WHEN (calc_synthetic_phase_phase_pooled_rate_a(p_phase_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_synthetic_phase_phase_pooled_rate_a(p_phase_id))::numeric ELSE NULL END, 0) - COALESCE(CASE WHEN (calc_synthetic_phase_phase_pooled_rate_b(p_phase_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_synthetic_phase_phase_pooled_rate_b(p_phase_id))::numeric ELSE NULL END, 0)))::numeric;
+  WITH __erb_dedup_v1 AS (SELECT calc_synthetic_phase_phase_pooled_rate_a(p_phase_id) AS val), __erb_dedup_v2 AS (SELECT calc_synthetic_phase_phase_pooled_rate_b(p_phase_id) AS val) SELECT ((COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v1))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v1))::numeric ELSE NULL END, 0) - COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v2))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v2))::numeric ELSE NULL END, 0)))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_synthetic_phase_phase_corrected_gap
@@ -2600,7 +3774,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_synthetic_phase_phase_reversal_intensity(p_phase_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((COALESCE(CASE WHEN (calc_synthetic_phase_phase_strata_won_by_loser(p_phase_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_synthetic_phase_phase_strata_won_by_loser(p_phase_id))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(2, 0), 0)))::numeric;
+  WITH __erb_dedup_v1 AS (SELECT calc_synthetic_phase_phase_strata_won_by_loser(p_phase_id) AS val) SELECT ((COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v1))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v1))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(2, 0), 0)))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_synthetic_phase_phase_is_sign_flip
@@ -2610,7 +3784,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_synthetic_phase_phase_is_sign_flip(p_phase_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (CASE WHEN (calc_synthetic_phase_phase_corrected_gap(p_phase_id))::NUMERIC > 0 THEN ((calc_synthetic_phase_phase_signed_pooled_gap(p_phase_id))::NUMERIC < 0)::text ELSE ((calc_synthetic_phase_phase_signed_pooled_gap(p_phase_id))::NUMERIC > 0)::text END)::boolean;
+  WITH __erb_dedup_v1 AS (SELECT calc_synthetic_phase_phase_signed_pooled_gap(p_phase_id) AS val) SELECT (CASE WHEN (calc_synthetic_phase_phase_corrected_gap(p_phase_id))::NUMERIC > 0 THEN (((SELECT val FROM __erb_dedup_v1))::NUMERIC < 0)::text ELSE (((SELECT val FROM __erb_dedup_v1))::NUMERIC > 0)::text END)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_synthetic_phase_phase_allocation_distortion
@@ -2620,7 +3794,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_synthetic_phase_phase_allocation_distortion(p_phase_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT (ABS((COALESCE(CASE WHEN (calc_synthetic_phase_phase_corrected_gap(p_phase_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_synthetic_phase_phase_corrected_gap(p_phase_id))::numeric ELSE NULL END, 0) - COALESCE(CASE WHEN (calc_synthetic_phase_phase_signed_pooled_gap(p_phase_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_synthetic_phase_phase_signed_pooled_gap(p_phase_id))::numeric ELSE NULL END, 0))))::numeric;
+  WITH __erb_dedup_v1 AS (SELECT calc_synthetic_phase_phase_corrected_gap(p_phase_id) AS val), __erb_dedup_v2 AS (SELECT calc_synthetic_phase_phase_signed_pooled_gap(p_phase_id) AS val) SELECT (ABS((COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v1))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v1))::numeric ELSE NULL END, 0) - COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v2))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v2))::numeric ELSE NULL END, 0))))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_synthetic_phase_phase_distortion_type
@@ -2630,7 +3804,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_synthetic_phase_phase_distortion_type(p_phase_id TEXT)
 RETURNS TEXT AS $$
-  SELECT (CASE WHEN (calc_synthetic_phase_phase_is_sign_flip(p_phase_id) AND (calc_synthetic_phase_phase_reversal_intensity(p_phase_id))::NUMERIC = 1) THEN ('A')::text ELSE (CASE WHEN (calc_synthetic_phase_phase_is_sign_flip(p_phase_id) AND (calc_synthetic_phase_phase_reversal_intensity(p_phase_id))::NUMERIC < 1) THEN ('B')::text ELSE (CASE WHEN (NOT (calc_synthetic_phase_phase_is_sign_flip(p_phase_id)) AND (calc_synthetic_phase_phase_allocation_distortion(p_phase_id))::NUMERIC > 0.01 AND ABS(calc_synthetic_phase_phase_signed_pooled_gap(p_phase_id)) > (COALESCE(CASE WHEN (ABS(calc_synthetic_phase_phase_corrected_gap(p_phase_id)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (ABS(calc_synthetic_phase_phase_corrected_gap(p_phase_id)))::numeric ELSE NULL END, 0) + COALESCE(0.001, 0))) THEN ('C+')::text ELSE (CASE WHEN (NOT (calc_synthetic_phase_phase_is_sign_flip(p_phase_id)) AND (calc_synthetic_phase_phase_allocation_distortion(p_phase_id))::NUMERIC > 0.01 AND ABS(calc_synthetic_phase_phase_signed_pooled_gap(p_phase_id)) < (COALESCE(CASE WHEN (ABS(calc_synthetic_phase_phase_corrected_gap(p_phase_id)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (ABS(calc_synthetic_phase_phase_corrected_gap(p_phase_id)))::numeric ELSE NULL END, 0) - COALESCE(0.001, 0))) THEN ('C-')::text ELSE ('D')::text END)::text END)::text END)::text END)::text;
+  WITH __erb_dedup_v1 AS (SELECT calc_synthetic_phase_phase_is_sign_flip(p_phase_id) AS val), __erb_dedup_v2 AS (SELECT calc_synthetic_phase_phase_reversal_intensity(p_phase_id) AS val), __erb_dedup_v3 AS (SELECT calc_synthetic_phase_phase_allocation_distortion(p_phase_id) AS val), __erb_dedup_v4 AS (SELECT calc_synthetic_phase_phase_signed_pooled_gap(p_phase_id) AS val), __erb_dedup_v5 AS (SELECT calc_synthetic_phase_phase_corrected_gap(p_phase_id) AS val) SELECT (CASE WHEN ((SELECT val FROM __erb_dedup_v1) AND ((SELECT val FROM __erb_dedup_v2))::NUMERIC = 1) THEN ('A')::text ELSE (CASE WHEN ((SELECT val FROM __erb_dedup_v1) AND ((SELECT val FROM __erb_dedup_v2))::NUMERIC < 1) THEN ('B')::text ELSE (CASE WHEN (NOT ((SELECT val FROM __erb_dedup_v1)) AND ((SELECT val FROM __erb_dedup_v3))::NUMERIC > 0.01 AND ABS((SELECT val FROM __erb_dedup_v4)) > (COALESCE(CASE WHEN (ABS((SELECT val FROM __erb_dedup_v5)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (ABS((SELECT val FROM __erb_dedup_v5)))::numeric ELSE NULL END, 0) + COALESCE(0.001, 0))) THEN ('C+')::text ELSE (CASE WHEN (NOT ((SELECT val FROM __erb_dedup_v1)) AND ((SELECT val FROM __erb_dedup_v3))::NUMERIC > 0.01 AND ABS((SELECT val FROM __erb_dedup_v4)) < (COALESCE(CASE WHEN (ABS((SELECT val FROM __erb_dedup_v5)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (ABS((SELECT val FROM __erb_dedup_v5)))::numeric ELSE NULL END, 0) - COALESCE(0.001, 0))) THEN ('C-')::text ELSE ('D')::text END)::text END)::text END)::text END)::text;
 $$ LANGUAGE sql STABLE;
 
 -- calc_phase_diagram_summary_name
@@ -2823,6 +3997,17 @@ RETURNS TEXT AS $$
   SELECT (CASE WHEN calc_ingestion_summary_ingestion_contract_passes(p_ingestion_summary_id) THEN (CONCAT('PASS: ', calc_ingestion_summary_protocol_item_count(p_ingestion_summary_id), ' contract items; ', calc_ingestion_summary_corpus_cell_count(p_ingestion_summary_id), ' cells valid; ', calc_ingestion_summary_real_fully_compliant_count(p_ingestion_summary_id), '/', calc_ingestion_summary_real_study_count(p_ingestion_summary_id), ' real studies fully compliant'))::text ELSE ('FAIL: ingestion contract violated')::text END)::text;
 $$ LANGUAGE sql STABLE;
 
+-- calc_candidate_study_catalog_observed_distortion_type
+-- Field: CandidateStudyCatalog.ObservedDistortionType
+-- Type: lookup | DataType: string | Returns: TEXT
+-- Lookup: DistortionType from related TreatmentRankings
+
+
+CREATE OR REPLACE FUNCTION calc_candidate_study_catalog_observed_distortion_type(p_candidate_id TEXT)
+RETURNS TEXT AS $$
+  SELECT calc_treatment_rankings_distortion_type((SELECT linked_study_id FROM candidate_study_catalog WHERE candidate_id = p_candidate_id));
+$$ LANGUAGE sql STABLE;
+
 -- calc_candidate_study_catalog_name
 -- Field: CandidateStudyCatalog.Name
 -- Type: calculated | DataType: string | Returns: TEXT
@@ -2860,7 +4045,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_candidate_study_catalog_type_prediction_match(p_candidate_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (CASE WHEN calc_candidate_study_catalog_is_imported(p_candidate_id) THEN ((SELECT NULLIF(observed_distortion_type, '') FROM candidate_study_catalog WHERE candidate_id = p_candidate_id) = (SELECT NULLIF(expected_distortion_type, '') FROM candidate_study_catalog WHERE candidate_id = p_candidate_id))::text ELSE ('')::text END)::boolean;
+  SELECT (CASE WHEN calc_candidate_study_catalog_is_imported(p_candidate_id) THEN (calc_candidate_study_catalog_observed_distortion_type(p_candidate_id) = (SELECT NULLIF(expected_distortion_type, '') FROM candidate_study_catalog WHERE candidate_id = p_candidate_id))::text ELSE NULL END)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_candidate_study_catalog_expected_sign_flip
@@ -2880,7 +4065,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_candidate_study_catalog_observed_sign_flip_type(p_candidate_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (CASE WHEN calc_candidate_study_catalog_is_imported(p_candidate_id) THEN (((SELECT NULLIF(observed_distortion_type, '') FROM candidate_study_catalog WHERE candidate_id = p_candidate_id) = 'A' OR (SELECT NULLIF(observed_distortion_type, '') FROM candidate_study_catalog WHERE candidate_id = p_candidate_id) = 'B'))::text ELSE ('')::text END)::boolean;
+  WITH __erb_dedup_v1 AS (SELECT calc_candidate_study_catalog_observed_distortion_type(p_candidate_id) AS val) SELECT (CASE WHEN calc_candidate_study_catalog_is_imported(p_candidate_id) THEN (((SELECT val FROM __erb_dedup_v1) = 'A' OR (SELECT val FROM __erb_dedup_v1) = 'B'))::text ELSE NULL END)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_candidate_study_catalog_sign_flip_prediction_match
@@ -2890,7 +4075,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_candidate_study_catalog_sign_flip_prediction_match(p_candidate_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (CASE WHEN (calc_candidate_study_catalog_is_imported(p_candidate_id) AND calc_candidate_study_catalog_expected_sign_flip(p_candidate_id)) THEN (calc_candidate_study_catalog_observed_sign_flip_type(p_candidate_id))::text ELSE ('')::text END)::boolean;
+  SELECT (CASE WHEN (calc_candidate_study_catalog_is_imported(p_candidate_id) AND calc_candidate_study_catalog_expected_sign_flip(p_candidate_id)) THEN (calc_candidate_study_catalog_observed_sign_flip_type(p_candidate_id))::text ELSE NULL END)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_candidate_study_catalog_is_data_ready
@@ -3030,7 +4215,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_corpus_catalog_summary_type_prediction_match_rate(p_catalog_summary_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT (CASE WHEN (calc_corpus_catalog_summary_imported_count(p_catalog_summary_id))::NUMERIC = 0 THEN ('')::text ELSE ((COALESCE(CASE WHEN (calc_corpus_catalog_summary_type_prediction_match_count(p_catalog_summary_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_corpus_catalog_summary_type_prediction_match_count(p_catalog_summary_id))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(CASE WHEN (calc_corpus_catalog_summary_imported_count(p_catalog_summary_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_corpus_catalog_summary_imported_count(p_catalog_summary_id))::numeric ELSE NULL END, 0), 0)))::text END)::numeric;
+  WITH __erb_dedup_v1 AS (SELECT calc_corpus_catalog_summary_imported_count(p_catalog_summary_id) AS val), __erb_dedup_v2 AS (SELECT calc_corpus_catalog_summary_type_prediction_match_count(p_catalog_summary_id) AS val) SELECT (CASE WHEN ((SELECT val FROM __erb_dedup_v1))::NUMERIC = 0 THEN NULL ELSE ((COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v2))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v2))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v1))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v1))::numeric ELSE NULL END, 0), 0)))::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_corpus_catalog_summary_sign_flip_prediction_match_rate
@@ -3040,7 +4225,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_corpus_catalog_summary_sign_flip_prediction_match_rate(p_catalog_summary_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT (CASE WHEN (calc_corpus_catalog_summary_sign_flip_prediction_eligible_count(p_catalog_summary_id))::NUMERIC = 0 THEN ('')::text ELSE ((COALESCE(CASE WHEN (calc_corpus_catalog_summary_sign_flip_prediction_match_count(p_catalog_summary_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_corpus_catalog_summary_sign_flip_prediction_match_count(p_catalog_summary_id))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(CASE WHEN (calc_corpus_catalog_summary_sign_flip_prediction_eligible_count(p_catalog_summary_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_corpus_catalog_summary_sign_flip_prediction_eligible_count(p_catalog_summary_id))::numeric ELSE NULL END, 0), 0)))::text END)::numeric;
+  WITH __erb_dedup_v1 AS (SELECT calc_corpus_catalog_summary_sign_flip_prediction_eligible_count(p_catalog_summary_id) AS val), __erb_dedup_v2 AS (SELECT calc_corpus_catalog_summary_sign_flip_prediction_match_count(p_catalog_summary_id) AS val) SELECT (CASE WHEN ((SELECT val FROM __erb_dedup_v1))::NUMERIC = 0 THEN NULL ELSE ((COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v2))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v2))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v1))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v1))::numeric ELSE NULL END, 0), 0)))::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_corpus_catalog_summary_catalog_witness_note
@@ -3050,7 +4235,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_corpus_catalog_summary_catalog_witness_note(p_catalog_summary_id TEXT)
 RETURNS TEXT AS $$
-  SELECT (CASE WHEN calc_corpus_catalog_summary_import_session_ready(p_catalog_summary_id) THEN (CONCAT('READY: ', calc_corpus_catalog_summary_ready_to_encode_count(p_catalog_summary_id), ' encode-ready (', calc_corpus_catalog_summary_data_ready_count(p_catalog_summary_id), ' data-ready) of ', calc_corpus_catalog_summary_candidate_count(p_catalog_summary_id), ' candidates'))::text ELSE (CONCAT('BUILDING: ', calc_corpus_catalog_summary_candidate_count(p_catalog_summary_id), ' candidates — ', calc_corpus_catalog_summary_data_ready_count(p_catalog_summary_id), ' data-ready, ', calc_corpus_catalog_summary_ready_to_encode_count(p_catalog_summary_id), ' encode-ready'))::text END)::text;
+  WITH __erb_dedup_v1 AS (SELECT calc_corpus_catalog_summary_ready_to_encode_count(p_catalog_summary_id) AS val), __erb_dedup_v2 AS (SELECT calc_corpus_catalog_summary_data_ready_count(p_catalog_summary_id) AS val), __erb_dedup_v3 AS (SELECT calc_corpus_catalog_summary_candidate_count(p_catalog_summary_id) AS val) SELECT (CASE WHEN calc_corpus_catalog_summary_import_session_ready(p_catalog_summary_id) THEN (CONCAT('READY: ', (SELECT val FROM __erb_dedup_v1), ' encode-ready (', (SELECT val FROM __erb_dedup_v2), ' data-ready) of ', (SELECT val FROM __erb_dedup_v3), ' candidates'))::text ELSE (CONCAT('BUILDING: ', (SELECT val FROM __erb_dedup_v3), ' candidates — ', (SELECT val FROM __erb_dedup_v2), ' data-ready, ', (SELECT val FROM __erb_dedup_v1), ' encode-ready'))::text END)::text;
 $$ LANGUAGE sql STABLE;
 
 -- calc_corpus_catalog_summary_catalog_prediction_witness_note
@@ -3060,7 +4245,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_corpus_catalog_summary_catalog_prediction_witness_note(p_catalog_summary_id TEXT)
 RETURNS TEXT AS $$
-  SELECT (CONCAT('exact=', calc_corpus_catalog_summary_type_prediction_match_count(p_catalog_summary_id), '/', calc_corpus_catalog_summary_imported_count(p_catalog_summary_id), ' (', ROUND(((COALESCE(CASE WHEN (calc_corpus_catalog_summary_type_prediction_match_rate(p_catalog_summary_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_corpus_catalog_summary_type_prediction_match_rate(p_catalog_summary_id))::numeric ELSE NULL END, 0) * COALESCE(100, 0)))::NUMERIC, (1)::INTEGER), '%); flipPred=', calc_corpus_catalog_summary_sign_flip_prediction_match_count(p_catalog_summary_id), '/', calc_corpus_catalog_summary_sign_flip_prediction_eligible_count(p_catalog_summary_id), ' (', ROUND(((COALESCE(CASE WHEN (calc_corpus_catalog_summary_sign_flip_prediction_match_rate(p_catalog_summary_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_corpus_catalog_summary_sign_flip_prediction_match_rate(p_catalog_summary_id))::numeric ELSE NULL END, 0) * COALESCE(100, 0)))::NUMERIC, (1)::INTEGER), '%)'))::text;
+  WITH __erb_dedup_v1 AS (SELECT calc_corpus_catalog_summary_type_prediction_match_rate(p_catalog_summary_id) AS val), __erb_dedup_v2 AS (SELECT calc_corpus_catalog_summary_sign_flip_prediction_match_rate(p_catalog_summary_id) AS val) SELECT (CONCAT('exact=', calc_corpus_catalog_summary_type_prediction_match_count(p_catalog_summary_id), '/', calc_corpus_catalog_summary_imported_count(p_catalog_summary_id), ' (', ROUND(((COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v1))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v1))::numeric ELSE NULL END, 0) * COALESCE(100, 0)))::NUMERIC, (1)::INTEGER), '%); flipPred=', calc_corpus_catalog_summary_sign_flip_prediction_match_count(p_catalog_summary_id), '/', calc_corpus_catalog_summary_sign_flip_prediction_eligible_count(p_catalog_summary_id), ' (', ROUND(((COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v2))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v2))::numeric ELSE NULL END, 0) * COALESCE(100, 0)))::NUMERIC, (1)::INTEGER), '%)'))::text;
 $$ LANGUAGE sql STABLE;
 
 -- calc_corpus_catalog_summary_data_ready_count
@@ -3130,7 +4315,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_domain_expansion_targets_projected_count(p_domain_target_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((COALESCE(CASE WHEN (calc_domain_expansion_targets_current_imported_count(p_domain_target_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_domain_expansion_targets_current_imported_count(p_domain_target_id))::numeric ELSE NULL END, 0) + COALESCE(CASE WHEN (calc_domain_expansion_targets_candidate_queued_count(p_domain_target_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_domain_expansion_targets_candidate_queued_count(p_domain_target_id))::numeric ELSE NULL END, 0)))::integer;
+  WITH __erb_dedup_v1 AS (SELECT calc_domain_expansion_targets_current_imported_count(p_domain_target_id) AS val), __erb_dedup_v2 AS (SELECT calc_domain_expansion_targets_candidate_queued_count(p_domain_target_id) AS val) SELECT ((COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v1))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v1))::numeric ELSE NULL END, 0) + COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v2))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v2))::numeric ELSE NULL END, 0)))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_domain_expansion_targets_gap_count
@@ -3140,7 +4325,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_domain_expansion_targets_gap_count(p_domain_target_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT (GREATEST(0, (COALESCE(CASE WHEN ((SELECT target_min_count FROM domain_expansion_targets WHERE domain_target_id = p_domain_target_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT target_min_count FROM domain_expansion_targets WHERE domain_target_id = p_domain_target_id))::numeric ELSE NULL END, 0) - COALESCE(CASE WHEN (calc_domain_expansion_targets_projected_count(p_domain_target_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_domain_expansion_targets_projected_count(p_domain_target_id))::numeric ELSE NULL END, 0))))::integer;
+  WITH __erb_dedup_v1 AS (SELECT calc_domain_expansion_targets_projected_count(p_domain_target_id) AS val) SELECT (GREATEST(0, (COALESCE(CASE WHEN ((SELECT target_min_count FROM domain_expansion_targets WHERE domain_target_id = p_domain_target_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT target_min_count FROM domain_expansion_targets WHERE domain_target_id = p_domain_target_id))::numeric ELSE NULL END, 0) - COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v1))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v1))::numeric ELSE NULL END, 0))))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_domain_expansion_targets_is_under_represented
@@ -3193,6 +4378,53 @@ RETURNS TEXT AS $$
   SELECT ((SELECT NULLIF(hypothesis_id, '') FROM discovery_hypotheses WHERE hypothesis_id = p_hypothesis_id))::text;
 $$ LANGUAGE sql STABLE;
 
+-- calc_discovery_findings_hypothesis_statement
+-- Field: DiscoveryFindings.HypothesisStatement
+-- Type: lookup | DataType: string | Returns: TEXT
+-- Lookup: Statement from related DiscoveryHypotheses
+
+
+CREATE OR REPLACE FUNCTION calc_discovery_findings_hypothesis_statement(p_finding_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT statement::text FROM discovery_hypotheses WHERE hypothesis_id = (SELECT hypothesis_id FROM discovery_findings WHERE finding_id = p_finding_id));
+$$ LANGUAGE sql STABLE;
+
+-- get_discovery_hypotheses_statement
+-- Helper function: Get Statement from DiscoveryHypotheses by HypothesisId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_discovery_hypotheses_statement(p_hypothesis_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT statement FROM discovery_hypotheses WHERE hypothesis_id = p_hypothesis_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_discovery_hypotheses_expected_outcome
+-- Helper function: Get ExpectedOutcome from DiscoveryHypotheses by HypothesisId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_discovery_hypotheses_expected_outcome(p_hypothesis_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT expected_outcome FROM discovery_hypotheses WHERE hypothesis_id = p_hypothesis_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_discovery_hypotheses_registered_in_loop
+-- Helper function: Get RegisteredInLoop from DiscoveryHypotheses by HypothesisId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_discovery_hypotheses_registered_in_loop(p_hypothesis_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT registered_in_loop FROM discovery_hypotheses WHERE hypothesis_id = p_hypothesis_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_discovery_hypotheses_epistemic_tier
+-- Helper function: Get EpistemicTier from DiscoveryHypotheses by HypothesisId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_discovery_hypotheses_epistemic_tier(p_hypothesis_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT epistemic_tier FROM discovery_hypotheses WHERE hypothesis_id = p_hypothesis_id);
+$$ LANGUAGE sql STABLE;
+
 -- calc_discovery_findings_name
 -- Field: DiscoveryFindings.Name
 -- Type: calculated | DataType: string | Returns: TEXT
@@ -3210,11 +4442,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_discovery_findings_observed_metric(p_finding_id TEXT)
 RETURNS TEXT AS $$
-  SELECT /* WARNING: Formula translation failed: Function 'LOOKUP' is not supported yet
-   Original Airtable formula:
-   =IF({{HypothesisId}} = "H-latent-d", CONCAT("fraction=", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[LatentTypeDFraction])), IF({{HypothesisId}} = "H-purity", CONCAT("maxPurity=", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[SignFlipSignalPurityMax])), IF({{HypothesisId}} = "H-small-effect", CONCAT("stable=", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[AvgPooledGapStableD]), " latent=", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[AvgPooledGapLatentD])), IF({{HypothesisId}} = "H-econ-zero", CONCAT("flips=", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[EconomicsSignFlipCount])), IF({{HypothesisId}} = "H-domain-dist", CONCAT("epi=", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[EpidemiologyAvgDistortion]), " edu=", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[EducationAvgDistortion])), IF({{HypothesisId}} = "H-causal-manifest", CONCAT("confFlip=", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[ConfounderSignFlipCount]), " collManifest=", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[ColliderSelectionManifestCount])), IF({{HypothesisId}} = "H-causal-latent", CONCAT("collManifest=", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[ColliderSelectionManifestCount]), " collLatent=", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[ColliderSelectionLatentOnlyCount]), " collN=", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[ColliderSelectionCount])), IF({{HypothesisId}} = "H-explained-confounder", CONCAT("ExplainedConfounderCount=", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[ExplainedConfounderCount]), ", ConfounderSignFlipCount=", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[ConfounderSignFlipCount])), IF({{HypothesisId}} = "H-unexplained-nonconfounder", CONCAT("ContestedOrMediatorExplainedCount=", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[ContestedOrMediatorExplainedCount])), IF({{HypothesisId}} = "H-catalog-exact-match", CONCAT("exactRate=", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[TypePredictionMatchRate])), IF({{HypothesisId}} = "H-catalog-flip-prediction", CONCAT("flipPredRate=", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[SignFlipPredictionMatchRate])), IF({{HypothesisId}} = "H-domain-flip-geometry-controlled", CONCAT("econHighImbFlips=", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[EconomicsHighImbalanceSignFlipCount]), "; epiRate=", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[EpidemiologyHighImbalanceSignFlipRate]), "; legal=", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[LegalHighImbalanceSignFlipRate]), "; sports=", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[SportsHighImbalanceSignFlipRate])), IF({{HypothesisId}} = "H-collider-no-manifest-v2", CONCAT("collManifest=", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[ColliderSelectionManifestCount])), IF({{HypothesisId}} = "H-cplus-magnitude", CONCAT("C+=", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[CPlusAvgDistortion]), " C-=", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[CMinusAvgDistortion]), " D=", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[TypeDAvgDistortion])), IF({{HypothesisId}} = "H-econ-encoding-selection", CONCAT("EconExpectedAMismatchRate=", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[EconomicsExpectedAMismatchRate])), IF({{HypothesisId}} = "H-domain-profiles-stable", CONCAT("eduLatent=", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[EducationLatentFraction]), " sportsLatent=", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[SportsLatentFraction]), " econFlipRate=", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[EconomicsSignFlipRate])), IF({{HypothesisId}} = "H-corrected-gap-invariant", CONCAT("maxRange=", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[MaxStudySweepCorrectedGapRange]), " fails=", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[CorrectedGapInvariantFailCount])), IF({{HypothesisId}} = "H-explained-bidirectional", CONCAT("explained=", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[ExplainedConfounderCount]), " confFlip=", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[ConfounderSignFlipCount]), " falsePos=", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[FalsePositiveExplainedCount]), " unexplained=", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[UnexplainedConfounderSignFlipCount])), IF({{HypothesisId}} = "H-collider-no-manifest-theorem", CONCAT("collN=", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[ColliderSelectionCount]), " collManifest=", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[ColliderSelectionManifestCount])), IF({{HypothesisId}} = "H-theorem-portfolio", CONCAT("theoremCount=", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[TheoremCount])), IF({{HypothesisId}} = "H-age-identity-flip-rate", CONCAT("rate=", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[AgeIdentityManifestFlipRate]), ", n=", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[AgeIdentityStudyCount])), IF({{HypothesisId}} = "H-identity-map-coverage", CONCAT("coverage=", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[IdentityMapCoverageRate])), IF({{HypothesisId}} = "H-severity-medicine-manifest", CONCAT("medicine_flip_rate=", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[SeverityMedicineManifestFlipRate])), IF({{HypothesisId}} = "H-severity-epi-latent-only", CONCAT("epi_manifest_count=", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[SeverityEpiManifestFlipCount])), IF({{HypothesisId}} = "H-mechanism-other-drain", CONCAT("other_count=", LOOKUP("cluster-id-mechanism-other", IdentityClusterSummaries[IdentityClusterId], IdentityClusterSummaries[StudyCount])), IF({{HypothesisId}} = "H-selection-frailty-zero-manifest", CONCAT("manifest=", LOOKUP("cluster-id-selection-frailty", IdentityClusterSummaries[IdentityClusterId], IdentityClusterSummaries[ManifestFlipCount]), ", n=", LOOKUP("cluster-id-selection-frailty", IdentityClusterSummaries[IdentityClusterId], IdentityClusterSummaries[StudyCount])), IF({{HypothesisId}} = "H-collider-identity-low-manifest", CONCAT("rate=", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[ColliderIdentityManifestFlipRate])), IF({{HypothesisId}} = "H-geographic-stable-type-d", CONCAT("type_d_frac=", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[GeographicTypeDFraction])), IF({{HypothesisId}} = "H-unexplained-flips-only-nonconfounders", CONCAT("unexplained_confounder_flips=", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[UnexplainedConfounderSignFlipCount])), "")))))))))))))))))))))))))))))
-*/
-NULL::text;
+  SELECT (IF((SELECT NULLIF(hypothesis_id, '') FROM discovery_findings WHERE finding_id = p_finding_id) = "H-latent-d", CONCAT("fraction=", LOOKUP("simpsons-paradox-v1", ModelSummary(SELECT NULLIF(model_summary_id, '') FROM discovery_findings WHERE finding_id = p_finding_id), ModelSummary(SELECT NULLIF(latent_type_d_fraction, '') FROM discovery_findings WHERE finding_id = p_finding_id))), IF((SELECT NULLIF(hypothesis_id, '') FROM discovery_findings WHERE finding_id = p_finding_id) = "H-purity", CONCAT("maxPurity=", LOOKUP("simpsons-paradox-v1", ModelSummary(SELECT NULLIF(model_summary_id, '') FROM discovery_findings WHERE finding_id = p_finding_id), ModelSummary(SELECT NULLIF(sign_flip_signal_purity_max, '') FROM discovery_findings WHERE finding_id = p_finding_id))), IF((SELECT NULLIF(hypothesis_id, '') FROM discovery_findings WHERE finding_id = p_finding_id) = "H-small-effect", CONCAT("stable=", LOOKUP("simpsons-paradox-v1", ModelSummary(SELECT NULLIF(model_summary_id, '') FROM discovery_findings WHERE finding_id = p_finding_id), ModelSummary(SELECT NULLIF(avg_pooled_gap_stable_d, '') FROM discovery_findings WHERE finding_id = p_finding_id)), " latent=", LOOKUP("simpsons-paradox-v1", ModelSummary(SELECT NULLIF(model_summary_id, '') FROM discovery_findings WHERE finding_id = p_finding_id), ModelSummary(SELECT NULLIF(avg_pooled_gap_latent_d, '') FROM discovery_findings WHERE finding_id = p_finding_id))), IF((SELECT NULLIF(hypothesis_id, '') FROM discovery_findings WHERE finding_id = p_finding_id) = "H-econ-zero", CONCAT("flips=", LOOKUP("simpsons-paradox-v1", ModelSummary(SELECT NULLIF(model_summary_id, '') FROM discovery_findings WHERE finding_id = p_finding_id), ModelSummary(SELECT NULLIF(economics_sign_flip_count, '') FROM discovery_findings WHERE finding_id = p_finding_id))), IF((SELECT NULLIF(hypothesis_id, '') FROM discovery_findings WHERE finding_id = p_finding_id) = "H-domain-dist", CONCAT("epi=", LOOKUP("simpsons-paradox-v1", ModelSummary(SELECT NULLIF(model_summary_id, '') FROM discovery_findings WHERE finding_id = p_finding_id), ModelSummary(SELECT NULLIF(epidemiology_avg_distortion, '') FROM discovery_findings WHERE finding_id = p_finding_id)), " edu=", LOOKUP("simpsons-paradox-v1", ModelSummary(SELECT NULLIF(model_summary_id, '') FROM discovery_findings WHERE finding_id = p_finding_id), ModelSummary(SELECT NULLIF(education_avg_distortion, '') FROM discovery_findings WHERE finding_id = p_finding_id))), IF((SELECT NULLIF(hypothesis_id, '') FROM discovery_findings WHERE finding_id = p_finding_id) = "H-causal-manifest", CONCAT("confFlip=", LOOKUP("simpsons-paradox-v1", ModelSummary(SELECT NULLIF(model_summary_id, '') FROM discovery_findings WHERE finding_id = p_finding_id), ModelSummary(SELECT NULLIF(confounder_sign_flip_count, '') FROM discovery_findings WHERE finding_id = p_finding_id)), " collManifest=", LOOKUP("simpsons-paradox-v1", ModelSummary(SELECT NULLIF(model_summary_id, '') FROM discovery_findings WHERE finding_id = p_finding_id), ModelSummary(SELECT NULLIF(collider_selection_manifest_count, '') FROM discovery_findings WHERE finding_id = p_finding_id))), IF((SELECT NULLIF(hypothesis_id, '') FROM discovery_findings WHERE finding_id = p_finding_id) = "H-causal-latent", CONCAT("collManifest=", LOOKUP("simpsons-paradox-v1", ModelSummary(SELECT NULLIF(model_summary_id, '') FROM discovery_findings WHERE finding_id = p_finding_id), ModelSummary(SELECT NULLIF(collider_selection_manifest_count, '') FROM discovery_findings WHERE finding_id = p_finding_id)), " collLatent=", LOOKUP("simpsons-paradox-v1", ModelSummary(SELECT NULLIF(model_summary_id, '') FROM discovery_findings WHERE finding_id = p_finding_id), ModelSummary(SELECT NULLIF(collider_selection_latent_only_count, '') FROM discovery_findings WHERE finding_id = p_finding_id)), " collN=", LOOKUP("simpsons-paradox-v1", ModelSummary(SELECT NULLIF(model_summary_id, '') FROM discovery_findings WHERE finding_id = p_finding_id), ModelSummary(SELECT NULLIF(collider_selection_count, '') FROM discovery_findings WHERE finding_id = p_finding_id))), IF((SELECT NULLIF(hypothesis_id, '') FROM discovery_findings WHERE finding_id = p_finding_id) = "H-explained-confounder", CONCAT("ExplainedConfounderCount=", LOOKUP("simpsons-paradox-v1", ModelSummary(SELECT NULLIF(model_summary_id, '') FROM discovery_findings WHERE finding_id = p_finding_id), ModelSummary(SELECT NULLIF(explained_confounder_count, '') FROM discovery_findings WHERE finding_id = p_finding_id)), ", ConfounderSignFlipCount=", LOOKUP("simpsons-paradox-v1", ModelSummary(SELECT NULLIF(model_summary_id, '') FROM discovery_findings WHERE finding_id = p_finding_id), ModelSummary(SELECT NULLIF(confounder_sign_flip_count, '') FROM discovery_findings WHERE finding_id = p_finding_id))), IF((SELECT NULLIF(hypothesis_id, '') FROM discovery_findings WHERE finding_id = p_finding_id) = "H-unexplained-nonconfounder", CONCAT("ContestedOrMediatorExplainedCount=", LOOKUP("simpsons-paradox-v1", ModelSummary(SELECT NULLIF(model_summary_id, '') FROM discovery_findings WHERE finding_id = p_finding_id), ModelSummary(SELECT NULLIF(contested_or_mediator_explained_count, '') FROM discovery_findings WHERE finding_id = p_finding_id))), IF((SELECT NULLIF(hypothesis_id, '') FROM discovery_findings WHERE finding_id = p_finding_id) = "H-catalog-exact-match", CONCAT("exactRate=", LOOKUP("simpsons-paradox-v1", ModelSummary(SELECT NULLIF(model_summary_id, '') FROM discovery_findings WHERE finding_id = p_finding_id), ModelSummary(SELECT NULLIF(type_prediction_match_rate, '') FROM discovery_findings WHERE finding_id = p_finding_id))), IF((SELECT NULLIF(hypothesis_id, '') FROM discovery_findings WHERE finding_id = p_finding_id) = "H-catalog-flip-prediction", CONCAT("flipPredRate=", LOOKUP("simpsons-paradox-v1", ModelSummary(SELECT NULLIF(model_summary_id, '') FROM discovery_findings WHERE finding_id = p_finding_id), ModelSummary(SELECT NULLIF(sign_flip_prediction_match_rate, '') FROM discovery_findings WHERE finding_id = p_finding_id))), IF((SELECT NULLIF(hypothesis_id, '') FROM discovery_findings WHERE finding_id = p_finding_id) = "H-domain-flip-geometry-controlled", CONCAT("econHighImbFlips=", LOOKUP("simpsons-paradox-v1", ModelSummary(SELECT NULLIF(model_summary_id, '') FROM discovery_findings WHERE finding_id = p_finding_id), ModelSummary(SELECT NULLIF(economics_high_imbalance_sign_flip_count, '') FROM discovery_findings WHERE finding_id = p_finding_id)), "; epiRate=", LOOKUP("simpsons-paradox-v1", ModelSummary(SELECT NULLIF(model_summary_id, '') FROM discovery_findings WHERE finding_id = p_finding_id), ModelSummary(SELECT NULLIF(epidemiology_high_imbalance_sign_flip_rate, '') FROM discovery_findings WHERE finding_id = p_finding_id)), "; legal=", LOOKUP("simpsons-paradox-v1", ModelSummary(SELECT NULLIF(model_summary_id, '') FROM discovery_findings WHERE finding_id = p_finding_id), ModelSummary(SELECT NULLIF(legal_high_imbalance_sign_flip_rate, '') FROM discovery_findings WHERE finding_id = p_finding_id)), "; sports=", LOOKUP("simpsons-paradox-v1", ModelSummary(SELECT NULLIF(model_summary_id, '') FROM discovery_findings WHERE finding_id = p_finding_id), ModelSummary(SELECT NULLIF(sports_high_imbalance_sign_flip_rate, '') FROM discovery_findings WHERE finding_id = p_finding_id))), IF((SELECT NULLIF(hypothesis_id, '') FROM discovery_findings WHERE finding_id = p_finding_id) = "H-collider-no-manifest-v2", CONCAT("collManifest=", LOOKUP("simpsons-paradox-v1", ModelSummary(SELECT NULLIF(model_summary_id, '') FROM discovery_findings WHERE finding_id = p_finding_id), ModelSummary(SELECT NULLIF(collider_selection_manifest_count, '') FROM discovery_findings WHERE finding_id = p_finding_id))), IF((SELECT NULLIF(hypothesis_id, '') FROM discovery_findings WHERE finding_id = p_finding_id) = "H-cplus-magnitude", CONCAT("C+=", LOOKUP("simpsons-paradox-v1", ModelSummary(SELECT NULLIF(model_summary_id, '') FROM discovery_findings WHERE finding_id = p_finding_id), ModelSummary(SELECT NULLIF(c_plus_avg_distortion, '') FROM discovery_findings WHERE finding_id = p_finding_id)), " C-=", LOOKUP("simpsons-paradox-v1", ModelSummary(SELECT NULLIF(model_summary_id, '') FROM discovery_findings WHERE finding_id = p_finding_id), ModelSummary(SELECT NULLIF(c_minus_avg_distortion, '') FROM discovery_findings WHERE finding_id = p_finding_id)), " D=", LOOKUP("simpsons-paradox-v1", ModelSummary(SELECT NULLIF(model_summary_id, '') FROM discovery_findings WHERE finding_id = p_finding_id), ModelSummary(SELECT NULLIF(type_d_avg_distortion, '') FROM discovery_findings WHERE finding_id = p_finding_id))), IF((SELECT NULLIF(hypothesis_id, '') FROM discovery_findings WHERE finding_id = p_finding_id) = "H-econ-encoding-selection", CONCAT("EconExpectedAMismatchRate=", LOOKUP("simpsons-paradox-v1", ModelSummary(SELECT NULLIF(model_summary_id, '') FROM discovery_findings WHERE finding_id = p_finding_id), ModelSummary(SELECT NULLIF(economics_expected_a_mismatch_rate, '') FROM discovery_findings WHERE finding_id = p_finding_id))), IF((SELECT NULLIF(hypothesis_id, '') FROM discovery_findings WHERE finding_id = p_finding_id) = "H-domain-profiles-stable", CONCAT("eduLatent=", LOOKUP("simpsons-paradox-v1", ModelSummary(SELECT NULLIF(model_summary_id, '') FROM discovery_findings WHERE finding_id = p_finding_id), ModelSummary(SELECT NULLIF(education_latent_fraction, '') FROM discovery_findings WHERE finding_id = p_finding_id)), " sportsLatent=", LOOKUP("simpsons-paradox-v1", ModelSummary(SELECT NULLIF(model_summary_id, '') FROM discovery_findings WHERE finding_id = p_finding_id), ModelSummary(SELECT NULLIF(sports_latent_fraction, '') FROM discovery_findings WHERE finding_id = p_finding_id)), " econFlipRate=", LOOKUP("simpsons-paradox-v1", ModelSummary(SELECT NULLIF(model_summary_id, '') FROM discovery_findings WHERE finding_id = p_finding_id), ModelSummary(SELECT NULLIF(economics_sign_flip_rate, '') FROM discovery_findings WHERE finding_id = p_finding_id))), IF((SELECT NULLIF(hypothesis_id, '') FROM discovery_findings WHERE finding_id = p_finding_id) = "H-corrected-gap-invariant", CONCAT("maxRange=", LOOKUP("simpsons-paradox-v1", ModelSummary(SELECT NULLIF(model_summary_id, '') FROM discovery_findings WHERE finding_id = p_finding_id), ModelSummary(SELECT NULLIF(max_study_sweep_corrected_gap_range, '') FROM discovery_findings WHERE finding_id = p_finding_id)), " fails=", LOOKUP("simpsons-paradox-v1", ModelSummary(SELECT NULLIF(model_summary_id, '') FROM discovery_findings WHERE finding_id = p_finding_id), ModelSummary(SELECT NULLIF(corrected_gap_invariant_fail_count, '') FROM discovery_findings WHERE finding_id = p_finding_id))), IF((SELECT NULLIF(hypothesis_id, '') FROM discovery_findings WHERE finding_id = p_finding_id) = "H-explained-bidirectional", CONCAT("explained=", LOOKUP("simpsons-paradox-v1", ModelSummary(SELECT NULLIF(model_summary_id, '') FROM discovery_findings WHERE finding_id = p_finding_id), ModelSummary(SELECT NULLIF(explained_confounder_count, '') FROM discovery_findings WHERE finding_id = p_finding_id)), " confFlip=", LOOKUP("simpsons-paradox-v1", ModelSummary(SELECT NULLIF(model_summary_id, '') FROM discovery_findings WHERE finding_id = p_finding_id), ModelSummary(SELECT NULLIF(confounder_sign_flip_count, '') FROM discovery_findings WHERE finding_id = p_finding_id)), " falsePos=", LOOKUP("simpsons-paradox-v1", ModelSummary(SELECT NULLIF(model_summary_id, '') FROM discovery_findings WHERE finding_id = p_finding_id), ModelSummary(SELECT NULLIF(false_positive_explained_count, '') FROM discovery_findings WHERE finding_id = p_finding_id)), " unexplained=", LOOKUP("simpsons-paradox-v1", ModelSummary(SELECT NULLIF(model_summary_id, '') FROM discovery_findings WHERE finding_id = p_finding_id), ModelSummary(SELECT NULLIF(unexplained_confounder_sign_flip_count, '') FROM discovery_findings WHERE finding_id = p_finding_id))), IF((SELECT NULLIF(hypothesis_id, '') FROM discovery_findings WHERE finding_id = p_finding_id) = "H-collider-no-manifest-theorem", CONCAT("collN=", LOOKUP("simpsons-paradox-v1", ModelSummary(SELECT NULLIF(model_summary_id, '') FROM discovery_findings WHERE finding_id = p_finding_id), ModelSummary(SELECT NULLIF(collider_selection_count, '') FROM discovery_findings WHERE finding_id = p_finding_id)), " collManifest=", LOOKUP("simpsons-paradox-v1", ModelSummary(SELECT NULLIF(model_summary_id, '') FROM discovery_findings WHERE finding_id = p_finding_id), ModelSummary(SELECT NULLIF(collider_selection_manifest_count, '') FROM discovery_findings WHERE finding_id = p_finding_id))), IF((SELECT NULLIF(hypothesis_id, '') FROM discovery_findings WHERE finding_id = p_finding_id) = "H-theorem-portfolio", CONCAT("theoremCount=", LOOKUP("simpsons-paradox-v1", ModelSummary(SELECT NULLIF(model_summary_id, '') FROM discovery_findings WHERE finding_id = p_finding_id), ModelSummary(SELECT NULLIF(theorem_count, '') FROM discovery_findings WHERE finding_id = p_finding_id))), IF((SELECT NULLIF(hypothesis_id, '') FROM discovery_findings WHERE finding_id = p_finding_id) = "H-age-identity-flip-rate", CONCAT("rate=", LOOKUP("simpsons-paradox-v1", ModelSummary(SELECT NULLIF(model_summary_id, '') FROM discovery_findings WHERE finding_id = p_finding_id), ModelSummary(SELECT NULLIF(age_identity_manifest_flip_rate, '') FROM discovery_findings WHERE finding_id = p_finding_id)), ", n=", LOOKUP("simpsons-paradox-v1", ModelSummary(SELECT NULLIF(model_summary_id, '') FROM discovery_findings WHERE finding_id = p_finding_id), ModelSummary(SELECT NULLIF(age_identity_study_count, '') FROM discovery_findings WHERE finding_id = p_finding_id))), IF((SELECT NULLIF(hypothesis_id, '') FROM discovery_findings WHERE finding_id = p_finding_id) = "H-identity-map-coverage", CONCAT("coverage=", LOOKUP("simpsons-paradox-v1", ModelSummary(SELECT NULLIF(model_summary_id, '') FROM discovery_findings WHERE finding_id = p_finding_id), ModelSummary(SELECT NULLIF(identity_map_coverage_rate, '') FROM discovery_findings WHERE finding_id = p_finding_id))), IF((SELECT NULLIF(hypothesis_id, '') FROM discovery_findings WHERE finding_id = p_finding_id) = "H-severity-medicine-manifest", CONCAT("medicine_flip_rate=", LOOKUP("simpsons-paradox-v1", ModelSummary(SELECT NULLIF(model_summary_id, '') FROM discovery_findings WHERE finding_id = p_finding_id), ModelSummary(SELECT NULLIF(severity_medicine_manifest_flip_rate, '') FROM discovery_findings WHERE finding_id = p_finding_id))), IF((SELECT NULLIF(hypothesis_id, '') FROM discovery_findings WHERE finding_id = p_finding_id) = "H-severity-epi-latent-only", CONCAT("epi_manifest_count=", LOOKUP("simpsons-paradox-v1", ModelSummary(SELECT NULLIF(model_summary_id, '') FROM discovery_findings WHERE finding_id = p_finding_id), ModelSummary(SELECT NULLIF(severity_epi_manifest_flip_count, '') FROM discovery_findings WHERE finding_id = p_finding_id))), IF((SELECT NULLIF(hypothesis_id, '') FROM discovery_findings WHERE finding_id = p_finding_id) = "H-mechanism-other-drain", CONCAT("other_count=", LOOKUP("cluster-id-mechanism-other", IdentityClusterSummaries(SELECT NULLIF(identity_cluster_id, '') FROM discovery_findings WHERE finding_id = p_finding_id), IdentityClusterSummaries(SELECT NULLIF(study_count, '') FROM discovery_findings WHERE finding_id = p_finding_id))), IF((SELECT NULLIF(hypothesis_id, '') FROM discovery_findings WHERE finding_id = p_finding_id) = "H-selection-frailty-zero-manifest", CONCAT("manifest=", LOOKUP("cluster-id-selection-frailty", IdentityClusterSummaries(SELECT NULLIF(identity_cluster_id, '') FROM discovery_findings WHERE finding_id = p_finding_id), IdentityClusterSummaries(SELECT NULLIF(manifest_flip_count, '') FROM discovery_findings WHERE finding_id = p_finding_id)), ", n=", LOOKUP("cluster-id-selection-frailty", IdentityClusterSummaries(SELECT NULLIF(identity_cluster_id, '') FROM discovery_findings WHERE finding_id = p_finding_id), IdentityClusterSummaries(SELECT NULLIF(study_count, '') FROM discovery_findings WHERE finding_id = p_finding_id))), IF((SELECT NULLIF(hypothesis_id, '') FROM discovery_findings WHERE finding_id = p_finding_id) = "H-collider-identity-low-manifest", CONCAT("rate=", LOOKUP("simpsons-paradox-v1", ModelSummary(SELECT NULLIF(model_summary_id, '') FROM discovery_findings WHERE finding_id = p_finding_id), ModelSummary(SELECT NULLIF(collider_identity_manifest_flip_rate, '') FROM discovery_findings WHERE finding_id = p_finding_id))), IF((SELECT NULLIF(hypothesis_id, '') FROM discovery_findings WHERE finding_id = p_finding_id) = "H-geographic-stable-type-d", CONCAT("type_d_frac=", LOOKUP("simpsons-paradox-v1", ModelSummary(SELECT NULLIF(model_summary_id, '') FROM discovery_findings WHERE finding_id = p_finding_id), ModelSummary(SELECT NULLIF(geographic_type_d_fraction, '') FROM discovery_findings WHERE finding_id = p_finding_id))), IF((SELECT NULLIF(hypothesis_id, '') FROM discovery_findings WHERE finding_id = p_finding_id) = "H-unexplained-flips-only-nonconfounders", CONCAT("unexplained_confounder_flips=", LOOKUP("simpsons-paradox-v1", ModelSummary(SELECT NULLIF(model_summary_id, '') FROM discovery_findings WHERE finding_id = p_finding_id), ModelSummary(SELECT NULLIF(unexplained_confounder_sign_flip_count, '') FROM discovery_findings WHERE finding_id = p_finding_id))), IF((SELECT NULLIF(hypothesis_id, '') FROM discovery_findings WHERE finding_id = p_finding_id) = "H-confounder-drift-type-d", CONCAT("severity=", LOOKUP("simpsons-paradox-v1", ModelSummary(SELECT NULLIF(model_summary_id, '') FROM discovery_findings WHERE finding_id = p_finding_id), ModelSummary(SELECT NULLIF(severity_drift_direction, '') FROM discovery_findings WHERE finding_id = p_finding_id)), " geography=", LOOKUP("simpsons-paradox-v1", ModelSummary(SELECT NULLIF(model_summary_id, '') FROM discovery_findings WHERE finding_id = p_finding_id), ModelSummary(SELECT NULLIF(geographic_drift_direction, '') FROM discovery_findings WHERE finding_id = p_finding_id)), " situational=", LOOKUP("simpsons-paradox-v1", ModelSummary(SELECT NULLIF(model_summary_id, '') FROM discovery_findings WHERE finding_id = p_finding_id), ModelSummary(SELECT NULLIF(situational_drift_direction, '') FROM discovery_findings WHERE finding_id = p_finding_id)), " age=", LOOKUP("simpsons-paradox-v1", ModelSummary(SELECT NULLIF(model_summary_id, '') FROM discovery_findings WHERE finding_id = p_finding_id), ModelSummary(SELECT NULLIF(age_drift_direction, '') FROM discovery_findings WHERE finding_id = p_finding_id)), " institutional=", LOOKUP("simpsons-paradox-v1", ModelSummary(SELECT NULLIF(model_summary_id, '') FROM discovery_findings WHERE finding_id = p_finding_id), ModelSummary(SELECT NULLIF(institutional_drift_direction, '') FROM discovery_findings WHERE finding_id = p_finding_id)), " socioeconomic=", LOOKUP("simpsons-paradox-v1", ModelSummary(SELECT NULLIF(model_summary_id, '') FROM discovery_findings WHERE finding_id = p_finding_id), ModelSummary(SELECT NULLIF(socioeconomic_drift_direction, '') FROM discovery_findings WHERE finding_id = p_finding_id))), ""))))))))))))))))))))))))))))))::text;
 $$ LANGUAGE sql STABLE;
 
 -- calc_discovery_findings_is_confirmed
@@ -3226,7 +4454,7 @@ CREATE OR REPLACE FUNCTION calc_discovery_findings_is_confirmed(p_finding_id TEX
 RETURNS BOOLEAN AS $$
   SELECT /* WARNING: Formula translation failed: Function 'LOOKUP' is not supported yet
    Original Airtable formula:
-   =IF({{HypothesisId}} = "H-latent-d", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[LatentTypeDFraction]) > 0.5, IF({{HypothesisId}} = "H-purity", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[SignFlipSignalPurityMax]) < 0.5, IF({{HypothesisId}} = "H-small-effect", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[AvgPooledGapStableD]) > LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[AvgPooledGapLatentD]), IF({{HypothesisId}} = "H-econ-zero", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[EconomicsSignFlipCount]) = 0, IF({{HypothesisId}} = "H-domain-dist", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[EpidemiologyAvgDistortion]) > LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[EducationAvgDistortion]), IF({{HypothesisId}} = "H-causal-manifest", AND(LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[ConfounderSignFlipCount]) > LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[ColliderSelectionManifestCount]), LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[ConfounderSignFlipCount]) >= 10), IF({{HypothesisId}} = "H-causal-latent", AND(LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[ColliderSelectionManifestCount]) = 0, LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[ColliderSelectionLatentOnlyCount]) >= 5), IF({{HypothesisId}} = "H-explained-confounder", AND(LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[ExplainedConfounderCount]) = LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[ConfounderSignFlipCount]), LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[ExplainedConfounderCount]) >= 10), IF({{HypothesisId}} = "H-unexplained-nonconfounder", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[ContestedOrMediatorExplainedCount]) = 0, IF({{HypothesisId}} = "H-catalog-exact-match", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[TypePredictionMatchRate]) < 0.5, IF({{HypothesisId}} = "H-catalog-flip-prediction", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[SignFlipPredictionMatchRate]) < 0.5, IF({{HypothesisId}} = "H-domain-flip-geometry-controlled", AND(LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[EconomicsHighImbalanceSignFlipCount]) = 0, LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[EpidemiologyHighImbalanceSignFlipRate]) > 0.15), IF({{HypothesisId}} = "H-collider-no-manifest-v2", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[ColliderSelectionManifestCount]) = 0, IF({{HypothesisId}} = "H-cplus-magnitude", AND(LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[CPlusAvgDistortion]) > LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[CMinusAvgDistortion]), LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[CPlusAvgDistortion]) > LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[TypeDAvgDistortion])), IF({{HypothesisId}} = "H-econ-encoding-selection", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[EconomicsExpectedAMismatchRate]) > 0.5, IF({{HypothesisId}} = "H-domain-profiles-stable", AND(LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[EducationLatentFraction]) > 0.5, LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[SportsLatentFraction]) > 0.5, LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[EconomicsSignFlipRate]) < 0.05), IF({{HypothesisId}} = "H-corrected-gap-invariant", AND(LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[MaxStudySweepCorrectedGapRange]) < 0.0001, LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[CorrectedGapInvariantFailCount]) = 0), IF({{HypothesisId}} = "H-explained-bidirectional", AND(LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[ExplainedConfounderCount]) = LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[ConfounderSignFlipCount]), LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[FalsePositiveExplainedCount]) = 0, LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[UnexplainedConfounderSignFlipCount]) = 0), IF({{HypothesisId}} = "H-collider-no-manifest-theorem", AND(LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[ColliderSelectionManifestCount]) = 0, LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[ColliderSelectionCount]) >= 10), IF({{HypothesisId}} = "H-theorem-portfolio", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[TheoremCount]) >= 4, IF({{HypothesisId}} = "H-age-identity-flip-rate", AND(LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[AgeIdentityManifestFlipRate]) >= 0.40, LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[AgeIdentityStudyCount]) >= 10), IF({{HypothesisId}} = "H-identity-map-coverage", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[IdentityMapCoverageRate]) >= 0.95, IF({{HypothesisId}} = "H-severity-medicine-manifest", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[SeverityMedicineManifestFlipRate]) >= 0.45, IF({{HypothesisId}} = "H-severity-epi-latent-only", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[SeverityEpiManifestFlipCount]) = 0, IF({{HypothesisId}} = "H-mechanism-other-drain", LOOKUP("cluster-id-mechanism-other", IdentityClusterSummaries[IdentityClusterId], IdentityClusterSummaries[StudyCount]) <= 5, IF({{HypothesisId}} = "H-selection-frailty-zero-manifest", AND(LOOKUP("cluster-id-selection-frailty", IdentityClusterSummaries[IdentityClusterId], IdentityClusterSummaries[ManifestFlipCount]) = 0, LOOKUP("cluster-id-selection-frailty", IdentityClusterSummaries[IdentityClusterId], IdentityClusterSummaries[StudyCount]) >= 3), IF({{HypothesisId}} = "H-collider-identity-low-manifest", AND(LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[ColliderIdentityManifestFlipRate]) <= 0.15, LOOKUP("cluster-id-collider-proxy", IdentityClusterSummaries[IdentityClusterId], IdentityClusterSummaries[StudyCount]) >= 5), IF({{HypothesisId}} = "H-geographic-stable-type-d", AND(LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[GeographicTypeDFraction]) >= 0.25, LOOKUP("cluster-id-geographic-composition", IdentityClusterSummaries[IdentityClusterId], IdentityClusterSummaries[StudyCount]) >= 3), IF({{HypothesisId}} = "H-unexplained-flips-only-nonconfounders", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[UnexplainedConfounderSignFlipCount]) = 0, FALSE())))))))))))))))))))))))))))))
+   =IF({{HypothesisId}} = "H-latent-d", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[LatentTypeDFraction]) > 0.5, IF({{HypothesisId}} = "H-purity", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[SignFlipSignalPurityMax]) < 0.5, IF({{HypothesisId}} = "H-small-effect", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[AvgPooledGapStableD]) > LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[AvgPooledGapLatentD]), IF({{HypothesisId}} = "H-econ-zero", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[EconomicsSignFlipCount]) = 0, IF({{HypothesisId}} = "H-domain-dist", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[EpidemiologyAvgDistortion]) > LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[EducationAvgDistortion]), IF({{HypothesisId}} = "H-causal-manifest", AND(LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[ConfounderSignFlipCount]) > LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[ColliderSelectionManifestCount]), LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[ConfounderSignFlipCount]) >= 10), IF({{HypothesisId}} = "H-causal-latent", AND(LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[ColliderSelectionManifestCount]) = 0, LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[ColliderSelectionLatentOnlyCount]) >= 5), IF({{HypothesisId}} = "H-explained-confounder", AND(LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[ExplainedConfounderCount]) = LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[ConfounderSignFlipCount]), LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[ExplainedConfounderCount]) >= 10), IF({{HypothesisId}} = "H-unexplained-nonconfounder", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[ContestedOrMediatorExplainedCount]) = 0, IF({{HypothesisId}} = "H-catalog-exact-match", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[TypePredictionMatchRate]) < 0.5, IF({{HypothesisId}} = "H-catalog-flip-prediction", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[SignFlipPredictionMatchRate]) < 0.5, IF({{HypothesisId}} = "H-domain-flip-geometry-controlled", AND(LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[EconomicsHighImbalanceSignFlipCount]) = 0, LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[EpidemiologyHighImbalanceSignFlipRate]) > 0.15), IF({{HypothesisId}} = "H-collider-no-manifest-v2", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[ColliderSelectionManifestCount]) = 0, IF({{HypothesisId}} = "H-cplus-magnitude", AND(LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[CPlusAvgDistortion]) > LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[CMinusAvgDistortion]), LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[CPlusAvgDistortion]) > LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[TypeDAvgDistortion])), IF({{HypothesisId}} = "H-econ-encoding-selection", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[EconomicsExpectedAMismatchRate]) > 0.5, IF({{HypothesisId}} = "H-domain-profiles-stable", AND(LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[EducationLatentFraction]) > 0.5, LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[SportsLatentFraction]) > 0.5, LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[EconomicsSignFlipRate]) < 0.05), IF({{HypothesisId}} = "H-corrected-gap-invariant", AND(LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[MaxStudySweepCorrectedGapRange]) < 0.0001, LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[CorrectedGapInvariantFailCount]) = 0), IF({{HypothesisId}} = "H-explained-bidirectional", AND(LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[ExplainedConfounderCount]) = LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[ConfounderSignFlipCount]), LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[FalsePositiveExplainedCount]) = 0, LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[UnexplainedConfounderSignFlipCount]) = 0), IF({{HypothesisId}} = "H-collider-no-manifest-theorem", AND(LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[ColliderSelectionManifestCount]) = 0, LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[ColliderSelectionCount]) >= 10), IF({{HypothesisId}} = "H-theorem-portfolio", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[TheoremCount]) >= 4, IF({{HypothesisId}} = "H-age-identity-flip-rate", AND(LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[AgeIdentityManifestFlipRate]) >= 0.40, LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[AgeIdentityStudyCount]) >= 10), IF({{HypothesisId}} = "H-identity-map-coverage", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[IdentityMapCoverageRate]) >= 0.95, IF({{HypothesisId}} = "H-severity-medicine-manifest", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[SeverityMedicineManifestFlipRate]) >= 0.45, IF({{HypothesisId}} = "H-severity-epi-latent-only", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[SeverityEpiManifestFlipCount]) = 0, IF({{HypothesisId}} = "H-mechanism-other-drain", LOOKUP("cluster-id-mechanism-other", IdentityClusterSummaries[IdentityClusterId], IdentityClusterSummaries[StudyCount]) <= 5, IF({{HypothesisId}} = "H-selection-frailty-zero-manifest", AND(LOOKUP("cluster-id-selection-frailty", IdentityClusterSummaries[IdentityClusterId], IdentityClusterSummaries[ManifestFlipCount]) = 0, LOOKUP("cluster-id-selection-frailty", IdentityClusterSummaries[IdentityClusterId], IdentityClusterSummaries[StudyCount]) >= 3), IF({{HypothesisId}} = "H-collider-identity-low-manifest", AND(LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[ColliderIdentityManifestFlipRate]) <= 0.15, LOOKUP("cluster-id-collider-proxy", IdentityClusterSummaries[IdentityClusterId], IdentityClusterSummaries[StudyCount]) >= 5), IF({{HypothesisId}} = "H-geographic-stable-type-d", AND(LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[GeographicTypeDFraction]) >= 0.25, LOOKUP("cluster-id-geographic-composition", IdentityClusterSummaries[IdentityClusterId], IdentityClusterSummaries[StudyCount]) >= 3), IF({{HypothesisId}} = "H-unexplained-flips-only-nonconfounders", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[UnexplainedConfounderSignFlipCount]) = 0, IF({{HypothesisId}} = "H-confounder-drift-type-d", AND(OR(LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[SeverityDriftDirection]) = "rising", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[SeverityDriftDirection]) = "single-decade"), OR(LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[GeographicDriftDirection]) = "rising", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[GeographicDriftDirection]) = "single-decade"), OR(LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[SituationalDriftDirection]) = "rising", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[SituationalDriftDirection]) = "single-decade"), LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[AgeDriftDirection]) <> "rising", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[InstitutionalDriftDirection]) <> "rising", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[SocioeconomicDriftDirection]) <> "rising"), FALSE()))))))))))))))))))))))))))))))
 */
 NULL::boolean;
 $$ LANGUAGE sql STABLE;
@@ -3238,7 +4466,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_discovery_findings_evidence(p_finding_id TEXT)
 RETURNS TEXT AS $$
-  SELECT (CASE WHEN calc_discovery_findings_is_confirmed(p_finding_id) = TRUE THEN (CONCAT('PASS: ', calc_discovery_findings_observed_metric(p_finding_id)))::text ELSE (CASE WHEN calc_discovery_findings_is_confirmed(p_finding_id) = FALSE THEN (CONCAT('FAIL: ', calc_discovery_findings_observed_metric(p_finding_id)))::text ELSE ('')::text END)::text END)::text;
+  WITH __erb_dedup_v1 AS (SELECT calc_discovery_findings_is_confirmed(p_finding_id) AS val), __erb_dedup_v2 AS (SELECT calc_discovery_findings_observed_metric(p_finding_id) AS val) SELECT (CASE WHEN (SELECT val FROM __erb_dedup_v1) = TRUE THEN (CONCAT('PASS: ', (SELECT val FROM __erb_dedup_v2)))::text ELSE (CASE WHEN (SELECT val FROM __erb_dedup_v1) = FALSE THEN (CONCAT('FAIL: ', (SELECT val FROM __erb_dedup_v2)))::text ELSE ('')::text END)::text END)::text;
 $$ LANGUAGE sql STABLE;
 
 -- calc_corpus_domains_name
@@ -3273,60 +4501,6 @@ RETURNS INTEGER AS $$
    =COUNT(StratumVariableIdentityMaps!{{MapId}}, ConfounderIdentity, {{ConfounderIdentityId}})
 */
 NULL::integer;
-$$ LANGUAGE sql STABLE;
-
--- get_stratum_variables_variable_name
--- Helper function: Get VariableName from StratumVariables by StratumVariableId
--- Used for join-free cross-table references in aggregations
-
-CREATE OR REPLACE FUNCTION get_stratum_variables_variable_name(p_stratum_variable_id TEXT)
-RETURNS TEXT AS $$
-  SELECT (SELECT variable_name FROM stratum_variables WHERE stratum_variable_id = p_stratum_variable_id);
-$$ LANGUAGE sql STABLE;
-
--- get_stratum_variables_causal_role
--- Helper function: Get CausalRole from StratumVariables by StratumVariableId
--- Used for join-free cross-table references in aggregations
-
-CREATE OR REPLACE FUNCTION get_stratum_variables_causal_role(p_stratum_variable_id TEXT)
-RETURNS TEXT AS $$
-  SELECT (SELECT causal_role FROM stratum_variables WHERE stratum_variable_id = p_stratum_variable_id);
-$$ LANGUAGE sql STABLE;
-
--- get_stratum_variables_affects_treatment_assignment
--- Helper function: Get AffectsTreatmentAssignment from StratumVariables by StratumVariableId
--- Used for join-free cross-table references in aggregations
-
-CREATE OR REPLACE FUNCTION get_stratum_variables_affects_treatment_assignment(p_stratum_variable_id TEXT)
-RETURNS BOOLEAN AS $$
-  SELECT (SELECT affects_treatment_assignment FROM stratum_variables WHERE stratum_variable_id = p_stratum_variable_id);
-$$ LANGUAGE sql STABLE;
-
--- get_stratum_variables_affects_outcome
--- Helper function: Get AffectsOutcome from StratumVariables by StratumVariableId
--- Used for join-free cross-table references in aggregations
-
-CREATE OR REPLACE FUNCTION get_stratum_variables_affects_outcome(p_stratum_variable_id TEXT)
-RETURNS BOOLEAN AS $$
-  SELECT (SELECT affects_outcome FROM stratum_variables WHERE stratum_variable_id = p_stratum_variable_id);
-$$ LANGUAGE sql STABLE;
-
--- get_stratum_variables_mechanism_note
--- Helper function: Get MechanismNote from StratumVariables by StratumVariableId
--- Used for join-free cross-table references in aggregations
-
-CREATE OR REPLACE FUNCTION get_stratum_variables_mechanism_note(p_stratum_variable_id TEXT)
-RETURNS TEXT AS $$
-  SELECT (SELECT mechanism_note FROM stratum_variables WHERE stratum_variable_id = p_stratum_variable_id);
-$$ LANGUAGE sql STABLE;
-
--- get_stratum_variables_conditioning_risk
--- Helper function: Get ConditioningRisk from StratumVariables by StratumVariableId
--- Used for join-free cross-table references in aggregations
-
-CREATE OR REPLACE FUNCTION get_stratum_variables_conditioning_risk(p_stratum_variable_id TEXT)
-RETURNS TEXT AS $$
-  SELECT (SELECT conditioning_risk FROM stratum_variables WHERE stratum_variable_id = p_stratum_variable_id);
 $$ LANGUAGE sql STABLE;
 
 -- get_confounder_identities_display_name
@@ -3375,6 +4549,17 @@ RETURNS TEXT AS $$
   SELECT ((SELECT NULLIF(map_id, '') FROM stratum_variable_identity_maps WHERE map_id = p_map_id))::text;
 $$ LANGUAGE sql STABLE;
 
+-- calc_identity_cluster_summaries_display_name
+-- Field: IdentityClusterSummaries.DisplayName
+-- Type: lookup | DataType: string | Returns: TEXT
+-- Lookup: DisplayName from related ConfounderIdentities
+
+
+CREATE OR REPLACE FUNCTION calc_identity_cluster_summaries_display_name(p_identity_cluster_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT display_name::text FROM confounder_identities WHERE confounder_identity_id = (SELECT confounder_identity FROM identity_cluster_summaries WHERE identity_cluster_id = p_identity_cluster_id));
+$$ LANGUAGE sql STABLE;
+
 -- calc_identity_cluster_summaries_name
 -- Field: IdentityClusterSummaries.Name
 -- Type: calculated | DataType: string | Returns: TEXT
@@ -3392,7 +4577,18 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_identity_cluster_summaries_manifest_flip_rate(p_identity_cluster_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT (CASE WHEN ((SELECT study_count FROM identity_cluster_summaries WHERE identity_cluster_id = p_identity_cluster_id))::NUMERIC = 0 THEN ('')::text ELSE ((COALESCE(CASE WHEN ((SELECT manifest_flip_count FROM identity_cluster_summaries WHERE identity_cluster_id = p_identity_cluster_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT manifest_flip_count FROM identity_cluster_summaries WHERE identity_cluster_id = p_identity_cluster_id))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(CASE WHEN ((SELECT study_count FROM identity_cluster_summaries WHERE identity_cluster_id = p_identity_cluster_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT study_count FROM identity_cluster_summaries WHERE identity_cluster_id = p_identity_cluster_id))::numeric ELSE NULL END, 0), 0)))::text END)::numeric;
+  SELECT (CASE WHEN ((SELECT study_count FROM identity_cluster_summaries WHERE identity_cluster_id = p_identity_cluster_id))::NUMERIC = 0 THEN NULL ELSE ((COALESCE(CASE WHEN ((SELECT manifest_flip_count FROM identity_cluster_summaries WHERE identity_cluster_id = p_identity_cluster_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT manifest_flip_count FROM identity_cluster_summaries WHERE identity_cluster_id = p_identity_cluster_id))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(CASE WHEN ((SELECT study_count FROM identity_cluster_summaries WHERE identity_cluster_id = p_identity_cluster_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT study_count FROM identity_cluster_summaries WHERE identity_cluster_id = p_identity_cluster_id))::numeric ELSE NULL END, 0), 0)))::text END)::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_identity_domain_cells_identity_display_name
+-- Field: IdentityDomainCells.IdentityDisplayName
+-- Type: lookup | DataType: string | Returns: TEXT
+-- Lookup: DisplayName from related ConfounderIdentities
+
+
+CREATE OR REPLACE FUNCTION calc_identity_domain_cells_identity_display_name(p_cell_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT display_name::text FROM confounder_identities WHERE confounder_identity_id = (SELECT confounder_identity FROM identity_domain_cells WHERE cell_id = p_cell_id));
 $$ LANGUAGE sql STABLE;
 
 -- calc_identity_domain_cells_name
@@ -3412,7 +4608,163 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_identity_domain_cells_manifest_flip_rate(p_cell_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT (CASE WHEN ((SELECT study_count FROM identity_domain_cells WHERE cell_id = p_cell_id))::NUMERIC = 0 THEN ('')::text ELSE ((COALESCE(CASE WHEN ((SELECT manifest_flip_count FROM identity_domain_cells WHERE cell_id = p_cell_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT manifest_flip_count FROM identity_domain_cells WHERE cell_id = p_cell_id))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(CASE WHEN ((SELECT study_count FROM identity_domain_cells WHERE cell_id = p_cell_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT study_count FROM identity_domain_cells WHERE cell_id = p_cell_id))::numeric ELSE NULL END, 0), 0)))::text END)::numeric;
+  SELECT (CASE WHEN ((SELECT study_count FROM identity_domain_cells WHERE cell_id = p_cell_id))::NUMERIC = 0 THEN NULL ELSE ((COALESCE(CASE WHEN ((SELECT manifest_flip_count FROM identity_domain_cells WHERE cell_id = p_cell_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT manifest_flip_count FROM identity_domain_cells WHERE cell_id = p_cell_id))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(CASE WHEN ((SELECT study_count FROM identity_domain_cells WHERE cell_id = p_cell_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT study_count FROM identity_domain_cells WHERE cell_id = p_cell_id))::numeric ELSE NULL END, 0), 0)))::text END)::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_confounder_distortion_timeline_identity_display_name
+-- Field: ConfounderDistortionTimeline.IdentityDisplayName
+-- Type: lookup | DataType: string | Returns: TEXT
+-- Lookup: DisplayName from related ConfounderIdentities
+
+
+CREATE OR REPLACE FUNCTION calc_confounder_distortion_timeline_identity_display_name(p_cell_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT display_name::text FROM confounder_identities WHERE confounder_identity_id = (SELECT confounder_identity FROM confounder_distortion_timeline WHERE cell_id = p_cell_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_confounder_distortion_timeline_mechanism_class
+-- Field: ConfounderDistortionTimeline.MechanismClass
+-- Type: lookup | DataType: string | Returns: TEXT
+-- Lookup: MechanismClass from related ConfounderIdentities
+
+
+CREATE OR REPLACE FUNCTION calc_confounder_distortion_timeline_mechanism_class(p_cell_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT mechanism_class::text FROM confounder_identities WHERE confounder_identity_id = (SELECT confounder_identity FROM confounder_distortion_timeline WHERE cell_id = p_cell_id));
+$$ LANGUAGE sql STABLE;
+
+-- get_confounder_distortion_timeline_valid_time_decade
+-- Helper function: Get ValidTimeDecade from ConfounderDistortionTimeline by CellId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_confounder_distortion_timeline_valid_time_decade(p_cell_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT (SELECT valid_time_decade FROM confounder_distortion_timeline WHERE cell_id = p_cell_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_confounder_distortion_timeline_study_count
+-- Helper function: Get StudyCount from ConfounderDistortionTimeline by CellId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_confounder_distortion_timeline_study_count(p_cell_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT (SELECT study_count FROM confounder_distortion_timeline WHERE cell_id = p_cell_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_confounder_distortion_timeline_type_d_count
+-- Helper function: Get TypeDCount from ConfounderDistortionTimeline by CellId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_confounder_distortion_timeline_type_d_count(p_cell_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT (SELECT type_d_count FROM confounder_distortion_timeline WHERE cell_id = p_cell_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_confounder_distortion_timeline_sign_flip_count
+-- Helper function: Get SignFlipCount from ConfounderDistortionTimeline by CellId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_confounder_distortion_timeline_sign_flip_count(p_cell_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT (SELECT sign_flip_count FROM confounder_distortion_timeline WHERE cell_id = p_cell_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_confounder_distortion_timeline_sum_signal_purity
+-- Helper function: Get SumSignalPurity from ConfounderDistortionTimeline by CellId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_confounder_distortion_timeline_sum_signal_purity(p_cell_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT (SELECT sum_signal_purity FROM confounder_distortion_timeline WHERE cell_id = p_cell_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_confounder_distortion_timeline_sum_allocation_distortion
+-- Helper function: Get SumAllocationDistortion from ConfounderDistortionTimeline by CellId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_confounder_distortion_timeline_sum_allocation_distortion(p_cell_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT (SELECT sum_allocation_distortion FROM confounder_distortion_timeline WHERE cell_id = p_cell_id);
+$$ LANGUAGE sql STABLE;
+
+-- calc_confounder_distortion_timeline_name
+-- Field: ConfounderDistortionTimeline.Name
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_confounder_distortion_timeline_name(p_cell_id TEXT)
+RETURNS TEXT AS $$
+  SELECT ((SELECT NULLIF(cell_id, '') FROM confounder_distortion_timeline WHERE cell_id = p_cell_id))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_confounder_distortion_timeline_type_d_fraction
+-- Field: ConfounderDistortionTimeline.TypeDFraction
+-- Type: calculated | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_confounder_distortion_timeline_type_d_fraction(p_cell_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT (CASE WHEN ((SELECT study_count FROM confounder_distortion_timeline WHERE cell_id = p_cell_id) IS NULL OR ((SELECT study_count FROM confounder_distortion_timeline WHERE cell_id = p_cell_id))::NUMERIC = 0) THEN NULL ELSE ((COALESCE(CASE WHEN ((SELECT type_d_count FROM confounder_distortion_timeline WHERE cell_id = p_cell_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT type_d_count FROM confounder_distortion_timeline WHERE cell_id = p_cell_id))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(CASE WHEN ((SELECT study_count FROM confounder_distortion_timeline WHERE cell_id = p_cell_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT study_count FROM confounder_distortion_timeline WHERE cell_id = p_cell_id))::numeric ELSE NULL END, 0), 0)))::text END)::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_confounder_distortion_timeline_sign_flip_fraction
+-- Field: ConfounderDistortionTimeline.SignFlipFraction
+-- Type: calculated | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_confounder_distortion_timeline_sign_flip_fraction(p_cell_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT (CASE WHEN ((SELECT study_count FROM confounder_distortion_timeline WHERE cell_id = p_cell_id) IS NULL OR ((SELECT study_count FROM confounder_distortion_timeline WHERE cell_id = p_cell_id))::NUMERIC = 0) THEN NULL ELSE ((COALESCE(CASE WHEN ((SELECT sign_flip_count FROM confounder_distortion_timeline WHERE cell_id = p_cell_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT sign_flip_count FROM confounder_distortion_timeline WHERE cell_id = p_cell_id))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(CASE WHEN ((SELECT study_count FROM confounder_distortion_timeline WHERE cell_id = p_cell_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT study_count FROM confounder_distortion_timeline WHERE cell_id = p_cell_id))::numeric ELSE NULL END, 0), 0)))::text END)::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_confounder_distortion_timeline_mean_signal_purity
+-- Field: ConfounderDistortionTimeline.MeanSignalPurity
+-- Type: calculated | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_confounder_distortion_timeline_mean_signal_purity(p_cell_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT (CASE WHEN ((SELECT study_count FROM confounder_distortion_timeline WHERE cell_id = p_cell_id) IS NULL OR ((SELECT study_count FROM confounder_distortion_timeline WHERE cell_id = p_cell_id))::NUMERIC = 0) THEN NULL ELSE ((COALESCE(CASE WHEN ((SELECT sum_signal_purity FROM confounder_distortion_timeline WHERE cell_id = p_cell_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT sum_signal_purity FROM confounder_distortion_timeline WHERE cell_id = p_cell_id))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(CASE WHEN ((SELECT study_count FROM confounder_distortion_timeline WHERE cell_id = p_cell_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT study_count FROM confounder_distortion_timeline WHERE cell_id = p_cell_id))::numeric ELSE NULL END, 0), 0)))::text END)::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_confounder_distortion_timeline_mean_allocation_distortion
+-- Field: ConfounderDistortionTimeline.MeanAllocationDistortion
+-- Type: calculated | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_confounder_distortion_timeline_mean_allocation_distortion(p_cell_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT (CASE WHEN ((SELECT study_count FROM confounder_distortion_timeline WHERE cell_id = p_cell_id) IS NULL OR ((SELECT study_count FROM confounder_distortion_timeline WHERE cell_id = p_cell_id))::NUMERIC = 0) THEN NULL ELSE ((COALESCE(CASE WHEN ((SELECT sum_allocation_distortion FROM confounder_distortion_timeline WHERE cell_id = p_cell_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT sum_allocation_distortion FROM confounder_distortion_timeline WHERE cell_id = p_cell_id))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(CASE WHEN ((SELECT study_count FROM confounder_distortion_timeline WHERE cell_id = p_cell_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT study_count FROM confounder_distortion_timeline WHERE cell_id = p_cell_id))::numeric ELSE NULL END, 0), 0)))::text END)::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_confounder_distortion_timeline_identity_earliest_decade
+-- Field: ConfounderDistortionTimeline.IdentityEarliestDecade
+-- Type: aggregation | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_confounder_distortion_timeline_identity_earliest_decade(p_cell_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((SELECT COALESCE(MIN((valid_time_decade)::numeric), 0) FROM confounder_distortion_timeline WHERE confounder_identity = (SELECT NULLIF(confounder_identity, '') FROM confounder_distortion_timeline WHERE cell_id = p_cell_id)))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_confounder_distortion_timeline_identity_latest_decade
+-- Field: ConfounderDistortionTimeline.IdentityLatestDecade
+-- Type: aggregation | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_confounder_distortion_timeline_identity_latest_decade(p_cell_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((SELECT COALESCE(MAX((valid_time_decade)::numeric), 0) FROM confounder_distortion_timeline WHERE confounder_identity = (SELECT NULLIF(confounder_identity, '') FROM confounder_distortion_timeline WHERE cell_id = p_cell_id)))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_confounder_distortion_timeline_drift_direction
+-- Field: ConfounderDistortionTimeline.DriftDirection
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_confounder_distortion_timeline_drift_direction(p_cell_id TEXT)
+RETURNS TEXT AS $$
+  WITH __erb_dedup_v1 AS (SELECT calc_confounder_distortion_timeline_identity_earliest_type_d_fr(p_cell_id) AS val), __erb_dedup_v2 AS (SELECT calc_confounder_distortion_timeline_identity_latest_type_d_frac(p_cell_id) AS val) SELECT (CASE WHEN calc_confounder_distortion_timeline_identity_earliest_decade(p_cell_id) = calc_confounder_distortion_timeline_identity_latest_decade(p_cell_id) THEN ('single-decade')::text ELSE (CASE WHEN ((SELECT val FROM __erb_dedup_v1) IS NULL OR (SELECT val FROM __erb_dedup_v2) IS NULL) THEN ('')::text ELSE (CASE WHEN (SELECT val FROM __erb_dedup_v2) > (COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v1))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v1))::numeric ELSE NULL END, 0) + COALESCE(0.05, 0)) THEN ('rising')::text ELSE (CASE WHEN (SELECT val FROM __erb_dedup_v2) < (COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v1))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v1))::numeric ELSE NULL END, 0) - COALESCE(0.05, 0)) THEN ('falling')::text ELSE ('flat')::text END)::text END)::text END)::text END)::text;
 $$ LANGUAGE sql STABLE;
 
 -- calc_corpus_balance_name
@@ -3432,7 +4784,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_corpus_balance_total_study_count(p_balance_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((COALESCE(CASE WHEN (calc_corpus_balance_simpson_study_count(p_balance_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_corpus_balance_simpson_study_count(p_balance_id))::numeric ELSE NULL END, 0) + COALESCE(CASE WHEN (calc_corpus_balance_control_study_count(p_balance_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_corpus_balance_control_study_count(p_balance_id))::numeric ELSE NULL END, 0)))::integer;
+  WITH __erb_dedup_v1 AS (SELECT calc_corpus_balance_simpson_study_count(p_balance_id) AS val), __erb_dedup_v2 AS (SELECT calc_corpus_balance_control_study_count(p_balance_id) AS val) SELECT ((COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v1))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v1))::numeric ELSE NULL END, 0) + COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v2))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v2))::numeric ELSE NULL END, 0)))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_corpus_balance_simpson_study_count
@@ -3462,7 +4814,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_corpus_balance_control_fraction(p_balance_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT (CASE WHEN (calc_corpus_balance_total_study_count(p_balance_id))::NUMERIC = 0 THEN (0)::text ELSE ((COALESCE(CASE WHEN (calc_corpus_balance_control_study_count(p_balance_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_corpus_balance_control_study_count(p_balance_id))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(CASE WHEN (calc_corpus_balance_total_study_count(p_balance_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_corpus_balance_total_study_count(p_balance_id))::numeric ELSE NULL END, 0), 0)))::text END)::numeric;
+  WITH __erb_dedup_v1 AS (SELECT calc_corpus_balance_total_study_count(p_balance_id) AS val), __erb_dedup_v2 AS (SELECT calc_corpus_balance_control_study_count(p_balance_id) AS val) SELECT (CASE WHEN ((SELECT val FROM __erb_dedup_v1))::NUMERIC = 0 THEN (0)::text ELSE ((COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v2))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v2))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(CASE WHEN ((SELECT val FROM __erb_dedup_v1))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT val FROM __erb_dedup_v1))::numeric ELSE NULL END, 0), 0)))::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- ============================================================================

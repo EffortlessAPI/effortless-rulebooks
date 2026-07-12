@@ -149,7 +149,11 @@ SELECT
   calc_studies_ingestion_cell_parity(s.study_id)   AS ingestion_cell_parity,
   calc_studies_ingestion_compliance(s.study_id)     AS ingestion_compliance,
   s.is_control_study,
-  s.control_domain
+  s.control_domain,
+  s.valid_time_start,
+  s.valid_time_end,
+  calc_studies_valid_time_midpoint(s.study_id) AS valid_time_midpoint,
+  calc_studies_valid_time_decade(s.study_id)   AS valid_time_decade
 FROM studies s
 LEFT JOIN research_traditions   rt  ON rt.tradition_id   = s.tradition_id
 LEFT JOIN researchers           res ON res.researcher_id = s.primary_researcher_id
@@ -296,7 +300,18 @@ FROM (
     calc_model_summary_geographic_type_d_fraction(t.model_summary_id) AS geographic_type_d_fraction,
     calc_model_summary_domain_flip_gap_survives_geometry_control(t.model_summary_id) AS domain_flip_gap_survives_geometry_control,
     calc_model_summary_corpus_pattern_superseded_fail_count(t.model_summary_id) AS corpus_pattern_superseded_fail_count,
-    calc_model_summary_expansion_wave3_discovery_note(t.model_summary_id) AS expansion_wave3_discovery_note
+    calc_model_summary_expansion_wave3_discovery_note(t.model_summary_id) AS expansion_wave3_discovery_note,
+    calc_model_summary_catalog_entry_count(t.model_summary_id) AS catalog_entry_count,
+    calc_model_summary_pending_import_count(t.model_summary_id) AS pending_import_count,
+    calc_model_summary_ready_to_encode_count(t.model_summary_id) AS ready_to_encode_count,
+    calc_model_summary_import_session_ready(t.model_summary_id) AS import_session_ready,
+    calc_model_summary_catalog_witness_note(t.model_summary_id) AS catalog_witness_note,
+    calc_model_summary_severity_drift_direction(t.model_summary_id) AS severity_drift_direction,
+    calc_model_summary_geographic_drift_direction(t.model_summary_id) AS geographic_drift_direction,
+    calc_model_summary_situational_drift_direction(t.model_summary_id) AS situational_drift_direction,
+    calc_model_summary_age_drift_direction(t.model_summary_id) AS age_drift_direction,
+    calc_model_summary_institutional_drift_direction(t.model_summary_id) AS institutional_drift_direction,
+    calc_model_summary_socioeconomic_drift_direction(t.model_summary_id) AS socioeconomic_drift_direction
   FROM model_summary t
 ) native;
 

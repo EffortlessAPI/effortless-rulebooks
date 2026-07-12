@@ -10,6 +10,7 @@ export default defineConfig({
       '/rulespeak': 'http://localhost:3001',
       '/simpsons-paradox-explorer.html': 'http://localhost:3001',
       '/simpsons-paradox-summary.pdf': 'http://localhost:3001',
+      '/simpsons-paradox-details.pdf': 'http://localhost:3001',
     },
   },
 });

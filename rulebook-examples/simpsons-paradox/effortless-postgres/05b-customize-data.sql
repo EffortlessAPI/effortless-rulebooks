@@ -54,6 +54,11 @@ WHERE invariant_check_id = 'inv-type-d-ratio-near-unity';
 SELECT refresh_identity_cluster_summaries();
 SELECT refresh_identity_domain_cells();
 
+-- Loop-92: ConfounderDistortionTimeline principled materialization. Must run
+-- after Studies/StratumVariables/StratumVariableIdentityMaps/TreatmentRankings
+-- are populated (05-insert-data.sql, above).
+SELECT refresh_confounder_distortion_timeline();
+
 -- Loop-93: SweepStudySummary principled materialization (MaterializedEntities:
 -- mat-sweep-study-summary). Must run after allocation_sweep/sweep_study_config
 -- are loaded (05-insert-data.sql, above) and before anything below reads

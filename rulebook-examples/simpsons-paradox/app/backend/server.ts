@@ -6,6 +6,7 @@ import { existsSync } from 'node:fs';
 import { fileURLToPath } from 'url';
 import { query, withRollbackTransaction } from './db.js';
 import { buildSummaryPdf } from './export-summary-pdf.js';
+import { buildDetailsPdf } from './export-details-pdf.js';
 import { exportXlsx } from './export-xlsx.js';
 import { getConformanceState, startConformanceRun } from './conformance.js';
 
@@ -395,6 +396,23 @@ app.get('/api/export/summary-pdf', async (_req, res) => {
   }
 });
 
+app.get('/api/export/details-pdf', async (_req, res) => {
+  try {
+    const pdf = await buildDetailsPdf();
+    const stamp = new Date().toISOString().slice(0, 10);
+    res.setHeader('Content-Type', 'application/pdf');
+    res.setHeader(
+      'Content-Disposition',
+      `attachment; filename="simpsons-paradox-details-${stamp}.pdf"`,
+    );
+    res.send(pdf);
+  } catch (err) {
+    const message = err instanceof Error ? err.message : String(err);
+    console.error('[export/details-pdf]', message);
+    res.status(500).json({ error: message });
+  }
+});
+
 // Serve the standalone explorer HTML from the project root
 const projectRoot = path.resolve(__dirname, '../..');
 const rulespeakDir = path.join(projectRoot, 'rulespeak');
@@ -411,6 +429,18 @@ app.get('/simpsons-paradox-summary.pdf', (_req, res) => {
       res.status(404).json({
         error:
           'simpsons-paradox-summary.pdf not found — run ./effortless-postgres/init-db.sh after effortless build',
+      });
+    }
+  });
+});
+
+app.get('/simpsons-paradox-details.pdf', (_req, res) => {
+  const pdfPath = path.join(projectRoot, 'simpsons-paradox-details.pdf');
+  res.sendFile(pdfPath, (err) => {
+    if (err) {
+      res.status(404).json({
+        error:
+          'simpsons-paradox-details.pdf not found — run ./effortless-postgres/init-db.sh after effortless build',
       });
     }
   });

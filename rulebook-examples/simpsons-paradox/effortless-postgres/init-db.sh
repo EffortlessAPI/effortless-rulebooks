@@ -151,3 +151,10 @@ fi
 if [ -f "${SCRIPT_DIR}/generate-summary-pdf.sh" ]; then
     DATABASE_URL="$DATABASE_URL" bash "${SCRIPT_DIR}/generate-summary-pdf.sh"
 fi
+
+# ----------------------------------------------------------------------
+# 6b. Corpus details PDF — expanded companion with full hypothesis detail.
+# ----------------------------------------------------------------------
+if [ -f "${SCRIPT_DIR}/generate-details-pdf.sh" ]; then
+    DATABASE_URL="$DATABASE_URL" bash "${SCRIPT_DIR}/generate-details-pdf.sh"
+fi

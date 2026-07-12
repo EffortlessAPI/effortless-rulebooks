@@ -335,6 +335,36 @@
         "type": "raw",
         "nullable": true,
         "Description": "Domain slug for control studies (e.g. medicine-rct, education-higher). NULL for non-control studies."
+      },
+      {
+        "name": "ValidTimeStart",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": true,
+        "Description": "First year of the real-world cohort period this study\u0027s data covers (valid-time, not publication year). Defaults to PublicationYear when the true cohort window is not independently known."
+      },
+      {
+        "name": "ValidTimeEnd",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Last year of the real-world cohort period this study\u0027s data covers (valid-time, not publication year). Defaults to PublicationYear when the true cohort window is not independently known."
+      },
+      {
+        "name": "ValidTimeMidpoint",
+        "datatype": "float",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Midpoint year of the valid-time cohort window, used to bucket studies by when their underlying data actually occurred rather than when the paper was published.",
+        "formula": "=IF(AND({{ValidTimeStart}} \u003C\u003E \u0022\u0022, {{ValidTimeEnd}} \u003C\u003E \u0022\u0022), ({{ValidTimeStart}} \u002B {{ValidTimeEnd}}) / 2, {{PublicationYear}})"
+      },
+      {
+        "name": "ValidTimeDecade",
+        "datatype": "integer",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "ValidTimeMidpoint floored to the decade (e.g. 1973 -\u003E 1970). The bucket key ConfounderDistortionTimeline aggregates over.",
+        "formula": "=IF({{ValidTimeMidpoint}} = \u0022\u0022, \u0022\u0022, FLOOR({{ValidTimeMidpoint}} / 10) * 10)"
       }
     ]
   },
@@ -1640,6 +1670,54 @@
         "nullable": true,
         "Description": "Type-D fraction for geographic-composition identity.",
         "formula": "=IF(LOOKUP(\u0022cluster-id-geographic-composition\u0022, IdentityClusterSummaries[IdentityClusterId], IdentityClusterSummaries[StudyCount])=0, \u0022\u0022, LOOKUP(\u0022cluster-id-geographic-composition\u0022, IdentityClusterSummaries[IdentityClusterId], IdentityClusterSummaries[TypeDCount]) / LOOKUP(\u0022cluster-id-geographic-composition\u0022, IdentityClusterSummaries[IdentityClusterId], IdentityClusterSummaries[StudyCount]))"
+      },
+      {
+        "name": "SeverityDriftDirection",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "loop-92: ConfounderDistortionTimeline.DriftDirection for id-disease-severity (severity-case-mix archetype), valid-time Type-D drift. Overridden in 02b-customize-functions.sql: native transpiler mistranslates LOOKUP(constant, Table[NonPKColumn], Table[TargetColumn]) into a lookup keyed on the table\u0027s PK instead of the specified match column.",
+        "formula": "=LOOKUP(\u0022id-disease-severity\u0022, ConfounderDistortionTimeline[ConfounderIdentity], ConfounderDistortionTimeline[DriftDirection])"
+      },
+      {
+        "name": "GeographicDriftDirection",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "loop-92: ConfounderDistortionTimeline.DriftDirection for id-geographic-composition (geography archetype), valid-time Type-D drift. Overridden in 02b-customize-functions.sql: native transpiler mistranslates LOOKUP(constant, Table[NonPKColumn], Table[TargetColumn]) into a lookup keyed on the table\u0027s PK instead of the specified match column.",
+        "formula": "=LOOKUP(\u0022id-geographic-composition\u0022, ConfounderDistortionTimeline[ConfounderIdentity], ConfounderDistortionTimeline[DriftDirection])"
+      },
+      {
+        "name": "SituationalDriftDirection",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "loop-92: ConfounderDistortionTimeline.DriftDirection for id-situational-context (sports-situation archetype), valid-time Type-D drift. Overridden in 02b-customize-functions.sql: native transpiler mistranslates LOOKUP(constant, Table[NonPKColumn], Table[TargetColumn]) into a lookup keyed on the table\u0027s PK instead of the specified match column.",
+        "formula": "=LOOKUP(\u0022id-situational-context\u0022, ConfounderDistortionTimeline[ConfounderIdentity], ConfounderDistortionTimeline[DriftDirection])"
+      },
+      {
+        "name": "AgeDriftDirection",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "loop-92: ConfounderDistortionTimeline.DriftDirection for id-age-composition (demographic-composition archetype), valid-time Type-D drift. Overridden in 02b-customize-functions.sql: native transpiler mistranslates LOOKUP(constant, Table[NonPKColumn], Table[TargetColumn]) into a lookup keyed on the table\u0027s PK instead of the specified match column.",
+        "formula": "=LOOKUP(\u0022id-age-composition\u0022, ConfounderDistortionTimeline[ConfounderIdentity], ConfounderDistortionTimeline[DriftDirection])"
+      },
+      {
+        "name": "InstitutionalDriftDirection",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "loop-92: ConfounderDistortionTimeline.DriftDirection for id-institutional-unit (organizational-unit archetype), valid-time Type-D drift. Overridden in 02b-customize-functions.sql: native transpiler mistranslates LOOKUP(constant, Table[NonPKColumn], Table[TargetColumn]) into a lookup keyed on the table\u0027s PK instead of the specified match column.",
+        "formula": "=LOOKUP(\u0022id-institutional-unit\u0022, ConfounderDistortionTimeline[ConfounderIdentity], ConfounderDistortionTimeline[DriftDirection])"
+      },
+      {
+        "name": "SocioeconomicDriftDirection",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "loop-92: ConfounderDistortionTimeline.DriftDirection for id-socioeconomic-status (ses-income archetype), valid-time Type-D drift. Overridden in 02b-customize-functions.sql: native transpiler mistranslates LOOKUP(constant, Table[NonPKColumn], Table[TargetColumn]) into a lookup keyed on the table\u0027s PK instead of the specified match column.",
+        "formula": "=LOOKUP(\u0022id-socioeconomic-status\u0022, ConfounderDistortionTimeline[ConfounderIdentity], ConfounderDistortionTimeline[DriftDirection])"
       },
       {
         "name": "DomainFlipGapSurvivesGeometryControl",
@@ -4761,7 +4839,7 @@
         "type": "calculated",
         "nullable": true,
         "Description": "Witnessed metric value from ModelSummary for this hypothesis.",
-        "formula": "=IF({{HypothesisId}} = \u0022H-latent-d\u0022, CONCAT(\u0022fraction=\u0022, LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[LatentTypeDFraction])), IF({{HypothesisId}} = \u0022H-purity\u0022, CONCAT(\u0022maxPurity=\u0022, LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[SignFlipSignalPurityMax])), IF({{HypothesisId}} = \u0022H-small-effect\u0022, CONCAT(\u0022stable=\u0022, LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[AvgPooledGapStableD]), \u0022 latent=\u0022, LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[AvgPooledGapLatentD])), IF({{HypothesisId}} = \u0022H-econ-zero\u0022, CONCAT(\u0022flips=\u0022, LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[EconomicsSignFlipCount])), IF({{HypothesisId}} = \u0022H-domain-dist\u0022, CONCAT(\u0022epi=\u0022, LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[EpidemiologyAvgDistortion]), \u0022 edu=\u0022, LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[EducationAvgDistortion])), IF({{HypothesisId}} = \u0022H-causal-manifest\u0022, CONCAT(\u0022confFlip=\u0022, LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[ConfounderSignFlipCount]), \u0022 collManifest=\u0022, LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[ColliderSelectionManifestCount])), IF({{HypothesisId}} = \u0022H-causal-latent\u0022, CONCAT(\u0022collManifest=\u0022, LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[ColliderSelectionManifestCount]), \u0022 collLatent=\u0022, LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[ColliderSelectionLatentOnlyCount]), \u0022 collN=\u0022, LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[ColliderSelectionCount])), IF({{HypothesisId}} = \u0022H-explained-confounder\u0022, CONCAT(\u0022ExplainedConfounderCount=\u0022, LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[ExplainedConfounderCount]), \u0022, ConfounderSignFlipCount=\u0022, LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[ConfounderSignFlipCount])), IF({{HypothesisId}} = \u0022H-unexplained-nonconfounder\u0022, CONCAT(\u0022ContestedOrMediatorExplainedCount=\u0022, LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[ContestedOrMediatorExplainedCount])), IF({{HypothesisId}} = \u0022H-catalog-exact-match\u0022, CONCAT(\u0022exactRate=\u0022, LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[TypePredictionMatchRate])), IF({{HypothesisId}} = \u0022H-catalog-flip-prediction\u0022, CONCAT(\u0022flipPredRate=\u0022, LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[SignFlipPredictionMatchRate])), IF({{HypothesisId}} = \u0022H-domain-flip-geometry-controlled\u0022, CONCAT(\u0022econHighImbFlips=\u0022, LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[EconomicsHighImbalanceSignFlipCount]), \u0022; epiRate=\u0022, LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[EpidemiologyHighImbalanceSignFlipRate]), \u0022; legal=\u0022, LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[LegalHighImbalanceSignFlipRate]), \u0022; sports=\u0022, LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[SportsHighImbalanceSignFlipRate])), IF({{HypothesisId}} = \u0022H-collider-no-manifest-v2\u0022, CONCAT(\u0022collManifest=\u0022, LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[ColliderSelectionManifestCount])), IF({{HypothesisId}} = \u0022H-cplus-magnitude\u0022, CONCAT(\u0022C\u002B=\u0022, LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[CPlusAvgDistortion]), \u0022 C-=\u0022, LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[CMinusAvgDistortion]), \u0022 D=\u0022, LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[TypeDAvgDistortion])), IF({{HypothesisId}} = \u0022H-econ-encoding-selection\u0022, CONCAT(\u0022EconExpectedAMismatchRate=\u0022, LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[EconomicsExpectedAMismatchRate])), IF({{HypothesisId}} = \u0022H-domain-profiles-stable\u0022, CONCAT(\u0022eduLatent=\u0022, LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[EducationLatentFraction]), \u0022 sportsLatent=\u0022, LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[SportsLatentFraction]), \u0022 econFlipRate=\u0022, LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[EconomicsSignFlipRate])), IF({{HypothesisId}} = \u0022H-corrected-gap-invariant\u0022, CONCAT(\u0022maxRange=\u0022, LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[MaxStudySweepCorrectedGapRange]), \u0022 fails=\u0022, LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[CorrectedGapInvariantFailCount])), IF({{HypothesisId}} = \u0022H-explained-bidirectional\u0022, CONCAT(\u0022explained=\u0022, LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[ExplainedConfounderCount]), \u0022 confFlip=\u0022, LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[ConfounderSignFlipCount]), \u0022 falsePos=\u0022, LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[FalsePositiveExplainedCount]), \u0022 unexplained=\u0022, LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[UnexplainedConfounderSignFlipCount])), IF({{HypothesisId}} = \u0022H-collider-no-manifest-theorem\u0022, CONCAT(\u0022collN=\u0022, LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[ColliderSelectionCount]), \u0022 collManifest=\u0022, LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[ColliderSelectionManifestCount])), IF({{HypothesisId}} = \u0022H-theorem-portfolio\u0022, CONCAT(\u0022theoremCount=\u0022, LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[TheoremCount])), IF({{HypothesisId}} = \u0022H-age-identity-flip-rate\u0022, CONCAT(\u0022rate=\u0022, LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[AgeIdentityManifestFlipRate]), \u0022, n=\u0022, LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[AgeIdentityStudyCount])), IF({{HypothesisId}} = \u0022H-identity-map-coverage\u0022, CONCAT(\u0022coverage=\u0022, LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[IdentityMapCoverageRate])), IF({{HypothesisId}} = \u0022H-severity-medicine-manifest\u0022, CONCAT(\u0022medicine_flip_rate=\u0022, LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[SeverityMedicineManifestFlipRate])), IF({{HypothesisId}} = \u0022H-severity-epi-latent-only\u0022, CONCAT(\u0022epi_manifest_count=\u0022, LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[SeverityEpiManifestFlipCount])), IF({{HypothesisId}} = \u0022H-mechanism-other-drain\u0022, CONCAT(\u0022other_count=\u0022, LOOKUP(\u0022cluster-id-mechanism-other\u0022, IdentityClusterSummaries[IdentityClusterId], IdentityClusterSummaries[StudyCount])), IF({{HypothesisId}} = \u0022H-selection-frailty-zero-manifest\u0022, CONCAT(\u0022manifest=\u0022, LOOKUP(\u0022cluster-id-selection-frailty\u0022, IdentityClusterSummaries[IdentityClusterId], IdentityClusterSummaries[ManifestFlipCount]), \u0022, n=\u0022, LOOKUP(\u0022cluster-id-selection-frailty\u0022, IdentityClusterSummaries[IdentityClusterId], IdentityClusterSummaries[StudyCount])), IF({{HypothesisId}} = \u0022H-collider-identity-low-manifest\u0022, CONCAT(\u0022rate=\u0022, LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[ColliderIdentityManifestFlipRate])), IF({{HypothesisId}} = \u0022H-geographic-stable-type-d\u0022, CONCAT(\u0022type_d_frac=\u0022, LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[GeographicTypeDFraction])), IF({{HypothesisId}} = \u0022H-unexplained-flips-only-nonconfounders\u0022, CONCAT(\u0022unexplained_confounder_flips=\u0022, LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[UnexplainedConfounderSignFlipCount])), \u0022\u0022)))))))))))))))))))))))))))))"
+        "formula": "=IF({{HypothesisId}} = \u0022H-latent-d\u0022, CONCAT(\u0022fraction=\u0022, LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[LatentTypeDFraction])), IF({{HypothesisId}} = \u0022H-purity\u0022, CONCAT(\u0022maxPurity=\u0022, LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[SignFlipSignalPurityMax])), IF({{HypothesisId}} = \u0022H-small-effect\u0022, CONCAT(\u0022stable=\u0022, LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[AvgPooledGapStableD]), \u0022 latent=\u0022, LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[AvgPooledGapLatentD])), IF({{HypothesisId}} = \u0022H-econ-zero\u0022, CONCAT(\u0022flips=\u0022, LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[EconomicsSignFlipCount])), IF({{HypothesisId}} = \u0022H-domain-dist\u0022, CONCAT(\u0022epi=\u0022, LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[EpidemiologyAvgDistortion]), \u0022 edu=\u0022, LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[EducationAvgDistortion])), IF({{HypothesisId}} = \u0022H-causal-manifest\u0022, CONCAT(\u0022confFlip=\u0022, LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[ConfounderSignFlipCount]), \u0022 collManifest=\u0022, LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[ColliderSelectionManifestCount])), IF({{HypothesisId}} = \u0022H-causal-latent\u0022, CONCAT(\u0022collManifest=\u0022, LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[ColliderSelectionManifestCount]), \u0022 collLatent=\u0022, LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[ColliderSelectionLatentOnlyCount]), \u0022 collN=\u0022, LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[ColliderSelectionCount])), IF({{HypothesisId}} = \u0022H-explained-confounder\u0022, CONCAT(\u0022ExplainedConfounderCount=\u0022, LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[ExplainedConfounderCount]), \u0022, ConfounderSignFlipCount=\u0022, LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[ConfounderSignFlipCount])), IF({{HypothesisId}} = \u0022H-unexplained-nonconfounder\u0022, CONCAT(\u0022ContestedOrMediatorExplainedCount=\u0022, LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[ContestedOrMediatorExplainedCount])), IF({{HypothesisId}} = \u0022H-catalog-exact-match\u0022, CONCAT(\u0022exactRate=\u0022, LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[TypePredictionMatchRate])), IF({{HypothesisId}} = \u0022H-catalog-flip-prediction\u0022, CONCAT(\u0022flipPredRate=\u0022, LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[SignFlipPredictionMatchRate])), IF({{HypothesisId}} = \u0022H-domain-flip-geometry-controlled\u0022, CONCAT(\u0022econHighImbFlips=\u0022, LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[EconomicsHighImbalanceSignFlipCount]), \u0022; epiRate=\u0022, LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[EpidemiologyHighImbalanceSignFlipRate]), \u0022; legal=\u0022, LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[LegalHighImbalanceSignFlipRate]), \u0022; sports=\u0022, LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[SportsHighImbalanceSignFlipRate])), IF({{HypothesisId}} = \u0022H-collider-no-manifest-v2\u0022, CONCAT(\u0022collManifest=\u0022, LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[ColliderSelectionManifestCount])), IF({{HypothesisId}} = \u0022H-cplus-magnitude\u0022, CONCAT(\u0022C\u002B=\u0022, LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[CPlusAvgDistortion]), \u0022 C-=\u0022, LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[CMinusAvgDistortion]), \u0022 D=\u0022, LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[TypeDAvgDistortion])), IF({{HypothesisId}} = \u0022H-econ-encoding-selection\u0022, CONCAT(\u0022EconExpectedAMismatchRate=\u0022, LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[EconomicsExpectedAMismatchRate])), IF({{HypothesisId}} = \u0022H-domain-profiles-stable\u0022, CONCAT(\u0022eduLatent=\u0022, LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[EducationLatentFraction]), \u0022 sportsLatent=\u0022, LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[SportsLatentFraction]), \u0022 econFlipRate=\u0022, LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[EconomicsSignFlipRate])), IF({{HypothesisId}} = \u0022H-corrected-gap-invariant\u0022, CONCAT(\u0022maxRange=\u0022, LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[MaxStudySweepCorrectedGapRange]), \u0022 fails=\u0022, LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[CorrectedGapInvariantFailCount])), IF({{HypothesisId}} = \u0022H-explained-bidirectional\u0022, CONCAT(\u0022explained=\u0022, LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[ExplainedConfounderCount]), \u0022 confFlip=\u0022, LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[ConfounderSignFlipCount]), \u0022 falsePos=\u0022, LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[FalsePositiveExplainedCount]), \u0022 unexplained=\u0022, LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[UnexplainedConfounderSignFlipCount])), IF({{HypothesisId}} = \u0022H-collider-no-manifest-theorem\u0022, CONCAT(\u0022collN=\u0022, LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[ColliderSelectionCount]), \u0022 collManifest=\u0022, LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[ColliderSelectionManifestCount])), IF({{HypothesisId}} = \u0022H-theorem-portfolio\u0022, CONCAT(\u0022theoremCount=\u0022, LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[TheoremCount])), IF({{HypothesisId}} = \u0022H-age-identity-flip-rate\u0022, CONCAT(\u0022rate=\u0022, LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[AgeIdentityManifestFlipRate]), \u0022, n=\u0022, LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[AgeIdentityStudyCount])), IF({{HypothesisId}} = \u0022H-identity-map-coverage\u0022, CONCAT(\u0022coverage=\u0022, LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[IdentityMapCoverageRate])), IF({{HypothesisId}} = \u0022H-severity-medicine-manifest\u0022, CONCAT(\u0022medicine_flip_rate=\u0022, LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[SeverityMedicineManifestFlipRate])), IF({{HypothesisId}} = \u0022H-severity-epi-latent-only\u0022, CONCAT(\u0022epi_manifest_count=\u0022, LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[SeverityEpiManifestFlipCount])), IF({{HypothesisId}} = \u0022H-mechanism-other-drain\u0022, CONCAT(\u0022other_count=\u0022, LOOKUP(\u0022cluster-id-mechanism-other\u0022, IdentityClusterSummaries[IdentityClusterId], IdentityClusterSummaries[StudyCount])), IF({{HypothesisId}} = \u0022H-selection-frailty-zero-manifest\u0022, CONCAT(\u0022manifest=\u0022, LOOKUP(\u0022cluster-id-selection-frailty\u0022, IdentityClusterSummaries[IdentityClusterId], IdentityClusterSummaries[ManifestFlipCount]), \u0022, n=\u0022, LOOKUP(\u0022cluster-id-selection-frailty\u0022, IdentityClusterSummaries[IdentityClusterId], IdentityClusterSummaries[StudyCount])), IF({{HypothesisId}} = \u0022H-collider-identity-low-manifest\u0022, CONCAT(\u0022rate=\u0022, LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[ColliderIdentityManifestFlipRate])), IF({{HypothesisId}} = \u0022H-geographic-stable-type-d\u0022, CONCAT(\u0022type_d_frac=\u0022, LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[GeographicTypeDFraction])), IF({{HypothesisId}} = \u0022H-unexplained-flips-only-nonconfounders\u0022, CONCAT(\u0022unexplained_confounder_flips=\u0022, LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[UnexplainedConfounderSignFlipCount])), IF({{HypothesisId}} = \u0022H-confounder-drift-type-d\u0022, CONCAT(\u0022severity=\u0022, LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[SeverityDriftDirection]), \u0022 geography=\u0022, LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[GeographicDriftDirection]), \u0022 situational=\u0022, LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[SituationalDriftDirection]), \u0022 age=\u0022, LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[AgeDriftDirection]), \u0022 institutional=\u0022, LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[InstitutionalDriftDirection]), \u0022 socioeconomic=\u0022, LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[SocioeconomicDriftDirection])), \u0022\u0022)))))))))))))))))))))))))))))"
       },
       {
         "name": "IsConfirmed",
@@ -4769,7 +4847,7 @@
         "type": "calculated",
         "nullable": true,
         "Description": "TRUE when the witnessed metric satisfies the pre-registered ExpectedOutcome.",
-        "formula": "=IF({{HypothesisId}} = \u0022H-latent-d\u0022, LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[LatentTypeDFraction]) \u003E 0.5, IF({{HypothesisId}} = \u0022H-purity\u0022, LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[SignFlipSignalPurityMax]) \u003C 0.5, IF({{HypothesisId}} = \u0022H-small-effect\u0022, LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[AvgPooledGapStableD]) \u003E LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[AvgPooledGapLatentD]), IF({{HypothesisId}} = \u0022H-econ-zero\u0022, LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[EconomicsSignFlipCount]) = 0, IF({{HypothesisId}} = \u0022H-domain-dist\u0022, LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[EpidemiologyAvgDistortion]) \u003E LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[EducationAvgDistortion]), IF({{HypothesisId}} = \u0022H-causal-manifest\u0022, AND(LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[ConfounderSignFlipCount]) \u003E LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[ColliderSelectionManifestCount]), LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[ConfounderSignFlipCount]) \u003E= 10), IF({{HypothesisId}} = \u0022H-causal-latent\u0022, AND(LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[ColliderSelectionManifestCount]) = 0, LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[ColliderSelectionLatentOnlyCount]) \u003E= 5), IF({{HypothesisId}} = \u0022H-explained-confounder\u0022, AND(LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[ExplainedConfounderCount]) = LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[ConfounderSignFlipCount]), LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[ExplainedConfounderCount]) \u003E= 10), IF({{HypothesisId}} = \u0022H-unexplained-nonconfounder\u0022, LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[ContestedOrMediatorExplainedCount]) = 0, IF({{HypothesisId}} = \u0022H-catalog-exact-match\u0022, LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[TypePredictionMatchRate]) \u003C 0.5, IF({{HypothesisId}} = \u0022H-catalog-flip-prediction\u0022, LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[SignFlipPredictionMatchRate]) \u003C 0.5, IF({{HypothesisId}} = \u0022H-domain-flip-geometry-controlled\u0022, AND(LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[EconomicsHighImbalanceSignFlipCount]) = 0, LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[EpidemiologyHighImbalanceSignFlipRate]) \u003E 0.15), IF({{HypothesisId}} = \u0022H-collider-no-manifest-v2\u0022, LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[ColliderSelectionManifestCount]) = 0, IF({{HypothesisId}} = \u0022H-cplus-magnitude\u0022, AND(LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[CPlusAvgDistortion]) \u003E LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[CMinusAvgDistortion]), LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[CPlusAvgDistortion]) \u003E LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[TypeDAvgDistortion])), IF({{HypothesisId}} = \u0022H-econ-encoding-selection\u0022, LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[EconomicsExpectedAMismatchRate]) \u003E 0.5, IF({{HypothesisId}} = \u0022H-domain-profiles-stable\u0022, AND(LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[EducationLatentFraction]) \u003E 0.5, LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[SportsLatentFraction]) \u003E 0.5, LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[EconomicsSignFlipRate]) \u003C 0.05), IF({{HypothesisId}} = \u0022H-corrected-gap-invariant\u0022, AND(LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[MaxStudySweepCorrectedGapRange]) \u003C 0.0001, LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[CorrectedGapInvariantFailCount]) = 0), IF({{HypothesisId}} = \u0022H-explained-bidirectional\u0022, AND(LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[ExplainedConfounderCount]) = LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[ConfounderSignFlipCount]), LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[FalsePositiveExplainedCount]) = 0, LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[UnexplainedConfounderSignFlipCount]) = 0), IF({{HypothesisId}} = \u0022H-collider-no-manifest-theorem\u0022, AND(LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[ColliderSelectionManifestCount]) = 0, LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[ColliderSelectionCount]) \u003E= 10), IF({{HypothesisId}} = \u0022H-theorem-portfolio\u0022, LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[TheoremCount]) \u003E= 4, IF({{HypothesisId}} = \u0022H-age-identity-flip-rate\u0022, AND(LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[AgeIdentityManifestFlipRate]) \u003E= 0.40, LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[AgeIdentityStudyCount]) \u003E= 10), IF({{HypothesisId}} = \u0022H-identity-map-coverage\u0022, LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[IdentityMapCoverageRate]) \u003E= 0.95, IF({{HypothesisId}} = \u0022H-severity-medicine-manifest\u0022, LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[SeverityMedicineManifestFlipRate]) \u003E= 0.45, IF({{HypothesisId}} = \u0022H-severity-epi-latent-only\u0022, LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[SeverityEpiManifestFlipCount]) = 0, IF({{HypothesisId}} = \u0022H-mechanism-other-drain\u0022, LOOKUP(\u0022cluster-id-mechanism-other\u0022, IdentityClusterSummaries[IdentityClusterId], IdentityClusterSummaries[StudyCount]) \u003C= 5, IF({{HypothesisId}} = \u0022H-selection-frailty-zero-manifest\u0022, AND(LOOKUP(\u0022cluster-id-selection-frailty\u0022, IdentityClusterSummaries[IdentityClusterId], IdentityClusterSummaries[ManifestFlipCount]) = 0, LOOKUP(\u0022cluster-id-selection-frailty\u0022, IdentityClusterSummaries[IdentityClusterId], IdentityClusterSummaries[StudyCount]) \u003E= 3), IF({{HypothesisId}} = \u0022H-collider-identity-low-manifest\u0022, AND(LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[ColliderIdentityManifestFlipRate]) \u003C= 0.15, LOOKUP(\u0022cluster-id-collider-proxy\u0022, IdentityClusterSummaries[IdentityClusterId], IdentityClusterSummaries[StudyCount]) \u003E= 5), IF({{HypothesisId}} = \u0022H-geographic-stable-type-d\u0022, AND(LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[GeographicTypeDFraction]) \u003E= 0.25, LOOKUP(\u0022cluster-id-geographic-composition\u0022, IdentityClusterSummaries[IdentityClusterId], IdentityClusterSummaries[StudyCount]) \u003E= 3), IF({{HypothesisId}} = \u0022H-unexplained-flips-only-nonconfounders\u0022, LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[UnexplainedConfounderSignFlipCount]) = 0, FALSE())))))))))))))))))))))))))))))"
+        "formula": "=IF({{HypothesisId}} = \u0022H-latent-d\u0022, LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[LatentTypeDFraction]) \u003E 0.5, IF({{HypothesisId}} = \u0022H-purity\u0022, LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[SignFlipSignalPurityMax]) \u003C 0.5, IF({{HypothesisId}} = \u0022H-small-effect\u0022, LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[AvgPooledGapStableD]) \u003E LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[AvgPooledGapLatentD]), IF({{HypothesisId}} = \u0022H-econ-zero\u0022, LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[EconomicsSignFlipCount]) = 0, IF({{HypothesisId}} = \u0022H-domain-dist\u0022, LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[EpidemiologyAvgDistortion]) \u003E LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[EducationAvgDistortion]), IF({{HypothesisId}} = \u0022H-causal-manifest\u0022, AND(LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[ConfounderSignFlipCount]) \u003E LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[ColliderSelectionManifestCount]), LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[ConfounderSignFlipCount]) \u003E= 10), IF({{HypothesisId}} = \u0022H-causal-latent\u0022, AND(LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[ColliderSelectionManifestCount]) = 0, LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[ColliderSelectionLatentOnlyCount]) \u003E= 5), IF({{HypothesisId}} = \u0022H-explained-confounder\u0022, AND(LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[ExplainedConfounderCount]) = LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[ConfounderSignFlipCount]), LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[ExplainedConfounderCount]) \u003E= 10), IF({{HypothesisId}} = \u0022H-unexplained-nonconfounder\u0022, LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[ContestedOrMediatorExplainedCount]) = 0, IF({{HypothesisId}} = \u0022H-catalog-exact-match\u0022, LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[TypePredictionMatchRate]) \u003C 0.5, IF({{HypothesisId}} = \u0022H-catalog-flip-prediction\u0022, LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[SignFlipPredictionMatchRate]) \u003C 0.5, IF({{HypothesisId}} = \u0022H-domain-flip-geometry-controlled\u0022, AND(LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[EconomicsHighImbalanceSignFlipCount]) = 0, LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[EpidemiologyHighImbalanceSignFlipRate]) \u003E 0.15), IF({{HypothesisId}} = \u0022H-collider-no-manifest-v2\u0022, LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[ColliderSelectionManifestCount]) = 0, IF({{HypothesisId}} = \u0022H-cplus-magnitude\u0022, AND(LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[CPlusAvgDistortion]) \u003E LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[CMinusAvgDistortion]), LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[CPlusAvgDistortion]) \u003E LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[TypeDAvgDistortion])), IF({{HypothesisId}} = \u0022H-econ-encoding-selection\u0022, LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[EconomicsExpectedAMismatchRate]) \u003E 0.5, IF({{HypothesisId}} = \u0022H-domain-profiles-stable\u0022, AND(LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[EducationLatentFraction]) \u003E 0.5, LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[SportsLatentFraction]) \u003E 0.5, LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[EconomicsSignFlipRate]) \u003C 0.05), IF({{HypothesisId}} = \u0022H-corrected-gap-invariant\u0022, AND(LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[MaxStudySweepCorrectedGapRange]) \u003C 0.0001, LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[CorrectedGapInvariantFailCount]) = 0), IF({{HypothesisId}} = \u0022H-explained-bidirectional\u0022, AND(LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[ExplainedConfounderCount]) = LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[ConfounderSignFlipCount]), LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[FalsePositiveExplainedCount]) = 0, LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[UnexplainedConfounderSignFlipCount]) = 0), IF({{HypothesisId}} = \u0022H-collider-no-manifest-theorem\u0022, AND(LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[ColliderSelectionManifestCount]) = 0, LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[ColliderSelectionCount]) \u003E= 10), IF({{HypothesisId}} = \u0022H-theorem-portfolio\u0022, LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[TheoremCount]) \u003E= 4, IF({{HypothesisId}} = \u0022H-age-identity-flip-rate\u0022, AND(LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[AgeIdentityManifestFlipRate]) \u003E= 0.40, LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[AgeIdentityStudyCount]) \u003E= 10), IF({{HypothesisId}} = \u0022H-identity-map-coverage\u0022, LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[IdentityMapCoverageRate]) \u003E= 0.95, IF({{HypothesisId}} = \u0022H-severity-medicine-manifest\u0022, LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[SeverityMedicineManifestFlipRate]) \u003E= 0.45, IF({{HypothesisId}} = \u0022H-severity-epi-latent-only\u0022, LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[SeverityEpiManifestFlipCount]) = 0, IF({{HypothesisId}} = \u0022H-mechanism-other-drain\u0022, LOOKUP(\u0022cluster-id-mechanism-other\u0022, IdentityClusterSummaries[IdentityClusterId], IdentityClusterSummaries[StudyCount]) \u003C= 5, IF({{HypothesisId}} = \u0022H-selection-frailty-zero-manifest\u0022, AND(LOOKUP(\u0022cluster-id-selection-frailty\u0022, IdentityClusterSummaries[IdentityClusterId], IdentityClusterSummaries[ManifestFlipCount]) = 0, LOOKUP(\u0022cluster-id-selection-frailty\u0022, IdentityClusterSummaries[IdentityClusterId], IdentityClusterSummaries[StudyCount]) \u003E= 3), IF({{HypothesisId}} = \u0022H-collider-identity-low-manifest\u0022, AND(LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[ColliderIdentityManifestFlipRate]) \u003C= 0.15, LOOKUP(\u0022cluster-id-collider-proxy\u0022, IdentityClusterSummaries[IdentityClusterId], IdentityClusterSummaries[StudyCount]) \u003E= 5), IF({{HypothesisId}} = \u0022H-geographic-stable-type-d\u0022, AND(LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[GeographicTypeDFraction]) \u003E= 0.25, LOOKUP(\u0022cluster-id-geographic-composition\u0022, IdentityClusterSummaries[IdentityClusterId], IdentityClusterSummaries[StudyCount]) \u003E= 3), IF({{HypothesisId}} = \u0022H-unexplained-flips-only-nonconfounders\u0022, LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[UnexplainedConfounderSignFlipCount]) = 0, IF({{HypothesisId}} = \u0022H-confounder-drift-type-d\u0022, AND(OR(LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[SeverityDriftDirection]) = \u0022rising\u0022, LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[SeverityDriftDirection]) = \u0022single-decade\u0022), OR(LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[GeographicDriftDirection]) = \u0022rising\u0022, LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[GeographicDriftDirection]) = \u0022single-decade\u0022), OR(LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[SituationalDriftDirection]) = \u0022rising\u0022, LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[SituationalDriftDirection]) = \u0022single-decade\u0022), LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[AgeDriftDirection]) \u003C\u003E \u0022rising\u0022, LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[InstitutionalDriftDirection]) \u003C\u003E \u0022rising\u0022, LOOKUP(\u0022simpsons-paradox-v1\u0022, ModelSummary[ModelSummaryId], ModelSummary[SocioeconomicDriftDirection]) \u003C\u003E \u0022rising\u0022), FALSE()))))))))))))))))))))))))))))))"
       },
       {
         "name": "Evidence",
@@ -5110,6 +5188,164 @@
         "nullable": true,
         "Description": "Lookup archetype display name.",
         "formula": "=LOOKUP({{ConfounderIdentity}}, ConfounderIdentities[ConfounderIdentityId], ConfounderIdentities[DisplayName])"
+      }
+    ]
+  },
+  "ConfounderDistortionTimeline": {
+    "Description": "Table: ConfounderDistortionTimeline -- derived geometry at the (ConfounderIdentity x ValidTimeDecade) grain. Each row aggregates the studies whose real-world cohort period (valid-time, not publication year) falls in that decade and that carry the given confounder archetype, tracking whether the corpus drifts toward clean Type-D (non-reversing, zero-allocation-distortion) outcomes over time and whether that drift is confounder-specific. Principled materialization per CLAUDE.md (N-way join over a sealed, bounded study set) -- refreshed via refresh_confounder_distortion_timeline(), same pattern as IdentityClusterSummaries/IdentityDomainCells.",
+    "schema": [
+      {
+        "name": "CellId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Unique slug: confounder-identity-id \u002B \u0027-x-\u0027 \u002B valid-time decade (e.g. id-disease-severity-x-1980)."
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": false,
+        "Description": "Display label.",
+        "formula": "={{CellId}}"
+      },
+      {
+        "name": "ConfounderIdentity",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": false,
+        "Description": "FK -\u003E ConfounderIdentities.",
+        "RelatedTo": "ConfounderIdentities"
+      },
+      {
+        "name": "ValidTimeDecade",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Studies.ValidTimeDecade bucket this cell aggregates over (e.g. 1980 covers valid-time midpoints 1980-1989)."
+      },
+      {
+        "name": "StudyCount",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Studies carrying this ConfounderIdentity whose ValidTimeDecade falls in this bucket (refresh_confounder_distortion_timeline())."
+      },
+      {
+        "name": "TypeDCount",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Of those, count with TreatmentRankings.DistortionType = \u0027D\u0027 (clean, non-reversing)."
+      },
+      {
+        "name": "SignFlipCount",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Of those, count with TreatmentRankings.IsSignFlip = TRUE."
+      },
+      {
+        "name": "SumSignalPurity",
+        "datatype": "number",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Sum of TreatmentRankings.SignalPurity across cell studies (numerator for MeanSignalPurity; summed rather than pre-averaged so the aggregate survives refresh re-runs without drift)."
+      },
+      {
+        "name": "SumAllocationDistortion",
+        "datatype": "number",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Sum of TreatmentRankings.AllocationDistortion across cell studies (numerator for MeanAllocationDistortion)."
+      },
+      {
+        "name": "TypeDFraction",
+        "datatype": "number",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TypeDCount / StudyCount.",
+        "formula": "=IF(OR({{StudyCount}} = \u0022\u0022, {{StudyCount}} = 0), \u0022\u0022, {{TypeDCount}} / {{StudyCount}})"
+      },
+      {
+        "name": "SignFlipFraction",
+        "datatype": "number",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "SignFlipCount / StudyCount.",
+        "formula": "=IF(OR({{StudyCount}} = \u0022\u0022, {{StudyCount}} = 0), \u0022\u0022, {{SignFlipCount}} / {{StudyCount}})"
+      },
+      {
+        "name": "MeanSignalPurity",
+        "datatype": "number",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "SumSignalPurity / StudyCount.",
+        "formula": "=IF(OR({{StudyCount}} = \u0022\u0022, {{StudyCount}} = 0), \u0022\u0022, {{SumSignalPurity}} / {{StudyCount}})"
+      },
+      {
+        "name": "MeanAllocationDistortion",
+        "datatype": "number",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "SumAllocationDistortion / StudyCount.",
+        "formula": "=IF(OR({{StudyCount}} = \u0022\u0022, {{StudyCount}} = 0), \u0022\u0022, {{SumAllocationDistortion}} / {{StudyCount}})"
+      },
+      {
+        "name": "IdentityDisplayName",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Lookup: ConfounderIdentities.DisplayName via ConfounderIdentity.",
+        "formula": "=LOOKUP({{ConfounderIdentity}}, ConfounderIdentities[ConfounderIdentityId], ConfounderIdentities[DisplayName])"
+      },
+      {
+        "name": "MechanismClass",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Lookup: ConfounderIdentities.MechanismClass via ConfounderIdentity \u2014 the archetype group used to test whether Type-D drift is confounder-specific.",
+        "formula": "=LOOKUP({{ConfounderIdentity}}, ConfounderIdentities[ConfounderIdentityId], ConfounderIdentities[MechanismClass])"
+      },
+      {
+        "name": "IdentityEarliestDecade",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "Earliest ValidTimeDecade present in this table for this ConfounderIdentity.",
+        "formula": "=MINIFS(ConfounderDistortionTimeline!{{ValidTimeDecade}}, ConfounderDistortionTimeline!{{ConfounderIdentity}}, {{ConfounderIdentity}})"
+      },
+      {
+        "name": "IdentityLatestDecade",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "Latest ValidTimeDecade present in this table for this ConfounderIdentity.",
+        "formula": "=MAXIFS(ConfounderDistortionTimeline!{{ValidTimeDecade}}, ConfounderDistortionTimeline!{{ConfounderIdentity}}, {{ConfounderIdentity}})"
+      },
+      {
+        "name": "IdentityEarliestTypeDFraction",
+        "datatype": "number",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "TypeDFraction of this ConfounderIdentity\u0027s earliest decade cell -- the start point for the drift comparison.",
+        "formula": "=LOOKUP(CONCAT({{ConfounderIdentity}}, \u0022-x-\u0022, {{IdentityEarliestDecade}}), ConfounderDistortionTimeline[CellId], ConfounderDistortionTimeline[TypeDFraction])"
+      },
+      {
+        "name": "IdentityLatestTypeDFraction",
+        "datatype": "number",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "TypeDFraction of this ConfounderIdentity\u0027s latest decade cell -- the end point for the drift comparison.",
+        "formula": "=LOOKUP(CONCAT({{ConfounderIdentity}}, \u0022-x-\u0022, {{IdentityLatestDecade}}), ConfounderDistortionTimeline[CellId], ConfounderDistortionTimeline[TypeDFraction])"
+      },
+      {
+        "name": "DriftDirection",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "rising | falling | flat | single-decade -- compares this ConfounderIdentity\u0027s earliest-decade TypeDFraction to its latest-decade TypeDFraction across the whole table (same value on every row for a given ConfounderIdentity by construction).",
+        "formula": "=IF({{IdentityEarliestDecade}} = {{IdentityLatestDecade}}, \u0022single-decade\u0022, IF(OR({{IdentityEarliestTypeDFraction}} = \u0022\u0022, {{IdentityLatestTypeDFraction}} = \u0022\u0022), \u0022\u0022, IF({{IdentityLatestTypeDFraction}} \u003E {{IdentityEarliestTypeDFraction}} \u002B 0.05, \u0022rising\u0022, IF({{IdentityLatestTypeDFraction}} \u003C {{IdentityEarliestTypeDFraction}} - 0.05, \u0022falling\u0022, \u0022flat\u0022))))"
       }
     ]
   },

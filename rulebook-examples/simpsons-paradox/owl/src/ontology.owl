@@ -542,6 +542,135 @@ effortless-ntwf:invariantProtectingCount a owl:DatatypeProperty ;
     rdfs:comment "Count of InvariantChecks whose ProtectsConclusion FK points to this conclusion — how many algebraic invariants stand behind this finding." .
     # calculated: aggregation
 
+# === Class: ConfounderDistortionTimeline ===
+effortless-ntwf:ConfounderDistortionTimeline a owl:Class ;
+    rdfs:label "ConfounderDistortionTimeline" ;
+    rdfs:comment "Table: ConfounderDistortionTimeline -- derived geometry at the (ConfounderIdentity x ValidTimeDecade) grain. Each row aggregates the studies whose real-world cohort period (valid-time, not publication year) falls in that decade and that carry the given confounder archetype, tracking whether the corpus drifts toward clean Type-D (non-reversing, zero-allocation-distortion) outcomes over time and whether that drift is confounder-specific. Principled materialization per CLAUDE.md (N-way join over a sealed, bounded study set) -- refreshed via refresh_confounder_distortion_timeline(), same pattern as IdentityClusterSummaries/IdentityDomainCells." .
+
+effortless-ntwf:cellId a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "CellId" ;
+    rdfs:comment "Unique slug: confounder-identity-id + '-x-' + valid-time decade (e.g. id-disease-severity-x-1980)." .
+
+effortless-ntwf:name a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "Name" ;
+    rdfs:comment "Display label." .
+    # calculated: calculated
+
+effortless-ntwf:confounderIdentity a owl:ObjectProperty ;
+    rdfs:range effortless-ntwf:ConfounderIdentities ;
+    rdfs:label "ConfounderIdentity" ;
+    rdfs:comment "FK -> ConfounderIdentities." .
+
+effortless-ntwf:validTimeDecade a owl:DatatypeProperty ;
+    rdfs:range xsd:integer ;
+    rdfs:label "ValidTimeDecade" ;
+    rdfs:comment "Studies.ValidTimeDecade bucket this cell aggregates over (e.g. 1980 covers valid-time midpoints 1980-1989)." .
+
+effortless-ntwf:studyCount a owl:DatatypeProperty ;
+    rdfs:range xsd:integer ;
+    rdfs:label "StudyCount" ;
+    rdfs:comment "Studies carrying this ConfounderIdentity whose ValidTimeDecade falls in this bucket (refresh_confounder_distortion_timeline())." .
+
+effortless-ntwf:typeDCount a owl:DatatypeProperty ;
+    rdfs:range xsd:integer ;
+    rdfs:label "TypeDCount" ;
+    rdfs:comment "Of those, count with TreatmentRankings.DistortionType = 'D' (clean, non-reversing)." .
+
+effortless-ntwf:signFlipCount a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:ConfounderDistortionTimeline ;
+    rdfs:range xsd:integer ;
+    rdfs:label "SignFlipCount" ;
+    rdfs:comment "Of those, count with TreatmentRankings.IsSignFlip = TRUE." .
+
+effortless-ntwf:sumSignalPurity a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:ConfounderDistortionTimeline ;
+    rdfs:range xsd:string ;
+    rdfs:label "SumSignalPurity" ;
+    rdfs:comment "Sum of TreatmentRankings.SignalPurity across cell studies (numerator for MeanSignalPurity; summed rather than pre-averaged so the aggregate survives refresh re-runs without drift)." .
+
+effortless-ntwf:sumAllocationDistortion a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:ConfounderDistortionTimeline ;
+    rdfs:range xsd:string ;
+    rdfs:label "SumAllocationDistortion" ;
+    rdfs:comment "Sum of TreatmentRankings.AllocationDistortion across cell studies (numerator for MeanAllocationDistortion)." .
+
+effortless-ntwf:typeDFraction a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:ConfounderDistortionTimeline ;
+    rdfs:range xsd:string ;
+    rdfs:label "TypeDFraction" ;
+    rdfs:comment "TypeDCount / StudyCount." .
+    # calculated: calculated
+
+effortless-ntwf:signFlipFraction a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:ConfounderDistortionTimeline ;
+    rdfs:range xsd:string ;
+    rdfs:label "SignFlipFraction" ;
+    rdfs:comment "SignFlipCount / StudyCount." .
+    # calculated: calculated
+
+effortless-ntwf:meanSignalPurity a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:ConfounderDistortionTimeline ;
+    rdfs:range xsd:string ;
+    rdfs:label "MeanSignalPurity" ;
+    rdfs:comment "SumSignalPurity / StudyCount." .
+    # calculated: calculated
+
+effortless-ntwf:meanAllocationDistortion a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:ConfounderDistortionTimeline ;
+    rdfs:range xsd:string ;
+    rdfs:label "MeanAllocationDistortion" ;
+    rdfs:comment "SumAllocationDistortion / StudyCount." .
+    # calculated: calculated
+
+effortless-ntwf:identityDisplayName a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "IdentityDisplayName" ;
+    rdfs:comment "Lookup: ConfounderIdentities.DisplayName via ConfounderIdentity." .
+    # calculated: lookup
+
+effortless-ntwf:mechanismClass a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "MechanismClass" ;
+    rdfs:comment "Lookup: ConfounderIdentities.MechanismClass via ConfounderIdentity — the archetype group used to test whether Type-D drift is confounder-specific." .
+    # calculated: lookup
+
+effortless-ntwf:identityEarliestDecade a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:ConfounderDistortionTimeline ;
+    rdfs:range xsd:integer ;
+    rdfs:label "IdentityEarliestDecade" ;
+    rdfs:comment "Earliest ValidTimeDecade present in this table for this ConfounderIdentity." .
+    # calculated: aggregation
+
+effortless-ntwf:identityLatestDecade a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:ConfounderDistortionTimeline ;
+    rdfs:range xsd:integer ;
+    rdfs:label "IdentityLatestDecade" ;
+    rdfs:comment "Latest ValidTimeDecade present in this table for this ConfounderIdentity." .
+    # calculated: aggregation
+
+effortless-ntwf:identityEarliestTypeDFraction a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:ConfounderDistortionTimeline ;
+    rdfs:range xsd:string ;
+    rdfs:label "IdentityEarliestTypeDFraction" ;
+    rdfs:comment "TypeDFraction of this ConfounderIdentity's earliest decade cell -- the start point for the drift comparison." .
+    # calculated: lookup
+
+effortless-ntwf:identityLatestTypeDFraction a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:ConfounderDistortionTimeline ;
+    rdfs:range xsd:string ;
+    rdfs:label "IdentityLatestTypeDFraction" ;
+    rdfs:comment "TypeDFraction of this ConfounderIdentity's latest decade cell -- the end point for the drift comparison." .
+    # calculated: lookup
+
+effortless-ntwf:driftDirection a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:ConfounderDistortionTimeline ;
+    rdfs:range xsd:string ;
+    rdfs:label "DriftDirection" ;
+    rdfs:comment "rising | falling | flat | single-decade -- compares this ConfounderIdentity's earliest-decade TypeDFraction to its latest-decade TypeDFraction across the whole table (same value on every row for a given ConfounderIdentity by construction)." .
+    # calculated: calculated
+
 # === Class: ConfounderIdentities ===
 effortless-ntwf:ConfounderIdentities a owl:Class ;
     rdfs:label "ConfounderIdentities" ;
@@ -565,7 +694,6 @@ effortless-ntwf:displayName a owl:DatatypeProperty ;
     rdfs:comment "Human-readable archetype name." .
 
 effortless-ntwf:mechanismClass a owl:DatatypeProperty ;
-    rdfs:domain effortless-ntwf:ConfounderIdentities ;
     rdfs:range xsd:string ;
     rdfs:label "MechanismClass" ;
     rdfs:comment "Mechanism taxonomy token." .
@@ -1049,7 +1177,6 @@ effortless-ntwf:IdentityDomainCells a owl:Class ;
     rdfs:label "IdentityDomainCells" .
 
 effortless-ntwf:cellId a owl:DatatypeProperty ;
-    rdfs:domain effortless-ntwf:IdentityDomainCells ;
     rdfs:range xsd:string ;
     rdfs:label "CellId" ;
     rdfs:comment "Unique slug: identity-id + '-x-' + domain slug." .
@@ -1102,7 +1229,6 @@ effortless-ntwf:manifestFlipRate a owl:DatatypeProperty ;
     # calculated: calculated
 
 effortless-ntwf:identityDisplayName a owl:DatatypeProperty ;
-    rdfs:domain effortless-ntwf:IdentityDomainCells ;
     rdfs:range xsd:string ;
     rdfs:label "IdentityDisplayName" ;
     rdfs:comment "Lookup archetype display name." .
@@ -2412,6 +2538,48 @@ effortless-ntwf:geographicTypeDFraction a owl:DatatypeProperty ;
     rdfs:comment "Type-D fraction for geographic-composition identity." .
     # calculated: calculated
 
+effortless-ntwf:severityDriftDirection a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:ModelSummary ;
+    rdfs:range xsd:string ;
+    rdfs:label "SeverityDriftDirection" ;
+    rdfs:comment "loop-92: ConfounderDistortionTimeline.DriftDirection for id-disease-severity (severity-case-mix archetype), valid-time Type-D drift. Overridden in 02b-customize-functions.sql: native transpiler mistranslates LOOKUP(constant, Table[NonPKColumn], Table[TargetColumn]) into a lookup keyed on the table's PK instead of the specified match column." .
+    # calculated: calculated
+
+effortless-ntwf:geographicDriftDirection a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:ModelSummary ;
+    rdfs:range xsd:string ;
+    rdfs:label "GeographicDriftDirection" ;
+    rdfs:comment "loop-92: ConfounderDistortionTimeline.DriftDirection for id-geographic-composition (geography archetype), valid-time Type-D drift. Overridden in 02b-customize-functions.sql: native transpiler mistranslates LOOKUP(constant, Table[NonPKColumn], Table[TargetColumn]) into a lookup keyed on the table's PK instead of the specified match column." .
+    # calculated: calculated
+
+effortless-ntwf:situationalDriftDirection a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:ModelSummary ;
+    rdfs:range xsd:string ;
+    rdfs:label "SituationalDriftDirection" ;
+    rdfs:comment "loop-92: ConfounderDistortionTimeline.DriftDirection for id-situational-context (sports-situation archetype), valid-time Type-D drift. Overridden in 02b-customize-functions.sql: native transpiler mistranslates LOOKUP(constant, Table[NonPKColumn], Table[TargetColumn]) into a lookup keyed on the table's PK instead of the specified match column." .
+    # calculated: calculated
+
+effortless-ntwf:ageDriftDirection a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:ModelSummary ;
+    rdfs:range xsd:string ;
+    rdfs:label "AgeDriftDirection" ;
+    rdfs:comment "loop-92: ConfounderDistortionTimeline.DriftDirection for id-age-composition (demographic-composition archetype), valid-time Type-D drift. Overridden in 02b-customize-functions.sql: native transpiler mistranslates LOOKUP(constant, Table[NonPKColumn], Table[TargetColumn]) into a lookup keyed on the table's PK instead of the specified match column." .
+    # calculated: calculated
+
+effortless-ntwf:institutionalDriftDirection a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:ModelSummary ;
+    rdfs:range xsd:string ;
+    rdfs:label "InstitutionalDriftDirection" ;
+    rdfs:comment "loop-92: ConfounderDistortionTimeline.DriftDirection for id-institutional-unit (organizational-unit archetype), valid-time Type-D drift. Overridden in 02b-customize-functions.sql: native transpiler mistranslates LOOKUP(constant, Table[NonPKColumn], Table[TargetColumn]) into a lookup keyed on the table's PK instead of the specified match column." .
+    # calculated: calculated
+
+effortless-ntwf:socioeconomicDriftDirection a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:ModelSummary ;
+    rdfs:range xsd:string ;
+    rdfs:label "SocioeconomicDriftDirection" ;
+    rdfs:comment "loop-92: ConfounderDistortionTimeline.DriftDirection for id-socioeconomic-status (ses-income archetype), valid-time Type-D drift. Overridden in 02b-customize-functions.sql: native transpiler mistranslates LOOKUP(constant, Table[NonPKColumn], Table[TargetColumn]) into a lookup keyed on the table's PK instead of the specified match column." .
+    # calculated: calculated
+
 effortless-ntwf:domainFlipGapSurvivesGeometryControl a owl:DatatypeProperty ;
     rdfs:domain effortless-ntwf:ModelSummary ;
     rdfs:range xsd:boolean ;
@@ -3265,6 +3433,31 @@ effortless-ntwf:controlDomain a owl:DatatypeProperty ;
     rdfs:range xsd:string ;
     rdfs:label "ControlDomain" ;
     rdfs:comment "Domain slug for control studies (e.g. medicine-rct, education-higher). NULL for non-control studies." .
+
+effortless-ntwf:validTimeStart a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:Studies ;
+    rdfs:range xsd:integer ;
+    rdfs:label "ValidTimeStart" ;
+    rdfs:comment "First year of the real-world cohort period this study's data covers (valid-time, not publication year). Defaults to PublicationYear when the true cohort window is not independently known." .
+
+effortless-ntwf:validTimeEnd a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:Studies ;
+    rdfs:range xsd:integer ;
+    rdfs:label "ValidTimeEnd" ;
+    rdfs:comment "Last year of the real-world cohort period this study's data covers (valid-time, not publication year). Defaults to PublicationYear when the true cohort window is not independently known." .
+
+effortless-ntwf:validTimeMidpoint a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:Studies ;
+    rdfs:range xsd:string ;
+    rdfs:label "ValidTimeMidpoint" ;
+    rdfs:comment "Midpoint year of the valid-time cohort window, used to bucket studies by when their underlying data actually occurred rather than when the paper was published." .
+    # calculated: calculated
+
+effortless-ntwf:validTimeDecade a owl:DatatypeProperty ;
+    rdfs:range xsd:integer ;
+    rdfs:label "ValidTimeDecade" ;
+    rdfs:comment "ValidTimeMidpoint floored to the decade (e.g. 1973 -> 1970). The bucket key ConfounderDistortionTimeline aggregates over." .
+    # calculated: calculated
 
 # === Class: StudyImportTemplate ===
 effortless-ntwf:StudyImportTemplate a owl:Class ;
