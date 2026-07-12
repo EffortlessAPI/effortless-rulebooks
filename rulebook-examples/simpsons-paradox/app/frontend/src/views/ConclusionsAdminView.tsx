@@ -1,13 +1,16 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { Chart } from 'chart.js/auto';
 import { api } from '../api';
 import { ViewDagScan } from '../components/DagValue';
-import { Cell } from '../components/dag-display';
+import { Cell, TrCell } from '../components/dag-display';
 import type {
   Conclusion,
   DiscoveryFinding,
   DiscoveryHypothesis,
   InvariantCheck,
   ModelSummary,
+  Study,
+  TreatmentRanking,
 } from '../types';
 import {
   CATEGORY_ORDER,
@@ -21,7 +24,9 @@ import {
   isConsistencyCheck,
   tierConclusionCounts,
 } from '../../../shared/epistemic-framing';
+import { buildInvisibleFragileChart, buildPurityChart, buildTypeDFragilityChart, TYPE_COLORS } from './overviewCharts';
 import './Conclusions.css';
+import './Overview.css';
 
 const STATUS_COLORS: Record<string, string> = {
   witnessed: 'badge-type-c',
@@ -63,15 +68,24 @@ function DiscoveryCard({
   );
 }
 
+const CAUSAL_ROLES = ['confounder', 'collider', 'selection', 'mediator', 'contested', 'unknown'] as const;
+
 export function ConclusionsAdminView() {
   const [conclusions, setConclusions] = useState<Conclusion[]>([]);
   const [hypotheses, setHypotheses] = useState<DiscoveryHypothesis[]>([]);
   const [findings, setFindings] = useState<DiscoveryFinding[]>([]);
   const [invariants, setInvariants] = useState<InvariantCheck[]>([]);
   const [summary, setSummary] = useState<ModelSummary | null>(null);
+  const [studies, setStudies] = useState<Study[]>([]);
+  const [rankings, setRankings] = useState<TreatmentRanking[]>([]);
   const [loading, setLoading] = useState(true);
   const [categoryFilter, setCategoryFilter] = useState<string>('all');
   const [selectedId, setSelectedId] = useState<string | null>(null);
+
+  const typeDFragilityRef = useRef<HTMLCanvasElement>(null);
+  const purityRef = useRef<HTMLCanvasElement>(null);
+  const invisibleFragileRef = useRef<HTMLCanvasElement>(null);
+  const notableChartsRef = useRef<(Chart | null)[]>([]);
 
   useEffect(() => {
     Promise.all([
@@ -80,17 +94,101 @@ export function ConclusionsAdminView() {
       api.discoveryFindings(),
       api.invariantChecks(),
       api.modelSummary(),
+      api.studies(),
+      api.treatmentRankings(),
     ])
-      .then(([c, h, f, i, s]) => {
+      .then(([c, h, f, i, s, st, tr]) => {
         setConclusions(c);
         setHypotheses(h);
         setFindings(f);
         setInvariants(i);
         setSummary(s);
+        setStudies(st);
+        setRankings(tr);
         setSelectedId(prev => prev ?? c[c.length - 1]?.conclusion_id ?? null);
       })
       .finally(() => setLoading(false));
   }, []);
+
+  const studyById = useMemo(
+    () => Object.fromEntries(studies.map(s => [s.study_id, s])),
+    [studies],
+  );
+
+  useEffect(() => {
+    if (!rankings.length) return;
+    notableChartsRef.current.forEach(c => c?.destroy());
+    const built: Chart[] = [];
+    if (typeDFragilityRef.current) built.push(buildTypeDFragilityChart(typeDFragilityRef.current, rankings));
+    if (purityRef.current) built.push(buildPurityChart(purityRef.current, rankings, studyById));
+    if (invisibleFragileRef.current) built.push(buildInvisibleFragileChart(invisibleFragileRef.current, rankings, studyById));
+    notableChartsRef.current = built;
+    return () => { notableChartsRef.current.forEach(c => c?.destroy()); notableChartsRef.current = []; };
+  }, [rankings, studyById]);
+
+  const distortionCounts = useMemo(() => {
+    const counts: Record<string, number> = { A: 0, B: 0, 'C-': 0, 'C+': 0, D: 0 };
+    rankings.forEach(r => { if (r.distortion_type in counts) counts[r.distortion_type]++; });
+    return counts;
+  }, [rankings]);
+
+  // Matches ModelSummary.ColliderSelectionCount / ColliderSelectionManifestCount scope:
+  // real-world corpus only — synthetic boundary-probe studies (e.g. adversarial theorem
+  // stress tests) are excluded from this specific corpus-level claim.
+  const causalRoleBreakdown = useMemo(() => {
+    const byRole: Record<string, { manifest: number; latent: number; stable: number }> = {};
+    CAUSAL_ROLES.forEach(r => { byRole[r] = { manifest: 0, latent: 0, stable: 0 }; });
+    rankings.filter(r => r.study_domain !== 'synthetic').forEach(r => {
+      const role = r.stratum_causal_role && r.stratum_causal_role in byRole ? r.stratum_causal_role : 'unknown';
+      if (r.is_sign_flip) byRole[role].manifest++;
+      else if (r.is_latent_only_flip) byRole[role].latent++;
+      else byRole[role].stable++;
+    });
+    return CAUSAL_ROLES.map(role => ({ role, ...byRole[role] })).filter(r => r.manifest + r.latent + r.stable > 0);
+  }, [rankings]);
+
+  const effectSizeBuckets = useMemo(() => {
+    const buckets = [
+      { label: '< 1%', min: 0, max: 0.01 },
+      { label: '1–3%', min: 0.01, max: 0.03 },
+      { label: '3–5%', min: 0.03, max: 0.05 },
+      { label: '5–10%', min: 0.05, max: 0.10 },
+      { label: '> 10%', min: 0.10, max: Infinity },
+    ];
+    const dRows = rankings.filter(r => r.distortion_type === 'D');
+    return buckets.map(b => {
+      const group = dRows.filter(r => Number(r.pooled_gap) >= b.min && Number(r.pooled_gap) < b.max);
+      const fragile = group.filter(r => r.is_sweep_fragile).length;
+      return { ...b, n: group.length, fragile, pct: group.length ? fragile / group.length : 0 };
+    }).filter(b => b.n > 0);
+  }, [rankings]);
+
+  const domainBreakdown = useMemo(() => {
+    const byDomain: Record<string, { manifest: number; latent: number; stable: number }> = {};
+    rankings.forEach(r => {
+      const domain = r.study_domain ?? 'unknown';
+      if (!byDomain[domain]) byDomain[domain] = { manifest: 0, latent: 0, stable: 0 };
+      if (r.is_sign_flip) byDomain[domain].manifest++;
+      else if (r.is_latent_only_flip) byDomain[domain].latent++;
+      else byDomain[domain].stable++;
+    });
+    return Object.entries(byDomain)
+      .map(([domain, d]) => ({ domain, ...d, total: d.manifest + d.latent + d.stable }))
+      .sort((a, b) => b.total - a.total);
+  }, [rankings]);
+
+  const invisibleFragileCount = useMemo(
+    () => rankings.filter(r => r.is_sweep_fragile && Number(r.allocation_distortion) === 0).length,
+    [rankings],
+  );
+
+  const abCompare = useMemo(() => {
+    const aRows = rankings.filter(r => r.distortion_type === 'A');
+    const bRows = rankings.filter(r => r.distortion_type === 'B');
+    const aUnanimous = aRows.filter(r => r.is_stratum_unanimous).length;
+    const bUnanimous = bRows.filter(r => r.is_stratum_unanimous).length;
+    return { aRows, bRows, aUnanimous, bUnanimous };
+  }, [rankings]);
 
   const filtered = useMemo(() => {
     const rows =
@@ -203,6 +301,156 @@ export function ConclusionsAdminView() {
           </div>
         </div>
       </div>
+
+      <section className="card">
+        <h2>Notable findings</h2>
+        <p className="section-hint">
+          Live cross-cuts over <code>vw_treatment_rankings</code> / <code>vw_studies</code> —
+          computed on every page load, not baked-in numbers. Refresh the underlying data and
+          these recompute automatically.
+        </p>
+
+        <div className="stat-row" style={{ display: 'flex', gap: 12, flexWrap: 'wrap', marginBottom: 20 }}>
+          {(['A', 'B', 'C-', 'C+', 'D'] as const).map(t => (
+            <div key={t} className="card stat-card" style={{ flex: 1, minWidth: 110 }}>
+              <div className="stat-big" style={{ color: TYPE_COLORS[t] }}>
+                <TrCell col="distortion_type">{distortionCounts[t]}</TrCell>
+              </div>
+              <div className="stat-caption">Type {t}</div>
+            </div>
+          ))}
+        </div>
+
+        <div className="findings-grid">
+          <div className="finding-panel">
+            <div className="finding-num">1</div>
+            <span className="finding-badge">Novel</span>
+            <h3 className="finding-title">Collider / selection never manifests a sign flip</h3>
+            <p className="finding-blurb">
+              Across {causalRoleBreakdown.reduce((n, r) => n + r.manifest + r.latent + r.stable, 0)}{' '}
+              real-world studies (excludes synthetic boundary-probe studies — see{' '}
+              <code>H-collider-no-manifest-theorem</code> below), causal role by outcome:
+            </p>
+            <div className="side-stack">
+              {causalRoleBreakdown.map(r => {
+                const total = r.manifest + r.latent + r.stable;
+                return (
+                  <div key={r.role} className="type-bar-row">
+                    <div className="type-bar-header">
+                      <span>{r.role}</span>
+                      <span style={{ color: '#8b949e' }}>{total}</span>
+                    </div>
+                    <div style={{ display: 'flex', height: 10, borderRadius: 6, overflow: 'hidden', gap: 1 }}>
+                      <div style={{ flex: r.manifest || 0.0001, background: TYPE_COLORS.A, minWidth: r.manifest ? 2 : 0 }} title={`manifest: ${r.manifest}`} />
+                      <div style={{ flex: r.latent || 0.0001, background: TYPE_COLORS['C+'], minWidth: r.latent ? 2 : 0 }} title={`latent: ${r.latent}`} />
+                      <div style={{ flex: r.stable || 0.0001, background: TYPE_COLORS.D, minWidth: r.stable ? 2 : 0 }} title={`stable: ${r.stable}`} />
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+            <p className="finding-blurb" style={{ marginTop: 10 }}>
+              {(() => {
+                const collider = causalRoleBreakdown.find(r => r.role === 'collider');
+                const selection = causalRoleBreakdown.find(r => r.role === 'selection');
+                const colliderManifest = (collider?.manifest ?? 0) + (selection?.manifest ?? 0);
+                return colliderManifest === 0
+                  ? 'Zero manifest flips among collider/selection studies in the current corpus — conditioning biases the estimate but does not reverse its sign.'
+                  : `${colliderManifest} manifest flip(s) among collider/selection studies — this no-flip pattern does not hold on the current data.`;
+              })()}
+            </p>
+          </div>
+
+          <div className="finding-panel">
+            <div className="finding-num">2</div>
+            <span className="finding-badge">Novel</span>
+            <h3 className="finding-title">Effect size predicts Type-D latent fragility</h3>
+            <p className="finding-blurb">Pooled gap bucket → latent-fragile rate, Type D only:</p>
+            <div className="side-stack">
+              {effectSizeBuckets.map(b => (
+                <div key={b.label} className="type-bar-row">
+                  <div className="type-bar-header">
+                    <span>{b.label}</span>
+                    <span style={{ color: '#8b949e' }}>{b.fragile}/{b.n}</span>
+                  </div>
+                  <div className="type-bar-track">
+                    <div className="type-bar-fill" style={{ width: `${b.pct * 100}%`, background: TYPE_COLORS.A }} />
+                  </div>
+                </div>
+              ))}
+            </div>
+            <div className="chart-canvas-wrap chart-canvas-wrap-finding">
+              <canvas ref={typeDFragilityRef} />
+            </div>
+          </div>
+
+          <div className="finding-panel">
+            <div className="finding-num">3</div>
+            <span className="finding-badge" style={{ color: '#7ee787' }}>Theorem</span>
+            <h3 className="finding-title">Signal purity is necessary but not sufficient for a flip</h3>
+            <p className="finding-blurb">
+              All manifest reversals (A, B) have purity below 0.5 — proven invariant. C+ studies
+              also show low purity but don't flip: their corrected gap stays non-zero.
+            </p>
+            <div className="chart-canvas-wrap chart-canvas-wrap-finding">
+              <canvas ref={purityRef} />
+            </div>
+          </div>
+
+          <div className="finding-panel">
+            <div className="finding-num">4</div>
+            <span className="finding-badge">Novel</span>
+            <h3 className="finding-title">Domain risk profile</h3>
+            <p className="finding-blurb">Manifest / latent-fragile / stable, by domain:</p>
+            <div className="side-stack" style={{ maxHeight: 220, overflowY: 'auto' }}>
+              {domainBreakdown.map(d => (
+                <div key={d.domain} className="type-bar-row">
+                  <div className="type-bar-header">
+                    <span>{d.domain}</span>
+                    <span style={{ color: '#8b949e' }}>{d.total}</span>
+                  </div>
+                  <div style={{ display: 'flex', height: 10, borderRadius: 6, overflow: 'hidden', gap: 1 }}>
+                    <div style={{ flex: d.manifest || 0.0001, background: TYPE_COLORS.A, minWidth: d.manifest ? 2 : 0 }} title={`manifest: ${d.manifest}`} />
+                    <div style={{ flex: d.latent || 0.0001, background: TYPE_COLORS['C+'], minWidth: d.latent ? 2 : 0 }} title={`latent: ${d.latent}`} />
+                    <div style={{ flex: d.stable || 0.0001, background: TYPE_COLORS.D, minWidth: d.stable ? 2 : 0 }} title={`stable: ${d.stable}`} />
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="finding-panel">
+            <div className="finding-num">5</div>
+            <span className="finding-badge">Novel</span>
+            <h3 className="finding-title">Invisible-fragile Type D studies</h3>
+            <p className="finding-blurb">
+              <TrCell col="allocation_distortion">{invisibleFragileCount}</TrCell> studies have
+              zero measured allocation distortion yet are flagged <code>is_sweep_fragile</code> —
+              undetectable by existing distortion metrics but reweighting-sensitive.
+            </p>
+            <div className="chart-canvas-wrap chart-canvas-wrap-finding">
+              <canvas ref={invisibleFragileRef} />
+            </div>
+          </div>
+
+          <div className="finding-panel">
+            <div className="finding-num">6</div>
+            <span className="finding-badge">Novel characterization</span>
+            <h3 className="finding-title">A vs B is a structural distinction</h3>
+            <p className="finding-blurb">
+              Type A ({abCompare.aRows.length} studies): {abCompare.aUnanimous} have unanimous
+              stratum agreement — the pooled aggregate simply overrides them. Type B (
+              {abCompare.bRows.length} studies): {abCompare.bUnanimous} unanimous, meaning most B
+              studies have strata that disagree with each other, and pooling favors whichever
+              stratum happens to be overweighted.
+            </p>
+            <p className="finding-blurb" style={{ color: '#8b949e' }}>
+              Policy response differs: A warrants immediate stratification; B requires causal
+              investigation of which stratum's estimate to trust first.
+            </p>
+          </div>
+        </div>
+      </section>
 
       <section className="card">
         <h2>Consistency checks (loop-61)</h2>
@@ -359,7 +607,7 @@ export function ConclusionsAdminView() {
           )}
         </section>
       </div>
-      <ViewDagScan ready={!loading} deps={[conclusions, hypotheses, findings, invariants, selectedId, categoryFilter]} />
+      <ViewDagScan ready={!loading} deps={[conclusions, hypotheses, findings, invariants, selectedId, categoryFilter, rankings, studies]} />
     </div>
   );
 }

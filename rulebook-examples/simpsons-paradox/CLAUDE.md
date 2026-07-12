@@ -6,22 +6,25 @@ Build with `effortless build` (hosted transpilers in `effortless.json`); run the
 
 ## What this models
 
-A **digital mirror** of the Simpson's Paradox domain — a **238-study** validation corpus
-(233 real, 5 synthetic) spanning medicine, epidemiology, law, sports, education,
-economics, public health, and social science. Built through **loop-85** (loops 86–90
-next; 97–107 queued). The entities are domain objects: Studies, Treatments, Strata,
+A **digital mirror** of the Simpson's Paradox domain — **299 studies** (290 real, 9
+synthetic): the original **238-study** Simpson's-paradox corpus plus a control-corpus
+wave of non-paradox studies across 25 additional domains, spanning medicine,
+epidemiology, law, sports, education, economics, public health, and social science.
+Built through **loop-93** (loops 94–96 in progress: docs/prune/bootstrap polish;
+97–99 unplanned). The entities are domain objects: Studies, Treatments, Strata,
 CaseCells. The paradox emerges as a derived fact from the DAG — it is NOT modeled
 directly. No `ReversalDetection` entity. No `PooledRate` entity. The paradox falls out
 when you ask the right questions of the domain.
 
 Derived geometry on `TreatmentRankings` includes `IsSignFlip`, `IsStratumUnanimous`,
 `IsSweepFragile`, `AllocationDistortion`, `DistortionType` (A / B / C+ / C− / D),
-`SignalPurity`, and allocation-corrected winners. Loops 80–85 add `ConfounderIdentities`,
-`StratumVariableIdentityMaps`, `IdentityDomainCells`, and cross-study stratum-variable
-identity maps — 19 canonical confounding archetypes now cover the corpus.
-`DiscoveryHypotheses` / `DiscoveryFindings` hold pre-registered corpus experiments; six
-superseded predicates were retired in loop-79. `InvariantChecks` rows are build-breaking:
-any critical `FailCount > 0` is a bug (25 critical, all passing).
+`SignalPurity`, and allocation-corrected winners. `ConfounderIdentities`,
+`StratumVariableIdentityMaps`, and `IdentityDomainCells` hold cross-study
+stratum-variable identity maps — 19 canonical confounding archetypes now cover the
+corpus. `DiscoveryHypotheses` / `DiscoveryFindings` hold pre-registered corpus
+experiments; six superseded predicates were retired in loop-79. `InvariantChecks`
+rows are build-breaking: any critical `FailCount > 0` is a bug (26 critical, all
+passing).
 
 The model is built iteratively via Leopold loops. The `Loops` table IS the plan — each
 row documents what domain concept is introduced and what natural-language question it

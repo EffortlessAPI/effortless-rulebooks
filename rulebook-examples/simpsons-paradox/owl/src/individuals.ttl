@@ -32527,6 +32527,36 @@ effortless-ntwf:loop-93 a effortless-ntwf:Loops ;
     effortless-ntwf:nextSuggestion "Structural debt, not a one-off bug: every table whose calculated fields route through 03c (or an equivalent hand-written override) requires the SAME new-hypothesis-or-new-field edit made in at least three places by hand (rulebook formula for documentation, 03b for view columns, 03c for real logic), with no automated check that they stay in sync -- this loop found two independent instances of exactly that drift in one pass. Two remediation shapes worth evaluating next: (a) a build-time conformance check that diffs 03-create-views.sql's native column/branch list against 03b/03c's hand-maintained lists and fails loudly on drift, in the same spirit as InvariantChecks; (b) escalating the underlying rulebook-to-postgres LOOKUP(constant, Table[NonPKColumn], Table[TargetColumn]) mistranslation (this loop's second confirmed instance, after loop-92's first) as a transpiler bug report, which would eventually let 03c's hand-written logic collapse back into a real generated formula." ;
     effortless-ntwf:traditionId "tradition-dag" .
 
+effortless-ntwf:loop-94 a effortless-ntwf:Loops ;
+    effortless-ntwf:loopId "loop-94" ;
+    effortless-ntwf:title "Docs cleanup, polish, prune, re-align with the current instrument" ;
+    effortless-ntwf:status "complete" ;
+    effortless-ntwf:newConcept "No new domain concept. Documentation-accuracy loop: reconcile CLAUDE.md and README.md against the actual current rulebook state." ;
+    effortless-ntwf:domainQuestion "CLAUDE.md still said '238-study corpus', 'loop-85', and '25 critical invariants' while the live rulebook was at 299 studies (238 Simpson's-corpus + control wave), loop-93, and 26 critical InvariantChecks — do the two docs agree with each other and with the rulebook once corrected?" ;
+    effortless-ntwf:mockDataNote "Witnessed. CLAUDE.md's 'What this models' section rewritten to 299 studies / loop-93 / 26 critical invariants, matching README.md (which was already current). Added the doctrine-mandated 'Local transpiler bus (localhost:4242)' section to README.md, which was missing it. Added a Chrome/Chromium prerequisite line (needed by the PDF export scripts, previously undocumented)." ;
+    effortless-ntwf:nextSuggestion "loop-95: prune dead-end root-level artifacts and superseded one-shot scripts that no longer add empirical/pedagogical value." ;
+    effortless-ntwf:traditionId "tradition-dag" .
+
+effortless-ntwf:loop-95 a effortless-ntwf:Loops ;
+    effortless-ntwf:loopId "loop-95" ;
+    effortless-ntwf:title "Prune dead-ends that add no empirical or pedagogical value" ;
+    effortless-ntwf:status "complete" ;
+    effortless-ntwf:newConcept "No new domain concept. Repo-hygiene loop: remove/relocate artifacts that predate the current ERB pipeline or are otherwise unreferenced debris." ;
+    effortless-ntwf:domainQuestion "Which root-level files and scripts/ entries are actually load-bearing (referenced by the README, app code, or an active ingestion path) versus superseded scratch artifacts from loops long since merged?" ;
+    effortless-ntwf:mockDataNote "Witnessed. Deleted loop-01.db + loop-01-run.sh (pre-ERB sqlite prototype, superseded by effortless-postgres/), temp.txt (an unrelated pasted conversation, zero references), and simpsons-paradox.xlsx (a stale Jun-29 manual snapshot predating loop-93's data; the live export path is rulebook-to-xlsx via app/backend/export-xlsx.ts, unaffected). Moved 16 historical one-shot migration/import/patch scripts (wave2-4 imports, loop-51-54/loop-68 patches, apply-loop-61/81, backfill-loop-commits, prune-legacy-taxonomy, tag-loop-milestones, etc.) from scripts/ to scripts/archive/ — none are referenced by README.md's script table, all were one-shot passes for loops already merged into the rulebook. Removed scripts/__pycache__." ;
+    effortless-ntwf:nextSuggestion "loop-96: verify the fresh-clone bootstrap path (clone -> VS Code -> effortless build -> init-db.sh -> start.sh) has no blockers." ;
+    effortless-ntwf:traditionId "tradition-dag" .
+
+effortless-ntwf:loop-96 a effortless-ntwf:Loops ;
+    effortless-ntwf:loopId "loop-96" ;
+    effortless-ntwf:title "Debug outstanding issues that impede a fresh clone from getting to work" ;
+    effortless-ntwf:status "complete" ;
+    effortless-ntwf:newConcept "No new domain concept. Bootstrap-reliability loop: make a cold clone + VS Code open + build fail loudly and early instead of obscurely." ;
+    effortless-ntwf:domainQuestion "If a new contributor clones the repo, opens it in VS Code, and runs ./start.sh before running effortless build + init-db.sh, what happens — and can it fail with a clear pointer to the missing step instead of an obscure downstream Postgres error?" ;
+    effortless-ntwf:mockDataNote "Witnessed. Confirmed the monorepo-wide .gitignore (one level up, shared across all rulebook-examples/ projects) already covers node_modules, .ssotme, .DS_Store, and .pyc, but was missing __pycache__/ directories and *.db files — added both patterns. Removed untracked .DS_Store debris (root, owl/, effortless-rulebook/, article-series/thumbnails/). Added a preflight check to start.sh: it now verifies Postgres is reachable and that vw_studies exists before killing ports/booting servers, failing with an explicit 'run effortless build && init-db.sh first' message instead of booting a backend that silently fails on every query." ;
+    effortless-ntwf:nextSuggestion "97-99: unplanned, to be scoped from future findings." ;
+    effortless-ntwf:traditionId "tradition-dag" .
+
 # === Individuals: MaterializedEntities ===
 
 effortless-ntwf:mat-sweep-study-summary a effortless-ntwf:MaterializedEntities ;

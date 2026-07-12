@@ -889,6 +889,30 @@
         "formula": "=COUNTIFS(TreatmentRankings!{{DistortionType}}, \u0022A\u0022)"
       },
       {
+        "name": "DangerTierCount",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "Studies where TreatmentRankings.ScreeningTier = DANGER \u2014 pooled sign is wrong (DistortionType A or B).",
+        "formula": "=COUNTIFS(TreatmentRankings!{{ScreeningTier}}, \u0022DANGER\u0022)"
+      },
+      {
+        "name": "CautionTierCount",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "Studies where TreatmentRankings.ScreeningTier = CAUTION \u2014 pooled sign holds but magnitude is distorted (DistortionType C\u002B or C-).",
+        "formula": "=COUNTIFS(TreatmentRankings!{{ScreeningTier}}, \u0022CAUTION\u0022)"
+      },
+      {
+        "name": "SafeTierCount",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "Studies where TreatmentRankings.ScreeningTier = SAFE \u2014 pooling is trustworthy (DistortionType D).",
+        "formula": "=COUNTIFS(TreatmentRankings!{{ScreeningTier}}, \u0022SAFE\u0022)"
+      },
+      {
         "name": "TypeBCount",
         "datatype": "integer",
         "type": "aggregation",

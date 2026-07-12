@@ -1350,6 +1350,36 @@ RETURNS INTEGER AS $$
   SELECT ((SELECT COUNT(*) FROM treatment_rankings WHERE calc_treatment_rankings_distortion_type(treatment_ranking_id) = 'A'))::integer;
 $$ LANGUAGE sql STABLE;
 
+-- calc_model_summary_danger_tier_count
+-- Field: ModelSummary.DangerTierCount
+-- Type: aggregation | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_model_summary_danger_tier_count(p_model_summary_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((SELECT COUNT(*) FROM treatment_rankings WHERE calc_treatment_rankings_screening_tier(treatment_ranking_id) = 'DANGER'))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_model_summary_caution_tier_count
+-- Field: ModelSummary.CautionTierCount
+-- Type: aggregation | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_model_summary_caution_tier_count(p_model_summary_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((SELECT COUNT(*) FROM treatment_rankings WHERE calc_treatment_rankings_screening_tier(treatment_ranking_id) = 'CAUTION'))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_model_summary_safe_tier_count
+-- Field: ModelSummary.SafeTierCount
+-- Type: aggregation | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_model_summary_safe_tier_count(p_model_summary_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((SELECT COUNT(*) FROM treatment_rankings WHERE calc_treatment_rankings_screening_tier(treatment_ranking_id) = 'SAFE'))::integer;
+$$ LANGUAGE sql STABLE;
+
 -- calc_model_summary_type_b_count
 -- Field: ModelSummary.TypeBCount
 -- Type: aggregation | DataType: integer | Returns: INTEGER

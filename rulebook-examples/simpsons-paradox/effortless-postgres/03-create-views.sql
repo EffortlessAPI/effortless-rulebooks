@@ -223,6 +223,9 @@ SELECT
   calc_model_summary_total_paradox_strength(t.model_summary_id) AS total_paradox_strength,-- Sum of ParadoxStrength across all studies. Used to compute average.
   calc_model_summary_avg_paradox_strength(t.model_summary_id) AS avg_paradox_strength,-- Average ParadoxStrength across all studies: TotalParadoxStrength / StudyCount. A scalar summary of how paradox-rich this dataset is.
   calc_model_summary_type_a_count(t.model_summary_id) AS type_a_count,          -- Studies classified as Type-A: sign flip AND full reversal (ReversalIntensity=1). The canonical Simpson's Paradox — allocation distortion reverses the pooled winner.
+  calc_model_summary_danger_tier_count(t.model_summary_id) AS danger_tier_count,-- Studies where TreatmentRankings.ScreeningTier = DANGER — pooled sign is wrong (DistortionType A or B).
+  calc_model_summary_caution_tier_count(t.model_summary_id) AS caution_tier_count,-- Studies where TreatmentRankings.ScreeningTier = CAUTION — pooled sign holds but magnitude is distorted (DistortionType C+ or C-).
+  calc_model_summary_safe_tier_count(t.model_summary_id) AS safe_tier_count,    -- Studies where TreatmentRankings.ScreeningTier = SAFE — pooling is trustworthy (DistortionType D).
   calc_model_summary_type_b_count(t.model_summary_id) AS type_b_count,          -- Studies classified as Type-B: sign flip but partial reversal (ReversalIntensity<1). Allocation distortion creates a sign flip but the pooled signal partially reflects per-stratum reality.
   calc_model_summary_type_d_count(t.model_summary_id) AS type_d_count,          -- Studies classified as Type-D: no sign flip, negligible distortion. Pooled analysis is trustworthy — allocation is sufficiently balanced.
   calc_model_summary_type_a_fraction(t.model_summary_id) AS type_a_fraction,    -- Fraction of studies that are Type-A (full canonical reversals). TypeACount / StudyCount.

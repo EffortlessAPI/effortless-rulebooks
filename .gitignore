@@ -13,6 +13,8 @@ effortless-platform/effortless-rulebook/push-to-airtable/sync-report.md
 **/.vite/**/*
 postgresql-18.1/**/*
 **/*.pyc
+**/__pycache__/**/*
+**/*.db
 execution-substrates/binary/erb_calc.dylib
 execution-substrates/binary/erb_calc.o
 execution-substrates/**/_run_metadata.json

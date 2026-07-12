@@ -588,3 +588,98 @@ export function buildPurityChart(
   };
   return new Chart(canvas, config);
 }
+
+/** Notable finding: Type-D pooled gap vs signal purity — effect size predicts latent fragility. */
+export function buildTypeDFragilityChart(
+  canvas: HTMLCanvasElement,
+  rankings: TreatmentRanking[],
+): Chart<'scatter'> {
+  const dRows = rankings.filter(r => r.distortion_type === 'D' && r.signal_purity != null);
+  const maxGap = Math.max(0.05, ...dRows.map(r => Number(r.pooled_gap)));
+  const bounds = { xMin: 0, xMax: maxGap * 1.08, yMin: -0.02, yMax: 1.05, scaleMode: 'linear' as const };
+  const xTick = (v: string | number) => (Number(v) * 100).toFixed(0) + '%';
+  const yTick = (v: string | number) => Number(v).toFixed(2);
+
+  const groups = [
+    { label: 'Latent-fragile', color: TYPE_COLORS.A, filter: (r: TreatmentRanking) => !!r.is_sweep_fragile },
+    { label: 'Allocation-stable', color: TYPE_COLORS.D, filter: (r: TreatmentRanking) => !r.is_sweep_fragile },
+  ];
+  const datasets = groups.map(g => {
+    const points = dRows.filter(g.filter).map(r => ({
+      x: Number(r.pooled_gap), y: Number(r.signal_purity), label: r.study, _radius: pointRadius(),
+    }));
+    return {
+      label: g.label,
+      data: points,
+      backgroundColor: points.map(() => g.color + '66'),
+      borderColor: points.map(() => g.color),
+      borderWidth: 1.25,
+      pointRadius: points.map(p => p._radius),
+      pointHoverRadius: points.map(p => p._radius + 2),
+    };
+  });
+
+  const config: ChartConfiguration<'scatter'> = {
+    type: 'scatter',
+    data: { datasets },
+    options: {
+      ...baseScatterOptions('Pooled gap →', 'Signal purity →', bounds, xTick, yTick),
+      plugins: {
+        ...baseScatterOptions('', '', bounds, xTick, yTick).plugins,
+        tooltip: {
+          ...baseScatterOptions('', '', bounds, xTick, yTick).plugins!.tooltip,
+          callbacks: {
+            title: items => String((items[0]?.raw as PlanePoint)?.label ?? ''),
+            label: ctx => {
+              const d = ctx.raw as { x: number; y: number };
+              return [`Pooled gap: ${(d.x * 100).toFixed(1)}%`, `Purity: ${d.y.toFixed(3)}`];
+            },
+          },
+        },
+      },
+    },
+  };
+  return new Chart(canvas, config);
+}
+
+/** Notable finding: allocation distortion vs sweep range — invisible-fragile cluster at distortion=0. */
+export function buildInvisibleFragileChart(
+  canvas: HTMLCanvasElement,
+  rankings: TreatmentRanking[],
+  studyById: Record<string, Study>,
+): Chart<'scatter'> {
+  const rows = rankings.filter(r => r.sweep_pooled_gap_range != null);
+  const maxX = Math.max(0.05, ...rows.map(r => Number(r.allocation_distortion)));
+  const maxY = Math.max(0.1, ...rows.map(r => Number(r.sweep_pooled_gap_range)));
+  const bounds = { xMin: -maxX * 0.04, xMax: maxX * 1.08, yMin: -maxY * 0.04, yMax: maxY * 1.08, scaleMode: 'linear' as const };
+  const xTick = (v: string | number) => Number(v).toFixed(3);
+  const yTick = (v: string | number) => Number(v).toFixed(2);
+
+  const datasets = byTypeDatasets(rows, studyById, r => ({
+    x: Number(r.allocation_distortion), y: Number(r.sweep_pooled_gap_range),
+    label: r.study, rawX: Number(r.allocation_distortion), rawY: Number(r.sweep_pooled_gap_range),
+    type: r.distortion_type, _radius: pointRadius(),
+  }));
+
+  const config: ChartConfiguration<'scatter'> = {
+    type: 'scatter',
+    data: { datasets },
+    options: {
+      ...baseScatterOptions('Allocation distortion →', 'Sweep range →', bounds, xTick, yTick),
+      plugins: {
+        ...baseScatterOptions('', '', bounds, xTick, yTick).plugins,
+        tooltip: {
+          ...baseScatterOptions('', '', bounds, xTick, yTick).plugins!.tooltip,
+          callbacks: {
+            title: items => String((items[0]?.raw as PlanePoint)?.label ?? ''),
+            label: ctx => {
+              const d = ctx.raw as PlanePoint & { rawX: number; rawY: number; type: string };
+              return [`Type ${d.type}`, `Distortion: ${d.rawX.toFixed(4)}`, `Sweep range: ${d.rawY.toFixed(3)}`];
+            },
+          },
+        },
+      },
+    },
+  };
+  return new Chart(canvas, config);
+}

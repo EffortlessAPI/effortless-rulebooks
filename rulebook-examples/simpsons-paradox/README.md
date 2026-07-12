@@ -188,7 +188,7 @@ Catalog `ExpectedDistortionType` is a **pre-encoding guess**. Observed `Distorti
 
 ## Build & run
 
-**Prerequisites:** [Effortless CLI](https://effortlessapi.com), local Postgres, Node.js.
+**Prerequisites:** [Effortless CLI](https://effortlessapi.com), local Postgres, Node.js, Chrome/Chromium (for PDF export via the download menu).
 
 Transpilers are registered in `effortless.json` and run on hosted Effortless infrastructure (Control Plane). No local transpiler bus is required for a routine build.
 
@@ -196,7 +196,7 @@ Transpilers are registered in `effortless.json` and run on hosted Effortless inf
 git status                               # always check first — rulebook JSON is sacred
 effortless build                         # hosted transpilers → postgres/, rulespeak/, owl/, explainer DAG, summary PDF
 cd effortless-postgres && ./init-db.sh   # drop and recreate local DB; writes simpsons-paradox-summary.pdf
-./start.sh                               # explorer UI on :5173 (API on :3001)
+./start.sh                               # installs app deps if missing, then boots explorer UI on :5173 (API on :3001)
 ```
 
 **Build outputs** (from `effortless.json`):
@@ -229,3 +229,13 @@ No migrations. Edit rulebook → `effortless build` → `./init-db.sh` → DB re
 | `merge-acquisition-manifest.py`, `merge-pdf-extraction-manifest.py` | Merge acquisition metadata into catalog |
 
 Run allocation-sweep regeneration after any import that adds studies.
+
+---
+
+## Local transpiler bus (`localhost:4242`)
+
+> **All 13 local transpilers live on `localhost:4242`.** Once you run
+> `./start.sh` from the repo root, the ssotme-proxy exposes every repo-local
+> transpiler — `rulebook-to-postgres`, `rulebook-to-python`, `rulebook-to-golang`,
+> `rulebook-to-cobol`, `rulebook-to-owl`, and more — as first-class `ssotme://`
+> routes any `effortless build` can call.

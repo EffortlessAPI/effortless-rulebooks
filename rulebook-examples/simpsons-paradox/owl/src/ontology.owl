@@ -1869,6 +1869,27 @@ effortless-ntwf:typeACount a owl:DatatypeProperty ;
     rdfs:comment "Studies classified as Type-A: sign flip AND full reversal (ReversalIntensity=1). The canonical Simpson's Paradox — allocation distortion reverses the pooled winner." .
     # calculated: aggregation
 
+effortless-ntwf:dangerTierCount a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:ModelSummary ;
+    rdfs:range xsd:integer ;
+    rdfs:label "DangerTierCount" ;
+    rdfs:comment "Studies where TreatmentRankings.ScreeningTier = DANGER — pooled sign is wrong (DistortionType A or B)." .
+    # calculated: aggregation
+
+effortless-ntwf:cautionTierCount a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:ModelSummary ;
+    rdfs:range xsd:integer ;
+    rdfs:label "CautionTierCount" ;
+    rdfs:comment "Studies where TreatmentRankings.ScreeningTier = CAUTION — pooled sign holds but magnitude is distorted (DistortionType C+ or C-)." .
+    # calculated: aggregation
+
+effortless-ntwf:safeTierCount a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:ModelSummary ;
+    rdfs:range xsd:integer ;
+    rdfs:label "SafeTierCount" ;
+    rdfs:comment "Studies where TreatmentRankings.ScreeningTier = SAFE — pooling is trustworthy (DistortionType D)." .
+    # calculated: aggregation
+
 effortless-ntwf:typeBCount a owl:DatatypeProperty ;
     rdfs:domain effortless-ntwf:ModelSummary ;
     rdfs:range xsd:integer ;

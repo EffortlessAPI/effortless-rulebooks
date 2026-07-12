@@ -107,6 +107,10 @@ export interface TreatmentRanking {
   study_domain?: string | null;
   stratum_causal_role?: string | null;
   is_latent_only_flip?: boolean | null;
+  is_stratum_unanimous?: boolean | null;
+  sweep_pooled_gap_range?: number | null;
+  allocation_fragility?: number | null;
+  is_sweep_fragile?: boolean | null;
 }
 
 export interface Treatment {

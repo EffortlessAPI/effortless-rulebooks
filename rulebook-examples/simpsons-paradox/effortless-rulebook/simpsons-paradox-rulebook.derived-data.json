@@ -1101,6 +1101,42 @@
       "NextSuggestion": "Structural debt, not a one-off bug: every table whose calculated fields route through 03c (or an equivalent hand-written override) requires the SAME new-hypothesis-or-new-field edit made in at least three places by hand (rulebook formula for documentation, 03b for view columns, 03c for real logic), with no automated check that they stay in sync -- this loop found two independent instances of exactly that drift in one pass. Two remediation shapes worth evaluating next: (a) a build-time conformance check that diffs 03-create-views.sql\u0027s native column/branch list against 03b/03c\u0027s hand-maintained lists and fails loudly on drift, in the same spirit as InvariantChecks; (b) escalating the underlying rulebook-to-postgres LOOKUP(constant, Table[NonPKColumn], Table[TargetColumn]) mistranslation (this loop\u0027s second confirmed instance, after loop-92\u0027s first) as a transpiler bug report, which would eventually let 03c\u0027s hand-written logic collapse back into a real generated formula.",
       "TraditionId": "tradition-dag",
       "EpochTag": "identity-era-geometry"
+    },
+    {
+      "LoopId": "loop-94",
+      "Title": "Docs cleanup, polish, prune, re-align with the current instrument",
+      "Status": "complete",
+      "NewConcept": "No new domain concept. Documentation-accuracy loop: reconcile CLAUDE.md and README.md against the actual current rulebook state.",
+      "DomainQuestion": "CLAUDE.md still said \u0027238-study corpus\u0027, \u0027loop-85\u0027, and \u002725 critical invariants\u0027 while the live rulebook was at 299 studies (238 Simpson\u0027s-corpus \u002B control wave), loop-93, and 26 critical InvariantChecks \u2014 do the two docs agree with each other and with the rulebook once corrected?",
+      "MockDataNote": "Witnessed. CLAUDE.md\u0027s \u0027What this models\u0027 section rewritten to 299 studies / loop-93 / 26 critical invariants, matching README.md (which was already current). Added the doctrine-mandated \u0027Local transpiler bus (localhost:4242)\u0027 section to README.md, which was missing it. Added a Chrome/Chromium prerequisite line (needed by the PDF export scripts, previously undocumented).",
+      "NextSuggestion": "loop-95: prune dead-end root-level artifacts and superseded one-shot scripts that no longer add empirical/pedagogical value.",
+      "TraditionId": "tradition-dag",
+      "WhatWasIntroduced": "CLAUDE.md corpus stats corrected (299 studies, loop-93, 26 critical invariants). README.md gained the Local transpiler bus section and a Chrome/Chromium prerequisite note.",
+      "EpochTag": "identity-era-geometry"
+    },
+    {
+      "LoopId": "loop-95",
+      "Title": "Prune dead-ends that add no empirical or pedagogical value",
+      "Status": "complete",
+      "NewConcept": "No new domain concept. Repo-hygiene loop: remove/relocate artifacts that predate the current ERB pipeline or are otherwise unreferenced debris.",
+      "DomainQuestion": "Which root-level files and scripts/ entries are actually load-bearing (referenced by the README, app code, or an active ingestion path) versus superseded scratch artifacts from loops long since merged?",
+      "MockDataNote": "Witnessed. Deleted loop-01.db \u002B loop-01-run.sh (pre-ERB sqlite prototype, superseded by effortless-postgres/), temp.txt (an unrelated pasted conversation, zero references), and simpsons-paradox.xlsx (a stale Jun-29 manual snapshot predating loop-93\u0027s data; the live export path is rulebook-to-xlsx via app/backend/export-xlsx.ts, unaffected). Moved 16 historical one-shot migration/import/patch scripts (wave2-4 imports, loop-51-54/loop-68 patches, apply-loop-61/81, backfill-loop-commits, prune-legacy-taxonomy, tag-loop-milestones, etc.) from scripts/ to scripts/archive/ \u2014 none are referenced by README.md\u0027s script table, all were one-shot passes for loops already merged into the rulebook. Removed scripts/__pycache__.",
+      "NextSuggestion": "loop-96: verify the fresh-clone bootstrap path (clone -\u003E VS Code -\u003E effortless build -\u003E init-db.sh -\u003E start.sh) has no blockers.",
+      "TraditionId": "tradition-dag",
+      "WhatWasIntroduced": "Deleted 4 root-level dead artifacts (loop-01.db, loop-01-run.sh, temp.txt, simpsons-paradox.xlsx). Archived 16 superseded one-shot scripts to scripts/archive/.",
+      "EpochTag": "identity-era-geometry"
+    },
+    {
+      "LoopId": "loop-96",
+      "Title": "Debug outstanding issues that impede a fresh clone from getting to work",
+      "Status": "complete",
+      "NewConcept": "No new domain concept. Bootstrap-reliability loop: make a cold clone \u002B VS Code open \u002B build fail loudly and early instead of obscurely.",
+      "DomainQuestion": "If a new contributor clones the repo, opens it in VS Code, and runs ./start.sh before running effortless build \u002B init-db.sh, what happens \u2014 and can it fail with a clear pointer to the missing step instead of an obscure downstream Postgres error?",
+      "MockDataNote": "Witnessed. Confirmed the monorepo-wide .gitignore (one level up, shared across all rulebook-examples/ projects) already covers node_modules, .ssotme, .DS_Store, and .pyc, but was missing __pycache__/ directories and *.db files \u2014 added both patterns. Removed untracked .DS_Store debris (root, owl/, effortless-rulebook/, article-series/thumbnails/). Added a preflight check to start.sh: it now verifies Postgres is reachable and that vw_studies exists before killing ports/booting servers, failing with an explicit \u0027run effortless build \u0026\u0026 init-db.sh first\u0027 message instead of booting a backend that silently fails on every query.",
+      "NextSuggestion": "97-99: unplanned, to be scoped from future findings.",
+      "TraditionId": "tradition-dag",
+      "WhatWasIntroduced": "start.sh gained a Postgres/vw_studies preflight check with an explicit remediation message. Monorepo .gitignore gained __pycache__/ and *.db patterns. Stray .DS_Store files removed.",
+      "EpochTag": "identity-era-geometry"
     }
   ],
   "Studies": [
