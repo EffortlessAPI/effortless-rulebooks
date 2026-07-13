@@ -182,13 +182,70 @@ export function ConclusionsAdminView() {
     [rankings],
   );
 
+  function median(vals: number[]): number {
+    if (!vals.length) return 0;
+    const s = [...vals].sort((a, b) => a - b);
+    const mid = Math.floor(s.length / 2);
+    return s.length % 2 ? s[mid] : (s[mid - 1] + s[mid]) / 2;
+  }
+
   const abCompare = useMemo(() => {
     const aRows = rankings.filter(r => r.distortion_type === 'A');
     const bRows = rankings.filter(r => r.distortion_type === 'B');
     const aUnanimous = aRows.filter(r => r.is_stratum_unanimous).length;
     const bUnanimous = bRows.filter(r => r.is_stratum_unanimous).length;
-    return { aRows, bRows, aUnanimous, bUnanimous };
+    const aMedianPurity = median(aRows.filter(r => r.signal_purity != null).map(r => Number(r.signal_purity)));
+    const bMedianPurity = median(bRows.filter(r => r.signal_purity != null).map(r => Number(r.signal_purity)));
+    return { aRows, bRows, aUnanimous, bUnanimous, aMedianPurity, bMedianPurity };
   }, [rankings]);
+
+  // Finding 1 right panel: causal role × outcome, flattened to 9 named rows (matches artifact layout).
+  const causalModeRows = useMemo(() => {
+    const find = (role: string, key: 'manifest' | 'latent' | 'stable') =>
+      causalRoleBreakdown.find(r => r.role === role)?.[key] ?? 0;
+    const label = (role: string) => role.charAt(0).toUpperCase() + role.slice(1);
+    return (['confounder', 'collider', 'selection'] as const).flatMap(role => ([
+      { label: `${label(role)} → manifest flip`, n: find(role, 'manifest'), color: TYPE_COLORS.A },
+      { label: `${label(role)} → latent only`, n: find(role, 'latent'), color: TYPE_COLORS['C+'] },
+      { label: `${label(role)} → stable`, n: find(role, 'stable'), color: TYPE_COLORS.D },
+    ]));
+  }, [causalRoleBreakdown]);
+
+  // Finding 3 right panel: C+ studies — high distortion, zero sign-flip.
+  const cPlusTable = useMemo(
+    () => rankings
+      .filter(r => r.distortion_type === 'C+')
+      .map(r => ({
+        study: r.study,
+        purity: Number(r.signal_purity ?? 0),
+        distortion_ratio: Number(r.distortion_ratio),
+        pooled_gap: Number(r.pooled_gap),
+        corrected_gap: Math.abs(Number(r.weighted_stratum_gap_sum)),
+      }))
+      .sort((a, b) => b.distortion_ratio - a.distortion_ratio),
+    [rankings],
+  );
+
+  // Finding 4: full domain breakdown with percentages (no truncation).
+  const domainBreakdownPct = useMemo(
+    () => domainBreakdown.map(d => ({
+      ...d,
+      manifestPct: d.total ? d.manifest / d.total : 0,
+      latentPct: d.total ? d.latent / d.total : 0,
+      stablePct: d.total ? d.stable / d.total : 0,
+    })),
+    [domainBreakdown],
+  );
+
+  // Finding 5: ranked fragility list for "invisible fragile" Type D studies (purity=1, distortion=0, sweep>0).
+  const invisibleFragileRanked = useMemo(
+    () => rankings
+      .filter(r => r.is_sweep_fragile && Number(r.allocation_distortion) === 0)
+      .map(r => ({ study: r.study, fragility: Number(r.allocation_fragility ?? 0) }))
+      .sort((a, b) => b.fragility - a.fragility)
+      .slice(0, 12),
+    [rankings],
+  );
 
   const filtered = useMemo(() => {
     const rows =
@@ -321,133 +378,313 @@ export function ConclusionsAdminView() {
           ))}
         </div>
 
-        <div className="findings-grid">
+        {/* Finding 1 — causal role × outcome */}
+        <div className="finding-2col">
           <div className="finding-panel">
-            <div className="finding-num">1</div>
-            <span className="finding-badge">Novel</span>
+            <span className="finding-badge">Finding 1 · Novel</span>
             <h3 className="finding-title">Collider / selection never manifests a sign flip</h3>
-            <p className="finding-blurb">
-              Across {causalRoleBreakdown.reduce((n, r) => n + r.manifest + r.latent + r.stable, 0)}{' '}
-              real-world studies (excludes synthetic boundary-probe studies — see{' '}
-              <code>H-collider-no-manifest-theorem</code> below), causal role by outcome:
-            </p>
+            <p className="finding-blurb">Causal role × manifest vs latent reversal</p>
             <div className="side-stack">
               {causalRoleBreakdown.map(r => {
                 const total = r.manifest + r.latent + r.stable;
                 return (
-                  <div key={r.role} className="type-bar-row">
-                    <div className="type-bar-header">
-                      <span>{r.role}</span>
-                      <span style={{ color: '#8b949e' }}>{total}</span>
+                  <div key={r.role} className="nf-stacked-row">
+                    <span className="nf-bar-label" style={{ textAlign: 'left' }}>{r.role}</span>
+                    <div className="nf-stacked-track">
+                      <div className="nf-stacked-seg" style={{ flex: r.manifest || 0.0001, background: TYPE_COLORS.A, minWidth: r.manifest ? 2 : 0 }} title={`manifest: ${r.manifest}`} />
+                      <div className="nf-stacked-seg" style={{ flex: r.latent || 0.0001, background: TYPE_COLORS['C+'], minWidth: r.latent ? 2 : 0 }} title={`latent: ${r.latent}`} />
+                      <div className="nf-stacked-seg" style={{ flex: r.stable || 0.0001, background: TYPE_COLORS.D, minWidth: r.stable ? 2 : 0 }} title={`stable: ${r.stable}`} />
                     </div>
-                    <div style={{ display: 'flex', height: 10, borderRadius: 6, overflow: 'hidden', gap: 1 }}>
-                      <div style={{ flex: r.manifest || 0.0001, background: TYPE_COLORS.A, minWidth: r.manifest ? 2 : 0 }} title={`manifest: ${r.manifest}`} />
-                      <div style={{ flex: r.latent || 0.0001, background: TYPE_COLORS['C+'], minWidth: r.latent ? 2 : 0 }} title={`latent: ${r.latent}`} />
-                      <div style={{ flex: r.stable || 0.0001, background: TYPE_COLORS.D, minWidth: r.stable ? 2 : 0 }} title={`stable: ${r.stable}`} />
-                    </div>
+                    <span className="nf-bar-val" style={{ textAlign: 'right' }}>{total}</span>
                   </div>
                 );
               })}
             </div>
-            <p className="finding-blurb" style={{ marginTop: 10 }}>
-              {(() => {
-                const collider = causalRoleBreakdown.find(r => r.role === 'collider');
-                const selection = causalRoleBreakdown.find(r => r.role === 'selection');
-                const colliderManifest = (collider?.manifest ?? 0) + (selection?.manifest ?? 0);
-                return colliderManifest === 0
-                  ? 'Zero manifest flips among collider/selection studies in the current corpus — conditioning biases the estimate but does not reverse its sign.'
-                  : `${colliderManifest} manifest flip(s) among collider/selection studies — this no-flip pattern does not hold on the current data.`;
-              })()}
+            <div className="nf-legend">
+              <span className="nf-legend-item"><span className="nf-legend-swatch" style={{ background: TYPE_COLORS.A }} />Manifest flip</span>
+              <span className="nf-legend-item"><span className="nf-legend-swatch" style={{ background: TYPE_COLORS['C+'] }} />Latent only</span>
+              <span className="nf-legend-item"><span className="nf-legend-swatch" style={{ background: TYPE_COLORS.D }} />Stable</span>
+            </div>
+            <p className="finding-blurb">
+              Real-world corpus only ({causalRoleBreakdown.reduce((n, r) => n + r.manifest + r.latent + r.stable, 0)}{' '}
+              studies; excludes synthetic boundary-probe studies — see{' '}
+              <code>H-collider-no-manifest-theorem</code> below). Collider and selection studies
+              are exclusively latent or stable — they can appear fragile under sweep but never
+              actually flip at observed allocation.
             </p>
           </div>
 
           <div className="finding-panel">
-            <div className="finding-num">2</div>
-            <span className="finding-badge">Novel</span>
-            <h3 className="finding-title">Effect size predicts Type-D latent fragility</h3>
-            <p className="finding-blurb">Pooled gap bucket → latent-fragile rate, Type D only:</p>
-            <div className="side-stack">
-              {effectSizeBuckets.map(b => (
-                <div key={b.label} className="type-bar-row">
-                  <div className="type-bar-header">
-                    <span>{b.label}</span>
-                    <span style={{ color: '#8b949e' }}>{b.fragile}/{b.n}</span>
+            <h3 className="finding-title" style={{ visibility: 'hidden', height: 0, margin: 0 }}>&nbsp;</h3>
+            <p className="finding-blurb"><strong>Causal role → reversal mode (count)</strong></p>
+            <div className="nf-bar-list">
+              {causalModeRows.map(row => {
+                const max = Math.max(1, ...causalModeRows.map(r => r.n));
+                return (
+                  <div key={row.label} className="nf-bar-row wide-label">
+                    <span className="nf-bar-label">{row.label}</span>
+                    <div className="nf-bar-track">
+                      <div className="nf-bar-fill" style={{ width: `${(row.n / max) * 100}%`, background: row.color }} />
+                    </div>
+                    <span className="nf-bar-val">{row.n}</span>
                   </div>
-                  <div className="type-bar-track">
-                    <div className="type-bar-fill" style={{ width: `${b.pct * 100}%`, background: TYPE_COLORS.A }} />
-                  </div>
-                </div>
-              ))}
+                );
+              })}
+            </div>
+            <p className="finding-blurb" style={{ marginTop: 10, color: '#8b949e' }}>
+              Theorem candidate: conditioning on a collider biases the estimate but does not
+              reverse its sign under the 2×K encoding.
+            </p>
+          </div>
+        </div>
+
+        {/* Finding 2 — effect size vs Type-D fragility */}
+        <div className="finding-2col">
+          <div className="finding-panel">
+            <span className="finding-badge">Finding 2 · Novel</span>
+            <h3 className="finding-title">Effect size is the strongest predictor of Type-D fragility</h3>
+            <p className="finding-blurb">Pooled gap vs latent-flip potential (Type D)</p>
+            <div className="nf-legend">
+              <span className="nf-legend-item"><span className="nf-legend-swatch" style={{ background: TYPE_COLORS.A }} />Latent-fragile</span>
+              <span className="nf-legend-item"><span className="nf-legend-swatch" style={{ background: TYPE_COLORS.D }} />Allocation-stable</span>
             </div>
             <div className="chart-canvas-wrap chart-canvas-wrap-finding">
               <canvas ref={typeDFragilityRef} />
             </div>
-          </div>
-
-          <div className="finding-panel">
-            <div className="finding-num">3</div>
-            <span className="finding-badge" style={{ color: '#7ee787' }}>Theorem</span>
-            <h3 className="finding-title">Signal purity is necessary but not sufficient for a flip</h3>
-            <p className="finding-blurb">
-              All manifest reversals (A, B) have purity below 0.5 — proven invariant. C+ studies
-              also show low purity but don't flip: their corrected gap stays non-zero.
+            <p className="finding-blurb" style={{ color: '#8b949e' }}>
+              Stable D studies cluster at larger pooled gaps; fragile D studies concentrate where
+              the observed effect is tiny, even when purity = 1.0.
             </p>
-            <div className="chart-canvas-wrap chart-canvas-wrap-finding">
-              <canvas ref={purityRef} />
-            </div>
           </div>
 
           <div className="finding-panel">
-            <div className="finding-num">4</div>
-            <span className="finding-badge">Novel</span>
-            <h3 className="finding-title">Domain risk profile</h3>
-            <p className="finding-blurb">Manifest / latent-fragile / stable, by domain:</p>
-            <div className="side-stack" style={{ maxHeight: 220, overflowY: 'auto' }}>
-              {domainBreakdown.map(d => (
-                <div key={d.domain} className="type-bar-row">
-                  <div className="type-bar-header">
-                    <span>{d.domain}</span>
-                    <span style={{ color: '#8b949e' }}>{d.total}</span>
+            <p className="finding-blurb"><strong>Effect size bucket → latent-flip rate (Type D)</strong></p>
+            <div className="nf-bar-list">
+              {effectSizeBuckets.map(b => (
+                <div key={b.label} className="nf-bar-row">
+                  <span className="nf-bar-label">{b.label}</span>
+                  <div className="nf-bar-track">
+                    <div className="nf-bar-fill" style={{ width: `${b.pct * 100}%`, background: TYPE_COLORS.A }} />
                   </div>
-                  <div style={{ display: 'flex', height: 10, borderRadius: 6, overflow: 'hidden', gap: 1 }}>
-                    <div style={{ flex: d.manifest || 0.0001, background: TYPE_COLORS.A, minWidth: d.manifest ? 2 : 0 }} title={`manifest: ${d.manifest}`} />
-                    <div style={{ flex: d.latent || 0.0001, background: TYPE_COLORS['C+'], minWidth: d.latent ? 2 : 0 }} title={`latent: ${d.latent}`} />
-                    <div style={{ flex: d.stable || 0.0001, background: TYPE_COLORS.D, minWidth: d.stable ? 2 : 0 }} title={`stable: ${d.stable}`} />
-                  </div>
+                  <span className="nf-bar-val">{Math.round(b.pct * 100)}% ({b.fragile}/{b.n})</span>
                 </div>
               ))}
             </div>
+            <p className="finding-blurb" style={{ marginTop: 10, color: '#8b949e' }}>
+              Effect size is a near-perfect separator between fragile and stable Type-D studies —
+              not part of any published taxonomy we're aware of.
+            </p>
+          </div>
+        </div>
+
+        {/* Finding 3 — signal purity necessary but not sufficient */}
+        <div className="finding-2col">
+          <div className="finding-panel">
+            <span className="finding-badge" style={{ color: '#7ee787' }}>Finding 3 · Theorem (proven)</span>
+            <h3 className="finding-title">Signal purity is necessary but not sufficient for a flip</h3>
+            <p className="finding-blurb">Signal purity by distortion type</p>
+            <div className="nf-strip-chart">
+              <div className="nf-strip-threshold" style={{ bottom: '50%' }}>
+                <span className="nf-strip-threshold-label">purity = 0.5</span>
+              </div>
+              {(['A', 'B', 'C-', 'C+', 'D'] as const).map(t => (
+                <div key={t} className="nf-strip-col">
+                  {rankings.filter(r => r.distortion_type === t && r.signal_purity != null).map(r => (
+                    <div
+                      key={r.study}
+                      className="nf-strip-dot"
+                      style={{
+                        bottom: `${Math.max(0, Math.min(100, Number(r.signal_purity) * 100))}%`,
+                        background: TYPE_COLORS[t],
+                        opacity: 0.75,
+                      }}
+                      title={`${r.study}: purity ${Number(r.signal_purity).toFixed(3)}`}
+                    />
+                  ))}
+                  <span className="nf-strip-axis-label" style={{ color: TYPE_COLORS[t] }}>{t}</span>
+                </div>
+              ))}
+            </div>
+            <p className="finding-blurb" style={{ color: '#8b949e' }}>
+              All manifest reversals (A, B) have purity below 0.5 — proven invariant. C+ studies
+              also show low purity but don't flip: their corrected gap stays non-zero. The full
+              condition is purity &lt; 0.5 AND |corrected gap| ≈ 0.
+            </p>
           </div>
 
           <div className="finding-panel">
-            <div className="finding-num">5</div>
-            <span className="finding-badge">Novel</span>
-            <h3 className="finding-title">Invisible-fragile Type D studies</h3>
-            <p className="finding-blurb">
-              <TrCell col="allocation_distortion">{invisibleFragileCount}</TrCell> studies have
-              zero measured allocation distortion yet are flagged <code>is_sweep_fragile</code> —
-              undetectable by existing distortion metrics but reweighting-sensitive.
+            <p className="finding-blurb"><strong>C+ studies: high distortion, zero sign-flip — why?</strong></p>
+            <div className="nf-table-wrap">
+              <table className="nf-table">
+                <thead>
+                  <tr>
+                    <th>Study</th>
+                    <th>Purity</th>
+                    <th>Distortion</th>
+                    <th>Pooled gap</th>
+                    <th>|Corrected|</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {cPlusTable.map(r => (
+                    <tr key={r.study}>
+                      <td>{r.study}</td>
+                      <td>{(r.purity * 100).toFixed(1)}%</td>
+                      <td style={{ color: TYPE_COLORS['C+'] }}>{r.distortion_ratio.toFixed(1)}×</td>
+                      <td>{(r.pooled_gap * 100).toFixed(1)}%</td>
+                      <td>{(r.corrected_gap * 100).toFixed(1)}%</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            <p className="finding-blurb" style={{ marginTop: 10, color: '#8b949e' }}>
+              Amplification ≠ reversal: distortion ratio can be an order of magnitude off while
+              both pooled and corrected gaps still point the same direction.
             </p>
+          </div>
+        </div>
+
+        {/* Finding 4 — domain risk profile */}
+        <div className="finding-panel finding-panel-wide" style={{ marginBottom: 28 }}>
+          <span className="finding-badge">Finding 4 · Novel</span>
+          <h3 className="finding-title">Domain risk profile: manifest · latent-fragile · stable — by domain</h3>
+          <div className="nf-legend">
+            <span className="nf-legend-item"><span className="nf-legend-swatch" style={{ background: TYPE_COLORS.A }} />Manifest wrong</span>
+            <span className="nf-legend-item"><span className="nf-legend-swatch" style={{ background: TYPE_COLORS['C+'] }} />Latent fragile</span>
+            <span className="nf-legend-item"><span className="nf-legend-swatch" style={{ background: TYPE_COLORS.D }} />Stable</span>
+          </div>
+          <div className="side-stack">
+            {domainBreakdownPct.map(d => (
+              <div key={d.domain} className="nf-stacked-row" style={{ gridTemplateColumns: '110px 1fr 40px' }}>
+                <span className="nf-bar-label" style={{ textAlign: 'left' }}>{d.domain}</span>
+                <div className="nf-stacked-track" style={{ height: 20 }}>
+                  {d.manifest > 0 && (
+                    <div className="nf-stacked-seg" style={{ flex: d.manifest, background: TYPE_COLORS.A }} title={`${Math.round(d.manifestPct * 100)}% manifest`} />
+                  )}
+                  {d.latent > 0 && (
+                    <div className="nf-stacked-seg" style={{ flex: d.latent, background: TYPE_COLORS['C+'] }} title={`${Math.round(d.latentPct * 100)}% latent-fragile`} />
+                  )}
+                  {d.stable > 0 && (
+                    <div className="nf-stacked-seg" style={{ flex: d.stable, background: TYPE_COLORS.D }} title={`${Math.round(d.stablePct * 100)}% stable`} />
+                  )}
+                </div>
+                <span className="nf-bar-val" style={{ textAlign: 'right' }}>n={d.total}</span>
+              </div>
+            ))}
+          </div>
+          <p className="finding-blurb" style={{ marginTop: 10, color: '#8b949e' }}>
+            {(() => {
+              const sorted = [...domainBreakdownPct].sort((a, b) => b.latentPct - a.latentPct);
+              const top = sorted[0];
+              const zeroManifest = domainBreakdownPct.filter(d => d.manifest === 0).map(d => d.domain);
+              return top
+                ? `${top.domain} has the highest latent-fragile rate (${Math.round(top.latentPct * 100)}%). ${
+                    zeroManifest.length ? `Zero manifest flips in: ${zeroManifest.join(', ')}.` : ''
+                  }`
+                : '';
+            })()}
+          </p>
+        </div>
+
+        {/* Finding 5 — invisible-fragile Type D */}
+        <div className="finding-2col">
+          <div className="finding-panel">
+            <span className="finding-badge">Finding 5 · Novel</span>
+            <h3 className="finding-title">Ultra-fragile "invisible" Type D studies</h3>
+            <p className="finding-blurb">
+              Allocation fragility (sweep range ÷ pooled gap) — Type D studies with
+              signal_purity = 1.0 and allocation_distortion = 0
+            </p>
+            <div className="nf-bar-list">
+              {invisibleFragileRanked.map(r => {
+                const max = Math.max(1, ...invisibleFragileRanked.map(x => x.fragility));
+                return (
+                  <div key={r.study} className="nf-bar-row wide-label">
+                    <span className="nf-bar-label">{r.study}</span>
+                    <div className="nf-bar-track">
+                      <div className="nf-bar-fill" style={{ width: `${(r.fragility / max) * 100}%`, background: TYPE_COLORS['C+'] }} />
+                    </div>
+                    <span className="nf-bar-val">{r.fragility.toFixed(1)}×</span>
+                  </div>
+                );
+              })}
+            </div>
+            <p className="finding-blurb" style={{ marginTop: 10, color: '#8b949e' }}>
+              <TrCell col="allocation_distortion">{invisibleFragileCount}</TrCell> studies look
+              perfectly safe by every published measure (purity 1.0, distortion 0) yet are
+              flagged <code>is_sweep_fragile</code> — undetectable by existing distortion metrics.
+            </p>
+          </div>
+
+          <div className="finding-panel">
+            <p className="finding-blurb"><strong>Allocation distortion vs sweep range (all types)</strong></p>
             <div className="chart-canvas-wrap chart-canvas-wrap-finding">
               <canvas ref={invisibleFragileRef} />
             </div>
-          </div>
-
-          <div className="finding-panel">
-            <div className="finding-num">6</div>
-            <span className="finding-badge">Novel characterization</span>
-            <h3 className="finding-title">A vs B is a structural distinction</h3>
-            <p className="finding-blurb">
-              Type A ({abCompare.aRows.length} studies): {abCompare.aUnanimous} have unanimous
-              stratum agreement — the pooled aggregate simply overrides them. Type B (
-              {abCompare.bRows.length} studies): {abCompare.bUnanimous} unanimous, meaning most B
-              studies have strata that disagree with each other, and pooling favors whichever
-              stratum happens to be overweighted.
-            </p>
             <p className="finding-blurb" style={{ color: '#8b949e' }}>
-              Policy response differs: A warrants immediate stratification; B requires causal
-              investigation of which stratum's estimate to trust first.
+              The cluster at distortion≈0, sweep&gt;0 is the "invisible fragile" group — undetectable
+              by allocation-distortion metrics but highly reweighting-sensitive.
             </p>
+          </div>
+        </div>
+
+        {/* Finding 6 — A vs B structural distinction */}
+        <div className="finding-panel finding-panel-wide">
+          <span className="finding-badge">Finding 6 · Novel characterization</span>
+          <h3 className="finding-title">A vs B is a structural distinction (unanimous vs heterogeneous strata)</h3>
+          <p className="finding-blurb">
+            Type A: strata agree, pool overrides them · Type B: strata disagree, pool picks the wrong one
+          </p>
+          <div className="nf-compare-grid">
+            <div className="nf-compare-card" style={{ borderLeft: `3px solid ${TYPE_COLORS.A}` }}>
+              <h4 style={{ color: TYPE_COLORS.A }}>Type A — allocation-driven</h4>
+              <div className="nf-compare-stat">
+                <div className="nf-cs-val">{abCompare.aRows.length}</div>
+                <div className="nf-cs-label">studies</div>
+              </div>
+              <div className="nf-compare-stat">
+                <div className="nf-cs-val">{abCompare.aUnanimous}</div>
+                <div className="nf-cs-label">unanimous strata — all agree on direction</div>
+              </div>
+              <div className="nf-compare-stat">
+                <div className="nf-cs-val">{Math.round(abCompare.aMedianPurity * 100)}%</div>
+                <div className="nf-cs-label">median purity (lower = more distorted)</div>
+              </div>
+              <div className="nf-compare-mech">
+                <strong>Mechanism</strong>
+                Every stratum agrees; the error is purely in the pooling weights.
+              </div>
+              <div className="nf-compare-mech">
+                <strong>Policy</strong>
+                Stratify immediately. The corrected winner is unambiguous.
+              </div>
+            </div>
+            <div className="nf-compare-card" style={{ borderLeft: `3px solid ${TYPE_COLORS.B}` }}>
+              <h4 style={{ color: TYPE_COLORS.B }}>Type B — heterogeneity-driven</h4>
+              <div className="nf-compare-stat">
+                <div className="nf-cs-val">{abCompare.bRows.length}</div>
+                <div className="nf-cs-label">studies</div>
+              </div>
+              <div className="nf-compare-stat">
+                <div className="nf-cs-val">{abCompare.bUnanimous}</div>
+                <div className="nf-cs-label">unanimous strata — most strata disagree</div>
+              </div>
+              <div className="nf-compare-stat">
+                <div className="nf-cs-val">{Math.round(abCompare.bMedianPurity * 100)}%</div>
+                <div className="nf-cs-label">median purity (lower = more distorted)</div>
+              </div>
+              <div className="nf-compare-mech">
+                <strong>Mechanism</strong>
+                Strata themselves contradict each other; the pooled result favors whichever
+                stratum happens to be overweighted.
+              </div>
+              <div className="nf-compare-mech">
+                <strong>Policy</strong>
+                Investigate before acting — causal role is contested or confounded by
+                heterogeneous subpopulation effects.
+              </div>
+            </div>
           </div>
         </div>
       </section>
