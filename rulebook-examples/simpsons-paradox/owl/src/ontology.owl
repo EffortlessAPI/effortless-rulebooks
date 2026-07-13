@@ -1903,6 +1903,20 @@ effortless-ntwf:typeDCount a owl:DatatypeProperty ;
     rdfs:comment "Studies classified as Type-D: no sign flip, negligible distortion. Pooled analysis is trustworthy — allocation is sufficiently balanced." .
     # calculated: aggregation
 
+effortless-ntwf:typeCPlusCount a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:ModelSummary ;
+    rdfs:range xsd:integer ;
+    rdfs:label "TypeCPlusCount" ;
+    rdfs:comment "Studies classified as Type-C+: sign flip with amplification (ReversalIntensity>1). Pooled effect overstates the true per-stratum effect." .
+    # calculated: aggregation
+
+effortless-ntwf:typeCMinusCount a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:ModelSummary ;
+    rdfs:range xsd:integer ;
+    rdfs:label "TypeCMinusCount" ;
+    rdfs:comment "Studies classified as Type-C-: sign flip with attenuation. Pooled effect understates or masks the true per-stratum effect." .
+    # calculated: aggregation
+
 effortless-ntwf:typeAFraction a owl:DatatypeProperty ;
     rdfs:domain effortless-ntwf:ModelSummary ;
     rdfs:range xsd:string ;
@@ -3281,6 +3295,30 @@ effortless-ntwf:confounderIdentity a owl:DatatypeProperty ;
     rdfs:label "ConfounderIdentity" ;
     rdfs:comment "Canonical cross-study identity via StratumVariableIdentityMaps (loop-80)." .
     # calculated: lookup
+
+effortless-ntwf:annotationCommitHash a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:StratumVariables ;
+    rdfs:range xsd:string ;
+    rdfs:label "AnnotationCommitHash" ;
+    rdfs:comment "Full git SHA of the commit that first introduced this row's CausalRole/MechanismNote — derived via `git log -S` pickaxe search on this row's StratumVariableId (loop-97 audit-trail backfill). Real repo history, not a hand-entered label." .
+
+effortless-ntwf:annotationCommitDate a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:StratumVariables ;
+    rdfs:range xsd:string ;
+    rdfs:label "AnnotationCommitDate" ;
+    rdfs:comment "ISO date (YYYY-MM-DD) of AnnotationCommitHash." .
+
+effortless-ntwf:annotationCommitSubject a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:StratumVariables ;
+    rdfs:range xsd:string ;
+    rdfs:label "AnnotationCommitSubject" ;
+    rdfs:comment "Git commit subject line of AnnotationCommitHash — the loop/change that landed this row's causal-role judgment call." .
+
+effortless-ntwf:causalRoleEverRevised a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:StratumVariables ;
+    rdfs:range xsd:boolean ;
+    rdfs:label "CausalRoleEverRevised" ;
+    rdfs:comment "TRUE if this row's CausalRole value differs across any two points in its git history (a real reclassification); FALSE if the value has been identical since AnnotationCommitHash. Computed once at loop-97 backfill via full-history diff, not re-derived live — re-run the backfill script after any future CausalRole edit to keep this accurate." .
 
 # === Class: Studies ===
 effortless-ntwf:Studies a owl:Class ;

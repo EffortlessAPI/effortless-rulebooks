@@ -228,6 +228,8 @@ SELECT
   calc_model_summary_safe_tier_count(t.model_summary_id) AS safe_tier_count,    -- Studies where TreatmentRankings.ScreeningTier = SAFE — pooling is trustworthy (DistortionType D).
   calc_model_summary_type_b_count(t.model_summary_id) AS type_b_count,          -- Studies classified as Type-B: sign flip but partial reversal (ReversalIntensity<1). Allocation distortion creates a sign flip but the pooled signal partially reflects per-stratum reality.
   calc_model_summary_type_d_count(t.model_summary_id) AS type_d_count,          -- Studies classified as Type-D: no sign flip, negligible distortion. Pooled analysis is trustworthy — allocation is sufficiently balanced.
+  calc_model_summary_type_c_plus_count(t.model_summary_id) AS type_c_plus_count,-- Studies classified as Type-C+: sign flip with amplification (ReversalIntensity>1). Pooled effect overstates the true per-stratum effect.
+  calc_model_summary_type_c_minus_count(t.model_summary_id) AS type_c_minus_count,-- Studies classified as Type-C-: sign flip with attenuation. Pooled effect understates or masks the true per-stratum effect.
   calc_model_summary_type_a_fraction(t.model_summary_id) AS type_a_fraction,    -- Fraction of studies that are Type-A (full canonical reversals). TypeACount / StudyCount.
   calc_model_summary_distortion_taxonomy_coverage(t.model_summary_id) AS distortion_taxonomy_coverage,-- Human-readable summary of the four-type distribution: e.g. 'A:2 B:1 C:1 D:0'. The model's self-portrait of its own distortion geometry.
   calc_model_summary_distortion_only_count(t.model_summary_id) AS distortion_only_count,-- Number of studies with real allocation distortion but no sign flip: TypeCCount. The pooled winner is correct but the effect size is biased. Distinct from ZeroStrengthCount, which conflates Type-C (real distortion) with Type-D (neutral).
@@ -353,7 +355,11 @@ SELECT
   calc_stratum_variables_is_confounder(t.stratum_variable_id) AS is_confounder, -- TRUE when AffectsTreatmentAssignment AND AffectsOutcome AND CausalRole = 'confounder'. A confounder is the classic driver of Simpson's Paradox.
   t.mechanism_note,                                                             -- Plain-language description of how this variable creates the confounding: why it affects both assignment and outcome.
   t.conditioning_risk,                                                          -- The causal hazard posed by conditioning on this variable. Values: confounder (safe to condition — removes bias), mediator (conditioning blocks the causal path of interest — harmful), collider (conditioning opens a spurious backdoor — harmful), proxy (conditioning on a noisy proxy of the true confounder — risky), none (no conditioning risk identified). NULL means unclassified.
-  calc_stratum_variables_confounder_identity(t.stratum_variable_id) AS confounder_identity-- Canonical cross-study identity via StratumVariableIdentityMaps (loop-80).
+  calc_stratum_variables_confounder_identity(t.stratum_variable_id) AS confounder_identity,-- Canonical cross-study identity via StratumVariableIdentityMaps (loop-80).
+  t.annotation_commit_hash,                                                     -- Full git SHA of the commit that first introduced this row's CausalRole/MechanismNote — derived via `git log -S` pickaxe search on this row's StratumVariableId (loop-97 audit-trail backfill). Real repo history, not a hand-entered label.
+  t.annotation_commit_date,                                                     -- ISO date (YYYY-MM-DD) of AnnotationCommitHash.
+  t.annotation_commit_subject,                                                  -- Git commit subject line of AnnotationCommitHash — the loop/change that landed this row's causal-role judgment call.
+  t.causal_role_ever_revised                                                    -- TRUE if this row's CausalRole value differs across any two points in its git history (a real reclassification); FALSE if the value has been identical since AnnotationCommitHash. Computed once at loop-97 backfill via full-history diff, not re-derived live — re-run the backfill script after any future CausalRole edit to keep this accurate.
 FROM stratum_variables t;
 
 -- ----------------------------------------------------------------------------

@@ -435,6 +435,42 @@ RETURNS TEXT AS $$
   SELECT (SELECT conditioning_risk FROM stratum_variables WHERE stratum_variable_id = p_stratum_variable_id);
 $$ LANGUAGE sql STABLE;
 
+-- get_stratum_variables_annotation_commit_hash
+-- Helper function: Get AnnotationCommitHash from StratumVariables by StratumVariableId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_stratum_variables_annotation_commit_hash(p_stratum_variable_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT annotation_commit_hash FROM stratum_variables WHERE stratum_variable_id = p_stratum_variable_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_stratum_variables_annotation_commit_date
+-- Helper function: Get AnnotationCommitDate from StratumVariables by StratumVariableId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_stratum_variables_annotation_commit_date(p_stratum_variable_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT annotation_commit_date FROM stratum_variables WHERE stratum_variable_id = p_stratum_variable_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_stratum_variables_annotation_commit_subject
+-- Helper function: Get AnnotationCommitSubject from StratumVariables by StratumVariableId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_stratum_variables_annotation_commit_subject(p_stratum_variable_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT annotation_commit_subject FROM stratum_variables WHERE stratum_variable_id = p_stratum_variable_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_stratum_variables_causal_role_ever_revised
+-- Helper function: Get CausalRoleEverRevised from StratumVariables by StratumVariableId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_stratum_variables_causal_role_ever_revised(p_stratum_variable_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (SELECT causal_role_ever_revised FROM stratum_variables WHERE stratum_variable_id = p_stratum_variable_id);
+$$ LANGUAGE sql STABLE;
+
 -- calc_studies_name
 -- Field: Studies.Name
 -- Type: calculated | DataType: string | Returns: TEXT
@@ -1398,6 +1434,26 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION calc_model_summary_type_d_count(p_model_summary_id TEXT)
 RETURNS INTEGER AS $$
   SELECT ((SELECT COUNT(*) FROM treatment_rankings WHERE calc_treatment_rankings_distortion_type(treatment_ranking_id) = 'D'))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_model_summary_type_c_plus_count
+-- Field: ModelSummary.TypeCPlusCount
+-- Type: aggregation | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_model_summary_type_c_plus_count(p_model_summary_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((SELECT COUNT(*) FROM treatment_rankings WHERE calc_treatment_rankings_distortion_type(treatment_ranking_id) = 'C+'))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_model_summary_type_c_minus_count
+-- Field: ModelSummary.TypeCMinusCount
+-- Type: aggregation | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_model_summary_type_c_minus_count(p_model_summary_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((SELECT COUNT(*) FROM treatment_rankings WHERE calc_treatment_rankings_distortion_type(treatment_ranking_id) = 'C-'))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_model_summary_type_a_fraction

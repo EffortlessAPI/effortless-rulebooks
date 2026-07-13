@@ -929,6 +929,22 @@
         "formula": "=COUNTIFS(TreatmentRankings!{{DistortionType}}, \u0022D\u0022)"
       },
       {
+        "name": "TypeCPlusCount",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "Studies classified as Type-C\u002B: sign flip with amplification (ReversalIntensity\u003E1). Pooled effect overstates the true per-stratum effect.",
+        "formula": "=COUNTIFS(TreatmentRankings!{{DistortionType}}, \u0022C\u002B\u0022)"
+      },
+      {
+        "name": "TypeCMinusCount",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "Studies classified as Type-C-: sign flip with attenuation. Pooled effect understates or masks the true per-stratum effect.",
+        "formula": "=COUNTIFS(TreatmentRankings!{{DistortionType}}, \u0022C-\u0022)"
+      },
+      {
         "name": "TypeAFraction",
         "datatype": "number",
         "type": "calculated",
@@ -1852,6 +1868,34 @@
         "nullable": true,
         "Description": "Canonical cross-study identity via StratumVariableIdentityMaps (loop-80).",
         "formula": "=LOOKUP({{StratumVariableId}}, StratumVariableIdentityMaps[StratumVariable], StratumVariableIdentityMaps[ConfounderIdentity])"
+      },
+      {
+        "name": "AnnotationCommitHash",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Full git SHA of the commit that first introduced this row\u0027s CausalRole/MechanismNote \u2014 derived via \u0060git log -S\u0060 pickaxe search on this row\u0027s StratumVariableId (loop-97 audit-trail backfill). Real repo history, not a hand-entered label."
+      },
+      {
+        "name": "AnnotationCommitDate",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "ISO date (YYYY-MM-DD) of AnnotationCommitHash."
+      },
+      {
+        "name": "AnnotationCommitSubject",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Git commit subject line of AnnotationCommitHash \u2014 the loop/change that landed this row\u0027s causal-role judgment call."
+      },
+      {
+        "name": "CausalRoleEverRevised",
+        "datatype": "boolean",
+        "type": "raw",
+        "nullable": true,
+        "Description": "TRUE if this row\u0027s CausalRole value differs across any two points in its git history (a real reclassification); FALSE if the value has been identical since AnnotationCommitHash. Computed once at loop-97 backfill via full-history diff, not re-derived live \u2014 re-run the backfill script after any future CausalRole edit to keep this accurate."
       }
     ]
   },

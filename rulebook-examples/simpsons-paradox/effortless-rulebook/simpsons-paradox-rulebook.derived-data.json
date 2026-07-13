@@ -1137,6 +1137,18 @@
       "TraditionId": "tradition-dag",
       "WhatWasIntroduced": "start.sh gained a Postgres/vw_studies preflight check with an explicit remediation message. Monorepo .gitignore gained __pycache__/ and *.db patterns. Stray .DS_Store files removed.",
       "EpochTag": "identity-era-geometry"
+    },
+    {
+      "LoopId": "loop-97",
+      "Title": "Act on loop-93\u0027s unactioned remediation (a): build-time conformance check for the 03b view-override drift hazard, plus a concrete dead-code cleanup it surfaced",
+      "Status": "complete",
+      "NewConcept": "No new domain concept. Instrument-integrity loop: a Postgres-native drift check for 03b-customize-views.sql\u0027s hand-maintained vw_studies/vw_treatment_rankings/vw_model_summary overrides against 03-create-views.sql\u0027s native definitions.",
+      "DomainQuestion": "Loop-93 named the hazard (every hand-maintained 03b/03c override can silently drop a column or dead-code a retired branch with nothing catching it) but only fixed the two instances it found by hand and proposed, without building, a build-time conformance check. Does building that check now, and running it against the live rulebook, find any further drift?",
+      "MockDataNote": "Witnessed. Added effortless-postgres/check-view-override-drift.sh: for each of the three views 03b-customize-views.sql overrides, it extracts 03-create-views.sql\u0027s native CREATE VIEW block verbatim, re-runs it in a rolled-back transaction under a __native_check suffix name so Postgres (not a hand-rolled parser) resolves its real information_schema.columns, and diffs that against the live (overridden) view\u0027s columns -- failing loudly and listing the exact missing column names if the override ever drops one. Verified the check actually catches drift (not just a green rubber stamp): force-dropped vw_studies down to 2 columns, confirmed the script correctly failed and named all 30 missing columns, then restored and re-verified a clean pass. Wired into init-db.sh as step 2b, right after the SQL files run and before function-overrides, under set -euo pipefail so a real drift genuinely aborts the build. Current live state: all three overridden views pass (0 missing columns) -- no drift found today, but the guard is now load-bearing for tomorrow. Also closed loop-93\u0027s own concrete second finding of the SAME hazard: 03c-customize-functions-post-views.sql\u0027s calc_discovery_findings_is_confirmed/calc_discovery_findings_observed_metric CASE-dispatch functions carried 6 dead WHEN branches (H-domain-dist, H-econ-zero, H-econ-encoding-selection, H-domain-profiles-stable, H-domain-flip-geometry-controlled, H-catalog-flip-prediction) for hypotheses retired from DiscoveryHypotheses in loop-79 -- confirmed via vw_discovery_findings that zero live rows reference any of the six (pure dead code, not a behavior change), removed all 12 branches (6 x 2 functions), re-ran init-db.sh clean: 26 critical InvariantChecks still pass, same 5 pre-existing warning-only fails, unrelated.",
+      "NextSuggestion": "loop-98: act on loop-93\u0027s remediation (b) -- fix the rulebook-to-postgres transpiler\u0027s LOOKUP(non-PK-match-column) mistranslation at its source (Program.cs) instead of leaving the workaround permanently hand-written in 03c.",
+      "TraditionId": "tradition-dag",
+      "WhatWasIntroduced": "effortless-postgres/check-view-override-drift.sh (new, wired into init-db.sh step 2b). Removed 12 dead CASE branches (6 retired hypotheses x 2 functions) from 03c-customize-functions-post-views.sql.",
+      "EpochTag": "identity-era-geometry"
     }
   ],
   "Studies": [
