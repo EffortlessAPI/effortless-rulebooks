@@ -3300,7 +3300,7 @@ effortless-ntwf:annotationCommitHash a owl:DatatypeProperty ;
     rdfs:domain effortless-ntwf:StratumVariables ;
     rdfs:range xsd:string ;
     rdfs:label "AnnotationCommitHash" ;
-    rdfs:comment "Full git SHA of the commit that first introduced this row's CausalRole/MechanismNote — derived via `git log -S` pickaxe search on this row's StratumVariableId (loop-97 audit-trail backfill). Real repo history, not a hand-entered label." .
+    rdfs:comment "Full git SHA of the commit that first introduced this row's CausalRole/MechanismNote — derived via `git log -S` pickaxe search on this row's StratumVariableId (loop-98 audit-trail backfill). Real repo history, not a hand-entered label." .
 
 effortless-ntwf:annotationCommitDate a owl:DatatypeProperty ;
     rdfs:domain effortless-ntwf:StratumVariables ;

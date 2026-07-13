@@ -82,6 +82,17 @@ for f in "${SCRIPT_DIR}"/[0-9][0-9]*-*.sql "${SCRIPT_DIR}"/[0-9][0-9]*-*.sql.dis
 done
 
 # ----------------------------------------------------------------------
+# 2b. loop-97: fail loudly if a 03b-customize-views.sql hand-maintained
+#     view override (vw_studies/vw_treatment_rankings/vw_model_summary)
+#     has silently fallen behind 03-create-views.sql's native column set.
+#     See loop-93's NextSuggestion and check-view-override-drift.sh.
+# ----------------------------------------------------------------------
+if [ -f "${SCRIPT_DIR}/check-view-override-drift.sh" ]; then
+    echo "[init-db] [RUN]  check-view-override-drift.sh"
+    DATABASE_URL="$DATABASE_URL" bash "${SCRIPT_DIR}/check-view-override-drift.sh"
+fi
+
+# ----------------------------------------------------------------------
 # 3. function-overrides/*.sql (per-function tweaks; errors non-fatal).
 #    Two-pass: non-policy files first, then policy__* files (policies
 #    often reference custom functions).

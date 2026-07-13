@@ -216,6 +216,8 @@ FROM (
     calc_model_summary_safe_tier_count(t.model_summary_id) AS safe_tier_count,
     calc_model_summary_type_b_count(t.model_summary_id) AS type_b_count,
     calc_model_summary_type_d_count(t.model_summary_id) AS type_d_count,
+    calc_model_summary_type_c_plus_count(t.model_summary_id) AS type_c_plus_count,
+    calc_model_summary_type_c_minus_count(t.model_summary_id) AS type_c_minus_count,
     calc_model_summary_type_a_fraction(t.model_summary_id) AS type_a_fraction,
     calc_model_summary_distortion_taxonomy_coverage(t.model_summary_id) AS distortion_taxonomy_coverage,
     calc_model_summary_distortion_only_count(t.model_summary_id) AS distortion_only_count,

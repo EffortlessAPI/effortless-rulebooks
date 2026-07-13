@@ -1149,6 +1149,18 @@
       "TraditionId": "tradition-dag",
       "WhatWasIntroduced": "effortless-postgres/check-view-override-drift.sh (new, wired into init-db.sh step 2b). Removed 12 dead CASE branches (6 retired hypotheses x 2 functions) from 03c-customize-functions-post-views.sql.",
       "EpochTag": "identity-era-geometry"
+    },
+    {
+      "LoopId": "loop-98",
+      "Title": "PDF-summary review response: restore superseded-hypothesis visibility, quarantine vacuous control findings, backfill the CausalRole annotation audit trail from real git history, and fix a silent ModelSummary regression",
+      "Status": "complete",
+      "NewConcept": "Two ModelSummary aggregation fields (TypeCPlusCount, TypeCMinusCount) that had silently gone missing; four StratumVariables audit-trail fields (AnnotationCommitHash, AnnotationCommitDate, AnnotationCommitSubject, CausalRoleEverRevised) backfilled from full git history, not invented; a __meta__ causal_role_annotation_protocol row stating the actual (single-author, no-double-review) annotation process; PDF/report changes so superseded hypotheses stay visible with their FAIL status and vacuous control findings no longer inflate the corpus-hypothesis confirmation ratio.",
+      "DomainQuestion": "A July-8-vs-July-12 PDF comparison surfaced: (1) six loop-78 corpus-pattern-superseded hypotheses vanished from the report instead of showing FAIL/superseded, (2) three new H-control-* hypotheses passed only because control studies have zero paired-arm rows (vacuous by construction) yet were counted in the headline ratio, (3) C\u002B/C- taxonomy counts rendered as \u0027undefined\u0027 where July 8 had real numbers, (4) there was no audit trail for who assigned each StratumVariables.CausalRole label or when. Which of these are real regressions vs. reporting-layer omissions, and what can actually be fixed without fabricating data that doesn\u0027t exist?",
+      "MockDataNote": "Witnessed: (1) confirmed the 6 hypotheses were deliberately pruned from the live DAG in loop-79 (not a report bug) -- their FAIL evidence is preserved verbatim in conc-32\u0027s Evidence field; PDF now always renders a \u0027superseded hypotheses (historical)\u0027 block sourced from conc-32 so they stay visible without re-adding dead vocabulary to DiscoveryHypotheses. (2) Confirmed H-control-safety-corridor / H-control-no-manifest-flip / H-control-type-d-predominance all PASS with observed_metric text already self-labeling \u0027vacuous: control studies have zero TreatmentRankings rows... true by construction, not a substantive corpus finding\u0027 -- PDF now buckets these separately and excludes them from the corpus-hypothesis confirmed/total ratio. (3) Root-caused: ModelSummary never had TypeCPlusCount/TypeCMinusCount fields (only CPlusAvgDistortion/CMinusAvgDistortion existed from a different loop) -- export-summary-pdf.ts was querying columns vw_model_summary never had, so \u0060undefined\u0060 leaked into rendered text. Added both as first-class COUNTIFS aggregation fields, matching live TreatmentRankings counts (C\u002B 8, C- 7, matching the July-8 snapshot). (4) Built a real (not fabricated) per-row audit trail: for every one of 242 StratumVariables rows, walked full git history (git log -p, not line-blame, since JSON reformatting churns line numbers) to find the commit that first introduced the row\u0027s CausalRole and check whether that value ever differed across any later re-add of the same row. Verified result: all 242 rows were introduced exactly once and CausalRole has never been revised since (CausalRoleEverRevised=FALSE everywhere) -- not assumed, checked. No annotator-identity or per-label timestamp exists beyond the commit that landed it (single-contributor repo), so AnnotatedBy was deliberately NOT added -- inventing individual annotator names would have been exactly the kind of fabricated-fallback data this project\u0027s CLAUDE.md forbids. The 9 CausalRole=contested rows are named in __meta__ causal_role_annotation_protocol as the concrete candidates for a future second-reviewer spot-check, which has not yet been performed.",
+      "NextSuggestion": "loop-99: perform the actual second-reviewer spot-check on the 9 contested CausalRole rows named in causal_role_annotation_protocol, and record its outcome as a real annotation-revision event (updating CausalRoleEverRevised) if any role changes.",
+      "TraditionId": "tradition-dag",
+      "WhatWasIntroduced": "ModelSummary.TypeCPlusCount / TypeCMinusCount (aggregation). StratumVariables.AnnotationCommitHash / AnnotationCommitDate / AnnotationCommitSubject / CausalRoleEverRevised (raw, backfilled from git history for all 242 rows). __meta__ causal_role_annotation_protocol row. export-summary-pdf.ts \u002B epistemic-framing.ts changes for superseded-hypothesis visibility, vacuous-finding quarantine, and the C\u002B/C- fix.",
+      "EpochTag": "identity-era-geometry"
     }
   ],
   "Studies": [
@@ -66831,7 +66843,11 @@
       "MechanismNote": "Large kidney stones were preferentially assigned to Treatment A (the more aggressive procedure), while small stones more often received Treatment B. Independently, large stones have lower baseline cure rates regardless of treatment. This dual influence \u2014 on both assignment and on outcome \u2014 is what drives the pooled reversal.",
       "Name": "kidney-1986-stone-size",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "b96e0fe6e3402d85b16e9772518d9241c64c1b1e",
+      "AnnotationCommitDate": "2026-06-27",
+      "AnnotationCommitSubject": "loop-05: StratumVariables \u002B IsParadoxExplained \u2014 the DAG witnesses its own explanation",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "berkeley-1973-department",
@@ -66843,7 +66859,11 @@
       "MechanismNote": "Department choice correlates with both gender (women applied disproportionately to competitive departments) and admission rate (competitive departments admit fewer applicants regardless of gender). However, department choice may itself be downstream of gender \u2014 if women systematically self-select into harder departments due to societal factors, then department is a mediator, not a confounder. The causal role is genuinely contested in the literature. IsConfounder=FALSE because CausalRole=\u0027contested\u0027, not because the flags are false.",
       "Name": "berkeley-1973-department",
       "IsConfounder": false,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "29337f5cd3855ee5aa53d969d59a67994458059b",
+      "AnnotationCommitDate": "2026-06-27",
+      "AnnotationCommitSubject": "loop-10: ModelSummary \u2014 the DAG witnesses its own epistemic state",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "kidney-balanced-stone-size",
@@ -66855,7 +66875,11 @@
       "MechanismNote": "In this counterfactual, stone size still affects outcome (hard cases have lower success rates) but does NOT affect treatment assignment \u2014 both treatments receive exactly 50% of their cases in each stratum. Because treatment assignment is now independent of stone size, no confounding occurs and AllocationBias=0 everywhere. IsConfounder=FALSE (AffectsTreatmentAssignment=false). The reversal is impossible by construction.",
       "Name": "kidney-balanced-stone-size",
       "IsConfounder": false,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "49f01e7cafcdb6b529db5743081ee7b32d708b01",
+      "AnnotationCommitDate": "2026-06-27",
+      "AnnotationCommitSubject": "loop-15: ReversalThreshold \u2014 intensity and margin witness paradox robustness vs fragility",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "balanced-synthetic-stratum",
@@ -66867,7 +66891,11 @@
       "MechanismNote": "The stratum variable affects outcome (easy vs hard conditions) but does NOT affect treatment assignment \u2014 each treatment receives exactly 50% of its cases in each stratum. Because treatment assignment is independent of stratum, no confounding can occur and the pooled rate must agree with every per-stratum comparison.",
       "Name": "balanced-synthetic-stratum",
       "IsConfounder": false,
-      "ConditioningRisk": "none"
+      "ConditioningRisk": "none",
+      "AnnotationCommitHash": "29337f5cd3855ee5aa53d969d59a67994458059b",
+      "AnnotationCommitDate": "2026-06-27",
+      "AnnotationCommitSubject": "loop-10: ModelSummary \u2014 the DAG witnesses its own epistemic state",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "compressed-synthetic-stratum",
@@ -66879,7 +66907,11 @@
       "MechanismNote": "Case difficulty affects both which treatment patients receive (A is over-allocated to hard cases: 60% vs 40%) and the outcome (hard cases have lower success rates for both treatments). This IS confounding \u2014 but the confounding is not strong enough to flip the pooled winner. A wins in every stratum and also wins pooled. The allocation compresses A\u0027s pooled advantage (from equal-weight 10pp down to actual 6pp) but does not erase it. This is type-C distortion: real confounding, partial distortion, no reversal.",
       "Name": "compressed-synthetic-stratum",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "ca3109557acb34bb159bed0ac1c39e5a81cce5dc",
+      "AnnotationCommitDate": "2026-06-27",
+      "AnnotationCommitSubject": "loop-20\u002B20b: real study hydration via 05b-customize-data.sql \u2014 two type-A reversals witnessed",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "reintjes-2000-hospital-incidence",
@@ -66891,7 +66923,11 @@
       "MechanismNote": "Hospital baseline UTI incidence affects both whether a patient received prophylaxis (high-incidence hospitals were more likely to forgo it, concentrating controls there) and the outcome (high-incidence hospitals have higher UTI rates regardless of treatment). Most prophylaxis patients are in low-incidence hospitals (1113/1279=87%), which depresses the aggregate prophylaxis UTI rate below the aggregate control rate \u2014 inverting the within-stratum finding.",
       "Name": "reintjes-2000-hospital-incidence",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "a6e0725cbcbeb17a49c11dbcad061f770de2293e",
+      "AnnotationCommitDate": "2026-06-27",
+      "AnnotationCommitSubject": "feat: enhance README and server to support standalone explorer; add new screenshots",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "radelet-1981-victim-race",
@@ -66903,7 +66939,11 @@
       "MechanismNote": "Victim race affects both defendant race (cross-race homicides are rare \u2014 most black defendants killed black victims, most white defendants killed white victims) and sentencing outcome (white-victim cases receive the death penalty ~5\u00D7 more often: ~17.7% vs ~3.3%). This is classic confounding. Black defendants are disproportionately concentrated in the black-victim stratum (low sentence rate), pulling their aggregate death penalty rate below white defendants\u0027 rate \u2014 even though black defendants are MORE likely to be sentenced to death within each victim-race stratum.",
       "Name": "radelet-1981-victim-race",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "a6e0725cbcbeb17a49c11dbcad061f770de2293e",
+      "AnnotationCommitDate": "2026-06-27",
+      "AnnotationCommitSubject": "feat: enhance README and server to support standalone explorer; add new screenshots",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "jeter-justice-1997-season",
@@ -66915,7 +66955,11 @@
       "MechanismNote": "The season year affects both the player\u0027s at-bat count (treatment assignment proxy \u2014 Justice\u0027s heaviest season was 1995 when his average was lowest; Jeter\u0027s heaviest were 1996-97 when his average was higher) and the outcome (players hit differently in different years). Justice front-loaded his ABs into his worst year (411 of 1046 = 39% in 1995 at .253); Jeter back-loaded into his stronger years (1236 of 1284 = 96% in 1996-97 at .300-.314). This differential allocation of AB-weight across years flips the combined average despite Justice winning every year individually.",
       "Name": "jeter-justice-1997-season",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "a6e0725cbcbeb17a49c11dbcad061f770de2293e",
+      "AnnotationCommitDate": "2026-06-27",
+      "AnnotationCommitSubject": "feat: enhance README and server to support standalone explorer; add new screenshots",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "appleton-1996-age",
@@ -66927,7 +66971,11 @@
       "MechanismNote": "Age at baseline confounds both smoking status and 20-year mortality. Smoking affects age distribution in the cohort (survivorship bias: people who smoked heavily and were older had already died before the 1972-74 baseline survey, so the surviving smokers skew younger). Age strongly determines 20-year mortality regardless of smoking. The result: smokers are over-represented in low-mortality age strata (18-44), pulling the pooled smoker mortality rate below the true within-stratum risk. This is the textbook epidemiological confounding by age pattern, often called the \u0022healthy smoker\u0022 fallacy in this particular dataset.",
       "Name": "appleton-1996-age",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "a6e0725cbcbeb17a49c11dbcad061f770de2293e",
+      "AnnotationCommitDate": "2026-06-27",
+      "AnnotationCommitSubject": "feat: enhance README and server to support standalone explorer; add new screenshots",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "phe-covid-2021-age",
@@ -66939,7 +66987,11 @@
       "MechanismNote": "Age group is a powerful confounder. It affects vaccine uptake (older people were prioritised and had much higher vaccination rates in the UK\u0027s 2021 rollout \u2014 23% of vaccinated are 50\u002B vs only 2.3% of unvaccinated) and strongly determines COVID-19 mortality (50\u002B CFR is ~40\u00D7 higher than under-50 CFR in this dataset regardless of vaccination). The vaccinated cohort is therefore loaded with high-risk patients, inflating the pooled vaccinated death rate to 0.41% vs 0.17% for unvaccinated \u2014 reversing the within-stratum relationship where vaccines reduce death rates by 3\u00D7 to 4\u00D7 in every age group.",
       "Name": "phe-covid-2021-age",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "a6e0725cbcbeb17a49c11dbcad061f770de2293e",
+      "AnnotationCommitDate": "2026-06-27",
+      "AnnotationCommitSubject": "feat: enhance README and server to support standalone explorer; add new screenshots",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "hannan-1994-patient-risk",
@@ -66951,7 +67003,11 @@
       "MechanismNote": "Patient risk class affects both hospital assignment (high-volume centers receive referrals of sicker patients \u2014 70% of A caseload is high-risk vs only 20% at B) and surgical outcome (high-risk patients have dramatically higher operative mortality regardless of hospital volume). High-volume hospitals win in every risk stratum (15pp advantage in high-risk, 2pp in low-risk) and also win pooled \u2014 but their pooled survival advantage is compressed from 7.9pp (equal-weight stratum average) down to 2.8pp (actual pooled) because they carry so many harder cases. IsSignFlip=FALSE, AllocationDistortion\u22480.05 \u2014 the geometry of type-C distortion: real confounding, partial distortion, no reversal.",
       "Name": "hannan-1994-patient-risk",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "a6e0725cbcbeb17a49c11dbcad061f770de2293e",
+      "AnnotationCommitDate": "2026-06-27",
+      "AnnotationCommitSubject": "feat: enhance README and server to support standalone explorer; add new screenshots",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "titanic-1912-sex",
@@ -66963,7 +67019,11 @@
       "MechanismNote": "Passenger sex affects both cabin class (1st class had a higher fraction of women \u2014 45% vs 26% in 3rd class, reflecting social travel patterns of the era) and survival outcome (\u0027women and children first\u0027 evacuation protocol gave women dramatically higher survival rates regardless of class). The over-representation of women in 1st class inflates the pooled 1st-class survival advantage beyond the per-stratum (per-sex) average \u2014 the pooled gap (37.4pp) exceeds the equal-weight average (33.4pp). AllocationDistortion\u003E0, IsSignFlip=FALSE \u2192 type-C.",
       "Name": "titanic-1912-sex",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "a6e0725cbcbeb17a49c11dbcad061f770de2293e",
+      "AnnotationCommitDate": "2026-06-27",
+      "AnnotationCommitSubject": "feat: enhance README and server to support standalone explorer; add new screenshots",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "bwp-weight-class",
@@ -66975,7 +67035,11 @@
       "MechanismNote": "Birth weight category is a mediator, not a classical confounder \u2014 it lies on the causal pathway from maternal smoking to infant mortality (smoking causes low birth weight, which causes elevated mortality). Conditioning on birth weight (stratifying) opens a collider path: among LBW infants, smoker babies are \u0027selected in\u0027 via a milder mechanism (growth restriction) while non-smoker LBW babies are more likely to have serious congenital causes. This creates the paradox: smokers appear to have better LBW survival not because smoking is protective, but because the comparison groups differ in unobserved severity. IsSignFlip=TRUE, RI=0.5 \u2192 type-B (partial reversal: smokers win LBW stratum, non-smokers win NBW, non-smokers win pooled).",
       "Name": "bwp-weight-class",
       "IsConfounder": false,
-      "ConditioningRisk": "mediator"
+      "ConditioningRisk": "mediator",
+      "AnnotationCommitHash": "a6e0725cbcbeb17a49c11dbcad061f770de2293e",
+      "AnnotationCommitDate": "2026-06-27",
+      "AnnotationCommitSubject": "feat: enhance README and server to support standalone explorer; add new screenshots",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "melanoma-sex",
@@ -66987,7 +67051,11 @@
       "MechanismNote": "Patient sex affects both tumor thickness at presentation (women self-examine and seek medical attention earlier \u2014 70% of female melanomas are thin vs 40% of male melanomas) and survival outcome (beyond the thickness effect, female sex is an independent prognostic factor for melanoma). Women\u0027s concentration in the high-survival thin-tumor stratum inflates their pooled survival advantage from 7.9pp (equal-weight per-stratum average) to 18pp (actual pooled). IsSignFlip=FALSE, AllocationDistortion=0.094 \u2192 type-C inflation.",
       "Name": "melanoma-sex",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "a6e0725cbcbeb17a49c11dbcad061f770de2293e",
+      "AnnotationCommitDate": "2026-06-27",
+      "AnnotationCommitSubject": "feat: enhance README and server to support standalone explorer; add new screenshots",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "coffee-smoking",
@@ -66999,7 +67067,11 @@
       "MechanismNote": "Smoking status affects CHD outcome (smokers have higher baseline CHD risk) but does NOT materially affect coffee consumption (equal allocation across strata in this study design). Because treatment assignment is effectively independent of the confounder, no allocation imbalance occurs and the pooled estimate agrees with the per-stratum estimates. AllocationDistortion\u22480 \u2192 type-D: no Simpson distortion. This study is the clean null case \u2014 confounders that do not create allocation imbalance do not distort the pooled result.",
       "Name": "coffee-smoking",
       "IsConfounder": false,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "a6e0725cbcbeb17a49c11dbcad061f770de2293e",
+      "AnnotationCommitDate": "2026-06-27",
+      "AnnotationCommitSubject": "feat: enhance README and server to support standalone explorer; add new screenshots",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "sat-school-spending",
@@ -67011,7 +67083,11 @@
       "MechanismNote": "State school spending confounds the participation-rate / SAT-score comparison. High-spending states tend to have high participation (more students take the SAT, including weaker students), and high spending is independently associated with better educational outcomes. Within each spending stratum, high-participation states do better (or tie), because controlling for spending removes the quality signal. But in high-spending states, the small self-selected pool of test-takers from low-participation states outscores the broad pool from high-participation states \u2014 reversing the low-spending stratum winner. IsSignFlip=TRUE, RI=0.5 \u2192 type-B partial reversal.",
       "Name": "sat-school-spending",
       "IsConfounder": true,
-      "ConditioningRisk": "proxy"
+      "ConditioningRisk": "proxy",
+      "AnnotationCommitHash": "a6e0725cbcbeb17a49c11dbcad061f770de2293e",
+      "AnnotationCommitDate": "2026-06-27",
+      "AnnotationCommitSubject": "feat: enhance README and server to support standalone explorer; add new screenshots",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "rogers-nicewander-1988-position_group",
@@ -67023,7 +67099,11 @@
       "MechanismNote": "Series stratum affects both at-bat allocation (Fairly had 36 AB combined vs Lefebvre 22) and batting average. Fairly wins each series individually but loses combined \u2014 classic type-A reversal via differential AB weighting.",
       "Name": "rogers-nicewander-1988-position_group",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "5a14dcb9e84aaf645e19965933246fdc0cb76e34",
+      "AnnotationCommitDate": "2026-06-27",
+      "AnnotationCommitSubject": "Add new metrics and definitions for allocation sweep analysis",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "lucente-baseball-1995-month_half",
@@ -67035,7 +67115,11 @@
       "MechanismNote": "First-half vs second-half season affects both at-bat volume and batting average. Player A front-loads ABs into weaker half, flipping combined ranking.",
       "Name": "lucente-baseball-1995-month_half",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "5a14dcb9e84aaf645e19965933246fdc0cb76e34",
+      "AnnotationCommitDate": "2026-06-27",
+      "AnnotationCommitSubject": "Add new metrics and definitions for allocation sweep analysis",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "wilson-batting-2000-inning_half",
@@ -67047,7 +67131,11 @@
       "MechanismNote": "Inning half confounds at-bat allocation and success rate; differential weighting across early vs late innings produces reversal.",
       "Name": "wilson-batting-2000-inning_half",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "5a14dcb9e84aaf645e19965933246fdc0cb76e34",
+      "AnnotationCommitDate": "2026-06-27",
+      "AnnotationCommitSubject": "Add new metrics and definitions for allocation sweep analysis",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "clemens-bly-1998-home_away",
@@ -67059,7 +67147,11 @@
       "MechanismNote": "Home/away stratum affects both at-bat counts and batting success; Clemens-type allocation imbalance flips combined ranking.",
       "Name": "clemens-bly-1998-home_away",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "5a14dcb9e84aaf645e19965933246fdc0cb76e34",
+      "AnnotationCommitDate": "2026-06-27",
+      "AnnotationCommitSubject": "Add new metrics and definitions for allocation sweep analysis",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "open-university-1975-age_band",
@@ -67071,7 +67163,11 @@
       "MechanismNote": "Age band affects both gender composition (more females in younger high-pass cohorts) and pass rate. Males win in two strata; females win pooled \u2014 partial reversal pattern (type-B geometry).",
       "Name": "open-university-1975-age_band",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "5a14dcb9e84aaf645e19965933246fdc0cb76e34",
+      "AnnotationCommitDate": "2026-06-27",
+      "AnnotationCommitSubject": "Add new metrics and definitions for allocation sweep analysis",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "pisa-immigration-2015-country",
@@ -67083,7 +67179,11 @@
       "MechanismNote": "Country stratum confounds immigrant status and reading proficiency; self-selection into high-performing countries drives pooled reversal.",
       "Name": "pisa-immigration-2015-country",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "5a14dcb9e84aaf645e19965933246fdc0cb76e34",
+      "AnnotationCommitDate": "2026-06-27",
+      "AnnotationCommitSubject": "Add new metrics and definitions for allocation sweep analysis",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "wainer-sat-states-1992-region",
@@ -67095,7 +67195,11 @@
       "MechanismNote": "Region confounds participation rate (treatment A=high participation, B=low) and SAT success; mirrors Wainer 1986 geometry with geographic strata.",
       "Name": "wainer-sat-states-1992-region",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "5a14dcb9e84aaf645e19965933246fdc0cb76e34",
+      "AnnotationCommitDate": "2026-06-27",
+      "AnnotationCommitSubject": "Add new metrics and definitions for allocation sweep analysis",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "folic-acid-neural-tube-1991-maternal_age",
@@ -67107,7 +67211,11 @@
       "MechanismNote": "Maternal age affects both folic acid uptake (younger mothers less supplement use) and NTD baseline risk; stratification reveals treatment benefit masked in aggregate.",
       "Name": "folic-acid-neural-tube-1991-maternal_age",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "5a14dcb9e84aaf645e19965933246fdc0cb76e34",
+      "AnnotationCommitDate": "2026-06-27",
+      "AnnotationCommitSubject": "Add new metrics and definitions for allocation sweep analysis",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "steroid-asthma-severity-disease_severity",
@@ -67119,7 +67227,11 @@
       "MechanismNote": "Disease severity confounds treatment assignment and asthma control outcome; pooled comparison inverts within-stratum steroid benefit.",
       "Name": "steroid-asthma-severity-disease_severity",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "5a14dcb9e84aaf645e19965933246fdc0cb76e34",
+      "AnnotationCommitDate": "2026-06-27",
+      "AnnotationCommitSubject": "Add new metrics and definitions for allocation sweep analysis",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "kidney-dialysis-facility-1990-case_mix",
@@ -67131,7 +67243,11 @@
       "MechanismNote": "Case-mix severity affects facility referral and mortality; high-volume centers win in each stratum but pooled margin compressed (type-C-).",
       "Name": "kidney-dialysis-facility-1990-case_mix",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "5a14dcb9e84aaf645e19965933246fdc0cb76e34",
+      "AnnotationCommitDate": "2026-06-27",
+      "AnnotationCommitSubject": "Add new metrics and definitions for allocation sweep analysis",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "warfarin-bleeding-age-age_group",
@@ -67143,7 +67259,11 @@
       "MechanismNote": "Age affects both warfarin initiation (older patients more likely treated) and bleeding risk; pooled comparison partially reverses within-stratum pattern.",
       "Name": "warfarin-bleeding-age-age_group",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "5a14dcb9e84aaf645e19965933246fdc0cb76e34",
+      "AnnotationCommitDate": "2026-06-27",
+      "AnnotationCommitSubject": "Add new metrics and definitions for allocation sweep analysis",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "diabetes-metformin-bmi-bmi_category",
@@ -67155,7 +67275,11 @@
       "MechanismNote": "BMI category drives both metformin prescribing and glycemic control; aggregate comparison reverses within-stratum metformin advantage.",
       "Name": "diabetes-metformin-bmi-bmi_category",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "5a14dcb9e84aaf645e19965933246fdc0cb76e34",
+      "AnnotationCommitDate": "2026-06-27",
+      "AnnotationCommitSubject": "Add new metrics and definitions for allocation sweep analysis",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "oncology-trial-stage-cancer_stage",
@@ -67167,7 +67291,11 @@
       "MechanismNote": "Cancer stage affects both chemotherapy regimen selection and response probability; pooled comparison inverts within-stratum regimen ranking.",
       "Name": "oncology-trial-stage-cancer_stage",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "5a14dcb9e84aaf645e19965933246fdc0cb76e34",
+      "AnnotationCommitDate": "2026-06-27",
+      "AnnotationCommitSubject": "Add new metrics and definitions for allocation sweep analysis",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "exercise-cholesterol-age-age_group",
@@ -67179,7 +67307,11 @@
       "MechanismNote": "Age affects exercise participation and baseline cholesterol; younger exercisers dominate high-success stratum, flipping pooled comparison.",
       "Name": "exercise-cholesterol-age-age_group",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "5a14dcb9e84aaf645e19965933246fdc0cb76e34",
+      "AnnotationCommitDate": "2026-06-27",
+      "AnnotationCommitSubject": "Add new metrics and definitions for allocation sweep analysis",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "red-meat-colorectal-bmi-bmi_category",
@@ -67191,7 +67323,11 @@
       "MechanismNote": "BMI affects red-meat consumption patterns and colorectal cancer risk; allocation distortion inflates pooled association without full sign flip (type-C\u002B).",
       "Name": "red-meat-colorectal-bmi-bmi_category",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "5a14dcb9e84aaf645e19965933246fdc0cb76e34",
+      "AnnotationCommitDate": "2026-06-27",
+      "AnnotationCommitSubject": "Add new metrics and definitions for allocation sweep analysis",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "folic-fortification-2000-region",
@@ -67203,7 +67339,11 @@
       "MechanismNote": "Regional fortification timing affects both folate exposure and baseline NTD surveillance intensity; regional strata reveal fortification benefit masked in aggregate.",
       "Name": "folic-fortification-2000-region",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "5a14dcb9e84aaf645e19965933246fdc0cb76e34",
+      "AnnotationCommitDate": "2026-06-27",
+      "AnnotationCommitSubject": "Add new metrics and definitions for allocation sweep analysis",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "north-carolina-death-penalty-1990-victim_race",
@@ -67215,7 +67355,11 @@
       "MechanismNote": "Victim race affects defendant race distribution and death sentence probability; same confounding geometry as Radelet Florida \u2014 type-A reversal.",
       "Name": "north-carolina-death-penalty-1990-victim_race",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "5a14dcb9e84aaf645e19965933246fdc0cb76e34",
+      "AnnotationCommitDate": "2026-06-27",
+      "AnnotationCommitSubject": "Add new metrics and definitions for allocation sweep analysis",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "housing-discrimination-audit-neighborhood_income",
@@ -67227,7 +67371,11 @@
       "MechanismNote": "Neighborhood income affects both tester pairing location and callback rate; minority testers concentrated in low-income strata with lower callbacks, producing partial reversal.",
       "Name": "housing-discrimination-audit-neighborhood_income",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "5a14dcb9e84aaf645e19965933246fdc0cb76e34",
+      "AnnotationCommitDate": "2026-06-27",
+      "AnnotationCommitSubject": "Add new metrics and definitions for allocation sweep analysis",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "gender-pay-gap-industry-industry_sector",
@@ -67239,7 +67387,11 @@
       "MechanismNote": "Industry sector confounds gender composition and wage level; women over-represented in lower-wage sectors, producing aggregate pay gap reversal within sectors.",
       "Name": "gender-pay-gap-industry-industry_sector",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "5a14dcb9e84aaf645e19965933246fdc0cb76e34",
+      "AnnotationCommitDate": "2026-06-27",
+      "AnnotationCommitSubject": "Add new metrics and definitions for allocation sweep analysis",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "income-education-state-state",
@@ -67251,7 +67403,11 @@
       "MechanismNote": "State education level confounds college attainment and income; allocation distortion amplifies pooled gap (type-C\u002B).",
       "Name": "income-education-state-state",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "5a14dcb9e84aaf645e19965933246fdc0cb76e34",
+      "AnnotationCommitDate": "2026-06-27",
+      "AnnotationCommitSubject": "Add new metrics and definitions for allocation sweep analysis",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "florida-reef-fish-1994-gear_type",
@@ -67263,7 +67419,11 @@
       "MechanismNote": "Gear type affects both fishing location/species target and catch success rate; pooled ranking reverses within-gear comparison.",
       "Name": "florida-reef-fish-1994-gear_type",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "5a14dcb9e84aaf645e19965933246fdc0cb76e34",
+      "AnnotationCommitDate": "2026-06-27",
+      "AnnotationCommitSubject": "Add new metrics and definitions for allocation sweep analysis",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "uc-irvine-admissions-1985-department",
@@ -67275,7 +67435,11 @@
       "MechanismNote": "Department choice correlates with gender and admission rate; same contested-confounder geometry as Berkeley 1973 \u2014 partial reversal expected.",
       "Name": "uc-irvine-admissions-1985-department",
       "IsConfounder": false,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "5a14dcb9e84aaf645e19965933246fdc0cb76e34",
+      "AnnotationCommitDate": "2026-06-27",
+      "AnnotationCommitSubject": "Add new metrics and definitions for allocation sweep analysis",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "cesarean-birth-weight-2006-birth_weight",
@@ -67287,7 +67451,11 @@
       "MechanismNote": "Birth weight affects presentation mode and cesarean indication; low-birth-weight stratum concentrates high-risk presentations, compressing pooled comparison (type-C-).",
       "Name": "cesarean-birth-weight-2006-birth_weight",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "5a14dcb9e84aaf645e19965933246fdc0cb76e34",
+      "AnnotationCommitDate": "2026-06-27",
+      "AnnotationCommitSubject": "Add new metrics and definitions for allocation sweep analysis",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "schizophrenia-antipsychotic-illness_severity",
@@ -67299,7 +67467,11 @@
       "MechanismNote": "Illness severity drives both antipsychotic choice and remission probability; severe patients concentrated on drug A, inverting pooled response comparison.",
       "Name": "schizophrenia-antipsychotic-illness_severity",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "5a14dcb9e84aaf645e19965933246fdc0cb76e34",
+      "AnnotationCommitDate": "2026-06-27",
+      "AnnotationCommitSubject": "Add new metrics and definitions for allocation sweep analysis",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "berkeley-six-dept-1973-department",
@@ -67311,7 +67483,11 @@
       "MechanismNote": "Department self-selection confounds gender-admission comparison; causal role contested (same as berkeley-1973).",
       "Name": "berkeley-six-dept-1973-department",
       "IsConfounder": false,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "5a14dcb9e84aaf645e19965933246fdc0cb76e34",
+      "AnnotationCommitDate": "2026-06-27",
+      "AnnotationCommitSubject": "Add new metrics and definitions for allocation sweep analysis",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "rosiglitazone-mi-pool-2007-trial_allocation_profile",
@@ -67323,7 +67499,11 @@
       "MechanismNote": "Arm-size imbalance across trials confounds naive pooling; Mantel-Haenszel vs crude pool diverge.",
       "Name": "rosiglitazone-mi-pool-2007-trial_allocation_profile",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "5a14dcb9e84aaf645e19965933246fdc0cb76e34",
+      "AnnotationCommitDate": "2026-06-27",
+      "AnnotationCommitSubject": "Add new metrics and definitions for allocation sweep analysis",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "ironman-gender-age-2010-age_cohort",
@@ -67335,7 +67515,11 @@
       "MechanismNote": "Cohort mix confounds sex comparison; women faster within each cohort.",
       "Name": "ironman-gender-age-2010-age_cohort",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "5a14dcb9e84aaf645e19965933246fdc0cb76e34",
+      "AnnotationCommitDate": "2026-06-27",
+      "AnnotationCommitSubject": "Add new metrics and definitions for allocation sweep analysis",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "hanley-power-lines-2000-source_study",
@@ -67347,7 +67531,11 @@
       "MechanismNote": "Investigator-induced case-control ratio heterogeneity across studies; meta-analysis Simpson paradox.",
       "Name": "hanley-power-lines-2000-source_study",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "5a14dcb9e84aaf645e19965933246fdc0cb76e34",
+      "AnnotationCommitDate": "2026-06-27",
+      "AnnotationCommitSubject": "Add new metrics and definitions for allocation sweep analysis",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "coffee-smoking-lung-1968-smoking_status",
@@ -67359,7 +67547,11 @@
       "MechanismNote": "Smoking confounds coffee-cancer association; pooled direction reverses stratum-specific pattern.",
       "Name": "coffee-smoking-lung-1968-smoking_status",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "5a14dcb9e84aaf645e19965933246fdc0cb76e34",
+      "AnnotationCommitDate": "2026-06-27",
+      "AnnotationCommitSubject": "Add new metrics and definitions for allocation sweep analysis",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "panama-sweden-mortality-1975-age_group",
@@ -67371,7 +67563,11 @@
       "MechanismNote": "Age distribution confounds country comparison; Panama better within each age group.",
       "Name": "panama-sweden-mortality-1975-age_group",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "5a14dcb9e84aaf645e19965933246fdc0cb76e34",
+      "AnnotationCommitDate": "2026-06-27",
+      "AnnotationCommitSubject": "Add new metrics and definitions for allocation sweep analysis",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "hrt-whi-2002-study_design",
@@ -67383,7 +67579,11 @@
       "MechanismNote": "Healthy-user selection in observational stratum vs RCT randomization in WHI stratum. Cross-design reversal; causal role contested (healthy-user vs true harm).",
       "Name": "hrt-whi-2002-study_design",
       "IsConfounder": false,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "4172aaebbb6e52b0d89b890dff98c26ff77f8c4b",
+      "AnnotationCommitDate": "2026-06-29",
+      "AnnotationCommitSubject": "Revise README for Rulebook Examples",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "obesity-paradox-hf-heart_failure_status",
@@ -67395,7 +67595,11 @@
       "MechanismNote": "Conditioning on HF status induces collider bias: obese patients survive longer among HF patients but not in the general population.",
       "Name": "obesity-paradox-hf-heart_failure_status",
       "IsConfounder": false,
-      "ConditioningRisk": "collider"
+      "ConditioningRisk": "collider",
+      "AnnotationCommitHash": "4172aaebbb6e52b0d89b890dff98c26ff77f8c4b",
+      "AnnotationCommitDate": "2026-06-29",
+      "AnnotationCommitSubject": "Revise README for Rulebook Examples",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "dialysis-bmi-survival-esrd_status",
@@ -67407,7 +67611,11 @@
       "MechanismNote": "Conditioning on ESRD/dialysis status: higher BMI associated with better survival among dialysis patients (reverse epidemiology).",
       "Name": "dialysis-bmi-survival-esrd_status",
       "IsConfounder": false,
-      "ConditioningRisk": "collider"
+      "ConditioningRisk": "collider",
+      "AnnotationCommitHash": "4172aaebbb6e52b0d89b890dff98c26ff77f8c4b",
+      "AnnotationCommitDate": "2026-06-29",
+      "AnnotationCommitSubject": "Revise README for Rulebook Examples",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "sick-quitter-alcohol-abstainer_composition",
@@ -67419,7 +67627,11 @@
       "MechanismNote": "Former drinkers (sick quitters) included in abstainer reference group. Causal role contested: collider/selection vs residual confounding.",
       "Name": "sick-quitter-alcohol-abstainer_composition",
       "IsConfounder": false,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "4172aaebbb6e52b0d89b890dff98c26ff77f8c4b",
+      "AnnotationCommitDate": "2026-06-29",
+      "AnnotationCommitSubject": "Revise README for Rulebook Examples",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "flu-vaccine-elderly-mortality-age_group",
@@ -67431,7 +67643,11 @@
       "MechanismNote": "Frailty and age confound vaccine uptake and mortality. Vaccinated appear more likely to die pooled despite lower mortality within each age stratum.",
       "Name": "flu-vaccine-elderly-mortality-age_group",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "4172aaebbb6e52b0d89b890dff98c26ff77f8c4b",
+      "AnnotationCommitDate": "2026-06-29",
+      "AnnotationCommitSubject": "Revise README for Rulebook Examples",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "covid-italy-china-cfr-2020-age_group",
@@ -67443,7 +67659,11 @@
       "MechanismNote": "Age structure confounds cross-country CFR comparison. Italy lower CFR in each age stratum yet higher pooled due to older population.",
       "Name": "covid-italy-china-cfr-2020-age_group",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "4172aaebbb6e52b0d89b890dff98c26ff77f8c4b",
+      "AnnotationCommitDate": "2026-06-29",
+      "AnnotationCommitSubject": "Revise README for Rulebook Examples",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "israel-covid-severe-2021-age_group",
@@ -67455,7 +67675,11 @@
       "MechanismNote": "Age confounds vaccination status and severe COVID outcome. Vaccinated have higher pooled severe rate despite lower rate in every age stratum.",
       "Name": "israel-covid-severe-2021-age_group",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "4172aaebbb6e52b0d89b890dff98c26ff77f8c4b",
+      "AnnotationCommitDate": "2026-06-29",
+      "AnnotationCommitSubject": "Revise README for Rulebook Examples",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "cochran-smoking-1968-age_group",
@@ -67467,7 +67691,11 @@
       "MechanismNote": "Smokers younger on average; age confounds smoking-mortality comparison. Smokers worse in every age stratum yet better pooled.",
       "Name": "cochran-smoking-1968-age_group",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "4172aaebbb6e52b0d89b890dff98c26ff77f8c4b",
+      "AnnotationCommitDate": "2026-06-29",
+      "AnnotationCommitSubject": "Revise README for Rulebook Examples",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "healthy-worker-mortality-employment_status",
@@ -67479,7 +67707,11 @@
       "MechanismNote": "Healthy-worker selection: employed cohort healthier at hire. Selection mechanism, not classical confounding.",
       "Name": "healthy-worker-mortality-employment_status",
       "IsConfounder": false,
-      "ConditioningRisk": "collider"
+      "ConditioningRisk": "collider",
+      "AnnotationCommitHash": "4172aaebbb6e52b0d89b890dff98c26ff77f8c4b",
+      "AnnotationCommitDate": "2026-06-29",
+      "AnnotationCommitSubject": "Revise README for Rulebook Examples",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "compas-recidivism-base-group_base_rate",
@@ -67491,7 +67723,11 @@
       "MechanismNote": "Differing recidivism base rates across demographic groups produce fairness metric reversals. Links to Chouldechova impossibility theorem.",
       "Name": "compas-recidivism-base-group_base_rate",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "4172aaebbb6e52b0d89b890dff98c26ff77f8c4b",
+      "AnnotationCommitDate": "2026-06-29",
+      "AnnotationCommitSubject": "Revise README for Rulebook Examples",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "us-wage-composition-stagnation-workforce_composition",
@@ -67503,7 +67739,11 @@
       "MechanismNote": "Workforce composition shift toward lower-wage education groups. Each subgroup wage rises yet aggregate median flat or falls.",
       "Name": "us-wage-composition-stagnation-workforce_composition",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "4172aaebbb6e52b0d89b890dff98c26ff77f8c4b",
+      "AnnotationCommitDate": "2026-06-29",
+      "AnnotationCommitSubject": "Revise README for Rulebook Examples",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "borjas-immigrant-cohort-arrival_cohort",
@@ -67515,7 +67755,11 @@
       "MechanismNote": "Arrival cohort composition confounds cross-section vs longitudinal assimilation comparisons.",
       "Name": "borjas-immigrant-cohort-arrival_cohort",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "4172aaebbb6e52b0d89b890dff98c26ff77f8c4b",
+      "AnnotationCommitDate": "2026-06-29",
+      "AnnotationCommitSubject": "Revise README for Rulebook Examples",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "robinson-1950-literacy-state_aggregation",
@@ -67527,7 +67771,11 @@
       "MechanismNote": "Ecological aggregation: immigrants settle in high-literacy states. Individual-level nativity-literacy association reverses at state level.",
       "Name": "robinson-1950-literacy-state_aggregation",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "4172aaebbb6e52b0d89b890dff98c26ff77f8c4b",
+      "AnnotationCommitDate": "2026-06-29",
+      "AnnotationCommitSubject": "Revise README for Rulebook Examples",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "ab-test-traffic-mix-time_varying_segment",
@@ -67539,7 +67787,11 @@
       "MechanismNote": "Traffic composition shifts between user segments across experiment weeks. Segment mix confounds variant comparison.",
       "Name": "ab-test-traffic-mix-time_varying_segment",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "4172aaebbb6e52b0d89b890dff98c26ff77f8c4b",
+      "AnnotationCommitDate": "2026-06-29",
+      "AnnotationCommitSubject": "Revise README for Rulebook Examples",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "recsys-offline-eval-exposure_popularity",
@@ -67551,7 +67803,11 @@
       "MechanismNote": "Exposure/popularity confounds offline metric comparison. New model wins on head items, loses on tail; pooled metric reverses.",
       "Name": "recsys-offline-eval-exposure_popularity",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "4172aaebbb6e52b0d89b890dff98c26ff77f8c4b",
+      "AnnotationCommitDate": "2026-06-29",
+      "AnnotationCommitSubject": "Revise README for Rulebook Examples",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "collider-only-synthetic-constructed_collider",
@@ -67563,7 +67819,11 @@
       "MechanismNote": "Constructed collider with zero confounding. Reversal induced solely by conditioning on selection variable.",
       "Name": "collider-only-synthetic-constructed_collider",
       "IsConfounder": false,
-      "ConditioningRisk": "collider"
+      "ConditioningRisk": "collider",
+      "AnnotationCommitHash": "4172aaebbb6e52b0d89b890dff98c26ff77f8c4b",
+      "AnnotationCommitDate": "2026-06-29",
+      "AnnotationCommitSubject": "Revise README for Rulebook Examples",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "noncollapsibility-or-synthetic-noncollapsible_measure",
@@ -67575,7 +67835,11 @@
       "MechanismNote": "Non-collapsibility-only control: OR would reverse if used as measure, but risk difference (Successes/Cases) does not reverse. AllocationDistortion framing cannot represent OR non-collapsibility \u2014 documented blind spot.",
       "Name": "noncollapsibility-or-synthetic-noncollapsible_measure",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "4172aaebbb6e52b0d89b890dff98c26ff77f8c4b",
+      "AnnotationCommitDate": "2026-06-29",
+      "AnnotationCommitSubject": "Revise README for Rulebook Examples",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "trauma-center-mortality-injury_severity",
@@ -67587,7 +67851,11 @@
       "MechanismNote": "Injury severity confounds referral to trauma centers and mortality; higher-level centers receive more severe cases.",
       "Name": "trauma-center-mortality-injury_severity",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "4172aaebbb6e52b0d89b890dff98c26ff77f8c4b",
+      "AnnotationCommitDate": "2026-06-29",
+      "AnnotationCommitSubject": "Revise README for Rulebook Examples",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "surgeon-volume-mortality-baseline_risk",
@@ -67599,7 +67867,11 @@
       "MechanismNote": "Baseline risk confounds surgeon volume assignment and operative mortality.",
       "Name": "surgeon-volume-mortality-baseline_risk",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "4172aaebbb6e52b0d89b890dff98c26ff77f8c4b",
+      "AnnotationCommitDate": "2026-06-29",
+      "AnnotationCommitSubject": "Revise README for Rulebook Examples",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "mammography-length-bias-detection_mode",
@@ -67611,7 +67883,11 @@
       "MechanismNote": "Detection mode selects slower-progressing cancers; screen-detected cases appear more survivable pooled.",
       "Name": "mammography-length-bias-detection_mode",
       "IsConfounder": false,
-      "ConditioningRisk": "collider"
+      "ConditioningRisk": "collider",
+      "AnnotationCommitHash": "4172aaebbb6e52b0d89b890dff98c26ff77f8c4b",
+      "AnnotationCommitDate": "2026-06-29",
+      "AnnotationCommitSubject": "Revise README for Rulebook Examples",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "cabg-vs-pci-severity-coronary_severity",
@@ -67623,7 +67899,11 @@
       "MechanismNote": "Disease severity confounds revascularization choice and outcomes; sicker patients directed to CABG.",
       "Name": "cabg-vs-pci-severity-coronary_severity",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "4172aaebbb6e52b0d89b890dff98c26ff77f8c4b",
+      "AnnotationCommitDate": "2026-06-29",
+      "AnnotationCommitSubject": "Revise README for Rulebook Examples",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "tolbutamide-ugdp-1970-center_baseline_risk",
@@ -67635,7 +67915,11 @@
       "MechanismNote": "Center baseline risk heterogeneity confounds tolbutamide vs placebo comparison; causal adjudication contested.",
       "Name": "tolbutamide-ugdp-1970-center_baseline_risk",
       "IsConfounder": false,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "4172aaebbb6e52b0d89b890dff98c26ff77f8c4b",
+      "AnnotationCommitDate": "2026-06-29",
+      "AnnotationCommitSubject": "Revise README for Rulebook Examples",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "snow-cholera-water-1855-water_company",
@@ -67647,7 +67931,11 @@
       "MechanismNote": "Water company supply confounds cholera exposure; S\u0026V supply areas had higher mortality in each sub-period but composition drives pooled comparison.",
       "Name": "snow-cholera-water-1855-water_company",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "4172aaebbb6e52b0d89b890dff98c26ff77f8c4b",
+      "AnnotationCommitDate": "2026-06-29",
+      "AnnotationCommitSubject": "Revise README for Rulebook Examples",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "seatbelt-crash-severity-crash_occurrence",
@@ -67659,7 +67947,11 @@
       "MechanismNote": "Conditioning on crash involvement: belted drivers in more severe crashes; collider induces reversal.",
       "Name": "seatbelt-crash-severity-crash_occurrence",
       "IsConfounder": false,
-      "ConditioningRisk": "collider"
+      "ConditioningRisk": "collider",
+      "AnnotationCommitHash": "4172aaebbb6e52b0d89b890dff98c26ff77f8c4b",
+      "AnnotationCommitDate": "2026-06-29",
+      "AnnotationCommitSubject": "Revise README for Rulebook Examples",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "measles-outbreak-vaccinated-vaccination_base_rate",
@@ -67671,7 +67963,11 @@
       "MechanismNote": "High vaccination coverage means most cases occur among vaccinated individuals despite lower attack rate within each exposure stratum.",
       "Name": "measles-outbreak-vaccinated-vaccination_base_rate",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "4172aaebbb6e52b0d89b890dff98c26ff77f8c4b",
+      "AnnotationCommitDate": "2026-06-29",
+      "AnnotationCommitSubject": "Revise README for Rulebook Examples",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "air-pollution-mortality-city-city",
@@ -67683,7 +67979,11 @@
       "MechanismNote": "City-level age/socioeconomic composition confounds pollution exposure and mortality; ecological comparison reverses within-city gradients.",
       "Name": "air-pollution-mortality-city-city",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "4172aaebbb6e52b0d89b890dff98c26ff77f8c4b",
+      "AnnotationCommitDate": "2026-06-29",
+      "AnnotationCommitSubject": "Revise README for Rulebook Examples",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "tb-treatment-resistance-drug_resistance",
@@ -67695,7 +67995,11 @@
       "MechanismNote": "Drug resistance confounds regimen assignment and treatment success; pooled comparison reverses stratum-specific pattern.",
       "Name": "tb-treatment-resistance-drug_resistance",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "4172aaebbb6e52b0d89b890dff98c26ff77f8c4b",
+      "AnnotationCommitDate": "2026-06-29",
+      "AnnotationCommitSubject": "Revise README for Rulebook Examples",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "hospital-mortality-readmission-case_mix",
@@ -67707,7 +68011,11 @@
       "MechanismNote": "Case-mix severity confounds penalty status and mortality; sicker patients concentrated in penalized hospitals.",
       "Name": "hospital-mortality-readmission-case_mix",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "4172aaebbb6e52b0d89b890dff98c26ff77f8c4b",
+      "AnnotationCommitDate": "2026-06-29",
+      "AnnotationCommitSubject": "Revise README for Rulebook Examples",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "nypd-stop-frisk-hitrate-precinct_base_rate",
@@ -67719,7 +68027,11 @@
       "MechanismNote": "Precinct crime base rate confounds stop volume and hit rate; benchmarking reversal across precincts.",
       "Name": "nypd-stop-frisk-hitrate-precinct_base_rate",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "4172aaebbb6e52b0d89b890dff98c26ff77f8c4b",
+      "AnnotationCommitDate": "2026-06-29",
+      "AnnotationCommitSubject": "Revise README for Rulebook Examples",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "sentencing-offense-type-offense_category",
@@ -67731,7 +68043,11 @@
       "MechanismNote": "Offense category mix confounds demographic comparison and sentence severity; pooled disparity reverses within-category pattern.",
       "Name": "sentencing-offense-type-offense_category",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "4172aaebbb6e52b0d89b890dff98c26ff77f8c4b",
+      "AnnotationCommitDate": "2026-06-29",
+      "AnnotationCommitSubject": "Revise README for Rulebook Examples",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "bail-risk-score-pretrial_risk_tier",
@@ -67743,7 +68059,11 @@
       "MechanismNote": "Risk tier confounds detention decision and rearrest outcome; case-mix drives pooled comparison.",
       "Name": "bail-risk-score-pretrial_risk_tier",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "4172aaebbb6e52b0d89b890dff98c26ff77f8c4b",
+      "AnnotationCommitDate": "2026-06-29",
+      "AnnotationCommitSubject": "Revise README for Rulebook Examples",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "police-force-encounter-encounter_conditioning",
@@ -67755,7 +68075,11 @@
       "MechanismNote": "Conditioning on police encounter induces collider bias; force rates reverse when pooling across encounter types.",
       "Name": "police-force-encounter-encounter_conditioning",
       "IsConfounder": false,
-      "ConditioningRisk": "collider"
+      "ConditioningRisk": "collider",
+      "AnnotationCommitHash": "4172aaebbb6e52b0d89b890dff98c26ff77f8c4b",
+      "AnnotationCommitDate": "2026-06-29",
+      "AnnotationCommitSubject": "Revise README for Rulebook Examples",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "uc-systemwide-admissions-major_campus",
@@ -67767,7 +68091,11 @@
       "MechanismNote": "Self-selection into major/campus confounds admission comparison; causal role contested (mediator vs confounder).",
       "Name": "uc-systemwide-admissions-major_campus",
       "IsConfounder": false,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "4172aaebbb6e52b0d89b890dff98c26ff77f8c4b",
+      "AnnotationCommitDate": "2026-06-29",
+      "AnnotationCommitSubject": "Revise README for Rulebook Examples",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "teacher-vam-prior-achievement-incoming_achievement",
@@ -67779,7 +68107,11 @@
       "MechanismNote": "Incoming achievement confounds teacher assignment and student outcomes; VAM reverses within strata.",
       "Name": "teacher-vam-prior-achievement-incoming_achievement",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "4172aaebbb6e52b0d89b890dff98c26ff77f8c4b",
+      "AnnotationCommitDate": "2026-06-29",
+      "AnnotationCommitSubject": "Revise README for Rulebook Examples",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "naep-state-demographics-state_composition",
@@ -67791,7 +68123,11 @@
       "MechanismNote": "State demographic composition confounds comparison and proficiency rates; ecological aggregation reversal.",
       "Name": "naep-state-demographics-state_composition",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "4172aaebbb6e52b0d89b890dff98c26ff77f8c4b",
+      "AnnotationCommitDate": "2026-06-29",
+      "AnnotationCommitSubject": "Revise README for Rulebook Examples",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "college-grad-rate-selectivity-incoming_preparation",
@@ -67803,7 +68139,11 @@
       "MechanismNote": "Incoming preparation confounds selectivity and graduation; less selective schools win within strata but lose pooled.",
       "Name": "college-grad-rate-selectivity-incoming_preparation",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "4172aaebbb6e52b0d89b890dff98c26ff77f8c4b",
+      "AnnotationCommitDate": "2026-06-29",
+      "AnnotationCommitSubject": "Revise README for Rulebook Examples",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "star-class-size-school",
@@ -67815,7 +68155,11 @@
       "MechanismNote": "School site confounds class-size assignment; near-neutral type-D geometry expected.",
       "Name": "star-class-size-school",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "4172aaebbb6e52b0d89b890dff98c26ff77f8c4b",
+      "AnnotationCommitDate": "2026-06-29",
+      "AnnotationCommitSubject": "Revise README for Rulebook Examples",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "nba-shooting-shot-mix-shot_type",
@@ -67827,7 +68171,11 @@
       "MechanismNote": "Shot-type mix confounds shooting comparison; higher FG% in both shot types but lower pooled due to 3PT volume.",
       "Name": "nba-shooting-shot-mix-shot_type",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "4172aaebbb6e52b0d89b890dff98c26ff77f8c4b",
+      "AnnotationCommitDate": "2026-06-29",
+      "AnnotationCommitSubject": "Revise README for Rulebook Examples",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "pitcher-era-ballpark-ballpark",
@@ -67839,7 +68187,11 @@
       "MechanismNote": "Ballpark run environment confounds pitcher comparison and ERA outcomes.",
       "Name": "pitcher-era-ballpark-ballpark",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "4172aaebbb6e52b0d89b890dff98c26ff77f8c4b",
+      "AnnotationCommitDate": "2026-06-29",
+      "AnnotationCommitSubject": "Revise README for Rulebook Examples",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "nfl-completion-depth-pass_depth",
@@ -67851,7 +68203,11 @@
       "MechanismNote": "Pass-depth mix confounds QB comparison; higher completion in each depth stratum but lower pooled.",
       "Name": "nfl-completion-depth-pass_depth",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "4172aaebbb6e52b0d89b890dff98c26ff77f8c4b",
+      "AnnotationCommitDate": "2026-06-29",
+      "AnnotationCommitSubject": "Revise README for Rulebook Examples",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "field-goal-distance-kick_distance",
@@ -67863,7 +68219,11 @@
       "MechanismNote": "Attempt distance distribution confounds kicker comparison; better within distance bins but worse pooled.",
       "Name": "field-goal-distance-kick_distance",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "4172aaebbb6e52b0d89b890dff98c26ff77f8c4b",
+      "AnnotationCommitDate": "2026-06-29",
+      "AnnotationCommitSubject": "Revise README for Rulebook Examples",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "golf-scoring-course-course_difficulty",
@@ -67875,7 +68235,11 @@
       "MechanismNote": "Course difficulty mix confounds golfer comparison; better on both course types but worse pooled schedule mix.",
       "Name": "golf-scoring-course-course_difficulty",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "4172aaebbb6e52b0d89b890dff98c26ff77f8c4b",
+      "AnnotationCommitDate": "2026-06-29",
+      "AnnotationCommitSubject": "Revise README for Rulebook Examples",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "minimum-wage-region-region",
@@ -67887,7 +68251,11 @@
       "MechanismNote": "Regional labor market conditions confound minimum-wage exposure and employment outcomes.",
       "Name": "minimum-wage-region-region",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "4172aaebbb6e52b0d89b890dff98c26ff77f8c4b",
+      "AnnotationCommitDate": "2026-06-29",
+      "AnnotationCommitSubject": "Revise README for Rulebook Examples",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "returns-to-education-field-field_of_study",
@@ -67899,7 +68267,11 @@
       "MechanismNote": "Field of study mediates education-earnings relationship; causal role contested.",
       "Name": "returns-to-education-field-field_of_study",
       "IsConfounder": false,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "4172aaebbb6e52b0d89b890dff98c26ff77f8c4b",
+      "AnnotationCommitDate": "2026-06-29",
+      "AnnotationCommitSubject": "Revise README for Rulebook Examples",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "unemployment-education-cycle-education_composition",
@@ -67911,7 +68283,11 @@
       "MechanismNote": "Education composition shifts over the business cycle confound aggregate unemployment comparisons.",
       "Name": "unemployment-education-cycle-education_composition",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "4172aaebbb6e52b0d89b890dff98c26ff77f8c4b",
+      "AnnotationCommitDate": "2026-06-29",
+      "AnnotationCommitSubject": "Revise README for Rulebook Examples",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "costa-rica-us-life-expectancy-age_group",
@@ -67923,7 +68299,11 @@
       "MechanismNote": "Age structure confounds cross-national life expectancy comparison.",
       "Name": "costa-rica-us-life-expectancy-age_group",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "4172aaebbb6e52b0d89b890dff98c26ff77f8c4b",
+      "AnnotationCommitDate": "2026-06-29",
+      "AnnotationCommitSubject": "Revise README for Rulebook Examples",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "fertility-income-country-country",
@@ -67935,7 +68315,11 @@
       "MechanismNote": "Country-level development confounds income and fertility; ecological paradox across nations.",
       "Name": "fertility-income-country-country",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "4172aaebbb6e52b0d89b890dff98c26ff77f8c4b",
+      "AnnotationCommitDate": "2026-06-29",
+      "AnnotationCommitSubject": "Revise README for Rulebook Examples",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "religiosity-happiness-country-national_wealth",
@@ -67947,7 +68331,11 @@
       "MechanismNote": "National wealth confounds religiosity and happiness; pooled cross-country comparison reverses within-country pattern.",
       "Name": "religiosity-happiness-country-national_wealth",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "4172aaebbb6e52b0d89b890dff98c26ff77f8c4b",
+      "AnnotationCommitDate": "2026-06-29",
+      "AnnotationCommitSubject": "Revise README for Rulebook Examples",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "voter-turnout-education-state-state",
@@ -67959,7 +68347,11 @@
       "MechanismNote": "State demographic composition confounds education-turnout relationship; ecological reversal.",
       "Name": "voter-turnout-education-state-state",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "4172aaebbb6e52b0d89b890dff98c26ff77f8c4b",
+      "AnnotationCommitDate": "2026-06-29",
+      "AnnotationCommitSubject": "Revise README for Rulebook Examples",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "ad-ctr-platform-mix-platform",
@@ -67971,7 +68363,11 @@
       "MechanismNote": "Platform mix confounds creative comparison; CTR reversal from segment composition shift.",
       "Name": "ad-ctr-platform-mix-platform",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "4172aaebbb6e52b0d89b890dff98c26ff77f8c4b",
+      "AnnotationCommitDate": "2026-06-29",
+      "AnnotationCommitSubject": "Revise README for Rulebook Examples",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "hernandez-diaz-schisterman-hernan-2006-birth-weight-category",
@@ -67983,7 +68379,11 @@
       "MechanismNote": "Low birth weight is a collider on the smoking\u2013mortality pathway. Among LBW infants, smokers show lower mortality because smoking-related LBW is a milder selection mechanism than pathology-driven LBW among non-smokers.",
       "Name": "hernandez-diaz-schisterman-hernan-2006-birth-weight-category",
       "IsConfounder": false,
-      "ConditioningRisk": "collider"
+      "ConditioningRisk": "collider",
+      "AnnotationCommitHash": "ea838015949d9dfd6ce27f4ce983b3d11fcf1a86",
+      "AnnotationCommitDate": "2026-07-06",
+      "AnnotationCommitSubject": "Add new data acquisition files and update README for Simpson\u0027s Paradox",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "wade-boggs-vs-don-mattingly-season-year",
@@ -67995,7 +68395,11 @@
       "MechanismNote": "Season year affects both at-bat volume and batting average. Boggs wins each season individually but Mattingly wins the combined average via differential AB weighting \u2014 unanimous stratum direction, Type-A geometry.",
       "Name": "wade-boggs-vs-don-mattingly-season-year",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "ea838015949d9dfd6ce27f4ce983b3d11fcf1a86",
+      "AnnotationCommitDate": "2026-07-06",
+      "AnnotationCommitSubject": "Add new data acquisition files and update README for Simpson\u0027s Paradox",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "johnson-2006-model-specification",
@@ -68007,7 +68411,11 @@
       "MechanismNote": "Criminal history is an omitted confounder in the naive specification. Race coefficient sign reverses when the stratum variable (prior record severity) is included \u2014 classic confounder-driven Type A reversal.",
       "Name": "johnson-2006-model-specification",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "ea838015949d9dfd6ce27f4ce983b3d11fcf1a86",
+      "AnnotationCommitDate": "2026-07-06",
+      "AnnotationCommitSubject": "Add new data acquisition files and update README for Simpson\u0027s Paradox",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "chetty-friedman-rockoff-2014-school",
@@ -68019,7 +68427,11 @@
       "MechanismNote": "High-VA teachers cluster in low-poverty schools. At 2\u00D7K encoding with balanced allocation, pooled winner matches stratum winners \u2014 catalog Expected-A overstates manifest reversal.",
       "Name": "chetty-friedman-rockoff-2014-school",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "ea838015949d9dfd6ce27f4ce983b3d11fcf1a86",
+      "AnnotationCommitDate": "2026-07-06",
+      "AnnotationCommitSubject": "Add new data acquisition files and update README for Simpson\u0027s Paradox",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "angrist-pischke-2009-proximity-to-college",
@@ -68031,7 +68443,11 @@
       "MechanismNote": "College proximity correlates with family background. 2\u00D7K collapse yields Type-D neutral geometry despite Expected-A catalog prior.",
       "Name": "angrist-pischke-2009-proximity-to-college",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "ea838015949d9dfd6ce27f4ce983b3d11fcf1a86",
+      "AnnotationCommitDate": "2026-07-06",
+      "AnnotationCommitSubject": "Add new data acquisition files and update README for Simpson\u0027s Paradox",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "blau-kahn-2017-occupation",
@@ -68043,7 +68459,11 @@
       "MechanismNote": "Occupation mix confounds raw gender gap. Balanced 2\u00D7K encoding preserves same winner across strata and pooled \u2014 Type D despite Expected-A tag.",
       "Name": "blau-kahn-2017-occupation",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "ea838015949d9dfd6ce27f4ce983b3d11fcf1a86",
+      "AnnotationCommitDate": "2026-07-06",
+      "AnnotationCommitSubject": "Add new data acquisition files and update README for Simpson\u0027s Paradox",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "moretti-2013-city",
@@ -68055,7 +68475,11 @@
       "MechanismNote": "Nominal wage gaps shrink after COL adjustment at full resolution; 2\u00D7K encoding yields Type-D neutral geometry.",
       "Name": "moretti-2013-city",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "ea838015949d9dfd6ce27f4ce983b3d11fcf1a86",
+      "AnnotationCommitDate": "2026-07-06",
+      "AnnotationCommitSubject": "Add new data acquisition files and update README for Simpson\u0027s Paradox",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "oaxaca-1973-education-experience-occupation",
@@ -68067,7 +68491,11 @@
       "MechanismNote": "Decomposition reversal at full resolution collapses to Type-D at coarse 2\u00D7K \u2014 catalog Expected-A is a mechanism prior, not observed geometry.",
       "Name": "oaxaca-1973-education-experience-occupation",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "ea838015949d9dfd6ce27f4ce983b3d11fcf1a86",
+      "AnnotationCommitDate": "2026-07-06",
+      "AnnotationCommitSubject": "Add new data acquisition files and update README for Simpson\u0027s Paradox",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "spohn-2000-offense-severity",
@@ -68079,7 +68507,11 @@
       "MechanismNote": "Raw racial sentencing gaps shrink or reverse when offense severity is controlled \u2014 prior record severity is the confounding stratum.",
       "Name": "spohn-2000-offense-severity",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "b2bd9bca253dcec3fec9231b0188a8ac60596418",
+      "AnnotationCommitDate": "2026-07-06",
+      "AnnotationCommitSubject": "Loop 71: expansion wave 2 encode \u2014 12 studies to N=111 real.",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "angwin-larson-mattu-kirchner-2016-crime-type",
@@ -68091,7 +68523,11 @@
       "MechanismNote": "Overall accuracy equal by race; false positive rate reversal emerges within non-violent crime stratum.",
       "Name": "angwin-larson-mattu-kirchner-2016-crime-type",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "b2bd9bca253dcec3fec9231b0188a8ac60596418",
+      "AnnotationCommitDate": "2026-07-06",
+      "AnnotationCommitSubject": "Loop 71: expansion wave 2 encode \u2014 12 studies to N=111 real.",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "gross-risinger-et-al-2017-crime-category",
@@ -68103,7 +68539,11 @@
       "MechanismNote": "Drug exonerations heavily Black; within drug category conviction rates reverse vs pooled.",
       "Name": "gross-risinger-et-al-2017-crime-category",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "b2bd9bca253dcec3fec9231b0188a8ac60596418",
+      "AnnotationCommitDate": "2026-07-06",
+      "AnnotationCommitSubject": "Loop 71: expansion wave 2 encode \u2014 12 studies to N=111 real.",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "baldus-woodworth-pulaski-1983-aggravating-circumstances-tier",
@@ -68115,7 +68555,11 @@
       "MechanismNote": "Defendant-race effect reverses within aggravating-factor strata; victim race is the dominant confounder.",
       "Name": "baldus-woodworth-pulaski-1983-aggravating-circumstances-tier",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "b2bd9bca253dcec3fec9231b0188a8ac60596418",
+      "AnnotationCommitDate": "2026-07-06",
+      "AnnotationCommitSubject": "Loop 71: expansion wave 2 encode \u2014 12 studies to N=111 real.",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "harris-steffensmeier-ulmer-painter-davis-2009-offense-type",
@@ -68127,7 +68571,11 @@
       "MechanismNote": "Overall incarceration disparity large; stratifying by offense type, gap reverses for property crimes.",
       "Name": "harris-steffensmeier-ulmer-painter-davis-2009-offense-type",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "b2bd9bca253dcec3fec9231b0188a8ac60596418",
+      "AnnotationCommitDate": "2026-07-06",
+      "AnnotationCommitSubject": "Loop 71: expansion wave 2 encode \u2014 12 studies to N=111 real.",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "dockery-et-al-1993-ses",
@@ -68139,7 +68587,11 @@
       "MechanismNote": "City-level PM2.5 association robust; within SES strata apparent city ranking can reverse.",
       "Name": "dockery-et-al-1993-ses",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "b2bd9bca253dcec3fec9231b0188a8ac60596418",
+      "AnnotationCommitDate": "2026-07-06",
+      "AnnotationCommitSubject": "Loop 71: expansion wave 2 encode \u2014 12 studies to N=111 real.",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "framingham-heart-study-sex",
@@ -68151,7 +68603,11 @@
       "MechanismNote": "Risk factor associations reverse by sex in early waves; sex-stratified analyses required.",
       "Name": "framingham-heart-study-sex",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "b2bd9bca253dcec3fec9231b0188a8ac60596418",
+      "AnnotationCommitDate": "2026-07-06",
+      "AnnotationCommitSubject": "Loop 71: expansion wave 2 encode \u2014 12 studies to N=111 real.",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "fillmore-et-al-2006-former-vs-never-drinker-status",
@@ -68163,7 +68619,11 @@
       "MechanismNote": "J-curve moderate-drinker advantage reverses when sick quitters separated from never-drinkers.",
       "Name": "fillmore-et-al-2006-former-vs-never-drinker-status",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "b2bd9bca253dcec3fec9231b0188a8ac60596418",
+      "AnnotationCommitDate": "2026-07-06",
+      "AnnotationCommitSubject": "Loop 71: expansion wave 2 encode \u2014 12 studies to N=111 real.",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "women-s-health-study-age-group",
@@ -68175,7 +68635,11 @@
       "MechanismNote": "No overall CV benefit but stroke reduction; stratifying age \u226565, MI benefit emerges.",
       "Name": "women-s-health-study-age-group",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "b2bd9bca253dcec3fec9231b0188a8ac60596418",
+      "AnnotationCommitDate": "2026-07-06",
+      "AnnotationCommitSubject": "Loop 71: expansion wave 2 encode \u2014 12 studies to N=111 real.",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "ellsbury-vs-lowell-2007-season",
@@ -68187,7 +68651,11 @@
       "MechanismNote": "Ellsbury outperformed Lowell each season but had far fewer AB in 2007, reversing combined average.",
       "Name": "ellsbury-vs-lowell-2007-season",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "b2bd9bca253dcec3fec9231b0188a8ac60596418",
+      "AnnotationCommitDate": "2026-07-06",
+      "AnnotationCommitSubject": "Loop 71: expansion wave 2 encode \u2014 12 studies to N=111 real.",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "efron-morris-1975-first-vs-second-half-of-season",
@@ -68199,7 +68667,11 @@
       "MechanismNote": "Player wins each half individually but loses combined average via AB weighting.",
       "Name": "efron-morris-1975-first-vs-second-half-of-season",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "b2bd9bca253dcec3fec9231b0188a8ac60596418",
+      "AnnotationCommitDate": "2026-07-06",
+      "AnnotationCommitSubject": "Loop 71: expansion wave 2 encode \u2014 12 studies to N=111 real.",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "hiester-1984-handedness-of-pitcher",
@@ -68211,7 +68683,11 @@
       "MechanismNote": "Dawson wins vs RHP and LHP individually but Lacy wins combined via AB allocation.",
       "Name": "hiester-1984-handedness-of-pitcher",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "b2bd9bca253dcec3fec9231b0188a8ac60596418",
+      "AnnotationCommitDate": "2026-07-06",
+      "AnnotationCommitSubject": "Loop 71: expansion wave 2 encode \u2014 12 studies to N=111 real.",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "card-1992-industry-fast-food-vs-retail-vs-manufact",
@@ -68223,7 +68699,11 @@
       "MechanismNote": "Aggregate employment may fall while fast-food employment rises; industry mix confounds pooled estimate.",
       "Name": "card-1992-industry-fast-food-vs-retail-vs-manufact",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "313589ec98b77f14901c47549fcad97006618129",
+      "AnnotationCommitDate": "2026-07-07",
+      "AnnotationCommitSubject": "Enhance SHACL rule processing and aggregation handling in Simpson\u0027s Paradox framework",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "chetty-et-al-2014-commuting-zone",
@@ -68235,7 +68715,11 @@
       "MechanismNote": "National average mobility masks enormous geographic reversal: some high-income metros have lower mobility than poor rural areas.",
       "Name": "chetty-et-al-2014-commuting-zone",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "313589ec98b77f14901c47549fcad97006618129",
+      "AnnotationCommitDate": "2026-07-07",
+      "AnnotationCommitSubject": "Enhance SHACL rule processing and aggregation handling in Simpson\u0027s Paradox framework",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "chetty-friedman-saez-turner-yagan-2020-college-selectivity-tier",
@@ -68247,7 +68731,11 @@
       "MechanismNote": "Elite colleges look like mobility engines; stratifying by parental income shows top-1% attendance rates that dwarf low-income attendance.",
       "Name": "chetty-friedman-saez-turner-yagan-2020-college-selectivity-tier",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "313589ec98b77f14901c47549fcad97006618129",
+      "AnnotationCommitDate": "2026-07-07",
+      "AnnotationCommitSubject": "Enhance SHACL rule processing and aggregation handling in Simpson\u0027s Paradox framework",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "chetty-deming-friedman-2023-legacy",
@@ -68259,7 +68747,11 @@
       "MechanismNote": "Top-1% students 2\u00D7 more likely admitted than equal-SAT middle-class students; stratifying by non-academic credentials reveals the full reversal.",
       "Name": "chetty-deming-friedman-2023-legacy",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "313589ec98b77f14901c47549fcad97006618129",
+      "AnnotationCommitDate": "2026-07-07",
+      "AnnotationCommitSubject": "Enhance SHACL rule processing and aggregation handling in Simpson\u0027s Paradox framework",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "piketty-saez-2003-income-fractile",
@@ -68271,7 +68763,11 @@
       "MechanismNote": "Overall mean income grows while median stagnates; capital-income stratum drives the top share, masking labor income stagnation.",
       "Name": "piketty-saez-2003-income-fractile",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "313589ec98b77f14901c47549fcad97006618129",
+      "AnnotationCommitDate": "2026-07-07",
+      "AnnotationCommitSubject": "Enhance SHACL rule processing and aggregation handling in Simpson\u0027s Paradox framework",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "juhn-murphy-pierce-1993-education",
@@ -68283,7 +68779,11 @@
       "MechanismNote": "Pooled wage variance rises; stratifying by skill group shows within-group compression at the bottom while top expands.",
       "Name": "juhn-murphy-pierce-1993-education",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "313589ec98b77f14901c47549fcad97006618129",
+      "AnnotationCommitDate": "2026-07-07",
+      "AnnotationCommitSubject": "Enhance SHACL rule processing and aggregation handling in Simpson\u0027s Paradox framework",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "autor-levy-murnane-2003-routine-vs-non-routine",
@@ -68295,7 +68795,11 @@
       "MechanismNote": "Aggregate employment growth masks hollowing-out: middle-skill routine jobs decline while high and low skill grow.",
       "Name": "autor-levy-murnane-2003-routine-vs-non-routine",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "313589ec98b77f14901c47549fcad97006618129",
+      "AnnotationCommitDate": "2026-07-07",
+      "AnnotationCommitSubject": "Enhance SHACL rule processing and aggregation handling in Simpson\u0027s Paradox framework",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "katz-murphy-1992-demographic-group-age-gender-race",
@@ -68307,7 +68811,11 @@
       "MechanismNote": "College premium rises in aggregate; stratifying by cohort and gender shows reversal patterns within groups.",
       "Name": "katz-murphy-1992-demographic-group-age-gender-race",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "313589ec98b77f14901c47549fcad97006618129",
+      "AnnotationCommitDate": "2026-07-07",
+      "AnnotationCommitSubject": "Enhance SHACL rule processing and aggregation handling in Simpson\u0027s Paradox framework",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "heckman-1979-labor-force-participation-decision",
@@ -68319,7 +68827,11 @@
       "MechanismNote": "Observed wages are a selected sample; correcting for selection reveals different wage gap.",
       "Name": "heckman-1979-labor-force-participation-decision",
       "IsConfounder": false,
-      "ConditioningRisk": "collider"
+      "ConditioningRisk": "collider",
+      "AnnotationCommitHash": "313589ec98b77f14901c47549fcad97006618129",
+      "AnnotationCommitDate": "2026-07-07",
+      "AnnotationCommitSubject": "Enhance SHACL rule processing and aggregation handling in Simpson\u0027s Paradox framework",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "autor-dorn-2013-local-labor-market",
@@ -68331,7 +68843,11 @@
       "MechanismNote": "High-tech cities look like high-employment successes; stratifying by occupation tier reveals simultaneous low-wage service expansion.",
       "Name": "autor-dorn-2013-local-labor-market",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "313589ec98b77f14901c47549fcad97006618129",
+      "AnnotationCommitDate": "2026-07-07",
+      "AnnotationCommitSubject": "Enhance SHACL rule processing and aggregation handling in Simpson\u0027s Paradox framework",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "acemoglu-autor-2011-task-type",
@@ -68343,7 +68859,11 @@
       "MechanismNote": "Aggregate employment growth masks task-based displacement within educational groups.",
       "Name": "acemoglu-autor-2011-task-type",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "313589ec98b77f14901c47549fcad97006618129",
+      "AnnotationCommitDate": "2026-07-07",
+      "AnnotationCommitSubject": "Enhance SHACL rule processing and aggregation handling in Simpson\u0027s Paradox framework",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "chetty-hendren-katz-2016-age-at-time-of-move",
@@ -68355,7 +68875,11 @@
       "MechanismNote": "Pooled MTO effect is null; stratifying by child age at move reveals large positive effects for young children \u2014 reversing null finding.",
       "Name": "chetty-hendren-katz-2016-age-at-time-of-move",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "313589ec98b77f14901c47549fcad97006618129",
+      "AnnotationCommitDate": "2026-07-07",
+      "AnnotationCommitSubject": "Enhance SHACL rule processing and aggregation handling in Simpson\u0027s Paradox framework",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "bhutta-hizmo-ringo-2022-credit-score",
@@ -68367,7 +68891,11 @@
       "MechanismNote": "Raw 7.5 pp Black-white denial gap shrinks to 1\u20132 pp after controls \u2014 but does not reverse, illustrating a Type-C compression.",
       "Name": "bhutta-hizmo-ringo-2022-credit-score",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "313589ec98b77f14901c47549fcad97006618129",
+      "AnnotationCommitDate": "2026-07-07",
+      "AnnotationCommitSubject": "Enhance SHACL rule processing and aggregation handling in Simpson\u0027s Paradox framework",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "saez-2019-income-fractile",
@@ -68379,7 +68907,11 @@
       "MechanismNote": "During expansions, top-1% captures disproportionate share; stratifying by cycle phase reverses apparent broad-based growth narrative.",
       "Name": "saez-2019-income-fractile",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "313589ec98b77f14901c47549fcad97006618129",
+      "AnnotationCommitDate": "2026-07-07",
+      "AnnotationCommitSubject": "Enhance SHACL rule processing and aggregation handling in Simpson\u0027s Paradox framework",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "fortin-lemieux-firpo-2011-quantile",
@@ -68391,7 +68923,11 @@
       "MechanismNote": "Mean wage decomposition reverses sign at different quantiles \u2014 an upper-quantile wage gap may have opposite sign from lower-quantile gap.",
       "Name": "fortin-lemieux-firpo-2011-quantile",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "313589ec98b77f14901c47549fcad97006618129",
+      "AnnotationCommitDate": "2026-07-07",
+      "AnnotationCommitSubject": "Enhance SHACL rule processing and aggregation handling in Simpson\u0027s Paradox framework",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "starr-rehavi-2014-charge-severity",
@@ -68403,7 +68939,11 @@
       "MechanismNote": "After controlling for initial charges, Black male defendants receive sentences ~10% longer; prosecutorial discretion is the uncontrolled confounder.",
       "Name": "starr-rehavi-2014-charge-severity",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "313589ec98b77f14901c47549fcad97006618129",
+      "AnnotationCommitDate": "2026-07-07",
+      "AnnotationCommitSubject": "Enhance SHACL rule processing and aggregation handling in Simpson\u0027s Paradox framework",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "ussc-2017-offense-type",
@@ -68415,7 +68955,11 @@
       "MechanismNote": "Controlling for offense severity substantially reduces but does not eliminate racial gap.",
       "Name": "ussc-2017-offense-type",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "313589ec98b77f14901c47549fcad97006618129",
+      "AnnotationCommitDate": "2026-07-07",
+      "AnnotationCommitSubject": "Enhance SHACL rule processing and aggregation handling in Simpson\u0027s Paradox framework",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "western-2006-education-level",
@@ -68427,7 +68971,11 @@
       "MechanismNote": "Pooled incarceration rate gaps are stark; stratifying by education shows college-educated Black men incarcerated at rates similar to white high school dropouts.",
       "Name": "western-2006-education-level",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "313589ec98b77f14901c47549fcad97006618129",
+      "AnnotationCommitDate": "2026-07-07",
+      "AnnotationCommitSubject": "Enhance SHACL rule processing and aggregation handling in Simpson\u0027s Paradox framework",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "brame-bushway-paternoster-turner-2014-offense-type",
@@ -68439,7 +68987,11 @@
       "MechanismNote": "Pooled arrest gap is large; within non-violent offense categories, gaps narrow substantially.",
       "Name": "brame-bushway-paternoster-turner-2014-offense-type",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "313589ec98b77f14901c47549fcad97006618129",
+      "AnnotationCommitDate": "2026-07-07",
+      "AnnotationCommitSubject": "Enhance SHACL rule processing and aggregation handling in Simpson\u0027s Paradox framework",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "fryer-2016-interaction-type",
@@ -68451,7 +69003,11 @@
       "MechanismNote": "Unconditional shooting rates higher for Black civilians; conditioning on police contact eliminates gap \u2014 selection-into-contact is contested (Fryer 2016). Distinct from police-force-encounter collider encode; catalog Expected B. Reclassified loop-75 to avoid theorem falsifier with placeholder counts.",
       "Name": "fryer-2016-interaction-type",
       "IsConfounder": false,
-      "ConditioningRisk": "contested"
+      "ConditioningRisk": "contested",
+      "AnnotationCommitHash": "313589ec98b77f14901c47549fcad97006618129",
+      "AnnotationCommitDate": "2026-07-07",
+      "AnnotationCommitSubject": "Enhance SHACL rule processing and aggregation handling in Simpson\u0027s Paradox framework",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "rehavi-starr-2012-arrest-offense",
@@ -68463,7 +69019,11 @@
       "MechanismNote": "Racial charging gaps disappear within offense categories with no prosecutorial discretion.",
       "Name": "rehavi-starr-2012-arrest-offense",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "313589ec98b77f14901c47549fcad97006618129",
+      "AnnotationCommitDate": "2026-07-07",
+      "AnnotationCommitSubject": "Enhance SHACL rule processing and aggregation handling in Simpson\u0027s Paradox framework",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "kutateladze-andiloro-johnson-spohn-2014-stage-in-process",
@@ -68475,7 +69035,11 @@
       "MechanismNote": "Racial gaps grow across stages; stratifying by stage shows reversal in certain charge categories.",
       "Name": "kutateladze-andiloro-johnson-spohn-2014-stage-in-process",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "313589ec98b77f14901c47549fcad97006618129",
+      "AnnotationCommitDate": "2026-07-07",
+      "AnnotationCommitSubject": "Enhance SHACL rule processing and aggregation handling in Simpson\u0027s Paradox framework",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "arcidiacono-kinsler-ransom-2019-legacy",
@@ -68487,7 +69051,11 @@
       "MechanismNote": "Overall diversity stats look better than stratum-level rates; within non-legacy non-athlete pool, income disparities reverse the diversity impression.",
       "Name": "arcidiacono-kinsler-ransom-2019-legacy",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "313589ec98b77f14901c47549fcad97006618129",
+      "AnnotationCommitDate": "2026-07-07",
+      "AnnotationCommitSubject": "Enhance SHACL rule processing and aggregation handling in Simpson\u0027s Paradox framework",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "long-2004-income-quartile",
@@ -68499,7 +69067,11 @@
       "MechanismNote": "Racial attendance gap nearly disappears after controlling for income; income confounds the pooled racial gap.",
       "Name": "long-2004-income-quartile",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "313589ec98b77f14901c47549fcad97006618129",
+      "AnnotationCommitDate": "2026-07-07",
+      "AnnotationCommitSubject": "Enhance SHACL rule processing and aggregation handling in Simpson\u0027s Paradox framework",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "alon-tienda-2007-institutional-selectivity-tier",
@@ -68511,7 +69083,11 @@
       "MechanismNote": "Racial gaps in admission rates reverse within selectivity tier \u2014 minority students are more likely to be admitted at elite schools conditional on test scores.",
       "Name": "alon-tienda-2007-institutional-selectivity-tier",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "313589ec98b77f14901c47549fcad97006618129",
+      "AnnotationCommitDate": "2026-07-07",
+      "AnnotationCommitSubject": "Enhance SHACL rule processing and aggregation handling in Simpson\u0027s Paradox framework",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "hoekstra-2009-sat-score-band-near-threshold",
@@ -68523,7 +69099,11 @@
       "MechanismNote": "Overall selectivity premium is large; at the admission threshold, the within-band premium is much smaller.",
       "Name": "hoekstra-2009-sat-score-band-near-threshold",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "313589ec98b77f14901c47549fcad97006618129",
+      "AnnotationCommitDate": "2026-07-07",
+      "AnnotationCommitSubject": "Enhance SHACL rule processing and aggregation handling in Simpson\u0027s Paradox framework",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "dale-krueger-2002-application-portfolio-which-schools-one",
@@ -68535,7 +69115,11 @@
       "MechanismNote": "Raw selectivity premium is large; controlling for application portfolio (ambition/ability), premium nearly vanishes for most students.",
       "Name": "dale-krueger-2002-application-portfolio-which-schools-one",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "313589ec98b77f14901c47549fcad97006618129",
+      "AnnotationCommitDate": "2026-07-07",
+      "AnnotationCommitSubject": "Enhance SHACL rule processing and aggregation handling in Simpson\u0027s Paradox framework",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "nces-ipeds-institution-type",
@@ -68547,7 +69131,11 @@
       "MechanismNote": "Pooled acceptance rates across institution types mask within-tier reversal: smaller liberal arts colleges have lower acceptance rates than large state flagship averages suggest.",
       "Name": "nces-ipeds-institution-type",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "313589ec98b77f14901c47549fcad97006618129",
+      "AnnotationCommitDate": "2026-07-07",
+      "AnnotationCommitSubject": "Enhance SHACL rule processing and aggregation handling in Simpson\u0027s Paradox framework",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "college-scorecard-field-of-study",
@@ -68559,7 +69147,11 @@
       "MechanismNote": "Pooled institution-level earnings mask major-composition reversal: an institution with high average earnings may rank below another within STEM majors.",
       "Name": "college-scorecard-field-of-study",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "313589ec98b77f14901c47549fcad97006618129",
+      "AnnotationCommitDate": "2026-07-07",
+      "AnnotationCommitSubject": "Enhance SHACL rule processing and aggregation handling in Simpson\u0027s Paradox framework",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "hoxby-avery-2013-geographic-isolation",
@@ -68571,7 +69163,11 @@
       "MechanismNote": "High-achieving low-income students nationally apply to less selective schools than high-income students with same scores \u2014 geographic isolation confounds pooled achievement-selectivity correlation.",
       "Name": "hoxby-avery-2013-geographic-isolation",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "313589ec98b77f14901c47549fcad97006618129",
+      "AnnotationCommitDate": "2026-07-07",
+      "AnnotationCommitSubject": "Enhance SHACL rule processing and aggregation handling in Simpson\u0027s Paradox framework",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "espenshade-radford-2009-applicant-type",
@@ -68583,7 +69179,11 @@
       "MechanismNote": "Within legacies and athletes, racial gaps narrow substantially.",
       "Name": "espenshade-radford-2009-applicant-type",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "313589ec98b77f14901c47549fcad97006618129",
+      "AnnotationCommitDate": "2026-07-07",
+      "AnnotationCommitSubject": "Enhance SHACL rule processing and aggregation handling in Simpson\u0027s Paradox framework",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "bound-lovenheim-turner-2010-institution-selectivity",
@@ -68595,7 +69195,11 @@
       "MechanismNote": "Overall graduation rates stable; stratifying by institution type shows large declines at less-selective schools masked by stable elite rates.",
       "Name": "bound-lovenheim-turner-2010-institution-selectivity",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "313589ec98b77f14901c47549fcad97006618129",
+      "AnnotationCommitDate": "2026-07-07",
+      "AnnotationCommitSubject": "Enhance SHACL rule processing and aggregation handling in Simpson\u0027s Paradox framework",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "carnevale-strohl-2010-institutional-tier",
@@ -68607,7 +69211,11 @@
       "MechanismNote": "Top institutions become more diverse over time in aggregate; stratifying by socioeconomic tier shows increasing stratification within selectivity.",
       "Name": "carnevale-strohl-2010-institutional-tier",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "313589ec98b77f14901c47549fcad97006618129",
+      "AnnotationCommitDate": "2026-07-07",
+      "AnnotationCommitSubject": "Enhance SHACL rule processing and aggregation handling in Simpson\u0027s Paradox framework",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "hoxby-murarka-2009-lottery-winner-vs-loser",
@@ -68619,7 +69227,11 @@
       "MechanismNote": "Aggregate charter effect is small; stratifying by neighborhood poverty, lottery-admitted students show large gains \u2014 selection confounds pooled estimate.",
       "Name": "hoxby-murarka-2009-lottery-winner-vs-loser",
       "IsConfounder": false,
-      "ConditioningRisk": "collider"
+      "ConditioningRisk": "collider",
+      "AnnotationCommitHash": "313589ec98b77f14901c47549fcad97006618129",
+      "AnnotationCommitDate": "2026-07-07",
+      "AnnotationCommitSubject": "Enhance SHACL rule processing and aggregation handling in Simpson\u0027s Paradox framework",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "rothstein-2004-institution",
@@ -68631,7 +69243,11 @@
       "MechanismNote": "Pooled SAT-GPA correlation is strong; within-institution, the correlation weakens or reverses for under-represented groups due to range restriction.",
       "Name": "rothstein-2004-institution",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "313589ec98b77f14901c47549fcad97006618129",
+      "AnnotationCommitDate": "2026-07-07",
+      "AnnotationCommitSubject": "Enhance SHACL rule processing and aggregation handling in Simpson\u0027s Paradox framework",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "accord-study-group-2008-baseline-hba1c",
@@ -68643,7 +69259,11 @@
       "MechanismNote": "Intensive arm shows increased mortality overall; subgroup by baseline HbA1c may reverse benefit \u2014 severity confounds pooled result.",
       "Name": "accord-study-group-2008-baseline-hba1c",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "313589ec98b77f14901c47549fcad97006618129",
+      "AnnotationCommitDate": "2026-07-07",
+      "AnnotationCommitSubject": "Enhance SHACL rule processing and aggregation handling in Simpson\u0027s Paradox framework",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "allhat-collaborative-research-group-2002-race",
@@ -68655,7 +69275,11 @@
       "MechanismNote": "Chlorthalidone beats lisinopril overall; within Black patients with hypertension, the margin reverses for certain outcomes.",
       "Name": "allhat-collaborative-research-group-2002-race",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "313589ec98b77f14901c47549fcad97006618129",
+      "AnnotationCommitDate": "2026-07-07",
+      "AnnotationCommitSubject": "Enhance SHACL rule processing and aggregation handling in Simpson\u0027s Paradox framework",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "isis-2-collaborative-group-1988-age-group",
@@ -68667,7 +69291,11 @@
       "MechanismNote": "Aspirin benefit pooled is robust; stratified by astrological sign (the paper\u0027s famous negative control), apparent reversals demonstrate the paradox mechanism.",
       "Name": "isis-2-collaborative-group-1988-age-group",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "313589ec98b77f14901c47549fcad97006618129",
+      "AnnotationCommitDate": "2026-07-07",
+      "AnnotationCommitSubject": "Enhance SHACL rule processing and aggregation handling in Simpson\u0027s Paradox framework",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "plato-trial-geographic-region-north-america-vs-europ",
@@ -68679,7 +69307,11 @@
       "MechanismNote": "Ticagrelor benefits globally; North America subgroup shows reversal \u2014 aspirin dose confounded the regional stratum.",
       "Name": "plato-trial-geographic-region-north-america-vs-europ",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "313589ec98b77f14901c47549fcad97006618129",
+      "AnnotationCommitDate": "2026-07-07",
+      "AnnotationCommitSubject": "Enhance SHACL rule processing and aggregation handling in Simpson\u0027s Paradox framework",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "fibrinolytic-therapy-trialists-1994-time-from-symptom-onset",
@@ -68691,7 +69323,11 @@
       "MechanismNote": "Benefit is large when treated early; late-treatment stratum shows no benefit or harm \u2014 pooled average masks time-dependent reversal.",
       "Name": "fibrinolytic-therapy-trialists-1994-time-from-symptom-onset",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "313589ec98b77f14901c47549fcad97006618129",
+      "AnnotationCommitDate": "2026-07-07",
+      "AnnotationCommitSubject": "Enhance SHACL rule processing and aggregation handling in Simpson\u0027s Paradox framework",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "cast-1989-arrhythmia-burden",
@@ -68703,7 +69339,11 @@
       "MechanismNote": "Drug suppresses arrhythmias in all strata; mortality increases in all strata \u2014 a cautionary reversal of surrogate endpoints.",
       "Name": "cast-1989-arrhythmia-burden",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "313589ec98b77f14901c47549fcad97006618129",
+      "AnnotationCommitDate": "2026-07-07",
+      "AnnotationCommitSubject": "Enhance SHACL rule processing and aggregation handling in Simpson\u0027s Paradox framework",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "women-s-health-initiative-2002-age-at-menopause-onset",
@@ -68715,7 +69355,11 @@
       "MechanismNote": "WHI shows increased risk overall; stratifying by age at start, women who began HRT near menopause show cardioprotective benefit \u2014 \u0022timing hypothesis.\u0022",
       "Name": "women-s-health-initiative-2002-age-at-menopause-onset",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "313589ec98b77f14901c47549fcad97006618129",
+      "AnnotationCommitDate": "2026-07-07",
+      "AnnotationCommitSubject": "Enhance SHACL rule processing and aggregation handling in Simpson\u0027s Paradox framework",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "dcct-research-group-1993-baseline-hba1c",
@@ -68727,7 +69371,11 @@
       "MechanismNote": "Overall benefit of intensive therapy; hypoglycemia risk reverses benefit in high-risk baseline strata.",
       "Name": "dcct-research-group-1993-baseline-hba1c",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "313589ec98b77f14901c47549fcad97006618129",
+      "AnnotationCommitDate": "2026-07-07",
+      "AnnotationCommitSubject": "Enhance SHACL rule processing and aggregation handling in Simpson\u0027s Paradox framework",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "triton-timi-38-prior-stroke",
@@ -68739,7 +69387,11 @@
       "MechanismNote": "Prasugrel superior overall; within prior-stroke stratum, net clinical outcome reverses due to bleeding risk.",
       "Name": "triton-timi-38-prior-stroke",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "313589ec98b77f14901c47549fcad97006618129",
+      "AnnotationCommitDate": "2026-07-07",
+      "AnnotationCommitSubject": "Enhance SHACL rule processing and aggregation handling in Simpson\u0027s Paradox framework",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "yusuf-et-al-hope-trial-2000-diabetes-status",
@@ -68751,7 +69403,11 @@
       "MechanismNote": "Pooled benefit is clear; within-diabetic stratum the effect size is larger, masking a potential reversal in lower-risk subgroups.",
       "Name": "yusuf-et-al-hope-trial-2000-diabetes-status",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "313589ec98b77f14901c47549fcad97006618129",
+      "AnnotationCommitDate": "2026-07-07",
+      "AnnotationCommitSubject": "Enhance SHACL rule processing and aggregation handling in Simpson\u0027s Paradox framework",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "sprint-research-group-2015-age",
@@ -68763,7 +69419,11 @@
       "MechanismNote": "Overall intensive benefit; within advanced CKD, benefit reverses \u2014 kidney function is the confounding stratum.",
       "Name": "sprint-research-group-2015-age",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "313589ec98b77f14901c47549fcad97006618129",
+      "AnnotationCommitDate": "2026-07-07",
+      "AnnotationCommitSubject": "Enhance SHACL rule processing and aggregation handling in Simpson\u0027s Paradox framework",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "astrazeneca-mystic-trial-pacific-trial-crossover-2017-pd-l1-expression-quartile",
@@ -68775,7 +69435,11 @@
       "MechanismNote": "Pooled OS benefit is present; within low-PD-L1 stratum, benefit reverses \u2014 expression confounds pooled result.",
       "Name": "astrazeneca-mystic-trial-pacific-trial-crossover-2017-pd-l1-expression-quartile",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "313589ec98b77f14901c47549fcad97006618129",
+      "AnnotationCommitDate": "2026-07-07",
+      "AnnotationCommitSubject": "Enhance SHACL rule processing and aggregation handling in Simpson\u0027s Paradox framework",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "uk-biobank-ukbb-observational-indication-for-statin-cardiovascular-ris",
@@ -68787,7 +69451,11 @@
       "MechanismNote": "Pooled statin-cancer association appears protective; stratifying by indication (healthy user bias), benefit reduces or reverses in low-risk groups.",
       "Name": "uk-biobank-ukbb-observational-indication-for-statin-cardiovascular-ris",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "313589ec98b77f14901c47549fcad97006618129",
+      "AnnotationCommitDate": "2026-07-07",
+      "AnnotationCommitSubject": "Enhance SHACL rule processing and aggregation handling in Simpson\u0027s Paradox framework",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "soccer-pass-completion-by-league-2017-match-situation-pressing-vs-not-pressing",
@@ -68799,7 +69467,11 @@
       "MechanismNote": "Teams in high-pressing leagues appear to have lower pass completion; stratifying by defensive pressure, passing accuracy reverses across leagues.",
       "Name": "soccer-pass-completion-by-league-2017-match-situation-pressing-vs-not-pressing",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "313589ec98b77f14901c47549fcad97006618129",
+      "AnnotationCommitDate": "2026-07-07",
+      "AnnotationCommitSubject": "Enhance SHACL rule processing and aggregation handling in Simpson\u0027s Paradox framework",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "marathon-finishing-times-by-age-and-temperature-boston-marat-race-day-temperature",
@@ -68811,7 +69483,11 @@
       "MechanismNote": "Older runners appear faster in hot years (they drop out less); stratifying by completion rate, the age-performance gradient reverses.",
       "Name": "marathon-finishing-times-by-age-and-temperature-boston-marat-race-day-temperature",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "313589ec98b77f14901c47549fcad97006618129",
+      "AnnotationCommitDate": "2026-07-07",
+      "AnnotationCommitSubject": "Enhance SHACL rule processing and aggregation handling in Simpson\u0027s Paradox framework",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "tennis-first-serve-percentage-by-surface-2010-surface-type-hard",
@@ -68823,7 +69499,11 @@
       "MechanismNote": "Player with higher overall first-serve win % may lose on every surface individually \u2014 surface allocation confounds overall rate.",
       "Name": "tennis-first-serve-percentage-by-surface-2010-surface-type-hard",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "313589ec98b77f14901c47549fcad97006618129",
+      "AnnotationCommitDate": "2026-07-07",
+      "AnnotationCommitSubject": "Enhance SHACL rule processing and aggregation handling in Simpson\u0027s Paradox framework",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "nfl-quarterback-rating-by-game-situation-2010-down-and-distance",
@@ -68835,7 +69515,11 @@
       "MechanismNote": "QB forced to throw more in losing situations (garbage time) inflates or deflates overall rate; within game-script strata, rankings reverse.",
       "Name": "nfl-quarterback-rating-by-game-situation-2010-down-and-distance",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "313589ec98b77f14901c47549fcad97006618129",
+      "AnnotationCommitDate": "2026-07-07",
+      "AnnotationCommitSubject": "Enhance SHACL rule processing and aggregation handling in Simpson\u0027s Paradox framework",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "nhl-shooting-percentage-by-game-state-2010-score-situation-trailing-vs-leading-vs-t",
@@ -68847,7 +69531,11 @@
       "MechanismNote": "Players who play more \u0022desperation minutes\u0022 while trailing inflate shot counts at lower %, reversing overall rates vs. within-score-state rates.",
       "Name": "nhl-shooting-percentage-by-game-state-2010-score-situation-trailing-vs-leading-vs-t",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "313589ec98b77f14901c47549fcad97006618129",
+      "AnnotationCommitDate": "2026-07-07",
+      "AnnotationCommitSubject": "Enhance SHACL rule processing and aggregation handling in Simpson\u0027s Paradox framework",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "soccer-expected-goals-home",
@@ -68859,7 +69547,11 @@
       "MechanismNote": "Teams playing many home games against weak opponents inflate overall xG; within home-vs-tier stratum, ranking reverses for some clubs.",
       "Name": "soccer-expected-goals-home",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "313589ec98b77f14901c47549fcad97006618129",
+      "AnnotationCommitDate": "2026-07-07",
+      "AnnotationCommitSubject": "Enhance SHACL rule processing and aggregation handling in Simpson\u0027s Paradox framework",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "lollar-vs-mccatty-pitching-1982-season",
@@ -68871,7 +69563,11 @@
       "MechanismNote": "McCatty had higher win % in both years individually; Lollar\u0027s combined two-year win % exceeded McCatty\u0027s.",
       "Name": "lollar-vs-mccatty-pitching-1982-season",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "313589ec98b77f14901c47549fcad97006618129",
+      "AnnotationCommitDate": "2026-07-07",
+      "AnnotationCommitSubject": "Enhance SHACL rule processing and aggregation handling in Simpson\u0027s Paradox framework",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "mlb-park-factor-adjustments-home-vs-away-park",
@@ -68883,7 +69579,11 @@
       "MechanismNote": "Player in extreme homer-friendly park may appear a better home-run hitter overall; stratifying by park, ranking reverses.",
       "Name": "mlb-park-factor-adjustments-home-vs-away-park",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "313589ec98b77f14901c47549fcad97006618129",
+      "AnnotationCommitDate": "2026-07-07",
+      "AnnotationCommitSubject": "Enhance SHACL rule processing and aggregation handling in Simpson\u0027s Paradox framework",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "olympic-sprint-times-by-heat-type-1996-preliminary-heat-vs-semifinal-vs-final",
@@ -68895,7 +69595,11 @@
       "MechanismNote": "Athletes peaking early may have faster preliminary times; stratifying by heat round and wind, rankings reverse for finals-only comparison.",
       "Name": "olympic-sprint-times-by-heat-type-1996-preliminary-heat-vs-semifinal-vs-final",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "313589ec98b77f14901c47549fcad97006618129",
+      "AnnotationCommitDate": "2026-07-07",
+      "AnnotationCommitSubject": "Enhance SHACL rule processing and aggregation handling in Simpson\u0027s Paradox framework",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "von-kugelgen-mohamed-scholkopf-2021-stratum",
@@ -68907,7 +69611,11 @@
       "MechanismNote": "See expansion plan.",
       "Name": "von-kugelgen-mohamed-scholkopf-2021-stratum",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "313589ec98b77f14901c47549fcad97006618129",
+      "AnnotationCommitDate": "2026-07-07",
+      "AnnotationCommitSubject": "Enhance SHACL rule processing and aggregation handling in Simpson\u0027s Paradox framework",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "dagan-et-al-2021-age-group",
@@ -68919,7 +69627,11 @@
       "MechanismNote": "Apparent VE may flip at population level during booster rollout when younger unvaccinated cohorts have lower baseline risk.",
       "Name": "dagan-et-al-2021-age-group",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "313589ec98b77f14901c47549fcad97006618129",
+      "AnnotationCommitDate": "2026-07-07",
+      "AnnotationCommitSubject": "Enhance SHACL rule processing and aggregation handling in Simpson\u0027s Paradox framework",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "israeli-ministry-of-health-age-group-50-vs-50",
@@ -68931,7 +69643,11 @@
       "MechanismNote": "Naive data showed more vaccinated than unvaccinated in hospitals; stratifying by age, VE is strongly positive in all groups \u2014 age confounds the pooled comparison.",
       "Name": "israeli-ministry-of-health-age-group-50-vs-50",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "313589ec98b77f14901c47549fcad97006618129",
+      "AnnotationCommitDate": "2026-07-07",
+      "AnnotationCommitSubject": "Enhance SHACL rule processing and aggregation handling in Simpson\u0027s Paradox framework",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "yule-1903-age-group",
@@ -68943,7 +69659,11 @@
       "MechanismNote": "Inoculated appeared to have higher death rates pooled; age was the suppressed confounder.",
       "Name": "yule-1903-age-group",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "313589ec98b77f14901c47549fcad97006618129",
+      "AnnotationCommitDate": "2026-07-07",
+      "AnnotationCommitSubject": "Enhance SHACL rule processing and aggregation handling in Simpson\u0027s Paradox framework",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "mantel-haenszel-1959-age",
@@ -68955,7 +69675,11 @@
       "MechanismNote": "Methodology paper demonstrating how stratification resolves apparent reversals in pooled odds ratios.",
       "Name": "mantel-haenszel-1959-age",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "313589ec98b77f14901c47549fcad97006618129",
+      "AnnotationCommitDate": "2026-07-07",
+      "AnnotationCommitSubject": "Enhance SHACL rule processing and aggregation handling in Simpson\u0027s Paradox framework",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "doll-hill-1954-age-group",
@@ -68967,7 +69691,11 @@
       "MechanismNote": "Age confounds naive cross-sectional comparison; longitudinal follow-up resolves apparent reversals.",
       "Name": "doll-hill-1954-age-group",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "313589ec98b77f14901c47549fcad97006618129",
+      "AnnotationCommitDate": "2026-07-07",
+      "AnnotationCommitSubject": "Enhance SHACL rule processing and aggregation handling in Simpson\u0027s Paradox framework",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "hammond-horn-1958-age",
@@ -68979,7 +69707,11 @@
       "MechanismNote": "Prior-illness / healthy-smoker selection: pooled mortality ratios are high; stratifying by prior illness status reveals sick-quitter bias. Selection mechanism (Hammond \u0026 Horn 1958).",
       "Name": "hammond-horn-1958-age",
       "IsConfounder": false,
-      "ConditioningRisk": "collider"
+      "ConditioningRisk": "collider",
+      "AnnotationCommitHash": "313589ec98b77f14901c47549fcad97006618129",
+      "AnnotationCommitDate": "2026-07-07",
+      "AnnotationCommitSubject": "Enhance SHACL rule processing and aggregation handling in Simpson\u0027s Paradox framework",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "polack-et-al-2020-age-group",
@@ -68991,7 +69723,11 @@
       "MechanismNote": "Overall VE 95%; within elderly subgroup with comorbidities, confidence intervals widen \u2014 small subgroup VE point estimates vary.",
       "Name": "polack-et-al-2020-age-group",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "313589ec98b77f14901c47549fcad97006618129",
+      "AnnotationCommitDate": "2026-07-07",
+      "AnnotationCommitSubject": "Enhance SHACL rule processing and aggregation handling in Simpson\u0027s Paradox framework",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "baden-et-al-2021-age",
@@ -69003,7 +69739,11 @@
       "MechanismNote": "Within-subgroup VE estimates vary; minority subgroups under-enrolled, creating allocation-distortion risk in any stratified comparison.",
       "Name": "baden-et-al-2021-age",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "313589ec98b77f14901c47549fcad97006618129",
+      "AnnotationCommitDate": "2026-07-07",
+      "AnnotationCommitSubject": "Enhance SHACL rule processing and aggregation handling in Simpson\u0027s Paradox framework",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "flannery-et-al-2020-flu-season",
@@ -69015,7 +69755,11 @@
       "MechanismNote": "VE appears lower in high-mismatch seasons; stratifying by health status of child, VE in healthy children is higher than pooled across risk groups.",
       "Name": "flannery-et-al-2020-flu-season",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "313589ec98b77f14901c47549fcad97006618129",
+      "AnnotationCommitDate": "2026-07-07",
+      "AnnotationCommitSubject": "Enhance SHACL rule processing and aggregation handling in Simpson\u0027s Paradox framework",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "simonsen-et-al-2005-frailty",
@@ -69027,7 +69771,11 @@
       "MechanismNote": "Healthy vaccinee selection bias \u2014 vaccinated elderly appear to have lower all-cause mortality; stratifying by baseline functional status reduces effect to near zero. Selection mechanism, not adjust-resolvable confounding (Simonsen et al. 2005).",
       "Name": "simonsen-et-al-2005-frailty",
       "IsConfounder": false,
-      "ConditioningRisk": "collider"
+      "ConditioningRisk": "collider",
+      "AnnotationCommitHash": "313589ec98b77f14901c47549fcad97006618129",
+      "AnnotationCommitDate": "2026-07-07",
+      "AnnotationCommitSubject": "Enhance SHACL rule processing and aggregation handling in Simpson\u0027s Paradox framework",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "hernan-hernandez-diaz-robins-2004-time-since-initiation",
@@ -69039,7 +69787,11 @@
       "MechanismNote": "Early observational studies showed HRT protective; stratifying by when HRT was initiated reveals the timing-hypothesis reversal (harmful if started late).",
       "Name": "hernan-hernandez-diaz-robins-2004-time-since-initiation",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "313589ec98b77f14901c47549fcad97006618129",
+      "AnnotationCommitDate": "2026-07-07",
+      "AnnotationCommitSubject": "Enhance SHACL rule processing and aggregation handling in Simpson\u0027s Paradox framework",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "cornfield-et-al-1959-exposure-dose",
@@ -69051,7 +69803,11 @@
       "MechanismNote": "Methodological analysis demonstrating how confounders could theoretically reverse apparent smoking-cancer association.",
       "Name": "cornfield-et-al-1959-exposure-dose",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "313589ec98b77f14901c47549fcad97006618129",
+      "AnnotationCommitDate": "2026-07-07",
+      "AnnotationCommitSubject": "Enhance SHACL rule processing and aggregation handling in Simpson\u0027s Paradox framework",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "baker-kramer-2001-sex",
@@ -69063,7 +69819,11 @@
       "MechanismNote": "Demonstrates how pooled benefits mask sex-specific harms in multiple drug trials.",
       "Name": "baker-kramer-2001-sex",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "313589ec98b77f14901c47549fcad97006618129",
+      "AnnotationCommitDate": "2026-07-07",
+      "AnnotationCommitSubject": "Enhance SHACL rule processing and aggregation handling in Simpson\u0027s Paradox framework",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "cdc-covid-19-case-surveillance-2020-age-group",
@@ -69075,7 +69835,11 @@
       "MechanismNote": "CFR patterns reverse across age groups depending on vaccination uptake timing \u2014 age is the dominant confounding stratum.",
       "Name": "cdc-covid-19-case-surveillance-2020-age-group",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "313589ec98b77f14901c47549fcad97006618129",
+      "AnnotationCommitDate": "2026-07-07",
+      "AnnotationCommitSubject": "Enhance SHACL rule processing and aggregation handling in Simpson\u0027s Paradox framework",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "our-world-in-data-covid-19-dataset-2020-country",
@@ -69087,7 +69851,11 @@
       "MechanismNote": "Countries with older populations appear to have higher CFR; stratifying by age group, some comparisons reverse (the corpus\u0027s Italy vs. China case).",
       "Name": "our-world-in-data-covid-19-dataset-2020-country",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "313589ec98b77f14901c47549fcad97006618129",
+      "AnnotationCommitDate": "2026-07-07",
+      "AnnotationCommitSubject": "Enhance SHACL rule processing and aggregation handling in Simpson\u0027s Paradox framework",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "shapiro-et-al-1988-age-group",
@@ -69099,7 +69867,11 @@
       "MechanismNote": "Pooled mortality benefit is modest; stratifying by age group, screening benefit reverses for youngest (40\u201349) due to lead-time bias.",
       "Name": "shapiro-et-al-1988-age-group",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "313589ec98b77f14901c47549fcad97006618129",
+      "AnnotationCommitDate": "2026-07-07",
+      "AnnotationCommitSubject": "Enhance SHACL rule processing and aggregation handling in Simpson\u0027s Paradox framework",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "moss-racusin-et-al-2012-faculty-mentor-s-gender",
@@ -69111,7 +69883,11 @@
       "MechanismNote": "Female faculty also rate female applicants lower \u2014 gender of evaluator moderates but does not eliminate the reversal.",
       "Name": "moss-racusin-et-al-2012-faculty-mentor-s-gender",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "313589ec98b77f14901c47549fcad97006618129",
+      "AnnotationCommitDate": "2026-07-07",
+      "AnnotationCommitSubject": "Enhance SHACL rule processing and aggregation handling in Simpson\u0027s Paradox framework",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "castilla-2008-department",
@@ -69123,7 +69899,11 @@
       "MechanismNote": "Same performance rating \u2192 lower pay increase for women and minorities \u2014 meritocracy reversal emerges within performance band.",
       "Name": "castilla-2008-department",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "313589ec98b77f14901c47549fcad97006618129",
+      "AnnotationCommitDate": "2026-07-07",
+      "AnnotationCommitSubject": "Enhance SHACL rule processing and aggregation handling in Simpson\u0027s Paradox framework",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "blau-devaro-2007-occupation",
@@ -69135,7 +69915,11 @@
       "MechanismNote": "Women promoted at lower rate overall; within same occupation and firm, gap narrows significantly.",
       "Name": "blau-devaro-2007-occupation",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "313589ec98b77f14901c47549fcad97006618129",
+      "AnnotationCommitDate": "2026-07-07",
+      "AnnotationCommitSubject": "Enhance SHACL rule processing and aggregation handling in Simpson\u0027s Paradox framework",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "sarsons-2017-gender-of-co-authors",
@@ -69147,7 +69931,11 @@
       "MechanismNote": "Men get full credit for joint work; women\u0027s joint-authored papers are discounted \u2014 reversal in implied contribution credit.",
       "Name": "sarsons-2017-gender-of-co-authors",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "313589ec98b77f14901c47549fcad97006618129",
+      "AnnotationCommitDate": "2026-07-07",
+      "AnnotationCommitSubject": "Enhance SHACL rule processing and aggregation handling in Simpson\u0027s Paradox framework",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "ginther-kahn-2004-field-subarea",
@@ -69159,7 +69947,11 @@
       "MechanismNote": "Women promoted at lower rates overall; controlling for publications and field, gap persists \u2014 field of specialty is a partial confounder.",
       "Name": "ginther-kahn-2004-field-subarea",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "313589ec98b77f14901c47549fcad97006618129",
+      "AnnotationCommitDate": "2026-07-07",
+      "AnnotationCommitSubject": "Enhance SHACL rule processing and aggregation handling in Simpson\u0027s Paradox framework",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "eeoc-charge-data-industry",
@@ -69171,7 +69963,11 @@
       "MechanismNote": "Pooled charge rates by race mask industry-specific reversals where minority representation is lower.",
       "Name": "eeoc-charge-data-industry",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "313589ec98b77f14901c47549fcad97006618129",
+      "AnnotationCommitDate": "2026-07-07",
+      "AnnotationCommitSubject": "Enhance SHACL rule processing and aggregation handling in Simpson\u0027s Paradox framework",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "nsf-ncses-survey-of-doctoral-recipients-field-of-science",
@@ -69183,7 +69979,11 @@
       "MechanismNote": "Aggregate gender wage gap in STEM; stratifying by field, biological sciences gap is smaller than physical sciences \u2014 field composition confounds pooled rate.",
       "Name": "nsf-ncses-survey-of-doctoral-recipients-field-of-science",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "313589ec98b77f14901c47549fcad97006618129",
+      "AnnotationCommitDate": "2026-07-07",
+      "AnnotationCommitSubject": "Enhance SHACL rule processing and aggregation handling in Simpson\u0027s Paradox framework",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "neumark-bank-van-nort-1996-restaurant-tier-high-price-vs-low-price",
@@ -69195,7 +69995,11 @@
       "MechanismNote": "High-price restaurants discriminate against women; low-price favor women \u2014 pooling reverses the apparent direction.",
       "Name": "neumark-bank-van-nort-1996-restaurant-tier-high-price-vs-low-price",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "313589ec98b77f14901c47549fcad97006618129",
+      "AnnotationCommitDate": "2026-07-07",
+      "AnnotationCommitSubject": "Enhance SHACL rule processing and aggregation handling in Simpson\u0027s Paradox framework",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "kline-rose-walters-2022-industry",
@@ -69207,7 +70011,11 @@
       "MechanismNote": "Racial callback gaps vary enormously by firm; pooled average masks near-zero gaps at some firms and large gaps at others.",
       "Name": "kline-rose-walters-2022-industry",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "313589ec98b77f14901c47549fcad97006618129",
+      "AnnotationCommitDate": "2026-07-07",
+      "AnnotationCommitSubject": "Enhance SHACL rule processing and aggregation handling in Simpson\u0027s Paradox framework",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "hsieh-moretti-2019-city-housing-market",
@@ -69219,7 +70027,11 @@
       "MechanismNote": "High-wage cities attract workers; controlling for housing costs, real wage gains reverse for workers in regulated markets.",
       "Name": "hsieh-moretti-2019-city-housing-market",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "313589ec98b77f14901c47549fcad97006618129",
+      "AnnotationCommitDate": "2026-07-07",
+      "AnnotationCommitSubject": "Enhance SHACL rule processing and aggregation handling in Simpson\u0027s Paradox framework",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "kohavi-deng-longbotham-xu-2014-user-segment",
@@ -69231,7 +70043,11 @@
       "MechanismNote": "Demonstrated concrete cases where experiment wins in desktop segment, loses in mobile, yet aggregate shows win \u2014 segment allocation is the confounder.",
       "Name": "kohavi-deng-longbotham-xu-2014-user-segment",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "313589ec98b77f14901c47549fcad97006618129",
+      "AnnotationCommitDate": "2026-07-07",
+      "AnnotationCommitSubject": "Enhance SHACL rule processing and aggregation handling in Simpson\u0027s Paradox framework",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "kohavi-longbotham-2017-device-type",
@@ -69243,7 +70059,11 @@
       "MechanismNote": "Device-mix shift between treatment and control periods creates Simpson-type reversals in click-through rates.",
       "Name": "kohavi-longbotham-2017-device-type",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "313589ec98b77f14901c47549fcad97006618129",
+      "AnnotationCommitDate": "2026-07-07",
+      "AnnotationCommitSubject": "Enhance SHACL rule processing and aggregation handling in Simpson\u0027s Paradox framework",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "xu-chen-fernandez-sinno-bhasin-2015-user-tenure",
@@ -69255,7 +70075,11 @@
       "MechanismNote": "New users and veteran users respond differently; allocation imbalance across cohorts creates aggregate reversals.",
       "Name": "xu-chen-fernandez-sinno-bhasin-2015-user-tenure",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "313589ec98b77f14901c47549fcad97006618129",
+      "AnnotationCommitDate": "2026-07-07",
+      "AnnotationCommitSubject": "Enhance SHACL rule processing and aggregation handling in Simpson\u0027s Paradox framework",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "deng-xu-kohavi-walker-2013-pre-experiment-user-behavior-stratum",
@@ -69267,7 +70091,11 @@
       "MechanismNote": "Covariates (pre-experiment behavior) create stratification-dependent reversals in naive estimates.",
       "Name": "deng-xu-kohavi-walker-2013-pre-experiment-user-behavior-stratum",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "313589ec98b77f14901c47549fcad97006618129",
+      "AnnotationCommitDate": "2026-07-07",
+      "AnnotationCommitSubject": "Enhance SHACL rule processing and aggregation handling in Simpson\u0027s Paradox framework",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "tang-agarwal-o-brien-meyer-2010-concurrent-experiment-assignment",
@@ -69279,7 +70107,11 @@
       "MechanismNote": "Overlapping experiments create apparent reversals when users in multiple experiments are pooled incorrectly.",
       "Name": "tang-agarwal-o-brien-meyer-2010-concurrent-experiment-assignment",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "313589ec98b77f14901c47549fcad97006618129",
+      "AnnotationCommitDate": "2026-07-07",
+      "AnnotationCommitSubject": "Enhance SHACL rule processing and aggregation handling in Simpson\u0027s Paradox framework",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "bakshy-eckles-bernstein-2014-user-activity-level",
@@ -69291,7 +70123,11 @@
       "MechanismNote": "Active vs. passive users respond differently \u2014 allocation-driven reversal if activity level differs between groups.",
       "Name": "bakshy-eckles-bernstein-2014-user-activity-level",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "313589ec98b77f14901c47549fcad97006618129",
+      "AnnotationCommitDate": "2026-07-07",
+      "AnnotationCommitSubject": "Enhance SHACL rule processing and aggregation handling in Simpson\u0027s Paradox framework",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "dmitriev-frasca-lu-kohavi-olariu-2016-traffic-allocation-method",
@@ -69303,7 +70139,11 @@
       "MechanismNote": "Time-of-day and day-of-week allocation imbalances create temporal stratification reversals.",
       "Name": "dmitriev-frasca-lu-kohavi-olariu-2016-traffic-allocation-method",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "313589ec98b77f14901c47549fcad97006618129",
+      "AnnotationCommitDate": "2026-07-07",
+      "AnnotationCommitSubject": "Enhance SHACL rule processing and aggregation handling in Simpson\u0027s Paradox framework",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "kohavi-longbotham-sommerfield-henne-2009-user-segment",
@@ -69315,7 +70155,11 @@
       "MechanismNote": "Demonstrates how segment-level wins aggregate to overall losses and vice versa.",
       "Name": "kohavi-longbotham-sommerfield-henne-2009-user-segment",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "313589ec98b77f14901c47549fcad97006618129",
+      "AnnotationCommitDate": "2026-07-07",
+      "AnnotationCommitSubject": "Enhance SHACL rule processing and aggregation handling in Simpson\u0027s Paradox framework",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "hohnhold-o-brien-tang-2015-user-tenure-cohort",
@@ -69327,7 +70171,11 @@
       "MechanismNote": "Short-term CTR gains reverse in long-term engagement when stratified by user tenure.",
       "Name": "hohnhold-o-brien-tang-2015-user-tenure-cohort",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "313589ec98b77f14901c47549fcad97006618129",
+      "AnnotationCommitDate": "2026-07-07",
+      "AnnotationCommitSubject": "Enhance SHACL rule processing and aggregation handling in Simpson\u0027s Paradox framework",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "johari-koomen-pekelis-walsh-2017-sequential-test-timing",
@@ -69339,7 +70187,11 @@
       "MechanismNote": "Peeking creates stratum-conditional reversals in estimated treatment effects.",
       "Name": "johari-koomen-pekelis-walsh-2017-sequential-test-timing",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "313589ec98b77f14901c47549fcad97006618129",
+      "AnnotationCommitDate": "2026-07-07",
+      "AnnotationCommitSubject": "Enhance SHACL rule processing and aggregation handling in Simpson\u0027s Paradox framework",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "doll-hill-1950-age",
@@ -69351,7 +70203,11 @@
       "MechanismNote": "Age confounds naive comparison \u2014 older cohort has higher background cancer rate.",
       "Name": "doll-hill-1950-age",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "313589ec98b77f14901c47549fcad97006618129",
+      "AnnotationCommitDate": "2026-07-07",
+      "AnnotationCommitSubject": "Enhance SHACL rule processing and aggregation handling in Simpson\u0027s Paradox framework",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "predimed-trial-cardiovascular-risk-tier",
@@ -69363,7 +70219,11 @@
       "MechanismNote": "Overall benefit; within low-CV-risk subgroup, confidence intervals cross zero \u2014 risk stratification reveals heterogeneity.",
       "Name": "predimed-trial-cardiovascular-risk-tier",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "313589ec98b77f14901c47549fcad97006618129",
+      "AnnotationCommitDate": "2026-07-07",
+      "AnnotationCommitSubject": "Enhance SHACL rule processing and aggregation handling in Simpson\u0027s Paradox framework",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "mrfit-1982-baseline-ecg-abnormality",
@@ -69375,7 +70235,11 @@
       "MechanismNote": "Overall trial showed null effect; stratifying by baseline ECG, intervention group with abnormal ECG had worse outcomes \u2014 EKG is the confounder.",
       "Name": "mrfit-1982-baseline-ecg-abnormality",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "313589ec98b77f14901c47549fcad97006618129",
+      "AnnotationCommitDate": "2026-07-07",
+      "AnnotationCommitSubject": "Enhance SHACL rule processing and aggregation handling in Simpson\u0027s Paradox framework",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "nhanes-air-quality-and-respiratory-income",
@@ -69387,7 +70251,11 @@
       "MechanismNote": "Geographic air pollution correlation with respiratory disease reverses after adjusting for SES and occupational confounders.",
       "Name": "nhanes-air-quality-and-respiratory-income",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "313589ec98b77f14901c47549fcad97006618129",
+      "AnnotationCommitDate": "2026-07-07",
+      "AnnotationCommitSubject": "Enhance SHACL rule processing and aggregation handling in Simpson\u0027s Paradox framework",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "coleman-et-al-1966-family-ses",
@@ -69399,7 +70267,11 @@
       "MechanismNote": "School resources appear to matter less than family SES; stratifying by SES, some resource effects reverse direction.",
       "Name": "coleman-et-al-1966-family-ses",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "313589ec98b77f14901c47549fcad97006618129",
+      "AnnotationCommitDate": "2026-07-07",
+      "AnnotationCommitSubject": "Enhance SHACL rule processing and aggregation handling in Simpson\u0027s Paradox framework",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "naep-race",
@@ -69411,7 +70283,11 @@
       "MechanismNote": "State rankings reverse when stratified by demographic composition \u2014 states with high minority enrollment appear lower overall despite having higher within-group scores.",
       "Name": "naep-race",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "313589ec98b77f14901c47549fcad97006618129",
+      "AnnotationCommitDate": "2026-07-07",
+      "AnnotationCommitSubject": "Enhance SHACL rule processing and aggregation handling in Simpson\u0027s Paradox framework",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "krueger-1999-school",
@@ -69423,7 +70299,11 @@
       "MechanismNote": "Small class benefit is homogeneous within school; across schools, initial disadvantage confounds pooled estimate.",
       "Name": "krueger-1999-school",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "313589ec98b77f14901c47549fcad97006618129",
+      "AnnotationCommitDate": "2026-07-07",
+      "AnnotationCommitSubject": "Enhance SHACL rule processing and aggregation handling in Simpson\u0027s Paradox framework",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "finn-achilles-1990-school",
@@ -69435,7 +70315,11 @@
       "MechanismNote": "Within-school small-class benefit is consistent; pooling across schools with different poverty levels can reverse apparent effect.",
       "Name": "finn-achilles-1990-school",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "313589ec98b77f14901c47549fcad97006618129",
+      "AnnotationCommitDate": "2026-07-07",
+      "AnnotationCommitSubject": "Enhance SHACL rule processing and aggregation handling in Simpson\u0027s Paradox framework",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "mosteller-1995-grade-level",
@@ -69447,7 +70331,11 @@
       "MechanismNote": "See expansion plan.",
       "Name": "mosteller-1995-grade-level",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "313589ec98b77f14901c47549fcad97006618129",
+      "AnnotationCommitDate": "2026-07-07",
+      "AnnotationCommitSubject": "Enhance SHACL rule processing and aggregation handling in Simpson\u0027s Paradox framework",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "angrist-lavy-1999-grade",
@@ -69459,7 +70347,11 @@
       "MechanismNote": "Regression discontinuity at 40-student threshold; pooled class-size relationship reverses without controlling for school composition.",
       "Name": "angrist-lavy-1999-grade",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "313589ec98b77f14901c47549fcad97006618129",
+      "AnnotationCommitDate": "2026-07-07",
+      "AnnotationCommitSubject": "Enhance SHACL rule processing and aggregation handling in Simpson\u0027s Paradox framework",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "hoxby-2000-grade",
@@ -69471,7 +70363,11 @@
       "MechanismNote": "Cross-district class-size relationships reverse direction from within-district variation \u2014 district composition confounds.",
       "Name": "hoxby-2000-grade",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "313589ec98b77f14901c47549fcad97006618129",
+      "AnnotationCommitDate": "2026-07-07",
+      "AnnotationCommitSubject": "Enhance SHACL rule processing and aggregation handling in Simpson\u0027s Paradox framework",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "abdulkadiroglu-angrist-dynarski-kane-pathak-2011-lottery-result",
@@ -69483,7 +70379,11 @@
       "MechanismNote": "Charter schools appear to outperform; lottery-based comparison within same applicant pool reverses for some subgroups.",
       "Name": "abdulkadiroglu-angrist-dynarski-kane-pathak-2011-lottery-result",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "313589ec98b77f14901c47549fcad97006618129",
+      "AnnotationCommitDate": "2026-07-07",
+      "AnnotationCommitSubject": "Enhance SHACL rule processing and aggregation handling in Simpson\u0027s Paradox framework",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "head-start-impact-study-age-3-vs-4-year-olds",
@@ -69495,7 +70395,11 @@
       "MechanismNote": "3-year-olds show different patterns from 4-year-olds; pooled benefits obscure within-age reversals at school entry.",
       "Name": "head-start-impact-study-age-3-vs-4-year-olds",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "313589ec98b77f14901c47549fcad97006618129",
+      "AnnotationCommitDate": "2026-07-07",
+      "AnnotationCommitSubject": "Enhance SHACL rule processing and aggregation handling in Simpson\u0027s Paradox framework",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "timss-2019-international-math-and-science-ses",
@@ -69507,7 +70411,11 @@
       "MechanismNote": "Country rankings reverse when stratified by school SES \u2014 wealthy-country advantage shrinks within SES brackets.",
       "Name": "timss-2019-international-math-and-science-ses",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "313589ec98b77f14901c47549fcad97006618129",
+      "AnnotationCommitDate": "2026-07-07",
+      "AnnotationCommitSubject": "Enhance SHACL rule processing and aggregation handling in Simpson\u0027s Paradox framework",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "hanushek-1989-state",
@@ -69519,7 +70427,11 @@
       "MechanismNote": "State-level spending-achievement correlation is positive; within demographic groups, controlling for SES, spending effect reverses or disappears.",
       "Name": "hanushek-1989-state",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "313589ec98b77f14901c47549fcad97006618129",
+      "AnnotationCommitDate": "2026-07-07",
+      "AnnotationCommitSubject": "Enhance SHACL rule processing and aggregation handling in Simpson\u0027s Paradox framework",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "early-childhood-longitudinal-study-kindergarten-ses",
@@ -69531,7 +70443,11 @@
       "MechanismNote": "Catholic schools appear to outperform; controlling for family SES, the advantage diminishes or reverses within SES strata.",
       "Name": "early-childhood-longitudinal-study-kindergarten-ses",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "313589ec98b77f14901c47549fcad97006618129",
+      "AnnotationCommitDate": "2026-07-07",
+      "AnnotationCommitSubject": "Enhance SHACL rule processing and aggregation handling in Simpson\u0027s Paradox framework",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "rothstein-2010-prior-year-assignment",
@@ -69543,7 +70459,11 @@
       "MechanismNote": "Value-added estimates reverse sign in falsification tests \u2014 prior-year VA predicts future-year scores in wrong direction, suggesting confounding.",
       "Name": "rothstein-2010-prior-year-assignment",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "313589ec98b77f14901c47549fcad97006618129",
+      "AnnotationCommitDate": "2026-07-07",
+      "AnnotationCommitSubject": "Enhance SHACL rule processing and aggregation handling in Simpson\u0027s Paradox framework",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "hmda-loan-to-income-ratio",
@@ -69555,7 +70475,11 @@
       "MechanismNote": "Raw denial rate gap Black/White is ~2\u00D7; stratifying by loan-to-income and property type, gap shrinks significantly but does not reverse \u2014 Type C compression.",
       "Name": "hmda-loan-to-income-ratio",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "313589ec98b77f14901c47549fcad97006618129",
+      "AnnotationCommitDate": "2026-07-07",
+      "AnnotationCommitSubject": "Enhance SHACL rule processing and aggregation handling in Simpson\u0027s Paradox framework",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "munnell-tootell-browne-mceneaney-1996-credit-score",
@@ -69567,7 +70491,11 @@
       "MechanismNote": "Controlling for financial characteristics reduces but does not eliminate racial gap \u2014 unobserved creditworthiness is the partial confounder.",
       "Name": "munnell-tootell-browne-mceneaney-1996-credit-score",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "313589ec98b77f14901c47549fcad97006618129",
+      "AnnotationCommitDate": "2026-07-07",
+      "AnnotationCommitSubject": "Enhance SHACL rule processing and aggregation handling in Simpson\u0027s Paradox framework",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "bartlett-morse-stanton-wallace-2022-loan-channel",
@@ -69579,7 +70507,11 @@
       "MechanismNote": "FinTech lenders show smaller racial pricing gaps than face-to-face; stratifying by credit score tier, the pattern reverses for some score ranges.",
       "Name": "bartlett-morse-stanton-wallace-2022-loan-channel",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "313589ec98b77f14901c47549fcad97006618129",
+      "AnnotationCommitDate": "2026-07-07",
+      "AnnotationCommitSubject": "Enhance SHACL rule processing and aggregation handling in Simpson\u0027s Paradox framework",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "federal-reserve-scf-income-quartile",
@@ -69591,7 +70523,11 @@
       "MechanismNote": "Racial wealth gap is enormous; stratifying by income quartile, within upper-income brackets the gap shrinks dramatically but the composition effect confounds cross-group comparisons.",
       "Name": "federal-reserve-scf-income-quartile",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "313589ec98b77f14901c47549fcad97006618129",
+      "AnnotationCommitDate": "2026-07-07",
+      "AnnotationCommitSubject": "Enhance SHACL rule processing and aggregation handling in Simpson\u0027s Paradox framework",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "cfpb-consumer-credit-panel-zip-code-income-tier",
@@ -69603,7 +70539,11 @@
       "MechanismNote": "Regional delinquency rates appear uniform; stratifying by zip-code income tier reveals dramatic reversal \u2014 low-income zips in high-income states look similar to high-income zips in low-income states.",
       "Name": "cfpb-consumer-credit-panel-zip-code-income-tier",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "313589ec98b77f14901c47549fcad97006618129",
+      "AnnotationCommitDate": "2026-07-07",
+      "AnnotationCommitSubject": "Enhance SHACL rule processing and aggregation handling in Simpson\u0027s Paradox framework",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "sba-small-business-lending-data-loan-size",
@@ -69615,7 +70555,11 @@
       "MechanismNote": "Minority-owned businesses receive smaller loans on average; stratifying by business revenue and industry, approval rates reverse in some sectors.",
       "Name": "sba-small-business-lending-data-loan-size",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "313589ec98b77f14901c47549fcad97006618129",
+      "AnnotationCommitDate": "2026-07-07",
+      "AnnotationCommitSubject": "Enhance SHACL rule processing and aggregation handling in Simpson\u0027s Paradox framework",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "petersen-rajan-1994-firm-age",
@@ -69627,7 +70571,11 @@
       "MechanismNote": "Older relationships get more credit; young firms with long relationships get more than old firms with short relationships \u2014 relationship length confounds firm-age effect.",
       "Name": "petersen-rajan-1994-firm-age",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "313589ec98b77f14901c47549fcad97006618129",
+      "AnnotationCommitDate": "2026-07-07",
+      "AnnotationCommitSubject": "Enhance SHACL rule processing and aggregation handling in Simpson\u0027s Paradox framework",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "berger-udell-1995-firm-size",
@@ -69639,7 +70587,11 @@
       "MechanismNote": "Long-relationship borrowers get lower rates; controlling for firm quality, the relationship effect reverses for very small firms.",
       "Name": "berger-udell-1995-firm-size",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "313589ec98b77f14901c47549fcad97006618129",
+      "AnnotationCommitDate": "2026-07-07",
+      "AnnotationCommitSubject": "Enhance SHACL rule processing and aggregation handling in Simpson\u0027s Paradox framework",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "fdic-small-business-lending-survey-2016-bank-size",
@@ -69651,7 +70603,11 @@
       "MechanismNote": "Community banks appear to approve small business loans more readily; stratifying by loan size, large banks approve more small-balance loans.",
       "Name": "fdic-small-business-lending-survey-2016-bank-size",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "313589ec98b77f14901c47549fcad97006618129",
+      "AnnotationCommitDate": "2026-07-07",
+      "AnnotationCommitSubject": "Enhance SHACL rule processing and aggregation handling in Simpson\u0027s Paradox framework",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "keys-mukherjee-seru-vig-2010-fico-score-band",
@@ -69663,7 +70619,11 @@
       "MechanismNote": "Securitized loans default at higher rates overall; within narrow FICO bands at the threshold, the effect reverses due to screening discontinuity.",
       "Name": "keys-mukherjee-seru-vig-2010-fico-score-band",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "313589ec98b77f14901c47549fcad97006618129",
+      "AnnotationCommitDate": "2026-07-07",
+      "AnnotationCommitSubject": "Enhance SHACL rule processing and aggregation handling in Simpson\u0027s Paradox framework",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "acharya-imbierowicz-steffen-teichmann-2020-bank-capitalization-tier",
@@ -69675,7 +70635,11 @@
       "MechanismNote": "Monetary easing appears to increase lending overall; within low-capitalization banks, lending contracts rather than expands \u2014 capitalization is the confounding stratum.",
       "Name": "acharya-imbierowicz-steffen-teichmann-2020-bank-capitalization-tier",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "313589ec98b77f14901c47549fcad97006618129",
+      "AnnotationCommitDate": "2026-07-07",
+      "AnnotationCommitSubject": "Enhance SHACL rule processing and aggregation handling in Simpson\u0027s Paradox framework",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "near-zero-distortion-boundary-allocation-skew",
@@ -69687,7 +70651,11 @@
       "MechanismNote": "Small residual allocation imbalance between strata affects both which treatment patients receive and outcome rates, but the imbalance is too small to threaten the pooled winner. Confirms non-flip region well above the SignalPurity theorem boundary.",
       "Name": "near-zero-distortion-boundary-allocation-skew",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "08f3b8eca267a7dae0c83bf207bcde3bceb0fde7",
+      "AnnotationCommitDate": "2026-07-08",
+      "AnnotationCommitSubject": "Completed Loops 86-89 - Add new candidate datasets and studies for Simpson\u0027s Paradox analysis",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "equal-weight-signflip-boundary-within-stratum-allocation",
@@ -69699,7 +70667,11 @@
       "MechanismNote": "Strata are exactly equal size (StratumFraction=0.5/0.5) but allocation within each stratum is skewed oppositely, producing a manifest sign-flip purely from within-stratum imbalance \u2014 demonstrates the SignalPurity theorem does not require stratum-size imbalance, only allocation imbalance.",
       "Name": "equal-weight-signflip-boundary-within-stratum-allocation",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "08f3b8eca267a7dae0c83bf207bcde3bceb0fde7",
+      "AnnotationCommitDate": "2026-07-08",
+      "AnnotationCommitSubject": "Completed Loops 86-89 - Add new candidate datasets and studies for Simpson\u0027s Paradox analysis",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "zero-corrected-gap-boundary-allocation-manufactured-signal",
@@ -69711,7 +70683,11 @@
       "MechanismNote": "Allocation imbalance manufactures the entire observed pooled gap (5.4pp) from a true corrected effect of exactly zero (CorrectedGap=0.0, SignalPurity=0.0) \u2014 the purest form of allocation artifact in the corpus, useful as the SignalPurity lower-bound anchor (purity=0 means 100% of observed signal is allocation, 0% true effect).",
       "Name": "zero-corrected-gap-boundary-allocation-manufactured-signal",
       "IsConfounder": true,
-      "ConditioningRisk": "confounder"
+      "ConditioningRisk": "confounder",
+      "AnnotationCommitHash": "08f3b8eca267a7dae0c83bf207bcde3bceb0fde7",
+      "AnnotationCommitDate": "2026-07-08",
+      "AnnotationCommitSubject": "Completed Loops 86-89 - Add new candidate datasets and studies for Simpson\u0027s Paradox analysis",
+      "CausalRoleEverRevised": false
     },
     {
       "StratumVariableId": "collider-purity-boundary-flip-near-independent-stratification",
@@ -69723,7 +70699,11 @@
       "MechanismNote": "Constructed via 1.2M-trial adversarial search for the highest-SignalPurity configuration that still produces a manifest sign-flip. Best found: purity=0.49994, asymptotically approaching but never reaching the 0.5 theorem boundary (conc-20). Tagged collider (not confounder) to probe conc-30 (collider-no-manifest theorem) at its tightest empirically-discoverable edge \u2014 the geometry structurally resists high-purity flips even under adversarial search, not merely by absence in the observed real-data corpus.",
       "Name": "collider-purity-boundary-flip-near-independent-stratification",
       "IsConfounder": false,
-      "ConditioningRisk": "collider"
+      "ConditioningRisk": "collider",
+      "AnnotationCommitHash": "08f3b8eca267a7dae0c83bf207bcde3bceb0fde7",
+      "AnnotationCommitDate": "2026-07-08",
+      "AnnotationCommitSubject": "Completed Loops 86-89 - Add new candidate datasets and studies for Simpson\u0027s Paradox analysis",
+      "CausalRoleEverRevised": false
     }
   ],
   "TreatmentRankings": [

@@ -449,7 +449,7 @@ $$ LANGUAGE sql STABLE;
 -- Used for join-free cross-table references in aggregations
 
 CREATE OR REPLACE FUNCTION get_stratum_variables_annotation_commit_date(p_stratum_variable_id TEXT)
-RETURNS TEXT AS $$
+RETURNS DATE AS $$
   SELECT (SELECT annotation_commit_date FROM stratum_variables WHERE stratum_variable_id = p_stratum_variable_id);
 $$ LANGUAGE sql STABLE;
 

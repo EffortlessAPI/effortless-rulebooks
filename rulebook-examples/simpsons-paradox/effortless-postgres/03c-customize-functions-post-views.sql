@@ -20,9 +20,6 @@ CREATE OR REPLACE FUNCTION calc_discovery_findings_is_confirmed(p_finding_id TEX
     WHEN 'H-purity' THEN calc_model_summary_sign_flip_signal_purity_max('simpsons-paradox-v1') < 0.5
     WHEN 'H-small-effect' THEN calc_model_summary_avg_pooled_gap_stable_d('simpsons-paradox-v1')
                               > calc_model_summary_avg_pooled_gap_latent_d('simpsons-paradox-v1')
-    WHEN 'H-econ-zero' THEN calc_model_summary_economics_sign_flip_count('simpsons-paradox-v1') = 0
-    WHEN 'H-domain-dist' THEN calc_model_summary_epidemiology_avg_distortion('simpsons-paradox-v1')
-                              > calc_model_summary_education_avg_distortion('simpsons-paradox-v1')
     WHEN 'H-causal-manifest' THEN calc_model_summary_confounder_sign_flip_count('simpsons-paradox-v1')
                               > calc_model_summary_collider_selection_manifest_count('simpsons-paradox-v1')
                               AND calc_model_summary_confounder_sign_flip_count('simpsons-paradox-v1') >= 10
@@ -38,18 +35,12 @@ CREATE OR REPLACE FUNCTION calc_discovery_findings_is_confirmed(p_finding_id TEX
         AND calc_treatment_rankings_adjustment_appropriate(tr.treatment_ranking_id) = FALSE
     ) = 0
     WHEN 'H-catalog-exact-match' THEN calc_model_summary_type_prediction_match_rate('simpsons-paradox-v1') < 0.5
-    WHEN 'H-catalog-flip-prediction' THEN calc_model_summary_sign_flip_prediction_match_rate('simpsons-paradox-v1') < 0.5
-    WHEN 'H-domain-flip-geometry-controlled' THEN calc_model_summary_domain_flip_gap_survives_geometry_control('simpsons-paradox-v1')
     WHEN 'H-collider-no-manifest-v2' THEN calc_model_summary_collider_selection_manifest_count('simpsons-paradox-v1') = 0
     WHEN 'H-cplus-magnitude' THEN calc_model_summary_c_plus_avg_distortion('simpsons-paradox-v1')
                               > calc_model_summary_c_minus_avg_distortion('simpsons-paradox-v1')
                               AND calc_model_summary_c_plus_avg_distortion('simpsons-paradox-v1')
                                   > calc_model_summary_type_d_avg_distortion('simpsons-paradox-v1')
     WHEN 'H-ultra-fragile' THEN calc_model_summary_sweep_fragile_count('simpsons-paradox-v1') >= 4
-    WHEN 'H-econ-encoding-selection' THEN calc_model_summary_economics_expected_a_mismatch_rate('simpsons-paradox-v1') > 0.5
-    WHEN 'H-domain-profiles-stable' THEN calc_model_summary_education_latent_fraction('simpsons-paradox-v1') > 0.5
-                              AND calc_model_summary_sports_latent_fraction('simpsons-paradox-v1') > 0.5
-                              AND calc_model_summary_economics_sign_flip_rate('simpsons-paradox-v1') < 0.05
     WHEN 'H-corrected-gap-invariant' THEN calc_model_summary_max_study_sweep_corrected_gap_range('simpsons-paradox-v1') < 0.0001
                               AND calc_model_summary_corrected_gap_invariant_fail_count('simpsons-paradox-v1') = 0
     WHEN 'H-explained-bidirectional' THEN calc_model_summary_explained_confounder_count('simpsons-paradox-v1')
@@ -158,9 +149,6 @@ CREATE OR REPLACE FUNCTION calc_discovery_findings_observed_metric(p_finding_id 
     WHEN 'H-purity' THEN CONCAT('maxPurity=', calc_model_summary_sign_flip_signal_purity_max('simpsons-paradox-v1'))
     WHEN 'H-small-effect' THEN CONCAT('stable=', calc_model_summary_avg_pooled_gap_stable_d('simpsons-paradox-v1'),
                                       ' latent=', calc_model_summary_avg_pooled_gap_latent_d('simpsons-paradox-v1'))
-    WHEN 'H-econ-zero' THEN CONCAT('flips=', calc_model_summary_economics_sign_flip_count('simpsons-paradox-v1'))
-    WHEN 'H-domain-dist' THEN CONCAT('epi=', calc_model_summary_epidemiology_avg_distortion('simpsons-paradox-v1'),
-                                     ' edu=', calc_model_summary_education_avg_distortion('simpsons-paradox-v1'))
     WHEN 'H-causal-manifest' THEN CONCAT('confFlip=', calc_model_summary_confounder_sign_flip_count('simpsons-paradox-v1'),
                                         ' collManifest=', calc_model_summary_collider_selection_manifest_count('simpsons-paradox-v1'))
     WHEN 'H-causal-latent' THEN CONCAT('collManifest=', calc_model_summary_collider_selection_manifest_count('simpsons-paradox-v1'),
@@ -176,23 +164,11 @@ CREATE OR REPLACE FUNCTION calc_discovery_findings_observed_metric(p_finding_id 
     WHEN 'H-catalog-exact-match' THEN CONCAT('exactRate=', calc_model_summary_type_prediction_match_rate('simpsons-paradox-v1'),
                                               ' (', calc_model_summary_type_prediction_match_count('simpsons-paradox-v1'),
                                               '/', calc_corpus_catalog_summary_imported_count('catalog-v1'), ')')
-    WHEN 'H-catalog-flip-prediction' THEN CONCAT('flipPredRate=', calc_model_summary_sign_flip_prediction_match_rate('simpsons-paradox-v1'),
-                                                  ' note=', calc_model_summary_catalog_prediction_witness_note('simpsons-paradox-v1'))
-    WHEN 'H-domain-flip-geometry-controlled' THEN CONCAT('econHighImbFlips=', calc_model_summary_economics_high_imbalance_sign_flip_count('simpsons-paradox-v1'),
-                                                          ' epiHighImbRate=', calc_model_summary_epidemiology_high_imbalance_sign_flip_rate('simpsons-paradox-v1'),
-                                                          ' legalHighImbRate=', calc_model_summary_legal_high_imbalance_sign_flip_rate('simpsons-paradox-v1'),
-                                                          ' sportsHighImbRate=', calc_model_summary_sports_high_imbalance_sign_flip_rate('simpsons-paradox-v1'),
-                                                          ' threshold=', calc_model_summary_high_imbalance_sign_flip_threshold('simpsons-paradox-v1'))
     WHEN 'H-collider-no-manifest-v2' THEN CONCAT('collManifest=', calc_model_summary_collider_selection_manifest_count('simpsons-paradox-v1'))
     WHEN 'H-cplus-magnitude' THEN CONCAT('C+=', calc_model_summary_c_plus_avg_distortion('simpsons-paradox-v1'),
                                          ' C-=', calc_model_summary_c_minus_avg_distortion('simpsons-paradox-v1'),
                                          ' D=', calc_model_summary_type_d_avg_distortion('simpsons-paradox-v1'))
     WHEN 'H-ultra-fragile' THEN CONCAT('SweepFragileCount=', calc_model_summary_sweep_fragile_count('simpsons-paradox-v1'))
-    WHEN 'H-econ-encoding-selection' THEN CONCAT('EconExpectedAMismatchRate=', calc_model_summary_economics_expected_a_mismatch_rate('simpsons-paradox-v1'))
-    WHEN 'H-domain-profiles-stable' THEN CONCAT('eduLatent=', calc_model_summary_education_latent_fraction('simpsons-paradox-v1'),
-                                                '; sportsLatent=', calc_model_summary_sports_latent_fraction('simpsons-paradox-v1'),
-                                                '; econFlipRate=', calc_model_summary_economics_sign_flip_rate('simpsons-paradox-v1'),
-                                                '; realN=', calc_model_summary_real_study_count('simpsons-paradox-v1'))
     WHEN 'H-corrected-gap-invariant' THEN CONCAT('maxRange=', calc_model_summary_max_study_sweep_corrected_gap_range('simpsons-paradox-v1'),
                                                  ' fails=', calc_model_summary_corrected_gap_invariant_fail_count('simpsons-paradox-v1'))
     WHEN 'H-explained-bidirectional' THEN CONCAT('explained=', calc_model_summary_explained_confounder_count('simpsons-paradox-v1'),

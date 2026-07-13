@@ -1874,7 +1874,7 @@
         "datatype": "string",
         "type": "raw",
         "nullable": true,
-        "Description": "Full git SHA of the commit that first introduced this row\u0027s CausalRole/MechanismNote \u2014 derived via \u0060git log -S\u0060 pickaxe search on this row\u0027s StratumVariableId (loop-97 audit-trail backfill). Real repo history, not a hand-entered label."
+        "Description": "Full git SHA of the commit that first introduced this row\u0027s CausalRole/MechanismNote \u2014 derived via \u0060git log -S\u0060 pickaxe search on this row\u0027s StratumVariableId (loop-98 audit-trail backfill). Real repo history, not a hand-entered label."
       },
       {
         "name": "AnnotationCommitDate",
